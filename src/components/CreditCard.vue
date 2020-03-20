@@ -36,17 +36,17 @@ export default {};
 }
 @media screen and (max-width: 489px) {
   .last_image {
-    margin-top: -2rem !important;
+    /* margin-top: -2rem !important; */
   }
 }
 @media screen and (max-width: 401px) {
   .last_second_image {
-    margin-top: -2rem !important;
+    /* margin-top: -2rem !important; */
   }
 }
 @media screen and (max-width: 313px) {
   .last_third_image {
-    margin-top: -2rem !important;
+    /* margin-top: -2rem !important; */
   }
 }
 .card_image {
