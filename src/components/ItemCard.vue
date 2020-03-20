@@ -1,23 +1,47 @@
 <template>
-  <div class="card block" :class="{order_now:0 < counter}">
+  <div class="card block" :class="{ order_now: 0 < counter }">
     <div class="card-content">
       <div class="media">
         <div class="media-content">
           <!-- <h4 class="bold">Kushikatsu Special Platter</h4> -->
-          <h4 class="bold">{{title}}</h4>
-          <h2 class="bold payment">{{payment}}</h2>
-          <p>{{discription}}</p>
+          <h4 class="bold">
+            {{ title }}
+          </h4>
+          <h2 class="bold payment">
+            {{ payment }}
+          </h2>
+          <p>{{ discription }}</p>
         </div>
         <div class="media-right">
-          <figure class="image is-100x100"><img class="is-square" :src="image" alt=""></figure>
+          <figure class="image is-100x100">
+            <img class="is-square" :src="image" alt="" />
+          </figure>
         </div>
       </div>
       <div class="level is-mobile">
-        <div class="level-left">
-        </div>
+        <div class="level-left"></div>
         <div class="level-right">
-          <b-button  icon-left="cart" v-if="!this.openMenuFlag" @click="openMenu" style="margin-right:auto" type="is-info" class="counter-button" rounded>Order</b-button>
-          <b-button icon-left="close" v-else-if="this.openMenuFlag" @click="closeMenu" style="margin-right:auto" class="counter-button" rounded>Close</b-button>
+          <b-button
+            v-if="!openMenuFlag"
+            icon-left="cart"
+            style="margin-right:auto"
+            type="is-info"
+            class="counter-button"
+            rounded
+            @click="openMenu"
+          >
+            Order
+          </b-button>
+          <b-button
+            v-else-if="openMenuFlag"
+            icon-left="close"
+            style="margin-right:auto"
+            class="counter-button"
+            rounded
+            @click="closeMenu"
+          >
+            Close
+          </b-button>
         </div>
       </div>
       <div v-if="openMenuFlag">
@@ -27,18 +51,51 @@
 
           <div class="level is-mobile counter">
             <div class="level-left">
-              <b-button v-if="0 < counter" @click="pullCount" class="counter-button disabled" rounded style="padding-left:2rem;padding-right:2rem;margin-left:1rem;">-</b-button>
-              <b-button disabled v-else @click="pullCount" class="counter-button" rounded style="padding-left:2rem;padding-right:2rem;margin-left:1rem;" disabled>-</b-button>
+              <b-button
+                v-if="0 < counter"
+                class="counter-button disabled"
+                rounded
+                style="padding-left:2rem;padding-right:2rem;margin-left:1rem;"
+                @click="pullCount"
+              >
+                -
+              </b-button>
+              <b-button
+                v-else
+                class="counter-button"
+                rounded
+                style="padding-left:2rem;padding-right:2rem;margin-left:1rem;"
+                disabled
+                @click="pullCount"
+              >
+                -
+              </b-button>
             </div>
-            <h2 style="margin-top:-0.4rem;">{{counter}}</h2>
+            <h2 style="margin-top:-0.4rem;">
+              {{ counter }}
+            </h2>
             <div class="level-right">
-              <b-button @click="pushCount" class="counter-button" rounded style="padding-left:2rem;padding-right:2rem;margin-right:1rem;">+</b-button>
+              <b-button
+                class="counter-button"
+                rounded
+                style="padding-left:2rem;padding-right:2rem;margin-right:1rem;"
+                @click="pushCount"
+              >
+                +
+              </b-button>
             </div>
           </div>
-          <p class="bold">Special instructions</p>
-          <p class="p-font-mini">Please note that special requests may result in price adjustment after your order is processed.</p>
+          <p class="bold">
+            Special instructions
+          </p>
+          <p class="p-font-mini">
+            Please note that special requests may result in price adjustment
+            after your order is processed.
+          </p>
           <div class="notification">
-            <p class="p-font-mini">Please put the dressing on the side.</p>
+            <p class="p-font-mini">
+              Please put the dressing on the side.
+            </p>
           </div>
         </div>
       </div>
@@ -67,34 +124,34 @@ export default {
       type: String,
       required: true,
       default: "https://magazine.hitosara.com/image/421/MM_421.jp"
-    },
+    }
   },
   data() {
     return {
       counter: 0,
-      openMenuFlag:false
-    }
+      openMenuFlag: false
+    };
   },
-  methods:{
-    pullCount(){
-      if(this.counter <= 0){
+  methods: {
+    pullCount() {
+      if (this.counter <= 0) {
         return;
       }
-      this.counter --;
-        this.$store.state.totalOrderCount--;
-        this.order();
-        console.log(this.$store.state.totalOrderCount);
+      this.counter--;
+      this.$store.state.totalOrderCount--;
+      this.order();
+      console.log(this.$store.state.totalOrderCount);
     },
-    pushCount(){
-      this.counter ++;
+    pushCount() {
+      this.counter++;
       this.$store.state.totalOrderCount++;
       this.order();
       console.log(this.$store.state.totalOrderCount);
     },
     openMenu() {
       this.openMenuFlag = true;
-      if(this.counter == 0){
-        this.counter ++;
+      if (this.counter == 0) {
+        this.counter++;
         this.$store.state.totalOrderCount++;
         this.order();
         console.log(this.$store.state.totalOrderCount);
@@ -103,34 +160,34 @@ export default {
     closeMenu() {
       this.openMenuFlag = false;
     },
-    order(){
-      this.$emit('emitting', {orderCount: this.$store.state.totalOrderCount})
+    order() {
+      this.$emit("emitting", { orderCount: this.$store.state.totalOrderCount });
     }
   }
 };
 </script>
 <style lang="scss" scoped>
 .card {
-  margin-bottom:0.6rem;
+  margin-bottom: 0.6rem;
 }
 
 .payment {
-  margin-top:0.4rem;
-  margin-bottom:0.4rem;
+  margin-top: 0.4rem;
+  margin-bottom: 0.4rem;
 }
 
 .count-class {
-  margin-top:1rem;
+  margin-top: 1rem;
 }
 
 .counter {
-   margin-top:1rem;
+  margin-top: 1rem;
 }
 
 .notification {
-  margin-top:1rem;
+  margin-top: 1rem;
 }
 .order_now {
-  background-color:#C2EEFF;
+  background-color: #c2eeff;
 }
 </style>

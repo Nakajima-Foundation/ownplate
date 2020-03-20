@@ -4,24 +4,14 @@
     <div id="menu-heder-image">
       <div id="menu-heder-image-mask"></div>
     </div>
+    <!-- shop-orner -->
     <section class="section">
-      <!-- shop-orner -->
-      <div class="media">
-        <div class="media-left">
-          <figure class="image is-64x64">
-            <img
-              class="is-rounded"
-              src="https://pbs.twimg.com/profile_images/704153164438642692/bYo0YeEr_bigger.jpg"
-              alt=""
-            />
-          </figure>
-        </div>
-        <div class="media-content">
-          <h3 class="title is-4">Yuta Seatle</h3>
-        </div>
-      </div>
-
-      <!-- shop-orner -->
+      <shop-orner-info
+        :src="
+          'https://pbs.twimg.com/profile_images/704153164438642692/bYo0YeEr_bigger.jpg'
+        "
+        :name="'Yuta Seatle'"
+      ></shop-orner-info>
       <b-tabs size="is-medium" class="block" expanded>
         <b-tab-item label="Menu">
           <h2 class="p-big bold">Most popular</h2>
@@ -162,13 +152,15 @@
 import store from "~/store/index.js";
 import ItemCard from "~/components/ItemCard";
 import LoginModal from "~/components/LoginModal";
+import ShopOrnerInfo from "~/components/ShopOrnerInfo";
 
 export default {
   name: "ShopMenu",
 
   components: {
     ItemCard,
-    LoginModal
+    LoginModal,
+    ShopOrnerInfo
   },
   data() {
     return {
@@ -189,15 +181,6 @@ export default {
       this.footCounter = eventArgs.orderCount;
       // console.log(eventArgs.orderCount);
     },
-    cardModal() {
-      this.$buefy.modal.open({
-        parent: this,
-        component: ModalForm,
-        hasModalCard: true,
-        customClass: "custom-class custom-class-2",
-        trapFocus: true
-      });
-    },
     checkOut() {
       this.$refs.modalLogin.open();
     }
@@ -217,11 +200,6 @@ export default {
 // #menu-heder-image-mask {
 //   background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), #fff 50%)!important;
 // }
-
-.media-content {
-  margin-top: auto;
-  margin-bottom: auto;
-}
 
 #order_btn {
   position: fixed;
