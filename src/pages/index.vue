@@ -37,8 +37,7 @@ export default {
     return {};
   },
 
-  mounted() {
-  },
+  mounted() {},
 
   methods: {
     sessionClear() {

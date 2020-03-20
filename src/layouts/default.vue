@@ -7,7 +7,9 @@
             src="https://www.gstatic.com/devrel-devsite/prod/vf4743e4237527d72f4be8582639e4a529166b52e9bb628e797b1ed38800b278b/firebase/images/lockup.png"
             alt="Lightweight UI components for Vue.js based on Bulma"
           /> -->
-          <p class="p-font bold logo">OwnPlate</p>
+          <p class="p-font bold logo">
+            OwnPlate
+          </p>
         </b-navbar-item>
       </template>
 
@@ -106,7 +108,6 @@
                   Mail
                 </a>
               </p>
-
             </div>
 
             <div class="mainichi-info" style="margin-top:1rem;">
@@ -181,7 +182,7 @@ export default {
 }
 
 .logo {
-  color:rgb(255, 255, 255);
+  color: rgb(255, 255, 255);
   font-weight: 900;
 }
 </style>
