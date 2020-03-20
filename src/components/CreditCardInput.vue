@@ -8,11 +8,13 @@
           </label>
         </div>
         <input
+          id="cc-number"
           class="input sp"
           type="number"
           max="12"
           pattern="^[0-9]+$"
           placeholder="0000000000000000"
+          name="cardNumber"
         />
       </div>
 
