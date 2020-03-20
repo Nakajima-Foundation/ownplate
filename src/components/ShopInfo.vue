@@ -9,7 +9,7 @@
           src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d10747.343129628855!2d-122.3823014!3d47.6681865!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x77579f8814f54e37!2sArashi%20Ramen!5e0!3m2!1sja!2sjp!4v1584711520886!5m2!1sja!2sjp"
           height="450"
           frameborder="0"
-          style="border:0;"
+          style="border:0;width:100%;"
           allowfullscreen=""
           aria-hidden="false"
           tabindex="0"

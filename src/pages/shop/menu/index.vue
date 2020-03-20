@@ -177,6 +177,7 @@ export default {
   margin-right: auto;
   // background: #FFC778;
   color: white;
+  height: 3rem;
 }
 </style>
 <style>

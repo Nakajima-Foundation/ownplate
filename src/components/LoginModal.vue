@@ -10,6 +10,7 @@
           <b-field class="p-font-middle" label="Your phone Number">
             <b-input
               v-model="phone"
+              type="number"
               placeholder="+1 000-000-0000"
               value=""
             ></b-input>

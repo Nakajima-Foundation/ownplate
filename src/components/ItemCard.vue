@@ -71,7 +71,10 @@
                 -
               </b-button>
             </div>
-            <h2 style="margin-top:-0.4rem;">
+            <h2
+              class="bold"
+              style="margin-top:-0.4rem;font-size:3rem!important;"
+            >
               {{ counter }}
             </h2>
             <div class="level-right">

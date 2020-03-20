@@ -22,6 +22,7 @@
           </div>
           <li><a href="/shop/menu">Menu</a></li>
           <li><a href="/shop/order">Order</a></li>
+          <li><a href="/shop/thank">ThankYou</a></li>
         </ol>
       </div>
     </section>
