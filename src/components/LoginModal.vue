@@ -67,7 +67,7 @@ export default {
     goNext() {
       this.$buefy.toast.open({
         duration: 5000,
-        message: `Send your mumber！`,
+        message: `Send your number！`,
         position: "is-bottom",
         type: "is-success"
       });
