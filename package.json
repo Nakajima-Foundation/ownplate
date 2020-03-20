@@ -1,0 +1,43 @@
+{
+  "name": "nakajima-demae",
+  "version": "1.0.0",
+  "description": "My stylish Nuxt.js project",
+  "author": "FujiyamaYuta",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt --port 3000",
+    "devsync": "HOST=192.168.100.20 PORT=3333 nuxt",
+    "build": "nuxt build",
+    "start": "axios-mock-server -b && nuxt start",
+    "generate": "axios-mock-server -b && nuxt generate",
+    "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
+    "lintfix": "eslint --fix --ext .js,.vue --ignore-path .gitignore ."
+  },
+  "dependencies": {
+    "@babel/plugin-syntax-dynamic-import": "^7.7.4",
+    "@babel/plugin-transform-runtime": "^7.7.6",
+    "@babel/preset-env": "^7.7.7",
+    "@babel/runtime": "^7.7.7",
+    "@nuxtjs/axios": "^5.9.2",
+    "axios-mock-server": "^0.16.3",
+    "babel-polyfill": "^6.26.0",
+    "bulma-social": "^1.0.1",
+    "nuxt": "^2.0.0",
+    "nuxt-buefy": "^0.3.2",
+    "vue-carousel": "^0.18.0",
+    "vuex-persistedstate": "^2.7.0"
+  },
+  "devDependencies": {
+    "@nuxtjs/style-resources": "^1.0.0",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-loader": "^3.0.3",
+    "eslint-plugin-prettier": "^3.1.2",
+    "eslint-plugin-vue": "^6.2.2",
+    "node-sass": "^4.13.0",
+    "nuxt-sass-resources-loader": "^2.0.5",
+    "prettier": "^1.19.1",
+    "sass-loader": "^8.0.0"
+  }
+}

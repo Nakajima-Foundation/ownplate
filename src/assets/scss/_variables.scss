@@ -1,0 +1,34 @@
+@include mq(bluma) {
+  .navbar-link {
+    display: none;
+  }
+}
+
+.navbar {
+  background-color: darkslategrey;
+  .navbar-burger {
+    span {
+      color: white;
+    }
+  }
+}
+
+.tabs li.is-active a {
+  border-bottom-width: 4px;
+  // font-weight: bold;
+}
+
+.card-content {
+  padding: 1rem;
+}
+
+.image.is-100x100 {
+  height: 124px !important;
+  width: 124px !important;
+  margin-top: -0.8rem;
+  margin-right: -0.8rem;
+}
+
+.notification {
+  padding: 0.6rem 0.4rem 0.6rem 0.4rem;
+}
