@@ -22,6 +22,7 @@
     "axios-mock-server": "^0.16.3",
     "babel-polyfill": "^6.26.0",
     "bulma-social": "^1.0.1",
+    "firebase": "^7.12.0",
     "nuxt": "^2.0.0",
     "nuxt-buefy": "^0.3.2",
     "vue-carousel": "^0.18.0",
