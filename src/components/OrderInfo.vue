@@ -33,7 +33,7 @@
       </div>
     </div>
 
-    <div class="card-content tax" style="margin-top: -1rem;">
+    <div class="card-content tax">
       <div class="media">
         <div class="media-content">
           <h4 class="bold">
@@ -79,6 +79,6 @@ export default {
 </script>
 <style type="scss" scped>
 .tax {
-  margin-top: -2rem !important;
+  margin-top: -1.6rem !important;
 }
 </style>
