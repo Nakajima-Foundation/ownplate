@@ -8,6 +8,9 @@
  phone: shop phone number (string, required)
  uid: firebase user uid (string, required)
  web_url: url (string)
+
+ default_tax_rate: rate (number)
+
 }
 ```
 
@@ -16,6 +19,7 @@
 {
  name: name (string, required)
  price: price (number, required)
+ tax_rate: rate (number) 
  description: description (string)
 }
 ```
