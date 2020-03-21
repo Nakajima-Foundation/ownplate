@@ -23,7 +23,8 @@
           <li><a href="/shop/menu">Menu</a></li>
           <li><a href="/shop/order">Order</a></li>
           <li><a href="/shop/thank">ThankYou</a></li>
-          <li><a href="/shop/new">Create a new Reataurant</a></li>
+          <li><a href="/admin/restaurants/new">Create a new Reataurant</a></li>
+          <li><a href="/admin/restaurants/">Your Reataurant</a></li>
         </ol>
       </div>
     </section>
