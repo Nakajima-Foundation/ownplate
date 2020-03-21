@@ -7,6 +7,7 @@ It is built with Firebase + React + Stripe, for productivity and scalability.
 
 ## Minimum Viable Product
 Restaurants can
+ - can login using e-mail
  - create its own page, with restaurant name, banner, address, phone number, homepage url
  - enter the menu with prices (and available time)
  - associate a Stripe account (to receive payment)
@@ -14,7 +15,7 @@ Restaurants can
  - see the list of pending orders
  - remove orders that have been picked up
 Customers can
- - log in using Facebook or e-mail
+ - log in using Phone SMS
  - see the menu
  - order items (shopping cart) and pay
  - let the service remember the credit card (via Stripe)
@@ -32,3 +33,4 @@ Customers can
  - be notified the status of the order
  - give feedback (stars and text)
  - pay tips after pick-up
+ - can search Restaurants using text or from map or current location.
