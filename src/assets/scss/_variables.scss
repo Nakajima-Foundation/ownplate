@@ -22,6 +22,12 @@
   padding: 1rem;
 }
 
+.card {
+  box-shadow: 0px 2px 4px #0000001a;
+  border-radius: 8px;
+  opacity: 1;
+}
+
 .image.is-100x100 {
   height: 124px !important;
   width: 124px !important;
@@ -31,4 +37,9 @@
 
 .notification {
   padding: 0.6rem 0.4rem 0.6rem 0.4rem;
+  background: #ffffff 0% 0% no-repeat padding-box;
+  box-shadow: 0px 2px 4px #0000001a;
+  border-radius: 8px;
+  opacity: 1;
+  padding: 1rem;
 }
