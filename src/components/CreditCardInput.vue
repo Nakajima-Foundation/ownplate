@@ -64,7 +64,7 @@
               />
               <img
                 class="secure_sample-image"
-                src="/dist/assets/image/secure_number.png"
+                src="/card-image/secure_number.png"
               />
             </div>
           </div>
@@ -142,9 +142,10 @@ export default {
 
 .secure_sample-image {
   max-width: 100%;
-  height: 60px;
+  height: 40px;
   width: auto;
-  margin-left: 1rem;
+  margin-left: 0.4rem;
+  margin-top: -0.6rem;
 }
 
 .postcode_second {

@@ -32,62 +32,70 @@ h1 {
   letter-spacing: 0;
   font-size: 2rem !important;
   line-height: 1.5rem;
+  color: #212121;
 }
 
 h2 {
   // font-family: "Hiragino Sans CNS";
   font-size: 1.75rem !important;
   line-height: 1.5rem;
+  color: #212121;
 }
 
 h3 {
   // font-family: "Hiragino Sans CNS";
   font-size: 1.2rem !important;
   line-height: 2.2rem;
+  color: #212121;
 }
 
 h4 {
   // font-family: "Hiragino Sans CNS";
   // color: #363636;
-  color: #484848;
+  // color: #484848;
   font-weight: 600;
   line-height: 1.125rem;
   font-size: 1rem !important;
+  color: #212121;
 }
 
 @include mq(bluma) {
   h1 {
     // font-family: "Hiragino Sans CNS" !important;
-    color: #222222;
+    // color: #222222;
     letter-spacing: 0;
     font-size: 1.75rem !important;
     line-height: 2.2rem;
+    color: #212121;
   }
 
   h2 {
     // font-family: "Hiragino Sans CNS" !important;
     letter-spacing: 0;
-    color: #222222;
+    // color: #222222;
     opacity: 1;
     font-size: 1.5rem !important;
     line-height: 2.2rem;
+    color: #212121;
   }
 
   h3 {
     // font-family: "Hiragino Sans CNS" !important;
     letter-spacing: 0;
-    color: #222222;
+    // color: #222222;
     opacity: 1;
     line-height: 2rem !important;
     font-size: 1.25rem !important;
+    color: #212121;
   }
 
   h4 {
     // font-family: "Hiragino Sans CNS" !important;
     letter-spacing: 0;
-    color: #484848;
+    // color: #484848;
     opacity: 1;
     font-size: 1rem !important;
+    color: #212121;
   }
 }
 
@@ -142,4 +150,8 @@ p {
   border: none;
   border-top: 1px #c5c5c5 solid;
   margin-bottom: 0.5rem;
+}
+
+.card.block {
+  border-radius: 8px;
 }

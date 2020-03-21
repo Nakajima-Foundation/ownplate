@@ -5,18 +5,18 @@
         <img src="/undraw_breakfast_psiw.svg" />
       </figure>
       <div style="text-align: center;margin-top:1rem;">
-        <p class="p-font bold" style="line-height: 1.4rem;color:#02AA94">
+        <p class="p-big bold" style="line-height: 1.8rem;color:#02AA94">
           Thank you,
         </p>
-        <p class="p-font bold" style="line-height: 1.0rem;color:#02AA94">
+        <p class="p-big bold" style="line-height: 1.4rem;color:#02AA94">
           Your order has been placed
         </p>
       </div>
-      <div style="text-align: center;margin-top:1rem;">
-        <p class="p-font-mini">
+      <div style="text-align:center;margin-top:1rem;">
+        <p class="p-font">
           Please contact to the restaurant
         </p>
-        <p class="p-font-mini">
+        <p class="p-font">
           to check, change, or cancel your order
         </p>
       </div>

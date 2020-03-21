@@ -14,7 +14,12 @@
         </div>
         <div class="media-right">
           <figure class="image is-100x100">
-            <img class="is-square" :src="image" alt="" />
+            <img
+              class="is-square"
+              :src="image"
+              alt=""
+              style="border-radius: 4px;"
+            />
           </figure>
         </div>
       </div>
@@ -73,7 +78,7 @@
             </div>
             <h2
               class="bold"
-              style="margin-top:-0.4rem;font-size:3rem!important;"
+              style="margin-top:-0.4rem;font-size:3rem!important;color:#0097A7;"
             >
               {{ counter }}
             </h2>
@@ -191,6 +196,6 @@ export default {
   margin-top: 1rem;
 }
 .order_now {
-  background-color: #c2eeff;
+  background-color: #e0f7fa;
 }
 </style>
