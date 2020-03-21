@@ -1,15 +1,15 @@
 # OwnPlate Project
 
 ## Overview
-This is an open source project for a take-out order service, which allows restaurants to create their own menu + order page. Unlike Caviar or UberEats (which charges 12 to 30% + credit card transaction fee), it costs only the credit card transaction fee (via Stripe). 
+This is an open source project for a take-out order service, which allows restaurants to create their own menu + order page. Unlike Caviar or UberEats (which charges 12% to 30% + credit card transaction fee), it costs only the credit card transaction fee (via Stripe, 2.9% + 30cents). 
 
-It is built with Firebase + React + Stripe, for productivity and scalability.
+It is built with Firebase + Vue + Stripe, for productivity and scalability.
 
 ## Minimum Viable Product
 Restaurants can
- - can login using e-mail
+ - login using e-mail
  - create its own page, with restaurant name, banner, address, phone number, homepage url
- - enter the menu with prices (and available time)
+ - enter the menu with prices and tax (and available time)
  - associate a Stripe account (to receive payment)
  - be notified for a new order
  - see the list of pending orders
@@ -32,5 +32,6 @@ Customers can
  - see the status of the order
  - be notified the status of the order
  - give feedback (stars and text)
- - pay tips after pick-up
- - can search Restaurants using text or from map or current location.
+ - pay tips beforer or after pick-up
+ - search Restaurants using text or from map or current location
+ - click the address to start the navigation
