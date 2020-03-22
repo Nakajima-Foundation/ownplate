@@ -1,25 +1,33 @@
 <template>
   <section class="section">
-    <shop-orner-info
-      :src="restprofilephoto"
-      :name="restaurantname"
-    ></shop-orner-info>
-    <div style="text-align:center;margin-top:1rem;">
-      <p class="p-font">
-        {{ streetaddress }}
-      </p>
-      <p class="p-font">
-        {{ city }}
-        {{ state }}
-        {{ zip }}
-      </p>
-      <p class="p-font">
-        {{ phonenumber }}
-      </p>
-    </div>
-
     <div class="card block">
       <div class="card-content">
+        <div class="media">
+          <div class="media-content">
+            <div class="container content has-text-centered image is-128x128">
+              <img class="is-rounded" :src="restprofilephoto" alt="" />
+            </div>
+
+            <div class="container content has-text-centered">
+              <h3 style="color: #0078c8">
+                {{ restaurantname }}
+              </h3>
+            </div>
+            <div style="text-align:center;margin-top:1rem;">
+              <div class="p-font">
+                {{ streetaddress }}
+              </div>
+              <div class="p-font" style="margin-top:-0.8rem;">
+                {{ city }},
+                {{ state }}
+                {{ zip }}
+              </div>
+              <p class="p-font">
+                {{ phonenumber }}
+              </p>
+            </div>
+          </div>
+        </div>
         <div class="media">
           <div class="media-content">
             <div style="text-align:center;">
@@ -29,11 +37,6 @@
             </div>
           </div>
         </div>
-      </div>
-    </div>
-
-    <div class="card block">
-      <div class="card-content">
         <div class="media">
           <div class="media-content">
             <div style="text-align:center;">
@@ -43,11 +46,6 @@
             </div>
           </div>
         </div>
-      </div>
-    </div>
-
-    <div class="card block">
-      <div class="card-content">
         <div class="media">
           <div class="media-content">
             <div style="text-align:center;">
@@ -58,18 +56,27 @@
           </div>
         </div>
       </div>
+      <div class="card-footer">
+        <a href="#" class="card-footer-item">
+          <b-icon icon="arrow-up" size="is-midium"></b-icon>
+        </a>
+        <a href="#" class="card-footer-item">
+          <b-icon icon="arrow-down" size="is-midium"></b-icon>
+        </a>
+        <a href="#" class="card-footer-item">
+          <b-icon icon="plus" size="is-midium"></b-icon>
+        </a>
+        <a href="#" class="card-footer-item">
+          <b-icon icon="delete" size="is-midium"></b-icon>
+        </a>
+      </div>
     </div>
   </section>
 </template>
 
 <script>
-import ShopOrnerInfo from "~/components/ShopOrnerInfo";
-
 export default {
   name: "RestaurantEditCard",
-  components: {
-    ShopOrnerInfo
-  },
   props: {
     restprofilephoto: {
       type: String,

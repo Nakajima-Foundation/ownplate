@@ -1,6 +1,10 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import createPersistedState from "vuex-persistedstate";
+//for User
+import user from "./user";
+
+Vue.use(Vuex);
 
 export const strict = false;
 
@@ -26,3 +30,10 @@ export const actions = {
     context.commit("increment");
   }
 };
+
+//for User
+export const store = new Vuex.Store({
+  modules: {
+    user: user
+  }
+});

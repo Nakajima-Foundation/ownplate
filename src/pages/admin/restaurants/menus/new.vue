@@ -164,6 +164,7 @@ export default {
         tax: this.tax,
         itemDescription: this.itemDescription,
         itemPhoto: itemPhoto,
+        titleFlag: false,
         createdAt: new Date()
       };
       await this.createItemData(this.$route.query.id, itemData);

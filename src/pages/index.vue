@@ -25,6 +25,8 @@
           <li><a href="/shop/thank">ThankYou</a></li>
           <li><a href="/admin/restaurants/new">Create a new Reataurant</a></li>
           <li><a href="/admin/restaurants/">Your Reataurant</a></li>
+          <li><a href="/admin/user/signin">Admin Signin</a></li>
+          <li><a href="/admin/user/signup">Admin Signup</a></li>
         </ol>
       </div>
     </section>

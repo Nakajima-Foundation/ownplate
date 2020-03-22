@@ -3,18 +3,20 @@
     <h2 class="p-big bold">
       Menu
     </h2>
-    <h2 class="p-big bold">
-      Most popular
-    </h2>
 
     <div v-for="menuItem in menuItems" :key="menuItem.id">
-      <item-card
-        :title="menuItem.itemName"
-        :payment="menuItem.price"
-        :discription="menuItem.itemDescription"
-        :image="menuItem.itemPhoto"
-        @emitting="emitted($event)"
-      ></item-card>
+      <div v-if="menuItem.titleFlag">
+        <title-edit-card :title="menuItem.title"></title-edit-card>
+      </div>
+      <div v-else>
+        <item-edit-card
+          :title="menuItem.itemName"
+          :payment="menuItem.price"
+          :discription="menuItem.itemDescription"
+          :image="menuItem.itemPhoto"
+          @emitting="emitted($event)"
+        ></item-edit-card>
+      </div>
     </div>
 
     <div style="margin-top:1rem;">
@@ -27,6 +29,7 @@
             expanded
             rounded
             outlined
+            @click="editTitle()"
           >
             Add title
           </b-button>
@@ -62,12 +65,14 @@
 </template>
 <script>
 import { db } from "~/plugins/firebase.js";
-import ItemCard from "~/components/ItemCard";
+import ItemEditCard from "~/components/ItemEditCard";
+import TitleEditCard from "~/components/TitleEditCard";
 
 export default {
   name: "Menus",
   components: {
-    ItemCard
+    ItemEditCard,
+    TitleEditCard
   },
   data() {
     return {
@@ -75,6 +80,7 @@ export default {
     };
   },
   mounted() {
+    //fetch menus
     db.collection("restaurants")
       .doc(this.$route.query.id)
       .collection("menus")
@@ -89,7 +95,9 @@ export default {
             tax,
             itemDescription,
             itemPhoto,
-            createdAt
+            createdAt,
+            titleFlag,
+            title
           } = doc.data();
           this.menuItems.push({
             itemName,
@@ -97,7 +105,9 @@ export default {
             tax,
             itemDescription,
             itemPhoto,
-            createdAt
+            createdAt,
+            titleFlag,
+            title
           });
         });
       })
@@ -109,6 +119,11 @@ export default {
     editMenuItem() {
       this.$router.push({
         path: `/admin/restaurants/menus/new/?id=${this.$route.query.id}`
+      });
+    },
+    editTitle() {
+      this.$router.push({
+        path: `/admin/restaurants/menus/newtitle/?id=${this.$route.query.id}`
       });
     },
     goRestaurant() {

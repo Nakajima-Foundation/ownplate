@@ -12,37 +12,12 @@
       </div>
     </div>
 
-    <!-- <div class="field is-horizontal">
-      <div class="field-body">
-        <h4>
-          Restaurant profile photo
-        </h4>
-        <p class="p-small" style="color:#CB4B4B">
-          *
-        </p>
-      </div>
-    </div>
-    <b-field class="file">
-      <div class="columns">
-        <div class="column is-harf">
-          <img :src="restProfilePhotoImageUrl" />
-        </div>
-        <div class="column is-harf">
-          <b-upload v-model="restProfilePhoto" type="is-link">
-            <a class="button">
-              <span>Add image</span>
-            </a>
-          </b-upload>
-        </div>
-      </div>
-    </b-field> -->
-
     <div class="field is-horizontal">
       <div class="field-body">
         <h4>
           Restaurant profile photo
         </h4>
-        <p class="p-small" style="color:#CB4B4B">
+        <p class="p-small bold" style="color:#CB4B4B">
           *
         </p>
       </div>
@@ -51,6 +26,10 @@
       v-model="restProfileCroppa"
       :prevent-white-space="true"
       :zoom-speed="5"
+      :width="200"
+      :height="200"
+      :placeholder="'No image'"
+      :placeholder-font-size="20"
       initial-position="center"
       :canvas-color="'gainsboro'"
     ></croppa>
@@ -60,27 +39,24 @@
         <h4>Restaurant cover photo</h4>
       </div>
     </div>
-    <b-field class="file">
-      <div class="columns">
-        <div class="column is-harf">
-          <img :src="restCoverPhotoImageUrl" />
-        </div>
-        <div class="column is-harf">
-          <b-upload v-model="restCoverPhoto" type="is-link">
-            <a class="button">
-              <span>Add image</span>
-            </a>
-          </b-upload>
-        </div>
-      </div>
-    </b-field>
+    <croppa
+      v-model="restCoverCroppa"
+      :prevent-white-space="true"
+      :zoom-speed="5"
+      :width="400"
+      :height="200"
+      :placeholder="'No image'"
+      :placeholder-font-size="20"
+      :initial-position="center"
+      :canvas-color="'gainsboro'"
+    ></croppa>
 
     <div class="field is-horizontal">
       <div class="field-body">
         <h4>
           Restaurant name
         </h4>
-        <p class="p-small" style="color:#CB4B4B">
+        <p class="p-small bold" style="color:#CB4B4B">
           *
         </p>
       </div>
@@ -88,7 +64,9 @@
     <b-field>
       <b-input
         v-model="restaurantName"
+        type="text"
         placeholder="Enter restaurant name"
+        maxlength="50"
       ></b-input>
     </b-field>
 
@@ -97,7 +75,7 @@
         <h4>
           Street address
         </h4>
-        <p class="p-small" style="color:#CB4B4B">
+        <p class="p-small bold" style="color:#CB4B4B">
           *
         </p>
       </div>
@@ -118,7 +96,7 @@
             <h4>
               City
             </h4>
-            <p class="p-small" style="color:#CB4B4B">
+            <p class="p-small bold" style="color:#CB4B4B">
               *
             </p>
           </div>
@@ -138,7 +116,7 @@
             <h4>
               State
             </h4>
-            <p class="p-small" style="color:#CB4B4B">
+            <p class="p-small bold" style="color:#CB4B4B">
               *
             </p>
           </div>
@@ -158,17 +136,17 @@
         <h4>
           Zip
         </h4>
-        <p class="p-small" style="color:#CB4B4B">
+        <p class="p-small bold" style="color:#CB4B4B">
           *
         </p>
       </div>
     </div>
-    <b-field type="is-white">
+    <b-field>
       <b-input
         v-model="zip"
         type="text"
         placeholder="Enter zip"
-        maxlength="30"
+        maxlength="10"
       ></b-input>
     </b-field>
 
@@ -177,7 +155,7 @@
         <h4>
           Phone number
         </h4>
-        <p class="p-small" style="color:#CB4B4B">
+        <p class="p-small bold" style="color:#CB4B4B">
           *
         </p>
       </div>
@@ -187,16 +165,16 @@
         v-model="phoneNumber"
         placeholder="Enter phone number"
         type="tel"
-        maxlength="30"
+        maxlength="20"
       ></b-input>
     </b-field>
 
-    <b-field label="Website" type="is-white">
+    <b-field label="Website">
       <b-input
         v-model="url"
         placeholder="Enter website URL"
         type="url"
-        maxlength="30"
+        maxlength="100"
       ></b-input>
     </b-field>
 
@@ -342,11 +320,8 @@ export default {
   },
   data() {
     return {
-      restProfilePhoto: null,
       restProfileCroppa: null,
-      restProfilePhotoImageUrl: "/no_image.jpg",
-      restCoverPhoto: null,
-      restCoverPhotoImageUrl: "/no_image.jpg",
+      restCoverCroppa: null,
       restaurantName: "",
       streetAddress: "",
       city: "",
@@ -379,40 +354,33 @@ export default {
       );
     }
   },
-  watch: {
-    // restProfilePhoto: function(val) {
-    //   let filename = this.restProfilePhoto.name;
-    //   if (filename.lastIndexOf(".") <= 0) {
-    //     return alert("Please add a valid file!");
-    //   }
-    //   const fileReader = new FileReader();
-    //   fileReader.addEventListener("load", () => {
-    //     this.restProfilePhotoImageUrl = fileReader.result;
-    //   });
-    //   fileReader.readAsDataURL(this.restProfilePhoto);
-    // },
-    restCoverPhoto: function(val) {
-      let filename = this.restCoverPhoto.name;
-      if (filename.lastIndexOf(".") <= 0) {
-        return alert("Please add a valid file!");
-      }
-      const fileReader = new FileReader();
-      fileReader.addEventListener("load", () => {
-        this.restCoverPhotoImageUrl = fileReader.result;
-      });
-      fileReader.readAsDataURL(this.restCoverPhoto);
-    }
-  },
   methods: {
     async submitRestaurant() {
       if (!this.formIsValid) return;
 
       const restaurantId = this.generateUniqueId();
-      let file = await this.restProfileCroppa.promisedBlob("image/jpeg", 0.8);
-      let restProfilePhoto = await this.uploadFile(file, restaurantId);
+      let restProfileFile = await this.restProfileCroppa.promisedBlob(
+        "image/jpeg",
+        0.8
+      );
+      let restProfilePhoto = await this.uploadFile(
+        restProfileFile,
+        "profile",
+        restaurantId
+      );
+      let restCoverFile = await this.restCoverCroppa.promisedBlob(
+        "image/jpeg",
+        0.8
+      );
+      let restCoverPhoto = await this.uploadFile(
+        restCoverFile,
+        "cover",
+        restaurantId
+      );
 
       const restaurantData = {
         restProfilePhoto: restProfilePhoto,
+        restCoverPhoto: restCoverPhoto,
         restaurantName: this.restaurantName,
         streetAddress: this.streetAddress,
         city: this.city,
@@ -438,11 +406,12 @@ export default {
         Math.floor(1000000000 * Math.random()).toString(16)
       );
     },
-    uploadFile(file, restaurantId) {
+    uploadFile(file, filename, restaurantId) {
+      debugger;
       return new Promise((resolve, rejected) => {
         let storageRef = storage.ref();
         let mountainsRef = storageRef.child(
-          `/images/restaurants/${restaurantId}/profile.jpg`
+          `/images/restaurants/${restaurantId}/${filename}.jpg`
         );
         let uploadTask = mountainsRef.put(file);
 
