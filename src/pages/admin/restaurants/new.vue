@@ -395,13 +395,14 @@ export default {
         tags: this.tags,
         uid: this.uid,
         defauleTaxRate: 0.1,
-        publicFlag: true
+        publicFlag: true,
+        createdAt: new Date()
       };
       const restaurantId = this.generateUniqueId();
       await this.createRestaurantData(restaurantId, restaurantData);
 
       this.$router.push({
-        path: `/admin/restaurants/?id=${restaurantId}`
+        path: `/admin/restaurants/`
       });
     },
     generateUniqueId() {
@@ -425,7 +426,8 @@ export default {
             tags: restaurantData.tags,
             uid: restaurantData.uid,
             defaultTaxRate: restaurantData.defauleTaxRate,
-            publicFlag: restaurantData.publicFlag
+            publicFlag: restaurantData.publicFlag,
+            createdAt: restaurantData.createdAt
           })
           .then(() => {
             resolve();

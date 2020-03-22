@@ -3,67 +3,24 @@
     <h2 class="p-big bold">
       Your Restaurant
     </h2>
-    <div>No restaurant</div>
-    <shop-orner-info
-      :src="
-        'https://pbs.twimg.com/profile_images/704153164438642692/bYo0YeEr_bigger.jpg'
-      "
-      :name="restaurantName"
-    ></shop-orner-info>
-    <div style="text-align:center;margin-top:1rem;">
-      <p class="p-font">
-        {{ streetAddress }}
-      </p>
-      <p class="p-font">
-        {{ city }}
-        {{ state }}
-        {{ zip }}
-      </p>
-      <p class="p-font">
-        {{ phoneNumber }}
-      </p>
-    </div>
 
-    <div class="card block">
-      <div class="card-content">
-        <div class="media">
-          <div class="media-content">
-            <div style="text-align:center;">
-              <h2 class="bold">
-                X incomplete orders
-              </h2>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="card block">
-      <div class="card-content">
-        <div class="media">
-          <div class="media-content">
-            <div style="text-align:center;">
-              <h2 class="bold" @click="editMenu">
-                Edit Menu(X items)
-              </h2>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="card block">
-      <div class="card-content">
-        <div class="media">
-          <div class="media-content">
-            <div style="text-align:center;">
-              <h2 class="bold">
-                Edit About
-              </h2>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div v-for="restaurantItem in restaurantItems" :key="restaurantItem.id">
+      <restaurant-edit-card
+        :restaurantid="restaurantItem.restaurantId"
+        :restaurantname="restaurantItem.restaurantName"
+        :streetaddress="restaurantItem.streetAddress"
+        :city="restaurantItem.city"
+        :state="restaurantItem.state"
+        :zip="restaurantItem.zip"
+        :phonenumber="restaurantItem.phoneNumber"
+        :url="restaurantItem.url"
+        :tags="restaurantItem.tags"
+        :uid="restaurantItem.uid"
+        :defaulttaxrate="restaurantItem.defauleTaxRate"
+        :publicflag="restaurantItem.publicFlag"
+        :createdat="restaurantItem.createdAt"
+        @emitting="emitted($event)"
+      ></restaurant-edit-card>
     </div>
 
     <a href="/admin/restaurants/new">
@@ -82,12 +39,12 @@
 
 <script>
 import { db } from "~/plugins/firebase.js";
-import ShopOrnerInfo from "~/components/ShopOrnerInfo";
+import RestaurantEditCard from "~/components/RestaurantEditCard";
 
 export default {
   name: "Restaurant",
   components: {
-    ShopOrnerInfo
+    RestaurantEditCard
   },
   data() {
     return {
@@ -103,36 +60,59 @@ export default {
       phoneNumber: "",
       url: "",
       tags: "",
-      uid: ""
+      uid: "",
+      restaurantItems: []
     };
   },
   computed: {},
   mounted() {
     db.collection("restaurants")
-      .doc(this.$route.query.id)
       .get()
       .then(data => {
-        (this.restaurantName = data.get("restaurantName")),
-          (this.streetAddress = data.get("streetAddress")),
-          (this.city = data.get("city")),
-          (this.state = data.get("state")),
-          (this.zip = data.get("zip")),
-          (this.phoneNumber = data.get("phoneNumber")),
-          (this.url = data.get("url")),
-          (this.tags = data.get("tags")),
-          (this.uid = data.get("uid")),
-          (this.defaultTaxRate = data.get("defauleTaxRate")),
-          (this.publicFlag = data.get("publicFlag"));
+        data.forEach(doc => {
+          let restaurantId = doc.id;
+          let {
+            restaurantName,
+            streetAddress,
+            city,
+            state,
+            zip,
+            phoneNumber,
+            url,
+            tags,
+            uid,
+            defaultTaxRate,
+            publicFlag,
+            createdAt
+          } = doc.data();
+          this.restaurantItems.push({
+            restaurantId,
+            restaurantName,
+            streetAddress,
+            city,
+            state,
+            zip,
+            phoneNumber,
+            url,
+            tags,
+            uid,
+            defaultTaxRate,
+            publicFlag,
+            createdAt
+          });
+        });
       })
       .catch(error => {
         console.log("Error fetch doc,", error);
       });
   },
   methods: {
-    editMenu() {
-      this.$router.push({
-        path: `/admin/restaurants/menus/?id=${this.$route.query.id}`
-      });
+    emitted(eventArgs) {
+      if (eventArgs.restaurantid) {
+        this.$router.push({
+          path: `/admin/restaurants/menus/?id=${eventArgs.restaurantid}`
+        });
+      }
     }
   }
 };

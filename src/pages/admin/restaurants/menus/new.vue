@@ -177,7 +177,8 @@ export default {
         price: this.price,
         tax: this.tax,
         itemDescription: this.itemDescription,
-        itemPhoto: this.itemPhoto
+        itemPhoto: this.itemPhoto,
+        createdAt: new Date()
       };
       await this.createItemData(this.$route.query.id, itemData);
 
