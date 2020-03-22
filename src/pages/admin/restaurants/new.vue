@@ -1,6 +1,8 @@
 <template>
   <section class="section">
-    <h2>About</h2>
+    <h2 class="p-big bold">
+      About
+    </h2>
     <div class="media">
       <div class="media-content"></div>
       <div class="media-right">
@@ -330,11 +332,8 @@ export default {
       phoneNumber: "",
       url: "",
       tags: "",
-      bannerFile: null,
       states: US_STATES,
       uid: "hogehoge", //TODO test
-      bannerImageUrl: "",
-      bannerImage: null,
       hoursMon: true,
       hoursTue: true,
       hoursWed: true,
@@ -386,10 +385,14 @@ export default {
       if (!this.formIsValid) return;
 
       const restaurantData = {
-        name: this.name,
-        address: this.address,
-        phone: this.phoneNumber,
+        restaurantName: this.restaurantName,
+        streetAddress: this.streetAddress,
+        city: this.city,
+        state: this.state,
+        zip: this.zip,
+        phoneNumber: this.phoneNumber,
         url: this.url,
+        tags: this.tags,
         uid: this.uid,
         defauleTaxRate: 0.1,
         publicFlag: true
@@ -412,13 +415,17 @@ export default {
         db.collection("restaurants")
           .doc(restaurantId)
           .set({
-            name: restaurantData.name,
-            address: restaurantData.address,
-            phone: restaurantData.phone,
-            web_url: restaurantData.url,
+            restaurantName: restaurantData.restaurantName,
+            streetAddress: restaurantData.streetAddress,
+            city: restaurantData.city,
+            state: restaurantData.state,
+            zip: restaurantData.zip,
+            phoneNumber: restaurantData.phoneNumber,
+            url: restaurantData.url,
+            tags: restaurantData.tags,
             uid: restaurantData.uid,
-            default_tax_rate: restaurantData.defauleTaxRate,
-            public_flag: restaurantData.publicFlag
+            defaultTaxRate: restaurantData.defauleTaxRate,
+            publicFlag: restaurantData.publicFlag
           })
           .then(() => {
             resolve();
