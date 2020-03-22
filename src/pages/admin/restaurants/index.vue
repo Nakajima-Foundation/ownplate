@@ -6,6 +6,7 @@
 
     <div v-for="restaurantItem in restaurantItems" :key="restaurantItem.id">
       <restaurant-edit-card
+        :restprofilephoto="restaurantItem.restProfilePhoto"
         :restaurantid="restaurantItem.restaurantId"
         :restaurantname="restaurantItem.restaurantName"
         :streetaddress="restaurantItem.streetAddress"
@@ -72,6 +73,7 @@ export default {
         data.forEach(doc => {
           let restaurantId = doc.id;
           let {
+            restProfilePhoto,
             restaurantName,
             streetAddress,
             city,
@@ -86,6 +88,7 @@ export default {
             createdAt
           } = doc.data();
           this.restaurantItems.push({
+            restProfilePhoto,
             restaurantId,
             restaurantName,
             streetAddress,

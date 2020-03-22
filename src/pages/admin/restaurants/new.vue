@@ -12,7 +12,7 @@
       </div>
     </div>
 
-    <div class="field is-horizontal">
+    <!-- <div class="field is-horizontal">
       <div class="field-body">
         <h4>
           Restaurant profile photo
@@ -35,7 +35,25 @@
           </b-upload>
         </div>
       </div>
-    </b-field>
+    </b-field> -->
+
+    <div class="field is-horizontal">
+      <div class="field-body">
+        <h4>
+          Restaurant profile photo
+        </h4>
+        <p class="p-small" style="color:#CB4B4B">
+          *
+        </p>
+      </div>
+    </div>
+    <croppa
+      v-model="restProfileCroppa"
+      :prevent-white-space="true"
+      :zoom-speed="5"
+      initial-position="center"
+      :canvas-color="'gainsboro'"
+    ></croppa>
 
     <div class="field is-horizontal">
       <div class="field-body">
@@ -257,8 +275,12 @@
 </template>
 
 <script>
-import { db } from "~/plugins/firebase.js";
+import Vue from "vue";
+import { db, storage } from "~/plugins/firebase.js";
+import Croppa from "vue-croppa";
 import HoursInput from "~/components/HoursInput";
+
+Vue.use(Croppa);
 
 const US_STATES = [
   "Alabama",
@@ -321,6 +343,7 @@ export default {
   data() {
     return {
       restProfilePhoto: null,
+      restProfileCroppa: null,
       restProfilePhotoImageUrl: "/no_image.jpg",
       restCoverPhoto: null,
       restCoverPhotoImageUrl: "/no_image.jpg",
@@ -346,7 +369,7 @@ export default {
   computed: {
     formIsValid() {
       return (
-        this.restProfilePhoto !== "" &&
+        this.restProfileCroppa !== "" &&
         this.restaurantName !== "" &&
         this.streetAddress !== "" &&
         this.city !== "" &&
@@ -357,17 +380,17 @@ export default {
     }
   },
   watch: {
-    restProfilePhoto: function(val) {
-      let filename = this.restProfilePhoto.name;
-      if (filename.lastIndexOf(".") <= 0) {
-        return alert("Please add a valid file!");
-      }
-      const fileReader = new FileReader();
-      fileReader.addEventListener("load", () => {
-        this.restProfilePhotoImageUrl = fileReader.result;
-      });
-      fileReader.readAsDataURL(this.restProfilePhoto);
-    },
+    // restProfilePhoto: function(val) {
+    //   let filename = this.restProfilePhoto.name;
+    //   if (filename.lastIndexOf(".") <= 0) {
+    //     return alert("Please add a valid file!");
+    //   }
+    //   const fileReader = new FileReader();
+    //   fileReader.addEventListener("load", () => {
+    //     this.restProfilePhotoImageUrl = fileReader.result;
+    //   });
+    //   fileReader.readAsDataURL(this.restProfilePhoto);
+    // },
     restCoverPhoto: function(val) {
       let filename = this.restCoverPhoto.name;
       if (filename.lastIndexOf(".") <= 0) {
@@ -384,7 +407,12 @@ export default {
     async submitRestaurant() {
       if (!this.formIsValid) return;
 
+      const restaurantId = this.generateUniqueId();
+      let file = await this.restProfileCroppa.promisedBlob("image/jpeg", 0.8);
+      let restProfilePhoto = await this.uploadFile(file, restaurantId);
+
       const restaurantData = {
+        restProfilePhoto: restProfilePhoto,
         restaurantName: this.restaurantName,
         streetAddress: this.streetAddress,
         city: this.city,
@@ -398,7 +426,6 @@ export default {
         publicFlag: true,
         createdAt: new Date()
       };
-      const restaurantId = this.generateUniqueId();
       await this.createRestaurantData(restaurantId, restaurantData);
 
       this.$router.push({
@@ -411,11 +438,33 @@ export default {
         Math.floor(1000000000 * Math.random()).toString(16)
       );
     },
+    uploadFile(file, restaurantId) {
+      return new Promise((resolve, rejected) => {
+        let storageRef = storage.ref();
+        let mountainsRef = storageRef.child(
+          `/images/restaurants/${restaurantId}/profile.jpg`
+        );
+        let uploadTask = mountainsRef.put(file);
+
+        uploadTask.on(
+          "state_changed",
+          snapshot => {},
+          err => {
+            this.loading = false;
+          },
+          () =>
+            uploadTask.snapshot.ref
+              .getDownloadURL()
+              .then(downloadURL => resolve(downloadURL))
+        );
+      });
+    },
     createRestaurantData(restaurantId, restaurantData) {
       return new Promise((resolve, rejected) => {
         db.collection("restaurants")
           .doc(restaurantId)
           .set({
+            restProfilePhoto: restaurantData.restProfilePhoto,
             restaurantName: restaurantData.restaurantName,
             streetAddress: restaurantData.streetAddress,
             city: restaurantData.city,

@@ -1,9 +1,7 @@
 <template>
   <section class="section">
     <shop-orner-info
-      :src="
-        'https://pbs.twimg.com/profile_images/704153164438642692/bYo0YeEr_bigger.jpg'
-      "
+      :src="restprofilephoto"
       :name="restaurantname"
     ></shop-orner-info>
     <div style="text-align:center;margin-top:1rem;">
@@ -73,6 +71,10 @@ export default {
     ShopOrnerInfo
   },
   props: {
+    restprofilephoto: {
+      type: String,
+      required: true
+    },
     restaurantid: {
       type: String,
       required: true

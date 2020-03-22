@@ -89,20 +89,13 @@
         </h4>
       </div>
     </div>
-    <b-field class="file">
-      <div class="columns">
-        <div class="column is-harf">
-          <img :src="itemPhotoImageUrl" />
-        </div>
-        <div class="column is-harf">
-          <b-upload v-model="itemPhoto" type="is-link">
-            <a class="button">
-              <span>Add image</span>
-            </a>
-          </b-upload>
-        </div>
-      </div>
-    </b-field>
+    <croppa
+      v-model="croppa"
+      :prevent-white-space="true"
+      :zoom-speed="5"
+      initial-position="center"
+      :canvas-color="'gainsboro'"
+    ></croppa>
 
     <b-button
       :disabled="!formIsValid"
@@ -119,7 +112,11 @@
 </template>
 
 <script>
-import { db } from "~/plugins/firebase.js";
+import Vue from "vue";
+import { db, storage } from "~/plugins/firebase.js";
+import Croppa from "vue-croppa";
+
+Vue.use(Croppa);
 
 const TAX_RATES = [
   "5%",
@@ -143,41 +140,30 @@ export default {
       price: "",
       tax: "",
       itemDescription: "",
-      itemPhoto: null,
-      itemPhotoImageUrl: "/no_image.jpg",
       taxRates: TAX_RATES,
-      uid: "hogehoge" //TODO test
+      uid: "hogehoge", //TODO test
+      croppa: {}
     };
   },
   computed: {
     formIsValid() {
-      debugger;
       return this.itemName !== "" && this.price !== "" && this.tax !== "";
-    }
-  },
-  watch: {
-    itemPhoto: function(val) {
-      let filename = this.itemPhoto.name;
-      if (filename.lastIndexOf(".") <= 0) {
-        return alert("Please add a valid file!");
-      }
-      const fileReader = new FileReader();
-      fileReader.addEventListener("load", () => {
-        this.itemPhotoImageUrl = fileReader.result;
-      });
-      fileReader.readAsDataURL(this.itemPhoto);
     }
   },
   methods: {
     async submitItem() {
       if (!this.formIsValid) return;
 
+      //upload image
+      const menuId = this.generateUniqueId();
+      let file = await this.croppa.promisedBlob("image/jpeg", 0.8);
+      let itemPhoto = await this.uploadFile(file, menuId);
       const itemData = {
         itemName: this.itemName,
         price: this.price,
         tax: this.tax,
         itemDescription: this.itemDescription,
-        itemPhoto: this.itemPhoto,
+        itemPhoto: itemPhoto,
         createdAt: new Date()
       };
       await this.createItemData(this.$route.query.id, itemData);
@@ -186,8 +172,32 @@ export default {
         path: `/admin/restaurants/menus/?id=${this.$route.query.id}`
       });
     },
+    generateUniqueId() {
+      return (
+        new Date().getTime().toString(16) +
+        Math.floor(1000000000 * Math.random()).toString(16)
+      );
+    },
+    uploadFile(file, menuId) {
+      return new Promise((resolve, rejected) => {
+        let storageRef = storage.ref();
+        let mountainsRef = storageRef.child(`/images/menus/${menuId}/item.jpg`);
+        let uploadTask = mountainsRef.put(file);
+
+        uploadTask.on(
+          "state_changed",
+          snapshot => {},
+          err => {
+            this.loading = false;
+          },
+          () =>
+            uploadTask.snapshot.ref
+              .getDownloadURL()
+              .then(downloadURL => resolve(downloadURL))
+        );
+      });
+    },
     createItemData(restaurantId, itemData) {
-      debugger;
       return new Promise((resolve, rejected) => {
         db.collection("restaurants")
           .doc(restaurantId)

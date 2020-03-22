@@ -12,7 +12,7 @@
         :title="menuItem.itemName"
         :payment="menuItem.price"
         :discription="menuItem.itemDescription"
-        :image="'https://magazine.hitosara.com/image/421/MM_421.jpg'"
+        :image="menuItem.itemPhoto"
         @emitting="emitted($event)"
       ></item-card>
     </div>
