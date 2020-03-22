@@ -11,6 +11,8 @@ jobs:
           steps:
             - run: npm install
             - run: npm build
+            - run: ./node_modules/.bin/firebase deploy --token=$FIREBASE_TOKEN
+
 workflows:
     build-and-test:
       jobs:
