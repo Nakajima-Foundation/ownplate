@@ -51,7 +51,8 @@ export default {
       numberForm: false,
       phone: "",
       number: "",
-      conrfim: false
+      conrfim: false,
+      restaurantsId: this.$route.params.id
     };
   },
   methods: {
@@ -76,7 +77,13 @@ export default {
       this.conrfim = true;
     },
     goCheckout() {
-      this.$router.push({ path: "/shop/order" });
+      if (this.restaurantsId) {
+        this.$router.push({
+          path: `/restaurants/order/${this.restaurantsId}/`
+        });
+      } else {
+        this.$router.push({ path: "/restaurants/order/" });
+      }
     }
   }
 };

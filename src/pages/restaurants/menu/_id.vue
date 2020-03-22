@@ -129,7 +129,8 @@ export default {
   },
   data() {
     return {
-      footCounter: this.$store.state.totalOrderCount
+      footCounter: this.$store.state.totalOrderCount,
+      restaurantsId: this.$route.params.id
       // isCardModalActive: false
     };
   },
@@ -140,6 +141,7 @@ export default {
   },
   mounted() {
     console.log(this.$store.state.totalOrderCount);
+    console.log("this.restaurantsId" + this.restaurantsId);
   },
   methods: {
     emitted(eventArgs) {
