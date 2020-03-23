@@ -1,4 +1,8 @@
-import firebase from "firebase";
+import * as firebase from "firebase/app";
+import "firebase/firestore";
+import "firebase/storage";
+import "firebase/auth";
+
 import firebaseConfig from "@/config/firebase";
 
 // ** 本番環境
