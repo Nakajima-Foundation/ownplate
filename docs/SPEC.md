@@ -5,7 +5,7 @@ This is an open source project for a take-out order service, which allows restau
 
 It is built with Firebase + Vue + Stripe, for productivity and scalability.
 
-## Minimum Viable Product
+## Minimum Viable Product (Phase 0)
 Restaurants can
  - login using e-mail
  - create its own page, with restaurant name, banner, address, phone number, homepage url
@@ -19,19 +19,30 @@ Customers can
  - see the menu
  - order items (shopping cart) and pay
  - let the service remember the credit card (via Stripe)
- 
-## Additional Features
+
+## Additional Features (Phase 1)
 Restaurant can
- - add the theme (colors and font)
+ - be notified when the customer has arrived (curbside pickup)
  - verify the identity of customer on pick-up
- - send coupons and specials
- - offer royalty program
- - be notified when the customer has arrived 
 Customers can
  - specify the pickup time
+ - pickup at the curbside  
  - see the status of the order
- - be notified the status of the order
- - give feedback (stars and text)
  - pay tips beforer or after pick-up
- - search Restaurants using text or from map or current location
+ - like/share restaurants 
+ - like/share individual menu item (with OGP!)
+ - give feedback (stars and text) to the restaurant
  - click the address to start the navigation
+ - see "other restaurants in this area"
+
+## Additional Features (Phase 2, for-profit)
+Premium (paid) Restaurant can
+ - select customer reviews to be displayed on the menu page
+ - remove "other restaurants in this area" from its menu page
+ - be recommended in menu page of other restaurants
+ - be promoted in the restaurant browser and search result
+ - send coupons and specials to customers
+ - offer royalty program
+Customers can
+ - browse restaurants
+ - search Restaurants using text or from map or current location
