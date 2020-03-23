@@ -113,7 +113,7 @@ export default {
     emitted(eventArgs) {
       if (eventArgs.restaurantid) {
         this.$router.push({
-          path: `/admin/restaurants/menus/?id=${eventArgs.restaurantid}`
+          path: `/admin/restaurants/${eventArgs.restaurantid}/menus/`
         });
       }
     }
