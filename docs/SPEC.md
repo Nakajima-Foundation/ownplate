@@ -14,6 +14,7 @@ Restaurants can
  - be notified for a new order
  - see the list of pending orders
  - remove orders that have been picked up
+
 Customers can
  - log in using Phone SMS
  - see the menu
@@ -24,6 +25,7 @@ Customers can
 Restaurant can
  - be notified when the customer has arrived (curbside pickup)
  - verify the identity of customer on pick-up
+
 Customers can
  - specify the pickup time
  - pickup at the curbside  
@@ -43,6 +45,7 @@ Premium (paid) Restaurant can
  - be promoted in the restaurant browser and search result
  - send coupons and specials to customers
  - offer royalty program
+
 Customers can
  - browse restaurants
  - search Restaurants using text or from map or current location
