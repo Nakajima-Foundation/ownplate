@@ -58,6 +58,9 @@ export default {
     }
   },
   methods: {
+    restaurantId() {
+      return this.$route.params.restaurantId;
+    },
     async submitItem() {
       if (!this.formIsValid) return;
 
@@ -68,10 +71,10 @@ export default {
         titleFlag: true,
         createdAt: new Date()
       };
-      await this.createItemData(this.$route.query.id, itemData);
+      await this.createItemData(this.restaurantId(), itemData);
 
       this.$router.push({
-        path: `/admin/restaurants/menus/?id=${this.$route.query.id}`
+        path: `/admin/restaurants/${this.restaurantId()}/menus`
       });
     },
     generateUniqueId() {
