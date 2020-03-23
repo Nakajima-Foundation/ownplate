@@ -68,8 +68,8 @@ export default {
   computed: {},
   mounted() {
     const uid = this.$store.getters['user/user'].uid;
-    console.log(uid);
     db.collection("restaurants")
+      .where("uid", "==", uid)
       .get()
       .then(data => {
         data.forEach(doc => {

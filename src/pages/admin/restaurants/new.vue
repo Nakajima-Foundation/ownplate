@@ -334,6 +334,7 @@ export default {
     VueTagsInput
   },
   data() {
+    const uid = this.$store.getters['user/user'].uid;
     return {
       restProfileCroppa: null,
       restCoverCroppa: null,
@@ -346,7 +347,7 @@ export default {
       url: "",
       // tags: "",
       states: US_STATES,
-      uid: "hogehoge", //TODO test
+      uid: uid,
       hoursMon: true,
       hoursTue: true,
       hoursWed: true,
