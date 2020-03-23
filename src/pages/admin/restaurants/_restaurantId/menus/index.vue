@@ -82,7 +82,7 @@ export default {
   mounted() {
     //fetch menus
     db.collection("restaurants")
-      .doc(this.$route.query.id)
+      .doc(this.$route.params.restaurantId)
       .collection("menus")
       .orderBy("createdAt", "desc")
       .get()
@@ -116,19 +116,22 @@ export default {
       });
   },
   methods: {
+    restaurantId() {
+      return this.$route.params.restaurantId;
+    },
     editMenuItem() {
       this.$router.push({
-        path: `/admin/restaurants/menus/new/?id=${this.$route.query.id}`
+        path: `/admin/restaurants/${this.restaurantId()}/menus/new`
       });
     },
     editTitle() {
       this.$router.push({
-        path: `/admin/restaurants/menus/newtitle/?id=${this.$route.query.id}`
+        path: `/admin/restaurants/${this.restaurantId()}/menus/newtitle/`
       });
     },
     goRestaurant() {
       this.$router.push({
-        path: `/admin/restaurants/?id=${this.$route.query.id}`
+        path: `/admin/restaurants/${this.restaurantId()}`
       });
     }
   }

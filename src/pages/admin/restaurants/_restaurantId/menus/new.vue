@@ -151,6 +151,9 @@ export default {
     }
   },
   methods: {
+    restaurantId() {
+      return this.$route.params.restaurantId;
+    },
     async submitItem() {
       if (!this.formIsValid) return;
 
@@ -167,10 +170,10 @@ export default {
         titleFlag: false,
         createdAt: new Date()
       };
-      await this.createItemData(this.$route.query.id, itemData);
+      await this.createItemData(this.restaurantId(), itemData);
 
       this.$router.push({
-        path: `/admin/restaurants/menus/?id=${this.$route.query.id}`
+        path: `/admin/restaurants/${this.restaurantId()}/menus`
       });
     },
     generateUniqueId() {
@@ -182,7 +185,7 @@ export default {
     uploadFile(file, menuId) {
       return new Promise((resolve, rejected) => {
         let storageRef = storage.ref();
-        let mountainsRef = storageRef.child(`/images/menus/${menuId}/item.jpg`);
+        let mountainsRef = storageRef.child(`/images/restaurants/${this.restaurantId()}/menus/${menuId}/item.jpg`);
         let uploadTask = mountainsRef.put(file);
 
         uploadTask.on(
