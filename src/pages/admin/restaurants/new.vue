@@ -6,7 +6,7 @@
     <div class="media">
       <div class="media-content"></div>
       <div class="media-right">
-        <p class="p-small bold" style="color:#CB4B4B">
+        <p class="p-font bold" style="color:#CB4B4B">
           * Required
         </p>
       </div>
@@ -16,10 +16,10 @@
       <div class="field-body">
         <h4>
           Restaurant profile photo
+          <span class="p-font bold" style="color:#CB4B4B">
+            *
+          </span>
         </h4>
-        <p class="p-small bold" style="color:#CB4B4B">
-          *
-        </p>
       </div>
     </div>
     <croppa
@@ -43,8 +43,8 @@
       v-model="restCoverCroppa"
       :prevent-white-space="true"
       :zoom-speed="5"
-      :width="400"
-      :height="200"
+      :width="300"
+      :height="150"
       :placeholder="'No image'"
       :placeholder-font-size="20"
       :initial-position="center"
@@ -55,10 +55,10 @@
       <div class="field-body">
         <h4>
           Restaurant name
+          <span class="p-font bold" style="color:#CB4B4B">
+            *
+          </span>
         </h4>
-        <p class="p-small bold" style="color:#CB4B4B">
-          *
-        </p>
       </div>
     </div>
     <b-field>
@@ -74,10 +74,10 @@
       <div class="field-body">
         <h4>
           Street address
+          <span class="p-font bold" style="color:#CB4B4B">
+            *
+          </span>
         </h4>
-        <p class="p-small bold" style="color:#CB4B4B">
-          *
-        </p>
       </div>
     </div>
     <b-field type="is-white">
@@ -95,10 +95,10 @@
           <div class="field-body">
             <h4>
               City
+              <span class="p-font bold" style="color:#CB4B4B">
+                *
+              </span>
             </h4>
-            <p class="p-small bold" style="color:#CB4B4B">
-              *
-            </p>
           </div>
         </div>
         <b-field type="is-white">
@@ -115,10 +115,10 @@
           <div class="field-body">
             <h4>
               State
+              <span class="p-font bold" style="color:#CB4B4B">
+                *
+              </span>
             </h4>
-            <p class="p-small bold" style="color:#CB4B4B">
-              *
-            </p>
           </div>
         </div>
         <b-field type="is-white">
@@ -135,10 +135,10 @@
       <div class="field-body">
         <h4>
           Zip
+          <span class="p-font bold" style="color:#CB4B4B">
+            *
+          </span>
         </h4>
-        <p class="p-small bold" style="color:#CB4B4B">
-          *
-        </p>
       </div>
     </div>
     <b-field>
@@ -154,10 +154,10 @@
       <div class="field-body">
         <h4>
           Phone number
+          <span class="p-font bold" style="color:#CB4B4B">
+            *
+          </span>
         </h4>
-        <p class="p-small bold" style="color:#CB4B4B">
-          *
-        </p>
       </div>
     </div>
     <b-field type="is-white">
@@ -178,13 +178,26 @@
       ></b-input>
     </b-field>
 
-    <b-field label="Tags" type="is-white">
-      <b-input
+    <b-field
+      label="Tags"
+      type="is-white"
+      style="border-radius: 0.4rem!important;"
+    >
+      <vue-tags-input
+        v-model="tag"
+        style="border-radius: 0.4rem!important;"
+        placeholder="your restaurant tag"
+        :tags="tags"
+        :validation="validation"
+        :autocomplete-items="filteredItems"
+        @tags-changed="newTags => (tags = newTags)"
+      />
+      <!-- <b-input
         v-model="tags"
         placeholder="Enter Tags"
         type="text"
         maxlength="30"
-      ></b-input>
+      ></b-input> -->
     </b-field>
 
     <h4>Hours</h4>
@@ -256,6 +269,7 @@
 import Vue from "vue";
 import { db, storage } from "~/plugins/firebase.js";
 import Croppa from "vue-croppa";
+import VueTagsInput from "@johmun/vue-tags-input";
 import HoursInput from "~/components/HoursInput";
 
 Vue.use(Croppa);
@@ -316,7 +330,8 @@ const US_STATES = [
 export default {
   name: "Order",
   components: {
-    HoursInput
+    HoursInput,
+    VueTagsInput
   },
   data() {
     return {
@@ -329,7 +344,7 @@ export default {
       zip: "",
       phoneNumber: "",
       url: "",
-      tags: "",
+      // tags: "",
       states: US_STATES,
       uid: "hogehoge", //TODO test
       hoursMon: true,
@@ -338,7 +353,21 @@ export default {
       hoursThu: true,
       hoursFri: true,
       hoursSat: true,
-      hoursSun: true
+      hoursSun: true,
+      tag: "",
+      tags: ["Meet"],
+      autocompleteItems: [
+        {
+          text: 'Invalid because of "8"'
+        }
+      ],
+      validation: [
+        {
+          classes: "no-braces",
+          disableAdd: true,
+          rule: tag => tag.text.length > 15
+        }
+      ]
     };
   },
   computed: {
@@ -352,6 +381,11 @@ export default {
         this.phoneNumber !== "" &&
         this.state !== ""
       );
+    }
+  },
+  watch: {
+    state: function(val) {
+      this.tags.push(val);
     }
   },
   methods: {
@@ -407,7 +441,6 @@ export default {
       );
     },
     uploadFile(file, filename, restaurantId) {
-      debugger;
       return new Promise((resolve, rejected) => {
         let storageRef = storage.ref();
         let mountainsRef = storageRef.child(
@@ -462,5 +495,8 @@ export default {
 <style lang="scss" scoped>
 .tax {
   margin-top: -2rem !important;
+}
+/deep/.ti-input {
+  border-radius: 0.4rem !important;
 }
 </style>
