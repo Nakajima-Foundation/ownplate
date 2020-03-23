@@ -20,13 +20,13 @@
           <div class="columns is-mobile is-left">
             <p class="p-bold">【SHOP】</p>
           </div>
-          <li><a href="/shop/menu">Menu</a></li>
-          <li><a href="/shop/order">Order</a></li>
-          <li><a href="/shop/thank">ThankYou</a></li>
-          <li><a href="/admin/restaurants/new">Create a new Reataurant</a></li>
-          <li><a href="/admin/restaurants/">Your Reataurant</a></li>
-          <li><a href="/admin/user/signin">Admin Signin</a></li>
-          <li><a href="/admin/user/signup">Admin Signup</a></li>
+          <li><router-link to="/shop/menu">Menu</router-link></li>
+          <li><router-link to="/shop/order">Order</router-link></li>
+          <li><router-link to="/shop/thank">ThankYou</router-link></li>
+          <li><router-link to="/admin/restaurants/new">Create a new Reataurant</router-link></li>
+          <li><router-link to="/admin/restaurants/">Your Reataurant</router-link></li>
+          <li><router-link to="/admin/user/signin">Admin Signin</router-link></li>
+          <li><router-link to="/admin/user/signup">Admin Signup</router-link></li>
         </ol>
       </div>
     </section>
