@@ -158,7 +158,8 @@ export default {
           icon: "lightbulb",
           to: { name: "inspire" }
         }
-      ]
+      ],
+      unregisterAuthObserver: null,
     };
   },
   computed: {
@@ -168,12 +169,17 @@ export default {
   },
   beforeCreate() {
     this.$store.commit('user/SET_LOADING', true);
-    auth.onAuthStateChanged(user => {
+    this.unregisterAuthObserver = auth.onAuthStateChanged(async (user) => {
       if (user) {
         this.$store.commit('user/SET_USER', user);
       }
       this.$store.commit('user/SET_LOADING', false);
     });
+  },
+  destroyed() {
+    if (this.unregisterAuthObserver) {
+      this.unregisterAuthObserver();
+    }
   }
 };
 </script>
