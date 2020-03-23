@@ -4,7 +4,7 @@ import { db } from "~/plugins/firebase.js";
 export default {
   state: {
     user: null,
-    loading: false,
+    loading: true,
     error: null
   },
   mutations: {

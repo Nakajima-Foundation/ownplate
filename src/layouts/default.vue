@@ -56,7 +56,7 @@
     </b-navbar>
 
     <!-- pagesのコンポーネントが読み込まれる -->
-    <nuxt style="max-width:100%;"></nuxt>
+    <nuxt style="max-width:100%;" v-if="loaded" ></nuxt>
     <!-- pagesのコンポーネントが読み込まれる -->
 
     <footer class="footer" style="background-color: black!important;">
@@ -141,7 +141,10 @@
 </template>
 
 <script>
+import { auth } from '@/plugins/firebase.js';
+
 export default {
+
   data() {
     return {
       items: [
@@ -157,6 +160,20 @@ export default {
         }
       ]
     };
+  },
+  computed: {
+    loaded() {
+      return !this.$store.getters['user/loading'];
+    },
+  },
+  beforeCreate() {
+    this.$store.commit('user/SET_LOADING', true);
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        this.$store.commit('user/SET_USER', user);
+      }
+      this.$store.commit('user/SET_LOADING', false);
+    });
   }
 };
 </script>
