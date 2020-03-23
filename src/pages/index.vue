@@ -18,11 +18,14 @@
       <div class="content">
         <ol type="A">
           <div class="columns is-mobile is-left">
-            <p class="p-bold">【SHOP】</p>
+            <p class="p-bold">【Reataurant】</p>
           </div>
-          <li><router-link to="/shop/menu">Menu</router-link></li>
-          <li><router-link to="/shop/order">Order</router-link></li>
-          <li><router-link to="/shop/thank">ThankYou</router-link></li>
+          <li><router-link to="/restaurants/menu/123456789/">Menu</router-link></li>
+          <li><router-link to="/restaurants/order/123456789/">Order</router-link></li>
+          <li><router-link to="/restaurants/thank/123456789/">ThankYou</router-link></li>
+          <div class="columns is-mobile is-left">
+            <p class="p-bold" style="margin-top:2rem;">【Admin】</p>
+          </div>
           <li><router-link to="/admin/restaurants/new">Create a new Reataurant</router-link></li>
           <li><router-link to="/admin/restaurants/">Your Reataurant</router-link></li>
           <li><router-link to="/admin/user/signin">Admin Signin</router-link></li>

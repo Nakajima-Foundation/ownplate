@@ -57,10 +57,15 @@ export default {
     OrderInfo,
     CreditCardInput
   },
-
+  data() {
+    return {
+      restaurantsId: this.$route.params.id
+    };
+  },
   methods: {
     goNext() {
-      this.$router.push({ path: "/shop/thank" });
+      // this.$router.push({ path: "/restaurants/thank" });
+      this.$router.push({ path: `/restaurants/thank/${this.restaurantsId}/` });
     }
   }
 };

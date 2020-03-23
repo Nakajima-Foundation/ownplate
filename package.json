@@ -20,6 +20,7 @@
     "@babel/plugin-transform-runtime": "^7.7.6",
     "@babel/preset-env": "^7.7.7",
     "@babel/runtime": "^7.7.7",
+    "@johmun/vue-tags-input": "^2.1.0",
     "@nuxtjs/axios": "^5.9.2",
     "axios-mock-server": "^0.16.3",
     "babel-polyfill": "^6.26.0",

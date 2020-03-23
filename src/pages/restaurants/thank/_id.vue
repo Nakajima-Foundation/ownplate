@@ -55,11 +55,13 @@ export default {
     ShopInfo
   },
 
-  methods: {
-    goNext() {
-      this.$router.push({ path: "/shop/thank" });
-    }
-  }
+  data() {
+    return {
+      restaurantsId: this.$route.params.id
+    };
+  },
+
+  methods: {}
 };
 </script>
 <style lang="scss" scoped>
