@@ -171,7 +171,12 @@ export default {
     this.$store.commit('user/SET_LOADING', true);
     this.unregisterAuthObserver = auth.onAuthStateChanged(async (user) => {
       if (user) {
-        this.$store.commit('user/SET_USER', user);
+        if (user.email) {
+          this.$store.commit('admin/SET_USER', user);
+        }
+        if (user.phoneNumber) {
+          this.$store.commit('user/SET_USER', user);
+        }
       }
       this.$store.commit('user/SET_LOADING', false);
     });

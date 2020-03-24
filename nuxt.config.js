@@ -40,6 +40,7 @@ export default {
    */
   plugins: [
     // { src: "~/plugins/localStorage.js", ssr: false },
+    { src: "~/plugins/userPermission.js", ssr: false },
     // "~/plugins/mock.js"
   ],
   /*

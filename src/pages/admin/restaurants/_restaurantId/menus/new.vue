@@ -145,6 +145,9 @@ export default {
       croppa: {}
     };
   },
+  beforeCreated() {
+    this.checkAdminPermission();
+  },
   computed: {
     formIsValid() {
       return this.itemName !== "" && this.price !== "" && this.tax !== "";

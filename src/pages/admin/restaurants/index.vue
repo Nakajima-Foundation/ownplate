@@ -65,51 +65,25 @@ export default {
       restaurantItems: []
     };
   },
+  beforeCreated() {
+    this.checkAdminPermission();
+  },
   computed: {},
-  mounted() {
-    const uid = this.$store.getters['user/user'].uid;
-    db.collection("restaurants")
-      .where("uid", "==", uid)
-      .get()
-      .then(data => {
-        data.forEach(doc => {
-          let restaurantId = doc.id;
-          let {
-            restProfilePhoto,
-            restaurantName,
-            streetAddress,
-            city,
-            state,
-            zip,
-            phoneNumber,
-            url,
-            tags,
-            uid,
-            defaultTaxRate,
-            publicFlag,
-            createdAt
-          } = doc.data();
-          this.restaurantItems.push({
-            restProfilePhoto,
-            restaurantId,
-            restaurantName,
-            streetAddress,
-            city,
-            state,
-            zip,
-            phoneNumber,
-            url,
-            tags,
-            uid,
-            defaultTaxRate,
-            publicFlag,
-            createdAt
-          });
-        });
-      })
-      .catch(error => {
-        console.log("Error fetch doc,", error);
+  async mounted() {
+    const uid = this.$store.getters['admin/user'].uid;
+    const res = await db.collection("restaurants")
+          .where("uid", "==", uid)
+          .get();
+    try {
+      this.restaurantItems = (res.docs||[]).map((doc) => {
+        let restaurantId = doc.id;
+        const data = doc.data();
+        data.restaurantId =  doc.id
+        return data;
       });
+    } catch(error) {
+      console.log("Error fetch doc,", error);
+    }
   },
   methods: {
     emitted(eventArgs) {

@@ -3,6 +3,7 @@ import Vuex from "vuex";
 import createPersistedState from "vuex-persistedstate";
 //for User
 import user from "./user";
+import admin from "./admin";
 
 Vue.use(Vuex);
 
@@ -34,6 +35,7 @@ export const actions = {
 //for User
 export const store = new Vuex.Store({
   modules: {
-    user: user
+    user,
+    admin,
   }
 });
