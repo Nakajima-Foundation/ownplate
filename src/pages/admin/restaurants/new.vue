@@ -334,7 +334,7 @@ export default {
     VueTagsInput
   },
   data() {
-    const uid = this.$store.getters['user/user'].uid;
+    const uid = this.$store.getters['admin/user'].uid;
     return {
       restProfileCroppa: null,
       restCoverCroppa: null,
@@ -370,6 +370,9 @@ export default {
         }
       ]
     };
+  },
+  beforeCreated() {
+    this.checkAdminPermission();
   },
   computed: {
     formIsValid() {

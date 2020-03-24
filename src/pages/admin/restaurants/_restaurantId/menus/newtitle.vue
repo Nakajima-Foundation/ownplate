@@ -52,6 +52,9 @@ export default {
       uid: "hogehoge" //TODO test
     };
   },
+  beforeCreated() {
+    this.checkAdminPermission();
+  },
   computed: {
     formIsValid() {
       return this.title !== "";

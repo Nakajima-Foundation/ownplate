@@ -65,9 +65,12 @@ export default {
       restaurantItems: []
     };
   },
+  beforeCreated() {
+    this.checkAdminPermission();
+  },
   computed: {},
   async mounted() {
-    const uid = this.$store.getters['user/user'].uid;
+    const uid = this.$store.getters['admin/user'].uid;
     const res = await db.collection("restaurants")
           .where("uid", "==", uid)
           .get();
