@@ -14,83 +14,35 @@
       ></shop-orner-info>
       <b-tabs size="is-medium" class="block" expanded>
         <b-tab-item label="Menu">
-          <h2 class="p-big bold">Most popular</h2>
+          <h2 class="p-big bold">Appetizers</h2>
 
-          <!-- TODO - for -->
-          <item-card
-            :title="'Kushikatsu Special Platter'"
-            :payment="'$26.00'"
-            :discription="
-              '11 pieces assorted kushikatsu. Served with miso soup and salad.'
-            "
-            :image="'https://magazine.hitosara.com/image/421/MM_421.jpg'"
-            @emitting="emitted($event)"
-          ></item-card>
-          <item-card
-            :title="'Spicy Eggplant'"
-            :payment="'$8.00'"
-            :discription="
-              'Steamed topped with assorted fresh roe and special sauce.'
-            "
-            :image="'https://magazine.hitosara.com/image/421/MM_421.jpg'"
-            @emitting="emitted($event)"
-          ></item-card>
-          <item-card
-            :title="'Spicy Eggplant'"
-            :payment="'$8.00'"
-            :discription="
-              'Steamed topped with assorted fresh roe and special sauce.'
-            "
-            :image="
-              'https://www.momoya.co.jp/wp-content/uploads/2016/01/%E6%B8%88%EF%BC%97.jpg'
-            "
+          <item-card 
+            v-for="item in appetizers"
+            v-bind:key="item.id"
+            v-bind:id="item.id"
+            v-bind:counter="orders[item.id] || 0"
+            v-bind:title="item.title"
+            v-bind:payment="item.payment"
+            v-bind:description="item.description"
+            v-bind:image="item.image"
             @emitting="emitted($event)"
           ></item-card>
 
           <hr class="hr-black" />
 
-          <h2 class="p-big bold">Appetizers</h2>
-          <!-- TODO - for -->
-          <item-card
-            :title="'Kushikatsu Special Platter'"
-            :payment="'$26.00'"
-            :discription="
-              '11 pieces assorted kushikatsu. Served with miso soup and salad.'
-            "
-            :image="'https://magazine.hitosara.com/image/421/MM_421.jpg'"
+          <h2 class="p-big bold">Entrees</h2>
+          <item-card 
+            v-for="item in entrees"
+            v-bind:key="item.id"
+            v-bind:id="item.id"
+            v-bind:counter="orders[item.id] || 0"
+            v-bind:title="item.title"
+            v-bind:payment="item.payment"
+            v-bind:description="item.description"
+            v-bind:image="item.image"
             @emitting="emitted($event)"
           ></item-card>
-          <item-card
-            :title="'Spicy Eggplant'"
-            :payment="'$8.00'"
-            :discription="
-              'Steamed topped with assorted fresh roe and special sauce.'
-            "
-            :image="'https://magazine.hitosara.com/image/421/MM_421.jpg'"
-            @emitting="emitted($event)"
-          ></item-card>
-          <item-card
-            :title="'Spicy Eggplant'"
-            :payment="'$8.00'"
-            :discription="
-              'Steamed topped with assorted fresh roe and special sauce.'
-            "
-            :image="
-              'https://www.momoya.co.jp/wp-content/uploads/2016/01/%E6%B8%88%EF%BC%97.jpg'
-            "
-            @emitting="emitted($event)"
-          ></item-card>
-          <item-card
-            :title="'Chicken Karaage'"
-            :payment="'$9.95'"
-            :discription="'Chicken Karaage'"
-            @emitting="emitted($event)"
-          ></item-card>
-          <item-card
-            :title="'Edamame'"
-            :payment="'$3.00'"
-            @emitting="emitted($event)"
-          ></item-card>
+
         </b-tab-item>
         <b-tab-item label="About">
           <shop-info></shop-info>
@@ -129,6 +81,39 @@ export default {
   },
   data() {
     return {
+      entrees: [{
+        id:"1001",
+        title:"Kushikatsu Special Platter",
+        payment:"$26.00",
+        description:"11 pieces assorted kushikatsu. Served with miso soup and salad.",
+        image:"https://magazine.hitosara.com/image/421/MM_421.jpg",
+      },{
+        id:"1002",
+        title:"Spicy Eggplant",
+        payment:"$8.00",
+        description:"Steamed topped with assorted fresh roe and special sauce.",
+        image:"https://demandafrica-4741.kxcdn.com/wp-content/uploads/2017/08/Spicy-Chinese-Eggplant.jpg"
+      },{
+        id:"1003",
+        title:"Oyako-don",
+        payment:"$8.00",
+        description:"Chiken and Egg on Rice.",
+        image:"https://www.momoya.co.jp/wp-content/uploads/2016/01/%E6%B8%88%EF%BC%97.jpg"
+      }],
+      appetizers: [{
+        id:"1004",
+        title:"Chicken Karaage",
+        payment:"$9.95",
+        description:"Chicken Karaage",
+        image:"https://img.cpcdn.com/recipes/4417485/280x487s/e4e40823fa78ca87df83284c5ecc5cf2.jpg"
+      },{
+        id:"1005",
+        title:"Edamame",
+        payment:"$3.00",
+        description:"Boiled Soy Beans",
+        image:"https://www.olive-hitomawashi.com/column/assets_c/2017/12/SEO058K_0-thumb-500xauto-50342.jpg",
+      }],
+      orders: {},
       footCounter: this.$store.state.totalOrderCount,
       restaurantsId: this.$route.params.id
       // isCardModalActive: false
@@ -145,6 +130,7 @@ export default {
   },
   methods: {
     emitted(eventArgs) {
+      this.orders[eventArgs.id] = eventArgs.counter;
       this.footCounter = eventArgs.orderCount;
       // console.log(eventArgs.orderCount);
     },
