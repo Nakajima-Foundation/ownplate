@@ -19,6 +19,8 @@
           <item-card 
             v-for="item in appetizers"
             v-bind:key="item.id"
+            v-bind:id="item.id"
+            v-bind:counter="orders[item.id] || 0"
             v-bind:title="item.title"
             v-bind:payment="item.payment"
             v-bind:description="item.description"
@@ -32,6 +34,8 @@
           <item-card 
             v-for="item in entrees"
             v-bind:key="item.id"
+            v-bind:id="item.id"
+            v-bind:counter="orders[item.id] || 0"
             v-bind:title="item.title"
             v-bind:payment="item.payment"
             v-bind:description="item.description"
@@ -109,6 +113,7 @@ export default {
         description:"Boiled Soy Beans",
         image:"https://www.olive-hitomawashi.com/column/assets_c/2017/12/SEO058K_0-thumb-500xauto-50342.jpg",
       }],
+      orders: {},
       footCounter: this.$store.state.totalOrderCount,
       restaurantsId: this.$route.params.id
       // isCardModalActive: false
@@ -125,6 +130,7 @@ export default {
   },
   methods: {
     emitted(eventArgs) {
+      this.orders[eventArgs.id] = eventArgs.counter;
       this.footCounter = eventArgs.orderCount;
       // console.log(eventArgs.orderCount);
     },
