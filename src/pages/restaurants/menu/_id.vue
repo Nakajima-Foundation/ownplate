@@ -88,12 +88,12 @@ export default {
         title:"Spicy Eggplant",
         payment:"$8.00",
         discription:"Steamed topped with assorted fresh roe and special sauce.",
-        image:"https://magazine.hitosara.com/image/421/MM_421.jpg"
+        image:"https://demandafrica-4741.kxcdn.com/wp-content/uploads/2017/08/Spicy-Chinese-Eggplant.jpg"
       },{
         id:"1003",
-        title:"Spicy Eggplant",
+        title:"Oyako-don",
         payment:"$8.00",
-        discription:"Steamed topped with assorted fresh roe and special sauce.",
+        discription:"Chiken and Egg on Rice.",
         image:"https://www.momoya.co.jp/wp-content/uploads/2016/01/%E6%B8%88%EF%BC%97.jpg"
       }],
       appetizers: [{
