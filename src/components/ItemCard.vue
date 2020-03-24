@@ -10,7 +10,7 @@
           <h2 class="bold payment">
             {{ payment }}
           </h2>
-          <p>{{ discription }}</p>
+          <p>{{ description }}</p>
         </div>
         <div class="media-right">
           <figure class="image is-100x100">
@@ -124,7 +124,7 @@ export default {
       type: String,
       required: true
     },
-    discription: {
+    description: {
       type: String,
       required: true
     },
