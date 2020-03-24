@@ -16,34 +16,13 @@
         <b-tab-item label="Menu">
           <h2 class="p-big bold">Most popular</h2>
 
-          <!-- TODO - for -->
-          <item-card
-            :title="'Kushikatsu Special Platter'"
-            :payment="'$26.00'"
-            :discription="
-              '11 pieces assorted kushikatsu. Served with miso soup and salad.'
-            "
-            :image="'https://magazine.hitosara.com/image/421/MM_421.jpg'"
-            @emitting="emitted($event)"
-          ></item-card>
-          <item-card
-            :title="'Spicy Eggplant'"
-            :payment="'$8.00'"
-            :discription="
-              'Steamed topped with assorted fresh roe and special sauce.'
-            "
-            :image="'https://magazine.hitosara.com/image/421/MM_421.jpg'"
-            @emitting="emitted($event)"
-          ></item-card>
-          <item-card
-            :title="'Spicy Eggplant'"
-            :payment="'$8.00'"
-            :discription="
-              'Steamed topped with assorted fresh roe and special sauce.'
-            "
-            :image="
-              'https://www.momoya.co.jp/wp-content/uploads/2016/01/%E6%B8%88%EF%BC%97.jpg'
-            "
+          <item-card 
+            v-for="item in popularItems"
+            v-bind:key="item.id"
+            v-bind:title="item.title"
+            v-bind:payment="item.payment"
+            v-bind:discription="item.discrirption"
+            v-bind:image="item.image"
             @emitting="emitted($event)"
           ></item-card>
 
@@ -129,6 +108,25 @@ export default {
   },
   data() {
     return {
+      popularItems: [{
+        id:"1001",
+        title:"KUKushikatsu Special Platter",
+        payment:"$26.00",
+        discription:"11 pieces assorted kushikatsu. Served with miso soup and salad.",
+        image:"https://magazine.hitosara.com/image/421/MM_421.jpg",
+      },{
+        id:"1002",
+        title:"Spicy Eggplant",
+        payment:"$8.00",
+        discription:"Steamed topped with assorted fresh roe and special sauce.",
+        image:"https://magazine.hitosara.com/image/421/MM_421.jpg"
+      },{
+        id:"1003",
+        title:"Spicy Eggplant",
+        payment:"$8.00",
+        discription:"Steamed topped with assorted fresh roe and special sauce.",
+        image:"https://www.momoya.co.jp/wp-content/uploads/2016/01/%E6%B8%88%EF%BC%97.jpg"
+      }],
       footCounter: this.$store.state.totalOrderCount,
       restaurantsId: this.$route.params.id
       // isCardModalActive: false
