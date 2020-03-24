@@ -1,3 +1,7 @@
+import i18nEN from './lang/en.json';
+import i18nES from './lang/es.json';
+import i18nJA from './lang/ja.json';
+
 export default {
   mode: "spa",
   srcDir: "src",
@@ -54,8 +58,21 @@ export default {
     // Doc: https://buefy.github.io/#/documentation
     "nuxt-buefy",
     "@nuxtjs/style-resources",
-    "@nuxtjs/axios"
+    "@nuxtjs/axios",
+    'nuxt-i18n',
   ],
+  i18n: {
+    locales: ['en', 'es', 'ja'],
+    defaultLocale: 'en',
+    vueI18n: {
+      fallbackLocale: 'en',
+      messages: {
+        en: i18nEN,
+        es: i18nES,
+        ja: i18nJA,
+      }
+    }
+  },
   styleResources: {
     scss: [
       "~/assets/scss/_mixins.scss",
