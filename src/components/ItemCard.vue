@@ -112,7 +112,6 @@
 </template>
 
 <script>
-import store from "~/store/index.js";
 import { mapGetters, mapMutations } from "vuex";
 export default {
   props: {
@@ -152,28 +151,22 @@ export default {
       if (this.counter <= 0) {
         return;
       }
-      this.$store.state.totalOrderCount--;
       this.order(this.counter - 1);
-      console.log(this.$store.state.totalOrderCount);
     },
     pushCount() {
-      this.$store.state.totalOrderCount++;
       this.order(this.counter + 1);
-      console.log(this.$store.state.totalOrderCount);
     },
     openMenu() {
       this.openMenuFlag = true;
       if (this.counter == 0) {
-        this.$store.state.totalOrderCount++;
         this.order(this.counter + 1);
-        console.log(this.$store.state.totalOrderCount);
       }
     },
     closeMenu() {
       this.openMenuFlag = false;
     },
     order(newCounter) {
-      this.$emit("emitting", { id:this.id, counter:newCounter, orderCount: this.$store.state.totalOrderCount });
+      this.$emit("emitting", { id:this.id, counter:newCounter });
     }
   }
 };
