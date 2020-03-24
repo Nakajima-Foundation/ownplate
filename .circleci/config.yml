@@ -14,7 +14,7 @@ jobs:
             - run: npm run build
             - run: cp dist/index.html functions/templates/index.html
             - run: ./node_modules/.bin/firebase deploy --token=$FIREBASE_TOKEN --project=staging --only hosting
-            - run: ./node_modules/.bin/firebase deploy --token=$FIREBASE_TOKEN --project=staging --only functions
+            - run: cd functions && npm install && ../node_modules/.bin/firebase deploy --token=$FIREBASE_TOKEN --project=staging --only functions
 
 workflows:
     version: 2.1
