@@ -192,13 +192,62 @@
         :autocomplete-items="filteredItems"
         @tags-changed="newTags => (tags = newTags)"
       />
-      <!-- <b-input
-        v-model="tags"
-        placeholder="Enter Tags"
-        type="text"
-        maxlength="30"
-      ></b-input> -->
     </b-field>
+
+    <div class="columns">
+      <div class="column">
+        <div class="field is-horizontal">
+          <div class="field-body">
+            <div class="field has-addons">
+              <b-field
+                label="Food tax"
+                type="is-white"
+                style="border-radius: 0.4rem!important;"
+              >
+                <div style="display:inline-flex">
+                  <b-select v-model="foodTax" :disabled="disabled">
+                    <option v-for="taxItem of taxList" :key="taxItem">
+                      {{ taxItem }}
+                    </option>
+                  </b-select>
+                  <span
+                    style="margin-top: auto;margin-bottom: auto;margin-left:0.4rem;margin-right:0.4rem;"
+                  >
+                    %
+                  </span>
+                </div>
+              </b-field>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="column">
+        <div class="field is-horizontal">
+          <div class="field-body">
+            <div class="field has-addons">
+              <b-field
+                label="Alcohol tax"
+                type="is-white"
+                style="border-radius: 0.4rem!important;"
+              >
+                <div style="display:inline-flex">
+                  <b-select v-model="alcoholTax" :disabled="disabled">
+                    <option v-for="taxItem of taxList" :key="taxItem">
+                      {{ taxItem }}
+                    </option>
+                  </b-select>
+                  <span
+                    style="margin-top: auto;margin-bottom: auto;margin-left:0.4rem;margin-right:0.4rem;"
+                  >
+                    %
+                  </span>
+                </div>
+              </b-field>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <h4>Hours</h4>
 
@@ -327,6 +376,8 @@ const US_STATES = [
   "Wyoming"
 ];
 
+const TAX_RATES = [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+
 export default {
   name: "Order",
   components: {
@@ -334,7 +385,7 @@ export default {
     VueTagsInput
   },
   data() {
-    const uid = this.$store.getters['admin/user'].uid;
+    const uid = this.$store.getters["admin/user"].uid;
     return {
       restProfileCroppa: null,
       restCoverCroppa: null,
@@ -345,8 +396,10 @@ export default {
       zip: "",
       phoneNumber: "",
       url: "",
-      // tags: "",
+      foodTax: 0,
+      alcoholTax: 0,
       states: US_STATES,
+      taxList: TAX_RATES,
       uid: uid,
       hoursMon: true,
       hoursTue: true,
@@ -427,6 +480,8 @@ export default {
         phoneNumber: this.phoneNumber,
         url: this.url,
         tags: this.tags,
+        foodTax: Number(this.foodTax),
+        alcoholTax: Number(this.alcoholTax),
         uid: this.uid,
         defauleTaxRate: 0.1,
         publicFlag: true,
@@ -469,21 +524,24 @@ export default {
       return new Promise((resolve, rejected) => {
         db.collection("restaurants")
           .doc(restaurantId)
-          .set({
-            restProfilePhoto: restaurantData.restProfilePhoto,
-            restaurantName: restaurantData.restaurantName,
-            streetAddress: restaurantData.streetAddress,
-            city: restaurantData.city,
-            state: restaurantData.state,
-            zip: restaurantData.zip,
-            phoneNumber: restaurantData.phoneNumber,
-            url: restaurantData.url,
-            tags: restaurantData.tags,
-            uid: restaurantData.uid,
-            defaultTaxRate: restaurantData.defauleTaxRate,
-            publicFlag: restaurantData.publicFlag,
-            createdAt: restaurantData.createdAt
-          })
+          .set(restaurantData)
+          // .set({
+          //   restProfilePhoto: restaurantData.restProfilePhoto,
+          //   restaurantName: restaurantData.restaurantName,
+          //   streetAddress: restaurantData.streetAddress,
+          //   city: restaurantData.city,
+          //   state: restaurantData.state,
+          //   zip: restaurantData.zip,
+          //   phoneNumber: restaurantData.phoneNumber,
+          //   url: restaurantData.url,
+          //   tags: restaurantData.tags,
+          //   foodTax: restaurantData.foodTax,
+          //   alcoholTax: restaurantData.alcoholTax,
+          //   uid: restaurantData.uid,
+          //   defaultTaxRate: restaurantData.defauleTaxRate,
+          //   publicFlag: restaurantData.publicFlag,
+          //   createdAt: restaurantData.createdAt
+          // })
           .then(() => {
             resolve();
           })
