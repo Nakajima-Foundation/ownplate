@@ -64,7 +64,6 @@
 </template>
 
 <script>
-import store from "~/store/index.js";
 import ItemCard from "~/components/ItemCard";
 import LoginModal from "~/components/LoginModal";
 import ShopOrnerInfo from "~/components/ShopOrnerInfo";
@@ -114,7 +113,7 @@ export default {
         image:"https://www.olive-hitomawashi.com/column/assets_c/2017/12/SEO058K_0-thumb-500xauto-50342.jpg",
       }],
       orders: {},
-      footCounter: this.$store.state.totalOrderCount,
+      footCounter: 0,
       restaurantsId: this.$route.params.id
       // isCardModalActive: false
     };
@@ -125,14 +124,15 @@ export default {
     }
   },
   mounted() {
-    console.log(this.$store.state.totalOrderCount);
     console.log("this.restaurantsId" + this.restaurantsId);
   },
   methods: {
     emitted(eventArgs) {
       this.orders[eventArgs.id] = eventArgs.counter;
-      this.footCounter = eventArgs.orderCount;
-      // console.log(eventArgs.orderCount);
+      const orders = this.orders;
+      this.footCounter = Object.keys(this.orders).reduce(function(total, id) {
+        return total + orders[id]
+      }, 0);
     },
     checkOut() {
       this.$refs.modalLogin.open();
