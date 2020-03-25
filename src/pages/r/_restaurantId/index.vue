@@ -127,8 +127,10 @@ export default {
   created() {
     // console.log(db);
     this.detacher = db.doc(`restaurants/${this.restaurantId()}`).onSnapshot((restaurant) => {
+      console.log("AAA");
       if (restaurant.exists) {
         const restaurant_data = restaurant.data();
+        console.log( restaurant_data);
         this.shopInfo = restaurant_data;
       }
     });
@@ -141,7 +143,7 @@ export default {
   watch: {
     footCounter(val) {
       console.log("footCounter" + val);
-    }
+    },
   },
   mounted() {
     console.log(this.restaurantId());
