@@ -12,6 +12,7 @@ jobs:
             - run: npm install
             - run: npm install --save-dev firebase-tools
             - run: cp configs/dev.js src/config/firebase.js
+            - run: cp configs/.firebaserc ./
             - run: npm run build
             - run: cp dist/index.html functions/templates/index.html
             - run: ./node_modules/.bin/firebase deploy --token=$FIREBASE_TOKEN --project=staging --only hosting
