@@ -141,8 +141,11 @@ export default {
   },
   methods: {
     editMenu() {
-      this.$emit("emitting", { restaurantid: this.restaurantid });
-    }
+      this.$emit("emitting", { restaurantid: this.restaurantid() });
+    },
+    restaurantId() {
+      return this.$route.params.restaurantId;
+    },
   }
 };
 </script>
