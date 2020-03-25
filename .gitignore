@@ -96,5 +96,6 @@ sw.*
 .firebaserc
 plugins/firebase.js
 src/plugins/firebase.js
+src/config/firebase.js
 # Emacs
 *~
