@@ -139,7 +139,7 @@ export default {
     },
     goRestaurant() {
       this.$router.push({
-        path: `/admin/restaurants/${this.restaurantId()}`
+        path: `/admin/restaurants/`
       });
     }
   }
