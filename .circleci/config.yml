@@ -11,7 +11,7 @@ jobs:
           steps:
             - run: npm install
             - run: npm install --save-dev firebase-tools
-            - run: cp configs/dev.js src/config/firebase.js
+            - run: cp src/config/default/ownplate-dev.js src/config/firebase.js
             - run: cp configs/.firebaserc ./
             - run: npm run build
             - run: cp dist/index.html functions/templates/index.html
