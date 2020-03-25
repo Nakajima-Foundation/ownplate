@@ -1,6 +1,5 @@
 {
   "projects": {
-    "default": "shushi-demae",
-    "staging": "ownplate-dev"
+    "default": "ownplate-12658"
   }
 }

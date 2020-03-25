@@ -80,37 +80,6 @@
         </a>
       </b-tab-item>
     </b-tabs>
-    <div v-for="restaurantItem in restaurantItems" :key="restaurantItem.id">
-      <restaurant-edit-card
-        :restprofilephoto="restaurantItem.restProfilePhoto"
-        :restaurantid="restaurantItem.restaurantid"
-        :restaurantname="restaurantItem.restaurantName"
-        :streetaddress="restaurantItem.streetAddress"
-        :city="restaurantItem.city"
-        :state="restaurantItem.state"
-        :zip="restaurantItem.zip"
-        :phonenumber="restaurantItem.phoneNumber"
-        :url="restaurantItem.url"
-        :tags="restaurantItem.tags"
-        :uid="restaurantItem.uid"
-        :defaulttaxrate="restaurantItem.defauleTaxRate"
-        :publicflag="restaurantItem.publicFlag"
-        :createdat="restaurantItem.createdAt"
-        @emitting="emitted($event)"
-      ></restaurant-edit-card>
-    </div>
-
-    <a href="/admin/restaurants/new">
-      <b-button
-        style="margin-right:auto"
-        type="is-info"
-        class="counter-button"
-        expanded
-        rounded
-      >
-        Add new restaurant
-      </b-button>
-    </a>
   </section>
 </template>
 
@@ -152,7 +121,7 @@ export default {
       }
       return false;
     },
-    existPayment() {
+    existsPayment() {
       if (this.paymentItems.length > 0) {
         return true;
       }
