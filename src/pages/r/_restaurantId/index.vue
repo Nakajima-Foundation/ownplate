@@ -119,18 +119,24 @@ export default {
       orders: {},
       footCounter: 0,
       restaurantsId: this.restaurantId(),
-      shopInfo: {}
+      shopInfo: {},
       // isCardModalActive: false
+      detacher: null,
     };
   },
   created() {
     // console.log(db);
-    db.doc(`restaurants/${this.restaurantId()}`).onSnapshot((restaurant) => {
+    this.detacher = db.doc(`restaurants/${this.restaurantId()}`).onSnapshot((restaurant) => {
       if (restaurant.exists) {
         const restaurant_data = restaurant.data();
         this.shopInfo = restaurant_data;
       }
     });
+  },
+  destroyed() {
+    if (this.detacher) {
+      this.detacher();
+    }
   },
   watch: {
     footCounter(val) {
