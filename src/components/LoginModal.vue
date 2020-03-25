@@ -52,7 +52,7 @@ export default {
       phone: "",
       number: "",
       conrfim: false,
-      restaurantsId: this.$route.params.id
+      restaurantsId: this.restaurantId(),
     };
   },
   methods: {
@@ -77,14 +77,17 @@ export default {
       this.conrfim = true;
     },
     goCheckout() {
-      if (this.restaurantsId) {
+      if (this.restaurantId()) {
         this.$router.push({
-          path: `/restaurants/order/${this.restaurantsId}/`
+          path: `/restaurants/${this.restaurantId()}/order/123`
         });
       } else {
-        this.$router.push({ path: "/restaurants/order/" });
+        this.$router.push({ path: `/restaurants/${this.restaurantId()}/order/123` });
       }
-    }
+    },
+    restaurantId() {
+      return this.$route.params.restaurantId;
+    },
   }
 };
 </script>

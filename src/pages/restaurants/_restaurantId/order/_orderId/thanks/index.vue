@@ -1,3 +1,4 @@
+
 <template>
   <section class="section">
     <div class="is-centered" style="margin-bottom:2rem;">
@@ -57,11 +58,15 @@ export default {
 
   data() {
     return {
-      restaurantsId: this.$route.params.id
+      restaurantsId: this.restaurantId(),
     };
   },
 
-  methods: {}
+  methods: {
+    restaurantId() {
+      return this.$route.params.restaurantId;
+    },
+  }
 };
 </script>
 <style lang="scss" scoped>

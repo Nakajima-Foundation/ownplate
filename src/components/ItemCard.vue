@@ -10,7 +10,7 @@
           <h2 class="bold payment">
             {{ payment }}
           </h2>
-          <p>{{ discription }}</p>
+          <p>{{ description }}</p>
         </div>
         <div class="media-right">
           <figure class="image is-100x100">
@@ -112,10 +112,17 @@
 </template>
 
 <script>
-import store from "~/store/index.js";
 import { mapGetters, mapMutations } from "vuex";
 export default {
   props: {
+    id: {
+      type: String,
+      required: true
+    },
+    counter: {
+      type: Number,
+      required: true
+    },
     title: {
       type: String,
       required: true
@@ -124,7 +131,7 @@ export default {
       type: String,
       required: true
     },
-    discription: {
+    description: {
       type: String,
       required: true
     },
@@ -136,7 +143,6 @@ export default {
   },
   data() {
     return {
-      counter: 0,
       openMenuFlag: false
     };
   },
@@ -145,31 +151,22 @@ export default {
       if (this.counter <= 0) {
         return;
       }
-      this.counter--;
-      this.$store.state.totalOrderCount--;
-      this.order();
-      console.log(this.$store.state.totalOrderCount);
+      this.order(this.counter - 1);
     },
     pushCount() {
-      this.counter++;
-      this.$store.state.totalOrderCount++;
-      this.order();
-      console.log(this.$store.state.totalOrderCount);
+      this.order(this.counter + 1);
     },
     openMenu() {
       this.openMenuFlag = true;
       if (this.counter == 0) {
-        this.counter++;
-        this.$store.state.totalOrderCount++;
-        this.order();
-        console.log(this.$store.state.totalOrderCount);
+        this.order(this.counter + 1);
       }
     },
     closeMenu() {
       this.openMenuFlag = false;
     },
-    order() {
-      this.$emit("emitting", { orderCount: this.$store.state.totalOrderCount });
+    order(newCounter) {
+      this.$emit("emitting", { id:this.id, counter:newCounter });
     }
   }
 };
