@@ -8,9 +8,11 @@
     <section class="section">
       <shop-orner-info
         :src="
+              this.shopInfo.restProfilePhoto ||
           'https://pbs.twimg.com/profile_images/704153164438642692/bYo0YeEr_bigger.jpg'
         "
-        :name="'Yuta Seatle'"
+        :name="this.shopInfo.restaurantName || 'Yuta Seatle'"
+
       ></shop-orner-info>
       <b-tabs size="is-medium" class="block" expanded>
         <b-tab-item label="Menu">
@@ -69,6 +71,8 @@ import LoginModal from "~/components/LoginModal";
 import ShopOrnerInfo from "~/components/ShopOrnerInfo";
 import ShopInfo from "~/components/ShopInfo";
 
+import { db } from "~/plugins/firebase.js";
+
 export default {
   name: "ShopMenu",
 
@@ -114,9 +118,19 @@ export default {
       }],
       orders: {},
       footCounter: 0,
-      restaurantsId: this.restaurantId()
+      restaurantsId: this.restaurantId(),
+      shopInfo: {}
       // isCardModalActive: false
     };
+  },
+  created() {
+    // console.log(db);
+    db.doc(`restaurants/${this.restaurantId()}`).onSnapshot((restaurant) => {
+      if (restaurant.exists) {
+        const restaurant_data = restaurant.data();
+        this.shopInfo = restaurant_data;
+      }
+    });
   },
   watch: {
     footCounter(val) {
