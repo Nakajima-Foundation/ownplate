@@ -24,7 +24,7 @@
             >
               <restaurant-edit-card
                 :restprofilephoto="restaurantItem.restProfilePhoto"
-                :restaurantid="restaurantItem.restaurantId"
+                :restaurantid="restaurantItem.restaurantid"
                 :restaurantname="restaurantItem.restaurantName"
                 :streetaddress="restaurantItem.streetAddress"
                 :city="restaurantItem.city"
