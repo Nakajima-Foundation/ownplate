@@ -8,6 +8,9 @@
 # install dependencies
 $ npm install
 
+# copy and edit firebase.js file
+$ cp src/config/default/ownplate-dev.js src/config/firebase.js
+
 # serve with hot reload at localhost:3000
 $ npm run dev
 
