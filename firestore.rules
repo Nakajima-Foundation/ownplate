@@ -9,8 +9,9 @@ service cloud.firestore {
       allow create: if request.auth.uid != null && request.auth.token.email != null;
     }
     
-    match /restaurants/{restaurantsId}/menu/{menuId} {
+    match /restaurants/{restaurantsId}/menus/{menuId} {
       allow read: if true
+      allow create: if request.auth.uid != null && request.auth.token.email != null;
     }
     
     match /{document=**} {

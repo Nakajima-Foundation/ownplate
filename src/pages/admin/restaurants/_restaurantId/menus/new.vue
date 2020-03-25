@@ -135,13 +135,14 @@ const TAX_RATES = [
 export default {
   name: "Order",
   data() {
+    const uid = this.$store.getters["admin/user"].uid;
     return {
       itemName: "",
       price: "",
       tax: "",
       itemDescription: "",
       taxRates: TAX_RATES,
-      uid: "hogehoge", //TODO test
+      uid: uid,
       croppa: {}
     };
   },
@@ -188,7 +189,9 @@ export default {
     uploadFile(file, menuId) {
       return new Promise((resolve, rejected) => {
         let storageRef = storage.ref();
-        let mountainsRef = storageRef.child(`/images/restaurants/${this.restaurantId()}/menus/${menuId}/item.jpg`);
+        let mountainsRef = storageRef.child(
+          `/images/restaurants/${this.restaurantId()}/menus/${menuId}/item.jpg`
+        );
         let uploadTask = mountainsRef.put(file);
 
         uploadTask.on(

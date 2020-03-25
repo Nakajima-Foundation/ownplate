@@ -3,19 +3,30 @@
     <h2 class="p-big bold">
       Menu
     </h2>
-
-    <div v-for="menuItem in menuItems" :key="menuItem.id">
-      <div v-if="menuItem.titleFlag">
-        <title-edit-card :title="menuItem.title"></title-edit-card>
+    <div class="card block">
+      <div class="card-content">
+        <div v-if="!existsMenu" class="container content has-text-centered">
+          <b-icon icon="book-open" size="is-large"></b-icon>
+          <h3>No items</h3>
+          Please create your menu from the bottom button.
+        </div>
       </div>
-      <div v-else>
-        <item-edit-card
-          :title="menuItem.itemName"
-          :payment="menuItem.price"
-          :discription="menuItem.itemDescription"
-          :image="menuItem.itemPhoto"
-          @emitting="emitted($event)"
-        ></item-edit-card>
+    </div>
+
+    <div v-if="existsMenu">
+      <div v-for="menuItem in menuItems" :key="menuItem.id">
+        <div v-if="menuItem.titleFlag">
+          <title-edit-card :title="menuItem.title"></title-edit-card>
+        </div>
+        <div v-else>
+          <item-edit-card
+            :title="menuItem.itemName"
+            :payment="menuItem.price"
+            :discription="menuItem.itemDescription"
+            :image="menuItem.itemPhoto"
+            @emitting="emitted($event)"
+          ></item-edit-card>
+        </div>
       </div>
     </div>
 
@@ -72,48 +83,45 @@ export default {
   name: "Menus",
   components: {
     ItemEditCard,
-    TitleEditCard
+    TitleEditCard,
+    menuItems: []
   },
   data() {
     return {
       menuItems: []
     };
   },
-  mounted() {
-    //fetch menus
-    db.collection("restaurants")
+  beforeCreated() {
+    this.checkAdminPermission();
+  },
+  computed: {
+    existsMenu() {
+      if (this.menuItems.length > 0) {
+        return true;
+      }
+      return false;
+    }
+  },
+  async mounted() {
+    const uid = this.$store.getters["admin/user"].uid;
+    // const resId = this.$route.params.restaurantId;
+    const res = await db
+      .collection("restaurants")
       .doc(this.$route.params.restaurantId)
       .collection("menus")
-      .orderBy("createdAt", "desc")
-      .get()
-      .then(data => {
-        data.forEach(doc => {
-          let id = doc.id;
-          let {
-            itemName,
-            price,
-            tax,
-            itemDescription,
-            itemPhoto,
-            createdAt,
-            titleFlag,
-            title
-          } = doc.data();
-          this.menuItems.push({
-            itemName,
-            price,
-            tax,
-            itemDescription,
-            itemPhoto,
-            createdAt,
-            titleFlag,
-            title
-          });
-        });
-      })
-      .catch(error => {
-        console.log("Error fetch doc,", error);
+      .get();
+
+    try {
+      this.menuItems = (res.docs || []).map(doc => {
+        let menuId = doc.id;
+        const data = doc.data();
+        data.menuId = doc.id;
+        data.id = doc.id;
+        return data;
       });
+    } catch (error) {
+      console.log("Error fetch menu,", error);
+    }
   },
   methods: {
     restaurantId() {
@@ -131,7 +139,7 @@ export default {
     },
     goRestaurant() {
       this.$router.push({
-        path: `/admin/restaurants/${this.restaurantId()}`
+        path: `/admin/restaurants/`
       });
     }
   }

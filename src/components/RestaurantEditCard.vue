@@ -86,10 +86,6 @@ export default {
       type: String,
       required: true
     },
-    restaurantid: {
-      type: String,
-      required: true
-    },
     restaurantname: {
       type: String,
       required: true
@@ -120,9 +116,9 @@ export default {
       default: ""
     },
     tags: {
-      type: String,
+      type: Array,
       required: false,
-      default: ""
+      default: null
     },
     uid: {
       type: String,
@@ -130,23 +126,23 @@ export default {
       default: ""
     },
     defaulttaxrate: {
-      type: String,
+      type: Number,
       required: false,
-      default: ""
+      default: 0
     },
     publicflag: {
       type: Boolean,
       required: true
     },
     createdat: {
-      type: String,
+      type: Object,
       required: true
     }
   },
   methods: {
     editMenu() {
       this.$emit("emitting", { restaurantid: this.restaurantid });
-    },
+    }
   }
 };
 </script>
