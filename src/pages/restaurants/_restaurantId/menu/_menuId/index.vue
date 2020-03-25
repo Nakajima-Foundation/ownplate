@@ -16,7 +16,7 @@
         <b-tab-item label="Menu">
           <h2 class="p-big bold">Appetizers</h2>
 
-          <item-card 
+          <item-card
             v-for="item in appetizers"
             v-bind:key="item.id"
             v-bind:id="item.id"
@@ -31,7 +31,7 @@
           <hr class="hr-black" />
 
           <h2 class="p-big bold">Entrees</h2>
-          <item-card 
+          <item-card
             v-for="item in entrees"
             v-bind:key="item.id"
             v-bind:id="item.id"
@@ -114,7 +114,7 @@ export default {
       }],
       orders: {},
       footCounter: 0,
-      restaurantsId: this.$route.params.id
+      restaurantsId: this.restaurantId()
       // isCardModalActive: false
     };
   },
@@ -124,9 +124,12 @@ export default {
     }
   },
   mounted() {
-    console.log("this.restaurantsId" + this.restaurantsId);
+    console.log(this.restaurantId());
   },
   methods: {
+    restaurantId() {
+      return this.$route.params.restaurantId;
+    },
     emitted(eventArgs) {
       this.orders[eventArgs.id] = eventArgs.counter;
       const orders = this.orders;
