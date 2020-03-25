@@ -78,6 +78,10 @@
 export default {
   name: "RestaurantEditCard",
   props: {
+    restaurantid: {
+      type: String,
+      required: true
+    },
     restprofilephoto: {
       type: String,
       required: true
@@ -141,10 +145,7 @@ export default {
   },
   methods: {
     editMenu() {
-      this.$emit("emitting", { restaurantid: this.restaurantid() });
-    },
-    restaurantId() {
-      return this.$route.params.restaurantId;
+      this.$emit("emitting", { restaurantid: this.restaurantid });
     },
   }
 };

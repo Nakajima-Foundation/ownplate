@@ -7,7 +7,7 @@
     <div v-for="restaurantItem in restaurantItems" :key="restaurantItem.id">
       <restaurant-edit-card
         :restprofilephoto="restaurantItem.restProfilePhoto"
-        :restaurantid="restaurantItem.restaurantId"
+        :restaurantid="restaurantItem.restaurantid"
         :restaurantname="restaurantItem.restaurantName"
         :streetaddress="restaurantItem.streetAddress"
         :city="restaurantItem.city"
@@ -78,7 +78,8 @@ export default {
       this.restaurantItems = (res.docs||[]).map((doc) => {
         let restaurantId = doc.id;
         const data = doc.data();
-        data.restaurantId =  doc.id
+        data.restaurantid =  doc.id
+        data.id =  doc.id
         return data;
       });
     } catch(error) {
