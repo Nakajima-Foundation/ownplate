@@ -77,6 +77,11 @@ router.get('/hello',
            logger,
            hello_response);
 
+router.get('/stripe/callback',
+           logger,
+           hello_response);
+
+
 app.use('/1.0', router);
 
 app.get('/r/:restaurantName', ogpPage);
