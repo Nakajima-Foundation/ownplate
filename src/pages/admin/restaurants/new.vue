@@ -525,23 +525,6 @@ export default {
         db.collection("restaurants")
           .doc(restaurantId)
           .set(restaurantData)
-          // .set({
-          //   restProfilePhoto: restaurantData.restProfilePhoto,
-          //   restaurantName: restaurantData.restaurantName,
-          //   streetAddress: restaurantData.streetAddress,
-          //   city: restaurantData.city,
-          //   state: restaurantData.state,
-          //   zip: restaurantData.zip,
-          //   phoneNumber: restaurantData.phoneNumber,
-          //   url: restaurantData.url,
-          //   tags: restaurantData.tags,
-          //   foodTax: restaurantData.foodTax,
-          //   alcoholTax: restaurantData.alcoholTax,
-          //   uid: restaurantData.uid,
-          //   defaultTaxRate: restaurantData.defauleTaxRate,
-          //   publicFlag: restaurantData.publicFlag,
-          //   createdAt: restaurantData.createdAt
-          // })
           .then(() => {
             resolve();
           })
