@@ -1,4 +1,4 @@
-Overview
+## Overview
 
 In order to suppress or mitigate the explosive spread of COVID-19, many states and cities have ordered citizens to shelter-in-place and even ordered non-essential businesses to temporarily close. Although such a measure is necessary, it is hurting bars and restaurants businesses, and they had no choice but laying off most of their employees. 
 
@@ -20,18 +20,17 @@ Using this web service, restaurant owners can start offering a minimum-contact, 
 
 They just need to do:
 
-Create an account on OwnPlate
-Create an account on Stripe (to receive payment)
-Register a restaurant (or restaurants)
-Add menu items
+- Create an account on OwnPlate
+- Create an account on Stripe (to receive payment)
+- Register a restaurant (or restaurants)
+- Add menu items
 
 Both restaurants and customers will receive various notifications (such as “a new order came in” or “your food is ready to pick up”) so that the restaurant can offer a stress free customer experience. 
 
-Roadmap
+## Roadmap
 
-
-April 2020: Start a beta testing with a few restaurants in Seattle
-June 2020: Officially launch it to the restaurants in the United States
-August 2020: Start supporting other countries
+- April 2020: Start a beta testing with a few restaurants in Seattle
+- June 2020: Officially launch it to the restaurants in the United States
+- August 2020: Start supporting other countries
 
 Throughout this process, we will continue to add features based on feedback from participating restaurants.
