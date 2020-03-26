@@ -38,10 +38,10 @@
             v-bind:key="item.id"
             v-bind:id="item.id"
             v-bind:counter="orders[item.id] || 0"
-            v-bind:title="item.title"
-            v-bind:payment="item.payment"
-            v-bind:description="item.description"
-            v-bind:image="item.image"
+            v-bind:title="item.itemName"
+            v-bind:payment="'$' + (Number(item.price||0) / 100).toFixed(2)"
+            v-bind:description="item.itemDescription"
+            v-bind:image="item.itemPhoto"
             @emitting="emitted($event)"
           ></item-card>
 
@@ -121,23 +121,37 @@ export default {
       restaurantsId: this.restaurantId(),
       shopInfo: {},
       // isCardModalActive: false
-      detacher: null,
+      detacher: [],
     };
   },
   created() {
-    // console.log(db);
-    this.detacher = db.doc(`restaurants/${this.restaurantId()}`).onSnapshot((restaurant) => {
-      console.log("AAA");
+    const restaurant_detacher = db.doc(`restaurants/${this.restaurantId()}`).onSnapshot((restaurant) => {
       if (restaurant.exists) {
         const restaurant_data = restaurant.data();
         console.log( restaurant_data);
         this.shopInfo = restaurant_data;
       }
     });
+    const menu_detacher = db.collection(`restaurants/${this.restaurantId()}/menus`).onSnapshot((menu) => {
+      if (!menu.empty) {
+        this.entrees = [];
+        menu.docs.map((doc) => {
+          const data = doc.data();
+          data.id = doc.id;
+          this.entrees.push(data);
+        });
+      }
+    });
+    this.detacher = [
+      restaurant_detacher,
+      menu_detacher
+    ];
   },
   destroyed() {
     if (this.detacher) {
-      this.detacher();
+      this.detacher.map((detacher) => {
+        detacher();
+      });
     }
   },
   watch: {
