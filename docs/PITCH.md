@@ -22,7 +22,7 @@ We believe that the right solution is the combination of the online order and th
 
 This is why we started the OwnPlate project, an open-source online order system optimized for the curbside food pickup businesses. 
 
-It allows bars and restaurants to take orders online with minimum transaction fee (with Stipe, 2.9% + 30cents), and let customers to pick up their food at the curbside quickly without unnessary contacts. 
+It allows bars and restaurants to take orders online with minimum transaction fee (with Stipe, 2.9% + 30cents), and let customers pick up their food at the curbside quickly without unnessary contacts. 
 
 ## How we built it
 
