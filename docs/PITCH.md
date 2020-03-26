@@ -6,7 +6,7 @@ It is clear that the fight against COVID-19 will be a long battle, because we ha
 
 It means bars and restaurants need to find a new way to survive during this period, finding a new way to provide food services to the public safely.
 
-## What I learned
+## What we learned
 
 We have interviews several restaurant owners, and found out that many of them have started to-go services, but they don't know how to use technologies, and still rely on phone calls and papers. This is not only quite inefficient but also involves various contacts, such 
 
@@ -24,7 +24,7 @@ This is why we started the OwnPlate project, an open-source online order system 
 
 It allows bars and restaurants to take orders online with minimum transaction fee (with Stipe, 2.9% + 30cents), and let customers to pick up their food at the curbside with minimum contact. 
 
-## How I built it
+## How we built it
 
 We are building this software with Firebase, Vue (Nuxt) and Stripe as an open source on GitHub, and will make the web service available. 
 
@@ -43,7 +43,7 @@ Both restaurants and customers will receive various notifications (such as “a 
 
 We are making a very good progress in applying technologies to solve this problem, identifying various issues involved in food services and focusing on user experiences both by both restaurants and their customers. 
 
-## Challenges We ran into
+## Challenges we ran into
 
 We have five software engineers, but they have day jobs and can work on this project only in the evenings and weekends. 
 
