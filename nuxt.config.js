@@ -26,6 +26,18 @@ export default {
         href: "/favicon.ico"
       },
       {
+        rel: "icon",
+        sizes: '16x16',
+        type: "image/x-icon",
+        href: "/favicon-16x16.png"
+      },
+      {
+        rel: "icon",
+        sizes: '32x32',
+        type: "image/x-icon",
+        href: "/favicon-32x32.png"
+      },
+      {
         rel: "stylesheet",
         href: "https://use.fontawesome.com/releases/v5.2.0/css/all.css"
       }
