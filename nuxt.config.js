@@ -38,6 +38,22 @@ export default {
         href: "/favicon-32x32.png"
       },
       {
+        rel: "apple-touch-icon",
+        href: "/apple-touch-icon.png"
+      },
+      {
+        rel: "icon",
+        sizes: '192x192',
+        type: "image/png",
+        href: "/android-chrome-192x192.png"
+      },
+      {
+        rel: "icon",
+        sizes: '512x512',
+        type: "image/png",
+        href: "/android-chrome-512x512.png"
+      },
+      {
         rel: "stylesheet",
         href: "https://use.fontawesome.com/releases/v5.2.0/css/all.css"
       }
