@@ -4,6 +4,9 @@ This is an open source project for a take-out order service, which allows restau
 
 It is built with Firebase + Vue + Stripe, for productivity and scalability.
 
+[SPEC](./docs/SPEC.md)
+
+
 ## Build Setup
 
 ```bash
