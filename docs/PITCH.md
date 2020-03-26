@@ -24,7 +24,7 @@ This is why we started the OwnPlate project, an open-source online order system 
 
 It allows bars and restaurants to take orders online with minimum transaction fee (with Stipe, 2.9% + 30cents), and let customers pick up their food at the curbside quickly without unnessary contacts. 
 
-## How we built it
+## How we are building it
 
 We are building this software with Firebase, Vue (Nuxt) and Stripe as an open source project on GitHub, and will make the web service available for free. 
 
