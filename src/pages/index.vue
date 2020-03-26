@@ -20,9 +20,9 @@
           <div class="columns is-mobile is-left">
             <p class="p-bold">【Reataurant】</p>
           </div>
-          <li><router-link to="/r/123">Menu</router-link></li>
-          <li><router-link to="/r/123/order/123456789/">Order</router-link></li>
-          <li><router-link to="/r/123/order/123456789/thanks">ThankYou</router-link></li>
+          <li><router-link to="/r/1710478afd0304e4974">Menu</router-link></li>
+          <li><router-link to="/r/1710478afd0304e4974/order/123456789/">Order</router-link></li>
+          <li><router-link to="/r/1710478afd0304e4974/order/123456789/thanks">ThankYou</router-link></li>
           <div class="columns is-mobile is-left">
             <p class="p-bold" style="margin-top:2rem;">【Admin】</p>
           </div>
