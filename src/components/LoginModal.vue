@@ -79,10 +79,10 @@ export default {
     goCheckout() {
       if (this.restaurantId()) {
         this.$router.push({
-          path: `/restaurants/${this.restaurantId()}/order/123`
+          path: `/r/${this.restaurantId()}/order/123`
         });
       } else {
-        this.$router.push({ path: `/restaurants/${this.restaurantId()}/order/123` });
+        this.$router.push({ path: `/r/${this.restaurantId()}/order/123` });
       }
     },
     restaurantId() {

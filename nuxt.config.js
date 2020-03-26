@@ -23,7 +23,35 @@ export default {
       {
         rel: "icon",
         type: "image/x-icon",
-        href: "/assets/favicon.ico"
+        href: "/favicon.ico"
+      },
+      {
+        rel: "icon",
+        sizes: '16x16',
+        type: "image/x-icon",
+        href: "/favicon-16x16.png"
+      },
+      {
+        rel: "icon",
+        sizes: '32x32',
+        type: "image/x-icon",
+        href: "/favicon-32x32.png"
+      },
+      {
+        rel: "apple-touch-icon",
+        href: "/apple-touch-icon.png"
+      },
+      {
+        rel: "icon",
+        sizes: '192x192',
+        type: "image/png",
+        href: "/android-chrome-192x192.png"
+      },
+      {
+        rel: "icon",
+        sizes: '512x512',
+        type: "image/png",
+        href: "/android-chrome-512x512.png"
       },
       {
         rel: "stylesheet",

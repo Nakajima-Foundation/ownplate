@@ -8,9 +8,11 @@
     <section class="section">
       <shop-orner-info
         :src="
+              this.shopInfo.restProfilePhoto ||
           'https://pbs.twimg.com/profile_images/704153164438642692/bYo0YeEr_bigger.jpg'
         "
-        :name="'Yuta Seatle'"
+        :name="this.shopInfo.restaurantName || 'Yuta Seatle'"
+
       ></shop-orner-info>
       <b-tabs size="is-medium" class="block" expanded>
         <b-tab-item label="Menu">
@@ -36,10 +38,10 @@
             v-bind:key="item.id"
             v-bind:id="item.id"
             v-bind:counter="orders[item.id] || 0"
-            v-bind:title="item.title"
-            v-bind:payment="item.payment"
-            v-bind:description="item.description"
-            v-bind:image="item.image"
+            v-bind:title="item.itemName"
+            v-bind:payment="'$' + (Number(item.price||0) / 100).toFixed(2)"
+            v-bind:description="item.itemDescription"
+            v-bind:image="item.itemPhoto"
             @emitting="emitted($event)"
           ></item-card>
 
@@ -68,6 +70,8 @@ import ItemCard from "~/components/ItemCard";
 import LoginModal from "~/components/LoginModal";
 import ShopOrnerInfo from "~/components/ShopOrnerInfo";
 import ShopInfo from "~/components/ShopInfo";
+
+import { db } from "~/plugins/firebase.js";
 
 export default {
   name: "ShopMenu",
@@ -114,14 +118,46 @@ export default {
       }],
       orders: {},
       footCounter: 0,
-      restaurantsId: this.restaurantId()
+      restaurantsId: this.restaurantId(),
+      shopInfo: {},
       // isCardModalActive: false
+      detacher: [],
     };
+  },
+  created() {
+    const restaurant_detacher = db.doc(`restaurants/${this.restaurantId()}`).onSnapshot((restaurant) => {
+      if (restaurant.exists) {
+        const restaurant_data = restaurant.data();
+        console.log( restaurant_data);
+        this.shopInfo = restaurant_data;
+      }
+    });
+    const menu_detacher = db.collection(`restaurants/${this.restaurantId()}/menus`).onSnapshot((menu) => {
+      if (!menu.empty) {
+        this.entrees = [];
+        menu.docs.map((doc) => {
+          const data = doc.data();
+          data.id = doc.id;
+          this.entrees.push(data);
+        });
+      }
+    });
+    this.detacher = [
+      restaurant_detacher,
+      menu_detacher
+    ];
+  },
+  destroyed() {
+    if (this.detacher) {
+      this.detacher.map((detacher) => {
+        detacher();
+      });
+    }
   },
   watch: {
     footCounter(val) {
       console.log("footCounter" + val);
-    }
+    },
   },
   mounted() {
     console.log(this.restaurantId());
