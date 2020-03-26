@@ -8,11 +8,11 @@ It means bars and restaurants need to find a new way to provide food services to
 
 ## What we learned
 
-We have interviewed several restaurant owners, and found out that many of them have started to-go services, but they don't know how to use technologies, and still rely on phone calls and papers. This is not only inefficient but also involves various unnecessry contacts, such 
+We have interviewed several restaurant owners, and found out that many of them have started to-go services, but they don't know how to use technologies, and still rely on phone calls and papers. This is not only inefficient but also involves various unnecessry contacts:
 
-- customers touches door handles when they come in to pick up
-- staffs touche customers' credit cards during the payment process
-- customers touch the pen during the payment process
+- customers touch door handles when they come in to pick up
+- staffs touch customers' credit cards during the payment processes
+- customers touch pens during the payment processes
 
 One alternative is a food delivery service like UberEats, but it involves a third party (which increases the risk of contamination) and requires a very high transaction fee (15% to 30% + credit card fee), which is too expensive for already low-margin food businesses. 
 
