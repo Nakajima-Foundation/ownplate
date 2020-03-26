@@ -1,5 +1,4 @@
-import * as firebase from "firebase";
-import { db } from "~/plugins/firebase.js";
+import { db, auth } from "~/plugins/firebase.js";
 
 export default {
   state: {
@@ -24,8 +23,7 @@ export default {
   actions: {
     signUserUp({ commit }, payload) {
       commit("SET_LOADING", true);
-      firebase
-        .auth()
+        auth
         .createUserWithEmailAndPassword(payload.email, payload.password)
         .then(user => {
           commit("SET_LOADING", false);
@@ -43,8 +41,7 @@ export default {
     },
     signUserIn({ commit }, payload) {
       commit("SET_LOADING", true);
-      firebase
-        .auth()
+        auth
         .signInWithEmailAndPassword(payload.email, payload.password)
         .then(user => {
           commit("SET_LOADING", false);
