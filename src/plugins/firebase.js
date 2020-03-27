@@ -2,6 +2,7 @@ import * as firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/storage";
 import "firebase/auth";
+import "firebase/functions";
 
 import firebaseConfig from "@/config/firebase";
 
@@ -13,3 +14,4 @@ if (!firebase.apps.length) {
 export const db = firebase.firestore();
 export const storage = firebase.storage();
 export const auth = firebase.auth();
+export const functions = firebase.functions();
