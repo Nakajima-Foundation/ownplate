@@ -13,16 +13,20 @@
 export default {
   data() {
     return {
-      errors:["no error 1"],
+      errors:[],
       restaurantId:""
     };
   },
   methods: {
     validate() {
       console.log("validate", this.restaurantId)
-      this.errors = [];
+      this.errors = []
+      const regex = /^\w+$/
       if (this.restaurantId.length < 5) {
         this.errors.push("too short")
+      }
+      if (!regex.test(this.restaurantId)) {
+        this.errors.push("invalid")
       }
     }
   }
