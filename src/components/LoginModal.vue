@@ -43,7 +43,12 @@
 
 <script>
 export default {
-  props: {},
+  props: {
+    orderId: {
+      type: String,
+      required: true
+    },
+  },
   data() {
     return {
       openFlag: false,
@@ -79,14 +84,17 @@ export default {
     goCheckout() {
       if (this.restaurantId()) {
         this.$router.push({
-          path: `/r/${this.restaurantId()}/order/123`
+          path: `/r/${this.restaurantId()}/order/${this.orderId}`
         });
       } else {
-        this.$router.push({ path: `/r/${this.restaurantId()}/order/123` });
+        this.$router.push({ path: `/r/${this.restaurantId()}/order/${this.orderId}` });
       }
     },
     restaurantId() {
       return this.$route.params.restaurantId;
+    },
+    setOrderId(orderId) {
+      this.orderId = orderId;
     },
   }
 };

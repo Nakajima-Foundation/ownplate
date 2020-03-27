@@ -24,7 +24,7 @@
             v-bind:id="item.id"
             v-bind:counter="orders[item.id] || 0"
             v-bind:title="item.title"
-            v-bind:payment="item.payment"
+            v-bind:payment="item.payment || 0"
             v-bind:description="item.description"
             v-bind:image="item.image"
             @emitting="emitted($event)"
@@ -87,36 +87,37 @@ export default {
       entrees: [{
         id:"1001",
         title:"Kushikatsu Special Platter",
-        payment:"$26.00",
+        payment: 2600,
         description:"11 pieces assorted kushikatsu. Served with miso soup and salad.",
         image:"https://magazine.hitosara.com/image/421/MM_421.jpg",
       },{
         id:"1002",
         title:"Spicy Eggplant",
-        payment:"$8.00",
+        payment: 800,
         description:"Steamed topped with assorted fresh roe and special sauce.",
         image:"https://demandafrica-4741.kxcdn.com/wp-content/uploads/2017/08/Spicy-Chinese-Eggplant.jpg"
       },{
         id:"1003",
         title:"Oyako-don",
-        payment:"$8.00",
+        payment: 800,
         description:"Chiken and Egg on Rice.",
         image:"https://www.momoya.co.jp/wp-content/uploads/2016/01/%E6%B8%88%EF%BC%97.jpg"
       }],
       appetizers: [{
         id:"1004",
         title:"Chicken Karaage",
-        payment:"$9.95",
+        payment:995,
         description:"Chicken Karaage",
         image:"https://img.cpcdn.com/recipes/4417485/280x487s/e4e40823fa78ca87df83284c5ecc5cf2.jpg"
       },{
         id:"1005",
         title:"Edamame",
-        payment:"$3.00",
+        payment:300,
         description:"Boiled Soy Beans",
         image:"https://www.olive-hitomawashi.com/column/assets_c/2017/12/SEO058K_0-thumb-500xauto-50342.jpg",
       }],
       orders: {},
+      orderId: null,
       footCounter: 0,
       restaurantsId: this.restaurantId(),
       shopInfo: {},
@@ -172,8 +173,17 @@ export default {
         return total + orders[id]
       }, 0);
     },
-    checkOut() {
+    async checkOut() {
+      const order_data = {
+        order: this.orders,
+        statis: 0, // todo
+        uid: "hogehoge", // todo
+        // price never set here.
+      };
+      const res = await db.collection(`restaurants/${this.restaurantId()}/orders`).add(order_data);
+      this.orderId = res.id;
       this.$refs.modalLogin.open();
+      this.$refs.modalLogin.setOrderId(this.orderId);
     }
   }
 };
