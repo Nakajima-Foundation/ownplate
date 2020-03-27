@@ -2,11 +2,27 @@
   <span>
     <section class="section" style="background-color:#fffafa">
       <form @submit.prevent="handleSubmit">
-        <input type="text" v-model="restaurantId" placeholder="Restaurant Id" 
-        v-on:input="validate"/>
-        <p>{{errors}}</p>
-        <p>URL: https://ownplate.today/r/{{ restaurantId }}</p>
-        <button type="submit">Submit</button>
+        <div>
+          <input type="text" 
+            v-model="restaurantId" 
+            v-on:input="validate"
+            placeholder="Restaurant Id" /> 
+        </div>
+        <ul v-if="errors.length > 0">
+          <li v-for="error in errors" :key="error">
+            {{error}}
+          </li>
+        </ul>
+        <div>
+          <button 
+            :disabled="errors.length > 0" 
+            type="submit">
+            Submit
+          </button>
+        </div>
+        <p v-if="errors.length === 0"> 
+          The web page will be created at: https://ownplate.today/r/{{ restaurantId }}
+        </p>
       </form>
     </section>
   </span>
@@ -17,7 +33,7 @@ import { db, functions } from "~/plugins/firebase.js";
 export default {
   data() {
     return {
-      errors:[],
+      errors:["restaurantId.tooshort"],
       restaurantId:""
     };
   },
@@ -25,12 +41,12 @@ export default {
     async validate() {
       const restaurantId = this.restaurantId
       this.errors = []
-      const regex = /^\w+$/
+      const regex = /^\w*$/
       if (restaurantId.length < 5) {
-        this.errors.push("too short")
+        this.errors.push("restaurantId.tooshort")
       }
       if (!regex.test(restaurantId)) {
-        this.errors.push("invalid")
+        this.errors.push("restaurantId.invalid")
       }
       if (this.errors.length > 0) {
         return // no need to check the database
