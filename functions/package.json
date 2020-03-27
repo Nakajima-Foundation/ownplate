@@ -6,6 +6,7 @@
     "serve": "npm run build && firebase serve --only functions",
     "shell": "npm run build && firebase functions:shell",
     "start": "npm run shell",
+    "deploy_fs": "firebase deploy --only functions:orderCreate",
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log",
     "tests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/*_test.ts"

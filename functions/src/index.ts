@@ -1,5 +1,17 @@
+import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
 
 import * as express from './functions/express';
+import * as firestore from './functions/firestore';
+
 
 export const api = functions.https.onRequest(express.app);
+
+let db = admin.firestore();
+export const updateDb = (_db) => {
+  db = _db;
+}
+
+export const orderCreate = functions.firestore.document('restaurants/{restaurantId}/orders/{orderId}').onCreate(async (snapshot, context)=>{
+  await firestore.orderCreate(db, snapshot, context);
+});
