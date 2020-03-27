@@ -18,7 +18,7 @@
     ],
     "rewrites": [
       {
-        "source": "/r/**",
+        "source": "/r/*",
         "function": "api"
       },
       {
