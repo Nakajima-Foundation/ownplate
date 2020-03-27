@@ -10,6 +10,7 @@
 </template>
 
 <script> 
+import { db } from "~/plugins/firebase.js";
 export default {
   data() {
     return {
@@ -18,15 +19,25 @@ export default {
     };
   },
   methods: {
-    validate() {
-      console.log("validate", this.restaurantId)
+    async validate() {
+      const restaurantId = this.restaurantId
       this.errors = []
       const regex = /^\w+$/
-      if (this.restaurantId.length < 5) {
+      if (restaurantId.length < 5) {
         this.errors.push("too short")
       }
-      if (!regex.test(this.restaurantId)) {
+      if (!regex.test(restaurantId)) {
         this.errors.push("invalid")
+      }
+      if (this.errors.length > 0) {
+        return // no need to check the database
+      }
+      const doc = await db.doc(`restaurants/${restaurantId}`).get();
+      if (this.restaurantId !== restaurantId) {
+        return // the user has already changed the text
+      }
+      if (doc.exists) {
+        this.errors.push("already taken")
       }
     }
   }
