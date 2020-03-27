@@ -1,3 +1,9 @@
 {
-  "greeting": "Hello World2"
+  "greeting": "Hello World2",
+  "restaurantId": {
+    "tooshort": "RestaurantID you input is too short.",
+    "invalid": "RestaurantID you input is invalid. You can use a-z 0-9.",
+    "restaurantId.alreadytaken": "RestaurantID you input is already taken."
+  }
+
 }
