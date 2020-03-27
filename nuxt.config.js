@@ -89,7 +89,7 @@ export default {
     "@nuxtjs/axios",
     'nuxt-i18n',
     ['nuxt-gmaps', {
-      key: 'process.env.GAPIKey',
+      key: process.env.GAPIKey,
     }]
   ],
   i18n: {
