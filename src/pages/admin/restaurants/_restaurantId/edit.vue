@@ -150,6 +150,31 @@
       ></b-input>
     </b-field>
 
+    <b-field type="is-white">
+      <GMap
+        ref="gMap"
+        :cluster="{options: {styles: clusterStyle}}"
+        :center="{lat: 44.933076, lng: 15.629058}"
+        :options="{fullscreenControl: false, styles: mapStyle}"
+        :zoom="6"
+        >
+        <GMapMarker
+          v-for="location in locations"
+          :key="location.id"
+          :position="{lat: location.lat, lng: location.lng}"
+          :options="{icon: location === currentLocation ? pins.selected : pins.notSelected}"
+          @click="currentLocation = location"
+          >
+          <GMapInfoWindow>
+            <code>
+              lat: {{ location.lat }},
+              lng: {{ location.lng }}
+            </code>
+          </GMapInfoWindow>
+        </GMapMarker>
+      </GMap>
+    </b-field>
+
     <div class="field is-horizontal">
       <div class="field-body">
         <h4>

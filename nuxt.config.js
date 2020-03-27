@@ -88,6 +88,9 @@ export default {
     "@nuxtjs/style-resources",
     "@nuxtjs/axios",
     'nuxt-i18n',
+    ['nuxt-gmaps', {
+      key: 'process.env.GAPIKey',
+    }]
   ],
   i18n: {
     locales: ['en', 'es', 'ja'],
