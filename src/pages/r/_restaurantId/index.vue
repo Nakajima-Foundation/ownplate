@@ -164,9 +164,6 @@ export default {
     console.log(this.restaurantId());
   },
   methods: {
-    restaurantId() {
-      return this.$route.params.restaurantId;
-    },
     emitted(eventArgs) {
       this.orders[eventArgs.id] = eventArgs.counter;
       const orders = this.orders;

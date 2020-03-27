@@ -410,7 +410,7 @@ export default {
     VueTagsInput
   },
   data() {
-    const uid = this.$store.getters["admin/user"].uid;
+    const uid = this.adminUid();
     return {
       restProfileCroppa: null,
       restCoverCroppa: null,

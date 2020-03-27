@@ -63,9 +63,6 @@ export default {
   },
 
   methods: {
-    restaurantId() {
-      return this.$route.params.restaurantId;
-    },
   }
 };
 </script>

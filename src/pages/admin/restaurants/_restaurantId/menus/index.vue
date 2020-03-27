@@ -103,7 +103,7 @@ export default {
     }
   },
   async mounted() {
-    const uid = this.$store.getters["admin/user"].uid;
+    const uid = this.adminUid();
     // const resId = this.$route.params.restaurantId;
     const res = await db
       .collection(`restaurants/${this.restaurantId()}/menus`)
@@ -122,9 +122,6 @@ export default {
     }
   },
   methods: {
-    restaurantId() {
-      return this.$route.params.restaurantId;
-    },
     editMenuItem() {
       this.$router.push({
         path: `/admin/restaurants/${this.restaurantId()}/menus/new`

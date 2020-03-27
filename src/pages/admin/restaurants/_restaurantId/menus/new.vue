@@ -135,7 +135,7 @@ const TAX_RATES = [
 export default {
   name: "Order",
   data() {
-    const uid = this.$store.getters["admin/user"].uid;
+    const uid = this.adminUid();
     return {
       itemName: "",
       price: "",
@@ -155,9 +155,6 @@ export default {
     }
   },
   methods: {
-    restaurantId() {
-      return this.$route.params.restaurantId;
-    },
     async submitItem() {
       if (!this.formIsValid) return;
 

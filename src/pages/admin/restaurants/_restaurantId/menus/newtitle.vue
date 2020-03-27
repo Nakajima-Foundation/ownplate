@@ -61,9 +61,6 @@ export default {
     }
   },
   methods: {
-    restaurantId() {
-      return this.$route.params.restaurantId;
-    },
     async submitItem() {
       if (!this.formIsValid) return;
 
