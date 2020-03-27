@@ -4,6 +4,9 @@
     "tooshort": "RestaurantID you input is too short.",
     "invalid": "RestaurantID you input is invalid. You can use a-z 0-9.",
     "alreadytaken": "RestaurantID you input is already taken."
+  },
+  "auth": {
+    "notAdmin": "You need to login as a restaurant owner."
   }
 
 }

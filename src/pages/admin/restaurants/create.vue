@@ -65,6 +65,11 @@ export default {
       const createRestaurant = functions.httpsCallable('createRestaurant');
       const result = (await createRestaurant(context)).data;
       console.log("result", result);
+      if (result.result) {
+
+      } else {
+        this.errors = [result.message]
+      }
     }
   }
 };

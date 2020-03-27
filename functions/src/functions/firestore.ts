@@ -26,7 +26,7 @@ export const orderCreate = async (db, snapshot, context) => {
 export const createRestaurant = async (db:FirebaseFirestore.Firestore, data, context) => {
   const { restaurantId } = data
   if (!context.auth || !context.auth.uid || !context.auth.token.email) {
-    return { result:false, message:"auth.uid.missing" };
+    return { result:false, message:"auth.notAdmin" };
   }
   const regex = /^\w+$/
   if (!restaurantId || restaurantId.length < 5 || !regex.test(restaurantId)) {
