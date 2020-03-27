@@ -56,7 +56,7 @@ export default {
         return // the user has already changed the text
       }
       if (doc.exists) {
-        this.errors.push("restaurantId.alreadytaken")
+        this.errors.push("restaurantId.alreadyTaken")
       }
     },
     async handleSubmit() {

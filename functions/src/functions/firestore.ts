@@ -36,7 +36,7 @@ export const createRestaurant = async (db:FirebaseFirestore.Firestore, data, con
   return db.runTransaction(async (tr)=>{
     const doc = await tr.get(refRestaurant);
     if (doc.exists) {
-      throw new Error("restaurantId.taken");
+      throw new Error("restaurantId.alreadyTaken");
     }
     tr.set(refRestaurant, { owner:context.auth.uid, publicFlag: false });
   }).then(() => {
