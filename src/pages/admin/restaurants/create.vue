@@ -66,7 +66,7 @@ export default {
       const result = (await createRestaurant(context)).data;
       console.log("result", result);
       if (result.result) {
-
+        this.$router.push(`./${this.restaurantId}/edit`)
       } else {
         this.errors = [result.message]
       }
