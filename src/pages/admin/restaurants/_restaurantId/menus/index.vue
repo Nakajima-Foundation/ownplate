@@ -106,9 +106,7 @@ export default {
     const uid = this.$store.getters["admin/user"].uid;
     // const resId = this.$route.params.restaurantId;
     const res = await db
-      .collection("restaurants")
-      .doc(this.$route.params.restaurantId)
-      .collection("menus")
+      .collection(`restaurants/${this.restaurantId()}/menus`)
       .get();
 
     try {

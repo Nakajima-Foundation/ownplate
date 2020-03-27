@@ -98,6 +98,20 @@ export default {
         en: i18nEN,
         es: i18nES,
         ja: i18nJA,
+      },
+      numberFormats: {
+        en: {
+          currency: {
+            style: 'currency',
+            currency: 'USD'
+          }
+        },
+        ja: {
+          currency: {
+            style: 'currency',
+            currency: 'JPY'
+          }
+        }
       }
     }
   },

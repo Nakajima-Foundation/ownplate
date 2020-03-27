@@ -39,7 +39,7 @@
             v-bind:id="item.id"
             v-bind:counter="orders[item.id] || 0"
             v-bind:title="item.itemName"
-            v-bind:payment="'$' + (Number(item.price||0) / 100).toFixed(2)"
+            v-bind:payment="Number(item.price||0)"
             v-bind:description="item.itemDescription"
             v-bind:image="item.itemPhoto"
             @emitting="emitted($event)"
@@ -56,7 +56,7 @@
         class="button is-info is-rounded"
         @click="checkOut"
       >
-        <span style="margin-right: auto;">{{ footCounter }} item</span>
+        <span style="margin-right: auto;">{{ footCounter }} {{ footCounter > 1 ? "items": "item"}}</span>
         <span class="bold" style="margin-left:auto;">CHECKOUT</span>
       </button>
 
@@ -128,7 +128,6 @@ export default {
     const restaurant_detacher = db.doc(`restaurants/${this.restaurantId()}`).onSnapshot((restaurant) => {
       if (restaurant.exists) {
         const restaurant_data = restaurant.data();
-        console.log( restaurant_data);
         this.shopInfo = restaurant_data;
       }
     });

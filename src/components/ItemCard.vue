@@ -8,7 +8,7 @@
             {{ title }}
           </h4>
           <h2 class="bold payment">
-            {{ payment }}
+            {{  $n(payment / 100, 'currency')  }}
           </h2>
           <p>{{ description }}</p>
         </div>
@@ -128,7 +128,7 @@ export default {
       required: true
     },
     payment: {
-      type: String,
+      type: Number,
       required: true
     },
     description: {
