@@ -25,8 +25,8 @@ export const orderCreate = async (db, snapshot, context) => {
 
 export const createRestaurant = async (db:FirebaseFirestore.Firestore, data, context) => {
   const { restaurantId } = data
-  if (!context.auth || !context.auth.uid) {
-    return { result:false, message:"auth.uid.missing" };
+  if (!context.auth || !context.auth.uid || !context.auth.token.email) {
+    return { result:false, message:"auth.notAdmin" };
   }
   const regex = /^\w+$/
   if (!restaurantId || restaurantId.length < 5 || !regex.test(restaurantId)) {
@@ -36,7 +36,7 @@ export const createRestaurant = async (db:FirebaseFirestore.Firestore, data, con
   return db.runTransaction(async (tr)=>{
     const doc = await tr.get(refRestaurant);
     if (doc.exists) {
-      throw new Error("restaurantId.taken");
+      throw new Error("restaurantId.alreadyTaken");
     }
     tr.set(refRestaurant, { owner:context.auth.uid, publicFlag: false });
   }).then(() => {

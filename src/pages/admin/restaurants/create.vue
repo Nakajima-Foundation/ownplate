@@ -56,7 +56,7 @@ export default {
         return // the user has already changed the text
       }
       if (doc.exists) {
-        this.errors.push("restaurantId.alreadytaken")
+        this.errors.push("restaurantId.alreadyTaken")
       }
     },
     async handleSubmit() {
@@ -65,6 +65,11 @@ export default {
       const createRestaurant = functions.httpsCallable('createRestaurant');
       const result = (await createRestaurant(context)).data;
       console.log("result", result);
+      if (result.result) {
+
+      } else {
+        this.errors = [result.message]
+      }
     }
   }
 };
