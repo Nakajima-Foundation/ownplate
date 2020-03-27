@@ -20,7 +20,9 @@ $ cp src/config/default/ownplate-dev.js src/config/firebase.js
 $ cp src/config/default/.firebaserc .
 
 # serve with hot reload at localhost:3000
-$ npm run dev
+$ GAPIKey=xxx npm run dev
+
+GAPIKey is google API key for Google Map
 
 # build for production and launch server
 $ npm run build
