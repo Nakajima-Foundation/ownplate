@@ -92,6 +92,9 @@ sw.*
 # Vim swap files
 *.swp
 
+# fuction template
+functions/templates/index.html
+
 # firebase files
 .firebaserc
 plugins/firebase.js
