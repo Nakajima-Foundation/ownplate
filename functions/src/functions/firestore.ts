@@ -25,7 +25,7 @@ export const orderCreate = async (db, snapshot, context) => {
 
 export const createRestaurant = async (db:FirebaseFirestore.Firestore, data, context) => {
   const { restaurantId } = data
-  if (!context.auth || !context.auth.uid) {
+  if (!context.auth || !context.auth.uid || !context.auth.token.email) {
     return { result:false, message:"auth.uid.missing" };
   }
   const regex = /^\w+$/

@@ -3,6 +3,6 @@
   "restaurantId": {
     "tooshort": "RestaurantIDが短いです。",
     "invalid": "RestaurantIDは、数字の半角小文字英字のみ使えます。",
-    "restaurantId.alreadytaken": "RestaurantIDはすでに使われています。"
+    "alreadytaken": "RestaurantIDはすでに使われています。"
   }
 }
