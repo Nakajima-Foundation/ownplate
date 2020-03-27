@@ -15,3 +15,7 @@ export const updateDb = (_db) => {
 export const orderCreate = functions.firestore.document('restaurants/{restaurantId}/orders/{orderId}').onCreate(async (snapshot, context)=>{
   await firestore.orderCreate(db, snapshot, context);
 });
+
+export const createRestaurant = functions.https.onCall(async (data, context) => {
+  return await firestore.createRestaurant(db, data, context);
+});
