@@ -26,11 +26,11 @@ export const orderCreate = async (db, snapshot, context) => {
 export const createRestaurant = async (db:FirebaseFirestore.Firestore, data, context) => {
   const { restaurantId } = data
   if (!context.auth || !context.auth.uid) {
-    return { result:false, message:"auth.uid.missing" }; 
+    return { result:false, message:"auth.uid.missing" };
   }
   const regex = /^\w+$/
   if (!restaurantId || restaurantId.length < 5 || !regex.test(restaurantId)) {
-    return { result:false, message:"restaurantId.invalid" }; 
+    return { result:false, message:"restaurantId.invalid" };
   }
   const refRestaurant = db.doc(`restaurants/${restaurantId}`)
   return db.runTransaction(async (tr)=>{
@@ -38,7 +38,7 @@ export const createRestaurant = async (db:FirebaseFirestore.Firestore, data, con
     if (doc.exists) {
       throw new Error("restaurantId.taken");
     }
-    tr.set(refRestaurant, { owner:context.auth.uid, draft:true });
+    tr.set(refRestaurant, { owner:context.auth.uid, publicFlag: false });
   }).then(() => {
     return { result: true };
   }).catch((e) => {
