@@ -72,6 +72,7 @@ import ShopOrnerInfo from "~/components/ShopOrnerInfo";
 import ShopInfo from "~/components/ShopInfo";
 
 import { db } from "~/plugins/firebase.js";
+import { order_status } from "~/plugins/constant.js";
 
 export default {
   name: "ShopMenu",
@@ -176,7 +177,7 @@ export default {
     async checkOut() {
       const order_data = {
         order: this.orders,
-        statis: 0, // todo
+        status: order_status.new_order,
         uid: "hogehoge", // todo
         // price never set here.
       };
