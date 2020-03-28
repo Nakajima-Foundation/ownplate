@@ -143,7 +143,7 @@
     </div>
     <b-field>
       <b-input
-        v-model="zip"
+        v-model="shopInfo.zip"
         type="text"
         placeholder="Enter zip"
         maxlength="10"
@@ -187,7 +187,7 @@
     </div>
     <b-field type="is-white">
       <b-input
-        v-model="phoneNumber"
+        v-model="shopInfo.phoneNumber"
         placeholder="Enter phone number"
         type="tel"
         maxlength="20"
@@ -196,7 +196,7 @@
 
     <b-field label="Website">
       <b-input
-        v-model="url"
+        v-model="shopInfo.url"
         placeholder="Enter website URL"
         type="url"
         maxlength="100"
@@ -209,7 +209,7 @@
       style="border-radius: 0.4rem!important;"
     >
       <vue-tags-input
-        v-model="tag"
+        v-model="shopInfo.tag"
         style="border-radius: 0.4rem!important;"
         placeholder="your restaurant tag"
         :tags="tags"
@@ -230,7 +230,7 @@
                 style="border-radius: 0.4rem!important;"
               >
                 <div style="display:inline-flex">
-                  <b-select v-model="foodTax" :disabled="disabled">
+                  <b-select v-model="shopInfo.foodTax" :disabled="disabled">
                     <option v-for="taxItem of taxList" :key="taxItem">
                       {{ taxItem }}
                     </option>
@@ -256,7 +256,7 @@
                 style="border-radius: 0.4rem!important;"
               >
                 <div style="display:inline-flex">
-                  <b-select v-model="alcoholTax" :disabled="disabled">
+                  <b-select v-model="shopInfo.alcoholTax" :disabled="disabled">
                     <option v-for="taxItem of taxList" :key="taxItem">
                       {{ taxItem }}
                     </option>
@@ -428,6 +428,7 @@ export default {
         states: US_STATES,
         taxList: TAX_RATES,
         tags: ["Meet"],
+        tag: "",
       },
       hoursMon: true,
       hoursTue: true,
@@ -436,7 +437,6 @@ export default {
       hoursFri: true,
       hoursSat: true,
       hoursSun: true,
-      tag: "",
       autocompleteItems: [
         {
           text: 'Invalid because of "8"'
@@ -469,7 +469,7 @@ export default {
   },
   computed: {
     formIsValid() {
-      return true;
+      return true; // for debug
       return (
         this.restProfileCroppa !== "" &&
         this.shopInfo.restaurantName !== "" &&
@@ -491,6 +491,8 @@ export default {
       if (!this.formIsValid) return;
 
       const restaurantId = this.restaurantId();
+      // for debug
+      /*
       let restProfileFile = await this.restProfileCroppa.promisedBlob(
         "image/jpeg",
         0.8
@@ -509,7 +511,10 @@ export default {
         "cover",
         restaurantId
       );
+*/
       const restaurantData = {
+        // restProfilePhoto: restProfilePhoto,
+        // restCoverPhoto: restCoverPhoto,
         restaurantName: this.shopInfo.restaurantName,
         streetAddress: this.shopInfo.streetAddress,
         city: this.shopInfo.city,
@@ -557,7 +562,6 @@ export default {
         db.doc(`restaurants/${this.restaurantId()}`)
           .set(restaurantData)
           .then(() => {
-            console.log("OK");
             resolve();
           })
           .catch(error => {
