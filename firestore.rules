@@ -1,5 +1,13 @@
 service cloud.firestore {
   match /databases/{database}/documents {
+    function isAdmin() {
+      return request.auth.uid != null && request.auth.token.email != null
+    }
+
+    function isUser() {
+      return request.auth.uid != null && request.auth.token.phone_number != null
+    }
+
     match /users/{userId} {
       allow read, create, update, delete: if request.auth.uid == userId;
     }
@@ -8,15 +16,14 @@ service cloud.firestore {
       allow read: if true
       allow create: if request.auth.uid != null && request.auth.token.email != null;
     }
-    
+
     match /restaurants/{restaurantsId}/menus/{menuId} {
       allow read: if true
-      allow create: if request.auth.uid != null && request.auth.token.email != null;
+      allow create: if isAdmin();
     }
-    
+
     match /{document=**} {
       allow read, write: if false;
     }
   }
 }
-
