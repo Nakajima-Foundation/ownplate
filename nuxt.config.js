@@ -91,8 +91,11 @@ export default {
     'nuxt-i18n',
     ['nuxt-gmaps', {
       key: process.env.GAPIKey,
-    }]
+    }],
   ],
+  env: {
+    gapikey: process.env.GAPIKey,
+  },
   i18n: {
     locales: ['en', 'es', 'ja'],
     defaultLocale: 'en',

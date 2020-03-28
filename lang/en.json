@@ -5,6 +5,10 @@
     "invalid": "RestaurantID you input is invalid. You can use a-z 0-9.",
     "alreadyTaken": "RestaurantID you input is already taken."
   },
+  "editRestaurant": {
+    "setLocation": "Set location",
+    "updateMap": "Update Map"
+  },
   "auth": {
     "notAdmin": "You need to login as a restaurant owner."
   }

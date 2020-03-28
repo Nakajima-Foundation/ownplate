@@ -160,7 +160,7 @@
                 rounded
                 @click="updateMap"
                 >
-        Update Map
+        {{$t("editRestaurant.updateMap")}}
       </b-button>
     </b-field>
     <b-field type="is-white">
@@ -169,23 +169,20 @@
         :cluster="{options: {styles: clusterStyle}}"
         :center="{lat: 44.933076, lng: 15.629058}"
         :options="{fullscreenControl: false, styles: mapStyle}"
-        :zoom="6"
+        :zoom="18"
         >
-        <GMapMarker
-          v-for="location in locations"
-          :key="location.id"
-          :position="{lat: location.lat, lng: location.lng}"
-          :options="{icon: location === currentLocation ? pins.selected : pins.notSelected}"
-          @click="currentLocation = location"
-          >
-          <GMapInfoWindow>
-            <code>
-              lat: {{ location.lat }},
-              lng: {{ location.lng }}
-            </code>
-          </GMapInfoWindow>
-        </GMapMarker>
       </GMap>
+    </b-field>
+    <b-field>
+      <b-button variant="outline-primary"
+                style="margin-right:auto"
+                type="is-info"
+                class="counter-button"
+                rounded
+                @click="setLocation"
+                >
+        {{$t("editRestaurant.setLocation")}}
+      </b-button>
     </b-field>
 
     <div class="field is-horizontal">
@@ -359,6 +356,8 @@ import Croppa from "vue-croppa";
 import VueTagsInput from "@johmun/vue-tags-input";
 import HoursInput from "~/components/HoursInput";
 
+import * as API from "~/plugins/api"
+
 Vue.use(Croppa);
 
 const US_STATES = [
@@ -425,7 +424,6 @@ export default {
   data() {
     const uid = this.adminUid();
     return {
-
       restProfileCroppa: null,
       restCoverCroppa: null,
       shopInfo: {
@@ -450,6 +448,8 @@ export default {
       hoursFri: true,
       hoursSat: true,
       hoursSun: true,
+      maplocation: {},
+      markers: [],
       autocompleteItems: [
         {
           text: 'Invalid because of "8"'
@@ -572,8 +572,40 @@ export default {
         );
       });
     },
-    async updateMap() {
 
+    async updateMap() {
+      // https://gitlab.com/broj42/nuxt-gmaps#readme
+      // https://codesandbox.io/s/6j6zw48l83
+      const keyword = [
+        this.shopInfo.restaurantName,
+        this.shopInfo.streetAddress,
+        this.shopInfo.city,
+        this.shopInfo.state
+      ].join(",");
+
+      const res = await API.google_geocode(keyword);
+      if (res && res[0] && res[0].geometry) {
+        const location = res[0].geometry.location
+        this.$refs.gMap.map.setCenter(location);
+        this.removeAllMarker();
+        const marker = new google.maps.Marker({
+          position: new google.maps.LatLng(location.lat, location.lng),
+          title: "hello",
+          map: this.$refs.gMap.map,
+        });
+        this.markers.push(marker);
+        this.maplocation = location;
+      }
+      console.log(res);
+
+    },
+    removeAllMarker() {
+      if (this.markers && this.markers.length > 0) {
+        this.markers.map((marker) => {
+          marker.setMap(null);
+        });
+        this.markers = [];
+      }
     },
     updateRestaurantData(restaurantData) {
       const cleanData = Object.keys(restaurantData).reduce((tmp, key) => {
