@@ -22,6 +22,7 @@
         </h4>
       </div>
     </div>
+    <img class="card_image" :src="this.shopInfo.restProfilePhoto" if this.shopInfo.restProfilePhoto />
     <croppa
       v-model="restProfileCroppa"
       :prevent-white-space="true"
@@ -39,6 +40,8 @@
         <h4>Restaurant cover photo</h4>
       </div>
     </div>
+
+    <img class="card_image" :src="this.shopInfo.restCoverPhoto" if this.shopInfo.restCoverPhoto />
     <croppa
       v-model="restCoverCroppa"
       :prevent-white-space="true"
@@ -149,7 +152,17 @@
         maxlength="10"
       ></b-input>
     </b-field>
-
+    <b-field>
+      <b-button variant="outline-primary"
+                style="margin-right:auto"
+                type="is-info"
+                class="counter-button"
+                rounded
+                @click="updateMap"
+                >
+        Update Map
+      </b-button>
+    </b-field>
     <b-field type="is-white">
       <GMap
         ref="gMap"
@@ -491,30 +504,32 @@ export default {
       if (!this.formIsValid) return;
 
       const restaurantId = this.restaurantId();
-      // for debug
-      /*
-      let restProfileFile = await this.restProfileCroppa.promisedBlob(
-        "image/jpeg",
-        0.8
-      );
-      let restProfilePhoto = await this.uploadFile(
-        restProfileFile,
-        "profile",
-        restaurantId
-      );
-      let restCoverFile = await this.restCoverCroppa.promisedBlob(
-        "image/jpeg",
-        0.8
-      );
-      let restCoverPhoto = await this.uploadFile(
-        restCoverFile,
-        "cover",
-        restaurantId
-      );
-*/
+      if ( this.restProfileCroppa.chosenFile) {
+        let restProfileFile = await this.restProfileCroppa.promisedBlob(
+          "image/jpeg",
+          0.8
+        );
+        this.shopInfo.restProfilePhoto = await this.uploadFile(
+          restProfileFile,
+          "profile",
+          restaurantId
+        );
+      }
+
+      if (this.restCoverCroppa.chosenFile) {
+        let restCoverFile = await this.restCoverCroppa.promisedBlob(
+          "image/jpeg",
+          0.8
+        );
+        this.shopInfo.restCoverPhoto = await this.uploadFile(
+          restCoverFile,
+          "cover",
+          restaurantId
+        );
+      }
       const restaurantData = {
-        // restProfilePhoto: restProfilePhoto,
-        // restCoverPhoto: restCoverPhoto,
+        restProfilePhoto: this.shopInfo.restProfilePhoto,
+        restCoverPhoto: this.shopInfo.restCoverPhoto,
         restaurantName: this.shopInfo.restaurantName,
         streetAddress: this.shopInfo.streetAddress,
         city: this.shopInfo.city,
@@ -557,10 +572,19 @@ export default {
         );
       });
     },
+    async updateMap() {
+
+    },
     updateRestaurantData(restaurantData) {
+      const cleanData = Object.keys(restaurantData).reduce((tmp, key) => {
+        if (restaurantData[key]) {
+          tmp[key] = restaurantData[key];
+        }
+        return tmp;
+      }, {});
       return new Promise((resolve, rejected) => {
         db.doc(`restaurants/${this.restaurantId()}`)
-          .set(restaurantData)
+          .set(cleanData)
           .then(() => {
             resolve();
           })
