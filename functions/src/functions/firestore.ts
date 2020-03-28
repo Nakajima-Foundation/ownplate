@@ -1,3 +1,4 @@
+import * as admin from 'firebase-admin';
 import * as constant from '../common/constant';
 
 export const orderCreate = async (db, snapshot, context) => {
@@ -38,7 +39,11 @@ export const createRestaurant = async (db:FirebaseFirestore.Firestore, data, con
     if (doc.exists) {
       throw new Error("restaurantId.alreadyTaken");
     }
-    tr.set(refRestaurant, { uid: context.auth.uid, publicFlag: false });
+    tr.set(refRestaurant, {
+      uid: context.auth.uid,
+      publicFlag: false,
+      created: admin.firestore.Timestamp.now(),
+    });
   }).then(() => {
     return { result: true };
   }).catch((e) => {
