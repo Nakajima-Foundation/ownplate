@@ -22,6 +22,7 @@
         </h4>
       </div>
     </div>
+    <img class="card_image" :src="this.shopInfo.restProfilePhoto" if this.shopInfo.restProfilePhoto />
     <croppa
       v-model="restProfileCroppa"
       :prevent-white-space="true"
@@ -39,6 +40,8 @@
         <h4>Restaurant cover photo</h4>
       </div>
     </div>
+
+    <img class="card_image" :src="this.shopInfo.restCoverPhoto" if this.shopInfo.restCoverPhoto />
     <croppa
       v-model="restCoverCroppa"
       :prevent-white-space="true"
@@ -63,7 +66,7 @@
     </div>
     <b-field>
       <b-input
-        v-model="restaurantName"
+        v-model="shopInfo.restaurantName"
         type="text"
         placeholder="Enter restaurant name"
         maxlength="50"
@@ -82,7 +85,7 @@
     </div>
     <b-field type="is-white">
       <b-input
-        v-model="streetAddress"
+        v-model="shopInfo.streetAddress"
         type="text"
         placeholder="Enter street address"
         maxlength="30"
@@ -103,7 +106,7 @@
         </div>
         <b-field type="is-white">
           <b-input
-            v-model="city"
+            v-model="shopInfo.city"
             type="text"
             placeholder="Enter city"
             maxlength="15"
@@ -122,7 +125,7 @@
           </div>
         </div>
         <b-field type="is-white">
-          <b-select v-model="state" placeholder="select">
+          <b-select v-model="shopInfo.state" placeholder="select">
             <option v-for="stateItem in states" :key="stateItem">
               {{ stateItem }}
             </option>
@@ -143,36 +146,43 @@
     </div>
     <b-field>
       <b-input
-        v-model="zip"
+        v-model="shopInfo.zip"
         type="text"
         placeholder="Enter zip"
         maxlength="10"
       ></b-input>
     </b-field>
-
+    <b-field>
+      <b-button variant="outline-primary"
+                style="margin-right:auto"
+                type="is-info"
+                class="counter-button"
+                rounded
+                @click="updateMap"
+                >
+        {{$t("editRestaurant.updateMap")}}
+      </b-button>
+    </b-field>
     <b-field type="is-white">
       <GMap
         ref="gMap"
         :cluster="{options: {styles: clusterStyle}}"
         :center="{lat: 44.933076, lng: 15.629058}"
         :options="{fullscreenControl: false, styles: mapStyle}"
-        :zoom="6"
+        :zoom="18"
         >
-        <GMapMarker
-          v-for="location in locations"
-          :key="location.id"
-          :position="{lat: location.lat, lng: location.lng}"
-          :options="{icon: location === currentLocation ? pins.selected : pins.notSelected}"
-          @click="currentLocation = location"
-          >
-          <GMapInfoWindow>
-            <code>
-              lat: {{ location.lat }},
-              lng: {{ location.lng }}
-            </code>
-          </GMapInfoWindow>
-        </GMapMarker>
       </GMap>
+    </b-field>
+    <b-field>
+      <b-button variant="outline-primary"
+                style="margin-right:auto"
+                type="is-info"
+                class="counter-button"
+                rounded
+                @click="setLocation"
+                >
+        {{$t("editRestaurant.setLocation")}}
+      </b-button>
     </b-field>
 
     <div class="field is-horizontal">
@@ -187,7 +197,7 @@
     </div>
     <b-field type="is-white">
       <b-input
-        v-model="phoneNumber"
+        v-model="shopInfo.phoneNumber"
         placeholder="Enter phone number"
         type="tel"
         maxlength="20"
@@ -196,7 +206,7 @@
 
     <b-field label="Website">
       <b-input
-        v-model="url"
+        v-model="shopInfo.url"
         placeholder="Enter website URL"
         type="url"
         maxlength="100"
@@ -209,7 +219,7 @@
       style="border-radius: 0.4rem!important;"
     >
       <vue-tags-input
-        v-model="tag"
+        v-model="shopInfo.tag"
         style="border-radius: 0.4rem!important;"
         placeholder="your restaurant tag"
         :tags="tags"
@@ -230,7 +240,7 @@
                 style="border-radius: 0.4rem!important;"
               >
                 <div style="display:inline-flex">
-                  <b-select v-model="foodTax" :disabled="disabled">
+                  <b-select v-model="shopInfo.foodTax" :disabled="disabled">
                     <option v-for="taxItem of taxList" :key="taxItem">
                       {{ taxItem }}
                     </option>
@@ -256,7 +266,7 @@
                 style="border-radius: 0.4rem!important;"
               >
                 <div style="display:inline-flex">
-                  <b-select v-model="alcoholTax" :disabled="disabled">
+                  <b-select v-model="shopInfo.alcoholTax" :disabled="disabled">
                     <option v-for="taxItem of taxList" :key="taxItem">
                       {{ taxItem }}
                     </option>
@@ -346,6 +356,8 @@ import Croppa from "vue-croppa";
 import VueTagsInput from "@johmun/vue-tags-input";
 import HoursInput from "~/components/HoursInput";
 
+import * as API from "~/plugins/api"
+
 Vue.use(Croppa);
 
 const US_STATES = [
@@ -414,18 +426,22 @@ export default {
     return {
       restProfileCroppa: null,
       restCoverCroppa: null,
-      restaurantName: "",
-      streetAddress: "",
-      city: "",
-      state: "",
-      zip: "",
-      phoneNumber: "",
-      url: "",
-      foodTax: 0,
-      alcoholTax: 0,
-      states: US_STATES,
+      shopInfo: {
+        restaurantName: "",
+        streetAddress: "",
+        city: "",
+        state: "",
+        zip: "",
+        location: {},
+        phoneNumber: "",
+        url: "",
+        foodTax: 0,
+        alcoholTax: 0,
+        tags: ["Meet"],
+        tag: "",
+      },
       taxList: TAX_RATES,
-      uid: uid,
+      states: US_STATES,
       hoursMon: true,
       hoursTue: true,
       hoursWed: true,
@@ -433,8 +449,8 @@ export default {
       hoursFri: true,
       hoursSat: true,
       hoursSun: true,
-      tag: "",
-      tags: ["Meet"],
+      maplocation: {},
+      markers: [],
       autocompleteItems: [
         {
           text: 'Invalid because of "8"'
@@ -446,22 +462,39 @@ export default {
           disableAdd: true,
           rule: tag => tag.text.length > 15
         }
-      ]
+      ],
     };
   },
   beforeCreated() {
     this.checkAdminPermission();
   },
+  async created() {
+    // never use onSnapshot here.
+    const restaurant = await db.doc(`restaurants/${this.restaurantId()}`).get();
+
+    if (restaurant.exists) {
+      const restaurant_data = restaurant.data();
+      this.shopInfo = Object.assign({}, this.shopInfo, restaurant_data);
+      if (this.shopInfo && this.shopInfo.location) {
+        this.setCurrentLocation(this.shopInfo.location);
+      }
+      console.log(this.shopInfo);
+      // todo update data.
+    } else {
+      // todo something error
+    }
+  },
   computed: {
     formIsValid() {
+      return true; // for debug
       return (
         this.restProfileCroppa !== "" &&
-        this.restaurantName !== "" &&
-        this.streetAddress !== "" &&
-        this.city !== "" &&
+        this.shopInfo.restaurantName !== "" &&
+        this.shopInfo.streetAddress !== "" &&
+        this.shopInfo.city !== "" &&
         this.zip !== "" &&
         this.phoneNumber !== "" &&
-        this.state !== ""
+        this.shopInfo.state !== ""
       );
     }
   },
@@ -474,55 +507,54 @@ export default {
     async submitRestaurant() {
       if (!this.formIsValid) return;
 
-      const restaurantId = this.generateUniqueId();
-      let restProfileFile = await this.restProfileCroppa.promisedBlob(
-        "image/jpeg",
-        0.8
-      );
-      let restProfilePhoto = await this.uploadFile(
-        restProfileFile,
-        "profile",
-        restaurantId
-      );
-      let restCoverFile = await this.restCoverCroppa.promisedBlob(
-        "image/jpeg",
-        0.8
-      );
-      let restCoverPhoto = await this.uploadFile(
-        restCoverFile,
-        "cover",
-        restaurantId
-      );
+      const restaurantId = this.restaurantId();
+      if ( this.restProfileCroppa.chosenFile) {
+        let restProfileFile = await this.restProfileCroppa.promisedBlob(
+          "image/jpeg",
+          0.8
+        );
+        this.shopInfo.restProfilePhoto = await this.uploadFile(
+          restProfileFile,
+          "profile",
+          restaurantId
+        );
+      }
 
+      if (this.restCoverCroppa.chosenFile) {
+        let restCoverFile = await this.restCoverCroppa.promisedBlob(
+          "image/jpeg",
+          0.8
+        );
+        this.shopInfo.restCoverPhoto = await this.uploadFile(
+          restCoverFile,
+          "cover",
+          restaurantId
+        );
+      }
       const restaurantData = {
-        restProfilePhoto: restProfilePhoto,
-        restCoverPhoto: restCoverPhoto,
-        restaurantName: this.restaurantName,
-        streetAddress: this.streetAddress,
-        city: this.city,
-        state: this.state,
-        zip: this.zip,
-        phoneNumber: this.phoneNumber,
-        url: this.url,
-        tags: this.tags,
-        foodTax: Number(this.foodTax),
-        alcoholTax: Number(this.alcoholTax),
-        uid: this.uid,
+        restProfilePhoto: this.shopInfo.restProfilePhoto,
+        restCoverPhoto: this.shopInfo.restCoverPhoto,
+        restaurantName: this.shopInfo.restaurantName,
+        streetAddress: this.shopInfo.streetAddress,
+        city: this.shopInfo.city,
+        state: this.shopInfo.state,
+        zip: this.shopInfo.zip,
+        location: this.shopInfo.location,
+        phoneNumber: this.shopInfo.phoneNumber,
+        url: this.shopInfo.url,
+        tags: this.shopInfo.tags,
+        foodTax: Number(this.shopInfo.foodTax),
+        alcoholTax: Number(this.shopInfo.alcoholTax),
+        uid: this.shopInfo.uid,
         defauleTaxRate: 0.1,
         publicFlag: true,
         createdAt: new Date()
       };
-      await this.createRestaurantData(restaurantId, restaurantData);
+      await this.updateRestaurantData(restaurantData);
 
       this.$router.push({
         path: `/admin/restaurants/`
       });
-    },
-    generateUniqueId() {
-      return (
-        new Date().getTime().toString(16) +
-        Math.floor(1000000000 * Math.random()).toString(16)
-      );
     },
     uploadFile(file, filename, restaurantId) {
       return new Promise((resolve, rejected) => {
@@ -545,11 +577,56 @@ export default {
         );
       });
     },
-    createRestaurantData(restaurantId, restaurantData) {
+    async updateMap() {
+      // https://gitlab.com/broj42/nuxt-gmaps#readme
+      // https://codesandbox.io/s/6j6zw48l83
+      const keyword = [
+        this.shopInfo.restaurantName,
+        this.shopInfo.streetAddress,
+        this.shopInfo.city,
+        this.shopInfo.state
+      ].join(",");
+
+      const res = await API.google_geocode(keyword);
+      if (res && res[0] && res[0].geometry) {
+        this.setCurrentLocation(res[0].geometry.location);
+      }
+
+    },
+    setCurrentLocation(location) {
+      this.$refs.gMap.map.setCenter(location);
+      this.removeAllMarker();
+      const marker = new google.maps.Marker({
+        position: new google.maps.LatLng(location.lat, location.lng),
+        title: "hello",
+        map: this.$refs.gMap.map,
+      });
+      this.markers.push(marker);
+      this.maplocation = location;
+    },
+    setLocation() {
+      if (this.maplocation) {
+        this.shopInfo.location = this.maplocation;
+      }
+    },
+    removeAllMarker() {
+      if (this.markers && this.markers.length > 0) {
+        this.markers.map((marker) => {
+          marker.setMap(null);
+        });
+        this.markers = [];
+      }
+    },
+    updateRestaurantData(restaurantData) {
+      const cleanData = Object.keys(restaurantData).reduce((tmp, key) => {
+        if (restaurantData[key]) {
+          tmp[key] = restaurantData[key];
+        }
+        return tmp;
+      }, {});
       return new Promise((resolve, rejected) => {
-        db.collection("restaurants")
-          .doc(restaurantId)
-          .set(restaurantData)
+        db.doc(`restaurants/${this.restaurantId()}`)
+          .set(cleanData)
           .then(() => {
             resolve();
           })

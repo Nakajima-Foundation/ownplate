@@ -8,6 +8,10 @@ service cloud.firestore {
       return request.auth.uid != null && request.auth.token.phone_number != null
     }
 
+    function isOwner(resource, request) {
+      return resource.data.uid == request.auth.uid;
+    }
+
     match /users/{userId} {
       allow read, create, update, delete: if request.auth.uid == userId;
     }
@@ -15,6 +19,7 @@ service cloud.firestore {
     match /restaurants/{restaurantsId} {
       allow read: if true
       allow create: if isAdmin(request);
+      allow update: if isAdmin(request) && isOwner(resource, request);
     }
 
     match /restaurants/{restaurantsId}/menus/{menuId} {
