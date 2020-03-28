@@ -432,6 +432,7 @@ export default {
         city: "",
         state: "",
         zip: "",
+        location: {},
         phoneNumber: "",
         url: "",
         foodTax: 0,
@@ -474,6 +475,9 @@ export default {
     if (restaurant.exists) {
       const restaurant_data = restaurant.data();
       this.shopInfo = Object.assign({}, this.shopInfo, restaurant_data);
+      if (this.shopInfo && this.shopInfo.location) {
+        this.setCurrentLocation(this.shopInfo.location);
+      }
       console.log(this.shopInfo);
       // todo update data.
     } else {
@@ -535,6 +539,7 @@ export default {
         city: this.shopInfo.city,
         state: this.shopInfo.state,
         zip: this.shopInfo.zip,
+        location: this.shopInfo.location,
         phoneNumber: this.shopInfo.phoneNumber,
         url: this.shopInfo.url,
         tags: this.shopInfo.tags,
@@ -572,7 +577,6 @@ export default {
         );
       });
     },
-
     async updateMap() {
       // https://gitlab.com/broj42/nuxt-gmaps#readme
       // https://codesandbox.io/s/6j6zw48l83
@@ -585,19 +589,25 @@ export default {
 
       const res = await API.google_geocode(keyword);
       if (res && res[0] && res[0].geometry) {
-        const location = res[0].geometry.location
-        this.$refs.gMap.map.setCenter(location);
-        this.removeAllMarker();
-        const marker = new google.maps.Marker({
-          position: new google.maps.LatLng(location.lat, location.lng),
-          title: "hello",
-          map: this.$refs.gMap.map,
-        });
-        this.markers.push(marker);
-        this.maplocation = location;
+        this.setCurrentLocation(res[0].geometry.location);
       }
-      console.log(res);
 
+    },
+    setCurrentLocation(location) {
+      this.$refs.gMap.map.setCenter(location);
+      this.removeAllMarker();
+      const marker = new google.maps.Marker({
+        position: new google.maps.LatLng(location.lat, location.lng),
+        title: "hello",
+        map: this.$refs.gMap.map,
+      });
+      this.markers.push(marker);
+      this.maplocation = location;
+    },
+    setLocation() {
+      if (this.maplocation) {
+        this.shopInfo.location = this.maplocation;
+      }
     },
     removeAllMarker() {
       if (this.markers && this.markers.length > 0) {
