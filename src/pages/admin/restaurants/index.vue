@@ -41,7 +41,7 @@
               ></restaurant-edit-card>
             </div>
           </div>
-          <a href="/admin/restaurants/new">
+          <a href="/admin/restaurants/create">
             <b-button
               style="margin-right:auto"
               type="is-info"
