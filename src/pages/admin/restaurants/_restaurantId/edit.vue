@@ -63,7 +63,7 @@
     </div>
     <b-field>
       <b-input
-        v-model="restaurantName"
+        v-model="shopInfo.restaurantName"
         type="text"
         placeholder="Enter restaurant name"
         maxlength="50"
@@ -82,7 +82,7 @@
     </div>
     <b-field type="is-white">
       <b-input
-        v-model="streetAddress"
+        v-model="shopInfo.streetAddress"
         type="text"
         placeholder="Enter street address"
         maxlength="30"
@@ -103,7 +103,7 @@
         </div>
         <b-field type="is-white">
           <b-input
-            v-model="city"
+            v-model="shopInfo.city"
             type="text"
             placeholder="Enter city"
             maxlength="15"
@@ -122,7 +122,7 @@
           </div>
         </div>
         <b-field type="is-white">
-          <b-select v-model="state" placeholder="select">
+          <b-select v-model="shopInfo.state" placeholder="select">
             <option v-for="stateItem in states" :key="stateItem">
               {{ stateItem }}
             </option>
@@ -412,20 +412,23 @@ export default {
   data() {
     const uid = this.adminUid();
     return {
+
       restProfileCroppa: null,
       restCoverCroppa: null,
-      restaurantName: "",
-      streetAddress: "",
-      city: "",
-      state: "",
-      zip: "",
-      phoneNumber: "",
-      url: "",
-      foodTax: 0,
-      alcoholTax: 0,
-      states: US_STATES,
-      taxList: TAX_RATES,
-      uid: uid,
+      shopInfo: {
+        restaurantName: "",
+        streetAddress: "",
+        city: "",
+        state: "",
+        zip: "",
+        phoneNumber: "",
+        url: "",
+        foodTax: 0,
+        alcoholTax: 0,
+        states: US_STATES,
+        taxList: TAX_RATES,
+        tags: ["Meet"],
+      },
       hoursMon: true,
       hoursTue: true,
       hoursWed: true,
@@ -434,7 +437,6 @@ export default {
       hoursSat: true,
       hoursSun: true,
       tag: "",
-      tags: ["Meet"],
       autocompleteItems: [
         {
           text: 'Invalid because of "8"'
@@ -446,22 +448,36 @@ export default {
           disableAdd: true,
           rule: tag => tag.text.length > 15
         }
-      ]
+      ],
     };
   },
   beforeCreated() {
     this.checkAdminPermission();
   },
+  async created() {
+    // never use onSnapshot here.
+    const restaurant = await db.doc(`restaurants/${this.restaurantId()}`).get();
+
+    if (restaurant.exists) {
+      const restaurant_data = restaurant.data();
+      this.shopInfo = Object.assign({}, this.shopInfo, restaurant_data);
+      console.log(this.shopInfo);
+      // todo update data.
+    } else {
+      // todo something error
+    }
+  },
   computed: {
     formIsValid() {
+      return true;
       return (
         this.restProfileCroppa !== "" &&
-        this.restaurantName !== "" &&
-        this.streetAddress !== "" &&
-        this.city !== "" &&
+        this.shopInfo.restaurantName !== "" &&
+        this.shopInfo.streetAddress !== "" &&
+        this.shopInfo.city !== "" &&
         this.zip !== "" &&
         this.phoneNumber !== "" &&
-        this.state !== ""
+        this.shopInfo.state !== ""
       );
     }
   },
@@ -474,7 +490,7 @@ export default {
     async submitRestaurant() {
       if (!this.formIsValid) return;
 
-      const restaurantId = this.generateUniqueId();
+      const restaurantId = this.restaurantId();
       let restProfileFile = await this.restProfileCroppa.promisedBlob(
         "image/jpeg",
         0.8
@@ -493,36 +509,27 @@ export default {
         "cover",
         restaurantId
       );
-
       const restaurantData = {
-        restProfilePhoto: restProfilePhoto,
-        restCoverPhoto: restCoverPhoto,
-        restaurantName: this.restaurantName,
-        streetAddress: this.streetAddress,
-        city: this.city,
-        state: this.state,
-        zip: this.zip,
-        phoneNumber: this.phoneNumber,
-        url: this.url,
-        tags: this.tags,
-        foodTax: Number(this.foodTax),
-        alcoholTax: Number(this.alcoholTax),
-        uid: this.uid,
+        restaurantName: this.shopInfo.restaurantName,
+        streetAddress: this.shopInfo.streetAddress,
+        city: this.shopInfo.city,
+        state: this.shopInfo.state,
+        zip: this.shopInfo.zip,
+        phoneNumber: this.shopInfo.phoneNumber,
+        url: this.shopInfo.url,
+        tags: this.shopInfo.tags,
+        foodTax: Number(this.shopInfo.foodTax),
+        alcoholTax: Number(this.shopInfo.alcoholTax),
+        uid: this.shopInfo.uid,
         defauleTaxRate: 0.1,
         publicFlag: true,
         createdAt: new Date()
       };
-      await this.createRestaurantData(restaurantId, restaurantData);
+      await this.updateRestaurantData(restaurantData);
 
       this.$router.push({
         path: `/admin/restaurants/`
       });
-    },
-    generateUniqueId() {
-      return (
-        new Date().getTime().toString(16) +
-        Math.floor(1000000000 * Math.random()).toString(16)
-      );
     },
     uploadFile(file, filename, restaurantId) {
       return new Promise((resolve, rejected) => {
@@ -545,12 +552,12 @@ export default {
         );
       });
     },
-    createRestaurantData(restaurantId, restaurantData) {
+    updateRestaurantData(restaurantData) {
       return new Promise((resolve, rejected) => {
-        db.collection("restaurants")
-          .doc(restaurantId)
+        db.doc(`restaurants/${this.restaurantId()}`)
           .set(restaurantData)
           .then(() => {
+            console.log("OK");
             resolve();
           })
           .catch(error => {
