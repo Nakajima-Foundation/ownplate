@@ -41,7 +41,7 @@
           <div class="media-content">
             <div style="text-align:center;">
               <h2 class="bold" @click="editMenu">
-                Edit Menu(X items)
+                Edit Menu({{numberOfMenus}} items)
               </h2>
             </div>
           </div>
@@ -137,7 +137,11 @@ export default {
     createdat: {
       type: Object,
       required: true
-    }
+    },
+    numberOfMenus: {
+      type: Object,
+      required: true
+    },
   },
   methods: {
     editMenu() {

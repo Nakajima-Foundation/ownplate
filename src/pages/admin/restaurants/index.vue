@@ -37,6 +37,7 @@
                 :defaulttaxrate="restaurantItem.defauleTaxRate"
                 :publicflag="restaurantItem.publicFlag||false"
                 :createdat="restaurantItem.createdAt||Date.now()"
+                :numberOfMenus="restaurantItem.numberOfMenus||0"
                 @emitting="emitted($event)"
               ></restaurant-edit-card>
             </div>
@@ -108,7 +109,7 @@ export default {
       tags: "",
       uid: "",
       restaurantItems: [],
-      paymentItems: []
+      paymentItems: [],
     };
   },
   beforeCreated() {
@@ -142,6 +143,11 @@ export default {
         data.id = doc.id;
         return data;
       });
+      this.restaurantItems = await Promise.all(this.restaurantItems.map(async (restaurant) => {
+        const menus = await db.collection(`restaurants/${restaurant.id}/menus`).get();
+        restaurant.numberOfMenus = menus.size
+        return restaurant;
+      }));
     } catch (error) {
       console.log("Error fetch doc,", error);
     }
