@@ -1,7 +1,19 @@
 <template>
   <section class="section">
+    <b-button
+      style="margin-right:auto"
+      type="is-info"
+      class="counter-button"
+      icon-left="arrow-left"
+      rounded
+      outlined
+      @click="goBack()"
+    >
+      Back
+    </b-button>
+
     <h2 class="p-big bold">
-      About
+      Item
     </h2>
     <div class="media">
       <div class="media-content"></div>
@@ -27,7 +39,7 @@
     </b-field>
 
     <div class="columns">
-      <div class="column">
+      <div class="column is-6">
         <div class="field is-horizontal">
           <div class="field-body">
             <h4>
@@ -38,16 +50,25 @@
             </p>
           </div>
         </div>
-        <b-field type="is-white">
-          <b-input
-            v-model="price"
-            type="text"
-            placeholder="Enter price"
-            maxlength="15"
-          ></b-input>
-        </b-field>
+        <div class="columns">
+          <div class="column">
+            <b-field>
+              <b-input
+                v-model="price"
+                type="number"
+                step="0.01"
+                placeholder="00.00"
+                max="10000.00"
+                min="0.00"
+              ></b-input>
+            </b-field>
+          </div>
+          <div class="column">
+            <h4>USD</h4>
+          </div>
+        </div>
       </div>
-      <div class="column">
+      <div class="column is-6">
         <div class="field is-horizontal">
           <div class="field-body">
             <h4>
@@ -97,6 +118,17 @@
       :canvas-color="'gainsboro'"
     ></croppa>
 
+    <h4>
+      Availability
+    </h4>
+    <b-field type="is-white">
+      <b-select v-model="availability" placeholder="select">
+        <option v-for="availItem in availOptions" :key="availItem">
+          {{ availItem }}
+        </option>
+      </b-select>
+    </b-field>
+
     <b-button
       :disabled="!formIsValid"
       style="margin-right:auto"
@@ -132,6 +164,8 @@ const TAX_RATES = [
   "15%"
 ];
 
+const AVAIL_OPTIONS = ["All day"];
+
 export default {
   name: "Order",
   data() {
@@ -142,6 +176,8 @@ export default {
       tax: "",
       itemDescription: "",
       taxRates: TAX_RATES,
+      availability: "",
+      availOptions: AVAIL_OPTIONS,
       uid: uid,
       croppa: {}
     };
@@ -164,10 +200,11 @@ export default {
       let itemPhoto = await this.uploadFile(file, menuId);
       const itemData = {
         itemName: this.itemName,
-        price: this.price,
+        price: Number(this.price),
         tax: this.tax,
         itemDescription: this.itemDescription,
         itemPhoto: itemPhoto,
+        availability: this.availability,
         titleFlag: false,
         createdAt: new Date()
       };
@@ -217,6 +254,11 @@ export default {
             console.error("Error writing document: ", error);
             this.loading = false;
           });
+      });
+    },
+    goBack() {
+      this.$router.push({
+        path: `/admin/restaurants/${this.restaurantId()}/menus`
       });
     }
   }

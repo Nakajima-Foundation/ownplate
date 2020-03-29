@@ -1,43 +1,33 @@
 <template>
-  <section class="section">
-    <h2 class="p-big bold">
-      About
-    </h2>
-    <div class="media">
-      <div class="media-content"></div>
-      <div class="media-right">
-        <p class="p-small bold" style="color:#CB4B4B">
-          * Required
-        </p>
+  <div class="card block">
+    <div class="card-content">
+      <div class="media">
+        <div class="media-content">
+          <b-field>
+            <b-input
+              v-model="title"
+              placeholder="Enter title"
+              @keydown.native="onKeydown"
+            ></b-input>
+          </b-field>
+        </div>
       </div>
     </div>
-
-    <div class="field is-horizontal">
-      <div class="field-body">
-        <h4>
-          Title
-        </h4>
-        <p class="p-small" style="color:#CB4B4B">
-          *
-        </p>
-      </div>
+    <div class="card-footer">
+      <a href="#" class="card-footer-item">
+        <b-icon icon="arrow-up" size="is-midium"></b-icon>
+      </a>
+      <a href="#" class="card-footer-item">
+        <b-icon icon="arrow-down" size="is-midium"></b-icon>
+      </a>
+      <a href="#" class="card-footer-item">
+        <b-icon icon="plus" size="is-midium"></b-icon>
+      </a>
+      <a href="#" class="card-footer-item">
+        <b-icon icon="delete" size="is-midium"></b-icon>
+      </a>
     </div>
-    <b-field>
-      <b-input v-model="title" placeholder="Enter title"></b-input>
-    </b-field>
-
-    <b-button
-      :disabled="!formIsValid"
-      style="margin-right:auto"
-      type="is-info"
-      class="counter-button"
-      expanded
-      rounded
-      @click="submitItem"
-    >
-      Save
-    </b-button>
-  </section>
+  </div>
 </template>
 
 <script>
@@ -45,11 +35,10 @@ import Vue from "vue";
 import { db, storage } from "~/plugins/firebase.js";
 
 export default {
-  name: "NewTitle",
+  name: "TitleInput",
   data() {
     return {
-      title: "",
-      uid: "hogehoge" //TODO test
+      title: ""
     };
   },
   beforeCreated() {
@@ -61,10 +50,14 @@ export default {
     }
   },
   methods: {
+    onKeydown(event) {
+      if (event.which === 13) {
+        this.submitItem();
+      }
+    },
     async submitItem() {
       if (!this.formIsValid) return;
 
-      //upload image
       const menuId = this.generateUniqueId();
       const itemData = {
         title: this.title,
@@ -73,9 +66,7 @@ export default {
       };
       await this.createItemData(this.restaurantId(), itemData);
 
-      this.$router.push({
-        path: `/admin/restaurants/${this.restaurantId()}/menus`
-      });
+      this.$emit("finishTitleInput");
     },
     generateUniqueId() {
       return (

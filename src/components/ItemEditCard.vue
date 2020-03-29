@@ -5,18 +5,18 @@
         <div class="media-content">
           <!-- <h4 class="bold">Kushikatsu Special Platter</h4> -->
           <h3 class="bold">
-            {{ title }}
+            {{ menuitem.itemName }}
           </h3>
           <h2 class="bold payment">
-            {{ $n(payment, 'currency') }}
+            {{ $n(menuitem.price, "currency") }}
           </h2>
-          <p>{{ discription }}</p>
+          <p>{{ menuitem.itemDescription }}</p>
         </div>
         <div class="media-right">
           <figure class="image is-100x100">
             <img
               class="is-square"
-              :src="image"
+              :src="menuitem.itemPhoto"
               alt=""
               style="border-radius: 4px;"
             />
@@ -46,20 +46,8 @@ import store from "~/store/index.js";
 
 export default {
   props: {
-    title: {
-      type: String,
-      required: true
-    },
-    payment: {
-      type: Number,
-      required: true
-    },
-    discription: {
-      type: String,
-      required: true
-    },
-    image: {
-      type: String,
+    menuitem: {
+      type: Object,
       required: true
     }
   },
