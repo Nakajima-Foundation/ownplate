@@ -12,80 +12,100 @@
       Back
     </b-button>
 
-    <h2 class="p-big bold">
-      Menu
-    </h2>
-    <div v-if="!existsMenu && !titleEditFlag" class="card block">
-      <div class="card-content">
-        <div class="container content has-text-centered">
-          <b-icon icon="book-open" size="is-large"></b-icon>
-          <h3>No items</h3>
-          Please create your menu from the bottom button.
+    <section class="section">
+      <div class="media">
+        <div class="media-left">
+          <figure class="image is-64x64">
+            <img
+              class="is-rounded"
+              :src="restaurantInfo.restProfilePhoto"
+              alt=""
+            />
+          </figure>
+        </div>
+        <div class="media-content">
+          <h3 class="title is-4">
+            {{ restaurantInfo.restaurantName }}
+          </h3>
         </div>
       </div>
-    </div>
+      </div>
 
-    <title-input
-      v-if="titleEditFlag"
-      @finishTitleInput="finishTitleInput"
-    ></title-input>
-
-    <div v-if="existsMenu">
-      <div v-for="menuItem in menuItems" :key="menuItem.id">
-        <div v-if="menuItem.titleFlag">
-          <title-edit-card :title="menuItem.title"></title-edit-card>
-        </div>
-        <div v-else>
-          <item-edit-card
-            :menuitem="menuItem"
-            @emitting="emitted($event)"
-          ></item-edit-card>
+      <h2 class="p-big bold">
+        Menu
+      </h2>
+      <div v-if="!existsMenu && !titleEditFlag" class="card block">
+        <div class="card-content">
+          <div class="container content has-text-centered">
+            <b-icon icon="book-open" size="is-large"></b-icon>
+            <h3>No items</h3>
+            Please create your menu from the bottom button.
+          </div>
         </div>
       </div>
-    </div>
 
-    <div style="margin-top:1rem;">
-      <div class="columns">
-        <div class="column">
-          <b-button
-            style="margin-right:auto"
-            type="is-info"
-            class="counter-button"
-            expanded
-            rounded
-            outlined
-            @click="addTitle()"
-          >
-            Add title
-          </b-button>
-        </div>
-        <div class="column">
-          <b-button
-            style="margin-right:auto"
-            type="is-info"
-            class="counter-button"
-            expanded
-            rounded
-            outlined
-            @click="addMenuItem()"
-          >
-            Add Item
-          </b-button>
+      <title-input
+        v-if="titleEditFlag"
+        @finishTitleInput="finishTitleInput"
+      ></title-input>
+
+      <div v-if="existsMenu">
+        <div v-for="menuItem in menuItems" :key="menuItem.id">
+          <div v-if="menuItem.titleFlag">
+            <title-edit-card :title="menuItem.title"></title-edit-card>
+          </div>
+          <div v-else>
+            <item-edit-card
+              :menuitem="menuItem"
+              @emitting="emitted($event)"
+            ></item-edit-card>
+          </div>
         </div>
       </div>
-    </div>
-    <div style="margin-top:1rem;">
-      <b-button
-        style="margin-right:auto"
-        type="is-info"
-        class="counter-button"
-        expanded
-        rounded
-        @click="goRestaurant"
-      >
-        Save
-      </b-button>
-    </div>
+
+      <div style="margin-top:1rem;">
+        <div class="columns">
+          <div class="column">
+            <b-button
+              style="margin-right:auto"
+              type="is-info"
+              class="counter-button"
+              expanded
+              rounded
+              outlined
+              @click="addTitle()"
+            >
+              Add title
+            </b-button>
+          </div>
+          <div class="column">
+            <b-button
+              style="margin-right:auto"
+              type="is-info"
+              class="counter-button"
+              expanded
+              rounded
+              outlined
+              @click="addMenuItem()"
+            >
+              Add Item
+            </b-button>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:1rem;">
+        <b-button
+          style="margin-right:auto"
+          type="is-info"
+          class="counter-button"
+          expanded
+          rounded
+          @click="goRestaurant"
+        >
+          Save
+        </b-button>
+      </div>
+    </section>
   </section>
 </template>
 <script>
@@ -104,6 +124,7 @@ export default {
   data() {
     return {
       menuItems: [],
+      restaurantInfo: {},
       titleEditFlag: false
     };
   },
@@ -120,7 +141,6 @@ export default {
   },
   async mounted() {
     const uid = this.adminUid();
-    // const resId = this.$route.params.restaurantId;
     const res = await db
       .collection(`restaurants/${this.restaurantId()}/menus`)
       .get();
@@ -135,6 +155,17 @@ export default {
       });
     } catch (error) {
       console.log("Error fetch menu,", error);
+    }
+
+    const resRestInfo = await db
+      .collection("restaurants")
+      .doc(this.restaurantId())
+      .get();
+
+    if (resRestInfo.exists) {
+      this.restaurantInfo = resRestInfo.data();
+    } else {
+      console.log("Error fetch restaurantInfo.");
     }
   },
   methods: {
@@ -160,4 +191,9 @@ export default {
   }
 };
 </script>
-<style lang="stylus" scoped></style>
+<style lang="scss" scoped>
+.media-content {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+</style>
