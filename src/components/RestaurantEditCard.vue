@@ -50,7 +50,7 @@
           <div class="media-content">
             <div style="text-align:center;">
               <h2 class="bold">
-                Edit About
+                <router-link :to="'/admin/restaurants/' + restaurantid + '/edit'">Edit About</router-link>
               </h2>
             </div>
           </div>
