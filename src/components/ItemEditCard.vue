@@ -8,7 +8,7 @@
             {{ title }}
           </h3>
           <h2 class="bold payment">
-            {{ $n(payment / 100, 'currency') }}
+            {{ $n(payment, 'currency') }}
           </h2>
           <p>{{ discription }}</p>
         </div>
