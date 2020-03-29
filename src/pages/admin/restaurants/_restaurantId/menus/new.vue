@@ -1,7 +1,20 @@
 <template>
   <section class="section">
+    <b-button
+      style="margin-right:auto"
+      type="is-info"
+      class="counter-button"
+      icon-left="arrow-left"
+      rounded
+      outlined
+      @click="goBack()"
+    >  
+      Back
+    </b-button>
+    </div>
+
     <h2 class="p-big bold">
-      About
+      Item
     </h2>
     <div class="media">
       <div class="media-content"></div>
@@ -218,7 +231,13 @@ export default {
             this.loading = false;
           });
       });
+    },
+    goBack(){
+      this.$router.push({
+        path: `/admin/restaurants/${this.restaurantId()}/menus`
+      });
     }
+
   }
 };
 </script>
