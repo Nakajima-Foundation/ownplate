@@ -15,15 +15,20 @@
     <h2 class="p-big bold">
       Menu
     </h2>
-    <div class="card block">
+    <div v-if="!existsMenu && !titleEditFlag" class="card block">
       <div class="card-content">
-        <div v-if="!existsMenu" class="container content has-text-centered">
+        <div class="container content has-text-centered">
           <b-icon icon="book-open" size="is-large"></b-icon>
           <h3>No items</h3>
           Please create your menu from the bottom button.
         </div>
       </div>
     </div>
+
+    <title-input
+      v-if="titleEditFlag"
+      @finishTitleInput="finishTitleInput"
+    ></title-input>
 
     <div v-if="existsMenu">
       <div v-for="menuItem in menuItems" :key="menuItem.id">
@@ -52,7 +57,7 @@
             expanded
             rounded
             outlined
-            @click="editTitle()"
+            @click="addTitle()"
           >
             Add title
           </b-button>
@@ -65,7 +70,7 @@
             expanded
             rounded
             outlined
-            @click="editMenuItem()"
+            @click="addMenuItem()"
           >
             Add Item
           </b-button>
@@ -90,17 +95,19 @@
 import { db } from "~/plugins/firebase.js";
 import ItemEditCard from "~/components/ItemEditCard";
 import TitleEditCard from "~/components/TitleEditCard";
+import TitleInput from "~/components/TitleInput";
 
 export default {
   name: "Menus",
   components: {
     ItemEditCard,
     TitleEditCard,
-    menuItems: []
+    TitleInput
   },
   data() {
     return {
-      menuItems: []
+      menuItems: [],
+      titleEditFlag: false
     };
   },
   beforeCreated() {
@@ -134,19 +141,26 @@ export default {
     }
   },
   methods: {
-    editMenuItem() {
+    addMenuItem() {
       this.$router.push({
         path: `/admin/restaurants/${this.restaurantId()}/menus/new`
       });
     },
-    editTitle() {
-      this.$router.push({
-        path: `/admin/restaurants/${this.restaurantId()}/menus/newtitle/`
-      });
+    addTitle() {
+      // this.$router.push({
+      //   path: `/admin/restaurants/${this.restaurantId()}/menus/newtitle/`
+      // });
+      this.titleEditFlag = true;
     },
     goRestaurant() {
       this.$router.push({
         path: `/admin/restaurants/`
+      });
+    },
+    finishTitleInput() {
+      this.$router.go({
+        path: `/admin/restaurants/${this.restaurantId()}/menus`,
+        force: true
       });
     }
   }
