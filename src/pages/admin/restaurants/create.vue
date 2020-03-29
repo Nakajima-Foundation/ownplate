@@ -2,12 +2,12 @@
   <span>
     <section class="section" style="background-color:#fffafa">
       <form @submit.prevent="handleSubmit">
-        <b-field label="Restaurat Id">
+        <b-field :label="$t('restaurantId.self')">
           <b-input type="text"
             v-model="rid"
             v-on:input="validate"
             maxlength="30"
-            placeholder="Specify Unique Restaurant Id" />
+            :placeholder="$t('restaurantId.placeholder')" />
         </b-field>
         <ul v-if="errors.length > 0">
           <li v-for="error in errors" :key="error">
@@ -32,6 +32,7 @@
 
 <script>
 import { db, functions } from "~/plugins/firebase.js";
+
 export default {
   data() {
     return {
