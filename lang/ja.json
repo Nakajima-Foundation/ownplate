@@ -10,6 +10,7 @@
     "updateMap": "場所をセット"
   },
   "shopInfo": {
+    "address": "場所",
     "phonenumber": "電話番号",
     "website": "ホームページ"
   },

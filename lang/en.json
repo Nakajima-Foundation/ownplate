@@ -10,6 +10,7 @@
     "updateMap": "Update Map"
   },
   "shopInfo": {
+    "address": "Address",
     "phonenumber": "Phones Number",
     "website": "Website"
   },

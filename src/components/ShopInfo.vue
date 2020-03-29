@@ -1,7 +1,7 @@
 <template>
   <span>
     <h2 class="bold">
-      Adress
+      {{$t('shopInfo.address')}}
     </h2>
     <div class="card">
       <div class="card-image">
