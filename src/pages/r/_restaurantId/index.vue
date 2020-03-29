@@ -15,7 +15,7 @@
 
       ></shop-orner-info>
       <b-tabs size="is-medium" class="block" expanded>
-        <b-tab-item label="Menu">
+        <b-tab-item :label="$t('sitemenu.menu')">
           <h2 class="p-big bold">Appetizers</h2>
 
           <item-card
@@ -46,7 +46,7 @@
           ></item-card>
 
         </b-tab-item>
-        <b-tab-item label="About">
+        <b-tab-item :label="$t('sitemenu.about')">
           <shop-info v-bind:shopInfo="shopInfo"></shop-info>
         </b-tab-item>
       </b-tabs>

@@ -13,6 +13,10 @@
     "phonenumber": "Phones Number",
     "website": "Website"
   },
+  "sitemenu": {
+    "menu": "Menu",
+    "about": "About"
+  },
   "auth": {
     "notAdmin": "You need to login as a restaurant owner."
   }

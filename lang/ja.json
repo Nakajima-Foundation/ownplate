@@ -13,6 +13,10 @@
     "phonenumber": "電話番号",
     "website": "ホームページ"
   },
+  "sitemenu": {
+    "menu": "メニュー",
+    "about": "お店情報"
+  },
   "auth": {
     "notAdmin": "You need to login as a restaurant owner."
   }
