@@ -9,6 +9,10 @@
     "setLocation": "Set location",
     "updateMap": "Update Map"
   },
+  "shopInfo": {
+    "phonenumber": "Phones Number",
+    "website": "Website"
+  },
   "auth": {
     "notAdmin": "You need to login as a restaurant owner."
   }
