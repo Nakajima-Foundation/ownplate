@@ -1,9 +1,11 @@
 {
   "greeting": "こんにちは、世界",
   "restaurantId": {
-    "tooshort": "RestaurantIDが短いです。",
-    "invalid": "RestaurantIDは、数字の半角小文字英字のみ使えます。",
-    "alreadyTaken": "RestaurantIDはすでに使われています。"
+    "self": "レストランID",
+    "placeholder": "使いたいレストランIDを入力してください",
+    "tooshort": "最低５文字必要です。",
+    "invalid": "数字の半角小文字英字のみ使えます。",
+    "alreadyTaken": "このIDはすでに使われています。"
   },
   "editRestaurant": {
     "setLocation": "住所を元に地図を更新",
