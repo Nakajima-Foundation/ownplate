@@ -2,12 +2,13 @@
   <span>
     <section class="section" style="background-color:#fffafa">
       <form @submit.prevent="handleSubmit">
-        <div>
-          <input type="text"
+        <b-field label="Restaurat Id">
+          <b-input type="text"
             v-model="rid"
             v-on:input="validate"
-            placeholder="Restaurant Id" />
-        </div>
+            maxlength="30"
+            placeholder="Specify Unique Restaurant Id" />
+        </b-field>
         <ul v-if="errors.length > 0">
           <li v-for="error in errors" :key="error">
             {{$t(error)}}
@@ -15,6 +16,7 @@
         </ul>
         <div>
           <button
+            class="button is-info is-rounded"
             :disabled="errors.length > 0"
             type="submit">
             Submit
