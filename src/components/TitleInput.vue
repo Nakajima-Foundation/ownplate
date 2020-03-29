@@ -58,7 +58,6 @@ export default {
     async submitItem() {
       if (!this.formIsValid) return;
 
-      const menuId = this.generateUniqueId();
       const itemData = {
         title: this.title,
         titleFlag: true,
@@ -67,12 +66,6 @@ export default {
       await this.createItemData(this.restaurantId(), itemData);
 
       this.$emit("finishTitleInput");
-    },
-    generateUniqueId() {
-      return (
-        new Date().getTime().toString(16) +
-        Math.floor(1000000000 * Math.random()).toString(16)
-      );
     },
     createItemData(restaurantId, itemData) {
       return new Promise((resolve, rejected) => {

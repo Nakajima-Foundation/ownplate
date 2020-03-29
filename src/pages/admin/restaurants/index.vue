@@ -32,11 +32,11 @@
                 :zip="restaurantItem.zip||''"
                 :phonenumber="restaurantItem.phoneNumber||''"
                 :url="restaurantItem.url"
-                :tags="restaurantItem.tags"
+                :tags="restaurantItem.tags||[]"
                 :uid="restaurantItem.uid"
                 :defaulttaxrate="restaurantItem.defauleTaxRate"
                 :publicflag="restaurantItem.publicFlag||false"
-                :createdat="restaurantItem.createdAt||Date.now()"
+                :createdat="restaurantItem.createdAt"
                 :numberOfMenus="restaurantItem.numberOfMenus||0"
                 @emitting="emitted($event)"
               ></restaurant-edit-card>

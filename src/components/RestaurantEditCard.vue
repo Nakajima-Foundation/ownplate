@@ -139,7 +139,7 @@ export default {
       required: true
     },
     numberOfMenus: {
-      type: Object,
+      type: Number,
       required: true
     },
   },

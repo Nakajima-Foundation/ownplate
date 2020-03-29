@@ -50,7 +50,7 @@
       :height="150"
       :placeholder="'No image'"
       :placeholder-font-size="20"
-      :initial-position="center"
+      initial-position="center"
       :canvas-color="'gainsboro'"
     ></croppa>
 
@@ -166,9 +166,8 @@
     <b-field type="is-white">
       <GMap
         ref="gMap"
-        :cluster="{options: {styles: clusterStyle}}"
         :center="{lat: 44.933076, lng: 15.629058}"
-        :options="{fullscreenControl: false, styles: mapStyle}"
+        :options="{fullscreenControl: false}"
         :zoom="18"
         >
       </GMap>
@@ -424,6 +423,9 @@ export default {
   data() {
     const uid = this.adminUid();
     return {
+      disabled: false, // ??
+      filteredItems: [], // ??
+      tags: [], // ???
       restProfileCroppa: null,
       restCoverCroppa: null,
       shopInfo: {
@@ -475,13 +477,15 @@ export default {
     if (restaurant.exists) {
       const restaurant_data = restaurant.data();
       this.shopInfo = Object.assign({}, this.shopInfo, restaurant_data);
-      if (this.shopInfo && this.shopInfo.location) {
-        this.setCurrentLocation(this.shopInfo.location);
-      }
       console.log(this.shopInfo);
       // todo update data.
     } else {
       // todo something error
+    }
+  },
+  mounted() {
+    if (this.shopInfo && this.shopInfo.location) {
+      this.setCurrentLocation(this.shopInfo.location);
     }
   },
   computed: {
@@ -500,7 +504,7 @@ export default {
   },
   watch: {
     state: function(val) {
-      this.tags.push(val);
+      this.shopInfo.tags.push(val); // ???
     }
   },
   methods: {
@@ -591,18 +595,19 @@ export default {
       if (res && res[0] && res[0].geometry) {
         this.setCurrentLocation(res[0].geometry.location);
       }
-
     },
     setCurrentLocation(location) {
-      this.$refs.gMap.map.setCenter(location);
-      this.removeAllMarker();
-      const marker = new google.maps.Marker({
-        position: new google.maps.LatLng(location.lat, location.lng),
-        title: "hello",
-        map: this.$refs.gMap.map,
-      });
-      this.markers.push(marker);
-      this.maplocation = location;
+      if (this.$refs.gMap && this.$refs.gMap.map) {
+        this.$refs.gMap.map.setCenter(location);
+        this.removeAllMarker();
+        const marker = new google.maps.Marker({
+          position: new google.maps.LatLng(location.lat, location.lng),
+          title: "hello",
+          map: this.$refs.gMap.map,
+        });
+        this.markers.push(marker);
+        this.maplocation = location;
+      }
     },
     setLocation() {
       if (this.maplocation) {
