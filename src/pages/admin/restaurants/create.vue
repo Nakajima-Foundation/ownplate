@@ -4,6 +4,7 @@
       <form @submit.prevent="handleSubmit">
         <b-field 
           :type="hasError ? 'is-danger' : 'is-success'"
+          :message="hasError ? $t(errors[0]) : $t('restaurantId.available')"
           :label="$t('restaurantId.self')">
           <b-input type="text"
             v-model="rid"
@@ -11,11 +12,6 @@
             maxlength="30"
             :placeholder="$t('restaurantId.placeholder')" />
         </b-field>
-        <ul v-if="hasError">
-          <li v-for="error in errors" :key="error">
-            {{$t(error)}}
-          </li>
-        </ul>
         <div>
           <button
             class="button is-info is-rounded"
@@ -24,9 +20,6 @@
             Submit
           </button>
         </div>
-        <p v-if="errors.length === 0">
-          The web page will be created at: https://ownplate.today/r/{{ rid }}
-        </p>
       </form>
     </section>
   </span>

@@ -2,9 +2,10 @@
   "greeting": "Hello World2",
   "restaurantId": {
     "self": "Restaurant ID",
+    "available": "This Restaurant ID is available",
     "placeholder": "Please specify an unique Restaurant ID",
     "tooshort": "Restaurant ID must have at least five characters.",
-    "invalid": "Invalid　ID. You can use only alphabets and numbers.",
+    "invalid": "Invalid ID. You can use only alphabets and numbers.",
     "alreadyTaken": "This ID is not available."
   },
   "editRestaurant": {
