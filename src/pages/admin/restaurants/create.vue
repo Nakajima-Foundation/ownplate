@@ -2,7 +2,9 @@
   <span>
     <section class="section" style="background-color:#fffafa">
       <form @submit.prevent="handleSubmit">
-        <b-field :label="$t('restaurantId.self')">
+        <b-field 
+          :type="errors.length > 0 ? 'is-danger' : 'is-success'"
+          :label="$t('restaurantId.self')">
           <b-input type="text"
             v-model="rid"
             v-on:input="validate"
