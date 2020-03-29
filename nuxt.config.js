@@ -71,6 +71,7 @@ export default {
    ** Plugins to load before mounting the App
    */
   plugins: [
+    '~plugins/buefy.js',
     // { src: "~/plugins/localStorage.js", ssr: false },
     { src: "~/plugins/userPermission.js", ssr: false },
     { src: "~/plugins/utils.js", ssr: false },
@@ -85,7 +86,7 @@ export default {
    */
   modules: [
     // Doc: https://buefy.github.io/#/documentation
-    "nuxt-buefy",
+    //"nuxt-buefy",
     "@nuxtjs/style-resources",
     "@nuxtjs/axios",
     'nuxt-i18n',
@@ -124,8 +125,7 @@ export default {
   },
   styleResources: {
     scss: [
-      "~/assets/scss/_mixins.scss",
-      "~/assets/scss/_variables.scss"
+      "~/assets/scss/main.scss",
       // "~/assets/web-grid-master/dist/web-grid.css"
       // "~/assets/iota/iota.scss"
     ]
