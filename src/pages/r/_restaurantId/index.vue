@@ -47,7 +47,7 @@
 
         </b-tab-item>
         <b-tab-item label="About">
-          <shop-info></shop-info>
+          <shop-info v-bind:shopInfo="shopInfo"></shop-info>
         </b-tab-item>
       </b-tabs>
       <button
