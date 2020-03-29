@@ -37,10 +37,7 @@
         </div>
         <div v-else>
           <item-edit-card
-            :title="menuItem.itemName"
-            :payment="menuItem.price"
-            :discription="menuItem.itemDescription"
-            :image="menuItem.itemPhoto"
+            :menuitem="menuItem"
             @emitting="emitted($event)"
           ></item-edit-card>
         </div>
@@ -147,9 +144,6 @@ export default {
       });
     },
     addTitle() {
-      // this.$router.push({
-      //   path: `/admin/restaurants/${this.restaurantId()}/menus/newtitle/`
-      // });
       this.titleEditFlag = true;
     },
     goRestaurant() {

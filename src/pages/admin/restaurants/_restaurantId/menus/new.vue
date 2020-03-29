@@ -52,12 +52,14 @@
         </div>
         <div class="columns">
           <div class="column">
-            <b-field type="is-white">
+            <b-field>
               <b-input
                 v-model="price"
-                type="text"
+                type="number"
+                step="0.01"
                 placeholder="00.00"
-                maxlength="15"
+                max="10000.00"
+                min="0.00"
               ></b-input>
             </b-field>
           </div>
@@ -198,7 +200,7 @@ export default {
       let itemPhoto = await this.uploadFile(file, menuId);
       const itemData = {
         itemName: this.itemName,
-        price: this.price,
+        price: Number(this.price),
         tax: this.tax,
         itemDescription: this.itemDescription,
         itemPhoto: itemPhoto,
