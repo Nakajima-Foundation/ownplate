@@ -4,7 +4,7 @@
       <form @submit.prevent="handleSubmit">
         <div>
           <input type="text"
-            v-model="restaurantId"
+            v-model="rid"
             v-on:input="validate"
             placeholder="Restaurant Id" />
         </div>
@@ -21,7 +21,7 @@
           </button>
         </div>
         <p v-if="errors.length === 0">
-          The web page will be created at: https://ownplate.today/r/{{ restaurantId }}
+          The web page will be created at: https://ownplate.today/r/{{ rid }}
         </p>
       </form>
     </section>
@@ -34,25 +34,25 @@ export default {
   data() {
     return {
       errors:["restaurantId.tooshort"],
-      restaurantId:""
+      rid:"" // restaurantId (for some reason, there is a method restaurantId. What is this?)
     };
   },
   methods: {
     async validate() {
-      const restaurantId = this.restaurantId
+      const rid = this.rid
       this.errors = []
       const regex = /^\w*$/
-      if (restaurantId.length < 5) {
+      if (rid.length < 5) {
         this.errors.push("restaurantId.tooshort")
       }
-      if (!regex.test(restaurantId)) {
+      if (!regex.test(rid)) {
         this.errors.push("restaurantId.invalid")
       }
       if (this.errors.length > 0) {
         return // no need to check the database
       }
-      const doc = await db.doc(`restaurants/${restaurantId}`).get();
-      if (this.restaurantId !== restaurantId) {
+      const doc = await db.doc(`restaurants/${rid}`).get();
+      if (this.rid !== rid) {
         return // the user has already changed the text
       }
       if (doc.exists) {
@@ -61,12 +61,12 @@ export default {
     },
     async handleSubmit() {
       console.log("handleSubmit");
-      const context = { restaurantId:this.restaurantId };
+      const context = { restaurantId:this.rid };
       const createRestaurant = functions.httpsCallable('createRestaurant');
       const result = (await createRestaurant(context)).data;
       console.log("result", result);
       if (result.result) {
-        this.$router.push(`./${this.restaurantId}/edit`)
+        this.$router.push(`./${this.rid}/edit`)
       } else {
         this.errors = [result.message]
       }
