@@ -3,7 +3,7 @@
     <section class="section" style="background-color:#fffafa">
       <form @submit.prevent="handleSubmit">
         <b-field 
-          :type="errors.length > 0 ? 'is-danger' : 'is-success'"
+          :type="hasError ? 'is-danger' : 'is-success'"
           :label="$t('restaurantId.self')">
           <b-input type="text"
             v-model="rid"
@@ -11,7 +11,7 @@
             maxlength="30"
             :placeholder="$t('restaurantId.placeholder')" />
         </b-field>
-        <ul v-if="errors.length > 0">
+        <ul v-if="hasError">
           <li v-for="error in errors" :key="error">
             {{$t(error)}}
           </li>
@@ -19,7 +19,7 @@
         <div>
           <button
             class="button is-info is-rounded"
-            :disabled="errors.length > 0"
+            :disabled="hasError"
             type="submit">
             Submit
           </button>
@@ -41,6 +41,11 @@ export default {
       errors:["restaurantId.tooshort"],
       rid:"" // restaurantId (for some reason, there is a method restaurantId. What is this?)
     };
+  },
+  computed: {
+    hasError() {
+      return this.errors.length > 0
+    }
   },
   methods: {
     async validate() {
