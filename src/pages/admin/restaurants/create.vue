@@ -2,27 +2,24 @@
   <span>
     <section class="section" style="background-color:#fffafa">
       <form @submit.prevent="handleSubmit">
-        <div>
-          <input type="text"
+        <b-field 
+          :type="hasError ? 'is-danger' : 'is-success'"
+          :message="hasError ? $t(errors[0]) : $t('restaurantId.available')"
+          :label="$t('restaurantId.self')">
+          <b-input type="text"
             v-model="rid"
             v-on:input="validate"
-            placeholder="Restaurant Id" />
-        </div>
-        <ul v-if="errors.length > 0">
-          <li v-for="error in errors" :key="error">
-            {{$t(error)}}
-          </li>
-        </ul>
+            maxlength="30"
+            :placeholder="$t('restaurantId.placeholder')" />
+        </b-field>
         <div>
           <button
-            :disabled="errors.length > 0"
+            class="button is-info is-rounded"
+            :disabled="hasError"
             type="submit">
-            Submit
+            {{ $t('restaurantId.submit')}}
           </button>
         </div>
-        <p v-if="errors.length === 0">
-          The web page will be created at: https://ownplate.today/r/{{ rid }}
-        </p>
       </form>
     </section>
   </span>
@@ -30,12 +27,18 @@
 
 <script>
 import { db, functions } from "~/plugins/firebase.js";
+
 export default {
   data() {
     return {
       errors:["restaurantId.tooshort"],
       rid:"" // restaurantId (for some reason, there is a method restaurantId. What is this?)
     };
+  },
+  computed: {
+    hasError() {
+      return this.errors.length > 0
+    }
   },
   methods: {
     async validate() {

@@ -1,9 +1,13 @@
 {
   "greeting": "Hello World2",
   "restaurantId": {
-    "tooshort": "RestaurantID you input is too short.",
-    "invalid": "RestaurantID you input is invalid. You can use a-z 0-9.",
-    "alreadyTaken": "RestaurantID you input is already taken."
+    "self": "Restaurant ID",
+    "available": "This Restaurant ID is available",
+    "submit": "Register",
+    "placeholder": "Please specify an unique Restaurant ID",
+    "tooshort": "Restaurant ID must have at least five characters.",
+    "invalid": "Invalid ID. You can use only alphabets and numbers.",
+    "alreadyTaken": "This ID is not available."
   },
   "editRestaurant": {
     "setLocation": "Set location",
