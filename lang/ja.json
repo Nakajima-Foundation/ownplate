@@ -3,6 +3,7 @@
   "restaurantId": {
     "self": "レストランID",
     "available": "このレストランIDは使用が可能です",
+    "submit": "登録",
     "placeholder": "使いたいレストランIDを入力してください",
     "tooshort": "最低５文字必要です。",
     "invalid": "数字の半角小文字英字のみ使えます。",

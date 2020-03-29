@@ -17,7 +17,7 @@
             class="button is-info is-rounded"
             :disabled="hasError"
             type="submit">
-            Submit
+            {{ $t('restaurantId.submit')}}
           </button>
         </div>
       </form>
