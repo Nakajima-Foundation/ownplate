@@ -1,5 +1,17 @@
 <template>
   <section class="section">
+    <b-button
+      style="margin-right:auto"
+      type="is-info"
+      class="counter-button"
+      icon-left="arrow-left"
+      rounded
+      outlined
+      @click="goRestaurant()"
+    >
+      Back
+    </b-button>
+
     <h2 class="p-big bold">
       Menu
     </h2>

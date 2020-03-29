@@ -1,7 +1,19 @@
 <template>
   <section class="section">
+    <b-button
+      style="margin-right:auto"
+      type="is-info"
+      class="counter-button"
+      icon-left="arrow-left"
+      rounded
+      outlined
+      @click="goBack()"
+    >
+      Back
+    </b-button>
+
     <h2 class="p-big bold">
-      About
+      Menu
     </h2>
     <div class="media">
       <div class="media-content"></div>
@@ -96,6 +108,11 @@ export default {
             console.error("Error writing document: ", error);
             this.loading = false;
           });
+      });
+    },
+    goBack() {
+      this.$router.push({
+        path: `/admin/restaurants/${this.restaurantId()}/menus`
       });
     }
   }

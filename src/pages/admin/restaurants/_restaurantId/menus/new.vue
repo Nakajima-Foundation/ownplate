@@ -8,10 +8,9 @@
       rounded
       outlined
       @click="goBack()"
-    >  
+    >
       Back
     </b-button>
-    </div>
 
     <h2 class="p-big bold">
       Item
@@ -163,9 +162,7 @@ const TAX_RATES = [
   "15%"
 ];
 
-const AVAIL_OPTIONS = [
-  "All day"
-];
+const AVAIL_OPTIONS = ["All day"];
 
 export default {
   name: "Order",
@@ -257,12 +254,11 @@ export default {
           });
       });
     },
-    goBack(){
+    goBack() {
       this.$router.push({
         path: `/admin/restaurants/${this.restaurantId()}/menus`
       });
     }
-
   }
 };
 </script>
