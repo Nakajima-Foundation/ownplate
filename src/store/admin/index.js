@@ -1,10 +1,12 @@
 import { db, auth } from "~/plugins/firebase.js";
 
 export default {
-  state: {
-    user: null,
-    loading: true,
-    error: null
+  state() {
+    return {
+      user: null,
+      loading: true,
+      error: null
+    }
   },
   mutations: {
     SET_USER(state, payload) {
