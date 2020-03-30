@@ -4,7 +4,7 @@
     <template slot="brand">
       <b-navbar-item tag="router-link" :to="{ path: '/' }">
         <img
-          src="/OwnPlate-Logo-Horizontal-YellowBlack.svg"
+          src="/OwnPlate-Logo-Horizontal-YellowWhite.svg"
           alt="Lightweight UI components for Vue.js based on Bulma"
           />
         <!-- <p class="p-font bold logo">
@@ -59,7 +59,7 @@
   <nuxt style="max-width:100%;" v-if="loaded" ></nuxt>
   <!-- pagesのコンポーネントが読み込まれる -->
 
-  <footer class="footer" style="background-color: black!important;">
+  <footer class="footer">
     <div class="footer-sections">
       <div class="columns is-desktop" style="margin-top:-3rem;">
         <div class="column">

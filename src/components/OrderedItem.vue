@@ -1,5 +1,5 @@
 <template>
-  <li>{{ item.title }}</li>
+  <div>{{ item.title }}</div>
 </template>
 
 <script>

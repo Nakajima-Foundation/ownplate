@@ -29,10 +29,10 @@
           <b-button rounded @click="openFlag = false">
             Cancel
           </b-button>
-          <b-button v-if="!conrfim" type="is-info" rounded @click="goNext">
+          <b-button v-if="!conrfim" type="is-primary" rounded @click="goNext">
             Next
           </b-button>
-          <b-button v-if="conrfim" type="is-info" rounded @click="goCheckout">
+          <b-button v-if="conrfim" type="is-primary" rounded @click="goCheckout">
             Checkout
           </b-button>
         </div>

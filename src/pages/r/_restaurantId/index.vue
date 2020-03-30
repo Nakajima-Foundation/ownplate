@@ -53,7 +53,7 @@
       <button
         v-if="0 != footCounter"
         id="order_btn"
-        class="button is-info is-rounded"
+        class="button is-primary is-rounded"
         @click="checkOut"
       >
         <span style="margin-right: auto;">{{ footCounter }} {{ footCounter > 1 ? "items": "item"}}</span>

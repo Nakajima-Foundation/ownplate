@@ -45,7 +45,7 @@
           <a href="/admin/restaurants/create">
             <b-button
               style="margin-right:auto"
-              type="is-info"
+              type="is-primary"
               class="counter-button"
               expanded
               rounded
@@ -71,7 +71,7 @@
         <a href="/admin/restaurants/new">
           <b-button
             style="margin-right:auto"
-            type="is-info"
+            type="is-primary"
             class="counter-button"
             expanded
             rounded
