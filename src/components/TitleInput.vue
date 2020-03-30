@@ -5,9 +5,10 @@
         <div class="media-content">
           <b-field>
             <b-input
-              v-model="title"
+              ref="textInput"
+              v-model="title.name"
+              @blur="blur"
               placeholder="Enter title"
-              @keydown.native="onKeydown"
             ></b-input>
           </b-field>
         </div>
@@ -36,56 +37,30 @@ import { db, storage } from "~/plugins/firebase.js";
 
 export default {
   name: "TitleInput",
-  data() {
-    return {
-      title: ""
-    };
+  props: {
+    title: {
+      type: Object,
+      required: true
+    }
   },
   beforeCreated() {
     this.checkAdminPermission();
   },
-  computed: {
-    formIsValid() {
-      return this.title !== "";
-    }
+  mounted() {
+    this.$refs.textInput.focus();
   },
   methods: {
-    onKeydown(event) {
-      if (event.which === 13) {
-        this.submitItem();
-      }
+    blur() {
+      // save and update this.
+      this.$emit("updateTitle", this.title);
     },
-    async submitItem() {
-      if (!this.formIsValid) return;
-
-      const itemData = {
-        title: this.title,
-        titleFlag: true,
-        createdAt: new Date()
-      };
-      await this.createItemData(this.restaurantId(), itemData);
-
-      this.$emit("finishTitleInput");
-    },
-    createItemData(restaurantId, itemData) {
-      return new Promise((resolve, rejected) => {
-        db.collection("restaurants")
-          .doc(restaurantId)
-          .collection("menus")
-          .add(itemData)
-          .then(() => {
-            resolve();
-          })
-          .catch(error => {
-            console.error("Error writing document: ", error);
-            this.loading = false;
-          });
-      });
-    }
   }
 };
 </script>
 <style lang="scss" scoped>
+.card {
+  margin-bottom: 0.6rem;
+}
 .tax {
   margin-top: -2rem !important;
 }
