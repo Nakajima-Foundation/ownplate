@@ -1,6 +1,6 @@
 <template>
   <div class="card block">
-    <div class="card-content">
+    <div class="card-content" @click="$emit('selected', order)">
       <div class="level is-mobile" style="margin:0">
         <div class="level-left">
           <h3>{{ order.title }}</h3>
