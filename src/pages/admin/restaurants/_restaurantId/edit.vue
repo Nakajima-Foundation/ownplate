@@ -1,5 +1,6 @@
 <template>
   <section class="section">
+    <back-button url="/admin/restaurants/" />
     <h2 class="p-big bold">
       About
     </h2>
@@ -356,6 +357,7 @@ import VueTagsInput from "@johmun/vue-tags-input";
 import HoursInput from "~/components/HoursInput";
 
 import * as API from "~/plugins/api"
+import BackButton from "~/components/BackButton";
 
 Vue.use(Croppa);
 
@@ -418,8 +420,10 @@ export default {
   name: "Order",
   components: {
     HoursInput,
-    VueTagsInput
+    VueTagsInput,
+    BackButton
   },
+
   data() {
     const uid = this.adminUid();
     return {
