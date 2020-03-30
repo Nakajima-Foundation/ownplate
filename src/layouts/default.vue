@@ -59,7 +59,7 @@
   <nuxt style="max-width:100%;" v-if="loaded" ></nuxt>
   <!-- pagesのコンポーネントが読み込まれる -->
 
-  <footer class="footer" style="background-color: black!important;">
+  <footer class="footer">
     <div class="footer-sections">
       <div class="columns is-desktop" style="margin-top:-3rem;">
         <div class="column">

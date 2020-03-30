@@ -5,9 +5,13 @@
 $primary: #1197A7;
 $primary-invert: findColorInvert($primary);
 $danger: #CA513E;
-$primary-invert: findColorInvert($danger);
+$danger-invert: findColorInvert($danger);
 $success: #8D8E90;
-$primary-invert: findColorInvert($success);
+$success-invert: findColorInvert($success);
+$link: #FFFFFF;
+$link-invert: findColorInvert($link);
+$dark: #616161;
+$dark-invert: findColorInvert($dark);
 $twitter: #4099FF;
 $twitter-invert: findColorInvert($twitter);
 

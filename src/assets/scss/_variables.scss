@@ -5,12 +5,16 @@
 }
 
 .navbar {
-  background-color: #616161;
+  background-color: $dark;
   .navbar-burger {
     span {
       color: white;
     }
   }
+}
+
+.footer {
+  background-color: $dark;
 }
 
 .tabs li.is-active a {
