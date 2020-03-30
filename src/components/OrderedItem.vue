@@ -1,5 +1,9 @@
 <template>
-  <div>{{ item.title }}</div>
+  <div class="card block">
+    <div class="card-content">
+      <h3>{{ item.title }}</h3>
+    </div>
+  </div>
 </template>
 
 <script>
