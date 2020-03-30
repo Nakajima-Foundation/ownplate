@@ -34,7 +34,7 @@
       <h2 class="p-big bold">
         Menu
       </h2>
-      <div v-if="!existsMenu && !titleEditFlag" class="card block">
+      <div v-if="!existsMenu" class="card block">
         <div class="card-content">
           <div class="container content has-text-centered">
             <b-icon icon="book-open" size="is-large"></b-icon>
@@ -43,11 +43,6 @@
           </div>
         </div>
       </div>
-
-      <title-input
-        v-if="titleEditFlag"
-        @finishTitleInput="finishTitleInput"
-      ></title-input>
 
       <div v-if="existsMenu">
         <div v-for="menuList in menuLists" :key="menuList">
@@ -59,9 +54,14 @@
                 ></title-input>
             </div>
             <div v-else>
-              <title-edit-card :title="itemsObj[menuList]"
-                               @toEditMode="toEditMode($event)"
-                               ></title-edit-card>
+              <title-card
+                :title="itemsObj[menuList]"
+                @toEditMode="toEditMode($event)"
+                @positionUp="positionUp($event)"
+                @positionDown="positionDown($event)"
+                @forkItem="forkItem($event)"
+                @deleteItem="deleteItem($event)"
+                ></title-card>
             </div>
           </div>
           <div v-else>
@@ -121,7 +121,7 @@
 <script>
 import { db } from "~/plugins/firebase.js";
 import ItemEditCard from "~/components/ItemEditCard";
-import TitleEditCard from "~/components/TitleEditCard";
+import TitleCard from "~/components/TitleCard";
 import TitleInput from "~/components/TitleInput";
 
 import * as firebase from "firebase/app";
@@ -130,7 +130,7 @@ export default {
   name: "Menus",
   components: {
     ItemEditCard,
-    TitleEditCard,
+    TitleCard,
     TitleInput
   },
   data() {
@@ -140,7 +140,6 @@ export default {
       itemsObj: {},
 
       restaurantInfo: {},
-      titleEditFlag: false
     };
   },
   beforeCreated() {
@@ -148,14 +147,10 @@ export default {
   },
   computed: {
     existsMenu() {
-      if (this.menuLists.length > 0) {
-        return true;
-      }
-      return false;
+      return (this.menuLists.length > 0);
     }
   },
   async mounted() {
-    const uid = this.adminUid();
     const restaurantRef =  db.doc(`restaurants/${this.restaurantId()}`);
     const resRestInfo = await restaurantRef.get();
 
@@ -206,7 +201,10 @@ export default {
       newTitle._isEditing = true;
       this.menuLists.unshift(newTitle.id);
       this.itemsObj[newTitle.id] = newTitle;
-      // todo save menuList;
+
+      this.saveMenuList();
+    },
+    saveMenuList() {
       db.doc(`restaurants/${this.restaurantId()}`).update("menuLists", this.menuLists);
     },
     goRestaurant() {
@@ -220,6 +218,9 @@ export default {
         force: true
       });
     },
+
+
+    // edit title
     toEditMode(titleId) {
       this.changeTitleMode(titleId, true);
     },
@@ -235,6 +236,37 @@ export default {
       data[key] = value;
       itemsObj[titleId] = data;
       this.itemsObj = itemsObj;
+    },
+    // end of edit title
+
+    //
+    positionUp(itemKey) {
+      const pos = this.menuLists.indexOf(itemKey);
+      if (pos !== 0 && pos !== -1) {
+        const newMenuLists = [...this.menuLists];
+        const tmp = newMenuLists[pos - 1];
+        newMenuLists[pos - 1] = newMenuLists[pos]
+        newMenuLists[pos] = tmp;
+        this.menuLists = newMenuLists;
+        this.saveMenuList();
+      }
+    },
+    positionDown(itemKey) {
+      const pos = this.menuLists.indexOf(itemKey);
+      if (pos !== this.menuLists.length && pos !== -1) {
+        const newMenuLists = [...this.menuLists];
+        const tmp = newMenuLists[pos + 1];
+        newMenuLists[pos + 1] = newMenuLists[pos]
+        newMenuLists[pos] = tmp;
+        this.menuLists = newMenuLists;
+        this.saveMenuList();
+      }
+    },
+    forkItem(item) {
+      console.log(item);
+    },
+    deleteItem(itemKey) {
+      console.log(itemKey);
     },
   }
 };
