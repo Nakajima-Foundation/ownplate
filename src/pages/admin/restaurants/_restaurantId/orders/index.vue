@@ -4,15 +4,19 @@
       Orders
     </h2>
     <ul>
-      <li v-for="order in orders" :key="order.id">{{ order.title }}</li>
+      <ordered-item v-for="order in orders" :key="order.id" />
     </ul>
   </section>
 </template>
 
 <script>
 import { db } from "~/plugins/firebase.js";
+import OrderedItem from "~/components/OrderedItem";
 
 export default {
+  components: {
+    OrderedItem
+  },
   data() {
     return {
       orders: [{
