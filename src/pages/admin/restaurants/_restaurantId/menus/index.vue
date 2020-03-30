@@ -68,6 +68,12 @@
             <item-edit-card
               :menuitem="itemsObj[menuList]"
               @emitting="emitted($event)"
+
+              @toEditMode="toEditMode($event)"
+              @positionUp="positionUp($event)"
+              @positionDown="positionDown($event)"
+              @forkItem="forkItem($event)"
+              @deleteItem="deleteItem($event)"
             ></item-edit-card>
           </div>
         </div>
