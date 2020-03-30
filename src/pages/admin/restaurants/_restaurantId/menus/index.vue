@@ -9,7 +9,7 @@
       outlined
       @click="goRestaurant()"
     >
-      Back
+      {{$t("button.back")}}
     </b-button>
 
     <section class="section">
@@ -91,7 +91,7 @@
               outlined
               @click="addTitle()"
             >
-              Add title
+              {{$t("button.addTitle")}}
             </b-button>
           </div>
           <div class="column">
@@ -104,22 +104,10 @@
               outlined
               @click="addMenuItem()"
             >
-              Add Item
+              {{$t("button.addItem")}}
             </b-button>
           </div>
         </div>
-      </div>
-      <div style="margin-top:1rem;">
-        <b-button
-          style="margin-right:auto"
-          type="is-info"
-          class="counter-button"
-          expanded
-          rounded
-          @click="goRestaurant"
-        >
-          Save
-        </b-button>
       </div>
     </section>
   </section>
