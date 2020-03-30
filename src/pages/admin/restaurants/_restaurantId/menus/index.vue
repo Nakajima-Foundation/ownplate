@@ -50,13 +50,23 @@
       ></title-input>
 
       <div v-if="existsMenu">
-        <div v-for="menuItem in menuItems" :key="menuItem.id">
-          <div v-if="menuItem.titleFlag">
-            <title-edit-card :title="menuItem.title"></title-edit-card>
+        <div v-for="menuList in menuLists" :key="menuList">
+          <div v-if="itemsObj[menuList]._dataType === 'title'">
+            <div v-if="itemsObj[menuList]._isEditing === true">
+              <title-input
+                @updateTitle="updateTitle($event)"
+                :title="itemsObj[menuList]"
+                ></title-input>
+            </div>
+            <div v-else>
+              <title-edit-card :title="itemsObj[menuList]"
+                               @toEditMode="toEditMode($event)"
+                               ></title-edit-card>
+            </div>
           </div>
           <div v-else>
             <item-edit-card
-              :menuitem="menuItem"
+              :menuitem="itemsObj[menuList]"
               @emitting="emitted($event)"
             ></item-edit-card>
           </div>
@@ -114,6 +124,8 @@ import ItemEditCard from "~/components/ItemEditCard";
 import TitleEditCard from "~/components/TitleEditCard";
 import TitleInput from "~/components/TitleInput";
 
+import * as firebase from "firebase/app";
+
 export default {
   name: "Menus",
   components: {
@@ -124,6 +136,9 @@ export default {
   data() {
     return {
       menuItems: [],
+      menuLists: [],
+      itemsObj: {},
+
       restaurantInfo: {},
       titleEditFlag: false
     };
@@ -133,7 +148,7 @@ export default {
   },
   computed: {
     existsMenu() {
-      if (this.menuItems.length > 0) {
+      if (this.menuLists.length > 0) {
         return true;
       }
       return false;
@@ -141,32 +156,34 @@ export default {
   },
   async mounted() {
     const uid = this.adminUid();
-    const res = await db
-      .collection(`restaurants/${this.restaurantId()}/menus`)
-      .get();
-
-    try {
-      this.menuItems = (res.docs || []).map(doc => {
-        let menuId = doc.id;
-        const data = doc.data();
-        data.menuId = doc.id;
-        data.id = doc.id;
-        return data;
-      });
-    } catch (error) {
-      console.log("Error fetch menu,", error);
-    }
-
-    const resRestInfo = await db
-      .collection("restaurants")
-      .doc(this.restaurantId())
-      .get();
+    const restaurantRef =  db.doc(`restaurants/${this.restaurantId()}`);
+    const resRestInfo = await restaurantRef.get();
 
     if (resRestInfo.exists) {
       this.restaurantInfo = resRestInfo.data();
     } else {
       console.log("Error fetch restaurantInfo.");
     }
+    const menu_res = await restaurantRef.collection('menus').get();
+    const title_res = await restaurantRef.collection('titles').get();
+
+    this.menuLists = this.restaurantInfo.menuLists || [];
+
+    try {
+      const menus = (menu_res.docs || []).map(this.doc2data("menu"));
+      const titles = (title_res.docs || []).map(this.doc2data("title"))
+
+      this.itemsObj =  this.array2obj(menus.concat(titles));
+
+      // for backward compatibility
+      if (Object.keys(this.itemsObj).length !== this.menuLists.length) {
+        const diff = Object.keys(this.itemsObj).filter(itemKey => this.menuLists.indexOf(itemKey) === -1);
+        this.menuLists = this.menuLists.concat(diff);
+      }
+    } catch (error) {
+      console.log("Error fetch menu,", error);
+    }
+
   },
   methods: {
     addMenuItem() {
@@ -174,8 +191,23 @@ export default {
         path: `/admin/restaurants/${this.restaurantId()}/menus/new`
       });
     },
-    addTitle() {
-      this.titleEditFlag = true;
+    async updateTitle(title) {
+      await db.doc(`restaurants/${this.restaurantId()}/titles/${title.id}`).update("name", title.name);
+      this.changeTitleMode(title.id, false);
+    },
+    async addTitle() {
+      const data = {
+        name: "",
+        uid: this.adminUid(),
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      };
+      const newTitle = await db.collection(`restaurants/${this.restaurantId()}/titles`).add(data);
+      newTitle._dataType = "title";
+      newTitle._isEditing = true;
+      this.menuLists.unshift(newTitle.id);
+      this.itemsObj[newTitle.id] = newTitle;
+      // todo save menuList;
+      db.doc(`restaurants/${this.restaurantId()}`).update("menuLists", this.menuLists);
     },
     goRestaurant() {
       this.$router.push({
@@ -187,7 +219,23 @@ export default {
         path: `/admin/restaurants/${this.restaurantId()}/menus`,
         force: true
       });
-    }
+    },
+    toEditMode(titleId) {
+      this.changeTitleMode(titleId, true);
+    },
+    changeTitleName(titleId, value) {
+      this.changeTitleObj(titleId, 'name', value);
+    },
+    changeTitleMode(titleId, value) {
+      this.changeTitleObj(titleId, '_isEditing', value);
+    },
+    changeTitleObj(titleId, key, value) {
+      const itemsObj = {...this.itemsObj};
+      const data = itemsObj[titleId];
+      data[key] = value;
+      itemsObj[titleId] = data;
+      this.itemsObj = itemsObj;
+    },
   }
 };
 </script>
