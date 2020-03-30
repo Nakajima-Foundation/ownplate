@@ -14,7 +14,7 @@
         </b-field>
         <div>
           <button
-            class="button is-info is-rounded"
+            class="button is-primary is-rounded"
             :disabled="hasError"
             type="submit">
             {{ $t('restaurantId.submit')}}
