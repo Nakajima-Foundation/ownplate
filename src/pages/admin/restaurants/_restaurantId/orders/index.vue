@@ -4,7 +4,7 @@
       Orders
     </h2>
     <ul>
-      <ordered-item v-for="order in orders" :key="order.id" />
+      <ordered-item v-for="order in orders" :key="order.id" :item="order" />
     </ul>
   </section>
 </template>
