@@ -22,6 +22,11 @@
     "menu": "Menu",
     "about": "About"
   },
+  "button": {
+    "back": "Back",
+    "addTitle": "Add title",
+    "addItem": "Add Item"
+  },
   "auth": {
     "notAdmin": "You need to login as a restaurant owner."
   }

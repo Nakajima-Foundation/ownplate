@@ -9,7 +9,7 @@
       outlined
       @click="goRestaurant()"
     >
-      Back
+      {{$t("button.back")}}
     </b-button>
 
     <section class="section">
@@ -91,7 +91,7 @@
               outlined
               @click="addTitle()"
             >
-              Add title
+              {{$t("button.addTitle")}}
             </b-button>
           </div>
           <div class="column">
@@ -104,7 +104,7 @@
               outlined
               @click="addMenuItem()"
             >
-              Add Item
+              {{$t("button.addItem")}}
             </b-button>
           </div>
         </div>
@@ -141,7 +141,6 @@ export default {
   },
   data() {
     return {
-      menuItems: [],
       menuLists: [],
       itemsObj: {},
 

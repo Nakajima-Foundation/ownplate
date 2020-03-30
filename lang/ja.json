@@ -22,6 +22,11 @@
     "menu": "メニュー",
     "about": "お店情報"
   },
+  "button": {
+    "back": "戻る",
+    "addTitle": "カテゴリー追加",
+    "addItem": "料理/ドリンク追加"
+  },
   "auth": {
     "notAdmin": "You need to login as a restaurant owner."
   }

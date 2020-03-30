@@ -32,7 +32,7 @@
           <div class="media-content">
             <div style="text-align:center;">
               <h2 class="bold">
-                X incomplete orders
+                <router-link :to="'/admin/restaurants/' + restaurantid + '/orders'">X incomplete orders</router-link>
               </h2>
             </div>
           </div>
