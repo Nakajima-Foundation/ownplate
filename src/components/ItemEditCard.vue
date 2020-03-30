@@ -25,16 +25,16 @@
       </div>
     </div>
     <div class="card-footer">
-      <a href="#" class="card-footer-item">
+      <a href="#" class="card-footer-item" @click="positionUp">
         <b-icon icon="arrow-up" size="is-midium"></b-icon>
       </a>
-      <a href="#" class="card-footer-item">
+      <a href="#" class="card-footer-item" @click="positionDown">
         <b-icon icon="arrow-down" size="is-midium"></b-icon>
       </a>
-      <a href="#" class="card-footer-item">
+      <a href="#" class="card-footer-item" @click="forkItem">
         <b-icon icon="plus" size="is-midium"></b-icon>
       </a>
-      <a href="#" class="card-footer-item">
+      <a href="#" class="card-footer-item" @click="deleteItem">
         <b-icon icon="delete" size="is-midium"></b-icon>
       </a>
     </div>
@@ -56,7 +56,20 @@ export default {
       counter: 0
     };
   },
-  methods: {}
+  methods: {
+    positionUp() {
+      this.$emit("positionUp", this.menuitem.id);
+    },
+    positionDown() {
+      this.$emit("positionDown", this.menuitem.id);
+    },
+    forkItem() {
+      this.$emit("forkItem", this.menuitem);
+    },
+    deleteItem() {
+      this.$emit("forkItem", this.menuitem.id);
+    },
+  }
 };
 </script>
 <style lang="scss" scoped>
