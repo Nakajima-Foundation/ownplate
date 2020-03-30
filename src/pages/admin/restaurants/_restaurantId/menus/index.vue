@@ -2,7 +2,7 @@
   <section class="section">
     <b-button
       style="margin-right:auto"
-      type="is-info"
+      type="is-primary"
       class="counter-button"
       icon-left="arrow-left"
       rounded
@@ -84,7 +84,7 @@
           <div class="column">
             <b-button
               style="margin-right:auto"
-              type="is-info"
+              type="is-primary"
               class="counter-button"
               expanded
               rounded
@@ -97,7 +97,7 @@
           <div class="column">
             <b-button
               style="margin-right:auto"
-              type="is-info"
+              type="is-primary"
               class="counter-button"
               expanded
               rounded
@@ -112,7 +112,7 @@
       <div style="margin-top:1rem;">
         <b-button
           style="margin-right:auto"
-          type="is-info"
+          type="is-primary"
           class="counter-button"
           expanded
           rounded

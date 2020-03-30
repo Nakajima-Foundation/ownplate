@@ -30,7 +30,7 @@
             v-if="!openMenuFlag"
             icon-left="cart"
             style="margin-right:auto"
-            type="is-info"
+            type="is-primary"
             class="counter-button"
             rounded
             @click="openMenu"
