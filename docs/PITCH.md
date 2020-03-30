@@ -14,7 +14,7 @@ We have interviewed several restaurant owners, and found out that many of them h
 - staffs touch customers' credit cards during the payment processes
 - customers touch pens during the payment processes
 
-One alternative is a food delivery service like UberEats, but it involves a third party (which increases the risk of contamination) and requires a very high transaction fee (15% to 30% + credit card fee), which is too expensive for already low-margin food businesses. 
+One alternative is a food delivery service like UberEats and Grubhub, but it involves a third party (which increases the risk of contamination) and requires a very high transaction fee (15% to 30% + credit card fee), which is too expensive for already low-margin food businesses. 
 
 ## What it does
 
@@ -42,7 +42,7 @@ Both restaurants and customers will receive various notifications (such as “a 
 
 ## Accomplishments that we are proud of
 
-We are making a very good progress in applying technologies (especially the real-time notification mechanism of Firebase) to solve this problem, identifying various issues involved in food services and focusing on user experiences both by both restaurants and their customers. 
+We are making a very good progress in applying technologies (especially the real-time notification mechanism of Firebase) to solve this problem, identifying various issues involved in food services and focusing on user experiences for restaurants and their customers. 
 
 ## Challenges we ran into
 
