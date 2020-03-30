@@ -3,7 +3,7 @@
     <div class="card-content">
       <div class="level is-mobile" style="margin:0">
         <div class="level-left">
-          <h3>{{ item.title }}</h3>
+          <h3>{{ order.title }}</h3>
         </div>
         <div class="level-right">
           Order Placed
@@ -11,18 +11,18 @@
       </div>
       <div class="level is-mobile" style="margin:0">
         <div class="level-left">
-          {{ item.totalCount }} items
+          {{ order.totalCount }} items
         </div>
         <div class="level-right">
-          {{ item.phone }}
+          {{ order.phone }}
         </div>
       </div>
       <div class="level is-mobile" style="margin:0">
         <div class="level-left">
-          {{ item.totalPrice }}
+          {{ order.totalPrice }}
         </div>
         <div class="level-right">
-          {{ item.pickupTime }}
+          {{ order.pickupTime }}
         </div>
       </div>
     </div>
@@ -32,7 +32,7 @@
 <script>
 export default {
   props: {
-    item: {
+    order: {
       type: Object,
       required: true
     },
