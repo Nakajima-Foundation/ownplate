@@ -8,7 +8,7 @@
     outlined
     @click="goBack()"
   >
-    Back
+    {{ $t('button.back') }}
   </b-button>
 </template>
 
