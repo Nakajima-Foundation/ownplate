@@ -29,6 +29,7 @@
           <li><router-link to="/admin/restaurants/">Your Restaurant(s)</router-link></li>
           <li><router-link to="/admin/restaurants/create">Create a new Reataurant (unique restaurant Id)</router-link></li>
           <li><router-link to="/admin/restaurants/123/edit">Edit a Reataurant</router-link></li>
+          <li><router-link to="/admin/restaurants/123/orders/">Orders</router-link></li>
           <li><router-link to="/admin/user/signin">Admin Signin</router-link></li>
           <li><router-link to="/admin/user/signup">Admin Signup</router-link></li>
         </ol>
