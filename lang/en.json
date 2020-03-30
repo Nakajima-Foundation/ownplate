@@ -1,5 +1,8 @@
 {
   "greeting": "Hello World2",
+  "button": {
+    "back": "Back"
+  },
   "restaurantId": {
     "self": "Restaurant ID",
     "available": "This Restaurant ID is available",

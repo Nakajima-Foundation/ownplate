@@ -1,5 +1,8 @@
 {
   "greeting": "こんにちは、世界",
+  "button": {
+    "back": "戻る"
+  },
   "restaurantId": {
     "self": "レストランID",
     "available": "このレストランIDは使用が可能です",
