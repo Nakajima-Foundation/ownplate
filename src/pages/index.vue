@@ -1,6 +1,6 @@
 <template>
   <span>
-    <section class="hero is-info">
+    <section class="hero is-primary">
       <div class="hero-body">
         <div class="container">
           <h1 class="title">

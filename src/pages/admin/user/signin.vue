@@ -43,7 +43,7 @@
           <div class="column">
             <b-button
               style="margin-right:auto"
-              type="is-info"
+              type="is-primary"
               class="counter-button"
               expanded
               rounded
@@ -54,7 +54,7 @@
           <div class="column">
             <b-button
               style="margin-right:auto"
-              type="is-info"
+              type="is-primary"
               class="counter-button"
               expanded
               rounded

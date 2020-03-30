@@ -2,7 +2,7 @@
   <section class="section">
     <b-button
       style="margin-right:auto"
-      type="is-info"
+      type="is-primary"
       class="counter-button"
       icon-left="arrow-left"
       rounded
@@ -132,7 +132,7 @@
     <b-button
       :disabled="!formIsValid"
       style="margin-right:auto"
-      type="is-info"
+      type="is-primary"
       class="counter-button"
       expanded
       rounded

@@ -155,7 +155,7 @@
     <b-field>
       <b-button variant="outline-primary"
                 style="margin-right:auto"
-                type="is-info"
+                type="is-primary"
                 class="counter-button"
                 rounded
                 @click="updateMap"
@@ -175,7 +175,7 @@
     <b-field>
       <b-button variant="outline-primary"
                 style="margin-right:auto"
-                type="is-info"
+                type="is-primary"
                 class="counter-button"
                 rounded
                 @click="setLocation"
@@ -337,7 +337,7 @@
     <b-button
       :disabled="!formIsValid"
       style="margin-right:auto"
-      type="is-info"
+      type="is-primary"
       class="counter-button"
       expanded
       rounded
