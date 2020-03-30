@@ -40,8 +40,8 @@
         <div class="media">
           <div class="media-content">
             <div style="text-align:center;">
-              <h2 class="bold" @click="editMenu">
-                Edit Menu({{numberOfMenus}} items)
+              <h2 class="bold">
+                <router-link :to="'/admin/restaurants/' + restaurantid + '/menus'">Edit Menu({{numberOfMenus}} items)</router-link>
               </h2>
             </div>
           </div>
@@ -144,9 +144,6 @@ export default {
     },
   },
   methods: {
-    editMenu() {
-      this.$emit("emitting", { restaurantid: this.restaurantid });
-    }
   }
 };
 </script>

@@ -1,6 +1,6 @@
 <template>
   <section class="section" style="background-color:#fffafa">
-    <back-button :url="'/admin/restaurants/' + restaurantId()" />
+    <back-button url="/admin/restaurants/" />
     <h2 class="p-big bold">
       Orders
     </h2>
