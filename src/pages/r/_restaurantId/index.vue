@@ -16,34 +16,29 @@
       ></shop-orner-info>
       <b-tabs size="is-medium" class="block" expanded>
         <b-tab-item :label="$t('sitemenu.menu')">
-          <h2 class="p-big bold">Appetizers</h2>
+          <template v-for="menu in menuLists">
+            <template v-if="itemsObj[menu]">
+              <h2 class="p-big bold" v-if="itemsObj[menu]._dataType === 'title'">
+                {{itemsObj[menu].name}}
+              </h2>
 
-          <item-card
-            v-for="item in appetizers"
-            v-bind:key="item.id"
-            v-bind:id="item.id"
-            v-bind:counter="orders[item.id] || 0"
-            v-bind:title="item.title"
-            v-bind:payment="item.payment || 0"
-            v-bind:description="item.description"
-            v-bind:image="item.image"
-            @emitting="emitted($event)"
-          ></item-card>
+              <item-card
+                v-bind:key="itemsObj[menu].id"
+                v-bind:id="itemsObj[menu].id"
+                v-bind:counter="orders[itemsObj[menu].id] || 0"
+                v-bind:title="itemsObj[menu].itemName"
+                v-bind:payment="Number(itemsObj[menu].price||0)"
+                v-bind:description="itemsObj[menu].itemDescription"
+                v-bind:image="itemsObj[menu].itemPhoto"
+                @emitting="emitted($event)"
+                v-if="itemsObj[menu]._dataType === 'menu'"
+                ></item-card>
+
+            </template>
+          </template>
+
 
           <hr class="hr-black" />
-
-          <h2 class="p-big bold">Entrees</h2>
-          <item-card
-            v-for="item in entrees"
-            v-bind:key="item.id"
-            v-bind:id="item.id"
-            v-bind:counter="orders[item.id] || 0"
-            v-bind:title="item.itemName"
-            v-bind:payment="Number(item.price||0)"
-            v-bind:description="item.itemDescription"
-            v-bind:image="item.itemPhoto"
-            @emitting="emitted($event)"
-          ></item-card>
 
         </b-tab-item>
         <b-tab-item :label="$t('sitemenu.about')">
@@ -123,6 +118,11 @@ export default {
       restaurantsId: this.restaurantId(),
       shopInfo: {},
       // isCardModalActive: false
+      menus: [],
+      titles: [],
+      menuLists: [],
+      itemsObj: {},
+
       detacher: [],
     };
   },
@@ -135,17 +135,18 @@ export default {
     });
     const menu_detacher = db.collection(`restaurants/${this.restaurantId()}/menus`).onSnapshot((menu) => {
       if (!menu.empty) {
-        this.entrees = [];
-        menu.docs.map((doc) => {
-          const data = doc.data();
-          data.id = doc.id;
-          this.entrees.push(data);
-        });
+        this.menus = menu.docs.map(this.doc2data("menu"));
+      }
+    });
+    const title_detacher = db.collection(`restaurants/${this.restaurantId()}/titles`).onSnapshot((title) => {
+      if (!title.empty) {
+        this.titles = title.docs.map(this.doc2data("title"));
       }
     });
     this.detacher = [
       restaurant_detacher,
-      menu_detacher
+      menu_detacher,
+      title_detacher,
     ];
   },
   destroyed() {
@@ -159,11 +160,29 @@ export default {
     footCounter(val) {
       console.log("footCounter" + val);
     },
+    menus() {
+      this.itemsObj =  this.array2obj(this.menus.concat(this.titles));
+      this.updateMenu();
+    },
+    titles() {
+      this.itemsObj =  this.array2obj(this.menus.concat(this.titles));
+      this.updateMenu();
+    },
+    shopInfo() {
+      this.menuLists = this.shopInfo.menuLists || [];
+      this.updateMenu();
+    },
   },
   mounted() {
     console.log(this.restaurantId());
   },
   methods: {
+    updateMenu() {
+      if (Object.keys(this.itemsObj).length !== this.menuLists.length) {
+        const diff = Object.keys(this.itemsObj).filter(itemKey => this.menuLists.indexOf(itemKey) === -1);
+        this.menuLists = this.menuLists.concat(diff);
+      }
+    },
     emitted(eventArgs) {
       this.orders[eventArgs.id] = eventArgs.counter;
       const orders = this.orders;

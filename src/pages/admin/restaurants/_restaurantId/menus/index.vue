@@ -141,7 +141,6 @@ export default {
   },
   data() {
     return {
-      menuItems: [],
       menuLists: [],
       itemsObj: {},
 
