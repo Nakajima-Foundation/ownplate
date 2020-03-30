@@ -20,7 +20,9 @@
   },
   "sitemenu": {
     "menu": "メニュー",
-    "about": "お店情報"
+    "about": "お店情報",
+    "checkout": "お会計",
+    "orderCounter": "{count} 個"
   },
   "button": {
     "back": "戻る",
