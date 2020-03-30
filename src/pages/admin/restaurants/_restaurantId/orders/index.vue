@@ -1,5 +1,6 @@
 <template>
   <section class="section" style="background-color:#fffafa">
+    <back-button url=".." />
     <h2 class="p-big bold">
       Orders
     </h2>
@@ -15,10 +16,12 @@
 <script>
 import { db } from "~/plugins/firebase.js";
 import OrderedItem from "~/components/OrderedItem";
+import BackButton from "~/components/BackButton";
 
 export default {
   components: {
-    OrderedItem
+    OrderedItem,
+    BackButton
   },
   data() {
     return {

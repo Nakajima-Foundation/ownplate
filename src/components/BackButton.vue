@@ -14,10 +14,16 @@
 
 <script>
 export default {
+  props: {
+    url: {
+      type: String,
+      required: true
+    }
+  },
   methods: {
     goBack() {
       this.$router.push({
-        path: `/admin/restaurants/`
+        path: this.url
       });
     }
   }
