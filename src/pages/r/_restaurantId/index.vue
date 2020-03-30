@@ -51,8 +51,8 @@
         class="button is-primary is-rounded"
         @click="checkOut"
       >
-        <span style="margin-right: auto;">{{ footCounter }} {{ footCounter > 1 ? "items": "item"}}</span>
-        <span class="bold" style="margin-left:auto;">CHECKOUT</span>
+        <span style="margin-right: auto;">{{$tc('sitemenu.orderCounter', footCounter, {count: footCounter})}}</span>
+        <span class="bold" style="margin-left:auto;">{{$t('sitemenu.checkout')}}</span>
       </button>
 
       <login-modal ref="modalLogin"></login-modal>
@@ -80,38 +80,6 @@ export default {
   },
   data() {
     return {
-      entrees: [{
-        id:"1001",
-        title:"Kushikatsu Special Platter",
-        payment: 2600,
-        description:"11 pieces assorted kushikatsu. Served with miso soup and salad.",
-        image:"https://magazine.hitosara.com/image/421/MM_421.jpg",
-      },{
-        id:"1002",
-        title:"Spicy Eggplant",
-        payment: 800,
-        description:"Steamed topped with assorted fresh roe and special sauce.",
-        image:"https://demandafrica-4741.kxcdn.com/wp-content/uploads/2017/08/Spicy-Chinese-Eggplant.jpg"
-      },{
-        id:"1003",
-        title:"Oyako-don",
-        payment: 800,
-        description:"Chiken and Egg on Rice.",
-        image:"https://www.momoya.co.jp/wp-content/uploads/2016/01/%E6%B8%88%EF%BC%97.jpg"
-      }],
-      appetizers: [{
-        id:"1004",
-        title:"Chicken Karaage",
-        payment:995,
-        description:"Chicken Karaage",
-        image:"https://img.cpcdn.com/recipes/4417485/280x487s/e4e40823fa78ca87df83284c5ecc5cf2.jpg"
-      },{
-        id:"1005",
-        title:"Edamame",
-        payment:300,
-        description:"Boiled Soy Beans",
-        image:"https://www.olive-hitomawashi.com/column/assets_c/2017/12/SEO058K_0-thumb-500xauto-50342.jpg",
-      }],
       orders: {},
       orderId: null,
       footCounter: 0,

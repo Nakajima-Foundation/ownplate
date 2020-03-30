@@ -20,7 +20,9 @@
   },
   "sitemenu": {
     "menu": "Menu",
-    "about": "About"
+    "about": "About",
+    "checkout": "CHECKOUT",
+    "orderCounter": "{count} item | {count} items"
   },
   "button": {
     "back": "Back",
