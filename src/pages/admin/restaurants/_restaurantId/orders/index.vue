@@ -24,13 +24,25 @@ export default {
     return {
       orders: [{
         id:111,
-        title:"one"
+        totalCount: 3,
+        totalPrice: "$20.15",
+        phone: "(333)444-5555",
+        pickupTime: "4:41pm",
+        title:"#0001"
       }, {
         id:222,
-        title:"two"
+        totalCount: 12,
+        totalPrice: "$120.30",
+        phone: "(222)444-5555",
+        pickupTime: "4:35pm",
+        title:"#0002"
       }, {
         id:333,
-        title:"three"
+        totalCount: 4,
+        totalPrice: "$42.15",
+        phone: "(444)444-5555",
+        pickupTime: "4:30pm",
+        title:"#0003"
       }]
     }
   },
