@@ -45,10 +45,17 @@ export default {
         this.orders = orders.docs.map(this.doc2data("order"));
       }
     });
-    this.detacher = [
+    this.detachers = [
       restaurant_detacher,
       order_detacher
     ]
+  },
+  destroyed() {
+    if (this.detachers) {
+      this.detachers.map((detacher) => {
+        detacher();
+      });
+    }
   },
   computed: {
   },
