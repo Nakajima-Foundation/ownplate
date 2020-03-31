@@ -4,6 +4,7 @@
     <h2 class="p-big bold">
       #000
     </h2>
+    <ordered-item />
     <p>{{ count }}</p>
     <p>{{ menus }}</p>
     <p>{{ orderInfo }}</p>
@@ -14,10 +15,12 @@
 <script>
 import { db } from "~/plugins/firebase.js";
 import BackButton from "~/components/BackButton";
+import OrderedItem from "~/components/OrderedItem";
 
 export default {
   components: {
-    BackButton
+    BackButton,
+    OrderedItem
   },
 
   data() {
