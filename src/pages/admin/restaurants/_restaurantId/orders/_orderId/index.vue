@@ -4,7 +4,7 @@
     <h2 class="p-big bold">
       #000
     </h2>
-    <ordered-item />
+    <ordered-item v-for="id in ids" :key="id" :item="id" />
     <p>{{ count }}</p>
     <p>{{ menus }}</p>
     <p>{{ orderInfo }}</p>
@@ -61,9 +61,12 @@ export default {
     });
   },
   computed: {
+    ids() {
+      return Object.keys(this.orderInfo.order);
+    },
     count() {
       if (this.orderInfo.order) {
-        return Object.keys(this.orderInfo.order).length;
+        return this.ids.length;
       }
       return 0;
     }

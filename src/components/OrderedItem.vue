@@ -3,7 +3,7 @@
     <div class="card-content" @click="$emit('selected', order)">
       <div class="level is-mobile" style="margin:0">
         <div class="level-left">
-          <h3>foo</h3>
+          {{item}}
         </div>
         <div class="level-right">
           bar
