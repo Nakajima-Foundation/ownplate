@@ -12,7 +12,6 @@
           'https://pbs.twimg.com/profile_images/704153164438642692/bYo0YeEr_bigger.jpg'
         "
         :name="this.shopInfo.restaurantName || 'Yuta Seatle'"
-
       ></shop-orner-info>
       <b-tabs size="is-medium" class="block" expanded>
         <b-tab-item :label="$t('sitemenu.menu')">

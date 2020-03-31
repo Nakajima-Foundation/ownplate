@@ -1,20 +1,12 @@
 <template>
   <div class="card block">
-    <order-item
-      :title="'Kushikatsu Special PlatterPlatter'"
-      :payment="'$26.00'"
-      :option="'($3.00 ea.)'"
-      :option-payment="'Put the dressing on the side.'"
-    ></order-item>
 
-    <order-item :title="'Spicy Eggplant'" :payment="'$8.00'"></order-item>
-
-    <order-item
-      :title="'Spicy Eggplant'"
-      :payment="'$8.00'"
-      :option="'($3.00 ea.)'"
-      :option-payment="'Put the dressing on the side.'"
-    ></order-item>
+    <template v-for="orderItem in orderItems">
+      <order-item
+        :title="orderItem.item.itemName"
+        :payment="$n(orderItem.item.price, 'currency')"
+        ></order-item>
+    </template>
 
     <hr class="hr-black" />
 
@@ -27,7 +19,7 @@
         </div>
         <div class="media-right" style="margin-top:-0.4rem;">
           <p class="p-bold">
-            $40.00
+            {{$n(orderInfo.sub_total, 'currency')}}
           </p>
         </div>
       </div>
@@ -42,7 +34,7 @@
         </div>
         <div class="media-right" style="margin-top:-0.4rem;">
           <p class="p-bold">
-            $4.00
+            {{$n(orderInfo.tax, 'currency')}}
           </p>
         </div>
       </div>
@@ -57,7 +49,7 @@
         </div>
         <div class="media-right">
           <p class="p-big bold" style="color:#CB4B4B">
-            $44.00
+            {{$n(orderInfo.total, 'currency')}}
           </p>
         </div>
       </div>
@@ -70,6 +62,16 @@ import OrderItem from "~/components/OrderItem";
 export default {
   name: "Order",
 
+  props: {
+    orderItems: {
+      type: Array,
+      required: true
+    },
+    orderInfo: {
+      type: Object,
+      required: true
+    },
+  },
   components: {
     OrderItem
   },
