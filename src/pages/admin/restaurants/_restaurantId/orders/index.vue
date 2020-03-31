@@ -60,13 +60,11 @@ export default {
       if (restaurant.exists) {
         const restaurant_data = restaurant.data();
         this.shopInfo = restaurant_data;
-        console.log(this.shopInfo);
       }
     });
     const menu_detacher = db.collection(`restaurants/${this.restaurantId()}/menus`).onSnapshot((menu) => {
       if (!menu.empty) {
         this.menus = menu.docs.map(this.doc2data("menu"));
-        console.log(this.menus);
       }
     });
     const order_detacher = db.collection(`restaurants/${this.restaurantId()}/orders`).onSnapshot((orders) => {
