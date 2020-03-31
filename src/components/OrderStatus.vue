@@ -20,7 +20,6 @@ export default {
   },
   computed: {
     statusKey() {
-      console.log(order_status);
       return Object.keys(order_status).reduce((result, key)=>{
         if (order_status[key] == this.order.status) {
           return key;

@@ -2,7 +2,7 @@
   <section class="section" style="background-color:#fffafa">
     <back-button url="/admin/restaurants/" />
     <h2 class="p-big bold">
-      Orders
+      {{ shopInfo.restaurantName }}
     </h2>
     <div>
       <div>
@@ -38,6 +38,7 @@ export default {
       if (restaurant.exists) {
         const restaurant_data = restaurant.data();
         this.shopInfo = restaurant_data;
+        console.log(this.shopInfo);
       }
     });
     const order_detacher = db.collection(`restaurants/${this.restaurantId()}/orders`).onSnapshot((orders) => {
