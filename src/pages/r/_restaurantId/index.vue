@@ -87,7 +87,6 @@ export default {
       // isCardModalActive: false
       menus: [],
       titles: [],
-      menuLists: [],
       itemsObj: {},
 
       detacher: [],
@@ -127,29 +126,21 @@ export default {
     footCounter(val) {
       console.log("footCounter" + val);
     },
-    menus() {
-      this.itemsObj =  this.array2obj(this.menus.concat(this.titles));
-      this.updateMenu();
-    },
-    titles() {
-      this.itemsObj =  this.array2obj(this.menus.concat(this.titles));
-      this.updateMenu();
-    },
-    shopInfo() {
-      this.menuLists = this.shopInfo.menuLists || [];
-      this.updateMenu();
-    },
+  },
+  computed: {
+    menuLists() {
+      var list = this.shopInfo.menuLists || [];
+      if (Object.keys(this.itemsObj).length !== list.length) {
+        const diff = Object.keys(this.itemsObj).filter(itemKey => this.menuLists.indexOf(itemKey) === -1);
+        list = list.concat(diff);
+      }
+      return list;
+    }
   },
   mounted() {
     console.log(this.restaurantId());
   },
   methods: {
-    updateMenu() {
-      if (Object.keys(this.itemsObj).length !== this.menuLists.length) {
-        const diff = Object.keys(this.itemsObj).filter(itemKey => this.menuLists.indexOf(itemKey) === -1);
-        this.menuLists = this.menuLists.concat(diff);
-      }
-    },
     emitted(eventArgs) {
       this.orders[eventArgs.id] = eventArgs.counter;
       const orders = this.orders;
