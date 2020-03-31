@@ -2,16 +2,14 @@
   <section class="section" style="background-color:#fffafa">
     <back-button url="/admin/restaurants/" />
     <h2 class="p-big bold">
-      Orders
+      {{ shopInfo.restaurantName }}
     </h2>
     <div>
-      <div>
-        <ordered-item 
-          v-for="order in orders" 
-          :key="order.id"
-          @selected = "orderSelected($event)" 
-          :order="order" />
-      </div>
+      <ordered-info 
+        v-for="order in orders" 
+        :key="order.id"
+        @selected = "orderSelected($event)" 
+        :order="order" />
     </div>
   </section>
   
@@ -19,12 +17,12 @@
 
 <script>
 import { db } from "~/plugins/firebase.js";
-import OrderedItem from "~/components/OrderedItem";
+import OrderedInfo from "~/components/OrderedInfo";
 import BackButton from "~/components/BackButton";
 
 export default {
   components: {
-    OrderedItem,
+    OrderedInfo,
     BackButton
   },
   data() {
@@ -38,6 +36,7 @@ export default {
       if (restaurant.exists) {
         const restaurant_data = restaurant.data();
         this.shopInfo = restaurant_data;
+        console.log(this.shopInfo);
       }
     });
     const order_detacher = db.collection(`restaurants/${this.restaurantId()}/orders`).onSnapshot((orders) => {
@@ -45,10 +44,17 @@ export default {
         this.orders = orders.docs.map(this.doc2data("order"));
       }
     });
-    this.detacher = [
+    this.detachers = [
       restaurant_detacher,
       order_detacher
     ]
+  },
+  destroyed() {
+    if (this.detachers) {
+      this.detachers.map((detacher) => {
+        detacher();
+      });
+    }
   },
   computed: {
   },
