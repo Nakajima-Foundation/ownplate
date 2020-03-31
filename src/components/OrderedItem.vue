@@ -1,13 +1,9 @@
 <template>
   <div class="card block">
     <div class="card-content" @click="$emit('selected', order)">
-      <div class="level is-mobile" style="margin:0">
-        <div class="level-left">
-          {{item}}
-        </div>
-        <div class="level-right">
-          bar
-        </div>
+      <div style="margin:0">
+        <h3>{{menu.itemName}}</h3>
+        <p>x {{ item.count }}</p>
       </div>
     </div>
   </div>
@@ -25,8 +21,12 @@ export default {
     },
   },
   computed: {
+    menu() {
+      return this.item.menu;
+    }
   },
   mounted() {
+    console.log(this.item.menu)
   }
 }
 </script>
