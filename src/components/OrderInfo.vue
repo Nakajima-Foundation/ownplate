@@ -3,8 +3,8 @@
 
     <template v-for="orderItem in orderItems">
       <order-item
-        :title="orderItem.item.itemName"
-        :payment="$n(orderItem.item.price, 'currency')"
+        :item="orderItem.item"
+        :count="orderItem.count"
         ></order-item>
     </template>
 

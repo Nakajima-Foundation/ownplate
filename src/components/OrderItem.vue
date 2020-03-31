@@ -4,18 +4,18 @@
     <div class="media">
       <div class="media-content">
         <h4 class="bold">
-          {{ title }}
+          {{ item.itemName }} {{count > 1 ? " x " + String(count) : "" }}
         </h4>
         <p v-if="option" class="p-font-mini payment">
           {{ option }}
         </p>
         <p v-if="optionPayment" class="p-font-mini payment">
-          {{ optionPayment }}
+          {{ $n(optionPayment, 'currency') }}
         </p>
       </div>
       <div class="media-right" style="margin-top:-0.4rem;">
         <p class="p-bold">
-          {{ payment }}
+          {{ $n(item.price * count, 'currency') }}
         </p>
       </div>
     </div>
@@ -28,12 +28,12 @@ import store from "~/store/index.js";
 import { mapGetters, mapMutations } from "vuex";
 export default {
   props: {
-    title: {
-      type: String,
+    item: {
+      type: Object,
       required: true
     },
-    payment: {
-      type: String,
+    count: {
+      type: Number,
       required: true
     },
     optionPayment: {
