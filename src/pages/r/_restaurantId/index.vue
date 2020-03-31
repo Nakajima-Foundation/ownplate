@@ -87,7 +87,6 @@ export default {
       // isCardModalActive: false
       menus: [],
       titles: [],
-      itemsObj: {},
 
       detacher: [],
     };
@@ -128,17 +127,17 @@ export default {
     },
   },
   computed: {
+    itemsObj() {
+      return this.array2obj(this.menus.concat(this.titles));
+    },
     menuLists() {
-      var list = this.shopInfo.menuLists || [];
+      const list = this.shopInfo.menuLists || [];
       if (Object.keys(this.itemsObj).length !== list.length) {
-        const diff = Object.keys(this.itemsObj).filter(itemKey => this.menuLists.indexOf(itemKey) === -1);
-        list = list.concat(diff);
+        const diff = Object.keys(this.itemsObj).filter(itemKey => list.indexOf(itemKey) === -1);
+        return list.concat(diff);
       }
       return list;
-    }
-  },
-  mounted() {
-    console.log(this.restaurantId());
+    },
   },
   methods: {
     emitted(eventArgs) {
