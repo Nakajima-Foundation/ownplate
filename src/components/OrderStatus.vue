@@ -1,6 +1,8 @@
 <template>
-  <b-button 
+  <b-button
+    :class="statusKey" 
     variant="outline-primary"
+    size="is-small"
     rounded>
     {{ $t("order.status." + statusKey) }}
   </b-button>
@@ -29,3 +31,11 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.validation_ok {
+  color:red;
+  background:#ffeeee;
+  border: 0;
+}
+</style>
