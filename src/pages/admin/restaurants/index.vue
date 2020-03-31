@@ -38,7 +38,6 @@
                 :publicflag="restaurantItem.publicFlag||false"
                 :createdat="restaurantItem.createdAt"
                 :numberOfMenus="restaurantItem.numberOfMenus||0"
-                @emitting="emitted($event)"
               ></restaurant-edit-card>
             </div>
           </div>
@@ -153,13 +152,6 @@ export default {
     }
   },
   methods: {
-    emitted(eventArgs) {
-      if (eventArgs.restaurantid) {
-        this.$router.push({
-          path: `/admin/restaurants/${eventArgs.restaurantid}/menus/`
-        });
-      }
-    }
   }
 };
 </script>
