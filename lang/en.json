@@ -1,8 +1,5 @@
 {
   "greeting": "Hello World2",
-  "button": {
-    "back": "Back"
-  },
   "restaurantId": {
     "self": "Restaurant ID",
     "available": "This Restaurant ID is available",
@@ -28,7 +25,17 @@
     "orderCounter": "{count} item | {count} items"
   },
   "order": {
-    "yourOrder": "Your Order"
+    "yourOrder": "Your Order",
+    "status": {
+      "unexpected": "Unexpected",
+      "error": "Error",
+      "new_order": "New Order",
+      "validation_ok": "Validated",
+      "customer_paid": "Paid", 
+      "order_accepted": "Accepted",
+      "cooking_completed": "Cooking Complete",
+      "customer_picked_up": "Picked Up"
+    }
   },
   "button": {
     "back": "Back",

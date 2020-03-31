@@ -6,7 +6,7 @@
           <h3>{{ order.number || "#000" }}</h3>
         </div>
         <div class="level-right">
-          Order Placed
+          <order-status :order="order" />
         </div>
       </div>
       <div class="level is-mobile" style="margin:0">
@@ -30,7 +30,12 @@
 </template>
 
 <script>
+import OrderStatus from "~/components/OrderStatus";
+
 export default {
+  components: {
+    OrderStatus,
+  },
   props: {
     order: {
       type: Object,
