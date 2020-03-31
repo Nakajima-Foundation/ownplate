@@ -30,29 +30,7 @@ export default {
   data() {
     return {
       shopInfo: {},
-      menus: [],
-      orders: [{
-        id:111,
-        totalCount: 3,
-        totalPrice: "$20.15",
-        phone: "(333)444-5555",
-        pickupTime: "4:41pm",
-        title:"#0001"
-      }, {
-        id:222,
-        totalCount: 12,
-        totalPrice: "$120.30",
-        phone: "(222)444-5555",
-        pickupTime: "4:35pm",
-        title:"#0002"
-      }, {
-        id:333,
-        totalCount: 4,
-        totalPrice: "$42.15",
-        phone: "(444)444-5555",
-        pickupTime: "4:30pm",
-        title:"#0003"
-      }]
+      orders: []
     }
   },
   created() {
@@ -62,11 +40,6 @@ export default {
         this.shopInfo = restaurant_data;
       }
     });
-    const menu_detacher = db.collection(`restaurants/${this.restaurantId()}/menus`).onSnapshot((menu) => {
-      if (!menu.empty) {
-        this.menus = menu.docs.map(this.doc2data("menu"));
-      }
-    });
     const order_detacher = db.collection(`restaurants/${this.restaurantId()}/orders`).onSnapshot((orders) => {
       if (!orders.empty) {
         this.orders = orders.docs.map(this.doc2data("order"));
@@ -74,7 +47,6 @@ export default {
     });
     this.detacher = [
       restaurant_detacher,
-      menu_detacher,
       order_detacher
     ]
   },
