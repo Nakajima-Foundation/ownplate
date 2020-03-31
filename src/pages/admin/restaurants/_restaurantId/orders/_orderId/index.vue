@@ -5,6 +5,7 @@
       #000
     </h2>
     <ordered-item v-for="id in ids" :key="id" :item="id" />
+    <p>{{ ids }}</p>
     <p>{{ count }}</p>
     <p>{{ menus }}</p>
     <p>{{ orderInfo }}</p>
@@ -62,13 +63,10 @@ export default {
   },
   computed: {
     ids() {
-      return Object.keys(this.orderInfo.order);
+      return this.orderInfo.order ? Object.keys(this.orderInfo.order) : [];
     },
     count() {
-      if (this.orderInfo.order) {
-        return this.ids.length;
-      }
-      return 0;
+      return this.ids ? this.ids.length : 0;
     }
   },
   methods: {
