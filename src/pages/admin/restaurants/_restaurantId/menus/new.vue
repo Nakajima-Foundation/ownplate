@@ -179,11 +179,25 @@ export default {
       availability: "",
       availOptions: AVAIL_OPTIONS,
       uid: uid,
-      croppa: {}
+      croppa: {},
+      restaurantInfo: {},
     };
   },
   beforeCreated() {
     this.checkAdminPermission();
+  },
+  async created() {
+    const restaurantRef =  db.doc(`restaurants/${this.restaurantId()}`);
+    const resRestInfo = await restaurantRef.get();
+    if (resRestInfo.exists) {
+      this.restaurantInfo = resRestInfo.data();
+      // check restaurantInfo owner
+      if (this.restaurantInfo.uid !== this.adminUid()) {
+        // something error
+      }
+    } else {
+      console.log("Error fetch restaurantInfo.");
+    }
   },
   computed: {
     formIsValid() {
@@ -195,7 +209,7 @@ export default {
       if (!this.formIsValid) return;
 
       //upload image
-      const menuId = this.generateUniqueId();
+      const menuId = db.collection("random").doc().id;
       let file = await this.croppa.promisedBlob("image/jpeg", 0.8);
       let itemPhoto = await this.uploadFile(file, menuId);
       const itemData = {
@@ -208,17 +222,15 @@ export default {
         titleFlag: false,
         createdAt: new Date()
       };
-      await this.createItemData(this.restaurantId(), itemData);
+      const newData = await db.collection(`restaurants/${this.restaurantId()}/menus`).add(itemData);
+
+      const menuLists = this.restaurantInfo.menuLists || [];
+      menuLists.push(newData.id);
+      await db.doc(`restaurants/${this.restaurantId()}`).update("menuLists", menuLists);
 
       this.$router.push({
         path: `/admin/restaurants/${this.restaurantId()}/menus`
       });
-    },
-    generateUniqueId() {
-      return (
-        new Date().getTime().toString(16) +
-        Math.floor(1000000000 * Math.random()).toString(16)
-      );
     },
     uploadFile(file, menuId) {
       return new Promise((resolve, rejected) => {
@@ -239,21 +251,6 @@ export default {
               .getDownloadURL()
               .then(downloadURL => resolve(downloadURL))
         );
-      });
-    },
-    createItemData(restaurantId, itemData) {
-      return new Promise((resolve, rejected) => {
-        db.collection("restaurants")
-          .doc(restaurantId)
-          .collection("menus")
-          .add(itemData)
-          .then(() => {
-            resolve();
-          })
-          .catch(error => {
-            console.error("Error writing document: ", error);
-            this.loading = false;
-          });
       });
     },
     goBack() {
