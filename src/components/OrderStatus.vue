@@ -1,7 +1,9 @@
 <template>
-  <span>
+  <b-button 
+    variant="outline-primary"
+    rounded>
     {{ $t("order.status." + statusKey) }}
-  </span>
+  </b-button>
 </template>
 
 <script>
