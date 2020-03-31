@@ -27,6 +27,9 @@
     "checkout": "CHECKOUT",
     "orderCounter": "{count} item | {count} items"
   },
+  "order": {
+    "yourOrder": "Your Order"
+  },
   "button": {
     "back": "Back",
     "addTitle": "Add title",
