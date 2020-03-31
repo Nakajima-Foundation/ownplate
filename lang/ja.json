@@ -1,8 +1,5 @@
 {
   "greeting": "こんにちは、世界",
-  "button": {
-    "back": "戻る"
-  },
   "restaurantId": {
     "self": "レストランID",
     "available": "このレストランIDは使用が可能です",
@@ -26,6 +23,19 @@
     "about": "お店情報",
     "checkout": "お会計",
     "orderCounter": "{count} 個"
+  },
+  "order": {
+    "yourOrder": "あなたの注文",
+    "status": {
+      "unexpected": "(Unexpected)",
+      "error": "エラー",
+      "new_order": "新規注文",
+      "validation_ok": "確認済み",
+      "customer_paid": "支払い済み", 
+      "order_accepted": "受付済み",
+      "cooking_completed": "料理済み",
+      "customer_picked_up": "受け渡し完了"
+    }
   },
   "button": {
     "back": "戻る",
