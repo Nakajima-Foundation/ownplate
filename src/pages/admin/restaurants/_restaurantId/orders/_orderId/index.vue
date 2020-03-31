@@ -4,11 +4,7 @@
     <h2 class="p-big bold">
       #000
     </h2>
-    <ordered-item v-for="id in ids" :key="id" :item="id" />
-    <p>{{ ids }}</p>
-    <p>{{ count }}</p>
-    <p>{{ menus }}</p>
-    <p>{{ orderInfo }}</p>
+    <ordered-item v-for="id in ids" :key="id" :item="item(id)" />
   </section>
   
 </template>
@@ -27,7 +23,7 @@ export default {
   data() {
     return {
       shopInfo: {},
-      menus: [],
+      menus: {},
       orderInfo: {},
       detacher: [],
     };
@@ -41,7 +37,11 @@ export default {
     });
     const menu_detacher = db.collection(`restaurants/${this.restaurantId()}/menus`).onSnapshot((menu) => {
       if (!menu.empty) {
-        this.menus = menu.docs.map(this.doc2data("menu"));
+        const menuList = menu.docs.map(this.doc2data("menu"));
+        this.menus = {};
+        menuList.map((menu)=>{
+          this.menus[menu.id] = menu;
+        });
       }
     });
     const order_detacher = db.doc(`restaurants/${this.restaurantId()}/orders/${this.orderId()}`).onSnapshot((order) => {
@@ -70,6 +70,12 @@ export default {
     }
   },
   methods: {
+    item(id) {
+      return {
+        count: this.orderInfo.order[id],
+        menu: this.menus[id]
+      }
+    }
   }
 };
 </script>
