@@ -1,8 +1,8 @@
 <template>
   <div class="card block">
-    <div class="card-content" @click="$emit('selected', order)">
+    <div class="card-content">
       <div style="margin:0">
-        <h3>{{menu.itemName}}</h3>
+        <h3>{{ menu.itemName }}</h3>
         <p>x {{ item.count }}</p>
       </div>
     </div>

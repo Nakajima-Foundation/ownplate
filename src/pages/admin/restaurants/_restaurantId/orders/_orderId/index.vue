@@ -38,10 +38,7 @@ export default {
     const menu_detacher = db.collection(`restaurants/${this.restaurantId()}/menus`).onSnapshot((menu) => {
       if (!menu.empty) {
         const menuList = menu.docs.map(this.doc2data("menu"));
-        this.menus = {};
-        menuList.map((menu)=>{
-          this.menus[menu.id] = menu;
-        });
+        this.menus = this.array2obj(menuList);
       }
     });
     const order_detacher = db.doc(`restaurants/${this.restaurantId()}/orders/${this.orderId()}`).onSnapshot((order) => {
