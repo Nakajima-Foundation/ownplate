@@ -2,8 +2,11 @@
   <section class="section" style="background-color:#fffafa">
     <back-button :url="'/admin/restaurants/' + restaurantId() + '/orders'" />
     <h2 class="p-big bold">
-      Order
+      #000
     </h2>
+    <p>{{ count }}</p>
+    <p>{{ menus }}</p>
+    <p>{{ orderInfo }}</p>
   </section>
   
 </template>
@@ -21,7 +24,7 @@ export default {
     return {
       shopInfo: {},
       menus: [],
-      titles: [],
+      orderInfo: {},
       detacher: [],
     };
   },
@@ -37,15 +40,16 @@ export default {
         this.menus = menu.docs.map(this.doc2data("menu"));
       }
     });
-    const title_detacher = db.collection(`restaurants/${this.restaurantId()}/titles`).onSnapshot((title) => {
-      if (!title.empty) {
-        this.titles = title.docs.map(this.doc2data("title"));
+    const order_detacher = db.doc(`restaurants/${this.restaurantId()}/orders/${this.orderId()}`).onSnapshot((order) => {
+      if (order.exists) {
+        const order_data = order.data();
+        this.orderInfo = order_data;
       }
     });
     this.detacher = [
       restaurant_detacher,
       menu_detacher,
-      title_detacher,
+      order_detacher
     ];
   },
   destroyed() {
@@ -54,6 +58,12 @@ export default {
     });
   },
   computed: {
+    count() {
+      if (this.orderInfo.order) {
+        return Object.keys(this.orderInfo.order).length;
+      }
+      return 0;
+    }
   },
   methods: {
   }
