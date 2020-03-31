@@ -5,7 +5,7 @@
       {{ shopInfo.restaurantName }}
     </h2>
     <div>
-      <ordered-item 
+      <ordered-info 
         v-for="order in orders" 
         :key="order.id"
         @selected = "orderSelected($event)" 
@@ -17,12 +17,12 @@
 
 <script>
 import { db } from "~/plugins/firebase.js";
-import OrderedItem from "~/components/OrderedItem";
+import OrderedInfo from "~/components/OrderedInfo";
 import BackButton from "~/components/BackButton";
 
 export default {
   components: {
-    OrderedItem,
+    OrderedInfo,
     BackButton
   },
   data() {
