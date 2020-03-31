@@ -11,7 +11,7 @@
       </div>
       <div class="level is-mobile" style="margin:0">
         <div class="level-left">
-          {{ order.totalCount }} items
+          {{ totalCount }} items
         </div>
         <div class="level-right">
           {{ order.phone }}
@@ -19,7 +19,7 @@
       </div>
       <div class="level is-mobile" style="margin:0">
         <div class="level-left">
-          {{ order.totalPrice }}
+          {{ order.total }}
         </div>
         <div class="level-right">
           {{ order.pickupTime }}
@@ -36,6 +36,19 @@ export default {
       type: Object,
       required: true
     },
+  },
+  computed: {
+    totalCount() {
+      if (this.order.order) {
+        return Object.keys(this.order.order).reduce((count, id)=>{ 
+          return count + this.order.order[id]; 
+        }, 0);
+      }
+      return 0;
+    }
+  },
+  mounted() {
+    console.log(this.order);
   }
 }
 </script>
