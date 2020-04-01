@@ -92,11 +92,14 @@ export default {
       }
     },
     async changeStatus(statusKey, event) {
-      console.log(order_status[statusKey], event.target);
       const ref = db.doc(`restaurants/${this.restaurantId()}/orders/${this.orderId()}`);
       console.log(this.orderInfo);
       await ref.set({status:order_status[statusKey]}, {merge:true});
-      event.target.blur();
+
+      // HACK ALERT: I am not able to find the proper way to access event.currentTart
+      // in this environment (Vue + Bluma + Buefy). 
+      event.target.blur(); // the use clicks the outside of the span
+      event.target.parentElement.blur(); // the user clicks the span
     },
     classOf(statusKey) {
       if (order_status[statusKey] == this.orderInfo.status) {
