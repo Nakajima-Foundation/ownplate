@@ -35,7 +35,6 @@ export default {
   data() {
     return {
       orderStates: [
-        "validation_ok",
         "customer_paid",
         "order_accepted",
         "cooking_completed",
@@ -92,23 +91,26 @@ export default {
         menu: this.menus[id]
       }
     },
-    changeStatus(statusKey, event) {
-      event.target.blur();
-      console.log(order_status[statusKey]);
+    async changeStatus(statusKey, event) {
+      console.log(order_status[statusKey], event.target);
       const ref = db.doc(`restaurants/${this.restaurantId()}/orders/${this.orderId()}`);
       console.log(this.orderInfo);
-      ref.set({status:order_status[statusKey]}, {merge:true});
-      //ref.set({})
+      await ref.set({status:order_status[statusKey]}, {merge:true});
+      event.target.blur();
     },
     classOf(statusKey) {
       if (order_status[statusKey] == this.orderInfo.status) {
         return statusKey;
       }
-      return "";
+      return "light";
     }
   }
 };
 </script>
 
 <style lang="scss">
+.light {
+  background: $light;
+  border: none;
+}
 </style>

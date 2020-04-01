@@ -31,10 +31,10 @@
       "error": "Error",
       "new_order": "New Order",
       "validation_ok": "Validated",
-      "customer_paid": "Paid", 
+      "customer_paid": "Order Placed", 
       "order_accepted": "Accepted",
-      "cooking_completed": "Cooking Complete",
-      "customer_picked_up": "Picked Up"
+      "cooking_completed": "Ready To Pickup",
+      "customer_picked_up": "Complete"
     }
   },
   "button": {
