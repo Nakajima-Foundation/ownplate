@@ -4,11 +4,12 @@
     <h2 class="p-big bold">
       #000
     </h2>
-    <div>
+    <div style="margin-bottom:1rem">
       <div v-for="orderState in orderStates"
         style="margin:0.2rem" 
         :key="orderState">
-        <b-button 
+        <b-button
+          type="is-light" 
           style="width:100%"
           @click="changeStatus(orderState)">
           {{ $t("order.status." + orderState) }}
