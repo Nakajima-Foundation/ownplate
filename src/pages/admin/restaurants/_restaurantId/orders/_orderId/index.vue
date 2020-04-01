@@ -4,6 +4,16 @@
     <h2 class="p-big bold">
       #000
     </h2>
+    <div>
+      <div v-for="orderState in orderStates"
+        style="margin:0.2rem" 
+        :key="orderState">
+        <b-button 
+          style="width:100%">
+          {{ $t("order.status." + orderState) }}
+        </b-button>
+      </div>
+    </div>
     <ordered-item v-for="id in ids" :key="id" :item="item(id)" />
   </section>
   
@@ -22,6 +32,13 @@ export default {
 
   data() {
     return {
+      orderStates: [
+        "validation_ok",
+        "customer_paid",
+        "order_accepted",
+        "cooking_completed",
+        "customer_picked_up"
+      ],
       shopInfo: {},
       menus: {},
       orderInfo: {},
