@@ -9,7 +9,7 @@
         style="margin:0.2rem" 
         :key="orderState">
         <b-button
-          :class="orderState"
+          :class="classOf(orderState)"
           style="width:100%"
           @click="changeStatus(orderState)">
           {{ $t("order.status." + orderState) }}
@@ -98,6 +98,12 @@ export default {
       console.log(this.orderInfo);
       ref.set({status:order_status[statusKey]}, {merge:true});
       //ref.set({})
+    },
+    classOf(statusKey) {
+      if (order_status[statusKey] == this.orderInfo.status) {
+        return "validation_ok";
+      }
+      return "";
     }
   }
 };
