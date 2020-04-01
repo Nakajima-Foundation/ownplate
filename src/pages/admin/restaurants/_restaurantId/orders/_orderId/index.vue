@@ -1,5 +1,5 @@
 <template>
-  <section class="section" style="background-color:#fffafa">
+  <section class="section">
     <back-button :url="'/admin/restaurants/' + restaurantId() + '/orders'" />
     <h2 class="p-big bold">
       #000
