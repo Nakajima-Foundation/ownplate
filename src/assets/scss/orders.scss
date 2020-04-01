@@ -1,28 +1,28 @@
-.validation_ok {
+.validation_ok, .validation_ok:hover {
   color:red;
   background:#ffeeee;
   border: 0;
 }
   
-.customer_paid {
+.customer_paid, .customer_paid:hover {
   color:red;
   background:#ffeeee;
   border: 0;
 }
 
-.order_accepted {
+.order_accepted, .order_accepted:hover {
   color:#FF8000;
   background:#FFF3DE;
   border: 0;
 }
 
-.cooking_completed {
+.cooking_completed, .cooking_completed:hover {
   color: #8506A8;
   background:#F5E4F6;
   border: 0;
 }
 
-.customer_picked_up {
+.customer_picked_up, .customer_picked_up:hover {
   color:red;
   background:#ffeeee;
   border: 0;

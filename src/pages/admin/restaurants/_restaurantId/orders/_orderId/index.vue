@@ -102,7 +102,7 @@ export default {
     },
     classOf(statusKey) {
       if (order_status[statusKey] == this.orderInfo.status) {
-        return "validation_ok";
+        return statusKey;
       }
       return "";
     }
