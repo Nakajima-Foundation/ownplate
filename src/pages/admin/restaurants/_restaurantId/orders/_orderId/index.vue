@@ -9,20 +9,21 @@
         style="margin:0.2rem" 
         :key="orderState">
         <b-button 
-          style="width:100%">
+          style="width:100%"
+          @click="changeStatus(orderState)">
           {{ $t("order.status." + orderState) }}
         </b-button>
       </div>
     </div>
     <ordered-item v-for="id in ids" :key="id" :item="item(id)" />
   </section>
-  
 </template>
 
 <script>
 import { db } from "~/plugins/firebase.js";
 import BackButton from "~/components/BackButton";
 import OrderedItem from "~/components/OrderedItem";
+import { order_status } from "~/plugins/constant.js";
 
 export default {
   components: {
@@ -89,6 +90,9 @@ export default {
         count: this.orderInfo.order[id],
         menu: this.menus[id]
       }
+    },
+    changeStatus(status) {
+      console.log(order_status[status]);
     }
   }
 };
