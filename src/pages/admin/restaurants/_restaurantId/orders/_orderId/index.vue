@@ -9,7 +9,7 @@
         style="margin:0.2rem" 
         :key="orderState">
         <b-button
-          type="is-light" 
+          :class="orderState"
           style="width:100%"
           @click="changeStatus(orderState)">
           {{ $t("order.status." + orderState) }}
@@ -92,12 +92,21 @@ export default {
         menu: this.menus[id]
       }
     },
-    changeStatus(status) {
-      console.log(order_status[status]);
+    changeStatus(statusKey) {
+      console.log(order_status[statusKey]);
+      const ref = db.doc(`restaurants/${this.restaurantId()}/orders/${this.orderId()}`);
+      console.log(this.orderInfo);
+      ref.set({status:order_status[statusKey]}, {merge:true});
+      //ref.set({})
     }
   }
 };
 </script>
 
 <style lang="scss">
+.validation_ok {
+  color:red;
+  background:#ffeeee;
+  border: 0;
+}
 </style>
