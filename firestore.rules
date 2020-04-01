@@ -36,6 +36,7 @@ service cloud.firestore {
       allow read: if true
       // allow create: if isUser(request);
       allow create: if true
+      allow update: if isAdmin(request); // HACK: check the owner of restaurant
     }
 
     match /{document=**} {

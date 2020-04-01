@@ -36,7 +36,6 @@ export default {
       if (restaurant.exists) {
         const restaurant_data = restaurant.data();
         this.shopInfo = restaurant_data;
-        console.log(this.shopInfo);
       }
     });
     const order_detacher = db.collection(`restaurants/${this.restaurantId()}/orders`).onSnapshot((orders) => {
@@ -60,7 +59,7 @@ export default {
   },
   methods: {
     orderSelected(order) {
-      console.log(order)
+      console.log(order.order)
       this.$router.push({
         path: '/admin/restaurants/' + this.restaurantId() + '/orders/' + order.id
       });

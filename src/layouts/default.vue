@@ -56,7 +56,7 @@
   </b-navbar>
 
   <!-- pagesのコンポーネントが読み込まれる -->
-  <nuxt style="max-width:100%;" v-if="loaded" ></nuxt>
+  <nuxt style="max-width:100%;background:#FBF9F9" v-if="loaded" ></nuxt>
   <!-- pagesのコンポーネントが読み込まれる -->
 
   <footer class="footer">

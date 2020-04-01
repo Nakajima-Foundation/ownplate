@@ -32,9 +32,4 @@ export default {
 </script>
 
 <style scoped>
-.validation_ok {
-  color:red;
-  background:#ffeeee;
-  border: 0;
-}
 </style>
