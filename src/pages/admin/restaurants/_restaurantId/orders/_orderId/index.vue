@@ -110,9 +110,4 @@ export default {
 </script>
 
 <style lang="scss">
-.validation_ok {
-  color:red;
-  background:#ffeeee;
-  border: 0;
-}
 </style>
