@@ -11,7 +11,7 @@
         <b-button
           :class="classOf(orderState)"
           style="width:100%"
-          @click="changeStatus(orderState)">
+          @click="changeStatus(orderState, $event)">
           {{ $t("order.status." + orderState) }}
         </b-button>
       </div>
@@ -92,7 +92,8 @@ export default {
         menu: this.menus[id]
       }
     },
-    changeStatus(statusKey) {
+    changeStatus(statusKey, event) {
+      event.target.blur();
       console.log(order_status[statusKey]);
       const ref = db.doc(`restaurants/${this.restaurantId()}/orders/${this.orderId()}`);
       console.log(this.orderInfo);
