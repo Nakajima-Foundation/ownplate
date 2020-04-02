@@ -59,7 +59,7 @@ export default {
         this.menus = this.array2obj(menuList);
       }
     });
-    const order_detacher = db.doc(`restaurants/${this.restaurantId()}/orders/${this.orderId()}`).onSnapshot((order) => {
+    const order_detacher = db.doc(`restaurants/${this.restaurantId()}/orders/${this.orderId}`).onSnapshot((order) => {
       if (order.exists) {
         const order_data = order.data();
         this.orderInfo = order_data;
@@ -82,6 +82,9 @@ export default {
     },
     count() {
       return this.ids ? this.ids.length : 0;
+    },
+    orderId() {
+      return this.$route.params.orderId;
     }
   },
   methods: {
@@ -92,7 +95,7 @@ export default {
       }
     },
     async changeStatus(statusKey, event) {
-      const ref = db.doc(`restaurants/${this.restaurantId()}/orders/${this.orderId()}`);
+      const ref = db.doc(`restaurants/${this.restaurantId()}/orders/${this.orderId}`);
       console.log(this.orderInfo);
       await ref.set({status:order_status[statusKey]}, {merge:true});
 
