@@ -87,7 +87,7 @@ export default {
         this.menus = menu.docs.map(this.doc2data("menu"));
       }
     });
-    const order_detacher = db.doc(`restaurants/${this.restaurantId()}/orders/${this.orderId()}`).onSnapshot((order) => {
+    const order_detacher = db.doc(`restaurants/${this.restaurantId()}/orders/${this.orderId}`).onSnapshot((order) => {
       if (order.exists) {
         const order_data = order.data();
         this.orderInfo = order_data;
@@ -114,6 +114,11 @@ export default {
       });
     }
   },
+  computed: {
+    orderId() {
+      return this.$route.params.orderId;
+    }
+  },
   methods: {
     updateOrder() {
       if (this.menus.length > 0 && this.orderInfo.order) {
@@ -130,7 +135,7 @@ export default {
     },
     goNext() {
       // this.$router.push({ path: "/restaurants/thank" });
-      this.$router.push({ path: `/r/${this.restaurantId()}/order/${this.orderId()}/thanks` });
+      this.$router.push({ path: `/r/${this.restaurantId()}/order/${this.orderId}/thanks` });
     }
   }
 };
