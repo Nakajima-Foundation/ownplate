@@ -51,6 +51,12 @@
           </span>
           <span class="nav-item">history</span>
         </b-navbar-item>
+        <b-navbar-item v-if="hasUser" @click="signout">
+          <span class="icon">
+            <i class="fas fa-sign-out-alt"></i>
+          </span>
+          <span class="nav-item">Sign Out</span>
+        </b-navbar-item>
       </b-navbar-dropdown>
     </template>
   </b-navbar>
@@ -172,6 +178,7 @@ export default {
 
   data() {
     return {
+      user: null,
       items: [
         {
           title: "Home",
@@ -191,11 +198,26 @@ export default {
     loaded() {
       return !this.$store.getters['user/loading'];
     },
+    hasUser() {
+      return this.user !== null;
+    }
+  },
+  methods: {
+    async signout() {
+      console.log("signing out", auth.currentUser);
+      try {
+        auth.signOut()
+        console.log("sign out succeeded", this.hasUser);
+      } catch(error) {
+        console.log("sign out failed", error);
+      }
+    }
   },
   beforeCreate() {
     this.$store.commit('user/SET_LOADING', true);
     this.unregisterAuthObserver = auth.onAuthStateChanged(async (user) => {
-      console.log("authStateChanged", user.email, user.phoneNumber);
+      console.log("authStateChanged", user && user.email, user && user.phoneNumber);
+      this.user = user;
       if (user) {
         if (user.email) {
           this.$store.commit('admin/SET_USER', user);
