@@ -1,6 +1,8 @@
 <template>
   <section class="section">
-    <form>
+    <form 
+      v-if="confirmationResult === null"
+      @submit.prevent="handleSubmit">
       <b-field 
         :type="hasError ? 'is-danger' : 'is-success'"
         :message="hasError ? $t(errors[0]) : $t('sms.notice')"
@@ -17,9 +19,11 @@
       <input
         type="submit" 
         class="button" 
-        @click="submit"
         :value="$t('sms.send')" 
         :disabled="!readyToSendSMS" />
+    </form>
+    <form v-else>
+      <p>Hello</p>
     </form>
   </section>
 </template>
@@ -64,13 +68,14 @@ export default {
     validate() {
       console.log(this.phoneNumber);
     },
-    submit() {
+    handleSubmit() {
       console.log("submit");
       auth.signInWithPhoneNumber(this.phoneNumber, this.recaptchaVerifier)
-        .then(function (confirmationResult) {
+        .then((confirmationResult) => {
           // SMS sent. Prompt user to type the code from the message, then sign the
           // user in with confirmationResult.confirm(code).
           console.log("result", confirmationResult);
+          this.confirmationResult = confirmationResult;
         }).catch(function (error) {
           // Error; SMS not sent
           // ...
