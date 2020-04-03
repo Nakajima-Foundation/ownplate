@@ -50,7 +50,12 @@
     "resend": "Re-send SMS",
     "verificationCode": "Verification Code",
     "typeVerificationCode": "Please type the code you've received",
-    "sendVerificationCode": "Send"
+    "sendVerificationCode": "Send",
+    "countryCode": "Country Code",
+    "country": {
+      "us": "US (+1)",
+      "ja": "Japan (+81)"
+    }
   },
   "auth": {
     "notAdmin": "You need to login as a restaurant owner."

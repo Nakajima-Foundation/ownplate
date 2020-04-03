@@ -3,6 +3,18 @@
     <form 
       v-show="confirmationResult === null"
       @submit.prevent="handleSubmit">
+      <b-field
+        :label="$t('sms.countryCode')">
+        <b-select
+          v-model="countryCode">
+          <option
+            v-for="country in countries"
+            :value="country.code"
+            :key="country.code">
+            {{ $t(country.name) }}
+          </option>
+        </b-select>
+      </b-field>
       <b-field 
         :type="hasError ? 'is-danger' : 'is-success'"
         :message="hasError ? $t(errors[0]) : $t('sms.notice')"
@@ -32,7 +44,7 @@
         <b-input type="text"
           v-model="verificationCode"
           v-on:input="validateVerificationCode"
-          maxlength="30"
+          maxlength="16"
           :placeholder="$t('sms.typeVerificationCode')" />
       </b-field>
       <input
@@ -50,7 +62,12 @@ import { auth, authObject } from "~/plugins/firebase.js";
 export default {
   data() {
     return {
-      phoneNumber:"+1 650-555-1234",
+      countries: [
+        { code:"+1", name:"sms.country.us" },
+        { code:"+81", name:"sms.country.ja" },
+      ],
+      countryCode: "+1",
+      phoneNumber:"650-555-1234",
       errors:[],
       recaptchaVerifier : () => {},
       recaptchaVerified: false,
@@ -95,7 +112,7 @@ export default {
     async handleSubmit() {
       console.log("submit");
       try {
-        this.confirmationResult = await auth.signInWithPhoneNumber(this.phoneNumber, this.recaptchaVerifier);
+        this.confirmationResult = await auth.signInWithPhoneNumber(this.countryCode + this.phoneNumber, this.recaptchaVerifier);
         console.log("result", this.confirmationResult);
       } catch(error) {
         console.log("error", error);
