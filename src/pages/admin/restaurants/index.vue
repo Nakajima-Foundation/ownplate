@@ -38,6 +38,7 @@
                 :publicflag="restaurantItem.publicFlag||false"
                 :createdat="restaurantItem.createdAt"
                 :numberOfMenus="restaurantItem.numberOfMenus||0"
+                :numberOfOrders="restaurantItem.numberOfOrders||0"
               ></restaurant-edit-card>
             </div>
           </div>
@@ -86,6 +87,7 @@
 <script>
 import { db } from "~/plugins/firebase.js";
 import RestaurantEditCard from "~/components/RestaurantEditCard";
+import { order_status } from "~/plugins/constant.js";
 
 export default {
   name: "Restaurant",
@@ -145,6 +147,11 @@ export default {
       this.restaurantItems = await Promise.all(this.restaurantItems.map(async (restaurant) => {
         const menus = await db.collection(`restaurants/${restaurant.id}/menus`).get();
         restaurant.numberOfMenus = menus.size
+        const orders = await db.collection(`restaurants/${restaurant.id}/orders`)
+              .where("status", "<", order_status.customer_picked_up)
+              .where("status", ">=", order_status.new_order).get();
+        restaurant.numberOfOrders = orders.size
+
         return restaurant;
       }));
     } catch (error) {
