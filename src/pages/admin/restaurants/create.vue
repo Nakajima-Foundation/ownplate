@@ -13,12 +13,13 @@
             :placeholder="$t('restaurantId.placeholder')" />
         </b-field>
         <div>
-          <button
+          <b-button
             class="button is-primary is-rounded"
             :disabled="hasError"
-            type="submit">
+            :loading="isLoading"
+            @click="handleSubmit">
             {{ $t('restaurantId.submit')}}
-          </button>
+          </b-button>
         </div>
       </form>
     </section>
@@ -31,6 +32,7 @@ import { db, functions } from "~/plugins/firebase.js";
 export default {
   data() {
     return {
+      isLoading: false,
       errors:["restaurantId.tooshort"],
       rid:"" // restaurantId (for some reason, there is a method restaurantId. What is this?)
     };
@@ -66,7 +68,9 @@ export default {
       console.log("handleSubmit");
       const context = { restaurantId:this.rid };
       const createRestaurant = functions.httpsCallable('createRestaurant');
+      this.isLoading = true;
       const result = (await createRestaurant(context)).data;
+      this.isLoading = false;
       console.log("result", result);
       if (result.result) {
         this.$router.push(`./${this.rid}/edit`)
