@@ -35,6 +35,9 @@
         :disabled="!readyToSendSMS">
         {{$t('sms.send')}} 
       </b-button>
+      <b-button @click="$emit('dismissed')">
+        {{$t('button.cancel')}}
+      </b-button>
     </form>
     <form
       v-if="confirmationResult !== null" 
@@ -55,6 +58,9 @@
         @click="handleCode"
         :disabled="!readyToSendVerificationCode">
         {{$t('sms.sendVerificationCode')}}
+      </b-button>
+      <b-button @click="$emit('dismissed')">
+        {{$t('button.cancel')}}
       </b-button>
     </form>
   </div>

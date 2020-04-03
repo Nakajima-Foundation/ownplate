@@ -1,6 +1,7 @@
 <template>
   <section class="section">
-    <phone-login 
+    <phone-login
+     v-show="!dismissed" 
      v-on:dismissed="handleDismissed" />
   </section>
 </template>
@@ -15,6 +16,7 @@ export default {
   },
   data() {
     return {
+      dismissed: false
     }
   },
   mounted() {
@@ -24,6 +26,7 @@ export default {
   methods: {
     handleDismissed() {
       console.log("handleDismissed", auth.currentUser && auth.currentUser.phoneNumber);
+      this.dismissed = true;
     }
   }
 }

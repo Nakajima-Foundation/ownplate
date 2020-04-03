@@ -40,7 +40,8 @@
   "button": {
     "back": "Back",
     "addTitle": "Add title",
-    "addItem": "Add Item"
+    "addItem": "Add Item",
+    "cancel": "Cancel"
   },
   "sms": {
     "phonenumber": "Phone Number",
