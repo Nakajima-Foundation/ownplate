@@ -56,7 +56,8 @@ export default {
       recaptchaVerified: false,
       recaptchaWidgetId: null,
       confirmationResult: null,
-      verificationCode: ""
+      verificationCode: "",
+      result: {}
     }
   },
   mounted() {
@@ -91,30 +92,26 @@ export default {
     validateVerificationCode() {
       console.log(this.verificationCode);
     },
-    handleSubmit() {
+    async handleSubmit() {
       console.log("submit");
-      auth.signInWithPhoneNumber(this.phoneNumber, this.recaptchaVerifier)
-        .then((confirmationResult) => {
-          // SMS sent. Prompt user to type the code from the message, then sign the
-          // user in with confirmationResult.confirm(code).
-          console.log("result", confirmationResult);
-          this.confirmationResult = confirmationResult;
-        }).catch((error) => {
-          // Error; SMS not sent
-          // ...
-          console.log("error", error);
-          this.errors = [ error.message ];
-        });
-    },
-    handleCode() {
-      console.log("handleCode");
-      this.errors = [];
-      this.confirmationResult.confirm(this.verificationCode).then((result)=>{
-        console.log("success!", result);
-      }).catch((error)=> {
+      try {
+        this.confirmationResult = await auth.signInWithPhoneNumber(this.phoneNumber, this.recaptchaVerifier);
+        console.log("result", this.confirmationResult);
+      } catch(error) {
         console.log("error", error);
         this.errors = [ error.message ];
-      });
+      }
+    },
+    async handleCode() {
+      console.log("handleCode");
+      this.errors = [];
+      try {
+        let result = await this.confirmationResult.confirm(this.verificationCode);
+        console.log("success!", result);
+      } catch(error) {
+        console.log("error", error);
+        this.errors = [ error.message ];
+      }
     }
   }
 }
