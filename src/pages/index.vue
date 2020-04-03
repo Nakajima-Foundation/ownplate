@@ -18,8 +18,9 @@
       <div class="content">
         <ol type="A">
           <div class="columns is-mobile is-left">
-            <p class="p-bold">【Reataurant】</p>
+            <p class="p-bold">【User】</p>
           </div>
+          <li><router-link to="/test/sms">SMS Auth</router-link></li>
           <li><router-link to="/r/1710478afd0304e4974">Menu</router-link></li>
           <li><router-link to="/r/1710478afd0304e4974/order/123456789/">Order</router-link></li>
           <li><router-link to="/r/1710478afd0304e4974/order/123456789/thanks">ThankYou</router-link></li>

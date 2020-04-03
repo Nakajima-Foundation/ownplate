@@ -195,6 +195,7 @@ export default {
   beforeCreate() {
     this.$store.commit('user/SET_LOADING', true);
     this.unregisterAuthObserver = auth.onAuthStateChanged(async (user) => {
+      console.log("authStateChanged", user.email, user.phoneNumber);
       if (user) {
         if (user.email) {
           this.$store.commit('admin/SET_USER', user);
