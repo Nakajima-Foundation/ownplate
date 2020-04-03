@@ -1,7 +1,7 @@
 <template>
   <section class="section">
     <form 
-      v-if="confirmationResult === null"
+      v-show="confirmationResult === null"
       @submit.prevent="handleSubmit">
       <b-field 
         :type="hasError ? 'is-danger' : 'is-success'"
@@ -23,7 +23,7 @@
         :disabled="!readyToSendSMS" />
     </form>
     <form
-      v-else 
+      v-if="confirmationResult !== null" 
       @submit.prevent="handleCode">
       <b-field 
         :type="hasError ? 'is-danger' : 'is-success'"
