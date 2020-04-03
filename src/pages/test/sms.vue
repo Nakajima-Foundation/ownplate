@@ -30,6 +30,7 @@
         style="margin-bottom:0.5rem" />
       <b-button
         type="is-primary" 
+        :loading="isLoading" 
         @click="handleSubmit"
         :disabled="!readyToSendSMS">
         {{$t('sms.send')}} 
@@ -49,7 +50,8 @@
           :placeholder="$t('sms.typeVerificationCode')" />
       </b-field>
       <b-button
-        type="is-primary" 
+        type="is-primary"
+        :loading="isLoading" 
         @click="handleCode"
         :disabled="!readyToSendVerificationCode">
         {{$t('sms.sendVerificationCode')}}
@@ -64,6 +66,7 @@ import { auth, authObject } from "~/plugins/firebase.js";
 export default {
   data() {
     return {
+      isLoading: false,
       countries: [
         { code:"+1", name:"sms.country.us" },
         { code:"+81", name:"sms.country.ja" },
@@ -122,22 +125,28 @@ export default {
     async handleSubmit() {
       console.log("submit");
       try {
+        this.isLoading = true;
         this.confirmationResult = await auth.signInWithPhoneNumber(this.countryCode + this.phoneNumber, this.recaptchaVerifier);
         console.log("result", this.confirmationResult);
       } catch(error) {
         console.log("error", error);
         this.errors = [ error.message ];
+      } finally {
+        this.isLoading = false;
       }
     },
     async handleCode() {
       console.log("handleCode");
       this.errors = [];
       try {
+        this.isLoading = true;
         let result = await this.confirmationResult.confirm(this.verificationCode);
         console.log("success!", result);
       } catch(error) {
         console.log("error", error);
         this.errors = [ error.message ];
+      } finally {
+        this.isLoading = false;
       }
     }
   }
