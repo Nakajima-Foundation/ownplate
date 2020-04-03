@@ -9,7 +9,7 @@
         :label="$t('sms.phonenumber')">
         <b-input type="text"
           v-model="phoneNumber"
-          v-on:input="validate"
+          v-on:input="validatePhoneNumber"
           maxlength="30"
           :placeholder="$t('sms.pleasetype')" />
       </b-field>
@@ -22,8 +22,24 @@
         :value="$t('sms.send')" 
         :disabled="!readyToSendSMS" />
     </form>
-    <form v-else>
-      <p>Hello</p>
+    <form
+      v-else 
+      @submit.prevent="handleCode">
+      <b-field 
+        :type="hasError ? 'is-danger' : 'is-success'"
+        :message="hasError ? $t(errors[0]) : ''"
+        :label="$t('sms.verificationCode')">
+        <b-input type="text"
+          v-model="verificationCode"
+          v-on:input="validateVerificationCode"
+          maxlength="30"
+          :placeholder="$t('sms.typeVerificationCode')" />
+      </b-field>
+      <input
+        type="submit" 
+        class="button" 
+        :value="$t('sms.sendVerificationCode')" 
+        :disabled="!readyToSendVerificationCode" />
     </form>
   </section>
 </template>
@@ -34,12 +50,13 @@ import { auth, authObject } from "~/plugins/firebase.js";
 export default {
   data() {
     return {
-      phoneNumber:"",
+      phoneNumber:"+1 650-555-1234",
       errors:[],
       recaptchaVerifier : () => {},
       recaptchaVerified: false,
       recaptchaWidgetId: null,
-      confirmationResult: null
+      confirmationResult: null,
+      verificationCode: ""
     }
   },
   mounted() {
@@ -60,13 +77,19 @@ export default {
     readyToSendSMS() {
       return this.recaptchaVerified;
     },
+    readyToSendVerificationCode() {
+      return this.confirmationResult;
+    },
     hasError() {
       return this.errors.length > 0
     }
   },
   methods: {
-    validate() {
+    validatePhoneNumber() {
       console.log(this.phoneNumber);
+    },
+    validateVerificationCode() {
+      console.log(this.verificationCode);
     },
     handleSubmit() {
       console.log("submit");
@@ -76,11 +99,22 @@ export default {
           // user in with confirmationResult.confirm(code).
           console.log("result", confirmationResult);
           this.confirmationResult = confirmationResult;
-        }).catch(function (error) {
+        }).catch((error) => {
           // Error; SMS not sent
           // ...
           console.log("error", error);
+          this.errors = [ error.message ];
         });
+    },
+    handleCode() {
+      console.log("handleCode");
+      this.errors = [];
+      this.confirmationResult.confirm(this.verificationCode).then((result)=>{
+        console.log("success!", result);
+      }).catch((error)=> {
+        console.log("error", error);
+        this.errors = [ error.message ];
+      });
     }
   }
 }

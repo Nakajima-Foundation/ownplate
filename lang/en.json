@@ -46,7 +46,11 @@
     "phonenumber": "Phone Number",
     "pleasetype": "111-111-1111",
     "notice": "A SMS message will be sent for the verification.",
-    "send": "Send SMS"
+    "send": "Send SMS",
+    "resend": "Re-send SMS",
+    "verificationCode": "Verification Code",
+    "typeVerificationCode": "Please type the code you've received",
+    "sendVerificationCode": "Send"
   },
   "auth": {
     "notAdmin": "You need to login as a restaurant owner."
