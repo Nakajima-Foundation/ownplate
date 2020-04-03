@@ -1,11 +1,20 @@
 <template>
-  <div>
-    <p>Hello World</p>
+  <section class="section">
+      <b-field 
+        :type="hasError ? 'is-danger' : 'is-success'"
+        :message="hasError ? $t(errors[0]) : $t('sms.notice')"
+        :label="$t('sms.phonenumber')">
+        <b-input type="text"
+          v-model="phoneNumber"
+          v-on:input="validate"
+          maxlength="30"
+          :placeholder="$t('sms.pleasetype')" />
+      </b-field>
     <div id="signInButton"></div>
     <b-button @click="submit" :disabled="!readyToSendSMS">
       Send SMS
     </b-button>
-  </div>
+  </section>
 </template>
 
 <script>
@@ -14,6 +23,8 @@ import { auth, authObject } from "~/plugins/firebase.js";
 export default {
   data() {
     return {
+      phoneNumber:"",
+      errors:[],
       recaptchaVerifier : () => {},
       recaptchaVerified: false,
       recaptchaWidgetId: null,
@@ -37,12 +48,18 @@ export default {
   computed: {
     readyToSendSMS() {
       return this.recaptchaVerified;
+    },
+    hasError() {
+      return this.errors.length > 0
     }
   },
   methods: {
+    validate() {
+      console.log(this.phoneNumber);
+    },
     submit() {
       console.log("submit");
-      auth.signInWithPhoneNumber("+1", this.recaptchaVerifier)
+      auth.signInWithPhoneNumber(this.phoneNumber, this.recaptchaVerifier)
         .then(function (confirmationResult) {
           // SMS sent. Prompt user to type the code from the message, then sign the
           // user in with confirmationResult.confirm(code).
