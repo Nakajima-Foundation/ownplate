@@ -1,7 +1,7 @@
 <template>
   <section class="section">
     <phone-login
-     v-show="!dismissed" 
+     v-show="!dismissed"
      v-on:dismissed="handleDismissed" />
   </section>
 </template>

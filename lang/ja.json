@@ -31,7 +31,7 @@
       "error": "エラー",
       "new_order": "新規注文",
       "validation_ok": "確認済み",
-      "customer_paid": "支払い済み", 
+      "customer_paid": "支払い済み",
       "order_accepted": "受付済み",
       "cooking_completed": "料理済み",
       "customer_picked_up": "受け渡し完了"
@@ -41,6 +41,26 @@
     "back": "戻る",
     "addTitle": "カテゴリー追加",
     "addItem": "料理/ドリンク追加"
+  },
+  "sms": {
+    "phonenumber": "電話番号",
+    "pleasetype": "090-1111-1111",
+    "notice": "確認のためのメッセージが送られてきます",
+    "send": "送信",
+    "resend": "再送信",
+    "verificationCode": "確認コード",
+    "typeVerificationCode": "メールで送られてきたコードを入力してください",
+    "sendVerificationCode": "送信",
+    "countryCode": "国",
+    "country": {
+      "us": "米国 (+1)",
+      "ja": "日本 (+81)"
+    },
+    "invalidPhoneNumber": "電話番号を入力してください",
+    "invalidValidationCode": "正しくない文字が含まれています",
+    "auth/invalid-phone-number": "正しい電話番号を入力してください",
+    "auth/invalid-verification-code": "SMS確認コードが無効です。SMS確認コードを再送信して再度入力してください",
+    "auth/missing-verification-code": "SMS確認コードが入力されていません"
   },
   "auth": {
     "notAdmin": "You need to login as a restaurant owner."
