@@ -3,6 +3,18 @@
     <form 
       v-show="confirmationResult === null"
       @submit.prevent="handleSubmit">
+      <b-field
+        :label="$t('sms.countryCode')">
+        <b-select
+          v-model="countryCode">
+          <option
+            v-for="country in countries"
+            :value="country.code"
+            :key="country.code">
+            {{ $t(country.name) }}
+          </option>
+        </b-select>
+      </b-field>
       <b-field 
         :type="hasError ? 'is-danger' : 'is-success'"
         :message="hasError ? $t(errors[0]) : $t('sms.notice')"
@@ -16,11 +28,12 @@
       <div 
         id="signInButton" 
         style="margin-bottom:0.5rem" />
-      <input
-        type="submit" 
-        class="button" 
-        :value="$t('sms.send')" 
-        :disabled="!readyToSendSMS" />
+      <b-button
+        type="is-primary" 
+        @click="handleSubmit"
+        :disabled="!readyToSendSMS">
+        {{$t('sms.send')}} 
+      </b-button>
     </form>
     <form
       v-if="confirmationResult !== null" 
@@ -32,14 +45,15 @@
         <b-input type="text"
           v-model="verificationCode"
           v-on:input="validateVerificationCode"
-          maxlength="30"
+          maxlength="16"
           :placeholder="$t('sms.typeVerificationCode')" />
       </b-field>
-      <input
-        type="submit" 
-        class="button" 
-        :value="$t('sms.sendVerificationCode')" 
-        :disabled="!readyToSendVerificationCode" />
+      <b-button
+        type="is-primary" 
+        @click="handleCode"
+        :disabled="!readyToSendVerificationCode">
+        {{$t('sms.sendVerificationCode')}}
+      </b-button>
     </form>
   </section>
 </template>
@@ -50,7 +64,12 @@ import { auth, authObject } from "~/plugins/firebase.js";
 export default {
   data() {
     return {
-      phoneNumber:"+1 650-555-1234",
+      countries: [
+        { code:"+1", name:"sms.country.us" },
+        { code:"+81", name:"sms.country.ja" },
+      ],
+      countryCode: "+1",
+      phoneNumber:"650-555-1234",
       errors:[],
       recaptchaVerifier : () => {},
       recaptchaVerified: false,
@@ -76,10 +95,10 @@ export default {
   },
   computed: {
     readyToSendSMS() {
-      return this.recaptchaVerified;
+      return this.recaptchaVerified && !this.hasError;
     },
     readyToSendVerificationCode() {
-      return this.confirmationResult;
+      return !this.hasError;
     },
     hasError() {
       return this.errors.length > 0
@@ -87,15 +106,23 @@ export default {
   },
   methods: {
     validatePhoneNumber() {
-      console.log(this.phoneNumber);
+      this.errors = []
+      const regex = /^[0-9()\-]*$/
+      if (!regex.test(this.phoneNumber)) {
+        this.errors.push("sms.invalidPhoneNumber")
+      }
     },
     validateVerificationCode() {
-      console.log(this.verificationCode);
+      this.errors = []
+      const regex = /^[0-9]*$/
+      if (!regex.test(this.verificationCode)) {
+        this.errors.push("sms.invalidValidationCode")
+      }
     },
     async handleSubmit() {
       console.log("submit");
       try {
-        this.confirmationResult = await auth.signInWithPhoneNumber(this.phoneNumber, this.recaptchaVerifier);
+        this.confirmationResult = await auth.signInWithPhoneNumber(this.countryCode + this.phoneNumber, this.recaptchaVerifier);
         console.log("result", this.confirmationResult);
       } catch(error) {
         console.log("error", error);
