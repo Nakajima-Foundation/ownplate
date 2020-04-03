@@ -28,11 +28,12 @@
       <div 
         id="signInButton" 
         style="margin-bottom:0.5rem" />
-      <input
-        type="submit" 
-        class="button" 
-        :value="$t('sms.send')" 
-        :disabled="!readyToSendSMS" />
+      <b-button
+        type="is-primary" 
+        @click="handleSubmit"
+        :disabled="!readyToSendSMS">
+        {{$t('sms.send')}} 
+      </b-button>
     </form>
     <form
       v-if="confirmationResult !== null" 
@@ -47,11 +48,12 @@
           maxlength="16"
           :placeholder="$t('sms.typeVerificationCode')" />
       </b-field>
-      <input
-        type="submit" 
-        class="button" 
-        :value="$t('sms.sendVerificationCode')" 
-        :disabled="!readyToSendVerificationCode" />
+      <b-button
+        type="is-primary" 
+        @click="handleCode"
+        :disabled="!readyToSendVerificationCode">
+        {{$t('sms.sendVerificationCode')}}
+      </b-button>
     </form>
   </section>
 </template>
