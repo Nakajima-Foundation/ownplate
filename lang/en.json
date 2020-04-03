@@ -31,7 +31,7 @@
       "error": "Error",
       "new_order": "New Order",
       "validation_ok": "Validated",
-      "customer_paid": "Order Placed", 
+      "customer_paid": "Order Placed",
       "order_accepted": "Accepted",
       "cooking_completed": "Ready To Pickup",
       "customer_picked_up": "Complete"
@@ -57,7 +57,10 @@
       "ja": "Japan (+81)"
     },
     "invalidPhoneNumber": "Invalid Phone Number",
-    "invalidValidationCode": "Invalid Validation Code"
+    "invalidValidationCode": "Invalid Validation Code",
+    "auth/invalid-phone-number": "Invalid Phone Number",
+    "auth/invalid-verification-code": "The SMS verification code used to create the phone auth credential is invalid. Please resend the verification code sms and be sure use the verification code provided by the user.",
+    "auth/missing-verification-code": "The phone auth credential was created with an empty SMS verification code."
   },
   "auth": {
     "notAdmin": "You need to login as a restaurant owner."

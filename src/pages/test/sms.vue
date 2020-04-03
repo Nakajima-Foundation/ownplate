@@ -1,6 +1,6 @@
 <template>
   <section class="section">
-    <form 
+    <form
       v-show="confirmationResult === null"
       @submit.prevent="handleSubmit">
       <b-field
@@ -15,7 +15,7 @@
           </option>
         </b-select>
       </b-field>
-      <b-field 
+      <b-field
         :type="hasError ? 'is-danger' : 'is-success'"
         :message="hasError ? $t(errors[0]) : $t('sms.notice')"
         :label="$t('sms.phonenumber')">
@@ -25,21 +25,21 @@
           maxlength="30"
           :placeholder="$t('sms.pleasetype')" />
       </b-field>
-      <div 
-        id="signInButton" 
+      <div
+        id="signInButton"
         style="margin-bottom:0.5rem" />
       <b-button
-        type="is-primary" 
-        :loading="isLoading" 
+        type="is-primary"
+        :loading="isLoading"
         @click="handleSubmit"
         :disabled="!readyToSendSMS">
-        {{$t('sms.send')}} 
+        {{$t('sms.send')}}
       </b-button>
     </form>
     <form
-      v-if="confirmationResult !== null" 
+      v-if="confirmationResult !== null"
       @submit.prevent="handleCode">
-      <b-field 
+      <b-field
         :type="hasError ? 'is-danger' : 'is-success'"
         :message="hasError ? $t(errors[0]) : ''"
         :label="$t('sms.verificationCode')">
@@ -51,7 +51,7 @@
       </b-field>
       <b-button
         type="is-primary"
-        :loading="isLoading" 
+        :loading="isLoading"
         @click="handleCode"
         :disabled="!readyToSendVerificationCode">
         {{$t('sms.sendVerificationCode')}}
@@ -130,7 +130,7 @@ export default {
         console.log("result", this.confirmationResult);
       } catch(error) {
         console.log("error", error);
-        this.errors = [ error.message ];
+        this.errors = [ "sms." + error.code ];
       } finally {
         this.isLoading = false;
       }
@@ -144,7 +144,7 @@ export default {
         console.log("success!", result);
       } catch(error) {
         console.log("error", error);
-        this.errors = [ error.message ];
+        this.errors = [ "sms." + error.code ];
       } finally {
         this.isLoading = false;
       }
