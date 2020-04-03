@@ -178,7 +178,7 @@ export default {
 
   data() {
     return {
-      user: null,
+      user: null, // temporarily until we simplify the store
       items: [
         {
           title: "Home",
