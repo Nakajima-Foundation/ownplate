@@ -55,7 +55,9 @@
     "country": {
       "us": "US (+1)",
       "ja": "Japan (+81)"
-    }
+    },
+    "invalidPhoneNumber": "Invalid Phone Number",
+    "invalidValidationCode": "Invalid Validation Code"
   },
   "auth": {
     "notAdmin": "You need to login as a restaurant owner."

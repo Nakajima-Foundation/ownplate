@@ -93,10 +93,10 @@ export default {
   },
   computed: {
     readyToSendSMS() {
-      return this.recaptchaVerified;
+      return this.recaptchaVerified && !this.hasError;
     },
     readyToSendVerificationCode() {
-      return this.confirmationResult;
+      return !this.hasError;
     },
     hasError() {
       return this.errors.length > 0
@@ -104,10 +104,18 @@ export default {
   },
   methods: {
     validatePhoneNumber() {
-      console.log(this.phoneNumber);
+      this.errors = []
+      const regex = /^[0-9()\-]*$/
+      if (!regex.test(this.phoneNumber)) {
+        this.errors.push("sms.invalidPhoneNumber")
+      }
     },
     validateVerificationCode() {
-      console.log(this.verificationCode);
+      this.errors = []
+      const regex = /^[0-9]*$/
+      if (!regex.test(this.verificationCode)) {
+        this.errors.push("sms.invalidValidationCode")
+      }
     },
     async handleSubmit() {
       console.log("submit");
