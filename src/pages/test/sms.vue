@@ -1,23 +1,50 @@
 <template>
   <div>
     <p>Hello World</p>
-    <button id="signInButton">Foo</button>
+    <div id="signInButton"></div>
+    <b-button @click="submit">
+      Submit
+    </b-button>
   </div>
 </template>
 
 <script>
-import { RecaptchaVerifier } from "~/plugins/firebase.js";
+import { auth, authObject } from "~/plugins/firebase.js";
 
 export default {
+  data() {
+    return {
+      recaptchaVerifier : () => {},
+      recaptchaWidgetId: null
+    }
+  },
   mounted() {
-    console.log("mounted", RecaptchaVerifier);
-    window.recaptchaVerifier = new RecaptchaVerifier('signInButton', {
-      'size': 'invisible',
+    this.recaptchaVerifier = new authObject.RecaptchaVerifier('signInButton', {
+      'size': 'normal',
       'callback': function(response) {
       // reCAPTCHA solved, allow signInWithPhoneNumber.
-      console.log("onSignInSubmit");
+      console.log("verified");
+      }
+    });
+    this.recaptchaVerifier.render().then((widgetId) => {
+      this.recaptchaWidgetId = widgetId;
+      console.log("widdgetId", widgetId);
+    });
+  },
+  methods: {
+    submit() {
+      console.log("submit");
+      auth.signInWithPhoneNumber("+1", this.recaptchaVerifier)
+        .then(function (confirmationResult) {
+          // SMS sent. Prompt user to type the code from the message, then sign the
+          // user in with confirmationResult.confirm(code).
+          console.log("result", confirmationResult);
+        }).catch(function (error) {
+          // Error; SMS not sent
+          // ...
+          console.log("error", error);
+        });
     }
-});
   }
 }
 </script>
