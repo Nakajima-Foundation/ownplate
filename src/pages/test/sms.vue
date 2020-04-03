@@ -1,5 +1,6 @@
 <template>
   <section class="section">
+    <form>
       <b-field 
         :type="hasError ? 'is-danger' : 'is-success'"
         :message="hasError ? $t(errors[0]) : $t('sms.notice')"
@@ -10,10 +11,16 @@
           maxlength="30"
           :placeholder="$t('sms.pleasetype')" />
       </b-field>
-    <div id="signInButton"></div>
-    <b-button @click="submit" :disabled="!readyToSendSMS">
-      Send SMS
-    </b-button>
+      <div 
+        id="signInButton" 
+        style="margin-bottom:0.5rem" />
+      <input
+        type="submit" 
+        class="button" 
+        @click="submit"
+        :value="$t('sms.send')" 
+        :disabled="!readyToSendSMS" />
+    </form>
   </section>
 </template>
 

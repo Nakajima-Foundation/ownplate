@@ -42,6 +42,12 @@
     "addTitle": "Add title",
     "addItem": "Add Item"
   },
+  "sms": {
+    "phonenumber": "Phone Number",
+    "pleasetype": "111-111-1111",
+    "notice": "A SMS message will be sent for the verification.",
+    "send": "Send SMS"
+  },
   "auth": {
     "notAdmin": "You need to login as a restaurant owner."
   }
