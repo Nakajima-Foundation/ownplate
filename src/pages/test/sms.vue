@@ -2,8 +2,8 @@
   <div>
     <p>Hello World</p>
     <div id="signInButton"></div>
-    <b-button @click="submit">
-      Submit
+    <b-button @click="submit" :disabled="!readyToSendSMS">
+      Send SMS
     </b-button>
   </div>
 </template>
@@ -15,21 +15,29 @@ export default {
   data() {
     return {
       recaptchaVerifier : () => {},
-      recaptchaWidgetId: null
+      recaptchaVerified: false,
+      recaptchaWidgetId: null,
+      confirmationResult: null
     }
   },
   mounted() {
     this.recaptchaVerifier = new authObject.RecaptchaVerifier('signInButton', {
       'size': 'normal',
-      'callback': function(response) {
-      // reCAPTCHA solved, allow signInWithPhoneNumber.
-      console.log("verified");
+      'callback': (response) => {
+        // reCAPTCHA solved, allow signInWithPhoneNumber.
+        console.log("verified", response);
+        this.recaptchaVerified = true;
       }
     });
     this.recaptchaVerifier.render().then((widgetId) => {
       this.recaptchaWidgetId = widgetId;
       console.log("widdgetId", widgetId);
     });
+  },
+  computed: {
+    readyToSendSMS() {
+      return this.recaptchaVerified;
+    }
   },
   methods: {
     submit() {
