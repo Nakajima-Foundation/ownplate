@@ -148,6 +148,8 @@ export default {
         this.isLoading = true;
         let result = await this.confirmationResult.confirm(this.verificationCode);
         console.log("success!", result);
+        this.confirmationResult = null; // so that we can re-use this
+        this.verificationCode = "";
         this.$emit("dismissed");
       } catch(error) {
         console.log("error", error);
