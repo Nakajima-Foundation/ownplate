@@ -289,93 +289,20 @@
 
     <h4>Hours</h4>
 
-    <div class="field">
-      <b-checkbox v-model="hoursMon">
-        Mon
-      </b-checkbox>
+    <div v-for="(day, index) in days" :key="index">
+      <div class="field">
+        <b-checkbox v-model="shopInfo.businessDay[index]">
+          {{$t("week.short." + day)}}
+        </b-checkbox>
+      </div>
+      <hours-input
+        v-model="shopInfo.openTimes[index][0]"
+        :disabled="!shopInfo.businessDay[index]"></hours-input>
+      <hours-input
+        v-model="shopInfo.openTimes[index][1]"
+        :disabled="!shopInfo.businessDay[index]"></hours-input>
     </div>
-    <hours-input
-      v-model="shopInfo.open[1][0]"
-      :disabled="!hoursMon"></hours-input>
-    <hours-input
-      v-model="shopInfo.open[1][1]"
-      :disabled="!hoursMon"></hours-input>
 
-    <div class="field">
-      <b-checkbox v-model="hoursTue">
-        Tue
-      </b-checkbox>
-    </div>
-    <hours-input
-      v-model="shopInfo.open[2][0]"
-      :disabled="!hoursTue"></hours-input>
-
-    <hours-input
-      v-model="shopInfo.open[2][1]"
-      :disabled="!hoursTue"></hours-input>
-
-    <div class="field">
-      <b-checkbox v-model="hoursWed">
-        Wed
-      </b-checkbox>
-    </div>
-    <hours-input
-      v-model="shopInfo.open[3][0]"
-      :disabled="!hoursWed"></hours-input>
-
-    <hours-input
-      v-model="shopInfo.open[3][1]"
-      :disabled="!hoursWed"></hours-input>
-
-    <div class="field">
-      <b-checkbox v-model="hoursThu">
-        Thu
-      </b-checkbox>
-    </div>
-    <hours-input
-      v-model="shopInfo.open[4][0]"
-      :disabled="!hoursThu"></hours-input>
-
-    <hours-input
-      v-model="shopInfo.open[4][1]"
-      :disabled="!hoursThu"></hours-input>
-
-    <div class="field">
-      <b-checkbox v-model="hoursFri">
-        Fri
-      </b-checkbox>
-    </div>
-    <hours-input
-      v-model="shopInfo.open[5][0]"
-      :disabled="!hoursFri"></hours-input>
-
-    <hours-input
-      v-model="shopInfo.open[5][1]"
-      :disabled="!hoursFri"></hours-input>
-
-    <div class="field">
-      <b-checkbox v-model="hoursSat">
-        Sat
-      </b-checkbox>
-    </div>
-    <hours-input
-      v-model="shopInfo.open[6][0]"
-      :disabled="!hoursSat"></hours-input>
-    <hours-input
-      v-model="shopInfo.open[6][1]"
-      :disabled="!hoursSat"></hours-input>
-
-    <div class="field">
-      <b-checkbox v-model="hoursSun">
-        Sun
-      </b-checkbox>
-    </div>
-    <hours-input
-      v-model="shopInfo.open[7][0]"
-      :disabled="!hoursSun"></hours-input>
-    <hours-input
-      v-model="shopInfo.open[7][3]"
-      :disabled="!hoursSun"></hours-input>
 
     <b-button
       :disabled="!formIsValid"
@@ -400,6 +327,8 @@ import HoursInput from "~/components/HoursInput";
 
 import * as API from "~/plugins/api"
 import BackButton from "~/components/BackButton";
+
+import { daysOfWeek } from "~/plugins/constant.js";
 
 Vue.use(Croppa);
 
@@ -486,7 +415,7 @@ export default {
         alcoholTax: 0,
         tags: ["Meet"],
         tag: "",
-        open: {
+        openTimes: {
           1: [], // mon
           2: [],
           3: [],
@@ -495,17 +424,20 @@ export default {
           6: [],
           7: []
         },
+        businessDay: {
+          1: true, // mon
+          2: true,
+          3: true,
+          4: true,
+          5: true,
+          6: true,
+          7: true
+        },
       },
       states: US_STATES,
-      hoursMon: true,
-      hoursTue: true,
-      hoursWed: true,
-      hoursThu: true,
-      hoursFri: true,
-      hoursSat: true,
-      hoursSun: true,
       maplocation: {},
       markers: [],
+      days: daysOfWeek,
       autocompleteItems: [
         {
           text: 'Invalid because of "8"'
@@ -602,7 +534,8 @@ export default {
         tags: this.shopInfo.tags,
         foodTax: Number(this.shopInfo.foodTax),
         alcoholTax: Number(this.shopInfo.alcoholTax),
-        open: this.shopInfo.open,
+        openTimes: this.shopInfo.openTimes,
+        businessDay: this.shopInfo.businessDay,
         uid: this.shopInfo.uid,
         defauleTaxRate: 0.1,
         publicFlag: true,

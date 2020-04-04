@@ -65,6 +65,16 @@
   },
   "auth": {
     "notAdmin": "You need to login as a restaurant owner."
+  },
+  "week": {
+    "short": {
+      "monday": "Mon",
+      "tuesday": "Tue",
+      "wednesday": "Wed",
+      "thursday": "Thu",
+      "friday": "Fri",
+      "saturday": "Sat",
+      "sunday":"Sun"
+    }
   }
-
 }
