@@ -88,7 +88,6 @@ export default {
     return {
       loginVisible: false,
       orders: {},
-      orderId: null,
       footCounter: 0,
       restaurantsId: this.restaurantId(),
       shopInfo: {},
@@ -151,10 +150,17 @@ export default {
     },
   },
   methods: {
-    goCheckout() {
-        this.$router.push({
-          path: `/r/${this.restaurantId()}/order/${this.orderId}`
-        });
+    async goCheckout() {
+      const order_data = {
+        order: this.orders,
+        status: order_status.new_order,
+        uid: this.user.uid
+        // price never set here.
+      };
+      const res = await db.collection(`restaurants/${this.restaurantId()}/orders`).add(order_data);
+      this.$router.push({
+        path: `/r/${this.restaurantId()}/order/${res.id}`
+      });
     },
     handleDismissed() {
       console.log("handleDismissed");
@@ -170,15 +176,7 @@ export default {
         return total + orders[id]
       }, 0);
     },
-    async checkOut() {
-      const order_data = {
-        order: this.orders,
-        status: order_status.new_order,
-        uid: "hogehoge", // todo
-        // price never set here.
-      };
-      const res = await db.collection(`restaurants/${this.restaurantId()}/orders`).add(order_data);
-      this.orderId = res.id;
+    checkOut() {
       //this.$refs.modalLogin.open();
       if (this.user) {
         this.goCheckout();
