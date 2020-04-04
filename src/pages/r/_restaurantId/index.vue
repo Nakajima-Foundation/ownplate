@@ -56,8 +56,7 @@
 
       <login-modal 
         ref="modalLogin"
-        :orderId="orderId">
-      </login-modal>
+        :orderId="orderId" />
     </section>
   </span>
 </template>
