@@ -45,12 +45,12 @@
         </b-tab-item>
       </b-tabs>
       <button
-        v-if="0 != footCounter"
+        v-if="0 != foodCounter"
         id="order_btn"
         class="button is-primary is-rounded"
         @click="handleCheckOut"
       >
-        <span style="margin-right: auto;">{{$tc('sitemenu.orderCounter', footCounter, {count: footCounter})}}</span>
+        <span style="margin-right: auto;">{{$tc('sitemenu.orderCounter', foodCounter, {count: foodCounter})}}</span>
         <span class="bold" style="margin-left:auto;">{{$t('sitemenu.checkout')}}</span>
       </button>
 
@@ -88,7 +88,7 @@ export default {
     return {
       loginVisible: false,
       orders: {},
-      footCounter: 0,
+      foodCounter: 0,
       restaurantsId: this.restaurantId(),
       shopInfo: {},
       // isCardModalActive: false
@@ -129,8 +129,8 @@ export default {
     }
   },
   watch: {
-    footCounter(val) {
-      console.log("footCounter" + val);
+    foodCounter(val) {
+      console.log("foodCounter" + val);
     },
   },
   computed: {
@@ -179,7 +179,7 @@ export default {
     },
     emitted(eventArgs) {
       this.orders[eventArgs.id] = eventArgs.counter;
-      this.footCounter = Object.keys(this.orders).reduce((total, id) => {
+      this.foodCounter = Object.keys(this.orders).reduce((total, id) => {
         return total + this.orders[id]
       }, 0);
     },
