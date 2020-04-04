@@ -1,5 +1,6 @@
 <template>
   <section class="section">
+    <h1>{{phone}}</h1>
     <phone-login
      v-show="!dismissed"
      v-on:dismissed="handleDismissed" />
@@ -22,6 +23,10 @@ export default {
   mounted() {
   },
   computed: {
+    phone() {
+      const user = this.$store.state.user.user;
+      return (user && user.phoneNumber);
+    }
   },
   methods: {
     handleDismissed() {

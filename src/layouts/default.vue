@@ -225,6 +225,9 @@ export default {
         if (user.phoneNumber) {
           this.$store.commit('user/SET_USER', user);
         }
+      } else {
+        this.$store.commit('admin/SET_USER', null);
+        this.$store.commit('user/SET_USER', null);
       }
       this.$store.commit('user/SET_LOADING', false);
     });
