@@ -179,9 +179,8 @@ export default {
     },
     emitted(eventArgs) {
       this.orders[eventArgs.id] = eventArgs.counter;
-      const orders = this.orders;
-      this.footCounter = Object.keys(this.orders).reduce(function(total, id) {
-        return total + orders[id]
+      this.footCounter = Object.keys(this.orders).reduce((total, id) => {
+        return total + this.orders[id]
       }, 0);
     },
   }
