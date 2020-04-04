@@ -45,25 +45,30 @@
         </b-tab-item>
       </b-tabs>
       <button
-        v-if="0 != footCounter"
+        v-if="0 != foodCounter"
         id="order_btn"
         class="button is-primary is-rounded"
-        @click="checkOut"
+        @click="handleCheckOut"
       >
-        <span style="margin-right: auto;">{{$tc('sitemenu.orderCounter', footCounter, {count: footCounter})}}</span>
+        <span style="margin-right: auto;">{{$tc('sitemenu.orderCounter', foodCounter, {count: foodCounter})}}</span>
         <span class="bold" style="margin-left:auto;">{{$t('sitemenu.checkout')}}</span>
       </button>
 
-      <login-modal 
-        ref="modalLogin"
-        :orderId="orderId" />
+      <b-modal :active.sync="loginVisible" :width="640" scroll="keep">
+        <div class="card">
+          <div class="card-content">
+            <phone-login
+              v-on:dismissed="handleDismissed" />
+          </div>
+        </div>
+      </b-modal>    
     </section>
   </span>
 </template>
 
 <script>
 import ItemCard from "~/components/ItemCard";
-import LoginModal from "~/components/LoginModal";
+import PhoneLogin from "~/components/auth/PhoneLogin";
 import ShopOrnerInfo from "~/components/ShopOrnerInfo";
 import ShopInfo from "~/components/ShopInfo";
 
@@ -75,15 +80,15 @@ export default {
 
   components: {
     ItemCard,
-    LoginModal,
+    PhoneLogin,
     ShopOrnerInfo,
     ShopInfo
   },
   data() {
     return {
+      loginVisible: false,
       orders: {},
-      orderId: null,
-      footCounter: 0,
+      foodCounter: 0,
       restaurantsId: this.restaurantId(),
       shopInfo: {},
       // isCardModalActive: false
@@ -124,8 +129,8 @@ export default {
     }
   },
   watch: {
-    footCounter(val) {
-      console.log("footCounter" + val);
+    foodCounter(val) {
+      console.log("foodCounter" + val);
     },
   },
   computed: {
@@ -140,26 +145,44 @@ export default {
       }
       return list;
     },
+    user() {
+      return this.$store.state.user.user;
+    },
   },
   methods: {
-    emitted(eventArgs) {
-      this.orders[eventArgs.id] = eventArgs.counter;
-      const orders = this.orders;
-      this.footCounter = Object.keys(this.orders).reduce(function(total, id) {
-        return total + orders[id]
-      }, 0);
+    handleCheckOut() {
+      // The user has clicked the CheckOut button
+      if (this.user) {
+        this.goCheckout();
+      } else {
+        this.loginVisible = true;
+      }
     },
-    async checkOut() {
+    handleDismissed() {
+      // The user has dismissed the login dialog (including the successful login)
+      this.loginVisible = false;
+      if (this.user) {
+        this.goCheckout();
+      }
+    },
+    async goCheckout() {
       const order_data = {
         order: this.orders,
         status: order_status.new_order,
-        uid: "hogehoge", // todo
+        uid: this.user.uid
         // price never set here.
       };
       const res = await db.collection(`restaurants/${this.restaurantId()}/orders`).add(order_data);
-      this.orderId = res.id;
-      this.$refs.modalLogin.open();
-    }
+      this.$router.push({
+        path: `/r/${this.restaurantId()}/order/${res.id}`
+      });
+    },
+    emitted(eventArgs) {
+      this.orders[eventArgs.id] = eventArgs.counter;
+      this.foodCounter = Object.keys(this.orders).reduce((total, id) => {
+        return total + this.orders[id]
+      }, 0);
+    },
   }
 };
 </script>
