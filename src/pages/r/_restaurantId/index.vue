@@ -54,16 +54,21 @@
         <span class="bold" style="margin-left:auto;">{{$t('sitemenu.checkout')}}</span>
       </button>
 
-      <login-modal 
-        ref="modalLogin"
-        :orderId="orderId" />
+      <b-modal :active.sync="loginVisible" :width="640" scroll="keep">
+        <div class="card">
+          <div class="card-content">
+            <phone-login
+              v-on:dismissed="handleDismissed" />
+          </div>
+        </div>
+      </b-modal>    
     </section>
   </span>
 </template>
 
 <script>
 import ItemCard from "~/components/ItemCard";
-import LoginModal from "~/components/LoginModal";
+import PhoneLogin from "~/components/auth/PhoneLogin";
 import ShopOrnerInfo from "~/components/ShopOrnerInfo";
 import ShopInfo from "~/components/ShopInfo";
 
@@ -75,12 +80,13 @@ export default {
 
   components: {
     ItemCard,
-    LoginModal,
+    PhoneLogin,
     ShopOrnerInfo,
     ShopInfo
   },
   data() {
     return {
+      loginVisible: false,
       orders: {},
       orderId: null,
       footCounter: 0,
@@ -140,8 +146,23 @@ export default {
       }
       return list;
     },
+    user() {
+      return this.$store.state.user.user;
+    },
   },
   methods: {
+    goCheckout() {
+        this.$router.push({
+          path: `/r/${this.restaurantId()}/order/${this.orderId}`
+        });
+    },
+    handleDismissed() {
+      console.log("handleDismissed");
+      this.loginVisible = false;
+      if (this.user) {
+        this.goCheckout();
+      }
+    },
     emitted(eventArgs) {
       this.orders[eventArgs.id] = eventArgs.counter;
       const orders = this.orders;
@@ -158,7 +179,12 @@ export default {
       };
       const res = await db.collection(`restaurants/${this.restaurantId()}/orders`).add(order_data);
       this.orderId = res.id;
-      this.$refs.modalLogin.open();
+      //this.$refs.modalLogin.open();
+      if (this.user) {
+        this.goCheckout();
+      } else {
+        this.loginVisible = true;
+      }
     }
   }
 };
