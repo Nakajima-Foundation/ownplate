@@ -195,7 +195,7 @@ export default {
   },
   computed: {
     loaded() {
-      return !this.$store.getters['user/loading'];
+      return !this.$store.state.user.loading;
     },
     hasUser() {
       return this.$store.state.user.user !== null;
