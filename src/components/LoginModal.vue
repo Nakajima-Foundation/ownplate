@@ -86,9 +86,6 @@ export default {
           path: `/r/${this.restaurantId()}/order/${this.orderId}`
         });
     },
-    restaurantId() {
-      return this.$route.params.restaurantId;
-    },
   }
 };
 </script>
