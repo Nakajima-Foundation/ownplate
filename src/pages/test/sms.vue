@@ -31,12 +31,6 @@ export default {
     phone() {
       return (this.user && this.user.phoneNumber);
     }
-  },
-  methods: {
-    handleDismissed() {
-      console.log("handleDismissed", auth.currentUser && auth.currentUser.phoneNumber);
-      this.dismissed = true;
-    }
   }
 }
 </script>

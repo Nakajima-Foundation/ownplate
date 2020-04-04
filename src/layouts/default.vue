@@ -219,9 +219,11 @@ export default {
       if (user) {
         if (user.email) {
           this.$store.commit('admin/SET_USER', user);
+          this.$store.commit('user/SET_USER', null);
         }
         if (user.phoneNumber) {
           this.$store.commit('user/SET_USER', user);
+          this.$store.commit('admin/SET_USER', null);
         }
       } else {
         this.$store.commit('admin/SET_USER', null);
