@@ -1,8 +1,11 @@
 <template>
   <section class="section">
+    <div v-show="user !== null">
+      <h2>Phone: {{phone}}</h2>
+      <p>Try "Sign Out" from the menu.</p>
+    </div>
     <phone-login
-     v-show="!dismissed"
-     v-on:dismissed="handleDismissed" />
+     v-show="!user" />
   </section>
 </template>
 
@@ -22,11 +25,11 @@ export default {
   mounted() {
   },
   computed: {
-  },
-  methods: {
-    handleDismissed() {
-      console.log("handleDismissed", auth.currentUser && auth.currentUser.phoneNumber);
-      this.dismissed = true;
+    user() {
+      return this.$store.state.user.user;
+    },
+    phone() {
+      return (this.user && this.user.phoneNumber);
     }
   }
 }
