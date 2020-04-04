@@ -5,8 +5,11 @@
         <div class="field-body">
           <div class="field has-addons">
             <div style="display:inline-flex">
-              <b-select v-model="startTime" :disabled="disabled">
-                <option v-for="timeItem of timeList" :key="timeItem">
+              <b-select v-model="value.start"
+                        :disabled="disabled"
+                        @input="updateValue"
+                        >
+                <option v-for="(timeItem, index) of timeList" :key="timeItem" :value="index === 0 ? null : (index - 1) * 30">
                   {{ timeItem }}
                 </option>
               </b-select>
@@ -15,8 +18,11 @@
               >
                 -
               </span>
-              <b-select v-model="endTime" :disabled="disabled">
-                <option v-for="timeItem of timeList" :key="timeItem">
+              <b-select v-model="value.end"
+                        :disabled="disabled"
+                        @input="updateValue"
+                        >
+                <option v-for="(timeItem, index) of timeList" :key="timeItem" :value="index === 0 ? null : (index - 1) * 30">
                   {{ timeItem }}
                 </option>
               </b-select>
@@ -36,13 +42,22 @@ export default {
     disabled : {
       type: Boolean,
       required: true
-    }
+    },
+    value: {
+      type: Object,
+      required: true,
+      'default': () => ({})
+    },
+  },
+  methods: {
+    updateValue() {
+      this.$emit('input', this.value)
+    },
   },
   data() {
     return {
-      startTime: "",
-      endTime: "",
       timeList: [
+        null,
         "00:00 AM",
         "00:30 AM",
         "01:00 AM",
@@ -94,8 +109,6 @@ export default {
       ],
     };
   },
-  mounted() {},
-  methods: {}
 };
 </script>
 <style lang="scss" scoped>

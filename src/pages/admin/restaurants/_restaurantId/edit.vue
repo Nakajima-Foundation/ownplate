@@ -238,13 +238,14 @@
                 label="Food tax"
                 type="is-white"
                 style="border-radius: 0.4rem!important;"
-              >
+                >
                 <div style="display:inline-flex">
-                  <b-select v-model="shopInfo.foodTax" :disabled="disabled">
-                    <option v-for="taxItem of taxList" :key="taxItem">
-                      {{ taxItem }}
-                    </option>
-                  </b-select>
+                  <b-input
+                    v-model="shopInfo.foodTax"
+                    placeholder="8.2"
+                    type="text"
+                    maxlength="5"
+                    />
                   <span
                     style="margin-top: auto;margin-bottom: auto;margin-left:0.4rem;margin-right:0.4rem;"
                   >
@@ -266,16 +267,18 @@
                 style="border-radius: 0.4rem!important;"
               >
                 <div style="display:inline-flex">
-                  <b-select v-model="shopInfo.alcoholTax" :disabled="disabled">
-                    <option v-for="taxItem of taxList" :key="taxItem">
-                      {{ taxItem }}
-                    </option>
-                  </b-select>
+                  <b-input
+                    v-model="shopInfo.alcoholTax"
+                    placeholder="10.2"
+                    type="text"
+                    maxlength="5"
+                    />
                   <span
                     style="margin-top: auto;margin-bottom: auto;margin-left:0.4rem;margin-right:0.4rem;"
                   >
                     %
                   </span>
+
                 </div>
               </b-field>
             </div>
@@ -291,49 +294,88 @@
         Mon
       </b-checkbox>
     </div>
-    <hours-input :disabled="!hoursMon"></hours-input>
+    <hours-input
+      v-model="shopInfo.open[1][0]"
+      :disabled="!hoursMon"></hours-input>
+    <hours-input
+      v-model="shopInfo.open[1][1]"
+      :disabled="!hoursMon"></hours-input>
 
     <div class="field">
       <b-checkbox v-model="hoursTue">
         Tue
       </b-checkbox>
     </div>
-    <hours-input :disabled="!hoursTue"></hours-input>
+    <hours-input
+      v-model="shopInfo.open[2][0]"
+      :disabled="!hoursTue"></hours-input>
+
+    <hours-input
+      v-model="shopInfo.open[2][1]"
+      :disabled="!hoursTue"></hours-input>
 
     <div class="field">
       <b-checkbox v-model="hoursWed">
         Wed
       </b-checkbox>
     </div>
-    <hours-input :disabled="!hoursWed"></hours-input>
+    <hours-input
+      v-model="shopInfo.open[3][0]"
+      :disabled="!hoursWed"></hours-input>
+
+    <hours-input
+      v-model="shopInfo.open[3][1]"
+      :disabled="!hoursWed"></hours-input>
 
     <div class="field">
       <b-checkbox v-model="hoursThu">
         Thu
       </b-checkbox>
     </div>
-    <hours-input :disabled="!hoursThu"></hours-input>
+    <hours-input
+      v-model="shopInfo.open[4][0]"
+      :disabled="!hoursThu"></hours-input>
+
+    <hours-input
+      v-model="shopInfo.open[4][1]"
+      :disabled="!hoursThu"></hours-input>
 
     <div class="field">
       <b-checkbox v-model="hoursFri">
         Fri
       </b-checkbox>
     </div>
-    <hours-input :disabled="!hoursFri"></hours-input>
+    <hours-input
+      v-model="shopInfo.open[5][0]"
+      :disabled="!hoursFri"></hours-input>
+
+    <hours-input
+      v-model="shopInfo.open[5][1]"
+      :disabled="!hoursFri"></hours-input>
 
     <div class="field">
       <b-checkbox v-model="hoursSat">
         Sat
       </b-checkbox>
     </div>
-    <hours-input :disabled="!hoursSat"></hours-input>
+    <hours-input
+      v-model="shopInfo.open[6][0]"
+      :disabled="!hoursSat"></hours-input>
+    <hours-input
+      v-model="shopInfo.open[6][1]"
+      :disabled="!hoursSat"></hours-input>
 
     <div class="field">
       <b-checkbox v-model="hoursSun">
         Sun
       </b-checkbox>
     </div>
-    <hours-input :disabled="!hoursSun"></hours-input>
+    <hours-input
+      v-model="shopInfo.open[7][0]"
+      :disabled="!hoursSun"></hours-input>
+    <hours-input
+      v-model="shopInfo.open[7][3]"
+      :disabled="!hoursSun"></hours-input>
 
     <b-button
       :disabled="!formIsValid"
@@ -414,8 +456,6 @@ const US_STATES = [
   "Wyoming"
 ];
 
-const TAX_RATES = [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
-
 export default {
   name: "Order",
   components: {
@@ -432,6 +472,7 @@ export default {
       tags: [], // ???
       restProfileCroppa: null,
       restCoverCroppa: null,
+      test: null,
       shopInfo: {
         restaurantName: "",
         streetAddress: "",
@@ -445,8 +486,16 @@ export default {
         alcoholTax: 0,
         tags: ["Meet"],
         tag: "",
+        open: {
+          1: [], // mon
+          2: [],
+          3: [],
+          4: [],
+          5: [],
+          6: [],
+          7: []
+        },
       },
-      taxList: TAX_RATES,
       states: US_STATES,
       hoursMon: true,
       hoursTue: true,
@@ -481,7 +530,6 @@ export default {
     if (restaurant.exists) {
       const restaurant_data = restaurant.data();
       this.shopInfo = Object.assign({}, this.shopInfo, restaurant_data);
-      console.log(this.shopInfo);
       // todo update data.
     } else {
       // todo something error
@@ -494,6 +542,7 @@ export default {
   },
   computed: {
     formIsValid() {
+      // todo
       return true; // for debug
       return (
         this.restProfileCroppa !== "" &&
@@ -553,6 +602,7 @@ export default {
         tags: this.shopInfo.tags,
         foodTax: Number(this.shopInfo.foodTax),
         alcoholTax: Number(this.shopInfo.alcoholTax),
+        open: this.shopInfo.open,
         uid: this.shopInfo.uid,
         defauleTaxRate: 0.1,
         publicFlag: true,
