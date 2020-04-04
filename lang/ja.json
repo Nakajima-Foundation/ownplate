@@ -64,5 +64,16 @@
   },
   "auth": {
     "notAdmin": "You need to login as a restaurant owner."
+  },
+  "week": {
+    "short": {
+      "monday": "月曜",
+      "tuesday": "火曜",
+      "wednesday": "水曜",
+      "thursday": "木曜",
+      "friday": "金曜",
+      "saturday": "土曜",
+      "sunday":"日曜"
+    }
   }
 }
