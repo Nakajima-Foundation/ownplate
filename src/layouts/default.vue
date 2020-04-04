@@ -178,7 +178,6 @@ export default {
 
   data() {
     return {
-      user: null, // temporarily until we simplify the store
       items: [
         {
           title: "Home",
@@ -199,7 +198,7 @@ export default {
       return !this.$store.getters['user/loading'];
     },
     hasUser() {
-      return this.user !== null;
+      return this.$store.state.user.user !== null;
     }
   },
   methods: {
@@ -217,7 +216,6 @@ export default {
     this.$store.commit('user/SET_LOADING', true);
     this.unregisterAuthObserver = auth.onAuthStateChanged(async (user) => {
       console.log("authStateChanged", user && user.email, user && user.phoneNumber);
-      this.user = user;
       if (user) {
         if (user.email) {
           this.$store.commit('admin/SET_USER', user);
