@@ -46,7 +46,7 @@ export default {
   props: {
     orderId: {
       type: String,
-      required: true
+      required: false
     },
   },
   data() {
@@ -82,19 +82,12 @@ export default {
       this.conrfim = true;
     },
     goCheckout() {
-      if (this.restaurantId()) {
         this.$router.push({
           path: `/r/${this.restaurantId()}/order/${this.orderId}`
         });
-      } else {
-        this.$router.push({ path: `/r/${this.restaurantId()}/order/${this.orderId}` });
-      }
     },
     restaurantId() {
       return this.$route.params.restaurantId;
-    },
-    setOrderId(orderId) {
-      this.orderId = orderId;
     },
   }
 };

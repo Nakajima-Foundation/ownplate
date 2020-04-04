@@ -7,9 +7,9 @@
       <div class="card-image">
         <GMap
           ref="gMap"
-          :cluster="{options: {styles: clusterStyle}}"
+          :cluster="{options: {styles: 'clusterStyle'}}"
           :center="{}"
-          :options="{fullscreenControl: false, styles: mapStyle}"
+          :options="{fullscreenControl: false, styles: 'mapStyle'}"
           :zoom="18"
           >
         </GMap>

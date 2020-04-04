@@ -54,7 +54,9 @@
         <span class="bold" style="margin-left:auto;">{{$t('sitemenu.checkout')}}</span>
       </button>
 
-      <login-modal ref="modalLogin"></login-modal>
+      <login-modal 
+        ref="modalLogin"
+        :orderId="orderId" />
     </section>
   </span>
 </template>
@@ -157,7 +159,6 @@ export default {
       const res = await db.collection(`restaurants/${this.restaurantId()}/orders`).add(order_data);
       this.orderId = res.id;
       this.$refs.modalLogin.open();
-      this.$refs.modalLogin.setOrderId(this.orderId);
     }
   }
 };
