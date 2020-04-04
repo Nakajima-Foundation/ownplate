@@ -291,16 +291,16 @@
 
     <div v-for="(day, index) in days" :key="index">
       <div class="field">
-        <b-checkbox v-model="shopInfo.openDays[index]">
+        <b-checkbox v-model="shopInfo.businessDay[index]">
           {{$t("week.short." + day)}}
         </b-checkbox>
       </div>
       <hours-input
         v-model="shopInfo.openTimes[index][0]"
-        :disabled="!shopInfo.openDays[index]"></hours-input>
+        :disabled="!shopInfo.businessDay[index]"></hours-input>
       <hours-input
         v-model="shopInfo.openTimes[index][1]"
-        :disabled="!shopInfo.openDays[index]"></hours-input>
+        :disabled="!shopInfo.businessDay[index]"></hours-input>
     </div>
 
 
@@ -424,7 +424,7 @@ export default {
           6: [],
           7: []
         },
-        openDays: {
+        businessDay: {
           1: true, // mon
           2: true,
           3: true,
@@ -535,6 +535,7 @@ export default {
         foodTax: Number(this.shopInfo.foodTax),
         alcoholTax: Number(this.shopInfo.alcoholTax),
         openTimes: this.shopInfo.openTimes,
+        businessDay: this.shopInfo.businessDay,
         uid: this.shopInfo.uid,
         defauleTaxRate: 0.1,
         publicFlag: true,
