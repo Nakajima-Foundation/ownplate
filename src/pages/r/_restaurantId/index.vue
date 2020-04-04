@@ -48,7 +48,7 @@
         v-if="0 != footCounter"
         id="order_btn"
         class="button is-primary is-rounded"
-        @click="checkOut"
+        @click="handleCheckOut"
       >
         <span style="margin-right: auto;">{{$tc('sitemenu.orderCounter', footCounter, {count: footCounter})}}</span>
         <span class="bold" style="margin-left:auto;">{{$t('sitemenu.checkout')}}</span>
@@ -150,6 +150,21 @@ export default {
     },
   },
   methods: {
+    handleCheckOut() {
+      // The user has clicked the CheckOut button
+      if (this.user) {
+        this.goCheckout();
+      } else {
+        this.loginVisible = true;
+      }
+    },
+    handleDismissed() {
+      // The user has dismissed the login dialog (including the successful login)
+      this.loginVisible = false;
+      if (this.user) {
+        this.goCheckout();
+      }
+    },
     async goCheckout() {
       const order_data = {
         order: this.orders,
@@ -162,13 +177,6 @@ export default {
         path: `/r/${this.restaurantId()}/order/${res.id}`
       });
     },
-    handleDismissed() {
-      console.log("handleDismissed");
-      this.loginVisible = false;
-      if (this.user) {
-        this.goCheckout();
-      }
-    },
     emitted(eventArgs) {
       this.orders[eventArgs.id] = eventArgs.counter;
       const orders = this.orders;
@@ -176,14 +184,6 @@ export default {
         return total + orders[id]
       }, 0);
     },
-    checkOut() {
-      //this.$refs.modalLogin.open();
-      if (this.user) {
-        this.goCheckout();
-      } else {
-        this.loginVisible = true;
-      }
-    }
   }
 };
 </script>
