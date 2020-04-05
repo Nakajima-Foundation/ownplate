@@ -16,24 +16,20 @@
       ></order-info>
     <div class="is-centered" style="text-align: center;">
       <b-button expanded rounded style="margin-bottom:1rem;">
-        Add more items
+        {{$t('order.editItems')}}
       </b-button>
-
-      <n-link :to="{ path: '/shop/menu' }">
-        Remove all items
-      </n-link>
     </div>
 
     <hr class="hr-black" />
 
     <h2 class="p-big bold">
-      Your payment
+      {{$t('order.yourPayment')}}
     </h2>
     <credit-card-input></credit-card-input>
 
     <div class="is-centered" style="text-align: center;">
       <b-button
-        type="is-info"
+        type="is-primary"
         expanded
         rounded
         style="margin-top:4rem;padding-top: 0.2rem;"

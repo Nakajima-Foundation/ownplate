@@ -28,6 +28,11 @@
   },
   "order": {
     "yourOrder": "Your Order",
+    "editItems": "Edit Items",
+    "subtotal": "Subtotal",
+    "salesTax": "Sales　tax",
+    "total": "Total",
+    "yourPayment": "Your Payment",
     "status": {
       "unexpected": "Unexpected",
       "error": "Error",
