@@ -28,6 +28,12 @@
   },
   "order": {
     "yourOrder": "あなたの注文",
+    "editItems": "注文を変更する",
+    "subtotal": "小計",
+    "salesTax": "消費税",
+    "total": "合計",
+    "yourPayment": "お支払い",
+    "placeOrder": "注文する:",
     "status": {
       "unexpected": "(Unexpected)",
       "error": "エラー",

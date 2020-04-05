@@ -15,25 +15,25 @@
       :orderInfo="this.orderInfo||{}"
       ></order-info>
     <div class="is-centered" style="text-align: center;">
-      <b-button expanded rounded style="margin-bottom:1rem;">
-        Add more items
+      <b-button 
+        expanded 
+        rounded
+        @click="handleEditItems" 
+        style="margin-bottom:1rem;">
+        {{$t('order.editItems')}}
       </b-button>
-
-      <n-link :to="{ path: '/shop/menu' }">
-        Remove all items
-      </n-link>
     </div>
 
     <hr class="hr-black" />
 
     <h2 class="p-big bold">
-      Your payment
+      {{$t('order.yourPayment')}}
     </h2>
     <credit-card-input></credit-card-input>
 
     <div class="is-centered" style="text-align: center;">
       <b-button
-        type="is-info"
+        type="is-primary"
         expanded
         rounded
         style="margin-top:4rem;padding-top: 0.2rem;"
@@ -41,7 +41,7 @@
         @click="goNext"
       >
         <span class="p-font bold">
-          Place order: $44.00
+          {{$t('order.placeOrder')}} {{$n(orderInfo.total, 'currency')}}
         </span>
       </b-button>
     </div>
@@ -120,6 +120,16 @@ export default {
     }
   },
   methods: {
+    async handleEditItems() {
+      console.log("handleEditItems");
+      try {
+        await db.doc(`restaurants/${this.restaurantId()}/orders/${this.orderId}`).delete();
+        console.log("suceeded");
+        this.$router.push({ path: `/r/${this.restaurantId()}` });
+      } catch(error) {
+        console.log("failed");
+      }
+    },
     updateOrder() {
       if (this.menus.length > 0 && this.orderInfo.order) {
         const menuObj = this.array2obj(this.menus);
@@ -129,6 +139,8 @@ export default {
           return {
             item: menuObj[key],
             count: num,
+            id: key,
+            specialRequest: "no special request" // BUGBUG: Implement this later
           };
         });
       }

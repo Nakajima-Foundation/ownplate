@@ -6,11 +6,8 @@
         <h4 class="bold">
           {{ item.itemName }} {{count > 1 ? " x " + String(count) : "" }}
         </h4>
-        <p v-if="option" class="p-font-mini payment">
-          {{ option }}
-        </p>
-        <p v-if="optionPayment" class="p-font-mini payment">
-          {{ $n(optionPayment, 'currency') }}
+        <p v-if="specialRequest" class="p-font-mini payment">
+          {{ specialRequest }}
         </p>
       </div>
       <div class="media-right" style="margin-top:-0.4rem;">
@@ -36,13 +33,9 @@ export default {
       type: Number,
       required: true
     },
-    optionPayment: {
+    specialRequest: {
       type: String,
-      required: true
-    },
-    option: {
-      type: String,
-      required: true
+      required: false
     }
   },
   data() {

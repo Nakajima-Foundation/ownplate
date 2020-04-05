@@ -5,6 +5,8 @@
       <order-item
         :item="orderItem.item"
         :count="orderItem.count"
+        :specialRequest="orderItem.specialRequest"
+        :key="orderItem.key"
         ></order-item>
     </template>
 
@@ -14,7 +16,7 @@
       <div class="media">
         <div class="media-content">
           <h4 class="bold">
-            Subtotal
+            {{$t('order.subtotal')}}
           </h4>
         </div>
         <div class="media-right" style="margin-top:-0.4rem;">
@@ -29,7 +31,7 @@
       <div class="media">
         <div class="media-content">
           <h4 class="bold">
-            Sales Tax
+            {{$t('order.salesTax')}}
           </h4>
         </div>
         <div class="media-right" style="margin-top:-0.4rem;">
@@ -44,7 +46,7 @@
       <div class="media">
         <div class="media-content">
           <h3 class="bold">
-            Total
+            {{$t('order.total')}}
           </h3>
         </div>
         <div class="media-right">
