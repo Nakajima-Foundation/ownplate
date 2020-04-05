@@ -5,6 +5,8 @@
       <order-item
         :item="orderItem.item"
         :count="orderItem.count"
+        :specialRequest="orderItem.specialRequest"
+        :key="orderItem.key"
         ></order-item>
     </template>
 

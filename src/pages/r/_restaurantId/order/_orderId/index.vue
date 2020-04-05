@@ -129,6 +129,8 @@ export default {
           return {
             item: menuObj[key],
             count: num,
+            id: key,
+            specialRequest: "no special request" // BUGBUG: Implement this later
           };
         });
       }
