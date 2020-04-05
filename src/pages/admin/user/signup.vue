@@ -103,6 +103,8 @@
 </template>
 
 <script>
+import { auth } from "~/plugins/firebase.js";
+
 export default {
   name: "Signup",
   data() {
@@ -119,33 +121,17 @@ export default {
         ? "Password do not match"
         : "";
     },
-    user() {
-      return this.$store.getters.user;
-    },
-    error() {
-      return this.$store.getters.error;
-    },
-    loading() {
-      return this.$store.getters.loading;
-    }
-  },
-  watch: {
-    user(value) {
-      if (value != null && value !== undefined) {
-        this.$router.push("/");
-      }
-    }
   },
   methods: {
-    onSignup() {
-      this.$store.dispatch("user/signUserUp", {
-        email: this.email,
-        password: this.password
-      });
+    async onSignup() {
+      try {
+        await auth.createUserWithEmailAndPassword(this.email, this.password)
+        console.log("onSignup success")
+        this.$router.push("/");
+      } catch(error) {
+        console.log("onSignup failed", error.message);
+      }
     },
-    onDismissed() {
-      this.$store.dispatch("clearError");
-    }
   }
 };
 </script>

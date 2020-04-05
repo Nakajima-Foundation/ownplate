@@ -70,7 +70,7 @@
 </template>
 
 <script>
-import { db, auth } from "~/plugins/firebase.js";
+import { auth } from "~/plugins/firebase.js";
 
 export default {
   name: "Signin",
@@ -90,9 +90,6 @@ export default {
         console.log("onSignin failed", error.message);
       }
     },
-    onDismissed() {
-      //this.$store.dispatch("clearError");
-    }
   }
 };
 </script>
