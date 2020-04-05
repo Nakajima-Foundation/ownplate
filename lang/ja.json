@@ -16,7 +16,9 @@
   "shopInfo": {
     "address": "場所",
     "phonenumber": "電話番号",
-    "website": "ホームページ"
+    "website": "ホームページ",
+    "hours": "営業時間",
+    "public": "公開"
   },
   "sitemenu": {
     "menu": "メニュー",

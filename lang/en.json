@@ -16,7 +16,9 @@
   "shopInfo": {
     "address": "Address",
     "phonenumber": "Phones Number",
-    "website": "Website"
+    "website": "Website",
+    "hours": "Hours",
+    "public": "Public"
   },
   "sitemenu": {
     "menu": "Menu",
