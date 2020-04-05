@@ -25,20 +25,20 @@
       </div>
     </div>
     <div class="card-footer">
-      <a href="#" class="card-footer-item" @click="positionUp" v-if="position!=='first'">
+      <a @click.prevent href="#" class="card-footer-item" @click="positionUp" v-if="position!=='first'">
         <b-icon icon="arrow-up" size="is-midium"></b-icon>
       </a>
-      <a href="#" class="card-footer-item" v-else>
+      <a @click.prevent href="#" class="card-footer-item" v-else>
       </a>
-      <a href="#" class="card-footer-item" @click="positionDown" v-if="position!=='last'">
+      <a @click.prevent href="#" class="card-footer-item" @click="positionDown" v-if="position!=='last'">
         <b-icon icon="arrow-down" size="is-midium"></b-icon>
       </a>
-      <a href="#" class="card-footer-item" v-else>
+      <a @click.prevent href="#" class="card-footer-item" v-else>
       </a>
-      <a href="#" class="card-footer-item" @click="forkItem">
+      <a @click.prevent href="#" class="card-footer-item" @click="forkItem">
         <b-icon icon="plus" size="is-midium"></b-icon>
       </a>
-      <a href="#" class="card-footer-item" @click="deleteItem">
+      <a @click.prevent href="#" class="card-footer-item" @click="deleteItem">
         <b-icon icon="delete" size="is-midium"></b-icon>
       </a>
     </div>
