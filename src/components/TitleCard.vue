@@ -13,11 +13,15 @@
       </div>
     </div>
     <div class="card-footer">
-      <a href="#" class="card-footer-item" @click="positionUp">
+      <a href="#" class="card-footer-item" @click="positionUp" v-if="position!=='first'">
         <b-icon icon="arrow-up" size="is-midium"></b-icon>
       </a>
-      <a href="#" class="card-footer-item" @click="positionDown">
+      <a href="#" class="card-footer-item" v-else>
+      </a>
+      <a href="#" class="card-footer-item" @click="positionDown" v-if="position!=='last'">
         <b-icon icon="arrow-down" size="is-midium"></b-icon>
+      </a>
+      <a href="#" class="card-footer-item" v-else>
       </a>
       <a href="#" class="card-footer-item" @click="forkItem">
         <b-icon icon="plus" size="is-midium"></b-icon>
@@ -36,6 +40,10 @@ export default {
   props: {
     title: {
       type: Object,
+      required: true
+    },
+    position: {
+      type: String,
       required: true
     }
   },

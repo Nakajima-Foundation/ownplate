@@ -45,7 +45,7 @@
       </div>
 
       <div v-if="existsMenu">
-        <div v-for="menuList in menuLists" :key="menuList">
+        <div v-for="(menuList, index) in menuLists" :key="menuList">
           <div v-if="itemsObj[menuList]._dataType === 'title'">
             <div v-if="itemsObj[menuList]._isEditing === true">
               <title-input
@@ -56,6 +56,7 @@
             <div v-else>
               <title-card
                 :title="itemsObj[menuList]"
+                :position="index == 0 ? 'first' : ((menuLists.length - 1) === index ? 'last' : '')"
                 @toEditMode="toEditMode($event)"
                 @positionUp="positionUp($event)"
                 @positionDown="positionDown($event)"
@@ -67,6 +68,7 @@
           <div v-else>
             <item-edit-card
               :menuitem="itemsObj[menuList]"
+              :position="index == 0 ? 'first' : ((menuLists.length - 1) === index ? 'last' : '')"
               @emitting="emitted($event)"
 
               @toEditMode="toEditMode($event)"
