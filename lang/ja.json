@@ -33,6 +33,7 @@
     "salesTax": "消費税",
     "total": "合計",
     "yourPayment": "お支払い",
+    "placeOrder": "注文する:",
     "status": {
       "unexpected": "(Unexpected)",
       "error": "エラー",
