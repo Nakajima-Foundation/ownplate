@@ -30,8 +30,8 @@
       :zoom-speed="5"
       :width="200"
       :height="200"
-      :placeholder="'No image'"
-      :placeholder-font-size="20"
+      placeholder="No image"
+      placeholder-font-size="20"
       initial-position="center"
       :canvas-color="'gainsboro'"
     ></croppa>
@@ -65,13 +65,15 @@
         </h4>
       </div>
     </div>
-    <b-field>
+    <b-field
+      :type="errors['restaurantName'].length > 0 ? 'is-danger' : 'is-success'"
+      >
       <b-input
         v-model="shopInfo.restaurantName"
         type="text"
         placeholder="Enter restaurant name"
         maxlength="50"
-      ></b-input>
+        ></b-input>
     </b-field>
 
     <div class="field is-horizontal">
@@ -84,7 +86,9 @@
         </h4>
       </div>
     </div>
-    <b-field type="is-white">
+    <b-field type="is-white"
+      :type="errors['streetAddress'].length > 0 ? 'is-danger' : 'is-success'"
+             >
       <b-input
         v-model="shopInfo.streetAddress"
         type="text"
@@ -105,7 +109,9 @@
             </h4>
           </div>
         </div>
-        <b-field type="is-white">
+        <b-field
+          :type="errors['city'].length > 0 ? 'is-danger' : 'is-white'"
+          >
           <b-input
             v-model="shopInfo.city"
             type="text"
@@ -125,7 +131,9 @@
             </h4>
           </div>
         </div>
-        <b-field type="is-white">
+        <b-field type="is-white"
+                 :type="errors['state'].length > 0 ? 'is-danger' : 'is-success'"
+                 >
           <b-select v-model="shopInfo.state" placeholder="select">
             <option v-for="stateItem in states" :key="stateItem">
               {{ stateItem }}
@@ -145,7 +153,9 @@
         </h4>
       </div>
     </div>
-    <b-field>
+    <b-field
+      :type="errors['zip'].length > 0 ? 'is-danger' : 'is-white'"
+      >
       <b-input
         v-model="shopInfo.zip"
         type="text"
@@ -195,7 +205,9 @@
         </h4>
       </div>
     </div>
-    <b-field type="is-white">
+    <b-field
+      :type="errors['phoneNumber'].length > 0 ? 'is-danger' : 'is-white'"
+      >
       <b-input
         v-model="shopInfo.phoneNumber"
         placeholder="Enter phone number"
@@ -238,6 +250,7 @@
                 label="Food tax"
                 type="is-white"
                 style="border-radius: 0.4rem!important;"
+                :type="errors['foodTax'].length > 0 ? 'is-danger' : 'is-success'"
                 >
                 <div style="display:inline-flex">
                   <b-input
@@ -265,7 +278,8 @@
                 label="Alcohol tax"
                 type="is-white"
                 style="border-radius: 0.4rem!important;"
-              >
+                :type="errors['alcoholTax'].length > 0 ? 'is-danger' : 'is-success'"
+                >
                 <div style="display:inline-flex">
                   <b-input
                     v-model="shopInfo.alcoholTax"
@@ -287,7 +301,7 @@
       </div>
     </div>
 
-    <h4>Hours</h4>
+    <h4>{{$t('shopInfo.hours')}}</h4>
 
     <div v-for="(day, index) in days" :key="index">
       <div class="field">
@@ -297,15 +311,21 @@
       </div>
       <hours-input
         v-model="shopInfo.openTimes[index][0]"
+        :type="errors['time'][index][0].length > 0 ? 'is-danger' : 'is-success'"
         :disabled="!shopInfo.businessDay[index]"></hours-input>
       <hours-input
         v-model="shopInfo.openTimes[index][1]"
+        :type="errors['time'][index][1].length > 0 ? 'is-danger' : 'is-success'"
         :disabled="!shopInfo.businessDay[index]"></hours-input>
     </div>
 
+    <h4>
+      <b-checkbox v-model="shopInfo.isPublic" :disabled="hasError">
+        {{$t('shopInfo.public')}}
+      </b-checkbox>
+    </h4>
 
     <b-button
-      :disabled="!formIsValid"
       style="margin-right:auto"
       type="is-primary"
       class="counter-button"
@@ -328,62 +348,10 @@ import HoursInput from "~/components/HoursInput";
 import * as API from "~/plugins/api"
 import BackButton from "~/components/BackButton";
 
-import { daysOfWeek } from "~/plugins/constant.js";
+import { daysOfWeek, USStates } from "~/plugins/constant.js";
 
 Vue.use(Croppa);
 
-const US_STATES = [
-  "Alabama",
-  "Alaska",
-  "Arizona",
-  "Arkansas",
-  "California",
-  "Colorado",
-  "Connecticut",
-  "Delaware",
-  "Florida",
-  "Georgia",
-  "Hawaii",
-  "Idaho",
-  "Illinois",
-  "Indiana",
-  "Iowa",
-  "Kansas",
-  "Kentucky",
-  "Louisiana",
-  "Maine",
-  "Maryland",
-  "Massachusetts",
-  "Michigan",
-  "Minnesota",
-  "Mississippi",
-  "Missouri",
-  "Montana",
-  "Nebraska",
-  "Nevada",
-  "New Hampshire",
-  "New Jersey",
-  "New Mexico",
-  "New York",
-  "North Carolina",
-  "North Dakota",
-  "Ohio",
-  "Oklahoma",
-  "Oregon",
-  "Pennsylvania",
-  "Rhode Island",
-  "South Carolina",
-  "South Dakota",
-  "Tennessee",
-  "Texas",
-  "Utah",
-  "Vermont",
-  "Virginia",
-  "Washington",
-  "West Virginia",
-  "Wisconsin",
-  "Wyoming"
-];
 
 export default {
   name: "Order",
@@ -433,8 +401,9 @@ export default {
           6: true,
           7: true
         },
+        isPublic: false,
       },
-      states: US_STATES,
+      states: USStates,
       maplocation: {},
       markers: [],
       days: daysOfWeek,
@@ -452,7 +421,7 @@ export default {
       ],
     };
   },
-  beforeCreated() {
+  created() {
     this.checkAdminPermission();
   },
   async created() {
@@ -473,19 +442,59 @@ export default {
     }
   },
   computed: {
-    formIsValid() {
-      // todo
-      return true; // for debug
-      return (
-        this.restProfileCroppa !== "" &&
-        this.shopInfo.restaurantName !== "" &&
-        this.shopInfo.streetAddress !== "" &&
-        this.shopInfo.city !== "" &&
-        this.zip !== "" &&
-        this.phoneNumber !== "" &&
-        this.shopInfo.state !== ""
-      );
-    }
+    errors() {
+      const err = {};
+      ['restaurantName', 'streetAddress', 'city', 'state', 'zip', 'phoneNumber'].forEach((name) => {
+        err[name] = [];
+        if (this.shopInfo[name] === "") {
+          err[name].push('validationError.'+ name +'.empty');
+        }
+      });
+      ['foodTax', 'alcoholTax'].forEach((name) => {
+        err[name] = [];
+        if (this.shopInfo[name] !== "") {
+          if (isNaN(this.shopInfo[name])) {
+            err[name].push('validationError.'+ name +'.invalidNumber');
+          }
+        }
+      });
+
+      err['time'] = {};
+      Object.keys(daysOfWeek).forEach((key) => {
+
+        err['time'][key] = [];
+        [0, 1].forEach((key2) => {
+          err['time'][key].push([]);
+          if (this.shopInfo.businessDay[key]) {
+            if (this.shopInfo.openTimes[key] && this.shopInfo.openTimes[key][key2]) {
+              const data = this.shopInfo.openTimes[key][key2];
+              if (this.isNull(data.start) ^ this.isNull(data.end)) {
+                err['time'][key][key2].push('validationError.oneInEmpty');
+              }
+              if (!this.isNull(data.start) && !this.isNull(data.end)) {
+                if (data.start > data.end) {
+                  err['time'][key][key2].push('validationError.validBusinessTime');
+                }
+              }
+            } else {
+              if (key2 === 0) {
+                err['time'][key][key2].push('validationError.noSelect');
+              }
+            }
+          }
+        });
+      });
+      console.log(err);
+      // todo more validate
+      return err;
+    },
+    hasError() {
+      console.log(this.errors);
+
+      const num = this.countObj(this.errors);
+      console.log(num)
+      return num > 0;
+    },
   },
   watch: {
     state: function(val) {
@@ -493,8 +502,22 @@ export default {
     }
   },
   methods: {
+    countObj (obj) {
+      if (Array.isArray(obj)) {
+        return obj.reduce((tmp, value) => {
+          // nested array
+          if (Array.isArray(value)) {
+            return tmp + this.countObj(value);
+          }
+          return tmp + 1;
+        }, 0);
+      }
+      return Object.keys(obj).reduce((tmp, key) => {
+        return this.countObj(obj[key]) + tmp;
+      }, 0);
+    },
     async submitRestaurant() {
-      if (!this.formIsValid) return;
+      if (this.hasError) return;
 
       const restaurantId = this.restaurantId();
       if ( this.restProfileCroppa.chosenFile) {
@@ -536,6 +559,7 @@ export default {
         alcoholTax: Number(this.shopInfo.alcoholTax),
         openTimes: this.shopInfo.openTimes,
         businessDay: this.shopInfo.businessDay,
+        isPublic: this.shopInfo.isPublic,
         uid: this.shopInfo.uid,
         defauleTaxRate: 0.1,
         publicFlag: true,

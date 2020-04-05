@@ -43,7 +43,7 @@ export default {
       required: true
     }
   },
-  beforeCreated() {
+  created() {
     this.checkAdminPermission();
   },
   mounted() {

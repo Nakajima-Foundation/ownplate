@@ -1,8 +1,9 @@
+
 <template>
   <span>
     <section class="section" style="background-color:#fffafa">
       <form @submit.prevent="handleSubmit">
-        <b-field 
+        <b-field
           :type="hasError ? 'is-danger' : 'is-success'"
           :message="hasError ? $t(errors[0]) : $t('restaurantId.available')"
           :label="$t('restaurantId.self')">

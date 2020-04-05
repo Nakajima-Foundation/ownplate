@@ -147,7 +147,7 @@ export default {
       restaurantInfo: {},
     };
   },
-  beforeCreated() {
+  created() {
     this.checkAdminPermission();
   },
   computed: {
