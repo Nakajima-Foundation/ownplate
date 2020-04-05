@@ -62,7 +62,7 @@
   </b-navbar>
 
   <!-- pagesのコンポーネントが読み込まれる -->
-  <nuxt style="max-width:100%;background:#FBF9F9" v-if="loaded" ></nuxt>
+  <nuxt style="max-width:100%;background:#FBF9F9" ></nuxt>
   <!-- pagesのコンポーネントが読み込まれる -->
 
   <footer class="footer">
@@ -194,11 +194,8 @@ export default {
     };
   },
   computed: {
-    loaded() {
-      return !this.$store.state.user.loading;
-    },
     hasUser() {
-      return this.$store.state.user.user !== null;
+      return this.$store.state.user !== null;
     }
   },
   methods: {
@@ -213,23 +210,9 @@ export default {
     }
   },
   beforeCreate() {
-    this.$store.commit('user/SET_LOADING', true);
     this.unregisterAuthObserver = auth.onAuthStateChanged(async (user) => {
       console.log("authStateChanged", user && user.email, user && user.phoneNumber);
-      if (user) {
-        if (user.email) {
-          this.$store.commit('admin/SET_USER', user);
-          this.$store.commit('user/SET_USER', null);
-        }
-        if (user.phoneNumber) {
-          this.$store.commit('user/SET_USER', user);
-          this.$store.commit('admin/SET_USER', null);
-        }
-      } else {
-        this.$store.commit('admin/SET_USER', null);
-        this.$store.commit('user/SET_USER', null);
-      }
-      this.$store.commit('user/SET_LOADING', false);
+      this.$store.commit('setUser', user);
     });
   },
   destroyed() {
