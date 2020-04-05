@@ -3,6 +3,9 @@ import Vue from 'vue';
 export default ({app}) => {
   Vue.mixin({
     methods: {
+      isNull(value) {
+        return value === null || value === undefined;
+      },
       restaurantId() {
         return this.$route.params.restaurantId;
       },

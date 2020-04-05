@@ -183,7 +183,7 @@ export default {
       restaurantInfo: {},
     };
   },
-  beforeCreated() {
+  created() {
     this.checkAdminPermission();
   },
   async created() {

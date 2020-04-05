@@ -5,27 +5,35 @@
         <div class="field-body">
           <div class="field has-addons">
             <div style="display:inline-flex">
-              <b-select v-model="value.start"
-                        :disabled="disabled"
-                        @input="updateValue"
-                        >
-                <option v-for="(timeItem, index) of timeList" :key="timeItem" :value="index === 0 ? null : (index - 1) * 30">
-                  {{ timeItem }}
-                </option>
-              </b-select>
+              <b-field
+                :type="type"
+                >
+                <b-select v-model="value.start"
+                          :disabled="disabled"
+                          @input="updateValue"
+                          >
+                  <option v-for="(timeItem, index) of timeList" :key="timeItem" :value="index === 0 ? null : (index - 1) * 30">
+                    {{ timeItem }}
+                  </option>
+                </b-select>
+              </b-field>
               <span
                 style="margin-top: auto;margin-bottom: auto;margin-left:0.4rem;margin-right:0.4rem;"
               >
                 -
               </span>
-              <b-select v-model="value.end"
-                        :disabled="disabled"
-                        @input="updateValue"
-                        >
-                <option v-for="(timeItem, index) of timeList" :key="timeItem" :value="index === 0 ? null : (index - 1) * 30">
-                  {{ timeItem }}
-                </option>
-              </b-select>
+              <b-field
+                :type="type"
+                >
+                <b-select v-model="value.end"
+                          :disabled="disabled"
+                          @input="updateValue"
+                          >
+                  <option v-for="(timeItem, index) of timeList" :key="timeItem" :value="index === 0 ? null : (index - 1) * 30">
+                    {{ timeItem }}
+                  </option>
+                </b-select>
+              </b-field>
             </div>
           </div>
         </div>
@@ -41,6 +49,10 @@ export default {
   props: {
     disabled : {
       type: Boolean,
+      required: true
+    },
+    type : {
+      type: String,
       required: true
     },
     value: {

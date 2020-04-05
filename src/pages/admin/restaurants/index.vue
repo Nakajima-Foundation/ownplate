@@ -113,7 +113,7 @@ export default {
       paymentItems: [],
     };
   },
-  beforeCreated() {
+  created() {
     this.checkAdminPermission();
   },
   computed: {
