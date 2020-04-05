@@ -169,7 +169,7 @@ const AVAIL_OPTIONS = ["All day"];
 export default {
   name: "Order",
   data() {
-    const uid = this.adminUid();
+    const uid = this.$store.getters.uidAdmin;
     return {
       itemName: "",
       price: "",
@@ -192,7 +192,7 @@ export default {
     if (resRestInfo.exists) {
       this.restaurantInfo = resRestInfo.data();
       // check restaurantInfo owner
-      if (this.restaurantInfo.uid !== this.adminUid()) {
+      if (this.restaurantInfo.uid !== this.uid) {
         // something error
       }
     } else {

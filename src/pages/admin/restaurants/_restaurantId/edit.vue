@@ -362,7 +362,7 @@ export default {
   },
 
   data() {
-    const uid = this.adminUid();
+    const uid = this.$store.getters.uidAdmin;
     return {
       disabled: false, // ??
       filteredItems: [], // ??

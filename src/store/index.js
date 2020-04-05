@@ -9,8 +9,17 @@ export const state = () => ({
   user: null
 });
 
-export const getters = () => ({
-});
+export const getters = {
+  uid: (state) => {
+    return state.user && state.user.uid;
+  },
+  uidAdmin: (state) => {
+    return state.user && state.user.email && state.user.uid;
+  },
+  uidUser: (state) => {
+    return state.user && state.user.phoneNumber && state.user.uid;
+  },
+};
 
 export const mutations = {
   setUser(state, user) {

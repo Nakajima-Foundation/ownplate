@@ -9,9 +9,6 @@ export default ({app}) => {
       restaurantId() {
         return this.$route.params.restaurantId;
       },
-      adminUid() {
-        return this.$store.state.user && this.$store.state.user.uid;
-      },
       doc2data(dataType) {
         return (doc) => {
           const data = doc.data();

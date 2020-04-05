@@ -200,7 +200,7 @@ export default {
     async addTitle() {
       const data = {
         name: "",
-        uid: this.adminUid(),
+        uid: this.$store.getters.uidAdmin,
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       };
       const newTitle = await db.collection(`restaurants/${this.restaurantId()}/titles`).add(data);

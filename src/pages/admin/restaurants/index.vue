@@ -131,7 +131,7 @@ export default {
     }
   },
   async mounted() {
-    const uid = this.$store.state.user && this.$store.state.user.uid;
+    const uid = this.$store.getters.uidAdmin;
     const res = await db
       .collection("restaurants")
       .where("uid", "==", uid)
