@@ -146,7 +146,7 @@ export default {
       return list;
     },
     user() {
-      return this.$store.state.user.user;
+      return this.$store.state.user;
     },
   },
   methods: {

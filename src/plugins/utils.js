@@ -10,7 +10,7 @@ export default ({app}) => {
         return this.$route.params.restaurantId;
       },
       adminUid() {
-        return this.$store.getters["admin/user"].uid;
+        return this.$store.state.user && this.$store.state.user.uid;
       },
       doc2data(dataType) {
         return (doc) => {

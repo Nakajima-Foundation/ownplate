@@ -70,6 +70,8 @@
 </template>
 
 <script>
+import { auth } from "~/plugins/firebase.js";
+
 export default {
   name: "Signin",
   data() {
@@ -78,34 +80,16 @@ export default {
       password: ""
     };
   },
-  computed: {
-    user() {
-      return this.$store.getters.user;
-    },
-    error() {
-      return this.$store.getters.error;
-    },
-    loading() {
-      return this.$store.getters.loading;
-    }
-  },
-  watch: {
-    user(value) {
-      if (value != null && value !== undefined) {
-        this.$router.push("/");
-      }
-    }
-  },
   methods: {
-    onSignin() {
-      this.$store.dispatch("user/signUserIn", {
-        email: this.email,
-        password: this.password
-      });
+    async onSignin() {
+      try {
+        await auth.signInWithEmailAndPassword(this.email, this.password)
+        console.log("onSignin success")
+        this.$router.push("/");
+      } catch(error) {
+        console.log("onSignin failed", error.message);
+      }
     },
-    onDismissed() {
-      this.$store.dispatch("clearError");
-    }
   }
 };
 </script>

@@ -4,7 +4,8 @@ export default ({app}) => {
   Vue.mixin({
     methods: {
       checkAdminPermission() {
-        if (!this.$store.getters['admin/user']) {
+        console.log(this.$store.state.user);
+        if (!(this.$store.state.user && this.$store.state.user.email)) {
           this.$router.push('/admin/user/signin');
         }
       }
