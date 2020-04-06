@@ -281,6 +281,7 @@ export default {
       if (item._dataType === "title") {
         const data = {
           name: item.name,
+          uid: this.uid,
           deletedFlag: false,
           createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         };

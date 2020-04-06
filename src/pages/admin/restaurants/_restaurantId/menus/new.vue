@@ -222,6 +222,7 @@ export default {
         availability: this.availability,
         titleFlag: false,
         uid: this.uid,
+        deletedFlag: false,
         createdAt: new Date()
       };
       const newData = await db.collection(`restaurants/${this.restaurantId()}/menus`).add(itemData);
