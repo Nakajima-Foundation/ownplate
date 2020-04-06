@@ -62,7 +62,7 @@
   </b-navbar>
 
   <!-- pagesのコンポーネントが読み込まれる -->
-  <nuxt style="max-width:100%;background:#FBF9F9" ></nuxt>
+  <nuxt style="max-width:100%;background:#FBF9F9" v-if="$store.getters.userWasInitialized"></nuxt>
   <!-- pagesのコンポーネントが読み込まれる -->
 
   <footer class="footer">
