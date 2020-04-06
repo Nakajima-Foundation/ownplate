@@ -320,7 +320,7 @@
     </div>
 
     <h4>
-      <b-checkbox v-model="shopInfo.isPublic" :disabled="hasError">
+      <b-checkbox v-model="shopInfo.publicFlag" :disabled="hasError">
         {{$t('shopInfo.public')}}
       </b-checkbox>
     </h4>
@@ -401,7 +401,7 @@ export default {
           6: true,
           7: true
         },
-        isPublic: false,
+        publicFlag: false,
       },
       states: USStates,
       maplocation: {},
@@ -484,15 +484,11 @@ export default {
           }
         });
       });
-      console.log(err);
       // todo more validate
       return err;
     },
     hasError() {
-      console.log(this.errors);
-
       const num = this.countObj(this.errors);
-      console.log(num)
       return num > 0;
     },
   },
@@ -561,7 +557,7 @@ export default {
         businessDay: this.shopInfo.businessDay,
         uid: this.shopInfo.uid,
         defauleTaxRate: 0.1,
-        publicFlag: this.shopInfo.isPublic,
+        publicFlag: this.shopInfo.publicFlag,
         createdAt: new Date()
       };
       await this.updateRestaurantData(restaurantData);
