@@ -12,7 +12,7 @@
       {{$t("button.back")}}
     </b-button>
 
-    <section class="section">
+    <section class="section" v-if="readyToDisplay">
       <div class="media">
         <div class="media-left">
           <figure class="image is-64x64">
@@ -28,7 +28,6 @@
             {{ restaurantInfo.restaurantName }}
           </h3>
         </div>
-      </div>
       </div>
 
       <h2 class="p-big bold">
@@ -143,9 +142,9 @@ export default {
   },
   data() {
     return {
+      readyToDisplay: false,
       menuLists: [],
       itemsObj: {},
-
       restaurantInfo: {},
     };
   },
@@ -187,6 +186,8 @@ export default {
       }
     } catch (error) {
       console.log("Error fetch menu,", error);
+    } finally {
+      this.readyToDisplay = true;
     }
 
   },

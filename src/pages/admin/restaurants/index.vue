@@ -6,7 +6,7 @@
 
     <b-tabs size="is-medium" class="block" expanded>
       <b-tab-item label="Restaurant">
-        <div class="card block">
+        <div class="card block" v-if="readyToDisplay">
           <div class="card-content">
             <div
               v-if="!existsRestaurant"
@@ -96,6 +96,7 @@ export default {
   },
   data() {
     return {
+      readyToDisplay: false,
       restProfilePhoto: null,
       restProfilePhotoImageUrl: "",
       restCoverPhoto: null,
@@ -163,6 +164,8 @@ export default {
         }));
       } catch (error) {
         console.log("Error fetch doc,", error);
+      } finally {
+        this.readyToDisplay = true;
       }
     },
   }
