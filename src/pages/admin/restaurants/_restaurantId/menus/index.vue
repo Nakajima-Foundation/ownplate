@@ -166,8 +166,8 @@ export default {
     } else {
       console.log("Error fetch restaurantInfo.");
     }
-    const menu_res = await restaurantRef.collection('menus').get();
-    const title_res = await restaurantRef.collection('titles').get();
+    const menu_res = await restaurantRef.collection('menus').where("deletedFlag", "==", false).get();
+    const title_res = await restaurantRef.collection('titles').where("deletedFlag", "==", false).get();
 
     this.menuLists = this.restaurantInfo.menuLists || [];
 
@@ -225,8 +225,6 @@ export default {
         force: true
       });
     },
-
-
     // edit title
     toEditMode(titleId) {
       this.changeTitleMode(titleId, true);
@@ -272,8 +270,19 @@ export default {
     forkItem(item) {
       console.log(item);
     },
-    deleteItem(itemKey) {
-      console.log(itemKey);
+    async deleteItem(itemKey) {
+      // delete from list
+      const pos = this.menuLists.indexOf(itemKey);
+      const item = this.itemsObj[itemKey];
+      this.menuLists.splice( pos, 1 );
+
+      if (item._dataType === "menu") {
+        await db.doc(`restaurants/${this.restaurantId()}/menus/${itemKey}`).update("deletedFlag", true);
+      }
+      if (item._dataType === "title") {
+        await db.doc(`restaurants/${this.restaurantId()}/titles/${itemKey}`).update("deletedFlag", true);
+      }
+      this.saveMenuList();
     },
   }
 };

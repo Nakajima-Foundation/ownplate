@@ -75,7 +75,7 @@ export default {
       this.$emit("forkItem", this.menuitem);
     },
     deleteItem() {
-      this.$emit("forkItem", this.menuitem.id);
+      this.$emit("deleteItem", this.menuitem.id);
     },
   }
 };
