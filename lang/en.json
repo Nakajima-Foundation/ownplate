@@ -85,7 +85,17 @@
     "emailPlaceHolder": "Enter email here",
     "passwordPlaceHolder": "Enter password here",
     "confirmPasswordPlaceHolder": "Enter same password here",
-    "enterName": "Enter name here"
+    "enterName": "Enter name here",
+    "error": {
+      "email": {
+        "invalid":"Invalid Email Address",
+        "taken":"The email address is already in use by another account."
+      },
+      "password": {
+        "tooshort":"Password should be at least 6 characters",
+        "mismatch":"Password mismatch"
+      }
+    }
   },
   "week": {
     "short": {
