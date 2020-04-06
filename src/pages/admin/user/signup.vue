@@ -1,103 +1,60 @@
 <template>
   <section class="section">
     <div class="card block">
-      <div class="card-content">
+      <form class="card-content"
+        @submit.prevent="onSignup">
         <h2 class="p-big bold">
-          Create account
+          {{ $t('admin.registration') }}
         </h2>
-        <div class="field is-horizontal">
-          <div class="field-body">
-            <h4>
-              Email
-            </h4>
-          </div>
-        </div>
-        <b-field>
+        <b-field
+          :label="$t('admin.email')">
           <b-input
             v-model="email"
             type="email"
             placeholder="Enter email here"
-            maxlength="256"
-          ></b-input>
+            maxlength="256" />
         </b-field>
 
-        <div class="field is-horizontal">
-          <div class="field-body">
-            <h4>
-              First & last name
-            </h4>
-          </div>
-        </div>
-        <b-field>
+        <b-field
+          :label="$t('admin.name')">
           <b-input
             v-model="name"
             type="text"
             placeholder="Enter name here"
-            maxlength="100"
-          ></b-input>
+            maxlength="100" />
         </b-field>
 
-        <div class="field is-horizontal">
-          <div class="field-body">
-            <h4>
-              Password
-            </h4>
-          </div>
-        </div>
-        <b-field type="is-white">
+        <b-field
+          :label="$t('admin.password')">
           <b-input
             v-model="password"
             type="password"
             placeholder="Enter password here"
             maxlength="30"
-            password-reveal
-          ></b-input>
+            password-reveal />
         </b-field>
 
-        <div class="field is-horizontal">
-          <div class="field-body">
-            <h4>
-              Confirm Password
-            </h4>
-          </div>
-        </div>
-        <b-field type="is-white">
+        <b-field
+          :label="$t('admin.confirmPassword')">
           <b-input
             v-model="confirmPassword"
             type="password"
             placeholder="Enter confirm password here"
             maxlength="30"
             password-reveal
-            :rules="[comparePasswords]"
-          ></b-input>
+            :rules="[comparePasswords]" />
         </b-field>
 
-        <div class="columns">
-          <div class="column">
-            <b-button
-              style="margin-right:auto"
-              type="is-primary"
-              class="counter-button"
-              expanded
-              rounded
-            >
-              Cancel
-            </b-button>
-          </div>
-          <div class="column">
-            <b-button
-              style="margin-right:auto"
-              type="is-primary"
-              class="counter-button"
-              expanded
-              rounded
-              @click="onSignup()"
-            >
-              Next
-            </b-button>
-          </div>
-        </div>
-      </div>
+        <b-button>
+          {{ $t('button.cancel') }}
+        </b-button>
+        <b-button
+          type="is-primary"
+          @click="onSignup"
+        >
+          {{ $t('button.next') }}
+        </b-button>
+      </form>
     </div>
   </section>
 </template>

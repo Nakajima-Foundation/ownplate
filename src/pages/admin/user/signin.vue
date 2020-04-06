@@ -1,70 +1,40 @@
 <template>
   <section class="section">
     <div class="card block">
-      <div class="card-content">
+      <form 
+        class="card-content"
+        @submit.prevent="onSignin">
         <h2 class="p-big bold">
-          Sign in with email
+          {{ $t('admin.pleaseSignIn') }}
         </h2>
 
-        <div class="field is-horizontal">
-          <div class="field-body">
-            <h4>
-              Email
-            </h4>
-          </div>
-        </div>
-        <b-field>
+        <b-field
+          :label="$t('admin.email')">
           <b-input
             v-model="email"
             type="email"
-            placeholder="Enter email here"
-            maxlength="256"
-          ></b-input>
+            :placeholder="$t('admin.emailPlaceHolder')"
+            maxlength="256" />
         </b-field>
 
-        <div class="field is-horizontal">
-          <div class="field-body">
-            <h4>
-              Password
-            </h4>
-          </div>
-        </div>
-        <b-field type="is-white">
+        <b-field
+          :label="$t('admin.password')">
           <b-input
             v-model="password"
             type="password"
-            placeholder="Enter password here"
+            :placeholder="$t('admin.passwordPlaceHolder')"
             maxlength="30"
-            password-reveal
-          ></b-input>
+            password-reveal />
         </b-field>
-
-        <div class="columns">
-          <div class="column">
-            <b-button
-              style="margin-right:auto"
-              type="is-primary"
-              class="counter-button"
-              expanded
-              rounded
-            >
-              Cancel
-            </b-button>
-          </div>
-          <div class="column">
-            <b-button
-              style="margin-right:auto"
-              type="is-primary"
-              class="counter-button"
-              expanded
-              rounded
-              @click="onSignin()"
-            >
-              Next
-            </b-button>
-          </div>
-        </div>
-      </div>
+        <b-button>
+          {{ $t('button.cancel') }}
+        </b-button>
+        <b-button
+          type="is-primary"
+          @click="onSignin">
+          {{ $t('button.next') }}
+        </b-button>
+      </form>
     </div>
   </section>
 </template>
@@ -85,9 +55,9 @@ export default {
       try {
         await auth.signInWithEmailAndPassword(this.email, this.password)
         console.log("onSignin success")
-        this.$router.push("/");
+        this.$router.push("/admin/restaurants");
       } catch(error) {
-        console.log("onSignin failed", error.message);
+        console.log("onSignin failed", error.code, error.message);
       }
     },
   }

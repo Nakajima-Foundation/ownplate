@@ -48,7 +48,9 @@
   "button": {
     "back": "戻る",
     "addTitle": "カテゴリー追加",
-    "addItem": "料理/ドリンク追加"
+    "addItem": "料理/ドリンク追加",
+    "cancel": "キャンセル",
+    "next": "次へ"
   },
   "sms": {
     "phonenumber": "電話番号",
@@ -72,6 +74,18 @@
   },
   "auth": {
     "notAdmin": "You need to login as a restaurant owner."
+  },
+  "admin": {
+    "pleaseSignIn": "サインインしてください (レストラン向け)",
+    "registration":"登録してください (レストラン向け)",
+    "email": "メールアドレス",
+    "password": "パスワード",
+    "confirmPassword": "Confirm Password",
+    "name":"First & last name",
+    "emailPlaceHolder": "メールアドレスを入力して下さい",
+    "passwordPlaceHolder": "パスワードを入力して下さい",
+    "confirmPasswordPlaceHolder": "同じパスワードを入力して下さい",
+    "enterName": "ご指名を入力して下さい"
   },
   "week": {
     "short": {
