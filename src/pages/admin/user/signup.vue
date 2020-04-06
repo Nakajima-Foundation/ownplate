@@ -76,7 +76,7 @@ export default {
       name: "",
       password: "",
       confirmPassword: "",
-      emailTaken: "foo@bar.com"
+      emailTaken: "---invalid---"
     };
   },
   computed: {
