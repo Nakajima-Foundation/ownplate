@@ -72,7 +72,7 @@ export default {
       this.$emit("positionDown", this.menuitem.id);
     },
     forkItem() {
-      this.$emit("forkItem", this.menuitem);
+      this.$emit("forkItem", this.menuitem.id);
     },
     deleteItem() {
       this.$emit("deleteItem", this.menuitem.id);

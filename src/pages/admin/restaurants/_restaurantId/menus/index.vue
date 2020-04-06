@@ -46,7 +46,7 @@
 
       <div v-if="existsMenu">
         <div v-for="(menuList, index) in menuLists" :key="menuList">
-          <div v-if="itemsObj[menuList]._dataType === 'title'">
+          <div v-if="itemsObj[menuList] && itemsObj[menuList]._dataType === 'title'">
             <div v-if="itemsObj[menuList]._isEditing === true">
               <title-input
                 @updateTitle="updateTitle($event)"
@@ -65,7 +65,7 @@
                 ></title-card>
             </div>
           </div>
-          <div v-else>
+          <div v-else-if="itemsObj[menuList] && itemsObj[menuList]._dataType === 'menu'" >
             <item-edit-card
               :menuitem="itemsObj[menuList]"
               :position="index == 0 ? 'first' : ((menuLists.length - 1) === index ? 'last' : '')"
@@ -166,6 +166,7 @@ export default {
     } else {
       console.log("Error fetch restaurantInfo.");
     }
+    // todo use computed and/or watch
     const menu_res = await restaurantRef.collection('menus').where("deletedFlag", "==", false).get();
     const title_res = await restaurantRef.collection('titles').where("deletedFlag", "==", false).get();
 
@@ -174,7 +175,6 @@ export default {
     try {
       const menus = (menu_res.docs || []).map(this.doc2data("menu"));
       const titles = (title_res.docs || []).map(this.doc2data("title"))
-
       this.itemsObj =  this.array2obj(menus.concat(titles));
 
       // for backward compatibility
@@ -194,6 +194,7 @@ export default {
       });
     },
     async updateTitle(title) {
+      console.log(`restaurants/${this.restaurantId()}/titles/${title.id}`);
       await db.doc(`restaurants/${this.restaurantId()}/titles/${title.id}`).update("name", title.name);
       this.changeTitleMode(title.id, false);
     },
@@ -202,12 +203,14 @@ export default {
         name: "",
         uid: this.$store.getters.uidAdmin,
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        deletedFlag: false,
       };
       const newTitle = await db.collection(`restaurants/${this.restaurantId()}/titles`).add(data);
-      newTitle._dataType = "title";
-      newTitle._isEditing = true;
+      data.id = newTitle.id;
+      data._dataType = "title";
+      data._isEditing = true;
       this.menuLists.unshift(newTitle.id);
-      this.itemsObj[newTitle.id] = newTitle;
+      this.itemsObj[newTitle.id] = data;
 
       this.saveMenuList();
     },
@@ -267,15 +270,34 @@ export default {
         this.saveMenuList();
       }
     },
-    forkItem(item) {
-      console.log(item);
+    async forkItem(itemKey) {
+      const pos = this.menuLists.indexOf(itemKey);
+      const item = this.itemsObj[itemKey];
+      if (item._dataType === "menu") {
+      }
+      if (item._dataType === "title") {
+        const data = {
+          name: item.name,
+          uid: this.adminUid(),
+          deletedFlag: false,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        };
+        const newTitle = await db.collection(`restaurants/${this.restaurantId()}/titles`).add(data);
+        data.id = newTitle.id;
+        data._dataType = "title";
+        data._isEditing = false;
+
+        // todo correct position
+        this.menuLists.unshift(newTitle.id);
+        this.itemsObj[newTitle.id] = data;
+        this.saveMenuList();
+      }
     },
     async deleteItem(itemKey) {
       // delete from list
       const pos = this.menuLists.indexOf(itemKey);
       const item = this.itemsObj[itemKey];
       this.menuLists.splice( pos, 1 );
-
       if (item._dataType === "menu") {
         await db.doc(`restaurants/${this.restaurantId()}/menus/${itemKey}`).update("deletedFlag", true);
       }
