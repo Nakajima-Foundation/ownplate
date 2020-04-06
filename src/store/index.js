@@ -6,7 +6,7 @@ Vue.use(Vuex);
 export const strict = false;
 
 export const state = () => ({
-  user: null
+  user: undefined, // undefined:not authorized, null:no user
 });
 
 export const getters = {
@@ -19,6 +19,10 @@ export const getters = {
   uidUser: (state) => {
     return state.user && state.user.phoneNumber && state.user.uid;
   },
+  userWasInitialized: (state) => {
+    // Check if state.user has been initialized (as the result of notication from Firebase)
+    return state.user !== undefined;
+  }
 };
 
 export const mutations = {

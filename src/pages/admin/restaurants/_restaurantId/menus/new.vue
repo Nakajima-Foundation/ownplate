@@ -169,7 +169,6 @@ const AVAIL_OPTIONS = ["All day"];
 export default {
   name: "Order",
   data() {
-    const uid = this.$store.getters.uidAdmin;
     return {
       itemName: "",
       price: "",
