@@ -4,7 +4,7 @@ export default ({app}) => {
   Vue.mixin({
     methods: {
       checkAdminPermission() {
-        if (this.$store.state.user === undefined) {
+        if (!this.$store.getters.userWasInitialized) {
           // Authentication incomplete. Ignore it for now. 
           return;
         }

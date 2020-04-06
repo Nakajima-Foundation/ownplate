@@ -19,6 +19,9 @@ export const getters = {
   uidUser: (state) => {
     return state.user && state.user.phoneNumber && state.user.uid;
   },
+  userWasInitialized: (state) => {
+    return state.user !== undefined;
+  }
 };
 
 export const mutations = {
