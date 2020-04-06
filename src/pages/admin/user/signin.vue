@@ -3,13 +3,13 @@
     <div class="card block">
       <div class="card-content">
         <h2 class="p-big bold">
-          Sign in with email
+          {{ $t('admin.pleaseSignIn') }}
         </h2>
 
         <div class="field is-horizontal">
           <div class="field-body">
             <h4>
-              Email
+              {{ $t('admin.email') }}
             </h4>
           </div>
         </div>
@@ -25,7 +25,7 @@
         <div class="field is-horizontal">
           <div class="field-body">
             <h4>
-              Password
+              {{ $t('admin.password') }}
             </h4>
           </div>
         </div>
@@ -43,12 +43,11 @@
           <div class="column">
             <b-button
               style="margin-right:auto"
-              type="is-primary"
               class="counter-button"
               expanded
               rounded
             >
-              Cancel
+              {{ $t('button.cancel') }}
             </b-button>
           </div>
           <div class="column">
@@ -60,7 +59,7 @@
               rounded
               @click="onSignin()"
             >
-              Next
+              {{ $t('button.next') }}
             </b-button>
           </div>
         </div>

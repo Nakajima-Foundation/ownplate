@@ -49,7 +49,8 @@
     "back": "Back",
     "addTitle": "Add title",
     "addItem": "Add Item",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "next": "Next"
   },
   "sms": {
     "phonenumber": "Phone Number",
@@ -73,6 +74,11 @@
   },
   "auth": {
     "notAdmin": "You need to login as a restaurant owner."
+  },
+  "admin": {
+    "pleaseSignIn": "Please Sign In (for restaurants)",
+    "email": "Email",
+    "password": "Password"
   },
   "week": {
     "short": {
