@@ -77,10 +77,15 @@
   },
   "admin": {
     "pleaseSignIn": "サインインしてください (レストラン向け)",
+    "registration":"登録してください (レストラン向け)",
     "email": "メールアドレス",
     "password": "パスワード",
+    "confirmPassword": "Confirm Password",
+    "name":"First & last name",
     "emailPlaceHolder": "メールアドレスを入力して下さい",
-    "passwordPlaceHolder": "パスワードを入力して下さい"
+    "passwordPlaceHolder": "パスワードを入力して下さい",
+    "confirmPasswordPlaceHolder": "同じパスワードを入力して下さい",
+    "enterName": "ご指名を入力して下さい"
   },
   "week": {
     "short": {
