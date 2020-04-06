@@ -108,7 +108,6 @@ export default {
       phoneNumber: "",
       url: "",
       tags: "",
-      uid: this.$store.getters.uidAdmin,
       restaurantItems: [],
       paymentItems: [],
     };
@@ -116,12 +115,10 @@ export default {
   created() {
     this.checkAdminPermission();
   },
-  watch: {
-    uid() {
-      console.log("**** uid changed");
-    }
-  },
   computed: {
+    uid() {
+      return this.$store.getters.uidAdmin;
+    },
     existsRestaurant() {
       if (this.restaurantItems.length > 0) {
         return true;
@@ -137,6 +134,11 @@ export default {
   },
   mounted() {
     if (this.uid) {
+      this.fetchData();
+    }
+  },
+  watch: {
+    uid(val) {
       this.fetchData();
     }
   },
