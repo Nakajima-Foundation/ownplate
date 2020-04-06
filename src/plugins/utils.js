@@ -23,6 +23,19 @@ export default ({app}) => {
           return tmp;
         }, {});
       },
+      num2time(num) {
+        let ampm = "AM";
+        if (num > 60 * 12) {
+          ampm = "PM";
+          num = num - 60 * 12;
+        }
+        return [
+          String(Math.floor(num/60)).padStart(2, '0'),
+          ":",
+          String(num % 60).padStart(2, '0'),
+          " ",
+          ampm].join("");
+      },
     }
   });
 }
