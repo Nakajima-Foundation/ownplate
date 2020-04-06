@@ -220,7 +220,6 @@ export default {
         itemDescription: this.itemDescription,
         itemPhoto: itemPhoto,
         availability: this.availability,
-        titleFlag: false,
         uid: this.uid,
         deletedFlag: false,
         createdAt: new Date()

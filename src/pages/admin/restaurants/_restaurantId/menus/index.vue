@@ -277,6 +277,25 @@ export default {
       const pos = this.menuLists.indexOf(itemKey);
       const item = this.itemsObj[itemKey];
       if (item._dataType === "menu") {
+        const data = {
+          itemName: item.itemName,
+          price: Number(item.price),
+          tax: item.tax,
+          itemDescription: item.itemDescription,
+          itemPhoto: item.itemPhoto,
+          availability: item.availability,
+          uid: this.uid,
+          deletedFlag: false,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        };
+        const newData = await db.collection(`restaurants/${this.restaurantId()}/menus`).add(data);
+        data.id = newData.id;
+        data._dataType = "menu";
+
+        this.itemsObj[newData.id] = data;
+        this.menuLists.splice(pos, 0, newData.id);
+        this.saveMenuList();
+
       }
       if (item._dataType === "title") {
         const data = {
@@ -290,9 +309,8 @@ export default {
         data._dataType = "title";
         data._isEditing = false;
 
-        // todo correct position
-        this.menuLists.unshift(newTitle.id);
         this.itemsObj[newTitle.id] = data;
+        this.menuLists.splice(pos, 0, newTitle.id);
         this.saveMenuList();
       }
     },
