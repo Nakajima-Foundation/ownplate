@@ -25,12 +25,12 @@ service cloud.firestore {
 
     match /restaurants/{restaurantsId}/menus/{menuId} {
       allow read: if true
-      allow create: if isAdmin(request) && isOwner(resource, request);
+      allow create: if isAdmin(request)
       allow update: if isAdmin(request) && isOwner(resource, request);
     }
     match /restaurants/{restaurantsId}/titles/{titleId} {
       allow read: if true
-      allow create: if isAdmin(request) && isOwner(resource, request);
+      allow create: if isAdmin(request)
       allow update: if isAdmin(request) && isOwner(resource, request);
     }
     match /restaurants/{restaurantsId}/orders/{orderId} {
