@@ -6,14 +6,8 @@
           {{ $t('admin.pleaseSignIn') }}
         </h2>
 
-        <div class="field is-horizontal">
-          <div class="field-body">
-            <h4>
-              {{ $t('admin.email') }}
-            </h4>
-          </div>
-        </div>
-        <b-field>
+        <b-field
+          :label="$t('admin.email')">
           <b-input
             v-model="email"
             type="email"
@@ -22,14 +16,8 @@
           ></b-input>
         </b-field>
 
-        <div class="field is-horizontal">
-          <div class="field-body">
-            <h4>
-              {{ $t('admin.password') }}
-            </h4>
-          </div>
-        </div>
-        <b-field type="is-white">
+        <b-field
+          :label="$t('admin.password')">
           <b-input
             v-model="password"
             type="password"
