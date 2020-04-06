@@ -108,13 +108,18 @@ export default {
       phoneNumber: "",
       url: "",
       tags: "",
-      uid: "",
+      uid: this.$store.getters.uidAdmin,
       restaurantItems: [],
       paymentItems: [],
     };
   },
   created() {
     this.checkAdminPermission();
+  },
+  watch: {
+    uid() {
+      console.log("**** uid changed");
+    }
   },
   computed: {
     existsRestaurant() {
@@ -130,35 +135,39 @@ export default {
       return false;
     }
   },
-  async mounted() {
-    const uid = this.$store.getters.uidAdmin;
-    const res = await db
-      .collection("restaurants")
-      .where("uid", "==", uid)
-      .get();
-    try {
-      this.restaurantItems = (res.docs || []).map(doc => {
-        let restaurantId = doc.id;
-        const data = doc.data();
-        data.restaurantid = doc.id;
-        data.id = doc.id;
-        return data;
-      });
-      this.restaurantItems = await Promise.all(this.restaurantItems.map(async (restaurant) => {
-        const menus = await db.collection(`restaurants/${restaurant.id}/menus`).get();
-        restaurant.numberOfMenus = menus.size
-        const orders = await db.collection(`restaurants/${restaurant.id}/orders`)
-              .where("status", "<", order_status.customer_picked_up)
-              .where("status", ">=", order_status.new_order).get();
-        restaurant.numberOfOrders = orders.size
-
-        return restaurant;
-      }));
-    } catch (error) {
-      console.log("Error fetch doc,", error);
+  mounted() {
+    if (this.uid) {
+      this.fetchData();
     }
   },
   methods: {
+    async fetchData() {
+      const res = await db
+        .collection("restaurants")
+        .where("uid", "==", this.uid)
+        .get();
+      try {
+        this.restaurantItems = (res.docs || []).map(doc => {
+          let restaurantId = doc.id;
+          const data = doc.data();
+          data.restaurantid = doc.id;
+          data.id = doc.id;
+          return data;
+        });
+        this.restaurantItems = await Promise.all(this.restaurantItems.map(async (restaurant) => {
+          const menus = await db.collection(`restaurants/${restaurant.id}/menus`).get();
+          restaurant.numberOfMenus = menus.size
+          const orders = await db.collection(`restaurants/${restaurant.id}/orders`)
+                .where("status", "<", order_status.customer_picked_up)
+                .where("status", ">=", order_status.new_order).get();
+          restaurant.numberOfOrders = orders.size
+
+          return restaurant;
+        }));
+      } catch (error) {
+        console.log("Error fetch doc,", error);
+      }
+    },
   }
 };
 </script>

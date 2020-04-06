@@ -6,7 +6,7 @@ Vue.use(Vuex);
 export const strict = false;
 
 export const state = () => ({
-  user: null
+  user: undefined, // undefined:not authorized, null:no user
 });
 
 export const getters = {
