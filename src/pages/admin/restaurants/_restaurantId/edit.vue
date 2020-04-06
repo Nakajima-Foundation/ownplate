@@ -559,10 +559,9 @@ export default {
         alcoholTax: Number(this.shopInfo.alcoholTax),
         openTimes: this.shopInfo.openTimes,
         businessDay: this.shopInfo.businessDay,
-        isPublic: this.shopInfo.isPublic,
         uid: this.shopInfo.uid,
         defauleTaxRate: 0.1,
-        publicFlag: true,
+        publicFlag: this.shopInfo.isPublic,
         createdAt: new Date()
       };
       await this.updateRestaurantData(restaurantData);
