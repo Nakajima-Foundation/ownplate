@@ -1,7 +1,9 @@
 <template>
   <section class="section">
     <div class="card block">
-      <div class="card-content">
+      <form 
+        class="card-content"
+        @submit.prevent="onSignin">
         <h2 class="p-big bold">
           {{ $t('admin.pleaseSignIn') }}
         </h2>
@@ -29,10 +31,10 @@
         </b-button>
         <b-button
           type="is-primary"
-          @click="onSignin()">
+          @click="onSignin">
           {{ $t('button.next') }}
         </b-button>
-      </div>
+      </form>
     </div>
   </section>
 </template>
@@ -55,7 +57,7 @@ export default {
         console.log("onSignin success")
         this.$router.push("/");
       } catch(error) {
-        console.log("onSignin failed", error.message);
+        console.log("onSignin failed", error.code, error.message);
       }
     },
   }
