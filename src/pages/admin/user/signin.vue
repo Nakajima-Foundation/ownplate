@@ -55,7 +55,7 @@ export default {
       try {
         await auth.signInWithEmailAndPassword(this.email, this.password)
         console.log("onSignin success")
-        this.$router.push("/");
+        this.$router.push("/admin/restaurants");
       } catch(error) {
         console.log("onSignin failed", error.code, error.message);
       }
