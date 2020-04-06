@@ -134,12 +134,12 @@ export default {
   },
   mounted() {
     if (this.uid) {
-      this.fetchData();
+      this.fetchData(); // normal case
     }
   },
   watch: {
     uid(val) {
-      this.fetchData();
+      this.fetchData(); // refresh case
     }
   },
   methods: {
