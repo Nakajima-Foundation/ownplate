@@ -78,7 +78,9 @@
   "admin": {
     "pleaseSignIn": "Please Sign In (for restaurants)",
     "email": "Email",
-    "password": "Password"
+    "password": "Password",
+    "emailPlaceHolder": "Enter email here",
+    "passwordPlaceHolder": "Enter password here"
   },
   "week": {
     "short": {

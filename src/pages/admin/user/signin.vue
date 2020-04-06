@@ -11,9 +11,8 @@
           <b-input
             v-model="email"
             type="email"
-            placeholder="Enter email here"
-            maxlength="256"
-          ></b-input>
+            :placeholder="$t('admin.emailPlaceHolder')"
+            maxlength="256" />
         </b-field>
 
         <b-field
@@ -21,36 +20,18 @@
           <b-input
             v-model="password"
             type="password"
-            placeholder="Enter password here"
+            :placeholder="$t('admin.passwordPlaceHolder')"
             maxlength="30"
-            password-reveal
-          ></b-input>
+            password-reveal />
         </b-field>
-
-        <div class="columns">
-          <div class="column">
-            <b-button
-              style="margin-right:auto"
-              class="counter-button"
-              expanded
-              rounded
-            >
-              {{ $t('button.cancel') }}
-            </b-button>
-          </div>
-          <div class="column">
-            <b-button
-              style="margin-right:auto"
-              type="is-primary"
-              class="counter-button"
-              expanded
-              rounded
-              @click="onSignin()"
-            >
-              {{ $t('button.next') }}
-            </b-button>
-          </div>
-        </div>
+        <b-button>
+          {{ $t('button.cancel') }}
+        </b-button>
+        <b-button
+          type="is-primary"
+          @click="onSignin()">
+          {{ $t('button.next') }}
+        </b-button>
       </div>
     </div>
   </section>

@@ -78,7 +78,9 @@
   "admin": {
     "pleaseSignIn": "サインインしてください (レストラン向け)",
     "email": "メールアドレス",
-    "password": "パスワード"
+    "password": "パスワード",
+    "emailPlaceHolder": "メールアドレスを入力して下さい",
+    "passwordPlaceHolder": "パスワードを入力して下さい"
   },
   "week": {
     "short": {
