@@ -18,6 +18,8 @@
         </b-field>
 
         <b-field
+          :message="$t(errorCode)"
+          :type="errorCode ? 'is-danger' : 'is-success'"
           :label="$t('admin.password')">
           <b-input
             v-model="password"
@@ -47,17 +49,20 @@ export default {
   data() {
     return {
       email: "",
-      password: ""
+      password: "",
+      errorCode: null
     };
   },
   methods: {
     async onSignin() {
       try {
+        this.errorCode = null;
         await auth.signInWithEmailAndPassword(this.email, this.password)
         console.log("onSignin success")
         this.$router.push("/admin/restaurants");
       } catch(error) {
         console.log("onSignin failed", error.code, error.message);
+        this.errorCode = "admin.error.code."+error.code;
       }
     },
   }

@@ -94,6 +94,12 @@
       "password": {
         "tooshort":"Password should be at least 6 characters",
         "mismatch":"Password mismatch"
+      },
+      "code": {
+        "auth/user-not-found":"There is no user record corresponding to this identifier.",
+        "auth/wrong-password":"The password is invalid",
+        "auth/too-many-requests":"Too many unsuccessful login attempts. Please try again later.",
+        "auth/invalid-email":"The email address is badly formatted."
       }
     }
   },
