@@ -1,17 +1,16 @@
 <template>
   <span>
     <!-- menu-image -->
-    <div id="menu-heder-image">
-      <div id="menu-heder-image-mask"></div>
+    <div id="menu-header-image"
+         :style="{ backgroundImage: 'url(' + shopInfo.restCoverPhoto + ')' }"
+         >
+      <div id="menu-header-image-mask"></div>
     </div>
     <!-- shop-orner -->
     <section class="section">
       <shop-orner-info
-        :src="
-              this.shopInfo.restProfilePhoto ||
-          'https://pbs.twimg.com/profile_images/704153164438642692/bYo0YeEr_bigger.jpg'
-        "
-        :name="this.shopInfo.restaurantName || 'Yuta Seatle'"
+        :src="shopInfo.restProfilePhoto"
+        :name="shopInfo.restaurantName"
       ></shop-orner-info>
       <b-tabs size="is-medium" class="block" expanded>
         <b-tab-item :label="$t('sitemenu.menu')">
@@ -41,7 +40,7 @@
 
         </b-tab-item>
         <b-tab-item :label="$t('sitemenu.about')">
-          <shop-info v-bind:shopInfo="shopInfo"></shop-info>
+          <shop-info v-bind:shopInfo="shopInfo" v-if="shopInfo.publicFlag"></shop-info>
         </b-tab-item>
       </b-tabs>
       <button
@@ -61,7 +60,7 @@
               v-on:dismissed="handleDismissed" />
           </div>
         </div>
-      </b-modal>    
+      </b-modal>
     </section>
   </span>
 </template>
@@ -187,8 +186,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-#menu-heder-image {
-  background-image: url("https://joooint.com/articles/wp-content/uploads/2019/07/cropped-63837330b62bf983ab70c21bd94128b6_m.jpg");
+#menu-header-image {
   width: 100%;
   height: 200px;
   padding: initial !important;
@@ -196,7 +194,7 @@ export default {
   background-size: cover;
   position: relative;
 }
-// #menu-heder-image-mask {
+// #menu-header-image-mask {
 //   background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), #fff 50%)!important;
 // }
 
