@@ -9,17 +9,18 @@
         </h2>
 
         <b-field
+          :type="errors.email ? 'is-danger' : 'is-success'"
+          :message="errors.email && $t(errors.email[0])"
           :label="$t('admin.email')">
           <b-input
             v-model="email"
-            type="email"
             :placeholder="$t('admin.emailPlaceHolder')"
             maxlength="256" />
         </b-field>
 
         <b-field
-          :message="$t(errorCode)"
-          :type="errorCode ? 'is-danger' : 'is-success'"
+          :type="errors.password ? 'is-danger' : 'is-success'"
+          :message="errors.password && $t(errors.password[0])"
           :label="$t('admin.password')">
           <b-input
             v-model="password"
@@ -50,19 +51,24 @@ export default {
     return {
       email: "",
       password: "",
-      errorCode: null
+      errors: {}
     };
   },
   methods: {
     async onSignin() {
       try {
-        this.errorCode = null;
+        this.errors = {};
         await auth.signInWithEmailAndPassword(this.email, this.password)
         console.log("onSignin success")
         this.$router.push("/admin/restaurants");
       } catch(error) {
         console.log("onSignin failed", error.code, error.message);
-        this.errorCode = "admin.error.code."+error.code;
+        const errorCode = "admin.error.code."+error.code;
+        if (error.code === "auth/wrong-password") {
+          this.errors = { "password":[errorCode] };
+        } else {
+          this.errors = { "email":[errorCode] };
+        }
       }
     },
   }
