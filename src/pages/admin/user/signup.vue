@@ -25,6 +25,8 @@
         </b-field>
 
         <b-field
+          :type="errors.password ? 'is-danger' : 'is-success'"
+          :message="errors.password && errors.password[0]"
           :label="$t('admin.password')">
           <b-input
             v-model="password"
@@ -33,23 +35,26 @@
             maxlength="30"
             password-reveal />
         </b-field>
-
         <b-field
+          :type="errors.confirm ? 'is-danger' : 'is-success'"
+          :message="errors.confirm && errors.confirm[0]"
           :label="$t('admin.confirmPassword')">
           <b-input
             v-model="confirmPassword"
             type="password"
             placeholder="Enter confirm password here"
             maxlength="30"
-            password-reveal
-            :rules="[comparePasswords]" />
+            password-reveal />
         </b-field>
+
+        <p>{{ errors }}</p>
 
         <b-button>
           {{ $t('button.cancel') }}
         </b-button>
         <b-button
           type="is-primary"
+          :disabled="Object.keys(errors).length > 0"
           @click="onSignup"
         >
           {{ $t('button.next') }}
@@ -73,10 +78,15 @@ export default {
     };
   },
   computed: {
-    comparePasswords() {
-      return this.password !== this.confirmPassword
-        ? "Password do not match"
-        : "";
+    errors() {
+      let errors = {};
+      if (this.password !== this.confirmPassword) {
+        errors.confirm = ['admin.password.mismatch'];
+      }
+      if (this.password.length < 6) {
+        errors.password = ['admin.password.tooshort'];
+      }
+      return errors;
     },
   },
   methods: {
