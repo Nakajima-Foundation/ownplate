@@ -153,6 +153,9 @@ export default {
     this.checkAdminPermission();
   },
   computed: {
+    uid() {
+      return this.$store.getters.uidAdmin;
+    },
     existsMenu() {
       return (this.menuLists.length > 0);
     }
@@ -278,7 +281,7 @@ export default {
       if (item._dataType === "title") {
         const data = {
           name: item.name,
-          uid: this.adminUid(),
+          uid: this.uid,
           deletedFlag: false,
           createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         };

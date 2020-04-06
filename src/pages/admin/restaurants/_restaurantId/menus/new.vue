@@ -178,7 +178,6 @@ export default {
       taxRates: TAX_RATES,
       availability: "",
       availOptions: AVAIL_OPTIONS,
-      uid: uid,
       croppa: {},
       restaurantInfo: {},
     };
@@ -200,6 +199,9 @@ export default {
     }
   },
   computed: {
+    uid() {
+      return this.$store.getters.uidAdmin;
+    },
     formIsValid() {
       return this.itemName !== "" && this.price !== "" && this.tax !== "";
     }
@@ -220,7 +222,7 @@ export default {
         itemPhoto: itemPhoto,
         availability: this.availability,
         titleFlag: false,
-        uid: this.adminUid(),
+        uid: this.uid,
         createdAt: new Date()
       };
       const newData = await db.collection(`restaurants/${this.restaurantId()}/menus`).add(itemData);
