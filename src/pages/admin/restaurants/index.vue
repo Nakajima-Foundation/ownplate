@@ -120,12 +120,6 @@ export default {
       this.fetchData(); // normal case
     }
   },
-  watch: {
-    uid(val) {
-      this.checkAdminPermission(); // handle logout
-      this.fetchData(); // refresh case
-    }
-  },
   computed: {
     uid() {
       return this.$store.getters.uidAdmin;
