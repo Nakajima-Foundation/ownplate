@@ -20,6 +20,7 @@ export const getters = {
     return state.user && state.user.phoneNumber && state.user.uid;
   },
   userWasInitialized: (state) => {
+    // Check if state.user has been initialized (as the result of notication from Firebase)
     return state.user !== undefined;
   }
 };
