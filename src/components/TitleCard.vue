@@ -64,7 +64,7 @@ export default {
       this.$emit("forkItem", this.title);
     },
     deleteItem() {
-      this.$emit("forkItem", this.title.id);
+      this.$emit("deleteItem", this.title.id);
     },
   }
 };

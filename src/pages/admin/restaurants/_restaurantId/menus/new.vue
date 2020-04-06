@@ -220,6 +220,7 @@ export default {
         itemPhoto: itemPhoto,
         availability: this.availability,
         titleFlag: false,
+        uid: this.adminUid(),
         createdAt: new Date()
       };
       const newData = await db.collection(`restaurants/${this.restaurantId()}/menus`).add(itemData);
