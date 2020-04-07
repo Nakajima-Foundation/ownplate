@@ -1,7 +1,7 @@
 <template>
   <div class="card block" :class="{ order_now: 0 < counter }">
-    <div class="card-content" @click="openMenuFlag ? closeMenu() : openMenu()">
-      <div class="media">
+    <div class="card-content">
+      <div class="media" @click="openMenuFlag ? closeMenu() : openMenu()">
         <div class="media-content">
           <!-- <h4 class="bold">Kushikatsu Special Platter</h4> -->
           <h4 class="bold">
