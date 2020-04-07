@@ -1,6 +1,6 @@
 <template>
   <div class="card block" :class="{ order_now: 0 < counter }">
-    <div class="card-content">
+    <div class="card-content" @click="openMenuFlag ? closeMenu() : openMenu()">
       <div class="media">
         <div class="media-content">
           <!-- <h4 class="bold">Kushikatsu Special Platter</h4> -->
@@ -21,32 +21,6 @@
               style="border-radius: 4px;"
             />
           </figure>
-        </div>
-      </div>
-      <div class="level is-mobile">
-        <div class="level-left"></div>
-        <div class="level-right">
-          <b-button
-            v-if="!openMenuFlag"
-            icon-left="cart"
-            style="margin-right:auto"
-            type="is-primary"
-            class="counter-button"
-            rounded
-            @click="openMenu"
-          >
-            Order
-          </b-button>
-          <b-button
-            v-else-if="openMenuFlag"
-            icon-left="close"
-            style="margin-right:auto"
-            class="counter-button"
-            rounded
-            @click="closeMenu"
-          >
-            Close
-          </b-button>
         </div>
       </div>
       <div v-if="openMenuFlag">
