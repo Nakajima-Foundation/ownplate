@@ -9,6 +9,7 @@
     <!-- shop-orner -->
     <section class="section">
       <shop-orner-info
+        v-if="shopInfo.restaurantName"
         :src="shopInfo.restProfilePhoto"
         :name="shopInfo.restaurantName"
       ></shop-orner-info>
@@ -16,7 +17,10 @@
         <b-tab-item :label="$t('sitemenu.menu')">
           <template v-for="menu in menuLists">
             <template v-if="itemsObj[menu]">
-              <h2 class="p-big bold" v-if="itemsObj[menu]._dataType === 'title'">
+              <h2 
+                class="p-big bold" 
+                v-bind:key="itemsObj[menu].id"
+                v-if="itemsObj[menu]._dataType === 'title'">
                 {{itemsObj[menu].name}}
               </h2>
 
