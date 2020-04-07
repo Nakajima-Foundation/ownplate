@@ -24,12 +24,6 @@ export const getters = {
     // Check if state.user has been initialized (as the result of notication from Firebase)
     return state.user !== undefined;
   },
-  day: (state) => {
-    return state.date && state.date.getDay()
-  },
-  time: (state) => {
-    return state.date && state.date.getTime()
-  },
 };
 
 export const mutations = {
