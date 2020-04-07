@@ -1,7 +1,7 @@
 <template>
   <section class="section">
     <h2 class="p-big bold">
-      Your Restaurant
+      Your Restaurant(s)
     </h2>
 
     <b-tabs size="is-medium" class="block" expanded>
