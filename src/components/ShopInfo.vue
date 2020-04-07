@@ -8,7 +8,6 @@
       <GMap
         ref="gMap"
         :cluster="{options: {styles: 'clusterStyle'}}"
-        :center="{}"
         :options="{fullscreenControl: false, styles: 'mapStyle'}"
         :zoom="18"
         @loaded="updateMap"
