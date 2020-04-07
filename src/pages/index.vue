@@ -1,18 +1,20 @@
 <template>
-  <span>
-    <section class="hero is-primary">
-      <div class="hero-body">
-        <div class="container">
-          <h1 class="title">
-            <span class="under_line">PAGE</span>
-          </h1>
+  <div>
+    <section class="section">
+      <div class="card block">
+        <div class="card-content">
+          <p><router-link to="/admin/restaurants">For Restraunt Operators</router-link></p>
+        </div>
+      </div>
+      <div class="card block">
+        <div class="card-content">
+          <p><router-link to="/r">For Consumers</router-link></p>
         </div>
       </div>
     </section>
-
-    <section class="section" style="background-color:#fffafa">
+    <section class="section" style="background-color:#cccccc">
       <div class="columns is-mobile is-centered">
-        PageList
+        --- Test Area (for Developers) ---
       </div>
 
       <div class="content">
@@ -36,7 +38,7 @@
         </ol>
       </div>
     </section>
-  </span>
+  </div>
 </template>
 
 <script>
