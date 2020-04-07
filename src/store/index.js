@@ -7,6 +7,7 @@ export const strict = false;
 
 export const state = () => ({
   user: undefined, // undefined:not authorized, null:no user
+  date: new Date()
 });
 
 export const getters = {
@@ -22,12 +23,15 @@ export const getters = {
   userWasInitialized: (state) => {
     // Check if state.user has been initialized (as the result of notication from Firebase)
     return state.user !== undefined;
-  }
+  },
 };
 
 export const mutations = {
   setUser(state, user) {
     state.user = user;
+  },
+  updateDate(state) {
+    state.date = new Date();
   }
 };
 
