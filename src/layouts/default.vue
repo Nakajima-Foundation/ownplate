@@ -218,7 +218,7 @@ export default {
   },
   created() {
     this.timerId = window.setInterval(()=>{
-      this.$store.commit('updateClock');
+      this.$store.commit('updateDate');
     }, 1000);
   },
   destroyed() {
