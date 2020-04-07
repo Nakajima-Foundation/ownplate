@@ -26,7 +26,7 @@ export default {
     try {
       const res = await db
         .collection("restaurants")
-        //.where("uid", "==", this.uid)
+        .where("publicFlag", "==", true)
         .get();
       this.restaurants = (res.docs || []).map(doc => {
         const data = doc.data();
