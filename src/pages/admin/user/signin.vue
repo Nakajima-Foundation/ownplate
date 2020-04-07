@@ -37,6 +37,9 @@
           @click="onSignin">
           {{ $t('button.next') }}
         </b-button>
+        <p style="margin-top: 2rem">
+          New User: Please <router-link to="/admin/user/signup">Sign Up</router-link> to create your own restaurant page(s).
+        </p>
       </form>
     </div>
   </section>
