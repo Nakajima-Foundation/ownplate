@@ -191,6 +191,7 @@ export default {
         }
       ],
       unregisterAuthObserver: null,
+      timerId: null
     };
   },
   computed: {
@@ -215,9 +216,17 @@ export default {
       this.$store.commit('setUser', user);
     });
   },
+  created() {
+    this.timerId = window.setInterval(()=>{
+      this.$store.commit('updateClock');
+    }, 1000);
+  },
   destroyed() {
     if (this.unregisterAuthObserver) {
       this.unregisterAuthObserver();
+    }
+    if (this.timerId) {
+      window.clearInterval(this.timerId);
     }
   }
 };

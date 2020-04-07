@@ -1,5 +1,6 @@
 <template>
   <section class="section">
+    <p>{{ "now:" + $store.getters.time }}</p>
     <div v-show="user !== null">
       <h2>Phone: {{phone}}</h2>
       <p>Try "Sign Out" from the menu.</p>
