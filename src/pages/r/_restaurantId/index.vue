@@ -140,9 +140,6 @@ export default {
     }
   },
   watch: {
-    foodCounter(val) {
-      console.log("foodCounter" + val);
-    },
     tabIndex() {
       this.$router.push(this.tabs[this.tabIndex]);
     },

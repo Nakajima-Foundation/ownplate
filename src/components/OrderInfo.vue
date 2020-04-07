@@ -12,47 +12,49 @@
 
     <hr class="hr-black" />
 
-    <div class="card-content subtotal">
-      <div class="media">
-        <div class="media-content">
-          <h4 class="bold">
-            {{$t('order.subtotal')}}
-          </h4>
-        </div>
-        <div class="media-right" style="margin-top:-0.4rem;">
-          <p class="p-bold">
-            {{$n(orderInfo.sub_total, 'currency')}}
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <div class="card-content tax">
-      <div class="media">
-        <div class="media-content">
-          <h4 class="bold">
-            {{$t('order.salesTax')}}
-          </h4>
-        </div>
-        <div class="media-right" style="margin-top:-0.4rem;">
-          <p class="p-bold">
-            {{$n(orderInfo.tax, 'currency')}}
-          </p>
+    <div v-if="verified">
+      <div class="card-content subtotal">
+        <div class="media">
+          <div class="media-content">
+            <h4 class="bold">
+              {{$t('order.subtotal')}}
+            </h4>
+          </div>
+          <div class="media-right" style="margin-top:-0.4rem;">
+            <p class="p-bold">
+              {{$n(orderInfo.sub_total, 'currency')}}
+            </p>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="card-content">
-      <div class="media">
-        <div class="media-content">
-          <h3 class="bold">
-            {{$t('order.total')}}
-          </h3>
+      <div class="card-content tax">
+        <div class="media">
+          <div class="media-content">
+            <h4 class="bold">
+              {{$t('order.salesTax')}}
+            </h4>
+          </div>
+          <div class="media-right" style="margin-top:-0.4rem;">
+            <p class="p-bold">
+              {{$n(orderInfo.tax, 'currency')}}
+            </p>
+          </div>
         </div>
-        <div class="media-right">
-          <p class="p-big bold" style="color:#CB4B4B">
-            {{$n(orderInfo.total, 'currency')}}
-          </p>
+      </div>
+
+      <div class="card-content">
+        <div class="media">
+          <div class="media-content">
+            <h3 class="bold">
+              {{$t('order.total')}}
+            </h3>
+          </div>
+          <div class="media-right">
+            <p class="p-big bold" style="color:#CB4B4B">
+              {{$n(orderInfo.total, 'currency')}}
+            </p>
+          </div>
         </div>
       </div>
     </div>
@@ -60,7 +62,9 @@
 </template>
 
 <script>
+import { order_status } from "~/plugins/constant.js";
 import OrderItem from "~/components/OrderItem";
+
 export default {
   name: "Order",
 
@@ -77,7 +81,11 @@ export default {
   components: {
     OrderItem
   },
-
+  computed: {
+    verified() {
+      return this.orderInfo.status === order_status.validation_ok;
+    }
+  },
   methods: {}
 };
 </script>
