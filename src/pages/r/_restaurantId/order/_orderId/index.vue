@@ -14,36 +14,39 @@
       :orderItems="this.orderItems"
       :orderInfo="this.orderInfo||{}"
       ></order-info>
-    <div class="is-centered" style="text-align: center;">
-      <b-button 
-        expanded 
-        rounded
-        @click="handleEditItems" 
-        style="margin-bottom:1rem;">
-        {{$t('order.editItems')}}
-      </b-button>
-    </div>
 
-    <hr class="hr-black" />
+    <div v-if="!paid">
+      <div class="is-centered" style="text-align: center;">
+        <b-button 
+          expanded 
+          rounded
+          @click="handleEditItems" 
+          style="margin-bottom:1rem;">
+          {{$t('order.editItems')}}
+        </b-button>
+      </div>
 
-    <h2 class="p-big bold">
-      {{$t('order.yourPayment')}}
-    </h2>
-    <credit-card-input></credit-card-input>
+      <hr class="hr-black" />
 
-    <div class="is-centered" style="text-align: center;">
-      <b-button
-        type="is-primary"
-        expanded
-        rounded
-        style="margin-top:4rem;padding-top: 0.2rem;"
-        size="is-large"
-        @click="goNext"
-      >
-        <span class="p-font bold">
-          {{$t('order.placeOrder')}} {{$n(orderInfo.total, 'currency')}}
-        </span>
-      </b-button>
+      <h2 class="p-big bold">
+        {{$t('order.yourPayment')}}
+      </h2>
+      <credit-card-input></credit-card-input>
+
+      <div class="is-centered" style="text-align: center;">
+        <b-button
+          type="is-primary"
+          expanded
+          rounded
+          style="margin-top:4rem;padding-top: 0.2rem;"
+          size="is-large"
+          @click="goNext"
+        >
+          <span class="p-font bold">
+            {{$t('order.placeOrder')}} {{$n(orderInfo.total, 'currency')}}
+          </span>
+        </b-button>
+      </div>
     </div>
   </section>
 </template>
@@ -54,6 +57,7 @@ import OrderInfo from "~/components/OrderInfo";
 import CreditCardInput from "~/components/CreditCardInput";
 
 import { db } from "~/plugins/firebase.js";
+import { order_status } from "~/plugins/constant.js";
 
 export default {
   name: "Order",
@@ -104,6 +108,9 @@ export default {
     }
   },
   computed: {
+    paid() {
+      return this.orderInfo.status >= order_status.customer_paid;
+    },
     orderItems() {
       if (this.menus.length > 0 && this.orderInfo.order) {
         const menuObj = this.array2obj(this.menus);
@@ -136,9 +143,16 @@ export default {
         console.log("failed");
       }
     },
-    goNext() {
-      // this.$router.push({ path: "/restaurants/thank" });
-      this.$router.push({ path: `/r/${this.restaurantId()}/order/${this.orderId}/thanks` });
+    async goNext() {
+      try {
+        // HACK: Workaround until we implement sprite
+        await db.doc(`restaurants/${this.restaurantId()}/orders/${this.orderId}`).set({
+          status: order_status.customer_paid
+        }, { merge:true });
+        console.log("suceeded");
+      } catch(error) {
+        console.log("failed", error);
+      }
     }
   }
 };

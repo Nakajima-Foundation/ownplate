@@ -83,7 +83,7 @@ export default {
   },
   computed: {
     verified() {
-      return this.orderInfo.status === order_status.validation_ok;
+      return this.orderInfo.status >= order_status.validation_ok;
     }
   },
   methods: {}

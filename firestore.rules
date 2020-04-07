@@ -38,6 +38,9 @@ service cloud.firestore {
       allow create: if isUser(request);
       allow delete: if resource.data.uid == request.auth.uid
                       && resource.data.status == 200; // validated
+      allow update: if resource.data.uid == request.auth.uid
+                      && resource.data.status == 200
+                      && request.resource.data.status == 300; // HACK: Temporary During no-sprite Testing
       allow update: if isAdmin(request); // HACK: check the owner of restaurant
     }
 
