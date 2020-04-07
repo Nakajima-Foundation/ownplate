@@ -12,7 +12,7 @@
         :src="shopInfo.restProfilePhoto"
         :name="shopInfo.restaurantName"
       ></shop-orner-info>
-      <b-tabs size="is-medium" class="block" expanded>
+      <b-tabs size="is-medium" class="block" expanded v-model="tabIndex">
         <b-tab-item :label="$t('sitemenu.menu')">
           <template v-for="menu in menuLists">
             <template v-if="itemsObj[menu]">
@@ -85,6 +85,8 @@ export default {
   },
   data() {
     return {
+      tabIndex: 0,
+      tabs: ['#menus', '#about'],
       loginVisible: false,
       orders: {},
       foodCounter: 0,
@@ -96,6 +98,12 @@ export default {
 
       detacher: [],
     };
+  },
+  mounted() {
+    const index = this.tabs.findIndex(tab => tab === this.$route.hash)
+    if (index > -1) {
+      this.tabIndex = index;
+    }
   },
   created() {
     const restaurant_detacher = db.doc(`restaurants/${this.restaurantId()}`).onSnapshot((restaurant) => {
@@ -130,6 +138,9 @@ export default {
   watch: {
     foodCounter(val) {
       console.log("foodCounter" + val);
+    },
+    tabIndex() {
+      this.$router.push(this.tabs[this.tabIndex]);
     },
   },
   computed: {
