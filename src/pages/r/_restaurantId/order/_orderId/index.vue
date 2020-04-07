@@ -69,9 +69,6 @@ export default {
       shopInfo: {},
       orderInfo: {},
       menus: [],
-
-      orderItems: [],
-
       detacher: [],
     };
   },
@@ -99,14 +96,6 @@ export default {
       order_detacher
     ]
   },
-  watch: {
-    menus() {
-      this.updateOrder();
-    },
-    orderInfo() {
-      this.updateOrder();
-    },
-  },
   destroyed() {
     if (this.detacher) {
       this.detacher.map((detacher) => {
@@ -115,6 +104,23 @@ export default {
     }
   },
   computed: {
+    orderItems() {
+      if (this.menus.length > 0 && this.orderInfo.order) {
+        const menuObj = this.array2obj(this.menus);
+        console.log(this.orderInfo);
+        return Object.keys(this.orderInfo.order).map((key) => {
+          const num = this.orderInfo.order[key];
+          return {
+            item: menuObj[key],
+            count: num,
+            id: key,
+            specialRequest: "no special request" // BUGBUG: Implement this later
+          };
+        });
+      }
+      console.log("menu is not ready");
+      return []; 
+    },
     orderId() {
       return this.$route.params.orderId;
     }
@@ -128,21 +134,6 @@ export default {
         this.$router.push({ path: `/r/${this.restaurantId()}` });
       } catch(error) {
         console.log("failed");
-      }
-    },
-    updateOrder() {
-      if (this.menus.length > 0 && this.orderInfo.order) {
-        const menuObj = this.array2obj(this.menus);
-        console.log(menuObj);
-        this.orderItems = Object.keys(this.orderInfo.order).map((key) => {
-          const num = this.orderInfo.order[key];
-          return {
-            item: menuObj[key],
-            count: num,
-            id: key,
-            specialRequest: "no special request" // BUGBUG: Implement this later
-          };
-        });
       }
     },
     goNext() {
