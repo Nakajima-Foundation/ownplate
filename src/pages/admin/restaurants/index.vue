@@ -153,7 +153,7 @@ export default {
           return data;
         });
         this.restaurantItems = await Promise.all(this.restaurantItems.map(async (restaurant) => {
-          const menus = await db.collection(`restaurants/${restaurant.id}/menus`).get();
+          const menus = await db.collection(`restaurants/${restaurant.id}/menus`).where("deletedFlag", "==", false).get();
           restaurant.numberOfMenus = menus.size
           const orders = await db.collection(`restaurants/${restaurant.id}/orders`)
                 .where("status", "<", order_status.customer_picked_up)
