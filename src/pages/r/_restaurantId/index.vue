@@ -162,7 +162,7 @@ export default {
   methods: {
     handleCheckOut() {
       // The user has clicked the CheckOut button
-      if (this.user.phoneNumber) {
+      if (this.user && this.user.phoneNumber) {
         this.goCheckout();
       } else {
         this.loginVisible = true;
