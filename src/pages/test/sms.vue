@@ -1,6 +1,6 @@
 <template>
   <section class="section">
-    <p>{{ "date:" + $d($store.state.date) }}</p>
+    <p>{{ "date:" + $d(date) + " " + (date.getMinutes()) }}</p>
     <div v-show="user !== null">
       <h2>Phone: {{phone}}</h2>
       <p>Try "Sign Out" from the menu.</p>
@@ -24,8 +24,12 @@ export default {
     }
   },
   mounted() {
+      console.log(this.$store.state.date);
   },
   computed: {
+    date() {
+      return this.$store.state.date;
+    },
     user() {
       return this.$store.state.user;
     },
