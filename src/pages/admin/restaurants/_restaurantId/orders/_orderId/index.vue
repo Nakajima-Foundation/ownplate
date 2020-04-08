@@ -4,6 +4,11 @@
     <h2 class="p-big bold">
       {{ orderName }}
     </h2>
+    <p v-if="orderInfo.phoneNumber" style="margin-bottom:1rem">
+      <a :href="nationalPhoneURI">
+        {{ nationalPhoneNumber }}
+      </a>
+    </p>
     <div style="margin-bottom:1rem">
       <div v-for="orderState in orderStates"
         style="margin:0.2rem" 
@@ -26,6 +31,7 @@ import BackButton from "~/components/BackButton";
 import OrderedItem from "~/components/OrderedItem";
 import { order_status } from "~/plugins/constant.js";
 import { nameOfOrder } from "~/plugins/strings.js";
+import { parsePhoneNumber, formatNational } from "~/plugins/phoneutil.js";
 
 export default {
   components: {
@@ -78,6 +84,17 @@ export default {
     });
   },
   computed: {
+    phoneNumber() {
+      return this.orderInfo 
+        && this.orderInfo.phoneNumber 
+        && parsePhoneNumber(this.orderInfo.phoneNumber);
+    },
+    nationalPhoneNumber() {
+      return formatNational(this.phoneNumber);
+    },
+    nationalPhoneURI() {
+      return "tel:" + this.phoneNumber.getNationalNumber();
+    },
     orderName() {
       return nameOfOrder(this.orderInfo);
     },
