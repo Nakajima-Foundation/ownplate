@@ -14,7 +14,7 @@
           {{ totalCount }} items
         </div>
         <div class="level-right">
-          {{ order.phone || "(222)222-2222" }}
+          {{ order.phoneNumber || "(222)222-2222" }}
         </div>
       </div>
       <div class="level is-mobile" style="margin:0">
@@ -22,7 +22,7 @@
           {{ $n(order.total / 100, 'currency') }}
         </div>
         <div class="level-right">
-          {{ order.pickupTime || "0:00pm"}}
+          {{ orderTime }}
         </div>
       </div>
     </div>
@@ -44,6 +44,12 @@ export default {
     },
   },
   computed: {
+    orderTime() {
+      if (this.order.timePaid) {
+        return this.order.timePaid.toDate().toLocaleTimeString();
+      }
+      return "";
+    },
     orderName() {
       return nameOfOrder(this.order);
     },
