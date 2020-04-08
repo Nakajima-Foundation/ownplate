@@ -38,46 +38,48 @@
       </p>
     </a>
   </div>
-  <h2 class="bold">
-    {{$t("shopInfo.website")}}
-  </h2>
-  <div class="notification">
-    <div class="is-centered" style="text-align: center;">
-      <a target="_blank" :href="this.shopInfo.url">
-        {{this.shopInfo.url}}
-      </a>
+  <div v-if="!compact">
+    <h2 class="bold">
+      {{$t("shopInfo.website")}}
+    </h2>
+    <div class="notification">
+      <div class="is-centered" style="text-align: center;">
+        <a target="_blank" :href="this.shopInfo.url">
+          {{this.shopInfo.url}}
+        </a>
+      </div>
     </div>
-  </div>
 
-  <h2 class="bold">
-    {{$t("shopInfo.hours")}}
-  </h2>
-  <div class="notification">
-    <div class="is-centered" style="text-align: center;">
-      <table :style="{width: '100%'}">
-        <template v-for="(day, key) in days">
-          <tr :style="(weekday==key) ? {'background-color': 'skyblue'} : {}">
-            <td>
-              {{$t('week.short.' + day)}}
-            </td>
-            <td>
-              <template v-if=shopInfo.businessDay[key]>
-                <template v-for="(data) in shopInfo.openTimes[key]">
-                  {{num2time(data.start)}} - {{num2time(data.end)}}<br/>
+    <h2 class="bold">
+      {{$t("shopInfo.hours")}}
+    </h2>
+    <div class="notification">
+      <div class="is-centered" style="text-align: center;">
+        <table :style="{width: '100%'}">
+          <template v-for="(day, key) in days">
+            <tr :style="(weekday==key) ? {'background-color': 'skyblue'} : {}">
+              <td>
+                {{$t('week.short.' + day)}}
+              </td>
+              <td>
+                <template v-if=shopInfo.businessDay[key]>
+                  <template v-for="(data) in shopInfo.openTimes[key]">
+                    {{num2time(data.start)}} - {{num2time(data.end)}}<br/>
+                  </template>
                 </template>
-              </template>
-              <template v-else>
-                Closed
-              </template>
-            </td>
-            <td>
-              <template v-if="isOpen[key]">
-                open
-              </template>
-            </td>
-          </tr>
-        </template>
-      </table>
+                <template v-else>
+                  Closed
+                </template>
+              </td>
+              <td>
+                <template v-if="isOpen[key]">
+                  open
+                </template>
+              </td>
+            </tr>
+          </template>
+        </table>
+      </div>
     </div>
   </div>
 </span>
@@ -92,6 +94,10 @@ export default {
       type: Object,
       required: true
     },
+    compact: {
+      type: Boolean,
+      required: false
+    }
   },
   data() {
     const d = new Date();

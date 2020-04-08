@@ -8,12 +8,14 @@
       </h2>
     </div>
     <shop-orner-info
-      :src="
-            this.shopInfo.restProfilePhoto ||
-            'https://pbs.twimg.com/profile_images/704153164438642692/bYo0YeEr_bigger.jpg'
-            "
-      :name="this.shopInfo.restaurantName || 'Yuta Seatle'"
-      ></shop-orner-info>
+      :src="this.shopInfo.restProfilePhoto"
+      :name="this.shopInfo.restaurantName"
+      />
+    <shop-info 
+      v-if="paid"
+      :compact="true" 
+      :shopInfo="shopInfo" />
+
     <h2 class="p-big bold">
       {{$t('order.yourOrder')}}
     </h2>
@@ -67,6 +69,7 @@
 import ShopOrnerInfo from "~/components/ShopOrnerInfo";
 import OrderInfo from "~/components/OrderInfo";
 import CreditCardInput from "~/components/CreditCardInput";
+import ShopInfo from "~/components/ShopInfo";
 
 import { db } from "~/plugins/firebase.js";
 import { order_status } from "~/plugins/constant.js";
@@ -77,13 +80,14 @@ export default {
   components: {
     ShopOrnerInfo,
     OrderInfo,
-    CreditCardInput
+    CreditCardInput,
+    ShopInfo
   },
   data() {
     return {
       isLoading: true,
       restaurantsId: this.restaurantId(),
-      shopInfo: {},
+      shopInfo: { restaurantName:"" },
       orderInfo: {},
       menus: [],
       detacher: [],
