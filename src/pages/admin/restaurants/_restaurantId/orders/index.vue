@@ -19,6 +19,7 @@
 import { db } from "~/plugins/firebase.js";
 import OrderedInfo from "~/components/OrderedInfo";
 import BackButton from "~/components/BackButton";
+import { order_status } from "~/plugins/constant.js";
 
 export default {
   components: {
@@ -38,7 +39,9 @@ export default {
         this.shopInfo = restaurant_data;
       }
     });
-    const order_detacher = db.collection(`restaurants/${this.restaurantId()}/orders`).onSnapshot((orders) => {
+    const order_detacher = db.collection(`restaurants/${this.restaurantId()}/orders`)
+        .where("status", ">", order_status.validation_ok)
+        .onSnapshot((orders) => {
       if (!orders.empty) {
         this.orders = orders.docs.map(this.doc2data("order"));
       }
