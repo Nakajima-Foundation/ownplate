@@ -51,9 +51,6 @@ export default {
     nationalPhoneNumber() {
       return formatNational(this.phoneNumber);
     },
-    nationalPhoneURI() {
-      return "tel:" + this.phoneNumber.getNationalNumber();
-    },
     orderName() {
       return nameOfOrder(this.order);
     },
