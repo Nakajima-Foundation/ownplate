@@ -163,7 +163,6 @@ export default {
           };
         });
       }
-      console.log("menu is not ready");
       return []; 
     },
     orderId() {
