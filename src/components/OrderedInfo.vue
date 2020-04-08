@@ -22,7 +22,7 @@
           {{ $n(order.total / 100, 'currency') }}
         </div>
         <div class="level-right">
-          {{ order.pickupTime || "0:00pm"}}
+          {{ timestamp || "0:00pm"}}
         </div>
       </div>
     </div>
@@ -45,6 +45,9 @@ export default {
     },
   },
   computed: {
+    timestamp() {
+      return this.order.timePaid.toDate().toLocaleTimeString();
+    },
     phoneNumber() {
       return this.order.phoneNumber && parsePhoneNumber(this.order.phoneNumber);
     },
