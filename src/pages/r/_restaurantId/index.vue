@@ -92,7 +92,6 @@ export default {
       tabs: ['#menus', '#about'],
       loginVisible: false,
       orders: {},
-      foodCounter: 0,
       restaurantsId: this.restaurantId(),
       shopInfo: {},
       // isCardModalActive: false
@@ -151,6 +150,12 @@ export default {
     },
   },
   computed: {
+    foodCounter() {
+      const ret = Object.keys(this.orders).reduce((total, id) => {
+        return total + this.orders[id]
+      }, 0);
+      return ret;
+    },
     itemsObj() {
       return this.array2obj(this.menus.concat(this.titles));
     },
@@ -196,10 +201,10 @@ export default {
       });
     },
     emitted(eventArgs) {
-      this.orders[eventArgs.id] = eventArgs.counter;
-      this.foodCounter = Object.keys(this.orders).reduce((total, id) => {
-        return total + this.orders[id]
-      }, 0);
+      // NOTE: We need to assign a new object to trigger computed properties
+      const obj = {};
+      obj[eventArgs.id] = eventArgs.counter;
+      this.orders = Object.assign({}, this.orders, obj);
     },
   }
 };
