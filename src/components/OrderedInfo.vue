@@ -3,7 +3,7 @@
     <div class="card-content" @click="$emit('selected', order)">
       <div class="level is-mobile" style="margin:0">
         <div class="level-left">
-          <h3>{{ order.number || "#000" }}</h3>
+          <h3>{{ orderName }}</h3>
         </div>
         <div class="level-right">
           <order-status :order="order" />
@@ -31,6 +31,7 @@
 
 <script>
 import OrderStatus from "~/components/OrderStatus";
+import { nameOfOrder } from "~/plugins/strings.js";
 
 export default {
   components: {
@@ -43,6 +44,9 @@ export default {
     },
   },
   computed: {
+    orderName() {
+      return nameOfOrder(this.order);
+    },
     totalCount() {
       if (this.order.order) {
         return Object.keys(this.order.order).reduce((count, id)=>{ 

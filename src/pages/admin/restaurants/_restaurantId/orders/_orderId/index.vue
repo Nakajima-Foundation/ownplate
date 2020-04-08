@@ -2,7 +2,7 @@
   <section class="section">
     <back-button :url="'/admin/restaurants/' + restaurantId() + '/orders'" />
     <h2 class="p-big bold">
-      #000
+      {{ orderName }}
     </h2>
     <div style="margin-bottom:1rem">
       <div v-for="orderState in orderStates"
@@ -25,6 +25,7 @@ import { db } from "~/plugins/firebase.js";
 import BackButton from "~/components/BackButton";
 import OrderedItem from "~/components/OrderedItem";
 import { order_status } from "~/plugins/constant.js";
+import { nameOfOrder } from "~/plugins/strings.js";
 
 export default {
   components: {
@@ -77,6 +78,9 @@ export default {
     });
   },
   computed: {
+    orderName() {
+      return nameOfOrder(this.orderInfo);
+    },
     ids() {
       return this.orderInfo.order ? Object.keys(this.orderInfo.order) : [];
     },

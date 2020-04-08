@@ -14,10 +14,24 @@ export const orderCreate = async (db, snapshot, context) => {
   const tax = 200;
   const total = sub_total+ tax;
 
-  // todo create stripe payment request
-  snapshot.ref.update({
-    status: constant.order_status.validation_ok,
+  // Atomically increment the orderCount of the restaurant
+  const refRestaurant = snapshot.ref.parent.parent;
+  let number = 0;
+  await db.runTransaction(async (tr)=>{
+    const doc = await tr.get(refRestaurant);
+    const data = doc.data();
+    if (data) {
+      number = data.orderCount || 0;
+      await tr.update(refRestaurant, {
+        orderCount: (number + 1) % 1000000
+      });
+    }
+  });
 
+  // todo create stripe payment request
+  return snapshot.ref.update({
+    status: constant.order_status.validation_ok,
+    number,
     sub_total,
     tax,
     total
