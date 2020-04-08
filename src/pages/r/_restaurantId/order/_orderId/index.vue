@@ -16,7 +16,7 @@
       ></order-info>
 
     <b-notification :closable="false" v-if="newOrder">
-        Validating...
+        {{$t('order.validating')}}
         <b-loading :is-full-page="false" :active.sync="newOrder" :can-cancel="true"></b-loading>
     </b-notification>
 
