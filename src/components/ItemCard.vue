@@ -7,7 +7,7 @@
           <p class="item-name">
             {{ title }}
           </p>
-          <p class="price">
+          <p class="item-price">
             {{  $n(payment, 'currency')  }}
           </p>
           <p>{{ description }}</p>
@@ -149,7 +149,7 @@ export default {
   margin-bottom: 0.6rem;
 }
 
-.price {
+.item-price {
   margin-top: 0.3rem;
   margin-bottom: 0.3rem;
   font-size: 1.5rem;
