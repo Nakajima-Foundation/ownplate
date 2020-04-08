@@ -1,5 +1,12 @@
 <template>
   <section class="section">
+    <div
+      v-if="paid" 
+      style="text-align: center;">
+      <h2 class="thankyou">
+        {{$t('order.thankyou')}}
+      </h2>
+    </div>
     <shop-orner-info
       :src="
             this.shopInfo.restProfilePhoto ||
@@ -172,5 +179,9 @@ export default {
 <style lang="scss" scoped>
 .tax {
   margin-top: -2rem !important;
+}
+.thankyou {
+  color: $primary;
+  margin-bottom: 1em;
 }
 </style>

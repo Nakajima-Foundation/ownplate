@@ -35,6 +35,7 @@
     "yourPayment": "お支払い",
     "placeOrder": "注文する:",
     "validating": "処理しています...",
+    "thankyou":"ご注文、ありがとうございます!",
     "status": {
       "unexpected": "(Unexpected)",
       "error": "エラー",
