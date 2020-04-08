@@ -13,8 +13,8 @@
         <div class="level-left">
           {{ totalCount }} items
         </div>
-        <div class="level-right">
-          {{ order.phoneNumber || "(222)222-2222" }}
+        <div class="level-right" v-if="phoneNumber">
+          {{ nationalPhoneNumber }}
         </div>
       </div>
       <div class="level is-mobile" style="margin:0">
@@ -22,7 +22,7 @@
           {{ $n(order.total / 100, 'currency') }}
         </div>
         <div class="level-right">
-          {{ orderTime }}
+          {{ order.pickupTime || "0:00pm"}}
         </div>
       </div>
     </div>
@@ -32,6 +32,7 @@
 <script>
 import OrderStatus from "~/components/OrderStatus";
 import { nameOfOrder } from "~/plugins/strings.js";
+import { parsePhoneNumber, formatNational } from "~/plugins/phoneutil.js";
 
 export default {
   components: {
@@ -44,11 +45,14 @@ export default {
     },
   },
   computed: {
-    orderTime() {
-      if (this.order.timePaid) {
-        return this.order.timePaid.toDate().toLocaleTimeString();
-      }
-      return "";
+    phoneNumber() {
+      return this.order.phoneNumber && parsePhoneNumber(this.order.phoneNumber);
+    },
+    nationalPhoneNumber() {
+      return formatNational(this.phoneNumber);
+    },
+    nationalPhoneURI() {
+      return "tel:" + this.phoneNumber.getNationalNumber();
     },
     orderName() {
       return nameOfOrder(this.order);
