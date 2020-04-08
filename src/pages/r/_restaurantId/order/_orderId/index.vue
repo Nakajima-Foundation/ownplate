@@ -15,6 +15,11 @@
       :orderInfo="this.orderInfo||{}"
       ></order-info>
 
+    <b-notification :closable="false" v-if="newOrder">
+        Validating...
+        <b-loading :is-full-page="false" :active.sync="newOrder" :can-cancel="true"></b-loading>
+    </b-notification>
+
     <div v-if="validated">
       <div class="is-centered" style="text-align: center;">
         <b-button 
@@ -69,6 +74,7 @@ export default {
   },
   data() {
     return {
+      isLoading: true,
       restaurantsId: this.restaurantId(),
       shopInfo: {},
       orderInfo: {},
@@ -108,6 +114,9 @@ export default {
     }
   },
   computed: {
+    newOrder() {
+      return this.orderInfo.status == order_status.new_order;
+    },
     validated() {
       return this.orderInfo.status == order_status.validation_ok;
     },
