@@ -149,16 +149,6 @@ export default {
   margin-bottom: 0.6rem;
 }
 
-.item-price {
-  margin-top: 0.3rem;
-  margin-bottom: 0.3rem;
-  font-size: 1.5rem;
-  font-weight: bold;
-}
-.item-name {
-  font-weight: bold;
-  font-size: 1.2rem;
-}
 .item-counter {
   margin-top:-0.4rem;
   font-size:3rem !important;
