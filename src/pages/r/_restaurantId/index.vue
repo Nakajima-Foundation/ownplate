@@ -18,7 +18,6 @@
           <template v-for="menu in menuLists">
             <template v-if="itemsObj[menu]">
               <h2 
-                class="p-big bold" 
                 v-bind:key="itemsObj[menu].id"
                 v-if="itemsObj[menu]._dataType === 'title'">
                 {{itemsObj[menu].name}}

@@ -4,12 +4,12 @@
       <div class="media" @click="openMenuFlag ? closeMenu() : openMenu()">
         <div class="media-content">
           <!-- <h4 class="bold">Kushikatsu Special Platter</h4> -->
-          <h4 class="bold">
+          <p class="item-name">
             {{ title }}
-          </h4>
-          <h2 class="bold payment">
+          </p>
+          <p class="price">
             {{  $n(payment, 'currency')  }}
-          </h2>
+          </p>
           <p>{{ description }}</p>
         </div>
         <div class="media-right">
@@ -50,12 +50,11 @@
                 -
               </b-button>
             </div>
-            <h2
-              class="bold"
-              style="margin-top:-0.4rem;font-size:3rem!important;color:#0097A7;"
+            <span
+              class="item-counter"
             >
               {{ counter }}
-            </h2>
+            </span>
             <div class="level-right">
               <b-button
                 class="counter-button"
@@ -150,9 +149,20 @@ export default {
   margin-bottom: 0.6rem;
 }
 
-.payment {
-  margin-top: 0.4rem;
-  margin-bottom: 0.4rem;
+.price {
+  margin-top: 0.3rem;
+  margin-bottom: 0.3rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+.item-name {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+.item-counter {
+  margin-top:-0.4rem;
+  font-size:3rem !important;
+  color:$primary;
 }
 
 .count-class {

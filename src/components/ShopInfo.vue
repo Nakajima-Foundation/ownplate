@@ -1,6 +1,6 @@
 <template>
 <span>
-  <h2 class="bold">
+  <h2>
     {{$t('shopInfo.address')}}
   </h2>
   <div class="card">
@@ -28,7 +28,7 @@
     </div>
   </div>
 
-  <h2 class="bold" style="margin-top:2rem;">
+  <h2 style="margin-top:2rem;">
     {{$t("shopInfo.phonenumber")}}
   </h2>
   <div class="notification is-centered">
@@ -39,7 +39,7 @@
     </a>
   </div>
   <div v-if="!compact">
-    <h2 class="bold">
+    <h2>
       {{$t("shopInfo.website")}}
     </h2>
     <div class="notification">
@@ -50,7 +50,7 @@
       </div>
     </div>
 
-    <h2 class="bold">
+    <h2>
       {{$t("shopInfo.hours")}}
     </h2>
     <div class="notification">
