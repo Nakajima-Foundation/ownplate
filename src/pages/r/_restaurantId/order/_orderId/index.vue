@@ -3,9 +3,9 @@
     <div
       v-if="paid" 
       style="text-align: center;">
-      <h2 class="thankyou">
+      <p class="thankyou">
         {{$t('order.thankyou')}}
-      </h2>
+      </p>
     </div>
     <shop-orner-info
       :src="this.shopInfo.restProfilePhoto"
@@ -16,7 +16,7 @@
       :compact="true" 
       :shopInfo="shopInfo" />
 
-    <h2 class="p-big bold">
+    <h2>
       {{$t('order.yourOrder')}}
     </h2>
     <order-info
@@ -42,7 +42,7 @@
 
       <hr class="hr-black" />
 
-      <h2 class="p-big bold">
+      <h2>
         {{$t('order.yourPayment')}}
       </h2>
       <credit-card-input></credit-card-input>
@@ -187,6 +187,8 @@ export default {
 }
 .thankyou {
   color: $primary;
-  margin-bottom: 1em;
+  font-size: 2.0rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
 }
 </style>

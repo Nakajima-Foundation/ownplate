@@ -4,12 +4,12 @@
       <div class="media">
         <div class="media-content">
           <!-- <h4 class="bold">Kushikatsu Special Platter</h4> -->
-          <h3 class="bold">
+          <p class="item-name">
             {{ menuitem.itemName }}
-          </h3>
-          <h2 class="bold payment">
+          </p>
+          <p class="item-price">
             {{ $n(menuitem.price, "currency") }}
-          </h2>
+          </p>
           <p>{{ menuitem.itemDescription }}</p>
         </div>
         <div class="media-right">

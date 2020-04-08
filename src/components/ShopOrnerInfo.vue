@@ -7,9 +7,9 @@
       </figure>
     </div>
     <div class="media-content">
-      <h3 class="title is-4">
+      <span class="shop-name">
         {{ name }}
-      </h3>
+      </span>
     </div>
   </div>
 </template>
@@ -35,5 +35,9 @@ export default {
 .media-content {
   margin-top: auto;
   margin-bottom: auto;
+}
+.shop-name {
+  font-weight: bold;
+  font-size: 1.75rem;
 }
 </style>

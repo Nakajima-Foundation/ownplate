@@ -18,13 +18,13 @@ $breakpoints: (
 }
 
 a {
-  color: #0078c8;
+  color: $primary;
 }
 a:link {
-  color: #0078c8;
+  color: $primary;
 }
 a:visited {
-  color: #0078c8;
+  color: $primary;
 }
 
 h1 {
