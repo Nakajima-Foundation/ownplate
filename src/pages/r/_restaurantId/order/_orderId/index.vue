@@ -22,7 +22,7 @@
       :shopInfo="shopInfo" />
 
     <h2>
-      {{$t('order.yourOrder')}}
+      {{ $t('order.yourOrder') + ": " + orderName }}
     </h2>
     <order-info
       :orderItems="this.orderItems"
@@ -78,6 +78,7 @@ import ShopInfo from "~/components/ShopInfo";
 
 import { db } from "~/plugins/firebase.js";
 import { order_status } from "~/plugins/constant.js";
+import { nameOfOrder } from "~/plugins/strings.js";
 
 export default {
   name: "Order",
@@ -130,6 +131,9 @@ export default {
     }
   },
   computed: {
+    orderName() {
+      return nameOfOrder(this.orderInfo);
+    },
     orderStatusKey() {
       return Object.keys(order_status).reduce((result, key)=>{
         return (order_status[key] === this.orderInfo.status) ?
