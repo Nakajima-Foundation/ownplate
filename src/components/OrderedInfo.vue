@@ -31,6 +31,7 @@
 
 <script>
 import OrderStatus from "~/components/OrderStatus";
+import { nameOfOrder } from "~/plugins/strings.js";
 
 export default {
   components: {
@@ -44,7 +45,8 @@ export default {
   },
   computed: {
     orderName() {
-      return "#"+`00${this.order.number}`.slice(-3);
+      //return "#"+`00${this.order.number}`.slice(-3);
+      return nameOfOrder(this.order);
     },
     totalCount() {
       if (this.order.order) {
