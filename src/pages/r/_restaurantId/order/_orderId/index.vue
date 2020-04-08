@@ -1,5 +1,12 @@
 <template>
   <section class="section">
+    <div
+      v-if="paid" 
+      style="text-align: center;">
+      <h2 class="thankyou">
+        {{$t('order.thankyou')}}
+      </h2>
+    </div>
     <shop-orner-info
       :src="
             this.shopInfo.restProfilePhoto ||
@@ -14,36 +21,44 @@
       :orderItems="this.orderItems"
       :orderInfo="this.orderInfo||{}"
       ></order-info>
-    <div class="is-centered" style="text-align: center;">
-      <b-button 
-        expanded 
-        rounded
-        @click="handleEditItems" 
-        style="margin-bottom:1rem;">
-        {{$t('order.editItems')}}
-      </b-button>
-    </div>
 
-    <hr class="hr-black" />
+    <b-notification :closable="false" v-if="newOrder">
+        {{$t('order.validating')}}
+        <b-loading :is-full-page="false" :active.sync="newOrder" :can-cancel="true"></b-loading>
+    </b-notification>
 
-    <h2 class="p-big bold">
-      {{$t('order.yourPayment')}}
-    </h2>
-    <credit-card-input></credit-card-input>
+    <div v-if="validated">
+      <div class="is-centered" style="text-align: center;">
+        <b-button 
+          expanded 
+          rounded
+          @click="handleEditItems" 
+          style="margin-bottom:1rem;">
+          {{$t('order.editItems')}}
+        </b-button>
+      </div>
 
-    <div class="is-centered" style="text-align: center;">
-      <b-button
-        type="is-primary"
-        expanded
-        rounded
-        style="margin-top:4rem;padding-top: 0.2rem;"
-        size="is-large"
-        @click="goNext"
-      >
-        <span class="p-font bold">
-          {{$t('order.placeOrder')}} {{$n(orderInfo.total, 'currency')}}
-        </span>
-      </b-button>
+      <hr class="hr-black" />
+
+      <h2 class="p-big bold">
+        {{$t('order.yourPayment')}}
+      </h2>
+      <credit-card-input></credit-card-input>
+
+      <div class="is-centered" style="text-align: center;">
+        <b-button
+          type="is-primary"
+          expanded
+          rounded
+          style="margin-top:4rem;padding-top: 0.2rem;"
+          size="is-large"
+          @click="goNext"
+        >
+          <span class="p-font bold">
+            {{$t('order.placeOrder')}} {{$n(orderInfo.total, 'currency')}}
+          </span>
+        </b-button>
+      </div>
     </div>
   </section>
 </template>
@@ -54,6 +69,7 @@ import OrderInfo from "~/components/OrderInfo";
 import CreditCardInput from "~/components/CreditCardInput";
 
 import { db } from "~/plugins/firebase.js";
+import { order_status } from "~/plugins/constant.js";
 
 export default {
   name: "Order",
@@ -65,6 +81,7 @@ export default {
   },
   data() {
     return {
+      isLoading: true,
       restaurantsId: this.restaurantId(),
       shopInfo: {},
       orderInfo: {},
@@ -104,6 +121,15 @@ export default {
     }
   },
   computed: {
+    newOrder() {
+      return this.orderInfo.status == order_status.new_order;
+    },
+    validated() {
+      return this.orderInfo.status == order_status.validation_ok;
+    },
+    paid() {
+      return this.orderInfo.status >= order_status.customer_paid;
+    },
     orderItems() {
       if (this.menus.length > 0 && this.orderInfo.order) {
         const menuObj = this.array2obj(this.menus);
@@ -136,9 +162,17 @@ export default {
         console.log("failed");
       }
     },
-    goNext() {
-      // this.$router.push({ path: "/restaurants/thank" });
-      this.$router.push({ path: `/r/${this.restaurantId()}/order/${this.orderId}/thanks` });
+    async goNext() {
+      try {
+        // HACK: Workaround until we implement sprite
+        await db.doc(`restaurants/${this.restaurantId()}/orders/${this.orderId}`).set({
+          status: order_status.customer_paid
+        }, { merge:true });
+        console.log("suceeded");
+        window.scrollTo(0,0);
+      } catch(error) {
+        console.log("failed", error);
+      }
     }
   }
 };
@@ -146,5 +180,9 @@ export default {
 <style lang="scss" scoped>
 .tax {
   margin-top: -2rem !important;
+}
+.thankyou {
+  color: $primary;
+  margin-bottom: 1em;
 }
 </style>

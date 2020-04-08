@@ -34,6 +34,8 @@
     "total": "Total",
     "yourPayment": "Your Payment",
     "placeOrder": "Place Order:",
+    "validating": "Processing...",
+    "thankyou":"Thank you!",
     "status": {
       "unexpected": "Unexpected",
       "error": "Error",

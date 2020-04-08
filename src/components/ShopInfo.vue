@@ -4,7 +4,7 @@
     {{$t('shopInfo.address')}}
   </h2>
   <div class="card">
-    <div class="card-image">
+    <div class="card-image" v-if="hasLocation">
       <GMap
         ref="gMap"
         :cluster="{options: {styles: 'clusterStyle'}}"
@@ -119,21 +119,27 @@ export default {
         return tmp;
       }, {});
     },
+    hasLocation() {
+      return this.shopInfo.location && this.shopInfo.location.lat && this.shopInfo.location.lng;
+    }
   },
   mounted() {
     this.updateMap();
   },
   methods: {
     updateMap() {
-      if (this.shopInfo.location) {
+      if (this.hasLocation) {
         if (this.$refs.gMap && this.$refs.gMap.map) {
           const location = this.shopInfo.location;
-          this.$refs.gMap.map.setCenter(location);
-          const marker = new google.maps.Marker({
-            position: new google.maps.LatLng(location.lat, location.lng),
-            title: this.shopInfo.restaurantName,
-            map: this.$refs.gMap.map,
-          });
+          console.log(location);
+          if (location) {
+            this.$refs.gMap.map.setCenter(location);
+            const marker = new google.maps.Marker({
+              position: new google.maps.LatLng(location.lat, location.lng),
+              title: this.shopInfo.restaurantName,
+              map: this.$refs.gMap.map,
+            });
+          }
         }
       }
     },
