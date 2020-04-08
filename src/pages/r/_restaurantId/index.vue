@@ -107,6 +107,13 @@ export default {
     if (index > -1) {
       this.tabIndex = index;
     }
+
+    const url = new URL(window.location.href);
+    if (url.hash.length > 1) {
+      const prevOrderId = url.hash.slice(1);
+      console.log("####", prevOrderId, this.$store.state.carts[prevOrderId])
+      this.orders = this.$store.state.carts[prevOrderId] || {}; 
+    }
   },
   created() {
     const restaurant_detacher = db.doc(`restaurants/${this.restaurantId()}`).onSnapshot((restaurant) => {
@@ -183,6 +190,7 @@ export default {
         // price never set here.
       };
       const res = await db.collection(`restaurants/${this.restaurantId()}/orders`).add(order_data);
+      this.$store.commit('saveCart', {id:res.id, order:this.orders});
       this.$router.push({
         path: `/r/${this.restaurantId()}/order/${res.id}`
       });

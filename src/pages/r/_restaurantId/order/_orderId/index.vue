@@ -176,7 +176,7 @@ export default {
       try {
         await db.doc(`restaurants/${this.restaurantId()}/orders/${this.orderId}`).delete();
         console.log("suceeded");
-        this.$router.push({ path: `/r/${this.restaurantId()}` });
+        this.$router.push({ path: `/r/${this.restaurantId()}#${this.orderId}` });
       } catch(error) {
         console.log("failed");
       }
