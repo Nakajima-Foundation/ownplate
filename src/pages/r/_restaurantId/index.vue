@@ -193,7 +193,6 @@ export default {
       });
     },
     emitted(eventArgs) {
-      console.log("emitted");
       // NOTE: We need to assign a new object to trigger computed properties
       const obj = {};
       obj[eventArgs.id] = eventArgs.counter;
