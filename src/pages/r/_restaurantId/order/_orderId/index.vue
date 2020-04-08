@@ -12,7 +12,8 @@
       :name="this.shopInfo.restaurantName"
       />
     <shop-info 
-      v-if="paid" 
+      v-if="paid"
+      :compact="true" 
       :shopInfo="shopInfo" />
 
     <h2 class="p-big bold">
