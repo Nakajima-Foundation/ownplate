@@ -6,6 +6,11 @@
       <p class="thankyou">
         {{$t('order.thankyou')}}
       </p>
+      <p 
+        :class="orderStatusKey" 
+        style="margin-bottom:1rem;padding:0.5rem">
+        {{ $t("order.status." + orderStatusKey) }}
+      </p>
     </div>
     <shop-orner-info
       :src="this.shopInfo.restProfilePhoto"
@@ -125,6 +130,12 @@ export default {
     }
   },
   computed: {
+    orderStatusKey() {
+      return Object.keys(order_status).reduce((result, key)=>{
+        return (order_status[key] === this.orderInfo.status) ?
+          key : result;
+      }, "unexpected");
+    },
     newOrder() {
       return this.orderInfo.status == order_status.new_order;
     },
