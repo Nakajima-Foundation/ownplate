@@ -1,7 +1,7 @@
 <template>
   <!-- shop-orner -->
   <div class="media">
-    <div class="media-left">
+    <div class="media-left" v-if="src">
       <figure class="image is-64x64">
         <img class="is-rounded" :src="src" alt="" />
       </figure>
@@ -19,7 +19,6 @@ export default {
   props: {
     src: {
       type: String,
-      required: true
     },
     name: {
       type: String,
