@@ -23,7 +23,7 @@ export const orderCreate = async (db, snapshot, context) => {
     if (data) {
       number = data.orderCount || 0;
       await tr.update(refRestaurant, {
-        orderCount: number + 1
+        orderCount: (number + 1) % 1000000
       });
     }
   });
