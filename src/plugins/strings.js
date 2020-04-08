@@ -1,3 +1,4 @@
 export const nameOfOrder = (order) => {
-  return "#"+`00${order.number}`.slice(-3);
+  return order && order.number &&
+    "#"+`00${order.number}`.slice(-3);
 };

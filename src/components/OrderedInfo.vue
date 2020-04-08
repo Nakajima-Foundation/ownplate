@@ -45,7 +45,6 @@ export default {
   },
   computed: {
     orderName() {
-      //return "#"+`00${this.order.number}`.slice(-3);
       return nameOfOrder(this.order);
     },
     totalCount() {
