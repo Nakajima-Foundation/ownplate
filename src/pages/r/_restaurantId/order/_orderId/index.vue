@@ -76,7 +76,7 @@ import OrderInfo from "~/components/OrderInfo";
 import CreditCardInput from "~/components/CreditCardInput";
 import ShopInfo from "~/components/ShopInfo";
 
-import { db } from "~/plugins/firebase.js";
+import { db, firestore } from "~/plugins/firebase.js";
 import { order_status } from "~/plugins/constant.js";
 import { nameOfOrder } from "~/plugins/strings.js";
 
@@ -184,9 +184,11 @@ export default {
     async goNext() {
       try {
         // HACK: Workaround until we implement sprite
-        await db.doc(`restaurants/${this.restaurantId()}/orders/${this.orderId}`).set({
-          status: order_status.customer_paid
-        }, { merge:true });
+        await db.doc(`restaurants/${this.restaurantId()}/orders/${this.orderId}`).update({
+          status: order_status.customer_paid,
+          phoneNumber: this.$store.state.user.phoneNumber,
+          timePaid: firestore.FieldValue.serverTimestamp()
+        });
         console.log("suceeded");
         window.scrollTo(0,0);
       } catch(error) {
