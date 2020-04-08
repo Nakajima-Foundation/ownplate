@@ -169,6 +169,7 @@ export default {
           status: order_status.customer_paid
         }, { merge:true });
         console.log("suceeded");
+        window.scrollTo(0,0);
       } catch(error) {
         console.log("failed", error);
       }
