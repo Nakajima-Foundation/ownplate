@@ -15,7 +15,7 @@
       :orderInfo="this.orderInfo||{}"
       ></order-info>
 
-    <div v-if="!paid">
+    <div v-if="validated">
       <div class="is-centered" style="text-align: center;">
         <b-button 
           expanded 
@@ -108,6 +108,9 @@ export default {
     }
   },
   computed: {
+    validated() {
+      return this.orderInfo.status == order_status.validation_ok;
+    },
     paid() {
       return this.orderInfo.status >= order_status.customer_paid;
     },
