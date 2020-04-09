@@ -31,8 +31,10 @@
         <div class="media">
           <div class="media-content">
             <div style="text-align:center;">
-              <h2 class="bold">
-                <router-link :to="'/admin/restaurants/' + restaurantid + '/orders'">{{ numberOfOrders }} incomplete orders</router-link>
+              <h2>
+                <router-link :to="'/admin/restaurants/' + restaurantid + '/orders'">
+                  {{ $tc('admin.incompleteOrders', numberOfOrders, {count:numberOfOrders}) }}
+                </router-link>
               </h2>
             </div>
           </div>
@@ -40,8 +42,10 @@
         <div class="media">
           <div class="media-content">
             <div style="text-align:center;">
-              <h2 class="bold">
-                <router-link :to="'/admin/restaurants/' + restaurantid + '/menus'">Edit Menu({{numberOfMenus}} items)</router-link>
+              <h2>
+                <router-link :to="'/admin/restaurants/' + restaurantid + '/menus'">
+                  {{ $t('admin.editMenuItems', {count:numberOfMenus})}}
+                </router-link>
               </h2>
             </div>
           </div>
@@ -49,8 +53,10 @@
         <div class="media">
           <div class="media-content">
             <div style="text-align:center;">
-              <h2 class="bold">
-                <router-link :to="'/admin/restaurants/' + restaurantid + '/edit'">Edit About</router-link>
+              <h2>
+                <router-link :to="'/admin/restaurants/' + restaurantid + '/edit'">
+                  {{$t('admin.editAbout')}}
+                </router-link>
               </h2>
             </div>
           </div>
