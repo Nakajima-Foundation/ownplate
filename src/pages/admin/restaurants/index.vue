@@ -111,15 +111,55 @@ export default {
       tags: "",
       restaurantItems: [],
       paymentItems: [],
+      detachers: [],
     };
   },
   created() {
     this.checkAdminPermission();
   },
-  mounted() {
-    if (this.uid) {
-      this.fetchData(); // normal case
+  async mounted() {
+    const res = await db
+      .collection("restaurants")
+      .where("uid", "==", this.uid)
+      .get();
+    try {
+      this.restaurantItems = (res.docs || []).map(doc => {
+        let restaurantId = doc.id;
+        const data = doc.data();
+        data.restaurantid = doc.id;
+        data.id = doc.id;
+        return data;
+      });
+      this.restaurantItems = await Promise.all(this.restaurantItems.map(async (restaurant) => {
+        const menus = await db.collection(`restaurants/${restaurant.id}/menus`).where("deletedFlag", "==", false).get();
+        restaurant.numberOfMenus = menus.size;
+
+        return restaurant;
+      }));
+
+      // Number of orders: Realtime update 
+      this.detachers = this.restaurantItems.map((restaurant, index)=>{
+        return db.collection(`restaurants/${restaurant.id}/orders`)
+              .where("status", "<", order_status.customer_picked_up)
+              .where("status", ">=", order_status.customer_paid).onSnapshot((result) => {
+            this.restaurantItems = this.restaurantItems.map((r2, i2) => {
+              if (index === i2) {
+                r2.numberOfOrders = result.size;
+              }
+              return r2;
+            });
+          });
+      });
+    } catch (error) {
+      console.log("Error fetch doc,", error);
+    } finally {
+      this.readyToDisplay = true;
     }
+  },
+  destroyed() {
+    this.detachers.map((detacher) => {
+      detacher();
+    });
   },
   computed: {
     uid() {
@@ -139,35 +179,6 @@ export default {
     }
   },
   methods: {
-    async fetchData() {
-      const res = await db
-        .collection("restaurants")
-        .where("uid", "==", this.uid)
-        .get();
-      try {
-        this.restaurantItems = (res.docs || []).map(doc => {
-          let restaurantId = doc.id;
-          const data = doc.data();
-          data.restaurantid = doc.id;
-          data.id = doc.id;
-          return data;
-        });
-        this.restaurantItems = await Promise.all(this.restaurantItems.map(async (restaurant) => {
-          const menus = await db.collection(`restaurants/${restaurant.id}/menus`).where("deletedFlag", "==", false).get();
-          restaurant.numberOfMenus = menus.size
-          const orders = await db.collection(`restaurants/${restaurant.id}/orders`)
-                .where("status", "<", order_status.customer_picked_up)
-                .where("status", ">=", order_status.new_order).get();
-          restaurant.numberOfOrders = orders.size
-
-          return restaurant;
-        }));
-      } catch (error) {
-        console.log("Error fetch doc,", error);
-      } finally {
-        this.readyToDisplay = true;
-      }
-    },
   }
 };
 </script>

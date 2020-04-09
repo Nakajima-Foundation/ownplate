@@ -46,7 +46,7 @@ export default {
   },
   computed: {
     timestamp() {
-      return this.order.timePaid.toDate().toLocaleTimeString();
+      return this.order.timePaid.toLocaleTimeString();
     },
     phoneNumber() {
       return this.order.phoneNumber && parsePhoneNumber(this.order.phoneNumber);
