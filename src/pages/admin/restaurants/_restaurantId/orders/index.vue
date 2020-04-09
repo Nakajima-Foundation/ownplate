@@ -42,9 +42,17 @@ export default {
     const order_detacher = db.collection(`restaurants/${this.restaurantId()}/orders`)
         .where("status", ">=", order_status.customer_paid)
         .where("status", "<", order_status.customer_picked_up)
-        .onSnapshot((orders) => {
-      if (!orders.empty) {
-        this.orders = orders.docs.map(this.doc2data("order"));
+        .onSnapshot((result) => {
+      if (!result.empty) {
+        let orders = result.docs.map(this.doc2data("order"));
+        orders = orders.map((order)=>{
+          order.timePaid = order.timePaid.toDate(); 
+          return order;
+        });
+        this.orders = orders.sort((order1, order2)=>{
+          console.log(order1.number, order1.timePaid, order2.timePaid)
+          return order1.timePaid - order2.timePaid;
+        });
       }
     });
     this.detachers = [
