@@ -13,6 +13,10 @@ service cloud.firestore {
       return resource.data.uid == request.auth.uid;
     }
 
+    function isRestaurantOwner(restaurantsId, request) {
+      return get(/databases/$(database)/documents/restaurants/$(restaurantsId)).data.uid == request.auth.uid;
+    }
+
     match /users/{userId} {
       allow read, create, update, delete: if request.auth.uid == userId;
     }
@@ -34,14 +38,18 @@ service cloud.firestore {
       allow update: if isAdmin(request) && isOwner(resource, request);
     }
     match /restaurants/{restaurantsId}/orders/{orderId} {
-      allow read: if true;
-      allow create: if isUser(request);
-      allow delete: if resource.data.uid == request.auth.uid
+      allow create: if isUser(request)
+                      && request.resource.data.uid == request.auth.uid;
+      allow read: if isAdmin(request)
+                      && isRestaurantOwner(restaurantsId, request);
+      allow read: if isUser(request) && isOwner(resource, request);
+      allow delete: if isOwner(resource, request)
                       && resource.data.status == 200; // validated
-      allow update: if resource.data.uid == request.auth.uid
+      allow update: if isOwner(resource, request)
                       && resource.data.status == 200
                       && request.resource.data.status == 300; // HACK: Temporary During no-sprite Testing
-      allow update: if isAdmin(request); // HACK: check the owner of restaurant
+      allow update: if isAdmin(request)
+                      && isRestaurantOwner(restaurantsId, request);
     }
 
     match /{document=**} {
