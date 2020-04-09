@@ -1,16 +1,30 @@
 {
-  "compilerOptions": {
-    "module": "commonjs",
-    "noImplicitReturns": true,
-    "noUnusedLocals": true,
-    "noImplicitAny": false,
-    "outDir": "lib",
-    "sourceMap": true,
-    "strict": true,
-    "target": "es2017"
-  },
-  "compileOnSave": true,
-  "include": [
-    "src"
-  ]
+	"compilerOptions": {
+		"lib": [
+			"es6",
+			"dom",
+			"es2018"
+		],
+		"module": "commonjs",
+		"noImplicitReturns": true,
+		"emitDecoratorMetadata": true,
+		"experimentalDecorators": true,
+		"noUnusedLocals": true,
+		"outDir": "lib",
+		"sourceMap": true,
+		"strict": true,
+		"target": "es2018",
+		"forceConsistentCasingInFileNames": false,
+		"esModuleInterop": true,
+		"resolveJsonModule": true,
+		"isolatedModules": true,
+		"allowJs": true,
+	},
+	"compileOnSave": true,
+	"include": [
+		"src",
+	],
+	"exclude": [
+		"node_modules",
+	]
 }
