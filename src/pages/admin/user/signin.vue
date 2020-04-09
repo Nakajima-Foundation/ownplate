@@ -29,7 +29,8 @@
             maxlength="30"
             password-reveal />
         </b-field>
-        <b-button>
+        <b-button
+          @click="handleCancel">
           {{ $t('button.cancel') }}
         </b-button>
         <b-button
@@ -38,7 +39,15 @@
           {{ $t('button.next') }}
         </b-button>
         <p style="margin-top: 2rem">
-          New User: Please <router-link to="/admin/user/signup">Sign Up</router-link> to create your own restaurant page(s).
+          <router-link to="/admin/user/signup">
+            {{$t('admin.pleaseSignUp')}} 
+          </router-link>
+          <br/>
+          <router-link to="/admin/user/reset">
+            {{$t('admin.forgotPassword')}} 
+          </router-link>
+        </p>
+        <p style="margin-top: 2rem">
         </p>
       </form>
     </div>
@@ -58,6 +67,9 @@ export default {
     };
   },
   methods: {
+    handleCancel() {
+       this.$router.push("/");
+    },
     async onSignin() {
       try {
         this.errors = {};
