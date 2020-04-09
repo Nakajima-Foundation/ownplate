@@ -88,6 +88,17 @@
     "passwordPlaceHolder": "Enter password here",
     "confirmPasswordPlaceHolder": "Enter same password here",
     "enterName": "Enter name here",
+
+    "restaurant":"Restaurant",
+    "payment":"Payment",
+    "yourRestaurants":"Your Restaurant(s)",
+    "noRestaurant":"No restaurant",
+    "addYourRestaurant":"Please add your restaurant from the bottom button.",
+    "addNewRestaurant":"Add New Restaurant",
+    "noPaymentAccount":"No Payment account",
+    "pleaseConnectPayment":"Please connect your payment account from the bottom button.",
+    "connectPaymentAccount":"Connect payment account",
+    
     "error": {
       "email": {
         "invalid":"Invalid Email Address",

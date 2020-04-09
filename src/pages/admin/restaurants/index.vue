@@ -1,11 +1,11 @@
 <template>
   <section class="section">
     <h2 class="p-big bold">
-      Your Restaurant(s)
+      {{ $t('admin.yourRestaurants') }}
     </h2>
 
     <b-tabs size="is-medium" class="block" expanded>
-      <b-tab-item label="Restaurant">
+      <b-tab-item :label="$t('admin.restaurant')">
         <div class="card block" v-if="readyToDisplay">
           <div class="card-content">
             <div
@@ -13,8 +13,8 @@
               class="container content has-text-centered"
             >
               <b-icon icon="silverware" size="is-large"></b-icon>
-              <h3>No restaurant</h3>
-              Please add your restaurant from the bottom button.
+              <h3>{{$t('admin.noRestaurant')}}</h3>
+                {{$t('admin.addYourRestaurant')}}
             </div>
           </div>
           <div v-if="existsRestaurant">
@@ -50,12 +50,12 @@
               expanded
               rounded
             >
-              Add new restaurant
+              {{$t('admin.addNewRestaurant')}}
             </b-button>
           </a>
         </div>
       </b-tab-item>
-      <b-tab-item label="Payment">
+      <b-tab-item :label="$t('admin.payment')">
         <div class="card block">
           <div class="card-content">
             <div
@@ -63,8 +63,8 @@
               class="container content has-text-centered"
             >
               <b-icon icon="credit-card" size="is-large"></b-icon>
-              <h3>No Payment account</h3>
-              Please connect your payment account from the bottom button.
+              <h3>{{$t('admin.addNewRestaurant')}}</h3>
+                {{$t('admin.pleaseConnectPayment')}}
             </div>
           </div>
         </div>
@@ -76,7 +76,7 @@
             expanded
             rounded
           >
-            Connect payment account
+            {{$t('admin.connectPaymentAccount')}}
           </b-button>
         </a>
       </b-tab-item>
