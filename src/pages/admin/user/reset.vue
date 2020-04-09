@@ -65,8 +65,9 @@ export default {
        this.$router.push("/admin/user/signin");
     },
     async handleNext() {
-      console.log("handleNext");
-      auth.sendPasswordResetEmail(this.email).then(() => {
+      const options = { url:window.location.href.replace(/reset$/, "signin") };
+      console.log("handleNext", options.url);
+      auth.sendPasswordResetEmail(this.email, options).then(() => {
         console.log("success");
         this.emailSent = true;
       }).catch((error) => {
