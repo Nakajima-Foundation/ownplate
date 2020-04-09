@@ -98,7 +98,10 @@
     "noPaymentAccount":"No Payment account",
     "pleaseConnectPayment":"Please connect your payment account from the bottom button.",
     "connectPaymentAccount":"Connect payment account",
-    
+    "incompleteOrders":"{count} incomplete order | {count} incomplete orders",
+    "editMenuItems":"Edit Menu ({count} items)",
+    "editAbout":"Edit About",
+
     "error": {
       "email": {
         "invalid":"Invalid Email Address",
