@@ -24,6 +24,7 @@
         </b-button>
         <b-button
           type="is-primary"
+          :disabled="Object.keys(errors).length > 0"
           @click="handleNext">
           {{ $t('button.next') }}
         </b-button>
@@ -34,15 +35,26 @@
 </template>
 
 <script>
+import isEmail from 'validator/lib/isEmail';
 import { auth } from "~/plugins/firebase.js";
 
 export default {
-  name: "Signin",
+  name: "Reset",
   data() {
     return {
       email: "",
-      errors: {}
     };
+  },
+  computed: {
+    errors() {
+      let errors = {};
+      if (!isEmail(this.email)) {
+        errors.email = ['admin.error.email.invalid'];        
+      } else if (this.email === this.emailTaken) {
+        errors.email = ['admin.error.email.taken'];        
+      }
+      return errors;
+    },
   },
   methods: {
     handleCancel() {
