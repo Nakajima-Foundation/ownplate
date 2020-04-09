@@ -17,15 +17,18 @@
   },
   "main": "lib/index.js",
   "dependencies": {
+    "@1amageek/ballcap": "^1.1.4",
+    "@firebase/firestore": "^1.13.1",
     "express": "^4.17.1",
     "firebase-admin": "^8.0.0",
     "firebase-functions": "^3.1.0",
-    "@firebase/firestore": "^1.13.1"
+    "stripe": "^8.39.1"
   },
   "devDependencies": {
     "@firebase/testing": "^0.17.1",
     "@types/chai": "^4.2.11",
     "@types/mocha": "^7.0.2",
+    "@types/stripe": "^7.13.22",
     "chai": "^4.2.0",
     "cheerio": "^1.0.0-rc.3",
     "mocha": "^7.1.1",
