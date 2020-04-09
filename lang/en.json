@@ -103,6 +103,7 @@
     "editAbout":"Edit About",
     "pleaseSignUp":"Sign up as a new user",
     "forgotPassword":"Forgot Password？",
+    "passwordReset":"Reset Password",
 
     "error": {
       "email": {

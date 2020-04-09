@@ -18,7 +18,8 @@
             maxlength="256" />
         </b-field>
 
-        <b-button>
+        <b-button
+          @click="handleCancel">
           {{ $t('button.cancel') }}
         </b-button>
         <b-button
@@ -44,6 +45,9 @@ export default {
     };
   },
   methods: {
+    handleCancel() {
+       this.$router.push("/admin/user/signin");
+    },
     async handleNext() {
       console.log("handleNext");
     },
