@@ -50,8 +50,8 @@ export const orderCreate = async (db, snapshot, context) => {
     const restaurant = restaurantDoc.data();
 
     // tax rate
-    const alcoholTax = restaurant.alcoholTax;
-    const foodTax = restaurant.foodTax;
+    const alcoholTax = restaurant.alcoholTax || 0;
+    const foodTax = restaurant.foodTax || 0;
 
     const menuObj = await getMenuObj(refRestaurant);
 
@@ -61,9 +61,9 @@ export const orderCreate = async (db, snapshot, context) => {
     Object.keys(original_data.order).map((menuId) => {
       const menu = menuObj[menuId];
       if (menu.tax === "alcohol") {
-        alcohol_sub_total += (alcohol_sub_total + menu.price * original_data.order[menuId])
+        alcohol_sub_total += (menu.price * original_data.order[menuId])
       } else {
-        food_sub_total += (food_sub_total + menu.price * original_data.order[menuId])
+        food_sub_total += (menu.price * original_data.order[menuId])
       }
     });
 
