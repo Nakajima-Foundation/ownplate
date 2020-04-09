@@ -40,7 +40,8 @@ export default {
       }
     });
     const order_detacher = db.collection(`restaurants/${this.restaurantId()}/orders`)
-        .where("status", ">", order_status.validation_ok)
+        .where("status", ">=", order_status.customer_paid)
+        .where("status", "<", order_status.customer_picked_up)
         .onSnapshot((orders) => {
       if (!orders.empty) {
         this.orders = orders.docs.map(this.doc2data("order"));
