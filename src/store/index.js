@@ -7,7 +7,8 @@ export const strict = false;
 
 export const state = () => ({
   user: undefined, // undefined:not authorized, null:no user
-  date: new Date()
+  date: new Date(),
+  carts: {} // for "Edit Order"
 });
 
 export const getters = {
@@ -32,6 +33,11 @@ export const mutations = {
   },
   updateDate(state) {
     state.date = new Date();
+  },
+  saveCart(state, payload) {
+    console.log("saving cart", payload.id, payload.order);
+    state.carts = {};
+    state.carts[payload.id] = payload.order;
   }
 };
 

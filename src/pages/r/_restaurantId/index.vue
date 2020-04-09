@@ -106,6 +106,13 @@ export default {
     if (index > -1) {
       this.tabIndex = index;
     }
+
+    // Check if we came here as the result of "Edit Items"
+    const url = new URL(window.location.href);
+    if (url.hash.length > 1) {
+      const prevOrderId = url.hash.slice(1);
+      this.orders = this.$store.state.carts[prevOrderId] || {}; 
+    }
   },
   created() {
     const restaurant_detacher = db.doc(`restaurants/${this.restaurantId()}`).onSnapshot((restaurant) => {
@@ -188,6 +195,10 @@ export default {
         // price never set here.
       };
       const res = await db.collection(`restaurants/${this.restaurantId()}/orders`).add(order_data);
+      // Store the current order associated with this order id, so that we can re-use it
+      // when the user clicks the "Edit Items" on the next page. 
+      // In that case, we will come back here with #id so that we can retrieve it (see mounted).
+      this.$store.commit('saveCart', {id:res.id, order:this.orders});
       this.$router.push({
         path: `/r/${this.restaurantId()}/order/${res.id}`
       });
