@@ -1,6 +1,8 @@
 <template>
   <div>
-    <template v-if="notFound">
+    <template v-if="notFound==null">
+    </template>
+    <template v-else-if="notFound">
       <not-found />
     </template>
     <template v-else>
@@ -89,7 +91,7 @@ export default {
     PhoneLogin,
     ShopOrnerInfo,
     ShopInfo,
-    NotFound
+    NotFound,
   },
   data() {
     return {
@@ -104,7 +106,7 @@ export default {
       titles: [],
 
       detacher: [],
-      notFound: false,
+      notFound: null,
     };
   },
   mounted() {
@@ -125,6 +127,7 @@ export default {
       if (restaurant.exists) {
         const restaurant_data = restaurant.data();
         this.shopInfo = restaurant_data;
+        this.notFound = false;
       } else {
         this.notFound = true;
       }
