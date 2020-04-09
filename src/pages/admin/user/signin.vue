@@ -38,7 +38,15 @@
           {{ $t('button.next') }}
         </b-button>
         <p style="margin-top: 2rem">
-          New User: Please <router-link to="/admin/user/signup">Sign Up</router-link> to create your own restaurant page(s).
+          <router-link to="/admin/user/signup">
+            {{$t('admin.pleaseSignUp')}} 
+          </router-link>
+          <br/>
+          <router-link to="/admin/user/reset">
+            {{$t('admin.forgotPassword')}} 
+          </router-link>
+        </p>
+        <p style="margin-top: 2rem">
         </p>
       </form>
     </div>

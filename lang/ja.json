@@ -101,6 +101,8 @@
     "incompleteOrders":"{count} incomplete order | {count} incomplete orders",
     "editMenuItems":"Edit Menu ({count} items)",
     "editAbout":"Edit About",
+    "pleaseSignUp":"Sign up as a new user",
+    "forgotPassword":"Forgot Password？",
     
     "error": {
       "email": {
