@@ -62,6 +62,11 @@ export default {
     },
     async handleNext() {
       console.log("handleNext");
+      auth.sendPasswordResetEmail(this.email).then(function() {
+        console.log("success");
+      }).catch(function(error) {
+        console.log("failed", error);
+      });
     },
   }
 };
