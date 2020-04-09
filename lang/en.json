@@ -104,6 +104,7 @@
     "pleaseSignUp":"Sign up as a new user",
     "forgotPassword":"Forgot Password？",
     "passwordReset":"Reset Password",
+    "pleaseCheckInbox":"Please check your inbox, an email is on the way.",
 
     "error": {
       "email": {

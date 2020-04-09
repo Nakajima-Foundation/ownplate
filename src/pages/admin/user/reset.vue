@@ -28,6 +28,8 @@
           @click="handleNext">
           {{ $t('button.next') }}
         </b-button>
+        <p v-if="emailSent" style="margin-top:1rem">
+          {{$t('admin.pleaseCheckInbox')}}
         </p>
       </form>
     </div>
@@ -43,7 +45,8 @@ export default {
   data() {
     return {
       email: "",
-      badEmail: "---invalid---"
+      badEmail: "---invalid---",
+      emailSent: false
     };
   },
   computed: {
@@ -65,6 +68,7 @@ export default {
       console.log("handleNext");
       auth.sendPasswordResetEmail(this.email).then(() => {
         console.log("success");
+        this.emailSent = true;
       }).catch((error) => {
         console.log("failed", error);
         if (error.code === "auth/user-not-found") {
