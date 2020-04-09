@@ -1,27 +1,81 @@
 import * as admin from 'firebase-admin';
 import * as constant from '../common/constant';
 
+/*
+const chunk = (array, chunkSize) => {
+  const ret: any[] = [];
+  let tmp: any[] = [];
+  for (let i = 0; i < array.length; i += chunkSize)
+    tmp = array.slice(i, i + chunkSize);
+    ret.push(tmp);
+  return ret;
+}
+*/
+const getMenuObj = async (refRestaurant) => {
+  /*
+  // todo: if this bug will fix.  https://github.com/googleapis/nodejs-firestore/issues/990
+  const menuIdChunks = chunk(Object.keys(original_data.order), 10);
+
+  for(let i = 0; i < menuIdChunks.length; i ++) {
+    const menuIds = menuIdChunks[i];
+    const menusCollections = await refRestaurant.collection("menus").where(admin.firestore.FieldPath.documentId(), 'in', menuIds);
+
+    menusCollections.forEach((a) => {
+      menus[a.id] = a.data();
+    });
+  };
+  */
+  const menuObj = {};
+  const menusCollections = await refRestaurant.collection("menus").get();
+  menusCollections.forEach((m) => {
+    menuObj[m.id] = m.data();
+  });
+  return menuObj;
+};
+
 export const orderCreate = async (db, snapshot, context) => {
-  // const { restaurantId, orderId } = context.params;
   const original_data = snapshot.data()
-  // todo validate order data
+
   if (!original_data || !original_data.status || original_data.status !== constant.order_status.new_order) {
     return ;
   }
 
-  // todo calculate price.
-  const sub_total = 2000;
-  const tax = 200;
+  // get restaurant
+  const refRestaurant = snapshot.ref.parent.parent;
+  const restaurantDoc = await refRestaurant.get();
+  if (!restaurantDoc.exists) {
+    return snapshot.ref.update("status", constant.order_status.error);
+  }
+  const restaurant = restaurantDoc.data();
+
+  // tax rate
+  const alcoholTax = restaurant.alcoholTax;
+  const foodTax = restaurant.foodTax;
+
+  const menuObj = await getMenuObj(refRestaurant);
+
+  let food_sub_total = 0;
+  let alcohol_sub_total = 0;
+
+  Object.keys(original_data.order).map((menuId) => {
+    const menu = menuObj[menuId];
+    if (menu.tax === "alcohol") {
+      alcohol_sub_total += (alcohol_sub_total + menu.price * original_data.order[menuId])
+    } else {
+      food_sub_total += (food_sub_total + menu.price * original_data.order[menuId])
+    }
+  });
+
+  // calculate price.
+  const sub_total = food_sub_total + alcohol_sub_total;
+  const tax = (alcohol_sub_total * alcoholTax) / 100 + (food_sub_total * foodTax) / 100;
   const total = sub_total+ tax;
 
   // Atomically increment the orderCount of the restaurant
-  const refRestaurant = snapshot.ref.parent.parent;
   let number = 0;
   await db.runTransaction(async (tr)=>{
-    const doc = await tr.get(refRestaurant);
-    const data = doc.data();
-    if (data) {
-      number = data.orderCount || 0;
+    if (restaurant) {
+      number = restaurant.orderCount || 0;
       await tr.update(refRestaurant, {
         orderCount: (number + 1) % 1000000
       });
