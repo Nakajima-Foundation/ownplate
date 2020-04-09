@@ -3,7 +3,7 @@
     <div class="card block">
       <form 
         class="card-content"
-        @submit.prevent="onSignin">
+        @submit.prevent="handleNext">
         <h2 class="p-big bold">
           {{ $t('admin.passwordReset') }}
         </h2>
@@ -43,6 +43,7 @@ export default {
   data() {
     return {
       email: "",
+      badEmail: "---invalid---"
     };
   },
   computed: {
@@ -50,8 +51,8 @@ export default {
       let errors = {};
       if (!isEmail(this.email)) {
         errors.email = ['admin.error.email.invalid'];        
-      } else if (this.email === this.emailTaken) {
-        errors.email = ['admin.error.email.taken'];        
+      } else if (this.email === this.badEmail) {
+        errors.email = ['admin.error.code.auth/user-not-found'];        
       }
       return errors;
     },
@@ -62,10 +63,15 @@ export default {
     },
     async handleNext() {
       console.log("handleNext");
-      auth.sendPasswordResetEmail(this.email).then(function() {
+      auth.sendPasswordResetEmail(this.email).then(() => {
         console.log("success");
-      }).catch(function(error) {
+      }).catch((error) => {
         console.log("failed", error);
+        if (error.code === "auth/user-not-found") {
+          this.badEmail = this.email;
+        } else {
+          this.badEmail = "---Invalid---";
+        }
       });
     },
   }
