@@ -41,55 +41,61 @@ export const orderCreate = async (db, snapshot, context) => {
   }
 
   // get restaurant
-  const refRestaurant = snapshot.ref.parent.parent;
-  const restaurantDoc = await refRestaurant.get();
-  if (!restaurantDoc.exists) {
+  try {
+    const refRestaurant = snapshot.ref.parent.parent;
+    const restaurantDoc = await refRestaurant.get();
+    if (!restaurantDoc.exists) {
+      return snapshot.ref.update("status", constant.order_status.error);
+    }
+    const restaurant = restaurantDoc.data();
+
+    // tax rate
+    const alcoholTax = restaurant.alcoholTax;
+    const foodTax = restaurant.foodTax;
+
+    const menuObj = await getMenuObj(refRestaurant);
+
+    let food_sub_total = 0;
+    let alcohol_sub_total = 0;
+
+    Object.keys(original_data.order).map((menuId) => {
+      const menu = menuObj[menuId];
+      if (menu.tax === "alcohol") {
+        alcohol_sub_total += (alcohol_sub_total + menu.price * original_data.order[menuId])
+      } else {
+        food_sub_total += (food_sub_total + menu.price * original_data.order[menuId])
+      }
+    });
+
+    // calculate price.
+    const sub_total = food_sub_total + alcohol_sub_total;
+    const tax = (alcohol_sub_total * alcoholTax) / 100 + (food_sub_total * foodTax) / 100;
+    const total = sub_total+ tax;
+
+    // Atomically increment the orderCount of the restaurant
+    let number = 0;
+    await db.runTransaction(async (tr)=>{
+      if (restaurant) {
+        number = restaurant.orderCount || 0;
+        await tr.update(refRestaurant, {
+          orderCount: (number + 1) % 1000000
+        });
+      }
+    });
+
+    // todo create stripe payment request
+    return snapshot.ref.update({
+      status: constant.order_status.validation_ok,
+      number,
+      sub_total,
+      tax,
+      total
+    });
+  } catch (e) {
+    console.log(e);
     return snapshot.ref.update("status", constant.order_status.error);
+
   }
-  const restaurant = restaurantDoc.data();
-
-  // tax rate
-  const alcoholTax = restaurant.alcoholTax;
-  const foodTax = restaurant.foodTax;
-
-  const menuObj = await getMenuObj(refRestaurant);
-
-  let food_sub_total = 0;
-  let alcohol_sub_total = 0;
-
-  Object.keys(original_data.order).map((menuId) => {
-    const menu = menuObj[menuId];
-    if (menu.tax === "alcohol") {
-      alcohol_sub_total += (alcohol_sub_total + menu.price * original_data.order[menuId])
-    } else {
-      food_sub_total += (food_sub_total + menu.price * original_data.order[menuId])
-    }
-  });
-
-  // calculate price.
-  const sub_total = food_sub_total + alcohol_sub_total;
-  const tax = (alcohol_sub_total * alcoholTax) / 100 + (food_sub_total * foodTax) / 100;
-  const total = sub_total+ tax;
-
-  // Atomically increment the orderCount of the restaurant
-  let number = 0;
-  await db.runTransaction(async (tr)=>{
-    if (restaurant) {
-      number = restaurant.orderCount || 0;
-      await tr.update(refRestaurant, {
-        orderCount: (number + 1) % 1000000
-      });
-    }
-  });
-
-  // todo create stripe payment request
-  return snapshot.ref.update({
-    status: constant.order_status.validation_ok,
-    number,
-    sub_total,
-    tax,
-    total
-  });
 }
 
 export const createRestaurant = async (db:FirebaseFirestore.Firestore, data, context) => {
