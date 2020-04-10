@@ -8,10 +8,6 @@
 
 <script>
 export default {
-  head: {
-    script: [{ src: "https://js.stripe.com/v3/" }]
-  },
-
   data() {
     return {
       stripeAPIToken: process.env.STRIPE_API_KEY,
@@ -21,12 +17,7 @@ export default {
   },
 
   mounted() {
-    this.includeStripe(
-      "js.stripe.com/v3/",
-      function() {
-        this.configureStripe();
-      }.bind(this)
-    );
+    this.configureStripe();
   },
 
   methods: {
@@ -37,24 +28,6 @@ export default {
       });
       return payload;
     },
-    includeStripe(URL, callback) {
-      let documentTag = document,
-        tag = "script",
-        object = documentTag.createElement(tag),
-        scriptTag = documentTag.getElementsByTagName(tag)[0];
-      object.src = "//" + URL;
-      if (callback) {
-        object.addEventListener(
-          "load",
-          function(e) {
-            callback(null, e);
-          },
-          false
-        );
-      }
-      scriptTag.parentNode.insertBefore(object, scriptTag);
-    },
-
     configureStripe() {
       const stripe = Stripe(this.stripeAPIToken);
       const elements = stripe.elements();
