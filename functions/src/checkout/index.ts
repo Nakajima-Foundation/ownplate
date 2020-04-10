@@ -45,9 +45,12 @@ export const create = async (data, context) => {
         throw new functions.https.HttpsError('aborted', 'This order is invalid.')
       }
 
+      // FIXME: check amount, currency.
+      const amount = order.total * 100
+
       const request = {
         setup_future_usage: 'off_session',
-        amount: order.total,
+        amount: amount,
         currency: 'USD',
         payment_method: paymentMethodId,
         metadata: { uid, restaurantId, orderId }
