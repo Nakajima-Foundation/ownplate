@@ -1,71 +1,76 @@
 <template>
-  <span>
-    <!-- menu-image -->
-    <div id="menu-header-image"
-         :style="{ backgroundImage: 'url(' + shopInfo.restCoverPhoto + ')' }"
-         >
-      <div id="menu-header-image-mask"></div>
-    </div>
-    <!-- shop-orner -->
-    <section class="section">
-      <shop-orner-info
-        v-if="shopInfo.restaurantName"
-        :src="shopInfo.restProfilePhoto"
-        :name="shopInfo.restaurantName"
-      ></shop-orner-info>
-      <b-tabs size="is-medium" class="block" expanded v-model="tabIndex">
-        <b-tab-item :label="$t('sitemenu.menu')">
-          <template v-for="menu in menuLists">
-            <template v-if="itemsObj[menu]">
-              <h2 
-                v-bind:key="itemsObj[menu].id"
-                v-if="itemsObj[menu]._dataType === 'title'">
-                {{itemsObj[menu].name}}
-              </h2>
+  <div>
+    <template v-if="notFound==null">
+    </template>
+    <template v-else-if="notFound">
+      <not-found />
+    </template>
+    <template v-else>
+      <!-- menu-image -->
+      <div id="menu-header-image"
+           :style="{ backgroundImage: 'url(' + shopInfo.restCoverPhoto + ')' }"
+           >
+        <div id="menu-header-image-mask"></div>
+      </div>
+      <!-- shop-orner -->
+      <section class="section">
+        <shop-orner-info
+          v-if="shopInfo.restaurantName"
+          :src="shopInfo.restProfilePhoto"
+          :name="shopInfo.restaurantName"
+          ></shop-orner-info>
+        <b-tabs size="is-medium" class="block" expanded v-model="tabIndex">
+          <b-tab-item :label="$t('sitemenu.menu')">
+            <template v-for="menu in menuLists">
+              <template v-if="itemsObj[menu]">
+                <h2
+                  v-bind:key="itemsObj[menu].id"
+                  v-if="itemsObj[menu]._dataType === 'title'">
+                  {{itemsObj[menu].name}}
+                </h2>
 
-              <item-card
-                v-bind:key="itemsObj[menu].id"
-                v-bind:id="itemsObj[menu].id"
-                v-bind:counter="orders[itemsObj[menu].id] || 0"
-                v-bind:title="itemsObj[menu].itemName"
-                v-bind:payment="Number(itemsObj[menu].price||0)"
-                v-bind:description="itemsObj[menu].itemDescription"
-                v-bind:image="itemsObj[menu].itemPhoto"
-                @emitting="emitted($event)"
-                v-if="itemsObj[menu]._dataType === 'menu'"
-                ></item-card>
+                <item-card
+                  v-bind:key="itemsObj[menu].id"
+                  v-bind:id="itemsObj[menu].id"
+                  v-bind:counter="orders[itemsObj[menu].id] || 0"
+                  v-bind:title="itemsObj[menu].itemName"
+                  v-bind:payment="Number(itemsObj[menu].price||0)"
+                  v-bind:description="itemsObj[menu].itemDescription"
+                  v-bind:image="itemsObj[menu].itemPhoto"
+                  @emitting="emitted($event)"
+                  v-if="itemsObj[menu]._dataType === 'menu'"
+                  ></item-card>
 
+              </template>
             </template>
-          </template>
+            <hr class="hr-black" />
 
+          </b-tab-item>
+          <b-tab-item :label="$t('sitemenu.about')">
+            <shop-info v-bind:shopInfo="shopInfo" v-if="shopInfo.publicFlag"></shop-info>
+          </b-tab-item>
+        </b-tabs>
+        <button
+          v-if="0 != foodCounter"
+          id="order_btn"
+          class="button is-primary is-rounded"
+          @click="handleCheckOut"
+          >
+          <span style="margin-right: auto;">{{$tc('sitemenu.orderCounter', foodCounter, {count: foodCounter})}}</span>
+          <span class="bold" style="margin-left:auto;">{{$t('sitemenu.checkout')}}</span>
+        </button>
 
-          <hr class="hr-black" />
-
-        </b-tab-item>
-        <b-tab-item :label="$t('sitemenu.about')">
-          <shop-info v-bind:shopInfo="shopInfo" v-if="shopInfo.publicFlag"></shop-info>
-        </b-tab-item>
-      </b-tabs>
-      <button
-        v-if="0 != foodCounter"
-        id="order_btn"
-        class="button is-primary is-rounded"
-        @click="handleCheckOut"
-      >
-        <span style="margin-right: auto;">{{$tc('sitemenu.orderCounter', foodCounter, {count: foodCounter})}}</span>
-        <span class="bold" style="margin-left:auto;">{{$t('sitemenu.checkout')}}</span>
-      </button>
-
-      <b-modal :active.sync="loginVisible" :width="640" scroll="keep">
-        <div class="card">
-          <div class="card-content">
-            <phone-login
-              v-on:dismissed="handleDismissed" />
+        <b-modal :active.sync="loginVisible" :width="640">
+          <div class="card">
+            <div class="card-content">
+              <phone-login
+                v-on:dismissed="handleDismissed" />
+            </div>
           </div>
-        </div>
-      </b-modal>
-    </section>
-  </span>
+        </b-modal>
+      </section>
+    </template>
+  </div>
 </template>
 
 <script>
@@ -73,6 +78,7 @@ import ItemCard from "~/components/ItemCard";
 import PhoneLogin from "~/components/auth/PhoneLogin";
 import ShopOrnerInfo from "~/components/ShopOrnerInfo";
 import ShopInfo from "~/components/ShopInfo";
+import NotFound from "~/components/NotFound";
 
 import { db } from "~/plugins/firebase.js";
 import { order_status } from "~/plugins/constant.js";
@@ -84,7 +90,8 @@ export default {
     ItemCard,
     PhoneLogin,
     ShopOrnerInfo,
-    ShopInfo
+    ShopInfo,
+    NotFound,
   },
   data() {
     return {
@@ -99,6 +106,7 @@ export default {
       titles: [],
 
       detacher: [],
+      notFound: null,
     };
   },
   mounted() {
@@ -111,7 +119,7 @@ export default {
     const url = new URL(window.location.href);
     if (url.hash.length > 1) {
       const prevOrderId = url.hash.slice(1);
-      this.orders = this.$store.state.carts[prevOrderId] || {}; 
+      this.orders = this.$store.state.carts[prevOrderId] || {};
     }
   },
   created() {
@@ -119,6 +127,9 @@ export default {
       if (restaurant.exists) {
         const restaurant_data = restaurant.data();
         this.shopInfo = restaurant_data;
+        this.notFound = !this.shopInfo.publicFlag;
+      } else {
+        this.notFound = true;
       }
     });
     const menu_detacher = db.collection(`restaurants/${this.restaurantId()}/menus`).onSnapshot((menu) => {
@@ -196,7 +207,7 @@ export default {
       };
       const res = await db.collection(`restaurants/${this.restaurantId()}/orders`).add(order_data);
       // Store the current order associated with this order id, so that we can re-use it
-      // when the user clicks the "Edit Items" on the next page. 
+      // when the user clicks the "Edit Items" on the next page.
       // In that case, we will come back here with #id so that we can retrieve it (see mounted).
       this.$store.commit('saveCart', {id:res.id, order:this.orders});
       this.$router.push({

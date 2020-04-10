@@ -23,38 +23,67 @@
         </h4>
       </div>
     </div>
-    <img class="card_image" :src="this.shopInfo.restProfilePhoto" if this.shopInfo.restProfilePhoto />
-    <croppa
-      v-model="restProfileCroppa"
-      :prevent-white-space="true"
-      :zoom-speed="5"
-      :width="200"
-      :height="200"
-      placeholder="No image"
-      placeholder-font-size="20"
-      initial-position="center"
-      :canvas-color="'gainsboro'"
-    ></croppa>
-
+    <table>
+      <tr>
+        <td v-if="shopInfo.restProfilePhoto">
+          Current
+        </td>
+        <td>
+          New
+        </td>
+      </tr>
+      <tr>
+        <td v-if="shopInfo.restProfilePhoto">
+          <img class="card_image" :src="this.shopInfo.restProfilePhoto" />
+        </td>
+        <td>
+          <croppa
+            v-model="restProfileCroppa"
+            :prevent-white-space="true"
+            :zoom-speed="5"
+            :width="200"
+            :height="200"
+            placeholder="No image"
+            placeholder-font-size="20"
+            initial-position="center"
+            :canvas-color="'gainsboro'"
+            ></croppa>
+        </td>
+      </tr>
+    </table>
     <div class="field is-horizontal">
       <div class="field-body">
         <h4>Restaurant cover photo</h4>
       </div>
     </div>
-
-    <img class="card_image" :src="this.shopInfo.restCoverPhoto" if this.shopInfo.restCoverPhoto />
-    <croppa
-      v-model="restCoverCroppa"
-      :prevent-white-space="true"
-      :zoom-speed="5"
-      :width="300"
-      :height="150"
-      :placeholder="'No image'"
-      :placeholder-font-size="20"
-      initial-position="center"
-      :canvas-color="'gainsboro'"
-    ></croppa>
-
+    <table>
+      <tr>
+        <td v-if="shopInfo.restProfilePhoto">
+          Current
+        </td>
+        <td>
+          New
+        </td>
+      </tr>
+      <tr>
+        <td v-if="shopInfo.restProfilePhoto">
+          <img class="card_cover_image" :src="this.shopInfo.restCoverPhoto" if this.shopInfo.restCoverPhoto />
+        </td>
+        <td>
+          <croppa
+            v-model="restCoverCroppa"
+            :prevent-white-space="true"
+            :zoom-speed="5"
+            :width="300"
+            :height="150"
+            :placeholder="'No image'"
+            :placeholder-font-size="20"
+            initial-position="center"
+            :canvas-color="'gainsboro'"
+            ></croppa>
+        </td>
+      </tr>
+    </table>
     <div class="field is-horizontal">
       <div class="field-body">
         <h4>
@@ -498,20 +527,6 @@ export default {
     }
   },
   methods: {
-    countObj (obj) {
-      if (Array.isArray(obj)) {
-        return obj.reduce((tmp, value) => {
-          // nested array
-          if (Array.isArray(value)) {
-            return tmp + this.countObj(value);
-          }
-          return tmp + 1;
-        }, 0);
-      }
-      return Object.keys(obj).reduce((tmp, key) => {
-        return this.countObj(obj[key]) + tmp;
-      }, 0);
-    },
     async submitRestaurant() {
       if (this.hasError) return;
 
@@ -629,6 +644,8 @@ export default {
       }
     },
     updateRestaurantData(restaurantData) {
+      // todo why promise??
+      // todo use this.cleanObject(restaurantData);
       const cleanData = Object.keys(restaurantData).reduce((tmp, key) => {
         if (restaurantData[key]) {
           tmp[key] = restaurantData[key];
@@ -653,6 +670,12 @@ export default {
 <style lang="scss" scoped>
 .tax {
   margin-top: -2rem !important;
+}
+.card_image {
+    height: 200px;
+}
+.card_cover_image {
+    height: 150px;
 }
 /deep/.ti-input {
   border-radius: 0.4rem !important;

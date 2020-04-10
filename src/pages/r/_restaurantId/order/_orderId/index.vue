@@ -1,54 +1,65 @@
 <template>
-  <section class="section">
-    <div v-if="paid" style="text-align: center;">
-      <p class="thankyou">{{$t('order.thankyou')}}</p>
-      <p
-        :class="orderStatusKey"
-        style="margin-bottom:1rem;padding:0.5rem"
-      >{{ $t("order.status." + orderStatusKey) }}</p>
-    </div>
-    <shop-orner-info :src="this.shopInfo.restProfilePhoto" :name="this.shopInfo.restaurantName" />
-    <shop-info v-if="paid" :compact="true" :shopInfo="shopInfo" />
+  <div>
+    <template v-if="notFound">
+      <not-found />
+    </template>
+    <template v-else>
+      <section class="section">
+        <div v-if="paid" style="text-align: center;">
+          <p class="thankyou">{{$t('order.thankyou')}}</p>
+          <p
+            :class="orderStatusKey"
+            style="margin-bottom:1rem;padding:0.5rem"
+          >{{ $t("order.status." + orderStatusKey) }}</p>
+        </div>
+        <shop-orner-info
+          :src="this.shopInfo.restProfilePhoto"
+          :name="this.shopInfo.restaurantName"
+        />
+        <shop-info v-if="paid" :compact="true" :shopInfo="shopInfo" />
 
-    <h2>{{ $t('order.yourOrder') + ": " + orderName }}</h2>
-    <order-info :orderItems="this.orderItems" :orderInfo="this.orderInfo||{}"></order-info>
+        <h2>{{ $t('order.yourOrder') + ": " + orderName }}</h2>
+        <order-info :orderItems="this.orderItems" :orderInfo="this.orderInfo||{}"></order-info>
 
-    <b-notification :closable="false" v-if="newOrder">
-      {{$t('order.validating')}}
-      <b-loading :is-full-page="false" :active.sync="newOrder" :can-cancel="true"></b-loading>
-    </b-notification>
+        <b-notification :closable="false" v-if="newOrder">
+          {{$t('order.validating')}}
+          <b-loading :is-full-page="false" :active.sync="newOrder" :can-cancel="true"></b-loading>
+        </b-notification>
 
-    <div v-if="validated">
-      <div class="is-centered" style="text-align: center;">
-        <b-button
-          expanded
-          rounded
-          @click="handleEditItems"
-          style="margin-bottom:1rem;"
-        >{{$t('order.editItems')}}</b-button>
-      </div>
+        <div v-if="validated">
+          <div class="is-centered" style="text-align: center;">
+            <b-button
+              expanded
+              rounded
+              @click="handleEditItems"
+              style="margin-bottom:1rem;"
+            >{{$t('order.editItems')}}</b-button>
+          </div>
 
-      <hr class="hr-black" />
-      <h2>{{$t('order.yourPayment')}}</h2>
+          <hr class="hr-black" />
 
-      <stripe-card ref="stripe"></stripe-card>
-      <!-- <credit-card-input></credit-card-input> -->
+          <h2>{{$t('order.yourPayment')}}</h2>
+          <stripe-card ref="stripe"></stripe-card>
+          <!-- <credit-card-input></credit-card-input> -->
 
-      <div id="stripe-card-element"></div>
-      <div class="is-centered" style="text-align: center;">
-        <b-button
-          type="is-primary"
-          expanded
-          rounded
-          style="margin-top:4rem;padding-top: 0.2rem;"
-          size="is-large"
-          @click="goNext"
-        >
-          <span class="p-font bold">{{$t('order.placeOrder')}} {{$n(orderInfo.total, 'currency')}}</span>
-        </b-button>
-      </div>
-    </div>
-  </section>
+          <div class="is-centered" style="text-align: center;">
+            <b-button
+              type="is-primary"
+              expanded
+              rounded
+              style="margin-top:4rem;padding-top: 0.2rem;"
+              size="is-large"
+              @click="goNext"
+            >
+              <span
+                class="p-font bold"
+              >{{$t('order.placeOrder')}} {{$n(orderInfo.total, 'currency')}}</span>
+            </b-button>
+          </div>
+        </div>
+      </section>
+    </template>
+  </div>
 </template>
 
 <script>
@@ -57,10 +68,12 @@ import OrderInfo from "~/components/OrderInfo";
 import CreditCardInput from "~/components/CreditCardInput";
 import ShopInfo from "~/components/ShopInfo";
 import StripeCard from "~/components/StripeCard";
+import NotFound from "~/components/NotFound";
 
 import { db, firestore } from "~/plugins/firebase.js";
 import { order_status } from "~/plugins/constant.js";
 import { nameOfOrder } from "~/plugins/strings.js";
+import firebase from "firebase";
 
 export default {
   name: "Order",
@@ -70,7 +83,8 @@ export default {
     OrderInfo,
     CreditCardInput,
     ShopInfo,
-    StripeCard
+    StripeCard,
+    NotFound
   },
   data() {
     return {
@@ -79,7 +93,8 @@ export default {
       shopInfo: { restaurantName: "" },
       orderInfo: {},
       menus: [],
-      detacher: []
+      detacher: [],
+      notFound: false
     };
   },
   created() {
@@ -89,6 +104,8 @@ export default {
         if (restaurant.exists) {
           const restaurant_data = restaurant.data();
           this.shopInfo = restaurant_data;
+        } else {
+          this.notFound = true;
         }
       });
     const menu_detacher = db
@@ -100,12 +117,22 @@ export default {
       });
     const order_detacher = db
       .doc(`restaurants/${this.restaurantId()}/orders/${this.orderId}`)
-      .onSnapshot(order => {
-        if (order.exists) {
-          const order_data = order.data();
-          this.orderInfo = order_data;
+      .onSnapshot(
+        order => {
+          if (order.exists) {
+            const order_data = order.data();
+            this.orderInfo = order_data;
+          } else {
+            this.notFound = true;
+          }
+        },
+        error => {
+          // Because of the firestore.rules, it causes "insufficient permissions"
+          // if the order does not exist.
+          console.log(error);
+          this.notFound = true;
         }
-      });
+      );
     this.detacher = [restaurant_detacher, menu_detacher, order_detacher];
   },
   destroyed() {

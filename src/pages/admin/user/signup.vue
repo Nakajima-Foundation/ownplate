@@ -49,7 +49,8 @@
             password-reveal />
         </b-field>
 
-        <b-button>
+        <b-button
+          @click="handleCancel">
           {{ $t('button.cancel') }}
         </b-button>
         <b-button
@@ -97,6 +98,9 @@ export default {
     },
   },
   methods: {
+    handleCancel() {
+       this.$router.push("/");
+    },
     async onSignup() {
       const email = this.email; // 
       try {
