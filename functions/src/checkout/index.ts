@@ -26,8 +26,8 @@ export const create = regionFunctions.https.onCall(async (data, context) => {
   if (!restaurantId) {
     throw new functions.https.HttpsError('invalid-argument', 'This request does not contain a restaurantId.')
   }
-  const paymentMethodID = data.paymentMethodId
-  if (!paymentMethodID) {
+  const paymentMethodId = data.paymentMethodId
+  if (!paymentMethodId) {
     throw new functions.https.HttpsError('invalid-argument', 'This request does not contain a paymentMethodId.')
   }
   const phoneNumber = data.phoneNumber
@@ -42,7 +42,7 @@ export const create = regionFunctions.https.onCall(async (data, context) => {
       const order = Order.from<Order>(snapshot)
 
       // Check the stock status.
-      if (order.status !== constant.order_status.new_order) {
+      if (order.status !== constant.order_status.validation_ok) {
         throw new functions.https.HttpsError('aborted', 'This order is invalid.')
       }
 
@@ -50,10 +50,8 @@ export const create = regionFunctions.https.onCall(async (data, context) => {
         setup_future_usage: 'off_session',
         amount: order.total,
         currency: 'USD',
-        payment_method: paymentMethodID,
-        metadata: {
-          uid: uid,
-        }
+        payment_method: paymentMethodId,
+        metadata: { uid, restaurantId, orderId }
       } as Stripe.PaymentIntentCreateParams
 
       const result = await stripe.paymentIntents.create(request, {
@@ -103,14 +101,14 @@ export const confirm = regionFunctions.https.onCall(async (data, context) => {
         throw new functions.https.HttpsError('invalid-argument', `The order does not exist. ${orderRef.path}`)
       }
       // Check the stock status.
-      if (order.status !== constant.order_status.new_order) {
+      if (order.status !== constant.order_status.validation_ok) {
         throw new functions.https.HttpsError('aborted', 'This order is invalid.')
       }
 
       try {
         // Check the stock status.
         const result = await stripe.paymentIntents.confirm(paymentIntentID, {
-          idempotencyKey: order.id
+          idempotencyKey: order.path
         })
         transaction.set(orderRef, {
           timePaid: admin.firestore.FieldValue.serverTimestamp(),
