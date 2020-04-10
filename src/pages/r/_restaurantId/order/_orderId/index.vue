@@ -70,10 +70,9 @@ import ShopInfo from "~/components/ShopInfo";
 import StripeCard from "~/components/StripeCard";
 import NotFound from "~/components/NotFound";
 
-import { db, firestore } from "~/plugins/firebase.js";
+import { db, firestore, functions } from "~/plugins/firebase.js";
 import { order_status } from "~/plugins/constant.js";
 import { nameOfOrder } from "~/plugins/strings.js";
-import firebase from "firebase";
 
 export default {
   name: "Order",
@@ -163,7 +162,6 @@ export default {
     orderItems() {
       if (this.menus.length > 0 && this.orderInfo.order) {
         const menuObj = this.array2obj(this.menus);
-        console.log(this.orderInfo);
         return Object.keys(this.orderInfo.order).map(key => {
           const num = this.orderInfo.order[key];
           return {
@@ -206,16 +204,11 @@ export default {
         return;
       }
 
-      const chackoutCreate = firebase
-        .functions()
-        .httpsCallable("checkoutCreate");
-
-      const checkoutConfirm = firebase
-        .functions()
-        .httpsCallable("checkoutConfirm");
+      const checkoutCreate = functions.httpsCallable("checkoutCreate");
+      const checkoutConfirm = functions.httpsCallable("checkoutConfirm");
 
       try {
-        const result = await chackoutCreate({
+        const result = await checkoutCreate({
           paymentMethodId: paymentMethod.id,
           restaurantId: this.restaurantId(),
           orderId: this.orderId,
