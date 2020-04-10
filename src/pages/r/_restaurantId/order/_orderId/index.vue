@@ -208,13 +208,13 @@ export default {
 
       const chackoutCreate = firebase
         .functions()
-        .httpsCallable("checkout-create");
+        .httpsCallable("checkoutCreate");
 
       try {
         const result = await chackoutCreate({
           paymentMethodId: paymentMethod.id,
           restaurantId: this.restaurantId(),
-          orderID: this.orderId,
+          orderId: this.orderId,
           phoneNumber: this.$store.state.user.phoneNumber
         });
       } catch (error) {
