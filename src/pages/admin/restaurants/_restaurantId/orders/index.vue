@@ -5,14 +5,14 @@
       {{ shopInfo.restaurantName }}
     </h2>
     <div>
-      <ordered-info 
-        v-for="order in orders" 
+      <ordered-info
+        v-for="order in orders"
         :key="order.id"
-        @selected = "orderSelected($event)" 
+        @selected = "orderSelected($event)"
         :order="order" />
     </div>
   </section>
-  
+
 </template>
 
 <script>
@@ -29,7 +29,8 @@ export default {
   data() {
     return {
       shopInfo: {},
-      orders: []
+      orders: [],
+      detachers: []
     }
   },
   created() {
@@ -46,7 +47,7 @@ export default {
       if (!result.empty) {
         let orders = result.docs.map(this.doc2data("order"));
         orders = orders.map((order)=>{
-          order.timePaid = order.timePaid.toDate(); 
+          order.timePaid = order.timePaid.toDate();
           return order;
         });
         this.orders = orders.sort((order1, order2)=>{

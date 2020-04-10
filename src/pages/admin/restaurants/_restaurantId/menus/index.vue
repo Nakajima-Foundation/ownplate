@@ -46,7 +46,7 @@
       <div v-if="existsMenu">
         <div v-for="(menuList, index) in menuLists" :key="menuList">
           <div v-if="itemsObj[menuList] && itemsObj[menuList]._dataType === 'title'">
-            <div v-if="itemsObj[menuList]._isEditing === true">
+            <div v-if="editings[menuList] === true">
               <title-input
                 @updateTitle="updateTitle($event)"
                 :title="itemsObj[menuList]"
@@ -143,9 +143,11 @@ export default {
   data() {
     return {
       readyToDisplay: false,
-      menuLists: [],
-      itemsObj: {},
       restaurantInfo: {},
+      menuCollection: [],
+      titleCollection: [],
+      editings: {},
+      detachers: [],
     };
   },
   created() {
@@ -157,39 +159,62 @@ export default {
     },
     existsMenu() {
       return (this.menuLists.length > 0);
-    }
-  },
-  async mounted() {
-    const restaurantRef =  db.doc(`restaurants/${this.restaurantId()}`);
-    const resRestInfo = await restaurantRef.get();
+    },
+    itemsObj() {
+      const menus = (this.menuCollection.docs || []).map(this.doc2data("menu"));
+      const titles = (this.titleCollection.docs || []).map(this.doc2data("title"))
+      return this.array2obj(menus.concat(titles));
+    },
+    menuLists() {
+      let menuLists =  this.restaurantInfo.menuLists || [];
 
-    if (resRestInfo.exists) {
-      this.restaurantInfo = resRestInfo.data();
-    } else {
-      console.log("Error fetch restaurantInfo.");
-    }
-    // todo use computed and/or watch
-    const menu_res = await restaurantRef.collection('menus').where("deletedFlag", "==", false).get();
-    const title_res = await restaurantRef.collection('titles').where("deletedFlag", "==", false).get();
-
-    this.menuLists = this.restaurantInfo.menuLists || [];
-
-    try {
-      const menus = (menu_res.docs || []).map(this.doc2data("menu"));
-      const titles = (title_res.docs || []).map(this.doc2data("title"))
-      this.itemsObj =  this.array2obj(menus.concat(titles));
-
-      // for backward compatibility
-      if (Object.keys(this.itemsObj).length !== this.menuLists.length) {
-        const diff = Object.keys(this.itemsObj).filter(itemKey => this.menuLists.indexOf(itemKey) === -1);
-        this.menuLists = this.menuLists.concat(diff);
+      try {
+        // for backward compatibility
+        if (Object.keys(this.itemsObj).length !== menuLists.length) {
+          const diff = Object.keys(this.itemsObj).filter(itemKey => menuLists.indexOf(itemKey) === -1);
+          menuLists = menuLists.concat(diff);
+        }
+      } catch (error) {
+        console.log("Error fetch menu,", error);
+      } finally {
+        this.readyToDisplay = true;
       }
-    } catch (error) {
-      console.log("Error fetch menu,", error);
-    } finally {
-      this.readyToDisplay = true;
+      return menuLists;
     }
 
+  },
+  async created() {
+    const restaurantRef =  db.doc(`restaurants/${this.restaurantId()}`);
+    const restaurant_detacher = restaurantRef.onSnapshot((results) => {
+      if (results.exists) {
+        this.restaurantInfo = results.data();
+      } else {
+        console.log("Error fetch restaurantInfo.");
+      }
+    });
+    const menu_detacher = restaurantRef.collection('menus').where("deletedFlag", "==", false).onSnapshot((results) => {
+      if (!results.empty) {
+        this.menuCollection = results;
+      }
+    });
+    const title_detacher = restaurantRef.collection('titles').where("deletedFlag", "==", false).onSnapshot((results) => {
+      if (!results.empty) {
+        this.titleCollection = results;
+      }
+    });
+    this.detacher = [
+      restaurant_detacher,
+      menu_detacher,
+      title_detacher
+    ];
+    this.readyToDisplay = true;
+  },
+  destroyed() {
+    if (this.detachers) {
+      this.detachers.map((detacher) => {
+        detacher();
+      });
+    }
   },
   methods: {
     async updateTitle(title) {
@@ -204,13 +229,10 @@ export default {
         deletedFlag: false,
       };
       const newTitle = await db.collection(`restaurants/${this.restaurantId()}/titles`).add(data);
-      data.id = newTitle.id;
-      data._dataType = "title";
-      data._isEditing = true;
-      this.menuLists.unshift(newTitle.id);
-      this.itemsObj[newTitle.id] = data;
+      const newMenuLists = this.menuLists;
+      newMenuLists.unshift(newTitle.id);
 
-      this.saveMenuList();
+      this.saveMenuList(newMenuLists);
     },
     async addMenu() {
       const itemData = {
@@ -225,16 +247,17 @@ export default {
       };
       const newData = await db.collection(`restaurants/${this.restaurantId()}/menus`).add(itemData);
 
-      this.menuLists.push(newData.id);
-      this.saveMenuList();
+      const newMenuLists = this.menuLists;
+      newMenuLists.push(newData.id);
+      this.saveMenuList(newMenuLists);
 
       this.$router.push({
         path: `/admin/restaurants/${this.restaurantId()}/menus/${newData.id}`
       });
     },
 
-    saveMenuList() {
-      db.doc(`restaurants/${this.restaurantId()}`).update("menuLists", this.menuLists);
+    saveMenuList(menuLists) {
+      db.doc(`restaurants/${this.restaurantId()}`).update("menuLists", menuLists);
     },
     goRestaurant() {
       this.$router.push({
@@ -251,18 +274,10 @@ export default {
     toEditMode(titleId) {
       this.changeTitleMode(titleId, true);
     },
-    changeTitleName(titleId, value) {
-      this.changeTitleObj(titleId, 'name', value);
-    },
     changeTitleMode(titleId, value) {
-      this.changeTitleObj(titleId, '_isEditing', value);
-    },
-    changeTitleObj(titleId, key, value) {
-      const itemsObj = {...this.itemsObj};
-      const data = itemsObj[titleId];
-      data[key] = value;
-      itemsObj[titleId] = data;
-      this.itemsObj = itemsObj;
+      const newEditings = {...this.editings};
+      newEditings[titleId] = value;
+      this.editings = newEditings;
     },
     // end of edit title
 
@@ -274,8 +289,7 @@ export default {
         const tmp = newMenuLists[pos - 1];
         newMenuLists[pos - 1] = newMenuLists[pos]
         newMenuLists[pos] = tmp;
-        this.menuLists = newMenuLists;
-        this.saveMenuList();
+        this.saveMenuList(newMenuLists);
       }
     },
     positionDown(itemKey) {
@@ -285,8 +299,7 @@ export default {
         const tmp = newMenuLists[pos + 1];
         newMenuLists[pos + 1] = newMenuLists[pos]
         newMenuLists[pos] = tmp;
-        this.menuLists = newMenuLists;
-        this.saveMenuList();
+        this.saveMenuList(newMenuLists);
       }
     },
     async forkItem(itemKey) {
@@ -305,12 +318,10 @@ export default {
           createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         };
         const newData = await db.collection(`restaurants/${this.restaurantId()}/menus`).add(data);
-        data.id = newData.id;
-        data._dataType = "menu";
 
-        this.itemsObj[newData.id] = data;
-        this.menuLists.splice(pos, 0, newData.id);
-        this.saveMenuList();
+        const newMenuLists = this.menuLists;
+        newMenuLists.splice(pos, 0, newData.id);
+        this.saveMenuList(newMenuLists);
 
       }
       if (item._dataType === "title") {
@@ -321,18 +332,17 @@ export default {
           createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         };
         const newTitle = await db.collection(`restaurants/${this.restaurantId()}/titles`).add(data);
-        data.id = newTitle.id;
-        data._dataType = "title";
-        data._isEditing = false;
-
         this.itemsObj[newTitle.id] = data;
-        this.menuLists.splice(pos, 0, newTitle.id);
-        this.saveMenuList();
+
+        const newMenuLists = this.menuLists;
+        newMenuLists.splice(pos, 0, newTitle.id);
+        this.saveMenuList(newMenuLists);
       }
     },
     async deleteItem(itemKey) {
       // delete from list
-      const pos = this.menuLists.indexOf(itemKey);
+      const newMenuLists = this.menuLists;
+      const pos = newMenuLists.indexOf(itemKey);
       const item = this.itemsObj[itemKey];
       this.menuLists.splice( pos, 1 );
       if (item._dataType === "menu") {
@@ -341,7 +351,7 @@ export default {
       if (item._dataType === "title") {
         await db.doc(`restaurants/${this.restaurantId()}/titles/${itemKey}`).update("deletedFlag", true);
       }
-      this.saveMenuList();
+      this.saveMenuList(newMenuLists);
     },
   }
 };
