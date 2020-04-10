@@ -59,7 +59,7 @@
                 @toEditMode="toEditMode($event)"
                 @positionUp="positionUp($event)"
                 @positionDown="positionDown($event)"
-                @forkItem="forkItem($event)"
+                @forkItem="forkTitleItem($event)"
                 @deleteItem="deleteItem($event)"
                 ></title-card>
             </div>
@@ -68,12 +68,9 @@
             <item-edit-card
               :menuitem="itemsObj[menuList]"
               :position="index == 0 ? 'first' : ((menuLists.length - 1) === index ? 'last' : '')"
-              @emitting="emitted($event)"
-
-              @toEditMode="toEditMode($event)"
               @positionUp="positionUp($event)"
               @positionDown="positionDown($event)"
-              @forkItem="forkItem($event)"
+              @forkItem="forkMenuItem($event)"
               @deleteItem="deleteItem($event)"
             ></item-edit-card>
           </div>
@@ -168,16 +165,10 @@ export default {
     menuLists() {
       let menuLists =  this.restaurantInfo.menuLists || [];
 
-      try {
-        // for backward compatibility
-        if (Object.keys(this.itemsObj).length !== menuLists.length) {
-          const diff = Object.keys(this.itemsObj).filter(itemKey => menuLists.indexOf(itemKey) === -1);
-          menuLists = menuLists.concat(diff);
-        }
-      } catch (error) {
-        console.log("Error fetch menu,", error);
-      } finally {
-        this.readyToDisplay = true;
+      // for backward compatibility
+      if (Object.keys(this.itemsObj).length !== menuLists.length) {
+        const diff = Object.keys(this.itemsObj).filter(itemKey => menuLists.indexOf(itemKey) === -1);
+        menuLists = menuLists.concat(diff);
       }
       return menuLists;
     }
@@ -188,7 +179,9 @@ export default {
     const restaurant_detacher = restaurantRef.onSnapshot((results) => {
       if (results.exists) {
         this.restaurantInfo = results.data();
+        this.readyToDisplay = true;
       } else {
+        // 404
         console.log("Error fetch restaurantInfo.");
       }
     });
@@ -207,7 +200,6 @@ export default {
       menu_detacher,
       title_detacher
     ];
-    this.readyToDisplay = true;
   },
   destroyed() {
     if (this.detachers) {
@@ -302,42 +294,41 @@ export default {
         this.saveMenuList(newMenuLists);
       }
     },
-    async forkItem(itemKey) {
+    async forkTitleItem(itemKey) {
+      const item = this.itemsObj[itemKey];
+      const data = {
+        name: item.name,
+        uid: this.uid,
+        deletedFlag: false,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      };
+      const newTitle = await db.collection(`restaurants/${this.restaurantId()}/titles`).add(data);
+      this.forkItem(itemKey, newTitle);
+    },
+    async forkMenuItem(itemKey) {
+      const item = this.itemsObj[itemKey];
+      const data = {
+        itemName: item.itemName,
+        price: Number(item.price),
+        tax: item.tax,
+        itemDescription: item.itemDescription,
+        itemPhoto: item.itemPhoto,
+        availability: item.availability,
+        uid: this.uid,
+        deletedFlag: false,
+        publicFlag: false,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      };
+      const newData = await db.collection(`restaurants/${this.restaurantId()}/menus`).add(data);
+      this.forkItem(itemKey, newData);
+    },
+    async forkItem(itemKey, newData) {
       const pos = this.menuLists.indexOf(itemKey);
       const item = this.itemsObj[itemKey];
-      if (item._dataType === "menu") {
-        const data = {
-          itemName: item.itemName,
-          price: Number(item.price),
-          tax: item.tax,
-          itemDescription: item.itemDescription,
-          itemPhoto: item.itemPhoto,
-          availability: item.availability,
-          uid: this.uid,
-          deletedFlag: false,
-          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-        };
-        const newData = await db.collection(`restaurants/${this.restaurantId()}/menus`).add(data);
 
-        const newMenuLists = this.menuLists;
-        newMenuLists.splice(pos, 0, newData.id);
-        this.saveMenuList(newMenuLists);
-
-      }
-      if (item._dataType === "title") {
-        const data = {
-          name: item.name,
-          uid: this.uid,
-          deletedFlag: false,
-          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-        };
-        const newTitle = await db.collection(`restaurants/${this.restaurantId()}/titles`).add(data);
-        this.itemsObj[newTitle.id] = data;
-
-        const newMenuLists = this.menuLists;
-        newMenuLists.splice(pos, 0, newTitle.id);
-        this.saveMenuList(newMenuLists);
-      }
+      const newMenuLists = this.menuLists;
+      newMenuLists.splice(pos, 0, newData.id);
+      this.saveMenuList(newMenuLists);
     },
     async deleteItem(itemKey) {
       // delete from list
