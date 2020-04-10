@@ -18,37 +18,13 @@
           right
           icon-left="github-circle"
           >
-          <b-navbar-item href="/dist/mypage">
+          <b-navbar-item href="/">
             <span class="icon">
-              <i class="fas fa-th-list"></i>
+              <i class="fas fa-home"></i>
             </span>
-            <span class="nav-item">mypage</span>
+            <span class="nav-item">Home</span>
           </b-navbar-item>
-          <b-navbar-item href="/dist/mypage/profile">
-            <span class="icon">
-              <i class="fas fa-user-circle"></i>
-            </span>
-            <span class="nav-item">profile</span>
-          </b-navbar-item>
-          <b-navbar-item href="/dist/mypage/payment">
-            <span class="icon">
-              <i class="fas fa-money-check"></i>
-            </span>
-            <span class="nav-item">setting</span>
-          </b-navbar-item>
-          <b-navbar-item href="/dist/mypage/agreement">
-            <span class="icon">
-              <i class="fas fa-id-card"></i>
-            </span>
-            <span class="nav-item">payment</span>
-          </b-navbar-item>
-          <b-navbar-item href="/dist/mypage/billinghistory">
-            <span class="icon">
-              <i class="fas fa-history"></i>
-            </span>
-            <span class="nav-item">history</span>
-          </b-navbar-item>
-          <b-navbar-item v-if="hasUser" @click="signout">
+          <b-navbar-item href="#" v-if="hasUser" @click.prevent="signout">
             <span class="icon">
               <i class="fas fa-sign-out-alt"></i>
             </span>
@@ -109,6 +85,7 @@ export default {
       try {
         auth.signOut()
         console.log("sign out succeeded", this.hasUser);
+        this.$router.push("/");
       } catch(error) {
         console.log("sign out failed", error);
       }
