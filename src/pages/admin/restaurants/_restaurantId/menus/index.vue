@@ -192,11 +192,6 @@ export default {
 
   },
   methods: {
-    addMenuItem() {
-      this.$router.push({
-        path: `/admin/restaurants/${this.restaurantId()}/menus/new`
-      });
-    },
     async updateTitle(title) {
       await db.doc(`restaurants/${this.restaurantId()}/titles/${title.id}`).update("name", title.name);
       this.changeTitleMode(title.id, false);
