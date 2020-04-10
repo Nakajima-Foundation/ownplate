@@ -1,6 +1,8 @@
 import i18nEN from './lang/en.json';
 import i18nES from './lang/es.json';
 import i18nJA from './lang/ja.json';
+require('dotenv').config();
+const { STRIPE_API_KEY } = process.env;
 
 export default {
   mode: "spa",
@@ -91,6 +93,7 @@ export default {
   modules: [
     // Doc: https://buefy.github.io/#/documentation
     //"nuxt-buefy",
+    '@nuxtjs/dotenv',
     "@nuxtjs/style-resources",
     "@nuxtjs/axios",
     'nuxt-i18n',
@@ -99,6 +102,7 @@ export default {
     }],
   ],
   env: {
+    STRIPE_API_KEY,
     gapikey: process.env.GAPIKey,
   },
   i18n: {
@@ -141,7 +145,7 @@ export default {
     /*
      ** You can extend webpack config here
      */
-    extend(config, ctx) {},
+    extend(config, ctx) { },
     babel: {
       presets: [
         [

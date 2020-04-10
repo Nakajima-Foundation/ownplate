@@ -14,6 +14,7 @@
     "lintfix": "eslint --fix --ext .js,.vue --ignore-path .gitignore .",
     "deploy_staging": "nuxt build &&  cp dist/index.html functions/templates/index.html && firebase deploy --only hosting --project=staging && firebase deploy --only functions --project=staging",
     "deploy": "nuxt build && cp dist/index.html functions/templates/index.html &&  firebase deploy --only hosting --project=staging && firebase deploy --only functions --project=staging",
+    "deploy:dev": "nuxt build && cp dist/index.html functions/templates/index.html &&  firebase deploy --only hosting --project=default && firebase deploy --only functions --project=default",
     "deploy_fs_rule": "firebase deploy --only firestore:rules --project=staging"
   },
   "dependencies": {
@@ -23,6 +24,7 @@
     "@babel/runtime": "^7.7.7",
     "@johmun/vue-tags-input": "^2.1.0",
     "@nuxtjs/axios": "^5.9.2",
+    "@nuxtjs/dotenv": "^1.4.1",
     "axios-mock-server": "^0.16.3",
     "babel-polyfill": "^6.26.0",
     "bulma-social": "^1.0.1",

@@ -1,4 +1,4 @@
-import * as express from 'express';
+import express from 'express';
 import * as admin from 'firebase-admin';
 import * as fs from 'fs';
 
@@ -19,15 +19,15 @@ export const updateDb = (_db) => {
 export const logger = async (req, res, next) => {
   next();
 }
-export const hello_response = async (req, res) =>{
-  res.json({message: "hello"});
+export const hello_response = async (req, res) => {
+  res.json({ message: "hello" });
 };
 
 const escapeHtml = (str: string): string => {
   if (typeof str !== 'string') {
     return '';
   }
-  const mapping:any = {
+  const mapping: any = {
     '&': '&amp;',
     "'": '&#x27;',
     '`': '&#x60;',
@@ -35,9 +35,9 @@ const escapeHtml = (str: string): string => {
     '<': '&lt;',
     '>': '&gt;',
   };
-  return str.replace(/[&'`"<>]/g, function(match) {
+  return str.replace(/[&'`"<>]/g, function (match) {
     return mapping[match]
-    });
+  });
 }
 
 
@@ -46,7 +46,7 @@ const ogpPage = async (req: any, res: any) => {
   const { restaurantName } = req.params;
   const restaurant = await db.doc(`restaurants/${restaurantName}`).get();
 
-  const template_data = fs.readFileSync('./templates/index.html',  {encoding: 'utf8'});
+  const template_data = fs.readFileSync('./templates/index.html', { encoding: 'utf8' });
 
   if (!restaurant || !restaurant.exists) {
     return res.status(404).send(template_data);
@@ -74,12 +74,12 @@ const ogpPage = async (req: any, res: any) => {
 };
 
 router.get('/hello',
-           logger,
-           hello_response);
+  logger,
+  hello_response);
 
 router.get('/stripe/callback',
-           logger,
-           hello_response);
+  logger,
+  hello_response);
 
 
 app.use('/1.0', router);

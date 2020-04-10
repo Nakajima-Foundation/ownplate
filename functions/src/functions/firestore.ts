@@ -37,7 +37,7 @@ export const orderCreate = async (db, snapshot, context) => {
   const original_data = snapshot.data()
 
   if (!original_data || !original_data.status || original_data.status !== constant.order_status.new_order) {
-    return ;
+    return;
   }
 
   // get restaurant
@@ -70,11 +70,11 @@ export const orderCreate = async (db, snapshot, context) => {
     // calculate price.
     const sub_total = food_sub_total + alcohol_sub_total;
     const tax = (alcohol_sub_total * alcoholTax) / 100 + (food_sub_total * foodTax) / 100;
-    const total = sub_total+ tax;
+    const total = sub_total + tax;
 
     // Atomically increment the orderCount of the restaurant
     let number = 0;
-    await db.runTransaction(async (tr)=>{
+    await db.runTransaction(async (tr) => {
       if (restaurant) {
         number = restaurant.orderCount || 0;
         await tr.update(refRestaurant, {
@@ -98,17 +98,17 @@ export const orderCreate = async (db, snapshot, context) => {
   }
 }
 
-export const createRestaurant = async (db:FirebaseFirestore.Firestore, data, context) => {
+export const createRestaurant = async (db: FirebaseFirestore.Firestore, data, context) => {
   const { restaurantId } = data
   if (!context.auth || !context.auth.uid || !context.auth.token.email) {
-    return { result:false, message:"auth.notAdmin" };
+    return { result: false, message: "auth.notAdmin" };
   }
   const regex = /^\w+$/
   if (!restaurantId || restaurantId.length < 5 || !regex.test(restaurantId)) {
-    return { result:false, message:"restaurantId.invalid" };
+    return { result: false, message: "restaurantId.invalid" };
   }
   const refRestaurant = db.doc(`restaurants/${restaurantId}`)
-  return db.runTransaction(async (tr)=>{
+  return db.runTransaction(async (tr) => {
     const doc = await tr.get(refRestaurant);
     if (doc.exists) {
       throw new Error("restaurantId.alreadyTaken");

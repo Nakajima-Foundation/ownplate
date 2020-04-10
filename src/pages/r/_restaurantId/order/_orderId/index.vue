@@ -5,57 +5,42 @@
     </template>
     <template v-else>
       <section class="section">
-        <div
-          v-if="paid" 
-          style="text-align: center;">
-          <p class="thankyou">
-            {{$t('order.thankyou')}}
-          </p>
-          <p 
-            :class="orderStatusKey" 
-            style="margin-bottom:1rem;padding:0.5rem">
-            {{ $t("order.status." + orderStatusKey) }}
-          </p>
+        <div v-if="paid" style="text-align: center;">
+          <p class="thankyou">{{$t('order.thankyou')}}</p>
+          <p
+            :class="orderStatusKey"
+            style="margin-bottom:1rem;padding:0.5rem"
+          >{{ $t("order.status." + orderStatusKey) }}</p>
         </div>
         <shop-orner-info
           :src="this.shopInfo.restProfilePhoto"
           :name="this.shopInfo.restaurantName"
-          />
-        <shop-info 
-          v-if="paid"
-          :compact="true" 
-          :shopInfo="shopInfo" />
+        />
+        <shop-info v-if="paid" :compact="true" :shopInfo="shopInfo" />
 
-        <h2>
-          {{ $t('order.yourOrder') + ": " + orderName }}
-        </h2>
-        <order-info
-          :orderItems="this.orderItems"
-          :orderInfo="this.orderInfo||{}"
-          ></order-info>
+        <h2>{{ $t('order.yourOrder') + ": " + orderName }}</h2>
+        <order-info :orderItems="this.orderItems" :orderInfo="this.orderInfo||{}"></order-info>
 
         <b-notification :closable="false" v-if="newOrder">
-            {{$t('order.validating')}}
-            <b-loading :is-full-page="false" :active.sync="newOrder" :can-cancel="true"></b-loading>
+          {{$t('order.validating')}}
+          <b-loading :is-full-page="false" :active.sync="newOrder" :can-cancel="true"></b-loading>
         </b-notification>
 
         <div v-if="validated">
           <div class="is-centered" style="text-align: center;">
-            <b-button 
-              expanded 
+            <b-button
+              expanded
               rounded
-              @click="handleEditItems" 
-              style="margin-bottom:1rem;">
-              {{$t('order.editItems')}}
-            </b-button>
+              @click="handleEditItems"
+              style="margin-bottom:1rem;"
+            >{{$t('order.editItems')}}</b-button>
           </div>
 
           <hr class="hr-black" />
 
-          <h2>
-            {{$t('order.yourPayment')}}
-          </h2>
-          <credit-card-input></credit-card-input>
+          <h2>{{$t('order.yourPayment')}}</h2>
+          <stripe-card ref="stripe"></stripe-card>
+          <!-- <credit-card-input></credit-card-input> -->
 
           <div class="is-centered" style="text-align: center;">
             <b-button
@@ -66,9 +51,9 @@
               size="is-large"
               @click="goNext"
             >
-              <span class="p-font bold">
-                {{$t('order.placeOrder')}} {{$n(orderInfo.total, 'currency')}}
-              </span>
+              <span
+                class="p-font bold"
+              >{{$t('order.placeOrder')}} {{$n(orderInfo.total, 'currency')}}</span>
             </b-button>
           </div>
         </div>
@@ -82,11 +67,13 @@ import ShopOrnerInfo from "~/components/ShopOrnerInfo";
 import OrderInfo from "~/components/OrderInfo";
 import CreditCardInput from "~/components/CreditCardInput";
 import ShopInfo from "~/components/ShopInfo";
+import StripeCard from "~/components/StripeCard";
 import NotFound from "~/components/NotFound";
 
 import { db, firestore } from "~/plugins/firebase.js";
 import { order_status } from "~/plugins/constant.js";
 import { nameOfOrder } from "~/plugins/strings.js";
+import firebase from "firebase";
 
 export default {
   name: "Order",
@@ -96,55 +83,61 @@ export default {
     OrderInfo,
     CreditCardInput,
     ShopInfo,
+    StripeCard,
     NotFound
   },
   data() {
     return {
       isLoading: true,
       restaurantsId: this.restaurantId(),
-      shopInfo: { restaurantName:"" },
+      shopInfo: { restaurantName: "" },
       orderInfo: {},
       menus: [],
       detacher: [],
-      notFound: false,
+      notFound: false
     };
   },
   created() {
-    const restaurant_detacher = db.doc(`restaurants/${this.restaurantId()}`).onSnapshot((restaurant) => {
-      if (restaurant.exists) {
-        const restaurant_data = restaurant.data();
-        this.shopInfo = restaurant_data;
-      } else {
-        this.notFound = true;
-      }
-    });
-    const menu_detacher = db.collection(`restaurants/${this.restaurantId()}/menus`).onSnapshot((menu) => {
-      if (!menu.empty) {
-        this.menus = menu.docs.map(this.doc2data("menu"));
-      }
-    });
-    const order_detacher = db.doc(`restaurants/${this.restaurantId()}/orders/${this.orderId}`).onSnapshot((order) => {
-      if (order.exists) {
-        const order_data = order.data();
-        this.orderInfo = order_data;
-      } else {
-        this.notFound = true;
-      }
-    }, (error) => {
-      // Because of the firestore.rules, it causes "insufficient permissions"
-      // if the order does not exist.
-      console.log(error);
-      this.notFound = true;
-    });
-    this.detacher = [
-      restaurant_detacher,
-      menu_detacher,
-      order_detacher
-    ]
+    const restaurant_detacher = db
+      .doc(`restaurants/${this.restaurantId()}`)
+      .onSnapshot(restaurant => {
+        if (restaurant.exists) {
+          const restaurant_data = restaurant.data();
+          this.shopInfo = restaurant_data;
+        } else {
+          this.notFound = true;
+        }
+      });
+    const menu_detacher = db
+      .collection(`restaurants/${this.restaurantId()}/menus`)
+      .onSnapshot(menu => {
+        if (!menu.empty) {
+          this.menus = menu.docs.map(this.doc2data("menu"));
+        }
+      });
+    const order_detacher = db
+      .doc(`restaurants/${this.restaurantId()}/orders/${this.orderId}`)
+      .onSnapshot(
+        order => {
+          if (order.exists) {
+            const order_data = order.data();
+            this.orderInfo = order_data;
+          } else {
+            this.notFound = true;
+          }
+        },
+        error => {
+          // Because of the firestore.rules, it causes "insufficient permissions"
+          // if the order does not exist.
+          console.log(error);
+          this.notFound = true;
+        }
+      );
+    this.detacher = [restaurant_detacher, menu_detacher, order_detacher];
   },
   destroyed() {
     if (this.detacher) {
-      this.detacher.map((detacher) => {
+      this.detacher.map(detacher => {
         detacher();
       });
     }
@@ -154,9 +147,8 @@ export default {
       return nameOfOrder(this.orderInfo);
     },
     orderStatusKey() {
-      return Object.keys(order_status).reduce((result, key)=>{
-        return (order_status[key] === this.orderInfo.status) ?
-          key : result;
+      return Object.keys(order_status).reduce((result, key) => {
+        return order_status[key] === this.orderInfo.status ? key : result;
       }, "unexpected");
     },
     newOrder() {
@@ -172,7 +164,7 @@ export default {
       if (this.menus.length > 0 && this.orderInfo.order) {
         const menuObj = this.array2obj(this.menus);
         console.log(this.orderInfo);
-        return Object.keys(this.orderInfo.order).map((key) => {
+        return Object.keys(this.orderInfo.order).map(key => {
           const num = this.orderInfo.order[key];
           return {
             item: menuObj[key],
@@ -182,7 +174,7 @@ export default {
           };
         });
       }
-      return []; 
+      return [];
     },
     orderId() {
       return this.$route.params.orderId;
@@ -192,26 +184,57 @@ export default {
     async handleEditItems() {
       console.log("handleEditItems");
       try {
-        await db.doc(`restaurants/${this.restaurantId()}/orders/${this.orderId}`).delete();
+        await db
+          .doc(`restaurants/${this.restaurantId()}/orders/${this.orderId}`)
+          .delete();
         console.log("suceeded");
-        this.$router.push({ path: `/r/${this.restaurantId()}#${this.orderId}` });
-      } catch(error) {
+        this.$router.push({
+          path: `/r/${this.restaurantId()}#${this.orderId}`
+        });
+      } catch (error) {
         console.log("failed");
       }
     },
     async goNext() {
-      try {
-        // HACK: Workaround until we implement sprite
-        await db.doc(`restaurants/${this.restaurantId()}/orders/${this.orderId}`).update({
-          status: order_status.customer_paid,
-          phoneNumber: this.$store.state.user.phoneNumber,
-          timePaid: firestore.FieldValue.serverTimestamp()
-        });
-        console.log("suceeded");
-        window.scrollTo(0,0);
-      } catch(error) {
-        console.log("failed", error);
+      const {
+        error,
+        paymentMethod
+      } = await this.$refs.stripe.createPaymentMethod();
+
+      if (error) {
+        console.log(error);
+        return;
       }
+
+      const chackoutCreate = firebase
+        .functions()
+        .httpsCallable("checkout-create");
+
+      try {
+        const result = await chackoutCreate({
+          paymentMethodId: paymentMethod.id,
+          restaurantId: this.restaurantId(),
+          orderID: this.orderId,
+          phoneNumber: this.$store.state.user.phoneNumber
+        });
+      } catch (error) {
+        console.log(error);
+      }
+
+      // try {
+      //   // HACK: Workaround until we implement sprite
+      //   await db
+      //     .doc(`restaurants/${this.restaurantId()}/orders/${this.orderId}`)
+      //     .update({
+      //       status: order_status.customer_paid,
+      //       phoneNumber: this.$store.state.user.phoneNumber,
+      //       timePaid: firestore.FieldValue.serverTimestamp()
+      //     });
+      //   console.log("suceeded");
+      //   window.scrollTo(0, 0);
+      // } catch (error) {
+      //   console.log("failed", error);
+      // }
     }
   }
 };
@@ -222,7 +245,7 @@ export default {
 }
 .thankyou {
   color: $primary;
-  font-size: 2.0rem;
+  font-size: 2rem;
   font-weight: bold;
   margin-bottom: 1rem;
 }
