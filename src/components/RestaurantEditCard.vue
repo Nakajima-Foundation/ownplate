@@ -54,7 +54,7 @@
           <div class="media-content">
             <div style="text-align:center;">
               <h2>
-                <router-link :to="'/admin/restaurants/' + restaurantid + '/edit'">
+                <router-link :to="'/admin/restaurants/' + restaurantid">
                   {{$t('admin.editAbout')}}
                 </router-link>
               </h2>
