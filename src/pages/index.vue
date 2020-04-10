@@ -1,41 +1,19 @@
 <template>
   <div>
-    <section class="section">
+    <section class="section" style="margin-top:5rem;margin-bottom:5rem">
       <div class="card block">
         <div class="card-content">
-          <p><router-link to="/admin/restaurants">For Restraunt Operators</router-link></p>
+          <p style="text-align:center; font-weight:bold; font-size:1.5em">
+            <router-link to="/admin/restaurants">Restraunt Operators</router-link>
+          </p>
         </div>
       </div>
       <div class="card block">
         <div class="card-content">
-          <p><router-link to="/r">For Consumers</router-link></p>
+          <p style="text-align:center; font-weight:bold; font-size:1.5em">
+            <router-link to="/r">Consumers</router-link>
+          </p>
         </div>
-      </div>
-    </section>
-    <section class="section" style="background-color:#cccccc">
-      <div class="columns is-mobile is-centered">
-        --- Test Area (for Developers) ---
-      </div>
-
-      <div class="content">
-        <ol type="A">
-          <div class="columns is-mobile is-left">
-            <p class="p-bold">【User】</p>
-          </div>
-          <li><router-link to="/test/sms">SMS Auth</router-link></li>
-          <li><router-link to="/r/1710478afd0304e4974">Menu</router-link></li>
-          <li><router-link to="/r/1710478afd0304e4974/order/123456789/">Order</router-link></li>
-          <li><router-link to="/r/1710478afd0304e4974/order/123456789/thanks">ThankYou</router-link></li>
-          <div class="columns is-mobile is-left">
-            <p class="p-bold" style="margin-top:2rem;">【Admin】</p>
-          </div>
-          <li><router-link to="/admin/restaurants/">Your Restaurant(s)</router-link></li>
-          <li><router-link to="/admin/restaurants/create">Create a new Reataurant (unique restaurant Id)</router-link></li>
-          <li><router-link to="/admin/restaurants/123/edit">Edit a Reataurant</router-link></li>
-          <li><router-link to="/admin/restaurants/123/orders/">Orders</router-link></li>
-          <li><router-link to="/admin/user/signin">Admin Signin</router-link></li>
-          <li><router-link to="/admin/user/signup">Admin Signup</router-link></li>
-        </ol>
       </div>
     </section>
   </div>
