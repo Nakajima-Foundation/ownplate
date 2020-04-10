@@ -210,6 +210,10 @@ export default {
         .functions()
         .httpsCallable("checkoutCreate");
 
+      const checkoutConfirm = firebase
+        .functions()
+        .httpsCallable("checkoutConfirm");
+
       try {
         const result = await chackoutCreate({
           paymentMethodId: paymentMethod.id,
@@ -217,6 +221,8 @@ export default {
           orderId: this.orderId,
           phoneNumber: this.$store.state.user.phoneNumber
         });
+
+        console.log(result);
       } catch (error) {
         console.log(error);
       }
