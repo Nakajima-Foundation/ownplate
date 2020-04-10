@@ -7,11 +7,12 @@
 </template>
 
 <script>
+import { getStripeInstance } from "~/plugins/stripe.js";
+
 export default {
   data() {
     return {
-      stripeAPIToken: process.env.STRIPE_API_KEY,
-      stripe: {},
+      stripe: getStripeInstance(),
       cardElement: {}
     };
   },
@@ -29,8 +30,7 @@ export default {
       return payload;
     },
     configureStripe() {
-      const stripe = Stripe(this.stripeAPIToken);
-      const elements = stripe.elements();
+      const elements = this.stripe.elements();
       const cardElement = elements.create("card", {
         hidePostalCode: true,
         style: {
@@ -53,7 +53,6 @@ export default {
         }
       });
       cardElement.mount("#card-element");
-      this.stripe = stripe;
       this.cardElement = cardElement;
     }
   }
