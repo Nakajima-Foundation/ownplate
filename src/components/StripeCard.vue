@@ -1,6 +1,6 @@
 <template>
   <div
-    style="padding: 18px; background: #fff; border-raduis: 12px; box-shadow: 0px 2px 4px rgba(0,0,0,0.1);"
+    style="padding: 18px; background: #fff; border-raduis: 12px; box-shadow: 0px 2px 4px rgba(0,0,0,0.13);"
   >
     <div id="card-element"></div>
   </div>
@@ -14,8 +14,9 @@ export default {
 
   data() {
     return {
-      stripeAPIToken: "pk_test_",
-      stripe: {}
+      stripeAPIToken: process.env.STRIPE_API_KEY,
+      stripe: {},
+      cardElement: {}
     };
   },
 
@@ -29,6 +30,13 @@ export default {
   },
 
   methods: {
+    async createPaymentMethod() {
+      const payload = await this.stripe.createPaymentMethod({
+        type: "card",
+        card: this.cardElement
+      });
+      return payload;
+    },
     includeStripe(URL, callback) {
       let documentTag = document,
         tag = "script",
@@ -54,7 +62,7 @@ export default {
         hidePostalCode: true,
         style: {
           base: {
-            fontWeight: 500,
+            fontWeight: 600,
             fontFamily: "Roboto, Open Sans, Segoe UI, sans-serif",
             fontSize: "16px",
             fontSmoothing: "antialiased",
@@ -72,6 +80,8 @@ export default {
         }
       });
       cardElement.mount("#card-element");
+      this.stripe = stripe;
+      this.cardElement = cardElement;
     }
   }
 };
