@@ -103,7 +103,7 @@
               expanded
               rounded
               outlined
-              @click="addMenuItem()"
+              @click="addMenu()"
             >
               {{$t("button.addItem")}}
             </b-button>
@@ -198,7 +198,6 @@ export default {
       });
     },
     async updateTitle(title) {
-      console.log(`restaurants/${this.restaurantId()}/titles/${title.id}`);
       await db.doc(`restaurants/${this.restaurantId()}/titles/${title.id}`).update("name", title.name);
       this.changeTitleMode(title.id, false);
     },
@@ -218,6 +217,27 @@ export default {
 
       this.saveMenuList();
     },
+    async addMenu() {
+      const itemData = {
+        itemName: "",
+        price: 0,
+        tax: "food",
+        itemDescription: "",
+        uid: this.$store.getters.uidAdmin,
+        deletedFlag: false,
+        publicFlag: false,
+        createdAt: new Date()
+      };
+      const newData = await db.collection(`restaurants/${this.restaurantId()}/menus`).add(itemData);
+
+      this.menuLists.push(newData.id);
+      this.saveMenuList();
+
+      this.$router.push({
+        path: `/admin/restaurants/${this.restaurantId()}/menus/${newData.id}`
+      });
+    },
+
     saveMenuList() {
       db.doc(`restaurants/${this.restaurantId()}`).update("menuLists", this.menuLists);
     },

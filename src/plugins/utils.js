@@ -36,6 +36,28 @@ export default ({app}) => {
           " ",
           ampm].join("");
       },
+      countObj (obj) {
+        if (Array.isArray(obj)) {
+          return obj.reduce((tmp, value) => {
+            // nested array
+            if (Array.isArray(value)) {
+              return tmp + this.countObj(value);
+            }
+            return tmp + 1;
+          }, 0);
+        }
+        return Object.keys(obj).reduce((tmp, key) => {
+          return this.countObj(obj[key]) + tmp;
+        }, 0);
+      },
+      cleanObject(obj) {
+        return Object.keys(obj).reduce((tmp, key) => {
+          if (!this.isNull(obj[key])) {
+            tmp[key] = obj[key];
+          }
+          return tmp;
+        }, {});
+      }
     }
   });
 }
