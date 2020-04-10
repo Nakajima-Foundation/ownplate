@@ -2,7 +2,7 @@ import * as admin from 'firebase-admin'
 import * as functions from 'firebase-functions'
 import * as constant from '../common/constant'
 import Stripe from 'stripe'
-import Order from '../../models/Order'
+import Order from '../models/Order'
 
 const regionFunctions = functions
 
@@ -54,14 +54,14 @@ export const create = regionFunctions.https.onCall(async (data, context) => {
         metadata: { uid, restaurantId, orderId }
       } as Stripe.PaymentIntentCreateParams
 
-      const result = await stripe.paymentIntents.create(request, {
+      const paymentInset = await stripe.paymentIntents.create(request, {
         idempotencyKey: orderRef.path
       })
       transaction.set(orderRef, {
         phoneNumber: phoneNumber
       }, { merge: true })
       return {
-        paymentIntentID: result.id,
+        paymentIntentID: paymentInset.id,
         orderID: orderRef.id
       }
     })
@@ -107,13 +107,13 @@ export const confirm = regionFunctions.https.onCall(async (data, context) => {
 
       try {
         // Check the stock status.
-        const result = await stripe.paymentIntents.confirm(paymentIntentID, {
+        const paymentInset = await stripe.paymentIntents.confirm(paymentIntentID, {
           idempotencyKey: order.path
         })
         transaction.set(orderRef, {
           timePaid: admin.firestore.FieldValue.serverTimestamp(),
           status: constant.order_status.customer_paid,
-          result: result
+          result: paymentInset
         }, { merge: true })
         return result
       } catch (error) {
