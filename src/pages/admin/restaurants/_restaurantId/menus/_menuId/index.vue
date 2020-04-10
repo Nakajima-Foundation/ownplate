@@ -284,7 +284,7 @@ export default {
         tax: this.menuInfo.tax,
         itemDescription: this.menuInfo.itemDescription,
         itemPhoto: this.menuInfo.itemPhoto,
-        publicFlag: this.menuInfo.publicFlag,
+        publicFlag: this.menuInfo.publicFlag || false,
       };
       const newData = await db.doc(`restaurants/${this.restaurantId()}/menus/${this.menuId}`).update(itemData);
 
