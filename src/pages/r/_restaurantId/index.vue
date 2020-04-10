@@ -60,7 +60,7 @@
           <span class="bold" style="margin-left:auto;">{{$t('sitemenu.checkout')}}</span>
         </button>
 
-        <b-modal :active.sync="loginVisible" :width="640" scroll="keep">
+        <b-modal :active.sync="loginVisible" :width="640">
           <div class="card">
             <div class="card-content">
               <phone-login
