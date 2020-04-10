@@ -127,7 +127,7 @@ export default {
       if (restaurant.exists) {
         const restaurant_data = restaurant.data();
         this.shopInfo = restaurant_data;
-        this.notFound = false;
+        this.notFound = !this.shopInfo.publicFlag;
       } else {
         this.notFound = true;
       }
