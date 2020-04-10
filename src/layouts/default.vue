@@ -66,7 +66,7 @@
         <div class="columns is-desktop" style="margin-top:-3rem;">
           <div class="content has-text-left" style="color:white">
             <p class="p-font-mini">
-              'Operated by Singularity Society.'
+              Operated by Singularity Society.
             </p>
           </div>
         </div>
