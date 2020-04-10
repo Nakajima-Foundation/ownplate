@@ -214,6 +214,13 @@ export default {
         .functions()
         .httpsCallable("checkoutConfirm");
 
+      console.log({
+        paymentMethodId: paymentMethod.id,
+        restaurantId: this.restaurantId(),
+        orderId: this.orderId,
+        phoneNumber: this.$store.state.user.phoneNumber
+      });
+
       try {
         const result = await chackoutCreate({
           paymentMethodId: paymentMethod.id,
