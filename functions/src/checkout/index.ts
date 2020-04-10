@@ -35,9 +35,10 @@ export const create = async (data, context) => {
 
   try {
     const result = await admin.firestore().runTransaction(async transaction => {
+
       const orderRef = admin.firestore().doc(`restaurants/${restaurantId}/orders/${orderId}`)
       const snapshot = await transaction.get(orderRef)
-      const order = Order.from<Order>(snapshot)
+      const order = Order.fromSnapshot<Order>(snapshot)
 
       // Check the stock status.
       if (order.status !== constant.order_status.validation_ok) {
@@ -94,7 +95,7 @@ export const confirm = async (data, context) => {
     const result = await admin.firestore().runTransaction(async transaction => {
       const orderRef = admin.firestore().doc(orderPath)
       const snapshot = await transaction.get(orderRef)
-      const order = Order.from<Order>(snapshot)
+      const order = Order.fromSnapshot<Order>(snapshot)
 
       if (!snapshot.exists) {
         throw new functions.https.HttpsError('invalid-argument', `The order does not exist. ${orderRef.path}`)
