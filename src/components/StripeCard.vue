@@ -1,6 +1,6 @@
 <template>
   <div
-    style="padding: 18px; background: #fff; border-raduis: 12px; box-shadow: 0px 2px 4px rgba(0,0,0,0.13);"
+    style="padding: 16px 8px; background: #fff; border-raduis: 12px; box-shadow: 0px 2px 4px rgba(0,0,0,0.13);"
   >
     <div id="card-element"></div>
   </div>
