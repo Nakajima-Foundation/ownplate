@@ -91,7 +91,7 @@
       <div class="field is-horizontal">
         <div class="field-body">
           <h4>
-             {{$t("editMenu.itemDescription")}}
+            {{$t("editMenu.itemDescription")}}
           </h4>
         </div>
       </div>
@@ -117,7 +117,7 @@
           </td>
           <td>
             New
-        </td>
+          </td>
         </tr>
         <tr>
           <td v-if="menuInfo.itemPhoto">
@@ -134,6 +134,29 @@
           </td>
         </tr>
       </table>
+
+      <div class="field is-horizontal">
+        <div class="field-body">
+          <h4>
+            {{$t("editMenu.itemOptions")}}
+          </h4>
+        </div>
+      </div>
+      <template v-for="(option, key) in menuInfo.itemOptionCheckbox">
+        <div :style="{display: 'inline-flex', width: '100%'}">
+          <b-input v-model="menuInfo.itemOptionCheckbox[key]"
+                   placeholder="Enter item option"
+                   :style="{width: '95%'}"
+                   />
+          <span @click="deleteOption(key)">
+            <b-icon icon="delete" size="is-midium"  />
+          </span>
+        </div><br/>
+      </template>
+      <span @click="addOption">
+        <b-icon icon="plus" size="is-midium"></b-icon>Add Option
+      </span><br/>
+
 
       <!--
       <h4>
@@ -203,6 +226,7 @@ export default {
         itemPhoto: "",
         // availability: "",
         publicFlag: false,
+        itemOptionCheckbox: [""],
       },
 
       taxRates: TAX_RATES,
@@ -238,7 +262,8 @@ export default {
       console.log("no menu");
       return ;
     }
-    this.menuInfo = Object.assign({}, this.mennuInfo, resMenuInfo.data());
+    this.menuInfo = Object.assign({}, this.menuInfo, resMenuInfo.data());
+
     this.notFound = false;
   },
   computed: {
@@ -261,6 +286,13 @@ export default {
     },
   },
   methods: {
+    deleteOption(pos) {
+      this.menuInfo.itemOptionCheckbox.splice( pos, 1 );
+      // console.log(e);
+    },
+    addOption() {
+      this.menuInfo.itemOptionCheckbox.push("");
+    },
     async submitItem() {
       if (this.hasError) return;
 
@@ -276,6 +308,7 @@ export default {
         tax: this.menuInfo.tax,
         itemDescription: this.menuInfo.itemDescription,
         itemPhoto: this.menuInfo.itemPhoto,
+        itemOptionCheckbox: this.menuInfo.itemOptionCheckbox || [],
         publicFlag: this.menuInfo.publicFlag || false,
       };
       const newData = await db.doc(`restaurants/${this.restaurantId()}/menus/${this.menuId}`).update(itemData);
