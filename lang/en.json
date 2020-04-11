@@ -20,7 +20,8 @@
     "price": "Price",
     "tax": "Tax",
     "itemDescription": "Item description",
-    "itemPhoto": "Item photo"
+    "itemPhoto": "Item photo",
+    "itemOptions": "Item options"
   },
   "shopInfo": {
     "address": "Address",
