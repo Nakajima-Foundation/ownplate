@@ -50,15 +50,6 @@
             <shop-info v-bind:shopInfo="shopInfo" v-if="shopInfo.publicFlag"></shop-info>
           </b-tab-item>
         </b-tabs>
-        <button
-          v-if="0 != foodCounter"
-          id="order_btn"
-          class="button is-primary is-rounded"
-          @click="handleCheckOut"
-          >
-          <span style="margin-right: auto;">{{$tc('sitemenu.orderCounter', foodCounter, {count: foodCounter})}}</span>
-          <span class="bold" style="margin-left:auto;">{{$t('sitemenu.checkout')}}</span>
-        </button>
 
         <b-modal :active.sync="loginVisible" :width="640">
           <div class="card">
@@ -69,6 +60,17 @@
           </div>
         </b-modal>
       </section>
+      <div>
+        <button
+          v-if="0 != foodCounter"
+          id="order_btn"
+          class="button is-primary is-rounded"
+          @click="handleCheckOut"
+          >
+          <span style="margin-right: auto;">{{$tc('sitemenu.orderCounter', foodCounter, {count: foodCounter})}}</span>
+          <span class="bold" style="margin-left:auto;">{{$t('sitemenu.checkout')}}</span>
+        </button>
+      </div>
     </template>
   </div>
 </template>
@@ -241,6 +243,8 @@ export default {
   /*余白が入らないように*/
   /*以下装飾*/
   width: 90%;
+  left: 50%;
+  transform: translate(-50%, 0);
   margin-left: auto;
   margin-right: auto;
   // background: #FFC778;
