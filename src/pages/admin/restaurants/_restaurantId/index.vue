@@ -49,7 +49,7 @@
             :width="200"
             :height="200"
             placeholder="No image"
-            placeholder-font-size="20"
+            :placeholder-font-size="20"
             initial-position="center"
             :canvas-color="'gainsboro'"
             ></croppa>
@@ -214,6 +214,7 @@
         :center="{lat: 44.933076, lng: 15.629058}"
         :options="{fullscreenControl: false}"
         :zoom="18"
+        @loaded="hello"
         >
       </GMap>
     </b-field>
@@ -477,9 +478,7 @@ export default {
     this.notFound = false;
   },
   mounted() {
-    if (this.shopInfo && this.shopInfo.location) {
-      this.setCurrentLocation(this.shopInfo.location);
-    }
+    this.hello();
   },
   computed: {
     errors() {
@@ -533,9 +532,9 @@ export default {
     },
   },
   watch: {
-    shopInfo: function() {
-      if (this.shopInfo && this.shopInfo.location) {
-        this.setCurrentLocation(this.shopInfo.location);
+    notFound: function() {
+      if (this.notFound === false) {
+        this.hello();
       }
     },
     state: function(val) {
@@ -543,6 +542,11 @@ export default {
     }
   },
   methods: {
+    hello() {
+      if (this.shopInfo && this.shopInfo.location) {
+        this.setCurrentLocation(this.shopInfo.location);
+      }
+    },
     async submitRestaurant() {
       if (this.hasError) return;
 
@@ -636,7 +640,8 @@ export default {
       }
     },
     setCurrentLocation(location) {
-      if (this.$refs.gMap && this.$refs.gMap.map) {
+      if (this.$refs.gMap && this.$refs.gMap.map &&
+          location && location.lat && location.lng) {
         this.$refs.gMap.map.setCenter(location);
         this.removeAllMarker();
         const marker = new google.maps.Marker({
@@ -662,26 +667,9 @@ export default {
         this.markers = [];
       }
     },
-    updateRestaurantData(restaurantData) {
-      // todo why promise??
-      // todo use this.cleanObject(restaurantData);
-      const cleanData = Object.keys(restaurantData).reduce((tmp, key) => {
-        if (restaurantData[key]) {
-          tmp[key] = restaurantData[key];
-        }
-        return tmp;
-      }, {});
-      return new Promise((resolve, rejected) => {
-        db.doc(`restaurants/${this.restaurantId()}`)
-          .set(cleanData)
-          .then(() => {
-            resolve();
-          })
-          .catch(error => {
-            console.error("Error writing document: ", error);
-            this.loading = false;
-          });
-      });
+    async updateRestaurantData(restaurantData) {
+      const cleanData = this.cleanObject(restaurantData);
+      await db.doc(`restaurants/${this.restaurantId()}`).update(cleanData)
     }
   }
 };

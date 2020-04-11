@@ -18,7 +18,7 @@
       <div class="content">
         <a
           target="_blank"
-          href="https://goo.gl/maps/g1ocnE21MTvbeTaV7"
+          :href="'https://www.google.com/maps/search/?api=1&query=' + this.shopInfo.location.lat + ',' +  this.shopInfo.location.lng + '&query_place_id=' + this.shopInfo.place_id"
           class="p-font-middle"
           >
           <i class="fas fa-map-marker-alt" style="margin-right:1rem;"></i>
