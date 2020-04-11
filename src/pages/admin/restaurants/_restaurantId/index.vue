@@ -1,6 +1,11 @@
 <template>
-  <section class="section">
-    <back-button url="/admin/restaurants/" />
+<section class="section">
+  <back-button url="/admin/restaurants/" />
+
+  <template v-if="notFound">
+    <not-found />
+  </template>
+  <template v-else-if="!notFound">
     <h2 class="p-big bold">
       About
     </h2>
@@ -116,14 +121,14 @@
       </div>
     </div>
     <b-field type="is-white"
-      :type="errors['streetAddress'].length > 0 ? 'is-danger' : 'is-success'"
+             :type="errors['streetAddress'].length > 0 ? 'is-danger' : 'is-success'"
              >
       <b-input
         v-model="shopInfo.streetAddress"
         type="text"
         placeholder="Enter street address"
         maxlength="30"
-      ></b-input>
+        ></b-input>
     </b-field>
 
     <div class="columns">
@@ -146,7 +151,7 @@
             type="text"
             placeholder="Enter city"
             maxlength="15"
-          ></b-input>
+            ></b-input>
         </b-field>
       </div>
       <div class="column">
@@ -190,7 +195,7 @@
         type="text"
         placeholder="Enter zip"
         maxlength="10"
-      ></b-input>
+        ></b-input>
     </b-field>
     <b-field>
       <b-button variant="outline-primary"
@@ -242,7 +247,7 @@
         placeholder="Enter phone number"
         type="tel"
         maxlength="20"
-      ></b-input>
+        ></b-input>
     </b-field>
 
     <b-field label="Website">
@@ -251,14 +256,14 @@
         placeholder="Enter website URL"
         type="url"
         maxlength="100"
-      ></b-input>
+        ></b-input>
     </b-field>
 
     <b-field
       label="Tags"
       type="is-white"
       style="border-radius: 0.4rem!important;"
-    >
+      >
       <vue-tags-input
         v-model="shopInfo.tag"
         style="border-radius: 0.4rem!important;"
@@ -267,7 +272,7 @@
         :validation="validation"
         :autocomplete-items="filteredItems"
         @tags-changed="newTags => (tags = newTags)"
-      />
+        />
     </b-field>
 
     <div class="columns">
@@ -290,7 +295,7 @@
                     />
                   <span
                     style="margin-top: auto;margin-bottom: auto;margin-left:0.4rem;margin-right:0.4rem;"
-                  >
+                    >
                     %
                   </span>
                 </div>
@@ -318,7 +323,7 @@
                     />
                   <span
                     style="margin-top: auto;margin-bottom: auto;margin-left:0.4rem;margin-right:0.4rem;"
-                  >
+                    >
                     %
                   </span>
 
@@ -364,7 +369,8 @@
     >
       Save
     </b-button>
-  </section>
+  </template>
+</section>
 </template>
 
 <script>
@@ -376,6 +382,7 @@ import HoursInput from "~/components/HoursInput";
 
 import * as API from "~/plugins/api"
 import BackButton from "~/components/BackButton";
+import NotFound from "~/components/NotFound";
 
 import { daysOfWeek, USStates } from "~/plugins/constant.js";
 
@@ -387,7 +394,8 @@ export default {
   components: {
     HoursInput,
     VueTagsInput,
-    BackButton
+    BackButton,
+    NotFound
   },
 
   data() {
@@ -448,6 +456,7 @@ export default {
           rule: tag => tag.text.length > 15
         }
       ],
+      notFound: null,
     };
   },
   created() {
@@ -457,13 +466,13 @@ export default {
     // never use onSnapshot here.
     const restaurant = await db.doc(`restaurants/${this.restaurantId()}`).get();
 
-    if (restaurant.exists) {
-      const restaurant_data = restaurant.data();
-      this.shopInfo = Object.assign({}, this.shopInfo, restaurant_data);
-      // todo update data.
-    } else {
-      // todo something error
+    if (!restaurant.exists) {
+      this.notFound = true;
+      return;
     }
+    const restaurant_data = restaurant.data();
+    this.shopInfo = Object.assign({}, this.shopInfo, restaurant_data);
+    this.notFound = false;
   },
   mounted() {
     if (this.shopInfo && this.shopInfo.location) {
