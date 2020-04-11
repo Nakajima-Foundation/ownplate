@@ -14,8 +14,10 @@
       <div v-if="canceling">
         <div class="message-box">
           <div style="width:100%">
-            <div style="float:right; width:1em;height:1px">
-              <b-button style="position:abolute;border:none;top:-0.5rem" @click="canceling=false">X</b-button>
+            <div style="float:right; width:2em;height:1px">
+              <b-button style="position:abolute;border:none;top:-0.5rem" @click="canceling=false">
+                <i class="fa fa-times-circle" style="color:#A0A0A0" />
+              </b-button>
             </div>
             <div style="clear:both" />
           </div>
