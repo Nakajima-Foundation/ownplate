@@ -163,14 +163,16 @@ export default {
       return this.array2obj(menus.concat(titles));
     },
     menuLists() {
-      let menuLists =  this.restaurantInfo.menuLists || [];
+      return menuLists =  this.restaurantInfo.menuLists || [];
 
       // for backward compatibility
-      if (Object.keys(this.itemsObj).length !== menuLists.length) {
+      /*
+      if (Object.keys(this.itemsObj).length > menuLists.length) {
         const diff = Object.keys(this.itemsObj).filter(itemKey => menuLists.indexOf(itemKey) === -1);
         menuLists = menuLists.concat(diff);
       }
       return menuLists;
+      */
     }
 
   },
@@ -189,6 +191,12 @@ export default {
       if (!results.empty) {
         this.menuCollection = results;
       }
+      // for debug
+      results.docs.forEach((a) => {
+        if (a.data().publicFlag === undefined) {
+          a.ref.update({publicFlag: true});
+        }
+      });
     });
     const title_detacher = restaurantRef.collection('titles').where("deletedFlag", "==", false).onSnapshot((results) => {
       if (!results.empty) {
@@ -319,7 +327,7 @@ export default {
         publicFlag: false,
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       };
-      const newData = await db.collection(`restaurants/${this.restaurantId()}/menus`).add(data);
+      const newData = await db.collection(`restaurants/${this.restaurantId()}/menus`).add(this.cleanObject(data));
       this.forkItem(itemKey, newData);
     },
     async forkItem(itemKey, newData) {
