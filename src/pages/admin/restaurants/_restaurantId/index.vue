@@ -531,6 +531,11 @@ export default {
     },
   },
   watch: {
+    shopInfo: function() {
+      if (this.shopInfo && this.shopInfo.location) {
+        this.setCurrentLocation(this.shopInfo.location);
+      }
+    },
     state: function(val) {
       this.shopInfo.tags.push(val); // ???
     }
