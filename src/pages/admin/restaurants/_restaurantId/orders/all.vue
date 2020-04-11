@@ -42,8 +42,9 @@ export default {
       });
     const order_detacher = db
       .collection(`restaurants/${this.restaurantId()}/orders`)
+      .orderBy("status")
       .where("status", ">=", order_status.customer_paid)
-      .where("status", "<", order_status.customer_picked_up)
+      .orderBy("timePaid")
       .onSnapshot(result => {
         if (!result.empty) {
           let orders = result.docs.map(this.doc2data("order"));
