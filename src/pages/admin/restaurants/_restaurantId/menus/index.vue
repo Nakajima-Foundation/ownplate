@@ -163,7 +163,7 @@ export default {
       return this.array2obj(menus.concat(titles));
     },
     menuLists() {
-      return menuLists =  this.restaurantInfo.menuLists || [];
+      return this.restaurantInfo.menuLists || [];
 
       // for backward compatibility
       /*
