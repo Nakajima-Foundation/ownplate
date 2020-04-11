@@ -414,6 +414,7 @@ export default {
         state: "",
         zip: "",
         location: {},
+        place_id: null,
         phoneNumber: "",
         url: "",
         foodTax: 0,
@@ -442,6 +443,7 @@ export default {
       },
       states: USStates,
       maplocation: {},
+      place_id: null,
       markers: [],
       days: daysOfWeek,
       autocompleteItems: [
@@ -577,6 +579,7 @@ export default {
         state: this.shopInfo.state,
         zip: this.shopInfo.zip,
         location: this.shopInfo.location,
+        place_id: this.shopInfo.place_id,
         phoneNumber: this.shopInfo.phoneNumber,
         url: this.shopInfo.url,
         tags: this.shopInfo.tags,
@@ -629,6 +632,7 @@ export default {
       const res = await API.google_geocode(keyword);
       if (res && res[0] && res[0].geometry) {
         this.setCurrentLocation(res[0].geometry.location);
+        this.place_id = res[0].place_id;
       }
     },
     setCurrentLocation(location) {
@@ -647,6 +651,7 @@ export default {
     setLocation() {
       if (this.maplocation) {
         this.shopInfo.location = this.maplocation;
+        this.shopInfo.place_id = this.place_id;
       }
     },
     removeAllMarker() {
