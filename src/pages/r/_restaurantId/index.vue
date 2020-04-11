@@ -132,7 +132,9 @@ export default {
         this.notFound = true;
       }
     });
-    const menu_detacher = db.collection(`restaurants/${this.restaurantId()}/menus`).onSnapshot((menu) => {
+    const menu_detacher = db.collection(`restaurants/${this.restaurantId()}/menus`)
+          .where("deletedFlag", "==", false)
+          .where("publicFlag", "==", true).onSnapshot((menu) => {
       if (!menu.empty) {
         this.menus = menu.docs.map(this.doc2data("menu"));
       }
@@ -172,10 +174,6 @@ export default {
     },
     menuLists() {
       const list = this.shopInfo.menuLists || [];
-      if (Object.keys(this.itemsObj).length !== list.length) {
-        const diff = Object.keys(this.itemsObj).filter(itemKey => list.indexOf(itemKey) === -1);
-        return list.concat(diff);
-      }
       return list;
     },
     user() {
