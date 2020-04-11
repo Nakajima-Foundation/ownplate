@@ -7,26 +7,16 @@
   </template>
   <template v-else>
     <section class="section">
-      <b-button
-        style="margin-right:auto"
-        type="is-primary"
-        class="counter-button"
-        icon-left="arrow-left"
-        rounded
-        outlined
-        @click="goBack()"
-        >
-        Back
-      </b-button>
+      <back-button :url="`/admin/restaurants/${this.restaurantId()}/menus`" />
 
       <h2 class="p-big bold">
-        Item
+        {{$t("editMenu.item")}}
       </h2>
       <div class="media">
         <div class="media-content"></div>
         <div class="media-right">
           <p class="p-small bold" style="color:#CB4B4B">
-            * Required
+            * {{$t("editMenu.required")}}
           </p>
         </div>
       </div>
@@ -34,7 +24,7 @@
       <div class="field is-horizontal">
         <div class="field-body">
           <h4>
-            Item name
+            {{$t("editMenu.itemName")}}
           </h4>
           <p class="p-small" style="color:#CB4B4B">
             *
@@ -52,7 +42,7 @@
           <div class="field is-horizontal">
             <div class="field-body">
               <h4>
-                Price
+                {{$t("editMenu.price")}}
               </h4>
               <p class="p-small" style="color:#CB4B4B">
                 *
@@ -81,7 +71,7 @@
           <div class="field is-horizontal">
             <div class="field-body">
               <h4>
-                Tax
+                {{$t("editMenu.tax")}}
               </h4>
               <p class="p-small" style="color:#CB4B4B">
                 *
@@ -101,7 +91,7 @@
       <div class="field is-horizontal">
         <div class="field-body">
           <h4>
-            Item description
+            {{$t("editMenu.itemDescription")}}
           </h4>
         </div>
       </div>
@@ -115,7 +105,7 @@
       <div class="field is-horizontal">
         <div class="field-body">
           <h4>
-            Item photo
+            {{$t("editMenu.itemPhoto")}}
           </h4>
         </div>
       </div>
@@ -127,7 +117,7 @@
           </td>
           <td>
             New
-        </td>
+          </td>
         </tr>
         <tr>
           <td v-if="menuInfo.itemPhoto">
@@ -144,6 +134,29 @@
           </td>
         </tr>
       </table>
+
+      <div class="field is-horizontal">
+        <div class="field-body">
+          <h4>
+            {{$t("editMenu.itemOptions")}}
+          </h4>
+        </div>
+      </div>
+      <template v-for="(option, key) in menuInfo.itemOptionCheckbox">
+        <div :style="{display: 'inline-flex', width: '100%'}">
+          <b-input v-model="menuInfo.itemOptionCheckbox[key]"
+                   placeholder="Enter item option"
+                   :style="{width: '95%'}"
+                   />
+          <span @click="deleteOption(key)">
+            <b-icon icon="delete" size="is-midium"  />
+          </span>
+        </div><br/>
+      </template>
+      <span @click="addOption">
+        <b-icon icon="plus" size="is-midium"></b-icon>Add Option
+      </span><br/>
+
 
       <!--
       <h4>
@@ -184,6 +197,7 @@ import { db, storage } from "~/plugins/firebase.js";
 import Croppa from "vue-croppa";
 
 import NotFound from "~/components/NotFound";
+import BackButton from "~/components/BackButton";
 
 Vue.use(Croppa);
 
@@ -198,6 +212,7 @@ export default {
   name: "Order",
 
   components: {
+    BackButton,
     NotFound,
   },
 
@@ -211,6 +226,7 @@ export default {
         itemPhoto: "",
         // availability: "",
         publicFlag: false,
+        itemOptionCheckbox: [""],
       },
 
       taxRates: TAX_RATES,
@@ -246,7 +262,8 @@ export default {
       console.log("no menu");
       return ;
     }
-    this.menuInfo = Object.assign({}, this.mennuInfo, resMenuInfo.data());
+    this.menuInfo = Object.assign({}, this.menuInfo, resMenuInfo.data());
+
     this.notFound = false;
   },
   computed: {
@@ -269,6 +286,13 @@ export default {
     },
   },
   methods: {
+    deleteOption(pos) {
+      this.menuInfo.itemOptionCheckbox.splice( pos, 1 );
+      // console.log(e);
+    },
+    addOption() {
+      this.menuInfo.itemOptionCheckbox.push("");
+    },
     async submitItem() {
       if (this.hasError) return;
 
@@ -284,6 +308,7 @@ export default {
         tax: this.menuInfo.tax,
         itemDescription: this.menuInfo.itemDescription,
         itemPhoto: this.menuInfo.itemPhoto,
+        itemOptionCheckbox: this.menuInfo.itemOptionCheckbox || [],
         publicFlag: this.menuInfo.publicFlag || false,
       };
       const newData = await db.doc(`restaurants/${this.restaurantId()}/menus/${this.menuId}`).update(itemData);

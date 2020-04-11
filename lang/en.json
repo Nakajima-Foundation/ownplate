@@ -13,6 +13,16 @@
     "setLocation": "Set location",
     "updateMap": "Update Map"
   },
+  "editMenu": {
+    "item": "Item",
+    "required": "Required",
+    "itemName": "Item name",
+    "price": "Price",
+    "tax": "Tax",
+    "itemDescription": "Item description",
+    "itemPhoto": "Item photo",
+    "itemOptions": "Item options"
+  },
   "shopInfo": {
     "address": "Address",
     "phonenumber": "Phones Number",
