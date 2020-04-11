@@ -3,7 +3,7 @@
   background:#ffeeee;
   border: 0;
 }
-  
+
 .customer_paid, .customer_paid:hover {
   color:red;
   background:#ffeeee;
@@ -24,6 +24,12 @@
 
 .customer_picked_up, .customer_picked_up:hover {
   color: #8506A8;
+  background:#F5E4F6;
+  border: 0;
+}
+
+.oder_canceled, .oder_canceled:hover {
+  color: #3506A8;
   background:#F5E4F6;
   border: 0;
 }
