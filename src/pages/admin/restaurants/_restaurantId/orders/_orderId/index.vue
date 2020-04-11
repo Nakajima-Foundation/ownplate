@@ -1,6 +1,6 @@
 <template>
   <section class="section">
-    <back-button :url="'/admin/restaurants/' + restaurantId() + '/orders'" />
+    <back-button :url="parentUrl" />
     <div>
       <div style="float:left">
         <h2>{{ orderName }}</h2>
@@ -139,6 +139,9 @@ export default {
     },
     orderId() {
       return this.$route.params.orderId;
+    },
+    parentUrl() {
+      return `/admin/restaurants/${this.restaurantId()}/orders`;
     }
   },
   methods: {
@@ -155,7 +158,7 @@ export default {
       console.log(this.orderInfo);
       await ref.set({ status: order_status[statusKey] }, { merge: true });
       if (statusKey === "oder_canceled") {
-        this.$router.push(`/admin/restaurants/${this.restaurantId()}/orders`);
+        this.$router.push(this.parentUrl);
       }
 
       // HACK ALERT: I am not able to find the proper way to access event.currentTart
