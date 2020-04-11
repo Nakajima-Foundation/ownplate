@@ -16,7 +16,7 @@
           <div style="width:100%">
             <div style="float:right; width:2em;height:1px">
               <b-button style="position:abolute;border:none;top:-0.5rem" @click="canceling=false">
-                <i class="fa fa-times-circle" style="color:#A0A0A0" />
+                <i class="fa fa-times-circle gray-icon" />
               </b-button>
             </div>
             <div style="clear:both" />
@@ -27,12 +27,14 @@
             <a :href="nationalPhoneURI">{{ nationalPhoneNumber }}</a>
           </p>
         </div>
-        <b-button
-          type="is-danger"
-          style="width:100%"
-          class="light"
-          @click="changeStatus('oder_canceled', $event)"
-        >{{ $t("admin.order.delete") }}</b-button>
+        <div style="margin:0.2rem">
+          <b-button
+            type="is-danger"
+            style="width:100%"
+            class="light"
+            @click="changeStatus('oder_canceled', $event)"
+          >{{ $t("admin.order.delete") }}</b-button>
+        </div>
       </div>
       <div v-else>
         <p v-if="orderInfo.phoneNumber" style="margin-bottom:1rem">
@@ -180,5 +182,8 @@ export default {
   padding: 0.5rem;
   background: white;
   text-align: center;
+}
+.gray-icon {
+  color: $grey;
 }
 </style>
