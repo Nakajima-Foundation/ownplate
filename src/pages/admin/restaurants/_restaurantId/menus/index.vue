@@ -234,7 +234,8 @@ export default {
       };
       const newTitle = await db.collection(`restaurants/${this.restaurantId()}/titles`).add(data);
       const newMenuLists = this.menuLists;
-      newMenuLists.unshift(newTitle.id);
+      // newMenuLists.unshift(newTitle.id);
+      newMenuLists.push(newTitle.id);
 
       this.saveMenuList(newMenuLists);
     },
