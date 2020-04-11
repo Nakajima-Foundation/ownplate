@@ -10,10 +10,20 @@
       </div>
       <div style="clear:both" />
     </div>
-    <p v-if="orderInfo.phoneNumber" style="margin-bottom:1rem">
-      <a :href="nationalPhoneURI">{{ nationalPhoneNumber }}</a>
-    </p>
     <div style="margin-bottom:1rem">
+      <div v-if="canceling">
+        <div>
+          <h3>{{$t("admin.order.cancelTitle")}}</h3>
+          <b-button @click="canceling=false">X</b-button>
+          <p>{{$t("admin.order.cancelMessage")}}</p>
+        </div>
+        <b-button type="is-danger" style="width:100%" class="light">{{ $t("admin.order.delete") }}</b-button>
+      </div>
+      <div>
+        <p v-if="orderInfo.phoneNumber" style="margin-bottom:1rem">
+          <a :href="nationalPhoneURI">{{ nationalPhoneNumber }}</a>
+        </p>
+      </div>
       <div v-for="orderState in orderStates" style="margin:0.2rem" :key="orderState">
         <b-button
           :class="classOf(orderState)"
