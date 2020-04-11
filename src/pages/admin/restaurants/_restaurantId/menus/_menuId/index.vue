@@ -7,26 +7,16 @@
   </template>
   <template v-else>
     <section class="section">
-      <b-button
-        style="margin-right:auto"
-        type="is-primary"
-        class="counter-button"
-        icon-left="arrow-left"
-        rounded
-        outlined
-        @click="goBack()"
-        >
-        Back
-      </b-button>
+      <back-button :url="`/admin/restaurants/${this.restaurantId()}/menus`" />
 
       <h2 class="p-big bold">
-        Item
+        {{$t("editMenu.item")}}
       </h2>
       <div class="media">
         <div class="media-content"></div>
         <div class="media-right">
           <p class="p-small bold" style="color:#CB4B4B">
-            * Required
+            * {{$t("editMenu.required")}}
           </p>
         </div>
       </div>
@@ -34,7 +24,7 @@
       <div class="field is-horizontal">
         <div class="field-body">
           <h4>
-            Item name
+            {{$t("editMenu.itemName")}}
           </h4>
           <p class="p-small" style="color:#CB4B4B">
             *
@@ -52,7 +42,7 @@
           <div class="field is-horizontal">
             <div class="field-body">
               <h4>
-                Price
+                {{$t("editMenu.price")}}
               </h4>
               <p class="p-small" style="color:#CB4B4B">
                 *
@@ -81,7 +71,7 @@
           <div class="field is-horizontal">
             <div class="field-body">
               <h4>
-                Tax
+                {{$t("editMenu.tax")}}
               </h4>
               <p class="p-small" style="color:#CB4B4B">
                 *
@@ -101,7 +91,7 @@
       <div class="field is-horizontal">
         <div class="field-body">
           <h4>
-            Item description
+             {{$t("editMenu.itemDescription")}}
           </h4>
         </div>
       </div>
@@ -115,7 +105,7 @@
       <div class="field is-horizontal">
         <div class="field-body">
           <h4>
-            Item photo
+            {{$t("editMenu.itemPhoto")}}
           </h4>
         </div>
       </div>
@@ -184,6 +174,7 @@ import { db, storage } from "~/plugins/firebase.js";
 import Croppa from "vue-croppa";
 
 import NotFound from "~/components/NotFound";
+import BackButton from "~/components/BackButton";
 
 Vue.use(Croppa);
 
@@ -198,6 +189,7 @@ export default {
   name: "Order",
 
   components: {
+    BackButton,
     NotFound,
   },
 
