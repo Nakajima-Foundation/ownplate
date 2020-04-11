@@ -44,7 +44,8 @@
       "customer_paid": "Order Placed",
       "order_accepted": "Accepted",
       "cooking_completed": "Ready To Pickup",
-      "customer_picked_up": "Complete"
+      "customer_picked_up": "Complete",
+      "oder_canceled": "Canceled"
     }
   },
   "button": {
@@ -106,8 +107,8 @@
     "pleaseCheckInbox": "Please check your inbox, an email is on the way.",
     "order": {
       "cancelButton": "Cancel this order",
-      "cancelTitle": "Order canceling",
-      "cancelMessage": "Please contact to the customer and tell the order will be canceled",
+      "cancelTitle": "Order Canceling",
+      "cancelMessage": "Please contact to the customer and tell the order will be canceled.",
       "callTo": "Call to {phone}",
       "delete": "Delete this order"
     },

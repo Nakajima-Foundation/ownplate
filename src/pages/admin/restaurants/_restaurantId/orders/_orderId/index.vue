@@ -12,14 +12,27 @@
     </div>
     <div style="margin-bottom:1rem">
       <div v-if="canceling">
-        <div>
+        <div class="message-box">
+          <div style="width:100%">
+            <div style="float:right; width:1em;height:1px">
+              <b-button style="position:abolute;border:none;top:-0.5rem" @click="canceling=false">X</b-button>
+            </div>
+            <div style="clear:both" />
+          </div>
           <h3>{{$t("admin.order.cancelTitle")}}</h3>
-          <b-button @click="canceling=false">X</b-button>
           <p>{{$t("admin.order.cancelMessage")}}</p>
+          <p>
+            <a :href="nationalPhoneURI">{{ nationalPhoneNumber }}</a>
+          </p>
         </div>
-        <b-button type="is-danger" style="width:100%" class="light">{{ $t("admin.order.delete") }}</b-button>
+        <b-button
+          type="is-danger"
+          style="width:100%"
+          class="light"
+          @click="changeStatus('oder_canceled', $event)"
+        >{{ $t("admin.order.delete") }}</b-button>
       </div>
-      <div>
+      <div v-else>
         <p v-if="orderInfo.phoneNumber" style="margin-bottom:1rem">
           <a :href="nationalPhoneURI">{{ nationalPhoneNumber }}</a>
         </p>
@@ -157,5 +170,13 @@ export default {
 .light {
   background: $light;
   border: none;
+}
+.message-box {
+  border: 1px #dddddd solid;
+  border-radius: 5px;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  background: white;
+  text-align: center;
 }
 </style>
