@@ -154,6 +154,9 @@ export default {
       );
       console.log(this.orderInfo);
       await ref.set({ status: order_status[statusKey] }, { merge: true });
+      if (statusKey === "oder_canceled") {
+        this.$router.push(`/admin/restaurants/${this.restaurantId()}/orders`);
+      }
 
       // HACK ALERT: I am not able to find the proper way to access event.currentTart
       // in this environment (Vue + Bluma + Buefy).
