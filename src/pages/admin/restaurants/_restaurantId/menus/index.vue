@@ -1,18 +1,11 @@
 <template>
   <section class="section">
-    <b-button
-      style="margin-right:auto"
-      type="is-primary"
-      class="counter-button"
-      icon-left="arrow-left"
-      rounded
-      outlined
-      @click="goRestaurant()"
-    >
-      {{$t("button.back")}}
-    </b-button>
+    <back-button url="/admin/restaurants/" />
 
-    <section class="section" v-if="readyToDisplay">
+    <template v-if="notFound">
+      <not-found />
+    </template>
+    <section class="section" v-else-if="readyToDisplay">
       <div class="media">
         <div class="media-left">
           <figure class="image is-64x64">
@@ -127,6 +120,8 @@ import { db } from "~/plugins/firebase.js";
 import ItemEditCard from "~/components/ItemEditCard";
 import TitleCard from "~/components/TitleCard";
 import TitleInput from "~/components/TitleInput";
+import NotFound from "~/components/NotFound";
+import BackButton from "~/components/BackButton";
 
 import * as firebase from "firebase/app";
 
@@ -135,7 +130,9 @@ export default {
   components: {
     ItemEditCard,
     TitleCard,
-    TitleInput
+    TitleInput,
+    BackButton,
+    NotFound
   },
   data() {
     return {
@@ -145,6 +142,7 @@ export default {
       titleCollection: [],
       editings: {},
       detachers: [],
+      notFound: null,
     };
   },
   created() {
@@ -182,8 +180,10 @@ export default {
       if (results.exists) {
         this.restaurantInfo = results.data();
         this.readyToDisplay = true;
+        this.notFound = false;
       } else {
-        // 404
+        this.notFound = true;
+       // 404
         console.log("Error fetch restaurantInfo.");
       }
     });
