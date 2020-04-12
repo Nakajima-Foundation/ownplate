@@ -31,9 +31,8 @@
                 <item-card
                   :item="itemsObj[menu]"
                   :key="itemsObj[menu].id"
-                  v-bind:counter="orders[itemsObj[menu].id] || 0"
-                  v-bind:payment="Number(itemsObj[menu].price||0)"
-                  v-bind:description="itemsObj[menu].itemDescription"
+                  :counter="orders[itemsObj[menu].id] || 0"
+                  :payment="Number(itemsObj[menu].price||0)"
                   v-bind:image="itemsObj[menu].itemPhoto"
                   @emitting="emitted($event)"
                   v-if="itemsObj[menu]._dataType === 'menu'"

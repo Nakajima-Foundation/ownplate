@@ -4,7 +4,7 @@
       <div class="media" @click="openMenuFlag ? closeMenu() : openMenu()">
         <div class="media-content">
           <!-- <h4 class="bold">Kushikatsu Special Platter</h4> -->
-          <p class="item-name">{{ item.title }}</p>
+          <p class="item-name">{{ title }}</p>
           <p class="item-price">{{ $n(payment, 'currency') }}</p>
           <p>{{ description }}</p>
         </div>
@@ -77,10 +77,6 @@ export default {
       type: Number,
       required: true
     },
-    description: {
-      type: String,
-      required: true
-    },
     image: {
       type: String,
       required: true,
@@ -91,6 +87,14 @@ export default {
     return {
       openMenuFlag: false
     };
+  },
+  computed: {
+    title() {
+      return this.item.itemName;
+    },
+    description() {
+      return this.item.itemDescription;
+    }
   },
   methods: {
     pullCount() {
