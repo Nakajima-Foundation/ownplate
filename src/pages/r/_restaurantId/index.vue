@@ -112,7 +112,9 @@ export default {
     const url = new URL(window.location.href);
     if (url.hash.length > 1) {
       const prevOrderId = url.hash.slice(1);
-      this.orders = this.$store.state.carts[prevOrderId] || {};
+      const cart = this.$store.state.carts[prevOrderId] || {};
+      console.log("cart", cart);
+      this.orders = cart.orders || {};
     }
   },
   created() {
@@ -211,7 +213,13 @@ export default {
       // Store the current order associated with this order id, so that we can re-use it
       // when the user clicks the "Edit Items" on the next page.
       // In that case, we will come back here with #id so that we can retrieve it (see mounted).
-      this.$store.commit("saveCart", { id: res.id, order: this.orders });
+      this.$store.commit("saveCart", {
+        id: res.id,
+        cart: {
+          orders: this.orders,
+          options: this.options
+        }
+      });
       this.$router.push({
         path: `/r/${this.restaurantId()}/order/${res.id}`
       });

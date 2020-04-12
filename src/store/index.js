@@ -35,9 +35,9 @@ export const mutations = {
     state.date = new Date();
   },
   saveCart(state, payload) {
-    console.log("saving cart", payload.id, payload.order);
+    console.log("saving cart", payload.id, payload.cart);
     state.carts = {};
-    state.carts[payload.id] = payload.order;
+    state.carts[payload.id] = payload.cart;
   }
 };
 
