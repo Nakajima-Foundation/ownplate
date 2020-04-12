@@ -34,6 +34,7 @@
                   :key="itemsObj[menu].id"
                   :count="orders[itemsObj[menu].id] || 0"
                   @didCountChange="didCountChange($event)"
+                  @didOptionValuesChange="didOptionValuesChange($event)"
                 ></item-card>
               </template>
             </template>
@@ -95,6 +96,7 @@ export default {
       tabs: ["#menus", "#about"],
       loginVisible: false,
       orders: {},
+      options: {},
       restaurantsId: this.restaurantId(),
       shopInfo: {},
       // isCardModalActive: false
@@ -197,6 +199,7 @@ export default {
     async goCheckout() {
       const order_data = {
         order: this.orders,
+        options: this.options,
         status: order_status.new_order,
         uid: this.user.uid
         // price never set here.
@@ -217,6 +220,12 @@ export default {
       const obj = {};
       obj[eventArgs.id] = eventArgs.count;
       this.orders = Object.assign({}, this.orders, obj);
+    },
+    didOptionValuesChange(eventArgs) {
+      const obj = {};
+      obj[eventArgs.id] = eventArgs.optionValues;
+      this.options = Object.assign({}, this.options, obj);
+      console.log(this.options);
     }
   }
 };

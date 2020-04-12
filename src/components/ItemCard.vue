@@ -100,9 +100,11 @@ export default {
     });
   },
   watch: {
-    // Only for debugging
     optionValues() {
-      console.log(this.optionValues);
+      this.$emit("didOptionValuesChange", {
+        id: this.item.id,
+        optionValues: this.optionValues
+      });
     }
   },
   computed: {
