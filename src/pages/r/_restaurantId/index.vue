@@ -21,18 +21,18 @@
         ></shop-orner-info>
         <b-tabs size="is-medium" class="block" expanded v-model="tabIndex">
           <b-tab-item :label="$t('sitemenu.menu')">
-            <template v-for="menu in menuLists">
-              <template v-if="itemsObj[menu]">
+            <template v-for="menuId in menuLists">
+              <template v-if="itemsObj[menuId]">
                 <h2
-                  v-if="itemsObj[menu]._dataType === 'title'"
-                  v-bind:key="itemsObj[menu].id"
-                >{{itemsObj[menu].name}}</h2>
+                  v-if="itemsObj[menuId]._dataType === 'title'"
+                  v-bind:key="itemsObj[menuId].id"
+                >{{itemsObj[menuId].name}}</h2>
 
                 <item-card
-                  v-if="itemsObj[menu]._dataType === 'menu'"
-                  :item="itemsObj[menu]"
-                  :key="itemsObj[menu].id"
-                  :count="orders[itemsObj[menu].id] || 0"
+                  v-if="itemsObj[menuId]._dataType === 'menu'"
+                  :item="itemsObj[menuId]"
+                  :key="itemsObj[menuId].id"
+                  :count="orders[itemsObj[menuId].id] || 0"
                   @didCountChange="didCountChange($event)"
                   @didOptionValuesChange="didOptionValuesChange($event)"
                 ></item-card>
