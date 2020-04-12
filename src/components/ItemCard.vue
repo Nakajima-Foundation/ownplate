@@ -43,13 +43,22 @@
               </b-button>
             </div>
           </div>
-          <p class="bold">Special instructions</p>
-          <p class="p-font-mini">
-            Please note that special requests may result in price adjustment
-            after your order is processed.
-          </p>
-          <div class="notification">
-            <p class="p-font-mini">Please put the dressing on the side.</p>
+          <div v-if="hasOptions">
+            <p class="bold">Options</p>
+            <div v-for="(option, index) in options" :key="index">
+              <div v-if="option.length === 1">Checkbox</div>
+              <div v-else>Selector</div>
+            </div>
+          </div>
+          <div v-if="false">
+            <p class="bold">Special instructions</p>
+            <p class="p-font-mini">
+              Please note that special requests may result in price adjustment
+              after your order is processed.
+            </p>
+            <div class="notification">
+              <p class="p-font-mini">Please put the dressing on the side.</p>
+            </div>
           </div>
         </div>
       </div>
@@ -76,6 +85,16 @@ export default {
     };
   },
   computed: {
+    options() {
+      return (this.item.itemOptionCheckbox || []).map(option => {
+        return option.split(",").map(choice => {
+          return choice.trim();
+        });
+      });
+    },
+    hasOptions() {
+      return this.options.length;
+    },
     cardStyle() {
       return this.counter > 0 ? { backgroundColor: "#e0f7fa" } : {};
     },
