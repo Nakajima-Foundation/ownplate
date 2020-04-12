@@ -25,13 +25,13 @@
                 class="counter-button"
                 rounded
                 style="padding-left:2rem;padding-right:2rem;margin-left:1rem;"
-                :disabled="counter === 0"
+                :disabled="count === 0"
                 @click="pullCount"
               >
                 <i class="fas fa-minus" />
               </b-button>
             </div>
-            <span class="item-counter">{{ counter }}</span>
+            <span class="item-counter">{{ count }}</span>
             <div class="level-right">
               <b-button
                 class="counter-button"
@@ -83,7 +83,7 @@ export default {
       type: Object,
       required: true
     },
-    counter: {
+    count: {
       type: Number,
       required: true
     }
@@ -117,7 +117,7 @@ export default {
       return this.options.length;
     },
     cardStyle() {
-      return this.counter > 0 ? { backgroundColor: "#e0f7fa" } : {};
+      return this.count > 0 ? { backgroundColor: "#e0f7fa" } : {};
     },
     price() {
       return Number(this.item.price || 0);
@@ -138,25 +138,25 @@ export default {
   },
   methods: {
     pullCount() {
-      if (this.counter <= 0) {
+      if (this.count <= 0) {
         return;
       }
-      this.setCount(this.counter - 1);
+      this.setCount(this.count - 1);
     },
     pushCount() {
-      this.setCount(this.counter + 1);
+      this.setCount(this.count + 1);
     },
     openMenu() {
       this.openMenuFlag = true;
-      if (this.counter == 0) {
-        this.setCount(this.counter + 1);
+      if (this.count == 0) {
+        this.setCount(this.count + 1);
       }
     },
     closeMenu() {
       this.openMenuFlag = false;
     },
-    setCount(newCounter) {
-      this.$emit("didCountChange", { id: this.item.id, counter: newCounter });
+    setCount(newValue) {
+      this.$emit("didCountChange", { id: this.item.id, count: newValue });
     }
   }
 };

@@ -32,7 +32,7 @@
                   v-if="itemsObj[menu]._dataType === 'menu'"
                   :item="itemsObj[menu]"
                   :key="itemsObj[menu].id"
-                  :counter="orders[itemsObj[menu].id] || 0"
+                  :count="orders[itemsObj[menu].id] || 0"
                   @didCountChange="didCountChange($event)"
                 ></item-card>
               </template>
@@ -215,7 +215,7 @@ export default {
     didCountChange(eventArgs) {
       // NOTE: We need to assign a new object to trigger computed properties
       const obj = {};
-      obj[eventArgs.id] = eventArgs.counter;
+      obj[eventArgs.id] = eventArgs.count;
       this.orders = Object.assign({}, this.orders, obj);
     }
   }
