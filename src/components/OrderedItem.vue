@@ -4,7 +4,7 @@
       <div class="media">
         <div class="media-content">
           <h3>{{ menu.itemName }}</h3>
-          <p>x {{ item.count }}</p>
+          <h3>x {{ item.count }}</h3>
           <p>{{ item.option }}</p>
         </div>
         <div class="media-right">
@@ -32,7 +32,7 @@ export default {
     }
   },
   mounted() {
-    console.log(this.item.menu);
+    //console.log(this.item.menu);
   }
 };
 </script>

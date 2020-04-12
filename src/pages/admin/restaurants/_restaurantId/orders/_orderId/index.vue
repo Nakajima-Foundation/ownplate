@@ -147,7 +147,7 @@ export default {
       return Object.keys(this.orderInfo.order).reduce((ret, id) => {
         ret[id] = {
           count: this.orderInfo.order[id],
-          option: this.orderInfo.options && this.orderInfo.options[id],
+          option: this.specialRequest(id),
           menu: this.menuObj[id]
         };
         return ret;
@@ -155,6 +155,28 @@ export default {
     }
   },
   methods: {
+    // NOTE: Exact same code in the order/_orderId/index.vue for the user.
+    // This is intentional because we may want to present it differently to admins.
+    specialRequest(key) {
+      const option = this.orderInfo.options && this.orderInfo.options[key];
+      if (option) {
+        return option
+          .reduce((ret, choice, index) => {
+            if (choice === true) {
+              // Checkbox case
+              if (this.menuObj[key].itemOptionCheckbox) {
+                ret.push(this.menuObj[key].itemOptionCheckbox[index]);
+              }
+            } else if (choice) {
+              // Radio button case
+              ret.push(choice);
+            }
+            return ret;
+          }, [])
+          .join(", ");
+      }
+      return "";
+    },
     async changeStatus(statusKey, event) {
       const ref = db.doc(
         `restaurants/${this.restaurantId()}/orders/${this.orderId}`
