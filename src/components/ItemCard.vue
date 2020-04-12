@@ -5,7 +5,7 @@
         <div class="media-content">
           <!-- <h4 class="bold">Kushikatsu Special Platter</h4> -->
           <p class="item-name">{{ title }}</p>
-          <p class="item-price">{{ $n(payment, 'currency') }}</p>
+          <p class="item-price">{{ $n(price, 'currency') }}</p>
           <p>{{ description }}</p>
         </div>
         <div class="media-right">
@@ -72,10 +72,6 @@ export default {
     counter: {
       type: Number,
       required: true
-    },
-    payment: {
-      type: Number,
-      required: true
     }
   },
   data() {
@@ -84,6 +80,9 @@ export default {
     };
   },
   computed: {
+    price() {
+      return Number(this.item.price || 0);
+    },
     image() {
       // BUGBUG: Come up with a better default image.
       return (
