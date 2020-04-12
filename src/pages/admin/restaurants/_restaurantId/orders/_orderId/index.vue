@@ -49,7 +49,7 @@
         >{{ $t("order.status." + orderState) }}</b-button>
       </div>
     </div>
-    <ordered-item v-for="id in ids" :key="id" :item="item(id)" />
+    <ordered-item v-for="id in ids" :key="id" :item="items[id]" />
   </section>
 </template>
 
@@ -142,16 +142,19 @@ export default {
     },
     parentUrl() {
       return `/admin/restaurants/${this.restaurantId()}/orders`;
+    },
+    items() {
+      return Object.keys(this.orderInfo.order).reduce((ret, id) => {
+        ret[id] = {
+          count: this.orderInfo.order[id],
+          option: this.orderInfo.options && this.orderInfo.options[id],
+          menu: this.menus[id]
+        };
+        return ret;
+      }, {});
     }
   },
   methods: {
-    item(id) {
-      return {
-        count: this.orderInfo.order[id],
-        option: this.orderInfo.options && this.orderInfo.options[id],
-        menu: this.menus[id]
-      };
-    },
     async changeStatus(statusKey, event) {
       const ref = db.doc(
         `restaurants/${this.restaurantId()}/orders/${this.orderId}`
