@@ -22,20 +22,14 @@
           <div class="level is-mobile counter">
             <div class="level-left">
               <b-button
-                v-if="0 < counter"
-                class="counter-button disabled"
-                rounded
-                style="padding-left:2rem;padding-right:2rem;margin-left:1rem;"
-                @click="pullCount"
-              >-</b-button>
-              <b-button
-                v-else
                 class="counter-button"
                 rounded
                 style="padding-left:2rem;padding-right:2rem;margin-left:1rem;"
-                disabled
+                :disabled="counter === 0"
                 @click="pullCount"
-              >-</b-button>
+              >
+                <i class="fas fa-minus" />
+              </b-button>
             </div>
             <span class="item-counter">{{ counter }}</span>
             <div class="level-right">
@@ -44,7 +38,9 @@
                 rounded
                 style="padding-left:2rem;padding-right:2rem;margin-right:1rem;"
                 @click="pushCount"
-              >+</b-button>
+              >
+                <i class="fas fa-plus" />
+              </b-button>
             </div>
           </div>
           <p class="bold">Special instructions</p>
