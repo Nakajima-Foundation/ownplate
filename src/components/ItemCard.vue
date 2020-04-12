@@ -46,13 +46,14 @@
           <div v-if="hasOptions">
             <div v-for="(option, index) in options" :key="index">
               <div v-if="option.length === 1" class="field">
-                <b-checkbox>{{ option[0] }}</b-checkbox>
+                <b-checkbox v-model="optionValues[index]">{{ option[0] }}</b-checkbox>
               </div>
               <div v-else class="field">
                 <b-radio
                   v-for="(choice, index2) in option"
+                  v-model="optionValues[index]"
                   name="key + index"
-                  native-value="choice"
+                  :native-value="choice"
                   :key="index2"
                 >{{ choice }}</b-radio>
               </div>
@@ -89,8 +90,20 @@ export default {
   },
   data() {
     return {
-      openMenuFlag: false
+      openMenuFlag: false,
+      optionValues: []
     };
+  },
+  created() {
+    this.optionValues = this.options.map(option => {
+      return option.length === 1 ? false : option[0];
+    });
+  },
+  watch: {
+    // Only for debugging
+    optionValues() {
+      console.log(this.optionValues);
+    }
   },
   computed: {
     options() {
@@ -143,7 +156,7 @@ export default {
       this.openMenuFlag = false;
     },
     order(newCounter) {
-      this.$emit("emitting", { id: this.item.id, counter: newCounter });
+      this.$emit("didCountChange", { id: this.item.id, counter: newCounter });
     }
   }
 };

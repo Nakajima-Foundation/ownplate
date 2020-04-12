@@ -33,7 +33,7 @@
                   :item="itemsObj[menu]"
                   :key="itemsObj[menu].id"
                   :counter="orders[itemsObj[menu].id] || 0"
-                  @emitting="emitted($event)"
+                  @didCountChange="didCountChange($event)"
                 ></item-card>
               </template>
             </template>
@@ -212,7 +212,7 @@ export default {
         path: `/r/${this.restaurantId()}/order/${res.id}`
       });
     },
-    emitted(eventArgs) {
+    didCountChange(eventArgs) {
       // NOTE: We need to assign a new object to trigger computed properties
       const obj = {};
       obj[eventArgs.id] = eventArgs.counter;
