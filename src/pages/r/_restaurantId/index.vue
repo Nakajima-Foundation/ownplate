@@ -22,21 +22,16 @@
         <b-tabs size="is-medium" class="block" expanded v-model="tabIndex">
           <b-tab-item :label="$t('sitemenu.menu')">
             <template v-for="itemId in menuLists">
-              <template v-if="itemsObj[itemId]">
-                <h2
-                  v-if="itemsObj[itemId]._dataType === 'title'"
-                  :key="itemId"
-                >{{itemsObj[itemId].name}}</h2>
-
+              <div v-if="itemsObj[itemId]" :key="itemId">
+                <h2 v-if="itemsObj[itemId]._dataType === 'title'">{{itemsObj[itemId].name}}</h2>
                 <item-card
                   v-if="itemsObj[itemId]._dataType === 'menu'"
                   :item="itemsObj[itemId]"
-                  :key="itemId"
                   :count="orders[itemId] || 0"
                   @didCountChange="didCountChange($event)"
                   @didOptionValuesChange="didOptionValuesChange($event)"
                 ></item-card>
-              </template>
+              </div>
             </template>
             <hr class="hr-black" />
           </b-tab-item>
