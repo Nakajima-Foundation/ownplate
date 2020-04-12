@@ -44,10 +44,18 @@
             </div>
           </div>
           <div v-if="hasOptions">
-            <p class="bold">Options</p>
             <div v-for="(option, index) in options" :key="index">
-              <div v-if="option.length === 1">Checkbox</div>
-              <div v-else>Selector</div>
+              <div v-if="option.length === 1" class="field">
+                <b-checkbox>{{ option[0] }}</b-checkbox>
+              </div>
+              <div v-else class="field">
+                <b-radio
+                  v-for="(choice, index2) in option"
+                  name="key + index"
+                  native-value="choice"
+                  :key="index2"
+                >{{ choice }}</b-radio>
+              </div>
             </div>
           </div>
           <div v-if="false">
