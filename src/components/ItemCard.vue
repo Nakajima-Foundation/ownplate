@@ -141,21 +141,21 @@ export default {
       if (this.counter <= 0) {
         return;
       }
-      this.order(this.counter - 1);
+      this.setCount(this.counter - 1);
     },
     pushCount() {
-      this.order(this.counter + 1);
+      this.setCount(this.counter + 1);
     },
     openMenu() {
       this.openMenuFlag = true;
       if (this.counter == 0) {
-        this.order(this.counter + 1);
+        this.setCount(this.counter + 1);
       }
     },
     closeMenu() {
       this.openMenuFlag = false;
     },
-    order(newCounter) {
+    setCount(newCounter) {
       this.$emit("didCountChange", { id: this.item.id, counter: newCounter });
     }
   }
