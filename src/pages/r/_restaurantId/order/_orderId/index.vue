@@ -161,11 +161,10 @@ export default {
     },
     orderItems() {
       if (this.menus.length > 0 && this.orderInfo.order) {
-        const menuObj = this.array2obj(this.menus);
         return Object.keys(this.orderInfo.order).map(key => {
           const num = this.orderInfo.order[key];
           return {
-            item: menuObj[key],
+            item: this.menuObj[key],
             count: num,
             id: key,
             specialRequest: this.specialRequest(key)
@@ -186,9 +185,9 @@ export default {
       const option = this.orderInfo.options && this.orderInfo.options[key];
       if (option) {
         return option
-          .reduce((ret, choice) => {
+          .reduce((ret, choice, index) => {
             if (choice === true) {
-              ret.push("something");
+              ret.push(this.menuObj[key].itemOptionCheckbox[index]);
             } else if (choice) {
               ret.push(choice);
             }
