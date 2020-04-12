@@ -74,7 +74,7 @@ export default {
       this.isLoading = false;
       console.log("result", result);
       if (result.result) {
-        this.$router.push(`./${this.rid}/edit`)
+        this.$router.push(`./${this.rid}`)
       } else {
         this.errors = [result.message]
       }
