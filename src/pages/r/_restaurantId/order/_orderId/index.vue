@@ -184,20 +184,7 @@ export default {
     specialRequest(key) {
       const option = this.orderInfo.options && this.orderInfo.options[key];
       if (option) {
-        return option
-          .reduce((ret, choice, index) => {
-            if (choice === true) {
-              // Checkbox case
-              if (this.menuObj[key].itemOptionCheckbox) {
-                ret.push(this.menuObj[key].itemOptionCheckbox[index]);
-              }
-            } else if (choice) {
-              // Radio button case
-              ret.push(choice);
-            }
-            return ret;
-          }, [])
-          .join(", ");
+        return option.filter(choice => choice).join(", ");
       }
       return "";
     },
