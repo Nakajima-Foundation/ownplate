@@ -485,14 +485,15 @@ export default {
   computed: {
     errors() {
       const err = {};
-      ['restaurantName', 'streetAddress', 'city', 'state', 'zip', 'phoneNumber'].forEach((name) => {
+      ['restaurantName', 'streetAddress', 'city', 'state', 'zip', 'phoneNumber',
+       'foodTax', 'alcoholTax'].forEach((name) => {
         err[name] = [];
         if (this.shopInfo[name] === "") {
           err[name].push('validationError.'+ name +'.empty');
         }
       });
       ['foodTax', 'alcoholTax'].forEach((name) => {
-        err[name] = [];
+        // err[name] = [];
         if (this.shopInfo[name] !== "") {
           if (isNaN(this.shopInfo[name])) {
             err[name].push('validationError.'+ name +'.invalidNumber');
