@@ -4,7 +4,7 @@
       <div class="media" @click="openMenuFlag ? closeMenu() : openMenu()">
         <div class="media-content">
           <!-- <h4 class="bold">Kushikatsu Special Platter</h4> -->
-          <p class="item-name">{{ title }}</p>
+          <p class="item-name">{{ item.title }}</p>
           <p class="item-price">{{ $n(payment, 'currency') }}</p>
           <p>{{ description }}</p>
         </div>
@@ -66,15 +66,11 @@ import { mapGetters, mapMutations } from "vuex";
 export default {
   props: {
     item: {
-      type: String,
+      type: Object,
       required: true
     },
     counter: {
       type: Number,
-      required: true
-    },
-    title: {
-      type: String,
       required: true
     },
     payment: {

@@ -32,7 +32,6 @@
                   :item="itemsObj[menu]"
                   :key="itemsObj[menu].id"
                   v-bind:counter="orders[itemsObj[menu].id] || 0"
-                  v-bind:title="itemsObj[menu].itemName"
                   v-bind:payment="Number(itemsObj[menu].price||0)"
                   v-bind:description="itemsObj[menu].itemDescription"
                   v-bind:image="itemsObj[menu].itemPhoto"
