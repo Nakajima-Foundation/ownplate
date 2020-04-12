@@ -4,22 +4,13 @@
       <div class="media" @click="openMenuFlag ? closeMenu() : openMenu()">
         <div class="media-content">
           <!-- <h4 class="bold">Kushikatsu Special Platter</h4> -->
-          <p class="item-name">
-            {{ title }}
-          </p>
-          <p class="item-price">
-            {{  $n(payment, 'currency')  }}
-          </p>
+          <p class="item-name">{{ title }}</p>
+          <p class="item-price">{{ $n(payment, 'currency') }}</p>
           <p>{{ description }}</p>
         </div>
         <div class="media-right">
           <figure class="image is-100x100">
-            <img
-              class="is-square"
-              :src="image"
-              alt=""
-              style="border-radius: 4px;"
-            />
+            <img class="is-square" :src="image" alt style="border-radius: 4px;" />
           </figure>
         </div>
       </div>
@@ -36,9 +27,7 @@
                 rounded
                 style="padding-left:2rem;padding-right:2rem;margin-left:1rem;"
                 @click="pullCount"
-              >
-                -
-              </b-button>
+              >-</b-button>
               <b-button
                 v-else
                 class="counter-button"
@@ -46,37 +35,25 @@
                 style="padding-left:2rem;padding-right:2rem;margin-left:1rem;"
                 disabled
                 @click="pullCount"
-              >
-                -
-              </b-button>
+              >-</b-button>
             </div>
-            <span
-              class="item-counter"
-            >
-              {{ counter }}
-            </span>
+            <span class="item-counter">{{ counter }}</span>
             <div class="level-right">
               <b-button
                 class="counter-button"
                 rounded
                 style="padding-left:2rem;padding-right:2rem;margin-right:1rem;"
                 @click="pushCount"
-              >
-                +
-              </b-button>
+              >+</b-button>
             </div>
           </div>
-          <p class="bold">
-            Special instructions
-          </p>
+          <p class="bold">Special instructions</p>
           <p class="p-font-mini">
             Please note that special requests may result in price adjustment
             after your order is processed.
           </p>
           <div class="notification">
-            <p class="p-font-mini">
-              Please put the dressing on the side.
-            </p>
+            <p class="p-font-mini">Please put the dressing on the side.</p>
           </div>
         </div>
       </div>
@@ -88,7 +65,7 @@
 import { mapGetters, mapMutations } from "vuex";
 export default {
   props: {
-    id: {
+    item: {
       type: String,
       required: true
     },
@@ -139,7 +116,7 @@ export default {
       this.openMenuFlag = false;
     },
     order(newCounter) {
-      this.$emit("emitting", { id:this.id, counter:newCounter });
+      this.$emit("emitting", { id: this.item.id, counter: newCounter });
     }
   }
 };
@@ -150,9 +127,9 @@ export default {
 }
 
 .item-counter {
-  margin-top:-0.4rem;
-  font-size:3rem !important;
-  color:$primary;
+  margin-top: -0.4rem;
+  font-size: 3rem !important;
+  color: $primary;
 }
 
 .count-class {
