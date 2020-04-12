@@ -25,13 +25,13 @@
                 class="counter-button"
                 rounded
                 style="padding-left:2rem;padding-right:2rem;margin-left:1rem;"
-                :disabled="counter === 0"
+                :disabled="count === 0"
                 @click="pullCount"
               >
                 <i class="fas fa-minus" />
               </b-button>
             </div>
-            <span class="item-counter">{{ counter }}</span>
+            <span class="item-counter">{{ count }}</span>
             <div class="level-right">
               <b-button
                 class="counter-button"
@@ -43,13 +43,31 @@
               </b-button>
             </div>
           </div>
-          <p class="bold">Special instructions</p>
-          <p class="p-font-mini">
-            Please note that special requests may result in price adjustment
-            after your order is processed.
-          </p>
-          <div class="notification">
-            <p class="p-font-mini">Please put the dressing on the side.</p>
+          <div v-if="hasOptions">
+            <div v-for="(option, index) in options" :key="index">
+              <div v-if="option.length === 1" class="field">
+                <b-checkbox v-model="optionValues[index]">{{ option[0] }}</b-checkbox>
+              </div>
+              <div v-else class="field">
+                <b-radio
+                  v-for="(choice, index2) in option"
+                  v-model="optionValues[index]"
+                  name="key + index"
+                  :native-value="choice"
+                  :key="index2"
+                >{{ choice }}</b-radio>
+              </div>
+            </div>
+          </div>
+          <div v-if="false">
+            <p class="bold">Special instructions</p>
+            <p class="p-font-mini">
+              Please note that special requests may result in price adjustment
+              after your order is processed.
+            </p>
+            <div class="notification">
+              <p class="p-font-mini">Please put the dressing on the side.</p>
+            </div>
           </div>
         </div>
       </div>
@@ -65,19 +83,41 @@ export default {
       type: Object,
       required: true
     },
-    counter: {
+    count: {
       type: Number,
       required: true
     }
   },
   data() {
     return {
-      openMenuFlag: false
+      openMenuFlag: false,
+      optionValues: []
     };
   },
+  created() {
+    this.optionValues = this.options.map(option => {
+      return option.length === 1 ? false : option[0];
+    });
+  },
+  watch: {
+    // Only for debugging
+    optionValues() {
+      console.log(this.optionValues);
+    }
+  },
   computed: {
+    options() {
+      return (this.item.itemOptionCheckbox || []).map(option => {
+        return option.split(",").map(choice => {
+          return choice.trim();
+        });
+      });
+    },
+    hasOptions() {
+      return this.options.length;
+    },
     cardStyle() {
-      return this.counter > 0 ? { backgroundColor: "#e0f7fa" } : {};
+      return this.count > 0 ? { backgroundColor: "#e0f7fa" } : {};
     },
     price() {
       return Number(this.item.price || 0);
@@ -98,25 +138,25 @@ export default {
   },
   methods: {
     pullCount() {
-      if (this.counter <= 0) {
+      if (this.count <= 0) {
         return;
       }
-      this.order(this.counter - 1);
+      this.setCount(this.count - 1);
     },
     pushCount() {
-      this.order(this.counter + 1);
+      this.setCount(this.count + 1);
     },
     openMenu() {
       this.openMenuFlag = true;
-      if (this.counter == 0) {
-        this.order(this.counter + 1);
+      if (this.count == 0) {
+        this.setCount(this.count + 1);
       }
     },
     closeMenu() {
       this.openMenuFlag = false;
     },
-    order(newCounter) {
-      this.$emit("emitting", { id: this.item.id, counter: newCounter });
+    setCount(newValue) {
+      this.$emit("didCountChange", { id: this.item.id, count: newValue });
     }
   }
 };

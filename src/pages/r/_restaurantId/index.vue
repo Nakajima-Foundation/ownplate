@@ -32,9 +32,8 @@
                   v-if="itemsObj[menu]._dataType === 'menu'"
                   :item="itemsObj[menu]"
                   :key="itemsObj[menu].id"
-                  :counter="orders[itemsObj[menu].id] || 0"
-                  :payment="Number(itemsObj[menu].price||0)"
-                  @emitting="emitted($event)"
+                  :count="orders[itemsObj[menu].id] || 0"
+                  @didCountChange="didCountChange($event)"
                 ></item-card>
               </template>
             </template>
@@ -55,14 +54,14 @@
       </section>
       <div>
         <button
-          v-if="0 != foodCounter"
+          v-if="0 != totalCount"
           id="order_btn"
           class="button is-primary is-rounded"
           @click="handleCheckOut"
         >
           <span
             style="margin-right: auto;"
-          >{{$tc('sitemenu.orderCounter', foodCounter, {count: foodCounter})}}</span>
+          >{{$tc('sitemenu.orderCounter', totalCount, {count: totalCount})}}</span>
           <span class="bold" style="margin-left:auto;">{{$t('sitemenu.checkout')}}</span>
         </button>
       </div>
@@ -162,7 +161,7 @@ export default {
     }
   },
   computed: {
-    foodCounter() {
+    totalCount() {
       const ret = Object.keys(this.orders).reduce((total, id) => {
         return total + this.orders[id];
       }, 0);
@@ -213,10 +212,10 @@ export default {
         path: `/r/${this.restaurantId()}/order/${res.id}`
       });
     },
-    emitted(eventArgs) {
+    didCountChange(eventArgs) {
       // NOTE: We need to assign a new object to trigger computed properties
       const obj = {};
-      obj[eventArgs.id] = eventArgs.counter;
+      obj[eventArgs.id] = eventArgs.count;
       this.orders = Object.assign({}, this.orders, obj);
     }
   }
