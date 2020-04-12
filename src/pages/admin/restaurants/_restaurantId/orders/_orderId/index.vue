@@ -148,6 +148,7 @@ export default {
     item(id) {
       return {
         count: this.orderInfo.order[id],
+        option: this.orderInfo.options && this.orderInfo.options[id],
         menu: this.menus[id]
       };
     },

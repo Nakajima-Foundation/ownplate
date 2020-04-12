@@ -5,15 +5,11 @@
         <div class="media-content">
           <h3>{{ menu.itemName }}</h3>
           <p>x {{ item.count }}</p>
+          <p>{{ item.option }}</p>
         </div>
         <div class="media-right">
           <figure class="image thumbnail">
-            <img
-              class="is-square"
-              :src="menu.itemPhoto"
-              alt=""
-              style="border-radius: 4px;"
-            />
+            <img class="is-square" :src="menu.itemPhoto" alt style="border-radius: 4px;" />
           </figure>
         </div>
       </div>
@@ -22,15 +18,13 @@
 </template>
 
 <script>
-
 export default {
-  components: {
-  },
+  components: {},
   props: {
     item: {
       type: Object,
       required: true
-    },
+    }
   },
   computed: {
     menu() {
@@ -38,9 +32,9 @@ export default {
     }
   },
   mounted() {
-    console.log(this.item.menu)
+    console.log(this.item.menu);
   }
-}
+};
 </script>
 
 <style scoped>
