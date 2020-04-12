@@ -18,7 +18,9 @@
     "phonenumber": "電話番号",
     "website": "ホームページ",
     "hours": "営業時間",
-    "public": "公開"
+    "public": "公開",
+    "businessHourDescription": "営業する曜日にチェックをいれ、営業時間を設定してください。",
+    "publicDescription": "「公開」にチェックを入れずにSAVEボタンをクリックすると、下書きとして保存されます。"
   },
   "sitemenu": {
     "menu": "メニュー",
@@ -104,7 +106,7 @@
     "pleaseSignUp":"Sign up as a new user",
     "forgotPassword":"Forgot Password？",
     "passwordReset":"Reset Password",
-    
+
     "error": {
       "email": {
         "invalid":"Invalid Email Address",
@@ -120,7 +122,7 @@
         "auth/too-many-requests":"Too many unsuccessful login attempts. Please try again later.",
         "auth/invalid-email":"The email address is badly formatted."
       }
-    }  
+    }
   },
   "week": {
     "short": {

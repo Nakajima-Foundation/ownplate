@@ -337,7 +337,9 @@
     </div>
 
     <h4>{{$t('shopInfo.hours')}}</h4>
-
+    <p class="p-font bold" style="color:#CB4B4B">
+      {{$t('shopInfo.businessHourDescription')}}
+    </p>
     <div v-for="(day, index) in days" :key="index">
       <div class="field">
         <b-checkbox v-model="shopInfo.businessDay[index]">

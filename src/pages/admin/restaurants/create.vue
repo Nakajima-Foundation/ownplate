@@ -74,7 +74,7 @@ export default {
       this.isLoading = false;
       console.log("result", result);
       if (result.result) {
-        this.$router.push(`./${this.rid}`)
+        this.$router.push(`/admin/restaurants/${this.rid}`)
       } else {
         this.errors = [result.message]
       }
