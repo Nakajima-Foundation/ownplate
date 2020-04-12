@@ -28,6 +28,7 @@
                   v-if="itemsObj[itemId]._dataType === 'menu'"
                   :item="itemsObj[itemId]"
                   :count="orders[itemId] || 0"
+                  :optionPrev="optionsPrev[itemId]"
                   @didCountChange="didCountChange($event)"
                   @didOptionValuesChange="didOptionValuesChange($event)"
                 ></item-card>
@@ -92,6 +93,7 @@ export default {
       loginVisible: false,
       orders: {},
       options: {},
+      optionsPrev: {}, // from the store.cart
       restaurantsId: this.restaurantId(),
       shopInfo: {},
       // isCardModalActive: false
@@ -115,6 +117,7 @@ export default {
       const cart = this.$store.state.carts[prevOrderId] || {};
       console.log("cart", cart);
       this.orders = cart.orders || {};
+      this.optionsPrev = cart.options || {};
     }
   },
   created() {

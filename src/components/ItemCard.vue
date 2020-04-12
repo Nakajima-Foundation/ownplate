@@ -86,6 +86,10 @@ export default {
     count: {
       type: Number,
       required: true
+    },
+    optionPrev: {
+      type: Array,
+      required: false
     }
   },
   data() {
@@ -95,7 +99,15 @@ export default {
     };
   },
   created() {
-    this.optionValues = this.options.map(option => {
+    console.log("created", this.optionPrev);
+    this.optionValues = this.options.map((option, index) => {
+      if (
+        this.optionPrev &&
+        this.optionPrev.length > index &&
+        this.optionPrev[index]
+      ) {
+        return this.optionPrev[index];
+      }
       return option.length === 1 ? false : option[0];
     });
   },
