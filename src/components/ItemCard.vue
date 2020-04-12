@@ -76,11 +76,6 @@ export default {
     payment: {
       type: Number,
       required: true
-    },
-    image: {
-      type: String,
-      required: true,
-      default: "https://magazine.hitosara.com/image/421/MM_421.jp"
     }
   },
   data() {
@@ -89,6 +84,13 @@ export default {
     };
   },
   computed: {
+    image() {
+      // BUGBUG: Come up with a better default image.
+      return (
+        this.item.itemPhoto ||
+        "https://magazine.hitosara.com/image/421/MM_421.jp"
+      );
+    },
     title() {
       return this.item.itemName;
     },

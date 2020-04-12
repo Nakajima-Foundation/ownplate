@@ -24,18 +24,17 @@
             <template v-for="menu in menuLists">
               <template v-if="itemsObj[menu]">
                 <h2
-                  v-bind:key="itemsObj[menu].id"
                   v-if="itemsObj[menu]._dataType === 'title'"
+                  v-bind:key="itemsObj[menu].id"
                 >{{itemsObj[menu].name}}</h2>
 
                 <item-card
+                  v-if="itemsObj[menu]._dataType === 'menu'"
                   :item="itemsObj[menu]"
                   :key="itemsObj[menu].id"
                   :counter="orders[itemsObj[menu].id] || 0"
                   :payment="Number(itemsObj[menu].price||0)"
-                  v-bind:image="itemsObj[menu].itemPhoto"
                   @emitting="emitted($event)"
-                  v-if="itemsObj[menu]._dataType === 'menu'"
                 ></item-card>
               </template>
             </template>
