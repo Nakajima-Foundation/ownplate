@@ -187,8 +187,12 @@ export default {
         return option
           .reduce((ret, choice, index) => {
             if (choice === true) {
-              ret.push(this.menuObj[key].itemOptionCheckbox[index]);
+              // Checkbox case
+              if (this.menuObj[key].itemOptionCheckbox) {
+                ret.push(this.menuObj[key].itemOptionCheckbox[index]);
+              }
             } else if (choice) {
+              // Radio button case
               ret.push(choice);
             }
             return ret;
@@ -198,15 +202,17 @@ export default {
       return "";
     },
     async handleEditItems() {
-      console.log("handleEditItems");
+      // We need to call push before waiting for this promise to complete.
+      // Otherwise, the user will see the 404 error briefly.
+      const promise = db
+        .doc(`restaurants/${this.restaurantId()}/orders/${this.orderId}`)
+        .delete();
+      this.$router.push({
+        path: `/r/${this.restaurantId()}#${this.orderId}`
+      });
       try {
-        await db
-          .doc(`restaurants/${this.restaurantId()}/orders/${this.orderId}`)
-          .delete();
+        await promise;
         console.log("suceeded");
-        this.$router.push({
-          path: `/r/${this.restaurantId()}#${this.orderId}`
-        });
       } catch (error) {
         console.log("failed");
       }
