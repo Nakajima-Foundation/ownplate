@@ -1,15 +1,15 @@
 <template>
   <div>
-    <template v-if="notFound==null">
-    </template>
+    <template v-if="notFound==null"></template>
     <template v-else-if="notFound">
       <not-found />
     </template>
     <template v-else>
       <!-- menu-image -->
-      <div id="menu-header-image"
-           :style="{ backgroundImage: 'url(' + shopInfo.restCoverPhoto + ')' }"
-           >
+      <div
+        id="menu-header-image"
+        :style="{ backgroundImage: 'url(' + shopInfo.restCoverPhoto + ')' }"
+      >
         <div id="menu-header-image-mask"></div>
       </div>
       <!-- shop-orner -->
@@ -18,33 +18,27 @@
           v-if="shopInfo.restaurantName"
           :src="shopInfo.restProfilePhoto"
           :name="shopInfo.restaurantName"
-          ></shop-orner-info>
+        ></shop-orner-info>
         <b-tabs size="is-medium" class="block" expanded v-model="tabIndex">
           <b-tab-item :label="$t('sitemenu.menu')">
             <template v-for="menu in menuLists">
               <template v-if="itemsObj[menu]">
                 <h2
+                  v-if="itemsObj[menu]._dataType === 'title'"
                   v-bind:key="itemsObj[menu].id"
-                  v-if="itemsObj[menu]._dataType === 'title'">
-                  {{itemsObj[menu].name}}
-                </h2>
+                >{{itemsObj[menu].name}}</h2>
 
                 <item-card
-                  v-bind:key="itemsObj[menu].id"
-                  v-bind:id="itemsObj[menu].id"
-                  v-bind:counter="orders[itemsObj[menu].id] || 0"
-                  v-bind:title="itemsObj[menu].itemName"
-                  v-bind:payment="Number(itemsObj[menu].price||0)"
-                  v-bind:description="itemsObj[menu].itemDescription"
-                  v-bind:image="itemsObj[menu].itemPhoto"
-                  @emitting="emitted($event)"
                   v-if="itemsObj[menu]._dataType === 'menu'"
-                  ></item-card>
-
+                  :item="itemsObj[menu]"
+                  :key="itemsObj[menu].id"
+                  :counter="orders[itemsObj[menu].id] || 0"
+                  :payment="Number(itemsObj[menu].price||0)"
+                  @emitting="emitted($event)"
+                ></item-card>
               </template>
             </template>
             <hr class="hr-black" />
-
           </b-tab-item>
           <b-tab-item :label="$t('sitemenu.about')">
             <shop-info v-bind:shopInfo="shopInfo" v-if="shopInfo.publicFlag"></shop-info>
@@ -54,8 +48,7 @@
         <b-modal :active.sync="loginVisible" :width="640">
           <div class="card">
             <div class="card-content">
-              <phone-login
-                v-on:dismissed="handleDismissed" />
+              <phone-login v-on:dismissed="handleDismissed" />
             </div>
           </div>
         </b-modal>
@@ -66,8 +59,10 @@
           id="order_btn"
           class="button is-primary is-rounded"
           @click="handleCheckOut"
-          >
-          <span style="margin-right: auto;">{{$tc('sitemenu.orderCounter', foodCounter, {count: foodCounter})}}</span>
+        >
+          <span
+            style="margin-right: auto;"
+          >{{$tc('sitemenu.orderCounter', foodCounter, {count: foodCounter})}}</span>
           <span class="bold" style="margin-left:auto;">{{$t('sitemenu.checkout')}}</span>
         </button>
       </div>
@@ -93,12 +88,12 @@ export default {
     PhoneLogin,
     ShopOrnerInfo,
     ShopInfo,
-    NotFound,
+    NotFound
   },
   data() {
     return {
       tabIndex: 0,
-      tabs: ['#menus', '#about'],
+      tabs: ["#menus", "#about"],
       loginVisible: false,
       orders: {},
       restaurantsId: this.restaurantId(),
@@ -108,11 +103,11 @@ export default {
       titles: [],
 
       detacher: [],
-      notFound: null,
+      notFound: null
     };
   },
   mounted() {
-    const index = this.tabs.findIndex(tab => tab === this.$route.hash)
+    const index = this.tabs.findIndex(tab => tab === this.$route.hash);
     if (index > -1) {
       this.tabIndex = index;
     }
@@ -125,36 +120,38 @@ export default {
     }
   },
   created() {
-    const restaurant_detacher = db.doc(`restaurants/${this.restaurantId()}`).onSnapshot((restaurant) => {
-      if (restaurant.exists) {
-        const restaurant_data = restaurant.data();
-        this.shopInfo = restaurant_data;
-        this.notFound = !this.shopInfo.publicFlag;
-      } else {
-        this.notFound = true;
-      }
-    });
-    const menu_detacher = db.collection(`restaurants/${this.restaurantId()}/menus`)
-          .where("deletedFlag", "==", false)
-          .where("publicFlag", "==", true).onSnapshot((menu) => {
-      if (!menu.empty) {
-        this.menus = menu.docs.map(this.doc2data("menu"));
-      }
-    });
-    const title_detacher = db.collection(`restaurants/${this.restaurantId()}/titles`).onSnapshot((title) => {
-      if (!title.empty) {
-        this.titles = title.docs.map(this.doc2data("title"));
-      }
-    });
-    this.detacher = [
-      restaurant_detacher,
-      menu_detacher,
-      title_detacher,
-    ];
+    const restaurant_detacher = db
+      .doc(`restaurants/${this.restaurantId()}`)
+      .onSnapshot(restaurant => {
+        if (restaurant.exists) {
+          const restaurant_data = restaurant.data();
+          this.shopInfo = restaurant_data;
+          this.notFound = !this.shopInfo.publicFlag;
+        } else {
+          this.notFound = true;
+        }
+      });
+    const menu_detacher = db
+      .collection(`restaurants/${this.restaurantId()}/menus`)
+      .where("deletedFlag", "==", false)
+      .where("publicFlag", "==", true)
+      .onSnapshot(menu => {
+        if (!menu.empty) {
+          this.menus = menu.docs.map(this.doc2data("menu"));
+        }
+      });
+    const title_detacher = db
+      .collection(`restaurants/${this.restaurantId()}/titles`)
+      .onSnapshot(title => {
+        if (!title.empty) {
+          this.titles = title.docs.map(this.doc2data("title"));
+        }
+      });
+    this.detacher = [restaurant_detacher, menu_detacher, title_detacher];
   },
   destroyed() {
     if (this.detacher) {
-      this.detacher.map((detacher) => {
+      this.detacher.map(detacher => {
         detacher();
       });
     }
@@ -162,12 +159,12 @@ export default {
   watch: {
     tabIndex() {
       this.$router.push(this.tabs[this.tabIndex]);
-    },
+    }
   },
   computed: {
     foodCounter() {
       const ret = Object.keys(this.orders).reduce((total, id) => {
-        return total + this.orders[id]
+        return total + this.orders[id];
       }, 0);
       return ret;
     },
@@ -180,7 +177,7 @@ export default {
     },
     user() {
       return this.$store.state.user;
-    },
+    }
   },
   methods: {
     handleCheckOut() {
@@ -205,11 +202,13 @@ export default {
         uid: this.user.uid
         // price never set here.
       };
-      const res = await db.collection(`restaurants/${this.restaurantId()}/orders`).add(order_data);
+      const res = await db
+        .collection(`restaurants/${this.restaurantId()}/orders`)
+        .add(order_data);
       // Store the current order associated with this order id, so that we can re-use it
       // when the user clicks the "Edit Items" on the next page.
       // In that case, we will come back here with #id so that we can retrieve it (see mounted).
-      this.$store.commit('saveCart', {id:res.id, order:this.orders});
+      this.$store.commit("saveCart", { id: res.id, order: this.orders });
       this.$router.push({
         path: `/r/${this.restaurantId()}/order/${res.id}`
       });
@@ -219,7 +218,7 @@ export default {
       const obj = {};
       obj[eventArgs.id] = eventArgs.counter;
       this.orders = Object.assign({}, this.orders, obj);
-    },
+    }
   }
 };
 </script>

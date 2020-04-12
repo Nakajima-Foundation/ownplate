@@ -1,25 +1,16 @@
 <template>
-  <div class="card block" :class="{ order_now: 0 < counter }">
+  <div class="card block" :style="cardStyle">
     <div class="card-content">
       <div class="media" @click="openMenuFlag ? closeMenu() : openMenu()">
         <div class="media-content">
           <!-- <h4 class="bold">Kushikatsu Special Platter</h4> -->
-          <p class="item-name">
-            {{ title }}
-          </p>
-          <p class="item-price">
-            {{  $n(payment, 'currency')  }}
-          </p>
+          <p class="item-name">{{ title }}</p>
+          <p class="item-price">{{ $n(price, 'currency') }}</p>
           <p>{{ description }}</p>
         </div>
         <div class="media-right">
           <figure class="image is-100x100">
-            <img
-              class="is-square"
-              :src="image"
-              alt=""
-              style="border-radius: 4px;"
-            />
+            <img class="is-square" :src="image" alt style="border-radius: 4px;" />
           </figure>
         </div>
       </div>
@@ -31,30 +22,16 @@
           <div class="level is-mobile counter">
             <div class="level-left">
               <b-button
-                v-if="0 < counter"
-                class="counter-button disabled"
-                rounded
-                style="padding-left:2rem;padding-right:2rem;margin-left:1rem;"
-                @click="pullCount"
-              >
-                -
-              </b-button>
-              <b-button
-                v-else
                 class="counter-button"
                 rounded
                 style="padding-left:2rem;padding-right:2rem;margin-left:1rem;"
-                disabled
+                :disabled="counter === 0"
                 @click="pullCount"
               >
-                -
+                <i class="fas fa-minus" />
               </b-button>
             </div>
-            <span
-              class="item-counter"
-            >
-              {{ counter }}
-            </span>
+            <span class="item-counter">{{ counter }}</span>
             <div class="level-right">
               <b-button
                 class="counter-button"
@@ -62,21 +39,17 @@
                 style="padding-left:2rem;padding-right:2rem;margin-right:1rem;"
                 @click="pushCount"
               >
-                +
+                <i class="fas fa-plus" />
               </b-button>
             </div>
           </div>
-          <p class="bold">
-            Special instructions
-          </p>
+          <p class="bold">Special instructions</p>
           <p class="p-font-mini">
             Please note that special requests may result in price adjustment
             after your order is processed.
           </p>
           <div class="notification">
-            <p class="p-font-mini">
-              Please put the dressing on the side.
-            </p>
+            <p class="p-font-mini">Please put the dressing on the side.</p>
           </div>
         </div>
       </div>
@@ -88,36 +61,40 @@
 import { mapGetters, mapMutations } from "vuex";
 export default {
   props: {
-    id: {
-      type: String,
+    item: {
+      type: Object,
       required: true
     },
     counter: {
       type: Number,
       required: true
-    },
-    title: {
-      type: String,
-      required: true
-    },
-    payment: {
-      type: Number,
-      required: true
-    },
-    description: {
-      type: String,
-      required: true
-    },
-    image: {
-      type: String,
-      required: true,
-      default: "https://magazine.hitosara.com/image/421/MM_421.jp"
     }
   },
   data() {
     return {
       openMenuFlag: false
     };
+  },
+  computed: {
+    cardStyle() {
+      return this.counter > 0 ? { backgroundColor: "#e0f7fa" } : {};
+    },
+    price() {
+      return Number(this.item.price || 0);
+    },
+    image() {
+      // BUGBUG: Come up with a better default image.
+      return (
+        this.item.itemPhoto ||
+        "https://magazine.hitosara.com/image/421/MM_421.jp"
+      );
+    },
+    title() {
+      return this.item.itemName;
+    },
+    description() {
+      return this.item.itemDescription;
+    }
   },
   methods: {
     pullCount() {
@@ -139,7 +116,7 @@ export default {
       this.openMenuFlag = false;
     },
     order(newCounter) {
-      this.$emit("emitting", { id:this.id, counter:newCounter });
+      this.$emit("emitting", { id: this.item.id, counter: newCounter });
     }
   }
 };
@@ -150,9 +127,9 @@ export default {
 }
 
 .item-counter {
-  margin-top:-0.4rem;
-  font-size:3rem !important;
-  color:$primary;
+  margin-top: -0.4rem;
+  font-size: 3rem !important;
+  color: $primary;
 }
 
 .count-class {
@@ -165,8 +142,5 @@ export default {
 
 .notification {
   margin-top: 1rem;
-}
-.order_now {
-  background-color: #e0f7fa;
 }
 </style>
