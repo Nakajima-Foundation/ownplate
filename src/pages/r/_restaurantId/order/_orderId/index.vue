@@ -168,17 +168,36 @@ export default {
             item: menuObj[key],
             count: num,
             id: key,
-            specialRequest: "no special request" // BUGBUG: Implement this later
+            specialRequest: this.specialRequest(key)
           };
         });
       }
       return [];
+    },
+    menuObj() {
+      return this.array2obj(this.menus);
     },
     orderId() {
       return this.$route.params.orderId;
     }
   },
   methods: {
+    specialRequest(key) {
+      const option = this.orderInfo.options && this.orderInfo.options[key];
+      if (option) {
+        return option
+          .reduce((ret, choice) => {
+            if (choice === true) {
+              ret.push("something");
+            } else if (choice) {
+              ret.push(choice);
+            }
+            return ret;
+          }, [])
+          .join(", ");
+      }
+      return "";
+    },
     async handleEditItems() {
       console.log("handleEditItems");
       try {
