@@ -178,6 +178,12 @@ export default {
     },
     user() {
       return this.$store.state.user;
+    },
+    trimmedOptions() {
+      return Object.keys(this.orders).reduce((ret, id) => {
+        ret[id] = this.options[id];
+        return ret;
+      }, {});
     }
   },
   methods: {
@@ -199,7 +205,7 @@ export default {
     async goCheckout() {
       const order_data = {
         order: this.orders,
-        options: this.options,
+        options: this.trimmedOptions,
         status: order_status.new_order,
         uid: this.user.uid
         // price never set here.
