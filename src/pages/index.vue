@@ -4,7 +4,7 @@
       <div class="card block">
         <div class="card-content">
           <p style="text-align:center; font-weight:bold; font-size:1.5em">
-            <router-link to="/admin/restaurants">Restraunt Operators</router-link>
+            <router-link to="/admin/restaurants">Restaurant Operators</router-link>
           </p>
         </div>
       </div>
