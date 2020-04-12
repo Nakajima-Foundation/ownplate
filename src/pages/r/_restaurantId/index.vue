@@ -21,21 +21,18 @@
         ></shop-orner-info>
         <b-tabs size="is-medium" class="block" expanded v-model="tabIndex">
           <b-tab-item :label="$t('sitemenu.menu')">
-            <template v-for="menu in menuLists">
-              <template v-if="itemsObj[menu]">
-                <h2
-                  v-if="itemsObj[menu]._dataType === 'title'"
-                  v-bind:key="itemsObj[menu].id"
-                >{{itemsObj[menu].name}}</h2>
-
+            <template v-for="itemId in menuLists">
+              <div v-if="itemsObj[itemId]" :key="itemId">
+                <h2 v-if="itemsObj[itemId]._dataType === 'title'">{{itemsObj[itemId].name}}</h2>
                 <item-card
-                  v-if="itemsObj[menu]._dataType === 'menu'"
-                  :item="itemsObj[menu]"
-                  :key="itemsObj[menu].id"
-                  :count="orders[itemsObj[menu].id] || 0"
+                  v-if="itemsObj[itemId]._dataType === 'menu'"
+                  :item="itemsObj[itemId]"
+                  :count="orders[itemId] || 0"
+                  :optionPrev="optionsPrev[itemId]"
                   @didCountChange="didCountChange($event)"
+                  @didOptionValuesChange="didOptionValuesChange($event)"
                 ></item-card>
-              </template>
+              </div>
             </template>
             <hr class="hr-black" />
           </b-tab-item>
@@ -95,6 +92,8 @@ export default {
       tabs: ["#menus", "#about"],
       loginVisible: false,
       orders: {},
+      options: {},
+      optionsPrev: {}, // from the store.cart
       restaurantsId: this.restaurantId(),
       shopInfo: {},
       // isCardModalActive: false
@@ -115,7 +114,10 @@ export default {
     const url = new URL(window.location.href);
     if (url.hash.length > 1) {
       const prevOrderId = url.hash.slice(1);
-      this.orders = this.$store.state.carts[prevOrderId] || {};
+      const cart = this.$store.state.carts[prevOrderId] || {};
+      console.log("cart", cart);
+      this.orders = cart.orders || {};
+      this.optionsPrev = cart.options || {};
     }
   },
   created() {
@@ -176,6 +178,12 @@ export default {
     },
     user() {
       return this.$store.state.user;
+    },
+    trimmedOptions() {
+      return Object.keys(this.orders).reduce((ret, id) => {
+        ret[id] = this.options[id];
+        return ret;
+      }, {});
     }
   },
   methods: {
@@ -197,6 +205,7 @@ export default {
     async goCheckout() {
       const order_data = {
         order: this.orders,
+        options: this.trimmedOptions,
         status: order_status.new_order,
         uid: this.user.uid
         // price never set here.
@@ -207,7 +216,13 @@ export default {
       // Store the current order associated with this order id, so that we can re-use it
       // when the user clicks the "Edit Items" on the next page.
       // In that case, we will come back here with #id so that we can retrieve it (see mounted).
-      this.$store.commit("saveCart", { id: res.id, order: this.orders });
+      this.$store.commit("saveCart", {
+        id: res.id,
+        cart: {
+          orders: this.orders,
+          options: this.options
+        }
+      });
       this.$router.push({
         path: `/r/${this.restaurantId()}/order/${res.id}`
       });
@@ -217,6 +232,12 @@ export default {
       const obj = {};
       obj[eventArgs.id] = eventArgs.count;
       this.orders = Object.assign({}, this.orders, obj);
+    },
+    didOptionValuesChange(eventArgs) {
+      const obj = {};
+      obj[eventArgs.id] = eventArgs.optionValues;
+      this.options = Object.assign({}, this.options, obj);
+      console.log(this.options);
     }
   }
 };

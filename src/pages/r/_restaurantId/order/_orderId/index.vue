@@ -161,34 +161,58 @@ export default {
     },
     orderItems() {
       if (this.menus.length > 0 && this.orderInfo.order) {
-        const menuObj = this.array2obj(this.menus);
         return Object.keys(this.orderInfo.order).map(key => {
           const num = this.orderInfo.order[key];
           return {
-            item: menuObj[key],
+            item: this.menuObj[key],
             count: num,
             id: key,
-            specialRequest: "no special request" // BUGBUG: Implement this later
+            specialRequest: this.specialRequest(key)
           };
         });
       }
       return [];
+    },
+    menuObj() {
+      return this.array2obj(this.menus);
     },
     orderId() {
       return this.$route.params.orderId;
     }
   },
   methods: {
+    specialRequest(key) {
+      const option = this.orderInfo.options && this.orderInfo.options[key];
+      if (option) {
+        return option
+          .reduce((ret, choice, index) => {
+            if (choice === true) {
+              // Checkbox case
+              if (this.menuObj[key].itemOptionCheckbox) {
+                ret.push(this.menuObj[key].itemOptionCheckbox[index]);
+              }
+            } else if (choice) {
+              // Radio button case
+              ret.push(choice);
+            }
+            return ret;
+          }, [])
+          .join(", ");
+      }
+      return "";
+    },
     async handleEditItems() {
-      console.log("handleEditItems");
+      // We need to call push before waiting for this promise to complete.
+      // Otherwise, the user will see the 404 error briefly.
+      const promise = db
+        .doc(`restaurants/${this.restaurantId()}/orders/${this.orderId}`)
+        .delete();
+      this.$router.push({
+        path: `/r/${this.restaurantId()}#${this.orderId}`
+      });
       try {
-        await db
-          .doc(`restaurants/${this.restaurantId()}/orders/${this.orderId}`)
-          .delete();
+        await promise;
         console.log("suceeded");
-        this.$router.push({
-          path: `/r/${this.restaurantId()}#${this.orderId}`
-        });
       } catch (error) {
         console.log("failed");
       }

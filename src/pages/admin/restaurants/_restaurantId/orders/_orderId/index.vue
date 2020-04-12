@@ -49,7 +49,7 @@
         >{{ $t("order.status." + orderState) }}</b-button>
       </div>
     </div>
-    <ordered-item v-for="id in ids" :key="id" :item="item(id)" />
+    <ordered-item v-for="id in ids" :key="id" :item="items[id]" />
   </section>
 </template>
 
@@ -76,7 +76,7 @@ export default {
         "customer_picked_up"
       ],
       shopInfo: {},
-      menus: {},
+      menuObj: {},
       orderInfo: {},
       canceling: false,
       detacher: []
@@ -96,7 +96,7 @@ export default {
       .onSnapshot(menu => {
         if (!menu.empty) {
           const menuList = menu.docs.map(this.doc2data("menu"));
-          this.menus = this.array2obj(menuList);
+          this.menuObj = this.array2obj(menuList);
         }
       });
     const order_detacher = db
@@ -142,14 +142,40 @@ export default {
     },
     parentUrl() {
       return `/admin/restaurants/${this.restaurantId()}/orders`;
+    },
+    items() {
+      return Object.keys(this.orderInfo.order).reduce((ret, id) => {
+        ret[id] = {
+          count: this.orderInfo.order[id],
+          option: this.specialRequest(id),
+          menu: this.menuObj[id]
+        };
+        return ret;
+      }, {});
     }
   },
   methods: {
-    item(id) {
-      return {
-        count: this.orderInfo.order[id],
-        menu: this.menus[id]
-      };
+    // NOTE: Exact same code in the order/_orderId/index.vue for the user.
+    // This is intentional because we may want to present it differently to admins.
+    specialRequest(key) {
+      const option = this.orderInfo.options && this.orderInfo.options[key];
+      if (option) {
+        return option
+          .reduce((ret, choice, index) => {
+            if (choice === true) {
+              // Checkbox case
+              if (this.menuObj[key].itemOptionCheckbox) {
+                ret.push(this.menuObj[key].itemOptionCheckbox[index]);
+              }
+            } else if (choice) {
+              // Radio button case
+              ret.push(choice);
+            }
+            return ret;
+          }, [])
+          .join(", ");
+      }
+      return "";
     },
     async changeStatus(statusKey, event) {
       const ref = db.doc(
