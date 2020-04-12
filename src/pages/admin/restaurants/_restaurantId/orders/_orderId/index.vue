@@ -76,7 +76,7 @@ export default {
         "customer_picked_up"
       ],
       shopInfo: {},
-      menus: {},
+      menuObj: {},
       orderInfo: {},
       canceling: false,
       detacher: []
@@ -96,7 +96,7 @@ export default {
       .onSnapshot(menu => {
         if (!menu.empty) {
           const menuList = menu.docs.map(this.doc2data("menu"));
-          this.menus = this.array2obj(menuList);
+          this.menuObj = this.array2obj(menuList);
         }
       });
     const order_detacher = db
@@ -148,7 +148,7 @@ export default {
         ret[id] = {
           count: this.orderInfo.order[id],
           option: this.orderInfo.options && this.orderInfo.options[id],
-          menu: this.menus[id]
+          menu: this.menuObj[id]
         };
         return ret;
       }, {});
