@@ -54,14 +54,14 @@
       </section>
       <div>
         <button
-          v-if="0 != foodCounter"
+          v-if="0 != totalCount"
           id="order_btn"
           class="button is-primary is-rounded"
           @click="handleCheckOut"
         >
           <span
             style="margin-right: auto;"
-          >{{$tc('sitemenu.orderCounter', foodCounter, {count: foodCounter})}}</span>
+          >{{$tc('sitemenu.orderCounter', totalCount, {count: totalCount})}}</span>
           <span class="bold" style="margin-left:auto;">{{$t('sitemenu.checkout')}}</span>
         </button>
       </div>
@@ -161,7 +161,7 @@ export default {
     }
   },
   computed: {
-    foodCounter() {
+    totalCount() {
       const ret = Object.keys(this.orders).reduce((total, id) => {
         return total + this.orders[id];
       }, 0);
