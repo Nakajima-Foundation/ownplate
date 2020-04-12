@@ -1,5 +1,5 @@
 <template>
-  <div class="card block" :class="{ order_now: 0 < counter }">
+  <div class="card block" :style="cardStyle">
     <div class="card-content">
       <div class="media" @click="openMenuFlag ? closeMenu() : openMenu()">
         <div class="media-content">
@@ -76,6 +76,9 @@ export default {
     };
   },
   computed: {
+    cardStyle() {
+      return this.counter > 0 ? { backgroundColor: "#e0f7fa" } : {};
+    },
     price() {
       return Number(this.item.price || 0);
     },
@@ -139,8 +142,5 @@ export default {
 
 .notification {
   margin-top: 1rem;
-}
-.order_now {
-  background-color: #e0f7fa;
 }
 </style>
