@@ -33,7 +33,6 @@
                   :item="itemsObj[menu]"
                   :key="itemsObj[menu].id"
                   :counter="orders[itemsObj[menu].id] || 0"
-                  :payment="Number(itemsObj[menu].price||0)"
                   @emitting="emitted($event)"
                 ></item-card>
               </template>
