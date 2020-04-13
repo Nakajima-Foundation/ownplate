@@ -388,7 +388,6 @@ export default {
 
   data() {
     return {
-      uid,
       disabled: false, // ??
       filteredItems: [], // ??
       restProfileCroppa: null,
