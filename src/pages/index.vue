@@ -4,14 +4,21 @@
       <div class="card block">
         <div class="card-content">
           <p style="text-align:center; font-weight:bold; font-size:1.5em">
-            <router-link to="/admin/restaurants">Restaurant Operators</router-link>
+            <router-link to="/admin/restaurants">{{$t("menu.admins")}}</router-link>
           </p>
         </div>
       </div>
       <div class="card block">
         <div class="card-content">
           <p style="text-align:center; font-weight:bold; font-size:1.5em">
-            <router-link to="/r">Consumers</router-link>
+            <router-link to="/r">{{$t("menu.users")}}</router-link>
+          </p>
+        </div>
+      </div>
+      <div class="card block">
+        <div class="card-content">
+          <p style="text-align:center; font-weight:bold; font-size:1.5em">
+            <router-link to="/about">{{$t("menu.about")}}</router-link>
           </p>
         </div>
       </div>
