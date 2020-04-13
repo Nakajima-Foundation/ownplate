@@ -40,14 +40,21 @@ export default {
           this.shopInfo = restaurant_data;
         }
       });
+    const midMight = (() => {
+      const date = new Date();
+      date.setHours(0); // local midnight
+      date.setMinutes(0);
+      return date;
+    })();
     const order_detacher = db
       .collection(`restaurants/${this.restaurantId()}/orders`)
-      .orderBy("status")
-      .where("status", ">=", order_status.customer_paid)
-      .orderBy("timePaid")
+      .where("timePaid", ">=", midMight)
       .onSnapshot(result => {
         if (!result.empty) {
           let orders = result.docs.map(this.doc2data("order"));
+          orders = orders.sort((order0, order1) => {
+            return order0.status < order1.status ? -1 : 1;
+          });
           this.orders = orders.map(order => {
             order.timePaid =
               (order.timePaid && order.timePaid.toDate()) || new Date();
