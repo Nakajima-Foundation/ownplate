@@ -10,17 +10,17 @@
 
             <div class="container content has-text-centered">
               <h3 style="color: #0078c8">
-                {{ restaurantname }}
+                {{ restaurantname || "restaurantname"}}
               </h3>
             </div>
             <div style="text-align:center;margin-top:1rem;">
               <div class="p-font">
-                {{ streetaddress }}
+                {{ streetaddress || "streetaddress"}}
               </div>
               <div class="p-font" style="margin-top:-0.8rem;">
-                {{ city }},
-                {{ state }}
-                {{ zip }}
+                {{ city || "city"}},
+                {{ state || "state"}}
+                {{ zip || "zip"}}
               </div>
               <p class="p-font">
                 {{ phonenumber }}
