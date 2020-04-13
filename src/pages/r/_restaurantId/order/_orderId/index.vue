@@ -6,7 +6,12 @@
     <template v-else>
       <section class="section">
         <div v-if="paid" style="text-align: center;">
+          <i class="far fa-check-circle thankyou-icon"></i>
           <p class="thankyou">{{$t('order.thankyou')}}</p>
+        </div>
+        <h2>{{ $t('order.orderStatus') + ": " + orderName }}</h2>
+        <p style="margin-bottom:0.5rem">{{$t('order.pleaseStay')}}</p>
+        <div v-if="paid" style="text-align: center;">
           <p
             :class="orderStatusKey"
             style="margin-bottom:1rem;padding:0.5rem"
@@ -268,8 +273,12 @@ export default {
 }
 .thankyou {
   color: $primary;
-  font-size: 2rem;
+  font-size: 1.5em;
   font-weight: bold;
   margin-bottom: 1rem;
+}
+.thankyou-icon {
+  color: $primary;
+  font-size: 7em;
 }
 </style>
