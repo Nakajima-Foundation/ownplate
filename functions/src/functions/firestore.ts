@@ -1,4 +1,3 @@
-import * as admin from 'firebase-admin';
 import * as constant from '../common/constant';
 
 /*
@@ -97,7 +96,7 @@ export const orderCreate = async (db, snapshot, context) => {
 
   }
 }
-
+/* We no longer use this code, but keep it here for future for custom URL.
 export const createRestaurant = async (db: FirebaseFirestore.Firestore, data, context) => {
   const { restaurantId } = data
   if (!context.auth || !context.auth.uid || !context.auth.token.email) {
@@ -125,3 +124,4 @@ export const createRestaurant = async (db: FirebaseFirestore.Firestore, data, co
     return { result: false, message: e.message };
   });
 }
+*/
