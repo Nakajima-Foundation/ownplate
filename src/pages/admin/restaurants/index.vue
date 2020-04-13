@@ -9,7 +9,11 @@
         <div class="card block" v-if="readyToDisplay">
           <div class="card-content">
             <div
-              v-if="!existsRestaurant"
+              v-if="existsRestaurant === null"
+              >
+            </div>
+            <div
+              v-else-if="!existsRestaurant"
               class="container content has-text-centered"
             >
               <b-icon icon="silverware" size="is-large"></b-icon>
@@ -109,7 +113,7 @@ export default {
       phoneNumber: "",
       url: "",
       tags: "",
-      restaurantItems: [],
+      restaurantItems: null,
       paymentItems: [],
       detachers: [],
       restaurant_detacher: null,
@@ -131,7 +135,7 @@ export default {
             this.restaurantItems = (result.docs || []).map(doc => {
               const restaurantId = doc.id;
 
-              if (doc.deletedFlag === undefined) {
+              if (doc.data().deletedFlag === undefined) {
                 doc.ref.update("deletedFlag", false); // for Backward compatible
               };
 
@@ -193,6 +197,9 @@ export default {
       return this.$store.getters.uidAdmin;
     },
     existsRestaurant() {
+      if (this.restaurantItems === null) {
+        return null;
+      }
       if (this.restaurantItems.length > 0) {
         return true;
       }
