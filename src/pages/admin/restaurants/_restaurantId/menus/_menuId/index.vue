@@ -93,6 +93,9 @@
           <h4>
             {{$t("editMenu.itemDescription")}}
           </h4>
+          <p class="p-small" style="color:#CB4B4B">
+            *
+          </p>
         </div>
       </div>
       <b-field :type="errors['itemDescription'].length > 0 ? 'is-danger' : 'is-success'" >
