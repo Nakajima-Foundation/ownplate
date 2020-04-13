@@ -41,6 +41,7 @@
             expanded
             rounded
             @click="handleNew"
+            :loading="isCreating"
           >{{$t('admin.addNewRestaurant')}}</b-button>
         </div>
       </b-tab-item>
@@ -81,6 +82,7 @@ export default {
   data() {
     return {
       readyToDisplay: false,
+      isCreating: false,
       restProfilePhoto: null,
       restProfilePhotoImageUrl: "",
       restCoverPhoto: null,
@@ -178,6 +180,7 @@ export default {
     async handleNew() {
       console.log("handleNew");
       try {
+        this.isCreating = true;
         const doc = await db.collection("restaurants").add({
           uid: this.uid,
           publicFlag: false,
@@ -187,6 +190,8 @@ export default {
         this.$router.push(`/admin/restaurants/${doc.id}`);
       } catch (error) {
         console.log(error);
+      } finally {
+        this.isCreating = false;
       }
     }
   },
