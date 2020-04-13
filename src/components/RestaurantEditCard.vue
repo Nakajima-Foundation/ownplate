@@ -5,17 +5,17 @@
         <div class="media">
           <div class="media-content">
             <div class="container content has-text-centered image is-128x128">
-              <img class="is-rounded" :src="restprofilephoto" alt="" />
+              <img class="is-rounded" :src="restprofilephoto||'/OwnPlate-Favicon-Default.png'" alt="" />
             </div>
 
             <div class="container content has-text-centered">
               <h3 style="color: #0078c8">
-                {{ restaurantname || "restaurantname"}}
+                {{ restaurantname || "no restaurant name"}}
               </h3>
             </div>
             <div style="text-align:center;margin-top:1rem;">
               <div class="p-font">
-                {{ streetaddress || "streetaddress"}}
+                {{ streetaddress || "no streetaddress"}}
               </div>
               <div class="p-font" style="margin-top:-0.8rem;">
                 {{ city || "city"}},
