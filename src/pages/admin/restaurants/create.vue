@@ -1,4 +1,4 @@
-
+<!--- no longer used, but keep it here for future
 <template>
   <span>
     <section class="section" style="background-color:#fffafa">
@@ -85,3 +85,4 @@ export default {
 
 <style lang="scss">
 </style>
+-->
