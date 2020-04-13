@@ -102,18 +102,6 @@
           </div>
         </div>
       </div>
-      <div style="margin-top:1rem;">
-        <b-button
-          style="margin-right:auto"
-          type="is-primary"
-          class="counter-button"
-          expanded
-          rounded
-          @click="goRestaurant"
-        >
-          Save
-        </b-button>
-      </div>
     </section>
   </section>
 </template>
@@ -265,11 +253,6 @@ export default {
 
     saveMenuList(menuLists) {
       db.doc(`restaurants/${this.restaurantId()}`).update("menuLists", menuLists);
-    },
-    goRestaurant() {
-      this.$router.push({
-        path: `/admin/restaurants/`
-      });
     },
     finishTitleInput() {
       this.$router.go({

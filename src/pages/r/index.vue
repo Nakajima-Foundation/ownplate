@@ -26,8 +26,9 @@ export default {
     try {
       const res = await db
         .collection("restaurants")
-        .where("publicFlag", "==", true)
-        .get();
+            .where("publicFlag", "==", true)
+            .where("deletedFlag", "==", false)
+            .get();
       this.restaurants = (res.docs || []).map(doc => {
         const data = doc.data();
         data.id = doc.id;
@@ -39,6 +40,6 @@ export default {
     }
 
   }
-  
+
 }
 </script>
