@@ -32,7 +32,7 @@
             type="is-danger"
             style="width:100%"
             class="light"
-            @click="changeStatus('oder_canceled', $event)"
+            @click="handleChangeStatus('oder_canceled', $event)"
           >{{ $t("admin.order.delete") }}</b-button>
         </div>
       </div>
@@ -45,7 +45,7 @@
         <b-button
           :class="classOf(orderState)"
           style="width:100%"
-          @click="changeStatus(orderState, $event)"
+          @click="handleChangeStatus(orderState, $event)"
         >{{ $t("order.status." + orderState) }}</b-button>
       </div>
     </div>
@@ -164,20 +164,13 @@ export default {
       }
       return "";
     },
-    async changeStatus(statusKey, event) {
+    async handleChangeStatus(statusKey, event) {
       const ref = db.doc(
         `restaurants/${this.restaurantId()}/orders/${this.orderId}`
       );
       console.log(this.orderInfo);
       await ref.set({ status: order_status[statusKey] }, { merge: true });
-      if (statusKey === "oder_canceled") {
-        this.$router.push(this.parentUrl);
-      }
-
-      // HACK ALERT: I am not able to find the proper way to access event.currentTart
-      // in this environment (Vue + Bluma + Buefy).
-      event.target.blur(); // the use clicks the outside of the span
-      event.target.parentElement.blur(); // the user clicks the span
+      this.$router.push(this.parentUrl);
     },
     classOf(statusKey) {
       if (order_status[statusKey] == this.orderInfo.status) {

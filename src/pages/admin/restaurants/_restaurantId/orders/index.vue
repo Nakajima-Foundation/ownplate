@@ -40,21 +40,28 @@ export default {
           this.shopInfo = restaurant_data;
         }
       });
+    const midMight = (() => {
+      const date = new Date();
+      date.setHours(0); // local midnight
+      date.setMinutes(0);
+      return date;
+    })();
     const order_detacher = db
       .collection(`restaurants/${this.restaurantId()}/orders`)
-      .where("status", ">=", order_status.customer_paid)
-      .where("status", "<", order_status.customer_picked_up)
+      .where("timePaid", ">=", midMight)
       .onSnapshot(result => {
         if (!result.empty) {
           let orders = result.docs.map(this.doc2data("order"));
-          orders = orders.map(order => {
+          orders = orders.sort((order0, order1) => {
+            if (order0.status === order1.status) {
+              return order0.timePaid > order1.timePaid ? -1 : 1;
+            }
+            return order0.status < order1.status ? -1 : 1;
+          });
+          this.orders = orders.map(order => {
             order.timePaid =
               (order.timePaid && order.timePaid.toDate()) || new Date();
             return order;
-          });
-          this.orders = orders.sort((order1, order2) => {
-            console.log(order1.number, order1.timePaid, order2.timePaid);
-            return order1.timePaid - order2.timePaid;
           });
         }
       });
@@ -70,7 +77,6 @@ export default {
   computed: {},
   methods: {
     orderSelected(order) {
-      console.log(order.order);
       this.$router.push({
         path:
           "/admin/restaurants/" + this.restaurantId() + "/orders/" + order.id
