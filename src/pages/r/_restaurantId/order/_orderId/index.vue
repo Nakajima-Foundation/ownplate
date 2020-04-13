@@ -31,6 +31,7 @@
             <b-button
               expanded
               rounded
+              :loading="isDeleting"
               @click="handleEditItems"
               style="margin-bottom:1rem;"
             >{{$t('order.editItems')}}</b-button>
@@ -93,6 +94,7 @@ export default {
       orderInfo: {},
       menus: [],
       detacher: [],
+      isDeleting: false,
       notFound: false
     };
   },
@@ -121,7 +123,7 @@ export default {
           if (order.exists) {
             const order_data = order.data();
             this.orderInfo = order_data;
-          } else {
+          } else if (!this.isDeleting) {
             this.notFound = true;
           }
         },
@@ -189,20 +191,19 @@ export default {
       return "";
     },
     async handleEditItems() {
-      // We need to call push before waiting for this promise to complete.
-      // Otherwise, the user will see the 404 error briefly.
-      const promise = db
-        .doc(`restaurants/${this.restaurantId()}/orders/${this.orderId}`)
-        .delete();
+      try {
+        this.isDeleting = true;
+        await db
+          .doc(`restaurants/${this.restaurantId()}/orders/${this.orderId}`)
+          .delete();
+        console.log("suceeded");
+      } catch (error) {
+        this.isDeleting = false;
+        console.log("failed");
+      }
       this.$router.push({
         path: `/r/${this.restaurantId()}#${this.orderId}`
       });
-      try {
-        await promise;
-        console.log("suceeded");
-      } catch (error) {
-        console.log("failed");
-      }
     },
     async goNext() {
       const {
