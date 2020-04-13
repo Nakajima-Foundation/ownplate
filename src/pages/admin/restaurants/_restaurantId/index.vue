@@ -361,7 +361,8 @@
         {{$t('shopInfo.public')}}
       </b-checkbox>
     </h4>
-
+    <span v-if="shopInfo.publicFlag">{{$t('shopInfo.publishDescription')}}</span>
+    <span v-if="!shopInfo.publicFlag">{{$t('shopInfo.draftDescription')}}</span>
     <b-button
       style="margin-right:auto"
       type="is-primary"

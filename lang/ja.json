@@ -20,7 +20,8 @@
     "hours": "営業時間",
     "public": "公開",
     "businessHourDescription": "営業する曜日にチェックをいれ、営業時間を設定してください。",
-    "publicDescription": "「公開」にチェックを入れずにSAVEボタンをクリックすると、下書きとして保存されます。"
+    "draftDescription": "下書きとして保存",
+    "publishDescription":"保存して公開"
   },
   "sitemenu": {
     "menu": "メニュー",
