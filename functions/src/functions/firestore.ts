@@ -117,7 +117,7 @@ export const createRestaurant = async (db: FirebaseFirestore.Firestore, data, co
       uid: context.auth.uid,
       publicFlag: false,
       deletedFlag: false,
-      created: admin.firestore.Timestamp.now(),
+      createdAt: admin.firestore.Timestamp.now(),
     });
   }).then(() => {
     return { result: true };
