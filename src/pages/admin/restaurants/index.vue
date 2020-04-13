@@ -29,7 +29,6 @@
                 :uid="restaurantItem.uid"
                 :defaulttaxrate="restaurantItem.defauleTaxRate"
                 :publicflag="restaurantItem.publicFlag||false"
-                :createdat="restaurantItem.createdAt"
                 :numberOfMenus="restaurantItem.numberOfMenus||0"
                 :numberOfOrders="restaurantItem.numberOfOrders||0"
               ></restaurant-edit-card>
@@ -185,7 +184,6 @@ export default {
           deletedFlag: false,
           createdAt: firestore.FieldValue.serverTimestamp()
         });
-        console.log("success", doc.id);
         this.$router.push(`/admin/restaurants/${doc.id}`);
       } catch (error) {
         console.log(error);
