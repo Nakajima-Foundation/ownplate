@@ -9,13 +9,13 @@
   </template>
   <template v-else-if="!notFound">
     <h2 class="p-big bold">
-      About
+      {{$t("editRestaurant.about")}}
     </h2>
     <div class="media">
       <div class="media-content"></div>
       <div class="media-right">
         <p class="p-font bold" style="color:#CB4B4B">
-          * Required
+          * {{$t("editRestaurant.required")}}
         </p>
       </div>
     </div>
@@ -23,7 +23,7 @@
     <div class="field is-horizontal">
       <div class="field-body">
         <h4>
-          Restaurant profile photo
+          {{$t("editRestaurant.profilePhoto")}}
           <span class="p-font bold" style="color:#CB4B4B">
             *
           </span>
@@ -33,10 +33,10 @@
     <table>
       <tr>
         <td v-if="shopInfo.restProfilePhoto">
-          Current
+          {{$t("editRestaurant.current")}}
         </td>
         <td>
-          New
+          {{$t("editRestaurant.new")}}
         </td>
       </tr>
       <tr>
@@ -60,16 +60,16 @@
     </table>
     <div class="field is-horizontal">
       <div class="field-body">
-        <h4>Restaurant cover photo</h4>
+        <h4>{{$t("editRestaurant.coverPhoto")}}</h4>
       </div>
     </div>
     <table>
       <tr>
         <td v-if="shopInfo.restProfilePhoto">
-          Current
+          {{$t("editRestaurant.current")}}
         </td>
         <td>
-          New
+          {{$t("editRestaurant.new")}}
         </td>
       </tr>
       <tr>
@@ -94,7 +94,7 @@
     <div class="field is-horizontal">
       <div class="field-body">
         <h4>
-          Restaurant name
+          <h4>{{$t('shopInfo.name')}}</h4>
           <span class="p-font bold" style="color:#CB4B4B">
             *
           </span>
@@ -115,7 +115,7 @@
     <div class="field is-horizontal">
       <div class="field-body">
         <h4>
-          Street address
+          {{$t('shopInfo.streetAddress')}}
           <span class="p-font bold" style="color:#CB4B4B">
             *
           </span>
@@ -138,7 +138,7 @@
         <div class="field is-horizontal">
           <div class="field-body">
             <h4>
-              City
+              {{$t('shopInfo.city')}}
               <span class="p-font bold" style="color:#CB4B4B">
                 *
               </span>
@@ -160,7 +160,7 @@
         <div class="field is-horizontal">
           <div class="field-body">
             <h4>
-              State
+              {{$t('shopInfo.state')}}
               <span class="p-font bold" style="color:#CB4B4B">
                 *
               </span>
@@ -182,7 +182,7 @@
     <div class="field is-horizontal">
       <div class="field-body">
         <h4>
-          Zip
+          {{$t('shopInfo.zip')}}
           <span class="p-font bold" style="color:#CB4B4B">
             *
           </span>
@@ -205,11 +205,19 @@
                 type="is-primary"
                 class="counter-button"
                 rounded
-                @click="updateMap"
+                @click="updateAndUpdateMap"
                 >
         {{$t("editRestaurant.updateMap")}}
-      </b-button>
+      </b-button><br/>
     </b-field>
+    <div class="field is-horizontal">
+      <div class="field-body">
+        <p class="p-font bold" style="color:#CB4B4B">
+          {{$t('editRestaurant.updateMapDescription')}}
+
+        </p>
+      </div>
+    </div>
     <b-field type="is-white">
       <GMap
         ref="gMap"
@@ -220,22 +228,11 @@
         >
       </GMap>
     </b-field>
-    <b-field>
-      <b-button variant="outline-primary"
-                style="margin-right:auto"
-                type="is-primary"
-                class="counter-button"
-                rounded
-                @click="setLocation"
-                >
-        {{$t("editRestaurant.setLocation")}}
-      </b-button>
-    </b-field>
 
     <div class="field is-horizontal">
       <div class="field-body">
         <h4>
-          Phone number
+          {{$t('shopInfo.phonenumber')}}
           <span class="p-font bold" style="color:#CB4B4B">
             *
           </span>
@@ -324,7 +321,7 @@
 
     <h4>{{$t('shopInfo.hours')}}</h4>
     <p class="p-font bold" style="color:#CB4B4B">
-      {{$t('shopInfo.businessHourDescription')}}
+      {{$t('editRestaurant.businessHourDescription')}}
     </p>
     <div v-for="(day, index) in days" :key="index">
       <div class="field">
@@ -347,8 +344,8 @@
         {{$t('shopInfo.public')}}
       </b-checkbox>
     </h4>
-    <span v-if="shopInfo.publicFlag">{{$t('shopInfo.publishDescription')}}</span>
-    <span v-if="!shopInfo.publicFlag">{{$t('shopInfo.draftDescription')}}</span>
+    <span v-if="shopInfo.publicFlag">{{$t('editRestaurant.publishDescription')}}</span>
+    <span v-if="!shopInfo.publicFlag">{{$t('editRestaurant.draftDescription')}}</span>
     <b-button
       style="margin-right:auto"
       type="is-primary"
@@ -597,6 +594,10 @@ export default {
               .then(downloadURL => resolve(downloadURL))
         );
       });
+    },
+    async updateAndUpdateMap() {
+      await this.updateMap();
+      this.setLocation();
     },
     async updateMap() {
       // https://gitlab.com/broj42/nuxt-gmaps#readme
