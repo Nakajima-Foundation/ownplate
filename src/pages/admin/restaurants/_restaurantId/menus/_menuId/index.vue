@@ -131,6 +131,8 @@
               v-model="croppa"
               :prevent-white-space="true"
               :zoom-speed="5"
+              :placeholder="'Click and upload'"
+              :placeholder-font-size="20"
               initial-position="center"
               :canvas-color="'gainsboro'"
               ></croppa>
