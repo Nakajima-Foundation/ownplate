@@ -3,7 +3,9 @@
   "menu": {
     "about": "このサービスについて",
     "admins": "レストラン向けページ",
-    "users": "お客様向けページ"
+    "users": "お客様向けページ",
+    "home": "ホーム",
+    "signOut": "サイン・アウト"
   },
   "restaurantId": {
     "self": "レストランID",

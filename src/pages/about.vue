@@ -23,8 +23,9 @@
     </p>
     <p class="p">
       Sincerely,
-      <br />Satoshi Nakajima (chairman of Singularity Society)
+      <br />Satoshi Nakajima, chairman of Singularity Society
     </p>
+    <hr />
     <h1 class="h1">このサービスについて</h1>
     <p class="p">
       新型コロナウィルスは、多くの人の命を奪っただけではなく、経済にも大きなダメージを与えました。
@@ -36,6 +37,13 @@
       OwnTable を使えば、レストランは、余計な手数料なしでテイクアウトサービスを始める事ができます。
       レストランは、専用のページを作り、そこにメニューを登録します（ウェブ・コンサルタントを雇う必要はありません）。
       顧客はそのページから注文し、支払いを済ませ、調理時間に合わせて店に取りに行くのです。
+    </p>
+    <p class="p">
+      シンギュラリティ・ソサエティは、技術の進歩により大きく変わろうとしている世の中に向けた活動をするNPOです。
+      OpenPlate は、Firebase と Vue という技術を使って作られています。
+    </p>
+    <p class="p">
+      <br />代表理事 中島聡
     </p>
   </section>
 </template>

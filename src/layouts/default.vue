@@ -22,7 +22,7 @@
             <span class="icon">
               <i class="fas fa-home"></i>
             </span>
-            <span class="nav-item">Home</span>
+            <span class="nav-item">{{$t("menu.home")}}</span>
           </b-navbar-item>
           <b-navbar-item href="/about">
             <span class="icon">
@@ -34,7 +34,7 @@
             <span class="icon">
               <i class="fas fa-sign-out-alt"></i>
             </span>
-            <span class="nav-item">Sign Out</span>
+            <span class="nav-item">{{$t("menu.signOut")}}</span>
           </b-navbar-item>
         </b-navbar-dropdown>
       </template>

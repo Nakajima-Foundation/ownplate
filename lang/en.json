@@ -3,7 +3,9 @@
   "menu": {
     "about": "About",
     "admins": "Restaurant Owners",
-    "users": "Food Lovers"
+    "users": "Food Lovers",
+    "home": "Home",
+    "signOut": "Sign Out"
   },
   "restaurantId": {
     "self": "Restaurant ID",
