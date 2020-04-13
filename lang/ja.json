@@ -40,7 +40,7 @@
     "placeOrderNoPayment": "支払わずに注文する",
     "validating": "処理しています...",
     "thankyou": "ご注文、ありがとうございます!",
-    "orderStatus": "ご注文のステータス:",
+    "orderStatus": "ご注文のステータス: ",
     "pleaseStay": "このページを開けたままにしていただけると、ステータスを知る事が出来ます。",
     "status": {
       "unexpected": "(Unexpected)",

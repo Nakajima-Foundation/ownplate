@@ -5,17 +5,22 @@
     </template>
     <template v-else>
       <section class="section">
-        <div v-if="paid" style="text-align: center;">
-          <i class="far fa-check-circle thankyou-icon"></i>
-          <p class="thankyou">{{$t('order.thankyou')}}</p>
-        </div>
-        <h2>{{ $t('order.orderStatus') + ": " + orderName }}</h2>
-        <p style="margin-bottom:0.5rem">{{$t('order.pleaseStay')}}</p>
-        <div v-if="paid" style="text-align: center;">
-          <p
-            :class="orderStatusKey"
-            style="margin-bottom:1rem;padding:0.5rem"
-          >{{ $t("order.status." + orderStatusKey) }}</p>
+        <div v-if="paid">
+          <div style="text-align: center;">
+            <i class="far fa-check-circle thankyou-icon"></i>
+            <p class="thankyou">
+              {{$t('order.thankyou')}}
+              <br />
+              {{$t('order.pleaseStay')}}
+            </p>
+          </div>
+          <h2>{{ $t('order.orderStatus') + orderName }}</h2>
+          <div v-if="paid" style="text-align: center;">
+            <p
+              :class="orderStatusKey"
+              style="margin-bottom:1rem;padding:0.5rem"
+            >{{ $t("order.status." + orderStatusKey) }}</p>
+          </div>
         </div>
         <shop-orner-info
           :src="this.shopInfo.restProfilePhoto"
@@ -273,12 +278,13 @@ export default {
 }
 .thankyou {
   color: $primary;
-  font-size: 1.5em;
+  font-size: 1.2em;
   font-weight: bold;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
 }
 .thankyou-icon {
   color: $primary;
-  font-size: 7em;
+  font-size: 8em;
+  margin: 1rem;
 }
 </style>
