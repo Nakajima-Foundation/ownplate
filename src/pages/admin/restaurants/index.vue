@@ -1,31 +1,20 @@
 <template>
   <section class="section">
-    <h2 class="p-big bold">
-      {{ $t('admin.yourRestaurants') }}
-    </h2>
+    <h2 class="p-big bold">{{ $t('admin.yourRestaurants') }}</h2>
 
     <b-tabs size="is-medium" class="block" expanded>
       <b-tab-item :label="$t('admin.restaurant')">
         <div class="card block" v-if="readyToDisplay">
           <div class="card-content">
-            <div
-              v-if="existsRestaurant === null"
-              >
-            </div>
-            <div
-              v-else-if="!existsRestaurant"
-              class="container content has-text-centered"
-            >
+            <div v-if="existsRestaurant === null"></div>
+            <div v-else-if="!existsRestaurant" class="container content has-text-centered">
               <b-icon icon="silverware" size="is-large"></b-icon>
               <h3>{{$t('admin.noRestaurant')}}</h3>
-                {{$t('admin.addYourRestaurant')}}
+              {{$t('admin.addYourRestaurant')}}
             </div>
           </div>
           <div v-if="existsRestaurant">
-            <div
-              v-for="restaurantItem in restaurantItems"
-              :key="restaurantItem.id"
-            >
+            <div v-for="restaurantItem in restaurantItems" :key="restaurantItem.id">
               <restaurant-edit-card
                 :restprofilephoto="restaurantItem.restProfilePhoto||''"
                 :restaurantid="restaurantItem.restaurantid"
@@ -46,29 +35,23 @@
               ></restaurant-edit-card>
             </div>
           </div>
-          <a href="/admin/restaurants/create">
-            <b-button
-              style="margin-right:auto"
-              type="is-primary"
-              class="counter-button"
-              expanded
-              rounded
-            >
-              {{$t('admin.addNewRestaurant')}}
-            </b-button>
-          </a>
+          <b-button
+            style="margin-right:auto"
+            type="is-primary"
+            class="counter-button"
+            expanded
+            rounded
+            @click="handleNew"
+          >{{$t('admin.addNewRestaurant')}}</b-button>
         </div>
       </b-tab-item>
       <b-tab-item :label="$t('admin.payment')">
         <div class="card block">
           <div class="card-content">
-            <div
-              v-if="!existsPayment"
-              class="container content has-text-centered"
-            >
+            <div v-if="!existsPayment" class="container content has-text-centered">
               <b-icon icon="credit-card" size="is-large"></b-icon>
               <h3>{{$t('admin.addNewRestaurant')}}</h3>
-                {{$t('admin.pleaseConnectPayment')}}
+              {{$t('admin.pleaseConnectPayment')}}
             </div>
           </div>
         </div>
@@ -79,9 +62,7 @@
             class="counter-button"
             expanded
             rounded
-          >
-            {{$t('admin.connectPaymentAccount')}}
-          </b-button>
+          >{{$t('admin.connectPaymentAccount')}}</b-button>
         </a>
       </b-tab-item>
     </b-tabs>
@@ -89,7 +70,7 @@
 </template>
 
 <script>
-import { db } from "~/plugins/firebase.js";
+import { db, firestore } from "~/plugins/firebase.js";
 import RestaurantEditCard from "~/components/RestaurantEditCard";
 import { order_status } from "~/plugins/constant.js";
 
@@ -116,7 +97,7 @@ export default {
       restaurantItems: null,
       paymentItems: [],
       detachers: [],
-      restaurant_detacher: null,
+      restaurant_detacher: null
     };
   },
   created() {
@@ -124,40 +105,50 @@ export default {
   },
   async mounted() {
     try {
-      this.restaurant_detacher = db.collection("restaurants")
+      this.restaurant_detacher = db
+        .collection("restaurants")
         .where("uid", "==", this.uid)
-      // todo add Condition .where("deletedFlag", "==", false)
-        .onSnapshot(async (result) => {
+        // todo add Condition .where("deletedFlag", "==", false)
+        .onSnapshot(async result => {
           try {
             if (result.empty) {
-              return
+              return;
             }
-            this.restaurantItems = (result.docs || []).map(doc => {
-              const restaurantId = doc.id;
+            this.restaurantItems = (result.docs || [])
+              .map(doc => {
+                const restaurantId = doc.id;
 
-              if (doc.data().deletedFlag === undefined) {
-                doc.ref.update("deletedFlag", false); // for Backward compatible
-              };
+                if (doc.data().deletedFlag === undefined) {
+                  doc.ref.update("deletedFlag", false); // for Backward compatible
+                }
 
-              const data = doc.data();
-              data.restaurantid = doc.id;
-              data.id = doc.id;
-              return data;
-            }).filter((res) => {
-              return !res.deletedFlag;
-            });
+                const data = doc.data();
+                data.restaurantid = doc.id;
+                data.id = doc.id;
+                return data;
+              })
+              .filter(res => {
+                return !res.deletedFlag;
+              });
 
-            this.restaurantItems = await Promise.all(this.restaurantItems.map(async (restaurant) => {
-              const menus = await db.collection(`restaurants/${restaurant.id}/menus`).where("deletedFlag", "==", false).get();
-              restaurant.numberOfMenus = menus.size;
-              return restaurant;
-            }));
+            this.restaurantItems = await Promise.all(
+              this.restaurantItems.map(async restaurant => {
+                const menus = await db
+                  .collection(`restaurants/${restaurant.id}/menus`)
+                  .where("deletedFlag", "==", false)
+                  .get();
+                restaurant.numberOfMenus = menus.size;
+                return restaurant;
+              })
+            );
 
             this.destroy_detacher();
-            this.detachers = this.restaurantItems.map((restaurant, index)=>{
-              return db.collection(`restaurants/${restaurant.id}/orders`)
+            this.detachers = this.restaurantItems.map((restaurant, index) => {
+              return db
+                .collection(`restaurants/${restaurant.id}/orders`)
                 .where("status", "<", order_status.customer_picked_up)
-                .where("status", ">=", order_status.customer_paid).onSnapshot((result) => {
+                .where("status", ">=", order_status.customer_paid)
+                .onSnapshot(result => {
                   this.restaurantItems = this.restaurantItems.map((r2, i2) => {
                     if (index === i2) {
                       r2.numberOfOrders = result.size;
@@ -180,11 +171,25 @@ export default {
   },
   methods: {
     destroy_detacher() {
-      this.detachers.map((detacher) => {
+      this.detachers.map(detacher => {
         detacher();
       });
       this.detachers = [];
     },
+    async handleNew() {
+      console.log("handleNew");
+      try {
+        const doc = await db.collection("restaurants").add({
+          uid: this.uid,
+          publicFlag: false,
+          deletedFlag: false,
+          createdAt: firestore.FieldValue.serverTimestamp()
+        });
+        console.log("success", doc.id);
+      } catch (error) {
+        console.log(error);
+      }
+    }
   },
   destroyed() {
     this.destroy_detacher();
@@ -211,7 +216,7 @@ export default {
       }
       return false;
     }
-  },
+  }
 };
 </script>
 <style lang="scss" scoped>
