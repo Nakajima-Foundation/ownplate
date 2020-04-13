@@ -274,12 +274,13 @@ export default {
   computed: {
     errors() {
       const err = {};
-      ['itemName', 'price', 'tax', 'itemDescription'].forEach((name) => {
+      ['itemName', 'price', 'tax'].forEach((name) => {
         err[name] = [];
         if (this.menuInfo[name] === "") {
           err[name].push('validationError.'+ name +'.empty');
         }
       });
+      err['itemDescription'] = [];
       return err;
     },
     uid() {
