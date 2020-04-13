@@ -2,7 +2,9 @@
 <section class="section">
   <back-button url="/admin/restaurants/" />
 
-  <template v-if="notFound">
+  <template v-if="notFound===null">
+  </template>
+  <template v-else-if="notFound">
     <not-found />
   </template>
   <template v-else-if="!notFound">
@@ -260,22 +262,6 @@
         ></b-input>
     </b-field>
 
-    <b-field
-      label="Tags"
-      type="is-white"
-      style="border-radius: 0.4rem!important;"
-      >
-      <vue-tags-input
-        v-model="shopInfo.tag"
-        style="border-radius: 0.4rem!important;"
-        placeholder="your restaurant tag"
-        :tags="tags"
-        :validation="validation"
-        :autocomplete-items="filteredItems"
-        @tags-changed="newTags => (tags = newTags)"
-        />
-    </b-field>
-
     <div class="columns">
       <div class="column">
         <div class="field is-horizontal">
@@ -381,7 +367,6 @@
 import Vue from "vue";
 import { db, storage } from "~/plugins/firebase.js";
 import Croppa from "vue-croppa";
-import VueTagsInput from "@johmun/vue-tags-input";
 import HoursInput from "~/components/HoursInput";
 
 import * as API from "~/plugins/api"
@@ -397,17 +382,15 @@ export default {
   name: "Order",
   components: {
     HoursInput,
-    VueTagsInput,
     BackButton,
     NotFound
   },
 
   data() {
-    const uid = this.$store.getters.uidAdmin;
     return {
+      uid,
       disabled: false, // ??
       filteredItems: [], // ??
-      tags: [], // ???
       restProfileCroppa: null,
       restCoverCroppa: null,
       test: null,
@@ -423,8 +406,6 @@ export default {
         url: "",
         foodTax: 0,
         alcoholTax: 0,
-        tags: ["Meet"],
-        tag: "",
         openTimes: {
           1: [], // mon
           2: [],
@@ -450,18 +431,6 @@ export default {
       place_id: null,
       markers: [],
       days: daysOfWeek,
-      autocompleteItems: [
-        {
-          text: 'Invalid because of "8"'
-        }
-      ],
-      validation: [
-        {
-          classes: "no-braces",
-          disableAdd: true,
-          rule: tag => tag.text.length > 15
-        }
-      ],
       notFound: null,
     };
   },
@@ -477,6 +446,10 @@ export default {
       return;
     }
     const restaurant_data = restaurant.data();
+    if (restaurant_data.uid !== this.uid) {
+      this.notFound = true;
+      return;
+    }
     this.shopInfo = Object.assign({}, this.shopInfo, restaurant_data);
     this.notFound = false;
   },
@@ -484,6 +457,9 @@ export default {
     this.hello();
   },
   computed: {
+    uid() {
+      return this.$store.getters.uidAdmin;
+    },
     errors() {
       const err = {};
       ['restaurantName', 'streetAddress', 'city', 'state', 'zip', 'phoneNumber',
@@ -541,9 +517,6 @@ export default {
         this.hello();
       }
     },
-    state: function(val) {
-      this.shopInfo.tags.push(val); // ???
-    }
   },
   methods: {
     hello() {
@@ -590,7 +563,6 @@ export default {
         place_id: this.shopInfo.place_id,
         phoneNumber: this.shopInfo.phoneNumber,
         url: this.shopInfo.url,
-        tags: this.shopInfo.tags,
         foodTax: Number(this.shopInfo.foodTax),
         alcoholTax: Number(this.shopInfo.alcoholTax),
         openTimes: this.shopInfo.openTimes,

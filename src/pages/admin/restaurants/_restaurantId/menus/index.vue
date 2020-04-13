@@ -2,7 +2,9 @@
   <section class="section">
     <back-button url="/admin/restaurants/" />
 
-    <template v-if="notFound">
+    <template v-if="notFound===null">
+    </template>
+    <template v-else-if="notFound">
       <not-found />
     </template>
     <section class="section" v-else-if="readyToDisplay">
@@ -171,7 +173,7 @@ export default {
   async created() {
     const restaurantRef =  db.doc(`restaurants/${this.restaurantId()}`);
     const restaurant_detacher = restaurantRef.onSnapshot((results) => {
-      if (results.exists) {
+      if (results.exists && results.data().uid === this.uid) {
         this.restaurantInfo = results.data();
         this.readyToDisplay = true;
         this.notFound = false;
