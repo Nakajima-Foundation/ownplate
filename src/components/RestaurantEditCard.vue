@@ -63,17 +63,8 @@
         </div>
       </div>
       <div class="card-footer">
-        <a href="#" class="card-footer-item">
-          <b-icon icon="arrow-up" size="is-midium"></b-icon>
-        </a>
-        <a href="#" class="card-footer-item">
-          <b-icon icon="arrow-down" size="is-midium"></b-icon>
-        </a>
-        <a href="#" class="card-footer-item">
-          <b-icon icon="plus" size="is-midium"></b-icon>
-        </a>
-        <a href="#" class="card-footer-item">
-          <b-icon icon="delete" size="is-midium"></b-icon>
+        <a class="card-footer-item" @click="deleteRestaurant">
+          <b-icon icon="delete" size="is-midium" ></b-icon>
         </a>
       </div>
     </div>
@@ -81,6 +72,8 @@
 </template>
 
 <script>
+import { db } from "~/plugins/firebase.js";
+
 export default {
   name: "RestaurantEditCard",
   props: {
@@ -154,6 +147,12 @@ export default {
     },
   },
   methods: {
+    deleteRestaurant: function() {
+      if (confirm("Do you really want to delete this?")) {
+        db.doc(`restaurants/${this.restaurantid}`).update("deletedFlag", true);
+      }
+
+    },
   }
 };
 </script>
