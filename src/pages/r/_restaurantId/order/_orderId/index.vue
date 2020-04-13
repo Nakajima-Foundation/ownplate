@@ -50,11 +50,22 @@
               rounded
               style="margin-top:4rem;padding-top: 0.2rem;"
               size="is-large"
-              @click="goNext"
+              @click="handlePayment"
             >
               <span
                 class="p-font bold"
               >{{$t('order.placeOrder')}} {{$n(orderInfo.total, 'currency')}}</span>
+            </b-button>
+          </div>
+          <div class="is-centered" style="text-align: center;">
+            <b-button
+              expanded
+              rounded
+              style="margin-top:4rem;padding-top: 0.2rem;"
+              size="is-large"
+              @click="handleNoPayment"
+            >
+              <span class="p-font bold">{{$t('order.placeOrderNoPayment')}}</span>
             </b-button>
           </div>
         </div>
@@ -205,7 +216,7 @@ export default {
         path: `/r/${this.restaurantId()}#${this.orderId}`
       });
     },
-    async goNext() {
+    async handlePayment() {
       const {
         error,
         paymentMethod
@@ -231,21 +242,22 @@ export default {
       } catch (error) {
         console.log(error);
       }
-
-      // try {
-      //   // HACK: Workaround until we implement sprite
-      //   await db
-      //     .doc(`restaurants/${this.restaurantId()}/orders/${this.orderId}`)
-      //     .update({
-      //       status: order_status.customer_paid,
-      //       phoneNumber: this.$store.state.user.phoneNumber,
-      //       timePaid: firestore.FieldValue.serverTimestamp()
-      //     });
-      //   console.log("suceeded");
-      //   window.scrollTo(0, 0);
-      // } catch (error) {
-      //   console.log("failed", error);
-      // }
+    },
+    async handleNoPayment() {
+      try {
+        // HACK: Workaround until we implement sprite
+        await db
+          .doc(`restaurants/${this.restaurantId()}/orders/${this.orderId}`)
+          .update({
+            status: order_status.customer_paid,
+            phoneNumber: this.$store.state.user.phoneNumber,
+            timePaid: firestore.FieldValue.serverTimestamp()
+          });
+        console.log("suceeded");
+        window.scrollTo(0, 0);
+      } catch (error) {
+        console.log("failed", error);
+      }
     }
   }
 };

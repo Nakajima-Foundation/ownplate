@@ -21,7 +21,7 @@
     "public": "公開",
     "businessHourDescription": "営業する曜日にチェックをいれ、営業時間を設定してください。",
     "draftDescription": "下書きとして保存",
-    "publishDescription":"保存して公開"
+    "publishDescription": "保存して公開"
   },
   "sitemenu": {
     "menu": "メニュー",
@@ -37,8 +37,9 @@
     "total": "合計",
     "yourPayment": "お支払い",
     "placeOrder": "注文する:",
+    "placeOrderNoPayment": "支払わずに注文する",
     "validating": "処理しています...",
-    "thankyou":"ご注文、ありがとうございます!",
+    "thankyou": "ご注文、ありがとうございます!",
     "status": {
       "unexpected": "(Unexpected)",
       "error": "エラー",
@@ -82,46 +83,44 @@
   },
   "admin": {
     "pleaseSignIn": "サインインしてください (レストラン向け)",
-    "registration":"登録してください (レストラン向け)",
+    "registration": "登録してください (レストラン向け)",
     "email": "メールアドレス",
     "password": "パスワード",
     "confirmPassword": "Confirm Password",
-    "name":"First & last name",
+    "name": "First & last name",
     "emailPlaceHolder": "メールアドレスを入力して下さい",
     "passwordPlaceHolder": "パスワードを入力して下さい",
     "confirmPasswordPlaceHolder": "同じパスワードを入力して下さい",
     "enterName": "ご指名を入力して下さい",
-
-    "restaurant":"Restaurant",
-    "payment":"Payment",
-    "yourRestaurants":"Your Restaurant(s)",
-    "noRestaurant":"No restaurant",
-    "addYourRestaurant":"Please add your restaurant from the bottom button.",
-    "addNewRestaurant":"Add New Restaurant",
-    "noPaymentAccount":"No Payment account",
-    "pleaseConnectPayment":"Please connect your payment account from the bottom button.",
-    "connectPaymentAccount":"Connect payment account",
-    "incompleteOrders":"{count} incomplete order | {count} incomplete orders",
-    "editMenuItems":"Edit Menu ({count} items)",
-    "editAbout":"Edit About",
-    "pleaseSignUp":"Sign up as a new user",
-    "forgotPassword":"Forgot Password？",
-    "passwordReset":"Reset Password",
-
+    "restaurant": "Restaurant",
+    "payment": "Payment",
+    "yourRestaurants": "Your Restaurant(s)",
+    "noRestaurant": "No restaurant",
+    "addYourRestaurant": "Please add your restaurant from the bottom button.",
+    "addNewRestaurant": "Add New Restaurant",
+    "noPaymentAccount": "No Payment account",
+    "pleaseConnectPayment": "Please connect your payment account from the bottom button.",
+    "connectPaymentAccount": "Connect payment account",
+    "incompleteOrders": "{count} incomplete order | {count} incomplete orders",
+    "editMenuItems": "Edit Menu ({count} items)",
+    "editAbout": "Edit About",
+    "pleaseSignUp": "Sign up as a new user",
+    "forgotPassword": "Forgot Password？",
+    "passwordReset": "Reset Password",
     "error": {
       "email": {
-        "invalid":"Invalid Email Address",
-        "taken":"The email address is already in use by another account."
+        "invalid": "Invalid Email Address",
+        "taken": "The email address is already in use by another account."
       },
       "password": {
-        "tooshort":"Password should be at least 6 characters",
-        "mismatch":"Password mismatch"
+        "tooshort": "Password should be at least 6 characters",
+        "mismatch": "Password mismatch"
       },
       "code": {
-        "auth/user-not-found":"There is no user record corresponding to this identifier.",
-        "auth/wrong-password":"The password is invalid",
-        "auth/too-many-requests":"Too many unsuccessful login attempts. Please try again later.",
-        "auth/invalid-email":"The email address is badly formatted."
+        "auth/user-not-found": "There is no user record corresponding to this identifier.",
+        "auth/wrong-password": "The password is invalid",
+        "auth/too-many-requests": "Too many unsuccessful login attempts. Please try again later.",
+        "auth/invalid-email": "The email address is badly formatted."
       }
     }
   },
@@ -133,7 +132,7 @@
       "thursday": "木曜",
       "friday": "金曜",
       "saturday": "土曜",
-      "sunday":"日曜"
+      "sunday": "日曜"
     }
   }
 }
