@@ -124,10 +124,10 @@ export default {
     const restaurant_detacher = db
       .doc(`restaurants/${this.restaurantId()}`)
       .onSnapshot(restaurant => {
-        if (restaurant.exists) {
+        if (restaurant.exists && !restaurant.data().deletedFlag && restaurant.data().publicFlag) {
           const restaurant_data = restaurant.data();
           this.shopInfo = restaurant_data;
-          this.notFound = !this.shopInfo.publicFlag;
+          this.notFound = false;
         } else {
           this.notFound = true;
         }
