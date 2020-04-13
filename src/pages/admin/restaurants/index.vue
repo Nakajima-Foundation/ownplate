@@ -186,6 +186,7 @@ export default {
           createdAt: firestore.FieldValue.serverTimestamp()
         });
         console.log("success", doc.id);
+        this.$router.push(`/admin/restaurants/${doc.id}`);
       } catch (error) {
         console.log(error);
       }
