@@ -112,54 +112,81 @@ export default {
       restaurantItems: [],
       paymentItems: [],
       detachers: [],
+      restaurant_detacher: null,
     };
   },
   created() {
     this.checkAdminPermission();
   },
   async mounted() {
-    const res = await db
-      .collection("restaurants")
-      .where("uid", "==", this.uid)
-      .get();
     try {
-      this.restaurantItems = (res.docs || []).map(doc => {
-        let restaurantId = doc.id;
-        const data = doc.data();
-        data.restaurantid = doc.id;
-        data.id = doc.id;
-        return data;
-      });
-      this.restaurantItems = await Promise.all(this.restaurantItems.map(async (restaurant) => {
-        const menus = await db.collection(`restaurants/${restaurant.id}/menus`).where("deletedFlag", "==", false).get();
-        restaurant.numberOfMenus = menus.size;
+      this.restaurant_detacher = db.collection("restaurants")
+        .where("uid", "==", this.uid)
+      // todo add Condition .where("deletedFlag", "==", false)
+        .onSnapshot(async (result) => {
+          try {
+            if (result.empty) {
+              return
+            }
+            this.restaurantItems = (result.docs || []).map(doc => {
+              const restaurantId = doc.id;
 
-        return restaurant;
-      }));
+              if (doc.deletedFlag === undefined) {
+                doc.ref.update("deletedFlag", false); // for Backward compatible
+              };
 
-      // Number of orders: Realtime update 
-      this.detachers = this.restaurantItems.map((restaurant, index)=>{
-        return db.collection(`restaurants/${restaurant.id}/orders`)
-              .where("status", "<", order_status.customer_picked_up)
-              .where("status", ">=", order_status.customer_paid).onSnapshot((result) => {
-            this.restaurantItems = this.restaurantItems.map((r2, i2) => {
-              if (index === i2) {
-                r2.numberOfOrders = result.size;
-              }
-              return r2;
+              const data = doc.data();
+              data.restaurantid = doc.id;
+              data.id = doc.id;
+              return data;
+            }).filter((res) => {
+              return !res.deletedFlag;
             });
-          });
-      });
+
+            this.restaurantItems = await Promise.all(this.restaurantItems.map(async (restaurant) => {
+              const menus = await db.collection(`restaurants/${restaurant.id}/menus`).where("deletedFlag", "==", false).get();
+              restaurant.numberOfMenus = menus.size;
+              return restaurant;
+            }));
+
+            this.destroy_detacher();
+            this.detachers = this.restaurantItems.map((restaurant, index)=>{
+              return db.collection(`restaurants/${restaurant.id}/orders`)
+                .where("status", "<", order_status.customer_picked_up)
+                .where("status", ">=", order_status.customer_paid).onSnapshot((result) => {
+                  this.restaurantItems = this.restaurantItems.map((r2, i2) => {
+                    if (index === i2) {
+                      r2.numberOfOrders = result.size;
+                    }
+                    return r2;
+                  });
+                });
+            });
+          } catch (error) {
+            console.log("Error fetch doc,", error);
+          } finally {
+            this.readyToDisplay = true;
+          }
+        });
     } catch (error) {
       console.log("Error fetch doc,", error);
     } finally {
       this.readyToDisplay = true;
     }
   },
+  methods: {
+    destroy_detacher() {
+      this.detachers.map((detacher) => {
+        detacher();
+      });
+      this.detachers = [];
+    },
+  },
   destroyed() {
-    this.detachers.map((detacher) => {
-      detacher();
-    });
+    this.destroy_detacher();
+    if (this.restaurant_detacher) {
+      this.restaurant_detacher();
+    }
   },
   computed: {
     uid() {
@@ -178,8 +205,6 @@ export default {
       return false;
     }
   },
-  methods: {
-  }
 };
 </script>
 <style lang="scss" scoped>

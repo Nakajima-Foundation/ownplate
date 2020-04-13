@@ -31,6 +31,7 @@
             <b-button
               expanded
               rounded
+              :loading="isDeleting"
               @click="handleEditItems"
               style="margin-bottom:1rem;"
             >{{$t('order.editItems')}}</b-button>
@@ -93,6 +94,7 @@ export default {
       orderInfo: {},
       menus: [],
       detacher: [],
+      isDeleting: false,
       notFound: false
     };
   },
@@ -121,7 +123,7 @@ export default {
           if (order.exists) {
             const order_data = order.data();
             this.orderInfo = order_data;
-          } else {
+          } else if (!this.isDeleting) {
             this.notFound = true;
           }
         },
@@ -184,38 +186,24 @@ export default {
     specialRequest(key) {
       const option = this.orderInfo.options && this.orderInfo.options[key];
       if (option) {
-        return option
-          .reduce((ret, choice, index) => {
-            if (choice === true) {
-              // Checkbox case
-              if (this.menuObj[key].itemOptionCheckbox) {
-                ret.push(this.menuObj[key].itemOptionCheckbox[index]);
-              }
-            } else if (choice) {
-              // Radio button case
-              ret.push(choice);
-            }
-            return ret;
-          }, [])
-          .join(", ");
+        return option.filter(choice => choice).join(", ");
       }
       return "";
     },
     async handleEditItems() {
-      // We need to call push before waiting for this promise to complete.
-      // Otherwise, the user will see the 404 error briefly.
-      const promise = db
-        .doc(`restaurants/${this.restaurantId()}/orders/${this.orderId}`)
-        .delete();
+      try {
+        this.isDeleting = true;
+        await db
+          .doc(`restaurants/${this.restaurantId()}/orders/${this.orderId}`)
+          .delete();
+        console.log("suceeded");
+      } catch (error) {
+        this.isDeleting = false;
+        console.log("failed");
+      }
       this.$router.push({
         path: `/r/${this.restaurantId()}#${this.orderId}`
       });
-      try {
-        await promise;
-        console.log("suceeded");
-      } catch (error) {
-        console.log("failed");
-      }
     },
     async goNext() {
       const {

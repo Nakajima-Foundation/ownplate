@@ -235,7 +235,16 @@ export default {
     },
     didOptionValuesChange(eventArgs) {
       const obj = {};
-      obj[eventArgs.id] = eventArgs.optionValues;
+      obj[eventArgs.id] = eventArgs.optionValues.map((option, index) => {
+        if (option === true) {
+          if (this.itemsObj[eventArgs.id].itemOptionCheckbox) {
+            return this.itemsObj[eventArgs.id].itemOptionCheckbox[index];
+          }
+        } else if (option === false) {
+          return "";
+        }
+        return option;
+      });
       this.options = Object.assign({}, this.options, obj);
       console.log(this.options);
     }
