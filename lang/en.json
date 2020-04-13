@@ -10,8 +10,18 @@
     "alreadyTaken": "This ID is not available."
   },
   "editRestaurant": {
+    "about": "About",
+    "required": "Required",
+    "profilePhoto": "Restaurant profile photo",
+    "coverPhoto": "Restaurant cover photo",
+    "current": "Current",
+    "new": "New",
     "setLocation": "Set location",
-    "updateMap": "Update Map"
+    "updateMap": "Update Map",
+    "businessHourDescription": "Check the business day of the week and set the business hours.",
+    "draftDescription": "Save as Draft.",
+    "publishDescription": "Save and publish your restaurant.",
+    "updateMapDescription": "Set restaurant location from your restaurant name and address."
   },
   "editMenu": {
     "item": "Item",
@@ -24,14 +34,16 @@
     "itemOptions": "Item options"
   },
   "shopInfo": {
+    "name": "Restaurant name",
+    "streetAddress": "Street address",
+    "city": "City",
+    "state": "State",
+    "zip": "Zip",
     "address": "Address",
     "phonenumber": "Phones Number",
     "website": "Website",
     "hours": "Hours",
-    "public": "Public",
-    "businessHourDescription": "Check the business day of the week and set the business hours.",
-    "draftDescription": "Save as Draft.",
-    "publishDescription": "Save and publish your restaurant."
+    "public": "Public"
   },
   "sitemenu": {
     "menu": "Menu",

@@ -10,18 +10,40 @@
     "alreadyTaken": "このIDはすでに使われています。"
   },
   "editRestaurant": {
+    "about": "お店の情報",
+    "required": "必須",
+    "profilePhoto": "プロフィール画像",
+    "coverPhoto": "カバー画像",
+    "current": "現在",
+    "new": "新規",
     "setLocation": "住所を元に地図を更新",
-    "updateMap": "場所をセット"
+    "updateMap": "場所をセット",
+    "businessHourDescription": "営業する曜日にチェックをいれ、営業時間を設定してください。",
+    "draftDescription": "下書きとして保存",
+    "publishDescription": "保存して公開",
+    "updateMapDescription": "レストラン名や住所を元に地図を更新"
+  },
+  "editMenu": {
+    "item": "Item",
+    "required": "Required",
+    "itemName": "Item name",
+    "price": "値段",
+    "tax": "税金",
+    "itemDescription": "Item description",
+    "itemPhoto": "Item photo",
+    "itemOptions": "Item options"
   },
   "shopInfo": {
+    "name": "Restaurant name",
+    "streetAddress": "Street address",
+    "city": "City",
+    "state": "State",
+    "zip": "Zip",
     "address": "場所",
     "phonenumber": "電話番号",
     "website": "ホームページ",
     "hours": "営業時間",
-    "public": "公開",
-    "businessHourDescription": "営業する曜日にチェックをいれ、営業時間を設定してください。",
-    "draftDescription": "下書きとして保存",
-    "publishDescription": "保存して公開"
+    "public": "公開"
   },
   "sitemenu": {
     "menu": "メニュー",
