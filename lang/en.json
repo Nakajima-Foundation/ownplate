@@ -1,5 +1,12 @@
 {
   "greeting": "Hello World2",
+  "menu": {
+    "about": "About",
+    "admins": "Restaurant Owners",
+    "users": "Food Lovers",
+    "home": "Home",
+    "signOut": "Sign Out"
+  },
   "restaurantId": {
     "self": "Restaurant ID",
     "available": "This Restaurant ID is available",

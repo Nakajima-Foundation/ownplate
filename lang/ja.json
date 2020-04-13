@@ -1,5 +1,12 @@
 {
   "greeting": "こんにちは、世界",
+  "menu": {
+    "about": "このサービスについて",
+    "admins": "レストラン向けページ",
+    "users": "お客様向けページ",
+    "home": "ホーム",
+    "signOut": "サイン・アウト"
+  },
   "restaurantId": {
     "self": "レストランID",
     "available": "このレストランIDは使用が可能です",
