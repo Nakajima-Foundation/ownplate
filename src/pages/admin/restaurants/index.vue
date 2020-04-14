@@ -62,7 +62,7 @@
               </div>
             </div>
           </div>
-          <a href="/admin/restaurants/new">
+          <a :href="stripeLink">
             <b-button
               style="margin-right:auto"
               type="is-primary"
@@ -210,6 +210,9 @@ export default {
     }
   },
   computed: {
+    stripeLink() {
+      return `https://connect.stripe.com/oauth/authorize?response_type=code&client_id=${process.env.STRIPE_CLIENT_ID}&scope=read_write&redirect_uri=${process.env.STRIPE_AUTH_REDIRECT_URI}`;
+    },
     hidePayment() {
       return process.env.releaseConfig.hidePayment;
     },

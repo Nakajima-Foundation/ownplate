@@ -2,7 +2,7 @@ import i18nEN from './lang/en.json';
 import i18nES from './lang/es.json';
 import i18nJA from './lang/ja.json';
 require('dotenv').config();
-const { STRIPE_API_KEY, OwnPlateKey } = process.env;
+const { STRIPE_API_KEY, STRIPE_CLIENT_ID, STRIPE_AUTH_REDIRECT_URI, OwnPlateKey } = process.env;
 console.log("OwnPlateKey=", OwnPlateKey);
 
 // This mechanism allows us to specify release specific configurations.
@@ -114,6 +114,8 @@ export default {
   ],
   env: {
     STRIPE_API_KEY,
+    STRIPE_CLIENT_ID,
+    STRIPE_AUTH_REDIRECT_URI,
     gapikey: process.env.GAPIKey,
     releaseConfig: (OwnPlateKey && releaseConfigs[OwnPlateKey]) || {}
   },
