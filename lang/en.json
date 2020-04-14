@@ -38,7 +38,8 @@
     "tax": "Tax",
     "itemDescription": "Item description",
     "itemPhoto": "Item photo",
-    "itemOptions": "Item options"
+    "itemOptions": "Item options",
+    "itemOptionsNote": "For altenatives, use comma to separate them (e.g., \"Chiken, Pork, Tofu\")"
   },
   "shopInfo": {
     "name": "Restaurant name",
