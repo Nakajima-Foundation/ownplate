@@ -18,7 +18,47 @@ service cloud.firestore {
     }
 
     match /users/{userId} {
-      allow read, create, update, delete: if request.auth.uid == userId;
+      allow read, write: if request.auth.uid == userId;
+      match /public {
+        allow read: if true;
+        allow write: if request.auth.uid == userId;
+      }
+      match /private {
+        allow read, write: if request.auth.uid == userId;
+        match /profile {
+          allow read: if request.auth.uid == userId;
+          allow write: if request.auth.uid == userId
+            && request.resource.data.phoneNumber == request.auth.token.phone_number;
+        }
+      }
+      match /readonly {
+        allow read: if request.auth.uid == userId;
+      }
+      match /system {
+        allow read, write: if false;
+      }
+    }
+
+    match /admins/{userId} {
+      allow read, write: if request.auth.uid == userId;
+      match /public {
+        allow read: if true;
+        allow write: if request.auth.uid == userId;
+      }
+      match /private {
+        allow read, write: if request.auth.uid == userId;
+        match /profile {
+          allow read: if request.auth.uid == userId;
+          allow write: if request.auth.uid == userId
+            && request.resource.data.email == request.auth.token.email;
+        }
+      }
+      match /readonly {
+        allow read: if request.auth.uid == userId;
+      }
+      match /system {
+        allow read, write: if false;
+      }
     }
 
     match /restaurants/{restaurantsId} {
@@ -26,32 +66,32 @@ service cloud.firestore {
       allow create: if isAdmin(request)
                       && request.resource.data.uid == request.auth.uid;
       allow update: if isAdmin(request) && isOwner(resource, request);
+      match /menus/{menuId} {
+        allow read: if true
+        allow create: if isAdmin(request)
+        allow update: if isAdmin(request) && isOwner(resource, request);
+      }
+      match /titles/{titleId} {
+        allow read: if true
+        allow create: if isAdmin(request)
+        allow update: if isAdmin(request) && isOwner(resource, request);
+      }
+      match /orders/{orderId} {
+        allow create: if isUser(request)
+                        && request.resource.data.uid == request.auth.uid;
+        allow read: if isAdmin(request)
+                        && isRestaurantOwner(restaurantsId, request);
+        allow read: if isUser(request) && isOwner(resource, request);
+        allow delete: if isOwner(resource, request)
+                        && resource.data.status == 200; // validated
+        allow update: if isOwner(resource, request)
+                        && resource.data.status == 200
+                        && request.resource.data.status == 300; // HACK: Temporary During no-sprite Testing
+        allow update: if isAdmin(request)
+                        && isRestaurantOwner(restaurantsId, request);
+      }
     }
 
-    match /restaurants/{restaurantsId}/menus/{menuId} {
-      allow read: if true
-      allow create: if isAdmin(request)
-      allow update: if isAdmin(request) && isOwner(resource, request);
-    }
-    match /restaurants/{restaurantsId}/titles/{titleId} {
-      allow read: if true
-      allow create: if isAdmin(request)
-      allow update: if isAdmin(request) && isOwner(resource, request);
-    }
-    match /restaurants/{restaurantsId}/orders/{orderId} {
-      allow create: if isUser(request)
-                      && request.resource.data.uid == request.auth.uid;
-      allow read: if isAdmin(request)
-                      && isRestaurantOwner(restaurantsId, request);
-      allow read: if isUser(request) && isOwner(resource, request);
-      allow delete: if isOwner(resource, request)
-                      && resource.data.status == 200; // validated
-      allow update: if isOwner(resource, request)
-                      && resource.data.status == 200
-                      && request.resource.data.status == 300; // HACK: Temporary During no-sprite Testing
-      allow update: if isAdmin(request)
-                      && isRestaurantOwner(restaurantsId, request);
-    }
 
     match /{document=**} {
       allow read, write: if false;

@@ -46,24 +46,32 @@
         </div>
       </b-tab-item>
       <b-tab-item :label="$t('admin.payment')">
-        <div class="card block">
-          <div class="card-content">
-            <div v-if="!existsPayment" class="container content has-text-centered">
-              <b-icon icon="credit-card" size="is-large"></b-icon>
-              <h3>{{$t('admin.addNewRestaurant')}}</h3>
-              {{$t('admin.pleaseConnectPayment')}}
+        <div v-if="hidePayment" style="text-align: center;">
+          <div>
+            <i class="fas fa-wrench" style="font-size:7em;margin:2rem"></i>
+          </div>
+          <h3>{{ $t('admin.hidePayment') }}</h3>
+        </div>
+        <div v-else>
+          <div class="card block">
+            <div class="card-content">
+              <div v-if="!existsPayment" class="container content has-text-centered">
+                <b-icon icon="credit-card" size="is-large"></b-icon>
+                <h3>{{$t('admin.addNewRestaurant')}}</h3>
+                {{$t('admin.pleaseConnectPayment')}}
+              </div>
             </div>
           </div>
+          <a href="/admin/restaurants/new">
+            <b-button
+              style="margin-right:auto"
+              type="is-primary"
+              class="counter-button"
+              expanded
+              rounded
+            >{{$t('admin.connectPaymentAccount')}}</b-button>
+          </a>
         </div>
-        <a href="/admin/restaurants/new">
-          <b-button
-            style="margin-right:auto"
-            type="is-primary"
-            class="counter-button"
-            expanded
-            rounded
-          >{{$t('admin.connectPaymentAccount')}}</b-button>
-        </a>
       </b-tab-item>
     </b-tabs>
   </section>
@@ -73,6 +81,7 @@
 import { db, firestore } from "~/plugins/firebase.js";
 import RestaurantEditCard from "~/components/RestaurantEditCard";
 import { order_status } from "~/plugins/constant.js";
+import { releaseConfig } from "~/plugins/config.js";
 
 export default {
   name: "Restaurant",
@@ -202,6 +211,9 @@ export default {
     }
   },
   computed: {
+    hidePayment() {
+      return releaseConfig.hidePayment;
+    },
     uid() {
       return this.$store.getters.uidAdmin;
     },

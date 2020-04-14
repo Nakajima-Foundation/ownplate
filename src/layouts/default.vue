@@ -6,7 +6,7 @@
           <img
             src="/OwnPlate-Logo-Horizontal-YellowWhite.svg"
             alt="Lightweight UI components for Vue.js based on Bulma"
-            />
+          />
         </b-navbar-item>
       </template>
 
@@ -17,18 +17,24 @@
           hoverable
           right
           icon-left="github-circle"
-          >
+        >
           <b-navbar-item href="/">
             <span class="icon">
               <i class="fas fa-home"></i>
             </span>
-            <span class="nav-item">Home</span>
+            <span class="nav-item">{{$t("menu.home")}}</span>
+          </b-navbar-item>
+          <b-navbar-item href="/about">
+            <span class="icon">
+              <i class="far fa-file-alt"></i>
+            </span>
+            <span class="nav-item">{{$t("menu.about")}}</span>
           </b-navbar-item>
           <b-navbar-item href="#" v-if="hasUser" @click.prevent="signout">
             <span class="icon">
               <i class="fas fa-sign-out-alt"></i>
             </span>
-            <span class="nav-item">Sign Out</span>
+            <span class="nav-item">{{$t("menu.signOut")}}</span>
           </b-navbar-item>
         </b-navbar-dropdown>
       </template>
@@ -41,9 +47,7 @@
       <div class="footer-sections">
         <div class="columns is-desktop" style="margin-top:-3rem;">
           <div class="content has-text-left" style="color:white">
-            <p class="p-font-mini">
-              Operated by Singularity Society.
-            </p>
+            <p class="p-font-mini">Operated by Singularity Society.</p>
           </div>
         </div>
       </div>
@@ -52,10 +56,9 @@
 </template>
 
 <script>
-import { auth } from '@/plugins/firebase.js';
+import { auth } from "@/plugins/firebase.js";
 
 export default {
-
   data() {
     return {
       items: [
@@ -83,23 +86,27 @@ export default {
     async signout() {
       console.log("signing out", auth.currentUser);
       try {
-        auth.signOut()
+        auth.signOut();
         console.log("sign out succeeded", this.hasUser);
         this.$router.push("/");
-      } catch(error) {
+      } catch (error) {
         console.log("sign out failed", error);
       }
     }
   },
   beforeCreate() {
-    this.unregisterAuthObserver = auth.onAuthStateChanged(async (user) => {
-      console.log("authStateChanged", user && user.email, user && user.phoneNumber);
-      this.$store.commit('setUser', user);
+    this.unregisterAuthObserver = auth.onAuthStateChanged(async user => {
+      console.log(
+        "authStateChanged",
+        user && user.email,
+        user && user.phoneNumber
+      );
+      this.$store.commit("setUser", user);
     });
   },
   created() {
-    this.timerId = window.setInterval(()=>{
-      this.$store.commit('updateDate');
+    this.timerId = window.setInterval(() => {
+      this.$store.commit("updateDate");
     }, 60 * 1000);
   },
   destroyed() {
@@ -132,5 +139,4 @@ export default {
 .p-font-mini {
   line-height: 1.6rem;
 }
-
 </style>

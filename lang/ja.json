@@ -1,5 +1,12 @@
 {
   "greeting": "こんにちは、世界",
+  "menu": {
+    "about": "このサービスについて",
+    "admins": "レストラン向けページ",
+    "users": "お客様向けページ",
+    "home": "ホーム",
+    "signOut": "サイン・アウト"
+  },
   "restaurantId": {
     "self": "レストランID",
     "available": "このレストランIDは使用が可能です",
@@ -31,7 +38,8 @@
     "tax": "税金",
     "itemDescription": "Item description",
     "itemPhoto": "Item photo",
-    "itemOptions": "Item options"
+    "itemOptions": "Item options",
+    "itemOptionsNote": "二択や三択の場合、半角カンマで区切ってください (例: \"チキン, ポーク, 豆腐\")"
   },
   "shopInfo": {
     "name": "Restaurant name",
@@ -90,6 +98,8 @@
     "resend": "再送信",
     "verificationCode": "確認コード",
     "typeVerificationCode": "メールで送られてきたコードを入力してください",
+    "userName": "お名前 (オプション)",
+    "typeUserName": "山田太郎",
     "sendVerificationCode": "送信",
     "countryCode": "国",
     "country": {
@@ -106,6 +116,7 @@
     "notAdmin": "You need to login as a restaurant owner."
   },
   "admin": {
+    "hidePayment": "課金の仕組みはまもなく提供される予定です。少々お待ちください。",
     "pleaseSignIn": "サインインしてください (レストラン向け)",
     "registration": "登録してください (レストラン向け)",
     "email": "メールアドレス",
