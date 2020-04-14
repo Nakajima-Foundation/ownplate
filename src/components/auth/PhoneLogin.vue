@@ -150,6 +150,13 @@ export default {
           },
           { merge: true }
         );
+        await db.doc(`users/${result.user.uid}/private/profile`).set(
+          {
+            phoneNumber: result.user.phoneNumber,
+            updated: firestore.FieldValue.serverTimestamp()
+          },
+          { merge: true }
+        );
         this.confirmationResult = null; // so that we can re-use this
         this.verificationCode = "";
         this.$emit("dismissed");

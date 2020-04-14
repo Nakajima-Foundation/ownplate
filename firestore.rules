@@ -23,13 +23,15 @@ service cloud.firestore {
         allow read: if true;
         allow write: if request.auth.uid == userId;
       }
-      match /private {
-        allow read, write: if request.auth.uid == userId;
+      match /private/{dataId} {
+        allow read: if request.auth.uid == userId
+        allow write: if request.auth.uid == userId
+          && request.resource.data.phoneNumber == request.auth.token.phone_number;
       }
-      match /readonly {
+      match /readonly/{dataId} {
         allow read: if request.auth.uid == userId;
       }
-      match /system {
+      match /system/{dataId} {
         allow read, write: if false;
       }
     }
@@ -40,13 +42,13 @@ service cloud.firestore {
         allow read: if true;
         allow write: if request.auth.uid == userId;
       }
-      match /private {
+      match /private/{dataId} {
         allow read, write: if request.auth.uid == userId;
       }
-      match /readonly {
+      match /readonly/{dataId} {
         allow read: if request.auth.uid == userId;
       }
-      match /system {
+      match /system/{dataId} {
         allow read, write: if false;
       }
     }
