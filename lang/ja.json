@@ -113,6 +113,7 @@
     "notAdmin": "You need to login as a restaurant owner."
   },
   "admin": {
+    "hidePayment": "課金の仕組みはまもなく提供される予定です。少々お待ちください。",
     "pleaseSignIn": "サインインしてください (レストラン向け)",
     "registration": "登録してください (レストラン向け)",
     "email": "メールアドレス",
