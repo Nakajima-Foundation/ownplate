@@ -96,9 +96,8 @@ sw.*
 functions/templates/index.html
 
 # firebase files
-.firebaserc
-plugins/firebase.js
-src/plugins/firebase.js
+/.firebaserc
 src/config/firebase.js
+
 # Emacs
 *~
