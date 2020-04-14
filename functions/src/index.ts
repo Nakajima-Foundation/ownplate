@@ -23,14 +23,6 @@ export const createRestaurant = functions.https.onCall(async (data, context) => 
 */
 
 /*
- Stripe connection
- */
-
-import * as Stripe from './stripe'
-
-export const stripeConnect = Stripe.accountConnect
-
-/*
  Payment processing
  */
 

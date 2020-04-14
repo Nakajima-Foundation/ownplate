@@ -1,6 +1,7 @@
 import express from 'express';
 import * as admin from 'firebase-admin';
 import * as fs from 'fs';
+import Stripe from './stripe'
 
 export const app = express();
 export const router = express.Router();
@@ -77,9 +78,9 @@ router.get('/hello',
   logger,
   hello_response);
 
-router.get('/stripe/callback',
+router.get('/stripe',
   logger,
-  hello_response);
+  Stripe);
 
 
 app.use('/1.0', router);

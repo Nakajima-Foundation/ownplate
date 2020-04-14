@@ -211,7 +211,11 @@ export default {
   },
   computed: {
     stripeLink() {
-      return `https://connect.stripe.com/oauth/authorize?response_type=code&client_id=${process.env.STRIPE_CLIENT_ID}&scope=read_write&redirect_uri=${process.env.STRIPE_AUTH_REDIRECT_URI}`;
+      const uid = Auth.auth().currentUser.uid;
+      const redirectURI = `${process.env.STRIPE_AUTH_REDIRECT_URI}?uid=${uid}`;
+      return `https://connect.stripe.com/oauth/authorize?response_type=code&client_id=${
+        process.env.STRIPE_CLIENT_ID
+      }&scope=read_write&redirect_uri=${encodeURI(redirectURI)}`;
     },
     hidePayment() {
       return process.env.releaseConfig.hidePayment;
