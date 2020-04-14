@@ -101,6 +101,13 @@ export default {
           name: this.name,
           created: firestore.FieldValue.serverTimestamp()
         });
+        await db.doc(`admins/${result.user.uid}/private/profile`).set(
+          {
+            email: result.user.email,
+            updated: firestore.FieldValue.serverTimestamp()
+          },
+          { merge: true }
+        );
         this.$router.push("/admin/restaurants");
       } catch (error) {
         console.log("onSignup failed", error.code, error.message);
