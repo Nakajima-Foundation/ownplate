@@ -18,16 +18,8 @@
     ],
     "rewrites": [
       {
-        "source": "/r/*",
+        "source": "**/**",
         "function": "api"
-      },
-      {
-        "source": "/1.0/**",
-        "function": "api"
-      },
-      {
-        "source": "**",
-        "destination": "/index.html"
       }
     ]
   },

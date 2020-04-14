@@ -81,6 +81,8 @@
 import { db, firestore } from "~/plugins/firebase.js";
 import RestaurantEditCard from "~/components/RestaurantEditCard";
 import { order_status } from "~/plugins/constant.js";
+import firebase from "firebase";
+import "firebase/auth";
 
 export default {
   name: "Restaurant",
@@ -211,8 +213,9 @@ export default {
   },
   computed: {
     stripeLink() {
-      const uid = Auth.auth().currentUser.uid;
-      const redirectURI = `${process.env.STRIPE_AUTH_REDIRECT_URI}?uid=${uid}`;
+      const uid = firebase.auth().currentUser.uid;
+      console.log(uid);
+      const redirectURI = `${process.env.STRIPE_AUTH_REDIRECT_URI}/${uid}`;
       return `https://connect.stripe.com/oauth/authorize?response_type=code&client_id=${
         process.env.STRIPE_CLIENT_ID
       }&scope=read_write&redirect_uri=${encodeURI(redirectURI)}`;

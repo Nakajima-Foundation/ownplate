@@ -1,27 +1,8 @@
+import * as admin from 'firebase-admin'
 import express from 'express';
-import * as admin from 'firebase-admin';
 import * as fs from 'fs';
 
-export const app = express();
-export const router = express.Router();
-
-// for test, db is not immutable
-if (!admin.apps.length) {
-  admin.initializeApp();
-}
-
-let db = admin.firestore();
-
-export const updateDb = (_db) => {
-  db = _db;
-}
-
-export const logger = async (req, res, next) => {
-  next();
-}
-export const hello_response = async (req, res) => {
-  res.json({ message: "hello" });
-};
+const app = express()
 
 const escapeHtml = (str: string): string => {
   if (typeof str !== 'string') {
@@ -40,9 +21,8 @@ const escapeHtml = (str: string): string => {
   });
 }
 
-
 const ogpPage = async (req: any, res: any) => {
-
+  const db = admin.firestore()
   const { restaurantName } = req.params;
   const restaurant = await db.doc(`restaurants/${restaurantName}`).get();
 
@@ -73,16 +53,9 @@ const ogpPage = async (req: any, res: any) => {
 
 };
 
-router.get('/hello',
-  logger,
-  hello_response);
 
-router.get('/stripe',
-  logger,
-  hello_response);
+app.get('/:restaurantName', ogpPage);
+app.get('/:restaurantpName/*', ogpPage);
 
 
-app.use('/1.0', router);
-
-app.get('/r/:restaurantName', ogpPage);
-app.get('/r/:restaurantpName/*', ogpPage);
+export default app

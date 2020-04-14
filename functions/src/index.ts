@@ -1,11 +1,13 @@
 import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
+import API from './api'
 
-import * as express from './functions/express';
 import * as firestore from './functions/firestore';
 
 
-export const api = functions.https.onRequest(express.app);
+admin.initializeApp();
+
+export const api = functions.https.onRequest(API);
 
 let db = admin.firestore();
 export const updateDb = (_db) => {
