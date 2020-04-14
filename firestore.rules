@@ -26,7 +26,10 @@ service cloud.firestore {
       match /private {
         allow read, write: if request.auth.uid == userId;
       }
-      match /secret {
+      match /readonly {
+        allow read: if request.auth.uid == userId;
+      }
+      match /system {
         allow read, write: if false;
       }
     }
@@ -40,7 +43,10 @@ service cloud.firestore {
       match /private {
         allow read, write: if request.auth.uid == userId;
       }
-      match /secret {
+      match /readonly {
+        allow read: if request.auth.uid == userId;
+      }
+      match /system {
         allow read, write: if false;
       }
     }
