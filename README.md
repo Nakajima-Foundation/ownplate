@@ -39,9 +39,9 @@ $ npm run devsync
 For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
 
 
-## function
+## Function
 
-You need to deploy function for	develoment.
+You need to deploy Function for	develoment.
 
 ```
 cd functions && npm install
