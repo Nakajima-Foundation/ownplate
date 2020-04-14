@@ -1,10 +1,8 @@
-import * as admin from 'firebase-admin'
 import * as functions from 'firebase-functions'
-import * as constant from '../common/constant'
 import Stripe from 'stripe'
-import Order from '../models/Order'
+import Account from '../models/Account'
 
-export const create = async (data, context) => {
+export const accountConnect = functions.https.onCall(async (data, context) => {
   if (!context.auth) {
     throw new functions.https.HttpsError('failed-precondition', 'The function must be called while authenticated.')
   }
@@ -13,63 +11,25 @@ export const create = async (data, context) => {
     throw new functions.https.HttpsError('invalid-argument', 'The functions requires STRIPE_API_KEY.')
   }
   console.info(context)
+
+  const grant_type = data.grant_type
+  if (!grant_type) {
+    throw new functions.https.HttpsError('invalid-argument', 'This request does not contain a grant_type.')
+  }
+  const code = data.code
+  if (!code) {
+    throw new functions.https.HttpsError('invalid-argument', 'This request does not contain a code.')
+  }
   const uid: string = context.auth.uid
   const stripe = new Stripe(STRIPE_API_KEY, { apiVersion: '2020-03-02' })
+  const response = await stripe.oauth.token({
+    grant_type,
+    code
+  });
 
-  const orderId = data.orderId
-  if (!orderId) {
-    throw new functions.https.HttpsError('invalid-argument', 'This request does not include an orderId.')
-  }
-  const restaurantId = data.restaurantId
-  if (!restaurantId) {
-    throw new functions.https.HttpsError('invalid-argument', 'This request does not contain a restaurantId.')
-  }
-  const paymentMethodId = data.paymentMethodId
-  if (!paymentMethodId) {
-    throw new functions.https.HttpsError('invalid-argument', 'This request does not contain a paymentMethodId.')
-  }
-  const phoneNumber = data.phoneNumber
-  if (!phoneNumber) {
-    throw new functions.https.HttpsError('invalid-argument', 'This request does not contain a phoneNumber.')
-  }
-
-  try {
-    const result = await admin.firestore().runTransaction(async transaction => {
-
-      const orderRef = admin.firestore().doc(`restaurants/${restaurantId}/orders/${orderId}`)
-      const snapshot = await transaction.get(orderRef)
-      const order = Order.fromSnapshot<Order>(snapshot)
-
-      // Check the stock status.
-      if (order.status !== constant.order_status.validation_ok) {
-        throw new functions.https.HttpsError('aborted', 'This order is invalid.')
-      }
-
-      // FIXME: check amount, currency.
-      const amount = order.total * 100
-
-      const request = {
-        setup_future_usage: 'off_session',
-        amount: amount,
-        currency: 'USD',
-        payment_method: paymentMethodId,
-        metadata: { uid, restaurantId, orderId }
-      } as Stripe.PaymentIntentCreateParams
-
-      const paymentInset = await stripe.paymentIntents.create(request, {
-        idempotencyKey: orderRef.path
-      })
-      transaction.set(orderRef, {
-        phoneNumber: phoneNumber
-      }, { merge: true })
-      return {
-        paymentIntentId: paymentInset.id,
-        orderId: orderRef.id
-      }
-    })
-    return { result }
-  } catch (error) {
-    console.error(error)
-    return { error }
-  }
-};
+  const account = new Account(uid)
+  account.status = 'connected'
+  account.stripeUserId = response.stripe_user_id
+  account.stripeInfo = response
+  await account.save()
+})

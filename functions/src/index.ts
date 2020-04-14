@@ -22,9 +22,20 @@ export const createRestaurant = functions.https.onCall(async (data, context) => 
 });
 */
 
+/*
+ Stripe connection
+ */
+
+import * as Stripe from './stripe'
+
+export const stripeConnect = Stripe.accountConnect
+
+/*
+ Payment processing
+ */
+
 import * as Checkout from './checkout'
 
-// export const checkout = { ...Checkout }
 export const checkoutCreate = functions.https.onCall(async (data, context) => {
   return await Checkout.create(data, context);
 });
@@ -32,4 +43,3 @@ export const checkoutCreate = functions.https.onCall(async (data, context) => {
 export const checkoutConfirm = functions.https.onCall(async (data, context) => {
   return await Checkout.confirm(data, context);
 });
-
