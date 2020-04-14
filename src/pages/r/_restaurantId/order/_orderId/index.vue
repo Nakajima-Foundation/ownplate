@@ -247,14 +247,16 @@ export default {
       const checkoutConfirm = functions.httpsCallable("checkoutConfirm");
 
       try {
-        const result = await checkoutCreate({
+        const { data } = await checkoutCreate({
           paymentMethodId: paymentMethod.id,
           restaurantId: this.restaurantId(),
           orderId: this.orderId,
           phoneNumber: this.$store.state.user.phoneNumber
         });
-
-        console.log(result);
+        const result = await checkoutConfirm({
+          paymentIntentId: data.result.paymentIntentId,
+          orderPath: `restaurants/${this.restaurantId()}/orders/${this.orderId}`
+        });
       } catch (error) {
         console.log(error);
       }

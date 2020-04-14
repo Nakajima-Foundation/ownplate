@@ -63,8 +63,8 @@ export const create = async (data, context) => {
         phoneNumber: phoneNumber
       }, { merge: true })
       return {
-        paymentIntentID: paymentInset.id,
-        orderID: orderRef.id
+        paymentIntentId: paymentInset.id,
+        orderId: orderRef.id
       }
     })
     return { result }
@@ -111,14 +111,14 @@ export const confirm = async (data, context) => {
       try {
         // Check the stock status.
         const paymentInset = await stripe.paymentIntents.confirm(paymentIntentID, {
-          idempotencyKey: order.path
+          idempotencyKey: order.id
         })
         transaction.set(orderRef, {
           timePaid: admin.firestore.FieldValue.serverTimestamp(),
           status: constant.order_status.customer_paid,
           result: paymentInset
         }, { merge: true })
-        return result
+        return paymentInset
       } catch (error) {
         throw error
       }
