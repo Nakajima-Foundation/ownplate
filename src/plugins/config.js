@@ -5,7 +5,8 @@ const releaseName = ownPlateConfig.releasName || "default";
 const releaseConfigs = {
   default: {},
   alpha: {
-    hidePayment: true
+    hidePayment: true,
+    hideUsersLink: true
   }
 };
 
