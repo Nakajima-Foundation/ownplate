@@ -1,6 +1,6 @@
 {
   "projects": {
-    “production”: “own-plate”,
+    "production": "own-plate",
     "staging": "ownplate-dev"
   }
 }
