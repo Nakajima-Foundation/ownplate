@@ -114,6 +114,7 @@
     "notAdmin": "You need to login as a restaurant owner."
   },
   "admin": {
+    "hidePayment": "Payment feature is coming soon. Please stay tuned.",
     "pleaseSignIn": "Sign In (Restaurant Operators)",
     "registration": "Registration (for restaurants)",
     "email": "Email",
