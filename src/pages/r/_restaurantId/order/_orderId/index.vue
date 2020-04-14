@@ -48,28 +48,30 @@
           </div>
 
           <hr class="hr-black" />
+          <div v-if="!hidePayment">
+            <h2>{{$t('order.yourPayment')}}</h2>
+            <stripe-card ref="stripe"></stripe-card>
+            <!-- <credit-card-input></credit-card-input> -->
 
-          <h2>{{$t('order.yourPayment')}}</h2>
-          <stripe-card ref="stripe"></stripe-card>
-          <!-- <credit-card-input></credit-card-input> -->
-
-          <div class="is-centered" style="text-align: center;">
-            <b-button
-              type="is-primary"
-              expanded
-              rounded
-              style="margin-top:4rem;padding-top: 0.2rem;"
-              size="is-large"
-              @click="handlePayment"
-            >
-              <span
-                class="p-font bold"
-              >{{$t('order.placeOrder')}} {{$n(orderInfo.total, 'currency')}}</span>
-            </b-button>
+            <div class="is-centered" style="text-align: center;">
+              <b-button
+                type="is-primary"
+                expanded
+                rounded
+                style="margin-top:4rem;padding-top: 0.2rem;"
+                size="is-large"
+                @click="handlePayment"
+              >
+                <span
+                  class="p-font bold"
+                >{{$t('order.placeOrder')}} {{$n(orderInfo.total, 'currency')}}</span>
+              </b-button>
+            </div>
           </div>
           <div class="is-centered" style="text-align: center;">
             <b-button
               expanded
+              :type="hidePayment ? 'is-primary' : ''"
               rounded
               style="margin-top:4rem;padding-top: 0.2rem;"
               size="is-large"
@@ -120,6 +122,7 @@ export default {
     };
   },
   created() {
+    console.log("releaseConfig = ", process.env.releaseConfig);
     const restaurant_detacher = db
       .doc(`restaurants/${this.restaurantId()}`)
       .onSnapshot(restaurant => {
@@ -165,6 +168,9 @@ export default {
     }
   },
   computed: {
+    hidePayment() {
+      return process.env.releaseConfig.hidePayment;
+    },
     orderName() {
       return nameOfOrder(this.orderInfo);
     },
