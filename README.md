@@ -38,6 +38,16 @@ $ npm run devsync
 
 For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
 
+
+## function
+
+You need to deploy function for	develoment.
+
+```
+cd functions && npm install
+firebase deploy --only functions
+```
+
 ## ESlint + Prettier
 
 Saveと同時にフォーマッターが動くように設定しています（.eslintrc.js）。
