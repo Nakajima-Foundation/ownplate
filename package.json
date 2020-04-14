@@ -14,9 +14,9 @@
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "lintfix": "eslint --fix --ext .js,.vue --ignore-path .gitignore .",
     "deploy_production": "nuxt build &&  cp dist/index.html functions/templates/index.html && firebase deploy --only hosting --project=production && firebase deploy --only functions --project=production",
-    "deploy": "nuxt build && cp dist/index.html functions/templates/index.html &&  firebase deploy --only hosting --project=production && firebase deploy --only functions --project=production",
+    "deploy": "nuxt build && cp dist/index.html functions/templates/index.html &&  firebase deploy --project=production",
     "deploy:dev": "nuxt build && cp dist/index.html functions/templates/index.html &&  firebase deploy --only hosting --project=default && firebase deploy --only functions --project=default",
-    "deploy_fs_rule": "firebase deploy --only firestore:rules --project=production"
+    "deploy_fs_rule": "firebase deploy --only firestore:rules --project=production",
     "use_staging": "firebase use staging && cp src/config/default/ownplate-dev.js src/config/firebase.js",
     "use_production": "firebase use production && cp src/config/default/ownplate.js src/config/firebase.js"
   },
