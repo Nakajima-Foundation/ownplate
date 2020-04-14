@@ -99,6 +99,8 @@
     "resend": "Re-send SMS",
     "verificationCode": "Verification Code",
     "typeVerificationCode": "Please type the code you've received",
+    "userName": "User Name (Optional)",
+    "typeUserName": "John Smith",
     "sendVerificationCode": "Send",
     "countryCode": "Country Code",
     "country": {

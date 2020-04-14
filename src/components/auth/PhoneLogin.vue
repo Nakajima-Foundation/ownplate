@@ -46,6 +46,13 @@
           :placeholder="$t('sms.typeVerificationCode')"
         />
       </b-field>
+      <b-field
+        :type="hasError ? 'is-danger' : 'is-success'"
+        :message="hasError ? $t(errors[0]) : ''"
+        :label="$t('sms.userName')"
+      >
+        <b-input type="text" v-model="name" maxlength="16" :placeholder="$t('sms.typeUserName')" />
+      </b-field>
       <b-button
         type="is-primary"
         :loading="isLoading"
@@ -76,6 +83,7 @@ export default {
       recaptchaWidgetId: null,
       confirmationResult: null,
       verificationCode: "",
+      name: "",
       result: {}
     };
   },
@@ -144,12 +152,14 @@ export default {
           this.verificationCode
         );
         console.log("success!", result);
-        await db.doc(`users/${result.user.uid}`).set(
-          {
-            lastConfirmedAt: firestore.FieldValue.serverTimestamp()
-          },
-          { merge: true }
-        );
+        if (this.name) {
+          await db.doc(`users/${result.user.uid}`).set(
+            {
+              name: this.name
+            },
+            { merge: true }
+          );
+        }
         await db.doc(`users/${result.user.uid}/private/profile`).set(
           {
             phoneNumber: result.user.phoneNumber,
