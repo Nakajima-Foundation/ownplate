@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import { auth, authObject } from "~/plugins/firebase.js";
+import { db, firestore, auth, authObject } from "~/plugins/firebase.js";
 
 export default {
   data() {
@@ -144,6 +144,12 @@ export default {
           this.verificationCode
         );
         console.log("success!", result);
+        await db.doc(`users/${result.user.uid}`).set(
+          {
+            lastConfirmedAt: firestore.FieldValue.serverTimestamp()
+          },
+          { merge: true }
+        );
         this.confirmationResult = null; // so that we can re-use this
         this.verificationCode = "";
         this.$emit("dismissed");
