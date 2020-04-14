@@ -18,7 +18,31 @@ service cloud.firestore {
     }
 
     match /users/{userId} {
-      allow read, create, update, delete: if request.auth.uid == userId;
+      allow read, write: if request.auth.uid == userId;
+      match /public {
+        allow read: if true;
+        allow write: if request.auth.uid == userId;
+      }
+      match /private {
+        allow read, write: if request.auth.uid == userId;
+      }
+      match /secret {
+        allow read, write: if false;
+      }
+    }
+
+    match /admins/{userId} {
+      allow read, write: if request.auth.uid == userId;
+      match /public {
+        allow read: if true;
+        allow write: if request.auth.uid == userId;
+      }
+      match /private {
+        allow read, write: if request.auth.uid == userId;
+      }
+      match /secret {
+        allow read, write: if false;
+      }
     }
 
     match /restaurants/{restaurantsId} {
