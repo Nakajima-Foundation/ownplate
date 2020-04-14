@@ -2,15 +2,7 @@ import i18nEN from './lang/en.json';
 import i18nES from './lang/es.json';
 import i18nJA from './lang/ja.json';
 require('dotenv').config();
-const { STRIPE_API_KEY, OwnPlateKey } = process.env;
-console.log("OwnPlateKey=", OwnPlateKey);
-
-// This mechanism allows us to specify release specific configurations.
-const releaseConfigs = {
-  alpha: {
-    hidePayment: true
-  }
-};
+const { STRIPE_API_KEY } = process.env;
 
 export default {
   mode: "spa",
@@ -114,8 +106,7 @@ export default {
   ],
   env: {
     STRIPE_API_KEY,
-    gapikey: process.env.GAPIKey,
-    releaseConfig: (OwnPlateKey && releaseConfigs[OwnPlateKey]) || {}
+    gapikey: process.env.GAPIKey
   },
   i18n: {
     locales: ['en', 'es', 'ja'],

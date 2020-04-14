@@ -81,6 +81,7 @@
 import { db, firestore } from "~/plugins/firebase.js";
 import RestaurantEditCard from "~/components/RestaurantEditCard";
 import { order_status } from "~/plugins/constant.js";
+import { releaseConfig } from "~/plugins/config.js";
 
 export default {
   name: "Restaurant",
@@ -211,7 +212,7 @@ export default {
   },
   computed: {
     hidePayment() {
-      return process.env.releaseConfig.hidePayment;
+      return releaseConfig.hidePayment;
     },
     uid() {
       return this.$store.getters.uidAdmin;
