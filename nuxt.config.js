@@ -106,7 +106,8 @@ export default {
   ],
   env: {
     STRIPE_API_KEY,
-    gapikey: process.env.GAPIKey
+    gapikey: process.env.GAPIKey,
+    CIRCLE_SHA1: process.env.CIRCLE_SHA1,
   },
   i18n: {
     locales: ['en', 'es', 'ja'],

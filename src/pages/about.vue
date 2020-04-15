@@ -52,7 +52,10 @@ import BackButton from "~/components/BackButton";
 export default {
   components: {
     BackButton
-  }
+  },
+  created() {
+    console.log(process.env.CIRCLE_SHA1);
+  },
 };
 </script>
 <style scoped>
