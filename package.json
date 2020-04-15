@@ -54,6 +54,7 @@
     "node-sass": "^4.13.0",
     "nuxt-sass-resources-loader": "^2.0.5",
     "prettier": "^1.19.1",
+    "rimraf": "^3.0.2",
     "sass-loader": "^8.0.0",
     "typescript": "^3.8.3"
   }
