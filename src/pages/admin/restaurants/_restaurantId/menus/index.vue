@@ -82,6 +82,7 @@
               expanded
               rounded
               outlined
+              :disabled="submitting"
               @click="addTitle()"
             >
               {{$t("button.addTitle")}}
@@ -95,6 +96,7 @@
               expanded
               rounded
               outlined
+              :disabled="submitting"
               @click="addMenu()"
             >
               {{$t("button.addItem")}}
@@ -126,6 +128,7 @@ export default {
   },
   data() {
     return {
+      submitting: false,
       readyToDisplay: false,
       restaurantInfo: {},
       menuCollection: null,
@@ -216,43 +219,56 @@ export default {
       this.changeTitleMode(title.id, false);
     },
     async addTitle() {
-      const data = {
-        name: "",
-        uid: this.$store.getters.uidAdmin,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-        deletedFlag: false,
-      };
-      const newTitle = await db.collection(`restaurants/${this.restaurantId()}/titles`).add(data);
-      const newMenuLists = this.menuLists;
-      // newMenuLists.unshift(newTitle.id);
-      newMenuLists.push(newTitle.id);
+      this.submitting = true;
+      try {
+        const data = {
+          name: "",
+          uid: this.$store.getters.uidAdmin,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+          deletedFlag: false,
+        };
+        const newTitle = await db.collection(`restaurants/${this.restaurantId()}/titles`).add(data);
+        const newMenuLists = this.menuLists;
+        // newMenuLists.unshift(newTitle.id);
+        newMenuLists.push(newTitle.id);
 
-      this.saveMenuList(newMenuLists);
+        await this.saveMenuList(newMenuLists);
+      }  catch(e) {
+        console.log(e)
+      } finally {
+        this.submitting = false;
+      }
     },
     async addMenu() {
-      const itemData = {
-        itemName: "",
-        price: 0,
-        tax: "food",
-        itemDescription: "",
-        uid: this.$store.getters.uidAdmin,
-        deletedFlag: false,
-        publicFlag: false,
-        createdAt: new Date()
-      };
-      const newData = await db.collection(`restaurants/${this.restaurantId()}/menus`).add(itemData);
+      this.submitting = true;
+      try {
+        const itemData = {
+          itemName: "",
+          price: 0,
+          tax: "food",
+          itemDescription: "",
+          uid: this.$store.getters.uidAdmin,
+          deletedFlag: false,
+          publicFlag: false,
+          createdAt: new Date()
+        };
+        const newData = await db.collection(`restaurants/${this.restaurantId()}/menus`).add(itemData);
 
-      const newMenuLists = this.menuLists;
-      newMenuLists.push(newData.id);
-      this.saveMenuList(newMenuLists);
-
-      this.$router.push({
-        path: `/admin/restaurants/${this.restaurantId()}/menus/${newData.id}`
-      });
+        const newMenuLists = this.menuLists;
+        newMenuLists.push(newData.id);
+        await this.saveMenuList(newMenuLists);
+        this.$router.push({
+          path: `/admin/restaurants/${this.restaurantId()}/menus/${newData.id}`
+        });
+      } catch (e) {
+        console.log(e);
+      } finally {
+        this.submitting = false;
+      }
     },
 
-    saveMenuList(menuLists) {
-      db.doc(`restaurants/${this.restaurantId()}`).update("menuLists", menuLists);
+    async saveMenuList(menuLists) {
+      await db.doc(`restaurants/${this.restaurantId()}`).update("menuLists", menuLists);
     },
     finishTitleInput() {
       this.$router.go({
@@ -272,24 +288,24 @@ export default {
     // end of edit title
 
     //
-    positionUp(itemKey) {
+    async positionUp(itemKey) {
       const pos = this.menuLists.indexOf(itemKey);
       if (pos !== 0 && pos !== -1) {
         const newMenuLists = [...this.menuLists];
         const tmp = newMenuLists[pos - 1];
         newMenuLists[pos - 1] = newMenuLists[pos]
         newMenuLists[pos] = tmp;
-        this.saveMenuList(newMenuLists);
+        await this.saveMenuList(newMenuLists);
       }
     },
-    positionDown(itemKey) {
+    async positionDown(itemKey) {
       const pos = this.menuLists.indexOf(itemKey);
       if (pos !== this.menuLists.length && pos !== -1) {
         const newMenuLists = [...this.menuLists];
         const tmp = newMenuLists[pos + 1];
         newMenuLists[pos + 1] = newMenuLists[pos]
         newMenuLists[pos] = tmp;
-        this.saveMenuList(newMenuLists);
+        await this.saveMenuList(newMenuLists);
       }
     },
     async forkTitleItem(itemKey) {
@@ -326,7 +342,7 @@ export default {
 
       const newMenuLists = this.menuLists;
       newMenuLists.splice(pos, 0, newData.id);
-      this.saveMenuList(newMenuLists);
+      await this.saveMenuList(newMenuLists);
     },
     async deleteItem(itemKey) {
       // delete from list
@@ -340,7 +356,7 @@ export default {
       if (item._dataType === "title") {
         await db.doc(`restaurants/${this.restaurantId()}/titles/${itemKey}`).update("deletedFlag", true);
       }
-      this.saveMenuList(newMenuLists);
+      await this.saveMenuList(newMenuLists);
     },
   }
 };

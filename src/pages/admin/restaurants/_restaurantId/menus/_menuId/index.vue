@@ -65,8 +65,7 @@
               <b-select v-model="menuInfo.tax" placeholder="select">
                 <option
                   v-for="taxItem in taxRates"
-                  :key="taxItem"
-                  :value="{taxItem}"
+                  :value="taxItem"
                 >{{ taxItem }} {{ restaurantInfo && ((restaurantInfo[taxItem + "Tax"] || 0) + "%") }}</option>
               </b-select>
             </b-field>
