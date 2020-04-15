@@ -125,6 +125,9 @@ export default {
   computed: {
     options() {
       return (this.item.itemOptionCheckbox || []).map(option => {
+        if (!option) {
+          return [];
+        }
         return option.split(",").map(choice => {
           return choice.trim();
         });
