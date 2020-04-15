@@ -9,7 +9,9 @@
             </div>
 
             <div class="container content has-text-centered">
-              <h3 style="color: #0078c8">{{ restaurantname || "no restaurant name"}}</h3>
+              <h2>
+                <router-link :to="'/r/' + restaurantid">{{ restaurantname || "no restaurant name"}}</router-link>
+              </h2>
             </div>
             <div style="text-align:center;margin-top:1rem;">
               <div class="p-font">{{ streetaddress || "no streetaddress"}}</div>
