@@ -7,8 +7,8 @@
   "scripts": {
     "dev": "nuxt --port 3000",
     "devsync": "HOST=192.168.100.20 PORT=3333 nuxt",
-    "build": "nuxt build",
     "build:functions": "tsc --project functions",
+    "build": "nuxt build && cp dist/index.html functions/templates/index.html",
     "start": "axios-mock-server -b && nuxt start",
     "generate": "axios-mock-server -b && nuxt generate",
     "emulate": "npm run build:functions && firebase emulators:start",
@@ -17,7 +17,9 @@
     "deploy_staging": "nuxt build &&  cp dist/index.html functions/templates/index.html && firebase deploy --only hosting --project=staging && firebase deploy --only functions --project=staging",
     "deploy": "nuxt build && cp dist/index.html functions/templates/index.html &&  firebase deploy --only hosting --project=staging && firebase deploy --only functions --project=staging",
     "deploy:dev": "nuxt build && cp dist/index.html functions/templates/index.html &&  firebase deploy --only hosting --project=default && firebase deploy --only functions --project=default",
-    "deploy_fs_rule": "firebase deploy --only firestore:rules --project=staging"
+    "deploy_fs_rule": "firebase deploy --only firestore:rules --project=staging",
+    "use_staging": "firebase use staging && cp src/config/default/ownplate-dev.js src/config/firebase.js",
+    "use_production": "firebase use production && cp src/config/default/ownplate.js src/config/firebase.js"
   },
   "dependencies": {
     "@babel/plugin-syntax-dynamic-import": "^7.7.4",

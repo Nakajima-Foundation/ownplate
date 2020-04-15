@@ -8,7 +8,7 @@
           </p>
         </div>
       </div>
-      <div class="card block">
+      <div class="card block" v-if="!hideUsersLink">
         <div class="card-content">
           <p style="text-align:center; font-weight:bold; font-size:1.5em">
             <router-link to="/r">{{$t("menu.users")}}</router-link>
@@ -27,6 +27,8 @@
 </template>
 
 <script>
+import { releaseConfig } from "~/plugins/config.js";
+
 export default {
   name: "HomePage",
 
@@ -37,6 +39,11 @@ export default {
 
   mounted() {},
 
+  computed: {
+    hideUsersLink() {
+      return releaseConfig.hideUsersLink;
+    }
+  },
   methods: {
     sessionClear() {
       alert("クリアしました");

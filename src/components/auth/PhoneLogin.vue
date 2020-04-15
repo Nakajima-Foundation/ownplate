@@ -46,6 +46,13 @@
           :placeholder="$t('sms.typeVerificationCode')"
         />
       </b-field>
+      <b-field
+        :type="hasError ? 'is-danger' : 'is-success'"
+        :message="hasError ? $t(errors[0]) : ''"
+        :label="$t('sms.userName')"
+      >
+        <b-input type="text" v-model="name" maxlength="16" :placeholder="$t('sms.typeUserName')" />
+      </b-field>
       <b-button
         type="is-primary"
         :loading="isLoading"
@@ -58,7 +65,7 @@
 </template>
 
 <script>
-import { auth, authObject } from "~/plugins/firebase.js";
+import { db, firestore, auth, authObject } from "~/plugins/firebase.js";
 
 export default {
   data() {
@@ -76,6 +83,7 @@ export default {
       recaptchaWidgetId: null,
       confirmationResult: null,
       verificationCode: "",
+      name: "",
       result: {}
     };
   },
@@ -144,6 +152,21 @@ export default {
           this.verificationCode
         );
         console.log("success!", result);
+        if (this.name) {
+          await db.doc(`users/${result.user.uid}`).set(
+            {
+              name: this.name
+            },
+            { merge: true }
+          );
+        }
+        await db.doc(`users/${result.user.uid}/private/profile`).set(
+          {
+            phoneNumber: result.user.phoneNumber,
+            updated: firestore.FieldValue.serverTimestamp()
+          },
+          { merge: true }
+        );
         this.confirmationResult = null; // so that we can re-use this
         this.verificationCode = "";
         this.$emit("dismissed");

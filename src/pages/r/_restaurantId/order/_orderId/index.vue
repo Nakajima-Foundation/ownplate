@@ -97,6 +97,7 @@ import NotFound from "~/components/NotFound";
 import { db, firestore, functions } from "~/plugins/firebase.js";
 import { order_status } from "~/plugins/constant.js";
 import { nameOfOrder } from "~/plugins/strings.js";
+import { releaseConfig } from "~/plugins/config.js";
 
 export default {
   name: "Order",
@@ -122,7 +123,6 @@ export default {
     };
   },
   created() {
-    console.log("releaseConfig = ", process.env.releaseConfig);
     const restaurant_detacher = db
       .doc(`restaurants/${this.restaurantId()}`)
       .onSnapshot(restaurant => {
@@ -169,7 +169,7 @@ export default {
   },
   computed: {
     hidePayment() {
-      return process.env.releaseConfig.hidePayment;
+      return releaseConfig.hidePayment;
     },
     orderName() {
       return nameOfOrder(this.orderInfo);

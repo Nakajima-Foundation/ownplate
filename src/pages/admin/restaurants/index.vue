@@ -83,6 +83,7 @@ import RestaurantEditCard from "~/components/RestaurantEditCard";
 import { order_status } from "~/plugins/constant.js";
 import firebase from "firebase";
 import "firebase/auth";
+import { releaseConfig } from "~/plugins/config.js";
 
 export default {
   name: "Restaurant",
@@ -221,7 +222,7 @@ export default {
       }&scope=read_write&redirect_uri=${encodeURI(redirectURI)}`;
     },
     hidePayment() {
-      return process.env.releaseConfig.hidePayment;
+      return releaseConfig.hidePayment;
     },
     uid() {
       return this.$store.getters.uidAdmin;

@@ -2,6 +2,7 @@ import i18nEN from './lang/en.json';
 import i18nES from './lang/es.json';
 import i18nJA from './lang/ja.json';
 require('dotenv').config();
+
 const { STRIPE_API_KEY, STRIPE_CLIENT_ID, STRIPE_AUTH_REDIRECT_URI, OwnPlateKey } = process.env;
 console.log("OwnPlateKey=", OwnPlateKey);
 

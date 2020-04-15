@@ -11,8 +11,8 @@
       and thousands of restaurant owners have been forced to close their businesses.
     </p>
     <p class="p">
-      We've created OwnTable to help those restaurants and bars.
-      With OwnTable, restaurants can start take-out service with no extra fees (only credit card charges are required).
+      We've created OwnPlate to help those restaurants and bars.
+      With OwnPlate, restaurants can start take-out service with no extra fees (only credit card charges are required).
       The restaurant owners can create dedicated pages and register menu items there (no special skill is required),
       where customers can order and pay, then pick them up at restaurants.
     </p>
@@ -33,14 +33,14 @@
       多くの失業者を生み出したし、閉業へと追い込まれた経営者も少なくありません。
     </p>
     <p class="p">
-      私たちは、そんなレストランやバーを支援するために、OwnTable を作りました。
-      OwnTable を使えば、レストランは、余計な手数料なしでテイクアウトサービスを始める事ができます。
+      私たちは、そんなレストランやバーを支援するために、OwnPlate を作りました。
+      OwnPlate を使えば、レストランは、余計な手数料なしでテイクアウトサービスを始める事ができます。
       レストランは、専用のページを作り、そこにメニューを登録します（ウェブ・コンサルタントを雇う必要はありません）。
       顧客はそのページから注文し、支払いを済ませ、調理時間に合わせて店に取りに行くのです。
     </p>
     <p class="p">
-      シンギュラリティ・ソサエティは、技術の進歩により大きく変わろうとしている世の中に向けた活動をするNPOです。
-      OpenPlate は、Firebase と Vue という技術を使って作られています。
+      シンギュラリティ・ソサエティは、技術の進歩により大きく変わろうとしている世の中に向けた活動をするNPO（非営利型一般社団法人）です。
+      OwnPlate は、Firebase と Vue という技術を使って作られています。
     </p>
     <p class="p">
       <br />代表理事 中島聡
