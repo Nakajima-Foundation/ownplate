@@ -70,7 +70,7 @@
 import ItemCard from "~/components/user/ItemCard";
 import PhoneLogin from "~/components/auth/PhoneLogin";
 import ShopOrnerInfo from "~/components/user/ShopOrnerInfo";
-import ShopInfo from "~/components/ShopInfo";
+import ShopInfo from "~/components/user/ShopInfo";
 import NotFound from "~/components/NotFound";
 
 import { db } from "~/plugins/firebase.js";
