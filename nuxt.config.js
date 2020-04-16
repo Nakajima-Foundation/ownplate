@@ -81,6 +81,7 @@ export default {
    */
   plugins: [
     '~plugins/buefy.js',
+    '~plugins/social.js',
     // { src: "~/plugins/localStorage.js", ssr: false },
     { src: "~/plugins/userPermission.js", ssr: false },
     { src: "~/plugins/utils.js", ssr: false },
