@@ -14,6 +14,9 @@
               </h2>
             </div>
             <div style="text-align:center;margin-top:1rem;">
+              <div class="p-font">
+                <router-link :to="'/r/' + restaurantid">{{`${host}/r/${restaurantid}`}}</router-link>
+              </div>
               <div class="p-font">{{ streetaddress || "no streetaddress"}}</div>
               <div class="p-font" style="margin-top:-0.8rem;">
                 {{ city || "city"}},
@@ -141,6 +144,11 @@ export default {
       type: Number,
       required: true
     }
+  },
+  data() {
+    return {
+      host: location.protocol + "//" + location.host
+    };
   },
   methods: {
     deleteRestaurant: function() {
