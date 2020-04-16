@@ -123,6 +123,7 @@ export default {
         .onSnapshot(async result => {
           try {
             if (result.empty) {
+              this.restaurantItems = []; // so that we present "No restaurant"
               return;
             }
             this.restaurantItems = (result.docs || [])
