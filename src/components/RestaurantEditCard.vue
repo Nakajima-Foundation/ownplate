@@ -25,7 +25,7 @@
             <div class="container content has-text-centered">
               <div style="text-align:center;">
                 <h2>
-                  <router-link :to="'/admin/restaurants/' + restaurantid"> <b-icon icon="account" size="is-midium"></b-icon>{{$t('admin.editAbout')}}</router-link>
+                  <router-link :to="'/admin/restaurants/' + restaurantid"> <b-icon icon="pen" size="is-midium"></b-icon>{{$t('admin.editAbout')}}</router-link>
                 </h2>
               </div>
             </div>
