@@ -87,7 +87,7 @@
 </template>
 
 <script>
-import ShopOrnerInfo from "~/components/ShopOrnerInfo";
+import ShopOrnerInfo from "~/components/user/ShopOrnerInfo";
 import OrderInfo from "~/components/user/OrderInfo";
 import CreditCardInput from "~/components/CreditCardInput";
 import ShopInfo from "~/components/ShopInfo";

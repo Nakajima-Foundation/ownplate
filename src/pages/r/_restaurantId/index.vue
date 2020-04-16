@@ -69,7 +69,7 @@
 <script>
 import ItemCard from "~/components/user/ItemCard";
 import PhoneLogin from "~/components/auth/PhoneLogin";
-import ShopOrnerInfo from "~/components/ShopOrnerInfo";
+import ShopOrnerInfo from "~/components/user/ShopOrnerInfo";
 import ShopInfo from "~/components/ShopInfo";
 import NotFound from "~/components/NotFound";
 
