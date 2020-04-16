@@ -31,7 +31,7 @@ export default {
   },
   computed: {
     targetURL() {
-      return this.url || window.location.hash;
+      return this.url || window.location.href;
     }
   }
 };

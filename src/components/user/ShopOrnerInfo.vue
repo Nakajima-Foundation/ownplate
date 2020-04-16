@@ -32,11 +32,6 @@ export default {
   data() {
     return {};
   },
-  computed: {
-    currentURL() {
-      return window.location.href;
-    }
-  },
   methods: {}
 };
 </script>
