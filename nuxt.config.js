@@ -2,7 +2,6 @@ import i18nEN from './lang/en.json';
 import i18nES from './lang/es.json';
 import i18nJA from './lang/ja.json';
 require('dotenv').config();
-const { STRIPE_API_KEY } = process.env;
 
 export default {
   mode: "spa",
@@ -105,7 +104,9 @@ export default {
     }],
   ],
   env: {
-    STRIPE_API_KEY,
+    STRIPE_API_KEY: process.env.STRIPE_API_KEY,
+    STRIPE_CLIENT_ID: process.env.STRIPE_CLIENT_ID,
+    STRIPE_AUTH_REDIRECT_URI: process.env.STRIPE_AUTH_REDIRECT_URI,
     gapikey: process.env.GAPIKey,
     CIRCLE_SHA1: process.env.CIRCLE_SHA1,
   },
