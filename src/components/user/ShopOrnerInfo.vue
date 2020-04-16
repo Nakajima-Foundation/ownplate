@@ -9,21 +9,17 @@
     <div class="media-content">
       <span class="shop-name">{{ name }}</span>
     </div>
-    <social-sharing :url="currentURL" :title="name" hashtags="ownplate" inline-template>
-      <div>
-        <network network="facebook">
-          <i class="fab fa-facebook"></i> Facebook
-        </network>
-        <network network="twitter">
-          <i class="fab fa-twitter"></i> Twitter
-        </network>
-      </div>
-    </social-sharing>
+    <sharing-buttons :title="name" />
   </div>
 </template>
 
 <script>
+import SharingButtons from "~/components/user/SharingButtons";
+
 export default {
+  components: {
+    SharingButtons
+  },
   props: {
     src: {
       type: String
