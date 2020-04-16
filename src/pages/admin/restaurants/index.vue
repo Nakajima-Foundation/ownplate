@@ -155,17 +155,29 @@ export default {
 
             this.destroy_detacher();
             this.detachers = this.restaurantItems.map((restaurant, index) => {
-              return db
-                .collection(`restaurants/${restaurant.id}/orders`)
-                .where("timePaid", ">=", midNight())
-                .onSnapshot(result => {
-                  this.restaurantItems = this.restaurantItems.map((r2, i2) => {
-                    if (index === i2) {
-                      r2.numberOfOrders = result.size;
-                    }
-                    return r2;
-                  });
-                });
+              return (
+                db
+                  .collection(`restaurants/${restaurant.id}/orders`)
+                  .where("timePaid", ">=", midNight())
+                  // IDEALLY: .where("status", "<", order_status.customer_picked_up)
+                  .onSnapshot(result => {
+                    this.restaurantItems = this.restaurantItems.map(
+                      (r2, i2) => {
+                        if (index === i2) {
+                          r2.numberOfOrders = result.docs
+                            .map(doc => doc.data())
+                            .filter(data => {
+                              // We need this filter here because Firebase does not allow us to do
+                              return (
+                                data.status < order_status.customer_picked_up
+                              );
+                            }).length;
+                        }
+                        return r2;
+                      }
+                    );
+                  })
+              );
             });
           } catch (error) {
             console.log("Error fetch doc,", error);
