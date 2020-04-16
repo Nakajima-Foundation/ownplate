@@ -137,7 +137,7 @@
     "pleaseConnectPayment": "Please connect your payment account from the bottom button.",
     "connectPaymentAccount": "Connect payment account",
     "incompleteOrders": "{count} incomplete order | {count} incomplete orders",
-    "editMenuItems": "Edit Menu ({count} items)",
+    "editMenuItems": "メニュー ({count})",
     "editAbout": "Edit About",
     "pleaseSignUp": "Sign up as a new user",
     "forgotPassword": "Forgot Password？",

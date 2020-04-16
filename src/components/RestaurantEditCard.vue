@@ -22,36 +22,42 @@
               </div>
               <p class="p-font">{{ phonenumber }}</p>
             </div>
-          </div>
-        </div>
-        <div class="media">
-          <div class="media-content">
-            <div style="text-align:center;">
-              <h2>
-                <router-link
-                  :to="'/admin/restaurants/' + restaurantid + '/orders'"
-                >{{ $tc('admin.incompleteOrders', numberOfOrders, {count:numberOfOrders}) }}</router-link>
-              </h2>
+            <div class="container content has-text-centered">
+              <div style="text-align:center;">
+                <h2>
+                  <router-link :to="'/admin/restaurants/' + restaurantid"> <b-icon icon="pen" size="is-midium"></b-icon>{{$t('admin.editAbout')}}</router-link>
+                </h2>
+              </div>
             </div>
-          </div>
-        </div>
-        <div class="media">
-          <div class="media-content">
-            <div style="text-align:center;">
-              <h2>
-                <router-link
-                  :to="'/admin/restaurants/' + restaurantid + '/menus'"
-                >{{ $t('admin.editMenuItems', {count:numberOfMenus})}}</router-link>
-              </h2>
+            <div class="container content has-text-centered" :style="{margin: '20px'}">
+              <b-button
+                tag="router-link"
+                :to="'/admin/restaurants/' + restaurantid + '/orders'"
+                :style="{'margin-right': 'auto', height: '40px'}"
+                  type="is-primary"
+                class="counter-button"
+                expanded
+                rounded
+                  contained
+                >
+                {{ $tc('admin.incompleteOrders', numberOfOrders, {count:numberOfOrders}) }}
+              </b-button>
             </div>
-          </div>
-        </div>
-        <div class="media">
-          <div class="media-content">
-            <div style="text-align:center;">
-              <h2>
-                <router-link :to="'/admin/restaurants/' + restaurantid">{{$t('admin.editAbout')}}</router-link>
-              </h2>
+            <div class="container content has-text-centered" :style="{margin: '20px'}">
+              <div style="text-align:center;">
+                <h2>
+                  <b-button
+                    tag="router-link"
+                    :to="'/admin/restaurants/' + restaurantid + '/menus'"
+                    style="margin-right:auto"
+                    type="is-primary"
+                    class="counter-button"
+                    expanded
+                    rounded
+                    outlined
+                    >{{ $t('admin.editMenuItems', {count:numberOfMenus})}}</b-button>
+                </h2>
+              </div>
             </div>
           </div>
         </div>
