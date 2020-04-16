@@ -48,6 +48,10 @@ cd functions && npm install
 firebase deploy --only functions
 ```
 
+## icon lists
+
+https://fontawesome.com/icons?d=gallery
+
 ## ESlint + Prettier
 
 Saveと同時にフォーマッターが動くように設定しています（.eslintrc.js）。
