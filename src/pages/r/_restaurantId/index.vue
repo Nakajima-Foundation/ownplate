@@ -67,7 +67,7 @@
 </template>
 
 <script>
-import ItemCard from "~/components/ItemCard";
+import ItemCard from "~/components/user/ItemCard";
 import PhoneLogin from "~/components/auth/PhoneLogin";
 import ShopOrnerInfo from "~/components/ShopOrnerInfo";
 import ShopInfo from "~/components/ShopInfo";
@@ -124,7 +124,11 @@ export default {
     const restaurant_detacher = db
       .doc(`restaurants/${this.restaurantId()}`)
       .onSnapshot(restaurant => {
-        if (restaurant.exists && !restaurant.data().deletedFlag && restaurant.data().publicFlag) {
+        if (
+          restaurant.exists &&
+          !restaurant.data().deletedFlag &&
+          restaurant.data().publicFlag
+        ) {
           const restaurant_data = restaurant.data();
           this.shopInfo = restaurant_data;
           this.notFound = false;

@@ -88,7 +88,7 @@
 
 <script>
 import ShopOrnerInfo from "~/components/ShopOrnerInfo";
-import OrderInfo from "~/components/OrderInfo";
+import OrderInfo from "~/components/user/OrderInfo";
 import CreditCardInput from "~/components/CreditCardInput";
 import ShopInfo from "~/components/ShopInfo";
 import StripeCard from "~/components/StripeCard";
