@@ -1,11 +1,17 @@
 <template>
   <social-sharing :url="targetURL" :title="title" hashtags="ownplate" inline-template>
     <div>
-      <network network="facebook">
-        <i class="fab fa-facebook"></i> Facebook
+      <network network="facebook" class="facebook">
+        <span style="color:#3b5998">
+          <i class="fab fa-facebook"></i>
+          <span>Facebook</span>
+        </span>
       </network>
-      <network network="twitter">
-        <i class="fab fa-twitter"></i> Twitter
+      <network network="twitter" class="twitter">
+        <span style="color:#00acee">
+          <i class="fab fa-twitter"></i>
+          <span>Twitter</span>
+        </span>
       </network>
     </div>
   </social-sharing>
