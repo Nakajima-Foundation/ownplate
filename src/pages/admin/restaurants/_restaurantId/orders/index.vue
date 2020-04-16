@@ -15,6 +15,7 @@
 
 <script>
 import { db } from "~/plugins/firebase.js";
+import { midNight } from "~/plugins/dateUtils.js";
 import OrderedInfo from "~/components/OrderedInfo";
 import BackButton from "~/components/BackButton";
 import { order_status } from "~/plugins/constant.js";
@@ -40,15 +41,9 @@ export default {
           this.shopInfo = restaurant_data;
         }
       });
-    const midMight = (() => {
-      const date = new Date();
-      date.setHours(0); // local midnight
-      date.setMinutes(0);
-      return date;
-    })();
     const order_detacher = db
       .collection(`restaurants/${this.restaurantId()}/orders`)
-      .where("timePaid", ">=", midMight)
+      .where("timePaid", ">=", midNight())
       .onSnapshot(result => {
         if (!result.empty) {
           let orders = result.docs.map(this.doc2data("order"));

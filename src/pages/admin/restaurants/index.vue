@@ -82,6 +82,7 @@ import { db, firestore } from "~/plugins/firebase.js";
 import RestaurantEditCard from "~/components/RestaurantEditCard";
 import { order_status } from "~/plugins/constant.js";
 import { releaseConfig } from "~/plugins/config.js";
+import { midNight } from "~/plugins/dateUtils.js";
 
 export default {
   name: "Restaurant",
@@ -156,8 +157,7 @@ export default {
             this.detachers = this.restaurantItems.map((restaurant, index) => {
               return db
                 .collection(`restaurants/${restaurant.id}/orders`)
-                .where("status", "<", order_status.customer_picked_up)
-                .where("status", ">=", order_status.customer_paid)
+                .where("timePaid", ">=", midNight())
                 .onSnapshot(result => {
                   this.restaurantItems = this.restaurantItems.map((r2, i2) => {
                     if (index === i2) {
