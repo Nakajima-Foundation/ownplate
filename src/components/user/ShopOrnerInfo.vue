@@ -3,22 +3,26 @@
   <div class="media">
     <div class="media-left" v-if="src">
       <figure class="image is-64x64">
-        <img class="is-rounded" :src="src" alt="" />
+        <img class="is-rounded" :src="src" alt />
       </figure>
     </div>
     <div class="media-content">
-      <span class="shop-name">
-        {{ name }}
-      </span>
+      <span class="shop-name">{{ name }}</span>
     </div>
+    <sharing-buttons :title="name" />
   </div>
 </template>
 
 <script>
+import SharingButtons from "~/components/user/SharingButtons";
+
 export default {
+  components: {
+    SharingButtons
+  },
   props: {
     src: {
-      type: String,
+      type: String
     },
     name: {
       type: String,
