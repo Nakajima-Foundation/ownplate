@@ -33,6 +33,7 @@ export default {
     };
   },
   created() {
+    console.log(this.lastSeveralDays);
     const restaurant_detacher = db
       .doc(`restaurants/${this.restaurantId()}`)
       .onSnapshot(restaurant => {
@@ -69,7 +70,14 @@ export default {
       });
     }
   },
-  computed: {},
+  computed: {
+    lastSeveralDays() {
+      return Array.from(Array(10).keys()).map(index => {
+        const date = midNight(-index);
+        return { index, date };
+      });
+    }
+  },
   methods: {
     orderSelected(order) {
       this.$router.push({
