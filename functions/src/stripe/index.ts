@@ -22,10 +22,22 @@ export const connect = functions.https.onCall(async (data, context) => {
       code: code
     });
 
-    await admin.firestore().collection('admins').doc(uid)
-      .collection('system').doc('stripe')
-      .set(response)
+    const batch = admin.firestore().batch()
 
+    batch.set(
+      admin.firestore().collection('admins').doc(uid)
+        .collection('system').doc('stripe'),
+      response
+    )
+    batch.set(
+      admin.firestore().collection('admins').doc(uid)
+        .collection('public').doc('stripe'),
+      {
+        isConnected: true
+      }
+    )
+
+    await batch.commit()
     return { result: response }
   } catch (error) {
     console.error(error)
