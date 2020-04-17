@@ -3,7 +3,10 @@
     <back-button url="/admin/restaurants/" />
     <h2 class="p-big bold">{{ shopInfo.restaurantName }}</h2>
     <b-select v-model="dayIndex">
-      <option v-for="day in lastSeveralDays" :value="day.index" :key="day.index">{{ $d(day.date )}}</option>
+      <option v-for="day in lastSeveralDays" :value="day.index" :key="day.index">
+        {{ $d(day.date )}}
+        <span v-if="day.index===0">{{$t('date.today')}}</span>
+      </option>
     </b-select>
     <div>
       <ordered-info
