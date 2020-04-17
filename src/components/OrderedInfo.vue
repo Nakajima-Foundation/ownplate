@@ -11,7 +11,10 @@
       </div>
       <div class="level is-mobile" style="margin:0">
         <div class="level-left">{{ totalCount }} items</div>
-        <div class="level-right" v-if="phoneNumber">{{ nationalPhoneNumber }}</div>
+        <div class="level-right">
+          <span v-if="order.name">{{ order.name }}</span>
+          <span v-if="!order.name && phoneNumber">{{ nationalPhoneNumber }}</span>
+        </div>
       </div>
       <div class="level is-mobile" style="margin:0">
         <div class="level-left">{{ $n(order.total, 'currency') }}</div>
