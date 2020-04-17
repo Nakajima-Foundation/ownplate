@@ -2,6 +2,9 @@
   <section class="section" style="background-color:#fffafa">
     <back-button url="/admin/restaurants/" />
     <h2 class="p-big bold">{{ shopInfo.restaurantName }}</h2>
+    <b-select v-model="dayIndex">
+      <option v-for="day in lastSeveralDays" :value="day.index" :key="day.index">{{ $d(day.date )}}</option>
+    </b-select>
     <div>
       <ordered-info
         v-for="order in orders"
@@ -29,8 +32,14 @@ export default {
     return {
       shopInfo: {},
       orders: [],
+      dayIndex: 0,
       detachers: []
     };
+  },
+  watch: {
+    dayIndex() {
+      console.log(this.dayIndex);
+    }
   },
   created() {
     console.log(this.lastSeveralDays);
