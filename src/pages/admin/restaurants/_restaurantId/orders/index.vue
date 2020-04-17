@@ -36,7 +36,8 @@ export default {
       shopInfo: {},
       orders: [],
       dayIndex: 0,
-      detachers: []
+      restaurant_detacher: () => {},
+      order_detacher: () => {}
     };
   },
   watch: {
@@ -46,7 +47,7 @@ export default {
   },
   created() {
     console.log(this.lastSeveralDays);
-    const restaurant_detacher = db
+    this.restaurant_detacher = db
       .doc(`restaurants/${this.restaurantId()}`)
       .onSnapshot(restaurant => {
         if (restaurant.exists) {
@@ -54,10 +55,27 @@ export default {
           this.shopInfo = restaurant_data;
         }
       });
-    const order_detacher = db
-      .collection(`restaurants/${this.restaurantId()}/orders`)
-      .where("timePaid", ">=", midNight())
-      .onSnapshot(result => {
+    this.dateWasUpdated();
+  },
+  destroyed() {
+    this.restaurant_detacher();
+    this.order_detacher();
+  },
+  computed: {
+    lastSeveralDays() {
+      return Array.from(Array(10).keys()).map(index => {
+        const date = midNight(-index);
+        return { index, date };
+      });
+    }
+  },
+  methods: {
+    dateWasUpdated() {
+      this.order_detacher();
+      let query = db
+        .collection(`restaurants/${this.restaurantId()}/orders`)
+        .where("timePaid", ">=", midNight());
+      this.order_detacher = query.onSnapshot(result => {
         if (!result.empty) {
           let orders = result.docs.map(this.doc2data("order"));
           orders = orders.sort((order0, order1) => {
@@ -73,24 +91,7 @@ export default {
           });
         }
       });
-    this.detachers = [restaurant_detacher, order_detacher];
-  },
-  destroyed() {
-    if (this.detachers) {
-      this.detachers.map(detacher => {
-        detacher();
-      });
-    }
-  },
-  computed: {
-    lastSeveralDays() {
-      return Array.from(Array(10).keys()).map(index => {
-        const date = midNight(-index);
-        return { index, date };
-      });
-    }
-  },
-  methods: {
+    },
     orderSelected(order) {
       this.$router.push({
         path:
