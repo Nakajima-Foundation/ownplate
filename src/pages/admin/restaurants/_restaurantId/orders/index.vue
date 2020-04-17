@@ -43,6 +43,7 @@ export default {
   watch: {
     dayIndex() {
       console.log(this.dayIndex);
+      this.dateWasUpdated();
     }
   },
   created() {
@@ -74,7 +75,7 @@ export default {
       this.order_detacher();
       let query = db
         .collection(`restaurants/${this.restaurantId()}/orders`)
-        .where("timePaid", ">=", midNight());
+        .where("timePaid", ">=", this.lastSeveralDays[this.dayIndex].date);
       this.order_detacher = query.onSnapshot(result => {
         if (!result.empty) {
           let orders = result.docs.map(this.doc2data("order"));
