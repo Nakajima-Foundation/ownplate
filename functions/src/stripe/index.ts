@@ -23,7 +23,7 @@ export const connect = functions.https.onCall(async (data, context) => {
     });
 
     await admin.firestore().collection('admins').doc(uid)
-      .collection('secret').doc('stripe')
+      .collection('system').doc('stripe')
       .set(response)
 
     return { result: response }
