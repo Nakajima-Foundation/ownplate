@@ -22,6 +22,9 @@ export const createRestaurant = functions.https.onCall(async (data, context) => 
 });
 */
 
+import * as Stripe from './stripe'
+
+export const stripe = { ...Stripe }
 import * as Checkout from './checkout'
 
 // export const checkout = { ...Checkout }

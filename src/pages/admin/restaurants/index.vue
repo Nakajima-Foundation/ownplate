@@ -62,7 +62,7 @@
               </div>
             </div>
           </div>
-          <a href="/admin/restaurants/new">
+          <a :href="stripeLink">
             <b-button
               style="margin-right:auto"
               type="is-primary"
@@ -78,11 +78,13 @@
 </template>
 
 <script>
-import { db, firestore } from "~/plugins/firebase.js";
+import { db, firestore, functions } from "~/plugins/firebase.js";
 import RestaurantEditCard from "~/components/RestaurantEditCard";
 import { order_status } from "~/plugins/constant.js";
 import { releaseConfig } from "~/plugins/config.js";
 import { midNight } from "~/plugins/dateUtils.js";
+import firebase from "firebase";
+import "firebase/auth";
 
 export default {
   name: "Restaurant",
@@ -115,6 +117,23 @@ export default {
     this.checkAdminPermission();
   },
   async mounted() {
+    const code = this.$route.query.code;
+    if (code) {
+      console.log(code);
+      const stripeConnect = firebase
+        .app()
+        .functions("us-central1")
+        .httpsCallable("stripe-connect");
+      try {
+        const response = await stripeConnect({ code });
+        console.log(response);
+        // TODO: show connected view
+      } catch (error) {
+        // TODO: show error modal
+        console.log(error);
+      }
+    }
+
     try {
       this.restaurant_detacher = db
         .collection("restaurants")
@@ -224,6 +243,12 @@ export default {
     }
   },
   computed: {
+    stripeLink() {
+      const redirectURI = `${location.protocol}//${location.host}${process.env.STRIPE_AUTH_REDIRECT_URI}`;
+      return `https://connect.stripe.com/oauth/authorize?response_type=code&client_id=${
+        process.env.STRIPE_CLIENT_ID
+      }&scope=read_write&redirect_uri=${encodeURI(redirectURI)}`;
+    },
     hidePayment() {
       return releaseConfig.hidePayment;
     },
