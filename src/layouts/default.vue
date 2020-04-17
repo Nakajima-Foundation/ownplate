@@ -101,11 +101,13 @@ export default {
         user && user.email,
         user && user.phoneNumber
       );
-      const snapshot = await db.doc(`users/${user.uid}`).get();
-      const doc = snapshot.data();
-      if (doc && doc.name) {
-        user.name = doc.name;
-        console.log("user.name", doc.name);
+      if (user) {
+        const snapshot = await db.doc(`users/${user.uid}`).get();
+        const doc = snapshot.data();
+        if (doc && doc.name) {
+          user.name = doc.name;
+          console.log("user.name", doc.name);
+        }
       }
 
       this.$store.commit("setUser", user);
