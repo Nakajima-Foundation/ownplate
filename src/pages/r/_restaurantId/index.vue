@@ -211,7 +211,8 @@ export default {
         order: this.orders,
         options: this.trimmedOptions,
         status: order_status.new_order,
-        uid: this.user.uid
+        uid: this.user.uid,
+        name: this.$store.getters.name
         // price never set here.
       };
       const res = await db

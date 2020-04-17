@@ -25,6 +25,9 @@ export const getters = {
     // Check if state.user has been initialized (as the result of notication from Firebase)
     return state.user !== undefined;
   },
+  name: (state) => {
+    return state.user && state.user.name || "";
+  }
 };
 
 export const mutations = {
