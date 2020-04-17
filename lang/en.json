@@ -59,6 +59,9 @@
     "checkout": "CHECKOUT",
     "orderCounter": "{count} item | {count} items"
   },
+  "date": {
+    "today": "Today"
+  },
   "order": {
     "yourOrder": "Your Order",
     "editItems": "Edit Items",

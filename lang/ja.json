@@ -59,6 +59,9 @@
     "checkout": "お会計",
     "orderCounter": "{count} 個"
   },
+  "date": {
+    "today": "本日"
+  },
   "order": {
     "yourOrder": "あなたの注文",
     "editItems": "注文を変更する",

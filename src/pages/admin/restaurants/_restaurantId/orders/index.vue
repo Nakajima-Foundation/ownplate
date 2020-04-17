@@ -2,6 +2,12 @@
   <section class="section" style="background-color:#fffafa">
     <back-button url="/admin/restaurants/" />
     <h2 class="p-big bold">{{ shopInfo.restaurantName }}</h2>
+    <b-select v-model="dayIndex">
+      <option v-for="day in lastSeveralDays" :value="day.index" :key="day.index">
+        {{ $d(day.date )}}
+        <span v-if="day.index===0">{{$t('date.today')}}</span>
+      </option>
+    </b-select>
     <div>
       <ordered-info
         v-for="order in orders"
@@ -29,11 +35,18 @@ export default {
     return {
       shopInfo: {},
       orders: [],
-      detachers: []
+      dayIndex: 0,
+      restaurant_detacher: () => {},
+      order_detacher: () => {}
     };
   },
+  watch: {
+    dayIndex() {
+      this.dateWasUpdated();
+    }
+  },
   created() {
-    const restaurant_detacher = db
+    this.restaurant_detacher = db
       .doc(`restaurants/${this.restaurantId()}`)
       .onSnapshot(restaurant => {
         if (restaurant.exists) {
@@ -41,10 +54,34 @@ export default {
           this.shopInfo = restaurant_data;
         }
       });
-    const order_detacher = db
-      .collection(`restaurants/${this.restaurantId()}/orders`)
-      .where("timePaid", ">=", midNight())
-      .onSnapshot(result => {
+    this.dateWasUpdated();
+  },
+  destroyed() {
+    this.restaurant_detacher();
+    this.order_detacher();
+  },
+  computed: {
+    lastSeveralDays() {
+      return Array.from(Array(10).keys()).map(index => {
+        const date = midNight(-index);
+        return { index, date };
+      });
+    }
+  },
+  methods: {
+    dateWasUpdated() {
+      this.order_detacher();
+      let query = db
+        .collection(`restaurants/${this.restaurantId()}/orders`)
+        .where("timePaid", ">=", this.lastSeveralDays[this.dayIndex].date);
+      if (this.dayIndex > 0) {
+        query = query.where(
+          "timePaid",
+          "<",
+          this.lastSeveralDays[this.dayIndex - 1].date
+        );
+      }
+      this.order_detacher = query.onSnapshot(result => {
         if (!result.empty) {
           let orders = result.docs.map(this.doc2data("order"));
           orders = orders.sort((order0, order1) => {
@@ -60,17 +97,7 @@ export default {
           });
         }
       });
-    this.detachers = [restaurant_detacher, order_detacher];
-  },
-  destroyed() {
-    if (this.detachers) {
-      this.detachers.map(detacher => {
-        detacher();
-      });
-    }
-  },
-  computed: {},
-  methods: {
+    },
     orderSelected(order) {
       this.$router.push({
         path:
