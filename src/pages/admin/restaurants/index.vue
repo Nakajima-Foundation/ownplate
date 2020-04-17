@@ -93,9 +93,6 @@ import RestaurantEditCard from "~/components/RestaurantEditCard";
 import { order_status } from "~/plugins/constant.js";
 import { releaseConfig } from "~/plugins/config.js";
 import { midNight } from "~/plugins/dateUtils.js";
-import firebase from "firebase";
-import "firebase/auth";
-import "firebase/firestore";
 
 export default {
   name: "Restaurant",
@@ -131,10 +128,8 @@ export default {
   async mounted() {
     const code = this.$route.query.code;
     if (code) {
-      const stripeConnect = firebase
-        .app()
-        .functions("us-central1")
-        .httpsCallable("stripe-connect");
+      console.log("**** found code");
+      const stripeConnect = functions.httpsCallable("stripe-connect");
       try {
         const response = await stripeConnect({ code });
         console.log(response);
@@ -145,8 +140,7 @@ export default {
       }
     }
 
-    this.stripe_connnect_detacher = firebase
-      .firestore()
+    this.stripe_connnect_detacher = db
       .doc(`/admins/${this.uid}/public/stripe`)
       .onSnapshot({
         next: snapshot => {
