@@ -14,7 +14,7 @@
       <div v-if="canceling">
         <div class="message-box">
           <div style="width:100%">
-            <div style="float:right; width:2em;height:1px">
+            <div style="float:right; width:2.5em;height:1px">
               <b-button style="position:abolute;border:none;top:-0.5rem" @click="canceling=false">
                 <i class="fa fa-times-circle gray-icon" />
               </b-button>
@@ -24,6 +24,7 @@
           <h3>{{$t("admin.order.cancelTitle")}}</h3>
           <p>{{$t("admin.order.cancelMessage")}}</p>
           <p>
+            <span>{{orderInfo.name }}</span>
             <a :href="nationalPhoneURI">{{ nationalPhoneNumber }}</a>
           </p>
         </div>
@@ -38,6 +39,7 @@
       </div>
       <div v-else>
         <p v-if="orderInfo.phoneNumber" style="margin-bottom:1rem">
+          <span>{{orderInfo.name }}</span>
           <a :href="nationalPhoneURI">{{ nationalPhoneNumber }}</a>
         </p>
       </div>
