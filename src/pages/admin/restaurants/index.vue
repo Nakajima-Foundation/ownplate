@@ -60,6 +60,16 @@
                 <h3>{{$t('admin.addNewRestaurant')}}</h3>
                 {{$t('admin.pleaseConnectPayment')}}
               </div>
+              <div v-if="existsPayment" class="container content has-text-centered">
+                <b-button
+                  @click="handlePaymentAccountDisconnect"
+                  style="margin-right:auto"
+                  type="is-primary"
+                  class="counter-button"
+                  expanded
+                  rounded
+                >{{$t('admin.disconnectPaymentAccount')}}</b-button>
+              </div>
             </div>
           </div>
           <a :href="stripeLink">
@@ -85,6 +95,7 @@ import { releaseConfig } from "~/plugins/config.js";
 import { midNight } from "~/plugins/dateUtils.js";
 import firebase from "firebase";
 import "firebase/auth";
+import "firebase/firestore";
 
 export default {
   name: "Restaurant",
@@ -110,7 +121,8 @@ export default {
       restaurantItems: null,
       paymentItems: [],
       detachers: [],
-      restaurant_detacher: null
+      restaurant_detacher: null,
+      stripe_connnect_detacher: null
     };
   },
   created() {
@@ -119,7 +131,6 @@ export default {
   async mounted() {
     const code = this.$route.query.code;
     if (code) {
-      console.log(code);
       const stripeConnect = firebase
         .app()
         .functions("us-central1")
@@ -133,6 +144,19 @@ export default {
         console.log(error);
       }
     }
+
+    this.stripe_connnect_detacher = firebase
+      .firestore()
+      .doc(`/admins/${this.uid}/public/stripe`)
+      .onSnapshot({
+        next: snapshot => {
+          console.log(snapshot.data());
+          if (snapshot.exists) {
+            const isConected = snapshot.data()["isConnected"];
+            this.paymentItems.push(isConected);
+          }
+        }
+      });
 
     try {
       this.restaurant_detacher = db
@@ -234,12 +258,29 @@ export default {
       } finally {
         this.isCreating = false;
       }
+    },
+    async handlePaymentAccountDisconnect() {
+      const stripeDisconnect = firebase
+        .app()
+        .functions("us-central1")
+        .httpsCallable("stripe-disconnect");
+      try {
+        const response = await stripeDisconnect();
+        console.log(response);
+        // TODO: show connected view
+      } catch (error) {
+        // TODO: show error modal
+        console.log(error);
+      }
     }
   },
   destroyed() {
     this.destroy_detacher();
     if (this.restaurant_detacher) {
       this.restaurant_detacher();
+    }
+    if (this.stripe_connnect_detacher) {
+      this.stripe_connnect_detacher();
     }
   },
   computed: {

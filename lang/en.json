@@ -137,6 +137,7 @@
     "noPaymentAccount": "No Payment account",
     "pleaseConnectPayment": "Please connect your payment account from the bottom button.",
     "connectPaymentAccount": "Connect payment account",
+    "disconnectPaymentAccount": "Disconnect payment account",
     "incompleteOrders": "{count} order incomplete | {count} orders incomplete",
     "editMenuItems": "Menu ({count})",
     "editAbout": "Edit",

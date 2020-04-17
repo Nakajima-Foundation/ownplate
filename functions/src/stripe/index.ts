@@ -45,3 +45,55 @@ export const connect = functions.https.onCall(async (data, context) => {
   }
 });
 
+export const disconnect = functions.https.onCall(async (data, context) => {
+  if (!context.auth) {
+    throw new functions.https.HttpsError('failed-precondition', 'The function must be called while authenticated.')
+  }
+  const STRIPE_API_KEY = functions.config().stripe.api_key
+  if (!STRIPE_API_KEY) {
+    throw new functions.https.HttpsError('invalid-argument', 'The functions requires STRIPE_API_KEY.')
+  }
+  const STRIPE_CLIENT_ID = functions.config().stripe.client_id
+  if (!STRIPE_CLIENT_ID) {
+    throw new functions.https.HttpsError('invalid-argument', 'The functions requires STRIPE_CLIENT_ID.')
+  }
+  const uid: string = context.auth.uid
+  const snapshot = await admin.firestore().doc(`/admins/${uid}/system/stripe`).get()
+  const systemStripe = snapshot.data()
+  if (!systemStripe) {
+    throw new functions.https.HttpsError('invalid-argument', 'This account is not connected to Stripe.')
+  }
+  const stripe_user_id = systemStripe.stripe_user_id
+  if (!systemStripe.stripe_user_id) {
+    throw new functions.https.HttpsError('invalid-argument', 'This account is not connected to Stripe.')
+  }
+
+  const stripe = new Stripe(STRIPE_API_KEY, { apiVersion: '2020-03-02' })
+  try {
+
+    const response = await stripe.oauth.deauthorize({
+      client_id: STRIPE_CLIENT_ID,
+      stripe_user_id: stripe_user_id,
+    });
+
+    const batch = admin.firestore().batch()
+
+    batch.delete(
+      admin.firestore().collection('admins').doc(uid)
+        .collection('system').doc('stripe')
+    )
+    batch.set(
+      admin.firestore().collection('admins').doc(uid)
+        .collection('public').doc('stripe'),
+      {
+        isConnected: false
+      }
+    )
+
+    await batch.commit()
+    return { result: response }
+  } catch (error) {
+    console.error(error)
+    return { error }
+  }
+});
