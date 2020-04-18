@@ -50,7 +50,7 @@
           <hr class="hr-black" />
           <div v-if="!hidePayment">
             <h2>{{$t('order.yourPayment')}}</h2>
-            <stripe-card ref="stripe"></stripe-card>
+            <stripe-card :stripe-account="this.stripeAccount" ref="stripe"></stripe-card>
             <!-- <credit-card-input></credit-card-input> -->
 
             <div class="is-centered" style="text-align: center;">
@@ -101,7 +101,6 @@ import { releaseConfig } from "~/plugins/config.js";
 
 export default {
   name: "Order",
-
   components: {
     ShopOrnerInfo,
     OrderInfo,
@@ -115,6 +114,7 @@ export default {
       isLoading: true,
       restaurantsId: this.restaurantId(),
       shopInfo: { restaurantName: "" },
+      stripeAccount: null,
       orderInfo: {},
       menus: [],
       detacher: [],
@@ -125,10 +125,13 @@ export default {
   created() {
     const restaurant_detacher = db
       .doc(`restaurants/${this.restaurantId()}`)
-      .onSnapshot(restaurant => {
+      .onSnapshot(async restaurant => {
         if (restaurant.exists) {
           const restaurant_data = restaurant.data();
           this.shopInfo = restaurant_data;
+          const uid = restaurant_data.uid;
+          const snapshot = await db.doc(`/admins/${uid}/public/stripe`).get();
+          this.stripeAccount = snapshot.data()["stripeAccount"];
         } else {
           this.notFound = true;
         }
@@ -245,7 +248,6 @@ export default {
 
       const checkoutCreate = functions.httpsCallable("checkoutCreate");
       const checkoutConfirm = functions.httpsCallable("checkoutConfirm");
-
       try {
         const { data } = await checkoutCreate({
           paymentMethodId: paymentMethod.id,

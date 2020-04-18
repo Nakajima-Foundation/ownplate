@@ -24,11 +24,6 @@ export const connect = functions.https.onCall(async (data, context) => {
 
     const batch = admin.firestore().batch()
     batch.set(
-      admin.firestore().collection('admins').doc(uid),
-      {
-        stripeAccount: response.stripe_user_id
-      }, { merge: true })
-    batch.set(
       admin.firestore().collection('admins').doc(uid)
         .collection('system').doc('stripe'),
       response
@@ -37,7 +32,8 @@ export const connect = functions.https.onCall(async (data, context) => {
       admin.firestore().collection('admins').doc(uid)
         .collection('public').doc('stripe'),
       {
-        isConnected: true
+        isConnected: true,
+        stripeAccount: response.stripe_user_id
       }
     )
 

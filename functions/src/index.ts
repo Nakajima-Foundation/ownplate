@@ -23,9 +23,9 @@ export const createRestaurant = functions.https.onCall(async (data, context) => 
 */
 
 import * as Stripe from './stripe'
-
 export const stripe = { ...Stripe }
-import * as Checkout from './checkout'
+
+import * as Checkout from './stripe/checkout'
 
 // export const checkout = { ...Checkout }
 export const checkoutCreate = functions.https.onCall(async (data, context) => {
