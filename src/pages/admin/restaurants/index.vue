@@ -55,12 +55,12 @@
         <div v-else>
           <div class="card block">
             <div class="card-content">
-              <div v-if="!existsPayment" class="container content has-text-centered">
+              <div v-if="!hasStripe" class="container content has-text-centered">
                 <b-icon icon="credit-card" size="is-large"></b-icon>
                 <h3>{{$t('admin.addNewRestaurant')}}</h3>
                 {{$t('admin.pleaseConnectPayment')}}
               </div>
-              <div v-if="existsPayment" class="container content has-text-centered">
+              <div v-if="hasStripe" class="container content has-text-centered">
                 <b-button
                   @click="handlePaymentAccountDisconnect"
                   style="margin-right:auto"
@@ -116,7 +116,7 @@ export default {
       url: "",
       tags: "",
       restaurantItems: null,
-      paymentItems: [],
+      paymentItems: {}, // { stripe:true, ... }
       detachers: [],
       restaurant_detacher: null,
       stripe_connnect_detacher: null
@@ -144,10 +144,13 @@ export default {
       .doc(`/admins/${this.uid}/public/stripe`)
       .onSnapshot({
         next: snapshot => {
-          console.log(snapshot.data());
+          console.log("public/stripe", snapshot.data());
           if (snapshot.exists) {
-            const isConected = snapshot.data()["isConnected"];
-            this.paymentItems.push(isConected);
+            const stripe = snapshot.data()["isConnected"];
+            this.paymentItems = Object.assign({}, this.paymentItems, {
+              stripe
+            });
+            console.log("paymentItems", this.paymentItems);
           }
         }
       });
@@ -298,11 +301,9 @@ export default {
       }
       return false;
     },
-    existsPayment() {
-      if (this.paymentItems.length > 0) {
-        return true;
-      }
-      return false;
+    hasStripe() {
+      console.log("paymentItems", this.paymentItems);
+      return this.paymentItems["stripe"];
     }
   }
 };
