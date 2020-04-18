@@ -280,7 +280,7 @@ export default {
   },
   computed: {
     stripeLink() {
-      const redirectURI = `${location.protocol}//${location.host}${process.env.STRIPE_AUTH_REDIRECT_URI}`;
+      const redirectURI = `${location.protocol}//${location.host}${location.pathname}`;
       return `https://connect.stripe.com/oauth/authorize?response_type=code&client_id=${
         process.env.STRIPE_CLIENT_ID
       }&scope=read_write&redirect_uri=${encodeURI(redirectURI)}`;

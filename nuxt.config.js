@@ -107,7 +107,6 @@ export default {
   env: {
     STRIPE_API_KEY: process.env.STRIPE_API_KEY,
     STRIPE_CLIENT_ID: process.env.STRIPE_CLIENT_ID,
-    STRIPE_AUTH_REDIRECT_URI: process.env.STRIPE_AUTH_REDIRECT_URI,
     gapikey: process.env.GAPIKey,
     CIRCLE_SHA1: process.env.CIRCLE_SHA1,
   },
