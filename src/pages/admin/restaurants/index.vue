@@ -256,7 +256,9 @@ export default {
     async handlePaymentAccountDisconnect() {
       const stripeDisconnect = functions.httpsCallable("stripe-disconnect");
       try {
-        const response = await stripeDisconnect();
+        const response = await stripeDisconnect({
+          STRIPE_CLIENT_ID: process.env.STRIPE_CLIENT_ID
+        });
         console.log(response);
         // TODO: show connected view
       } catch (error) {
