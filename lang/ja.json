@@ -140,8 +140,8 @@
     "incompleteOrders": "{count} incomplete order | {count} incomplete orders",
     "editMenuItems": "メニュー ({count})",
     "editAbout": "Edit About",
-    "pleaseSignUp": "Sign up as a new user",
-    "forgotPassword": "Forgot Password？",
+    "pleaseSignUp": "ユーザー登録",
+    "forgotPassword": "パスワード忘れ",
     "passwordReset": "Reset Password",
     "error": {
       "email": {
@@ -153,10 +153,10 @@
         "mismatch": "Password mismatch"
       },
       "code": {
-        "auth/user-not-found": "There is no user record corresponding to this identifier.",
-        "auth/wrong-password": "The password is invalid",
-        "auth/too-many-requests": "Too many unsuccessful login attempts. Please try again later.",
-        "auth/invalid-email": "The email address is badly formatted."
+        "auth/user-not-found": "登録されていません。",
+        "auth/wrong-password": "パスワードが無効です。",
+        "auth/too-many-requests": "ログインに失敗した回数が多すぎます。時間がたってから再度ログインしてください。",
+        "auth/invalid-email": "メールアドレスの形式で入力してください。"
       }
     }
   },
