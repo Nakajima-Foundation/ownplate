@@ -44,30 +44,30 @@ export const connect = functions.https.onCall(async (data, context) => {
 });
 
 export const disconnect = functions.https.onCall(async (data, context) => {
-  if (!context.auth) {
-    throw new functions.https.HttpsError('failed-precondition', 'The function must be called while authenticated.')
-  }
-  const STRIPE_SECRET_KEY = functions.config().stripe.secret_key
-  if (!STRIPE_SECRET_KEY) {
-    throw new functions.https.HttpsError('invalid-argument', 'The functions requires STRIPE_SECRET_KEY.')
-  }
-  const STRIPE_CLIENT_ID = functions.config().stripe.client_id
-  if (!STRIPE_CLIENT_ID) {
-    throw new functions.https.HttpsError('invalid-argument', 'The functions requires STRIPE_CLIENT_ID.')
-  }
-  const uid: string = context.auth.uid
-  const snapshot = await admin.firestore().doc(`/admins/${uid}/system/stripe`).get()
-  const systemStripe = snapshot.data()
-  if (!systemStripe) {
-    throw new functions.https.HttpsError('invalid-argument', 'This account is not connected to Stripe.')
-  }
-  const stripe_user_id = systemStripe.stripe_user_id
-  if (!systemStripe.stripe_user_id) {
-    throw new functions.https.HttpsError('invalid-argument', 'This account is not connected to Stripe.')
-  }
-
-  const stripe = new Stripe(STRIPE_SECRET_KEY, { apiVersion: '2020-03-02' })
   try {
+    if (!context.auth) {
+      throw new functions.https.HttpsError('failed-precondition', 'The function must be called while authenticated.')
+    }
+    const STRIPE_SECRET_KEY = functions.config().stripe.secret_key
+    if (!STRIPE_SECRET_KEY) {
+      throw new functions.https.HttpsError('invalid-argument', 'The functions requires STRIPE_SECRET_KEY.')
+    }
+    const STRIPE_CLIENT_ID = data.STRIPE_CLIENT_ID
+    if (!STRIPE_CLIENT_ID) {
+      throw new functions.https.HttpsError('invalid-argument', 'The functions requires STRIPE_CLIENT_ID.')
+    }
+    const uid: string = context.auth.uid
+    const snapshot = await admin.firestore().doc(`/admins/${uid}/system/stripe`).get()
+    const systemStripe = snapshot.data()
+    if (!systemStripe) {
+      throw new functions.https.HttpsError('invalid-argument', 'This account is not connected to Stripe.')
+    }
+    const stripe_user_id = systemStripe.stripe_user_id
+    if (!systemStripe.stripe_user_id) {
+      throw new functions.https.HttpsError('invalid-argument', 'This account is not connected to Stripe.')
+    }
+
+    const stripe = new Stripe(STRIPE_SECRET_KEY, { apiVersion: '2020-03-02' })
 
     const response = await stripe.oauth.deauthorize({
       client_id: STRIPE_CLIENT_ID,
