@@ -254,10 +254,7 @@ export default {
       }
     },
     async handlePaymentAccountDisconnect() {
-      const stripeDisconnect = firebase
-        .app()
-        .functions("us-central1")
-        .httpsCallable("stripe-disconnect");
+      const stripeDisconnect = functions.httpsCallable("stripe-disconnect");
       try {
         const response = await stripeDisconnect();
         console.log(response);
