@@ -20,11 +20,12 @@ $ cp src/config/default/ownplate-dev.js src/config/firebase.js
 $ cp src/config/default/.firebaserc .
 
 # set config to cloud functions.
+
 ```bash
 firebase functions:config:set \
-stripe.secret_key="sk_xxx" \
-stripe.client_id="ca_xxx"
+stripe.secret_key="sk_xxx"
 ```
+
 # serve with hot reload at localhost:3000
 $ GAPIKey=xxx npm run dev
 
