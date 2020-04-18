@@ -27,9 +27,10 @@ stripe.secret_key="sk_xxx"
 ```
 
 # serve with hot reload at localhost:3000
-$ GAPIKey=xxx npm run dev
+$ STRIPE_CLIENT_ID=xxx STRIPE_API_KEY=xxx GAPIKey=xxx npm run dev
 
 GAPIKey is google API key for Google Map
+STRIPE_CLIENT_ID and STRIPE_API_KEY are Stripe's id.
 
 # build for production and launch server
 $ npm run build
