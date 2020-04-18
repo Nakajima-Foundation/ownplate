@@ -24,13 +24,11 @@ export const connect = functions.https.onCall(async (data, context) => {
 
     const batch = admin.firestore().batch()
     batch.set(
-      admin.firestore().collection('admins').doc(uid)
-        .collection('system').doc('stripe'),
+      admin.firestore().doc(`/admins/${uid}/system/stripe`),
       response
     )
     batch.set(
-      admin.firestore().collection('admins').doc(uid)
-        .collection('public').doc('stripe'),
+      admin.firestore().doc(`/admins/${uid}/public/stripe`),
       {
         isConnected: true,
         stripeAccount: response.stripe_user_id
@@ -79,12 +77,10 @@ export const disconnect = functions.https.onCall(async (data, context) => {
     const batch = admin.firestore().batch()
 
     batch.delete(
-      admin.firestore().collection('admins').doc(uid)
-        .collection('system').doc('stripe')
+      admin.firestore().doc(`/admins/${uid}/system/stripe`)
     )
     batch.set(
-      admin.firestore().collection('admins').doc(uid)
-        .collection('public').doc('stripe'),
+      admin.firestore().doc(`/admins/${uid}/public/stripe`),
       {
         isConnected: false
       }
