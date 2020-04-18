@@ -57,8 +57,16 @@
             <div class="card-content">
               <div v-if="!hasStripe" class="container content has-text-centered">
                 <b-icon icon="credit-card" size="is-large"></b-icon>
-                <h3>{{$t('admin.addNewRestaurant')}}</h3>
-                {{$t('admin.pleaseConnectPayment')}}
+                <div style="margin-bottom:1rem">{{$t('admin.pleaseConnectPayment')}}</div>
+                <a :href="stripeLink">
+                  <b-button
+                    style="margin-right:auto"
+                    type="is-primary"
+                    class="counter-button"
+                    expanded
+                    rounded
+                  >{{$t('admin.connectPaymentAccount')}}</b-button>
+                </a>
               </div>
               <div v-if="hasStripe" class="container content has-text-centered">
                 <b-button
@@ -72,15 +80,6 @@
               </div>
             </div>
           </div>
-          <a :href="stripeLink">
-            <b-button
-              style="margin-right:auto"
-              type="is-primary"
-              class="counter-button"
-              expanded
-              rounded
-            >{{$t('admin.connectPaymentAccount')}}</b-button>
-          </a>
         </div>
       </b-tab-item>
     </b-tabs>
