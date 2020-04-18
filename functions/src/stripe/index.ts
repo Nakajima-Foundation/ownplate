@@ -6,16 +6,16 @@ export const connect = functions.https.onCall(async (data, context) => {
   if (!context.auth) {
     throw new functions.https.HttpsError('failed-precondition', 'The function must be called while authenticated.')
   }
-  const STRIPE_API_KEY = functions.config().stripe.api_key
-  if (!STRIPE_API_KEY) {
-    throw new functions.https.HttpsError('invalid-argument', 'The functions requires STRIPE_API_KEY.')
+  const STRIPE_SECRET_KEY = functions.config().stripe.secret_key
+  if (!STRIPE_SECRET_KEY) {
+    throw new functions.https.HttpsError('invalid-argument', 'The functions requires STRIPE_SECRET_KEY.')
   }
   const code = data.code
   if (!code) {
     throw new functions.https.HttpsError('invalid-argument', 'This request does not include an code.')
   }
   const uid: string = context.auth.uid
-  const stripe = new Stripe(STRIPE_API_KEY, { apiVersion: '2020-03-02' })
+  const stripe = new Stripe(STRIPE_SECRET_KEY, { apiVersion: '2020-03-02' })
   try {
     const response = await stripe.oauth.token({
       grant_type: 'authorization_code',
@@ -23,17 +23,15 @@ export const connect = functions.https.onCall(async (data, context) => {
     });
 
     const batch = admin.firestore().batch()
-
     batch.set(
-      admin.firestore().collection('admins').doc(uid)
-        .collection('system').doc('stripe'),
+      admin.firestore().doc(`/admins/${uid}/system/stripe`),
       response
     )
     batch.set(
-      admin.firestore().collection('admins').doc(uid)
-        .collection('public').doc('stripe'),
+      admin.firestore().doc(`/admins/${uid}/public/stripe`),
       {
-        isConnected: true
+        isConnected: true,
+        stripeAccount: response.stripe_user_id
       }
     )
 
@@ -41,7 +39,7 @@ export const connect = functions.https.onCall(async (data, context) => {
     return { result: response }
   } catch (error) {
     console.error(error)
-    return { error }
+    throw error
   }
 });
 
@@ -49,9 +47,9 @@ export const disconnect = functions.https.onCall(async (data, context) => {
   if (!context.auth) {
     throw new functions.https.HttpsError('failed-precondition', 'The function must be called while authenticated.')
   }
-  const STRIPE_API_KEY = functions.config().stripe.api_key
-  if (!STRIPE_API_KEY) {
-    throw new functions.https.HttpsError('invalid-argument', 'The functions requires STRIPE_API_KEY.')
+  const STRIPE_SECRET_KEY = functions.config().stripe.secret_key
+  if (!STRIPE_SECRET_KEY) {
+    throw new functions.https.HttpsError('invalid-argument', 'The functions requires STRIPE_SECRET_KEY.')
   }
   const STRIPE_CLIENT_ID = functions.config().stripe.client_id
   if (!STRIPE_CLIENT_ID) {
@@ -68,7 +66,7 @@ export const disconnect = functions.https.onCall(async (data, context) => {
     throw new functions.https.HttpsError('invalid-argument', 'This account is not connected to Stripe.')
   }
 
-  const stripe = new Stripe(STRIPE_API_KEY, { apiVersion: '2020-03-02' })
+  const stripe = new Stripe(STRIPE_SECRET_KEY, { apiVersion: '2020-03-02' })
   try {
 
     const response = await stripe.oauth.deauthorize({
@@ -79,14 +77,13 @@ export const disconnect = functions.https.onCall(async (data, context) => {
     const batch = admin.firestore().batch()
 
     batch.delete(
-      admin.firestore().collection('admins').doc(uid)
-        .collection('system').doc('stripe')
+      admin.firestore().doc(`/admins/${uid}/system/stripe`)
     )
     batch.set(
-      admin.firestore().collection('admins').doc(uid)
-        .collection('public').doc('stripe'),
+      admin.firestore().doc(`/admins/${uid}/public/stripe`),
       {
-        isConnected: false
+        isConnected: false,
+        stripeAccount: null
       }
     )
 
@@ -94,6 +91,6 @@ export const disconnect = functions.https.onCall(async (data, context) => {
     return { result: response }
   } catch (error) {
     console.error(error)
-    return { error }
+    throw error
   }
 });

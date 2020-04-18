@@ -10,17 +10,25 @@
 import { getStripeInstance } from "~/plugins/stripe.js";
 
 export default {
+  props: ["stripeAccount"],
   data() {
     return {
-      stripe: getStripeInstance(),
+      stripe: {}, //getStripeInstance(this.stripeAccount),
       cardElement: {}
     };
   },
-
   mounted() {
-    this.configureStripe();
+    if (this.stripeAccount) {
+      this.stripe = getStripeInstance(this.stripeAccount);
+      this.configureStripe();
+    }
   },
-
+  watch: {
+    stripeAccount: function(newVal, oldVal) {
+      this.stripe = getStripeInstance(newVal);
+      this.configureStripe();
+    }
+  },
   methods: {
     async createPaymentMethod() {
       const payload = await this.stripe.createPaymentMethod({

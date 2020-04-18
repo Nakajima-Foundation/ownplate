@@ -1,20 +1,20 @@
 import * as admin from 'firebase-admin'
 import * as functions from 'firebase-functions'
-import * as constant from '../common/constant'
+import * as constant from '../../common/constant'
 import Stripe from 'stripe'
-import Order from '../models/Order'
+import Order from '../../models/Order'
 
 export const create = async (data, context) => {
   if (!context.auth) {
     throw new functions.https.HttpsError('failed-precondition', 'The function must be called while authenticated.')
   }
-  const STRIPE_API_KEY = functions.config().stripe.api_key
-  if (!STRIPE_API_KEY) {
-    throw new functions.https.HttpsError('invalid-argument', 'The functions requires STRIPE_API_KEY.')
+  const STRIPE_SECRET_KEY = functions.config().stripe.secret_key
+  if (!STRIPE_SECRET_KEY) {
+    throw new functions.https.HttpsError('invalid-argument', 'The functions requires STRIPE_SECRET_KEY.')
   }
-  console.info(context)
+  console.info(data, context)
   const uid: string = context.auth.uid
-  const stripe = new Stripe(STRIPE_API_KEY, { apiVersion: '2020-03-02' })
+  const stripe = new Stripe(STRIPE_SECRET_KEY, { apiVersion: '2020-03-02' })
 
   const orderId = data.orderId
   if (!orderId) {
@@ -33,6 +33,18 @@ export const create = async (data, context) => {
     throw new functions.https.HttpsError('invalid-argument', 'This request does not contain a phoneNumber.')
   }
 
+  const restaurantSnapshot = await admin.firestore().doc(`/restaurants/${restaurantId}`).get()
+  const restaurantData = restaurantSnapshot.data()
+  if (!restaurantData) {
+    throw new functions.https.HttpsError('invalid-argument', 'Dose not exist a restaurant.')
+  }
+  const venderId = restaurantData['uid']
+  const stripeSnapshot = await admin.firestore().doc(`/admins/${venderId}/public/stripe`).get()
+  const stripeData = stripeSnapshot.data()
+  if (!stripeData) {
+    throw new functions.https.HttpsError('invalid-argument', 'This restaurant is unavailable.')
+  }
+  const stripeAccount = stripeData.stripeAccount
   try {
     const result = await admin.firestore().runTransaction(async transaction => {
 
@@ -57,7 +69,8 @@ export const create = async (data, context) => {
       } as Stripe.PaymentIntentCreateParams
 
       const paymentInset = await stripe.paymentIntents.create(request, {
-        idempotencyKey: orderRef.path
+        idempotencyKey: orderRef.path,
+        stripeAccount
       })
       transaction.set(orderRef, {
         phoneNumber: phoneNumber
@@ -70,7 +83,7 @@ export const create = async (data, context) => {
     return { result }
   } catch (error) {
     console.error(error)
-    return { error }
+    throw error
   }
 };
 
@@ -78,12 +91,12 @@ export const confirm = async (data, context) => {
   if (!context.auth) {
     throw new functions.https.HttpsError('failed-precondition', 'The function must be called while authenticated.')
   }
-  const STRIPE_API_KEY = functions.config().stripe.api_key
-  if (!STRIPE_API_KEY) {
-    throw new functions.https.HttpsError('invalid-argument', 'The functions requires STRIPE_API_KEY.')
+  const STRIPE_SECRET_KEY = functions.config().stripe.secret_key
+  if (!STRIPE_SECRET_KEY) {
+    throw new functions.https.HttpsError('invalid-argument', 'The functions requires STRIPE_SECRET_KEY.')
   }
-  console.info(context)
-  const stripe = new Stripe(STRIPE_API_KEY, { apiVersion: '2020-03-02' })
+  console.info(data, context)
+  const stripe = new Stripe(STRIPE_SECRET_KEY, { apiVersion: '2020-03-02' })
 
   const orderPath = data.orderPath
   if (!orderPath) {
@@ -94,9 +107,23 @@ export const confirm = async (data, context) => {
     throw new functions.https.HttpsError('invalid-argument', 'This request does not contain a paymentIntentID.')
   }
 
+  const orderRef = admin.firestore().doc(orderPath)
+  const restaurantSnapshot = await orderRef.parent.parent!.get()
+  const restaurantData = restaurantSnapshot.data()
+  if (!restaurantData) {
+    throw new functions.https.HttpsError('invalid-argument', 'Dose not exist a restaurant.')
+  }
+  const venderId = restaurantData['uid']
+  const stripeSnapshot = await admin.firestore().doc(`/admins/${venderId}/public/stripe`).get()
+  const stripeData = stripeSnapshot.data()
+  if (!stripeData) {
+    throw new functions.https.HttpsError('invalid-argument', 'This restaurant is unavailable.')
+  }
+  const stripeAccount = stripeData.stripeAccount
+
   try {
     const result = await admin.firestore().runTransaction(async transaction => {
-      const orderRef = admin.firestore().doc(orderPath)
+
       const snapshot = await transaction.get(orderRef)
       const order = Order.fromSnapshot<Order>(snapshot)
 
@@ -111,7 +138,8 @@ export const confirm = async (data, context) => {
       try {
         // Check the stock status.
         const paymentInset = await stripe.paymentIntents.confirm(paymentIntentID, {
-          idempotencyKey: order.id
+          idempotencyKey: order.id,
+          stripeAccount
         })
         transaction.set(orderRef, {
           timePaid: admin.firestore.FieldValue.serverTimestamp(),
@@ -126,6 +154,6 @@ export const confirm = async (data, context) => {
     return { result }
   } catch (error) {
     console.error(error)
-    return { error }
+    throw error
   }
 };
