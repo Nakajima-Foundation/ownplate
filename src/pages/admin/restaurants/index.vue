@@ -55,12 +55,20 @@
         <div v-else>
           <div class="card block">
             <div class="card-content">
-              <div v-if="!existsPayment" class="container content has-text-centered">
+              <div v-if="!hasStripe" class="container content has-text-centered">
                 <b-icon icon="credit-card" size="is-large"></b-icon>
-                <h3>{{$t('admin.addNewRestaurant')}}</h3>
-                {{$t('admin.pleaseConnectPayment')}}
+                <div style="margin-bottom:1rem">{{$t('admin.payments.pleaseConnect')}}</div>
+                <a :href="stripeLink">
+                  <b-button
+                    style="margin-right:auto"
+                    type="is-primary"
+                    class="counter-button"
+                    expanded
+                    rounded
+                  >{{$t('admin.payments.connectStripe')}}</b-button>
+                </a>
               </div>
-              <div v-if="existsPayment" class="container content has-text-centered">
+              <div v-if="hasStripe" class="container content has-text-centered">
                 <b-button
                   @click="handlePaymentAccountDisconnect"
                   style="margin-right:auto"
@@ -68,19 +76,10 @@
                   class="counter-button"
                   expanded
                   rounded
-                >{{$t('admin.disconnectPaymentAccount')}}</b-button>
+                >{{$t('admin.payments.disconnectStripe')}}</b-button>
               </div>
             </div>
           </div>
-          <a :href="stripeLink">
-            <b-button
-              style="margin-right:auto"
-              type="is-primary"
-              class="counter-button"
-              expanded
-              rounded
-            >{{$t('admin.connectPaymentAccount')}}</b-button>
-          </a>
         </div>
       </b-tab-item>
     </b-tabs>
@@ -116,7 +115,7 @@ export default {
       url: "",
       tags: "",
       restaurantItems: null,
-      paymentItems: [],
+      paymentItems: {}, // { stripe:true, ... }
       detachers: [],
       restaurant_detacher: null,
       stripe_connnect_detacher: null
@@ -144,10 +143,13 @@ export default {
       .doc(`/admins/${this.uid}/public/stripe`)
       .onSnapshot({
         next: snapshot => {
-          console.log(snapshot.data());
+          console.log("public/stripe", snapshot.data());
           if (snapshot.exists) {
-            const isConected = snapshot.data()["isConnected"];
-            this.paymentItems.push(isConected);
+            const stripe = snapshot.data()["isConnected"];
+            this.paymentItems = Object.assign({}, this.paymentItems, {
+              stripe
+            });
+            console.log("paymentItems", this.paymentItems);
           }
         }
       });
@@ -298,11 +300,9 @@ export default {
       }
       return false;
     },
-    existsPayment() {
-      if (this.paymentItems.length > 0) {
-        return true;
-      }
-      return false;
+    hasStripe() {
+      console.log("paymentItems", this.paymentItems);
+      return this.paymentItems["stripe"];
     }
   }
 };

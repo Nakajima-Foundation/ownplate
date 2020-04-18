@@ -137,9 +137,11 @@
     "addYourRestaurant": "Please add your restaurant from the bottom button.",
     "addNewRestaurant": "Add New Restaurant",
     "noPaymentAccount": "No Payment account",
-    "pleaseConnectPayment": "Please connect your payment account from the bottom button.",
-    "connectPaymentAccount": "Connect payment account",
-    "disconnectPaymentAccount": "Disconnect payment account",
+    "payments": {
+      "pleaseConnect": "In order to receive online payments, you need to connect your Stripe account.",
+      "connectStripe": "Connect Stripe Account",
+      "disconnectStripe": "Disconnect Stripe Account"
+    },
     "incompleteOrders": "{count} incomplete order | {count} incomplete orders",
     "editMenuItems": "メニュー ({count})",
     "editAbout": "Edit About",
