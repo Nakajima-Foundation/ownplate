@@ -82,7 +82,8 @@ export const disconnect = functions.https.onCall(async (data, context) => {
     batch.set(
       admin.firestore().doc(`/admins/${uid}/public/stripe`),
       {
-        isConnected: false
+        isConnected: false,
+        stripeAccount: null
       }
     )
 
