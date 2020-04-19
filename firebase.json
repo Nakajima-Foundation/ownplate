@@ -5,6 +5,7 @@
   },
   "functions": {
     "predeploy": [
+      "cp dist/index.html functions/templates/index.html",
       "npm --prefix \"$RESOURCE_DIR\" run lint",
       "npm --prefix \"$RESOURCE_DIR\" run build"
     ]
