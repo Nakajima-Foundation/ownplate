@@ -17,9 +17,9 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
       throw new functions.https.HttpsError('failed-precondition', 'The user does not have an authority to perform this operation.')
     }
 
-    await db.doc(`restaurants/${restaurantId}/orders/${orderId}`).set({
+    await db.doc(`restaurants/${restaurantId}/orders/${orderId}`).update({
       status
-    }, { merge: true })
+    })
 
     return { success: true }
   } catch (error) {
