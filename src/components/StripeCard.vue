@@ -62,6 +62,9 @@ export default {
       });
       cardElement.mount("#card-element");
       this.cardElement = cardElement;
+      this.cardElement.addEventListener("change", event => {
+        this.$emit("change", event);
+      });
     }
   }
 };

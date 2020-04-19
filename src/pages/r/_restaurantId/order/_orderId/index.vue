@@ -50,7 +50,11 @@
           <hr class="hr-black" />
           <div v-if="!hidePayment">
             <h2>{{$t('order.yourPayment')}}</h2>
-            <stripe-card :stripe-account="this.stripeAccount" ref="stripe"></stripe-card>
+            <stripe-card
+              :stripe-account="this.stripeAccount"
+              @change="handleCardStateChange"
+              ref="stripe"
+            ></stripe-card>
             <!-- <credit-card-input></credit-card-input> -->
 
             <div class="is-centered" style="text-align: center;">
@@ -58,6 +62,8 @@
                 type="is-primary"
                 expanded
                 rounded
+                :loading="isPaying"
+                :disabled="!cardState.complete"
                 style="margin-top:4rem;padding-top: 0.2rem;"
                 size="is-large"
                 @click="handlePayment"
@@ -111,9 +117,10 @@ export default {
   },
   data() {
     return {
-      isLoading: true,
+      isPaying: false,
       restaurantsId: this.restaurantId(),
       shopInfo: { restaurantName: "" },
+      cardState: {},
       stripeAccount: null,
       orderInfo: {},
       menus: [],
@@ -213,6 +220,9 @@ export default {
     }
   },
   methods: {
+    handleCardStateChange(state) {
+      this.cardState = state;
+    },
     specialRequest(key) {
       const option = this.orderInfo.options && this.orderInfo.options[key];
       if (option) {
@@ -236,12 +246,14 @@ export default {
       });
     },
     async handlePayment() {
+      this.isPaying = true;
       const {
         error,
         paymentMethod
       } = await this.$refs.stripe.createPaymentMethod();
 
       if (error) {
+        this.isPaying = false;
         console.log(error);
         return;
       }
@@ -259,8 +271,11 @@ export default {
           paymentIntentId: data.result.paymentIntentId,
           orderPath: `restaurants/${this.restaurantId()}/orders/${this.orderId}`
         });
+        window.scrollTo(0, 0);
       } catch (error) {
         console.log(error);
+      } finally {
+        this.isPaying = false;
       }
     },
     async handleNoPayment() {

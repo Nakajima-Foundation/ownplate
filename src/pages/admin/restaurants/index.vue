@@ -74,6 +74,7 @@
                   style="margin-right:auto"
                   type="is-primary"
                   class="counter-button"
+                  :loading="isDisconnecting"
                   expanded
                   rounded
                 >{{$t('admin.payments.disconnectStripe')}}</b-button>
@@ -102,6 +103,7 @@ export default {
     return {
       readyToDisplay: false,
       isCreating: false,
+      isDisconnecting: false,
       restProfilePhoto: null,
       restProfilePhotoImageUrl: "",
       restCoverPhoto: null,
@@ -258,6 +260,7 @@ export default {
     async handlePaymentAccountDisconnect() {
       const stripeDisconnect = functions.httpsCallable("stripe-disconnect");
       try {
+        this.isDisconnecting = true;
         const response = await stripeDisconnect({
           STRIPE_CLIENT_ID: process.env.STRIPE_CLIENT_ID
         });
@@ -266,6 +269,8 @@ export default {
       } catch (error) {
         // TODO: show error modal
         console.error(error, error.details);
+      } finally {
+        this.isDisconnecting = false;
       }
     }
   },
