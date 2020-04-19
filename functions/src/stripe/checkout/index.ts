@@ -28,10 +28,6 @@ export const create = async (data, context) => {
   if (!paymentMethodId) {
     throw new functions.https.HttpsError('invalid-argument', 'This request does not contain a paymentMethodId.')
   }
-  const phoneNumber = data.phoneNumber
-  if (!phoneNumber) {
-    throw new functions.https.HttpsError('invalid-argument', 'This request does not contain a phoneNumber.')
-  }
 
   const restaurantSnapshot = await admin.firestore().doc(`/restaurants/${restaurantId}`).get()
   const restaurantData = restaurantSnapshot.data()
@@ -72,9 +68,6 @@ export const create = async (data, context) => {
         idempotencyKey: orderRef.path,
         stripeAccount
       })
-      transaction.set(orderRef, {
-        phoneNumber: phoneNumber
-      }, { merge: true })
       return {
         paymentIntentId: paymentInset.id,
         orderId: orderRef.id
