@@ -265,7 +265,7 @@ export default {
         // TODO: show connected view
       } catch (error) {
         // TODO: show error modal
-        console.log(error);
+        console.error(error.code, error.message, error.details);
       }
     }
   },

@@ -69,10 +69,17 @@ export const disconnect = functions.https.onCall(async (data, context) => {
 
     const stripe = new Stripe(STRIPE_SECRET_KEY, { apiVersion: '2020-03-02' })
 
-    const response = await stripe.oauth.deauthorize({
-      client_id: STRIPE_CLIENT_ID,
-      stripe_user_id: stripe_user_id,
-    });
+    let response = {}
+    try {
+      response = await stripe.oauth.deauthorize({
+        client_id: STRIPE_CLIENT_ID,
+        stripe_user_id: stripe_user_id,
+      });
+    } catch (stripeError) {
+      // Convert stripe-specific error into HttpsError
+      console.error(stripeError);
+      throw new functions.https.HttpsError("internal", stripeError.message, stripeError);
+    }
 
     const batch = admin.firestore().batch()
 
