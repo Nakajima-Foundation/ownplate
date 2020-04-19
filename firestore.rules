@@ -78,6 +78,8 @@ service cloud.firestore {
       }
       match /orders/{orderId} {
         allow create: if isUser(request)
+                        && request.resource.data.status == 100
+                        && request.resource.data.phoneNumber == request.auth.token.phone_number
                         && request.resource.data.uid == request.auth.uid;
         allow read: if isAdmin(request)
                         && isRestaurantOwner(restaurantsId, request);

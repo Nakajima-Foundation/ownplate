@@ -264,8 +264,7 @@ export default {
         const { data } = await checkoutCreate({
           paymentMethodId: paymentMethod.id,
           restaurantId: this.restaurantId(),
-          orderId: this.orderId,
-          phoneNumber: this.$store.state.user.phoneNumber
+          orderId: this.orderId
         });
         const result = await checkoutConfirm({
           paymentIntentId: data.result.paymentIntentId,
@@ -273,7 +272,7 @@ export default {
         });
         window.scrollTo(0, 0);
       } catch (error) {
-        console.log(error);
+        console.error(error);
       } finally {
         this.isPaying = false;
       }
@@ -285,7 +284,6 @@ export default {
           .doc(`restaurants/${this.restaurantId()}/orders/${this.orderId}`)
           .update({
             status: order_status.customer_paid,
-            phoneNumber: this.$store.state.user.phoneNumber,
             timePaid: firestore.FieldValue.serverTimestamp()
           });
         console.log("suceeded");
