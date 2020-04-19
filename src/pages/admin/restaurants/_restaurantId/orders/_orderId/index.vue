@@ -171,18 +171,21 @@ export default {
       try {
         const result = await orderUpdate({
           restaurantId: this.restaurantId(),
-          orderId: this.orderId
+          orderId: this.orderId,
+          status: order_status[statusKey]
         });
         console.log("result=", result.data);
       } catch (error) {
         console.error(error);
       }
 
+      /*
       const ref = db.doc(
         `restaurants/${this.restaurantId()}/orders/${this.orderId}`
       );
       console.log(this.orderInfo);
       await ref.set({ status: order_status[statusKey] }, { merge: true });
+      */
       this.$router.push(this.parentUrl);
     },
     classOf(statusKey) {
