@@ -82,20 +82,18 @@ export default {
         );
       }
       this.order_detacher = query.onSnapshot(result => {
-        if (!result.empty) {
-          let orders = result.docs.map(this.doc2data("order"));
-          orders = orders.sort((order0, order1) => {
-            if (order0.status === order1.status) {
-              return order0.timePaid > order1.timePaid ? -1 : 1;
-            }
-            return order0.status < order1.status ? -1 : 1;
-          });
-          this.orders = orders.map(order => {
-            order.timePaid =
-              (order.timePaid && order.timePaid.toDate()) || new Date();
-            return order;
-          });
-        }
+        let orders = result.docs.map(this.doc2data("order"));
+        orders = orders.sort((order0, order1) => {
+          if (order0.status === order1.status) {
+            return order0.timePaid > order1.timePaid ? -1 : 1;
+          }
+          return order0.status < order1.status ? -1 : 1;
+        });
+        this.orders = orders.map(order => {
+          order.timePaid =
+            (order.timePaid && order.timePaid.toDate()) || new Date();
+          return order;
+        });
       });
     },
     orderSelected(order) {
