@@ -38,8 +38,12 @@ export const connect = functions.https.onCall(async (data, context) => {
     await batch.commit()
     return { result: response }
   } catch (error) {
-    console.error(error)
-    throw error
+    console.error(error);
+    if (error instanceof functions.https.HttpsError) {
+      throw error
+    }
+    // Convert it into HttpsError so that client can access it via error.details
+    throw new functions.https.HttpsError("internal", error.message, error);
   }
 });
 
@@ -90,7 +94,11 @@ export const disconnect = functions.https.onCall(async (data, context) => {
     await batch.commit()
     return { result: response }
   } catch (error) {
-    console.error(error)
-    throw error
+    console.error(error);
+    if (error instanceof functions.https.HttpsError) {
+      throw error
+    }
+    // Convert it into HttpsError so that client can access it via error.details
+    throw new functions.https.HttpsError("internal", error.message, error);
   }
 });
