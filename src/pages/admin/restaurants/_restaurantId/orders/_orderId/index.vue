@@ -33,6 +33,7 @@
             type="is-danger"
             style="width:100%"
             class="light"
+            :loading="updating==='oder_canceled'"
             @click="handleChangeStatus('oder_canceled', $event)"
           >{{ $t("admin.order.delete") }}</b-button>
         </div>
@@ -46,6 +47,7 @@
       <div v-for="orderState in orderStates" style="margin:0.2rem" :key="orderState">
         <b-button
           :class="classOf(orderState)"
+          :loading="updating===orderState"
           style="width:100%"
           @click="handleChangeStatus(orderState, $event)"
         >{{ $t("order.status." + orderState) }}</b-button>
@@ -77,6 +79,7 @@ export default {
         "cooking_completed",
         "customer_picked_up"
       ],
+      updating: "",
       shopInfo: {},
       menuObj: {},
       orderInfo: {},
@@ -168,6 +171,7 @@ export default {
     },
     async handleChangeStatus(statusKey, event) {
       const orderUpdate = functions.httpsCallable("orderUpdate");
+      this.updating = statusKey;
       try {
         const result = await orderUpdate({
           restaurantId: this.restaurantId(),
@@ -177,6 +181,8 @@ export default {
         console.log("result=", result.data);
       } catch (error) {
         console.error(error);
+      } finally {
+        this.updating = "";
       }
 
       /*
