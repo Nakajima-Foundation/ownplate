@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import { db } from "~/plugins/firebase.js";
+import { db, functions } from "~/plugins/firebase.js";
 import BackButton from "~/components/BackButton";
 import OrderedItem from "~/components/OrderedItem";
 import { order_status } from "~/plugins/constant.js";
@@ -167,6 +167,17 @@ export default {
       return "";
     },
     async handleChangeStatus(statusKey, event) {
+      const orderUpdate = functions.httpsCallable("orderUpdate");
+      try {
+        const result = await orderUpdate({
+          restaurantId: this.restaurantId(),
+          orderId: this.orderId
+        });
+        console.log(result);
+      } catch (error) {
+        console.error(error);
+      }
+
       const ref = db.doc(
         `restaurants/${this.restaurantId()}/orders/${this.orderId}`
       );
