@@ -58,6 +58,7 @@
                 type="is-primary"
                 expanded
                 rounded
+                :loading="isPaying"
                 style="margin-top:4rem;padding-top: 0.2rem;"
                 size="is-large"
                 @click="handlePayment"
@@ -111,7 +112,7 @@ export default {
   },
   data() {
     return {
-      isLoading: true,
+      isPaying: false,
       restaurantsId: this.restaurantId(),
       shopInfo: { restaurantName: "" },
       stripeAccount: null,
@@ -236,12 +237,14 @@ export default {
       });
     },
     async handlePayment() {
+      this.isPaying = true;
       const {
         error,
         paymentMethod
       } = await this.$refs.stripe.createPaymentMethod();
 
       if (error) {
+        this.isPaying = false;
         console.log(error);
         return;
       }
@@ -261,6 +264,8 @@ export default {
         });
       } catch (error) {
         console.log(error);
+      } finally {
+        this.isPaying = false;
       }
     },
     async handleNoPayment() {
