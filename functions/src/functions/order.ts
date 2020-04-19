@@ -1,7 +1,7 @@
 import * as functions from 'firebase-functions';
 //import * as constant from '../common/constant';
 
-export const update = async (db, data, context) => {
+export const update = async (db: FirebaseFirestore.Firestore, data: any, context: any) => {
   if (!context.auth) {
     throw new functions.https.HttpsError('failed-precondition', 'The function must be called while authenticated.')
   }
@@ -10,7 +10,7 @@ export const update = async (db, data, context) => {
     throw new functions.https.HttpsError('invalid-argument', 'Missing parameters.')
   }
   const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`)
-  const orderDoc = orderRef.get();
-  const order = orderDoc.data;
+  const orderDoc = await orderRef.get();
+  const order = orderDoc.data();
   return { result: { success: order } }
 }

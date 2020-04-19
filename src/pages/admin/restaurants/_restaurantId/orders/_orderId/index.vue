@@ -173,7 +173,7 @@ export default {
           restaurantId: this.restaurantId(),
           orderId: this.orderId
         });
-        console.log(result);
+        console.log("result=", result.data);
       } catch (error) {
         console.error(error);
       }
