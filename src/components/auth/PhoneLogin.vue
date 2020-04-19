@@ -161,9 +161,12 @@ export default {
           );
           // Paranoia: To avoid race condition
           const user = this.$store.state.user;
-          console.log("name", user.name, this.name);
-          user.name = this.name;
-          this.$store.commit("setUser", user);
+          console.log("user", user);
+          if (user) {
+            console.log("name", user.name, this.name);
+            user.name = this.name;
+            this.$store.commit("setUser", user);
+          }
         }
 
         await db.doc(`users/${result.user.uid}/private/profile`).set(
