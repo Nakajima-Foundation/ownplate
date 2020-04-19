@@ -262,6 +262,7 @@ export default {
           paymentIntentId: data.result.paymentIntentId,
           orderPath: `restaurants/${this.restaurantId()}/orders/${this.orderId}`
         });
+        window.scrollTo(0, 0);
       } catch (error) {
         console.log(error);
       } finally {
