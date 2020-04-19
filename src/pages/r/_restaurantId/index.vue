@@ -212,6 +212,7 @@ export default {
         options: this.trimmedOptions,
         status: order_status.new_order,
         uid: this.user.uid,
+        phoneNumber: this.user.phoneNumber,
         name: this.$store.getters.name
         // price never set here.
       };
