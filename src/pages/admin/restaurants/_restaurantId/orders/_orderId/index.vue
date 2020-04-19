@@ -33,6 +33,7 @@
             type="is-danger"
             style="width:100%"
             class="light"
+            :loading="updating==='oder_canceled'"
             @click="handleChangeStatus('oder_canceled', $event)"
           >{{ $t("admin.order.delete") }}</b-button>
         </div>
@@ -46,6 +47,7 @@
       <div v-for="orderState in orderStates" style="margin:0.2rem" :key="orderState">
         <b-button
           :class="classOf(orderState)"
+          :loading="updating===orderState"
           style="width:100%"
           @click="handleChangeStatus(orderState, $event)"
         >{{ $t("order.status." + orderState) }}</b-button>
@@ -56,7 +58,7 @@
 </template>
 
 <script>
-import { db } from "~/plugins/firebase.js";
+import { db, functions } from "~/plugins/firebase.js";
 import BackButton from "~/components/BackButton";
 import OrderedItem from "~/components/OrderedItem";
 import { order_status } from "~/plugins/constant.js";
@@ -77,6 +79,7 @@ export default {
         "cooking_completed",
         "customer_picked_up"
       ],
+      updating: "",
       shopInfo: {},
       menuObj: {},
       orderInfo: {},
@@ -167,11 +170,28 @@ export default {
       return "";
     },
     async handleChangeStatus(statusKey, event) {
+      const orderUpdate = functions.httpsCallable("orderUpdate");
+      this.updating = statusKey;
+      try {
+        const result = await orderUpdate({
+          restaurantId: this.restaurantId(),
+          orderId: this.orderId,
+          status: order_status[statusKey]
+        });
+        console.log("result=", result.data);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        this.updating = "";
+      }
+
+      /*
       const ref = db.doc(
         `restaurants/${this.restaurantId()}/orders/${this.orderId}`
       );
       console.log(this.orderInfo);
       await ref.set({ status: order_status[statusKey] }, { merge: true });
+      */
       this.$router.push(this.parentUrl);
     },
     classOf(statusKey) {

@@ -83,7 +83,10 @@ export const create = async (data, context) => {
     return { result }
   } catch (error) {
     console.error(error)
-    throw error
+    if (error instanceof functions.https.HttpsError) {
+      throw error
+    }
+    throw new functions.https.HttpsError("internal", error.message, error);
   }
 };
 
@@ -154,6 +157,9 @@ export const confirm = async (data, context) => {
     return { result }
   } catch (error) {
     console.error(error)
-    throw error
+    if (error instanceof functions.https.HttpsError) {
+      throw error
+    }
+    throw new functions.https.HttpsError("internal", error.message, error);
   }
 };

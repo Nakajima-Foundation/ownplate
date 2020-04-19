@@ -22,6 +22,11 @@ export const createRestaurant = functions.https.onCall(async (data, context) => 
 });
 */
 
+import * as Order from './functions/order';
+export const orderUpdate = functions.https.onCall(async (data, context) => {
+  return await Order.update(db, data, context);
+});
+
 import * as Stripe from './stripe'
 export const stripe = { ...Stripe }
 

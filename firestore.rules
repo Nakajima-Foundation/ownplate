@@ -87,8 +87,6 @@ service cloud.firestore {
         allow update: if isOwner(resource, request)
                         && resource.data.status == 200
                         && request.resource.data.status == 300; // HACK: Temporary During no-sprite Testing
-        allow update: if isAdmin(request)
-                        && isRestaurantOwner(restaurantsId, request);
       }
     }
 
