@@ -73,7 +73,7 @@ import ShopOrnerInfo from "~/components/user/ShopOrnerInfo";
 import ShopInfo from "~/components/user/ShopInfo";
 import NotFound from "~/components/NotFound";
 
-import { db } from "~/plugins/firebase.js";
+import { db, firestore } from "~/plugins/firebase.js";
 import { order_status } from "~/plugins/constant.js";
 
 export default {
@@ -213,7 +213,8 @@ export default {
         status: order_status.new_order,
         uid: this.user.uid,
         phoneNumber: this.user.phoneNumber,
-        name: this.$store.getters.name
+        name: this.$store.getters.name,
+        createAt: firestore.FieldValue.serverTimestamp()
         // price never set here.
       };
       const res = await db
