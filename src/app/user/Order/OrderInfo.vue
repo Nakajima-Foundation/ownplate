@@ -95,7 +95,7 @@
 
 <script>
 import { order_status } from "~/plugins/constant.js";
-import OrderItem from "~/components/user/OrderItem";
+import OrderItem from "~/app/user/Order/OrderItem";
 
 export default {
   name: "Order",

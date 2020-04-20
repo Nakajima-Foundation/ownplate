@@ -105,8 +105,7 @@
 
 <script>
 import ShopOrnerInfo from "~/app/user/Restaurant/ShopOrnerInfo";
-import OrderInfo from "~/components/user/OrderInfo";
-import CreditCardInput from "~/components/CreditCardInput";
+import OrderInfo from "~/app/user/Order/OrderInfo";
 import ShopInfo from "~/app/user/Restaurant/ShopInfo";
 import StripeCard from "~/components/StripeCard";
 import NotFound from "~/components/NotFound";
@@ -121,7 +120,6 @@ export default {
   components: {
     ShopOrnerInfo,
     OrderInfo,
-    CreditCardInput,
     ShopInfo,
     StripeCard,
     NotFound
