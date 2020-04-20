@@ -78,6 +78,13 @@ export default {
       tip: 0
     };
   },
+  watch: {
+    orderInfo() {
+      console.log("orderInfo changed", this.orderInfo.total);
+      const value = Math.round(this.orderInfo.total * 15) / 100;
+      this.tip = value.toLocaleString(undefined, { minimumFractionDigits: 2 });
+    }
+  },
   components: {
     OrderItem
   },
