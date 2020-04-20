@@ -41,3 +41,7 @@ export const checkoutConfirm = functions.https.onCall(async (data, context) => {
   return await Checkout.confirm(data, context);
 });
 
+export const checkoutCancel = functions.https.onCall(async (data, context) => {
+  return await Checkout.cancel(data, context);
+});
+
