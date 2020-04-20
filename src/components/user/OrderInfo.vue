@@ -36,10 +36,22 @@
 
       <div class="card-content">
         <div class="media">
-          <b-field :label="'order.tip'">
-            <b-input type="number" v-model="tip" v-on:input="handleTipInput" />
-          </b-field>
+          <div class="media-content">
+            <b-field :label="'order.tip'">
+              <b-input
+                type="number"
+                v-model="tip"
+                v-on:input="handleTipInput"
+                maxlength="30"
+                style="width:8em"
+              />
+            </b-field>
+          </div>
+          <div class="media-right" style="margin-top:-0.4rem;">
+            <p class="p-bold">{{$n(tip, 'currency')}}</p>
+          </div>
         </div>
+        <b-button>foo</b-button>
       </div>
 
       <div class="card-content">
