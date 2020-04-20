@@ -143,7 +143,7 @@
     "disconnectPaymentAccount": "Disconnect payment account",
     "incompleteOrders": "{count} incomplete order | {count} incomplete orders",
     "editMenuItems": "メニュー ({count})",
-    "editAbout": "店舗情報編集",
+    "editAbout": "飲食店情報編集",
     "pleaseSignUp": "ユーザー登録",
     "forgotPassword": "パスワード忘れ",
     "passwordReset": "Reset Password",
