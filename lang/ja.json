@@ -2,22 +2,22 @@
   "greeting": "こんにちは、世界",
   "menu": {
     "about": "このサービスについて",
-    "admins": "レストラン向けページ",
+    "admins": "飲食店向けページ",
     "users": "お客様向けページ",
     "home": "ホーム",
     "signOut": "サイン・アウト"
   },
   "restaurantId": {
-    "self": "レストランID",
-    "available": "このレストランIDは使用が可能です",
+    "self": "飲食店ID",
+    "available": "この飲食店IDは使用できます",
     "submit": "登録",
-    "placeholder": "使いたいレストランIDを入力してください",
+    "placeholder": "使用したい飲食店IDを入力してください",
     "tooshort": "最低５文字必要です。",
     "invalid": "数字の半角小文字英字のみ使えます。",
     "alreadyTaken": "このIDはすでに使われています。"
   },
   "editRestaurant": {
-    "about": "お店の情報",
+    "about": "飲食店情報",
     "required": "必須",
     "profilePhoto": "プロフィール画像",
     "coverPhoto": "カバー画像",
@@ -28,7 +28,7 @@
     "businessHourDescription": "営業する曜日にチェックをいれ、営業時間を設定してください。",
     "draftDescription": "下書きとして保存",
     "publishDescription": "保存して公開",
-    "updateMapDescription": "レストラン名や住所を元に地図を更新"
+    "updateMapDescription": "飲食店名や住所を元に地図を更新"
   },
   "editMenu": {
     "item": "Item",
@@ -55,7 +55,7 @@
   },
   "sitemenu": {
     "menu": "メニュー",
-    "about": "お店情報",
+    "about": "飲食店情報",
     "checkout": "お会計",
     "orderCounter": "{count} 個"
   },
@@ -120,8 +120,8 @@
   },
   "admin": {
     "hidePayment": "課金の仕組みはまもなく提供される予定です。少々お待ちください。",
-    "pleaseSignIn": "サインインしてください (レストラン向け)",
-    "registration": "登録してください (レストラン向け)",
+    "pleaseSignIn": "サインインしてください (飲食店向け)",
+    "registration": "登録してください (飲食店向け)",
     "email": "メールアドレス",
     "password": "パスワード",
     "confirmPassword": "Confirm Password",
