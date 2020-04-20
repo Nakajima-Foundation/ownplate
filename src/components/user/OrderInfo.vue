@@ -33,6 +33,16 @@
           </div>
         </div>
       </div>
+      <div class="card-content tax">
+        <div class="media">
+          <div class="media-content">
+            <h4 class="bold">{{$t('order.total')}}</h4>
+          </div>
+          <div class="media-right" style="margin-top:-0.4rem;">
+            <p class="p-bold">{{$n(orderInfo.total, 'currency')}}</p>
+          </div>
+        </div>
+      </div>
 
       <div class="card-content">
         <div class="media">
@@ -69,10 +79,13 @@
       <div class="card-content">
         <div class="media">
           <div class="media-content">
-            <h3 class="bold">{{$t('order.total')}}</h3>
+            <h3 class="bold">{{$t('order.totalCharge')}}</h3>
           </div>
           <div class="media-right">
-            <p class="p-big bold" style="color:#CB4B4B">{{$n(orderInfo.total, 'currency')}}</p>
+            <p
+              class="p-big bold"
+              style="color:#CB4B4B"
+            >{{$n(orderInfo.total + Number(tip), 'currency')}}</p>
           </div>
         </div>
       </div>
