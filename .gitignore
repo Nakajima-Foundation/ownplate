@@ -97,7 +97,8 @@ functions/templates/index.html
 
 # firebase files
 /.firebaserc
-src/config/firebase.js
+src/config/firebase.js #Obsolete
+src/config/project.js
 
 # Emacs
 *~
