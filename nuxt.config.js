@@ -14,6 +14,11 @@ const customRoutes = [
     path: '/r/:restaurantId',
     component: 'user/RestaurantPage.vue',
   },
+  {
+    name: 'r-restaurantId',
+    path: '/r/:restaurantId/order/:orderId',
+    component: 'user/OrderPage.vue',
+  },
 ];
 
 export default {
