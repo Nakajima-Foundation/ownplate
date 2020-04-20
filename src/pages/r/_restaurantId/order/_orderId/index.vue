@@ -29,7 +29,11 @@
         <shop-info v-if="paid" :compact="true" :shopInfo="shopInfo" />
 
         <h2>{{ $t('order.yourOrder') + ": " + orderName }}</h2>
-        <order-info :orderItems="this.orderItems" :orderInfo="this.orderInfo||{}"></order-info>
+        <order-info
+          :orderItems="this.orderItems"
+          :orderInfo="this.orderInfo||{}"
+          @change="handleTipChange"
+        ></order-info>
 
         <b-notification :closable="false" v-if="newOrder">
           {{$t('order.validating')}}
@@ -70,7 +74,7 @@
               >
                 <span
                   class="p-font bold"
-                >{{$t('order.placeOrder')}} {{$n(orderInfo.total, 'currency')}}</span>
+                >{{$t('order.placeOrder')}} {{$n(orderInfo.total + tip, 'currency')}}</span>
               </b-button>
             </div>
           </div>
@@ -126,6 +130,7 @@ export default {
       menus: [],
       detacher: [],
       isDeleting: false,
+      tip: 0,
       notFound: false
     };
   },
@@ -220,6 +225,10 @@ export default {
     }
   },
   methods: {
+    handleTipChange(tip) {
+      console.log("handleTipChange", tip);
+      this.tip = tip;
+    },
     handleCardStateChange(state) {
       this.cardState = state;
     },

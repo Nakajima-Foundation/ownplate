@@ -48,7 +48,7 @@
         <div class="media">
           <div class="media-content">
             <b-field :label="$t('order.tip')">
-              <div>
+              <div v-if="isTipEditable">
                 <div style="margin-right:1em; float:left; width:6em">
                   <b-input
                     type="number"
@@ -127,6 +127,9 @@ export default {
   computed: {
     verified() {
       return this.orderInfo.status >= order_status.validation_ok;
+    },
+    isTipEditable() {
+      return this.orderInfo.status === order_status.validation_ok;
     }
   },
   methods: {
@@ -136,16 +139,18 @@ export default {
     },
     updateTip(ratio) {
       this.tip = this.calcTip(ratio);
+      this.$emit("change", Number(this.tip));
     },
     isSameAmount(ratio) {
       return this.tip === this.calcTip(ratio);
     },
     handleTipInput() {
-      console.log("tip=", this.tip);
+      //console.log("tip=", this.tip);
       if (this.tip < 0) {
         console.log("native");
         this.tip = -this.tip;
       }
+      this.$emit("change", Number(this.tip));
     }
   }
 };
