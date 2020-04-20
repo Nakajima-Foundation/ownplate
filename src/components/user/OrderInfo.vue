@@ -50,6 +50,7 @@
                   v-for="ratio in [10, 15,18,20]"
                   @click="updateTip(ratio)"
                   :key="ratio"
+                  size="is-small"
                 >{{ ratio + "%" }}</b-button>
               </div>
             </b-field>
