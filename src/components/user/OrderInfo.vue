@@ -36,6 +36,14 @@
 
       <div class="card-content">
         <div class="media">
+          <b-field :label="'order.tip'">
+            <b-input type="number" v-model="tip" v-on:input="handleTipInput" />
+          </b-field>
+        </div>
+      </div>
+
+      <div class="card-content">
+        <div class="media">
           <div class="media-content">
             <h3 class="bold">{{$t('order.total')}}</h3>
           </div>
@@ -65,6 +73,11 @@ export default {
       required: true
     }
   },
+  data() {
+    return {
+      tip: 0
+    };
+  },
   components: {
     OrderItem
   },
@@ -73,7 +86,11 @@ export default {
       return this.orderInfo.status >= order_status.validation_ok;
     }
   },
-  methods: {}
+  methods: {
+    handleTipInput() {
+      console.log("tip=", this.tip);
+    }
+  }
 };
 </script>
 <style type="scss" scped>
