@@ -20,6 +20,13 @@
               :class="orderStatusKey"
               style="margin-bottom:1rem;padding:0.5rem"
             >{{ $t("order.status." + orderStatusKey) }}</p>
+            <b-button
+              v-if="just_paid"
+              type="is-danger"
+              :loading="isCanceling"
+              @click="handleCancelPayment"
+              style="margin-bottom:1rem"
+            >{{$t('button.cancel')}}</b-button>
           </div>
         </div>
         <shop-orner-info
@@ -30,14 +37,13 @@
 
         <h2>{{ $t('order.yourOrder') + ": " + orderName }}</h2>
         <order-info :orderItems="this.orderItems" :orderInfo="this.orderInfo||{}"></order-info>
-        <button @click="paymentCancel">Cancel</button>
 
         <b-notification :closable="false" v-if="newOrder">
           {{$t('order.validating')}}
           <b-loading :is-full-page="false" :active.sync="newOrder" :can-cancel="true"></b-loading>
         </b-notification>
 
-        <div v-if="validated">
+        <div v-if="just_validated">
           <div class="is-centered" style="text-align: center;">
             <b-button
               expanded
@@ -127,6 +133,7 @@ export default {
       menus: [],
       detacher: [],
       isDeleting: false,
+      isCanceling: false,
       notFound: false
     };
   },
@@ -191,10 +198,13 @@ export default {
       }, "unexpected");
     },
     newOrder() {
-      return this.orderInfo.status == order_status.new_order;
+      return this.orderInfo.status === order_status.new_order;
     },
-    validated() {
-      return this.orderInfo.status == order_status.validation_ok;
+    just_validated() {
+      return this.orderInfo.status === order_status.validation_ok;
+    },
+    just_paid() {
+      return this.orderInfo.status === order_status.customer_paid;
     },
     paid() {
       return this.orderInfo.status >= order_status.customer_paid;
@@ -260,7 +270,7 @@ export default {
       }
 
       const checkoutCreate = functions.httpsCallable("checkoutCreate");
-      const checkoutConfirm = functions.httpsCallable("checkoutConfirm");
+      //const checkoutConfirm = functions.httpsCallable("checkoutConfirm");
       try {
         const { data } = await checkoutCreate({
           paymentMethodId: paymentMethod.id,
@@ -293,13 +303,22 @@ export default {
         console.log("failed", error);
       }
     },
-    async paymentCancel() {
+    async handleCancelPayment() {
       console.log(this.orderInfo.result);
-      const checkoutCancel = functions.httpsCallable("checkoutCancel");
-      const { data } = await checkoutCancel({
-        paymentIntentId: this.orderInfo.result.id,
-        orderPath: `restaurants/${this.restaurantId()}/orders/${this.orderId}`
-      });
+
+      try {
+        this.isCanceling = true;
+        const checkoutCancel = functions.httpsCallable("checkoutCancel");
+        const { data } = await checkoutCancel({
+          paymentIntentId: this.orderInfo.result.id,
+          orderPath: `restaurants/${this.restaurantId()}/orders/${this.orderId}`
+        });
+      } catch (error) {
+        // BUGBUG: Implement the error handling code here
+        console.error(error);
+      } finally {
+        this.isCanceling = false;
+      }
     }
   }
 };

@@ -6,7 +6,8 @@ export const order_status = {
   order_accepted: 400, // by restaurant
   cooking_completed: 500, // by restaurant
   customer_picked_up: 600, // by restaurant
-  oder_canceled: 700, // by restaurant
+  order_canceled: 700, // by restaurant or user
+  order_refunded: 800 // by restaurant
 };
 
 export const order_error = {
