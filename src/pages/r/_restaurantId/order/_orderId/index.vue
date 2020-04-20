@@ -30,6 +30,7 @@
 
         <h2>{{ $t('order.yourOrder') + ": " + orderName }}</h2>
         <order-info :orderItems="this.orderItems" :orderInfo="this.orderInfo||{}"></order-info>
+        <button @click="paymentCancel">Cancel</button>
 
         <b-notification :closable="false" v-if="newOrder">
           {{$t('order.validating')}}
@@ -266,10 +267,10 @@ export default {
           restaurantId: this.restaurantId(),
           orderId: this.orderId
         });
-        const result = await checkoutConfirm({
-          paymentIntentId: data.result.paymentIntentId,
-          orderPath: `restaurants/${this.restaurantId()}/orders/${this.orderId}`
-        });
+        // const result = await checkoutConfirm({
+        //   paymentIntentId: data.result.paymentIntentId,
+        //   orderPath: `restaurants/${this.restaurantId()}/orders/${this.orderId}`
+        // });
         window.scrollTo(0, 0);
       } catch (error) {
         console.error(error);
@@ -291,6 +292,14 @@ export default {
       } catch (error) {
         console.log("failed", error);
       }
+    },
+    async paymentCancel() {
+      console.log(this.orderInfo.result);
+      const checkoutCancel = functions.httpsCallable("checkoutCancel");
+      const { data } = await checkoutCancel({
+        paymentIntentId: this.orderInfo.result.id,
+        orderPath: `restaurants/${this.restaurantId()}/orders/${this.orderId}`
+      });
     }
   }
 };

@@ -64,12 +64,19 @@ export const create = async (data, context) => {
         metadata: { uid, restaurantId, orderId }
       } as Stripe.PaymentIntentCreateParams
 
-      const paymentInset = await stripe.paymentIntents.create(request, {
+      const paymentIntent = await stripe.paymentIntents.create(request, {
         idempotencyKey: orderRef.path,
         stripeAccount
       })
+
+      transaction.set(orderRef, {
+        timePaid: admin.firestore.FieldValue.serverTimestamp(),
+        status: constant.order_status.customer_paid,
+        result: paymentIntent
+      }, { merge: true })
+
       return {
-        paymentIntentId: paymentInset.id,
+        paymentIntentId: paymentIntent.id,
         orderId: orderRef.id
       }
     })
@@ -133,16 +140,16 @@ export const confirm = async (data, context) => {
 
       try {
         // Check the stock status.
-        const paymentInset = await stripe.paymentIntents.confirm(paymentIntentID, {
+        const paymentIntent = await stripe.paymentIntents.confirm(paymentIntentID, {
           idempotencyKey: order.id,
           stripeAccount
         })
         transaction.set(orderRef, {
           timePaid: admin.firestore.FieldValue.serverTimestamp(),
           status: constant.order_status.customer_paid,
-          result: paymentInset
+          result: paymentIntent
         }, { merge: true })
-        return paymentInset
+        return paymentIntent
       } catch (error) {
         throw error
       }
@@ -174,9 +181,9 @@ export const cancel = async (data, context) => {
   if (!orderPath) {
     throw new functions.https.HttpsError('invalid-argument', 'This request does not include an orderPath.')
   }
-  const paymentIntentID = data.paymentIntentId
-  if (!paymentIntentID) {
-    throw new functions.https.HttpsError('invalid-argument', 'This request does not contain a paymentIntentID.')
+  const paymentIntentId = data.paymentIntentId
+  if (!paymentIntentId) {
+    throw new functions.https.HttpsError('invalid-argument', 'This request does not contain a paymentIntentId.')
   }
 
   const orderRef = admin.firestore().doc(orderPath)
@@ -191,11 +198,8 @@ export const cancel = async (data, context) => {
   if (!stripeData) {
     throw new functions.https.HttpsError('invalid-argument', 'This restaurant is unavailable.')
   }
+
   const stripeAccount = stripeData.stripeAccount
-
-  const canceledByRestaurant = uid === venderId
-  const status = canceledByRestaurant ? 700 : 800
-
   try {
     const result = await admin.firestore().runTransaction(async transaction => {
 
@@ -205,6 +209,9 @@ export const cancel = async (data, context) => {
       if (!snapshot.exists) {
         throw new functions.https.HttpsError('invalid-argument', `The order does not exist. ${orderRef.path}`)
       }
+      if (uid !== order.uid) {
+        throw new functions.https.HttpsError('permission-denied', 'You do not have permission to cancel this request.')
+      }
       // Check the stock status.
       if (order.status !== constant.order_status.customer_paid) {
         throw new functions.https.HttpsError('aborted', 'This order is invalid.')
@@ -212,15 +219,16 @@ export const cancel = async (data, context) => {
 
       try {
         // Check the stock status.
-        const paymentInset = await stripe.paymentIntents.cancel(paymentIntentID, {
+        const paymentIntents = await stripe.paymentIntents.cancel(paymentIntentId, {
+          idempotencyKey: `${order.id}-cancel`,
           stripeAccount
         })
         transaction.set(orderRef, {
           timePaid: admin.firestore.FieldValue.serverTimestamp(),
-          status: status,
-          result: paymentInset
+          status: constant.order_status.order_canceled_by_customer,
+          result: paymentIntents
         }, { merge: true })
-        return paymentInset
+        return paymentIntents
       } catch (error) {
         throw error
       }
