@@ -249,7 +249,8 @@ export default {
           itemDescription: "",
           uid: this.$store.getters.uidAdmin,
           deletedFlag: false,
-          publicFlag: false,
+          publicFlag: true,
+          validatedFlag: false,
           createdAt: new Date()
         };
         const newData = await db.collection(`restaurants/${this.restaurantId()}/menus`).add(itemData);

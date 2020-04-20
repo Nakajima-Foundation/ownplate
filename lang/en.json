@@ -39,7 +39,8 @@
     "itemDescription": "Item description",
     "itemPhoto": "Item photo",
     "itemOptions": "Item options",
-    "itemOptionsNote": "For altenatives, use comma to separate them (e.g., \"Chiken, Pork, Tofu\")"
+    "itemOptionsNote": "For altenatives, use comma to separate them (e.g., \"Chiken, Pork, Tofu\")",
+    "itemInvalidMessage": "This item is not on your menu because data is invalid."
   },
   "shopInfo": {
     "name": "Restaurant name",
