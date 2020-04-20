@@ -23,7 +23,8 @@
             <b-button
               v-if="just_paid"
               type="is-danger"
-              @click="paymentCancel"
+              :loading="isCanceling"
+              @click="handleCancelPayment"
               style="margin-bottom:1rem"
             >{{$t('button.cancel')}}</b-button>
           </div>
@@ -132,6 +133,7 @@ export default {
       menus: [],
       detacher: [],
       isDeleting: false,
+      isCanceling: false,
       notFound: false
     };
   },
@@ -301,13 +303,22 @@ export default {
         console.log("failed", error);
       }
     },
-    async paymentCancel() {
+    async handleCancelPayment() {
       console.log(this.orderInfo.result);
-      const checkoutCancel = functions.httpsCallable("checkoutCancel");
-      const { data } = await checkoutCancel({
-        paymentIntentId: this.orderInfo.result.id,
-        orderPath: `restaurants/${this.restaurantId()}/orders/${this.orderId}`
-      });
+
+      try {
+        this.isCanceling = true;
+        const checkoutCancel = functions.httpsCallable("checkoutCancel");
+        const { data } = await checkoutCancel({
+          paymentIntentId: this.orderInfo.result.id,
+          orderPath: `restaurants/${this.restaurantId()}/orders/${this.orderId}`
+        });
+      } catch (error) {
+        // BUGBUG: Implement the error handling code here
+        console.error(error);
+      } finally {
+        this.isCanceling = false;
+      }
     }
   }
 };
