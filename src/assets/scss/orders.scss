@@ -28,7 +28,13 @@
   border: 0;
 }
 
-.oder_canceled, .oder_canceled:hover {
+.order_canceled, .order_canceled:hover {
+  color: #3506A8;
+  background:#F5E4F6;
+  border: 0;
+}
+
+.order_refunded, .order_refunded:hover {
   color: #3506A8;
   background:#F5E4F6;
   border: 0;

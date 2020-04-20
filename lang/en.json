@@ -87,7 +87,8 @@
       "order_accepted": "Accepted",
       "cooking_completed": "Ready To Pickup",
       "customer_picked_up": "Complete",
-      "oder_canceled": "Canceled"
+      "order_canceled": "Canceled",
+      "order_refunded": "Refunded"
     }
   },
   "button": {

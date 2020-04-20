@@ -20,6 +20,12 @@
               :class="orderStatusKey"
               style="margin-bottom:1rem;padding:0.5rem"
             >{{ $t("order.status." + orderStatusKey) }}</p>
+            <b-button
+              v-if="just_paid"
+              type="is-danger"
+              @click="paymentCancel"
+              style="margin-bottom:1rem"
+            >{{$t('button.cancel')}}</b-button>
           </div>
         </div>
         <shop-orner-info
@@ -30,14 +36,13 @@
 
         <h2>{{ $t('order.yourOrder') + ": " + orderName }}</h2>
         <order-info :orderItems="this.orderItems" :orderInfo="this.orderInfo||{}"></order-info>
-        <button @click="paymentCancel">Cancel</button>
 
         <b-notification :closable="false" v-if="newOrder">
           {{$t('order.validating')}}
           <b-loading :is-full-page="false" :active.sync="newOrder" :can-cancel="true"></b-loading>
         </b-notification>
 
-        <div v-if="validated">
+        <div v-if="just_validated">
           <div class="is-centered" style="text-align: center;">
             <b-button
               expanded
@@ -191,10 +196,13 @@ export default {
       }, "unexpected");
     },
     newOrder() {
-      return this.orderInfo.status == order_status.new_order;
+      return this.orderInfo.status === order_status.new_order;
     },
-    validated() {
-      return this.orderInfo.status == order_status.validation_ok;
+    just_validated() {
+      return this.orderInfo.status === order_status.validation_ok;
+    },
+    just_paid() {
+      return this.orderInfo.status === order_status.customer_paid;
     },
     paid() {
       return this.orderInfo.status >= order_status.customer_paid;

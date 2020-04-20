@@ -33,8 +33,8 @@
             type="is-danger"
             style="width:100%"
             class="light"
-            :loading="updating==='oder_canceled'"
-            @click="handleChangeStatus('oder_canceled', $event)"
+            :loading="updating==='order_canceled'"
+            @click="handleChangeStatus('order_canceled', $event)"
           >{{ $t("admin.order.delete") }}</b-button>
         </div>
       </div>
