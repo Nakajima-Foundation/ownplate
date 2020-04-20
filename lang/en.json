@@ -146,6 +146,7 @@
     "incompleteOrders": "{count} Incomplete Order | {count} Incomplete Orders",
     "editMenuItems": "Menu ({count})",
     "editAbout": "Edit",
+    "shareRestaurant": "Share",
     "pleaseSignUp": "Sign up as a new user",
     "forgotPassword": "Forgot Password？",
     "passwordReset": "Reset Password",

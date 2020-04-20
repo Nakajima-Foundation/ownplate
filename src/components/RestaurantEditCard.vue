@@ -10,12 +10,12 @@
 
             <div class="container content has-text-centered">
               <h2>
-                <router-link :to="'/r/' + restaurantid">{{ restaurantname || "no restaurant name"}}</router-link>
+                <nuxt-link :to="'/r/' + restaurantid">{{ restaurantname || "no restaurant name"}}</nuxt-link>
               </h2>
             </div>
             <div style="text-align:center;margin-top:1rem;">
               <div class="p-font">
-                <router-link :to="'/r/' + restaurantid">{{`${host}/r/${restaurantid}`}}</router-link>
+                <nuxt-link :to="'/r/' + restaurantid">{{`${host}/r/${restaurantid}`}}</nuxt-link>
               </div>
               <div class="p-font">{{ streetaddress || "no streetaddress"}}</div>
               <div class="p-font" style="margin-top:-0.8rem;">
@@ -28,13 +28,14 @@
             <div class="container content has-text-centered">
               <div style="text-align:center;">
                 <h2>
-                  <router-link :to="'/admin/restaurants/' + restaurantid"> <b-icon icon="pen" size="is-midium"></b-icon>{{$t('admin.editAbout')}}</router-link>
+                  <nuxt-link  to="#" @click.native="copyClipboard()"><b-icon icon="share" size="is-midium"></b-icon>{{$t('admin.shareRestaurant')}}</nuxt-link>
+                  <nuxt-link :to="'/admin/restaurants/' + restaurantid"> <b-icon icon="pencil" size="is-midium"></b-icon>{{$t('admin.editAbout')}}</nuxt-link>
                 </h2>
               </div>
             </div>
             <div class="container content has-text-centered" :style="{margin: '20px'}">
               <b-button
-                tag="router-link"
+                tag="nuxt-link"
                 :to="'/admin/restaurants/' + restaurantid + '/orders'"
                 :style="{'margin-right': 'auto', height: '40px'}"
                   type="is-primary"
@@ -50,7 +51,7 @@
               <div style="text-align:center;">
                 <h2>
                   <b-button
-                    tag="router-link"
+                    tag="nuxt-link"
                     :to="'/admin/restaurants/' + restaurantid + '/menus'"
                     style="margin-right:auto"
                     type="is-primary"
@@ -147,15 +148,25 @@ export default {
   },
   data() {
     return {
-      host: location.protocol + "//" + location.host
+      host: location.protocol + "//" + location.host,
+      shareUrl: location.protocol + "//" + location.host + "/r/" + this.restaurantid,
     };
+
   },
   methods: {
     deleteRestaurant: function() {
       if (confirm("Do you really want to delete this?")) {
         db.doc(`restaurants/${this.restaurantid}`).update("deletedFlag", true);
       }
-    }
+    },
+    copyClipboard: async function() {
+      try {
+        await this.$copyText(this.shareUrl);
+        this.$buefy.toast.open('URL Copied');
+      } catch(e) {
+        this.$buefy.toast.open('URL Copy failed');
+      }
+    },
   }
 };
 </script>
