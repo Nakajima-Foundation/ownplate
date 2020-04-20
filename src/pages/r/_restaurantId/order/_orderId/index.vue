@@ -268,7 +268,7 @@ export default {
       }
 
       const checkoutCreate = functions.httpsCallable("checkoutCreate");
-      const checkoutConfirm = functions.httpsCallable("checkoutConfirm");
+      //const checkoutConfirm = functions.httpsCallable("checkoutConfirm");
       try {
         const { data } = await checkoutCreate({
           paymentMethodId: paymentMethod.id,

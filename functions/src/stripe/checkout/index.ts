@@ -145,7 +145,7 @@ export const confirm = async (data, context) => {
           stripeAccount
         })
         transaction.set(orderRef, {
-          timePaid: admin.firestore.FieldValue.serverTimestamp(),
+          timeConfirmed: admin.firestore.FieldValue.serverTimestamp(),
           status: constant.order_status.customer_paid,
           result: paymentIntent
         }, { merge: true })
@@ -212,9 +212,8 @@ export const cancel = async (data, context) => {
       if (uid !== order.uid) {
         throw new functions.https.HttpsError('permission-denied', 'You do not have permission to cancel this request.')
       }
-      // Check the stock status.
       if (order.status !== constant.order_status.customer_paid) {
-        throw new functions.https.HttpsError('aborted', 'This order is invalid.')
+        throw new functions.https.HttpsError('permission-denied', 'Invalid order state to cancel.')
       }
 
       try {
@@ -224,8 +223,9 @@ export const cancel = async (data, context) => {
           stripeAccount
         })
         transaction.set(orderRef, {
-          timePaid: admin.firestore.FieldValue.serverTimestamp(),
+          timeCanceld: admin.firestore.FieldValue.serverTimestamp(),
           status: constant.order_status.order_canceled_by_customer,
+          canceledBy: uid,
           result: paymentIntents
         }, { merge: true })
         return paymentIntents
