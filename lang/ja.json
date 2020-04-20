@@ -78,6 +78,8 @@
     "thankyou": "ご注文、ありがとうございます!",
     "orderStatus": "ご注文のステータス: ",
     "pleaseStay": "このページを開けたままにしていただけると、ステータスを知る事が出来ます。",
+    "tip": "心付け",
+    "totalCharge": "合計金額",
     "status": {
       "unexpected": "(Unexpected)",
       "error": "エラー",

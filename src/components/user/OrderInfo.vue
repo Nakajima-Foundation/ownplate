@@ -47,7 +47,7 @@
       <div class="card-content">
         <div class="media">
           <div class="media-content">
-            <b-field :label="'order.tip'">
+            <b-field :label="$t('order.tip')">
               <div>
                 <div style="margin-right:1em; float:left; width:6em">
                   <b-input

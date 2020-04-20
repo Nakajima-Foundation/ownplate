@@ -78,6 +78,8 @@
     "thankyou": "Thank you!",
     "orderStatus": "Order Status: ",
     "pleaseStay": "Please stay on this page. The order status will be updated below.",
+    "tip": "Gratuity",
+    "totalCharge": "Total Charge",
     "status": {
       "unexpected": "Unexpected",
       "error": "Error",
