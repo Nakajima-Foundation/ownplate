@@ -40,6 +40,8 @@
     "itemPhoto": "Item photo",
     "itemOptions": "Item options",
     "itemOptionsNote": "For altenatives, use comma to separate them (e.g., \"Chiken, Pork, Tofu\")",
+    "itemAddOption": "Add Option",
+    "save": "Save",
     "itemInvalidMessage": "This item is not on your menu because data is invalid."
   },
   "shopInfo": {

@@ -130,7 +130,7 @@
           <br />
         </template>
         <span @click="addOption">
-          <b-icon icon="plus" size="is-midium"></b-icon>Add Option
+          <b-icon icon="plus" size="is-midium"></b-icon>{{$t("editMenu.itemAddOption")}}
         </span>
         <br />
 
@@ -160,7 +160,7 @@
           expanded
           rounded
           @click="submitItem"
-        >Save</b-button>
+        >{{$t("editMenu.save")}}</b-button>
       </section>
     </template>
   </div>
