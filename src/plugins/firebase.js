@@ -4,7 +4,7 @@ import "firebase/storage";
 import "firebase/auth";
 import "firebase/functions";
 
-import firebaseConfig from "@/config/project";
+import { firebaseConfig } from "@/config/project";
 
 // ** 本番環境
 if (!firebase.apps.length) {

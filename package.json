@@ -17,9 +17,9 @@
     "deploy": "nuxt build && cp dist/index.html functions/templates/index.html &&  firebase deploy --only hosting --project=staging && firebase deploy --only functions --project=staging",
     "deploy:dev": "nuxt build && cp dist/index.html functions/templates/index.html &&  firebase deploy --only hosting --project=default && firebase deploy --only functions --project=default",
     "deploy_fs_rule": "firebase deploy --only firestore:rules --project=staging",
-    "use_staging": "firebase use staging && cp src/config/default/ownplate-dev.js src/config/firebase.js",
-    "use_production": "firebase use production && cp src/config/default/ownplate.js src/config/firebase.js",
-    "use_jp": "firebase use jp && cp src/config/default/ownplate-jp.js src/config/firebase.js"
+    "use_staging": "firebase use staging && cp src/config/default/ownplate-dev.js src/config/project.js",
+    "use_production": "firebase use production && cp src/config/default/ownplate.js src/config/project.js",
+    "use_jp": "firebase use jp && cp src/config/default/ownplate-jp.js src/config/project.js"
   },
   "dependencies": {
     "@babel/plugin-syntax-dynamic-import": "^7.7.4",
