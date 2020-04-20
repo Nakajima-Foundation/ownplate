@@ -363,7 +363,6 @@
 <script>
 import Vue from "vue";
 import { db, storage } from "~/plugins/firebase.js";
-import Croppa from "vue-croppa";
 import HoursInput from "~/components/HoursInput";
 
 import * as API from "~/plugins/api"
@@ -371,8 +370,6 @@ import BackButton from "~/components/BackButton";
 import NotFound from "~/components/NotFound";
 
 import { daysOfWeek, USStates } from "~/plugins/constant.js";
-
-Vue.use(Croppa);
 
 
 export default {

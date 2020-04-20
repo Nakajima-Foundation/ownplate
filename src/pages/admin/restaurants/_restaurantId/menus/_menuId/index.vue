@@ -168,12 +168,9 @@
 <script>
 import Vue from "vue";
 import { db, storage } from "~/plugins/firebase.js";
-import Croppa from "vue-croppa";
 
 import NotFound from "~/components/NotFound";
 import BackButton from "~/components/BackButton";
-
-Vue.use(Croppa);
 
 const TAX_RATES = ["food", "alcohol"];
 
