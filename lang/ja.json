@@ -88,7 +88,9 @@
       "customer_paid": "支払い済み",
       "order_accepted": "受付済み",
       "cooking_completed": "料理済み",
-      "customer_picked_up": "受け渡し完了"
+      "customer_picked_up": "受け渡し完了",
+      "order_canceled": "キャンセル済み",
+      "order_refunded": "払い戻し済み"
     }
   },
   "button": {

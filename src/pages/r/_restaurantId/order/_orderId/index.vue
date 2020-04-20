@@ -20,6 +20,13 @@
               :class="orderStatusKey"
               style="margin-bottom:1rem;padding:0.5rem"
             >{{ $t("order.status." + orderStatusKey) }}</p>
+            <b-button
+              v-if="just_paid"
+              type="is-danger"
+              :loading="isCanceling"
+              @click="handleCancelPayment"
+              style="margin-bottom:1rem"
+            >{{$t('button.cancel')}}</b-button>
           </div>
         </div>
         <shop-orner-info
@@ -40,7 +47,7 @@
           <b-loading :is-full-page="false" :active.sync="newOrder" :can-cancel="true"></b-loading>
         </b-notification>
 
-        <div v-if="validated">
+        <div v-if="just_validated">
           <div class="is-centered" style="text-align: center;">
             <b-button
               expanded
@@ -131,6 +138,7 @@ export default {
       detacher: [],
       isDeleting: false,
       tip: 0,
+      isCanceling: false,
       notFound: false
     };
   },
@@ -195,10 +203,13 @@ export default {
       }, "unexpected");
     },
     newOrder() {
-      return this.orderInfo.status == order_status.new_order;
+      return this.orderInfo.status === order_status.new_order;
     },
-    validated() {
-      return this.orderInfo.status == order_status.validation_ok;
+    just_validated() {
+      return this.orderInfo.status === order_status.validation_ok;
+    },
+    just_paid() {
+      return this.orderInfo.status === order_status.customer_paid;
     },
     paid() {
       return this.orderInfo.status >= order_status.customer_paid;
@@ -268,17 +279,17 @@ export default {
       }
 
       const checkoutCreate = functions.httpsCallable("checkoutCreate");
-      const checkoutConfirm = functions.httpsCallable("checkoutConfirm");
+      //const checkoutConfirm = functions.httpsCallable("checkoutConfirm");
       try {
         const { data } = await checkoutCreate({
           paymentMethodId: paymentMethod.id,
           restaurantId: this.restaurantId(),
           orderId: this.orderId
         });
-        const result = await checkoutConfirm({
-          paymentIntentId: data.result.paymentIntentId,
-          orderPath: `restaurants/${this.restaurantId()}/orders/${this.orderId}`
-        });
+        // const result = await checkoutConfirm({
+        //   paymentIntentId: data.result.paymentIntentId,
+        //   orderPath: `restaurants/${this.restaurantId()}/orders/${this.orderId}`
+        // });
         window.scrollTo(0, 0);
       } catch (error) {
         console.error(error);
@@ -299,6 +310,23 @@ export default {
         window.scrollTo(0, 0);
       } catch (error) {
         console.log("failed", error);
+      }
+    },
+    async handleCancelPayment() {
+      console.log(this.orderInfo.result);
+
+      try {
+        this.isCanceling = true;
+        const checkoutCancel = functions.httpsCallable("checkoutCancel");
+        const { data } = await checkoutCancel({
+          paymentIntentId: this.orderInfo.result.id,
+          orderPath: `restaurants/${this.restaurantId()}/orders/${this.orderId}`
+        });
+      } catch (error) {
+        // BUGBUG: Implement the error handling code here
+        console.error(error);
+      } finally {
+        this.isCanceling = false;
       }
     }
   }
