@@ -39,19 +39,22 @@
           <div class="media-content">
             <b-field :label="'order.tip'">
               <div>
-                <b-input
-                  type="number"
-                  v-model="tip"
-                  v-on:input="handleTipInput"
-                  maxlength="30"
-                  style="width:8em"
-                />
+                <div style="margin-right:1em; float:left">
+                  <b-input
+                    type="number"
+                    v-model="tip"
+                    v-on:input="handleTipInput"
+                    maxlength="30"
+                    style="width:6em"
+                  />
+                </div>
                 <b-button
                   v-for="ratio in [10, 15,18,20]"
                   @click="updateTip(ratio)"
                   :key="ratio"
                   size="is-small"
                 >{{ ratio + "%" }}</b-button>
+                <div style="clear:both" />
               </div>
             </b-field>
           </div>
