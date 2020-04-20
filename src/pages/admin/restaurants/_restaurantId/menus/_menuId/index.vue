@@ -75,7 +75,6 @@
         <div class="field is-horizontal">
           <div class="field-body">
             <h4>{{$t("editMenu.itemDescription")}}</h4>
-            <p class="p-small" style="color:#CB4B4B">*</p>
           </div>
         </div>
         <b-field :type="errors['itemDescription'].length > 0 ? 'is-danger' : 'is-success'">
@@ -148,11 +147,13 @@
       </b-field>
         -->
         <div style="margin-top:0.5rem;margin-bottom:1rem">
-          <b-checkbox v-model="menuInfo.publicFlag" :disabled="hasError">{{$t('shopInfo.public')}}</b-checkbox>
+          <b-checkbox v-model="menuInfo.publicFlag">{{$t('shopInfo.public')}}</b-checkbox>
+          <span style="color:#CB4B4B" v-if="menuInfo.publicFlag && hasError"><br/>
+            {{$t("editMenu.itemInvalidMessage")}}
+          </span>
         </div>
 
         <b-button
-          :disabled="hasError"
           style="margin-right:auto"
           type="is-primary"
           class="counter-button"
@@ -265,7 +266,7 @@ export default {
       this.menuInfo.itemOptionCheckbox.push("");
     },
     async submitItem() {
-      if (this.hasError) return;
+      // if (this.hasError) return;
 
       //upload image
       const menuId = this.menuId;
@@ -280,7 +281,8 @@ export default {
         itemDescription: this.menuInfo.itemDescription,
         itemPhoto: this.menuInfo.itemPhoto,
         itemOptionCheckbox: this.menuInfo.itemOptionCheckbox || [],
-        publicFlag: this.menuInfo.publicFlag || false
+        publicFlag: this.menuInfo.publicFlag || false,
+        validatedFlag: !this.hasError
       };
       const newData = await db
         .doc(`restaurants/${this.restaurantId()}/menus/${this.menuId}`)

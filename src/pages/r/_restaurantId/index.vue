@@ -142,7 +142,10 @@ export default {
       .where("publicFlag", "==", true)
       .onSnapshot(menu => {
         if (!menu.empty) {
-          this.menus = menu.docs.map(this.doc2data("menu"));
+          this.menus = menu.docs.filter((a) => {
+            const data = a.data();
+            return (data.validatedFlag === undefined || data.validatedFlag);
+          }).map(this.doc2data("menu"));
         }
       });
     const title_detacher = db
