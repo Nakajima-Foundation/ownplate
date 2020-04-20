@@ -104,10 +104,10 @@
 </template>
 
 <script>
-import ShopOrnerInfo from "~/components/user/ShopOrnerInfo";
+import ShopOrnerInfo from "~/app/user/Restaurant/ShopOrnerInfo";
 import OrderInfo from "~/components/user/OrderInfo";
 import CreditCardInput from "~/components/CreditCardInput";
-import ShopInfo from "~/components/user/ShopInfo";
+import ShopInfo from "~/app/user/Restaurant/ShopInfo";
 import StripeCard from "~/components/StripeCard";
 import NotFound from "~/components/NotFound";
 
