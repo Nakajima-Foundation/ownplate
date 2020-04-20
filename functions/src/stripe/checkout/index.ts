@@ -156,3 +156,81 @@ export const confirm = async (data, context) => {
     throw new functions.https.HttpsError("internal", error.message, error);
   }
 };
+
+
+export const cancel = async (data, context) => {
+  if (!context.auth) {
+    throw new functions.https.HttpsError('failed-precondition', 'The function must be called while authenticated.')
+  }
+  const STRIPE_SECRET_KEY = functions.config().stripe.secret_key
+  if (!STRIPE_SECRET_KEY) {
+    throw new functions.https.HttpsError('invalid-argument', 'The functions requires STRIPE_SECRET_KEY.')
+  }
+  console.info(data, context)
+  const uid = context.auth.uid
+  const stripe = new Stripe(STRIPE_SECRET_KEY, { apiVersion: '2020-03-02' })
+
+  const orderPath = data.orderPath
+  if (!orderPath) {
+    throw new functions.https.HttpsError('invalid-argument', 'This request does not include an orderPath.')
+  }
+  const paymentIntentID = data.paymentIntentId
+  if (!paymentIntentID) {
+    throw new functions.https.HttpsError('invalid-argument', 'This request does not contain a paymentIntentID.')
+  }
+
+  const orderRef = admin.firestore().doc(orderPath)
+  const restaurantSnapshot = await orderRef.parent.parent!.get()
+  const restaurantData = restaurantSnapshot.data()
+  if (!restaurantData) {
+    throw new functions.https.HttpsError('invalid-argument', 'Dose not exist a restaurant.')
+  }
+  const venderId = restaurantData['uid']
+  const stripeSnapshot = await admin.firestore().doc(`/admins/${venderId}/public/stripe`).get()
+  const stripeData = stripeSnapshot.data()
+  if (!stripeData) {
+    throw new functions.https.HttpsError('invalid-argument', 'This restaurant is unavailable.')
+  }
+  const stripeAccount = stripeData.stripeAccount
+
+  const canceledByRestaurant = uid === venderId
+  const status = canceledByRestaurant ? 700 : 800
+
+  try {
+    const result = await admin.firestore().runTransaction(async transaction => {
+
+      const snapshot = await transaction.get(orderRef)
+      const order = Order.fromSnapshot<Order>(snapshot)
+
+      if (!snapshot.exists) {
+        throw new functions.https.HttpsError('invalid-argument', `The order does not exist. ${orderRef.path}`)
+      }
+      // Check the stock status.
+      if (order.status !== constant.order_status.customer_paid) {
+        throw new functions.https.HttpsError('aborted', 'This order is invalid.')
+      }
+
+      try {
+        // Check the stock status.
+        const paymentInset = await stripe.paymentIntents.cancel(paymentIntentID, {
+          stripeAccount
+        })
+        transaction.set(orderRef, {
+          timePaid: admin.firestore.FieldValue.serverTimestamp(),
+          status: status,
+          result: paymentInset
+        }, { merge: true })
+        return paymentInset
+      } catch (error) {
+        throw error
+      }
+    })
+    return { result }
+  } catch (error) {
+    console.error(error)
+    if (error instanceof functions.https.HttpsError) {
+      throw error
+    }
+    throw new functions.https.HttpsError("internal", error.message, error);
+  }
+};
