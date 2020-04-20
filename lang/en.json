@@ -51,7 +51,8 @@
     "phonenumber": "Phones Number",
     "website": "Website",
     "hours": "Hours",
-    "public": "Public"
+    "public": "Public",
+    "save": "Save"
   },
   "sitemenu": {
     "menu": "Menu",

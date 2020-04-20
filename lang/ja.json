@@ -2,33 +2,33 @@
   "greeting": "こんにちは、世界",
   "menu": {
     "about": "このサービスについて",
-    "admins": "レストラン向けページ",
+    "admins": "飲食店",
     "users": "お客様向けページ",
     "home": "ホーム",
     "signOut": "サイン・アウト"
   },
   "restaurantId": {
-    "self": "レストランID",
-    "available": "このレストランIDは使用が可能です",
+    "self": "飲食店ID",
+    "available": "この飲食店IDは使用が可能です",
     "submit": "登録",
-    "placeholder": "使いたいレストランIDを入力してください",
+    "placeholder": "使いたい飲食店IDを入力してください",
     "tooshort": "最低５文字必要です。",
     "invalid": "数字の半角小文字英字のみ使えます。",
     "alreadyTaken": "このIDはすでに使われています。"
   },
   "editRestaurant": {
-    "about": "お店の情報",
+    "about": "飲食店の情報",
     "required": "必須",
     "profilePhoto": "プロフィール画像",
     "coverPhoto": "カバー画像",
     "current": "現在",
     "new": "新規",
     "setLocation": "住所を元に地図を更新",
-    "updateMap": "場所をセット",
+    "updateMap": "場所を設定する",
     "businessHourDescription": "営業する曜日にチェックをいれ、営業時間を設定してください。",
     "draftDescription": "下書きとして保存",
     "publishDescription": "保存して公開",
-    "updateMapDescription": "レストラン名や住所を元に地図を更新"
+    "updateMapDescription": "飲食店名や住所を元に地図を更新します"
   },
   "editMenu": {
     "item": "Item",
@@ -42,20 +42,21 @@
     "itemOptionsNote": "二択や三択の場合、半角カンマで区切ってください (例: \"チキン, ポーク, 豆腐\")"
   },
   "shopInfo": {
-    "name": "Restaurant name",
-    "streetAddress": "Street address",
-    "city": "City",
-    "state": "State",
-    "zip": "Zip",
+    "name": "飲食店名",
+    "streetAddress": "住所",
+    "city": "市区町村",
+    "state": "都道府県",
+    "zip": "郵便番号",
     "address": "場所",
     "phonenumber": "電話番号",
     "website": "ホームページ",
     "hours": "営業時間",
-    "public": "公開"
+    "public": "公開",
+    "save": "保存"
   },
   "sitemenu": {
     "menu": "メニュー",
-    "about": "お店情報",
+    "about": "飲食店情報",
     "checkout": "お会計",
     "orderCounter": "{count} 個"
   },
@@ -142,7 +143,7 @@
     "disconnectPaymentAccount": "Disconnect payment account",
     "incompleteOrders": "{count} incomplete order | {count} incomplete orders",
     "editMenuItems": "メニュー ({count})",
-    "editAbout": "Edit About",
+    "editAbout": "店舗情報編集",
     "pleaseSignUp": "ユーザー登録",
     "forgotPassword": "パスワード忘れ",
     "passwordReset": "Reset Password",
