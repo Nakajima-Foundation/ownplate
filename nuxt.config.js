@@ -9,13 +9,11 @@ const customRoutes = [
     path: '/r',
     component: 'user/RootPage.vue',
   },
-  /*
   {
-    name: 't-restaurantId',
-    path: '/t/:restaurantId',
-    component: 'pages/r/_restaurantId/index.vue',
+    name: 'r-restaurantId',
+    path: '/r/:restaurantId',
+    component: 'user/RestaurantPage.vue',
   },
-  */
 ];
 
 export default {
