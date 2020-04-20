@@ -3,9 +3,32 @@ import i18nES from './lang/es.json';
 import i18nJA from './lang/ja.json';
 require('dotenv').config();
 
+const customRoutes = [
+  {
+    name: 'r',
+    path: '/r',
+    component: 'user/RootPage.vue',
+  },
+  /*
+  {
+    name: 't-restaurantId',
+    path: '/t/:restaurantId',
+    component: 'pages/r/_restaurantId/index.vue',
+  },
+  */
+];
+
 export default {
   mode: "spa",
   srcDir: "src",
+  router: {
+    extendRoutes(routes, resolve) {
+      customRoutes.map(route => {
+        route.component = resolve(__dirname, "src/app/" + route.component);
+        routes.push(route);
+      });
+    }
+  },
   /*
    ** Headers of the page
    */
