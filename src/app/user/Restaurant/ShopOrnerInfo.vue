@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import SharingButtons from "~/components/user/SharingButtons";
+import SharingButtons from "~/app/user/Common/SharingButtons";
 
 export default {
   components: {

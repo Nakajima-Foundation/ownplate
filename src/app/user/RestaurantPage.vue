@@ -67,10 +67,10 @@
 </template>
 
 <script>
-import ItemCard from "~/components/user/ItemCard";
+import ItemCard from "~/app/user/Restaurant/ItemCard";
 import PhoneLogin from "~/components/auth/PhoneLogin";
-import ShopOrnerInfo from "~/components/user/ShopOrnerInfo";
-import ShopInfo from "~/components/user/ShopInfo";
+import ShopOrnerInfo from "~/app/user/Restaurant/ShopOrnerInfo";
+import ShopInfo from "~/app/user/Restaurant/ShopInfo";
 import NotFound from "~/components/NotFound";
 
 import { db, firestore } from "~/plugins/firebase.js";
