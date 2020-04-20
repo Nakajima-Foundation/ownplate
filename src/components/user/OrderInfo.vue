@@ -39,18 +39,20 @@
           <div class="media-content">
             <b-field :label="'order.tip'">
               <div>
-                <div style="margin-right:1em; float:left">
+                <div style="margin-right:1em; float:left; width:6em">
                   <b-input
                     type="number"
+                    step=".01"
                     v-model="tip"
                     v-on:input="handleTipInput"
                     maxlength="30"
-                    style="width:6em"
+                    style
                   />
                 </div>
                 <b-button
                   v-for="ratio in [10, 15,18,20]"
                   @click="updateTip(ratio)"
+                  :type="isSameAmount(ratio) ? 'is-primary' : ''"
                   :key="ratio"
                   size="is-small"
                 >{{ ratio + "%" }}</b-button>
@@ -115,9 +117,15 @@ export default {
     }
   },
   methods: {
-    updateTip(ratio) {
+    calcTip(ratio) {
       const value = Math.round(this.orderInfo.total * ratio) / 100;
-      this.tip = value.toLocaleString(undefined, { minimumFractionDigits: 2 });
+      return value.toLocaleString(undefined, { minimumFractionDigits: 2 });
+    },
+    updateTip(ratio) {
+      this.tip = this.calcTip(ratio);
+    },
+    isSameAmount(ratio) {
+      return this.tip === this.calcTip(ratio);
     },
     handleTipInput() {
       console.log("tip=", this.tip);
