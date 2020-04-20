@@ -38,20 +38,26 @@
         <div class="media">
           <div class="media-content">
             <b-field :label="'order.tip'">
-              <b-input
-                type="number"
-                v-model="tip"
-                v-on:input="handleTipInput"
-                maxlength="30"
-                style="width:8em"
-              />
+              <div>
+                <b-input
+                  type="number"
+                  v-model="tip"
+                  v-on:input="handleTipInput"
+                  maxlength="30"
+                  style="width:8em"
+                />
+                <b-button
+                  v-for="ratio in [10, 15,18,20]"
+                  @click="updateTip(ratio)"
+                  :key="ratio"
+                >{{ ratio + "%" }}</b-button>
+              </div>
             </b-field>
           </div>
           <div class="media-right" style="margin-top:-0.4rem;">
             <p class="p-bold">{{$n(tip, 'currency')}}</p>
           </div>
         </div>
-        <b-button>foo</b-button>
       </div>
 
       <div class="card-content">
@@ -93,8 +99,7 @@ export default {
   watch: {
     orderInfo() {
       console.log("orderInfo changed", this.orderInfo.total);
-      const value = Math.round(this.orderInfo.total * 15) / 100;
-      this.tip = value.toLocaleString(undefined, { minimumFractionDigits: 2 });
+      this.updateTip(15);
     }
   },
   components: {
@@ -106,8 +111,16 @@ export default {
     }
   },
   methods: {
+    updateTip(ratio) {
+      const value = Math.round(this.orderInfo.total * ratio) / 100;
+      this.tip = value.toLocaleString(undefined, { minimumFractionDigits: 2 });
+    },
     handleTipInput() {
       console.log("tip=", this.tip);
+      if (this.tip < 0) {
+        console.log("native");
+        this.tip = -this.tip;
+      }
     }
   }
 };
