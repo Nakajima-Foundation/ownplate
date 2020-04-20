@@ -13,8 +13,8 @@ It is built with Firebase + Vue + Stripe, for productivity and scalability.
 # install dependencies
 $ npm install
 
-# copy and edit firebase.js file
-$ cp src/config/default/ownplate-dev.js src/config/firebase.js
+# copy and edit project.js file
+$ cp src/config/default/ownplate-dev.js src/config/project.js
 
 # copy and edit .firebaserc file
 $ cp src/config/default/.firebaserc .
