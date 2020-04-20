@@ -145,6 +145,7 @@
     "incompleteOrders": "{count} incomplete order | {count} incomplete orders",
     "editMenuItems": "メニュー ({count})",
     "editAbout": "Edit About",
+    "shareRestaurant": "Share",
     "pleaseSignUp": "ユーザー登録",
     "forgotPassword": "パスワード忘れ",
     "passwordReset": "Reset Password",
