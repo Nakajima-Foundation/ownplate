@@ -185,6 +185,7 @@ export default {
             orderPath: `restaurants/${this.restaurantId()}/orders/${orderId}`
           });
           console.log(result);
+          this.$router.push(this.parentUrl);
         } catch (error) {
           console.error(error);
         } finally {
