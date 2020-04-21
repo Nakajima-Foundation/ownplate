@@ -1,8 +1,8 @@
 import * as admin from 'firebase-admin'
 import * as functions from 'firebase-functions'
-import * as constant from '../../common/constant'
+import * as constant from '../common/constant'
 import Stripe from 'stripe'
-import Order from '../../models/Order'
+import Order from '../models/Order'
 
 export const create = async (data, context) => {
   if (!context.auth) {
