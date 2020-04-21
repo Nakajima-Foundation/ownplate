@@ -4,6 +4,10 @@
     <div>
       <div style="float:left">
         <h2>{{ orderName }}</h2>
+        <div>
+          <span>{{ $n(orderInfo.total, 'currency') }}</span>
+          <i v-if="hasStripe" class="fab fa-cc-stripe" style="margin-left: 0.3em"></i>
+        </div>
       </div>
       <div style="float:right" v-if="!canceling">
         <b-button type="is-danger" @click="canceling=true">{{ $t("admin.order.cancelButton" )}}</b-button>
@@ -124,6 +128,9 @@ export default {
     });
   },
   computed: {
+    hasStripe() {
+      return this.orderInfo.payment && this.orderInfo.payment.stripe;
+    },
     phoneNumber() {
       return (
         this.orderInfo &&
@@ -174,14 +181,13 @@ export default {
       return "";
     },
     async handleComplete() {
-      const intent = this.orderInfo.result;
-      if (intent) {
+      const payment = this.orderInfo.payment;
+      if (payment && payment.stripe) {
         const orderId = this.$route.params.orderId;
-        console.log("handleComplete", intent.id, orderId);
+        console.log("handleComplete with Stripe", orderId);
         try {
           this.updating = "customer_picked_up";
           const result = await checkoutConfirm({
-            paymentIntentId: intent.id,
             restaurantId: this.restaurantId(),
             orderId
           });

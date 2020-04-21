@@ -306,12 +306,9 @@ export default {
       }
     },
     async handleCancelPayment() {
-      console.log(this.orderInfo.result);
-
       try {
         this.isCanceling = true;
         const { data } = await checkoutCancel({
-          paymentIntentId: this.orderInfo.result.id,
           restaurantId: this.restaurantId(),
           orderId: this.orderId
         });
