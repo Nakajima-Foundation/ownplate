@@ -32,7 +32,7 @@ const getMenuObj = async (refRestaurant) => {
   return menuObj;
 };
 
-export const orderCreate = async (db, snapshot, context) => {
+export const wasOrderCreated = async (db, snapshot, context) => {
   const original_data = snapshot.data()
 
   if (!original_data || !original_data.status || original_data.status !== constant.order_status.new_order) {

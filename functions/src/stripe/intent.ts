@@ -1,10 +1,10 @@
-import * as admin from 'firebase-admin'
 import * as functions from 'firebase-functions'
+import * as admin from 'firebase-admin';
 import * as constant from '../common/constant'
 import Stripe from 'stripe'
 import Order from '../models/Order'
 
-export const create = async (data, context) => {
+export const create = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   if (!context.auth) {
     throw new functions.https.HttpsError('failed-precondition', 'The function must be called while authenticated.')
   }
@@ -29,22 +29,22 @@ export const create = async (data, context) => {
     throw new functions.https.HttpsError('invalid-argument', 'This request does not contain a paymentMethodId.')
   }
 
-  const restaurantSnapshot = await admin.firestore().doc(`/restaurants/${restaurantId}`).get()
+  const restaurantSnapshot = await db.doc(`/restaurants/${restaurantId}`).get()
   const restaurantData = restaurantSnapshot.data()
   if (!restaurantData) {
     throw new functions.https.HttpsError('invalid-argument', 'Dose not exist a restaurant.')
   }
   const venderId = restaurantData['uid']
-  const stripeSnapshot = await admin.firestore().doc(`/admins/${venderId}/public/stripe`).get()
+  const stripeSnapshot = await db.doc(`/admins/${venderId}/public/stripe`).get()
   const stripeData = stripeSnapshot.data()
   if (!stripeData) {
     throw new functions.https.HttpsError('invalid-argument', 'This restaurant is unavailable.')
   }
   const stripeAccount = stripeData.stripeAccount
   try {
-    const result = await admin.firestore().runTransaction(async transaction => {
+    const result = await db.runTransaction(async transaction => {
 
-      const orderRef = admin.firestore().doc(`restaurants/${restaurantId}/orders/${orderId}`)
+      const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`)
       const snapshot = await transaction.get(orderRef)
       const order = Order.fromSnapshot<Order>(snapshot)
 
@@ -90,7 +90,7 @@ export const create = async (data, context) => {
   }
 };
 
-export const confirm = async (data, context) => {
+export const confirm = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   if (!context.auth) {
     throw new functions.https.HttpsError('failed-precondition', 'The function must be called while authenticated.')
   }
@@ -110,14 +110,14 @@ export const confirm = async (data, context) => {
     throw new functions.https.HttpsError('invalid-argument', 'This request does not contain a paymentIntentID.')
   }
 
-  const orderRef = admin.firestore().doc(orderPath)
+  const orderRef = db.doc(orderPath)
   const restaurantSnapshot = await orderRef.parent.parent!.get()
   const restaurantData = restaurantSnapshot.data()
   if (!restaurantData) {
     throw new functions.https.HttpsError('invalid-argument', 'Dose not exist a restaurant.')
   }
   const venderId = restaurantData['uid']
-  const stripeSnapshot = await admin.firestore().doc(`/admins/${venderId}/public/stripe`).get()
+  const stripeSnapshot = await db.doc(`/admins/${venderId}/public/stripe`).get()
   const stripeData = stripeSnapshot.data()
   if (!stripeData) {
     throw new functions.https.HttpsError('invalid-argument', 'This restaurant is unavailable.')
@@ -125,7 +125,7 @@ export const confirm = async (data, context) => {
   const stripeAccount = stripeData.stripeAccount
 
   try {
-    const result = await admin.firestore().runTransaction(async transaction => {
+    const result = await db.runTransaction(async transaction => {
 
       const snapshot = await transaction.get(orderRef)
       const order = Order.fromSnapshot<Order>(snapshot)
@@ -165,7 +165,7 @@ export const confirm = async (data, context) => {
 };
 
 
-export const cancel = async (data, context) => {
+export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   if (!context.auth) {
     throw new functions.https.HttpsError('failed-precondition', 'The function must be called while authenticated.')
   }
@@ -186,14 +186,14 @@ export const cancel = async (data, context) => {
     throw new functions.https.HttpsError('invalid-argument', 'This request does not contain a paymentIntentId.')
   }
 
-  const orderRef = admin.firestore().doc(orderPath)
+  const orderRef = db.doc(orderPath)
   const restaurantSnapshot = await orderRef.parent.parent!.get()
   const restaurantData = restaurantSnapshot.data()
   if (!restaurantData) {
     throw new functions.https.HttpsError('invalid-argument', 'Dose not exist a restaurant.')
   }
   const venderId = restaurantData['uid']
-  const stripeSnapshot = await admin.firestore().doc(`/admins/${venderId}/public/stripe`).get()
+  const stripeSnapshot = await db.doc(`/admins/${venderId}/public/stripe`).get()
   const stripeData = stripeSnapshot.data()
   if (!stripeData) {
     throw new functions.https.HttpsError('invalid-argument', 'This restaurant is unavailable.')
@@ -201,7 +201,7 @@ export const cancel = async (data, context) => {
 
   const stripeAccount = stripeData.stripeAccount
   try {
-    const result = await admin.firestore().runTransaction(async transaction => {
+    const result = await db.runTransaction(async transaction => {
 
       const snapshot = await transaction.get(orderRef)
       const order = Order.fromSnapshot<Order>(snapshot)

@@ -1,8 +1,7 @@
 import * as functions from 'firebase-functions';
-import * as admin from 'firebase-admin';
 import Stripe from 'stripe'
 
-export const connect = async (data, context) => {
+export const connect = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   if (!context.auth) {
     throw new functions.https.HttpsError('failed-precondition', 'The function must be called while authenticated.')
   }
@@ -22,13 +21,13 @@ export const connect = async (data, context) => {
       code: code
     });
 
-    const batch = admin.firestore().batch()
+    const batch = db.batch()
     batch.set(
-      admin.firestore().doc(`/admins/${uid}/system/stripe`),
+      db.doc(`/admins/${uid}/system/stripe`),
       response
     )
     batch.set(
-      admin.firestore().doc(`/admins/${uid}/public/stripe`),
+      db.doc(`/admins/${uid}/public/stripe`),
       {
         isConnected: true,
         stripeAccount: response.stripe_user_id
@@ -47,7 +46,7 @@ export const connect = async (data, context) => {
   }
 };
 
-export const disconnect = async (data, context) => {
+export const disconnect = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   try {
     if (!context.auth) {
       throw new functions.https.HttpsError('failed-precondition', 'The function must be called while authenticated.')
@@ -61,7 +60,7 @@ export const disconnect = async (data, context) => {
       throw new functions.https.HttpsError('invalid-argument', 'The functions requires STRIPE_CLIENT_ID.')
     }
     const uid: string = context.auth.uid
-    const snapshot = await admin.firestore().doc(`/admins/${uid}/system/stripe`).get()
+    const snapshot = await db.doc(`/admins/${uid}/system/stripe`).get()
     const systemStripe = snapshot.data()
     if (!systemStripe) {
       throw new functions.https.HttpsError('invalid-argument', 'This account is not connected to Stripe.')
@@ -78,13 +77,13 @@ export const disconnect = async (data, context) => {
       stripe_user_id: stripe_user_id,
     });
 
-    const batch = admin.firestore().batch()
+    const batch = db.batch()
 
     batch.delete(
-      admin.firestore().doc(`/admins/${uid}/system/stripe`)
+      db.doc(`/admins/${uid}/system/stripe`)
     )
     batch.set(
-      admin.firestore().doc(`/admins/${uid}/public/stripe`),
+      db.doc(`/admins/${uid}/public/stripe`),
       {
         isConnected: false,
         stripeAccount: null

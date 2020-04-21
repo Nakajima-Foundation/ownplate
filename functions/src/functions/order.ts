@@ -1,5 +1,4 @@
 import * as functions from 'firebase-functions';
-//import * as constant from '../common/constant';
 
 export const update = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   if (!context.auth) {
