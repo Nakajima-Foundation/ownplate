@@ -25,6 +25,7 @@ import { midNight } from "~/plugins/dateUtils.js";
 import OrderedInfo from "~/app/admin/Order/OrderedInfo";
 import BackButton from "~/components/BackButton";
 import { order_status } from "~/plugins/constant.js";
+import moment from 'moment';
 
 export default {
   components: {
@@ -42,7 +43,11 @@ export default {
   },
   watch: {
     dayIndex() {
+      this.updateQueryDay();
       this.dateWasUpdated();
+    },
+    '$route.query.day'() {
+      this.updateDayIndex();
     }
   },
   created() {
@@ -54,6 +59,9 @@ export default {
           this.shopInfo = restaurant_data;
         }
       });
+    if (this.$route.query.day) {
+      this.updateDayIndex();
+    }
     this.dateWasUpdated();
   },
   destroyed() {
@@ -69,6 +77,19 @@ export default {
     }
   },
   methods: {
+    updateDayIndex() {
+      const dayIndex = this.lastSeveralDays.findIndex((day) => {
+        return moment(day.date).format("YYYY-MM-DD") === this.$route.query.day
+      }) || 0;
+      this.dayIndex = dayIndex > 0 ? dayIndex : 0;
+    },
+    updateQueryDay() {
+      const day = moment(this.lastSeveralDays[this.dayIndex].date).format("YYYY-MM-DD");
+      this.$router.push({
+        path:
+        "/admin/restaurants/" + this.restaurantId() + "/orders?day=" + day,
+      });
+    },
     dateWasUpdated() {
       this.order_detacher();
       let query = db

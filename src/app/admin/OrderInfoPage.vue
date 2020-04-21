@@ -73,6 +73,7 @@ import { order_status } from "~/plugins/constant.js";
 import { nameOfOrder } from "~/plugins/strings.js";
 import { parsePhoneNumber, formatNational } from "~/plugins/phoneutil.js";
 import { checkoutConfirm } from "~/plugins/stripe.js";
+import moment from 'moment';
 
 export default {
   components: {
@@ -150,7 +151,8 @@ export default {
       return this.$route.params.orderId;
     },
     parentUrl() {
-      return `/admin/restaurants/${this.restaurantId()}/orders`;
+      const day = this.orderInfo.timePaid ? moment(this.orderInfo.timePaid.toDate()).format("YYYY-MM-DD") : null;
+      return `/admin/restaurants/${this.restaurantId()}/orders?day=${day}` ;
     },
     items() {
       return Object.keys(this.orderInfo.order).reduce((ret, id) => {
