@@ -285,7 +285,7 @@ export default {
         });
         window.scrollTo(0, 0);
       } catch (error) {
-        console.error(error);
+        console.error(error.message, error.details);
       } finally {
         this.isPaying = false;
       }
