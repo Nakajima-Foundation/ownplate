@@ -312,11 +312,12 @@ export default {
         this.isCanceling = true;
         const { data } = await checkoutCancel({
           paymentIntentId: this.orderInfo.result.id,
-          orderPath: `restaurants/${this.restaurantId()}/orders/${this.orderId}`
+          restaurantId: this.restaurantId(),
+          orderId: this.orderId
         });
       } catch (error) {
         // BUGBUG: Implement the error handling code here
-        console.error(error);
+        console.error(error.message, error.details);
       } finally {
         this.isCanceling = false;
       }
