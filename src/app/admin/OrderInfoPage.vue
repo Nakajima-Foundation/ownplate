@@ -57,7 +57,7 @@
           :class="classOf('customer_picked_up')"
           :loading="updating==='customer_picked_up'"
           style="width:100%"
-          @click="handleChangeStatus('customer_picked_up')"
+          @click="handleComplete()"
         >{{ $t("order.status." + 'customer_picked_up') }}</b-button>
       </div>
     </div>
@@ -72,6 +72,7 @@ import OrderedItem from "~/app/admin/Order/OrderedItem";
 import { order_status } from "~/plugins/constant.js";
 import { nameOfOrder } from "~/plugins/strings.js";
 import { parsePhoneNumber, formatNational } from "~/plugins/phoneutil.js";
+import { checkoutConfirm } from "~/plugins/stripe.js";
 
 export default {
   components: {
@@ -171,6 +172,21 @@ export default {
         return option.filter(choice => choice).join(", ");
       }
       return "";
+    },
+    async handleComplete() {
+      const intent = this.orderInfo.result;
+      if (intent) {
+        const orderId = this.$route.params.orderId;
+        console.log("handleComplete", intent.id, orderId);
+        /*
+        const result = await checkoutConfirm({
+          paymentIntentId: intent.id,
+          orderPath: `restaurants/${this.restaurantId()}/orders/${this.orderId}`
+        });
+        */
+      } else {
+        this.handleChangeStatus("customer_picked_up");
+      }
     },
     async handleChangeStatus(statusKey) {
       const orderUpdate = functions.httpsCallable("orderUpdate");

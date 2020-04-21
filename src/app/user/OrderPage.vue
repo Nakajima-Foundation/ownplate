@@ -283,10 +283,6 @@ export default {
           restaurantId: this.restaurantId(),
           orderId: this.orderId
         });
-        // const result = await checkoutConfirm({
-        //   paymentIntentId: data.result.paymentIntentId,
-        //   orderPath: `restaurants/${this.restaurantId()}/orders/${this.orderId}`
-        // });
         window.scrollTo(0, 0);
       } catch (error) {
         console.error(error);
