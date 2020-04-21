@@ -29,25 +29,25 @@ export const orderUpdate = functions.https.onCall(async (data, context) => {
 
 import * as StripeOAuth from './stripe/oauth'
 export const stripeConnect = functions.https.onCall(async (data, context) => {
-  return await StripeOAuth.connect(data, context);
+  return await StripeOAuth.connect(db, data, context);
 });
 
 export const stripeDisconnect = functions.https.onCall(async (data, context) => {
-  return await StripeOAuth.disconnect(data, context);
+  return await StripeOAuth.disconnect(db, data, context);
 });
 
 import * as StripeIntent from './stripe/intent'
 
 // export const checkout = { ...Checkout }
 export const stripeCreateIntent = functions.https.onCall(async (data, context) => {
-  return await StripeIntent.create(data, context);
+  return await StripeIntent.create(db, data, context);
 });
 
 export const stripeConfirmIntent = functions.https.onCall(async (data, context) => {
-  return await StripeIntent.confirm(data, context);
+  return await StripeIntent.confirm(db, data, context);
 });
 
 export const stripeCancelIntent = functions.https.onCall(async (data, context) => {
-  return await StripeIntent.cancel(data, context);
+  return await StripeIntent.cancel(db, data, context);
 });
 
