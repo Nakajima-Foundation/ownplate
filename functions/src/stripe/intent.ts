@@ -3,18 +3,11 @@ import * as admin from 'firebase-admin';
 import * as constant from '../common/constant'
 import Stripe from 'stripe'
 import Order from '../models/Order'
+import * as utils from './utils'
 
 export const create = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
-  if (!context.auth) {
-    throw new functions.https.HttpsError('failed-precondition', 'The function must be called while authenticated.')
-  }
-  const STRIPE_SECRET_KEY = functions.config().stripe.secret_key
-  if (!STRIPE_SECRET_KEY) {
-    throw new functions.https.HttpsError('invalid-argument', 'The functions requires STRIPE_SECRET_KEY.')
-  }
-  console.info(data, context)
-  const uid: string = context.auth.uid
-  const stripe = new Stripe(STRIPE_SECRET_KEY, { apiVersion: '2020-03-02' })
+  const uid = utils.validate_auth(context);
+  const stripe = utils.validate_stripe();
 
   const orderId = data.orderId
   if (!orderId) {
