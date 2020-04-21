@@ -1,9 +1,7 @@
 import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
-
 import * as express from './functions/express';
 import * as firestore from './functions/firestore';
-
 
 export const api = functions.https.onRequest(express.app);
 
@@ -16,12 +14,6 @@ export const orderCreate = functions.firestore.document('restaurants/{restaurant
   await firestore.orderCreate(db, snapshot, context);
 });
 
-/*
-export const createRestaurant = functions.https.onCall(async (data, context) => {
-	return await firestore.createRestaurant(db, data, context);
-});
-*/
-
 import * as Order from './functions/order';
 export const orderUpdate = functions.https.onCall(async (data, context) => {
   return await Order.update(db, data, context);
@@ -31,22 +23,17 @@ import * as StripeOAuth from './stripe/oauth'
 export const stripeConnect = functions.https.onCall(async (data, context) => {
   return await StripeOAuth.connect(db, data, context);
 });
-
 export const stripeDisconnect = functions.https.onCall(async (data, context) => {
   return await StripeOAuth.disconnect(db, data, context);
 });
 
 import * as StripeIntent from './stripe/intent'
-
-// export const checkout = { ...Checkout }
 export const stripeCreateIntent = functions.https.onCall(async (data, context) => {
   return await StripeIntent.create(db, data, context);
 });
-
 export const stripeConfirmIntent = functions.https.onCall(async (data, context) => {
   return await StripeIntent.confirm(db, data, context);
 });
-
 export const stripeCancelIntent = functions.https.onCall(async (data, context) => {
   return await StripeIntent.cancel(db, data, context);
 });
