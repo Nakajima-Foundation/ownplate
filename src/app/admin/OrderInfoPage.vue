@@ -34,7 +34,7 @@
             style="width:100%"
             class="light"
             :loading="updating==='order_canceled'"
-            @click="handleChangeStatus('order_canceled', $event)"
+            @click="handleChangeStatus('order_canceled')"
           >{{ $t("admin.order.delete") }}</b-button>
         </div>
       </div>
@@ -49,7 +49,7 @@
           :class="classOf(orderState)"
           :loading="updating===orderState"
           style="width:100%"
-          @click="handleChangeStatus(orderState, $event)"
+          @click="handleChangeStatus(orderState)"
         >{{ $t("order.status." + orderState) }}</b-button>
       </div>
       <div style="margin:0.2rem">
@@ -57,7 +57,7 @@
           :class="classOf('customer_picked_up')"
           :loading="updating==='customer_picked_up'"
           style="width:100%"
-          @click="handleChangeStatus('customer_picked_up', $event)"
+          @click="handleChangeStatus('customer_picked_up')"
         >{{ $t("order.status." + 'customer_picked_up') }}</b-button>
       </div>
     </div>
@@ -172,7 +172,7 @@ export default {
       }
       return "";
     },
-    async handleChangeStatus(statusKey, event) {
+    async handleChangeStatus(statusKey) {
       const orderUpdate = functions.httpsCallable("orderUpdate");
       this.updating = statusKey;
       try {
