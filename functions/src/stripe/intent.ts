@@ -70,10 +70,10 @@ export const confirm = async (db: FirebaseFirestore.Firestore, data: any, contex
   const uid = utils.validate_auth(context);
   const stripe = utils.get_stripe();
 
-  const { orderPath, paymentIntentId } = data
-  utils.validate_params({ orderPath, paymentIntentId })
+  const { restaurantId, orderId, paymentIntentId } = data
+  utils.validate_params({ restaurantId, orderId, paymentIntentId })
 
-  const orderRef = db.doc(orderPath)
+  const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`)
   const restaurantSnapshot = await orderRef.parent.parent!.get()
   const restaurantData = restaurantSnapshot.data()
   if (!restaurantData) {
