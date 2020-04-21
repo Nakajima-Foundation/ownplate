@@ -28,7 +28,13 @@ export const orderUpdate = functions.https.onCall(async (data, context) => {
 });
 
 import * as Stripe from './stripe'
-export const stripe = { ...Stripe }
+export const stripeConnect = functions.https.onCall(async (data, context) => {
+  return await Stripe.connect(data, context);
+});
+
+export const stripeDisconnect = functions.https.onCall(async (data, context) => {
+  return await Stripe.disconnect(data, context);
+});
 
 import * as Checkout from './stripe/checkout'
 

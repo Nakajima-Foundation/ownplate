@@ -10,6 +10,6 @@ export const getStripeInstance = (stripeAccount) => {
 export const checkoutCreate = functions.httpsCallable("checkoutCreate");
 export const checkoutConfirm = functions.httpsCallable("checkoutConfirm");
 export const checkoutCancel = functions.httpsCallable("checkoutCancel");
-export const stripeConnect = functions.httpsCallable("stripe-connect");
-export const stripeDisconnect = functions.httpsCallable("stripe-disconnect");
+export const stripeConnect = functions.httpsCallable("stripeConnect");
+export const stripeDisconnect = functions.httpsCallable("stripeDisconnect");
 
