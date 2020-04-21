@@ -15,9 +15,29 @@ const customRoutes = [
     component: 'user/RestaurantPage.vue',
   },
   {
-    name: 'r-restaurantId',
+    name: 'r-restaurantId-order',
     path: '/r/:restaurantId/order/:orderId',
     component: 'user/OrderPage.vue',
+  },
+  {
+    name: 'admin',
+    path: '/admin/restaurants',
+    component: 'admin/OwnerPage.vue',
+  },
+  {
+    name: 'admin-about',
+    path: '/admin/restaurants/:restaurantId',
+    component: 'admin/AboutPage.vue',
+  },
+  {
+    name: 'admin-menus',
+    path: '/admin/restaurants/:restaurantId/menus',
+    component: 'admin/MenusPage.vue',
+  },
+  {
+    name: 'admin-menus-item',
+    path: '/admin/restaurants/:restaurantId/menus/:menuId',
+    component: 'admin/MenuItemPage.vue',
   },
 ];
 
