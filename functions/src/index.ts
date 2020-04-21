@@ -27,27 +27,27 @@ export const orderUpdate = functions.https.onCall(async (data, context) => {
   return await Order.update(db, data, context);
 });
 
-import * as Stripe from './stripe'
+import * as StripeOAuth from './stripe/oauth'
 export const stripeConnect = functions.https.onCall(async (data, context) => {
-  return await Stripe.connect(data, context);
+  return await StripeOAuth.connect(data, context);
 });
 
 export const stripeDisconnect = functions.https.onCall(async (data, context) => {
-  return await Stripe.disconnect(data, context);
+  return await StripeOAuth.disconnect(data, context);
 });
 
-import * as Checkout from './stripe/checkout'
+import * as StripeIntent from './stripe/intent'
 
 // export const checkout = { ...Checkout }
 export const stripeCreateIntent = functions.https.onCall(async (data, context) => {
-  return await Checkout.create(data, context);
+  return await StripeIntent.create(data, context);
 });
 
 export const stripeConfirmIntent = functions.https.onCall(async (data, context) => {
-  return await Checkout.confirm(data, context);
+  return await StripeIntent.confirm(data, context);
 });
 
 export const stripeCancelIntent = functions.https.onCall(async (data, context) => {
-  return await Checkout.cancel(data, context);
+  return await StripeIntent.cancel(data, context);
 });
 
