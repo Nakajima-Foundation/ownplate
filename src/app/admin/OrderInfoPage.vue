@@ -178,12 +178,18 @@ export default {
       if (intent) {
         const orderId = this.$route.params.orderId;
         console.log("handleComplete", intent.id, orderId);
-        /*
-        const result = await checkoutConfirm({
-          paymentIntentId: intent.id,
-          orderPath: `restaurants/${this.restaurantId()}/orders/${this.orderId}`
-        });
-        */
+        try {
+          this.updating = "customer_picked_up";
+          const result = await checkoutConfirm({
+            paymentIntentId: intent.id,
+            orderPath: `restaurants/${this.restaurantId()}/orders/${orderId}`
+          });
+          console.log(result);
+        } catch (error) {
+          console.error(error);
+        } finally {
+          this.updating = "";
+        }
       } else {
         this.handleChangeStatus("customer_picked_up");
       }
