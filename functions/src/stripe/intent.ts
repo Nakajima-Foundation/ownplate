@@ -75,10 +75,11 @@ export const confirm = async (db: FirebaseFirestore.Firestore, data: any, contex
   const uid = utils.validate_auth(context);
   const stripe = utils.get_stripe();
 
-  const { restaurantId, orderId, paymentIntentId } = data
-  utils.validate_params({ restaurantId, orderId, paymentIntentId })
+  const { restaurantId, orderId } = data
+  utils.validate_params({ restaurantId, orderId })
 
   const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`)
+  const stripeRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}/system/stripe`)
   const restaurantSnapshot = await orderRef.parent.parent!.get()
   const restaurantData = restaurantSnapshot.data()
   if (!restaurantData) {
@@ -109,6 +110,12 @@ export const confirm = async (db: FirebaseFirestore.Firestore, data: any, contex
       if (order.status !== constant.order_status.cooking_completed) {
         throw new functions.https.HttpsError('failed-precondition', 'This order is not ready yet.')
       }
+
+      const stripeRecord = (await transaction.get(stripeRef)).data();
+      if (!stripeRecord || !stripeRecord.paymentIntent || !stripeRecord.paymentIntent.id) {
+        throw new functions.https.HttpsError('failed-precondition', 'This order has no paymentIntendId.', stripeRecord)
+      }
+      const paymentIntentId = stripeRecord.paymentIntent.id;
 
       try {
         // Check the stock status.
