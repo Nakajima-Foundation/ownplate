@@ -22,7 +22,7 @@
 <script>
 import { db } from "~/plugins/firebase.js";
 import { midNight } from "~/plugins/dateUtils.js";
-import OrderedInfo from "~/components/OrderedInfo";
+import OrderedInfo from "~/app/admin/Order/OrderedInfo";
 import BackButton from "~/components/BackButton";
 import { order_status } from "~/plugins/constant.js";
 
