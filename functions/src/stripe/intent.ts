@@ -120,9 +120,14 @@ export const confirm = async (db: FirebaseFirestore.Firestore, data: any, contex
   const stripeSnapshot = await db.doc(`/admins/${venderId}/public/stripe`).get()
   const stripeData = stripeSnapshot.data()
   if (!stripeData) {
-    throw new functions.https.HttpsError('invalid-argument', 'This restaurant is unavailable.')
+    throw new functions.https.HttpsError('invalid-argument', 'This restaurant does not support payment.')
   }
   const stripeAccount = stripeData.stripeAccount
+
+  const uid = context.auth.uid
+  if (venderId !== uid) {
+    throw new functions.https.HttpsError('permission-denied', 'You do not have permission to confirm this request.')
+  }
 
   try {
     const result = await db.runTransaction(async transaction => {
@@ -134,8 +139,8 @@ export const confirm = async (db: FirebaseFirestore.Firestore, data: any, contex
         throw new functions.https.HttpsError('invalid-argument', `The order does not exist. ${orderRef.path}`)
       }
       // Check the stock status.
-      if (order.status !== constant.order_status.validation_ok) {
-        throw new functions.https.HttpsError('aborted', 'This order is invalid.')
+      if (order.status !== constant.order_status.cooking_completed) {
+        throw new functions.https.HttpsError('failed-precondition', 'This order is not ready yet.')
       }
 
       try {
@@ -146,7 +151,7 @@ export const confirm = async (db: FirebaseFirestore.Firestore, data: any, contex
         })
         transaction.set(orderRef, {
           timeConfirmed: admin.firestore.FieldValue.serverTimestamp(),
-          status: constant.order_status.customer_paid,
+          status: constant.order_status.customer_picked_up,
           result: paymentIntent
         }, { merge: true })
         return paymentIntent
