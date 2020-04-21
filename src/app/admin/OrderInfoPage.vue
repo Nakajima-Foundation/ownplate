@@ -52,6 +52,14 @@
           @click="handleChangeStatus(orderState, $event)"
         >{{ $t("order.status." + orderState) }}</b-button>
       </div>
+      <div style="margin:0.2rem">
+        <b-button
+          :class="classOf('customer_picked_up')"
+          :loading="updating==='customer_picked_up'"
+          style="width:100%"
+          @click="handleChangeStatus('customer_picked_up', $event)"
+        >{{ $t("order.status." + 'customer_picked_up') }}</b-button>
+      </div>
     </div>
     <ordered-item v-for="id in ids" :key="id" :item="items[id]" />
   </section>
@@ -73,12 +81,7 @@ export default {
 
   data() {
     return {
-      orderStates: [
-        "customer_paid",
-        "order_accepted",
-        "cooking_completed",
-        "customer_picked_up"
-      ],
+      orderStates: ["customer_paid", "order_accepted", "cooking_completed"],
       updating: "",
       shopInfo: {},
       menuObj: {},
@@ -180,18 +183,12 @@ export default {
         });
         console.log("result=", result.data);
       } catch (error) {
+        // BUGBUG: Handle Error
         console.error(error);
       } finally {
         this.updating = "";
       }
 
-      /*
-      const ref = db.doc(
-        `restaurants/${this.restaurantId()}/orders/${this.orderId}`
-      );
-      console.log(this.orderInfo);
-      await ref.set({ status: order_status[statusKey] }, { merge: true });
-      */
       this.$router.push(this.parentUrl);
     },
     classOf(statusKey) {
