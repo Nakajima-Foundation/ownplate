@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import OrderStatus from "~/components/OrderStatus";
+import OrderStatus from "~/app/admin/Order/OrderStatus";
 import { nameOfOrder } from "~/plugins/strings.js";
 import { parsePhoneNumber, formatNational } from "~/plugins/phoneutil.js";
 
