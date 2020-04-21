@@ -7,9 +7,9 @@ export const getStripeInstance = (stripeAccount) => {
   });
 }
 
-export const checkoutCreate = functions.httpsCallable("checkoutCreate");
-export const checkoutConfirm = functions.httpsCallable("checkoutConfirm");
-export const checkoutCancel = functions.httpsCallable("checkoutCancel");
+export const checkoutCreate = functions.httpsCallable("stripeCreateIntent");
+export const checkoutConfirm = functions.httpsCallable("stripeConfirmIntent");
+export const checkoutCancel = functions.httpsCallable("stripeCancelIntent");
 export const stripeConnect = functions.httpsCallable("stripeConnect");
 export const stripeDisconnect = functions.httpsCallable("stripeDisconnect");
 

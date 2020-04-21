@@ -39,15 +39,15 @@ export const stripeDisconnect = functions.https.onCall(async (data, context) => 
 import * as Checkout from './stripe/checkout'
 
 // export const checkout = { ...Checkout }
-export const checkoutCreate = functions.https.onCall(async (data, context) => {
+export const stripeCreateIntent = functions.https.onCall(async (data, context) => {
   return await Checkout.create(data, context);
 });
 
-export const checkoutConfirm = functions.https.onCall(async (data, context) => {
+export const stripeConfirmIntent = functions.https.onCall(async (data, context) => {
   return await Checkout.confirm(data, context);
 });
 
-export const checkoutCancel = functions.https.onCall(async (data, context) => {
+export const stripeCancelIntent = functions.https.onCall(async (data, context) => {
   return await Checkout.cancel(data, context);
 });
 
