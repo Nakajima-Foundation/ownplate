@@ -129,25 +129,11 @@ export const confirm = async (db: FirebaseFirestore.Firestore, data: any, contex
 
 
 export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
-  if (!context.auth) {
-    throw new functions.https.HttpsError('failed-precondition', 'The function must be called while authenticated.')
-  }
-  const STRIPE_SECRET_KEY = functions.config().stripe.secret_key
-  if (!STRIPE_SECRET_KEY) {
-    throw new functions.https.HttpsError('invalid-argument', 'The functions requires STRIPE_SECRET_KEY.')
-  }
-  console.info(data, context)
-  const uid = context.auth.uid
-  const stripe = new Stripe(STRIPE_SECRET_KEY, { apiVersion: '2020-03-02' })
+  const uid = utils.validate_auth(context);
+  const stripe = utils.get_stripe();
 
-  const orderPath = data.orderPath
-  if (!orderPath) {
-    throw new functions.https.HttpsError('invalid-argument', 'This request does not include an orderPath.')
-  }
-  const paymentIntentId = data.paymentIntentId
-  if (!paymentIntentId) {
-    throw new functions.https.HttpsError('invalid-argument', 'This request does not contain a paymentIntentId.')
-  }
+  const { orderPath, paymentIntentId } = data
+  utils.validate_params({ orderPath, paymentIntentId })
 
   const orderRef = db.doc(orderPath)
   const restaurantSnapshot = await orderRef.parent.parent!.get()
@@ -198,10 +184,6 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
     })
     return { result }
   } catch (error) {
-    console.error(error)
-    if (error instanceof functions.https.HttpsError) {
-      throw error
-    }
-    throw new functions.https.HttpsError("internal", error.message, error);
+    throw utils.process_error(error)
   }
 };
