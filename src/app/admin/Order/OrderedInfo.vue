@@ -17,7 +17,10 @@
         </div>
       </div>
       <div class="level is-mobile" style="margin:0">
-        <div class="level-left">{{ $n(order.total, 'currency') }}</div>
+        <div class="level-left">
+          <span>{{ $n(order.total, 'currency') }}</span>
+          <i v-if="hasStripe" class="fab fa-cc-stripe" style="margin-left: 0.3em"></i>
+        </div>
         <div class="level-right">{{ timestamp || "0:00pm"}}</div>
       </div>
     </div>
@@ -40,6 +43,9 @@ export default {
     }
   },
   computed: {
+    hasStripe() {
+      return this.order.payment && this.order.payment.stripe;
+    },
     timestamp() {
       return this.order.timePaid.toLocaleTimeString();
     },
