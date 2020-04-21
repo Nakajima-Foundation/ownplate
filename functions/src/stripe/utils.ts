@@ -31,7 +31,15 @@ export const get_restaurant = async (db: FirebaseFirestore.Firestore, restaurant
   const snapshot = await db.doc(`/restaurants/${restaurantId}`).get()
   const data = snapshot.data()
   if (!data) {
-    throw new functions.https.HttpsError('invalid-argument', 'Dose not exist a restaurant.')
+    throw new functions.https.HttpsError('invalid-argument', 'There is no restaurant with this id.')
   }
   return data;
+}
+
+export const process_error = (error: any) => {
+  console.error(error)
+  if (error instanceof functions.https.HttpsError) {
+    return error
+  }
+  return new functions.https.HttpsError("internal", error.message, error);
 }
