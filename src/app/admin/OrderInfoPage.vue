@@ -187,7 +187,7 @@ export default {
           console.log(result);
           this.$router.push(this.parentUrl);
         } catch (error) {
-          console.error(error);
+          console.error(error.message, error.details);
         } finally {
           this.updating = "";
         }

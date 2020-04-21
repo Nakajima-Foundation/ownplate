@@ -67,24 +67,11 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
 };
 
 export const confirm = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
-  if (!context.auth) {
-    throw new functions.https.HttpsError('failed-precondition', 'The function must be called while authenticated.')
-  }
-  const STRIPE_SECRET_KEY = functions.config().stripe.secret_key
-  if (!STRIPE_SECRET_KEY) {
-    throw new functions.https.HttpsError('invalid-argument', 'The functions requires STRIPE_SECRET_KEY.')
-  }
-  console.info(data, context)
-  const stripe = new Stripe(STRIPE_SECRET_KEY, { apiVersion: '2020-03-02' })
+  const uid = utils.validate_auth(context);
+  const stripe = utils.get_stripe();
 
-  const orderPath = data.orderPath
-  if (!orderPath) {
-    throw new functions.https.HttpsError('invalid-argument', 'This request does not include an orderPath.')
-  }
-  const paymentIntentID = data.paymentIntentId
-  if (!paymentIntentID) {
-    throw new functions.https.HttpsError('invalid-argument', 'This request does not contain a paymentIntentID.')
-  }
+  const { orderPath, paymentIntentId } = data
+  utils.validate_params({ orderPath, paymentIntentId })
 
   const orderRef = db.doc(orderPath)
   const restaurantSnapshot = await orderRef.parent.parent!.get()
@@ -100,7 +87,6 @@ export const confirm = async (db: FirebaseFirestore.Firestore, data: any, contex
   }
   const stripeAccount = stripeData.stripeAccount
 
-  const uid = context.auth.uid
   if (venderId !== uid) {
     throw new functions.https.HttpsError('permission-denied', 'You do not have permission to confirm this request.')
   }
@@ -121,7 +107,7 @@ export const confirm = async (db: FirebaseFirestore.Firestore, data: any, contex
 
       try {
         // Check the stock status.
-        const paymentIntent = await stripe.paymentIntents.confirm(paymentIntentID, {
+        const paymentIntent = await stripe.paymentIntents.confirm(paymentIntentId, {
           idempotencyKey: order.id,
           stripeAccount
         })
@@ -137,11 +123,7 @@ export const confirm = async (db: FirebaseFirestore.Firestore, data: any, contex
     })
     return { result }
   } catch (error) {
-    console.error(error)
-    if (error instanceof functions.https.HttpsError) {
-      throw error
-    }
-    throw new functions.https.HttpsError("internal", error.message, error);
+    throw utils.process_error(error)
   }
 };
 
