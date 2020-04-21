@@ -19,11 +19,11 @@ service cloud.firestore {
 
     match /users/{userId} {
       allow read, write: if request.auth.uid == userId;
-      match /public {
+      match /public/{document=**} {
         allow read: if true;
         allow write: if request.auth.uid == userId;
       }
-      match /private {
+      match /private/{document=**} {
         allow read, write: if request.auth.uid == userId;
         match /profile {
           allow read: if request.auth.uid == userId;
@@ -31,10 +31,10 @@ service cloud.firestore {
             && request.resource.data.phoneNumber == request.auth.token.phone_number;
         }
       }
-      match /readonly {
+      match /readonly/{document=**} {
         allow read: if request.auth.uid == userId;
       }
-      match /system {
+      match /system/{document=**} {
         allow read, write: if false;
       }
     }
@@ -45,7 +45,7 @@ service cloud.firestore {
         allow read: if true;
         allow write: if request.auth.uid == userId;
       }
-      match /private {
+      match /private/{document=**} {
         allow read, write: if request.auth.uid == userId;
         match /profile {
           allow read: if request.auth.uid == userId;
@@ -53,10 +53,10 @@ service cloud.firestore {
             && request.resource.data.email == request.auth.token.email;
         }
       }
-      match /readonly {
+      match /readonly/{document=**} {
         allow read: if request.auth.uid == userId;
       }
-      match /system {
+      match /system/{document=**} {
         allow read, write: if false;
       }
     }
@@ -89,6 +89,9 @@ service cloud.firestore {
         allow update: if isOwner(resource, request)
                         && resource.data.status == 200
                         && request.resource.data.status == 300; // HACK: Temporary During no-sprite Testing
+        match /system/{document=**} {
+          allow read, write: if false;
+        }
       }
     }
 
