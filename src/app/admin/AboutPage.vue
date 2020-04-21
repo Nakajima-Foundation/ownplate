@@ -1,376 +1,312 @@
 <template>
-<section class="section">
-  <back-button url="/admin/restaurants/" />
+  <section class="section">
+    <back-button url="/admin/restaurants/" />
 
-  <template v-if="notFound===null">
-  </template>
-  <template v-else-if="notFound">
-    <not-found />
-  </template>
-  <template v-else-if="!notFound">
-    <h2 class="p-big bold">
-      {{$t("editRestaurant.about")}}
-    </h2>
-    <div class="media">
-      <div class="media-content"></div>
-      <div class="media-right">
-        <p class="p-font bold" style="color:#CB4B4B">
-          * {{$t("editRestaurant.required")}}
-        </p>
-      </div>
-    </div>
-
-    <div class="field is-horizontal">
-      <div class="field-body">
-        <h4>
-          {{$t("editRestaurant.profilePhoto")}}
-          <span class="p-font bold" style="color:#CB4B4B">
-            *
-          </span>
-        </h4>
-      </div>
-    </div>
-    <table>
-      <tr>
-        <td v-if="shopInfo.restProfilePhoto">
-          {{$t("editRestaurant.current")}}
-        </td>
-        <td>
-          {{$t("editRestaurant.new")}}
-        </td>
-      </tr>
-      <tr>
-        <td v-if="shopInfo.restProfilePhoto">
-          <img class="card_image" :src="this.shopInfo.restProfilePhoto" />
-        </td>
-        <td>
-          <croppa
-            v-model="restProfileCroppa"
-            :prevent-white-space="true"
-            :zoom-speed="5"
-            :width="200"
-            :height="200"
-            placeholder="Click and uploade"
-            :placeholder-font-size="20"
-            initial-position="center"
-            :canvas-color="'gainsboro'"
-            ></croppa>
-        </td>
-      </tr>
-    </table>
-    <div class="field is-horizontal">
-      <div class="field-body">
-        <h4>{{$t("editRestaurant.coverPhoto")}}</h4>
-      </div>
-    </div>
-    <table>
-      <tr>
-        <td v-if="shopInfo.restProfilePhoto">
-          {{$t("editRestaurant.current")}}
-        </td>
-        <td>
-          {{$t("editRestaurant.new")}}
-        </td>
-      </tr>
-      <tr>
-        <td v-if="shopInfo.restProfilePhoto">
-          <img class="card_cover_image" :src="this.shopInfo.restCoverPhoto" if this.shopInfo.restCoverPhoto />
-        </td>
-        <td>
-          <croppa
-            v-model="restCoverCroppa"
-            :prevent-white-space="true"
-            :zoom-speed="5"
-            :width="300"
-            :height="150"
-            :placeholder="'Click and upload'"
-            :placeholder-font-size="20"
-            initial-position="center"
-            :canvas-color="'gainsboro'"
-            ></croppa>
-        </td>
-      </tr>
-    </table>
-    <div class="field is-horizontal">
-      <div class="field-body">
-        <h4>
-          <h4>{{$t('shopInfo.name')}}</h4>
-          <span class="p-font bold" style="color:#CB4B4B">
-            *
-          </span>
-        </h4>
-      </div>
-    </div>
-    <b-field
-      :type="errors['restaurantName'].length > 0 ? 'is-danger' : 'is-success'"
-      >
-      <b-input
-        v-model="shopInfo.restaurantName"
-        type="text"
-        placeholder="Enter restaurant name"
-        maxlength="50"
-        ></b-input>
-    </b-field>
-
-    <div class="field is-horizontal">
-      <div class="field-body">
-        <h4>
-          {{$t('shopInfo.streetAddress')}}
-          <span class="p-font bold" style="color:#CB4B4B">
-            *
-          </span>
-        </h4>
-      </div>
-    </div>
-    <b-field type="is-white"
-             :type="errors['streetAddress'].length > 0 ? 'is-danger' : 'is-success'"
-             >
-      <b-input
-        v-model="shopInfo.streetAddress"
-        type="text"
-        placeholder="Enter street address"
-        maxlength="30"
-        ></b-input>
-    </b-field>
-
-    <div class="columns">
-      <div class="column">
-        <div class="field is-horizontal">
-          <div class="field-body">
-            <h4>
-              {{$t('shopInfo.city')}}
-              <span class="p-font bold" style="color:#CB4B4B">
-                *
-              </span>
-            </h4>
-          </div>
+    <template v-if="notFound===null"></template>
+    <template v-else-if="notFound">
+      <not-found />
+    </template>
+    <template v-else-if="!notFound">
+      <h2 class="p-big bold">{{$t("editRestaurant.about")}}</h2>
+      <div class="media">
+        <div class="media-content"></div>
+        <div class="media-right">
+          <p class="p-font bold" style="color:#CB4B4B">* {{$t("editRestaurant.required")}}</p>
         </div>
-        <b-field
-          :type="errors['city'].length > 0 ? 'is-danger' : 'is-white'"
-          >
-          <b-input
-            v-model="shopInfo.city"
-            type="text"
-            placeholder="Enter city"
-            maxlength="15"
-            ></b-input>
-        </b-field>
       </div>
-      <div class="column">
-        <div class="field is-horizontal">
-          <div class="field-body">
-            <h4>
-              {{$t('shopInfo.state')}}
-              <span class="p-font bold" style="color:#CB4B4B">
-                *
-              </span>
-            </h4>
-          </div>
+
+      <div class="field is-horizontal">
+        <div class="field-body">
+          <h4>
+            {{$t("editRestaurant.profilePhoto")}}
+            <span class="p-font bold" style="color:#CB4B4B">*</span>
+          </h4>
         </div>
-        <b-field type="is-white"
-                 :type="errors['state'].length > 0 ? 'is-danger' : 'is-success'"
-                 >
-          <b-select v-model="shopInfo.state" placeholder="select">
-            <option v-for="stateItem in states" :key="stateItem">
-              {{ stateItem }}
-            </option>
-          </b-select>
-        </b-field>
       </div>
-    </div>
+      <table>
+        <tr>
+          <td v-if="shopInfo.restProfilePhoto">{{$t("editRestaurant.current")}}</td>
+          <td>{{$t("editRestaurant.new")}}</td>
+        </tr>
+        <tr>
+          <td v-if="shopInfo.restProfilePhoto">
+            <img class="card_image" :src="this.shopInfo.restProfilePhoto" />
+          </td>
+          <td>
+            <croppa
+              v-model="restProfileCroppa"
+              :prevent-white-space="true"
+              :zoom-speed="5"
+              :width="200"
+              :height="200"
+              placeholder="Click and uploade"
+              :placeholder-font-size="20"
+              initial-position="center"
+              :canvas-color="'gainsboro'"
+            ></croppa>
+          </td>
+        </tr>
+      </table>
+      <div class="field is-horizontal">
+        <div class="field-body">
+          <h4>{{$t("editRestaurant.coverPhoto")}}</h4>
+        </div>
+      </div>
+      <table>
+        <tr>
+          <td v-if="shopInfo.restProfilePhoto">{{$t("editRestaurant.current")}}</td>
+          <td>{{$t("editRestaurant.new")}}</td>
+        </tr>
+        <tr>
+          <td v-if="shopInfo.restProfilePhoto">
+            <img
+              class="card_cover_image"
+              :src="this.shopInfo.restCoverPhoto"
+              if
+              this.shopInfo.restCoverPhoto
+            />
+          </td>
+          <td>
+            <croppa
+              v-model="restCoverCroppa"
+              :prevent-white-space="true"
+              :zoom-speed="5"
+              :width="300"
+              :height="150"
+              :placeholder="'Click and upload'"
+              :placeholder-font-size="20"
+              initial-position="center"
+              :canvas-color="'gainsboro'"
+            ></croppa>
+          </td>
+        </tr>
+      </table>
+      <div class="field is-horizontal">
+        <div class="field-body">
+          <h4>
+            <h4>{{$t('shopInfo.name')}}</h4>
+            <span class="p-font bold" style="color:#CB4B4B">*</span>
+          </h4>
+        </div>
+      </div>
+      <b-field :type="errors['restaurantName'].length > 0 ? 'is-danger' : 'is-success'">
+        <b-input
+          v-model="shopInfo.restaurantName"
+          type="text"
+          placeholder="Enter restaurant name"
+          maxlength="50"
+        ></b-input>
+      </b-field>
 
-    <div class="field is-horizontal">
-      <div class="field-body">
-        <h4>
-          {{$t('shopInfo.zip')}}
-          <span class="p-font bold" style="color:#CB4B4B">
-            *
-          </span>
-        </h4>
+      <div class="field is-horizontal">
+        <div class="field-body">
+          <h4>
+            {{$t('shopInfo.streetAddress')}}
+            <span class="p-font bold" style="color:#CB4B4B">*</span>
+          </h4>
+        </div>
       </div>
-    </div>
-    <b-field
-      :type="errors['zip'].length > 0 ? 'is-danger' : 'is-white'"
+      <b-field
+        type="is-white"
+        :type="errors['streetAddress'].length > 0 ? 'is-danger' : 'is-success'"
       >
-      <b-input
-        v-model="shopInfo.zip"
-        type="text"
-        placeholder="Enter zip"
-        maxlength="10"
+        <b-input
+          v-model="shopInfo.streetAddress"
+          type="text"
+          placeholder="Enter street address"
+          maxlength="30"
         ></b-input>
-    </b-field>
-    <b-field>
-      <b-button variant="outline-primary"
-                style="margin-right:auto"
-                type="is-primary"
-                class="counter-button"
-                rounded
-                @click="updateAndUpdateMap"
-                >
-        {{$t("editRestaurant.updateMap")}}
-      </b-button><br/>
-    </b-field>
-    <div class="field is-horizontal">
-      <div class="field-body">
-        <p class="p-font bold" style="color:#CB4B4B">
-          {{$t('editRestaurant.updateMapDescription')}}
+      </b-field>
 
-        </p>
+      <div class="columns">
+        <div class="column">
+          <div class="field is-horizontal">
+            <div class="field-body">
+              <h4>
+                {{$t('shopInfo.city')}}
+                <span class="p-font bold" style="color:#CB4B4B">*</span>
+              </h4>
+            </div>
+          </div>
+          <b-field :type="errors['city'].length > 0 ? 'is-danger' : 'is-white'">
+            <b-input v-model="shopInfo.city" type="text" placeholder="Enter city" maxlength="15"></b-input>
+          </b-field>
+        </div>
+        <div class="column">
+          <div class="field is-horizontal">
+            <div class="field-body">
+              <h4>
+                {{$t('shopInfo.state')}}
+                <span class="p-font bold" style="color:#CB4B4B">*</span>
+              </h4>
+            </div>
+          </div>
+          <b-field type="is-white" :type="errors['state'].length > 0 ? 'is-danger' : 'is-success'">
+            <b-select v-model="shopInfo.state" placeholder="select">
+              <option v-for="stateItem in states" :key="stateItem">{{ stateItem }}</option>
+            </b-select>
+          </b-field>
+        </div>
       </div>
-    </div>
-    <b-field type="is-white">
-      <GMap
-        ref="gMap"
-        :center="{lat: 44.933076, lng: 15.629058}"
-        :options="{fullscreenControl: false}"
-        :zoom="18"
-        @loaded="hello"
-        >
-      </GMap>
-    </b-field>
 
-    <div class="field is-horizontal">
-      <div class="field-body">
-        <h4>
-          {{$t('shopInfo.phonenumber')}}
-          <span class="p-font bold" style="color:#CB4B4B">
-            *
-          </span>
-        </h4>
+      <div class="field is-horizontal">
+        <div class="field-body">
+          <h4>
+            {{$t('shopInfo.zip')}}
+            <span class="p-font bold" style="color:#CB4B4B">*</span>
+          </h4>
+        </div>
       </div>
-    </div>
-    <b-field
-      :type="errors['phoneNumber'].length > 0 ? 'is-danger' : 'is-white'"
-      >
-      <b-input
-        v-model="shopInfo.phoneNumber"
-        placeholder="Enter phone number"
-        type="tel"
-        maxlength="20"
-        ></b-input>
-    </b-field>
+      <b-field :type="errors['zip'].length > 0 ? 'is-danger' : 'is-white'">
+        <b-input v-model="shopInfo.zip" type="text" placeholder="Enter zip" maxlength="10"></b-input>
+      </b-field>
+      <b-field>
+        <b-button
+          variant="outline-primary"
+          style="margin-right:auto"
+          type="is-primary"
+          class="counter-button"
+          rounded
+          @click="updateAndUpdateMap"
+        >{{$t("editRestaurant.updateMap")}}</b-button>
+        <br />
+      </b-field>
+      <div class="field is-horizontal">
+        <div class="field-body">
+          <p class="p-font bold" style="color:#CB4B4B">{{$t('editRestaurant.updateMapDescription')}}</p>
+        </div>
+      </div>
+      <b-field type="is-white">
+        <GMap
+          ref="gMap"
+          :center="{lat: 44.933076, lng: 15.629058}"
+          :options="{fullscreenControl: false}"
+          :zoom="18"
+          @loaded="hello"
+        ></GMap>
+      </b-field>
 
-    <b-field label="Website">
-      <b-input
-        v-model="shopInfo.url"
-        placeholder="Enter website URL"
-        type="url"
-        maxlength="100"
+      <div class="field is-horizontal">
+        <div class="field-body">
+          <h4>
+            {{$t('shopInfo.phonenumber')}}
+            <span class="p-font bold" style="color:#CB4B4B">*</span>
+          </h4>
+        </div>
+      </div>
+      <b-field :type="errors['phoneNumber'].length > 0 ? 'is-danger' : 'is-white'">
+        <b-input
+          v-model="shopInfo.phoneNumber"
+          placeholder="Enter phone number"
+          type="tel"
+          maxlength="20"
         ></b-input>
-    </b-field>
+      </b-field>
 
-    <div class="columns">
-      <div class="column">
-        <div class="field is-horizontal">
-          <div class="field-body">
-            <div class="field has-addons">
-              <b-field
-                label="Food tax"
-                type="is-white"
-                style="border-radius: 0.4rem!important;"
-                :type="errors['foodTax'].length > 0 ? 'is-danger' : 'is-success'"
+      <b-field label="Website">
+        <b-input v-model="shopInfo.url" placeholder="Enter website URL" type="url" maxlength="100"></b-input>
+      </b-field>
+
+      <div class="columns">
+        <div class="column">
+          <div class="field is-horizontal">
+            <div class="field-body">
+              <div class="field has-addons">
+                <b-field
+                  label="Food tax"
+                  type="is-white"
+                  style="border-radius: 0.4rem!important;"
+                  :type="errors['foodTax'].length > 0 ? 'is-danger' : 'is-success'"
                 >
-                <div style="display:inline-flex">
-                  <b-input
-                    v-model="shopInfo.foodTax"
-                    placeholder="8.2"
-                    type="text"
-                    maxlength="5"
+                  <div style="display:inline-flex">
+                    <b-input
+                      v-model="shopInfo.foodTax"
+                      placeholder="8.2"
+                      type="text"
+                      maxlength="5"
                     />
-                  <span
-                    style="margin-top: auto;margin-bottom: auto;margin-left:0.4rem;margin-right:0.4rem;"
-                    >
-                    %
-                  </span>
-                </div>
-              </b-field>
+                    <span
+                      style="margin-top: auto;margin-bottom: auto;margin-left:0.4rem;margin-right:0.4rem;"
+                    >%</span>
+                  </div>
+                </b-field>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="column">
+          <div class="field is-horizontal">
+            <div class="field-body">
+              <div class="field has-addons">
+                <b-field
+                  label="Alcohol tax"
+                  type="is-white"
+                  style="border-radius: 0.4rem!important;"
+                  :type="errors['alcoholTax'].length > 0 ? 'is-danger' : 'is-success'"
+                >
+                  <div style="display:inline-flex">
+                    <b-input
+                      v-model="shopInfo.alcoholTax"
+                      placeholder="10.2"
+                      type="text"
+                      maxlength="5"
+                    />
+                    <span
+                      style="margin-top: auto;margin-bottom: auto;margin-left:0.4rem;margin-right:0.4rem;"
+                    >%</span>
+                  </div>
+                </b-field>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="column">
-        <div class="field is-horizontal">
-          <div class="field-body">
-            <div class="field has-addons">
-              <b-field
-                label="Alcohol tax"
-                type="is-white"
-                style="border-radius: 0.4rem!important;"
-                :type="errors['alcoholTax'].length > 0 ? 'is-danger' : 'is-success'"
-                >
-                <div style="display:inline-flex">
-                  <b-input
-                    v-model="shopInfo.alcoholTax"
-                    placeholder="10.2"
-                    type="text"
-                    maxlength="5"
-                    />
-                  <span
-                    style="margin-top: auto;margin-bottom: auto;margin-left:0.4rem;margin-right:0.4rem;"
-                    >
-                    %
-                  </span>
 
-                </div>
-              </b-field>
-            </div>
-          </div>
+      <h4>{{$t('shopInfo.hours')}}</h4>
+      <p class="p-font bold" style="color:#CB4B4B">{{$t('editRestaurant.businessHourDescription')}}</p>
+      <div v-for="(day, index) in days" :key="index">
+        <div class="field">
+          <b-checkbox v-model="shopInfo.businessDay[index]">{{$t("week.short." + day)}}</b-checkbox>
         </div>
+        <hours-input
+          v-model="shopInfo.openTimes[index][0]"
+          :type="errors['time'][index][0].length > 0 ? 'is-danger' : 'is-success'"
+          :disabled="!shopInfo.businessDay[index]"
+        ></hours-input>
+        <hours-input
+          v-model="shopInfo.openTimes[index][1]"
+          :type="errors['time'][index][1].length > 0 ? 'is-danger' : 'is-success'"
+          :disabled="!shopInfo.businessDay[index]"
+        ></hours-input>
       </div>
-    </div>
 
-    <h4>{{$t('shopInfo.hours')}}</h4>
-    <p class="p-font bold" style="color:#CB4B4B">
-      {{$t('editRestaurant.businessHourDescription')}}
-    </p>
-    <div v-for="(day, index) in days" :key="index">
-      <div class="field">
-        <b-checkbox v-model="shopInfo.businessDay[index]">
-          {{$t("week.short." + day)}}
-        </b-checkbox>
-      </div>
-      <hours-input
-        v-model="shopInfo.openTimes[index][0]"
-        :type="errors['time'][index][0].length > 0 ? 'is-danger' : 'is-success'"
-        :disabled="!shopInfo.businessDay[index]"></hours-input>
-      <hours-input
-        v-model="shopInfo.openTimes[index][1]"
-        :type="errors['time'][index][1].length > 0 ? 'is-danger' : 'is-success'"
-        :disabled="!shopInfo.businessDay[index]"></hours-input>
-    </div>
-
-    <h4>
-      <b-checkbox v-model="shopInfo.publicFlag" :disabled="hasError">
-        {{$t('shopInfo.public')}}
-      </b-checkbox>
-    </h4>
-    <span v-if="shopInfo.publicFlag">{{$t('editRestaurant.publishDescription')}}</span>
-    <span v-if="!shopInfo.publicFlag">{{$t('editRestaurant.draftDescription')}}</span>
-    <b-button
-      style="margin-right:auto"
-      type="is-primary"
-      class="counter-button"
-      expanded
-      rounded
-      @click="submitRestaurant"
-    >
-      Save
-    </b-button>
-  </template>
-</section>
+      <h4>
+        <b-checkbox v-model="shopInfo.publicFlag" :disabled="hasError">{{$t('shopInfo.public')}}</b-checkbox>
+      </h4>
+      <span v-if="shopInfo.publicFlag">{{$t('editRestaurant.publishDescription')}}</span>
+      <span v-if="!shopInfo.publicFlag">{{$t('editRestaurant.draftDescription')}}</span>
+      <b-button
+        style="margin-right:auto"
+        type="is-primary"
+        class="counter-button"
+        expanded
+        rounded
+        @click="submitRestaurant"
+      >Save</b-button>
+    </template>
+  </section>
 </template>
 
 <script>
 import Vue from "vue";
 import { db, storage } from "~/plugins/firebase.js";
-import HoursInput from "~/components/HoursInput";
+import HoursInput from "~/app/admin/Restaurant/HoursInput";
 
-import * as API from "~/plugins/api"
+import * as API from "~/plugins/api";
 import BackButton from "~/components/BackButton";
 import NotFound from "~/components/NotFound";
 
 import { daysOfWeek, USStates } from "~/plugins/constant.js";
-
 
 export default {
   name: "Order",
@@ -417,14 +353,14 @@ export default {
           6: true,
           7: true
         },
-        publicFlag: false,
+        publicFlag: false
       },
       states: USStates,
       maplocation: {},
       place_id: null,
       markers: [],
       days: daysOfWeek,
-      notFound: null,
+      notFound: null
     };
   },
   created() {
@@ -455,42 +391,54 @@ export default {
     },
     errors() {
       const err = {};
-      ['restaurantName', 'streetAddress', 'city', 'state', 'zip', 'phoneNumber',
-       'foodTax', 'alcoholTax'].forEach((name) => {
+      [
+        "restaurantName",
+        "streetAddress",
+        "city",
+        "state",
+        "zip",
+        "phoneNumber",
+        "foodTax",
+        "alcoholTax"
+      ].forEach(name => {
         err[name] = [];
         if (this.shopInfo[name] === "") {
-          err[name].push('validationError.'+ name +'.empty');
+          err[name].push("validationError." + name + ".empty");
         }
       });
-      ['foodTax', 'alcoholTax'].forEach((name) => {
+      ["foodTax", "alcoholTax"].forEach(name => {
         // err[name] = [];
         if (this.shopInfo[name] !== "") {
           if (isNaN(this.shopInfo[name])) {
-            err[name].push('validationError.'+ name +'.invalidNumber');
+            err[name].push("validationError." + name + ".invalidNumber");
           }
         }
       });
 
-      err['time'] = {};
-      Object.keys(daysOfWeek).forEach((key) => {
-
-        err['time'][key] = [];
-        [0, 1].forEach((key2) => {
-          err['time'][key].push([]);
+      err["time"] = {};
+      Object.keys(daysOfWeek).forEach(key => {
+        err["time"][key] = [];
+        [0, 1].forEach(key2 => {
+          err["time"][key].push([]);
           if (this.shopInfo.businessDay[key]) {
-            if (this.shopInfo.openTimes[key] && this.shopInfo.openTimes[key][key2]) {
+            if (
+              this.shopInfo.openTimes[key] &&
+              this.shopInfo.openTimes[key][key2]
+            ) {
               const data = this.shopInfo.openTimes[key][key2];
               if (this.isNull(data.start) ^ this.isNull(data.end)) {
-                err['time'][key][key2].push('validationError.oneInEmpty');
+                err["time"][key][key2].push("validationError.oneInEmpty");
               }
               if (!this.isNull(data.start) && !this.isNull(data.end)) {
                 if (data.start > data.end) {
-                  err['time'][key][key2].push('validationError.validBusinessTime');
+                  err["time"][key][key2].push(
+                    "validationError.validBusinessTime"
+                  );
                 }
               }
             } else {
               if (key2 === 0) {
-                err['time'][key][key2].push('validationError.noSelect');
+                err["time"][key][key2].push("validationError.noSelect");
               }
             }
           }
@@ -502,14 +450,14 @@ export default {
     hasError() {
       const num = this.countObj(this.errors);
       return num > 0;
-    },
+    }
   },
   watch: {
     notFound: function() {
       if (this.notFound === false) {
         this.hello();
       }
-    },
+    }
   },
   methods: {
     hello() {
@@ -521,7 +469,7 @@ export default {
       if (this.hasError) return;
 
       const restaurantId = this.restaurantId();
-      if ( this.restProfileCroppa.chosenFile) {
+      if (this.restProfileCroppa.chosenFile) {
         let restProfileFile = await this.restProfileCroppa.promisedBlob(
           "image/jpeg",
           0.8
@@ -613,14 +561,19 @@ export default {
       }
     },
     setCurrentLocation(location) {
-      if (this.$refs.gMap && this.$refs.gMap.map &&
-          location && location.lat && location.lng) {
+      if (
+        this.$refs.gMap &&
+        this.$refs.gMap.map &&
+        location &&
+        location.lat &&
+        location.lng
+      ) {
         this.$refs.gMap.map.setCenter(location);
         this.removeAllMarker();
         const marker = new google.maps.Marker({
           position: new google.maps.LatLng(location.lat, location.lng),
           title: "hello",
-          map: this.$refs.gMap.map,
+          map: this.$refs.gMap.map
         });
         this.markers.push(marker);
         this.maplocation = location;
@@ -634,7 +587,7 @@ export default {
     },
     removeAllMarker() {
       if (this.markers && this.markers.length > 0) {
-        this.markers.map((marker) => {
+        this.markers.map(marker => {
           marker.setMap(null);
         });
         this.markers = [];
@@ -642,7 +595,7 @@ export default {
     },
     async updateRestaurantData(restaurantData) {
       const cleanData = this.cleanObject(restaurantData);
-      await db.doc(`restaurants/${this.restaurantId()}`).update(cleanData)
+      await db.doc(`restaurants/${this.restaurantId()}`).update(cleanData);
     }
   }
 };
@@ -652,10 +605,10 @@ export default {
   margin-top: -2rem !important;
 }
 .card_image {
-    height: 200px;
+  height: 200px;
 }
 .card_cover_image {
-    height: 150px;
+  height: 150px;
 }
 /deep/.ti-input {
   border-radius: 0.4rem !important;

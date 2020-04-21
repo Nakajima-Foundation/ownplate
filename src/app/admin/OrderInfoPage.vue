@@ -60,7 +60,7 @@
 <script>
 import { db, functions } from "~/plugins/firebase.js";
 import BackButton from "~/components/BackButton";
-import OrderedItem from "~/components/OrderedItem";
+import OrderedItem from "~/app/admin/Order/OrderedItem";
 import { order_status } from "~/plugins/constant.js";
 import { nameOfOrder } from "~/plugins/strings.js";
 import { parsePhoneNumber, formatNational } from "~/plugins/phoneutil.js";
