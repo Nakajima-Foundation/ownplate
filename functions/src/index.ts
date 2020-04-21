@@ -1,7 +1,7 @@
 import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
 import * as express from './functions/express';
-import * as firestore from './functions/firestore';
+import * as Firestore from './functions/firestore';
 
 export const api = functions.https.onRequest(express.app);
 
@@ -10,8 +10,8 @@ export const updateDb = (_db) => {
   db = _db;
 }
 
-export const orderCreate = functions.firestore.document('restaurants/{restaurantId}/orders/{orderId}').onCreate(async (snapshot, context) => {
-  await firestore.orderCreate(db, snapshot, context);
+export const wasOrderCreated = functions.firestore.document('restaurants/{restaurantId}/orders/{orderId}').onCreate(async (snapshot, context) => {
+  await Firestore.wasOrderCreated(db, snapshot, context);
 });
 
 import * as Order from './functions/order';
