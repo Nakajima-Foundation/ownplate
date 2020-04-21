@@ -62,11 +62,7 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
     })
     return { result }
   } catch (error) {
-    console.error(error)
-    if (error instanceof functions.https.HttpsError) {
-      throw error
-    }
-    throw new functions.https.HttpsError("internal", error.message, error);
+    throw utils.process_error(error)
   }
 };
 
