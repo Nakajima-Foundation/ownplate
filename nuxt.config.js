@@ -52,17 +52,17 @@ const customRoutes = [
   {
     name: 'admin-signin',
     path: '/admin/user/signin',
-    component: 'admin/SignInPage.vue',
+    component: 'auth/SignInPage.vue',
   },
   {
     name: 'admin-signup',
     path: '/admin/user/signup',
-    component: 'admin/SignUpPage.vue',
+    component: 'auth/SignUpPage.vue',
   },
   {
     name: 'admin-reset',
     path: '/admin/user/reset',
-    component: 'admin/ResetPasswordPage.vue',
+    component: 'auth/ResetPasswordPage.vue',
   },
 ];
 
