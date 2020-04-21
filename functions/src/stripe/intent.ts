@@ -128,8 +128,11 @@ export const confirm = async (db: FirebaseFirestore.Firestore, data: any, contex
         transaction.set(orderRef, {
           timeConfirmed: admin.firestore.FieldValue.serverTimestamp(),
           status: constant.order_status.customer_picked_up,
-          result: paymentIntent
         }, { merge: true })
+        transaction.set(stripeRef, {
+          paymentIntent
+        }, { merge: true });
+
         return paymentIntent
       } catch (error) {
         throw error
@@ -185,7 +188,7 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
 
       try {
         // Check the stock status.
-        const paymentIntents = await stripe.paymentIntents.cancel(paymentIntentId, {
+        const paymentIntent = await stripe.paymentIntents.cancel(paymentIntentId, {
           idempotencyKey: `${order.id}-cancel`,
           stripeAccount
         })
@@ -193,9 +196,11 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
           timeCanceld: admin.firestore.FieldValue.serverTimestamp(),
           status: constant.order_status.order_canceled_by_customer,
           uidCanceledBy: uid,
-          result: paymentIntents
         }, { merge: true })
-        return paymentIntents
+        transaction.set(stripeRef, {
+          paymentIntent
+        }, { merge: true });
+        return paymentIntent
       } catch (error) {
         throw error
       }
