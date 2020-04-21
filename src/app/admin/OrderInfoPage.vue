@@ -34,7 +34,7 @@
             style="width:100%"
             class="light"
             :loading="updating==='order_canceled'"
-            @click="handleChangeStatus('order_canceled', $event)"
+            @click="handleChangeStatus('order_canceled')"
           >{{ $t("admin.order.delete") }}</b-button>
         </div>
       </div>
@@ -49,8 +49,16 @@
           :class="classOf(orderState)"
           :loading="updating===orderState"
           style="width:100%"
-          @click="handleChangeStatus(orderState, $event)"
+          @click="handleChangeStatus(orderState)"
         >{{ $t("order.status." + orderState) }}</b-button>
+      </div>
+      <div style="margin:0.2rem">
+        <b-button
+          :class="classOf('customer_picked_up')"
+          :loading="updating==='customer_picked_up'"
+          style="width:100%"
+          @click="handleComplete()"
+        >{{ $t("order.status." + 'customer_picked_up') }}</b-button>
       </div>
     </div>
     <ordered-item v-for="id in ids" :key="id" :item="items[id]" />
@@ -64,6 +72,7 @@ import OrderedItem from "~/app/admin/Order/OrderedItem";
 import { order_status } from "~/plugins/constant.js";
 import { nameOfOrder } from "~/plugins/strings.js";
 import { parsePhoneNumber, formatNational } from "~/plugins/phoneutil.js";
+import { checkoutConfirm } from "~/plugins/stripe.js";
 
 export default {
   components: {
@@ -73,12 +82,7 @@ export default {
 
   data() {
     return {
-      orderStates: [
-        "customer_paid",
-        "order_accepted",
-        "cooking_completed",
-        "customer_picked_up"
-      ],
+      orderStates: ["customer_paid", "order_accepted", "cooking_completed"],
       updating: "",
       shopInfo: {},
       menuObj: {},
@@ -169,7 +173,29 @@ export default {
       }
       return "";
     },
-    async handleChangeStatus(statusKey, event) {
+    async handleComplete() {
+      const intent = this.orderInfo.result;
+      if (intent) {
+        const orderId = this.$route.params.orderId;
+        console.log("handleComplete", intent.id, orderId);
+        try {
+          this.updating = "customer_picked_up";
+          const result = await checkoutConfirm({
+            paymentIntentId: intent.id,
+            orderPath: `restaurants/${this.restaurantId()}/orders/${orderId}`
+          });
+          console.log(result);
+          this.$router.push(this.parentUrl);
+        } catch (error) {
+          console.error(error);
+        } finally {
+          this.updating = "";
+        }
+      } else {
+        this.handleChangeStatus("customer_picked_up");
+      }
+    },
+    async handleChangeStatus(statusKey) {
       const orderUpdate = functions.httpsCallable("orderUpdate");
       this.updating = statusKey;
       try {
@@ -180,18 +206,12 @@ export default {
         });
         console.log("result=", result.data);
       } catch (error) {
+        // BUGBUG: Handle Error
         console.error(error);
       } finally {
         this.updating = "";
       }
 
-      /*
-      const ref = db.doc(
-        `restaurants/${this.restaurantId()}/orders/${this.orderId}`
-      );
-      console.log(this.orderInfo);
-      await ref.set({ status: order_status[statusKey] }, { merge: true });
-      */
       this.$router.push(this.parentUrl);
     },
     classOf(statusKey) {
