@@ -8,19 +8,8 @@ import * as utils from './utils'
 export const create = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
   const stripe = utils.validate_stripe();
-
-  const orderId = data.orderId
-  if (!orderId) {
-    throw new functions.https.HttpsError('invalid-argument', 'This request does not include an orderId.')
-  }
-  const restaurantId = data.restaurantId
-  if (!restaurantId) {
-    throw new functions.https.HttpsError('invalid-argument', 'This request does not contain a restaurantId.')
-  }
-  const paymentMethodId = data.paymentMethodId
-  if (!paymentMethodId) {
-    throw new functions.https.HttpsError('invalid-argument', 'This request does not contain a paymentMethodId.')
-  }
+  const { orderId, restaurantId, paymentMethodId } = data;
+  utils.validate_params({ orderId, restaurantId, paymentMethodId });
 
   const restaurantSnapshot = await db.doc(`/restaurants/${restaurantId}`).get()
   const restaurantData = restaurantSnapshot.data()

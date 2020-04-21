@@ -16,3 +16,13 @@ export const validate_stripe = () => {
   return new Stripe(STRIPE_SECRET_KEY, { apiVersion: '2020-03-02' })
 }
 
+export const validate_params = (params) => {
+  const errors = Object.keys(params).filter(key => {
+    return params[key] === undefined;
+  })
+  if (errors.length > 0) {
+    throw new functions.https.HttpsError('invalid-argument',
+      'Missing parameters.', { params: errors }
+    )
+  }
+}
