@@ -182,12 +182,13 @@ export default {
           this.updating = "customer_picked_up";
           const result = await checkoutConfirm({
             paymentIntentId: intent.id,
-            orderPath: `restaurants/${this.restaurantId()}/orders/${orderId}`
+            restaurantId: this.restaurantId(),
+            orderId
           });
           console.log(result);
           this.$router.push(this.parentUrl);
         } catch (error) {
-          console.error(error);
+          console.error(error.message, error.details);
         } finally {
           this.updating = "";
         }
