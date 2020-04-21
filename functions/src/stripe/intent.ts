@@ -7,16 +7,14 @@ import * as utils from './utils'
 
 export const create = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
-  const stripe = utils.validate_stripe();
+  const stripe = utils.get_stripe();
+
   const { orderId, restaurantId, paymentMethodId } = data;
   utils.validate_params({ orderId, restaurantId, paymentMethodId });
 
-  const restaurantSnapshot = await db.doc(`/restaurants/${restaurantId}`).get()
-  const restaurantData = restaurantSnapshot.data()
-  if (!restaurantData) {
-    throw new functions.https.HttpsError('invalid-argument', 'Dose not exist a restaurant.')
-  }
+  const restaurantData = await utils.get_restaurant(db, restaurantId);
   const venderId = restaurantData['uid']
+
   const stripeSnapshot = await db.doc(`/admins/${venderId}/public/stripe`).get()
   const stripeData = stripeSnapshot.data()
   if (!stripeData) {

@@ -8,7 +8,7 @@ export const validate_auth = (context: functions.https.CallableContext) => {
   return context.auth.uid
 }
 
-export const validate_stripe = () => {
+export const get_stripe = () => {
   const STRIPE_SECRET_KEY = functions.config().stripe.secret_key
   if (!STRIPE_SECRET_KEY) {
     throw new functions.https.HttpsError('invalid-argument', 'The functions requires STRIPE_SECRET_KEY.')
@@ -25,4 +25,13 @@ export const validate_params = (params) => {
       'Missing parameters.', { params: errors }
     )
   }
+}
+
+export const get_restaurant = async (db: FirebaseFirestore.Firestore, restaurantId: String) => {
+  const snapshot = await db.doc(`/restaurants/${restaurantId}`).get()
+  const data = snapshot.data()
+  if (!data) {
+    throw new functions.https.HttpsError('invalid-argument', 'Dose not exist a restaurant.')
+  }
+  return data;
 }
