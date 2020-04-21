@@ -174,14 +174,13 @@ export default {
       return "";
     },
     async handleComplete() {
-      const intent = this.orderInfo.result;
-      if (intent) {
+      const payment = this.orderInfo.payment;
+      if (payment && payment.stripe) {
         const orderId = this.$route.params.orderId;
-        console.log("handleComplete", intent.id, orderId);
+        console.log("handleComplete with Stripe", orderId);
         try {
           this.updating = "customer_picked_up";
           const result = await checkoutConfirm({
-            paymentIntentId: intent.id,
             restaurantId: this.restaurantId(),
             orderId
           });

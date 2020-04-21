@@ -53,7 +53,9 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
       transaction.set(orderRef, {
         timePaid: admin.firestore.FieldValue.serverTimestamp(),
         status: constant.order_status.customer_paid,
-        result: paymentIntent // BUGBUG: Remove this soon (after this clean up)
+        payment: {
+          stripe: true
+        }
       }, { merge: true });
 
       transaction.set(stripeRef, {
