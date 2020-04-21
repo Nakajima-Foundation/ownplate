@@ -68,7 +68,7 @@
 
 <script>
 import ItemCard from "~/app/user/Restaurant/ItemCard";
-import PhoneLogin from "~/components/auth/PhoneLogin";
+import PhoneLogin from "~/app/auth/PhoneLogin";
 import ShopOrnerInfo from "~/app/user/Restaurant/ShopOrnerInfo";
 import ShopInfo from "~/app/user/Restaurant/ShopInfo";
 import NotFound from "~/components/NotFound";
