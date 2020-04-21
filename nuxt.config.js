@@ -39,6 +39,16 @@ const customRoutes = [
     path: '/admin/restaurants/:restaurantId/menus/:menuId',
     component: 'admin/MenuItemPage.vue',
   },
+  {
+    name: 'admin-orders',
+    path: '/admin/restaurants/:restaurantId/orders',
+    component: 'admin/OrderListPage.vue',
+  },
+  {
+    name: 'admin-order-info',
+    path: '/admin/restaurants/:restaurantId/orders/:orderId',
+    component: 'admin/OrderInfoPage.vue',
+  },
 ];
 
 export default {
