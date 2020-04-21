@@ -2,7 +2,7 @@ import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
 import Stripe from 'stripe'
 
-export const connect = functions.https.onCall(async (data, context) => {
+export const connect = async (data, context) => {
   if (!context.auth) {
     throw new functions.https.HttpsError('failed-precondition', 'The function must be called while authenticated.')
   }
@@ -45,9 +45,9 @@ export const connect = functions.https.onCall(async (data, context) => {
     // Convert it into HttpsError so that client can access it via error.details
     throw new functions.https.HttpsError("internal", error.message, error);
   }
-});
+};
 
-export const disconnect = functions.https.onCall(async (data, context) => {
+export const disconnect = async (data, context) => {
   try {
     if (!context.auth) {
       throw new functions.https.HttpsError('failed-precondition', 'The function must be called while authenticated.')
@@ -101,4 +101,4 @@ export const disconnect = functions.https.onCall(async (data, context) => {
     // Convert it into HttpsError so that client can access it via error.details
     throw new functions.https.HttpsError("internal", error.message, error);
   }
-});
+};

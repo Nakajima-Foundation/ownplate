@@ -93,6 +93,7 @@ import RestaurantEditCard from "~/app/admin/Restaurant/RestaurantEditCard";
 import { order_status } from "~/plugins/constant.js";
 import { releaseConfig } from "~/plugins/config.js";
 import { midNight } from "~/plugins/dateUtils.js";
+import { stripeConnect, stripeDisconnect } from "~/plugins/stripe.js";
 
 export default {
   name: "Restaurant",
@@ -130,7 +131,6 @@ export default {
     const code = this.$route.query.code;
     if (code) {
       console.log("**** found code");
-      const stripeConnect = functions.httpsCallable("stripe-connect");
       try {
         const response = await stripeConnect({ code });
         console.log(response);
@@ -258,7 +258,6 @@ export default {
       }
     },
     async handlePaymentAccountDisconnect() {
-      const stripeDisconnect = functions.httpsCallable("stripe-disconnect");
       try {
         this.isDisconnecting = true;
         const response = await stripeDisconnect({

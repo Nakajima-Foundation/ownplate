@@ -114,6 +114,7 @@ import { db, firestore, functions } from "~/plugins/firebase.js";
 import { order_status } from "~/plugins/constant.js";
 import { nameOfOrder } from "~/plugins/strings.js";
 import { releaseConfig } from "~/plugins/config.js";
+import { checkoutCreate, checkoutCancel } from "~/plugins/stripe.js";
 
 export default {
   name: "Order",
@@ -276,8 +277,6 @@ export default {
         return;
       }
 
-      const checkoutCreate = functions.httpsCallable("checkoutCreate");
-      //const checkoutConfirm = functions.httpsCallable("checkoutConfirm");
       try {
         const { data } = await checkoutCreate({
           paymentMethodId: paymentMethod.id,
@@ -315,7 +314,6 @@ export default {
 
       try {
         this.isCanceling = true;
-        const checkoutCancel = functions.httpsCallable("checkoutCancel");
         const { data } = await checkoutCancel({
           paymentIntentId: this.orderInfo.result.id,
           orderPath: `restaurants/${this.restaurantId()}/orders/${this.orderId}`
