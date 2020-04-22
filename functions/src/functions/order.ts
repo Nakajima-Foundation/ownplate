@@ -15,7 +15,6 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
       throw new functions.https.HttpsError('permission-denied', 'The user does not have an authority to perform this operation.')
     }
 
-    // BUGBUG: We need to add some rules
     const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`)
 
     return await db.runTransaction(async transaction => {
