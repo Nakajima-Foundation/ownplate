@@ -34,8 +34,8 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
         throw new functions.https.HttpsError('aborted', 'This order is invalid.')
       }
 
-      // FIXME: check amount, currency.
-      const multiple = 100; // in case of USD
+      // BUGBUG: support JPY.
+      const multiple = 100; // 100 for USD, 1 for JPY
       const chargeTotal = Math.round((order.total + tip) * multiple)
 
       const request = {
@@ -55,6 +55,7 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
         timePaid: admin.firestore.FieldValue.serverTimestamp(),
         status: constant.order_status.customer_paid,
         chargeTotal: chargeTotal / multiple,
+        tip: Math.round(tip * multiple) / multiple,
         payment: {
           stripe: true
         }
