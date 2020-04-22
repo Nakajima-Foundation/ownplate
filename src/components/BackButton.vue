@@ -4,9 +4,10 @@
     type="is-primary"
     class="counter-button"
     icon-left="arrow-left"
+    tag="nuxt-link"
+    :to="localePath(url)"
     rounded
     outlined
-    @click="goBack()"
   >
     {{ $t('button.back') }}
   </b-button>
@@ -20,12 +21,5 @@ export default {
       required: true
     }
   },
-  methods: {
-    goBack() {
-      this.$router.push({
-        path: this.url
-      });
-    }
-  }
 }
 </script>
