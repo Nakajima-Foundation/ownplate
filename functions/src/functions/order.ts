@@ -27,9 +27,15 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
       if (order.status < constant.order_status.validation_ok || order.status >= constant.order_status.customer_picked_up) {
         throw new functions.https.HttpsError('failed-precondition', 'It is not possible to change state from the current state.')
       }
-      const isNewStatusValid: Boolean = (status === constant.order_status.order_canceled)
-        || (status === constant.order_status.order_accepted)
-        || (status === constant.order_status.cooking_completed)
+      const isNewStatusValid: Boolean = (() => {
+        switch (status) {
+          case constant.order_status.order_canceled:
+          case constant.order_status.order_accepted:
+          case constant.order_status.cooking_completed:
+            return true
+        }
+        return false
+      })();
       if (!isNewStatusValid) {
         throw new functions.https.HttpsError('permission-denied', 'The user does not have an authority to perform this operation.')
       }
