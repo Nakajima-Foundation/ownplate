@@ -52,6 +52,7 @@
         <b-button
           :class="classOf(orderState)"
           :loading="updating===orderState"
+          :disabled="!isValidTransition(orderState)"
           style="width:100%"
           @click="handleChangeStatus(orderState)"
         >{{ $t("order.status." + orderState) }}</b-button>
@@ -60,6 +61,7 @@
         <b-button
           :class="classOf('customer_picked_up')"
           :loading="updating==='customer_picked_up'"
+          :disabled="!isValidTransition('customer_picked_up')"
           style="width:100%"
           @click="handleComplete()"
         >{{ $t("order.status." + 'customer_picked_up') }}</b-button>
@@ -175,6 +177,38 @@ export default {
     }
   },
   methods: {
+    possibleTransition() {
+      switch (this.orderInfo.status) {
+        case order_status.customer_paid:
+          return {
+            order_accepted: true,
+            cooking_completed: true,
+            order_canceled: true
+          };
+        case order_status.order_accepted:
+          return {
+            cooking_completed: true,
+            order_canceled: true
+          };
+        case order_status.cooking_completed:
+          return {
+            order_accepted: true,
+            order_canceled: true,
+            customer_picked_up: true // both paid and unpaid
+          };
+        case order_status.customer_picked_up:
+          return {
+            order_refunded: true
+          };
+      }
+      return {};
+    },
+    isValidTransition(newStatus) {
+      return (
+        this.possibleTransition()[newStatus] ||
+        order_status[newStatus] == this.orderInfo.status
+      );
+    },
     // NOTE: Exact same code in the order/_orderId/index.vue for the user.
     // This is intentional because we may want to present it differently to admins.
     specialRequest(key) {
@@ -206,13 +240,17 @@ export default {
       }
     },
     async handleChangeStatus(statusKey) {
+      const newStatus = order_status[statusKey];
+      if (newStatus === this.orderInfo.status) {
+        return;
+      }
       const orderUpdate = functions.httpsCallable("orderUpdate");
       this.updating = statusKey;
       try {
         const result = await orderUpdate({
           restaurantId: this.restaurantId(),
           orderId: this.orderId,
-          status: order_status[statusKey]
+          status: newStatus
         });
         console.log("result=", result.data);
         this.$router.push(this.parentUrl);
