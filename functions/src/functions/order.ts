@@ -16,6 +16,7 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
 
     // BUGBUG: We need to add some rules
     const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`)
+    //const stripeRef = db.doc(`/admins/${uid}/public/stripe`)
 
     return await db.runTransaction(async transaction => {
       const snapshot = await transaction.get(orderRef);
@@ -24,7 +25,17 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
         throw new functions.https.HttpsError('invalid-argument', 'This order does not exist.')
       }
 
-      if (order.status < constant.order_status.validation_ok || order.status >= constant.order_status.customer_picked_up) {
+      const isPreviousStateChangable: Boolean = (() => {
+        switch (status) {
+          case constant.order_status.validation_ok:
+          case constant.order_status.order_accepted:
+          case constant.order_status.cooking_completed:
+            return true
+          //const snapshot = await transaction.get();
+        }
+        return false
+      })();
+      if (!isPreviousStateChangable) {
         throw new functions.https.HttpsError('failed-precondition', 'It is not possible to change state from the current state.')
       }
       const isNewStatusValid: Boolean = (() => {
@@ -33,6 +44,8 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
           case constant.order_status.order_accepted:
           case constant.order_status.cooking_completed:
             return true
+          case constant.order_status.customer_picked_up:
+            return false;
         }
         return false
       })();
