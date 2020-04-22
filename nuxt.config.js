@@ -3,6 +3,24 @@ import i18nES from './lang/es.json';
 import i18nJA from './lang/ja.json';
 require('dotenv').config();
 
+const defaultLocale = process.env.LOCALE || "en";
+const numberFormats = ((locale) => {
+  if (locale === 'ja') {
+    return {
+      currency: {
+        style: 'currency',
+        currency: 'JPY'
+      }
+    };
+  }
+  return {
+    currency: {
+      style: 'currency',
+      currency: 'USD'
+    }
+  };
+})(defaultLocale);
+
 const customRoutes = [
   {
     name: 'r',
@@ -185,27 +203,17 @@ export default {
   },
   i18n: {
     locales: ['en', 'es', 'ja'],
-    defaultLocale: 'en',
+    defaultLocale: defaultLocale,
     vueI18n: {
-      fallbackLocale: 'en',
+      fallbackLocale: defaultLocale,
       messages: {
         en: i18nEN,
         es: i18nES,
         ja: i18nJA,
       },
       numberFormats: {
-        en: {
-          currency: {
-            style: 'currency',
-            currency: 'USD'
-          }
-        },
-        ja: {
-          currency: {
-            style: 'currency',
-            currency: 'JPY'
-          }
-        }
+        en: numberFormats,
+        ja: numberFormats
       }
     }
   },
