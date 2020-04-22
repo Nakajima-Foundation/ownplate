@@ -21,7 +21,6 @@ $ cp src/config/default/.firebaserc .
 
 # set config to cloud functions.
 
-```bash
 firebase functions:config:set \
 stripe.secret_key="sk_xxx"
 ```
