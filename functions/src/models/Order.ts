@@ -13,10 +13,15 @@ export type Status =
   500 | // cooking_completed
   600   // customer_picked_up
 
+class Payment {
+  stripe!: boolean
+}
+
 export default class Order extends Doc {
   @Field status: Status = 100
   @Field order: { [id: string]: Menu } = {}
   @Field sub_total: number = 0
   @Field total: number = 0
   @Field uid!: string
+  @Field payment?: Payment
 }

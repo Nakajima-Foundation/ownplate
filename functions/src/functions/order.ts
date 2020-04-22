@@ -1,6 +1,7 @@
 import * as functions from 'firebase-functions'
 import * as utils from '../stripe/utils'
 import * as constant from '../common/constant'
+import Order from '../models/Order'
 
 export const update = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
@@ -18,7 +19,7 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
     const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`)
 
     return await db.runTransaction(async transaction => {
-      const order = (await transaction.get(orderRef)).data();
+      const order = Order.fromSnapshot<Order>(await transaction.get(orderRef))
       if (!order) {
         throw new functions.https.HttpsError('invalid-argument', 'This order does not exist.')
       }
