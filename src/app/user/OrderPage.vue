@@ -91,6 +91,7 @@
               expanded
               :type="showPayment ? '' : 'is-primary'"
               rounded
+              :loading="isPlacing"
               style="margin-top:1rem;padding-top: 0.2rem;"
               size="is-large"
               @click="handleNoPayment"
@@ -137,6 +138,7 @@ export default {
       menus: [],
       detacher: [],
       isDeleting: false,
+      isPlacing: false,
       tip: 0,
       isCanceling: false,
       notFound: false
@@ -298,6 +300,7 @@ export default {
     async handleNoPayment() {
       const orderPlace = functions.httpsCallable("orderPlace");
       try {
+        this.isPlacing = true;
         const result = await orderPlace({
           restaurantId: this.restaurantId(),
           orderId: this.orderId
@@ -306,6 +309,8 @@ export default {
         window.scrollTo(0, 0);
       } catch (error) {
         console.error(error.message, error.details);
+      } finally {
+        this.isPlacing = true;
       }
     },
     async handleCancelPayment() {
