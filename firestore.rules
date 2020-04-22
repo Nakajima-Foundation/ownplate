@@ -86,9 +86,6 @@ service cloud.firestore {
         allow read: if isUser(request) && isOwner(resource, request);
         allow delete: if isOwner(resource, request)
                         && resource.data.status == 200; // validated
-        allow update: if isOwner(resource, request)
-                        && resource.data.status == 200
-                        && request.resource.data.status == 300; // HACK: Temporary During no-sprite Testing
         match /system/{document=**} {
           allow read, write: if false;
         }

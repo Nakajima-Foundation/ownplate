@@ -1,8 +1,42 @@
 import * as functions from 'firebase-functions'
+import * as admin from 'firebase-admin';
 import * as utils from '../stripe/utils'
 import * as constant from '../common/constant'
 import Order from '../models/Order'
 
+// This function is called by users to place orders without paying
+export const place = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
+  const uid = utils.validate_auth(context);
+  const { restaurantId, orderId } = data;
+  utils.validate_params({ restaurantId, orderId })
+
+  try {
+    const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`)
+
+    return await db.runTransaction(async transaction => {
+      const order = Order.fromSnapshot<Order>(await transaction.get(orderRef))
+      if (!order) {
+        throw new functions.https.HttpsError('invalid-argument', 'This order does not exist.')
+      }
+      if (uid !== order.uid) {
+        throw new functions.https.HttpsError('permission-denied', 'The user is not the owner of this order.')
+      }
+      if (order.status !== constant.order_status.validation_ok) {
+        throw new functions.https.HttpsError('failed-precondition', 'The order has been already placed or canceled')
+      }
+      transaction.update(orderRef, {
+        status: constant.order_status.customer_paid,
+        timePaid: admin.firestore.FieldValue.serverTimestamp()
+      })
+
+      return { success: true }
+    })
+  } catch (error) {
+    throw utils.process_error(error)
+  }
+}
+
+// This function is called by admins (restaurant operators) to update the status of order
 export const update = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
   const { restaurantId, orderId, status } = data;

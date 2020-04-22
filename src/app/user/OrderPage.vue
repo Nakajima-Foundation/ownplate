@@ -296,18 +296,16 @@ export default {
       }
     },
     async handleNoPayment() {
+      const orderPlace = functions.httpsCallable("orderPlace");
       try {
-        // HACK: Workaround until we implement sprite
-        await db
-          .doc(`restaurants/${this.restaurantId()}/orders/${this.orderId}`)
-          .update({
-            status: order_status.customer_paid,
-            timePaid: firestore.FieldValue.serverTimestamp()
-          });
-        console.log("suceeded");
+        const result = await orderPlace({
+          restaurantId: this.restaurantId(),
+          orderId: this.orderId
+        });
+        console.log(result);
         window.scrollTo(0, 0);
       } catch (error) {
-        console.log("failed", error);
+        console.error(error.message, error.details);
       }
     },
     async handleCancelPayment() {
