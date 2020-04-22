@@ -16,11 +16,9 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
 
     // BUGBUG: We need to add some rules
     const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`)
-    //const stripeRef = db.doc(`/admins/${uid}/public/stripe`)
 
     return await db.runTransaction(async transaction => {
-      const snapshot = await transaction.get(orderRef);
-      const order = snapshot.data();
+      const order = (await transaction.get(orderRef)).data();
       if (!order) {
         throw new functions.https.HttpsError('invalid-argument', 'This order does not exist.')
       }
@@ -31,7 +29,6 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
           case constant.order_status.order_accepted:
           case constant.order_status.cooking_completed:
             return true
-          //const snapshot = await transaction.get();
         }
         return false
       })();
@@ -45,7 +42,8 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
           case constant.order_status.cooking_completed:
             return true
           case constant.order_status.customer_picked_up:
-            return false;
+            console.log("***", order.payment, !(order.payment && order.payment.stripe))
+            return !(order.payment && order.payment.stripe) // only "unpaid" order can be manually completed
         }
         return false
       })();

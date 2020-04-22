@@ -185,8 +185,7 @@ export default {
       return "";
     },
     async handleComplete() {
-      const payment = this.orderInfo.payment;
-      if (payment && payment.stripe) {
+      if (this.hasStripe) {
         const orderId = this.$route.params.orderId;
         console.log("handleComplete with Stripe", orderId);
         try {
