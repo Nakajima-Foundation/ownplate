@@ -115,7 +115,7 @@ import { db, firestore, functions } from "~/plugins/firebase.js";
 import { order_status } from "~/plugins/constant.js";
 import { nameOfOrder } from "~/plugins/strings.js";
 import { releaseConfig } from "~/plugins/config.js";
-import { checkoutCreate, checkoutCancel } from "~/plugins/stripe.js";
+import { stripeCreateIntent, stripeCancelIntent } from "~/plugins/stripe.js";
 
 export default {
   name: "Order",
@@ -282,7 +282,7 @@ export default {
       }
 
       try {
-        const { data } = await checkoutCreate({
+        const { data } = await stripeCreateIntent({
           paymentMethodId: paymentMethod.id,
           restaurantId: this.restaurantId(),
           orderId: this.orderId
@@ -312,7 +312,7 @@ export default {
     async handleCancelPayment() {
       try {
         this.isCanceling = true;
-        const { data } = await checkoutCancel({
+        const { data } = await stripeCancelIntent({
           restaurantId: this.restaurantId(),
           orderId: this.orderId
         });

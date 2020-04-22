@@ -82,7 +82,7 @@ import OrderedItem from "~/app/admin/Order/OrderedItem";
 import { order_status } from "~/plugins/constant.js";
 import { nameOfOrder } from "~/plugins/strings.js";
 import { parsePhoneNumber, formatNational } from "~/plugins/phoneutil.js";
-import { checkoutConfirm } from "~/plugins/stripe.js";
+import { stripeConfirmIntent } from "~/plugins/stripe.js";
 import moment from "moment";
 
 export default {
@@ -228,7 +228,7 @@ export default {
         console.log("handleComplete with Stripe", orderId);
         try {
           this.updating = "customer_picked_up";
-          const result = await checkoutConfirm({
+          const result = await stripeConfirmIntent({
             restaurantId: this.restaurantId(),
             orderId
           });
