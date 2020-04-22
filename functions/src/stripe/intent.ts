@@ -36,11 +36,11 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
 
       // BUGBUG: support JPY.
       const multiple = 100; // 100 for USD, 1 for JPY
-      const chargeTotal = Math.round((order.total + tip) * multiple)
+      const totalCharge = Math.round((order.total + tip) * multiple)
 
       const request = {
         setup_future_usage: 'off_session',
-        amount: chargeTotal,
+        amount: totalCharge,
         currency: 'USD',
         payment_method: paymentMethodId,
         metadata: { uid, restaurantId, orderId }
@@ -54,7 +54,7 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
       transaction.set(orderRef, {
         timePaid: admin.firestore.FieldValue.serverTimestamp(),
         status: constant.order_status.customer_paid,
-        chargeTotal: chargeTotal / multiple,
+        totalCharge: totalCharge / multiple,
         tip: Math.round(tip * multiple) / multiple,
         payment: {
           stripe: true

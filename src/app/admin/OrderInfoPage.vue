@@ -5,7 +5,7 @@
       <div style="float:left">
         <h2>{{ orderName }}</h2>
         <div>
-          <span>{{ $n(orderInfo.chargeTotal, 'currency') }}</span>
+          <span>{{ $n(orderInfo.totalCharge, 'currency') }}</span>
           <i v-if="hasStripe" class="fab fa-cc-stripe" style="margin-left: 0.3em"></i>
         </div>
       </div>
