@@ -10,7 +10,11 @@
         </div>
       </div>
       <div style="float:right" v-if="!canceling">
-        <b-button type="is-danger" @click="canceling=true">{{ $t("admin.order.cancelButton" )}}</b-button>
+        <b-button
+          type="is-danger"
+          :disabled="!isValidTransition('order_canceled')"
+          @click="canceling=true"
+        >{{ $t("admin.order.cancelButton" )}}</b-button>
       </div>
       <div style="clear:both" />
     </div>
@@ -52,6 +56,7 @@
         <b-button
           :class="classOf(orderState)"
           :loading="updating===orderState"
+          :disabled="!isValidTransition(orderState)"
           style="width:100%"
           @click="handleChangeStatus(orderState)"
         >{{ $t("order.status." + orderState) }}</b-button>
@@ -60,6 +65,7 @@
         <b-button
           :class="classOf('customer_picked_up')"
           :loading="updating==='customer_picked_up'"
+          :disabled="!isValidTransition('customer_picked_up')"
           style="width:100%"
           @click="handleComplete()"
         >{{ $t("order.status." + 'customer_picked_up') }}</b-button>
@@ -77,7 +83,7 @@ import { order_status } from "~/plugins/constant.js";
 import { nameOfOrder } from "~/plugins/strings.js";
 import { parsePhoneNumber, formatNational } from "~/plugins/phoneutil.js";
 import { checkoutConfirm } from "~/plugins/stripe.js";
-import moment from 'moment';
+import moment from "moment";
 
 export default {
   components: {
@@ -158,8 +164,10 @@ export default {
       return this.$route.params.orderId;
     },
     parentUrl() {
-      const day = this.orderInfo.timePaid ? moment(this.orderInfo.timePaid.toDate()).format("YYYY-MM-DD") : null;
-      return `/admin/restaurants/${this.restaurantId()}/orders?day=${day}` ;
+      const day = this.orderInfo.timePaid
+        ? moment(this.orderInfo.timePaid.toDate()).format("YYYY-MM-DD")
+        : null;
+      return `/admin/restaurants/${this.restaurantId()}/orders?day=${day}`;
     },
     items() {
       return Object.keys(this.orderInfo.order).reduce((ret, id) => {
@@ -173,6 +181,38 @@ export default {
     }
   },
   methods: {
+    possibleTransition() {
+      switch (this.orderInfo.status) {
+        case order_status.customer_paid:
+          return {
+            order_accepted: true,
+            cooking_completed: true,
+            order_canceled: true
+          };
+        case order_status.order_accepted:
+          return {
+            cooking_completed: true,
+            order_canceled: true
+          };
+        case order_status.cooking_completed:
+          return {
+            order_accepted: true,
+            order_canceled: true,
+            customer_picked_up: true // both paid and unpaid
+          };
+        case order_status.customer_picked_up:
+          return {
+            order_refunded: true
+          };
+      }
+      return {};
+    },
+    isValidTransition(newStatus) {
+      return (
+        this.possibleTransition()[newStatus] ||
+        order_status[newStatus] == this.orderInfo.status
+      );
+    },
     // NOTE: Exact same code in the order/_orderId/index.vue for the user.
     // This is intentional because we may want to present it differently to admins.
     specialRequest(key) {
@@ -183,8 +223,7 @@ export default {
       return "";
     },
     async handleComplete() {
-      const payment = this.orderInfo.payment;
-      if (payment && payment.stripe) {
+      if (this.hasStripe) {
         const orderId = this.$route.params.orderId;
         console.log("handleComplete with Stripe", orderId);
         try {
@@ -205,23 +244,26 @@ export default {
       }
     },
     async handleChangeStatus(statusKey) {
+      const newStatus = order_status[statusKey];
+      if (newStatus === this.orderInfo.status) {
+        return;
+      }
       const orderUpdate = functions.httpsCallable("orderUpdate");
       this.updating = statusKey;
       try {
         const result = await orderUpdate({
           restaurantId: this.restaurantId(),
           orderId: this.orderId,
-          status: order_status[statusKey]
+          status: newStatus
         });
         console.log("result=", result.data);
+        this.$router.push(this.parentUrl);
       } catch (error) {
         // BUGBUG: Handle Error
-        console.error(error);
+        console.error(error.message, error.details);
       } finally {
         this.updating = "";
       }
-
-      this.$router.push(this.parentUrl);
     },
     classOf(statusKey) {
       if (order_status[statusKey] == this.orderInfo.status) {
