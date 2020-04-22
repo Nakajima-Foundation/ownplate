@@ -191,7 +191,8 @@ export default {
   },
   computed: {
     showPayment() {
-      return releaseConfig.hidePayment && this.stripeAccount;
+      console.log(releaseConfig.hidePayment, this.stripeAccount);
+      return !releaseConfig.hidePayment && this.stripeAccount;
     },
     orderName() {
       return nameOfOrder(this.orderInfo);
