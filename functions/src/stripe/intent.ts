@@ -9,7 +9,7 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
   const uid = utils.validate_auth(context);
   const stripe = utils.get_stripe();
 
-  const { orderId, restaurantId, paymentMethodId } = data;
+  const { orderId, restaurantId, paymentMethodId, tip } = data;
   utils.validate_params({ orderId, restaurantId, paymentMethodId });
 
   const restaurantData = await utils.get_restaurant(db, restaurantId);
@@ -34,12 +34,13 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
         throw new functions.https.HttpsError('aborted', 'This order is invalid.')
       }
 
-      // FIXME: check amount, currency.
-      const amount = order.total * 100
+      // BUGBUG: support JPY.
+      const multiple = 100; // 100 for USD, 1 for JPY
+      const totalCharge = Math.round((order.total + tip) * multiple)
 
       const request = {
         setup_future_usage: 'off_session',
-        amount: amount,
+        amount: totalCharge,
         currency: 'USD',
         payment_method: paymentMethodId,
         metadata: { uid, restaurantId, orderId }
@@ -53,6 +54,8 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
       transaction.set(orderRef, {
         timePaid: admin.firestore.FieldValue.serverTimestamp(),
         status: constant.order_status.customer_paid,
+        totalCharge: totalCharge / multiple,
+        tip: Math.round(tip * multiple) / multiple,
         payment: {
           stripe: true
         }
@@ -194,7 +197,7 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
         })
         transaction.set(orderRef, {
           timeCanceld: admin.firestore.FieldValue.serverTimestamp(),
-          status: constant.order_status.order_canceled_by_customer,
+          status: constant.order_status.order_canceled,
           uidCanceledBy: uid,
         }, { merge: true })
         transaction.set(stripeRef, {
