@@ -1,31 +1,26 @@
 import * as functions from 'firebase-functions';
+import * as utils from '../stripe/utils'
 
 export const update = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
-  if (!context.auth) {
-    throw new functions.https.HttpsError('failed-precondition', 'The function must be called while authenticated.')
-  }
+  const uid = utils.validate_auth(context);
   const { restaurantId, orderId, status } = data;
-  if (!restaurantId || !orderId || !status) {
-    throw new functions.https.HttpsError('invalid-argument', 'Missing parameter(s).')
-  }
+  utils.validate_params({ restaurantId, orderId, status })
 
   try {
     const restaurantDoc = await db.doc(`restaurants/${restaurantId}`).get()
     const restaurant = restaurantDoc.data() || {}
-    if (restaurant.uid !== context.auth.uid) {
-      throw new functions.https.HttpsError('failed-precondition', 'The user does not have an authority to perform this operation.')
+    if (restaurant.uid !== uid) {
+      throw new functions.https.HttpsError('permission-denied', 'The user does not have an authority to perform this operation.')
     }
 
-    await db.doc(`restaurants/${restaurantId}/orders/${orderId}`).update({
+    // BUGBUG: We need to add some rules
+    const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`)
+    await orderRef.update({
       status
     })
 
     return { success: true }
   } catch (error) {
-    console.error(error);
-    if (error instanceof functions.https.HttpsError) {
-      throw error
-    }
-    throw new functions.https.HttpsError("internal", error.message, error);
+    throw utils.process_error(error)
   }
 }
