@@ -303,7 +303,8 @@ export default {
         this.isPlacing = true;
         const result = await orderPlace({
           restaurantId: this.restaurantId(),
-          orderId: this.orderId
+          orderId: this.orderId,
+          tip: this.tip || 0
         });
         console.log(result);
         window.scrollTo(0, 0);
