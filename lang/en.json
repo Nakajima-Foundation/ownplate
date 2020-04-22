@@ -163,7 +163,7 @@
       "cancelTitle": "Order Canceling",
       "cancelMessage": "Please contact to the customer and tell the order will be canceled.",
       "callTo": "Call to {phone}",
-      "delete": "Delete this order"
+      "delete": "Cancel this order (undoable)"
     },
     "error": {
       "email": {

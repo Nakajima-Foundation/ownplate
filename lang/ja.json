@@ -157,6 +157,14 @@
     "pleaseSignUp": "ユーザー登録",
     "forgotPassword": "パスワード忘れ",
     "passwordReset": "Reset Password",
+    "pleaseCheckInbox": "Please check your inbox, an email is on the way.",
+    "order": {
+      "cancelButton": "Cancel this order",
+      "cancelTitle": "Order Canceling",
+      "cancelMessage": "Please contact to the customer and tell the order will be canceled.",
+      "callTo": "Call to {phone}",
+      "delete": "Cancel this order (undoable)"
+    },
     "error": {
       "email": {
         "invalid": "無効なメールアドレスです。",
