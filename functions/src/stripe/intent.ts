@@ -5,6 +5,7 @@ import Stripe from 'stripe'
 import Order from '../models/Order'
 import * as utils from './utils'
 
+// This function is called by user to create a "payment intent" (to start the payment transaction)
 export const create = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
   const stripe = utils.get_stripe();
@@ -76,6 +77,7 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
   }
 };
 
+// This function is called by admin to confurm a "payment intent" (to complete the payment transaction)
 export const confirm = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
   const stripe = utils.get_stripe();
