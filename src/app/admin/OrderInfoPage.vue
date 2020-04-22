@@ -10,7 +10,11 @@
         </div>
       </div>
       <div style="float:right" v-if="!canceling">
-        <b-button type="is-danger" @click="canceling=true">{{ $t("admin.order.cancelButton" )}}</b-button>
+        <b-button
+          type="is-danger"
+          :disabled="!isValidTransition('order_canceled')"
+          @click="canceling=true"
+        >{{ $t("admin.order.cancelButton" )}}</b-button>
       </div>
       <div style="clear:both" />
     </div>
