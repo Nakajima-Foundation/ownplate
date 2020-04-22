@@ -41,7 +41,6 @@ $ npm run generate
 # "devsync": "HOST=192.168.100.20 PORT=3333 nuxt",
 # ローカル環境（PC）を自分のスマホで確認したい場合、同じネットワークに接続してHOST={IPアドレス}を指定してあげれば、スマホからも確認できます
 $ npm run devsync
-```
 
 For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
 
