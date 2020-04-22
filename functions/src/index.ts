@@ -18,6 +18,9 @@ import * as Order from './functions/order';
 export const orderUpdate = functions.https.onCall(async (data, context) => {
   return await Order.update(db, data, context);
 });
+export const orderPlace = functions.https.onCall(async (data, context) => {
+  return await Order.place(db, data, context);
+});
 
 import * as StripeOAuth from './stripe/oauth'
 export const stripeConnect = functions.https.onCall(async (data, context) => {
