@@ -218,7 +218,7 @@ export default {
         this.$router.push(this.parentUrl);
       } catch (error) {
         // BUGBUG: Handle Error
-        console.error(error);
+        console.error(error.message, error.details);
       } finally {
         this.updating = "";
       }

@@ -24,8 +24,8 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
       }
 
       const isPreviousStateChangable: Boolean = (() => {
-        switch (status) {
-          case constant.order_status.validation_ok:
+        switch (order.status) {
+          case constant.order_status.customer_paid:
           case constant.order_status.order_accepted:
           case constant.order_status.cooking_completed:
             return true
@@ -33,7 +33,7 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
         return false
       })();
       if (!isPreviousStateChangable) {
-        throw new functions.https.HttpsError('failed-precondition', 'It is not possible to change state from the current state.')
+        throw new functions.https.HttpsError('failed-precondition', 'It is not possible to change state from the current state.', order.status)
       }
       const isNewStatusValid: Boolean = (() => {
         switch (status) {
@@ -48,7 +48,7 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
         return false
       })();
       if (!isNewStatusValid) {
-        throw new functions.https.HttpsError('permission-denied', 'The user does not have an authority to perform this operation.')
+        throw new functions.https.HttpsError('permission-denied', 'The user does not have an authority to perform this operation.', status)
       }
 
       transaction.update(orderRef, {
