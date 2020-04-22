@@ -194,7 +194,7 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
         })
         transaction.set(orderRef, {
           timeCanceld: admin.firestore.FieldValue.serverTimestamp(),
-          status: constant.order_status.order_canceled_by_customer,
+          status: constant.order_status.order_canceled,
           uidCanceledBy: uid,
         }, { merge: true })
         transaction.set(stripeRef, {
