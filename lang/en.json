@@ -80,6 +80,7 @@
     "pleaseStay": "Please stay on this page. The order status will be updated below.",
     "tip": "Gratuity",
     "totalCharge": "Total Charge",
+    "pleasePayAtRestaurant": "Online payment was not enabled yet. Please pay at the time of pickup.",
     "status": {
       "unexpected": "Unexpected",
       "error": "Error",

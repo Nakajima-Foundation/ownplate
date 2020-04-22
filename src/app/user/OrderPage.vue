@@ -85,6 +85,7 @@
               </b-button>
             </div>
           </div>
+          <div v-else>{{ $t('order.pleasePayAtRestaurant') }}</div>
           <div class="is-centered" style="text-align: center;">
             <b-button
               expanded
@@ -150,7 +151,9 @@ export default {
           this.shopInfo = restaurant_data;
           const uid = restaurant_data.uid;
           const snapshot = await db.doc(`/admins/${uid}/public/stripe`).get();
-          this.stripeAccount = snapshot.data()["stripeAccount"];
+          const stripeInfo = snapshot.data();
+          console.log("restaurant", uid, stripeInfo);
+          this.stripeAccount = stripeInfo["stripeAccount"];
         } else {
           this.notFound = true;
         }
@@ -191,7 +194,7 @@ export default {
   },
   computed: {
     showPayment() {
-      console.log(releaseConfig.hidePayment, this.stripeAccount);
+      console.log("payment", releaseConfig.hidePayment, this.stripeAccount);
       return !releaseConfig.hidePayment && this.stripeAccount;
     },
     orderName() {
