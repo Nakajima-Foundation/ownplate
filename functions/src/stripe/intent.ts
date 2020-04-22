@@ -9,7 +9,7 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
   const uid = utils.validate_auth(context);
   const stripe = utils.get_stripe();
 
-  const { orderId, restaurantId, paymentMethodId } = data;
+  const { orderId, restaurantId, paymentMethodId, tip } = data;
   utils.validate_params({ orderId, restaurantId, paymentMethodId });
 
   const restaurantData = await utils.get_restaurant(db, restaurantId);
@@ -35,11 +35,12 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
       }
 
       // FIXME: check amount, currency.
-      const amount = order.total * 100
+      const multiple = 100; // in case of USD
+      const chargeTotal = Math.round((order.total + tip) * multiple)
 
       const request = {
         setup_future_usage: 'off_session',
-        amount: amount,
+        amount: chargeTotal,
         currency: 'USD',
         payment_method: paymentMethodId,
         metadata: { uid, restaurantId, orderId }
@@ -53,6 +54,7 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
       transaction.set(orderRef, {
         timePaid: admin.firestore.FieldValue.serverTimestamp(),
         status: constant.order_status.customer_paid,
+        chargeTotal: chargeTotal / multiple,
         payment: {
           stripe: true
         }

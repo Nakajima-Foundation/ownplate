@@ -18,7 +18,7 @@
       </div>
       <div class="level is-mobile" style="margin:0">
         <div class="level-left">
-          <span>{{ $n(order.total, 'currency') }}</span>
+          <span>{{ $n(order.chargeTotal, 'currency') }}</span>
           <i v-if="hasStripe" class="fab fa-cc-stripe" style="margin-left: 0.3em"></i>
         </div>
         <div class="level-right">{{ timestamp || "0:00pm"}}</div>

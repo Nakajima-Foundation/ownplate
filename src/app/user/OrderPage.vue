@@ -285,7 +285,8 @@ export default {
         const { data } = await stripeCreateIntent({
           paymentMethodId: paymentMethod.id,
           restaurantId: this.restaurantId(),
-          orderId: this.orderId
+          orderId: this.orderId,
+          tip: this.tip || 0
         });
         window.scrollTo(0, 0);
       } catch (error) {
