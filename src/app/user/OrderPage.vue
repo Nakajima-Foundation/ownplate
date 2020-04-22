@@ -59,7 +59,7 @@
           </div>
 
           <hr class="hr-black" />
-          <div v-if="!hidePayment">
+          <div v-if="showPayment">
             <h2>{{$t('order.yourPayment')}}</h2>
             <stripe-card
               :stripe-account="this.stripeAccount"
@@ -88,9 +88,9 @@
           <div class="is-centered" style="text-align: center;">
             <b-button
               expanded
-              :type="hidePayment ? 'is-primary' : ''"
+              :type="showPayment ? '' : 'is-primary'"
               rounded
-              style="margin-top:4rem;padding-top: 0.2rem;"
+              style="margin-top:1rem;padding-top: 0.2rem;"
               size="is-large"
               @click="handleNoPayment"
             >
@@ -190,8 +190,8 @@ export default {
     }
   },
   computed: {
-    hidePayment() {
-      return releaseConfig.hidePayment;
+    showPayment() {
+      return releaseConfig.hidePayment && this.stripeAccount;
     },
     orderName() {
       return nameOfOrder(this.orderInfo);
