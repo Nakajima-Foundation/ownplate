@@ -200,7 +200,7 @@ export default {
               return (
                 db
                   .collection(`restaurants/${restaurant.id}/orders`)
-                  .where("timePaid", ">=", midNight())
+                  .where("timePlaced", ">=", midNight())
                   // IDEALLY: .where("status", "<", order_status.customer_picked_up)
                   .onSnapshot(result => {
                     this.restaurantItems = this.restaurantItems.map(

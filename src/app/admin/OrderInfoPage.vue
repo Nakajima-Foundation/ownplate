@@ -164,8 +164,8 @@ export default {
       return this.$route.params.orderId;
     },
     parentUrl() {
-      const day = this.orderInfo.timePaid
-        ? moment(this.orderInfo.timePaid.toDate()).format("YYYY-MM-DD")
+      const day = this.orderInfo.timePlaced
+        ? moment(this.orderInfo.timePlaced.toDate()).format("YYYY-MM-DD")
         : null;
       return `/admin/restaurants/${this.restaurantId()}/orders?day=${day}`;
     },

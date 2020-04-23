@@ -47,7 +47,7 @@ export default {
       return this.order.payment && this.order.payment.stripe;
     },
     timestamp() {
-      return this.order.timePaid.toLocaleTimeString();
+      return this.order.timePlaced.toLocaleTimeString();
     },
     phoneNumber() {
       return this.order.phoneNumber && parsePhoneNumber(this.order.phoneNumber);
