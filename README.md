@@ -7,6 +7,21 @@ It is built with Firebase + Vue + Stripe, for productivity and scalability.
 [SPEC](./docs/SPEC.md)
 
 
+## Setup Firebase
+
+ - Authentication
+   - Enable email/password and phone authentication as Sign-in providers
+   - Add your domain if you use custom domain.
+ - Database
+   - Create Firestore database
+ - Hosting
+   - Enable hosting
+   - Add your domain if you use custom domain.
+ - Storage
+   - Enable Storage.
+ - Functions
+   - Enable functions.
+
 ## Build Setup
 
 ```bash
@@ -59,20 +74,3 @@ firebase deploy --only functions
 https://fontawesome.com/icons?d=gallery
 https://materialdesignicons.com/cdn/2.0.46/
 
-## ESlint + Prettier
-
-Saveと同時にフォーマッターが動くように設定しています（.eslintrc.js）。
-VSCodeを使用して、すでにPrettierを使っている場合競合して、うまく保存できない場合があります。
-
-その場合VSCode側にPrettierをオフにする必要があります。
-
-* ① VSCodeの左下の歯車を押す
-* ② 設定を押す
-* ③ 右上の右から三番目の「設定（JSON）を開く」を押す
-* ④ 以下の設定がある場合は確認する（なければOK！）
-
-"[vue]": {
-  "editor.formatOnSave": false // ここがtrueになっている場合はfalseにする
-},
-
-※ 設定がない場合は無視してOK。trueになっている場合のみfalseに変更する
