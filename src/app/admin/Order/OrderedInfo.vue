@@ -19,7 +19,11 @@
       <div class="level is-mobile" style="margin:0">
         <div class="level-left">
           <span>{{ $n(order.totalCharge, 'currency') }}</span>
-          <i v-if="hasStripe" class="fab fa-cc-stripe" style="margin-left: 0.3em"></i>
+          <i
+            v-if="hasStripe"
+            :class="'fab fa-cc-stripe stripe_'+order.payment.stripe"
+            style="margin-left: 0.3em"
+          ></i>
         </div>
         <div class="level-right">{{ timestamp || "0:00pm"}}</div>
       </div>
@@ -70,3 +74,6 @@ export default {
   mounted() {}
 };
 </script>
+
+<style scoped>
+</style>

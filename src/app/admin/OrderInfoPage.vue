@@ -6,7 +6,11 @@
         <h2>{{ orderName }}</h2>
         <div>
           <span>{{ $n(orderInfo.totalCharge, 'currency') }}</span>
-          <i v-if="hasStripe" class="fab fa-cc-stripe" style="margin-left: 0.3em"></i>
+          <i
+            v-if="hasStripe"
+            :class="'fab fa-cc-stripe stripe_'+orderInfo.payment.stripe"
+            style="margin-left: 0.3em"
+          ></i>
         </div>
       </div>
       <div style="float:right" v-if="!canceling">

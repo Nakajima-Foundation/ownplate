@@ -46,6 +46,10 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
         metadata: { uid, restaurantId, orderId }
       } as Stripe.PaymentIntentCreateParams
 
+      if (data.description) {
+        request.description = data.description
+      }
+
       const paymentIntent = await stripe.paymentIntents.create(request, {
         idempotencyKey: orderRef.path,
         stripeAccount
@@ -57,7 +61,7 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
         totalCharge: totalCharge / multiple,
         tip: Math.round(tip * multiple) / multiple,
         payment: {
-          stripe: true
+          stripe: "pending"
         }
       }, { merge: true });
 
@@ -129,6 +133,9 @@ export const confirm = async (db: FirebaseFirestore.Firestore, data: any, contex
       transaction.set(orderRef, {
         timeConfirmed: admin.firestore.FieldValue.serverTimestamp(),
         status: order_status.customer_picked_up,
+        payment: {
+          stripe: "confirmed"
+        }
       }, { merge: true })
       transaction.set(stripeRef, {
         paymentIntent
@@ -203,6 +210,9 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
           timeCanceld: admin.firestore.FieldValue.serverTimestamp(),
           status: order_status.order_canceled,
           uidCanceledBy: uid,
+          payment: {
+            stripe: "canceled"
+          }
         }, { merge: true })
         transaction.set(stripeRef, {
           paymentIntent

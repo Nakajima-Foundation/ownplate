@@ -29,7 +29,7 @@
 }
 
 .order_canceled, .order_canceled:hover {
-  color: #3506A8;
+  color: #ff4500;
   background:#F5E4F6;
   border: 0;
 }
@@ -38,4 +38,14 @@
   color: #3506A8;
   background:#F5E4F6;
   border: 0;
+}
+
+.stripe_pending {
+  color: #808080;
+}
+.stripe_confirmed {
+  color: #000000;
+}
+.stripe_canceled {
+  color: #ff4500;
 }
