@@ -54,6 +54,7 @@
           v-if="0 != totalCount"
           id="order_btn"
           class="button is-primary is-rounded"
+          :loading="isCheckingOut"
           @click="handleCheckOut"
         >
           <span
@@ -91,6 +92,7 @@ export default {
       tabIndex: 0,
       tabs: ["#menus", "#about"],
       loginVisible: false,
+      isCheckingOut: false,
       orders: {},
       options: {},
       optionsPrev: {}, // from the store.cart
@@ -115,7 +117,7 @@ export default {
     if (url.hash.length > 1) {
       const prevOrderId = url.hash.slice(1);
       const cart = this.$store.state.carts[prevOrderId] || {};
-      console.log("cart", cart);
+      //console.log("cart", cart);
       this.orders = cart.orders || {};
       this.optionsPrev = cart.options || {};
     }
@@ -222,22 +224,29 @@ export default {
         timeCreated: firestore.FieldValue.serverTimestamp()
         // price never set here.
       };
-      const res = await db
-        .collection(`restaurants/${this.restaurantId()}/orders`)
-        .add(order_data);
-      // Store the current order associated with this order id, so that we can re-use it
-      // when the user clicks the "Edit Items" on the next page.
-      // In that case, we will come back here with #id so that we can retrieve it (see mounted).
-      this.$store.commit("saveCart", {
-        id: res.id,
-        cart: {
-          orders: this.orders,
-          options: this.options
-        }
-      });
-      this.$router.push({
-        path: `/r/${this.restaurantId()}/order/${res.id}`
-      });
+      this.isCheckingOut = true;
+      try {
+        const res = await db
+          .collection(`restaurants/${this.restaurantId()}/orders`)
+          .add(order_data);
+        // Store the current order associated with this order id, so that we can re-use it
+        // when the user clicks the "Edit Items" on the next page.
+        // In that case, we will come back here with #id so that we can retrieve it (see mounted).
+        this.$store.commit("saveCart", {
+          id: res.id,
+          cart: {
+            orders: this.orders,
+            options: this.options
+          }
+        });
+        this.$router.push({
+          path: `/r/${this.restaurantId()}/order/${res.id}`
+        });
+      } catch (error) {
+        console.log(error);
+      } finally {
+        this.isCheckingOut = true;
+      }
     },
     didCountChange(eventArgs) {
       // NOTE: We need to assign a new object to trigger computed properties
@@ -258,7 +267,7 @@ export default {
         return option;
       });
       this.options = Object.assign({}, this.options, obj);
-      console.log(this.options);
+      //console.log(this.options);
     }
   }
 };

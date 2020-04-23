@@ -306,7 +306,7 @@ export default {
           orderId: this.orderId,
           tip: this.tip || 0
         });
-        console.log("no payment", data);
+        console.log("place", data);
         window.scrollTo(0, 0);
       } catch (error) {
         console.error(error.message, error.details);

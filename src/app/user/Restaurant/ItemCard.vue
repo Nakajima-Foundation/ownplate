@@ -99,7 +99,7 @@ export default {
     };
   },
   created() {
-    console.log("created", this.optionPrev);
+    //console.log("created", this.optionPrev);
     this.optionValues = this.options.map((option, index) => {
       if (
         this.optionPrev &&
