@@ -21,6 +21,25 @@ It is built with Firebase + Vue + Stripe, for productivity and scalability.
    - Enable Storage.
  - Functions
    - Enable functions.
+   
+## Setup Stripe
+TBD.
+
+## Setup OwnPlate configuration
+
+### Environment variable
+TBD.
+
+### nuxt.config.js
+TBD.
+
+### src/config/project.js 
+TBD.
+
+## Deploy to firebase
+see CircleCI setting.
+[.circleci/config.yml](./.circleci/config.yml)
+
 
 ## Build Setup
 
