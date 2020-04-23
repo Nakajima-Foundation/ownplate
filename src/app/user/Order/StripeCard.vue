@@ -29,11 +29,6 @@ export default {
       this.configureStripe();
     }
   },
-  computed: {
-    stripeRegion() {
-      return this.$store.getters.stripeRegion;
-    }
-  },
   methods: {
     async createPaymentMethod() {
       const payload = await this.stripe.createPaymentMethod({
@@ -43,10 +38,9 @@ export default {
       return payload;
     },
     configureStripe() {
-      console.log("***3", this.stripeRegion);
       const elements = this.stripe.elements();
       const cardElement = elements.create("card", {
-        hidePostalCode: this.stripeRegion.hidePostalCode,
+        hidePostalCode: true,
         style: {
           base: {
             fontWeight: 600,
