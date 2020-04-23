@@ -31,8 +31,6 @@ export const getters = {
     return state.user && state.user.name || "";
   },
   stripeRegion: (state) => {
-    console.log("***", state.server, stripe_regions, state.server.region)
-    console.log("***3", stripe_regions[state.server.region || "us"])
     return stripe_regions[state.server.region || "us"]
   }
 };
@@ -51,7 +49,7 @@ export const mutations = {
   },
   setServerConfig(state, config) {
     state.server = config;
-    console.log("setServerConfig", state.server.region)
+    console.log("store:setServerConfig", state.server.region)
   }
 };
 
