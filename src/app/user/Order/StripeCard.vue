@@ -39,8 +39,9 @@ export default {
     },
     configureStripe() {
       const elements = this.stripe.elements();
+      const stripeRegion = this.$store.getters.stripeRegion;
       const cardElement = elements.create("card", {
-        hidePostalCode: true,
+        hidePostalCode: stripeRegion.hidePostalCode,
         style: {
           base: {
             fontWeight: 600,
