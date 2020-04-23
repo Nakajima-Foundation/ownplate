@@ -89,6 +89,9 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
       if (!isNewStatusValid) {
         throw new functions.https.HttpsError('permission-denied', 'The user does not have an authority to perform this operation.', status)
       }
+      if (status === constant.order_status.order_canceled && order.payment && order.payment.stripe) {
+        throw new functions.https.HttpsError('permission-denied', 'Paid order can not be cancele like this', status)
+      }
 
       transaction.update(orderRef, {
         status

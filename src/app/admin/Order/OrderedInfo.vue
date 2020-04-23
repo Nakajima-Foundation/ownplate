@@ -20,6 +20,7 @@
         <div class="level-left">
           <span>{{ $n(order.totalCharge, 'currency') }}</span>
           <i v-if="hasStripe" class="fab fa-cc-stripe" style="margin-left: 0.3em"></i>
+          {{ order.payment.stripe }}
         </div>
         <div class="level-right">{{ timestamp || "0:00pm"}}</div>
       </div>
