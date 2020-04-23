@@ -40,22 +40,32 @@ firebase functions:config:set \
 stripe.secret_key="sk_xxx"
 ```
 
-# serve with hot reload at localhost:3000
+# Run the development server on localhost
+```
 $ STRIPE_CLIENT_ID=xxx STRIPE_API_KEY=xxx GAPIKey=xxx npm run dev
-
+```
 GAPIKey is google API key for Google Map
 STRIPE_CLIENT_ID and STRIPE_API_KEY are Stripe's id.
 
 # build for production and launch server
+```
 $ npm run build
 $ npm run start
+```
 
 # generate static project
+```
 $ npm run generate
+```
 
-# "devsync": "HOST=192.168.100.20 PORT=3333 nuxt",
-# ローカル環境（PC）を自分のスマホで確認したい場合、同じネットワークに接続してHOST={IPアドレス}を指定してあげれば、スマホからも確認できます
+#  Test with a smartphone on your local network
+"devsync": "HOST=192.168.100.20 PORT=3333 nuxt",
+
+If you want to check the local environment with your smartphone, you can also check from your smartphone to specify HOST = {IP address} on local network.
+
+```
 $ npm run devsync
+```
 
 For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
 
