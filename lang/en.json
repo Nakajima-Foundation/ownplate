@@ -86,7 +86,7 @@
       "error": "Error",
       "new_order": "New Order",
       "validation_ok": "Validated",
-      "customer_paid": "Order Placed",
+      "order_placed": "Order Placed",
       "order_accepted": "Accepted",
       "cooking_completed": "Ready To Pickup",
       "customer_picked_up": "Complete",

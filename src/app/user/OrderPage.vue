@@ -214,10 +214,10 @@ export default {
       return this.orderInfo.status === order_status.validation_ok;
     },
     just_paid() {
-      return this.orderInfo.status === order_status.customer_paid;
+      return this.orderInfo.status === order_status.order_placed;
     },
     paid() {
-      return this.orderInfo.status >= order_status.customer_paid;
+      return this.orderInfo.status >= order_status.order_placed;
     },
     orderItems() {
       if (this.menus.length > 0 && this.orderInfo.order) {

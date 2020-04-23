@@ -53,7 +53,7 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
 
       transaction.set(orderRef, {
         timePaid: admin.firestore.FieldValue.serverTimestamp(),
-        status: order_status.customer_paid,
+        status: order_status.order_placed,
         totalCharge: totalCharge / multiple,
         tip: Math.round(tip * multiple) / multiple,
         payment: {
@@ -180,7 +180,7 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
       if (uid !== order.uid) {
         throw new functions.https.HttpsError('permission-denied', 'You do not have permission to cancel this request.')
       }
-      if (order.status !== order_status.customer_paid) {
+      if (order.status !== order_status.order_placed) {
         throw new functions.https.HttpsError('permission-denied', 'Invalid order state to cancel.')
       }
 
