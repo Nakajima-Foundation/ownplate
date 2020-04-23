@@ -23,7 +23,7 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
   }
   const stripeAccount = stripeData.stripeAccount
   try {
-    const result = await db.runTransaction(async transaction => {
+    return await db.runTransaction(async transaction => {
 
       const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`)
       const stripeRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}/system/stripe`)
@@ -66,11 +66,9 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
       }, { merge: true });
 
       return {
-        paymentIntentId: paymentIntent.id,
-        orderId: orderRef.id
+        success: true
       }
     })
-    return { result }
   } catch (error) {
     throw utils.process_error(error)
   }
@@ -104,7 +102,7 @@ export const confirm = async (db: FirebaseFirestore.Firestore, data: any, contex
   }
 
   try {
-    const result = await db.runTransaction(async transaction => {
+    return await db.runTransaction(async transaction => {
 
       const snapshot = await transaction.get(orderRef)
       const order = Order.fromSnapshot<Order>(snapshot)
@@ -123,26 +121,21 @@ export const confirm = async (db: FirebaseFirestore.Firestore, data: any, contex
       }
       const paymentIntentId = stripeRecord.paymentIntent.id;
 
-      try {
-        // Check the stock status.
-        const paymentIntent = await stripe.paymentIntents.confirm(paymentIntentId, {
-          idempotencyKey: order.id,
-          stripeAccount
-        })
-        transaction.set(orderRef, {
-          timeConfirmed: admin.firestore.FieldValue.serverTimestamp(),
-          status: order_status.customer_picked_up,
-        }, { merge: true })
-        transaction.set(stripeRef, {
-          paymentIntent
-        }, { merge: true });
+      // Check the stock status.
+      const paymentIntent = await stripe.paymentIntents.confirm(paymentIntentId, {
+        idempotencyKey: order.id,
+        stripeAccount
+      })
+      transaction.set(orderRef, {
+        timeConfirmed: admin.firestore.FieldValue.serverTimestamp(),
+        status: order_status.customer_picked_up,
+      }, { merge: true })
+      transaction.set(stripeRef, {
+        paymentIntent
+      }, { merge: true });
 
-        return paymentIntent
-      } catch (error) {
-        throw error
-      }
+      return { success: true }
     })
-    return { result }
   } catch (error) {
     throw utils.process_error(error)
   }
@@ -169,7 +162,7 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
 
   const stripeAccount = stripeData.stripeAccount
   try {
-    const result = await db.runTransaction(async transaction => {
+    return await db.runTransaction(async transaction => {
 
       const snapshot = await transaction.get(orderRef)
       const order = Order.fromSnapshot<Order>(snapshot)
@@ -182,6 +175,16 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
       }
       if (order.status !== order_status.order_placed) {
         throw new functions.https.HttpsError('permission-denied', 'Invalid order state to cancel.')
+      }
+
+      if (!order.payment || !order.payment.stripe) {
+        // No payment transaction
+        transaction.set(orderRef, {
+          timeCanceld: admin.firestore.FieldValue.serverTimestamp(),
+          status: order_status.order_canceled,
+          uidCanceledBy: uid,
+        }, { merge: true })
+        return { success: true, payment: false }
       }
 
       const stripeRecord = (await transaction.get(stripeRef)).data();
@@ -204,12 +207,11 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
         transaction.set(stripeRef, {
           paymentIntent
         }, { merge: true });
-        return paymentIntent
+        return { success: true, payment: "stripe" }
       } catch (error) {
         throw error
       }
     })
-    return { result }
   } catch (error) {
     throw utils.process_error(error)
   }
