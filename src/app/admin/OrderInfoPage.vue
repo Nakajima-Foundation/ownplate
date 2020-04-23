@@ -214,7 +214,8 @@ export default {
     isValidTransition(newStatus) {
       return (
         this.possibleTransition()[newStatus] ||
-        order_status[newStatus] == this.orderInfo.status
+        (order_status[newStatus] === this.orderInfo.status &&
+          newStatus !== "order_canceled")
       );
     },
     // NOTE: Exact same code in the order/_orderId/index.vue for the user.
@@ -278,6 +279,7 @@ export default {
           orderId: this.orderId
         });
         console.log("cancel", data);
+        this.$router.push(this.parentUrl);
       } catch (error) {
         // BUGBUG: Implement the error handling code here
         console.error(error.message, error.details);

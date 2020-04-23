@@ -178,7 +178,6 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
         throw new functions.https.HttpsError('invalid-argument', `The order does not exist.`)
       }
 
-      console.log("uids", uid, order.uid, venderId)
       if (uid === order.uid) {
         // User can cancel an order before accepted
         if (order.status !== order_status.order_placed) {
