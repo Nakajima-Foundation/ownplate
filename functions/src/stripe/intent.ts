@@ -141,7 +141,7 @@ export const confirm = async (db: FirebaseFirestore.Firestore, data: any, contex
   }
 };
 
-
+// This function is called by user to cencel an exsting order (before accepted by admin)
 export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
   const stripe = utils.get_stripe();
@@ -168,10 +168,10 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
       const order = Order.fromSnapshot<Order>(snapshot)
 
       if (!snapshot.exists) {
-        throw new functions.https.HttpsError('invalid-argument', `The order does not exist. ${orderRef.path}`)
+        throw new functions.https.HttpsError('invalid-argument', `The order does not exist.`)
       }
       if (uid !== order.uid) {
-        throw new functions.https.HttpsError('permission-denied', 'You do not have permission to cancel this request.')
+        throw new functions.https.HttpsError('permission-denied', 'The user does not have permission to cancel this request.')
       }
       if (order.status !== order_status.order_placed) {
         throw new functions.https.HttpsError('permission-denied', 'Invalid order state to cancel.')
