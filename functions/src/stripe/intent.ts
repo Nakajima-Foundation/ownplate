@@ -148,7 +148,7 @@ export const confirm = async (db: FirebaseFirestore.Firestore, data: any, contex
   }
 };
 
-// This function is called by user to cencel an exsting order (before accepted by admin)
+// This function is called by user or admin to cencel an exsting order (before accepted by admin)
 export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
   const stripe = utils.get_stripe();
@@ -177,11 +177,19 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
       if (!snapshot.exists) {
         throw new functions.https.HttpsError('invalid-argument', `The order does not exist.`)
       }
-      if (uid !== order.uid) {
+
+      if (uid === order.uid) {
+        // User can cancel an order before accepted
+        if (order.status !== order_status.order_placed) {
+          throw new functions.https.HttpsError('permission-denied', 'Invalid order state to cancel.')
+        }
+      } else if (uid === venderId) {
+        // Admin can cancel it before confirmed
+        if (order.status >= order_status.customer_picked_up) {
+          throw new functions.https.HttpsError('permission-denied', 'Invalid order state to cancel.')
+        }
+      } else {
         throw new functions.https.HttpsError('permission-denied', 'The user does not have permission to cancel this request.')
-      }
-      if (order.status !== order_status.order_placed) {
-        throw new functions.https.HttpsError('permission-denied', 'Invalid order state to cancel.')
       }
 
       if (!order.payment || !order.payment.stripe) {
@@ -217,7 +225,7 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
         transaction.set(stripeRef, {
           paymentIntent
         }, { merge: true });
-        return { success: true, payment: "stripe" }
+        return { success: true, payment: "stripe", byUser: (uid === order.uid) }
       } catch (error) {
         throw error
       }

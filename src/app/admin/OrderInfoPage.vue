@@ -46,7 +46,7 @@
             style="width:100%"
             class="light"
             :loading="updating==='order_canceled'"
-            @click="handleChangeStatus('order_canceled')"
+            @click="handleCancel"
           >{{ $t("admin.order.delete") }}</b-button>
         </div>
       </div>
@@ -86,7 +86,7 @@ import OrderedItem from "~/app/admin/Order/OrderedItem";
 import { order_status } from "~/plugins/constant.js";
 import { nameOfOrder } from "~/plugins/strings.js";
 import { parsePhoneNumber, formatNational } from "~/plugins/phoneutil.js";
-import { stripeConfirmIntent } from "~/plugins/stripe.js";
+import { stripeConfirmIntent, stripeCancelIntent } from "~/plugins/stripe.js";
 import moment from "moment";
 
 export default {
@@ -214,7 +214,8 @@ export default {
     isValidTransition(newStatus) {
       return (
         this.possibleTransition()[newStatus] ||
-        order_status[newStatus] == this.orderInfo.status
+        (order_status[newStatus] === this.orderInfo.status &&
+          newStatus !== "order_canceled")
       );
     },
     // NOTE: Exact same code in the order/_orderId/index.vue for the user.
@@ -264,6 +265,23 @@ export default {
         this.$router.push(this.parentUrl);
       } catch (error) {
         // BUGBUG: Handle Error
+        console.error(error.message, error.details);
+      } finally {
+        this.updating = "";
+      }
+    },
+    async handleCancel() {
+      console.log("handleCancel");
+      try {
+        this.updating = "order_canceled";
+        const { data } = await stripeCancelIntent({
+          restaurantId: this.restaurantId(),
+          orderId: this.orderId
+        });
+        console.log("cancel", data);
+        this.$router.push(this.parentUrl);
+      } catch (error) {
+        // BUGBUG: Implement the error handling code here
         console.error(error.message, error.details);
       } finally {
         this.updating = "";

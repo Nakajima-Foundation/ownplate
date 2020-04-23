@@ -74,14 +74,14 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
       if (!isPreviousStateChangable) {
         throw new functions.https.HttpsError('failed-precondition', 'It is not possible to change state from the current state.', order.status)
       }
+
       const isNewStatusValid: Boolean = (() => {
         switch (status) {
-          case constant.order_status.order_canceled:
+          //case constant.order_status.order_canceled:    call stripeCancelIntent instead
           case constant.order_status.order_accepted:
           case constant.order_status.cooking_completed:
             return true
           case constant.order_status.customer_picked_up:
-            console.log("***", order.payment, !(order.payment && order.payment.stripe))
             return !(order.payment && order.payment.stripe) // only "unpaid" order can be manually completed
         }
         return false
@@ -89,6 +89,7 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
       if (!isNewStatusValid) {
         throw new functions.https.HttpsError('permission-denied', 'The user does not have an authority to perform this operation.', status)
       }
+
       if (status === constant.order_status.order_canceled && order.payment && order.payment.stripe) {
         throw new functions.https.HttpsError('permission-denied', 'Paid order can not be cancele like this', status)
       }
