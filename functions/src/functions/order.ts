@@ -31,7 +31,7 @@ export const place = async (db: FirebaseFirestore.Firestore, data: any, context:
         status: constant.order_status.order_placed,
         totalCharge: order.total + tip,
         tip: roundedTip,
-        timePaid: admin.firestore.FieldValue.serverTimestamp()
+        timePlaced: admin.firestore.FieldValue.serverTimestamp()
       })
 
       return { success: true }

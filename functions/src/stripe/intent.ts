@@ -52,7 +52,7 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
       })
 
       transaction.set(orderRef, {
-        timePaid: admin.firestore.FieldValue.serverTimestamp(),
+        timePlaced: admin.firestore.FieldValue.serverTimestamp(),
         status: order_status.order_placed,
         totalCharge: totalCharge / multiple,
         tip: Math.round(tip * multiple) / multiple,
