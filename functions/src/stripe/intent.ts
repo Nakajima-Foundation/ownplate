@@ -169,7 +169,7 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
 
   const stripeAccount = stripeData.stripeAccount
   try {
-    const result = await db.runTransaction(async transaction => {
+    return await db.runTransaction(async transaction => {
 
       const snapshot = await transaction.get(orderRef)
       const order = Order.fromSnapshot<Order>(snapshot)
@@ -182,6 +182,16 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
       }
       if (order.status !== order_status.order_placed) {
         throw new functions.https.HttpsError('permission-denied', 'Invalid order state to cancel.')
+      }
+
+      if (!order.payment || !order.payment.stripe) {
+        // No payment transaction
+        transaction.set(orderRef, {
+          timeCanceld: admin.firestore.FieldValue.serverTimestamp(),
+          status: order_status.order_canceled,
+          uidCanceledBy: uid,
+        }, { merge: true })
+        return { success: true, payment: false }
       }
 
       const stripeRecord = (await transaction.get(stripeRef)).data();
@@ -204,12 +214,11 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
         transaction.set(stripeRef, {
           paymentIntent
         }, { merge: true });
-        return paymentIntent
+        return { success: true, payment: "stripe" }
       } catch (error) {
         throw error
       }
     })
-    return { result }
   } catch (error) {
     throw utils.process_error(error)
   }

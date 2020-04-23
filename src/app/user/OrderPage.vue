@@ -301,12 +301,12 @@ export default {
       const orderPlace = functions.httpsCallable("orderPlace");
       try {
         this.isPlacing = true;
-        const result = await orderPlace({
+        const { data } = await orderPlace({
           restaurantId: this.restaurantId(),
           orderId: this.orderId,
           tip: this.tip || 0
         });
-        console.log(result);
+        console.log("no payment", data);
         window.scrollTo(0, 0);
       } catch (error) {
         console.error(error.message, error.details);
@@ -321,6 +321,7 @@ export default {
           restaurantId: this.restaurantId(),
           orderId: this.orderId
         });
+        console.log("cancel", data);
       } catch (error) {
         // BUGBUG: Implement the error handling code here
         console.error(error.message, error.details);
