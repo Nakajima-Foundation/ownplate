@@ -40,39 +40,36 @@ TBD.
 see CircleCI setting.
 [.circleci/config.yml](./.circleci/config.yml)
 
+# Run the development server on localhost
 
-## Build Setup
-
-```bash
+```
 # install dependencies
 $ npm install
 
 # copy and edit project.js file
 $ cp src/config/default/ownplate-dev.js src/config/project.js
 
-# copy and edit .firebaserc file
-$ cp src/config/default/.firebaserc .
-
-# set config to cloud functions.
-
-firebase functions:config:set \
-stripe.secret_key="sk_xxx"
-```
-
-# Run the development server on localhost
-```
 $ STRIPE_CLIENT_ID=xxx STRIPE_API_KEY=xxx GAPIKey=xxx npm run dev
 ```
 GAPIKey is google API key for Google Map
 STRIPE_CLIENT_ID and STRIPE_API_KEY are Stripe's id.
 
-# build for production and launch server
+
+## Build Vue.js.
+
+see CircleCI setting.
+This file 
+[.circleci/config.yml](./.circleci/config.yml)
+
+This file contains the latest and valid information for the build.
+
+# Build for production and launch server
 ```
 $ npm run build
 $ npm run start
 ```
 
-# generate static project
+# Generate static project
 ```
 $ npm run generate
 ```
