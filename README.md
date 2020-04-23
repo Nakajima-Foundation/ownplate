@@ -13,16 +13,23 @@ It is built with Firebase + Vue + Stripe, for productivity and scalability.
 # install dependencies
 $ npm install
 
-# copy and edit firebase.js file
-$ cp src/config/default/ownplate-dev.js src/config/firebase.js
+# copy and edit project.js file
+$ cp src/config/default/ownplate-dev.js src/config/project.js
 
 # copy and edit .firebaserc file
 $ cp src/config/default/.firebaserc .
 
+# set config to cloud functions.
+
+firebase functions:config:set \
+stripe.secret_key="sk_xxx"
+```
+
 # serve with hot reload at localhost:3000
-$ GAPIKey=xxx npm run dev
+$ STRIPE_CLIENT_ID=xxx STRIPE_API_KEY=xxx GAPIKey=xxx npm run dev
 
 GAPIKey is google API key for Google Map
+STRIPE_CLIENT_ID and STRIPE_API_KEY are Stripe's id.
 
 # build for production and launch server
 $ npm run build
@@ -34,7 +41,6 @@ $ npm run generate
 # "devsync": "HOST=192.168.100.20 PORT=3333 nuxt",
 # ローカル環境（PC）を自分のスマホで確認したい場合、同じネットワークに接続してHOST={IPアドレス}を指定してあげれば、スマホからも確認できます
 $ npm run devsync
-```
 
 For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
 
@@ -47,6 +53,11 @@ You need to deploy Function for	develoment.
 cd functions && npm install
 firebase deploy --only functions
 ```
+
+## icon lists
+
+https://fontawesome.com/icons?d=gallery
+https://materialdesignicons.com/cdn/2.0.46/
 
 ## ESlint + Prettier
 

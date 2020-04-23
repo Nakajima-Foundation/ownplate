@@ -1,6 +1,16 @@
-export const getStripeInstance = () => {
-	const stripeAPIToken = process.env.STRIPE_API_KEY;
-	return Stripe(stripeAPIToken);
+import { functions } from "~/plugins/firebase"
+
+export const getStripeInstance = (stripeAccount) => {
+  const stripeAPIToken = process.env.STRIPE_API_KEY;
+  return Stripe(stripeAPIToken, {
+    stripeAccount: stripeAccount
+  });
 }
 
-// LATER: Move the client-side Stripe API here, such as checkoutCreate
+export const stripeCreateIntent = functions.httpsCallable("stripeCreateIntent");
+export const stripeConfirmIntent
+  = functions.httpsCallable("stripeConfirmIntent");
+export const stripeCancelIntent
+  = functions.httpsCallable("stripeCancelIntent");
+export const stripeConnect = functions.httpsCallable("stripeConnect");
+export const stripeDisconnect = functions.httpsCallable("stripeDisconnect");

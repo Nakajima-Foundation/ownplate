@@ -4,7 +4,7 @@
   border: 0;
 }
 
-.customer_paid, .customer_paid:hover {
+.order_placed, .order_placed:hover {
   color:red;
   background:#ffeeee;
   border: 0;
@@ -28,8 +28,24 @@
   border: 0;
 }
 
-.oder_canceled, .oder_canceled:hover {
+.order_canceled, .order_canceled:hover {
+  color: #ff4500;
+  background:#F5E4F6;
+  border: 0;
+}
+
+.order_refunded, .order_refunded:hover {
   color: #3506A8;
   background:#F5E4F6;
   border: 0;
+}
+
+.stripe_pending {
+  color: #808080;
+}
+.stripe_confirmed {
+  color: #000000;
+}
+.stripe_canceled {
+  color: #ff4500;
 }

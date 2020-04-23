@@ -2,11 +2,99 @@ import i18nEN from './lang/en.json';
 import i18nES from './lang/es.json';
 import i18nJA from './lang/ja.json';
 require('dotenv').config();
-const { STRIPE_API_KEY } = process.env;
+
+const defaultLocale = process.env.LOCALE || "en";
+const numberFormats = ((locale) => {
+  if (locale === 'ja') {
+    return {
+      currency: {
+        style: 'currency',
+        currency: 'JPY'
+      }
+    };
+  }
+  return {
+    currency: {
+      style: 'currency',
+      currency: 'USD'
+    }
+  };
+})(defaultLocale);
+
+const customRoutes = [
+  {
+    name: 'r',
+    path: '/r',
+    component: 'user/RootPage.vue',
+  },
+  {
+    name: 'r-restaurantId',
+    path: '/r/:restaurantId',
+    component: 'user/RestaurantPage.vue',
+  },
+  {
+    name: 'r-restaurantId-order',
+    path: '/r/:restaurantId/order/:orderId',
+    component: 'user/OrderPage.vue',
+  },
+  {
+    name: 'admin',
+    path: '/admin/restaurants',
+    component: 'admin/OwnerPage.vue',
+  },
+  {
+    name: 'admin-about',
+    path: '/admin/restaurants/:restaurantId',
+    component: 'admin/AboutPage.vue',
+  },
+  {
+    name: 'admin-menus',
+    path: '/admin/restaurants/:restaurantId/menus',
+    component: 'admin/MenusPage.vue',
+  },
+  {
+    name: 'admin-menus-item',
+    path: '/admin/restaurants/:restaurantId/menus/:menuId',
+    component: 'admin/MenuItemPage.vue',
+  },
+  {
+    name: 'admin-orders',
+    path: '/admin/restaurants/:restaurantId/orders',
+    component: 'admin/OrderListPage.vue',
+  },
+  {
+    name: 'admin-order-info',
+    path: '/admin/restaurants/:restaurantId/orders/:orderId',
+    component: 'admin/OrderInfoPage.vue',
+  },
+  {
+    name: 'admin-signin',
+    path: '/admin/user/signin',
+    component: 'auth/SignInPage.vue',
+  },
+  {
+    name: 'admin-signup',
+    path: '/admin/user/signup',
+    component: 'auth/SignUpPage.vue',
+  },
+  {
+    name: 'admin-reset',
+    path: '/admin/user/reset',
+    component: 'auth/ResetPasswordPage.vue',
+  },
+];
 
 export default {
   mode: "spa",
   srcDir: "src",
+  router: {
+    extendRoutes(routes, resolve) {
+      customRoutes.map(route => {
+        route.component = resolve(__dirname, "src/app/" + route.component);
+        routes.push(route);
+      });
+    }
+  },
   /*
    ** Headers of the page
    */
@@ -81,6 +169,9 @@ export default {
    */
   plugins: [
     '~plugins/buefy.js',
+    '~plugins/social.js',
+    '~plugins/croppa.js',
+    '~plugins/clipboard2.js',
     // { src: "~/plugins/localStorage.js", ssr: false },
     { src: "~/plugins/userPermission.js", ssr: false },
     { src: "~/plugins/utils.js", ssr: false },
@@ -105,32 +196,24 @@ export default {
     }],
   ],
   env: {
-    STRIPE_API_KEY,
-    gapikey: process.env.GAPIKey
+    STRIPE_API_KEY: process.env.STRIPE_API_KEY,
+    STRIPE_CLIENT_ID: process.env.STRIPE_CLIENT_ID,
+    gapikey: process.env.GAPIKey,
+    CIRCLE_SHA1: process.env.CIRCLE_SHA1,
   },
   i18n: {
     locales: ['en', 'es', 'ja'],
-    defaultLocale: 'en',
+    defaultLocale: defaultLocale,
     vueI18n: {
-      fallbackLocale: 'en',
+      fallbackLocale: defaultLocale,
       messages: {
         en: i18nEN,
         es: i18nES,
         ja: i18nJA,
       },
       numberFormats: {
-        en: {
-          currency: {
-            style: 'currency',
-            currency: 'USD'
-          }
-        },
-        ja: {
-          currency: {
-            style: 'currency',
-            currency: 'JPY'
-          }
-        }
+        en: numberFormats,
+        ja: numberFormats
       }
     }
   },

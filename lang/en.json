@@ -39,7 +39,10 @@
     "itemDescription": "Item description",
     "itemPhoto": "Item photo",
     "itemOptions": "Item options",
-    "itemOptionsNote": "For altenatives, use comma to separate them (e.g., \"Chiken, Pork, Tofu\")"
+    "itemOptionsNote": "For altenatives, use comma to separate them (e.g., \"Chiken, Pork, Tofu\")",
+    "itemAddOption": "Add Option",
+    "save": "Save",
+    "itemInvalidMessage": "This item is not on your menu because data is invalid."
   },
   "shopInfo": {
     "name": "Restaurant name",
@@ -59,6 +62,9 @@
     "checkout": "CHECKOUT",
     "orderCounter": "{count} item | {count} items"
   },
+  "date": {
+    "today": "Today"
+  },
   "order": {
     "yourOrder": "Your Order",
     "editItems": "Edit Items",
@@ -72,16 +78,20 @@
     "thankyou": "Thank you!",
     "orderStatus": "Order Status: ",
     "pleaseStay": "Please stay on this page. The order status will be updated below.",
+    "tip": "Gratuity",
+    "totalCharge": "Total Charge",
+    "pleasePayAtRestaurant": "Online payment was not enabled yet. Please pay at the time of pickup.",
     "status": {
       "unexpected": "Unexpected",
       "error": "Error",
       "new_order": "New Order",
       "validation_ok": "Validated",
-      "customer_paid": "Order Placed",
+      "order_placed": "Order Placed",
       "order_accepted": "Accepted",
       "cooking_completed": "Ready To Pickup",
       "customer_picked_up": "Complete",
-      "oder_canceled": "Canceled"
+      "order_canceled": "Canceled",
+      "order_refunded": "Refunded"
     }
   },
   "button": {
@@ -135,11 +145,15 @@
     "addYourRestaurant": "Please add your restaurant from the bottom button.",
     "addNewRestaurant": "Add New Restaurant",
     "noPaymentAccount": "No Payment account",
-    "pleaseConnectPayment": "Please connect your payment account from the bottom button.",
-    "connectPaymentAccount": "Connect payment account",
-    "incompleteOrders": "{count} incomplete order | {count} incomplete orders",
-    "editMenuItems": "Edit Menu ({count} items)",
-    "editAbout": "Edit About",
+    "payments": {
+      "pleaseConnect": "In order to receive online payments, you need to connect your Stripe account.",
+      "connectStripe": "Connect Stripe Account",
+      "disconnectStripe": "Disconnect Stripe Account"
+    },
+    "incompleteOrders": "{count} Incomplete Order | {count} Incomplete Orders",
+    "editMenuItems": "Menu ({count})",
+    "editAbout": "Edit",
+    "shareRestaurant": "Share",
     "pleaseSignUp": "Sign up as a new user",
     "forgotPassword": "Forgot Password？",
     "passwordReset": "Reset Password",
@@ -149,7 +163,7 @@
       "cancelTitle": "Order Canceling",
       "cancelMessage": "Please contact to the customer and tell the order will be canceled.",
       "callTo": "Call to {phone}",
-      "delete": "Delete this order"
+      "delete": "Cancel this order (undoable)"
     },
     "error": {
       "email": {

@@ -1,4 +1,5 @@
 import * as constant from '../common/constant';
+import * as utils from '../stripe/utils'
 
 /*
 const chunk = (array, chunkSize) => {
@@ -32,7 +33,7 @@ const getMenuObj = async (refRestaurant) => {
   return menuObj;
 };
 
-export const orderCreate = async (db, snapshot, context) => {
+export const wasOrderCreated = async (db, snapshot, context) => {
   const original_data = snapshot.data()
 
   if (!original_data || !original_data.status || original_data.status !== constant.order_status.new_order) {
@@ -66,9 +67,10 @@ export const orderCreate = async (db, snapshot, context) => {
       }
     });
 
+    const multiple = utils.stripe_region.multiple; //100 for USD, 1 for JPY
     // calculate price.
     const sub_total = food_sub_total + alcohol_sub_total;
-    const tax = (alcohol_sub_total * alcoholTax) / 100 + (food_sub_total * foodTax) / 100;
+    const tax = Math.round(((alcohol_sub_total * alcoholTax) / 100 + (food_sub_total * foodTax) / 100) * multiple) / multiple;
     const total = sub_total + tax;
 
     // Atomically increment the orderCount of the restaurant

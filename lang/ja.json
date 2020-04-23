@@ -2,22 +2,22 @@
   "greeting": "こんにちは、世界",
   "menu": {
     "about": "このサービスについて",
-    "admins": "レストラン向けページ",
+    "admins": "飲食店向けページ",
     "users": "お客様向けページ",
     "home": "ホーム",
     "signOut": "サイン・アウト"
   },
   "restaurantId": {
-    "self": "レストランID",
-    "available": "このレストランIDは使用が可能です",
+    "self": "飲食店ID",
+    "available": "この飲食店IDは使用できます",
     "submit": "登録",
-    "placeholder": "使いたいレストランIDを入力してください",
+    "placeholder": "使用したい飲食店IDを入力してください",
     "tooshort": "最低５文字必要です。",
     "invalid": "数字の半角小文字英字のみ使えます。",
     "alreadyTaken": "このIDはすでに使われています。"
   },
   "editRestaurant": {
-    "about": "お店の情報",
+    "about": "飲食店情報",
     "required": "必須",
     "profilePhoto": "プロフィール画像",
     "coverPhoto": "カバー画像",
@@ -28,7 +28,7 @@
     "businessHourDescription": "営業する曜日にチェックをいれ、営業時間を設定してください。",
     "draftDescription": "下書きとして保存",
     "publishDescription": "保存して公開",
-    "updateMapDescription": "レストラン名や住所を元に地図を更新"
+    "updateMapDescription": "飲食店名や住所を元に地図を更新"
   },
   "editMenu": {
     "item": "Item",
@@ -39,7 +39,10 @@
     "itemDescription": "Item description",
     "itemPhoto": "Item photo",
     "itemOptions": "Item options",
-    "itemOptionsNote": "二択や三択の場合、半角カンマで区切ってください (例: \"チキン, ポーク, 豆腐\")"
+    "itemOptionsNote": "二択や三択の場合、半角カンマで区切ってください (例: \"チキン, ポーク, 豆腐\")",
+    "itemAddOption": "オプション追加",
+    "save": "保存",
+    "itemInvalidMessage": "データが正しく入力されていないため、公開されません"
   },
   "shopInfo": {
     "name": "Restaurant name",
@@ -55,9 +58,12 @@
   },
   "sitemenu": {
     "menu": "メニュー",
-    "about": "お店情報",
+    "about": "飲食店情報",
     "checkout": "お会計",
     "orderCounter": "{count} 個"
+  },
+  "date": {
+    "today": "本日"
   },
   "order": {
     "yourOrder": "あなたの注文",
@@ -72,15 +78,20 @@
     "thankyou": "ご注文、ありがとうございます!",
     "orderStatus": "ご注文のステータス: ",
     "pleaseStay": "このページを開けたままにしていただけると、ステータスを知る事が出来ます。",
+    "tip": "心付け",
+    "totalCharge": "合計金額",
+    "pleasePayAtRestaurant": "オンライン課金は現時点では出来ません。受け取り時にお店でお支払いください。",
     "status": {
       "unexpected": "(Unexpected)",
       "error": "エラー",
       "new_order": "新規注文",
       "validation_ok": "確認済み",
-      "customer_paid": "支払い済み",
+      "order_placed": "支払い済み",
       "order_accepted": "受付済み",
       "cooking_completed": "料理済み",
-      "customer_picked_up": "受け渡し完了"
+      "customer_picked_up": "受け渡し完了",
+      "order_canceled": "キャンセル済み",
+      "order_refunded": "払い戻し済み"
     }
   },
   "button": {
@@ -117,8 +128,8 @@
   },
   "admin": {
     "hidePayment": "課金の仕組みはまもなく提供される予定です。少々お待ちください。",
-    "pleaseSignIn": "サインインしてください (レストラン向け)",
-    "registration": "登録してください (レストラン向け)",
+    "pleaseSignIn": "サインインしてください (飲食店向け)",
+    "registration": "登録してください (飲食店向け)",
     "email": "メールアドレス",
     "password": "パスワード",
     "confirmPassword": "Confirm Password",
@@ -134,28 +145,40 @@
     "addYourRestaurant": "Please add your restaurant from the bottom button.",
     "addNewRestaurant": "Add New Restaurant",
     "noPaymentAccount": "No Payment account",
-    "pleaseConnectPayment": "Please connect your payment account from the bottom button.",
-    "connectPaymentAccount": "Connect payment account",
+    "payments": {
+      "pleaseConnect": "In order to receive online payments, you need to connect your Stripe account.",
+      "connectStripe": "Connect Stripe Account",
+      "disconnectStripe": "Disconnect Stripe Account"
+    },
     "incompleteOrders": "{count} incomplete order | {count} incomplete orders",
-    "editMenuItems": "Edit Menu ({count} items)",
+    "editMenuItems": "メニュー ({count})",
     "editAbout": "Edit About",
-    "pleaseSignUp": "Sign up as a new user",
-    "forgotPassword": "Forgot Password？",
+    "shareRestaurant": "Share",
+    "pleaseSignUp": "ユーザー登録",
+    "forgotPassword": "パスワード忘れ",
     "passwordReset": "Reset Password",
+    "pleaseCheckInbox": "Please check your inbox, an email is on the way.",
+    "order": {
+      "cancelButton": "Cancel this order",
+      "cancelTitle": "Order Canceling",
+      "cancelMessage": "Please contact to the customer and tell the order will be canceled.",
+      "callTo": "Call to {phone}",
+      "delete": "Cancel this order (undoable)"
+    },
     "error": {
       "email": {
-        "invalid": "Invalid Email Address",
-        "taken": "The email address is already in use by another account."
+        "invalid": "無効なメールアドレスです。",
+        "taken": "このメールアドレスは別のアカウントですでに使用されています。"
       },
       "password": {
-        "tooshort": "Password should be at least 6 characters",
-        "mismatch": "Password mismatch"
+        "tooshort": "パスワードは6文字以上にしてください。",
+        "mismatch": "パスワードが違います。"
       },
       "code": {
-        "auth/user-not-found": "There is no user record corresponding to this identifier.",
-        "auth/wrong-password": "The password is invalid",
-        "auth/too-many-requests": "Too many unsuccessful login attempts. Please try again later.",
-        "auth/invalid-email": "The email address is badly formatted."
+        "auth/user-not-found": "登録されていません。",
+        "auth/wrong-password": "パスワードが無効です。",
+        "auth/too-many-requests": "ログインに失敗した回数が多すぎます。時間がたってから再度ログインしてください。",
+        "auth/invalid-email": "無効なメールアドレスです。"
       }
     }
   },

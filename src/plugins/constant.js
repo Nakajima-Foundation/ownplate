@@ -2,11 +2,12 @@ export const order_status = {
   error: 0,
   new_order: 100, // by user
   validation_ok: 200, // by functions
-  customer_paid: 300,  // by user and stripe
+  order_placed: 300,  // by user and stripe
   order_accepted: 400, // by restaurant
   cooking_completed: 500, // by restaurant
-  customer_picked_up: 600, // by restaurant
-  oder_canceled: 700, // by restaurant
+  customer_picked_up: 600, // by restaurant and stripe
+  order_canceled: 700, // by restaurant or user
+  order_refunded: 800 // by restaurant
 };
 
 export const order_error = {
@@ -15,6 +16,19 @@ export const order_error = {
   payment_error: 300,
   order_canceled_by_restaurant: 400,
   unknow_error: 900,
+};
+
+export const stripe_regions = {
+  "us": {
+    currency: 'USD',
+    multiple: 100,
+    hidePostalCode: false
+  },
+  "jp": {
+    currency: 'JPY',
+    multiple: 1,
+    hidePostalCode: true
+  }
 };
 
 export const daysOfWeek = {

@@ -1,4 +1,4 @@
-import { ownPlateConfig } from "~/plugins/firebase.js";
+import { ownPlateConfig } from "@/config/project";
 
 const releaseName = ownPlateConfig.releasName || "default";
 

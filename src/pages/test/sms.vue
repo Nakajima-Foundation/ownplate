@@ -5,13 +5,12 @@
       <h2>Phone: {{phone}}</h2>
       <p>Try "Sign Out" from the menu.</p>
     </div>
-    <phone-login
-     v-show="!user" />
+    <phone-login v-show="!user" />
   </section>
 </template>
 
 <script>
-import PhoneLogin from "~/components/auth/PhoneLogin";
+import PhoneLogin from "~/app/auth/PhoneLogin";
 import { auth, authObject } from "~/plugins/firebase.js";
 
 export default {
@@ -21,10 +20,10 @@ export default {
   data() {
     return {
       dismissed: false
-    }
+    };
   },
   mounted() {
-      console.log(this.$store.state.date);
+    console.log(this.$store.state.date);
   },
   computed: {
     date() {
@@ -34,8 +33,8 @@ export default {
       return this.$store.state.user;
     },
     phone() {
-      return (this.user && this.user.phoneNumber);
+      return this.user && this.user.phoneNumber;
     }
   }
-}
+};
 </script>

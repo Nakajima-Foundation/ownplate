@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import { stripe_regions } from "~/plugins/constant.js"
 
 Vue.use(Vuex);
 
@@ -8,7 +9,8 @@ export const strict = false;
 export const state = () => ({
   user: undefined, // undefined:not authorized, null:no user
   date: new Date(),
-  carts: {} // for "Edit Order"
+  carts: {}, // for "Edit Order"
+  server: {} // server configuration
 });
 
 export const getters = {
@@ -25,6 +27,12 @@ export const getters = {
     // Check if state.user has been initialized (as the result of notication from Firebase)
     return state.user !== undefined;
   },
+  name: (state) => {
+    return state.user && state.user.name || "";
+  },
+  stripeRegion: (state) => {
+    return stripe_regions[state.server.region || "us"]
+  }
 };
 
 export const mutations = {
@@ -38,6 +46,10 @@ export const mutations = {
     console.log("saving cart", payload.id, payload.cart);
     state.carts = {};
     state.carts[payload.id] = payload.cart;
+  },
+  setServerConfig(state, config) {
+    state.server = config;
+    console.log("store:setServerConfig", state.server.region)
   }
 };
 
