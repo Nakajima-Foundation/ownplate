@@ -290,6 +290,7 @@ export default {
           orderId: this.orderId,
           tip: this.tip || 0
         });
+        console.log("create", data);
         window.scrollTo(0, 0);
       } catch (error) {
         console.error(error.message, error.details);

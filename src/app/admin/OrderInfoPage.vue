@@ -225,14 +225,14 @@ export default {
     async handleComplete() {
       if (this.hasStripe) {
         const orderId = this.$route.params.orderId;
-        console.log("handleComplete with Stripe", orderId);
+        //console.log("handleComplete with Stripe", orderId);
         try {
           this.updating = "customer_picked_up";
-          const result = await stripeConfirmIntent({
+          const { data } = await stripeConfirmIntent({
             restaurantId: this.restaurantId(),
             orderId
           });
-          console.log(result);
+          console.log("confirm", data);
           this.$router.push(this.parentUrl);
         } catch (error) {
           console.error(error.message, error.details);
@@ -251,12 +251,12 @@ export default {
       const orderUpdate = functions.httpsCallable("orderUpdate");
       this.updating = statusKey;
       try {
-        const result = await orderUpdate({
+        const { data } = await orderUpdate({
           restaurantId: this.restaurantId(),
           orderId: this.orderId,
           status: newStatus
         });
-        console.log("result=", result.data);
+        console.log("update", data);
         this.$router.push(this.parentUrl);
       } catch (error) {
         // BUGBUG: Handle Error
