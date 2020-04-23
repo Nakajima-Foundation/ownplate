@@ -24,8 +24,7 @@ export const place = async (db: FirebaseFirestore.Firestore, data: any, context:
       if (order.status !== constant.order_status.validation_ok) {
         throw new functions.https.HttpsError('failed-precondition', 'The order has been already placed or canceled')
       }
-      // BUGBUG: support JPY.
-      const multiple = 100; // 100 for USD, 1 for JPY
+      const multiple = utils.stripe_region.multiple; // 100 for USD, 1 for JPY
       const roundedTip = Math.round(tip * multiple) / multiple
 
       transaction.update(orderRef, {
