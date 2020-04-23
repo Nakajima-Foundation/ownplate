@@ -28,7 +28,7 @@ export const place = async (db: FirebaseFirestore.Firestore, data: any, context:
       const roundedTip = Math.round(tip * multiple) / multiple
 
       transaction.update(orderRef, {
-        status: constant.order_status.customer_paid,
+        status: constant.order_status.order_placed,
         totalCharge: order.total + tip,
         tip: roundedTip,
         timePaid: admin.firestore.FieldValue.serverTimestamp()
@@ -64,7 +64,7 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
 
       const isPreviousStateChangable: Boolean = (() => {
         switch (order.status) {
-          case constant.order_status.customer_paid:
+          case constant.order_status.order_placed:
           case constant.order_status.order_accepted:
           case constant.order_status.cooking_completed:
             return true

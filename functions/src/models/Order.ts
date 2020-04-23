@@ -8,7 +8,7 @@ export interface Menu {
 export type Status =
   100 | // new_order
   200 | // validation_ok
-  300 | // customer_paid
+  300 | // order_placed
   400 | // order_accepted
   500 | // cooking_completed
   600   // customer_picked_up

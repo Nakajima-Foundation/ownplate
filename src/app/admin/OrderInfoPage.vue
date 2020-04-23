@@ -93,7 +93,7 @@ export default {
 
   data() {
     return {
-      orderStates: ["customer_paid", "order_accepted", "cooking_completed"],
+      orderStates: ["order_placed", "order_accepted", "cooking_completed"],
       updating: "",
       shopInfo: {},
       menuObj: {},
@@ -183,7 +183,7 @@ export default {
   methods: {
     possibleTransition() {
       switch (this.orderInfo.status) {
-        case order_status.customer_paid:
+        case order_status.order_placed:
           return {
             order_accepted: true,
             cooking_completed: true,
