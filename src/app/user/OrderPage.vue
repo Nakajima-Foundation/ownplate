@@ -288,7 +288,7 @@ export default {
           paymentMethodId: paymentMethod.id,
           restaurantId: this.restaurantId(),
           orderId: this.orderId,
-          description: "foo bar",
+          description: `${this.orderName} ${this.shopInfo.restaurantName}`,
           tip: this.tip || 0
         });
         console.log("create", data);
