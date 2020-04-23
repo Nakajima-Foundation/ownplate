@@ -46,6 +46,10 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
         metadata: { uid, restaurantId, orderId }
       } as Stripe.PaymentIntentCreateParams
 
+      if (data.description) {
+        request.description = data.description
+      }
+
       const paymentIntent = await stripe.paymentIntents.create(request, {
         idempotencyKey: orderRef.path,
         stripeAccount
