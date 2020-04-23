@@ -196,7 +196,7 @@ export default {
   },
   computed: {
     showPayment() {
-      console.log("payment", releaseConfig.hidePayment, this.stripeAccount);
+      //console.log("payment", releaseConfig.hidePayment, this.stripeAccount);
       return !releaseConfig.hidePayment && this.stripeAccount;
     },
     orderName() {
@@ -242,7 +242,7 @@ export default {
   },
   methods: {
     handleTipChange(tip) {
-      console.log("handleTipChange", tip);
+      //console.log("handleTipChange", tip);
       this.tip = tip;
     },
     handleCardStateChange(state) {

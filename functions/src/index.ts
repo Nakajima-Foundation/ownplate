@@ -14,6 +14,11 @@ export const wasOrderCreated = functions.firestore.document('restaurants/{restau
   await Firestore.wasOrderCreated(db, snapshot, context);
 });
 
+import * as System from './functions/system';
+export const systemGetConfig = functions.https.onCall(async (data, context) => {
+  return await System.getConfig(db, data, context);
+});
+
 import * as Order from './functions/order';
 export const orderUpdate = functions.https.onCall(async (data, context) => {
   return await Order.update(db, data, context);

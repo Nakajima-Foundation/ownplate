@@ -117,7 +117,7 @@ export default {
   },
   watch: {
     orderInfo() {
-      console.log("orderInfo changed", this.orderInfo.total);
+      //console.log("orderInfo changed", this.orderInfo.total);
       this.updateTip(15);
     }
   },
