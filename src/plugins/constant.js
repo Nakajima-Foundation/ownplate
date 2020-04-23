@@ -21,11 +21,13 @@ export const order_error = {
 export const stripe_regions = {
   "us": {
     currency: 'USD',
-    multiple: 100
+    multiple: 100,
+    hidePostalCode: false
   },
-  "ja": {
+  "jp": {
     currency: 'JPY',
-    multiple: 1
+    multiple: 1,
+    hidePostalCode: true
   }
 };
 

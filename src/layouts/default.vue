@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import { db, auth } from "@/plugins/firebase.js";
+import { db, auth, functions } from "@/plugins/firebase.js";
 
 export default {
   data() {
@@ -95,6 +95,11 @@ export default {
     }
   },
   beforeCreate() {
+    const systemGetConfig = functions.httpsCallable("systemGetConfig");
+    systemGetConfig().then(result => {
+      this.$store.commit("setServerConfig", result.data);
+    });
+
     this.unregisterAuthObserver = auth.onAuthStateChanged(async user => {
       if (user) {
         console.log(
