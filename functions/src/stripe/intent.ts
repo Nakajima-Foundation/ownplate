@@ -1,10 +1,11 @@
 import * as functions from 'firebase-functions'
 import * as admin from 'firebase-admin';
-import * as constant from '../common/constant'
+import { order_status } from '../common/constant'
 import Stripe from 'stripe'
 import Order from '../models/Order'
 import * as utils from './utils'
 
+// This function is called by user to create a "payment intent" (to start the payment transaction)
 export const create = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
   const stripe = utils.get_stripe();
@@ -30,18 +31,17 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
       const order = Order.fromSnapshot<Order>(snapshot)
 
       // Check the stock status.
-      if (order.status !== constant.order_status.validation_ok) {
+      if (order.status !== order_status.validation_ok) {
         throw new functions.https.HttpsError('aborted', 'This order is invalid.')
       }
 
-      // BUGBUG: support JPY.
-      const multiple = 100; // 100 for USD, 1 for JPY
+      const multiple = utils.stripe_region.multiple; // 100 for USD, 1 for JPY
       const totalCharge = Math.round((order.total + tip) * multiple)
 
       const request = {
         setup_future_usage: 'off_session',
         amount: totalCharge,
-        currency: 'USD',
+        currency: utils.stripe_region.currency,
         payment_method: paymentMethodId,
         metadata: { uid, restaurantId, orderId }
       } as Stripe.PaymentIntentCreateParams
@@ -53,7 +53,7 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
 
       transaction.set(orderRef, {
         timePaid: admin.firestore.FieldValue.serverTimestamp(),
-        status: constant.order_status.customer_paid,
+        status: order_status.customer_paid,
         totalCharge: totalCharge / multiple,
         tip: Math.round(tip * multiple) / multiple,
         payment: {
@@ -76,6 +76,7 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
   }
 };
 
+// This function is called by admin to confurm a "payment intent" (to complete the payment transaction)
 export const confirm = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
   const stripe = utils.get_stripe();
@@ -112,7 +113,7 @@ export const confirm = async (db: FirebaseFirestore.Firestore, data: any, contex
         throw new functions.https.HttpsError('invalid-argument', `The order does not exist. ${orderRef.path}`)
       }
       // Check the stock status.
-      if (order.status !== constant.order_status.cooking_completed) {
+      if (order.status !== order_status.cooking_completed) {
         throw new functions.https.HttpsError('failed-precondition', 'This order is not ready yet.')
       }
 
@@ -130,7 +131,7 @@ export const confirm = async (db: FirebaseFirestore.Firestore, data: any, contex
         })
         transaction.set(orderRef, {
           timeConfirmed: admin.firestore.FieldValue.serverTimestamp(),
-          status: constant.order_status.customer_picked_up,
+          status: order_status.customer_picked_up,
         }, { merge: true })
         transaction.set(stripeRef, {
           paymentIntent
@@ -179,7 +180,7 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
       if (uid !== order.uid) {
         throw new functions.https.HttpsError('permission-denied', 'You do not have permission to cancel this request.')
       }
-      if (order.status !== constant.order_status.customer_paid) {
+      if (order.status !== order_status.customer_paid) {
         throw new functions.https.HttpsError('permission-denied', 'Invalid order state to cancel.')
       }
 
@@ -197,7 +198,7 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
         })
         transaction.set(orderRef, {
           timeCanceld: admin.firestore.FieldValue.serverTimestamp(),
-          status: constant.order_status.order_canceled,
+          status: order_status.order_canceled,
           uidCanceledBy: uid,
         }, { merge: true })
         transaction.set(stripeRef, {

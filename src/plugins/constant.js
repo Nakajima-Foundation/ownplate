@@ -18,6 +18,17 @@ export const order_error = {
   unknow_error: 900,
 };
 
+export const stripe_regions = {
+  "us": {
+    currency: 'USD',
+    multiple: 100
+  },
+  "ja": {
+    currency: 'JPY',
+    multiple: 1
+  }
+};
+
 export const daysOfWeek = {
   1: "monday",
   2: "tuesday",
