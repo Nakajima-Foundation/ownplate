@@ -9,7 +9,7 @@
     <div class="media-content">
       <span class="shop-name">{{ name }}</span>
     </div>
-    <sharing-buttons :title="name" />
+    <sharing-buttons :title="name" :url="shareUrl" />
   </div>
 </template>
 
@@ -30,7 +30,11 @@ export default {
     }
   },
   data() {
-    return {};
+    return {
+      shareUrl: `${location.protocol}//${
+        location.host
+      }/r/${this.restaurantId()}`
+    };
   },
   methods: {}
 };
