@@ -7,40 +7,81 @@ It is built with Firebase + Vue + Stripe, for productivity and scalability.
 [SPEC](./docs/SPEC.md)
 
 
-## Build Setup
+## Setup Firebase
 
-```bash
+ - Authentication
+   - Enable email/password and phone authentication as Sign-in providers
+   - Add your domain if you use custom domain.
+ - Database
+   - Create Firestore database
+ - Hosting
+   - Enable hosting
+   - Add your domain if you use custom domain.
+ - Storage
+   - Enable Storage.
+ - Functions
+   - Enable functions.
+   
+## Setup Stripe
+TBD.
+
+## Setup OwnPlate configuration
+
+### Environment variable
+TBD.
+
+### nuxt.config.js
+TBD.
+
+### src/config/project.js 
+TBD.
+
+## Deploy to firebase
+see CircleCI setting.
+[.circleci/config.yml](./.circleci/config.yml)
+
+# Run the development server on localhost
+
+```
 # install dependencies
 $ npm install
 
 # copy and edit project.js file
 $ cp src/config/default/ownplate-dev.js src/config/project.js
 
-# copy and edit .firebaserc file
-$ cp src/config/default/.firebaserc .
-
-# set config to cloud functions.
-
-firebase functions:config:set \
-stripe.secret_key="sk_xxx"
-```
-
-# serve with hot reload at localhost:3000
 $ STRIPE_CLIENT_ID=xxx STRIPE_API_KEY=xxx GAPIKey=xxx npm run dev
-
+```
 GAPIKey is google API key for Google Map
 STRIPE_CLIENT_ID and STRIPE_API_KEY are Stripe's id.
 
-# build for production and launch server
+
+## Build Vue.js.
+
+see CircleCI setting.
+This file 
+[.circleci/config.yml](./.circleci/config.yml)
+
+This file contains the latest and valid information for the build.
+
+# Build for production and launch server
+```
 $ npm run build
 $ npm run start
+```
 
-# generate static project
+# Generate static project
+```
 $ npm run generate
+```
 
-# "devsync": "HOST=192.168.100.20 PORT=3333 nuxt",
-# ローカル環境（PC）を自分のスマホで確認したい場合、同じネットワークに接続してHOST={IPアドレス}を指定してあげれば、スマホからも確認できます
+#  Test with a smartphone on your local network
+"devsync": "HOST=192.168.100.20 PORT=3333 nuxt",
+
+If you want to check the local environment with your smartphone, you can also check from your smartphone to specify HOST = {IP address} on local network.
+
+```
 $ npm run devsync
+```
 
 For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
 
@@ -59,20 +100,3 @@ firebase deploy --only functions
 https://fontawesome.com/icons?d=gallery
 https://materialdesignicons.com/cdn/2.0.46/
 
-## ESlint + Prettier
-
-Saveと同時にフォーマッターが動くように設定しています（.eslintrc.js）。
-VSCodeを使用して、すでにPrettierを使っている場合競合して、うまく保存できない場合があります。
-
-その場合VSCode側にPrettierをオフにする必要があります。
-
-* ① VSCodeの左下の歯車を押す
-* ② 設定を押す
-* ③ 右上の右から三番目の「設定（JSON）を開く」を押す
-* ④ 以下の設定がある場合は確認する（なければOK！）
-
-"[vue]": {
-  "editor.formatOnSave": false // ここがtrueになっている場合はfalseにする
-},
-
-※ 設定がない場合は無視してOK。trueになっている場合のみfalseに変更する

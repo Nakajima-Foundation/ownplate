@@ -19,6 +19,7 @@
     "deploy_fs_rule": "firebase deploy --only firestore:rules --project=production",
     "use_staging": "firebase use staging && cp src/config/default/ownplate-dev.js src/config/project.js",
     "use_production": "firebase use production && cp src/config/default/ownplate.js src/config/project.js",
+    "use_eu": "firebase use eu && cp src/config/default/ownplate-eu.js src/config/project.js",
     "use_jp": "firebase use jp && cp src/config/default/ownplate-jp.js src/config/project.js"
   },
   "dependencies": {

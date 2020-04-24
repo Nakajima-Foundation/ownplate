@@ -24,6 +24,11 @@ export const stripe_regions = {
     multiple: 100,
     hidePostalCode: false
   },
+  "eu": {
+    currency: 'EUR',
+    multiple: 100,
+    hidePostalCode: false
+  },
   "jp": {
     currency: 'JPY',
     multiple: 1,
