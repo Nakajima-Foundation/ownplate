@@ -173,9 +173,10 @@ export default {
     tabIndex() {
       this.$router.push(this.tabs[this.tabIndex]);
     },
-    user() {
+    user(newValue) {
       console.log("user changed");
-      if (this.waitForUser) {
+      if (this.waitForUser && newValue) {
+        console.log("handling deferred notification");
         this.goCheckout();
       }
     }
