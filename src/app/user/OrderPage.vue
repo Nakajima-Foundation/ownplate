@@ -171,8 +171,9 @@ export default {
       .doc(`restaurants/${this.restaurantId()}/orders/${this.orderId}`)
       .onSnapshot(
         order => {
-          if (order.exists) {
-            const order_data = order.data();
+
+          const order_data = order.exists ? order.data() : {};
+          if (this.user.uid === order_data.uid) {
             this.orderInfo = order_data;
           } else if (!this.isDeleting) {
             this.notFound = true;
@@ -238,7 +239,10 @@ export default {
     },
     orderId() {
       return this.$route.params.orderId;
-    }
+    },
+    user() {
+      return this.$store.state.user;
+    },
   },
   methods: {
     handleTipChange(tip) {
