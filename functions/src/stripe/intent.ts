@@ -36,7 +36,7 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
       }
 
       const multiple = utils.stripe_region.multiple; // 100 for USD, 1 for JPY
-      const totalCharge = Math.round((order.total + tip) * multiple)
+      const totalCharge = Math.round((order.total + Math.max(0, tip)) * multiple)
 
       const request = {
         setup_future_usage: 'off_session',
