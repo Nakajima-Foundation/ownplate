@@ -101,6 +101,7 @@ export default {
       // isCardModalActive: false
       menus: [],
       titles: [],
+      waitForUser: false,
 
       detacher: [],
       notFound: null
@@ -171,6 +172,12 @@ export default {
   watch: {
     tabIndex() {
       this.$router.push(this.tabs[this.tabIndex]);
+    },
+    user() {
+      console.log("user changed");
+      if (this.waitForUser) {
+        this.goCheckout();
+      }
     }
   },
   computed: {
@@ -211,6 +218,9 @@ export default {
       this.loginVisible = false;
       if (this.user) {
         this.goCheckout();
+      } else {
+        console.log("this.user it not ready yet");
+        this.waitForUser = true;
       }
     },
     async goCheckout() {
