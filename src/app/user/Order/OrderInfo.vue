@@ -118,7 +118,9 @@ export default {
   watch: {
     orderInfo() {
       //console.log("orderInfo changed", this.orderInfo.total);
-      this.updateTip(15);
+      if (this.orderInfo.status === order_status.validation_ok) {
+        this.updateTip(15);
+      }
     }
   },
   components: {
