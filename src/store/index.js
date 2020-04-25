@@ -31,7 +31,7 @@ export const getters = {
     return state.user && state.user.name || "";
   },
   stripeRegion: (state) => {
-    return stripe_regions[state.server.region || "us"]
+    return stripe_regions[state.server.region || "US"]
   }
 };
 
