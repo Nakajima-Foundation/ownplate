@@ -3,8 +3,8 @@ import { stripe_regions } from '../common/constant'
 import Stripe from 'stripe'
 
 const locale = functions.config().locale;
-export const region = (locale && locale.region) || "us";
-export const stripe_region = stripe_regions[region] || stripe_regions["us"];
+export const region = (locale && locale.region) || "US";
+export const stripe_region = stripe_regions[region] || stripe_regions["US"];
 
 export const validate_auth = (context: functions.https.CallableContext) => {
   if (!context.auth) {

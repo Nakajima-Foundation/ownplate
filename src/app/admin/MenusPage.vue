@@ -154,7 +154,7 @@ export default {
         this.restaurantInfo = results.data();
         this.readyToDisplay = true;
         this.notFound = false;
-        this.updateBrokenMenu();
+        // this.updateBrokenMenu();
       } else {
         this.notFound = true;
         // 404
@@ -188,12 +188,15 @@ export default {
       });
     }
   },
+  /*
   watch: {
     itemsObj: function() {
       this.updateBrokenMenu();
     }
   },
+*/
   methods: {
+    /*
     updateBrokenMenu() {
       // if loaded all data
       if (this.notFound === false && Object.keys(this.itemsObj).length > 0) {
@@ -205,6 +208,7 @@ export default {
         }
       }
     },
+    */
     async updateTitle(title) {
       await db
         .doc(`restaurants/${this.restaurantId()}/titles/${title.id}`)

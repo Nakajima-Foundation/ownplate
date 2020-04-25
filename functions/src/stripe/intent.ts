@@ -36,7 +36,7 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
       }
 
       const multiple = utils.stripe_region.multiple; // 100 for USD, 1 for JPY
-      const totalCharge = Math.round((order.total + tip) * multiple)
+      const totalCharge = Math.round((order.total + Math.max(0, tip)) * multiple)
 
       const request = {
         setup_future_usage: 'off_session',
@@ -163,11 +163,7 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
 
   const stripeSnapshot = await db.doc(`/admins/${venderId}/public/stripe`).get()
   const stripeData = stripeSnapshot.data()
-  if (!stripeData) {
-    throw new functions.https.HttpsError('invalid-argument', 'This restaurant is unavailable.')
-  }
 
-  const stripeAccount = stripeData.stripeAccount
   try {
     return await db.runTransaction(async transaction => {
 
@@ -192,7 +188,7 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
         throw new functions.https.HttpsError('permission-denied', 'The user does not have permission to cancel this request.')
       }
 
-      if (!order.payment || !order.payment.stripe) {
+      if (!stripeData || !order.payment || !order.payment.stripe) {
         // No payment transaction
         transaction.set(orderRef, {
           timeCanceld: admin.firestore.FieldValue.serverTimestamp(),
@@ -201,6 +197,7 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
         }, { merge: true })
         return { success: true, payment: false }
       }
+      const stripeAccount = stripeData.stripeAccount
 
       const stripeRecord = (await transaction.get(stripeRef)).data();
       if (!stripeRecord || !stripeRecord.paymentIntent || !stripeRecord.paymentIntent.id) {

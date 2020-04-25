@@ -39,7 +39,7 @@
     "itemDescription": "Item description",
     "itemPhoto": "Item photo",
     "itemOptions": "Item options",
-    "itemOptionsNote": "For altenatives, use comma to separate them (e.g., \"Chiken, Pork, Tofu\")",
+    "itemOptionsNote": "For altenatives, use comma to separate them (e.g., \"Chicken, Pork, Tofu\")",
     "itemAddOption": "Add Option",
     "save": "Save",
     "itemInvalidMessage": "This item is not on your menu because data is invalid."
@@ -178,7 +178,8 @@
         "auth/user-not-found": "There is no user record corresponding to this identifier.",
         "auth/wrong-password": "The password is invalid",
         "auth/too-many-requests": "Too many unsuccessful login attempts. Please try again later.",
-        "auth/invalid-email": "The email address is badly formatted."
+        "auth/invalid-email": "The email address is badly formatted.",
+        "auth/unauthorized-continue-uri": "Domain not whitelisted by project"
       }
     }
   },

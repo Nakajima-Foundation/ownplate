@@ -7,9 +7,12 @@ jobs:
       name: node/default
     steps:
       - checkout
+      - node/install:
+          node-version: 12.1.0
       - node/with-cache:
           steps:
             - run: npm install
+            - run: npm rebuild node-sass
             - run: npm install --save-dev firebase-tools
             - run: cp src/config/default/ownplate-dev.js src/config/project.js
             - run: cp configs/.firebaserc ./

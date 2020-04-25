@@ -65,10 +65,14 @@ export default {
       name: "",
       password: "",
       confirmPassword: "",
+      deferredPush: false,
       emailTaken: "---invalid---"
     };
   },
   computed: {
+    user() {
+      return this.$store.state.user;
+    },
     errors() {
       let errors = {};
       if (this.password !== this.confirmPassword) {
@@ -85,6 +89,14 @@ export default {
       return errors;
     }
   },
+  watch: {
+    user(newValue) {
+      console.log("user updated", this.deferredPush);
+      if (this.deferredPush && newValue) {
+        this.$router.push("/admin/restaurants");
+      }
+    }
+  },
   methods: {
     handleCancel() {
       this.$router.push("/");
@@ -96,7 +108,7 @@ export default {
           this.email,
           this.password
         );
-        console.log("onSignup success", result.user.uid, this.name);
+        console.log("signup success", result.user.uid, this.name);
         await db.doc(`admins/${result.user.uid}`).set({
           name: this.name,
           created: firestore.FieldValue.serverTimestamp()
@@ -105,7 +117,13 @@ export default {
           email: result.user.email,
           updated: firestore.FieldValue.serverTimestamp()
         });
-        this.$router.push("/admin/restaurants");
+        if (this.user) {
+          console.log("signup calling push");
+          this.$router.push("/admin/restaurants");
+        } else {
+          console.log("signup deferred push");
+          this.deferredPush = true;
+        }
       } catch (error) {
         console.log("onSignup failed", error.code, error.message);
         if (error.code === "auth/email-already-in-use") {

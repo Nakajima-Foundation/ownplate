@@ -466,7 +466,7 @@ export default {
       }
     },
     async submitRestaurant() {
-      if (this.hasError) return;
+      // if (this.hasError) return;
 
       const restaurantId = this.restaurantId();
       if (this.restProfileCroppa.chosenFile) {

@@ -118,7 +118,11 @@ export default {
   watch: {
     orderInfo() {
       //console.log("orderInfo changed", this.orderInfo.total);
-      this.updateTip(15);
+      if (this.isTipEditable) {
+        this.updateTip(15);
+      } else {
+        this.tip = this.orderInfo.tip;
+      }
     }
   },
   components: {
