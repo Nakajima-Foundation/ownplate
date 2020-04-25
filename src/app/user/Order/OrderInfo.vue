@@ -118,7 +118,7 @@ export default {
   watch: {
     orderInfo() {
       //console.log("orderInfo changed", this.orderInfo.total);
-      if (this.orderInfo.status === order_status.validation_ok) {
+      if (this.isTipEditable) {
         this.updateTip(15);
       } else {
         this.tip = this.orderInfo.tip;
