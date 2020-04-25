@@ -120,6 +120,8 @@ export default {
       //console.log("orderInfo changed", this.orderInfo.total);
       if (this.orderInfo.status === order_status.validation_ok) {
         this.updateTip(15);
+      } else {
+        this.tip = this.orderInfo.tip;
       }
     }
   },
