@@ -155,7 +155,7 @@ export default {
           const snapshot = await db.doc(`/admins/${uid}/public/stripe`).get();
           const stripeInfo = snapshot.data();
           console.log("restaurant", uid, stripeInfo);
-          this.stripeAccount = stripeInfo["stripeAccount"];
+          this.stripeAccount = stripeInfo && stripeInfo["stripeAccount"];
         } else {
           this.notFound = true;
         }
@@ -171,7 +171,6 @@ export default {
       .doc(`restaurants/${this.restaurantId()}/orders/${this.orderId}`)
       .onSnapshot(
         order => {
-
           const order_data = order.exists ? order.data() : {};
           if (this.user.uid === order_data.uid) {
             this.orderInfo = order_data;
@@ -242,7 +241,7 @@ export default {
     },
     user() {
       return this.$store.state.user;
-    },
+    }
   },
   methods: {
     handleTipChange(tip) {
