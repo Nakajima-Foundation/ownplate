@@ -1,4 +1,4 @@
-import * as supertest from 'supertest';
+import supertest from 'supertest';
 import { should } from 'chai';
 
 import * as express from '../src/functions/express';
