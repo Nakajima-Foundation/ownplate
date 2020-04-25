@@ -19,17 +19,17 @@ export const order_error = {
 };
 
 export const stripe_regions = {
-  "us": {
+  "US": {
     currency: 'USD',
     multiple: 100,
     hidePostalCode: false
   },
-  "eu": {
+  "EU": {
     currency: 'EUR',
     multiple: 100,
     hidePostalCode: false
   },
-  "jp": {
+  "JP": {
     currency: 'JPY',
     multiple: 1,
     hidePostalCode: true
