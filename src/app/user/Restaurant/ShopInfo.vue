@@ -49,8 +49,10 @@
                 <td>
                   <template v-if="shopInfo.businessDay[key]">
                     <template v-for="(data) in shopInfo.openTimes[key]">
-                      {{num2time(data.start)}} - {{num2time(data.end)}}
-                      <br />
+                      <template v-if="validDate(data)">
+                        {{num2time(data.start)}} - {{num2time(data.end)}}
+                        <br />
+                      </template>
                     </template>
                   </template>
                   <template v-else>Closed</template>
@@ -134,7 +136,10 @@ export default {
           }
         }
       }
-    }
+    },
+    validDate(date) {
+      return !this.isNull(date.start) && !this.isNull(date.end);
+    },
   }
 };
 </script>
