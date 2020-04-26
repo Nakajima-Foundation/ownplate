@@ -35,7 +35,7 @@ export const pushSMS = async (subject, message, phone_number) => {
     // @ts-ignore
     const publishTextPromise = await aws.publish(params).promise();
     if (!publishTextPromise) {
-      return console.log("ERROR");
+      console.log("ERROR");
     }
   } else {
     console.log("SMS not push")
