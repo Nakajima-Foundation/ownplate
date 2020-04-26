@@ -52,7 +52,7 @@
                 <b-radio
                   v-for="(choice, index2) in option"
                   v-model="optionValues[index]"
-                  name="key + index"
+                  :name="`${item.id}${index}`"
                   :native-value="choice"
                   :key="index2"
                 >{{ choice }}</b-radio>
