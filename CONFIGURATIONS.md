@@ -1,15 +1,15 @@
-# firebase
+# Firebase Functions
 
-- stripe.secret_key - stripe secret key
+- stripe.secret_key - Stripe secret key
 - locale.region - region. US, JP, EU
-- aws.id - aws id for sms push
-- aws.secret - aws scret for sms push
+- aws.id - AWS id for sms push
+- aws.secret - AWS secret for sms push
 
 # Environment variables for build client
 
-- STRIPE_API_KEY - stripe public key
-- STRIPE_CLIENT_ID - stripe oauth client id
-- GAPIKey - google map api key
+- STRIPE_API_KEY - Stripe public key
+- STRIPE_CLIENT_ID - Stripe oauth client id
+- GAPIKey - Google map api key
 
-# Firebase configurations
-- src/config/project.js
+# Firebase web client (Vue.js) configurations
+- src/config/project.js - configuration file.
