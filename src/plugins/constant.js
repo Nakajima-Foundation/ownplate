@@ -22,12 +22,18 @@ export const stripe_regions = {
   "US": {
     currency: 'USD',
     multiple: 100,
-    hidePostalCode: false
+    hidePostalCode: false,
+    allergens: [
+      "gluten", "crustacean", "egg", "milk", "fish", "peanuts", "soybeans", "shellfish", "raw"
+    ]
   },
   "EU": {
     currency: 'EUR',
     multiple: 100,
-    hidePostalCode: false
+    hidePostalCode: false,
+    allergens: [
+      "gluten", "crustacean", "egg", "milk", "lupin", "mollusc"
+    ]
   },
   "JP": {
     currency: 'JPY',
