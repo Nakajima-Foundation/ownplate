@@ -87,7 +87,7 @@ export default {
       type: Number,
       required: true
     },
-    openMenuFlag: {
+    initialOpenMenuFlag: {
       type: Boolean,
       required: true
     },
@@ -98,7 +98,7 @@ export default {
   },
   data() {
     return {
-//      openMenuFlag: false,
+      openMenuFlag: this.initialOpenMenuFlag,
       optionValues: []
     };
   },
@@ -178,9 +178,9 @@ export default {
     },
     openMenu() {
       this.openMenuFlag = true;
-//      if (this.count == 0) {
-//        this.setCount(this.count + 1);
-//      }
+      //      if (this.count == 0) {
+      //        this.setCount(this.count + 1);
+      //      }
     },
     closeMenu() {
       this.openMenuFlag = false;

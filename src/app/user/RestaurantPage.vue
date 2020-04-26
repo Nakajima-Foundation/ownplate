@@ -29,7 +29,7 @@
                   :item="itemsObj[itemId]"
                   :count="orders[itemId] || 0"
                   :optionPrev="optionsPrev[itemId]"
-                  :openMenuFlag="(orders[itemId] || 0) > 0"
+                  :initialOpenMenuFlag="(orders[itemId] || 0) > 0"
                   @didCountChange="didCountChange($event)"
                   @didOptionValuesChange="didOptionValuesChange($event)"
                 ></item-card>
