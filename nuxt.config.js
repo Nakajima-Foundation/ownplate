@@ -90,8 +90,9 @@ export default {
   router: {
     extendRoutes(routes, resolve) {
       customRoutes.map(route => {
-        route.component = resolve(__dirname, "src/app/" + route.component);
-        routes.push(route);
+        const r = {...route};
+        r.component = resolve(__dirname, "src/app/" + route.component);
+        routes.push(r);
       });
     }
   },
