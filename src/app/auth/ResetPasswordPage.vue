@@ -53,6 +53,7 @@ export default {
   },
   methods: {
     handleCancel() {
+      //this.$router.push(localePath("/admin/user/signin"));
       this.$router.push("/admin/user/signin");
     },
     async handleNext() {
