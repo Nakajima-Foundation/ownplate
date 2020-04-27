@@ -2,7 +2,7 @@
   <div>
     <b-navbar>
       <template slot="brand">
-        <b-navbar-item tag="router-link" :to="{ path: '/' }">
+        <b-navbar-item tag="router-link" :to="{ path: localePath('/') }">
           <img
             src="/OwnPlate-Logo-Horizontal-YellowWhite.svg"
             alt="Lightweight UI components for Vue.js based on Bulma"
@@ -18,13 +18,13 @@
           right
           icon-left="github-circle"
         >
-          <b-navbar-item href="/">
+          <b-navbar-item :href="localePath('/')">
             <span class="icon">
               <i class="fas fa-home"></i>
             </span>
             <span class="nav-item">{{$t("menu.home")}}</span>
           </b-navbar-item>
-          <b-navbar-item href="/about">
+          <b-navbar-item :href="localePath('/about')">
             <span class="icon">
               <i class="far fa-file-alt"></i>
             </span>
