@@ -1,3 +1,5 @@
-export const translation = {
-  hello: "Hello World."
+export const resource = {
+  translation: {
+    hello: "Hello World."
+  }
 }
