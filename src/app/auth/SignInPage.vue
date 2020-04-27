@@ -28,9 +28,9 @@
         <b-button @click="handleCancel">{{ $t('button.cancel') }}</b-button>
         <b-button type="is-primary" :loading="isLoading" @click="onSignin">{{ $t('button.next') }}</b-button>
         <p style="margin-top: 2rem">
-          <router-link :to="localePath('/admin/user/signup')">{{$t('admin.pleaseSignUp')}}</router-link>
+          <router-link to="/admin/user/signup">{{$t('admin.pleaseSignUp')}}</router-link>
           <br />
-          <router-link :to="localePath('/admin/user/reset')">{{$t('admin.forgotPassword')}}</router-link>
+          <router-link to="/admin/user/reset">{{$t('admin.forgotPassword')}}</router-link>
         </p>
         <p style="margin-top: 2rem"></p>
       </form>
@@ -60,14 +60,12 @@ export default {
     user(newValue) {
       console.log("user changed", newValue);
       if (newValue) {
-        // this.$router.push(localePath("/admin/restaurants"));
         this.$router.push("/admin/restaurants");
       }
     }
   },
   methods: {
     handleCancel() {
-      // this.$router.push(localePath("/"));
       this.$router.push("/");
     },
     async onSignin() {

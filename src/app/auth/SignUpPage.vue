@@ -93,14 +93,12 @@ export default {
     user(newValue) {
       console.log("user updated", this.deferredPush);
       if (this.deferredPush && newValue) {
-        // this.$router.push(localePath("/admin/restaurants"));
         this.$router.push("/admin/restaurants");
       }
     }
   },
   methods: {
     handleCancel() {
-      // this.$router.push(localePath("/"));
       this.$router.push("/");
     },
     async onSignup() {
@@ -121,7 +119,6 @@ export default {
         });
         if (this.user) {
           console.log("signup calling push");
-          // this.$router.push(localePath("/admin/restaurants"));
           this.$router.push("/admin/restaurants");
         } else {
           console.log("signup deferred push");

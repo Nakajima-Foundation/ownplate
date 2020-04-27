@@ -2,7 +2,7 @@
   <div>
     <b-navbar>
       <template slot="brand">
-        <b-navbar-item tag="router-link" :to="{ path: localePath('/') }">
+        <b-navbar-item tag="router-link" :to="{ path: '/' }">
           <img
             src="/OwnPlate-Logo-Horizontal-YellowWhite.svg"
             alt="Lightweight UI components for Vue.js based on Bulma"
@@ -18,13 +18,13 @@
           right
           icon-left="github-circle"
         >
-          <b-navbar-item :href="localePath('/')">
+          <b-navbar-item href="/">
             <span class="icon">
               <i class="fas fa-home"></i>
             </span>
             <span class="nav-item">{{$t("menu.home")}}</span>
           </b-navbar-item>
-          <b-navbar-item :href="localePath('/about')">
+          <b-navbar-item href="/about">
             <span class="icon">
               <i class="far fa-file-alt"></i>
             </span>
@@ -99,7 +99,6 @@ export default {
     systemGetConfig().then(result => {
       this.$store.commit("setServerConfig", result.data);
     });
-
     this.unregisterAuthObserver = auth.onAuthStateChanged(async user => {
       if (user) {
         console.log(
