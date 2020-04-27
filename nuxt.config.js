@@ -13,6 +13,14 @@ const numberFormats = ((locale) => {
       }
     };
   }
+  if (locale === 'eu') {
+    return {
+      currency: {
+        style: 'currency',
+        currency: 'EUR'
+      }
+    };
+  }
   return {
     currency: {
       style: 'currency',
