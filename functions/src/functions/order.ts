@@ -105,13 +105,8 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
       return { success: true }
     })
     if (sendSms) {
-      const foo = {
-        lng: lng || "en",
-        resources: lang.resources
-      }
-      console.log("foo", foo)
       const t = await i18next.init({
-        lng: lng || "en",
+        lng: lng || utils.stripe_region.langs[0],
         resources: lang.resources
       })
       await sms.pushSMS("OwnPlate", t("hello"), phoneNumber)
