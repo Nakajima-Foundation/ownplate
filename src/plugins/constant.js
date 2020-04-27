@@ -20,6 +20,7 @@ export const order_error = {
 
 export const stripe_regions = {
   "US": {
+    langs: ["en", "es"], // first one is default
     currency: 'USD',
     multiple: 100,
     hidePostalCode: false,
@@ -28,6 +29,7 @@ export const stripe_regions = {
     ]
   },
   "EU": {
+    langs: ["en", "fr", "es", "it", "de", "nl"],
     currency: 'EUR',
     multiple: 100,
     hidePostalCode: false,
@@ -36,6 +38,7 @@ export const stripe_regions = {
     ]
   },
   "JP": {
+    langs: ["ja"],
     currency: 'JPY',
     multiple: 1,
     hidePostalCode: true

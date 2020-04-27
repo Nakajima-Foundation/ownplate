@@ -260,7 +260,6 @@ export default {
           restaurantId: this.restaurantId(),
           orderId: this.orderId,
           sendSms: true,
-          lng: "ja",
           status: newStatus
         });
         console.log("update", data);
