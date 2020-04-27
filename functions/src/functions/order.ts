@@ -87,7 +87,9 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
         switch (status) {
           //case order_status.order_canceled:    call stripeCancelIntent instead
           case order_status.order_accepted:
-            msgKey = "msg_order_accepted"
+            if (status > order.status) {
+              msgKey = "msg_order_accepted"
+            }
             return true
           case order_status.cooking_completed:
             msgKey = "msg_cooking_completed"
