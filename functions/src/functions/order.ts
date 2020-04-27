@@ -3,6 +3,7 @@ import * as admin from 'firebase-admin';
 import * as utils from '../stripe/utils'
 import * as constant from '../common/constant'
 import * as sms from './sms'
+import i18next from 'i18next'
 import Order from '../models/Order'
 
 // This function is called by users to place orders without paying
@@ -45,8 +46,8 @@ export const place = async (db: FirebaseFirestore.Firestore, data: any, context:
 // This function is called by admins (restaurant operators) to update the status of order
 export const update = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
-  const { restaurantId, orderId, status, smsMessage } = data;
-  utils.validate_params({ restaurantId, orderId, status }) // smsMessage is optional
+  const { restaurantId, orderId, status, sendSms, lng } = data;
+  utils.validate_params({ restaurantId, orderId, status }) // sendSms, lng is optional
 
   try {
     const restaurantDoc = await db.doc(`restaurants/${restaurantId}`).get()
@@ -102,8 +103,23 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
       })
       return { success: true }
     })
-    if (smsMessage && phoneNumber) {
-      await sms.pushSMS("OwnPlate", smsMessage, phoneNumber)
+    if (sendSms) {
+      const t = await i18next.init({
+        lng: lng || "en",
+        resources: {
+          en: {
+            translation: {
+              hello: "Hello World"
+            }
+          },
+          ja: {
+            translation: {
+              hello: "こんにちは"
+            }
+          }
+        }
+      })
+      await sms.pushSMS("OwnPlate", t("hello"), phoneNumber)
     }
     return result
   } catch (error) {
