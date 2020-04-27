@@ -26,4 +26,5 @@ export default class Order extends Doc {
   @Field payment?: Payment
   @Field phoneNumber?: string
   @Field number: number = 0
+  @Field sendSMS: boolean = false
 }

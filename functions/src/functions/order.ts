@@ -10,8 +10,8 @@ import Order from '../models/Order'
 // This function is called by users to place orders without paying
 export const place = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
-  const { restaurantId, orderId, tip } = data;
-  utils.validate_params({ restaurantId, orderId })
+  const { restaurantId, orderId, tip, sendSMS } = data;
+  utils.validate_params({ restaurantId, orderId }) // tip and sendSMS are optinoal
 
   try {
     const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`)
@@ -34,6 +34,7 @@ export const place = async (db: FirebaseFirestore.Firestore, data: any, context:
         status: order_status.order_placed,
         totalCharge: order.total + tip,
         tip: roundedTip,
+        sendSMS: sendSMS || false,
         timePlaced: admin.firestore.FieldValue.serverTimestamp()
       })
 
@@ -47,8 +48,8 @@ export const place = async (db: FirebaseFirestore.Firestore, data: any, context:
 // This function is called by admins (restaurant operators) to update the status of order
 export const update = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
-  const { restaurantId, orderId, status, sendSms, lng } = data;
-  utils.validate_params({ restaurantId, orderId, status }) // sendSms, lng is optional
+  const { restaurantId, orderId, status, lng } = data;
+  utils.validate_params({ restaurantId, orderId, status }) // lng is optional
 
   try {
     const restaurantDoc = await db.doc(`restaurants/${restaurantId}`).get()
@@ -61,6 +62,7 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
     let phoneNumber: string | undefined = undefined;
     let msgKey: string | undefined = undefined;
     let orderNumber: string = "";
+    let sendSMS: boolean = false;
 
     const result = await db.runTransaction(async transaction => {
       const order = Order.fromSnapshot<Order>(await transaction.get(orderRef))
@@ -69,6 +71,7 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
       }
       phoneNumber = order.phoneNumber
       orderNumber = "#" + `00${order.number}`.slice(-3)
+      sendSMS = order.sendSMS
 
       const isPreviousStateChangable: Boolean = (() => {
         switch (order.status) {
@@ -112,7 +115,7 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
       })
       return { success: true }
     })
-    if (sendSms && msgKey) {
+    if (sendSMS && msgKey) {
       const t = await i18next.init({
         lng: lng || utils.stripe_region.langs[0],
         resources
