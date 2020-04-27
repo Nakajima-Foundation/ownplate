@@ -25,4 +25,5 @@ export default class Order extends Doc {
   @Field uid!: string
   @Field payment?: Payment
   @Field phoneNumber?: string
+  @Field number: number = 0
 }

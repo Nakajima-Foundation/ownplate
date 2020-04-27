@@ -60,6 +60,7 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
     const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`)
     let phoneNumber: string | undefined = undefined;
     let msgKey: string | undefined = undefined;
+    let orderNumber: string = "";
 
     const result = await db.runTransaction(async transaction => {
       const order = Order.fromSnapshot<Order>(await transaction.get(orderRef))
@@ -67,6 +68,7 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
         throw new functions.https.HttpsError('invalid-argument', 'This order does not exist.')
       }
       phoneNumber = order.phoneNumber
+      orderNumber = "#" + `00${order.number}`.slice(-3)
 
       const isPreviousStateChangable: Boolean = (() => {
         switch (order.status) {
@@ -113,7 +115,7 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
         lng: lng || utils.stripe_region.langs[0],
         resources
       })
-      await sms.pushSMS("OwnPlate", `${t(msgKey)} ${restaurant.restaurantName}`, phoneNumber)
+      await sms.pushSMS("OwnPlate", `${t(msgKey)} ${restaurant.restaurantName} ${orderNumber}`, phoneNumber)
     }
     return result
   } catch (error) {
