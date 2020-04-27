@@ -84,7 +84,7 @@
       <div class="field is-horizontal">
         <div class="field-body">
           <h4>
-            <h4>{{$t('shopInfo.name')}}</h4>
+            {{$t('shopInfo.name')}}
             <span class="p-font bold" style="color:#CB4B4B">*</span>
           </h4>
         </div>
@@ -288,8 +288,7 @@
       <b-button
         style="margin-right:auto"
         type="is-primary"
-        class="counter-button"
-        expanded
+        class="counter-button save_btn"
         rounded
         @click="submitRestaurant"
       >Save</b-button>
@@ -609,6 +608,19 @@ export default {
 }
 .card_cover_image {
   height: 150px;
+}
+.save_btn {
+  position: fixed;
+  bottom: 2rem;
+  width: 80%;
+  left: 50%;
+  transform: translate(-50%, 0);
+  margin-left: auto;
+  margin-right: auto;
+  height: 4rem;
+  font-size: 1.5rem;
+  font-weight: 200;
+  z-index: 10,
 }
 /deep/.ti-input {
   border-radius: 0.4rem !important;

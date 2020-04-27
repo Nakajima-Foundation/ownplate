@@ -52,7 +52,7 @@
                 <b-radio
                   v-for="(choice, index2) in option"
                   v-model="optionValues[index]"
-                  name="key + index"
+                  :name="`${item.id}${index}`"
                   :native-value="choice"
                   :key="index2"
                 >{{ choice }}</b-radio>
@@ -87,6 +87,10 @@ export default {
       type: Number,
       required: true
     },
+    initialOpenMenuFlag: {
+      type: Boolean,
+      required: true
+    },
     optionPrev: {
       type: Array,
       required: false
@@ -94,7 +98,7 @@ export default {
   },
   data() {
     return {
-      openMenuFlag: false,
+      openMenuFlag: this.initialOpenMenuFlag,
       optionValues: []
     };
   },
@@ -174,9 +178,9 @@ export default {
     },
     openMenu() {
       this.openMenuFlag = true;
-      if (this.count == 0) {
-        this.setCount(this.count + 1);
-      }
+      //      if (this.count == 0) {
+      //        this.setCount(this.count + 1);
+      //      }
     },
     closeMenu() {
       this.openMenuFlag = false;
