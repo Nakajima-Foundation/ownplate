@@ -2,6 +2,7 @@ import * as functions from 'firebase-functions'
 import * as admin from 'firebase-admin';
 import * as utils from '../stripe/utils'
 import * as constant from '../common/constant'
+import * as sms from './sms'
 import Order from '../models/Order'
 
 // This function is called by users to place orders without paying
@@ -44,8 +45,8 @@ export const place = async (db: FirebaseFirestore.Firestore, data: any, context:
 // This function is called by admins (restaurant operators) to update the status of order
 export const update = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
-  const { restaurantId, orderId, status } = data;
-  utils.validate_params({ restaurantId, orderId, status })
+  const { restaurantId, orderId, status, smsMessage } = data;
+  utils.validate_params({ restaurantId, orderId, status }) // smsMessage is optional
 
   try {
     const restaurantDoc = await db.doc(`restaurants/${restaurantId}`).get()
@@ -55,12 +56,14 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
     }
 
     const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`)
+    let phoneNumber: string | undefined = undefined;
 
-    return await db.runTransaction(async transaction => {
+    const result = await db.runTransaction(async transaction => {
       const order = Order.fromSnapshot<Order>(await transaction.get(orderRef))
       if (!order) {
         throw new functions.https.HttpsError('invalid-argument', 'This order does not exist.')
       }
+      phoneNumber = order.phoneNumber
 
       const isPreviousStateChangable: Boolean = (() => {
         switch (order.status) {
@@ -99,6 +102,10 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
       })
       return { success: true }
     })
+    if (smsMessage && phoneNumber) {
+      await sms.pushSMS("OwnPlate", smsMessage, phoneNumber)
+    }
+    return result
   } catch (error) {
     throw utils.process_error(error)
   }
