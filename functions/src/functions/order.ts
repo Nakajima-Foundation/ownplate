@@ -3,7 +3,7 @@ import * as admin from 'firebase-admin';
 import * as utils from '../stripe/utils'
 import * as constant from '../common/constant'
 import * as sms from './sms'
-import { resources } from '../lang/resouces'
+import * as lang from '../lang/resouces'
 import i18next from 'i18next'
 import Order from '../models/Order'
 
@@ -107,7 +107,7 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
     if (sendSms) {
       const t = await i18next.init({
         lng: lng || "en",
-        resources
+        resources: lang.resources
       })
       await sms.pushSMS("OwnPlate", t("hello"), phoneNumber)
     }
