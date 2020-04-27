@@ -10,12 +10,12 @@
 
             <div class="container content has-text-centered">
               <h2>
-                <nuxt-link :to="localePath('/r/' + restaurantid)">{{ restaurantname || "no restaurant name"}}</nuxt-link>
+                <nuxt-link :to="'/r/' + restaurantid">{{ restaurantname || "no restaurant name"}}</nuxt-link>
               </h2>
             </div>
             <div style="text-align:center;margin-top:1rem;">
               <div class="p-font">
-                <nuxt-link :to="localePath('/r/' + restaurantid)">{{`${host}/r/${restaurantid}`}}</nuxt-link>
+                <nuxt-link :to="'/r/' + restaurantid">{{`${host}/r/${restaurantid}`}}</nuxt-link>
               </div>
               <div class="p-font">{{ streetaddress || "no streetaddress"}}</div>
               <div class="p-font" style="margin-top:-0.8rem;">
@@ -29,14 +29,14 @@
               <div style="text-align:center;">
                 <h2>
                   <nuxt-link  to="#" @click.native="copyClipboard()"><b-icon icon="share" size="is-midium"></b-icon>{{$t('admin.shareRestaurant')}}</nuxt-link>
-                  <nuxt-link :to="localePath('/admin/restaurants/' + restaurantid)"> <b-icon icon="pencil" size="is-midium"></b-icon>{{$t('admin.editAbout')}}</nuxt-link>
+                  <nuxt-link :to="'/admin/restaurants/' + restaurantid"> <b-icon icon="pencil" size="is-midium"></b-icon>{{$t('admin.editAbout')}}</nuxt-link>
                 </h2>
               </div>
             </div>
             <div class="container content has-text-centered" :style="{margin: '20px'}">
               <b-button
                 tag="nuxt-link"
-                :to="localePath('/admin/restaurants/' + restaurantid + '/orders')"
+                :to="'/admin/restaurants/' + restaurantid + '/orders'"
                 :style="{'margin-right': 'auto', height: '40px'}"
                   type="is-primary"
                 class="counter-button"
@@ -52,7 +52,7 @@
                 <h2>
                   <b-button
                     tag="nuxt-link"
-                    :to="localePath('/admin/restaurants/' + restaurantid + '/menus')"
+                    :to="'/admin/restaurants/' + restaurantid + '/menus'"
                     style="margin-right:auto"
                     type="is-primary"
                     class="counter-button"

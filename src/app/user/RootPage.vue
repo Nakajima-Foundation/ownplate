@@ -5,7 +5,7 @@
     </h2>
     <div v-for="restaurant in restaurants" class="card block" :key="restaurant.id">
       <div class="card-content">
-        <router-link :to="localePath(`/r/${restaurant.id}`)">
+        <router-link :to="`/r/${restaurant.id}`">
         {{ restaurant.restaurantName }}
         </router-link>
       </div>
