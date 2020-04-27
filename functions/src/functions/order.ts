@@ -1,7 +1,10 @@
 import * as functions from 'firebase-functions'
 import * as admin from 'firebase-admin';
 import * as utils from '../stripe/utils'
-import * as constant from '../common/constant'
+import { order_status } from '../common/constant'
+import * as sms from './sms'
+import { resources } from './resources'
+import i18next from 'i18next'
 import Order from '../models/Order'
 
 // This function is called by users to place orders without paying
@@ -21,14 +24,14 @@ export const place = async (db: FirebaseFirestore.Firestore, data: any, context:
       if (uid !== order.uid) {
         throw new functions.https.HttpsError('permission-denied', 'The user is not the owner of this order.')
       }
-      if (order.status !== constant.order_status.validation_ok) {
+      if (order.status !== order_status.validation_ok) {
         throw new functions.https.HttpsError('failed-precondition', 'The order has been already placed or canceled')
       }
       const multiple = utils.stripe_region.multiple; // 100 for USD, 1 for JPY
       const roundedTip = Math.round(tip * multiple) / multiple
 
       transaction.update(orderRef, {
-        status: constant.order_status.order_placed,
+        status: order_status.order_placed,
         totalCharge: order.total + tip,
         tip: roundedTip,
         timePlaced: admin.firestore.FieldValue.serverTimestamp()
@@ -44,8 +47,8 @@ export const place = async (db: FirebaseFirestore.Firestore, data: any, context:
 // This function is called by admins (restaurant operators) to update the status of order
 export const update = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
-  const { restaurantId, orderId, status } = data;
-  utils.validate_params({ restaurantId, orderId, status })
+  const { restaurantId, orderId, status, sendSms, lng } = data;
+  utils.validate_params({ restaurantId, orderId, status }) // sendSms, lng is optional
 
   try {
     const restaurantDoc = await db.doc(`restaurants/${restaurantId}`).get()
@@ -55,18 +58,23 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
     }
 
     const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`)
+    let phoneNumber: string | undefined = undefined;
+    let msgKey: string | undefined = undefined;
+    let orderNumber: string = "";
 
-    return await db.runTransaction(async transaction => {
+    const result = await db.runTransaction(async transaction => {
       const order = Order.fromSnapshot<Order>(await transaction.get(orderRef))
       if (!order) {
         throw new functions.https.HttpsError('invalid-argument', 'This order does not exist.')
       }
+      phoneNumber = order.phoneNumber
+      orderNumber = "#" + `00${order.number}`.slice(-3)
 
       const isPreviousStateChangable: Boolean = (() => {
         switch (order.status) {
-          case constant.order_status.order_placed:
-          case constant.order_status.order_accepted:
-          case constant.order_status.cooking_completed:
+          case order_status.order_placed:
+          case order_status.order_accepted:
+          case order_status.cooking_completed:
             return true
         }
         return false
@@ -77,11 +85,14 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
 
       const isNewStatusValid: Boolean = (() => {
         switch (status) {
-          //case constant.order_status.order_canceled:    call stripeCancelIntent instead
-          case constant.order_status.order_accepted:
-          case constant.order_status.cooking_completed:
+          //case order_status.order_canceled:    call stripeCancelIntent instead
+          case order_status.order_accepted:
+            msgKey = "msg_order_accepted"
             return true
-          case constant.order_status.customer_picked_up:
+          case order_status.cooking_completed:
+            msgKey = "msg_cooking_completed"
+            return true
+          case order_status.customer_picked_up:
             return !(order.payment && order.payment.stripe) // only "unpaid" order can be manually completed
         }
         return false
@@ -90,7 +101,7 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
         throw new functions.https.HttpsError('permission-denied', 'The user does not have an authority to perform this operation.', status)
       }
 
-      if (status === constant.order_status.order_canceled && order.payment && order.payment.stripe) {
+      if (status === order_status.order_canceled && order.payment && order.payment.stripe) {
         throw new functions.https.HttpsError('permission-denied', 'Paid order can not be cancele like this', status)
       }
 
@@ -99,6 +110,14 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
       })
       return { success: true }
     })
+    if (sendSms && msgKey) {
+      const t = await i18next.init({
+        lng: lng || utils.stripe_region.langs[0],
+        resources
+      })
+      await sms.pushSMS("OwnPlate", `${t(msgKey)} ${restaurant.restaurantName} ${orderNumber}`, phoneNumber)
+    }
+    return result
   } catch (error) {
     throw utils.process_error(error)
   }

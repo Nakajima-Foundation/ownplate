@@ -259,6 +259,7 @@ export default {
         const { data } = await orderUpdate({
           restaurantId: this.restaurantId(),
           orderId: this.orderId,
+          sendSms: true,
           status: newStatus
         });
         console.log("update", data);
