@@ -9,8 +9,6 @@ Vue.use(VueI18n);
 
 const defaultLocale = process.env.LOCALE || "en";
 
-//    locales: ['en', 'es', 'ja'],
-
 const numberFormats = ((locale) => {
   if (locale === 'ja') {
     return {
@@ -36,10 +34,11 @@ const numberFormats = ((locale) => {
   };
 })(defaultLocale);
 
+const locale = defaultLocale || 'en';
+
 export default ({ app }) => {
-  // const locale = app.$cookies.get('locale') || 'ja';
-  const locale =  'ja';
   app.i18n = new VueI18n({
+    // locales: ['en', 'es', 'ja'],
     locale,
     fallbackLocale: defaultLocale,
     messages: {
