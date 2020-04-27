@@ -3,7 +3,7 @@ import * as admin from 'firebase-admin';
 import * as utils from '../stripe/utils'
 import * as constant from '../common/constant'
 import * as sms from './sms'
-import * as lang from '../lang/resouces'
+import * as lang from './resouces'
 import i18next from 'i18next'
 import Order from '../models/Order'
 
