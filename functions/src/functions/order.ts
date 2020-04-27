@@ -113,7 +113,7 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
         lng: lng || utils.stripe_region.langs[0],
         resources
       })
-      await sms.pushSMS("OwnPlate", t(msgKey), phoneNumber)
+      await sms.pushSMS("OwnPlate", `${t(msgKey)} ${restaurant.restaurantName}`, phoneNumber)
     }
     return result
   } catch (error) {
