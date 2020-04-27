@@ -252,7 +252,7 @@ export default {
           }
         });
         this.$router.push({
-          path: `/r/${this.restaurantId()}/order/${res.id}`
+          path: localePath(`/r/${this.restaurantId()}/order/${res.id}`)
         });
       } catch (error) {
         console.log(error);
