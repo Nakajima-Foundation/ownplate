@@ -10,6 +10,7 @@
 - STRIPE_API_KEY - Stripe public key
 - STRIPE_CLIENT_ID - Stripe oauth client id
 - GAPIKey - Google map api key
+- LOCALE - vue i18n locale (us, ja, eu)
 
 # Firebase web client (Vue.js) configurations
 - src/config/project.js - configuration file.
