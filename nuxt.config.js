@@ -3,32 +3,6 @@ import i18nES from './lang/es.json';
 import i18nJA from './lang/ja.json';
 require('dotenv').config();
 
-const defaultLocale = process.env.LOCALE || "en";
-const numberFormats = ((locale) => {
-  if (locale === 'ja') {
-    return {
-      currency: {
-        style: 'currency',
-        currency: 'JPY'
-      }
-    };
-  }
-  if (locale === 'eu') {
-    return {
-      currency: {
-        style: 'currency',
-        currency: 'EUR'
-      }
-    };
-  }
-  return {
-    currency: {
-      style: 'currency',
-      currency: 'USD'
-    }
-  };
-})(defaultLocale);
-
 const customRoutes = [
   {
     name: 'r',
@@ -185,6 +159,7 @@ export default {
     { src: "~/plugins/userPermission.js", ssr: false },
     { src: "~/plugins/utils.js", ssr: false },
     // "~/plugins/mock.js"
+    '~plugins/vue-i18n'
   ],
   /*
    ** Nuxt.js dev-modules
@@ -199,7 +174,6 @@ export default {
     '@nuxtjs/dotenv',
     "@nuxtjs/style-resources",
     "@nuxtjs/axios",
-    'nuxt-i18n',
     ['nuxt-gmaps', {
       key: process.env.GAPIKey,
     }],
@@ -209,22 +183,6 @@ export default {
     STRIPE_CLIENT_ID: process.env.STRIPE_CLIENT_ID,
     gapikey: process.env.GAPIKey,
     CIRCLE_SHA1: process.env.CIRCLE_SHA1,
-  },
-  i18n: {
-    locales: ['en', 'es', 'ja'],
-    defaultLocale: defaultLocale,
-    vueI18n: {
-      fallbackLocale: defaultLocale,
-      messages: {
-        en: i18nEN,
-        es: i18nES,
-        ja: i18nJA,
-      },
-      numberFormats: {
-        en: numberFormats,
-        ja: numberFormats
-      }
-    }
   },
   styleResources: {
     scss: [

@@ -92,7 +92,16 @@ export default {
       } catch (error) {
         console.log("sign out failed", error);
       }
-    }
+    },
+    setLang(lang) {
+      this.$i18n.locale = lang;
+    },
+    changeLang(lang) {
+      this.setLang(lang);
+      this.saveLang(lang);
+    },
+    saveLang(lang) {
+    },
   },
   beforeCreate() {
     const systemGetConfig = functions.httpsCallable("systemGetConfig");
@@ -119,10 +128,18 @@ export default {
       this.$store.commit("setUser", user);
     });
   },
+  watch: {
+    "$route.query.lang"() {
+      this.changeLang(this.$route.query.lang);
+    }
+  },
   created() {
     this.timerId = window.setInterval(() => {
       this.$store.commit("updateDate");
     }, 60 * 1000);
+    if (this.$route.query.lang) {
+      this.changeLang(this.$route.query.lang);
+    }
   },
   destroyed() {
     if (this.unregisterAuthObserver) {
