@@ -1,24 +1,44 @@
 <template>
   <section class="section">
     <h2>Order History</h2>
+    <ordered-info
+      v-for="order in orders"
+      :key="order.id"
+      @selected="orderSelected($event)"
+      :order="order"
+    />
   </section>
 </template>
 
 <script>
 import { db, firestore, functions } from "~/plugins/firebase.js";
+import OrderedInfo from "~/app/admin/Order/OrderedInfo";
 
 export default {
+  components: {
+    OrderedInfo
+  },
   data() {
-    return {};
+    return {
+      orders: []
+    };
   },
   async created() {
     console.log("created", this.uid);
     if (this.uid) {
-      const snapshott = await db
+      const snapshot = await db
         .collectionGroup("orders")
         .where("uid", "==", this.uid)
         .get();
-      console.log("snapshot", snapshot, snapshot.docs);
+      const orders = snapshot.docs.map(this.doc2data("order"));
+      // HACK: Remove it later
+      this.orders = orders.map(order => {
+        order.timePlaced =
+          (order.timePlaced && order.timePlaced.toDate()) || new Date();
+        return order;
+      });
+
+      console.log(this.orders);
     }
   },
   computed: {

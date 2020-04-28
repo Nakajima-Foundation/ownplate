@@ -61,6 +61,10 @@ service cloud.firestore {
       }
     }
 
+    match /{path=**}/orders/{orderId} {
+      allow read: if true
+    }
+
     match /restaurants {
       match /{restaurantsId} {
         allow read: if true
