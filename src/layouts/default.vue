@@ -100,8 +100,7 @@ export default {
       this.setLang(lang);
       this.saveLang(lang);
     },
-    saveLang(lang) {
-    },
+    saveLang(lang) {}
   },
   beforeCreate() {
     const systemGetConfig = functions.httpsCallable("systemGetConfig");
@@ -130,7 +129,9 @@ export default {
   },
   watch: {
     "$route.query.lang"() {
-      this.changeLang(this.$route.query.lang);
+      if (this.$route.query.lang) {
+        this.changeLang(this.$route.query.lang);
+      }
     }
   },
   created() {
