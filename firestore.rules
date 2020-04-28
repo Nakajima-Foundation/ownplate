@@ -61,37 +61,38 @@ service cloud.firestore {
       }
     }
 
-    match /restaurants/{restaurantsId} {
-      allow read: if true
-      allow create: if isAdmin(request)
-                      && request.resource.data.uid == request.auth.uid;
-      allow update: if isAdmin(request) && isOwner(resource, request);
-      match /menus/{menuId} {
+    match /restaurants {
+      match /{restaurantsId} {
         allow read: if true
         allow create: if isAdmin(request)
-        allow update: if isAdmin(request) && isOwner(resource, request);
-      }
-      match /titles/{titleId} {
-        allow read: if true
-        allow create: if isAdmin(request)
-        allow update: if isAdmin(request) && isOwner(resource, request);
-      }
-      match /orders/{orderId} {
-        allow create: if isUser(request)
-                        && request.resource.data.status == 100
-                        && request.resource.data.phoneNumber == request.auth.token.phone_number
                         && request.resource.data.uid == request.auth.uid;
-        allow read: if isAdmin(request)
-                        && isRestaurantOwner(restaurantsId, request);
-        allow read: if isUser(request) && isOwner(resource, request);
-        allow delete: if isOwner(resource, request)
-                        && resource.data.status == 200; // validated
-        match /system/{document=**} {
-          allow read, write: if false;
+        allow update: if isAdmin(request) && isOwner(resource, request);
+        match /menus/{menuId} {
+          allow read: if true
+          allow create: if isAdmin(request)
+          allow update: if isAdmin(request) && isOwner(resource, request);
+        }
+        match /titles/{titleId} {
+          allow read: if true
+          allow create: if isAdmin(request)
+          allow update: if isAdmin(request) && isOwner(resource, request);
+        }
+        match /orders/{orderId} {
+          allow create: if isUser(request)
+                          && request.resource.data.status == 100
+                          && request.resource.data.phoneNumber == request.auth.token.phone_number
+                          && request.resource.data.uid == request.auth.uid;
+          allow read: if isAdmin(request)
+                          && isRestaurantOwner(restaurantsId, request);
+          allow read: if isUser(request) && isOwner(resource, request);
+          allow delete: if isOwner(resource, request)
+                          && resource.data.status == 200; // validated
+          match /system/{document=**} {
+            allow read, write: if false;
+          }
         }
       }
     }
-
 
     match /{document=**} {
       allow read, write: if false;
