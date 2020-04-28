@@ -81,6 +81,7 @@
     "tip": "心付け",
     "totalCharge": "合計金額",
     "pleasePayAtRestaurant": "オンライン課金は現時点では出来ません。受け取り時にお店でお支払いください。",
+    "sendSMS": "SMSメッセージを受け取る（携帯電話の契約によっては課金の対象になります）",
     "status": {
       "unexpected": "(Unexpected)",
       "error": "エラー",

@@ -10,8 +10,8 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
   const uid = utils.validate_auth(context);
   const stripe = utils.get_stripe();
 
-  const { orderId, restaurantId, paymentMethodId, tip } = data;
-  utils.validate_params({ orderId, restaurantId, paymentMethodId });
+  const { orderId, restaurantId, paymentMethodId, tip, sendSMS } = data;
+  utils.validate_params({ orderId, restaurantId, paymentMethodId }); // tip and sendSMS are optional
 
   const restaurantData = await utils.get_restaurant(db, restaurantId);
   const venderId = restaurantData['uid']
@@ -60,6 +60,7 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
         status: order_status.order_placed,
         totalCharge: totalCharge / multiple,
         tip: Math.round(tip * multiple) / multiple,
+        sendSMS: sendSMS || false,
         payment: {
           stripe: "pending"
         }
