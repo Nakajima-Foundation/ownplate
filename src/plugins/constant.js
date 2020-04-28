@@ -158,13 +158,21 @@ export const JPPrefecture = [
   '沖縄県'
 ];
 
-export const AddressStates = {
-  US: USStates,
-  JP: JPPrefecture,
-};
+export const regionalSettings = {
+  US: {
+    StateKey: "shopInfo.state",
+    AddressStates: USStates,
+    Logo: "OwnPlate-Logo-Horizontal-YellowWhite.png",
+  },
+  JP: {
+    StateKey: "shopInfo.prefecture",
+    AddressStates: JPPrefecture,
+    Logo: "Omochikaeri-Logo-Horizontal-YellowWhite.png",
+  },
+  EU: {
+    StateKey: "shopInfo.state",
+    AddressStates: null,
+    Logo: "OwnPlate-Logo-Horizontal-YellowWhite.png",
+  },
 
-export const StateKey = {
-  US: "shopInfo.state",
-  JP: "shopInfo.prefecture",
-  EU: "shopInfo.state",
 };

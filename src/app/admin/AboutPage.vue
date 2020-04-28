@@ -308,7 +308,7 @@ import * as API from "~/plugins/api";
 import BackButton from "~/components/BackButton";
 import NotFound from "~/components/NotFound";
 
-import { daysOfWeek, AddressStates, StateKey } from "~/plugins/constant.js";
+import { daysOfWeek, regionalSettings } from "~/plugins/constant.js";
 
 export default {
   name: "Order",
@@ -319,6 +319,7 @@ export default {
   },
 
   data() {
+    const regionalSetting = regionalSettings[process.env.REGION];
     return {
       disabled: false, // ??
       filteredItems: [], // ??
@@ -357,8 +358,8 @@ export default {
         },
         publicFlag: false
       },
-      states: AddressStates[process.env.REGION],
-      state_key: StateKey[process.env.REGION] || "shopInfo.state",
+      states: regionalSetting.AddressStates,
+      state_key: regionalSetting.StateKey || "shopInfo.state",
       maplocation: {},
       place_id: null,
       markers: [],

@@ -4,7 +4,7 @@
       <template slot="brand">
         <b-navbar-item tag="router-link" :to="{ path: '/' }">
           <img
-            src="/OwnPlate-Logo-Horizontal-YellowWhite.svg"
+            :src="`/${this.logo}`"
             alt="Lightweight UI components for Vue.js based on Bulma"
           />
         </b-navbar-item>
@@ -57,9 +57,11 @@
 
 <script>
 import { db, auth, functions } from "@/plugins/firebase.js";
+import { regionalSettings } from "~/plugins/constant.js";
 
 export default {
   data() {
+    const regionalSetting = regionalSettings[process.env.REGION];
     return {
       items: [
         {
@@ -74,7 +76,11 @@ export default {
         }
       ],
       unregisterAuthObserver: null,
-      timerId: null
+      timerId: null,
+      logo: regionalSetting.Logo,
+      // todo support scrset https://kanoto.info/201912/673/
+      // srcset: regionalSetting.Logo.map((logo) => {}
+      },
     };
   },
   computed: {
