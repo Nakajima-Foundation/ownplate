@@ -78,8 +78,25 @@ export default {
     };
   },
   computed: {
+    user() {
+      return this.$store.state.user;
+    },
     hasUser() {
-      return this.$store.state.user !== null;
+      return !this.isNull(this.$store.state.user);
+    },
+    isAdmin() {
+      console.log(this.$store.getters.uidAdmin);
+      return !!this.$store.getters.uidAdmin;
+    },
+    isUser() {
+      return !!this.$store.getters.uidUser;
+    },
+    uid() {
+      return this.$store.getters.uid;
+    },
+    profile_path() {
+      const path_prefix = this.isAdmin ? "admins" : "users";
+      return `${path_prefix}/${this.uid}/private/profile`;
     }
   },
   methods: {
@@ -96,11 +113,18 @@ export default {
     setLang(lang) {
       this.$i18n.locale = lang;
     },
-    changeLang(lang) {
+    async changeLang(lang) {
       this.setLang(lang);
-      this.saveLang(lang);
+      await this.saveLang(lang);
     },
-    saveLang(lang) {}
+    async saveLang(lang) {
+      if (this.hasUser) {
+        await db.doc(this.profile_path).set({ lang }, { merge: true });
+      } else {
+        // save into store
+        this.$store.commit("setLang", lang);
+      }
+    },
   },
   beforeCreate() {
     const systemGetConfig = functions.httpsCallable("systemGetConfig");
@@ -114,11 +138,13 @@ export default {
           user.email || user.phoneNumber,
           user.uid
         );
-        const snapshot = await db.doc(`users/${user.uid}`).get();
-        const doc = snapshot.data();
-        if (doc && doc.name) {
-          user.name = doc.name;
-          console.log("user.name", doc.name);
+        if (this.isUser) {
+          const snapshot = await db.doc(`users/${user.uid}`).get();
+          const doc = snapshot.data();
+          if (doc && doc.name) {
+            user.name = doc.name;
+            console.log("user.name", doc.name);
+          }
         }
       } else {
         console.log("authStateChanged: null");
@@ -128,18 +154,34 @@ export default {
     });
   },
   watch: {
-    "$route.query.lang"() {
+    async "$route.query.lang"() {
       if (this.$route.query.lang) {
-        this.changeLang(this.$route.query.lang);
+        await this.changeLang(this.$route.query.lang);
       }
-    }
+    },
+    async user() {
+      if (this.user) {
+        // lang
+        if (this.$store.state.lang ) {
+          this.changeLang(this.$store.state.lang);
+        } else {
+          const profileSnapshot = await db.doc(this.profile_path).get();
+          if (profileSnapshot.exists) {
+            if (profileSnapshot.data().lang) {
+              this.setLang(profileSnapshot.data().lang);
+            }
+          }
+        }
+      }
+    },
   },
-  created() {
+  async created() {
     this.timerId = window.setInterval(() => {
       this.$store.commit("updateDate");
     }, 60 * 1000);
+
     if (this.$route.query.lang) {
-      this.changeLang(this.$route.query.lang);
+      await this.changeLang(this.$route.query.lang);
     }
   },
   destroyed() {
