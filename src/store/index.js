@@ -8,6 +8,7 @@ export const strict = false;
 
 export const state = () => ({
   user: undefined, // undefined:not authorized, null:no user
+  lang: undefined,
   date: new Date(),
   carts: {}, // for "Edit Order"
   server: {} // server configuration
@@ -31,8 +32,8 @@ export const getters = {
     return state.user && state.user.name || "";
   },
   stripeRegion: (state) => {
-    return stripe_regions[state.server.region || "US"]
-  }
+    return stripe_regions[state.server.region || "US"];
+  },
 };
 
 export const mutations = {
@@ -49,8 +50,12 @@ export const mutations = {
   },
   setServerConfig(state, config) {
     state.server = config;
-    console.log("store:setServerConfig", state.server.region)
-  }
+    console.log("store:setServerConfig", state.server.region);
+  },
+  setLang(state, lang) {
+    state.lang = lang;
+  },
+
 };
 
 export const actions = {
