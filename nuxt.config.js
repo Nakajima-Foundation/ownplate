@@ -159,7 +159,7 @@ export default {
     { src: "~/plugins/userPermission.js", ssr: false },
     { src: "~/plugins/utils.js", ssr: false },
     // "~/plugins/mock.js"
-    '~plugins/vue-i18n'
+    '~plugins/vue-i18n.js'
   ],
   /*
    ** Nuxt.js dev-modules

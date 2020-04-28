@@ -5,38 +5,22 @@ import i18nEN from '../../lang/en.json';
 import i18nES from '../../lang/es.json';
 import i18nJA from '../../lang/ja.json';
 
+import * as constant from './constant.js';
+
 Vue.use(VueI18n);
 
-const defaultLocale = process.env.LOCALE || "en";
-// todo change locale to region. use constant.js
 const region = process.env.REGION || "US";
 
-const numberFormats = ((locale) => {
-  if (locale === 'ja') {
-    return {
-      currency: {
-        style: 'currency',
-        currency: 'JPY'
-      }
-    };
-  }
-  if (locale === 'eu') {
-    return {
-      currency: {
-        style: 'currency',
-        currency: 'EUR'
-      }
-    };
-  }
-  return {
-    currency: {
-      style: 'currency',
-      currency: 'USD'
-    }
-  };
-})(defaultLocale);
+const region_data = constant.stripe_regions[region];
 
-const locale = defaultLocale || 'en';
+const numberFormats = {
+  currency: {
+    style: 'currency',
+    currency: region_data.currency,
+  }
+};
+
+const locale = region_data.langs[0] || 'en';
 
 export default ({ app }) => {
   app.i18n = new VueI18n({
