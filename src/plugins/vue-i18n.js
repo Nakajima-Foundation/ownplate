@@ -26,7 +26,7 @@ export default ({ app }) => {
   app.i18n = new VueI18n({
     // locales: ['en', 'es', 'ja'],
     locale,
-    fallbackLocale: defaultLocale,
+    fallbackLocale: locale,
     messages: {
       en: i18nEN,
       es: i18nES,
