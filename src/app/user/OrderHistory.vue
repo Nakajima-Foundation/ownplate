@@ -32,6 +32,7 @@ export default {
         .get();
       this.orders = snapshot.docs.map(doc => {
         const order = doc.data();
+        console.log(doc.ref.parent.parent.path);
         order.id = order.id;
         // HACK: Remove it later
         order.timePlaced =
