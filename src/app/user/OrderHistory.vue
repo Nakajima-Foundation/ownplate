@@ -30,9 +30,10 @@ export default {
         .collectionGroup("orders")
         .where("uid", "==", this.uid)
         .get();
-      const orders = snapshot.docs.map(this.doc2data("order"));
-      // HACK: Remove it later
-      this.orders = orders.map(order => {
+      this.orders = snapshot.docs.map(doc => {
+        const order = doc.data();
+        order.id = order.id;
+        // HACK: Remove it later
         order.timePlaced =
           (order.timePlaced && order.timePlaced.toDate()) || new Date();
         return order;
@@ -44,6 +45,14 @@ export default {
   computed: {
     uid() {
       return this.$store.getters.uidUser;
+    }
+  },
+  methods: {
+    orderSelected(order) {
+      this.$router.push({
+        path:
+          "/admin/restaurants/" + this.restaurantId() + "/orders/" + order.id
+      });
     }
   }
 };
