@@ -159,7 +159,7 @@ export default {
     { src: "~/plugins/userPermission.js", ssr: false },
     { src: "~/plugins/utils.js", ssr: false },
     // "~/plugins/mock.js"
-    '~plugins/vue-i18n'
+    '~plugins/vue-i18n.js'
   ],
   /*
    ** Nuxt.js dev-modules
@@ -183,6 +183,7 @@ export default {
     STRIPE_CLIENT_ID: process.env.STRIPE_CLIENT_ID,
     gapikey: process.env.GAPIKey,
     CIRCLE_SHA1: process.env.CIRCLE_SHA1,
+    REGION: process.env.REGION,
   },
   styleResources: {
     scss: [
