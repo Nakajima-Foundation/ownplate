@@ -34,9 +34,6 @@ export const getters = {
   stripeRegion: (state) => {
     return stripe_regions[state.server.region || "US"];
   },
-  lang: (state) => {
-    return state.lang;
-  },
 };
 
 export const mutations = {

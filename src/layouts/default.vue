@@ -138,12 +138,13 @@ export default {
           user.email || user.phoneNumber,
           user.uid
         );
-        // todo check admin or user
-        const snapshot = await db.doc(`users/${user.uid}`).get();
-        const doc = snapshot.data();
-        if (doc && doc.name) {
-          user.name = doc.name;
-          console.log("user.name", doc.name);
+        if (this.isUser) {
+          const snapshot = await db.doc(`users/${user.uid}`).get();
+          const doc = snapshot.data();
+          if (doc && doc.name) {
+            user.name = doc.name;
+            console.log("user.name", doc.name);
+          }
         }
       } else {
         console.log("authStateChanged: null");
@@ -161,8 +162,8 @@ export default {
     async user() {
       if (this.user) {
         // lang
-        if (this.$store.getters.lang) {
-          this.changeLang(this.$store.getters.lang);
+        if (this.$store.state.lang ) {
+          this.changeLang(this.$store.state.lang);
         } else {
           const profileSnapshot = await db.doc(this.profile_path).get();
           if (profileSnapshot.exists) {
