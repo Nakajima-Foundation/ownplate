@@ -136,15 +136,18 @@
           <div class="field is-horizontal">
             <div class="field-body">
               <h4>
-                {{$t('shopInfo.state')}}
+                {{$t(this.state_key)}}
                 <span class="p-font bold" style="color:#CB4B4B">*</span>
               </h4>
             </div>
           </div>
-          <b-field type="is-white" :type="errors['state'].length > 0 ? 'is-danger' : 'is-success'">
+          <b-field type="is-white" :type="errors['state'].length > 0 ? 'is-danger' : 'is-success'" v-if="Array.isArray(states)">
             <b-select v-model="shopInfo.state" placeholder="select">
               <option v-for="stateItem in states" :key="stateItem">{{ stateItem }}</option>
             </b-select>
+          </b-field>
+          <b-field type="is-white" :type="errors['state'].length > 0 ? 'is-danger' : 'is-success'" v-else>
+            <b-input v-model="shopInfo.state" type="text" placeholder="Enter city" maxlength="15"></b-input>
           </b-field>
         </div>
       </div>
@@ -305,7 +308,7 @@ import * as API from "~/plugins/api";
 import BackButton from "~/components/BackButton";
 import NotFound from "~/components/NotFound";
 
-import { daysOfWeek, USStates } from "~/plugins/constant.js";
+import { daysOfWeek, AddressStates, StateKey } from "~/plugins/constant.js";
 
 export default {
   name: "Order",
@@ -354,7 +357,8 @@ export default {
         },
         publicFlag: false
       },
-      states: USStates,
+      states: AddressStates[process.env.REGION],
+      state_key: StateKey[process.env.REGION] || "shopInfo.state",
       maplocation: {},
       place_id: null,
       markers: [],
