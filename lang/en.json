@@ -49,6 +49,7 @@
     "streetAddress": "Street address",
     "city": "City",
     "state": "State",
+    "prefecture": "Prefecture",
     "zip": "Zip",
     "address": "Address",
     "phonenumber": "Phones Number",

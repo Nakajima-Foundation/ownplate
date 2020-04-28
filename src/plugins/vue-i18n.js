@@ -8,6 +8,8 @@ import i18nJA from '../../lang/ja.json';
 Vue.use(VueI18n);
 
 const defaultLocale = process.env.LOCALE || "en";
+// todo change locale to region. use constant.js
+const region = process.env.REGION || "US";
 
 const numberFormats = ((locale) => {
   if (locale === 'ja') {
