@@ -322,7 +322,7 @@
         class="counter-button save_btn"
         rounded
         @click="submitRestaurant"
-      >Save</b-button>
+      >{{$t('editRestaurant.save')}}</b-button>
     </template>
   </section>
 </template>

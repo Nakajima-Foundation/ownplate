@@ -17,6 +17,7 @@
     "alreadyTaken": "This ID is not available."
   },
   "editRestaurant": {
+    "save": "Save",
     "new": "New",
     "current": "Current",
     "clickAndUpload": "Click and Upload",
