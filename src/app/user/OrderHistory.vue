@@ -1,6 +1,6 @@
 <template>
   <section class="section">
-    <h2>Order History</h2>
+    <h2>{{$t('order.history')}}</h2>
     <ordered-info
       v-for="order in orders"
       :key="order.id"
