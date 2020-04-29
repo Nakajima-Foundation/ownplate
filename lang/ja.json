@@ -126,17 +126,14 @@
     "auth/invalid-verification-code": "SMS確認コードが無効です。SMS確認コードを再送信して再度入力してください",
     "auth/missing-verification-code": "SMS確認コードが入力されていません"
   },
-  "auth": {
-    "notAdmin": "You need to login as a restaurant owner."
-  },
   "admin": {
     "hidePayment": "課金の仕組みはまもなく提供される予定です。少々お待ちください。",
     "pleaseSignIn": "サインインしてください (飲食店向け)",
     "registration": "登録してください (飲食店向け)",
     "email": "メールアドレス",
     "password": "パスワード",
-    "confirmPassword": "Confirm Password",
-    "name": "First & last name",
+    "confirmPassword": "パスワード(再入力)",
+    "name": "氏名",
     "emailPlaceHolder": "メールアドレスを入力して下さい",
     "passwordPlaceHolder": "パスワードを入力して下さい",
     "confirmPasswordPlaceHolder": "同じパスワードを入力して下さい",
@@ -149,24 +146,23 @@
     "addNewRestaurant": "飲食店を追加する",
     "noPaymentAccount": "お支払いのアカウントが登録されていません",
     "payments": {
-      "pleaseConnect": "In order to receive online payments, you need to connect your Stripe account.",
-      "connectStripe": "Connect Stripe Account",
-      "disconnectStripe": "Disconnect Stripe Account"
+      "pleaseConnect": "オンラインで支払いを受けるには、Stripeアカウントとの接続が必要です",
+      "connectStripe": "Stripeアカウントと接続する",
+      "disconnectStripe": "Stripeアカウントとの接続を切る"
     },
-    "incompleteOrders": "{count} incomplete order | {count} incomplete orders",
+    "incompleteOrders": "{count} 個の未完了の注文",
     "editMenuItems": "メニュー ({count})",
-    "editAbout": "Edit About",
-    "shareRestaurant": "Share",
+    "editAbout": "飲食店情報の変更",
+    "shareRestaurant": "シェア",
     "pleaseSignUp": "ユーザー登録",
-    "forgotPassword": "パスワード忘れ",
-    "passwordReset": "Reset Password",
+    "forgotPassword": "パスワードを忘れた場合",
+    "passwordReset": "パスワードのリセット",
     "pleaseCheckInbox": "メールを送信しました。受信箱をご確認ください。",
     "order": {
       "cancelButton": "注文をキャンセル",
       "cancelTitle": "注文のキャンセル",
       "cancelMessage": "お客様にご連絡の上、ご注文をキャンセルさせていただく旨をお伝え下さい。",
-      "callTo": "Call to {phone}",
-      "delete": "Cancel this order (undoable)"
+      "delete": "この注文をキャンセルする (やり直しは出来ません)"
     },
     "error": {
       "email": {

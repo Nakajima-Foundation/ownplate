@@ -126,9 +126,6 @@
     "auth/invalid-verification-code": "The SMS verification code used to create the phone auth credential is invalid. Please resend the verification code sms and be sure use the verification code provided by the user.",
     "auth/missing-verification-code": "The phone auth credential was created with an empty SMS verification code."
   },
-  "auth": {
-    "notAdmin": "You need to login as a restaurant owner."
-  },
   "admin": {
     "hidePayment": "Payment feature is coming soon. Please stay tuned.",
     "pleaseSignIn": "Sign In (Restaurant Operators)",
@@ -165,7 +162,6 @@
       "cancelButton": "Cancel this order",
       "cancelTitle": "Order Canceling",
       "cancelMessage": "Please contact to the customer and tell the order will be canceled.",
-      "callTo": "Call to {phone}",
       "delete": "Cancel this order (undoable)"
     },
     "error": {
