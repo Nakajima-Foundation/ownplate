@@ -22,7 +22,7 @@ const numberFormats = {
 
 const dateTimeFormats = {
   short: {
-    year: 'numeric', month: 'short', day: 'numeric'
+    year: 'numeric', month: 'short', day: 'numeric', weekday: 'short'
   },
   time: {
     hour: 'numeric', minute: 'numeric', hour12: true

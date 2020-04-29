@@ -4,7 +4,7 @@
     <h2 class="p-big bold">{{ shopInfo.restaurantName }}</h2>
     <b-select v-model="dayIndex">
       <option v-for="day in lastSeveralDays" :value="day.index" :key="day.index">
-        {{ $d(day.date )}}
+        {{ $d(day.date, "short" )}}
         <span v-if="day.index===0">{{$t('date.today')}}</span>
       </option>
     </b-select>
