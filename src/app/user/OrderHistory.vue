@@ -29,7 +29,7 @@ export default {
     if (this.uid) {
       db.collectionGroup("orders")
         .where("uid", "==", this.uid)
-        //.orderBy("timePlaced", "desc")
+        .orderBy("timePlaced", "desc")
         .limit(25)
         .onSnapshot(snapshot => {
           this.orders = snapshot.docs.map(doc => {
