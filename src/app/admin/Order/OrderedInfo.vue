@@ -3,7 +3,10 @@
     <div class="card-content" @click="$emit('selected', order)">
       <div class="level is-mobile" style="margin:0">
         <div class="level-left">
-          <h3>{{ orderName }}</h3>
+          <h3>
+            <span v-if="restaurantName">{{restaurantName}}</span>
+            {{ orderName }}
+          </h3>
         </div>
         <div class="level-right">
           <order-status :order="order" />
@@ -35,15 +38,32 @@
 import OrderStatus from "~/app/admin/Order/OrderStatus";
 import { nameOfOrder } from "~/plugins/strings.js";
 import { parsePhoneNumber, formatNational } from "~/plugins/phoneutil.js";
+import { db } from "~/plugins/firebase.js";
 
 export default {
   components: {
     OrderStatus
   },
+  data() {
+    return {
+      restaurantName: ""
+    };
+  },
   props: {
     order: {
       type: Object,
       required: true
+    }
+  },
+  async created() {
+    if (this.order.restaurantId) {
+      const snapshot = await db
+        .doc(`restaurants/${this.order.restaurantId}`)
+        .get();
+      const doc = snapshot.data();
+      if (doc) {
+        this.restaurantName = doc.restaurantName;
+      }
     }
   },
   computed: {
