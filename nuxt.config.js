@@ -10,6 +10,11 @@ const customRoutes = [
     component: 'user/RootPage.vue',
   },
   {
+    name: 'history',
+    path: '/u/history',
+    component: 'user/OrderHistory.vue',
+  },
+  {
     name: 'r-restaurantId',
     path: '/r/:restaurantId',
     component: 'user/RestaurantPage.vue',
@@ -72,7 +77,7 @@ export default {
   router: {
     extendRoutes(routes, resolve) {
       customRoutes.map(route => {
-        const r = {...route};
+        const r = { ...route };
         r.component = resolve(__dirname, "src/app/" + route.component);
         routes.push(r);
       });
