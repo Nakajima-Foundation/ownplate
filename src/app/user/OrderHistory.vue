@@ -32,7 +32,6 @@ export default {
         .onSnapshot(snapshot => {
           this.orders = snapshot.docs.map(doc => {
             const order = doc.data();
-            console.log(doc.ref.path.split("/")[1]);
             order.restaurantId = doc.ref.path.split("/")[1];
             order.id = doc.id;
             // HACK: Remove it later

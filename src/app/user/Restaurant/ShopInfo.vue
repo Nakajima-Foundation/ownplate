@@ -1,8 +1,8 @@
 <template>
   <span>
     <h2>{{$t('shopInfo.address')}}</h2>
-    <div class="card">
-      <div class="card-image" v-if="hasLocation">
+    <div class="card" v-if="hasLocation">
+      <div class="card-image">
         <GMap
           ref="gMap"
           :cluster="{options: {styles: 'clusterStyle'}}"
@@ -139,7 +139,7 @@ export default {
     },
     validDate(date) {
       return !this.isNull(date.start) && !this.isNull(date.end);
-    },
+    }
   }
 };
 </script>
