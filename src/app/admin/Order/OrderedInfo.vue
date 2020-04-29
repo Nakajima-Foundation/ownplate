@@ -3,7 +3,10 @@
     <div class="card-content" @click="$emit('selected', order)">
       <div class="level is-mobile" style="margin:0">
         <div class="level-left">
-          <h3>{{ orderName }}</h3>
+          <h3>
+            <span v-if="restaurant">{{restaurant.restaurantName}}</span>
+            {{ orderName }}
+          </h3>
         </div>
         <div class="level-right">
           <order-status :order="order" />
@@ -35,10 +38,16 @@
 import OrderStatus from "~/app/admin/Order/OrderStatus";
 import { nameOfOrder } from "~/plugins/strings.js";
 import { parsePhoneNumber, formatNational } from "~/plugins/phoneutil.js";
+import { db } from "~/plugins/firebase.js";
 
 export default {
   components: {
     OrderStatus
+  },
+  data() {
+    return {
+      restaurant: null
+    };
   },
   props: {
     order: {
@@ -46,11 +55,22 @@ export default {
       required: true
     }
   },
+  async created() {
+    if (this.order.restaurantId) {
+      const snapshot = await db
+        .doc(`restaurants/${this.order.restaurantId}`)
+        .get();
+      this.restaurant = snapshot.data();
+    }
+  },
   computed: {
     hasStripe() {
       return this.order.payment && this.order.payment.stripe;
     },
     timestamp() {
+      if (this.order.restaurantId) {
+        return this.order.timePlaced.toLocaleString();
+      }
       return this.order.timePlaced.toLocaleTimeString();
     },
     phoneNumber() {

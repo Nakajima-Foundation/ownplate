@@ -83,6 +83,7 @@
     "totalCharge": "合計金額",
     "pleasePayAtRestaurant": "オンライン課金は現時点では出来ません。受け取り時にお店でお支払いください。",
     "sendSMS": "SMSメッセージを受け取る（携帯電話の契約によっては課金の対象になります）",
+    "history": "注文履歴",
     "status": {
       "unexpected": "(Unexpected)",
       "error": "エラー",

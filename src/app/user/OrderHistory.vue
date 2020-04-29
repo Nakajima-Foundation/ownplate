@@ -1,6 +1,6 @@
 <template>
   <section class="section">
-    <h2>Order History</h2>
+    <h2>{{$t('order.history')}}</h2>
     <ordered-info
       v-for="order in orders"
       :key="order.id"
@@ -27,7 +27,8 @@ export default {
   async created() {
     console.log("created", this.uid);
     if (this.uid) {
-      db.collectionGroup("orders")
+      this.detatcher = db
+        .collectionGroup("orders")
         .where("uid", "==", this.uid)
         .orderBy("timePlaced", "desc")
         .limit(25)
