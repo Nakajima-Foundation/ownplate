@@ -31,6 +31,12 @@
     "updateMapDescription": "Set restaurant location from your restaurant name and address."
   },
   "editMenu": {
+    "new": "New",
+    "current": "Current",
+    "clickAndUpload": "Click and Upload",
+    "enterItemName": "Enter item name",
+    "enterItemDescription": "Enter item description",
+    "enterItemOption": "Enter item option",
     "item": "Item",
     "required": "Required",
     "itemName": "Item name",

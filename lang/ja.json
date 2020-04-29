@@ -31,6 +31,12 @@
     "updateMapDescription": "飲食店名や住所を元に地図を更新"
   },
   "editMenu": {
+    "new": "変更後",
+    "current": "変更前",
+    "clickAndUpload": "クリックしてアップロード",
+    "enterItemName": "料理/ドリンク名を入力してください",
+    "enterItemDescription": "説明文を入力してください",
+    "enterItemOption": "オプションを入力してください",
     "item": "料理/ドリンク",
     "required": "必須",
     "itemName": "料理/ドリンク名",
