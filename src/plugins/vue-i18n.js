@@ -20,30 +20,28 @@ const numberFormats = {
   }
 };
 
-const dateTimeFormats = {
-  'en': {
-    short: {
-      year: 'numeric', month: 'short', day: 'numeric'
-    },
-    time: {
-      hour: 'numeric', minute: 'numeric'
-    },
-    long: {
-      year: 'numeric', month: 'short', day: 'numeric',
-      weekday: 'short', hour: 'numeric', minute: 'numeric'
-    }
+const dateTimeFormatsEn = {
+  short: {
+    year: 'numeric', month: 'short', day: 'numeric'
   },
-  'ja': {
-    short: {
-      year: 'numeric', month: 'short', day: 'numeric'
-    },
-    time: {
-      hour: 'numeric', minute: 'numeric', hour12: true
-    },
-    long: {
-      year: 'numeric', month: 'short', day: 'numeric',
-      weekday: 'short', hour: 'numeric', minute: 'numeric', hour12: true
-    }
+  time: {
+    hour: 'numeric', minute: 'numeric'
+  },
+  long: {
+    year: 'numeric', month: 'short', day: 'numeric',
+    weekday: 'short', hour: 'numeric', minute: 'numeric'
+  }
+}
+const dateTimeFormatsJa = {
+  short: {
+    year: 'numeric', month: 'short', day: 'numeric'
+  },
+  time: {
+    hour: 'numeric', minute: 'numeric', hour12: true
+  },
+  long: {
+    year: 'numeric', month: 'short', day: 'numeric',
+    weekday: 'short', hour: 'numeric', minute: 'numeric', hour12: true
   }
 }
 
@@ -63,6 +61,9 @@ export default ({ app }) => {
       en: numberFormats,
       ja: numberFormats
     },
-    dateTimeFormats
+    dateTimeFormats: {
+      en: dateTimeFormatsEn,
+      ja: dateTimeFormatsJa
+    }
   });
 };
