@@ -27,7 +27,8 @@ export default {
   async created() {
     console.log("created", this.uid);
     if (this.uid) {
-      db.collectionGroup("orders")
+      this.detatcher = db
+        .collectionGroup("orders")
         .where("uid", "==", this.uid)
         .orderBy("timePlaced", "desc")
         .limit(25)
