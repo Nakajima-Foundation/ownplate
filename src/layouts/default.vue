@@ -80,7 +80,6 @@ export default {
       logo: regionalSetting.Logo,
       // todo support scrset https://kanoto.info/201912/673/
       // srcset: regionalSetting.Logo.map((logo) => {}
-      },
     };
   },
   computed: {
@@ -188,6 +187,15 @@ export default {
 
     if (this.$route.query.lang) {
       await this.changeLang(this.$route.query.lang);
+    } else {
+      const language = (window.navigator.languages && window.navigator.languages[0]) ||
+            window.navigator.language ||
+            window.navigator.userLanguage ||
+            window.navigator.browserLanguage
+      const lang = (language||"").substr(0, 2)
+      if (lang.length === 2) {
+        await this.changeLang(lang);
+      }
     }
   },
   destroyed() {
