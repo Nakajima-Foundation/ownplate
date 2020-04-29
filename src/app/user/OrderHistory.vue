@@ -20,29 +20,32 @@ export default {
   },
   data() {
     return {
+      detatcher: () => {},
       orders: []
     };
   },
   async created() {
     console.log("created", this.uid);
     if (this.uid) {
-      const snapshot = await db
-        .collectionGroup("orders")
+      db.collectionGroup("orders")
         .where("uid", "==", this.uid)
-        .get();
-      this.orders = snapshot.docs.map(doc => {
-        const order = doc.data();
-        console.log(doc.ref.path.split("/")[1]);
-        order.restaurantId = doc.ref.path.split("/")[1];
-        order.id = doc.id;
-        // HACK: Remove it later
-        order.timePlaced =
-          (order.timePlaced && order.timePlaced.toDate()) || new Date();
-        return order;
-      });
-
-      console.log(this.orders);
+        .onSnapshot(snapshot => {
+          this.orders = snapshot.docs.map(doc => {
+            const order = doc.data();
+            console.log(doc.ref.path.split("/")[1]);
+            order.restaurantId = doc.ref.path.split("/")[1];
+            order.id = doc.id;
+            // HACK: Remove it later
+            order.timePlaced =
+              (order.timePlaced && order.timePlaced.toDate()) || new Date();
+            return order;
+          });
+        });
     }
+  },
+  deestroyed() {
+    console.log("destroyed");
+    this.detatcher();
   },
   computed: {
     uid() {
