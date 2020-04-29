@@ -32,8 +32,9 @@ export default {
         .get();
       this.orders = snapshot.docs.map(doc => {
         const order = doc.data();
-        console.log(doc.ref.parent.parent.path);
-        order.id = order.id;
+        console.log(doc.ref.path.split("/")[1]);
+        order.restaurantId = doc.ref.path.split("/")[1];
+        order.id = doc.id;
         // HACK: Remove it later
         order.timePlaced =
           (order.timePlaced && order.timePlaced.toDate()) || new Date();
@@ -51,8 +52,7 @@ export default {
   methods: {
     orderSelected(order) {
       this.$router.push({
-        path:
-          "/admin/restaurants/" + this.restaurantId() + "/orders/" + order.id
+        path: "/r/" + order.restaurantId + "/order/" + order.id
       });
     }
   }

@@ -63,7 +63,7 @@ service cloud.firestore {
 
     // Rules for collection group
     match /{path=**}/orders/{orderId} {
-      allow read: if true;
+      allow read: if isOwner(resource, request);
     }
 
     match /restaurants {
