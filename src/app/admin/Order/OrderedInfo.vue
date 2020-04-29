@@ -68,6 +68,9 @@ export default {
       return this.order.payment && this.order.payment.stripe;
     },
     timestamp() {
+      if (this.order.restaurantId) {
+        return this.order.timePlaced.toLocaleString();
+      }
       return this.order.timePlaced.toLocaleTimeString();
     },
     phoneNumber() {
