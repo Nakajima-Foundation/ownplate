@@ -4,7 +4,7 @@
       <div class="level is-mobile" style="margin:0">
         <div class="level-left">
           <h3>
-            <span v-if="restaurantName">{{restaurantName}}</span>
+            <span v-if="restaurant">{{restaurant.restaurantName}}</span>
             {{ orderName }}
           </h3>
         </div>
@@ -46,7 +46,7 @@ export default {
   },
   data() {
     return {
-      restaurantName: ""
+      restaurant: null
     };
   },
   props: {
@@ -60,10 +60,7 @@ export default {
       const snapshot = await db
         .doc(`restaurants/${this.order.restaurantId}`)
         .get();
-      const doc = snapshot.data();
-      if (doc) {
-        this.restaurantName = doc.restaurantName;
-      }
+      this.restaurant = snapshot.data();
     }
   },
   computed: {
