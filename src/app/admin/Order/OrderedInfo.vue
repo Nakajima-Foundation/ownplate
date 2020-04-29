@@ -68,10 +68,10 @@ export default {
       return this.order.payment && this.order.payment.stripe;
     },
     timestamp() {
-      if (this.order.restaurantId) {
-        return this.order.timePlaced.toLocaleString();
-      }
-      return this.order.timePlaced.toLocaleTimeString();
+      return this.$d(
+        this.order.timePlaced,
+        this.order.restaurantId ? "long" : "time"
+      );
     },
     phoneNumber() {
       return this.order.phoneNumber && parsePhoneNumber(this.order.phoneNumber);

@@ -20,6 +20,33 @@ const numberFormats = {
   }
 };
 
+const dateTimeFormats = {
+  'en': {
+    short: {
+      year: 'numeric', month: 'short', day: 'numeric'
+    },
+    time: {
+      hour: 'numeric', minute: 'numeric'
+    },
+    long: {
+      year: 'numeric', month: 'short', day: 'numeric',
+      weekday: 'short', hour: 'numeric', minute: 'numeric'
+    }
+  },
+  'ja': {
+    short: {
+      year: 'numeric', month: 'short', day: 'numeric'
+    },
+    time: {
+      hour: 'numeric', minute: 'numeric', hour12: true
+    },
+    long: {
+      year: 'numeric', month: 'short', day: 'numeric',
+      weekday: 'short', hour: 'numeric', minute: 'numeric', hour12: true
+    }
+  }
+}
+
 const locale = region_data.langs[0] || 'en';
 
 export default ({ app }) => {
@@ -35,6 +62,7 @@ export default ({ app }) => {
     numberFormats: {
       en: numberFormats,
       ja: numberFormats
-    }
+    },
+    dateTimeFormats
   });
 };
