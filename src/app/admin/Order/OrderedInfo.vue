@@ -13,7 +13,7 @@
         </div>
       </div>
       <div class="level is-mobile" style="margin:0">
-        <div class="level-left">{{ totalCount }} items</div>
+        <div class="level-left">{{$tc('sitemenu.orderCounter', totalCount, {count: totalCount})}}</div>
         <div class="level-right">
           <span v-if="order.name">{{ order.name }}</span>
           <span v-if="!order.name && phoneNumber">{{ nationalPhoneNumber }}</span>
