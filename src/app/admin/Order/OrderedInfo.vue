@@ -13,7 +13,7 @@
         </div>
       </div>
       <div class="level is-mobile" style="margin:0">
-        <div class="level-left">{{ totalCount }} items</div>
+        <div class="level-left">{{$tc('sitemenu.orderCounter', totalCount, {count: totalCount})}}</div>
         <div class="level-right">
           <span v-if="order.name">{{ order.name }}</span>
           <span v-if="!order.name && phoneNumber">{{ nationalPhoneNumber }}</span>
@@ -68,10 +68,10 @@ export default {
       return this.order.payment && this.order.payment.stripe;
     },
     timestamp() {
-      if (this.order.restaurantId) {
-        return this.order.timePlaced.toLocaleString();
-      }
-      return this.order.timePlaced.toLocaleTimeString();
+      return this.$d(
+        this.order.timePlaced,
+        this.order.restaurantId ? "long" : "time"
+      );
     },
     phoneNumber() {
       return this.order.phoneNumber && parsePhoneNumber(this.order.phoneNumber);

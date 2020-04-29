@@ -20,6 +20,19 @@ const numberFormats = {
   }
 };
 
+const dateTimeFormats = {
+  short: {
+    year: 'numeric', month: 'short', day: 'numeric', weekday: 'short'
+  },
+  time: {
+    hour: 'numeric', minute: 'numeric', hour12: true
+  },
+  long: {
+    year: 'numeric', month: 'short', day: 'numeric',
+    weekday: 'short', hour: 'numeric', minute: 'numeric', hour12: true
+  }
+}
+
 const locale = region_data.langs[0] || 'en';
 
 export default ({ app }) => {
@@ -35,6 +48,10 @@ export default ({ app }) => {
     numberFormats: {
       en: numberFormats,
       ja: numberFormats
+    },
+    dateTimeFormats: {
+      en: dateTimeFormats,
+      ja: dateTimeFormats
     }
   });
 };
