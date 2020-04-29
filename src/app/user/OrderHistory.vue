@@ -43,8 +43,7 @@ export default {
         });
     }
   },
-  deestroyed() {
-    console.log("destroyed");
+  destroyed() {
     this.detatcher();
   },
   computed: {
