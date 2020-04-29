@@ -3,10 +3,7 @@
     <b-navbar>
       <template slot="brand">
         <b-navbar-item tag="router-link" :to="{ path: '/' }">
-          <img
-            :src="`/${this.logo}`"
-            alt="Lightweight UI components for Vue.js based on Bulma"
-          />
+          <img :src="`/${this.logo}`" alt="Lightweight UI components for Vue.js based on Bulma" />
         </b-navbar-item>
       </template>
 
@@ -29,6 +26,12 @@
               <i class="far fa-file-alt"></i>
             </span>
             <span class="nav-item">{{$t("menu.about")}}</span>
+          </b-navbar-item>
+          <b-navbar-item href="/u/history" v-if="isUser">
+            <span class="icon">
+              <i class="fas fa-history"></i>
+            </span>
+            <span class="nav-item">{{$t("order.history")}}</span>
           </b-navbar-item>
           <b-navbar-item href="#" v-if="hasUser" @click.prevent="signout">
             <span class="icon">
@@ -77,7 +80,7 @@ export default {
       ],
       unregisterAuthObserver: null,
       timerId: null,
-      logo: regionalSetting.Logo,
+      logo: regionalSetting.Logo
       // todo support scrset https://kanoto.info/201912/673/
       // srcset: regionalSetting.Logo.map((logo) => {}
     };
@@ -129,7 +132,7 @@ export default {
         // save into store
         this.$store.commit("setLang", lang);
       }
-    },
+    }
   },
   beforeCreate() {
     const systemGetConfig = functions.httpsCallable("systemGetConfig");
@@ -167,7 +170,7 @@ export default {
     async user() {
       if (this.user) {
         // lang
-        if (this.$store.state.lang ) {
+        if (this.$store.state.lang) {
           this.changeLang(this.$store.state.lang);
         } else {
           const profileSnapshot = await db.doc(this.profile_path).get();
@@ -178,7 +181,7 @@ export default {
           }
         }
       }
-    },
+    }
   },
   async created() {
     this.timerId = window.setInterval(() => {
@@ -188,11 +191,12 @@ export default {
     if (this.$route.query.lang) {
       await this.changeLang(this.$route.query.lang);
     } else {
-      const language = (window.navigator.languages && window.navigator.languages[0]) ||
-            window.navigator.language ||
-            window.navigator.userLanguage ||
-            window.navigator.browserLanguage
-      const lang = (language||"").substr(0, 2)
+      const language =
+        (window.navigator.languages && window.navigator.languages[0]) ||
+        window.navigator.language ||
+        window.navigator.userLanguage ||
+        window.navigator.browserLanguage;
+      const lang = (language || "").substr(0, 2);
       if (lang.length === 2) {
         await this.changeLang(lang);
       }
