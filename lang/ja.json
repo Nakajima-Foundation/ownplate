@@ -17,12 +17,19 @@
     "alreadyTaken": "このIDはすでに使われています。"
   },
   "editRestaurant": {
+    "new": "新規",
+    "current": "変更前",
+    "clickAndUpload": "クリックしてアップロード",
+    "enterRestaurantName": "レストラン名を入力して下さい",
+    "enterStreetAddress": "番地以下の住所を入力して下さい",
+    "enterCity": "市町村名を入力して下さい",
+    "enterZip": "郵便番号を入力して下さい",
+    "enterPhone": "電話番号を入力して下さい",
+    "enterWebsite": "ウェブサイトのURLを入力して下さい",
     "about": "飲食店情報",
     "required": "必須",
     "profilePhoto": "プロフィール画像",
     "coverPhoto": "カバー画像",
-    "current": "現在",
-    "new": "新規",
     "setLocation": "住所を元に地図を更新",
     "updateMap": "場所をセット",
     "businessHourDescription": "営業する曜日にチェックをいれ、営業時間を設定してください。",
@@ -31,7 +38,7 @@
     "updateMapDescription": "飲食店名や住所を元に地図を更新"
   },
   "editMenu": {
-    "new": "変更後",
+    "new": "新規",
     "current": "変更前",
     "clickAndUpload": "クリックしてアップロード",
     "enterItemName": "料理/ドリンク名を入力してください",
