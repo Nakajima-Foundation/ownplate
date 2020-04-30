@@ -229,7 +229,7 @@
         ></b-input>
       </b-field>
 
-      <b-field label="Website">
+      <b-field :label="$t('editRestaurant.website')">
         <b-input
           v-model="shopInfo.url"
           :placeholder="$t('editRestaurant.enterWebsite')"
@@ -244,7 +244,7 @@
             <div class="field-body">
               <div class="field has-addons">
                 <b-field
-                  label="Food tax"
+                  :label="$t('editRestaurant.foodTax')"
                   type="is-white"
                   style="border-radius: 0.4rem!important;"
                   :type="errors['foodTax'].length > 0 ? 'is-danger' : 'is-success'"
@@ -270,7 +270,7 @@
             <div class="field-body">
               <div class="field has-addons">
                 <b-field
-                  label="Alcohol tax"
+                  :label="$t('editRestaurant.alcoholTax')"
                   type="is-white"
                   style="border-radius: 0.4rem!important;"
                   :type="errors['alcoholTax'].length > 0 ? 'is-danger' : 'is-success'"
