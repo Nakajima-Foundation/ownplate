@@ -41,7 +41,12 @@
     "businessHourDescription": "Check the business day of the week and set the business hours.",
     "draftDescription": "Save as Draft.",
     "publishDescription": "Save and publish your restaurant.",
-    "updateMapDescription": "Set restaurant location from your restaurant name and address."
+    "updateMapDescription": "Set restaurant location from your restaurant name and address.",
+    "noRestaurant": "No restaurant name",
+    "noStreetAddress": "No street address",
+    "city": "city",
+    "zip": "zip",
+    "state": "state"
   },
   "editMenu": {
     "menu": "Menu",

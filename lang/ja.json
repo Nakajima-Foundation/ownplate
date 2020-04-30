@@ -41,7 +41,12 @@
     "businessHourDescription": "営業する曜日にチェックをいれ、営業時間を設定してください。",
     "draftDescription": "下書きとして保存",
     "publishDescription": "保存して公開",
-    "updateMapDescription": "飲食店名や住所を元に地図を更新"
+    "updateMapDescription": "飲食店名や住所を元に地図を更新",
+    "noRestaurant": "レストラン名が未指定です",
+    "noStreetAddress": "住所が未入力です",
+    "city": "市町村",
+    "zip": "郵便番号",
+    "state": "都道府県"
   },
   "editMenu": {
     "menu": "メニュー",
