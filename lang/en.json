@@ -16,17 +16,22 @@
     "invalid": "Invalid ID. You can use only alphabets and numbers.",
     "alreadyTaken": "This ID is not available."
   },
-  "editRestaurant": {
+  "editCommon": {
     "save": "Save",
     "new": "New",
     "current": "Current",
-    "clickAndUpload": "Click and Upload",
+    "clickAndUpload": "Click and Upload"
+  },
+  "editRestaurant": {
     "enterRestaurantName": "Enter restaurant name",
     "enterStreetAddress": "Enter street address",
     "enterCity": "Enter City",
     "enterZip": "Enter Zip",
     "enterPhone": "Enter Phone Number",
     "enterWebsite": "Enter Website URL",
+    "website": "Website",
+    "foodTax": "Food Tax",
+    "alcoholTax": "Alcohol Tax",
     "about": "About",
     "required": "Required",
     "profilePhoto": "Restaurant profile photo",
@@ -36,16 +41,21 @@
     "businessHourDescription": "Check the business day of the week and set the business hours.",
     "draftDescription": "Save as Draft.",
     "publishDescription": "Save and publish your restaurant.",
-    "updateMapDescription": "Set restaurant location from your restaurant name and address."
+    "updateMapDescription": "Set restaurant location from your restaurant name and address.",
+    "noRestaurant": "No restaurant name",
+    "noStreetAddress": "No street address",
+    "city": "city",
+    "zip": "zip",
+    "state": "state"
   },
   "editMenu": {
-    "new": "New",
-    "current": "Current",
-    "clickAndUpload": "Click and Upload",
+    "menu": "Menu",
     "enterItemName": "Enter item name",
     "enterItemDescription": "Enter item description",
     "enterItemOption": "Enter item option",
     "item": "Item",
+    "noItem": "No Item",
+    "pleaseAddItem": "Please create your menu from the bottom button.",
     "required": "Required",
     "itemName": "Item name",
     "price": "Price",
@@ -55,7 +65,6 @@
     "itemOptions": "Item options",
     "itemOptionsNote": "For altenatives, use comma to separate them (e.g., \"Chicken, Pork, Tofu\")",
     "itemAddOption": "Add Option",
-    "save": "Save",
     "itemInvalidMessage": "This item is not on your menu because data is invalid."
   },
   "shopInfo": {

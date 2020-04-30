@@ -25,8 +25,8 @@
       </div>
       <table>
         <tr>
-          <td v-if="shopInfo.restProfilePhoto">{{$t("editRestaurant.current")}}</td>
-          <td>{{$t("editRestaurant.new")}}</td>
+          <td v-if="shopInfo.restProfilePhoto">{{$t("editCommon.current")}}</td>
+          <td>{{$t("editCommon.new")}}</td>
         </tr>
         <tr>
           <td v-if="shopInfo.restProfilePhoto">
@@ -39,7 +39,7 @@
               :zoom-speed="5"
               :width="200"
               :height="200"
-              :placeholder="$t('editRestaurant.clickAndUpload')"
+              :placeholder="$t('editCommon.clickAndUpload')"
               :placeholder-font-size="16"
               initial-position="center"
               :canvas-color="'gainsboro'"
@@ -54,8 +54,8 @@
       </div>
       <table>
         <tr>
-          <td v-if="shopInfo.restProfilePhoto">{{$t("editRestaurant.current")}}</td>
-          <td>{{$t("editRestaurant.new")}}</td>
+          <td v-if="shopInfo.restProfilePhoto">{{$t("editCommon.current")}}</td>
+          <td>{{$t("editCommon.new")}}</td>
         </tr>
         <tr>
           <td v-if="shopInfo.restProfilePhoto">
@@ -73,7 +73,7 @@
               :zoom-speed="5"
               :width="300"
               :height="150"
-              :placeholder="$t('editRestaurant.clickAndUpload')"
+              :placeholder="$t('editCommon.clickAndUpload')"
               :placeholder-font-size="16"
               initial-position="center"
               :canvas-color="'gainsboro'"
@@ -229,7 +229,7 @@
         ></b-input>
       </b-field>
 
-      <b-field label="Website">
+      <b-field :label="$t('editRestaurant.website')">
         <b-input
           v-model="shopInfo.url"
           :placeholder="$t('editRestaurant.enterWebsite')"
@@ -244,7 +244,7 @@
             <div class="field-body">
               <div class="field has-addons">
                 <b-field
-                  label="Food tax"
+                  :label="$t('editRestaurant.foodTax')"
                   type="is-white"
                   style="border-radius: 0.4rem!important;"
                   :type="errors['foodTax'].length > 0 ? 'is-danger' : 'is-success'"
@@ -270,7 +270,7 @@
             <div class="field-body">
               <div class="field has-addons">
                 <b-field
-                  label="Alcohol tax"
+                  :label="$t('editRestaurant.alcoholTax')"
                   type="is-white"
                   style="border-radius: 0.4rem!important;"
                   :type="errors['alcoholTax'].length > 0 ? 'is-danger' : 'is-success'"
@@ -322,7 +322,7 @@
         class="counter-button save_btn"
         rounded
         @click="submitRestaurant"
-      >{{$t('editRestaurant.save')}}</b-button>
+      >{{$t('editCommon.save')}}</b-button>
     </template>
   </section>
 </template>
