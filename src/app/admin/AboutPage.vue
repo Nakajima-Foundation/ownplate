@@ -39,8 +39,8 @@
               :zoom-speed="5"
               :width="200"
               :height="200"
-              placeholder="Click and uploade"
-              :placeholder-font-size="20"
+              :placeholder="$t('editRestaurant.clickAndUpload')"
+              :placeholder-font-size="16"
               initial-position="center"
               :canvas-color="'gainsboro'"
             ></croppa>
@@ -73,8 +73,8 @@
               :zoom-speed="5"
               :width="300"
               :height="150"
-              :placeholder="'Click and upload'"
-              :placeholder-font-size="20"
+              :placeholder="$t('editRestaurant.clickAndUpload')"
+              :placeholder-font-size="16"
               initial-position="center"
               :canvas-color="'gainsboro'"
             ></croppa>
@@ -93,7 +93,7 @@
         <b-input
           v-model="shopInfo.restaurantName"
           type="text"
-          placeholder="Enter restaurant name"
+          :placeholder="$t('editRestaurant.enterRestaurantName')"
           maxlength="50"
         ></b-input>
       </b-field>
@@ -113,7 +113,7 @@
         <b-input
           v-model="shopInfo.streetAddress"
           type="text"
-          placeholder="Enter street address"
+          :placeholder="$t('editRestaurant.enterStreetAddress')"
           maxlength="30"
         ></b-input>
       </b-field>
@@ -129,7 +129,12 @@
             </div>
           </div>
           <b-field :type="errors['city'].length > 0 ? 'is-danger' : 'is-white'">
-            <b-input v-model="shopInfo.city" type="text" placeholder="Enter city" maxlength="15"></b-input>
+            <b-input
+              v-model="shopInfo.city"
+              type="text"
+              :placeholder="$t('editRestaurant.enterCity')"
+              maxlength="15"
+            ></b-input>
           </b-field>
         </div>
         <div class="column">
@@ -141,13 +146,26 @@
               </h4>
             </div>
           </div>
-          <b-field type="is-white" :type="errors['state'].length > 0 ? 'is-danger' : 'is-success'" v-if="Array.isArray(states)">
+          <b-field
+            type="is-white"
+            :type="errors['state'].length > 0 ? 'is-danger' : 'is-success'"
+            v-if="Array.isArray(states)"
+          >
             <b-select v-model="shopInfo.state" placeholder="select">
               <option v-for="stateItem in states" :key="stateItem">{{ stateItem }}</option>
             </b-select>
           </b-field>
-          <b-field type="is-white" :type="errors['state'].length > 0 ? 'is-danger' : 'is-success'" v-else>
-            <b-input v-model="shopInfo.state" type="text" placeholder="Enter city" maxlength="15"></b-input>
+          <b-field
+            type="is-white"
+            :type="errors['state'].length > 0 ? 'is-danger' : 'is-success'"
+            v-else
+          >
+            <b-input
+              v-model="shopInfo.state"
+              type="text"
+              :placeholder="$t('editRestaurant.enterCity')"
+              maxlength="15"
+            ></b-input>
           </b-field>
         </div>
       </div>
@@ -161,7 +179,12 @@
         </div>
       </div>
       <b-field :type="errors['zip'].length > 0 ? 'is-danger' : 'is-white'">
-        <b-input v-model="shopInfo.zip" type="text" placeholder="Enter zip" maxlength="10"></b-input>
+        <b-input
+          v-model="shopInfo.zip"
+          type="text"
+          :placeholder="$t('editRestaurant.enterZip')"
+          maxlength="10"
+        ></b-input>
       </b-field>
       <b-field>
         <b-button
@@ -200,14 +223,19 @@
       <b-field :type="errors['phoneNumber'].length > 0 ? 'is-danger' : 'is-white'">
         <b-input
           v-model="shopInfo.phoneNumber"
-          placeholder="Enter phone number"
+          :placeholder="$t('editRestaurant.enterPhone')"
           type="tel"
           maxlength="20"
         ></b-input>
       </b-field>
 
       <b-field label="Website">
-        <b-input v-model="shopInfo.url" placeholder="Enter website URL" type="url" maxlength="100"></b-input>
+        <b-input
+          v-model="shopInfo.url"
+          :placeholder="$t('editRestaurant.enterWebsite')"
+          type="url"
+          maxlength="100"
+        ></b-input>
       </b-field>
 
       <div class="columns">
@@ -294,7 +322,7 @@
         class="counter-button save_btn"
         rounded
         @click="submitRestaurant"
-      >Save</b-button>
+      >{{$t('editRestaurant.save')}}</b-button>
     </template>
   </section>
 </template>
@@ -625,7 +653,7 @@ export default {
   height: 4rem;
   font-size: 1.5rem;
   font-weight: 200;
-  z-index: 10,
+  z-index: 10;
 }
 /deep/.ti-input {
   border-radius: 0.4rem !important;
