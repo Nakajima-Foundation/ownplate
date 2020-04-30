@@ -16,11 +16,13 @@
     "invalid": "数字の半角小文字英字のみ使えます。",
     "alreadyTaken": "このIDはすでに使われています。"
   },
-  "editRestaurant": {
+  "editCommon": {
     "save": "保存",
     "new": "新規",
     "current": "変更前",
-    "clickAndUpload": "クリックしてアップロード",
+    "clickAndUpload": "クリックしてアップロード"
+  },
+  "editRestaurant": {
     "enterRestaurantName": "レストラン名を入力して下さい",
     "enterStreetAddress": "番地以下の住所を入力して下さい",
     "enterCity": "市町村名を入力して下さい",
@@ -39,9 +41,7 @@
     "updateMapDescription": "飲食店名や住所を元に地図を更新"
   },
   "editMenu": {
-    "new": "新規",
-    "current": "変更前",
-    "clickAndUpload": "クリックしてアップロード",
+    "menu": "メニュー",
     "enterItemName": "料理/ドリンク名を入力してください",
     "enterItemDescription": "説明文を入力してください",
     "enterItemOption": "オプションを入力してください",
@@ -55,7 +55,6 @@
     "itemOptions": "オプション",
     "itemOptionsNote": "二択や三択の場合、半角カンマで区切ってください (例: \"チキン, ポーク, 豆腐\")",
     "itemAddOption": "オプション追加",
-    "save": "保存",
     "itemInvalidMessage": "データが正しく入力されていないため、公開されません"
   },
   "shopInfo": {

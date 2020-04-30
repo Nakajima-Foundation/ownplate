@@ -25,8 +25,8 @@
       </div>
       <table>
         <tr>
-          <td v-if="shopInfo.restProfilePhoto">{{$t("editRestaurant.current")}}</td>
-          <td>{{$t("editRestaurant.new")}}</td>
+          <td v-if="shopInfo.restProfilePhoto">{{$t("editCommon.current")}}</td>
+          <td>{{$t("editCommon.new")}}</td>
         </tr>
         <tr>
           <td v-if="shopInfo.restProfilePhoto">
@@ -39,7 +39,7 @@
               :zoom-speed="5"
               :width="200"
               :height="200"
-              :placeholder="$t('editRestaurant.clickAndUpload')"
+              :placeholder="$t('editCommon.clickAndUpload')"
               :placeholder-font-size="16"
               initial-position="center"
               :canvas-color="'gainsboro'"
@@ -54,8 +54,8 @@
       </div>
       <table>
         <tr>
-          <td v-if="shopInfo.restProfilePhoto">{{$t("editRestaurant.current")}}</td>
-          <td>{{$t("editRestaurant.new")}}</td>
+          <td v-if="shopInfo.restProfilePhoto">{{$t("editCommon.current")}}</td>
+          <td>{{$t("editCommon.new")}}</td>
         </tr>
         <tr>
           <td v-if="shopInfo.restProfilePhoto">
@@ -73,7 +73,7 @@
               :zoom-speed="5"
               :width="300"
               :height="150"
-              :placeholder="$t('editRestaurant.clickAndUpload')"
+              :placeholder="$t('editCommon.clickAndUpload')"
               :placeholder-font-size="16"
               initial-position="center"
               :canvas-color="'gainsboro'"
@@ -322,7 +322,7 @@
         class="counter-button save_btn"
         rounded
         @click="submitRestaurant"
-      >{{$t('editRestaurant.save')}}</b-button>
+      >{{$t('editCommon.save')}}</b-button>
     </template>
   </section>
 </template>

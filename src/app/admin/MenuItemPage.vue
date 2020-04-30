@@ -92,8 +92,8 @@
 
         <table style="margin-bottom:0.5rem">
           <tr>
-            <td v-if="menuInfo.itemPhoto">{{$t('editMenu.current')}}</td>
-            <td>{{$t('editMenu.new')}}</td>
+            <td v-if="menuInfo.itemPhoto">{{$t('editCommon.current')}}</td>
+            <td>{{$t('editCommon.new')}}</td>
           </tr>
           <tr>
             <td v-if="menuInfo.itemPhoto">
@@ -104,7 +104,7 @@
                 v-model="croppa"
                 :prevent-white-space="true"
                 :zoom-speed="5"
-                :placeholder="$t('editMenu.clickAndUpload')"
+                :placeholder="$t('editCommon.clickAndUpload')"
                 :placeholder-font-size="16"
                 initial-position="center"
                 :canvas-color="'gainsboro'"
@@ -165,7 +165,7 @@
           expanded
           rounded
           @click="submitItem"
-        >{{$t("editMenu.save")}}</b-button>
+        >{{$t("editCommon.save")}}</b-button>
       </section>
     </template>
   </div>

@@ -18,7 +18,7 @@
         </div>
       </div>
 
-      <h2 class="p-big bold">Menu</h2>
+      <h2 class="p-big bold">{{$t('editMenu.menu')}}</h2>
       <div v-if="!existsMenu" class="card block">
         <div class="card-content">
           <div class="container content has-text-centered">

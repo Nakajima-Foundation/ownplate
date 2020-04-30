@@ -16,11 +16,13 @@
     "invalid": "Invalid ID. You can use only alphabets and numbers.",
     "alreadyTaken": "This ID is not available."
   },
-  "editRestaurant": {
+  "editCommon": {
     "save": "Save",
     "new": "New",
     "current": "Current",
-    "clickAndUpload": "Click and Upload",
+    "clickAndUpload": "Click and Upload"
+  },
+  "editRestaurant": {
     "enterRestaurantName": "Enter restaurant name",
     "enterStreetAddress": "Enter street address",
     "enterCity": "Enter City",
@@ -39,9 +41,7 @@
     "updateMapDescription": "Set restaurant location from your restaurant name and address."
   },
   "editMenu": {
-    "new": "New",
-    "current": "Current",
-    "clickAndUpload": "Click and Upload",
+    "menu": "Menu",
     "enterItemName": "Enter item name",
     "enterItemDescription": "Enter item description",
     "enterItemOption": "Enter item option",
@@ -55,7 +55,6 @@
     "itemOptions": "Item options",
     "itemOptionsNote": "For altenatives, use comma to separate them (e.g., \"Chicken, Pork, Tofu\")",
     "itemAddOption": "Add Option",
-    "save": "Save",
     "itemInvalidMessage": "This item is not on your menu because data is invalid."
   },
   "shopInfo": {
