@@ -120,6 +120,7 @@ export default {
     },
     setLang(lang) {
       this.$i18n.locale = lang;
+      auth.languageCode = lang;
     },
     async changeLang(lang) {
       this.setLang(lang);
