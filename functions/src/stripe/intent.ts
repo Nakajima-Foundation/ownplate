@@ -4,14 +4,17 @@ import { order_status } from '../common/constant'
 import Stripe from 'stripe'
 import Order from '../models/Order'
 import * as utils from './utils'
+import * as sms from '../functions/sms'
+import { resources } from '../functions/resources'
+import i18next from 'i18next'
 
 // This function is called by user to create a "payment intent" (to start the payment transaction)
 export const create = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
   const stripe = utils.get_stripe();
 
-  const { orderId, restaurantId, paymentMethodId, tip } = data;
-  utils.validate_params({ orderId, restaurantId, paymentMethodId });
+  const { orderId, restaurantId, paymentMethodId, tip, sendSMS } = data;
+  utils.validate_params({ orderId, restaurantId, paymentMethodId }); // tip and sendSMS are optional
 
   const restaurantData = await utils.get_restaurant(db, restaurantId);
   const venderId = restaurantData['uid']
@@ -60,6 +63,7 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
         status: order_status.order_placed,
         totalCharge: totalCharge / multiple,
         tip: Math.round(tip * multiple) / multiple,
+        sendSMS: sendSMS || false,
         payment: {
           stripe: "pending"
         }
@@ -153,19 +157,23 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
   const uid = utils.validate_auth(context);
   const stripe = utils.get_stripe();
 
-  const { restaurantId, orderId } = data
-  utils.validate_params({ restaurantId, orderId })
+  const { restaurantId, orderId, lng } = data
+  utils.validate_params({ restaurantId, orderId }) // lng is optional
 
   const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`)
   const stripeRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}/system/stripe`)
-  const restaurantData = await utils.get_restaurant(db, restaurantId)
-  const venderId = restaurantData['uid']
+  const restaurant = await utils.get_restaurant(db, restaurantId)
+  const venderId = restaurant['uid']
 
   const stripeSnapshot = await db.doc(`/admins/${venderId}/public/stripe`).get()
   const stripeData = stripeSnapshot.data()
 
+  let sendSMS: boolean = false
+  let phoneNumber: string | undefined = undefined;
+  let orderNumber: string = "";
+
   try {
-    return await db.runTransaction(async transaction => {
+    const result = await db.runTransaction(async transaction => {
 
       const snapshot = await transaction.get(orderRef)
       const order = Order.fromSnapshot<Order>(snapshot)
@@ -184,9 +192,12 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
         if (order.status >= order_status.customer_picked_up) {
           throw new functions.https.HttpsError('permission-denied', 'Invalid order state to cancel.')
         }
+        sendSMS = order.sendSMS
       } else {
         throw new functions.https.HttpsError('permission-denied', 'The user does not have permission to cancel this request.')
       }
+      phoneNumber = order.phoneNumber
+      orderNumber = "#" + `00${order.number}`.slice(-3)
 
       if (!stripeData || !order.payment || !order.payment.stripe) {
         // No payment transaction
@@ -227,6 +238,14 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
         throw error
       }
     })
+    if (sendSMS) {
+      const t = await i18next.init({
+        lng: lng || utils.stripe_region.langs[0],
+        resources
+      })
+      await sms.pushSMS("OwnPlate", `${t('msg_order_canceled')} ${restaurant.restaurantName} ${orderNumber}`, phoneNumber)
+    }
+    return result
   } catch (error) {
     throw utils.process_error(error)
   }

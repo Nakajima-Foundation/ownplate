@@ -99,6 +99,9 @@
               <span class="p-font bold">{{$t('order.placeOrderNoPayment')}}</span>
             </b-button>
           </div>
+          <div style="margin-top: 1rem">
+            <b-checkbox v-model="sendSMS">{{$t('order.sendSMS')}}</b-checkbox>
+          </div>
         </div>
       </section>
     </template>
@@ -141,6 +144,7 @@ export default {
       isPlacing: false,
       tip: 0,
       isCanceling: false,
+      sendSMS: true,
       notFound: false
     };
   },
@@ -292,6 +296,7 @@ export default {
           restaurantId: this.restaurantId(),
           orderId: this.orderId,
           description: `${this.orderName} ${this.shopInfo.restaurantName} ${this.shopInfo.phoneNumber}`,
+          sendSMS: this.sendSMS,
           tip: this.tip || 0
         });
         console.log("create", data);
@@ -309,6 +314,7 @@ export default {
         const { data } = await orderPlace({
           restaurantId: this.restaurantId(),
           orderId: this.orderId,
+          sendSMS: this.sendSMS,
           tip: this.tip || 0
         });
         console.log("place", data);

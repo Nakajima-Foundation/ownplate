@@ -5,7 +5,7 @@
     class="counter-button"
     icon-left="arrow-left"
     tag="nuxt-link"
-    :to="localePath(url)"
+    :to="url"
     rounded
     outlined
   >

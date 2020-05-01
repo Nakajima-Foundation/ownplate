@@ -3,29 +3,16 @@ import i18nES from './lang/es.json';
 import i18nJA from './lang/ja.json';
 require('dotenv').config();
 
-const defaultLocale = process.env.LOCALE || "en";
-const numberFormats = ((locale) => {
-  if (locale === 'ja') {
-    return {
-      currency: {
-        style: 'currency',
-        currency: 'JPY'
-      }
-    };
-  }
-  return {
-    currency: {
-      style: 'currency',
-      currency: 'USD'
-    }
-  };
-})(defaultLocale);
-
 const customRoutes = [
   {
     name: 'r',
     path: '/r',
     component: 'user/RootPage.vue',
+  },
+  {
+    name: 'history',
+    path: '/u/history',
+    component: 'user/OrderHistory.vue',
   },
   {
     name: 'r-restaurantId',
@@ -90,7 +77,7 @@ export default {
   router: {
     extendRoutes(routes, resolve) {
       customRoutes.map(route => {
-        const r = {...route};
+        const r = { ...route };
         r.component = resolve(__dirname, "src/app/" + route.component);
         routes.push(r);
       });
@@ -177,6 +164,7 @@ export default {
     { src: "~/plugins/userPermission.js", ssr: false },
     { src: "~/plugins/utils.js", ssr: false },
     // "~/plugins/mock.js"
+    '~plugins/vue-i18n.js'
   ],
   /*
    ** Nuxt.js dev-modules
@@ -191,7 +179,6 @@ export default {
     '@nuxtjs/dotenv',
     "@nuxtjs/style-resources",
     "@nuxtjs/axios",
-    'nuxt-i18n',
     ['nuxt-gmaps', {
       key: process.env.GAPIKey,
     }],
@@ -201,22 +188,7 @@ export default {
     STRIPE_CLIENT_ID: process.env.STRIPE_CLIENT_ID,
     gapikey: process.env.GAPIKey,
     CIRCLE_SHA1: process.env.CIRCLE_SHA1,
-  },
-  i18n: {
-    locales: ['en', 'es', 'ja'],
-    defaultLocale: defaultLocale,
-    vueI18n: {
-      fallbackLocale: defaultLocale,
-      messages: {
-        en: i18nEN,
-        es: i18nES,
-        ja: i18nJA,
-      },
-      numberFormats: {
-        en: numberFormats,
-        ja: numberFormats
-      }
-    }
+    REGION: process.env.REGION,
   },
   styleResources: {
     scss: [

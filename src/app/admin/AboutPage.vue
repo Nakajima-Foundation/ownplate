@@ -25,8 +25,8 @@
       </div>
       <table>
         <tr>
-          <td v-if="shopInfo.restProfilePhoto">{{$t("editRestaurant.current")}}</td>
-          <td>{{$t("editRestaurant.new")}}</td>
+          <td v-if="shopInfo.restProfilePhoto">{{$t("editCommon.current")}}</td>
+          <td>{{$t("editCommon.new")}}</td>
         </tr>
         <tr>
           <td v-if="shopInfo.restProfilePhoto">
@@ -39,8 +39,8 @@
               :zoom-speed="5"
               :width="200"
               :height="200"
-              placeholder="Click and uploade"
-              :placeholder-font-size="20"
+              :placeholder="$t('editCommon.clickAndUpload')"
+              :placeholder-font-size="16"
               initial-position="center"
               :canvas-color="'gainsboro'"
             ></croppa>
@@ -54,8 +54,8 @@
       </div>
       <table>
         <tr>
-          <td v-if="shopInfo.restProfilePhoto">{{$t("editRestaurant.current")}}</td>
-          <td>{{$t("editRestaurant.new")}}</td>
+          <td v-if="shopInfo.restProfilePhoto">{{$t("editCommon.current")}}</td>
+          <td>{{$t("editCommon.new")}}</td>
         </tr>
         <tr>
           <td v-if="shopInfo.restProfilePhoto">
@@ -73,8 +73,8 @@
               :zoom-speed="5"
               :width="300"
               :height="150"
-              :placeholder="'Click and upload'"
-              :placeholder-font-size="20"
+              :placeholder="$t('editCommon.clickAndUpload')"
+              :placeholder-font-size="16"
               initial-position="center"
               :canvas-color="'gainsboro'"
             ></croppa>
@@ -93,7 +93,7 @@
         <b-input
           v-model="shopInfo.restaurantName"
           type="text"
-          placeholder="Enter restaurant name"
+          :placeholder="$t('editRestaurant.enterRestaurantName')"
           maxlength="50"
         ></b-input>
       </b-field>
@@ -113,7 +113,7 @@
         <b-input
           v-model="shopInfo.streetAddress"
           type="text"
-          placeholder="Enter street address"
+          :placeholder="$t('editRestaurant.enterStreetAddress')"
           maxlength="30"
         ></b-input>
       </b-field>
@@ -129,22 +129,43 @@
             </div>
           </div>
           <b-field :type="errors['city'].length > 0 ? 'is-danger' : 'is-white'">
-            <b-input v-model="shopInfo.city" type="text" placeholder="Enter city" maxlength="15"></b-input>
+            <b-input
+              v-model="shopInfo.city"
+              type="text"
+              :placeholder="$t('editRestaurant.enterCity')"
+              maxlength="15"
+            ></b-input>
           </b-field>
         </div>
         <div class="column">
           <div class="field is-horizontal">
             <div class="field-body">
               <h4>
-                {{$t('shopInfo.state')}}
+                {{$t(this.state_key)}}
                 <span class="p-font bold" style="color:#CB4B4B">*</span>
               </h4>
             </div>
           </div>
-          <b-field type="is-white" :type="errors['state'].length > 0 ? 'is-danger' : 'is-success'">
+          <b-field
+            type="is-white"
+            :type="errors['state'].length > 0 ? 'is-danger' : 'is-success'"
+            v-if="Array.isArray(states)"
+          >
             <b-select v-model="shopInfo.state" placeholder="select">
               <option v-for="stateItem in states" :key="stateItem">{{ stateItem }}</option>
             </b-select>
+          </b-field>
+          <b-field
+            type="is-white"
+            :type="errors['state'].length > 0 ? 'is-danger' : 'is-success'"
+            v-else
+          >
+            <b-input
+              v-model="shopInfo.state"
+              type="text"
+              :placeholder="$t('editRestaurant.enterCity')"
+              maxlength="15"
+            ></b-input>
           </b-field>
         </div>
       </div>
@@ -158,7 +179,12 @@
         </div>
       </div>
       <b-field :type="errors['zip'].length > 0 ? 'is-danger' : 'is-white'">
-        <b-input v-model="shopInfo.zip" type="text" placeholder="Enter zip" maxlength="10"></b-input>
+        <b-input
+          v-model="shopInfo.zip"
+          type="text"
+          :placeholder="$t('editRestaurant.enterZip')"
+          maxlength="10"
+        ></b-input>
       </b-field>
       <b-field>
         <b-button
@@ -197,14 +223,19 @@
       <b-field :type="errors['phoneNumber'].length > 0 ? 'is-danger' : 'is-white'">
         <b-input
           v-model="shopInfo.phoneNumber"
-          placeholder="Enter phone number"
+          :placeholder="$t('editRestaurant.enterPhone')"
           type="tel"
           maxlength="20"
         ></b-input>
       </b-field>
 
-      <b-field label="Website">
-        <b-input v-model="shopInfo.url" placeholder="Enter website URL" type="url" maxlength="100"></b-input>
+      <b-field :label="$t('editRestaurant.website')">
+        <b-input
+          v-model="shopInfo.url"
+          :placeholder="$t('editRestaurant.enterWebsite')"
+          type="url"
+          maxlength="100"
+        ></b-input>
       </b-field>
 
       <div class="columns">
@@ -213,7 +244,7 @@
             <div class="field-body">
               <div class="field has-addons">
                 <b-field
-                  label="Food tax"
+                  :label="$t('editRestaurant.foodTax')"
                   type="is-white"
                   style="border-radius: 0.4rem!important;"
                   :type="errors['foodTax'].length > 0 ? 'is-danger' : 'is-success'"
@@ -239,7 +270,7 @@
             <div class="field-body">
               <div class="field has-addons">
                 <b-field
-                  label="Alcohol tax"
+                  :label="$t('editRestaurant.alcoholTax')"
                   type="is-white"
                   style="border-radius: 0.4rem!important;"
                   :type="errors['alcoholTax'].length > 0 ? 'is-danger' : 'is-success'"
@@ -291,7 +322,7 @@
         class="counter-button save_btn"
         rounded
         @click="submitRestaurant"
-      >Save</b-button>
+      >{{$t('editCommon.save')}}</b-button>
     </template>
   </section>
 </template>
@@ -305,7 +336,7 @@ import * as API from "~/plugins/api";
 import BackButton from "~/components/BackButton";
 import NotFound from "~/components/NotFound";
 
-import { daysOfWeek, USStates } from "~/plugins/constant.js";
+import { daysOfWeek, regionalSettings } from "~/plugins/constant.js";
 
 export default {
   name: "Order",
@@ -316,6 +347,7 @@ export default {
   },
 
   data() {
+    const regionalSetting = regionalSettings[process.env.REGION];
     return {
       disabled: false, // ??
       filteredItems: [], // ??
@@ -354,7 +386,8 @@ export default {
         },
         publicFlag: false
       },
-      states: USStates,
+      states: regionalSetting.AddressStates,
+      state_key: regionalSetting.StateKey || "shopInfo.state",
       maplocation: {},
       place_id: null,
       markers: [],
@@ -620,7 +653,7 @@ export default {
   height: 4rem;
   font-size: 1.5rem;
   font-weight: 200;
-  z-index: 10,
+  z-index: 10;
 }
 /deep/.ti-input {
   border-radius: 0.4rem !important;

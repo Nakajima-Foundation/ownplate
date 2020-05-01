@@ -10,6 +10,6 @@ export const firebaseConfig = {
 };
 
 export const ownPlateConfig = {
-  releasName: "alpha"
+  releasName: "beta"
 };
 

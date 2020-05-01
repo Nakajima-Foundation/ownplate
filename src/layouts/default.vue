@@ -3,10 +3,7 @@
     <b-navbar>
       <template slot="brand">
         <b-navbar-item tag="router-link" :to="{ path: '/' }">
-          <img
-            src="/OwnPlate-Logo-Horizontal-YellowWhite.svg"
-            alt="Lightweight UI components for Vue.js based on Bulma"
-          />
+          <img :src="`/${this.logo}`" alt="Lightweight UI components for Vue.js based on Bulma" />
         </b-navbar-item>
       </template>
 
@@ -29,6 +26,12 @@
               <i class="far fa-file-alt"></i>
             </span>
             <span class="nav-item">{{$t("menu.about")}}</span>
+          </b-navbar-item>
+          <b-navbar-item href="/u/history" v-if="isUser">
+            <span class="icon">
+              <i class="fas fa-history"></i>
+            </span>
+            <span class="nav-item">{{$t("order.history")}}</span>
           </b-navbar-item>
           <b-navbar-item href="#" v-if="hasUser" @click.prevent="signout">
             <span class="icon">
@@ -57,9 +60,11 @@
 
 <script>
 import { db, auth, functions } from "@/plugins/firebase.js";
+import { regionalSettings } from "~/plugins/constant.js";
 
 export default {
   data() {
+    const regionalSetting = regionalSettings[process.env.REGION];
     return {
       items: [
         {
@@ -74,12 +79,32 @@ export default {
         }
       ],
       unregisterAuthObserver: null,
-      timerId: null
+      timerId: null,
+      logo: regionalSetting.Logo
+      // todo support scrset https://kanoto.info/201912/673/
+      // srcset: regionalSetting.Logo.map((logo) => {}
     };
   },
   computed: {
+    user() {
+      return this.$store.state.user;
+    },
     hasUser() {
-      return this.$store.state.user !== null;
+      return !this.isNull(this.$store.state.user);
+    },
+    isAdmin() {
+      console.log(this.$store.getters.uidAdmin);
+      return !!this.$store.getters.uidAdmin;
+    },
+    isUser() {
+      return !!this.$store.getters.uidUser;
+    },
+    uid() {
+      return this.$store.getters.uid;
+    },
+    profile_path() {
+      const path_prefix = this.isAdmin ? "admins" : "users";
+      return `${path_prefix}/${this.uid}/private/profile`;
     }
   },
   methods: {
@@ -92,6 +117,21 @@ export default {
       } catch (error) {
         console.log("sign out failed", error);
       }
+    },
+    setLang(lang) {
+      this.$i18n.locale = lang;
+    },
+    async changeLang(lang) {
+      this.setLang(lang);
+      await this.saveLang(lang);
+    },
+    async saveLang(lang) {
+      if (this.hasUser) {
+        await db.doc(this.profile_path).set({ lang }, { merge: true });
+      } else {
+        // save into store
+        this.$store.commit("setLang", lang);
+      }
     }
   },
   beforeCreate() {
@@ -99,7 +139,6 @@ export default {
     systemGetConfig().then(result => {
       this.$store.commit("setServerConfig", result.data);
     });
-
     this.unregisterAuthObserver = auth.onAuthStateChanged(async user => {
       if (user) {
         console.log(
@@ -107,11 +146,13 @@ export default {
           user.email || user.phoneNumber,
           user.uid
         );
-        const snapshot = await db.doc(`users/${user.uid}`).get();
-        const doc = snapshot.data();
-        if (doc && doc.name) {
-          user.name = doc.name;
-          console.log("user.name", doc.name);
+        if (this.isUser) {
+          const snapshot = await db.doc(`users/${user.uid}`).get();
+          const doc = snapshot.data();
+          if (doc && doc.name) {
+            user.name = doc.name;
+            console.log("user.name", doc.name);
+          }
         }
       } else {
         console.log("authStateChanged: null");
@@ -120,10 +161,46 @@ export default {
       this.$store.commit("setUser", user);
     });
   },
-  created() {
+  watch: {
+    async "$route.query.lang"() {
+      if (this.$route.query.lang) {
+        await this.changeLang(this.$route.query.lang);
+      }
+    },
+    async user() {
+      if (this.user) {
+        // lang
+        if (this.$store.state.lang) {
+          this.changeLang(this.$store.state.lang);
+        } else {
+          const profileSnapshot = await db.doc(this.profile_path).get();
+          if (profileSnapshot.exists) {
+            if (profileSnapshot.data().lang) {
+              this.setLang(profileSnapshot.data().lang);
+            }
+          }
+        }
+      }
+    }
+  },
+  async created() {
     this.timerId = window.setInterval(() => {
       this.$store.commit("updateDate");
     }, 60 * 1000);
+
+    if (this.$route.query.lang) {
+      await this.changeLang(this.$route.query.lang);
+    } else {
+      const language =
+        (window.navigator.languages && window.navigator.languages[0]) ||
+        window.navigator.language ||
+        window.navigator.userLanguage ||
+        window.navigator.browserLanguage;
+      const lang = (language || "").substr(0, 2);
+      if (lang.length === 2) {
+        await this.changeLang(lang);
+      }
+    }
   },
   destroyed() {
     if (this.unregisterAuthObserver) {

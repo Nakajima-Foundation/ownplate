@@ -18,12 +18,13 @@
         </div>
       </div>
 
-      <h2 class="p-big bold">Menu</h2>
+      <h2 class="p-big bold">{{$t('editMenu.menu')}}</h2>
       <div v-if="!existsMenu" class="card block">
         <div class="card-content">
           <div class="container content has-text-centered">
             <b-icon icon="book-open" size="is-large"></b-icon>
-            <h3>No items</h3>Please create your menu from the bottom button.
+            <h3>{{$t('editMenu.noItem')}}</h3>
+            {{$t('editMenu.pleaseAddItem')}}
           </div>
         </div>
       </div>

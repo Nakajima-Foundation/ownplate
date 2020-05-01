@@ -24,7 +24,7 @@
         </div>
         <b-field>
           <b-field :type="errors['itemName'].length > 0 ? 'is-danger' : 'is-success'">
-            <b-input v-model="menuInfo.itemName" placeholder="Enter item name"></b-input>
+            <b-input v-model="menuInfo.itemName" :placeholder="$t('editMenu.enterItemName')"></b-input>
           </b-field>
         </b-field>
 
@@ -78,7 +78,10 @@
           </div>
         </div>
         <b-field :type="errors['itemDescription'].length > 0 ? 'is-danger' : 'is-success'">
-          <b-input v-model="menuInfo.itemDescription" placeholder="Enter item description"></b-input>
+          <b-input
+            v-model="menuInfo.itemDescription"
+            :placeholder="$t('editMenu.enterItemDescription')"
+          ></b-input>
         </b-field>
 
         <div class="field is-horizontal">
@@ -89,8 +92,8 @@
 
         <table style="margin-bottom:0.5rem">
           <tr>
-            <td v-if="menuInfo.itemPhoto">Current</td>
-            <td>New</td>
+            <td v-if="menuInfo.itemPhoto">{{$t('editCommon.current')}}</td>
+            <td>{{$t('editCommon.new')}}</td>
           </tr>
           <tr>
             <td v-if="menuInfo.itemPhoto">
@@ -101,8 +104,8 @@
                 v-model="croppa"
                 :prevent-white-space="true"
                 :zoom-speed="5"
-                :placeholder="'Click and upload'"
-                :placeholder-font-size="20"
+                :placeholder="$t('editCommon.clickAndUpload')"
+                :placeholder-font-size="16"
                 initial-position="center"
                 :canvas-color="'gainsboro'"
               ></croppa>
@@ -120,7 +123,7 @@
           <div :style="{display: 'inline-flex', width: '100%'}" :key="key">
             <b-input
               v-model="menuInfo.itemOptionCheckbox[key]"
-              placeholder="Enter item option"
+              :placeholder="$t('editMenu.enterItemOption')"
               :style="{width: '95%'}"
             />
             <span @click="deleteOption(key)">
@@ -130,7 +133,8 @@
           <br />
         </template>
         <span @click="addOption">
-          <b-icon icon="plus" size="is-midium"></b-icon>{{$t("editMenu.itemAddOption")}}
+          <b-icon icon="plus" size="is-midium"></b-icon>
+          {{$t("editMenu.itemAddOption")}}
         </span>
         <br />
 
@@ -148,7 +152,8 @@
         -->
         <div style="margin-top:0.5rem;margin-bottom:1rem">
           <b-checkbox v-model="menuInfo.publicFlag">{{$t('shopInfo.public')}}</b-checkbox>
-          <span style="color:#CB4B4B" v-if="menuInfo.publicFlag && hasError"><br/>
+          <span style="color:#CB4B4B" v-if="menuInfo.publicFlag && hasError">
+            <br />
             {{$t("editMenu.itemInvalidMessage")}}
           </span>
         </div>
@@ -160,7 +165,7 @@
           expanded
           rounded
           @click="submitItem"
-        >{{$t("editMenu.save")}}</b-button>
+        >{{$t("editCommon.save")}}</b-button>
       </section>
     </template>
   </div>

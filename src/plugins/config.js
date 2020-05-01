@@ -7,6 +7,9 @@ const releaseConfigs = {
   alpha: {
     hidePayment: true,
     hideUsersLink: true
+  },
+  beta: {
+    hideUsersLink: true
   }
 };
 

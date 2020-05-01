@@ -1,7 +1,7 @@
 <template>
   <div class="card block" :style="cardStyle">
     <div class="card-content">
-      <div class="media" @click="openMenuFlag ? closeMenu() : openMenu()">
+      <div class="media" @click="toggleMenuFlag()">
         <div class="media-content">
           <!-- <h4 class="bold">Kushikatsu Special Platter</h4> -->
           <p class="item-name">{{ title }}</p>
@@ -124,7 +124,12 @@ export default {
         id: this.item.id,
         optionValues: this.optionValues
       });
-    }
+    },
+    openMenuFlag() {
+      if (this.openMenuFlag && this.count == 0) {
+        this.setCount(this.count + 1);
+      }
+    },
   },
   computed: {
     options() {
@@ -166,6 +171,7 @@ export default {
       return this.item.itemDescription;
     }
   },
+
   methods: {
     pullCount() {
       if (this.count <= 0) {
@@ -176,14 +182,8 @@ export default {
     pushCount() {
       this.setCount(this.count + 1);
     },
-    openMenu() {
-      this.openMenuFlag = true;
-      //      if (this.count == 0) {
-      //        this.setCount(this.count + 1);
-      //      }
-    },
-    closeMenu() {
-      this.openMenuFlag = false;
+    toggleMenuFlag() {
+      this.openMenuFlag = !this.openMenuFlag;
     },
     setCount(newValue) {
       this.$emit("didCountChange", { id: this.item.id, count: newValue });

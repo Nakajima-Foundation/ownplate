@@ -10,56 +10,62 @@
 
             <div class="container content has-text-centered">
               <h2>
-                <nuxt-link :to="localePath('/r/' + restaurantid)">{{ restaurantname || "no restaurant name"}}</nuxt-link>
+                <nuxt-link
+                  :to="'/r/' + restaurantid"
+                >{{ restaurantname || $t('editRestaurant.noRestaurant') }}</nuxt-link>
               </h2>
             </div>
             <div style="text-align:center;margin-top:1rem;">
               <div class="p-font">
-                <nuxt-link :to="localePath('/r/' + restaurantid)">{{`${host}/r/${restaurantid}`}}</nuxt-link>
+                <nuxt-link :to="'/r/' + restaurantid">{{`${host}/r/${restaurantid}`}}</nuxt-link>
               </div>
-              <div class="p-font">{{ streetaddress || "no streetaddress"}}</div>
+              <div class="p-font">{{ streetaddress || $t('editRestaurant.noStreetAddress') }}</div>
               <div class="p-font" style="margin-top:-0.8rem;">
-                {{ city || "city"}},
-                {{ state || "state"}}
-                {{ zip || "zip"}}
+                {{ city || $t('editRestaurant.city')}},
+                {{ state || $t('editRestaurant.state')}}
+                {{ zip || $t('editRestaurant.zip')}}
               </div>
               <p class="p-font">{{ phonenumber }}</p>
             </div>
             <div class="container content has-text-centered">
               <div style="text-align:center;">
                 <h2>
-                  <nuxt-link  to="#" @click.native="copyClipboard()"><b-icon icon="share" size="is-midium"></b-icon>{{$t('admin.shareRestaurant')}}</nuxt-link>
-                  <nuxt-link :to="localePath('/admin/restaurants/' + restaurantid)"> <b-icon icon="pencil" size="is-midium"></b-icon>{{$t('admin.editAbout')}}</nuxt-link>
+                  <nuxt-link to="#" @click.native="copyClipboard()">
+                    <b-icon icon="share" size="is-midium"></b-icon>
+                    {{$t('admin.shareRestaurant')}}
+                  </nuxt-link>
+                  <nuxt-link :to="'/admin/restaurants/' + restaurantid">
+                    <b-icon icon="pencil" size="is-midium"></b-icon>
+                    {{$t('admin.editAbout')}}
+                  </nuxt-link>
                 </h2>
               </div>
             </div>
             <div class="container content has-text-centered" :style="{margin: '20px'}">
               <b-button
                 tag="nuxt-link"
-                :to="localePath('/admin/restaurants/' + restaurantid + '/orders')"
+                :to="'/admin/restaurants/' + restaurantid + '/orders'"
                 :style="{'margin-right': 'auto', height: '40px'}"
-                  type="is-primary"
+                type="is-primary"
                 class="counter-button"
                 expanded
                 rounded
-                  contained
-                >
-                {{ $tc('admin.incompleteOrders', numberOfOrders, {count:numberOfOrders}) }}
-              </b-button>
+                contained
+              >{{ $tc('admin.incompleteOrders', numberOfOrders, {count:numberOfOrders}) }}</b-button>
             </div>
             <div class="container content has-text-centered" :style="{margin: '20px'}">
               <div style="text-align:center;">
                 <h2>
                   <b-button
                     tag="nuxt-link"
-                    :to="localePath('/admin/restaurants/' + restaurantid + '/menus')"
+                    :to="'/admin/restaurants/' + restaurantid + '/menus'"
                     style="margin-right:auto"
                     type="is-primary"
                     class="counter-button"
                     expanded
                     rounded
                     outlined
-                    >{{ $t('admin.editMenuItems', {count:numberOfMenus})}}</b-button>
+                  >{{ $t('admin.editMenuItems', {count:numberOfMenus})}}</b-button>
                 </h2>
               </div>
             </div>
@@ -149,9 +155,9 @@ export default {
   data() {
     return {
       host: location.protocol + "//" + location.host,
-      shareUrl: location.protocol + "//" + location.host + "/r/" + this.restaurantid,
+      shareUrl:
+        location.protocol + "//" + location.host + "/r/" + this.restaurantid
     };
-
   },
   methods: {
     deleteRestaurant: function() {
@@ -162,11 +168,11 @@ export default {
     copyClipboard: async function() {
       try {
         await this.$copyText(this.shareUrl);
-        this.$buefy.toast.open('URL Copied');
-      } catch(e) {
-        this.$buefy.toast.open('URL Copy failed');
+        this.$buefy.toast.open("URL Copied");
+      } catch (e) {
+        this.$buefy.toast.open("URL Copy failed");
       }
-    },
+    }
   }
 };
 </script>
