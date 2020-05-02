@@ -7,9 +7,11 @@ import i18nJA from '../../lang/ja.json';
 
 import * as constant from './constant.js';
 
+import { ownPlateConfig } from "@/config/project";
+
 Vue.use(VueI18n);
 
-const region = process.env.REGION || "US";
+const region = ownPlateConfig.region || "US";
 
 const region_data = constant.stripe_regions[region];
 

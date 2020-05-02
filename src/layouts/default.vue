@@ -61,10 +61,11 @@
 <script>
 import { db, auth, functions } from "@/plugins/firebase.js";
 import { regionalSettings } from "~/plugins/constant.js";
+import { ownPlateConfig } from "@/config/project";
 
 export default {
   data() {
-    const regionalSetting = regionalSettings[process.env.REGION];
+    const regionalSetting = regionalSettings[ownPlateConfig.region || "US"];
     return {
       items: [
         {
