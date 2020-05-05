@@ -1,5 +1,6 @@
 {
   "greeting": "Hello World2",
+  "underConstruction": "WARNING: This is a staging server for development.",
   "menu": {
     "about": "About",
     "admins": "Restaurant Owners",
