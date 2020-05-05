@@ -1,5 +1,6 @@
 {
   "greeting": "こんにちは、世界",
+  "underConstruction": "注意：これはテスト用のサーバーです。",
   "menu": {
     "about": "このサービスについて",
     "admins": "飲食店向けページ",

@@ -42,6 +42,7 @@
         </b-navbar-dropdown>
       </template>
     </b-navbar>
+    <div v-if="underConstruction" class="underConstruction">{{$t('underConstruction')}}</div>
 
     <!-- approproate component under pages will be displayed -->
     <nuxt style="max-width:100%;background:#FBF9F9" v-if="$store.getters.userWasInitialized"></nuxt>
@@ -61,6 +62,7 @@
 <script>
 import { db, auth, functions } from "@/plugins/firebase.js";
 import { regionalSettings } from "~/plugins/constant.js";
+import { releaseConfig } from "~/plugins/config.js";
 
 export default {
   data() {
@@ -86,6 +88,9 @@ export default {
     };
   },
   computed: {
+    underConstruction() {
+      return releaseConfig.underConstruction;
+    },
     user() {
       return this.$store.state.user;
     },
@@ -232,5 +237,10 @@ export default {
 
 .p-font-mini {
   line-height: 1.6rem;
+}
+.underConstruction {
+  text-align: center;
+  color: black;
+  background: yellow;
 }
 </style>
