@@ -155,7 +155,7 @@ export default {
   data() {
     return {
       host: location.protocol + "//" + location.host,
-      shareUrl:
+      share_url:
         location.protocol + "//" + location.host + "/r/" + this.restaurantid
     };
   },
@@ -167,7 +167,7 @@ export default {
     },
     copyClipboard: async function() {
       try {
-        await this.$copyText(this.shareUrl);
+        await this.$copyText(this.share_url);
         this.$buefy.toast.open("URL Copied");
       } catch (e) {
         this.$buefy.toast.open("URL Copy failed");
