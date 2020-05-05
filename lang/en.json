@@ -68,6 +68,7 @@
     "itemInvalidMessage": "This item is not on your menu because data is invalid."
   },
   "shopInfo": {
+    "qrcode": "QR code",
     "name": "Restaurant name",
     "streetAddress": "Street address",
     "city": "City",

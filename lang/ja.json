@@ -68,6 +68,7 @@
     "itemInvalidMessage": "データが正しく入力されていないため、公開されません"
   },
   "shopInfo": {
+    "qrcode": "飲食店QRコード",
     "name": "飲食店名",
     "streetAddress": "住所",
     "city": "市区町村",
