@@ -30,7 +30,7 @@ export default {
   data() {
     return {
       loginVisible: false,
-      detatcher: () => {},
+      detatcher: null,
       orders: []
     };
   },
@@ -40,7 +40,7 @@ export default {
     this.getHistory();
   },
   destroyed() {
-    this.detatcher();
+    this.detatcher && this.detatcher();
   },
   watch: {
     uid(newValue) {
@@ -54,8 +54,8 @@ export default {
   },
   methods: {
     getHistory() {
+      this.detatcher && this.detatcher();
       if (this.uid) {
-        this.detatcher();
         this.detatcher = db
           .collectionGroup("orders")
           .where("uid", "==", this.uid)
@@ -72,6 +72,8 @@ export default {
               return order;
             });
           });
+      } else {
+        this.detatcher = null;
       }
     },
     handleDismissed(success) {
