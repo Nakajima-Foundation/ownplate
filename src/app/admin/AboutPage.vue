@@ -106,10 +106,7 @@
           </h4>
         </div>
       </div>
-      <b-field
-        type="is-white"
-        :type="errors['streetAddress'].length > 0 ? 'is-danger' : 'is-success'"
-      >
+      <b-field :type="errors['streetAddress'].length > 0 ? 'is-danger' : 'is-success'">
         <b-input
           v-model="shopInfo.streetAddress"
           type="text"
@@ -128,7 +125,7 @@
               </h4>
             </div>
           </div>
-          <b-field :type="errors['city'].length > 0 ? 'is-danger' : 'is-white'">
+          <b-field :type="errors['city'].length > 0 ? 'is-danger' : 'is-success'">
             <b-input
               v-model="shopInfo.city"
               type="text"
@@ -147,7 +144,6 @@
             </div>
           </div>
           <b-field
-            type="is-white"
             :type="errors['state'].length > 0 ? 'is-danger' : 'is-success'"
             v-if="Array.isArray(states)"
           >
@@ -155,11 +151,7 @@
               <option v-for="stateItem in states" :key="stateItem">{{ stateItem }}</option>
             </b-select>
           </b-field>
-          <b-field
-            type="is-white"
-            :type="errors['state'].length > 0 ? 'is-danger' : 'is-success'"
-            v-else
-          >
+          <b-field :type="errors['state'].length > 0 ? 'is-danger' : 'is-success'" v-else>
             <b-input
               v-model="shopInfo.state"
               type="text"
@@ -178,7 +170,7 @@
           </h4>
         </div>
       </div>
-      <b-field :type="errors['zip'].length > 0 ? 'is-danger' : 'is-white'">
+      <b-field :type="errors['zip'].length > 0 ? 'is-danger' : 'is-success'">
         <b-input
           v-model="shopInfo.zip"
           type="text"
@@ -220,7 +212,7 @@
           </h4>
         </div>
       </div>
-      <b-field :type="errors['phoneNumber'].length > 0 ? 'is-danger' : 'is-white'">
+      <b-field :type="errors['phoneNumber'].length > 0 ? 'is-danger' : 'is-success'">
         <b-input
           v-model="shopInfo.phoneNumber"
           :placeholder="$t('editRestaurant.enterPhone')"
@@ -231,7 +223,7 @@
 
       <b-field
         :label="$t('editRestaurant.website')"
-        :type="errors['url'].length > 0 ? 'is-danger' : 'is-white'"
+        :type="errors['url'].length > 0 ? 'is-danger' : 'is-success'"
       >
         <b-input
           v-model="shopInfo.url"
@@ -248,7 +240,6 @@
               <div class="field has-addons">
                 <b-field
                   :label="$t('editRestaurant.foodTax')"
-                  type="is-white"
                   style="border-radius: 0.4rem!important;"
                   :type="errors['foodTax'].length > 0 ? 'is-danger' : 'is-success'"
                 >
