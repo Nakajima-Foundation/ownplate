@@ -10,6 +10,11 @@ const customRoutes = [
     component: 'user/RootPage.vue',
   },
   {
+    name: 'u',
+    path: '/u',
+    component: 'user/UserHome.vue',
+  },
+  {
     name: 'history',
     path: '/u/history',
     component: 'user/OrderHistory.vue',

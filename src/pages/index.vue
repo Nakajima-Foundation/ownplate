@@ -8,10 +8,10 @@
           </p>
         </div>
       </div>
-      <div class="card block" v-if="!hideUsersLink">
+      <div class="card block">
         <div class="card-content">
           <p style="text-align:center; font-weight:bold; font-size:1.5em">
-            <router-link to="/r">{{$t("menu.users")}}</router-link>
+            <router-link to="/u">{{$t("menu.users")}}</router-link>
           </p>
         </div>
       </div>
@@ -39,11 +39,6 @@ export default {
 
   mounted() {},
 
-  computed: {
-    hideUsersLink() {
-      return releaseConfig.hideUsersLink;
-    }
-  },
   methods: {
     sessionClear() {
       alert("クリアしました");
