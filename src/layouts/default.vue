@@ -27,7 +27,7 @@
             </span>
             <span class="nav-item">{{$t("menu.about")}}</span>
           </b-navbar-item>
-          <b-navbar-item href="/u/history" v-if="isUser">
+          <b-navbar-item href="/u/history">
             <span class="icon">
               <i class="fas fa-history"></i>
             </span>

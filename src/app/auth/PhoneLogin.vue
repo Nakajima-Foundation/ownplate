@@ -30,7 +30,7 @@
         @click="handleSubmit"
         :disabled="!readyToSendSMS"
       >{{$t('sms.send')}}</b-button>
-      <b-button @click="$emit('dismissed')">{{$t('button.cancel')}}</b-button>
+      <b-button @click="$emit('dismissed', false)">{{$t('button.cancel')}}</b-button>
     </form>
     <form v-if="confirmationResult !== null" @submit.prevent="handleCode">
       <b-field
@@ -59,7 +59,7 @@
         @click="handleCode"
         :disabled="!readyToSendVerificationCode"
       >{{$t('sms.sendVerificationCode')}}</b-button>
-      <b-button @click="$emit('dismissed')">{{$t('button.cancel')}}</b-button>
+      <b-button @click="$emit('dismissed', false)">{{$t('button.cancel')}}</b-button>
     </form>
   </div>
 </template>
@@ -178,7 +178,7 @@ export default {
         );
         this.confirmationResult = null; // so that we can re-use this
         this.verificationCode = "";
-        this.$emit("dismissed");
+        this.$emit("dismissed", true);
       } catch (error) {
         console.log("error", error);
         this.errors = ["sms." + error.code];
@@ -189,3 +189,4 @@ export default {
   }
 };
 </script>
+
