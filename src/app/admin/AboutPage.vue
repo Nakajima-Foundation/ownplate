@@ -229,7 +229,10 @@
         ></b-input>
       </b-field>
 
-      <b-field :label="$t('editRestaurant.website')">
+      <b-field
+        :label="$t('editRestaurant.website')"
+        :type="errors['url'].length > 0 ? 'is-danger' : 'is-white'"
+      >
         <b-input
           v-model="shopInfo.url"
           :placeholder="$t('editRestaurant.enterWebsite')"
@@ -271,7 +274,6 @@
               <div class="field has-addons">
                 <b-field
                   :label="$t('editRestaurant.alcoholTax')"
-                  type="is-white"
                   style="border-radius: 0.4rem!important;"
                   :type="errors['alcoholTax'].length > 0 ? 'is-danger' : 'is-success'"
                 >
@@ -446,6 +448,12 @@ export default {
           }
         }
       });
+
+      const ex = new RegExp("^(https?)://[^\\s]+$");
+      err["url"] =
+        this.shopInfo.url && !ex.test(this.shopInfo.url)
+          ? ["validationError.url.invalidUrl"]
+          : [];
 
       err["time"] = {};
       Object.keys(daysOfWeek).forEach(key => {
