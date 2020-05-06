@@ -1,5 +1,11 @@
 <template>
   <span>
+    <h2>{{$t('shopInfo.qrcode')}}</h2>
+    <div class="notification">
+      <div class="is-centered" style="text-align: center;">
+        <qrcode :value="this.shareUrl()" :options="{ width: 200 }"></qrcode>
+      </div>
+    </div>
     <h2>{{$t('shopInfo.address')}}</h2>
     <div class="card" v-if="hasLocation">
       <div class="card-image">

@@ -9,5 +9,5 @@ export const firebaseConfig = {
 };
 
 export const ownPlateConfig = {
-  releasName: "default"
+  releasName: "beta-dev"
 };

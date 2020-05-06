@@ -9,6 +9,9 @@ export default ({app}) => {
       restaurantId() {
         return this.$route.params.restaurantId;
       },
+      shareUrl() {
+        return location.protocol + "//" + location.host + "/r/" + this.restaurantId();
+      },
       doc2data(dataType) {
         return (doc) => {
           const data = doc.data();
