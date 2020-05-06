@@ -9,5 +9,37 @@
         </div>
       </div>
     </section>
+    <b-modal :active.sync="loginVisible" :width="640">
+      <div class="card">
+        <div class="card-content">
+          <phone-login v-on:dismissed="handleDismissed" />
+        </div>
+      </div>
+    </b-modal>
   </div>
 </template>
+
+<script>
+import PhoneLogin from "~/app/auth/PhoneLogin";
+
+export default {
+  data() {
+    return {
+      loginVisible: !this.$store.state.user
+    };
+  },
+  components: {
+    PhoneLogin
+  },
+  methods: {
+    handleDismissed(success) {
+      console.log("handleDismissed", success);
+      if (success) {
+        this.loginVisible = false;
+      } else {
+        this.$router.push("/");
+      }
+    }
+  }
+};
+</script>
