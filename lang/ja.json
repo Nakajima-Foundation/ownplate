@@ -1,5 +1,6 @@
 {
   "greeting": "こんにちは、世界",
+  "underConstruction": "注意：これはテスト用のサーバーです。",
   "menu": {
     "about": "このサービスについて",
     "admins": "飲食店向けページ",
@@ -68,6 +69,7 @@
     "itemInvalidMessage": "データが正しく入力されていないため、公開されません"
   },
   "shopInfo": {
+    "qrcode": "飲食店QRコード",
     "name": "飲食店名",
     "streetAddress": "住所",
     "city": "市区町村",
@@ -97,22 +99,22 @@
     "total": "合計",
     "yourPayment": "お支払い",
     "placeOrder": "注文する:",
-    "placeOrderNoPayment": "支払わずに注文する",
+    "placeOrderNoPayment": "お店で支払う",
     "validating": "処理しています...",
     "thankyou": "ご注文、ありがとうございます!",
     "orderStatus": "ご注文のステータス: ",
     "pleaseStay": "このページを開けたままにしていただけると、ステータスを知る事が出来ます。",
     "tip": "心付け",
     "totalCharge": "合計金額",
-    "pleasePayAtRestaurant": "オンライン課金は現時点では出来ません。受け取り時にお店でお支払いください。",
-    "sendSMS": "SMSメッセージを受け取る（携帯電話の契約によっては課金の対象になります）",
+    "pleasePayAtRestaurant": "オンラインでの支払いは現時点では出来ません。受け取り時にお店でお支払いください。",
+    "sendSMS": "SMSメッセージを受け取る（SMSの受信には料金がかかる場合があります）",
     "history": "注文履歴",
     "status": {
       "unexpected": "(Unexpected)",
       "error": "エラー",
       "new_order": "新規注文",
       "validation_ok": "確認済み",
-      "order_placed": "支払い済み",
+      "order_placed": "注文済み",
       "order_accepted": "受付済み",
       "cooking_completed": "料理済み",
       "customer_picked_up": "受け渡し完了",

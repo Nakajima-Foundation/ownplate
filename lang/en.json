@@ -1,5 +1,6 @@
 {
   "greeting": "Hello World2",
+  "underConstruction": "WARNING: This is a staging server for development.",
   "menu": {
     "about": "About",
     "admins": "Restaurant Owners",
@@ -68,6 +69,7 @@
     "itemInvalidMessage": "This item is not on your menu because data is invalid."
   },
   "shopInfo": {
+    "qrcode": "QR code",
     "name": "Restaurant name",
     "streetAddress": "Street address",
     "city": "City",

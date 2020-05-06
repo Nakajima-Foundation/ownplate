@@ -86,7 +86,7 @@
             </div>
           </div>
           <div v-else>{{ $t('order.pleasePayAtRestaurant') }}</div>
-          <div class="is-centered" style="text-align: center;">
+          <div v-if="!showPayment" class="is-centered" style="text-align: center;">
             <b-button
               expanded
               :type="showPayment ? '' : 'is-primary'"

@@ -9,6 +9,5 @@ export const firebaseConfig = {
 };
 
 export const ownPlateConfig = {
-  releasName: "default",
-  region: "US",
+  releasName: "beta-dev"
 };
