@@ -31,7 +31,7 @@ export default {
     this.detatcher = db
       .collectionGroup("orders")
       .orderBy("timePlaced", "desc")
-      .limit(25)
+      .limit(100)
       .onSnapshot(snapshot => {
         this.orders = snapshot.docs.map(doc => {
           const order = doc.data();
