@@ -33,7 +33,7 @@
           </div>
         </div>
       </div>
-      <div class="card-content tax">
+      <div v-if="regionTip.choices.length > 0" class="card-content tax">
         <div class="media">
           <div class="media-content">
             <h4 class="bold">{{$t('order.total')}}</h4>
@@ -44,7 +44,7 @@
         </div>
       </div>
 
-      <div class="card-content">
+      <div v-if="regionTip.choices.length > 0" class="card-content">
         <div class="media">
           <div class="media-content">
             <b-field :label="$t('order.tip')">
@@ -60,7 +60,7 @@
                   />
                 </div>
                 <b-button
-                  v-for="ratio in [10, 15,18,20]"
+                  v-for="ratio in regionTip.choices"
                   @click="updateTip(ratio)"
                   :type="isSameAmount(ratio) ? 'is-primary' : ''"
                   :key="ratio"
@@ -119,7 +119,7 @@ export default {
     orderInfo() {
       //console.log("orderInfo changed", this.orderInfo.total);
       if (this.isTipEditable) {
-        this.updateTip(15);
+        this.updateTip(this.regionTip.default);
       } else {
         this.tip = this.orderInfo.tip;
       }
@@ -129,6 +129,9 @@ export default {
     OrderItem
   },
   computed: {
+    regionTip() {
+      return this.$store.getters.stripeRegion.tip;
+    },
     verified() {
       return this.orderInfo.status >= order_status.validation_ok;
     },

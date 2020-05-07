@@ -24,6 +24,10 @@ export const stripe_regions = {
     currency: 'USD',
     multiple: 100,
     hidePostalCode: false,
+    tip: {
+      default: 15,
+      choices: [10, 15, 18, 20]
+    },
     allergens: [
       "gluten", "crustacean", "egg", "milk", "fish", "peanuts", "soybeans", "shellfish", "raw"
     ]
@@ -33,6 +37,10 @@ export const stripe_regions = {
     currency: 'EUR',
     multiple: 100,
     hidePostalCode: false,
+    tip: {
+      default: 15,
+      choices: [10, 15, 18, 20]
+    },
     allergens: [
       "gluten", "crustacean", "egg", "milk", "lupin", "mollusc"
     ]
@@ -41,6 +49,10 @@ export const stripe_regions = {
     langs: ["ja"],
     currency: 'JPY',
     multiple: 1,
+    tip: {
+      default: 0,
+      choices: []
+    },
     hidePostalCode: true
   }
 };
