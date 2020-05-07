@@ -49,6 +49,7 @@ export default {
   },
   methods: {
     orderSelected(order) {
+      // We are re-using the end-user view of this order for now.
       this.$router.push({
         path: "/r/" + order.restaurantId + "/order/" + order.id
       });
