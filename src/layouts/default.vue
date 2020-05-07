@@ -63,6 +63,7 @@
 import { db, auth, functions } from "@/plugins/firebase.js";
 import { regionalSettings } from "~/plugins/constant.js";
 import { releaseConfig } from "~/plugins/config.js";
+import { ownPlateConfig } from "@/config/project";
 
 export default {
   data() {
