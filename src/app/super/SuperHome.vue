@@ -2,6 +2,7 @@
   <section class="section">
     <div v-if="isAdmin">
       <h2>Admin Page</h2>
+      <router-link to="/s/orders">All Orders</router-link>
     </div>
     <b-loading v-else active />
   </section>
@@ -16,8 +17,8 @@ export default {
     };
   },
   async mounted() {
-    const getCredential = functions.httpsCallable("getCredential");
-    const { data } = await getCredential();
+    const getCredentials = functions.httpsCallable("getCredentials");
+    const { data } = await getCredentials();
     this.credential = data;
     console.log("admin", this.isAdmin);
     if (!this.isAdmin) {

@@ -19,7 +19,7 @@ export const systemGetConfig = functions.https.onCall(async (data, context) => {
   return await System.getConfig(db, data, context);
 });
 
-export const getCredential = functions.https.onCall(async (data, context) => {
+export const getCredentials = functions.https.onCall(async (data, context) => {
   return {
     admin: context.auth?.token.admin
   }

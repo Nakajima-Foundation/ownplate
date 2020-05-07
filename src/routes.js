@@ -67,5 +67,9 @@ export const customRoutes = [
   {
     path: '/s',
     component: 'super/SuperHome.vue'
-  }
+  },
+  {
+    path: '/s/orders',
+    component: 'super/AllOrders.vue'
+  },
 ];
