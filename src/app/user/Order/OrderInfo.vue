@@ -33,7 +33,7 @@
           </div>
         </div>
       </div>
-      <div class="card-content tax">
+      <div v-if="regionTip.choices.length > 0" class="card-content tax">
         <div class="media">
           <div class="media-content">
             <h4 class="bold">{{$t('order.total')}}</h4>
@@ -44,7 +44,7 @@
         </div>
       </div>
 
-      <div class="card-content">
+      <div v-if="regionTip.choices.length > 0" class="card-content">
         <div class="media">
           <div class="media-content">
             <b-field :label="$t('order.tip')">
