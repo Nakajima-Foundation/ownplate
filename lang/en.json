@@ -75,7 +75,8 @@
     "itemOptions": "Item options",
     "itemOptionsNote": "For altenatives, use comma to separate them (e.g., \"Chicken, Pork, Tofu\")",
     "itemAddOption": "Add Option",
-    "itemInvalidMessage": "This item is not on your menu because data is invalid."
+    "itemInvalidMessage": "This item is not on your menu because data is invalid.",
+    "saveAsDraft": "Save as draft. This item is not on your menus."
   },
   "editTitle": {
     "empty": "empty"
