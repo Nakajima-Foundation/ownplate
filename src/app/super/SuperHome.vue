@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import { db, firestore, functions } from "~/plugins/firebase.js";
+import { functions } from "~/plugins/firebase.js";
 export default {
   data() {
     return {
