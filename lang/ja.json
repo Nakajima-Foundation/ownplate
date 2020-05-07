@@ -24,6 +24,11 @@
     "current": "変更前",
     "clickAndUpload": "クリックしてアップロード"
   },
+  "currency": {
+    "USD": "ドル",
+    "JPY": "円",
+    "EUR": "ユーロ"
+  },
   "editRestaurant": {
     "enterRestaurantName": "レストラン名を入力して下さい",
     "enterStreetAddress": "番地以下の住所を入力して下さい",
@@ -41,7 +46,7 @@
     "setLocation": "住所を元に地図を更新",
     "updateMap": "場所をセット",
     "businessHourDescription": "営業する曜日にチェックをいれ、営業時間を設定してください。",
-    "draftDescription": "下書きとして保存",
+    "draftDescription": "下書きとして保存されます(お客さんからお店のページは見えません)",
     "publishDescription": "保存して公開",
     "draftWarning": "赤枠のエラーを修正すると公開可能になります",
     "updateMapDescription": "飲食店名や住所を元に地図を更新",
@@ -62,13 +67,19 @@
     "required": "必須",
     "itemName": "料理/ドリンク名",
     "price": "値段",
-    "tax": "税金",
+    "tax": "消費税金",
+    "food": "食品",
+    "alcohol": "酒類",
     "itemDescription": "説明文",
     "itemPhoto": "写真",
     "itemOptions": "オプション",
     "itemOptionsNote": "二択や三択の場合、半角カンマで区切ってください (例: \"チキン, ポーク, 豆腐\")",
     "itemAddOption": "オプション追加",
-    "itemInvalidMessage": "データが正しく入力されていないため、公開されません"
+    "itemInvalidMessage": "データが正しく入力されていないため、公開されません",
+    "saveAsDraft": "下書きとして保存されます(メニューに表示されません)"
+  },
+  "editTitle": {
+    "empty": "未入力"
   },
   "shopInfo": {
     "qrcode": "飲食店QRコード",

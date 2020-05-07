@@ -313,7 +313,7 @@
       </b-checkbox><br/>
 
       <span v-if="shopInfo.publicFlag">{{$t('editRestaurant.publishDescription')}}<br/></span>
-      <span v-if="!shopInfo.publicFlag">{{$t('editRestaurant.draftDescription')}}<br/></span>
+      <span style="color:#CB4B4B" v-if="!shopInfo.publicFlag">{{$t('editRestaurant.draftDescription')}}<br/></span>
       <span v-if="hasError" class="p-font bold" style="color:#CB4B4B">{{$t('editRestaurant.draftWarning')}}<br/></span>
       <b-button
         style="margin-right:auto"
@@ -498,9 +498,6 @@ export default {
     },
     hasError: function() {
       this.shopInfo.publicFlag = !this.hasError;
-      if (this.hasError) {
-        this.shopInfo.publicFlag = false;
-      }
     },
   },
   methods: {
