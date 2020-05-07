@@ -4,7 +4,7 @@
       <div class="media">
         <div class="media-content" @click="toEdit()">
           <h2 class="p-big" if v-if="title.name==''">
-            empty...
+            {{$t('editTitle.empty')}}...
           </h2>
           <h2 class="p-big bold" if v-else>
             {{ title.name }}

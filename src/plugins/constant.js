@@ -160,16 +160,19 @@ export const JPPrefecture = [
 
 export const regionalSettings = {
   US: {
+    CurrencyKey: 'USD',
     StateKey: "shopInfo.state",
     AddressStates: USStates,
     Logo: "OwnPlate-Logo-Horizontal-YellowWhite.png",
   },
   JP: {
+    CurrencyKey: 'JPY',
     StateKey: "shopInfo.prefecture",
     AddressStates: JPPrefecture,
     Logo: "Omochikaeri-Logo-Horizontal-YellowWhite.png",
   },
   EU: {
+    CurrencyKey: 'EUR',
     StateKey: "shopInfo.state",
     AddressStates: null,
     Logo: "OwnPlate-Logo-Horizontal-YellowWhite.png",
