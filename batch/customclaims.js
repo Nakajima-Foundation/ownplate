@@ -14,22 +14,24 @@ const main = async () => {
   const db = admin.firestore();
 
   // todo see flag.
-  const users = await db.collection("users").get();
+  const updateFlag = async (flag) => {
+    const users = await db.collection("users").where("admin", "==", flag).get();
 
-  await Promise.all(users.docs.map(async (userSnap) => {
-    const user = userSnap.data();
+    await Promise.all(users.docs.map(async (userSnap) => {
+      const user = userSnap.data();
 
-    if (user.name === "Satoshi") {
       const uid = userSnap.id;
       // console.log(user, uid);
-      const customClaims = {admin: true};
+      const customClaims = {admin: flag};
       await admin.auth().setCustomUserClaims(uid, customClaims);
       const updated = await admin.auth().getUser(uid);
       console.log(updated);
       return;
-    }
-  }));
-  return;
+    }));
+    return
+  };
+  await updateFlag(true);
+  await updateFlag(false);
 };
 
 main();
