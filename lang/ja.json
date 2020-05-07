@@ -19,6 +19,7 @@
   },
   "editCommon": {
     "save": "保存",
+    "saveDraft": "下書きとして保存",
     "new": "新規",
     "current": "変更前",
     "clickAndUpload": "クリックしてアップロード"
@@ -42,6 +43,7 @@
     "businessHourDescription": "営業する曜日にチェックをいれ、営業時間を設定してください。",
     "draftDescription": "下書きとして保存",
     "publishDescription": "保存して公開",
+    "draftWarning": "赤枠のエラーを修正すると公開可能になります",
     "updateMapDescription": "飲食店名や住所を元に地図を更新",
     "noRestaurant": "レストラン名が未指定です",
     "noStreetAddress": "住所が未入力です",
