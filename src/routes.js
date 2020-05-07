@@ -64,4 +64,8 @@ export const customRoutes = [
     path: '/admin/user/reset',
     component: 'auth/ResetPasswordPage.vue',
   },
+  {
+    path: '/s',
+    component: 'super/SuperHome.vue'
+  }
 ];
