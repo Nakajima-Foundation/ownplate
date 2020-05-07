@@ -2,7 +2,7 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     function isSuper(request) {
-      return request.auth.token.admin
+      return request.auth.token.admin == true
     }
 
     function isAdmin(request) {
@@ -67,6 +67,7 @@ service cloud.firestore {
 
     // Rules for collection group
     match /{path=**}/orders/{orderId} {
+      allow read: if isSuper(request);
       allow read: if isOwner(resource, request);
     }
 
