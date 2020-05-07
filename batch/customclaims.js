@@ -1,5 +1,6 @@
 import * as admin from "firebase-admin";
 
+// todo environment variables
 const project = "ownplate-dev";
 
 const main = async () => {
@@ -12,6 +13,7 @@ const main = async () => {
 
   const db = admin.firestore();
 
+  // todo see flag.
   const users = await db.collection("users").get();
 
   await Promise.all(users.docs.map(async (userSnap) => {
