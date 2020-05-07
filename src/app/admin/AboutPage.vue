@@ -292,30 +292,36 @@
         <div class="field">
           <b-checkbox v-model="shopInfo.businessDay[index]">{{$t("week.short." + day)}}</b-checkbox>
         </div>
-        <hours-input
-          v-model="shopInfo.openTimes[index][0]"
-          :type="errors['time'][index][0].length > 0 ? 'is-danger' : 'is-success'"
+        <div class="hours">
+          <hours-input
+            v-model="shopInfo.openTimes[index][0]"
+            :type="errors['time'][index][0].length > 0 ? 'is-danger' : 'is-success'"
+            :disabled="!shopInfo.businessDay[index]"
+            ></hours-input>
+          <hours-input
+            v-model="shopInfo.openTimes[index][1]"
+            :type="errors['time'][index][1].length > 0 ? 'is-danger' : 'is-success'"
           :disabled="!shopInfo.businessDay[index]"
-        ></hours-input>
-        <hours-input
-          v-model="shopInfo.openTimes[index][1]"
-          :type="errors['time'][index][1].length > 0 ? 'is-danger' : 'is-success'"
-          :disabled="!shopInfo.businessDay[index]"
-        ></hours-input>
+            ></hours-input>
+        </div>
       </div>
 
-      <h4>
-        <b-checkbox v-model="shopInfo.publicFlag" :disabled="hasError">{{$t('shopInfo.public')}}</b-checkbox>
-      </h4>
-      <span v-if="shopInfo.publicFlag">{{$t('editRestaurant.publishDescription')}}</span>
-      <span v-if="!shopInfo.publicFlag">{{$t('editRestaurant.draftDescription')}}</span>
+      <b-checkbox v-model="shopInfo.publicFlag"
+                  :disabled="hasError"
+                  :type="!shopInfo.publicFlag ? 'is-danger' : ''">
+        {{$t('shopInfo.public')}}
+      </b-checkbox><br/>
+
+      <span v-if="shopInfo.publicFlag">{{$t('editRestaurant.publishDescription')}}<br/></span>
+      <span v-if="!shopInfo.publicFlag">{{$t('editRestaurant.draftDescription')}}<br/></span>
+      <span v-if="hasError" class="p-font bold" style="color:#CB4B4B">{{$t('editRestaurant.draftWarning')}}<br/></span>
       <b-button
         style="margin-right:auto"
         type="is-primary"
         class="counter-button save_btn"
         rounded
         @click="submitRestaurant"
-      >{{$t('editCommon.save')}}</b-button>
+      >{{$t(shopInfo.publicFlag ? 'editCommon.save' : 'editCommon.saveDraft' )}}</b-button>
     </template>
   </section>
 </template>
@@ -488,7 +494,13 @@ export default {
       if (this.notFound === false) {
         this.hello();
       }
-    }
+    },
+    hasError: function() {
+      this.shopInfo.publicFlag = !this.hasError;
+      if (this.hasError) {
+        this.shopInfo.publicFlag = false;
+      }
+    },
   },
   methods: {
     hello() {
@@ -632,6 +644,9 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.hours {
+    margin-bottom: 0.75rem;
+}
 .tax {
   margin-top: -2rem !important;
 }
