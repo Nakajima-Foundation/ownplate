@@ -55,7 +55,10 @@ export const mutations = {
   setLang(state, lang) {
     state.lang = lang;
   },
-
+  setCredentials(state, credentials) {
+    state.user = Object.assign({}, state.user, { credentials });
+    console.log("store:setCredentials", credentials.admin);
+  }
 };
 
 export const actions = {

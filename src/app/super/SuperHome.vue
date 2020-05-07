@@ -11,15 +11,12 @@
 <script>
 import { functions } from "~/plugins/firebase.js";
 export default {
-  data() {
-    return {
-      credential: {}
-    };
-  },
   async mounted() {
-    const getCredentials = functions.httpsCallable("getCredentials");
-    const { data } = await getCredentials();
-    this.credential = data;
+    if (this.user && !this.credentials) {
+      const getCredentials = functions.httpsCallable("getCredentials");
+      const { data } = await getCredentials();
+      this.$store.commit("setCredentials", data);
+    }
     console.log("admin", this.isAdmin);
     if (!this.isAdmin) {
       this.$router.push("/");
@@ -27,7 +24,13 @@ export default {
   },
   computed: {
     isAdmin() {
-      return this.credential.admin;
+      return this.credentials && this.credentials.admin;
+    },
+    credentials() {
+      return this.user && this.user.credentials;
+    },
+    user() {
+      return this.$store.state.user;
     }
   }
 };

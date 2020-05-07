@@ -99,7 +99,7 @@ export default {
       return !this.isNull(this.$store.state.user);
     },
     isAdmin() {
-      console.log(this.$store.getters.uidAdmin);
+      //console.log(this.$store.getters.uidAdmin);
       return !!this.$store.getters.uidAdmin;
     },
     isUser() {
