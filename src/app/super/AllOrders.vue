@@ -49,7 +49,9 @@ export default {
   },
   methods: {
     orderSelected(order) {
-      console.log("orderSelected", order);
+      this.$router.push({
+        path: "/r/" + order.restaurantId + "/order/" + order.id
+      });
     }
   }
 };
