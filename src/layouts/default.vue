@@ -66,7 +66,7 @@ import { releaseConfig } from "~/plugins/config.js";
 
 export default {
   data() {
-    const regionalSetting = regionalSettings[process.env.REGION];
+    const regionalSetting = regionalSettings[ownPlateConfig.region || "US"];
     return {
       items: [
         {

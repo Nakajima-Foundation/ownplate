@@ -328,6 +328,7 @@ import HoursInput from "~/app/admin/Restaurant/HoursInput";
 import * as API from "~/plugins/api";
 import BackButton from "~/components/BackButton";
 import NotFound from "~/components/NotFound";
+import { ownPlateConfig } from "@/config/project";
 
 import { daysOfWeek, regionalSettings } from "~/plugins/constant.js";
 
@@ -340,7 +341,7 @@ export default {
   },
 
   data() {
-    const regionalSetting = regionalSettings[process.env.REGION];
+    const regionalSetting = regionalSettings[ownPlateConfig.region || "US"];
     return {
       disabled: false, // ??
       filteredItems: [], // ??
