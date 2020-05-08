@@ -194,7 +194,8 @@
     "payments": {
       "pleaseConnect": "In order to receive online payments, you need to connect your Stripe account.",
       "connectStripe": "Connect Stripe Account",
-      "disconnectStripe": "Disconnect Stripe Account"
+      "disconnectStripe": "Disconnect Stripe Account",
+      "openDashboard": "Open Stripe Dashboard"
     },
     "incompleteOrders": "{count} Incomplete Order | {count} Incomplete Orders",
     "editMenuItems": "Menu ({count})",

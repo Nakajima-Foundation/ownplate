@@ -194,7 +194,8 @@
     "payments": {
       "pleaseConnect": "オンラインで支払いを受けるには、Stripeアカウントとの接続が必要です",
       "connectStripe": "Stripeアカウントと接続する",
-      "disconnectStripe": "Stripeアカウントとの接続を切る"
+      "disconnectStripe": "Stripeアカウントとの接続を切る",
+      "openDashboard": "Stripe のダッシュボードを開く"
     },
     "incompleteOrders": "{count} 個の未完了の注文",
     "editMenuItems": "メニュー ({count})",
