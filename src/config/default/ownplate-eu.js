@@ -10,6 +10,7 @@ const firebaseConfig = {
 };
 
 export const ownPlateConfig = {
+  siteName: "OwnPlate",
   releasName: "alpha",
   region: "EU",
 };
