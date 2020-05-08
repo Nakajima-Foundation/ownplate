@@ -83,6 +83,7 @@
 
 <script>
 import { db } from "~/plugins/firebase.js";
+import { i18n } from "~/plugins/vue-i18n.js"
 
 export default {
   name: "RestaurantEditCard",
@@ -161,8 +162,7 @@ export default {
   },
   methods: {
     deleteRestaurant: function() {
-      // todo i18n
-      if (confirm("Do you really want to delete this?")) {
+      if (confirm(i18n.tc('editRestaurant.reallyDelete'))) {
         db.doc(`restaurants/${this.restaurantid}`).update("deletedFlag", true);
       }
     },

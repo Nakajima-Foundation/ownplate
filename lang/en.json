@@ -52,6 +52,7 @@
     "updateMapDescription": "Set restaurant location from your restaurant name and address.",
     "noRestaurant": "No restaurant name",
     "noStreetAddress": "No street address",
+    "reallyDelete": "Do you really want to delete this?",
     "city": "city",
     "zip": "zip",
     "state": "state"
@@ -84,6 +85,8 @@
   "shopInfo": {
     "qrcode": "QR code",
     "copyUrl": "Copy Url",
+    "UrlCopied": "URL Copied",
+    "UrlCopyFailed": "URL Copy failed",
     "name": "Restaurant name",
     "streetAddress": "Street address",
     "city": "City",

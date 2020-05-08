@@ -52,6 +52,7 @@
     "updateMapDescription": "飲食店名や住所を元に地図を更新",
     "noRestaurant": "レストラン名が未指定です",
     "noStreetAddress": "住所が未入力です",
+    "reallyDelete": "本当にこの飲食店を削除しますか？",
     "city": "市町村",
     "zip": "郵便番号",
     "state": "都道府県"
@@ -84,6 +85,8 @@
   "shopInfo": {
     "qrcode": "飲食店QRコード",
     "copyUrl": "このお店のアドレスをコピー",
+    "UrlCopied": "コピーしました",
+    "UrlCopyFailed": "コピー失敗",
     "name": "飲食店名",
     "streetAddress": "住所",
     "city": "市区町村",
