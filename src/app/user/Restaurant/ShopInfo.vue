@@ -3,7 +3,11 @@
     <h2>{{$t('shopInfo.qrcode')}}</h2>
     <div class="notification">
       <div class="is-centered" style="text-align: center;">
-        <qrcode :value="this.shareUrl()" :options="{ width: 200 }"></qrcode>
+        <qrcode :value="this.shareUrl()" :options="{ width: 200 }"></qrcode><br/>
+        <nuxt-link to="#" @click.native="copyClipboard()" event="">
+          <b-icon icon="share" size="is-midium"></b-icon>
+          {{$t('admin.shareRestaurant')}}
+        </nuxt-link>
       </div>
     </div>
     <h2>{{$t('shopInfo.address')}}</h2>
@@ -127,6 +131,14 @@ export default {
     this.updateMap();
   },
   methods: {
+    copyClipboard: async function() {
+      try {
+        await this.$copyText(this.shareUrl);
+        this.$buefy.toast.open("URL Copied");
+      } catch (e) {
+        this.$buefy.toast.open("URL Copy failed");
+      }
+    },
     updateMap() {
       if (this.hasLocation) {
         if (this.$refs.gMap && this.$refs.gMap.map) {

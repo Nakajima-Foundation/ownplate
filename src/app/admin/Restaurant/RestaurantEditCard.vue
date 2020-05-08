@@ -30,7 +30,7 @@
             <div class="container content has-text-centered">
               <div style="text-align:center;">
                 <h2>
-                  <nuxt-link to="#" @click.native="copyClipboard()">
+                  <nuxt-link to="#" @click.native="copyClipboard()" event="">
                     <b-icon icon="share" size="is-midium"></b-icon>
                     {{$t('admin.shareRestaurant')}}
                   </nuxt-link>
