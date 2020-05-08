@@ -37,7 +37,7 @@ const dateTimeFormats = {
 
 const locale = region_data.langs[0] || 'en';
 
-export const i18n = new VueI18n({
+const i18n = new VueI18n({
   // locales: ['en', 'es', 'ja'],
   locale,
   fallbackLocale: locale,
@@ -57,5 +57,5 @@ export const i18n = new VueI18n({
 });
 
 export default ({ app }) => {
-  app.i18n = i18n
+  app.i18n = i18n;
 };
