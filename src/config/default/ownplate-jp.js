@@ -11,6 +11,7 @@ export const firebaseConfig = {
 
 export const ownPlateConfig = {
   siteName: "おもちかえり.com",
+  siteDescription: "レストランに優しいテイクアウト・サービス",
   releasName: "beta",
   region: "JP",
 };
