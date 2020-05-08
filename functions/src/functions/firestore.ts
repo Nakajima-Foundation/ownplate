@@ -11,7 +11,7 @@ const chunk = (array, chunkSize) => {
   return ret;
 }
 */
-const getMenuObj = async (refRestaurant) => {
+export const getMenuObj = async (refRestaurant) => {
   /*
   // todo: if this bug will fix.  https://github.com/googleapis/nodejs-firestore/issues/990
   const menuIdChunks = chunk(Object.keys(original_data.order), 10);
@@ -37,6 +37,7 @@ export const wasOrderCreated = async (db, snapshot, context) => {
   const original_data = snapshot.data()
 
   if (!original_data || !original_data.status || original_data.status !== constant.order_status.new_order) {
+    console.log("invalid order:" + String(snapshot.id));
     return;
   }
 

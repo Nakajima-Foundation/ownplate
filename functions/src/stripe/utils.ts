@@ -48,4 +48,3 @@ export const process_error = (error: any) => {
   }
   return new functions.https.HttpsError("internal", error.message, error);
 }
-
