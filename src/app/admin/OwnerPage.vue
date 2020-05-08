@@ -82,6 +82,7 @@
                   type="is-danger"
                   class="counter-button"
                   :loading="isDisconnecting"
+                  rounded
                 >{{$t('admin.payments.disconnectStripe')}}</b-button>
               </div>
             </div>
