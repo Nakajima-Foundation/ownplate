@@ -176,7 +176,6 @@ export default {
       .onSnapshot(
         order => {
           const order_data = order.exists ? order.data() : {};
-          console.log("#################", this.isAdmin);
           if (this.user.uid === order_data.uid || this.isAdmin) {
             this.orderInfo = order_data;
           } else if (!this.isDeleting) {
