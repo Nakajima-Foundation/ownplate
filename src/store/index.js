@@ -34,6 +34,12 @@ export const getters = {
   stripeRegion: (state) => {
     return stripe_regions[state.server.region || "US"];
   },
+  isSuperAdmin: (state) => {
+    return state.user && state.user.credentials && state.user.credentials.admin
+  },
+  isNotSuperAdmin: (state) => {
+    return state.user && state.user.credentials && !state.user.credentials.admin
+  }
 };
 
 export const mutations = {
@@ -55,7 +61,10 @@ export const mutations = {
   setLang(state, lang) {
     state.lang = lang;
   },
-
+  setCredentials(state, credentials) {
+    state.user = Object.assign({}, state.user, { credentials });
+    console.log("store:setCredentials", credentials.admin);
+  }
 };
 
 export const actions = {
