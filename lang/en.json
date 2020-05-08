@@ -83,6 +83,7 @@
   },
   "shopInfo": {
     "qrcode": "QR code",
+    "copyUrl": "Copy Url",
     "name": "Restaurant name",
     "streetAddress": "Street address",
     "city": "City",

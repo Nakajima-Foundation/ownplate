@@ -30,7 +30,7 @@
             <div class="container content has-text-centered">
               <div style="text-align:center;">
                 <h2>
-                  <nuxt-link to="#" @click.native="copyClipboard()">
+                  <nuxt-link to="#" @click.native="copyClipboard(share_url)" event="">
                     <b-icon icon="share" size="is-midium"></b-icon>
                     {{$t('admin.shareRestaurant')}}
                   </nuxt-link>
@@ -161,18 +161,11 @@ export default {
   },
   methods: {
     deleteRestaurant: function() {
+      // todo i18n
       if (confirm("Do you really want to delete this?")) {
         db.doc(`restaurants/${this.restaurantid}`).update("deletedFlag", true);
       }
     },
-    copyClipboard: async function() {
-      try {
-        await this.$copyText(this.share_url);
-        this.$buefy.toast.open("URL Copied");
-      } catch (e) {
-        this.$buefy.toast.open("URL Copy failed");
-      }
-    }
   }
 };
 </script>
