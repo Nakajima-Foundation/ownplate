@@ -83,6 +83,7 @@
   },
   "shopInfo": {
     "qrcode": "飲食店QRコード",
+    "copyUrl": "このお店のアドレスをコピー",
     "name": "飲食店名",
     "streetAddress": "住所",
     "city": "市区町村",
