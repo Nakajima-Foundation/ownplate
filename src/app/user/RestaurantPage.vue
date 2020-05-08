@@ -262,9 +262,13 @@ export default {
     },
     didCountChange(eventArgs) {
       // NOTE: We need to assign a new object to trigger computed properties
-      const obj = {};
-      obj[eventArgs.id] = eventArgs.count;
-      this.orders = Object.assign({}, this.orders, obj);
+      const newObject = { ...this.orders };
+      if (eventArgs.count > 0) {
+        newObject[eventArgs.id] = eventArgs.count;
+      } else {
+        delete newObject[eventArgs.id];
+      }
+      this.orders = newObject;
     },
     didOptionValuesChange(eventArgs) {
       const obj = {};
