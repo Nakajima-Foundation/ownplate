@@ -16,7 +16,7 @@ const main = async () => {
   const db = admin.firestore();
 
   const updateFlag = async (flag) => {
-    const users = await db.collection("users").where("admin", "==", flag).get();
+    const users = await db.collection("admins").where("admin", "==", flag).get();
 
     await Promise.all(users.docs.map(async (userSnap) => {
       const user = userSnap.data();
