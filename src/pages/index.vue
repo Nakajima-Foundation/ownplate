@@ -22,7 +22,7 @@
           </p>
         </div>
       </div>
-      <div v-if="isAdmin" class="card block">
+      <div v-if="$store.getters.isSuperAdmin" class="card block">
         <div class="card-content">
           <p style="text-align:center; font-weight:bold; font-size:1.5em">
             <router-link to="/s">Admin Page</router-link>
@@ -47,15 +47,6 @@ export default {
   mounted() {},
 
   computed: {
-    isAdmin() {
-      return this.credentials && this.credentials.admin;
-    },
-    credentials() {
-      return this.user && this.user.credentials;
-    },
-    user() {
-      return this.$store.state.user;
-    },
     hideUsersLink() {
       return releaseConfig.hideUsersLink;
     }
