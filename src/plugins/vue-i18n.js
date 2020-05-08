@@ -37,23 +37,25 @@ const dateTimeFormats = {
 
 const locale = region_data.langs[0] || 'en';
 
+export const i18n = new VueI18n({
+  // locales: ['en', 'es', 'ja'],
+  locale,
+  fallbackLocale: locale,
+  messages: {
+    en: i18nEN,
+    es: i18nES,
+    ja: i18nJA,
+  },
+  numberFormats: {
+    en: numberFormats,
+    ja: numberFormats
+  },
+  dateTimeFormats: {
+    en: dateTimeFormats,
+    ja: dateTimeFormats
+  }
+});
+
 export default ({ app }) => {
-  app.i18n = new VueI18n({
-    // locales: ['en', 'es', 'ja'],
-    locale,
-    fallbackLocale: locale,
-    messages: {
-      en: i18nEN,
-      es: i18nES,
-      ja: i18nJA,
-    },
-    numberFormats: {
-      en: numberFormats,
-      ja: numberFormats
-    },
-    dateTimeFormats: {
-      en: dateTimeFormats,
-      ja: dateTimeFormats
-    }
-  });
+  app.i18n = i18n
 };

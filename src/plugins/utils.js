@@ -62,12 +62,11 @@ export default ({app}) => {
         }, {});
       },
       copyClipboard: async function(text) {
-        // todo i18n
         try {
           await this.$copyText(text);
-          this.$buefy.toast.open("URL Copied");
+          this.$buefy.toast.open(app.i18n.tc('shopInfo.UrlCopied'));
         } catch (e) {
-          this.$buefy.toast.open("URL Copy failed");
+          this.$buefy.toast.open(app.i18n.tc('shopInfo.UrlCopyFailed'));
         }
       },
     }
