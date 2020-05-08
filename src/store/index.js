@@ -34,6 +34,15 @@ export const getters = {
   stripeRegion: (state) => {
     return stripe_regions[state.server.region || "US"];
   },
+  credentials: (state) => {
+    return state.user && state.user.credentials;
+  },
+  isSuperAdmin: (state) => {
+    return state.user && state.user.credentials && state.user.credentials.admin
+  },
+  isNotSuperAdmin: (state) => {
+    return state.user && state.user.credentials && !state.user.credentials.admin
+  }
 };
 
 export const mutations = {

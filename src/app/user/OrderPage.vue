@@ -176,7 +176,10 @@ export default {
       .onSnapshot(
         order => {
           const order_data = order.exists ? order.data() : {};
-          if (this.user.uid === order_data.uid || this.isAdmin) {
+          if (
+            this.user.uid === order_data.uid ||
+            this.$store.getters.isSuperAdmin
+          ) {
             this.orderInfo = order_data;
           } else if (!this.isDeleting) {
             this.notFound = true;
@@ -199,12 +202,6 @@ export default {
     }
   },
   computed: {
-    isAdmin() {
-      return this.credentials && this.credentials.admin;
-    },
-    credentials() {
-      return this.user && this.user.credentials;
-    },
     showPayment() {
       //console.log("payment", releaseConfig.hidePayment, this.stripeAccount);
       return !releaseConfig.hidePayment && this.stripeAccount;

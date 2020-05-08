@@ -1,6 +1,6 @@
 <template>
   <section class="section">
-    <div v-if="isAdmin">
+    <div v-if="$store.getters.isSuperAdmin">
       <h2>Admin Page</h2>
       <router-link to="/s/orders">All Orders</router-link>
     </div>
@@ -12,26 +12,20 @@
 import { functions } from "~/plugins/firebase.js";
 export default {
   async mounted() {
-    if (!this.user || (this.credentials && !this.isAdmin)) {
+    if (!this.$store.state.user || this.$store.getters.isNotSuperAdmin) {
       this.$router.push("/");
     }
   },
   watch: {
-    credentials(newValue) {
-      if (newValue && !newValue.admin) {
+    isNotSuperAdmin(newValue) {
+      if (newValue) {
         this.$router.push("/");
       }
     }
   },
   computed: {
-    isAdmin() {
-      return this.credentials && this.credentials.admin;
-    },
-    credentials() {
-      return this.user && this.user.credentials;
-    },
-    user() {
-      return this.$store.state.user;
+    isNotSuperAdmin() {
+      return this.$store.getters.isNotSuperAdmin;
     }
   }
 };
