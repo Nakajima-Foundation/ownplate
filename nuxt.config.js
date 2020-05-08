@@ -1,8 +1,9 @@
 import i18nEN from './lang/en.json';
 import i18nES from './lang/es.json';
 import i18nJA from './lang/ja.json';
-require('dotenv').config();
+import { ownPlateConfig } from "./src/config/project";
 
+require('dotenv').config();
 import { customRoutes } from './src/routes';
 
 export default {
@@ -21,7 +22,7 @@ export default {
    ** Headers of the page
    */
   head: {
-    title: process.env.npm_package_name || "",
+    title: ownPlateConfig.siteName || process.env.npm_package_name,
     script: [
       { src: "https://js.stripe.com/v3/" }
     ],
