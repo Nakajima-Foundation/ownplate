@@ -85,7 +85,11 @@ import BackButton from "~/components/BackButton";
 import OrderedItem from "~/app/admin/Order/OrderedItem";
 import { order_status } from "~/plugins/constant.js";
 import { nameOfOrder } from "~/plugins/strings.js";
-import { parsePhoneNumber, formatNational } from "~/plugins/phoneutil.js";
+import {
+  parsePhoneNumber,
+  formatNational,
+  formatURL
+} from "~/plugins/phoneutil.js";
 import { stripeConfirmIntent, stripeCancelIntent } from "~/plugins/stripe.js";
 import moment from "moment";
 
@@ -153,7 +157,7 @@ export default {
       return formatNational(this.phoneNumber);
     },
     nationalPhoneURI() {
-      return "tel:" + this.phoneNumber.getNationalNumber();
+      return formatURL(this.phoneNumber);
     },
     orderName() {
       return nameOfOrder(this.orderInfo);
