@@ -85,6 +85,7 @@ export default {
   },
   mounted() {
     this.countryCode = this.countries[0].code;
+    console.log("countryCode:mount", this.countryCode);
     this.recaptchaVerifier = new authObject.RecaptchaVerifier("signInButton", {
       size: "normal",
       callback: response => {
@@ -97,6 +98,13 @@ export default {
       this.recaptchaWidgetId = widgetId;
       console.log("widdgetId", widgetId);
     });
+  },
+  watch: {
+    countries() {
+      // to handle delayed initialization
+      this.countryCode = this.countries[0].code;
+      console.log("countryCode:watch", this.countryCode);
+    }
   },
   computed: {
     countries() {
