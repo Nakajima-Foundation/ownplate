@@ -12,14 +12,15 @@
 import { functions } from "~/plugins/firebase.js";
 export default {
   async mounted() {
-    if (this.user && !this.credentials) {
-      const getCredentials = functions.httpsCallable("getCredentials");
-      const { data } = await getCredentials();
-      this.$store.commit("setCredentials", data);
-    }
-    console.log("admin", this.isAdmin);
-    if (!this.isAdmin) {
+    if (!this.user || (this.credentials && !this.isAdmin)) {
       this.$router.push("/");
+    }
+  },
+  watch: {
+    credentials(newValue) {
+      if (newValue && !newValue.admin) {
+        this.$router.push("/");
+      }
     }
   },
   computed: {

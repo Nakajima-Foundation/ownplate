@@ -19,12 +19,6 @@ export const systemGetConfig = functions.https.onCall(async (data, context) => {
   return await System.getConfig(db, data, context);
 });
 
-export const getCredentials = functions.https.onCall(async (data, context) => {
-  return {
-    admin: context.auth?.token.admin
-  }
-});
-
 import * as Order from './functions/order';
 export const orderUpdate = functions.https.onCall(async (data, context) => {
   return await Order.update(db, data, context);
