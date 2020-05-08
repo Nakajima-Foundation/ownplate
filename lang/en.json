@@ -159,8 +159,12 @@
     "sendVerificationCode": "Send",
     "countryCode": "Country Code",
     "country": {
-      "us": "US (+1)",
-      "ja": "Japan (+81)"
+      "US": "United States (+1)",
+      "UK": "United Kingdom (+44)",
+      "FR": "France (+33)",
+      "ES": "Spain (+34)",
+      "DE": "Germany (+49)",
+      "JP": "Japan (+81)"
     },
     "invalidPhoneNumber": "Invalid Phone Number",
     "invalidValidationCode": "Invalid Validation Code",

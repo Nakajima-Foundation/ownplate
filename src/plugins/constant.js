@@ -28,6 +28,9 @@ export const stripe_regions = {
       default: 15,
       choices: [10, 15, 18, 20]
     },
+    countries: [
+      { code: "+1", name: "sms.country.US" },
+    ],
     allergens: [
       "gluten", "crustacean", "egg", "milk", "fish", "peanuts", "soybeans", "shellfish", "raw"
     ]
@@ -41,6 +44,12 @@ export const stripe_regions = {
       default: 15,
       choices: [10, 15, 18, 20]
     },
+    countries: [
+      { code: "+44", name: "sms.country.UK" },
+      { code: "+33", name: "sms.country.FR" },
+      { code: "+34", name: "sms.country.ES" },
+      { code: "+49", name: "sms.country.DE" },
+    ],
     allergens: [
       "gluten", "crustacean", "egg", "milk", "lupin", "mollusc"
     ]
@@ -53,6 +62,9 @@ export const stripe_regions = {
       default: 0,
       choices: []
     },
+    countries: [
+      { code: "+81", name: "sms.country.JP" },
+    ],
     hidePostalCode: true
   }
 };

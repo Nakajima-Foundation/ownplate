@@ -159,8 +159,12 @@
     "sendVerificationCode": "送信",
     "countryCode": "国",
     "country": {
-      "us": "米国 (+1)",
-      "ja": "日本 (+81)"
+      "US": "米国 (+1)",
+      "UK": "英国 (+44)",
+      "FR": "フランス (+33)",
+      "ES": "スペイン (+34)",
+      "DE": "ドイツ (+49)",
+      "JP": "日本 (+81)"
     },
     "invalidPhoneNumber": "電話番号を入力してください",
     "invalidValidationCode": "正しくない文字が含まれています",
