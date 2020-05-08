@@ -1,7 +1,7 @@
 <template>
   <div>
     <form v-show="confirmationResult === null" @submit.prevent="handleSubmit">
-      <b-field :label="$t('sms.countryCode')">
+      <b-field v-if="countries.length > 1" :label="$t('sms.countryCode')">
         <b-select v-model="countryCode">
           <option
             v-for="country in countries"
@@ -71,10 +71,6 @@ export default {
   data() {
     return {
       isLoading: false,
-      countries: [
-        { code: "+1", name: "sms.country.us" },
-        { code: "+81", name: "sms.country.ja" }
-      ],
       countryCode: "+1",
       phoneNumber: "",
       errors: [],
@@ -88,6 +84,7 @@ export default {
     };
   },
   mounted() {
+    this.countryCode = this.countries[0].code;
     this.recaptchaVerifier = new authObject.RecaptchaVerifier("signInButton", {
       size: "normal",
       callback: response => {
@@ -102,6 +99,9 @@ export default {
     });
   },
   computed: {
+    countries() {
+      return this.$store.getters.stripeRegion.countries;
+    },
     readyToSendSMS() {
       return this.recaptchaVerified && !this.hasError;
     },
