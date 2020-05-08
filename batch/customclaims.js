@@ -1,7 +1,9 @@
 import * as admin from "firebase-admin";
 
-// todo environment variables
-const project = "ownplate-dev";
+// PROJECT=123 npm run customclaims
+const project = process.env.PROJECT || "ownplate-dev";
+
+console.log(`project: ${project}`);
 
 const main = async () => {
   const serviceAccount = await import(`./keys/${project}-firebase-adminsdk.json`);
@@ -13,9 +15,8 @@ const main = async () => {
 
   const db = admin.firestore();
 
-  // todo see flag.
   const updateFlag = async (flag) => {
-    const users = await db.collection("users").where("admin", "==", flag).get();
+    const users = await db.collection("admins").where("admin", "==", flag).get();
 
     await Promise.all(users.docs.map(async (userSnap) => {
       const user = userSnap.data();
@@ -28,7 +29,7 @@ const main = async () => {
       console.log(updated);
       return;
     }));
-    return
+    return;
   };
   await updateFlag(true);
   await updateFlag(false);
