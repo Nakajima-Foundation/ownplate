@@ -42,16 +42,12 @@
           type="text"
           v-model="verificationCode"
           v-on:input="validateVerificationCode"
-          maxlength="16"
+          maxlength="6"
           :placeholder="$t('sms.typeVerificationCode')"
         />
       </b-field>
-      <b-field
-        :type="hasError ? 'is-danger' : 'is-success'"
-        :message="hasError ? $t(errors[0]) : ''"
-        :label="$t('sms.userName')"
-      >
-        <b-input type="text" v-model="name" maxlength="16" :placeholder="$t('sms.typeUserName')" />
+      <b-field :label="$t('sms.userName')">
+        <b-input type="text" v-model="name" maxlength="32" :placeholder="$t('sms.typeUserName')" />
       </b-field>
       <b-button
         type="is-primary"
