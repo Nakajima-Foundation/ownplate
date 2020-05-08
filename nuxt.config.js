@@ -4,6 +4,7 @@ import i18nJA from './lang/ja.json';
 require('dotenv').config();
 
 import { customRoutes } from './src/routes';
+import { ownPlateConfig } from './src/config/project';
 
 export default {
   mode: "spa",
@@ -21,7 +22,7 @@ export default {
    ** Headers of the page
    */
   head: {
-    title: process.env.npm_package_name || "",
+    title: ownPlateConfig.title,
     script: [
       { src: "https://js.stripe.com/v3/" }
     ],

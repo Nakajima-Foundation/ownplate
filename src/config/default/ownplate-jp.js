@@ -10,6 +10,7 @@ export const firebaseConfig = {
 };
 
 export const ownPlateConfig = {
+  title: "おもちかえり.com",
   releasName: "beta",
   region: "JP",
 };
