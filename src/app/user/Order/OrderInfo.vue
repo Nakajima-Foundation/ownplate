@@ -52,7 +52,7 @@
                 <div style="margin-right:1em; float:left; width:6em">
                   <b-input
                     type="number"
-                    step=".01"
+                    :step="tipStep"
                     v-model="tip"
                     v-on:input="handleTipInput"
                     maxlength="30"
@@ -132,6 +132,9 @@ export default {
     regionTip() {
       return this.$store.getters.stripeRegion.tip;
     },
+    tipStep() {
+      return 1.0 / this.$store.getters.stripeRegion.multiple;
+    },
     verified() {
       return this.orderInfo.status >= order_status.validation_ok;
     },
@@ -141,7 +144,11 @@ export default {
   },
   methods: {
     calcTip(ratio) {
-      const value = Math.round(this.orderInfo.total * ratio) / 100;
+      const m = this.$store.getters.stripeRegion.multiple;
+      const value = Math.round((this.orderInfo.total * ratio * m) / 100) / m;
+      if (m === 1) {
+        return value.toLocaleString();
+      }
       return value.toLocaleString(undefined, { minimumFractionDigits: 2 });
     },
     updateTip(ratio) {
