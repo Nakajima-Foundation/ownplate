@@ -59,7 +59,7 @@ export const stripe_regions = {
     currency: 'JPY',
     multiple: 1,
     tip: {
-      default: 15,
+      default: 0,
       choices: [0, 10, 20]
     },
     countries: [
