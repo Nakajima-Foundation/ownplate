@@ -27,7 +27,7 @@ export const place = async (db: FirebaseFirestore.Firestore, data: any, context:
       if (order.status !== order_status.validation_ok) {
         throw new functions.https.HttpsError('failed-precondition', 'The order has been already placed or canceled')
       }
-      const multiple = utils.stripe_region.multiple; // 100 for USD, 1 for JPY
+      const multiple = utils.getStripeRegion().multiple; // 100 for USD, 1 for JPY
       const roundedTip = Math.round(tip * multiple) / multiple
 
       transaction.update(orderRef, {
@@ -117,7 +117,7 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
     })
     if (sendSMS && msgKey) {
       const t = await i18next.init({
-        lng: lng || utils.stripe_region.langs[0],
+        lng: lng || utils.getStripeRegion().langs[0],
         resources
       })
       await sms.pushSMS("OwnPlate", `${t(msgKey)} ${restaurant.restaurantName} ${orderNumber}`, phoneNumber)

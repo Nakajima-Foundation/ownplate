@@ -62,14 +62,14 @@ export const wasOrderCreated = async (db, snapshot, context) => {
     const newOrderData = {};
     Object.keys(original_data.order).map((menuId) => {
       const num = original_data.order[menuId];
-      if (!Number.isInteger(num)){
+      if (!Number.isInteger(num)) {
         throw new Error("invalid number: not integer");
       }
-      if(num < 0) {
+      if (num < 0) {
         throw new Error("invalid number: negative number");
       }
       // skip 0 order
-      if(num === 0) {
+      if (num === 0) {
         return;
       }
       const menu = menuObj[menuId];
@@ -82,7 +82,7 @@ export const wasOrderCreated = async (db, snapshot, context) => {
       newOrderData[menuId] = num;
     });
 
-    const multiple = utils.stripe_region.multiple; //100 for USD, 1 for JPY
+    const multiple = utils.getStripeRegion().multiple; //100 for USD, 1 for JPY
     // calculate price.
     const sub_total = food_sub_total + alcohol_sub_total;
     if (sub_total === 0) {
