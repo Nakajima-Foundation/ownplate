@@ -38,13 +38,13 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
         throw new functions.https.HttpsError('aborted', 'This order is invalid.')
       }
 
-      const multiple = utils.stripe_region.multiple; // 100 for USD, 1 for JPY
+      const multiple = utils.getStripeRegion().multiple; // 100 for USD, 1 for JPY
       const totalCharge = Math.round((order.total + Math.max(0, tip)) * multiple)
 
       const request = {
         setup_future_usage: 'off_session',
         amount: totalCharge,
-        currency: utils.stripe_region.currency,
+        currency: utils.getStripeRegion().currency,
         payment_method: paymentMethodId,
         metadata: { uid, restaurantId, orderId }
       } as Stripe.PaymentIntentCreateParams
@@ -240,7 +240,7 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
     })
     if (sendSMS) {
       const t = await i18next.init({
-        lng: lng || utils.stripe_region.langs[0],
+        lng: lng || utils.getStripeRegion().langs[0],
         resources
       })
       await sms.pushSMS("OwnPlate", `${t('msg_order_canceled')} ${restaurant.restaurantName} ${orderNumber}`, phoneNumber)

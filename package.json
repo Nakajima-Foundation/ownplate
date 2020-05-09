@@ -13,7 +13,9 @@
     "emulate": "npm --prefix functions run build && firebase emulators:start",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "lintfix": "eslint --fix --ext .js,.vue --ignore-path .gitignore .",
+    "customclaims": "babel-node --presets @babel/env  ./batch/customclaims.js",
     "deploy_production": "nuxt build &&  cp dist/index.html functions/templates/index.html && firebase deploy --only hosting --project=production && firebase deploy --only functions --project=production",
+    "deploy_staging": "nuxt build &&  cp dist/index.html functions/templates/index.html && firebase deploy --only hosting --project=staging && firebase deploy --only functions --project=staging",
     "deploy": "nuxt build && cp dist/index.html functions/templates/index.html &&  firebase deploy --project=production",
     "deploy:dev": "nuxt build && cp dist/index.html functions/templates/index.html &&  firebase deploy --only hosting --project=default && firebase deploy --only functions --project=default",
     "deploy_fs_rule": "firebase deploy --only firestore:rules --project=production",
@@ -50,6 +52,7 @@
     "vuex-persistedstate": "^2.7.0"
   },
   "devDependencies": {
+    "@babel/node": "^7.8.7",
     "@nuxtjs/style-resources": "^1.0.0",
     "babel-eslint": "^10.1.0",
     "eslint": "^6.8.0",
@@ -57,6 +60,7 @@
     "eslint-loader": "^3.0.3",
     "eslint-plugin-prettier": "^3.1.2",
     "eslint-plugin-vue": "^6.2.2",
+    "firebase-admin": "^8.12.0",
     "node-sass": "^4.13.0",
     "nuxt-sass-resources-loader": "^2.0.5",
     "prettier": "^1.19.1",

@@ -22,6 +22,13 @@
           </p>
         </div>
       </div>
+      <div v-if="$store.getters.isSuperAdmin" class="card block">
+        <div class="card-content">
+          <p style="text-align:center; font-weight:bold; font-size:1.5em">
+            <router-link to="/s">Admin Page</router-link>
+          </p>
+        </div>
+      </div>
     </section>
   </div>
 </template>

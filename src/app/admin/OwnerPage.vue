@@ -27,7 +27,6 @@
                 :url="restaurantItem.url"
                 :tags="restaurantItem.tags||[]"
                 :uid="restaurantItem.uid"
-                :defaulttaxrate="restaurantItem.defauleTaxRate"
                 :publicflag="restaurantItem.publicFlag||false"
                 :numberOfMenus="restaurantItem.numberOfMenus||0"
                 :numberOfOrders="restaurantItem.numberOfOrders||0"
@@ -69,13 +68,19 @@
                 </a>
               </div>
               <div v-if="hasStripe" class="container content has-text-centered">
+                <div style="margin-bottom:2rem">
+                  <a href="https://dashboard.stripe.com/dashboard" target="_blank">
+                    <div>
+                      <i class="fab fa-cc-stripe" style="font-size:4em"></i>
+                    </div>
+                    <div>{{$t('admin.payments.openDashboard')}}</div>
+                  </a>
+                </div>
                 <b-button
                   @click="handlePaymentAccountDisconnect"
-                  style="margin-right:auto"
-                  type="is-primary"
+                  type="is-danger"
                   class="counter-button"
                   :loading="isDisconnecting"
-                  expanded
                   rounded
                 >{{$t('admin.payments.disconnectStripe')}}</b-button>
               </div>

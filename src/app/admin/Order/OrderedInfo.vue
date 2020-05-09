@@ -2,7 +2,7 @@
   <div class="card block">
     <div class="card-content" @click="$emit('selected', order)">
       <div class="level is-mobile" style="margin:0">
-        <div class="level-left">
+        <div class="level-left" style="width:80%; overflow:hidden">
           <h3>
             <span v-if="restaurant">{{restaurant.restaurantName}}</span>
             {{ orderName }}

@@ -10,6 +10,8 @@ export const firebaseConfig = {
 };
 
 export const ownPlateConfig = {
-  releasName: "beta"
+  siteName: "OwnPlate",
+  siteDescription: "Zero Comission Take-out Service",
+  releasName: "beta",
+  region: "US",
 };
-

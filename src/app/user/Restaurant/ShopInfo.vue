@@ -3,7 +3,12 @@
     <h2>{{$t('shopInfo.qrcode')}}</h2>
     <div class="notification">
       <div class="is-centered" style="text-align: center;">
-        <qrcode :value="this.shareUrl()" :options="{ width: 200 }"></qrcode>
+        <qrcode :value="this.url" :options="{ width: 200 }"></qrcode><br/>
+        <nuxt-link to="#" @click.native="copyClipboard(url)" event="">
+          <b-icon icon="share" size="is-midium"></b-icon>
+          {{$t('shopInfo.copyUrl')}}
+        </nuxt-link><br/>
+        {{this.url}}<br/>
       </div>
     </div>
     <h2>{{$t('shopInfo.address')}}</h2>
@@ -92,6 +97,7 @@ export default {
   data() {
     const d = new Date();
     return {
+      url: this.shareUrl(),
       days: daysOfWeek,
       weekday: d.getDay(),
       today: d

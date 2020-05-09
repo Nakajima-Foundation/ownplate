@@ -1,75 +1,10 @@
 import i18nEN from './lang/en.json';
 import i18nES from './lang/es.json';
 import i18nJA from './lang/ja.json';
-require('dotenv').config();
+import { ownPlateConfig } from "./src/config/project";
 
-const customRoutes = [
-  {
-    name: 'r',
-    path: '/r',
-    component: 'user/RootPage.vue',
-  },
-  {
-    name: 'history',
-    path: '/u/history',
-    component: 'user/OrderHistory.vue',
-  },
-  {
-    name: 'r-restaurantId',
-    path: '/r/:restaurantId',
-    component: 'user/RestaurantPage.vue',
-  },
-  {
-    name: 'r-restaurantId-order',
-    path: '/r/:restaurantId/order/:orderId',
-    component: 'user/OrderPage.vue',
-  },
-  {
-    name: 'admin',
-    path: '/admin/restaurants',
-    component: 'admin/OwnerPage.vue',
-  },
-  {
-    name: 'admin-about',
-    path: '/admin/restaurants/:restaurantId',
-    component: 'admin/AboutPage.vue',
-  },
-  {
-    name: 'admin-menus',
-    path: '/admin/restaurants/:restaurantId/menus',
-    component: 'admin/MenusPage.vue',
-  },
-  {
-    name: 'admin-menus-item',
-    path: '/admin/restaurants/:restaurantId/menus/:menuId',
-    component: 'admin/MenuItemPage.vue',
-  },
-  {
-    name: 'admin-orders',
-    path: '/admin/restaurants/:restaurantId/orders',
-    component: 'admin/OrderListPage.vue',
-  },
-  {
-    name: 'admin-order-info',
-    path: '/admin/restaurants/:restaurantId/orders/:orderId',
-    component: 'admin/OrderInfoPage.vue',
-  },
-  {
-    name: 'admin-signin',
-    path: '/admin/user/signin',
-    component: 'auth/SignInPage.vue',
-  },
-  {
-    name: 'admin-signup',
-    path: '/admin/user/signup',
-    component: 'auth/SignUpPage.vue',
-  },
-  {
-    name: 'admin-reset',
-    path: '/admin/user/reset',
-    component: 'auth/ResetPasswordPage.vue',
-  },
-];
+require('dotenv').config();
+import { customRoutes } from './src/routes';
 
 export default {
   mode: "spa",
@@ -87,7 +22,7 @@ export default {
    ** Headers of the page
    */
   head: {
-    title: process.env.npm_package_name || "",
+    title: ownPlateConfig.siteName || process.env.npm_package_name,
     script: [
       { src: "https://js.stripe.com/v3/" }
     ],
@@ -97,7 +32,7 @@ export default {
       {
         hid: "description",
         name: "description",
-        content: process.env.npm_package_description || ""
+        content: ownPlateConfig.siteDescription || process.env.npm_package_description || ""
       }
     ],
     link: [
@@ -189,7 +124,6 @@ export default {
     STRIPE_CLIENT_ID: process.env.STRIPE_CLIENT_ID,
     gapikey: process.env.GAPIKey,
     CIRCLE_SHA1: process.env.CIRCLE_SHA1,
-    REGION: process.env.REGION,
   },
   styleResources: {
     scss: [

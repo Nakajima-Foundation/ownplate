@@ -19,9 +19,15 @@
   },
   "editCommon": {
     "save": "Save",
+    "saveDraft": "Save as Draft",
     "new": "New",
     "current": "Current",
     "clickAndUpload": "Click and Upload"
+  },
+  "currency": {
+    "USD": "USD",
+    "JPY": "JPY",
+    "EUR": "EUR"
   },
   "editRestaurant": {
     "enterRestaurantName": "Enter restaurant name",
@@ -42,9 +48,11 @@
     "businessHourDescription": "Check the business day of the week and set the business hours.",
     "draftDescription": "Save as Draft.",
     "publishDescription": "Save and publish your restaurant.",
+    "draftWarning": "You can publish this by correcting the red frame.",
     "updateMapDescription": "Set restaurant location from your restaurant name and address.",
     "noRestaurant": "No restaurant name",
     "noStreetAddress": "No street address",
+    "reallyDelete": "Do you really want to delete this?",
     "city": "city",
     "zip": "zip",
     "state": "state"
@@ -61,15 +69,24 @@
     "itemName": "Item name",
     "price": "Price",
     "tax": "Tax",
+    "food": "Food",
+    "alcohol": "Alcohol",
     "itemDescription": "Item description",
     "itemPhoto": "Item photo",
     "itemOptions": "Item options",
     "itemOptionsNote": "For altenatives, use comma to separate them (e.g., \"Chicken, Pork, Tofu\")",
     "itemAddOption": "Add Option",
-    "itemInvalidMessage": "This item is not on your menu because data is invalid."
+    "itemInvalidMessage": "This item is not on your menu because data is invalid.",
+    "saveAsDraft": "Save as draft. This item is not on your menus."
+  },
+  "editTitle": {
+    "empty": "empty"
   },
   "shopInfo": {
     "qrcode": "QR code",
+    "copyUrl": "Copy Url",
+    "UrlCopied": "URL Copied",
+    "UrlCopyFailed": "URL Copy failed",
     "name": "Restaurant name",
     "streetAddress": "Street address",
     "city": "City",
@@ -142,8 +159,12 @@
     "sendVerificationCode": "Send",
     "countryCode": "Country Code",
     "country": {
-      "us": "US (+1)",
-      "ja": "Japan (+81)"
+      "US": "United States (+1)",
+      "UK": "United Kingdom (+44)",
+      "FR": "France (+33)",
+      "ES": "Spain (+34)",
+      "DE": "Germany (+49)",
+      "JP": "Japan (+81)"
     },
     "invalidPhoneNumber": "Invalid Phone Number",
     "invalidValidationCode": "Invalid Validation Code",
@@ -173,7 +194,8 @@
     "payments": {
       "pleaseConnect": "In order to receive online payments, you need to connect your Stripe account.",
       "connectStripe": "Connect Stripe Account",
-      "disconnectStripe": "Disconnect Stripe Account"
+      "disconnectStripe": "Disconnect Stripe Account",
+      "openDashboard": "Open Stripe Dashboard"
     },
     "incompleteOrders": "{count} Incomplete Order | {count} Incomplete Orders",
     "editMenuItems": "Menu ({count})",
