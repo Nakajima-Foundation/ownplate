@@ -11,7 +11,7 @@ const chunk = (array, chunkSize) => {
   return ret;
 }
 */
-const getMenuObj = async (refRestaurant) => {
+export const getMenuObj = async (refRestaurant) => {
   /*
   // todo: if this bug will fix.  https://github.com/googleapis/nodejs-firestore/issues/990
   const menuIdChunks = chunk(Object.keys(original_data.order), 10);
@@ -37,6 +37,7 @@ export const wasOrderCreated = async (db, snapshot, context) => {
   const original_data = snapshot.data()
 
   if (!original_data || !original_data.status || original_data.status !== constant.order_status.new_order) {
+    console.log("invalid order:" + String(snapshot.id));
     return;
   }
 
@@ -58,18 +59,35 @@ export const wasOrderCreated = async (db, snapshot, context) => {
     let food_sub_total = 0;
     let alcohol_sub_total = 0;
 
+    const newOrderData = {};
     Object.keys(original_data.order).map((menuId) => {
-      const menu = menuObj[menuId];
-      if (menu.tax === "alcohol") {
-        alcohol_sub_total += (menu.price * original_data.order[menuId])
-      } else {
-        food_sub_total += (menu.price * original_data.order[menuId])
+      const num = original_data.order[menuId];
+      if (!Number.isInteger(num)){
+        throw new Error("invalid number: not integer");
       }
+      if(num < 0) {
+        throw new Error("invalid number: negative number");
+      }
+      // skip 0 order
+      if(num === 0) {
+        return;
+      }
+      const menu = menuObj[menuId];
+
+      if (menu.tax === "alcohol") {
+        alcohol_sub_total += (menu.price * num);
+      } else {
+        food_sub_total += (menu.price * num)
+      }
+      newOrderData[menuId] = num;
     });
 
     const multiple = utils.stripe_region.multiple; //100 for USD, 1 for JPY
     // calculate price.
     const sub_total = food_sub_total + alcohol_sub_total;
+    if (sub_total === 0) {
+      throw new Error("invalid order: total 0 ");
+    }
     const tax = Math.round(((alcohol_sub_total * alcoholTax) / 100 + (food_sub_total * foodTax) / 100) * multiple) / multiple;
     const total = sub_total + tax;
 
@@ -84,8 +102,8 @@ export const wasOrderCreated = async (db, snapshot, context) => {
       }
     });
 
-    // todo create stripe payment request
     return snapshot.ref.update({
+      order: newOrderData,
       status: constant.order_status.validation_ok,
       number,
       sub_total,

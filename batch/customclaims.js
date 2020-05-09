@@ -33,6 +33,8 @@ const main = async () => {
   };
   await updateFlag(true);
   await updateFlag(false);
+
+  process.exit(0);
 };
 
 main();
