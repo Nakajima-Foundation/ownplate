@@ -1,5 +1,5 @@
 import { should } from 'chai';
-// import { expect } from 'chai';
+import { expect } from 'chai';
 
 import * as firestore from './../src/functions/firestore'
 
@@ -11,33 +11,49 @@ const adminDB = test_db_helper.adminDB();
 should()
 
 describe('Order function', () => {
-  it ('Order function, orderCounter test', async function() {
 
-    // create restaurant.
-    await adminDB.doc(`restaurants/testbar1`).set({
+  const createRestaurantData = async (restaurantId) => {
+    await adminDB.doc(`restaurants/${restaurantId}`).set({
       orderCount: 10,
       foodTax: 5,
       alcoholTax: 8,
     });
     // create menu.
-    await adminDB.doc(`restaurants/testbar1/menus/hoge1`).set({
+    await adminDB.doc(`restaurants/${restaurantId}/menus/hoge1`).set({
       deletedFlag: false,
       itemName: "hoge1",
       price: 100,
       publicFlag: true,
       tax: "food",
     });
-    await adminDB.doc(`restaurants/testbar1/menus/hoge2`).set({
+    // create order
+    await adminDB.doc(`restaurants/${restaurantId}/menus/hoge2`).set({
       deletedFlag: false,
-      itemName: "hoge1",
+      itemName: "hoge2",
       price: 50,
       publicFlag: true,
       tax: "alcohol",
     });
+  }
+  const createOrder = async (restaurantId, orderId, orderData) => {
+    await adminDB.doc(`restaurants/${restaurantId}/orders/${orderId}`).set({
+      status: constant.order_status.new_order,
+      order: orderData
+    });
 
+    //  get order
+    const orderdata = await adminDB.doc(`restaurants/${restaurantId}/orders/${orderId}`).get();
+
+    // call function
+    await firestore.wasOrderCreated(adminDB, orderdata, {});
+  }
+
+  it ('Order function, orderCounter test', async function() {
+    const restaurantId = "testbar1";
+    await createRestaurantData(restaurantId);
 
     // menuObj test
-    const refRestaurant = adminDB.doc(`restaurants/testbar1`);
+    const refRestaurant = adminDB.doc(`restaurants/${restaurantId}`);
     const menuObj = await firestore.getMenuObj(refRestaurant);
 
     Object.keys(menuObj).length.should.equal(2);
@@ -46,23 +62,14 @@ describe('Order function', () => {
     menuObj["hoge2"].price.should.equal(50);
     menuObj["hoge2"].tax.should.equal("alcohol");
 
-
     // create order
-    await adminDB.doc(`restaurants/testbar1/orders/hoge`).set({
-      status: constant.order_status.new_order,
-      order: {
-        hoge1: 10,
-      },
+    const orderId = "hoge";
+
+    await createOrder(restaurantId, orderId, {
+      hoge1: 10,
     });
 
-
-    //  get order
-    const orderdata = await adminDB.doc(`restaurants/testbar1/orders/hoge`).get();
-
-    // call function
-    await firestore.wasOrderCreated(adminDB, orderdata, {});
-
-    const updatedOrder = await adminDB.doc(`restaurants/testbar1/orders/hoge`).get();
+    const updatedOrder = await adminDB.doc(`restaurants/${restaurantId}/orders/${orderId}`).get();
     const updatedOrderdata = updatedOrder.data() || {};
 
     updatedOrderdata.number.should.equal(10);
@@ -72,108 +79,104 @@ describe('Order function', () => {
     updatedOrderdata.tax.should.equal(50);
     updatedOrderdata.total.should.equal(1050);
 
-    //  get order
-    // const orderdata = await adminDB.doc(`restaurants/testbar1/orders/hoge`).get();
-
-    // call function
-    /*
     // check order counter on restaurant
-    const restaurantDoc = await adminDB.doc(`restaurants/testbar1`).get();
-    expect(restaurantDoc).to.exist;
+    const restaurantDoc = await adminDB.doc(`restaurants/${restaurantId}`).get();
     const data = restaurantDoc.data();
-    expect(data).to.exist;
     if (data) {
       data.orderCount.should.equal(11);
     }
-  })
-
-  it ('Order function, calculate test', async function() {
-    // create restaurant.
-    await adminDB.doc(`restaurants/testbar2`).set({
-      orderCount: 10,
-      foodTax: 5,
-      alcoholTax: 8,
-    });
-    // create menu.
-    await adminDB.doc(`restaurants/testbar2/menus/hoge1`).set({
-      price: 100,
-      tax: "food",
-    });
-
-    await adminDB.doc(`restaurants/testbar2/menus/hoge2`).set({
-      price: 50,
-      tax: "alcohol",
-    });
-
-
-    // create order
-    await adminDB.doc(`restaurants/testbar2/orders/hoge`).set({
-      status: constant.order_status.new_order,
-      order: {
-        hoge1: 10,
-        hoge2: 5,
-      },
-    });
-
-    //  get order
-    const orderdata = await adminDB.doc(`restaurants/testbar2/orders/hoge`).get();
-
-    // call function
-    await firestore.orderCreate(adminDB, orderdata, {});
-
-    //  check order
-    const newOrderDoc = await adminDB.doc(`restaurants/testbar2/orders/hoge`).get();
-    const newOrderData = newOrderDoc.data();
-
-    const sub_total = 100 * 10 + 50 * 5;
-    const tax = 100 * 10 * 0.05 + 50 * 5 * 0.08
-    const total = sub_total + tax;
-
-    expect(newOrderData).to.exist;
-    if (newOrderData) {
-      newOrderData.sub_total.should.equal(sub_total);
-      newOrderData.tax.should.equal(tax);
-      newOrderData.total.should.equal(total);
-    }
-  })
+  });
 
   it ('Order function, error test', async function() {
-    // create restaurant.
-    await adminDB.doc(`restaurants/testbar3`).set({
-      orderCount: 10,
-      foodTax: 5,
-      alcoholTax: 8,
+    // create restaurant
+    const restaurantId = "testbar3";
+    await createRestaurantData(restaurantId);
+
+    let index = 0;
+
+    const makeOrder = async (data) => {
+      const orderId = "hoge" + String(index);
+
+      await createOrder(restaurantId, orderId, data);
+      const newOrderData = (await adminDB.doc(`restaurants/${restaurantId}/orders/${orderId}`).get()).data() || {};
+
+      index ++;
+      return newOrderData;
+    };
+
+    // not exist menu test
+    const newOrderData = await makeOrder({
+      hoge1: 10,
+      hoge3: 5,
     });
-    // create menu.
-    await adminDB.doc(`restaurants/testbar3/menus/hoge1`).set({
-      price: 100,
-      tax: "food",
+    newOrderData.status.should.equal(constant.order_status.error);
+
+
+    // zero order test - skip 0 order
+    const newOrderData2 = await makeOrder({
+      hoge1: 0,
+      hoge2: 1,
     });
-    // create order
-    await adminDB.doc(`restaurants/testbar3/orders/hoge`).set({
-      status: constant.order_status.new_order,
-      order: {
-        hoge1: 10,
-        hoge2: 5,
-      },
+    Object.keys(newOrderData2.order).length.should.equal(1);
+
+    // zero order test - total 0 is error
+    const newOrderData3 = await makeOrder({
+      hoge1: 0,
+      hoge2: 0,
+    });
+    expect(newOrderData3.sub_total).equal(undefined);
+    expect(newOrderData3.tax).equal(undefined);
+    expect(newOrderData3.total).equal(undefined);
+
+    newOrderData3.status.should.equal(constant.order_status.error);
+
+    // dicimal error
+    const newOrderData4 = await makeOrder({
+      hoge1: 1.5,
+      hoge2: 0,
+    });
+    expect(newOrderData4.sub_total).equal(undefined);
+    expect(newOrderData4.tax).equal(undefined);
+    expect(newOrderData4.total).equal(undefined);
+
+    newOrderData4.status.should.equal(constant.order_status.error);
+
+    // zero order test
+    const newOrderData5 = await makeOrder({
+      hoge1: "1",
+      hoge2: 0,
+    });
+    expect(newOrderData5.sub_total).equal(undefined);
+    expect(newOrderData5.tax).equal(undefined);
+    expect(newOrderData5.total).equal(undefined);
+
+    newOrderData5.status.should.equal(constant.order_status.error);
+
+    const newOrderData6 = await makeOrder({
+      hoge1: -1,
+      hoge2: 0,
+    });
+    expect(newOrderData6.sub_total).equal(undefined);
+    expect(newOrderData6.tax).equal(undefined);
+    expect(newOrderData6.total).equal(undefined);
+
+    newOrderData6.status.should.equal(constant.order_status.error);
+
+
+    // invalid number data test
+    const newOrderData10 =  await makeOrder({
+      hoge1: "abc",
     });
 
-    //  get order
-    const orderdata = await adminDB.doc(`restaurants/testbar3/orders/hoge`).get();
+    expect(newOrderData10.sub_total).equal(undefined);
+    expect(newOrderData10.tax).equal(undefined);
+    expect(newOrderData10.total).equal(undefined);
+    newOrderData10.status.should.equal(constant.order_status.error);
 
-    // call function
-    await firestore.orderCreate(adminDB, orderdata, {});
 
-    //  check order
-    const newOrderDoc = await adminDB.doc(`restaurants/testbar3/orders/hoge`).get();
-    const newOrderData = newOrderDoc.data();
 
-    expect(newOrderData).to.exist;
-    if (newOrderData) {
-      newOrderData.status.should.equal(constant.order_status.error);
-    }
-    */
-  })
 
+
+  });
 
 });
