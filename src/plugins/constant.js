@@ -59,8 +59,8 @@ export const stripe_regions = {
     currency: 'JPY',
     multiple: 1,
     tip: {
-      default: 0,
-      choices: []
+      default: 15,
+      choices: [0, 10, 20]
     },
     countries: [
       { code: "+81", name: "sms.country.JP" },
