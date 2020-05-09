@@ -27,7 +27,6 @@
                 :url="restaurantItem.url"
                 :tags="restaurantItem.tags||[]"
                 :uid="restaurantItem.uid"
-                :defaulttaxrate="restaurantItem.defauleTaxRate"
                 :publicflag="restaurantItem.publicFlag||false"
                 :numberOfMenus="restaurantItem.numberOfMenus||0"
                 :numberOfOrders="restaurantItem.numberOfOrders||0"

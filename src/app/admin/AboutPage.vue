@@ -233,7 +233,7 @@
         ></b-input>
       </b-field>
 
-      <div class="columns">
+      <div class="columns" v-if="requireTaxInput">
         <div class="column">
           <div class="field is-horizontal">
             <div class="field-body">
@@ -348,7 +348,11 @@ export default {
 
   data() {
     const regionalSetting = regionalSettings[ownPlateConfig.region || "US"];
+
     return {
+      requireTaxInput: regionalSetting.requireTaxInput,
+      requireTaxInclusive: regionalSetting.requireTaxInclusive,
+      defaultTax: regionalSetting.defaultTax,
       disabled: false, // ??
       filteredItems: [], // ??
       restProfileCroppa: null,
@@ -366,6 +370,7 @@ export default {
         url: "",
         foodTax: 0,
         alcoholTax: 0,
+        taxInclusive: 0,
         openTimes: {
           1: [], // mon
           2: [],
@@ -412,6 +417,9 @@ export default {
       return;
     }
     this.shopInfo = Object.assign({}, this.shopInfo, restaurant_data);
+    if (this.defaultTax) {
+      this.shopInfo = Object.assign({}, this.shopInfo, this.defaultTax);
+    }
     this.notFound = false;
   },
   mounted() {
@@ -430,22 +438,25 @@ export default {
         "state",
         "zip",
         "phoneNumber",
-        "foodTax",
-        "alcoholTax"
       ].forEach(name => {
         err[name] = [];
         if (this.shopInfo[name] === "") {
           err[name].push("validationError." + name + ".empty");
         }
       });
-      ["foodTax", "alcoholTax"].forEach(name => {
-        // err[name] = [];
-        if (this.shopInfo[name] !== "") {
-          if (isNaN(this.shopInfo[name])) {
-            err[name].push("validationError." + name + ".invalidNumber");
+      if (this.requireTaxInput) {
+        ["foodTax", "alcoholTax"].forEach(name => {
+          err[name] = [];
+          if (this.shopInfo[name] === "") {
+            err[name].push("validationError." + name + ".empty");
           }
-        }
-      });
+          if (this.shopInfo[name] !== "") {
+            if (isNaN(this.shopInfo[name])) {
+              err[name].push("validationError." + name + ".invalidNumber");
+            }
+          }
+        });
+      }
 
       const ex = new RegExp("^(https?)://[^\\s]+$");
       err["url"] =
@@ -550,7 +561,6 @@ export default {
         openTimes: this.shopInfo.openTimes,
         businessDay: this.shopInfo.businessDay,
         uid: this.shopInfo.uid,
-        defauleTaxRate: 0.1,
         publicFlag: this.shopInfo.publicFlag,
         createdAt: new Date()
       };
