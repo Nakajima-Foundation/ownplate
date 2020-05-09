@@ -60,7 +60,15 @@ export default ({app}) => {
           }
           return tmp;
         }, {});
-      }
+      },
+      copyClipboard: async function(text) {
+        try {
+          await this.$copyText(text);
+          this.$buefy.toast.open(app.i18n.tc('shopInfo.UrlCopied'));
+        } catch (e) {
+          this.$buefy.toast.open(app.i18n.tc('shopInfo.UrlCopyFailed'));
+        }
+      },
     }
   });
 }

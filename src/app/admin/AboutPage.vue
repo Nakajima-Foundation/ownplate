@@ -233,7 +233,7 @@
         ></b-input>
       </b-field>
 
-      <div class="columns">
+      <div class="columns" v-if="requireTaxInput">
         <div class="column">
           <div class="field is-horizontal">
             <div class="field-body">
@@ -292,30 +292,36 @@
         <div class="field">
           <b-checkbox v-model="shopInfo.businessDay[index]">{{$t("week.short." + day)}}</b-checkbox>
         </div>
-        <hours-input
-          v-model="shopInfo.openTimes[index][0]"
-          :type="errors['time'][index][0].length > 0 ? 'is-danger' : 'is-success'"
+        <div class="hours">
+          <hours-input
+            v-model="shopInfo.openTimes[index][0]"
+            :type="errors['time'][index][0].length > 0 ? 'is-danger' : 'is-success'"
+            :disabled="!shopInfo.businessDay[index]"
+            ></hours-input>
+          <hours-input
+            v-model="shopInfo.openTimes[index][1]"
+            :type="errors['time'][index][1].length > 0 ? 'is-danger' : 'is-success'"
           :disabled="!shopInfo.businessDay[index]"
-        ></hours-input>
-        <hours-input
-          v-model="shopInfo.openTimes[index][1]"
-          :type="errors['time'][index][1].length > 0 ? 'is-danger' : 'is-success'"
-          :disabled="!shopInfo.businessDay[index]"
-        ></hours-input>
+            ></hours-input>
+        </div>
       </div>
 
-      <h4>
-        <b-checkbox v-model="shopInfo.publicFlag" :disabled="hasError">{{$t('shopInfo.public')}}</b-checkbox>
-      </h4>
-      <span v-if="shopInfo.publicFlag">{{$t('editRestaurant.publishDescription')}}</span>
-      <span v-if="!shopInfo.publicFlag">{{$t('editRestaurant.draftDescription')}}</span>
+      <b-checkbox v-model="shopInfo.publicFlag"
+                  :disabled="hasError"
+                  :type="!shopInfo.publicFlag ? 'is-danger' : ''">
+        {{$t('shopInfo.public')}}
+      </b-checkbox><br/>
+
+      <span v-if="shopInfo.publicFlag">{{$t('editRestaurant.publishDescription')}}<br/></span>
+      <span style="color:#CB4B4B" v-if="!shopInfo.publicFlag">{{$t('editRestaurant.draftDescription')}}<br/></span>
+      <span v-if="hasError" class="p-font bold" style="color:#CB4B4B">{{$t('editRestaurant.draftWarning')}}<br/></span>
       <b-button
         style="margin-right:auto"
         type="is-primary"
         class="counter-button save_btn"
         rounded
         @click="submitRestaurant"
-      >{{$t('editCommon.save')}}</b-button>
+      >{{$t(shopInfo.publicFlag ? 'editCommon.save' : 'editCommon.saveDraft' )}}</b-button>
     </template>
   </section>
 </template>
@@ -328,6 +334,7 @@ import HoursInput from "~/app/admin/Restaurant/HoursInput";
 import * as API from "~/plugins/api";
 import BackButton from "~/components/BackButton";
 import NotFound from "~/components/NotFound";
+import { ownPlateConfig } from "@/config/project";
 
 import { daysOfWeek, regionalSettings } from "~/plugins/constant.js";
 
@@ -340,8 +347,12 @@ export default {
   },
 
   data() {
-    const regionalSetting = regionalSettings[process.env.REGION];
+    const regionalSetting = regionalSettings[ownPlateConfig.region || "US"];
+
     return {
+      requireTaxInput: regionalSetting.requireTaxInput,
+      requireTaxInclusive: regionalSetting.requireTaxInclusive,
+      defaultTax: regionalSetting.defaultTax,
       disabled: false, // ??
       filteredItems: [], // ??
       restProfileCroppa: null,
@@ -359,6 +370,7 @@ export default {
         url: "",
         foodTax: 0,
         alcoholTax: 0,
+        taxInclusive: 0,
         openTimes: {
           1: [], // mon
           2: [],
@@ -405,6 +417,9 @@ export default {
       return;
     }
     this.shopInfo = Object.assign({}, this.shopInfo, restaurant_data);
+    if (this.defaultTax) {
+      this.shopInfo = Object.assign({}, this.shopInfo, this.defaultTax);
+    }
     this.notFound = false;
   },
   mounted() {
@@ -423,22 +438,25 @@ export default {
         "state",
         "zip",
         "phoneNumber",
-        "foodTax",
-        "alcoholTax"
       ].forEach(name => {
         err[name] = [];
         if (this.shopInfo[name] === "") {
           err[name].push("validationError." + name + ".empty");
         }
       });
-      ["foodTax", "alcoholTax"].forEach(name => {
-        // err[name] = [];
-        if (this.shopInfo[name] !== "") {
-          if (isNaN(this.shopInfo[name])) {
-            err[name].push("validationError." + name + ".invalidNumber");
+      if (this.requireTaxInput) {
+        ["foodTax", "alcoholTax"].forEach(name => {
+          err[name] = [];
+          if (this.shopInfo[name] === "") {
+            err[name].push("validationError." + name + ".empty");
           }
-        }
-      });
+          if (this.shopInfo[name] !== "") {
+            if (isNaN(this.shopInfo[name])) {
+              err[name].push("validationError." + name + ".invalidNumber");
+            }
+          }
+        });
+      }
 
       const ex = new RegExp("^(https?)://[^\\s]+$");
       err["url"] =
@@ -488,7 +506,10 @@ export default {
       if (this.notFound === false) {
         this.hello();
       }
-    }
+    },
+    hasError: function() {
+      this.shopInfo.publicFlag = !this.hasError;
+    },
   },
   methods: {
     hello() {
@@ -540,7 +561,6 @@ export default {
         openTimes: this.shopInfo.openTimes,
         businessDay: this.shopInfo.businessDay,
         uid: this.shopInfo.uid,
-        defauleTaxRate: 0.1,
         publicFlag: this.shopInfo.publicFlag,
         createdAt: new Date()
       };
@@ -632,6 +652,9 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.hours {
+    margin-bottom: 0.75rem;
+}
 .tax {
   margin-top: -2rem !important;
 }

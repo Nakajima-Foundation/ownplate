@@ -63,10 +63,11 @@
 import { db, auth, functions } from "@/plugins/firebase.js";
 import { regionalSettings } from "~/plugins/constant.js";
 import { releaseConfig } from "~/plugins/config.js";
+import { ownPlateConfig } from "@/config/project";
 
 export default {
   data() {
-    const regionalSetting = regionalSettings[process.env.REGION];
+    const regionalSetting = regionalSettings[ownPlateConfig.region || "US"];
     return {
       items: [
         {
@@ -98,7 +99,7 @@ export default {
       return !this.isNull(this.$store.state.user);
     },
     isAdmin() {
-      console.log(this.$store.getters.uidAdmin);
+      //console.log(this.$store.getters.uidAdmin);
       return !!this.$store.getters.uidAdmin;
     },
     isUser() {
@@ -160,6 +161,10 @@ export default {
             console.log("user.name", doc.name);
           }
         }
+        user.getIdTokenResult(true).then(result => {
+          const admin = result.claims.admin;
+          this.$store.commit("setCredentials", { admin });
+        });
       } else {
         console.log("authStateChanged: null");
       }

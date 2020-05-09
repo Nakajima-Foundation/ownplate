@@ -50,7 +50,7 @@
                 </b-field>
               </div>
               <div class="column">
-                <h4>USD</h4>
+                <h4>{{$t("currency." + this.currencyKey)}}</h4>
               </div>
             </div>
           </div>
@@ -66,7 +66,7 @@
                 <option
                   v-for="taxItem in taxRates"
                   :value="taxItem"
-                >{{ taxItem }} {{ restaurantInfo && ((restaurantInfo[taxItem + "Tax"] || 0) + "%") }}</option>
+                >{{ $t("editMenu." + taxItem) }} {{ restaurantInfo && ((restaurantInfo[taxItem + "Tax"] || 0) + "%") }}</option>
               </b-select>
             </b-field>
           </div>
@@ -151,10 +151,15 @@
       </b-field>
         -->
         <div style="margin-top:0.5rem;margin-bottom:1rem">
-          <b-checkbox v-model="menuInfo.publicFlag">{{$t('shopInfo.public')}}</b-checkbox>
-          <span style="color:#CB4B4B" v-if="menuInfo.publicFlag && hasError">
+          <b-checkbox v-model="menuInfo.publicFlag"
+                      :disabled="hasError"
+                      :type="!menuInfo.publicFlag ? 'is-danger' : ''">
+            {{$t('shopInfo.public')}}
+          </b-checkbox><br/>
+          <span v-if="hasError" class="p-font bold" style="color:#CB4B4B">{{$t('editRestaurant.draftWarning')}}<br/></span>
+          <span style="color:#CB4B4B" v-if="!menuInfo.publicFlag && !hasError">
+            {{$t("editMenu.saveAsDraft")}}
             <br />
-            {{$t("editMenu.itemInvalidMessage")}}
           </span>
         </div>
 
@@ -165,7 +170,7 @@
           expanded
           rounded
           @click="submitItem"
-        >{{$t("editCommon.save")}}</b-button>
+          >{{$t(menuInfo.publicFlag ? "editCommon.save" : "editCommon.saveDraft")}}</b-button>
       </section>
     </template>
   </div>
@@ -177,6 +182,9 @@ import { db, storage } from "~/plugins/firebase.js";
 
 import NotFound from "~/components/NotFound";
 import BackButton from "~/components/BackButton";
+
+import { regionalSettings } from "~/plugins/constant.js";
+import { ownPlateConfig } from "@/config/project";
 
 const TAX_RATES = ["food", "alcohol"];
 
@@ -191,6 +199,8 @@ export default {
   },
 
   data() {
+    const regionalSetting = regionalSettings[ownPlateConfig.region || "US"];
+
     return {
       menuInfo: {
         itemName: "",
@@ -205,6 +215,7 @@ export default {
 
       taxRates: TAX_RATES,
       availOptions: AVAIL_OPTIONS,
+      currencyKey: regionalSetting["CurrencyKey"],
       croppa: {},
 
       restaurantInfo: {},
@@ -261,6 +272,11 @@ export default {
       const num = this.countObj(this.errors);
       return num > 0;
     }
+  },
+  watch: {
+    hasError: function() {
+      this.menuInfo.publicFlag = !this.hasError;
+    },
   },
   methods: {
     deleteOption(pos) {

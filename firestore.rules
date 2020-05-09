@@ -1,6 +1,10 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
+    function isSuper(request) {
+      return request.auth.token.admin == true
+    }
+
     function isAdmin(request) {
       return request.auth.uid != null && request.auth.token.email != null
     }
@@ -63,6 +67,7 @@ service cloud.firestore {
 
     // Rules for collection group
     match /{path=**}/orders/{orderId} {
+      allow read: if isSuper(request);
       allow read: if isOwner(resource, request);
     }
 
@@ -83,6 +88,7 @@ service cloud.firestore {
           allow update: if isAdmin(request) && isOwner(resource, request);
         }
         match /orders/{orderId} {
+          allow read: if isSuper(request);
           allow create: if isUser(request)
                           && request.resource.data.status == 100
                           && request.resource.data.phoneNumber == request.auth.token.phone_number

@@ -4,13 +4,13 @@
       <network network="facebook" class="facebook">
         <span style="color:#3b5998">
           <i class="fab fa-facebook"></i>
-          <span>Facebook</span>
+          <span class="sharetext">Facebook</span>
         </span>
-      </network>
+      </network><br/>
       <network network="twitter" class="twitter">
         <span style="color:#00acee">
           <i class="fab fa-twitter"></i>
-          <span>Twitter</span>
+          <span class="sharetext">Twitter</span>
         </span>
       </network>
     </div>

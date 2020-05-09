@@ -19,9 +19,15 @@
   },
   "editCommon": {
     "save": "保存",
+    "saveDraft": "下書きとして保存",
     "new": "新規",
     "current": "変更前",
     "clickAndUpload": "クリックしてアップロード"
+  },
+  "currency": {
+    "USD": "ドル",
+    "JPY": "円",
+    "EUR": "ユーロ"
   },
   "editRestaurant": {
     "enterRestaurantName": "レストラン名を入力して下さい",
@@ -40,11 +46,13 @@
     "setLocation": "住所を元に地図を更新",
     "updateMap": "場所をセット",
     "businessHourDescription": "営業する曜日にチェックをいれ、営業時間を設定してください。",
-    "draftDescription": "下書きとして保存",
+    "draftDescription": "下書きとして保存されます(お客さんからお店のページは見えません)",
     "publishDescription": "保存して公開",
+    "draftWarning": "赤枠のエラーを修正すると公開可能になります",
     "updateMapDescription": "飲食店名や住所を元に地図を更新",
     "noRestaurant": "レストラン名が未指定です",
     "noStreetAddress": "住所が未入力です",
+    "reallyDelete": "本当にこの飲食店を削除しますか？",
     "city": "市町村",
     "zip": "郵便番号",
     "state": "都道府県"
@@ -60,16 +68,25 @@
     "required": "必須",
     "itemName": "料理/ドリンク名",
     "price": "値段",
-    "tax": "税金",
+    "tax": "消費税",
+    "food": "食品",
+    "alcohol": "酒類",
     "itemDescription": "説明文",
     "itemPhoto": "写真",
     "itemOptions": "オプション",
     "itemOptionsNote": "二択や三択の場合、半角カンマで区切ってください (例: \"チキン, ポーク, 豆腐\")",
     "itemAddOption": "オプション追加",
-    "itemInvalidMessage": "データが正しく入力されていないため、公開されません"
+    "itemInvalidMessage": "データが正しく入力されていないため、公開されません",
+    "saveAsDraft": "下書きとして保存されます(メニューに表示されません)"
+  },
+  "editTitle": {
+    "empty": "未入力"
   },
   "shopInfo": {
     "qrcode": "飲食店QRコード",
+    "copyUrl": "このお店のアドレスをコピー",
+    "UrlCopied": "コピーしました",
+    "UrlCopyFailed": "コピー失敗",
     "name": "飲食店名",
     "streetAddress": "住所",
     "city": "市区町村",
@@ -142,8 +159,12 @@
     "sendVerificationCode": "送信",
     "countryCode": "国",
     "country": {
-      "us": "米国 (+1)",
-      "ja": "日本 (+81)"
+      "US": "米国 (+1)",
+      "UK": "英国 (+44)",
+      "FR": "フランス (+33)",
+      "ES": "スペイン (+34)",
+      "DE": "ドイツ (+49)",
+      "JP": "日本 (+81)"
     },
     "invalidPhoneNumber": "電話番号を入力してください",
     "invalidValidationCode": "正しくない文字が含まれています",
@@ -173,7 +194,8 @@
     "payments": {
       "pleaseConnect": "オンラインで支払いを受けるには、Stripeアカウントとの接続が必要です",
       "connectStripe": "Stripeアカウントと接続する",
-      "disconnectStripe": "Stripeアカウントとの接続を切る"
+      "disconnectStripe": "Stripeアカウントとの接続を切る",
+      "openDashboard": "Stripe のダッシュボードを開く"
     },
     "incompleteOrders": "{count} 個の未完了の注文",
     "editMenuItems": "メニュー ({count})",

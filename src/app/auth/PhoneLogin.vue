@@ -1,7 +1,7 @@
 <template>
   <div>
     <form v-show="confirmationResult === null" @submit.prevent="handleSubmit">
-      <b-field :label="$t('sms.countryCode')">
+      <b-field v-if="countries.length > 1" :label="$t('sms.countryCode')">
         <b-select v-model="countryCode">
           <option
             v-for="country in countries"
@@ -42,16 +42,12 @@
           type="text"
           v-model="verificationCode"
           v-on:input="validateVerificationCode"
-          maxlength="16"
+          maxlength="6"
           :placeholder="$t('sms.typeVerificationCode')"
         />
       </b-field>
-      <b-field
-        :type="hasError ? 'is-danger' : 'is-success'"
-        :message="hasError ? $t(errors[0]) : ''"
-        :label="$t('sms.userName')"
-      >
-        <b-input type="text" v-model="name" maxlength="16" :placeholder="$t('sms.typeUserName')" />
+      <b-field :label="$t('sms.userName')">
+        <b-input type="text" v-model="name" maxlength="32" :placeholder="$t('sms.typeUserName')" />
       </b-field>
       <b-button
         type="is-primary"
@@ -71,10 +67,6 @@ export default {
   data() {
     return {
       isLoading: false,
-      countries: [
-        { code: "+1", name: "sms.country.us" },
-        { code: "+81", name: "sms.country.ja" }
-      ],
       countryCode: "+1",
       phoneNumber: "",
       errors: [],
@@ -88,6 +80,8 @@ export default {
     };
   },
   mounted() {
+    this.countryCode = this.countries[0].code;
+    console.log("countryCode:mount", this.countryCode);
     this.recaptchaVerifier = new authObject.RecaptchaVerifier("signInButton", {
       size: "normal",
       callback: response => {
@@ -101,7 +95,17 @@ export default {
       console.log("widdgetId", widgetId);
     });
   },
+  watch: {
+    countries() {
+      // to handle delayed initialization
+      this.countryCode = this.countries[0].code;
+      console.log("countryCode:watch", this.countryCode);
+    }
+  },
   computed: {
+    countries() {
+      return this.$store.getters.stripeRegion.countries;
+    },
     readyToSendSMS() {
       return this.recaptchaVerified && !this.hasError;
     },
@@ -189,4 +193,3 @@ export default {
   }
 };
 </script>
-

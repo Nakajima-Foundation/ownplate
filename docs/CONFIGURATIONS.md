@@ -10,7 +10,7 @@
 - STRIPE_API_KEY - Stripe public key
 - STRIPE_CLIENT_ID - Stripe oauth client id
 - GAPIKey - Google map api key
-- REGION - Region. US, JP, EU
+- REGION - ~~Region. US, JP, EU~~ Not support now. Moved to project.js
 - LOCALE - ~~vue i18n locale (us, ja, eu)~~ Not support now. vue i18n locale is set by REGION. 
 
 # Firebase web client (Vue.js) configurations
