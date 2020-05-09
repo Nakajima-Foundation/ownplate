@@ -188,18 +188,28 @@ export const regionalSettings = {
     StateKey: "shopInfo.state",
     AddressStates: USStates,
     Logo: "OwnPlate-Logo-Horizontal-YellowWhite.png",
+    requireTaxInput: true,
+    requireTaxInclusive: false,
   },
   JP: {
     CurrencyKey: 'JPY',
     StateKey: "shopInfo.prefecture",
     AddressStates: JPPrefecture,
     Logo: "Omochikaeri-Logo-Horizontal-YellowWhite.png",
+    requireTaxInput: false,
+    requireTaxInclusive: true,
+    defaultTax: {
+      foodTax: 8,
+      alcoholTax: 10,
+    },
   },
   EU: {
     CurrencyKey: 'EUR',
     StateKey: "shopInfo.state",
     AddressStates: null,
     Logo: "OwnPlate-Logo-Horizontal-YellowWhite.png",
+    requireTaxInput: true,
+    requireTaxInclusive: false,
   },
 
 };
