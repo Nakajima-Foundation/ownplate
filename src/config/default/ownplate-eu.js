@@ -11,6 +11,7 @@ const firebaseConfig = {
 
 export const ownPlateConfig = {
   siteName: "OwnPlate",
+  siteDescription: "Zero Comission Take-out Service",
   releasName: "alpha",
   region: "EU",
 };
