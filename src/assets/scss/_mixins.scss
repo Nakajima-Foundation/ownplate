@@ -159,3 +159,9 @@ p {
 .notification {
   word-break: break-all;
 }
+
+@media screen and (max-width: 600px) {
+  .sharetext {
+    display: none;
+  }
+}
