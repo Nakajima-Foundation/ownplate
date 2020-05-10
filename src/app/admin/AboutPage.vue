@@ -553,9 +553,9 @@ export default {
   },
   methods: {
     handlePhoneChange(payload) {
-      console.log(payload)
+      //console.log(payload)
       this.shopInfo.phoneNumber = payload.phoneNumber;
-      this.shopInfo.countryCode = payload.validatePhoneNumber;
+      this.shopInfo.countryCode = payload.countryCode;
       this.errorsPhone = payload.errors;
     },
     hello() {

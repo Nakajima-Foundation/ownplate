@@ -41,9 +41,10 @@
 
     <h2 style="margin-top:2rem;">{{$t("shopInfo.phonenumber")}}</h2>
     <div class="notification is-centered">
-      <a :href="phoneUrl">
+      <a v-if="phoneUrl" :href="phoneUrl">
         <p class="p-font bold" style="text-align:center;">{{nationalPhoneNumber}}</p>
       </a>
+      <p v-else class="p-font bold" style="text-align:center;">{{nationalPhoneNumber}}</p>
     </div>
     <div v-if="!compact">
       <h2>{{$t("shopInfo.website")}}</h2>
@@ -119,6 +120,7 @@ export default {
       }
       return "";
     },
+    // BUGBUG: We need to determine what we want to diplay for EU
     nationalPhoneNumber() {
       const number = this.parsedNumber;
       if (number) {
@@ -128,6 +130,7 @@ export default {
       return this.shopInfo.phoneNumber;
     },
     parsedNumber() {
+      //console.log("countryCode", this.shopInfo.countryCode);
       const countryCode = this.shopInfo.countryCode || this.countries[0].code;
       try {
         return parsePhoneNumber(countryCode + this.shopInfo.phoneNumber);
