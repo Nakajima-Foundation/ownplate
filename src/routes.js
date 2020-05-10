@@ -72,4 +72,7 @@ export const customRoutes = [
     path: '/s/orders',
     component: 'super/AllOrders.vue'
   },
+  { path: '*',
+    component: 'common/404.vue'
+  }
 ];
