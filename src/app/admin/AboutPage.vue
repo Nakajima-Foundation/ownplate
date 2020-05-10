@@ -286,6 +286,34 @@
         </div>
       </div>
 
+      <div class="field is-horizontal" v-if="!requireTaxInput">
+        <div class="field-body">
+          <h4>
+            {{$t('editRestaurant.tax')}}
+          </h4>
+        </div>
+      </div>
+      <div v-if="!requireTaxInput" >
+        {{$t('editRestaurant.foodTax')}} {{shopInfo.foodTax}}% <br/>
+        {{$t('editRestaurant.alcoholTax')}} {{shopInfo.alcoholTax}}% <br/><br/>
+     </div>
+      <div class="field is-horizontal" v-if="requireTaxPriceDisplay">
+        <div class="field-body">
+          <h4>
+            {{$t('editRestaurant.taxPriceDisplay')}}
+          </h4>
+        </div>
+      </div>
+
+      <div v-if="requireTaxPriceDisplay">
+        <span>
+          <b-checkbox v-model="shopInfo.taxInclude">{{$t("editRestaurant.taxIncluded")}}</b-checkbox>
+        </span>
+        <br/>
+        {{$tc('tax.taxExample', examplePriceI18n)}} - <Price :shopInfo="shopInfo" :menu="sampleMenu"/></span>
+        <br/>
+      </div>
+
       <h4>{{$t('shopInfo.hours')}}</h4>
       <p class="p-font bold" style="color:#CB4B4B">{{$t('editRestaurant.businessHourDescription')}}</p>
       <div v-for="(day, index) in days" :key="index">
@@ -334,6 +362,7 @@ import HoursInput from "~/app/admin/Restaurant/HoursInput";
 import * as API from "~/plugins/api";
 import BackButton from "~/components/BackButton";
 import NotFound from "~/components/NotFound";
+import Price from "~/components/Price";
 import { ownPlateConfig } from "@/config/project";
 
 import { daysOfWeek, regionalSettings } from "~/plugins/constant.js";
@@ -343,15 +372,19 @@ export default {
   components: {
     HoursInput,
     BackButton,
-    NotFound
+    NotFound,
+    Price
   },
 
   data() {
     const regionalSetting = regionalSettings[ownPlateConfig.region || "US"];
 
     return {
+      examplePriceI18n: this.$n(1000, 'currency'),
+      sampleMenu: {price: 1000, tax: 'food'},
       requireTaxInput: regionalSetting.requireTaxInput,
-      requireTaxInclusive: regionalSetting.requireTaxInclusive,
+      requireTaxPriceDisplay: regionalSetting.requireTaxPriceDisplay,
+
       defaultTax: regionalSetting.defaultTax,
       disabled: false, // ??
       filteredItems: [], // ??
@@ -370,7 +403,7 @@ export default {
         url: "",
         foodTax: 0,
         alcoholTax: 0,
-        taxInclusive: 0,
+        taxInclude: 0,
         openTimes: {
           1: [], // mon
           2: [],
@@ -562,6 +595,7 @@ export default {
         businessDay: this.shopInfo.businessDay,
         uid: this.shopInfo.uid,
         publicFlag: this.shopInfo.publicFlag,
+        taxInclude: this.shopInfo.taxInclude,
         createdAt: new Date()
       };
       await this.updateRestaurantData(restaurantData);
