@@ -212,8 +212,10 @@
           </h4>
         </div>
       </div>
-      <phone-entry :currentNumber="shopInfo.phoneNumber" @change="handlePhoneChange"/>
-      <b-field :type="errors['phoneNumber'].length > 0 ? 'is-danger' : 'is-success'">
+      <phone-entry :currentNumber="shopInfo.phoneNumber"
+                  :placeHolder="$t('editRestaurant.enterPhone')" @change="handlePhoneChange"/>
+
+      <b-field v-if="true" :type="errors['phoneNumber'].length > 0 ? 'is-danger' : 'is-success'">
         <b-input
           v-model="shopInfo.phoneNumber"
           :placeholder="$t('editRestaurant.enterPhone')"
@@ -433,6 +435,7 @@ export default {
       place_id: null,
       markers: [],
       days: daysOfWeek,
+      errorsPhone: [],
       notFound: null
     };
   },
@@ -529,6 +532,7 @@ export default {
           }
         });
       });
+      err["phoneNumber"] = this.errorsPhone;
       // todo more validate
       return err;
     },
@@ -551,6 +555,7 @@ export default {
     handlePhoneChange(payload) {
       console.log(payload);
       this.shopInfo.phoneNumber = payload.text;
+      this.errorsPhone = payload.errors;
     },
     hello() {
       if (this.shopInfo && this.shopInfo.location) {
