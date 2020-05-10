@@ -5,7 +5,6 @@
         <div class="media-content" @click="linkEdit">
           <p class="item-name">
               {{ menuitem.itemName }}
-            </router-link>
           </p>
           <p class="item-price">
             {{ $n(menuitem.price, "currency") }}

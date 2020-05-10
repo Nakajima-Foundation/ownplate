@@ -64,7 +64,8 @@
                 <option
                   v-for="taxItem in taxRates"
                   :value="taxItem"
-                >{{ $t("editMenu." + taxItem) }} {{ restaurantInfo && ((restaurantInfo[taxItem + "Tax"] || 0) + "%") }}</option>
+                  >
+                  {{ restaurantInfo && ((restaurantInfo[taxItem + "Tax"] || 0) + "%") }} - {{ $t("editMenu." + taxRateKeys[taxItem]) }}</option>
               </b-select>
             </b-field>
           </div>
@@ -212,6 +213,7 @@ export default {
       },
 
       taxRates: TAX_RATES,
+      taxRateKeys: regionalSetting["taxRateKeys"],
       availOptions: AVAIL_OPTIONS,
       currencyKey: regionalSetting["CurrencyKey"],
       croppa: {},
