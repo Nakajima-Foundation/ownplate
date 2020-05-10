@@ -190,6 +190,10 @@ export const regionalSettings = {
     Logo: "OwnPlate-Logo-Horizontal-YellowWhite.png",
     requireTaxInput: true,
     requireTaxPriceDisplay: false,
+    taxRateKeys: {
+      "food": "food",
+      "alcohol": "alcohol",
+    }
   },
   JP: {
     CurrencyKey: 'JPY',
@@ -202,6 +206,10 @@ export const regionalSettings = {
       foodTax: 8,
       alcoholTax: 10,
     },
+    taxRateKeys: {
+      "food": "foodJP",
+      "alcohol": "alcoholJP",
+    }
   },
   EU: {
     CurrencyKey: 'EUR',
@@ -210,6 +218,10 @@ export const regionalSettings = {
     Logo: "OwnPlate-Logo-Horizontal-YellowWhite.png",
     requireTaxInput: true,
     requireTaxPriceDisplay: false,
+    taxRateKeys: {
+      "food": "food",
+      "alcohol": "alcohol",
+    }
   },
 
 };

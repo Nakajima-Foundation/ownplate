@@ -80,6 +80,8 @@
     "tax": "消費税",
     "food": "食品",
     "alcohol": "酒類",
+    "foodJP": "軽減税率が適用される飲食料品",
+    "alcoholJP": "それ以外（酒、グッズなど）",
     "itemDescription": "説明文",
     "itemPhoto": "写真",
     "itemOptions": "オプション",
