@@ -11,7 +11,7 @@
     </b-field>
     <b-field
       :type="hasError ? 'is-danger' : 'is-success'"
-      :message="hasError ? $t(errors[0]) : $t('sms.notice')"
+      :message="hasError ? $t(errors[0]) : notice"
       :label="$t('sms.phonenumber')"
     >
       <b-input
@@ -29,11 +29,22 @@
 import { parsePhoneNumber, formatNational } from "~/plugins/phoneutil.js";
 
 export default {
+  props: {
+    notice: {
+      type: String,
+      default: ""
+    }
+  },
   data() {
     return {
+      countryCode: "+1",
       errors: [],
       phoneNumber: ""
     };
+  },
+  mounted() {
+    this.countryCode = this.countries[0].code;
+    console.log("countryCode:mount", this.countryCode);
   },
   computed: {
     countries() {
@@ -46,8 +57,10 @@ export default {
   methods: {
     validatePhoneNumber() {
       this.errors = [];
-      const regex = /^[0-9()\-]*$/;
-      if (!regex.test(this.phoneNumber)) {
+      try {
+        const number = parsePhoneNumber(this.countryCode + this.phoneNumber);
+        console.log(number);
+      } catch (error) {
         this.errors.push("sms.invalidPhoneNumber");
       }
     }
