@@ -295,6 +295,7 @@ export default {
   padding: initial !important;
   background-repeat: no-repeat;
   background-size: cover;
+  background-position: center;
   position: relative;
 }
 // #menu-header-image-mask {
