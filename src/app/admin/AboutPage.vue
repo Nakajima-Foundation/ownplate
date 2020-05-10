@@ -595,6 +595,7 @@ export default {
         businessDay: this.shopInfo.businessDay,
         uid: this.shopInfo.uid,
         publicFlag: this.shopInfo.publicFlag,
+        taxInclude: this.shopInfo.taxInclude,
         createdAt: new Date()
       };
       await this.updateRestaurantData(restaurantData);
