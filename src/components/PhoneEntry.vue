@@ -33,13 +33,17 @@ export default {
     notice: {
       type: String,
       default: ""
+    },
+    currentNumber: {
+      type: String,
+      default: ""
     }
   },
   data() {
     return {
       countryCode: "+1",
       errors: [],
-      phoneNumber: ""
+      phoneNumber: this.currentNumber
     };
   },
   mounted() {

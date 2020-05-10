@@ -204,6 +204,8 @@
         ></GMap>
       </b-field>
 
+      <phone-entry :currentNumber="shopInfo.phoneNumber"/>
+
       <div class="field is-horizontal">
         <div class="field-body">
           <h4>
@@ -362,6 +364,7 @@ import HoursInput from "~/app/admin/Restaurant/HoursInput";
 import * as API from "~/plugins/api";
 import BackButton from "~/components/BackButton";
 import NotFound from "~/components/NotFound";
+import PhoneEntry from "~/components/PhoneEntry";
 import Price from "~/components/Price";
 import { ownPlateConfig } from "@/config/project";
 
@@ -373,6 +376,7 @@ export default {
     HoursInput,
     BackButton,
     NotFound,
+    PhoneEntry,
     Price
   },
 
