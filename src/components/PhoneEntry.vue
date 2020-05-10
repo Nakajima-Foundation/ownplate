@@ -18,7 +18,6 @@
         type="text"
         v-model="phoneNumber"
         v-on:input="validatePhoneNumber"
-        maxlength="30"
         :placeholder="$t('sms.pleasetype')"
       />
     </b-field>
@@ -67,7 +66,12 @@ export default {
       this.errors = [];
       try {
         const number = parsePhoneNumber(this.countryCode + this.phoneNumber);
-        console.log(number);
+        //console.log(number);
+        this.$emit("change", {
+          text: this.phoneNumber,
+          number,
+          national: formatNational(number)
+        });
       } catch (error) {
         this.errors.push("sms.invalidPhoneNumber");
       }

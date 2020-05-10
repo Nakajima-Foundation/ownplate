@@ -212,7 +212,7 @@
           </h4>
         </div>
       </div>
-      <phone-entry :currentNumber="shopInfo.phoneNumber"/>
+      <phone-entry :currentNumber="shopInfo.phoneNumber" @change="handlePhoneChange"/>
       <b-field :type="errors['phoneNumber'].length > 0 ? 'is-danger' : 'is-success'">
         <b-input
           v-model="shopInfo.phoneNumber"
@@ -548,6 +548,10 @@ export default {
     },
   },
   methods: {
+    handlePhoneChange(payload) {
+      console.log(payload);
+      this.shopInfo.phoneNumber = payload.text;
+    },
     hello() {
       if (this.shopInfo && this.shopInfo.location) {
         this.setCurrentLocation(this.shopInfo.location);
