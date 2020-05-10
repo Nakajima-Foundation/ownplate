@@ -3,12 +3,15 @@
     <h2>{{$t('shopInfo.qrcode')}}</h2>
     <div class="notification">
       <div class="is-centered" style="text-align: center;">
-        <qrcode :value="this.url" :options="{ width: 200 }"></qrcode><br/>
-        <nuxt-link to="#" @click.native="copyClipboard(url)" event="">
+        <qrcode :value="this.url" :options="{ width: 200 }"></qrcode>
+        <br />
+        <nuxt-link to="#" @click.native="copyClipboard(url)" event>
           <b-icon icon="share" size="is-midium"></b-icon>
           {{$t('shopInfo.copyUrl')}}
-        </nuxt-link><br/>
-        {{this.url}}<br/>
+        </nuxt-link>
+        <br />
+        {{this.url}}
+        <br />
       </div>
     </div>
     <h2>{{$t('shopInfo.address')}}</h2>
@@ -38,8 +41,8 @@
 
     <h2 style="margin-top:2rem;">{{$t("shopInfo.phonenumber")}}</h2>
     <div class="notification is-centered">
-      <a>
-        <p class="p-font bold" style="text-align:center;">{{this.shopInfo.phoneNumber}}</p>
+      <a :href="phoneUrl">
+        <p class="p-font bold" style="text-align:center;">{{nationalPhoneNumber}}</p>
       </a>
     </div>
     <div v-if="!compact">
@@ -82,6 +85,11 @@
 
 <script>
 import { daysOfWeek } from "~/plugins/constant.js";
+import {
+  parsePhoneNumber,
+  formatNational,
+  formatURL
+} from "~/plugins/phoneutil.js";
 
 export default {
   props: {
@@ -104,6 +112,32 @@ export default {
     };
   },
   computed: {
+    phoneUrl() {
+      const number = this.parsedNumber;
+      if (number) {
+        return formatURL(number);
+      }
+      return "";
+    },
+    nationalPhoneNumber() {
+      const number = this.parsedNumber;
+      if (number) {
+        return formatNational(number);
+      }
+      console.log("parsing failed, return as-is");
+      return this.shopInfo.phoneNumber;
+    },
+    parsedNumber() {
+      const countryCode = this.shopInfo.countryCode || this.countries[0].code;
+      try {
+        return parsePhoneNumber(countryCode + this.shopInfo.phoneNumber);
+      } catch (error) {
+        return null;
+      }
+    },
+    countries() {
+      return this.$store.getters.stripeRegion.countries;
+    },
     isOpen() {
       return Object.keys(this.days).reduce((tmp, day) => {
         if (this.weekday === Number(day) && this.shopInfo.businessDay[day]) {

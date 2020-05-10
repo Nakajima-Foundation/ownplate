@@ -54,6 +54,7 @@ export default {
     };
   },
   mounted() {
+    // BUGBUG: This code is sufficient for US and JP, but not for EU
     this.countryCode = this.countries[0].code;
     console.log("countryCode:mount", this.countryCode);
   },
