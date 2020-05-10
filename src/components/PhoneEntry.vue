@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="margin-bottom:1rem">
     <b-field v-if="countries.length > 1">
       <b-select v-model="countryCode">
         <option

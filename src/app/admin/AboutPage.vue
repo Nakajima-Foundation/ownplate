@@ -215,14 +215,14 @@
       <phone-entry :currentNumber="shopInfo.phoneNumber"
                   :placeHolder="$t('editRestaurant.enterPhone')" @change="handlePhoneChange"/>
 
-      <b-field v-if="true" :type="errors['phoneNumber'].length > 0 ? 'is-danger' : 'is-success'">
+      <!-- b-field :type="errors['phoneNumber'].length > 0 ? 'is-danger' : 'is-success'">
         <b-input
           v-model="shopInfo.phoneNumber"
           :placeholder="$t('editRestaurant.enterPhone')"
           type="tel"
           maxlength="20"
         ></b-input>
-      </b-field>
+      </b-field -->
 
       <b-field
         :label="$t('editRestaurant.website')"
@@ -553,7 +553,6 @@ export default {
   },
   methods: {
     handlePhoneChange(payload) {
-      console.log(payload);
       this.shopInfo.phoneNumber = payload.text;
       this.errorsPhone = payload.errors;
     },
