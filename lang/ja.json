@@ -239,5 +239,11 @@
       "saturday": "土曜",
       "sunday": "日曜"
     }
+  },
+  "errorPage": {
+    "notFound": {
+      "message1": "ごめんなさい。ページがみつかりません。",
+      "message2": "もう一度確認してアクセスしてください。"
+    }
   }
 }
