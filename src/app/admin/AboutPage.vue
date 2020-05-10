@@ -553,7 +553,9 @@ export default {
   },
   methods: {
     handlePhoneChange(payload) {
-      this.shopInfo.phoneNumber = payload.text;
+      console.log(payload)
+      this.shopInfo.phoneNumber = payload.phoneNumber;
+      this.shopInfo.countryCode = payload.validatePhoneNumber;
       this.errorsPhone = payload.errors;
     },
     hello() {
@@ -599,6 +601,7 @@ export default {
         location: this.shopInfo.location,
         place_id: this.shopInfo.place_id,
         phoneNumber: this.shopInfo.phoneNumber,
+        countryCode: this.shopInfo.countryCode,
         url: this.shopInfo.url,
         foodTax: Number(this.shopInfo.foodTax),
         alcoholTax: Number(this.shopInfo.alcoholTax),

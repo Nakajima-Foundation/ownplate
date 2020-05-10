@@ -66,16 +66,17 @@ export default {
     }
   },
   methods: {
+    // BUGBUG: This code is fine for US and JP, but not sufficient for EU
     validatePhoneNumber() {
       this.errors = [];
       try {
         const number = parsePhoneNumber(this.countryCode + this.phoneNumber);
-        //console.log(number);
       } catch (error) {
         this.errors.push("sms.invalidPhoneNumber");
       }
       this.$emit("change", {
-        text: this.phoneNumber,
+        phoneNumber: this.phoneNumber,
+        countryCode: this.countryCode,
         errors: this.errors
         // number,
         // national: formatNational(number)
