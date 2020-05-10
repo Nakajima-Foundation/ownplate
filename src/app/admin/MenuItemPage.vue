@@ -18,8 +18,8 @@
 
         <div class="field is-horizontal">
           <div class="field-body">
-            <h4>{{$t("editMenu.itemName")}}</h4>
-            <p class="p-small" style="color:#CB4B4B">*</p>
+            <h4>{{$t("editMenu.itemName")}} <span class="p-small" style="color:#CB4B4B">*</span></h4>
+
           </div>
         </div>
         <b-field>
@@ -32,8 +32,8 @@
           <div class="column is-6">
             <div class="field is-horizontal">
               <div class="field-body">
-                <h4>{{$t("editMenu.price")}}</h4>
-                <p class="p-small" style="color:#CB4B4B">*</p>
+                <h4>{{$t("editMenu.price")}} <span class="p-small" style="color:#CB4B4B">*</span></h4>
+
               </div>
             </div>
             <div class="columns">
@@ -42,23 +42,21 @@
                   <b-input
                     v-model="menuInfo.price"
                     type="number"
-                    step="0.01"
+                    :step="priceStep"
                     placeholder="00.00"
                     max="10000.00"
                     min="0.00"
-                  ></b-input>
+                    expanded
+                    ></b-input>
+                  <p class="control"><span class="button is-static">{{$t("currency." + this.currencyKey)}}</span></p>
                 </b-field>
-              </div>
-              <div class="column">
-                <h4>{{$t("currency." + this.currencyKey)}}</h4>
               </div>
             </div>
           </div>
           <div class="column is-6">
             <div class="field is-horizontal">
               <div class="field-body">
-                <h4>{{$t("editMenu.tax")}}</h4>
-                <p class="p-small" style="color:#CB4B4B">*</p>
+                <h4>{{$t("editMenu.tax")}} <span class="p-small" style="color:#CB4B4B">*</span></h4>
               </div>
             </div>
             <b-field :type="errors['tax'].length > 0 ? 'is-danger' : 'is-success'">
@@ -254,6 +252,9 @@ export default {
     this.notFound = false;
   },
   computed: {
+    priceStep() {
+      return 10.0 / this.$store.getters.stripeRegion.multiple;
+    },
     errors() {
       const err = {};
       ["itemName", "price", "tax"].forEach(name => {
@@ -345,8 +346,5 @@ export default {
 <style lang="scss" scoped>
 .card_image {
   height: 200px;
-}
-.tax {
-  margin-top: -2rem !important;
 }
 </style>

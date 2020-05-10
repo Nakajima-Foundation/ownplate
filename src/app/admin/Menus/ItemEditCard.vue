@@ -3,7 +3,6 @@
     <div class="card-content">
       <div class="media">
         <div class="media-content" @click="linkEdit">
-          <!-- <h4 class="bold">Kushikatsu Special Platter</h4> -->
           <p class="item-name">
               {{ menuitem.itemName }}
             </router-link>

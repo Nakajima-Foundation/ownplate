@@ -1,6 +1,5 @@
 <template>
   <section class="section">
-    <h2 class="p-big bold">{{ $t('admin.yourRestaurants') }}</h2>
 
     <b-tabs size="is-medium" class="block" expanded>
       <b-tab-item :label="$t('admin.restaurant')">
