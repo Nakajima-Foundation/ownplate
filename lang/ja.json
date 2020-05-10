@@ -29,6 +29,11 @@
     "JPY": "円",
     "EUR": "ユーロ"
   },
+  "tax": {
+    "include": "{count} (税込)",
+    "exclude": "{count} (税抜) + 税",
+    "taxExample": "{count}の商品の例"
+  },
   "editRestaurant": {
     "enterRestaurantName": "レストラン名を入力して下さい",
     "enterStreetAddress": "番地以下の住所を入力して下さい",
@@ -37,8 +42,12 @@
     "enterPhone": "電話番号を入力して下さい",
     "enterWebsite": "ウェブサイトのURLを入力して下さい",
     "website": "ウェブサイト",
+    "tax": "消費税",
     "foodTax": "消費税率（食品）",
     "alcoholTax": "消費税率（酒類）",
+    "taxPriceDisplay": "税額表示方法",
+    "taxIncluded": "内税",
+    "taxExcluded": "外税",
     "about": "飲食店情報",
     "required": "必須",
     "profilePhoto": "プロフィール画像",
