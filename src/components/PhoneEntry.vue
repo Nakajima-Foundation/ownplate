@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-field v-if="countries.length > 1" :label="$t('sms.countryCode')">
+    <b-field v-if="countries.length > 1">
       <b-select v-model="countryCode">
         <option
           v-for="country in countries"
@@ -12,7 +12,7 @@
     <b-field
       :type="hasError ? 'is-danger' : 'is-success'"
       :message="hasError ? $t(errors[0]) : notice"
-      :label="$t('sms.phonenumber')"
+      :label="label"
     >
       <b-input
         type="text"
@@ -35,6 +35,10 @@ export default {
       default: ""
     },
     currentNumber: {
+      type: String,
+      default: ""
+    },
+    label: {
       type: String,
       default: ""
     }

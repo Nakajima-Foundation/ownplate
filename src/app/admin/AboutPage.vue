@@ -204,8 +204,6 @@
         ></GMap>
       </b-field>
 
-      <phone-entry :currentNumber="shopInfo.phoneNumber"/>
-
       <div class="field is-horizontal">
         <div class="field-body">
           <h4>
@@ -214,6 +212,7 @@
           </h4>
         </div>
       </div>
+      <phone-entry :currentNumber="shopInfo.phoneNumber"/>
       <b-field :type="errors['phoneNumber'].length > 0 ? 'is-danger' : 'is-success'">
         <b-input
           v-model="shopInfo.phoneNumber"
