@@ -58,7 +58,7 @@
             >{{$t('order.editItems')}}</b-button>
           </div>
 
-          <time-to-pickup v-if="shopInfo.businessDay" :shopInfo="shopInfo" />
+          <time-to-pickup v-if="shopInfo.businessDay" :shopInfo="shopInfo" ref="time" />
 
           <hr class="hr-black" />
           <div v-if="showPayment">
@@ -285,6 +285,10 @@ export default {
       });
     },
     async handlePayment() {
+      const timeToPickup = this.$refs.time.timeToPickup();
+      console.log("handlePayment", timeToPickup);
+      return;
+
       this.isPaying = true;
       const {
         error,

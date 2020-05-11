@@ -101,6 +101,14 @@ export default {
     daysInAdvance() {
       return 4; // LATER: Make it customizable
     }
+  },
+  methods: {
+    timeToPickup() {
+      const date = this.availableDays[this.dayIndex].date;
+      date.setHours(this.time / 60);
+      date.setMinutes(this.time % 60);
+      return date;
+    }
   }
 };
 </script>
