@@ -9,6 +9,7 @@
 <script>
 
 export default {
+  name: "Price",
   props: {
     shopInfo: {
       type: Object,
