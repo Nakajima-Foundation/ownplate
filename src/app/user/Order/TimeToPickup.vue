@@ -43,7 +43,7 @@ export default {
     },
     availableDays() {
       const today = this.dayOfWeek;
-      return [0, 1, 2, 3, 4, 5, 6]
+      return Array.from(Array(this.daysInAdvance).keys())
         .filter(offset => {
           return this.businessDays[(today + offset) % 7];
         })
@@ -87,6 +87,9 @@ export default {
     },
     minimumCookTime() {
       return 30; // LATER: Make it customizable
+    },
+    daysInAdvance() {
+      return 4; // LATER: Make it customizable
     }
   }
 };
