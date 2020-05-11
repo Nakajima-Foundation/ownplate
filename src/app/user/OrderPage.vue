@@ -58,7 +58,7 @@
             >{{$t('order.editItems')}}</b-button>
           </div>
 
-          <time-to-pickup />
+          <time-to-pickup v-if="shopInfo.businessDay" :shopInfo="shopInfo" />
 
           <hr class="hr-black" />
           <div v-if="showPayment">
