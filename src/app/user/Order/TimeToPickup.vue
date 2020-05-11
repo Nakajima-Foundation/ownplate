@@ -8,11 +8,11 @@
         </option>
       </b-select>
     </b-field>
-    <b-select v-model="timeIndex">
+    <b-select v-model="time">
       <option
         v-for="time in availableDays[dayIndex].times"
-        :value="time.index"
-        :key="time.index"
+        :value="time.time"
+        :key="time.time"
       >{{ time.display }}</option>
     </b-select>
   </div>
@@ -25,7 +25,7 @@ export default {
   data() {
     return {
       dayIndex: 0,
-      timeIndex: 0
+      time: 0
     };
   },
   props: {
@@ -34,7 +34,9 @@ export default {
       required: true
     }
   },
-  mounted() {},
+  mounted() {
+    this.time = this.availableDays[0].times[0].time;
+  },
   computed: {
     dayOfWeek() {
       return new Date().getDay();
@@ -74,7 +76,7 @@ export default {
             time < value.end;
             time += this.timeInterval
           ) {
-            ret.push({ index: ret.length, time, display: this.num2time(time) });
+            ret.push({ time, display: this.num2time(time) });
           }
           return ret;
         }, []);
