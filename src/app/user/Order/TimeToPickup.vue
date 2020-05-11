@@ -2,9 +2,9 @@
   <div>
     <b-field label="TimeToPickup">
       <b-select v-model="dayIndex">
-        <option v-for="day in availableDays" :value="day.index" :key="day.index">
+        <option v-for="(day, index) in availableDays" :value="index" :key="day.offset">
           {{ $d(day.date, "short" )}}
-          <span v-if="day.index===0">{{$t('date.today')}}</span>
+          <span v-if="day.offset===0">{{$t('date.today')}}</span>
         </option>
       </b-select>
     </b-field>
@@ -69,10 +69,6 @@ export default {
         })
         .filter(day => {
           return day.times.length > 0;
-        })
-        .map((day, index) => {
-          day.index = index;
-          return day;
         });
     },
     businessDays() {
