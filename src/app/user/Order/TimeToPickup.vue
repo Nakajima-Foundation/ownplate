@@ -47,7 +47,14 @@ export default {
         })
         .map(offset => {
           const date = midNight(offset);
-          const times = this.openSlots[(today + offset) % 7];
+          let times = this.openSlots[(today + offset) % 7];
+          if (offset === 0) {
+            const now = new Date();
+            const localMin = now.getHours() * 60 + now.getMinutes();
+            times = times.filter(time => {
+              return time.time > localMin;
+            });
+          }
           return { index: offset, date, times };
         });
     },
@@ -61,6 +68,7 @@ export default {
       return [0, 1, 2, 3, 4, 5, 6].map(day => {
         const key = ((day + 6) % 7) + 1;
         return this.shopInfo.openTimes[key].reduce((ret, value) => {
+          console.log(day, value.start, value.end);
           for (
             let time = value.start;
             time < value.end;
@@ -74,6 +82,9 @@ export default {
     },
     timeInterval() {
       return 10; // LATER: Make it customizable
+    },
+    minimumCookTime() {
+      return 30; // LATER: Make it customizable
     }
   }
 };
