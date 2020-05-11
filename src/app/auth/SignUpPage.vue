@@ -8,11 +8,14 @@
           :message="errors.email && $t(errors.email[0])"
           :label="$t('admin.email')"
         >
-          <b-input v-model="email" type="email" placeholder="Enter email here" maxlength="256" />
+          <b-input v-model="email" type="email" :placeholder="$t('admin.emailPlaceHolder')" maxlength="256" />
         </b-field>
 
         <b-field :label="$t('admin.name')">
-          <b-input v-model="name" type="text" placeholder="Enter name here" maxlength="100" />
+          <b-input v-model="name"
+                   type="text"
+                   :placeholder="$t('admin.enterName')"
+                   maxlength="100" />
         </b-field>
 
         <b-field
@@ -23,7 +26,7 @@
           <b-input
             v-model="password"
             type="password"
-            placeholder="Enter password here"
+            :placeholder="$t('admin.passwordPlaceHolder')"
             maxlength="30"
             password-reveal
           />
@@ -36,7 +39,7 @@
           <b-input
             v-model="confirmPassword"
             type="password"
-            placeholder="Enter confirm password here"
+            :placeholder="$t('admin.confirmPasswordPlaceHolder')"
             maxlength="30"
             password-reveal
           />
