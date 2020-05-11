@@ -40,18 +40,25 @@ export default {
       const today = this.dayOfWeek;
       return [0, 1, 2, 3, 4, 5, 6]
         .filter(offset => {
-          return this.isOpen((today + offset) % 7);
+          return this.businessDays[(today + offset) % 7];
         })
         .map(offset => {
           const date = midNight(offset);
+          //const times = this.shopInfo.openTimes
           return { index: offset, date };
         });
-    }
-  },
-  methods: {
-    isOpen(day) {
-      const key = ((day + 6) % 7) + 1;
-      return this.shopInfo.businessDay[key];
+    },
+    businessDays() {
+      return [0, 1, 2, 3, 4, 5, 6].map(day => {
+        const key = ((day + 6) % 7) + 1;
+        return this.shopInfo.businessDay[key];
+      });
+    },
+    openTimes() {
+      return [0, 1, 2, 3, 4, 5, 6].map(day => {
+        const key = ((day + 6) % 7) + 1;
+        return this.shopInfo.openTimes[key];
+      });
     }
   }
 };
