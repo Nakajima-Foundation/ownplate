@@ -1,12 +1,12 @@
 <template>
-  <div>
+  <div class="wrapper">
+    <!-- Header -->
     <b-navbar>
       <template slot="brand">
         <b-navbar-item tag="router-link" :to="{ path: '/' }">
           <img :src="`/${this.logo}`" alt="Lightweight UI components for Vue.js based on Bulma" />
         </b-navbar-item>
       </template>
-
       <template slot="end">
         <b-navbar-dropdown
           class="b-navbar-item"
@@ -42,11 +42,16 @@
         </b-navbar-dropdown>
       </template>
     </b-navbar>
-    <div v-if="underConstruction" class="underConstruction">{{$t('underConstruction')}}</div>
 
-    <!-- approproate component under pages will be displayed -->
-    <nuxt style="max-width:100%;background:#FBF9F9" v-if="$store.getters.userWasInitialized"></nuxt>
+    <!-- Main -->
+    <div class="main">
+      <div v-if="underConstruction" class="underConstruction">{{$t('underConstruction')}}</div>
 
+      <!-- approproate component under pages will be displayed -->
+      <nuxt style="max-width:100%;background:#FBF9F9" v-if="$store.getters.userWasInitialized"></nuxt>
+    </div>
+
+    <!-- Footer -->
     <footer class="footer">
       <div class="footer-sections">
         <div class="columns is-desktop" style="margin-top:-3rem;">
