@@ -212,14 +212,17 @@
           </h4>
         </div>
       </div>
-      <b-field :type="errors['phoneNumber'].length > 0 ? 'is-danger' : 'is-success'">
+      <phone-entry :currentNumber="shopInfo.phoneNumber"
+                  :placeHolder="$t('editRestaurant.enterPhone')" @change="handlePhoneChange"/>
+
+      <!-- b-field :type="errors['phoneNumber'].length > 0 ? 'is-danger' : 'is-success'">
         <b-input
           v-model="shopInfo.phoneNumber"
           :placeholder="$t('editRestaurant.enterPhone')"
           type="tel"
           maxlength="20"
         ></b-input>
-      </b-field>
+      </b-field -->
 
       <b-field
         :label="$t('editRestaurant.website')"
@@ -362,6 +365,7 @@ import HoursInput from "~/app/admin/Restaurant/HoursInput";
 import * as API from "~/plugins/api";
 import BackButton from "~/components/BackButton";
 import NotFound from "~/components/NotFound";
+import PhoneEntry from "~/components/PhoneEntry";
 import Price from "~/components/Price";
 import { ownPlateConfig } from "@/config/project";
 
@@ -373,6 +377,7 @@ export default {
     HoursInput,
     BackButton,
     NotFound,
+    PhoneEntry,
     Price
   },
 
@@ -430,6 +435,7 @@ export default {
       place_id: null,
       markers: [],
       days: daysOfWeek,
+      errorsPhone: [],
       notFound: null
     };
   },
@@ -526,6 +532,7 @@ export default {
           }
         });
       });
+      err["phoneNumber"] = this.errorsPhone;
       // todo more validate
       return err;
     },
@@ -545,6 +552,12 @@ export default {
     },
   },
   methods: {
+    handlePhoneChange(payload) {
+      //console.log(payload)
+      this.shopInfo.phoneNumber = payload.phoneNumber;
+      this.shopInfo.countryCode = payload.countryCode;
+      this.errorsPhone = payload.errors;
+    },
     hello() {
       if (this.shopInfo && this.shopInfo.location) {
         this.setCurrentLocation(this.shopInfo.location);
@@ -588,6 +601,7 @@ export default {
         location: this.shopInfo.location,
         place_id: this.shopInfo.place_id,
         phoneNumber: this.shopInfo.phoneNumber,
+        countryCode: this.shopInfo.countryCode,
         url: this.shopInfo.url,
         foodTax: Number(this.shopInfo.foodTax),
         alcoholTax: Number(this.shopInfo.alcoholTax),
