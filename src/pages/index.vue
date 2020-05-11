@@ -9,21 +9,21 @@
         </div>
       </div>
       <div class="card block" v-if="!hideUsersLink">
-        <div class="card-content">
+        <div class="card-content m-t-8">
           <p style="text-align:center; font-weight:bold; font-size:1.5em">
             <router-link to="/r">{{$t("menu.users")}}</router-link>
           </p>
         </div>
       </div>
       <div class="card block">
-        <div class="card-content">
+        <div class="card-content m-t-8">
           <p style="text-align:center; font-weight:bold; font-size:1.5em">
             <router-link to="/about">{{$t("menu.about")}}</router-link>
           </p>
         </div>
       </div>
       <div v-if="$store.getters.isSuperAdmin" class="card block">
-        <div class="card-content">
+        <div class="card-content m-t-8">
           <p style="text-align:center; font-weight:bold; font-size:1.5em">
             <router-link to="/s">Admin Page</router-link>
           </p>

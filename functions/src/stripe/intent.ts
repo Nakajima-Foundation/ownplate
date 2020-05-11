@@ -13,7 +13,7 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
   const uid = utils.validate_auth(context);
   const stripe = utils.get_stripe();
 
-  const { orderId, restaurantId, paymentMethodId, tip, sendSMS } = data;
+  const { orderId, restaurantId, paymentMethodId, tip, sendSMS, timeToPickup } = data;
   utils.validate_params({ orderId, restaurantId, paymentMethodId }); // tip and sendSMS are optional
 
   const restaurantData = await utils.get_restaurant(db, restaurantId);
@@ -59,7 +59,7 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
       })
 
       transaction.set(orderRef, {
-        timePlaced: admin.firestore.FieldValue.serverTimestamp(),
+        timePlaced: timeToPickup && new admin.firestore.Timestamp(timeToPickup.seconds, timeToPickup.nanoseconds) || admin.firestore.FieldValue.serverTimestamp(),
         status: order_status.order_placed,
         totalCharge: totalCharge / multiple,
         tip: Math.round(tip * multiple) / multiple,

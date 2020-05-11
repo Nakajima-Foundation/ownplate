@@ -58,6 +58,8 @@
             >{{$t('order.editItems')}}</b-button>
           </div>
 
+          <time-to-pickup v-if="shopInfo.businessDay" :shopInfo="shopInfo" ref="time" />
+
           <hr class="hr-black" />
           <div v-if="showPayment">
             <h2>{{$t('order.yourPayment')}}</h2>
@@ -113,6 +115,7 @@ import ShopOrnerInfo from "~/app/user/Restaurant/ShopOrnerInfo";
 import OrderInfo from "~/app/user/Order/OrderInfo";
 import ShopInfo from "~/app/user/Restaurant/ShopInfo";
 import StripeCard from "~/app/user/Order/StripeCard";
+import TimeToPickup from "~/app/user/Order/TimeToPickup";
 import NotFound from "~/components/NotFound";
 
 import { db, firestore, functions } from "~/plugins/firebase.js";
@@ -128,6 +131,7 @@ export default {
     OrderInfo,
     ShopInfo,
     StripeCard,
+    TimeToPickup,
     NotFound
   },
   data() {
@@ -281,6 +285,9 @@ export default {
       });
     },
     async handlePayment() {
+      const timeToPickup = this.$refs.time.timeToPickup();
+      console.log("handlePayment", timeToPickup);
+
       this.isPaying = true;
       const {
         error,
@@ -296,6 +303,7 @@ export default {
       try {
         const { data } = await stripeCreateIntent({
           paymentMethodId: paymentMethod.id,
+          timeToPickup,
           restaurantId: this.restaurantId(),
           orderId: this.orderId,
           description: `${this.orderName} ${this.shopInfo.restaurantName} ${this.shopInfo.phoneNumber}`,
@@ -311,11 +319,13 @@ export default {
       }
     },
     async handleNoPayment() {
+      const timeToPickup = this.$refs.time.timeToPickup();
       const orderPlace = functions.httpsCallable("orderPlace");
       try {
         this.isPlacing = true;
         const { data } = await orderPlace({
           restaurantId: this.restaurantId(),
+          timeToPickup,
           orderId: this.orderId,
           sendSMS: this.sendSMS,
           tip: this.tip || 0
