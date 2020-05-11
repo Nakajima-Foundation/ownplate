@@ -1,7 +1,28 @@
 <template>
   <section class="section">
-    <h2 class="p-big bold">{{ $t('admin.yourRestaurants') }}</h2>
 
+    <div class="container content has-text-centered" v-if="region=='JP'">
+      <b-button
+        tag="a"
+        target="_blank"
+        href="https://gluepass.jp/g/ownplatejp/pages"
+        style="margin-right:auto;min-width: 30%;"
+        type="is-primary"
+        class="counter-button"
+        rounded
+        outlined
+        >{{$t("admin.userManual")}}</b-button>
+      <b-button
+        tag="a"
+        target="_blank"
+        href="https://docs.google.com/forms/d/e/1FAIpQLSfGR4kk65ynfkCRGJsvJz01HZf7AU1nGLL9Rn9i4G9-qiW6MQ/viewform"
+        style="margin-right:auto;min-width: 30%;"
+        type="is-primary"
+        class="counter-button"
+        rounded
+        outlined
+        >{{$t("admin.suportPage")}}</b-button>
+    </div>
     <b-tabs size="is-medium" class="block" expanded>
       <b-tab-item :label="$t('admin.restaurant')">
         <div class="card block" v-if="readyToDisplay">
@@ -99,6 +120,7 @@ import { order_status } from "~/plugins/constant.js";
 import { releaseConfig } from "~/plugins/config.js";
 import { midNight } from "~/plugins/dateUtils.js";
 import { stripeConnect, stripeDisconnect } from "~/plugins/stripe.js";
+import { ownPlateConfig } from "@/config/project";
 
 export default {
   name: "Restaurant",
@@ -107,6 +129,7 @@ export default {
   },
   data() {
     return {
+      region: ownPlateConfig.region,
       readyToDisplay: false,
       isCreating: false,
       isDisconnecting: false,

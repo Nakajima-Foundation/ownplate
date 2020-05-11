@@ -212,14 +212,17 @@
           </h4>
         </div>
       </div>
-      <b-field :type="errors['phoneNumber'].length > 0 ? 'is-danger' : 'is-success'">
+      <phone-entry :currentNumber="shopInfo.phoneNumber"
+                  :placeHolder="$t('editRestaurant.enterPhone')" @change="handlePhoneChange"/>
+
+      <!-- b-field :type="errors['phoneNumber'].length > 0 ? 'is-danger' : 'is-success'">
         <b-input
           v-model="shopInfo.phoneNumber"
           :placeholder="$t('editRestaurant.enterPhone')"
           type="tel"
           maxlength="20"
         ></b-input>
-      </b-field>
+      </b-field -->
 
       <b-field
         :label="$t('editRestaurant.website')"
@@ -286,6 +289,34 @@
         </div>
       </div>
 
+      <div class="field is-horizontal" v-if="!requireTaxInput">
+        <div class="field-body">
+          <h4>
+            {{$t('editRestaurant.tax')}}
+          </h4>
+        </div>
+      </div>
+      <div v-if="!requireTaxInput" >
+        {{$t('editRestaurant.foodTax')}} {{shopInfo.foodTax}}% <br/>
+        {{$t('editRestaurant.alcoholTax')}} {{shopInfo.alcoholTax}}% <br/><br/>
+     </div>
+      <div class="field is-horizontal" v-if="requireTaxPriceDisplay">
+        <div class="field-body">
+          <h4>
+            {{$t('editRestaurant.taxPriceDisplay')}}
+          </h4>
+        </div>
+      </div>
+
+      <div v-if="requireTaxPriceDisplay">
+        <span>
+          <b-checkbox v-model="shopInfo.taxInclude">{{$t("editRestaurant.taxIncluded")}}</b-checkbox>
+        </span>
+        <br/>
+        {{$tc('tax.taxExample', examplePriceI18n)}} - <Price :shopInfo="shopInfo" :menu="sampleMenu"/></span>
+        <br/>
+      </div>
+
       <h4>{{$t('shopInfo.hours')}}</h4>
       <p class="p-font bold" style="color:#CB4B4B">{{$t('editRestaurant.businessHourDescription')}}</p>
       <div v-for="(day, index) in days" :key="index">
@@ -334,6 +365,8 @@ import HoursInput from "~/app/admin/Restaurant/HoursInput";
 import * as API from "~/plugins/api";
 import BackButton from "~/components/BackButton";
 import NotFound from "~/components/NotFound";
+import PhoneEntry from "~/components/PhoneEntry";
+import Price from "~/components/Price";
 import { ownPlateConfig } from "@/config/project";
 
 import { daysOfWeek, regionalSettings } from "~/plugins/constant.js";
@@ -343,15 +376,20 @@ export default {
   components: {
     HoursInput,
     BackButton,
-    NotFound
+    NotFound,
+    PhoneEntry,
+    Price
   },
 
   data() {
     const regionalSetting = regionalSettings[ownPlateConfig.region || "US"];
 
     return {
+      examplePriceI18n: this.$n(1000, 'currency'),
+      sampleMenu: {price: 1000, tax: 'food'},
       requireTaxInput: regionalSetting.requireTaxInput,
-      requireTaxInclusive: regionalSetting.requireTaxInclusive,
+      requireTaxPriceDisplay: regionalSetting.requireTaxPriceDisplay,
+
       defaultTax: regionalSetting.defaultTax,
       disabled: false, // ??
       filteredItems: [], // ??
@@ -370,7 +408,7 @@ export default {
         url: "",
         foodTax: 0,
         alcoholTax: 0,
-        taxInclusive: 0,
+        taxInclude: 0,
         openTimes: {
           1: [], // mon
           2: [],
@@ -397,6 +435,7 @@ export default {
       place_id: null,
       markers: [],
       days: daysOfWeek,
+      errorsPhone: [],
       notFound: null
     };
   },
@@ -493,6 +532,7 @@ export default {
           }
         });
       });
+      err["phoneNumber"] = this.errorsPhone;
       // todo more validate
       return err;
     },
@@ -512,6 +552,12 @@ export default {
     },
   },
   methods: {
+    handlePhoneChange(payload) {
+      //console.log(payload)
+      this.shopInfo.phoneNumber = payload.phoneNumber;
+      this.shopInfo.countryCode = payload.countryCode;
+      this.errorsPhone = payload.errors;
+    },
     hello() {
       if (this.shopInfo && this.shopInfo.location) {
         this.setCurrentLocation(this.shopInfo.location);
@@ -555,6 +601,7 @@ export default {
         location: this.shopInfo.location,
         place_id: this.shopInfo.place_id,
         phoneNumber: this.shopInfo.phoneNumber,
+        countryCode: this.shopInfo.countryCode,
         url: this.shopInfo.url,
         foodTax: Number(this.shopInfo.foodTax),
         alcoholTax: Number(this.shopInfo.alcoholTax),
@@ -562,6 +609,7 @@ export default {
         businessDay: this.shopInfo.businessDay,
         uid: this.shopInfo.uid,
         publicFlag: this.shopInfo.publicFlag,
+        taxInclude: this.shopInfo.taxInclude,
         createdAt: new Date()
       };
       await this.updateRestaurantData(restaurantData);

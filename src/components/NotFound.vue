@@ -6,8 +6,9 @@
     </p>
   </div>
   <div class="notFoundPageText">
-      The page you're looking for can't be found.<br />
-      Try contacting the restaurant in other way
+      {{$t('errorPage.notFound.message1')}}<br />
+      {{$t('errorPage.notFound.message2')}}<br />
+
   </div>
 </div>
 </template>

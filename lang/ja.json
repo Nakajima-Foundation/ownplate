@@ -29,6 +29,11 @@
     "JPY": "円",
     "EUR": "ユーロ"
   },
+  "tax": {
+    "include": "{count} (税込)",
+    "exclude": "{count} (税抜) + 税",
+    "taxExample": "{count}の商品の例"
+  },
   "editRestaurant": {
     "enterRestaurantName": "レストラン名を入力して下さい",
     "enterStreetAddress": "番地以下の住所を入力して下さい",
@@ -37,8 +42,12 @@
     "enterPhone": "電話番号を入力して下さい",
     "enterWebsite": "ウェブサイトのURLを入力して下さい",
     "website": "ウェブサイト",
+    "tax": "消費税",
     "foodTax": "消費税率（食品）",
     "alcoholTax": "消費税率（酒類）",
+    "taxPriceDisplay": "税額表示方法",
+    "taxIncluded": "内税",
+    "taxExcluded": "外税",
     "about": "飲食店情報",
     "required": "必須",
     "profilePhoto": "プロフィール画像",
@@ -71,6 +80,8 @@
     "tax": "消費税",
     "food": "食品",
     "alcohol": "酒類",
+    "foodJP": "軽減税率が適用される飲食料品",
+    "alcoholJP": "それ以外（酒、グッズなど）",
     "itemDescription": "説明文",
     "itemPhoto": "写真",
     "itemOptions": "オプション",
@@ -133,7 +144,7 @@
       "validation_ok": "確認済み",
       "order_placed": "注文済み",
       "order_accepted": "受付済み",
-      "cooking_completed": "料理済み",
+      "cooking_completed": "調理済み",
       "customer_picked_up": "受け渡し完了",
       "order_canceled": "キャンセル済み",
       "order_refunded": "払い戻し済み"
@@ -173,6 +184,8 @@
     "auth/missing-verification-code": "SMS確認コードが入力されていません"
   },
   "admin": {
+    "userManual": "使い方説明",
+    "suportPage": "お問い合わせ",
     "hidePayment": "課金の仕組みはまもなく提供される予定です。少々お待ちください。",
     "pleaseSignIn": "サインインしてください (飲食店向け)",
     "registration": "登録してください (飲食店向け)",
@@ -238,6 +251,12 @@
       "friday": "金曜",
       "saturday": "土曜",
       "sunday": "日曜"
+    }
+  },
+  "errorPage": {
+    "notFound": {
+      "message1": "ごめんなさい。ページがみつかりません。",
+      "message2": "もう一度確認してアクセスしてください。"
     }
   }
 }
