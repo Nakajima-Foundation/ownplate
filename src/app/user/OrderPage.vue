@@ -58,6 +58,8 @@
             >{{$t('order.editItems')}}</b-button>
           </div>
 
+          <time-to-pickup />
+
           <hr class="hr-black" />
           <div v-if="showPayment">
             <h2>{{$t('order.yourPayment')}}</h2>
@@ -113,6 +115,7 @@ import ShopOrnerInfo from "~/app/user/Restaurant/ShopOrnerInfo";
 import OrderInfo from "~/app/user/Order/OrderInfo";
 import ShopInfo from "~/app/user/Restaurant/ShopInfo";
 import StripeCard from "~/app/user/Order/StripeCard";
+import TimeToPickup from "~/app/user/Order/TimeToPickup";
 import NotFound from "~/components/NotFound";
 
 import { db, firestore, functions } from "~/plugins/firebase.js";
@@ -128,6 +131,7 @@ export default {
     OrderInfo,
     ShopInfo,
     StripeCard,
+    TimeToPickup,
     NotFound
   },
   data() {
