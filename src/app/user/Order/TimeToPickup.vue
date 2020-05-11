@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-field label="TimeToPickup">
-      <b-select v-model="dayIndex" @change="handleDayChange">
+      <b-select v-model="dayIndex">
         <option v-for="day in availableDays" :value="day.index" :key="day.index">
           {{ $d(day.date, "short" )}}
           <span v-if="day.index===0">{{$t('date.today')}}</span>
@@ -37,6 +37,14 @@ export default {
   mounted() {
     this.time = this.availableDays[0].times[0].time;
   },
+  watch: {
+    dayIndex(newValue) {
+      this.time = this.availableDays[newValue].times[0].time;
+    },
+    time() {
+      console.log("time changed");
+    }
+  },
   computed: {
     dayOfWeek() {
       return new Date().getDay();
@@ -70,7 +78,6 @@ export default {
       return [0, 1, 2, 3, 4, 5, 6].map(day => {
         const key = ((day + 6) % 7) + 1;
         return this.shopInfo.openTimes[key].reduce((ret, value) => {
-          console.log(day, value.start, value.end);
           for (
             let time = value.start;
             time < value.end;
@@ -90,11 +97,6 @@ export default {
     },
     daysInAdvance() {
       return 4; // LATER: Make it customizable
-    }
-  },
-  methods: {
-    handleDayChange() {
-      console.log("foo");
     }
   }
 };
