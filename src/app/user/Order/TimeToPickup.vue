@@ -54,7 +54,7 @@ export default {
             const now = new Date();
             const localMin = now.getHours() * 60 + now.getMinutes();
             times = times.filter(time => {
-              return time.time > localMin;
+              return time.time >= localMin + this.minimumCookTime;
             });
           }
           return { index: offset, date, times };
