@@ -51,6 +51,7 @@
             <item-edit-card
               :menuitem="itemsObj[menuList]"
               :position="index == 0 ? 'first' : ((menuLists.length - 1) === index ? 'last' : '')"
+              :shopInfo="restaurantInfo"
               @positionUp="positionUp($event)"
               @positionDown="positionDown($event)"
               @forkItem="forkMenuItem($event)"
