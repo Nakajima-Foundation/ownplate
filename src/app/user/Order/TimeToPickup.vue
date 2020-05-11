@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-field label="TimeToPickup">
-      <b-select v-model="dayIndex">
+      <b-select v-model="dayIndex" @change="handleDayChange">
         <option v-for="day in availableDays" :value="day.index" :key="day.index">
           {{ $d(day.date, "short" )}}
           <span v-if="day.index===0">{{$t('date.today')}}</span>
@@ -47,7 +47,7 @@ export default {
         .filter(offset => {
           return this.businessDays[(today + offset) % 7];
         })
-        .map(offset => {
+        .map((offset, index) => {
           const date = midNight(offset);
           let times = this.openSlots[(today + offset) % 7];
           if (offset === 0) {
@@ -57,7 +57,7 @@ export default {
               return time.time >= localMin + this.minimumCookTime;
             });
           }
-          return { index: offset, date, times };
+          return { index, offset, date, times };
         });
     },
     businessDays() {
@@ -86,10 +86,15 @@ export default {
       return 10; // LATER: Make it customizable
     },
     minimumCookTime() {
-      return 30; // LATER: Make it customizable
+      return 25; // LATER: Make it customizable
     },
     daysInAdvance() {
       return 4; // LATER: Make it customizable
+    }
+  },
+  methods: {
+    handleDayChange() {
+      console.log("foo");
     }
   }
 };
