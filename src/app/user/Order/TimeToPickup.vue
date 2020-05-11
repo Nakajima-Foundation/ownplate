@@ -55,7 +55,7 @@ export default {
         .filter(offset => {
           return this.businessDays[(today + offset) % 7];
         })
-        .map((offset, index) => {
+        .map(offset => {
           const date = midNight(offset);
           let times = this.openSlots[(today + offset) % 7];
           if (offset === 0) {
@@ -65,7 +65,14 @@ export default {
               return time.time >= localMin + this.minimumCookTime;
             });
           }
-          return { index, offset, date, times };
+          return { offset, date, times };
+        })
+        .filter(day => {
+          return day.times.length > 0;
+        })
+        .map((day, index) => {
+          day.index = index;
+          return day;
         });
     },
     businessDays() {
