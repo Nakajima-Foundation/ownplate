@@ -287,7 +287,6 @@ export default {
     async handlePayment() {
       const timeToPickup = this.$refs.time.timeToPickup();
       console.log("handlePayment", timeToPickup);
-      return;
 
       this.isPaying = true;
       const {
@@ -304,6 +303,7 @@ export default {
       try {
         const { data } = await stripeCreateIntent({
           paymentMethodId: paymentMethod.id,
+          timeToPickup,
           restaurantId: this.restaurantId(),
           orderId: this.orderId,
           description: `${this.orderName} ${this.shopInfo.restaurantName} ${this.shopInfo.phoneNumber}`,
@@ -319,11 +319,13 @@ export default {
       }
     },
     async handleNoPayment() {
+      const timeToPickup = this.$refs.time.timeToPickup();
       const orderPlace = functions.httpsCallable("orderPlace");
       try {
         this.isPlacing = true;
         const { data } = await orderPlace({
           restaurantId: this.restaurantId(),
+          timeToPickup,
           orderId: this.orderId,
           sendSMS: this.sendSMS,
           tip: this.tip || 0

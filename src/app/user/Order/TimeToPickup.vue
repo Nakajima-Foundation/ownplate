@@ -20,6 +20,7 @@
 
 <script>
 import { midNight } from "~/plugins/dateUtils.js";
+import * as firebase from "firebase/app";
 
 export default {
   data() {
@@ -107,7 +108,8 @@ export default {
       const date = this.availableDays[this.dayIndex].date;
       date.setHours(this.time / 60);
       date.setMinutes(this.time % 60);
-      return date;
+      const ts = firebase.firestore.Timestamp.fromDate(date);
+      return new firebase.firestore.Timestamp(ts.seconds, ts.nanoseconds);
     }
   }
 };
