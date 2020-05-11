@@ -5,7 +5,9 @@
         <div class="media-content">
           <!-- <h4 class="bold">Kushikatsu Special Platter</h4> -->
           <p class="item-name">{{ title }}</p>
-          <p class="item-price">{{ $n(price, 'currency') }}</p>
+          <p class="item-price">
+            <Price :shopInfo="shopInfo" :menu="item"/>
+          </p>
           <p>{{ description }}</p>
         </div>
         <div class="media-right">
@@ -77,9 +79,19 @@
 
 <script>
 import { mapGetters, mapMutations } from "vuex";
+
+import Price from "~/components/Price";
+
 export default {
+  components: {
+    Price
+  },
   props: {
     item: {
+      type: Object,
+      required: true
+    },
+    shopInfo: {
       type: Object,
       required: true
     },

@@ -30,6 +30,7 @@
                   :count="orders[itemId] || 0"
                   :optionPrev="optionsPrev[itemId]"
                   :initialOpenMenuFlag="(orders[itemId] || 0) > 0"
+                  :shopInfo="shopInfo"
                   @didCountChange="didCountChange($event)"
                   @didOptionValuesChange="didOptionValuesChange($event)"
                 ></item-card>
@@ -295,6 +296,7 @@ export default {
   padding: initial !important;
   background-repeat: no-repeat;
   background-size: cover;
+  background-position: center;
   position: relative;
 }
 // #menu-header-image-mask {
