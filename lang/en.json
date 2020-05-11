@@ -184,6 +184,8 @@
     "auth/missing-verification-code": "The phone auth credential was created with an empty SMS verification code."
   },
   "admin": {
+    "userManual": "User Manual",
+    "suportPage": "Support",
     "hidePayment": "Payment feature is coming soon. Please stay tuned.",
     "pleaseSignIn": "Sign In (Restaurant Operators)",
     "registration": "Registration (for restaurants)",

@@ -184,6 +184,8 @@
     "auth/missing-verification-code": "SMS確認コードが入力されていません"
   },
   "admin": {
+    "userManual": "使い方説明",
+    "suportPage": "お問い合わせ",
     "hidePayment": "課金の仕組みはまもなく提供される予定です。少々お待ちください。",
     "pleaseSignIn": "サインインしてください (飲食店向け)",
     "registration": "登録してください (飲食店向け)",
