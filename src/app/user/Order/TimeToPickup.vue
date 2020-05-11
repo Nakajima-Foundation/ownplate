@@ -8,6 +8,9 @@
         </option>
       </b-select>
     </b-field>
+    <b-select v-model="timeIndex">
+      <option v-for="time in availableDays[dayIndex].times" :value="time" :key="time">{{ time }}</option>
+    </b-select>
   </div>
 </template>
 
@@ -17,7 +20,8 @@ import { midNight } from "~/plugins/dateUtils.js";
 export default {
   data() {
     return {
-      dayIndex: 0
+      dayIndex: 0,
+      timeIndex: 0
     };
   },
   props: {
@@ -27,10 +31,7 @@ export default {
     }
   },
   mounted() {
-    //console.log(this.shopInfo.businessDay);
-    console.log(this.shopInfo.openTimes);
-    const now = new Date();
-    //console.log(this.availableDays);
+    this.timeIndex = this.availableDays[0].times[0];
   },
   computed: {
     dayOfWeek() {
@@ -44,8 +45,9 @@ export default {
         })
         .map(offset => {
           const date = midNight(offset);
-          //const times = this.shopInfo.openTimes
-          return { index: offset, date };
+          const times = this.openSlots[(today + offset) % 7];
+          console.log(times);
+          return { index: offset, date, times };
         });
     },
     businessDays() {
@@ -54,11 +56,23 @@ export default {
         return this.shopInfo.businessDay[key];
       });
     },
-    openTimes() {
+    openSlots() {
       return [0, 1, 2, 3, 4, 5, 6].map(day => {
         const key = ((day + 6) % 7) + 1;
-        return this.shopInfo.openTimes[key];
+        return this.shopInfo.openTimes[key].reduce((ret, value) => {
+          for (
+            let time = value.start;
+            time < value.end;
+            time += this.timeInterval
+          ) {
+            ret.push(time);
+          }
+          return ret;
+        }, []);
       });
+    },
+    timeInterval() {
+      return 10; // LATER: Make it customizable
     }
   }
 };
