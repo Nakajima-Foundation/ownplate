@@ -73,15 +73,13 @@ export default {
         });
     },
     businessDays() {
-      return [0, 1, 2, 3, 4, 5, 6].map(day => {
-        const key = ((day + 6) % 7) + 1;
-        return this.shopInfo.businessDay[key];
+      return [7, 1, 2, 3, 4, 5, 6].map(day => {
+        return this.shopInfo.businessDay[day];
       });
     },
     openSlots() {
-      return [0, 1, 2, 3, 4, 5, 6].map(day => {
-        const key = ((day + 6) % 7) + 1;
-        return this.shopInfo.openTimes[key].reduce((ret, value) => {
+      return [7, 1, 2, 3, 4, 5, 6].map(day => {
+        return this.shopInfo.openTimes[day].reduce((ret, value) => {
           for (
             let time = value.start;
             time < value.end;
