@@ -9,7 +9,11 @@
       </b-select>
     </b-field>
     <b-select v-model="timeIndex">
-      <option v-for="time in availableDays[dayIndex].times" :value="time" :key="time">{{ time }}</option>
+      <option
+        v-for="time in availableDays[dayIndex].times"
+        :value="time.index"
+        :key="time.index"
+      >{{ time.display }}</option>
     </b-select>
   </div>
 </template>
@@ -30,9 +34,7 @@ export default {
       required: true
     }
   },
-  mounted() {
-    this.timeIndex = this.availableDays[0].times[0];
-  },
+  mounted() {},
   computed: {
     dayOfWeek() {
       return new Date().getDay();
@@ -46,7 +48,6 @@ export default {
         .map(offset => {
           const date = midNight(offset);
           const times = this.openSlots[(today + offset) % 7];
-          console.log(times);
           return { index: offset, date, times };
         });
     },
@@ -65,7 +66,7 @@ export default {
             time < value.end;
             time += this.timeInterval
           ) {
-            ret.push(time);
+            ret.push({ index: ret.length, time, display: this.num2time(time) });
           }
           return ret;
         }, []);
