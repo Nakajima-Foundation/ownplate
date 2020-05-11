@@ -182,10 +182,8 @@ import { db, storage } from "~/plugins/firebase.js";
 import NotFound from "~/components/NotFound";
 import BackButton from "~/components/BackButton";
 
-import { regionalSettings } from "~/plugins/constant.js";
+import { taxRates, regionalSettings } from "~/plugins/constant.js";
 import { ownPlateConfig } from "@/config/project";
-
-const TAX_RATES = ["food", "alcohol"];
 
 const AVAIL_OPTIONS = ["All day"];
 
@@ -212,7 +210,7 @@ export default {
         itemOptionCheckbox: [""]
       },
 
-      taxRates: TAX_RATES,
+      taxRates: taxRates,
       taxRateKeys: regionalSetting["taxRateKeys"],
       availOptions: AVAIL_OPTIONS,
       currencyKey: regionalSetting["CurrencyKey"],

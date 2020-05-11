@@ -182,6 +182,8 @@ export const JPPrefecture = [
   '沖縄県'
 ];
 
+export const taxRates = ["food", "alcohol"];
+
 export const regionalSettings = {
   US: {
     CurrencyKey: 'USD',
