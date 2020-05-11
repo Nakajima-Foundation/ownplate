@@ -29,6 +29,11 @@
     "JPY": "JPY",
     "EUR": "EUR"
   },
+  "tax": {
+    "include": "{count} with tax.",
+    "exclude": "{count} without tax.",
+    "taxExample": "Example of {count} product."
+  },
   "editRestaurant": {
     "enterRestaurantName": "Enter restaurant name",
     "enterStreetAddress": "Enter street address",
@@ -37,8 +42,12 @@
     "enterPhone": "Enter Phone Number",
     "enterWebsite": "Enter Website URL",
     "website": "Website",
+    "tax": " Sales Tax",
     "foodTax": "Food Tax",
     "alcoholTax": "Alcohol Tax",
+    "taxPriceDisplay": "Tax Display Option",
+    "taxIncluded": "Tax icnlude",
+    "taxExcluded": "Tax exclude",
     "about": "About",
     "required": "Required",
     "profilePhoto": "Restaurant profile photo",
@@ -71,6 +80,8 @@
     "tax": "Tax",
     "food": "Food",
     "alcohol": "Alcohol",
+    "foodJP": "Food reduced tax rate",
+    "alcoholJP": "Anything else like alcohol, goods",
     "itemDescription": "Item description",
     "itemPhoto": "Item photo",
     "itemOptions": "Item options",
@@ -173,6 +184,8 @@
     "auth/missing-verification-code": "The phone auth credential was created with an empty SMS verification code."
   },
   "admin": {
+    "userManual": "User Manual",
+    "suportPage": "Support",
     "hidePayment": "Payment feature is coming soon. Please stay tuned.",
     "pleaseSignIn": "Sign In (Restaurant Operators)",
     "registration": "Registration (for restaurants)",
@@ -239,5 +252,12 @@
       "saturday": "Sat",
       "sunday": "Sun"
     }
+  },
+  "errorPage": {
+    "notFound": {
+      "message1": "The page you're looking for can't be found.",
+      "message2": "Try contacting the restaurant in other way"
+    }
   }
+
 }
