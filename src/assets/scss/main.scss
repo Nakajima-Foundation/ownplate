@@ -1,11 +1,15 @@
 // Import Bulma's core
 @import "~bulma/sass/utilities/_all";
-@import './customize.scss';
+@import "./customize.scss";
 
 @import "~bulma";
 @import "~buefy/src/scss/buefy";
 
-@import './_mixins.scss';
-@import './_variables.scss';
-@import './okajima.scss';
-@import './orders.scss';
+@import "./_mixins.scss";
+@import "./_variables.scss";
+@import "./okajima.scss";
+@import "./orders.scss";
+
+// Import OwnPlate Styles
+@import "./reset.scss";
+@import "./ownplate.scss";

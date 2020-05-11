@@ -1,0 +1,460 @@
+// OwnPlate Colors
+$op-colors: (
+  test: #ff0000,
+  ownplate-yellow: #fbc02d,
+  ownplate-gray: #616161,
+  ownplate-white: #ffffff,
+  ownplate-black: #000000,
+  background: #faf9f9,
+  surface: #ffffff,
+  sattle-white: rgba(255, 255, 255, 0.1),
+  sattle-black: rgba(0, 0, 0, 0.1),
+  dialog-overlay: rgba(0, 0, 0, 0.5),
+  primary: #0097a7,
+  primary-bg: rgba(0, 151, 167, 0.1),
+  onprimary: #ffffff,
+  text-black-full: #000000,
+  text-black-high: rgba(0, 0, 0, 0.87),
+  text-black-medium: rgba(0, 0, 0, 0.6),
+  text-black-disabled: rgba(0, 0, 0, 0.38),
+  text-white-full: #ffffff,
+  text-white-high: rgba(255, 255, 255, 0.87),
+  text-white-medium: rgba(255, 255, 255, 0.6),
+  text-white-disable: rgba(255, 255, 255, 0.38),
+  form: rgba(0, 0, 0, 0.05),
+  status-red: #b00020,
+  status-red-bg: rgba(176, 0, 32, 0.1),
+  status-amber: #f57c00,
+  status-amber-bg: rgba(245, 124, 0, 0.1),
+  status-green: #689f38,
+  status-green-bg: rgba(104, 159, 56, 0.1),
+  status-blue: #0288d1,
+  status-blue-bg: rgba(2, 136, 209, 0.1),
+  status-purple: #4a148c,
+  status-purple-bg: rgba(74, 20, 140, 0.1)
+);
+
+// Reset Buefy and Bulma
+.button {
+  padding: 0;
+  background-color: transparent;
+  border: none;
+}
+.columns.is-gapless:not(:last-child) {
+  margin-bottom: 0;
+}
+
+.columns,
+.column {
+  margin: 0;
+  padding: 0;
+}
+
+.box:not(:last-child),
+.content:not(:last-child),
+.notification:not(:last-child),
+.progress:not(:last-child),
+.table:not(:last-child),
+.table-container:not(:last-child),
+.title:not(:last-child),
+.subtitle:not(:last-child),
+.block:not(:last-child),
+.highlight:not(:last-child),
+.breadcrumb:not(:last-child),
+.level:not(:last-child),
+.list:not(:last-child),
+.message:not(:last-child),
+.tabs:not(:last-child) {
+  margin-bottom: 0;
+}
+
+// Text Styles
+.t-h1 {
+  font-weight: 300;
+  font-size: 96px;
+  line-height: 112px;
+  letter-spacing: -1.5px;
+}
+.t-h2 {
+  font-weight: 300;
+  font-size: 60px;
+  line-height: 72px;
+  letter-spacing: -0.5px;
+}
+.t-h3 {
+  font-weight: normal;
+  font-size: 48px;
+  line-height: 56px;
+}
+.t-h4 {
+  font-weight: normal;
+  font-size: 34px;
+  line-height: 36px;
+}
+.t-h5 {
+  font-weight: normal;
+  font-size: 24px;
+  line-height: 24px;
+  letter-spacing: 0.18px;
+}
+.t-h6 {
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 24px;
+  letter-spacing: 0.15px;
+}
+.t-subtitle1 {
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.15px;
+}
+.t-subtitle2 {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 24px;
+  letter-spacing: 0.1px;
+}
+.t-body1 {
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.5px;
+}
+.t-body2 {
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.25px;
+}
+.t-button {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  letter-spacing: 1.25px;
+  text-transform: uppercase;
+}
+.t-caption {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.4px;
+}
+.t-overline {
+  font-weight: 500;
+  font-size: 10px;
+  line-height: 16px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.align-center {
+  text-align: center;
+}
+.align-right {
+  text-align: right;
+}
+
+html {
+  background-color: map-get($op-colors, background);
+}
+
+// Text and Background Colors
+@each $name, $value in $op-colors {
+  // Text Colors
+  .c-#{$name} {
+    color: $value;
+  }
+  // Background Colors
+  .bg-#{$name} {
+    background-color: $value;
+  }
+}
+
+// Drop Shadow Styles
+.d-medium {
+  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1);
+}
+.d-low {
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+// Border Styles
+.border-primary {
+  border: 2px solid map-get($op-colors, primary);
+  box-sizing: border-box;
+}
+.button.border-primary:hover {
+  border: 2px solid map-get($op-colors, primary);
+}
+
+// OwnPlate Sizes
+$sizes: (
+  0,
+  4,
+  8,
+  16,
+  18,
+  24,
+  32,
+  36,
+  48,
+  64,
+  80,
+  96,
+  128,
+  160,
+  192,
+  256,
+  288,
+  440
+);
+
+// Margin and Padding Sizes
+$sides: (top, bottom, left, right);
+@each $space-size in $sizes {
+  @each $side in $sides {
+    // Margin Sizes
+    .m-#{str-slice($side, 0, 1)}-#{$space-size} {
+      margin-#{$side}: #{$space-size}px;
+    }
+    // Padding Sizes
+    .p-#{str-slice($side, 0, 1)}-#{$space-size} {
+      padding-#{$side}: #{$space-size}px;
+    }
+  }
+}
+
+// Width and Height Sizes
+@each $dimension-size in $sizes {
+  // Width Sizes
+  .w-#{$dimension-size} {
+    width: #{$dimension-size}px;
+  }
+  // Height Sizes
+  .h-#{$dimension-size} {
+    height: #{$dimension-size}px;
+  }
+}
+
+// Rounded Corners Sizes
+@each $corner-size in $sizes {
+  .r-#{$corner-size} {
+    border-radius: #{$corner-size}px;
+  }
+}
+// To make the bottom rounded corners sharp.
+.r-b-0 {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+// Icon Sizes
+@each $icon-size in $sizes {
+  .material-icons.s-#{$icon-size} {
+    font-size: #{$icon-size}px;
+  }
+}
+
+// Push footer down to the bottom
+body,
+#app,
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+.main {
+  flex: 1;
+  max-width: 1080px;
+  margin: auto;
+}
+
+.w-full {
+  width: 100%;
+}
+
+// Cover Photo
+.cover {
+  object-fit: cover;
+}
+
+// Flex Box
+.cols {
+  display: flex;
+}
+.flex-1 {
+  flex: 1;
+}
+.touchable {
+  cursor: pointer;
+}
+.devider {
+  border-top: 1px solid map-get($op-colors, sattle-black);
+}
+
+// OwnPlate Status
+.op-status {
+  display: inline-block;
+  @extend .p-t-4;
+  @extend .p-b-4;
+  @extend .p-l-16;
+  @extend .p-r-16;
+  @extend .r-32;
+  @extend .t-subtitle2;
+}
+
+// OwnPlate Buttons
+.op-button {
+  cursor: pointer;
+  display: inline-flex;
+  min-height: 36px;
+  align-items: center;
+  justify-content: center;
+}
+
+.op-button-text {
+  @extend .op-button;
+  @extend .p-l-8;
+  @extend .p-r-8;
+  .material-icons {
+    @extend .s-18;
+    @extend .m-r-8;
+  }
+  span {
+    @extend .t-button;
+  }
+  @extend .c-primary;
+}
+
+.op-button-pill {
+  @extend .op-button;
+  @extend .r-36;
+  @extend .p-l-16;
+  @extend .p-r-16;
+  @extend .c-primary;
+  .material-icons {
+    @extend .s-18;
+  }
+  span {
+    @extend .m-l-8;
+    @extend .m-r-8;
+    @extend .t-button;
+  }
+}
+
+.op-button-small {
+  @extend .op-button;
+  @extend .r-48;
+  @extend .p-l-16;
+  @extend .p-r-16;
+  min-width: 128px;
+  @extend .h-48;
+  @extend .t-subtitle1;
+  &.primary {
+    @extend .bg-primary;
+    @extend .c-onprimary;
+    @extend .d-low;
+  }
+  &.secondary {
+    border: 2px solid map-get($op-colors, primary);
+    @extend .c-primary;
+  }
+  &.tertiary {
+    @extend .bg-form;
+    @extend .c-text-black-medium;
+  }
+}
+
+.op-button-medium {
+  @extend .op-button;
+  @extend .r-64;
+  @extend .p-l-16;
+  @extend .p-r-16;
+  min-width: 128px;
+  @extend .h-64;
+  @extend .t-h6;
+  &.primary {
+    @extend .bg-primary;
+    @extend .c-onprimary;
+    @extend .d-medium;
+  }
+  &.secondary {
+    border: 2px solid map-get($op-colors, primary);
+    @extend .c-primary;
+  }
+  &.tertiary {
+    @extend .bg-form;
+    @extend .c-text-black-medium;
+  }
+}
+
+.op-cartbutton {
+  cursor: pointer;
+  display: inline-flex;
+  // display: inline-flex;
+  // min-height: 36px;
+  align-items: center;
+  justify-content: center;
+  @extend .w-288;
+  @extend .h-80;
+  @extend .r-80;
+  @extend .d-medium;
+  position: fixed;
+  bottom: 32px;
+  left: 50%;
+  margin-left: -144px;
+  @extend .bg-primary;
+  @extend .c-onprimary;
+  @extend .t-h6;
+}
+
+.control-label {
+  @extend .t-body1;
+  @extend .c-text-black-medium;
+}
+.textarea {
+  @extend .bg-form;
+  @extend .r-8;
+  padding: 8px 16px;
+  box-shadow: none;
+  border: none;
+  @extend .t-body1;
+  @extend .c-text-black-high;
+}
+
+// OwnPlate Dialog
+.modal-background {
+  background-color: map-get($op-colors, dialog-overlay);
+}
+.modal .animation-content {
+  margin: 0;
+}
+.op-dialog {
+  @extend .r-8;
+  @extend .m-l-8;
+  @extend .m-r-8;
+  @extend .bg-surface;
+  @extend .d-medium;
+}
+.modal-content {
+  max-height: calc(100vh - 128px);
+}
+@media screen and (max-width: 768px) {
+  .modal-content {
+    max-height: calc(100vh - 256px);
+  }
+}
+
+// OwnPlate Side Bar
+.b-sidebar .sidebar-background {
+  background-color: map-get($op-colors, dialog-overlay);
+}
+.b-sidebar .sidebar-content.is-light {
+  @extend .bg-surface;
+}
+.b-sidebar .sidebar-content {
+  @extend .d-medium;
+  @extend .w-288;
+}
