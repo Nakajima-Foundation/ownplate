@@ -30,8 +30,9 @@
     "EUR": "ユーロ"
   },
   "tax": {
-    "include": "{count} (税込)",
-    "exclude": "{count} + 税",
+    "price": "{count}",
+    "include": " (税込)",
+    "exclude": " (+ 税)",
     "taxExample": "{count}の商品の例"
   },
   "editRestaurant": {
