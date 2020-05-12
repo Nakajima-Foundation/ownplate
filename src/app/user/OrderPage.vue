@@ -15,7 +15,8 @@
             </p>
           </div>
           <h2>{{ $t('order.orderStatus') + orderName }}</h2>
-          <div v-if="paid" style="text-align: center;">
+          <p v-if="waiting">{{$t('order.timeToPickup') + ": " + timePlaced }}</p>
+          <div v-if="paid" class="m-t-8" style="text-align: center;">
             <p
               :class="orderStatusKey"
               style="margin-bottom:1rem;padding:0.5rem"
@@ -33,9 +34,11 @@
           :src="this.shopInfo.restProfilePhoto"
           :name="this.shopInfo.restaurantName"
         />
+
         <shop-info v-if="paid" :compact="true" :shopInfo="shopInfo" />
 
-        <h2>{{ $t('order.yourOrder') + ": " + orderName }}</h2>
+        <h2 v-if="paid">{{ $t('order.yourOrder') + ": " + orderName }}</h2>
+        <h2 v-else>{{ $t('order.yourOrder') }}</h2>
         <order-info
           :orderItems="this.orderItems"
           :orderInfo="this.orderInfo||{}"
@@ -206,6 +209,10 @@ export default {
     }
   },
   computed: {
+    timePlaced() {
+      const date = this.orderInfo.timePlaced.toDate();
+      return this.$d(date, "long");
+    },
     showPayment() {
       //console.log("payment", releaseConfig.hidePayment, this.stripeAccount);
       return !releaseConfig.hidePayment && this.stripeAccount;
@@ -229,6 +236,9 @@ export default {
     },
     paid() {
       return this.orderInfo.status >= order_status.order_placed;
+    },
+    waiting() {
+      return this.orderInfo.status < order_status.cooking_completed;
     },
     orderItems() {
       if (this.menus.length > 0 && this.orderInfo.order) {

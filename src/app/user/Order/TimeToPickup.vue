@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-field label="TimeToPickup">
+    <b-field :label="$t('order.timeToPickup')">
       <b-select v-model="dayIndex">
         <option v-for="(day, index) in availableDays" :value="index" :key="day.offset">
           {{ $d(day.date, "short" )}}
