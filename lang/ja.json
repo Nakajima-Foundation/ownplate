@@ -31,7 +31,7 @@
   },
   "tax": {
     "include": "{count} (税込)",
-    "exclude": "{count} (税抜) + 税",
+    "exclude": "{count} + 税",
     "taxExample": "{count}の商品の例"
   },
   "editRestaurant": {

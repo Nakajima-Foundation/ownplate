@@ -20,12 +20,6 @@ export default {
       required: true
     }
   },
-  watch: {
-    "menu.price": function() {
-      console.log("AAA");
-      // nothing
-    },
-  },
   computed: {
     taxObj() {
       const price = Number(this.menu.price);
