@@ -13,6 +13,11 @@
             style="margin-left: 0.3em"
           ></i>
         </p>
+        <p v-if="orderInfo.phoneNumber" style="margin-bottom:1rem">
+          <span>{{orderInfo.name }}</span>
+          {{ $t('sms.phonenumber') + ": "}}
+          <a :href="nationalPhoneURI">{{ nationalPhoneNumber }}</a>
+        </p>
       </div>
       <div style="float:right" v-if="!canceling">
         <b-button
@@ -50,12 +55,6 @@
             @click="handleCancel"
           >{{ $t("admin.order.delete") }}</b-button>
         </div>
-      </div>
-      <div v-else>
-        <p v-if="orderInfo.phoneNumber" style="margin-bottom:1rem">
-          <span>{{orderInfo.name }}</span>
-          <a :href="nationalPhoneURI">{{ nationalPhoneNumber }}</a>
-        </p>
       </div>
       <div v-for="orderState in orderStates" style="margin:0.2rem" :key="orderState">
         <b-button
