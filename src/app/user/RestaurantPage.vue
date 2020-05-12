@@ -260,10 +260,11 @@ export default {
       } catch (error) {
         if (error.code === "permission-denied" && this.retryCount < 3) {
           this.retryCount++;
-          console.log("retrying:", this.retryCount);
+          const delay = 250 * this.retryCount;
+          console.log("retrying:", this.retryCount, delay);
           setTimeout(() => {
             this.goCheckout();
-          }, 500);
+          }, delay);
         } else {
           console.error(error);
         }
