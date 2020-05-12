@@ -16,12 +16,15 @@
         <p v-if="orderInfo.phoneNumber" style="margin-bottom:1rem">
           <span>{{orderInfo.name }}</span>
           {{ $t('sms.phonenumber') + ": "}}
-          <a :href="nationalPhoneURI">{{ nationalPhoneNumber }}</a>
+          <a
+            :href="nationalPhoneURI"
+          >{{ nationalPhoneNumber }}</a>
         </p>
       </div>
       <div style="float:right" v-if="!canceling">
         <b-button
           type="is-danger"
+          class="p-r-16 p-l-16"
           :disabled="!isValidTransition('order_canceled')"
           @click="canceling=true"
         >{{ $t("admin.order.cancelButton" )}}</b-button>

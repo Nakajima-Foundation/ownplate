@@ -24,6 +24,7 @@
             <b-button
               v-if="just_paid"
               type="is-danger"
+              class="p-r-16 p-l-16"
               :loading="isCanceling"
               @click="handleCancelPayment"
               style="margin-bottom:1rem"
