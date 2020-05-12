@@ -15,6 +15,7 @@
             </p>
           </div>
           <h2>{{ $t('order.orderStatus') + orderName }}</h2>
+          <p v-if="waiting">{{$t('order.timeToPickup') + ": " + timePlaced }}</p>
           <div v-if="paid" style="text-align: center;">
             <p
               :class="orderStatusKey"
@@ -207,6 +208,10 @@ export default {
     }
   },
   computed: {
+    timePlaced() {
+      const date = this.orderInfo.timePlaced.toDate();
+      return this.$d(date, "long");
+    },
     showPayment() {
       //console.log("payment", releaseConfig.hidePayment, this.stripeAccount);
       return !releaseConfig.hidePayment && this.stripeAccount;
@@ -230,6 +235,9 @@ export default {
     },
     paid() {
       return this.orderInfo.status >= order_status.order_placed;
+    },
+    waiting() {
+      return this.orderInfo.status < order_status.cooking_completed;
     },
     orderItems() {
       if (this.menus.length > 0 && this.orderInfo.order) {
