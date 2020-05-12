@@ -239,7 +239,6 @@ export default {
         timeCreated: firestore.FieldValue.serverTimestamp()
         // price never set here.
       };
-
       this.isCheckingOut = true;
       try {
         const res = await db
@@ -259,16 +258,14 @@ export default {
           path: `/r/${this.restaurantId()}/order/${res.id}`
         });
       } catch (error) {
-        if (error.code === "permission-denied") {
+        if (error.code === "permission-denied" && this.retryCount < 3) {
           this.retryCount++;
           console.log("retrying:", this.retryCount);
-          if (this.retryCount < 3) {
-            setTimeout(() => {
-              this.goCheckout();
-            }, 500);
-          }
+          setTimeout(() => {
+            this.goCheckout();
+          }, 500);
         } else {
-          console.error(error.code);
+          console.error(error);
         }
       } finally {
         this.isCheckingOut = true;
