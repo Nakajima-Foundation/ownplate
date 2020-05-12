@@ -3,7 +3,7 @@
     <!-- Header -->
     <div class="columns is-gapless is-vcentered is-mobile bg-ownplate-white">
       <div class="column">
-        <div class="op-button w-48 h-48" @click="open = true">
+        <div class="op-button w-48 h-48" @click="handleOpen()">
           <i class="material-icons s-24 c-text-black-medium">menu</i>
         </div>
       </div>
@@ -30,23 +30,23 @@
       </div>
       <div class="align-center m-t-24">
         <router-link to="/">
-          <div class="op-button-medium tertiary w-192" @click="open = false">{{$t("menu.home")}}</div>
+          <div class="op-button-medium tertiary w-192" @click="handleClose()">{{$t("menu.home")}}</div>
         </router-link>
       </div>
       <div class="align-center m-t-24">
         <router-link to="/about">
-          <div class="op-button-small tertiary" @click="open = false">{{$t("menu.about")}}</div>
+          <div class="op-button-small tertiary" @click="handleClose()">{{$t("menu.about")}}</div>
         </router-link>
       </div>
       <div class="align-center m-t-24">
         <router-link to="/u/history">
-          <div class="op-button-small tertiary" @click="open = false">{{$t("order.history")}}</div>
+          <div class="op-button-small tertiary" @click="handleClose()">{{$t("order.history")}}</div>
         </router-link>
       </div>
-      <div class="align-center m-t-24">
+      <div class="align-center m-t-24"
+           v-if="hasUser">
         <div
           class="op-button-small tertiary"
-          v-if="hasUser"
           @click.prevent="signout"
         >{{$t("menu.signOut")}}</div>
       </div>
@@ -144,6 +144,12 @@ export default {
       } catch (error) {
         console.log("sign out failed", error);
       }
+    },
+    handleOpen() {
+      this.open = true;
+    },
+    handleClose() {
+      this.open = false;
     },
     setLang(lang) {
       this.$i18n.locale = lang;
