@@ -1,47 +1,56 @@
 <template>
   <div class="wrapper">
     <!-- Header -->
-    <b-navbar>
-      <template slot="brand">
-        <b-navbar-item tag="router-link" :to="{ path: '/' }">
-          <img :src="`/${this.logo}`" alt="Lightweight UI components for Vue.js based on Bulma" />
-        </b-navbar-item>
-      </template>
-      <template slot="end">
-        <b-navbar-dropdown
-          class="b-navbar-item"
-          spaced="true"
-          hoverable
-          right
-          icon-left="github-circle"
-        >
-          <b-navbar-item href="/">
-            <span class="icon">
-              <i class="fas fa-home"></i>
-            </span>
-            <span class="nav-item">{{$t("menu.home")}}</span>
-          </b-navbar-item>
-          <b-navbar-item href="/about">
-            <span class="icon">
-              <i class="far fa-file-alt"></i>
-            </span>
-            <span class="nav-item">{{$t("menu.about")}}</span>
-          </b-navbar-item>
-          <b-navbar-item href="/u/history">
-            <span class="icon">
-              <i class="fas fa-history"></i>
-            </span>
-            <span class="nav-item">{{$t("order.history")}}</span>
-          </b-navbar-item>
-          <b-navbar-item href="#" v-if="hasUser" @click.prevent="signout">
-            <span class="icon">
-              <i class="fas fa-sign-out-alt"></i>
-            </span>
-            <span class="nav-item">{{$t("menu.signOut")}}</span>
-          </b-navbar-item>
-        </b-navbar-dropdown>
-      </template>
-    </b-navbar>
+    <div class="columns is-gapless is-vcentered is-mobile bg-ownplate-white">
+      <div class="column">
+        <div class="op-button w-48 h-48" @click="open = true">
+          <i class="material-icons s-24 c-text-black-medium">menu</i>
+        </div>
+      </div>
+      <div class="column align-center">
+        <router-link to="/">
+          <img class="h-24" :src="`/${this.logo}`" />
+        </router-link>
+      </div>
+      <div class="column"></div>
+    </div>
+    <!-- Side Bar -->
+    <b-sidebar
+      type="is-light"
+      :fullheight="fullheight"
+      :fullwidth="fullwidth"
+      :overlay="overlay"
+      :right="right"
+      :open.sync="open"
+    >
+      <div class="align-center m-t-24">
+        <router-link to="/">
+          <img class="w-96" :src="`/${this.logo2}`" />
+        </router-link>
+      </div>
+      <div class="align-center m-t-24">
+        <router-link to="/">
+          <div class="op-button-medium tertiary w-192" @click="open = false">{{$t("menu.home")}}</div>
+        </router-link>
+      </div>
+      <div class="align-center m-t-24">
+        <router-link to="/about">
+          <div class="op-button-small tertiary" @click="open = false">{{$t("menu.about")}}</div>
+        </router-link>
+      </div>
+      <div class="align-center m-t-24">
+        <router-link to="/u/history">
+          <div class="op-button-small tertiary" @click="open = false">{{$t("order.history")}}</div>
+        </router-link>
+      </div>
+      <div class="align-center m-t-24">
+        <div
+          class="op-button-small tertiary"
+          v-if="hasUser"
+          @click.prevent="signout"
+        >{{$t("menu.signOut")}}</div>
+      </div>
+    </b-sidebar>
 
     <!-- Main -->
     <div class="main">
@@ -88,9 +97,16 @@ export default {
       ],
       unregisterAuthObserver: null,
       timerId: null,
-      logo: regionalSetting.Logo
+      logo: regionalSetting.Logo,
+      logo2: regionalSetting.Logo2,
       // todo support scrset https://kanoto.info/201912/673/
       // srcset: regionalSetting.Logo.map((logo) => {}
+
+      open: false,
+      overlay: true,
+      fullheight: true,
+      fullwidth: false,
+      right: false
     };
   },
   computed: {
