@@ -30,8 +30,9 @@
     "EUR": "EUR"
   },
   "tax": {
-    "include": "{count} with tax.",
-    "exclude": "{count} without tax.",
+    "price": "{count}",
+    "include": " (with tax)",
+    "exclude": " (+ tax)",
     "taxExample": "Example of {count} product."
   },
   "editRestaurant": {
