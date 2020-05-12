@@ -16,7 +16,7 @@
           </div>
           <h2>{{ $t('order.orderStatus') + orderName }}</h2>
           <p v-if="waiting">{{$t('order.timeToPickup') + ": " + timePlaced }}</p>
-          <div v-if="paid" style="text-align: center;">
+          <div v-if="paid" class="m-t-8" style="text-align: center;">
             <p
               :class="orderStatusKey"
               style="margin-bottom:1rem;padding:0.5rem"
@@ -34,6 +34,7 @@
           :src="this.shopInfo.restProfilePhoto"
           :name="this.shopInfo.restaurantName"
         />
+
         <shop-info v-if="paid" :compact="true" :shopInfo="shopInfo" />
 
         <h2 v-if="paid">{{ $t('order.yourOrder') + ": " + orderName }}</h2>
