@@ -35,7 +35,8 @@
         />
         <shop-info v-if="paid" :compact="true" :shopInfo="shopInfo" />
 
-        <h2>{{ $t('order.yourOrder') + ": " + orderName }}</h2>
+        <h2 v-if="paid">{{ $t('order.yourOrder') + ": " + orderName }}</h2>
+        <h2 v-else>{{ $t('order.yourOrder') }}</h2>
         <order-info
           :orderItems="this.orderItems"
           :orderInfo="this.orderInfo||{}"
