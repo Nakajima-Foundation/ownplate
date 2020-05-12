@@ -252,5 +252,7 @@ export default {
   text-align: center;
   color: black;
   background: yellow;
+  @extend .p-t-4;
+  @extend .p-b-4;
 }
 </style>
