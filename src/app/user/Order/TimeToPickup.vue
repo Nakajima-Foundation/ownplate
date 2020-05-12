@@ -1,20 +1,23 @@
 <template>
   <div>
-    <b-field :label="$t('order.timeToPickup')">
-      <b-select v-model="dayIndex">
-        <option v-for="(day, index) in availableDays" :value="index" :key="day.offset">
-          {{ $d(day.date, "short" )}}
-          <span v-if="day.offset===0">{{$t('date.today')}}</span>
-        </option>
+    <div v-if="availableDays.length > 0">
+      <b-field :label="$t('order.timeToPickup')">
+        <b-select v-model="dayIndex">
+          <option v-for="(day, index) in availableDays" :value="index" :key="day.offset">
+            {{ $d(day.date, "short" )}}
+            <span v-if="day.offset===0">{{$t('date.today')}}</span>
+          </option>
+        </b-select>
+      </b-field>
+      <b-select v-model="time">
+        <option
+          v-for="time in availableDays[dayIndex].times"
+          :value="time.time"
+          :key="time.time"
+        >{{ time.display }}</option>
       </b-select>
-    </b-field>
-    <b-select v-model="time">
-      <option
-        v-for="time in availableDays[dayIndex].times"
-        :value="time.time"
-        :key="time.time"
-      >{{ time.display }}</option>
-    </b-select>
+    </div>
+    <p v-else class="notAvailble">{{$t('order.notAvailable')}}</p>
   </div>
 </template>
 
@@ -36,7 +39,11 @@ export default {
     }
   },
   mounted() {
-    this.time = this.availableDays[0].times[0].time;
+    if (this.availableDays.length > 0) {
+      this.time = this.availableDays[0].times[0].time;
+    } else {
+      this.$emit("notAvailable", true);
+    }
   },
   watch: {
     dayIndex(newValue) {
@@ -112,3 +119,9 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+.notAvailble {
+  color: $danger;
+}
+</style>

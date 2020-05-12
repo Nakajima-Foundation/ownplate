@@ -51,7 +51,7 @@
           <b-loading :is-full-page="false" :active.sync="newOrder" :can-cancel="true"></b-loading>
         </b-notification>
 
-        <div v-if="just_validated">
+        <div v-if="just_validated" class="m-t-16">
           <div class="is-centered" style="text-align: center;">
             <b-button
               expanded
@@ -62,7 +62,12 @@
             >{{$t('order.editItems')}}</b-button>
           </div>
 
-          <time-to-pickup v-if="shopInfo.businessDay" :shopInfo="shopInfo" ref="time" />
+          <time-to-pickup
+            v-if="shopInfo.businessDay"
+            :shopInfo="shopInfo"
+            ref="time"
+            @notAvailable="handleNotAvailable"
+          />
 
           <hr class="hr-black" />
           <div v-if="showPayment">
@@ -80,7 +85,7 @@
                 expanded
                 rounded
                 :loading="isPaying"
-                :disabled="!cardState.complete"
+                :disabled="!cardState.complete || notAvailable"
                 style="margin-top:4rem;padding-top: 0.2rem;"
                 size="is-large"
                 @click="handlePayment"
@@ -98,6 +103,7 @@
               :type="showPayment ? '' : 'is-primary'"
               rounded
               :loading="isPlacing"
+              :disabled="notAvailable"
               style="margin-top:1rem;padding-top: 0.2rem;"
               size="is-large"
               @click="handleNoPayment"
@@ -140,6 +146,7 @@ export default {
   },
   data() {
     return {
+      notAvailable: false,
       isPaying: false,
       restaurantsId: this.restaurantId(),
       shopInfo: { restaurantName: "" },
@@ -266,6 +273,10 @@ export default {
     }
   },
   methods: {
+    handleNotAvailable(flag) {
+      console.log("handleNotAvailable", flag);
+      this.notAvailable = flag;
+    },
     handleTipChange(tip) {
       //console.log("handleTipChange", tip);
       this.tip = tip;
