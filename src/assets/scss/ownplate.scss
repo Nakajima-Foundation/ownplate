@@ -35,11 +35,11 @@ $op-colors: (
 );
 
 // Reset Buefy and Bulma
-.button {
-  padding: 0;
-  background-color: transparent;
-  border: none;
-}
+// .button {
+//   padding: 0;
+//   background-color: transparent;
+//   border: none;
+// }
 .columns.is-gapless:not(:last-child) {
   margin-bottom: 0;
 }
