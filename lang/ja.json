@@ -137,6 +137,7 @@
     "pleasePayAtRestaurant": "オンラインでの支払いは現時点では出来ません。受け取り時にお店でお支払いください。",
     "sendSMS": "SMSメッセージを受け取る（SMSの受信には料金がかかる場合があります）",
     "history": "注文履歴",
+    "timeToPickup": "受け渡し予定時刻",
     "status": {
       "unexpected": "(Unexpected)",
       "error": "エラー",
