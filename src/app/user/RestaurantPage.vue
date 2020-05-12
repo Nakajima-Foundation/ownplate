@@ -91,6 +91,7 @@ export default {
   },
   data() {
     return {
+      retryCount: 0,
       tabIndex: 0,
       tabs: ["#menus", "#about"],
       loginVisible: false,
@@ -210,6 +211,7 @@ export default {
   methods: {
     handleCheckOut() {
       // The user has clicked the CheckOut button
+      this.retryCount = 0;
       if (this.user && this.user.phoneNumber) {
         this.goCheckout();
       } else {
@@ -237,6 +239,7 @@ export default {
         timeCreated: firestore.FieldValue.serverTimestamp()
         // price never set here.
       };
+
       this.isCheckingOut = true;
       try {
         const res = await db
@@ -256,7 +259,17 @@ export default {
           path: `/r/${this.restaurantId()}/order/${res.id}`
         });
       } catch (error) {
-        console.log(error);
+        if (error.code === "permission-denied") {
+          this.retryCount++;
+          console.log("retrying:", this.retryCount);
+          if (this.retryCount < 3) {
+            setTimeout(() => {
+              this.goCheckout();
+            }, 500);
+          }
+        } else {
+          console.error(error.code);
+        }
       } finally {
         this.isCheckingOut = true;
       }
