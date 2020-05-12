@@ -139,6 +139,7 @@
     "sendSMS": "SMSメッセージを受け取る（SMSの受信には料金がかかる場合があります）",
     "history": "注文履歴",
     "timeToPickup": "受け渡し予定時刻",
+    "notAvailable": "現在は注文を受け付けていません。しばらくして、もう一度試して下さい。",
     "status": {
       "unexpected": "(Unexpected)",
       "error": "エラー",

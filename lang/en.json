@@ -139,6 +139,7 @@
     "sendSMS": "Receive Text Messages (standard telco fee may apply)",
     "history": "Order History",
     "timeToPickup": "Pickup Time",
+    "notAvailable": "This restaurant is not available at this time. Please try again later",
     "status": {
       "unexpected": "Unexpected",
       "error": "Error",
