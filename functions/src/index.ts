@@ -5,7 +5,7 @@ import * as Firestore from './functions/firestore';
 
 import * as Sentry from '@sentry/node';
 
-const senty_dsn =  functions.config() && functions.config().senty.dsn || process.env.SENTY_DSN;
+const senty_dsn =  functions.config() && functions.config().senty && functions.config().senty.dsn || process.env.SENTY_DSN;
 
 Sentry.init({ dsn: senty_dsn });
 

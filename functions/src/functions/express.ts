@@ -74,6 +74,12 @@ const ogpPage = async (req: any, res: any) => {
   res.send(template_data.replace(regex, metas));
 
 };
+const debugError = async (req: any, res: any) => {
+  setTimeout(() => {
+    throw new Error("sample error");
+    res.send({});
+  }, 10);
+};
 
 router.get('/hello',
   logger,
@@ -88,3 +94,5 @@ app.use('/1.0', router);
 
 app.get('/r/:restaurantName', ogpPage);
 app.get('/r/:restaurantpName/*', ogpPage);
+
+app.get('/debug/error', debugError);
