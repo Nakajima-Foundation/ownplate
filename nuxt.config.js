@@ -2,9 +2,12 @@ import i18nEN from './lang/en.json';
 import i18nES from './lang/es.json';
 import i18nJA from './lang/ja.json';
 import { ownPlateConfig } from "./src/config/project";
+import { regionalSettings } from "./src/plugins/constant";
 
 require('dotenv').config();
 import { customRoutes } from './src/routes';
+
+const hostName = regionalSettings[ownPlateConfig.region].hostName;
 
 export default {
   mode: "spa",
@@ -27,6 +30,7 @@ export default {
       { src: "https://js.stripe.com/v3/" }
     ],
     meta: [
+      { hid: 'og:image', property: 'og:image', content: 'https://' + hostName + '/OGP-Facebook.png' },
       { charset: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       {
