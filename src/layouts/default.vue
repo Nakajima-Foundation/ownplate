@@ -67,7 +67,7 @@
         <div class="column align-right">
           <div class="op-button-pill bg-sattle-white m-r-16 m-t-16" @click="openLang()">
             <i class="material-icons c-text-white-high">language</i>
-            <span class="c-text-white-high t-body1">English</span>
+            <span class="c-text-white-high t-body1">{{languages[language]}}</span>
             <i class="material-icons c-text-white-high">arrow_drop_down</i>
           </div>
         </div>
@@ -77,25 +77,15 @@
     <!-- Language Popup-->
     <b-modal :active.sync="langPopup" :width="488" scroll="keep">
       <div class="op-dialog p-t-24 p-l-24 p-r-24 p-b-24">
-        <div class="t-h6 c-text-black-disabled p-b-8">Select language</div>
-        <div class="m-t-16">
-          <div class="op-button-pill bg-form">
-            <i class="material-icons c-text-black-high">check</i>
-            <span class="t-body1">English (US)</span>
-          </div>
-        </div>
-        <div class="m-t-16">
-          <div class="op-button-pill bg-form">
-            <span class="t-body1">Español</span>
-          </div>
-        </div>
-        <div class="m-t-16">
-          <div class="op-button-pill bg-form">
-            <span class="t-body1">日本語</span>
+        <div class="t-h6 c-text-black-disabled p-b-8">{{$t("menu.selectLanguage")}}</div>
+        <div class="m-t-16" v-for="(lang, lang_key) in languages">
+          <div class="op-button-pill bg-form" @click="changeLangAndClose(lang_key)">
+            <i class="material-icons c-text-black-high" v-if="lang_key==language">check</i>
+            <span class="t-body1">{{lang}}</span>
           </div>
         </div>
         <div class="m-t-24 align-center">
-          <div class="op-button-small tertiary" @click="closeLang()">Close</div>
+          <div class="op-button-small tertiary" @click="closeLang()">{{$t("menu.close")}}</div>
         </div>
       </div>
     </b-modal>
@@ -112,6 +102,8 @@ export default {
   data() {
     const regionalSetting = regionalSettings[ownPlateConfig.region || "US"];
     return {
+      language: regionalSetting.defaultLanguage,
+      languages: regionalSetting.languages,
       items: [
         {
           title: "Home",
@@ -188,7 +180,12 @@ export default {
     closeLang() {
       this.langPopup = false;
     },
+    changeLangAndClose(lang) {
+      this.changeLang(lang);
+      this.closeLang();
+    },
     setLang(lang) {
+      this.language = lang;
       this.$i18n.locale = lang;
       auth.languageCode = lang;
     },
@@ -197,7 +194,7 @@ export default {
       await this.saveLang(lang);
     },
     async saveLang(lang) {
-      if (this.hasUser) {
+      if (this.hasUser || this.isAdmin) {
         await db.doc(this.profile_path).set({ lang }, { merge: true });
       } else {
         // save into store
@@ -263,6 +260,9 @@ export default {
       this.$store.commit("updateDate");
     }, 60 * 1000);
 
+    // query
+    // setting
+    // browser
     if (this.$route.query.lang) {
       await this.changeLang(this.$route.query.lang);
     } else {
@@ -273,7 +273,7 @@ export default {
         window.navigator.browserLanguage;
       const lang = (language || "").substr(0, 2);
       if (lang.length === 2) {
-        await this.changeLang(lang);
+        await this.setLang(lang);
       }
     }
   },

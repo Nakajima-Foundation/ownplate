@@ -6,7 +6,9 @@
     "admins": "Restaurant Owners",
     "users": "Food Lovers",
     "home": "Home",
-    "signOut": "Sign Out"
+    "signOut": "Sign Out",
+    "selectLanguage": "Select language",
+    "close": "Close"
   },
   "restaurantId": {
     "self": "Restaurant ID",

@@ -198,7 +198,13 @@ export const regionalSettings = {
     taxRateKeys: {
       food: "food",
       alcohol: "alcohol"
-    }
+    },
+    defaultLanguage: "en",
+    languages: {
+      "en": "English(US)",
+      "es": "Español",
+      "ja": "日本語",
+    },
   },
   JP: {
     CurrencyKey: "JPY",
@@ -215,7 +221,12 @@ export const regionalSettings = {
     taxRateKeys: {
       food: "foodJP",
       alcohol: "alcoholJP"
-    }
+    },
+    defaultLanguage: "ja",
+    languages: {
+      "ja": "日本語",
+      "en": "English(US)",
+    },
   },
   EU: {
     CurrencyKey: "EUR",
@@ -228,6 +239,16 @@ export const regionalSettings = {
     taxRateKeys: {
       food: "food",
       alcohol: "alcohol"
-    }
+    },
+    defaultLanguage: "en",
+    languages: {
+      "en": "English(US)",
+      "es": "Español",
+      "de": "Deutsch",
+      "fr": "Le français",
+      "it": "italiano",
+      "nl": "Nederlands",
+      "ja": "日本語",
+    },
   }
 };
