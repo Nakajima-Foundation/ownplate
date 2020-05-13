@@ -4,6 +4,7 @@
 - locale.region - region. US, JP, EU
 - aws.id - AWS id for sms push
 - aws.secret - AWS secret for sms push
+- senty.dsn - SENTY endpoint for Functions ( client dsn set src/config/project.js )
 
 # Environment variables for build client
 
