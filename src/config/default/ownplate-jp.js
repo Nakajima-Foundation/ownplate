@@ -16,4 +16,4 @@ export const ownPlateConfig = {
   region: "JP",
 };
 
-export const sentryDsn = 'https://127aea38118f4362a1167c0bc5607846@o391740.ingest.sentry.io/5238403',
+export const sentryDsn = 'https://127aea38118f4362a1167c0bc5607846@o391740.ingest.sentry.io/5238403';
