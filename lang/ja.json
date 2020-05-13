@@ -6,7 +6,9 @@
     "admins": "飲食店向けページ",
     "users": "お客様向けページ",
     "home": "ホーム",
-    "signOut": "サイン・アウト"
+    "signOut": "サイン・アウト",
+    "selectLanguage": "表示言語選択",
+    "close": "閉じる"
   },
   "restaurantId": {
     "self": "飲食店ID",
