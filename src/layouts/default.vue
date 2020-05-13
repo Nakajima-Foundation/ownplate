@@ -43,12 +43,8 @@
           <div class="op-button-small tertiary" @click="handleClose()">{{$t("order.history")}}</div>
         </router-link>
       </div>
-      <div class="align-center m-t-24"
-           v-if="hasUser">
-        <div
-          class="op-button-small tertiary"
-          @click.prevent="signout"
-        >{{$t("menu.signOut")}}</div>
+      <div class="align-center m-t-24" v-if="hasUser">
+        <div class="op-button-small tertiary" @click.prevent="signout">{{$t("menu.signOut")}}</div>
       </div>
     </b-sidebar>
 
@@ -61,15 +57,48 @@
     </div>
 
     <!-- Footer -->
-    <footer class="footer">
-      <div class="footer-sections">
-        <div class="columns is-desktop" style="margin-top:-3rem;">
-          <div class="content has-text-left" style="color:white">
-            <p class="p-font-mini">Operated by Singularity Society.</p>
+    <div class="m-t-24">
+      <div class="bg-ownplate-gray columns is-gapless is-mobile h-128">
+        <div class="column">
+          <div
+            class="is-inline-block t-caption c-text-white-medium m-t-16 m-l-16"
+          >Operated by Singularity Society</div>
+        </div>
+        <div class="column align-right">
+          <div class="op-button-pill bg-sattle-white m-r-16 m-t-16" @click="openLang()">
+            <i class="material-icons c-text-white-high">language</i>
+            <span class="c-text-white-high t-body1">English</span>
+            <i class="material-icons c-text-white-high">arrow_drop_down</i>
           </div>
         </div>
       </div>
-    </footer>
+    </div>
+
+    <!-- Language Popup-->
+    <b-modal :active.sync="langPopup" :width="488" scroll="keep">
+      <div class="op-dialog p-t-24 p-l-24 p-r-24 p-b-24">
+        <div class="t-h6 c-text-black-disabled p-b-8">Select language</div>
+        <div class="m-t-16">
+          <div class="op-button-pill bg-form">
+            <i class="material-icons c-text-black-high">check</i>
+            <span class="t-body1">English (US)</span>
+          </div>
+        </div>
+        <div class="m-t-16">
+          <div class="op-button-pill bg-form">
+            <span class="t-body1">Español</span>
+          </div>
+        </div>
+        <div class="m-t-16">
+          <div class="op-button-pill bg-form">
+            <span class="t-body1">日本語</span>
+          </div>
+        </div>
+        <div class="m-t-24 align-center">
+          <div class="op-button-small tertiary" @click="closeLang()">Close</div>
+        </div>
+      </div>
+    </b-modal>
   </div>
 </template>
 
@@ -106,7 +135,9 @@ export default {
       overlay: true,
       fullheight: true,
       fullwidth: false,
-      right: false
+      right: false,
+
+      langPopup: false
     };
   },
   computed: {
@@ -150,6 +181,12 @@ export default {
     },
     handleClose() {
       this.open = false;
+    },
+    openLang() {
+      this.langPopup = true;
+    },
+    closeLang() {
+      this.langPopup = false;
     },
     setLang(lang) {
       this.$i18n.locale = lang;
