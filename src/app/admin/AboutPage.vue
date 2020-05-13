@@ -444,10 +444,9 @@ export default {
       notFound: null
     };
   },
-  created() {
-    this.checkAdminPermission();
-  },
   async created() {
+    this.checkAdminPermission();
+
     // never use onSnapshot here.
     const restaurant = await db.doc(`restaurants/${this.restaurantId()}`).get();
 
