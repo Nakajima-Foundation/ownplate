@@ -1,14 +1,21 @@
 <template>
   <span>
-    <span v-if="shopInfo.taxInclude">{{$tc('tax.include', total_price_i18n)}}<br/></span>
-    <span v-if="!shopInfo.taxInclude">{{$tc('tax.exclude', price_i18n)}}<br/></span>
-
+    <span v-if="shopInfo.taxInclude">
+      {{$tc('tax.price', taxObj.total_price_i18n) }}
+      <span class="tax">{{$tc('tax.include')}}</span>
+      <br />
+    </span>
+    <span v-if="!shopInfo.taxInclude">
+      {{$tc('tax.price', taxObj.price_i18n)}}
+      <span class="tax">{{$tc('tax.exclude')}}</span>
+      <br />
+    </span>
   </span>
 </template>
 
 <script>
-
 export default {
+  name: "Price",
   props: {
     shopInfo: {
       type: Object,
@@ -19,21 +26,29 @@ export default {
       required: true
     }
   },
-  data() {
-    const stripeRegion = this.$store.getters.stripeRegion;
-    const multiple = stripeRegion.multiple;
+  computed: {
+    taxObj() {
+      const price = Number(this.menu.price);
+      const multiple = this.$store.getters.stripeRegion.multiple;
+      const taxRate =
+        this.menu.tax === "alcohol"
+          ? this.shopInfo.alcoholTax
+          : this.shopInfo.foodTax;
+      const tax = Math.round(((price * taxRate) / 100) * multiple) / multiple;
+      const total = price + tax;
 
-    const taxRate = this.menu.tax === "alcohol" ? this.shopInfo.alcoholTax : this.shopInfo.foodTax;
-    const price = this.menu.price;
-
-    const tax = Math.round(((price * taxRate) / 100 )* multiple) / multiple;
-    const total = price + tax;
-
-    return {
-      price_i18n: this.$n(price,  'currency'),
-      tax_i18n: this.$n(tax, 'currency'),
-      total_price_i18n: this.$n(total,  'currency')
-    };
+      return {
+        price_i18n: this.$n(price, "currency"),
+        tax_i18n: this.$n(tax, "currency"),
+        total_price_i18n: this.$n(total, "currency")
+      };
+    }
   }
-}
+};
 </script>
+
+<style scoped>
+.tax {
+  font-size: 0.6em;
+}
+</style>

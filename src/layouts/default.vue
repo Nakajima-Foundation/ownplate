@@ -1,61 +1,124 @@
 <template>
-  <div>
-    <b-navbar>
-      <template slot="brand">
-        <b-navbar-item tag="router-link" :to="{ path: '/' }">
-          <img :src="`/${this.logo}`" alt="Lightweight UI components for Vue.js based on Bulma" />
-        </b-navbar-item>
-      </template>
+  <div class="wrapper">
+    <!-- Header -->
+    <div class="columns is-gapless is-vcentered is-mobile bg-ownplate-white">
+      <div class="column">
+        <div class="op-button w-48 h-48" @click="handleOpen()">
+          <i class="material-icons s-24 c-text-black-medium">menu</i>
+        </div>
+      </div>
+      <div class="column align-center">
+        <router-link to="/">
+          <img class="h-24" :src="`/${this.logo}`" />
+        </router-link>
+      </div>
+      <div class="column"></div>
+    </div>
+    <!-- Side Bar -->
+    <b-sidebar
+      type="is-light"
+      :fullheight="fullheight"
+      :fullwidth="fullwidth"
+      :overlay="overlay"
+      :right="right"
+      :open.sync="open"
+    >
+      <div class="align-center m-t-24">
+        <router-link to="/">
+          <img class="w-96" :src="`/${this.logo2}`" />
+        </router-link>
+      </div>
+      <div class="align-center m-t-24">
+        <router-link to="/">
+          <div class="op-button-medium tertiary w-192" @click="handleClose()">
+            {{ $t("menu.home") }}
+          </div>
+        </router-link>
+      </div>
+      <div class="align-center m-t-24">
+        <router-link to="/about">
+          <div class="op-button-small tertiary" @click="handleClose()">
+            {{ $t("menu.about") }}
+          </div>
+        </router-link>
+      </div>
+      <div class="align-center m-t-24">
+        <router-link to="/u/history">
+          <div class="op-button-small tertiary" @click="handleClose()">
+            {{ $t("order.history") }}
+          </div>
+        </router-link>
+      </div>
+      <div class="align-center m-t-24" v-if="hasUser">
+        <div class="op-button-small tertiary" @click.prevent="signout">
+          {{ $t("menu.signOut") }}
+        </div>
+      </div>
+    </b-sidebar>
 
-      <template slot="end">
-        <b-navbar-dropdown
-          class="b-navbar-item"
-          spaced="true"
-          hoverable
-          right
-          icon-left="github-circle"
-        >
-          <b-navbar-item href="/">
-            <span class="icon">
-              <i class="fas fa-home"></i>
-            </span>
-            <span class="nav-item">{{$t("menu.home")}}</span>
-          </b-navbar-item>
-          <b-navbar-item href="/about">
-            <span class="icon">
-              <i class="far fa-file-alt"></i>
-            </span>
-            <span class="nav-item">{{$t("menu.about")}}</span>
-          </b-navbar-item>
-          <b-navbar-item href="/u/history">
-            <span class="icon">
-              <i class="fas fa-history"></i>
-            </span>
-            <span class="nav-item">{{$t("order.history")}}</span>
-          </b-navbar-item>
-          <b-navbar-item href="#" v-if="hasUser" @click.prevent="signout">
-            <span class="icon">
-              <i class="fas fa-sign-out-alt"></i>
-            </span>
-            <span class="nav-item">{{$t("menu.signOut")}}</span>
-          </b-navbar-item>
-        </b-navbar-dropdown>
-      </template>
-    </b-navbar>
-    <div v-if="underConstruction" class="underConstruction">{{$t('underConstruction')}}</div>
+    <!-- Main -->
+    <div class="main">
+      <div class="contents">
+        <div v-if="underConstruction" class="underConstruction">
+          {{ $t("underConstruction") }}
+        </div>
 
-    <!-- approproate component under pages will be displayed -->
-    <nuxt style="max-width:100%;background:#FBF9F9" v-if="$store.getters.userWasInitialized"></nuxt>
+        <!-- approproate component under pages will be displayed -->
+        <nuxt v-if="$store.getters.userWasInitialized"></nuxt>
+      </div>
+    </div>
 
-    <footer class="footer">
-      <div class="footer-sections">
-        <div class="columns is-desktop" style="margin-top:-3rem;">
-          <div class="content has-text-left" style="color:white">
-            <p class="p-font-mini">Operated by Singularity Society.</p>
+    <!-- Footer -->
+    <div class="m-t-24">
+      <div class="bg-ownplate-gray columns is-gapless is-mobile h-128">
+        <div class="column">
+          <div
+            class="is-inline-block t-caption c-text-white-medium m-t-16 m-l-16"
+          >
+            Operated by Singularity Society
+          </div>
+        </div>
+        <div class="column align-right">
+          <div
+            class="op-button-pill bg-sattle-white m-r-16 m-t-16"
+            @click="openLang()"
+          >
+            <i class="material-icons c-text-white-high">language</i>
+            <span class="c-text-white-high t-body1">{{
+              languages[language]
+            }}</span>
+            <i class="material-icons c-text-white-high">arrow_drop_down</i>
           </div>
         </div>
       </div>
-    </footer>
+    </div>
+
+    <!-- Language Popup-->
+    <b-modal :active.sync="langPopup" :width="488" scroll="keep">
+      <div class="op-dialog p-t-24 p-l-24 p-r-24 p-b-24">
+        <div class="t-h6 c-text-black-disabled p-b-8">
+          {{ $t("menu.selectLanguage") }}
+        </div>
+        <div class="m-t-16" v-for="(lang, lang_key) in languages">
+          <div
+            class="op-button-pill bg-form"
+            @click="changeLangAndClose(lang_key)"
+          >
+            <i
+              class="material-icons c-text-black-high"
+              v-if="lang_key == language"
+              >check</i
+            >
+            <span class="t-body1">{{ lang }}</span>
+          </div>
+        </div>
+        <div class="m-t-24 align-center">
+          <div class="op-button-small tertiary" @click="closeLang()">
+            {{ $t("menu.close") }}
+          </div>
+        </div>
+      </div>
+    </b-modal>
   </div>
 </template>
 
@@ -69,6 +132,8 @@ export default {
   data() {
     const regionalSetting = regionalSettings[ownPlateConfig.region || "US"];
     return {
+      language: regionalSetting.defaultLanguage,
+      languages: regionalSetting.languages,
       items: [
         {
           title: "Home",
@@ -83,9 +148,18 @@ export default {
       ],
       unregisterAuthObserver: null,
       timerId: null,
-      logo: regionalSetting.Logo
+      logo: regionalSetting.Logo,
+      logo2: regionalSetting.Logo2,
       // todo support scrset https://kanoto.info/201912/673/
       // srcset: regionalSetting.Logo.map((logo) => {}
+
+      open: false,
+      overlay: true,
+      fullheight: true,
+      fullwidth: false,
+      right: false,
+
+      langPopup: false
     };
   },
   computed: {
@@ -124,7 +198,24 @@ export default {
         console.log("sign out failed", error);
       }
     },
+    handleOpen() {
+      this.open = true;
+    },
+    handleClose() {
+      this.open = false;
+    },
+    openLang() {
+      this.langPopup = true;
+    },
+    closeLang() {
+      this.langPopup = false;
+    },
+    changeLangAndClose(lang) {
+      this.changeLang(lang);
+      this.closeLang();
+    },
     setLang(lang) {
+      this.language = lang;
       this.$i18n.locale = lang;
       auth.languageCode = lang;
     },
@@ -133,7 +224,7 @@ export default {
       await this.saveLang(lang);
     },
     async saveLang(lang) {
-      if (this.hasUser) {
+      if (this.hasUser || this.isAdmin) {
         await db.doc(this.profile_path).set({ lang }, { merge: true });
       } else {
         // save into store
@@ -199,6 +290,9 @@ export default {
       this.$store.commit("updateDate");
     }, 60 * 1000);
 
+    // query
+    // setting
+    // browser
     if (this.$route.query.lang) {
       await this.changeLang(this.$route.query.lang);
     } else {
@@ -209,7 +303,7 @@ export default {
         window.navigator.browserLanguage;
       const lang = (language || "").substr(0, 2);
       if (lang.length === 2) {
-        await this.changeLang(lang);
+        await this.setLang(lang);
       }
     }
   },
@@ -247,5 +341,7 @@ export default {
   text-align: center;
   color: black;
   background: yellow;
+  @extend .p-t-4;
+  @extend .p-b-4;
 }
 </style>

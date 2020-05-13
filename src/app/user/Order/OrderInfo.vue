@@ -61,6 +61,7 @@
                 </div>
                 <b-button
                   v-for="ratio in regionTip.choices"
+                  class="p-r-8 p-l-8"
                   @click="updateTip(ratio)"
                   :type="isSameAmount(ratio) ? 'is-primary' : ''"
                   :key="ratio"

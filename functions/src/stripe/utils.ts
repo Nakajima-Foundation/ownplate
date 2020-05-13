@@ -1,5 +1,5 @@
 import * as functions from 'firebase-functions'
-import { stripe_regions } from '../common/constant'
+import { stripe_regions, regionalSettings } from '../common/constant'
 import Stripe from 'stripe'
 
 export const getRegion = () => {
@@ -10,6 +10,11 @@ export const getRegion = () => {
 export const getStripeRegion = () => {
   const region = getRegion();
   return stripe_regions[region] || stripe_regions["US"];
+}
+
+export const getRegionalSetting = () => {
+  const region = getRegion();
+  return regionalSettings[region] || regionalSettings["US"];
 }
 
 export const validate_auth = (context: functions.https.CallableContext) => {

@@ -297,8 +297,10 @@
         </div>
       </div>
       <div v-if="!requireTaxInput" >
-        {{$t('editRestaurant.foodTax')}} {{shopInfo.foodTax}}% <br/>
-        {{$t('editRestaurant.alcoholTax')}} {{shopInfo.alcoholTax}}% <br/><br/>
+        <span v-for="taxItem in taxRates">
+          {{$t('editMenu.' + taxRateKeys[taxItem])}} {{shopInfo[taxItem + "Tax"]}}% <br/>
+        </span>
+        <br/>
      </div>
       <div class="field is-horizontal" v-if="requireTaxPriceDisplay">
         <div class="field-body">
@@ -369,7 +371,7 @@ import PhoneEntry from "~/components/PhoneEntry";
 import Price from "~/components/Price";
 import { ownPlateConfig } from "@/config/project";
 
-import { daysOfWeek, regionalSettings } from "~/plugins/constant.js";
+import { taxRates, daysOfWeek, regionalSettings } from "~/plugins/constant.js";
 
 export default {
   name: "Order",
@@ -385,6 +387,9 @@ export default {
     const regionalSetting = regionalSettings[ownPlateConfig.region || "US"];
 
     return {
+      taxRates: taxRates,
+      taxRateKeys: regionalSetting["taxRateKeys"],
+
       examplePriceI18n: this.$n(1000, 'currency'),
       sampleMenu: {price: 1000, tax: 'food'},
       requireTaxInput: regionalSetting.requireTaxInput,
@@ -439,10 +444,9 @@ export default {
       notFound: null
     };
   },
-  created() {
-    this.checkAdminPermission();
-  },
   async created() {
+    this.checkAdminPermission();
+
     // never use onSnapshot here.
     const restaurant = await db.doc(`restaurants/${this.restaurantId()}`).get();
 

@@ -15,3 +15,5 @@ export const ownPlateConfig = {
   releasName: "beta",
   region: "US",
 };
+
+export const sentryDsn = 'https://370e22db44d64d028df9d40829999274@o391740.ingest.sentry.io/5238405';

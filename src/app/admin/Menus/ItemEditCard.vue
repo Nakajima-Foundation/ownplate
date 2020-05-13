@@ -7,7 +7,7 @@
               {{ menuitem.itemName }}
           </p>
           <p class="item-price">
-            {{ $n(menuitem.price, "currency") }}
+            <Price :shopInfo="shopInfo" :menu="menuitem"/>
           </p>
           <p>{{ menuitem.itemDescription }}</p>
         </div>
@@ -46,10 +46,18 @@
 
 <script>
 import store from "~/store/index.js";
+import Price from "~/components/Price";
 
 export default {
+  components: {
+    Price
+  },
   props: {
     menuitem: {
+      type: Object,
+      required: true
+    },
+    shopInfo: {
       type: Object,
       required: true
     },
@@ -59,6 +67,7 @@ export default {
     }
   },
   data() {
+    console.log(this.shopInfo);
     return {
       counter: 0
     };

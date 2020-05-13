@@ -2,7 +2,7 @@ export const order_status = {
   error: 0,
   new_order: 100, // by user
   validation_ok: 200, // by functions
-  order_placed: 300,  // by user and stripe
+  order_placed: 300, // by user and stripe
   order_accepted: 400, // by restaurant
   cooking_completed: 500, // by restaurant
   customer_picked_up: 600, // by restaurant and stripe
@@ -15,29 +15,35 @@ export const order_error = {
   order_canceled_by_customer: 200,
   payment_error: 300,
   order_canceled_by_restaurant: 400,
-  unknow_error: 900,
+  unknow_error: 900
 };
 
 export const stripe_regions = {
-  "US": {
+  US: {
     langs: ["en", "es"], // first one is default
-    currency: 'USD',
+    currency: "USD",
     multiple: 100,
     hidePostalCode: false,
     tip: {
       default: 15,
       choices: [10, 15, 18, 20]
     },
-    countries: [
-      { code: "+1", name: "sms.country.US" },
-    ],
+    countries: [{ code: "+1", name: "sms.country.US" }],
     allergens: [
-      "gluten", "crustacean", "egg", "milk", "fish", "peanuts", "soybeans", "shellfish", "raw"
+      "gluten",
+      "crustacean",
+      "egg",
+      "milk",
+      "fish",
+      "peanuts",
+      "soybeans",
+      "shellfish",
+      "raw"
     ]
   },
-  "EU": {
+  EU: {
     langs: ["en", "fr", "es", "it", "de", "nl"],
-    currency: 'EUR',
+    currency: "EUR",
     multiple: 100,
     hidePostalCode: false,
     tip: {
@@ -48,23 +54,19 @@ export const stripe_regions = {
       { code: "+44", name: "sms.country.UK" },
       { code: "+33", name: "sms.country.FR" },
       { code: "+34", name: "sms.country.ES" },
-      { code: "+49", name: "sms.country.DE" },
+      { code: "+49", name: "sms.country.DE" }
     ],
-    allergens: [
-      "gluten", "crustacean", "egg", "milk", "lupin", "mollusc"
-    ]
+    allergens: ["gluten", "crustacean", "egg", "milk", "lupin", "mollusc"]
   },
-  "JP": {
+  JP: {
     langs: ["ja"],
-    currency: 'JPY',
+    currency: "JPY",
     multiple: 1,
     tip: {
       default: 0,
       choices: [0, 10, 20]
     },
-    countries: [
-      { code: "+81", name: "sms.country.JP" },
-    ],
+    countries: [{ code: "+81", name: "sms.country.JP" }],
     hidePostalCode: true
   }
 };
@@ -76,7 +78,7 @@ export const daysOfWeek = {
   4: "thursday",
   5: "friday",
   6: "saturday",
-  7: "sunday",
+  7: "sunday"
 };
 
 export const USStates = [
@@ -133,95 +135,123 @@ export const USStates = [
 ];
 
 export const JPPrefecture = [
-  '北海道',
-  '青森県',
-  '岩手県',
-  '宮城県',
-  '秋田県',
-  '山形県',
-  '福島県',
-  '茨城県',
-  '栃木県',
-  '群馬県',
-  '埼玉県',
-  '千葉県',
-  '東京都',
-  '神奈川県',
-  '新潟県',
-  '富山県',
-  '石川県',
-  '福井県',
-  '山梨県',
-  '長野県',
-  '岐阜県',
-  '静岡県',
-  '愛知県',
-  '三重県',
-  '滋賀県',
-  '京都府',
-  '大阪府',
-  '兵庫県',
-  '奈良県',
-  '和歌山県',
-  '鳥取県',
-  '島根県',
-  '岡山県',
-  '広島県',
-  '山口県',
-  '徳島県',
-  '香川県',
-  '愛媛県',
-  '高知県',
-  '福岡県',
-  '佐賀県',
-  '長崎県',
-  '熊本県',
-  '大分県',
-  '宮崎県',
-  '鹿児島県',
-  '沖縄県'
+  "北海道",
+  "青森県",
+  "岩手県",
+  "宮城県",
+  "秋田県",
+  "山形県",
+  "福島県",
+  "茨城県",
+  "栃木県",
+  "群馬県",
+  "埼玉県",
+  "千葉県",
+  "東京都",
+  "神奈川県",
+  "新潟県",
+  "富山県",
+  "石川県",
+  "福井県",
+  "山梨県",
+  "長野県",
+  "岐阜県",
+  "静岡県",
+  "愛知県",
+  "三重県",
+  "滋賀県",
+  "京都府",
+  "大阪府",
+  "兵庫県",
+  "奈良県",
+  "和歌山県",
+  "鳥取県",
+  "島根県",
+  "岡山県",
+  "広島県",
+  "山口県",
+  "徳島県",
+  "香川県",
+  "愛媛県",
+  "高知県",
+  "福岡県",
+  "佐賀県",
+  "長崎県",
+  "熊本県",
+  "大分県",
+  "宮崎県",
+  "鹿児島県",
+  "沖縄県"
 ];
+
+export const taxRates = ["food", "alcohol"];
 
 export const regionalSettings = {
   US: {
-    CurrencyKey: 'USD',
+    CurrencyKey: "USD",
     StateKey: "shopInfo.state",
     AddressStates: USStates,
-    Logo: "OwnPlate-Logo-Horizontal-YellowWhite.png",
+    Logo: "OwnPlate-Logo-Horizontal-YellowBlack.svg",
+    Logo2: "OwnPlate-Logo-Stack-YellowBlack.svg",
     requireTaxInput: true,
     requireTaxPriceDisplay: false,
     taxRateKeys: {
-      "food": "food",
-      "alcohol": "alcohol",
-    }
+      food: "food",
+      alcohol: "alcohol"
+    },
+    defaultLanguage: "en",
+    languages: {
+      "en": "English(US)",
+      "es": "Español",
+      "ja": "日本語",
+    },
+    hostName: "ownplate.today"
   },
   JP: {
-    CurrencyKey: 'JPY',
+    CurrencyKey: "JPY",
     StateKey: "shopInfo.prefecture",
     AddressStates: JPPrefecture,
-    Logo: "Omochikaeri-Logo-Horizontal-YellowWhite.png",
+    Logo: "Omochikaeri-Logo-Horizontal-YellowBlack.svg",
+    Logo2: "Omochikaeri-Logo-Stack-YellowBlack.svg",
     requireTaxInput: false,
     requireTaxPriceDisplay: true,
     defaultTax: {
       foodTax: 8,
-      alcoholTax: 10,
+      alcoholTax: 10
     },
     taxRateKeys: {
-      "food": "foodJP",
-      "alcohol": "alcoholJP",
-    }
+      food: "foodJP",
+      alcohol: "alcoholJP"
+    },
+    defaultLanguage: "ja",
+    languages: {
+      "ja": "日本語",
+      "en": "English(US)",
+    },
+    hostName: "omochikaeri.com"
   },
   EU: {
-    CurrencyKey: 'EUR',
+    CurrencyKey: "EUR",
     StateKey: "shopInfo.state",
     AddressStates: null,
-    Logo: "OwnPlate-Logo-Horizontal-YellowWhite.png",
+    Logo: "OwnPlate-Logo-Horizontal-YellowBlack.svg",
+    Logo2: "OwnPlate-Logo-Stack-YellowBlack.svg",
     requireTaxInput: true,
     requireTaxPriceDisplay: false,
     taxRateKeys: {
-      "food": "food",
-      "alcohol": "alcohol",
-    }
-  },
-
+      food: "food",
+      alcohol: "alcohol"
+    },
+    defaultLanguage: "en",
+    languages: {
+      "en": "English(US)",
+      "es": "Español",
+      "de": "Deutsch",
+      "fr": "Le français",
+      "it": "italiano",
+      "nl": "Nederlands",
+      "ja": "日本語",
+    },
+    hostName: "eu.ownplate.today"
+  }
 };

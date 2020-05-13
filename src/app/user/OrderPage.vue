@@ -15,7 +15,8 @@
             </p>
           </div>
           <h2>{{ $t('order.orderStatus') + orderName }}</h2>
-          <div v-if="paid" style="text-align: center;">
+          <p v-if="waiting">{{$t('order.timeToPickup') + ": " + timePlaced }}</p>
+          <div v-if="paid" class="m-t-8" style="text-align: center;">
             <p
               :class="orderStatusKey"
               style="margin-bottom:1rem;padding:0.5rem"
@@ -23,6 +24,7 @@
             <b-button
               v-if="just_paid"
               type="is-danger"
+              class="p-r-16 p-l-16"
               :loading="isCanceling"
               @click="handleCancelPayment"
               style="margin-bottom:1rem"
@@ -33,9 +35,11 @@
           :src="this.shopInfo.restProfilePhoto"
           :name="this.shopInfo.restaurantName"
         />
+
         <shop-info v-if="paid" :compact="true" :shopInfo="shopInfo" />
 
-        <h2>{{ $t('order.yourOrder') + ": " + orderName }}</h2>
+        <h2 v-if="paid">{{ $t('order.yourOrder') + ": " + orderName }}</h2>
+        <h2 v-else>{{ $t('order.yourOrder') }}</h2>
         <order-info
           :orderItems="this.orderItems"
           :orderInfo="this.orderInfo||{}"
@@ -47,7 +51,7 @@
           <b-loading :is-full-page="false" :active.sync="newOrder" :can-cancel="true"></b-loading>
         </b-notification>
 
-        <div v-if="just_validated">
+        <div v-if="just_validated" class="m-t-16">
           <div class="is-centered" style="text-align: center;">
             <b-button
               expanded
@@ -57,6 +61,13 @@
               style="margin-bottom:1rem;"
             >{{$t('order.editItems')}}</b-button>
           </div>
+
+          <time-to-pickup
+            v-if="shopInfo.businessDay"
+            :shopInfo="shopInfo"
+            ref="time"
+            @notAvailable="handleNotAvailable"
+          />
 
           <hr class="hr-black" />
           <div v-if="showPayment">
@@ -74,7 +85,7 @@
                 expanded
                 rounded
                 :loading="isPaying"
-                :disabled="!cardState.complete"
+                :disabled="!cardState.complete || notAvailable"
                 style="margin-top:4rem;padding-top: 0.2rem;"
                 size="is-large"
                 @click="handlePayment"
@@ -92,6 +103,7 @@
               :type="showPayment ? '' : 'is-primary'"
               rounded
               :loading="isPlacing"
+              :disabled="notAvailable"
               style="margin-top:1rem;padding-top: 0.2rem;"
               size="is-large"
               @click="handleNoPayment"
@@ -113,6 +125,7 @@ import ShopOrnerInfo from "~/app/user/Restaurant/ShopOrnerInfo";
 import OrderInfo from "~/app/user/Order/OrderInfo";
 import ShopInfo from "~/app/user/Restaurant/ShopInfo";
 import StripeCard from "~/app/user/Order/StripeCard";
+import TimeToPickup from "~/app/user/Order/TimeToPickup";
 import NotFound from "~/components/NotFound";
 
 import { db, firestore, functions } from "~/plugins/firebase.js";
@@ -128,10 +141,12 @@ export default {
     OrderInfo,
     ShopInfo,
     StripeCard,
+    TimeToPickup,
     NotFound
   },
   data() {
     return {
+      notAvailable: false,
       isPaying: false,
       restaurantsId: this.restaurantId(),
       shopInfo: { restaurantName: "" },
@@ -202,6 +217,10 @@ export default {
     }
   },
   computed: {
+    timePlaced() {
+      const date = this.orderInfo.timePlaced.toDate();
+      return this.$d(date, "long");
+    },
     showPayment() {
       //console.log("payment", releaseConfig.hidePayment, this.stripeAccount);
       return !releaseConfig.hidePayment && this.stripeAccount;
@@ -225,6 +244,9 @@ export default {
     },
     paid() {
       return this.orderInfo.status >= order_status.order_placed;
+    },
+    waiting() {
+      return this.orderInfo.status < order_status.cooking_completed;
     },
     orderItems() {
       if (this.menus.length > 0 && this.orderInfo.order) {
@@ -251,6 +273,10 @@ export default {
     }
   },
   methods: {
+    handleNotAvailable(flag) {
+      console.log("handleNotAvailable", flag);
+      this.notAvailable = flag;
+    },
     handleTipChange(tip) {
       //console.log("handleTipChange", tip);
       this.tip = tip;
@@ -281,6 +307,9 @@ export default {
       });
     },
     async handlePayment() {
+      const timeToPickup = this.$refs.time.timeToPickup();
+      console.log("handlePayment", timeToPickup);
+
       this.isPaying = true;
       const {
         error,
@@ -296,6 +325,7 @@ export default {
       try {
         const { data } = await stripeCreateIntent({
           paymentMethodId: paymentMethod.id,
+          timeToPickup,
           restaurantId: this.restaurantId(),
           orderId: this.orderId,
           description: `${this.orderName} ${this.shopInfo.restaurantName} ${this.shopInfo.phoneNumber}`,
@@ -311,11 +341,13 @@ export default {
       }
     },
     async handleNoPayment() {
+      const timeToPickup = this.$refs.time.timeToPickup();
       const orderPlace = functions.httpsCallable("orderPlace");
       try {
         this.isPlacing = true;
         const { data } = await orderPlace({
           restaurantId: this.restaurantId(),
+          timeToPickup,
           orderId: this.orderId,
           sendSMS: this.sendSMS,
           tip: this.tip || 0

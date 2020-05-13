@@ -1,5 +1,5 @@
 <template>
-  <div class="card block">
+  <div class="card block m-t-8">
     <div class="card-content" @click="$emit('selected', order)">
       <div class="level is-mobile" style="margin:0">
         <div class="level-left" style="width:80%; overflow:hidden">
@@ -68,10 +68,10 @@ export default {
       return this.order.payment && this.order.payment.stripe;
     },
     timestamp() {
-      return this.$d(
-        this.order.timePlaced,
-        this.order.restaurantId ? "long" : "time"
-      );
+      const time = this.order.timePlaced;
+      const date = `${time.getMonth()}/${time.getDate()} `;
+      return date + this.num2time(time.getHours() * 60 + time.getMinutes());
+      //return this.$d(this.order.timePlaced, "time");
     },
     phoneNumber() {
       return this.order.phoneNumber && parsePhoneNumber(this.order.phoneNumber);

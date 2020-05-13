@@ -6,7 +6,9 @@
     "admins": "飲食店向けページ",
     "users": "お客様向けページ",
     "home": "ホーム",
-    "signOut": "サイン・アウト"
+    "signOut": "サイン・アウト",
+    "selectLanguage": "表示言語選択",
+    "close": "閉じる"
   },
   "restaurantId": {
     "self": "飲食店ID",
@@ -30,8 +32,9 @@
     "EUR": "ユーロ"
   },
   "tax": {
-    "include": "{count} (税込)",
-    "exclude": "{count} (税抜) + 税",
+    "price": "{count}",
+    "include": " (税込)",
+    "exclude": " (+ 税)",
     "taxExample": "{count}の商品の例"
   },
   "editRestaurant": {
@@ -137,6 +140,8 @@
     "pleasePayAtRestaurant": "オンラインでの支払いは現時点では出来ません。受け取り時にお店でお支払いください。",
     "sendSMS": "SMSメッセージを受け取る（SMSの受信には料金がかかる場合があります）",
     "history": "注文履歴",
+    "timeToPickup": "受け渡し予定時刻",
+    "notAvailable": "今日、明日は営業日ではないので、現在は注文を受け付けていません。",
     "status": {
       "unexpected": "(Unexpected)",
       "error": "エラー",

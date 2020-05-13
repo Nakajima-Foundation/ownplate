@@ -6,7 +6,9 @@
     "admins": "Restaurant Owners",
     "users": "Food Lovers",
     "home": "Home",
-    "signOut": "Sign Out"
+    "signOut": "Sign Out",
+    "selectLanguage": "Select language",
+    "close": "Close"
   },
   "restaurantId": {
     "self": "Restaurant ID",
@@ -30,8 +32,9 @@
     "EUR": "EUR"
   },
   "tax": {
-    "include": "{count} with tax.",
-    "exclude": "{count} without tax.",
+    "price": "{count}",
+    "include": " (with tax)",
+    "exclude": " (+ tax)",
     "taxExample": "Example of {count} product."
   },
   "editRestaurant": {
@@ -137,6 +140,8 @@
     "pleasePayAtRestaurant": "Online payment was not enabled yet. Please pay at the time of pickup.",
     "sendSMS": "Receive Text Messages (standard telco fee may apply)",
     "history": "Order History",
+    "timeToPickup": "Pickup Time",
+    "notAvailable": "This restaurant is not available at this time. Please try again later",
     "status": {
       "unexpected": "Unexpected",
       "error": "Error",
@@ -259,5 +264,4 @@
       "message2": "Try contacting the restaurant in other way"
     }
   }
-
 }
