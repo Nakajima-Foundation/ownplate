@@ -1,6 +1,7 @@
 import express from 'express';
 import * as admin from 'firebase-admin';
 import * as fs from 'fs';
+import { getRegionalSetting } from '../stripe/utils'
 
 export const app = express();
 export const router = express.Router();
@@ -51,6 +52,7 @@ const ogpPage = async (req: any, res: any) => {
   if (!restaurant || !restaurant.exists) {
     return res.status(404).send(template_data);
   }
+  const regionalSetting = getRegionalSetting();
   const restaurant_data: any = restaurant.data();
 
   const title = restaurant_data.restaurantName;
@@ -63,7 +65,7 @@ const ogpPage = async (req: any, res: any) => {
       `<meta property="og:title" content="${escapeHtml(title)}" />`,
       `<meta property="og:site_name" content="${escapeHtml(title)}" />`,
       `<meta property="og:type" content="website" />`,
-      `<meta property="og:url" content="https://staging.ownplate.today/r/${restaurantName}" />`,
+      `<meta property="og:url" content="https://${regionalSetting.hostName}/r/${restaurantName}" />`,
       `<meta property="og:description" content="Japanese comfort food" />`,
       `<meta property="og:image" content="${image}" />`,
     ].join("\n");
