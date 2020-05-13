@@ -33,6 +33,8 @@
     "@johmun/vue-tags-input": "^2.1.0",
     "@nuxtjs/axios": "^5.9.2",
     "@nuxtjs/dotenv": "^1.4.1",
+    "@sentry/browser": "^5.15.5",
+    "@sentry/integrations": "^5.15.5",
     "axios-mock-server": "^0.16.3",
     "babel-polyfill": "^6.26.0",
     "bulma-social": "^1.0.1",

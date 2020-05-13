@@ -27,7 +27,6 @@
             <b-input v-model="menuInfo.itemName" :placeholder="$t('editMenu.enterItemName')"></b-input>
           </b-field>
         </b-field>
-
         <div class="columns">
           <div class="column is-6">
             <div class="field is-horizontal">
@@ -44,7 +43,7 @@
                     type="number"
                     :step="priceStep"
                     placeholder="00.00"
-                    max="10000.00"
+                    :max="maxPrice"
                     min="0.00"
                     expanded
                     ></b-input>
@@ -69,6 +68,9 @@
               </b-select>
             </b-field>
           </div>
+        </div>
+        <div class="field is-horizontal"  v-if="requireTaxPriceDisplay">
+          <span class="h4">表示料金</span> <span style="line-height: 1.125rem;">:<Price :shopInfo="restaurantInfo" :menu="menuInfo"/></span>
         </div>
 
         <div class="field is-horizontal">
@@ -137,18 +139,6 @@
         </span>
         <br />
 
-        <!--
-      <h4>
-        Availability
-      </h4>
-      <b-field type="is-white">
-        <b-select v-model="availability" placeholder="select">
-          <option v-for="availItem in availOptions" :key="availItem">
-            {{ availItem }}
-          </option>
-        </b-select>
-      </b-field>
-        -->
         <div style="margin-top:0.5rem;margin-bottom:1rem">
           <b-checkbox v-model="menuInfo.publicFlag"
                       :disabled="hasError"
@@ -182,10 +172,10 @@ import { db, storage } from "~/plugins/firebase.js";
 import NotFound from "~/components/NotFound";
 import BackButton from "~/components/BackButton";
 
-import { regionalSettings } from "~/plugins/constant.js";
+import { taxRates, regionalSettings } from "~/plugins/constant.js";
 import { ownPlateConfig } from "@/config/project";
 
-const TAX_RATES = ["food", "alcohol"];
+import Price from "~/components/Price";
 
 const AVAIL_OPTIONS = ["All day"];
 
@@ -193,13 +183,13 @@ export default {
   name: "Order",
 
   components: {
+    Price,
     BackButton,
     NotFound
   },
 
   data() {
     const regionalSetting = regionalSettings[ownPlateConfig.region || "US"];
-
     return {
       menuInfo: {
         itemName: "",
@@ -212,11 +202,14 @@ export default {
         itemOptionCheckbox: [""]
       },
 
-      taxRates: TAX_RATES,
+      taxRates: taxRates,
       taxRateKeys: regionalSetting["taxRateKeys"],
-      availOptions: AVAIL_OPTIONS,
+      requireTaxPriceDisplay: regionalSetting.requireTaxPriceDisplay,
+
       currencyKey: regionalSetting["CurrencyKey"],
       croppa: {},
+
+      maxPrice: 1000000.0 / this.$store.getters.stripeRegion.multiple,
 
       restaurantInfo: {},
       notFound: null,
@@ -279,6 +272,9 @@ export default {
   watch: {
     hasError: function() {
       this.menuInfo.publicFlag = !this.hasError;
+    },
+    "menuInfo.price": function() {
+      // nothing
     },
   },
   methods: {
@@ -348,5 +344,12 @@ export default {
 <style lang="scss" scoped>
 .card_image {
   height: 200px;
+}
+.h4 {
+  font-weight: 600;
+  line-height: 1.125rem;
+  font-size: 1rem !important;
+  color: #212121;
+
 }
 </style>

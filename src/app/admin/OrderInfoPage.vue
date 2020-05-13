@@ -4,18 +4,27 @@
     <div>
       <div style="float:left">
         <h2>{{ orderName }}</h2>
-        <div>
-          <span>{{ $n(orderInfo.totalCharge, 'currency') }}</span>
+        <p>{{$t('order.timeToPickup') + ": " + timePlaced }}</p>
+        <p>
+          <span>{{ $t('order.totalCharge') + ": " + $n(orderInfo.totalCharge, 'currency') }}</span>
           <i
             v-if="hasStripe"
             :class="'fab fa-cc-stripe stripe_'+orderInfo.payment.stripe"
             style="margin-left: 0.3em"
           ></i>
-        </div>
+        </p>
+        <p v-if="orderInfo.phoneNumber" style="margin-bottom:1rem">
+          <span>{{orderInfo.name }}</span>
+          {{ $t('sms.phonenumber') + ": "}}
+          <a
+            :href="nationalPhoneURI"
+          >{{ nationalPhoneNumber }}</a>
+        </p>
       </div>
       <div style="float:right" v-if="!canceling">
         <b-button
           type="is-danger"
+          class="p-r-16 p-l-16"
           :disabled="!isValidTransition('order_canceled')"
           @click="canceling=true"
         >{{ $t("admin.order.cancelButton" )}}</b-button>
@@ -49,12 +58,6 @@
             @click="handleCancel"
           >{{ $t("admin.order.delete") }}</b-button>
         </div>
-      </div>
-      <div v-else>
-        <p v-if="orderInfo.phoneNumber" style="margin-bottom:1rem">
-          <span>{{orderInfo.name }}</span>
-          <a :href="nationalPhoneURI">{{ nationalPhoneNumber }}</a>
-        </p>
       </div>
       <div v-for="orderState in orderStates" style="margin:0.2rem" :key="orderState">
         <b-button
@@ -143,6 +146,13 @@ export default {
     });
   },
   computed: {
+    timePlaced() {
+      if (!this.orderInfo.timePlaced) {
+        return "";
+      }
+      const date = this.orderInfo.timePlaced.toDate();
+      return this.$d(date, "long");
+    },
     hasStripe() {
       return this.orderInfo.payment && this.orderInfo.payment.stripe;
     },

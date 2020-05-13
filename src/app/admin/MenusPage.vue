@@ -51,6 +51,7 @@
             <item-edit-card
               :menuitem="itemsObj[menuList]"
               :position="index == 0 ? 'first' : ((menuLists.length - 1) === index ? 'last' : '')"
+              :shopInfo="restaurantInfo"
               @positionUp="positionUp($event)"
               @positionDown="positionDown($event)"
               @forkItem="forkMenuItem($event)"
@@ -122,9 +123,6 @@ export default {
       notFound: null
     };
   },
-  created() {
-    this.checkAdminPermission();
-  },
   computed: {
     uid() {
       return this.$store.getters.uidAdmin;
@@ -149,6 +147,7 @@ export default {
     }
   },
   async created() {
+    this.checkAdminPermission();
     const restaurantRef = db.doc(`restaurants/${this.restaurantId()}`);
     const restaurant_detacher = restaurantRef.onSnapshot(results => {
       if (results.exists && results.data().uid === this.uid) {

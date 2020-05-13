@@ -10,7 +10,7 @@ import Order from '../models/Order'
 // This function is called by users to place orders without paying
 export const place = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
-  const { restaurantId, orderId, tip, sendSMS } = data;
+  const { restaurantId, orderId, tip, sendSMS, timeToPickup } = data;
   utils.validate_params({ restaurantId, orderId }) // tip and sendSMS are optinoal
 
   try {
@@ -35,7 +35,7 @@ export const place = async (db: FirebaseFirestore.Firestore, data: any, context:
         totalCharge: order.total + tip,
         tip: roundedTip,
         sendSMS: sendSMS || false,
-        timePlaced: admin.firestore.FieldValue.serverTimestamp()
+        timePlaced: timeToPickup && new admin.firestore.Timestamp(timeToPickup.seconds, timeToPickup.nanoseconds) || admin.firestore.FieldValue.serverTimestamp(),
       })
 
       return { success: true }

@@ -12,5 +12,7 @@ export const ownPlateConfig = {
   siteName: "OwnPlate",
   siteDescription: "Zero Comission Take-out Service",
   releasName: "beta-dev",
-  region: "US",
+  region: "JP",
 };
+
+export const sentryDsn = 'https://8bdfd641d3b54e4bb93e37d2d412cdae@o391740.ingest.sentry.io/5238306';
