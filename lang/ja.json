@@ -1,6 +1,7 @@
 {
   "greeting": "こんにちは、世界",
   "underConstruction": "注意：これはテスト用のサーバーです。",
+  "comma": "、",
   "menu": {
     "about": "このサービスについて",
     "admins": "飲食店向けページ",
@@ -257,6 +258,23 @@
       "saturday": "土曜",
       "sunday": "日曜"
     }
+  },
+  "allergens": {
+    "title": "アレルギー表示",
+    "shrimp": "えび",
+    "crab": "かに",
+    "gluten": "小麦",
+    "egg": "卵",
+    "milk": "乳",
+    "soba": "そば",
+    "peanuts": "落花生",
+    "fish": "魚",
+    "soybeans": "大豆",
+    "shellfish": "貝",
+    "raw": "生",
+    "crustacean": "甲殻類",
+    "lupin": "ルピナス",
+    "mollusc": "軟体動物"
   },
   "errorPage": {
     "notFound": {

@@ -67,7 +67,8 @@ export const stripe_regions = {
       choices: [0, 10, 20]
     },
     countries: [{ code: "+81", name: "sms.country.JP" }],
-    hidePostalCode: true
+    hidePostalCode: true,
+    allergens: ["shrimp", "crab", "gluten", "soba", "egg", "milk", "peanuts"]
   }
 };
 

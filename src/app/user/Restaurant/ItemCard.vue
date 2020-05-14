@@ -6,9 +6,10 @@
           <!-- <h4 class="bold">Kushikatsu Special Platter</h4> -->
           <p class="item-name">{{ title }}</p>
           <p class="item-price">
-            <Price :shopInfo="shopInfo" :menu="item"/>
+            <Price :shopInfo="shopInfo" :menu="item" />
           </p>
           <p>{{ description }}</p>
+          <p v-if="allergens.length > 0">{{ allergensDescription }}</p>
         </div>
         <div class="media-right">
           <figure class="image is-100x100">
@@ -141,9 +142,28 @@ export default {
       if (this.openMenuFlag && this.count == 0) {
         this.setCount(this.count + 1);
       }
-    },
+    }
   },
   computed: {
+    allergensDescription() {
+      return (
+        this.$t("allergens.title") +
+        ": " +
+        this.allergens
+          .map(allergen => {
+            return this.$t(`allergens.${allergen}`);
+          })
+          .join(this.$t("comma"))
+      );
+    },
+    allergens() {
+      if (this.item.allergens) {
+        return Object.keys(this.item.allergens).filter(allergen => {
+          return this.item.allergens[allergen];
+        });
+      }
+      return [];
+    },
     options() {
       // HACK: Dealing with a special case (probalby a bug in the menu editor)
       if (
