@@ -87,6 +87,7 @@
           <div class="field-body">
             <b-checkbox
               v-for="allergen in allergens"
+              v-model="menuInfo.allergens[allergen]"
               :key="allergen"
             >{{$t(`allergens.${allergen}`)}}</b-checkbox>
           </div>
@@ -230,7 +231,8 @@ export default {
         itemPhoto: "",
         // availability: "",
         publicFlag: false,
-        itemOptionCheckbox: [""]
+        itemOptionCheckbox: [""],
+        allergens: {}
       },
 
       taxRates: taxRates,
@@ -274,7 +276,6 @@ export default {
       return;
     }
     this.menuInfo = Object.assign({}, this.menuInfo, resMenuInfo.data());
-
     this.notFound = false;
   },
   computed: {
@@ -320,8 +321,6 @@ export default {
       this.menuInfo.itemOptionCheckbox.push("");
     },
     async submitItem() {
-      // if (this.hasError) return;
-
       //upload image
       const menuId = this.menuId;
       if (this.croppa.chosenFile) {
@@ -336,6 +335,7 @@ export default {
         itemPhoto: this.menuInfo.itemPhoto,
         itemOptionCheckbox: this.menuInfo.itemOptionCheckbox || [],
         publicFlag: this.menuInfo.publicFlag || false,
+        allergens: this.menuInfo.allergens,
         validatedFlag: !this.hasError
       };
       const newData = await db
