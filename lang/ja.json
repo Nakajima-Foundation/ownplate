@@ -1,4 +1,8 @@
 {
+  "serviceName": {
+    "ownPlate": "OwnPlate",
+    "omochikaeri": "おもちかえり.com"
+  },
   "greeting": "こんにちは、世界",
   "underConstruction": "注意：これはテスト用のサーバーです。",
   "comma": "、",
