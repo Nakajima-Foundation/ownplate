@@ -259,6 +259,7 @@
     }
   },
   "allergens": {
+    "title": "Allergens",
     "shrimp": "Shrimp",
     "crab": "Crab",
     "gluten": "Gluten",

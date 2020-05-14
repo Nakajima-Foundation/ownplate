@@ -259,6 +259,7 @@
     }
   },
   "allergens": {
+    "title": "アレルギー表示",
     "shrimp": "えび",
     "crab": "かに",
     "gluten": "小麦",
