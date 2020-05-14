@@ -30,7 +30,7 @@
           </b-field>
         </b-field>
         <div class="columns">
-          <div class="column is-6">
+          <div class="column is-half">
             <div class="field is-horizontal">
               <div class="field-body">
                 <h4>
@@ -58,7 +58,7 @@
               </div>
             </div>
           </div>
-          <div class="column is-6">
+          <div class="column is-half">
             <div class="field is-horizontal">
               <div class="field-body">
                 <h4>
@@ -78,6 +78,14 @@
             </b-field>
           </div>
         </div>
+        <div class="field is-horizontal" v-if="requireTaxPriceDisplay">
+          <span class="h4">{{$t('editMenu.displayPrice')}}</span>
+          <span style="line-height: 1.125rem;">
+            :
+            <Price :shopInfo="restaurantInfo" :menu="menuInfo" />
+          </span>
+        </div>
+
         <div class="field is-horizontal">
           <div class="field-body">
             <h4>{{$t('allergens.title')}}</h4>
@@ -91,14 +99,6 @@
               :key="allergen"
             >{{$t(`allergens.${allergen}`)}}</b-checkbox>
           </div>
-        </div>
-
-        <div class="field is-horizontal" v-if="requireTaxPriceDisplay">
-          <span class="h4">表示料金</span>
-          <span style="line-height: 1.125rem;">
-            :
-            <Price :shopInfo="restaurantInfo" :menu="menuInfo" />
-          </span>
         </div>
 
         <div class="field is-horizontal">

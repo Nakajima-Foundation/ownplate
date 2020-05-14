@@ -90,6 +90,7 @@
     "alcohol": "Alcohol",
     "foodJP": "Food reduced tax rate",
     "alcoholJP": "Anything else like alcohol, goods",
+    "displayPrice": "Price example",
     "itemDescription": "Item description",
     "itemPhoto": "Item photo",
     "itemOptions": "Item options",
