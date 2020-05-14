@@ -39,24 +39,20 @@
                 </h4>
               </div>
             </div>
-            <div class="columns">
-              <div class="column">
-                <b-field :type="errors['price'].length > 0 ? 'is-danger' : 'is-success'">
-                  <b-input
-                    v-model="menuInfo.price"
-                    type="number"
-                    :step="priceStep"
-                    placeholder="00.00"
-                    :max="maxPrice"
-                    min="0.00"
-                    expanded
-                  ></b-input>
-                  <p class="control">
-                    <span class="button is-static">{{$t("currency." + this.currencyKey)}}</span>
-                  </p>
-                </b-field>
-              </div>
-            </div>
+            <b-field :type="errors['price'].length > 0 ? 'is-danger' : 'is-success'">
+              <b-input
+                v-model="menuInfo.price"
+                type="number"
+                :step="priceStep"
+                placeholder="00.00"
+                :max="maxPrice"
+                min="0.00"
+                expanded
+                ></b-input>
+              <p class="control">
+                <span class="button is-static">{{$t("currency." + this.currencyKey)}}</span>
+              </p>
+            </b-field>
           </div>
           <div class="column is-half">
             <div class="field is-horizontal">
