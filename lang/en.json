@@ -258,6 +258,22 @@
       "sunday": "Sun"
     }
   },
+  "allergens": {
+    "shrimp": "Shrimp",
+    "crab": "Crab",
+    "gluten": "Gluten",
+    "egg": "Egg",
+    "milk": "Milk",
+    "soba": "Soba",
+    "peanuts": "Peanuts",
+    "fish": "Fish",
+    "soybeans": "Soybeans",
+    "shellfish": "Shellfish",
+    "raw": "Raw",
+    "crustacean": "Crustacean",
+    "lupin": "Lupin",
+    "mollusc": "Mollusc"
+  },
   "errorPage": {
     "notFound": {
       "message1": "The page you're looking for can't be found.",

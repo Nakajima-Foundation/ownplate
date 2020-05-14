@@ -258,6 +258,22 @@
       "sunday": "日曜"
     }
   },
+  "allergens": {
+    "shrimp": "えび",
+    "crab": "かに",
+    "gluten": "小麦",
+    "egg": "卵",
+    "milk": "乳",
+    "soba": "そば",
+    "peanuts": "落花生",
+    "fish": "魚",
+    "soybeans": "大豆",
+    "shellfish": "貝",
+    "raw": "生",
+    "crustacean": "甲殻類",
+    "lupin": "ルピナス",
+    "mollusc": "軟体動物"
+  },
   "errorPage": {
     "notFound": {
       "message1": "ごめんなさい。ページがみつかりません。",
