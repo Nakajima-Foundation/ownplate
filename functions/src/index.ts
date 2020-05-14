@@ -3,6 +3,12 @@ import * as functions from 'firebase-functions';
 import * as express from './functions/express';
 import * as Firestore from './functions/firestore';
 
+import * as Sentry from '@sentry/node';
+
+const senty_dsn =  functions.config() && functions.config().senty && functions.config().senty.dsn || process.env.SENTY_DSN;
+
+Sentry.init({ dsn: senty_dsn });
+
 export const api = functions.https.onRequest(express.app);
 
 let db = admin.firestore();
@@ -45,4 +51,3 @@ export const stripeConfirmIntent = functions.https.onCall(async (data, context) 
 export const stripeCancelIntent = functions.https.onCall(async (data, context) => {
   return await StripeIntent.cancel(db, data, context);
 });
-
