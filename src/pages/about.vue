@@ -1,7 +1,7 @@
 <template>
   <section class="section">
     <back-button url="/" />
-    <div v-if="$store.state.server.region !== 'JP'">
+    <div v-if="$i18n.locale !== 'ja'">
       <h1 class="h1">About</h1>
       <p class="p">
         The COVID-19 has not only claimed the lives of many people,
@@ -12,14 +12,14 @@
         and thousands of restaurant owners have been forced to close their businesses.
       </p>
       <p class="p">
-        We've created OwnPlate to help those restaurants and bars.
-        With OwnPlate, restaurants can start take-out service with no extra fees (only credit card charges are required).
+        We've created {{$t('serviceName.' + this.serviceKey)}} to help those restaurants and bars.
+        With {{$t('serviceName.' + this.serviceKey)}}, restaurants can start take-out service with no extra fees (only credit card charges are required).
         The restaurant owners can create dedicated pages and register menu items there (no special skill is required),
         where customers can order and pay, then pick them up at restaurants.
       </p>
       <p class="p">
         We, Singularity Society, is a non-profit organization, consists of software engineers,
-        designers and business people. We are building OwnPlate with Firebase (Google) + Vue (open source),
+        designers and business people. We are building {{$t('serviceName.' + this.serviceKey)}} with Firebase (Google) + Vue (open source),
         which allows us to develop this service in a very short period of time.
       </p>
       <p class="p">
@@ -28,25 +28,27 @@
       </p>
       <hr />
     </div>
-    <h1 class="h1">このサービスについて</h1>
-    <p class="p">
-      新型コロナウィルスは、多くの人の命を奪っただけではなく、経済にも大きなダメージを与えました。
-      特に、「人の集まる場所」を提供するレストランやバーは、都市封鎖や自宅待機により直接的な被害を被り、
-      多くの失業者を生み出したし、閉業へと追い込まれた経営者も少なくありません。
-    </p>
-    <p class="p">
-      私たちは、そんなレストランやバーを支援するために、「おもちかえり.com」を作りました。
-      「おもちかえり.com」を使えば、レストランは、余計な手数料なしでテイクアウトサービスを始める事ができます。
-      レストランは、専用のページを作り、そこにメニューを登録します（ウェブ・コンサルタントを雇う必要はありません）。
-      顧客はそのページから注文し、支払いを済ませ、調理時間に合わせて店に取りに行くのです。
-    </p>
-    <p class="p">
-      シンギュラリティ・ソサエティは、技術の進歩により大きく変わろうとしている世の中に向けた活動をするNPO（非営利型一般社団法人）です。
-      「おもちかえり.com」は、Firebase と Vue という技術を使って作られています。
-    </p>
-    <p class="p">
-      <br />代表理事 中島聡
-    </p>
+    <div v-else>
+      <h1 class="h1">このサービスについて</h1>
+      <p class="p">
+        新型コロナウィルスは、多くの人の命を奪っただけではなく、経済にも大きなダメージを与えました。
+        特に、「人の集まる場所」を提供するレストランやバーは、都市封鎖や自宅待機により直接的な被害を被り、
+        多くの失業者を生み出したし、閉業へと追い込まれた経営者も少なくありません。
+      </p>
+      <p class="p">
+        私たちは、そんなレストランやバーを支援するために、「{{$t('serviceName.' + this.serviceKey)}}」を作りました。
+        「{{$t('serviceName.' + this.serviceKey)}}」を使えば、レストランは、余計な手数料なしでテイクアウトサービスを始める事ができます。
+        レストランは、専用のページを作り、そこにメニューを登録します（ウェブ・コンサルタントを雇う必要はありません）。
+        顧客はそのページから注文し、支払いを済ませ、調理時間に合わせて店に取りに行くのです。
+      </p>
+      <p class="p">
+        シンギュラリティ・ソサエティは、技術の進歩により大きく変わろうとしている世の中に向けた活動をするNPO（非営利型一般社団法人）です。
+        「おもちかえり.com」は、Firebase と Vue という技術を使って作られています。
+      </p>
+      <p class="p">
+        <br />代表理事 中島聡
+      </p>
+    </div>
   </section>
 </template>
 <script>
@@ -54,6 +56,11 @@ import BackButton from "~/components/BackButton";
 export default {
   components: {
     BackButton
+  },
+  computed: {
+    serviceKey() {
+      return this.$store.state.server.region === 'JP' ? "omochikaeri" : "ownPlate";
+    }
   },
   created() {
     console.log(process.env.CIRCLE_SHA1);

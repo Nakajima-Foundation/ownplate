@@ -1,4 +1,8 @@
 {
+  "serviceName": {
+    "ownPlate": "OwnPlate",
+    "omochikaeri": "おもちかえり.com"
+  },
   "greeting": "Hello World2",
   "underConstruction": "WARNING: This is a staging server for development.",
   "comma": ", ",
