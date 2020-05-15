@@ -4,9 +4,11 @@ import { Vue as VueIntegration } from '@sentry/integrations';
 
 import { sentryDsn } from "@/config/project";
 
-if (sentryDsn) {
-  Sentry.init({
-    dsn: sentryDsn,
-    integrations: [new VueIntegration({Vue, attachProps: true})],
-  });
-}
+if (process.env.NODE_ENV !== "development") {
+  if (sentryDsn) {
+    Sentry.init({
+      dsn: sentryDsn,
+      integrations: [new VueIntegration({Vue, attachProps: true, logErrors: true})],
+    });
+  }
+};
