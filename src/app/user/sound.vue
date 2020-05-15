@@ -2,7 +2,7 @@
 <div>
   <div @click="play()">
     <span>hello</span>
-    <audio src="/silent.mp3" ref="audio"></audio>
+    <audio src="/silent.mp3" ref="audio" preload="auto"></audio>
   </div>
 </div>
 </template>
@@ -13,22 +13,25 @@ export default {
   data() {
     return {
       mySound: null,
-      call: false,
+      // call: false,
+      played: false,
     };
   },
   created() {
     this.mySound = new Audio(["/hello.mp3"]);
+    this.mySound.preload = "auto";
   },
   methods: {
     play() {
       const audio = this.$refs.audio;
 
-      if (audio.paused) {
+      if (!this.played &&audio.paused) {
+        this.played = true;
         const fileplay = () => {
           console.log("call play");
+          this.mySound.currentTime = 0;
+          this.mySound.play();
           setTimeout(() => {
-            this.mySound.currentTime = 0;
-            this.mySound.play();
             console.log("played");
             fileplay();
           }, 3000);
@@ -39,9 +42,9 @@ export default {
         audio.play();
 
         audio.addEventListener('ended', (event) => {
-          console.log("PLAYING");
-          audio.currentTime = 0;
-          audio.play();
+          console.log("ended");
+          // audio.currentTime = 0;
+          // audio.play();
         });
       }
 
