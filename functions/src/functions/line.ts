@@ -17,7 +17,7 @@ export const validate = async (db: FirebaseFirestore.Firestore, data: any, conte
         }
       };
       */
-      https.get('https://encrypted.google.com/', (res) => {
+      https.get('https://api.line.me/oauth2/v2.1/token', (res) => {
         console.log('statusCode:', res.statusCode);
         console.log('headers:', res.headers);
 
