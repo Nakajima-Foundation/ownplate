@@ -7,7 +7,19 @@ export const validate = async (db: FirebaseFirestore.Firestore, data: any, conte
   const { token } = data;
   utils.validate_params({ token })
   const foo = url.parse("https://api.line.me/oauth2/v2.1/token");
-  const postData = "hello";
+
+  const params = {
+    grant_type: "authorization_code",
+    code: token,
+    redirect_uri: "http//localhost:3000/test/line",
+    client_id: "1654216149",
+    client_secret: "abc"
+  };
+  const postData = Object.keys(params).map(key => {
+    return key + "=" + encodeURIComponent(params[key]);
+  }).join("&");
+  console.log(postData);
+
   const options = {
     hostname: foo.host,
     port: 443,
