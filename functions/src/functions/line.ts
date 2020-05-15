@@ -44,7 +44,7 @@ export const validate = async (db: FirebaseFirestore.Firestore, data: any, conte
           body += chunk;
         });
         res.on('end', () => {
-          resolve({ success: true, body })
+          resolve(JSON.parse(body))
         })
       })
       req.on('error', (e) => {
