@@ -84,12 +84,12 @@ export const validate = async (db: FirebaseFirestore.Firestore, data: any, conte
       algorithms: ['HS256']
     })
     */
-    /*
-    const lineObj = await request('https://api.line.me/oauth2/v2.1/verify', {
+    const lineObj = await postForm('https://api.line.me/oauth2/v2.1/verify', {
+      id_token: result.id_token,
+      client_id
     })
-    */
 
-    return { result };
+    return { result, lineObj };
   } catch (error) {
     throw utils.process_error(error)
   }
