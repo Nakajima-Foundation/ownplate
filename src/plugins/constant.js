@@ -194,7 +194,10 @@ export const regionalSettings = {
     AddressStates: USStates,
     Logo: "OwnPlate-Logo-Horizontal-YellowBlack.svg",
     Logo2: "OwnPlate-Logo-Stack-YellowBlack.svg",
-    FeatureHero: "Feature-Hero-v01-en.svg",
+    FeatureHero: {
+      ja: "Feature-Hero-v01-ja.svg",
+      en: "Feature-Hero-v01-en.svg",
+    },
     requireTaxInput: true,
     requireTaxPriceDisplay: false,
     taxRateKeys: {
@@ -215,7 +218,10 @@ export const regionalSettings = {
     AddressStates: JPPrefecture,
     Logo: "Omochikaeri-Logo-Horizontal-YellowBlack.svg",
     Logo2: "Omochikaeri-Logo-Stack-YellowBlack.svg",
-    FeatureHero: "Feature-Hero-v01-ja.svg",
+    FeatureHero: {
+      ja: "Feature-Hero-v01-ja.svg",
+      en: "Feature-Hero-v01-en.svg",
+    },
     requireTaxInput: false,
     requireTaxPriceDisplay: true,
     defaultTax: {

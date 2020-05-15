@@ -128,9 +128,8 @@ import { regionalSettings } from "~/plugins/constant.js";
 import { ownPlateConfig } from "@/config/project";
 export default {
   data() {
-    const regionalSetting = regionalSettings[ownPlateConfig.region || "US"];
     return {
-      featureHero: regionalSetting.FeatureHero
+      regionalSetting: regionalSettings[ownPlateConfig.region || "US"]
     };
   },
   computed: {
@@ -138,7 +137,10 @@ export default {
       return this.$store.state.server.region === "JP"
         ? "omochikaeri"
         : "ownPlate";
-    }
+    },
+    featureHero() {
+      return this.regionalSetting.FeatureHero[this.$i18n.locale === 'ja' ? 'ja' : 'en'];
+    },
   },
   created() {
     console.log(process.env.CIRCLE_SHA1);
