@@ -15,8 +15,12 @@ export default {
     if (this.code) {
       console.log("****", this.code);
       const lineValidate = functions.httpsCallable("lineValidate");
-      const { data } = await lineValidate({ code: this.code });
-      console.log(data);
+      try {
+        const { data } = await lineValidate({ token: this.code });
+        console.log(data);
+      } catch (error) {
+        console.error(error.message, error.details);
+      }
     }
   },
   computed: {
