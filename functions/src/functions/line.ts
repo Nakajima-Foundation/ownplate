@@ -37,11 +37,10 @@ export const validate = async (db: FirebaseFirestore.Firestore, data: any, conte
       const req = https.request(options, (res) => {
         console.log('statusCode:', res.statusCode);
         console.log('headers:', res.headers);
-
+        res.setEncoding('utf8');
         let body = "";
-        res.on('data', (d) => {
-          console.log(d);
-          body += d;
+        res.on('data', (chunk) => {
+          body += chunk;
         });
         res.on('end', () => {
           resolve({ success: true, body })
@@ -53,49 +52,6 @@ export const validate = async (db: FirebaseFirestore.Firestore, data: any, conte
       });
       req.write(postData)
       req.end();
-
-      /*
-      const options = {
-        url: 'https://api.line.me/v1/oauth/verify',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      };
-      */
-      //const postData = "hello";
-      /*
-      const options = {
-        // https://api.line.me/oauth2/v2.1/token works with get
-        //url: 'https://api.line.me/v2/oauth/accessToken',
-        hostname: 'encrypted.google.com',
-        port: 443,
-        path: '/',
-        method: 'GET'
-        /*
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          'Content-Length': Buffer.byteLength(postData)
-        }
-        */
-      /*
-      const options = {
-        //url: 'https://api.line.me/v1/oauth/verify',
-        hostname: 'api.line.me',
-        port: 80,
-        path: '/v1/oauth/verify',
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      };
-      try {
-        https.request(options, (res) => {
-          resolve({ success: true, res });
-        });
-      } catch (error) {
-        reject({ error });
-      }
-      */
     })
   } catch (error) {
     throw utils.process_error(error)
