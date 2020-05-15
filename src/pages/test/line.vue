@@ -12,7 +12,7 @@ export default {
       const query = {
         response_type: "code",
         client_id: "1654216149",
-        redirect_uri: "http://localhost:3000/test/line",
+        redirect_uri: location.origin + "/test/line",
         scope: "profile openid",
         state: "s" + Math.random()
         //nonce: "u" + Math.random()
