@@ -7,11 +7,17 @@ export const validate = async (db: FirebaseFirestore.Firestore, data: any, conte
   const { token } = data;
   utils.validate_params({ token })
   const foo = url.parse("https://api.line.me/oauth2/v2.1/token");
+  const options = {
+    hostname: foo.host,
+    port: 443,
+    path: foo.pathname,
+    method: 'GET'
+  }
 
   // https://stackoverflow.com/questions/43486393/how-to-make-an-http-request-in-cloud-functions-for-firebase
   try {
     return new Promise((resolve, reject) => {
-      const req = https.request(foo.href!, (res) => {
+      const req = https.request(options, (res) => {
         console.log('statusCode:', res.statusCode);
         console.log('headers:', res.headers);
 
