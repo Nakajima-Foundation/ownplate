@@ -6,12 +6,17 @@
 </template>
 
 <script>
+// https://firebase.googleblog.com/2016/11/authenticate-your-firebase-users-with-line-login.html
 import { ownPlateConfig } from "@/config/project";
+import { db, firestore, functions } from "~/plugins/firebase.js";
 
 export default {
-  mounted() {
+  async mounted() {
     if (this.code) {
       console.log("****", this.code);
+      const lineValidate = functions.httpsCallable("lineValidate");
+      const { data } = await lineValidate({ code: this.code });
+      console.log(data);
     }
   },
   computed: {
