@@ -9,7 +9,15 @@
 import { ownPlateConfig } from "@/config/project";
 
 export default {
+  mounted() {
+    if (this.code) {
+      console.log("****", this.code);
+    }
+  },
   computed: {
+    code() {
+      return this.$route.query.code;
+    },
     lineAuth() {
       const query = {
         response_type: "code",
@@ -24,7 +32,6 @@ export default {
           return key + "=" + encodeURIComponent(query[key]);
         })
         .join("&");
-      console.log(queryString);
       return `https://access.line.me/oauth2/v2.1/authorize?${queryString}`;
     }
   }
