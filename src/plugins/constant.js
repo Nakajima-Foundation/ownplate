@@ -194,6 +194,7 @@ export const regionalSettings = {
     AddressStates: USStates,
     Logo: "OwnPlate-Logo-Horizontal-YellowBlack.svg",
     Logo2: "OwnPlate-Logo-Stack-YellowBlack.svg",
+    FeatureHero: "Feature-Hero-v01-en.svg",
     requireTaxInput: true,
     requireTaxPriceDisplay: false,
     taxRateKeys: {
@@ -202,9 +203,9 @@ export const regionalSettings = {
     },
     defaultLanguage: "en",
     languages: {
-      "en": "English(US)",
-      "es": "Español",
-      "ja": "日本語",
+      en: "English(US)",
+      es: "Español",
+      ja: "日本語"
     },
     hostName: "ownplate.today"
   },
@@ -214,6 +215,7 @@ export const regionalSettings = {
     AddressStates: JPPrefecture,
     Logo: "Omochikaeri-Logo-Horizontal-YellowBlack.svg",
     Logo2: "Omochikaeri-Logo-Stack-YellowBlack.svg",
+    FeatureHero: "Feature-Hero-v01-ja.svg",
     requireTaxInput: false,
     requireTaxPriceDisplay: true,
     defaultTax: {
@@ -226,8 +228,8 @@ export const regionalSettings = {
     },
     defaultLanguage: "ja",
     languages: {
-      "ja": "日本語",
-      "en": "English(US)",
+      ja: "日本語",
+      en: "English(US)"
     },
     hostName: "omochikaeri.com"
   },
@@ -245,13 +247,13 @@ export const regionalSettings = {
     },
     defaultLanguage: "en",
     languages: {
-      "en": "English(US)",
-      "es": "Español",
-      "de": "Deutsch",
-      "fr": "Le français",
-      "it": "italiano",
-      "nl": "Nederlands",
-      "ja": "日本語",
+      en: "English(US)",
+      es: "Español",
+      de: "Deutsch",
+      fr: "Le français",
+      it: "italiano",
+      nl: "Nederlands",
+      ja: "日本語"
     },
     hostName: "eu.ownplate.today"
   }
