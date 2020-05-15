@@ -80,8 +80,11 @@ export const validate = async (db: FirebaseFirestore.Firestore, data: any, conte
       algorithms: ['HS256']
     })
     */
+    const lineObj = await request('https://api.line.me/v1/oauth/verify', {
+      'Authorization': `Bearer ${result.access_token}`
+    })
 
-    return { result };
+    return { result, lineObj };
   } catch (error) {
     throw utils.process_error(error)
   }
