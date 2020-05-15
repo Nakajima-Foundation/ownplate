@@ -48,6 +48,19 @@ const request = (_url: string, _options: any, postData?: any) => {
   })
 }
 
+const postForm = (_url: string, params: any) => {
+  const postData = Object.keys(params).map(key => {
+    return key + "=" + encodeURIComponent(params[key]);
+  }).join("&");
+  return request(_url, {
+    method: "POST",
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Content-Length': Buffer.byteLength(postData)
+    }
+  }, postData)
+}
+
 export const validate = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const { code, redirect_uri, client_id } = data;
   utils.validate_params({ code, redirect_uri, client_id })
@@ -60,18 +73,9 @@ export const validate = async (db: FirebaseFirestore.Firestore, data: any, conte
     client_id,
     client_secret: LINE_SECRET_KEY
   };
-  const postData = Object.keys(params).map(key => {
-    return key + "=" + encodeURIComponent(params[key]);
-  }).join("&");
 
   try {
-    const result: any = await request("https://api.line.me/oauth2/v2.1/token", {
-      method: "POST",
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Content-Length': Buffer.byteLength(postData)
-      }
-    }, postData)
+    const result: any = await postForm("https://api.line.me/oauth2/v2.1/token", params)
 
     /*
     const decoded = await decode(result.id_token, LINE_SECRET_KEY, {
@@ -80,11 +84,12 @@ export const validate = async (db: FirebaseFirestore.Firestore, data: any, conte
       algorithms: ['HS256']
     })
     */
-    const lineObj = await request('https://api.line.me/v1/oauth/verify', {
-      'Authorization': `Bearer ${result.access_token}`
+    /*
+    const lineObj = await request('https://api.line.me/oauth2/v2.1/verify', {
     })
+    */
 
-    return { result, lineObj };
+    return { result };
   } catch (error) {
     throw utils.process_error(error)
   }
