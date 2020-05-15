@@ -16,7 +16,10 @@ export default {
       console.log("****", this.code);
       const lineValidate = functions.httpsCallable("lineValidate");
       try {
-        const { data } = await lineValidate({ token: this.code });
+        const { data } = await lineValidate({
+          token: this.code,
+          redirect_uri: this.redirect_uri
+        });
         console.log(data);
       } catch (error) {
         console.error(error.message, error.details);
@@ -27,11 +30,14 @@ export default {
     code() {
       return this.$route.query.code;
     },
+    redirect_uri() {
+      return location.origin + "/test/line";
+    },
     lineAuth() {
       const query = {
         response_type: "code",
         client_id: ownPlateConfig.LINE_CHANNEL_ID,
-        redirect_uri: location.origin + "/test/line",
+        redirect_uri: this.redirect_uri,
         scope: "profile openid",
         state: "s" + Math.random()
         //nonce: "u" + Math.random()
