@@ -81,7 +81,7 @@ export const validate = async (db: FirebaseFirestore.Firestore, data: any, conte
     })
     */
 
-    return { result, decoded };
+    return { result };
   } catch (error) {
     throw utils.process_error(error)
   }
