@@ -4,16 +4,16 @@ import * as https from 'https'
 import * as url from 'url';
 
 export const validate = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
-  const { token, redirect_uri } = data;
-  utils.validate_params({ token, redirect_uri })
+  const { code, redirect_uri, client_id } = data;
+  utils.validate_params({ code, redirect_uri, client_id })
   const foo = url.parse("https://api.line.me/oauth2/v2.1/token");
 
   const LINE_SECRET_KEY = functions.config().line.secret;
   const params = {
     grant_type: "authorization_code",
-    code: token,
+    code,
     redirect_uri,
-    client_id: "1654216149",
+    client_id,
     client_secret: LINE_SECRET_KEY
   };
   const postData = Object.keys(params).map(key => {

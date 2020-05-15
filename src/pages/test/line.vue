@@ -17,8 +17,9 @@ export default {
       const lineValidate = functions.httpsCallable("lineValidate");
       try {
         const { data } = await lineValidate({
-          token: this.code,
-          redirect_uri: this.redirect_uri
+          code: this.code,
+          redirect_uri: this.redirect_uri,
+          client_id: ownPlateConfig.LINE_CHANNEL_ID
         });
         console.log(data);
       } catch (error) {
