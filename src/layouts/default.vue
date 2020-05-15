@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper">
+  <div class="wrapper" @click="enableSound()">
     <!-- Header -->
     <div class="columns is-gapless is-vcentered is-mobile bg-ownplate-white">
       <div class="column">
@@ -135,7 +135,8 @@ export default {
       fullwidth: false,
       right: false,
 
-      langPopup: false
+      langPopup: false,
+      audio: null,
     };
   },
   computed: {
@@ -174,6 +175,12 @@ export default {
     }
   },
   methods: {
+    enableSound() {
+      if (this.audio.paused) {
+        console.log("enableSoound");
+        this.audio.play();
+      }
+    },
     async signout() {
       console.log("signing out", auth.currentUser);
       try {
@@ -292,6 +299,8 @@ export default {
         await this.setLang(lang);
       }
     }
+    this.audio = new Audio(["/silent.mp3"]);
+    this.audio.preload = "auto";
   },
   destroyed() {
     if (this.unregisterAuthObserver) {
