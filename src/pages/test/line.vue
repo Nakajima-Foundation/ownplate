@@ -6,12 +6,14 @@
 </template>
 
 <script>
+import { ownPlateConfig } from "@/config/project";
+
 export default {
   computed: {
     lineAuth() {
       const query = {
         response_type: "code",
-        client_id: "1654216149",
+        client_id: ownPlateConfig.LINE_CHANNEL_ID,
         redirect_uri: location.origin + "/test/line",
         scope: "profile openid",
         state: "s" + Math.random()
