@@ -2,6 +2,21 @@ import * as functions from 'firebase-functions'
 import * as utils from '../stripe/utils'
 import * as https from 'https'
 import * as url from 'url';
+/*
+import * as jwt from 'jsonwebtoken';
+
+const decode = (token: string, secret: string, options: any) => {
+  return new Promise((resolve, reject) => {
+    jwt.decode(token, secret, options, (err: any, decoded: any) => {
+      if (err) {
+        reject(err)
+      } else {
+        resolve(decoded)
+      }
+    })
+  })
+}
+*/
 
 const request = (_url: string, _options: any, postData?: any) => {
   const parsedURL = url.parse(_url);
@@ -50,13 +65,23 @@ export const validate = async (db: FirebaseFirestore.Firestore, data: any, conte
   }).join("&");
 
   try {
-    return request("https://api.line.me/oauth2/v2.1/token", {
+    const result: any = await request("https://api.line.me/oauth2/v2.1/token", {
       method: "POST",
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
         'Content-Length': Buffer.byteLength(postData)
       }
     }, postData)
+
+    /*
+    const decoded = await decode(result.id_token, LINE_SECRET_KEY, {
+      audience: client_id,
+      issuer: 'https://access.line.me',
+      algorithms: ['HS256']
+    })
+    */
+
+    return { result, decoded };
   } catch (error) {
     throw utils.process_error(error)
   }
