@@ -2,23 +2,9 @@ import * as functions from 'firebase-functions'
 import * as utils from '../stripe/utils'
 import * as https from 'https'
 import * as url from 'url';
-/*
-import * as jwt from 'jsonwebtoken';
+import * as admin from 'firebase-admin';
 
-const decode = (token: string, secret: string, options: any) => {
-  return new Promise((resolve, reject) => {
-    jwt.decode(token, secret, options, (err: any, decoded: any) => {
-      if (err) {
-        reject(err)
-      } else {
-        resolve(decoded)
-      }
-    })
-  })
-}
-*/
-
-const request = (_url: string, _options: any, postData?: any) => {
+const request = (_url: string, _options: any, postData?: any): Promise<any> => {
   const parsedURL = url.parse(_url);
   const options = Object.assign({
     hostname: parsedURL.host,
@@ -48,7 +34,7 @@ const request = (_url: string, _options: any, postData?: any) => {
   })
 }
 
-const postForm = (_url: string, params: any) => {
+const postForm = (_url: string, params: any): Promise<any> => {
   const postData = Object.keys(params).map(key => {
     return key + "=" + encodeURIComponent(params[key]);
   }).join("&");
@@ -75,21 +61,16 @@ export const validate = async (db: FirebaseFirestore.Firestore, data: any, conte
   };
 
   try {
-    const result: any = await postForm("https://api.line.me/oauth2/v2.1/token", params)
-
-    /*
-    const decoded = await decode(result.id_token, LINE_SECRET_KEY, {
-      audience: client_id,
-      issuer: 'https://access.line.me',
-      algorithms: ['HS256']
-    })
-    */
-    const lineObj = await postForm('https://api.line.me/oauth2/v2.1/verify', {
+    // access_token, id_token, expires_in, refresh_token, scope, token_type
+    const result = await postForm("https://api.line.me/oauth2/v2.1/token", params)
+    // amr, aud, exp, iat, iss, name, sub
+    const verified = await postForm('https://api.line.me/oauth2/v2.1/verify', {
       id_token: result.id_token,
       client_id
     })
+    const customeToken = await admin.auth().createCustomToken(`line:${verified.sub}`)
 
-    return { result, lineObj };
+    return { result, verified, customeToken };
   } catch (error) {
     throw utils.process_error(error)
   }
