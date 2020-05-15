@@ -34,6 +34,7 @@ export default {
   },
   data() {
     return {
+      mySound: null,
       shopInfo: {},
       orders: [],
       dayIndex: 0,
@@ -63,6 +64,7 @@ export default {
       this.updateDayIndex();
     }
     this.dateWasUpdated();
+    this.soundInit();
   },
   destroyed() {
     this.restaurant_detacher();
@@ -119,12 +121,24 @@ export default {
             (order.timePlaced && order.timePlaced.toDate()) || new Date();
           return order;
         });
+        this.soundPlay();
       });
     },
     orderSelected(order) {
       this.$router.push({
         path:
           "/admin/restaurants/" + this.restaurantId() + "/orders/" + order.id
+      });
+    },
+    soundInit() {
+      this.mySound = new Audio(["/hello.mp3"]);
+      this.mySound.preload = "auto";
+    },
+    soundPlay() {
+      console.log("call play");
+      this.mySound.currentTime = 0;
+      this.mySound.play().catch(() => {
+        console.log("sound not enabled");
       });
     }
   }
