@@ -21,11 +21,13 @@ export const validate = async (db: FirebaseFirestore.Firestore, data: any, conte
         console.log('statusCode:', res.statusCode);
         console.log('headers:', res.headers);
 
+        let body = "";
         res.on('data', (d) => {
           console.log(d);
+          body += d;
         });
         res.on('end', () => {
-          resolve({ success: true })
+          resolve({ success: true, body })
         })
       }).on('error', (e) => {
         console.error(e);
