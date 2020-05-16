@@ -35,6 +35,7 @@ export const place = async (db: FirebaseFirestore.Firestore, data: any, context:
         totalCharge: order.total + tip,
         tip: roundedTip,
         sendSMS: sendSMS || false,
+        updatedAt: admin.firestore.Timestamp.now(),
         timePlaced: timeToPickup && new admin.firestore.Timestamp(timeToPickup.seconds, timeToPickup.nanoseconds) || admin.firestore.FieldValue.serverTimestamp(),
       })
 
@@ -111,6 +112,7 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
       }
 
       transaction.update(orderRef, {
+        updatedAt: admin.firestore.Timestamp.now(),
         status
       })
       return { success: true }

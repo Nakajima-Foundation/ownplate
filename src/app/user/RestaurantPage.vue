@@ -236,6 +236,7 @@ export default {
         uid: this.user.uid,
         phoneNumber: this.user.phoneNumber,
         name: this.$store.getters.name,
+        updatedAt: firestore.FieldValue.serverTimestamp(),
         timeCreated: firestore.FieldValue.serverTimestamp()
         // price never set here.
       };
