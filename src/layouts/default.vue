@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper">
+  <div class="wrapper" @click="enableSound()">
     <!-- Header -->
     <div class="columns is-gapless is-vcentered is-mobile bg-ownplate-white">
       <div class="column">
@@ -135,7 +135,12 @@ export default {
       fullwidth: false,
       right: false,
 
-      langPopup: false
+      langPopup: false,
+
+      audioContext: new (window.AudioContext || window.webkitAudioContext)(),
+      pleyedSilent: false,
+      buffer: null,
+
     };
   },
   computed: {
@@ -174,6 +179,38 @@ export default {
     }
   },
   methods: {
+    async enableSound() {
+      // console.log(this.$store.state.orderEvent);
+      if (!this.pleyedSilent) {
+
+        console.log("default: enableSound");
+        try {
+          const src = this.audioContext.createBufferSource();
+          src.buffer = this.audioContext.createBuffer(1, 1, 22050);
+          src.connect(this.audioContext.destination);
+          src.start(0);
+          console.log("default: silent played");
+
+          const res = await fetch("/hello.mp3");
+          this.buffer = await res.arrayBuffer();
+          this.pleyedSilent = true;
+        } catch (e) {
+          console.log(e);
+          console.log("default: layout sound not enabled");
+        }
+      }
+    },
+    async play() {
+      if (this.buffer) {
+        this.audioContext.decodeAudioData(this.buffer.slice(0), _audioBuffer => {
+          const source = this.audioContext.createBufferSource();
+          source.buffer = _audioBuffer;
+          source.connect(this.audioContext.destination);
+          source.start(0);
+        });
+      }
+    },
+
     async signout() {
       console.log("signing out", auth.currentUser);
       try {
@@ -255,6 +292,10 @@ export default {
         await this.changeLang(this.$route.query.lang);
       }
     },
+    async "$store.state.orderEvent"() {
+      await this.play();
+      console.log(this.$store.state.orderEvent);
+    },
     async user() {
       if (this.user) {
         // lang
@@ -292,6 +333,8 @@ export default {
         await this.setLang(lang);
       }
     }
+    this.audio = new Audio(["/silent.mp3"]);
+    this.audio.preload = "auto";
   },
   destroyed() {
     if (this.unregisterAuthObserver) {

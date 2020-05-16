@@ -7,7 +7,7 @@
  - ユーザ系
    - レストランページ表示の高速化
    - アレルギー表示
-   - About画面のlocalize
+   - About画面のlocalize / Feature Hero 画像追加
    
 ## v0.3.5 (2020/05/14)
  - 管理系

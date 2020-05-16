@@ -1,11 +1,10 @@
 import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
 import * as express from './functions/express';
-import * as Firestore from './functions/firestore';
 
 import * as Sentry from '@sentry/node';
 
-const senty_dsn =  functions.config() && functions.config().senty && functions.config().senty.dsn || process.env.SENTY_DSN;
+const senty_dsn = functions.config() && functions.config().senty && functions.config().senty.dsn || process.env.SENTY_DSN;
 
 Sentry.init({ dsn: senty_dsn });
 
@@ -16,8 +15,9 @@ export const updateDb = (_db) => {
   db = _db;
 }
 
-export const wasOrderCreated = functions.firestore.document('restaurants/{restaurantId}/orders/{orderId}').onCreate(async (snapshot, context) => {
-  await Firestore.wasOrderCreated(db, snapshot, context);
+import * as Line from './functions/line';
+export const lineValidate = functions.https.onCall(async (data, context) => {
+  return await Line.validate(db, data, context);
 });
 
 import * as System from './functions/system';
@@ -26,6 +26,11 @@ export const systemGetConfig = functions.https.onCall(async (data, context) => {
 });
 
 import * as Order from './functions/order';
+
+export const wasOrderCreated2 = functions.https.onCall(async (data, context) => {
+  await Order.wasOrderCreated(db, data, context);
+});
+
 export const orderUpdate = functions.https.onCall(async (data, context) => {
   return await Order.update(db, data, context);
 });

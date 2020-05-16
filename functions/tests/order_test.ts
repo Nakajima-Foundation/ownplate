@@ -1,7 +1,7 @@
 import { should } from 'chai';
 import { expect } from 'chai';
 
-import * as firestore from './../src/functions/firestore'
+import * as order from './../src/functions/order'
 
 import * as constant from './../src/common/constant';
 import * as test_db_helper from './test_db_helper';
@@ -36,16 +36,15 @@ describe('Order function', () => {
     });
   }
   const createOrder = async (restaurantId, orderId, orderData) => {
+    const uid = "123";
     await adminDB.doc(`restaurants/${restaurantId}/orders/${orderId}`).set({
       status: constant.order_status.new_order,
-      order: orderData
+      order: orderData,
+      uid,
     });
 
-    //  get order
-    const orderdata = await adminDB.doc(`restaurants/${restaurantId}/orders/${orderId}`).get();
-
     // call function
-    await firestore.wasOrderCreated(adminDB, orderdata, {});
+    await order.wasOrderCreated(adminDB, {restaurantId, orderId}, {auth: { uid }});
   }
 
   it ('Order function, orderCounter test', async function() {
@@ -54,7 +53,7 @@ describe('Order function', () => {
 
     // menuObj test
     const refRestaurant = adminDB.doc(`restaurants/${restaurantId}`);
-    const menuObj = await firestore.getMenuObj(refRestaurant);
+    const menuObj = await order.getMenuObj(refRestaurant);
 
     Object.keys(menuObj).length.should.equal(2);
     menuObj["hoge1"].price.should.equal(100);

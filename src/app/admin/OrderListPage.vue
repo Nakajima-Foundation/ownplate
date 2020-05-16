@@ -34,6 +34,8 @@ export default {
   },
   data() {
     return {
+      mySound: null,
+      watchingOrder: false,
       shopInfo: {},
       orders: [],
       dayIndex: 0,
@@ -106,6 +108,7 @@ export default {
           this.lastSeveralDays[this.dayIndex - 1].date
         );
       }
+      this.watchingOrder = false;
       this.order_detacher = query.onSnapshot(result => {
         let orders = result.docs.map(this.doc2data("order"));
         orders = orders.sort((order0, order1) => {
@@ -119,6 +122,10 @@ export default {
             (order.timePlaced && order.timePlaced.toDate()) || new Date();
           return order;
         });
+        if (this.watchingOrder) {
+          this.soundPlay();
+        }
+        this.watchingOrder = true;
       });
     },
     orderSelected(order) {
@@ -126,6 +133,10 @@ export default {
         path:
           "/admin/restaurants/" + this.restaurantId() + "/orders/" + order.id
       });
+    },
+    soundPlay() {
+      this.$store.commit("pingOrderEvent");
+      console.log("order: call play");
     }
   }
 };

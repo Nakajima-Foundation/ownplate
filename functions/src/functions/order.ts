@@ -35,6 +35,7 @@ export const place = async (db: FirebaseFirestore.Firestore, data: any, context:
         totalCharge: order.total + tip,
         tip: roundedTip,
         sendSMS: sendSMS || false,
+        updatedAt: admin.firestore.Timestamp.now(),
         timePlaced: timeToPickup && new admin.firestore.Timestamp(timeToPickup.seconds, timeToPickup.nanoseconds) || admin.firestore.FieldValue.serverTimestamp(),
       })
 
@@ -111,6 +112,7 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
       }
 
       transaction.update(orderRef, {
+        updatedAt: admin.firestore.Timestamp.now(),
         status
       })
       return { success: true }
@@ -125,5 +127,112 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
     return result
   } catch (error) {
     throw utils.process_error(error)
+  }
+}
+
+
+export const getMenuObj = async (refRestaurant) => {
+  const menuObj = {};
+  const menusCollections = await refRestaurant.collection("menus").get();
+  menusCollections.forEach((m) => {
+    menuObj[m.id] = m.data();
+  });
+  return menuObj;
+};
+
+// export const wasOrderCreated = async (db, snapshot, context) => {
+export const wasOrderCreated = async (db, data: any, context) => {
+  const uid = utils.validate_auth(context);
+
+  const { restaurantId, orderId } = data;
+  utils.validate_params({ restaurantId, orderId });
+
+  const restaurantRef = db.doc(`restaurants/${restaurantId}`)
+  const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`)
+
+  try {
+    const restaurantDoc = await restaurantRef.get();
+    if (!restaurantDoc.exists) {
+      return orderRef.update("status", order_status.error);
+    }
+    const restaurantData = restaurantDoc.data();
+
+    const order = await orderRef.get();
+
+    if (!order) {
+      throw new functions.https.HttpsError('invalid-argument', 'This order does not exist.')
+    }
+    const orderData = order.data()
+
+    if (!orderData || !orderData.status || orderData.status !== order_status.new_order ||
+        !orderData.uid || orderData.uid !== uid) {
+      console.log("invalid order:" + String(order.id));
+      throw new functions.https.HttpsError('invalid-argument', 'This order does not exist.')
+    }
+
+    // tax rate
+    const alcoholTax = restaurantData.alcoholTax || 0;
+    const foodTax = restaurantData.foodTax || 0;
+
+    const menuObj = await getMenuObj(restaurantRef);
+
+    let food_sub_total = 0;
+    let alcohol_sub_total = 0;
+
+    const newOrderData = {};
+    Object.keys(orderData.order).map((menuId) => {
+      const num = orderData.order[menuId];
+      if (!Number.isInteger(num)) {
+        throw new Error("invalid number: not integer");
+      }
+      if (num < 0) {
+        throw new Error("invalid number: negative number");
+      }
+      // skip 0 order
+      if (num === 0) {
+        return;
+      }
+      const menu = menuObj[menuId];
+
+      if (menu.tax === "alcohol") {
+        alcohol_sub_total += (menu.price * num);
+      } else {
+        food_sub_total += (menu.price * num)
+      }
+      newOrderData[menuId] = num;
+    });
+
+    const multiple = utils.getStripeRegion().multiple; //100 for USD, 1 for JPY
+    // calculate price.
+    const sub_total = food_sub_total + alcohol_sub_total;
+    if (sub_total === 0) {
+      throw new Error("invalid order: total 0 ");
+    }
+    const tax = Math.round(((alcohol_sub_total * alcoholTax) / 100 + (food_sub_total * foodTax) / 100) * multiple) / multiple;
+    const total = sub_total + tax;
+
+    // Atomically increment the orderCount of the restaurant
+    let number = 0;
+    await db.runTransaction(async (tr) => {
+      if (restaurantData) {
+        number = restaurantData.orderCount || 0;
+        await tr.update(restaurantRef, {
+          orderCount: (number + 1) % 1000000
+        });
+      }
+    });
+
+    return orderRef.update({
+      order: newOrderData,
+      status: order_status.validation_ok,
+      number,
+      sub_total,
+      tax,
+      total
+    });
+  } catch (e) {
+    console.log(e);
+    return orderRef.update("status", order_status.error);
+
   }
 }
