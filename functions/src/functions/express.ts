@@ -2,6 +2,7 @@ import express from 'express';
 import * as admin from 'firebase-admin';
 import * as fs from 'fs';
 import { getRegionalSetting } from '../stripe/utils'
+import * as line from '@line/bot-sdk'
 
 export const app = express();
 export const router = express.Router();
@@ -96,3 +97,42 @@ app.get('/r/:restaurantName', ogpPage);
 app.get('/r/:restaurantpName/*', ogpPage);
 
 app.get('/debug/error', debugError);
+
+const config = {
+  channelAccessToken: "foo",
+  channelSecret: "bar",
+};
+// create LINE SDK client
+const client = new line.Client(config);
+
+router.get('/line', (req, res) => {
+  res.json({ message: "hello line" });
+});
+
+router.get('/1.0/line', (req, res) => {
+  res.json({ message: "hello line 1.0" });
+});
+
+app.post('/line', line.middleware(config), (req, res) => {
+  Promise
+    .all(req.body.events.map(handleEvent))
+    .then((result) => res.json(result))
+    .catch((err) => {
+      console.error(err);
+      res.status(500).end();
+    });
+});
+
+// event handler
+function handleEvent(event: any) {
+  if (event.type !== 'message' || event.message.type !== 'text') {
+    // ignore non-text-message event
+    return Promise.resolve(null);
+  }
+
+  // create a echoing text message
+  const echo = { type: 'text', text: event.message.text } as line.TextMessage;
+
+  // use reply API
+  return client.replyMessage(event.replyToken, echo);
+}
