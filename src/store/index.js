@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import { stripe_regions } from "~/plugins/constant.js"
+import { stripe_regions } from "~/plugins/constant.js";
 
 Vue.use(Vuex);
 
@@ -11,7 +11,8 @@ export const state = () => ({
   lang: undefined,
   date: new Date(),
   carts: {}, // for "Edit Order"
-  server: {} // server configuration
+  server: {}, // server configuration
+  orderEvent: 0
 });
 
 export const getters = {
@@ -35,10 +36,10 @@ export const getters = {
     return stripe_regions[state.server.region || "US"];
   },
   isSuperAdmin: (state) => {
-    return state.user && state.user.credentials && state.user.credentials.admin
+    return state.user && state.user.credentials && state.user.credentials.admin;
   },
   isNotSuperAdmin: (state) => {
-    return state.user && state.user.credentials && !state.user.credentials.admin
+    return state.user && state.user.credentials && !state.user.credentials.admin;
   }
 };
 
@@ -64,7 +65,10 @@ export const mutations = {
   setCredentials(state, credentials) {
     state.user = Object.assign({}, state.user, { credentials });
     console.log("store:setCredentials", credentials.admin);
-  }
+  },
+  pingOrderEvent(state) {
+    state.orderEvent = (state.orderEvent) + 1;
+  },
 };
 
 export const actions = {
