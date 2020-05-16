@@ -1,6 +1,12 @@
 <template>
   <section class="section">
-    <h1>Line Test</h1>
+    <h1 class="m-b-8">Line Test</h1>
+    <div v-if="user">
+      <p>uid:{{user.uid}}</p>
+      <p>displayName:{{user.displayName}}</p>
+      <p>phone:{{user.phone}}</p>
+      <p>email:{{user.email}}</p>
+    </div>
     <a :href="lineAuth">Line Login</a>
   </section>
 </template>
@@ -8,7 +14,7 @@
 <script>
 // https://firebase.googleblog.com/2016/11/authenticate-your-firebase-users-with-line-login.html
 import { ownPlateConfig } from "@/config/project";
-import { db, firestore, functions } from "~/plugins/firebase.js";
+import { db, auth, firestore, functions } from "~/plugins/firebase.js";
 
 export default {
   async mounted() {
@@ -22,12 +28,23 @@ export default {
           client_id: ownPlateConfig.LINE_CHANNEL_ID
         });
         console.log(data);
+        if (data.customeToken) {
+          try {
+            const user = await auth.signInWithCustomToken(data.customeToken);
+            console.log("line.mount", user);
+          } catch (error) {
+            console.error(error);
+          }
+        }
       } catch (error) {
         console.error(error.message, error.details);
       }
     }
   },
   computed: {
+    user() {
+      return this.$store.state.user;
+    },
     code() {
       return this.$route.query.code;
     },
