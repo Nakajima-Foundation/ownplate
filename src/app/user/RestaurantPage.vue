@@ -57,6 +57,7 @@
           id="order_btn"
           class="button is-primary is-rounded"
           :loading="isCheckingOut"
+          :disabled="isCheckingOut"
           @click="handleCheckOut"
         >
           <span
@@ -76,7 +77,7 @@ import ShopOrnerInfo from "~/app/user/Restaurant/ShopOrnerInfo";
 import ShopInfo from "~/app/user/Restaurant/ShopInfo";
 import NotFound from "~/components/NotFound";
 
-import { db, firestore } from "~/plugins/firebase.js";
+import { db, firestore, functions } from "~/plugins/firebase.js";
 import { order_status } from "~/plugins/constant.js";
 
 export default {
@@ -254,6 +255,11 @@ export default {
             orders: this.orders,
             options: this.options
           }
+        });
+        const wasOrderCreated = functions.httpsCallable("wasOrderCreated2");
+        await wasOrderCreated({
+          restaurantId: this.restaurantId(),
+          orderId: res.id,
         });
         this.$router.push({
           path: `/r/${this.restaurantId()}/order/${res.id}`
