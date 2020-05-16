@@ -3,6 +3,8 @@ import * as admin from 'firebase-admin';
 import * as fs from 'fs';
 import { getRegionalSetting } from '../stripe/utils'
 
+import * as Sentry from '@sentry/node';
+
 export const app = express();
 export const router = express.Router();
 
@@ -45,33 +47,39 @@ const escapeHtml = (str: string): string => {
 const ogpPage = async (req: any, res: any) => {
 
   const { restaurantName } = req.params;
-  const restaurant = await db.doc(`restaurants/${restaurantName}`).get();
-
   const template_data = fs.readFileSync('./templates/index.html', { encoding: 'utf8' });
+  try {
+    const restaurant = await db.doc(`restaurants/${restaurantName}`).get();
 
-  if (!restaurant || !restaurant.exists) {
-    return res.status(404).send(template_data);
+
+    if (!restaurant || !restaurant.exists) {
+      return res.status(404).send(template_data);
+    }
+    const regionalSetting = getRegionalSetting();
+    const restaurant_data: any = restaurant.data();
+
+    const title = restaurant_data.restaurantName;
+    const image = restaurant_data.restProfilePhoto;
+
+    const regex = /<title.*title>/;
+    const metas =
+      [
+        `<title>${escapeHtml(title)}</title>`,
+        `<meta property="og:title" content="${escapeHtml(title)}" />`,
+        `<meta property="og:site_name" content="${escapeHtml(title)}" />`,
+        `<meta property="og:type" content="website" />`,
+        `<meta property="og:url" content="https://${regionalSetting.hostName}/r/${restaurantName}" />`,
+        `<meta property="og:description" content="Japanese comfort food" />`,
+        `<meta property="og:image" content="${image}" />`,
+      ].join("\n");
+
+    res.set('Cache-Control', 'public, max-age=300, s-maxage=600');
+    res.send(template_data.replace(regex, metas));
+  } catch(e) {
+    console.log(e);
+    Sentry.captureException(e);
+    res.send(template_data);
   }
-  const regionalSetting = getRegionalSetting();
-  const restaurant_data: any = restaurant.data();
-
-  const title = restaurant_data.restaurantName;
-  const image = restaurant_data.restProfilePhoto;
-
-  const regex = /<title.*title>/;
-  const metas =
-    [
-      `<title>${escapeHtml(title)}</title>`,
-      `<meta property="og:title" content="${escapeHtml(title)}" />`,
-      `<meta property="og:site_name" content="${escapeHtml(title)}" />`,
-      `<meta property="og:type" content="website" />`,
-      `<meta property="og:url" content="https://${regionalSetting.hostName}/r/${restaurantName}" />`,
-      `<meta property="og:description" content="Japanese comfort food" />`,
-      `<meta property="og:image" content="${image}" />`,
-    ].join("\n");
-
-  res.set('Cache-Control', 'public, max-age=300, s-maxage=600');
-  res.send(template_data.replace(regex, metas));
 
 };
 const debugError = async (req: any, res: any) => {
