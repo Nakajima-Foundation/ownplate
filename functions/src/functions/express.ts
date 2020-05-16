@@ -3,6 +3,8 @@ import * as admin from 'firebase-admin';
 import * as fs from 'fs';
 import { getRegionalSetting } from '../stripe/utils'
 import * as line from '@line/bot-sdk'
+import * as functions from 'firebase-functions'
+import * as project from '../common/project';
 
 export const app = express();
 export const router = express.Router();
@@ -99,8 +101,8 @@ app.get('/r/:restaurantpName/*', ogpPage);
 app.get('/debug/error', debugError);
 
 const config = {
-  channelAccessToken: "foo",
-  channelSecret: "bar",
+  channelAccessToken: project.ownPlateConfig.LINE_CHANNEL_ID,
+  channelSecret: functions.config().line.secret
 };
 // create LINE SDK client
 const client = new line.Client(config);
@@ -113,7 +115,7 @@ router.get('/1.0/line', (req, res) => {
   res.json({ message: "hello line 1.0" });
 });
 
-app.post('/line', line.middleware(config), (req, res) => {
+router.post('/1.0/line', line.middleware(config), (req, res) => {
   Promise
     .all(req.body.events.map(handleEvent))
     .then((result) => res.json(result))
