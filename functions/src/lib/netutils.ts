@@ -47,7 +47,7 @@ export const postForm = (_url: string, params: any): Promise<any> => {
 export const postJson = (_url: string, _options: any, json: any): Promise<any> => {
   const postData = JSON.stringify(json);
   const headers = {
-    'Content-Type': 'Content-Type:application/json',
+    'Content-Type': 'application/json',
     'Content-Length': Buffer.byteLength(postData)
   }
   if (_options.headers) {

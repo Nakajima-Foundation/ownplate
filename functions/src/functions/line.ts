@@ -62,12 +62,15 @@ export const validate = async (db: FirebaseFirestore.Firestore, data: any, conte
 }
 
 export const sendMessage = async (db: FirebaseFirestore.Firestore, uid: string, message: string) => {
-  const doc = await db.doc(`/users/${uid}/system/line`).get()
-  const data: any = doc.data()
+  //const doc = await db.doc(`/users/${uid}/system/line`).get()
+  //const data: any = doc.data()
   const sub = uid.slice(5)
+  const LINE_MESSAGE_TOKEN = functions.config().line.message_token;
+
   return netutils.postJson('https://api.line.me/v2/bot/message/multicast', {
     headers: {
-      Authorization: `Bearer ${data.access.access_token}`
+      //Authorization: `Bearer ${data.access.access_token}`
+      Authorization: `Bearer ${LINE_MESSAGE_TOKEN}`
     }
   }, {
     to: [sub],
