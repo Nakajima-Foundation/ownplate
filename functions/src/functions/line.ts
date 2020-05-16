@@ -18,7 +18,7 @@ export const validate = async (db: FirebaseFirestore.Firestore, data: any, conte
       client_id,
       client_secret: LINE_SECRET_KEY
     })
-    if (!result.id_token) {
+    if (!result.id_token || !result.access_token) {
       throw new functions.https.HttpsError('invalid-argument',
         'Validation failed.', { params: result }
       )
@@ -36,10 +36,17 @@ export const validate = async (db: FirebaseFirestore.Firestore, data: any, conte
       )
     }
 
+    // We get user's profile
+    const profile = await netutils.request('https://api.line.me/v2/profile', {
+      headers: {
+        Authorization: `Bearer ${result.access_token}`
+      }
+    })
+
     // We ask Firebase to create a custom token for this LINE user
     const customeToken = await admin.auth().createCustomToken(`line:${verified.sub}`)
 
-    return { result, verified, customeToken };
+    return { result, verified, customeToken, profile };
   } catch (error) {
     throw utils.process_error(error)
   }
