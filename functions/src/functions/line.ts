@@ -11,23 +11,23 @@ export const validate = async (db: FirebaseFirestore.Firestore, data: any, conte
   try {
     // We validate the OAuth token (code) given to the redirected page.
     // Result: access_token, id_token, expires_in, refresh_token, scope, token_type
-    const result = await netutils.postForm("https://api.line.me/oauth2/v2.1/token", {
+    const access = await netutils.postForm("https://api.line.me/oauth2/v2.1/token", {
       grant_type: "authorization_code",
       code,
       redirect_uri,
       client_id,
       client_secret: LINE_SECRET_KEY
     })
-    if (!result.id_token || !result.access_token) {
+    if (!access.id_token || !access.access_token) {
       throw new functions.https.HttpsError('invalid-argument',
-        'Validation failed.', { params: result }
+        'Validation failed.', { params: access }
       )
     }
 
     // We verify this code.
     // amr, aud, exp, iat, iss, name, sub
     const verified = await netutils.postForm('https://api.line.me/oauth2/v2.1/verify', {
-      id_token: result.id_token,
+      id_token: access.id_token,
       client_id
     })
     if (!verified.sub) {
@@ -39,14 +39,20 @@ export const validate = async (db: FirebaseFirestore.Firestore, data: any, conte
     // We get user's profile
     const profile = await netutils.request('https://api.line.me/v2/profile', {
       headers: {
-        Authorization: `Bearer ${result.access_token}`
+        Authorization: `Bearer ${access.access_token}`
       }
     })
 
-    // We ask Firebase to create a custom token for this LINE user
-    const customeToken = await admin.auth().createCustomToken(`line:${verified.sub}`)
 
-    return { result, verified, customeToken, profile };
+    // We ask Firebase to create a custom token for this LINE user
+    const uid = `line:${verified.sub}`
+    const customeToken = await admin.auth().createCustomToken(uid)
+
+    await db.doc(`/users/${uid}/system/line`).set({
+      access, verified
+    }, { merge: true })
+
+    return { access, verified, customeToken, profile };
   } catch (error) {
     throw utils.process_error(error)
   }
