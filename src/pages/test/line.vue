@@ -8,7 +8,19 @@
       <p>email:{{user.email}}</p>
       <p>photoURL:{{user.photoURL}}</p>
     </div>
-    <a :href="lineAuth">Line Login</a>
+    <p class="m-t-16 m-b-16">
+      <a :href="lineAuth">Line Login</a>
+    </p>
+    <p>
+      <a href="https://lin.ee/1tEaDEpHn">
+        <img
+          src="https://scdn.line-apps.com/n/line_add_friends/btn/ja.png"
+          alt="Add friend"
+          height="36"
+          border="0"
+        />
+      </a>
+    </p>
   </section>
 </template>
 
