@@ -4,7 +4,7 @@
     <div v-if="user">
       <p>uid:{{user.uid}}</p>
       <p>displayName:{{user.displayName}}</p>
-      <p>phone:{{user.phone}}</p>
+      <p>phone:{{user.phoneNumber}}</p>
       <p>email:{{user.email}}</p>
     </div>
     <a :href="lineAuth">Line Login</a>
@@ -18,6 +18,7 @@ import { db, auth, firestore, functions } from "~/plugins/firebase.js";
 
 export default {
   async mounted() {
+    console.log(this.user);
     if (this.code) {
       console.log("****", this.code);
       const lineValidate = functions.httpsCallable("lineValidate");
@@ -30,8 +31,14 @@ export default {
         console.log(data);
         if (data.customeToken) {
           try {
-            const user = await auth.signInWithCustomToken(data.customeToken);
-            console.log("line.mount", user);
+            const something = await auth.signInWithCustomToken(
+              data.customeToken
+            );
+            console.log("line.mount", something);
+            var user = auth.currentUser;
+            user.updateProfile({
+              displayName: data.verified.name
+            });
           } catch (error) {
             console.error(error);
           }
