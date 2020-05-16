@@ -1,13 +1,5 @@
 <template>
   <div>
-    <!-- Restaurant Profile Photo -->
-    <div class="m-t-24 align-center" v-if="src">
-      <img :src="src" class="h-64 r-64 cover" />
-    </div>
-
-    <!-- Restaurant Name -->
-    <div class="m-t-8 align-center t-h6 c-text-black-high">{{ name }}</div>
-
     <!-- Share / Review -->
     <div class="m-t-8 align-center">
       <div class="op-button-text m-r-8" @click="openShare()">
@@ -22,7 +14,7 @@
         <div class="t-h6 c-text-black-disabled p-b-8">Share</div>
         <div class="cols">
           <div>
-            <qrcode :value="this.url" :options="{ width: 160 }"></qrcode>
+            <qrcode :value="url" :options="{ width: 160 }"></qrcode>
           </div>
           <div>
             <nuxt-link to="#" @click.native="copyClipboard(url)" event>
@@ -36,7 +28,7 @@
               style="word-break: break-all;"
             >{{this.url}}</div>
             <div class="m-t-24">
-              <sharing-buttons :title="name" :url="shareUrl()" />
+              <sharing-buttons :title="shopInfo.restaurantName" :url="url" />
             </div>
           </div>
         </div>
@@ -164,17 +156,6 @@ export default {
       type: Object,
       required: true
     },
-    compact: {
-      type: Boolean,
-      required: false
-    },
-    src: {
-      type: String
-    },
-    name: {
-      type: String,
-      required: true
-    }
   },
   data() {
     const d = new Date();
