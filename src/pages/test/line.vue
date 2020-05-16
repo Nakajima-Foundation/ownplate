@@ -6,6 +6,7 @@
       <p>displayName:{{user.displayName}}</p>
       <p>phone:{{user.phoneNumber}}</p>
       <p>email:{{user.email}}</p>
+      <p>photoURL:{{user.photoURL}}</p>
     </div>
     <a :href="lineAuth">Line Login</a>
   </section>
@@ -36,9 +37,15 @@ export default {
             );
             console.log("line.mount", something);
             var user = auth.currentUser;
-            user.updateProfile({
-              displayName: data.verified.name
-            });
+            const profile = {
+              displayName: data.profile.displayName
+            };
+            if (data.profile.pictureUrl) {
+              console.log("found pictureUrl", data.profile.pictureUrl);
+              profile.photoURL = data.profile.pictureUrl;
+            }
+            user.updateProfile(profile);
+            this.$store.commit("setUser", user);
           } catch (error) {
             console.error(error);
           }
@@ -63,7 +70,7 @@ export default {
         response_type: "code",
         client_id: ownPlateConfig.LINE_CHANNEL_ID,
         redirect_uri: this.redirect_uri,
-        scope: "profile openid",
+        scope: "profile openid email",
         state: "s" + Math.random()
         //nonce: "u" + Math.random()
       };
