@@ -107,7 +107,7 @@
           <template v-for="(day, key) in days">
             <div
               class="cols p-l-8 p-r-8 p-t-4 p-b-4 r-4 t-body2"
-              :style="(weekday==key) ? {'background-color': 'rgba(104, 159, 56, 0.1)'} : {}"
+              :style="(weekday==(key%7)) ? {'background-color': 'rgba(104, 159, 56, 0.1)'} : {}"
             >
               <div class="w-64">{{$t('week.short.' + day)}}</div>
               <div class="flex-1">
@@ -130,7 +130,7 @@
           </template>
         </div>
         <!-- Want to update to popup version -->
-        <!-- 
+        <!--
 				<div class="align-center">
           <div class="op-status c-status-green bg-status-green-bg m-t-16">Open Now</div>
           <div class="p-t-8 t-caption c-status-green">Tue 4:30 AM - 9:00 PM</div>
