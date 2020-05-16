@@ -4,7 +4,7 @@
       <network network="facebook" class="facebook">
         <span style="color:#3b5998; cursor: pointer; padding: 8px;">
           <i class="fab fa-facebook"></i>
-          <span class="sharetext">Facebook</span>
+          Facebook
         </span>
       </network>
       <br />
@@ -12,7 +12,7 @@
       <network network="twitter" class="twitter">
         <span style="color:#00acee; cursor: pointer; padding: 8px;">
           <i class="fab fa-twitter"></i>
-          <span class="sharetext">Twitter</span>
+          Twitter
         </span>
       </network>
     </div>

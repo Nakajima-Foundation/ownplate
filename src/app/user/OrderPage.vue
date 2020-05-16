@@ -31,10 +31,7 @@
             >{{$t('button.cancel')}}</b-button>
           </div>
         </div>
-        <shop-orner-info
-          :src="this.shopInfo.restProfilePhoto"
-          :name="this.shopInfo.restaurantName"
-        />
+        <shop-orner-info  :shopInfo="shopInfo"></shop-orner-info>
 
         <shop-info v-if="paid" :compact="true" :shopInfo="shopInfo" />
 

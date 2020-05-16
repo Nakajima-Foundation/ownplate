@@ -29,13 +29,9 @@
             </div>
 
             <!-- Restaurant Details -->
-            <div class="m-l-24 m-r-24">
-              <shop-orner-info
-                v-if="shopInfo.restaurantName"
-                :src="shopInfo.restProfilePhoto"
-                :name="shopInfo.restaurantName"
-              ></shop-orner-info>
-              <shop-info v-bind:shopInfo="shopInfo" v-if="shopInfo.publicFlag"></shop-info>
+            <div class="m-l-24 m-r-24" v-if="shopInfo.publicFlag">
+              <shop-orner-info  :shopInfo="shopInfo"></shop-orner-info>
+              <shop-info :shopInfo="shopInfo"></shop-info>
             </div>
           </div>
 
