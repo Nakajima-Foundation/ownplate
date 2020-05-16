@@ -82,7 +82,7 @@
       </div>
 
       <!-- Cart Button -->
-      <div
+      <b-button
         class="op-cartbutton"
         v-if="0 != totalCount"
         :loading="isCheckingOut"
@@ -96,7 +96,7 @@
             <i class="material-icons">shopping_cart</i>
           </div>
         </div>
-      </div>
+      </b-button>
     </template>
   </div>
 </template>
