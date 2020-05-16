@@ -5,7 +5,7 @@ import * as Firestore from './functions/firestore';
 
 import * as Sentry from '@sentry/node';
 
-const senty_dsn =  functions.config() && functions.config().senty && functions.config().senty.dsn || process.env.SENTY_DSN;
+const senty_dsn = functions.config() && functions.config().senty && functions.config().senty.dsn || process.env.SENTY_DSN;
 
 Sentry.init({ dsn: senty_dsn });
 
@@ -18,6 +18,11 @@ export const updateDb = (_db) => {
 
 export const wasOrderCreated = functions.firestore.document('restaurants/{restaurantId}/orders/{orderId}').onCreate(async (snapshot, context) => {
   await Firestore.wasOrderCreated(db, snapshot, context);
+});
+
+import * as Line from './functions/line';
+export const lineValidate = functions.https.onCall(async (data, context) => {
+  return await Line.validate(db, data, context);
 });
 
 import * as System from './functions/system';
