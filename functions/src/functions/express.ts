@@ -78,7 +78,7 @@ const ogpPage = async (req: any, res: any) => {
 
     res.set('Cache-Control', 'public, max-age=300, s-maxage=600');
     res.send(template_data.replace(regex, metas));
-  } catch(e) {
+  } catch (e) {
     console.log(e);
     Sentry.captureException(e);
     res.send(template_data);
@@ -109,8 +109,8 @@ app.get('/r/:restaurantpName/*', ogpPage);
 app.get('/debug/error', debugError);
 
 const config = {
-  channelAccessToken: project.ownPlateConfig.LINE_CHANNEL_ID,
-  channelSecret: functions.config().line.secret
+  channelAccessToken: project.ownPlateConfig.LINE_BOT_CHANNEL_ID,
+  channelSecret: functions.config().line.bot_secret
 };
 // create LINE SDK client
 const client = new line.Client(config);

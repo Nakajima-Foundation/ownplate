@@ -15,6 +15,7 @@ export const ownPlateConfig = {
   releasName: "beta",
   region: "JP",
   LINE_CHANNEL_ID: "1654216149",
+  LINE_BOT_CHANNEL_ID: "1654221980",
 };
 
 export const sentryDsn = 'https://127aea38118f4362a1167c0bc5607846@o391740.ingest.sentry.io/5238403';
