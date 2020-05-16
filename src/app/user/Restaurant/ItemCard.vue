@@ -142,8 +142,8 @@ export default {
     },
     openMenuFlag() {
       if (this.openMenuFlag && this.count == 0) {
-        // this.setCount(this.count + 1);
-        this.setCount(this.count + 0); // Need discussion about the auto add feature.
+        this.setCount(this.count + 1);
+        // this.setCount(this.count + 0); // Need discussion about the auto add feature.
       }
     }
   },
