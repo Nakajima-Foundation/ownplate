@@ -61,6 +61,7 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
       transaction.set(orderRef, {
         timePlaced: timeToPickup && new admin.firestore.Timestamp(timeToPickup.seconds, timeToPickup.nanoseconds) || admin.firestore.FieldValue.serverTimestamp(),
         status: order_status.order_placed,
+        updatedAt: admin.firestore.Timestamp.now(),
         totalCharge: totalCharge / multiple,
         tip: Math.round(tip * multiple) / multiple,
         sendSMS: sendSMS || false,
@@ -137,6 +138,7 @@ export const confirm = async (db: FirebaseFirestore.Firestore, data: any, contex
       transaction.set(orderRef, {
         timeConfirmed: admin.firestore.FieldValue.serverTimestamp(),
         status: order_status.customer_picked_up,
+        updatedAt: admin.firestore.Timestamp.now(),
         payment: {
           stripe: "confirmed"
         }
@@ -203,6 +205,7 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
         // No payment transaction
         transaction.set(orderRef, {
           timeCanceld: admin.firestore.FieldValue.serverTimestamp(),
+          updatedAt: admin.firestore.Timestamp.now(),
           status: order_status.order_canceled,
           uidCanceledBy: uid,
         }, { merge: true })
@@ -225,6 +228,7 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
         transaction.set(orderRef, {
           timeCanceld: admin.firestore.FieldValue.serverTimestamp(),
           status: order_status.order_canceled,
+          updatedAt: admin.firestore.Timestamp.now(),
           uidCanceledBy: uid,
           payment: {
             stripe: "canceled"

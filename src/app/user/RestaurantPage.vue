@@ -5,44 +5,73 @@
       <not-found />
     </template>
     <template v-else>
-      <!-- menu-image -->
-      <div
-        id="menu-header-image"
-        :style="{ backgroundImage: 'url(' + shopInfo.restCoverPhoto + ')' }"
-      >
-        <div id="menu-header-image-mask"></div>
-      </div>
-      <!-- shop-orner -->
-      <section class="section">
-        <shop-orner-info
-          v-if="shopInfo.restaurantName"
-          :src="shopInfo.restProfilePhoto"
-          :name="shopInfo.restaurantName"
-        ></shop-orner-info>
-        <b-tabs size="is-medium" class="block" expanded v-model="tabIndex">
-          <b-tab-item :label="$t('sitemenu.menu')">
-            <template v-for="itemId in menuLists">
-              <div v-if="itemsObj[itemId]" :key="itemId">
-                <h2 v-if="itemsObj[itemId]._dataType === 'title'">{{itemsObj[itemId].name}}</h2>
-                <item-card
-                  v-if="itemsObj[itemId]._dataType === 'menu'"
-                  :item="itemsObj[itemId]"
-                  :count="orders[itemId] || 0"
-                  :optionPrev="optionsPrev[itemId]"
-                  :initialOpenMenuFlag="(orders[itemId] || 0) > 0"
-                  :shopInfo="shopInfo"
-                  @didCountChange="didCountChange($event)"
-                  @didOptionValuesChange="didOptionValuesChange($event)"
-                ></item-card>
-              </div>
-            </template>
-            <hr class="hr-black" />
-          </b-tab-item>
-          <b-tab-item :label="$t('sitemenu.about')">
-            <shop-info v-bind:shopInfo="shopInfo" v-if="shopInfo.publicFlag"></shop-info>
-          </b-tab-item>
-        </b-tabs>
+      <div>
+        <div class="columns is-gapless">
+          <!-- Left Gap -->
+          <div class="column is-narrow w-24"></div>
 
+          <!-- Left Column -->
+          <div class="column">
+            <!-- Restaurant Cover Photo -->
+            <div class="columns is-gapless">
+              <div class="column is-narrow w-24"></div>
+              <div class="column">
+                <div class="is-hidden-mobile h-24"></div>
+                <div class="bg-form h-192">
+                  <img :src="shopInfo.restCoverPhoto" class="h-192 w-full cover is-hidden-tablet" />
+                  <img
+                    :src="shopInfo.restCoverPhoto"
+                    class="h-192 w-full cover r-8 is-hidden-mobile"
+                  />
+                </div>
+              </div>
+              <div class="column is-narrow w-24"></div>
+            </div>
+
+            <!-- Restaurant Details -->
+            <div class="m-l-24 m-r-24">
+              <shop-orner-info
+                v-if="shopInfo.restaurantName"
+                :src="shopInfo.restProfilePhoto"
+                :name="shopInfo.restaurantName"
+              ></shop-orner-info>
+              <shop-info v-bind:shopInfo="shopInfo" v-if="shopInfo.publicFlag"></shop-info>
+            </div>
+          </div>
+
+          <!-- Right Column -->
+          <div class="column">
+            <div class="m-l-24 m-r-24">
+              <div class="m-t-24">
+                <!-- Menu Items -->
+                <template v-for="itemId in menuLists">
+                  <div v-if="itemsObj[itemId]" :key="itemId">
+                    <div
+                      class="t-h6 c-text-black-disabled m-t-24"
+                      v-if="itemsObj[itemId]._dataType === 'title'"
+                    >{{itemsObj[itemId].name}}</div>
+                    <item-card
+                      v-if="itemsObj[itemId]._dataType === 'menu'"
+                      :item="itemsObj[itemId]"
+                      :count="orders[itemId] || 0"
+                      :optionPrev="optionsPrev[itemId]"
+                      :initialOpenMenuFlag="(orders[itemId] || 0) > 0"
+                      :shopInfo="shopInfo"
+                      @didCountChange="didCountChange($event)"
+                      @didOptionValuesChange="didOptionValuesChange($event)"
+                    ></item-card>
+                  </div>
+                </template>
+              </div>
+            </div>
+          </div>
+          <!-- Right Gap -->
+          <div class="column is-narrow w-24"></div>
+        </div>
+      </div>
+
+      <!-- shop-orner -->
+      <div>
         <b-modal :active.sync="loginVisible" :width="640">
           <div class="card">
             <div class="card-content">
@@ -50,20 +79,23 @@
             </div>
           </div>
         </b-modal>
-      </section>
-      <div>
-        <button
-          v-if="0 != totalCount"
-          id="order_btn"
-          class="button is-primary is-rounded"
-          :loading="isCheckingOut"
-          @click="handleCheckOut"
-        >
-          <span
-            style="margin-right: auto;"
-          >{{$tc('sitemenu.orderCounter', totalCount, {count: totalCount})}}</span>
-          <span class="bold" style="margin-left:auto;">{{$t('sitemenu.checkout')}}</span>
-        </button>
+      </div>
+
+      <!-- Cart Button -->
+      <div
+        class="op-cartbutton"
+        v-if="0 != totalCount"
+        :loading="isCheckingOut"
+        :disabled="isCheckingOut"
+        @click="handleCheckOut"
+      >
+        <div class="level is-mobile w-full p-l-32 p-r-32">
+          <div class="level-left">{{$tc('sitemenu.orderCounter', totalCount, {count: totalCount})}}</div>
+          <div class="level-right">
+            <span class="m-r-8">{{$t('sitemenu.checkout')}}</span>
+            <i class="material-icons">shopping_cart</i>
+          </div>
+        </div>
       </div>
     </template>
   </div>
@@ -76,7 +108,7 @@ import ShopOrnerInfo from "~/app/user/Restaurant/ShopOrnerInfo";
 import ShopInfo from "~/app/user/Restaurant/ShopInfo";
 import NotFound from "~/components/NotFound";
 
-import { db, firestore } from "~/plugins/firebase.js";
+import { db, firestore, functions } from "~/plugins/firebase.js";
 import { order_status } from "~/plugins/constant.js";
 
 export default {
@@ -236,6 +268,7 @@ export default {
         uid: this.user.uid,
         phoneNumber: this.user.phoneNumber,
         name: this.$store.getters.name,
+        updatedAt: firestore.FieldValue.serverTimestamp(),
         timeCreated: firestore.FieldValue.serverTimestamp()
         // price never set here.
       };
@@ -253,6 +286,11 @@ export default {
             orders: this.orders,
             options: this.options
           }
+        });
+        const wasOrderCreated = functions.httpsCallable("wasOrderCreated2");
+        await wasOrderCreated({
+          restaurantId: this.restaurantId(),
+          orderId: res.id,
         });
         this.$router.push({
           path: `/r/${this.restaurantId()}/order/${res.id}`
@@ -299,39 +337,3 @@ export default {
   }
 };
 </script>
-<style lang="scss" scoped>
-#menu-header-image {
-  width: 100%;
-  height: 200px;
-  padding: initial !important;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  position: relative;
-}
-// #menu-header-image-mask {
-//   background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), #fff 50%)!important;
-// }
-
-#order_btn {
-  position: fixed;
-  /*基準を画面の左上に*/
-  bottom: 1rem;
-  /*余白が入らないように*/
-  /*以下装飾*/
-  width: 90%;
-  left: 50%;
-  transform: translate(-50%, 0);
-  margin-left: auto;
-  margin-right: auto;
-  // background: #FFC778;
-  color: white;
-  height: 3rem;
-}
-</style>
-<style>
-.tab-content {
-  margin-left: calc(((100vw - 100%) / 2) * -1) !important;
-  margin-right: calc(((100vw - 100%) / 2) * -1) !important;
-}
-</style>
