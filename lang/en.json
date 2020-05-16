@@ -104,7 +104,7 @@
   },
   "shopInfo": {
     "qrcode": "QR code",
-    "copyUrl": "Copy Url",
+    "copyUrl": "Copy URL",
     "UrlCopied": "URL Copied",
     "UrlCopyFailed": "URL Copy failed",
     "name": "Restaurant name",
@@ -122,7 +122,7 @@
   "sitemenu": {
     "menu": "Menu",
     "about": "About",
-    "checkout": "CHECKOUT",
+    "checkout": "Checkout",
     "orderCounter": "{count} item | {count} items"
   },
   "date": {
