@@ -65,7 +65,6 @@ export default {
       this.updateDayIndex();
     }
     this.dateWasUpdated();
-    this.soundInit();
   },
   destroyed() {
     this.restaurant_detacher();
@@ -135,16 +134,9 @@ export default {
           "/admin/restaurants/" + this.restaurantId() + "/orders/" + order.id
       });
     },
-    soundInit() {
-      this.mySound = new Audio(["/hello.mp3"]);
-      this.mySound.preload = "auto";
-    },
     soundPlay() {
-      console.log("call play");
-      this.mySound.currentTime = 0;
-      this.mySound.play().catch(() => {
-        console.log("sound not enabled");
-      });
+      this.$store.commit("pingOrderEvent");
+      console.log("order: call play");
     }
   }
 };
