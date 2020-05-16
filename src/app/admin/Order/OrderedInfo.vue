@@ -69,7 +69,7 @@ export default {
     },
     timestamp() {
       const time = this.order.timePlaced;
-      const date = `${time.getMonth()}/${time.getDate()} `;
+      const date = `${time.getMonth() + 1}/${time.getDate()} `;
       return date + this.num2time(time.getHours() * 60 + time.getMinutes());
       //return this.$d(this.order.timePlaced, "time");
     },
