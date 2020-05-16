@@ -49,10 +49,10 @@ export const validate = async (db: FirebaseFirestore.Firestore, data: any, conte
     const customeToken = await admin.auth().createCustomToken(uid)
 
     await db.doc(`/users/${uid}/system/line`).set({
-      access, verified
+      access, verified, profile
     }, { merge: true })
 
-    return { access, verified, customeToken, profile };
+    return { customeToken, profile };
   } catch (error) {
     throw utils.process_error(error)
   }
