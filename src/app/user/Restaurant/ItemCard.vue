@@ -1,75 +1,77 @@
 <template>
-  <div class="card block" :style="cardStyle">
-    <div class="card-content">
-      <div class="media" @click="toggleMenuFlag()">
-        <div class="media-content">
-          <!-- <h4 class="bold">Kushikatsu Special Platter</h4> -->
-          <p class="item-name">{{ title }}</p>
-          <p class="item-price">
+  <div>
+    <!-- Item Card -->
+    <div class="bg-surface r-8 d-low m-t-8" :style="cardStyle">
+      <div class="touchable cols" @click="toggleMenuFlag()">
+        <div class="flex-1 p-l-16 p-r-16 p-t-16 p-b-16">
+          <div class="t-h6 c-text-black-high">{{ title }}</div>
+          <div class="t-body1 c-text-black-high m-t-8">
             <Price :shopInfo="shopInfo" :menu="item" />
-          </p>
-          <p>{{ description }}</p>
-          <p v-if="allergens.length > 0">{{ allergensDescription }}</p>
+          </div>
+          <div
+            v-if="description !== null"
+            class="t-body2 c-text-black-medium m-t-8"
+          >{{ description }}</div>
+          <div
+            v-if="allergens.length > 0"
+            class="t-body2 c-text-black-medium m-t-8"
+          >{{ allergensDescription }}</div>
         </div>
-        <div class="media-right">
-          <figure class="image is-100x100">
-            <img class="is-square" :src="image" alt style="border-radius: 4px;" />
-          </figure>
+        <div class="p-r-16 p-t-16 p-b-16" v-if="image !== null">
+          <img :src="image" width="96" height="96" class="is-pulled-right r-4" />
         </div>
       </div>
-      <div v-if="openMenuFlag">
-        <hr class="hr-black" />
-        <div class="count-class">
-          <h4>Quantity</h4>
 
-          <div class="level is-mobile counter">
+      <!-- Item Order Details -->
+      <div v-if="openMenuFlag" class="m-l-16 m-r-16 p-b-16">
+        <hr class="devider m-t-0 m-b-0" />
+
+        <!-- Item Options -->
+        <div v-if="hasOptions" class="m-t-16">
+          <div class="t-caption c-text-black-medium">Options</div>
+          <div v-for="(option, index) in options" :key="index" class="m-t-8">
+            <div v-if="option.length === 1" class="field">
+              <b-checkbox v-model="optionValues[index]">{{ option[0] }}</b-checkbox>
+            </div>
+            <div v-else class="field">
+              <b-radio
+                v-for="(choice, index2) in option"
+                v-model="optionValues[index]"
+                :name="`${item.id}${index}`"
+                :native-value="choice"
+                :key="index2"
+              >{{ choice }}</b-radio>
+            </div>
+          </div>
+        </div>
+
+        <!-- Special instructions -->
+        <div v-if="false" class="m-t-16">
+          <div class="t-caption c-text-black-medium p-b-8">Special instructions</div>
+          <b-input type="textarea" placeholder="Enter special instructions here."></b-input>
+          <div
+            class="t-caption c-text-black-medium m-l-16 m-r-16 m-t-8"
+          >Please note that special requests may result in price adjustment after your order is processed.</div>
+        </div>
+
+        <!-- Item Quantity -->
+        <div class="m-t-16">
+          <div class="t-caption c-text-black-medium">Quantity</div>
+          <div class="level is-mobile m-t-8">
             <div class="level-left">
-              <b-button
-                class="counter-button"
-                rounded
-                style="padding-left:2rem;padding-right:2rem;margin-left:1rem;"
-                :disabled="count === 0"
+              <div
                 @click="pullCount"
+                class="op-button-pill bg-status-red-bg w-96 m-r-8"
+                :disabled="count === 0"
               >
-                <i class="fas fa-minus" />
-              </b-button>
+                <i class="material-icons c-status-red">remove</i>
+              </div>
             </div>
-            <span class="item-counter">{{ count }}</span>
+            <div class="t-h4 c-primary">{{ count }}</div>
             <div class="level-right">
-              <b-button
-                class="counter-button"
-                rounded
-                style="padding-left:2rem;padding-right:2rem;margin-right:1rem;"
-                @click="pushCount"
-              >
-                <i class="fas fa-plus" />
-              </b-button>
-            </div>
-          </div>
-          <div v-if="hasOptions">
-            <div v-for="(option, index) in options" :key="index">
-              <div v-if="option.length === 1" class="field">
-                <b-checkbox v-model="optionValues[index]">{{ option[0] }}</b-checkbox>
+              <div @click="pushCount" class="op-button-pill bg-primary-bg w-96 m-r-8">
+                <i class="material-icons">add</i>
               </div>
-              <div v-else class="field">
-                <b-radio
-                  v-for="(choice, index2) in option"
-                  v-model="optionValues[index]"
-                  :name="`${item.id}${index}`"
-                  :native-value="choice"
-                  :key="index2"
-                >{{ choice }}</b-radio>
-              </div>
-            </div>
-          </div>
-          <div v-if="false">
-            <p class="bold">Special instructions</p>
-            <p class="p-font-mini">
-              Please note that special requests may result in price adjustment
-              after your order is processed.
-            </p>
-            <div class="notification">
-              <p class="p-font-mini">Please put the dressing on the side.</p>
             </div>
           </div>
         </div>
@@ -140,7 +142,8 @@ export default {
     },
     openMenuFlag() {
       if (this.openMenuFlag && this.count == 0) {
-        this.setCount(this.count + 1);
+        // this.setCount(this.count + 1);
+        this.setCount(this.count + 0); // Need discussion about the auto add feature.
       }
     }
   },
@@ -184,7 +187,7 @@ export default {
       return this.options.length;
     },
     cardStyle() {
-      return this.count > 0 ? { backgroundColor: "#e0f7fa" } : {};
+      return this.count > 0 ? { border: "solid 2px #0097a7" } : {};
     },
     price() {
       return Number(this.item.price || 0);
@@ -192,8 +195,8 @@ export default {
     image() {
       // BUGBUG: Come up with a better default image.
       return (
-        this.item.itemPhoto ||
-        "https://magazine.hitosara.com/image/421/MM_421.jp"
+        this.item.itemPhoto || null
+        // "https://magazine.hitosara.com/image/421/MM_421.jp"
       );
     },
     title() {
@@ -203,7 +206,6 @@ export default {
       return this.item.itemDescription;
     }
   },
-
   methods: {
     pullCount() {
       if (this.count <= 0) {
@@ -223,26 +225,3 @@ export default {
   }
 };
 </script>
-<style lang="scss" scoped>
-.card {
-  margin-bottom: 0.6rem;
-}
-
-.item-counter {
-  margin-top: -0.4rem;
-  font-size: 3rem !important;
-  color: $primary;
-}
-
-.count-class {
-  margin-top: 1rem;
-}
-
-.counter {
-  margin-top: 1rem;
-}
-
-.notification {
-  margin-top: 1rem;
-}
-</style>
