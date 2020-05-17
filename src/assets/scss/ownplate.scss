@@ -410,6 +410,27 @@ body,
   @extend .c-onprimary;
   @extend .t-h6;
 }
+// Reset <b-button> style
+.button.op-cartbutton {
+  padding: 0;
+  border: none;
+  &:hover {
+    @extend .c-onprimary;
+    border: none;
+  }
+  &:active {
+    @extend .c-onprimary;
+    border: none;
+  }
+  &:focus {
+    @extend .c-onprimary;
+    border: none;
+    @extend .d-medium;
+  }
+  > span {
+    @extend .w-full;
+  }
+}
 
 .control-label {
   @extend .t-body1;
