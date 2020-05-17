@@ -52,10 +52,10 @@ export const validate = async (db: FirebaseFirestore.Firestore, data: any, conte
       access, verified, profile
     }, { merge: true })
 
-    const ret = await sendMessage(db, uid, "Hello World")
+    const ret = await sendMessage(db, uid, "Hello World 2")
     console.log('sendMessage', ret)
 
-    return { customeToken, profile, ret };
+    return { customeToken, profile, ret, nonce: verified.nonce };
   } catch (error) {
     throw utils.process_error(error)
   }

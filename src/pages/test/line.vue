@@ -83,7 +83,8 @@ export default {
         client_id: ownPlateConfig.LINE_CHANNEL_ID,
         redirect_uri: this.redirect_uri,
         scope: "profile openid email",
-        state: "s" + Math.random()
+        state: "s" + Math.random(),
+        nonce: location.href
         //nonce: "u" + Math.random()
       };
       const queryString = Object.keys(query)
