@@ -254,6 +254,7 @@ export default {
       } else {
         console.log("this.user it not ready yet");
         this.waitForUser = true;
+        // this.isCheckingOut = false;
       }
     },
     async goCheckout() {
