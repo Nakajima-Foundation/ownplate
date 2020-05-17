@@ -22,7 +22,7 @@
             <div v-if="image !== null" class="p-b-8">
               <img :src="image" width="96" height="96" class="r-4" />
             </div>
-            <div @click="pushCount" class="op-button-pill bg-primary-bg w-96">
+            <div  @click.stop="pushCount" class="op-button-pill bg-primary-bg w-96">
               <span>Add</span>
             </div>
           </div>
@@ -222,6 +222,9 @@ export default {
     },
     pushCount() {
       this.setCount(this.count + 1);
+      if (!this.openMenuFlag) {
+        this.toggleMenuFlag();
+      }
     },
     toggleMenuFlag() {
       this.openMenuFlag = !this.openMenuFlag;
