@@ -64,6 +64,7 @@ export default {
     }
   },
   async created() {
+    this.checkAdminPermission();
     this.restaurant_detacher = db
       .doc(`restaurants/${this.restaurantId()}`)
       .onSnapshot(restaurant => {
