@@ -12,7 +12,9 @@ export const state = () => ({
   date: new Date(),
   carts: {}, // for "Edit Order"
   server: {}, // server configuration
-  orderEvent: 0
+  orderEvent: 0,
+  soundEnable: false, // after user touch/click event, this flag set true (for mobile browser)
+  soundOn: false, // for restaurant admin config
 });
 
 export const getters = {
@@ -68,6 +70,12 @@ export const mutations = {
   },
   pingOrderEvent(state) {
     state.orderEvent = (state.orderEvent) + 1;
+  },
+  soundEnable(state) {
+    state.soundEnable = true;
+  },
+  setSoundOn(state, flag) {
+    state.soundOn = flag;
   },
 };
 
