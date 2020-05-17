@@ -43,16 +43,15 @@ export const validate = async (db: FirebaseFirestore.Firestore, data: any, conte
       }
     })
 
-
     // We ask Firebase to create a custom token for this LINE user
-    const uid = `line:${verified.sub}`
-    const customeToken = await admin.auth().createCustomToken(uid)
+    const uidLine = `line:${verified.sub}`
+    const customeToken = await admin.auth().createCustomToken(uidLine)
 
-    await db.doc(`/users/${uid}/system/line`).set({
+    await db.doc(`/users/${uidLine}/system/line`).set({
       access, verified, profile
     }, { merge: true })
 
-    const ret = await sendMessage(db, uid, "Hello World 2")
+    const ret = await sendMessage(db, uidLine, "Hello World 3")
     console.log('sendMessage', ret)
 
     return { customeToken, profile, ret, nonce: verified.nonce };
@@ -64,9 +63,12 @@ export const validate = async (db: FirebaseFirestore.Firestore, data: any, conte
 export const sendMessage = async (db: FirebaseFirestore.Firestore, uid: string, message: string) => {
   //const doc = await db.doc(`/users/${uid}/system/line`).get()
   //const data: any = doc.data()
-  const sub = uid.slice(5)
   const LINE_MESSAGE_TOKEN = functions.config().line.message_token;
-
+  const data = (await db.doc(`/users/${uid}/system/line`).get()).data();
+  const sub = data && data.profile && data.profile.userId
+  if (!sub) {
+    return;
+  }
   return netutils.postJson('https://api.line.me/v2/bot/message/push', {
     headers: {
       //Authorization: `Bearer ${data.access.access_token}`
