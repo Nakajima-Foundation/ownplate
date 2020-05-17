@@ -30,7 +30,7 @@
 
             <!-- Restaurant Details -->
             <div class="m-l-24 m-r-24" v-if="shopInfo.publicFlag">
-              <shop-orner-info  :shopInfo="shopInfo"></shop-orner-info>
+              <shop-orner-info :shopInfo="shopInfo"></shop-orner-info>
               <shop-info :shopInfo="shopInfo"></shop-info>
             </div>
           </div>
@@ -213,6 +213,9 @@ export default {
     }
   },
   computed: {
+    isUser() {
+      return !!this.$store.getters.uidUser;
+    },
     totalCount() {
       const ret = Object.keys(this.orders).reduce((total, id) => {
         return total + this.orders[id];
@@ -240,7 +243,7 @@ export default {
     handleCheckOut() {
       // The user has clicked the CheckOut button
       this.retryCount = 0;
-      if (this.user && this.user.phoneNumber) {
+      if (this.isUser) {
         this.goCheckout();
       } else {
         this.loginVisible = true;
@@ -249,7 +252,7 @@ export default {
     handleDismissed() {
       // The user has dismissed the login dialog (including the successful login)
       this.loginVisible = false;
-      if (this.user) {
+      if (this.isUser) {
         this.goCheckout();
       } else {
         console.log("this.user it not ready yet");
@@ -287,7 +290,7 @@ export default {
         const wasOrderCreated = functions.httpsCallable("wasOrderCreated2");
         await wasOrderCreated({
           restaurantId: this.restaurantId(),
-          orderId: res.id,
+          orderId: res.id
         });
         this.$router.push({
           path: `/r/${this.restaurantId()}/order/${res.id}`
