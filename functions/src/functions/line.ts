@@ -43,6 +43,19 @@ export const validate = async (db: FirebaseFirestore.Firestore, data: any, conte
       }
     })
 
+    // If this is for an existing user, we don't need to create custome token
+    if (context.auth) {
+      const collection = context.auth.token.phone_number ? "users" : "admins";
+      await db.doc(`/${collection}/${context.auth.uid}/system/line`).set({
+        access, verified, profile
+      }, { merge: true })
+
+      const ret2 = await sendMessage(db, context.auth.uid, "Hello World 5")
+      console.log('sendMessage', ret2)
+
+      return { profile, nonce: verified.nonce };
+    }
+
     // We ask Firebase to create a custom token for this LINE user
     const uidLine = `line:${verified.sub}`
     const customeToken = await admin.auth().createCustomToken(uidLine)
@@ -64,7 +77,7 @@ export const sendMessage = async (db: FirebaseFirestore.Firestore, uid: string, 
   //const doc = await db.doc(`/users/${uid}/system/line`).get()
   //const data: any = doc.data()
   const LINE_MESSAGE_TOKEN = functions.config().line.message_token;
-  const data = (await db.doc(`/users/${uid}/system/line`).get()).data();
+  const data = (await db.doc(`/users/${uid}/system/line`).get()).data() || (await db.doc(`/admins/${uid}/system/line`).get()).data();
   const sub = data && data.profile && data.profile.userId
   if (!sub) {
     return;
