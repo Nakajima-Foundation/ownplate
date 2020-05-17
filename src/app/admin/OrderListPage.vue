@@ -2,6 +2,9 @@
   <section class="section" style="background-color:#fffafa">
     <back-button url="/admin/restaurants/" />
     <h2 class="p-big bold">{{ shopInfo.restaurantName }}</h2>
+    <span :style=" enableSound ? {color: '#000000'}: {color: '#aaaaaa'} ">
+      <span @click="soundToggle()"><b-icon :icon="soundOn ? 'volume-high' : 'volume-mute'" size="is-miadium"></b-icon></span>
+    </span>
     <b-select v-model="dayIndex">
       <option v-for="day in lastSeveralDays" :value="day.index" :key="day.index">
         {{ $d(day.date, "short" )}}
@@ -20,7 +23,7 @@
 </template>
 
 <script>
-import { db } from "~/plugins/firebase.js";
+import { db, firestore } from "~/plugins/firebase.js";
 import { midNight } from "~/plugins/dateUtils.js";
 import OrderedInfo from "~/app/admin/Order/OrderedInfo";
 import BackButton from "~/components/BackButton";
@@ -34,13 +37,18 @@ export default {
   },
   data() {
     return {
+      soundOn: false,
       mySound: null,
       watchingOrder: false,
       shopInfo: {},
       orders: [],
       dayIndex: 0,
       restaurant_detacher: () => {},
-      order_detacher: () => {}
+      order_detacher: () => {},
+      notification_data: {
+        uid: this.$store.getters.uidAdmin,
+        createdAt: firestore.FieldValue.serverTimestamp()
+      }
     };
   },
   watch: {
@@ -50,9 +58,13 @@ export default {
     },
     "$route.query.day"() {
       this.updateDayIndex();
+    },
+    soundOn() {
+      this.$store.commit("setSoundOn", this.soundOn);
     }
   },
-  created() {
+  async created() {
+    this.checkAdminPermission();
     this.restaurant_detacher = db
       .doc(`restaurants/${this.restaurantId()}`)
       .onSnapshot(restaurant => {
@@ -65,6 +77,13 @@ export default {
       this.updateDayIndex();
     }
     this.dateWasUpdated();
+
+    const notification = await db.doc(`restaurants/${this.restaurantId()}/private/notifications`).get();
+    if (notification.exists) {
+      this.notification_data = notification.data();
+      this.soundOn = this.notification_data.soundOn;
+    };
+    console.log(notification);
   },
   destroyed() {
     this.restaurant_detacher();
@@ -76,9 +95,19 @@ export default {
         const date = midNight(-index);
         return { index, date };
       });
-    }
+    },
+    enableSound() {
+      return this.$store.state.soundEnable;
+    },
   },
   methods: {
+    async soundToggle() {
+      console.log("HELLO");
+      this.soundOn = !this.soundOn;
+      this.notification_data.soundOn = this.soundOn;
+      this.notification_data.updatedAt = firestore.FieldValue.serverTimestamp();
+      await db.doc(`restaurants/${this.restaurantId()}/private/notifications`).set(this.notification_data);
+    },
     updateDayIndex() {
       const dayIndex =
         this.lastSeveralDays.findIndex(day => {

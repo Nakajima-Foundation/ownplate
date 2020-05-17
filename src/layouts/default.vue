@@ -191,9 +191,10 @@ export default {
           src.start(0);
           console.log("default: silent played");
 
-          const res = await fetch("/hello.mp3");
+          const res = await fetch("/dora.mp3");
           this.buffer = await res.arrayBuffer();
           this.pleyedSilent = true;
+          this.$store.commit("soundEnable");
         } catch (e) {
           console.log(e);
           console.log("default: layout sound not enabled");
@@ -202,12 +203,16 @@ export default {
     },
     async play() {
       if (this.buffer) {
-        this.audioContext.decodeAudioData(this.buffer.slice(0), _audioBuffer => {
-          const source = this.audioContext.createBufferSource();
-          source.buffer = _audioBuffer;
-          source.connect(this.audioContext.destination);
-          source.start(0);
-        });
+        if (this.$store.state.soundOn) {
+          this.audioContext.decodeAudioData(this.buffer.slice(0), _audioBuffer => {
+            const source = this.audioContext.createBufferSource();
+            source.buffer = _audioBuffer;
+            source.connect(this.audioContext.destination);
+            source.start(0);
+          });
+        } else {
+          console.log("silent order update");
+        }
       }
     },
 
@@ -333,8 +338,6 @@ export default {
         await this.setLang(lang);
       }
     }
-    this.audio = new Audio(["/silent.mp3"]);
-    this.audio.preload = "auto";
   },
   destroyed() {
     if (this.unregisterAuthObserver) {
