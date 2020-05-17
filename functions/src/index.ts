@@ -1,58 +1,47 @@
 import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
-import * as express from './functions/express';
 
 import * as Sentry from '@sentry/node';
+
+import exportIfNeeded from './common/exportifneeded';
 
 const senty_dsn = functions.config() && functions.config().senty && functions.config().senty.dsn || process.env.SENTY_DSN;
 
 Sentry.init({ dsn: senty_dsn });
 
-export const api = functions.https.onRequest(express.app);
-
-let db = admin.firestore();
-export const updateDb = (_db) => {
-  db = _db;
+if (!admin.apps.length) {
+  admin.initializeApp();
 }
+const db = admin.firestore();
+
+exportIfNeeded("api", "api", exports);
+
+exportIfNeeded("systemGetConfig", "systemGetConfig", exports);
 
 import * as Line from './functions/line';
-export const lineValidate = functions.https.onCall(async (data, context) => {
+exports.lineValidate = functions.https.onCall(async (data, context) => {
   return await Line.validate(db, data, context);
 });
 
-import * as System from './functions/system';
-export const systemGetConfig = functions.https.onCall(async (data, context) => {
-  return await System.getConfig(db, data, context);
-});
-
-import * as Order from './functions/order';
-
-export const wasOrderCreated2 = functions.https.onCall(async (data, context) => {
-  await Order.wasOrderCreated(db, data, context);
-});
-
-export const orderUpdate = functions.https.onCall(async (data, context) => {
-  return await Order.update(db, data, context);
-});
-export const orderPlace = functions.https.onCall(async (data, context) => {
-  return await Order.place(db, data, context);
-});
+exportIfNeeded("wasOrderCreated2", "order/wasOrderCreated2", exports);
+exportIfNeeded("orderUpdate", "order/orderUpdate", exports);
+exportIfNeeded("orderPlace", "order/orderPlace", exports);
 
 import * as StripeOAuth from './stripe/oauth'
-export const stripeConnect = functions.https.onCall(async (data, context) => {
+exports.stripeConnect = functions.https.onCall(async (data, context) => {
   return await StripeOAuth.connect(db, data, context);
 });
-export const stripeDisconnect = functions.https.onCall(async (data, context) => {
+exports.stripeDisconnect = functions.https.onCall(async (data, context) => {
   return await StripeOAuth.disconnect(db, data, context);
 });
 
 import * as StripeIntent from './stripe/intent'
-export const stripeCreateIntent = functions.https.onCall(async (data, context) => {
+exports.stripeCreateIntent = functions.https.onCall(async (data, context) => {
   return await StripeIntent.create(db, data, context);
 });
-export const stripeConfirmIntent = functions.https.onCall(async (data, context) => {
+exports.stripeConfirmIntent = functions.https.onCall(async (data, context) => {
   return await StripeIntent.confirm(db, data, context);
 });
-export const stripeCancelIntent = functions.https.onCall(async (data, context) => {
+exports.stripeCancelIntent = functions.https.onCall(async (data, context) => {
   return await StripeIntent.cancel(db, data, context);
 });
