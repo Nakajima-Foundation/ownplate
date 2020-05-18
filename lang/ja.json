@@ -293,6 +293,11 @@
     "lupin": "ルピナス",
     "mollusc": "軟体動物"
   },
+  "line": {
+    "notifyMe": "ラインで通知を受ける",
+    "addFriend": "友だち追加",
+    "addFriendDescription": "ご注文状況の通知を受けるには、「おもてなし.com 公式アカウント」を友だち追加していただく必要があります。"
+  },
   "errorPage": {
     "notFound": {
       "message1": "ごめんなさい。ページがみつかりません。",

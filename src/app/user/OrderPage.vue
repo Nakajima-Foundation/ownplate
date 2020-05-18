@@ -15,7 +15,16 @@
             </p>
           </div>
           <div v-if="lineEnabled" class="m-t-8" style="text-align: center;">
-            <b-button type="is-primary" class="p-r-16 p-l-16" tag="a" :href="lineAuth">Lineで通知を受ける</b-button>
+            <b-button
+              type="is-primary"
+              class="p-r-16 p-l-16 notify"
+              style="background:#18b900"
+              tag="a"
+              :href="lineAuth"
+            >
+              <i class="fab fa-line" style="font-size:1.2em" />
+              {{$t('line.notifyMe')}}
+            </b-button>
           </div>
           <h2>{{ orderName }}</h2>
           <p v-if="waiting">{{$t('order.timeToPickup') + ": " + timePlaced }}</p>

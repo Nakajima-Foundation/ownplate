@@ -1,13 +1,18 @@
 <template>
-  <b-modal :width="640" :active.sync="isModalActive">
-    <div class="card">
-      <div class="card-content">
-        <p>Please add xxx as a friend to receive notification.</p>
-        <div class="m-t-8" style="text-align:center">
-          <b-button class="p-r-16 p-l-16" type="is-primary" tag="a" :href="friend_url">Add Friend</b-button>
+  <b-modal :width="320" :active.sync="isModalActive">
+    <section class="section">
+      <div class="card">
+        <div class="card-content">
+          <p>{{$t('line.addFriendDescription')}}</p>
+          <div class="m-t-16" style="text-align:center">
+            <b-button class="p-r-16 p-l-16 friend" tag="a" :href="friend_url">
+              <i class="fab fa-line" style="font-size:1.2em" />
+              {{$t('line.addFriend')}}
+            </b-button>
+          </div>
         </div>
       </div>
-    </div>
+    </section>
   </b-modal>
 </template>
 
@@ -27,3 +32,10 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.friend {
+  background: #18b900;
+  color: white;
+}
+</style>
