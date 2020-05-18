@@ -1,7 +1,7 @@
 import express from 'express';
 import * as admin from 'firebase-admin';
 import * as fs from 'fs';
-import { getRegionalSetting } from '../stripe/utils'
+import { ownPlateConfig } from '../common/project';
 
 import * as Sentry from '@sentry/node';
 
@@ -55,7 +55,6 @@ const ogpPage = async (req: any, res: any) => {
     if (!restaurant || !restaurant.exists) {
       return res.status(404).send(template_data);
     }
-    const regionalSetting = getRegionalSetting();
     const restaurant_data: any = restaurant.data();
 
     const title = restaurant_data.restaurantName;
@@ -68,14 +67,14 @@ const ogpPage = async (req: any, res: any) => {
         `<meta property="og:title" content="${escapeHtml(title)}" />`,
         `<meta property="og:site_name" content="${escapeHtml(title)}" />`,
         `<meta property="og:type" content="website" />`,
-        `<meta property="og:url" content="https://${regionalSetting.hostName}/r/${restaurantName}" />`,
+        `<meta property="og:url" content="https://${ownPlateConfig.hostName}/r/${restaurantName}" />`,
         `<meta property="og:description" content="Japanese comfort food" />`,
         `<meta property="og:image" content="${image}" />`,
       ].join("\n");
 
     res.set('Cache-Control', 'public, max-age=300, s-maxage=600');
     res.send(template_data.replace(regex, metas));
-  } catch(e) {
+  } catch (e) {
     console.log(e);
     Sentry.captureException(e);
     res.send(template_data);
