@@ -27,8 +27,16 @@ export default {
           client_id: ownPlateConfig.line.LOGIN_CHANNEL_ID
         });
         console.log(data);
-        // this.$router.push(data.nonce);
-        this.$router.push(data.nonce);
+        if (data.nonce && data.profile) {
+          if (this.becameFriend) {
+            await db.doc(`users/${this.user.uid}/private/line`).set({
+              isFriend: true
+            });
+          }
+          this.$router.push(data.nonce);
+        } else {
+          console.error("validatin failed", data);
+        }
       } catch (error) {
         console.error(error.message, error.details);
       } finally {
@@ -42,6 +50,9 @@ export default {
     },
     code() {
       return this.$route.query.code;
+    },
+    becameFriend() {
+      return this.$route.query.friendship_status_changed;
     },
     redirect_uri() {
       return location.origin + "/callback/line";
