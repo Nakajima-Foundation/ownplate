@@ -138,7 +138,7 @@ export const sendMessage = async (db: FirebaseFirestore.Firestore, lng: string,
     resources
   })
   const regionalSetting = utils.getRegionalSetting();
-  const url = `https://${regionalSetting.hostName}/r/${restaurantId}/order/${orderId}`
+  const url = `https://${regionalSetting.hostName}/r/${restaurantId}/order/${orderId}?openExternalBrowser=1`
   const message = `${t(msgKey)} ${restaurantName} ${orderNumber} ${url}`;
   if (line.isEnabled) {
     await line.sendMessage(db, uidUser, message)
