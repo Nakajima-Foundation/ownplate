@@ -5,7 +5,13 @@
         <div class="card-content">
           <p>{{$t('line.addFriendDescription')}}</p>
           <div class="m-t-16" style="text-align:center">
-            <b-button class="p-r-16 p-l-16 friend" tag="a" :href="friend_url">
+            <b-button
+              type="is-primary"
+              class="p-r-16 p-l-16"
+              style="background:#18b900"
+              tag="a"
+              :href="friend_url"
+            >
               <i class="fab fa-line" style="font-size:1.2em" />
               {{$t('line.addFriend')}}
             </b-button>
@@ -32,10 +38,4 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-.friend {
-  background: #18b900;
-  color: white;
-}
 </style>
