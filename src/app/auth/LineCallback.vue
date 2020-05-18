@@ -28,7 +28,8 @@ export default {
           client_id: ownPlateConfig.LINE_CHANNEL_ID
         });
         console.log(data);
-        this.$router.push(data.nonce);
+        // this.$router.push(data.nonce);
+        this.$router.push({ path: data.nonce, query: { line: 1 } });
       } catch (error) {
         console.error(error.message, error.details);
       } finally {
