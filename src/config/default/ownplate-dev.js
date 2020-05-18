@@ -15,7 +15,7 @@ export const ownPlateConfig = {
   region: "JP",
   line: {
     LOGIN_CHANNEL_ID: "1654216149",
-    ADD_FRIEND_URL: "https://lin.ee/1tEaDEpHn"
+    ADD_FRIEND_URL: "https://lin.ee/30PDYymgm"
   }
 };
 
