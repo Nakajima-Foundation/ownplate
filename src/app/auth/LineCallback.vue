@@ -29,9 +29,12 @@ export default {
         console.log(data);
         if (data.nonce && data.profile) {
           if (this.becameFriend) {
-            await db.doc(`users/${this.user.uid}/private/line`).set({
-              isFriend: true
-            });
+            await db.doc(`users/${this.user.uid}/private/line`).set(
+              {
+                isFriend: true
+              },
+              { merge: true }
+            );
           }
           this.$router.push(data.nonce);
         } else {
