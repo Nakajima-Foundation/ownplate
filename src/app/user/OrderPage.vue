@@ -123,7 +123,7 @@
               <span class="p-font bold">{{$t('order.placeOrderNoPayment')}}</span>
             </b-button>
           </div>
-          <div style="margin-top: 1rem">
+          <div v-if="!lineEnabled" style="margin-top: 1rem">
             <b-checkbox v-model="sendSMS">{{$t('order.sendSMS')}}</b-checkbox>
           </div>
         </div>
