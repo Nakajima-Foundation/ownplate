@@ -4,11 +4,7 @@ import { order_status } from '../common/constant'
 import Stripe from 'stripe'
 import Order from '../models/Order'
 import * as utils from './utils'
-import * as sms from '../functions/sms'
-import { resources } from '../functions/resources'
-import i18next from 'i18next'
-import * as line from '../functions/line'
-import * as order from '../functions/order';
+import { sendMessage } from '../functions/order';
 
 // This function is called by user to create a "payment intent" (to start the payment transaction)
 export const create = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
@@ -247,17 +243,7 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
       }
     })
     if (sendSMS) {
-      order.sendMessage(db, lng, 'msg_order_canceled', restaurant.restaurantName, orderNumber, uidUser, phoneNumber)
-      const t = await i18next.init({
-        lng: lng || utils.getStripeRegion().langs[0],
-        resources
-      })
-      const message = `${t('msg_order_canceled')} ${restaurant.restaurantName} ${orderNumber}`
-      if (line.isEnabled) {
-        await line.sendMessage(db, uidUser, message)
-      } else {
-        await sms.pushSMS("OwnPlate", message, phoneNumber)
-      }
+      await sendMessage(db, lng, 'msg_order_canceled', restaurant.restaurantName, orderNumber, uidUser, phoneNumber, restaurantId, orderId)
     }
     return result
   } catch (error) {

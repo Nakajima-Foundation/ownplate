@@ -121,7 +121,7 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
       return { success: true }
     })
     if (sendSMS && msgKey) {
-      await sendMessage(db, lng, msgKey, restaurant.restaurantName, orderNumber, uidUser, phoneNumber)
+      await sendMessage(db, lng, msgKey, restaurant.restaurantName, orderNumber, uidUser, phoneNumber, restaurantId, orderId)
     }
     return result
   } catch (error) {
@@ -131,12 +131,15 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
 
 export const sendMessage = async (db: FirebaseFirestore.Firestore, lng: string,
   msgKey: string, restaurantName: string, orderNumber: string,
-  uidUser: string | null, phoneNumber: string) => {
+  uidUser: string | null, phoneNumber: string | undefined,
+  restaurantId: string, orderId: string) => {
   const t = await i18next.init({
     lng: lng || utils.getStripeRegion().langs[0],
     resources
   })
-  const message = `${t(msgKey)} ${restaurantName} ${orderNumber}`;
+  const regionalSetting = utils.getRegionalSetting();
+  const url = `https://${regionalSetting.hostName}/r/${restaurantId}/order/${orderId}`
+  const message = `${t(msgKey)} ${restaurantName} ${orderNumber} ${url}`;
   if (line.isEnabled) {
     await line.sendMessage(db, uidUser, message)
   } else {
