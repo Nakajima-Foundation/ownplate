@@ -58,9 +58,10 @@ export const validate = async (db: FirebaseFirestore.Firestore, data: any, conte
   }
 }
 
-export const sendMessage = async (db: FirebaseFirestore.Firestore, uid: string, message: string) => {
-  //const doc = await db.doc(`/users/${uid}/system/line`).get()
-  //const data: any = doc.data()
+export const sendMessage = async (db: FirebaseFirestore.Firestore, uid: string | null, message: string) => {
+  if (uid === null) {
+    return;
+  }
   const LINE_MESSAGE_TOKEN = functions.config().line.message_token;
   const data = (await db.doc(`/users/${uid}/system/line`).get()).data() || (await db.doc(`/admins/${uid}/system/line`).get()).data();
   const sub = data && data.profile && data.profile.userId

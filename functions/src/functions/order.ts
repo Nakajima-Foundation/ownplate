@@ -65,7 +65,7 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
     let msgKey: string | undefined = undefined;
     let orderNumber: string = "";
     let sendSMS: boolean = false;
-    let uidUser: string | undefined = undefined;
+    let uidUser: string | null = null;
 
     const result = await db.runTransaction(async transaction => {
       const order = Order.fromSnapshot<Order>(await transaction.get(orderRef))
@@ -127,7 +127,7 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
       })
       const message = `${t(msgKey)} ${restaurant.restaurantName} ${orderNumber}`;
       if (line.isEnabled) {
-        await line.sendMessage(db, uidUser!, message)
+        await line.sendMessage(db, uidUser, message)
       } else {
         await sms.pushSMS("OwnPlate", message, phoneNumber)
       }

@@ -7,6 +7,7 @@ import * as utils from './utils'
 import * as sms from '../functions/sms'
 import { resources } from '../functions/resources'
 import i18next from 'i18next'
+import * as line from '../functions/line'
 
 // This function is called by user to create a "payment intent" (to start the payment transaction)
 export const create = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
@@ -173,6 +174,7 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
   let sendSMS: boolean = false
   let phoneNumber: string | undefined = undefined;
   let orderNumber: string = "";
+  let uidUser: string | null = null;
 
   try {
     const result = await db.runTransaction(async transaction => {
@@ -199,6 +201,7 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
         throw new functions.https.HttpsError('permission-denied', 'The user does not have permission to cancel this request.')
       }
       phoneNumber = order.phoneNumber
+      uidUser = order.uid
       orderNumber = "#" + `00${order.number}`.slice(-3)
 
       if (!stripeData || !order.payment || !order.payment.stripe) {
@@ -247,7 +250,12 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
         lng: lng || utils.getStripeRegion().langs[0],
         resources
       })
-      await sms.pushSMS("OwnPlate", `${t('msg_order_canceled')} ${restaurant.restaurantName} ${orderNumber}`, phoneNumber)
+      const message = `${t('msg_order_canceled')} ${restaurant.restaurantName} ${orderNumber}`
+      if (line.isEnabled) {
+        await line.sendMessage(db, uidUser, message)
+      } else {
+        await sms.pushSMS("OwnPlate", message, phoneNumber)
+      }
     }
     return result
   } catch (error) {
