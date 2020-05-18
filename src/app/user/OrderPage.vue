@@ -14,6 +14,9 @@
               {{$t('order.pleaseStay')}}
             </p>
           </div>
+          <div v-if="lineEnabled" class="m-t-8" style="text-align: center;">
+            <b-button type="is-primary" class="p-r-16 p-l-16" tag="a" :href="lineAuth">Lineで通知を受ける</b-button>
+          </div>
           <h2>{{ orderName }}</h2>
           <p v-if="waiting">{{$t('order.timeToPickup') + ": " + timePlaced }}</p>
           <div v-if="paid" class="m-t-8" style="text-align: center;">
@@ -38,7 +41,7 @@
             </template>
           </div>
         </div>
-        <shop-orner-info  :shopInfo="shopInfo"></shop-orner-info>
+        <shop-orner-info :shopInfo="shopInfo"></shop-orner-info>
 
         <shop-info v-if="paid" :compact="true" :shopInfo="shopInfo" />
 
@@ -74,8 +77,9 @@
           />
 
           <template v-if="shopInfo && shopInfo.orderNotice && shopInfo.orderNotice.length > 0">
-          <hr class="hr-black" />
-          <i class="material-icons">error</i>{{shopInfo.orderNotice}}
+            <hr class="hr-black" />
+            <i class="material-icons">error</i>
+            {{shopInfo.orderNotice}}
           </template>
           <hr class="hr-black" />
           <div v-if="showPayment">
@@ -141,6 +145,7 @@ import { order_status } from "~/plugins/constant.js";
 import { nameOfOrder } from "~/plugins/strings.js";
 import { releaseConfig } from "~/plugins/config.js";
 import { stripeCreateIntent, stripeCancelIntent } from "~/plugins/stripe.js";
+import { ownPlateConfig } from "@/config/project";
 
 export default {
   name: "Order",
@@ -229,6 +234,28 @@ export default {
     }
   },
   computed: {
+    lineAuth() {
+      const query = {
+        response_type: "code",
+        client_id: ownPlateConfig.LINE_CHANNEL_ID,
+        redirect_uri: this.redirect_uri,
+        scope: "profile openid email",
+        state: "s" + Math.random(),
+        nonce: location.href
+      };
+      const queryString = Object.keys(query)
+        .map(key => {
+          return key + "=" + encodeURIComponent(query[key]);
+        })
+        .join("&");
+      return `https://access.line.me/oauth2/v2.1/authorize?${queryString}`;
+    },
+    redirect_uri() {
+      return location.origin + "/callback/line";
+    },
+    lineEnabled() {
+      return !!ownPlateConfig.LINE_CHANNEL_ID;
+    },
     timePlaced() {
       const date = this.orderInfo.timePlaced.toDate();
       return this.$d(date, "long");
