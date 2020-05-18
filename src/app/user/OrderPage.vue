@@ -137,7 +137,6 @@
           </div>
         </div>
       </section>
-      <line-add-friend v-if="showLineAddFriend" />
     </template>
   </div>
 </template>
@@ -148,7 +147,6 @@ import OrderInfo from "~/app/user/Order/OrderInfo";
 import ShopInfo from "~/app/user/Restaurant/ShopInfo";
 import StripeCard from "~/app/user/Order/StripeCard";
 import TimeToPickup from "~/app/user/Order/TimeToPickup";
-import LineAddFriend from "~/app/auth/LineAddFriend";
 import NotFound from "~/components/NotFound";
 
 import { db, firestore, functions } from "~/plugins/firebase.js";
@@ -161,7 +159,6 @@ import { ownPlateConfig } from "@/config/project";
 export default {
   name: "Order",
   components: {
-    LineAddFriend,
     ShopOrnerInfo,
     OrderInfo,
     ShopInfo,
@@ -171,7 +168,6 @@ export default {
   },
   data() {
     return {
-      showLineAddFriend: false,
       notAvailable: false,
       isPaying: false,
       restaurantsId: this.restaurantId(),
@@ -245,9 +241,6 @@ export default {
         detacher();
       });
     }
-  },
-  mounted() {
-    this.showLineAddFriend = this.$route.query.line;
   },
   computed: {
     lineAuth() {

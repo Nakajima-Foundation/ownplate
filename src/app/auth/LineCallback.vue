@@ -28,7 +28,7 @@ export default {
         });
         console.log(data);
         // this.$router.push(data.nonce);
-        this.$router.push({ path: data.nonce, query: { line: 1 } });
+        this.$router.push(data.nonce);
       } catch (error) {
         console.error(error.message, error.details);
       } finally {
