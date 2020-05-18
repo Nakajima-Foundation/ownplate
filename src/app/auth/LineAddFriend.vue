@@ -12,6 +12,8 @@
 </template>
 
 <script>
+import { ownPlateConfig } from "@/config/project";
+
 export default {
   data() {
     return {
@@ -20,7 +22,7 @@ export default {
   },
   computed: {
     friend_url() {
-      return "https://lin.ee/1tEaDEpHn";
+      return ownPlateConfig.line.ADD_FRIEND_URL;
     }
   }
 };

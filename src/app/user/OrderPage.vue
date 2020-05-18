@@ -244,7 +244,7 @@ export default {
     lineAuth() {
       const query = {
         response_type: "code",
-        client_id: ownPlateConfig.LINE_CHANNEL_ID,
+        client_id: ownPlateConfig.line.LOGIN_CHANNEL_ID,
         redirect_uri: this.redirect_uri,
         scope: "profile openid email",
         state: "s" + Math.random(), // LATER: Make it more secure
@@ -261,7 +261,7 @@ export default {
       return location.origin + "/callback/line";
     },
     lineEnabled() {
-      return !!ownPlateConfig.LINE_CHANNEL_ID;
+      return !!ownPlateConfig.line;
     },
     timePlaced() {
       const date = this.orderInfo.timePlaced.toDate();

@@ -39,7 +39,7 @@ export default {
         const { data } = await lineValidate({
           code: this.code,
           redirect_uri: this.redirect_uri,
-          client_id: ownPlateConfig.LINE_CHANNEL_ID
+          client_id: ownPlateConfig.line.LOGIN_CHANNEL_ID
         });
         console.log(data);
         if (data.customeToken) {
@@ -80,7 +80,7 @@ export default {
     lineAuth() {
       const query = {
         response_type: "code",
-        client_id: ownPlateConfig.LINE_CHANNEL_ID,
+        client_id: ownPlateConfig.line.LOGIN_CHANNEL_ID,
         redirect_uri: this.redirect_uri,
         scope: "profile openid email",
         state: "s" + Math.random(),
