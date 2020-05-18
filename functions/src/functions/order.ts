@@ -6,6 +6,7 @@ import * as sms from './sms'
 import { resources } from './resources'
 import i18next from 'i18next'
 import Order from '../models/Order'
+import * as line from './line'
 
 // This function is called by users to place orders without paying
 export const place = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
@@ -64,12 +65,14 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
     let msgKey: string | undefined = undefined;
     let orderNumber: string = "";
     let sendSMS: boolean = false;
+    let uidUser: string | null = null;
 
     const result = await db.runTransaction(async transaction => {
       const order = Order.fromSnapshot<Order>(await transaction.get(orderRef))
       if (!order) {
         throw new functions.https.HttpsError('invalid-argument', 'This order does not exist.')
       }
+      uidUser = order.uid;
       phoneNumber = order.phoneNumber
       orderNumber = "#" + `00${order.number}`.slice(-3)
       sendSMS = order.sendSMS
@@ -122,7 +125,12 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
         lng: lng || utils.getStripeRegion().langs[0],
         resources
       })
-      await sms.pushSMS("OwnPlate", `${t(msgKey)} ${restaurant.restaurantName} ${orderNumber}`, phoneNumber)
+      const message = `${t(msgKey)} ${restaurant.restaurantName} ${orderNumber}`;
+      if (line.isEnabled) {
+        await line.sendMessage(db, uidUser, message)
+      } else {
+        await sms.pushSMS("OwnPlate", message, phoneNumber)
+      }
     }
     return result
   } catch (error) {
@@ -165,7 +173,7 @@ export const wasOrderCreated = async (db, data: any, context) => {
     const orderData = order.data()
 
     if (!orderData || !orderData.status || orderData.status !== order_status.new_order ||
-        !orderData.uid || orderData.uid !== uid) {
+      !orderData.uid || orderData.uid !== uid) {
       console.log("invalid order:" + String(order.id));
       throw new functions.https.HttpsError('invalid-argument', 'This order does not exist.')
     }

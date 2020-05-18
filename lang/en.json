@@ -293,6 +293,11 @@
     "lupin": "Lupin",
     "mollusc": "Mollusc"
   },
+  "line": {
+    "notifyMe": "Receive LINE notification",
+    "addFriend": "Follow",
+    "addFriendDescription": "In order to receive LINE notifications, you need to follow the official channel"
+  },
   "errorPage": {
     "notFound": {
       "message1": "The page you're looking for can't be found.",

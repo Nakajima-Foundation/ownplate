@@ -14,6 +14,18 @@
               {{$t('order.pleaseStay')}}
             </p>
           </div>
+          <div v-if="lineEnabled" class="m-t-8" style="text-align: center;">
+            <b-button
+              type="is-primary"
+              class="p-r-16 p-l-16 notify"
+              style="background:#18b900"
+              tag="a"
+              :href="lineAuth"
+            >
+              <i class="fab fa-line" style="font-size:1.2em" />
+              {{$t('line.notifyMe')}}
+            </b-button>
+          </div>
           <h2>{{ orderName }}</h2>
           <p v-if="waiting">{{$t('order.timeToPickup') + ": " + timePlaced }}</p>
           <div v-if="paid" class="m-t-8" style="text-align: center;">
@@ -38,7 +50,7 @@
             </template>
           </div>
         </div>
-        <shop-orner-info  :shopInfo="shopInfo"></shop-orner-info>
+        <shop-orner-info :shopInfo="shopInfo"></shop-orner-info>
 
         <shop-info v-if="paid" :compact="true" :shopInfo="shopInfo" />
 
@@ -74,8 +86,9 @@
           />
 
           <template v-if="shopInfo && shopInfo.orderNotice && shopInfo.orderNotice.length > 0">
-          <hr class="hr-black" />
-          <i class="material-icons">error</i>{{shopInfo.orderNotice}}
+            <hr class="hr-black" />
+            <i class="material-icons">error</i>
+            {{shopInfo.orderNotice}}
           </template>
           <hr class="hr-black" />
           <div v-if="showPayment">
@@ -119,7 +132,7 @@
               <span class="p-font bold">{{$t('order.placeOrderNoPayment')}}</span>
             </b-button>
           </div>
-          <div style="margin-top: 1rem">
+          <div v-if="!lineEnabled" style="margin-top: 1rem">
             <b-checkbox v-model="sendSMS">{{$t('order.sendSMS')}}</b-checkbox>
           </div>
         </div>
@@ -141,6 +154,7 @@ import { order_status } from "~/plugins/constant.js";
 import { nameOfOrder } from "~/plugins/strings.js";
 import { releaseConfig } from "~/plugins/config.js";
 import { stripeCreateIntent, stripeCancelIntent } from "~/plugins/stripe.js";
+import { ownPlateConfig } from "@/config/project";
 
 export default {
   name: "Order",
@@ -229,6 +243,29 @@ export default {
     }
   },
   computed: {
+    lineAuth() {
+      const query = {
+        response_type: "code",
+        client_id: ownPlateConfig.line.LOGIN_CHANNEL_ID,
+        redirect_uri: this.redirect_uri,
+        scope: "profile openid email",
+        bot_prompt: "aggressive",
+        state: "s" + Math.random(), // LATER: Make it more secure
+        nonce: location.pathname // HACK: Repurposing nonce
+      };
+      const queryString = Object.keys(query)
+        .map(key => {
+          return key + "=" + encodeURIComponent(query[key]);
+        })
+        .join("&");
+      return `https://access.line.me/oauth2/v2.1/authorize?${queryString}`;
+    },
+    redirect_uri() {
+      return location.origin + "/callback/line";
+    },
+    lineEnabled() {
+      return !!ownPlateConfig.line;
+    },
     timePlaced() {
       const date = this.orderInfo.timePlaced.toDate();
       return this.$d(date, "long");

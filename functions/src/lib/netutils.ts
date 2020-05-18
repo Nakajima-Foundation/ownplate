@@ -43,3 +43,20 @@ export const postForm = (_url: string, params: any): Promise<any> => {
     }
   }, postData)
 }
+
+export const postJson = (_url: string, _options: any, json: any): Promise<any> => {
+  const postData = JSON.stringify(json);
+  console.log("postJson", postData)
+  const headers = {
+    'Content-Type': 'application/json',
+    'Content-Length': Buffer.byteLength(postData)
+  }
+  if (_options.headers) {
+    Object.assign(headers, _options.headers)
+  }
+  const options = Object.assign({
+    method: "POST"
+  }, _options, { headers });
+  return request(_url, options, postData)
+}
+
