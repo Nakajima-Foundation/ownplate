@@ -14,6 +14,7 @@ export const ownPlateConfig = {
   siteDescription: "レストランに優しいテイクアウト・サービス",
   releasName: "beta",
   region: "JP",
+  hostName: "omochikaeri.com",
   line: {
     LOGIN_CHANNEL_ID: "1654216149",
   }

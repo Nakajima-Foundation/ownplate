@@ -7,6 +7,7 @@ import { resources } from './resources'
 import i18next from 'i18next'
 import Order from '../models/Order'
 import * as line from './line'
+import { ownPlateConfig } from '../common/project';
 
 // This function is called by users to place orders without paying
 export const place = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
@@ -137,8 +138,7 @@ export const sendMessage = async (db: FirebaseFirestore.Firestore, lng: string,
     lng: lng || utils.getStripeRegion().langs[0],
     resources
   })
-  const regionalSetting = utils.getRegionalSetting();
-  const url = `https://${regionalSetting.hostName}/r/${restaurantId}/order/${orderId}?openExternalBrowser=1`
+  const url = `https://${ownPlateConfig.hostName}/r/${restaurantId}/order/${orderId}?openExternalBrowser=1`
   const message = `${t(msgKey)} ${restaurantName} ${orderNumber} ${url}`;
   if (line.isEnabled) {
     await line.sendMessage(db, uidUser, message)
