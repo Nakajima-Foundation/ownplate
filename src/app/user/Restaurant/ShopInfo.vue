@@ -40,7 +40,7 @@
 
     <!-- Restaurant Details -->
     <div class="m-t-24">
-      <div class="t-h6 c-text-black-disabled">Restaurant Details</div>
+      <div class="t-h6 c-text-black-disabled">{{$t('shopInfo.restaurantDetails')}}</div>
 
       <div class="bg-surface r-8 d-low m-t-8 p-b-24">
         <!-- Restaurant Location -->
@@ -93,6 +93,14 @@
           </a>
         </div>
 
+        <!-- Restaurant Website -->
+        <div class="m-t-8 m-l-16 m-r-16">
+          <div class="op-button-text">
+            <i class="material-icons">info</i>
+            <span style="word-break: break-all;">{{this.shopInfo.introduction}}</span>
+          </div>
+        </div>
+
         <!-- Restaurant Hours -->
         <div class="m-l-16 m-r-16 m-t-16">
           <div class="t-subtitle2 c-text-black-medium p-l-8">{{$t("shopInfo.hours")}}</div>
@@ -111,7 +119,7 @@
                     </template>
                   </template>
                 </template>
-                <template v-else>Closed</template>
+                <template v-else>{{$t('shopInfo.closed')}}</template>
               </div>
               <div>
                 <template v-if="isOpen[key]">

@@ -17,8 +17,15 @@
             class="t-body2 c-text-black-medium m-t-8"
           >{{ allergensDescription }}</div>
         </div>
-        <div class="p-r-16 p-t-16 p-b-16" v-if="image !== null">
-          <img :src="image" width="96" height="96" class="is-pulled-right r-4" />
+        <div class="p-r-16 p-t-16 p-b-16">
+          <div class="w-96 is-pulled-right">
+            <div v-if="image !== null" class="p-b-8">
+              <img :src="image" width="96" height="96" class="r-4" />
+            </div>
+            <div  @click.stop="pushCount" class="op-button-pill bg-primary-bg w-96">
+              <span>{{$t('sitemenu.add')}}</span>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -28,7 +35,7 @@
 
         <!-- Item Options -->
         <div v-if="hasOptions" class="m-t-16">
-          <div class="t-caption c-text-black-medium">Options</div>
+          <div class="t-caption c-text-black-medium">{{$t('sitemenu.options')}}</div>
           <div v-for="(option, index) in options" :key="index" class="m-t-8">
             <div v-if="option.length === 1" class="field">
               <b-checkbox v-model="optionValues[index]">{{ option[0] }}</b-checkbox>
@@ -56,12 +63,12 @@
 
         <!-- Item Quantity -->
         <div class="m-t-16">
-          <div class="t-caption c-text-black-medium">Quantity</div>
+          <div class="t-caption c-text-black-medium">{{$t('sitemenu.quantity')}}</div>
           <div class="level is-mobile m-t-8">
             <div class="level-left">
               <div
                 @click="pullCount"
-                class="op-button-pill bg-status-red-bg w-96 m-r-8"
+                class="op-button-pill bg-status-red-bg w-96"
                 :disabled="count === 0"
               >
                 <i class="material-icons c-status-red">remove</i>
@@ -69,7 +76,7 @@
             </div>
             <div class="t-h4 c-primary">{{ count }}</div>
             <div class="level-right">
-              <div @click="pushCount" class="op-button-pill bg-primary-bg w-96 m-r-8">
+              <div @click="pushCount" class="op-button-pill bg-primary-bg w-96">
                 <i class="material-icons">add</i>
               </div>
             </div>
@@ -142,8 +149,8 @@ export default {
     },
     openMenuFlag() {
       if (this.openMenuFlag && this.count == 0) {
-        this.setCount(this.count + 1);
-        // this.setCount(this.count + 0); // Need discussion about the auto add feature.
+        // this.setCount(this.count + 1);
+        this.setCount(this.count + 0); // Only by tapping "Add" will do both open card and add item.
       }
     }
   },
@@ -215,6 +222,9 @@ export default {
     },
     pushCount() {
       this.setCount(this.count + 1);
+      if (!this.openMenuFlag) {
+        this.toggleMenuFlag();
+      }
     },
     toggleMenuFlag() {
       this.openMenuFlag = !this.openMenuFlag;

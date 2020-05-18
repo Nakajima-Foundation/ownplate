@@ -148,16 +148,16 @@ export default {
       const m = this.$store.getters.stripeRegion.multiple;
       const value = Math.round((this.orderInfo.total * ratio * m) / 100) / m;
       if (m === 1) {
-        return value.toLocaleString();
+        return Math.round(value);
       }
-      return value.toLocaleString(undefined, { minimumFractionDigits: 2 });
+      return Math.round(value * m) / m;
     },
     updateTip(ratio) {
       this.tip = this.calcTip(ratio);
-      this.$emit("change", Number(this.tip));
+      this.$emit("change", this.tip);
     },
     isSameAmount(ratio) {
-      return this.tip === this.calcTip(ratio);
+      return Number(this.tip) === this.calcTip(ratio);
     },
     handleTipInput() {
       //console.log("tip=", this.tip);

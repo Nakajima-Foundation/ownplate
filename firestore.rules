@@ -78,19 +78,15 @@ service cloud.firestore {
                         && request.resource.data.uid == request.auth.uid;
         allow update: if isAdmin(request) && isOwner(resource, request);
         match /private/{privateId} {
-          allow create: if isAdmin(request)
-          allow read: if isAdmin(request)
-          allow update: if isAdmin(request) && isOwner(resource, request);
+          allow read, write: if isAdmin(request) && isRestaurantOwner(restaurantsId, request);
         }
         match /menus/{menuId} {
           allow read: if true
-          allow create: if isAdmin(request)
-          allow update: if isAdmin(request) && isOwner(resource, request);
+          allow write: if isAdmin(request) && isRestaurantOwner(restaurantsId, request);
         }
         match /titles/{titleId} {
           allow read: if true
-          allow create: if isAdmin(request)
-          allow update: if isAdmin(request) && isOwner(resource, request);
+          allow write: if isAdmin(request) && isRestaurantOwner(restaurantsId, request);
         }
         match /orders/{orderId} {
           allow read: if isSuper(request);

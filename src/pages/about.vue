@@ -22,7 +22,7 @@
                 <!-- For Tablet -->
                 <img
                   style="height: 876px;"
-                  class="cover r-4 is-hidden-mobile"
+                  class="cover r-8 is-hidden-mobile"
                   :src="`/${this.featureHero}`"
                 />
               </div>
@@ -86,7 +86,7 @@
                 <!-- For Tablet -->
                 <img
                   style="height: 876px;"
-                  class="cover r-4 is-hidden-mobile"
+                  class="cover r-8 is-hidden-mobile"
                   :src="`/${this.featureHero}`"
                 />
               </div>
@@ -139,8 +139,10 @@ export default {
         : "ownPlate";
     },
     featureHero() {
-      return this.regionalSetting.FeatureHero[this.$i18n.locale === 'ja' ? 'ja' : 'en'];
-    },
+      return this.regionalSetting.FeatureHero[
+        this.$i18n.locale === "ja" ? "ja" : "en"
+      ];
+    }
   },
   created() {
     console.log(process.env.CIRCLE_SHA1);

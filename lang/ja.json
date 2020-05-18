@@ -49,6 +49,12 @@
     "enterZip": "郵便番号を入力して下さい",
     "enterPhone": "電話番号を入力して下さい",
     "enterWebsite": "ウェブサイトのURLを入力して下さい",
+    "enterIntroduction": "お店を紹介して下さい！！",
+    "enterOrderNotice": "注文の注意点を入力して下さい",
+    "enterOrderThanks": "注文後のありがとうメッセージを入力して下さい",
+    "introduction": "お店の紹介文",
+    "orderNotice": "注文直前のメッセージ",
+    "orderThanks": "注文後のありがとうメッセージ",
     "website": "ウェブサイト",
     "tax": "消費税",
     "foodTax": "消費税率（食品）",
@@ -108,6 +114,7 @@
     "UrlCopied": "コピーしました",
     "UrlCopyFailed": "コピー失敗",
     "name": "飲食店名",
+    "restaurantDetails": "飲食店情報",
     "streetAddress": "住所",
     "city": "市区町村",
     "state": "州",
@@ -117,13 +124,17 @@
     "phonenumber": "電話番号",
     "website": "ホームページ",
     "hours": "営業時間",
+    "closed": "定休日",
     "public": "公開"
   },
   "sitemenu": {
     "menu": "メニュー",
     "about": "飲食店情報",
     "checkout": "お会計",
-    "orderCounter": "{count} 個"
+    "orderCounter": "{count} 個",
+    "add": "追加",
+    "options": "オプション",
+    "quantity": "数量"
   },
   "date": {
     "today": "本日"
@@ -139,8 +150,9 @@
     "placeOrderNoPayment": "お店で支払う",
     "validating": "処理しています...",
     "thankyou": "ご注文、ありがとうございます!",
-    "orderStatus": "ご注文のステータス: ",
-    "pleaseStay": "このページを開けたままにしていただけると、ステータスを知る事が出来ます。",
+    "orderStatus": "ご注文のステータス",
+    "pleaseStay": "このページを開けたままにしていただけると、ご注文から受け渡しまでの状況を知ることができます。",
+    "thanksMessage": "お店からのメッセージ",
     "tip": "心付け",
     "totalCharge": "合計金額",
     "pleasePayAtRestaurant": "オンラインでの支払いは現時点では出来ません。受け取り時にお店でお支払いください。",

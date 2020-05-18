@@ -236,6 +236,40 @@
         ></b-input>
       </b-field>
 
+      <b-field
+        :label="$t('editRestaurant.introduction')"
+        :type="errors['introduction'].length > 0 ? 'is-danger' : 'is-success'"
+      >
+        <b-input type="textarea"
+          v-model="shopInfo.introduction"
+          :placeholder="$t('editRestaurant.enterIntroduction')"
+          maxlength="300"
+           ></b-input>
+      </b-field>
+
+      <b-field
+        :label="$t('editRestaurant.orderNotice')"
+        :type="errors['orderNotice'].length > 0 ? 'is-danger' : 'is-success'"
+      >
+        <b-input type="textarea"
+          v-model="shopInfo.orderNotice"
+          :placeholder="$t('editRestaurant.enterOrderNotice')"
+          maxlength="300"
+           ></b-input>
+      </b-field>
+
+      <b-field
+        :label="$t('editRestaurant.orderThanks')"
+        :type="errors['orderThanks'].length > 0 ? 'is-danger' : 'is-success'"
+      >
+        <b-input type="textarea"
+          v-model="shopInfo.orderThanks"
+          :placeholder="$t('editRestaurant.enterOrderThanks')"
+          maxlength="300"
+           ></b-input>
+      </b-field>
+
+
       <div class="columns" v-if="requireTaxInput">
         <div class="column">
           <div class="field is-horizontal">
@@ -361,7 +395,7 @@
 
 <script>
 import Vue from "vue";
-import { db, storage } from "~/plugins/firebase.js";
+import { db, storage, firestore } from "~/plugins/firebase.js";
 import HoursInput from "~/app/admin/Restaurant/HoursInput";
 
 import * as API from "~/plugins/api";
@@ -411,6 +445,9 @@ export default {
         place_id: null,
         phoneNumber: "",
         url: "",
+        introduction: "",
+        orderNotice: "",
+        orderThanks: "",
         foodTax: 0,
         alcoholTax: 0,
         taxInclude: 0,
@@ -486,6 +523,9 @@ export default {
         if (this.shopInfo[name] === "") {
           err[name].push("validationError." + name + ".empty");
         }
+      });
+      ["introduction", "orderNotice", "orderThanks"].forEach(name => {
+        err[name] = [];
       });
       if (this.requireTaxInput) {
         ["foodTax", "alcoholTax"].forEach(name => {
@@ -607,6 +647,9 @@ export default {
         phoneNumber: this.shopInfo.phoneNumber,
         countryCode: this.shopInfo.countryCode,
         url: this.shopInfo.url,
+        introduction: this.shopInfo.introduction,
+        orderNotice: this.shopInfo.orderNotice,
+        orderThanks: this.shopInfo.orderThanks,
         foodTax: Number(this.shopInfo.foodTax),
         alcoholTax: Number(this.shopInfo.alcoholTax),
         openTimes: this.shopInfo.openTimes,
@@ -614,7 +657,7 @@ export default {
         uid: this.shopInfo.uid,
         publicFlag: this.shopInfo.publicFlag,
         taxInclude: this.shopInfo.taxInclude,
-        createdAt: new Date()
+        createdAt: this.shopInfo.createdAt || firestore.FieldValue.serverTimestamp(),
       };
       await this.updateRestaurantData(restaurantData);
 
