@@ -93,6 +93,14 @@
           </a>
         </div>
 
+        <!-- Restaurant Website -->
+        <div class="m-t-8 m-l-16 m-r-16">
+          <div class="op-button-text">
+            <i class="material-icons">info</i>
+            <span style="word-break: break-all;">{{this.shopInfo.introduction}}</span>
+          </div>
+        </div>
+
         <!-- Restaurant Hours -->
         <div class="m-l-16 m-r-16 m-t-16">
           <div class="t-subtitle2 c-text-black-medium p-l-8">{{$t("shopInfo.hours")}}</div>
