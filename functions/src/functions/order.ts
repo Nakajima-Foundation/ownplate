@@ -121,16 +121,7 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
       return { success: true }
     })
     if (sendSMS && msgKey) {
-      const t = await i18next.init({
-        lng: lng || utils.getStripeRegion().langs[0],
-        resources
-      })
-      const message = `${t(msgKey)} ${restaurant.restaurantName} ${orderNumber}`;
-      if (line.isEnabled) {
-        await line.sendMessage(db, uidUser, message)
-      } else {
-        await sms.pushSMS("OwnPlate", message, phoneNumber)
-      }
+      await sendMessage(db, lng, msgKey, restaurant.restaurantName, orderNumber, uidUser, phoneNumber)
     }
     return result
   } catch (error) {
@@ -138,6 +129,20 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
   }
 }
 
+export const sendMessage = async (db: FirebaseFirestore.Firestore, lng: string,
+  msgKey: string, restaurantName: string, orderNumber: string,
+  uidUser: string | null, phoneNumber: string) => {
+  const t = await i18next.init({
+    lng: lng || utils.getStripeRegion().langs[0],
+    resources
+  })
+  const message = `${t(msgKey)} ${restaurantName} ${orderNumber}`;
+  if (line.isEnabled) {
+    await line.sendMessage(db, uidUser, message)
+  } else {
+    await sms.pushSMS("OwnPlate", message, phoneNumber)
+  }
+}
 
 export const getMenuObj = async (refRestaurant) => {
   const menuObj = {};
