@@ -256,6 +256,7 @@ export default {
         client_id: ownPlateConfig.line.LOGIN_CHANNEL_ID,
         redirect_uri: this.redirect_uri,
         scope: "profile openid email",
+        bot_prompt: "aggressive",
         state: "s" + Math.random(), // LATER: Make it more secure
         nonce: location.pathname // HACK: Repurposing nonce
       };
