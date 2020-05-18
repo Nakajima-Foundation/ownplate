@@ -75,7 +75,7 @@ const ogpPage = async (req: any, res: any) => {
 
     res.set('Cache-Control', 'public, max-age=300, s-maxage=600');
     res.send(template_data.replace(regex, metas));
-  } catch (e) {
+  } catch(e) {
     console.log(e);
     Sentry.captureException(e);
     res.send(template_data);
