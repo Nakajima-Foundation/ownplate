@@ -14,9 +14,10 @@
               {{$t('order.pleaseStay')}}
             </p>
           </div>
-          <h2>{{ $t('order.orderStatus') + orderName }}</h2>
+          <h2>{{ orderName }}</h2>
           <p v-if="waiting">{{$t('order.timeToPickup') + ": " + timePlaced }}</p>
           <div v-if="paid" class="m-t-8" style="text-align: center;">
+            <h2>{{ $t('order.orderStatus') }}</h2>
             <p
               :class="orderStatusKey"
               style="margin-bottom:1rem;padding:0.5rem"
@@ -29,6 +30,12 @@
               @click="handleCancelPayment"
               style="margin-bottom:1rem"
             >{{$t('button.cancel')}}</b-button>
+          </div>
+          <div v-if="paid" class="m-t-8">
+            <template v-if="shopInfo && shopInfo.orderThanks && shopInfo.orderThanks.length > 0">
+              <h3>{{$t('order.thanksMessage')}}</h3>
+              {{shopInfo.orderThanks}}
+            </template>
           </div>
         </div>
         <shop-orner-info  :shopInfo="shopInfo"></shop-orner-info>
@@ -66,6 +73,10 @@
             @notAvailable="handleNotAvailable"
           />
 
+          <template v-if="shopInfo && shopInfo.orderNotice && shopInfo.orderNotice.length > 0">
+          <hr class="hr-black" />
+          <i class="material-icons">error</i>{{shopInfo.orderNotice}}
+          </template>
           <hr class="hr-black" />
           <div v-if="showPayment">
             <h2>{{$t('order.yourPayment')}}</h2>
