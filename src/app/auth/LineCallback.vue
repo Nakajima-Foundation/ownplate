@@ -16,9 +16,8 @@ export default {
     };
   },
   async mounted() {
-    console.log(this.user);
+    console.log(this.$route.query);
     if (this.code) {
-      console.log("****", this.code);
       const lineValidate = functions.httpsCallable("lineValidate");
       try {
         this.isValidating = true;
