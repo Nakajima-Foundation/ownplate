@@ -240,8 +240,8 @@ export default {
         client_id: ownPlateConfig.LINE_CHANNEL_ID,
         redirect_uri: this.redirect_uri,
         scope: "profile openid email",
-        state: "s" + Math.random(),
-        nonce: location.href
+        state: "s" + Math.random(), // LATER: Make it more secure
+        nonce: location.pathname // HACK: Repurposing nonce
       };
       const queryString = Object.keys(query)
         .map(key => {

@@ -1,9 +1,10 @@
 import * as functions from 'firebase-functions'
 import * as utils from '../stripe/utils'
 import * as netutils from '../lib/netutils'
-import * as admin from 'firebase-admin'
 
 export const validate = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
+  const uid = utils.validate_auth(context);
+
   const { code, redirect_uri, client_id } = data;
   utils.validate_params({ code, redirect_uri, client_id })
   const LINE_SECRET_KEY = functions.config().line.secret;
@@ -43,31 +44,12 @@ export const validate = async (db: FirebaseFirestore.Firestore, data: any, conte
       }
     })
 
-    // If this is for an existing user, we don't need to create custome token
-    if (context.auth) {
-      const collection = context.auth.token.phone_number ? "users" : "admins";
-      await db.doc(`/${collection}/${context.auth.uid}/system/line`).set({
-        access, verified, profile
-      }, { merge: true })
-
-      const ret2 = await sendMessage(db, context.auth.uid, "Hello World 5")
-      console.log('sendMessage', ret2)
-
-      return { profile, nonce: verified.nonce };
-    }
-
-    // We ask Firebase to create a custom token for this LINE user
-    const uidLine = `line:${verified.sub}`
-    const customeToken = await admin.auth().createCustomToken(uidLine)
-
-    await db.doc(`/users/${uidLine}/system/line`).set({
+    const collection = context.auth!.token.phone_number ? "users" : "admins";
+    await db.doc(`/${collection}/${uid}/system/line`).set({
       access, verified, profile
     }, { merge: true })
 
-    const ret = await sendMessage(db, uidLine, "Hello World 3")
-    console.log('sendMessage', ret)
-
-    return { customeToken, profile, ret, nonce: verified.nonce };
+    return { profile, nonce: verified.nonce };
   } catch (error) {
     throw utils.process_error(error)
   }
