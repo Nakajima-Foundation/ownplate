@@ -1,5 +1,7 @@
 <template>
-  <p>Hello Callback</p>
+  <div>
+    <b-loading :is-full-page="false" :active="isValidating"></b-loading>
+  </div>
 </template>
 
 <script>
@@ -8,12 +10,18 @@ import { ownPlateConfig } from "@/config/project";
 import { db, auth, firestore, functions } from "~/plugins/firebase.js";
 
 export default {
+  data() {
+    return {
+      isValidating: false
+    };
+  },
   async mounted() {
     console.log(this.user);
     if (this.code) {
       console.log("****", this.code);
       const lineValidate = functions.httpsCallable("lineValidate");
       try {
+        this.isValidating = true;
         const { data } = await lineValidate({
           code: this.code,
           redirect_uri: this.redirect_uri,
@@ -23,6 +31,8 @@ export default {
         this.$router.push(data.nonce);
       } catch (error) {
         console.error(error.message, error.details);
+      } finally {
+        this.isValidating = false;
       }
     }
   },
