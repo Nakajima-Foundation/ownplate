@@ -1,6 +1,9 @@
 import * as functions from 'firebase-functions'
 import * as utils from '../stripe/utils'
 import * as netutils from '../lib/netutils'
+import { ownPlateConfig } from '../common/project';
+
+export const isEnabled = !!ownPlateConfig.line;
 
 export const validate = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
