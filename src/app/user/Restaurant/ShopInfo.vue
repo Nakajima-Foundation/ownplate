@@ -40,7 +40,7 @@
 
     <!-- Restaurant Details -->
     <div class="m-t-24">
-      <div class="t-h6 c-text-black-disabled">Restaurant Details</div>
+      <div class="t-h6 c-text-black-disabled">{{$t('shopInfo.restaurantDetails')}}</div>
 
       <div class="bg-surface r-8 d-low m-t-8 p-b-24">
         <!-- Restaurant Location -->
@@ -119,7 +119,7 @@
                     </template>
                   </template>
                 </template>
-                <template v-else>Closed</template>
+                <template v-else>{{$t('shopInfo.closed')}}</template>
               </div>
               <div>
                 <template v-if="isOpen[key]">

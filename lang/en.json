@@ -114,6 +114,7 @@
     "UrlCopied": "URL Copied",
     "UrlCopyFailed": "URL Copy failed",
     "name": "Restaurant name",
+    "restaurantDetails": "Restaurant Details",
     "streetAddress": "Street address",
     "city": "City",
     "state": "State",
@@ -123,13 +124,17 @@
     "phonenumber": "Phones Number",
     "website": "Website",
     "hours": "Hours",
+    "closed": "Closed",
     "public": "Public"
   },
   "sitemenu": {
     "menu": "Menu",
     "about": "About",
     "checkout": "Checkout",
-    "orderCounter": "{count} item | {count} items"
+    "orderCounter": "{count} item | {count} items",
+    "add": "Add",
+    "options": "Options",
+    "quantity": "Quantity"
   },
   "date": {
     "today": "Today"

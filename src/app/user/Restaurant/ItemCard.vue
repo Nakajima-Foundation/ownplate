@@ -23,7 +23,7 @@
               <img :src="image" width="96" height="96" class="r-4" />
             </div>
             <div  @click.stop="pushCount" class="op-button-pill bg-primary-bg w-96">
-              <span>Add</span>
+              <span>{{$t('sitemenu.add')}}</span>
             </div>
           </div>
         </div>
@@ -35,7 +35,7 @@
 
         <!-- Item Options -->
         <div v-if="hasOptions" class="m-t-16">
-          <div class="t-caption c-text-black-medium">Options</div>
+          <div class="t-caption c-text-black-medium">{{$t('sitemenu.options')}}</div>
           <div v-for="(option, index) in options" :key="index" class="m-t-8">
             <div v-if="option.length === 1" class="field">
               <b-checkbox v-model="optionValues[index]">{{ option[0] }}</b-checkbox>
@@ -63,7 +63,7 @@
 
         <!-- Item Quantity -->
         <div class="m-t-16">
-          <div class="t-caption c-text-black-medium">Quantity</div>
+          <div class="t-caption c-text-black-medium">{{$t('sitemenu.quantity')}}</div>
           <div class="level is-mobile m-t-8">
             <div class="level-left">
               <div

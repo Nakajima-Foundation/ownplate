@@ -114,6 +114,7 @@
     "UrlCopied": "コピーしました",
     "UrlCopyFailed": "コピー失敗",
     "name": "飲食店名",
+    "restaurantDetails": "飲食店情報",
     "streetAddress": "住所",
     "city": "市区町村",
     "state": "州",
@@ -123,13 +124,17 @@
     "phonenumber": "電話番号",
     "website": "ホームページ",
     "hours": "営業時間",
+    "closed": "定休日",
     "public": "公開"
   },
   "sitemenu": {
     "menu": "メニュー",
     "about": "飲食店情報",
     "checkout": "お会計",
-    "orderCounter": "{count} 個"
+    "orderCounter": "{count} 個",
+    "add": "追加",
+    "options": "オプション",
+    "quantity": "数量"
   },
   "date": {
     "today": "本日"
