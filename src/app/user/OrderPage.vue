@@ -189,7 +189,7 @@ export default {
     };
   },
   created() {
-    if (this.lineEnabled) {
+    if (this.lineEnabled && this.user) {
       db.doc(`users/${this.user.uid}/private/line`)
         .get()
         .then(doc => {
