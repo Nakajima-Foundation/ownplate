@@ -13,6 +13,7 @@ export const ownPlateConfig = {
   siteDescription: "Zero Comission Take-out Service",
   releasName: "beta-dev",
   region: "JP",
+  hostName: "staging.ownplate.today",
   line: {
     LOGIN_CHANNEL_ID: "1654216149",
   }

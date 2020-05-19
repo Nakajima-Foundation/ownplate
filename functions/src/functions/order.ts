@@ -7,6 +7,7 @@ import { resources } from './resources'
 import i18next from 'i18next'
 import Order from '../models/Order'
 import * as line from './line'
+import { ownPlateConfig } from '../common/project';
 
 // This function is called by users to place orders without paying
 export const place = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
@@ -121,16 +122,7 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
       return { success: true }
     })
     if (sendSMS && msgKey) {
-      const t = await i18next.init({
-        lng: lng || utils.getStripeRegion().langs[0],
-        resources
-      })
-      const message = `${t(msgKey)} ${restaurant.restaurantName} ${orderNumber}`;
-      if (line.isEnabled) {
-        await line.sendMessage(db, uidUser, message)
-      } else {
-        await sms.pushSMS("OwnPlate", message, phoneNumber)
-      }
+      await sendMessage(db, lng, msgKey, restaurant.restaurantName, orderNumber, uidUser, phoneNumber, restaurantId, orderId)
     }
     return result
   } catch (error) {
@@ -138,6 +130,22 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
   }
 }
 
+export const sendMessage = async (db: FirebaseFirestore.Firestore, lng: string,
+  msgKey: string, restaurantName: string, orderNumber: string,
+  uidUser: string | null, phoneNumber: string | undefined,
+  restaurantId: string, orderId: string) => {
+  const t = await i18next.init({
+    lng: lng || utils.getStripeRegion().langs[0],
+    resources
+  })
+  const url = `https://${ownPlateConfig.hostName}/r/${restaurantId}/order/${orderId}?openExternalBrowser=1`
+  const message = `${t(msgKey)} ${restaurantName} ${orderNumber} ${url}`;
+  if (line.isEnabled) {
+    await line.sendMessage(db, uidUser, message)
+  } else {
+    await sms.pushSMS("OwnPlate", message, phoneNumber)
+  }
+}
 
 export const getMenuObj = async (refRestaurant) => {
   const menuObj = {};

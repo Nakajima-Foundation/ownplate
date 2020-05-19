@@ -209,8 +209,7 @@ export const regionalSettings = {
       en: "English(US)",
       es: "Español",
       ja: "日本語"
-    },
-    hostName: "ownplate.today"
+    }
   },
   JP: {
     CurrencyKey: "JPY",
@@ -236,8 +235,7 @@ export const regionalSettings = {
     languages: {
       ja: "日本語",
       en: "English(US)"
-    },
-    hostName: "omochikaeri.com"
+    }
   },
   EU: {
     CurrencyKey: "EUR",
@@ -260,7 +258,6 @@ export const regionalSettings = {
       it: "italiano",
       nl: "Nederlands",
       ja: "日本語"
-    },
-    hostName: "eu.ownplate.today"
+    }
   }
 };
