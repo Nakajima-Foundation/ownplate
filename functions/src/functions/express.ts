@@ -57,18 +57,19 @@ const ogpPage = async (req: any, res: any) => {
     }
     const restaurant_data: any = restaurant.data();
 
-    const title = restaurant_data.restaurantName;
+    const siteName = ownPlateConfig.siteName;
+    const title = restaurant_data.restaurantName || ownPlateConfig.siteName;
     const image = restaurant_data.restProfilePhoto;
-    const description = restaurant_data.introduction || "Japanese comfort food";
+    const description = restaurant_data.introduction || ownPlateConfig.siteDescription;
     const regex = /<title.*title>/;
     const metas =
       [
         `<title>${escapeHtml(title)}</title>`,
         `<meta property="og:title" content="${escapeHtml(title)}" />`,
-        `<meta property="og:site_name" content="${escapeHtml(title)}" />`,
+        `<meta property="og:site_name" content="${escapeHtml(siteName)}" />`,
         `<meta property="og:type" content="website" />`,
         `<meta property="og:url" content="https://${ownPlateConfig.hostName}/r/${restaurantName}" />`,
-        `<meta property="og:description" content="${description}" />`,
+        `<meta property="og:description" content="${escapeHtml(description)}" />`,
         `<meta property="og:image" content="${image}" />`,
         `<meta name="twitter:card" content="summary_large_image" />`,
         `<meta name="twitter:site" content="@omochikaericom" />`,
