@@ -60,7 +60,7 @@ const ogpPage = async (req: any, res: any) => {
 
     const title = restaurant_data.restaurantName;
     const image = restaurant_data.restProfilePhoto;
-
+    const description = restaurant_data.introduction || "Japanese comfort food";
     const regex = /<title.*title>/;
     const metas =
       [
@@ -69,8 +69,13 @@ const ogpPage = async (req: any, res: any) => {
         `<meta property="og:site_name" content="${escapeHtml(title)}" />`,
         `<meta property="og:type" content="website" />`,
         `<meta property="og:url" content="https://${regionalSetting.hostName}/r/${restaurantName}" />`,
-        `<meta property="og:description" content="Japanese comfort food" />`,
+        `<meta property="og:description" content="${description}" />`,
         `<meta property="og:image" content="${image}" />`,
+        `<meta name="twitter:card" content="summary_large_image" />`,
+        `<meta name="twitter:site" content="@omochikaericom" />`,
+        `<meta name="twitter:creator" content="@omochikaericom" />`,
+        `<meta name="twitter:description" content="${description}" />`,
+        `<meta name="twitter:image" content="${image}" />`,
       ].join("\n");
 
     res.set('Cache-Control', 'public, max-age=300, s-maxage=600');
