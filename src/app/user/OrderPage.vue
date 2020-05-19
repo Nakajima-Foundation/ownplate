@@ -50,7 +50,9 @@
             </template>
           </div>
         </div>
-        <shop-orner-info :shopInfo="shopInfo"></shop-orner-info>
+        <router-link :to="`/r/${restaurantId()}`">
+          <shop-orner-info :shopInfo="shopInfo"></shop-orner-info>
+        </router-link>
 
         <shop-info v-if="paid" :compact="true" :shopInfo="shopInfo" />
 
