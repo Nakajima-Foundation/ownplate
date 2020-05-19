@@ -21,11 +21,7 @@
     ],
     "rewrites": [
       {
-        "source": "/r/*",
-        "function": "api"
-      },
-      {
-        "source": "/r/*/order/*",
+        "source": "/r/**",
         "function": "api"
       },
       {
