@@ -14,7 +14,7 @@
               {{$t('order.pleaseStay')}}
             </p>
           </div>
-          <div v-if="lineEnabled" class="m-t-8" style="text-align: center;">
+          <div v-if="showAddLine" class="m-t-8" style="text-align: center;">
             <b-button
               type="is-primary"
               class="p-r-16 p-l-16 notify"
@@ -50,7 +50,9 @@
             </template>
           </div>
         </div>
-        <shop-orner-info :shopInfo="shopInfo"></shop-orner-info>
+        <router-link :to="`/r/${restaurantId()}`">
+          <shop-orner-info :shopInfo="shopInfo"></shop-orner-info>
+        </router-link>
 
         <shop-info v-if="paid" :compact="true" :shopInfo="shopInfo" />
 
@@ -168,6 +170,7 @@ export default {
   },
   data() {
     return {
+      showAddLine: false,
       notAvailable: false,
       isPaying: false,
       restaurantsId: this.restaurantId(),
@@ -186,6 +189,15 @@ export default {
     };
   },
   created() {
+    if (this.lineEnabled) {
+      db.doc(`users/${this.user.uid}/private/line`)
+        .get()
+        .then(doc => {
+          const data = doc.data();
+          console.log(data);
+          this.showAddLine = !(data && data.isFriend);
+        });
+    }
     const restaurant_detacher = db
       .doc(`restaurants/${this.restaurantId()}`)
       .onSnapshot(async restaurant => {
