@@ -94,6 +94,7 @@
         </div>
       </b-button>
     </template>
+    <error-popup :error="errorMessage" />
   </div>
 </template>
 
@@ -103,6 +104,7 @@ import PhoneLogin from "~/app/auth/PhoneLogin";
 import ShopOrnerInfo from "~/app/user/Restaurant/ShopOrnerInfo";
 import ShopInfo from "~/app/user/Restaurant/ShopInfo";
 import NotFound from "~/components/NotFound";
+import ErrorPopup from "~/components/ErrorPopup";
 
 import { db, firestore, functions } from "~/plugins/firebase.js";
 import { order_status } from "~/plugins/constant.js";
@@ -115,6 +117,7 @@ export default {
     PhoneLogin,
     ShopOrnerInfo,
     ShopInfo,
+    ErrorPopup,
     NotFound
   },
   data() {
@@ -133,6 +136,7 @@ export default {
       menus: [],
       titles: [],
       waitForUser: false,
+      errorMessage: null,
 
       detacher: [],
       notFound: null
@@ -274,6 +278,9 @@ export default {
       };
       this.isCheckingOut = true;
       try {
+        if (this.forcedError("checkout")) {
+          throw Error("forced Error");
+        }
         const res = await db
           .collection(`restaurants/${this.restaurantId()}/orders`)
           .add(order_data);
@@ -303,10 +310,11 @@ export default {
             this.goCheckout();
           }, 500);
         } else {
-          console.error(error);
+          console.error(error.message);
+          this.errorMessage = { code: "order.checkout", details: error };
         }
       } finally {
-        this.isCheckingOut = true;
+        this.isCheckingOut = false;
       }
     },
     didCountChange(eventArgs) {
