@@ -1,6 +1,7 @@
 <template>
   <div>
     <b-loading :is-full-page="false" :active="isValidating"></b-loading>
+    <error-popup :error="errorMessage" />
   </div>
 </template>
 
@@ -8,10 +9,15 @@
 // https://firebase.googleblog.com/2016/11/authenticate-your-firebase-users-with-line-login.html
 import { ownPlateConfig } from "@/config/project";
 import { db, auth, firestore, functions } from "~/plugins/firebase.js";
+import ErrorPopup from "~/components/ErrorPopup";
 
 export default {
+  components: {
+    ErrorPopup
+  },
   data() {
     return {
+      errorMessage: null,
       isValidating: false
     };
   },
@@ -42,6 +48,7 @@ export default {
         }
       } catch (error) {
         console.error(error.message, error.details);
+        this.errorMessage = { code: "line.validation", details: error.details };
       } finally {
         this.isValidating = false;
       }
