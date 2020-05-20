@@ -18,9 +18,9 @@
               <div class="column">
                 <div class="is-hidden-mobile h-24"></div>
                 <div class="bg-form h-192">
-                  <img :src="shopInfo.restCoverPhoto" class="h-192 w-full cover is-hidden-tablet" />
+                  <img :src="coverImage" class="h-192 w-full cover is-hidden-tablet" />
                   <img
-                    :src="shopInfo.restCoverPhoto"
+                    :src="coverImage"
                     class="h-192 w-full cover r-8 is-hidden-mobile"
                   />
                 </div>
@@ -237,7 +237,10 @@ export default {
         ret[id] = this.options[id];
         return ret;
       }, {});
-    }
+    },
+    coverImage() {
+      return this.shopInfo.images.cover.resizedImages["1200"] || this.shopInfo.restCoverPhoto;
+    },
   },
   methods: {
     handleCheckOut() {
