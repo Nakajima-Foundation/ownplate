@@ -2,7 +2,10 @@
   <div v-if="error">
     <b-modal :active.sync="isVisible" :width="488">
       <div class="op-dialog p-t-24 p-l-24 p-r-24 p-b-24">
-        <div class="t-h6 c-text-black-disabled p-b-8">{{$t('errorPage.popup.title')}}</div>
+        <div class="t-h6 c-text-black-disabled p-b-8">
+          <i class="fas fa-exclamation-triangle"></i>
+          {{$t('errorPage.popup.title')}}
+        </div>
         <div class="m-t-8">{{message}}</div>
         <div class="m-t-8">{{$t("errorPage.popup.message1")}}</div>
         <div class="m-t-24 align-center">
