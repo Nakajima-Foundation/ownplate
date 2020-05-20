@@ -462,18 +462,17 @@ export default {
       console.log("handlePayment", timeToPickup);
 
       this.isPaying = true;
-      const {
-        error,
-        paymentMethod
-      } = await this.$refs.stripe.createPaymentMethod();
-
-      if (error) {
-        this.isPaying = false;
-        console.log(error);
-        return;
-      }
-
       try {
+        const {
+          error,
+          paymentMethod
+        } = await this.$refs.stripe.createPaymentMethod();
+
+        if (error) {
+          this.isPaying = false;
+          throw error;
+        }
+
         const { data } = await stripeCreateIntent({
           paymentMethodId: paymentMethod.id,
           timeToPickup,
