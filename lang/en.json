@@ -301,8 +301,11 @@
   },
   "errorPage": {
     "popup": {
-      "title": "Unexped Error Happened",
-      "message1": "Please try this operation later."
+      "title": "Unexped Error Happened"
+    },
+    "message": {
+      "generic": "Please try this operation later.",
+      "line": "Plase try to connect LINE again."
     },
     "code": {
       "line": {

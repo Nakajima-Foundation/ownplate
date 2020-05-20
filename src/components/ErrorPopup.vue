@@ -7,7 +7,7 @@
           {{$t('errorPage.popup.title')}}
         </div>
         <div class="m-t-8">{{message}}</div>
-        <div class="m-t-8">{{$t("errorPage.popup.message1")}}</div>
+        <div class="m-t-8">{{$t(message2)}}</div>
         <div class="m-t-24 align-center">
           <div class="op-button-small tertiary" @click="close">{{$t('menu.close')}}</div>
         </div>
@@ -41,6 +41,9 @@ export default {
         return this.$t("errorPage.code." + this.error.code);
       }
       return "";
+    },
+    message2() {
+      return this.error.message2 || "errorPage.message.generic";
     }
   },
   methods: {
