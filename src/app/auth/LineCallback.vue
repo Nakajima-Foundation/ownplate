@@ -44,7 +44,7 @@ export default {
         console.error(error.message, error.details);
         this.$store.commit("setErrorMessage", {
           code: "line.validation",
-          details: error.details
+          error
         });
       } finally {
         this.isValidating = false;

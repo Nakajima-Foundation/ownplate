@@ -225,7 +225,6 @@
         <!-- Right Gap -->
         <div class="column is-narrow w-24"></div>
       </div>
-      <error-popup :error="errorMessage" />
     </template>
   </div>
 </template>
@@ -244,7 +243,6 @@ import { nameOfOrder } from "~/plugins/strings.js";
 import { releaseConfig } from "~/plugins/config.js";
 import { stripeCreateIntent, stripeCancelIntent } from "~/plugins/stripe.js";
 import { ownPlateConfig } from "@/config/project";
-import ErrorPopup from "~/components/ErrorPopup";
 
 export default {
   name: "Order",
@@ -254,7 +252,6 @@ export default {
     ShopInfo,
     StripeCard,
     TimeToPickup,
-    ErrorPopup,
     NotFound
   },
   data() {
@@ -274,7 +271,6 @@ export default {
       tip: 0,
       isCanceling: false,
       sendSMS: true,
-      errorMessage: null,
       notFound: false
     };
   },
@@ -486,7 +482,10 @@ export default {
         window.scrollTo(0, 0);
       } catch (error) {
         console.error(error.message, error.details);
-        this.errorMessage = { code: "sprite.intent", details: error.details };
+        this.$store.commit("setErrorMessage", {
+          code: "sprite.intent",
+          error
+        });
       } finally {
         this.isPaying = false;
       }
@@ -504,7 +503,10 @@ export default {
           tip: this.tip || 0
         });
         console.log("place", data);
-        this.errorMessage = { code: "order.place", details: error.details };
+        this.$store.commit("setErrorMessage", {
+          code: "order.place",
+          error
+        });
         window.scrollTo(0, 0);
       } catch (error) {
         console.error(error.message, error.details);
@@ -523,7 +525,10 @@ export default {
       } catch (error) {
         // BUGBUG: Implement the error handling code here
         console.error(error.message, error.details);
-        this.errorMessage = { code: "order.cancel", details: error.details };
+        this.$store.commit("setErrorMessage", {
+          code: "order.cancel",
+          error
+        });
       } finally {
         this.isCanceling = false;
       }

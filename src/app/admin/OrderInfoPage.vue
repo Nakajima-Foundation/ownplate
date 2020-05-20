@@ -79,7 +79,6 @@
       </div>
     </div>
     <ordered-item v-for="id in ids" :key="id" :item="items[id]" />
-    <error-popup :error="errorMessage" />
   </section>
 </template>
 
@@ -96,13 +95,11 @@ import {
 } from "~/plugins/phoneutil.js";
 import { stripeConfirmIntent, stripeCancelIntent } from "~/plugins/stripe.js";
 import moment from "moment";
-import ErrorPopup from "~/components/ErrorPopup";
 
 export default {
   components: {
     BackButton,
-    OrderedItem,
-    ErrorPopup
+    OrderedItem
   },
 
   data() {
@@ -258,10 +255,10 @@ export default {
           this.$router.push(this.parentUrl);
         } catch (error) {
           console.error(error.message, error.details);
-          this.errorMessage = {
+          this.$store.commit("setErrorMessage", {
             code: "sprite.confirm",
-            details: error.details
-          };
+            error
+          });
         } finally {
           this.updating = "";
         }
@@ -286,7 +283,10 @@ export default {
         this.$router.push(this.parentUrl);
       } catch (error) {
         console.error(error.message, error.details);
-        this.errorMessage = { code: "order.update", details: error.details };
+        this.$store.commit("setErrorMessage", {
+          code: "order.update",
+          error
+        });
       } finally {
         this.updating = "";
       }
@@ -303,7 +303,10 @@ export default {
         this.$router.push(this.parentUrl);
       } catch (error) {
         console.error(error.message, error.details);
-        this.errorMessage = { code: "order.cancel", details: error.details };
+        this.$store.commit("setErrorMessage", {
+          code: "order.cancel",
+          error
+        });
       } finally {
         this.updating = "";
       }
