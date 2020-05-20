@@ -1,7 +1,37 @@
+rules_version = '2';
+
 service firebase.storage {
   match /b/{bucket}/o {
+
+    match /images/restaurants/{restaurantId}/{userId}/cover.jpg {
+      allow write: if request.auth.uid == userId;
+      allow read;
+    }
+    match /images/restaurants/{restaurantId}/{userId}/profile.jpg {
+      allow write: if request.auth.uid == userId;
+      allow read;
+    }
+    match /images/restaurants/{restaurantId}/menus/{menuId}/{userId}/item.jpg {
+      allow write: if request.auth.uid == userId;
+      allow read;
+    }
+
+
+    match /images/restaurants/{restaurantId}/cover.jpg {
+      allow write: if false;
+      allow read;
+    }
+    match /images/restaurants/{restaurantId}/profile.jpg {
+      allow write: if false;
+      allow read;
+    }
+    match /images/restaurants/{restaurantId}/menus/{menuId}/item.jpg {
+      allow write: if false;
+      allow read;
+    }
+
     match /{allPaths=**} {
-      allow read, write: if request.auth!=null;
+      allow read, write: if false
     }
   }
 }
