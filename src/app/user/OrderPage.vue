@@ -225,6 +225,7 @@
         <!-- Right Gap -->
         <div class="column is-narrow w-24"></div>
       </div>
+      <error-popup :error="errorMessage" />
     </template>
   </div>
 </template>
@@ -243,6 +244,7 @@ import { nameOfOrder } from "~/plugins/strings.js";
 import { releaseConfig } from "~/plugins/config.js";
 import { stripeCreateIntent, stripeCancelIntent } from "~/plugins/stripe.js";
 import { ownPlateConfig } from "@/config/project";
+import ErrorPopup from "~/components/ErrorPopup";
 
 export default {
   name: "Order",
@@ -252,6 +254,7 @@ export default {
     ShopInfo,
     StripeCard,
     TimeToPickup,
+    ErrorPopup,
     NotFound
   },
   data() {
@@ -271,6 +274,7 @@ export default {
       tip: 0,
       isCanceling: false,
       sendSMS: true,
+      errorMessage: null,
       notFound: false
     };
   },
@@ -420,11 +424,6 @@ export default {
     }
   },
   methods: {
-    forcedError(key) {
-      const debug = this.$route.query.debug;
-      console.log(debug);
-      return debug || "";
-    },
     handleNotAvailable(flag) {
       console.log("handleNotAvailable", flag);
       this.notAvailable = flag;
@@ -478,7 +477,7 @@ export default {
         const { data } = await stripeCreateIntent({
           paymentMethodId: paymentMethod.id,
           timeToPickup,
-          restaurantId: this.restaurantId() + this.forcedError("restaurantId"),
+          restaurantId: this.restaurantId() + this.forcedError("intent"),
           orderId: this.orderId,
           description: `${this.orderName} ${this.shopInfo.restaurantName} ${this.shopInfo.phoneNumber}`,
           sendSMS: this.sendSMS,
@@ -488,6 +487,7 @@ export default {
         window.scrollTo(0, 0);
       } catch (error) {
         console.error(error.message, error.details);
+        this.errorMessage = { code: "sprite.intent", details: error.details };
       } finally {
         this.isPaying = false;
       }

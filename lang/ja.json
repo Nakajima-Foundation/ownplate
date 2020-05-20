@@ -307,6 +307,9 @@
     "code": {
       "line": {
         "validation": "ラインによる認証に失敗しました。"
+      },
+      "sprite": {
+        "intent": "スプライトによる課金に失敗しました。"
       }
     },
     "notFound": {
