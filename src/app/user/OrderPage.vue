@@ -498,13 +498,14 @@ export default {
       try {
         this.isPlacing = true;
         const { data } = await orderPlace({
-          restaurantId: this.restaurantId(),
+          restaurantId: this.restaurantId() + this.forcedError("place"),
           timeToPickup,
           orderId: this.orderId,
           sendSMS: this.sendSMS,
           tip: this.tip || 0
         });
         console.log("place", data);
+        this.errorMessage = { code: "order.place", details: error.details };
         window.scrollTo(0, 0);
       } catch (error) {
         console.error(error.message, error.details);
@@ -516,13 +517,14 @@ export default {
       try {
         this.isCanceling = true;
         const { data } = await stripeCancelIntent({
-          restaurantId: this.restaurantId(),
+          restaurantId: this.restaurantId() + this.forcedError("cancel"),
           orderId: this.orderId
         });
         console.log("cancel", data);
       } catch (error) {
         // BUGBUG: Implement the error handling code here
         console.error(error.message, error.details);
+        this.errorMessage = { code: "order.cancel", details: error.details };
       } finally {
         this.isCanceling = false;
       }
