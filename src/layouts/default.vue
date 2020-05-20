@@ -55,6 +55,7 @@
 
         <!-- approproate component under pages will be displayed -->
         <nuxt v-if="isReadyToRender"></nuxt>
+        <error-popup :error="errorMessage" />
       </div>
     </div>
 
@@ -103,8 +104,12 @@ import { db, auth, functions } from "@/plugins/firebase.js";
 import { regionalSettings } from "~/plugins/constant.js";
 import { releaseConfig } from "~/plugins/config.js";
 import { ownPlateConfig } from "@/config/project";
+import ErrorPopup from "~/components/ErrorPopup";
 
 export default {
+  components: {
+    ErrorPopup
+  },
   data() {
     const regionalSetting = regionalSettings[ownPlateConfig.region || "US"];
     return {
@@ -143,6 +148,9 @@ export default {
     };
   },
   computed: {
+    errorMessage() {
+      return this.$store.state.errorMessage;
+    },
     isReadyToRender() {
       if (this.user !== undefined) {
         return true; // Firebase has already identified the user (or non-user)
