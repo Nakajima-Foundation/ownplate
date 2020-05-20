@@ -2,7 +2,7 @@
 // "/images/restaurants/0LHzyxxnKZ0eZs3bCaEx/profile.jpg";
 // "/images/restaurants/0LHzyxxnKZ0eZs3bCaEx/menus/6cDoe8lyrn898YtwiQfg/item.jpg"
 
-export const thumbnailSizes = [600, 1200];
+export const sizeOfResize = [600, 1200];
 
 export const coverPath = {path: "images/restaurants/*/*/cover.jpg"};
 export const profilePath = {path: "images/restaurants/*/*/profile.jpg"};

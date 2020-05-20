@@ -73,15 +73,13 @@ describe('Image function', () => {
   it('should test getToFileFullPath', function() {
     const uid = "123";
     const path1 = `images/restaurants/0LHzyxxnKZ0eZs3bCaEx/${uid}/cover.jpg`;
-    imageUtil.getToFileFullPath(path1, 100).should.equal("cover");
+    imageUtil.getToFileFullPath(path1, 100).should.equal("images/restaurants/0LHzyxxnKZ0eZs3bCaEx/123/resize/100/cover.jpg");
 
     const path2 = `images/restaurants/0LHzyxxnKZ0eZs3bCaEx/${uid}/profile.jpg`;
-    imageUtil.getToFileFullPath(path2, 200).should.equal("profile");
+    imageUtil.getToFileFullPath(path2, 200).should.equal("images/restaurants/0LHzyxxnKZ0eZs3bCaEx/123/resize/200/profile.jpg");
 
     const path3 = `images/restaurants/0LHzyxxnKZ0eZs3bCaEx/menus/6cDoe8lyrn898YtwiQfg/${uid}/item.jpg`
-    imageUtil.getToFileFullPath(path3, 300).should.equal("item");
-
-
+    imageUtil.getToFileFullPath(path3, 300).should.equal("images/restaurants/0LHzyxxnKZ0eZs3bCaEx/menus/6cDoe8lyrn898YtwiQfg/123/resize/300/item.jpg");
   });
 
 })
