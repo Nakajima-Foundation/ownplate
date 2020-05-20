@@ -28,6 +28,11 @@ export default {
       isVisible: true
     };
   },
+  watch: {
+    error() {
+      this.isVisible = true;
+    }
+  },
   computed: {
     message() {
       if (this.error.message) {
