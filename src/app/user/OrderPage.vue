@@ -420,6 +420,11 @@ export default {
     }
   },
   methods: {
+    forcedError(key) {
+      const debug = this.$route.query.debug;
+      console.log(debug);
+      return debug || "";
+    },
     handleNotAvailable(flag) {
       console.log("handleNotAvailable", flag);
       this.notAvailable = flag;
@@ -473,7 +478,7 @@ export default {
         const { data } = await stripeCreateIntent({
           paymentMethodId: paymentMethod.id,
           timeToPickup,
-          restaurantId: this.restaurantId(),
+          restaurantId: this.restaurantId() + this.forcedError("restaurantId"),
           orderId: this.orderId,
           description: `${this.orderName} ${this.shopInfo.restaurantName} ${this.shopInfo.phoneNumber}`,
           sendSMS: this.sendSMS,
