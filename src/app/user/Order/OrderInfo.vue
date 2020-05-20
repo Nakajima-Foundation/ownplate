@@ -1,5 +1,6 @@
 <template>
-  <div class="card block">
+  <div class="bg-surface r-8 d-low m-t-8 p-b-24">
+    <!-- Order Items -->
     <template v-for="orderItem in orderItems">
       <order-item
         :item="orderItem.item"
@@ -9,84 +10,93 @@
       ></order-item>
     </template>
 
-    <hr class="hr-black" />
+    <hr class="devider m-t-16 m-b-0 m-l-16 m-r-16" />
 
+    <!-- Totals -->
     <div v-if="verified">
-      <div class="card-content subtotal">
-        <div class="media">
-          <div class="media-content">
-            <h4 class="bold">{{$t('order.subtotal')}}</h4>
+      <!-- Sub Total -->
+      <div class="p-t-16 p-l-16 p-r-16">
+        <div class="cols">
+          <div class="flex-1">
+            <div class="t-body1 c-text-black-high">{{$t('order.subtotal')}}</div>
           </div>
-          <div class="media-right" style="margin-top:-0.4rem;">
-            <p class="p-bold">{{$n(orderInfo.sub_total, 'currency')}}</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="card-content tax">
-        <div class="media">
-          <div class="media-content">
-            <h4 class="bold">{{$t('order.salesTax')}}</h4>
-          </div>
-          <div class="media-right" style="margin-top:-0.4rem;">
-            <p class="p-bold">{{$n(orderInfo.tax, 'currency')}}</p>
-          </div>
-        </div>
-      </div>
-      <div v-if="regionTip.choices.length > 0" class="card-content tax">
-        <div class="media">
-          <div class="media-content">
-            <h4 class="bold">{{$t('order.total')}}</h4>
-          </div>
-          <div class="media-right" style="margin-top:-0.4rem;">
-            <p class="p-bold">{{$n(orderInfo.total, 'currency')}}</p>
+          <div class="align-righ">
+            <span class="t-body1 c-text-black-high">{{$n(orderInfo.sub_total, 'currency')}}</span>
           </div>
         </div>
       </div>
 
-      <div v-if="regionTip.choices.length > 0" class="card-content">
-        <div class="media">
-          <div class="media-content">
-            <b-field :label="$t('order.tip')">
-              <div v-if="isTipEditable">
-                <div style="margin-right:1em; float:left; width:6em">
-                  <b-input
-                    type="number"
-                    :step="tipStep"
-                    v-model="tip"
-                    v-on:input="handleTipInput"
-                    maxlength="30"
-                    style
-                  />
-                </div>
-                <b-button
-                  v-for="ratio in regionTip.choices"
-                  class="p-r-8 p-l-8"
-                  @click="updateTip(ratio)"
-                  :type="isSameAmount(ratio) ? 'is-primary' : ''"
-                  :key="ratio"
-                  size="is-small"
-                >{{ ratio + "%" }}</b-button>
-                <div style="clear:both" />
-              </div>
-            </b-field>
+      <!-- Tax -->
+      <div class="p-t-8 p-l-16 p-r-16">
+        <div class="cols">
+          <div class="flex-1">
+            <div class="t-body1 c-text-black-high">{{$t('order.salesTax')}}</div>
           </div>
-          <div class="media-right" style="margin-top:-0.4rem;">
-            <p class="p-bold">{{$n(tip, 'currency')}}</p>
+          <div class="align-righ">
+            <span class="t-body1 c-text-black-high">{{$n(orderInfo.tax, 'currency')}}</span>
           </div>
         </div>
       </div>
 
-      <div class="card-content">
-        <div class="media">
-          <div class="media-content">
-            <h3 class="bold">{{$t('order.totalCharge')}}</h3>
+      <!-- Total -->
+      <div v-if="regionTip.choices.length > 0" class="p-t-8 p-l-16 p-r-16">
+        <div class="cols">
+          <div class="flex-1">
+            <div class="t-body1 c-text-black-high">{{$t('order.total')}}</div>
           </div>
-          <div class="media-right">
-            <p
-              class="p-big bold"
-              style="color:#CB4B4B"
-            >{{$n(orderInfo.total + Number(tip), 'currency')}}</p>
+          <div class="align-righ">
+            <span class="t-body1 c-text-black-high">{{$n(orderInfo.total, 'currency')}}</span>
+          </div>
+        </div>
+      </div>
+
+      <hr class="devider m-t-16 m-b-0 m-l-16 m-r-16" />
+
+      <!-- Tip -->
+      <div v-if="regionTip.choices.length > 0" class="p-t-16 p-l-16 p-r-16">
+        <div class="cols">
+          <div class="flex-1">
+            <div class="t-body1 c-text-black-high">{{$t('order.tip')}}</div>
+          </div>
+          <div class="align-righ">
+            <span class="t-body1 c-text-black-high">{{$n(tip, 'currency')}}</span>
+          </div>
+        </div>
+        <!-- Tip Buttons -->
+        <div v-if="isTipEditable" class="columns is-gapless">
+          <div class="column is-narrow">
+            <b-input
+              class="w-96 m-t-8 m-r-16"
+              type="number"
+              :step="tipStep"
+              v-model="tip"
+              v-on:input="handleTipInput"
+              maxlength="30"
+              style
+            />
+          </div>
+          <div class="column">
+            <b-button
+              v-for="ratio in regionTip.choices"
+              class="m-t-8 m-r-8 bg-form"
+              @click="updateTip(ratio)"
+              :type="isSameAmount(ratio) ? 'is-primary' : ''"
+              :key="ratio"
+            >{{ ratio + "%" }}</b-button>
+          </div>
+        </div>
+      </div>
+
+      <hr class="devider m-t-16 m-b-0 m-l-16 m-r-16" />
+
+      <!-- Total Charge -->
+      <div class="p-t-24 p-l-16 p-r-16">
+        <div class="cols">
+          <div class="flex-1">
+            <div class="t-h6 c-status-green">{{$t('order.totalCharge')}}</div>
+          </div>
+          <div class="align-righ">
+            <span class="t-h6 c-status-green">{{$n(orderInfo.total + Number(tip), 'currency')}}</span>
           </div>
         </div>
       </div>
@@ -170,8 +180,3 @@ export default {
   }
 };
 </script>
-<style type="scss" scped>
-.tax {
-  margin-top: -1.6rem !important;
-}
-</style>
