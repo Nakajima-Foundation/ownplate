@@ -79,6 +79,7 @@
       </div>
     </div>
     <ordered-item v-for="id in ids" :key="id" :item="items[id]" />
+    <error-popup :error="errorMessage" />
   </section>
 </template>
 
@@ -95,11 +96,13 @@ import {
 } from "~/plugins/phoneutil.js";
 import { stripeConfirmIntent, stripeCancelIntent } from "~/plugins/stripe.js";
 import moment from "moment";
+import ErrorPopup from "~/components/ErrorPopup";
 
 export default {
   components: {
     BackButton,
-    OrderedItem
+    OrderedItem,
+    ErrorPopup
   },
 
   data() {
@@ -289,14 +292,14 @@ export default {
       try {
         this.updating = "order_canceled";
         const { data } = await stripeCancelIntent({
-          restaurantId: this.restaurantId(),
+          restaurantId: this.restaurantId() + this.forcedError("cancel"),
           orderId: this.orderId
         });
         console.log("cancel", data);
         this.$router.push(this.parentUrl);
       } catch (error) {
-        // BUGBUG: Implement the error handling code here
         console.error(error.message, error.details);
+        this.errorMessage = { code: "order.cancel", details: error.details };
       } finally {
         this.updating = "";
       }
