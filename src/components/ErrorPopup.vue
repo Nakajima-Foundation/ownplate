@@ -30,7 +30,7 @@ export default {
   },
   watch: {
     error() {
-      this.isVisible = true;
+      this.isVisible = true; // so that we can re-use this component
     }
   },
   computed: {
