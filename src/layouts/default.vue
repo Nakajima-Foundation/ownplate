@@ -38,7 +38,7 @@
           <div class="op-button-small tertiary" @click="handleClose()">{{ $t("menu.about") }}</div>
         </router-link>
       </div>
-      <div class="align-center m-t-24">
+      <div v-if="!isAdmin" class="align-center m-t-24">
         <router-link to="/u/history">
           <div class="op-button-small tertiary" @click="handleClose()">{{ $t("order.history") }}</div>
         </router-link>
@@ -139,8 +139,7 @@ export default {
 
       audioContext: new (window.AudioContext || window.webkitAudioContext)(),
       pleyedSilent: false,
-      buffer: null,
-
+      buffer: null
     };
   },
   computed: {
@@ -182,7 +181,6 @@ export default {
     async enableSound() {
       // console.log(this.$store.state.orderEvent);
       if (!this.pleyedSilent) {
-
         console.log("default: enableSound");
         try {
           const src = this.audioContext.createBufferSource();
@@ -204,12 +202,15 @@ export default {
     async play() {
       if (this.buffer) {
         if (this.$store.state.soundOn) {
-          this.audioContext.decodeAudioData(this.buffer.slice(0), _audioBuffer => {
-            const source = this.audioContext.createBufferSource();
-            source.buffer = _audioBuffer;
-            source.connect(this.audioContext.destination);
-            source.start(0);
-          });
+          this.audioContext.decodeAudioData(
+            this.buffer.slice(0),
+            _audioBuffer => {
+              const source = this.audioContext.createBufferSource();
+              source.buffer = _audioBuffer;
+              source.connect(this.audioContext.destination);
+              source.start(0);
+            }
+          );
         } else {
           console.log("silent order update");
         }
