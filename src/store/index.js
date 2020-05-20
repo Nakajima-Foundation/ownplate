@@ -15,6 +15,7 @@ export const state = () => ({
   orderEvent: 0,
   soundEnable: false, // after user touch/click event, this flag set true (for mobile browser)
   soundOn: false, // for restaurant admin config
+  errorMessage: null // for ErrorPopup
 });
 
 export const getters = {
@@ -77,6 +78,9 @@ export const mutations = {
   setSoundOn(state, flag) {
     state.soundOn = flag;
   },
+  setErrorMessage(state, message) {
+    state.errorMessage = message;
+  }
 };
 
 export const actions = {

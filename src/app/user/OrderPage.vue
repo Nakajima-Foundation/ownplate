@@ -458,22 +458,21 @@ export default {
       console.log("handlePayment", timeToPickup);
 
       this.isPaying = true;
-      const {
-        error,
-        paymentMethod
-      } = await this.$refs.stripe.createPaymentMethod();
-
-      if (error) {
-        this.isPaying = false;
-        console.log(error);
-        return;
-      }
-
       try {
+        const {
+          error,
+          paymentMethod
+        } = await this.$refs.stripe.createPaymentMethod();
+
+        if (error) {
+          this.isPaying = false;
+          throw error;
+        }
+
         const { data } = await stripeCreateIntent({
           paymentMethodId: paymentMethod.id,
           timeToPickup,
-          restaurantId: this.restaurantId(),
+          restaurantId: this.restaurantId() + this.forcedError("intent"),
           orderId: this.orderId,
           description: `${this.orderName} ${this.shopInfo.restaurantName} ${this.shopInfo.phoneNumber}`,
           sendSMS: this.sendSMS,
@@ -483,6 +482,10 @@ export default {
         window.scrollTo(0, 0);
       } catch (error) {
         console.error(error.message, error.details);
+        this.$store.commit("setErrorMessage", {
+          code: "sprite.intent",
+          error
+        });
       } finally {
         this.isPaying = false;
       }
@@ -493,13 +496,17 @@ export default {
       try {
         this.isPlacing = true;
         const { data } = await orderPlace({
-          restaurantId: this.restaurantId(),
+          restaurantId: this.restaurantId() + this.forcedError("place"),
           timeToPickup,
           orderId: this.orderId,
           sendSMS: this.sendSMS,
           tip: this.tip || 0
         });
         console.log("place", data);
+        this.$store.commit("setErrorMessage", {
+          code: "order.place",
+          error
+        });
         window.scrollTo(0, 0);
       } catch (error) {
         console.error(error.message, error.details);
@@ -511,13 +518,17 @@ export default {
       try {
         this.isCanceling = true;
         const { data } = await stripeCancelIntent({
-          restaurantId: this.restaurantId(),
+          restaurantId: this.restaurantId() + this.forcedError("cancel"),
           orderId: this.orderId
         });
         console.log("cancel", data);
       } catch (error) {
         // BUGBUG: Implement the error handling code here
         console.error(error.message, error.details);
+        this.$store.commit("setErrorMessage", {
+          code: "order.cancel",
+          error
+        });
       } finally {
         this.isCanceling = false;
       }

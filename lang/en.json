@@ -300,6 +300,28 @@
     "addFriendDescription": "In order to receive LINE notifications, you need to follow the official channel"
   },
   "errorPage": {
+    "popup": {
+      "title": "Unexped Error Happened"
+    },
+    "message": {
+      "generic": "Please try this operation later.",
+      "line": "Plase try to connect LINE again."
+    },
+    "code": {
+      "line": {
+        "validation": "LINE authentication failed."
+      },
+      "order": {
+        "checkout": "Failed to perform the checkout process.",
+        "place": "Failed to place the order.",
+        "update": "Failed to update the order status.",
+        "cancel": "Failed to cancel the order."
+      },
+      "sprite": {
+        "confirm": "Failed to confirm the payment.",
+        "intent": "Failed to process the payment."
+      }
+    },
     "notFound": {
       "message1": "The page you're looking for can't be found.",
       "message2": "Try contacting the restaurant in other way"
