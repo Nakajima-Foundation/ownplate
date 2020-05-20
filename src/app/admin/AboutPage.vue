@@ -669,7 +669,7 @@ export default {
       return new Promise((resolve, rejected) => {
         let storageRef = storage.ref();
         let mountainsRef = storageRef.child(
-          `/images/restaurants/${restaurantId}/${filename}.jpg`
+          `/images/restaurants/${restaurantId}/${this.uid}/${filename}.jpg`
         );
         let uploadTask = mountainsRef.put(file);
 
