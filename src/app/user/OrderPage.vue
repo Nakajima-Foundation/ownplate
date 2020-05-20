@@ -26,7 +26,9 @@
             </div>
 
             <!-- Restaurant Profile Photo and Name -->
-            <shop-orner-info :shopInfo="shopInfo"></shop-orner-info>
+            <router-link :to="`/r/${restaurantId()}`">
+              <shop-orner-info :shopInfo="shopInfo"></shop-orner-info>
+            </router-link>
 
             <!-- After Paid -->
             <div v-if="paid">
