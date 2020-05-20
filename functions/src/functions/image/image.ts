@@ -1,5 +1,3 @@
-import * as admin from 'firebase-admin';
-
 import * as imageUtil from './imageUtil';
 import * as constant from './constant';
 
