@@ -251,13 +251,17 @@ export default {
         try {
           this.updating = "customer_picked_up";
           const { data } = await stripeConfirmIntent({
-            restaurantId: this.restaurantId(),
+            restaurantId: this.restaurantId() + this.forcedError("confirm"),
             orderId
           });
           console.log("confirm", data);
           this.$router.push(this.parentUrl);
         } catch (error) {
           console.error(error.message, error.details);
+          this.errorMessage = {
+            code: "sprite.confirm",
+            details: error.details
+          };
         } finally {
           this.updating = "";
         }
@@ -274,15 +278,15 @@ export default {
       this.updating = statusKey;
       try {
         const { data } = await orderUpdate({
-          restaurantId: this.restaurantId(),
+          restaurantId: this.restaurantId() + this.forcedError("update"),
           orderId: this.orderId,
           status: newStatus
         });
         console.log("update", data);
         this.$router.push(this.parentUrl);
       } catch (error) {
-        // BUGBUG: Handle Error
         console.error(error.message, error.details);
+        this.errorMessage = { code: "order.update", details: error.details };
       } finally {
         this.updating = "";
       }
