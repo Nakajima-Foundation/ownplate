@@ -37,16 +37,15 @@
               </div>
 
               <!-- Line Button -->
-              <div v-if="showAddLine" class="m-t-8" style="text-align: center;">
+              <div v-if="showAddLine" class="m-t-24 align-center">
                 <b-button
-                  type="is-primary"
-                  class="p-r-16 p-l-16 notify"
+                  class="b-reset op-button-small"
                   style="background:#18b900"
                   tag="a"
                   :href="lineAuth"
                 >
-                  <i class="fab fa-line" style="font-size:1.2em" />
-                  {{$t('line.notifyMe')}}
+                  <i class="fab fa-line c-text-white-full m-l-24 m-r-8" style="font-size:24px" />
+                  <span class="c-text-white-full m-r-24">{{$t('line.notifyMe')}}</span>
                 </b-button>
               </div>
 
@@ -77,11 +76,12 @@
               <div class="align-center m-t-24">
                 <b-button
                   v-if="just_paid"
-                  type="is-danger"
-                  class="p-r-16 p-l-16"
+                  class="b-reset op-button-small bg-status-red"
                   :loading="isCanceling"
                   @click="handleCancelPayment"
-                >{{$t('button.cancel')}}</b-button>
+                >
+                  <span class="c-text-white-full">{{$t('button.cancel')}}</span>
+                </b-button>
               </div>
 
               <!-- Special Thank you Message from the Restaurant -->

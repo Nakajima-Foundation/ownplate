@@ -60,7 +60,7 @@
     </div>
 
     <!-- Footer -->
-    <div class="m-t-24">
+    <div class="m-t-48">
       <div class="bg-ownplate-gray columns is-gapless is-mobile h-128">
         <div class="column">
           <div
