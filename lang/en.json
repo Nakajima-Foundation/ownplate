@@ -208,6 +208,7 @@
     "auth/missing-verification-code": "The phone auth credential was created with an empty SMS verification code."
   },
   "admin": {
+    "welcomeMessage": "Welcome to OwnPlate",
     "userManual": "User Manual",
     "suportPage": "Support",
     "hidePayment": "Payment feature is coming soon. Please stay tuned.",
@@ -225,18 +226,22 @@
     "payment": "Payment",
     "yourRestaurants": "Your Restaurant(s)",
     "noRestaurant": "No restaurant",
-    "addYourRestaurant": "Please add your restaurant from the bottom button.",
+    "addYourRestaurant": "Please add your restaurant",
     "addNewRestaurant": "Add New Restaurant",
     "noPaymentAccount": "No Payment account",
     "payments": {
+      "statusNotConnected": "Not Connected",
+      "statusConnected": "Connected",
       "pleaseConnect": "In order to receive online payments, you need to connect your Stripe account.",
       "connectStripe": "Connect Stripe Account",
       "disconnectStripe": "Disconnect Stripe Account",
       "openDashboard": "Open Stripe Dashboard"
     },
+    "viewPage": "View Page",
     "incompleteOrders": "{count} Incomplete Order | {count} Incomplete Orders",
-    "editMenuItems": "Menu ({count})",
-    "editAbout": "Edit",
+    "editMenuItems": "Edit Menu ({count})",
+    "editAbout": "Edit Restaurant Details",
+    "delete": "Delete",
     "shareRestaurant": "Share",
     "pleaseSignUp": "Sign up as a new user",
     "forgotPassword": "Forgot Password？",

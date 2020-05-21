@@ -208,6 +208,7 @@
     "auth/missing-verification-code": "SMS確認コードが入力されていません"
   },
   "admin": {
+    "welcomeMessage": "いらっしゃいませ",
     "userManual": "使い方説明",
     "suportPage": "お問い合わせ",
     "hidePayment": "課金の仕組みはまもなく提供される予定です。少々お待ちください。",
@@ -226,17 +227,21 @@
     "yourRestaurants": "飲食店",
     "noRestaurant": "飲食店が登録されていません",
     "addYourRestaurant": "飲食店を追加してください",
-    "addNewRestaurant": "飲食店を追加する",
+    "addNewRestaurant": "飲食店を追加",
     "noPaymentAccount": "お支払いのアカウントが登録されていません",
     "payments": {
-      "pleaseConnect": "オンラインで支払いを受けるには、Stripeアカウントとの接続が必要です",
+      "statusNotConnected": "Stripeアカウント未接続",
+      "statusConnected": "Stripeアカウント接続済み",
+      "pleaseConnect": "オンラインで支払いを受けるには、Stripeアカウントとの接続が必要です。",
       "connectStripe": "Stripeアカウントと接続する",
       "disconnectStripe": "Stripeアカウントとの接続を切る",
       "openDashboard": "Stripe のダッシュボードを開く"
     },
+    "viewPage": "ページを確認",
     "incompleteOrders": "{count} 個の未完了の注文",
-    "editMenuItems": "メニュー ({count})",
-    "editAbout": "飲食店情報の変更",
+    "editMenuItems": "メニューの変更 ({count})",
+    "editAbout": "店情報の変更",
+    "delete": "削除",
     "shareRestaurant": "シェア",
     "pleaseSignUp": "ユーザー登録",
     "forgotPassword": "パスワードを忘れた場合",

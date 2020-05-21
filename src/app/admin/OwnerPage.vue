@@ -1,116 +1,187 @@
 <template>
-  <section class="section">
-
-    <div class="container content has-text-centered" v-if="region=='JP'">
-      <b-button
-        tag="a"
-        target="_blank"
-        href="https://gluepass.jp/g/ownplatejp/pages"
-        style="margin-right:auto;min-width: 30%;"
-        type="is-primary"
-        class="counter-button"
-        rounded
-        outlined
-        >{{$t("admin.userManual")}}</b-button>
-      <b-button
-        tag="a"
-        target="_blank"
-        href="https://docs.google.com/forms/d/e/1FAIpQLSfGR4kk65ynfkCRGJsvJz01HZf7AU1nGLL9Rn9i4G9-qiW6MQ/viewform"
-        style="margin-right:auto;min-width: 30%;"
-        type="is-primary"
-        class="counter-button"
-        rounded
-        outlined
-        >{{$t("admin.suportPage")}}</b-button>
-    </div>
-    <b-tabs size="is-medium" class="block" expanded>
-      <b-tab-item :label="$t('admin.restaurant')">
-        <div class="card block" v-if="readyToDisplay">
-          <div class="card-content">
-            <div v-if="existsRestaurant === null"></div>
-            <div v-else-if="!existsRestaurant" class="container content has-text-centered">
-              <b-icon icon="silverware" size="is-large"></b-icon>
-              <h3>{{$t('admin.noRestaurant')}}</h3>
-              {{$t('admin.addYourRestaurant')}}
-            </div>
-          </div>
-          <div v-if="existsRestaurant">
-            <div v-for="restaurantItem in restaurantItems" :key="restaurantItem.id">
-              <restaurant-edit-card
-                :restprofilephoto="restaurantItem.restProfilePhoto||''"
-                :restaurantid="restaurantItem.restaurantid"
-                :restaurantname="restaurantItem.restaurantName||''"
-                :streetaddress="restaurantItem.streetAddress||''"
-                :city="restaurantItem.city||''"
-                :state="restaurantItem.state||''"
-                :zip="restaurantItem.zip||''"
-                :phonenumber="restaurantItem.phoneNumber||''"
-                :url="restaurantItem.url"
-                :tags="restaurantItem.tags||[]"
-                :uid="restaurantItem.uid"
-                :publicflag="restaurantItem.publicFlag||false"
-                :numberOfMenus="restaurantItem.numberOfMenus||0"
-                :numberOfOrders="restaurantItem.numberOfOrders||0"
-              ></restaurant-edit-card>
-            </div>
-          </div>
-          <b-button
-            style="margin-right:auto"
-            type="is-primary"
-            class="counter-button"
-            expanded
-            rounded
-            @click="handleNew"
-            :loading="isCreating"
-          >{{$t('admin.addNewRestaurant')}}</b-button>
-        </div>
-      </b-tab-item>
-      <b-tab-item :label="$t('admin.payment')">
-        <div v-if="hidePayment" style="text-align: center;">
-          <div>
-            <i class="fas fa-wrench" style="font-size:7em;margin:2rem"></i>
-          </div>
-          <h3>{{ $t('admin.hidePayment') }}</h3>
-        </div>
-        <div v-else>
-          <div class="card block">
-            <div class="card-content">
-              <div v-if="!hasStripe" class="container content has-text-centered">
-                <b-icon icon="credit-card" size="is-large"></b-icon>
-                <div style="margin-bottom:1rem">{{$t('admin.payments.pleaseConnect')}}</div>
-                <a :href="stripeLink">
-                  <b-button
-                    style="margin-right:auto"
-                    type="is-primary"
-                    class="counter-button"
-                    expanded
-                    rounded
-                  >{{$t('admin.payments.connectStripe')}}</b-button>
-                </a>
-              </div>
-              <div v-if="hasStripe" class="container content has-text-centered">
-                <div style="margin-bottom:2rem">
-                  <a href="https://dashboard.stripe.com/dashboard" target="_blank">
-                    <div>
-                      <i class="fab fa-cc-stripe" style="font-size:4em"></i>
+  <div>
+    <!-- Welcome Instructions -->
+    <div class="columns is-gapless">
+      <!-- Left Gap -->
+      <div class="column is-narrow w-24"></div>
+      <!-- Center Column -->
+      <div class="column">
+        <div class="columns is-gapless">
+          <div class="column is-narrow w-24"></div>
+          <div class="column">
+            <div class="is-hidden-mobile h-24"></div>
+            <div class="bg-ownplate-yellow r-8 align-center">
+              <div class="h-24 bg-ownplate-yellow is-invisible-tablet"></div>
+              <div class="t-h6 c-ownplate-white p-b-24">{{$t("admin.welcomeMessage")}}</div>
+              <div class="is-inline-flex">
+                <div class="m-r-24">
+                  <a href="https://gluepass.jp/g/ownplatejp/pages" target="_blank">
+                    <div class="op-button-small w-160 bg-text-white-high">
+                      <i class="material-icons c-primary s-18 m-r-8">help_outline</i>
+                      <span class="c-primary t-button">{{$t("admin.userManual")}}</span>
                     </div>
-                    <div>{{$t('admin.payments.openDashboard')}}</div>
                   </a>
                 </div>
-                <b-button
-                  @click="handlePaymentAccountDisconnect"
-                  type="is-danger"
-                  class="counter-button"
-                  :loading="isDisconnecting"
-                  rounded
-                >{{$t('admin.payments.disconnectStripe')}}</b-button>
+                <div>
+                  <a
+                    href="https://docs.google.com/forms/d/e/1FAIpQLSfGR4kk65ynfkCRGJsvJz01HZf7AU1nGLL9Rn9i4G9-qiW6MQ/viewform"
+                    target="_blank"
+                  >
+                    <div class="op-button-small w-160 bg-text-white-high">
+                      <i class="material-icons c-primary s-18 m-r-8">mail_outline</i>
+                      <span class="c-primary t-button">{{$t("admin.suportPage")}}</span>
+                    </div>
+                  </a>
+                </div>
+              </div>
+              <div class="h-24 bg-ownplate-yellow is-invisible-tablet"></div>
+            </div>
+          </div>
+          <div class="column is-narrow w-24"></div>
+        </div>
+      </div>
+      <!-- Right Gap -->
+      <div class="column is-narrow w-24"></div>
+    </div>
+
+    <!-- Payment Setup and Restaurants -->
+    <div class="columns is-gapless">
+      <!-- Left Gap -->
+      <div class="column is-narrow w-24"></div>
+      <!-- Left Column -->
+      <div class="column">
+        <div class="m-l-24 m-r-24">
+          <!-- Payment -->
+          <div class="m-t-24">
+            <div class="t-h6 c-text-black-disabled m-b-8">{{$t('admin.payment')}}</div>
+
+            <!-- Payment Feature Disabled -->
+            <div v-if="hidePayment" style="text-align: center;">
+              <div class="bg-surface r-8 d-low p-t-24 p-b-24">
+                <div class="p-l-24 p-r-24 t-body1 c-text-black-medium">{{ $t('admin.hidePayment') }}</div>
+              </div>
+            </div>
+
+            <!-- Payment Feature Enabled -->
+            <div v-else>
+              <div class="bg-surface r-8 d-low p-t-24 p-b-24">
+                <!-- Stripe Not Connected -->
+                <div v-if="!hasStripe">
+                  <div class="align-center">
+                    <div
+                      class="op-status c-status-red bg-status-red-bg"
+                    >{{$t('admin.payments.statusNotConnected')}}</div>
+                  </div>
+                  <div
+                    class="p-l-24 p-r-24 m-t-24 t-body1 c-text-black-medium"
+                  >{{$t('admin.payments.pleaseConnect')}}</div>
+                  <div class="align-center m-t-24">
+                    <a :href="stripeLink">
+                      <div class="op-button-medium primary" style="min-width: 288px;">
+                        <span class="p-l-16 p-r-16">{{$t('admin.payments.connectStripe')}}</span>
+                      </div>
+                    </a>
+                  </div>
+                </div>
+
+                <!-- Stripe Connected -->
+                <div v-if="hasStripe">
+                  <div class="align-center">
+                    <div
+                      class="op-status c-status-green bg-status-green-bg"
+                    >{{$t('admin.payments.statusConnected')}}</div>
+                  </div>
+                  <div class="align-center m-t-24">
+                    <a href="https://dashboard.stripe.com/dashboard" target="_blank">
+                      <div class="op-button-small secondary" style="min-width: 256px;">
+                        <span class="c-primary p-l-16 p-r-16">{{$t('admin.payments.openDashboard')}}</span>
+                      </div>
+                    </a>
+                  </div>
+                  <div class="align-center m-t-16">
+                    <b-button
+                      @click="handlePaymentAccountDisconnect"
+                      class="b-reset op-button-text"
+                      :loading="isDisconnecting"
+                    >
+                      <i class="material-icons c-status-red">link_off</i>
+                      <span class="c-status-red">{{$t('admin.payments.disconnectStripe')}}</span>
+                    </b-button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </b-tab-item>
-    </b-tabs>
-  </section>
+      </div>
+      <!-- Right Column -->
+      <div class="column">
+        <div class="m-l-24 m-r-24">
+          <!-- Restaurants -->
+          <div class="m-t-24">
+            <div class="t-h6 c-text-black-disabled m-b-8">{{$t('admin.restaurant')}}</div>
+            <div v-if="readyToDisplay">
+              <!-- No Restaurant -->
+              <div v-if="existsRestaurant === null"></div>
+              <div v-else-if="!existsRestaurant">
+                <div class="border-primary r-8 p-l-24 p-r-24 p-t-24 p-b-24">
+                  <div class="align-center t-subtitle1 c-primary">{{$t('admin.addYourRestaurant')}}</div>
+                  <div class="align-center m-t-16">
+                    <b-button
+                      class="b-reset op-button-pill h-36 bg-form"
+                      style="min-width: 128px;"
+                      @click="handleNew"
+                      :loading="isCreating"
+                    >
+                      <i class="material-icons c-primary m-l-8">add</i>
+                      <span class="c-primary t-button">{{$t('admin.addNewRestaurant')}}</span>
+                    </b-button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Existing Restaurant -->
+              <div v-if="existsRestaurant">
+                <div v-for="restaurantItem in restaurantItems" :key="restaurantItem.id">
+                  <restaurant-edit-card
+                    :restprofilephoto="restaurantItem.restProfilePhoto||''"
+                    :restaurantid="restaurantItem.restaurantid"
+                    :restaurantname="restaurantItem.restaurantName||''"
+                    :streetaddress="restaurantItem.streetAddress||''"
+                    :city="restaurantItem.city||''"
+                    :state="restaurantItem.state||''"
+                    :zip="restaurantItem.zip||''"
+                    :phonenumber="restaurantItem.phoneNumber||''"
+                    :url="restaurantItem.url"
+                    :tags="restaurantItem.tags||[]"
+                    :uid="restaurantItem.uid"
+                    :publicflag="restaurantItem.publicFlag||false"
+                    :numberOfMenus="restaurantItem.numberOfMenus||0"
+                    :numberOfOrders="restaurantItem.numberOfOrders||0"
+                  ></restaurant-edit-card>
+                </div>
+
+                <!-- Add Restaurant -->
+                <div class="align-center m-t-16">
+                  <b-button
+                    class="b-reset op-button-pill h-36 bg-form"
+                    style="min-width: 128px;"
+                    @click="handleNew"
+                    :loading="isCreating"
+                  >
+                    <i class="material-icons c-primary m-l-8">add</i>
+                    <span class="c-primary t-button">{{$t('admin.addNewRestaurant')}}</span>
+                  </b-button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Right Gap -->
+      <div class="column is-narrow w-24"></div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -339,8 +410,3 @@ export default {
   }
 };
 </script>
-<style lang="scss" scoped>
-.tax {
-  margin-top: -2rem !important;
-}
-</style>

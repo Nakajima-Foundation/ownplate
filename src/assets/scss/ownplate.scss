@@ -20,7 +20,7 @@ $op-colors: (
   text-white-full: #ffffff,
   text-white-high: rgba(255, 255, 255, 0.87),
   text-white-medium: rgba(255, 255, 255, 0.6),
-  text-white-disable: rgba(255, 255, 255, 0.38),
+  text-white-disabled: rgba(255, 255, 255, 0.38),
   form: rgba(0, 0, 0, 0.05),
   status-red: #b00020,
   status-red-bg: rgba(176, 0, 32, 0.1),
@@ -105,7 +105,8 @@ $op-colors: (
   letter-spacing: 0.15px;
 }
 .t-subtitle1 {
-  font-weight: normal;
+  // font-weight: normal;
+  font-weight: bold;
   font-size: 16px;
   line-height: 24px;
   letter-spacing: 0.15px;
@@ -134,7 +135,7 @@ $op-colors: (
   font-weight: bold;
   font-size: 14px;
   line-height: 16px;
-  letter-spacing: 1.25px;
+  letter-spacing: 0.1px;
   // text-transform: uppercase;
 }
 .t-caption {

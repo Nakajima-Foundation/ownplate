@@ -1,84 +1,75 @@
 <template>
-  <section class="section">
-    <div class="card block">
-      <div class="card-content">
-        <div class="media">
-          <div class="media-content">
-            <div class="container content has-text-centered image is-128x128">
-              <img class="is-rounded" :src="restprofilephoto||'/OwnPlate-Favicon-Default.png'" alt />
-            </div>
+  <div>
+    <div class="bg-surface r-8 d-low p-t-24 p-b-24 m-b-16">
+      <!-- Restaurant Profile Photo -->
+      <div class="align-center">
+        <img class="w-64 h-64 r-64 cover" :src="restprofilephoto||'/OwnPlate-Favicon-Default.png'" />
+      </div>
 
-            <div class="container content has-text-centered">
-              <h2>
-                <nuxt-link
-                  :to="'/r/' + restaurantid"
-                >{{ restaurantname || $t('editRestaurant.noRestaurant') }}</nuxt-link>
-              </h2>
-            </div>
-            <div style="text-align:center;margin-top:1rem;">
-              <div class="p-font">
-                <nuxt-link :to="'/r/' + restaurantid">{{`${host}/r/${restaurantid}`}}</nuxt-link>
-              </div>
-              <div class="p-font">{{ streetaddress || $t('editRestaurant.noStreetAddress') }}</div>
-              <div class="p-font" style="margin-top:-0.8rem;">
-                {{ city || $t('editRestaurant.city')}},
-                {{ state || $t('editRestaurant.state')}}
-                {{ zip || $t('editRestaurant.zip')}}
-              </div>
-              <p class="p-font">{{ phonenumber }}</p>
-            </div>
-            <div class="container content has-text-centered">
-              <div style="text-align:center;">
-                <h2>
-                  <nuxt-link to="#" @click.native="copyClipboard(share_url)" event="">
-                    <b-icon icon="share" size="is-midium"></b-icon>
-                    {{$t('admin.shareRestaurant')}}
-                  </nuxt-link>
-                  <nuxt-link :to="'/admin/restaurants/' + restaurantid">
-                    <b-icon icon="pencil" size="is-midium"></b-icon>
-                    {{$t('admin.editAbout')}}
-                  </nuxt-link>
-                </h2>
-              </div>
-            </div>
-            <div class="container content has-text-centered" :style="{margin: '20px'}">
-              <b-button
-                tag="nuxt-link"
-                :to="'/admin/restaurants/' + restaurantid + '/orders'"
-                :style="{'margin-right': 'auto', height: '40px'}"
-                type="is-primary"
-                class="counter-button"
-                expanded
-                rounded
-                contained
-              >{{ $tc('admin.incompleteOrders', numberOfOrders, {count:numberOfOrders}) }}</b-button>
-            </div>
-            <div class="container content has-text-centered" :style="{margin: '20px'}">
-              <div style="text-align:center;">
-                <h2>
-                  <b-button
-                    tag="nuxt-link"
-                    :to="'/admin/restaurants/' + restaurantid + '/menus'"
-                    style="margin-right:auto"
-                    type="is-primary"
-                    class="counter-button"
-                    expanded
-                    rounded
-                    outlined
-                  >{{ $t('admin.editMenuItems', {count:numberOfMenus})}}</b-button>
-                </h2>
-              </div>
-            </div>
+      <!-- Restaurant Name -->
+      <div
+        class="m-t-8 align-center t-h6 c-text-black-high"
+      >{{ restaurantname || $t('editRestaurant.noRestaurant') }}</div>
+
+      <!-- View Page -->
+      <div class="m-t-8 align-center">
+        <nuxt-link target="_blank" :to="'/r/' + restaurantid">
+          <div class="op-button-text m-r-8">
+            <i class="material-icons">launch</i>
+            <span>{{$t('admin.viewPage')}}</span>
           </div>
+        </nuxt-link>
+        <!-- # Will have share button/popup here -->
+      </div>
+
+      <!-- # Will put a number of active orders here -->
+
+      <!-- View Orders -->
+      <div class="align-center m-t-16">
+        <b-button
+          tag="nuxt-link"
+          :to="'/admin/restaurants/' + restaurantid + '/orders'"
+          class="b-reset op-button-medium primary"
+          style="min-width: 288px;"
+        >
+          <span
+            class="c-onprimary p-l-24 p-r-24"
+          >{{ $tc('admin.incompleteOrders', numberOfOrders, {count:numberOfOrders}) }}</span>
+        </b-button>
+      </div>
+
+      <!-- Edit Menu -->
+      <div class="align-center m-t-24">
+        <b-button
+          tag="nuxt-link"
+          :to="'/admin/restaurants/' + restaurantid + '/menus'"
+          style="min-width: 256px;"
+          class="op-button-small secondary"
+        >
+          <span
+            class="c-primary p-l-24 p-r-24"
+          >{{ $t('admin.editMenuItems', {count:numberOfMenus})}}</span>
+        </b-button>
+      </div>
+
+      <!-- Edit Restaurant Details -->
+      <div class="align-center m-t-16">
+        <nuxt-link :to="'/admin/restaurants/' + restaurantid">
+          <div class="op-button-small secondary" style="min-width: 256px;">
+            <span class="c-primary">{{$t('admin.editAbout')}}</span>
+          </div>
+        </nuxt-link>
+      </div>
+
+      <!-- Delete Restaurant -->
+      <div class="m-t-24 align-center">
+        <div class="op-button-text c-status-red" @click="deleteRestaurant">
+          <i class="material-icons">delete</i>
+          <span>{{$t('admin.delete')}}</span>
         </div>
       </div>
-      <div class="card-footer">
-        <a class="card-footer-item" @click="deleteRestaurant">
-          <b-icon icon="delete" size="is-midium"></b-icon>
-        </a>
-      </div>
     </div>
-  </section>
+  </div>
 </template>
 
 <script>
@@ -161,11 +152,11 @@ export default {
   },
   methods: {
     deleteRestaurant: function() {
-      if (confirm(this.$t('editRestaurant.reallyDelete'))) {
+      if (confirm(this.$t("editRestaurant.reallyDelete"))) {
         db.doc(`restaurants/${this.restaurantid}`).update("deletedFlag", true);
       }
-    },
+    }
   }
 };
 </script>
-<style type="scss" scped></style>
+
