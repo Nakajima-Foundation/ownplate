@@ -151,6 +151,7 @@
     "validating": "Processing...",
     "thankyou": "Thank you!",
     "orderStatus": "Order Status",
+    "orderId": "Order ID",
     "pleaseStay": "Please stay on this page. The order status will be updated below.",
     "thanksMessage": "Message from restaurant",
     "tip": "Gratuity",
@@ -207,6 +208,7 @@
     "auth/missing-verification-code": "The phone auth credential was created with an empty SMS verification code."
   },
   "admin": {
+    "welcomeMessage": "Welcome to OwnPlate",
     "userManual": "User Manual",
     "suportPage": "Support",
     "hidePayment": "Payment feature is coming soon. Please stay tuned.",
@@ -224,18 +226,22 @@
     "payment": "Payment",
     "yourRestaurants": "Your Restaurant(s)",
     "noRestaurant": "No restaurant",
-    "addYourRestaurant": "Please add your restaurant from the bottom button.",
+    "addYourRestaurant": "Please add your restaurant",
     "addNewRestaurant": "Add New Restaurant",
     "noPaymentAccount": "No Payment account",
     "payments": {
+      "statusNotConnected": "Not Connected",
+      "statusConnected": "Connected",
       "pleaseConnect": "In order to receive online payments, you need to connect your Stripe account.",
       "connectStripe": "Connect Stripe Account",
       "disconnectStripe": "Disconnect Stripe Account",
       "openDashboard": "Open Stripe Dashboard"
     },
+    "viewPage": "View Page",
     "incompleteOrders": "{count} Incomplete Order | {count} Incomplete Orders",
-    "editMenuItems": "Menu ({count})",
-    "editAbout": "Edit",
+    "editMenuItems": "Edit Menu ({count})",
+    "editAbout": "Edit Restaurant Details",
+    "delete": "Delete",
     "shareRestaurant": "Share",
     "pleaseSignUp": "Sign up as a new user",
     "forgotPassword": "Forgot Password？",
@@ -299,6 +305,28 @@
     "addFriendDescription": "In order to receive LINE notifications, you need to follow the official channel"
   },
   "errorPage": {
+    "popup": {
+      "title": "Unexped Error Happened"
+    },
+    "message": {
+      "generic": "Please try this operation later.",
+      "line": "Plase try to connect LINE again."
+    },
+    "code": {
+      "line": {
+        "validation": "LINE authentication failed."
+      },
+      "order": {
+        "checkout": "Failed to perform the checkout process.",
+        "place": "Failed to place the order.",
+        "update": "Failed to update the order status.",
+        "cancel": "Failed to cancel the order."
+      },
+      "sprite": {
+        "confirm": "Failed to confirm the payment.",
+        "intent": "Failed to process the payment."
+      }
+    },
     "notFound": {
       "message1": "The page you're looking for can't be found.",
       "message2": "Try contacting the restaurant in other way"

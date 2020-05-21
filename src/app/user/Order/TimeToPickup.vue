@@ -1,21 +1,22 @@
 <template>
   <div>
-    <div v-if="availableDays.length > 0">
-      <b-field :label="$t('order.timeToPickup')">
+    <div v-if="availableDays.length > 0" class="m-t-24">
+      <div class="t-h6 c-text-black-disabled">{{ $t('order.timeToPickup') }}</div>
+      <div class="bg-surface r-8 d-low m-t-8 p-t-16 p-b-16 p-l-16 p-r-16">
         <b-select v-model="dayIndex">
           <option v-for="(day, index) in availableDays" :value="index" :key="day.offset">
             {{ $d(day.date, "short" )}}
             <span v-if="day.offset===0">{{$t('date.today')}}</span>
           </option>
         </b-select>
-      </b-field>
-      <b-select v-model="time">
-        <option
-          v-for="time in availableDays[dayIndex].times"
-          :value="time.time"
-          :key="time.time"
-        >{{ time.display }}</option>
-      </b-select>
+        <b-select v-model="time" class="m-t-8">
+          <option
+            v-for="time in availableDays[dayIndex].times"
+            :value="time.time"
+            :key="time.time"
+          >{{ time.display }}</option>
+        </b-select>
+      </div>
     </div>
     <p v-else class="notAvailble">{{$t('order.notAvailable')}}</p>
   </div>

@@ -30,7 +30,18 @@
 
             <!-- Restaurant Details -->
             <div class="m-l-24 m-r-24" v-if="shopInfo.publicFlag">
+              <!-- Restaurant Profile Photo and Name -->
               <shop-orner-info :shopInfo="shopInfo"></shop-orner-info>
+
+              <!-- Restaurant Descriptions -->
+              <div
+                class="t-body1 c-text-black-medium align-center m-t-8"
+              >{{this.shopInfo.introduction}}</div>
+
+              <!-- Share Popup -->
+              <share-popup :shopInfo="shopInfo"></share-popup>
+
+              <!-- Restaurant Info -->
               <shop-info :shopInfo="shopInfo"></shop-info>
             </div>
           </div>
@@ -94,6 +105,7 @@
         </div>
       </b-button>
     </template>
+    <error-popup :error="errorMessage" />
   </div>
 </template>
 
@@ -101,8 +113,10 @@
 import ItemCard from "~/app/user/Restaurant/ItemCard";
 import PhoneLogin from "~/app/auth/PhoneLogin";
 import ShopOrnerInfo from "~/app/user/Restaurant/ShopOrnerInfo";
+import SharePopup from "~/app/user/Restaurant/SharePopup";
 import ShopInfo from "~/app/user/Restaurant/ShopInfo";
 import NotFound from "~/components/NotFound";
+import ErrorPopup from "~/components/ErrorPopup";
 
 import { db, firestore, functions } from "~/plugins/firebase.js";
 import { order_status } from "~/plugins/constant.js";
@@ -114,7 +128,9 @@ export default {
     ItemCard,
     PhoneLogin,
     ShopOrnerInfo,
+    SharePopup,
     ShopInfo,
+    ErrorPopup,
     NotFound
   },
   data() {
@@ -133,6 +149,7 @@ export default {
       menus: [],
       titles: [],
       waitForUser: false,
+      errorMessage: null,
 
       detacher: [],
       notFound: null
@@ -277,6 +294,9 @@ export default {
       };
       this.isCheckingOut = true;
       try {
+        if (this.forcedError("checkout")) {
+          throw Error("forced Error");
+        }
         const res = await db
           .collection(`restaurants/${this.restaurantId()}/orders`)
           .add(order_data);
@@ -306,10 +326,11 @@ export default {
             this.goCheckout();
           }, 500);
         } else {
-          console.error(error);
+          console.error(error.message);
+          this.errorMessage = { code: "order.checkout", details: error };
         }
       } finally {
-        this.isCheckingOut = true;
+        this.isCheckingOut = false;
       }
     },
     didCountChange(eventArgs) {

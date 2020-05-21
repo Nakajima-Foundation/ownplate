@@ -1,23 +1,20 @@
 <template>
-  <!-- <div class="card block"> -->
-  <div class="card-content">
-    <div class="media">
-      <div class="media-content">
-        <h4 class="bold">
-          {{ item.itemName }} {{count > 1 ? " x " + String(count) : "" }}
-        </h4>
-        <p v-if="specialRequest" class="p-font-mini payment">
-          {{ specialRequest }}
-        </p>
+  <div class="p-t-16 p-l-16 p-r-16">
+    <div class="cols">
+      <div class="flex-1">
+        <div
+          class="t-body1 c-text-black-high"
+        >{{ item.itemName }} {{count > 1 ? " x " + String(count) : "" }}</div>
+        <div
+          v-if="specialRequest"
+          class="p-l-8 p-r-8 p-t-8 t-caption c-text-black-medium"
+        >{{ specialRequest }}</div>
       </div>
-      <div class="media-right" style="margin-top:-0.4rem;">
-        <p class="p-bold">
-          {{ $n(item.price * count, 'currency') }}
-        </p>
+      <div class="align-righ">
+        <span class="t-body1 c-text-black-high">{{ $n(item.price * count, 'currency') }}</span>
       </div>
     </div>
   </div>
-  <!-- </div> -->
 </template>
 
 <script>
@@ -47,8 +44,3 @@ export default {
   methods: {}
 };
 </script>
-<style lang="scss" scoped>
-.card {
-  margin-bottom: 0.6rem;
-}
-</style>

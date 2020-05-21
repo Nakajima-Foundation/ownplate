@@ -71,6 +71,10 @@ export default ({ app }) => {
           this.$buefy.toast.open(app.i18n.tc('shopInfo.UrlCopyFailed'));
         }
       },
+      forcedError(key) {
+        const debug = this.$route.query.error;
+        return debug === key ? "---forced-error---" : "";
+      },
     }
   });
 }

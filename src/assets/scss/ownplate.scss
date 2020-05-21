@@ -20,7 +20,7 @@ $op-colors: (
   text-white-full: #ffffff,
   text-white-high: rgba(255, 255, 255, 0.87),
   text-white-medium: rgba(255, 255, 255, 0.6),
-  text-white-disable: rgba(255, 255, 255, 0.38),
+  text-white-disabled: rgba(255, 255, 255, 0.38),
   form: rgba(0, 0, 0, 0.05),
   status-red: #b00020,
   status-red-bg: rgba(176, 0, 32, 0.1),
@@ -98,19 +98,22 @@ $op-colors: (
   letter-spacing: 0.18px;
 }
 .t-h6 {
-  font-weight: 500;
+  // font-weight: 500;
+  font-weight: bold;
   font-size: 20px;
   line-height: 24px;
   letter-spacing: 0.15px;
 }
 .t-subtitle1 {
-  font-weight: normal;
+  // font-weight: normal;
+  font-weight: bold;
   font-size: 16px;
   line-height: 24px;
   letter-spacing: 0.15px;
 }
 .t-subtitle2 {
-  font-weight: 500;
+  // font-weight: 500;
+  font-weight: bold;
   font-size: 14px;
   line-height: 24px;
   letter-spacing: 0.1px;
@@ -128,10 +131,11 @@ $op-colors: (
   letter-spacing: 0.25px;
 }
 .t-button {
-  font-weight: 500;
+  // font-weight: 500;
+  font-weight: bold;
   font-size: 14px;
   line-height: 16px;
-  letter-spacing: 1.25px;
+  letter-spacing: 0.1px;
   // text-transform: uppercase;
 }
 .t-caption {
@@ -142,7 +146,8 @@ $op-colors: (
   letter-spacing: 0.4px;
 }
 .t-overline {
-  font-weight: 500;
+  // font-weight: 500;
+  font-weight: bold;
   font-size: 10px;
   line-height: 16px;
   letter-spacing: 1.5px;
@@ -308,6 +313,31 @@ body,
 }
 
 // OwnPlate Buttons
+
+// Reset <b-button> style
+.button.b-reset {
+  padding: 0;
+  color: currentColor;
+  border: none;
+  &:hover {
+    color: currentColor;
+    border: none;
+  }
+  &:active {
+    color: currentColor;
+    border: none;
+  }
+  &:focus {
+    color: currentColor;
+    border: none;
+  }
+  span {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
 .op-button {
   cursor: pointer;
   display: inline-flex;
