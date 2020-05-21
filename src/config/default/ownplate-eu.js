@@ -14,4 +14,5 @@ export const ownPlateConfig = {
   siteDescription: "Zero Comission Take-out Service",
   releasName: "alpha",
   region: "EU",
+  hostName: "eu.ownplate.today"
 };

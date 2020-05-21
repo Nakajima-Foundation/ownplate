@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper">
+  <div class="wrapper" @click="enableSound()">
     <!-- Header -->
     <div class="columns is-gapless is-vcentered is-mobile bg-ownplate-white">
       <div class="column">
@@ -30,41 +30,32 @@
       </div>
       <div class="align-center m-t-24">
         <router-link to="/">
-          <div class="op-button-medium tertiary w-192" @click="handleClose()">
-            {{ $t("menu.home") }}
-          </div>
+          <div class="op-button-medium tertiary w-192" @click="handleClose()">{{ $t("menu.home") }}</div>
         </router-link>
       </div>
       <div class="align-center m-t-24">
         <router-link to="/about">
-          <div class="op-button-small tertiary" @click="handleClose()">
-            {{ $t("menu.about") }}
-          </div>
+          <div class="op-button-small tertiary" @click="handleClose()">{{ $t("menu.about") }}</div>
         </router-link>
       </div>
-      <div class="align-center m-t-24">
+      <div v-if="!isAdmin" class="align-center m-t-24">
         <router-link to="/u/history">
-          <div class="op-button-small tertiary" @click="handleClose()">
-            {{ $t("order.history") }}
-          </div>
+          <div class="op-button-small tertiary" @click="handleClose()">{{ $t("order.history") }}</div>
         </router-link>
       </div>
       <div class="align-center m-t-24" v-if="hasUser">
-        <div class="op-button-small tertiary" @click.prevent="signout">
-          {{ $t("menu.signOut") }}
-        </div>
+        <div class="op-button-small tertiary" @click.prevent="signout">{{ $t("menu.signOut") }}</div>
       </div>
     </b-sidebar>
 
     <!-- Main -->
     <div class="main">
       <div class="contents">
-        <div v-if="underConstruction" class="underConstruction">
-          {{ $t("underConstruction") }}
-        </div>
+        <div v-if="underConstruction" class="underConstruction">{{ $t("underConstruction") }}</div>
 
         <!-- approproate component under pages will be displayed -->
-        <nuxt v-if="$store.getters.userWasInitialized"></nuxt>
+        <nuxt v-if="isReadyToRender"></nuxt>
+        <error-popup :error="errorMessage" />
       </div>
     </div>
 
@@ -74,19 +65,16 @@
         <div class="column">
           <div
             class="is-inline-block t-caption c-text-white-medium m-t-16 m-l-16"
-          >
-            Operated by Singularity Society
-          </div>
+          >Operated by Singularity Society</div>
         </div>
         <div class="column align-right">
-          <div
-            class="op-button-pill bg-sattle-white m-r-16 m-t-16"
-            @click="openLang()"
-          >
+          <div class="op-button-pill bg-sattle-white m-r-16 m-t-16" @click="openLang()">
             <i class="material-icons c-text-white-high">language</i>
-            <span class="c-text-white-high t-body1">{{
+            <span class="c-text-white-high t-body1">
+              {{
               languages[language]
-            }}</span>
+              }}
+            </span>
             <i class="material-icons c-text-white-high">arrow_drop_down</i>
           </div>
         </div>
@@ -96,26 +84,15 @@
     <!-- Language Popup-->
     <b-modal :active.sync="langPopup" :width="488" scroll="keep">
       <div class="op-dialog p-t-24 p-l-24 p-r-24 p-b-24">
-        <div class="t-h6 c-text-black-disabled p-b-8">
-          {{ $t("menu.selectLanguage") }}
-        </div>
+        <div class="t-h6 c-text-black-disabled p-b-8">{{ $t("menu.selectLanguage") }}</div>
         <div class="m-t-16" v-for="(lang, lang_key) in languages">
-          <div
-            class="op-button-pill bg-form"
-            @click="changeLangAndClose(lang_key)"
-          >
-            <i
-              class="material-icons c-text-black-high"
-              v-if="lang_key == language"
-              >check</i
-            >
+          <div class="op-button-pill bg-form" @click="changeLangAndClose(lang_key)">
+            <i class="material-icons c-text-black-high" v-if="lang_key == language">check</i>
             <span class="t-body1">{{ lang }}</span>
           </div>
         </div>
         <div class="m-t-24 align-center">
-          <div class="op-button-small tertiary" @click="closeLang()">
-            {{ $t("menu.close") }}
-          </div>
+          <div class="op-button-small tertiary" @click="closeLang()">{{ $t("menu.close") }}</div>
         </div>
       </div>
     </b-modal>
@@ -127,8 +104,12 @@ import { db, auth, functions } from "@/plugins/firebase.js";
 import { regionalSettings } from "~/plugins/constant.js";
 import { releaseConfig } from "~/plugins/config.js";
 import { ownPlateConfig } from "@/config/project";
+import ErrorPopup from "~/components/ErrorPopup";
 
 export default {
+  components: {
+    ErrorPopup
+  },
   data() {
     const regionalSetting = regionalSettings[ownPlateConfig.region || "US"];
     return {
@@ -159,10 +140,27 @@ export default {
       fullwidth: false,
       right: false,
 
-      langPopup: false
+      langPopup: false,
+
+      audioContext: new (window.AudioContext || window.webkitAudioContext)(),
+      pleyedSilent: false,
+      buffer: null
     };
   },
   computed: {
+    errorMessage() {
+      return this.$store.state.errorMessage;
+    },
+    isReadyToRender() {
+      if (this.user !== undefined) {
+        return true; // Firebase has already identified the user (or non-user)
+      }
+      if (this.$route.path === `/r/${this.restaurantId()}`) {
+        console.log("isReadyToRender: quick render activated");
+        return true; // We are opening the restaurant page
+      }
+      return false;
+    },
     underConstruction() {
       return releaseConfig.underConstruction;
     },
@@ -188,6 +186,45 @@ export default {
     }
   },
   methods: {
+    async enableSound() {
+      // console.log(this.$store.state.orderEvent);
+      if (!this.pleyedSilent) {
+        console.log("default: enableSound");
+        try {
+          const src = this.audioContext.createBufferSource();
+          src.buffer = this.audioContext.createBuffer(1, 1, 22050);
+          src.connect(this.audioContext.destination);
+          src.start(0);
+          console.log("default: silent played");
+
+          const res = await fetch("/dora.mp3");
+          this.buffer = await res.arrayBuffer();
+          this.pleyedSilent = true;
+          this.$store.commit("soundEnable");
+        } catch (e) {
+          console.log(e);
+          console.log("default: layout sound not enabled");
+        }
+      }
+    },
+    async play() {
+      if (this.buffer) {
+        if (this.$store.state.soundOn) {
+          this.audioContext.decodeAudioData(
+            this.buffer.slice(0),
+            _audioBuffer => {
+              const source = this.audioContext.createBufferSource();
+              source.buffer = _audioBuffer;
+              source.connect(this.audioContext.destination);
+              source.start(0);
+            }
+          );
+        } else {
+          console.log("silent order update");
+        }
+      }
+    },
+
     async signout() {
       console.log("signing out", auth.currentUser);
       try {
@@ -268,6 +305,10 @@ export default {
       if (this.$route.query.lang) {
         await this.changeLang(this.$route.query.lang);
       }
+    },
+    async "$store.state.orderEvent"() {
+      await this.play();
+      console.log(this.$store.state.orderEvent);
     },
     async user() {
       if (this.user) {

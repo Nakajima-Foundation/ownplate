@@ -1,87 +1,149 @@
 <template>
-  <span>
-    <h2>{{$t('shopInfo.qrcode')}}</h2>
-    <div class="notification">
-      <div class="is-centered" style="text-align: center;">
-        <qrcode :value="this.url" :options="{ width: 200 }"></qrcode>
-        <br />
-        <nuxt-link to="#" @click.native="copyClipboard(url)" event>
-          <b-icon icon="share" size="is-midium"></b-icon>
-          {{$t('shopInfo.copyUrl')}}
-        </nuxt-link>
-        <br />
-        {{this.url}}
-        <br />
+  <div>
+    <!-- Share / Review -->
+    <div class="m-t-8 align-center">
+      <div class="op-button-text m-r-8" @click="openShare()">
+        <i class="material-icons">launch</i>
+        <span>Share</span>
       </div>
+      <!-- <sharing-buttons :title="name" :url="shareUrl()" /> -->
     </div>
-    <h2>{{$t('shopInfo.address')}}</h2>
-    <div class="card" v-if="hasLocation">
-      <div class="card-image">
-        <GMap
-          ref="gMap"
-          :cluster="{options: {styles: 'clusterStyle'}}"
-          :options="{fullscreenControl: false, styles: 'mapStyle'}"
-          :zoom="18"
-          @loaded="updateMap"
-        ></GMap>
+    <!-- Share Popup-->
+    <b-modal :active.sync="sharePopup" :width="488" scroll="keep">
+      <div class="op-dialog p-t-24 p-l-24 p-r-24 p-b-24">
+        <div class="t-h6 c-text-black-disabled p-b-8">Share</div>
+        <div class="cols">
+          <div>
+            <qrcode :value="url" :options="{ width: 160 }"></qrcode>
+          </div>
+          <div>
+            <nuxt-link to="#" @click.native="copyClipboard(url)" event>
+              <div class="op-button-text m-t-8">
+                <i class="material-icons">file_copy</i>
+                <span>{{$t('shopInfo.copyUrl')}}</span>
+              </div>
+            </nuxt-link>
+            <div
+              class="m-l-8 t-body2 c-text-black-disabled"
+              style="word-break: break-all;"
+            >{{this.url}}</div>
+            <div class="m-t-24">
+              <sharing-buttons :title="shopInfo.restaurantName" :url="url" />
+            </div>
+          </div>
+        </div>
+        <div class="m-t-24 align-center">
+          <div class="op-button-small tertiary" @click="closeShare()">Close</div>
+        </div>
       </div>
-      <div class="card-content">
-        <div class="content">
-          <a
-            target="_blank"
-            :href="'https://www.google.com/maps/search/?api=1&query=' + this.shopInfo.location.lat + ',' +  this.shopInfo.location.lng + '&query_place_id=' + this.shopInfo.place_id"
-            class="p-font-middle"
-          >
-            <i class="fas fa-map-marker-alt" style="margin-right:1rem;"></i>
-            {{this.shopInfo.streetAddress}}, {{this.shopInfo.city}}, {{this.shopInfo.state}} {{this.shopInfo.zip}}
+    </b-modal>
+
+    <!-- Restaurant Details -->
+    <div class="m-t-24">
+      <div class="t-h6 c-text-black-disabled">{{$t('shopInfo.restaurantDetails')}}</div>
+
+      <div class="bg-surface r-8 d-low m-t-8 p-b-24">
+        <!-- Restaurant Location -->
+        <div v-if="hasLocation">
+          <GMap
+            ref="gMap"
+            :cluster="{options: {styles: 'clusterStyle'}}"
+            :options="{fullscreenControl: false, styles: 'mapStyle'}"
+            :zoom="18"
+            @loaded="updateMap"
+          ></GMap>
+
+          <div class="m-t-16 m-l-16 m-r-16">
+            <a
+              target="_blank"
+              :href="'https://www.google.com/maps/search/?api=1&query=' + this.shopInfo.location.lat + ',' +  this.shopInfo.location.lng + '&query_place_id=' + this.shopInfo.place_id"
+              class="p-font-middle"
+            >
+              <div class="op-button-text">
+                <i class="material-icons">place</i>
+                <span
+                  style="word-break: break-all;"
+                >{{this.shopInfo.streetAddress}}, {{this.shopInfo.city}}, {{this.shopInfo.state}} {{this.shopInfo.zip}}</span>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- Restaurant Phone Number -->
+        <div class="m-t-8 m-l-16 m-r-16">
+          <a v-if="phoneUrl" :href="phoneUrl">
+            <div class="op-button-text">
+              <i class="material-icons">phone</i>
+              <span>{{nationalPhoneNumber}}</span>
+            </div>
+          </a>
+          <div v-else class="op-button-text">
+            <i class="material-icons">phone</i>
+            <span>{{nationalPhoneNumber}}</span>
+          </div>
+        </div>
+
+        <!-- Restaurant Website -->
+        <div class="m-t-8 m-l-16 m-r-16">
+          <a target="_blank" :href="this.shopInfo.url">
+            <div class="op-button-text">
+              <i class="material-icons">language</i>
+              <span style="word-break: break-all;">{{this.shopInfo.url}}</span>
+            </div>
           </a>
         </div>
-      </div>
-    </div>
 
-    <h2 style="margin-top:2rem;">{{$t("shopInfo.phonenumber")}}</h2>
-    <div class="notification is-centered">
-      <a v-if="phoneUrl" :href="phoneUrl">
-        <p class="p-font bold" style="text-align:center;">{{nationalPhoneNumber}}</p>
-      </a>
-      <p v-else class="p-font bold" style="text-align:center;">{{nationalPhoneNumber}}</p>
-    </div>
-    <div v-if="!compact">
-      <h2>{{$t("shopInfo.website")}}</h2>
-      <div class="notification">
-        <div class="is-centered" style="text-align: center;">
-          <a target="_blank" :href="this.shopInfo.url">{{this.shopInfo.url}}</a>
+        <!-- Restaurant Website -->
+        <div class="m-t-8 m-l-16 m-r-16">
+          <div class="op-button-text">
+            <i class="material-icons">info</i>
+            <span style="word-break: break-all;">{{this.shopInfo.introduction}}</span>
+          </div>
         </div>
-      </div>
 
-      <h2>{{$t("shopInfo.hours")}}</h2>
-      <div class="notification">
-        <div class="is-centered" style="text-align: center;">
-          <table :style="{width: '100%'}">
-            <template v-for="(day, key) in days">
-              <tr :style="(weekday==key) ? {'background-color': 'skyblue'} : {}">
-                <td>{{$t('week.short.' + day)}}</td>
-                <td>
-                  <template v-if="shopInfo.businessDay[key]">
-                    <template v-for="(data) in shopInfo.openTimes[key]">
-                      <template v-if="validDate(data)">
-                        {{num2time(data.start)}} - {{num2time(data.end)}}
-                        <br />
-                      </template>
+        <!-- Restaurant Hours -->
+        <div class="m-l-16 m-r-16 m-t-16">
+          <div class="t-subtitle2 c-text-black-medium p-l-8">{{$t("shopInfo.hours")}}</div>
+          <template v-for="(day, key) in days">
+            <div
+              class="cols p-l-8 p-r-8 p-t-4 p-b-4 r-4 t-body2"
+              :style="(weekday==(key%7)) ? {'background-color': 'rgba(104, 159, 56, 0.1)'} : {}"
+            >
+              <div class="w-64">{{$t('week.short.' + day)}}</div>
+              <div class="flex-1">
+                <template v-if="shopInfo.businessDay[key]">
+                  <template v-for="(data) in shopInfo.openTimes[key]">
+                    <template v-if="validDate(data)">
+                      {{num2time(data.start)}} - {{num2time(data.end)}}
+                      <br />
                     </template>
                   </template>
-                  <template v-else>Closed</template>
-                </td>
-                <td>
-                  <template v-if="isOpen[key]">open</template>
-                </td>
-              </tr>
-            </template>
-          </table>
+                </template>
+                <template v-else>{{$t('shopInfo.closed')}}</template>
+              </div>
+              <div>
+                <template v-if="isOpen[key]">
+                  <span class="c-status-green">Open</span>
+                </template>
+              </div>
+            </div>
+          </template>
         </div>
+        <!-- Want to update to popup version -->
+        <!--
+				<div class="align-center">
+          <div class="op-status c-status-green bg-status-green-bg m-t-16">Open Now</div>
+          <div class="p-t-8 t-caption c-status-green">Tue 4:30 AM - 9:00 PM</div>
+        </div>
+        <div class="align-center">
+          <div class="op-button-text m-t-8 m-b-16">
+            <span>View All Hours</span>
+          </div>
+        </div>
+        -->
       </div>
     </div>
-  </span>
+  </div>
 </template>
 
 <script>
@@ -91,17 +153,17 @@ import {
   formatNational,
   formatURL
 } from "~/plugins/phoneutil.js";
+import SharingButtons from "~/app/user/Common/SharingButtons";
 
 export default {
+  components: {
+    SharingButtons
+  },
   props: {
     shopInfo: {
       type: Object,
       required: true
     },
-    compact: {
-      type: Boolean,
-      required: false
-    }
   },
   data() {
     const d = new Date();
@@ -109,7 +171,8 @@ export default {
       url: this.shareUrl(),
       days: daysOfWeek,
       weekday: d.getDay(),
-      today: d
+      today: d,
+      sharePopup: false
     };
   },
   computed: {
@@ -188,6 +251,12 @@ export default {
     },
     validDate(date) {
       return !this.isNull(date.start) && !this.isNull(date.end);
+    },
+    openShare() {
+      this.sharePopup = true;
+    },
+    closeShare() {
+      this.sharePopup = false;
     }
   }
 };
@@ -195,6 +264,7 @@ export default {
 <style type="scss" scped>
 .GMap__Wrapper {
   width: 100%;
-  height: 150px;
+  height: 160px;
+  border-radius: 8px 8px 0 0;
 }
 </style>

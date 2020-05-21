@@ -18,8 +18,10 @@
 
         <div class="field is-horizontal">
           <div class="field-body">
-            <h4>{{$t("editMenu.itemName")}} <span class="p-small" style="color:#CB4B4B">*</span></h4>
-
+            <h4>
+              {{$t("editMenu.itemName")}}
+              <span class="p-small" style="color:#CB4B4B">*</span>
+            </h4>
           </div>
         </div>
         <b-field>
@@ -28,34 +30,37 @@
           </b-field>
         </b-field>
         <div class="columns">
-          <div class="column is-6">
+          <div class="column is-half">
             <div class="field is-horizontal">
               <div class="field-body">
-                <h4>{{$t("editMenu.price")}} <span class="p-small" style="color:#CB4B4B">*</span></h4>
-
+                <h4>
+                  {{$t("editMenu.price")}}
+                  <span class="p-small" style="color:#CB4B4B">*</span>
+                </h4>
               </div>
             </div>
-            <div class="columns">
-              <div class="column">
-                <b-field :type="errors['price'].length > 0 ? 'is-danger' : 'is-success'">
-                  <b-input
-                    v-model="menuInfo.price"
-                    type="number"
-                    :step="priceStep"
-                    placeholder="00.00"
-                    :max="maxPrice"
-                    min="0.00"
-                    expanded
-                    ></b-input>
-                  <p class="control"><span class="button is-static">{{$t("currency." + this.currencyKey)}}</span></p>
-                </b-field>
-              </div>
-            </div>
+            <b-field :type="errors['price'].length > 0 ? 'is-danger' : 'is-success'">
+              <b-input
+                v-model="menuInfo.price"
+                type="number"
+                :step="priceStep"
+                placeholder="00.00"
+                :max="maxPrice"
+                min="0.00"
+                expanded
+                ></b-input>
+              <p class="control">
+                <span class="button is-static">{{$t("currency." + this.currencyKey)}}</span>
+              </p>
+            </b-field>
           </div>
-          <div class="column is-6">
+          <div class="column is-half">
             <div class="field is-horizontal">
               <div class="field-body">
-                <h4>{{$t("editMenu.tax")}} <span class="p-small" style="color:#CB4B4B">*</span></h4>
+                <h4>
+                  {{$t("editMenu.tax")}}
+                  <span class="p-small" style="color:#CB4B4B">*</span>
+                </h4>
               </div>
             </div>
             <b-field :type="errors['tax'].length > 0 ? 'is-danger' : 'is-success'">
@@ -63,14 +68,33 @@
                 <option
                   v-for="taxItem in taxRates"
                   :value="taxItem"
-                  >
-                  {{ restaurantInfo && ((restaurantInfo[taxItem + "Tax"] || 0) + "%") }} - {{ $t("editMenu." + taxRateKeys[taxItem]) }}</option>
+                  :key="taxItem"
+                >{{ restaurantInfo && ((restaurantInfo[taxItem + "Tax"] || 0) + "%") }} - {{ $t("editMenu." + taxRateKeys[taxItem]) }}</option>
               </b-select>
             </b-field>
           </div>
         </div>
-        <div class="field is-horizontal"  v-if="requireTaxPriceDisplay">
-          <span class="h4">表示料金</span> <span style="line-height: 1.125rem;">:<Price :shopInfo="restaurantInfo" :menu="menuInfo"/></span>
+        <div class="field is-horizontal" v-if="requireTaxPriceDisplay">
+          <span class="h4">{{$t('editMenu.displayPrice')}}</span>
+          <span style="line-height: 1.125rem;">
+            :
+            <Price :shopInfo="restaurantInfo" :menu="menuInfo" />
+          </span>
+        </div>
+
+        <div class="field is-horizontal">
+          <div class="field-body">
+            <h4>{{$t('allergens.title')}}</h4>
+          </div>
+        </div>
+        <div class="field is-horizontal">
+          <div class="field-body">
+            <b-checkbox
+              v-for="allergen in allergens"
+              v-model="menuInfo.allergens[allergen]"
+              :key="allergen"
+            >{{$t(`allergens.${allergen}`)}}</b-checkbox>
+          </div>
         </div>
 
         <div class="field is-horizontal">
@@ -140,12 +164,16 @@
         <br />
 
         <div style="margin-top:0.5rem;margin-bottom:1rem">
-          <b-checkbox v-model="menuInfo.publicFlag"
-                      :disabled="hasError"
-                      :type="!menuInfo.publicFlag ? 'is-danger' : ''">
-            {{$t('shopInfo.public')}}
-          </b-checkbox><br/>
-          <span v-if="hasError" class="p-font bold" style="color:#CB4B4B">{{$t('editRestaurant.draftWarning')}}<br/></span>
+          <b-checkbox
+            v-model="menuInfo.publicFlag"
+            :disabled="hasError"
+            :type="!menuInfo.publicFlag ? 'is-danger' : ''"
+          >{{$t('shopInfo.public')}}</b-checkbox>
+          <br />
+          <span v-if="hasError" class="p-font bold" style="color:#CB4B4B">
+            {{$t('editRestaurant.draftWarning')}}
+            <br />
+          </span>
           <span style="color:#CB4B4B" v-if="!menuInfo.publicFlag && !hasError">
             {{$t("editMenu.saveAsDraft")}}
             <br />
@@ -159,7 +187,7 @@
           expanded
           rounded
           @click="submitItem"
-          >{{$t(menuInfo.publicFlag ? "editCommon.save" : "editCommon.saveDraft")}}</b-button>
+        >{{$t(menuInfo.publicFlag ? "editCommon.save" : "editCommon.saveDraft")}}</b-button>
       </section>
     </template>
   </div>
@@ -199,7 +227,8 @@ export default {
         itemPhoto: "",
         // availability: "",
         publicFlag: false,
-        itemOptionCheckbox: [""]
+        itemOptionCheckbox: [""],
+        allergens: {}
       },
 
       taxRates: taxRates,
@@ -243,10 +272,12 @@ export default {
       return;
     }
     this.menuInfo = Object.assign({}, this.menuInfo, resMenuInfo.data());
-
     this.notFound = false;
   },
   computed: {
+    allergens() {
+      return this.$store.getters.stripeRegion.allergens;
+    },
     priceStep() {
       return 10.0 / this.$store.getters.stripeRegion.multiple;
     },
@@ -275,7 +306,7 @@ export default {
     },
     "menuInfo.price": function() {
       // nothing
-    },
+    }
   },
   methods: {
     deleteOption(pos) {
@@ -286,8 +317,6 @@ export default {
       this.menuInfo.itemOptionCheckbox.push("");
     },
     async submitItem() {
-      // if (this.hasError) return;
-
       //upload image
       const menuId = this.menuId;
       if (this.croppa.chosenFile) {
@@ -302,6 +331,7 @@ export default {
         itemPhoto: this.menuInfo.itemPhoto,
         itemOptionCheckbox: this.menuInfo.itemOptionCheckbox || [],
         publicFlag: this.menuInfo.publicFlag || false,
+        allergens: this.menuInfo.allergens,
         validatedFlag: !this.hasError
       };
       const newData = await db
@@ -350,6 +380,5 @@ export default {
   line-height: 1.125rem;
   font-size: 1rem !important;
   color: #212121;
-
 }
 </style>

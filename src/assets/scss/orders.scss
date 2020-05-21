@@ -1,42 +1,49 @@
-.validation_ok, .validation_ok:hover {
-  color:red;
-  background:#ffeeee;
+.validation_ok,
+.validation_ok:hover {
+  color: red;
+  background: #ffeeee;
   border: 0;
 }
 
-.order_placed, .order_placed:hover {
-  color:red;
-  background:#ffeeee;
+.order_placed,
+.order_placed:hover {
+  @extend .c-status-amber;
+  @extend .bg-status-amber-bg;
   border: 0;
 }
 
-.order_accepted, .order_accepted:hover {
-  color:#FF8000;
-  background:#FFF3DE;
+.order_accepted,
+.order_accepted:hover {
+  @extend .c-status-blue;
+  @extend .bg-status-blue-bg;
   border: 0;
 }
 
-.cooking_completed, .cooking_completed:hover {
-  color:#57A12E;
-  background:#EFF8E7;
+.cooking_completed,
+.cooking_completed:hover {
+  @extend .c-status-green;
+  @extend .bg-status-green-bg;
   border: 0;
 }
 
-.customer_picked_up, .customer_picked_up:hover {
-  color: #8506A8;
-  background:#F5E4F6;
+.customer_picked_up,
+.customer_picked_up:hover {
+  @extend .c-status-purple;
+  @extend .bg-status-purple-bg;
   border: 0;
 }
 
-.order_canceled, .order_canceled:hover {
-  color: #ff4500;
-  background:#F5E4F6;
+.order_canceled,
+.order_canceled:hover {
+  @extend .c-status-red;
+  @extend .bg-status-red-bg;
   border: 0;
 }
 
-.order_refunded, .order_refunded:hover {
-  color: #3506A8;
-  background:#F5E4F6;
+.order_refunded,
+.order_refunded:hover {
+  color: #3506a8;
+  background: #f5e4f6;
   border: 0;
 }
 
