@@ -31,7 +31,7 @@
             <!-- Restaurant Details -->
             <div class="m-l-24 m-r-24" v-if="shopInfo.publicFlag">
               <!-- Restaurant Profile Photo and Name -->
-              <shop-orner-info :shopInfo="shopInfo"></shop-orner-info>
+              <shop-header :shopInfo="shopInfo"></shop-header>
 
               <!-- Restaurant Descriptions -->
               <div
@@ -112,7 +112,7 @@
 <script>
 import ItemCard from "~/app/user/Restaurant/ItemCard";
 import PhoneLogin from "~/app/auth/PhoneLogin";
-import ShopOrnerInfo from "~/app/user/Restaurant/ShopOrnerInfo";
+import ShopHeader from "~/app/user/Restaurant/ShopHeader";
 import SharePopup from "~/app/user/Restaurant/SharePopup";
 import ShopInfo from "~/app/user/Restaurant/ShopInfo";
 import NotFound from "~/components/NotFound";
@@ -127,7 +127,7 @@ export default {
   components: {
     ItemCard,
     PhoneLogin,
-    ShopOrnerInfo,
+    ShopHeader,
     SharePopup,
     ShopInfo,
     ErrorPopup,
