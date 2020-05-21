@@ -22,7 +22,7 @@
             <div v-if="image !== null" class="p-b-8">
               <img :src="image" width="96" height="96" class="r-4" />
             </div>
-            <div  @click.stop="pushCount" class="op-button-pill bg-primary-bg w-96">
+            <div @click.stop="pushCount" class="op-button-pill bg-primary-bg w-96 t-button">
               <span>{{$t('sitemenu.add')}}</span>
             </div>
           </div>

@@ -68,6 +68,7 @@
             </a>
           </div>
         </div>
+        <div v-else class="h-8"></div>
 
         <!-- Restaurant Phone Number -->
         <div class="m-t-8 m-l-16 m-r-16">
@@ -91,14 +92,6 @@
               <span style="word-break: break-all;">{{this.shopInfo.url}}</span>
             </div>
           </a>
-        </div>
-
-        <!-- Restaurant Website -->
-        <div class="m-t-8 m-l-16 m-r-16">
-          <div class="op-button-text">
-            <i class="material-icons">info</i>
-            <span style="word-break: break-all;">{{this.shopInfo.introduction}}</span>
-          </div>
         </div>
 
         <!-- Restaurant Hours -->
@@ -163,7 +156,7 @@ export default {
     shopInfo: {
       type: Object,
       required: true
-    },
+    }
   },
   data() {
     const d = new Date();
