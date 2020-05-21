@@ -26,7 +26,7 @@
             </div>
 
             <!-- Restaurant Profile Photo and Name -->
-            <shop-orner-info :shopInfo="shopInfo"></shop-orner-info>
+            <shop-header :shopInfo="shopInfo"></shop-header>
 
             <!-- After Paid -->
             <div v-if="paid">
@@ -230,7 +230,7 @@
 </template>
 
 <script>
-import ShopOrnerInfo from "~/app/user/Restaurant/ShopOrnerInfo";
+import ShopHeader from "~/app/user/Restaurant/ShopHeader";
 import OrderInfo from "~/app/user/Order/OrderInfo";
 import ShopInfo from "~/app/user/Restaurant/ShopInfo";
 import StripeCard from "~/app/user/Order/StripeCard";
@@ -247,7 +247,7 @@ import { ownPlateConfig } from "@/config/project";
 export default {
   name: "Order",
   components: {
-    ShopOrnerInfo,
+    ShopHeader,
     OrderInfo,
     ShopInfo,
     StripeCard,
