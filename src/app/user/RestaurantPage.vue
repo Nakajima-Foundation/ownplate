@@ -32,10 +32,15 @@
             <div class="m-l-24 m-r-24" v-if="shopInfo.publicFlag">
               <!-- Restaurant Profile Photo and Name -->
               <shop-orner-info :shopInfo="shopInfo"></shop-orner-info>
+
               <!-- Restaurant Descriptions -->
               <div
                 class="t-body1 c-text-black-medium align-center m-t-8"
               >{{this.shopInfo.introduction}}</div>
+
+              <!-- Share Popup -->
+              <share-popup :shopInfo="shopInfo"></share-popup>
+
               <!-- Restaurant Info -->
               <shop-info :shopInfo="shopInfo"></shop-info>
             </div>
@@ -108,6 +113,7 @@
 import ItemCard from "~/app/user/Restaurant/ItemCard";
 import PhoneLogin from "~/app/auth/PhoneLogin";
 import ShopOrnerInfo from "~/app/user/Restaurant/ShopOrnerInfo";
+import SharePopup from "~/app/user/Restaurant/SharePopup";
 import ShopInfo from "~/app/user/Restaurant/ShopInfo";
 import NotFound from "~/components/NotFound";
 import ErrorPopup from "~/components/ErrorPopup";
@@ -122,6 +128,7 @@ export default {
     ItemCard,
     PhoneLogin,
     ShopOrnerInfo,
+    SharePopup,
     ShopInfo,
     ErrorPopup,
     NotFound
