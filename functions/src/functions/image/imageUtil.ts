@@ -13,7 +13,10 @@ const runSharp = async (bucket, fromFileFullPath, toFileFullPath, size, contentT
 
   try {
     // resize
-    await sharp(fromFileFullPath).rotate().resize(size).toFile(tmpResizeFile);
+    await sharp(fromFileFullPath).rotate()
+      .resize(size, size, {
+        fit: 'inside'
+      }).toFile(tmpResizeFile);
 
     // upload
     const uuid = UUID();
