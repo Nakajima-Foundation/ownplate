@@ -30,7 +30,13 @@
 
             <!-- Restaurant Details -->
             <div class="m-l-24 m-r-24" v-if="shopInfo.publicFlag">
+              <!-- Restaurant Profile Photo and Name -->
               <shop-orner-info :shopInfo="shopInfo"></shop-orner-info>
+              <!-- Restaurant Descriptions -->
+              <div
+                class="t-body1 c-text-black-medium align-center m-t-8"
+              >{{this.shopInfo.introduction}}</div>
+              <!-- Restaurant Info -->
               <shop-info :shopInfo="shopInfo"></shop-info>
             </div>
           </div>
