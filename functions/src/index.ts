@@ -1,48 +1,30 @@
 import * as admin from 'firebase-admin';
 import * as functions from 'firebase-functions';
-import * as express from './functions/express';
-import * as Firestore from './functions/firestore';
 
-export const api = functions.https.onRequest(express.app);
+import * as Sentry from '@sentry/node';
 
-let db = admin.firestore();
-export const updateDb = (_db) => {
-  db = _db;
+import exportIfNeeded from './common/exportifneeded';
+
+const senty_dsn = functions.config() && functions.config().senty && functions.config().senty.dsn || process.env.SENTY_DSN;
+Sentry.init({ dsn: senty_dsn });
+
+if (!admin.apps.length) {
+  admin.initializeApp();
 }
 
-export const wasOrderCreated = functions.firestore.document('restaurants/{restaurantId}/orders/{orderId}').onCreate(async (snapshot, context) => {
-  await Firestore.wasOrderCreated(db, snapshot, context);
-});
+exportIfNeeded("api", "api", exports);
 
-import * as System from './functions/system';
-export const systemGetConfig = functions.https.onCall(async (data, context) => {
-  return await System.getConfig(db, data, context);
-});
+exportIfNeeded("systemGetConfig", "systemGetConfig", exports);
 
-import * as Order from './functions/order';
-export const orderUpdate = functions.https.onCall(async (data, context) => {
-  return await Order.update(db, data, context);
-});
-export const orderPlace = functions.https.onCall(async (data, context) => {
-  return await Order.place(db, data, context);
-});
+exportIfNeeded("lineValidate", "lineValidate", exports);
 
-import * as StripeOAuth from './stripe/oauth'
-export const stripeConnect = functions.https.onCall(async (data, context) => {
-  return await StripeOAuth.connect(db, data, context);
-});
-export const stripeDisconnect = functions.https.onCall(async (data, context) => {
-  return await StripeOAuth.disconnect(db, data, context);
-});
+exportIfNeeded("wasOrderCreated2", "order/wasOrderCreated2", exports);
+exportIfNeeded("orderUpdate", "order/orderUpdate", exports);
+exportIfNeeded("orderPlace", "order/orderPlace", exports);
 
-import * as StripeIntent from './stripe/intent'
-export const stripeCreateIntent = functions.https.onCall(async (data, context) => {
-  return await StripeIntent.create(db, data, context);
-});
-export const stripeConfirmIntent = functions.https.onCall(async (data, context) => {
-  return await StripeIntent.confirm(db, data, context);
-});
-export const stripeCancelIntent = functions.https.onCall(async (data, context) => {
-  return await StripeIntent.cancel(db, data, context);
-});
+exportIfNeeded("stripeConnect", "stripe/stripeConnect", exports);
+exportIfNeeded("stripeDisconnect", "stripe/stripeDisconnect", exports);
 
+exportIfNeeded("stripeCreateIntent", "stripe/stripeCreateIntent", exports);
+exportIfNeeded("stripeConfirmIntent", "stripe/stripeConfirmIntent", exports);
+exportIfNeeded("stripeCancelIntent", "stripe/stripeCancelIntent", exports);

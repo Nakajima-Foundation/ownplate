@@ -97,6 +97,8 @@ firebase deploy --only functions
 
 ## icon lists
 
+https://iconify.design/icon-sets/mdi/
+
 https://fontawesome.com/icons?d=gallery
 https://materialdesignicons.com/cdn/2.0.46/
 

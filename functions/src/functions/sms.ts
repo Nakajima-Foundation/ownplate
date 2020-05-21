@@ -23,7 +23,8 @@ export const pushSMS = async (subject, message, phone_number) => {
       },
       "AWS.SNS.SMS.SenderID": {
         "DataType": "String",
-        "StringValue": "eGroup",
+        // TODO: see config
+        "StringValue": "omochikaeri",
       },
     },
     Subject: subject,

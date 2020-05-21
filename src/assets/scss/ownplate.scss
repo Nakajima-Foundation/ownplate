@@ -98,7 +98,8 @@ $op-colors: (
   letter-spacing: 0.18px;
 }
 .t-h6 {
-  font-weight: 500;
+  // font-weight: 500;
+  font-weight: bold;
   font-size: 20px;
   line-height: 24px;
   letter-spacing: 0.15px;
@@ -110,7 +111,8 @@ $op-colors: (
   letter-spacing: 0.15px;
 }
 .t-subtitle2 {
-  font-weight: 500;
+  // font-weight: 500;
+  font-weight: bold;
   font-size: 14px;
   line-height: 24px;
   letter-spacing: 0.1px;
@@ -128,11 +130,12 @@ $op-colors: (
   letter-spacing: 0.25px;
 }
 .t-button {
-  font-weight: 500;
+  // font-weight: 500;
+  font-weight: bold;
   font-size: 14px;
   line-height: 16px;
   letter-spacing: 1.25px;
-  text-transform: uppercase;
+  // text-transform: uppercase;
 }
 .t-caption {
   font-style: normal;
@@ -142,11 +145,12 @@ $op-colors: (
   letter-spacing: 0.4px;
 }
 .t-overline {
-  font-weight: 500;
+  // font-weight: 500;
+  font-weight: bold;
   font-size: 10px;
   line-height: 16px;
   letter-spacing: 1.5px;
-  text-transform: uppercase;
+  // text-transform: uppercase;
 }
 
 .align-center {
@@ -308,6 +312,31 @@ body,
 }
 
 // OwnPlate Buttons
+
+// Reset <b-button> style
+.button.b-reset {
+  padding: 0;
+  color: currentColor;
+  border: none;
+  &:hover {
+    color: currentColor;
+    border: none;
+  }
+  &:active {
+    color: currentColor;
+    border: none;
+  }
+  &:focus {
+    color: currentColor;
+    border: none;
+  }
+  span {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
 .op-button {
   cursor: pointer;
   display: inline-flex;
@@ -409,6 +438,27 @@ body,
   @extend .bg-primary;
   @extend .c-onprimary;
   @extend .t-h6;
+}
+// Reset <b-button> style
+.button.op-cartbutton {
+  padding: 0;
+  border: none;
+  &:hover {
+    @extend .c-onprimary;
+    border: none;
+  }
+  &:active {
+    @extend .c-onprimary;
+    border: none;
+  }
+  &:focus {
+    @extend .c-onprimary;
+    border: none;
+    @extend .d-medium;
+  }
+  > span {
+    @extend .w-full;
+  }
 }
 
 .control-label {

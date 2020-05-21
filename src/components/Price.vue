@@ -2,12 +2,16 @@
   <span>
     <span v-if="shopInfo.taxInclude">
       {{$tc('tax.price', taxObj.total_price_i18n) }}
-      <span class="tax">{{$tc('tax.include')}}</span>
+      <span
+        class="t-caption c-text-black-medium"
+      >{{$tc('tax.include')}}</span>
       <br />
     </span>
     <span v-if="!shopInfo.taxInclude">
       {{$tc('tax.price', taxObj.price_i18n)}}
-      <span class="tax">{{$tc('tax.exclude')}}</span>
+      <span
+        class="t-caption c-text-black-medium"
+      >{{$tc('tax.exclude')}}</span>
       <br />
     </span>
   </span>
@@ -47,8 +51,3 @@ export default {
 };
 </script>
 
-<style scoped>
-.tax {
-  font-size: 0.6em;
-}
-</style>

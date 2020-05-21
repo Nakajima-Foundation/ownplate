@@ -102,3 +102,6 @@ src/config/project.js
 
 # Emacs
 *~
+
+# ownplate
+batch/keys/*.json

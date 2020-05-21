@@ -248,13 +248,17 @@ export default {
         try {
           this.updating = "customer_picked_up";
           const { data } = await stripeConfirmIntent({
-            restaurantId: this.restaurantId(),
+            restaurantId: this.restaurantId() + this.forcedError("confirm"),
             orderId
           });
           console.log("confirm", data);
           this.$router.push(this.parentUrl);
         } catch (error) {
           console.error(error.message, error.details);
+          this.$store.commit("setErrorMessage", {
+            code: "sprite.confirm",
+            error
+          });
         } finally {
           this.updating = "";
         }
@@ -271,15 +275,18 @@ export default {
       this.updating = statusKey;
       try {
         const { data } = await orderUpdate({
-          restaurantId: this.restaurantId(),
+          restaurantId: this.restaurantId() + this.forcedError("update"),
           orderId: this.orderId,
           status: newStatus
         });
         console.log("update", data);
         this.$router.push(this.parentUrl);
       } catch (error) {
-        // BUGBUG: Handle Error
         console.error(error.message, error.details);
+        this.$store.commit("setErrorMessage", {
+          code: "order.update",
+          error
+        });
       } finally {
         this.updating = "";
       }
@@ -289,14 +296,17 @@ export default {
       try {
         this.updating = "order_canceled";
         const { data } = await stripeCancelIntent({
-          restaurantId: this.restaurantId(),
+          restaurantId: this.restaurantId() + this.forcedError("cancel"),
           orderId: this.orderId
         });
         console.log("cancel", data);
         this.$router.push(this.parentUrl);
       } catch (error) {
-        // BUGBUG: Implement the error handling code here
         console.error(error.message, error.details);
+        this.$store.commit("setErrorMessage", {
+          code: "order.cancel",
+          error
+        });
       } finally {
         this.updating = "";
       }

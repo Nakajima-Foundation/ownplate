@@ -72,7 +72,12 @@ export const customRoutes = [
     path: '/s/orders',
     component: 'super/AllOrders.vue'
   },
-  { path: '*',
+  {
+    path: '/callback/line',
+    component: 'auth/LineCallback.vue'
+  },
+  {
+    path: '*',
     component: 'common/404.vue'
   }
 ];
