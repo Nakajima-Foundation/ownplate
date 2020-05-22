@@ -106,10 +106,12 @@
     "itemOptionsNote": "For altenatives, use comma to separate them (e.g., \"Chicken, Pork, Tofu\")",
     "itemAddOption": "Add Option",
     "itemInvalidMessage": "This item is not on your menu because data is invalid.",
-    "saveAsDraft": "Save as draft. This item is not on your menus."
+    "saveAsDraft": "Save as draft. This item is not on your menus.",
+    "reallyDelete": "Do you really want to delete this?"
   },
   "editTitle": {
-    "empty": "empty"
+    "enterCategory": "Enter category name",
+    "empty": "(Empty category name)"
   },
   "shopInfo": {
     "qrcode": "QR code",
@@ -180,7 +182,7 @@
   },
   "button": {
     "back": "Back",
-    "addTitle": "Add title",
+    "addTitle": "Add Category",
     "addItem": "Add Item",
     "cancel": "Cancel",
     "next": "Next"
