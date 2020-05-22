@@ -253,7 +253,7 @@
             <div v-if="paid">
               <shop-info :compact="true" :shopInfo="shopInfo" />
               <div class="align-center m-t-24">
-                <b-button class="b-reset op-button-small bg-status-green" @click="handleOpenMenu">
+                <b-button class="b-reset op-button-small bg-status-blue" @click="handleOpenMenu">
                   <span class="c-text-white-full">
                     {{
                     $t("order.menu")
