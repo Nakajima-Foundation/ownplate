@@ -86,7 +86,7 @@ export default ({ app }) => {
             "state_changed",
             (snapshot) => {},
             (err) => {
-              this.loading = false;
+              rejected(err);
             },
             async () => {
               const downloadURL = await uploadTask.snapshot.ref.getDownloadURL();

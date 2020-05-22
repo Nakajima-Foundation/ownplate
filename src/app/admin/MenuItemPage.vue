@@ -117,12 +117,12 @@
 
         <table style="margin-bottom:0.5rem">
           <tr>
-            <td v-if="menuInfo.itemPhoto">{{$t('editCommon.current')}}</td>
+            <td v-if="itemPhoto">{{$t('editCommon.current')}}</td>
             <td>{{$t('editCommon.new')}}</td>
           </tr>
           <tr>
-            <td v-if="menuInfo.itemPhoto">
-              <img class="card_image" :src="this.menuInfo.itemPhoto" />
+            <td v-if="itemPhoto">
+              <img class="card_image" :src="itemPhoto" />
             </td>
             <td>
               <croppa
@@ -225,6 +225,7 @@ export default {
         tax: "food",
         itemDescription: "",
         itemPhoto: "",
+        images: {},
         publicFlag: false,
         itemOptionCheckbox: [""],
         allergens: {}
@@ -275,6 +276,9 @@ export default {
     this.notFound = false;
   },
   computed: {
+    itemPhoto() {
+      return  this.menuInfo?.images?.item?.resizedImages["600"] || this.menuInfo.itemPhoto;
+    },
     allergens() {
       return this.$store.getters.stripeRegion.allergens;
     },
@@ -323,6 +327,10 @@ export default {
         if (this.files["menu"]) {
           const path = `/images/restaurants/${this.restaurantId()}/menus/${this.menuId}/${this.uid}/item.jpg`
           this.menuInfo.itemPhoto = await this.uploadFile(this.files["menu"], path);
+          this.menuInfo.images.item = {
+            original: this.menuInfo.itemPhoto,
+            resizedImages: {},
+          };
         }
         const itemData = {
           itemName: this.menuInfo.itemName,
@@ -330,6 +338,9 @@ export default {
           tax: this.menuInfo.tax,
           itemDescription: this.menuInfo.itemDescription,
           itemPhoto: this.menuInfo.itemPhoto,
+          images: {
+            item: this.menuInfo.images.item
+          },
           itemOptionCheckbox: this.menuInfo.itemOptionCheckbox || [],
           publicFlag: this.menuInfo.publicFlag || false,
           allergens: this.menuInfo.allergens,
