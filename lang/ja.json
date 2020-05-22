@@ -104,10 +104,12 @@
     "itemOptionsNote": "二択や三択の場合、半角カンマで区切ってください (例: \"チキン, ポーク, 豆腐\")",
     "itemAddOption": "オプション追加",
     "itemInvalidMessage": "データが正しく入力されていないため、公開されません",
-    "saveAsDraft": "下書きとして保存されます(メニューに表示されません)"
+    "saveAsDraft": "下書きとして保存されます(メニューに表示されません)",
+    "reallyDelete": "本当に削除しますか？"
   },
   "editTitle": {
-    "empty": "未入力"
+    "enterCategory": "カテゴリー名を入力してください",
+    "empty": "（カテゴリー名未入力）"
   },
   "shopInfo": {
     "qrcode": "飲食店QRコード",

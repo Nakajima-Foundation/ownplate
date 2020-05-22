@@ -48,6 +48,7 @@
     <div class="columns is-gapless">
       <!-- Left Gap -->
       <div class="column is-narrow w-24"></div>
+
       <!-- Left Column -->
       <div class="column">
         <div class="m-l-24 m-r-24">
@@ -114,6 +115,7 @@
           </div>
         </div>
       </div>
+
       <!-- Right Column -->
       <div class="column">
         <div class="m-l-24 m-r-24">

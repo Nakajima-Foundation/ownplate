@@ -1,45 +1,74 @@
 <template>
-  <div class="card block">
-    <div class="card-content">
-      <div class="media">
-        <div class="media-content" @click="linkEdit">
-          <p class="item-name">
-              {{ menuitem.itemName }}
-          </p>
-          <p class="item-price">
-            <Price :shopInfo="shopInfo" :menu="menuitem"/>
-          </p>
-          <p>{{ menuitem.itemDescription }}</p>
+  <div>
+    <!-- Item Card -->
+    <div class="bg-surface r-8 d-low m-t-8">
+      <div class="touchable cols" @click="linkEdit">
+        <div class="flex-1 p-l-16 p-r-16 p-t-16 p-b-16">
+          <div class="t-h6 c-text-black-high">{{ menuitem.itemName }}</div>
+          <div class="t-body1 c-text-black-high m-t-8">
+            <Price :shopInfo="shopInfo" :menu="menuitem" />
+          </div>
+
+          <!-- # Need to add *** v-if="menuitem.itemDescription !== null" ***? -->
+          <div class="t-body2 c-text-black-medium m-t-8">{{ menuitem.itemDescription }}</div>
+
+          <!-- # Need to add allergensDescription -->
+          <!-- <div
+            v-if="menuitem.allergens.length > 0"
+            class="t-body2 c-text-black-medium m-t-8"
+          >{{ menuitem.allergensDescription }}</div>-->
         </div>
-        <div class="media-right">
-          <figure class="image is-100x100">
-            <img
-              class="is-square"
-              :src="image"
-              alt=""
-              style="border-radius: 4px;"
-            />
-          </figure>
+        <div class="p-r-16 p-t-16 p-b-16">
+          <div class="w-96 is-pulled-right">
+            <div v-if="image" class="p-b-8">
+              <img :src="image" width="96" height="96" class="w-96 h-96 r-4 cover" />
+            </div>
+          </div>
         </div>
       </div>
     </div>
-    <div class="card-footer">
-      <a @click.prevent href="#" class="card-footer-item" @click="positionUp" v-if="position!=='first'">
-        <b-icon icon="arrow-up" size="is-midium"></b-icon>
-      </a>
-      <a @click.prevent href="#" class="card-footer-item" v-else>
-      </a>
-      <a @click.prevent href="#" class="card-footer-item" @click="positionDown" v-if="position!=='last'">
-        <b-icon icon="arrow-down" size="is-midium"></b-icon>
-      </a>
-      <a @click.prevent href="#" class="card-footer-item" v-else>
-      </a>
-      <a @click.prevent href="#" class="card-footer-item" @click="forkItem">
-        <b-icon icon="plus" size="is-midium"></b-icon>
-      </a>
-      <a @click.prevent href="#" class="card-footer-item" @click="deleteItem">
-        <b-icon icon="delete" size="is-midium"></b-icon>
-      </a>
+
+    <!-- Card Actions -->
+    <div class="m-t-8 p-b-8 p-l-8 p-r-8">
+      <div class="cols">
+        <div class="flex-1">
+          <!-- Position Up -->
+          <b-button
+            class="b-reset op-button-pill h-36 bg-primary-bg m-r-8"
+            v-if="position!=='first'"
+            @click="positionUp"
+          >
+            <i class="material-icons c-primary s-18 p-l-8 p-r-8">arrow_upward</i>
+          </b-button>
+          <!-- Disable if First -->
+          <b-button class="b-reset op-button-pill h-36 bg-primary-bg m-r-8" disabled v-else>
+            <i class="material-icons c-primary s-18 p-l-8 p-r-8">arrow_upward</i>
+          </b-button>
+
+          <!-- Position Down -->
+          <b-button
+            class="b-reset op-button-pill h-36 bg-primary-bg m-r-8"
+            v-if="position!=='last'"
+            @click="positionDown"
+          >
+            <i class="material-icons c-primary s-18 p-l-8 p-r-8">arrow_downward</i>
+          </b-button>
+          <!-- Disable if Last -->
+          <b-button class="b-reset op-button-pill h-36 bg-primary-bg m-r-8" disabled v-else>
+            <i class="material-icons c-primary s-18 p-l-8 p-r-8">arrow_downward</i>
+          </b-button>
+
+          <!-- Duplicate -->
+          <b-button class="b-reset op-button-pill h-36 bg-primary-bg m-r-8" @click="forkItem">
+            <i class="material-icons c-primary s-18 p-l-8 p-r-8">queue</i>
+          </b-button>
+        </div>
+        <div>
+          <b-button class="b-reset op-button-pill h-36 bg-status-red-bg" @click="deleteItem">
+            <i class="material-icons c-status-red s-18 p-l-8 p-r-8">delete</i>
+          </b-button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -68,7 +97,10 @@ export default {
   },
   computed: {
     image() {
-      return  this.menuitem.images?.item?.resizedImages["600"] || this.menuitem.itemPhoto;
+      return (
+        this.menuitem.images?.item?.resizedImages["600"] ||
+        this.menuitem.itemPhoto
+      );
     }
   },
   data() {
@@ -80,7 +112,9 @@ export default {
   methods: {
     linkEdit() {
       this.$router.push({
-        path: `/admin/restaurants/${this.restaurantId()}/menus/${this.menuitem.id}`
+        path: `/admin/restaurants/${this.restaurantId()}/menus/${
+          this.menuitem.id
+        }`
       });
     },
     positionUp() {
@@ -93,33 +127,11 @@ export default {
       this.$emit("forkItem", this.menuitem.id);
     },
     deleteItem() {
-      this.$emit("deleteItem", this.menuitem.id);
-    },
+      // this.$emit("deleteItem", this.menuitem.id);
+      if (confirm(this.$t("editMenu.reallyDelete"))) {
+        this.$emit("deleteItem", this.menuitem.id);
+      }
+    }
   }
 };
 </script>
-<style lang="scss" scoped>
-.card {
-  margin-bottom: 0.6rem;
-}
-
-.payment {
-  margin-top: 0.4rem;
-  margin-bottom: 0.4rem;
-}
-
-.count-class {
-  margin-top: 1rem;
-}
-
-.counter {
-  margin-top: 1rem;
-}
-
-.notification {
-  margin-top: 1rem;
-}
-.order_now {
-  background-color: #e0f7fa;
-}
-</style>
