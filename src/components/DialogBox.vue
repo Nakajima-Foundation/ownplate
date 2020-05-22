@@ -19,7 +19,10 @@
         </div>
         <div class="m-t-24 align-center">
           <div class="op-button-small tertiary" @click="close">{{$t('menu.close')}}</div>
-          <div class="op-button-small tertiary" @click="close">{{$t('menu.close')}}</div>
+          <div
+            class="op-button-small bg-status-red c-text-white-full"
+            @click="handleYes"
+          >{{$t('menu.yes')}}</div>
         </div>
       </div>
     </b-modal>
@@ -66,6 +69,9 @@ export default {
     }
   },
   methods: {
+    handleYes() {
+      console.log("handleYes");
+    },
     close() {
       this.isVisible = false;
     }
