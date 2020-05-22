@@ -126,13 +126,14 @@
             </td>
             <td>
               <croppa
-                v-model="croppa"
                 :prevent-white-space="true"
                 :zoom-speed="5"
+                :accept="'image/jpeg'"
                 :placeholder="$t('editCommon.clickAndUpload')"
-                :placeholder-font-size="16"
+                :placeholder-font-size="10"
                 initial-position="center"
                 :canvas-color="'gainsboro'"
+                @file-choose="handleMenuImage"
               ></croppa>
             </td>
           </tr>
@@ -186,8 +187,9 @@
           class="counter-button"
           expanded
           rounded
+          :disabled="submitting"
           @click="submitItem"
-        >{{$t(menuInfo.publicFlag ? "editCommon.save" : "editCommon.saveDraft")}}</b-button>
+        >{{$t(submitting ? 'editCommon.saving' : (menuInfo.publicFlag ? "editCommon.save" : "editCommon.saveDraft"))}}</b-button>
       </section>
     </template>
   </div>
@@ -233,13 +235,14 @@ export default {
       requireTaxPriceDisplay: regionalSetting.requireTaxPriceDisplay,
 
       currencyKey: regionalSetting["CurrencyKey"],
-      croppa: {},
 
       maxPrice: 1000000.0 / this.$store.getters.stripeRegion.multiple,
 
       restaurantInfo: {},
       notFound: null,
-      menuId: this.$route.params.menuId
+      menuId: this.$route.params.menuId,
+      submitting: false,
+      files: {},
     };
   },
   async created() {
@@ -303,6 +306,9 @@ export default {
     },
   },
   methods: {
+    handleMenuImage(e) {
+      this.files["menu"] = e;
+    },
     deleteOption(pos) {
       this.menuInfo.itemOptionCheckbox.splice(pos, 1);
       // console.log(e);
@@ -311,51 +317,34 @@ export default {
       this.menuInfo.itemOptionCheckbox.push("");
     },
     async submitItem() {
+      this.submitting = true;
       //upload image
-      const menuId = this.menuId;
-      if (this.croppa.chosenFile) {
-        let file = await this.croppa.promisedBlob("image/jpeg", 0.8);
-        this.menuInfo.itemPhoto = await this.uploadFile(file, menuId);
+      try {
+        if (this.files["menu"]) {
+          const path = `/images/restaurants/${this.restaurantId()}/menus/${this.menuId}/${this.uid}/item.jpg`
+          this.menuInfo.itemPhoto = await this.uploadFile(this.files["menu"], path);
+        }
+        const itemData = {
+          itemName: this.menuInfo.itemName,
+          price: Number(this.menuInfo.price),
+          tax: this.menuInfo.tax,
+          itemDescription: this.menuInfo.itemDescription,
+          itemPhoto: this.menuInfo.itemPhoto,
+          itemOptionCheckbox: this.menuInfo.itemOptionCheckbox || [],
+          publicFlag: this.menuInfo.publicFlag || false,
+          allergens: this.menuInfo.allergens,
+          validatedFlag: !this.hasError
+        };
+        const newData = await db
+              .doc(`restaurants/${this.restaurantId()}/menus/${this.menuId}`)
+              .update(itemData);
+
+        this.$router.push({
+          path: `/admin/restaurants/${this.restaurantId()}/menus`
+        });
+      } catch (e) {
+        this.submitting = false;
       }
-      const itemData = {
-        itemName: this.menuInfo.itemName,
-        price: Number(this.menuInfo.price),
-        tax: this.menuInfo.tax,
-        itemDescription: this.menuInfo.itemDescription,
-        itemPhoto: this.menuInfo.itemPhoto,
-        itemOptionCheckbox: this.menuInfo.itemOptionCheckbox || [],
-        publicFlag: this.menuInfo.publicFlag || false,
-        allergens: this.menuInfo.allergens,
-        validatedFlag: !this.hasError
-      };
-      const newData = await db
-        .doc(`restaurants/${this.restaurantId()}/menus/${this.menuId}`)
-        .update(itemData);
-
-      this.$router.push({
-        path: `/admin/restaurants/${this.restaurantId()}/menus`
-      });
-    },
-    uploadFile(file, menuId) {
-      return new Promise((resolve, rejected) => {
-        let storageRef = storage.ref();
-        let mountainsRef = storageRef.child(
-          `/images/restaurants/${this.restaurantId()}/menus/${menuId}/${this.uid}/item.jpg`
-        );
-        let uploadTask = mountainsRef.put(file);
-
-        uploadTask.on(
-          "state_changed",
-          snapshot => {},
-          err => {
-            this.loading = false;
-          },
-          () =>
-            uploadTask.snapshot.ref
-              .getDownloadURL()
-              .then(downloadURL => resolve(downloadURL))
-        );
-      });
     },
   }
 };
