@@ -390,7 +390,13 @@ body,
   }
   &.secondary {
     border: 2px solid map-get($op-colors, primary);
+    background: none;
     @extend .c-primary;
+    &:hover,
+    &:active,
+    &:focus {
+      border: 2px solid map-get($op-colors, primary);
+    }
   }
   &.tertiary {
     @extend .bg-form;
