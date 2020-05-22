@@ -14,6 +14,7 @@
     "signOut": "サイン・アウト",
     "selectLanguage": "表示言語選択",
     "yes": "はい",
+    "no": "いいえ",
     "close": "閉じる"
   },
   "restaurantId": {
@@ -238,6 +239,7 @@
       "pleaseConnect": "オンラインで支払いを受けるには、Stripeアカウントとの接続が必要です。",
       "connectStripe": "Stripeアカウントと接続する",
       "disconnectStripe": "Stripeアカウントとの接続を切る",
+      "reallyDisconnectStripe": "本当にStripeアカウントとの接続を切ってよろしいのですね？",
       "openDashboard": "Stripe のダッシュボードを開く"
     },
     "viewPage": "ページを確認",
