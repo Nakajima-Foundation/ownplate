@@ -1,5 +1,5 @@
 <template>
-  <div v-if="error">
+  <div v-if="dialog">
     <b-modal :active.sync="isVisible" :width="488">
       <div v-if="error" class="op-dialog p-t-24 p-l-24 p-r-24 p-b-24">
         <div class="t-h6 c-text-black-disabled p-b-8">
@@ -9,6 +9,16 @@
         <div class="m-t-8">{{errorMessage}}</div>
         <div class="m-t-8">{{$t(errorMessage2)}}</div>
         <div class="m-t-24 align-center">
+          <div class="op-button-small tertiary" @click="close">{{$t('menu.close')}}</div>
+        </div>
+      </div>
+      <div v-if="alert" class="op-dialog p-t-24 p-l-24 p-r-24 p-b-24">
+        <div class="t-h6 c-text-black-disabled p-b-8">
+          <i class="fas fa-exclamation-triangle"></i>
+          {{$t(alert.code)}}
+        </div>
+        <div class="m-t-24 align-center">
+          <div class="op-button-small tertiary" @click="close">{{$t('menu.close')}}</div>
           <div class="op-button-small tertiary" @click="close">{{$t('menu.close')}}</div>
         </div>
       </div>
@@ -36,6 +46,9 @@ export default {
     }
   },
   computed: {
+    alert() {
+      return this.dialog?.alert;
+    },
     error() {
       return this.dialog?.error;
     },

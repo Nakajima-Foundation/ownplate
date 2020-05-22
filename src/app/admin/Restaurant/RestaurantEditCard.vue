@@ -151,7 +151,13 @@ export default {
     };
   },
   methods: {
-    deleteRestaurant: function() {
+    deleteRestaurant() {
+      console.log("deleteRestaurant");
+      this.$store.commit("setAlert", {
+        code: "editRestaurant.reallyDelete"
+      });
+    },
+    deleteRestaurant2: function() {
       if (confirm(this.$t("editRestaurant.reallyDelete"))) {
         db.doc(`restaurants/${this.restaurantid}`).update("deletedFlag", true);
       }

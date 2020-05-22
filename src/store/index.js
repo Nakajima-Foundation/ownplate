@@ -78,8 +78,11 @@ export const mutations = {
   setSoundOn(state, flag) {
     state.soundOn = flag;
   },
-  setErrorMessage(state, message) {
-    state.dialog = { error: message };
+  setAlert(state, params) {
+    state.dialog = { alert: params };
+  },
+  setErrorMessage(state, params) {
+    state.dialog = { error: params };
   }
 };
 
