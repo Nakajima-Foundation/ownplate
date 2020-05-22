@@ -55,7 +55,7 @@
 
         <!-- approproate component under pages will be displayed -->
         <nuxt v-if="isReadyToRender"></nuxt>
-        <dialog-box :error="errorMessage" />
+        <dialog-box :dialog="dialog" />
       </div>
     </div>
 
@@ -148,8 +148,8 @@ export default {
     };
   },
   computed: {
-    errorMessage() {
-      return this.$store.state.errorMessage;
+    dialog() {
+      return this.$store.state.dialog;
     },
     isReadyToRender() {
       if (this.user !== undefined) {

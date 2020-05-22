@@ -1,13 +1,13 @@
 <template>
   <div v-if="error">
     <b-modal :active.sync="isVisible" :width="488">
-      <div class="op-dialog p-t-24 p-l-24 p-r-24 p-b-24">
+      <div v-if="error" class="op-dialog p-t-24 p-l-24 p-r-24 p-b-24">
         <div class="t-h6 c-text-black-disabled p-b-8">
           <i class="fas fa-exclamation-triangle"></i>
           {{$t('errorPage.popup.title')}}
         </div>
-        <div class="m-t-8">{{message}}</div>
-        <div class="m-t-8">{{$t(message2)}}</div>
+        <div class="m-t-8">{{errorMessage}}</div>
+        <div class="m-t-8">{{$t(errorMessage2)}}</div>
         <div class="m-t-24 align-center">
           <div class="op-button-small tertiary" @click="close">{{$t('menu.close')}}</div>
         </div>
@@ -17,11 +17,11 @@
 </template>
 
 <script>
-import * as Sentry from '@sentry/browser';
+import * as Sentry from "@sentry/browser";
 
 export default {
   props: {
-    error: {
+    dialog: {
       type: Object
     }
   },
@@ -31,12 +31,15 @@ export default {
     };
   },
   watch: {
-    error() {
+    dialog() {
       this.isVisible = true; // so that we can re-use this component
     }
   },
   computed: {
-    message() {
+    error() {
+      return this.dialog?.error;
+    },
+    errorMessage() {
       Sentry.captureException(this.error);
       if (this.error.message) {
         return this.error.message;
@@ -45,7 +48,7 @@ export default {
       }
       return "";
     },
-    message2() {
+    errorMessage2() {
       return this.error.message2 || "errorPage.message.generic";
     }
   },
