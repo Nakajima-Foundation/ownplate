@@ -2,7 +2,7 @@
   <div>
     <!-- Restaurant Profile Photo -->
     <div class="m-t-24 align-center" v-if="profileImage">
-      <img :src="profileImage" class="h-64 r-64 cover" />
+      <img :src="profileImage" class="w-64 h-64 r-64 cover" />
     </div>
 
     <!-- Restaurant Name -->
@@ -16,7 +16,7 @@ export default {
     shopInfo: {
       type: Object,
       required: true
-    },
+    }
   },
   computed: {
     profileImage() {
