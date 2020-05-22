@@ -104,7 +104,7 @@ import { db, auth, functions } from "@/plugins/firebase.js";
 import { regionalSettings } from "~/plugins/constant.js";
 import { releaseConfig } from "~/plugins/config.js";
 import { ownPlateConfig } from "@/config/project";
-import ErrorPopup from "~/components/ErrorPopup";
+import ErrorPopup from "~/components/DialogBox";
 
 export default {
   components: {

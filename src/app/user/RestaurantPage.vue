@@ -19,10 +19,7 @@
                 <div class="is-hidden-mobile h-24"></div>
                 <div class="bg-form h-192">
                   <img :src="coverImage" class="h-192 w-full cover is-hidden-tablet" />
-                  <img
-                    :src="coverImage"
-                    class="h-192 w-full cover r-8 is-hidden-mobile"
-                  />
+                  <img :src="coverImage" class="h-192 w-full cover r-8 is-hidden-mobile" />
                 </div>
               </div>
               <div class="column is-narrow w-24"></div>
@@ -116,7 +113,7 @@ import ShopHeader from "~/app/user/Restaurant/ShopHeader";
 import SharePopup from "~/app/user/Restaurant/SharePopup";
 import ShopInfo from "~/app/user/Restaurant/ShopInfo";
 import NotFound from "~/components/NotFound";
-import ErrorPopup from "~/components/ErrorPopup";
+import ErrorPopup from "~/components/DialogBox";
 
 import { db, firestore, functions } from "~/plugins/firebase.js";
 import { order_status } from "~/plugins/constant.js";
@@ -256,8 +253,11 @@ export default {
       }, {});
     },
     coverImage() {
-      return this.shopInfo?.images?.cover?.resizedImages["1200"] || this.shopInfo.restCoverPhoto;
-    },
+      return (
+        this.shopInfo?.images?.cover?.resizedImages["1200"] ||
+        this.shopInfo.restCoverPhoto
+      );
+    }
   },
   methods: {
     handleCheckOut() {
