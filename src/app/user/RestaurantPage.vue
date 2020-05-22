@@ -256,7 +256,7 @@ export default {
       }, {});
     },
     coverImage() {
-      return this.shopInfo.images.cover.resizedImages["1200"] || this.shopInfo.restCoverPhoto;
+      return this.shopInfo?.images?.cover?.resizedImages["1200"] || this.shopInfo.restCoverPhoto;
     },
   },
   methods: {
