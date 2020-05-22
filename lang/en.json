@@ -323,9 +323,15 @@
         "update": "Failed to update the order status.",
         "cancel": "Failed to cancel the order."
       },
-      "sprite": {
+      "stripe": {
         "confirm": "Failed to confirm the payment.",
         "intent": "Failed to process the payment."
+      },
+      "menu": {
+        "save": "Failed to update the menu."
+      },
+      "restaurant": {
+        "save": "Failed to update the restaurant."
       }
     },
     "notFound": {

@@ -17,6 +17,8 @@
 </template>
 
 <script>
+import * as Sentry from '@sentry/browser';
+
 export default {
   props: {
     error: {
@@ -35,6 +37,7 @@ export default {
   },
   computed: {
     message() {
+      Sentry.captureException(this.error);
       if (this.error.message) {
         return this.error.message;
       } else if (this.error.code) {

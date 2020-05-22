@@ -339,7 +339,7 @@ export default {
           itemDescription: this.menuInfo.itemDescription,
           itemPhoto: this.menuInfo.itemPhoto,
           images: {
-            item: this.menuInfo.images.item
+            item: this.menuInfo.images.item || {},
           },
           itemOptionCheckbox: this.menuInfo.itemOptionCheckbox || [],
           publicFlag: this.menuInfo.publicFlag || false,
@@ -353,8 +353,13 @@ export default {
         this.$router.push({
           path: `/admin/restaurants/${this.restaurantId()}/menus`
         });
-      } catch (e) {
+      } catch (error) {
         this.submitting = false;
+        this.$store.commit("setErrorMessage", {
+          code: "menu.save",
+          error
+        });
+        console.log(error);
       }
     },
   }

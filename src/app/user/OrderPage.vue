@@ -483,7 +483,7 @@ export default {
       } catch (error) {
         console.error(error.message, error.details);
         this.$store.commit("setErrorMessage", {
-          code: "sprite.intent",
+          code: "stripe.intent",
           error
         });
       } finally {

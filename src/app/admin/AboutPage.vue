@@ -679,8 +679,12 @@ export default {
         this.$router.push({
           path: `/admin/restaurants/`
         });
-      } catch (e) {
+      } catch (error) {
         this.submitting = false;
+        this.$store.commit("setErrorMessage", {
+          code: "restaurant.save",
+          error
+        });
       }
     },
     async updateAndUpdateMap() {
