@@ -26,10 +26,11 @@
   },
   "editCommon": {
     "save": "保存",
+    "saving": "保存中",
     "saveDraft": "下書きとして保存",
     "new": "新規",
     "current": "変更前",
-    "clickAndUpload": "クリックしてアップロード"
+    "clickAndUpload": "クリックしてアップロード(JPEG形式)"
   },
   "currency": {
     "USD": "ドル",

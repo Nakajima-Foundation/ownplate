@@ -26,6 +26,7 @@
   },
   "editCommon": {
     "save": "Save",
+    "saving": "Saving",
     "saveDraft": "Save as Draft",
     "new": "New",
     "current": "Current",

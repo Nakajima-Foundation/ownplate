@@ -25,24 +25,25 @@
       </div>
       <table>
         <tr>
-          <td v-if="shopInfo.restProfilePhoto">{{$t("editCommon.current")}}</td>
+          <td v-if="restProfilePhoto">{{$t("editCommon.current")}}</td>
           <td>{{$t("editCommon.new")}}</td>
         </tr>
         <tr>
-          <td v-if="shopInfo.restProfilePhoto">
-            <img class="card_image" :src="this.shopInfo.restProfilePhoto" />
+          <td v-if="restProfilePhoto">
+            <img class="card_image" :src="restProfilePhoto" />
           </td>
           <td>
             <croppa
-              v-model="restProfileCroppa"
               :prevent-white-space="true"
               :zoom-speed="5"
               :width="200"
               :height="200"
+              :accept="'image/jpeg'"
               :placeholder="$t('editCommon.clickAndUpload')"
-              :placeholder-font-size="16"
+              :placeholder-font-size="10"
               initial-position="center"
               :canvas-color="'gainsboro'"
+              @file-choose="handleProfileImage"
             ></croppa>
           </td>
         </tr>
@@ -54,29 +55,28 @@
       </div>
       <table>
         <tr>
-          <td v-if="shopInfo.restProfilePhoto">{{$t("editCommon.current")}}</td>
+          <td v-if="restCoverPhoto">{{$t("editCommon.current")}}</td>
           <td>{{$t("editCommon.new")}}</td>
         </tr>
         <tr>
-          <td v-if="shopInfo.restProfilePhoto">
+          <td v-if="restCoverPhoto">
             <img
               class="card_cover_image"
-              :src="this.shopInfo.restCoverPhoto"
-              if
-              this.shopInfo.restCoverPhoto
+              :src="restCoverPhoto"
             />
           </td>
           <td>
             <croppa
-              v-model="restCoverCroppa"
               :prevent-white-space="true"
               :zoom-speed="5"
-              :width="300"
-              :height="150"
+              :width="200"
+              :height="200"
+              :accept="'image/jpeg'"
               :placeholder="$t('editCommon.clickAndUpload')"
-              :placeholder-font-size="16"
+              :placeholder-font-size="10"
               initial-position="center"
               :canvas-color="'gainsboro'"
+              @file-choose="handleCoverImage"
             ></croppa>
           </td>
         </tr>
@@ -386,9 +386,10 @@
         style="margin-right:auto"
         type="is-primary"
         class="counter-button save_btn"
+        :disabled="submitting"
         rounded
         @click="submitRestaurant"
-      >{{$t(shopInfo.publicFlag ? 'editCommon.save' : 'editCommon.saveDraft' )}}</b-button>
+      >{{$t(submitting ? 'editCommon.saving' : (shopInfo.publicFlag ? 'editCommon.save' : 'editCommon.saveDraft') )}}</b-button>
     </template>
   </section>
 </template>
@@ -432,8 +433,6 @@ export default {
       defaultTax: regionalSetting.defaultTax,
       disabled: false, // ??
       filteredItems: [], // ??
-      restProfileCroppa: null,
-      restCoverCroppa: null,
       test: null,
       shopInfo: {
         restaurantName: "",
@@ -478,7 +477,9 @@ export default {
       markers: [],
       days: daysOfWeek,
       errorsPhone: [],
-      notFound: null
+      notFound: null,
+      submitting: false,
+      files: {},
     };
   },
   async created() {
@@ -506,6 +507,12 @@ export default {
     this.hello();
   },
   computed: {
+    restProfilePhoto() {
+      return  this.shopInfo?.images?.profile?.resizedImages["600"] || this.shopInfo.restProfilePhoto;
+    },
+    restCoverPhoto() {
+      return this.shopInfo?.images?.cover?.resizedImages["600"] || this.shopInfo.restCoverPhoto;
+    },
     uid() {
       return this.$store.getters.uidAdmin;
     },
@@ -594,8 +601,17 @@ export default {
     hasError: function() {
       this.shopInfo.publicFlag = !this.hasError;
     },
+    files: function() {
+      console.log(this.files);
+    }
   },
   methods: {
+    handleProfileImage(e) {
+      this.files["profile"] = e;
+    },
+    handleCoverImage(e) {
+      this.files["cover"] = e;
+    },
     handlePhoneChange(payload) {
       //console.log(payload)
       this.shopInfo.phoneNumber = payload.phoneNumber;
@@ -608,62 +624,57 @@ export default {
       }
     },
     async submitRestaurant() {
-      // if (this.hasError) return;
-
+      this.submitting = true;
       const restaurantId = this.restaurantId();
-      if (this.restProfileCroppa.chosenFile) {
-        let restProfileFile = await this.restProfileCroppa.promisedBlob(
-          "image/jpeg",
-          0.8
-        );
-        this.shopInfo.restProfilePhoto = await this.uploadFile(
-          restProfileFile,
-          "profile",
-          restaurantId
-        );
-      }
+      try {
+        if (this.files["profile"]) {
+          this.shopInfo.restProfilePhoto = await this.uploadFile(
+            this.files["profile"],
+            "profile",
+            restaurantId
+          );
+        }
 
-      if (this.restCoverCroppa.chosenFile) {
-        let restCoverFile = await this.restCoverCroppa.promisedBlob(
-          "image/jpeg",
-          0.8
-        );
-        this.shopInfo.restCoverPhoto = await this.uploadFile(
-          restCoverFile,
-          "cover",
-          restaurantId
-        );
-      }
-      const restaurantData = {
-        restProfilePhoto: this.shopInfo.restProfilePhoto,
-        restCoverPhoto: this.shopInfo.restCoverPhoto,
-        restaurantName: this.shopInfo.restaurantName,
-        streetAddress: this.shopInfo.streetAddress,
-        city: this.shopInfo.city,
-        state: this.shopInfo.state,
-        zip: this.shopInfo.zip,
-        location: this.shopInfo.location,
-        place_id: this.shopInfo.place_id,
-        phoneNumber: this.shopInfo.phoneNumber,
-        countryCode: this.shopInfo.countryCode,
-        url: this.shopInfo.url,
-        introduction: this.shopInfo.introduction,
-        orderNotice: this.shopInfo.orderNotice,
-        orderThanks: this.shopInfo.orderThanks,
-        foodTax: Number(this.shopInfo.foodTax),
-        alcoholTax: Number(this.shopInfo.alcoholTax),
-        openTimes: this.shopInfo.openTimes,
-        businessDay: this.shopInfo.businessDay,
-        uid: this.shopInfo.uid,
-        publicFlag: this.shopInfo.publicFlag,
-        taxInclude: this.shopInfo.taxInclude,
-        createdAt: this.shopInfo.createdAt || firestore.FieldValue.serverTimestamp(),
-      };
-      await this.updateRestaurantData(restaurantData);
+        if (this.files["cover"]) {
+          this.shopInfo.restCoverPhoto = await this.uploadFile(
+            this.files["cover"],
+            "cover",
+            restaurantId
+          );
+        }
+        const restaurantData = {
+          restProfilePhoto: this.shopInfo.restProfilePhoto,
+          restCoverPhoto: this.shopInfo.restCoverPhoto,
+          restaurantName: this.shopInfo.restaurantName,
+          streetAddress: this.shopInfo.streetAddress,
+          city: this.shopInfo.city,
+          state: this.shopInfo.state,
+          zip: this.shopInfo.zip,
+          location: this.shopInfo.location,
+          place_id: this.shopInfo.place_id,
+          phoneNumber: this.shopInfo.phoneNumber,
+          countryCode: this.shopInfo.countryCode,
+          url: this.shopInfo.url,
+          introduction: this.shopInfo.introduction,
+          orderNotice: this.shopInfo.orderNotice,
+          orderThanks: this.shopInfo.orderThanks,
+          foodTax: Number(this.shopInfo.foodTax),
+          alcoholTax: Number(this.shopInfo.alcoholTax),
+          openTimes: this.shopInfo.openTimes,
+          businessDay: this.shopInfo.businessDay,
+          uid: this.shopInfo.uid,
+          publicFlag: this.shopInfo.publicFlag,
+          taxInclude: this.shopInfo.taxInclude,
+          createdAt: this.shopInfo.createdAt || firestore.FieldValue.serverTimestamp(),
+        };
+        await this.updateRestaurantData(restaurantData);
 
-      this.$router.push({
-        path: `/admin/restaurants/`
-      });
+        this.$router.push({
+          path: `/admin/restaurants/`
+        });
+      } catch (e) {
+        this.submitting = false;
+      }
     },
     uploadFile(file, filename, restaurantId) {
       return new Promise((resolve, rejected) => {
@@ -754,10 +765,12 @@ export default {
   margin-top: -2rem !important;
 }
 .card_image {
-  height: 200px;
+    height: 200px;
+    max-width: 200px;
 }
 .card_cover_image {
-  height: 150px;
+    height: 200px;
+    max-width: 200px;
 }
 .save_btn {
   position: fixed;
