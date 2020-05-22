@@ -141,6 +141,7 @@
     "today": "Today"
   },
   "order": {
+    "menu": "View Menu",
     "yourOrder": "Your Order",
     "editItems": "Edit Items",
     "subtotal": "Subtotal",
