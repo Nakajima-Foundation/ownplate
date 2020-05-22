@@ -102,7 +102,6 @@
         </div>
       </b-button>
     </template>
-    <error-popup :error="errorMessage" />
   </div>
 </template>
 
@@ -113,7 +112,6 @@ import ShopHeader from "~/app/user/Restaurant/ShopHeader";
 import SharePopup from "~/app/user/Restaurant/SharePopup";
 import ShopInfo from "~/app/user/Restaurant/ShopInfo";
 import NotFound from "~/components/NotFound";
-import ErrorPopup from "~/components/DialogBox";
 
 import { db, firestore, functions } from "~/plugins/firebase.js";
 import { order_status } from "~/plugins/constant.js";
@@ -127,7 +125,6 @@ export default {
     ShopHeader,
     SharePopup,
     ShopInfo,
-    ErrorPopup,
     NotFound
   },
   data() {
@@ -146,7 +143,6 @@ export default {
       menus: [],
       titles: [],
       waitForUser: false,
-      errorMessage: null,
 
       detacher: [],
       notFound: null
@@ -327,7 +323,10 @@ export default {
           }, 500);
         } else {
           console.error(error.message);
-          this.errorMessage = { code: "order.checkout", details: error };
+          this.$store.commit("setErrorMessage", {
+            code: "order.checkout",
+            error
+          });
         }
       } finally {
         this.isCheckingOut = false;
