@@ -55,7 +55,7 @@
 
         <!-- approproate component under pages will be displayed -->
         <nuxt v-if="isReadyToRender"></nuxt>
-        <error-popup :error="errorMessage" />
+        <dialog-box :error="errorMessage" />
       </div>
     </div>
 
@@ -104,11 +104,11 @@ import { db, auth, functions } from "@/plugins/firebase.js";
 import { regionalSettings } from "~/plugins/constant.js";
 import { releaseConfig } from "~/plugins/config.js";
 import { ownPlateConfig } from "@/config/project";
-import ErrorPopup from "~/components/DialogBox";
+import DialogBox from "~/components/DialogBox";
 
 export default {
   components: {
-    ErrorPopup
+    DialogBox
   },
   data() {
     const regionalSetting = regionalSettings[ownPlateConfig.region || "US"];
