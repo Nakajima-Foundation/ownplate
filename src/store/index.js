@@ -15,7 +15,7 @@ export const state = () => ({
   orderEvent: 0,
   soundEnable: false, // after user touch/click event, this flag set true (for mobile browser)
   soundOn: false, // for restaurant admin config
-  errorMessage: null // for ErrorPopup
+  dialog: null // for DialogBox
 });
 
 export const getters = {
@@ -78,8 +78,14 @@ export const mutations = {
   setSoundOn(state, flag) {
     state.soundOn = flag;
   },
-  setErrorMessage(state, message) {
-    state.errorMessage = message;
+  resetDialog(state) {
+    state.dialog = null;
+  },
+  setAlert(state, params) {
+    state.dialog = { alert: params };
+  },
+  setErrorMessage(state, params) {
+    state.dialog = { error: params };
   }
 };
 

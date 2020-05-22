@@ -151,10 +151,18 @@ export default {
     };
   },
   methods: {
-    deleteRestaurant: function() {
-      if (confirm(this.$t("editRestaurant.reallyDelete"))) {
-        db.doc(`restaurants/${this.restaurantid}`).update("deletedFlag", true);
-      }
+    deleteRestaurant() {
+      console.log("deleteRestaurant");
+      this.$store.commit("setAlert", {
+        code: "editRestaurant.reallyDelete",
+        callback: () => {
+          console.log(this.restaurantid);
+          db.doc(`restaurants/${this.restaurantid}`).update(
+            "deletedFlag",
+            true
+          );
+        }
+      });
     }
   }
 };
