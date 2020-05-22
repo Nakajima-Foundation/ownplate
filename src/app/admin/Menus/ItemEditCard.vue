@@ -15,7 +15,7 @@
           <figure class="image is-100x100">
             <img
               class="is-square"
-              :src="menuitem.itemPhoto"
+              :src="image"
               alt=""
               style="border-radius: 4px;"
             />
@@ -64,6 +64,11 @@ export default {
     position: {
       type: String,
       required: true
+    }
+  },
+  computed: {
+    image() {
+      return  this.menuitem.images?.item?.resizedImages["600"] || this.menuitem.itemPhoto;
     }
   },
   data() {

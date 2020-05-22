@@ -19,7 +19,7 @@
         </div>
         <div class="p-r-16 p-t-16 p-b-16">
           <div class="w-96 is-pulled-right">
-            <div v-if="image !== null" class="p-b-8">
+            <div v-if="image" class="p-b-8">
               <img :src="image" width="96" height="96" class="w-96 h-96 r-4 cover" />
             </div>
             <div @click.stop="pushCount" class="op-button-pill bg-primary-bg w-96 t-button">
@@ -200,11 +200,7 @@ export default {
       return Number(this.item.price || 0);
     },
     image() {
-      // BUGBUG: Come up with a better default image.
-      return (
-        this.item.itemPhoto || null
-        // "https://magazine.hitosara.com/image/421/MM_421.jp"
-      );
+      return this.item?.images?.item?.resizedImages["600"] || this.item.itemPhoto;
     },
     title() {
       return this.item.itemName;
