@@ -205,8 +205,6 @@ import { ownPlateConfig } from "@/config/project";
 
 import Price from "~/components/Price";
 
-const AVAIL_OPTIONS = ["All day"];
-
 export default {
   name: "Order",
 
@@ -225,7 +223,6 @@ export default {
         tax: "food",
         itemDescription: "",
         itemPhoto: "",
-        // availability: "",
         publicFlag: false,
         itemOptionCheckbox: [""],
         allergens: {}
@@ -304,9 +301,6 @@ export default {
     hasError: function() {
       this.menuInfo.publicFlag = !this.hasError;
     },
-    "menuInfo.price": function() {
-      // nothing
-    }
   },
   methods: {
     deleteOption(pos) {
@@ -363,11 +357,6 @@ export default {
         );
       });
     },
-    goBack() {
-      this.$router.push({
-        path: `/admin/restaurants/${this.restaurantId()}/menus`
-      });
-    }
   }
 };
 </script>

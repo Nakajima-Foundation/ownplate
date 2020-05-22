@@ -468,6 +468,7 @@ export default {
           6: true,
           7: true
         },
+        images: {},
         publicFlag: false
       },
       states: regionalSetting.AddressStates,
@@ -628,25 +629,31 @@ export default {
       const restaurantId = this.restaurantId();
       try {
         if (this.files["profile"]) {
-          this.shopInfo.restProfilePhoto = await this.uploadFile(
-            this.files["profile"],
-            "profile",
-            restaurantId
-          );
+          const path = `/images/restaurants/${restaurantId}/${this.uid}/profile.jpg`;
+          this.shopInfo.restProfilePhoto = await this.uploadFile(this.files["profile"], path);
+          this.shopInfo.images.profile = {
+            original: this.shopInfo.restProfilePhoto,
+            resizedImages: {},
+          };
         }
 
         if (this.files["cover"]) {
-          this.shopInfo.restCoverPhoto = await this.uploadFile(
-            this.files["cover"],
-            "cover",
-            restaurantId
-          );
+          const path = `/images/restaurants/${restaurantId}/${this.uid}/cover.jpg`;
+          this.shopInfo.restCoverPhoto = await this.uploadFile(this.files["cover"], path);
+          this.shopInfo.images.cover = {
+            original: this.shopInfo.restCoverPhoto,
+            resizedImages: {},
+          };
         }
         const restaurantData = {
           restProfilePhoto: this.shopInfo.restProfilePhoto,
           restCoverPhoto: this.shopInfo.restCoverPhoto,
           restaurantName: this.shopInfo.restaurantName,
           streetAddress: this.shopInfo.streetAddress,
+          images: {
+            cover: this.shopInfo?.images?.cover || {} ,
+            profile: this.shopInfo?.images?.profile || {} ,
+          },
           city: this.shopInfo.city,
           state: this.shopInfo.state,
           zip: this.shopInfo.zip,
@@ -675,27 +682,6 @@ export default {
       } catch (e) {
         this.submitting = false;
       }
-    },
-    uploadFile(file, filename, restaurantId) {
-      return new Promise((resolve, rejected) => {
-        let storageRef = storage.ref();
-        let mountainsRef = storageRef.child(
-          `/images/restaurants/${restaurantId}/${this.uid}/${filename}.jpg`
-        );
-        let uploadTask = mountainsRef.put(file);
-
-        uploadTask.on(
-          "state_changed",
-          snapshot => {},
-          err => {
-            this.loading = false;
-          },
-          () =>
-            uploadTask.snapshot.ref
-              .getDownloadURL()
-              .then(downloadURL => resolve(downloadURL))
-        );
-      });
     },
     async updateAndUpdateMap() {
       await this.updateMap();
