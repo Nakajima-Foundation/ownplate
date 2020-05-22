@@ -357,19 +357,24 @@ export default {
       }
     },
     async handlePaymentAccountDisconnect() {
-      try {
-        this.isDisconnecting = true;
-        const response = await stripeDisconnect({
-          STRIPE_CLIENT_ID: process.env.STRIPE_CLIENT_ID
-        });
-        console.log(response);
-        // TODO: show connected view
-      } catch (error) {
-        // TODO: show error modal
-        console.error(error, error.details);
-      } finally {
-        this.isDisconnecting = false;
-      }
+      this.$store.commit("setAlert", {
+        code: "admin.payments.reallyDisconnectStripe",
+        callback: async () => {
+          try {
+            this.isDisconnecting = true;
+            const response = await stripeDisconnect({
+              STRIPE_CLIENT_ID: process.env.STRIPE_CLIENT_ID
+            });
+            console.log(response);
+            // TODO: show connected view
+          } catch (error) {
+            // TODO: show error modal
+            console.error(error, error.details);
+          } finally {
+            this.isDisconnecting = false;
+          }
+        }
+      });
     }
   },
   destroyed() {

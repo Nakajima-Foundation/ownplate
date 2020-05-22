@@ -18,7 +18,7 @@
           {{$t(alert.code)}}
         </div>
         <div class="m-t-24 align-center">
-          <div class="op-button-small tertiary" @click="close">{{$t('menu.close')}}</div>
+          <div class="op-button-small tertiary" @click="close">{{$t('menu.no')}}</div>
           <div
             class="op-button-small bg-status-red c-text-white-full"
             @click="handleYes"

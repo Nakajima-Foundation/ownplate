@@ -14,6 +14,7 @@
     "signOut": "Sign Out",
     "selectLanguage": "Select language",
     "yes": "Yes",
+    "no": "No",
     "close": "Close"
   },
   "restaurantId": {
@@ -238,6 +239,7 @@
       "pleaseConnect": "In order to receive online payments, you need to connect your Stripe account.",
       "connectStripe": "Connect Stripe Account",
       "disconnectStripe": "Disconnect Stripe Account",
+      "reallyDisconnectStripe": "Do you really want to disconnect Stripe Account?",
       "openDashboard": "Open Stripe Dashboard"
     },
     "viewPage": "View Page",
