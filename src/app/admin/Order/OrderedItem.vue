@@ -9,7 +9,7 @@
         </div>
         <div class="media-right">
           <figure class="image thumbnail">
-            <img class="is-square" :src="menu.itemPhoto" alt style="border-radius: 4px;" />
+            <img class="is-square" :src="image" alt style="border-radius: 4px;" />
           </figure>
         </div>
       </div>
@@ -29,6 +29,9 @@ export default {
   computed: {
     menu() {
       return this.item.menu;
+    },
+    image() {
+      return  this.item.menu.images?.item?.resizedImages["600"] || this.item.menu.itemPhoto;
     }
   },
   mounted() {

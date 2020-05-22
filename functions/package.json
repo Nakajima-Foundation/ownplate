@@ -26,7 +26,9 @@
     "firebase-admin": "^8.0.0",
     "firebase-functions": "^3.6.0",
     "i18next": "^19.4.4",
-    "stripe": "^8.39.1"
+    "sharp": "^0.25.3",
+    "stripe": "^8.39.1",
+    "uuid-v4": "^0.1.0"
   },
   "devDependencies": {
     "@firebase/testing": "^0.17.1",

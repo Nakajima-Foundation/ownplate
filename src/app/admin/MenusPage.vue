@@ -333,6 +333,7 @@ export default {
         tax: item.tax,
         itemDescription: item.itemDescription,
         itemPhoto: item.itemPhoto,
+        images: item.images,
         availability: item.availability,
         uid: this.uid,
         deletedFlag: false,

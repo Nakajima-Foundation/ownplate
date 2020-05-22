@@ -117,22 +117,23 @@
 
         <table style="margin-bottom:0.5rem">
           <tr>
-            <td v-if="menuInfo.itemPhoto">{{$t('editCommon.current')}}</td>
+            <td v-if="itemPhoto">{{$t('editCommon.current')}}</td>
             <td>{{$t('editCommon.new')}}</td>
           </tr>
           <tr>
-            <td v-if="menuInfo.itemPhoto">
-              <img class="card_image" :src="this.menuInfo.itemPhoto" />
+            <td v-if="itemPhoto">
+              <img class="card_image" :src="itemPhoto" />
             </td>
             <td>
               <croppa
-                v-model="croppa"
                 :prevent-white-space="true"
                 :zoom-speed="5"
+                :accept="'image/jpeg'"
                 :placeholder="$t('editCommon.clickAndUpload')"
-                :placeholder-font-size="16"
+                :placeholder-font-size="10"
                 initial-position="center"
                 :canvas-color="'gainsboro'"
+                @file-choose="handleMenuImage"
               ></croppa>
             </td>
           </tr>
@@ -186,8 +187,9 @@
           class="counter-button"
           expanded
           rounded
+          :disabled="submitting"
           @click="submitItem"
-        >{{$t(menuInfo.publicFlag ? "editCommon.save" : "editCommon.saveDraft")}}</b-button>
+        >{{$t(submitting ? 'editCommon.saving' : (menuInfo.publicFlag ? "editCommon.save" : "editCommon.saveDraft"))}}</b-button>
       </section>
     </template>
   </div>
@@ -204,8 +206,6 @@ import { taxRates, regionalSettings } from "~/plugins/constant.js";
 import { ownPlateConfig } from "@/config/project";
 
 import Price from "~/components/Price";
-
-const AVAIL_OPTIONS = ["All day"];
 
 export default {
   name: "Order",
@@ -225,7 +225,7 @@ export default {
         tax: "food",
         itemDescription: "",
         itemPhoto: "",
-        // availability: "",
+        images: {},
         publicFlag: false,
         itemOptionCheckbox: [""],
         allergens: {}
@@ -236,13 +236,14 @@ export default {
       requireTaxPriceDisplay: regionalSetting.requireTaxPriceDisplay,
 
       currencyKey: regionalSetting["CurrencyKey"],
-      croppa: {},
 
       maxPrice: 1000000.0 / this.$store.getters.stripeRegion.multiple,
 
       restaurantInfo: {},
       notFound: null,
-      menuId: this.$route.params.menuId
+      menuId: this.$route.params.menuId,
+      submitting: false,
+      files: {},
     };
   },
   async created() {
@@ -275,6 +276,9 @@ export default {
     this.notFound = false;
   },
   computed: {
+    itemPhoto() {
+      return  this.menuInfo?.images?.item?.resizedImages["600"] || this.menuInfo.itemPhoto;
+    },
     allergens() {
       return this.$store.getters.stripeRegion.allergens;
     },
@@ -304,11 +308,11 @@ export default {
     hasError: function() {
       this.menuInfo.publicFlag = !this.hasError;
     },
-    "menuInfo.price": function() {
-      // nothing
-    }
   },
   methods: {
+    handleMenuImage(e) {
+      this.files["menu"] = e;
+    },
     deleteOption(pos) {
       this.menuInfo.itemOptionCheckbox.splice(pos, 1);
       // console.log(e);
@@ -317,57 +321,47 @@ export default {
       this.menuInfo.itemOptionCheckbox.push("");
     },
     async submitItem() {
+      this.submitting = true;
       //upload image
-      const menuId = this.menuId;
-      if (this.croppa.chosenFile) {
-        let file = await this.croppa.promisedBlob("image/jpeg", 0.8);
-        this.menuInfo.itemPhoto = await this.uploadFile(file, menuId);
-      }
-      const itemData = {
-        itemName: this.menuInfo.itemName,
-        price: Number(this.menuInfo.price),
-        tax: this.menuInfo.tax,
-        itemDescription: this.menuInfo.itemDescription,
-        itemPhoto: this.menuInfo.itemPhoto,
-        itemOptionCheckbox: this.menuInfo.itemOptionCheckbox || [],
-        publicFlag: this.menuInfo.publicFlag || false,
-        allergens: this.menuInfo.allergens,
-        validatedFlag: !this.hasError
-      };
-      const newData = await db
-        .doc(`restaurants/${this.restaurantId()}/menus/${this.menuId}`)
-        .update(itemData);
-
-      this.$router.push({
-        path: `/admin/restaurants/${this.restaurantId()}/menus`
-      });
-    },
-    uploadFile(file, menuId) {
-      return new Promise((resolve, rejected) => {
-        let storageRef = storage.ref();
-        let mountainsRef = storageRef.child(
-          `/images/restaurants/${this.restaurantId()}/menus/${menuId}/item.jpg`
-        );
-        let uploadTask = mountainsRef.put(file);
-
-        uploadTask.on(
-          "state_changed",
-          snapshot => {},
-          err => {
-            this.loading = false;
+      try {
+        if (this.files["menu"]) {
+          const path = `/images/restaurants/${this.restaurantId()}/menus/${this.menuId}/${this.uid}/item.jpg`
+          this.menuInfo.itemPhoto = await this.uploadFile(this.files["menu"], path);
+          this.menuInfo.images.item = {
+            original: this.menuInfo.itemPhoto,
+            resizedImages: {},
+          };
+        }
+        const itemData = {
+          itemName: this.menuInfo.itemName,
+          price: Number(this.menuInfo.price),
+          tax: this.menuInfo.tax,
+          itemDescription: this.menuInfo.itemDescription,
+          itemPhoto: this.menuInfo.itemPhoto,
+          images: {
+            item: this.menuInfo.images.item || {},
           },
-          () =>
-            uploadTask.snapshot.ref
-              .getDownloadURL()
-              .then(downloadURL => resolve(downloadURL))
-        );
-      });
+          itemOptionCheckbox: this.menuInfo.itemOptionCheckbox || [],
+          publicFlag: this.menuInfo.publicFlag || false,
+          allergens: this.menuInfo.allergens,
+          validatedFlag: !this.hasError
+        };
+        const newData = await db
+              .doc(`restaurants/${this.restaurantId()}/menus/${this.menuId}`)
+              .update(itemData);
+
+        this.$router.push({
+          path: `/admin/restaurants/${this.restaurantId()}/menus`
+        });
+      } catch (error) {
+        this.submitting = false;
+        this.$store.commit("setErrorMessage", {
+          code: "menu.save",
+          error
+        });
+        console.log(error);
+      }
     },
-    goBack() {
-      this.$router.push({
-        path: `/admin/restaurants/${this.restaurantId()}/menus`
-      });
-    }
   }
 };
 </script>
