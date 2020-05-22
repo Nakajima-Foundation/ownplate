@@ -260,6 +260,13 @@
                     }}
                   </span>
                 </b-button>
+                <b-button class="b-reset op-button-small bg-status-green" @click="handleRepeat">
+                  <span class="c-text-white-full">
+                    {{
+                    $t("order.repeat")
+                    }}
+                  </span>
+                </b-button>
               </div>
             </div>
           </div>
@@ -462,6 +469,9 @@ export default {
     }
   },
   methods: {
+    handleRepeat() {
+      this.$router.push(`/r/${this.restaurantId()}?repeat=${this.orderId}`);
+    },
     handleOpenMenu() {
       this.$router.push(`/r/${this.restaurantId()}`);
     },
