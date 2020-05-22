@@ -78,6 +78,9 @@ export const mutations = {
   setSoundOn(state, flag) {
     state.soundOn = flag;
   },
+  resetDialog(state) {
+    state.dialog = null;
+  },
   setAlert(state, params) {
     state.dialog = { alert: params };
   },

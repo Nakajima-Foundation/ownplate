@@ -46,6 +46,11 @@ export default {
   watch: {
     dialog() {
       this.isVisible = true; // so that we can re-use this component
+    },
+    isVisible(newValue) {
+      if (!newValue) {
+        this.$store.commit("resetDialog");
+      }
     }
   },
   computed: {
@@ -70,7 +75,9 @@ export default {
   },
   methods: {
     handleYes() {
-      console.log("handleYes");
+      console.log("handleYes", this.alert.callback);
+      this.alert.callback();
+      this.isVisible = false;
     },
     close() {
       this.isVisible = false;
