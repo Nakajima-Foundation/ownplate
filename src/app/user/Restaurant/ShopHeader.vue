@@ -20,8 +20,11 @@ export default {
   },
   computed: {
     profileImage() {
-      return this.shopInfo?.images?.profile?.resizedImages["600"] || this.shopInfo.restProfilePhoto;
-    },
-  },
+      return (
+        (this.shopInfo?.images?.profile?.resizedImages || {})["600"] ||
+        this.shopInfo.restProfilePhoto
+      );
+    }
+  }
 };
 </script>
