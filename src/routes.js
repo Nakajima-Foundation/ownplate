@@ -77,6 +77,10 @@ export const customRoutes = [
     component: 'auth/LineCallback.vue'
   },
   {
+    path: '/callback/track',
+    component: 'auth/TrackCallback.vue'
+  },
+  {
     path: '*',
     component: 'common/404.vue'
   }
