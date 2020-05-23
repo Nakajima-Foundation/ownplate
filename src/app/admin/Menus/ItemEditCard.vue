@@ -128,9 +128,12 @@ export default {
     },
     deleteItem() {
       // this.$emit("deleteItem", this.menuitem.id);
-      if (confirm(this.$t("editMenu.reallyDelete"))) {
-        this.$emit("deleteItem", this.menuitem.id);
-      }
+      this.$store.commit("setAlert", {
+        code: "editMenu.reallyDelete",
+        callback: () => {
+          this.$emit("deleteItem", this.menuitem.id);
+        }
+      });
     }
   }
 };
