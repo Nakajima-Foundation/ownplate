@@ -86,7 +86,6 @@
                       @positionUp="positionUp($event)"
                       @positionDown="positionDown($event)"
                       @forkItem="forkTitleItem($event)"
-                      @deleteItem="deleteItem($event)"
                       @updateTitle="updateTitle($event)"
                       ></title-input>
                   </div>
