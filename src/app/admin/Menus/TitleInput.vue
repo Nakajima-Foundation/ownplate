@@ -48,7 +48,7 @@
           </b-button>
         </div>
         <div>
-          <b-button class="b-reset op-button-pill h-36 bg-status-red-bg" @click="deleteItem">
+          <b-button class="b-reset op-button-pill h-36 bg-status-red-bg" disabled>
             <i class="material-icons c-status-red s-18 p-l-8 p-r-8">delete</i>
           </b-button>
         </div>
@@ -92,15 +92,6 @@ export default {
     },
     forkItem() {
       this.$emit("forkItem", this.title.id);
-    },
-    deleteItem() {
-      // this.$emit("deleteItem", this.title.id);
-      this.$store.commit("setAlert", {
-        code: "editMenu.reallyDelete",
-        callback: () => {
-          this.$emit("deleteItem", this.title.id);
-        }
-      });
     }
   }
 };
