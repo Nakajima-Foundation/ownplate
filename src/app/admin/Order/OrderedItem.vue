@@ -31,7 +31,10 @@ export default {
       return this.item.menu;
     },
     image() {
-      return  this.item.menu.images?.item?.resizedImages["600"] || this.item.menu.itemPhoto;
+      return (
+        (this.item.menu.images?.item?.resizedImages || {})["600"] ||
+        this.item.menu.itemPhoto
+      );
     }
   },
   mounted() {

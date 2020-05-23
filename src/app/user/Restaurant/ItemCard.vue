@@ -200,7 +200,10 @@ export default {
       return Number(this.item.price || 0);
     },
     image() {
-      return this.item?.images?.item?.resizedImages["600"] || this.item.itemPhoto;
+      return (
+        (this.item?.images?.item?.resizedImages || {})["600"] ||
+        this.item.itemPhoto
+      );
     },
     title() {
       return this.item.itemName;

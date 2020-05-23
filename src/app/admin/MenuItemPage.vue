@@ -48,7 +48,7 @@
                 :max="maxPrice"
                 min="0.00"
                 expanded
-                ></b-input>
+              ></b-input>
               <p class="control">
                 <span class="button is-static">{{$t("currency." + this.currencyKey)}}</span>
               </p>
@@ -246,7 +246,7 @@ export default {
       notFound: null,
       menuId: this.$route.params.menuId,
       submitting: false,
-      files: {},
+      files: {}
     };
   },
   async created() {
@@ -280,7 +280,10 @@ export default {
   },
   computed: {
     itemPhoto() {
-      return  this.menuInfo?.images?.item?.resizedImages["600"] || this.menuInfo.itemPhoto;
+      return (
+        (this.menuInfo?.images?.item?.resizedImages || {})["600"] ||
+        this.menuInfo.itemPhoto
+      );
     },
     allergens() {
       return this.$store.getters.stripeRegion.allergens;
@@ -310,7 +313,7 @@ export default {
   watch: {
     hasError: function() {
       this.menuInfo.publicFlag = !this.hasError;
-    },
+    }
   },
   methods: {
     handleMenuImage(e) {
@@ -328,11 +331,16 @@ export default {
       //upload image
       try {
         if (this.files["menu"]) {
-          const path = `/images/restaurants/${this.restaurantId()}/menus/${this.menuId}/${this.uid}/item.jpg`
-          this.menuInfo.itemPhoto = await this.uploadFile(this.files["menu"], path);
+          const path = `/images/restaurants/${this.restaurantId()}/menus/${
+            this.menuId
+          }/${this.uid}/item.jpg`;
+          this.menuInfo.itemPhoto = await this.uploadFile(
+            this.files["menu"],
+            path
+          );
           this.menuInfo.images.item = {
             original: this.menuInfo.itemPhoto,
-            resizedImages: {},
+            resizedImages: {}
           };
         }
         const itemData = {
@@ -342,7 +350,7 @@ export default {
           itemDescription: this.menuInfo.itemDescription,
           itemPhoto: this.menuInfo.itemPhoto,
           images: {
-            item: this.menuInfo.images.item || {},
+            item: this.menuInfo.images.item || {}
           },
           itemOptionCheckbox: this.menuInfo.itemOptionCheckbox || [],
           publicFlag: this.menuInfo.publicFlag || false,
@@ -350,8 +358,8 @@ export default {
           validatedFlag: !this.hasError
         };
         const newData = await db
-              .doc(`restaurants/${this.restaurantId()}/menus/${this.menuId}`)
-              .update(itemData);
+          .doc(`restaurants/${this.restaurantId()}/menus/${this.menuId}`)
+          .update(itemData);
 
         this.$router.push({
           path: `/admin/restaurants/${this.restaurantId()}/menus`
@@ -364,7 +372,7 @@ export default {
         });
         console.log(error);
       }
-    },
+    }
   }
 };
 </script>

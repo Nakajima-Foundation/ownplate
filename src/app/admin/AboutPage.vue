@@ -515,10 +515,10 @@ export default {
   },
   computed: {
     restProfilePhoto() {
-      return  this.shopInfo?.images?.profile?.resizedImages["600"] || this.shopInfo.restProfilePhoto;
+      return (this.shopInfo?.images?.profile?.resizedImages || {})["600"] || this.shopInfo.restProfilePhoto;
     },
     restCoverPhoto() {
-      return this.shopInfo?.images?.cover?.resizedImages["600"] || this.shopInfo.restCoverPhoto;
+      return (this.shopInfo?.images?.cover?.resizedImages || {})["600"] || this.shopInfo.restCoverPhoto;
     },
     uid() {
       return this.$store.getters.uidAdmin;
