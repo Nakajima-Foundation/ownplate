@@ -29,8 +29,10 @@ export default {
           client_id: ownPlateConfig.line.TRACK_CHANNEL_ID
         });
         console.log(data);
-        if (data.nonce && data.profile) {
+        if (data.nonce && data.profile && data.customToken) {
           console.log("validation succeded");
+          const user = await auth.signInWithCustomToken(data.customToken);
+          console.log("signInWithCustomToken", user);
         } else {
           console.error("validatin failed", data);
         }
