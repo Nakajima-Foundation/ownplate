@@ -10,7 +10,9 @@ export const validate = async (db: FirebaseFirestore.Firestore, data: any, conte
   const uid = (client_id === ownPlateConfig.line.TRACK_CHANNEL_ID) ? null : utils.validate_auth(context);
 
   utils.validate_params({ code, redirect_uri, client_id })
-  const LINE_SECRET_KEY = functions.config().line.secret;
+  const LINE_SECRET_KEY = (client_id === ownPlateConfig.line.TRACK_CHANNEL_ID) ?
+    functions.config().line.track :
+    functions.config().line.secret;
 
   try {
     // We validate the OAuth token (code) given to the redirected page.
