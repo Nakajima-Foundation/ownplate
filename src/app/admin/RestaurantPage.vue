@@ -104,42 +104,12 @@
         ></b-input>
       </b-field>
 
-      <div class="field is-horizontal">
-        <div class="field-body">
-          <h4>
-            {{$t('shopInfo.streetAddress')}}
-            <span class="p-font bold" style="color:#CB4B4B">*</span>
-          </h4>
-        </div>
-      </div>
-      <b-field :type="errors['streetAddress'].length > 0 ? 'is-danger' : 'is-success'">
-        <b-input
-          v-model="shopInfo.streetAddress"
-          type="text"
-          :placeholder="$t('editRestaurant.enterStreetAddress')"
-          maxlength="30"
-        ></b-input>
-      </b-field>
+      <street-address :errors="errors" v-model="shopInfo.streetAddress" />
+
 
       <div class="columns">
-        <div class="column">
-          <div class="field is-horizontal">
-            <div class="field-body">
-              <h4>
-                {{$t('shopInfo.city')}}
-                <span class="p-font bold" style="color:#CB4B4B">*</span>
-              </h4>
-            </div>
-          </div>
-          <b-field :type="errors['city'].length > 0 ? 'is-danger' : 'is-success'">
-            <b-input
-              v-model="shopInfo.city"
-              type="text"
-              :placeholder="$t('editRestaurant.enterCity')"
-              maxlength="15"
-            ></b-input>
-          </b-field>
-        </div>
+        <city :errors="errors" v-model="shopInfo.city" />
+
         <div class="column">
           <div class="field is-horizontal">
             <div class="field-body">
@@ -403,7 +373,6 @@
 <script>
 import Vue from "vue";
 import { db, storage, firestore } from "~/plugins/firebase.js";
-import HoursInput from "~/app/admin/Restaurant/HoursInput";
 
 import * as API from "~/plugins/api";
 import BackButton from "~/components/BackButton";
@@ -412,12 +381,19 @@ import PhoneEntry from "~/components/PhoneEntry";
 import Price from "~/components/Price";
 import { ownPlateConfig } from "@/config/project";
 
+
+import HoursInput from "./inputComponents/HoursInput";
+import StreetAddress from "./inputComponents/StreetAddress"
+import City from "./inputComponents/City"
+
 import { taxRates, daysOfWeek, regionalSettings } from "~/plugins/constant.js";
 
 export default {
   name: "Order",
   components: {
     HoursInput,
+    StreetAddress,
+    City,
     BackButton,
     NotFound,
     PhoneEntry,
