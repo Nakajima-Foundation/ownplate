@@ -98,7 +98,7 @@ export default {
   computed: {
     image() {
       return (
-        this.menuitem.images?.item?.resizedImages["600"] ||
+        (this.menuitem?.images?.item?.resizedImages || {})["600"] ||
         this.menuitem.itemPhoto
       );
     }
