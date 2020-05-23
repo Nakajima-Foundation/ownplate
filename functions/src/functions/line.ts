@@ -2,6 +2,7 @@ import * as functions from 'firebase-functions'
 import * as utils from '../stripe/utils'
 import * as netutils from '../lib/netutils'
 import { ownPlateConfig } from '../common/project';
+import * as admin from 'firebase-admin';
 
 export const isEnabled = !!ownPlateConfig.line;
 
@@ -49,16 +50,19 @@ export const validate = async (db: FirebaseFirestore.Firestore, data: any, conte
       }
     })
 
-    if (uid) {
-      const collection = context.auth!.token.phone_number ? "users" : "admins";
-      await db.doc(`/${collection}/${uid}/system/line`).set({
+    if (uid === null) {
+      const uidLine = "line:" + profile.userId;
+      await db.doc(`/line/${uidLine}/system/line`).set({
         access, verified, profile
       }, { merge: true })
-    } else {
-      await db.doc(`/line/${profile.userId}/system/line`).set({
-        access, verified, profile
-      }, { merge: true })
+      const customToken = await admin.auth().createCustomToken(uidLine)
+      return { profile, customToken, nonce: verified.nonce };
     }
+
+    const collection = context.auth!.token.phone_number ? "users" : "admins";
+    await db.doc(`/${collection}/${uid}/system/line`).set({
+      access, verified, profile
+    }, { merge: true })
 
     return { profile, nonce: verified.nonce };
   } catch (error) {
