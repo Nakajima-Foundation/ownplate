@@ -6,9 +6,9 @@ import { ownPlateConfig } from '../common/project';
 export const isEnabled = !!ownPlateConfig.line;
 
 export const validate = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
-  const uid = utils.validate_auth(context);
-
   const { code, redirect_uri, client_id } = data;
+  const uid = (client_id === ownPlateConfig.line.TRACK_CHANNEL_ID) ? null : utils.validate_auth(context);
+
   utils.validate_params({ code, redirect_uri, client_id })
   const LINE_SECRET_KEY = functions.config().line.secret;
 
@@ -47,10 +47,16 @@ export const validate = async (db: FirebaseFirestore.Firestore, data: any, conte
       }
     })
 
-    const collection = context.auth!.token.phone_number ? "users" : "admins";
-    await db.doc(`/${collection}/${uid}/system/line`).set({
-      access, verified, profile
-    }, { merge: true })
+    if (uid) {
+      const collection = context.auth!.token.phone_number ? "users" : "admins";
+      await db.doc(`/${collection}/${uid}/system/line`).set({
+        access, verified, profile
+      }, { merge: true })
+    } else {
+      await db.doc(`/line/${profile.userId}/system/line`).set({
+        access, verified, profile
+      }, { merge: true })
+    }
 
     return { profile, nonce: verified.nonce };
   } catch (error) {
