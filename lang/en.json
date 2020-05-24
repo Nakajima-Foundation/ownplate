@@ -32,7 +32,8 @@
     "saveDraft": "Save as Draft",
     "new": "New",
     "current": "Current",
-    "clickAndUpload": "Click and Upload"
+    "clickAndUpload": "Click and Upload",
+    "clickAndUploadDetail": "Click or Drag & Drop to upload image(JPEG only)"
   },
   "currency": {
     "USD": "USD",

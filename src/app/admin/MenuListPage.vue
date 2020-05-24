@@ -42,6 +42,17 @@
             <div
               class="t-body1 c-text-black-medium align-center m-t-8"
             >{{ restaurantInfo.introduction }}</div>
+
+            <!-- Preview Link -->
+            <!-- # Need to make this link working -->
+            <!-- <div class="m-t-8 align-center">
+              <nuxt-link target="_blank" :to="'/r/' + restaurantInfo.restaurantid">
+                <div class="op-button-text m-r-8">
+                  <i class="material-icons">launch</i>
+                  <span>{{$t('admin.viewPage')}}</span>
+                </div>
+              </nuxt-link>
+            </div>-->
           </div>
         </div>
 

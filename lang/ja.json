@@ -32,7 +32,8 @@
     "saveDraft": "下書きとして保存",
     "new": "新規",
     "current": "変更前",
-    "clickAndUpload": "クリックしてアップロード(JPEG形式)"
+    "clickAndUpload": "ここをクリック",
+    "clickAndUploadDetail": "クリックもしくは画像をドラッグ＆ドロップしてアップロード(JPEG形式)"
   },
   "currency": {
     "USD": "ドル",
