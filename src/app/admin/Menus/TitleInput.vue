@@ -48,7 +48,7 @@
           </b-button>
         </div>
         <div>
-          <b-button class="b-reset op-button-pill h-36 bg-status-red-bg" @click="deleteItem">
+          <b-button class="b-reset op-button-pill h-36 bg-status-red-bg" disabled>
             <i class="material-icons c-status-red s-18 p-l-8 p-r-8">delete</i>
           </b-button>
         </div>
@@ -66,6 +66,10 @@ export default {
   props: {
     title: {
       type: Object,
+      required: true
+    },
+    position: {
+      type: String,
       required: true
     }
   },
@@ -87,13 +91,7 @@ export default {
       this.$emit("positionDown", this.title.id);
     },
     forkItem() {
-      this.$emit("forkItem", this.title);
-    },
-    deleteItem() {
-      // this.$emit("deleteItem", this.title.id);
-      if (confirm(this.$t("editMenu.reallyDelete"))) {
-        this.$emit("deleteItem", this.title.id);
-      }
+      this.$emit("forkItem", this.title.id);
     }
   }
 };

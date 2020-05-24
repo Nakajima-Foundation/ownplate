@@ -25,7 +25,12 @@
                 <i class="material-icons">place</i>
                 <span
                   style="word-break: break-all;"
-                >{{this.shopInfo.streetAddress}}, {{this.shopInfo.city}}, {{this.shopInfo.state}} {{this.shopInfo.zip}}</span>
+                  v-if="region === 'JP'"
+                  >〒{{this.shopInfo.zip}} {{this.shopInfo.state}} {{this.shopInfo.city}} {{this.shopInfo.streetAddress}}</span>
+                <span
+                  style="word-break: break-all;"
+                  v-else
+                  >{{this.shopInfo.streetAddress}}, {{this.shopInfo.city}}, {{this.shopInfo.state}} {{this.shopInfo.zip}}</span>
               </div>
             </a>
           </div>
@@ -108,6 +113,7 @@ import {
   formatNational,
   formatURL
 } from "~/plugins/phoneutil.js";
+import { ownPlateConfig } from "@/config/project";
 
 export default {
   props: {
@@ -177,7 +183,10 @@ export default {
         this.shopInfo.location.lat &&
         this.shopInfo.location.lng
       );
-    }
+    },
+    region() {
+      return ownPlateConfig.region
+    },
   },
   mounted() {
     this.updateMap();

@@ -83,9 +83,12 @@ export default {
     },
     deleteItem() {
       // this.$emit("deleteItem", this.title.id);
-      if (confirm(this.$t("editMenu.reallyDelete"))) {
-        this.$emit("deleteItem", this.title.id);
-      }
+      this.$store.commit("setAlert", {
+        code: "editMenu.reallyDelete",
+        callback: () => {
+          this.$emit("deleteItem", this.title.id);
+        }
+      });
     }
   }
 };
