@@ -104,15 +104,25 @@
         ></b-input>
       </b-field>
 
-      <street-address :errors="errors" v-model="shopInfo.streetAddress" />
-
-
-      <div class="columns">
-        <city :errors="errors" v-model="shopInfo.city" />
-        <div class="column">
+      <template v-if="region==='JP'">
+        <div class="columns">
           <state :errors="errors" v-model="shopInfo.state" />
+          <div class="column">
+            <city :errors="errors" v-model="shopInfo.city" />
+          </div>
         </div>
-      </div>
+        <street-address :errors="errors" v-model="shopInfo.streetAddress" />
+      </template>
+      <template v-else>
+        <street-address :errors="errors" v-model="shopInfo.streetAddress" />
+
+        <div class="columns">
+          <city :errors="errors" v-model="shopInfo.city" />
+          <div class="column">
+            <state :errors="errors" v-model="shopInfo.state" />
+          </div>
+        </div>
+      </template>
 
       <div class="field is-horizontal">
         <div class="field-body">
@@ -431,8 +441,7 @@ export default {
         images: {},
         publicFlag: false
       },
-      states: regionalSetting.AddressStates,
-      state_key: regionalSetting.StateKey || "shopInfo.state",
+      region: ownPlateConfig.region,
       maplocation: {},
       place_id: null,
       markers: [],
