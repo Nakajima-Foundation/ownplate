@@ -87,29 +87,61 @@
           </td>
         </tr>
       </table>
-      <text-form :error="errors['restaurantName']" v-model="shopInfo.restaurantName" titleKey='shopInfo.name' placeHolder='editRestaurant.enterRestaurantName' :maxlength='50' />
+      <text-form
+        v-model="shopInfo.restaurantName"
+        titleKey='shopInfo.name'
+        placeHolder='editRestaurant.enterRestaurantName'
+        :error="errors['restaurantName']"
+        :maxlength='50' />
 
       <template v-if="region==='JP'">
-        <text-form :error="errors['zip']" v-model="shopInfo.zip" titleKey='shopInfo.zip' placeHolder='editRestaurant.enterZip' :maxlength='10' />
+        <text-form :error="errors['zip']"
+                   v-model="shopInfo.zip"
+                   titleKey='shopInfo.zip'
+                   placeHolder='editRestaurant.enterZip'
+                   :maxlength='10' />
         <div class="columns">
           <state :errors="errors" v-model="shopInfo.state" />
           <div class="column">
-            <text-form :error="errors['city']" v-model="shopInfo.city" titleKey='shopInfo.city' placeHolder='editRestaurant.enterCity' :maxlength='15' />
+            <text-form
+              :error="errors['city']"
+              v-model="shopInfo.city"
+              titleKey='shopInfo.city'
+              placeHolder='editRestaurant.enterCity'
+              :maxlength='15' />
           </div>
         </div>
-        <text-form :error="errors['streetAddress']" v-model="shopInfo.streetAddress" titleKey='shopInfo.streetAddress' placeHolder='editRestaurant.enterStreetAddress' :maxlength='30' />
+        <text-form
+          :error="errors['streetAddress']"
+          v-model="shopInfo.streetAddress"
+          titleKey='shopInfo.streetAddress'
+          placeHolder='editRestaurant.enterStreetAddress'
+          :maxlength='30' />
       </template>
 
       <template v-else>
-        <text-form :error="errors['streetAddress']" v-model="shopInfo.streetAddress" titleKey='shopInfo.streetAddress' placeHolder='editRestaurant.enterStreetAddress' :maxlength='30' />
+        <text-form
+          :error="errors['streetAddress']"
+          v-model="shopInfo.streetAddress"
+          titleKey='shopInfo.streetAddress'
+          placeHolder='editRestaurant.enterStreetAddress'
+          :maxlength='30' />
 
         <div class="columns">
-          <text-form :error="errors['city']" v-model="shopInfo.city" titleKey='shopInfo.city' placeHolder='editRestaurant.enterCity' :maxlength='15' />
+          <text-form :error="errors['city']"
+                     v-model="shopInfo.city"
+                     titleKey='shopInfo.city'
+                     placeHolder='editRestaurant.enterCity'
+                     :maxlength='15' />
           <div class="column">
             <state :errors="errors" v-model="shopInfo.state" />
           </div>
         </div>
-        <text-form :error="errors['zip']" v-model="shopInfo.zip" />
+        <text-form :error="errors['zip']"
+                   v-model="shopInfo.zip"
+                   titleKey='shopInfo.zip'
+                   placeHolder='editRestaurant.enterZip'
+                   :maxlength='10' />
       </template>
 
 
@@ -150,50 +182,39 @@
       <phone-entry :currentNumber="shopInfo.phoneNumber"
                   :placeHolder="$t('editRestaurant.enterPhone')" @change="handlePhoneChange"/>
 
-      <b-field
-        :label="$t('editRestaurant.website')"
-        :type="errors['url'].length > 0 ? 'is-danger' : 'is-success'"
-      >
-        <b-input
-          v-model="shopInfo.url"
-          :placeholder="$t('editRestaurant.enterWebsite')"
-          type="url"
-          maxlength="100"
-        ></b-input>
-      </b-field>
+      <text-form v-model="shopInfo.url"
+                 :error="errors['url']"
+                 titleKey='shopInfo.website'
+                 placeHolder='editRestaurant.enterWebsite'
+                 :maxlength='100'
+                 :required="false" />
 
-      <b-field
-        :label="$t('editRestaurant.introduction')"
-        :type="errors['introduction'].length > 0 ? 'is-danger' : 'is-success'"
-      >
-        <b-input type="textarea"
-          v-model="shopInfo.introduction"
-          :placeholder="$t('editRestaurant.enterIntroduction')"
-          maxlength="300"
-           ></b-input>
-      </b-field>
+      <text-form v-model="shopInfo.introduction"
+                 type="textarea"
+                 :required="false"
+                 :maxlength='300'
+                 titleKey='editRestaurant.introduction'
+                 placeHolder='editRestaurant.enterIntroduction'
+                 :error="errors['introduction']"
+                 />
 
-      <b-field
-        :label="$t('editRestaurant.orderNotice')"
-        :type="errors['orderNotice'].length > 0 ? 'is-danger' : 'is-success'"
-      >
-        <b-input type="textarea"
-          v-model="shopInfo.orderNotice"
-          :placeholder="$t('editRestaurant.enterOrderNotice')"
-          maxlength="300"
-           ></b-input>
-      </b-field>
+      <text-form v-model="shopInfo.orderNotice"
+                 type="textarea"
+                 :required="false"
+                 :maxlength='300'
+                 titleKey='editRestaurant.orderNotice'
+                 placeHolder='editRestaurant.enterOrderNotice'
+                 :error="errors['orderNotice']"
+                 />
 
-      <b-field
-        :label="$t('editRestaurant.orderThanks')"
-        :type="errors['orderThanks'].length > 0 ? 'is-danger' : 'is-success'"
-      >
-        <b-input type="textarea"
-          v-model="shopInfo.orderThanks"
-          :placeholder="$t('editRestaurant.enterOrderThanks')"
-          maxlength="300"
-           ></b-input>
-      </b-field>
+      <text-form v-model="shopInfo.orderThanks"
+                 type="textarea"
+                 :required="false"
+                 :maxlength='300'
+                 titleKey='editRestaurant.orderThanks'
+                 placeHolder='editRestaurant.enterOrderThanks'
+                 :error="errors['orderThanks']"
+                 />
 
 
       <div class="columns" v-if="requireTaxInput">

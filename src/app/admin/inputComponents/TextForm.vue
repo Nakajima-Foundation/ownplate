@@ -4,14 +4,14 @@
     <div class="field-body">
       <h4>
         {{$t(titleKey)}}
-        <span class="p-font bold" style="color:#CB4B4B">*</span>
+        <span class="p-font bold" style="color:#CB4B4B" v-if="required === true">*</span>
       </h4>
     </div>
   </div>
   <b-field :type="error.length > 0 ? 'is-danger' : 'is-success'">
     <b-input
       :value="value"
-      type="text"
+      :type="type"
       :placeholder="$t(placeHolder)"
       @input="input"
       :maxlength="maxlength"
@@ -29,6 +29,11 @@ export default {
       type: Boolean,
       required: false,
       'default': () => (true)
+    },
+    type: {
+      type: String,
+      required: false,
+      'default': () => ("text")
     },
     titleKey: {
       type: String,
