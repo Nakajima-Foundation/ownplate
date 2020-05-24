@@ -16,6 +16,12 @@ export default {
     }
   },
   computed: {
+    action() {
+      return this.$route.query.action;
+    },
+    id() {
+      return this.$route.query.id;
+    },
     lineAuth() {
       const query = {
         response_type: "code",
@@ -23,7 +29,7 @@ export default {
         redirect_uri: this.redirect_uri,
         scope: "profile openid",
         state: "s" + Math.random(), // LATER: Make it more secure
-        nonce: "restaurant ID" // HACK: Repurposing nonce
+        nonce: `${this.action}:${this.id}` // HACK: Repurposing nonce
       };
       const queryString = Object.keys(query)
         .map(key => {
