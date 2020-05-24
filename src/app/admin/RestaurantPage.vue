@@ -87,24 +87,24 @@
           </td>
         </tr>
       </table>
-      <text-form :error="errors['restaurantName']" v-model="shopInfo.restaurantName" titleKey='shopInfo.name' placeHolder='editRestaurant.enterRestaurantName' maxlength='50' />
+      <text-form :error="errors['restaurantName']" v-model="shopInfo.restaurantName" titleKey='shopInfo.name' placeHolder='editRestaurant.enterRestaurantName' :maxlength='50' />
 
       <template v-if="region==='JP'">
-        <text-form :error="errors['zip']" v-model="shopInfo.zip" titleKey='shopInfo.zip' placeHolder='editRestaurant.enterZip' maxlength='10' />
+        <text-form :error="errors['zip']" v-model="shopInfo.zip" titleKey='shopInfo.zip' placeHolder='editRestaurant.enterZip' :maxlength='10' />
         <div class="columns">
           <state :errors="errors" v-model="shopInfo.state" />
           <div class="column">
-            <text-form :error="errors['city']" v-model="shopInfo.city" titleKey='shopInfo.city' placeHolder='editRestaurant.enterCity' maxlength='15' />
+            <text-form :error="errors['city']" v-model="shopInfo.city" titleKey='shopInfo.city' placeHolder='editRestaurant.enterCity' :maxlength='15' />
           </div>
         </div>
-        <text-form :error="errors['streetAddress']" v-model="shopInfo.streetAddress" titleKey='shopInfo.streetAddress' placeHolder='editRestaurant.enterStreetAddress' maxlength='30' />
+        <text-form :error="errors['streetAddress']" v-model="shopInfo.streetAddress" titleKey='shopInfo.streetAddress' placeHolder='editRestaurant.enterStreetAddress' :maxlength='30' />
       </template>
 
       <template v-else>
-        <text-form :error="errors['streetAddress']" v-model="shopInfo.streetAddress" titleKey='shopInfo.streetAddress' placeHolder='editRestaurant.enterStreetAddress' maxlength='30' />
+        <text-form :error="errors['streetAddress']" v-model="shopInfo.streetAddress" titleKey='shopInfo.streetAddress' placeHolder='editRestaurant.enterStreetAddress' :maxlength='30' />
 
         <div class="columns">
-          <text-form :error="errors['city']" v-model="shopInfo.city" titleKey='shopInfo.city' placeHolder='editRestaurant.enterCity' maxlength='15' />
+          <text-form :error="errors['city']" v-model="shopInfo.city" titleKey='shopInfo.city' placeHolder='editRestaurant.enterCity' :maxlength='15' />
           <div class="column">
             <state :errors="errors" v-model="shopInfo.state" />
           </div>
