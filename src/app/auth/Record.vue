@@ -8,7 +8,7 @@
 
 <script>
 import { ownPlateConfig } from "@/config/project";
-import { db, firestore } from "~/plugins/firebase.js";
+import { db, firestore, functions } from "~/plugins/firebase.js";
 
 export default {
   data() {
@@ -22,12 +22,18 @@ export default {
       console.log("line user", this.user.uid);
       if (this.id) {
         try {
-          await db.collection(`line/${this.user.uid}/records`).add({
+          const doc = await db.collection(`line/${this.user.uid}/records`).add({
             id: this.id,
             uid: this.user.uid,
-            at: firestore.FieldValue.serverTimestamp()
+            at: firestore.FieldValue.serverTimestamp(),
+            processed: false
           });
+          console.log("recorded as", doc.id);
           this.success = true;
+
+          const traceProcess = functions.httpsCallable("traceProcess");
+          const { data } = await traceProcess({ id: doc.id });
+          console.log("traceProcess", data);
         } catch (error) {
           console.error(error);
         }
