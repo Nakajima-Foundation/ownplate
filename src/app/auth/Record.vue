@@ -20,10 +20,9 @@ export default {
     console.log("user =", this.user, this.isLineUser);
     if (this.isLineUser) {
       console.log("line user", this.user.uid);
-      if (this.event && this.id) {
+      if (this.id) {
         try {
           await db.collection(`line/${this.user.uid}/records`).add({
-            event: this.event,
             id: this.id,
             uid: this.user.uid,
             at: firestore.FieldValue.serverTimestamp()
@@ -51,7 +50,7 @@ export default {
         redirect_uri: this.redirect_uri,
         scope: "profile openid",
         state: "s" + Math.random(), // LATER: Make it more secure
-        nonce: `${this.action}:${this.id}` // HACK: Repurposing nonce
+        nonce: `${this.id}` // HACK: Repurposing nonce
       };
       const queryString = Object.keys(query)
         .map(key => {

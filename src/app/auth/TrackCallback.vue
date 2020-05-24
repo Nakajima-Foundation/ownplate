@@ -33,11 +33,10 @@ export default {
           console.log("validation succeded");
           const user = await auth.signInWithCustomToken(data.customToken);
           console.log("signInWithCustomToken", user);
-          const params = data.nonce.split(":");
-          if (user && params.length == 2) {
+          if (user) {
             this.$router.replace({
               path: "/t/record",
-              query: { event: params[0], id: params[1] }
+              query: { id: data.nonce }
             });
           }
         } else {
