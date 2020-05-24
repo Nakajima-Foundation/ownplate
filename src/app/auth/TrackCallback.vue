@@ -37,7 +37,7 @@ export default {
           if (user && params.length == 2) {
             this.$router.replace({
               path: "/t/record",
-              query: { action: params[0], id: params[1] }
+              query: { event: params[0], id: params[1] }
             });
           }
         } else {

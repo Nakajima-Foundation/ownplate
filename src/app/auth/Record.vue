@@ -1,23 +1,45 @@
 <template>
   <section class="section">
-    <p>Record</p>
+    <div v-if="success">
+      <p>ご協力ありがとうございます</p>
+    </div>
   </section>
 </template>
 
 <script>
 import { ownPlateConfig } from "@/config/project";
+import { db, firestore } from "~/plugins/firebase.js";
+
 export default {
-  mounted() {
+  data() {
+    return {
+      success: false
+    };
+  },
+  async mounted() {
     console.log("user =", this.user, this.isLineUser);
     if (this.isLineUser) {
-      console.log("line user");
+      console.log("line user", this.user.uid);
+      if (this.event && this.id) {
+        try {
+          await db.collection(`line/${this.user.uid}/events`).add({
+            event: this.event,
+            id: this.id,
+            uid: this.user.uid,
+            at: firestore.FieldValue.serverTimestamp()
+          });
+          this.success = true;
+        } catch (error) {
+          console.error(error);
+        }
+      }
     } else {
       location.href = this.lineAuth;
     }
   },
   computed: {
-    action() {
-      return this.$route.query.action;
+    event() {
+      return this.$route.query.event;
     },
     id() {
       return this.$route.query.id;
