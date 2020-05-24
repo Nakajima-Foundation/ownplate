@@ -87,59 +87,32 @@
           </td>
         </tr>
       </table>
-      <div class="field is-horizontal">
-        <div class="field-body">
-          <h4>
-            {{$t('shopInfo.name')}}
-            <span class="p-font bold" style="color:#CB4B4B">*</span>
-          </h4>
-        </div>
-      </div>
-      <b-field :type="errors['restaurantName'].length > 0 ? 'is-danger' : 'is-success'">
-        <b-input
-          v-model="shopInfo.restaurantName"
-          type="text"
-          :placeholder="$t('editRestaurant.enterRestaurantName')"
-          maxlength="50"
-        ></b-input>
-      </b-field>
+      <text-form :error="errors['restaurantName']" v-model="shopInfo.restaurantName" titleKey='shopInfo.name' placeHolder='editRestaurant.enterRestaurantName' maxlength='50' />
 
       <template v-if="region==='JP'">
+        <text-form :error="errors['zip']" v-model="shopInfo.zip" titleKey='shopInfo.zip' placeHolder='editRestaurant.enterZip' maxlength='10' />
         <div class="columns">
           <state :errors="errors" v-model="shopInfo.state" />
           <div class="column">
-            <city :errors="errors" v-model="shopInfo.city" />
+            <text-form :error="errors['city']" v-model="shopInfo.city" titleKey='shopInfo.city' placeHolder='editRestaurant.enterCity' maxlength='15' />
           </div>
         </div>
-        <street-address :errors="errors" v-model="shopInfo.streetAddress" />
+        <text-form :error="errors['streetAddress']" v-model="shopInfo.streetAddress" titleKey='shopInfo.streetAddress' placeHolder='editRestaurant.enterStreetAddress' maxlength='30' />
       </template>
+
       <template v-else>
-        <street-address :errors="errors" v-model="shopInfo.streetAddress" />
+        <text-form :error="errors['streetAddress']" v-model="shopInfo.streetAddress" titleKey='shopInfo.streetAddress' placeHolder='editRestaurant.enterStreetAddress' maxlength='30' />
 
         <div class="columns">
-          <city :errors="errors" v-model="shopInfo.city" />
+          <text-form :error="errors['city']" v-model="shopInfo.city" titleKey='shopInfo.city' placeHolder='editRestaurant.enterCity' maxlength='15' />
           <div class="column">
             <state :errors="errors" v-model="shopInfo.state" />
           </div>
         </div>
+        <text-form :error="errors['zip']" v-model="shopInfo.zip" />
       </template>
 
-      <div class="field is-horizontal">
-        <div class="field-body">
-          <h4>
-            {{$t('shopInfo.zip')}}
-            <span class="p-font bold" style="color:#CB4B4B">*</span>
-          </h4>
-        </div>
-      </div>
-      <b-field :type="errors['zip'].length > 0 ? 'is-danger' : 'is-success'">
-        <b-input
-          v-model="shopInfo.zip"
-          type="text"
-          :placeholder="$t('editRestaurant.enterZip')"
-          maxlength="10"
-        ></b-input>
-      </b-field>
+
       <b-field>
         <b-button
           variant="outline-primary"
@@ -176,15 +149,6 @@
       </div>
       <phone-entry :currentNumber="shopInfo.phoneNumber"
                   :placeHolder="$t('editRestaurant.enterPhone')" @change="handlePhoneChange"/>
-
-      <!-- b-field :type="errors['phoneNumber'].length > 0 ? 'is-danger' : 'is-success'">
-        <b-input
-          v-model="shopInfo.phoneNumber"
-          :placeholder="$t('editRestaurant.enterPhone')"
-          type="tel"
-          maxlength="20"
-        ></b-input>
-      </b-field -->
 
       <b-field
         :label="$t('editRestaurant.website')"
@@ -369,8 +333,7 @@ import { ownPlateConfig } from "@/config/project";
 
 
 import HoursInput from "./inputComponents/HoursInput";
-import StreetAddress from "./inputComponents/StreetAddress"
-import City from "./inputComponents/City"
+import TextForm from "./inputComponents/TextForm"
 import State from "./inputComponents/State"
 
 import { taxRates, daysOfWeek, regionalSettings } from "~/plugins/constant.js";
@@ -379,8 +342,7 @@ export default {
   name: "Order",
   components: {
     HoursInput,
-    StreetAddress,
-    City,
+    TextForm,
     State,
     BackButton,
     NotFound,
