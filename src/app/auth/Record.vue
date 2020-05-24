@@ -22,7 +22,7 @@ export default {
       console.log("line user", this.user.uid);
       if (this.event && this.id) {
         try {
-          await db.collection(`line/${this.user.uid}/events`).add({
+          await db.collection(`line/${this.user.uid}/records`).add({
             event: this.event,
             id: this.id,
             uid: this.user.uid,

@@ -107,7 +107,7 @@ service cloud.firestore {
     }
 
     match /line/{userId}{
-      match /events/{eventId} {
+      match /records/{eventId} {
         allow create: if request.auth.uid == userId
                       && request.resource.data.uid == userId;
       }
