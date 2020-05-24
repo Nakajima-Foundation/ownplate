@@ -121,7 +121,7 @@
     "UrlCopyFailed": "コピー失敗",
     "name": "飲食店名",
     "restaurantDetails": "飲食店情報",
-    "streetAddress": "住所",
+    "streetAddress": "番地以下",
     "city": "市区町村",
     "state": "州",
     "prefecture": "都道府県",
