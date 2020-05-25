@@ -20,10 +20,10 @@ export default {
   async mounted() {
     console.log(this.$route.query);
     if (this.code) {
-      const lineValidate = functions.httpsCallable("lineValidate");
+      const lineAuthenticate = functions.httpsCallable("lineAuthenticate");
       try {
         this.isValidating = true;
-        const { data } = await lineValidate({
+        const { data } = await lineAuthenticate({
           code: this.code,
           redirect_uri: this.redirect_uri,
           client_id: ownPlateConfig.line.TRACK_CHANNEL_ID
