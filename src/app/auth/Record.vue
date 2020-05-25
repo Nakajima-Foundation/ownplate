@@ -7,6 +7,11 @@
     </div>
     <div v-else>
       <p>ご協力ありがとうございます 2</p>
+      <div v-for="record in records" :key="record.id">
+        <span>{{record.timeCreated}}</span>
+        <span>{{record.event}}</span>
+        <span>{{record.restaurantName}}</span>
+      </div>
     </div>
   </section>
 </template>
@@ -18,19 +23,22 @@ import { db, firestore, functions } from "~/plugins/firebase.js";
 export default {
   data() {
     return {
-      success: false
+      success: false,
+      records: [],
+      detatcher: null
     };
   },
   async mounted() {
     console.log("user =", this.user, this.isLineUser);
     if (this.isLineUser) {
       console.log("line user", this.user.uid);
+      const refRecords = db.collection(`line/${this.user.uid}/records`);
       if (this.traceId) {
         try {
-          const doc = await db.collection(`line/${this.user.uid}/records`).add({
+          const doc = await refRecords.add({
             traceId: this.traceId,
             uid: this.user.uid,
-            at: firestore.FieldValue.serverTimestamp(),
+            timeCreated: firestore.FieldValue.serverTimestamp(),
             processed: false
           });
           console.log("recorded as", doc.id);
@@ -43,10 +51,21 @@ export default {
         } catch (error) {
           console.error(error);
         }
+      } else {
+        this.detatcher = refRecords
+          .orderBy("timeCreated", "desc")
+          .limit(25)
+          .onSnapshot(snapshot => {
+            this.records = snapshot.docs.map(this.doc2data("record"));
+            console.log("snapshot", this.records);
+          });
       }
     } else {
       location.href = this.lineAuth;
     }
+  },
+  destroyed() {
+    this.detatcher && this.detatcher();
   },
   computed: {
     event() {
