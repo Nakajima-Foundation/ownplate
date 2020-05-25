@@ -71,7 +71,7 @@ service cloud.firestore {
       allow read: if isOwner(resource, request);
     }
 
-    // DEBUG only
+    // This is not absolutely necessary, we can remove it later.
     match /{path=**}/trace/{traceId} {
       allow read: if true;
     }
@@ -118,8 +118,9 @@ service cloud.firestore {
 
     match /line/{userId}{
       match /records/{eventId} {
-        allow create: if request.auth.uid == userId
+        allow write: if request.auth.uid == userId
                       && request.resource.data.uid == userId;
+        allow read: if request.auth.uid == userId;
       }
     }
 

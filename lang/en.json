@@ -261,6 +261,12 @@
       "cancelMessage": "Please contact to the customer and tell the order will be canceled.",
       "delete": "Cancel this order (undoable)"
     },
+    "qrcode": {
+      "title": "QRcodes",
+      "restaurant": "Menu Page",
+      "enter": "Record Entrance",
+      "leave": "Record Leave"
+    },
     "error": {
       "email": {
         "invalid": "Invalid Email Address",

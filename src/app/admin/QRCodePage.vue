@@ -51,13 +51,13 @@ export default {
             transaction.set(refEnter, {
               event: "enter",
               uid: this.user.uid,
-              id: refEnter.id,
+              traceId: refEnter.id,
               restaurantId: this.restaurantId()
             });
             transaction.set(refLeave, {
               event: "leave",
               uid: this.user.uid,
-              id: refLeave.id,
+              traceId: refLeave.id,
               restaurantId: this.restaurantId()
             });
             transaction.update(refRestaurant, {
