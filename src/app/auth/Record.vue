@@ -34,6 +34,15 @@ export default {
           const traceProcess = functions.httpsCallable("traceProcess");
           const { data } = await traceProcess({ id: doc.id });
           console.log("traceProcess", data);
+
+          // DEBUG code
+          const snapshot = await db
+            .collectionGroup("trace")
+            .where("traceId", "==", this.traceId)
+            .get();
+          snapshot.forEach(doc => {
+            console.log("doc", doc);
+          });
         } catch (error) {
           console.error(error);
         }

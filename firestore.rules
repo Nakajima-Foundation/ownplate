@@ -71,6 +71,11 @@ service cloud.firestore {
       allow read: if isOwner(resource, request);
     }
 
+    // DEBUG only
+    match /{path=**}/trace/{traceId} {
+      allow read: if true;
+    }
+
     match /restaurants {
       match /{restaurantId} {
         allow read: if true
