@@ -1,5 +1,5 @@
 import * as constant from '../common/constant';
-import * as utils from '../stripe/utils'
+import * as utils from '../lib/utils'
 
 /*
 const chunk = (array, chunkSize) => {

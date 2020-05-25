@@ -1,6 +1,6 @@
 import * as functions from 'firebase-functions'
 import * as admin from 'firebase-admin';
-import * as utils from '../stripe/utils'
+import * as utils from '../lib/utils'
 import { order_status } from '../common/constant'
 import * as sms from './sms'
 import { resources } from './resources'
