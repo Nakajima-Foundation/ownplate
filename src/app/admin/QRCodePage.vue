@@ -23,25 +23,26 @@ export default {
       if (!restaurant.trace) {
         const refEnter = refRestaurant.collection("trace").doc();
         const refLeave = refRestaurant.collection("trace").doc();
-        // Strictly speaking, we need a transaction here, but practically speaking we don't need.
-        const docEnter = await refEnter.set({
-          event: "enter",
-          uid: this.user.uid,
-          id: refEnter.id,
-          restaurantId: this.restaurantId()
-        });
-        const docLeave = await refLeave.set({
-          event: "leave",
-          uid: this.user.uid,
-          id: refLeave.id,
-          restaurantId: this.restaurantId()
-        });
-        console.log("new traceIDs", docEnter.id, docLeave.id);
-        refRestaurant.update({
-          trace: {
-            enter: docEnter.id,
-            leave: docLeave.id
-          }
+        console.log("new traceIDs", refEnter.id, refLeave.id);
+        await db.runTransaction(async transaction => {
+          transaction.set(refEnter, {
+            event: "enter",
+            uid: this.user.uid,
+            id: refEnter.id,
+            restaurantId: this.restaurantId()
+          });
+          transaction.set(refLeave, {
+            event: "leave",
+            uid: this.user.uid,
+            id: refLeave.id,
+            restaurantId: this.restaurantId()
+          });
+          transaction.update(refRestaurant, {
+            trace: {
+              enter: refEnter.id,
+              leave: refLeave.id
+            }
+          });
         });
       }
     });
