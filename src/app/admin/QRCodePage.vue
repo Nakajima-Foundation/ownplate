@@ -2,7 +2,9 @@
   <section class="section" style="background-color:#fffafa">
     <div class="align-center m-t-24">
       <qrcode :value="urlMenu" :options="{ width: 160 }"></qrcode>
-      <p>{{$t('admin.qrcode.restaurant')}}</p>
+      <p>
+        <a :href="urlMenu">{{restaurant.restaurantName}}</a>
+      </p>
     </div>
     <div v-if="trace">
       <div class="align-center m-t-24">
@@ -27,6 +29,7 @@ import { db, firestore } from "~/plugins/firebase.js";
 export default {
   data() {
     return {
+      restaurant: {},
       detacher: null,
       trace: null
     };
@@ -34,9 +37,9 @@ export default {
   created() {
     const refRestaurant = db.doc(`restaurants/${this.restaurantId()}`);
     this.detacher = refRestaurant.onSnapshot(async snapshot => {
-      const restaurant = snapshot.data();
-      if (restaurant.trace) {
-        this.trace = restaurant.trace;
+      this.restaurant = snapshot.data();
+      if (this.restaurant.trace) {
+        this.trace = this.restaurant.trace;
       } else {
         const refEnter = refRestaurant.collection("trace").doc();
         const refLeave = refRestaurant.collection("trace").doc();
