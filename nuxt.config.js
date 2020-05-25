@@ -30,7 +30,8 @@ export default {
       { src: "https://js.stripe.com/v3/" }
     ],
     meta: [
-      { hid: 'og:image', property: 'og:image', content: 'https://' + hostName + '/OGP-Facebook.png' },
+      { hid: 'og:image', property: 'og:image', content: 'https://' + hostName + '/' +
+        (ownPlateConfig.region === "JP" ? 'Feature-Hero-v01-ja.png' : 'OGP-Facebook.png') },
       { charset: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       {
