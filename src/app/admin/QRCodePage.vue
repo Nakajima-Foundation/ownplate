@@ -25,24 +25,28 @@ export default {
         const refLeave = refRestaurant.collection("trace").doc();
         console.log("new traceIDs", refEnter.id, refLeave.id);
         await db.runTransaction(async transaction => {
-          transaction.set(refEnter, {
-            event: "enter",
-            uid: this.user.uid,
-            id: refEnter.id,
-            restaurantId: this.restaurantId()
-          });
-          transaction.set(refLeave, {
-            event: "leave",
-            uid: this.user.uid,
-            id: refLeave.id,
-            restaurantId: this.restaurantId()
-          });
-          transaction.update(refRestaurant, {
-            trace: {
-              enter: refEnter.id,
-              leave: refLeave.id
-            }
-          });
+          const data = (await transaction.get(refRestaurant)).data();
+          console.log(data);
+          if (!data.trace) {
+            transaction.set(refEnter, {
+              event: "enter",
+              uid: this.user.uid,
+              id: refEnter.id,
+              restaurantId: this.restaurantId()
+            });
+            transaction.set(refLeave, {
+              event: "leave",
+              uid: this.user.uid,
+              id: refLeave.id,
+              restaurantId: this.restaurantId()
+            });
+            transaction.update(refRestaurant, {
+              trace: {
+                enter: refEnter.id,
+                leave: refLeave.id
+              }
+            });
+          }
         });
       }
     });
