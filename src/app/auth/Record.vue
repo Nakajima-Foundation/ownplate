@@ -1,7 +1,12 @@
 <template>
   <section class="section">
-    <div v-if="success">
-      <p>ご協力ありがとうございます</p>
+    <div v-if="traceId">
+      <div v-if="success">
+        <p>ご協力ありがとうございます</p>
+      </div>
+    </div>
+    <div v-else>
+      <p>ご協力ありがとうございます 2</p>
     </div>
   </section>
 </template>
@@ -34,6 +39,7 @@ export default {
           const traceProcess = functions.httpsCallable("traceProcess");
           const { data } = await traceProcess({ eventId: doc.id });
           console.log("traceProcess", data);
+          this.$router.replace("/t");
         } catch (error) {
           console.error(error);
         }

@@ -95,6 +95,10 @@ export const customRoutes = [
     component: 'auth/Record.vue'
   },
   {
+    path: '/t',
+    component: 'auth/Record.vue'
+  },
+  {
     path: '*',
     component: 'common/404.vue'
   }
