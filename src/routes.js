@@ -50,6 +50,11 @@ export const customRoutes = [
     component: 'admin/OrderListPage.vue',
   },
   {
+    name: 'admin-orders',
+    path: '/admin/restaurants/:restaurantId/qrcode',
+    component: 'admin/QRCodePage.vue',
+  },
+  {
     name: 'admin-order-info',
     path: '/admin/restaurants/:restaurantId/orders/:orderId',
     component: 'admin/OrderInfoPage.vue',
