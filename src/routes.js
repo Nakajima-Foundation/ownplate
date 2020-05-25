@@ -92,11 +92,11 @@ export const customRoutes = [
   },
   {
     path: '/t/:traceId',
-    component: 'auth/Record.vue'
+    component: 'trace/Record.vue'
   },
   {
     path: '/t',
-    component: 'auth/Record.vue'
+    component: 'trace/Record.vue'
   },
   {
     path: '*',
