@@ -32,35 +32,8 @@ export default {
           this.success = true;
 
           const traceProcess = functions.httpsCallable("traceProcess");
-          const { data } = await traceProcess({ id: doc.id });
+          const { data } = await traceProcess({ eventId: doc.id });
           console.log("traceProcess", data);
-
-          // DEBUG code
-          const refRecord = db.doc(`line/${this.user.uid}/records/${doc.id}`);
-          const record = (await refRecord.get()).data();
-          console.log(record);
-          const snapshot = await db
-            .collectionGroup("trace")
-            .limit(1)
-            .where("traceId", "==", record.traceId)
-            .get();
-          if (snapshot.isEmpty) {
-            return;
-          }
-          const trace = snapshot.docs[0].data();
-          console.log("trace", trace);
-          const restaurant = (
-            await db.doc(`restaurants/${trace.restaurantId}`).get()
-          ).data();
-          if (!restaurant) {
-            return;
-          }
-          console.log("restaurant", restaurant);
-          refRecord.update({
-            restaurantId: trace.restaurantId,
-            event: trace.event,
-            restaurantName: restaurant.restaurantName
-          });
         } catch (error) {
           console.error(error);
         }
