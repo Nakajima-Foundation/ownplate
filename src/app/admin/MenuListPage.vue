@@ -42,6 +42,17 @@
             <div
               class="t-body1 c-text-black-medium align-center m-t-8"
             >{{ restaurantInfo.introduction }}</div>
+
+            <!-- Preview Link -->
+            <!-- # Need to make this link working -->
+            <!-- <div class="m-t-8 align-center">
+              <nuxt-link target="_blank" :to="'/r/' + restaurantInfo.restaurantid">
+                <div class="op-button-text m-r-8">
+                  <i class="material-icons">launch</i>
+                  <span>{{$t('admin.viewPage')}}</span>
+                </div>
+              </nuxt-link>
+            </div>-->
           </div>
         </div>
 
@@ -79,7 +90,15 @@
                 <!-- Category Title -->
                 <div v-if="itemsObj[menuList] && itemsObj[menuList]._dataType === 'title'">
                   <div v-if="editings[menuList] === true">
-                    <title-input @updateTitle="updateTitle($event)" :title="itemsObj[menuList]"></title-input>
+                    <title-input
+                      :title="itemsObj[menuList]"
+                      :position="index == 0 ? 'first' : ((menuLists.length - 1) === index ? 'last' : '')"
+                      @toEditMode="toEditMode($event)"
+                      @positionUp="positionUp($event)"
+                      @positionDown="positionDown($event)"
+                      @forkItem="forkTitleItem($event)"
+                      @updateTitle="updateTitle($event)"
+                      ></title-input>
                   </div>
                   <div v-else>
                     <title-card
@@ -236,27 +255,7 @@ export default {
       });
     }
   },
-  /*
-  watch: {
-    itemsObj: function() {
-      this.updateBrokenMenu();
-    }
-  },
-*/
   methods: {
-    /*
-    updateBrokenMenu() {
-      // if loaded all data
-      if (this.notFound === false && Object.keys(this.itemsObj).length > 0) {
-        if (this.restaurantInfo.menuLists === undefined) {
-          db.doc(`restaurants/${this.restaurantId()}`).update(
-            "menuLists",
-            Object.keys(this.itemsObj)
-          );
-        }
-      }
-    },
-    */
     async updateTitle(title) {
       await db
         .doc(`restaurants/${this.restaurantId()}/titles/${title.id}`)

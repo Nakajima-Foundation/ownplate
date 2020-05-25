@@ -20,19 +20,24 @@ export const customRoutes = [
     component: 'user/OrderPage.vue',
   },
   {
+    name: 'r-restaurantId-transactionsAct',
+    path: '/r/:restaurantId/transactionsAct',
+    component: 'user/TransactionsAct.vue',
+  },
+  {
     name: 'admin',
     path: '/admin/restaurants',
-    component: 'admin/OwnerPage.vue',
+    component: 'admin/Index.vue',
   },
   {
     name: 'admin-about',
     path: '/admin/restaurants/:restaurantId',
-    component: 'admin/AboutPage.vue',
+    component: 'admin/RestaurantPage.vue',
   },
   {
     name: 'admin-menus',
     path: '/admin/restaurants/:restaurantId/menus',
-    component: 'admin/MenusPage.vue',
+    component: 'admin/MenuListPage.vue',
   },
   {
     name: 'admin-menus-item',

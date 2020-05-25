@@ -7,7 +7,7 @@ import { regionalSettings } from "./src/plugins/constant";
 require('dotenv').config();
 import { customRoutes } from './src/routes';
 
-const hostName = regionalSettings[ownPlateConfig.region].hostName;
+const hostName = ownPlateConfig.hostName;
 
 export default {
   mode: "spa",
@@ -30,7 +30,8 @@ export default {
       { src: "https://js.stripe.com/v3/" }
     ],
     meta: [
-      { hid: 'og:image', property: 'og:image', content: 'https://' + hostName + '/OGP-Facebook.png' },
+      { hid: 'og:image', property: 'og:image', content: 'https://' + hostName + '/' +
+        (ownPlateConfig.region === "JP" ? 'PR-Feature.png' : 'OGP-Facebook.png') },
       { charset: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       {

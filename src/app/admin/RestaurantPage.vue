@@ -87,103 +87,64 @@
           </td>
         </tr>
       </table>
-      <div class="field is-horizontal">
-        <div class="field-body">
-          <h4>
-            {{$t('shopInfo.name')}}
-            <span class="p-font bold" style="color:#CB4B4B">*</span>
-          </h4>
-        </div>
-      </div>
-      <b-field :type="errors['restaurantName'].length > 0 ? 'is-danger' : 'is-success'">
-        <b-input
-          v-model="shopInfo.restaurantName"
-          type="text"
-          :placeholder="$t('editRestaurant.enterRestaurantName')"
-          maxlength="50"
-        ></b-input>
-      </b-field>
+      <text-form
+        v-model="shopInfo.restaurantName"
+        titleKey='shopInfo.name'
+        placeHolder='editRestaurant.enterRestaurantName'
+        :error="errors['restaurantName']"
+        :maxlength='50' />
 
-      <div class="field is-horizontal">
-        <div class="field-body">
-          <h4>
-            {{$t('shopInfo.streetAddress')}}
-            <span class="p-font bold" style="color:#CB4B4B">*</span>
-          </h4>
-        </div>
-      </div>
-      <b-field :type="errors['streetAddress'].length > 0 ? 'is-danger' : 'is-success'">
-        <b-input
-          v-model="shopInfo.streetAddress"
-          type="text"
-          :placeholder="$t('editRestaurant.enterStreetAddress')"
-          maxlength="30"
-        ></b-input>
-      </b-field>
-
-      <div class="columns">
-        <div class="column">
-          <div class="field is-horizontal">
-            <div class="field-body">
-              <h4>
-                {{$t('shopInfo.city')}}
-                <span class="p-font bold" style="color:#CB4B4B">*</span>
-              </h4>
-            </div>
-          </div>
-          <b-field :type="errors['city'].length > 0 ? 'is-danger' : 'is-success'">
-            <b-input
+      <template v-if="region==='JP'">
+        <text-form :error="errors['zip']"
+                   v-model="shopInfo.zip"
+                   titleKey='shopInfo.zip'
+                   placeHolder='editRestaurant.enterZip'
+                   :maxlength='10' />
+        <div class="columns">
+          <state :errors="errors" v-model="shopInfo.state" />
+          <div class="column">
+            <text-form
+              :error="errors['city']"
               v-model="shopInfo.city"
-              type="text"
-              :placeholder="$t('editRestaurant.enterCity')"
-              maxlength="15"
-            ></b-input>
-          </b-field>
-        </div>
-        <div class="column">
-          <div class="field is-horizontal">
-            <div class="field-body">
-              <h4>
-                {{$t(this.state_key)}}
-                <span class="p-font bold" style="color:#CB4B4B">*</span>
-              </h4>
-            </div>
+              titleKey='shopInfo.city'
+              placeHolder='editRestaurant.enterCity'
+              :maxlength='15' />
           </div>
-          <b-field
-            :type="errors['state'].length > 0 ? 'is-danger' : 'is-success'"
-            v-if="Array.isArray(states)"
-          >
-            <b-select v-model="shopInfo.state" placeholder="select">
-              <option v-for="stateItem in states" :key="stateItem">{{ stateItem }}</option>
-            </b-select>
-          </b-field>
-          <b-field :type="errors['state'].length > 0 ? 'is-danger' : 'is-success'" v-else>
-            <b-input
-              v-model="shopInfo.state"
-              type="text"
-              :placeholder="$t('editRestaurant.enterCity')"
-              maxlength="15"
-            ></b-input>
-          </b-field>
         </div>
-      </div>
+        <text-form
+          :error="errors['streetAddress']"
+          v-model="shopInfo.streetAddress"
+          titleKey='shopInfo.streetAddress'
+          placeHolder='editRestaurant.enterStreetAddress'
+          :maxlength='30' />
+      </template>
 
-      <div class="field is-horizontal">
-        <div class="field-body">
-          <h4>
-            {{$t('shopInfo.zip')}}
-            <span class="p-font bold" style="color:#CB4B4B">*</span>
-          </h4>
+      <template v-else>
+        <text-form
+          :error="errors['streetAddress']"
+          v-model="shopInfo.streetAddress"
+          titleKey='shopInfo.streetAddress'
+          placeHolder='editRestaurant.enterStreetAddress'
+          :maxlength='30' />
+
+        <div class="columns">
+          <text-form :error="errors['city']"
+                     v-model="shopInfo.city"
+                     titleKey='shopInfo.city'
+                     placeHolder='editRestaurant.enterCity'
+                     :maxlength='15' />
+          <div class="column">
+            <state :errors="errors" v-model="shopInfo.state" />
+          </div>
         </div>
-      </div>
-      <b-field :type="errors['zip'].length > 0 ? 'is-danger' : 'is-success'">
-        <b-input
-          v-model="shopInfo.zip"
-          type="text"
-          :placeholder="$t('editRestaurant.enterZip')"
-          maxlength="10"
-        ></b-input>
-      </b-field>
+        <text-form :error="errors['zip']"
+                   v-model="shopInfo.zip"
+                   titleKey='shopInfo.zip'
+                   placeHolder='editRestaurant.enterZip'
+                   :maxlength='10' />
+      </template>
+
+
       <b-field>
         <b-button
           variant="outline-primary"
@@ -221,59 +182,39 @@
       <phone-entry :currentNumber="shopInfo.phoneNumber"
                   :placeHolder="$t('editRestaurant.enterPhone')" @change="handlePhoneChange"/>
 
-      <!-- b-field :type="errors['phoneNumber'].length > 0 ? 'is-danger' : 'is-success'">
-        <b-input
-          v-model="shopInfo.phoneNumber"
-          :placeholder="$t('editRestaurant.enterPhone')"
-          type="tel"
-          maxlength="20"
-        ></b-input>
-      </b-field -->
+      <text-form v-model="shopInfo.url"
+                 :error="errors['url']"
+                 titleKey='shopInfo.website'
+                 placeHolder='editRestaurant.enterWebsite'
+                 :maxlength='100'
+                 :required="false" />
 
-      <b-field
-        :label="$t('editRestaurant.website')"
-        :type="errors['url'].length > 0 ? 'is-danger' : 'is-success'"
-      >
-        <b-input
-          v-model="shopInfo.url"
-          :placeholder="$t('editRestaurant.enterWebsite')"
-          type="url"
-          maxlength="100"
-        ></b-input>
-      </b-field>
+      <text-form v-model="shopInfo.introduction"
+                 type="textarea"
+                 :required="false"
+                 :maxlength='300'
+                 titleKey='editRestaurant.introduction'
+                 placeHolder='editRestaurant.enterIntroduction'
+                 :error="errors['introduction']"
+                 />
 
-      <b-field
-        :label="$t('editRestaurant.introduction')"
-        :type="errors['introduction'].length > 0 ? 'is-danger' : 'is-success'"
-      >
-        <b-input type="textarea"
-          v-model="shopInfo.introduction"
-          :placeholder="$t('editRestaurant.enterIntroduction')"
-          maxlength="300"
-           ></b-input>
-      </b-field>
+      <text-form v-model="shopInfo.orderNotice"
+                 type="textarea"
+                 :required="false"
+                 :maxlength='300'
+                 titleKey='editRestaurant.orderNotice'
+                 placeHolder='editRestaurant.enterOrderNotice'
+                 :error="errors['orderNotice']"
+                 />
 
-      <b-field
-        :label="$t('editRestaurant.orderNotice')"
-        :type="errors['orderNotice'].length > 0 ? 'is-danger' : 'is-success'"
-      >
-        <b-input type="textarea"
-          v-model="shopInfo.orderNotice"
-          :placeholder="$t('editRestaurant.enterOrderNotice')"
-          maxlength="300"
-           ></b-input>
-      </b-field>
-
-      <b-field
-        :label="$t('editRestaurant.orderThanks')"
-        :type="errors['orderThanks'].length > 0 ? 'is-danger' : 'is-success'"
-      >
-        <b-input type="textarea"
-          v-model="shopInfo.orderThanks"
-          :placeholder="$t('editRestaurant.enterOrderThanks')"
-          maxlength="300"
-           ></b-input>
-      </b-field>
+      <text-form v-model="shopInfo.orderThanks"
+                 type="textarea"
+                 :required="false"
+                 :maxlength='300'
+                 titleKey='editRestaurant.orderThanks'
+                 placeHolder='editRestaurant.enterOrderThanks'
+                 :error="errors['orderThanks']"
+                 />
 
 
       <div class="columns" v-if="requireTaxInput">
@@ -403,7 +344,6 @@
 <script>
 import Vue from "vue";
 import { db, storage, firestore } from "~/plugins/firebase.js";
-import HoursInput from "~/app/admin/Restaurant/HoursInput";
 
 import * as API from "~/plugins/api";
 import BackButton from "~/components/BackButton";
@@ -412,12 +352,19 @@ import PhoneEntry from "~/components/PhoneEntry";
 import Price from "~/components/Price";
 import { ownPlateConfig } from "@/config/project";
 
+
+import HoursInput from "./inputComponents/HoursInput";
+import TextForm from "./inputComponents/TextForm"
+import State from "./inputComponents/State"
+
 import { taxRates, daysOfWeek, regionalSettings } from "~/plugins/constant.js";
 
 export default {
   name: "Order",
   components: {
     HoursInput,
+    TextForm,
+    State,
     BackButton,
     NotFound,
     PhoneEntry,
@@ -477,8 +424,7 @@ export default {
         images: {},
         publicFlag: false
       },
-      states: regionalSetting.AddressStates,
-      state_key: regionalSetting.StateKey || "shopInfo.state",
+      region: ownPlateConfig.region,
       maplocation: {},
       place_id: null,
       markers: [],
