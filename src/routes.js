@@ -20,6 +20,11 @@ export const customRoutes = [
     component: 'user/OrderPage.vue',
   },
   {
+    name: 'r-restaurantId-transactionsAct',
+    path: '/r/:restaurantId/transactionsAct',
+    component: 'user/TransactionsAct.vue',
+  },
+  {
     name: 'admin',
     path: '/admin/restaurants',
     component: 'admin/Index.vue',
