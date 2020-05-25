@@ -21,15 +21,19 @@ export default {
     this.detacher = refRestaurant.onSnapshot(async snapshot => {
       const restaurant = snapshot.data();
       if (!restaurant.trace) {
+        const refEnter = refRestaurant.collection("trace").doc();
+        const refLeave = refRestaurant.collection("trace").doc();
         // Strictly speaking, we need a transaction here, but practically speaking we don't need.
-        const docEnter = await refRestaurant.collection("trace").add({
+        const docEnter = await refEnter.set({
           event: "enter",
           uid: this.user.uid,
+          id: refEnter.id,
           restaurantId: this.restaurantId()
         });
-        const docLeave = await refRestaurant.collection("trace").add({
+        const docLeave = await refLeave.set({
           event: "leave",
           uid: this.user.uid,
+          id: refLeave.id,
           restaurantId: this.restaurantId()
         });
         console.log("new traceIDs", docEnter.id, docLeave.id);
