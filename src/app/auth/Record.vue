@@ -2,15 +2,17 @@
   <section class="section">
     <div v-if="traceId">
       <div v-if="success">
-        <p>ご協力ありがとうございます</p>
+        <h1>{{$t('trace.thankyou')}}</h1>
       </div>
     </div>
     <div v-else>
-      <p>ご協力ありがとうございます 2</p>
-      <div v-for="record in records" :key="record.id">
-        <span>{{record.timeCreated}}</span>
-        <span>{{record.event}}</span>
-        <span>{{record.restaurantName}}</span>
+      <h1>{{$t('trace.thankyou')}}</h1>
+      <div class="m-t-16">
+        <div v-for="record in records" :key="record.id">
+          <span>{{record.timeCreated.toLocaleString()}}</span>
+          <span>{{$t('trace.' + record.event)}}</span>
+          <span>{{record.restaurantName}}</span>
+        </div>
       </div>
     </div>
   </section>
@@ -56,7 +58,11 @@ export default {
           .orderBy("timeCreated", "desc")
           .limit(25)
           .onSnapshot(snapshot => {
-            this.records = snapshot.docs.map(this.doc2data("record"));
+            this.records = snapshot.docs.map(doc => {
+              const record = doc.data();
+              record.timeCreated = record.timeCreated.toDate();
+              return record;
+            });
             console.log("snapshot", this.records);
           });
       }

@@ -318,6 +318,11 @@
     "addFriend": "Follow",
     "addFriendDescription": "In order to receive LINE notifications, you need to follow the official channel"
   },
+  "trace": {
+    "thankyou": "Thank you for participating.",
+    "enter": "Enter",
+    "leave": "Leave"
+  },
   "errorPage": {
     "popup": {
       "title": "Unexped Error Happened"

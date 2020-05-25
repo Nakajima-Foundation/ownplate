@@ -318,6 +318,11 @@
     "addFriend": "友だち追加",
     "addFriendDescription": "ご注文状況の通知を受けるには、「おもてなし.com 公式アカウント」を友だち追加していただく必要があります。"
   },
+  "trace": {
+    "thankyou": "ご協力ありがとうございます",
+    "enter": "入店",
+    "leave": "退店"
+  },
   "errorPage": {
     "popup": {
       "title": "エラーが発生しました"
