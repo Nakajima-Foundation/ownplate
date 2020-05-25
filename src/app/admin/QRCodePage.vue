@@ -1,14 +1,25 @@
 <template>
   <section class="section" style="background-color:#fffafa">
     <div class="align-center m-t-24">
-      <qrcode :value="url" :options="{ width: 160 }"></qrcode>
+      <qrcode :value="urlMenu" :options="{ width: 160 }"></qrcode>
       <p>{{$t('admin.qrcode.restaurant')}}</p>
+    </div>
+    <div v-if="trace">
+      <div class="align-center m-t-24">
+        <qrcode :value="urlEnter" :options="{ width: 160 }"></qrcode>
+        <p>{{$t('admin.qrcode.enter')}}</p>
+      </div>
+      <div class="align-center m-t-24">
+        <qrcode :value="urlLeave" :options="{ width: 160 }"></qrcode>
+        <p>{{$t('admin.qrcode.leave')}}</p>
+      </div>
     </div>
   </section>
 </template>
 
 <script>
 import { db, firestore } from "~/plugins/firebase.js";
+
 export default {
   data() {
     return {
@@ -20,7 +31,9 @@ export default {
     const refRestaurant = db.doc(`restaurants/${this.restaurantId()}`);
     this.detacher = refRestaurant.onSnapshot(async snapshot => {
       const restaurant = snapshot.data();
-      if (!restaurant.trace) {
+      if (restaurant.trace) {
+        this.trace = restaurant.trace;
+      } else {
         const refEnter = refRestaurant.collection("trace").doc();
         const refLeave = refRestaurant.collection("trace").doc();
         console.log("new traceIDs", refEnter.id, refLeave.id);
@@ -58,7 +71,13 @@ export default {
     user() {
       return this.$store.state.user;
     },
-    url() {
+    urlEnter() {
+      return `${location.origin}/t/${this.trace.enter}`;
+    },
+    urlLeave() {
+      return `${location.origin}/t/${this.trace.leave}`;
+    },
+    urlMenu() {
       return this.shareUrl();
     }
   }

@@ -91,7 +91,7 @@ export const customRoutes = [
     component: 'auth/TrackCallback.vue'
   },
   {
-    path: '/t/record',
+    path: '/t',
     component: 'auth/Record.vue'
   },
   {
