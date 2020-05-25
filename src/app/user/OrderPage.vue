@@ -554,15 +554,15 @@ export default {
           tip: this.tip || 0
         });
         console.log("place", data);
+        window.scrollTo(0, 0);
+      } catch (error) {
+        console.error(error.message, error.details);
         this.$store.commit("setErrorMessage", {
           code: "order.place",
           error
         });
-        window.scrollTo(0, 0);
-      } catch (error) {
-        console.error(error.message, error.details);
       } finally {
-        this.isPlacing = true;
+        this.isPlacing = false;
       }
     },
     async handleCancelPayment() {
