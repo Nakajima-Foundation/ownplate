@@ -31,7 +31,7 @@ export default {
     ],
     meta: [
       { hid: 'og:image', property: 'og:image', content: 'https://' + hostName + '/' +
-        (ownPlateConfig.region === "JP" ? 'Feature-Hero-v01-ja.png' : 'OGP-Facebook.png') },
+        (ownPlateConfig.region === "JP" ? 'PR-Feature.png' : 'OGP-Facebook.png') },
       { charset: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       {
