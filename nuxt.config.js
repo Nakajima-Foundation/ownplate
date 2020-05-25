@@ -7,7 +7,7 @@ import { regionalSettings } from "./src/plugins/constant";
 require('dotenv').config();
 import { customRoutes } from './src/routes';
 
-const hostName = regionalSettings[ownPlateConfig.region].hostName;
+const hostName = ownPlateConfig.hostName;
 
 export default {
   mode: "spa",
