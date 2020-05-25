@@ -20,10 +20,10 @@ export default {
     console.log("user =", this.user, this.isLineUser);
     if (this.isLineUser) {
       console.log("line user", this.user.uid);
-      if (this.id) {
+      if (this.traceId) {
         try {
           const doc = await db.collection(`line/${this.user.uid}/records`).add({
-            id: this.id,
+            traceId: this.traceId,
             uid: this.user.uid,
             at: firestore.FieldValue.serverTimestamp(),
             processed: false
@@ -46,8 +46,8 @@ export default {
     event() {
       return this.$route.query.event;
     },
-    id() {
-      return this.$route.query.id;
+    traceId() {
+      return this.$route.params.traceId;
     },
     lineAuth() {
       const query = {
@@ -56,7 +56,7 @@ export default {
         redirect_uri: this.redirect_uri,
         scope: "profile openid",
         state: "s" + Math.random(), // LATER: Make it more secure
-        nonce: `${this.id}` // HACK: Repurposing nonce
+        nonce: `${this.traceId}` // HACK: Repurposing nonce
       };
       const queryString = Object.keys(query)
         .map(key => {

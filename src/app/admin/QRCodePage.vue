@@ -7,11 +7,15 @@
     <div v-if="trace">
       <div class="align-center m-t-24">
         <qrcode :value="urlEnter" :options="{ width: 160 }"></qrcode>
-        <p>{{$t('admin.qrcode.enter')}}</p>
+        <p>
+          <a :href="urlEnter">{{$t('admin.qrcode.enter')}}</a>
+        </p>
       </div>
       <div class="align-center m-t-24">
         <qrcode :value="urlLeave" :options="{ width: 160 }"></qrcode>
-        <p>{{$t('admin.qrcode.leave')}}</p>
+        <p>
+          <a :href="urlLeave">{{$t('admin.qrcode.leave')}}</a>
+        </p>
       </div>
     </div>
   </section>
