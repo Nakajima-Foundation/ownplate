@@ -26,7 +26,9 @@ export default {
       return this.$store.state.user;
     },
     lineConnection() {
-      return "to be implemented";
+      return this.user?.claims.line
+        ? "profile.status.hasLine"
+        : "profile.status.noLine";
     },
     displayName() {
       return this.user?.displayName || "profile.undefined";
@@ -35,10 +37,11 @@ export default {
       if (this.user) {
         console.log(this.user);
         if (this.user.email) {
-          return `${"profile.status.email"} ${this.user.email}`;
+          const extra = this.user?.claims.admin ? "*admin" : "";
+          return `${"profile.status.email"}: ${this.user.email} ${extra}`;
         } else if (this.user.phoneNumber) {
           const number = parsePhoneNumber(this.user.phoneNumber);
-          return `${"profile.status.phone"} ${formatNational(number)}`;
+          return `${"profile.status.phone"}: ${formatNational(number)}`;
         } else if (this.user.uid.slice(0, 5) === "line:") {
           return "profile.status.line";
         }

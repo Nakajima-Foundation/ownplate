@@ -290,8 +290,7 @@ export default {
           }
         }
         user.getIdTokenResult(true).then(result => {
-          const admin = result.claims.admin;
-          this.$store.commit("setCredentials", { admin });
+          this.$store.commit("setCustomClaims", result.claims);
         });
       } else {
         console.log("authStateChanged: null");
