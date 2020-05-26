@@ -30,16 +30,14 @@ export default {
       detatcher: null
     };
   },
-  async mounted() {
-    console.log("user =", this.user, this.isLineUser);
-    if (this.isLineUser) {
-      console.log("line user", this.user.uid);
-      const refRecords = db.collection(`line/${this.user.uid}/records`);
+  methods: {
+    async record(lineUid) {
+      const refRecords = db.collection(`line/${lineUid}/records`);
       if (this.traceId) {
         try {
           const doc = await refRecords.add({
             traceId: this.traceId,
-            uid: this.user.uid,
+            uid: lineUid,
             timeCreated: firestore.FieldValue.serverTimestamp(),
             processed: false
           });
@@ -66,14 +64,22 @@ export default {
             console.log("snapshot", this.records);
           });
       }
+    }
+  },
+  async mounted() {
+    console.log("user =", this.user, this.isLineUser);
+    if (this.isLineUser) {
+      console.log("line user", this.user.uid);
+      this.record(this.user.uid);
     } else {
       if (this.user) {
         const { claims } = await this.user.getIdTokenResult(true);
         if (claims.line) {
           console.log("***** DEBUG *****", claims.line);
         }
+        return;
       }
-      //location.href = this.lineAuth;
+      location.href = this.lineAuth;
     }
   },
   destroyed() {
