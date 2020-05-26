@@ -131,18 +131,21 @@
                 class="t-h6 c-text-black-disabled"
               >{{ $t("order.yourOrder") + ": " + orderName }}</div>
               <div v-else class="t-h6 c-text-black-disabled">{{ $t("order.yourOrder") }}</div>
+
               <!-- Details -->
               <order-info
                 :orderItems="this.orderItems"
                 :orderInfo="this.orderInfo || {}"
                 @change="handleTipChange"
               ></order-info>
+
               <!-- View Menu Page Button -->
-              <div class="align-center m-t-24">
+              <div class="align-center m-t-24" v-if="paid">
                 <b-button class="b-reset op-button-small secondary" @click="handleOpenMenu">
                   <span class="c-primary p-l-24 p-r-24">{{$t("order.menu")}}</span>
                 </b-button>
               </div>
+
               <!-- Validating -->
               <b-notification :closable="false" v-if="newOrder">
                 {{ $t("order.validating") }}
@@ -174,7 +177,7 @@
                 "
               >
                 <div class="m-t-24">
-                  <div class="t-h6 c-text-black-disabled">Order Notice</div>
+                  <div class="t-h6 c-text-black-disabled">{{ $t("order.orderNotice") }}</div>
                   <div class="bg-surface r-8 d-low m-t-8 p-l-16 p-r-16 p-t-16 p-b-16">
                     <div class="cols">
                       <div class="p-r-8">
