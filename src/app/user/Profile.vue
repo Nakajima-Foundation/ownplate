@@ -22,8 +22,25 @@
 
 <script>
 import { parsePhoneNumber, formatNational } from "~/plugins/phoneutil.js";
+import { db, firestore, functions } from "~/plugins/firebase.js";
 
 export default {
+  data() {
+    return {
+      isFriend: false
+    };
+  },
+  created() {
+    db.doc(`users/${this.user.uid}/private/line`)
+      .get()
+      .then(doc => {
+        const data = doc.data();
+        console.log(data);
+        if (data) {
+          this.isFriend = data.isFriend;
+        }
+      });
+  },
   computed: {
     user() {
       return this.$store.state.user;
@@ -34,7 +51,7 @@ export default {
         : this.$t("profile.status.noLine");
     },
     lineFriend() {
-      return this.user?.claims?.line
+      return this.isFriend
         ? this.$t("profile.status.isFriend")
         : this.$t("profile.status.noFriend");
     },

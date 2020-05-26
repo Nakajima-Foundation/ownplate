@@ -14,7 +14,7 @@
     "lineFriend": "公式アカウントとの友達設定",
     "undefined": "未設定",
     "status": {
-      "hasLine": "連携中",
+      "hasLine": "連携済み",
       "noLine": "未連携",
       "email": "email",
       "phone": "電話番号",
