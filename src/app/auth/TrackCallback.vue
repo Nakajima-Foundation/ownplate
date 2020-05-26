@@ -61,6 +61,7 @@ export default {
       console.error(this.error);
       this.$store.commit("setErrorMessage", {
         message: this.error.message,
+        message2: "errorPage.message.line",
         error: this.error
       });
     }
