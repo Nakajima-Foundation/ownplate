@@ -6,7 +6,7 @@
         <a :href="urlMenu">{{restaurant.restaurantName}}</a>
       </p>
     </div>
-    <div v-if="trace">
+    <div v-if="trace && regionalSetting.covid19trace">
       <div class="align-center m-t-24">
         <qrcode :value="urlEnter" :options="{ width: 160 }"></qrcode>
         <p>
@@ -25,6 +25,8 @@
 
 <script>
 import { db, firestore } from "~/plugins/firebase.js";
+import { regionalSettings } from "~/plugins/constant.js";
+import { ownPlateConfig } from "@/config/project";
 
 export default {
   data() {
@@ -75,6 +77,9 @@ export default {
     this.detacher && this.detacher();
   },
   computed: {
+    regionalSetting() {
+      return regionalSettings[ownPlateConfig.region || "US"];
+    },
     user() {
       return this.$store.state.user;
     },

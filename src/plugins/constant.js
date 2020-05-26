@@ -235,7 +235,8 @@ export const regionalSettings = {
     languages: {
       ja: "日本語",
       en: "English(US)"
-    }
+    },
+    covid19trace: true
   },
   EU: {
     CurrencyKey: "EUR",
