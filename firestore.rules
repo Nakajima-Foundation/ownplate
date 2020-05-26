@@ -116,6 +116,9 @@ service cloud.firestore {
         allow write: if request.auth.uid == userId
                       && request.resource.data.uid == userId;
         allow read: if request.auth.uid == userId;
+        allow write: if request.auth.token.line == userId
+                      && request.resource.data.uid == userId;
+        allow read: if request.auth.token.line == userId;
       }
     }
 

@@ -76,8 +76,9 @@ export default {
         const { claims } = await this.user.getIdTokenResult(true);
         if (claims.line) {
           console.log("***** DEBUG *****", claims.line);
+          this.record(claims.line);
+          return;
         }
-        return;
       }
       location.href = this.lineAuth;
     }

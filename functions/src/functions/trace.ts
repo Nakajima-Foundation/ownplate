@@ -5,9 +5,11 @@ export const process = async (db: FirebaseFirestore.Firestore, data: any, contex
   const uid = utils.validate_auth(context);
   const { eventId } = data;
   utils.validate_params({ eventId })
+  const uidLine = context.auth!.token.line || uid
+  console.log("**** uid", uid, uidLine);
 
   try {
-    const refRecord = db.doc(`line/${uid}/records/${eventId}`);
+    const refRecord = db.doc(`line/${uidLine}/records/${eventId}`);
     const record = (await refRecord.get()).data();
     if (!record) {
       throw new functions.https.HttpsError('invalid-argument', 'No document for the specified eventId.')

@@ -66,8 +66,10 @@ export const mutations = {
     state.lang = lang;
   },
   setCredentials(state, credentials) {
-    state.user = Object.assign({}, state.user, { credentials });
-    console.log("store:setCredentials", credentials.admin);
+    // Note: we can't copy user using Object.assign here
+    if (credentials.admin) {
+      state.user.admin = credentials.admin;
+    }
   },
   pingOrderEvent(state) {
     state.orderEvent = (state.orderEvent) + 1;
