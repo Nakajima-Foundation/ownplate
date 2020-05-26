@@ -116,6 +116,7 @@
     "empty": "（カテゴリー名未入力）"
   },
   "shopInfo": {
+    "share": "シェア",
     "qrcode": "飲食店QRコード",
     "copyUrl": "このお店のアドレスをコピー",
     "UrlCopied": "コピーしました",
@@ -169,6 +170,7 @@
     "history": "注文履歴",
     "timeToPickup": "受け渡し予定時刻",
     "notAvailable": "今日、明日は営業日ではないので、現在は注文を受け付けていません。",
+    "orderNotice": "注文時のご注意",
     "status": {
       "unexpected": "(Unexpected)",
       "error": "エラー",
