@@ -8,6 +8,13 @@
           </p>
         </div>
       </div>
+      <div class="card block" v-if="isJapan">
+        <div class="card-content m-t-8">
+          <p style="text-align:center; font-weight:bold; font-size:1.5em">
+            <a href="https://gluepass.jp/g/ownplatejp/pages" target="_blank">{{$t("menu.userManual")}}</a>
+          </p>
+        </div>
+      </div>
       <div class="card block" v-if="!hideUsersLink">
         <div class="card-content m-t-8">
           <p style="text-align:center; font-weight:bold; font-size:1.5em">
@@ -49,6 +56,9 @@ export default {
   computed: {
     hideUsersLink() {
       return releaseConfig.hideUsersLink;
+    },
+    isJapan() {
+      return this.$store.state.server.region === "JP"
     }
   },
   methods: {

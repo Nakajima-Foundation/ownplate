@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h1>{{ $t('line.authenticating')}}</h1>
     <b-loading :is-full-page="false" :active="isValidating"></b-loading>
   </div>
 </template>
@@ -39,6 +40,7 @@ export default {
           this.$router.push(data.nonce);
         } else {
           console.error("validatin failed", data);
+          throw new Error("something is wrong");
         }
       } catch (error) {
         console.error(error.message, error.details);

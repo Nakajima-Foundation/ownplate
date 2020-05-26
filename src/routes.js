@@ -20,19 +20,24 @@ export const customRoutes = [
     component: 'user/OrderPage.vue',
   },
   {
+    name: 'r-restaurantId-transactionsAct',
+    path: '/r/:restaurantId/transactionsAct',
+    component: 'user/TransactionsAct.vue',
+  },
+  {
     name: 'admin',
     path: '/admin/restaurants',
-    component: 'admin/OwnerPage.vue',
+    component: 'admin/Index.vue',
   },
   {
     name: 'admin-about',
     path: '/admin/restaurants/:restaurantId',
-    component: 'admin/AboutPage.vue',
+    component: 'admin/RestaurantPage.vue',
   },
   {
     name: 'admin-menus',
     path: '/admin/restaurants/:restaurantId/menus',
-    component: 'admin/MenusPage.vue',
+    component: 'admin/MenuListPage.vue',
   },
   {
     name: 'admin-menus-item',
@@ -43,6 +48,11 @@ export const customRoutes = [
     name: 'admin-orders',
     path: '/admin/restaurants/:restaurantId/orders',
     component: 'admin/OrderListPage.vue',
+  },
+  {
+    name: 'admin-orders',
+    path: '/admin/restaurants/:restaurantId/qrcode',
+    component: 'admin/QRCodePage.vue',
   },
   {
     name: 'admin-order-info',
@@ -75,6 +85,18 @@ export const customRoutes = [
   {
     path: '/callback/line',
     component: 'auth/LineCallback.vue'
+  },
+  {
+    path: '/callback/track',
+    component: 'auth/TrackCallback.vue'
+  },
+  {
+    path: '/t/:traceId',
+    component: 'trace/Record.vue'
+  },
+  {
+    path: '/t',
+    component: 'trace/Record.vue'
   },
   {
     path: '*',

@@ -256,7 +256,7 @@ export default {
         } catch (error) {
           console.error(error.message, error.details);
           this.$store.commit("setErrorMessage", {
-            code: "sprite.confirm",
+            code: "stripe.confirm",
             error
           });
         } finally {

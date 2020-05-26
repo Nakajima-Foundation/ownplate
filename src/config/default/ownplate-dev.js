@@ -16,6 +16,7 @@ export const ownPlateConfig = {
   hostName: "staging.ownplate.today",
   line: {
     LOGIN_CHANNEL_ID: "1654216149",
+    TRACK_CHANNEL_ID: "1654259709",
   }
 };
 

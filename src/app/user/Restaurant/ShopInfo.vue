@@ -1,43 +1,5 @@
 <template>
   <div>
-    <!-- Share / Review -->
-    <div class="m-t-8 align-center">
-      <div class="op-button-text m-r-8" @click="openShare()">
-        <i class="material-icons">launch</i>
-        <span>Share</span>
-      </div>
-      <!-- <sharing-buttons :title="name" :url="shareUrl()" /> -->
-    </div>
-    <!-- Share Popup-->
-    <b-modal :active.sync="sharePopup" :width="488" scroll="keep">
-      <div class="op-dialog p-t-24 p-l-24 p-r-24 p-b-24">
-        <div class="t-h6 c-text-black-disabled p-b-8">Share</div>
-        <div class="cols">
-          <div>
-            <qrcode :value="url" :options="{ width: 160 }"></qrcode>
-          </div>
-          <div>
-            <nuxt-link to="#" @click.native="copyClipboard(url)" event>
-              <div class="op-button-text m-t-8">
-                <i class="material-icons">file_copy</i>
-                <span>{{$t('shopInfo.copyUrl')}}</span>
-              </div>
-            </nuxt-link>
-            <div
-              class="m-l-8 t-body2 c-text-black-disabled"
-              style="word-break: break-all;"
-            >{{this.url}}</div>
-            <div class="m-t-24">
-              <sharing-buttons :title="shopInfo.restaurantName" :url="url" />
-            </div>
-          </div>
-        </div>
-        <div class="m-t-24 align-center">
-          <div class="op-button-small tertiary" @click="closeShare()">Close</div>
-        </div>
-      </div>
-    </b-modal>
-
     <!-- Restaurant Details -->
     <div class="m-t-24">
       <div class="t-h6 c-text-black-disabled">{{$t('shopInfo.restaurantDetails')}}</div>
@@ -63,11 +25,17 @@
                 <i class="material-icons">place</i>
                 <span
                   style="word-break: break-all;"
-                >{{this.shopInfo.streetAddress}}, {{this.shopInfo.city}}, {{this.shopInfo.state}} {{this.shopInfo.zip}}</span>
+                  v-if="region === 'JP'"
+                  >〒{{this.shopInfo.zip}} {{this.shopInfo.state}} {{this.shopInfo.city}} {{this.shopInfo.streetAddress}}</span>
+                <span
+                  style="word-break: break-all;"
+                  v-else
+                  >{{this.shopInfo.streetAddress}}, {{this.shopInfo.city}}, {{this.shopInfo.state}} {{this.shopInfo.zip}}</span>
               </div>
             </a>
           </div>
         </div>
+        <div v-else class="h-8"></div>
 
         <!-- Restaurant Phone Number -->
         <div class="m-t-8 m-l-16 m-r-16">
@@ -91,14 +59,6 @@
               <span style="word-break: break-all;">{{this.shopInfo.url}}</span>
             </div>
           </a>
-        </div>
-
-        <!-- Restaurant Website -->
-        <div class="m-t-8 m-l-16 m-r-16">
-          <div class="op-button-text">
-            <i class="material-icons">info</i>
-            <span style="word-break: break-all;">{{this.shopInfo.introduction}}</span>
-          </div>
         </div>
 
         <!-- Restaurant Hours -->
@@ -129,7 +89,7 @@
             </div>
           </template>
         </div>
-        <!-- Want to update to popup version -->
+        <!-- # Want to update to popup version -->
         <!--
 				<div class="align-center">
           <div class="op-status c-status-green bg-status-green-bg m-t-16">Open Now</div>
@@ -153,17 +113,14 @@ import {
   formatNational,
   formatURL
 } from "~/plugins/phoneutil.js";
-import SharingButtons from "~/app/user/Common/SharingButtons";
+import { ownPlateConfig } from "@/config/project";
 
 export default {
-  components: {
-    SharingButtons
-  },
   props: {
     shopInfo: {
       type: Object,
       required: true
-    },
+    }
   },
   data() {
     const d = new Date();
@@ -171,8 +128,7 @@ export default {
       url: this.shareUrl(),
       days: daysOfWeek,
       weekday: d.getDay(),
-      today: d,
-      sharePopup: false
+      today: d
     };
   },
   computed: {
@@ -227,7 +183,10 @@ export default {
         this.shopInfo.location.lat &&
         this.shopInfo.location.lng
       );
-    }
+    },
+    region() {
+      return ownPlateConfig.region
+    },
   },
   mounted() {
     this.updateMap();
@@ -251,12 +210,6 @@ export default {
     },
     validDate(date) {
       return !this.isNull(date.start) && !this.isNull(date.end);
-    },
-    openShare() {
-      this.sharePopup = true;
-    },
-    closeShare() {
-      this.sharePopup = false;
     }
   }
 };

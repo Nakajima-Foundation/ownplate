@@ -1,7 +1,5 @@
 <template>
-  <div
-    style="padding: 16px 8px; background: #fff; border-raduis: 12px; box-shadow: 0px 2px 4px rgba(0,0,0,0.13);"
-  >
+  <div class="bg-surface r-8 d-low m-t-8 p-l-16 p-r-16 p-t-16 p-b-16">
     <div id="card-element"></div>
   </div>
 </template>
