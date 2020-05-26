@@ -17,6 +17,7 @@ exportIfNeeded("api", "api", exports);
 exportIfNeeded("systemGetConfig", "systemGetConfig", exports);
 
 exportIfNeeded("lineValidate", "lineValidate", exports);
+exportIfNeeded("traceProcess", "traceProcess", exports);
 
 exportIfNeeded("wasOrderCreated2", "order/wasOrderCreated2", exports);
 exportIfNeeded("orderUpdate", "order/orderUpdate", exports);

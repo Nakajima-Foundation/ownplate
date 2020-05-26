@@ -50,6 +50,11 @@ export const customRoutes = [
     component: 'admin/OrderListPage.vue',
   },
   {
+    name: 'admin-orders',
+    path: '/admin/restaurants/:restaurantId/qrcode',
+    component: 'admin/QRCodePage.vue',
+  },
+  {
     name: 'admin-order-info',
     path: '/admin/restaurants/:restaurantId/orders/:orderId',
     component: 'admin/OrderInfoPage.vue',
@@ -80,6 +85,18 @@ export const customRoutes = [
   {
     path: '/callback/line',
     component: 'auth/LineCallback.vue'
+  },
+  {
+    path: '/callback/track',
+    component: 'auth/TrackCallback.vue'
+  },
+  {
+    path: '/t/:traceId',
+    component: 'trace/Record.vue'
+  },
+  {
+    path: '/t',
+    component: 'trace/Record.vue'
   },
   {
     path: '*',

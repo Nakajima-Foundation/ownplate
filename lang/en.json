@@ -261,6 +261,12 @@
       "cancelMessage": "Please contact to the customer and tell the order will be canceled.",
       "delete": "Cancel this order (undoable)"
     },
+    "qrcode": {
+      "title": "QRcodes",
+      "restaurant": "Menu Page",
+      "enter": "Record Entrance",
+      "leave": "Record Leave"
+    },
     "error": {
       "email": {
         "invalid": "Invalid Email Address",
@@ -311,6 +317,11 @@
     "notifyMe": "Receive LINE notification",
     "addFriend": "Follow",
     "addFriendDescription": "In order to receive LINE notifications, you need to follow the official channel"
+  },
+  "trace": {
+    "thankyou": "Thank you for participating.",
+    "enter": "Enter",
+    "leave": "Leave"
   },
   "errorPage": {
     "popup": {

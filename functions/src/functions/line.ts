@@ -2,15 +2,18 @@ import * as functions from 'firebase-functions'
 import * as utils from '../stripe/utils'
 import * as netutils from '../lib/netutils'
 import { ownPlateConfig } from '../common/project';
+import * as admin from 'firebase-admin';
 
 export const isEnabled = !!ownPlateConfig.line;
 
 export const validate = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
-  const uid = utils.validate_auth(context);
-
   const { code, redirect_uri, client_id } = data;
+  const uid = (client_id === ownPlateConfig.line.TRACK_CHANNEL_ID) ? null : utils.validate_auth(context);
+
   utils.validate_params({ code, redirect_uri, client_id })
-  const LINE_SECRET_KEY = functions.config().line.secret;
+  const LINE_SECRET_KEY = (client_id === ownPlateConfig.line.TRACK_CHANNEL_ID) ?
+    functions.config().line.track :
+    functions.config().line.secret;
 
   try {
     // We validate the OAuth token (code) given to the redirected page.
@@ -46,6 +49,15 @@ export const validate = async (db: FirebaseFirestore.Firestore, data: any, conte
         Authorization: `Bearer ${access.access_token}`
       }
     })
+
+    if (uid === null) {
+      const uidLine = "line:" + profile.userId;
+      await db.doc(`/line/${uidLine}/system/line`).set({
+        access, verified, profile
+      }, { merge: true })
+      const customToken = await admin.auth().createCustomToken(uidLine)
+      return { profile, customToken, nonce: verified.nonce };
+    }
 
     const collection = context.auth!.token.phone_number ? "users" : "admins";
     await db.doc(`/${collection}/${uid}/system/line`).set({

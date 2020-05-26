@@ -61,6 +61,15 @@
         </nuxt-link>
       </div>
 
+      <!-- QR code -->
+      <div class="align-center m-t-16">
+        <nuxt-link :to="`/admin/restaurants/${restaurantid}/qrcode`">
+          <div class="op-button-small secondary" style="min-width: 256px;">
+            <span class="c-primary">{{$t('admin.qrcode.title')}}</span>
+          </div>
+        </nuxt-link>
+      </div>
+
       <!-- Delete Restaurant -->
       <div class="m-t-24 align-center">
         <div class="op-button-text c-status-red" @click="deleteRestaurant">

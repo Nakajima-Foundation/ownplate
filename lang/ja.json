@@ -261,6 +261,12 @@
       "cancelMessage": "お客様にご連絡の上、ご注文をキャンセルさせていただく旨をお伝え下さい。",
       "delete": "この注文をキャンセルする (やり直しは出来ません)"
     },
+    "qrcode": {
+      "title": "QRコード",
+      "restaurant": "メニューページ",
+      "enter": "入店記録",
+      "leave": "退店記録"
+    },
     "error": {
       "email": {
         "invalid": "無効なメールアドレスです。",
@@ -311,6 +317,11 @@
     "notifyMe": "ラインで通知を受ける",
     "addFriend": "友だち追加",
     "addFriendDescription": "ご注文状況の通知を受けるには、「おもてなし.com 公式アカウント」を友だち追加していただく必要があります。"
+  },
+  "trace": {
+    "thankyou": "ご協力ありがとうございます",
+    "enter": "入店",
+    "leave": "退店"
   },
   "errorPage": {
     "popup": {
