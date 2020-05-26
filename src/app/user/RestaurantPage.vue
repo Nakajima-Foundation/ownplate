@@ -18,11 +18,8 @@
               <div class="column">
                 <div class="is-hidden-mobile h-24"></div>
                 <div class="bg-form h-192">
-                  <img :src="shopInfo.restCoverPhoto" class="h-192 w-full cover is-hidden-tablet" />
-                  <img
-                    :src="shopInfo.restCoverPhoto"
-                    class="h-192 w-full cover r-8 is-hidden-mobile"
-                  />
+                  <img :src="coverImage" class="h-192 w-full cover is-hidden-tablet" />
+                  <img :src="coverImage" class="h-192 w-full cover r-8 is-hidden-mobile" />
                 </div>
               </div>
               <div class="column is-narrow w-24"></div>
@@ -30,7 +27,18 @@
 
             <!-- Restaurant Details -->
             <div class="m-l-24 m-r-24" v-if="shopInfo.publicFlag">
-              <shop-orner-info :shopInfo="shopInfo"></shop-orner-info>
+              <!-- Restaurant Profile Photo and Name -->
+              <shop-header :shopInfo="shopInfo"></shop-header>
+
+              <!-- Restaurant Descriptions -->
+              <div
+                class="t-body1 c-text-black-medium align-center m-t-8"
+              >{{this.shopInfo.introduction}}</div>
+
+              <!-- Share Popup -->
+              <share-popup :shopInfo="shopInfo"></share-popup>
+
+              <!-- Restaurant Info -->
               <shop-info :shopInfo="shopInfo"></shop-info>
             </div>
           </div>
@@ -94,17 +102,16 @@
         </div>
       </b-button>
     </template>
-    <error-popup :error="errorMessage" />
   </div>
 </template>
 
 <script>
 import ItemCard from "~/app/user/Restaurant/ItemCard";
 import PhoneLogin from "~/app/auth/PhoneLogin";
-import ShopOrnerInfo from "~/app/user/Restaurant/ShopOrnerInfo";
+import ShopHeader from "~/app/user/Restaurant/ShopHeader";
+import SharePopup from "~/app/user/Restaurant/SharePopup";
 import ShopInfo from "~/app/user/Restaurant/ShopInfo";
 import NotFound from "~/components/NotFound";
-import ErrorPopup from "~/components/ErrorPopup";
 
 import { db, firestore, functions } from "~/plugins/firebase.js";
 import { order_status } from "~/plugins/constant.js";
@@ -115,9 +122,9 @@ export default {
   components: {
     ItemCard,
     PhoneLogin,
-    ShopOrnerInfo,
+    ShopHeader,
+    SharePopup,
     ShopInfo,
-    ErrorPopup,
     NotFound
   },
   data() {
@@ -136,7 +143,6 @@ export default {
       menus: [],
       titles: [],
       waitForUser: false,
-      errorMessage: null,
 
       detacher: [],
       notFound: null
@@ -241,6 +247,12 @@ export default {
         ret[id] = this.options[id];
         return ret;
       }, {});
+    },
+    coverImage() {
+      return (
+        (this.shopInfo?.images?.cover?.resizedImages || {})["1200"] ||
+        this.shopInfo.restCoverPhoto
+      );
     }
   },
   methods: {
@@ -311,7 +323,10 @@ export default {
           }, 500);
         } else {
           console.error(error.message);
-          this.errorMessage = { code: "order.checkout", details: error };
+          this.$store.commit("setErrorMessage", {
+            code: "order.checkout",
+            error
+          });
         }
       } finally {
         this.isCheckingOut = false;

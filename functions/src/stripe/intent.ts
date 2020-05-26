@@ -3,7 +3,7 @@ import * as admin from 'firebase-admin';
 import { order_status } from '../common/constant'
 import Stripe from 'stripe'
 import Order from '../models/Order'
-import * as utils from './utils'
+import * as utils from '../lib/utils'
 import { sendMessage } from '../functions/order';
 
 // This function is called by user to create a "payment intent" (to start the payment transaction)

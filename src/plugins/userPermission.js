@@ -5,7 +5,7 @@ export default ({app}) => {
     methods: {
       checkAdminPermission() {
         if (!(this.$store.getters.uidAdmin)) {
-          this.$router.push('/admin/user/signin');
+          this.$router.replace('/admin/user/signin');
         }
       }
     },

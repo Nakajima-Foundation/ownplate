@@ -1,97 +1,164 @@
 <template>
-  <section class="section">
-    <back-button url="/admin/restaurants/" />
-
+  <div>
     <template v-if="notFound===null"></template>
     <template v-else-if="notFound">
       <not-found />
     </template>
-    <section class="section" v-else-if="readyToDisplay">
-      <div class="media">
-        <div class="media-left">
-          <figure class="image is-64x64">
-            <img class="is-rounded" :src="restaurantInfo.restProfilePhoto" alt />
-          </figure>
-        </div>
-        <div class="media-content">
-          <h3 class="title is-4">{{ restaurantInfo.restaurantName }}</h3>
-        </div>
-      </div>
-
-      <h2 class="p-big bold">{{$t('editMenu.menu')}}</h2>
-      <div v-if="!existsMenu" class="card block">
-        <div class="card-content">
-          <div class="container content has-text-centered">
-            <b-icon icon="book-open" size="is-large"></b-icon>
-            <h3>{{$t('editMenu.noItem')}}</h3>
-            {{$t('editMenu.pleaseAddItem')}}
+    <div v-else-if="readyToDisplay">
+      <!-- Edit Header Area -->
+      <div class="columns is-gapless">
+        <!-- Left Gap -->
+        <div class="column is-narrow w-24"></div>
+        <!-- Center Column -->
+        <div class="column">
+          <div class="m-l-24 m-r-24 m-t-24">
+            <!-- Back Button -->
+            <back-button url="/admin/restaurants/" />
           </div>
         </div>
+        <!-- Right Gap -->
+        <div class="column is-narrow w-24"></div>
       </div>
 
-      <div v-if="existsMenu">
-        <div v-for="(menuList, index) in menuLists" :key="menuList">
-          <div v-if="itemsObj[menuList] && itemsObj[menuList]._dataType === 'title'">
-            <div v-if="editings[menuList] === true">
-              <title-input @updateTitle="updateTitle($event)" :title="itemsObj[menuList]"></title-input>
+      <!-- Edit Body Area -->
+      <div class="columns is-gapless">
+        <!-- Left Gap -->
+        <div class="column is-narrow w-24"></div>
+
+        <!-- Left Column -->
+        <div class="column">
+          <div class="m-l-24 m-r-24">
+            <!-- Restaurant Profile Photo -->
+            <div class="m-t-24 align-center">
+              <img :src="restaurantInfo.restProfilePhoto" class="w-64 h-64 r-64 cover" />
             </div>
-            <div v-else>
-              <title-card
-                :title="itemsObj[menuList]"
-                :position="index == 0 ? 'first' : ((menuLists.length - 1) === index ? 'last' : '')"
-                @toEditMode="toEditMode($event)"
-                @positionUp="positionUp($event)"
-                @positionDown="positionDown($event)"
-                @forkItem="forkTitleItem($event)"
-                @deleteItem="deleteItem($event)"
-              ></title-card>
+
+            <!-- Restaurant Name -->
+            <div
+              class="m-t-8 align-center t-h6 c-text-black-high"
+            >{{ restaurantInfo.restaurantName }}</div>
+
+            <!-- Restaurant Descriptions -->
+            <div
+              class="t-body1 c-text-black-medium align-center m-t-8"
+            >{{ restaurantInfo.introduction }}</div>
+
+            <!-- Preview Link -->
+            <!-- # Need to make this link working -->
+            <!-- <div class="m-t-8 align-center">
+              <nuxt-link target="_blank" :to="'/r/' + restaurantInfo.restaurantid">
+                <div class="op-button-text m-r-8">
+                  <i class="material-icons">launch</i>
+                  <span>{{$t('admin.viewPage')}}</span>
+                </div>
+              </nuxt-link>
+            </div>-->
+          </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="column">
+          <div class="m-l-24 m-r-24">
+            <!-- No Menu -->
+            <div v-if="!existsMenu">
+              <div class="border-primary r-8 p-l-24 p-r-24 p-t-24 p-b-24">
+                <div class="align-center t-subtitle1 c-primary">{{$t('editMenu.pleaseAddItem')}}</div>
+                <div class="align-center">
+                  <b-button
+                    class="b-reset op-button-pill h-36 bg-form m-r-8 m-l-8 m-t-16"
+                    :disabled="submitting"
+                    @click="addTitle()"
+                  >
+                    <i class="material-icons c-primary m-l-8">add</i>
+                    <span class="c-primary t-button">{{$t("button.addTitle")}}</span>
+                  </b-button>
+                  <b-button
+                    class="b-reset op-button-pill h-36 bg-form m-l-8 m-r-8 m-t-16"
+                    :disabled="submitting"
+                    @click="addMenu()"
+                  >
+                    <i class="material-icons c-primary m-l-8">add</i>
+                    <span class="c-primary t-button">{{$t("button.addItem")}}</span>
+                  </b-button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Category Titles / Menu Items -->
+            <div v-if="existsMenu">
+              <div v-for="(menuList, index) in menuLists" :key="menuList">
+                <!-- Category Title -->
+                <div v-if="itemsObj[menuList] && itemsObj[menuList]._dataType === 'title'">
+                  <div v-if="editings[menuList] === true">
+                    <title-input
+                      :title="itemsObj[menuList]"
+                      :position="index == 0 ? 'first' : ((menuLists.length - 1) === index ? 'last' : '')"
+                      @toEditMode="toEditMode($event)"
+                      @positionUp="positionUp($event)"
+                      @positionDown="positionDown($event)"
+                      @forkItem="forkTitleItem($event)"
+                      @updateTitle="updateTitle($event)"
+                      ></title-input>
+                  </div>
+                  <div v-else>
+                    <title-card
+                      :title="itemsObj[menuList]"
+                      :position="index == 0 ? 'first' : ((menuLists.length - 1) === index ? 'last' : '')"
+                      @toEditMode="toEditMode($event)"
+                      @positionUp="positionUp($event)"
+                      @positionDown="positionDown($event)"
+                      @forkItem="forkTitleItem($event)"
+                      @deleteItem="deleteItem($event)"
+                    ></title-card>
+                  </div>
+                </div>
+
+                <!-- Menu Item -->
+                <div v-else-if="itemsObj[menuList] && itemsObj[menuList]._dataType === 'menu'">
+                  <item-edit-card
+                    :menuitem="itemsObj[menuList]"
+                    :position="index == 0 ? 'first' : ((menuLists.length - 1) === index ? 'last' : '')"
+                    :shopInfo="restaurantInfo"
+                    @positionUp="positionUp($event)"
+                    @positionDown="positionDown($event)"
+                    @forkItem="forkMenuItem($event)"
+                    @deleteItem="deleteItem($event)"
+                  ></item-edit-card>
+                </div>
+              </div>
+            </div>
+
+            <!-- Add Category Title / Menu Item -->
+            <div class="align-center m-t-16">
+              <!-- Add Category Title -->
+              <b-button
+                class="b-reset op-button-pill h-36 bg-form m-r-16"
+                :disabled="submitting"
+                @click="addTitle()"
+              >
+                <i class="material-icons c-primary m-l-8">add</i>
+                <span class="c-primary t-button">{{$t("button.addTitle")}}</span>
+              </b-button>
+
+              <!-- Add Menu Item -->
+              <b-button
+                class="b-reset op-button-pill h-36 bg-form"
+                :disabled="submitting"
+                @click="addMenu()"
+              >
+                <i class="material-icons c-primary m-l-8">add</i>
+                <span class="c-primary t-button">{{$t("button.addItem")}}</span>
+              </b-button>
             </div>
           </div>
-          <div v-else-if="itemsObj[menuList] && itemsObj[menuList]._dataType === 'menu'">
-            <item-edit-card
-              :menuitem="itemsObj[menuList]"
-              :position="index == 0 ? 'first' : ((menuLists.length - 1) === index ? 'last' : '')"
-              :shopInfo="restaurantInfo"
-              @positionUp="positionUp($event)"
-              @positionDown="positionDown($event)"
-              @forkItem="forkMenuItem($event)"
-              @deleteItem="deleteItem($event)"
-            ></item-edit-card>
-          </div>
         </div>
+        <!-- Right Gap -->
+        <div class="column is-narrow w-24"></div>
       </div>
-
-      <div style="margin-top:1rem;">
-        <div class="columns">
-          <div class="column">
-            <b-button
-              style="margin-right:auto"
-              type="is-primary"
-              class="counter-button"
-              expanded
-              rounded
-              outlined
-              :disabled="submitting"
-              @click="addTitle()"
-            >{{$t("button.addTitle")}}</b-button>
-          </div>
-          <div class="column">
-            <b-button
-              style="margin-right:auto"
-              type="is-primary"
-              class="counter-button"
-              expanded
-              rounded
-              outlined
-              :disabled="submitting"
-              @click="addMenu()"
-            >{{$t("button.addItem")}}</b-button>
-          </div>
-        </div>
-      </div>
-    </section>
-  </section>
+    </div>
+  </div>
 </template>
+
 <script>
 import { db } from "~/plugins/firebase.js";
 import ItemEditCard from "~/app/admin/Menus/ItemEditCard";
@@ -188,27 +255,7 @@ export default {
       });
     }
   },
-  /*
-  watch: {
-    itemsObj: function() {
-      this.updateBrokenMenu();
-    }
-  },
-*/
   methods: {
-    /*
-    updateBrokenMenu() {
-      // if loaded all data
-      if (this.notFound === false && Object.keys(this.itemsObj).length > 0) {
-        if (this.restaurantInfo.menuLists === undefined) {
-          db.doc(`restaurants/${this.restaurantId()}`).update(
-            "menuLists",
-            Object.keys(this.itemsObj)
-          );
-        }
-      }
-    },
-    */
     async updateTitle(title) {
       await db
         .doc(`restaurants/${this.restaurantId()}/titles/${title.id}`)
@@ -333,6 +380,7 @@ export default {
         tax: item.tax,
         itemDescription: item.itemDescription,
         itemPhoto: item.itemPhoto,
+        images: item.images,
         availability: item.availability,
         uid: this.uid,
         deletedFlag: false,
@@ -373,9 +421,3 @@ export default {
   }
 };
 </script>
-<style lang="scss" scoped>
-.media-content {
-  margin-top: auto;
-  margin-bottom: auto;
-}
-</style>

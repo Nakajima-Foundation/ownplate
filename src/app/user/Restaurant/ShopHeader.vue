@@ -1,8 +1,8 @@
 <template>
   <div>
     <!-- Restaurant Profile Photo -->
-    <div class="m-t-24 align-center" v-if="shopInfo.restProfilePhoto">
-      <img :src="shopInfo.restProfilePhoto" class="h-64 r-64 cover" />
+    <div class="m-t-24 align-center" v-if="profileImage">
+      <img :src="profileImage" class="w-64 h-64 r-64 cover" />
     </div>
 
     <!-- Restaurant Name -->
@@ -16,7 +16,15 @@ export default {
     shopInfo: {
       type: Object,
       required: true
-    },
+    }
+  },
+  computed: {
+    profileImage() {
+      return (
+        (this.shopInfo?.images?.profile?.resizedImages || {})["600"] ||
+        this.shopInfo.restProfilePhoto
+      );
+    }
   }
 };
 </script>

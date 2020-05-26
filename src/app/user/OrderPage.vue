@@ -20,33 +20,40 @@
               >
                 <span class="p-l-16 p-r-16">
                   <i class="material-icons c-primary s-18 m-r-8">arrow_back</i>
-                  <span class="c-primary t-button">{{$t('button.back')}}</span>
+                  <span class="c-primary t-button">
+                    {{
+                    $t("button.back")
+                    }}
+                  </span>
                 </span>
               </b-button>
             </div>
 
             <!-- Restaurant Profile Photo and Name -->
-            <shop-orner-info :shopInfo="shopInfo"></shop-orner-info>
+            <shop-header :shopInfo="shopInfo"></shop-header>
 
             <!-- After Paid -->
             <div v-if="paid">
               <!-- Thank you Message -->
               <div class="m-t-24">
-                <div class="t-h6 c-primary align-center">{{$t('order.thankyou')}}</div>
-                <div class="t-h6 c-primary align-center m-t-8">{{$t('order.pleaseStay')}}</div>
+                <div class="t-h6 c-primary align-center">{{ $t("order.thankyou") }}</div>
+                <div class="t-h6 c-primary align-center m-t-8">{{ $t("order.pleaseStay") }}</div>
               </div>
 
               <!-- Line Button -->
-              <div v-if="showAddLine" class="m-t-8" style="text-align: center;">
+              <div v-if="showAddLine" class="m-t-24 align-center">
                 <b-button
-                  type="is-primary"
-                  class="p-r-16 p-l-16 notify"
+                  class="b-reset op-button-small"
                   style="background:#18b900"
                   tag="a"
                   :href="lineAuth"
                 >
-                  <i class="fab fa-line" style="font-size:1.2em" />
-                  {{$t('line.notifyMe')}}
+                  <i class="fab fa-line c-text-white-full m-l-24 m-r-8" style="font-size:24px" />
+                  <span class="c-text-white-full m-r-24">
+                    {{
+                    $t("line.notifyMe")
+                    }}
+                  </span>
                 </b-button>
               </div>
 
@@ -54,14 +61,14 @@
               <div class="align-center m-t-24">
                 <div class="is-inline-flex">
                   <div class="m-r-24">
-                    <div class="t-subtitle2 c-text-black-medium">{{ $t('order.orderStatus') }}</div>
+                    <div class="t-subtitle2 c-text-black-medium">{{ $t("order.orderStatus") }}</div>
                     <div
                       class="op-status m-t-8"
                       :class="orderStatusKey"
                     >{{ $t("order.status." + orderStatusKey) }}</div>
                   </div>
                   <div>
-                    <div class="t-subtitle2 c-text-black-medium">{{ $t('order.orderId') }}</div>
+                    <div class="t-subtitle2 c-text-black-medium">{{ $t("order.orderId") }}</div>
                     <div class="t-h5 c-text-black-high m-t-8">{{ orderName }}</div>
                   </div>
                 </div>
@@ -71,24 +78,35 @@
               <div
                 v-if="waiting"
                 class="align-center t-body2 c-text-black-medium m-t-16"
-              >{{$t('order.timeToPickup') + ": " + timePlaced }}</div>
+              >{{ $t("order.timeToPickup") + ": " + timePlaced }}</div>
 
               <!-- Cancel Button -->
               <div class="align-center m-t-24">
                 <b-button
                   v-if="just_paid"
-                  type="is-danger"
-                  class="p-r-16 p-l-16"
+                  class="b-reset op-button-small bg-status-red"
                   :loading="isCanceling"
                   @click="handleCancelPayment"
-                >{{$t('button.cancel')}}</b-button>
+                >
+                  <span class="c-text-white-full">
+                    {{
+                    $t("button.cancel")
+                    }}
+                  </span>
+                </b-button>
               </div>
 
               <!-- Special Thank you Message from the Restaurant -->
-              <template v-if="shopInfo && shopInfo.orderThanks && shopInfo.orderThanks.length > 0">
+              <template
+                v-if="
+                  shopInfo &&
+                    shopInfo.orderThanks &&
+                    shopInfo.orderThanks.length > 0
+                "
+              >
                 <div class="bg-form m-t-24 p-l-16 p-r-16 p-t-16 p-b-16 r-8">
-                  <div class="t-caption">{{$t('order.thanksMessage')}}</div>
-                  <div class="t-body1 m-t-8">{{shopInfo.orderThanks}}</div>
+                  <div class="t-caption">{{ $t("order.thanksMessage") }}</div>
+                  <div class="t-body1 m-t-8">{{ shopInfo.orderThanks }}</div>
                 </div>
               </template>
             </div>
@@ -111,17 +129,23 @@
               <div
                 v-if="paid"
                 class="t-h6 c-text-black-disabled"
-              >{{ $t('order.yourOrder') + ": " + orderName }}</div>
-              <div v-else class="t-h6 c-text-black-disabled">{{ $t('order.yourOrder') }}</div>
+              >{{ $t("order.yourOrder") + ": " + orderName }}</div>
+              <div v-else class="t-h6 c-text-black-disabled">{{ $t("order.yourOrder") }}</div>
               <!-- Details -->
               <order-info
                 :orderItems="this.orderItems"
-                :orderInfo="this.orderInfo||{}"
+                :orderInfo="this.orderInfo || {}"
                 @change="handleTipChange"
               ></order-info>
+              <!-- View Menu Page Button -->
+              <div class="align-center m-t-24">
+                <b-button class="b-reset op-button-small secondary" @click="handleOpenMenu">
+                  <span class="c-primary p-l-24 p-r-24">{{$t("order.menu")}}</span>
+                </b-button>
+              </div>
               <!-- Validating -->
               <b-notification :closable="false" v-if="newOrder">
-                {{$t('order.validating')}}
+                {{ $t("order.validating") }}
                 <b-loading :is-full-page="false" :active.sync="newOrder" :can-cancel="true"></b-loading>
               </b-notification>
             </div>
@@ -142,7 +166,13 @@
               />
 
               <!-- Order Notice -->
-              <template v-if="shopInfo && shopInfo.orderNotice && shopInfo.orderNotice.length > 0">
+              <template
+                v-if="
+                  shopInfo &&
+                    shopInfo.orderNotice &&
+                    shopInfo.orderNotice.length > 0
+                "
+              >
                 <div class="m-t-24">
                   <div class="t-h6 c-text-black-disabled">Order Notice</div>
                   <div class="bg-surface r-8 d-low m-t-8 p-l-16 p-r-16 p-t-16 p-b-16">
@@ -150,7 +180,7 @@
                       <div class="p-r-8">
                         <i class="material-icons s-24 c-status-red">error</i>
                       </div>
-                      <div class="t-body1 c-status-red">{{shopInfo.orderNotice}}</div>
+                      <div class="t-body1 c-status-red">{{ shopInfo.orderNotice }}</div>
                     </div>
                   </div>
                 </div>
@@ -159,7 +189,7 @@
               <!-- Payment -->
               <div class="m-t-24">
                 <!-- Title -->
-                <div class="t-h6 c-text-black-disabled">{{$t('order.yourPayment')}}</div>
+                <div class="t-h6 c-text-black-disabled">{{ $t("order.yourPayment") }}</div>
 
                 <!-- Pay Online -->
                 <div v-if="showPayment">
@@ -169,20 +199,19 @@
                     ref="stripe"
                   ></stripe-card>
                   <!-- <credit-card-input></credit-card-input> -->
-                  <div class="is-centered" style="text-align: center;">
+                  <!-- Pay Button -->
+                  <div class="align-center m-t-24">
                     <b-button
-                      type="is-primary"
-                      expanded
-                      rounded
+                      class="b-reset op-button-medium primary"
+                      style="min-width: 288px;"
                       :loading="isPaying"
                       :disabled="!cardState.complete || notAvailable"
-                      style="margin-top:4rem;padding-top: 0.2rem;"
-                      size="is-large"
                       @click="handlePayment"
                     >
-                      <span
-                        class="p-font bold"
-                      >{{$t('order.placeOrder')}} {{$n(orderInfo.total + tip, 'currency')}}</span>
+                      <span class="c-onprimary p-l-24 p-r-24">
+                        {{ $t("order.placeOrder") }}
+                        {{ $n(orderInfo.total + tip, "currency") }}
+                      </span>
                     </b-button>
                   </div>
                 </div>
@@ -191,14 +220,18 @@
                 <div v-else class="m-t-8">
                   <div
                     class="bg-form r-8 p-l-16 p-r-16 p-t-16 p-b-16 t-body2 c-text-black-high"
-                  >{{ $t('order.pleasePayAtRestaurant') }}</div>
+                  >{{ $t("order.pleasePayAtRestaurant") }}</div>
                 </div>
 
                 <!-- Send SMS Checkbox -->
                 <div v-if="!lineEnabled" class="m-t-8">
                   <div class="bg-form r-8 p-l-16 p-r-16 p-t-16 p-b-16">
                     <b-checkbox v-model="sendSMS">
-                      <span class="t-body2 c-text-black-high">{{$t('order.sendSMS')}}</span>
+                      <span class="t-body2 c-text-black-high">
+                        {{
+                        $t("order.sendSMS")
+                        }}
+                      </span>
                     </b-checkbox>
                   </div>
                 </div>
@@ -212,14 +245,29 @@
                     :disabled="notAvailable"
                     @click="handleNoPayment"
                   >
-                    <span class="c-onprimary p-l-24 p-r-24">{{$t('order.placeOrderNoPayment')}}</span>
+                    <span class="c-onprimary p-l-24 p-r-24">
+                      {{
+                      $t("order.placeOrderNoPayment")
+                      }}
+                    </span>
                   </b-button>
                 </div>
               </div>
             </div>
 
             <!-- (After Paid) Restaurant Details -->
-            <shop-info v-if="paid" :compact="true" :shopInfo="shopInfo" />
+            <div v-if="paid">
+              <shop-info :compact="true" :shopInfo="shopInfo" />
+              <!-- <div class="align-center m-t-24">
+                <b-button class="b-reset op-button-small bg-status-blue" @click="handleOpenMenu">
+                  <span class="c-text-white-full">
+                    {{
+                    $t("order.menu")
+                    }}
+                  </span>
+                </b-button>
+              </div>-->
+            </div>
           </div>
         </div>
         <!-- Right Gap -->
@@ -230,7 +278,7 @@
 </template>
 
 <script>
-import ShopOrnerInfo from "~/app/user/Restaurant/ShopOrnerInfo";
+import ShopHeader from "~/app/user/Restaurant/ShopHeader";
 import OrderInfo from "~/app/user/Order/OrderInfo";
 import ShopInfo from "~/app/user/Restaurant/ShopInfo";
 import StripeCard from "~/app/user/Order/StripeCard";
@@ -247,7 +295,7 @@ import { ownPlateConfig } from "@/config/project";
 export default {
   name: "Order",
   components: {
-    ShopOrnerInfo,
+    ShopHeader,
     OrderInfo,
     ShopInfo,
     StripeCard,
@@ -420,6 +468,9 @@ export default {
     }
   },
   methods: {
+    handleOpenMenu() {
+      this.$router.push(`/r/${this.restaurantId()}`);
+    },
     handleNotAvailable(flag) {
       console.log("handleNotAvailable", flag);
       this.notAvailable = flag;
@@ -483,7 +534,7 @@ export default {
       } catch (error) {
         console.error(error.message, error.details);
         this.$store.commit("setErrorMessage", {
-          code: "sprite.intent",
+          code: "stripe.intent",
           error
         });
       } finally {
@@ -503,15 +554,15 @@ export default {
           tip: this.tip || 0
         });
         console.log("place", data);
+        window.scrollTo(0, 0);
+      } catch (error) {
+        console.error(error.message, error.details);
         this.$store.commit("setErrorMessage", {
           code: "order.place",
           error
         });
-        window.scrollTo(0, 0);
-      } catch (error) {
-        console.error(error.message, error.details);
       } finally {
-        this.isPlacing = true;
+        this.isPlacing = false;
       }
     },
     async handleCancelPayment() {

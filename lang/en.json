@@ -9,10 +9,13 @@
   "menu": {
     "about": "About",
     "admins": "Restaurant Owners",
+    "userManual": "Documents for Owners",
     "users": "Food Lovers",
     "home": "Home",
     "signOut": "Sign Out",
     "selectLanguage": "Select language",
+    "yes": "Yes",
+    "no": "No",
     "close": "Close"
   },
   "restaurantId": {
@@ -26,10 +29,12 @@
   },
   "editCommon": {
     "save": "Save",
+    "saving": "Saving",
     "saveDraft": "Save as Draft",
     "new": "New",
     "current": "Current",
-    "clickAndUpload": "Click and Upload"
+    "clickAndUpload": "Click and Upload",
+    "clickAndUploadDetail": "Click or Drag & Drop to upload image(JPEG only)"
   },
   "currency": {
     "USD": "USD",
@@ -49,9 +54,9 @@
     "enterZip": "Enter Zip",
     "enterPhone": "Enter Phone Number",
     "enterWebsite": "Enter Website URL",
-    "enterIntroduction": "お店を紹介して下さい！！",
-    "enterOrderNotice": "注文の注意点を入力して下さい",
-    "enterOrderThanks": "注文後のありがとうメッセージを入力して下さい",
+    "enterIntroduction": "Enter shop introduction",
+    "enterOrderNotice": "Enter order notifications",
+    "enterOrderThanks": "Enter order thanks message",
     "introduction": "Shop Introduction",
     "orderNotice": "Order notifications",
     "orderThanks": "Order thanks message",
@@ -103,10 +108,12 @@
     "itemOptionsNote": "For altenatives, use comma to separate them (e.g., \"Chicken, Pork, Tofu\")",
     "itemAddOption": "Add Option",
     "itemInvalidMessage": "This item is not on your menu because data is invalid.",
-    "saveAsDraft": "Save as draft. This item is not on your menus."
+    "saveAsDraft": "Save as draft. This item is not on your menus.",
+    "reallyDelete": "Do you really want to delete this?"
   },
   "editTitle": {
-    "empty": "empty"
+    "enterCategory": "Enter category name",
+    "empty": "(Empty category name)"
   },
   "shopInfo": {
     "qrcode": "QR code",
@@ -140,6 +147,7 @@
     "today": "Today"
   },
   "order": {
+    "menu": "View Menu Page",
     "yourOrder": "Your Order",
     "editItems": "Edit Items",
     "subtotal": "Subtotal",
@@ -176,7 +184,7 @@
   },
   "button": {
     "back": "Back",
-    "addTitle": "Add title",
+    "addTitle": "Add Category",
     "addItem": "Add Item",
     "cancel": "Cancel",
     "next": "Next"
@@ -208,6 +216,7 @@
     "auth/missing-verification-code": "The phone auth credential was created with an empty SMS verification code."
   },
   "admin": {
+    "welcomeMessage": "Welcome to OwnPlate",
     "userManual": "User Manual",
     "suportPage": "Support",
     "hidePayment": "Payment feature is coming soon. Please stay tuned.",
@@ -225,18 +234,23 @@
     "payment": "Payment",
     "yourRestaurants": "Your Restaurant(s)",
     "noRestaurant": "No restaurant",
-    "addYourRestaurant": "Please add your restaurant from the bottom button.",
+    "addYourRestaurant": "Please add your restaurant",
     "addNewRestaurant": "Add New Restaurant",
     "noPaymentAccount": "No Payment account",
     "payments": {
+      "statusNotConnected": "Not Connected",
+      "statusConnected": "Connected",
       "pleaseConnect": "In order to receive online payments, you need to connect your Stripe account.",
       "connectStripe": "Connect Stripe Account",
       "disconnectStripe": "Disconnect Stripe Account",
+      "reallyDisconnectStripe": "Do you really want to disconnect Stripe Account?",
       "openDashboard": "Open Stripe Dashboard"
     },
+    "viewPage": "View Page",
     "incompleteOrders": "{count} Incomplete Order | {count} Incomplete Orders",
-    "editMenuItems": "Menu ({count})",
-    "editAbout": "Edit",
+    "editMenuItems": "Edit Menu ({count})",
+    "editAbout": "Edit Restaurant Details",
+    "delete": "Delete",
     "shareRestaurant": "Share",
     "pleaseSignUp": "Sign up as a new user",
     "forgotPassword": "Forgot Password？",
@@ -247,6 +261,12 @@
       "cancelTitle": "Order Canceling",
       "cancelMessage": "Please contact to the customer and tell the order will be canceled.",
       "delete": "Cancel this order (undoable)"
+    },
+    "qrcode": {
+      "title": "QRcodes",
+      "restaurant": "Menu Page",
+      "enter": "Record Entrance",
+      "leave": "Record Leave"
     },
     "error": {
       "email": {
@@ -295,9 +315,15 @@
     "mollusc": "Mollusc"
   },
   "line": {
+    "authenticating": "LINE authentication",
     "notifyMe": "Receive LINE notification",
     "addFriend": "Follow",
     "addFriendDescription": "In order to receive LINE notifications, you need to follow the official channel"
+  },
+  "trace": {
+    "thankyou": "Thank you for participating.",
+    "enter": "Enter",
+    "leave": "Leave"
   },
   "errorPage": {
     "popup": {
@@ -317,9 +343,15 @@
         "update": "Failed to update the order status.",
         "cancel": "Failed to cancel the order."
       },
-      "sprite": {
+      "stripe": {
         "confirm": "Failed to confirm the payment.",
         "intent": "Failed to process the payment."
+      },
+      "menu": {
+        "save": "Failed to update the menu."
+      },
+      "restaurant": {
+        "save": "Failed to update the restaurant."
       }
     },
     "notFound": {

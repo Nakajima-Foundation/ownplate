@@ -9,10 +9,13 @@
   "menu": {
     "about": "このサービスについて",
     "admins": "飲食店向けページ",
+    "userManual": "飲食店向けマニュアル",
     "users": "お客様向けページ",
     "home": "ホーム",
     "signOut": "サイン・アウト",
     "selectLanguage": "表示言語選択",
+    "yes": "はい",
+    "no": "いいえ",
     "close": "閉じる"
   },
   "restaurantId": {
@@ -26,10 +29,12 @@
   },
   "editCommon": {
     "save": "保存",
+    "saving": "保存中",
     "saveDraft": "下書きとして保存",
     "new": "新規",
     "current": "変更前",
-    "clickAndUpload": "クリックしてアップロード"
+    "clickAndUpload": "ここをクリック",
+    "clickAndUploadDetail": "クリックもしくは画像をドラッグ＆ドロップしてアップロード(JPEG形式)"
   },
   "currency": {
     "USD": "ドル",
@@ -48,7 +53,7 @@
     "enterCity": "市町村名を入力して下さい",
     "enterZip": "郵便番号を入力して下さい",
     "enterPhone": "電話番号を入力して下さい",
-    "enterWebsite": "ウェブサイトのURLを入力して下さい",
+    "enterWebsite": "ホームページのURLを入力して下さい",
     "enterIntroduction": "お店を紹介して下さい！！",
     "enterOrderNotice": "注文の注意点を入力して下さい",
     "enterOrderThanks": "注文後のありがとうメッセージを入力して下さい",
@@ -103,10 +108,12 @@
     "itemOptionsNote": "二択や三択の場合、半角カンマで区切ってください (例: \"チキン, ポーク, 豆腐\")",
     "itemAddOption": "オプション追加",
     "itemInvalidMessage": "データが正しく入力されていないため、公開されません",
-    "saveAsDraft": "下書きとして保存されます(メニューに表示されません)"
+    "saveAsDraft": "下書きとして保存されます(メニューに表示されません)",
+    "reallyDelete": "本当に削除しますか？"
   },
   "editTitle": {
-    "empty": "未入力"
+    "enterCategory": "カテゴリー名を入力してください",
+    "empty": "（カテゴリー名未入力）"
   },
   "shopInfo": {
     "qrcode": "飲食店QRコード",
@@ -115,7 +122,7 @@
     "UrlCopyFailed": "コピー失敗",
     "name": "飲食店名",
     "restaurantDetails": "飲食店情報",
-    "streetAddress": "住所",
+    "streetAddress": "番地以下",
     "city": "市区町村",
     "state": "州",
     "prefecture": "都道府県",
@@ -140,6 +147,7 @@
     "today": "本日"
   },
   "order": {
+    "menu": "メニューページを見る",
     "yourOrder": "あなたの注文",
     "editItems": "注文を変更する",
     "subtotal": "小計",
@@ -208,6 +216,7 @@
     "auth/missing-verification-code": "SMS確認コードが入力されていません"
   },
   "admin": {
+    "welcomeMessage": "いらっしゃいませ",
     "userManual": "使い方説明",
     "suportPage": "お問い合わせ",
     "hidePayment": "課金の仕組みはまもなく提供される予定です。少々お待ちください。",
@@ -226,17 +235,22 @@
     "yourRestaurants": "飲食店",
     "noRestaurant": "飲食店が登録されていません",
     "addYourRestaurant": "飲食店を追加してください",
-    "addNewRestaurant": "飲食店を追加する",
+    "addNewRestaurant": "飲食店を追加",
     "noPaymentAccount": "お支払いのアカウントが登録されていません",
     "payments": {
-      "pleaseConnect": "オンラインで支払いを受けるには、Stripeアカウントとの接続が必要です",
+      "statusNotConnected": "Stripeアカウント未接続",
+      "statusConnected": "Stripeアカウント接続済み",
+      "pleaseConnect": "オンラインで支払いを受けるには、Stripeアカウントとの接続が必要です。",
       "connectStripe": "Stripeアカウントと接続する",
       "disconnectStripe": "Stripeアカウントとの接続を切る",
+      "reallyDisconnectStripe": "本当にStripeアカウントとの接続を切ってよろしいのですね？",
       "openDashboard": "Stripe のダッシュボードを開く"
     },
+    "viewPage": "ページを確認",
     "incompleteOrders": "{count} 個の未完了の注文",
-    "editMenuItems": "メニュー ({count})",
-    "editAbout": "飲食店情報の変更",
+    "editMenuItems": "メニューの変更 ({count})",
+    "editAbout": "店情報の変更",
+    "delete": "削除",
     "shareRestaurant": "シェア",
     "pleaseSignUp": "ユーザー登録",
     "forgotPassword": "パスワードを忘れた場合",
@@ -247,6 +261,12 @@
       "cancelTitle": "注文のキャンセル",
       "cancelMessage": "お客様にご連絡の上、ご注文をキャンセルさせていただく旨をお伝え下さい。",
       "delete": "この注文をキャンセルする (やり直しは出来ません)"
+    },
+    "qrcode": {
+      "title": "QRコード",
+      "restaurant": "メニューページ",
+      "enter": "入店記録",
+      "leave": "退店記録"
     },
     "error": {
       "email": {
@@ -295,9 +315,15 @@
     "mollusc": "軟体動物"
   },
   "line": {
+    "authenticating": "ライン認証",
     "notifyMe": "ラインで通知を受ける",
     "addFriend": "友だち追加",
     "addFriendDescription": "ご注文状況の通知を受けるには、「おもてなし.com 公式アカウント」を友だち追加していただく必要があります。"
+  },
+  "trace": {
+    "thankyou": "ご協力ありがとうございます",
+    "enter": "入店",
+    "leave": "退店"
   },
   "errorPage": {
     "popup": {
@@ -317,9 +343,15 @@
         "update": "注文状況の変更に失敗しました。",
         "cancel": "注文のキャンセルに失敗しました。"
       },
-      "sprite": {
+      "stripe": {
         "confirm": "課金処理に失敗しました。",
-        "intent": "スプライトによる課金に失敗しました。"
+        "intent": "ストライプによる課金に失敗しました。"
+      },
+      "menu": {
+        "save": "メニューの保存に失敗しました。"
+      },
+      "restaurant": {
+        "save": "飲食店情報の保存に失敗しました。"
       }
     },
     "notFound": {
