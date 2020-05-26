@@ -37,10 +37,8 @@
                 {{$t("editMenu.itemName")}}
                 <span class="c-status-red">*</span>
               </div>
-              <b-field>
-                <b-field :type="errors['itemName'].length > 0 ? 'is-danger' : 'is-success'">
-                  <b-input v-model="menuInfo.itemName" :placeholder="$t('editMenu.enterItemName')"></b-input>
-                </b-field>
+              <b-field :type="errors['itemName'].length > 0 ? 'is-danger' : 'is-success'">
+                <b-input v-model="menuInfo.itemName" :placeholder="$t('editMenu.enterItemName')"></b-input>
               </b-field>
             </div>
 

@@ -472,15 +472,15 @@ body,
   @extend .t-body1;
   @extend .c-text-black-medium;
 }
-.textarea {
-  @extend .bg-form;
-  @extend .r-8;
-  padding: 8px 16px;
-  box-shadow: none;
-  border: none;
-  @extend .t-body1;
-  @extend .c-text-black-high;
-}
+// .textarea {
+//   @extend .bg-form;
+//   @extend .r-8;
+//   padding: 8px 16px;
+//   box-shadow: none;
+//   border: none;
+//   @extend .t-body1;
+//   @extend .c-text-black-high;
+// }
 
 // OwnPlate Dialog
 .modal-background {

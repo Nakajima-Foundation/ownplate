@@ -1,17 +1,13 @@
 <template>
   <div>
-    <div class="field is-horizontal">
-      <div class="field-body">
-        <h4>
-          {{$t(this.state_key)}}
-          <span class="p-font bold" style="color:#CB4B4B">*</span>
-        </h4>
-      </div>
+    <div class="t-subtitle2 c-text-black-medium p-b-8">
+      {{$t(this.state_key)}}
+      <span class="c-status-red">*</span>
     </div>
     <b-field
       :type="errors['state'].length > 0 ? 'is-danger' : 'is-success'"
       v-if="Array.isArray(states)"
-      >
+    >
       <b-select :value="value" placeholder="select" @input="input">
         <option v-for="stateItem in states" :key="stateItem">{{ stateItem }}</option>
       </b-select>
@@ -22,7 +18,7 @@
         type="text"
         :placeholder="$t('editRestaurant.enterCity')"
         maxlength="15"
-        ></b-input>
+      ></b-input>
     </b-field>
   </div>
 </template>
@@ -34,26 +30,26 @@ import { regionalSettings } from "~/plugins/constant.js";
 export default {
   name: "State",
   props: {
-    errors : {
+    errors: {
       type: Object,
       required: true
     },
-    value : {
+    value: {
       type: String,
       required: true
-    },
+    }
   },
   methods: {
     input(e) {
-      this.$emit('input', e)
-    },
+      this.$emit("input", e);
+    }
   },
   data() {
     const regionalSetting = regionalSettings[ownPlateConfig.region || "US"];
     return {
       states: regionalSetting.AddressStates,
-      state_key: regionalSetting.StateKey || "shopInfo.state",
-    }
+      state_key: regionalSetting.StateKey || "shopInfo.state"
+    };
   }
-}
+};
 </script>

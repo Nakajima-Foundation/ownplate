@@ -1,70 +1,55 @@
 <template>
-  <span>
-    <section>
-      <div class="field is-horizontal">
-        <div class="field-body">
-          <div class="field has-addons">
-            <div style="display:inline-flex">
-              <b-field
-                :type="type"
-                >
-                <b-select v-model="value.start"
-                          :disabled="disabled"
-                          @input="updateValue"
-                          >
-                  <option v-for="(timeItem, index) of timeList" :key="timeItem" :value="index === 0 ? null : (index - 1) * 30">
-                    {{ timeItem }}
-                  </option>
-                </b-select>
-              </b-field>
-              <span
-                style="margin-top: auto;margin-bottom: auto;margin-left:0.4rem;margin-right:0.4rem;"
-              >
-                -
-              </span>
-              <b-field
-                :type="type"
-                >
-                <b-select v-model="value.end"
-                          :disabled="disabled"
-                          @input="updateValue"
-                          >
-                  <option v-for="(timeItem, index) of timeList" :key="timeItem" :value="index === 0 ? null : (index - 1) * 30">
-                    {{ timeItem }}
-                  </option>
-                </b-select>
-              </b-field>
-            </div>
-          </div>
-        </div>
+  <div>
+    <div class="cols" style="align-items: center;">
+      <div>
+        <b-field :type="type">
+          <b-select v-model="value.start" :disabled="disabled" @input="updateValue">
+            <option
+              v-for="(timeItem, index) of timeList"
+              :key="timeItem"
+              :value="index === 0 ? null : (index - 1) * 30"
+            >{{ timeItem }}</option>
+          </b-select>
+        </b-field>
       </div>
-    </section>
-  </span>
+      <div class="p-l-8 p-r-8">-</div>
+      <div>
+        <b-field :type="type">
+          <b-select v-model="value.end" :disabled="disabled" @input="updateValue">
+            <option
+              v-for="(timeItem, index) of timeList"
+              :key="timeItem"
+              :value="index === 0 ? null : (index - 1) * 30"
+            >{{ timeItem }}</option>
+          </b-select>
+        </b-field>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
-
 export default {
   name: "HoursInput",
   props: {
-    disabled : {
+    disabled: {
       type: Boolean,
       required: true
     },
-    type : {
+    type: {
       type: String,
       required: true
     },
     value: {
       type: Object,
       required: true,
-      'default': () => ({})
-    },
+      default: () => ({})
+    }
   },
   methods: {
     updateValue() {
-      this.$emit('input', this.value)
-    },
+      this.$emit("input", this.value);
+    }
   },
   data() {
     return {
@@ -118,9 +103,8 @@ export default {
         "10:30 PM",
         "11:00 PM",
         "11:30 PM"
-      ],
+      ]
     };
-  },
+  }
 };
 </script>
-<style lang="scss" scoped>
