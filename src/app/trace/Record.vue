@@ -99,6 +99,7 @@ export default {
         client_id: ownPlateConfig.line.TRACK_CHANNEL_ID,
         redirect_uri: this.redirect_uri,
         scope: "profile openid",
+        bot_prompt: "aggressive",
         state: "s" + Math.random(), // LATER: Make it more secure
         nonce: `${this.traceId}` // HACK: Repurposing nonce
       };
