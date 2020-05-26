@@ -1,6 +1,7 @@
 <template>
   <section class="section">
     <h1>{{ $t('line.authenticating')}}</h1>
+    <b-loading :is-full-page="false" :active="isProcessing" :can-cancel="true"></b-loading>
   </section>
 </template>
 
@@ -8,6 +9,11 @@
 import { ownPlateConfig } from "@/config/project";
 import { db, auth, firestore, functions } from "~/plugins/firebase.js";
 export default {
+  data() {
+    return {
+      isProcessing: false
+    };
+  },
   computed: {
     code() {
       return this.$route.query.code;
@@ -30,7 +36,7 @@ export default {
     if (this.code) {
       const lineAuthenticate = functions.httpsCallable("lineAuthenticate");
       try {
-        this.isValidating = true;
+        this.isProcessing = true;
         const { data } = await lineAuthenticate({
           code: this.code,
           redirect_uri: this.redirect_uri,
@@ -56,7 +62,7 @@ export default {
           error
         });
       } finally {
-        this.isValidating = false;
+        this.isProcessing = false;
       }
     } else if (this.error) {
       console.error(this.error);
