@@ -1,7 +1,6 @@
 <template>
   <section class="section">
     <p>Track Callback</p>
-    <a href="/test/track">Track</a>
   </section>
 </template>
 
@@ -12,6 +11,15 @@ export default {
   computed: {
     code() {
       return this.$route.query.code;
+    },
+    error() {
+      if (this.$route.query.error) {
+        return {
+          code: this.$route.query.error,
+          message: this.$route.query.error_description
+        };
+      }
+      return null;
     },
     redirect_uri() {
       return location.origin + "/callback/track";
@@ -49,6 +57,12 @@ export default {
       } finally {
         this.isValidating = false;
       }
+    } else if (this.error) {
+      console.error(this.error);
+      this.$store.commit("setErrorMessage", {
+        message: this.error.message,
+        error: this.error
+      });
     }
   }
 };
