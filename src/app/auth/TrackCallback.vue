@@ -1,6 +1,6 @@
 <template>
   <section class="section">
-    <p>Track Callback</p>
+    <h1>{{ $t('line.authenticating')}}</h1>
   </section>
 </template>
 
@@ -46,6 +46,7 @@ export default {
           }
         } else {
           console.error("validatin failed", data);
+          throw new Error("something is wrong");
         }
       } catch (error) {
         console.error(error.message, error.details);

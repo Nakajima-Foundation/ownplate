@@ -314,6 +314,7 @@
     "mollusc": "Mollusc"
   },
   "line": {
+    "authenticating": "LINE authentication",
     "notifyMe": "Receive LINE notification",
     "addFriend": "Follow",
     "addFriendDescription": "In order to receive LINE notifications, you need to follow the official channel"
