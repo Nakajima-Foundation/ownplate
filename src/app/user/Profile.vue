@@ -1,16 +1,19 @@
 <template>
   <section class="section">
-    <h1>{{"profile.title"}}</h1>
+    <h1>{{$t("profile.title")}}</h1>
     <b-field class="m-t-8" :label="$t('profile.loginStatus')">
       <p>{{loginStatus}}</p>
     </b-field>
     <div v-if="user">
-      <b-field class="m-t-8" :label="$t('profile.displayName')">
+      <!--b-field class="m-t-8" :label="$t('profile.displayName')">
         <p>{{displayName}}</p>
-      </b-field>
+      </b-field-->
       <div v-if="user.phoneNumber">
         <b-field class="m-t-8" :label="$t('profile.lineConnection')">
           <p>{{lineConnection}}</p>
+        </b-field>
+        <b-field class="m-t-8" :label="$t('profile.lineFriend')">
+          <p>{{lineFriend}}</p>
         </b-field>
       </div>
     </div>
@@ -26,9 +29,14 @@ export default {
       return this.$store.state.user;
     },
     lineConnection() {
-      return this.user?.claims.line
+      return this.user?.claims?.line
         ? this.$t("profile.status.hasLine")
         : this.$t("profile.status.noLine");
+    },
+    lineFriend() {
+      return this.user?.claims?.line
+        ? this.$t("profile.status.isFriend")
+        : this.$t("profile.status.noFriend");
     },
     displayName() {
       return this.user?.displayName || this.$t("profile.undefined");

@@ -11,6 +11,7 @@
     "loginStatus": "サインイン状況",
     "displayName": "名前",
     "lineConnection": "ライン連携",
+    "lineFriend": "公式アカウントとの友達設定",
     "undefined": "未設定",
     "status": {
       "hasLine": "連携中",
@@ -19,6 +20,8 @@
       "phone": "電話番号",
       "line": "ライン",
       "unexpected": "想定外",
+      "isFriend": "友達設定済み",
+      "noFriend": "未設定",
       "none": "なし"
     }
   },
