@@ -1,15 +1,15 @@
 <template>
   <section class="section">
     <h1>{{"profile.title"}}</h1>
-    <b-field class="m-t-8" :label="'profile.loginStatus'">
+    <b-field class="m-t-8" :label="$t('profile.loginStatus')">
       <p>{{loginStatus}}</p>
     </b-field>
     <div v-if="user">
-      <b-field class="m-t-8" :label="'profile.displayName'">
+      <b-field class="m-t-8" :label="$t('profile.displayName')">
         <p>{{displayName}}</p>
       </b-field>
       <div v-if="user.phoneNumber">
-        <b-field class="m-t-8" :label="'profile.lineConnection'">
+        <b-field class="m-t-8" :label="$t('profile.lineConnection')">
           <p>{{lineConnection}}</p>
         </b-field>
       </div>
@@ -27,27 +27,31 @@ export default {
     },
     lineConnection() {
       return this.user?.claims.line
-        ? "profile.status.hasLine"
-        : "profile.status.noLine";
+        ? this.$t("profile.status.hasLine")
+        : this.$t("profile.status.noLine");
     },
     displayName() {
-      return this.user?.displayName || "profile.undefined";
+      return this.user?.displayName || this.$t("profile.undefined");
     },
     loginStatus() {
       if (this.user) {
         console.log(this.user);
         if (this.user.email) {
           const extra = this.user?.claims.admin ? "*admin" : "";
-          return `${"profile.status.email"}: ${this.user.email} ${extra}`;
+          return `${this.$t("profile.status.email")}: ${
+            this.user.email
+          } ${extra}`;
         } else if (this.user.phoneNumber) {
           const number = parsePhoneNumber(this.user.phoneNumber);
-          return `${"profile.status.phone"}: ${formatNational(number)}`;
+          return `${this.$t("profile.status.phone")}: ${formatNational(
+            number
+          )}`;
         } else if (this.user.uid.slice(0, 5) === "line:") {
-          return "profile.status.line";
+          return this.$t("profile.status.line");
         }
-        return "profile.status.unexpected";
+        return this.$t("profile.status.unexpected");
       }
-      return "profile.status.none";
+      return this.$t("profile.status.none");
     }
   }
 };
