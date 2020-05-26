@@ -67,7 +67,13 @@ export default {
           });
       }
     } else {
-      location.href = this.lineAuth;
+      if (this.user) {
+        const { claims } = await this.user.getIdTokenResult(true);
+        if (claims.line) {
+          console.log("***** DEBUG *****", claims.line);
+        }
+      }
+      //location.href = this.lineAuth;
     }
   },
   destroyed() {

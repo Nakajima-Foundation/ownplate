@@ -99,6 +99,11 @@ export const validate = async (db: FirebaseFirestore.Firestore, data: any, conte
       }
     })
 
+    // Set custom claim
+    await admin.auth().setCustomUserClaims(uid, {
+      line: `line:${profile.userId}`
+    })
+
     const collection = context.auth!.token.phone_number ? "users" : "admins";
     await db.doc(`/${collection}/${uid}/system/line`).set({
       access, verified, profile
