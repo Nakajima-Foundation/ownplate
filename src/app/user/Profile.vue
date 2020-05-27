@@ -15,7 +15,6 @@
         <b-field class="m-t-8" :label="$t('profile.lineFriend')">
           <p>{{lineFriend}}</p>
         </b-field>
-        <b-button @click="handleVerify">Verify Friend</b-button>
         <b-button
           class="b-reset op-button-small"
           style="background:#18b900"
@@ -42,19 +41,20 @@ import { ownPlateConfig } from "@/config/project";
 export default {
   data() {
     return {
-      isFriend: false
+      isFriend: undefined
     };
   },
   created() {
-    db.doc(`users/${this.user.uid}/private/line`)
-      .get()
-      .then(doc => {
-        const data = doc.data();
-        console.log(data);
-        if (data) {
-          this.isFriend = data.isFriend;
-        }
-      });
+    if (this.isLineUser) {
+      this.checkFriend();
+    }
+  },
+  watch: {
+    isLineUser(newValue) {
+      if (this.isFriend === undefined) {
+        this.checkFriend();
+      }
+    }
   },
   computed: {
     lineAuth() {
@@ -80,8 +80,11 @@ export default {
     user() {
       return this.$store.state.user;
     },
+    isLineUser() {
+      return !!this.user?.claims?.line;
+    },
     lineConnection() {
-      return this.user?.claims?.line
+      return this.isLineUser
         ? this.$t("profile.status.hasLine")
         : this.$t("profile.status.noLine");
     },
@@ -115,12 +118,13 @@ export default {
     }
   },
   methods: {
-    async handleVerify() {
+    async checkFriend() {
       console.log("handleVerify");
       const lineVerifyFriend = functions.httpsCallable("lineVerifyFriend");
       try {
         const { data } = await lineVerifyFriend({});
         console.log("handleVerify", data);
+        this.isFriend = data.result;
       } catch (error) {
         console.error(error);
       }
