@@ -4,7 +4,7 @@
     <b-field class="m-t-8" :label="$t('profile.loginStatus')">
       <p>{{loginStatus}}</p>
     </b-field>
-    <div v-if="user">
+    <div v-if="claims">
       <!--b-field class="m-t-8" :label="$t('profile.displayName')">
         <p>{{displayName}}</p>
       </b-field-->
@@ -84,8 +84,11 @@ export default {
     user() {
       return this.$store.state.user;
     },
+    claims() {
+      return this.$store.state.claims;
+    },
     isLineUser() {
-      return !!this.$store.state.claims.line;
+      return !!this.claims?.line;
     },
     lineConnection() {
       return this.isLineUser

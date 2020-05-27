@@ -8,7 +8,7 @@ export const strict = false;
 
 export const state = () => ({
   user: undefined, // undefined:not authorized, null:no user
-  claims: {}, // custom claims
+  claims: undefined, // custom claims
   lang: undefined,
   date: new Date(),
   carts: {}, // for "Edit Order"
@@ -40,10 +40,10 @@ export const getters = {
     return stripe_regions[state.server.region || "US"];
   },
   isSuperAdmin: (state) => {
-    return state.claims.admin;
+    return state.claims?.admin;
   },
   isNotSuperAdmin: (state) => {
-    return !state.claims.admin;
+    return !state.claims?.admin;
   }
 };
 
