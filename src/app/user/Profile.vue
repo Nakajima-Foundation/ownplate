@@ -119,8 +119,8 @@ export default {
       console.log("handleVerify");
       const lineVerifyFriend = functions.httpsCallable("lineVerifyFriend");
       try {
-        const result = await lineVerifyFriend({});
-        console.log("handleVerify", result);
+        const { data } = await lineVerifyFriend({});
+        console.log("handleVerify", data);
       } catch (error) {
         console.error(error);
       }

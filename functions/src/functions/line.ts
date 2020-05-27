@@ -11,7 +11,18 @@ export const verifyFriend = async (db: FirebaseFirestore.Firestore, data: any, c
   const isLine = uid.slice(0, 5) === "line:"
   const uidLine = isLine ? uid.slice(5) : context.auth?.token?.line?.slice(5)
   try {
-    return sendMessageInternal(uidLine, "test message");
+    //return sendMessageInternal(uidLine, "test message");
+    const LINE_MESSAGE_TOKEN = functions.config().line.message_token;
+    const profile = await netutils.request(`https://api.line.me/v2/bot/profile/${uidLine}`, {
+      headers: {
+        Authorization: `Bearer ${LINE_MESSAGE_TOKEN}`
+      }
+    })
+    if (profile.userId && profile.displayName) {
+      return { result: true, profile }
+    } else {
+      return { result: false }
+    }
   } catch (error) {
     throw utils.process_error(error)
   }
