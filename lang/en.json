@@ -16,6 +16,7 @@
     "status": {
       "hasLine": "Connected",
       "noLine": "Not connected",
+      "verifying": "Verifying...",
       "email": "email",
       "phone": "Phone number",
       "line": "LINE",

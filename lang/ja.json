@@ -16,6 +16,7 @@
     "status": {
       "hasLine": "連携済み",
       "noLine": "未連携",
+      "verifying": "確認中...",
       "email": "email",
       "phone": "電話番号",
       "line": "ライン",

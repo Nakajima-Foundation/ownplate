@@ -12,22 +12,26 @@
         <b-field class="m-t-8" :label="$t('profile.lineConnection')">
           <p>{{lineConnection}}</p>
         </b-field>
-        <b-field class="m-t-8" :label="$t('profile.lineFriend')">
-          <p>{{lineFriend}}</p>
-        </b-field>
-        <b-button
-          class="b-reset op-button-small"
-          style="background:#18b900"
-          tag="a"
-          :href="lineAuth"
-        >
-          <i class="fab fa-line c-text-white-full m-l-24 m-r-8" style="font-size:24px" />
-          <span class="c-text-white-full m-r-24">
-            {{
-            $t("line.notifyMe")
-            }}
-          </span>
-        </b-button>
+        <div v-if="isLineUser">
+          <b-field class="m-t-8" :label="$t('profile.lineFriend')">
+            <p>{{lineFriend}}</p>
+          </b-field>
+        </div>
+        <div v-else>
+          <b-button
+            class="b-reset op-button-small"
+            style="background:#18b900"
+            tag="a"
+            :href="lineAuth"
+          >
+            <i class="fab fa-line c-text-white-full m-l-24 m-r-8" style="font-size:24px" />
+            <span class="c-text-white-full m-r-24">
+              {{
+              $t("line.notifyMe")
+              }}
+            </span>
+          </b-button>
+        </div>
       </div>
     </div>
   </section>
@@ -89,6 +93,9 @@ export default {
         : this.$t("profile.status.noLine");
     },
     lineFriend() {
+      if (this.isFriend === undefined) {
+        return this.$t("profile.status.verifying");
+      }
       return this.isFriend
         ? this.$t("profile.status.isFriend")
         : this.$t("profile.status.noFriend");
