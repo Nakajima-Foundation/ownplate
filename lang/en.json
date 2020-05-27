@@ -116,6 +116,7 @@
     "empty": "(Empty category name)"
   },
   "shopInfo": {
+    "share": "Share",
     "qrcode": "QR code",
     "copyUrl": "Copy URL",
     "UrlCopied": "URL Copied",
@@ -169,6 +170,7 @@
     "history": "Order History",
     "timeToPickup": "Pickup Time",
     "notAvailable": "This restaurant is not available at this time. Please try again later",
+    "orderNotice": "Order Notice",
     "status": {
       "unexpected": "Unexpected",
       "error": "Error",
