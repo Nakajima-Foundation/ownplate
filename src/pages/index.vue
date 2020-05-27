@@ -11,7 +11,7 @@
       <div class="card block" v-if="isJapan">
         <div class="card-content m-t-8">
           <p style="text-align:center; font-weight:bold; font-size:1.5em">
-            <a href="https://gluepass.jp/g/ownplatejp/pages" target="_blank">{{$t("menu.userManual")}}</a>
+            <a href="https://gluepass.jp/g/ownplatejp/pg/Zy8VserQdTxFVKLaFcOK" target="_blank">{{$t("menu.userManual")}}</a>
           </p>
         </div>
       </div>

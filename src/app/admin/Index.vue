@@ -15,7 +15,7 @@
               <div class="t-h6 c-ownplate-white p-b-24">{{$t("admin.welcomeMessage")}}</div>
               <div class="is-inline-flex">
                 <div class="m-r-24">
-                  <a href="https://gluepass.jp/g/ownplatejp/pages" target="_blank">
+                  <a href="ttps://gluepass.jp/g/ownplatejp/pg/Zy8VserQdTxFVKLaFcOK" target="_blank">
                     <div class="op-button-small w-160 bg-text-white-high">
                       <i class="material-icons c-primary s-18 m-r-8">help_outline</i>
                       <span class="c-primary t-button">{{$t("admin.userManual")}}</span>
