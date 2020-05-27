@@ -15,6 +15,7 @@
         <b-field class="m-t-8" :label="$t('profile.lineFriend')">
           <p>{{lineFriend}}</p>
         </b-field>
+        <b-button @click="handleVerify">Verify Friend</b-button>
       </div>
     </div>
   </section>
@@ -77,6 +78,18 @@ export default {
         return this.$t("profile.status.unexpected");
       }
       return this.$t("profile.status.none");
+    }
+  },
+  methods: {
+    async handleVerify() {
+      console.log("handleVerify");
+      const lineVerifyFriend = functions.httpsCallable("lineVerifyFriend");
+      try {
+        const result = await lineVerifyFriend({});
+        console.log("handleVerify", result);
+      } catch (error) {
+        console.error(error);
+      }
     }
   }
 };

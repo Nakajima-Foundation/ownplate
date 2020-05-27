@@ -16,6 +16,7 @@ exportIfNeeded("api", "api", exports);
 
 exportIfNeeded("systemGetConfig", "systemGetConfig", exports);
 
+exportIfNeeded("lineVerifyFriend", "line/lineVerifyFriend", exports);
 exportIfNeeded("lineValidate", "lineValidate", exports);
 exportIfNeeded("lineAuthenticate", "lineAuthenticate", exports);
 exportIfNeeded("traceProcess", "traceProcess", exports);
