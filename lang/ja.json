@@ -14,6 +14,7 @@
     "lineFriend": "公式アカウントとの友達設定",
     "undefined": "未設定",
     "friendLink": "友だち設定する",
+    "signIn": "一般ユーザーとしてサインイン",
     "status": {
       "hasLine": "連携済み",
       "noLine": "未連携",

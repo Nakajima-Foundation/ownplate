@@ -4,6 +4,18 @@
     <b-field class="m-t-8" :label="$t('profile.loginStatus')">
       <p>{{loginStatus}}</p>
     </b-field>
+    <div v-if="!user">
+      <div class="align-center">
+        <b-button class="b-reset op-button-small" @click="handleSignIn">{{$t('profile.signIn')}}</b-button>
+      </div>
+      <b-modal :active.sync="loginVisible" :width="640">
+        <div class="card">
+          <div class="card-content">
+            <phone-login v-on:dismissed="handleDismissed" />
+          </div>
+        </div>
+      </b-modal>
+    </div>
     <div v-if="claims">
       <!--b-field class="m-t-8" :label="$t('profile.displayName')">
         <p>{{displayName}}</p>
@@ -56,10 +68,15 @@
 import { parsePhoneNumber, formatNational } from "~/plugins/phoneutil.js";
 import { db, firestore, functions } from "~/plugins/firebase.js";
 import { ownPlateConfig } from "@/config/project";
+import PhoneLogin from "~/app/auth/PhoneLogin";
 
 export default {
+  components: {
+    PhoneLogin
+  },
   data() {
     return {
+      loginVisible: false,
       isFriend: undefined
     };
   },
@@ -145,6 +162,10 @@ export default {
     }
   },
   methods: {
+    handleSignIn() {
+      this.loginVisible = true;
+    },
+    handleDismissed() {},
     async checkFriend() {
       console.log("handleVerify");
       const lineVerifyFriend = functions.httpsCallable("lineVerifyFriend");
