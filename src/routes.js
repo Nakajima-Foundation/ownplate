@@ -10,6 +10,11 @@ export const customRoutes = [
     component: 'user/OrderHistory.vue',
   },
   {
+    name: 'profile',
+    path: '/u/profile',
+    component: 'user/Profile.vue',
+  },
+  {
     name: 'r-restaurantId',
     path: '/r/:restaurantId',
     component: 'user/RestaurantPage.vue',

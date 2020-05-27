@@ -39,10 +39,10 @@ export const getters = {
     return stripe_regions[state.server.region || "US"];
   },
   isSuperAdmin: (state) => {
-    return state.user && state.user.credentials && state.user.credentials.admin;
+    return state.user && state.user.claims && state.user.claims.admin;
   },
   isNotSuperAdmin: (state) => {
-    return state.user && state.user.credentials && !state.user.credentials.admin;
+    return state.user && state.user.claims && !state.user.claims.admin;
   }
 };
 
@@ -65,11 +65,9 @@ export const mutations = {
   setLang(state, lang) {
     state.lang = lang;
   },
-  setCredentials(state, credentials) {
+  setCustomClaims(state, claims) {
     // Note: we can't copy user using Object.assign here
-    if (credentials.admin) {
-      state.user.admin = credentials.admin;
-    }
+    state.user.claims = claims;
   },
   pingOrderEvent(state) {
     state.orderEvent = (state.orderEvent) + 1;

@@ -6,6 +6,25 @@
   "greeting": "こんにちは、世界",
   "underConstruction": "注意：これはテスト用のサーバーです。",
   "comma": "、",
+  "profile": {
+    "title": "プロフィール",
+    "loginStatus": "サインイン状況",
+    "displayName": "名前",
+    "lineConnection": "ライン連携",
+    "lineFriend": "公式アカウントとの友達設定",
+    "undefined": "未設定",
+    "status": {
+      "hasLine": "連携済み",
+      "noLine": "未連携",
+      "email": "email",
+      "phone": "電話番号",
+      "line": "ライン",
+      "unexpected": "想定外",
+      "isFriend": "友達設定済み",
+      "noFriend": "未設定",
+      "none": "なし"
+    }
+  },
   "menu": {
     "about": "このサービスについて",
     "admins": "飲食店向けページ",
