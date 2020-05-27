@@ -16,7 +16,7 @@
         </div>
       </b-modal>
     </div>
-    <div v-if="claims">
+    <div v-if="user && claims">
       <!--b-field class="m-t-8" :label="$t('profile.displayName')">
         <p>{{displayName}}</p>
       </b-field-->
@@ -44,7 +44,7 @@
             </b-button>
           </div>
         </div>
-        <div v-else>
+        <div v-else class="align-center">
           <b-button
             class="b-reset op-button-small"
             style="background:#18b900"
@@ -60,13 +60,16 @@
           </b-button>
         </div>
       </div>
+      <div class="align-center">
+        <b-button class="b-reset op-button-small" @click="handleSignOut">{{$t('profile.signOut')}}</b-button>
+      </div>
     </div>
   </section>
 </template>
 
 <script>
 import { parsePhoneNumber, formatNational } from "~/plugins/phoneutil.js";
-import { db, firestore, functions } from "~/plugins/firebase.js";
+import { db, auth, firestore, functions } from "~/plugins/firebase.js";
 import { ownPlateConfig } from "@/config/project";
 import PhoneLogin from "~/app/auth/PhoneLogin";
 
@@ -86,6 +89,9 @@ export default {
     }
   },
   watch: {
+    user() {
+      this.loginVisible = false;
+    },
     isLineUser(newValue) {
       if (this.isFriend === undefined) {
         this.checkFriend();
@@ -165,7 +171,14 @@ export default {
     handleSignIn() {
       this.loginVisible = true;
     },
-    handleDismissed() {},
+    handleSignOut() {
+      console.log("handleSignOut");
+      auth.signOut();
+    },
+    handleDismissed() {
+      console.log("handleDismissed");
+      this.loginVisible = false;
+    },
     async checkFriend() {
       console.log("handleVerify");
       const lineVerifyFriend = functions.httpsCallable("lineVerifyFriend");
