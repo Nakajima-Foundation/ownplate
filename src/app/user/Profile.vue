@@ -81,7 +81,7 @@ export default {
       return this.$store.state.user;
     },
     isLineUser() {
-      return !!this.user?.claims?.line;
+      return !!this.$store.state.claims.line;
     },
     lineConnection() {
       return this.isLineUser
@@ -98,9 +98,8 @@ export default {
     },
     loginStatus() {
       if (this.user) {
-        console.log(this.user);
         if (this.user.email) {
-          const extra = this.user?.claims.admin ? "*admin" : "";
+          const extra = this.$store.getters.isSuperAdmin ? "*admin" : "";
           return `${this.$t("profile.status.email")}: ${
             this.user.email
           } ${extra}`;
