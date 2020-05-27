@@ -13,6 +13,7 @@
     "lineConnection": "LINE connnection",
     "lineFriend": "Friend with the official account",
     "undefined": "Undefined",
+    "friendLink": "Become a friend",
     "status": {
       "hasLine": "Connected",
       "noLine": "Not connected",

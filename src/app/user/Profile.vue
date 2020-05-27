@@ -16,6 +16,21 @@
           <b-field class="m-t-8" :label="$t('profile.lineFriend')">
             <p>{{lineFriend}}</p>
           </b-field>
+          <div v-if="isFriend===false" class="align-center">
+            <b-button
+              class="b-reset op-button-small"
+              style="background:#18b900"
+              tag="a"
+              :href="friendLink"
+            >
+              <i class="fab fa-line c-text-white-full m-l-24 m-r-8" style="font-size:24px" />
+              <span class="c-text-white-full m-r-24">
+                {{
+                $t("profile.friendLink")
+                }}
+              </span>
+            </b-button>
+          </div>
         </div>
         <div v-else>
           <b-button
@@ -61,6 +76,9 @@ export default {
     }
   },
   computed: {
+    friendLink() {
+      return ownPlateConfig.line.FRIEND_LINK;
+    },
     lineAuth() {
       const query = {
         response_type: "code",

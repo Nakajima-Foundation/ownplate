@@ -18,6 +18,7 @@ export const ownPlateConfig = {
   line: {
     LOGIN_CHANNEL_ID: "1654216149",
     TRACK_CHANNEL_ID: "1654259709",
+    FRIEND_LINK: "https://lin.ee/30PDYymgm",
   }
 };
 
