@@ -59,12 +59,14 @@ const ogpPage = async (req: any, res: any) => {
 
     const siteName = ownPlateConfig.siteName;
     const title = restaurant_data.restaurantName || ownPlateConfig.siteName;
-    const image = restaurant_data.restProfilePhoto;
+    const image = (restaurant_data?.images?.profile?.resizedImages || {})["600"] ||
+      restaurant_data.restProfilePhoto;
     const description = restaurant_data.introduction || ownPlateConfig.siteDescription;
-    const regex = /<title.*title>/;
+    const regexTitle = /<title.*title>/;
     const metas =
       [
         `<title>${escapeHtml(title)}</title>`,
+        `<meta data-n-head="1" charset="utf-8">`,
         `<meta property="og:title" content="${escapeHtml(title)}" />`,
         `<meta property="og:site_name" content="${escapeHtml(siteName)}" />`,
         `<meta property="og:type" content="website" />`,
@@ -77,9 +79,8 @@ const ogpPage = async (req: any, res: any) => {
         `<meta name="twitter:description" content="${description}" />`,
         `<meta name="twitter:image" content="${image}" />`,
       ].join("\n");
-
     res.set('Cache-Control', 'public, max-age=300, s-maxage=600');
-    res.send(template_data.replace(regex, metas));
+    res.send(template_data.replace(/<meta[^>]*>/g, "").replace(regexTitle, metas));
   } catch (e) {
     console.log(e);
     Sentry.captureException(e);
