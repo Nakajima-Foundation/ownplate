@@ -10,15 +10,15 @@
     "title": "プロフィール",
     "loginStatus": "サインイン状況",
     "displayName": "名前",
-    "lineConnection": "ライン連携",
+    "lineConnection": "LINE連携",
     "lineFriend": "公式アカウントとの友達設定",
     "undefined": "未設定",
     "status": {
       "hasLine": "連携済み",
       "noLine": "未連携",
-      "email": "email",
+      "email": "Email",
       "phone": "電話番号",
-      "line": "ライン",
+      "line": "LINE",
       "unexpected": "想定外",
       "isFriend": "友達設定済み",
       "noFriend": "未設定",
@@ -31,7 +31,7 @@
     "userManual": "飲食店向けマニュアル",
     "users": "お客様向けページ",
     "home": "ホーム",
-    "signOut": "サイン・アウト",
+    "signOut": "サインアウト",
     "selectLanguage": "表示言語選択",
     "yes": "はい",
     "no": "いいえ",
@@ -42,7 +42,7 @@
     "available": "この飲食店IDは使用できます",
     "submit": "登録",
     "placeholder": "使用したい飲食店IDを入力してください",
-    "tooshort": "最低５文字必要です。",
+    "tooshort": "最低5文字必要です。",
     "invalid": "数字の半角小文字英字のみ使えます。",
     "alreadyTaken": "このIDはすでに使われています。"
   },
@@ -53,7 +53,7 @@
     "new": "新規",
     "current": "変更前",
     "clickAndUpload": "ここをクリック",
-    "clickAndUploadDetail": "クリックもしくは画像をドラッグ＆ドロップしてアップロード(JPEG形式)"
+    "clickAndUploadDetail": "クリックもしくは画像をドラッグ＆ドロップしてアップロード（JPEG形式）"
   },
   "currency": {
     "USD": "ドル",
@@ -62,24 +62,24 @@
   },
   "tax": {
     "price": "{count}",
-    "include": " (税込)",
-    "exclude": " (+ 税)",
+    "include": "（税込）",
+    "exclude": "（+ 税）",
     "taxExample": "{count}の商品の例"
   },
   "editRestaurant": {
-    "enterRestaurantName": "レストラン名を入力して下さい",
+    "enterRestaurantName": "飲食店名を入力して下さい",
     "enterStreetAddress": "番地以下の住所を入力して下さい",
     "enterCity": "市町村名を入力して下さい",
     "enterZip": "郵便番号を入力して下さい",
     "enterPhone": "電話番号を入力して下さい",
     "enterWebsite": "ホームページのURLを入力して下さい",
-    "enterIntroduction": "お店を紹介して下さい！！",
+    "enterIntroduction": "お店を紹介文を入力して下さい",
     "enterOrderNotice": "注文の注意点を入力して下さい",
     "enterOrderThanks": "注文後のありがとうメッセージを入力して下さい",
     "introduction": "お店の紹介文",
-    "orderNotice": "注文直前のメッセージ",
+    "orderNotice": "注文時の注意書き",
     "orderThanks": "注文後のありがとうメッセージ",
-    "website": "ウェブサイト",
+    "website": "ホームページ",
     "tax": "消費税",
     "foodTax": "消費税率（食品）",
     "alcoholTax": "消費税率（酒類）",
@@ -93,11 +93,11 @@
     "setLocation": "住所を元に地図を更新",
     "updateMap": "場所をセット",
     "businessHourDescription": "営業する曜日にチェックをいれ、営業時間を設定してください。",
-    "draftDescription": "下書きとして保存されます(お客さんからお店のページは見えません)",
+    "draftDescription": "下書きとして保存されます（お客様からお店のページは見えません）",
     "publishDescription": "保存して公開",
     "draftWarning": "赤枠のエラーを修正すると公開可能になります",
     "updateMapDescription": "飲食店名や住所を元に地図を更新",
-    "noRestaurant": "レストラン名が未指定です",
+    "noRestaurant": "飲食店名が未指定です",
     "noStreetAddress": "住所が未入力です",
     "reallyDelete": "本当にこの飲食店を削除しますか？",
     "city": "市町村",
@@ -124,10 +124,10 @@
     "itemDescription": "説明文",
     "itemPhoto": "写真",
     "itemOptions": "オプション",
-    "itemOptionsNote": "二択や三択の場合、半角カンマで区切ってください (例: \"チキン, ポーク, 豆腐\")",
+    "itemOptionsNote": "二択や三択の場合、半角カンマで区切ってください（例:「チキン, ポーク, 豆腐」）",
     "itemAddOption": "オプション追加",
     "itemInvalidMessage": "データが正しく入力されていないため、公開されません",
-    "saveAsDraft": "下書きとして保存されます(メニューに表示されません)",
+    "saveAsDraft": "下書きとして保存されます（メニューに表示されません）",
     "reallyDelete": "本当に削除しますか？"
   },
   "editTitle": {
@@ -177,10 +177,10 @@
     "placeOrder": "注文する:",
     "placeOrderNoPayment": "お店で支払う",
     "validating": "処理しています...",
-    "thankyou": "ご注文、ありがとうございます!",
-    "orderStatus": "ご注文のステータス",
+    "thankyou": "ご注文、ありがとうございます",
+    "orderStatus": "ご注文状況",
     "orderId": "ご注文番号",
-    "pleaseStay": "このページを開けたままにしていただけると、ご注文から受け渡しまでの状況を知ることができます。",
+    "pleaseStay": "このページを表示させたままにしておくと、ご注文から受け渡しまでの状況を知ることができます。",
     "thanksMessage": "お店からのメッセージ",
     "tip": "心付け",
     "totalCharge": "合計金額",
@@ -218,7 +218,7 @@
     "resend": "再送信",
     "verificationCode": "確認コード",
     "typeVerificationCode": "メールで送られてきたコードを入力してください",
-    "userName": "お名前 (オプション)",
+    "userName": "お名前（オプション）",
     "typeUserName": "山田太郎",
     "sendVerificationCode": "送信",
     "countryCode": "国",
@@ -241,11 +241,11 @@
     "userManual": "使い方説明",
     "suportPage": "お問い合わせ",
     "hidePayment": "課金の仕組みはまもなく提供される予定です。少々お待ちください。",
-    "pleaseSignIn": "サインインしてください (飲食店向け)",
-    "registration": "登録してください (飲食店向け)",
+    "pleaseSignIn": "サインインしてください（飲食店向け）",
+    "registration": "登録してください（飲食店向け）",
     "email": "メールアドレス",
     "password": "パスワード",
-    "confirmPassword": "パスワード(再入力)",
+    "confirmPassword": "パスワード（再入力）",
     "name": "氏名",
     "emailPlaceHolder": "メールアドレスを入力して下さい",
     "passwordPlaceHolder": "パスワードを入力して下さい",
@@ -263,13 +263,13 @@
       "statusConnected": "Stripeアカウント接続済み",
       "pleaseConnect": "オンラインで支払いを受けるには、Stripeアカウントとの接続が必要です。",
       "connectStripe": "Stripeアカウントと接続する",
-      "disconnectStripe": "Stripeアカウントとの接続を切る",
-      "reallyDisconnectStripe": "本当にStripeアカウントとの接続を切ってよろしいのですね？",
+      "disconnectStripe": "Stripeアカウントとの接続を解除",
+      "reallyDisconnectStripe": "本当にStripeアカウントとの接続を解除してもよろしいですか？",
       "openDashboard": "Stripe のダッシュボードを開く"
     },
     "viewPage": "ページを確認",
     "incompleteOrders": "{count} 個の未完了の注文",
-    "editMenuItems": "メニューの変更 ({count})",
+    "editMenuItems": "メニューの変更（{count}）",
     "editAbout": "店情報の変更",
     "delete": "削除",
     "shareRestaurant": "シェア",
@@ -280,8 +280,8 @@
     "order": {
       "cancelButton": "注文をキャンセル",
       "cancelTitle": "注文のキャンセル",
-      "cancelMessage": "お客様にご連絡の上、ご注文をキャンセルさせていただく旨をお伝え下さい。",
-      "delete": "この注文をキャンセルする (やり直しは出来ません)"
+      "cancelMessage": "お客様にご連絡の上、ご注文がキャンセルされることをお伝え下さい。",
+      "delete": "この注文をキャンセルする（キャンセルの取り消しは出来ません）"
     },
     "qrcode": {
       "title": "QRコード",
@@ -336,10 +336,10 @@
     "mollusc": "軟体動物"
   },
   "line": {
-    "authenticating": "ライン認証",
-    "notifyMe": "ラインで通知を受ける",
+    "authenticating": "LINE認証",
+    "notifyMe": "LINEで通知を受けとる",
     "addFriend": "友だち追加",
-    "addFriendDescription": "ご注文状況の通知を受けるには、「おもてなし.com 公式アカウント」を友だち追加していただく必要があります。"
+    "addFriendDescription": "ご注文状況の通知を受けるには、「おもてなし.com 公式アカウント」を友だち追加する必要があります。"
   },
   "trace": {
     "thankyou": "ご協力ありがとうございます",
@@ -352,11 +352,11 @@
     },
     "message": {
       "generic": "もう一度確認してアクセスしてください。",
-      "line": "最初からライン連携をやりなおしてください。"
+      "line": "最初からLINE連携をやりなおしてください。"
     },
     "code": {
       "line": {
-        "validation": "ラインによる認証に失敗しました。"
+        "validation": "LINEによる認証に失敗しました。"
       },
       "order": {
         "checkout": "チェックアウト処理に失敗しました",
@@ -376,7 +376,7 @@
       }
     },
     "notFound": {
-      "message1": "ごめんなさい。ページがみつかりません。",
+      "message1": "ページがみつかりません。",
       "message2": "もう一度確認してアクセスしてください。"
     }
   }
