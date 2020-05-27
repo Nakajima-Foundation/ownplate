@@ -16,6 +16,19 @@
           <p>{{lineFriend}}</p>
         </b-field>
         <b-button @click="handleVerify">Verify Friend</b-button>
+        <b-button
+          class="b-reset op-button-small"
+          style="background:#18b900"
+          tag="a"
+          :href="lineAuth"
+        >
+          <i class="fab fa-line c-text-white-full m-l-24 m-r-8" style="font-size:24px" />
+          <span class="c-text-white-full m-r-24">
+            {{
+            $t("line.notifyMe")
+            }}
+          </span>
+        </b-button>
       </div>
     </div>
   </section>
@@ -24,6 +37,7 @@
 <script>
 import { parsePhoneNumber, formatNational } from "~/plugins/phoneutil.js";
 import { db, firestore, functions } from "~/plugins/firebase.js";
+import { ownPlateConfig } from "@/config/project";
 
 export default {
   data() {
@@ -43,6 +57,26 @@ export default {
       });
   },
   computed: {
+    lineAuth() {
+      const query = {
+        response_type: "code",
+        client_id: ownPlateConfig.line.LOGIN_CHANNEL_ID,
+        redirect_uri: this.redirect_uri,
+        scope: "profile openid email",
+        bot_prompt: "aggressive",
+        state: "s" + Math.random(), // LATER: Make it more secure
+        nonce: location.pathname // HACK: Repurposing nonce
+      };
+      const queryString = Object.keys(query)
+        .map(key => {
+          return key + "=" + encodeURIComponent(query[key]);
+        })
+        .join("&");
+      return `https://access.line.me/oauth2/v2.1/authorize?${queryString}`;
+    },
+    redirect_uri() {
+      return location.origin + "/callback/line";
+    },
     user() {
       return this.$store.state.user;
     },
