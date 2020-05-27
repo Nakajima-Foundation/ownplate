@@ -3,6 +3,7 @@ import i18nES from './lang/es.json';
 import i18nJA from './lang/ja.json';
 import { ownPlateConfig } from "./src/config/project";
 import { regionalSettings } from "./src/plugins/constant";
+import { defaultHeader } from "./src/plugins/header";
 
 require('dotenv').config();
 import { customRoutes } from './src/routes';
@@ -24,70 +25,7 @@ export default {
   /*
    ** Headers of the page
    */
-  head: {
-    title: ownPlateConfig.siteName || process.env.npm_package_name,
-    script: [
-      { src: "https://js.stripe.com/v3/" }
-    ],
-    meta: [
-      { hid: 'og:image', property: 'og:image', content: 'https://' + hostName + '/' +
-        (ownPlateConfig.region === "JP" ? 'PR-Feature.png' : 'OGP-Facebook.png') },
-      { charset: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      {
-        hid: "description",
-        name: "description",
-        content: ownPlateConfig.siteDescription || process.env.npm_package_description || ""
-      }
-    ],
-    link: [
-      {
-        rel: "icon",
-        type: "image/x-icon",
-        href: "/favicon.ico"
-      },
-      {
-        rel: "icon",
-        sizes: '16x16',
-        type: "image/x-icon",
-        href: "/favicon-16x16.png"
-      },
-      {
-        rel: "icon",
-        sizes: '32x32',
-        type: "image/x-icon",
-        href: "/favicon-32x32.png"
-      },
-      {
-        rel: "apple-touch-icon",
-        href: "/apple-touch-icon.png"
-      },
-      {
-        rel: "icon",
-        sizes: '192x192',
-        type: "image/png",
-        href: "/android-chrome-192x192.png"
-      },
-      {
-        rel: "icon",
-        sizes: '512x512',
-        type: "image/png",
-        href: "/android-chrome-512x512.png"
-      },
-      {
-        rel: "stylesheet",
-        href: "https://cdn.materialdesignicons.com/2.5.94/css/materialdesignicons.min.css"
-      },
-      {
-        rel: "stylesheet",
-        href: "https://use.fontawesome.com/releases/v5.2.0/css/all.css"
-      },
-			{
-	rel: "stylesheet",
-    href: "https://fonts.googleapis.com/icon?family=Material+Icons",
-   }
-    ]
-  },
+  head: defaultHeader,
   /*
    ** Customize the progress-bar color
    */

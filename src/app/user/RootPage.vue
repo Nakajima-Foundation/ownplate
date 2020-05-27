@@ -17,12 +17,16 @@
 
 <script>
 import { db } from "~/plugins/firebase.js";
+import { RestaurantHeader }  from "~/plugins/header.js";
 
 export default {
   data() {
     return {
       restaurants: []
     };
+  },
+  head() {
+    return RestaurantHeader;
   },
   async created() {
     try {
