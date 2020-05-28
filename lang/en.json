@@ -259,6 +259,8 @@
     "passwordReset": "Reset Password",
     "pleaseCheckInbox": "Please check your inbox, an email is on the way.",
     "order": {
+      "soundOn": "Notification Sound: On",
+      "soundOff": "Notification Sound: Off",
       "cancelButton": "Cancel this order",
       "cancelTitle": "Order Canceling",
       "cancelMessage": "Please contact to the customer and tell the order will be canceled.",

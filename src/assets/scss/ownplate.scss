@@ -35,6 +35,7 @@ $op-colors: (
 );
 
 // Reset Buefy and Bulma
+
 // .button {
 //   padding: 0;
 //   background-color: transparent;
@@ -294,6 +295,10 @@ body,
 .flex-1 {
   flex: 1;
 }
+.flex-center {
+  align-items: center;
+}
+
 .touchable {
   cursor: pointer;
 }
