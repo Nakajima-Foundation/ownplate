@@ -106,7 +106,7 @@ export default {
   },
   watch: {
     isWindowActive(newValue) {
-      if (newValue) {
+      if (newValue && this.isLineUser && !this.isFriend) {
         this.isFriend = undefined;
         this.checkFriend();
       }
