@@ -144,6 +144,14 @@ export default {
       buffer: null
     };
   },
+  mounted() {
+    window.addEventListener("focus", () => {
+      this.$store.commit("setActive", true);
+    });
+    window.addEventListener("blur", () => {
+      this.$store.commit("setActive", false);
+    });
+  },
   computed: {
     dialog() {
       return this.$store.state.dialog;

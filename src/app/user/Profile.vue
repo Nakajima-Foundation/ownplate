@@ -105,6 +105,9 @@ export default {
     }
   },
   watch: {
+    isWindowActive(newValue) {
+      console.log("***** isWindowActive", newValue);
+    },
     user() {
       this.loginVisible = false;
     },
@@ -115,6 +118,9 @@ export default {
     }
   },
   computed: {
+    isWindowActive() {
+      return this.$store.state.isWindowActive;
+    },
     friendLink() {
       return ownPlateConfig.line.FRIEND_LINK;
     },
