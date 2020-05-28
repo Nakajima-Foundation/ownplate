@@ -5,8 +5,16 @@
       <p>{{loginStatus}}</p>
     </b-field>
     <div v-if="!user">
-      <div class="align-center">
-        <b-button class="b-reset op-button-small" @click="handleSignIn">{{$t('profile.signIn')}}</b-button>
+      <div class="align-center m-t-24">
+        <div
+          class="op-button-small tertiary"
+          @click.prevent="handleSignIn"
+        >{{ $t("profile.signIn") }}</div>
+      </div>
+      <div class="align-center m-t-24">
+        <router-link to="/admin/user/signin">
+          <div class="op-button-small tertiary">{{ $t("profile.signInRestaurant") }}</div>
+        </router-link>
       </div>
       <b-modal :active.sync="loginVisible" :width="640">
         <div class="card">
@@ -59,9 +67,17 @@
             </span>
           </b-button>
         </div>
+        <div class="align-center m-t-24">
+          <router-link to="/u/history">
+            <div class="op-button-small tertiary">{{ $t("order.history") }}</div>
+          </router-link>
+        </div>
       </div>
-      <div class="align-center">
-        <b-button class="b-reset op-button-small" @click="handleSignOut">{{$t('profile.signOut')}}</b-button>
+      <div class="align-center m-t-24">
+        <div
+          class="op-button-small tertiary"
+          @click.prevent="handleSignOut"
+        >{{ $t("menu.signOut") }}</div>
       </div>
     </div>
   </section>
@@ -89,6 +105,12 @@ export default {
     }
   },
   watch: {
+    isWindowActive(newValue) {
+      if (newValue && this.isLineUser && !this.isFriend) {
+        this.isFriend = undefined;
+        this.checkFriend();
+      }
+    },
     user() {
       this.loginVisible = false;
     },
@@ -99,6 +121,9 @@ export default {
     }
   },
   computed: {
+    isWindowActive() {
+      return this.$store.state.isWindowActive;
+    },
     friendLink() {
       return ownPlateConfig.line.FRIEND_LINK;
     },
@@ -180,11 +205,9 @@ export default {
       this.loginVisible = false;
     },
     async checkFriend() {
-      console.log("handleVerify");
       const lineVerifyFriend = functions.httpsCallable("lineVerifyFriend");
       try {
         const { data } = await lineVerifyFriend({});
-        console.log("handleVerify", data);
         this.isFriend = data.result;
       } catch (error) {
         console.error(error);

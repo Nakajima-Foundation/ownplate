@@ -307,7 +307,6 @@ export default {
   },
   data() {
     return {
-      showAddLine: false,
       notAvailable: false,
       isPaying: false,
       restaurantsId: this.restaurantId(),
@@ -326,15 +325,6 @@ export default {
     };
   },
   created() {
-    if (this.lineEnabled && this.user) {
-      db.doc(`users/${this.user.uid}/private/line`)
-        .get()
-        .then(doc => {
-          const data = doc.data();
-          console.log(data);
-          this.showAddLine = !(data && data.isFriend);
-        });
-    }
     const restaurant_detacher = db
       .doc(`restaurants/${this.restaurantId()}`)
       .onSnapshot(async restaurant => {
@@ -411,6 +401,13 @@ export default {
     },
     redirect_uri() {
       return location.origin + "/callback/line";
+    },
+    showAddLine() {
+      return (
+        this.lineEnabled &&
+        this.$store.state.claims &&
+        !this.$store.state.claims.line
+      );
     },
     lineEnabled() {
       return !!ownPlateConfig.line;

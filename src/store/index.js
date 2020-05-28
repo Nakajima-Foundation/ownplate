@@ -16,6 +16,7 @@ export const state = () => ({
   orderEvent: 0,
   soundEnable: false, // after user touch/click event, this flag set true (for mobile browser)
   soundOn: false, // for restaurant admin config
+  isWindowActive: false, // active status of browser window
   dialog: null // for DialogBox
 });
 
@@ -48,6 +49,9 @@ export const getters = {
 };
 
 export const mutations = {
+  setActive(state, flag) {
+    state.isWindowActive = flag;
+  },
   setUser(state, user) {
     state.user = user;
   },

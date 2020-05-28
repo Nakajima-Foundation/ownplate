@@ -38,13 +38,10 @@
           <div class="op-button-small tertiary" @click="handleClose()">{{ $t("menu.about") }}</div>
         </router-link>
       </div>
-      <div v-if="!isAdmin" class="align-center m-t-24">
-        <router-link to="/u/history">
-          <div class="op-button-small tertiary" @click="handleClose()">{{ $t("order.history") }}</div>
+      <div class="align-center m-t-24">
+        <router-link to="/u/profile">
+          <div class="op-button-small tertiary" @click="handleClose()">{{ $t("profile.title") }}</div>
         </router-link>
-      </div>
-      <div class="align-center m-t-24" v-if="hasUser">
-        <div class="op-button-small tertiary" @click.prevent="signout">{{ $t("menu.signOut") }}</div>
       </div>
     </b-sidebar>
 
@@ -85,7 +82,7 @@
     <b-modal :active.sync="langPopup" :width="488" scroll="keep">
       <div class="op-dialog p-t-24 p-l-24 p-r-24 p-b-24">
         <div class="t-h6 c-text-black-disabled p-b-8">{{ $t("menu.selectLanguage") }}</div>
-        <div class="m-t-16" v-for="(lang, lang_key) in languages">
+        <div class="m-t-16" v-for="(lang, lang_key) in languages" :key="lang_key">
           <div class="op-button-pill bg-form" @click="changeLangAndClose(lang_key)">
             <i class="material-icons c-text-black-high" v-if="lang_key == language">check</i>
             <span class="t-body1">{{ lang }}</span>
@@ -146,6 +143,14 @@ export default {
       pleyedSilent: false,
       buffer: null
     };
+  },
+  mounted() {
+    window.addEventListener("focus", () => {
+      this.$store.commit("setActive", true);
+    });
+    window.addEventListener("blur", () => {
+      this.$store.commit("setActive", false);
+    });
   },
   computed: {
     dialog() {
