@@ -6,6 +6,29 @@
   "greeting": "Hello World2",
   "underConstruction": "WARNING: This is a staging server for development.",
   "comma": ", ",
+  "profile": {
+    "title": "Profile",
+    "loginStatus": "Sign-in Status",
+    "displayName": "Name",
+    "lineConnection": "LINE connnection",
+    "lineFriend": "Friend with the official account",
+    "undefined": "Undefined",
+    "friendLink": "Become a friend",
+    "signIn": "Sign-in as a user",
+    "signOut": "Sign-out",
+    "status": {
+      "hasLine": "Connected",
+      "noLine": "Not connected",
+      "verifying": "Verifying...",
+      "email": "email",
+      "phone": "Phone number",
+      "line": "LINE",
+      "unexpected": "Unexpected",
+      "isFriend": "a friend",
+      "noFriend": "not a friend",
+      "none": "None"
+    }
+  },
   "menu": {
     "about": "About",
     "admins": "Restaurant Owners",

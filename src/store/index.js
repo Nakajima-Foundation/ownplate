@@ -8,6 +8,7 @@ export const strict = false;
 
 export const state = () => ({
   user: undefined, // undefined:not authorized, null:no user
+  claims: undefined, // custom claims
   lang: undefined,
   date: new Date(),
   carts: {}, // for "Edit Order"
@@ -39,10 +40,10 @@ export const getters = {
     return stripe_regions[state.server.region || "US"];
   },
   isSuperAdmin: (state) => {
-    return state.user && state.user.claims && state.user.claims.admin;
+    return state.claims?.admin;
   },
   isNotSuperAdmin: (state) => {
-    return state.user && state.user.claims && !state.user.claims.admin;
+    return !state.claims?.admin;
   }
 };
 
@@ -67,7 +68,7 @@ export const mutations = {
   },
   setCustomClaims(state, claims) {
     // Note: we can't copy user using Object.assign here
-    state.user.claims = claims;
+    state.claims = claims;
   },
   pingOrderEvent(state) {
     state.orderEvent = (state.orderEvent) + 1;

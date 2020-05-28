@@ -6,6 +6,28 @@ import * as admin from 'firebase-admin';
 
 export const isEnabled = !!ownPlateConfig.line;
 
+export const verifyFriend = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
+  const uid = utils.validate_auth(context);
+  const isLine = uid.slice(0, 5) === "line:"
+  const uidLine = isLine ? uid.slice(5) : context.auth?.token?.line?.slice(5)
+  try {
+    //return sendMessageInternal(uidLine, "test message");
+    const LINE_MESSAGE_TOKEN = functions.config().line.message_token;
+    const profile = await netutils.request(`https://api.line.me/v2/bot/profile/${uidLine}`, {
+      headers: {
+        Authorization: `Bearer ${LINE_MESSAGE_TOKEN}`
+      }
+    })
+    if (profile.userId && profile.displayName) {
+      return { result: true, profile }
+    } else {
+      return { result: false }
+    }
+  } catch (error) {
+    throw utils.process_error(error)
+  }
+}
+
 export const authenticate = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const { code, redirect_uri, client_id } = data;
   utils.validate_params({ code, redirect_uri, client_id })
@@ -115,16 +137,8 @@ export const validate = async (db: FirebaseFirestore.Firestore, data: any, conte
   }
 }
 
-export const sendMessage = async (db: FirebaseFirestore.Firestore, uid: string | null, message: string) => {
-  if (uid === null) {
-    return;
-  }
+const sendMessageInternal = async (sub: string, message: string) => {
   const LINE_MESSAGE_TOKEN = functions.config().line.message_token;
-  const data = (await db.doc(`/users/${uid}/system/line`).get()).data() || (await db.doc(`/admins/${uid}/system/line`).get()).data();
-  const sub = data && data.profile && data.profile.userId
-  if (!sub) {
-    return;
-  }
   return netutils.postJson('https://api.line.me/v2/bot/message/push', {
     headers: {
       //Authorization: `Bearer ${data.access.access_token}`
@@ -136,4 +150,16 @@ export const sendMessage = async (db: FirebaseFirestore.Firestore, uid: string |
       { type: "text", text: message }
     ]
   })
+}
+
+export const sendMessage = async (db: FirebaseFirestore.Firestore, uid: string | null, message: string) => {
+  if (uid === null) {
+    return;
+  }
+  const data = (await db.doc(`/users/${uid}/system/line`).get()).data() || (await db.doc(`/admins/${uid}/system/line`).get()).data();
+  const sub = data && data.profile && data.profile.userId
+  if (!sub) {
+    return;
+  }
+  return sendMessageInternal(sub, message);
 }

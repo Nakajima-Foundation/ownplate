@@ -4,7 +4,19 @@
     <b-field class="m-t-8" :label="$t('profile.loginStatus')">
       <p>{{loginStatus}}</p>
     </b-field>
-    <div v-if="user">
+    <div v-if="!user">
+      <div class="align-center">
+        <b-button class="b-reset op-button-small" @click="handleSignIn">{{$t('profile.signIn')}}</b-button>
+      </div>
+      <b-modal :active.sync="loginVisible" :width="640">
+        <div class="card">
+          <div class="card-content">
+            <phone-login v-on:dismissed="handleDismissed" />
+          </div>
+        </div>
+      </b-modal>
+    </div>
+    <div v-if="user && claims">
       <!--b-field class="m-t-8" :label="$t('profile.displayName')">
         <p>{{displayName}}</p>
       </b-field-->
@@ -12,9 +24,44 @@
         <b-field class="m-t-8" :label="$t('profile.lineConnection')">
           <p>{{lineConnection}}</p>
         </b-field>
-        <b-field class="m-t-8" :label="$t('profile.lineFriend')">
-          <p>{{lineFriend}}</p>
-        </b-field>
+        <div v-if="isLineUser">
+          <b-field class="m-t-8" :label="$t('profile.lineFriend')">
+            <p>{{lineFriend}}</p>
+          </b-field>
+          <div v-if="isFriend===false" class="align-center">
+            <b-button
+              class="b-reset op-button-small"
+              style="background:#18b900"
+              tag="a"
+              :href="friendLink"
+            >
+              <i class="fab fa-line c-text-white-full m-l-24 m-r-8" style="font-size:24px" />
+              <span class="c-text-white-full m-r-24">
+                {{
+                $t("profile.friendLink")
+                }}
+              </span>
+            </b-button>
+          </div>
+        </div>
+        <div v-else class="align-center">
+          <b-button
+            class="b-reset op-button-small"
+            style="background:#18b900"
+            tag="a"
+            :href="lineAuth"
+          >
+            <i class="fab fa-line c-text-white-full m-l-24 m-r-8" style="font-size:24px" />
+            <span class="c-text-white-full m-r-24">
+              {{
+              $t("line.notifyMe")
+              }}
+            </span>
+          </b-button>
+        </div>
+      </div>
+      <div class="align-center">
+        <b-button class="b-reset op-button-small" @click="handleSignOut">{{$t('profile.signOut')}}</b-button>
       </div>
     </div>
   </section>
@@ -22,35 +69,77 @@
 
 <script>
 import { parsePhoneNumber, formatNational } from "~/plugins/phoneutil.js";
-import { db, firestore, functions } from "~/plugins/firebase.js";
+import { db, auth, firestore, functions } from "~/plugins/firebase.js";
+import { ownPlateConfig } from "@/config/project";
+import PhoneLogin from "~/app/auth/PhoneLogin";
 
 export default {
+  components: {
+    PhoneLogin
+  },
   data() {
     return {
-      isFriend: false
+      loginVisible: false,
+      isFriend: undefined
     };
   },
   created() {
-    db.doc(`users/${this.user.uid}/private/line`)
-      .get()
-      .then(doc => {
-        const data = doc.data();
-        console.log(data);
-        if (data) {
-          this.isFriend = data.isFriend;
-        }
-      });
+    if (this.isLineUser) {
+      this.checkFriend();
+    }
+  },
+  watch: {
+    user() {
+      this.loginVisible = false;
+    },
+    isLineUser(newValue) {
+      if (this.isFriend === undefined) {
+        this.checkFriend();
+      }
+    }
   },
   computed: {
+    friendLink() {
+      return ownPlateConfig.line.FRIEND_LINK;
+    },
+    lineAuth() {
+      const query = {
+        response_type: "code",
+        client_id: ownPlateConfig.line.LOGIN_CHANNEL_ID,
+        redirect_uri: this.redirect_uri,
+        scope: "profile openid email",
+        bot_prompt: "aggressive",
+        state: "s" + Math.random(), // LATER: Make it more secure
+        nonce: location.pathname // HACK: Repurposing nonce
+      };
+      const queryString = Object.keys(query)
+        .map(key => {
+          return key + "=" + encodeURIComponent(query[key]);
+        })
+        .join("&");
+      return `https://access.line.me/oauth2/v2.1/authorize?${queryString}`;
+    },
+    redirect_uri() {
+      return location.origin + "/callback/line";
+    },
     user() {
       return this.$store.state.user;
     },
+    claims() {
+      return this.$store.state.claims;
+    },
+    isLineUser() {
+      return !!this.claims?.line;
+    },
     lineConnection() {
-      return this.user?.claims?.line
+      return this.isLineUser
         ? this.$t("profile.status.hasLine")
         : this.$t("profile.status.noLine");
     },
     lineFriend() {
+      if (this.isFriend === undefined) {
+        return this.$t("profile.status.verifying");
+      }
       return this.isFriend
         ? this.$t("profile.status.isFriend")
         : this.$t("profile.status.noFriend");
@@ -60,9 +149,8 @@ export default {
     },
     loginStatus() {
       if (this.user) {
-        console.log(this.user);
         if (this.user.email) {
-          const extra = this.user?.claims.admin ? "*admin" : "";
+          const extra = this.$store.getters.isSuperAdmin ? "*admin" : "";
           return `${this.$t("profile.status.email")}: ${
             this.user.email
           } ${extra}`;
@@ -77,6 +165,30 @@ export default {
         return this.$t("profile.status.unexpected");
       }
       return this.$t("profile.status.none");
+    }
+  },
+  methods: {
+    handleSignIn() {
+      this.loginVisible = true;
+    },
+    handleSignOut() {
+      console.log("handleSignOut");
+      auth.signOut();
+    },
+    handleDismissed() {
+      console.log("handleDismissed");
+      this.loginVisible = false;
+    },
+    async checkFriend() {
+      console.log("handleVerify");
+      const lineVerifyFriend = functions.httpsCallable("lineVerifyFriend");
+      try {
+        const { data } = await lineVerifyFriend({});
+        console.log("handleVerify", data);
+        this.isFriend = data.result;
+      } catch (error) {
+        console.error(error);
+      }
     }
   }
 };
