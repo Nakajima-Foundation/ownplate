@@ -38,11 +38,6 @@
           <div class="op-button-small tertiary" @click="handleClose()">{{ $t("menu.about") }}</div>
         </router-link>
       </div>
-      <div v-if="!isAdmin" class="align-center m-t-24">
-        <router-link to="/u/history">
-          <div class="op-button-small tertiary" @click="handleClose()">{{ $t("order.history") }}</div>
-        </router-link>
-      </div>
       <div class="align-center m-t-24">
         <router-link to="/u/profile">
           <div class="op-button-small tertiary" @click="handleClose()">{{ $t("profile.title") }}</div>

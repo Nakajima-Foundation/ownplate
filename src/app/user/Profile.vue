@@ -61,6 +61,11 @@
         </div>
       </div>
       <div class="align-center m-t-24">
+        <router-link to="/u/history">
+          <div class="op-button-small tertiary">{{ $t("order.history") }}</div>
+        </router-link>
+      </div>
+      <div class="align-center m-t-24">
         <div
           class="op-button-small tertiary"
           @click.prevent="handleSignOut"
