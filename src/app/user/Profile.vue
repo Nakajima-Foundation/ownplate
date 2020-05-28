@@ -107,6 +107,10 @@ export default {
   watch: {
     isWindowActive(newValue) {
       console.log("***** isWindowActive", newValue);
+      if (newValue) {
+        this.isFriend = undefined;
+        this.checkFriend();
+      }
     },
     user() {
       this.loginVisible = false;
