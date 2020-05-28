@@ -1,25 +1,80 @@
 <template>
-  <section class="section" style="background-color:#fffafa">
-    <back-button url="/admin/restaurants/" />
-    <h2 class="p-big bold">{{ shopInfo.restaurantName }}</h2>
-    <span :style=" enableSound ? {color: '#000000'}: {color: '#aaaaaa'} ">
-      <span @click="soundToggle()"><b-icon :icon="soundOn ? 'volume-high' : 'volume-mute'" size="is-miadium"></b-icon></span>
-    </span>
-    <b-select v-model="dayIndex">
-      <option v-for="day in lastSeveralDays" :value="day.index" :key="day.index">
-        {{ $d(day.date, "short" )}}
-        <span v-if="day.index===0">{{$t('date.today')}}</span>
-      </option>
-    </b-select>
-    <div>
-      <ordered-info
-        v-for="order in orders"
-        :key="order.id"
-        @selected="orderSelected($event)"
-        :order="order"
-      />
+  <div>
+    <!-- Order Header Area -->
+    <div class="columns is-gapless">
+      <!-- Left Gap -->
+      <div class="column is-narrow w-24"></div>
+      <!-- Center Column -->
+      <div class="column">
+        <div class="m-l-24 m-r-24">
+          <!-- Back Button and Restaurant Profile -->
+          <div>
+            <!-- Back Button -->
+            <back-button url="/admin/restaurants/" class="m-t-24" />
+
+            <!-- Restaurant Profile -->
+            <div class="is-inline-flex flex-center m-l-16 m-t-24">
+              <div>
+                <img :src="shopInfo.restProfilePhoto" class="w-36 h-36 r-36 cover" />
+              </div>
+              <div class="t-h6 c-text-black-high m-l-8">{{ shopInfo.restaurantName }}</div>
+            </div>
+          </div>
+
+          <!-- Date and Sound -->
+          <div class="level">
+            <!-- Select Date -->
+            <div class="level-left">
+              <b-select v-model="dayIndex" class="m-t-24">
+                <option v-for="day in lastSeveralDays" :value="day.index" :key="day.index">
+                  {{ $d(day.date, "short" )}}
+                  <span v-if="day.index===0">{{$t('date.today')}}</span>
+                </option>
+              </b-select>
+            </div>
+
+            <!-- Sound ON/OFF -->
+            <div class="level-right">
+              <div @click="soundToggle()" class="is-inline-block">
+                <div v-if="soundOn" class="op-button-pill bg-status-green-bg">
+                  <i class="material-icons c-status-green s-18 m-r-8">volume_up</i>
+                  <span class="c-status-green t-button">{{$t("admin.order.soundOn")}}</span>
+                </div>
+                <div v-else class="op-button-pill bg-status-red-bg">
+                  <i class="material-icons c-status-red s-18 m-r-8">volume_off</i>
+                  <span class="c-status-red t-button">{{$t("admin.order.soundOff")}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Right Gap -->
+      <div class="column is-narrow w-24"></div>
     </div>
-  </section>
+
+    <!-- Order Body Area -->
+    <div class="columns is-gapless">
+      <!-- Left Gap -->
+      <div class="column is-narrow w-24"></div>
+      <!-- Center Column -->
+      <div class="column">
+        <div class="m-l-24 m-r-16 m-t-24">
+          <!-- Orders -->
+          <div class="columns is-gapless is-multiline">
+            <ordered-info
+              v-for="order in orders"
+              :key="order.id"
+              @selected="orderSelected($event)"
+              :order="order"
+            />
+          </div>
+        </div>
+      </div>
+      <!-- Right Gap -->
+      <div class="column is-narrow w-24"></div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -78,11 +133,13 @@ export default {
     }
     this.dateWasUpdated();
 
-    const notification = await db.doc(`restaurants/${this.restaurantId()}/private/notifications`).get();
+    const notification = await db
+      .doc(`restaurants/${this.restaurantId()}/private/notifications`)
+      .get();
     if (notification.exists) {
       this.notification_data = notification.data();
       this.soundOn = this.notification_data.soundOn;
-    };
+    }
     console.log(notification);
   },
   destroyed() {
@@ -98,7 +155,7 @@ export default {
     },
     enableSound() {
       return this.$store.state.soundEnable;
-    },
+    }
   },
   methods: {
     async soundToggle() {
@@ -106,7 +163,9 @@ export default {
       this.soundOn = !this.soundOn;
       this.notification_data.soundOn = this.soundOn;
       this.notification_data.updatedAt = firestore.FieldValue.serverTimestamp();
-      await db.doc(`restaurants/${this.restaurantId()}/private/notifications`).set(this.notification_data);
+      await db
+        .doc(`restaurants/${this.restaurantId()}/private/notifications`)
+        .set(this.notification_data);
     },
     updateDayIndex() {
       const dayIndex =
@@ -170,6 +229,3 @@ export default {
   }
 };
 </script>
-
-<style lang="scss">
-</style>
