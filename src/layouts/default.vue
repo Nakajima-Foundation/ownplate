@@ -43,8 +43,10 @@
           <div class="op-button-small tertiary" @click="handleClose()">{{ $t("order.history") }}</div>
         </router-link>
       </div>
-      <div class="align-center m-t-24" v-if="hasUser">
-        <div class="op-button-small tertiary" @click.prevent="signout">{{ $t("menu.signOut") }}</div>
+      <div class="align-center m-t-24">
+        <router-link to="/u/profile">
+          <div class="op-button-small tertiary" @click="handleClose()">{{ $t("profile.title") }}</div>
+        </router-link>
       </div>
     </b-sidebar>
 

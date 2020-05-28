@@ -60,8 +60,11 @@
           </b-button>
         </div>
       </div>
-      <div class="align-center">
-        <b-button class="b-reset op-button-small" @click="handleSignOut">{{$t('profile.signOut')}}</b-button>
+      <div class="align-center m-t-24">
+        <div
+          class="op-button-small tertiary"
+          @click.prevent="handleSignOut"
+        >{{ $t("menu.signOut") }}</div>
       </div>
     </div>
   </section>
