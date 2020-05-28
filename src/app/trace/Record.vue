@@ -6,12 +6,14 @@
       </div>
     </div>
     <div v-else>
-      <h1>{{$t('trace.thankyou')}}</h1>
-      <div class="m-t-16">
-        <div v-for="record in records" :key="record.id">
-          <span>{{record.timeCreated.toLocaleString()}}</span>
-          <span>{{$t('trace.' + record.event)}}</span>
-          <span>{{record.restaurantName}}</span>
+      <div v-if="user">
+        <h1>{{$t('trace.thankyou')}}</h1>
+        <div class="m-t-16">
+          <div v-for="record in records" :key="record.id">
+            <span>{{record.timeCreated.toLocaleString()}}</span>
+            <span>{{$t('trace.' + record.event)}}</span>
+            <span>{{record.restaurantName}}</span>
+          </div>
         </div>
       </div>
     </div>
@@ -80,7 +82,9 @@ export default {
           return;
         }
       }
-      location.href = this.lineAuth;
+      if (this.traceId) {
+        location.href = this.lineAuth;
+      }
     }
   },
   destroyed() {
