@@ -82,7 +82,7 @@
     <b-modal :active.sync="langPopup" :width="488" scroll="keep">
       <div class="op-dialog p-t-24 p-l-24 p-r-24 p-b-24">
         <div class="t-h6 c-text-black-disabled p-b-8">{{ $t("menu.selectLanguage") }}</div>
-        <div class="m-t-16" v-for="(lang, lang_key) in languages">
+        <div class="m-t-16" v-for="(lang, lang_key) in languages" :key="lang_key">
           <div class="op-button-pill bg-form" @click="changeLangAndClose(lang_key)">
             <i class="material-icons c-text-black-high" v-if="lang_key == language">check</i>
             <span class="t-body1">{{ lang }}</span>
