@@ -106,7 +106,6 @@ export default {
   },
   watch: {
     isWindowActive(newValue) {
-      console.log("***** isWindowActive", newValue);
       if (newValue) {
         this.isFriend = undefined;
         this.checkFriend();
@@ -206,11 +205,9 @@ export default {
       this.loginVisible = false;
     },
     async checkFriend() {
-      console.log("handleVerify");
       const lineVerifyFriend = functions.httpsCallable("lineVerifyFriend");
       try {
         const { data } = await lineVerifyFriend({});
-        console.log("handleVerify", data);
         this.isFriend = data.result;
       } catch (error) {
         console.error(error);
