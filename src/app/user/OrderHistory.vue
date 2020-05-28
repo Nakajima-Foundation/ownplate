@@ -1,31 +1,69 @@
 <template>
-  <section class="section">
-    <h2>{{$t('order.history')}}</h2>
-    <ordered-info
-      v-for="order in orders"
-      :key="order.id"
-      @selected="orderSelected($event)"
-      :order="order"
-    />
-    <b-modal :active.sync="loginVisible" :width="640">
-      <div class="card">
-        <div class="card-content">
-          <phone-login v-on:dismissed="handleDismissed" />
+  <div>
+    <!-- History Header Area -->
+    <div class="columns is-gapless">
+      <!-- Left Gap -->
+      <div class="column is-narrow w-24"></div>
+      <!-- Center Column -->
+      <div class="column">
+        <div class="m-l-24 m-r-24">
+          <!-- Back Button and Restaurant Profile -->
+          <div>
+            <!-- Back Button -->
+            <back-button url="/u/profile/" class="m-t-24" />
+            <!-- Title -->
+            <div class="t-h6 c-text-black-disabled m-t-24">{{$t('order.history')}}</div>
+          </div>
         </div>
       </div>
-    </b-modal>
-  </section>
+      <!-- Right Gap -->
+      <div class="column is-narrow w-24"></div>
+    </div>
+
+    <!-- History Body Area -->
+    <div class="columns is-gapless">
+      <!-- Left Gap -->
+      <div class="column is-narrow w-24"></div>
+      <!-- Center Column -->
+      <div class="column">
+        <div class="m-l-24 m-r-16 m-t-24">
+          <!-- Orders -->
+          <div class="columns is-gapless is-multiline">
+            <ordered-info
+              v-for="order in orders"
+              :key="order.id"
+              @selected="orderSelected($event)"
+              :order="order"
+            />
+          </div>
+
+          <!-- Phone Login -->
+          <b-modal :active.sync="loginVisible" :width="640">
+            <div class="card">
+              <div class="card-content">
+                <phone-login v-on:dismissed="handleDismissed" />
+              </div>
+            </div>
+          </b-modal>
+        </div>
+      </div>
+      <!-- Right Gap -->
+      <div class="column is-narrow w-24"></div>
+    </div>
+  </div>
 </template>
 
 <script>
 import { db, firestore, functions } from "~/plugins/firebase.js";
 import OrderedInfo from "~/app/admin/Order/OrderedInfo";
 import PhoneLogin from "~/app/auth/PhoneLogin";
+import BackButton from "~/components/BackButton";
 
 export default {
   components: {
     OrderedInfo,
-    PhoneLogin
+    PhoneLogin,
+    BackButton
   },
   data() {
     return {
