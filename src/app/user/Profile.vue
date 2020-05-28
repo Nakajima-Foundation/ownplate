@@ -5,8 +5,16 @@
       <p>{{loginStatus}}</p>
     </b-field>
     <div v-if="!user">
-      <div class="align-center">
-        <b-button class="b-reset op-button-small" @click="handleSignIn">{{$t('profile.signIn')}}</b-button>
+      <div class="align-center m-t-24">
+        <div
+          class="op-button-small tertiary"
+          @click.prevent="handleSignIn"
+        >{{ $t("profile.signIn") }}</div>
+      </div>
+      <div class="align-center m-t-24">
+        <router-link to="/admin/user/signin">
+          <div class="op-button-small tertiary">{{ $t("profile.signInRestaurant") }}</div>
+        </router-link>
       </div>
       <b-modal :active.sync="loginVisible" :width="640">
         <div class="card">
@@ -59,11 +67,11 @@
             </span>
           </b-button>
         </div>
-      </div>
-      <div class="align-center m-t-24">
-        <router-link to="/u/history">
-          <div class="op-button-small tertiary">{{ $t("order.history") }}</div>
-        </router-link>
+        <div class="align-center m-t-24">
+          <router-link to="/u/history">
+            <div class="op-button-small tertiary">{{ $t("order.history") }}</div>
+          </router-link>
+        </div>
       </div>
       <div class="align-center m-t-24">
         <div

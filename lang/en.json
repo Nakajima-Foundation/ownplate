@@ -15,6 +15,7 @@
     "undefined": "Undefined",
     "friendLink": "Become a friend",
     "signIn": "Sign-in as a user",
+    "signInRestaurant": "Sign-in as a restaurant",
     "status": {
       "hasLine": "Connected",
       "noLine": "Not connected",
