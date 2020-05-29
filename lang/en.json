@@ -173,6 +173,7 @@
   "order": {
     "menu": "View Menu Page",
     "yourOrder": "Your Order",
+    "confirmOrder": "Confirm Order",
     "editItems": "Edit Items",
     "subtotal": "Subtotal",
     "salesTax": "Sales Tax",
