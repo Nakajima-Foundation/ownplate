@@ -1,16 +1,18 @@
 <template>
-  <div class="card block">
-    <div class="card-content">
-      <div class="media">
-        <div class="media-content">
-          <h3>{{ menu.itemName }}</h3>
-          <h3>x {{ item.count }}</h3>
-          <p>{{ item.option }}</p>
+  <div>
+    <div class="bg-surface r-8 d-low m-t-8">
+      <div class="cols">
+        <div class="flex-1 p-l-16 p-r-16 p-t-16 p-b-16">
+          <div class="t-h6 c-text-black-high">{{ menu.itemName }}</div>
+          <div class="c-status-blue t-h5 m-t-8">x {{ item.count }}</div>
+          <div class="t-body1 c-text-black-high m-t-8">{{ item.option }}</div>
         </div>
-        <div class="media-right">
-          <figure class="image thumbnail">
-            <img class="is-square" :src="image" alt style="border-radius: 4px;" />
-          </figure>
+        <div class="p-r-16 p-t-16 p-b-16">
+          <div class="w-96 is-pulled-right">
+            <div v-if="image">
+              <img :src="image" width="96" height="96" class="w-96 h-96 r-4 cover" />
+            </div>
+          </div>
         </div>
       </div>
     </div>
