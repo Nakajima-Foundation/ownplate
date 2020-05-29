@@ -173,6 +173,7 @@
   "order": {
     "menu": "メニューページを見る",
     "yourOrder": "あなたの注文",
+    "confirmOrder": "ご注文の確認",
     "editItems": "注文を変更する",
     "subtotal": "小計",
     "salesTax": "消費税",
@@ -287,7 +288,8 @@
       "cancelButton": "注文をキャンセル",
       "cancelTitle": "注文のキャンセル",
       "cancelMessage": "お客様にご連絡の上、ご注文がキャンセルされることをお伝え下さい。",
-      "delete": "この注文をキャンセルする（キャンセルの取り消しは出来ません）"
+      "delete": "この注文をキャンセルする",
+      "deleteConfirm": "（キャンセルの取り消しは出来ません）"
     },
     "qrcode": {
       "title": "QRコード",

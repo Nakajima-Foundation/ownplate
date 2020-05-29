@@ -173,6 +173,7 @@
   "order": {
     "menu": "View Menu Page",
     "yourOrder": "Your Order",
+    "confirmOrder": "Confirm Order",
     "editItems": "Edit Items",
     "subtotal": "Subtotal",
     "salesTax": "Sales Tax",
@@ -287,7 +288,8 @@
       "cancelButton": "Cancel this order",
       "cancelTitle": "Order Canceling",
       "cancelMessage": "Please contact to the customer and tell the order will be canceled.",
-      "delete": "Cancel this order (undoable)"
+      "delete": "Cancel this order",
+      "deleteConfirm": "(This action is undoable)"
     },
     "qrcode": {
       "title": "QRcodes",
