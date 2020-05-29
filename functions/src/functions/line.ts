@@ -6,6 +6,10 @@ import * as admin from 'firebase-admin';
 
 export const isEnabled = !!ownPlateConfig.line;
 
+export const setCustomClaim = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
+  return { success: true }
+}
+
 export const verifyFriend = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
   const isLine = uid.slice(0, 5) === "line:"
