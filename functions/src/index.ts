@@ -19,6 +19,7 @@ exportIfNeeded("systemGetConfig", "systemGetConfig", exports);
 exportIfNeeded("lineVerifyFriend", "line/lineVerifyFriend", exports);
 exportIfNeeded("lineValidate", "lineValidate", exports);
 exportIfNeeded("lineAuthenticate", "lineAuthenticate", exports);
+exportIfNeeded("lineSetCustomClaim", "line/lineSetCustomClaim", exports);
 exportIfNeeded("traceProcess", "traceProcess", exports);
 
 exportIfNeeded("wasOrderCreated2", "order/wasOrderCreated2", exports);
