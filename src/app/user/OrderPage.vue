@@ -130,7 +130,7 @@
                 v-if="paid"
                 class="t-h6 c-text-black-disabled"
               >{{ $t("order.yourOrder") + ": " + orderName }}</div>
-              <div v-else class="t-h6 c-text-black-disabled">{{ $t("order.yourOrder") }}</div>
+              <div v-else class="t-h6 c-text-black-disabled">{{ $t("order.confirmOrder") }}</div>
 
               <!-- Details -->
               <order-info
