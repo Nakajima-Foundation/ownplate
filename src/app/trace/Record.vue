@@ -77,21 +77,16 @@ export default {
   },
   async mounted() {
     console.log("user =", this.user, this.isLineUser);
-    if (this.isLineUser) {
-      console.log("line user", this.user.uid);
-      this.record(this.user.uid);
-    } else {
-      if (this.user) {
-        const { claims } = await this.user.getIdTokenResult(true);
-        if (claims.line) {
-          console.log("***** DEBUG *****", claims.line);
-          this.record(claims.line);
-          return;
-        }
+    if (this.user) {
+      const { claims } = await this.user.getIdTokenResult(true);
+      if (claims.line) {
+        console.log("***** DEBUG *****", claims.line);
+        this.record(claims.line);
+        return;
       }
-      if (this.traceId) {
-        location.href = this.lineAuth;
-      }
+    }
+    if (this.traceId) {
+      location.href = this.lineAuth;
     }
   },
   destroyed() {
