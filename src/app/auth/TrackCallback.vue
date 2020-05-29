@@ -47,6 +47,11 @@ export default {
           console.log("validation succeded");
           const user = await auth.signInWithCustomToken(data.customToken);
           console.log("signInWithCustomToken", user);
+          const lineSetCustomClaim = functions.httpsCallable(
+            "lineSetCustomClaim"
+          );
+          const result = await lineSetCustomClaim();
+          console.log("result", result);
           if (user) {
             this.$router.replace(`/t/${data.nonce}`);
           }

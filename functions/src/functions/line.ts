@@ -7,7 +7,19 @@ import * as admin from 'firebase-admin';
 export const isEnabled = !!ownPlateConfig.line;
 
 export const setCustomClaim = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
-  return { success: true }
+  const uid = utils.validate_auth(context);
+  const isLine = uid.slice(0, 5) === "line:"
+  try {
+    if (isLine) {
+      // This looks redundant, but it simplifies the firebase.rules
+      await admin.auth().setCustomUserClaims(uid, {
+        line: uid
+      })
+    }
+    return { success: isLine }
+  } catch (error) {
+    throw utils.process_error(error)
+  }
 }
 
 export const verifyFriend = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
