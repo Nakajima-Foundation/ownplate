@@ -51,7 +51,7 @@ export const process = async (db: FirebaseFirestore.Firestore, data: any, contex
         const lastDoc = records[1];
         const lastRecord = lastDoc.data();
         const duration = record.timeCreated.seconds - lastRecord.timeCreated.seconds;
-        if (lastRecord.restaurantId === trace.restaurantId && lastRecord.event === "enter") {
+        if (lastRecord.restaurantId === trace.restaurantId && lastRecord.event === "enter" && duration < 12 * 3600) {
           processed = true;
           await db.runTransaction(async tx => {
             tx.update(lastDoc.ref, {
