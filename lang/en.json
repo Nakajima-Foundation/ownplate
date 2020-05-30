@@ -352,7 +352,8 @@
   "trace": {
     "thankyou": "Thank you for participating.",
     "enter": "Enter",
-    "leave": "Leave"
+    "leave": "Leave",
+    "list": "Trace List"
   },
   "errorPage": {
     "popup": {

@@ -20,7 +20,7 @@
         </p>
       </div>
       <div class="align-center m-t-24">
-        <router-link :to="`/admin/restaurants/${restaurantId}/traces`">
+        <router-link :to="`/admin/restaurants/${restaurantId()}/traces`">
           <div class="op-button-small tertiary">{{ $t("trace.list") }}</div>
         </router-link>
       </div>
