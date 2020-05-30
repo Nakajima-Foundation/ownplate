@@ -120,7 +120,6 @@ service cloud.firestore {
     }
     match /{path=**}/records/{eventId} {
         allow read: if isRestaurantOwner(resource.data.restaurantId, request);
-        allow read: if true; // BUGBUG
     }
 
     match /{document=**} {
