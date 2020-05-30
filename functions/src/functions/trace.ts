@@ -41,6 +41,14 @@ export const process = async (db: FirebaseFirestore.Firestore, data: any, contex
       event: trace.event,
       restaurantName: restaurant.restaurantName
     });
+
+    // Allows the system to reverse lookup
+    const refProfile = db.doc(`hash/${hash}/system/profile`);
+    const profile = (await refProfile.get()).data();
+    if (!profile) {
+      await refProfile.set({ uid: uidLine })
+    }
+
     return { result: restaurant.restaurantName }
   } catch (error) {
     throw utils.process_error(error)
