@@ -5,7 +5,7 @@
       <div v-for="record in records" :key="record.id">
         <span>{{record.timeCreated.toLocaleString()}}</span>
         <span>{{$t('trace.' + record.event)}}</span>
-        <span>...{{record.uid.slice(-4)}}</span>
+        <span>{{record.uid.slice(-4)}}</span>
       </div>
     </div>
   </section>
