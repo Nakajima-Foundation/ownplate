@@ -43,29 +43,27 @@ export const process = async (db: FirebaseFirestore.Firestore, data: any, contex
       restaurantName: restaurant.restaurantName
     });
 
-    // Pair an "leave" with "enter"
+    // Enter-Leave Pairing (leaving others as unprocessed)
     if (trace.event === "leave") {
       const refRecords = db.collection(`hash/${hash}/records/`);
       const records = (await refRecords.orderBy("timeCreated", "desc").limit(2).get()).docs;
-      console.log("*** 1", records.length)
       if (records.length === 2) {
         const lastDoc = records[1];
         const lastRecord = lastDoc.data();
-        console.log("*** 2", lastRecord)
         if (lastRecord.restaurantId === trace.restaurantId && lastRecord.event === "enter") {
-          console.log("*** 3")
           processed = true;
-          await lastDoc.ref.update({
-            timeExited: record.timeCreated,
-            processed
-          })
-          await refRecord.update({
-            processed
+          await db.runTransaction(async tx => {
+            tx.update(lastDoc.ref, {
+              timeLeft: record.timeCreated,
+              processed
+            })
+            tx.update(refRecord, {
+              processed
+            })
           })
         }
       }
     }
-
     // Allows the system to reverse lookup
     const refProfile = db.doc(`hash/${hash}/system/profile`);
     const profile = (await refProfile.get()).data();
@@ -77,5 +75,4 @@ export const process = async (db: FirebaseFirestore.Firestore, data: any, contex
   } catch (error) {
     throw utils.process_error(error)
   }
-
 }
