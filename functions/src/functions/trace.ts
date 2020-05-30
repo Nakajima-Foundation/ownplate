@@ -7,7 +7,7 @@ export const process = async (db: FirebaseFirestore.Firestore, data: any, contex
   const { eventId } = data;
   utils.validate_params({ eventId })
   const uidLine = context.auth!.token.line || uid
-  console.log("**** uid", uid, uidLine);
+  let processed = false;
 
   try {
     //const refRecord = db.doc(`line/${uidLine}/records/${eventId}`);
@@ -36,11 +36,35 @@ export const process = async (db: FirebaseFirestore.Firestore, data: any, contex
     if (!restaurant) {
       throw new functions.https.HttpsError('invalid-argument', 'No document for the specified restaurantId.')
     }
+
     await refRecord.update({
       restaurantId: trace.restaurantId,
       event: trace.event,
       restaurantName: restaurant.restaurantName
     });
+
+    // Pair an "leave" with "enter"
+    if (trace.event === "leave") {
+      const refRecords = db.collection(`hash/${hash}/records/`);
+      const records = (await refRecords.orderBy("timeCreated", "desc").limit(2).get()).docs;
+      console.log("*** 1", records.length)
+      if (records.length === 2) {
+        const lastDoc = records[1];
+        const lastRecord = lastDoc.data();
+        console.log("*** 2", lastRecord)
+        if (lastRecord.restaurantId === trace.restaurantId && lastRecord.event === "enter") {
+          console.log("*** 3")
+          processed = true;
+          await lastDoc.ref.update({
+            timeExited: record.timeCreated,
+            processed
+          })
+          await refRecord.update({
+            processed
+          })
+        }
+      }
+    }
 
     // Allows the system to reverse lookup
     const refProfile = db.doc(`hash/${hash}/system/profile`);
@@ -49,7 +73,7 @@ export const process = async (db: FirebaseFirestore.Firestore, data: any, contex
       await refProfile.set({ uid: uidLine })
     }
 
-    return { result: restaurant.restaurantName }
+    return { result: restaurant.restaurantName, processed }
   } catch (error) {
     throw utils.process_error(error)
   }

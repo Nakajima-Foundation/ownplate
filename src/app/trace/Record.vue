@@ -12,6 +12,7 @@
           <div v-for="record in records" :key="record.id">
             <span>{{record.timeCreated.toLocaleString()}}</span>
             <span>{{$t('trace.' + record.event)}}</span>
+            <span>{{record.processed ? "*" : " "}}</span>
             <span>{{record.restaurantName}}</span>
           </div>
         </div>
