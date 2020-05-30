@@ -352,7 +352,8 @@
   "trace": {
     "thankyou": "ご協力ありがとうございます",
     "enter": "入店",
-    "leave": "退店"
+    "leave": "退店",
+    "list": "入退店記録"
   },
   "errorPage": {
     "popup": {
