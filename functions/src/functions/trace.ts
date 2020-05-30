@@ -7,7 +7,7 @@ export const process = async (db: FirebaseFirestore.Firestore, data: any, contex
   const { eventId } = data;
   utils.validate_params({ eventId })
   const uidLine = context.auth!.token.line || uid
-  console.log("**** uid", uid, uidLine);
+  let processed = false;
 
   try {
     //const refRecord = db.doc(`line/${uidLine}/records/${eventId}`);
@@ -36,12 +36,36 @@ export const process = async (db: FirebaseFirestore.Firestore, data: any, contex
     if (!restaurant) {
       throw new functions.https.HttpsError('invalid-argument', 'No document for the specified restaurantId.')
     }
+
     await refRecord.update({
       restaurantId: trace.restaurantId,
       event: trace.event,
       restaurantName: restaurant.restaurantName
     });
 
+    // Enter-Leave Pairing (leaving others as unprocessed)
+    if (trace.event === "leave") {
+      const refRecords = db.collection(`hash/${hash}/records/`);
+      const records = (await refRecords.orderBy("timeCreated", "desc").limit(2).get()).docs;
+      if (records.length === 2) {
+        const lastDoc = records[1];
+        const lastRecord = lastDoc.data();
+        const duration = record.timeCreated.seconds - lastRecord.timeCreated.seconds;
+        if (lastRecord.restaurantId === trace.restaurantId && lastRecord.event === "enter" && duration < 12 * 3600) {
+          processed = true;
+          await db.runTransaction(async tx => {
+            tx.update(lastDoc.ref, {
+              timeLeft: record.timeCreated,
+              duration,
+              processed
+            })
+            tx.update(refRecord, {
+              processed
+            })
+          })
+        }
+      }
+    }
     // Allows the system to reverse lookup
     const refProfile = db.doc(`hash/${hash}/system/profile`);
     const profile = (await refProfile.get()).data();
@@ -49,9 +73,8 @@ export const process = async (db: FirebaseFirestore.Firestore, data: any, contex
       await refProfile.set({ uid: uidLine })
     }
 
-    return { result: restaurant.restaurantName }
+    return { result: restaurant.restaurantName, processed }
   } catch (error) {
     throw utils.process_error(error)
   }
-
 }

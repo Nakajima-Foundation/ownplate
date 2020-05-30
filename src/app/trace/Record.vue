@@ -12,6 +12,7 @@
           <div v-for="record in records" :key="record.id">
             <span>{{record.timeCreated.toLocaleString()}}</span>
             <span>{{$t('trace.' + record.event)}}</span>
+            <span>{{record.processed ? "*" : " "}}</span>
             <span>{{record.restaurantName}}</span>
           </div>
         </div>
@@ -39,7 +40,7 @@ export default {
         .createHash("sha256")
         .update(lineUid)
         .digest("hex");
-      console.log("*********", hash);
+      //console.log("*********", hash);
 
       const refRecords = db.collection(`hash/${hash}/records`);
       if (this.traceId) {
@@ -50,7 +51,7 @@ export default {
             timeCreated: firestore.FieldValue.serverTimestamp(),
             processed: false
           });
-          console.log("recorded as", doc.id);
+          //console.log("recorded as", doc.id);
           this.success = true;
 
           const traceProcess = functions.httpsCallable("traceProcess");
@@ -70,17 +71,17 @@ export default {
               record.timeCreated = record.timeCreated.toDate();
               return record;
             });
-            console.log("snapshot", this.records);
+            //console.log("snapshot", this.records);
           });
       }
     }
   },
   async mounted() {
-    console.log("user =", this.user, this.isLineUser);
+    //console.log("user =", this.user, this.isLineUser);
     if (this.user) {
       const { claims } = await this.user.getIdTokenResult(true);
       if (claims.line) {
-        console.log("***** DEBUG *****", claims.line);
+        //console.log("***** DEBUG *****", claims.line);
         this.record(claims.line);
         return;
       }
