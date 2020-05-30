@@ -1,11 +1,11 @@
 <template>
   <section class="section" style="background-color:#fffafa">
-    <p>{{$t("trace.list")}}</p>
+    <div class="t-h6 c-text-black-disabled m-b-8">{{$t("trace.list")}}</div>
     <div class="m-t-16">
       <div v-for="record in records" :key="record.id">
         <span>{{record.timeCreated.toLocaleString()}}</span>
         <span>{{$t('trace.' + record.event)}}</span>
-        <span>{{record.restaurantName}}</span>
+        <span>...{{record.uid.slice(-4)}}</span>
       </div>
     </div>
   </section>
