@@ -1,6 +1,6 @@
 <template>
   <section class="section" style="background-color:#fffafa">
-    <p>$t("trace.list")</p>
+    <p>{{$t("trace.list")}}</p>
   </section>
 </template>
 
@@ -23,6 +23,7 @@ export default {
         this.records = snapshot.docs.map(doc => {
           const record = doc.data();
           record.id = doc.id;
+          record.timeCreated = record.timeCreated.toDate();
           return record;
         });
       });
