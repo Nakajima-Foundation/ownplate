@@ -80,6 +80,7 @@ export default {
       try {
         const response = await stripeConnect({ code });
         console.log(response);
+        this.$router.replace(location.pathname);
         // TODO: show connected view
       } catch (error) {
         // TODO: show error modal
@@ -111,11 +112,13 @@ export default {
     uid() {
       return this.$store.getters.uidAdmin;
     },
+    redirectURI() {
+      return `${location.protocol}//${location.host}${location.pathname}`;
+    },
     stripeLink() {
-      const redirectURI = `${location.protocol}//${location.host}${location.pathname}`;
       return `https://connect.stripe.com/oauth/authorize?response_type=code&client_id=${
         process.env.STRIPE_CLIENT_ID
-      }&scope=read_write&redirect_uri=${encodeURI(redirectURI)}`;
+      }&scope=read_write&redirect_uri=${encodeURI(this.redirectURI)}`;
     },
     hidePayment() {
       return releaseConfig.hidePayment;
