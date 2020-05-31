@@ -94,12 +94,13 @@ export default {
         console.log("paymentInfo", this.paymentInfo);
       } else {
         let stripe = null;
-        // Backward compatibility
+        // ---- Backward compatibility
         const refStripe = db.doc(`/admins/${this.uid}/public/stripe`);
         const stripeData = (await refStripe.get()).data();
         if (stripeData) {
           stripe = stripeData.stripeAccount;
         }
+        // ---- End of Backward compatibility
         refPayment.set({
           stripe,
           inStore: false
