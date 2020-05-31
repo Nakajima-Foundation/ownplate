@@ -240,7 +240,7 @@
                 </div>
 
                 <!-- Pay Button -->
-                <div v-if="!showPayment" class="align-center m-t-24">
+                <div v-if="inStorePayment" class="align-center m-t-24">
                   <b-button
                     class="b-reset op-button-medium primary"
                     style="min-width: 288px;"
@@ -312,7 +312,6 @@ export default {
       restaurantsId: this.restaurantId(),
       shopInfo: { restaurantName: "" },
       cardState: {},
-      stripeAccount: null,
       orderInfo: {},
       menus: [],
       detacher: [],
@@ -321,6 +320,7 @@ export default {
       tip: 0,
       isCanceling: false,
       sendSMS: true,
+      paymentInfo: {},
       notFound: false
     };
   },
@@ -332,10 +332,9 @@ export default {
           const restaurant_data = restaurant.data();
           this.shopInfo = restaurant_data;
           const uid = restaurant_data.uid;
-          const snapshot = await db.doc(`/admins/${uid}/public/stripe`).get();
-          const stripeInfo = snapshot.data();
-          console.log("restaurant", uid, stripeInfo);
-          this.stripeAccount = stripeInfo && stripeInfo["stripeAccount"];
+          const snapshot = await db.doc(`/admins/${uid}/public/payment`).get();
+          this.paymentInfo = snapshot.data() || {};
+          console.log("restaurant", uid, this.paymentInfo);
         } else {
           this.notFound = true;
         }
@@ -419,6 +418,12 @@ export default {
     showPayment() {
       //console.log("payment", releaseConfig.hidePayment, this.stripeAccount);
       return !releaseConfig.hidePayment && this.stripeAccount;
+    },
+    stripeAccount() {
+      return this.paymentInfo.stripe;
+    },
+    inStorePayment() {
+      return this.paymentInfo.inStore;
     },
     orderName() {
       return nameOfOrder(this.orderInfo);

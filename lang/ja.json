@@ -180,7 +180,7 @@
     "total": "合計",
     "yourPayment": "お支払い",
     "placeOrder": "注文する:",
-    "placeOrderNoPayment": "お店で支払う",
+    "placeOrderNoPayment": "注文して受け取り時に支払う",
     "validating": "処理しています...",
     "thankyou": "ご注文、ありがとうございます",
     "orderStatus": "ご注文状況",
@@ -189,7 +189,7 @@
     "thanksMessage": "お店からのメッセージ",
     "tip": "心付け",
     "totalCharge": "合計金額",
-    "pleasePayAtRestaurant": "オンラインでの支払いは現時点では出来ません。受け取り時にお店でお支払いください。",
+    "pleasePayAtRestaurant": "オンラインでの支払いは現時点では出来ません。",
     "sendSMS": "SMSメッセージを受け取る（SMSの受信には料金がかかる場合があります）",
     "history": "注文履歴",
     "timeToPickup": "受け渡し予定時刻",
@@ -270,7 +270,8 @@
       "connectStripe": "Stripeアカウントと接続する",
       "disconnectStripe": "Stripeアカウントとの接続を解除",
       "reallyDisconnectStripe": "本当にStripeアカウントとの接続を解除してもよろしいですか？",
-      "openDashboard": "Stripe のダッシュボードを開く"
+      "openDashboard": "Stripe のダッシュボードを開く",
+      "enableInStorePayment": "受け取り払いを許可する"
     },
     "viewPage": "ページを確認",
     "incompleteOrders": "{count} 個の未完了の注文",

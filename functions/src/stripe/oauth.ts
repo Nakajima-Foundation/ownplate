@@ -19,14 +19,10 @@ export const connect = async (db: FirebaseFirestore.Firestore, data: any, contex
       db.doc(`/admins/${uid}/system/stripe`),
       response
     )
-    batch.set(
-      db.doc(`/admins/${uid}/public/stripe`),
-      {
-        isConnected: true,
-        stripeAccount: response.stripe_user_id
-      }
-    )
-
+    batch.update(
+      db.doc(`/admins/${uid}/public/payment`), {
+      stripe: response.stripe_user_id
+    })
     await batch.commit()
     return { result: response }
   } catch (error) {
@@ -42,7 +38,14 @@ export const disconnect = async (db: FirebaseFirestore.Firestore, data: any, con
   utils.validate_params({ STRIPE_CLIENT_ID })
 
   try {
-    const snapshot = await db.doc(`/admins/${uid}/system/stripe`).get()
+    // We remove it from the database first, so that the operator can attempt to re-connect
+    // if something goes wrong.
+    await db.doc(`/admins/${uid}/public/payment`).update({
+      stripe: null
+    });
+
+    const refStripe = db.doc(`/admins/${uid}/system/stripe`);
+    const snapshot = await refStripe.get()
     const systemStripe = snapshot.data()
     if (!systemStripe) {
       throw new functions.https.HttpsError('invalid-argument', 'This account is not connected to Stripe.')
@@ -52,20 +55,7 @@ export const disconnect = async (db: FirebaseFirestore.Firestore, data: any, con
       throw new functions.https.HttpsError('invalid-argument', 'This account is not connected to Stripe.')
     }
 
-    // We remove it from the database first, so that the operator can attempt to re-connect
-    // if something goes wrong.
-    const batch = db.batch()
-    batch.delete(
-      db.doc(`/admins/${uid}/system/stripe`)
-    )
-    batch.set(
-      db.doc(`/admins/${uid}/public/stripe`),
-      {
-        isConnected: false,
-        stripeAccount: null
-      }
-    )
-    await batch.commit()
+    await refStripe.delete();
 
     const response = await stripe.oauth.deauthorize({
       client_id: STRIPE_CLIENT_ID,
