@@ -68,7 +68,7 @@ import { stripeConnect, stripeDisconnect } from "~/plugins/stripe.js";
 export default {
   data() {
     return {
-      paymentItems: {}, // { stripe:true, ... }
+      paymentInfo: {}, // { stripe, inStore, ... }
       stripe_connnect_detacher: null,
       isDisconnecting: false
     };
@@ -90,8 +90,8 @@ export default {
     const refPayment = db.doc(`/admins/${this.uid}/public/payment`);
     this.stripe_connnect_detacher = refPayment.onSnapshot(async snapshot => {
       if (snapshot.exists) {
-        this.paymentItems = snapshot.data();
-        console.log("paymentItems", this.paymentItems);
+        this.paymentInfo = snapshot.data();
+        console.log("paymentInfo", this.paymentInfo);
       } else {
         let stripe = null;
         // Backward compatibility
@@ -128,7 +128,7 @@ export default {
       return releaseConfig.hidePayment;
     },
     hasStripe() {
-      return !!this.paymentItems.stripe;
+      return !!this.paymentInfo.stripe;
     }
   },
   methods: {
