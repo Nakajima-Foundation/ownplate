@@ -270,7 +270,8 @@
       "connectStripe": "Connect Stripe Account",
       "disconnectStripe": "Disconnect Stripe Account",
       "reallyDisconnectStripe": "Do you really want to disconnect Stripe Account?",
-      "openDashboard": "Open Stripe Dashboard"
+      "openDashboard": "Open Stripe Dashboard",
+      "enableInStorePayment": "Allow in-store payment"
     },
     "viewPage": "View Page",
     "incompleteOrders": "{count} Incomplete Order | {count} Incomplete Orders",

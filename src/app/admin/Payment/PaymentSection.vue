@@ -2,9 +2,6 @@
   <div class="m-t-24">
     <div class="t-h6 c-text-black-disabled m-b-8">{{$t('admin.payment')}}</div>
     <div class="bg-surface r-8 d-low p-t-24 p-b-24">
-      <div class="align-center">
-        <b-checkbox v-model="inStorePayment">Foo</b-checkbox>
-      </div>
       <!-- Stripe Not Connected -->
       <div v-if="!hasStripe">
         <div class="align-center">
@@ -48,6 +45,11 @@
             <span class="c-status-red">{{$t('admin.payments.disconnectStripe')}}</span>
           </b-button>
         </div>
+      </div>
+
+      <!-- In-store Payment -->
+      <div class="align-center p-t-24">
+        <b-checkbox v-model="inStorePayment">{{$t('admin.payments.enableInStorePayment')}}</b-checkbox>
       </div>
     </div>
   </div>
