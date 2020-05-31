@@ -51,7 +51,9 @@ const link = [
 ];
 
 const script = [
-  { src: "https://js.stripe.com/v3/" }
+  { src: "https://js.stripe.com/v3/" },
+  { src: "https://www.gstatic.com/firebasejs/7.14.6/firebase-app.js" },
+  { src: "https://www.gstatic.com/firebasejs/7.14.6/firebase-analytics.js" }
 ];
 
 export const RestaurantHeader = {
