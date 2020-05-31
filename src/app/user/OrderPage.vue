@@ -332,10 +332,10 @@ export default {
           const restaurant_data = restaurant.data();
           this.shopInfo = restaurant_data;
           const uid = restaurant_data.uid;
-          const snapshot = await db.doc(`/admins/${uid}/public/stripe`).get();
-          const stripeInfo = snapshot.data();
-          console.log("restaurant", uid, stripeInfo);
-          this.stripeAccount = stripeInfo && stripeInfo["stripeAccount"];
+          const snapshot = await db.doc(`/admins/${uid}/public/payment`).get();
+          const paymentInfo = snapshot.data();
+          console.log("restaurant", uid, paymentInfo);
+          this.stripeAccount = paymentInfo && paymentInfo.stripe;
         } else {
           this.notFound = true;
         }

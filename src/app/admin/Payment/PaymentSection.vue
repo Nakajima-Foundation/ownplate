@@ -87,12 +87,22 @@ export default {
       }
     }
 
-    const refStripe = db.doc(`/admins/${this.uid}/public/stripe`);
-    this.stripe_connnect_detacher = refStripe.onSnapshot(snapshot => {
+    const refPayment = db.doc(`/admins/${this.uid}/public/payment`);
+    this.stripe_connnect_detacher = refPayment.onSnapshot(async snapshot => {
       if (snapshot.exists) {
-        const stripe = snapshot.data()["isConnected"];
-        this.paymentItems = Object.assign({}, this.paymentItems, {
-          stripe
+        this.paymentItems = snapshot.data();
+        console.log("paymentItems", this.paymentItems);
+      } else {
+        let stripe = null;
+        // Backward compatibility
+        const refStripe = db.doc(`/admins/${this.uid}/public/stripe`);
+        const stripeData = (await refStripe.get()).data();
+        if (stripeData) {
+          stripe = stripeData.stripeAccount;
+        }
+        refPayment.set({
+          stripe,
+          inStore: false
         });
       }
     });
@@ -118,7 +128,7 @@ export default {
       return releaseConfig.hidePayment;
     },
     hasStripe() {
-      return this.paymentItems["stripe"];
+      return !!this.paymentItems.stripe;
     }
   },
   methods: {
