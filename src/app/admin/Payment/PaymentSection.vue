@@ -76,10 +76,9 @@ export default {
   async mounted() {
     const code = this.$route.query.code;
     if (code) {
-      console.log("**** found code");
       try {
-        const response = await stripeConnect({ code });
-        console.log(response);
+        const { data } = await stripeConnect({ code });
+        console.log(data);
         this.$router.replace(location.pathname);
         // TODO: show connected view
       } catch (error) {
@@ -92,13 +91,11 @@ export default {
       .doc(`/admins/${this.uid}/public/stripe`)
       .onSnapshot({
         next: snapshot => {
-          console.log("public/stripe", snapshot.data());
           if (snapshot.exists) {
             const stripe = snapshot.data()["isConnected"];
             this.paymentItems = Object.assign({}, this.paymentItems, {
               stripe
             });
-            console.log("paymentItems", this.paymentItems);
           }
         }
       });
@@ -124,7 +121,6 @@ export default {
       return releaseConfig.hidePayment;
     },
     hasStripe() {
-      console.log("paymentItems", this.paymentItems);
       return this.paymentItems["stripe"];
     }
   },
@@ -135,10 +131,10 @@ export default {
         callback: async () => {
           try {
             this.isDisconnecting = true;
-            const response = await stripeDisconnect({
+            const { data } = await stripeDisconnect({
               STRIPE_CLIENT_ID: process.env.STRIPE_CLIENT_ID
             });
-            console.log(response);
+            console.log(data);
             // TODO: show connected view
           } catch (error) {
             // TODO: show error modal
