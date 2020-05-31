@@ -3,12 +3,14 @@ import "firebase/firestore";
 import "firebase/storage";
 import "firebase/auth";
 import "firebase/functions";
+import "firebase/analytics";
 
 import { firebaseConfig } from "@/config/project";
 
 // ** 本番環境
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
 }
 
 export const db = firebase.firestore();
