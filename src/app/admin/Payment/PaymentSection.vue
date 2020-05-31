@@ -87,18 +87,15 @@ export default {
       }
     }
 
-    this.stripe_connnect_detacher = db
-      .doc(`/admins/${this.uid}/public/stripe`)
-      .onSnapshot({
-        next: snapshot => {
-          if (snapshot.exists) {
-            const stripe = snapshot.data()["isConnected"];
-            this.paymentItems = Object.assign({}, this.paymentItems, {
-              stripe
-            });
-          }
-        }
-      });
+    const refStripe = db.doc(`/admins/${this.uid}/public/stripe`);
+    this.stripe_connnect_detacher = refStripe.onSnapshot(snapshot => {
+      if (snapshot.exists) {
+        const stripe = snapshot.data()["isConnected"];
+        this.paymentItems = Object.assign({}, this.paymentItems, {
+          stripe
+        });
+      }
+    });
   },
   destroyed() {
     if (this.stripe_connnect_detacher) {
