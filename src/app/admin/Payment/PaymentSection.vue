@@ -62,21 +62,55 @@
 </template>
 
 <script>
+import { db, firestore, functions } from "~/plugins/firebase.js";
 import { releaseConfig } from "~/plugins/config.js";
 import { stripeConnect, stripeDisconnect } from "~/plugins/stripe.js";
 export default {
   data() {
     return {
+      paymentItems: {}, // { stripe:true, ... }
+      stripe_connnect_detacher: null,
       isDisconnecting: false
     };
   },
-  props: {
-    paymentItems: {
-      type: Object,
-      required: true
+  async mounted() {
+    const code = this.$route.query.code;
+    if (code) {
+      console.log("**** found code");
+      try {
+        const response = await stripeConnect({ code });
+        console.log(response);
+        // TODO: show connected view
+      } catch (error) {
+        // TODO: show error modal
+        console.log(error);
+      }
+    }
+
+    this.stripe_connnect_detacher = db
+      .doc(`/admins/${this.uid}/public/stripe`)
+      .onSnapshot({
+        next: snapshot => {
+          console.log("public/stripe", snapshot.data());
+          if (snapshot.exists) {
+            const stripe = snapshot.data()["isConnected"];
+            this.paymentItems = Object.assign({}, this.paymentItems, {
+              stripe
+            });
+            console.log("paymentItems", this.paymentItems);
+          }
+        }
+      });
+  },
+  destroyed() {
+    if (this.stripe_connnect_detacher) {
+      this.stripe_connnect_detacher();
     }
   },
   computed: {
+    uid() {
+      return this.$store.getters.uidAdmin;
+    },
     stripeLink() {
       const redirectURI = `${location.protocol}//${location.host}${location.pathname}`;
       return `https://connect.stripe.com/oauth/authorize?response_type=code&client_id=${

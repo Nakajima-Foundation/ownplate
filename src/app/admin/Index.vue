@@ -53,7 +53,7 @@
       <div class="column">
         <div class="m-l-24 m-r-24">
           <!-- Payment -->
-          <payment-section :paymentItems="paymentItems" />
+          <payment-section />
         </div>
       </div>
 
@@ -132,7 +132,6 @@ import { db, firestore, functions } from "~/plugins/firebase.js";
 import RestaurantEditCard from "~/app/admin/Restaurant/RestaurantEditCard";
 import { order_status } from "~/plugins/constant.js";
 import { midNight } from "~/plugins/dateUtils.js";
-import { stripeConnect } from "~/plugins/stripe.js";
 import { ownPlateConfig } from "@/config/project";
 import PaymentSection from "~/app/admin/Payment/PaymentSection";
 
@@ -160,44 +159,14 @@ export default {
       url: "",
       tags: "",
       restaurantItems: null,
-      paymentItems: {}, // { stripe:true, ... }
       detachers: [],
-      restaurant_detacher: null,
-      stripe_connnect_detacher: null
+      restaurant_detacher: null
     };
   },
   created() {
     this.checkAdminPermission();
   },
   async mounted() {
-    const code = this.$route.query.code;
-    if (code) {
-      console.log("**** found code");
-      try {
-        const response = await stripeConnect({ code });
-        console.log(response);
-        // TODO: show connected view
-      } catch (error) {
-        // TODO: show error modal
-        console.log(error);
-      }
-    }
-
-    this.stripe_connnect_detacher = db
-      .doc(`/admins/${this.uid}/public/stripe`)
-      .onSnapshot({
-        next: snapshot => {
-          console.log("public/stripe", snapshot.data());
-          if (snapshot.exists) {
-            const stripe = snapshot.data()["isConnected"];
-            this.paymentItems = Object.assign({}, this.paymentItems, {
-              stripe
-            });
-            console.log("paymentItems", this.paymentItems);
-          }
-        }
-      });
-
     try {
       this.restaurant_detacher = db
         .collection("restaurants")
@@ -304,9 +273,6 @@ export default {
     this.destroy_detacher();
     if (this.restaurant_detacher) {
       this.restaurant_detacher();
-    }
-    if (this.stripe_connnect_detacher) {
-      this.stripe_connnect_detacher();
     }
   },
   computed: {
