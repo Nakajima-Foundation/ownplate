@@ -2,6 +2,9 @@
   <div class="m-t-24">
     <div class="t-h6 c-text-black-disabled m-b-8">{{$t('admin.payment')}}</div>
     <div class="bg-surface r-8 d-low p-t-24 p-b-24">
+      <div class="align-center">
+        <b-checkbox v-model="inStorePayment">Foo</b-checkbox>
+      </div>
       <!-- Stripe Not Connected -->
       <div v-if="!hasStripe">
         <div class="align-center">
@@ -59,6 +62,7 @@ export default {
     return {
       paymentInfo: {}, // { stripe, inStore, ... }
       stripe_connnect_detacher: null,
+      inStorePayment: false,
       isDisconnecting: false
     };
   },
@@ -80,6 +84,7 @@ export default {
     this.stripe_connnect_detacher = refPayment.onSnapshot(async snapshot => {
       if (snapshot.exists) {
         this.paymentInfo = snapshot.data();
+        this.inStorePayment = this.paymentInfo.inStore;
         console.log("paymentInfo", this.paymentInfo);
       } else {
         let stripe = null;
@@ -100,6 +105,17 @@ export default {
   destroyed() {
     if (this.stripe_connnect_detacher) {
       this.stripe_connnect_detacher();
+    }
+  },
+  watch: {
+    inStorePayment(newValue) {
+      if (newValue !== this.paymentInfo.inStore) {
+        console.log("************* inStorePayment change", newValue);
+        const refPayment = db.doc(`/admins/${this.uid}/public/payment`);
+        refPayment.update({
+          inStore: newValue
+        });
+      }
     }
   },
   computed: {
