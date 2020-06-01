@@ -18,17 +18,17 @@ const main = async () => {
 
   const db = admin.firestore();
   const refCollection = db.collection("users");
-  const next = async (i) => {
-    setTimeout(() => {
-      console.log(i);
-      if (i < 10) {
-        next(i + 1);
-      } else {
-        process.exit(0);
-      }
-    }, 500);
+  const next = async (last) => {
+    let query = last ? refCollection.startAfter(last) : refCollection;
+    const doc = (await query.limit(1).get()).docs[0];
+    if (doc) {
+      console.log(doc.data());
+      next(doc)
+    } else {
+      process.exit(0);
+    }
   }
-  next(0);
+  next(null);
 };
 
 main();
