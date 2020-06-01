@@ -21,13 +21,20 @@ export const deleteAccount = async (db: FirebaseFirestore.Firestore, data: any, 
       }
       return null;
     };
-
     let query: FirebaseFirestore.Query<FirebaseFirestore.DocumentData> | null = refCollection;
     let count = -1;
     do {
       query = await next(query);
       count++;
     } while (query);
+
+    const refUser = db.doc(`/users/${uid}`);
+    const refSystem = refUser.collection("system");
+    const refPrivate = refUser.collection("private");
+    await refSystem.doc("line").delete();
+    await refPrivate.doc("line").delete();
+    await refPrivate.doc("profile").delete();
+    await refUser.delete();
 
     return { result: uid, count }
   } catch (error) {
