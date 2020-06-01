@@ -216,6 +216,10 @@ export default {
               if (doc) {
                 // Do the real work here
                 console.log(doc.data().number);
+                await doc.ref.update({
+                  accountDeleted: true,
+                  timeAccountDeleted: firestore.FieldValue.serverTimestamp()
+                });
                 return refCollection.startAfter(doc);
               }
               return null;
