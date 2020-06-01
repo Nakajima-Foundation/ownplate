@@ -209,9 +209,8 @@ export default {
             const accountDelete = functions.httpsCallable("accountDelete");
             const { data } = await accountDelete();
             console.log("deleteAccount", data);
-
-            console.log("handleDeleteAccount");
-            console.log("done");
+            await this.user.delete();
+            console.log("deleted");
           } catch (error) {
             console.error(error);
           } finally {
