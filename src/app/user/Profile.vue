@@ -80,15 +80,12 @@
         >{{ $t("menu.signOut") }}</div>
       </div>
       <div v-if="user.phoneNumber" class="align-center m-t-24">
-        <b-button
-          @click="handleDeleteAccount"
-          class="b-reset op-button-text"
-          :loading="isDeletingAccount"
-        >
+        <b-button @click="handleDeleteAccount" class="b-reset op-button-text">
           <span class="c-status-red">{{ $t("profile.deleteAccount") }}</span>
         </b-button>
       </div>
     </div>
+    <b-loading :is-full-page="false" :active="isDeletingAccount" :can-cancel="true"></b-loading>
   </section>
 </template>
 
