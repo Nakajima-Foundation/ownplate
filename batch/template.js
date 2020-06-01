@@ -21,12 +21,16 @@ const main = async () => {
       // Do the real work here
       console.log(doc.data());
 
-      next(refCollection.startAfter(doc))
-    } else {
-      process.exit(0);
+      return refCollection.startAfter(doc)
     }
+    return null
   }
-  next(refCollection);
+
+  let query = refCollection;
+  do {
+    query = await next(query);
+  } while (query)
+  process.exit(0);
 };
 
 main();
