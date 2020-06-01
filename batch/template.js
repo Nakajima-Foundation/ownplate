@@ -18,17 +18,18 @@ const main = async () => {
 
   const db = admin.firestore();
   const refCollection = db.collection("users");
-  const next = async (last) => {
-    let query = last ? refCollection.startAfter(last) : refCollection;
+  const next = async (query) => {
     const doc = (await query.limit(1).get()).docs[0];
     if (doc) {
+      // Do the real work here
       console.log(doc.data());
-      next(doc)
+
+      next(refCollection.startAfter(doc))
     } else {
       process.exit(0);
     }
   }
-  next(null);
+  next(refCollection);
 };
 
 main();
