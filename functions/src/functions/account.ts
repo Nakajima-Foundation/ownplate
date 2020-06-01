@@ -1,11 +1,35 @@
 import * as functions from 'firebase-functions'
+import * as admin from 'firebase-admin';
 import * as utils from '../lib/utils'
 
 export const deleteAccount = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
 
   try {
-    return { result: uid }
+    const refCollection = db
+      .collectionGroup("orders")
+      .where("uid", "==", uid)
+      .orderBy("timePlaced", "desc");
+    const next = async _query => {
+      const doc = (await _query.limit(1).get()).docs[0];
+      if (doc) {
+        await doc.ref.update({
+          accountDeleted: true,
+          timeAccountDeleted: admin.firestore.FieldValue.serverTimestamp()
+        });
+        return refCollection.startAfter(doc);
+      }
+      return null;
+    };
+
+    let query: FirebaseFirestore.Query<FirebaseFirestore.DocumentData> | null = refCollection;
+    let count = -1;
+    do {
+      query = await next(query);
+      count++;
+    } while (query);
+
+    return { result: uid, count }
   } catch (error) {
     throw utils.process_error(error)
   }

@@ -206,29 +206,11 @@ export default {
         callback: async () => {
           this.isDeletingAccount = true;
           try {
-            console.log("handleDeleteAccount");
-            const refCollection = db
-              .collectionGroup("orders")
-              .where("uid", "==", this.user.uid)
-              .orderBy("timePlaced", "desc");
-            const next = async query => {
-              const doc = (await query.limit(1).get()).docs[0];
-              if (doc) {
-                // Do the real work here
-                console.log(doc.data().number);
-                await doc.ref.update({
-                  accountDeleted: true,
-                  timeAccountDeleted: firestore.FieldValue.serverTimestamp()
-                });
-                return refCollection.startAfter(doc);
-              }
-              return null;
-            };
+            const accountDelete = functions.httpsCallable("accountDelete");
+            const { data } = await accountDelete();
+            console.log("deleteAccount", data);
 
-            let query = refCollection;
-            do {
-              query = await next(query);
-            } while (query);
+            console.log("handleDeleteAccount");
             console.log("done");
           } catch (error) {
             console.error(error);
