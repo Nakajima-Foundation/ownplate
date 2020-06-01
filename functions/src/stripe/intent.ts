@@ -17,12 +17,11 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
   const restaurantData = await utils.get_restaurant(db, restaurantId);
   const venderId = restaurantData['uid']
 
-  const stripeSnapshot = await db.doc(`/admins/${venderId}/public/stripe`).get()
-  const stripeData = stripeSnapshot.data()
-  if (!stripeData) {
-    throw new functions.https.HttpsError('invalid-argument', 'This restaurant is unavailable.')
+  const paymentSnapshot = await db.doc(`/admins/${venderId}/public/payment`).get()
+  const stripeAccount = paymentSnapshot.data()?.stripe
+  if (!stripeAccount) {
+    throw new functions.https.HttpsError('invalid-argument', 'This restaurant does not support payment.')
   }
-  const stripeAccount = stripeData.stripeAccount
   try {
     return await db.runTransaction(async transaction => {
 
@@ -97,12 +96,11 @@ export const confirm = async (db: FirebaseFirestore.Firestore, data: any, contex
     throw new functions.https.HttpsError('invalid-argument', 'Dose not exist a restaurant.')
   }
   const venderId = restaurantData['uid']
-  const stripeSnapshot = await db.doc(`/admins/${venderId}/public/stripe`).get()
-  const stripeData = stripeSnapshot.data()
-  if (!stripeData) {
+  const paymentSnapshot = await db.doc(`/admins/${venderId}/public/payment`).get()
+  const stripeAccount = paymentSnapshot.data()?.stripe
+  if (!stripeAccount) {
     throw new functions.https.HttpsError('invalid-argument', 'This restaurant does not support payment.')
   }
-  const stripeAccount = stripeData.stripeAccount
 
   if (venderId !== uid) {
     throw new functions.https.HttpsError('permission-denied', 'You do not have permission to confirm this request.')
@@ -165,8 +163,8 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
   const restaurant = await utils.get_restaurant(db, restaurantId)
   const venderId = restaurant['uid']
 
-  const stripeSnapshot = await db.doc(`/admins/${venderId}/public/stripe`).get()
-  const stripeData = stripeSnapshot.data()
+  const paymentSnapshot = await db.doc(`/admins/${venderId}/public/payment`).get()
+  const stripeAccount = paymentSnapshot.data()?.stripe
 
   let sendSMS: boolean = false
   let phoneNumber: string | undefined = undefined;
@@ -201,7 +199,7 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
       uidUser = order.uid
       orderNumber = "#" + `00${order.number}`.slice(-3)
 
-      if (!stripeData || !order.payment || !order.payment.stripe) {
+      if (!stripeAccount || !order.payment || !order.payment.stripe) {
         // No payment transaction
         transaction.set(orderRef, {
           timeCanceld: admin.firestore.FieldValue.serverTimestamp(),
@@ -211,7 +209,6 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
         }, { merge: true })
         return { success: true, payment: false }
       }
-      const stripeAccount = stripeData.stripeAccount
 
       const stripeRecord = (await transaction.get(stripeRef)).data();
       if (!stripeRecord || !stripeRecord.paymentIntent || !stripeRecord.paymentIntent.id) {
