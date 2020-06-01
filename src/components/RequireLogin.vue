@@ -1,36 +1,35 @@
 <template>
-<div>
-  <div class="notFoundPageText">
-    {{$t('errorPage.requireLogin.message1')}}
-  </div>
-  <div>
-    <b-modal :active.sync="loginVisible" :width="640">
-      <div class="card">
-        <div class="card-content">
-          <phone-login v-on:dismissed="handleDismissed" />
+  <section class="section">
+    <div class="notFoundPageText">{{$t('errorPage.requireLogin.message1')}}</div>
+    <div>
+      <b-modal :active.sync="loginVisible" :width="640">
+        <div class="card">
+          <div class="card-content">
+            <phone-login v-on:dismissed="handleDismissed" />
+          </div>
         </div>
-      </div>
-    </b-modal>
-  </div>
-</div>
+      </b-modal>
+    </div>
+  </section>
 </template>
 <script>
 import PhoneLogin from "~/app/auth/PhoneLogin";
 export default {
   components: {
-    PhoneLogin,
+    PhoneLogin
   },
   props: {
-    handleDismissed: {
-      type: Function,
-      required: true
-    },
     loginVisible: {
       type: Boolean,
       required: true
-    },
+    }
+  },
+  methods: {
+    handleDismissed(params) {
+      this.$emit("dismissed", params);
+    }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

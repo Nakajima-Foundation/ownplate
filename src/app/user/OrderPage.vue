@@ -1,7 +1,7 @@
 <template>
   <div>
     <template v-if="!isUser">
-      <RequireLogin :loginVisible="loginVisible" :handleDismissed="handleDismissed" />
+      <RequireLogin :loginVisible="loginVisible" @dismissed="handleDismissed" />
     </template>
     <template v-else-if="notFound">
       <not-found />
@@ -291,7 +291,7 @@ import StripeCard from "~/app/user/Order/StripeCard";
 import TimeToPickup from "~/app/user/Order/TimeToPickup";
 import PhoneLogin from "~/app/auth/PhoneLogin";
 import NotFound from "~/components/NotFound";
-import RequireLogin from "~/components/RequireLogin"
+import RequireLogin from "~/components/RequireLogin";
 
 import { db, firestore, functions } from "~/plugins/firebase.js";
 import { order_status } from "~/plugins/constant.js";
@@ -358,10 +358,10 @@ export default {
         nonce: location.pathname // HACK: Repurposing nonce
       };
       const queryString = Object.keys(query)
-            .map(key => {
-              return key + "=" + encodeURIComponent(query[key]);
-            })
-            .join("&");
+        .map(key => {
+          return key + "=" + encodeURIComponent(query[key]);
+        })
+        .join("&");
       return `https://access.line.me/oauth2/v2.1/authorize?${queryString}`;
     },
     redirect_uri() {
@@ -370,8 +370,8 @@ export default {
     showAddLine() {
       return (
         this.lineEnabled &&
-          this.$store.state.claims &&
-          !this.$store.state.claims.line
+        this.$store.state.claims &&
+        !this.$store.state.claims.line
       );
     },
     lineEnabled() {
@@ -443,56 +443,58 @@ export default {
       if (this.isUser) {
         this.loadData();
       }
-    },
+    }
   },
   methods: {
     loadData() {
       const restaurant_detacher = db
-            .doc(`restaurants/${this.restaurantId()}`)
-            .onSnapshot(async restaurant => {
-              if (restaurant.exists) {
-                const restaurant_data = restaurant.data();
-                this.shopInfo = restaurant_data;
-                const uid = restaurant_data.uid;
-                const snapshot = await db.doc(`/admins/${uid}/public/payment`).get();
-                this.paymentInfo = snapshot.data() || {};
-                console.log("restaurant", uid, this.paymentInfo);
-              } else {
-                this.notFound = true;
-              }
-            });
+        .doc(`restaurants/${this.restaurantId()}`)
+        .onSnapshot(async restaurant => {
+          if (restaurant.exists) {
+            const restaurant_data = restaurant.data();
+            this.shopInfo = restaurant_data;
+            const uid = restaurant_data.uid;
+            const snapshot = await db
+              .doc(`/admins/${uid}/public/payment`)
+              .get();
+            this.paymentInfo = snapshot.data() || {};
+            console.log("restaurant", uid, this.paymentInfo);
+          } else {
+            this.notFound = true;
+          }
+        });
       const menu_detacher = db
-            .collection(`restaurants/${this.restaurantId()}/menus`)
-            .onSnapshot(menu => {
-              if (!menu.empty) {
-                this.menus = menu.docs.map(this.doc2data("menu"));
-              }
-            });
+        .collection(`restaurants/${this.restaurantId()}/menus`)
+        .onSnapshot(menu => {
+          if (!menu.empty) {
+            this.menus = menu.docs.map(this.doc2data("menu"));
+          }
+        });
       const order_detacher = db
-            .doc(`restaurants/${this.restaurantId()}/orders/${this.orderId}`)
-            .onSnapshot(
-              order => {
-                console.log("CALLSNAPSHOT");
-                const order_data = order.exists ? order.data() : {};
-                console.log(order_data);
-                if (
-                  this.user.uid === order_data.uid ||
-                    this.$store.getters.isSuperAdmin
-                ) {
-                  console.log("UPDATE");
-                  this.orderInfo = order_data;
-                } else if (!this.isDeleting) {
-                  console.log("NOTUPDATE");
-                  this.notFound = true;
-                }
-              },
-              error => {
-                // Because of the firestore.rules, it causes "insufficient permissions"
-                // if the order does not exist.
-                console.log(error);
-                this.notFound = true;
-              }
-            );
+        .doc(`restaurants/${this.restaurantId()}/orders/${this.orderId}`)
+        .onSnapshot(
+          order => {
+            console.log("CALLSNAPSHOT");
+            const order_data = order.exists ? order.data() : {};
+            console.log(order_data);
+            if (
+              this.user.uid === order_data.uid ||
+              this.$store.getters.isSuperAdmin
+            ) {
+              console.log("UPDATE");
+              this.orderInfo = order_data;
+            } else if (!this.isDeleting) {
+              console.log("NOTUPDATE");
+              this.notFound = true;
+            }
+          },
+          error => {
+            // Because of the firestore.rules, it causes "insufficient permissions"
+            // if the order does not exist.
+            console.log(error);
+            this.notFound = true;
+          }
+        );
       this.detacher = [restaurant_detacher, menu_detacher, order_detacher];
     },
 
@@ -510,13 +512,10 @@ export default {
     handleCardStateChange(state) {
       this.cardState = state;
     },
-    handleDismissed() {
+    handleDismissed(params) {
+      console.log("handleDismissed", params);
       // The user has dismissed the login dialog (including the successful login)
-      if (this.isUser) {
-        this.loginVisible = false;
-      } else {
-        console.log("this.user it not ready yet");
-      }
+      this.loginVisible = false;
     },
     specialRequest(key) {
       const option = this.orderInfo.options && this.orderInfo.options[key];
