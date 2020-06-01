@@ -1,3 +1,8 @@
+div,
+span {
+  word-break: break-all;
+}
+
 // OwnPlate Colors
 $op-colors: (
   test: #ff0000,
