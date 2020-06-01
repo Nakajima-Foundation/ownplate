@@ -210,7 +210,27 @@ export default {
           this.isDeletingAccount = true;
           try {
             console.log("handleDeleteAccount");
+            const refCollection = db
+              .collectionGroup("orders")
+              .where("uid", "==", this.user.uid)
+              .orderBy("timePlaced", "desc");
+            const next = async query => {
+              const doc = (await query.limit(1).get()).docs[0];
+              if (doc) {
+                // Do the real work here
+                console.log(doc.data().number);
+                return refCollection.startAfter(doc);
+              }
+              return null;
+            };
+
+            let query = refCollection;
+            do {
+              query = await next(query);
+            } while (query);
+            console.log("done");
           } catch (error) {
+            console.error(error);
           } finally {
             this.isDeletingAccount = false;
           }
