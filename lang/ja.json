@@ -389,7 +389,7 @@
       "message1": "ページがみつかりません。",
       "message2": "もう一度確認してアクセスしてください。"
     },
-    "reqireLogin": {
+    "requireLogin": {
       "message1": "オーダーを確認するにはログインが必要です"
     }
   }
