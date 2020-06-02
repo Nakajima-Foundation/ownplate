@@ -172,7 +172,7 @@ export const wasOrderCreated = async (db, data: any, context) => {
     if (!restaurantDoc.exists) {
       return orderRef.update("status", order_status.error);
     }
-    const restaurantData = restaurantDoc.data();
+    let restaurantData = restaurantDoc.data();
 
     const order = await orderRef.get();
 
@@ -231,11 +231,11 @@ export const wasOrderCreated = async (db, data: any, context) => {
     // Atomically increment the orderCount of the restaurant
     let number = 0;
     await db.runTransaction(async (tr) => {
-      // Create a stripe customer if we haven't created yet
       const refStripe = db.doc(`/users/${uid}/system/stripe`)
       const stripeInfo = (await tr.get(refStripe)).data();
 
-      // BUGBUG: read restaurantData here
+      // We need to read restaurantData again for this transaction
+      restaurantData = (await restaurantRef.get()).data();
       if (restaurantData) {
         number = restaurantData.orderCount || 0;
         await tr.update(restaurantRef, {
@@ -243,6 +243,7 @@ export const wasOrderCreated = async (db, data: any, context) => {
         });
       }
 
+      // Create a stripe customer if we haven't created yet
       if (!stripeInfo) {
         const customer = await stripe.customers.create({
           metadata: { uid }
