@@ -34,8 +34,9 @@
   "menu": {
     "about": "このサービスについて",
     "admins": "飲食店向けページ",
-    "userManual": "飲食店向けマニュアル",
+    "adminManual": "飲食店向けマニュアル",
     "users": "お客様向けページ",
+    "userManual": "お客様向けマニュアル",
     "home": "ホーム",
     "signOut": "サインアウト",
     "selectLanguage": "表示言語選択",

@@ -34,8 +34,9 @@
   "menu": {
     "about": "About",
     "admins": "Restaurant Owners",
-    "userManual": "Documents for Owners",
+    "adminManual": "Manual for Owners",
     "users": "Food Lovers",
+    "userManual": "Manual for Food Lovers",
     "home": "Home",
     "signOut": "Sign Out",
     "selectLanguage": "Select language",

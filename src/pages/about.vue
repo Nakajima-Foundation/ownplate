@@ -15,13 +15,13 @@
               <div>
                 <!-- For Mobile -->
                 <img
-                  style="height: 876px;"
+                  style="height: 752px;"
                   class="cover is-hidden-tablet"
                   :src="`/${this.featureHero}`"
                 />
                 <!-- For Tablet -->
                 <img
-                  style="height: 876px;"
+                  style="height: 752px;"
                   class="cover r-8 is-hidden-mobile"
                   :src="`/${this.featureHero}`"
                 />
@@ -79,13 +79,13 @@
               <div>
                 <!-- For Mobile -->
                 <img
-                  style="height: 876px;"
+                  style="height: 752px;"
                   class="cover is-hidden-tablet"
                   :src="`/${this.featureHero}`"
                 />
                 <!-- For Tablet -->
                 <img
-                  style="height: 876px;"
+                  style="height: 752px;"
                   class="cover r-8 is-hidden-mobile"
                   :src="`/${this.featureHero}`"
                 />

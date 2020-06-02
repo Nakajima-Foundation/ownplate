@@ -188,14 +188,14 @@ export const JPPrefecture = [
 export const taxRates = ["food", "alcohol"];
 
 export const reservationTheDayBefore = [
-  {messageKey: "editRestaurant.reservationTheDaysBefore.zero", value: 0 },
-  {messageKey: "editRestaurant.reservationTheDaysBefore.one", value: 1 },
-  {messageKey: "editRestaurant.reservationTheDaysBefore.two", value: 2 },
-  {messageKey: "editRestaurant.reservationTheDaysBefore.three", value: 3 },
-  {messageKey: "editRestaurant.reservationTheDaysBefore.four", value: 4 },
-  {messageKey: "editRestaurant.reservationTheDaysBefore.five", value: 5 },
-  {messageKey: "editRestaurant.reservationTheDaysBefore.six", value: 6 },
-  {messageKey: "editRestaurant.reservationTheDaysBefore.seven", value: 7 }
+  { messageKey: "editRestaurant.reservationTheDaysBefore.zero", value: 0 },
+  { messageKey: "editRestaurant.reservationTheDaysBefore.one", value: 1 },
+  { messageKey: "editRestaurant.reservationTheDaysBefore.two", value: 2 },
+  { messageKey: "editRestaurant.reservationTheDaysBefore.three", value: 3 },
+  { messageKey: "editRestaurant.reservationTheDaysBefore.four", value: 4 },
+  { messageKey: "editRestaurant.reservationTheDaysBefore.five", value: 5 },
+  { messageKey: "editRestaurant.reservationTheDaysBefore.six", value: 6 },
+  { messageKey: "editRestaurant.reservationTheDaysBefore.seven", value: 7 }
 ];
 
 export const regionalSettings = {
@@ -207,7 +207,7 @@ export const regionalSettings = {
     Logo2: "OwnPlate-Logo-Stack-YellowBlack.svg",
     FeatureHero: {
       ja: "Feature-Hero-v01-ja.svg",
-      en: "Feature-Hero-v01-en.svg",
+      en: "Feature-Hero-v01-en.svg"
     },
     requireTaxInput: true,
     requireTaxPriceDisplay: false,
@@ -228,9 +228,13 @@ export const regionalSettings = {
     AddressStates: JPPrefecture,
     Logo: "Omochikaeri-Logo-Horizontal-YellowBlack.svg",
     Logo2: "Omochikaeri-Logo-Stack-YellowBlack.svg",
-    FeatureHero: {
-      ja: "Feature-Hero-v01-ja.svg",
-      en: "Feature-Hero-v01-en.svg",
+    FeatureHeroMobile: {
+      ja: "Feature-Hero-Mobile-ja.svg",
+      en: "Feature-Hero-Mobile-en.svg"
+    },
+    FeatureHeroTablet: {
+      ja: "Feature-Hero-Tablet-ja.svg",
+      en: "Feature-Hero-Tablet-en.svg"
     },
     requireTaxInput: false,
     requireTaxPriceDisplay: true,
