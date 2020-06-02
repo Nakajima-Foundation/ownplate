@@ -159,6 +159,7 @@ export const getMenuObj = async (refRestaurant) => {
 // export const wasOrderCreated = async (db, snapshot, context) => {
 export const wasOrderCreated = async (db, data: any, context) => {
   const uid = utils.validate_auth(context);
+  const stripe = utils.get_stripe();
 
   const { restaurantId, orderId } = data;
   utils.validate_params({ restaurantId, orderId });
@@ -230,11 +231,25 @@ export const wasOrderCreated = async (db, data: any, context) => {
     // Atomically increment the orderCount of the restaurant
     let number = 0;
     await db.runTransaction(async (tr) => {
+      // Create a stripe customer if we haven't created yet
+      const refStripe = db.doc(`/users/${uid}/system/stripe`)
+      const stripeInfo = (await tr.get(refStripe)).data();
+
+      // BUGBUG: read restaurantData here
       if (restaurantData) {
         number = restaurantData.orderCount || 0;
         await tr.update(restaurantRef, {
           orderCount: (number + 1) % 1000000
         });
+      }
+
+      if (!stripeInfo) {
+        const customer = await stripe.customers.create({
+          metadata: { uid }
+        })
+        tr.set(refStripe, {
+          customerId: customer.id
+        })
       }
     });
 
