@@ -103,10 +103,10 @@ export default {
       return 10; // LATER: Make it customizable
     },
     minimumCookTime() {
-      return 25; // LATER: Make it customizable
+      return this.shopInfo.pickUpMinimumCookTime || 25;
     },
     daysInAdvance() {
-      return 4; // LATER: Make it customizable
+      return (this.shopInfo.pickUpDaysInAdvance || 3) + 1;
     }
   },
   methods: {

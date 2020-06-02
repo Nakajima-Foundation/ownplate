@@ -36,7 +36,7 @@ export default {
     },
     placeHolder: {
       type: String,
-      required: true
+      required: false
     },
     maxlength: {
       type: Number,
