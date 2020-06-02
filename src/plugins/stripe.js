@@ -2,9 +2,12 @@ import { functions } from "~/plugins/firebase"
 
 export const getStripeInstance = (stripeAccount) => {
   const stripeAPIToken = process.env.STRIPE_API_KEY;
-  return Stripe(stripeAPIToken, {
-    stripeAccount: stripeAccount
-  });
+  if (stripeAccount) {
+    return Stripe(stripeAPIToken, {
+      stripeAccount
+    });
+  }
+  return Stripe(stripeAPIToken);
 }
 
 export const stripeCreateIntent = functions.httpsCallable("stripeCreateIntent");
