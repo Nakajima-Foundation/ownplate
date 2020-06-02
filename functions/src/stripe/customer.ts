@@ -1,3 +1,4 @@
+import * as functions from 'firebase-functions'
 import * as utils from '../lib/utils'
 
 export const createCustomer = async (db: FirebaseFirestore.Firestore, uid: string, phoneNumber: string) => {
@@ -17,4 +18,7 @@ export const createCustomer = async (db: FirebaseFirestore.Firestore, uid: strin
       })
     }
   });
+}
+
+export const update = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
 }
