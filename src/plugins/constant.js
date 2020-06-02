@@ -187,6 +187,17 @@ export const JPPrefecture = [
 
 export const taxRates = ["food", "alcohol"];
 
+export const reservationTheDayBefore = [
+  {messageKey: "editRestaurant.reservationTheDaysBefore.zero", value: 0 },
+  {messageKey: "editRestaurant.reservationTheDaysBefore.one", value: 1 },
+  {messageKey: "editRestaurant.reservationTheDaysBefore.two", value: 2 },
+  {messageKey: "editRestaurant.reservationTheDaysBefore.three", value: 3 },
+  {messageKey: "editRestaurant.reservationTheDaysBefore.four", value: 4 },
+  {messageKey: "editRestaurant.reservationTheDaysBefore.five", value: 5 },
+  {messageKey: "editRestaurant.reservationTheDaysBefore.six", value: 6 },
+  {messageKey: "editRestaurant.reservationTheDaysBefore.seven", value: 7 }
+];
+
 export const regionalSettings = {
   US: {
     CurrencyKey: "USD",
