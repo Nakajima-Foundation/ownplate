@@ -16,6 +16,8 @@
     "friendLink": "友だち設定する",
     "signIn": "一般ユーザーとしてサイン・イン",
     "signInRestaurant": "飲食店としてサイン・イン",
+    "deleteAccount": "アカウント削除",
+    "reallyDeleteAccount": "過去の履歴は消えてしまいます。本当にアカウントを削除しますか？",
     "status": {
       "hasLine": "連携済み",
       "noLine": "未連携",

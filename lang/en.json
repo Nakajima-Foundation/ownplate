@@ -16,6 +16,8 @@
     "friendLink": "Become a friend",
     "signIn": "Sign-in as a user",
     "signInRestaurant": "Sign-in as a restaurant",
+    "deleteAccount": "Delete Account",
+    "reallyDeleteAccount": "Do you really want to delete this account? All the data will be deleted.",
     "status": {
       "hasLine": "Connected",
       "noLine": "Not connected",

@@ -79,7 +79,13 @@
           @click.prevent="handleSignOut"
         >{{ $t("menu.signOut") }}</div>
       </div>
+      <div v-if="user.phoneNumber" class="align-center m-t-24">
+        <b-button @click="handleDeleteAccount" class="b-reset op-button-text">
+          <span class="c-status-red">{{ $t("profile.deleteAccount") }}</span>
+        </b-button>
+      </div>
     </div>
+    <b-loading :is-full-page="false" :active="isDeletingAccount" :can-cancel="true"></b-loading>
   </section>
 </template>
 
@@ -96,7 +102,8 @@ export default {
   data() {
     return {
       loginVisible: false,
-      isFriend: undefined
+      isFriend: undefined,
+      isDeletingAccount: false
     };
   },
   created() {
@@ -193,6 +200,25 @@ export default {
     }
   },
   methods: {
+    handleDeleteAccount() {
+      this.$store.commit("setAlert", {
+        code: "profile.reallyDeleteAccount",
+        callback: async () => {
+          this.isDeletingAccount = true;
+          try {
+            const accountDelete = functions.httpsCallable("accountDelete");
+            const { data } = await accountDelete();
+            console.log("deleteAccount", data);
+            await this.user.delete();
+            console.log("deleted");
+          } catch (error) {
+            console.error(error);
+          } finally {
+            this.isDeletingAccount = false;
+          }
+        }
+      });
+    },
     handleSignIn() {
       this.loginVisible = true;
     },
