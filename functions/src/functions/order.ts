@@ -8,6 +8,7 @@ import i18next from 'i18next'
 import Order from '../models/Order'
 import * as line from './line'
 import { ownPlateConfig } from '../common/project';
+import { createCustomer } from '../stripe/customer';
 
 // This function is called by users to place orders without paying
 export const place = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
@@ -159,7 +160,6 @@ export const getMenuObj = async (refRestaurant) => {
 // export const wasOrderCreated = async (db, snapshot, context) => {
 export const wasOrderCreated = async (db, data: any, context) => {
   const uid = utils.validate_auth(context);
-  const stripe = utils.get_stripe();
 
   const { restaurantId, orderId } = data;
   utils.validate_params({ restaurantId, orderId });
@@ -231,9 +231,6 @@ export const wasOrderCreated = async (db, data: any, context) => {
     // Atomically increment the orderCount of the restaurant
     let number = 0;
     await db.runTransaction(async (tr) => {
-      const refStripe = db.doc(`/users/${uid}/system/stripe`)
-      const stripeInfo = (await tr.get(refStripe)).data();
-
       // We need to read restaurantData again for this transaction
       restaurantData = (await restaurantRef.get()).data();
       if (restaurantData) {
@@ -242,17 +239,8 @@ export const wasOrderCreated = async (db, data: any, context) => {
           orderCount: (number + 1) % 1000000
         });
       }
-
-      // Create a stripe customer if we haven't created yet
-      if (!stripeInfo) {
-        const customer = await stripe.customers.create({
-          metadata: { uid }
-        })
-        tr.set(refStripe, {
-          customerId: customer.id
-        })
-      }
     });
+    await createCustomer(db, uid, context.auth.token.phone_number)
 
     return orderRef.update({
       order: newOrderData,
