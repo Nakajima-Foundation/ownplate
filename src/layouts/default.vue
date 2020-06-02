@@ -1,18 +1,20 @@
 <template>
   <div class="wrapper" @click="enableSound()">
     <!-- Header -->
-    <div class="columns is-gapless is-vcentered is-mobile bg-ownplate-white">
-      <div class="column">
+    <div class="cols flex-center bg-ownplate-white">
+      <div>
         <div class="op-button w-48 h-48" @click="handleOpen()">
           <i class="material-icons s-24 c-text-black-medium">menu</i>
         </div>
       </div>
-      <div class="column align-center">
+      <div class="flex-1 align-center">
         <router-link to="/">
           <img class="h-24" :src="`/${this.logo}`" />
         </router-link>
       </div>
-      <div class="column"></div>
+      <div>
+        <div class="w-48 h-48"></div>
+      </div>
     </div>
     <!-- Side Bar -->
     <b-sidebar
@@ -33,11 +35,11 @@
           <div class="op-button-medium tertiary w-192" @click="handleClose()">{{ $t("menu.home") }}</div>
         </router-link>
       </div>
-      <div class="align-center m-t-24">
+      <!-- <div class="align-center m-t-24">
         <router-link to="/about">
           <div class="op-button-small tertiary" @click="handleClose()">{{ $t("menu.about") }}</div>
         </router-link>
-      </div>
+      </div>-->
       <div class="align-center m-t-24">
         <router-link to="/u/profile">
           <div class="op-button-small tertiary" @click="handleClose()">{{ $t("profile.title") }}</div>
@@ -58,13 +60,13 @@
 
     <!-- Footer -->
     <div class="m-t-48">
-      <div class="bg-ownplate-gray columns is-gapless is-mobile h-128">
-        <div class="column">
+      <div class="bg-ownplate-gray cols h-128">
+        <div class="flex-1">
           <div
             class="is-inline-block t-caption c-text-white-medium m-t-16 m-l-16"
           >Operated by Singularity Society</div>
         </div>
-        <div class="column align-right">
+        <div class="align-right">
           <div class="op-button-pill bg-sattle-white m-r-16 m-t-16" @click="openLang()">
             <i class="material-icons c-text-white-high">language</i>
             <span class="c-text-white-high t-body1">
