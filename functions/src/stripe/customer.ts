@@ -21,4 +21,5 @@ export const createCustomer = async (db: FirebaseFirestore.Firestore, uid: strin
 }
 
 export const update = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
+  return { result: true }
 }
