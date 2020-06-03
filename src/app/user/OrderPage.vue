@@ -199,11 +199,7 @@
 
                 <!-- Pay Online -->
                 <div v-if="showPayment">
-                  <stripe-card
-                    :stripe-account="this.stripeAccount"
-                    @change="handleCardStateChange"
-                    ref="stripe"
-                  ></stripe-card>
+                  <stripe-card @change="handleCardStateChange" ref="stripe"></stripe-card>
                   <!-- <credit-card-input></credit-card-input> -->
                   <!-- Pay Button -->
                   <div class="align-center m-t-24">
