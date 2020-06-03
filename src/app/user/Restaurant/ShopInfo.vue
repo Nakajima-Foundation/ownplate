@@ -26,11 +26,11 @@
                 <span
                   style="word-break: break-all;"
                   v-if="region === 'JP'"
-                  >〒{{this.shopInfo.zip}} {{this.shopInfo.state}} {{this.shopInfo.city}} {{this.shopInfo.streetAddress}}</span>
+                >〒{{this.shopInfo.zip}} {{this.shopInfo.state}} {{this.shopInfo.city}} {{this.shopInfo.streetAddress}}</span>
                 <span
                   style="word-break: break-all;"
                   v-else
-                  >{{this.shopInfo.streetAddress}}, {{this.shopInfo.city}}, {{this.shopInfo.state}} {{this.shopInfo.zip}}</span>
+                >{{this.shopInfo.streetAddress}}, {{this.shopInfo.city}}, {{this.shopInfo.state}} {{this.shopInfo.zip}}</span>
               </div>
             </a>
           </div>
@@ -59,6 +59,11 @@
               <span style="word-break: break-all;">{{this.shopInfo.url}}</span>
             </div>
           </a>
+        </div>
+
+        <!-- Transactions Act -->
+        <div class="m-t-8 m-l-16 m-r-16">
+          <transactions-act></transactions-act>
         </div>
 
         <!-- Restaurant Hours -->
@@ -114,8 +119,12 @@ import {
   formatURL
 } from "~/plugins/phoneutil.js";
 import { ownPlateConfig } from "@/config/project";
+import TransactionsAct from "~/app/user/TransactionsAct";
 
 export default {
+  components: {
+    TransactionsAct
+  },
   props: {
     shopInfo: {
       type: Object,
@@ -185,8 +194,8 @@ export default {
       );
     },
     region() {
-      return ownPlateConfig.region
-    },
+      return ownPlateConfig.region;
+    }
   },
   mounted() {
     this.updateMap();
