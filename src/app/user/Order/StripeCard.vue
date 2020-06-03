@@ -3,7 +3,7 @@
     <div v-if="storedCard">
       <p>{{storedCard.last4}}</p>
     </div>
-    <div v-else class="bg-surface r-8 d-low m-t-8 p-l-16 p-r-16 p-t-16 p-b-16">
+    <div v-show="!storedCard" class="bg-surface r-8 d-low m-t-8 p-l-16 p-r-16 p-t-16 p-b-16">
       <div id="card-element"></div>
     </div>
   </div>
@@ -11,7 +11,7 @@
 
 <script>
 import { getStripeInstance, stripeUpdateCustomer } from "~/plugins/stripe.js";
-import { functions } from "~/plugins/firebase.js";
+import { functions, db } from "~/plugins/firebase.js";
 
 export default {
   data() {
@@ -21,15 +21,30 @@ export default {
       cardElement: {}
     };
   },
-  mounted() {
+  async mounted() {
     this.configureStripe();
+    const stripeInfo = (
+      await db.doc(`/users/${this.user.uid}/readonly/stripe`).get()
+    ).data();
+    console.log("***mounted", stripeInfo);
+    if (stripeInfo && stripeInfo.card) {
+      this.storedCard = stripeInfo.card;
+      this.$emit("change", { complete: true });
+    }
+  },
+  computed: {
+    user() {
+      return this.$store.state.user;
+    }
   },
   methods: {
     async createToken() {
-      const { token } = await this.stripe.createToken(this.cardElement);
-      console.log("***toke", token, token.card.last4);
-      const result = await stripeUpdateCustomer({ tokenId: token.id });
-      console.log("createToken", result);
+      if (!this.storedCard) {
+        const { token } = await this.stripe.createToken(this.cardElement);
+        console.log("***toke", token, token.card.last4);
+        const result = await stripeUpdateCustomer({ tokenId: token.id });
+        console.log("createToken", result);
+      }
     },
     configureStripe() {
       const elements = this.stripe.elements();
