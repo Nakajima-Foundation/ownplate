@@ -470,24 +470,24 @@ export default {
         .doc(`restaurants/${this.restaurantId()}/orders/${this.orderId}`)
         .onSnapshot(
           order => {
-            console.log("CALLSNAPSHOT");
+            //console.log("CALLSNAPSHOT");
             const order_data = order.exists ? order.data() : {};
-            console.log(order_data);
+            //console.log(order_data);
             if (
               this.user.uid === order_data.uid ||
               this.$store.getters.isSuperAdmin
             ) {
-              console.log("UPDATE");
+              //console.log("UPDATE");
               this.orderInfo = order_data;
             } else if (!this.isDeleting) {
-              console.log("NOTUPDATE");
+              //console.log("NOTUPDATE");
               this.notFound = true;
             }
           },
           error => {
             // Because of the firestore.rules, it causes "insufficient permissions"
             // if the order does not exist.
-            console.log(error);
+            console.error(error.message);
             this.notFound = true;
           }
         );
@@ -537,7 +537,7 @@ export default {
     },
     async handlePayment() {
       const timeToPickup = this.$refs.time.timeToPickup();
-      console.log("handlePayment", timeToPickup);
+      //console.log("handlePayment", timeToPickup);
 
       this.isPaying = true;
       try {
@@ -550,7 +550,7 @@ export default {
           sendSMS: this.sendSMS,
           tip: this.tip || 0
         });
-        console.log("create", data);
+        console.log("createIntent", data);
         window.scrollTo(0, 0);
       } catch (error) {
         console.error(error.message, error.details);

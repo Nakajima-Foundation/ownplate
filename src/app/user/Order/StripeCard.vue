@@ -31,7 +31,6 @@ export default {
     const stripeInfo = (
       await db.doc(`/users/${this.user.uid}/readonly/stripe`).get()
     ).data();
-    console.log("***mounted", stripeInfo);
     if (stripeInfo && stripeInfo.card) {
       this.storedCard = stripeInfo.card;
       this.useStoredCard = true;
@@ -52,9 +51,9 @@ export default {
     async createToken() {
       if (!this.useStoredCard) {
         const { token } = await this.stripe.createToken(this.cardElement);
-        console.log("***toke", token, token.card.last4);
-        const result = await stripeUpdateCustomer({ tokenId: token.id });
-        console.log("createToken", result);
+        //console.log("***toke", token, token.card.last4);
+        const { data } = await stripeUpdateCustomer({ tokenId: token.id });
+        console.log("stripeUpdateCustomer", data);
       }
     },
     configureStripe() {
