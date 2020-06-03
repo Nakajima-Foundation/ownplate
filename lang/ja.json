@@ -178,6 +178,24 @@
     "closed": "定休日",
     "public": "公開"
   },
+  "transactionsAct": {
+    "title": "特定商取引法に基づく表記",
+    "sellerName": "販売事業者名",
+    "representative": "運営責任者",
+    "address": "所在地",
+    "hours": "営業時間",
+    "phone": "電話番号",
+    "price": "販売価格",
+    "priceDescription": "商品ページをご確認ください。",
+    "otherFees": "商品代金以外に必要な費用",
+    "otherFeesDescription": "店舗までの交通費など移動に関わる費用などは、ご負担下さい。",
+    "payment": "代金の支払い時期および方法",
+    "paymentDescription": "クレッジットカード決済/店舗払い",
+    "delivery": "商品引き渡し時期および方法",
+    "deliveryDescription": "お客様のご指定日と店舗受取り。",
+    "cancellation": "取り消しの取り扱い条件、解約条件",
+    "cancellationDescription": "受取指定日4日前まで、インターネット上でのキャンセルが可能です。3日前以降については店舗へご連絡ください。"
+  },
   "sitemenu": {
     "menu": "メニュー",
     "about": "飲食店情報",

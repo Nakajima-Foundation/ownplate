@@ -178,6 +178,24 @@
     "closed": "Closed",
     "public": "Public"
   },
+  "transactionsAct": {
+    "title": "Specified Commercial Transaction Act",
+    "sellerName": "Seller Name",
+    "representative": "Representative",
+    "address": "Address",
+    "hours": "Hours",
+    "phone": "Phone Number",
+    "price": "Selling Price",
+    "priceDescription": "Please check the product page.",
+    "otherFees": "Other Expenses",
+    "otherFeesDescription": "You are responsible for any expenses related to transportation to and from the store.",
+    "payment": "Time and Method of Payment",
+    "paymentDescription": "Credit Card Payment / Store Payment",
+    "delivery": "Time and Method of Delivery",
+    "deliveryDescription": "Customer's specified date and store pickup.",
+    "cancellation": "Cancellation",
+    "cancellationDescription": "You can cancel your order on the Internet up to 4 days before the designated date of delivery; for more than 3 days before, please contact the store."
+  },
   "sitemenu": {
     "menu": "Menu",
     "about": "About",
