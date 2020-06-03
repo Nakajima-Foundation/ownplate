@@ -30,8 +30,11 @@ export const deleteAccount = async (db: FirebaseFirestore.Firestore, data: any, 
 
     const refUser = db.doc(`/users/${uid}`);
     const refSystem = refUser.collection("system");
+    const refReadonly = refUser.collection("readonly");
     const refPrivate = refUser.collection("private");
     await refSystem.doc("line").delete();
+    await refSystem.doc("stripe").delete();
+    await refReadonly.doc("stripe").delete();
     await refPrivate.doc("line").delete();
     await refPrivate.doc("profile").delete();
     await refUser.delete();
