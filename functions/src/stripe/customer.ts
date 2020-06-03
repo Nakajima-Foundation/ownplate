@@ -20,6 +20,26 @@ export const createCustomer = async (db: FirebaseFirestore.Firestore, uid: strin
   });
 }
 
+export const deleteCustomer = async (db: FirebaseFirestore.Firestore, uid: string) => {
+  const stripe = utils.get_stripe();
+  const refStripeSystem = db.doc(`/users/${uid}/system/stripe`)
+  const refStripeReadOnly = db.doc(`/users/${uid}/readonly/stripe`)
+  await db.runTransaction(async (tr) => {
+    const stripeInfo = (await tr.get(refStripeSystem)).data();
+    if (stripeInfo) {
+      tr.delete(refStripeSystem);
+      tr.delete(refStripeReadOnly);
+      try {
+        await stripe.customers.del(stripeInfo.customerId);
+      } catch (error) {
+        // This happens if the customer was removed from the Stripe console.
+        // Therefore, it is fine to ignore this error.
+        console.error(error);
+      }
+    }
+  })
+}
+
 export const update = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
   const { tokenId } = data;
