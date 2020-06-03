@@ -83,6 +83,13 @@
         <b-button @click="handleDeleteAccount" class="b-reset op-button-text">
           <span class="c-status-red">{{ $t("profile.deleteAccount") }}</span>
         </b-button>
+        <b-modal :active.sync="reLoginVisible" :width="640">
+          <div class="card">
+            <div class="card-content">
+              <phone-login v-on:dismissed="continueDelete" :relogin="user.phoneNumber" />
+            </div>
+          </div>
+        </b-modal>
       </div>
     </div>
     <b-loading :is-full-page="false" :active="isDeletingAccount" :can-cancel="true"></b-loading>
@@ -102,6 +109,7 @@ export default {
   data() {
     return {
       loginVisible: false,
+      reLoginVisible: false,
       isFriend: undefined,
       isDeletingAccount: false
     };
@@ -204,20 +212,27 @@ export default {
       this.$store.commit("setAlert", {
         code: "profile.reallyDeleteAccount",
         callback: async () => {
-          this.isDeletingAccount = true;
-          try {
-            const accountDelete = functions.httpsCallable("accountDelete");
-            const { data } = await accountDelete();
-            console.log("deleteAccount", data);
-            await this.user.delete();
-            console.log("deleted");
-          } catch (error) {
-            console.error(error);
-          } finally {
-            this.isDeletingAccount = false;
-          }
+          this.reLoginVisible = true;
         }
       });
+    },
+    async continueDelete(result) {
+      console.log(result);
+      this.reLoginVisible = false;
+      if (result) {
+        this.isDeletingAccount = true;
+        try {
+          const accountDelete = functions.httpsCallable("accountDelete");
+          const { data } = await accountDelete();
+          console.log("deleteAccount", data);
+          await this.user.delete();
+          console.log("deleted");
+        } catch (error) {
+          console.error(error);
+        } finally {
+          this.isDeletingAccount = false;
+        }
+      }
     },
     handleSignIn() {
       this.loginVisible = true;
