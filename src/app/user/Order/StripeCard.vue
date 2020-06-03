@@ -6,6 +6,7 @@
 
 <script>
 import { getStripeInstance } from "~/plugins/stripe.js";
+import { functions } from "~/plugins/firebase.js";
 
 export default {
   props: ["stripeAccount"],
@@ -17,18 +18,26 @@ export default {
   },
   mounted() {
     if (this.stripeAccount) {
-      this.stripe = getStripeInstance(this.stripeAccount);
+      this.stripe = getStripeInstance(/*this.stripeAccount*/);
       this.configureStripe();
     }
   },
   watch: {
     stripeAccount: function(newVal, oldVal) {
-      this.stripe = getStripeInstance(newVal);
+      this.stripe = getStripeInstance(/*newVal*/);
       this.configureStripe();
     }
   },
   methods: {
     async createPaymentMethod() {
+      const { token } = await this.stripe.createToken(this.cardElement);
+      console.log("****Token", token.id);
+      const stripeUpdateCustomer = functions.httpsCallable(
+        "stripeUpdateCustomer"
+      );
+      const result = await stripeUpdateCustomer({ token: token.id });
+      console.log("****Result", result);
+
       const payload = await this.stripe.createPaymentMethod({
         type: "card",
         card: this.cardElement

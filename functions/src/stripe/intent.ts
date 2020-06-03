@@ -22,6 +22,20 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
   if (!stripeAccount) {
     throw new functions.https.HttpsError('invalid-argument', 'This restaurant does not support payment.')
   }
+  let tokenId: string | null = null;
+  if (paymentMethodId === "token") {
+    const refStripe = db.doc(`/users/${uid}/system/stripe`)
+    const stripeInfo = (await refStripe.get()).data();
+    if (stripeInfo) {
+      const token = await stripe.tokens.create({
+        customer: stripeInfo.customerId
+      }, {
+        stripeAccount: stripeAccount
+      })
+      tokenId = token.id
+    }
+  }
+
   try {
     return await db.runTransaction(async transaction => {
 
@@ -38,7 +52,18 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
       const multiple = utils.getStripeRegion().multiple; // 100 for USD, 1 for JPY
       const totalCharge = Math.round((order.total + Math.max(0, tip)) * multiple)
 
-      const request = {
+      const request = tokenId ? {
+        setup_future_usage: 'off_session',
+        amount: totalCharge,
+        currency: utils.getStripeRegion().currency,
+        payment_method_data: {
+          type: "card",
+          card: {
+            token: tokenId
+          }
+        },
+        metadata: { uid, restaurantId, orderId }
+      } as Stripe.PaymentIntentCreateParams : {
         setup_future_usage: 'off_session',
         amount: totalCharge,
         currency: utils.getStripeRegion().currency,

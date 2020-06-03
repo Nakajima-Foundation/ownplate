@@ -21,5 +21,29 @@ export const createCustomer = async (db: FirebaseFirestore.Firestore, uid: strin
 }
 
 export const update = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
-  return { result: true }
+  const uid = utils.validate_auth(context);
+  const { token } = data;
+  utils.validate_params({ token });
+  const stripe = utils.get_stripe();
+
+  const refStripe = db.doc(`/users/${uid}/system/stripe`)
+
+  const result = { result: {} }
+  try {
+    await db.runTransaction(async (tr) => {
+      const stripeInfo = (await tr.get(refStripe)).data();
+      if (!stripeInfo) {
+        throw new functions.https.HttpsError('invalid-argument', 'This user does not have a stripe customer.')
+      }
+
+      result.result = await stripe.customers.update(stripeInfo.customerId, {
+        source: token
+      })
+    });
+
+    return result
+  } catch (error) {
+    throw utils.process_error(error)
+  }
+
 }
