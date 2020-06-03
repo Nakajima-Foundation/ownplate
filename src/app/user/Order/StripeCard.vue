@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { getStripeInstance } from "~/plugins/stripe.js";
+import { getStripeInstance, stripeUpdateCustomer } from "~/plugins/stripe.js";
 import { functions } from "~/plugins/firebase.js";
 
 export default {
@@ -29,15 +29,13 @@ export default {
     }
   },
   methods: {
-    async createPaymentMethod() {
+    async createToken() {
       const { token } = await this.stripe.createToken(this.cardElement);
-      console.log("****Token", token.id);
-      const stripeUpdateCustomer = functions.httpsCallable(
-        "stripeUpdateCustomer"
-      );
+      console.log("***toke", token);
       const result = await stripeUpdateCustomer({ token: token.id });
-      console.log("****Result", result);
-
+      console.log("createToken", result);
+    },
+    async createPaymentMethod() {
       const payload = await this.stripe.createPaymentMethod({
         type: "card",
         card: this.cardElement
