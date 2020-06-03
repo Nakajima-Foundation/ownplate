@@ -205,6 +205,14 @@ export const regionalSettings = {
     AddressStates: USStates,
     Logo: "OwnPlate-Logo-Horizontal-YellowBlack.svg",
     Logo2: "OwnPlate-Logo-Stack-YellowBlack.svg",
+    FeatureHeroMobile: {
+      ja: "Feature-Hero-Mobile-ja.svg",
+      en: "Feature-Hero-Mobile-en.svg"
+    },
+    FeatureHeroTablet: {
+      ja: "Feature-Hero-Tablet-ja.svg",
+      en: "Feature-Hero-Tablet-en.svg"
+    },
     FeatureHero: {
       ja: "Feature-Hero-v01-ja.svg",
       en: "Feature-Hero-v01-en.svg"
@@ -220,7 +228,8 @@ export const regionalSettings = {
       en: "English(US)",
       es: "Español",
       ja: "日本語"
-    }
+    },
+    covid19trace: false
   },
   JP: {
     CurrencyKey: "JPY",
@@ -235,6 +244,10 @@ export const regionalSettings = {
     FeatureHeroTablet: {
       ja: "Feature-Hero-Tablet-ja.svg",
       en: "Feature-Hero-Tablet-en.svg"
+    },
+    FeatureHero: {
+      ja: "Feature-Hero-v01-ja.svg",
+      en: "Feature-Hero-v01-en.svg"
     },
     requireTaxInput: false,
     requireTaxPriceDisplay: true,
@@ -259,6 +272,18 @@ export const regionalSettings = {
     AddressStates: null,
     Logo: "OwnPlate-Logo-Horizontal-YellowBlack.svg",
     Logo2: "OwnPlate-Logo-Stack-YellowBlack.svg",
+    FeatureHeroMobile: {
+      ja: "Feature-Hero-Mobile-ja.svg",
+      en: "Feature-Hero-Mobile-en.svg"
+    },
+    FeatureHeroTablet: {
+      ja: "Feature-Hero-Tablet-ja.svg",
+      en: "Feature-Hero-Tablet-en.svg"
+    },
+    FeatureHero: {
+      ja: "Feature-Hero-v01-ja.svg",
+      en: "Feature-Hero-v01-en.svg"
+    },
     requireTaxInput: true,
     requireTaxPriceDisplay: false,
     taxRateKeys: {
@@ -274,6 +299,7 @@ export const regionalSettings = {
       it: "italiano",
       nl: "Nederlands",
       ja: "日本語"
-    }
+    },
+    covid19trace: false
   }
 };

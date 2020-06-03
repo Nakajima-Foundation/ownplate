@@ -35,11 +35,6 @@
           <div class="op-button-medium tertiary w-192" @click="handleClose()">{{ $t("menu.home") }}</div>
         </router-link>
       </div>
-      <!-- <div class="align-center m-t-24">
-        <router-link to="/about">
-          <div class="op-button-small tertiary" @click="handleClose()">{{ $t("menu.about") }}</div>
-        </router-link>
-      </div>-->
       <div class="align-center m-t-24">
         <router-link to="/u/profile">
           <div class="op-button-small tertiary" @click="handleClose()">{{ $t("profile.title") }}</div>
