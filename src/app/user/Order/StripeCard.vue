@@ -1,6 +1,11 @@
 <template>
-  <div class="bg-surface r-8 d-low m-t-8 p-l-16 p-r-16 p-t-16 p-b-16">
-    <div id="card-element"></div>
+  <div>
+    <div v-if="storedCard">
+      <p>{{storedCard.last4}}</p>
+    </div>
+    <div v-else class="bg-surface r-8 d-low m-t-8 p-l-16 p-r-16 p-t-16 p-b-16">
+      <div id="card-element"></div>
+    </div>
   </div>
 </template>
 
@@ -9,24 +14,15 @@ import { getStripeInstance, stripeUpdateCustomer } from "~/plugins/stripe.js";
 import { functions } from "~/plugins/firebase.js";
 
 export default {
-  props: ["stripeAccount"],
   data() {
     return {
-      stripe: {}, //getStripeInstance(this.stripeAccount),
+      stripe: getStripeInstance(),
+      storedCard: null,
       cardElement: {}
     };
   },
   mounted() {
-    if (this.stripeAccount) {
-      this.stripe = getStripeInstance(/*this.stripeAccount*/);
-      this.configureStripe();
-    }
-  },
-  watch: {
-    stripeAccount: function(newVal, oldVal) {
-      this.stripe = getStripeInstance(/*newVal*/);
-      this.configureStripe();
-    }
+    this.configureStripe();
   },
   methods: {
     async createToken() {
@@ -34,13 +30,6 @@ export default {
       console.log("***toke", token, token.card.last4);
       const result = await stripeUpdateCustomer({ tokenId: token.id });
       console.log("createToken", result);
-    },
-    async createPaymentMethod() {
-      const payload = await this.stripe.createPaymentMethod({
-        type: "card",
-        card: this.cardElement
-      });
-      return payload;
     },
     configureStripe() {
       const elements = this.stripe.elements();
