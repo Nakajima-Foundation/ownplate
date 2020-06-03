@@ -2,9 +2,8 @@
   <div>
     <div v-if="storedCard" class="m-t-16 m-l-16">
       <b-checkbox v-model="useStoredCard">
-        <span>{{"Use Stored Card:"}}</span>
         <span>{{storedCard.brand}}</span>
-        <span>{{storedCard.last4}}</span>
+        <span>**** **** **** {{storedCard.last4}}</span>
       </b-checkbox>
     </div>
     <div v-show="!useStoredCard" class="bg-surface r-8 d-low m-t-8 p-l-16 p-r-16 p-t-16 p-b-16">
