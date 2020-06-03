@@ -212,6 +212,9 @@ export default {
       alert("クリアしました");
       window.localStorage.clear();
     }
+  },
+  created() {
+    console.log(process.env.CIRCLE_SHA1);
   }
 };
 </script>
