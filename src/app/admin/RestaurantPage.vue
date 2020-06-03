@@ -37,10 +37,10 @@
         </div>
         <div class="m-t-16">
           <text-form
-            v-model="shopInfo.personName"
-            titleKey="shopInfo.personName"
-            placeHolder="editRestaurant.enterPersonName"
-            :error="errors['personName']"
+            v-model="shopInfo.ownerName"
+            titleKey="shopInfo.ownerName"
+            placeHolder="editRestaurant.enterOwnerName"
+            :error="errors['ownerName']"
             :maxlength="50"
             />
         </div>
@@ -580,7 +580,7 @@ export default {
       test: null,
       shopInfo: {
         restaurantName: "",
-        personName: "",
+        ownerName: "",
         streetAddress: "",
         city: "",
         state: "",
@@ -675,7 +675,7 @@ export default {
       const err = {};
       [
         "restaurantName",
-        "personName",
+        "ownerName",
         "streetAddress",
         "city",
         "state",
@@ -828,7 +828,7 @@ export default {
           restProfilePhoto: this.shopInfo.restProfilePhoto,
           restCoverPhoto: this.shopInfo.restCoverPhoto,
           restaurantName: this.shopInfo.restaurantName,
-          personName: this.shopInfo.personName,
+          ownerName: this.shopInfo.ownerName,
           streetAddress: this.shopInfo.streetAddress,
           images: {
             cover: this.shopInfo?.images?.cover || {},
