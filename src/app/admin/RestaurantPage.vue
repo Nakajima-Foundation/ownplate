@@ -35,6 +35,15 @@
             :maxlength="50"
             />
         </div>
+        <div class="m-t-16">
+          <text-form
+            v-model="shopInfo.ownerName"
+            titleKey="shopInfo.ownerName"
+            placeHolder="editRestaurant.enterOwnerName"
+            :error="errors['ownerName']"
+            :maxlength="50"
+            />
+        </div>
 
         <!-- Restaurant Address -->
         <div>
@@ -571,6 +580,7 @@ export default {
       test: null,
       shopInfo: {
         restaurantName: "",
+        ownerName: "",
         streetAddress: "",
         city: "",
         state: "",
@@ -665,6 +675,7 @@ export default {
       const err = {};
       [
         "restaurantName",
+        "ownerName",
         "streetAddress",
         "city",
         "state",
@@ -817,6 +828,7 @@ export default {
           restProfilePhoto: this.shopInfo.restProfilePhoto,
           restCoverPhoto: this.shopInfo.restCoverPhoto,
           restaurantName: this.shopInfo.restaurantName,
+          ownerName: this.shopInfo.ownerName,
           streetAddress: this.shopInfo.streetAddress,
           images: {
             cover: this.shopInfo?.images?.cover || {},
