@@ -12,7 +12,7 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
   const stripe = utils.get_stripe();
 
   const { orderId, restaurantId, paymentMethodId, tip, sendSMS, timeToPickup } = data;
-  utils.validate_params({ orderId, restaurantId, paymentMethodId }); // tip and sendSMS are optional
+  utils.validate_params({ orderId, restaurantId }); // paymentMethodId, tip and sendSMS are optional
 
   const restaurantData = await utils.get_restaurant(db, restaurantId);
   const venderId = restaurantData['uid']
@@ -21,19 +21,6 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
   const stripeAccount = paymentSnapshot.data()?.stripe
   if (!stripeAccount) {
     throw new functions.https.HttpsError('invalid-argument', 'This restaurant does not support payment.')
-  }
-  let tokenId: string | null = null;
-  if (paymentMethodId === "token") {
-    const refStripe = db.doc(`/users/${uid}/system/stripe`)
-    const stripeInfo = (await refStripe.get()).data();
-    if (stripeInfo) {
-      const token = await stripe.tokens.create({
-        customer: stripeInfo.customerId
-      }, {
-        stripeAccount: stripeAccount
-      })
-      tokenId = token.id
-    }
   }
 
   try {
@@ -52,24 +39,34 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
       const multiple = utils.getStripeRegion().multiple; // 100 for USD, 1 for JPY
       const totalCharge = Math.round((order.total + Math.max(0, tip)) * multiple)
 
-      const request = tokenId ? {
+      const request = {
         setup_future_usage: 'off_session',
         amount: totalCharge,
         currency: utils.getStripeRegion().currency,
-        payment_method_data: {
-          type: "card",
-          card: {
-            token: tokenId
-          }
-        },
-        metadata: { uid, restaurantId, orderId }
-      } as Stripe.PaymentIntentCreateParams : {
-        setup_future_usage: 'off_session',
-        amount: totalCharge,
-        currency: utils.getStripeRegion().currency,
-        payment_method: paymentMethodId,
         metadata: { uid, restaurantId, orderId }
       } as Stripe.PaymentIntentCreateParams
+
+      if (paymentMethodId) {
+        request.payment_method = paymentMethodId
+      } else {
+        // If no paymentMethodId, we expect that there is a customer Id associated with a token
+        const refStripe = db.doc(`/users/${uid}/system/stripe`)
+        const stripeInfo = (await refStripe.get()).data();
+        if (!stripeInfo) {
+          throw new functions.https.HttpsError('aborted', 'No stripeInfo.')
+        }
+        const token = await stripe.tokens.create({
+          customer: stripeInfo.customerId
+        }, {
+          stripeAccount: stripeAccount
+        })
+        request["payment_method_data"] = {
+          type: "card",
+          card: {
+            token: token.id
+          }
+        };
+      }
 
       if (data.description) {
         request.description = data.description

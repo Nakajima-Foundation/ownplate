@@ -556,7 +556,7 @@ export default {
         }
 
         const { data } = await stripeCreateIntent({
-          paymentMethodId: "token", // paymentMethod.id,
+          //paymentMethodId: paymentMethod.id,
           timeToPickup,
           restaurantId: this.restaurantId() + this.forcedError("intent"),
           orderId: this.orderId,
