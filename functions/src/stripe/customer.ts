@@ -33,7 +33,9 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
     const token = await stripe.tokens.retrieve(tokenId);
     const card = {
       last4: token.card?.last4,
-      brand: token.card?.brand
+      brand: token.card?.brand,
+      exp_month: token.card?.exp_month,
+      exp_year: token.card?.exp_year
     }
     console.log("***token", token);
     await db.runTransaction(async (tr) => {
