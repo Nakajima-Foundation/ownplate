@@ -12,7 +12,7 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
   const stripe = utils.get_stripe();
 
   const { orderId, restaurantId, paymentMethodId, tip, sendSMS, timeToPickup } = data;
-  utils.validate_params({ orderId, restaurantId, paymentMethodId }); // tip and sendSMS are optional
+  utils.validate_params({ orderId, restaurantId }); // paymentMethodId, tip and sendSMS are optional
 
   const restaurantData = await utils.get_restaurant(db, restaurantId);
   const venderId = restaurantData['uid']
@@ -22,6 +22,7 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
   if (!stripeAccount) {
     throw new functions.https.HttpsError('invalid-argument', 'This restaurant does not support payment.')
   }
+
   try {
     return await db.runTransaction(async transaction => {
 
@@ -42,9 +43,31 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
         setup_future_usage: 'off_session',
         amount: totalCharge,
         currency: utils.getStripeRegion().currency,
-        payment_method: paymentMethodId,
         metadata: { uid, restaurantId, orderId }
       } as Stripe.PaymentIntentCreateParams
+
+      if (paymentMethodId) {
+        // This code is obsolete, but keep it for a while in case we need it.
+        request.payment_method = paymentMethodId
+      } else {
+        // If no paymentMethodId, we expect that there is a customer Id associated with a token
+        const refStripe = db.doc(`/users/${uid}/system/stripe`)
+        const stripeInfo = (await refStripe.get()).data();
+        if (!stripeInfo) {
+          throw new functions.https.HttpsError('aborted', 'No stripeInfo.')
+        }
+        const token = await stripe.tokens.create({
+          customer: stripeInfo.customerId
+        }, {
+          stripeAccount: stripeAccount
+        })
+        request["payment_method_data"] = {
+          type: "card",
+          card: {
+            token: token.id
+          }
+        };
+      }
 
       if (data.description) {
         request.description = data.description

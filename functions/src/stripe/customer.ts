@@ -21,5 +21,40 @@ export const createCustomer = async (db: FirebaseFirestore.Firestore, uid: strin
 }
 
 export const update = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
-  return { result: true }
+  const uid = utils.validate_auth(context);
+  const { tokenId } = data;
+  utils.validate_params({ tokenId });
+  const stripe = utils.get_stripe();
+
+  const refStripeSystem = db.doc(`/users/${uid}/system/stripe`)
+  const refStripeReadOnly = db.doc(`/users/${uid}/readonly/stripe`)
+
+  try {
+    const token = await stripe.tokens.retrieve(tokenId);
+    const card = {
+      last4: token.card?.last4,
+      brand: token.card?.brand,
+      exp_month: token.card?.exp_month,
+      exp_year: token.card?.exp_year
+    }
+    console.log("***token", token);
+    await db.runTransaction(async (tr) => {
+      const stripeInfo = (await tr.get(refStripeSystem)).data();
+      if (!stripeInfo) {
+        throw new functions.https.HttpsError('invalid-argument', 'This user does not have a stripe customer.')
+      }
+      tr.set(refStripeReadOnly, {
+        card
+      }, { merge: true })
+
+      await stripe.customers.update(stripeInfo.customerId, {
+        source: tokenId
+      })
+    });
+
+    return { success: true }
+  } catch (error) {
+    throw utils.process_error(error)
+  }
+
 }

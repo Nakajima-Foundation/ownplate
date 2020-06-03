@@ -199,11 +199,7 @@
 
                 <!-- Pay Online -->
                 <div v-if="showPayment">
-                  <stripe-card
-                    :stripe-account="this.stripeAccount"
-                    @change="handleCardStateChange"
-                    ref="stripe"
-                  ></stripe-card>
+                  <stripe-card @change="handleCardStateChange" ref="stripe"></stripe-card>
                   <!-- <credit-card-input></credit-card-input> -->
                   <!-- Pay Button -->
                   <div class="align-center m-t-24">
@@ -474,24 +470,24 @@ export default {
         .doc(`restaurants/${this.restaurantId()}/orders/${this.orderId}`)
         .onSnapshot(
           order => {
-            console.log("CALLSNAPSHOT");
+            //console.log("CALLSNAPSHOT");
             const order_data = order.exists ? order.data() : {};
-            console.log(order_data);
+            //console.log(order_data);
             if (
               this.user.uid === order_data.uid ||
               this.$store.getters.isSuperAdmin
             ) {
-              console.log("UPDATE");
+              //console.log("UPDATE");
               this.orderInfo = order_data;
             } else if (!this.isDeleting) {
-              console.log("NOTUPDATE");
+              //console.log("NOTUPDATE");
               this.notFound = true;
             }
           },
           error => {
             // Because of the firestore.rules, it causes "insufficient permissions"
             // if the order does not exist.
-            console.log(error);
+            console.error(error.message);
             this.notFound = true;
           }
         );
@@ -541,22 +537,12 @@ export default {
     },
     async handlePayment() {
       const timeToPickup = this.$refs.time.timeToPickup();
-      console.log("handlePayment", timeToPickup);
+      //console.log("handlePayment", timeToPickup);
 
       this.isPaying = true;
       try {
-        const {
-          error,
-          paymentMethod
-        } = await this.$refs.stripe.createPaymentMethod();
-
-        if (error) {
-          this.isPaying = false;
-          throw error;
-        }
-
+        await this.$refs.stripe.createToken();
         const { data } = await stripeCreateIntent({
-          paymentMethodId: paymentMethod.id,
           timeToPickup,
           restaurantId: this.restaurantId() + this.forcedError("intent"),
           orderId: this.orderId,
@@ -564,7 +550,7 @@ export default {
           sendSMS: this.sendSMS,
           tip: this.tip || 0
         });
-        console.log("create", data);
+        console.log("createIntent", data);
         window.scrollTo(0, 0);
       } catch (error) {
         console.error(error.message, error.details);

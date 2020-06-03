@@ -1,39 +1,61 @@
 <template>
-  <div class="bg-surface r-8 d-low m-t-8 p-l-16 p-r-16 p-t-16 p-b-16">
-    <div id="card-element"></div>
+  <div>
+    <div v-if="storedCard" class="m-t-16 m-l-16">
+      <b-checkbox v-model="useStoredCard">
+        <span>{{storedCard.brand}}</span>
+        <span>**** **** **** {{storedCard.last4}}</span>
+      </b-checkbox>
+    </div>
+    <div v-show="!useStoredCard" class="bg-surface r-8 d-low m-t-8 p-l-16 p-r-16 p-t-16 p-b-16">
+      <div id="card-element"></div>
+    </div>
   </div>
 </template>
 
 <script>
-import { getStripeInstance } from "~/plugins/stripe.js";
+import { getStripeInstance, stripeUpdateCustomer } from "~/plugins/stripe.js";
+import { functions, db } from "~/plugins/firebase.js";
 
 export default {
-  props: ["stripeAccount"],
   data() {
     return {
-      stripe: {}, //getStripeInstance(this.stripeAccount),
+      stripe: getStripeInstance(),
+      storedCard: null,
+      useStoredCard: false,
+      elementStatus: { complete: false },
       cardElement: {}
     };
   },
-  mounted() {
-    if (this.stripeAccount) {
-      this.stripe = getStripeInstance(this.stripeAccount);
-      this.configureStripe();
+  async mounted() {
+    this.configureStripe();
+    const stripeInfo = (
+      await db.doc(`/users/${this.user.uid}/readonly/stripe`).get()
+    ).data();
+    if (stripeInfo && stripeInfo.card) {
+      this.storedCard = stripeInfo.card;
+      this.useStoredCard = true;
+      this.$emit("change", { complete: true });
     }
   },
   watch: {
-    stripeAccount: function(newVal, oldVal) {
-      this.stripe = getStripeInstance(newVal);
-      this.configureStripe();
+    useStoredCard(newValue) {
+      this.$emit("change", newValue ? { complete: true } : this.elementStatus);
+    }
+  },
+  computed: {
+    user() {
+      return this.$store.state.user;
     }
   },
   methods: {
-    async createPaymentMethod() {
-      const payload = await this.stripe.createPaymentMethod({
-        type: "card",
-        card: this.cardElement
-      });
-      return payload;
+    async createToken() {
+      if (!this.useStoredCard) {
+        const { token } = await this.stripe.createToken(this.cardElement);
+        const tokenId = token.id + this.forcedError("token");
+        //console.log("***toke", token, token.card.last4);
+        const { data } = await stripeUpdateCustomer({ tokenId });
+        console.log("stripeUpdateCustomer", data, tokenId);
+      }
     },
     configureStripe() {
       const elements = this.stripe.elements();
@@ -61,8 +83,9 @@ export default {
       });
       cardElement.mount("#card-element");
       this.cardElement = cardElement;
-      this.cardElement.addEventListener("change", event => {
-        this.$emit("change", event);
+      this.cardElement.addEventListener("change", status => {
+        this.elementStatus = status;
+        this.$emit("change", status);
       });
     }
   }
