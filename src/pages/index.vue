@@ -202,7 +202,6 @@ export default {
       ];
     },
     featureHeroTablet() {
-      console.log( this.isLocaleJapan);
       return this.regionalSetting.FeatureHeroTablet[
         this.isLocaleJapan ? "ja" : "en"
       ];
