@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import { storage } from "~/plugins/firebase.js";
+import { ownPlateConfig } from "@/config/project";
 
 export default ({ app }) => {
   Vue.mixin({
@@ -94,6 +95,17 @@ export default ({ app }) => {
             }
           );
         });
+      },
+    },
+    computed: {
+      isJapan() {
+        return ownPlateConfig.region === "JP";
+      },
+      isLocaleJapan() {
+        return this.$i18n.locale === "ja";
+      },
+      serviceKey() {
+        return this.isJapan ? "omochikaeri" : "ownPlate";
       },
     }
   });

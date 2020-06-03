@@ -133,14 +133,9 @@ export default {
     };
   },
   computed: {
-    serviceKey() {
-      return this.$store.state.server.region === "JP"
-        ? "omochikaeri"
-        : "ownPlate";
-    },
     featureHero() {
       return this.regionalSetting.FeatureHero[
-        this.$i18n.locale === "ja" ? "ja" : "en"
+        this.isLocaleJapan ? "ja" : "en"
       ];
     }
   },

@@ -119,7 +119,7 @@
         <div class="column">
           <div class="m-l-24 m-r-24">
             <!-- English -->
-            <div v-if="$i18n.locale !== 'ja'">
+            <div v-if="!isLocaleJapan">
               <div class="t-h6 c-text-black-disabled m-t-24">About</div>
               <div class="t-body1 c-text-black-high m-t-24">
                 The COVID-19 has not only claimed the lives of many people,
@@ -196,27 +196,17 @@ export default {
     hideUsersLink() {
       return releaseConfig.hideUsersLink;
     },
-    isJapan() {
-      return this.$store.state.server.region === "JP";
-    },
-    serviceKey() {
-      return this.$store.state.server.region === "JP"
-        ? "omochikaeri"
-        : "ownPlate";
-    },
     featureHeroMobile() {
       return this.regionalSetting.FeatureHeroMobile[
-        this.$i18n.locale === "ja" ? "ja" : "en"
+        this.isLocaleJapan ? "ja" : "en"
       ];
     },
     featureHeroTablet() {
+      console.log( this.isLocaleJapan);
       return this.regionalSetting.FeatureHeroTablet[
-        this.$i18n.locale === "ja" ? "ja" : "en"
+        this.isLocaleJapan ? "ja" : "en"
       ];
     }
-  },
-  created() {
-    console.log(process.env.CIRCLE_SHA1);
   },
   methods: {
     sessionClear() {
@@ -224,13 +214,5 @@ export default {
       window.localStorage.clear();
     }
   }
-
-  // APIcall
-  // async mounted() {
-  //   await this.$axios.$post('/users', { name: 'yoko' })
-
-  //   const users = await this.$axios.$get('/users')
-  //   console.log(users) // [{ id: 0, name: 'taro' }, { id: 1, name: 'yoko' }]
-  // }
 };
 </script>
