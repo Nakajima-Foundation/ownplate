@@ -47,6 +47,7 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
       } as Stripe.PaymentIntentCreateParams
 
       if (paymentMethodId) {
+        // This code is obsolete, but keep it for a while in case we need it.
         request.payment_method = paymentMethodId
       } else {
         // If no paymentMethodId, we expect that there is a customer Id associated with a token

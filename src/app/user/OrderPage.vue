@@ -541,20 +541,8 @@ export default {
 
       this.isPaying = true;
       try {
-        /*
-        const {
-          error,
-          paymentMethod
-        } = await this.$refs.stripe.createPaymentMethod();
-
-        if (error) {
-          this.isPaying = false;
-          throw error;
-        }
-        */
         await this.$refs.stripe.createToken();
         const { data } = await stripeCreateIntent({
-          //paymentMethodId: paymentMethod.id,
           timeToPickup,
           restaurantId: this.restaurantId() + this.forcedError("intent"),
           orderId: this.orderId,
