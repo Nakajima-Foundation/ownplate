@@ -75,6 +75,7 @@
   },
   "editRestaurant": {
     "enterRestaurantName": "飲食店名を入力して下さい",
+    "enterOwnerName": "責任者氏名を入力してください",
     "enterStreetAddress": "番地以下の住所を入力して下さい",
     "enterCity": "市町村名を入力して下さい",
     "enterZip": "郵便番号を入力して下さい",
@@ -163,6 +164,7 @@
     "UrlCopied": "コピーしました",
     "UrlCopyFailed": "コピー失敗",
     "name": "飲食店名",
+    "ownerName": "責任者氏名",
     "restaurantDetails": "飲食店情報",
     "streetAddress": "番地以下",
     "city": "市区町村",

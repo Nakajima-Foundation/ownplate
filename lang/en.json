@@ -75,6 +75,7 @@
   },
   "editRestaurant": {
     "enterRestaurantName": "Enter restaurant name",
+    "enterOwnerName": "Enter restaurant's owner name",
     "enterStreetAddress": "Enter street address",
     "enterCity": "Enter City",
     "enterZip": "Enter Zip",
@@ -163,6 +164,7 @@
     "UrlCopied": "URL Copied",
     "UrlCopyFailed": "URL Copy failed",
     "name": "Restaurant name",
+    "ownerName": "restaurant's owner name",
     "restaurantDetails": "Restaurant Details",
     "streetAddress": "Street address",
     "city": "City",
