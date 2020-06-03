@@ -29,7 +29,6 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
   const refStripeSystem = db.doc(`/users/${uid}/system/stripe`)
   const refStripeReadOnly = db.doc(`/users/${uid}/readonly/stripe`)
 
-  const result = { result: {} }
   try {
     const token = await stripe.tokens.retrieve(tokenId);
     const card = {
@@ -46,12 +45,12 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
         card
       }, { merge: true })
 
-      result.result = await stripe.customers.update(stripeInfo.customerId, {
+      await stripe.customers.update(stripeInfo.customerId, {
         source: tokenId
       })
     });
 
-    return result
+    return { success: true }
   } catch (error) {
     throw utils.process_error(error)
   }
