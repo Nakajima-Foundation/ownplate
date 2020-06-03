@@ -470,23 +470,10 @@ export default {
         .doc(`restaurants/${this.restaurantId()}/orders/${this.orderId}`)
         .onSnapshot(
           order => {
-            //console.log("CALLSNAPSHOT");
             const order_data = order.exists ? order.data() : {};
-            //console.log(order_data);
-            if (
-              this.user.uid === order_data.uid ||
-              this.$store.getters.isSuperAdmin
-            ) {
-              //console.log("UPDATE");
-              this.orderInfo = order_data;
-            } else if (!this.isDeleting) {
-              //console.log("NOTUPDATE");
-              this.notFound = true;
-            }
+            this.orderInfo = order_data;
           },
           error => {
-            // Because of the firestore.rules, it causes "insufficient permissions"
-            // if the order does not exist.
             console.error(error.message);
             this.notFound = true;
           }
