@@ -22,14 +22,16 @@ export const createCustomer = async (db: FirebaseFirestore.Firestore, uid: strin
 
 export const update = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
-  const { token } = data;
-  utils.validate_params({ token });
+  const { tokenId } = data;
+  utils.validate_params({ tokenId });
   const stripe = utils.get_stripe();
 
   const refStripe = db.doc(`/users/${uid}/system/stripe`)
 
   const result = { result: {} }
   try {
+    const token = await stripe.tokens.retrieve(tokenId);
+    console.log("***token", token);
     await db.runTransaction(async (tr) => {
       const stripeInfo = (await tr.get(refStripe)).data();
       if (!stripeInfo) {
@@ -37,7 +39,7 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
       }
 
       result.result = await stripe.customers.update(stripeInfo.customerId, {
-        source: token
+        source: tokenId
       })
     });
 

@@ -31,8 +31,8 @@ export default {
   methods: {
     async createToken() {
       const { token } = await this.stripe.createToken(this.cardElement);
-      console.log("***toke", token);
-      const result = await stripeUpdateCustomer({ token: token.id });
+      console.log("***toke", token, token.card.last4);
+      const result = await stripeUpdateCustomer({ tokenId: token.id });
       console.log("createToken", result);
     },
     async createPaymentMethod() {
