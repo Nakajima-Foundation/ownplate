@@ -191,10 +191,12 @@
     "otherFeesDescription": "店舗までの交通費など移動に関わる費用などは、ご負担下さい。",
     "payment": "代金の支払い時期および方法",
     "paymentDescription": "クレッジットカード決済/店舗払い",
+    "paymentDescriptionCard": "クレッジットカード決済",
+    "paymentDescriptionStore": "店舗払い",
     "delivery": "商品引き渡し時期および方法",
     "deliveryDescription": "お客様のご指定日と店舗受取り。",
     "cancellation": "取り消しの取り扱い条件、解約条件",
-    "cancellationDescription": "受取指定日4日前まで、インターネット上でのキャンセルが可能です。3日前以降については店舗へご連絡ください。"
+    "cancellationDescription": "お店が注文を「受付済み」にするまで、インターネット上でのキャンセルが可能です。それ以降については店舗へご連絡ください。"
   },
   "sitemenu": {
     "menu": "メニュー",
