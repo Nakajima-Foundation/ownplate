@@ -2,6 +2,13 @@ div,
 span {
   word-break: break-word;
 }
+.light {
+  @extend .bg-form;
+  border: none;
+}
+.button[disabled] {
+  background: #e6e6e6;
+}
 
 // OwnPlate Colors
 $op-colors: (

@@ -412,7 +412,4 @@ export default {
   @extend .bg-form;
   border: none;
 }
-.button[disabled] {
-  background: #eee;
-}
 </style>
