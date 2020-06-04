@@ -64,7 +64,7 @@ export const stripe_regions = {
     multiple: 1,
     tip: {
       default: 0,
-      choices: [0, 10, 20]
+      choices: [0, 5, 10, 20]
     },
     countries: [{ code: "+81", name: "sms.country.JP" }],
     hidePostalCode: true,
