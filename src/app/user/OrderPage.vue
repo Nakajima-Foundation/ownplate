@@ -317,7 +317,7 @@ export default {
       shopInfo: { restaurantName: "" },
       cardState: {},
       orderInfo: {},
-      menus: [],
+      menuObj: null,
       detacher: [],
       isDeleting: false,
       isPlacing: false,
@@ -411,7 +411,7 @@ export default {
       return this.orderInfo.status < order_status.cooking_completed;
     },
     orderItems() {
-      if (this.menus.length > 0 && this.orderInfo.order) {
+      if (this.menuObj && this.orderInfo.order) {
         return Object.keys(this.orderInfo.order).map(key => {
           const num = this.orderInfo.order[key];
           return {
@@ -423,9 +423,6 @@ export default {
         });
       }
       return [];
-    },
-    menuObj() {
-      return this.array2obj(this.menus);
     },
     orderId() {
       return this.$route.params.orderId;
@@ -463,7 +460,8 @@ export default {
         .collection(`restaurants/${this.restaurantId()}/menus`)
         .onSnapshot(menu => {
           if (!menu.empty) {
-            this.menus = menu.docs.map(this.doc2data("menu"));
+            const menus = menu.docs.map(this.doc2data("menu"));
+            this.menuObj = this.array2obj(menus);
           }
         });
       const order_detacher = db
