@@ -205,6 +205,12 @@ export default {
           this.$store.commit("soundEnable");
         } catch (e) {
           console.log(e);
+          Sentry.captureException(e, {
+            tags: {
+              view: "layouts/default",
+              methods: "enableSound",
+            }
+          });
           console.log("default: layout sound not enabled");
         }
       }

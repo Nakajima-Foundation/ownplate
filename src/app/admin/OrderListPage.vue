@@ -45,6 +45,11 @@
                   <span class="c-status-red t-button">{{$t("admin.order.soundOff")}}</span>
                 </div>
               </div>
+              <b-button class="b-reset h-36 r-36 bg-form"  @click="soundPlay()" style="margin-left: 15px">
+                <span class="p-l-16 p-r-16">
+                  <span class="c-primary t-button">{{ $t('admin.order.soundTest') }}</span>
+                </span>
+              </b-button>
             </div>
           </div>
         </div>
