@@ -456,27 +456,33 @@ export default {
             this.notFound = true;
           }
         });
-      const menu_detacher = db
-        .collection(`restaurants/${this.restaurantId()}/menus`)
-        .onSnapshot(menu => {
-          if (!menu.empty) {
-            const menus = menu.docs.map(this.doc2data("menu"));
-            this.menuObj = this.array2obj(menus);
-          }
-        });
       const order_detacher = db
         .doc(`restaurants/${this.restaurantId()}/orders/${this.orderId}`)
         .onSnapshot(
-          order => {
+          async order => {
             const order_data = order.exists ? order.data() : {};
             this.orderInfo = order_data;
+            if (this.orderInfo.menuItems) {
+              this.menuObj = this.orderInfo.menuItems;
+            } else {
+              // Backward compatibility
+              if (!this.menuObj) {
+                const menu = await db
+                  .collection(`restaurants/${this.restaurantId()}/menus`)
+                  .get();
+                if (!menu.empty) {
+                  const menus = menu.docs.map(this.doc2data("menu"));
+                  this.menuObj = this.array2obj(menus);
+                }
+              }
+            }
           },
           error => {
             console.error(error.message);
             this.notFound = true;
           }
         );
-      this.detacher = [restaurant_detacher, menu_detacher, order_detacher];
+      this.detacher = [restaurant_detacher, order_detacher];
     },
 
     handleOpenMenu() {
