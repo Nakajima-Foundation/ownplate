@@ -59,7 +59,6 @@ export const customRoutes = [
     component: 'admin/TraceList.vue',
   },
   {
-    name: 'admin-orders',
     path: '/admin/restaurants/:restaurantId/qrcode',
     component: 'admin/QRCodePage.vue',
   },

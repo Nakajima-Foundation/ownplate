@@ -44,16 +44,14 @@ const link = [
     rel: "stylesheet",
     href: "https://use.fontawesome.com/releases/v5.2.0/css/all.css"
   },
-	{
-	  rel: "stylesheet",
+  {
+    rel: "stylesheet",
     href: "https://fonts.googleapis.com/icon?family=Material+Icons",
   }
 ];
 
 const script = [
   { src: "https://js.stripe.com/v3/" },
-  { src: "https://www.gstatic.com/firebasejs/7.14.6/firebase-app.js" },
-  { src: "https://www.gstatic.com/firebasejs/7.14.6/firebase-analytics.js" }
 ];
 
 export const RestaurantHeader = {
@@ -72,8 +70,10 @@ export const defaultHeader = {
   title: ownPlateConfig.siteName || process.env.npm_package_name,
   script,
   meta: [
-    { hid: 'og:image', property: 'og:image', content: 'https://' + hostName + '/' +
-      (ownPlateConfig.region === "JP" ? 'PR-Feature.png' : 'OGP-Facebook.png') },
+    {
+      hid: 'og:image', property: 'og:image', content: 'https://' + hostName + '/' +
+        (ownPlateConfig.region === "JP" ? 'PR-Feature.png' : 'OGP-Facebook.png')
+    },
     { charset: "utf-8" },
     { name: "viewport", content: "width=device-width, initial-scale=1" },
     {
