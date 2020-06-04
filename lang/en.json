@@ -329,6 +329,7 @@
     "order": {
       "soundOn": "Notification Sound: On",
       "soundOff": "Notification Sound: Off",
+      "soundTest": "Sound Test",
       "cancelButton": "Cancel this order",
       "cancelTitle": "Order Canceling",
       "cancelMessage": "Please contact to the customer and tell the order will be canceled.",
