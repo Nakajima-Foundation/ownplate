@@ -1,6 +1,7 @@
 import * as functions from 'firebase-functions'
 import * as admin from 'firebase-admin';
 import * as utils from '../lib/utils'
+import { deleteCustomer } from '../stripe/customer';
 
 export const deleteAccount = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
@@ -30,14 +31,12 @@ export const deleteAccount = async (db: FirebaseFirestore.Firestore, data: any, 
 
     const refUser = db.doc(`/users/${uid}`);
     const refSystem = refUser.collection("system");
-    const refReadonly = refUser.collection("readonly");
     const refPrivate = refUser.collection("private");
     await refSystem.doc("line").delete();
-    await refSystem.doc("stripe").delete();
-    await refReadonly.doc("stripe").delete();
     await refPrivate.doc("line").delete();
     await refPrivate.doc("profile").delete();
     await refUser.delete();
+    await deleteCustomer(db, uid);
 
     return { result: uid, count }
   } catch (error) {
