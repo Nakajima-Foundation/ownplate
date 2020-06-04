@@ -70,11 +70,11 @@
             </div>
 
             <!-- For User -->
-            <div class="bg-surface r-8 d-low m-t-24 p-t-24 p-b-24" v-if="!hideUsersLink">
+            <div class="bg-surface r-8 d-low m-t-24 p-t-24 p-b-24">
               <div class="align-center">
                 <i class="material-icons c-text-black-disabled s-96">tag_faces</i>
                 <!-- Go to User Page -->
-                <div class="align-center m-t-16">
+                <div class="align-center m-t-16" v-if="!hideUsersLink">
                   <router-link to="/r">
                     <div class="op-button-medium primary" style="min-width: 288px;">
                       <span class="c-onprimary p-l-24 p-r-24">{{$t("menu.users")}}</span>
