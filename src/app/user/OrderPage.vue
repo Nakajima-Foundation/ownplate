@@ -451,7 +451,7 @@ export default {
               .doc(`/admins/${uid}/public/payment`)
               .get();
             this.paymentInfo = snapshot.data() || {};
-            console.log("restaurant", uid, this.paymentInfo);
+            //console.log("restaurant", uid, this.paymentInfo);
           } else {
             this.notFound = true;
           }
