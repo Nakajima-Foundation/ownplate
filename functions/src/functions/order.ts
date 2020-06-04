@@ -8,6 +8,7 @@ import i18next from 'i18next'
 import Order from '../models/Order'
 import * as line from './line'
 import { ownPlateConfig } from '../common/project';
+import { createCustomer } from '../stripe/customer';
 
 // This function is called by users to place orders without paying
 export const place = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
@@ -171,7 +172,11 @@ export const wasOrderCreated = async (db, data: any, context) => {
     if (!restaurantDoc.exists) {
       return orderRef.update("status", order_status.error);
     }
-    const restaurantData = restaurantDoc.data();
+    let restaurantData = restaurantDoc.data();
+
+    if (restaurantData.deletedFlag || !restaurantData.publicFlag) {
+      return orderRef.update("status", order_status.error);
+    }
 
     const order = await orderRef.get();
 
@@ -196,6 +201,7 @@ export const wasOrderCreated = async (db, data: any, context) => {
     let alcohol_sub_total = 0;
 
     const newOrderData = {};
+    const newOrderPrices = {};
     Object.keys(orderData.order).map((menuId) => {
       const num = orderData.order[menuId];
       if (!Number.isInteger(num)) {
@@ -216,6 +222,7 @@ export const wasOrderCreated = async (db, data: any, context) => {
         food_sub_total += (menu.price * num)
       }
       newOrderData[menuId] = num;
+      newOrderPrices[menuId] = menu.price;
     });
 
     const multiple = utils.getStripeRegion().multiple; //100 for USD, 1 for JPY
@@ -230,6 +237,8 @@ export const wasOrderCreated = async (db, data: any, context) => {
     // Atomically increment the orderCount of the restaurant
     let number = 0;
     await db.runTransaction(async (tr) => {
+      // We need to read restaurantData again for this transaction
+      restaurantData = (await restaurantRef.get()).data();
       if (restaurantData) {
         number = restaurantData.orderCount || 0;
         await tr.update(restaurantRef, {
@@ -237,9 +246,11 @@ export const wasOrderCreated = async (db, data: any, context) => {
         });
       }
     });
+    await createCustomer(db, uid, context.auth.token.phone_number)
 
     return orderRef.update({
       order: newOrderData,
+      orderPrices: newOrderPrices,
       status: order_status.validation_ok,
       number,
       sub_total,

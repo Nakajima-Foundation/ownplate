@@ -1,6 +1,9 @@
 <template>
   <div>
-    <template v-if="notFound">
+    <template v-if="!isUser">
+      <RequireLogin :loginVisible="loginVisible" @dismissed="handleDismissed" />
+    </template>
+    <template v-else-if="notFound">
       <not-found />
     </template>
     <template v-else>
@@ -130,19 +133,22 @@
                 v-if="paid"
                 class="t-h6 c-text-black-disabled"
               >{{ $t("order.yourOrder") + ": " + orderName }}</div>
-              <div v-else class="t-h6 c-text-black-disabled">{{ $t("order.yourOrder") }}</div>
+              <div v-else class="t-h6 c-text-black-disabled">{{ $t("order.confirmOrder") }}</div>
+
               <!-- Details -->
               <order-info
                 :orderItems="this.orderItems"
                 :orderInfo="this.orderInfo || {}"
                 @change="handleTipChange"
               ></order-info>
+
               <!-- View Menu Page Button -->
-              <div class="align-center m-t-24">
+              <div class="align-center m-t-24" v-if="paid">
                 <b-button class="b-reset op-button-small secondary" @click="handleOpenMenu">
                   <span class="c-primary p-l-24 p-r-24">{{$t("order.menu")}}</span>
                 </b-button>
               </div>
+
               <!-- Validating -->
               <b-notification :closable="false" v-if="newOrder">
                 {{ $t("order.validating") }}
@@ -174,7 +180,7 @@
                 "
               >
                 <div class="m-t-24">
-                  <div class="t-h6 c-text-black-disabled">Order Notice</div>
+                  <div class="t-h6 c-text-black-disabled">{{ $t("order.orderNotice") }}</div>
                   <div class="bg-surface r-8 d-low m-t-8 p-l-16 p-r-16 p-t-16 p-b-16">
                     <div class="cols">
                       <div class="p-r-8">
@@ -193,11 +199,7 @@
 
                 <!-- Pay Online -->
                 <div v-if="showPayment">
-                  <stripe-card
-                    :stripe-account="this.stripeAccount"
-                    @change="handleCardStateChange"
-                    ref="stripe"
-                  ></stripe-card>
+                  <stripe-card @change="handleCardStateChange" ref="stripe"></stripe-card>
                   <!-- <credit-card-input></credit-card-input> -->
                   <!-- Pay Button -->
                   <div class="align-center m-t-24">
@@ -237,7 +239,7 @@
                 </div>
 
                 <!-- Pay Button -->
-                <div v-if="!showPayment" class="align-center m-t-24">
+                <div v-if="inStorePayment" class="align-center m-t-24">
                   <b-button
                     class="b-reset op-button-medium primary"
                     style="min-width: 288px;"
@@ -283,7 +285,9 @@ import OrderInfo from "~/app/user/Order/OrderInfo";
 import ShopInfo from "~/app/user/Restaurant/ShopInfo";
 import StripeCard from "~/app/user/Order/StripeCard";
 import TimeToPickup from "~/app/user/Order/TimeToPickup";
+import PhoneLogin from "~/app/auth/PhoneLogin";
 import NotFound from "~/components/NotFound";
+import RequireLogin from "~/components/RequireLogin";
 
 import { db, firestore, functions } from "~/plugins/firebase.js";
 import { order_status } from "~/plugins/constant.js";
@@ -297,20 +301,21 @@ export default {
   components: {
     ShopHeader,
     OrderInfo,
+    PhoneLogin,
     ShopInfo,
     StripeCard,
     TimeToPickup,
-    NotFound
+    NotFound,
+    RequireLogin
   },
   data() {
     return {
-      showAddLine: false,
       notAvailable: false,
+      loginVisible: false,
       isPaying: false,
       restaurantsId: this.restaurantId(),
       shopInfo: { restaurantName: "" },
       cardState: {},
-      stripeAccount: null,
       orderInfo: {},
       menus: [],
       detacher: [],
@@ -319,67 +324,16 @@ export default {
       tip: 0,
       isCanceling: false,
       sendSMS: true,
+      paymentInfo: {},
       notFound: false
     };
   },
   created() {
-    if (this.lineEnabled && this.user) {
-      db.doc(`users/${this.user.uid}/private/line`)
-        .get()
-        .then(doc => {
-          const data = doc.data();
-          console.log(data);
-          this.showAddLine = !(data && data.isFriend);
-        });
+    if (this.isUser) {
+      this.loadData();
+    } else if (!this.isUser) {
+      this.loginVisible = true;
     }
-    const restaurant_detacher = db
-      .doc(`restaurants/${this.restaurantId()}`)
-      .onSnapshot(async restaurant => {
-        if (restaurant.exists) {
-          const restaurant_data = restaurant.data();
-          this.shopInfo = restaurant_data;
-          const uid = restaurant_data.uid;
-          const snapshot = await db.doc(`/admins/${uid}/public/stripe`).get();
-          const stripeInfo = snapshot.data();
-          console.log("restaurant", uid, stripeInfo);
-          this.stripeAccount = stripeInfo && stripeInfo["stripeAccount"];
-        } else {
-          this.notFound = true;
-        }
-      });
-    const menu_detacher = db
-      .collection(`restaurants/${this.restaurantId()}/menus`)
-      .onSnapshot(menu => {
-        if (!menu.empty) {
-          this.menus = menu.docs.map(this.doc2data("menu"));
-        }
-      });
-    const order_detacher = db
-      .doc(`restaurants/${this.restaurantId()}/orders/${this.orderId}`)
-      .onSnapshot(
-        order => {
-          console.log("CALLSNAPSHOT");
-          const order_data = order.exists ? order.data() : {};
-          console.log(order_data);
-          if (
-            this.user.uid === order_data.uid ||
-            this.$store.getters.isSuperAdmin
-          ) {
-            console.log("UPDATE");
-            this.orderInfo = order_data;
-          } else if (!this.isDeleting) {
-            console.log("NOTUPDATE");
-            this.notFound = true;
-          }
-        },
-        error => {
-          // Because of the firestore.rules, it causes "insufficient permissions"
-          // if the order does not exist.
-          console.log(error);
-          this.notFound = true;
-        }
-      );
-    this.detacher = [restaurant_detacher, menu_detacher, order_detacher];
   },
   destroyed() {
     if (this.detacher) {
@@ -409,6 +363,13 @@ export default {
     redirect_uri() {
       return location.origin + "/callback/line";
     },
+    showAddLine() {
+      return (
+        this.lineEnabled &&
+        this.$store.state.claims &&
+        !this.$store.state.claims.line
+      );
+    },
     lineEnabled() {
       return !!ownPlateConfig.line;
     },
@@ -419,6 +380,12 @@ export default {
     showPayment() {
       //console.log("payment", releaseConfig.hidePayment, this.stripeAccount);
       return !releaseConfig.hidePayment && this.stripeAccount;
+    },
+    stripeAccount() {
+      return this.paymentInfo.stripe;
+    },
+    inStorePayment() {
+      return this.paymentInfo.inStore;
     },
     orderName() {
       return nameOfOrder(this.orderInfo);
@@ -467,7 +434,53 @@ export default {
       return this.$store.state.user;
     }
   },
+  watch: {
+    isUser() {
+      if (this.isUser) {
+        this.loadData();
+      }
+    }
+  },
   methods: {
+    loadData() {
+      const restaurant_detacher = db
+        .doc(`restaurants/${this.restaurantId()}`)
+        .onSnapshot(async restaurant => {
+          if (restaurant.exists) {
+            const restaurant_data = restaurant.data();
+            this.shopInfo = restaurant_data;
+            const uid = restaurant_data.uid;
+            const snapshot = await db
+              .doc(`/admins/${uid}/public/payment`)
+              .get();
+            this.paymentInfo = snapshot.data() || {};
+            console.log("restaurant", uid, this.paymentInfo);
+          } else {
+            this.notFound = true;
+          }
+        });
+      const menu_detacher = db
+        .collection(`restaurants/${this.restaurantId()}/menus`)
+        .onSnapshot(menu => {
+          if (!menu.empty) {
+            this.menus = menu.docs.map(this.doc2data("menu"));
+          }
+        });
+      const order_detacher = db
+        .doc(`restaurants/${this.restaurantId()}/orders/${this.orderId}`)
+        .onSnapshot(
+          order => {
+            const order_data = order.exists ? order.data() : {};
+            this.orderInfo = order_data;
+          },
+          error => {
+            console.error(error.message);
+            this.notFound = true;
+          }
+        );
+      this.detacher = [restaurant_detacher, menu_detacher, order_detacher];
+    },
+
     handleOpenMenu() {
       this.$router.push(`/r/${this.restaurantId()}`);
     },
@@ -481,6 +494,11 @@ export default {
     },
     handleCardStateChange(state) {
       this.cardState = state;
+    },
+    handleDismissed(params) {
+      console.log("handleDismissed", params);
+      // The user has dismissed the login dialog (including the successful login)
+      this.loginVisible = false;
     },
     specialRequest(key) {
       const option = this.orderInfo.options && this.orderInfo.options[key];
@@ -506,22 +524,12 @@ export default {
     },
     async handlePayment() {
       const timeToPickup = this.$refs.time.timeToPickup();
-      console.log("handlePayment", timeToPickup);
+      //console.log("handlePayment", timeToPickup);
 
       this.isPaying = true;
       try {
-        const {
-          error,
-          paymentMethod
-        } = await this.$refs.stripe.createPaymentMethod();
-
-        if (error) {
-          this.isPaying = false;
-          throw error;
-        }
-
+        await this.$refs.stripe.createToken();
         const { data } = await stripeCreateIntent({
-          paymentMethodId: paymentMethod.id,
           timeToPickup,
           restaurantId: this.restaurantId() + this.forcedError("intent"),
           orderId: this.orderId,
@@ -529,7 +537,7 @@ export default {
           sendSMS: this.sendSMS,
           tip: this.tip || 0
         });
-        console.log("create", data);
+        console.log("createIntent", data);
         window.scrollTo(0, 0);
       } catch (error) {
         console.error(error.message, error.details);

@@ -64,7 +64,7 @@ export const stripe_regions = {
     multiple: 1,
     tip: {
       default: 0,
-      choices: [0, 10, 20]
+      choices: [0, 5, 10, 20]
     },
     countries: [{ code: "+81", name: "sms.country.JP" }],
     hidePostalCode: true,
@@ -187,6 +187,17 @@ export const JPPrefecture = [
 
 export const taxRates = ["food", "alcohol"];
 
+export const reservationTheDayBefore = [
+  { messageKey: "editRestaurant.reservationTheDaysBefore.zero", value: 0 },
+  { messageKey: "editRestaurant.reservationTheDaysBefore.one", value: 1 },
+  { messageKey: "editRestaurant.reservationTheDaysBefore.two", value: 2 },
+  { messageKey: "editRestaurant.reservationTheDaysBefore.three", value: 3 },
+  { messageKey: "editRestaurant.reservationTheDaysBefore.four", value: 4 },
+  { messageKey: "editRestaurant.reservationTheDaysBefore.five", value: 5 },
+  { messageKey: "editRestaurant.reservationTheDaysBefore.six", value: 6 },
+  { messageKey: "editRestaurant.reservationTheDaysBefore.seven", value: 7 }
+];
+
 export const regionalSettings = {
   US: {
     CurrencyKey: "USD",
@@ -194,9 +205,17 @@ export const regionalSettings = {
     AddressStates: USStates,
     Logo: "OwnPlate-Logo-Horizontal-YellowBlack.svg",
     Logo2: "OwnPlate-Logo-Stack-YellowBlack.svg",
+    FeatureHeroMobile: {
+      ja: "Feature-Hero-Mobile-ja.svg",
+      en: "Feature-Hero-Mobile-en.svg"
+    },
+    FeatureHeroTablet: {
+      ja: "Feature-Hero-Tablet-ja.svg",
+      en: "Feature-Hero-Tablet-en.svg"
+    },
     FeatureHero: {
       ja: "Feature-Hero-v01-ja.svg",
-      en: "Feature-Hero-v01-en.svg",
+      en: "Feature-Hero-v01-en.svg"
     },
     requireTaxInput: true,
     requireTaxPriceDisplay: false,
@@ -209,7 +228,8 @@ export const regionalSettings = {
       en: "English(US)",
       es: "Español",
       ja: "日本語"
-    }
+    },
+    covid19trace: false
   },
   JP: {
     CurrencyKey: "JPY",
@@ -217,9 +237,17 @@ export const regionalSettings = {
     AddressStates: JPPrefecture,
     Logo: "Omochikaeri-Logo-Horizontal-YellowBlack.svg",
     Logo2: "Omochikaeri-Logo-Stack-YellowBlack.svg",
+    FeatureHeroMobile: {
+      ja: "Feature-Hero-Mobile-ja.svg",
+      en: "Feature-Hero-Mobile-en.svg"
+    },
+    FeatureHeroTablet: {
+      ja: "Feature-Hero-Tablet-ja.svg",
+      en: "Feature-Hero-Tablet-en.svg"
+    },
     FeatureHero: {
       ja: "Feature-Hero-v01-ja.svg",
-      en: "Feature-Hero-v01-en.svg",
+      en: "Feature-Hero-v01-en.svg"
     },
     requireTaxInput: false,
     requireTaxPriceDisplay: true,
@@ -244,6 +272,18 @@ export const regionalSettings = {
     AddressStates: null,
     Logo: "OwnPlate-Logo-Horizontal-YellowBlack.svg",
     Logo2: "OwnPlate-Logo-Stack-YellowBlack.svg",
+    FeatureHeroMobile: {
+      ja: "Feature-Hero-Mobile-ja.svg",
+      en: "Feature-Hero-Mobile-en.svg"
+    },
+    FeatureHeroTablet: {
+      ja: "Feature-Hero-Tablet-ja.svg",
+      en: "Feature-Hero-Tablet-en.svg"
+    },
+    FeatureHero: {
+      ja: "Feature-Hero-v01-ja.svg",
+      en: "Feature-Hero-v01-en.svg"
+    },
     requireTaxInput: true,
     requireTaxPriceDisplay: false,
     taxRateKeys: {
@@ -259,6 +299,7 @@ export const regionalSettings = {
       it: "italiano",
       nl: "Nederlands",
       ja: "日本語"
-    }
+    },
+    covid19trace: false
   }
 };

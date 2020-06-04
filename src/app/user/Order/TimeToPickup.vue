@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- Date Picker -->
     <div v-if="availableDays.length > 0" class="m-t-24">
       <div class="t-h6 c-text-black-disabled">{{ $t('order.timeToPickup') }}</div>
       <div class="bg-surface r-8 d-low m-t-8 p-t-16 p-b-16 p-l-16 p-r-16">
@@ -18,7 +19,12 @@
         </b-select>
       </div>
     </div>
-    <p v-else class="notAvailble">{{$t('order.notAvailable')}}</p>
+
+    <!-- Not Available -->
+    <div
+      v-else
+      class="bg-status-red-bg r-8 p-l-16 p-r-16 p-t-16 p-b-16 t-subtitle1 c-status-red m-t-24"
+    >{{$t('order.notAvailable')}}</div>
   </div>
 </template>
 
@@ -103,10 +109,10 @@ export default {
       return 10; // LATER: Make it customizable
     },
     minimumCookTime() {
-      return 25; // LATER: Make it customizable
+      return this.shopInfo.pickUpMinimumCookTime || 25;
     },
     daysInAdvance() {
-      return 4; // LATER: Make it customizable
+      return (this.shopInfo.pickUpDaysInAdvance || 3) + 1;
     }
   },
   methods: {
@@ -120,9 +126,3 @@ export default {
   }
 };
 </script>
-
-<style lang="scss" scoped>
-.notAvailble {
-  color: $danger;
-}
-</style>

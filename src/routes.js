@@ -10,6 +10,11 @@ export const customRoutes = [
     component: 'user/OrderHistory.vue',
   },
   {
+    name: 'profile',
+    path: '/u/profile',
+    component: 'user/Profile.vue',
+  },
+  {
     name: 'r-restaurantId',
     path: '/r/:restaurantId',
     component: 'user/RestaurantPage.vue',
@@ -50,7 +55,10 @@ export const customRoutes = [
     component: 'admin/OrderListPage.vue',
   },
   {
-    name: 'admin-orders',
+    path: '/admin/restaurants/:restaurantId/traces',
+    component: 'admin/TraceList.vue',
+  },
+  {
     path: '/admin/restaurants/:restaurantId/qrcode',
     component: 'admin/QRCodePage.vue',
   },

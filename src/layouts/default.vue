@@ -1,18 +1,20 @@
 <template>
   <div class="wrapper" @click="enableSound()">
     <!-- Header -->
-    <div class="columns is-gapless is-vcentered is-mobile bg-ownplate-white">
-      <div class="column">
+    <div class="cols flex-center bg-ownplate-white">
+      <div>
         <div class="op-button w-48 h-48" @click="handleOpen()">
           <i class="material-icons s-24 c-text-black-medium">menu</i>
         </div>
       </div>
-      <div class="column align-center">
+      <div class="flex-1 align-center">
         <router-link to="/">
           <img class="h-24" :src="`/${this.logo}`" />
         </router-link>
       </div>
-      <div class="column"></div>
+      <div>
+        <div class="w-48 h-48"></div>
+      </div>
     </div>
     <!-- Side Bar -->
     <b-sidebar
@@ -34,17 +36,9 @@
         </router-link>
       </div>
       <div class="align-center m-t-24">
-        <router-link to="/about">
-          <div class="op-button-small tertiary" @click="handleClose()">{{ $t("menu.about") }}</div>
+        <router-link to="/u/profile">
+          <div class="op-button-small tertiary" @click="handleClose()">{{ $t("profile.title") }}</div>
         </router-link>
-      </div>
-      <div v-if="!isAdmin" class="align-center m-t-24">
-        <router-link to="/u/history">
-          <div class="op-button-small tertiary" @click="handleClose()">{{ $t("order.history") }}</div>
-        </router-link>
-      </div>
-      <div class="align-center m-t-24" v-if="hasUser">
-        <div class="op-button-small tertiary" @click.prevent="signout">{{ $t("menu.signOut") }}</div>
       </div>
     </b-sidebar>
 
@@ -61,13 +55,13 @@
 
     <!-- Footer -->
     <div class="m-t-48">
-      <div class="bg-ownplate-gray columns is-gapless is-mobile h-128">
-        <div class="column">
+      <div class="bg-ownplate-gray cols h-128">
+        <div class="flex-1">
           <div
             class="is-inline-block t-caption c-text-white-medium m-t-16 m-l-16"
           >Operated by Singularity Society</div>
         </div>
-        <div class="column align-right">
+        <div class="align-right">
           <div class="op-button-pill bg-sattle-white m-r-16 m-t-16" @click="openLang()">
             <i class="material-icons c-text-white-high">language</i>
             <span class="c-text-white-high t-body1">
@@ -85,7 +79,7 @@
     <b-modal :active.sync="langPopup" :width="488" scroll="keep">
       <div class="op-dialog p-t-24 p-l-24 p-r-24 p-b-24">
         <div class="t-h6 c-text-black-disabled p-b-8">{{ $t("menu.selectLanguage") }}</div>
-        <div class="m-t-16" v-for="(lang, lang_key) in languages">
+        <div class="m-t-16" v-for="(lang, lang_key) in languages" :key="lang_key">
           <div class="op-button-pill bg-form" @click="changeLangAndClose(lang_key)">
             <i class="material-icons c-text-black-high" v-if="lang_key == language">check</i>
             <span class="t-body1">{{ lang }}</span>
@@ -147,6 +141,14 @@ export default {
       buffer: null
     };
   },
+  mounted() {
+    window.addEventListener("focus", () => {
+      this.$store.commit("setActive", true);
+    });
+    window.addEventListener("blur", () => {
+      this.$store.commit("setActive", false);
+    });
+  },
   computed: {
     dialog() {
       return this.$store.state.dialog;
@@ -203,6 +205,12 @@ export default {
           this.$store.commit("soundEnable");
         } catch (e) {
           console.log(e);
+          Sentry.captureException(e, {
+            tags: {
+              view: "layouts/default",
+              methods: "enableSound",
+            }
+          });
           console.log("default: layout sound not enabled");
         }
       }
@@ -290,8 +298,7 @@ export default {
           }
         }
         user.getIdTokenResult(true).then(result => {
-          const admin = result.claims.admin;
-          this.$store.commit("setCredentials", { admin });
+          this.$store.commit("setCustomClaims", result.claims);
         });
       } else {
         console.log("authStateChanged: null");

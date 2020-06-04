@@ -17,7 +17,15 @@ test_db_helper.initHook();
 
 const good_cafe_data = {
   restProfilePhoto: "https://example.com/images",
+  images: {
+    profile: {
+      resizedImages: {
+        "600": "https://example.com/images600",
+      },
+    }
+  },
   restaurantName: "Good cafe",
+  introduction: "こんにちは",
   streetAddress: "NY",
   city: "NY",
   state: "NY",
@@ -73,6 +81,8 @@ describe('express function', () => {
     meta_tag['og:title'].should.equal(good_cafe_data.restaurantName);
     meta_tag['og:site_name'].should.not.empty;
     meta_tag['og:type'].should.not.empty;
+    meta_tag['og:image'].should.equal("https://example.com/images600");
+
 
   });
 });

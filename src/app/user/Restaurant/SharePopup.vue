@@ -4,14 +4,14 @@
     <div class="m-t-8 align-center">
       <div class="op-button-text m-r-8" @click="openShare()">
         <i class="material-icons">launch</i>
-        <span>Share</span>
+        <span>{{$t('shopInfo.share')}}</span>
       </div>
       <!-- <sharing-buttons :title="name" :url="shareUrl()" /> -->
     </div>
     <!-- Share Popup-->
     <b-modal :active.sync="sharePopup" :width="488" scroll="keep">
       <div class="op-dialog p-t-24 p-l-24 p-r-24 p-b-24">
-        <div class="t-h6 c-text-black-disabled p-b-8">Share</div>
+        <div class="t-h6 c-text-black-disabled p-b-8">{{$t('shopInfo.share')}}</div>
         <div class="cols">
           <div>
             <qrcode :value="url" :options="{ width: 160 }"></qrcode>
@@ -33,7 +33,7 @@
           </div>
         </div>
         <div class="m-t-24 align-center">
-          <div class="op-button-small tertiary" @click="closeShare()">Close</div>
+          <div class="op-button-small tertiary" @click="closeShare()">{{$t('menu.close')}}</div>
         </div>
       </div>
     </b-modal>

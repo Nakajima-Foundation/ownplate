@@ -8,6 +8,7 @@ export const strict = false;
 
 export const state = () => ({
   user: undefined, // undefined:not authorized, null:no user
+  claims: undefined, // custom claims
   lang: undefined,
   date: new Date(),
   carts: {}, // for "Edit Order"
@@ -15,6 +16,7 @@ export const state = () => ({
   orderEvent: 0,
   soundEnable: false, // after user touch/click event, this flag set true (for mobile browser)
   soundOn: false, // for restaurant admin config
+  isWindowActive: false, // active status of browser window
   dialog: null // for DialogBox
 });
 
@@ -39,14 +41,17 @@ export const getters = {
     return stripe_regions[state.server.region || "US"];
   },
   isSuperAdmin: (state) => {
-    return state.user && state.user.credentials && state.user.credentials.admin;
+    return state.claims?.admin;
   },
   isNotSuperAdmin: (state) => {
-    return state.user && state.user.credentials && !state.user.credentials.admin;
+    return !state.claims?.admin;
   }
 };
 
 export const mutations = {
+  setActive(state, flag) {
+    state.isWindowActive = flag;
+  },
   setUser(state, user) {
     state.user = user;
   },
@@ -65,11 +70,9 @@ export const mutations = {
   setLang(state, lang) {
     state.lang = lang;
   },
-  setCredentials(state, credentials) {
+  setCustomClaims(state, claims) {
     // Note: we can't copy user using Object.assign here
-    if (credentials.admin) {
-      state.user.admin = credentials.admin;
-    }
+    state.claims = claims;
   },
   pingOrderEvent(state) {
     state.orderEvent = (state.orderEvent) + 1;

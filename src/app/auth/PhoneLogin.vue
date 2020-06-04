@@ -1,28 +1,30 @@
 <template>
   <div>
     <form v-show="confirmationResult === null" @submit.prevent="handleSubmit">
-      <b-field v-if="countries.length > 1" :label="$t('sms.countryCode')">
-        <b-select v-model="countryCode">
-          <option
-            v-for="country in countries"
-            :value="country.code"
-            :key="country.code"
-          >{{ $t(country.name) }}</option>
-        </b-select>
-      </b-field>
-      <b-field
-        :type="hasError ? 'is-danger' : 'is-success'"
-        :message="hasError ? $t(errors[0]) : $t('sms.notice')"
-        :label="$t('sms.phonenumber')"
-      >
-        <b-input
-          type="text"
-          v-model="phoneNumber"
-          v-on:input="validatePhoneNumber"
-          maxlength="30"
-          :placeholder="$t('sms.pleasetype')"
-        />
-      </b-field>
+      <div v-if="!relogin">
+        <b-field v-if="countries.length > 1" :label="$t('sms.countryCode')">
+          <b-select v-model="countryCode">
+            <option
+              v-for="country in countries"
+              :value="country.code"
+              :key="country.code"
+            >{{ $t(country.name) }}</option>
+          </b-select>
+        </b-field>
+        <b-field
+          :type="hasError ? 'is-danger' : 'is-success'"
+          :message="hasError ? $t(errors[0]) : $t('sms.notice')"
+          :label="$t('sms.phonenumber')"
+        >
+          <b-input
+            type="text"
+            v-model="phoneNumber"
+            v-on:input="validatePhoneNumber"
+            maxlength="30"
+            :placeholder="$t('sms.pleasetype')"
+          />
+        </b-field>
+      </div>
       <div id="signInButton" style="margin-bottom:0.5rem" />
       <b-button
         type="is-primary"
@@ -64,6 +66,11 @@
 import { db, firestore, auth, authObject } from "~/plugins/firebase.js";
 
 export default {
+  props: {
+    relogin: {
+      type: String
+    }
+  },
   data() {
     return {
       isLoading: false,
@@ -103,11 +110,14 @@ export default {
     }
   },
   computed: {
+    SMSPhoneNumber() {
+      return this.relogin || this.countryCode + this.phoneNumber;
+    },
     countries() {
       return this.$store.getters.stripeRegion.countries;
     },
     readyToSendSMS() {
-      return this.recaptchaVerified && !this.hasError;
+      return this.recaptchaVerified && (!this.hasError || this.relogin);
     },
     readyToSendVerificationCode() {
       return !this.hasError;
@@ -136,7 +146,7 @@ export default {
       try {
         this.isLoading = true;
         this.confirmationResult = await auth.signInWithPhoneNumber(
-          this.countryCode + this.phoneNumber,
+          this.SMSPhoneNumber,
           this.recaptchaVerifier
         );
         console.log("result", this.confirmationResult);
