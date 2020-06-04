@@ -21,7 +21,7 @@
           <!-- Representative -->
           <div class="m-t-16">
             <div class="t-subtitle2 c-text-black-disabled">{{$t('transactionsAct.representative')}}</div>
-            <div class="t-body1 c-text-black-high">＜運営責任者＞</div>
+            <div class="t-body1 c-text-black-high">{{shopInfo.ownerName||"---"}}</div>
           </div>
 
           <!-- Address -->
@@ -72,11 +72,13 @@
             <div class="t-subtitle2 c-text-black-disabled">{{$t('transactionsAct.otherFees')}}</div>
             <div class="t-body1 c-text-black-high">{{$t('transactionsAct.otherFeesDescription')}}</div>
           </div>
-
           <!-- Payment Period and Method -->
           <div class="m-t-16">
             <div class="t-subtitle2 c-text-black-disabled">{{$t('transactionsAct.payment')}}</div>
-            <div class="t-body1 c-text-black-high">{{$t('transactionsAct.paymentDescription')}}</div>
+            <div class="t-body1 c-text-black-high">
+              <span v-if="showPayment">{{$t('transactionsAct.paymentDescriptionCard')}}</span>
+              <span v-if="inStorePayment">{{$t('transactionsAct.paymentDescriptionStore')}}</span>
+            </div>
           </div>
 
           <!-- Delivery Time -->
@@ -102,6 +104,7 @@
 import { daysOfWeek } from "~/plugins/constant.js";
 import { db } from "~/plugins/firebase.js";
 import { parsePhoneNumber, formatNational } from "~/plugins/phoneutil.js";
+import { releaseConfig } from "~/plugins/config.js";
 
 export default {
   data() {
@@ -111,13 +114,14 @@ export default {
       shopInfo: {},
       detacher: [],
       notFound: null,
+      paymentInfo: {},
       transactionsActPopup: false
     };
   },
   created() {
     const restaurant_detacher = db
       .doc(`restaurants/${this.restaurantId()}`)
-      .onSnapshot(restaurant => {
+      .onSnapshot(async restaurant => {
         if (
           restaurant.exists &&
           !restaurant.data().deletedFlag &&
@@ -125,6 +129,11 @@ export default {
         ) {
           const restaurant_data = restaurant.data();
           this.shopInfo = restaurant_data;
+          const uid = restaurant_data.uid;
+          const snapshot = await db
+                .doc(`/admins/${uid}/public/payment`)
+                .get();
+          this.paymentInfo = snapshot.data() || {};
           this.notFound = false;
         } else {
           this.notFound = true;
@@ -159,7 +168,17 @@ export default {
     },
     countries() {
       return this.$store.getters.stripeRegion.countries;
-    }
+    },
+    showPayment() {
+      //console.log("payment", releaseConfig.hidePayment, this.stripeAccount);
+      return !releaseConfig.hidePayment && this.stripeAccount;
+    },
+    stripeAccount() {
+      return this.paymentInfo.stripe;
+    },
+    inStorePayment() {
+      return this.paymentInfo.inStore;
+    },
   },
   methods: {
     validDate(date) {
