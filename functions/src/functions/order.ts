@@ -174,6 +174,10 @@ export const wasOrderCreated = async (db, data: any, context) => {
     }
     let restaurantData = restaurantDoc.data();
 
+    if (restaurantData.deletedFlag || !restaurantData.publicFlag) {
+      return orderRef.update("status", order_status.error);
+    }
+
     const order = await orderRef.get();
 
     if (!order) {
