@@ -6,11 +6,37 @@
   "greeting": "Hello World2",
   "underConstruction": "WARNING: This is a staging server for development.",
   "comma": ", ",
+  "profile": {
+    "title": "Profile",
+    "loginStatus": "Sign-in Status",
+    "displayName": "Name",
+    "lineConnection": "LINE connnection",
+    "lineFriend": "Friend with the official account",
+    "undefined": "Undefined",
+    "friendLink": "Become a friend",
+    "signIn": "Sign-in as a user",
+    "signInRestaurant": "Sign-in as a restaurant",
+    "deleteAccount": "Delete Account",
+    "reallyDeleteAccount": "Do you really want to delete this account? All the data will be deleted.",
+    "status": {
+      "hasLine": "Connected",
+      "noLine": "Not connected",
+      "verifying": "Verifying...",
+      "email": "email",
+      "phone": "Phone number",
+      "line": "LINE",
+      "unexpected": "Unexpected",
+      "isFriend": "a friend",
+      "noFriend": "not a friend",
+      "none": "None"
+    }
+  },
   "menu": {
     "about": "About",
     "admins": "Restaurant Owners",
-    "userManual": "Documents for Owners",
+    "adminManual": "Manual for Owners",
     "users": "Food Lovers",
+    "userManual": "Manual for Food Lovers",
     "home": "Home",
     "signOut": "Sign Out",
     "selectLanguage": "Select language",
@@ -49,6 +75,7 @@
   },
   "editRestaurant": {
     "enterRestaurantName": "Enter restaurant name",
+    "enterOwnerName": "Enter restaurant's owner name",
     "enterStreetAddress": "Enter street address",
     "enterCity": "Enter City",
     "enterZip": "Enter Zip",
@@ -69,6 +96,21 @@
     "taxExcluded": "Tax exclude",
     "about": "About",
     "required": "Required",
+    "timeToPickup": "Time to pickup",
+    "preparationTime": "Takeaway preparation time",
+    "reservationTheDayBefore": "Reservation the day before",
+    "reservationTheDaysBefore": {
+      "zero": "Only on the day",
+      "one": "From 1 day in advance",
+      "two": "From 2 day in advance",
+      "three": "From 3 day in advance",
+      "four": "From 4 day in advance",
+      "five": "From 5 day in advance",
+      "six": "From 6 day in advance",
+      "seven": "From 7 day in advance"
+    },
+    "minutes": "minutes",
+    "withinfive": "Within 5 hours",
     "profilePhoto": "Restaurant profile photo",
     "coverPhoto": "Restaurant cover photo",
     "setLocation": "Set location",
@@ -116,11 +158,13 @@
     "empty": "(Empty category name)"
   },
   "shopInfo": {
+    "share": "Share",
     "qrcode": "QR code",
     "copyUrl": "Copy URL",
     "UrlCopied": "URL Copied",
     "UrlCopyFailed": "URL Copy failed",
     "name": "Restaurant name",
+    "ownerName": "restaurant's owner name",
     "restaurantDetails": "Restaurant Details",
     "streetAddress": "Street address",
     "city": "City",
@@ -133,6 +177,26 @@
     "hours": "Hours",
     "closed": "Closed",
     "public": "Public"
+  },
+  "transactionsAct": {
+    "title": "Specified Commercial Transaction Act",
+    "sellerName": "Seller Name",
+    "representative": "Representative",
+    "address": "Address",
+    "hours": "Hours",
+    "phone": "Phone Number",
+    "price": "Selling Price",
+    "priceDescription": "Please check the product page.",
+    "otherFees": "Other Expenses",
+    "otherFeesDescription": "You are responsible for any expenses related to transportation to and from the store.",
+    "payment": "Time and Method of Payment",
+    "paymentDescription": "Credit Card Payment / Store Payment",
+    "paymentDescriptionCard": "Credit Card Payment",
+    "paymentDescriptionStore": "Store Payment",
+    "delivery": "Time and Method of Delivery",
+    "deliveryDescription": "Customer's specified date and store pickup.",
+    "cancellation": "Cancellation",
+    "cancellationDescription": "You can cancel your order on the Internet before the order state is Order Placed; After the state has changed, please contact the store."
   },
   "sitemenu": {
     "menu": "Menu",
@@ -149,11 +213,15 @@
   "order": {
     "menu": "View Menu Page",
     "yourOrder": "Your Order",
+    "confirmOrder": "Confirm Order",
     "editItems": "Edit Items",
     "subtotal": "Subtotal",
     "salesTax": "Sales Tax",
     "total": "Total",
     "yourPayment": "Your Payment",
+    "whatsCVC": "What’s CVC?",
+    "3digitsCVC": "The final three digits on the back",
+    "4digitsCVC": "The four digits on the front",
     "placeOrder": "Place Order:",
     "placeOrderNoPayment": "Place Order without Payment",
     "validating": "Processing...",
@@ -169,6 +237,7 @@
     "history": "Order History",
     "timeToPickup": "Pickup Time",
     "notAvailable": "This restaurant is not available at this time. Please try again later",
+    "orderNotice": "Order Notice",
     "status": {
       "unexpected": "Unexpected",
       "error": "Error",
@@ -244,7 +313,8 @@
       "connectStripe": "Connect Stripe Account",
       "disconnectStripe": "Disconnect Stripe Account",
       "reallyDisconnectStripe": "Do you really want to disconnect Stripe Account?",
-      "openDashboard": "Open Stripe Dashboard"
+      "openDashboard": "Open Stripe Dashboard",
+      "enableInStorePayment": "Allow in-store payment"
     },
     "viewPage": "View Page",
     "incompleteOrders": "{count} Incomplete Order | {count} Incomplete Orders",
@@ -257,10 +327,14 @@
     "passwordReset": "Reset Password",
     "pleaseCheckInbox": "Please check your inbox, an email is on the way.",
     "order": {
+      "soundOn": "Notification Sound: On",
+      "soundOff": "Notification Sound: Off",
+      "soundTest": "Sound Test",
       "cancelButton": "Cancel this order",
       "cancelTitle": "Order Canceling",
       "cancelMessage": "Please contact to the customer and tell the order will be canceled.",
-      "delete": "Cancel this order (undoable)"
+      "delete": "Cancel this order",
+      "deleteConfirm": "(This action is undoable)"
     },
     "qrcode": {
       "title": "QRcodes",
@@ -323,7 +397,8 @@
   "trace": {
     "thankyou": "Thank you for participating.",
     "enter": "Enter",
-    "leave": "Leave"
+    "leave": "Leave",
+    "list": "Trace List"
   },
   "errorPage": {
     "popup": {
@@ -357,6 +432,9 @@
     "notFound": {
       "message1": "The page you're looking for can't be found.",
       "message2": "Try contacting the restaurant in other way"
+    },
+    "requireLogin": {
+      "message1": "You must be signed in to see your order"
     }
   }
 }

@@ -1,85 +1,163 @@
 <template>
-  <section class="section">
-    <back-button :url="parentUrl" />
-    <div>
-      <div style="float:left">
-        <h2>{{ orderName }}</h2>
-        <p>{{$t('order.timeToPickup') + ": " + timePlaced }}</p>
-        <p>
-          <span>{{ $t('order.totalCharge') + ": " + $n(orderInfo.totalCharge, 'currency') }}</span>
-          <i
-            v-if="hasStripe"
-            :class="'fab fa-cc-stripe stripe_'+orderInfo.payment.stripe"
-            style="margin-left: 0.3em"
-          ></i>
-        </p>
-        <p v-if="orderInfo.phoneNumber" style="margin-bottom:1rem">
-          <span>{{orderInfo.name }}</span>
-          {{ $t('sms.phonenumber') + ": "}}
-          <a
-            :href="nationalPhoneURI"
-          >{{ nationalPhoneNumber }}</a>
-        </p>
-      </div>
-      <div style="float:right" v-if="!canceling">
-        <b-button
-          type="is-danger"
-          class="p-r-16 p-l-16"
-          :disabled="!isValidTransition('order_canceled')"
-          @click="canceling=true"
-        >{{ $t("admin.order.cancelButton" )}}</b-button>
-      </div>
-      <div style="clear:both" />
-    </div>
-    <div style="margin-bottom:1rem">
-      <div v-if="canceling">
-        <div class="message-box">
-          <div style="width:100%">
-            <div style="float:right; width:2.5em;height:1px">
-              <b-button style="position:abolute;border:none;top:-0.5rem" @click="canceling=false">
-                <i class="fa fa-times-circle gray-icon" />
-              </b-button>
+  <div>
+    <!-- Order Header Area -->
+    <div class="columns is-gapless">
+      <!-- Left Gap -->
+      <div class="column is-narrow w-24"></div>
+      <!-- Center Column -->
+      <div class="column">
+        <div class="m-l-24 m-r-24">
+          <!-- Back Button and Restaurant Profile -->
+          <div>
+            <!-- Back Button -->
+            <back-button :url="parentUrl" class="m-t-24" />
+
+            <!-- Restaurant Profile -->
+            <div class="is-inline-flex flex-center m-l-16 m-t-24">
+              <div>
+                <img :src="shopInfo.restProfilePhoto" class="w-36 h-36 r-36 cover" />
+              </div>
+              <div class="t-h6 c-text-black-high m-l-8">{{ shopInfo.restaurantName }}</div>
             </div>
-            <div style="clear:both" />
           </div>
-          <h3>{{$t("admin.order.cancelTitle")}}</h3>
-          <p>{{$t("admin.order.cancelMessage")}}</p>
-          <p>
-            <span>{{orderInfo.name }}</span>
-            <a :href="nationalPhoneURI">{{ nationalPhoneNumber }}</a>
-          </p>
-        </div>
-        <div style="margin:0.2rem">
-          <b-button
-            type="is-danger"
-            style="width:100%"
-            class="light"
-            :loading="updating==='order_canceled'"
-            @click="handleCancel"
-          >{{ $t("admin.order.delete") }}</b-button>
         </div>
       </div>
-      <div v-for="orderState in orderStates" style="margin:0.2rem" :key="orderState">
-        <b-button
-          :class="classOf(orderState)"
-          :loading="updating===orderState"
-          :disabled="!isValidTransition(orderState)"
-          style="width:100%"
-          @click="handleChangeStatus(orderState)"
-        >{{ $t("order.status." + orderState) }}</b-button>
-      </div>
-      <div style="margin:0.2rem">
-        <b-button
-          :class="classOf('customer_picked_up')"
-          :loading="updating==='customer_picked_up'"
-          :disabled="!isValidTransition('customer_picked_up')"
-          style="width:100%"
-          @click="handleComplete()"
-        >{{ $t("order.status." + 'customer_picked_up') }}</b-button>
-      </div>
+      <!-- Right Gap -->
+      <div class="column is-narrow w-24"></div>
     </div>
-    <ordered-item v-for="id in ids" :key="id" :item="items[id]" />
-  </section>
+
+    <!-- Order Body Area -->
+    <div class="columns is-gapless">
+      <!-- Left Gap -->
+      <div class="column is-narrow w-24"></div>
+
+      <!-- Left Column -->
+      <div class="column">
+        <div class="m-l-24 m-r-24">
+          <div class="bg-surface r-8 d-low p-l-24 p-r-24 p-t-24 p-b-24 m-t-24">
+            <!-- Order Overview -->
+            <div>
+              <div class="align-center">
+                <div class="is-inline-flex">
+                  <!-- Order ID -->
+                  <div class="t-h4 c-text-black-high">{{orderName}}</div>
+
+                  <!-- Total Charge -->
+                  <div class="m-l-16">
+                    <div class="t-caption c-text-black-medium">{{$t('order.totalCharge')}}</div>
+                    <div class="t-body1 c-textl-black-high is-inline-flex flex-center">
+                      <div>{{$n(orderInfo.totalCharge, 'currency')}}</div>
+                      <div v-if="hasStripe" class="m-l-4">
+                        <i :class="'fab fa-cc-stripe stripe_'+orderInfo.payment.stripe"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Cancel Button -->
+              <div class="m-t-24 align-center">
+                <b-button
+                  class="b-reset op-button-pill h-36 bg-status-red-bg"
+                  :disabled="!isValidTransition('order_canceled')"
+                  @click="openCancel()"
+                >
+                  <i class="material-icons c-status-red s-18 m-l-8">delete</i>
+                  <span class="c-status-red t-button">{{ $t("admin.order.cancelButton" )}}</span>
+                </b-button>
+              </div>
+
+              <!-- Cancel Popup-->
+              <b-modal :active.sync="cancelPopup" :width="488" scroll="keep">
+                <div class="op-dialog p-t-24 p-l-24 p-r-24 p-b-24">
+                  <div class="t-h6 c-text-black-disabled">{{$t("admin.order.cancelTitle")}}</div>
+                  <div class="t-body1 c-text-black-high m-t-24">{{$t("admin.order.cancelMessage")}}</div>
+                  <!-- CTA: Call -->
+                  <div v-if="orderInfo.phoneNumber" class="m-t-24 align-center">
+                    <div>
+                      <a :href="nationalPhoneURI">
+                        <div class="op-button-small w-256 secondary">{{nationalPhoneNumber}}</div>
+                      </a>
+                    </div>
+                    <div class="t-subtitle2 c-text-black-medium m-t-8">{{orderInfo.name}}</div>
+                  </div>
+                  <!-- CTA: Cancel -->
+                  <div class="align-center m-t-16">
+                    <b-button
+                      class="b-reset op-button-small d-low bg-status-red w-256"
+                      :loading="updating==='order_canceled'"
+                      @click="handleCancel"
+                    >
+                      <span class="c-text-white-full">{{$t("admin.order.delete")}}</span>
+                    </b-button>
+                    <div class="t-subtitle2 c-status-red m-t-8">{{$t("admin.order.deleteConfirm")}}</div>
+                  </div>
+                  <!-- CTA: Close -->
+                  <div class="m-t-24 align-center">
+                    <div
+                      class="op-button-small tertiary"
+                      @click="closeCancel()"
+                    >{{$t('menu.close')}}</div>
+                  </div>
+                </div>
+              </b-modal>
+
+              <!-- Pickup Time -->
+              <div class="m-t-24 align-center">
+                <div class="t-caption c-text-black-medium">{{$t('order.timeToPickup')}}</div>
+                <div class="t-body1 c-textl-black-high m-t-4">{{timePlaced}}</div>
+              </div>
+
+              <!-- Phone Number -->
+              <div v-if="orderInfo.phoneNumber" class="align-center m-t-16">
+                <div class="t-caption c-text-black-medium">{{$t('sms.phonenumber')}}</div>
+                <div class="t-body1 m-t-4">
+                  <div>
+                    <a :href="nationalPhoneURI">{{nationalPhoneNumber}}</a>
+                  </div>
+                  <div>{{orderInfo.name}}</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Order Status -->
+            <div>
+              <div v-for="orderState in orderStates" :key="orderState" class="align-center m-t-24">
+                <b-button
+                  class="op-button-medium w-256"
+                  :class="classOf(orderState)"
+                  :loading="updating===orderState"
+                  :disabled="!isValidTransition(orderState)"
+                  @click="handleChangeStatus(orderState)"
+                >{{ $t("order.status." + orderState) }}</b-button>
+              </div>
+              <div class="align-center m-t-24">
+                <b-button
+                  class="op-button-medium w-256"
+                  :class="classOf('customer_picked_up')"
+                  :loading="updating==='customer_picked_up'"
+                  :disabled="!isValidTransition('customer_picked_up')"
+                  @click="handleComplete()"
+                >{{ $t("order.status." + 'customer_picked_up') }}</b-button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column -->
+      <div class="column">
+        <div class="m-l-24 m-r-24">
+          <div class="m-t-24">
+            <!-- Order Items -->
+            <ordered-item v-for="id in ids" :key="id" :item="items[id]" />
+          </div>
+        </div>
+      </div>
+      <!-- Right Gap -->
+      <div class="column is-narrow w-24"></div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -110,9 +188,11 @@ export default {
       menuObj: {},
       orderInfo: {},
       canceling: false,
-      detacher: []
+      detacher: [],
+      cancelPopup: false
     };
   },
+
   created() {
     const restaurant_detacher = db
       .doc(`restaurants/${this.restaurantId()}`)
@@ -316,6 +396,12 @@ export default {
         return statusKey;
       }
       return "light";
+    },
+    openCancel() {
+      this.cancelPopup = true;
+    },
+    closeCancel() {
+      this.cancelPopup = false;
     }
   }
 };
@@ -323,18 +409,7 @@ export default {
 
 <style lang="scss">
 .light {
-  background: $light;
+  @extend .bg-form;
   border: none;
-}
-.message-box {
-  border: 1px #dddddd solid;
-  border-radius: 5px;
-  margin-bottom: 1rem;
-  padding: 0.5rem;
-  background: white;
-  text-align: center;
-}
-.gray-icon {
-  color: $grey;
 }
 </style>

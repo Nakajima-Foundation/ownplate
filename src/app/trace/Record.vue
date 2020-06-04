@@ -6,12 +6,15 @@
       </div>
     </div>
     <div v-else>
-      <h1>{{$t('trace.thankyou')}}</h1>
-      <div class="m-t-16">
-        <div v-for="record in records" :key="record.id">
-          <span>{{record.timeCreated.toLocaleString()}}</span>
-          <span>{{$t('trace.' + record.event)}}</span>
-          <span>{{record.restaurantName}}</span>
+      <div v-if="user">
+        <h1>{{$t('trace.thankyou')}}</h1>
+        <div class="m-t-16">
+          <div v-for="record in records" :key="record.id">
+            <span>{{record.timeCreated.toLocaleString()}}</span>
+            <span>{{$t('trace.' + record.event)}}</span>
+            <span>{{record.processed ? "*" : " "}}</span>
+            <span>{{record.restaurantName}}</span>
+          </div>
         </div>
       </div>
     </div>
@@ -21,6 +24,7 @@
 <script>
 import { ownPlateConfig } from "@/config/project";
 import { db, firestore, functions } from "~/plugins/firebase.js";
+import * as crypto from "crypto";
 
 export default {
   data() {
@@ -32,16 +36,22 @@ export default {
   },
   methods: {
     async record(lineUid) {
-      const refRecords = db.collection(`line/${lineUid}/records`);
+      const hash = crypto
+        .createHash("sha256")
+        .update(lineUid)
+        .digest("hex");
+      //console.log("*********", hash);
+
+      const refRecords = db.collection(`hash/${hash}/records`);
       if (this.traceId) {
         try {
           const doc = await refRecords.add({
             traceId: this.traceId,
-            uid: lineUid,
+            uid: hash,
             timeCreated: firestore.FieldValue.serverTimestamp(),
             processed: false
           });
-          console.log("recorded as", doc.id);
+          //console.log("recorded as", doc.id);
           this.success = true;
 
           const traceProcess = functions.httpsCallable("traceProcess");
@@ -61,25 +71,22 @@ export default {
               record.timeCreated = record.timeCreated.toDate();
               return record;
             });
-            console.log("snapshot", this.records);
+            //console.log("snapshot", this.records);
           });
       }
     }
   },
   async mounted() {
-    console.log("user =", this.user, this.isLineUser);
-    if (this.isLineUser) {
-      console.log("line user", this.user.uid);
-      this.record(this.user.uid);
-    } else {
-      if (this.user) {
-        const { claims } = await this.user.getIdTokenResult(true);
-        if (claims.line) {
-          console.log("***** DEBUG *****", claims.line);
-          this.record(claims.line);
-          return;
-        }
+    //console.log("user =", this.user, this.isLineUser);
+    if (this.user) {
+      const { claims } = await this.user.getIdTokenResult(true);
+      if (claims.line) {
+        //console.log("***** DEBUG *****", claims.line);
+        this.record(claims.line);
+        return;
       }
+    }
+    if (this.traceId) {
       location.href = this.lineAuth;
     }
   },

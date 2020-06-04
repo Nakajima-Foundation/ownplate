@@ -15,9 +15,12 @@ if (!admin.apps.length) {
 exportIfNeeded("api", "api", exports);
 
 exportIfNeeded("systemGetConfig", "systemGetConfig", exports);
+exportIfNeeded("accountDelete", "accountDelete", exports);
 
+exportIfNeeded("lineVerifyFriend", "line/lineVerifyFriend", exports);
 exportIfNeeded("lineValidate", "lineValidate", exports);
 exportIfNeeded("lineAuthenticate", "lineAuthenticate", exports);
+exportIfNeeded("lineSetCustomClaim", "line/lineSetCustomClaim", exports);
 exportIfNeeded("traceProcess", "traceProcess", exports);
 
 exportIfNeeded("wasOrderCreated2", "order/wasOrderCreated2", exports);
@@ -30,5 +33,7 @@ exportIfNeeded("stripeDisconnect", "stripe/stripeDisconnect", exports);
 exportIfNeeded("stripeCreateIntent", "stripe/stripeCreateIntent", exports);
 exportIfNeeded("stripeConfirmIntent", "stripe/stripeConfirmIntent", exports);
 exportIfNeeded("stripeCancelIntent", "stripe/stripeCancelIntent", exports);
+
+exportIfNeeded("stripeUpdateCustomer", "stripe/stripeUpdateCustomer", exports);
 
 exportIfNeeded("imageProcessing", "image/imageProcessing", exports);

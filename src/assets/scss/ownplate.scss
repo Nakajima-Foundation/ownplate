@@ -1,3 +1,15 @@
+div,
+span {
+  word-break: break-word;
+}
+.light {
+  @extend .bg-form;
+  border: none;
+}
+.button[disabled] {
+  background: #e6e6e6;
+}
+
 // OwnPlate Colors
 $op-colors: (
   test: #ff0000,
@@ -35,6 +47,7 @@ $op-colors: (
 );
 
 // Reset Buefy and Bulma
+
 // .button {
 //   padding: 0;
 //   background-color: transparent;
@@ -154,6 +167,9 @@ $op-colors: (
   // text-transform: uppercase;
 }
 
+.align-left {
+  text-align: left;
+}
 .align-center {
   text-align: center;
 }
@@ -294,6 +310,10 @@ body,
 .flex-1 {
   flex: 1;
 }
+.flex-center {
+  align-items: center;
+}
+
 .touchable {
   cursor: pointer;
 }

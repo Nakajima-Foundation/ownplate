@@ -1,393 +1,441 @@
 <template>
-  <div>
-    <!-- Edit Header Area -->
-    <div class="columns is-gapless">
-      <!-- Left Gap -->
-      <div class="column is-narrow w-24"></div>
-      <!-- Center Column -->
-      <div class="column">
-        <div class="m-l-24 m-r-24 m-t-24">
-          <!-- Back Button -->
-          <back-button url="/admin/restaurants/" />
+<div>
+  <!-- Edit Header Area -->
+  <div class="columns is-gapless">
+    <!-- Left Gap -->
+    <div class="column is-narrow w-24"></div>
+    <!-- Center Column -->
+    <div class="column">
+      <div class="m-l-24 m-r-24 m-t-24">
+        <!-- Back Button -->
+        <back-button url="/admin/restaurants/" />
 
-          <!-- Required Note -->
-          <div class="t-subtitle2 c-status-red m-t-24">* {{$t("editRestaurant.required")}}</div>
+        <!-- Required Note -->
+        <div class="t-subtitle2 c-status-red m-t-24">* {{$t("editRestaurant.required")}}</div>
+      </div>
+    </div>
+    <!-- Right Gap -->
+    <div class="column is-narrow w-24"></div>
+  </div>
+
+  <!-- Edit Body Area 1 -->
+  <div class="columns is-gapless">
+    <!-- Left Gap -->
+    <div class="column is-narrow w-24"></div>
+    <!-- Left Column -->
+    <div class="column">
+      <div class="m-l-24 m-r-24">
+        <!-- Restaurant Name -->
+        <div class="m-t-16">
+          <text-form
+            v-model="shopInfo.restaurantName"
+            titleKey="shopInfo.name"
+            placeHolder="editRestaurant.enterRestaurantName"
+            :error="errors['restaurantName']"
+            :maxlength="50"
+            />
+        </div>
+        <div class="m-t-16">
+          <text-form
+            v-model="shopInfo.ownerName"
+            titleKey="shopInfo.ownerName"
+            placeHolder="editRestaurant.enterOwnerName"
+            :error="errors['ownerName']"
+            :maxlength="50"
+            />
+        </div>
+
+        <!-- Restaurant Address -->
+        <div>
+          <!-- Japan Format -->
+          <template v-if="region==='JP'">
+            <!-- Zip and State -->
+            <div class="cols">
+              <div class="flex-1">
+                <text-form
+                  :error="errors['zip']"
+                  v-model="shopInfo.zip"
+                  titleKey="shopInfo.zip"
+                  placeHolder="editRestaurant.enterZip"
+                  :maxlength="10"
+                  />
+              </div>
+              <div class="p-l-16">
+                <state :errors="errors" v-model="shopInfo.state" />
+              </div>
+            </div>
+            <!-- City -->
+            <text-form
+              :error="errors['city']"
+              v-model="shopInfo.city"
+              titleKey="shopInfo.city"
+              placeHolder="editRestaurant.enterCity"
+              :maxlength="15"
+              />
+            <!-- Street -->
+            <text-form
+              :error="errors['streetAddress']"
+              v-model="shopInfo.streetAddress"
+              titleKey="shopInfo.streetAddress"
+              placeHolder="editRestaurant.enterStreetAddress"
+              :maxlength="30"
+              />
+          </template>
+
+          <!-- Other -->
+          <template v-else>
+            <!-- Street -->
+            <text-form
+              :error="errors['streetAddress']"
+              v-model="shopInfo.streetAddress"
+              titleKey="shopInfo.streetAddress"
+              placeHolder="editRestaurant.enterStreetAddress"
+              :maxlength="30"
+              />
+            <!-- City -->
+            <text-form
+              :error="errors['city']"
+              v-model="shopInfo.city"
+              titleKey="shopInfo.city"
+              placeHolder="editRestaurant.enterCity"
+              :maxlength="15"
+              />
+            <!-- State and Zip -->
+            <div class="cols">
+              <div class="p-r-16">
+                <state :errors="errors" v-model="shopInfo.state" />
+              </div>
+              <div class="flex-1">
+                <text-form
+                  :error="errors['zip']"
+                  v-model="shopInfo.zip"
+                  titleKey="shopInfo.zip"
+                  placeHolder="editRestaurant.enterZip"
+                  :maxlength="10"
+                  />
+              </div>
+            </div>
+          </template>
+        </div>
+
+        <!-- Map -->
+        <div>
+          <div class="align-center">
+            <b-button class="b-reset op-button-small primary" @click="updateAndUpdateMap">
+              <span class="c-onprimary p-l-24 p-r-24">{{$t("editRestaurant.updateMap")}}</span>
+            </b-button>
+          </div>
+          <div
+            class="align-center t-subtitle2 c-status-red m-t-8"
+            >{{$t('editRestaurant.updateMapDescription')}}</div>
+          <div class="m-t-16">
+            <GMap
+              ref="gMap"
+              :center="{lat: 44.933076, lng: 15.629058}"
+              :options="{fullscreenControl: false}"
+              :zoom="18"
+              @loaded="hello"
+              ></GMap>
+          </div>
         </div>
       </div>
-      <!-- Right Gap -->
-      <div class="column is-narrow w-24"></div>
     </div>
 
-    <!-- Edit Body Area 1 -->
-    <div class="columns is-gapless">
-      <!-- Left Gap -->
-      <div class="column is-narrow w-24"></div>
-      <!-- Left Column -->
-      <div class="column">
-        <div class="m-l-24 m-r-24">
-          <!-- Restaurant Name -->
-          <div class="m-t-16">
-            <text-form
-              v-model="shopInfo.restaurantName"
-              titleKey="shopInfo.name"
-              placeholder="editRestaurant.enterRestaurantName"
-              :error="errors['restaurantName']"
-              :maxlength="50"
-            />
+    <!-- Right Column -->
+    <div class="column">
+      <div class="m-l-24 m-r-24">
+        <!-- Phone -->
+        <div class="m-t-16">
+          <div class="t-subtitle2 c-text-black-medium p-b-8">
+            {{$t('shopInfo.phonenumber')}}
+            <span class="c-status-red">*</span>
           </div>
-
-          <!-- Restaurant Address -->
           <div>
-            <!-- Japan Format -->
-            <template v-if="region==='JP'">
-              <!-- Zip and State -->
-              <div class="cols">
-                <div class="flex-1">
-                  <text-form
-                    :error="errors['zip']"
-                    v-model="shopInfo.zip"
-                    titleKey="shopInfo.zip"
-                    placeholder="editRestaurant.enterZip"
-                    :maxlength="10"
-                  />
-                </div>
-                <div class="p-l-16">
-                  <state :errors="errors" v-model="shopInfo.state" />
-                </div>
-              </div>
-              <!-- City -->
-              <text-form
-                :error="errors['city']"
-                v-model="shopInfo.city"
-                titleKey="shopInfo.city"
-                placeholder="editRestaurant.enterCity"
-                :maxlength="15"
+            <phone-entry
+              :currentNumber="shopInfo.phoneNumber"
+              :placeHolder="$t('editRestaurant.enterPhone')"
+              @change="handlePhoneChange"
               />
-              <!-- Street -->
-              <text-form
-                :error="errors['streetAddress']"
-                v-model="shopInfo.streetAddress"
-                titleKey="shopInfo.streetAddress"
-                placeholder="editRestaurant.enterStreetAddress"
-                :maxlength="30"
-              />
-            </template>
-
-            <!-- Other -->
-            <template v-else>
-              <!-- Street -->
-              <text-form
-                :error="errors['streetAddress']"
-                v-model="shopInfo.streetAddress"
-                titleKey="shopInfo.streetAddress"
-                placeholder="editRestaurant.enterStreetAddress"
-                :maxlength="30"
-              />
-              <!-- City -->
-              <text-form
-                :error="errors['city']"
-                v-model="shopInfo.city"
-                titleKey="shopInfo.city"
-                placeholder="editRestaurant.enterCity"
-                :maxlength="15"
-              />
-              <!-- State and Zip -->
-              <div class="cols">
-                <div class="p-r-16">
-                  <state :errors="errors" v-model="shopInfo.state" />
-                </div>
-                <div class="flex-1">
-                  <text-form
-                    :error="errors['zip']"
-                    v-model="shopInfo.zip"
-                    titleKey="shopInfo.zip"
-                    placeholder="editRestaurant.enterZip"
-                    :maxlength="10"
-                  />
-                </div>
-              </div>
-            </template>
           </div>
+        </div>
 
-          <!-- Map -->
-          <div>
-            <div class="align-center">
-              <b-button class="b-reset op-button-small primary" @click="updateAndUpdateMap">
-                <span class="c-onprimary p-l-24 p-r-24">{{$t("editRestaurant.updateMap")}}</span>
-              </b-button>
+        <!-- Profile Photo -->
+        <div class="m-t-16">
+          <div class="t-subtitle2 c-text-black-medium p-b-8">
+            {{$t("editRestaurant.profilePhoto")}}
+            <span class="c-status-red">*</span>
+          </div>
+          <div class="cols">
+            <div v-if="restProfilePhoto" class="p-r-16">
+              <div>
+                <img class="w-128 h-128 r-4 cover" :src="restProfilePhoto" />
+              </div>
+              <div class="align-center t-caption">{{$t('editCommon.current')}}</div>
             </div>
-            <div
-              class="align-center t-subtitle2 c-status-red m-t-8"
-            >{{$t('editRestaurant.updateMapDescription')}}</div>
-            <div class="m-t-16">
-              <GMap
-                ref="gMap"
-                :center="{lat: 44.933076, lng: 15.629058}"
-                :options="{fullscreenControl: false}"
-                :zoom="18"
-                @loaded="hello"
-              ></GMap>
+            <div>
+              <div>
+                <croppa
+                  :width="128"
+                  :height="128"
+                  :prevent-white-space="true"
+                  :zoom-speed="5"
+                  :accept="'image/jpeg'"
+                  :placeHolder="$t('editCommon.clickAndUpload')"
+                  :placeHolder-font-size="13"
+                  :disable-drag-to-move="true"
+                  :disable-scroll-to-zoom="true"
+                  :disable-rotation="true"
+                  initial-position="center"
+                  :canvas-color="'gainsboro'"
+                  :show-remove-button="true"
+                  @file-choose="handleProfileImage"
+                  ></croppa>
+              </div>
+              <div class="align-center t-caption w-128">{{$t('editCommon.new')}}</div>
+            </div>
+            <div class="flex-1">
+              <div
+                class="p-l-8 p-r-8 t-body2 c-text-black-medium"
+                >{{$t('editCommon.clickAndUploadDetail')}}</div>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- Right Column -->
-      <div class="column">
-        <div class="m-l-24 m-r-24">
-          <!-- Phone -->
-          <div class="m-t-16">
-            <div class="t-subtitle2 c-text-black-medium p-b-8">
-              {{$t('shopInfo.phonenumber')}}
-              <span class="c-status-red">*</span>
-            </div>
-            <div>
-              <phone-entry
-                :currentNumber="shopInfo.phoneNumber"
-                :placeHolder="$t('editRestaurant.enterPhone')"
-                @change="handlePhoneChange"
-              />
-            </div>
-          </div>
-
-          <!-- Profile Photo -->
-          <div class="m-t-16">
-            <div class="t-subtitle2 c-text-black-medium p-b-8">
-              {{$t("editRestaurant.profilePhoto")}}
-              <span class="c-status-red">*</span>
+        <!-- Cover Photo -->
+        <div class="m-t-16">
+          <div class="t-subtitle2 c-text-black-medium p-b-8">{{$t("editRestaurant.coverPhoto")}}</div>
+          <div>
+            <div v-if="restCoverPhoto" class="p-b-8">
+              <div>
+                <img class="h-128 r-4 cover" :src="restCoverPhoto" style="width: 272px;" />
+              </div>
+              <div
+                class="align-center t-caption"
+                style="width: 272px;"
+                >{{$t('editCommon.current')}}</div>
             </div>
             <div class="cols">
-              <div v-if="restProfilePhoto" class="p-r-16">
-                <div>
-                  <img class="w-128 h-128 r-4 cover" :src="restProfilePhoto" />
-                </div>
-                <div class="align-center t-caption">{{$t('editCommon.current')}}</div>
-              </div>
               <div>
                 <div>
                   <croppa
-                    :width="128"
+                    :width="272"
                     :height="128"
                     :prevent-white-space="true"
                     :zoom-speed="5"
                     :accept="'image/jpeg'"
-                    :placeholder="$t('editCommon.clickAndUpload')"
-                    :placeholder-font-size="13"
+                    :placeHolder="$t('editCommon.clickAndUpload')"
+                    :placeHolder-font-size="13"
                     :disable-drag-to-move="true"
                     :disable-scroll-to-zoom="true"
                     :disable-rotation="true"
                     initial-position="center"
                     :canvas-color="'gainsboro'"
                     :show-remove-button="true"
-                    @file-choose="handleProfileImage"
-                  ></croppa>
+                    @file-choose="handleCoverImage"
+                    ></croppa>
                 </div>
-                <div class="align-center t-caption w-128">{{$t('editCommon.new')}}</div>
+                <div class="align-center t-caption" style="width: 272px;">{{$t('editCommon.new')}}</div>
               </div>
               <div class="flex-1">
                 <div
                   class="p-l-8 p-r-8 t-body2 c-text-black-medium"
-                >{{$t('editCommon.clickAndUploadDetail')}}</div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Cover Photo -->
-          <div class="m-t-16">
-            <div class="t-subtitle2 c-text-black-medium p-b-8">{{$t("editRestaurant.coverPhoto")}}</div>
-            <div>
-              <div v-if="restCoverPhoto" class="p-b-8">
-                <div>
-                  <img class="h-128 r-4 cover" :src="restCoverPhoto" style="width: 272px;" />
-                </div>
-                <div
-                  class="align-center t-caption"
-                  style="width: 272px;"
-                >{{$t('editCommon.current')}}</div>
-              </div>
-              <div class="cols">
-                <div>
-                  <div>
-                    <croppa
-                      :width="272"
-                      :height="128"
-                      :prevent-white-space="true"
-                      :zoom-speed="5"
-                      :accept="'image/jpeg'"
-                      :placeholder="$t('editCommon.clickAndUpload')"
-                      :placeholder-font-size="13"
-                      :disable-drag-to-move="true"
-                      :disable-scroll-to-zoom="true"
-                      :disable-rotation="true"
-                      initial-position="center"
-                      :canvas-color="'gainsboro'"
-                      :show-remove-button="true"
-                      @file-choose="handleCoverImage"
-                    ></croppa>
-                  </div>
-                  <div class="align-center t-caption" style="width: 272px;">{{$t('editCommon.new')}}</div>
-                </div>
-                <div class="flex-1">
-                  <div
-                    class="p-l-8 p-r-8 t-body2 c-text-black-medium"
                   >{{$t('editCommon.clickAndUploadDetail')}}</div>
-                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <!-- Right Gap -->
-      <div class="column is-narrow w-24"></div>
     </div>
+    <!-- Right Gap -->
+    <div class="column is-narrow w-24"></div>
+  </div>
 
-    <!-- Devider -->
-    <div class="columns is-gapless">
-      <!-- Left Gap -->
-      <div class="column is-narrow w-24"></div>
-      <!-- Center Column -->
-      <div class="column">
-        <div class="m-l-24 m-r-24">
-          <hr class="devider m-t-24 m-b-0" />
-        </div>
+  <!-- Devider -->
+  <div class="columns is-gapless">
+    <!-- Left Gap -->
+    <div class="column is-narrow w-24"></div>
+    <!-- Center Column -->
+    <div class="column">
+      <div class="m-l-24 m-r-24">
+        <hr class="devider m-t-24 m-b-0" />
       </div>
-      <!-- Right Gap -->
-      <div class="column is-narrow w-24"></div>
     </div>
+    <!-- Right Gap -->
+    <div class="column is-narrow w-24"></div>
+  </div>
 
-    <!-- Edit Body Area 2 -->
-    <div class="columns is-gapless">
-      <!-- Left Gap -->
-      <div class="column is-narrow w-24"></div>
-      <!-- Left Column -->
-      <div class="column">
-        <div class="m-l-24 m-r-24">
-          <!-- URL -->
-          <div class="m-t-16">
-            <text-form
-              v-model="shopInfo.url"
-              :error="errors['url']"
-              titleKey="shopInfo.website"
-              placeholder="editRestaurant.enterWebsite"
-              :maxlength="100"
-              :required="false"
+  <!-- Edit Body Area 2 -->
+  <div class="columns is-gapless">
+    <!-- Left Gap -->
+    <div class="column is-narrow w-24"></div>
+    <!-- Left Column -->
+    <div class="column">
+      <div class="m-l-24 m-r-24">
+        <!-- URL -->
+        <div class="m-t-16">
+          <text-form
+            v-model="shopInfo.url"
+            :error="errors['url']"
+            titleKey="shopInfo.website"
+            placeHolder="editRestaurant.enterWebsite"
+            :maxlength="100"
+            :required="false"
             />
-          </div>
+        </div>
 
-          <!-- Description -->
-          <div>
-            <text-form
-              v-model="shopInfo.introduction"
-              type="textarea"
-              :required="false"
-              :maxlength="300"
-              titleKey="editRestaurant.introduction"
-              placeholder="editRestaurant.enterIntroduction"
-              :error="errors['introduction']"
+        <!-- Description -->
+        <div>
+          <text-form
+            v-model="shopInfo.introduction"
+            type="textarea"
+            :required="false"
+            :maxlength="300"
+            titleKey="editRestaurant.introduction"
+            placeHolder="editRestaurant.enterIntroduction"
+            :error="errors['introduction']"
             />
-          </div>
+        </div>
 
-          <!-- Order Notice -->
-          <div>
-            <text-form
-              v-model="shopInfo.orderNotice"
-              type="textarea"
-              :required="false"
-              :maxlength="300"
-              titleKey="editRestaurant.orderNotice"
-              placeholder="editRestaurant.enterOrderNotice"
-              :error="errors['orderNotice']"
+        <!-- Order Notice -->
+        <div>
+          <text-form
+            v-model="shopInfo.orderNotice"
+            type="textarea"
+            :required="false"
+            :maxlength="300"
+            titleKey="editRestaurant.orderNotice"
+            placeHolder="editRestaurant.enterOrderNotice"
+            :error="errors['orderNotice']"
             />
-          </div>
+        </div>
 
-          <!-- Thank you Message -->
-          <div>
-            <text-form
-              v-model="shopInfo.orderThanks"
-              type="textarea"
-              :required="false"
-              :maxlength="300"
-              titleKey="editRestaurant.orderThanks"
-              placeholder="editRestaurant.enterOrderThanks"
-              :error="errors['orderThanks']"
+        <!-- Thank you Message -->
+        <div>
+          <text-form
+            v-model="shopInfo.orderThanks"
+            type="textarea"
+            :required="false"
+            :maxlength="300"
+            titleKey="editRestaurant.orderThanks"
+            placeHolder="editRestaurant.enterOrderThanks"
+            :error="errors['orderThanks']"
             />
-          </div>
+        </div>
 
-          <!-- Tax -->
-          <div>
-            <!-- Tax Input Required -->
-            <div v-if="requireTaxInput">
-              <div class="cols">
-                <div class="m-r-16">
-                  <div
-                    class="t-subtitle2 c-text-black-medium p-b-8"
+        <!-- Tax -->
+        <div>
+          <!-- Tax Input Required -->
+          <div v-if="requireTaxInput">
+            <div class="cols">
+              <div class="m-r-16">
+                <div
+                  class="t-subtitle2 c-text-black-medium p-b-8"
                   >{{$t('editRestaurant.foodTax')}}</div>
-                  <b-field
-                    class="is-inline-flex"
-                    style="align-items: center;"
-                    :type="errors['foodTax'].length > 0 ? 'is-danger' : 'is-success'"
+                <b-field
+                  class="is-inline-flex"
+                  style="align-items: center;"
+                  :type="errors['foodTax'].length > 0 ? 'is-danger' : 'is-success'"
                   >
-                    <b-input
-                      v-model="shopInfo.foodTax"
-                      placeholder="8.2"
-                      type="text"
-                      maxlength="5"
-                      class="w-96"
+                  <b-input
+                    v-model="shopInfo.foodTax"
+                    placeHolder="8.2"
+                    type="text"
+                    maxlength="5"
+                    class="w-96"
                     />
-                    <div class="m-l-8">%</div>
-                  </b-field>
-                </div>
-                <div>
-                  <div
-                    class="t-subtitle2 c-text-black-medium p-b-8"
-                  >{{$t('editRestaurant.alcoholTax')}}</div>
-                  <b-field
-                    class="is-inline-flex"
-                    style="align-items: center;"
-                    :type="errors['alcoholTax'].length > 0 ? 'is-danger' : 'is-success'"
-                  >
-                    <b-input
-                      v-model="shopInfo.alcoholTax"
-                      placeholder="10.2"
-                      type="text"
-                      maxlength="5"
-                      class="w-96"
-                    />
-                    <div class="m-l-8">%</div>
-                  </b-field>
-                </div>
+                  <div class="m-l-8">%</div>
+                </b-field>
               </div>
-            </div>
-
-            <!-- Tax Input Not Required -->
-            <div v-if="!requireTaxInput">
               <div>
-                <div class="t-subtitle2 c-text-black-medium p-b-8">{{$t('editRestaurant.tax')}}</div>
-                <div class="bg-form r-8 p-l-8 p-r-8 p-t-8">
-                  <div
-                    v-for="taxItem in taxRates"
-                    class="p-b-8 t-body1 c-text-black-high"
-                  >{{$t('editMenu.' + taxRateKeys[taxItem])}} {{shopInfo[taxItem + "Tax"]}}%</div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Tax Display -->
-            <div v-if="requireTaxPriceDisplay" class="m-t-16">
-              <div
-                class="t-subtitle2 c-text-black-medium p-b-8"
-              >{{$t('editRestaurant.taxPriceDisplay')}}</div>
-              <div class="bg-form r-8 p-l-8 p-r-8 p-t-8 p-b-8 t-body1 c-text-black-high">
-                <div>
-                  <b-checkbox v-model="shopInfo.taxInclude">{{$t("editRestaurant.taxIncluded")}}</b-checkbox>
-                </div>
-                <div class="m-t-8">
-                  {{$tc('tax.taxExample', examplePriceI18n)}} -
-                  <Price :shopInfo="shopInfo" :menu="sampleMenu" />
-                </div>
+                <div
+                  class="t-subtitle2 c-text-black-medium p-b-8"
+                  >{{$t('editRestaurant.alcoholTax')}}</div>
+                <b-field
+                  class="is-inline-flex"
+                  style="align-items: center;"
+                  :type="errors['alcoholTax'].length > 0 ? 'is-danger' : 'is-success'"
+                  >
+                  <b-input
+                    v-model="shopInfo.alcoholTax"
+                    placeHolder="10.2"
+                    type="text"
+                    maxlength="5"
+                    class="w-96"
+                    />
+                  <div class="m-l-8">%</div>
+                </b-field>
               </div>
             </div>
           </div>
+
+          <!-- Tax Input Not Required -->
+          <div v-if="!requireTaxInput">
+            <div>
+              <div class="t-subtitle2 c-text-black-medium p-b-8">{{$t('editRestaurant.tax')}}</div>
+              <div class="bg-form r-8 p-l-8 p-r-8 p-t-8">
+                <div
+                  v-for="taxItem in taxRates"
+                  class="p-b-8 t-body1 c-text-black-high"
+                  >{{$t('editMenu.' + taxRateKeys[taxItem])}} {{shopInfo[taxItem + "Tax"]}}%</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tax Display -->
+          <div v-if="requireTaxPriceDisplay" class="m-t-16">
+            <div
+              class="t-subtitle2 c-text-black-medium p-b-8"
+              >{{$t('editRestaurant.taxPriceDisplay')}}</div>
+            <div class="bg-form r-8 p-l-8 p-r-8 p-t-8 p-b-8 t-body1 c-text-black-high">
+              <div>
+                <b-checkbox v-model="shopInfo.taxInclude">{{$t("editRestaurant.taxIncluded")}}</b-checkbox>
+              </div>
+              <div class="m-t-8">
+                {{$tc('tax.taxExample', examplePriceI18n)}} -
+                <Price :shopInfo="shopInfo" :menu="sampleMenu" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Time -->
+        <div>
+          <div v-if="requireTaxPriceDisplay" class="m-t-16">
+            <div
+              class="t-subtitle2 c-text-black-medium p-b-8"
+              >{{$t('editRestaurant.timeToPickup')}}</div>
+            <div class="bg-form r-8 p-l-8 p-r-8 p-t-8 p-b-8 t-body1 c-text-black-high">
+              <div class="m-r-16">
+                {{$t('editRestaurant.preparationTime')}}<br/>
+                <b-field
+                  class="is-inline-flex"
+                  style="align-items: center;"
+                  :type="errors['pickUpMinimumCookTime'].length > 0 ? 'is-danger' : 'is-success'"
+                  >
+                  <b-input
+                    v-model.number="shopInfo.pickUpMinimumCookTime"
+                    placeHolder="10"
+                    type="text"
+                    class="w-96"
+                        />
+                  <div class="m-l-8">{{$t('editRestaurant.minutes')}} - {{$t('editRestaurant.withinfive')}} </div>
+                </b-field>
+              </div>
+              <div class="m-r-16">
+                {{$t('editRestaurant.reservationTheDayBefore')}}<br/>
+                <b-field
+                  class="is-inline-flex"
+                  style="align-items: center;"
+                  :type="errors['pickUpDaysInAdvance'].length > 0 ? 'is-danger' : 'is-success'"
+                  >
+                  <b-select v-model.number="shopInfo.pickUpDaysInAdvance">
+                    <option v-for="(day, index) in reservationTheDayBefore" :key="index" :value="day.value">{{ $t(day.messageKey) }}</option>
+                  </b-select>
+                </b-field>
+              </div>
+            </div>
+          </div>
+        </div>
+
         </div>
       </div>
 
@@ -499,7 +547,7 @@ import HoursInput from "./inputComponents/HoursInput";
 import TextForm from "./inputComponents/TextForm";
 import State from "./inputComponents/State";
 
-import { taxRates, daysOfWeek, regionalSettings } from "~/plugins/constant.js";
+import { taxRates, daysOfWeek, regionalSettings, reservationTheDayBefore } from "~/plugins/constant.js";
 
 export default {
   name: "Order",
@@ -517,6 +565,7 @@ export default {
     const regionalSetting = regionalSettings[ownPlateConfig.region || "US"];
 
     return {
+      reservationTheDayBefore,
       taxRates: taxRates,
       taxRateKeys: regionalSetting["taxRateKeys"],
 
@@ -531,6 +580,7 @@ export default {
       test: null,
       shopInfo: {
         restaurantName: "",
+        ownerName: "",
         streetAddress: "",
         city: "",
         state: "",
@@ -563,6 +613,8 @@ export default {
           6: true,
           7: true
         },
+        pickUpMinimumCookTime: 25,
+        pickUpDaysInAdvance: 3,
         images: {},
         publicFlag: false
       },
@@ -596,6 +648,7 @@ export default {
     if (this.defaultTax) {
       this.shopInfo = Object.assign({}, this.shopInfo, this.defaultTax);
     }
+    console.log(this.shopInfo);
     this.notFound = false;
   },
   mounted() {
@@ -618,14 +671,18 @@ export default {
       return this.$store.getters.uidAdmin;
     },
     errors() {
+      console.log(this.shopInfo);
       const err = {};
       [
         "restaurantName",
+        "ownerName",
         "streetAddress",
         "city",
         "state",
         "zip",
-        "phoneNumber"
+        "phoneNumber",
+        "pickUpMinimumCookTime",
+        "pickUpDaysInAdvance"
       ].forEach(name => {
         err[name] = [];
         if (this.shopInfo[name] === "") {
@@ -635,6 +692,22 @@ export default {
       ["introduction", "orderNotice", "orderThanks"].forEach(name => {
         err[name] = [];
       });
+      // validate pickUpMinimumCookTime
+      if (!Number.isInteger(this.shopInfo["pickUpMinimumCookTime"])) {
+        err["pickUpMinimumCookTime"].push("validationError." + name + ".notNumbery");
+      } else {
+        if (this.shopInfo["pickUpMinimumCookTime"] > 300) {
+          err["pickUpMinimumCookTime"].push("validationError." + name + ".tooMuch");
+        }
+        if (this.shopInfo["pickUpMinimumCookTime"] < 0) {
+          err["pickUpMinimumCookTime"].push("validationError." + name + ".negative");
+        }
+      }
+      if (!reservationTheDayBefore.some(day => day.value === this.shopInfo["pickUpDaysInAdvance"])) {
+        err["pickUpDaysInAdvance"].push("validationError." + name + ".invalid");
+      }
+
+
       if (this.requireTaxInput) {
         ["foodTax", "alcoholTax"].forEach(name => {
           err[name] = [];
@@ -755,6 +828,7 @@ export default {
           restProfilePhoto: this.shopInfo.restProfilePhoto,
           restCoverPhoto: this.shopInfo.restCoverPhoto,
           restaurantName: this.shopInfo.restaurantName,
+          ownerName: this.shopInfo.ownerName,
           streetAddress: this.shopInfo.streetAddress,
           images: {
             cover: this.shopInfo?.images?.cover || {},

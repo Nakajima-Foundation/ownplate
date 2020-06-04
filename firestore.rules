@@ -111,15 +111,15 @@ service cloud.firestore {
       }
     }
 
-    match /line/{userId}{
+    match /hash/{hashId}{
       match /records/{eventId} {
-        allow write: if request.auth.uid == userId
-                      && request.resource.data.uid == userId;
-        allow read: if request.auth.uid == userId;
-        allow write: if request.auth.token.line == userId
-                      && request.resource.data.uid == userId;
-        allow read: if request.auth.token.line == userId;
+        allow write: if hashing.sha256(request.auth.token.line).toHexString().lower() == hashId
+                      && request.resource.data.uid == hashId;
+        allow read: if hashing.sha256(request.auth.token.line).toHexString().lower() == hashId;
       }
+    }
+    match /{path=**}/records/{eventId} {
+        allow read: if isRestaurantOwner(resource.data.restaurantId, request);
     }
 
     match /{document=**} {

@@ -7,7 +7,17 @@ export default ({app}) => {
         if (!(this.$store.getters.uidAdmin)) {
           this.$router.replace('/admin/user/signin');
         }
-      }
+      },
+      checkUserPermission() {
+        if (!(this.$store.getters.uidUser)) {
+          this.$router.replace('/admin/user/signin');
+        }
+      },
+    },
+    computed: {
+      isUser() {
+        return !!this.$store.getters.uidUser;
+      },
     },
   });
 }

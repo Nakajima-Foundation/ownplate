@@ -6,13 +6,39 @@
   "greeting": "こんにちは、世界",
   "underConstruction": "注意：これはテスト用のサーバーです。",
   "comma": "、",
+  "profile": {
+    "title": "プロフィール",
+    "loginStatus": "サインイン状況",
+    "displayName": "名前",
+    "lineConnection": "LINE連携",
+    "lineFriend": "公式アカウントとの友達設定",
+    "undefined": "未設定",
+    "friendLink": "友だち設定する",
+    "signIn": "一般ユーザーとしてサイン・イン",
+    "signInRestaurant": "飲食店としてサイン・イン",
+    "deleteAccount": "アカウント削除",
+    "reallyDeleteAccount": "過去の履歴は消えてしまいます。本当にアカウントを削除しますか？",
+    "status": {
+      "hasLine": "連携済み",
+      "noLine": "未連携",
+      "verifying": "確認中...",
+      "email": "Email",
+      "phone": "電話番号",
+      "line": "LINE",
+      "unexpected": "想定外",
+      "isFriend": "友達設定済み",
+      "noFriend": "未設定",
+      "none": "なし"
+    }
+  },
   "menu": {
     "about": "このサービスについて",
     "admins": "飲食店向けページ",
-    "userManual": "飲食店向けマニュアル",
+    "adminManual": "飲食店向けマニュアル",
     "users": "お客様向けページ",
+    "userManual": "お客様向けマニュアル",
     "home": "ホーム",
-    "signOut": "サイン・アウト",
+    "signOut": "サインアウト",
     "selectLanguage": "表示言語選択",
     "yes": "はい",
     "no": "いいえ",
@@ -23,7 +49,7 @@
     "available": "この飲食店IDは使用できます",
     "submit": "登録",
     "placeholder": "使用したい飲食店IDを入力してください",
-    "tooshort": "最低５文字必要です。",
+    "tooshort": "最低5文字必要です。",
     "invalid": "数字の半角小文字英字のみ使えます。",
     "alreadyTaken": "このIDはすでに使われています。"
   },
@@ -34,7 +60,7 @@
     "new": "新規",
     "current": "変更前",
     "clickAndUpload": "ここをクリック",
-    "clickAndUploadDetail": "クリックもしくは画像をドラッグ＆ドロップしてアップロード(JPEG形式)"
+    "clickAndUploadDetail": "クリックもしくは画像をドラッグ＆ドロップしてアップロード（JPEG形式）"
   },
   "currency": {
     "USD": "ドル",
@@ -43,24 +69,25 @@
   },
   "tax": {
     "price": "{count}",
-    "include": " (税込)",
-    "exclude": " (+ 税)",
+    "include": "（税込）",
+    "exclude": "（+ 税）",
     "taxExample": "{count}の商品の例"
   },
   "editRestaurant": {
-    "enterRestaurantName": "レストラン名を入力して下さい",
+    "enterRestaurantName": "飲食店名を入力して下さい",
+    "enterOwnerName": "責任者氏名を入力してください",
     "enterStreetAddress": "番地以下の住所を入力して下さい",
     "enterCity": "市町村名を入力して下さい",
     "enterZip": "郵便番号を入力して下さい",
     "enterPhone": "電話番号を入力して下さい",
     "enterWebsite": "ホームページのURLを入力して下さい",
-    "enterIntroduction": "お店を紹介して下さい！！",
+    "enterIntroduction": "お店を紹介文を入力して下さい",
     "enterOrderNotice": "注文の注意点を入力して下さい",
     "enterOrderThanks": "注文後のありがとうメッセージを入力して下さい",
     "introduction": "お店の紹介文",
-    "orderNotice": "注文直前のメッセージ",
+    "orderNotice": "注文時の注意書き",
     "orderThanks": "注文後のありがとうメッセージ",
-    "website": "ウェブサイト",
+    "website": "ホームページ",
     "tax": "消費税",
     "foodTax": "消費税率（食品）",
     "alcoholTax": "消費税率（酒類）",
@@ -69,16 +96,31 @@
     "taxExcluded": "外税",
     "about": "飲食店情報",
     "required": "必須",
+    "timeToPickup": "受け渡し予定時刻設定",
+    "preparationTime": "受け渡し準備時間",
+    "reservationTheDayBefore": "前日受付",
+    "reservationTheDaysBefore": {
+      "zero": "当日のみ予約可能",
+      "one": "１日前から予約可能",
+      "two": "２日前から予約可能",
+      "three": "３日前から予約可能",
+      "four": "４日前から予約可能",
+      "five": "５日前から予約可能",
+      "six": "６日前から予約可能",
+      "seven": "７日前から予約可能"
+    },
+    "minutes": "分",
+    "withinfive": "５時間以内",
     "profilePhoto": "プロフィール画像",
     "coverPhoto": "カバー画像",
     "setLocation": "住所を元に地図を更新",
     "updateMap": "場所をセット",
     "businessHourDescription": "営業する曜日にチェックをいれ、営業時間を設定してください。",
-    "draftDescription": "下書きとして保存されます(お客さんからお店のページは見えません)",
+    "draftDescription": "下書きとして保存されます（お客様からお店のページは見えません）",
     "publishDescription": "保存して公開",
     "draftWarning": "赤枠のエラーを修正すると公開可能になります",
     "updateMapDescription": "飲食店名や住所を元に地図を更新",
-    "noRestaurant": "レストラン名が未指定です",
+    "noRestaurant": "飲食店名が未指定です",
     "noStreetAddress": "住所が未入力です",
     "reallyDelete": "本当にこの飲食店を削除しますか？",
     "city": "市町村",
@@ -105,10 +147,10 @@
     "itemDescription": "説明文",
     "itemPhoto": "写真",
     "itemOptions": "オプション",
-    "itemOptionsNote": "二択や三択の場合、半角カンマで区切ってください (例: \"チキン, ポーク, 豆腐\")",
+    "itemOptionsNote": "二択や三択の場合、半角カンマで区切ってください（例:「チキン, ポーク, 豆腐」）",
     "itemAddOption": "オプション追加",
     "itemInvalidMessage": "データが正しく入力されていないため、公開されません",
-    "saveAsDraft": "下書きとして保存されます(メニューに表示されません)",
+    "saveAsDraft": "下書きとして保存されます（メニューに表示されません）",
     "reallyDelete": "本当に削除しますか？"
   },
   "editTitle": {
@@ -116,11 +158,13 @@
     "empty": "（カテゴリー名未入力）"
   },
   "shopInfo": {
+    "share": "シェア",
     "qrcode": "飲食店QRコード",
     "copyUrl": "このお店のアドレスをコピー",
     "UrlCopied": "コピーしました",
     "UrlCopyFailed": "コピー失敗",
     "name": "飲食店名",
+    "ownerName": "責任者氏名",
     "restaurantDetails": "飲食店情報",
     "streetAddress": "番地以下",
     "city": "市区町村",
@@ -133,6 +177,26 @@
     "hours": "営業時間",
     "closed": "定休日",
     "public": "公開"
+  },
+  "transactionsAct": {
+    "title": "特定商取引法に基づく表記",
+    "sellerName": "販売事業者名",
+    "representative": "運営責任者",
+    "address": "所在地",
+    "hours": "営業時間",
+    "phone": "電話番号",
+    "price": "販売価格",
+    "priceDescription": "商品ページをご確認ください。",
+    "otherFees": "商品代金以外に必要な費用",
+    "otherFeesDescription": "店舗までの交通費など移動に関わる費用などは、ご負担下さい。",
+    "payment": "代金の支払い時期および方法",
+    "paymentDescription": "クレッジットカード決済/店舗払い",
+    "paymentDescriptionCard": "クレッジットカード決済",
+    "paymentDescriptionStore": "店舗払い",
+    "delivery": "商品引き渡し時期および方法",
+    "deliveryDescription": "お客様のご指定日と店舗受取り。",
+    "cancellation": "取り消しの取り扱い条件、解約条件",
+    "cancellationDescription": "お店が注文を「受付済み」にするまで、インターネット上でのキャンセルが可能です。それ以降については店舗へご連絡ください。"
   },
   "sitemenu": {
     "menu": "メニュー",
@@ -149,26 +213,31 @@
   "order": {
     "menu": "メニューページを見る",
     "yourOrder": "あなたの注文",
+    "confirmOrder": "ご注文の確認",
     "editItems": "注文を変更する",
     "subtotal": "小計",
     "salesTax": "消費税",
     "total": "合計",
     "yourPayment": "お支払い",
+    "whatsCVC": "CVCとは？",
+    "3digitsCVC": "カードのうら面の右端3ケタ",
+    "4digitsCVC": "カードのおもて面の4ケタ",
     "placeOrder": "注文する:",
-    "placeOrderNoPayment": "お店で支払う",
+    "placeOrderNoPayment": "注文して受け取り時に支払う",
     "validating": "処理しています...",
-    "thankyou": "ご注文、ありがとうございます!",
-    "orderStatus": "ご注文のステータス",
+    "thankyou": "ご注文、ありがとうございます",
+    "orderStatus": "ご注文状況",
     "orderId": "ご注文番号",
-    "pleaseStay": "このページを開けたままにしていただけると、ご注文から受け渡しまでの状況を知ることができます。",
+    "pleaseStay": "このページを表示させたままにしておくと、ご注文から受け渡しまでの状況を知ることができます。",
     "thanksMessage": "お店からのメッセージ",
     "tip": "心付け",
     "totalCharge": "合計金額",
-    "pleasePayAtRestaurant": "オンラインでの支払いは現時点では出来ません。受け取り時にお店でお支払いください。",
+    "pleasePayAtRestaurant": "オンラインでの支払いは現時点では出来ません。",
     "sendSMS": "SMSメッセージを受け取る（SMSの受信には料金がかかる場合があります）",
     "history": "注文履歴",
     "timeToPickup": "受け渡し予定時刻",
     "notAvailable": "今日、明日は営業日ではないので、現在は注文を受け付けていません。",
+    "orderNotice": "注文時のご注意",
     "status": {
       "unexpected": "(Unexpected)",
       "error": "エラー",
@@ -197,7 +266,7 @@
     "resend": "再送信",
     "verificationCode": "確認コード",
     "typeVerificationCode": "メールで送られてきたコードを入力してください",
-    "userName": "お名前 (オプション)",
+    "userName": "お名前（オプション）",
     "typeUserName": "山田太郎",
     "sendVerificationCode": "送信",
     "countryCode": "国",
@@ -220,11 +289,11 @@
     "userManual": "使い方説明",
     "suportPage": "お問い合わせ",
     "hidePayment": "課金の仕組みはまもなく提供される予定です。少々お待ちください。",
-    "pleaseSignIn": "サインインしてください (飲食店向け)",
-    "registration": "登録してください (飲食店向け)",
+    "pleaseSignIn": "サインインしてください（飲食店向け）",
+    "registration": "登録してください（飲食店向け）",
     "email": "メールアドレス",
     "password": "パスワード",
-    "confirmPassword": "パスワード(再入力)",
+    "confirmPassword": "パスワード（再入力）",
     "name": "氏名",
     "emailPlaceHolder": "メールアドレスを入力して下さい",
     "passwordPlaceHolder": "パスワードを入力して下さい",
@@ -242,13 +311,14 @@
       "statusConnected": "Stripeアカウント接続済み",
       "pleaseConnect": "オンラインで支払いを受けるには、Stripeアカウントとの接続が必要です。",
       "connectStripe": "Stripeアカウントと接続する",
-      "disconnectStripe": "Stripeアカウントとの接続を切る",
-      "reallyDisconnectStripe": "本当にStripeアカウントとの接続を切ってよろしいのですね？",
-      "openDashboard": "Stripe のダッシュボードを開く"
+      "disconnectStripe": "Stripeアカウントとの接続を解除",
+      "reallyDisconnectStripe": "本当にStripeアカウントとの接続を解除してもよろしいですか？",
+      "openDashboard": "Stripe のダッシュボードを開く",
+      "enableInStorePayment": "受け取り払いを許可する"
     },
     "viewPage": "ページを確認",
     "incompleteOrders": "{count} 個の未完了の注文",
-    "editMenuItems": "メニューの変更 ({count})",
+    "editMenuItems": "メニューの変更（{count}）",
     "editAbout": "店情報の変更",
     "delete": "削除",
     "shareRestaurant": "シェア",
@@ -257,10 +327,14 @@
     "passwordReset": "パスワードのリセット",
     "pleaseCheckInbox": "メールを送信しました。受信箱をご確認ください。",
     "order": {
+      "soundOn": "通知サウンド：オン",
+      "soundOff": "通知サウンド：オフ",
+      "soundTest": "音テスト",
       "cancelButton": "注文をキャンセル",
       "cancelTitle": "注文のキャンセル",
-      "cancelMessage": "お客様にご連絡の上、ご注文をキャンセルさせていただく旨をお伝え下さい。",
-      "delete": "この注文をキャンセルする (やり直しは出来ません)"
+      "cancelMessage": "お客様にご連絡の上、ご注文がキャンセルされることをお伝え下さい。",
+      "delete": "この注文をキャンセルする",
+      "deleteConfirm": "（キャンセルの取り消しは出来ません）"
     },
     "qrcode": {
       "title": "QRコード",
@@ -315,15 +389,16 @@
     "mollusc": "軟体動物"
   },
   "line": {
-    "authenticating": "ライン認証",
-    "notifyMe": "ラインで通知を受ける",
+    "authenticating": "LINE認証",
+    "notifyMe": "LINEで通知を受けとる",
     "addFriend": "友だち追加",
-    "addFriendDescription": "ご注文状況の通知を受けるには、「おもてなし.com 公式アカウント」を友だち追加していただく必要があります。"
+    "addFriendDescription": "ご注文状況の通知を受けるには、「おもてなし.com 公式アカウント」を友だち追加する必要があります。"
   },
   "trace": {
     "thankyou": "ご協力ありがとうございます",
     "enter": "入店",
-    "leave": "退店"
+    "leave": "退店",
+    "list": "入退店記録"
   },
   "errorPage": {
     "popup": {
@@ -331,11 +406,11 @@
     },
     "message": {
       "generic": "もう一度確認してアクセスしてください。",
-      "line": "最初からライン連携をやりなおしてください。"
+      "line": "最初からLINE連携をやりなおしてください。"
     },
     "code": {
       "line": {
-        "validation": "ラインによる認証に失敗しました。"
+        "validation": "LINEによる認証に失敗しました。"
       },
       "order": {
         "checkout": "チェックアウト処理に失敗しました",
@@ -355,8 +430,11 @@
       }
     },
     "notFound": {
-      "message1": "ごめんなさい。ページがみつかりません。",
+      "message1": "ページがみつかりません。",
       "message2": "もう一度確認してアクセスしてください。"
+    },
+    "requireLogin": {
+      "message1": "オーダーを確認するにはログインが必要です"
     }
   }
 }

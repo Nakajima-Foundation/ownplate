@@ -1,11 +1,7 @@
 <template>
-  <b-button
-    :class="statusKey" 
-    variant="outline-primary"
-    size="is-small"
-    rounded>
-    {{ $t("order.status." + statusKey) }}
-  </b-button>
+  <div>
+    <div class="op-status" :class="statusKey">{{ $t("order.status." + statusKey) }}</div>
+  </div>
 </template>
 
 <script>
@@ -16,11 +12,11 @@ export default {
     order: {
       type: Object,
       required: true
-    },
+    }
   },
   computed: {
     statusKey() {
-      return Object.keys(order_status).reduce((result, key)=>{
+      return Object.keys(order_status).reduce((result, key) => {
         if (order_status[key] == this.order.status) {
           return key;
         }
@@ -28,8 +24,5 @@ export default {
       }, "unexpected");
     }
   }
-}
+};
 </script>
-
-<style scoped>
-</style>

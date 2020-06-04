@@ -48,11 +48,11 @@
 }
 
 .stripe_pending {
-  color: #808080;
+  @extend .c-text-black-disabled;
 }
 .stripe_confirmed {
-  color: #000000;
+  @extend .c-status-green;
 }
 .stripe_canceled {
-  color: #ff4500;
+  @extend .c-status-red;
 }

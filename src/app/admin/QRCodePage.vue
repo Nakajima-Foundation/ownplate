@@ -19,6 +19,11 @@
           <a :href="urlLeave">{{$t('admin.qrcode.leave')}}</a>
         </p>
       </div>
+      <div class="align-center m-t-24">
+        <router-link :to="`/admin/restaurants/${restaurantId()}/traces`">
+          <div class="op-button-small tertiary">{{ $t("trace.list") }}</div>
+        </router-link>
+      </div>
     </div>
   </section>
 </template>
