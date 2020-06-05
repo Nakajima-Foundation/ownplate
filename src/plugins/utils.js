@@ -98,6 +98,10 @@ export default ({ app }) => {
       },
     },
     computed: {
+      isLineUser() {
+        const claims = this.$store.state.claims;
+        return !!claims?.line;
+      },
       isLineEnabled() {
         return !!ownPlateConfig.line;
       },

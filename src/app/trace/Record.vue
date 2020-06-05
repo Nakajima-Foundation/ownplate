@@ -77,7 +77,6 @@ export default {
     }
   },
   async mounted() {
-    //console.log("user =", this.user, this.isLineUser);
     if (this.user) {
       const { claims } = await this.user.getIdTokenResult(true);
       if (claims.line) {
@@ -119,9 +118,6 @@ export default {
     },
     redirect_uri() {
       return location.origin + "/callback/track";
-    },
-    isLineUser() {
-      return this.user && this.user.uid.slice(0, 5) === "line:";
     },
     user() {
       return this.$store.state.user;

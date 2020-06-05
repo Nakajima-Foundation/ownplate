@@ -170,9 +170,6 @@ export default {
     claims() {
       return this.$store.state.claims;
     },
-    isLineUser() {
-      return !!this.claims?.line;
-    },
     lineConnection() {
       return this.isLineUser
         ? this.$t("profile.status.hasLine")
