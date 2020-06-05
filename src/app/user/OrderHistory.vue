@@ -73,7 +73,7 @@ export default {
     };
   },
   async created() {
-    console.log("created", this.uid);
+    //console.log("created", this.uid);
     this.loginVisible = !this.uid;
     this.getHistory();
   },
