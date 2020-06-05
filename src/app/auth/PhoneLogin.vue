@@ -1,63 +1,107 @@
 <template>
   <div>
+    <div class="t-h6 c-text-black-disabled">{{ $t('sms.signin') }}</div>
+    <!-- Send SMS -->
     <form v-show="confirmationResult === null" @submit.prevent="handleSubmit">
-      <div v-if="!relogin">
-        <b-field v-if="countries.length > 1" :label="$t('sms.countryCode')">
-          <b-select v-model="countryCode">
-            <option
-              v-for="country in countries"
-              :value="country.code"
-              :key="country.code"
-            >{{ $t(country.name) }}</option>
-          </b-select>
-        </b-field>
+      <div v-if="!relogin" class="m-t-16">
+        <!-- Country Code -->
+        <div v-if="countries.length > 1">
+          <div class="t-subtitle2 c-text-black-medium m-b-4">{{ $t('sms.countryCode') }}</div>
+          <b-field>
+            <b-select v-model="countryCode">
+              <option
+                v-for="country in countries"
+                :value="country.code"
+                :key="country.code"
+              >{{ $t(country.name) }}</option>
+            </b-select>
+          </b-field>
+        </div>
+
+        <!-- Phone Number -->
+        <div class="m-t-8">
+          <div class="t-subtitle2 c-text-black-medium m-b-4">{{ $t('sms.phonenumber') }}</div>
+          <b-field
+            :type="hasError ? 'is-danger' : 'is-success'"
+            :message="hasError ? $t(errors[0]) : $t('sms.notice')"
+          >
+            <b-input
+              type="text"
+              v-model="phoneNumber"
+              v-on:input="validatePhoneNumber"
+              maxlength="30"
+              :placeholder="$t('sms.pleasetype')"
+            />
+          </b-field>
+        </div>
+      </div>
+
+      <!-- reCAPTCHA -->
+      <div id="signInButton" class="m-t-24"></div>
+
+      <!-- Submit Buttons -->
+      <div class="m-t-24 align-center">
+        <b-button
+          class="b-reset op-button-small tertiary m-r-16"
+          @click="$emit('dismissed', false)"
+        >
+          <span>{{$t('button.cancel')}}</span>
+        </b-button>
+        <b-button
+          class="b-reset op-button-small primary"
+          :loading="isLoading"
+          @click="handleSubmit"
+          :disabled="!readyToSendSMS"
+        >
+          <span class="c-onprimary">{{$t('sms.send')}}</span>
+        </b-button>
+      </div>
+    </form>
+
+    <!-- Verification Code -->
+    <form v-if="confirmationResult !== null" @submit.prevent="handleCode">
+      <!-- Enter Code -->
+      <div class="m-t-16">
+        <div class="t-subtitle2 c-text-black-medium m-b-4">{{ $t('sms.verificationCode') }}</div>
         <b-field
           :type="hasError ? 'is-danger' : 'is-success'"
-          :message="hasError ? $t(errors[0]) : $t('sms.notice')"
-          :label="$t('sms.phonenumber')"
+          :message="hasError ? $t(errors[0]) : ''"
         >
           <b-input
             type="text"
-            v-model="phoneNumber"
-            v-on:input="validatePhoneNumber"
-            maxlength="30"
-            :placeholder="$t('sms.pleasetype')"
+            v-model="verificationCode"
+            v-on:input="validateVerificationCode"
+            maxlength="6"
+            :placeholder="$t('sms.typeVerificationCode')"
           />
         </b-field>
       </div>
-      <div id="signInButton" style="margin-bottom:0.5rem" />
-      <b-button
-        type="is-primary"
-        :loading="isLoading"
-        @click="handleSubmit"
-        :disabled="!readyToSendSMS"
-      >{{$t('sms.send')}}</b-button>
-      <b-button @click="$emit('dismissed', false)">{{$t('button.cancel')}}</b-button>
-    </form>
-    <form v-if="confirmationResult !== null" @submit.prevent="handleCode">
-      <b-field
-        :type="hasError ? 'is-danger' : 'is-success'"
-        :message="hasError ? $t(errors[0]) : ''"
-        :label="$t('sms.verificationCode')"
-      >
-        <b-input
-          type="text"
-          v-model="verificationCode"
-          v-on:input="validateVerificationCode"
-          maxlength="6"
-          :placeholder="$t('sms.typeVerificationCode')"
-        />
-      </b-field>
-      <b-field :label="$t('sms.userName')">
-        <b-input type="text" v-model="name" maxlength="32" :placeholder="$t('sms.typeUserName')" />
-      </b-field>
-      <b-button
-        type="is-primary"
-        :loading="isLoading"
-        @click="handleCode"
-        :disabled="!readyToSendVerificationCode"
-      >{{$t('sms.sendVerificationCode')}}</b-button>
-      <b-button @click="$emit('dismissed', false)">{{$t('button.cancel')}}</b-button>
+
+      <!-- Enter Name -->
+      <div>
+        <div class="t-subtitle2 c-text-black-medium m-b-4">{{ $t('sms.userName') }}</div>
+        <b-field>
+          <b-input type="text" v-model="name" maxlength="32" :placeholder="$t('sms.typeUserName')" />
+        </b-field>
+      </div>
+
+      <!-- Submit Buttons -->
+      <div class="m-t-8 align-center">
+        <b-button
+          class="b-reset op-button-small tertiary m-r-16"
+          @click="$emit('dismissed', false)"
+        >
+          <span>{{$t('button.cancel')}}</span>
+        </b-button>
+        <b-button
+          class="b-reset op-button-small primary"
+          :loading="isLoading"
+          @click="handleCode"
+          :disabled="!readyToSendVerificationCode"
+        >
+          <span class="c-onprimary">{{$t('sms.sendVerificationCode')}}</span>
+        </b-button>
+      </div>
     </form>
   </div>
 </template>

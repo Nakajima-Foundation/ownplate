@@ -1,5 +1,5 @@
 body {
-  font-family: Arial, 游ゴシック体, YuGothic, メイリオ, Meiryo, sans-serif !important;
+  font-family: sans-serif !important;
   background: #f7f8fb;
 }
 
@@ -154,10 +154,6 @@ p {
 
 .card.block {
   border-radius: 8px;
-}
-
-.notification {
-  word-break: break-all;
 }
 
 @media screen and (max-width: 600px) {

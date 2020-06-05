@@ -259,13 +259,14 @@
     "next": "次へ"
   },
   "sms": {
+    "signin": "電話番号認証",
     "phonenumber": "電話番号",
     "pleasetype": "090-1111-1111",
-    "notice": "確認のためのメッセージが送られてきます",
+    "notice": "確認のためのSMSが送られてきます",
     "send": "送信",
     "resend": "再送信",
-    "verificationCode": "確認コード",
-    "typeVerificationCode": "メールで送られてきたコードを入力してください",
+    "verificationCode": "SMS確認コード",
+    "typeVerificationCode": "SMSで送られてきたコードを入力してください",
     "userName": "お名前（オプション）",
     "typeUserName": "山田太郎",
     "sendVerificationCode": "送信",
