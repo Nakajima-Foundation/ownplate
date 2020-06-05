@@ -30,8 +30,6 @@
 
 <script>
 import { db, firestore } from "~/plugins/firebase.js";
-import { regionalSettings } from "~/plugins/constant.js";
-import { ownPlateConfig } from "@/config/project";
 
 export default {
   data() {
@@ -82,9 +80,6 @@ export default {
     this.detacher && this.detacher();
   },
   computed: {
-    regionalSetting() {
-      return regionalSettings[ownPlateConfig.region || "US"];
-    },
     urlEnter() {
       return `${location.origin}/t/${this.trace.enter}`;
     },
