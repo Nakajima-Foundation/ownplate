@@ -311,11 +311,11 @@
       "statusNotConnected": "Stripeアカウント未接続",
       "statusConnected": "Stripeアカウント接続済み",
       "pleaseConnect": "オンラインで支払いを受けるには、Stripeアカウントとの接続が必要です。",
-      "connectStripe": "Stripeアカウントと接続する",
+      "connectStripe": "Stripeアカウントと接続",
       "disconnectStripe": "Stripeアカウントとの接続を解除",
       "reallyDisconnectStripe": "本当にStripeアカウントとの接続を解除してもよろしいですか？",
       "openDashboard": "Stripe のダッシュボードを開く",
-      "enableInStorePayment": "受け取り払いを許可する"
+      "enableInStorePayment": "受け取り払いを許可"
     },
     "viewPage": "ページを確認",
     "incompleteOrders": "{count} 個の未完了の注文",
