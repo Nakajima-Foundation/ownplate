@@ -121,9 +121,6 @@ export default {
     };
   },
   computed: {
-    user() {
-      return this.$store.state.user;
-    },
     errors() {
       let errors = {};
       if (this.password !== this.confirmPassword) {

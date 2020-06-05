@@ -128,9 +128,6 @@ export default {
         this.checkFriend();
       }
     },
-    user() {
-      this.loginVisible = false;
-    },
     isLineUser(newValue) {
       if (this.isFriend === undefined) {
         this.checkFriend();
@@ -163,9 +160,6 @@ export default {
     },
     redirect_uri() {
       return location.origin + "/callback/line";
-    },
-    user() {
-      return this.$store.state.user;
     },
     claims() {
       return this.$store.state.claims;

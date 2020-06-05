@@ -89,11 +89,6 @@ export default {
       this.$emit("change", newValue ? { complete: true } : this.elementStatus);
     }
   },
-  computed: {
-    user() {
-      return this.$store.state.user;
-    }
-  },
   methods: {
     async createToken() {
       if (!this.useStoredCard) {

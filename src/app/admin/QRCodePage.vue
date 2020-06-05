@@ -85,9 +85,6 @@ export default {
     regionalSetting() {
       return regionalSettings[ownPlateConfig.region || "US"];
     },
-    user() {
-      return this.$store.state.user;
-    },
     urlEnter() {
       return `${location.origin}/t/${this.trace.enter}`;
     },

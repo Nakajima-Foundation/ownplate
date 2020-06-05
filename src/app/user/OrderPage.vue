@@ -423,9 +423,6 @@ export default {
     },
     orderId() {
       return this.$route.params.orderId;
-    },
-    user() {
-      return this.$store.state.user;
     }
   },
   watch: {

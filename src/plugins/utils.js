@@ -98,6 +98,9 @@ export default ({ app }) => {
       },
     },
     computed: {
+      user() {
+        return this.$store.state.user;
+      },
       isLineUser() {
         const claims = this.$store.state.claims;
         return !!claims?.line;

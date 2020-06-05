@@ -118,9 +118,6 @@ export default {
     },
     redirect_uri() {
       return location.origin + "/callback/track";
-    },
-    user() {
-      return this.$store.state.user;
     }
   }
 };

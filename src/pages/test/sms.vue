@@ -29,9 +29,6 @@ export default {
     date() {
       return this.$store.state.date;
     },
-    user() {
-      return this.$store.state.user;
-    },
     phone() {
       return this.user && this.user.phoneNumber;
     }
