@@ -29,15 +29,10 @@ export default {
         });
         console.log(data);
         if (data.nonce && data.profile) {
-          if (this.becameFriend) {
-            await db.doc(`users/${this.user.uid}/private/line`).set(
-              {
-                isFriend: true
-              },
-              { merge: true }
-            );
-          }
-          this.$router.push(data.nonce);
+          this.user.getIdTokenResult(true).then(result => {
+            this.$store.commit("setCustomClaims", result.claims);
+            this.$router.push(data.nonce);
+          });
         } else {
           console.error("validatin failed", data);
           throw new Error("something is wrong");
@@ -57,9 +52,6 @@ export default {
   computed: {
     code() {
       return this.$route.query.code;
-    },
-    becameFriend() {
-      return this.$route.query.friendship_status_changed;
     },
     redirect_uri() {
       return location.origin + "/callback/line";

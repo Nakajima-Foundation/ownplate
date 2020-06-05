@@ -142,24 +142,7 @@ export default {
       return ownPlateConfig.line.FRIEND_LINK;
     },
     lineAuth() {
-      const query = {
-        response_type: "code",
-        client_id: ownPlateConfig.line.LOGIN_CHANNEL_ID,
-        redirect_uri: this.redirect_uri,
-        scope: "profile openid email",
-        bot_prompt: "aggressive",
-        state: "s" + Math.random(), // LATER: Make it more secure
-        nonce: location.pathname // HACK: Repurposing nonce
-      };
-      const queryString = Object.keys(query)
-        .map(key => {
-          return key + "=" + encodeURIComponent(query[key]);
-        })
-        .join("&");
-      return `https://access.line.me/oauth2/v2.1/authorize?${queryString}`;
-    },
-    redirect_uri() {
-      return location.origin + "/callback/line";
+      return this.lineAuthURL("/callback/line", location.pathname);
     },
     claims() {
       return this.$store.state.claims;
