@@ -1,41 +1,93 @@
 <template>
-  <section class="section">
-    <div class="card block">
-      <form class="card-content" @submit.prevent="onSignin">
-        <h2 class="p-big bold">{{ $t('admin.pleaseSignIn') }}</h2>
+  <div>
+    <!-- Sign In -->
+    <div class="columns is-gapless">
+      <!-- Left Gap -->
+      <div class="column is-narrow w-24"></div>
+      <!-- Center Column -->
+      <div class="column">
+        <div class="columns is-gaplress">
+          <div class="column is-half is-offset-one-quarter">
+            <div class="m-l-24 m-r-24">
+              <div class="bg-surface r-8 d-low m-t-24 p-l-24 p-r-24 p-t-24 p-b-24">
+                <form @submit.prevent="onSignin">
+                  <div class="t-h6 c-text-black-disabled">{{ $t('admin.pleaseSignIn') }}</div>
 
-        <b-field
-          :type="errors.email ? 'is-danger' : 'is-success'"
-          :message="errors.email && $t(errors.email[0])"
-          :label="$t('admin.email')"
-        >
-          <b-input v-model="email" :placeholder="$t('admin.emailPlaceHolder')" maxlength="256" />
-        </b-field>
+                  <!-- Email -->
+                  <div class="m-t-16">
+                    <div class="t-subtitle2 c-text-black-medium m-b-4">{{ $t('admin.email') }}</div>
+                    <b-field
+                      :type="errors.email ? 'is-danger' : 'is-success'"
+                      :message="errors.email && $t(errors.email[0])"
+                    >
+                      <b-input
+                        v-model="email"
+                        :placeholder="$t('admin.emailPlaceHolder')"
+                        maxlength="256"
+                      />
+                    </b-field>
+                  </div>
 
-        <b-field
-          :type="errors.password ? 'is-danger' : 'is-success'"
-          :message="errors.password && $t(errors.password[0])"
-          :label="$t('admin.password')"
-        >
-          <b-input
-            v-model="password"
-            type="password"
-            :placeholder="$t('admin.passwordPlaceHolder')"
-            maxlength="30"
-            password-reveal
-          />
-        </b-field>
-        <b-button @click="handleCancel">{{ $t('button.cancel') }}</b-button>
-        <b-button type="is-primary" :loading="isLoading" @click="onSignin">{{ $t('button.next') }}</b-button>
-        <p style="margin-top: 2rem">
-          <router-link to="/admin/user/signup">{{$t('admin.pleaseSignUp')}}</router-link>
-          <br />
-          <router-link to="/admin/user/reset">{{$t('admin.forgotPassword')}}</router-link>
-        </p>
-        <p style="margin-top: 2rem"></p>
-      </form>
+                  <!-- Password -->
+                  <div>
+                    <div class="t-subtitle2 c-text-black-medium m-b-4">{{ $t('admin.password') }}</div>
+                    <b-field
+                      :type="errors.password ? 'is-danger' : 'is-success'"
+                      :message="errors.password && $t(errors.password[0])"
+                    >
+                      <b-input
+                        v-model="password"
+                        type="password"
+                        :placeholder="$t('admin.passwordPlaceHolder')"
+                        maxlength="30"
+                        password-reveal
+                      />
+                    </b-field>
+                  </div>
+
+                  <!-- Submit Button -->
+                  <div class="m-t-8 align-center">
+                    <b-button class="b-reset op-button-small tertiary m-r-16" @click="handleCancel">
+                      <span class="c-text-black-medium">{{ $t('button.cancel') }}</span>
+                    </b-button>
+                    <b-button
+                      class="b-reset op-button-small primary"
+                      :loading="isLoading"
+                      @click="onSignin"
+                    >
+                      <span class="c-onprimary">{{ $t('button.next') }}</span>
+                    </b-button>
+                  </div>
+
+                  <!-- Sign Up as a New User -->
+                  <div class="align-center m-t-24">
+                    <router-link to="/admin/user/signup">
+                      <div class="op-button-text">
+                        <i class="material-icons c-primary">person_add_alt_1</i>
+                        <span class="c-primary t-button">{{$t('admin.pleaseSignUp')}}</span>
+                      </div>
+                    </router-link>
+                  </div>
+
+                  <!-- Forgot Password -->
+                  <div class="align-center m-t-8">
+                    <router-link to="/admin/user/reset">
+                      <div class="op-button-text">
+                        <i class="material-icons c-primary">help</i>
+                        <span class="c-primary t-button">{{$t('admin.forgotPassword')}}</span>
+                      </div>
+                    </router-link>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Right Gap -->
+      <div class="column is-narrow w-24"></div>
     </div>
-  </section>
+  </div>
 </template>
 
 <script>
@@ -90,8 +142,3 @@ export default {
   }
 };
 </script>
-<style lang="scss" scoped>
-.tax {
-  margin-top: -2rem !important;
-}
-</style>
