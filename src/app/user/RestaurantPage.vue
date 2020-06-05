@@ -235,9 +235,6 @@ export default {
       const list = this.shopInfo.menuLists || [];
       return list;
     },
-    user() {
-      return this.$store.state.user;
-    },
     trimmedOptions() {
       return Object.keys(this.orders).reduce((ret, id) => {
         ret[id] = this.options[id];

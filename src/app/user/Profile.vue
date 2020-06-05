@@ -52,20 +52,22 @@
             </b-button>
           </div>
         </div>
-        <div v-else class="align-center">
-          <b-button
-            class="b-reset op-button-small"
-            style="background:#18b900"
-            tag="a"
-            :href="lineAuth"
-          >
-            <i class="fab fa-line c-text-white-full m-l-24 m-r-8" style="font-size:24px" />
-            <span class="c-text-white-full m-r-24">
-              {{
-              $t("line.notifyMe")
-              }}
-            </span>
-          </b-button>
+        <div v-else>
+          <div v-if="isLineEnabled" class="align-center">
+            <b-button
+              class="b-reset op-button-small"
+              style="background:#18b900"
+              tag="a"
+              :href="lineAuth"
+            >
+              <i class="fab fa-line c-text-white-full m-l-24 m-r-8" style="font-size:24px" />
+              <span class="c-text-white-full m-r-24">
+                {{
+                $t("line.notifyMe")
+                }}
+              </span>
+            </b-button>
+          </div>
         </div>
         <div class="align-center m-t-24">
           <router-link to="/u/history">
@@ -126,9 +128,6 @@ export default {
         this.checkFriend();
       }
     },
-    user() {
-      this.loginVisible = false;
-    },
     isLineUser(newValue) {
       if (this.isFriend === undefined) {
         this.checkFriend();
@@ -162,14 +161,8 @@ export default {
     redirect_uri() {
       return location.origin + "/callback/line";
     },
-    user() {
-      return this.$store.state.user;
-    },
     claims() {
       return this.$store.state.claims;
-    },
-    isLineUser() {
-      return !!this.claims?.line;
     },
     lineConnection() {
       return this.isLineUser

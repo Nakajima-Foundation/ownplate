@@ -103,11 +103,6 @@ export default {
       errors: {}
     };
   },
-  computed: {
-    user() {
-      return this.$store.state.user;
-    }
-  },
   watch: {
     user(newValue) {
       console.log("user changed", newValue);

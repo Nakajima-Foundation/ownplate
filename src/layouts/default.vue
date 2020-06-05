@@ -166,9 +166,6 @@ export default {
     underConstruction() {
       return releaseConfig.underConstruction;
     },
-    user() {
-      return this.$store.state.user;
-    },
     hasUser() {
       return !this.isNull(this.$store.state.user);
     },
