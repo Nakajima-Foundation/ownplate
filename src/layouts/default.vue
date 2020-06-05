@@ -95,9 +95,7 @@
 
 <script>
 import { db, auth, functions } from "@/plugins/firebase.js";
-import { regionalSettings } from "~/plugins/constant.js";
 import { releaseConfig } from "~/plugins/config.js";
-import { ownPlateConfig } from "@/config/project";
 import DialogBox from "~/components/DialogBox";
 
 export default {
@@ -105,10 +103,9 @@ export default {
     DialogBox
   },
   data() {
-    const regionalSetting = regionalSettings[ownPlateConfig.region || "US"];
     return {
-      language: regionalSetting.defaultLanguage,
-      languages: regionalSetting.languages,
+      language: "en",
+      languages: [],
       items: [
         {
           title: "Home",
@@ -123,8 +120,8 @@ export default {
       ],
       unregisterAuthObserver: null,
       timerId: null,
-      logo: regionalSetting.Logo,
-      logo2: regionalSetting.Logo2,
+      logo: "",
+      logo2: "",
       // todo support scrset https://kanoto.info/201912/673/
       // srcset: regionalSetting.Logo.map((logo) => {}
 
@@ -331,6 +328,11 @@ export default {
     }
   },
   async created() {
+    this.language = this.regionalSetting.defaultLanguage;
+    this.languages = this.regionalSetting.languages;
+    this.logo = this.regionalSetting.Logo;
+    this.logo2 = this.regionalSetting.Logo2;
+
     this.timerId = window.setInterval(() => {
       this.$store.commit("updateDate");
     }, 60 * 1000);
