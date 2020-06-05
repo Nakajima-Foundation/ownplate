@@ -31,7 +31,15 @@ export default {
         if (data.nonce && data.profile) {
           this.user.getIdTokenResult(true).then(result => {
             this.$store.commit("setCustomClaims", result.claims);
-            this.$router.push(data.nonce);
+            if (this.isLineUser) {
+              this.$router.push(data.nonce);
+            } else {
+              this.$router.push(
+                `${data.nonce}?userId=${
+                  data.profile.userId
+                }&displayName=${encodeURIComponent(data.profile.displayName)}`
+              );
+            }
           });
         } else {
           console.error("validatin failed", data);

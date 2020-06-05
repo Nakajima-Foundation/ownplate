@@ -98,8 +98,8 @@ export const authenticate = async (db: FirebaseFirestore.Firestore, data: any, c
 export const validate = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
 
-  const { code, redirect_uri, client_id, restaurantId } = data;
-  utils.validate_params({ code, redirect_uri, client_id }) // restaurantId is optional
+  const { code, redirect_uri, client_id } = data;
+  utils.validate_params({ code, redirect_uri, client_id })
 
   const LINE_SECRET_KEY = functions.config().line.secret;
 
@@ -139,7 +139,7 @@ export const validate = async (db: FirebaseFirestore.Firestore, data: any, conte
 
     const lineUid = `line:${profile.userId}`
     if (context.auth!.token.phone_number) {
-      // Set custom claim
+      // For end-user, seet the custom claim
       await admin.auth().setCustomUserClaims(uid, {
         line: lineUid
       })
@@ -147,16 +147,6 @@ export const validate = async (db: FirebaseFirestore.Firestore, data: any, conte
       await db.doc(`/users/${uid}/system/line`).set({
         access, verified, profile
       }, { merge: true })
-    } else if (restaurantId) {
-      const refRestaurant = db.doc(`restaurants/${restaurantId}`);
-      const restaurant = (await refRestaurant.get()).data();
-      if (!restaurant || restaurant.uid !== uid) {
-        throw new functions.https.HttpsError('invalid-argument',
-          'Invalid restaurant Id.', { params: verified })
-      }
-      await refRestaurant.collection("lines").doc(lineUid).set({ profile }, {
-        merge: true
-      })
     }
 
     return { profile, nonce: verified.nonce };
