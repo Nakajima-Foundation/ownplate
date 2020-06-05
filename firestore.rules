@@ -103,6 +103,9 @@ service cloud.firestore {
             allow read, write: if false;
           }
         }
+        match /lines/{lineId} {
+          allow read, write: if isRestaurantOwner(restaurantId, request);
+        }
         match /trace/{traceId} {
           allow create: if isRestaurantOwner(restaurantId, request)
                           && request.resource.data.restaurantId == restaurantId
