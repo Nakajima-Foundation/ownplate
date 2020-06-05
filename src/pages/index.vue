@@ -177,20 +177,9 @@
 
 <script>
 import { releaseConfig } from "~/plugins/config.js";
-import { regionalSettings } from "~/plugins/constant.js";
-import { ownPlateConfig } from "@/config/project";
 
 export default {
   name: "HomePage",
-
-  components: {},
-  data() {
-    return {
-      regionalSetting: regionalSettings[ownPlateConfig.region || "US"]
-    };
-  },
-
-  mounted() {},
 
   computed: {
     hideUsersLink() {
