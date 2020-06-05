@@ -97,6 +97,23 @@ export default ({ app }) => {
           );
         });
       },
+      lineAuthURL(path, nonce, channelId) {
+        const query = {
+          response_type: "code",
+          client_id: channelId || ownPlateConfig.line.LOGIN_CHANNEL_ID,
+          redirect_uri: location.origin + path,
+          scope: "profile openid email",
+          bot_prompt: "aggressive",
+          state: "s" + Math.random(), // LATER: Make it more secure
+          nonce
+        };
+        const queryString = Object.keys(query)
+          .map(key => {
+            return key + "=" + encodeURIComponent(query[key]);
+          })
+          .join("&");
+        return `https://access.line.me/oauth2/v2.1/authorize?${queryString}`;
+      },
     },
     computed: {
       regionalSetting() {
