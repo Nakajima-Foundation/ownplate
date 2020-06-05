@@ -267,8 +267,7 @@ import { db, storage } from "~/plugins/firebase.js";
 import NotFound from "~/components/NotFound";
 import BackButton from "~/components/BackButton";
 
-import { taxRates, regionalSettings } from "~/plugins/constant.js";
-import { ownPlateConfig } from "@/config/project";
+import { taxRates } from "~/plugins/constant.js";
 
 import Price from "~/components/Price";
 
@@ -282,7 +281,6 @@ export default {
   },
 
   data() {
-    const regionalSetting = regionalSettings[ownPlateConfig.region || "US"];
     return {
       menuInfo: {
         itemName: "",
@@ -297,13 +295,10 @@ export default {
       },
 
       taxRates: taxRates,
-      taxRateKeys: regionalSetting["taxRateKeys"],
-      requireTaxPriceDisplay: regionalSetting.requireTaxPriceDisplay,
-
-      currencyKey: regionalSetting["CurrencyKey"],
-
+      taxRateKeys: [],
+      requireTaxPriceDisplay: false,
+      currencyKey: "US",
       maxPrice: 1000000.0 / this.$store.getters.stripeRegion.multiple,
-
       restaurantInfo: {},
       notFound: null,
       menuId: this.$route.params.menuId,
@@ -312,6 +307,10 @@ export default {
     };
   },
   async created() {
+    this.taxRateKeys = this.regionalSetting["taxRateKeys"];
+    this.requireTaxPriceDisplay = this.regionalSetting.requireTaxPriceDisplay;
+    this.currencyKey = this.regionalSetting["CurrencyKey"];
+
     this.checkAdminPermission();
 
     const restaurantRef = db.doc(`restaurants/${this.restaurantId()}`);
