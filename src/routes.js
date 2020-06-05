@@ -55,6 +55,10 @@ export const customRoutes = [
     component: 'admin/OrderListPage.vue',
   },
   {
+    path: '/admin/restaurants/:restaurantId/line',
+    component: 'admin/ManageLine.vue',
+  },
+  {
     path: '/admin/restaurants/:restaurantId/traces',
     component: 'admin/TraceList.vue',
   },
