@@ -64,7 +64,7 @@
         <div class="align-right">
           <div class="op-button-pill bg-sattle-white m-r-16 m-t-16" @click="openLang()">
             <i class="material-icons c-text-white-high">language</i>
-            <span class="c-text-white-high t-body1">
+            <span class="c-text-white-high t-button">
               {{
               languages[language]
               }}
@@ -82,7 +82,7 @@
         <div class="m-t-16" v-for="(lang, lang_key) in languages" :key="lang_key">
           <div class="op-button-pill bg-form" @click="changeLangAndClose(lang_key)">
             <i class="material-icons c-text-black-high" v-if="lang_key == language">check</i>
-            <span class="t-body1">{{ lang }}</span>
+            <span class="t-button">{{ lang }}</span>
           </div>
         </div>
         <div class="m-t-24 align-center">
@@ -208,7 +208,7 @@ export default {
           Sentry.captureException(e, {
             tags: {
               view: "layouts/default",
-              methods: "enableSound",
+              methods: "enableSound"
             }
           });
           console.log("default: layout sound not enabled");

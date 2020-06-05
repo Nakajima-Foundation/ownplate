@@ -259,6 +259,7 @@
     "next": "Next"
   },
   "sms": {
+    "signin": "Phone Number Sign In",
     "phonenumber": "Phone Number",
     "pleasetype": "111-111-1111",
     "notice": "A SMS message will be sent for the verification.",
