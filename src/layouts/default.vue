@@ -32,12 +32,16 @@
       </div>
       <div class="align-center m-t-24">
         <router-link to="/">
-          <div class="op-button-medium tertiary w-192" @click="handleClose()">{{ $t("menu.home") }}</div>
+          <div class="op-button-medium tertiary w-192" @click="handleClose()">
+            {{ $t("menu.home") }}
+          </div>
         </router-link>
       </div>
       <div class="align-center m-t-24">
         <router-link to="/u/profile">
-          <div class="op-button-small tertiary" @click="handleClose()">{{ $t("profile.title") }}</div>
+          <div class="op-button-small tertiary" @click="handleClose()">
+            {{ $t("profile.title") }}
+          </div>
         </router-link>
       </div>
     </b-sidebar>
@@ -45,7 +49,9 @@
     <!-- Main -->
     <div class="main">
       <div class="contents">
-        <div v-if="underConstruction" class="underConstruction">{{ $t("underConstruction") }}</div>
+        <div v-if="underConstruction" class="underConstruction">
+          {{ $t("underConstruction") }}
+        </div>
 
         <!-- approproate component under pages will be displayed -->
         <nuxt v-if="isReadyToRender"></nuxt>
@@ -59,15 +65,18 @@
         <div class="flex-1">
           <div
             class="is-inline-block t-caption c-text-white-medium m-t-16 m-l-16"
-          >Operated by Singularity Society</div>
+          >
+            Operated by Singularity Society
+          </div>
         </div>
         <div class="align-right">
-          <div class="op-button-pill bg-sattle-white m-r-16 m-t-16" @click="openLang()">
+          <div
+            class="op-button-pill bg-sattle-white m-r-16 m-t-16"
+            @click="openLang()"
+          >
             <i class="material-icons c-text-white-high">language</i>
             <span class="c-text-white-high t-button">
-              {{
-              languages[language]
-              }}
+              {{ languages[language] }}
             </span>
             <i class="material-icons c-text-white-high">arrow_drop_down</i>
           </div>
@@ -78,15 +87,30 @@
     <!-- Language Popup-->
     <b-modal :active.sync="langPopup" :width="488" scroll="keep">
       <div class="op-dialog p-t-24 p-l-24 p-r-24 p-b-24">
-        <div class="t-h6 c-text-black-disabled p-b-8">{{ $t("menu.selectLanguage") }}</div>
-        <div class="m-t-16" v-for="(lang, lang_key) in languages" :key="lang_key">
-          <div class="op-button-pill bg-form" @click="changeLangAndClose(lang_key)">
-            <i class="material-icons c-text-black-high" v-if="lang_key == language">check</i>
+        <div class="t-h6 c-text-black-disabled p-b-8">
+          {{ $t("menu.selectLanguage") }}
+        </div>
+        <div
+          class="m-t-16"
+          v-for="(lang, lang_key) in languages"
+          :key="lang_key"
+        >
+          <div
+            class="op-button-pill bg-form"
+            @click="changeLangAndClose(lang_key)"
+          >
+            <i
+              class="material-icons c-text-black-high"
+              v-if="lang_key == language"
+              >check</i
+            >
             <span class="t-button">{{ lang }}</span>
           </div>
         </div>
         <div class="m-t-24 align-center">
-          <div class="op-button-small tertiary" @click="closeLang()">{{ $t("menu.close") }}</div>
+          <div class="op-button-small tertiary" @click="closeLang()">
+            {{ $t("menu.close") }}
+          </div>
         </div>
       </div>
     </b-modal>
@@ -193,7 +217,7 @@ export default {
           src.start(0);
           console.log("default: silent played");
 
-          const res = await fetch("/dora.mp3");
+          const res = await fetch("/notification_decorative-01.mp3");
           this.buffer = await res.arrayBuffer();
           this.pleyedSilent = true;
           this.$store.commit("soundEnable");

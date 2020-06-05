@@ -81,6 +81,9 @@ $op-colors: (
   margin-bottom: 0;
 }
 
+.level-left + .level-right {
+  margin-top: 0;
+}
 // Text Styles
 .t-h1 {
   font-weight: 300;
