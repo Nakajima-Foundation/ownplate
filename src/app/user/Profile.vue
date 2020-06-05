@@ -52,20 +52,22 @@
             </b-button>
           </div>
         </div>
-        <div v-else class="align-center">
-          <b-button
-            class="b-reset op-button-small"
-            style="background:#18b900"
-            tag="a"
-            :href="lineAuth"
-          >
-            <i class="fab fa-line c-text-white-full m-l-24 m-r-8" style="font-size:24px" />
-            <span class="c-text-white-full m-r-24">
-              {{
-              $t("line.notifyMe")
-              }}
-            </span>
-          </b-button>
+        <div v-else>
+          <div v-if="lineEnabled" class="align-center">
+            <b-button
+              class="b-reset op-button-small"
+              style="background:#18b900"
+              tag="a"
+              :href="lineAuth"
+            >
+              <i class="fab fa-line c-text-white-full m-l-24 m-r-8" style="font-size:24px" />
+              <span class="c-text-white-full m-r-24">
+                {{
+                $t("line.notifyMe")
+                }}
+              </span>
+            </b-button>
+          </div>
         </div>
         <div class="align-center m-t-24">
           <router-link to="/u/history">
@@ -136,6 +138,9 @@ export default {
     }
   },
   computed: {
+    lineEnabled() {
+      return !!ownPlateConfig.line;
+    },
     isWindowActive() {
       return this.$store.state.isWindowActive;
     },
