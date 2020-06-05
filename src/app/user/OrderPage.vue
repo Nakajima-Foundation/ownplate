@@ -226,7 +226,7 @@
                 </div>
 
                 <!-- Send SMS Checkbox -->
-                <div v-if="!lineEnabled" class="m-t-8">
+                <div v-if="!isLineEnabled" class="m-t-8">
                   <div class="bg-form r-8 p-l-16 p-r-16 p-t-16 p-b-16">
                     <b-checkbox v-model="sendSMS">
                       <span class="t-body2 c-text-black-high">
@@ -365,13 +365,10 @@ export default {
     },
     showAddLine() {
       return (
-        this.lineEnabled &&
+        this.isLineEnabled &&
         this.$store.state.claims &&
         !this.$store.state.claims.line
       );
-    },
-    lineEnabled() {
-      return !!ownPlateConfig.line;
     },
     timePlaced() {
       const date = this.orderInfo.timePlaced.toDate();

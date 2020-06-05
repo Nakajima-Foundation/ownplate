@@ -53,7 +53,7 @@
           </div>
         </div>
         <div v-else>
-          <div v-if="lineEnabled" class="align-center">
+          <div v-if="isLineEnabled" class="align-center">
             <b-button
               class="b-reset op-button-small"
               style="background:#18b900"
@@ -138,9 +138,6 @@ export default {
     }
   },
   computed: {
-    lineEnabled() {
-      return !!ownPlateConfig.line;
-    },
     isWindowActive() {
       return this.$store.state.isWindowActive;
     },

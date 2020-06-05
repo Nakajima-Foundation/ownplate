@@ -85,7 +85,7 @@ export default ({ app }) => {
 
           uploadTask.on(
             "state_changed",
-            (snapshot) => {},
+            (snapshot) => { },
             (err) => {
               rejected(err);
             },
@@ -98,6 +98,9 @@ export default ({ app }) => {
       },
     },
     computed: {
+      isLineEnabled() {
+        return !!ownPlateConfig.line;
+      },
       isJapan() {
         return ownPlateConfig.region === "JP";
       },
