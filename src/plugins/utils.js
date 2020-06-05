@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import { storage } from "~/plugins/firebase.js";
 import { ownPlateConfig } from "@/config/project";
+import { regionalSettings } from "~/plugins/constant.js";
 
 export default ({ app }) => {
   Vue.mixin({
@@ -98,6 +99,9 @@ export default ({ app }) => {
       },
     },
     computed: {
+      regionalSetting() {
+        return regionalSettings[ownPlateConfig.region || "US"];
+      },
       user() {
         return this.$store.state.user;
       },
