@@ -97,10 +97,10 @@ export default ({ app }) => {
           );
         });
       },
-      lineAuthURL(path, nonce) {
+      lineAuthURL(path, nonce, channelId) {
         const query = {
           response_type: "code",
-          client_id: ownPlateConfig.line.LOGIN_CHANNEL_ID,
+          client_id: channelId || ownPlateConfig.line.LOGIN_CHANNEL_ID,
           redirect_uri: location.origin + path,
           scope: "profile openid email",
           bot_prompt: "aggressive",

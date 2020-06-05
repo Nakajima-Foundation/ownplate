@@ -294,7 +294,6 @@ import { order_status } from "~/plugins/constant.js";
 import { nameOfOrder } from "~/plugins/strings.js";
 import { releaseConfig } from "~/plugins/config.js";
 import { stripeCreateIntent, stripeCancelIntent } from "~/plugins/stripe.js";
-import { ownPlateConfig } from "@/config/project";
 
 export default {
   name: "Order",
