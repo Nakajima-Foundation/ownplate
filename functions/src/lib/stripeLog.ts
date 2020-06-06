@@ -1,17 +1,19 @@
-// import * as admin from 'firebase-admin';
+import * as admin from 'firebase-admin';
 
-const accountIdToUID = (accountId) => {
-  const uid = "123";
-  return uid;
+const accountIdToUIDs = async (db, accountId) => {
+  const pubSnapshot = await db.collectionGroup("public").where("stripeAccount", "==", accountId).get();
+  return (pubSnapshot?.docs || []).map(doc => {
+    const uid = pubSnapshot.docs[0].ref.parent.parent.id;
+    return uid;
+  });
 };
 
 export const account_updated = async (db, event) => {
   const {data: {object} } = event;
   const { id } = object;
-  console.log(id);
-  const uid = accountIdToUID(id);
+  const uids = await accountIdToUIDs(db, id);
 
-  await callbackLog(db, uid, stripeActions.account_updated, event);
+  await callbackAdminLog(db, uids, stripeActions.account_updated, event);
 
   return {}
 }
@@ -20,11 +22,9 @@ export const capability_updated = async (db, event) => {
   const {data: {object} } = event;
   const { account } = object;
   console.log(account);
-
-  // todo
-  const uid = accountIdToUID(account);
+  const uids = await accountIdToUIDs(db, account);
   // log
-  await callbackLog(db, uid, stripeActions.capability_updated, event);
+  await callbackAdminLog(db, uids, stripeActions.capability_updated, event);
   return {};
 }
 
@@ -33,14 +33,17 @@ export const stripeActions = {
   account_updated: 2,
 };
 
-export const callbackLog = async (db, userId, action, log) => {
-  const payload = { data: {log: log.data.object, userId }, action, type: "callback" };
-  await storeAdminLog(db, userId, payload);
-  // console.log(JSON.stringify(log, undefined, 1));
-}
+export const callbackAdminLog = async (db, uids, action, log) => {
+  await Promise.all((uids.length > 0 ? uids : ['unknown']).map(async (uid) => {
+    console.log(uid, action)
+    const payload: any = {
+      data: {log: log.data.object },
+      action,
+      uid,
+      type: "callback",
+      created: (process.env.NODE_ENV !== "test") ?  admin.firestore.Timestamp.now() : Date.now()
+    };
 
-const storeAdminLog = async (db, adminUID, payload) => {
-  // payload.created = admin.firestore.Timestamp.now();
-  console.log(payload);
-  // await db.collection(`/admins/${adminUID}/stripeLogs`).add(payload);
+    await db.collection(`/admins/${uid}/stripeLogs`).add(payload);
+  }));
 }

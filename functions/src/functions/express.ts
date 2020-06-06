@@ -100,7 +100,7 @@ const debugError = async (req: any, res: any) => {
 
 export const stripe_parser = async (req, res) => {
   const stripe = utils.get_stripe();
-  const endpointSecret = utils.getStripeSecretKey();
+  const endpointSecret = utils.getStripeWebhookSecretKey();
 
   const sig = req.headers['stripe-signature'];
   try {
@@ -125,9 +125,9 @@ export const stripe_parser = async (req, res) => {
 
 
 
-router.get('/stripe/callback',
-           logger,
-           stripe_parser);
+router.post('/stripe/callback',
+            logger,
+            stripe_parser);
 
 
 app.use('/1.0', router);

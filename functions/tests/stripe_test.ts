@@ -14,7 +14,13 @@ should()
 
 describe('stripe tests', () => {
   it ('capability_updated stripe test', async function() {
+    const uid = "aaabbbccc";
+    adminDB.doc(`admins/${uid}/public/stripe`).set({
+      stripeAccount: "acct_xxxxxxxx",
+      isConnected: true
+    })
     await stripeLog.capability_updated(adminDB, { data: test_jcb_data.jcb_one});
+
   });
 
   it ('account_updated stripe test', async function() {

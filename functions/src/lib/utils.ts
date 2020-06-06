@@ -24,6 +24,9 @@ export const validate_auth = (context: functions.https.CallableContext) => {
   return context.auth.uid
 }
 
+export const getStripeWebhookSecretKey = () => {
+  return functions.config() && functions.config().stripe && functions.config().stripe.whsecret_key || process.env.WH_STRIPE_SECRET;
+}
 export const getStripeSecretKey = () => {
   return functions.config() && functions.config().stripe && functions.config().stripe.secret_key || process.env.STRIPE_SECRET;
 }
