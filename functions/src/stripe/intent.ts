@@ -4,16 +4,15 @@ import { order_status } from '../common/constant'
 import Stripe from 'stripe'
 import Order from '../models/Order'
 import * as utils from '../lib/utils'
-import { sendMessage } from '../functions/order';
-import * as line from '../functions/line'
+import { sendMessage, sendMessageToRestaurant } from '../functions/order';
 
 // This function is called by user to create a "payment intent" (to start the payment transaction)
 export const create = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
   const stripe = utils.get_stripe();
 
-  const { orderId, restaurantId, paymentMethodId, tip, sendSMS, timeToPickup } = data;
-  utils.validate_params({ orderId, restaurantId }); // paymentMethodId, tip and sendSMS are optional
+  const { orderId, restaurantId, paymentMethodId, tip, sendSMS, timeToPickup, lng } = data;
+  utils.validate_params({ orderId, restaurantId }); // lng, paymentMethodId, tip and sendSMS are optional
 
   const restaurantData = await utils.get_restaurant(db, restaurantId);
   const venderId = restaurantData['uid']
@@ -25,12 +24,14 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
   }
 
   try {
+    let orderNumber: string = "";
     const result = await db.runTransaction(async transaction => {
 
       const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`)
       const stripeRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}/system/stripe`)
       const snapshot = await transaction.get(orderRef)
       const order = Order.fromSnapshot<Order>(snapshot)
+      orderNumber = "#" + `00${order.number}`.slice(-3)
 
       // Check the stock status.
       if (order.status !== order_status.validation_ok) {
@@ -101,12 +102,10 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
     })
 
     const docs = (await db.collection(`/restaurants/${restaurantId}/lines`).get()).docs;
-    console.log("*** docs", docs.length);
     docs.forEach(async doc => {
       const lineUser = doc.data();
-      console.log("*** lineUser", lineUser);
       if (lineUser.notify) {
-        await line.sendMessageDirect(doc.id, "You've got a new order!")
+        await sendMessageToRestaurant(lng, 'msg_order_placed', orderNumber, doc.id, restaurantId, orderId)
       }
     });
 

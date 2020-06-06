@@ -148,6 +148,18 @@ export const sendMessage = async (db: FirebaseFirestore.Firestore, lng: string,
   }
 }
 
+export const sendMessageToRestaurant = async (lng: string,
+  msgKey: string, orderNumber: string, lineId: string,
+  restaurantId: string, orderId: string) => {
+  const t = await i18next.init({
+    lng: lng || utils.getStripeRegion().langs[0],
+    resources
+  })
+  const url = `https://${ownPlateConfig.hostName}/admin/restaurants/${restaurantId}/orders/${orderId}?openExternalBrowser=1`
+  const message = `${t(msgKey)} ${orderNumber} ${url}`;
+  await line.sendMessageDirect(lineId, message)
+}
+
 export const getMenuObj = async (refRestaurant) => {
   const menuObj = {};
   const menusCollections = await refRestaurant.collection("menus").get();

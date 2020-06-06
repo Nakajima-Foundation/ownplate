@@ -155,7 +155,7 @@ export const validate = async (db: FirebaseFirestore.Firestore, data: any, conte
   }
 }
 
-export const sendMessageDirect = async (sub: string, message: string) => {
+export const sendMessageDirect = async (lineId: string, message: string) => {
   const LINE_MESSAGE_TOKEN = functions.config().line.message_token;
   return netutils.postJson('https://api.line.me/v2/bot/message/push', {
     headers: {
@@ -163,7 +163,7 @@ export const sendMessageDirect = async (sub: string, message: string) => {
       Authorization: `Bearer ${LINE_MESSAGE_TOKEN}`
     }
   }, {
-    to: sub,
+    to: lineId,
     messages: [
       { type: "text", text: message }
     ]
