@@ -10,7 +10,7 @@
         </span>
       </b-button>
     </div>
-    <div class="m-t-8">
+    <div class="m-t-16">
       <div v-for="lineUser in lineUsers" :key="lineUser.id" @click="handleToggle(lineUser)">
         <i :class="iconClass(lineUser)" />
         {{ lineUser.displayName }}

@@ -4,7 +4,7 @@ import { order_status } from '../common/constant'
 import Stripe from 'stripe'
 import Order from '../models/Order'
 import * as utils from '../lib/utils'
-import { sendMessage, sendMessageToRestaurant } from '../functions/order';
+import { sendMessage, notifyNewOrder } from '../functions/order';
 
 // This function is called by user to create a "payment intent" (to start the payment transaction)
 export const create = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
@@ -24,14 +24,14 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
   }
 
   try {
-    let orderNumber: string = "";
+    let orderNumber: number = 0;
     const result = await db.runTransaction(async transaction => {
 
       const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`)
       const stripeRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}/system/stripe`)
       const snapshot = await transaction.get(orderRef)
       const order = Order.fromSnapshot<Order>(snapshot)
-      orderNumber = "#" + `00${order.number}`.slice(-3)
+      orderNumber = order.number;
 
       // Check the stock status.
       if (order.status !== order_status.validation_ok) {
@@ -101,13 +101,7 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
       }
     })
 
-    const docs = (await db.collection(`/restaurants/${restaurantId}/lines`).get()).docs;
-    docs.forEach(async doc => {
-      const lineUser = doc.data();
-      if (lineUser.notify) {
-        await sendMessageToRestaurant(lng, 'msg_order_placed', orderNumber, doc.id, restaurantId, orderId)
-      }
-    });
+    await notifyNewOrder(db, restaurantId, orderId, orderNumber, lng);
 
     return result;
   } catch (error) {

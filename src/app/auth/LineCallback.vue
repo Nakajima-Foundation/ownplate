@@ -31,6 +31,7 @@ export default {
         if (data.nonce && data.profile) {
           this.user.getIdTokenResult(true).then(result => {
             this.$store.commit("setCustomClaims", result.claims);
+            console.log("isLineuser", this.isLineUser);
             if (this.isLineUser) {
               // End-user case
               this.$router.push(data.nonce);
