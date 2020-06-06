@@ -335,7 +335,9 @@
       "cancelTitle": "Order Canceling",
       "cancelMessage": "Please contact to the customer and tell the order will be canceled.",
       "delete": "Cancel this order",
-      "deleteConfirm": "(This action is undoable)"
+      "deleteConfirm": "(This action is undoable)",
+      "line": "LINE Notification",
+      "lineAdd": "Add a LINE account"
     },
     "qrcode": {
       "title": "QRcodes",
