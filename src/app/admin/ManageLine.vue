@@ -39,25 +39,15 @@ export default {
     const lineId = this.$route.query.userId;
     const displayName = this.$route.query.displayName;
     if (lineId && displayName) {
-      try {
-        await db.doc(`restaurants/${this.restaurantId()}/lines/${lineId}`).set(
-          {
-            displayName,
-            notify: true
-          },
-          { merge: true }
-        );
-        console.log("registered lineId", lineId);
-        this.$router.replace(location.pathname);
-      } catch (error) {
-        console.error(error.message);
-        // BUGBUG: code
-        this.$store.commit("setErrorMessage", {
-          code: "line.validation",
-          message2: error.message,
-          error
-        });
-      }
+      await db.doc(`restaurants/${this.restaurantId()}/lines/${lineId}`).set(
+        {
+          displayName,
+          notify: true
+        },
+        { merge: true }
+      );
+      console.log("registered lineId", lineId);
+      this.$router.replace(location.pathname);
     }
   },
   async mounted() {
