@@ -46,10 +46,6 @@ describe('express function', () => {
     const response = await request.get('/users');
     response.status.should.equal(404);
 
-    const hello_response = await request.get('/1.0/hello');
-    hello_response.status.should.equal(200);
-
-
     const restaurant_response = await request.get('/r/testbar');
     restaurant_response.status.should.equal(200);
 
@@ -68,9 +64,6 @@ describe('express function', () => {
     // const db_data = await adminDB.doc(`restaurants/testbar`).get();
     const response = await request.get('/users');
     response.status.should.equal(404);
-
-    const hello_response = await request.get('/1.0/hello');
-    hello_response.status.should.equal(200);
 
     const restaurant_response = await request.get('/r/testbar');
     restaurant_response.status.should.equal(200);

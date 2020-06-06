@@ -5,6 +5,9 @@ import { ownPlateConfig } from '../common/project';
 
 import * as Sentry from '@sentry/node';
 
+import * as utils from '../lib/utils'
+import * as stripeLog from '../lib/stripeLog';
+
 export const app = express();
 export const router = express.Router();
 
@@ -95,13 +98,36 @@ const debugError = async (req: any, res: any) => {
   }, 10);
 };
 
-router.get('/hello',
-  logger,
-  hello_response);
+export const stripe_parser = async (req, res) => {
+  const stripe = utils.get_stripe();
+  const endpointSecret = utils.getStripeSecretKey();
+
+  const sig = req.headers['stripe-signature'];
+  try {
+    const event = stripe.webhooks.constructEvent(req.rawBody.toString(), sig, endpointSecret);
+
+    // const {data:{object}} = event
+    if (!event) {
+      return res.status(400).send(`Webhook Error: unknow error`);
+    }
+
+    if (event.type === "capability.updated") {
+      await stripeLog.capability_updated(db, event)
+    } else if (event.type === "account.updated") {
+      await stripeLog.account_updated(db, event);
+    }
+    res.json({});
+  } catch (err) {
+    res.status(400).send(`Webhook Error: ${err.message}`);
+  }
+};
+
+
+
 
 router.get('/stripe/callback',
-  logger,
-  hello_response);
+           logger,
+           stripe_parser);
 
 
 app.use('/1.0', router);
