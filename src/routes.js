@@ -50,6 +50,16 @@ export const customRoutes = [
     component: 'admin/MenuItemPage.vue',
   },
   {
+    name: 'admin-news-list',
+    path: '/admin/news',
+    component: 'admin/News/List.vue',
+  },
+  {
+    name: 'admin-news-article',
+    path: '/admin/news/:newsId',
+    component: 'admin/News/Article.vue',
+  },
+  {
     name: 'admin-orders',
     path: '/admin/restaurants/:restaurantId/orders',
     component: 'admin/OrderListPage.vue',
