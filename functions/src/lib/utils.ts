@@ -24,8 +24,12 @@ export const validate_auth = (context: functions.https.CallableContext) => {
   return context.auth.uid
 }
 
+export const getStripeSecretKey = () => {
+  return functions.config() && functions.config().stripe && functions.config().stripe.secret_key || process.env.STRIPE_SECRET;
+}
+
 export const get_stripe = () => {
-  const STRIPE_SECRET_KEY = functions.config().stripe.secret_key
+  const STRIPE_SECRET_KEY = getStripeSecretKey();
   if (!STRIPE_SECRET_KEY) {
     throw new functions.https.HttpsError('invalid-argument', 'The functions requires STRIPE_SECRET_KEY.')
   }
