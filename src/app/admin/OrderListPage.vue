@@ -58,7 +58,7 @@
                 :to="`/admin/restaurants/${restaurantId()}/line`"
               >
                 <i class="fab fa-line m-r-8 c-status-green" style="font-size:24px" />
-                <span class="c-status-green t-button">{{$t("admin.order.soundOn")}}</span>
+                <span class="c-status-green t-button">{{$t("admin.order.line")}}</span>
               </router-link>
             </div>
           </div>

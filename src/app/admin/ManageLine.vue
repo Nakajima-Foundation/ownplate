@@ -1,27 +1,34 @@
 <template>
-  <section class="section">
+  <div class="m-l-24 m-r-24">
+    <!-- Back Button -->
+    <back-button :url="`/admin/restaurants/${restaurantId()}/orders`" class="m-t-24" />
     <div class="align-center">
       <b-button class="b-reset op-button-small" style="background:#18b900" tag="a" :href="lineAuth">
         <i class="fab fa-line c-text-white-full m-l-24 m-r-8" style="font-size:24px" />
         <span class="c-text-white-full m-r-24">
           {{
-          $t("line.notifyMe")
+          $t("admin.order.lineAdd")
           }}
         </span>
       </b-button>
     </div>
-    <div class="m-t-16">
+    <div class="m-t-24">
       <div v-for="lineUser in lineUsers" :key="lineUser.id" @click="handleToggle(lineUser)">
         <i :class="iconClass(lineUser)" />
         {{ lineUser.displayName }}
       </div>
     </div>
-  </section>
+  </div>
 </template>
 
 <script>
 import { db } from "~/plugins/firebase.js";
+import BackButton from "~/components/BackButton";
+
 export default {
+  components: {
+    BackButton
+  },
   data() {
     return {
       lineUsers: [],
