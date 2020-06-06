@@ -147,6 +147,9 @@ export const validate = async (db: FirebaseFirestore.Firestore, data: any, conte
       await db.doc(`/users/${uid}/system/line`).set({
         access, verified, profile
       }, { merge: true })
+    } else {
+      // Remove unnecessary claims from previous version.
+      await admin.auth().setCustomUserClaims(uid, { line: null })
     }
 
     return { profile, nonce: verified.nonce };
