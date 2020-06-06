@@ -32,8 +32,10 @@ export default {
           this.user.getIdTokenResult(true).then(result => {
             this.$store.commit("setCustomClaims", result.claims);
             if (this.isLineUser) {
+              // End-user case
               this.$router.push(data.nonce);
             } else {
+              // Restaurant operator case
               this.$router.push(
                 `${data.nonce}?userId=${
                   data.profile.userId

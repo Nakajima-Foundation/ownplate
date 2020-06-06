@@ -5,6 +5,7 @@ import Stripe from 'stripe'
 import Order from '../models/Order'
 import * as utils from '../lib/utils'
 import { sendMessage } from '../functions/order';
+import * as line from '../functions/line'
 
 // This function is called by user to create a "payment intent" (to start the payment transaction)
 export const create = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
@@ -24,7 +25,7 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
   }
 
   try {
-    return await db.runTransaction(async transaction => {
+    const result = await db.runTransaction(async transaction => {
 
       const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`)
       const stripeRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}/system/stripe`)
@@ -98,6 +99,18 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
         success: true
       }
     })
+
+    const docs = (await db.collection(`/restaurants/${restaurantId}/lines`).get()).docs;
+    console.log("*** docs", docs.length);
+    docs.forEach(async doc => {
+      const lineUser = doc.data();
+      console.log("*** lineUser", lineUser);
+      if (lineUser.notify) {
+        await line.sendMessageDirect(doc.id, "You've got a new order!")
+      }
+    });
+
+    return result;
   } catch (error) {
     throw utils.process_error(error)
   }
