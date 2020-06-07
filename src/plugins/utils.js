@@ -98,7 +98,7 @@ export default ({ app }) => {
           );
         });
       },
-      lineAuthURL(path, nonce, channelId) {
+      lineAuthURL(path, nonce, channelId, options) {
         const state = "s" + Math.random();
         console.log("lineAuthURL", state)
         const query = {
@@ -110,7 +110,8 @@ export default ({ app }) => {
           state,
           nonce
         };
-        const params = JSON.stringify({ state });
+        const params = JSON.stringify(Object.assign({}, options || {},
+          { state, nonce }));
         document.cookie = `line_params=${encodeURIComponent(params)};path=/callback/line`;
         console.log("cookies", Cookie.parse(document.cookie))
         const queryString = Object.keys(query)
@@ -120,7 +121,7 @@ export default ({ app }) => {
           .join("&");
         return `https://access.line.me/oauth2/v2.1/authorize?${queryString}`;
       },
-      lineGuard() {
+      lineGuard(nonce) {
         const state = this.$route.query.state;
         const cookies = Cookie.parse(document.cookie);
         console.log(cookies);
