@@ -4,7 +4,10 @@
       <div class="cols">
         <div class="flex-1 p-l-16 p-r-16 p-t-16 p-b-16">
           <div class="t-h6 c-text-black-high">{{ menu.itemName }}</div>
-          <div class="c-status-blue t-h5 m-t-8">x {{ item.count }}</div>
+          <div class="t-h4 c-text-black-medium m-t-8">
+            <i class="material-icons" style="vertical-align: middle;">close</i>
+            <span>{{ item.count }}</span>
+          </div>
           <div class="t-body1 c-text-black-high m-t-8">{{ item.option }}</div>
         </div>
         <div class="p-r-16 p-t-16 p-b-16">

@@ -96,10 +96,11 @@ export const authenticate = async (db: FirebaseFirestore.Firestore, data: any, c
 }
 
 export const validate = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
-  const { code, redirect_uri, client_id } = data;
   const uid = utils.validate_auth(context);
 
+  const { code, redirect_uri, client_id } = data;
   utils.validate_params({ code, redirect_uri, client_id })
+
   const LINE_SECRET_KEY = functions.config().line.secret;
 
   try {
@@ -126,8 +127,7 @@ export const validate = async (db: FirebaseFirestore.Firestore, data: any, conte
     })
     if (!verified.sub) {
       throw new functions.https.HttpsError('invalid-argument',
-        'Verification failed.', { params: verified }
-      )
+        'Verification failed.', { params: verified })
     }
 
     // We get user's profile
@@ -137,15 +137,17 @@ export const validate = async (db: FirebaseFirestore.Firestore, data: any, conte
       }
     })
 
-    // Set custom claim
-    await admin.auth().setCustomUserClaims(uid, {
-      line: `line:${profile.userId}`
-    })
+    const lineUid = `line:${profile.userId}`
+    if (context.auth!.token.phone_number) {
+      // For end-user, seet the custom claim
+      await admin.auth().setCustomUserClaims(uid, {
+        line: lineUid
+      })
 
-    const collection = context.auth!.token.phone_number ? "users" : "admins";
-    await db.doc(`/${collection}/${uid}/system/line`).set({
-      access, verified, profile
-    }, { merge: true })
+      await db.doc(`/users/${uid}/system/line`).set({
+        access, verified, profile
+      }, { merge: true })
+    }
 
     return { profile, nonce: verified.nonce };
   } catch (error) {

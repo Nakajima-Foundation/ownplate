@@ -1,5 +1,8 @@
 <template>
 <div>
+  <div v-if="notFound==null"></div>
+  <!-- Never show before load restaurant data -->
+  <div v-else>
   <!-- Edit Header Area -->
   <div class="columns is-gapless">
     <!-- Left Gap -->
@@ -530,6 +533,7 @@
       <div class="column is-narrow w-24"></div>
     </div>
   </div>
+  </div>
 </template>
 
 <script>
@@ -547,7 +551,7 @@ import HoursInput from "./inputComponents/HoursInput";
 import TextForm from "./inputComponents/TextForm";
 import State from "./inputComponents/State";
 
-import { taxRates, daysOfWeek, regionalSettings, reservationTheDayBefore } from "~/plugins/constant.js";
+import { taxRates, daysOfWeek, reservationTheDayBefore } from "~/plugins/constant.js";
 
 export default {
   name: "Order",
@@ -562,19 +566,17 @@ export default {
   },
 
   data() {
-    const regionalSetting = regionalSettings[ownPlateConfig.region || "US"];
-
     return {
       reservationTheDayBefore,
       taxRates: taxRates,
-      taxRateKeys: regionalSetting["taxRateKeys"],
+      taxRateKeys: [],
 
       examplePriceI18n: this.$n(1000, "currency"),
       sampleMenu: { price: 1000, tax: "food" },
-      requireTaxInput: regionalSetting.requireTaxInput,
-      requireTaxPriceDisplay: regionalSetting.requireTaxPriceDisplay,
+      requireTaxInput: false,
+      requireTaxPriceDisplay: false,
 
-      defaultTax: regionalSetting.defaultTax,
+      defaultTax: {},
       disabled: false, // ??
       filteredItems: [], // ??
       test: null,
@@ -630,6 +632,11 @@ export default {
     };
   },
   async created() {
+    this.taxRateKeys = this.regionalSetting["taxRateKeys"];
+    this.requireTaxInput = this.regionalSetting.requireTaxInput;
+    this.requireTaxPriceDisplay = this.regionalSetting.requireTaxPriceDisplay;
+    this.defaultTax = this.regionalSetting.defaultTax;
+
     this.checkAdminPermission();
 
     // never use onSnapshot here.
@@ -845,6 +852,8 @@ export default {
           introduction: this.shopInfo.introduction,
           orderNotice: this.shopInfo.orderNotice,
           orderThanks: this.shopInfo.orderThanks,
+          pickUpMinimumCookTime: this.shopInfo.pickUpMinimumCookTime,
+          pickUpDaysInAdvance: this.shopInfo.pickUpDaysInAdvance,
           foodTax: Number(this.shopInfo.foodTax),
           alcoholTax: Number(this.shopInfo.alcoholTax),
           openTimes: this.shopInfo.openTimes,

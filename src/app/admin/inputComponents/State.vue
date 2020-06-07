@@ -24,9 +24,6 @@
 </template>
 
 <script>
-import { ownPlateConfig } from "@/config/project";
-import { regionalSettings } from "~/plugins/constant.js";
-
 export default {
   name: "State",
   props: {
@@ -45,11 +42,14 @@ export default {
     }
   },
   data() {
-    const regionalSetting = regionalSettings[ownPlateConfig.region || "US"];
     return {
-      states: regionalSetting.AddressStates,
-      state_key: regionalSetting.StateKey || "shopInfo.state"
+      states: [],
+      state_key: ""
     };
+  },
+  created() {
+    this.states = this.regionalSetting.AddressStates;
+    this.state_key = this.regionalSetting.StateKey || "shopInfo.state";
   }
 };
 </script>

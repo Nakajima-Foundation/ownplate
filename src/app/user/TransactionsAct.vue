@@ -130,9 +130,7 @@ export default {
           const restaurant_data = restaurant.data();
           this.shopInfo = restaurant_data;
           const uid = restaurant_data.uid;
-          const snapshot = await db
-                .doc(`/admins/${uid}/public/payment`)
-                .get();
+          const snapshot = await db.doc(`/admins/${uid}/public/payment`).get();
           this.paymentInfo = snapshot.data() || {};
           this.notFound = false;
         } else {
@@ -150,6 +148,9 @@ export default {
   computed: {
     // BUGBUG: We need to determine what we want to diplay for EU
     nationalPhoneNumber() {
+      if (!this.shopInfo.phoneNumber) {
+        return "";
+      }
       const number = this.parsedNumber;
       if (number) {
         return formatNational(number);
@@ -158,11 +159,11 @@ export default {
       return this.shopInfo.phoneNumber;
     },
     parsedNumber() {
-      //console.log("countryCode", this.shopInfo.countryCode);
       const countryCode = this.shopInfo.countryCode || this.countries[0].code;
       try {
         return parsePhoneNumber(countryCode + this.shopInfo.phoneNumber);
       } catch (error) {
+        console.error(error);
         return null;
       }
     },
@@ -178,7 +179,7 @@ export default {
     },
     inStorePayment() {
       return this.paymentInfo.inStore;
-    },
+    }
   },
   methods: {
     validDate(date) {

@@ -52,20 +52,22 @@
             </b-button>
           </div>
         </div>
-        <div v-else class="align-center">
-          <b-button
-            class="b-reset op-button-small"
-            style="background:#18b900"
-            tag="a"
-            :href="lineAuth"
-          >
-            <i class="fab fa-line c-text-white-full m-l-24 m-r-8" style="font-size:24px" />
-            <span class="c-text-white-full m-r-24">
-              {{
-              $t("line.notifyMe")
-              }}
-            </span>
-          </b-button>
+        <div v-else>
+          <div v-if="isLineEnabled" class="align-center">
+            <b-button
+              class="b-reset op-button-small"
+              style="background:#18b900"
+              tag="a"
+              :href="lineAuth"
+            >
+              <i class="fab fa-line c-text-white-full m-l-24 m-r-8" style="font-size:24px" />
+              <span class="c-text-white-full m-r-24">
+                {{
+                $t("line.notifyMe")
+                }}
+              </span>
+            </b-button>
+          </div>
         </div>
         <div class="align-center m-t-24">
           <router-link to="/u/history">
@@ -126,9 +128,6 @@ export default {
         this.checkFriend();
       }
     },
-    user() {
-      this.loginVisible = false;
-    },
     isLineUser(newValue) {
       if (this.isFriend === undefined) {
         this.checkFriend();
@@ -143,33 +142,10 @@ export default {
       return ownPlateConfig.line.FRIEND_LINK;
     },
     lineAuth() {
-      const query = {
-        response_type: "code",
-        client_id: ownPlateConfig.line.LOGIN_CHANNEL_ID,
-        redirect_uri: this.redirect_uri,
-        scope: "profile openid email",
-        bot_prompt: "aggressive",
-        state: "s" + Math.random(), // LATER: Make it more secure
-        nonce: location.pathname // HACK: Repurposing nonce
-      };
-      const queryString = Object.keys(query)
-        .map(key => {
-          return key + "=" + encodeURIComponent(query[key]);
-        })
-        .join("&");
-      return `https://access.line.me/oauth2/v2.1/authorize?${queryString}`;
-    },
-    redirect_uri() {
-      return location.origin + "/callback/line";
-    },
-    user() {
-      return this.$store.state.user;
+      return this.lineAuthURL("/callback/line", location.pathname);
     },
     claims() {
       return this.$store.state.claims;
-    },
-    isLineUser() {
-      return !!this.claims?.line;
     },
     lineConnection() {
       return this.isLineUser

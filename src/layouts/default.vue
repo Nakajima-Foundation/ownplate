@@ -64,11 +64,7 @@
         <div class="align-right">
           <div class="op-button-pill bg-sattle-white m-r-16 m-t-16" @click="openLang()">
             <i class="material-icons c-text-white-high">language</i>
-            <span class="c-text-white-high t-body1">
-              {{
-              languages[language]
-              }}
-            </span>
+            <span class="c-text-white-high t-button">{{ languages[language] }}</span>
             <i class="material-icons c-text-white-high">arrow_drop_down</i>
           </div>
         </div>
@@ -82,7 +78,7 @@
         <div class="m-t-16" v-for="(lang, lang_key) in languages" :key="lang_key">
           <div class="op-button-pill bg-form" @click="changeLangAndClose(lang_key)">
             <i class="material-icons c-text-black-high" v-if="lang_key == language">check</i>
-            <span class="t-body1">{{ lang }}</span>
+            <span class="t-button">{{ lang }}</span>
           </div>
         </div>
         <div class="m-t-24 align-center">
@@ -95,9 +91,7 @@
 
 <script>
 import { db, auth, functions } from "@/plugins/firebase.js";
-import { regionalSettings } from "~/plugins/constant.js";
 import { releaseConfig } from "~/plugins/config.js";
-import { ownPlateConfig } from "@/config/project";
 import DialogBox from "~/components/DialogBox";
 
 export default {
@@ -105,10 +99,9 @@ export default {
     DialogBox
   },
   data() {
-    const regionalSetting = regionalSettings[ownPlateConfig.region || "US"];
     return {
-      language: regionalSetting.defaultLanguage,
-      languages: regionalSetting.languages,
+      language: "en",
+      languages: [],
       items: [
         {
           title: "Home",
@@ -123,8 +116,8 @@ export default {
       ],
       unregisterAuthObserver: null,
       timerId: null,
-      logo: regionalSetting.Logo,
-      logo2: regionalSetting.Logo2,
+      logo: "",
+      logo2: "",
       // todo support scrset https://kanoto.info/201912/673/
       // srcset: regionalSetting.Logo.map((logo) => {}
 
@@ -166,9 +159,6 @@ export default {
     underConstruction() {
       return releaseConfig.underConstruction;
     },
-    user() {
-      return this.$store.state.user;
-    },
     hasUser() {
       return !this.isNull(this.$store.state.user);
     },
@@ -199,7 +189,7 @@ export default {
           src.start(0);
           console.log("default: silent played");
 
-          const res = await fetch("/dora.mp3");
+          const res = await fetch("/notification_decorative-01.mp3");
           this.buffer = await res.arrayBuffer();
           this.pleyedSilent = true;
           this.$store.commit("soundEnable");
@@ -208,7 +198,7 @@ export default {
           Sentry.captureException(e, {
             tags: {
               view: "layouts/default",
-              methods: "enableSound",
+              methods: "enableSound"
             }
           });
           console.log("default: layout sound not enabled");
@@ -298,13 +288,13 @@ export default {
           }
         }
         user.getIdTokenResult(true).then(result => {
+          this.$store.commit("setUser", user);
           this.$store.commit("setCustomClaims", result.claims);
         });
       } else {
         console.log("authStateChanged: null");
+        this.$store.commit("setUser", null);
       }
-
-      this.$store.commit("setUser", user);
     });
   },
   watch: {
@@ -334,6 +324,11 @@ export default {
     }
   },
   async created() {
+    this.language = this.regionalSetting.defaultLanguage;
+    this.languages = this.regionalSetting.languages;
+    this.logo = this.regionalSetting.Logo;
+    this.logo2 = this.regionalSetting.Logo2;
+
     this.timerId = window.setInterval(() => {
       this.$store.commit("updateDate");
     }, 60 * 1000);

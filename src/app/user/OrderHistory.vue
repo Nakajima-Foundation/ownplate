@@ -37,12 +37,10 @@
             />
           </div>
 
-          <!-- Phone Login -->
-          <b-modal :active.sync="loginVisible" :width="640">
-            <div class="card">
-              <div class="card-content">
-                <phone-login v-on:dismissed="handleDismissed" />
-              </div>
+          <!-- Phone Login-->
+          <b-modal :active.sync="loginVisible" :width="488" scroll="keep">
+            <div class="op-dialog p-t-24 p-l-24 p-r-24 p-b-24">
+              <phone-login v-on:dismissed="handleDismissed" />
             </div>
           </b-modal>
         </div>
@@ -73,7 +71,7 @@ export default {
     };
   },
   async created() {
-    console.log("created", this.uid);
+    //console.log("created", this.uid);
     this.loginVisible = !this.uid;
     this.getHistory();
   },
