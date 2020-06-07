@@ -44,16 +44,17 @@ export default {
         });
         console.log(data);
         if (data.nonce && data.profile && data.customToken) {
-          console.log("validation succeded");
+          const params = this.lineGuard(data.nonce);
+          console.log("validation succeded", params.traceId);
           const user = await auth.signInWithCustomToken(data.customToken);
-          console.log("signInWithCustomToken", user);
+          //console.log("signInWithCustomToken", user);
           const lineSetCustomClaim = functions.httpsCallable(
             "lineSetCustomClaim"
           );
           const result = await lineSetCustomClaim();
-          console.log("result", result);
+          console.log("lineSetCustomClaim", result.data);
           if (user) {
-            this.$router.replace(`/t/${data.nonce}`);
+            this.$router.replace(`/t/${params.traceId}`);
           }
         } else {
           console.error("validatin failed", data);

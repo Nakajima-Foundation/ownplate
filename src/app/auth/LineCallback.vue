@@ -33,7 +33,7 @@ export default {
         console.log(data);
 
         if (data.nonce && data.profile) {
-          const params = this.lineGuard();
+          const params = this.lineGuard(data.nonce);
           console.log("*** params", params);
 
           this.user.getIdTokenResult(true).then(result => {

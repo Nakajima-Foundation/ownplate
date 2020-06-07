@@ -103,7 +103,10 @@ export default {
       return this.lineAuthURL(
         "/callback/track",
         `${this.traceId}`,
-        ownPlateConfig.line.TRACK_CHANNEL_ID
+        ownPlateConfig.line.TRACK_CHANNEL_ID,
+        {
+          traceId: this.traceId
+        }
       );
     }
   }
