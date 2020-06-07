@@ -27,6 +27,11 @@ export default {
       detacher: null
     };
   },
+  async mounted() {
+    if (!this.$store.state.user || this.$store.getters.isNotSuperAdmin) {
+      this.$router.push("/");
+    }
+  },
   created() {
     this.detatcher = db
       .collectionGroup("orders")
