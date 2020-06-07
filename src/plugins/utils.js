@@ -112,7 +112,7 @@ export default ({ app }) => {
         };
         const params = JSON.stringify(Object.assign({}, options || {},
           { state, nonce }));
-        document.cookie = `line_params=${encodeURIComponent(params)};path=/callback/line`;
+        document.cookie = `line_params=${encodeURIComponent(params)};path=${path}`;
         console.log("cookies", Cookie.parse(document.cookie))
         const queryString = Object.keys(query)
           .map(key => {
