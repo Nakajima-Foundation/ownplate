@@ -80,7 +80,7 @@ export default {
   },
   computed: {
     lineAuth() {
-      return this.lineAuthURL("/callback/line", location.pathname, null, {
+      return this.lineAuthURL("/callback/line", {
         pathname: location.pathname
       });
     }

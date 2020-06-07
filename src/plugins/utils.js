@@ -98,7 +98,7 @@ export default ({ app }) => {
           );
         });
       },
-      lineAuthURL(path, obsolete, channelId, options) {
+      lineAuthURL(path, options, channelId) {
         const state = "s" + Math.random();
         const nonce = "n" + Math.random();
         console.log("lineAuthURL", state)
