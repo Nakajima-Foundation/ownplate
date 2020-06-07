@@ -68,9 +68,6 @@ export default {
     }
   },
   computed: {
-    user() {
-      return this.$store.state.user;
-    },
     code() {
       return this.$route.query.code;
     },

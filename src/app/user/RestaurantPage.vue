@@ -74,16 +74,12 @@
         </div>
       </div>
 
-      <!-- shop-orner -->
-      <div>
-        <b-modal :active.sync="loginVisible" :width="640">
-          <div class="card">
-            <div class="card-content">
-              <phone-login v-on:dismissed="handleDismissed" />
-            </div>
-          </div>
-        </b-modal>
-      </div>
+      <!-- Phone Login-->
+      <b-modal :active.sync="loginVisible" :width="488" scroll="keep">
+        <div class="op-dialog p-t-24 p-l-24 p-r-24 p-b-24">
+          <phone-login v-on:dismissed="handleDismissed" />
+        </div>
+      </b-modal>
 
       <!-- Cart Button -->
       <b-button
@@ -238,9 +234,6 @@ export default {
     menuLists() {
       const list = this.shopInfo.menuLists || [];
       return list;
-    },
-    user() {
-      return this.$store.state.user;
     },
     trimmedOptions() {
       return Object.keys(this.orders).reduce((ret, id) => {

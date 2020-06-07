@@ -225,7 +225,7 @@ export const regionalSettings = {
     },
     defaultLanguage: "en",
     languages: {
-      en: "English(US)",
+      en: "English (US)",
       es: "Español",
       ja: "日本語"
     },
@@ -262,7 +262,7 @@ export const regionalSettings = {
     defaultLanguage: "ja",
     languages: {
       ja: "日本語",
-      en: "English(US)"
+      en: "English (US)"
     },
     covid19trace: true
   },
@@ -292,7 +292,7 @@ export const regionalSettings = {
     },
     defaultLanguage: "en",
     languages: {
-      en: "English(US)",
+      en: "English (US)",
       es: "Español",
       de: "Deutsch",
       fr: "Le français",

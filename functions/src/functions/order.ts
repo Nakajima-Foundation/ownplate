@@ -201,7 +201,7 @@ export const wasOrderCreated = async (db, data: any, context) => {
     let alcohol_sub_total = 0;
 
     const newOrderData = {};
-    const newOrderPrices = {};
+    const newItems = {};
     Object.keys(orderData.order).map((menuId) => {
       const num = orderData.order[menuId];
       if (!Number.isInteger(num)) {
@@ -222,7 +222,7 @@ export const wasOrderCreated = async (db, data: any, context) => {
         food_sub_total += (menu.price * num)
       }
       newOrderData[menuId] = num;
-      newOrderPrices[menuId] = menu.price;
+      newItems[menuId] = { price: menu.price, itemName: menu.itemName };
     });
 
     const multiple = utils.getStripeRegion().multiple; //100 for USD, 1 for JPY
@@ -250,7 +250,7 @@ export const wasOrderCreated = async (db, data: any, context) => {
 
     return orderRef.update({
       order: newOrderData,
-      orderPrices: newOrderPrices,
+      menuItems: newItems, // Clone of ordered menu items (simplified)
       status: order_status.validation_ok,
       number,
       sub_total,

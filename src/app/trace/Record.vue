@@ -77,7 +77,6 @@ export default {
     }
   },
   async mounted() {
-    //console.log("user =", this.user, this.isLineUser);
     if (this.user) {
       const { claims } = await this.user.getIdTokenResult(true);
       if (claims.line) {
@@ -101,30 +100,11 @@ export default {
       return this.$route.params.traceId;
     },
     lineAuth() {
-      const query = {
-        response_type: "code",
-        client_id: ownPlateConfig.line.TRACK_CHANNEL_ID,
-        redirect_uri: this.redirect_uri,
-        scope: "profile openid",
-        bot_prompt: "aggressive",
-        state: "s" + Math.random(), // LATER: Make it more secure
-        nonce: `${this.traceId}` // HACK: Repurposing nonce
-      };
-      const queryString = Object.keys(query)
-        .map(key => {
-          return key + "=" + encodeURIComponent(query[key]);
-        })
-        .join("&");
-      return `https://access.line.me/oauth2/v2.1/authorize?${queryString}`;
-    },
-    redirect_uri() {
-      return location.origin + "/callback/track";
-    },
-    isLineUser() {
-      return this.user && this.user.uid.slice(0, 5) === "line:";
-    },
-    user() {
-      return this.$store.state.user;
+      return this.lineAuthURL(
+        "/callback/track",
+        `${this.traceId}`,
+        ownPlateConfig.line.TRACK_CHANNEL_ID
+      );
     }
   }
 };

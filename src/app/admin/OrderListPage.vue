@@ -35,7 +35,7 @@
 
             <!-- Sound ON/OFF -->
             <div class="level-right">
-              <div @click="soundToggle()" class="is-inline-block">
+              <div @click="soundToggle()" class="is-inline-block m-r-16 m-t-16">
                 <div v-if="soundOn" class="op-button-pill bg-status-green-bg">
                   <i class="material-icons c-status-green s-18 m-r-8">volume_up</i>
                   <span class="c-status-green t-button">{{$t("admin.order.soundOn")}}</span>
@@ -45,9 +45,12 @@
                   <span class="c-status-red t-button">{{$t("admin.order.soundOff")}}</span>
                 </div>
               </div>
-              <b-button class="b-reset h-36 r-36 bg-form"  @click="soundPlay()" style="margin-left: 15px">
+              <b-button class="b-reset h-36 r-36 bg-form m-t-16" @click="soundPlay()">
                 <span class="p-l-16 p-r-16">
-                  <span class="c-primary t-button">{{ $t('admin.order.soundTest') }}</span>
+                  <span class="c-primary t-button">
+                    <i class="material-icons c-primary s-18 m-r-8">play_arrow</i>
+                    {{ $t('admin.order.soundTest') }}
+                  </span>
                 </span>
               </b-button>
             </div>
