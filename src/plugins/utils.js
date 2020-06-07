@@ -2,6 +2,7 @@ import Vue from 'vue';
 import { storage } from "~/plugins/firebase.js";
 import { ownPlateConfig } from "@/config/project";
 import { regionalSettings } from "~/plugins/constant.js";
+import * as Cookie from "cookie";
 
 export default ({ app }) => {
   Vue.mixin({
@@ -98,15 +99,20 @@ export default ({ app }) => {
         });
       },
       lineAuthURL(path, nonce, channelId) {
+        const state = "s" + Math.random();
+        console.log("lineAuthURL", state)
         const query = {
           response_type: "code",
           client_id: channelId || ownPlateConfig.line.LOGIN_CHANNEL_ID,
           redirect_uri: location.origin + path,
           scope: "profile openid email",
           bot_prompt: "aggressive",
-          state: "s" + Math.random(), // LATER: Make it more secure
+          state,
           nonce
         };
+        const params = JSON.stringify({ state });
+        document.cookie = `line_params=${encodeURIComponent(params)};path=/callback/line`;
+        console.log("cookies", Cookie.parse(document.cookie))
         const queryString = Object.keys(query)
           .map(key => {
             return key + "=" + encodeURIComponent(query[key]);
@@ -114,6 +120,17 @@ export default ({ app }) => {
           .join("&");
         return `https://access.line.me/oauth2/v2.1/authorize?${queryString}`;
       },
+      lineGuard() {
+        const state = this.$route.query.state;
+        const cookies = Cookie.parse(document.cookie);
+        console.log(cookies);
+        const params = JSON.parse(cookies.line_params);
+        console.log("***", params, state);
+
+        if (state !== params.state) {
+          throw new Error("invalid state");
+        }
+      }
     },
     computed: {
       regionalSetting() {
