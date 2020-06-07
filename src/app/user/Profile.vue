@@ -142,7 +142,9 @@ export default {
       return ownPlateConfig.line.FRIEND_LINK;
     },
     lineAuth() {
-      return this.lineAuthURL("/callback/line", location.pathname);
+      return this.lineAuthURL("/callback/line", location.pathname, null, {
+        pathname: location.pathname
+      });
     },
     claims() {
       return this.$store.state.claims;
