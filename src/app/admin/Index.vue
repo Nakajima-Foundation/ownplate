@@ -15,7 +15,10 @@
               <div class="t-h6 c-ownplate-white p-b-24">{{$t("admin.welcomeMessage")}}</div>
               <div class="is-inline-flex">
                 <div class="m-r-24">
-                  <a href="https://gluepass.jp/g/ownplatejp/pg/Zy8VserQdTxFVKLaFcOK" target="_blank">
+                  <a
+                    href="https://gluepass.jp/g/ownplatejp/pg/Zy8VserQdTxFVKLaFcOK"
+                    target="_blank"
+                  >
                     <div class="op-button-small w-160 bg-text-white-high">
                       <i class="material-icons c-primary s-18 m-r-8">help_outline</i>
                       <span class="c-primary t-button">{{$t("admin.userManual")}}</span>
@@ -38,6 +41,34 @@
             </div>
           </div>
           <div class="column is-narrow w-24"></div>
+        </div>
+      </div>
+      <!-- Right Gap -->
+      <div class="column is-narrow w-24"></div>
+    </div>
+
+    <!-- News -->
+    <div class="columns is-gapless" v-if="false">
+      <!-- Left Gap -->
+      <div class="column is-narrow w-24"></div>
+      <!-- Center Column -->
+      <div class="column">
+        <div class="m-l-24 m-r-24">
+          <div
+            class="r-8 p-l-16 p-r-16 p-t-8 p-b-8 m-t-24"
+            style="border: 2px solid rgba(0,0,0,0.1); "
+          >
+            <div class="cols">
+              <div class="t-subtitle2 c-text-black-disabled">2020.06.05</div>
+              <div class="t-subtitle2 c-primary flex-1 align-right">
+                <nuxt-link :to="'/admin/news/'">{{$t('admin.news.newsTop')}}</nuxt-link>
+              </div>
+            </div>
+            <!-- News Item -->
+            <div class="t-subtitle1 c-primary m-t-4">
+              <nuxt-link :to="'/admin/news/' + newsId">v0.5.1をリリースしました。</nuxt-link>
+            </div>
+          </div>
         </div>
       </div>
       <!-- Right Gap -->

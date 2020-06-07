@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import { storage } from "~/plugins/firebase.js";
 import { ownPlateConfig } from "@/config/project";
+import { regionalSettings } from "~/plugins/constant.js";
 
 export default ({ app }) => {
   Vue.mixin({
@@ -85,7 +86,7 @@ export default ({ app }) => {
 
           uploadTask.on(
             "state_changed",
-            (snapshot) => {},
+            (snapshot) => { },
             (err) => {
               rejected(err);
             },
@@ -96,8 +97,38 @@ export default ({ app }) => {
           );
         });
       },
+      lineAuthURL(path, nonce, channelId) {
+        const query = {
+          response_type: "code",
+          client_id: channelId || ownPlateConfig.line.LOGIN_CHANNEL_ID,
+          redirect_uri: location.origin + path,
+          scope: "profile openid email",
+          bot_prompt: "aggressive",
+          state: "s" + Math.random(), // LATER: Make it more secure
+          nonce
+        };
+        const queryString = Object.keys(query)
+          .map(key => {
+            return key + "=" + encodeURIComponent(query[key]);
+          })
+          .join("&");
+        return `https://access.line.me/oauth2/v2.1/authorize?${queryString}`;
+      },
     },
     computed: {
+      regionalSetting() {
+        return regionalSettings[ownPlateConfig.region || "US"];
+      },
+      user() {
+        return this.$store.state.user;
+      },
+      isLineUser() {
+        const claims = this.$store.state.claims;
+        return !!claims?.line;
+      },
+      isLineEnabled() {
+        return !!ownPlateConfig.line;
+      },
       isJapan() {
         return ownPlateConfig.region === "JP";
       },

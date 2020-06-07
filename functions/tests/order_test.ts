@@ -17,6 +17,7 @@ describe('Order function', () => {
       orderCount: 10,
       foodTax: 5,
       alcoholTax: 8,
+      publicFlag: true,
     });
     // create menu.
     await adminDB.doc(`restaurants/${restaurantId}/menus/hoge1`).set({
@@ -37,6 +38,8 @@ describe('Order function', () => {
   }
   const createOrder = async (restaurantId, orderId, orderData) => {
     const uid = "123";
+    await adminDB.doc(`/users/${uid}/system/stripe`).set({});
+
     await adminDB.doc(`restaurants/${restaurantId}/orders/${orderId}`).set({
       status: constant.order_status.new_order,
       order: orderData,
@@ -44,7 +47,7 @@ describe('Order function', () => {
     });
 
     // call function
-    await order.wasOrderCreated(adminDB, {restaurantId, orderId}, {auth: { uid }});
+    await order.wasOrderCreated(adminDB, {restaurantId, orderId}, {auth: { uid, token:{ phone_number: "xxxx"} }});
   }
 
   it ('Order function, orderCounter test', async function() {

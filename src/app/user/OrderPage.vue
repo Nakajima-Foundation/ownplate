@@ -226,7 +226,7 @@
                 </div>
 
                 <!-- Send SMS Checkbox -->
-                <div v-if="!lineEnabled" class="m-t-8">
+                <div v-if="!isLineEnabled" class="m-t-8">
                   <div class="bg-form r-8 p-l-16 p-r-16 p-t-16 p-b-16">
                     <b-checkbox v-model="sendSMS">
                       <span class="t-body2 c-text-black-high">
@@ -294,7 +294,6 @@ import { order_status } from "~/plugins/constant.js";
 import { nameOfOrder } from "~/plugins/strings.js";
 import { releaseConfig } from "~/plugins/config.js";
 import { stripeCreateIntent, stripeCancelIntent } from "~/plugins/stripe.js";
-import { ownPlateConfig } from "@/config/project";
 
 export default {
   name: "Order",
@@ -317,7 +316,7 @@ export default {
       shopInfo: { restaurantName: "" },
       cardState: {},
       orderInfo: {},
-      menus: [],
+      menuObj: null,
       detacher: [],
       isDeleting: false,
       isPlacing: false,
@@ -344,34 +343,14 @@ export default {
   },
   computed: {
     lineAuth() {
-      const query = {
-        response_type: "code",
-        client_id: ownPlateConfig.line.LOGIN_CHANNEL_ID,
-        redirect_uri: this.redirect_uri,
-        scope: "profile openid email",
-        bot_prompt: "aggressive",
-        state: "s" + Math.random(), // LATER: Make it more secure
-        nonce: location.pathname // HACK: Repurposing nonce
-      };
-      const queryString = Object.keys(query)
-        .map(key => {
-          return key + "=" + encodeURIComponent(query[key]);
-        })
-        .join("&");
-      return `https://access.line.me/oauth2/v2.1/authorize?${queryString}`;
-    },
-    redirect_uri() {
-      return location.origin + "/callback/line";
+      return this.lineAuthURL("/callback/line", location.pathname);
     },
     showAddLine() {
       return (
-        this.lineEnabled &&
+        this.isLineEnabled &&
         this.$store.state.claims &&
         !this.$store.state.claims.line
       );
-    },
-    lineEnabled() {
-      return !!ownPlateConfig.line;
     },
     timePlaced() {
       const date = this.orderInfo.timePlaced.toDate();
@@ -411,7 +390,7 @@ export default {
       return this.orderInfo.status < order_status.cooking_completed;
     },
     orderItems() {
-      if (this.menus.length > 0 && this.orderInfo.order) {
+      if (this.menuObj && this.orderInfo.order) {
         return Object.keys(this.orderInfo.order).map(key => {
           const num = this.orderInfo.order[key];
           return {
@@ -424,14 +403,8 @@ export default {
       }
       return [];
     },
-    menuObj() {
-      return this.array2obj(this.menus);
-    },
     orderId() {
       return this.$route.params.orderId;
-    },
-    user() {
-      return this.$store.state.user;
     }
   },
   watch: {
@@ -454,31 +427,38 @@ export default {
               .doc(`/admins/${uid}/public/payment`)
               .get();
             this.paymentInfo = snapshot.data() || {};
-            console.log("restaurant", uid, this.paymentInfo);
+            //console.log("restaurant", uid, this.paymentInfo);
           } else {
             this.notFound = true;
-          }
-        });
-      const menu_detacher = db
-        .collection(`restaurants/${this.restaurantId()}/menus`)
-        .onSnapshot(menu => {
-          if (!menu.empty) {
-            this.menus = menu.docs.map(this.doc2data("menu"));
           }
         });
       const order_detacher = db
         .doc(`restaurants/${this.restaurantId()}/orders/${this.orderId}`)
         .onSnapshot(
-          order => {
+          async order => {
             const order_data = order.exists ? order.data() : {};
             this.orderInfo = order_data;
+            if (this.orderInfo.menuItems) {
+              this.menuObj = this.orderInfo.menuItems;
+            } else {
+              // Backward compatibility
+              if (!this.menuObj) {
+                const menu = await db
+                  .collection(`restaurants/${this.restaurantId()}/menus`)
+                  .get();
+                if (!menu.empty) {
+                  const menus = menu.docs.map(this.doc2data("menu"));
+                  this.menuObj = this.array2obj(menus);
+                }
+              }
+            }
           },
           error => {
             console.error(error.message);
             this.notFound = true;
           }
         );
-      this.detacher = [restaurant_detacher, menu_detacher, order_detacher];
+      this.detacher = [restaurant_detacher, order_detacher];
     },
 
     handleOpenMenu() {

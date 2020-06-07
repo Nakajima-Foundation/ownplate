@@ -1,21 +1,25 @@
 <template>
   <div class="m-t-24">
-    <div class="t-h6 c-text-black-disabled m-b-8">{{$t('admin.payment')}}</div>
+    <div class="t-h6 c-text-black-disabled m-b-8">
+      {{ $t("admin.payment") }}
+    </div>
     <div class="bg-surface r-8 d-low p-t-24 p-b-24">
       <!-- Stripe Not Connected -->
       <div v-if="!hasStripe">
         <div class="align-center">
-          <div
-            class="op-status c-status-red bg-status-red-bg"
-          >{{$t('admin.payments.statusNotConnected')}}</div>
+          <div class="op-status c-status-red bg-status-red-bg">
+            {{ $t("admin.payments.statusNotConnected") }}
+          </div>
         </div>
-        <div
-          class="p-l-24 p-r-24 m-t-24 t-body1 c-text-black-medium"
-        >{{$t('admin.payments.pleaseConnect')}}</div>
+        <div class="p-l-24 p-r-24 m-t-24 t-body1 c-text-black-medium">
+          {{ $t("admin.payments.pleaseConnect") }}
+        </div>
         <div class="align-center m-t-24">
           <a :href="stripeLink">
             <div class="op-button-medium primary" style="min-width: 288px;">
-              <span class="p-l-16 p-r-16">{{$t('admin.payments.connectStripe')}}</span>
+              <span class="p-l-16 p-r-16">{{
+                $t("admin.payments.connectStripe")
+              }}</span>
             </div>
           </a>
         </div>
@@ -24,14 +28,16 @@
       <!-- Stripe Connected -->
       <div v-if="hasStripe">
         <div class="align-center">
-          <div
-            class="op-status c-status-green bg-status-green-bg"
-          >{{$t('admin.payments.statusConnected')}}</div>
+          <div class="op-status c-status-green bg-status-green-bg">
+            {{ $t("admin.payments.statusConnected") }}
+          </div>
         </div>
         <div class="align-center m-t-24">
           <a href="https://dashboard.stripe.com/dashboard" target="_blank">
-            <div class="op-button-small secondary" style="min-width: 256px;">
-              <span class="c-primary p-l-16 p-r-16">{{$t('admin.payments.openDashboard')}}</span>
+            <div class="op-button-small secondary">
+              <span class="c-primary">{{
+                $t("admin.payments.openDashboard")
+              }}</span>
             </div>
           </a>
         </div>
@@ -42,14 +48,18 @@
             :loading="isDisconnecting"
           >
             <i class="material-icons c-status-red">link_off</i>
-            <span class="c-status-red">{{$t('admin.payments.disconnectStripe')}}</span>
+            <span class="c-status-red">{{
+              $t("admin.payments.disconnectStripe")
+            }}</span>
           </b-button>
         </div>
       </div>
 
       <!-- In-store Payment -->
       <div class="align-center p-t-24">
-        <b-checkbox v-model="inStorePayment">{{$t('admin.payments.enableInStorePayment')}}</b-checkbox>
+        <b-checkbox v-model="inStorePayment">{{
+          $t("admin.payments.enableInStorePayment")
+        }}</b-checkbox>
       </div>
     </div>
   </div>
