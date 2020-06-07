@@ -848,6 +848,8 @@ export default {
           introduction: this.shopInfo.introduction,
           orderNotice: this.shopInfo.orderNotice,
           orderThanks: this.shopInfo.orderThanks,
+          pickUpMinimumCookTime: this.shopInfo.pickUpMinimumCookTime,
+          pickUpDaysInAdvance: this.shopInfo.pickUpDaysInAdvance,
           foodTax: Number(this.shopInfo.foodTax),
           alcoholTax: Number(this.shopInfo.alcoholTax),
           openTimes: this.shopInfo.openTimes,
