@@ -131,6 +131,7 @@ export default ({ app }) => {
         if (state !== params.state) {
           throw new Error("invalid state");
         }
+        return params;
       }
     },
     computed: {

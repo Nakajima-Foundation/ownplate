@@ -32,19 +32,20 @@ export default {
         });
         console.log(data);
 
-        this.lineGuard();
-
         if (data.nonce && data.profile) {
+          const params = this.lineGuard();
+          console.log("*** params", params);
+
           this.user.getIdTokenResult(true).then(result => {
             this.$store.commit("setCustomClaims", result.claims);
             console.log("isLineuser", this.isLineUser);
             if (this.isLineUser) {
               // End-user case
-              this.$router.push(data.nonce);
+              this.$router.push(params.pathname);
             } else {
               // Restaurant operator case
               this.$router.push(
-                `${data.nonce}?userId=${
+                `${params.pathname}?userId=${
                   data.profile.userId
                 }&displayName=${encodeURIComponent(data.profile.displayName)}`
               );
