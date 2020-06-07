@@ -59,14 +59,14 @@
             style="border: 2px solid rgba(0,0,0,0.1); "
           >
             <div class="cols">
-              <div class="t-subtitle2 c-text-black-disabled">お知らせ:</div>
+              <div class="t-subtitle2 c-text-black-disabled">2020.06.05</div>
               <div class="t-subtitle2 c-primary flex-1 align-right">
-                <nuxt-link target="_blank" :to="'/admin/news/'">全て見る</nuxt-link>
+                <nuxt-link :to="'/admin/news/'">{{$t('admin.news.newsTop')}}</nuxt-link>
               </div>
             </div>
             <!-- News Item -->
             <div class="t-subtitle1 c-primary m-t-4">
-              <nuxt-link target="_blank" :to="'/admin/news/' + newsId">2020.06.05: v0.5.1をリリースしました。</nuxt-link>
+              <nuxt-link :to="'/admin/news/' + newsId">v0.5.1をリリースしました。</nuxt-link>
             </div>
           </div>
         </div>
