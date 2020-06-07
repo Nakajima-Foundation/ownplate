@@ -1,5 +1,8 @@
 <template>
 <div>
+  <div v-if="notFound==null"></div>
+  <!-- Never show before load restaurant data -->
+  <div v-else>
   <!-- Edit Header Area -->
   <div class="columns is-gapless">
     <!-- Left Gap -->
@@ -529,6 +532,7 @@
       <!-- Right Gap -->
       <div class="column is-narrow w-24"></div>
     </div>
+  </div>
   </div>
 </template>
 
