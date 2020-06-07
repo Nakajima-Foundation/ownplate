@@ -48,7 +48,7 @@
     </div>
 
     <!-- News -->
-    <div class="columns is-gapless">
+    <div class="columns is-gapless" v-if="false">
       <!-- Left Gap -->
       <div class="column is-narrow w-24"></div>
       <!-- Center Column -->
