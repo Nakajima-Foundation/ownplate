@@ -289,6 +289,11 @@
     "welcomeMessage": "いらっしゃいませ",
     "userManual": "使い方説明",
     "suportPage": "お問い合わせ",
+    "news": {
+      "title": "お知らせ",
+      "newsTop": "お知らせ一覧",
+      "adminTop": "管理画面"
+    },
     "hidePayment": "課金の仕組みはまもなく提供される予定です。少々お待ちください。",
     "pleaseSignIn": "サインインしてください（飲食店向け）",
     "registration": "登録してください（飲食店向け）",
