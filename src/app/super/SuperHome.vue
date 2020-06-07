@@ -11,19 +11,23 @@
 <script>
 import { functions } from "~/plugins/firebase.js";
 export default {
-  async mounted() {
-    if (!this.$store.state.user || this.$store.getters.isNotSuperAdmin) {
-      this.$router.push("/");
-    }
-  },
   watch: {
-    isNotSuperAdmin(newValue) {
-      if (newValue) {
-        this.$router.push("/");
+    isReadyToRender:{
+      immediate: true,
+      handler: function(newValue) {
+        if (newValue) {
+          if (this.isNotSuperAdmin) {
+            this.$router.push("/");
+          }
+        }
+        return newValue;
       }
-    }
+    },
   },
   computed: {
+    isReadyToRender() {
+      return (this.$store.state.user !== undefined);
+    },
     isNotSuperAdmin() {
       return this.$store.getters.isNotSuperAdmin;
     }
