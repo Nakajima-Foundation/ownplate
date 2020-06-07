@@ -101,7 +101,6 @@ export default ({ app }) => {
       lineAuthURL(path, options, channelId) {
         const state = "s" + Math.random();
         const nonce = "n" + Math.random();
-        console.log("lineAuthURL", state)
         const query = {
           response_type: "code",
           client_id: channelId || ownPlateConfig.line.LOGIN_CHANNEL_ID,
@@ -114,7 +113,6 @@ export default ({ app }) => {
         const params = JSON.stringify(Object.assign({}, options || {},
           { state, nonce }));
         document.cookie = `line_params=${encodeURIComponent(params)};path=${path}`;
-        console.log("cookies", Cookie.parse(document.cookie))
         const queryString = Object.keys(query)
           .map(key => {
             return key + "=" + encodeURIComponent(query[key]);
@@ -125,9 +123,9 @@ export default ({ app }) => {
       lineGuard(nonce) {
         const state = this.$route.query.state;
         const cookies = Cookie.parse(document.cookie);
-        console.log(cookies);
+        //console.log(cookies);
         const params = JSON.parse(cookies.line_params);
-        console.log("*** lineGuard", params, state, nonce, params.nonce);
+        //console.log("*** lineGuard", params, state, nonce, params.nonce);
 
         if (state !== params.state || nonce !== params.nonce) {
           throw new Error("invalid state");

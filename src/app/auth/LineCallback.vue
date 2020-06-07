@@ -18,8 +18,8 @@ export default {
     };
   },
   async mounted() {
-    console.log(this.$route.query);
-    console.log("cookies", Cookie.parse(document.cookie));
+    //console.log(this.$route.query);
+    //console.log("cookies", Cookie.parse(document.cookie));
 
     if (this.code) {
       try {
@@ -30,11 +30,10 @@ export default {
           redirect_uri: this.redirect_uri,
           client_id: ownPlateConfig.line.LOGIN_CHANNEL_ID
         });
-        console.log(data);
+        console.log("lineValidate", data);
 
         if (data.nonce && data.profile) {
           const params = this.lineGuard(data.nonce);
-          console.log("*** params", params);
 
           this.user.getIdTokenResult(true).then(result => {
             this.$store.commit("setCustomClaims", result.claims);
