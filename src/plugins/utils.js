@@ -98,8 +98,9 @@ export default ({ app }) => {
           );
         });
       },
-      lineAuthURL(path, nonce, channelId, options) {
+      lineAuthURL(path, obsolete, channelId, options) {
         const state = "s" + Math.random();
+        const nonce = "n" + Math.random();
         console.log("lineAuthURL", state)
         const query = {
           response_type: "code",
@@ -126,9 +127,9 @@ export default ({ app }) => {
         const cookies = Cookie.parse(document.cookie);
         console.log(cookies);
         const params = JSON.parse(cookies.line_params);
-        console.log("***", params, state);
+        console.log("*** lineGuard", params, state, nonce, params.nonce);
 
-        if (state !== params.state) {
+        if (state !== params.state || nonce !== params.nonce) {
           throw new Error("invalid state");
         }
         return params;
