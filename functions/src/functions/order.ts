@@ -10,6 +10,10 @@ import * as line from './line'
 import { ownPlateConfig } from '../common/project';
 import { createCustomer } from '../stripe/customer';
 
+export const nameOfOrder = (orderNumber: number) => {
+  return "#" + `00${orderNumber}`.slice(-3);
+};
+
 // This function is called by users to place orders without paying
 export const place = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
@@ -70,7 +74,7 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
     const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`)
     let phoneNumber: string | undefined = undefined;
     let msgKey: string | undefined = undefined;
-    let orderNumber: string = "";
+    let orderName: string = "";
     let sendSMS: boolean = false;
     let uidUser: string | null = null;
 
@@ -81,7 +85,7 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
       }
       uidUser = order.uid;
       phoneNumber = order.phoneNumber
-      orderNumber = "#" + `00${order.number}`.slice(-3)
+      orderName = nameOfOrder(order.number)
       sendSMS = order.sendSMS
 
       const isPreviousStateChangable: Boolean = (() => {
@@ -128,7 +132,7 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
       return { success: true }
     })
     if (sendSMS && msgKey) {
-      await sendMessage(db, lng, msgKey, restaurant.restaurantName, orderNumber, uidUser, phoneNumber, restaurantId, orderId)
+      await sendMessage(db, lng, msgKey, restaurant.restaurantName, orderName, uidUser, phoneNumber, restaurantId, orderId)
     }
     return result
   } catch (error) {
@@ -160,8 +164,8 @@ export const notifyNewOrder = async (db: FirebaseFirestore.Firestore, restaurant
     resources
   })
   const url = `https://${ownPlateConfig.hostName}/admin/restaurants/${restaurantId}/orders/${orderId}?openExternalBrowser=1`
-  const orderString = "#" + `00${orderNumber}`.slice(-3)
-  const message = `${t('msg_order_placed')} ${orderString} ${url}`;
+  const orderName = nameOfOrder(orderNumber);
+  const message = `${t('msg_order_placed')} ${orderName} ${url}`;
   docs.forEach(async doc => {
     const lineUser = doc.data();
     if (lineUser.notify) {

@@ -4,7 +4,7 @@ import { order_status } from '../common/constant'
 import Stripe from 'stripe'
 import Order from '../models/Order'
 import * as utils from '../lib/utils'
-import { sendMessage, notifyNewOrder } from '../functions/order';
+import { sendMessage, notifyNewOrder, nameOfOrder } from '../functions/order';
 
 // This function is called by user to create a "payment intent" (to start the payment transaction)
 export const create = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
@@ -197,7 +197,7 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
 
   let sendSMS: boolean = false
   let phoneNumber: string | undefined = undefined;
-  let orderNumber: string = "";
+  let orderName: string = "";
   let uidUser: string | null = null;
 
   try {
@@ -226,7 +226,7 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
       }
       phoneNumber = order.phoneNumber
       uidUser = order.uid
-      orderNumber = "#" + `00${order.number}`.slice(-3)
+      orderName = nameOfOrder(order.number)
 
       if (!stripeAccount || !order.payment || !order.payment.stripe) {
         // No payment transaction
@@ -269,7 +269,7 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
       }
     })
     if (sendSMS) {
-      await sendMessage(db, lng, 'msg_order_canceled', restaurant.restaurantName, orderNumber, uidUser, phoneNumber, restaurantId, orderId)
+      await sendMessage(db, lng, 'msg_order_canceled', restaurant.restaurantName, orderName, uidUser, phoneNumber, restaurantId, orderId)
     }
     return result
   } catch (error) {
