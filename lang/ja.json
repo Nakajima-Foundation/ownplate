@@ -340,7 +340,9 @@
       "cancelTitle": "注文のキャンセル",
       "cancelMessage": "お客様にご連絡の上、ご注文がキャンセルされることをお伝え下さい。",
       "delete": "この注文をキャンセルする",
-      "deleteConfirm": "（キャンセルの取り消しは出来ません）"
+      "deleteConfirm": "（キャンセルの取り消しは出来ません）",
+      "line": "LINE通知設定",
+      "lineAdd": "LINEアカウントの追加"
     },
     "qrcode": {
       "title": "QRコード",

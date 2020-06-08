@@ -147,6 +147,9 @@ export const validate = async (db: FirebaseFirestore.Firestore, data: any, conte
       await db.doc(`/users/${uid}/system/line`).set({
         access, verified, profile
       }, { merge: true })
+    } else {
+      // Remove unnecessary claims from previous version.
+      await admin.auth().setCustomUserClaims(uid, { line: null })
     }
 
     return { profile, nonce: verified.nonce };
@@ -155,7 +158,7 @@ export const validate = async (db: FirebaseFirestore.Firestore, data: any, conte
   }
 }
 
-const sendMessageInternal = async (sub: string, message: string) => {
+export const sendMessageDirect = async (lineId: string, message: string) => {
   const LINE_MESSAGE_TOKEN = functions.config().line.message_token;
   return netutils.postJson('https://api.line.me/v2/bot/message/push', {
     headers: {
@@ -163,7 +166,7 @@ const sendMessageInternal = async (sub: string, message: string) => {
       Authorization: `Bearer ${LINE_MESSAGE_TOKEN}`
     }
   }, {
-    to: sub,
+    to: lineId,
     messages: [
       { type: "text", text: message }
     ]
@@ -179,5 +182,5 @@ export const sendMessage = async (db: FirebaseFirestore.Firestore, uid: string |
   if (!sub) {
     return;
   }
-  return sendMessageInternal(sub, message);
+  return sendMessageDirect(sub, message);
 }

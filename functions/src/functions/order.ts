@@ -13,17 +13,19 @@ import { createCustomer } from '../stripe/customer';
 // This function is called by users to place orders without paying
 export const place = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
-  const { restaurantId, orderId, tip, sendSMS, timeToPickup } = data;
-  utils.validate_params({ restaurantId, orderId }) // tip and sendSMS are optinoal
+  const { restaurantId, orderId, tip, sendSMS, timeToPickup, lng } = data;
+  utils.validate_params({ restaurantId, orderId }) // tip, sendSMS and lng are optinoal
 
   try {
     const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`)
 
-    return await db.runTransaction(async transaction => {
+    let orderNumber: number = 0;
+    const result = await db.runTransaction(async transaction => {
       const order = Order.fromSnapshot<Order>(await transaction.get(orderRef))
       if (!order) {
         throw new functions.https.HttpsError('invalid-argument', 'This order does not exist.')
       }
+      orderNumber = order.number;
       if (uid !== order.uid) {
         throw new functions.https.HttpsError('permission-denied', 'The user is not the owner of this order.')
       }
@@ -44,6 +46,9 @@ export const place = async (db: FirebaseFirestore.Firestore, data: any, context:
 
       return { success: true }
     })
+    await notifyNewOrder(db, restaurantId, orderId, orderNumber, lng);
+
+    return result;
   } catch (error) {
     throw utils.process_error(error)
   }
@@ -146,6 +151,24 @@ export const sendMessage = async (db: FirebaseFirestore.Firestore, lng: string,
   } else {
     await sms.pushSMS("OwnPlate", message, phoneNumber)
   }
+}
+
+export const notifyNewOrder = async (db: FirebaseFirestore.Firestore, restaurantId: string, orderId: string, orderNumber: number, lng: string) => {
+  const docs = (await db.collection(`/restaurants/${restaurantId}/lines`).get()).docs;
+  const t = await i18next.init({
+    lng: lng || utils.getStripeRegion().langs[0],
+    resources
+  })
+  const url = `https://${ownPlateConfig.hostName}/admin/restaurants/${restaurantId}/orders/${orderId}?openExternalBrowser=1`
+  const orderString = "#" + `00${orderNumber}`.slice(-3)
+  const message = `${t('msg_order_placed')} ${orderString} ${url}`;
+  docs.forEach(async doc => {
+    const lineUser = doc.data();
+    if (lineUser.notify) {
+      await line.sendMessageDirect(doc.id, message)
+    }
+  });
+
 }
 
 export const getMenuObj = async (refRestaurant) => {
