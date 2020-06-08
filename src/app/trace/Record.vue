@@ -25,6 +25,7 @@
 import { ownPlateConfig } from "@/config/project";
 import { db, firestore, functions } from "~/plugins/firebase.js";
 import * as crypto from "crypto";
+import { lineAuthURL } from "~/plugins/line.js";
 
 export default {
   data() {
@@ -100,7 +101,7 @@ export default {
       return this.$route.params.traceId;
     },
     lineAuth() {
-      return this.lineAuthURL(
+      return lineAuthURL(
         "/callback/track",
         {
           traceId: this.traceId

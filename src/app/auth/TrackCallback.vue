@@ -8,6 +8,8 @@
 <script>
 import { ownPlateConfig } from "@/config/project";
 import { db, auth, firestore, functions } from "~/plugins/firebase.js";
+import { lineGuard } from "~/plugins/line.js";
+
 export default {
   data() {
     return {
@@ -44,7 +46,8 @@ export default {
         });
         console.log(data);
         if (data.nonce && data.profile && data.customToken) {
-          const params = this.lineGuard(data.nonce);
+          const state = this.$route.query.state;
+          const params = lineGuard(data.nonce, state);
           console.log("validation succeded", params.traceId);
           const user = await auth.signInWithCustomToken(data.customToken);
           //console.log("signInWithCustomToken", user);

@@ -103,6 +103,7 @@ import { parsePhoneNumber, formatNational } from "~/plugins/phoneutil.js";
 import { db, auth, firestore, functions } from "~/plugins/firebase.js";
 import { ownPlateConfig } from "@/config/project";
 import PhoneLogin from "~/app/auth/PhoneLogin";
+import { lineAuthURL } from "~/plugins/line.js";
 
 export default {
   components: {
@@ -142,7 +143,7 @@ export default {
       return ownPlateConfig.line.FRIEND_LINK;
     },
     lineAuth() {
-      return this.lineAuthURL("/callback/line", {
+      return lineAuthURL("/callback/line", {
         pathname: location.pathname
       });
     },

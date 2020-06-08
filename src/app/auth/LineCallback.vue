@@ -10,6 +10,7 @@
 import { ownPlateConfig } from "@/config/project";
 import { db, auth, firestore, functions } from "~/plugins/firebase.js";
 import * as Cookie from "cookie";
+import { lineGuard } from "~/plugins/line.js";
 
 export default {
   data() {
@@ -33,7 +34,8 @@ export default {
         console.log("lineValidate", data);
 
         if (data.nonce && data.profile) {
-          const params = this.lineGuard(data.nonce);
+          const state = this.$route.query.state;
+          const params = lineGuard(data.nonce, state);
 
           this.user.getIdTokenResult(true).then(result => {
             this.$store.commit("setCustomClaims", result.claims);
