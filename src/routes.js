@@ -1,132 +1,137 @@
 export const customRoutes = [
   {
-    name: 'r',
-    path: '/r',
-    component: 'user/RootPage.vue',
+    name: "r",
+    path: "/r",
+    component: "user/RootPage.vue"
   },
   {
-    name: 'RestaurantsPrefecture',
-    path: '/r/pref/:prefectureId',
-    component: 'user/Restaurants/Prefecture.vue',
+    name: "RestaurantsAll",
+    path: "/r/area/all",
+    component: "user/Restaurants/All.vue"
   },
   {
-    name: 'history',
-    path: '/u/history',
-    component: 'user/OrderHistory.vue',
+    name: "RestaurantsArea",
+    path: "/r/area/:areaId",
+    component: "user/Restaurants/Area.vue"
   },
   {
-    name: 'profile',
-    path: '/u/profile',
-    component: 'user/Profile.vue',
+    name: "history",
+    path: "/u/history",
+    component: "user/OrderHistory.vue"
   },
   {
-    name: 'r-restaurantId',
-    path: '/r/:restaurantId',
-    component: 'user/RestaurantPage.vue',
+    name: "profile",
+    path: "/u/profile",
+    component: "user/Profile.vue"
   },
   {
-    name: 'r-restaurantId-order',
-    path: '/r/:restaurantId/order/:orderId',
-    component: 'user/OrderPage.vue',
+    name: "r-restaurantId",
+    path: "/r/:restaurantId",
+    component: "user/RestaurantPage.vue"
   },
   {
-    name: 'r-restaurantId-transactionsAct',
-    path: '/r/:restaurantId/transactionsAct',
-    component: 'user/TransactionsAct.vue',
+    name: "r-restaurantId-order",
+    path: "/r/:restaurantId/order/:orderId",
+    component: "user/OrderPage.vue"
   },
   {
-    name: 'admin',
-    path: '/admin/restaurants',
-    component: 'admin/Index.vue',
+    name: "r-restaurantId-transactionsAct",
+    path: "/r/:restaurantId/transactionsAct",
+    component: "user/TransactionsAct.vue"
   },
   {
-    name: 'admin-about',
-    path: '/admin/restaurants/:restaurantId',
-    component: 'admin/RestaurantPage.vue',
+    name: "admin",
+    path: "/admin/restaurants",
+    component: "admin/Index.vue"
   },
   {
-    name: 'admin-menus',
-    path: '/admin/restaurants/:restaurantId/menus',
-    component: 'admin/MenuListPage.vue',
+    name: "admin-about",
+    path: "/admin/restaurants/:restaurantId",
+    component: "admin/RestaurantPage.vue"
   },
   {
-    name: 'admin-menus-item',
-    path: '/admin/restaurants/:restaurantId/menus/:menuId',
-    component: 'admin/MenuItemPage.vue',
+    name: "admin-menus",
+    path: "/admin/restaurants/:restaurantId/menus",
+    component: "admin/MenuListPage.vue"
   },
   {
-    name: 'admin-news-list',
-    path: '/admin/news',
-    component: 'admin/News/List.vue',
+    name: "admin-menus-item",
+    path: "/admin/restaurants/:restaurantId/menus/:menuId",
+    component: "admin/MenuItemPage.vue"
   },
   {
-    name: 'admin-news-article',
-    path: '/admin/news/:newsId',
-    component: 'admin/News/Article.vue',
+    name: "admin-news-list",
+    path: "/admin/news",
+    component: "admin/News/List.vue"
   },
   {
-    name: 'admin-orders',
-    path: '/admin/restaurants/:restaurantId/orders',
-    component: 'admin/OrderListPage.vue',
+    name: "admin-news-article",
+    path: "/admin/news/:newsId",
+    component: "admin/News/Article.vue"
   },
   {
-    path: '/admin/restaurants/:restaurantId/line',
-    component: 'admin/ManageLine.vue',
+    name: "admin-orders",
+    path: "/admin/restaurants/:restaurantId/orders",
+    component: "admin/OrderListPage.vue"
   },
   {
-    path: '/admin/restaurants/:restaurantId/traces',
-    component: 'admin/TraceList.vue',
+    path: "/admin/restaurants/:restaurantId/line",
+    component: "admin/ManageLine.vue"
   },
   {
-    path: '/admin/restaurants/:restaurantId/qrcode',
-    component: 'admin/QRCodePage.vue',
+    path: "/admin/restaurants/:restaurantId/traces",
+    component: "admin/TraceList.vue"
   },
   {
-    name: 'admin-order-info',
-    path: '/admin/restaurants/:restaurantId/orders/:orderId',
-    component: 'admin/OrderInfoPage.vue',
+    path: "/admin/restaurants/:restaurantId/qrcode",
+    component: "admin/QRCodePage.vue"
   },
   {
-    name: 'admin-signin',
-    path: '/admin/user/signin',
-    component: 'auth/SignInPage.vue',
+    name: "admin-order-info",
+    path: "/admin/restaurants/:restaurantId/orders/:orderId",
+    component: "admin/OrderInfoPage.vue"
   },
   {
-    name: 'admin-signup',
-    path: '/admin/user/signup',
-    component: 'auth/SignUpPage.vue',
+    name: "admin-signin",
+    path: "/admin/user/signin",
+    component: "auth/SignInPage.vue"
   },
   {
-    name: 'admin-reset',
-    path: '/admin/user/reset',
-    component: 'auth/ResetPasswordPage.vue',
+    name: "admin-signup",
+    path: "/admin/user/signup",
+    component: "auth/SignUpPage.vue"
   },
   {
-    path: '/s',
-    component: 'super/SuperHome.vue'
+    name: "admin-reset",
+    path: "/admin/user/reset",
+    component: "auth/ResetPasswordPage.vue"
   },
   {
-    path: '/s/orders',
-    component: 'super/AllOrders.vue'
+    path: "/s",
+    component: "super/SuperHome.vue"
   },
   {
-    path: '/callback/line',
-    component: 'auth/LineCallback.vue'
+    path: "/s/orders",
+    component: "super/AllOrders.vue"
   },
   {
-    path: '/callback/track',
-    component: 'auth/TrackCallback.vue'
+    path: "/callback/line",
+    component: "auth/LineCallback.vue"
   },
   {
-    path: '/t/:traceId',
-    component: 'trace/Record.vue'
+    path: "/callback/track",
+    component: "auth/TrackCallback.vue"
   },
   {
-    path: '/t',
-    component: 'trace/Record.vue'
+    path: "/t/:traceId",
+    component: "trace/Record.vue"
   },
   {
-    path: '*',
-    component: 'common/404.vue'
+    path: "/t",
+    component: "trace/Record.vue"
+  },
+  {
+    path: "*",
+    component: "common/404.vue"
   }
 ];
