@@ -5,6 +5,11 @@ export const customRoutes = [
     component: 'user/RootPage.vue',
   },
   {
+    name: 'RestaurantsPrefecture',
+    path: '/r/pref/:prefectureId',
+    component: 'user/Restaurants/Prefecture.vue',
+  },
+  {
     name: 'history',
     path: '/u/history',
     component: 'user/OrderHistory.vue',
