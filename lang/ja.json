@@ -157,6 +157,11 @@
     "enterCategory": "カテゴリー名を入力してください",
     "empty": "（カテゴリー名未入力）"
   },
+  "find": {
+    "area": "飲食店エリア",
+    "areaAll": "全てのエリア",
+    "areaTop": "エリア一覧"
+  },
   "shopInfo": {
     "share": "シェア",
     "qrcode": "飲食店QRコード",

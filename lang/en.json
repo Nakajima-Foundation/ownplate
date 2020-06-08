@@ -157,6 +157,11 @@
     "enterCategory": "Enter category name",
     "empty": "(Empty category name)"
   },
+  "find": {
+    "area": "Areas",
+    "areaAll": "All Areas",
+    "areaTop": "Areas Top"
+  },
   "shopInfo": {
     "share": "Share",
     "qrcode": "QR code",

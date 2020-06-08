@@ -7,8 +7,16 @@
       <!-- Center Column -->
       <div class="column">
         <div class="m-l-24 m-r-24 m-t-24">
+          <!-- Link Button -->
+          <nuxt-link :to="'/r'">
+            <div class="op-button-pill bg-form">
+              <i class="material-icons c-primary s-18">list</i>
+              <span class="c-primary t-button">{{$t("find.areaTop")}}</span>
+            </div>
+          </nuxt-link>
+
           <!-- Title -->
-          <div class="t-h6 c-text-black-disabled m-t-24">{{$t("find.area")}}</div>
+          <div class="t-h6 c-text-black-disabled m-t-24">{{$t("find.areaAll")}}</div>
         </div>
       </div>
       <!-- Right Gap -->
@@ -21,16 +29,31 @@
       <div class="column is-narrow w-24"></div>
       <!-- Center Column -->
       <div class="column">
-        <div class="m-l-24 m-r-16 m-t-16">
-          <!-- Areas -->
+        <div class="m-l-24 m-r-16 m-t-24">
+          <!-- Restaurants -->
           <div class="columns is-gapless is-multiline">
-            <area-item :name="$t('find.areaAll')" :amount="'512'" :id="'all'" />
+            <!-- Restaurant -->
+            <div v-for="restaurant in restaurants" class="column is-one-third">
+              <div class="h-full p-b-8 p-r-8">
+                <router-link :to="`/r/${restaurant.id}`">
+                  <div class="touchable h-full">
+                    <div class="cols flex-center">
+                      <!-- Restaurant Profile -->
+                      <div class="m-r-16 h-48">
+                        <img :src="restaurant.restProfilePhoto" class="w-48 h-48 r-48 cover" />
+                      </div>
 
-            <!-- v-for="area in areas" -->
-            <area-item :name="'東京都'" :amount="'128'" :id="'12'" />
-            <area-item :name="'神奈川県'" :amount="'128'" :id="'12'" />
-            <area-item :name="'福岡県'" :amount="'128'" :id="'12'" />
-            <area-item :name="'熊本県'" :amount="'128'" :id="'12'" />
+                      <!-- Restaurant Name -->
+                      <div class="flex-1 p-r-8 t-subtitle1 c-primary">
+                        {{
+                        restaurant.restaurantName
+                        }}
+                      </div>
+                    </div>
+                  </div>
+                </router-link>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -51,14 +74,12 @@ export default {
   },
   data() {
     return {
-      // # Need to rewrite for Areas instead of Restaurants.
       restaurants: []
     };
   },
   head() {
     return RestaurantHeader;
   },
-  // # Need to rewrite for Areas instead of Restaurants.
   async created() {
     try {
       const res = await db
