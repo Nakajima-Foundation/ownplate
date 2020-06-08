@@ -19,3 +19,12 @@ export const stripeConnect = functions.httpsCallable("stripeConnect");
 export const stripeDisconnect = functions.httpsCallable("stripeDisconnect");
 export const stripeUpdateCustomer = functions.httpsCallable("stripeUpdateCustomer");
 
+export const stripeActions = {
+  capability_updated: 1,
+  account_updated: 2,
+};
+
+export const stripeActionStrings = {
+  [stripeActions.capability_updated]: "capability_updated",
+  [stripeActions.account_updated]: "account_updated",
+};

@@ -1,11 +1,10 @@
 <template>
   <section class="section">
     <back-button url="/s" />
-    <h2>All Callbacks</h2>
-    <div v-for="log in logs" :key="log.id">
-      <router-link :to="`/s/callbacks/${log.uid}/${log.id}`">
-        {{moment(log.created.toDate()).format("YYYY-MM-DD hh:mm")}}/{{log.uid || log.data.uid}}/{{stripeActionStrings[log.action]}}
-      </router-link>
+    <h2>Callback</h2>
+    <div v-if="log">
+      {{moment(log.created.toDate()).format("YYYY-MM-DD hh:mm")}}/{{log.uid || log.data.uid}}/{{stripeActionStrings[log.action]}}
+      <pre>{{log.data}}</pre>
     </div>
   </section>
 </template>
@@ -20,26 +19,20 @@ export default {
   },
   data() {
     return {
-      logs: [],
+      log: null,
       detacher: null,
       stripeActionStrings,
+      logUid: this.$route.params.uid,
+      logId: this.$route.params.logId
     };
   },
   async mounted() {
     if (!this.$store.state.user || this.$store.getters.isNotSuperAdmin) {
       this.$router.push("/");
     }
-    this.detatcher = db
-      .collectionGroup("stripeLogs")
-      .orderBy("created", "desc")
-      .limit(100)
-      .onSnapshot(snapshot => {
-        this.logs = snapshot.docs.map(doc => {
-          const log = doc.data();
-          log.id = doc.id;
-          return log;
-        });
-      });
+    const doc =  await db.doc(`admins/${this.logUid}/stripeLogs/${this.logId}`).get();
+    this.log = doc.data();
+    console.log(this.log);
   },
   destroyed() {
     this.detatcher && this.detatcher();
