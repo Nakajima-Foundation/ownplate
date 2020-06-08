@@ -25,6 +25,7 @@
 import { ownPlateConfig } from "@/config/project";
 import { db, firestore, functions } from "~/plugins/firebase.js";
 import * as crypto from "crypto";
+import { lineAuthURL } from "~/plugins/line.js";
 
 export default {
   data() {
@@ -86,7 +87,14 @@ export default {
       }
     }
     if (this.traceId) {
-      location.href = this.lineAuth;
+      const url = lineAuthURL(
+        "/callback/track",
+        {
+          traceId: this.traceId
+        },
+        ownPlateConfig.line.TRACK_CHANNEL_ID
+      );
+      location.href = url;
     }
   },
   destroyed() {
@@ -98,15 +106,6 @@ export default {
     },
     traceId() {
       return this.$route.params.traceId;
-    },
-    lineAuth() {
-      return this.lineAuthURL(
-        "/callback/track",
-        {
-          traceId: this.traceId
-        },
-        ownPlateConfig.line.TRACK_CHANNEL_ID
-      );
     }
   }
 };
