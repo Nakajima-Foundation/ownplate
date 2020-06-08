@@ -15,7 +15,9 @@ export const lineAuthURL = (path, options, channelId) => {
   };
   const params = JSON.stringify(Object.assign({}, options || {},
     { state, nonce }));
-  document.cookie = `line_params=${encodeURIComponent(params)};path=${path}`;
+  const cookie = `line_params=${encodeURIComponent(params)};path=${path}`;
+  console.log(cookie);
+  document.cookie = cookie;
   const queryString = Object.keys(query)
     .map(key => {
       return key + "=" + encodeURIComponent(query[key]);
