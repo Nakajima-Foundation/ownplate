@@ -18,6 +18,9 @@ export default ({app}) => {
       isUser() {
         return !!this.$store.getters.uidUser;
       },
+      isNotSuperAdmin() {
+        return this.$store.getters.isNotSuperAdmin;
+      }
     },
   });
 }

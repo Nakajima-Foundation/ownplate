@@ -343,7 +343,9 @@ export default {
   },
   computed: {
     lineAuth() {
-      return this.lineAuthURL("/callback/line", location.pathname);
+      return this.lineAuthURL("/callback/line", {
+        pathname: location.pathname
+      });
     },
     showAddLine() {
       return (

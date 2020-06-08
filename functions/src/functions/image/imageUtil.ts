@@ -69,7 +69,7 @@ export const validImagePath = (filePath, matchPaths) => {
       if (match === false) {
         return false;
       }
-      if (splitMatchPath[key] == "*") {
+      if (splitMatchPath[key] === "*") {
         return true;
       }
       return filePaths[Number(key)] === splitMatchPath[key]

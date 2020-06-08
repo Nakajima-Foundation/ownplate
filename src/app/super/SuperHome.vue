@@ -24,10 +24,5 @@ export default {
       }
     }
   },
-  computed: {
-    isNotSuperAdmin() {
-      return this.$store.getters.isNotSuperAdmin;
-    }
-  }
 };
 </script>
