@@ -24,7 +24,7 @@
 <script>
 import { db } from "~/plugins/firebase.js";
 import BackButton from "~/components/BackButton";
-import { lineAuthURL } from "~/plugins/line.js";
+import { lineAuthURL, lineVerify } from "~/plugins/line.js";
 
 export default {
   components: {
@@ -39,15 +39,20 @@ export default {
   async created() {
     const lineId = this.$route.query.userId;
     const displayName = this.$route.query.displayName;
-    if (lineId && displayName) {
-      await db.doc(`restaurants/${this.restaurantId()}/lines/${lineId}`).set(
-        {
-          displayName,
-          notify: true
-        },
-        { merge: true }
-      );
-      console.log("registered lineId", lineId);
+    const state = this.$route.query.state;
+    if (lineId && displayName && state) {
+      if (lineVerify(state)) {
+        await db.doc(`restaurants/${this.restaurantId()}/lines/${lineId}`).set(
+          {
+            displayName,
+            notify: true
+          },
+          { merge: true }
+        );
+        console.log("registered lineId", lineId);
+      } else {
+        console.error("invalid state", state);
+      }
       this.$router.replace(location.pathname);
     }
   },

@@ -35,3 +35,9 @@ export const lineGuard = (nonce, state) => {
   }
   return params;
 };
+
+export const lineVerify = (state) => {
+  const cookies = Cookie.parse(document.cookie);
+  const params = JSON.parse(cookies.line_params);
+  return (state === params.state);
+}

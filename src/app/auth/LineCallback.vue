@@ -48,7 +48,9 @@ export default {
               this.$router.push(
                 `${params.pathname}?userId=${
                   data.profile.userId
-                }&displayName=${encodeURIComponent(data.profile.displayName)}`
+                }&displayName=${encodeURIComponent(
+                  data.profile.displayName
+                )}&state=${state}`
               );
             }
           });
