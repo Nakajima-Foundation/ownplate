@@ -24,6 +24,7 @@
 <script>
 import { db } from "~/plugins/firebase.js";
 import BackButton from "~/components/BackButton";
+import { lineAuthURL } from "~/plugins/line.js";
 
 export default {
   components: {
@@ -80,7 +81,7 @@ export default {
   },
   computed: {
     lineAuth() {
-      return this.lineAuthURL("/callback/line", {
+      return lineAuthURL("/callback/line", {
         pathname: location.pathname
       });
     }

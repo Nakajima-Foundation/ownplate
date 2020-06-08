@@ -294,6 +294,7 @@ import { order_status } from "~/plugins/constant.js";
 import { nameOfOrder } from "~/plugins/strings.js";
 import { releaseConfig } from "~/plugins/config.js";
 import { stripeCreateIntent, stripeCancelIntent } from "~/plugins/stripe.js";
+import { lineAuthURL } from "~/plugins/line.js";
 
 export default {
   name: "Order",
@@ -343,7 +344,7 @@ export default {
   },
   computed: {
     lineAuth() {
-      return this.lineAuthURL("/callback/line", {
+      return lineAuthURL("/callback/line", {
         pathname: location.pathname
       });
     },
