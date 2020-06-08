@@ -175,11 +175,11 @@ const notifyRestaurant = async (db: FirebaseFirestore.Firestore, messageId: stri
 }
 
 export const notifyNewOrder = async (db: FirebaseFirestore.Firestore, restaurantId: string, orderId: string, orderNumber: number, lng: string) => {
-  notifyRestaurant(db, 'msg_order_placed', restaurantId, orderId, orderNumber, lng)
+  return notifyRestaurant(db, 'msg_order_placed', restaurantId, orderId, orderNumber, lng)
 };
 
 export const notifyCanceledOrder = async (db: FirebaseFirestore.Firestore, restaurantId: string, orderId: string, orderNumber: number, lng: string) => {
-  notifyRestaurant(db, 'msg_order_canceled_by_user', restaurantId, orderId, orderNumber, lng)
+  return notifyRestaurant(db, 'msg_order_canceled_by_user', restaurantId, orderId, orderNumber, lng)
 };
 
 export const getMenuObj = async (refRestaurant) => {

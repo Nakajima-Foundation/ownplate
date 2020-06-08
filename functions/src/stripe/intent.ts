@@ -239,7 +239,6 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
         return { success: true, payment: false }
       }
 
-      const orderName = nameOfOrder(orderNumber)
       const stripeRecord = (await transaction.get(stripeRef)).data();
       if (!stripeRecord || !stripeRecord.paymentIntent || !stripeRecord.paymentIntent.id) {
         throw new functions.https.HttpsError('failed-precondition', 'This order has no paymentIntendId.', stripeRecord)
@@ -269,6 +268,7 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
         throw error
       }
     })
+    const orderName = nameOfOrder(orderNumber)
     if (sendSMS) {
       await sendMessage(db, lng, 'msg_order_canceled', restaurant.restaurantName, orderName, uidUser, phoneNumber, restaurantId, orderId)
     }
