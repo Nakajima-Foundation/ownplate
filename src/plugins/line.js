@@ -15,7 +15,9 @@ export const lineAuthURL = (path, options, channelId) => {
   };
   const params = JSON.stringify(Object.assign({}, options || {},
     { state, nonce }));
-  const cookie = `line_params=${encodeURIComponent(params)};path=${path}`;
+  const date = new Date();
+  date.setTime(date.getTime() + 5 * 60 * 1000); // five minutes
+  const cookie = `line_params=${encodeURIComponent(params)}; expires=${date.toUTCString()}; path=${path}`;
   console.log(cookie);
   document.cookie = cookie;
   const queryString = Object.keys(query)
