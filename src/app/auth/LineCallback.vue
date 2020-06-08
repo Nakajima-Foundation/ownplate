@@ -9,7 +9,6 @@
 // https://firebase.googleblog.com/2016/11/authenticate-your-firebase-users-with-line-login.html
 import { ownPlateConfig } from "@/config/project";
 import { db, auth, firestore, functions } from "~/plugins/firebase.js";
-import * as Cookie from "cookie";
 import { lineGuard } from "~/plugins/line.js";
 
 export default {
@@ -19,9 +18,6 @@ export default {
     };
   },
   async mounted() {
-    //console.log(this.$route.query);
-    //console.log("cookies", Cookie.parse(document.cookie));
-
     if (this.code) {
       try {
         const lineValidate = functions.httpsCallable("lineValidate");
