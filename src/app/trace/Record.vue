@@ -87,7 +87,14 @@ export default {
       }
     }
     if (this.traceId) {
-      location.href = this.lineAuth;
+      const url = lineAuthURL(
+        "/callback/track",
+        {
+          traceId: this.traceId
+        },
+        ownPlateConfig.line.TRACK_CHANNEL_ID
+      );
+      location.href = url;
     }
   },
   destroyed() {
@@ -99,15 +106,6 @@ export default {
     },
     traceId() {
       return this.$route.params.traceId;
-    },
-    lineAuth() {
-      return lineAuthURL(
-        "/callback/track",
-        {
-          traceId: this.traceId
-        },
-        ownPlateConfig.line.TRACK_CHANNEL_ID
-      );
     }
   }
 };
