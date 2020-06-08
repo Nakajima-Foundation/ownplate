@@ -3,6 +3,7 @@
     <div v-if="$store.getters.isSuperAdmin">
       <h2>Admin Page</h2>
       <router-link to="/s/orders">All Orders</router-link>
+      <router-link to="/s/callbacks">All Callbacks</router-link>
     </div>
     <b-loading v-else active />
   </section>

@@ -2,6 +2,7 @@ import Vue from 'vue';
 import { storage } from "~/plugins/firebase.js";
 import { ownPlateConfig } from "@/config/project";
 import { regionalSettings } from "~/plugins/constant.js";
+import moment from "moment";
 
 export default ({ app }) => {
   Vue.mixin({
@@ -114,6 +115,9 @@ export default ({ app }) => {
           .join("&");
         return `https://access.line.me/oauth2/v2.1/authorize?${queryString}`;
       },
+      moment(value) {
+        return moment(value);
+      }
     },
     computed: {
       regionalSetting() {

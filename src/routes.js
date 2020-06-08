@@ -101,6 +101,10 @@ export const customRoutes = [
     component: 'super/AllOrders.vue'
   },
   {
+    path: '/s/callbacks',
+    component: 'super/AllStripeCallback.vue'
+  },
+  {
     path: '/callback/line',
     component: 'auth/LineCallback.vue'
   },
