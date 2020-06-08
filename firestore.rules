@@ -70,6 +70,9 @@ service cloud.firestore {
       allow read: if isSuper(request);
       allow read: if isOwner(resource, request);
     }
+    match /{path=**}/stripeLogs/{logId} {
+      allow read: if isSuper(request);
+    }
 
     match /restaurants {
       match /{restaurantId} {

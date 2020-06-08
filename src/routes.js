@@ -111,35 +111,35 @@ export const customRoutes = [
     component: "super/SuperHome.vue"
   },
   {
-    path: "/s/orders",
-    component: "super/AllOrders.vue"
+    path: '/s/orders',
+    component: 'super/AllOrders.vue'
   },
   {
-    path: "/s/callbacks",
-    component: "super/AllStripeCallback.vue"
+    path: '/s/callbacks',
+    component: 'super/AllStripeCallback.vue'
   },
   {
-    path: "/s/callbacks/:uid/:logId",
-    component: "super/StripeCallback.vue"
+    path: '/s/callbacks/:uid/:logId',
+    component: 'super/StripeCallback.vue'
   },
   {
-    path: "/callback/line",
-    component: "auth/LineCallback.vue"
+    path: '/callback/line',
+    component: 'auth/LineCallback.vue'
   },
   {
-    path: "/callback/track",
-    component: "auth/TrackCallback.vue"
+    path: '/callback/track',
+    component: 'auth/TrackCallback.vue'
   },
   {
-    path: "/t/:traceId",
-    component: "trace/Record.vue"
+    path: '/t/:traceId',
+    component: 'trace/Record.vue'
   },
   {
-    path: "/t",
-    component: "trace/Record.vue"
+    path: '/t',
+    component: 'trace/Record.vue'
   },
   {
-    path: "*",
-    component: "common/404.vue"
+    path: '*',
+    component: 'common/404.vue'
   }
 ];
