@@ -3,7 +3,7 @@
     <!-- Back Button -->
     <back-button :url="`/admin/restaurants/${restaurantId()}/orders`" class="m-t-24" />
     <div class="align-center">
-      <b-button class="b-reset op-button-small" style="background:#18b900" tag="a" :href="lineAuth">
+      <b-button class="b-reset op-button-small" style="background:#18b900" @click="handleLineAuth">
         <i class="fab fa-line c-text-white-full m-l-24 m-r-8" style="font-size:24px" />
         <span class="c-text-white-full m-r-24">
           {{
@@ -77,13 +77,12 @@ export default {
     },
     iconClass(lineUser) {
       return lineUser.notify ? "far fa-check-square" : "far fa-square";
-    }
-  },
-  computed: {
-    lineAuth() {
-      return lineAuthURL("/callback/line", {
+    },
+    handleLineAuth() {
+      const url = lineAuthURL("/callback/line", {
         pathname: location.pathname
       });
+      location.href = url;
     }
   }
 };
