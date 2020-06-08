@@ -57,8 +57,7 @@
             <b-button
               class="b-reset op-button-small"
               style="background:#18b900"
-              tag="a"
-              :href="lineAuth"
+              @click="handleLineAuth"
             >
               <i class="fab fa-line c-text-white-full m-l-24 m-r-8" style="font-size:24px" />
               <span class="c-text-white-full m-r-24">
@@ -142,11 +141,6 @@ export default {
     friendLink() {
       return ownPlateConfig.line.FRIEND_LINK;
     },
-    lineAuth() {
-      return lineAuthURL("/callback/line", {
-        pathname: location.pathname
-      });
-    },
     claims() {
       return this.$store.state.claims;
     },
@@ -187,6 +181,12 @@ export default {
     }
   },
   methods: {
+    handleLineAuth() {
+      const url = lineAuthURL("/callback/line", {
+        pathname: location.pathname
+      });
+      location.href = url;
+    },
     handleDeleteAccount() {
       this.$store.commit("setAlert", {
         code: "profile.reallyDeleteAccount",
