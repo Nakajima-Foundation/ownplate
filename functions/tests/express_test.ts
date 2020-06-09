@@ -78,4 +78,13 @@ describe('express function', () => {
 
 
   });
+
+  it ('express sitemape test', async function() {
+    const response = await request.get('/sitemap.xml');
+    response.status.should.equal(200);
+
+    console.log(response.text);
+
+  });
+
 });

@@ -27,6 +27,7 @@
     "firebase-functions": "^3.6.0",
     "i18next": "^19.4.4",
     "sharp": "^0.25.3",
+    "sitemap": "^6.1.5",
     "stripe": "^8.39.1",
     "uuid-v4": "^0.1.0"
   },

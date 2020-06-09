@@ -8,6 +8,8 @@ import * as Sentry from '@sentry/node';
 import * as utils from '../lib/utils'
 import * as stripeLog from '../lib/stripeLog';
 
+import { SitemapStream, streamToPromise } from 'sitemap';
+
 export const app = express();
 export const router = express.Router();
 
@@ -28,6 +30,26 @@ export const logger = async (req, res, next) => {
 export const hello_response = async (req, res) => {
   res.json({ message: "hello" });
 };
+
+export const sitemap_response = async (req, res) => {
+  try {
+    const smStream = new SitemapStream({ hostname: "https://" + ownPlateConfig.hostName })
+    const docs = (await db.collection("restaurants").get()).docs;
+    await Promise.all(docs.map(async doc => {
+      // console.log(doc.data());
+      // console.log(doc.id);
+      smStream.write({ url: '/restaurants/' + doc.id})
+    }));
+    smStream.end()
+
+    const response = await streamToPromise( smStream ).then( data => data.toString() );
+    return res.send(response);
+  } catch (e) {
+    console.error(e)
+    return res.status(500).end()
+  }
+};
+
 
 const escapeHtml = (str: string): string => {
   if (typeof str !== 'string') {
@@ -134,5 +156,8 @@ app.use('/1.0', router);
 
 app.get('/r/:restaurantName', ogpPage);
 app.get('/r/:restaurantpName/*', ogpPage);
+
+
+app.get('/sitemap.xml', sitemap_response);
 
 app.get('/debug/error', debugError);
