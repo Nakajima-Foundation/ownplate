@@ -8,7 +8,7 @@ import * as Sentry from '@sentry/node';
 import * as utils from '../lib/utils'
 import * as stripeLog from '../lib/stripeLog';
 
-import { SitemapStream, streamToPromise } from 'sitemap';
+import * as xmlbuilder from 'xmlbuilder';
 
 export const app = express();
 export const router = express.Router();
@@ -32,18 +32,25 @@ export const hello_response = async (req, res) => {
 };
 
 export const sitemap_response = async (req, res) => {
+
   try {
-    const smStream = new SitemapStream({ hostname: "https://" + ownPlateConfig.hostName })
+    const hostname = "https://" + ownPlateConfig.hostName;
+
+    const urlset = xmlbuilder.create('urlset').att('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9');
+
     const docs = (await db.collection("restaurants").get()).docs;
     await Promise.all(docs.map(async doc => {
-      // console.log(doc.data());
-      // console.log(doc.id);
-      smStream.write({ url: '/r/' + doc.id})
+      const url = urlset.ele('url');
+      url.ele('loc', hostname + '/r/' + doc.id);
     }));
-    smStream.end()
 
-    const response = await streamToPromise( smStream ).then( data => data.toString() );
-    return res.send(response);
+    const xml = urlset
+        .dec('1.0', 'UTF-8')
+        .end({ pretty: true });
+
+    res.setHeader("Content-Type", "text/xml");
+    res.send(xml);
+
   } catch (e) {
     console.error(e)
     return res.status(500).end()
