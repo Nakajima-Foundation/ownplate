@@ -872,7 +872,14 @@ export default {
           pickUpDaysInAdvance: this.shopInfo.pickUpDaysInAdvance,
           foodTax: Number(this.shopInfo.foodTax),
           alcoholTax: Number(this.shopInfo.alcoholTax),
-          openTimes: this.shopInfo.openTimes,
+          openTimes: Object.keys(this.shopInfo.openTimes).reduce((tmp, key) => {
+            tmp[key] = this.shopInfo.openTimes[key].filter(el => {
+              return el !== null && el?.end !== null && el?.start !== null;
+            }).sort((a, b) => {
+              return a.start <  b.start ? -1 : 1;
+            });
+            return tmp;
+          },{}),
           businessDay: this.shopInfo.businessDay,
           uid: this.shopInfo.uid,
           publicFlag: this.shopInfo.publicFlag,
