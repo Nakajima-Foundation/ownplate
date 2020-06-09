@@ -1,6 +1,6 @@
 <template>
   <div>
-    <template v-if="notFound==null"></template>
+    <template v-if="notFound == null"></template>
     <template v-else-if="notFound">
       <not-found />
     </template>
@@ -18,8 +18,14 @@
               <div class="column">
                 <div class="is-hidden-mobile h-24"></div>
                 <div class="bg-form h-192">
-                  <img :src="coverImage" class="h-192 w-full cover is-hidden-tablet" />
-                  <img :src="coverImage" class="h-192 w-full cover r-8 is-hidden-mobile" />
+                  <img
+                    :src="coverImage"
+                    class="h-192 w-full cover is-hidden-tablet"
+                  />
+                  <img
+                    :src="coverImage"
+                    class="h-192 w-full cover r-8 is-hidden-mobile"
+                  />
                 </div>
               </div>
               <div class="column is-narrow w-24"></div>
@@ -31,9 +37,9 @@
               <shop-header :shopInfo="shopInfo"></shop-header>
 
               <!-- Restaurant Descriptions -->
-              <div
-                class="t-body1 c-text-black-medium align-center m-t-8"
-              >{{this.shopInfo.introduction}}</div>
+              <div class="t-body1 c-text-black-medium align-center m-t-8">
+                {{ this.shopInfo.introduction }}
+              </div>
 
               <!-- Share Popup -->
               <share-popup :shopInfo="shopInfo"></share-popup>
@@ -53,7 +59,9 @@
                     <div
                       class="t-h6 c-text-black-disabled m-t-24"
                       v-if="itemsObj[itemId]._dataType === 'title'"
-                    >{{itemsObj[itemId].name}}</div>
+                    >
+                      {{ itemsObj[itemId].name }}
+                    </div>
                     <item-card
                       v-if="itemsObj[itemId]._dataType === 'menu'"
                       :item="itemsObj[itemId]"
@@ -82,6 +90,11 @@
       </b-modal>
 
       <!-- Cart Button -->
+      <div
+        v-if="isCheckingOut"
+        style="position: fixed; top: 0px; left: 0px;"
+        class="w-full h-full bg-dialog-overlay"
+      ></div>
       <b-button
         class="op-cartbutton"
         v-if="0 != totalCount"
@@ -90,9 +103,13 @@
         @click="handleCheckOut"
       >
         <div class="level is-mobile w-full p-l-32 p-r-32">
-          <div class="level-left">{{$tc('sitemenu.orderCounter', totalCount, {count: totalCount})}}</div>
+          <div class="level-left">
+            {{
+              $tc("sitemenu.orderCounter", totalCount, { count: totalCount })
+            }}
+          </div>
           <div class="level-right">
-            <span class="m-r-8">{{$t('sitemenu.checkout')}}</span>
+            <span class="m-r-8">{{ $t("sitemenu.checkout") }}</span>
             <i class="material-icons">shopping_cart</i>
           </div>
         </div>

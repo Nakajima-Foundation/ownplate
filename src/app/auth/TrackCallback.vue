@@ -8,6 +8,8 @@
 <script>
 import { ownPlateConfig } from "@/config/project";
 import { db, auth, firestore, functions } from "~/plugins/firebase.js";
+import { lineGuard } from "~/plugins/line.js";
+
 export default {
   data() {
     return {
@@ -44,16 +46,18 @@ export default {
         });
         console.log(data);
         if (data.nonce && data.profile && data.customToken) {
-          console.log("validation succeded");
+          const state = this.$route.query.state;
+          const params = lineGuard(data.nonce, state);
+          console.log("validation succeded", params.traceId);
           const user = await auth.signInWithCustomToken(data.customToken);
-          console.log("signInWithCustomToken", user);
+          //console.log("signInWithCustomToken", user);
           const lineSetCustomClaim = functions.httpsCallable(
             "lineSetCustomClaim"
           );
           const result = await lineSetCustomClaim();
-          console.log("result", result);
+          console.log("lineSetCustomClaim", result.data);
           if (user) {
-            this.$router.replace(`/t/${data.nonce}`);
+            this.$router.replace(`/t/${params.traceId}`);
           }
         } else {
           console.error("validatin failed", data);

@@ -48,8 +48,7 @@
                 <b-button
                   class="b-reset op-button-small"
                   style="background:#18b900"
-                  tag="a"
-                  :href="lineAuth"
+                  @click="handleLineAuth"
                 >
                   <i class="fab fa-line c-text-white-full m-l-24 m-r-8" style="font-size:24px" />
                   <span class="c-text-white-full m-r-24">
@@ -294,6 +293,7 @@ import { order_status } from "~/plugins/constant.js";
 import { nameOfOrder } from "~/plugins/strings.js";
 import { releaseConfig } from "~/plugins/config.js";
 import { stripeCreateIntent, stripeCancelIntent } from "~/plugins/stripe.js";
+import { lineAuthURL } from "~/plugins/line.js";
 
 export default {
   name: "Order",
@@ -342,9 +342,6 @@ export default {
     }
   },
   computed: {
-    lineAuth() {
-      return this.lineAuthURL("/callback/line", location.pathname);
-    },
     showAddLine() {
       return (
         this.isLineEnabled &&
@@ -415,6 +412,12 @@ export default {
     }
   },
   methods: {
+    handleLineAuth() {
+      const url = lineAuthURL("/callback/line", {
+        pathname: location.pathname
+      });
+      location.href = url;
+    },
     loadData() {
       const restaurant_detacher = db
         .doc(`restaurants/${this.restaurantId()}`)

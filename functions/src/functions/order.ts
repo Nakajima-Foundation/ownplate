@@ -10,20 +10,26 @@ import * as line from './line'
 import { ownPlateConfig } from '../common/project';
 import { createCustomer } from '../stripe/customer';
 
+export const nameOfOrder = (orderNumber: number) => {
+  return "#" + `00${orderNumber}`.slice(-3);
+};
+
 // This function is called by users to place orders without paying
 export const place = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
-  const { restaurantId, orderId, tip, sendSMS, timeToPickup } = data;
-  utils.validate_params({ restaurantId, orderId }) // tip and sendSMS are optinoal
+  const { restaurantId, orderId, tip, sendSMS, timeToPickup, lng } = data;
+  utils.validate_params({ restaurantId, orderId }) // tip, sendSMS and lng are optinoal
 
   try {
     const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`)
 
-    return await db.runTransaction(async transaction => {
+    let orderNumber: number = 0;
+    const result = await db.runTransaction(async transaction => {
       const order = Order.fromSnapshot<Order>(await transaction.get(orderRef))
       if (!order) {
         throw new functions.https.HttpsError('invalid-argument', 'This order does not exist.')
       }
+      orderNumber = order.number;
       if (uid !== order.uid) {
         throw new functions.https.HttpsError('permission-denied', 'The user is not the owner of this order.')
       }
@@ -44,6 +50,9 @@ export const place = async (db: FirebaseFirestore.Firestore, data: any, context:
 
       return { success: true }
     })
+    await notifyNewOrder(db, restaurantId, orderId, orderNumber, lng);
+
+    return result;
   } catch (error) {
     throw utils.process_error(error)
   }
@@ -65,7 +74,7 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
     const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`)
     let phoneNumber: string | undefined = undefined;
     let msgKey: string | undefined = undefined;
-    let orderNumber: string = "";
+    let orderName: string = "";
     let sendSMS: boolean = false;
     let uidUser: string | null = null;
 
@@ -76,7 +85,7 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
       }
       uidUser = order.uid;
       phoneNumber = order.phoneNumber
-      orderNumber = "#" + `00${order.number}`.slice(-3)
+      orderName = nameOfOrder(order.number)
       sendSMS = order.sendSMS
 
       const isPreviousStateChangable: Boolean = (() => {
@@ -123,7 +132,7 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
       return { success: true }
     })
     if (sendSMS && msgKey) {
-      await sendMessage(db, lng, msgKey, restaurant.restaurantName, orderNumber, uidUser, phoneNumber, restaurantId, orderId)
+      await sendMessage(db, lng, msgKey, restaurant.restaurantName, orderName, uidUser, phoneNumber, restaurantId, orderId)
     }
     return result
   } catch (error) {
@@ -147,6 +156,31 @@ export const sendMessage = async (db: FirebaseFirestore.Firestore, lng: string,
     await sms.pushSMS("OwnPlate", message, phoneNumber)
   }
 }
+
+const notifyRestaurant = async (db: FirebaseFirestore.Firestore, messageId: string, restaurantId: string, orderId: string, orderNumber: number, lng: string) => {
+  const docs = (await db.collection(`/restaurants/${restaurantId}/lines`).get()).docs;
+  const t = await i18next.init({
+    lng: lng || utils.getStripeRegion().langs[0],
+    resources
+  })
+  const url = `https://${ownPlateConfig.hostName}/admin/restaurants/${restaurantId}/orders/${orderId}?openExternalBrowser=1`
+  const orderName = nameOfOrder(orderNumber);
+  const message = `${t(messageId)} ${orderName} ${url}`;
+  docs.forEach(async doc => {
+    const lineUser = doc.data();
+    if (lineUser.notify) {
+      await line.sendMessageDirect(doc.id, message)
+    }
+  });
+}
+
+export const notifyNewOrder = async (db: FirebaseFirestore.Firestore, restaurantId: string, orderId: string, orderNumber: number, lng: string) => {
+  return notifyRestaurant(db, 'msg_order_placed', restaurantId, orderId, orderNumber, lng)
+};
+
+export const notifyCanceledOrder = async (db: FirebaseFirestore.Firestore, restaurantId: string, orderId: string, orderNumber: number, lng: string) => {
+  return notifyRestaurant(db, 'msg_order_canceled_by_user', restaurantId, orderId, orderNumber, lng)
+};
 
 export const getMenuObj = async (refRestaurant) => {
   const menuObj = {};

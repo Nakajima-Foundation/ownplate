@@ -1,33 +1,63 @@
 <template>
-  <section class="section">
-    <h2 class="p-big bold">Restaurants</h2>
-    <div
-      v-for="restaurant in restaurants"
-      class="card block"
-      :key="restaurant.id"
-    >
-      <div class="card-content m-t-8">
-        <router-link :to="`/r/${restaurant.id}`">{{
-          restaurant.restaurantName
-        }}</router-link>
+  <div>
+    <!-- List Header Area -->
+    <div class="columns is-gapless">
+      <!-- Left Gap -->
+      <div class="column is-narrow w-24"></div>
+      <!-- Center Column -->
+      <div class="column">
+        <div class="m-l-24 m-r-24 m-t-24">
+          <!-- Title -->
+          <div class="t-h6 c-text-black-disabled m-t-24">{{$t("find.area")}}</div>
+        </div>
       </div>
+      <!-- Right Gap -->
+      <div class="column is-narrow w-24"></div>
     </div>
-  </section>
+
+    <!-- List Body Area -->
+    <div class="columns is-gapless">
+      <!-- Left Gap -->
+      <div class="column is-narrow w-24"></div>
+      <!-- Center Column -->
+      <div class="column">
+        <div class="m-l-24 m-r-16 m-t-16">
+          <!-- Areas -->
+          <div class="columns is-gapless is-multiline">
+            <area-item :name="$t('find.areaAll')" :id="'all'" />
+
+            <!-- v-for="area in areas" -->
+            <area-item :name="'東京都'" :id="'12'" />
+            <area-item :name="'福岡県'" :id="'39'" />
+          </div>
+        </div>
+      </div>
+      <!-- Right Gap -->
+      <div class="column is-narrow w-24"></div>
+    </div>
+  </div>
 </template>
 
 <script>
 import { db } from "~/plugins/firebase.js";
-import { RestaurantHeader }  from "~/plugins/header.js";
+import { RestaurantHeader } from "~/plugins/header.js";
+import AreaItem from "~/app/user/Restaurants/AreaItem";
 
 export default {
+  components: {
+    AreaItem
+  },
   data() {
     return {
+      // # Need to rewrite for Areas instead of Restaurants.
       restaurants: []
     };
   },
   head() {
     return RestaurantHeader;
   },
+  // # Need to rewrite for Areas instead of Restaurants.
+/*
   async created() {
     try {
       const res = await db
@@ -45,5 +75,6 @@ export default {
       console.log(error);
     }
   }
+*/
 };
 </script>
