@@ -48,6 +48,10 @@
                         {{
                         restaurant.restaurantName
                         }}
+                        /
+                        {{
+                        restaurant.state
+                        }}
                       </div>
                     </div>
                   </div>

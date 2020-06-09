@@ -24,13 +24,11 @@
         <div class="m-l-24 m-r-16 m-t-16">
           <!-- Areas -->
           <div class="columns is-gapless is-multiline">
-            <area-item :name="$t('find.areaAll')" :amount="'512'" :id="'all'" />
+            <area-item :name="$t('find.areaAll')" :id="'all'" />
 
             <!-- v-for="area in areas" -->
-            <area-item :name="'東京都'" :amount="'128'" :id="'12'" />
-            <area-item :name="'神奈川県'" :amount="'128'" :id="'12'" />
-            <area-item :name="'福岡県'" :amount="'128'" :id="'12'" />
-            <area-item :name="'熊本県'" :amount="'128'" :id="'12'" />
+            <area-item :name="'東京都'" :id="'12'" />
+            <area-item :name="'福岡県'" :id="'39'" />
           </div>
         </div>
       </div>
@@ -59,6 +57,7 @@ export default {
     return RestaurantHeader;
   },
   // # Need to rewrite for Areas instead of Restaurants.
+/*
   async created() {
     try {
       const res = await db
@@ -76,5 +75,6 @@ export default {
       console.log(error);
     }
   }
+*/
 };
 </script>
