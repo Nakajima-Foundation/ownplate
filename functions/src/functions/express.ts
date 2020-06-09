@@ -38,7 +38,7 @@ export const sitemap_response = async (req, res) => {
     await Promise.all(docs.map(async doc => {
       // console.log(doc.data());
       // console.log(doc.id);
-      smStream.write({ url: '/restaurants/' + doc.id})
+      smStream.write({ url: '/r/' + doc.id})
     }));
     smStream.end()
 
