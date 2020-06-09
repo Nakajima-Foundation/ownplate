@@ -821,7 +821,6 @@ export default {
       }
     },
     async submitRestaurant() {
-      console.log(this.shopInfo);
       this.submitting = true;
       const restaurantId = this.restaurantId();
       try {
@@ -889,14 +888,12 @@ export default {
           createdAt:
             this.shopInfo.createdAt || firestore.FieldValue.serverTimestamp()
         };
-        console.log(restaurantData);
         await this.updateRestaurantData(restaurantData);
 
         this.$router.push({
           path: `/admin/restaurants/`
         });
       } catch (error) {
-        console.log(error);
         this.submitting = false;
         this.$store.commit("setErrorMessage", {
           code: "restaurant.save",
