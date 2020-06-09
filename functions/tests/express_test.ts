@@ -33,8 +33,10 @@ const good_cafe_data = {
   phoneNumber: "+01-0000-0000",
   url: "https://example.com",
   uid: "123123",
+  createdAt: Date.now(),
   defaultTaxRate: 10,
   publicFlag: true,
+  deletedFlag: false,
 };
 
 describe('express function', () => {

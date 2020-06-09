@@ -10,6 +10,8 @@ import * as stripeLog from '../lib/stripeLog';
 
 import * as xmlbuilder from 'xmlbuilder';
 
+import moment from 'moment';
+
 export const app = express();
 export const router = express.Router();
 
@@ -31,6 +33,20 @@ export const hello_response = async (req, res) => {
   res.json({ message: "hello" });
 };
 
+const lastmod = (restaurant) => {
+  try {
+    if (restaurant.updatedAt) {
+      return moment(restaurant.updatedAt.toDate()).format("YYYY-MM-DD")
+    }
+    if (restaurant.createdAt) {
+      return moment(restaurant.createdAt.toDate()).format("YYYY-MM-DD")
+    }
+  } catch (e) {
+    console.log(e);
+  }
+  return "2020-05-01";
+};
+
 export const sitemap_response = async (req, res) => {
 
   try {
@@ -38,10 +54,15 @@ export const sitemap_response = async (req, res) => {
 
     const urlset = xmlbuilder.create('urlset').att('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9');
 
-    const docs = (await db.collection("restaurants").get()).docs;
+    const docs = (await db.collection("restaurants")
+                  .where("publicFlag", "==", true)
+                  .where("deletedFlag", "==", false)
+                  .get()).docs;
     await Promise.all(docs.map(async doc => {
       const url = urlset.ele('url');
       url.ele('loc', hostname + '/r/' + doc.id);
+      url.ele('lastmod', lastmod(doc.data()));
+
     }));
 
     const xml = urlset
