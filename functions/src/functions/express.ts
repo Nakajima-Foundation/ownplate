@@ -8,6 +8,10 @@ import * as Sentry from '@sentry/node';
 import * as utils from '../lib/utils'
 import * as stripeLog from '../lib/stripeLog';
 
+import * as xmlbuilder from 'xmlbuilder';
+
+import moment from 'moment';
+
 export const app = express();
 export const router = express.Router();
 
@@ -28,6 +32,52 @@ export const logger = async (req, res, next) => {
 export const hello_response = async (req, res) => {
   res.json({ message: "hello" });
 };
+
+const lastmod = (restaurant) => {
+  try {
+    if (restaurant.updatedAt) {
+      return moment(restaurant.updatedAt.toDate()).format("YYYY-MM-DD")
+    }
+    if (restaurant.createdAt) {
+      return moment(restaurant.createdAt.toDate()).format("YYYY-MM-DD")
+    }
+  } catch (e) {
+    console.log(e);
+  }
+  return "2020-05-01";
+};
+
+export const sitemap_response = async (req, res) => {
+
+  try {
+    const hostname = "https://" + ownPlateConfig.hostName;
+
+    const urlset = xmlbuilder.create('urlset').att('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9');
+
+    const docs = (await db.collection("restaurants")
+                  .where("publicFlag", "==", true)
+                  .where("deletedFlag", "==", false)
+                  .get()).docs;
+    await Promise.all(docs.map(async doc => {
+      const url = urlset.ele('url');
+      url.ele('loc', hostname + '/r/' + doc.id);
+      url.ele('lastmod', lastmod(doc.data()));
+
+    }));
+
+    const xml = urlset
+        .dec('1.0', 'UTF-8')
+        .end({ pretty: true });
+
+    res.setHeader("Content-Type", "text/xml");
+    res.send(xml);
+
+  } catch (e) {
+    console.error(e)
+    return res.status(500).end()
+  }
+};
+
 
 const escapeHtml = (str: string): string => {
   if (typeof str !== 'string') {
@@ -134,5 +184,8 @@ app.use('/1.0', router);
 
 app.get('/r/:restaurantName', ogpPage);
 app.get('/r/:restaurantpName/*', ogpPage);
+
+
+app.get('/sitemap.xml', sitemap_response);
 
 app.get('/debug/error', debugError);

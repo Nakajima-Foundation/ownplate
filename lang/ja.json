@@ -60,7 +60,7 @@
     "new": "新規",
     "current": "変更前",
     "clickAndUpload": "ここをクリック",
-    "clickAndUploadDetail": "クリックもしくは画像をドラッグ＆ドロップしてアップロード（JPEG形式）"
+    "clickAndUploadDetail": "グレー部分をクリックもしくは画像をドラッグ＆ドロップしてアップロード（JPEG形式）"
   },
   "currency": {
     "USD": "ドル",
@@ -115,7 +115,8 @@
     "coverPhoto": "カバー画像",
     "setLocation": "住所を元に地図を更新",
     "updateMap": "場所をセット",
-    "businessHourDescription": "営業する曜日にチェックをいれ、営業時間を設定してください。",
+    "businessHourDescription": "営業する曜日にチェックをいれ、時間を設定してください。休憩など営業時間を分ける必要がある場合は別時間帯フォームに後半の時間を設定してください。",
+    "businessHourOption": "別時間帯（オプション）",
     "draftDescription": "下書きとして保存されます（お客様からお店のページは見えません）",
     "publishDescription": "保存して公開",
     "draftWarning": "赤枠のエラーを修正すると公開可能になります",
@@ -156,6 +157,11 @@
   "editTitle": {
     "enterCategory": "カテゴリー名を入力してください",
     "empty": "（カテゴリー名未入力）"
+  },
+  "find": {
+    "area": "飲食店エリア",
+    "areaAll": "全てのエリア",
+    "areaTop": "エリア一覧"
   },
   "shopInfo": {
     "share": "シェア",
@@ -340,7 +346,9 @@
       "cancelTitle": "注文のキャンセル",
       "cancelMessage": "お客様にご連絡の上、ご注文がキャンセルされることをお伝え下さい。",
       "delete": "この注文をキャンセルする",
-      "deleteConfirm": "（キャンセルの取り消しは出来ません）"
+      "deleteConfirm": "（キャンセルの取り消しは出来ません）",
+      "line": "LINE通知設定",
+      "lineAdd": "LINEアカウントの追加"
     },
     "qrcode": {
       "title": "QRコード",

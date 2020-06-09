@@ -4,15 +4,15 @@ import { order_status } from '../common/constant'
 import Stripe from 'stripe'
 import Order from '../models/Order'
 import * as utils from '../lib/utils'
-import { sendMessage } from '../functions/order';
+import { sendMessage, notifyNewOrder, nameOfOrder, notifyCanceledOrder } from '../functions/order';
 
 // This function is called by user to create a "payment intent" (to start the payment transaction)
 export const create = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
   const stripe = utils.get_stripe();
 
-  const { orderId, restaurantId, paymentMethodId, tip, sendSMS, timeToPickup } = data;
-  utils.validate_params({ orderId, restaurantId }); // paymentMethodId, tip and sendSMS are optional
+  const { orderId, restaurantId, paymentMethodId, tip, sendSMS, timeToPickup, lng } = data;
+  utils.validate_params({ orderId, restaurantId }); // lng, paymentMethodId, tip and sendSMS are optional
 
   const restaurantData = await utils.get_restaurant(db, restaurantId);
   const venderId = restaurantData['uid']
@@ -24,12 +24,14 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
   }
 
   try {
-    return await db.runTransaction(async transaction => {
+    let orderNumber: number = 0;
+    const result = await db.runTransaction(async transaction => {
 
       const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`)
       const stripeRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}/system/stripe`)
       const snapshot = await transaction.get(orderRef)
       const order = Order.fromSnapshot<Order>(snapshot)
+      orderNumber = order.number;
 
       // Check the stock status.
       if (order.status !== order_status.validation_ok) {
@@ -98,6 +100,10 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
         success: true
       }
     })
+
+    await notifyNewOrder(db, restaurantId, orderId, orderNumber, lng);
+
+    return result;
   } catch (error) {
     throw utils.process_error(error)
   }
@@ -191,7 +197,7 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
 
   let sendSMS: boolean = false
   let phoneNumber: string | undefined = undefined;
-  let orderNumber: string = "";
+  let orderNumber: number = 0;
   let uidUser: string | null = null;
 
   try {
@@ -220,7 +226,7 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
       }
       phoneNumber = order.phoneNumber
       uidUser = order.uid
-      orderNumber = "#" + `00${order.number}`.slice(-3)
+      orderNumber = order.number;
 
       if (!stripeAccount || !order.payment || !order.payment.stripe) {
         // No payment transaction
@@ -262,8 +268,12 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
         throw error
       }
     })
+    const orderName = nameOfOrder(orderNumber)
     if (sendSMS) {
-      await sendMessage(db, lng, 'msg_order_canceled', restaurant.restaurantName, orderNumber, uidUser, phoneNumber, restaurantId, orderId)
+      await sendMessage(db, lng, 'msg_order_canceled', restaurant.restaurantName, orderName, uidUser, phoneNumber, restaurantId, orderId)
+    }
+    if (uid !== venderId) {
+      await notifyCanceledOrder(db, restaurantId, orderId, orderNumber, lng)
     }
     return result
   } catch (error) {

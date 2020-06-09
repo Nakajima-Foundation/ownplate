@@ -60,7 +60,7 @@
     "new": "New",
     "current": "Current",
     "clickAndUpload": "Click and Upload",
-    "clickAndUploadDetail": "Click or Drag & Drop to upload image(JPEG only)"
+    "clickAndUploadDetail": "Click gray area or Drag & Drop to upload image(JPEG only)"
   },
   "currency": {
     "USD": "USD",
@@ -115,7 +115,8 @@
     "coverPhoto": "Restaurant cover photo",
     "setLocation": "Set location",
     "updateMap": "Update Map",
-    "businessHourDescription": "Check the business day of the week and set the business hours.",
+    "businessHourDescription": "Check the business day of the week and set the business hours. If you need to split your business hours, such as a break, please enter the latter time in the Another Hours form.",
+    "businessHourOption": "Another Hours (optional)",
     "draftDescription": "Save as Draft.",
     "publishDescription": "Save and publish your restaurant.",
     "draftWarning": "You can publish this by correcting the red frame.",
@@ -156,6 +157,11 @@
   "editTitle": {
     "enterCategory": "Enter category name",
     "empty": "(Empty category name)"
+  },
+  "find": {
+    "area": "Areas",
+    "areaAll": "All Areas",
+    "areaTop": "Areas Top"
   },
   "shopInfo": {
     "share": "Share",
@@ -340,7 +346,9 @@
       "cancelTitle": "Order Canceling",
       "cancelMessage": "Please contact to the customer and tell the order will be canceled.",
       "delete": "Cancel this order",
-      "deleteConfirm": "(This action is undoable)"
+      "deleteConfirm": "(This action is undoable)",
+      "line": "LINE Notification",
+      "lineAdd": "Add a LINE account"
     },
     "qrcode": {
       "title": "QRcodes",

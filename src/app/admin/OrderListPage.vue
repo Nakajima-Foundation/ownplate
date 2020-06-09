@@ -32,7 +32,6 @@
                 </option>
               </b-select>
             </div>
-
             <!-- Sound ON/OFF -->
             <div class="level-right">
               <div @click="soundToggle()" class="is-inline-block m-r-16 m-t-16">
@@ -45,7 +44,7 @@
                   <span class="c-status-red t-button">{{$t("admin.order.soundOff")}}</span>
                 </div>
               </div>
-              <b-button class="b-reset h-36 r-36 bg-form m-t-16" @click="soundPlay()">
+              <b-button class="b-reset h-36 r-36 bg-form m-r-16 m-t-16" @click="soundPlay()">
                 <span class="p-l-16 p-r-16">
                   <span class="c-primary t-button">
                     <i class="material-icons c-primary s-18 m-r-8">play_arrow</i>
@@ -53,6 +52,14 @@
                   </span>
                 </span>
               </b-button>
+              <router-link
+                v-if="isLineEnabled"
+                class="op-button-pill bg-status-green-bg m-t-16"
+                :to="`/admin/restaurants/${restaurantId()}/line`"
+              >
+                <i class="fab fa-line m-r-8 c-status-green" style="font-size:24px" />
+                <span class="c-status-green t-button">{{$t("admin.order.line")}}</span>
+              </router-link>
             </div>
           </div>
         </div>

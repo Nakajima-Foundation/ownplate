@@ -39,6 +39,7 @@
     "axios-mock-server": "^0.16.3",
     "babel-polyfill": "^6.26.0",
     "bulma-social": "^1.0.1",
+    "cookie": "^0.4.1",
     "firebase": "^7.14.1",
     "google-libphonenumber": "^3.2.8",
     "moment": "^2.24.0",

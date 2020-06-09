@@ -1,7 +1,7 @@
 import * as admin from 'firebase-admin';
 
 const accountIdToUIDs = async (db, accountId) => {
-  const pubSnapshot = await db.collectionGroup("public").where("stripeAccount", "==", accountId).get();
+  const pubSnapshot = await db.collectionGroup("public").where("stripe", "==", accountId).get();
   return (pubSnapshot?.docs || []).map(doc => {
     const uid = pubSnapshot.docs[0].ref.parent.parent.id;
     return uid;

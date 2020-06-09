@@ -29,6 +29,10 @@
         "function": "api"
       },
       {
+        "source": "/sitemap.xml",
+        "function": "api"
+      },
+      {
         "source": "**",
         "destination": "/index.html"
       }

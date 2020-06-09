@@ -3,7 +3,7 @@ import * as functions from 'firebase-functions';
 
 import * as Sentry from '@sentry/node';
 
-import exportIfNeeded from './common/exportifneeded';
+import exportIfNeeded from './lib/exportifneeded';
 
 const senty_dsn = functions.config() && functions.config().senty && functions.config().senty.dsn || process.env.SENTY_DSN;
 Sentry.init({ dsn: senty_dsn });

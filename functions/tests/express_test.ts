@@ -35,6 +35,7 @@ const good_cafe_data = {
   uid: "123123",
   defaultTaxRate: 10,
   publicFlag: true,
+  deletedFlag: false,
 };
 
 describe('express function', () => {
@@ -78,4 +79,13 @@ describe('express function', () => {
 
 
   });
+
+  it ('express sitemape test', async function() {
+    const response = await request.get('/sitemap.xml');
+    response.status.should.equal(200);
+
+    console.log(response.text);
+
+  });
+
 });
