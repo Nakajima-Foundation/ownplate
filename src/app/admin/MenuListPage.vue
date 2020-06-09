@@ -1,6 +1,6 @@
 <template>
   <div>
-    <template v-if="notFound===null"></template>
+    <template v-if="notFound === null"></template>
     <template v-else-if="notFound">
       <not-found />
     </template>
@@ -30,18 +30,21 @@
           <div class="m-l-24 m-r-24">
             <!-- Restaurant Profile Photo -->
             <div class="m-t-24 align-center">
-              <img :src="restaurantInfo.restProfilePhoto" class="w-64 h-64 r-64 cover" />
+              <img
+                :src="restaurantInfo.restProfilePhoto"
+                class="w-64 h-64 r-64 cover"
+              />
             </div>
 
             <!-- Restaurant Name -->
-            <div
-              class="m-t-8 align-center t-h6 c-text-black-high"
-            >{{ restaurantInfo.restaurantName }}</div>
+            <div class="m-t-8 align-center t-h6 c-text-black-high">
+              {{ restaurantInfo.restaurantName }}
+            </div>
 
             <!-- Restaurant Descriptions -->
-            <div
-              class="t-body1 c-text-black-medium align-center m-t-8"
-            >{{ restaurantInfo.introduction }}</div>
+            <div class="t-body1 c-text-black-medium align-center m-t-8">
+              {{ restaurantInfo.introduction }}
+            </div>
 
             <!-- Preview Link -->
             <!-- # Need to make this link working -->
@@ -61,8 +64,12 @@
           <div class="m-l-24 m-r-24">
             <!-- No Menu -->
             <div v-if="!existsMenu">
-              <div class="border-primary r-8 p-l-24 p-r-24 p-t-24 p-b-24">
-                <div class="align-center t-subtitle1 c-primary">{{$t('editMenu.pleaseAddItem')}}</div>
+              <div
+                class="border-primary r-8 p-l-24 p-r-24 p-t-24 p-b-24 m-t-24"
+              >
+                <div class="align-center t-subtitle1 c-primary">
+                  {{ $t("editMenu.pleaseAddItem") }}
+                </div>
                 <div class="align-center">
                   <b-button
                     class="b-reset op-button-pill h-36 bg-form m-r-8 m-l-8 m-t-16"
@@ -70,7 +77,9 @@
                     @click="addTitle()"
                   >
                     <i class="material-icons c-primary m-l-8">add</i>
-                    <span class="c-primary t-button">{{$t("button.addTitle")}}</span>
+                    <span class="c-primary t-button">{{
+                      $t("button.addTitle")
+                    }}</span>
                   </b-button>
                   <b-button
                     class="b-reset op-button-pill h-36 bg-form m-l-8 m-r-8 m-t-16"
@@ -78,7 +87,9 @@
                     @click="addMenu()"
                   >
                     <i class="material-icons c-primary m-l-8">add</i>
-                    <span class="c-primary t-button">{{$t("button.addItem")}}</span>
+                    <span class="c-primary t-button">{{
+                      $t("button.addItem")
+                    }}</span>
                   </b-button>
                 </div>
               </div>
@@ -88,22 +99,39 @@
             <div v-if="existsMenu">
               <div v-for="(menuList, index) in menuLists" :key="menuList">
                 <!-- Category Title -->
-                <div v-if="itemsObj[menuList] && itemsObj[menuList]._dataType === 'title'">
+                <div
+                  v-if="
+                    itemsObj[menuList] &&
+                      itemsObj[menuList]._dataType === 'title'
+                  "
+                >
                   <div v-if="editings[menuList] === true">
                     <title-input
                       :title="itemsObj[menuList]"
-                      :position="index == 0 ? 'first' : ((menuLists.length - 1) === index ? 'last' : '')"
+                      :position="
+                        index == 0
+                          ? 'first'
+                          : menuLists.length - 1 === index
+                          ? 'last'
+                          : ''
+                      "
                       @toEditMode="toEditMode($event)"
                       @positionUp="positionUp($event)"
                       @positionDown="positionDown($event)"
                       @forkItem="forkTitleItem($event)"
                       @updateTitle="updateTitle($event)"
-                      ></title-input>
+                    ></title-input>
                   </div>
                   <div v-else>
                     <title-card
                       :title="itemsObj[menuList]"
-                      :position="index == 0 ? 'first' : ((menuLists.length - 1) === index ? 'last' : '')"
+                      :position="
+                        index == 0
+                          ? 'first'
+                          : menuLists.length - 1 === index
+                          ? 'last'
+                          : ''
+                      "
                       @toEditMode="toEditMode($event)"
                       @positionUp="positionUp($event)"
                       @positionDown="positionDown($event)"
@@ -114,10 +142,21 @@
                 </div>
 
                 <!-- Menu Item -->
-                <div v-else-if="itemsObj[menuList] && itemsObj[menuList]._dataType === 'menu'">
+                <div
+                  v-else-if="
+                    itemsObj[menuList] &&
+                      itemsObj[menuList]._dataType === 'menu'
+                  "
+                >
                   <item-edit-card
                     :menuitem="itemsObj[menuList]"
-                    :position="index == 0 ? 'first' : ((menuLists.length - 1) === index ? 'last' : '')"
+                    :position="
+                      index == 0
+                        ? 'first'
+                        : menuLists.length - 1 === index
+                        ? 'last'
+                        : ''
+                    "
                     :shopInfo="restaurantInfo"
                     @positionUp="positionUp($event)"
                     @positionDown="positionDown($event)"
@@ -132,22 +171,26 @@
             <div class="align-center m-t-16">
               <!-- Add Category Title -->
               <b-button
-                class="b-reset op-button-pill h-36 bg-form m-r-16"
+                class="b-reset op-button-pill h-36 bg-form m-r-8 m-l-8 m-t-16"
                 :disabled="submitting"
                 @click="addTitle()"
               >
                 <i class="material-icons c-primary m-l-8">add</i>
-                <span class="c-primary t-button">{{$t("button.addTitle")}}</span>
+                <span class="c-primary t-button">{{
+                  $t("button.addTitle")
+                }}</span>
               </b-button>
 
               <!-- Add Menu Item -->
               <b-button
-                class="b-reset op-button-pill h-36 bg-form"
+                class="b-reset op-button-pill h-36 bg-form m-l-8 m-r-8 m-t-16"
                 :disabled="submitting"
                 @click="addMenu()"
               >
                 <i class="material-icons c-primary m-l-8">add</i>
-                <span class="c-primary t-button">{{$t("button.addItem")}}</span>
+                <span class="c-primary t-button">{{
+                  $t("button.addItem")
+                }}</span>
               </b-button>
             </div>
           </div>
