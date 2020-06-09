@@ -29,19 +29,20 @@
       <div class="column is-narrow w-24"></div>
       <!-- Center Column -->
       <div class="column">
-        <div class="m-l-24 m-r-16 m-t-24">
+        <div class="m-l-24 m-r-16">
           <!-- Restaurants -->
-          <div class="columns is-gapless is-multiline">
-            <!-- Restaurant -->
-            <div v-for="(restaurants, state) in restaurantsObj">
-              {{state}}
+
+          <!-- Restaurant -->
+          <div v-for="(restaurants, state) in restaurantsObj">
+            <div class="t-subtitle1 c-text-black-disabled p-b-8 m-t-24">{{state}}</div>
+            <div class="columns is-gapless is-multiline">
               <div v-for="restaurant in restaurants" class="column is-one-third">
                 <div class="h-full p-b-8 p-r-8">
                   <router-link :to="`/r/${restaurant.id}`">
                     <div class="touchable h-full">
                       <div class="cols flex-center">
                         <!-- Restaurant Profile -->
-                        <div class="m-r-16 h-48">
+                        <div class="m-r-16 h-48 r-48 bg-form">
                           <img :src="restaurant.restProfilePhoto" class="w-48 h-48 r-48 cover" />
                         </div>
 
@@ -96,7 +97,7 @@ export default {
         if (!tmp[data.state]) {
           tmp[data.state] = [];
         }
-        tmp[data.state].push(data)
+        tmp[data.state].push(data);
         return tmp;
       }, {});
       console.log(this.restaurantsObj);
