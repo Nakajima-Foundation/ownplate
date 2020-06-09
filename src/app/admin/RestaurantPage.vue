@@ -821,6 +821,7 @@ export default {
       }
     },
     async submitRestaurant() {
+      console.log(this.shopInfo);
       this.submitting = true;
       const restaurantId = this.restaurantId();
       try {
@@ -872,7 +873,14 @@ export default {
           pickUpDaysInAdvance: this.shopInfo.pickUpDaysInAdvance,
           foodTax: Number(this.shopInfo.foodTax),
           alcoholTax: Number(this.shopInfo.alcoholTax),
-          openTimes: this.shopInfo.openTimes,
+          openTimes: Object.keys(this.shopInfo.openTimes).reduce((tmp, key) => {
+            tmp[key] = this.shopInfo.openTimes[key].filter(el => {
+              return el !== null && el?.end !== null && el?.start !== null;
+            }).sort((a, b) => {
+              return a.start <  b.start ? -1 : 1;
+            });
+            return tmp;
+          },{}),
           businessDay: this.shopInfo.businessDay,
           uid: this.shopInfo.uid,
           publicFlag: this.shopInfo.publicFlag,
@@ -881,12 +889,14 @@ export default {
           createdAt:
             this.shopInfo.createdAt || firestore.FieldValue.serverTimestamp()
         };
+        console.log(restaurantData);
         await this.updateRestaurantData(restaurantData);
 
         this.$router.push({
           path: `/admin/restaurants/`
         });
       } catch (error) {
+        console.log(error);
         this.submitting = false;
         this.$store.commit("setErrorMessage", {
           code: "restaurant.save",
