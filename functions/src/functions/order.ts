@@ -157,7 +157,7 @@ export const sendMessage = async (db: FirebaseFirestore.Firestore, lng: string,
   }
 }
 
-export const notifyNewOrder = async (db: FirebaseFirestore.Firestore, restaurantId: string, orderId: string, orderNumber: number, lng: string) => {
+const notifyRestaurant = async (db: FirebaseFirestore.Firestore, messageId: string, restaurantId: string, orderId: string, orderNumber: number, lng: string) => {
   const docs = (await db.collection(`/restaurants/${restaurantId}/lines`).get()).docs;
   const t = await i18next.init({
     lng: lng || utils.getStripeRegion().langs[0],
@@ -165,15 +165,22 @@ export const notifyNewOrder = async (db: FirebaseFirestore.Firestore, restaurant
   })
   const url = `https://${ownPlateConfig.hostName}/admin/restaurants/${restaurantId}/orders/${orderId}?openExternalBrowser=1`
   const orderName = nameOfOrder(orderNumber);
-  const message = `${t('msg_order_placed')} ${orderName} ${url}`;
+  const message = `${t(messageId)} ${orderName} ${url}`;
   docs.forEach(async doc => {
     const lineUser = doc.data();
     if (lineUser.notify) {
       await line.sendMessageDirect(doc.id, message)
     }
   });
-
 }
+
+export const notifyNewOrder = async (db: FirebaseFirestore.Firestore, restaurantId: string, orderId: string, orderNumber: number, lng: string) => {
+  return notifyRestaurant(db, 'msg_order_placed', restaurantId, orderId, orderNumber, lng)
+};
+
+export const notifyCanceledOrder = async (db: FirebaseFirestore.Firestore, restaurantId: string, orderId: string, orderNumber: number, lng: string) => {
+  return notifyRestaurant(db, 'msg_order_canceled_by_user', restaurantId, orderId, orderNumber, lng)
+};
 
 export const getMenuObj = async (refRestaurant) => {
   const menuObj = {};
