@@ -33,29 +33,28 @@
           <!-- Restaurants -->
           <div class="columns is-gapless is-multiline">
             <!-- Restaurant -->
-            <div v-for="restaurant in restaurants" class="column is-one-third">
-              <div class="h-full p-b-8 p-r-8">
-                <router-link :to="`/r/${restaurant.id}`">
-                  <div class="touchable h-full">
-                    <div class="cols flex-center">
-                      <!-- Restaurant Profile -->
-                      <div class="m-r-16 h-48">
-                        <img :src="restaurant.restProfilePhoto" class="w-48 h-48 r-48 cover" />
-                      </div>
+            <div v-for="(restaurants, state) in restaurantsObj">
+              {{state}}
+              <div v-for="restaurant in restaurants" class="column is-one-third">
+                <div class="h-full p-b-8 p-r-8">
+                  <router-link :to="`/r/${restaurant.id}`">
+                    <div class="touchable h-full">
+                      <div class="cols flex-center">
+                        <!-- Restaurant Profile -->
+                        <div class="m-r-16 h-48">
+                          <img :src="restaurant.restProfilePhoto" class="w-48 h-48 r-48 cover" />
+                        </div>
 
-                      <!-- Restaurant Name -->
-                      <div class="flex-1 p-r-8 t-subtitle1 c-primary">
-                        {{
-                        restaurant.restaurantName
-                        }}
-                        /
-                        {{
-                        restaurant.state
-                        }}
+                        <!-- Restaurant Name -->
+                        <div class="flex-1 p-r-8 t-subtitle1 c-primary">
+                          {{
+                          restaurant.restaurantName
+                          }}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </router-link>
+                  </router-link>
+                </div>
               </div>
             </div>
           </div>
@@ -78,7 +77,7 @@ export default {
   },
   data() {
     return {
-      restaurants: []
+      restaurantsObj: []
     };
   },
   head() {
@@ -91,12 +90,17 @@ export default {
         .where("publicFlag", "==", true)
         .where("deletedFlag", "==", false)
         .get();
-      this.restaurants = (res.docs || []).map(doc => {
+      this.restaurantsObj = (res.docs || []).reduce((tmp, doc) => {
         const data = doc.data();
         data.id = doc.id;
-        return data;
-      });
-      console.log(this.restaurants.length, this.restaurants);
+        if (!tmp[data.state]) {
+          tmp[data.state] = [];
+        }
+        tmp[data.state].push(data)
+        return tmp;
+      }, {});
+      console.log(this.restaurantsObj);
+      // console.log(this.restaurants.length, this.restaurants);
     } catch (error) {
       console.log(error);
     }
