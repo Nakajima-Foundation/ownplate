@@ -9,7 +9,6 @@ const releaseConfigs = {
     hideUsersLink: true
   },
   beta: {
-    hideUsersLink: true
   },
   "beta-dev": {
     underConstruction: true
