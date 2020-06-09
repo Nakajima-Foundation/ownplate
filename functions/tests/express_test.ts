@@ -35,6 +35,7 @@ const good_cafe_data = {
   uid: "123123",
   defaultTaxRate: 10,
   publicFlag: true,
+  deletedFlag: false,
 };
 
 describe('express function', () => {

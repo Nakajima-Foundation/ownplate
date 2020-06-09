@@ -877,6 +877,7 @@ export default {
           uid: this.shopInfo.uid,
           publicFlag: this.shopInfo.publicFlag,
           taxInclude: this.shopInfo.taxInclude,
+          updatedAt: firestore.FieldValue.serverTimestamp(),
           createdAt:
             this.shopInfo.createdAt || firestore.FieldValue.serverTimestamp()
         };
