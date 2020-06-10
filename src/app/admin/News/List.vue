@@ -33,12 +33,7 @@
           <!-- Articles -->
           <div class="columns is-gapless is-multiline">
             <!-- v-for="article in articles" -->
-
-            <list-item :date="'2020.06.04'" :title="'v0.5.1をリリースしました。'" :id="'undefined'" />
-            <list-item :date="'2020.05.28'" :title="'v0.4.2をリリースしました。'" :id="'20200528'" />
-            <list-item :date="'2020.05.23'" :title="'v0.4.0をリリースしました。'" :id="'20200523'" />
-            <list-item :date="'2020.05.14'" :title="'v0.3.5をリリースしました。'" :id="'20200514'" />
-            <list-item :date="'2020.05.11'" :title="'v0.3.4をリリースしました。'" :id="'20200511'" />
+            <list-item v-for="news in newsList"  :date="news.date.replace(/\-/g,'.')" :title="news.title" :id="news.date" />
           </div>
         </div>
       </div>
@@ -50,10 +45,17 @@
 
 <script>
 import ListItem from "~/app/admin/News/ListItem";
+import newsList from './data';
 
 export default {
   components: {
     ListItem
+  },
+  data() {
+    console.log(newsList);
+    return {
+      newsList: newsList
+    };
   }
 };
 </script>

@@ -41,6 +41,7 @@
     "cookie": "^0.4.1",
     "firebase": "^7.14.1",
     "google-libphonenumber": "^3.2.8",
+    "markdown-it": "^11.0.0",
     "moment": "^2.24.0",
     "nuxt": "^2.0.0",
     "nuxt-buefy": "^0.3.2",
