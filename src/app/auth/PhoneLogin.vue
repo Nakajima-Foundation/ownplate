@@ -78,7 +78,7 @@
       </div>
 
       <!-- Enter Name -->
-      <div>
+      <div v-if="!this.relogin">
         <div class="t-subtitle2 c-text-black-medium m-b-4">{{ $t('sms.userName') }}</div>
         <b-field>
           <b-input type="text" v-model="name" maxlength="32" :placeholder="$t('sms.typeUserName')" />
