@@ -1,37 +1,134 @@
 <template>
-  <section class="section" style="background-color:#fffafa">
-    <div class="align-center m-t-24">
-      <qrcode :value="urlMenu" :options="{ width: 160 }"></qrcode>
-      <p>
-        <a :href="urlMenu">{{restaurant.restaurantName}}</a>
-      </p>
+  <div>
+    <!-- QR Header Area -->
+    <div class="columns is-gapless">
+      <!-- Left Gap -->
+      <div class="column is-narrow w-24"></div>
+      <!-- Center Column -->
+      <div class="column">
+        <div class="m-l-24 m-r-24">
+          <!-- Back Button and Restaurant Profile -->
+          <div>
+            <!-- Back Button -->
+            <back-button url="/admin/restaurants/" class="m-t-24 m-r-16" />
+
+            <!-- Restaurant Profile -->
+            <div class="is-inline-flex flex-center m-t-24">
+              <div>
+                <img
+                  :src="restaurant.restProfilePhoto"
+                  class="w-36 h-36 r-36 cover"
+                />
+              </div>
+              <div class="t-h6 c-text-black-high m-l-8 flex-1">
+                {{ restaurant.restaurantName }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Right Gap -->
+      <div class="column is-narrow w-24"></div>
     </div>
-    <div v-if="trace && regionalSetting.covid19trace">
-      <div class="align-center m-t-24">
-        <qrcode :value="urlEnter" :options="{ width: 160 }"></qrcode>
-        <p>
-          <a :href="urlEnter">{{$t('admin.qrcode.enter')}}</a>
-        </p>
+
+    <!-- QR Codes -->
+    <div class="columns is-gapless">
+      <!-- Left Gap -->
+      <div class="column is-narrow w-24"></div>
+
+      <!-- Left Column -->
+      <div class="column">
+        <div class="m-l-24 m-r-24">
+          <!-- Menu Page -->
+          <div class="t-h6 c-text-black-disabled m-t-24 p-b-8">
+            {{ $t("admin.qrcode.restaurant") }}
+          </div>
+          <div class="bg-surface r-8 d-low p-l-24 p-r-24 p-t-24 p-b-24">
+            <!-- QR Code -->
+            <div class="align-center">
+              <qrcode :value="urlMenu" :options="{ width: 160 }"></qrcode>
+            </div>
+            <!-- Link -->
+            <div class="align-center">
+              <a :href="urlMenu" target="_blank"
+                ><div class="op-button-text t-button">
+                  {{ restaurant.restaurantName }}
+                </div></a
+              >
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="align-center m-t-24">
-        <qrcode :value="urlLeave" :options="{ width: 160 }"></qrcode>
-        <p>
-          <a :href="urlLeave">{{$t('admin.qrcode.leave')}}</a>
-        </p>
+
+      <!-- Right Column -->
+      <div class="column">
+        <div class="m-l-24 m-r-24">
+          <!-- Trace -->
+          <div v-if="trace && regionalSetting.covid19trace">
+            <div class="t-h6 c-text-black-disabled m-t-24 p-b-8">
+              {{ $t("trace.list") }}
+            </div>
+            <div class="bg-surface r-8 d-low p-l-24 p-r-24 p-t-24 p-b-24">
+              <!-- Enter -->
+              <div>
+                <!-- QR Code -->
+                <div class="align-center">
+                  <qrcode :value="urlEnter" :options="{ width: 160 }"></qrcode>
+                </div>
+                <!-- Link -->
+                <div class="align-center">
+                  <a :href="urlEnter"
+                    ><div class="op-button-text t-button">
+                      {{ $t("admin.qrcode.enter") }}
+                    </div></a
+                  >
+                </div>
+              </div>
+
+              <!-- Leave -->
+              <div class="m-t-48">
+                <!-- QR Code -->
+                <div class="align-center">
+                  <qrcode :value="urlLeave" :options="{ width: 160 }"></qrcode>
+                </div>
+                <!-- Link -->
+                <div class="align-center">
+                  <a :href="urlLeave"
+                    ><div class="op-button-text t-button">
+                      {{ $t("admin.qrcode.leave") }}
+                    </div></a
+                  >
+                </div>
+              </div>
+
+              <!-- Trace List -->
+              <div class="align-center m-t-24">
+                <router-link
+                  :to="`/admin/restaurants/${restaurantId()}/traces`"
+                >
+                  <div class="op-button-small tertiary">
+                    {{ $t("trace.viewList") }}
+                  </div>
+                </router-link>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="align-center m-t-24">
-        <router-link :to="`/admin/restaurants/${restaurantId()}/traces`">
-          <div class="op-button-small tertiary">{{ $t("trace.list") }}</div>
-        </router-link>
-      </div>
+      <!-- Right Gap -->
+      <div class="column is-narrow w-24"></div>
     </div>
-  </section>
+  </div>
 </template>
 
 <script>
 import { db, firestore } from "~/plugins/firebase.js";
+import BackButton from "~/components/BackButton";
 
 export default {
+  components: {
+    BackButton
+  },
   data() {
     return {
       restaurant: {},
