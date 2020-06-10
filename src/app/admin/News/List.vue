@@ -52,7 +52,6 @@ export default {
     ListItem
   },
   data() {
-    console.log(newsList);
     return {
       newsList: newsList
     };

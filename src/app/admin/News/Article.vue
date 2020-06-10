@@ -63,9 +63,7 @@ export default {
   data() {
     const newsId = this.$route.params.newsId;
     const news = newsList.find(element => element.date === newsId);
-    console.log(news);
     return {
-      //newsList: newsList
       md: new MarkdownIt(),
       news,
     };
@@ -74,7 +72,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-/deep/.article-list ul {
+/deep/ .article-list ul {
   list-style: outside;
   list-style-type: disc;
   padding-left: 24px;
@@ -88,7 +86,7 @@ export default {
   @extend .t-h6;
   @extend .c-text-black-disabled;
 }
- /deep/ .article-list > ul > li:not(:first-child) {
+/deep/ .article-list > ul > li:not(:first-child) {
   padding-top: 24px;
 }
 
