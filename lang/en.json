@@ -348,7 +348,8 @@
       "delete": "Cancel this order",
       "deleteConfirm": "(This action is undoable)",
       "line": "LINE Notification",
-      "lineAdd": "Add a LINE account"
+      "lineAdd": "Add a LINE account",
+      "lineDelete": "Do you really want to delete this account？"
     },
     "qrcode": {
       "title": "QRcodes",

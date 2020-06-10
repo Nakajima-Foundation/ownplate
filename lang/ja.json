@@ -348,7 +348,8 @@
       "delete": "この注文をキャンセルする",
       "deleteConfirm": "（キャンセルの取り消しは出来ません）",
       "line": "LINE通知設定",
-      "lineAdd": "LINEアカウントの追加"
+      "lineAdd": "LINEアカウントの追加",
+      "lineDelete": "本当に消去しますか？"
     },
     "qrcode": {
       "title": "QRコード",
