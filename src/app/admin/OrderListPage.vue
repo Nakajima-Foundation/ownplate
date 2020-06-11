@@ -142,6 +142,7 @@ export default {
         createdAt: firestore.FieldValue.serverTimestamp()
       },
       intervalTask: {},
+      intervalTime: 60, // (seconds)
     };
   },
   watch: {
@@ -193,8 +194,10 @@ export default {
       }
     }
     this.intervalTask = setInterval(() => {
-      console.log(this.notification_data.infinityNotification);
-    }, 500);
+      if (this.notification_data.infinityNotification && this.hasNewOrder) {
+        this.soundPlay();
+      }
+    }, 1000 * this.intervalTime);
   },
   destroyed() {
     this.restaurant_detacher();
@@ -210,7 +213,12 @@ export default {
     },
     enableSound() {
       return this.$store.state.soundEnable;
-    }
+    },
+    hasNewOrder() {
+      return this.orders.some((order) => {
+        return order.status === order_status.order_placed;
+      });
+    },
   },
   methods: {
     soundToggle() {
