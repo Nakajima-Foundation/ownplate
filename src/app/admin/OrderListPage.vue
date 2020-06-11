@@ -36,7 +36,7 @@
             <div class="level-right">
               <!-- Sound ON/OFF -->
               <div @click="soundToggle()" class="is-inline-block m-r-16 m-t-16">
-                <div v-if="soundOn" class="op-button-pill bg-status-green-bg">
+                <div v-if="notification_data.soundOn" class="op-button-pill bg-status-green-bg">
                   <i class="material-icons c-status-green s-18">volume_up</i>
                   <span class="c-status-green t-button">{{$t("admin.order.soundOn")}}</span>
                 </div>
@@ -117,7 +117,6 @@ export default {
     return {
       soundIndex: 0, // for debug
       soundFiles: soundFiles,
-      soundOn: false,
       mySound: null,
       watchingOrder: false,
       shopInfo: {},
@@ -126,6 +125,7 @@ export default {
       restaurant_detacher: () => {},
       order_detacher: () => {},
       notification_data: {
+        soundOn: null,
         uid: this.$store.getters.uidAdmin,
         createdAt: firestore.FieldValue.serverTimestamp()
       }
@@ -145,8 +145,9 @@ export default {
     "$route.query.day"() {
       this.updateDayIndex();
     },
-    soundOn() {
-      this.$store.commit("setSoundOn", this.soundOn);
+    async "notification_data.soundOn"() {
+      this.$store.commit("setSoundOn", this.notification_data.soundOn);
+      await this.saveNotificationData();
     }
   },
   async created() {
@@ -179,7 +180,6 @@ export default {
       .get();
     if (notification.exists) {
       this.notification_data = notification.data();
-      this.soundOn = this.notification_data.soundOn;
     }
   },
   destroyed() {
@@ -198,9 +198,10 @@ export default {
     }
   },
   methods: {
-    async soundToggle() {
-      this.soundOn = !this.soundOn;
-      this.notification_data.soundOn = this.soundOn;
+    soundToggle() {
+      this.notification_data.soundOn = !this.notification_data.soundOn;
+    },
+    async saveNotificationData() {
       this.notification_data.updatedAt = firestore.FieldValue.serverTimestamp();
       await db
         .doc(`restaurants/${this.restaurantId()}/private/notifications`)
