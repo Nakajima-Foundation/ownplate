@@ -24,11 +24,9 @@
               <div class="op-button-text">
                 <i class="material-icons">place</i>
                 <span
-                  style="word-break: break-all;"
                   v-if="region === 'JP'"
                 >〒{{this.shopInfo.zip}} {{this.shopInfo.state}} {{this.shopInfo.city}} {{this.shopInfo.streetAddress}}</span>
                 <span
-                  style="word-break: break-all;"
                   v-else
                 >{{this.shopInfo.streetAddress}}, {{this.shopInfo.city}}, {{this.shopInfo.state}} {{this.shopInfo.zip}}</span>
               </div>
@@ -56,7 +54,7 @@
           <a target="_blank" :href="this.shopInfo.url">
             <div class="op-button-text">
               <i class="material-icons">language</i>
-              <span style="word-break: break-all;">{{this.shopInfo.url}}</span>
+              <span>{{this.shopInfo.url}}</span>
             </div>
           </a>
         </div>
