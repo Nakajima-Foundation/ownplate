@@ -349,6 +349,7 @@
       "deleteConfirm": "（キャンセルの取り消しは出来ません）",
       "line": "LINE通知設定",
       "lineAdd": "LINEアカウントの追加",
+      "lineUsers": "登録済みLINEアカウント",
       "lineDelete": "本当に消去しますか？"
     },
     "qrcode": {
