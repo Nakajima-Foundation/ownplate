@@ -71,24 +71,19 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
     if (restaurant.uid !== uid) {
       throw new functions.https.HttpsError('permission-denied', 'The user does not have an authority to perform this operation.')
     }
-    const foo = moment(new Date()).tz(timezone).locale('ja').format('LLL');
-    console.log("foo", foo);
 
     const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`)
-    let phoneNumber: string | undefined = undefined;
+    let order: Order | undefined = undefined;
     let msgKey: string | undefined = undefined;
-    let orderName: string = "";
     let sendSMS: boolean = false;
     let uidUser: string | null = null;
 
     const result = await db.runTransaction(async transaction => {
-      const order = Order.fromSnapshot<Order>(await transaction.get(orderRef))
+      order = Order.fromSnapshot<Order>(await transaction.get(orderRef))
       if (!order) {
         throw new functions.https.HttpsError('invalid-argument', 'This order does not exist.')
       }
       uidUser = order.uid;
-      phoneNumber = order.phoneNumber
-      orderName = nameOfOrder(order.number)
       sendSMS = order.sendSMS
 
       const isPreviousStateChangable: Boolean = (() => {
@@ -135,7 +130,10 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
       return { success: true }
     })
     if (sendSMS && msgKey) {
-      await sendMessage(db, lng, msgKey, restaurant.restaurantName, orderName, uidUser, phoneNumber, restaurantId, orderId)
+      const timePlaced = moment(order!.timePlaced.toDate()).tz(timezone).locale('ja').format('LLL');
+      console.log("timePlaced", timePlaced);
+      const orderName = nameOfOrder(order!.number)
+      await sendMessage(db, lng, msgKey, restaurant.restaurantName, orderName, uidUser, order!.phoneNumber, restaurantId, orderId)
     }
     return result
   } catch (error) {
