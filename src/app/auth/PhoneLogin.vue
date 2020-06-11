@@ -211,19 +211,11 @@ export default {
         );
         console.log("success!", result);
         if (this.name) {
-          await db.doc(`users/${result.user.uid}`).set(
-            {
-              name: this.name
-            },
-            { merge: true }
-          );
-          // Paranoia: To avoid race condition
-          const user = this.$store.state.user;
-          console.log("user", user);
+          const user = auth.currentUser; // paranoia: instead of this.$store.state.user;
           if (user) {
-            console.log("name", user.name, this.name);
-            user.name = this.name;
-            this.$store.commit("setUser", user);
+            await user.updateProfile({
+              displayName: this.name
+            });
           }
         }
 

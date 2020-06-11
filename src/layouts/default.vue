@@ -280,16 +280,9 @@ export default {
         console.log(
           "authStateChanged:",
           user.email || user.phoneNumber,
-          user.uid
+          user.uid,
+          user.displayName
         );
-        if (this.isUser) {
-          const snapshot = await db.doc(`users/${user.uid}`).get();
-          const doc = snapshot.data();
-          if (doc && doc.name) {
-            user.name = doc.name;
-            console.log("user.name", doc.name);
-          }
-        }
         user.getIdTokenResult(true).then(result => {
           this.$store.commit("setUser", user);
           this.$store.commit("setCustomClaims", result.claims);

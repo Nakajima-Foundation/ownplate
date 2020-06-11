@@ -284,7 +284,7 @@ export default {
         status: order_status.new_order,
         uid: this.user.uid,
         phoneNumber: this.user.phoneNumber,
-        name: this.$store.getters.name,
+        name: this.user.displayName,
         updatedAt: firestore.FieldValue.serverTimestamp(),
         timeCreated: firestore.FieldValue.serverTimestamp()
         // price never set here.
