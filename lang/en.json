@@ -349,6 +349,7 @@
       "deleteConfirm": "(This action is undoable)",
       "line": "LINE Notification",
       "lineAdd": "Add a LINE account",
+      "lineUsers": "Connected LINE Accounts",
       "lineDelete": "Do you really want to delete this account？"
     },
     "qrcode": {
