@@ -28,15 +28,23 @@ const currentData = getData("current.md");
 fs.writeSync(release_note_fd, currentData.markdown);
 fs.writeSync(release_note_fd, "\n");
 
+const removeFirstLine = (str) => {
+  const tmp = str.split("\n");
+  tmp.shift();
+  return tmp.join("\n");
+}
 
 const files = fs.readdirSync(dirpath).filter((file) => {
   return file.match(/^(\d+)\.md$/);
 }).sort().reverse().map((file) => {
   const data = getData(file);
 
-  write_data.push(data);
   fs.writeSync(release_note_fd, data.markdown);
   fs.writeSync(release_note_fd, "\n");
+
+  data.markdown = removeFirstLine(data.markdown);
+  write_data.push(data);
+
 });
 fs.closeSync(release_note_fd);
 
