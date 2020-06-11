@@ -132,12 +132,6 @@ export default {
     };
   },
   watch: {
-    async soundIndex() {
-      await db.doc(`restaurants/${this.restaurantId()}/private/sound`).set({
-        nameKey: soundFiles[this.soundIndex].nameKey,
-      });
-      this.$store.commit("setSoundFile", soundFiles[this.soundIndex].file);
-    },
     dayIndex() {
       this.updateQueryDay();
       this.dateWasUpdated();
@@ -148,7 +142,12 @@ export default {
     async "notification_data.soundOn"() {
       this.$store.commit("setSoundOn", this.notification_data.soundOn);
       await this.saveNotificationData();
-    }
+    },
+    async soundIndex() {
+      this.notification_data.nameKey = soundFiles[this.soundIndex].nameKey;
+      this.$store.commit("setSoundFile", soundFiles[this.soundIndex].file);
+      await this.saveNotificationData();
+    },
   },
   async created() {
     this.checkAdminPermission();
@@ -160,16 +159,6 @@ export default {
           this.shopInfo = restaurant_data;
         }
       });
-
-    const sound = (await db.doc(`restaurants/${this.restaurantId()}/private/sound`).get()).data();
-    if (sound) {
-      const index = soundFiles.findIndex((data) => data.nameKey === sound.nameKey);
-      if (index >= 0) {
-        this.soundIndex = index;
-      }
-
-    }
-
     if (this.$route.query.day) {
       this.updateDayIndex();
     }
@@ -180,6 +169,13 @@ export default {
       .get();
     if (notification.exists) {
       this.notification_data = notification.data();
+
+      if (this.notification_data.nameKey) {
+        const index = soundFiles.findIndex((data) => data.nameKey === this.notification_data.nameKey);
+        if (index >= 0) {
+          this.soundIndex = index;
+        }
+      }
     }
   },
   destroyed() {
