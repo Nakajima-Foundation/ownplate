@@ -45,6 +45,11 @@
                   <span class="c-status-red t-button">{{$t("admin.order.soundOff")}}</span>
                 </div>
               </div>
+              <b-select v-model="soundIndex" class="m-t-24">
+                <option v-for="(soundFile, index) in soundFiles" :value="index" :key="index">
+                  {{ $t(soundFile.nameKey)}}
+                </option>
+              </b-select>
 
               <!-- Sound Test -->
               <b-button class="b-reset op-button-pill bg-form m-r-16 m-t-16" @click="soundPlay()">
@@ -101,6 +106,8 @@ import BackButton from "~/components/BackButton";
 import { order_status } from "~/plugins/constant.js";
 import moment from "moment";
 
+import { soundFiles } from "~/plugins/constant.js";
+
 export default {
   components: {
     OrderedInfo,
@@ -108,6 +115,8 @@ export default {
   },
   data() {
     return {
+      soundIndex: 0, // for debug
+      soundFiles: soundFiles,
       soundOn: false,
       mySound: null,
       watchingOrder: false,
@@ -123,6 +132,12 @@ export default {
     };
   },
   watch: {
+    async soundIndex() {
+      await db.doc(`restaurants/${this.restaurantId()}/private/sound`).set({
+        nameKey: soundFiles[this.soundIndex].nameKey,
+      });
+      this.$store.commit("setSoundFile", soundFiles[this.soundIndex].file);
+    },
     dayIndex() {
       this.updateQueryDay();
       this.dateWasUpdated();
@@ -144,6 +159,16 @@ export default {
           this.shopInfo = restaurant_data;
         }
       });
+
+    const sound = (await db.doc(`restaurants/${this.restaurantId()}/private/sound`).get()).data();
+    if (sound) {
+      const index = soundFiles.findIndex((data) => data.nameKey === sound.nameKey);
+      if (index >= 0) {
+        this.soundIndex = index;
+      }
+
+    }
+
     if (this.$route.query.day) {
       this.updateDayIndex();
     }
@@ -156,7 +181,6 @@ export default {
       this.notification_data = notification.data();
       this.soundOn = this.notification_data.soundOn;
     }
-    console.log(notification);
   },
   destroyed() {
     this.restaurant_detacher();
@@ -175,7 +199,6 @@ export default {
   },
   methods: {
     async soundToggle() {
-      console.log("HELLO");
       this.soundOn = !this.soundOn;
       this.notification_data.soundOn = this.soundOn;
       this.notification_data.updatedAt = firestore.FieldValue.serverTimestamp();
@@ -241,7 +264,7 @@ export default {
     soundPlay() {
       this.$store.commit("pingOrderEvent");
       console.log("order: call play");
-    }
+    },
   }
 };
 </script>

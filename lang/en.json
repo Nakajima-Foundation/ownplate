@@ -352,6 +352,10 @@
       "lineUsers": "Connected LINE Accounts",
       "lineDelete": "Do you really want to delete this account？"
     },
+    "sound": {
+      "dora": "Dora",
+      "pikopiko": "Pico Pico"
+    },
     "qrcode": {
       "title": "QRcodes",
       "restaurant": "Menu Page",

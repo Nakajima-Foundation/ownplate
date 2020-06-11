@@ -352,6 +352,10 @@
       "lineUsers": "登録済みLINEアカウント",
       "lineDelete": "本当に消去しますか？"
     },
+    "sound": {
+      "dora": "ドラ",
+      "pikopiko": "ピコピコ"
+    },
     "qrcode": {
       "title": "QRコード",
       "restaurant": "メニューページ",

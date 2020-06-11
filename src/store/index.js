@@ -16,6 +16,7 @@ export const state = () => ({
   orderEvent: 0,
   soundEnable: false, // after user touch/click event, this flag set true (for mobile browser)
   soundOn: false, // for restaurant admin config
+  soundFile: "",
   isWindowActive: false, // active status of browser window
   dialog: null // for DialogBox
 });
@@ -79,6 +80,9 @@ export const mutations = {
   },
   setSoundOn(state, flag) {
     state.soundOn = flag;
+  },
+  setSoundFile(state, file) {
+    state.soundFile = file;
   },
   resetDialog(state) {
     state.dialog = null;
