@@ -130,10 +130,13 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
       return { success: true }
     })
     if (sendSMS && msgKey) {
-      const timePlaced = moment(order!.timePlaced.toDate()).tz(timezone).locale('ja').format('LLL');
-      console.log("timePlaced", timePlaced);
+      const params = {}
+      if (status === order_status.order_accepted) {
+        params["time"] = moment(order!.timePlaced.toDate()).tz(timezone).locale('ja').format('LLL');
+        console.log("timePlaced", params["time"]);
+      }
       const orderName = nameOfOrder(order!.number)
-      await sendMessage(db, lng, msgKey, restaurant.restaurantName, orderName, uidUser, order!.phoneNumber, restaurantId, orderId)
+      await sendMessage(db, lng, msgKey, restaurant.restaurantName, orderName, uidUser, order!.phoneNumber, restaurantId, orderId, params)
     }
     return result
   } catch (error) {
@@ -144,13 +147,13 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
 export const sendMessage = async (db: FirebaseFirestore.Firestore, lng: string,
   msgKey: string, restaurantName: string, orderNumber: string,
   uidUser: string | null, phoneNumber: string | undefined,
-  restaurantId: string, orderId: string) => {
+  restaurantId: string, orderId: string, params: object = {}) => {
   const t = await i18next.init({
     lng: lng || utils.getStripeRegion().langs[0],
     resources
   })
   const url = `https://${ownPlateConfig.hostName}/r/${restaurantId}/order/${orderId}?openExternalBrowser=1`
-  const message = `${t(msgKey)} ${restaurantName} ${orderNumber} ${url}`;
+  const message = `${t(msgKey, params)} ${restaurantName} ${orderNumber} ${url}`;
   if (line.isEnabled) {
     await line.sendMessage(db, uidUser, message)
   } else {
