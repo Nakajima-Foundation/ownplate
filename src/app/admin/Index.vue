@@ -48,7 +48,7 @@
     </div>
 
     <!-- News -->
-    <div class="columns is-gapless" v-if="false">
+    <div class="columns is-gapless" v-if="region==='JP'">
       <!-- Left Gap -->
       <div class="column is-narrow w-24"></div>
       <!-- Center Column -->
@@ -59,14 +59,14 @@
             style="border: 2px solid rgba(0,0,0,0.1); "
           >
             <div class="cols">
-              <div class="t-subtitle2 c-text-black-disabled">2020.06.05</div>
+              <div class="t-subtitle2 c-text-black-disabled">{{news.date.replace(/\-/g,'.')}}</div>
               <div class="t-subtitle2 c-primary flex-1 align-right">
                 <nuxt-link :to="'/admin/news/'">{{$t('admin.news.newsTop')}}</nuxt-link>
               </div>
             </div>
             <!-- News Item -->
             <div class="t-subtitle1 c-primary m-t-4">
-              <nuxt-link :to="'/admin/news/' + newsId">v0.5.1をリリースしました。</nuxt-link>
+              <nuxt-link :to="'/admin/news/' + news.date">{{news.title}}</nuxt-link>
             </div>
           </div>
         </div>
@@ -165,6 +165,7 @@ import { order_status } from "~/plugins/constant.js";
 import { midNight } from "~/plugins/dateUtils.js";
 import { ownPlateConfig } from "@/config/project";
 import PaymentSection from "~/app/admin/Payment/PaymentSection";
+import newsList from './News/data';
 
 export default {
   name: "Restaurant",
@@ -191,7 +192,8 @@ export default {
       tags: "",
       restaurantItems: null,
       detachers: [],
-      restaurant_detacher: null
+      restaurant_detacher: null,
+      news: newsList[0],
     };
   },
   created() {
