@@ -14,6 +14,7 @@
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "lintfix": "eslint --fix --ext .js,.vue --ignore-path .gitignore .",
     "customclaims": "babel-node --presets @babel/env  ./batch/customclaims.js",
+    "makenews": "babel-node --presets @babel/env  ./batch/news.js",
     "batch": "babel-node --presets @babel/env",
     "deploy_staging": "nuxt build &&  cp dist/index.html functions/templates/index.html && firebase deploy --only hosting --project=staging && firebase deploy --only functions --project=staging",
     "deploy": "nuxt build && cp dist/index.html functions/templates/index.html &&  firebase deploy --only hosting --project=staging && firebase deploy --only functions --project=staging",
