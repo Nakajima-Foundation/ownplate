@@ -36,13 +36,24 @@
             <div class="level-right">
               <!-- Sound ON/OFF -->
               <div @click="soundToggle()" class="is-inline-block m-r-16 m-t-16">
-                <div v-if="soundOn" class="op-button-pill bg-status-green-bg">
+                <div v-if="notification_data.soundOn" class="op-button-pill bg-status-green-bg">
                   <i class="material-icons c-status-green s-18">volume_up</i>
                   <span class="c-status-green t-button">{{$t("admin.order.soundOn")}}</span>
                 </div>
                 <div v-else class="op-button-pill bg-status-red-bg">
                   <i class="material-icons c-status-red s-18">volume_off</i>
                   <span class="c-status-red t-button">{{$t("admin.order.soundOff")}}</span>
+                </div>
+              </div>
+              <!-- Infinity notification ON/OFF -->
+              <div @click="infinityNotificationToggle()" class="is-inline-block m-r-16 m-t-16">
+                <div v-if="notification_data.infinityNotification" class="op-button-pill bg-status-green-bg">
+                  <i class="material-icons c-status-green s-18">volume_up</i>
+                  <span class="c-status-green t-button">{{$t("admin.order.infinityNotificationOn")}}</span>
+                </div>
+                <div v-else class="op-button-pill bg-status-red-bg">
+                  <i class="material-icons c-status-red s-18">volume_off</i>
+                  <span class="c-status-red t-button">{{$t("admin.order.infinityNotificationOff")}}</span>
                 </div>
               </div>
               <b-select v-model="soundIndex" class="m-t-24">
@@ -117,7 +128,6 @@ export default {
     return {
       soundIndex: 0, // for debug
       soundFiles: soundFiles,
-      soundOn: false,
       mySound: null,
       watchingOrder: false,
       shopInfo: {},
@@ -126,18 +136,15 @@ export default {
       restaurant_detacher: () => {},
       order_detacher: () => {},
       notification_data: {
+        soundOn: null,
+        infinityNotification: null,
         uid: this.$store.getters.uidAdmin,
         createdAt: firestore.FieldValue.serverTimestamp()
-      }
+      },
+      intervalTask: {},
     };
   },
   watch: {
-    async soundIndex() {
-      await db.doc(`restaurants/${this.restaurantId()}/private/sound`).set({
-        nameKey: soundFiles[this.soundIndex].nameKey,
-      });
-      this.$store.commit("setSoundFile", soundFiles[this.soundIndex].file);
-    },
     dayIndex() {
       this.updateQueryDay();
       this.dateWasUpdated();
@@ -145,9 +152,18 @@ export default {
     "$route.query.day"() {
       this.updateDayIndex();
     },
-    soundOn() {
-      this.$store.commit("setSoundOn", this.soundOn);
-    }
+    async "notification_data.soundOn"() {
+      this.$store.commit("setSoundOn", this.notification_data.soundOn);
+      await this.saveNotificationData();
+    },
+    async "notification_data.infinityNotification"() {
+      await this.saveNotificationData();
+    },
+    async soundIndex() {
+      this.notification_data.nameKey = soundFiles[this.soundIndex].nameKey;
+      this.$store.commit("setSoundFile", soundFiles[this.soundIndex].file);
+      await this.saveNotificationData();
+    },
   },
   async created() {
     this.checkAdminPermission();
@@ -159,16 +175,6 @@ export default {
           this.shopInfo = restaurant_data;
         }
       });
-
-    const sound = (await db.doc(`restaurants/${this.restaurantId()}/private/sound`).get()).data();
-    if (sound) {
-      const index = soundFiles.findIndex((data) => data.nameKey === sound.nameKey);
-      if (index >= 0) {
-        this.soundIndex = index;
-      }
-
-    }
-
     if (this.$route.query.day) {
       this.updateDayIndex();
     }
@@ -178,13 +184,22 @@ export default {
       .doc(`restaurants/${this.restaurantId()}/private/notifications`)
       .get();
     if (notification.exists) {
-      this.notification_data = notification.data();
-      this.soundOn = this.notification_data.soundOn;
+      this.notification_data = Object.assign(this.notification_data, notification.data());
+      if (this.notification_data.nameKey) {
+        const index = soundFiles.findIndex((data) => data.nameKey === this.notification_data.nameKey);
+        if (index >= 0) {
+          this.soundIndex = index;
+        }
+      }
     }
+    this.intervalTask = setInterval(() => {
+      console.log(this.notification_data.infinityNotification);
+    }, 500);
   },
   destroyed() {
     this.restaurant_detacher();
     this.order_detacher();
+    clearInterval(this.intervalTask);
   },
   computed: {
     lastSeveralDays() {
@@ -198,9 +213,13 @@ export default {
     }
   },
   methods: {
-    async soundToggle() {
-      this.soundOn = !this.soundOn;
-      this.notification_data.soundOn = this.soundOn;
+    soundToggle() {
+      this.notification_data.soundOn = !this.notification_data.soundOn;
+    },
+    infinityNotificationToggle() {
+      this.notification_data.infinityNotification = !this.notification_data.infinityNotification;
+    },
+    async saveNotificationData() {
       this.notification_data.updatedAt = firestore.FieldValue.serverTimestamp();
       await db
         .doc(`restaurants/${this.restaurantId()}/private/notifications`)
