@@ -9,6 +9,7 @@ import Order from '../models/Order'
 import * as line from './line'
 import { ownPlateConfig } from '../common/project';
 import { createCustomer } from '../stripe/customer';
+import moment from 'moment-timezone';
 
 export const nameOfOrder = (orderNumber: number) => {
   return "#" + `00${orderNumber}`.slice(-3);
@@ -61,8 +62,8 @@ export const place = async (db: FirebaseFirestore.Firestore, data: any, context:
 // This function is called by admins (restaurant operators) to update the status of order
 export const update = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
-  const { restaurantId, orderId, status, lng } = data;
-  utils.validate_params({ restaurantId, orderId, status }) // lng is optional
+  const { restaurantId, orderId, status, lng, timezone } = data;
+  utils.validate_params({ restaurantId, orderId, status, timezone }) // lng is optional
 
   try {
     const restaurantDoc = await db.doc(`restaurants/${restaurantId}`).get()
@@ -70,6 +71,8 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
     if (restaurant.uid !== uid) {
       throw new functions.https.HttpsError('permission-denied', 'The user does not have an authority to perform this operation.')
     }
+    const foo = moment(new Date()).tz(timezone).locale('ja').format('LLL');
+    console.log("foo", foo);
 
     const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`)
     let phoneNumber: string | undefined = undefined;
