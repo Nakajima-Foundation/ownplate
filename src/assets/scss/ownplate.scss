@@ -514,3 +514,29 @@ body,
   @extend .d-medium;
   @extend .w-288;
 }
+
+// iPhone SE
+@media only screen and (min-device-width: 320px) and (max-device-width: 568px) and (-webkit-min-device-pixel-ratio: 2) {
+  .m-l-24,
+  .m-l-16 {
+    margin-left: 8px;
+  }
+  .m-r-24,
+  .m-r-16 {
+    margin-right: 8px;
+  }
+  .p-l-24,
+  .p-l-16 {
+    padding-left: 8px;
+  }
+  .p-r-24,
+  .p-r-16 {
+    padding-right: 8px;
+  }
+  .modal-content {
+    max-height: calc(100vh - 96px);
+  }
+  #signInButton {
+    transform: scale(0.9);
+  }
+}
