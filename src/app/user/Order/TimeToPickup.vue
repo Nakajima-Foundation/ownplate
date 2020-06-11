@@ -112,7 +112,8 @@ export default {
       return this.shopInfo.pickUpMinimumCookTime || 25;
     },
     daysInAdvance() {
-      return (this.shopInfo.pickUpDaysInAdvance || 3) + 1;
+      const tmp = this.isNull(this.shopInfo.pickUpDaysInAdvance) ? 3 : this.shopInfo.pickUpDaysInAdvance;
+      return (tmp) + 1;
     }
   },
   methods: {

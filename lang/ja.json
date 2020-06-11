@@ -242,7 +242,7 @@
     "sendSMS": "SMSメッセージを受け取る（SMSの受信には料金がかかる場合があります）",
     "history": "注文履歴",
     "timeToPickup": "受け渡し予定時刻",
-    "notAvailable": "今日、明日は営業日ではないので、現在は注文を受け付けていません。",
+    "notAvailable": "注文可能な営業日がないので、現在は注文を受け付けていません。",
     "orderNotice": "注文時のご注意",
     "status": {
       "unexpected": "(Unexpected)",
@@ -349,6 +349,7 @@
       "deleteConfirm": "（キャンセルの取り消しは出来ません）",
       "line": "LINE通知設定",
       "lineAdd": "LINEアカウントの追加",
+      "lineUsers": "登録済みLINEアカウント",
       "lineDelete": "本当に消去しますか？"
     },
     "sound": {

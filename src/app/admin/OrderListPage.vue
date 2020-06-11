@@ -32,15 +32,16 @@
                 </option>
               </b-select>
             </div>
-            <!-- Sound ON/OFF -->
+
             <div class="level-right">
+              <!-- Sound ON/OFF -->
               <div @click="soundToggle()" class="is-inline-block m-r-16 m-t-16">
                 <div v-if="soundOn" class="op-button-pill bg-status-green-bg">
-                  <i class="material-icons c-status-green s-18 m-r-8">volume_up</i>
+                  <i class="material-icons c-status-green s-18">volume_up</i>
                   <span class="c-status-green t-button">{{$t("admin.order.soundOn")}}</span>
                 </div>
                 <div v-else class="op-button-pill bg-status-red-bg">
-                  <i class="material-icons c-status-red s-18 m-r-8">volume_off</i>
+                  <i class="material-icons c-status-red s-18">volume_off</i>
                   <span class="c-status-red t-button">{{$t("admin.order.soundOff")}}</span>
                 </div>
               </div>
@@ -50,20 +51,19 @@
                 </option>
               </b-select>
 
-              <b-button class="b-reset h-36 r-36 bg-form m-r-16 m-t-16" @click="soundPlay()">
-                <span class="p-l-16 p-r-16">
-                  <span class="c-primary t-button">
-                    <i class="material-icons c-primary s-18 m-r-8">play_arrow</i>
-                    {{ $t('admin.order.soundTest') }}
-                  </span>
-                </span>
+              <!-- Sound Test -->
+              <b-button class="b-reset op-button-pill bg-form m-r-16 m-t-16" @click="soundPlay()">
+                <i class="material-icons c-primary s-18 m-l-8">play_arrow</i>
+                <span class="c-primary t-button">{{ $t('admin.order.soundTest') }}</span>
               </b-button>
+
+              <!-- LINE Connection -->
               <router-link
                 v-if="isLineEnabled"
                 class="op-button-pill bg-status-green-bg m-t-16"
                 :to="`/admin/restaurants/${restaurantId()}/line`"
               >
-                <i class="fab fa-line m-r-8 c-status-green" style="font-size:24px" />
+                <i class="fab fa-line c-status-green" style="font-size:24px" />
                 <span class="c-status-green t-button">{{$t("admin.order.line")}}</span>
               </router-link>
             </div>

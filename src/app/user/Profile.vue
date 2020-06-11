@@ -266,6 +266,7 @@ export default {
       this.$store.commit("setAlert", {
         code: "profile.reallyDeleteAccount",
         callback: async () => {
+          window.scrollTo(0, 0);
           this.reLoginVisible = true;
         }
       });
@@ -289,6 +290,7 @@ export default {
       }
     },
     handleSignIn() {
+      window.scrollTo(0, 0);
       this.loginVisible = true;
     },
     handleSignOut() {
