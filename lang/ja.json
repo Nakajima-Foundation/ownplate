@@ -351,6 +351,10 @@
       "lineAdd": "LINEアカウントの追加",
       "lineDelete": "本当に消去しますか？"
     },
+    "sound": {
+      "dora": "ドラ",
+      "pikopiko": "ピコピコ"
+    },
     "qrcode": {
       "title": "QRコード",
       "restaurant": "メニューページ",

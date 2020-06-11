@@ -192,8 +192,6 @@ export default {
           src.start(0);
           console.log("default: silent played");
 
-          const res = await fetch("/notification_decorative-01.mp3");
-          this.buffer = await res.arrayBuffer();
           this.pleyedSilent = true;
           this.$store.commit("soundEnable");
         } catch (e) {
@@ -305,6 +303,10 @@ export default {
       if (this.$route.query.lang) {
         await this.changeLang(this.$route.query.lang);
       }
+    },
+    async "$store.state.soundFile"() {
+      const res = await fetch(this.$store.state.soundFile);
+      this.buffer = await res.arrayBuffer();
     },
     async "$store.state.orderEvent"() {
       await this.play();
