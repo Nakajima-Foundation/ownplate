@@ -9,6 +9,7 @@ import Order from '../models/Order'
 import * as line from './line'
 import { ownPlateConfig } from '../common/project';
 import { createCustomer } from '../stripe/customer';
+import moment from 'moment-timezone';
 
 export const nameOfOrder = (orderNumber: number) => {
   return "#" + `00${orderNumber}`.slice(-3);
@@ -61,8 +62,8 @@ export const place = async (db: FirebaseFirestore.Firestore, data: any, context:
 // This function is called by admins (restaurant operators) to update the status of order
 export const update = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
-  const { restaurantId, orderId, status, lng } = data;
-  utils.validate_params({ restaurantId, orderId, status }) // lng is optional
+  const { restaurantId, orderId, status, lng, timezone } = data;
+  utils.validate_params({ restaurantId, orderId, status, timezone }) // lng is optional
 
   try {
     const restaurantDoc = await db.doc(`restaurants/${restaurantId}`).get()
@@ -72,20 +73,17 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
     }
 
     const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`)
-    let phoneNumber: string | undefined = undefined;
+    let order: Order | undefined = undefined;
     let msgKey: string | undefined = undefined;
-    let orderName: string = "";
     let sendSMS: boolean = false;
     let uidUser: string | null = null;
 
     const result = await db.runTransaction(async transaction => {
-      const order = Order.fromSnapshot<Order>(await transaction.get(orderRef))
+      order = Order.fromSnapshot<Order>(await transaction.get(orderRef))
       if (!order) {
         throw new functions.https.HttpsError('invalid-argument', 'This order does not exist.')
       }
       uidUser = order.uid;
-      phoneNumber = order.phoneNumber
-      orderName = nameOfOrder(order.number)
       sendSMS = order.sendSMS
 
       const isPreviousStateChangable: Boolean = (() => {
@@ -132,7 +130,13 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
       return { success: true }
     })
     if (sendSMS && msgKey) {
-      await sendMessage(db, lng, msgKey, restaurant.restaurantName, orderName, uidUser, phoneNumber, restaurantId, orderId)
+      const params = {}
+      if (status === order_status.order_accepted) {
+        params["time"] = moment(order!.timePlaced.toDate()).tz(timezone).locale('ja').format('LLL');
+        console.log("timePlaced", params["time"]);
+      }
+      const orderName = nameOfOrder(order!.number)
+      await sendMessage(db, lng, msgKey, restaurant.restaurantName, orderName, uidUser, order!.phoneNumber, restaurantId, orderId, params)
     }
     return result
   } catch (error) {
@@ -143,13 +147,13 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
 export const sendMessage = async (db: FirebaseFirestore.Firestore, lng: string,
   msgKey: string, restaurantName: string, orderNumber: string,
   uidUser: string | null, phoneNumber: string | undefined,
-  restaurantId: string, orderId: string) => {
+  restaurantId: string, orderId: string, params: object = {}) => {
   const t = await i18next.init({
     lng: lng || utils.getStripeRegion().langs[0],
     resources
   })
   const url = `https://${ownPlateConfig.hostName}/r/${restaurantId}/order/${orderId}?openExternalBrowser=1`
-  const message = `${t(msgKey)} ${restaurantName} ${orderNumber} ${url}`;
+  const message = `${t(msgKey, params)} ${restaurantName} ${orderNumber} ${url}`;
   if (line.isEnabled) {
     await line.sendMessage(db, uidUser, message)
   } else {

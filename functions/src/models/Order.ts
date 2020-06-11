@@ -1,4 +1,5 @@
 import { Doc, Field } from '@1amageek/ballcap-admin'
+import * as admin from 'firebase-admin';
 
 export interface Menu {
   tax: string
@@ -27,4 +28,5 @@ export default class Order extends Doc {
   @Field phoneNumber?: string
   @Field number: number = 0
   @Field sendSMS: boolean = false
+  @Field timePlaced!: admin.firestore.Timestamp
 }
