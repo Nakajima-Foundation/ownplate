@@ -44,6 +44,7 @@
     "google-libphonenumber": "^3.2.8",
     "markdown-it": "^11.0.0",
     "moment": "^2.24.0",
+    "moment-timezone": "^0.5.31",
     "nuxt": "^2.0.0",
     "nuxt-buefy": "^0.3.2",
     "nuxt-gmaps": "^1.1.9",
