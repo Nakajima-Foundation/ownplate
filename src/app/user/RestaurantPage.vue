@@ -263,6 +263,7 @@ export default {
       if (this.isUser) {
         this.goCheckout();
       } else {
+        window.scrollTo(0, 0);
         this.loginVisible = true;
       }
     },
