@@ -27,7 +27,7 @@
             <area-item :name="$t('find.areaAll')" :id="'all'" />
 
             <!-- v-for="area in areas" -->
-            <area-item  v-for="area in areas" :name="area.name" :id="area.id" />
+            <area-item  v-for="area in areas" :name="area.name" :id="String(area.id)" />
           </div>
         </div>
       </div>

@@ -86,6 +86,7 @@ export default {
         .collection("restaurants")
         .where("publicFlag", "==", true)
         .where("deletedFlag", "==", false)
+        .where("onTheList", "==", true)
         .where("state", "==", this.areaName)
         .get();
       this.restaurants = (res.docs || []).map(doc => {
