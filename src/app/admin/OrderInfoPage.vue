@@ -185,7 +185,7 @@ import {
   formatURL
 } from "~/plugins/phoneutil.js";
 import { stripeConfirmIntent, stripeCancelIntent } from "~/plugins/stripe.js";
-import moment from "moment";
+import moment from "moment-timezone";
 import NotFound from "~/components/NotFound";
 
 export default {
@@ -369,6 +369,7 @@ export default {
       }
     },
     async handleChangeStatus(statusKey) {
+      const timezone = moment.tz.guess();
       const newStatus = order_status[statusKey];
       if (newStatus === this.orderInfo.status) {
         return;
@@ -379,7 +380,8 @@ export default {
         const { data } = await orderUpdate({
           restaurantId: this.restaurantId() + this.forcedError("update"),
           orderId: this.orderId,
-          status: newStatus
+          status: newStatus,
+          timezone
         });
         console.log("update", data);
         this.$router.push(this.parentUrl);
