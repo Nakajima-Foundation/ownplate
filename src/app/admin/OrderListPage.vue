@@ -45,6 +45,17 @@
                   <span class="c-status-red t-button">{{$t("admin.order.soundOff")}}</span>
                 </div>
               </div>
+              <!-- Infinity notification ON/OFF -->
+              <div @click="infinityNotificationToggle()" class="is-inline-block m-r-16 m-t-16">
+                <div v-if="notification_data.infinityNotification" class="op-button-pill bg-status-green-bg">
+                  <i class="material-icons c-status-green s-18">volume_up</i>
+                  <span class="c-status-green t-button">{{$t("admin.order.infinityNotificationOn")}}</span>
+                </div>
+                <div v-else class="op-button-pill bg-status-red-bg">
+                  <i class="material-icons c-status-red s-18">volume_off</i>
+                  <span class="c-status-red t-button">{{$t("admin.order.infinityNotificationOff")}}</span>
+                </div>
+              </div>
               <b-select v-model="soundIndex" class="m-t-24">
                 <option v-for="(soundFile, index) in soundFiles" :value="index" :key="index">
                   {{ $t(soundFile.nameKey)}}
@@ -126,9 +137,11 @@ export default {
       order_detacher: () => {},
       notification_data: {
         soundOn: null,
+        infinityNotification: null,
         uid: this.$store.getters.uidAdmin,
         createdAt: firestore.FieldValue.serverTimestamp()
-      }
+      },
+      intervalTask: {},
     };
   },
   watch: {
@@ -141,6 +154,9 @@ export default {
     },
     async "notification_data.soundOn"() {
       this.$store.commit("setSoundOn", this.notification_data.soundOn);
+      await this.saveNotificationData();
+    },
+    async "notification_data.infinityNotification"() {
       await this.saveNotificationData();
     },
     async soundIndex() {
@@ -168,8 +184,7 @@ export default {
       .doc(`restaurants/${this.restaurantId()}/private/notifications`)
       .get();
     if (notification.exists) {
-      this.notification_data = notification.data();
-
+      this.notification_data = Object.assign(this.notification_data, notification.data());
       if (this.notification_data.nameKey) {
         const index = soundFiles.findIndex((data) => data.nameKey === this.notification_data.nameKey);
         if (index >= 0) {
@@ -177,10 +192,14 @@ export default {
         }
       }
     }
+    this.intervalTask = setInterval(() => {
+      console.log(this.notification_data.infinityNotification);
+    }, 500);
   },
   destroyed() {
     this.restaurant_detacher();
     this.order_detacher();
+    clearInterval(this.intervalTask);
   },
   computed: {
     lastSeveralDays() {
@@ -196,6 +215,9 @@ export default {
   methods: {
     soundToggle() {
       this.notification_data.soundOn = !this.notification_data.soundOn;
+    },
+    infinityNotificationToggle() {
+      this.notification_data.infinityNotification = !this.notification_data.infinityNotification;
     },
     async saveNotificationData() {
       this.notification_data.updatedAt = firestore.FieldValue.serverTimestamp();
