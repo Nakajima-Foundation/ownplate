@@ -134,7 +134,7 @@ export default {
   watch: {
     async soundIndex() {
       await db.doc(`restaurants/${this.restaurantId()}/private/sound`).set({
-        index: this.soundIndex
+        nameKey: soundFiles[this.soundIndex].nameKey,
       });
       this.$store.commit("setSoundFile", soundFiles[this.soundIndex].file);
     },
@@ -162,7 +162,11 @@ export default {
 
     const sound = (await db.doc(`restaurants/${this.restaurantId()}/private/sound`).get()).data();
     if (sound) {
-      this.soundIndex = sound.index;
+      const index = soundFiles.findIndex((data) => data.nameKey === sound.nameKey);
+      if (index >= 0) {
+        this.soundIndex = index;
+      }
+
     }
 
     if (this.$route.query.day) {
