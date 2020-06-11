@@ -150,7 +150,10 @@ export default {
       if (this.user !== undefined) {
         return true; // Firebase has already identified the user (or non-user)
       }
-      if (this.$route.path === `/r/${this.restaurantId()}`) {
+      if (
+        this.$route.path === `/r/${this.restaurantId()}` ||
+        this.$route.path === "/"
+      ) {
         console.log("isReadyToRender: quick render activated");
         return true; // We are opening the restaurant page
       }

@@ -348,7 +348,8 @@
       "delete": "この注文をキャンセルする",
       "deleteConfirm": "（キャンセルの取り消しは出来ません）",
       "line": "LINE通知設定",
-      "lineAdd": "LINEアカウントの追加"
+      "lineAdd": "LINEアカウントの追加",
+      "lineDelete": "本当に消去しますか？"
     },
     "qrcode": {
       "title": "QRコード",
@@ -412,6 +413,7 @@
     "thankyou": "ご協力ありがとうございます",
     "enter": "入店",
     "leave": "退店",
+    "viewList": "入退店記録を確認",
     "list": "入退店記録"
   },
   "errorPage": {

@@ -16,6 +16,12 @@
       <div v-for="lineUser in lineUsers" :key="lineUser.id" @click="handleToggle(lineUser)">
         <i :class="iconClass(lineUser)" />
         {{ lineUser.displayName }}
+        <span
+          class="m-l-8"
+          @click.stop="handleDelete(lineUser.id)"
+        >
+          <i class="fas fa-trash" />
+        </span>
       </div>
     </div>
   </div>
@@ -88,6 +94,17 @@ export default {
         pathname: location.pathname
       });
       location.href = url;
+    },
+    handleDelete(lineId) {
+      this.$store.commit("setAlert", {
+        code: "admin.order.lineDelete",
+        callback: async () => {
+          console.log("handleDelete", lineId);
+          await db
+            .doc(`restaurants/${this.restaurantId()}/lines/${lineId}`)
+            .delete();
+        }
+      });
     }
   }
 };

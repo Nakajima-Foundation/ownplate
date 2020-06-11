@@ -20,6 +20,7 @@ export const lineAuthURL = (path, options, channelId) => {
   const cookie = `line_params=${encodeURIComponent(params)}; expires=${date.toUTCString()}; path=/`;
   console.log(cookie);
   document.cookie = cookie;
+
   const queryString = Object.keys(query)
     .map(key => {
       return key + "=" + encodeURIComponent(query[key]);
@@ -34,6 +35,7 @@ export const lineGuard = (nonce, state) => {
 
   //console.log("lineGuard", state, params.state);
   if (state !== params.state || nonce !== params.nonce) {
+    console.error("state", state, params.state)
     throw new Error("invalid state");
   }
   return params;
