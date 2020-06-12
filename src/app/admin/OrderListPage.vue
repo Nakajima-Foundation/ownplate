@@ -246,7 +246,7 @@ export default {
   },
   data() {
     return {
-      soundIndex: 0, // for debug
+      soundIndex: undefined, // for debug
       soundFiles: soundFiles,
       mySound: null,
       watchingOrder: false,
@@ -281,10 +281,13 @@ export default {
     async "notification_data.infinityNotification"() {
       await this.saveNotificationData();
     },
-    async soundIndex() {
+    async soundIndex(newData, oldData) {
       this.notification_data.nameKey = soundFiles[this.soundIndex].nameKey;
       this.$store.commit("setSoundFile", soundFiles[this.soundIndex].file);
-      await this.saveNotificationData();
+      // Ignore the very first change
+      if (oldData !== undefined) {
+        await this.saveNotificationData();
+      }
     }
   },
   async created() {
@@ -305,6 +308,7 @@ export default {
     const notification = await db
       .doc(`restaurants/${this.restaurantId()}/private/notifications`)
       .get();
+    let soundIndex = 0;
     if (notification.exists) {
       this.notification_data = Object.assign(
         this.notification_data,
@@ -315,10 +319,11 @@ export default {
           data => data.nameKey === this.notification_data.nameKey
         );
         if (index >= 0) {
-          this.soundIndex = index;
+          soundIndex = 0;
         }
       }
     }
+    this.soundIndex = soundIndex;
     this.intervalTask = setInterval(() => {
       if (this.notification_data.infinityNotification && this.hasNewOrder) {
         this.soundPlay();
