@@ -30,29 +30,22 @@
           <div class="m-l-24 m-r-24">
             <!-- Restaurant Profile Photo -->
             <div class="m-t-24 align-center">
-              <img
-                :src="restaurantInfo.restProfilePhoto"
-                class="w-64 h-64 r-64 cover"
-              />
+              <img :src="restaurantInfo.restProfilePhoto" class="w-64 h-64 r-64 cover" />
             </div>
 
             <!-- Restaurant Name -->
-            <div class="m-t-8 align-center t-h6 c-text-black-high">
-              {{ restaurantInfo.restaurantName }}
-            </div>
+            <div
+              class="m-t-8 align-center t-h6 c-text-black-high"
+            >{{ restaurantInfo.restaurantName }}</div>
 
             <!-- Restaurant Descriptions -->
-            <div class="t-body1 c-text-black-medium align-center m-t-8">
-              {{ restaurantInfo.introduction }}
-            </div>
+            <div
+              class="t-body1 c-text-black-medium align-center m-t-8"
+            >{{ restaurantInfo.introduction }}</div>
 
             <!-- Preview Link -->
-            <!-- # Need this link working -->
             <div class="m-t-8 align-center">
-              <nuxt-link
-                target="_blank"
-                :to="'/r/' + restaurantInfo.restaurantId"
-              >
+              <nuxt-link target="_blank" :to="'/r/' + restaurantId()">
                 <div class="op-button-text">
                   <i class="material-icons">launch</i>
                   <span>{{ $t("admin.viewPage") }}</span>
@@ -67,12 +60,8 @@
           <div class="m-l-24 m-r-24">
             <!-- No Menu -->
             <div v-if="!existsMenu">
-              <div
-                class="border-primary r-8 p-l-24 p-r-24 p-t-24 p-b-24 m-t-24"
-              >
-                <div class="align-center t-subtitle1 c-primary">
-                  {{ $t("editMenu.pleaseAddItem") }}
-                </div>
+              <div class="border-primary r-8 p-l-24 p-r-24 p-t-24 p-b-24 m-t-24">
+                <div class="align-center t-subtitle1 c-primary">{{ $t("editMenu.pleaseAddItem") }}</div>
                 <div class="align-center">
                   <b-button
                     class="b-reset op-button-pill h-36 bg-form m-r-8 m-l-8 m-t-16"
@@ -80,9 +69,11 @@
                     @click="addTitle()"
                   >
                     <i class="material-icons c-primary m-l-8">add</i>
-                    <span class="c-primary t-button">{{
+                    <span class="c-primary t-button">
+                      {{
                       $t("button.addTitle")
-                    }}</span>
+                      }}
+                    </span>
                   </b-button>
                   <b-button
                     class="b-reset op-button-pill h-36 bg-form m-l-8 m-r-8 m-t-16"
@@ -90,9 +81,11 @@
                     @click="addMenu()"
                   >
                     <i class="material-icons c-primary m-l-8">add</i>
-                    <span class="c-primary t-button">{{
+                    <span class="c-primary t-button">
+                      {{
                       $t("button.addItem")
-                    }}</span>
+                      }}
+                    </span>
                   </b-button>
                 </div>
               </div>
@@ -179,9 +172,11 @@
                 @click="addTitle()"
               >
                 <i class="material-icons c-primary m-l-8">add</i>
-                <span class="c-primary t-button">{{
+                <span class="c-primary t-button">
+                  {{
                   $t("button.addTitle")
-                }}</span>
+                  }}
+                </span>
               </b-button>
 
               <!-- Add Menu Item -->
@@ -191,9 +186,11 @@
                 @click="addMenu()"
               >
                 <i class="material-icons c-primary m-l-8">add</i>
-                <span class="c-primary t-button">{{
+                <span class="c-primary t-button">
+                  {{
                   $t("button.addItem")
-                }}</span>
+                  }}
+                </span>
               </b-button>
             </div>
           </div>
