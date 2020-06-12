@@ -27,7 +27,12 @@
             <area-item :name="$t('find.areaAll')" :id="'all'" />
 
             <!-- v-for="area in areas" -->
-            <area-item  v-for="area in areas" :name="area.name" :id="String(area.id)" />
+            <area-item
+              v-for="area in areas"
+              :name="area.name"
+              :id="String(area.id)"
+              :key="area.id"
+            />
           </div>
         </div>
       </div>
@@ -52,19 +57,20 @@ export default {
       // # Need to rewrite for Areas instead of Restaurants.
       region: ownPlateConfig.region,
       restaurants: [],
-      areas: ownPlateConfig.region == "JP" ? [
-        { name: "東京", id: 12},
-        { name: "福岡県", id: 39 }
-      ] : [
-        { name: "Washington", id: 46},
-      ]
+      areas:
+        ownPlateConfig.region == "JP"
+          ? [
+              { name: "東京", id: 12 },
+              { name: "福岡県", id: 39 }
+            ]
+          : [{ name: "Washington", id: 46 }]
     };
   },
   head() {
     return RestaurantHeader;
-  },
+  }
   // # Need to rewrite for Areas instead of Restaurants.
-/*
+  /*
   async created() {
     try {
       const res = await db
