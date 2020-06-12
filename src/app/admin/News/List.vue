@@ -33,7 +33,13 @@
           <!-- Articles -->
           <div class="columns is-gapless is-multiline">
             <!-- v-for="article in articles" -->
-            <list-item v-for="news in newsList"  :date="news.date.replace(/\-/g,'.')" :title="news.title" :id="news.date" />
+            <list-item
+              v-for="news in newsList"
+              :date="news.date.replace(/\-/g,'.')"
+              :title="news.title"
+              :id="news.date"
+              :key="news.date"
+            />
           </div>
         </div>
       </div>
@@ -45,7 +51,7 @@
 
 <script>
 import ListItem from "~/app/admin/News/ListItem";
-import newsList from './data';
+import newsList from "./data";
 
 export default {
   components: {
