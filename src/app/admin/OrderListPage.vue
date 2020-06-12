@@ -319,7 +319,7 @@ export default {
           data => data.nameKey === this.notification_data.nameKey
         );
         if (index >= 0) {
-          let soundIndex = 0;
+          soundIndex = 0;
         }
       }
     }
