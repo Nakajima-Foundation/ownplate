@@ -19,7 +19,7 @@
                     href="https://gluepass.jp/g/ownplatejp/pg/Zy8VserQdTxFVKLaFcOK"
                     target="_blank"
                   >
-                    <div class="op-button-small w-160 bg-text-white-high">
+                    <div class="op-button-small bg-text-white-high">
                       <i class="material-icons c-primary s-18 m-r-8">help_outline</i>
                       <span class="c-primary t-button">{{$t("admin.userManual")}}</span>
                     </div>
@@ -30,7 +30,7 @@
                     href="https://docs.google.com/forms/d/e/1FAIpQLSfGR4kk65ynfkCRGJsvJz01HZf7AU1nGLL9Rn9i4G9-qiW6MQ/viewform"
                     target="_blank"
                   >
-                    <div class="op-button-small w-160 bg-text-white-high">
+                    <div class="op-button-small bg-text-white-high">
                       <i class="material-icons c-primary s-18 m-r-8">mail_outline</i>
                       <span class="c-primary t-button">{{$t("admin.suportPage")}}</span>
                     </div>
@@ -165,7 +165,7 @@ import { order_status } from "~/plugins/constant.js";
 import { midNight } from "~/plugins/dateUtils.js";
 import { ownPlateConfig } from "@/config/project";
 import PaymentSection from "~/app/admin/Payment/PaymentSection";
-import newsList from './News/data';
+import newsList from "./News/data";
 
 export default {
   name: "Restaurant",
@@ -193,7 +193,7 @@ export default {
       restaurantItems: null,
       detachers: [],
       restaurant_detacher: null,
-      news: newsList[0],
+      news: newsList[0]
     };
   },
   created() {
