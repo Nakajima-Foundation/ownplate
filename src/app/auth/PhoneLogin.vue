@@ -36,12 +36,10 @@
         </div>
       </div>
 
-      <!-- reCAPTCHA -->
-      <div id="signInButton" class="m-t-24"></div>
-
       <!-- Submit Buttons -->
       <div class="m-t-24 align-center">
         <b-button
+          id="signInButton"
           class="b-reset op-button-small tertiary m-r-16"
           @click="$emit('dismissed', false)"
         >
@@ -122,8 +120,6 @@ export default {
       phoneNumber: "",
       errors: [],
       recaptchaVerifier: () => {},
-      recaptchaVerified: false,
-      recaptchaWidgetId: null,
       confirmationResult: null,
       verificationCode: "",
       name: "",
@@ -134,16 +130,11 @@ export default {
     this.countryCode = this.countries[0].code;
     console.log("countryCode:mount", this.countryCode);
     this.recaptchaVerifier = new authObject.RecaptchaVerifier("signInButton", {
-      size: "normal",
+      size: "invisible",
       callback: response => {
         // reCAPTCHA solved, allow signInWithPhoneNumber.
         console.log("verified", response);
-        this.recaptchaVerified = true;
       }
-    });
-    this.recaptchaVerifier.render().then(widgetId => {
-      this.recaptchaWidgetId = widgetId;
-      console.log("widdgetId", widgetId);
     });
   },
   watch: {
@@ -161,7 +152,7 @@ export default {
       return this.$store.getters.stripeRegion.countries;
     },
     readyToSendSMS() {
-      return this.recaptchaVerified && (!this.hasError || this.relogin);
+      return (!this.hasError || this.relogin);
     },
     readyToSendVerificationCode() {
       return !this.hasError;
@@ -173,7 +164,7 @@ export default {
   methods: {
     validatePhoneNumber() {
       this.errors = [];
-      const regex = /^[0-9()\-]*$/;
+      const regex = /^[0-9()\-]{8,15}$/;
       if (!regex.test(this.phoneNumber)) {
         this.errors.push("sms.invalidPhoneNumber");
       }
