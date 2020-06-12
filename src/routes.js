@@ -45,19 +45,48 @@ export const customRoutes = [
     component: "admin/Index.vue"
   },
   {
-    name: "admin-about",
+    name: "admin-router",
     path: "/admin/restaurants/:restaurantId",
-    component: "admin/RestaurantPage.vue"
-  },
-  {
-    name: "admin-menus",
-    path: "/admin/restaurants/:restaurantId/menus",
-    component: "admin/MenuListPage.vue"
-  },
-  {
-    name: "admin-menus-item",
-    path: "/admin/restaurants/:restaurantId/menus/:menuId",
-    component: "admin/MenuItemPage.vue"
+    component: "admin/Layout.vue",
+    children: [
+      {
+        name: "admin-about",
+        path: "/",
+        component: "admin/RestaurantPage.vue",
+      },
+      {
+        name: "admin-menus",
+        path: "menus",
+        component: "admin/MenuListPage.vue"
+      },
+      {
+        name: "admin-menus-item",
+        path: "menus/:menuId",
+        component: "admin/MenuItemPage.vue"
+      },
+      {
+        name: "admin-orders",
+        path: "orders",
+        component: "admin/OrderListPage.vue"
+      },
+      {
+        path: "line",
+        component: "admin/ManageLine.vue"
+      },
+      {
+        path: "traces",
+        component: "admin/TraceList.vue"
+      },
+      {
+        path: "qrcode",
+        component: "admin/QRCodePage.vue"
+      },
+      {
+        name: "admin-order-info",
+        path: "orders/:orderId",
+        component: "admin/OrderInfoPage.vue"
+      },
+    ]
   },
   {
     name: "admin-news-list",
@@ -68,28 +97,6 @@ export const customRoutes = [
     name: "admin-news-article",
     path: "/admin/news/:newsId",
     component: "admin/News/Article.vue"
-  },
-  {
-    name: "admin-orders",
-    path: "/admin/restaurants/:restaurantId/orders",
-    component: "admin/OrderListPage.vue"
-  },
-  {
-    path: "/admin/restaurants/:restaurantId/line",
-    component: "admin/ManageLine.vue"
-  },
-  {
-    path: "/admin/restaurants/:restaurantId/traces",
-    component: "admin/TraceList.vue"
-  },
-  {
-    path: "/admin/restaurants/:restaurantId/qrcode",
-    component: "admin/QRCodePage.vue"
-  },
-  {
-    name: "admin-order-info",
-    path: "/admin/restaurants/:restaurantId/orders/:orderId",
-    component: "admin/OrderInfoPage.vue"
   },
   {
     name: "admin-signin",
