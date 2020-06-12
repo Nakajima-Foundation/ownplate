@@ -47,15 +47,18 @@
             </div>
 
             <!-- Preview Link -->
-            <!-- # Need to make this link working -->
-            <!-- <div class="m-t-8 align-center">
-              <nuxt-link target="_blank" :to="'/r/' + restaurantInfo.restaurantid">
-                <div class="op-button-text m-r-8">
+            <!-- # Need this link working -->
+            <div class="m-t-8 align-center">
+              <nuxt-link
+                target="_blank"
+                :to="'/r/' + restaurantInfo.restaurantId"
+              >
+                <div class="op-button-text">
                   <i class="material-icons">launch</i>
-                  <span>{{$t('admin.viewPage')}}</span>
+                  <span>{{ $t("admin.viewPage") }}</span>
                 </div>
               </nuxt-link>
-            </div>-->
+            </div>
           </div>
         </div>
 
