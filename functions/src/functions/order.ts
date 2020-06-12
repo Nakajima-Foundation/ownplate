@@ -167,13 +167,13 @@ const notifyRestaurant = async (db: FirebaseFirestore.Firestore, messageId: stri
     lng: lng || utils.getStripeRegion().langs[0],
     resources
   })
-  const url = `https://${ownPlateConfig.hostName}/admin/restaurants/${restaurantId}/orders/${orderId}?openExternalBrowser=1`
+  const url = `https://${ownPlateConfig.hostName}/admin/restaurants/${restaurantId}/orders/${orderId}`
   const orderName = nameOfOrder(orderNumber);
   const message = `${t(messageId)} ${orderName}`;
   docs.forEach(async doc => {
     const lineUser = doc.data();
     if (lineUser.notify) {
-      await line.sendMessageDirect(doc.id, `${message} ${url}`)
+      await line.sendMessageDirect(doc.id, `${message} ${url}?openExternalBrowser=1`)
     }
   });
 
