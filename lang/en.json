@@ -339,8 +339,11 @@
     "passwordReset": "Reset Password",
     "pleaseCheckInbox": "Please check your inbox, an email is on the way.",
     "order": {
+      "notificationSettings": "Notification Settings",
       "soundOn": "Notification Sound: On",
       "soundOff": "Notification Sound: Off",
+      "infinityNotificationOn": "Remind Every Minute",
+      "infinityNotificationOff": "Notify One Time",
       "soundTest": "Test",
       "cancelButton": "Cancel this order",
       "cancelTitle": "Order Canceling",

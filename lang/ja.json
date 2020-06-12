@@ -339,8 +339,11 @@
     "passwordReset": "パスワードのリセット",
     "pleaseCheckInbox": "メールを送信しました。受信箱をご確認ください。",
     "order": {
+      "notificationSettings": "通知設定",
       "soundOn": "通知サウンド：オン",
       "soundOff": "通知サウンド：オフ",
+      "infinityNotificationOn": "1分おきに再通知",
+      "infinityNotificationOff": "受注時のみ通知",
       "soundTest": "テスト",
       "cancelButton": "注文をキャンセル",
       "cancelTitle": "注文のキャンセル",

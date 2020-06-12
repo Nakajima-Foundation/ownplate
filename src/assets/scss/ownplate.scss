@@ -516,7 +516,7 @@ body,
 }
 
 // For Small Screen like iPhone SE
-@media only screen and (min-device-width: 320px) and (max-device-width: 568px) and (-webkit-min-device-pixel-ratio: 2) {
+@media only screen and (max-device-width: 320px) {
   .m-l-24,
   .m-l-16 {
     margin-left: 8px;
@@ -534,7 +534,7 @@ body,
     padding-right: 8px;
   }
   .modal-content {
-    max-height: calc(100vh - 96px);
+    max-height: calc(100vh - 128px);
   }
   #signInButton {
     transform: scale(0.9);
