@@ -169,13 +169,24 @@ const notifyRestaurant = async (db: FirebaseFirestore.Firestore, messageId: stri
   })
   const url = `https://${ownPlateConfig.hostName}/admin/restaurants/${restaurantId}/orders/${orderId}?openExternalBrowser=1`
   const orderName = nameOfOrder(orderNumber);
-  const message = `${t(messageId)} ${orderName} ${url}`;
+  const message = `${t(messageId)} ${orderName}`;
   docs.forEach(async doc => {
     const lineUser = doc.data();
     if (lineUser.notify) {
-      await line.sendMessageDirect(doc.id, message)
+      await line.sendMessageDirect(doc.id, `${message} ${url}`)
     }
   });
+
+  const restaurant = (await db.doc(`/restaurants/${restaurantId}`).get()).data();
+  if (restaurant) { // paranoia
+    await db.doc(`/admins/${restaurant.uid}/private/notification`).set({
+      message,
+      sound: true,
+      path: `/admin/restaurants/${restaurantId}`,
+      updatedAt: admin.firestore.Timestamp.now(),
+      url
+    })
+  }
 }
 
 export const notifyNewOrder = async (db: FirebaseFirestore.Firestore, restaurantId: string, orderId: string, orderNumber: number, lng: string) => {
