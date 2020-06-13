@@ -23,7 +23,7 @@ export default {
           this.notifications.push(notification_data);
           if ((this.$route.path.indexOf(notification_data.path) > -1) &&
               notification_data.sound && this.watchingMessage){
-            this.soundPlay();
+            this.soundPlay("NotificationWatcher: newMessage");
           }
         }
         this.watchingMessage = true;
