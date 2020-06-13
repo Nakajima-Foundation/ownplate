@@ -214,7 +214,7 @@ export default {
   },
   data() {
     return {
-      soundIndex: undefined, // for debug
+      soundIndex: undefined,
       soundFiles: soundFiles,
       mySound: null,
       shopInfo: {},
@@ -242,7 +242,7 @@ export default {
       this.updateDayIndex();
     },
     async "notification_data.soundOn"() {
-      this.$store.commit("setSoundOn", this.notification_data.soundOn);
+      // this.$store.commit("setSoundOn", this.notification_data.soundOn);
       await this.saveNotificationData();
     },
     async "notification_data.infinityNotification"() {
@@ -250,7 +250,7 @@ export default {
     },
     async soundIndex(newData, oldData) {
       this.notification_data.nameKey = soundFiles[this.soundIndex].nameKey;
-      this.$store.commit("setSoundFile", soundFiles[this.soundIndex].file);
+      // this.$store.commit("setSoundFile", soundFiles[this.soundIndex].file);
       // Ignore the very first change
       if (oldData !== undefined) {
         await this.saveNotificationData();
@@ -275,22 +275,13 @@ export default {
     const notification = await db
       .doc(`restaurants/${this.restaurantId()}/private/notifications`)
       .get();
-    let soundIndex = 0;
     if (notification.exists) {
       this.notification_data = Object.assign(
         this.notification_data,
         notification.data()
       );
-      if (this.notification_data.nameKey) {
-        const index = soundFiles.findIndex(
-          data => data.nameKey === this.notification_data.nameKey
-        );
-        if (index >= 0) {
-          soundIndex = 0;
-        }
-      }
     }
-    this.soundIndex = soundIndex;
+    this.soundIndex = this.getSoundIndex(this.notification_data.nameKey);
     this.intervalTask = setInterval(() => {
       if (this.notification_data.infinityNotification && this.hasNewOrder) {
         this.soundPlay();

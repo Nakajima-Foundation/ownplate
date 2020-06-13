@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import { storage } from "~/plugins/firebase.js";
 import { ownPlateConfig } from "@/config/project";
-import { regionalSettings } from "~/plugins/constant.js";
+import { soundFiles, regionalSettings } from "~/plugins/constant.js";
 import moment from "moment";
 import * as Cookie from "cookie";
 
@@ -105,6 +105,13 @@ export default ({ app }) => {
       soundPlay() {
         this.$store.commit("pingOrderEvent");
         console.log("order: call play");
+      },
+      getSoundIndex (nameKey) {
+        if (nameKey) {
+          const index = soundFiles.findIndex(data => data.nameKey === nameKey);
+          return (index >= 0) ? index : 0;
+        }
+        return 0;
       },
     },
     computed: {
