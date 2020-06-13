@@ -15,14 +15,9 @@
             <!-- Restaurant Profile -->
             <div class="is-inline-flex flex-center m-l-16 m-t-24">
               <div>
-                <img
-                  :src="shopInfo.restProfilePhoto"
-                  class="w-36 h-36 r-36 cover"
-                />
+                <img :src="shopInfo.restProfilePhoto" class="w-36 h-36 r-36 cover" />
               </div>
-              <div class="t-h6 c-text-black-high m-l-8">
-                {{ shopInfo.restaurantName }}
-              </div>
+              <div class="t-h6 c-text-black-high m-l-8">{{ shopInfo.restaurantName }}</div>
             </div>
           </div>
 
@@ -31,11 +26,7 @@
             <!-- Select Date -->
             <div class="level-left">
               <b-select v-model="dayIndex" class="m-t-24">
-                <option
-                  v-for="day in lastSeveralDays"
-                  :value="day.index"
-                  :key="day.index"
-                >
+                <option v-for="day in lastSeveralDays" :value="day.index" :key="day.index">
                   {{ $d(day.date, "short") }}
                   <span v-if="day.index === 0">{{ $t("date.today") }}</span>
                 </option>
@@ -44,101 +35,84 @@
 
             <div class="level-right">
               <!-- Notification Settings Button -->
-              <div
-                class="op-button-pill bg-form m-t-24"
-                @click="openNotificationSettings()"
-              >
+              <div class="op-button-pill bg-form m-t-24" @click="openNotificationSettings()">
                 <i class="material-icons">settings</i>
-                <span class="t-button">{{
+                <span class="t-button">
+                  {{
                   $t("admin.order.notificationSettings")
-                }}</span>
+                  }}
+                </span>
 
                 <span v-if="notification_data.soundOn">
                   <i class="material-icons c-status-green s-18">volume_up</i>
-                  <span v-if="notification_data.infinityNotification"
-                    ><i class="material-icons c-status-green s-18"
-                      >repeat</i
-                    ></span
-                  >
-                  <span v-else
-                    ><i class="material-icons c-status-green s-18"
-                      >looks_one</i
-                    ></span
-                  >
+                  <span v-if="notification_data.infinityNotification">
+                    <i class="material-icons c-status-green s-18">repeat</i>
+                  </span>
+                  <span v-else>
+                    <i class="material-icons c-status-green s-18">looks_one</i>
+                  </span>
                 </span>
-                <i v-else class="material-icons c-status-red s-18"
-                  >volume_off</i
-                >
+                <i v-else class="material-icons c-status-red s-18">volume_off</i>
               </div>
 
               <!-- Notification Settings Popup-->
-              <b-modal
-                :active.sync="NotificationSettingsPopup"
-                :width="488"
-                scroll="keep"
-              >
+              <b-modal :active.sync="NotificationSettingsPopup" :width="488" scroll="keep">
                 <div class="op-dialog p-t-24 p-l-24 p-r-24 p-b-24">
                   <!-- Title -->
-                  <div class="t-h6 c-text-black-disabled">
-                    {{ $t("admin.order.notificationSettings") }}
-                  </div>
+                  <div
+                    class="t-h6 c-text-black-disabled"
+                  >{{ $t("admin.order.notificationSettings") }}</div>
                   <!-- Body -->
                   <div>
                     <!-- Sound ON/OFF -->
-                    <div
-                      @click="soundToggle()"
-                      class="is-inline-block m-r-16 m-t-16"
-                    >
+                    <div @click="soundToggle()" class="is-inline-block m-r-16 m-t-24">
                       <div
                         v-if="notification_data.soundOn"
                         class="op-button-pill bg-status-green-bg"
                       >
-                        <i class="material-icons c-status-green s-18"
-                          >volume_up</i
-                        >
-                        <span class="c-status-green t-button">{{
+                        <i class="material-icons c-status-green s-18">volume_up</i>
+                        <span class="c-status-green t-button">
+                          {{
                           $t("admin.order.soundOn")
-                        }}</span>
+                          }}
+                        </span>
                       </div>
                       <div v-else class="op-button-pill bg-status-red-bg">
-                        <i class="material-icons c-status-red s-18"
-                          >volume_off</i
-                        >
-                        <span class="c-status-red t-button">{{
+                        <i class="material-icons c-status-red s-18">volume_off</i>
+                        <span class="c-status-red t-button">
+                          {{
                           $t("admin.order.soundOff")
-                        }}</span>
+                          }}
+                        </span>
                       </div>
                     </div>
 
                     <!-- Sound ON Settings -->
                     <div
                       v-if="notification_data.soundOn"
-                      class="r-16 p-l-16 p-r-16 p-t-16 p-b-16 m-t-16"
-                      style="border: 2px solid rgba(0,0,0,0.1); "
+                      class="m-l-16 p-l-16 p-t-8 m-t-8"
+                      style="border-left: 2px solid rgba(0,0,0,0.1); "
                     >
                       <!-- Infinity Notification ON/OFF -->
-                      <div
-                        @click="infinityNotificationToggle()"
-                        class="is-inline-block"
-                      >
+                      <div @click="infinityNotificationToggle()" class="is-inline-block">
                         <div
                           v-if="notification_data.infinityNotification"
                           class="op-button-pill bg-status-green-bg"
                         >
-                          <i class="material-icons c-status-green s-18"
-                            >repeat</i
-                          >
-                          <span class="c-status-green t-button">{{
+                          <i class="material-icons c-status-green s-18">repeat</i>
+                          <span class="c-status-green t-button">
+                            {{
                             $t("admin.order.infinityNotificationOn")
-                          }}</span>
+                            }}
+                          </span>
                         </div>
                         <div v-else class="op-button-pill bg-status-green-bg">
-                          <i class="material-icons c-status-green s-18"
-                            >looks_one</i
-                          >
-                          <span class="c-status-green t-button">{{
+                          <i class="material-icons c-status-green s-18">looks_one</i>
+                          <span class="c-status-green t-button">
+                            {{
                             $t("admin.order.infinityNotificationOff")
-                          }}</span>
+                            }}
+                          </span>
                         </div>
                       </div>
 
@@ -150,40 +124,36 @@
                             v-for="(soundFile, index) in soundFiles"
                             :value="index"
                             :key="index"
-                          >
-                            {{ $t(soundFile.nameKey) }}
-                          </option>
+                          >{{ $t(soundFile.nameKey) }}</option>
                         </b-select>
 
                         <!-- Sound Test -->
-                        <b-button
-                          class="b-reset op-button-pill bg-form"
-                          @click="soundPlay()"
-                        >
-                          <i class="material-icons c-primary s-18 m-l-8"
-                            >play_arrow</i
-                          >
-                          <span class="c-primary t-button">{{
+                        <b-button class="b-reset op-button-pill bg-form" @click="soundPlay()">
+                          <i class="material-icons c-primary s-18 m-l-8">play_arrow</i>
+                          <span class="c-primary t-button">
+                            {{
                             $t("admin.order.soundTest")
-                          }}</span>
+                            }}
+                          </span>
                         </b-button>
                       </div>
                     </div>
 
                     <!-- LINE Connection -->
-                    <router-link
-                      v-if="isLineEnabled"
-                      class="op-button-pill bg-status-green-bg m-t-16"
-                      :to="`/admin/restaurants/${restaurantId()}/line`"
-                    >
-                      <i
-                        class="fab fa-line c-status-green"
-                        style="font-size:24px"
-                      />
-                      <span class="c-status-green t-button">{{
-                        $t("admin.order.line")
-                      }}</span>
-                    </router-link>
+                    <div class="m-t-24">
+                      <router-link
+                        v-if="isLineEnabled"
+                        class="op-button-pill bg-status-green-bg"
+                        :to="`/admin/restaurants/${restaurantId()}/line`"
+                      >
+                        <i class="fab fa-line c-status-green" style="font-size:24px" />
+                        <span class="c-status-green t-button">
+                          {{
+                          $t("admin.order.line")
+                          }}
+                        </span>
+                      </router-link>
+                    </div>
                   </div>
 
                   <!-- Action Buttons -->
@@ -191,9 +161,7 @@
                     <div
                       class="op-button-small tertiary"
                       @click="closeNotificationSettings()"
-                    >
-                      {{ $t("menu.close") }}
-                    </div>
+                    >{{ $t("menu.close") }}</div>
                   </div>
                 </div>
               </b-modal>
