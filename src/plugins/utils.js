@@ -102,6 +102,10 @@ export default ({ app }) => {
       moment(value) {
         return moment(value);
       },
+      soundPlay() {
+        this.$store.commit("pingOrderEvent");
+        console.log("order: call play");
+      },
     },
     computed: {
       regionalSetting() {
