@@ -207,6 +207,9 @@ export default {
       }
     },
     async play() {
+      if (this.buffer == null) {
+        await this.downloadAudio();
+      }
       if (this.buffer) {
         if (this.$store.state.soundOn) {
           this.audioContext.decodeAudioData(
@@ -266,7 +269,11 @@ export default {
         // save into store
         this.$store.commit("setLang", lang);
       }
-    }
+    },
+    async downloadAudio() {
+      const res = await fetch(this.$store.state.soundFile);
+      this.buffer = await res.arrayBuffer();
+    },
   },
   beforeCreate() {
     const systemGetConfig = functions.httpsCallable("systemGetConfig");
@@ -298,11 +305,14 @@ export default {
       }
     },
     async "$store.state.soundFile"() {
-      const res = await fetch(this.$store.state.soundFile);
-      this.buffer = await res.arrayBuffer();
+      this.downloadAudio();
     },
     async "$store.state.orderEvent"() {
       await this.play();
+      console.log(`soundEnable = ${this.$store.state.soundEnable}, soundOn=${this.$store.state.soundOn}, soundFile=${this.$store.state.soundFile}`);
+      if (this.buffer == null) {
+        console.log("buffer is null");
+      }
       console.log(this.$store.state.orderEvent);
     },
     async user() {
