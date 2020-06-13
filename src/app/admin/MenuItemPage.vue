@@ -1,6 +1,6 @@
 <template>
   <div>
-    <template v-if="notFound==null"></template>
+    <template v-if="notFound == null"></template>
     <template v-else-if="notFound">
       <not-found />
     </template>
@@ -12,11 +12,67 @@
         <!-- Center Column -->
         <div class="column">
           <div class="m-l-24 m-r-24 m-t-24">
-            <!-- Back Button -->
-            <back-button :url="`/admin/restaurants/${this.restaurantId()}/menus`" />
+            <!-- Cancel and Save Button -->
+            <div class="align-center">
+              <!-- Cancel Button -->
+              <b-button
+                class="b-reset op-button-small tertiary m-r-16"
+                style="min-width: 128px;"
+                tag="nuxt-link"
+                :to="`/admin/restaurants/${this.restaurantId()}/menus`"
+              >
+                <span class=" p-l-24 p-r-24">{{ $t("button.cancel") }}</span>
+              </b-button>
+
+              <!-- Save Button -->
+              <b-button
+                class="b-reset op-button-small primary"
+                style="min-width: 128px;"
+                :disabled="submitting"
+                @click="submitItem"
+              >
+                <span class="c-onprimary p-l-24 p-r-24">{{
+                  $t(
+                    submitting
+                      ? "editCommon.saving"
+                      : menuInfo.publicFlag
+                      ? "editCommon.save"
+                      : "editCommon.saveDraft"
+                  )
+                }}</span>
+              </b-button>
+            </div>
+
+            <!-- Public Checkbox -->
+            <div
+              class="m-t-24 align-center bg-form p-l-16 p-r-16 p-t-16 p-b-16 r-8"
+            >
+              <b-checkbox
+                v-model="menuInfo.publicFlag"
+                :disabled="hasError"
+                :type="!menuInfo.publicFlag ? 'is-danger' : ''"
+              >
+                <span class="t-subtitle1">{{ $t("shopInfo.public") }}</span>
+              </b-checkbox>
+
+              <!-- Messages -->
+              <div>
+                <div v-if="hasError" class="t-subtitle2 c-status-red">
+                  {{ $t("editRestaurant.draftWarning") }}
+                </div>
+                <div
+                  class="t-subtitle2 c-status-red"
+                  v-if="!menuInfo.publicFlag && !hasError"
+                >
+                  {{ $t("editMenu.saveAsDraft") }}
+                </div>
+              </div>
+            </div>
 
             <!-- Required Note -->
-            <div class="t-subtitle2 c-status-red m-t-24">* {{$t("editMenu.required")}}</div>
+            <div class="t-subtitle2 c-status-red m-t-24">
+              * {{ $t("editMenu.required") }}
+            </div>
           </div>
         </div>
         <!-- Right Gap -->
@@ -34,22 +90,33 @@
             <!-- Item Name -->
             <div class="m-t-16">
               <div class="t-subtitle2 c-text-black-medium p-b-8">
-                {{$t("editMenu.itemName")}}
+                {{ $t("editMenu.itemName") }}
                 <span class="c-status-red">*</span>
               </div>
-              <b-field :type="errors['itemName'].length > 0 ? 'is-danger' : 'is-success'">
-                <b-input v-model="menuInfo.itemName" :placeholder="$t('editMenu.enterItemName')"></b-input>
+              <b-field
+                :type="
+                  errors['itemName'].length > 0 ? 'is-danger' : 'is-success'
+                "
+              >
+                <b-input
+                  v-model="menuInfo.itemName"
+                  :placeholder="$t('editMenu.enterItemName')"
+                ></b-input>
               </b-field>
             </div>
 
             <!-- Item Price -->
             <div class="m-t-16">
               <div class="t-subtitle2 c-text-black-medium p-b-8">
-                {{$t("editMenu.price")}}
+                {{ $t("editMenu.price") }}
                 <span class="c-status-red">*</span>
               </div>
               <div>
-                <b-field :type="errors['price'].length > 0 ? 'is-danger' : 'is-success'">
+                <b-field
+                  :type="
+                    errors['price'].length > 0 ? 'is-danger' : 'is-success'
+                  "
+                >
                   <b-input
                     v-model="menuInfo.price"
                     type="number"
@@ -60,7 +127,9 @@
                     expanded
                   ></b-input>
                   <div>
-                    <span class="button is-static">{{$t("currency." + this.currencyKey)}}</span>
+                    <span class="button is-static">{{
+                      $t("currency." + this.currencyKey)
+                    }}</span>
                   </div>
                 </b-field>
               </div>
@@ -69,17 +138,24 @@
             <!-- Item Tax -->
             <div class="m-t-16">
               <div class="t-subtitle2 c-text-black-medium p-b-8">
-                {{$t("editMenu.tax")}}
+                {{ $t("editMenu.tax") }}
                 <span class="c-status-red">*</span>
               </div>
               <div>
-                <b-field :type="errors['tax'].length > 0 ? 'is-danger' : 'is-success'">
+                <b-field
+                  :type="errors['tax'].length > 0 ? 'is-danger' : 'is-success'"
+                >
                   <b-select v-model="menuInfo.tax" placeholder="select">
                     <option
                       v-for="taxItem in taxRates"
                       :value="taxItem"
                       :key="taxItem"
-                    >{{ restaurantInfo && ((restaurantInfo[taxItem + "Tax"] || 0) + "%") }} - {{ $t("editMenu." + taxRateKeys[taxItem]) }}</option>
+                      >{{
+                        restaurantInfo &&
+                          (restaurantInfo[taxItem + "Tax"] || 0) + "%"
+                      }}
+                      - {{ $t("editMenu." + taxRateKeys[taxItem]) }}</option
+                    >
                   </b-select>
                 </b-field>
               </div>
@@ -87,7 +163,9 @@
 
             <!-- Price Example -->
             <div v-if="requireTaxPriceDisplay" class="m-t-16">
-              <span class="t-subtitle2">{{$t('editMenu.displayPrice')}}:</span>
+              <span class="t-subtitle2"
+                >{{ $t("editMenu.displayPrice") }}:</span
+              >
               <span>
                 <Price :shopInfo="restaurantInfo" :menu="menuInfo" />
               </span>
@@ -96,7 +174,7 @@
             <!-- Allergens -->
             <div class="m-t-16">
               <div class="t-subtitle2 c-text-black-medium p-b-8">
-                {{$t('allergens.title')}}
+                {{ $t("allergens.title") }}
                 <span class="c-status-red"></span>
               </div>
               <div>
@@ -105,18 +183,25 @@
                   v-model="menuInfo.allergens[allergen]"
                   :key="allergen"
                   class="m-b-8"
-                >{{$t(`allergens.${allergen}`)}}</b-checkbox>
+                  >{{ $t(`allergens.${allergen}`) }}</b-checkbox
+                >
               </div>
             </div>
 
             <!-- Item Description -->
             <div class="m-t-16">
               <div class="t-subtitle2 c-text-black-medium p-b-8">
-                {{$t("editMenu.itemDescription")}}
+                {{ $t("editMenu.itemDescription") }}
                 <span class="c-status-red"></span>
               </div>
               <div>
-                <b-field :type="errors['itemDescription'].length > 0 ? 'is-danger' : 'is-success'">
+                <b-field
+                  :type="
+                    errors['itemDescription'].length > 0
+                      ? 'is-danger'
+                      : 'is-success'
+                  "
+                >
                   <b-input
                     v-model="menuInfo.itemDescription"
                     :placeholder="$t('editMenu.enterItemDescription')"
@@ -132,54 +217,65 @@
           <div class="m-l-24 m-r-24">
             <!-- Item Photo -->
             <div class="m-t-16">
-              <div class="t-subtitle2 c-text-black-medium p-b-8">{{$t("editMenu.itemPhoto")}}</div>
+              <div class="t-subtitle2 c-text-black-medium p-b-8">
+                {{ $t("editMenu.itemPhoto") }}
+              </div>
               <div class="cols">
+                <!-- Current Photo -->
                 <div v-if="itemPhoto" class="p-r-16">
                   <div>
                     <img class="w-128 h-128 r-4 cover" :src="itemPhoto" />
                   </div>
-                  <div class="align-center t-caption">{{$t('editCommon.current')}}</div>
-                </div>
-                <div>
-                  <div>
-                    <croppa
-                      :width="128"
-                      :height="128"
-                      :prevent-white-space="true"
-                      :zoom-speed="5"
-                      :accept="'image/jpeg'"
-                      :placeholder="$t('editCommon.clickAndUpload')"
-                      :placeholder-font-size="13"
-                      :disable-drag-to-move="true"
-                      :disable-scroll-to-zoom="true"
-                      :disable-rotation="true"
-                      initial-position="center"
-                      :canvas-color="'gainsboro'"
-                      :show-remove-button="true"
-                      @file-choose="handleMenuImage"
-                    ></croppa>
+                  <div class="align-center t-caption">
+                    {{ $t("editCommon.current") }}
                   </div>
-                  <div class="align-center t-caption w-128">{{$t('editCommon.new')}}</div>
                 </div>
+
+                <!-- New Photo -->
                 <div class="flex-1">
-                  <div
-                    class="p-l-8 p-r-8 t-body2 c-text-black-medium"
-                  >{{$t('editCommon.clickAndUploadDetail')}}</div>
+                  <croppa
+                    :width="128"
+                    :height="128"
+                    :prevent-white-space="true"
+                    :zoom-speed="5"
+                    :accept="'image/jpeg'"
+                    :placeholder="$t('editCommon.clickAndUpload')"
+                    :placeholder-font-size="13"
+                    :disable-drag-to-move="true"
+                    :disable-scroll-to-zoom="true"
+                    :disable-rotation="true"
+                    initial-position="center"
+                    :canvas-color="'gainsboro'"
+                    :show-remove-button="true"
+                    @file-choose="handleMenuImage"
+                  ></croppa>
+                  <div class="align-center t-caption w-128">
+                    {{ $t("editCommon.new") }}
+                  </div>
                 </div>
+              </div>
+
+              <!-- Description -->
+              <div class="t-body2 c-text-black-medium p-l-8 p-r-8 m-t-8">
+                {{ $t("editCommon.clickAndUploadDetail") }}
               </div>
             </div>
 
             <!-- Item Options -->
             <div class="m-t-16">
               <div class="t-subtitle2 c-text-black-medium p-b-8">
-                {{$t("editMenu.itemOptions")}}
+                {{ $t("editMenu.itemOptions") }}
                 <span class="c-status-red"></span>
               </div>
               <div>
-                <div class="t-body2 c-text-black-medium p-b-8">{{$t('editMenu.itemOptionsNote')}}</div>
+                <div class="t-body2 c-text-black-medium p-b-8">
+                  {{ $t("editMenu.itemOptionsNote") }}
+                </div>
                 <!-- Option Details -->
                 <div>
-                  <template v-for="(option, key) in menuInfo.itemOptionCheckbox">
+                  <template
+                    v-for="(option, key) in menuInfo.itemOptionCheckbox"
+                  >
                     <div :key="key" class="cols m-b-8">
                       <b-input
                         v-model="menuInfo.itemOptionCheckbox[key]"
@@ -190,66 +286,26 @@
                         class="b-reset op-button-pill h-36 bg-status-red-bg m-l-8"
                         @click="deleteOption(key)"
                       >
-                        <i class="material-icons c-status-red s-18 p-l-8 p-r-8">delete</i>
+                        <i class="material-icons c-status-red s-18 p-l-8 p-r-8"
+                          >delete</i
+                        >
                       </b-button>
                     </div>
                   </template>
                 </div>
                 <!-- Add Option -->
                 <div>
-                  <b-button class="b-reset op-button-pill h-36 bg-form" @click="addOption">
+                  <b-button
+                    class="b-reset op-button-pill h-36 bg-form"
+                    @click="addOption"
+                  >
                     <i class="material-icons c-primary m-l-8">add</i>
-                    <span class="c-primary t-button">{{$t("editMenu.itemAddOption")}}</span>
+                    <span class="c-primary t-button">{{
+                      $t("editMenu.itemAddOption")
+                    }}</span>
                   </b-button>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-        <!-- Right Gap -->
-        <div class="column is-narrow w-24"></div>
-      </div>
-
-      <!-- Edit Footer Area -->
-      <div class="columns is-gapless">
-        <!-- Left Gap -->
-        <div class="column is-narrow w-24"></div>
-        <!-- Center Column -->
-        <div class="column">
-          <div class="m-l-24 m-r-24 m-t-24">
-            <!-- Public Checkbox -->
-            <div class="m-t-24 align-center bg-form p-l-16 p-r-16 p-t-16 p-b-16 r-8">
-              <div>
-                <b-checkbox
-                  v-model="menuInfo.publicFlag"
-                  :disabled="hasError"
-                  :type="!menuInfo.publicFlag ? 'is-danger' : ''"
-                >
-                  <span class="t-subtitle1">{{$t('shopInfo.public')}}</span>
-                </b-checkbox>
-              </div>
-              <div
-                v-if="hasError"
-                class="t-subtitle2 c-status-red"
-              >{{$t('editRestaurant.draftWarning')}}</div>
-              <div
-                class="t-subtitle2 c-status-red"
-                v-if="!menuInfo.publicFlag && !hasError"
-              >{{$t("editMenu.saveAsDraft")}}</div>
-            </div>
-
-            <!-- Save Button -->
-            <div class="align-center m-t-24">
-              <b-button
-                class="b-reset op-button-medium primary"
-                style="min-width: 288px;"
-                :disabled="submitting"
-                @click="submitItem"
-              >
-                <span
-                  class="c-onprimary p-l-24 p-r-24"
-                >{{$t(submitting ? 'editCommon.saving' : (menuInfo.publicFlag ? "editCommon.save" : "editCommon.saveDraft"))}}</span>
-              </b-button>
             </div>
           </div>
         </div>
