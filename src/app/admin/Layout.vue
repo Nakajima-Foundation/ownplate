@@ -2,28 +2,45 @@
 <div>
   <router-view></router-view>
   <notification-watcher />
-  <sound-config-watcher />
+  <sound-config-watcher :notificationConfig="notificationConfig" />
+  <new-order-watcher :notificationConfig="notificationConfig" />
 </div>
 </template>
 
 <script>
 import { db, firestore } from "~/plugins/firebase.js";
-import NotificationWatcher from "./NotificationWatcher";
-import SoundConfigWatcher from "./SoundConfigWatcher";
+import NotificationWatcher from "./Watcher/NotificationWatcher";
+import SoundConfigWatcher from "./Watcher/SoundConfigWatcher";
+import NewOrderWatcher from "./Watcher/NewOrderWatcher";
 
 export default {
   components: {
     NotificationWatcher,
     SoundConfigWatcher,
+    NewOrderWatcher,
   },
   data() {
-    return {};
+    return {
+      notificationConfig: {
+        soundOn: null,
+        infinityNotification: null,
+        nameKey: null,
+      },
+    };
   },
   async created() {
-    console.log("created");
+    this.notification_detacher = db.doc(`restaurants/${this.restaurantId()}/private/notifications`)
+      .onSnapshot(notification => {
+        if (notification.exists) {
+          this.notificationConfig = Object.assign(
+            this.notificationConfig,
+            notification.data()
+          );
+        }
+      });
   },
   destroyed() {
-    console.log("destroyed");
+    this.notification_detacher();
   },
 }
 

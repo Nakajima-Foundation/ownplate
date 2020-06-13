@@ -102,9 +102,13 @@ export default ({ app }) => {
       moment(value) {
         return moment(value);
       },
-      soundPlay() {
+      soundPlay(reason) {
         this.$store.commit("pingOrderEvent");
-        console.log("order: call play");
+        if (reason) {
+          console.log("order: call play: " + reason);
+        } else {
+          console.log("order: call play");
+        }
       },
       getSoundIndex (nameKey) {
         if (nameKey) {

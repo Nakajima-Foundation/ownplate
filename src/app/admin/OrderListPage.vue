@@ -229,8 +229,6 @@ export default {
         uid: this.$store.getters.uidAdmin,
         createdAt: firestore.FieldValue.serverTimestamp()
       },
-      intervalTask: {},
-      intervalTime: 60 // (seconds)
     };
   },
   watch: {
@@ -242,7 +240,6 @@ export default {
       this.updateDayIndex();
     },
     async "notification_data.soundOn"() {
-      // this.$store.commit("setSoundOn", this.notification_data.soundOn);
       await this.saveNotificationData();
     },
     async "notification_data.infinityNotification"() {
@@ -250,7 +247,6 @@ export default {
     },
     async soundIndex(newData, oldData) {
       this.notification_data.nameKey = soundFiles[this.soundIndex].nameKey;
-      // this.$store.commit("setSoundFile", soundFiles[this.soundIndex].file);
       // Ignore the very first change
       if (oldData !== undefined) {
         await this.saveNotificationData();
@@ -282,16 +278,10 @@ export default {
       );
     }
     this.soundIndex = this.getSoundIndex(this.notification_data.nameKey);
-    this.intervalTask = setInterval(() => {
-      if (this.notification_data.infinityNotification && this.hasNewOrder) {
-        this.soundPlay();
-      }
-    }, 1000 * this.intervalTime);
   },
   destroyed() {
     this.restaurant_detacher();
     this.order_detacher();
-    clearInterval(this.intervalTask);
   },
   computed: {
     lastSeveralDays() {
@@ -303,11 +293,6 @@ export default {
     enableSound() {
       return this.$store.state.soundEnable;
     },
-    hasNewOrder() {
-      return this.orders.some(order => {
-        return order.status === order_status.order_placed;
-      });
-    }
   },
   methods: {
     openNotificationSettings() {
