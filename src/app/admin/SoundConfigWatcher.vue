@@ -13,8 +13,6 @@ export default {
       notification_data: {
         soundOn: null,
         infinityNotification: null,
-        uid: this.$store.getters.uidAdmin,
-        createdAt: firestore.FieldValue.serverTimestamp()
       },
     }
   },
