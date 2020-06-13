@@ -14,7 +14,6 @@ export default {
     }
   },
   async created() {
-    console.log("DDD");
     this.watchingMessage = false;
     this.message_detacher = db
       .doc(`admins/${this.uid}/private/notification`)
