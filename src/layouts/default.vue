@@ -212,12 +212,15 @@ export default {
       }
       if (this.buffer) {
         if (this.$store.state.soundOn) {
+          console.log("will play");
           this.audioContext.decodeAudioData(
             this.buffer.slice(0),
             _audioBuffer => {
+              console.log("run internal");
               const source = this.audioContext.createBufferSource();
               source.buffer = _audioBuffer;
               source.connect(this.audioContext.destination);
+              console.log(source);
               source.start(0);
             }
           );
