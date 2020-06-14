@@ -192,7 +192,7 @@ export default {
           src.start(0);
           console.log("default: silent played");
 
-          this.pleyedSilent = true;
+          // this.pleyedSilent = true;
           this.$store.commit("soundEnable");
         } catch (e) {
           console.log(e);
