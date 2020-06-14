@@ -19,7 +19,7 @@
                 tag="nuxt-link"
                 :to="`/admin/restaurants/`"
               >
-                <span class=" p-l-24 p-r-24">{{ $t("button.cancel") }}</span>
+                <span class="p-l-24 p-r-24">{{ $t("button.cancel") }}</span>
               </b-button>
 
               <!-- Save Button -->
@@ -29,22 +29,22 @@
                 :disabled="submitting"
                 @click="submitRestaurant"
               >
-                <span class="c-onprimary p-l-24 p-r-24">{{
+                <span class="c-onprimary p-l-24 p-r-24">
+                  {{
                   $t(
-                    submitting
-                      ? "editCommon.saving"
-                      : shopInfo.publicFlag
-                      ? "editCommon.save"
-                      : "editCommon.saveDraft"
+                  submitting
+                  ? "editCommon.saving"
+                  : shopInfo.publicFlag
+                  ? "editCommon.save"
+                  : "editCommon.saveDraft"
                   )
-                }}</span>
+                  }}
+                </span>
               </b-button>
             </div>
 
             <!-- Public Checkbox -->
-            <div
-              class="m-t-24 align-center bg-form p-l-16 p-r-16 p-t-16 p-b-16 r-8"
-            >
+            <div class="m-t-24 align-center bg-form p-l-16 p-r-16 p-t-16 p-b-16 r-8">
               <b-checkbox
                 v-model="shopInfo.publicFlag"
                 :disabled="hasError"
@@ -54,25 +54,23 @@
               </b-checkbox>
               <!-- Messages -->
               <div class="m-t-4">
-                <div v-if="shopInfo.publicFlag" class="t-subtitle2">
-                  {{ $t("editRestaurant.publishDescription") }}
-                </div>
+                <div
+                  v-if="shopInfo.publicFlag"
+                  class="t-subtitle2"
+                >{{ $t("editRestaurant.publishDescription") }}</div>
                 <div
                   v-if="!shopInfo.publicFlag"
                   class="t-subtitle2 c-status-red"
-                >
-                  {{ $t("editRestaurant.draftDescription") }}
-                </div>
-                <div v-if="hasError" class="t-subtitle2 c-status-red">
-                  {{ $t("editRestaurant.draftWarning") }}
-                </div>
+                >{{ $t("editRestaurant.draftDescription") }}</div>
+                <div
+                  v-if="hasError"
+                  class="t-subtitle2 c-status-red"
+                >{{ $t("editRestaurant.draftWarning") }}</div>
               </div>
             </div>
 
             <!-- Required Note -->
-            <div class="t-subtitle2 c-status-red m-t-24">
-              * {{ $t("editRestaurant.required") }}
-            </div>
+            <div class="t-subtitle2 c-status-red m-t-24">* {{ $t("editRestaurant.required") }}</div>
           </div>
         </div>
         <!-- Right Gap -->
@@ -184,18 +182,17 @@
             <!-- Map -->
             <div>
               <div class="align-center">
-                <b-button
-                  class="b-reset op-button-small primary"
-                  @click="updateAndUpdateMap"
-                >
-                  <span class="c-onprimary p-l-24 p-r-24">{{
+                <b-button class="b-reset op-button-small primary" @click="updateAndUpdateMap">
+                  <span class="c-onprimary p-l-24 p-r-24">
+                    {{
                     $t("editRestaurant.updateMap")
-                  }}</span>
+                    }}
+                  </span>
                 </b-button>
               </div>
-              <div class="align-center t-subtitle2 c-status-red m-t-8">
-                {{ $t("editRestaurant.updateMapDescription") }}
-              </div>
+              <div
+                class="align-center t-subtitle2 c-status-red m-t-8"
+              >{{ $t("editRestaurant.updateMapDescription") }}</div>
               <div class="m-t-16">
                 <GMap
                   ref="gMap"
@@ -237,14 +234,9 @@
                 <!-- Current Photo -->
                 <div v-if="restProfilePhoto" class="p-r-16">
                   <div>
-                    <img
-                      class="w-128 h-128 r-4 cover"
-                      :src="restProfilePhoto"
-                    />
+                    <img class="w-128 h-128 r-4 cover" :src="restProfilePhoto" />
                   </div>
-                  <div class="align-center t-caption">
-                    {{ $t("editCommon.current") }}
-                  </div>
+                  <div class="align-center t-caption">{{ $t("editCommon.current") }}</div>
                 </div>
 
                 <!-- New Photo -->
@@ -265,35 +257,30 @@
                     :show-remove-button="true"
                     @file-choose="handleProfileImage"
                   ></croppa>
-                  <div class="align-center t-caption w-128">
-                    {{ $t("editCommon.new") }}
-                  </div>
+                  <div class="align-center t-caption w-128">{{ $t("editCommon.new") }}</div>
                 </div>
               </div>
 
               <!-- Description -->
-              <div class="t-body2 c-text-black-medium p-l-8 p-r-8 m-t-8">
-                {{ $t("editCommon.clickAndUploadDetail") }}
-              </div>
+              <div
+                class="t-body2 c-text-black-medium p-l-8 p-r-8 m-t-8"
+              >{{ $t("editCommon.clickAndUploadDetail") }}</div>
             </div>
 
             <!-- Cover Photo -->
             <div class="m-t-16">
-              <div class="t-subtitle2 c-text-black-medium p-b-8">
-                {{ $t("editRestaurant.coverPhoto") }}
-              </div>
+              <div
+                class="t-subtitle2 c-text-black-medium p-b-8"
+              >{{ $t("editRestaurant.coverPhoto") }}</div>
               <div>
                 <div v-if="restCoverPhoto" class="p-b-8">
                   <div>
-                    <img
-                      class="h-128 r-4 cover"
-                      :src="restCoverPhoto"
-                      style="width: 272px;"
-                    />
+                    <img class="h-128 r-4 cover" :src="restCoverPhoto" style="width: 272px;" />
                   </div>
-                  <div class="align-center t-caption" style="width: 272px;">
-                    {{ $t("editCommon.current") }}
-                  </div>
+                  <div
+                    class="align-center t-caption"
+                    style="width: 272px;"
+                  >{{ $t("editCommon.current") }}</div>
                 </div>
                 <div class="cols">
                   <div>
@@ -313,14 +300,15 @@
                       :show-remove-button="true"
                       @file-choose="handleCoverImage"
                     ></croppa>
-                    <div class="align-center t-caption" style="width: 272px;">
-                      {{ $t("editCommon.new") }}
-                    </div>
+                    <div
+                      class="align-center t-caption"
+                      style="width: 272px;"
+                    >{{ $t("editCommon.new") }}</div>
                   </div>
                 </div>
-                <div class="t-body2 c-text-black-medium p-l-8 p-r-8 m-t-8">
-                  {{ $t("editCommon.clickAndUploadDetail") }}
-                </div>
+                <div
+                  class="t-body2 c-text-black-medium p-l-8 p-r-8 m-t-8"
+                >{{ $t("editCommon.clickAndUploadDetail") }}</div>
               </div>
             </div>
           </div>
@@ -407,9 +395,9 @@
               <div v-if="requireTaxInput">
                 <div class="cols">
                   <div class="m-r-16">
-                    <div class="t-subtitle2 c-text-black-medium p-b-8">
-                      {{ $t("editRestaurant.foodTax") }}
-                    </div>
+                    <div
+                      class="t-subtitle2 c-text-black-medium p-b-8"
+                    >{{ $t("editRestaurant.foodTax") }}</div>
                     <b-field
                       class="is-inline-flex"
                       style="align-items: center;"
@@ -430,9 +418,9 @@
                     </b-field>
                   </div>
                   <div>
-                    <div class="t-subtitle2 c-text-black-medium p-b-8">
-                      {{ $t("editRestaurant.alcoholTax") }}
-                    </div>
+                    <div
+                      class="t-subtitle2 c-text-black-medium p-b-8"
+                    >{{ $t("editRestaurant.alcoholTax") }}</div>
                     <b-field
                       class="is-inline-flex"
                       style="align-items: center;"
@@ -458,14 +446,9 @@
               <!-- Tax Input Not Required -->
               <div v-if="!requireTaxInput">
                 <div>
-                  <div class="t-subtitle2 c-text-black-medium p-b-8">
-                    {{ $t("editRestaurant.tax") }}
-                  </div>
+                  <div class="t-subtitle2 c-text-black-medium p-b-8">{{ $t("editRestaurant.tax") }}</div>
                   <div class="bg-form r-8 p-l-16 p-r-16 p-t-16 p-b-8">
-                    <div
-                      v-for="taxItem in taxRates"
-                      class="p-b-8 t-body1 c-text-black-high"
-                    >
+                    <div v-for="taxItem in taxRates" class="p-b-8 t-body1 c-text-black-high">
                       {{ $t("editMenu." + taxRateKeys[taxItem]) }}
                       {{ shopInfo[taxItem + "Tax"] }}%
                     </div>
@@ -475,16 +458,16 @@
 
               <!-- Tax Display -->
               <div v-if="requireTaxPriceDisplay" class="m-t-16">
-                <div class="t-subtitle2 c-text-black-medium p-b-8">
-                  {{ $t("editRestaurant.taxPriceDisplay") }}
-                </div>
                 <div
-                  class="bg-form r-8 p-l-16 p-r-16 p-t-16 p-b-16 t-body1 c-text-black-high"
-                >
+                  class="t-subtitle2 c-text-black-medium p-b-8"
+                >{{ $t("editRestaurant.taxPriceDisplay") }}</div>
+                <div class="bg-form r-8 p-l-16 p-r-16 p-t-16 p-b-16 t-body1 c-text-black-high">
                   <div>
-                    <b-checkbox v-model="shopInfo.taxInclude">{{
+                    <b-checkbox v-model="shopInfo.taxInclude">
+                      {{
                       $t("editRestaurant.taxIncluded")
-                    }}</b-checkbox>
+                      }}
+                    </b-checkbox>
                   </div>
                   <div class="m-t-8">
                     {{ $tc("tax.taxExample", examplePriceI18n) }} -
@@ -496,17 +479,13 @@
 
             <!-- Time to Pickup -->
             <div v-if="requireTaxPriceDisplay" class="m-t-16">
-              <div class="t-subtitle2 c-text-black-medium p-b-8">
-                {{ $t("editRestaurant.timeToPickup") }}
-              </div>
               <div
-                class="bg-form r-8 p-l-16 p-r-16 p-t-16 p-b-16 t-body1 c-text-black-high"
-              >
+                class="t-subtitle2 c-text-black-medium p-b-8"
+              >{{ $t("editRestaurant.timeToPickup") }}</div>
+              <div class="bg-form r-8 p-l-16 p-r-16 p-t-16 p-b-16 t-body1 c-text-black-high">
                 <!-- Preparation Time -->
                 <div class="m-r-16">
-                  <div class="p-b-4">
-                    {{ $t("editRestaurant.preparationTime") }}
-                  </div>
+                  <div class="p-b-4">{{ $t("editRestaurant.preparationTime") }}</div>
                   <b-field
                     class="cols"
                     style="align-items: center;"
@@ -531,9 +510,7 @@
 
                 <!-- The Day Before -->
                 <div class="m-t-8">
-                  <div class="p-b-4">
-                    {{ $t("editRestaurant.reservationTheDayBefore") }}
-                  </div>
+                  <div class="p-b-4">{{ $t("editRestaurant.reservationTheDayBefore") }}</div>
                   <b-field
                     class="is-inline-flex"
                     style="align-items: center;"
@@ -548,8 +525,7 @@
                         v-for="(day, index) in reservationTheDayBefore"
                         :key="index"
                         :value="day.value"
-                        >{{ $t(day.messageKey) }}</option
-                      >
+                      >{{ $t(day.messageKey) }}</option>
                     </b-select>
                   </b-field>
                 </div>
@@ -563,21 +539,21 @@
           <div class="m-l-24 m-r-24">
             <!-- Hours -->
             <div class="m-t-16">
-              <div class="t-subtitle2 c-text-black-medium">
-                {{ $t("shopInfo.hours") }}
-              </div>
-              <div class="t-subtitle2 c-status-red">
-                {{ $t("editRestaurant.businessHourDescription") }}
-              </div>
+              <div class="t-subtitle2 c-text-black-medium">{{ $t("shopInfo.hours") }}</div>
+              <div
+                class="t-subtitle2 c-status-red"
+              >{{ $t("editRestaurant.businessHourDescription") }}</div>
               <div
                 v-for="(day, index) in days"
                 :key="index"
                 class="bg-form r-8 m-t-8 p-l-16 p-r-16 p-t-16 p-b-16"
               >
                 <div>
-                  <b-checkbox v-model="shopInfo.businessDay[index]">{{
+                  <b-checkbox v-model="shopInfo.businessDay[index]">
+                    {{
                     $t("week.short." + day)
-                  }}</b-checkbox>
+                    }}
+                  </b-checkbox>
                 </div>
                 <div class="m-t-8">
                   <hours-input
@@ -591,9 +567,7 @@
                   ></hours-input>
                 </div>
                 <div class="m-t-8">
-                  <div class="t-caption p-b-4">
-                    {{ $t("editRestaurant.businessHourOption") }}
-                  </div>
+                  <div class="t-caption p-b-4">{{ $t("editRestaurant.businessHourOption") }}</div>
                   <hours-input
                     v-model="shopInfo.openTimes[index][1]"
                     :type="
@@ -605,6 +579,77 @@
                   ></hours-input>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+        <!-- Right Gap -->
+        <div class="column is-narrow w-24"></div>
+      </div>
+
+      <!-- Edit Footer Area -->
+      <div class="columns is-gapless">
+        <!-- Left Gap -->
+        <div class="column is-narrow w-24"></div>
+        <!-- Center Column -->
+        <div class="column">
+          <div class="m-l-24 m-r-24 m-t-24">
+            <!-- Public Checkbox -->
+            <div class="m-t-24 align-center bg-form p-l-16 p-r-16 p-t-16 p-b-16 r-8">
+              <b-checkbox
+                v-model="shopInfo.publicFlag"
+                :disabled="hasError"
+                :type="!shopInfo.publicFlag ? 'is-danger' : ''"
+              >
+                <span class="t-subtitle1">{{ $t("shopInfo.public") }}</span>
+              </b-checkbox>
+              <!-- Messages -->
+              <div class="m-t-4">
+                <div
+                  v-if="shopInfo.publicFlag"
+                  class="t-subtitle2"
+                >{{ $t("editRestaurant.publishDescription") }}</div>
+                <div
+                  v-if="!shopInfo.publicFlag"
+                  class="t-subtitle2 c-status-red"
+                >{{ $t("editRestaurant.draftDescription") }}</div>
+                <div
+                  v-if="hasError"
+                  class="t-subtitle2 c-status-red"
+                >{{ $t("editRestaurant.draftWarning") }}</div>
+              </div>
+            </div>
+
+            <!-- Cancel and Save Button -->
+            <div class="align-center m-t-24">
+              <!-- Cancel Button -->
+              <b-button
+                class="b-reset op-button-small tertiary m-r-16"
+                style="min-width: 128px;"
+                tag="nuxt-link"
+                :to="`/admin/restaurants/`"
+              >
+                <span class="p-l-24 p-r-24">{{ $t("button.cancel") }}</span>
+              </b-button>
+
+              <!-- Save Button -->
+              <b-button
+                class="b-reset op-button-small primary"
+                style="min-width: 128px;"
+                :disabled="submitting"
+                @click="submitRestaurant"
+              >
+                <span class="c-onprimary p-l-24 p-r-24">
+                  {{
+                  $t(
+                  submitting
+                  ? "editCommon.saving"
+                  : shopInfo.publicFlag
+                  ? "editCommon.save"
+                  : "editCommon.saveDraft"
+                  )
+                  }}
+                </span>
+              </b-button>
             </div>
           </div>
         </div>
