@@ -182,7 +182,6 @@ export default {
   },
   methods: {
     async enableSound() {
-      // console.log(this.$store.state.orderEvent);
       if (!this.pleyedSilent) {
         console.log("default: enableSound");
         try {
