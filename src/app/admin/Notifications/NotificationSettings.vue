@@ -166,7 +166,6 @@ export default {
       await db
         .doc(`restaurants/${this.restaurantId()}/private/notifications`)
         .set(this.notificationConfig);
-      console.log(this.notificationConfig);
     },
     closeNotificationSettings() {
       this.$emit('close');
