@@ -35,136 +35,17 @@
 
             <div class="level-right">
               <!-- Notification Settings Button -->
-              <div class="op-button-pill bg-form m-t-24" @click="openNotificationSettings()">
-                <i class="material-icons">settings</i>
-                <span class="t-button">
-                  {{
-                  $t("admin.order.notificationSettings")
-                  }}
-                </span>
-
-                <span v-if="notification_data.soundOn">
-                  <i class="material-icons c-status-green s-18">volume_up</i>
-                  <span v-if="notification_data.infinityNotification">
-                    <i class="material-icons c-status-green s-18">repeat</i>
-                  </span>
-                  <span v-else>
-                    <i class="material-icons c-status-green s-18">looks_one</i>
-                  </span>
-                </span>
-                <i v-else class="material-icons c-status-red s-18">volume_off</i>
-              </div>
+              <notification-setting-button
+                :notification_data="notification_data"
+                @openNotificationSettings="openNotificationSettings"
+                />
 
               <!-- Notification Settings Popup-->
-              <b-modal :active.sync="NotificationSettingsPopup" :width="488" scroll="keep">
-                <div class="op-dialog p-t-24 p-l-24 p-r-24 p-b-24">
-                  <!-- Title -->
-                  <div
-                    class="t-h6 c-text-black-disabled"
-                  >{{ $t("admin.order.notificationSettings") }}</div>
-                  <!-- Body -->
-                  <div>
-                    <!-- Sound ON/OFF -->
-                    <div @click="soundToggle()" class="is-inline-block m-r-16 m-t-24">
-                      <div
-                        v-if="notification_data.soundOn"
-                        class="op-button-pill bg-status-green-bg"
-                      >
-                        <i class="material-icons c-status-green s-18">volume_up</i>
-                        <span class="c-status-green t-button">
-                          {{
-                          $t("admin.order.soundOn")
-                          }}
-                        </span>
-                      </div>
-                      <div v-else class="op-button-pill bg-status-red-bg">
-                        <i class="material-icons c-status-red s-18">volume_off</i>
-                        <span class="c-status-red t-button">
-                          {{
-                          $t("admin.order.soundOff")
-                          }}
-                        </span>
-                      </div>
-                    </div>
-
-                    <!-- Sound ON Settings -->
-                    <div
-                      v-if="notification_data.soundOn"
-                      class="m-l-16 p-l-16 p-t-8 m-t-8"
-                      style="border-left: 2px solid rgba(0,0,0,0.1); "
-                    >
-                      <!-- Infinity Notification ON/OFF -->
-                      <div @click="infinityNotificationToggle()" class="is-inline-block">
-                        <div
-                          v-if="notification_data.infinityNotification"
-                          class="op-button-pill bg-status-green-bg"
-                        >
-                          <i class="material-icons c-status-green s-18">repeat</i>
-                          <span class="c-status-green t-button">
-                            {{
-                            $t("admin.order.infinityNotificationOn")
-                            }}
-                          </span>
-                        </div>
-                        <div v-else class="op-button-pill bg-status-green-bg">
-                          <i class="material-icons c-status-green s-18">looks_one</i>
-                          <span class="c-status-green t-button">
-                            {{
-                            $t("admin.order.infinityNotificationOff")
-                            }}
-                          </span>
-                        </div>
-                      </div>
-
-                      <!-- Sound Type and Test -->
-                      <div class="cols flex-center m-t-16">
-                        <!-- Sound Type -->
-                        <b-select v-model="soundIndex" class="m-r-16">
-                          <option
-                            v-for="(soundFile, index) in soundFiles"
-                            :value="index"
-                            :key="index"
-                          >{{ $t(soundFile.nameKey) }}</option>
-                        </b-select>
-
-                        <!-- Sound Test -->
-                        <b-button class="b-reset op-button-pill bg-form" @click="soundPlay()">
-                          <i class="material-icons c-primary s-18 m-l-8">play_arrow</i>
-                          <span class="c-primary t-button">
-                            {{
-                            $t("admin.order.soundTest")
-                            }}
-                          </span>
-                        </b-button>
-                      </div>
-                    </div>
-
-                    <!-- LINE Connection -->
-                    <div class="m-t-24">
-                      <router-link
-                        v-if="isLineEnabled"
-                        class="op-button-pill bg-status-green-bg"
-                        :to="`/admin/restaurants/${restaurantId()}/line`"
-                      >
-                        <i class="fab fa-line c-status-green" style="font-size:24px" />
-                        <span class="c-status-green t-button">
-                          {{
-                          $t("admin.order.line")
-                          }}
-                        </span>
-                      </router-link>
-                    </div>
-                  </div>
-
-                  <!-- Action Buttons -->
-                  <div class="m-t-24 align-center">
-                    <div
-                      class="op-button-small tertiary"
-                      @click="closeNotificationSettings()"
-                    >{{ $t("menu.close") }}</div>
-                  </div>
-                </div>
-              </b-modal>
+              <notification-settings
+                :notification_data="notification_data"
+                :NotificationSettingsPopup="NotificationSettingsPopup"
+                @close="closeNotificationSettings"
+                />
             </div>
           </div>
         </div>
@@ -205,18 +86,18 @@ import BackButton from "~/components/BackButton";
 import { order_status } from "~/plugins/constant.js";
 import moment from "moment";
 
-import { soundFiles } from "~/plugins/constant.js";
+import NotificationSettings from "./Notifications/NotificationSettings";
+import NotificationSettingButton from "./Notifications/NotificationSettingButton";
 
 export default {
   components: {
     OrderedInfo,
-    BackButton
+    BackButton,
+    NotificationSettings,
+    NotificationSettingButton,
   },
   data() {
     return {
-      soundIndex: undefined,
-      soundFiles: soundFiles,
-      mySound: null,
       shopInfo: {},
       orders: [],
       dayIndex: 0,
@@ -239,19 +120,6 @@ export default {
     "$route.query.day"() {
       this.updateDayIndex();
     },
-    async "notification_data.soundOn"() {
-      await this.saveNotificationData();
-    },
-    async "notification_data.infinityNotification"() {
-      await this.saveNotificationData();
-    },
-    async soundIndex(newData, oldData) {
-      this.notification_data.nameKey = soundFiles[this.soundIndex].nameKey;
-      // Ignore the very first change
-      if (oldData !== undefined) {
-        await this.saveNotificationData();
-      }
-    }
   },
   async created() {
     this.checkAdminPermission();
@@ -277,7 +145,6 @@ export default {
         notification.data()
       );
     }
-    this.soundIndex = this.getSoundIndex(this.notification_data.nameKey);
   },
   destroyed() {
     this.restaurant_detacher();
@@ -290,9 +157,6 @@ export default {
         return { index, date };
       });
     },
-    enableSound() {
-      return this.$store.state.soundEnable;
-    },
   },
   methods: {
     openNotificationSettings() {
@@ -300,19 +164,6 @@ export default {
     },
     closeNotificationSettings() {
       this.NotificationSettingsPopup = false;
-    },
-    soundToggle() {
-      this.notification_data.soundOn = !this.notification_data.soundOn;
-    },
-    infinityNotificationToggle() {
-      this.notification_data.infinityNotification = !this.notification_data
-        .infinityNotification;
-    },
-    async saveNotificationData() {
-      this.notification_data.updatedAt = firestore.FieldValue.serverTimestamp();
-      await db
-        .doc(`restaurants/${this.restaurantId()}/private/notifications`)
-        .set(this.notification_data);
     },
     updateDayIndex() {
       const dayIndex =
