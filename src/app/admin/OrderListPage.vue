@@ -102,7 +102,6 @@ export default {
       shopInfo: {},
       orders: [],
       dayIndex: 0,
-      restaurant_detacher: () => {},
       order_detacher: () => {},
       NotificationSettingsPopup: false,
       notification_data: null,
@@ -125,15 +124,14 @@ export default {
   },
   async created() {
     this.checkAdminPermission();
-    this.restaurant_detacher = db
-      .doc(`restaurants/${this.restaurantId()}`)
-      .onSnapshot(restaurant => {
-        if (restaurant.exists) {
-          const restaurant_data = restaurant.data();
-          this.shopInfo = restaurant_data;
-          this.dayIndex = this.getPickUpDaysInAdvance();
-        }
-      });
+    const restaurantDoc = await db.doc(`restaurants/${this.restaurantId()}`).get();
+    if (!restaurantDoc.exists) {
+      // todo not found
+      return
+    }
+    this.shopInfo = restaurantDoc.data();
+    this.dayIndex = this.getPickUpDaysInAdvance();
+
     if (this.$route.query.day) {
       this.updateDayIndex();
     }
@@ -149,7 +147,6 @@ export default {
 
   },
   destroyed() {
-    this.restaurant_detacher();
     this.order_detacher();
   },
   computed: {
