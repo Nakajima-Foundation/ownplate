@@ -36,7 +36,7 @@
             <div class="level-right">
               <!-- Notification Settings Button -->
               <notification-setting-button
-                :notification_data="notification_data"
+                :notification_data="notification_data || default_notification_data"
                 @openNotificationSettings="openNotificationSettings"
                 />
 
@@ -45,6 +45,7 @@
                 :notification_data="notification_data"
                 :NotificationSettingsPopup="NotificationSettingsPopup"
                 @close="closeNotificationSettings"
+                v-if="notification_data"
                 />
             </div>
           </div>
@@ -104,7 +105,8 @@ export default {
       restaurant_detacher: () => {},
       order_detacher: () => {},
       NotificationSettingsPopup: false,
-      notification_data: {
+      notification_data: null,
+      default_notification_data: {
         soundOn: null,
         infinityNotification: null,
         uid: this.$store.getters.uidAdmin,
@@ -140,12 +142,11 @@ export default {
     const notification = await db
       .doc(`restaurants/${this.restaurantId()}/private/notifications`)
       .get();
-    if (notification.exists) {
-      this.notification_data = Object.assign(
-        this.notification_data,
-        notification.data()
-      );
-    }
+    this.notification_data = notification.exists ? Object.assign(
+      this.default_notification_data,
+      notification.data()
+    ) :  this.default_notification_data;
+
   },
   destroyed() {
     this.restaurant_detacher();
