@@ -28,7 +28,7 @@
               <b-select v-model="dayIndex" class="m-t-24">
                 <option v-for="day in lastSeveralDays" :value="day.index" :key="day.index">
                   {{ $d(day.date, "short") }}
-                  <span v-if="day.index === 0">{{ $t("date.today") }}</span>
+                  <span v-if="day.index === pickUpDaysInAdvance">{{ $t("date.today") }}</span>
                 </option>
               </b-select>
             </div>
@@ -129,6 +129,7 @@ export default {
         if (restaurant.exists) {
           const restaurant_data = restaurant.data();
           this.shopInfo = restaurant_data;
+          this.dayIndex = this.getPickUpDaysInAdvance();
         }
       });
     if (this.$route.query.day) {
@@ -151,9 +152,12 @@ export default {
     this.order_detacher();
   },
   computed: {
+    pickUpDaysInAdvance() {
+      return this.getPickUpDaysInAdvance();
+    },
     lastSeveralDays() {
-      return Array.from(Array(10).keys()).map(index => {
-        const date = midNight(-index);
+      return Array.from(Array(10 + this.pickUpDaysInAdvance).keys()).map(index => {
+        const date = midNight(this.pickUpDaysInAdvance -index);
         return { index, date };
       });
     },
@@ -214,6 +218,9 @@ export default {
         path:
           "/admin/restaurants/" + this.restaurantId() + "/orders/" + order.id
       });
+    },
+    getPickUpDaysInAdvance() {
+      return this.isNull(this.shopInfo.pickUpDaysInAdvance) ? 3 : this.shopInfo.pickUpDaysInAdvance;
     },
   }
 };
