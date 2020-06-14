@@ -294,7 +294,7 @@ export default {
         ret[id] = {
           count: this.orderInfo.order[id],
           option: this.specialRequest(id),
-          menu: this.menuObj[id]
+          menu: this.menuObj[id] || {}
         };
         return ret;
       }, {});
