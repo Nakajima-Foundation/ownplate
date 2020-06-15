@@ -112,8 +112,12 @@
 
                 <!-- Pickup Time -->
                 <div class="m-t-24 align-center">
-                  <div class="t-caption c-text-black-medium">{{$t('order.timeToPickup')}}</div>
-                  <div class="t-body1 c-textl-black-high m-t-4">{{timePlaced}}</div>
+                  <div class="t-caption c-text-black-medium">{{$t('order.timeRequested')}}</div>
+                  <div class="t-body1 c-textl-black-high m-t-4">{{timeRequested}}</div>
+                  <div v-if="timeEstimated">
+                    <div class="t-caption c-text-black-medium">{{$t('order.timeToPickup')}}</div>
+                    <div class="t-body1 c-textl-black-high m-t-4">{{timeEstimated}}</div>
+                  </div>
                 </div>
 
                 <!-- Phone Number -->
@@ -248,12 +252,19 @@ export default {
     });
   },
   computed: {
-    timePlaced() {
+    timeRequested() {
       if (!this.orderInfo.timePlaced) {
         return "";
       }
       const date = this.orderInfo.timePlaced.toDate();
       return this.$d(date, "long");
+    },
+    timeEstimated() {
+      if (this.orderInfo.timeEstimated) {
+        const date = this.orderInfo.timeEstimated.toDate();
+        return this.$d(date, "long");
+      }
+      return undefined; // backward compatibility
     },
     hasStripe() {
       return this.orderInfo.payment && this.orderInfo.payment.stripe;
