@@ -2,7 +2,7 @@
   <div>
     <!-- Date Picker -->
     <div v-if="availableDays.length > 0" class="m-t-24">
-      <div class="t-h6 c-text-black-disabled">{{ $t('order.timeToPickup') }}</div>
+      <div class="t-h6 c-text-black-disabled">{{ $t('order.timeRequested') }}</div>
       <div class="bg-surface r-8 d-low m-t-8 p-t-16 p-b-16 p-l-16 p-r-16">
         <b-select v-model="dayIndex">
           <option v-for="(day, index) in availableDays" :value="index" :key="day.offset">
@@ -112,8 +112,10 @@ export default {
       return this.shopInfo.pickUpMinimumCookTime || 25;
     },
     daysInAdvance() {
-      const tmp = this.isNull(this.shopInfo.pickUpDaysInAdvance) ? 3 : this.shopInfo.pickUpDaysInAdvance;
-      return (tmp) + 1;
+      const tmp = this.isNull(this.shopInfo.pickUpDaysInAdvance)
+        ? 3
+        : this.shopInfo.pickUpDaysInAdvance;
+      return tmp + 1;
     }
   },
   methods: {
