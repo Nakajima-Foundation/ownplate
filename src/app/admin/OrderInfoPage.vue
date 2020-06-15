@@ -120,6 +120,18 @@
                   </div>
                 </div>
 
+                <!-- Estimated Time Picker -->
+                <div v-if="showTimePicker" class="m-t-16">
+                  <div class="c-text-black-medium">{{$t('order.timeToPickup')}}</div>
+                  <b-select class="m-t-8" v-model="timeOffset">
+                    <option
+                      v-for="time in estimatedTimes"
+                      :value="time.offset"
+                      :key="time.offset"
+                    >{{ time.display }}</option>
+                  </b-select>
+                </div>
+
                 <!-- Phone Number -->
                 <div v-if="orderInfo.phoneNumber" class="align-center m-t-16">
                   <div class="t-caption c-text-black-medium">{{$t('sms.phonenumber')}}</div>
@@ -178,7 +190,7 @@
 </template>
 
 <script>
-import { db, functions } from "~/plugins/firebase.js";
+import { db, functions, firestore } from "~/plugins/firebase.js";
 import BackButton from "~/components/BackButton";
 import OrderedItem from "~/app/admin/Order/OrderedItem";
 import { order_status } from "~/plugins/constant.js";
@@ -209,7 +221,8 @@ export default {
       canceling: false,
       detacher: [],
       cancelPopup: false,
-      notFound: false
+      notFound: false,
+      timeOffset: 0
     };
   },
 
@@ -252,6 +265,22 @@ export default {
     });
   },
   computed: {
+    showTimePicker() {
+      return this.orderInfo.status === order_status.order_placed;
+    },
+    estimatedTimes() {
+      if (!this.orderInfo.timePlaced) {
+        return [];
+      }
+      const time = this.orderInfo.timePlaced.toDate().getTime();
+      return [0, 10, 20, 30, 40, 50, 60].map(offset => {
+        const date = new Date(time + offset * 60000);
+        return {
+          offset,
+          display: `${this.$d(date, "long")}`
+        };
+      });
+    },
     timeRequested() {
       if (!this.orderInfo.timePlaced) {
         return "";
@@ -388,12 +417,19 @@ export default {
       const orderUpdate = functions.httpsCallable("orderUpdate");
       this.updating = statusKey;
       try {
-        const { data } = await orderUpdate({
+        const params = {
           restaurantId: this.restaurantId() + this.forcedError("update"),
           orderId: this.orderId,
           status: newStatus,
           timezone
-        });
+        };
+        if (this.timeOffset > 0) {
+          console.log("**** timeOffset", this.timeOffset);
+          const time = this.orderInfo.timePlaced.toDate().getTime();
+          const date = new Date(time + this.timeOffset * 60000);
+          params.timeEstimated = firestore.Timestamp.fromDate(date);
+        }
+        const { data } = await orderUpdate(params);
         console.log("update", data);
         this.$router.push(this.parentUrl);
       } catch (error) {
