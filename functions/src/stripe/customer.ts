@@ -69,6 +69,13 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
         tr.set(refStripeReadOnly, {
           card
         }, { merge: true })
+      } else {
+        // We need to delete the old card info (if exists). Otherwise, the new one will become the default and
+        // will be reused (even though the end-user unchecks the "re-user" checkbox).
+        // This is a little bit incombinient (the user can not reuse the first one any more,
+        // after using the second one even though she/he uncheks the 'reuse' button), but this is better
+        // than introducing the complexity of managing multiple cards.
+        tr.delete(refStripeReadOnly)
       }
 
       await stripe.customers.update(stripeInfo.customerId, {
