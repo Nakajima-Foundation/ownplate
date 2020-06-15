@@ -1,31 +1,15 @@
 <template>
-<div>
-  <div class="notFoundPage">
-    <p>
-      <img src="@/assets/404_logo.svg" class="image" />
-    </p>
+  <div>
+    <div
+      style="position: absolute; left: 50%; top: 50%; width: 320px; height: 192px; margin-left: -160px;  margin-top: -96px;"
+    >
+      <div class="align-center">
+        <img src="@/assets/404_logo.svg" />
+      </div>
+      <div class="align-center t-subtitle2 c-text-black-disabled m-t-24">
+        <div>{{ $t("errorPage.notFound.message1") }}</div>
+        <div>{{ $t("errorPage.notFound.message2") }}</div>
+      </div>
+    </div>
   </div>
-  <div class="notFoundPageText">
-      {{$t('errorPage.notFound.message1')}}<br />
-      {{$t('errorPage.notFound.message2')}}<br />
-
-  </div>
-</div>
 </template>
-
-<style lang="scss" scoped>
-.notFoundPageText {
-  text-align: center;
-  margin-bottom: 80px;
-  font-size: 1.5rem;
-}
-.image {
-  width: 50%;
-  margin: auto;
-  margin-top: 150px;
-  margin-bottom: 80px;
-}
-.notFoundPage {
-  margin: auto;
-}
-</style>

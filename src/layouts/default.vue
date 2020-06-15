@@ -150,7 +150,10 @@ export default {
       if (this.user !== undefined) {
         return true; // Firebase has already identified the user (or non-user)
       }
-      if (this.$route.path === `/r/${this.restaurantId()}`) {
+      if (
+        this.$route.path === `/r/${this.restaurantId()}` ||
+        this.$route.path === "/"
+      ) {
         console.log("isReadyToRender: quick render activated");
         return true; // We are opening the restaurant page
       }
@@ -179,7 +182,6 @@ export default {
   },
   methods: {
     async enableSound() {
-      // console.log(this.$store.state.orderEvent);
       if (!this.pleyedSilent) {
         console.log("default: enableSound");
         try {
@@ -189,8 +191,6 @@ export default {
           src.start(0);
           console.log("default: silent played");
 
-          const res = await fetch("/notification_decorative-01.mp3");
-          this.buffer = await res.arrayBuffer();
           this.pleyedSilent = true;
           this.$store.commit("soundEnable");
         } catch (e) {
@@ -206,14 +206,20 @@ export default {
       }
     },
     async play() {
+      if (this.buffer == null) {
+        await this.downloadAudio();
+      }
       if (this.buffer) {
         if (this.$store.state.soundOn) {
+          console.log("will play");
           this.audioContext.decodeAudioData(
             this.buffer.slice(0),
             _audioBuffer => {
+              console.log("run internal");
               const source = this.audioContext.createBufferSource();
               source.buffer = _audioBuffer;
               source.connect(this.audioContext.destination);
+              console.log(source);
               source.start(0);
             }
           );
@@ -265,7 +271,11 @@ export default {
         // save into store
         this.$store.commit("setLang", lang);
       }
-    }
+    },
+    async downloadAudio() {
+      const res = await fetch(this.$store.state.soundFile);
+      this.buffer = await res.arrayBuffer();
+    },
   },
   beforeCreate() {
     const systemGetConfig = functions.httpsCallable("systemGetConfig");
@@ -277,16 +287,9 @@ export default {
         console.log(
           "authStateChanged:",
           user.email || user.phoneNumber,
-          user.uid
+          user.uid,
+          user.displayName
         );
-        if (this.isUser) {
-          const snapshot = await db.doc(`users/${user.uid}`).get();
-          const doc = snapshot.data();
-          if (doc && doc.name) {
-            user.name = doc.name;
-            console.log("user.name", doc.name);
-          }
-        }
         user.getIdTokenResult(true).then(result => {
           this.$store.commit("setUser", user);
           this.$store.commit("setCustomClaims", result.claims);
@@ -303,8 +306,15 @@ export default {
         await this.changeLang(this.$route.query.lang);
       }
     },
+    async "$store.state.soundFile"() {
+      this.downloadAudio();
+    },
     async "$store.state.orderEvent"() {
       await this.play();
+      console.log(`soundEnable = ${this.$store.state.soundEnable}, soundOn=${this.$store.state.soundOn}, soundFile=${this.$store.state.soundFile}`);
+      if (this.buffer == null) {
+        console.log("buffer is null");
+      }
       console.log(this.$store.state.orderEvent);
     },
     async user() {

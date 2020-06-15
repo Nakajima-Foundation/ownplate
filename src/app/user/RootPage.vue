@@ -27,8 +27,12 @@
             <area-item :name="$t('find.areaAll')" :id="'all'" />
 
             <!-- v-for="area in areas" -->
-            <area-item :name="'東京都'" :id="'12'" />
-            <area-item :name="'福岡県'" :id="'39'" />
+            <area-item
+              v-for="area in areas"
+              :name="area.name"
+              :id="String(area.id)"
+              :key="area.id"
+            />
           </div>
         </div>
       </div>
@@ -42,6 +46,7 @@
 import { db } from "~/plugins/firebase.js";
 import { RestaurantHeader } from "~/plugins/header.js";
 import AreaItem from "~/app/user/Restaurants/AreaItem";
+import { ownPlateConfig } from "@/config/project";
 
 export default {
   components: {
@@ -50,14 +55,22 @@ export default {
   data() {
     return {
       // # Need to rewrite for Areas instead of Restaurants.
-      restaurants: []
+      region: ownPlateConfig.region,
+      restaurants: [],
+      areas:
+        ownPlateConfig.region == "JP"
+          ? [
+              { name: "東京", id: 12 },
+              { name: "福岡県", id: 39 }
+            ]
+          : [{ name: "Washington", id: 46 }]
     };
   },
   head() {
     return RestaurantHeader;
-  },
+  }
   // # Need to rewrite for Areas instead of Restaurants.
-/*
+  /*
   async created() {
     try {
       const res = await db

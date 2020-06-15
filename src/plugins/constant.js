@@ -303,3 +303,14 @@ export const regionalSettings = {
     covid19trace: false
   }
 };
+
+export const soundFiles = [
+  {
+    nameKey: "admin.sound.pikopiko",
+    file: "/notification_decorative-01.mp3",
+  },
+  {
+    nameKey: "admin.sound.dora",
+    file: "/dora.mp3",
+  },
+];

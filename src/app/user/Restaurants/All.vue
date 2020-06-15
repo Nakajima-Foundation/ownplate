@@ -70,11 +70,9 @@
 <script>
 import { db } from "~/plugins/firebase.js";
 import { RestaurantHeader } from "~/plugins/header.js";
-import AreaItem from "~/app/user/Restaurants/AreaItem";
 
 export default {
   components: {
-    AreaItem
   },
   data() {
     return {
@@ -90,6 +88,7 @@ export default {
         .collection("restaurants")
         .where("publicFlag", "==", true)
         .where("deletedFlag", "==", false)
+        .where("onTheList", "==", true)
         .get();
       this.restaurantsObj = (res.docs || []).reduce((tmp, doc) => {
         const data = doc.data();

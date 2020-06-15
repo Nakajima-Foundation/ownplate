@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>{{ $t('line.authenticating')}}</h1>
+    <div class="t-h6 c-text-black-disabled align-center m-t-24">{{ $t('line.authenticating')}}</div>
     <b-loading :is-full-page="false" :active="isValidating"></b-loading>
   </div>
 </template>

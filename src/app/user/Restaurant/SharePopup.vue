@@ -23,10 +23,7 @@
                 <span>{{$t('shopInfo.copyUrl')}}</span>
               </div>
             </nuxt-link>
-            <div
-              class="m-l-8 t-body2 c-text-black-disabled"
-              style="word-break: break-all;"
-            >{{this.url}}</div>
+            <div class="m-l-8 t-body2 c-text-black-disabled">{{this.url}}</div>
             <div class="m-t-24">
               <sharing-buttons :title="shopInfo.restaurantName" :url="url" />
             </div>

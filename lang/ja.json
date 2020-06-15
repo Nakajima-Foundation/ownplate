@@ -228,8 +228,10 @@
     "whatsCVC": "CVCとは？",
     "3digitsCVC": "カードのうら面の右端3ケタ",
     "4digitsCVC": "カードのおもて面の4ケタ",
-    "placeOrder": "注文する:",
-    "placeOrderNoPayment": "注文して受け取り時に支払う",
+    "placeOrder": "オンライン支払いで注文",
+    "or": "もしくは",
+    "placeOrderNoPayment": "受け取り払いで注文",
+    "placeOrderNoPaymentNote": "ここで決済せずに商品受け取り時に支払います",
     "validating": "処理しています...",
     "thankyou": "ご注文、ありがとうございます",
     "orderStatus": "ご注文状況",
@@ -242,7 +244,7 @@
     "sendSMS": "SMSメッセージを受け取る（SMSの受信には料金がかかる場合があります）",
     "history": "注文履歴",
     "timeToPickup": "受け渡し予定時刻",
-    "notAvailable": "今日、明日は営業日ではないので、現在は注文を受け付けていません。",
+    "notAvailable": "注文可能な営業日がないので、現在は注文を受け付けていません。",
     "orderNotice": "注文時のご注意",
     "status": {
       "unexpected": "(Unexpected)",
@@ -339,8 +341,11 @@
     "passwordReset": "パスワードのリセット",
     "pleaseCheckInbox": "メールを送信しました。受信箱をご確認ください。",
     "order": {
+      "notificationSettings": "通知設定",
       "soundOn": "通知サウンド：オン",
       "soundOff": "通知サウンド：オフ",
+      "infinityNotificationOn": "1分おきに再通知",
+      "infinityNotificationOff": "受注時のみ通知",
       "soundTest": "テスト",
       "cancelButton": "注文をキャンセル",
       "cancelTitle": "注文のキャンセル",
@@ -348,7 +353,13 @@
       "delete": "この注文をキャンセルする",
       "deleteConfirm": "（キャンセルの取り消しは出来ません）",
       "line": "LINE通知設定",
-      "lineAdd": "LINEアカウントの追加"
+      "lineAdd": "LINEアカウントの追加",
+      "lineUsers": "登録済みLINEアカウント",
+      "lineDelete": "本当に消去しますか？"
+    },
+    "sound": {
+      "dora": "ドラ",
+      "pikopiko": "ピコピコ"
     },
     "qrcode": {
       "title": "QRコード",
@@ -412,6 +423,7 @@
     "thankyou": "ご協力ありがとうございます",
     "enter": "入店",
     "leave": "退店",
+    "viewList": "入退店記録を確認",
     "list": "入退店記録"
   },
   "errorPage": {

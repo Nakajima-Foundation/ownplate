@@ -8,7 +8,7 @@ span {
 }
 .button[disabled] {
   background: #ddd;
-  opacity: 0.8;
+  opacity: 0.5;
   > span {
     @extend .c-text-black-disabled;
   }
@@ -51,12 +51,6 @@ $op-colors: (
 );
 
 // Reset Buefy and Bulma
-
-// .button {
-//   padding: 0;
-//   background-color: transparent;
-//   border: none;
-// }
 .columns.is-gapless:not(:last-child) {
   margin-bottom: 0;
 }
@@ -234,6 +228,7 @@ $sizes: (
   128,
   160,
   192,
+  224,
   256,
   288,
   440
@@ -457,44 +452,26 @@ body,
   }
 }
 
-.op-cartbutton {
-  cursor: pointer;
-  display: inline-flex;
-  // display: inline-flex;
-  // min-height: 36px;
-  align-items: center;
-  justify-content: center;
-  @extend .w-288;
+.op-button-large {
+  @extend .op-button;
+  min-width: 128px;
   @extend .h-80;
   @extend .r-80;
-  @extend .d-medium;
-  position: fixed;
-  bottom: 32px;
-  left: 50%;
-  margin-left: -144px;
-  @extend .bg-primary;
-  @extend .c-onprimary;
+  @extend .p-l-16;
+  @extend .p-r-16;
   @extend .t-h6;
-}
-// Reset <b-button> style
-.button.op-cartbutton {
-  padding: 0;
-  border: none;
-  &:hover {
+  &.primary {
+    @extend .bg-primary;
     @extend .c-onprimary;
-    border: none;
-  }
-  &:active {
-    @extend .c-onprimary;
-    border: none;
-  }
-  &:focus {
-    @extend .c-onprimary;
-    border: none;
     @extend .d-medium;
   }
-  > span {
-    @extend .w-full;
+  &.secondary {
+    border: 2px solid map-get($op-colors, primary);
+    @extend .c-primary;
+  }
+  &.tertiary {
+    @extend .bg-form;
+    @extend .c-text-black-medium;
   }
 }
 
@@ -502,15 +479,6 @@ body,
   @extend .t-body1;
   @extend .c-text-black-medium;
 }
-// .textarea {
-//   @extend .bg-form;
-//   @extend .r-8;
-//   padding: 8px 16px;
-//   box-shadow: none;
-//   border: none;
-//   @extend .t-body1;
-//   @extend .c-text-black-high;
-// }
 
 // OwnPlate Dialog
 .modal-background {
@@ -545,4 +513,30 @@ body,
 .b-sidebar .sidebar-content {
   @extend .d-medium;
   @extend .w-288;
+}
+
+// For Small Screen like iPhone SE
+@media only screen and (max-device-width: 320px) {
+  .m-l-24,
+  .m-l-16 {
+    margin-left: 8px;
+  }
+  .m-r-24,
+  .m-r-16 {
+    margin-right: 8px;
+  }
+  .p-l-24,
+  .p-l-16 {
+    padding-left: 8px;
+  }
+  .p-r-24,
+  .p-r-16 {
+    padding-right: 8px;
+  }
+  .modal-content {
+    max-height: calc(100vh - 128px);
+  }
+  #signInButton {
+    transform: scale(0.9);
+  }
 }
