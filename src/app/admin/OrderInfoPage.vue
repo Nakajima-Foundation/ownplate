@@ -424,7 +424,6 @@ export default {
           timezone
         };
         if (this.timeOffset > 0) {
-          console.log("**** timeOffset", this.timeOffset);
           const time = this.orderInfo.timePlaced.toDate().getTime();
           const date = new Date(time + this.timeOffset * 60000);
           params.timeEstimated = firestore.Timestamp.fromDate(date);
