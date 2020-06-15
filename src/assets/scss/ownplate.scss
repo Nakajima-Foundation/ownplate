@@ -489,19 +489,21 @@ body,
 }
 .op-dialog {
   @extend .r-8;
+  @extend .m-t-24;
+  @extend .m-b-24;
   @extend .m-l-8;
   @extend .m-r-8;
   @extend .bg-surface;
   @extend .d-medium;
 }
 .modal-content {
-  max-height: calc(100vh - 128px);
+  max-height: calc(100vh - 48px);
 }
-@media screen and (max-width: 768px) {
-  .modal-content {
-    max-height: calc(100vh - 256px);
-  }
-}
+// @media screen and (max-width: 768px) {
+//   .modal-content {
+//     max-height: calc(100vh - 64px);
+//   }
+// }
 
 // OwnPlate Side Bar
 .b-sidebar .sidebar-background {
@@ -533,9 +535,9 @@ body,
   .p-r-16 {
     padding-right: 8px;
   }
-  .modal-content {
-    max-height: calc(100vh - 128px);
-  }
+  // .modal-content {
+  //   max-height: calc(100vh - 128px);
+  // }
   #signInButton {
     transform: scale(0.9);
   }
