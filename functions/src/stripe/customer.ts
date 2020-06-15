@@ -42,7 +42,7 @@ export const deleteCustomer = async (db: FirebaseFirestore.Firestore, uid: strin
 
 export const update = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
-  const { tokenId } = data;
+  const { tokenId, reuse } = data;
   utils.validate_params({ tokenId });
   const stripe = utils.get_stripe();
 
@@ -63,9 +63,13 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
       if (!stripeInfo) {
         throw new functions.https.HttpsError('invalid-argument', 'This user does not have a stripe customer.')
       }
-      tr.set(refStripeReadOnly, {
-        card
-      }, { merge: true })
+      // Store the stripe info in the readonly area (accessible from the client) only if the user wants to reuse it.
+      // Notice that we still need to associate the stripe info the the customer internally.
+      if (reuse) {
+        tr.set(refStripeReadOnly, {
+          card
+        }, { merge: true })
+      }
 
       await stripe.customers.update(stripeInfo.customerId, {
         source: tokenId
