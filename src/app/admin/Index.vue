@@ -12,16 +12,22 @@
             <div class="is-hidden-mobile h-24"></div>
             <div class="bg-ownplate-yellow r-8 align-center">
               <div class="h-24 bg-ownplate-yellow is-invisible-tablet"></div>
-              <div class="t-h6 c-ownplate-white p-b-24">{{$t("admin.welcomeMessage")}}</div>
+              <div class="t-h6 c-ownplate-white p-b-24">
+                {{ $t("admin.welcomeMessage") }}
+              </div>
               <div class="is-inline-flex">
                 <div class="m-r-24">
                   <a
                     href="https://gluepass.jp/g/ownplatejp/pg/Zy8VserQdTxFVKLaFcOK"
                     target="_blank"
                   >
-                    <div class="op-button-small w-160 bg-text-white-high">
-                      <i class="material-icons c-primary s-18 m-r-8">help_outline</i>
-                      <span class="c-primary t-button">{{$t("admin.userManual")}}</span>
+                    <div class="op-button-small bg-text-white-high">
+                      <i class="material-icons c-primary s-18 m-r-8"
+                        >help_outline</i
+                      >
+                      <span class="c-primary t-button">{{
+                        $t("admin.userManual")
+                      }}</span>
                     </div>
                   </a>
                 </div>
@@ -30,9 +36,13 @@
                     href="https://docs.google.com/forms/d/e/1FAIpQLSfGR4kk65ynfkCRGJsvJz01HZf7AU1nGLL9Rn9i4G9-qiW6MQ/viewform"
                     target="_blank"
                   >
-                    <div class="op-button-small w-160 bg-text-white-high">
-                      <i class="material-icons c-primary s-18 m-r-8">mail_outline</i>
-                      <span class="c-primary t-button">{{$t("admin.suportPage")}}</span>
+                    <div class="op-button-small bg-text-white-high">
+                      <i class="material-icons c-primary s-18 m-r-8"
+                        >mail_outline</i
+                      >
+                      <span class="c-primary t-button">{{
+                        $t("admin.suportPage")
+                      }}</span>
                     </div>
                   </a>
                 </div>
@@ -48,7 +58,7 @@
     </div>
 
     <!-- News -->
-    <div class="columns is-gapless" v-if="false">
+    <div class="columns is-gapless" v-if="region === 'JP'">
       <!-- Left Gap -->
       <div class="column is-narrow w-24"></div>
       <!-- Center Column -->
@@ -59,14 +69,20 @@
             style="border: 2px solid rgba(0,0,0,0.1); "
           >
             <div class="cols">
-              <div class="t-subtitle2 c-text-black-disabled">2020.06.05</div>
+              <div class="t-subtitle2 c-text-black-disabled">
+                {{ news.date.replace(/\-/g, ".") }}
+              </div>
               <div class="t-subtitle2 c-primary flex-1 align-right">
-                <nuxt-link :to="'/admin/news/'">{{$t('admin.news.newsTop')}}</nuxt-link>
+                <nuxt-link :to="'/admin/news/'">{{
+                  $t("admin.news.newsTop")
+                }}</nuxt-link>
               </div>
             </div>
             <!-- News Item -->
             <div class="t-subtitle1 c-primary m-t-4">
-              <nuxt-link :to="'/admin/news/' + newsId">v0.5.1をリリースしました。</nuxt-link>
+              <nuxt-link :to="'/admin/news/' + news.date">{{
+                news.title
+              }}</nuxt-link>
             </div>
           </div>
         </div>
@@ -83,23 +99,19 @@
       <!-- Left Column -->
       <div class="column">
         <div class="m-l-24 m-r-24">
-          <!-- Payment -->
-          <payment-section />
-        </div>
-      </div>
-
-      <!-- Right Column -->
-      <div class="column">
-        <div class="m-l-24 m-r-24">
           <!-- Restaurants -->
           <div class="m-t-24">
-            <div class="t-h6 c-text-black-disabled m-b-8">{{$t('admin.restaurant')}}</div>
+            <div class="t-h6 c-text-black-disabled m-b-8">
+              {{ $t("admin.restaurant") }}
+            </div>
             <div v-if="readyToDisplay">
               <!-- No Restaurant -->
               <div v-if="existsRestaurant === null"></div>
               <div v-else-if="!existsRestaurant">
                 <div class="border-primary r-8 p-l-24 p-r-24 p-t-24 p-b-24">
-                  <div class="align-center t-subtitle1 c-primary">{{$t('admin.addYourRestaurant')}}</div>
+                  <div class="align-center t-subtitle1 c-primary">
+                    {{ $t("admin.addYourRestaurant") }}
+                  </div>
                   <div class="align-center m-t-16">
                     <b-button
                       class="b-reset op-button-pill h-36 bg-form"
@@ -108,7 +120,9 @@
                       :loading="isCreating"
                     >
                       <i class="material-icons c-primary m-l-8">add</i>
-                      <span class="c-primary t-button">{{$t('admin.addNewRestaurant')}}</span>
+                      <span class="c-primary t-button">{{
+                        $t("admin.addNewRestaurant")
+                      }}</span>
                     </b-button>
                   </div>
                 </div>
@@ -116,22 +130,25 @@
 
               <!-- Existing Restaurant -->
               <div v-if="existsRestaurant">
-                <div v-for="restaurantItem in restaurantItems" :key="restaurantItem.id">
+                <div
+                  v-for="restaurantItem in restaurantItems"
+                  :key="restaurantItem.id"
+                >
                   <restaurant-edit-card
-                    :restprofilephoto="restaurantItem.restProfilePhoto||''"
+                    :restprofilephoto="restaurantItem.restProfilePhoto || ''"
                     :restaurantid="restaurantItem.restaurantid"
-                    :restaurantname="restaurantItem.restaurantName||''"
-                    :streetaddress="restaurantItem.streetAddress||''"
-                    :city="restaurantItem.city||''"
-                    :state="restaurantItem.state||''"
-                    :zip="restaurantItem.zip||''"
-                    :phonenumber="restaurantItem.phoneNumber||''"
+                    :restaurantname="restaurantItem.restaurantName || ''"
+                    :streetaddress="restaurantItem.streetAddress || ''"
+                    :city="restaurantItem.city || ''"
+                    :state="restaurantItem.state || ''"
+                    :zip="restaurantItem.zip || ''"
+                    :phonenumber="restaurantItem.phoneNumber || ''"
                     :url="restaurantItem.url"
-                    :tags="restaurantItem.tags||[]"
+                    :tags="restaurantItem.tags || []"
                     :uid="restaurantItem.uid"
-                    :publicflag="restaurantItem.publicFlag||false"
-                    :numberOfMenus="restaurantItem.numberOfMenus||0"
-                    :numberOfOrders="restaurantItem.numberOfOrders||0"
+                    :publicflag="restaurantItem.publicFlag || false"
+                    :numberOfMenus="restaurantItem.numberOfMenus || 0"
+                    :numberOfOrders="restaurantItem.numberOfOrders || 0"
                   ></restaurant-edit-card>
                 </div>
 
@@ -144,12 +161,22 @@
                     :loading="isCreating"
                   >
                     <i class="material-icons c-primary m-l-8">add</i>
-                    <span class="c-primary t-button">{{$t('admin.addNewRestaurant')}}</span>
+                    <span class="c-primary t-button">{{
+                      $t("admin.addNewRestaurant")
+                    }}</span>
                   </b-button>
                 </div>
               </div>
             </div>
           </div>
+        </div>
+      </div>
+
+      <!-- Right Column -->
+      <div class="column">
+        <div class="m-l-24 m-r-24">
+          <!-- Payment -->
+          <payment-section />
         </div>
       </div>
       <!-- Right Gap -->
@@ -165,6 +192,7 @@ import { order_status } from "~/plugins/constant.js";
 import { midNight } from "~/plugins/dateUtils.js";
 import { ownPlateConfig } from "@/config/project";
 import PaymentSection from "~/app/admin/Payment/PaymentSection";
+import newsList from "./News/data";
 
 export default {
   name: "Restaurant",
@@ -191,7 +219,8 @@ export default {
       tags: "",
       restaurantItems: null,
       detachers: [],
-      restaurant_detacher: null
+      restaurant_detacher: null,
+      news: newsList[0]
     };
   },
   created() {

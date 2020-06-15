@@ -4,14 +4,21 @@
     <div class="bg-surface r-8 d-low m-t-8" :style="cardStyle">
       <div class="touchable cols" @click="toggleMenuFlag()">
         <div class="flex-1 p-l-16 p-r-16 p-t-16 p-b-16">
+          <!-- Item Name -->
           <div class="t-h6 c-text-black-high">{{ title }}</div>
+
+          <!-- Price -->
           <div class="t-body1 c-text-black-high m-t-8">
             <Price :shopInfo="shopInfo" :menu="item" />
           </div>
+
+          <!-- Description -->
           <div
             v-if="description !== null"
             class="t-body2 c-text-black-medium m-t-8"
           >{{ description }}</div>
+
+          <!-- Allergens -->
           <div
             v-if="allergens.length > 0"
             class="t-body2 c-text-black-medium m-t-8"
@@ -19,9 +26,18 @@
         </div>
         <div class="p-r-16 p-t-16 p-b-16">
           <div class="w-96 is-pulled-right">
+            <!-- Image -->
             <div v-if="image" class="p-b-8">
-              <img :src="image" width="96" height="96" class="w-96 h-96 r-4 cover" />
+              <img
+                @click.stop="openImage()"
+                :src="image"
+                width="96"
+                height="96"
+                class="w-96 h-96 r-4 cover"
+              />
             </div>
+
+            <!-- Add Button -->
             <div @click.stop="pushCount" class="op-button-pill bg-primary-bg w-96 t-button">
               <span>{{$t('sitemenu.add')}}</span>
             </div>
@@ -84,6 +100,13 @@
         </div>
       </div>
     </div>
+
+    <!-- Image Popup-->
+    <b-modal :active.sync="imagePopup" :width="488" scroll="keep">
+      <div class="align-center p-l-8 p-r-8" @click.stop="closeImage()">
+        <img :src="image" class="r-8 d-medium" />
+      </div>
+    </b-modal>
   </div>
 </template>
 
@@ -121,7 +144,8 @@ export default {
   data() {
     return {
       openMenuFlag: this.initialOpenMenuFlag,
-      optionValues: []
+      optionValues: [],
+      imagePopup: false
     };
   },
   created() {
@@ -213,6 +237,12 @@ export default {
     }
   },
   methods: {
+    openImage() {
+      this.imagePopup = true;
+    },
+    closeImage() {
+      this.imagePopup = false;
+    },
     pullCount() {
       if (this.count <= 0) {
         return;

@@ -27,39 +27,26 @@
             <div class="level-left">
               <b-select v-model="dayIndex" class="m-t-24">
                 <option v-for="day in lastSeveralDays" :value="day.index" :key="day.index">
-                  {{ $d(day.date, "short" )}}
-                  <span v-if="day.index===0">{{$t('date.today')}}</span>
+                  {{ $d(day.date, "short") }}
+                  <span v-if="day.index === pickUpDaysInAdvance">{{ $t("date.today") }}</span>
                 </option>
               </b-select>
             </div>
-            <!-- Sound ON/OFF -->
+
             <div class="level-right">
-              <div @click="soundToggle()" class="is-inline-block m-r-16 m-t-16">
-                <div v-if="soundOn" class="op-button-pill bg-status-green-bg">
-                  <i class="material-icons c-status-green s-18 m-r-8">volume_up</i>
-                  <span class="c-status-green t-button">{{$t("admin.order.soundOn")}}</span>
-                </div>
-                <div v-else class="op-button-pill bg-status-red-bg">
-                  <i class="material-icons c-status-red s-18 m-r-8">volume_off</i>
-                  <span class="c-status-red t-button">{{$t("admin.order.soundOff")}}</span>
-                </div>
-              </div>
-              <b-button class="b-reset h-36 r-36 bg-form m-r-16 m-t-16" @click="soundPlay()">
-                <span class="p-l-16 p-r-16">
-                  <span class="c-primary t-button">
-                    <i class="material-icons c-primary s-18 m-r-8">play_arrow</i>
-                    {{ $t('admin.order.soundTest') }}
-                  </span>
-                </span>
-              </b-button>
-              <router-link
-                v-if="isLineEnabled"
-                class="op-button-pill bg-status-green-bg m-t-16"
-                :to="`/admin/restaurants/${restaurantId()}/line`"
-              >
-                <i class="fab fa-line m-r-8 c-status-green" style="font-size:24px" />
-                <span class="c-status-green t-button">{{$t("admin.order.line")}}</span>
-              </router-link>
+              <!-- Notification Settings Button -->
+              <notification-setting-button
+                :notification_data="notification_data || default_notification_data"
+                @openNotificationSettings="openNotificationSettings"
+                />
+
+              <!-- Notification Settings Popup-->
+              <notification-settings
+                :notification_data="notification_data"
+                :NotificationSettingsPopup="NotificationSettingsPopup"
+                @close="closeNotificationSettings"
+                v-if="notification_data"
+                />
             </div>
           </div>
         </div>
@@ -100,25 +87,30 @@ import BackButton from "~/components/BackButton";
 import { order_status } from "~/plugins/constant.js";
 import moment from "moment";
 
+import NotificationSettings from "./Notifications/NotificationSettings";
+import NotificationSettingButton from "./Notifications/NotificationSettingButton";
+
 export default {
   components: {
     OrderedInfo,
-    BackButton
+    BackButton,
+    NotificationSettings,
+    NotificationSettingButton,
   },
   data() {
     return {
-      soundOn: false,
-      mySound: null,
-      watchingOrder: false,
       shopInfo: {},
       orders: [],
       dayIndex: 0,
-      restaurant_detacher: () => {},
       order_detacher: () => {},
-      notification_data: {
+      NotificationSettingsPopup: false,
+      notification_data: null,
+      default_notification_data: {
+        soundOn: null,
+        infinityNotification: null,
         uid: this.$store.getters.uidAdmin,
         createdAt: firestore.FieldValue.serverTimestamp()
-      }
+      },
     };
   },
   watch: {
@@ -129,20 +121,17 @@ export default {
     "$route.query.day"() {
       this.updateDayIndex();
     },
-    soundOn() {
-      this.$store.commit("setSoundOn", this.soundOn);
-    }
   },
   async created() {
     this.checkAdminPermission();
-    this.restaurant_detacher = db
-      .doc(`restaurants/${this.restaurantId()}`)
-      .onSnapshot(restaurant => {
-        if (restaurant.exists) {
-          const restaurant_data = restaurant.data();
-          this.shopInfo = restaurant_data;
-        }
-      });
+    const restaurantDoc = await db.doc(`restaurants/${this.restaurantId()}`).get();
+    if (!restaurantDoc.exists) {
+      // todo not found
+      return
+    }
+    this.shopInfo = restaurantDoc.data();
+    this.dayIndex = this.getPickUpDaysInAdvance();
+
     if (this.$route.query.day) {
       this.updateDayIndex();
     }
@@ -151,36 +140,32 @@ export default {
     const notification = await db
       .doc(`restaurants/${this.restaurantId()}/private/notifications`)
       .get();
-    if (notification.exists) {
-      this.notification_data = notification.data();
-      this.soundOn = this.notification_data.soundOn;
-    }
-    console.log(notification);
+    this.notification_data = notification.exists ? Object.assign(
+      this.default_notification_data,
+      notification.data()
+    ) :  this.default_notification_data;
+
   },
   destroyed() {
-    this.restaurant_detacher();
     this.order_detacher();
   },
   computed: {
+    pickUpDaysInAdvance() {
+      return this.getPickUpDaysInAdvance();
+    },
     lastSeveralDays() {
-      return Array.from(Array(10).keys()).map(index => {
-        const date = midNight(-index);
+      return Array.from(Array(10 + this.pickUpDaysInAdvance).keys()).map(index => {
+        const date = midNight(this.pickUpDaysInAdvance -index);
         return { index, date };
       });
     },
-    enableSound() {
-      return this.$store.state.soundEnable;
-    }
   },
   methods: {
-    async soundToggle() {
-      console.log("HELLO");
-      this.soundOn = !this.soundOn;
-      this.notification_data.soundOn = this.soundOn;
-      this.notification_data.updatedAt = firestore.FieldValue.serverTimestamp();
-      await db
-        .doc(`restaurants/${this.restaurantId()}/private/notifications`)
-        .set(this.notification_data);
+    openNotificationSettings() {
+      this.NotificationSettingsPopup = true;
+    },
+    closeNotificationSettings() {
+      this.NotificationSettingsPopup = false;
     },
     updateDayIndex() {
       const dayIndex =
@@ -211,7 +196,6 @@ export default {
           this.lastSeveralDays[this.dayIndex - 1].date
         );
       }
-      this.watchingOrder = false;
       this.order_detacher = query.onSnapshot(result => {
         let orders = result.docs.map(this.doc2data("order"));
         orders = orders.sort((order0, order1) => {
@@ -225,10 +209,6 @@ export default {
             (order.timePlaced && order.timePlaced.toDate()) || new Date();
           return order;
         });
-        if (this.watchingOrder) {
-          this.soundPlay();
-        }
-        this.watchingOrder = true;
       });
     },
     orderSelected(order) {
@@ -237,10 +217,9 @@ export default {
           "/admin/restaurants/" + this.restaurantId() + "/orders/" + order.id
       });
     },
-    soundPlay() {
-      this.$store.commit("pingOrderEvent");
-      console.log("order: call play");
-    }
+    getPickUpDaysInAdvance() {
+      return this.isNull(this.shopInfo.pickUpDaysInAdvance) ? 3 : this.shopInfo.pickUpDaysInAdvance;
+    },
   }
 };
 </script>

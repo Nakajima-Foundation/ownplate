@@ -77,9 +77,9 @@ export default {
       }
     }
   },
-  async mounted() {
+  mounted() {
     if (this.user) {
-      const { claims } = await this.user.getIdTokenResult(true);
+      const claims = this.$store.state.claims;
       if (claims.line) {
         //console.log("***** DEBUG *****", claims.line);
         this.record(claims.line);

@@ -10,7 +10,9 @@
           </div>
 
           <!-- # Need to add *** v-if="menuitem.itemDescription !== null" ***? -->
-          <div class="t-body2 c-text-black-medium m-t-8">{{ menuitem.itemDescription }}</div>
+          <div class="t-body2 c-text-black-medium m-t-8">
+            {{ menuitem.itemDescription }}
+          </div>
 
           <!-- # Need to add allergensDescription -->
           <!-- <div
@@ -21,7 +23,12 @@
         <div class="p-r-16 p-t-16 p-b-16">
           <div class="w-96 is-pulled-right">
             <div v-if="image" class="p-b-8">
-              <img :src="image" width="96" height="96" class="w-96 h-96 r-4 cover" />
+              <img
+                :src="image"
+                width="96"
+                height="96"
+                class="w-96 h-96 r-4 cover"
+              />
             </div>
           </div>
         </div>
@@ -35,36 +42,58 @@
           <!-- Position Up -->
           <b-button
             class="b-reset op-button-pill h-36 bg-primary-bg m-r-8"
-            v-if="position!=='first'"
+            v-if="position !== 'first'"
             @click="positionUp"
           >
-            <i class="material-icons c-primary s-18 p-l-8 p-r-8">arrow_upward</i>
+            <i class="material-icons c-primary s-18 p-l-8 p-r-8"
+              >arrow_upward</i
+            >
           </b-button>
           <!-- Disable if First -->
-          <b-button class="b-reset op-button-pill h-36 bg-primary-bg m-r-8" disabled v-else>
-            <i class="material-icons c-primary s-18 p-l-8 p-r-8">arrow_upward</i>
+          <b-button
+            class="b-reset op-button-pill h-36 bg-primary-bg m-r-8"
+            disabled
+            v-else
+          >
+            <i class="material-icons c-text-black-disabled s-18 p-l-8 p-r-8"
+              >arrow_upward</i
+            >
           </b-button>
 
           <!-- Position Down -->
           <b-button
             class="b-reset op-button-pill h-36 bg-primary-bg m-r-8"
-            v-if="position!=='last'"
+            v-if="position !== 'last'"
             @click="positionDown"
           >
-            <i class="material-icons c-primary s-18 p-l-8 p-r-8">arrow_downward</i>
+            <i class="material-icons c-primary s-18 p-l-8 p-r-8"
+              >arrow_downward</i
+            >
           </b-button>
           <!-- Disable if Last -->
-          <b-button class="b-reset op-button-pill h-36 bg-primary-bg m-r-8" disabled v-else>
-            <i class="material-icons c-primary s-18 p-l-8 p-r-8">arrow_downward</i>
+          <b-button
+            class="b-reset op-button-pill h-36 bg-primary-bg m-r-8"
+            disabled
+            v-else
+          >
+            <i class="material-icons c-text-black-disabled s-18 p-l-8 p-r-8"
+              >arrow_downward</i
+            >
           </b-button>
 
           <!-- Duplicate -->
-          <b-button class="b-reset op-button-pill h-36 bg-primary-bg m-r-8" @click="forkItem">
+          <b-button
+            class="b-reset op-button-pill h-36 bg-primary-bg m-r-8"
+            @click="forkItem"
+          >
             <i class="material-icons c-primary s-18 p-l-8 p-r-8">queue</i>
           </b-button>
         </div>
         <div>
-          <b-button class="b-reset op-button-pill h-36 bg-status-red-bg" @click="deleteItem">
+          <b-button
+            class="b-reset op-button-pill h-36 bg-status-red-bg"
+            @click="deleteItem"
+          >
             <i class="material-icons c-status-red s-18 p-l-8 p-r-8">delete</i>
           </b-button>
         </div>
