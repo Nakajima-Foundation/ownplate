@@ -69,10 +69,11 @@
               </div>
 
               <!-- Time to Pickup -->
-              <div
-                v-if="waiting"
-                class="align-center t-body2 c-text-black-medium m-t-16"
-              >{{ $t("order.timeToPickup") + ": " + timePlaced }}</div>
+
+              <div v-if="waiting" class="align-center t-body2 c-text-black-medium m-t-16">
+                <div>{{ $t("order.timeRequested") + ": " + timeRequested }}</div>
+                <div v-if="timeEstimated">{{ $t("order.timeToPickup") + ": " + timeEstimated }}</div>
+              </div>
 
               <!-- Cancel Button -->
               <div class="align-center m-t-24">
@@ -84,6 +85,7 @@
                 >
                   <i class="material-icons c-status-red s-18">highlight_off</i>
                   <span class="c-status-red">{{ $t("order.cancelOrder") }}</span>
+
                 </b-button>
               </div>
 
@@ -355,9 +357,16 @@ export default {
         !this.$store.state.claims.line
       );
     },
-    timePlaced() {
+    timeRequested() {
       const date = this.orderInfo.timePlaced.toDate();
       return this.$d(date, "long");
+    },
+    timeEstimated() {
+      if (this.orderInfo.timeEstimated) {
+        const date = this.orderInfo.timeEstimated.toDate();
+        return this.$d(date, "long");
+      }
+      return undefined; // backward compatibility
     },
     showPayment() {
       //console.log("payment", releaseConfig.hidePayment, this.stripeAccount);

@@ -127,10 +127,10 @@ export default {
       return this.order.payment && this.order.payment.stripe;
     },
     timestamp() {
-      const time = this.order.timePlaced;
-      const date = `${time.getMonth() + 1}/${time.getDate()} `;
-      return date + this.num2time(time.getHours() * 60 + time.getMinutes());
-      //return this.$d(this.order.timePlaced, "time");
+      const time = this.order.timeEstimated || this.order.timePlaced;
+      //const date = `${time.getMonth() + 1}/${time.getDate()} `;
+      //return date + this.num2time(time.getHours() * 60 + time.getMinutes());
+      return this.$d(time, "time");
     },
     phoneNumber() {
       return this.order.phoneNumber && parsePhoneNumber(this.order.phoneNumber);

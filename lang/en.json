@@ -247,7 +247,8 @@
     "pleasePayAtRestaurant": "Online payment was not enabled yet. Please pay at the time of pickup.",
     "sendSMS": "Receive Text Messages (standard telco fee may apply)",
     "history": "Order History",
-    "timeToPickup": "Pickup Time",
+    "timeRequested": "Requested Pickup Time",
+    "timeToPickup": "Estimated Pickup Time",
     "notAvailable": "This restaurant is not available at this time. Please try again later",
     "orderNotice": "Order Notice",
     "status": {

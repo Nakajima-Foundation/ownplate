@@ -247,6 +247,7 @@
     "pleasePayAtRestaurant": "オンラインでの支払いは現時点では出来ません。",
     "sendSMS": "SMSメッセージを受け取る（SMSの受信には料金がかかる場合があります）",
     "history": "注文履歴",
+    "timeRequested": "受け渡し希望時刻",
     "timeToPickup": "受け渡し予定時刻",
     "notAvailable": "注文可能な営業日がないので、現在は注文を受け付けていません。",
     "orderNotice": "注文時のご注意",
