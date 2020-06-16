@@ -27,7 +27,7 @@
             <div class="level-left">
               <b-select v-model="dayIndex" class="m-t-24">
                 <option v-for="day in lastSeveralDays" :value="day.index" :key="day.index">
-                  {{ $d(day.date, "short") }}
+                  {{ $d(day.date, "short") }} {{ orderCounter[moment(day.date).format("YYYY-MM-DD")] }}
                   <span
                     v-if="day.index === pickUpDaysInAdvance"
                   >{{ $t("date.today") }}</span>
@@ -152,6 +152,15 @@ export default {
     this.order_detacher();
   },
   computed: {
+    orderCounter() {
+      return this.lastSeveralDays.reduce((tmp, day) => {
+        const count = (this.$store.state.orderObj[moment(day.date).format("YYYY-MM-DD")]||[]).length
+        if (count > 0) {
+          tmp[moment(day.date).format("YYYY-MM-DD")] = "(" + count + ")";
+        }
+        return tmp;
+      }, {});
+    },
     pickUpDaysInAdvance() {
       return this.getPickUpDaysInAdvance();
     },

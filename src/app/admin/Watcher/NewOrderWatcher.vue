@@ -53,9 +53,10 @@ export default {
       this.order_detacher = db
         .collection(`restaurants/${this.restaurantId()}/orders`)
         .where("timePlaced", ">=", this.today)
-        .where("timePlaced", "<", this.tommorow)
+        // .where("timePlaced", "<", this.tommorow)
         .where("status", "==", order_status.order_placed).onSnapshot(result => {
           this.orders = result.docs.map(this.doc2data("order"));
+          this.$store.commit("setOrders", this.orders);
         });
     },
   }
