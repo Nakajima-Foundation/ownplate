@@ -312,6 +312,18 @@ export default {
         code: "profile.reallyDeleteCard",
         callback: async () => {
           console.log("handleDeleteCard");
+          this.$store.commit("setLoading", true);
+          try {
+            const stripeDeleteCard = functions.httpsCallable(
+              "stripeDeleteCard"
+            );
+            const { data } = await stripeDeleteCard();
+            console.log("stripeDeleteCard", data);
+          } catch (error) {
+            console.error(error);
+          } finally {
+            this.$store.commit("setLoading", false);
+          }
         }
       });
     },
