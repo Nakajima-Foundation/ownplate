@@ -23,9 +23,7 @@
               >
                 <span class="p-l-16 p-r-16">
                   <i class="material-icons c-primary s-18 m-r-8">arrow_back</i>
-                  <span class="c-primary t-button">
-                    {{ $t("button.back") }}
-                  </span>
+                  <span class="c-primary t-button">{{ $t("button.back") }}</span>
                 </span>
               </b-button>
             </div>
@@ -37,12 +35,8 @@
             <div v-if="paid">
               <!-- Thank you Message -->
               <div class="m-t-24">
-                <div class="t-h6 c-primary align-center">
-                  {{ $t("order.thankyou") }}
-                </div>
-                <div class="t-h6 c-primary align-center m-t-8">
-                  {{ $t("order.pleaseStay") }}
-                </div>
+                <div class="t-h6 c-primary align-center">{{ $t("order.thankyou") }}</div>
+                <div class="t-h6 c-primary align-center m-t-8">{{ $t("order.pleaseStay") }}</div>
               </div>
 
               <!-- Line Button -->
@@ -52,13 +46,8 @@
                   style="background:#18b900"
                   @click="handleLineAuth"
                 >
-                  <i
-                    class="fab fa-line c-text-white-full m-l-24 m-r-8"
-                    style="font-size:24px"
-                  />
-                  <span class="c-text-white-full m-r-24">
-                    {{ $t("line.notifyMe") }}
-                  </span>
+                  <i class="fab fa-line c-text-white-full m-l-24 m-r-8" style="font-size:24px" />
+                  <span class="c-text-white-full m-r-24">{{ $t("line.notifyMe") }}</span>
                 </b-button>
               </div>
 
@@ -66,20 +55,15 @@
               <div class="align-center m-t-24">
                 <div class="is-inline-flex">
                   <div class="m-r-24">
-                    <div class="t-subtitle2 c-text-black-medium">
-                      {{ $t("order.orderStatus") }}
-                    </div>
-                    <div class="op-status m-t-8" :class="orderStatusKey">
-                      {{ $t("order.status." + orderStatusKey) }}
-                    </div>
+                    <div class="t-subtitle2 c-text-black-medium">{{ $t("order.orderStatus") }}</div>
+                    <div
+                      class="op-status m-t-8"
+                      :class="orderStatusKey"
+                    >{{ $t("order.status." + orderStatusKey) }}</div>
                   </div>
                   <div>
-                    <div class="t-subtitle2 c-text-black-medium">
-                      {{ $t("order.orderId") }}
-                    </div>
-                    <div class="t-h5 c-text-black-high m-t-8">
-                      {{ orderName }}
-                    </div>
+                    <div class="t-subtitle2 c-text-black-medium">{{ $t("order.orderId") }}</div>
+                    <div class="t-h5 c-text-black-high m-t-8">{{ orderName }}</div>
                   </div>
                 </div>
               </div>
@@ -88,22 +72,27 @@
               <div
                 v-if="waiting"
                 class="align-center t-body2 c-text-black-medium m-t-16"
-              >
-                {{ $t("order.timeToPickup") + ": " + timePlaced }}
-              </div>
+              >{{ $t("order.timeToPickup") + ": " + timePlaced }}</div>
 
               <!-- Cancel Button -->
               <div class="align-center m-t-24">
                 <b-button
                   v-if="just_paid"
-                  class="b-reset op-button-small bg-status-red"
+                  class="b-reset op-button-text bg-transparent"
                   :loading="isCanceling"
                   @click="handleCancelPayment"
                 >
-                  <span class="c-text-white-full">
-                    {{ $t("button.cancel") }}
-                  </span>
+                  <i class="material-icons c-status-red s-18">highlight_off</i>
+                  <span class="c-status-red">{{ $t("order.cancelOrder") }}</span>
                 </b-button>
+              </div>
+
+              <!-- Cancel Message -->
+              <div
+                v-if="canceled"
+                class="bg-status-red-bg r-8 p-l-16 p-r-16 p-t-16 p-b-16 align-center"
+              >
+                <span class="t-subtitle1 c-status-red">{{ $t("order.cancelOrderComplete") }}</span>
               </div>
 
               <!-- Special Thank you Message from the Restaurant -->
@@ -111,7 +100,8 @@
                 v-if="
                   shopInfo &&
                     shopInfo.orderThanks &&
-                    shopInfo.orderThanks.length > 0
+                    shopInfo.orderThanks.length > 0 &&
+										!canceled
                 "
               >
                 <div class="bg-form m-t-24 p-l-16 p-r-16 p-t-16 p-b-16 r-8">
@@ -136,12 +126,11 @@
             <!-- Order Details -->
             <div class="m-t-24">
               <!-- Title -->
-              <div v-if="paid" class="t-h6 c-text-black-disabled">
-                {{ $t("order.yourOrder") + ": " + orderName }}
-              </div>
-              <div v-else class="t-h6 c-text-black-disabled">
-                {{ $t("order.confirmOrder") }}
-              </div>
+              <div
+                v-if="paid"
+                class="t-h6 c-text-black-disabled"
+              >{{ $t("order.yourOrder") + ": " + orderName }}</div>
+              <div v-else class="t-h6 c-text-black-disabled">{{ $t("order.confirmOrder") }}</div>
 
               <!-- Details -->
               <order-info
@@ -150,26 +139,29 @@
                 @change="handleTipChange"
               ></order-info>
 
+              <!-- Cancel Message -->
+              <div
+                v-if="canceled"
+                class="bg-status-red-bg r-8 p-l-16 p-r-16 p-t-16 p-b-16 align-center m-t-24"
+              >
+                <span class="t-subtitle1 c-status-red">{{ $t("order.cancelOrderComplete") }}</span>
+              </div>
+
               <!-- View Menu Page Button -->
               <div class="align-center m-t-24" v-if="paid">
-                <b-button
-                  class="b-reset op-button-small secondary"
-                  @click="handleOpenMenu"
-                >
-                  <span class="c-primary p-l-24 p-r-24">{{
+                <b-button class="b-reset op-button-small secondary" @click="handleOpenMenu">
+                  <span class="c-primary p-l-24 p-r-24">
+                    {{
                     $t("order.menu")
-                  }}</span>
+                    }}
+                  </span>
                 </b-button>
               </div>
 
               <!-- Validating -->
               <b-notification :closable="false" v-if="newOrder">
                 {{ $t("order.validating") }}
-                <b-loading
-                  :is-full-page="false"
-                  :active.sync="newOrder"
-                  :can-cancel="true"
-                ></b-loading>
+                <b-loading :is-full-page="false" :active.sync="newOrder" :can-cancel="true"></b-loading>
               </b-notification>
             </div>
           </div>
@@ -197,19 +189,13 @@
                 "
               >
                 <div class="m-t-24">
-                  <div class="t-h6 c-text-black-disabled">
-                    {{ $t("order.orderNotice") }}
-                  </div>
-                  <div
-                    class="bg-surface r-8 d-low m-t-8 p-l-16 p-r-16 p-t-16 p-b-16"
-                  >
+                  <div class="t-h6 c-text-black-disabled">{{ $t("order.orderNotice") }}</div>
+                  <div class="bg-surface r-8 d-low m-t-8 p-l-16 p-r-16 p-t-16 p-b-16">
                     <div class="cols">
                       <div class="p-r-8">
                         <i class="material-icons s-24 c-status-red">error</i>
                       </div>
-                      <div class="t-body1 c-status-red">
-                        {{ shopInfo.orderNotice }}
-                      </div>
+                      <div class="t-body1 c-status-red">{{ shopInfo.orderNotice }}</div>
                     </div>
                   </div>
                 </div>
@@ -218,16 +204,11 @@
               <!-- Payment -->
               <div class="m-t-24">
                 <!-- Title -->
-                <div class="t-h6 c-text-black-disabled">
-                  {{ $t("order.yourPayment") }}
-                </div>
+                <div class="t-h6 c-text-black-disabled">{{ $t("order.yourPayment") }}</div>
 
                 <!-- Pay Online -->
                 <div v-if="showPayment">
-                  <stripe-card
-                    @change="handleCardStateChange"
-                    ref="stripe"
-                  ></stripe-card>
+                  <stripe-card @change="handleCardStateChange" ref="stripe"></stripe-card>
                   <!-- <credit-card-input></credit-card-input> -->
                   <!-- Pay Button -->
                   <div class="align-center m-t-24">
@@ -250,16 +231,12 @@
                 <div v-else class="m-t-8">
                   <div
                     class="bg-form r-8 p-l-16 p-r-16 p-t-16 p-b-16 t-body2 c-text-black-high"
-                  >
-                    {{ $t("order.pleasePayAtRestaurant") }}
-                  </div>
+                  >{{ $t("order.pleasePayAtRestaurant") }}</div>
                 </div>
 
                 <!-- Pay Button -->
                 <div v-if="inStorePayment" class="align-center m-t-24">
-                  <div class="t-subtitle2 c-text-black-disabled">
-                    {{ $t("order.or") }}
-                  </div>
+                  <div class="t-subtitle2 c-text-black-disabled">{{ $t("order.or") }}</div>
                   <b-button
                     class="b-reset op-button-medium primary m-t-24"
                     style="min-width: 288px;"
@@ -267,22 +244,18 @@
                     :disabled="notAvailable"
                     @click="handleNoPayment"
                   >
-                    <span class="c-onprimary p-l-24 p-r-24">
-                      {{ $t("order.placeOrderNoPayment") }}
-                    </span>
+                    <span class="c-onprimary p-l-24 p-r-24">{{ $t("order.placeOrderNoPayment") }}</span>
                   </b-button>
-                  <div class="t-subtitle2 c-text-black-disabled m-t-8">
-                    {{ $t("order.placeOrderNoPaymentNote") }}
-                  </div>
+                  <div
+                    class="t-subtitle2 c-text-black-disabled m-t-8"
+                  >{{ $t("order.placeOrderNoPaymentNote") }}</div>
                 </div>
 
                 <!-- Send SMS Checkbox -->
                 <div v-if="!isLineEnabled" class="m-t-24">
                   <div class="bg-form r-8 p-l-16 p-r-16 p-t-16 p-b-16">
                     <b-checkbox v-model="sendSMS">
-                      <span class="t-body2 c-text-black-high">
-                        {{ $t("order.sendSMS") }}
-                      </span>
+                      <span class="t-body2 c-text-black-high">{{ $t("order.sendSMS") }}</span>
                     </b-checkbox>
                   </div>
                 </div>
@@ -412,6 +385,9 @@ export default {
     },
     just_paid() {
       return this.orderInfo.status === order_status.order_placed;
+    },
+    canceled() {
+      return this.orderInfo.status === order_status.order_canceled;
     },
     paid() {
       return this.orderInfo.status >= order_status.order_placed;
@@ -590,23 +566,28 @@ export default {
       }
     },
     async handleCancelPayment() {
-      try {
-        this.isCanceling = true;
-        const { data } = await stripeCancelIntent({
-          restaurantId: this.restaurantId() + this.forcedError("cancel"),
-          orderId: this.orderId
-        });
-        console.log("cancel", data);
-      } catch (error) {
-        // BUGBUG: Implement the error handling code here
-        console.error(error.message, error.details);
-        this.$store.commit("setErrorMessage", {
-          code: "order.cancel",
-          error
-        });
-      } finally {
-        this.isCanceling = false;
-      }
+      this.$store.commit("setAlert", {
+        code: "order.cancelOrderConfirm",
+        callback: async () => {
+          try {
+            this.isCanceling = true;
+            const { data } = await stripeCancelIntent({
+              restaurantId: this.restaurantId() + this.forcedError("cancel"),
+              orderId: this.orderId
+            });
+            console.log("cancel", data);
+          } catch (error) {
+            // BUGBUG: Implement the error handling code here
+            console.error(error.message, error.details);
+            this.$store.commit("setErrorMessage", {
+              code: "order.cancel",
+              error
+            });
+          } finally {
+            this.isCanceling = false;
+          }
+        }
+      });
     }
   }
 };
