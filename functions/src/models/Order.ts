@@ -29,4 +29,5 @@ export default class Order extends Doc {
   @Field number: number = 0
   @Field sendSMS: boolean = false
   @Field timePlaced!: admin.firestore.Timestamp
+  @Field timeEstimated?: admin.firestore.Timestamp
 }
