@@ -69,6 +69,7 @@
               </div>
 
               <!-- Time to Pickup -->
+
               <div v-if="waiting" class="align-center t-body2 c-text-black-medium m-t-16">
                 <div>{{ $t("order.timeRequested") + ": " + timeRequested }}</div>
                 <div v-if="timeEstimated">{{ $t("order.timeToPickup") + ": " + timeEstimated }}</div>
@@ -78,12 +79,22 @@
               <div class="align-center m-t-24">
                 <b-button
                   v-if="just_paid"
-                  class="b-reset op-button-small bg-status-red"
+                  class="b-reset op-button-text bg-transparent"
                   :loading="isCanceling"
                   @click="handleCancelPayment"
                 >
-                  <span class="c-text-white-full">{{ $t("button.cancel") }}</span>
+                  <i class="material-icons c-status-red s-18">highlight_off</i>
+                  <span class="c-status-red">{{ $t("order.cancelOrder") }}</span>
+
                 </b-button>
+              </div>
+
+              <!-- Cancel Message -->
+              <div
+                v-if="canceled"
+                class="bg-status-red-bg r-8 p-l-16 p-r-16 p-t-16 p-b-16 align-center"
+              >
+                <span class="t-subtitle1 c-status-red">{{ $t("order.cancelOrderComplete") }}</span>
               </div>
 
               <!-- Special Thank you Message from the Restaurant -->
@@ -91,7 +102,8 @@
                 v-if="
                   shopInfo &&
                     shopInfo.orderThanks &&
-                    shopInfo.orderThanks.length > 0
+                    shopInfo.orderThanks.length > 0 &&
+										!canceled
                 "
               >
                 <div class="bg-form m-t-24 p-l-16 p-r-16 p-t-16 p-b-16 r-8">
@@ -128,6 +140,14 @@
                 :orderInfo="this.orderInfo || {}"
                 @change="handleTipChange"
               ></order-info>
+
+              <!-- Cancel Message -->
+              <div
+                v-if="canceled"
+                class="bg-status-red-bg r-8 p-l-16 p-r-16 p-t-16 p-b-16 align-center m-t-24"
+              >
+                <span class="t-subtitle1 c-status-red">{{ $t("order.cancelOrderComplete") }}</span>
+              </div>
 
               <!-- View Menu Page Button -->
               <div class="align-center m-t-24" v-if="paid">
@@ -375,6 +395,9 @@ export default {
     just_paid() {
       return this.orderInfo.status === order_status.order_placed;
     },
+    canceled() {
+      return this.orderInfo.status === order_status.order_canceled;
+    },
     paid() {
       return this.orderInfo.status >= order_status.order_placed;
     },
@@ -552,23 +575,28 @@ export default {
       }
     },
     async handleCancelPayment() {
-      try {
-        this.isCanceling = true;
-        const { data } = await stripeCancelIntent({
-          restaurantId: this.restaurantId() + this.forcedError("cancel"),
-          orderId: this.orderId
-        });
-        console.log("cancel", data);
-      } catch (error) {
-        // BUGBUG: Implement the error handling code here
-        console.error(error.message, error.details);
-        this.$store.commit("setErrorMessage", {
-          code: "order.cancel",
-          error
-        });
-      } finally {
-        this.isCanceling = false;
-      }
+      this.$store.commit("setAlert", {
+        code: "order.cancelOrderConfirm",
+        callback: async () => {
+          try {
+            this.isCanceling = true;
+            const { data } = await stripeCancelIntent({
+              restaurantId: this.restaurantId() + this.forcedError("cancel"),
+              orderId: this.orderId
+            });
+            console.log("cancel", data);
+          } catch (error) {
+            // BUGBUG: Implement the error handling code here
+            console.error(error.message, error.details);
+            this.$store.commit("setErrorMessage", {
+              code: "order.cancel",
+              error
+            });
+          } finally {
+            this.isCanceling = false;
+          }
+        }
+      });
     }
   }
 };
