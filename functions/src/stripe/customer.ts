@@ -20,6 +20,11 @@ export const createCustomer = async (db: FirebaseFirestore.Firestore, uid: strin
   });
 }
 
+export const deleteCard = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
+  //const uid = utils.validate_auth(context);
+  return { return: true, message: "place holder" }
+}
+
 export const deleteCustomer = async (db: FirebaseFirestore.Firestore, uid: string) => {
   const stripe = utils.get_stripe();
   const refStripeSystem = db.doc(`/users/${uid}/system/stripe`)
