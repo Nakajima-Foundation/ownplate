@@ -50,7 +50,7 @@
         </div>
 
         <!-- Restaurant Website -->
-        <div class="m-t-8 m-l-16 m-r-16">
+        <div v-if="hasUrl" class="m-t-8 m-l-16 m-r-16">
           <a target="_blank" :href="this.shopInfo.url">
             <div class="op-button-text">
               <i class="material-icons">language</i>
@@ -190,6 +190,9 @@ export default {
         this.shopInfo.location.lat &&
         this.shopInfo.location.lng
       );
+    },
+    hasUrl() {
+      return this.shopInfo.url;
     },
     region() {
       return ownPlateConfig.region;

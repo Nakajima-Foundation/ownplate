@@ -54,6 +54,10 @@
           </div>
         </b-modal>
       </div>
+      <!-- Save Card Info for Reuse -->
+      <div class="m-l-16 m-t-8">
+        <b-checkbox v-model="reuse">{{ $t('order.reuseCard') }}</b-checkbox>
+      </div>
     </div>
   </div>
 </template>
@@ -70,7 +74,8 @@ export default {
       useStoredCard: false,
       elementStatus: { complete: false },
       cardElement: {},
-      CVCPopup: false
+      CVCPopup: false,
+      reuse: true
     };
   },
   async mounted() {
@@ -95,7 +100,10 @@ export default {
         const { token } = await this.stripe.createToken(this.cardElement);
         const tokenId = token.id + this.forcedError("token");
         //console.log("***toke", token, token.card.last4);
-        const { data } = await stripeUpdateCustomer({ tokenId });
+        const { data } = await stripeUpdateCustomer({
+          tokenId,
+          reuse: this.reuse
+        });
         console.log("stripeUpdateCustomer", data, tokenId);
       }
     },
