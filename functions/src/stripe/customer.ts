@@ -37,6 +37,10 @@ export const deleteCard = async (db: FirebaseFirestore.Firestore, data: any, con
       cardId = sourcesData[0].id;
       await stripe.customers.deleteSource(customerId, cardId!);
     }
+    await refStripeSystem.delete();
+    const refStripeReadOnly = db.doc(`/users/${uid}/readonly/stripe`)
+    await refStripeReadOnly.delete();
+
     //const refStripeReadOnly = db.doc(`/users/${uid}/readonly/stripe`)
     /*
     await db.runTransaction(async (tr) => {
