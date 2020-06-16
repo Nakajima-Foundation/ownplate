@@ -55,6 +55,14 @@
                   </b-field>-->
 
                   <div v-if="user.phoneNumber">
+                    <!-- Credit Card Info -->
+                    <div class="align-center p-t-16">
+                      <div
+                        class="t-subtitle2 c-text-black-disabled p-b-8"
+                      >{{ $t("profile.stripeInfo") }}</div>
+                      <div class="t-subtitle1 c-text-black-high">{{ cardDescription }}</div>
+                    </div>
+
                     <!-- LINE -->
                     <div class="bg-form r-8 p-l-16 p-r-16 p-t-24 p-b-24 m-t-24">
                       <!-- LINE Status -->
@@ -181,12 +189,20 @@ export default {
       loginVisible: false,
       reLoginVisible: false,
       isFriend: undefined,
-      isDeletingAccount: false
+      isDeletingAccount: false,
+      storedCard: null
     };
   },
-  created() {
+  async created() {
     if (this.isLineUser) {
       this.checkFriend();
+    }
+    if (this.user.phoneNumber) {
+      const stripeInfo = (
+        await db.doc(`/users/${this.user.uid}/readonly/stripe`).get()
+      ).data();
+      this.storedCard = stripeInfo?.card;
+      console.log("***", this.storedCard);
     }
   },
   watch: {
@@ -218,6 +234,11 @@ export default {
     },
     claims() {
       return this.$store.state.claims;
+    },
+    cardDescription() {
+      return this.storedCard
+        ? `${this.storedCard.brand} ***${this.storedCard.last4}`
+        : this.$t("profile.noCard");
     },
     lineConnection() {
       return this.isLineUser
