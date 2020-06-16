@@ -7,17 +7,37 @@
       <!-- Center Column -->
       <div class="column">
         <div class="m-l-24 m-r-24">
-          <!-- Back Button and Restaurant Profile -->
-          <div>
-            <!-- Back Button -->
-            <back-button url="/admin/restaurants/" class="m-t-24" />
+          <!-- Nav Bar -->
+          <div class="level">
+            <!-- Back Button and Restaurant Profile -->
+            <div class="level-left flex-1">
+              <!-- Back Button -->
+              <back-button url="/admin/restaurants/" class="m-t-24 m-r-16" />
 
-            <!-- Restaurant Profile -->
-            <div class="is-inline-flex flex-center m-l-16 m-t-24">
-              <div>
-                <img :src="shopInfo.restProfilePhoto" class="w-36 h-36 r-36 cover" />
+              <!-- Restaurant Profile -->
+              <div class="is-inline-flex flex-center m-t-24">
+                <div>
+                  <img :src="shopInfo.restProfilePhoto" class="w-36 h-36 r-36 cover" />
+                </div>
+                <div class="t-h6 c-text-black-high m-l-8 flex-1">{{ shopInfo.restaurantName }}</div>
               </div>
-              <div class="t-h6 c-text-black-high m-l-8">{{ shopInfo.restaurantName }}</div>
+            </div>
+
+            <!-- Notification Settings -->
+            <div class="level-right">
+              <!-- Notification Settings Button -->
+              <notification-setting-button
+                :notification_data="notification_data || default_notification_data"
+                @openNotificationSettings="openNotificationSettings"
+              />
+
+              <!-- Notification Settings Popup-->
+              <notification-settings
+                :notification_data="notification_data"
+                :NotificationSettingsPopup="NotificationSettingsPopup"
+                @close="closeNotificationSettings"
+                v-if="notification_data"
+              />
             </div>
           </div>
 
@@ -35,21 +55,7 @@
               </b-select>
             </div>
 
-            <div class="level-right">
-              <!-- Notification Settings Button -->
-              <notification-setting-button
-                :notification_data="notification_data || default_notification_data"
-                @openNotificationSettings="openNotificationSettings"
-              />
-
-              <!-- Notification Settings Popup-->
-              <notification-settings
-                :notification_data="notification_data"
-                :NotificationSettingsPopup="NotificationSettingsPopup"
-                @close="closeNotificationSettings"
-                v-if="notification_data"
-              />
-            </div>
+            <div class="level-right"></div>
           </div>
         </div>
       </div>
@@ -154,7 +160,10 @@ export default {
   computed: {
     orderCounter() {
       return this.lastSeveralDays.reduce((tmp, day) => {
-        const count = (this.$store.state.orderObj[moment(day.date).format("YYYY-MM-DD")]||[]).length
+        const count = (
+          this.$store.state.orderObj[moment(day.date).format("YYYY-MM-DD")] ||
+          []
+        ).length;
         if (count > 0) {
           tmp[moment(day.date).format("YYYY-MM-DD")] = "(" + count + ")";
         }

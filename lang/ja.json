@@ -346,6 +346,8 @@
     "passwordReset": "パスワードのリセット",
     "pleaseCheckInbox": "メールを送信しました。受信箱をご確認ください。",
     "order": {
+      "notification": "通知",
+      "incompleteOrders": "未完了の注文",
       "notificationSettings": "通知設定",
       "soundOn": "通知サウンド：オン",
       "soundOff": "通知サウンド：オフ",

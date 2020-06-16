@@ -1,12 +1,13 @@
 <template>
   <div class="op-button-pill bg-form m-t-24" @click="openNotificationSettings()">
-    <i class="material-icons">settings</i>
+    <i class="material-icons">notifications</i>
     <span class="t-button">
       {{
-      $t("admin.order.notificationSettings")
+      $t("admin.order.notification")
       }}
     </span>
-
+    <!-- # Show total incomplete number -->
+    <span class="t-button c-status-red">18</span>
     <span v-if="notification_data.soundOn">
       <i class="material-icons c-status-green s-18">volume_up</i>
       <span v-if="notification_data.infinityNotification">
@@ -23,12 +24,12 @@
 <script>
 export default {
   props: {
-    notification_data: Object,
+    notification_data: Object
   },
   methods: {
     openNotificationSettings() {
-      this.$emit('openNotificationSettings');
-    },
+      this.$emit("openNotificationSettings");
+    }
   }
-}
+};
 </script>
