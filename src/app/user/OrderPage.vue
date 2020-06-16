@@ -577,7 +577,6 @@ export default {
         callback: async () => {
           try {
             this.$store.commit("setLoading", true);
-            this.isCanceling = true;
             const { data } = await stripeCancelIntent({
               restaurantId: this.restaurantId() + this.forcedError("cancel"),
               orderId: this.orderId
