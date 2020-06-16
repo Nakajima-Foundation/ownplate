@@ -80,12 +80,10 @@
                 <b-button
                   v-if="just_paid"
                   class="b-reset op-button-text bg-transparent"
-                  :loading="isCanceling"
                   @click="handleCancelPayment"
                 >
                   <i class="material-icons c-status-red s-18">highlight_off</i>
                   <span class="c-status-red">{{ $t("order.cancelOrder") }}</span>
-
                 </b-button>
               </div>
 
@@ -329,7 +327,6 @@ export default {
       isDeleting: false,
       isPlacing: false,
       tip: 0,
-      isCanceling: false,
       sendSMS: true,
       paymentInfo: {},
       notFound: false
@@ -579,7 +576,7 @@ export default {
         code: "order.cancelOrderConfirm",
         callback: async () => {
           try {
-            this.isCanceling = true;
+            this.$store.commit("setLoading", true);
             const { data } = await stripeCancelIntent({
               restaurantId: this.restaurantId() + this.forcedError("cancel"),
               orderId: this.orderId
@@ -593,7 +590,7 @@ export default {
               error
             });
           } finally {
-            this.isCanceling = false;
+            this.$store.commit("setLoading", false);
           }
         }
       });

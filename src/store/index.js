@@ -18,7 +18,8 @@ export const state = () => ({
   soundOn: false, // for restaurant admin config
   soundFile: "",
   isWindowActive: false, // active status of browser window
-  dialog: null // for DialogBox
+  dialog: null, // for DialogBox
+  isLoading: false // for full-page loading animation
 });
 
 export const getters = {
@@ -49,6 +50,9 @@ export const getters = {
 export const mutations = {
   setActive(state, flag) {
     state.isWindowActive = flag;
+  },
+  setLoading(state, flag) {
+    state.isLoading = flag;
   },
   setUser(state, user) {
     state.user = user;

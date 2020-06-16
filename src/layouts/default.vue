@@ -53,6 +53,9 @@
       </div>
     </div>
 
+    <!-- Loading -->
+    <b-loading v-if="isLoading" :is-full-page="true" :active="true" :can-cancel="false"></b-loading>
+
     <!-- Footer -->
     <div class="m-t-48">
       <div class="bg-ownplate-gray cols h-128">
@@ -130,8 +133,7 @@ export default {
       fullwidth: false,
       right: false,
 
-      langPopup: false,
-
+      langPopup: false
     };
   },
   mounted() {
@@ -143,6 +145,9 @@ export default {
     });
   },
   computed: {
+    isLoading() {
+      return this.$store.state.isLoading;
+    },
     dialog() {
       return this.$store.state.dialog;
     },
@@ -226,7 +231,7 @@ export default {
         // save into store
         this.$store.commit("setLang", lang);
       }
-    },
+    }
   },
   beforeCreate() {
     const systemGetConfig = functions.httpsCallable("systemGetConfig");
