@@ -53,7 +53,7 @@
                         v-if="hasStripe"
                         class="t-body1 c-textl-black-high is-inline-flex flex-center"
                       >
-                        <a :href="search" target="_blank">
+                        <a :href="search" target="stripe">
                           <span>{{$n(orderInfo.totalCharge, 'currency')}}</span>
                           <i :class="'fab fa-cc-stripe stripe_'+orderInfo.payment.stripe"></i>
                         </a>
@@ -273,7 +273,9 @@ export default {
   },
   computed: {
     search() {
-      const value = encodeURIComponent(this.orderName);
+      const value = encodeURIComponent(
+        this.orderInfo.description || this.orderName
+      );
       return `${ownPlateConfig.stripe.search}?query=${value}`;
     },
     showTimePicker() {

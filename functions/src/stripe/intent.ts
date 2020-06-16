@@ -11,7 +11,7 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
   const uid = utils.validate_auth(context);
   const stripe = utils.get_stripe();
 
-  const { orderId, restaurantId, paymentMethodId, tip, sendSMS, timeToPickup, lng } = data;
+  const { orderId, restaurantId, paymentMethodId, description, tip, sendSMS, timeToPickup, lng } = data;
   utils.validate_params({ orderId, restaurantId }); // lng, paymentMethodId, tip and sendSMS are optional
 
   const restaurantData = await utils.get_restaurant(db, restaurantId);
@@ -44,6 +44,7 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
       const request = {
         setup_future_usage: 'off_session',
         amount: totalCharge,
+        description: `${description} ${orderId}`,
         currency: utils.getStripeRegion().currency,
         metadata: { uid, restaurantId, orderId }
       } as Stripe.PaymentIntentCreateParams
@@ -71,10 +72,6 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
         };
       }
 
-      if (data.description) {
-        request.description = data.description
-      }
-
       const paymentIntent = await stripe.paymentIntents.create(request, {
         idempotencyKey: orderRef.path,
         stripeAccount
@@ -87,6 +84,7 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
         totalCharge: totalCharge / multiple,
         tip: Math.round(tip * multiple) / multiple,
         sendSMS: sendSMS || false,
+        description: request.description,
         payment: {
           stripe: "pending"
         }

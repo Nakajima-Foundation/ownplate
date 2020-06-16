@@ -33,7 +33,7 @@
           >{{ $t("admin.payments.statusConnected") }}</div>
         </div>
         <div class="align-center m-t-24">
-          <a :href="dashboard" target="_blank">
+          <a :href="dashboard" target="stripe">
             <div class="op-button-small secondary">
               <span class="c-primary">
                 {{
