@@ -33,7 +33,7 @@
           >{{ $t("admin.payments.statusConnected") }}</div>
         </div>
         <div class="align-center m-t-24">
-          <a href="https://dashboard.stripe.com/dashboard" target="_blank">
+          <a :href="dashboard" target="stripe">
             <div class="op-button-small secondary">
               <span class="c-primary">
                 {{
@@ -75,6 +75,7 @@
 import { db, firestore, functions } from "~/plugins/firebase.js";
 import { releaseConfig } from "~/plugins/config.js";
 import { stripeConnect, stripeDisconnect } from "~/plugins/stripe.js";
+import { ownPlateConfig } from "~/config/project";
 export default {
   data() {
     return {
@@ -136,6 +137,9 @@ export default {
     }
   },
   computed: {
+    dashboard() {
+      return ownPlateConfig.stripe.dashboard;
+    },
     uid() {
       return this.$store.getters.uidAdmin;
     },

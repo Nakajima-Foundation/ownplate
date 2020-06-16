@@ -49,11 +49,17 @@
                     <!-- Total Charge -->
                     <div class="m-l-16">
                       <div class="t-caption c-text-black-medium">{{$t('order.totalCharge')}}</div>
-                      <div class="t-body1 c-textl-black-high is-inline-flex flex-center">
-                        <div>{{$n(orderInfo.totalCharge, 'currency')}}</div>
-                        <div v-if="hasStripe" class="m-l-4">
+                      <div
+                        v-if="hasStripe"
+                        class="t-body1 c-textl-black-high is-inline-flex flex-center"
+                      >
+                        <a :href="search" target="stripe">
+                          <span>{{$n(orderInfo.totalCharge, 'currency')}}</span>
                           <i :class="'fab fa-cc-stripe stripe_'+orderInfo.payment.stripe"></i>
-                        </div>
+                        </a>
+                      </div>
+                      <div v-else class="t-body1 c-textl-black-high is-inline-flex flex-center">
+                        <div>{{$n(orderInfo.totalCharge, 'currency')}}</div>
                       </div>
                     </div>
                   </div>
@@ -203,6 +209,7 @@ import {
 import { stripeConfirmIntent, stripeCancelIntent } from "~/plugins/stripe.js";
 import moment from "moment-timezone";
 import NotFound from "~/components/NotFound";
+import { ownPlateConfig } from "~/config/project";
 
 export default {
   components: {
@@ -265,6 +272,12 @@ export default {
     });
   },
   computed: {
+    search() {
+      const value = encodeURIComponent(
+        this.orderInfo.description || this.orderName
+      );
+      return `${ownPlateConfig.stripe.search}?query=${value}`;
+    },
     showTimePicker() {
       return this.orderInfo.status === order_status.order_placed;
     },
