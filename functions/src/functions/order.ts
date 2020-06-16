@@ -62,8 +62,8 @@ export const place = async (db: FirebaseFirestore.Firestore, data: any, context:
 // This function is called by admins (restaurant operators) to update the status of order
 export const update = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
-  const { restaurantId, orderId, status, lng, timezone } = data;
-  utils.validate_params({ restaurantId, orderId, status, timezone }) // lng is optional
+  const { restaurantId, orderId, status, lng, timezone, timeEstimated } = data;
+  utils.validate_params({ restaurantId, orderId, status, timezone }) // lng, timeEstimated is optional
 
   try {
     const restaurantDoc = await db.doc(`restaurants/${restaurantId}`).get()
@@ -123,17 +123,24 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
         throw new functions.https.HttpsError('permission-denied', 'Paid order can not be cancele like this', status)
       }
 
-      transaction.update(orderRef, {
+      const props: any = {
         updatedAt: admin.firestore.Timestamp.now(),
         status
-      })
+      };
+      if (status === order_status.order_accepted) {
+        props.timeEstimated = timeEstimated ?
+          new admin.firestore.Timestamp(timeEstimated.seconds, timeEstimated.nanoseconds)
+          : order.timePlaced;
+        order.timeEstimated = props.timeEstimated;
+      }
+      transaction.update(orderRef, props)
       return { success: true }
     })
     if (sendSMS && msgKey) {
       const params = {}
       if (status === order_status.order_accepted) {
-        params["time"] = moment(order!.timePlaced.toDate()).tz(timezone).locale('ja').format('LLL');
-        console.log("timePlaced", params["time"]);
+        params["time"] = moment(order!.timeEstimated!.toDate()).tz(timezone).locale('ja').format('LLL');
+        console.log("timeEstimated", params["time"]);
       }
       const orderName = nameOfOrder(order!.number)
       await sendMessage(db, lng, msgKey, restaurant.restaurantName, orderName, uidUser, order!.phoneNumber, restaurantId, orderId, params)

@@ -31,9 +31,7 @@
               <shop-header :shopInfo="shopInfo"></shop-header>
 
               <!-- Restaurant Descriptions -->
-              <div
-                class="t-body1 c-text-black-medium align-center m-t-8"
-              >{{ this.shopInfo.introduction }}</div>
+              <div class="t-body1 c-text-black-medium m-t-8">{{ this.shopInfo.introduction }}</div>
 
               <!-- Share Popup -->
               <share-popup :shopInfo="shopInfo"></share-popup>

@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import { stripe_regions } from "~/plugins/constant.js";
+import moment from "moment";
 
 Vue.use(Vuex);
 
@@ -14,11 +15,13 @@ export const state = () => ({
   carts: {}, // for "Edit Order"
   server: {}, // server configuration
   orderEvent: 0,
+  orderObj: {},
   soundEnable: false, // after user touch/click event, this flag set true (for mobile browser)
   soundOn: false, // for restaurant admin config
   soundFile: "",
   isWindowActive: false, // active status of browser window
-  dialog: null // for DialogBox
+  dialog: null, // for DialogBox
+  isLoading: false // for full-page loading animation
 });
 
 export const getters = {
@@ -50,6 +53,9 @@ export const mutations = {
   setActive(state, flag) {
     state.isWindowActive = flag;
   },
+  setLoading(state, flag) {
+    state.isLoading = flag;
+  },
   setUser(state, user) {
     state.user = user;
   },
@@ -74,6 +80,16 @@ export const mutations = {
   },
   pingOrderEvent(state) {
     state.orderEvent = (state.orderEvent) + 1;
+  },
+  setOrders(state, orders) {
+    state.orderObj = orders.reduce((tmp, order) => {
+      const day = moment(order.timePlaced.toDate()).format("YYYY-MM-DD");
+      if (!tmp[day]) {
+        tmp[day] = [];
+      }
+      tmp[day].push(order);
+      return tmp;
+    }, {});
   },
   soundEnable(state) {
     state.soundEnable = true;

@@ -42,7 +42,7 @@ export const deleteCustomer = async (db: FirebaseFirestore.Firestore, uid: strin
 
 export const update = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
-  const { tokenId } = data;
+  const { tokenId, reuse } = data;
   utils.validate_params({ tokenId });
   const stripe = utils.get_stripe();
 
@@ -63,9 +63,20 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
       if (!stripeInfo) {
         throw new functions.https.HttpsError('invalid-argument', 'This user does not have a stripe customer.')
       }
-      tr.set(refStripeReadOnly, {
-        card
-      }, { merge: true })
+      // Store the stripe info in the readonly area (accessible from the client) only if the user wants to reuse it.
+      // Notice that we still need to associate the stripe info the the customer internally.
+      if (reuse) {
+        tr.set(refStripeReadOnly, {
+          card
+        }, { merge: true })
+      } else {
+        // We need to delete the old card info (if exists). Otherwise, the new one will become the default and
+        // will be reused (even though the end-user unchecks the "re-user" checkbox).
+        // This is a little bit incombinient (the user can not reuse the first one any more,
+        // after using the second one even though she/he uncheks the 'reuse' button), but this is better
+        // than introducing the complexity of managing multiple cards.
+        tr.delete(refStripeReadOnly)
+      }
 
       await stripe.customers.update(stripeInfo.customerId, {
         source: tokenId
