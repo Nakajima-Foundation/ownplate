@@ -7,7 +7,7 @@
       }}
     </span>
     <!-- # Show total incomplete number -->
-    <span class="t-button c-status-red">18</span>
+    <span class="t-button c-status-red">{{orderCounter}}</span>
     <span v-if="notification_data.soundOn">
       <i class="material-icons c-status-green s-18">volume_up</i>
       <span v-if="notification_data.infinityNotification">
@@ -29,6 +29,18 @@ export default {
   methods: {
     openNotificationSettings() {
       this.$emit("openNotificationSettings");
+    }
+  },
+  computed: {
+    orderCounter() {
+      return Object.keys(this.$store.state.orderObj).reduce((tmp, key) => {
+        const count = (
+          this.$store.state.orderObj[key] ||
+            []
+        ).length;
+        console.log(count);
+        return tmp + count;
+      }, 0);
     }
   }
 };
