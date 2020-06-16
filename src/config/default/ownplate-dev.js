@@ -15,6 +15,9 @@ export const ownPlateConfig = {
   releasName: "beta-dev",
   region: "JP",
   hostName: "staging.ownplate.today",
+  stripe: {
+    dashboard: "https://dashboard.stripe.com/test/dashboard",
+  },
   line: {
     LOGIN_CHANNEL_ID: "1654216149",
     TRACK_CHANNEL_ID: "1654259709",
