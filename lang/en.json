@@ -18,6 +18,10 @@
     "signInRestaurant": "Sign In as a Restaurant",
     "deleteAccount": "Delete Account",
     "reallyDeleteAccount": "Do you really want to delete this account? All the data will be deleted.",
+    "stripeInfo": "Associated Credit Card",
+    "noCard": "Not saved",
+    "deleteCard": "Delete Card Info",
+    "reallyDeleteCard": "Do you really want to delete the card information？",
     "status": {
       "hasLine": "Connected",
       "noLine": "Not connected",
