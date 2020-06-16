@@ -61,6 +61,16 @@
                         class="t-subtitle2 c-text-black-disabled p-b-8"
                       >{{ $t("profile.stripeInfo") }}</div>
                       <div class="t-subtitle1 c-text-black-high">{{ cardDescription }}</div>
+                      <div v-if="storedCard">
+                        <b-button class="b-reset op-button-text" @click="handleDeleteCard">
+                          <i class="material-icons c-status-red">delete</i>
+                          <span class="c-status-red">
+                            {{
+                            $t("profile.deleteCard")
+                            }}
+                          </span>
+                        </b-button>
+                      </div>
                     </div>
 
                     <!-- LINE -->
@@ -294,6 +304,14 @@ export default {
         callback: async () => {
           window.scrollTo(0, 0);
           this.reLoginVisible = true;
+        }
+      });
+    },
+    handleDeleteCard() {
+      this.$store.commit("setAlert", {
+        code: "profile.reallyDeleteCard",
+        callback: async () => {
+          console.log("handleDeleteCard");
         }
       });
     },
