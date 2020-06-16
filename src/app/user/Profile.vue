@@ -190,7 +190,8 @@ export default {
       reLoginVisible: false,
       isFriend: undefined,
       isDeletingAccount: false,
-      storedCard: null
+      storedCard: null,
+      detachStripe: null
     };
   },
   async created() {
@@ -198,12 +199,16 @@ export default {
       this.checkFriend();
     }
     if (this.user.phoneNumber) {
-      const stripeInfo = (
-        await db.doc(`/users/${this.user.uid}/readonly/stripe`).get()
-      ).data();
-      this.storedCard = stripeInfo?.card;
-      console.log("***", this.storedCard);
+      this.detachStripe = db
+        .doc(`/users/${this.user.uid}/readonly/stripe`)
+        .onSnapshot(snapshot => {
+          const stripeInfo = snapshot.data();
+          this.storedCard = stripeInfo?.card;
+        });
     }
+  },
+  destroyed() {
+    this.detachStripe && this.detachStripe();
   },
   watch: {
     isWindowActive(newValue) {
