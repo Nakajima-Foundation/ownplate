@@ -17,5 +17,6 @@ export const ownPlateConfig = {
   hostName: "eu.ownplate.today",
   stripe: {
     dashboard: "https://dashboard.stripe.com/dashboard",
+    search: "https://dashboard.stripe.com/search",
   },
 };
