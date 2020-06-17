@@ -123,6 +123,7 @@
     "updateMap": "場所をセット",
     "businessHourDescription": "営業する曜日にチェックをいれ、時間を設定してください。休憩など営業時間を分ける必要がある場合は別時間帯フォームに後半の時間を設定してください。",
     "businessHourOption": "別時間帯（オプション）",
+    "copyPreviousDay": "前日をコピー",
     "draftDescription": "下書きとして保存されます（お客様からお店のページは見えません）",
     "publishDescription": "保存して公開",
     "draftWarning": "赤枠のエラーを修正すると公開可能になります",

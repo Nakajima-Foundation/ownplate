@@ -123,6 +123,7 @@
     "updateMap": "Update Map",
     "businessHourDescription": "Check the business day of the week and set the business hours. If you need to split your business hours, such as a break, please enter the latter time in the Another Hours form.",
     "businessHourOption": "Another Hours (optional)",
+    "copyPreviousDay": "Copy Previous Day",
     "draftDescription": "Save as Draft.",
     "publishDescription": "Save and publish your restaurant.",
     "draftWarning": "You can publish this by correcting the red frame.",
