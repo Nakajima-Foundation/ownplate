@@ -26,7 +26,9 @@
               </div>
             </div>
             <!-- Notification Settings -->
-            <div class="level-right"><!-- ### Put Components Here ### --></div>
+            <div class="level-right">
+              <notification-index :shopInfo="shopInfo"/>
+            </div>
           </div>
         </div>
       </div>
@@ -113,9 +115,12 @@ import { db } from "~/plugins/firebase.js";
 import BackButton from "~/components/BackButton";
 import { lineAuthURL, lineVerify } from "~/plugins/line.js";
 
+import NotificationIndex from "./Notifications/Index";
+
 export default {
   components: {
-    BackButton
+    BackButton,
+    NotificationIndex,
   },
   data() {
     return {

@@ -29,7 +29,9 @@
                 </div>-->
               </div>
               <!-- Notification Settings -->
-              <div class="level-right"><!-- ### Put Components Here ### --></div>
+              <div class="level-right">
+                <notification-index :shopInfo="restaurantInfo"/>
+              </div>
             </div>
           </div>
         </div>
@@ -229,6 +231,8 @@ import BackButton from "~/components/BackButton";
 
 import * as firebase from "firebase/app";
 
+import NotificationIndex from "./Notifications/Index";
+
 export default {
   name: "Menus",
   components: {
@@ -236,6 +240,7 @@ export default {
     TitleCard,
     TitleInput,
     BackButton,
+    NotificationIndex,
     NotFound
   },
   data() {

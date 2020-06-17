@@ -22,7 +22,9 @@
               </div>
             </div>
             <!-- Notification Settings -->
-            <div class="level-right"><!-- ### Put Components Here ### --></div>
+            <div class="level-right">
+              <notification-index :shopInfo="restaurant"/>
+            </div>
           </div>
         </div>
       </div>
@@ -109,10 +111,12 @@
 <script>
 import { db, firestore } from "~/plugins/firebase.js";
 import BackButton from "~/components/BackButton";
+import NotificationIndex from "./Notifications/Index";
 
 export default {
   components: {
-    BackButton
+    BackButton,
+    NotificationIndex
   },
   data() {
     return {
