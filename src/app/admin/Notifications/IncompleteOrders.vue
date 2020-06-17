@@ -8,32 +8,58 @@
       <!-- # Show latest date first -->
       <!-- # Make Red Color for Today -->
       <router-link
-        class="op-button-pill bg-status-red-bg m-t-8 m-r-8"
-        :to="`/admin/restaurants/${restaurantId()}/orders`"
+        :class="`op-button-pill ${index === 0 ? 'bg-status-red-bg' : 'bg-form'} m-t-8 m-r-8`"
+        :to="`/admin/restaurants/${restaurantId()}/orders?day=${moment(day.date).format('YYYY-MM-DD')}`"
+        v-for="(day, index) in lastSeveralDays"
         >
         <!-- # Link to the date -->
-        <span class="t-button c-status-red">2020年6月16日(火) 本日 - 3</span>
+        <span :class="`t-button ${index === 0 ? 'c-status-red' : 'c-primary'}`">
+          {{$d(day.date, "short")}} {{index === 0 ? '本日' : ''}} - {{ orderCounter[moment(day.date).format("YYYY-MM-DD")] }}
+        </span>
       </router-link>
 
       <!-- # Future Date will be Nomal Color -->
-      <router-link
-        class="op-button-pill bg-form m-t-8 m-r-8"
-        :to="`/admin/restaurants/${restaurantId()}/orders`"
-        >
-        <span class="t-button c-primary">2020年6月17日(水) - 2</span>
-      </router-link>
-      <router-link
-        class="op-button-pill bg-form m-t-8 m-r-8"
-        :to="`/admin/restaurants/${restaurantId()}/orders`"
-        >
-        <span class="t-button c-primary">2020年6月18日(木) - 3</span>
-      </router-link>
-      <router-link
-        class="op-button-pill bg-form m-t-8 m-r-8"
-        :to="`/admin/restaurants/${restaurantId()}/orders`"
-        >
-        <span class="t-button c-primary">2020年6月19日(金) - 10</span>
-      </router-link>
     </div>
   </div>
 </template>
+
+<script>
+import { midNight } from "~/plugins/dateUtils.js";
+import moment from "moment";
+
+export default {
+  props: {
+    shopInfo: Object,
+  },
+  computed: {
+    orderCounter() {
+      return this.lastSeveralDays.reduce((tmp, day) => {
+        const count = (
+          this.$store.state.orderObj[moment(day.date).format("YYYY-MM-DD")] ||
+          []
+        ).length;
+        tmp[moment(day.date).format("YYYY-MM-DD")] = count || 0;
+        return tmp;
+      }, {});
+    },
+    pickUpDaysInAdvance() {
+      return this.getPickUpDaysInAdvance();
+    },
+    lastSeveralDays() {
+      return Array.from(Array(this.pickUpDaysInAdvance).keys()).map(
+        index => {
+          const date = midNight(index);
+          return { index, date };
+        }
+      );
+    }
+  },
+  methods: {
+    getPickUpDaysInAdvance() {
+      return this.isNull(this.shopInfo.pickUpDaysInAdvance)
+        ? 3
+        : this.shopInfo.pickUpDaysInAdvance;
+    }
+  }
+}
+</script>

@@ -6,7 +6,7 @@
       <!-- Body -->
       <div>
         <!-- Incomplete Orders -->
-        <incomplete-orders />
+        <incomplete-orders :shopInfo="shopInfo"/>
         <!-- Settings -->
         <div>
           <div
@@ -125,7 +125,8 @@ export default {
   },
   props: {
     notification_data: Object,
-    NotificationSettingsPopup: Boolean
+    NotificationSettingsPopup: Boolean,
+    shopInfo: Object,
   },
   data() {
     return {

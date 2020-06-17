@@ -33,6 +33,7 @@
 
               <!-- Notification Settings Popup-->
               <notification-settings
+                :shopInfo="shopInfo"
                 :notification_data="notification_data"
                 :NotificationSettingsPopup="NotificationSettingsPopup"
                 @close="closeNotificationSettings"
