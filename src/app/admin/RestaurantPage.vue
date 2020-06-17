@@ -548,12 +548,21 @@
                 :key="index"
                 class="bg-form r-8 m-t-8 p-l-16 p-r-16 p-t-16 p-b-16"
               >
-                <div>
-                  <b-checkbox v-model="shopInfo.businessDay[index]">
-                    {{
-                    $t("week.short." + day)
-                    }}
-                  </b-checkbox>
+                <div class="cols flex-center">
+                  <!-- Enable/Disable Day -->
+                  <div class="flex-1">
+                    <b-checkbox v-model="shopInfo.businessDay[index]">
+                      {{
+                      $t("week.short." + day)
+                      }}
+                    </b-checkbox>
+                  </div>
+
+                  <!-- Copy Previous Day -->
+                  <div class="op-button-text">
+                    <i class="material-icons c-primary s-18">content_copy</i>
+                    <span>{{ $t("editRestaurant.copyPreviousDay") }}</span>
+                  </div>
                 </div>
                 <div class="m-t-8">
                   <hours-input
