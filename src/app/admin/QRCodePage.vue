@@ -7,23 +7,22 @@
       <!-- Center Column -->
       <div class="column">
         <div class="m-l-24 m-r-24">
-          <!-- Back Button and Restaurant Profile -->
-          <div>
-            <!-- Back Button -->
-            <back-button url="/admin/restaurants/" class="m-t-24 m-r-16" />
-
-            <!-- Restaurant Profile -->
-            <div class="is-inline-flex flex-center m-t-24">
-              <div>
-                <img
-                  :src="restaurant.restProfilePhoto"
-                  class="w-36 h-36 r-36 cover"
-                />
-              </div>
-              <div class="t-h6 c-text-black-high m-l-8 flex-1">
-                {{ restaurant.restaurantName }}
+          <!-- Nav Bar -->
+          <div class="level">
+            <!-- Back Button and Restaurant Profile -->
+            <div class="level-left flex-1">
+              <!-- Back Button -->
+              <back-button url="/admin/restaurants/" class="m-t-24 m-r-16" />
+              <!-- Restaurant Profile -->
+              <div class="is-inline-flex flex-center m-t-24">
+                <div>
+                  <img :src="restaurant.restProfilePhoto" class="w-36 h-36 r-36 cover" />
+                </div>
+                <div class="t-h6 c-text-black-high m-l-8 flex-1">{{ restaurant.restaurantName }}</div>
               </div>
             </div>
+            <!-- Notification Settings -->
+            <div class="level-right"><!-- ### Put Components Here ### --></div>
           </div>
         </div>
       </div>
@@ -40,9 +39,7 @@
       <div class="column">
         <div class="m-l-24 m-r-24">
           <!-- Menu Page -->
-          <div class="t-h6 c-text-black-disabled m-t-24 p-b-8">
-            {{ $t("admin.qrcode.restaurant") }}
-          </div>
+          <div class="t-h6 c-text-black-disabled m-t-24 p-b-8">{{ $t("admin.qrcode.restaurant") }}</div>
           <div class="bg-surface r-8 d-low p-l-24 p-r-24 p-t-24 p-b-24">
             <!-- QR Code -->
             <div class="align-center">
@@ -50,11 +47,9 @@
             </div>
             <!-- Link -->
             <div class="align-center">
-              <a :href="urlMenu" target="_blank"
-                ><div class="op-button-text t-button">
-                  {{ restaurant.restaurantName }}
-                </div></a
-              >
+              <a :href="urlMenu" target="_blank">
+                <div class="op-button-text t-button">{{ restaurant.restaurantName }}</div>
+              </a>
             </div>
           </div>
         </div>
@@ -65,9 +60,7 @@
         <div class="m-l-24 m-r-24">
           <!-- Trace -->
           <div v-if="trace && regionalSetting.covid19trace">
-            <div class="t-h6 c-text-black-disabled m-t-24 p-b-8">
-              {{ $t("trace.list") }}
-            </div>
+            <div class="t-h6 c-text-black-disabled m-t-24 p-b-8">{{ $t("trace.list") }}</div>
             <div class="bg-surface r-8 d-low p-l-24 p-r-24 p-t-24 p-b-24">
               <!-- Enter -->
               <div>
@@ -77,11 +70,9 @@
                 </div>
                 <!-- Link -->
                 <div class="align-center">
-                  <a :href="urlEnter"
-                    ><div class="op-button-text t-button">
-                      {{ $t("admin.qrcode.enter") }}
-                    </div></a
-                  >
+                  <a :href="urlEnter">
+                    <div class="op-button-text t-button">{{ $t("admin.qrcode.enter") }}</div>
+                  </a>
                 </div>
               </div>
 
@@ -93,22 +84,16 @@
                 </div>
                 <!-- Link -->
                 <div class="align-center">
-                  <a :href="urlLeave"
-                    ><div class="op-button-text t-button">
-                      {{ $t("admin.qrcode.leave") }}
-                    </div></a
-                  >
+                  <a :href="urlLeave">
+                    <div class="op-button-text t-button">{{ $t("admin.qrcode.leave") }}</div>
+                  </a>
                 </div>
               </div>
 
               <!-- Trace List -->
               <div class="align-center m-t-24">
-                <router-link
-                  :to="`/admin/restaurants/${restaurantId()}/traces`"
-                >
-                  <div class="op-button-small tertiary">
-                    {{ $t("trace.viewList") }}
-                  </div>
+                <router-link :to="`/admin/restaurants/${restaurantId()}/traces`">
+                  <div class="op-button-small tertiary">{{ $t("trace.viewList") }}</div>
                 </router-link>
               </div>
             </div>

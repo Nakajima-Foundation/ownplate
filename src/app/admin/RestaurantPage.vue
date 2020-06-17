@@ -10,8 +10,16 @@
         <!-- Center Column -->
         <div class="column">
           <div class="m-l-24 m-r-24 m-t-24">
+            <!-- Nav Bar -->
+            <div class="level">
+              <!-- Back Button and Restaurant Profile -->
+              <div class="level-left flex-1"></div>
+              <!-- Notification Settings -->
+              <div class="level-right"><!-- ### Put Components Here ### --></div>
+            </div>
+
             <!-- Cancel and Save Button -->
-            <div class="align-center">
+            <div class="align-center m-t-24">
               <!-- Cancel Button -->
               <b-button
                 class="b-reset op-button-small tertiary m-r-16"
