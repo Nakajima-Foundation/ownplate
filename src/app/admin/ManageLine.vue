@@ -26,7 +26,7 @@
               </div>
             </div>
             <!-- Notification Settings -->
-            <div class="level-right">### Put Components Here ###</div>
+            <div class="level-right"><!-- ### Put Components Here ### --></div>
           </div>
         </div>
       </div>
