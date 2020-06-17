@@ -218,7 +218,8 @@
     "orderCounter": "{count} item | {count} items",
     "add": "Add",
     "options": "Options",
-    "quantity": "Quantity"
+    "quantity": "Quantity",
+    "addDifferentOptionsItem": "Add Different Options Item"
   },
   "date": {
     "today": "Today"

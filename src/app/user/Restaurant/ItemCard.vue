@@ -98,6 +98,78 @@
             </div>
           </div>
         </div>
+
+        <!-- Another Order with Different Options -->
+        <div>
+          <!-- # Enable this section If "hasOptions" and more than one order in the default section above. -->
+          <!-- # Show only "Add Another Order Button" first, then add "Another Order" section with the item count +1 when the button tapped.  -->
+          <!-- # Once user removed the item to count 0, the "Another Order" section will be removed. -->
+
+          <!-- Another Order -->
+          <div>
+            <hr class="devider m-t-16 m-b-0" />
+            <!-- Item Options -->
+            <div v-if="hasOptions" class="m-t-16">
+              <div class="t-caption c-text-black-medium">{{$t('sitemenu.options')}}</div>
+              <div v-for="(option, index) in options" :key="index" class="m-t-8">
+                <div v-if="option.length === 1" class="field">
+                  <b-checkbox v-model="optionValues[index]">{{ option[0] }}</b-checkbox>
+                </div>
+                <div v-else class="field">
+                  <b-radio
+                    v-for="(choice, index2) in option"
+                    v-model="optionValues[index]"
+                    :name="`${item.id}${index}`"
+                    :native-value="choice"
+                    :key="index2"
+                  >{{ choice }}</b-radio>
+                </div>
+              </div>
+            </div>
+
+            <!-- Special instructions -->
+            <div v-if="false" class="m-t-16">
+              <div class="t-caption c-text-black-medium p-b-8">Special instructions</div>
+              <b-input type="textarea" placeholder="Enter special instructions here."></b-input>
+              <div
+                class="t-caption c-text-black-medium m-l-16 m-r-16 m-t-8"
+              >Please note that special requests may result in price adjustment after your order is processed.</div>
+            </div>
+
+            <!-- Item Quantity -->
+            <div class="m-t-16">
+              <div class="t-caption c-text-black-medium">{{$t('sitemenu.quantity')}}</div>
+              <div class="level is-mobile m-t-8">
+                <div class="level-left">
+                  <div
+                    @click="pullCount"
+                    class="op-button-pill bg-status-red-bg w-96"
+                    :disabled="count === 0"
+                  >
+                    <i class="material-icons c-status-red">remove</i>
+                  </div>
+                </div>
+                <div class="t-h4 c-primary">{{ count }}</div>
+                <div class="level-right">
+                  <div @click="pushCount" class="op-button-pill bg-primary-bg w-96">
+                    <i class="material-icons">add</i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Add Another Order Button -->
+          <div>
+            <hr class="devider m-t-16 m-b-0" />
+            <div class="align-center m-t-16">
+              <div class="op-button-pill bg-form">
+                <i class="material-icons">add</i>
+                <span class="t-button">{{$t('sitemenu.addDifferentOptionsItem')}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
