@@ -21,8 +21,37 @@ export const createCustomer = async (db: FirebaseFirestore.Firestore, uid: strin
 }
 
 export const deleteCard = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
-  //const uid = utils.validate_auth(context);
-  return { return: true, message: "place holder" }
+  const uid = utils.validate_auth(context);
+  const refStripeSystem = db.doc(`/users/${uid}/system/stripe`)
+  const stripeInfo = (await refStripeSystem.get()).data();
+  if (!stripeInfo) {
+    return { return: true }
+  }
+  const customerId = stripeInfo.customerId
+  const stripe = utils.get_stripe();
+  const customer = await stripe.customers.retrieve(customerId) as any;
+  const sourcesData = customer?.sources?.data;
+  let cardId = null;
+  try {
+    if (sourcesData.length > 0) {
+      cardId = sourcesData[0].id;
+      await stripe.customers.deleteSource(customerId, cardId!);
+    }
+    await refStripeSystem.delete();
+    const refStripeReadOnly = db.doc(`/users/${uid}/readonly/stripe`)
+    await refStripeReadOnly.delete();
+
+    //const refStripeReadOnly = db.doc(`/users/${uid}/readonly/stripe`)
+    /*
+    await db.runTransaction(async (tr) => {
+      const stripeInfo = (await tr.get(refStripeSystem)).data();
+
+    }
+    */
+    return { return: true, customerId, cardId }
+  } catch (error) {
+    throw utils.process_error(error)
+  }
 }
 
 export const deleteCustomer = async (db: FirebaseFirestore.Firestore, uid: string) => {

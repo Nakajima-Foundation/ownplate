@@ -18,6 +18,10 @@
     "signInRestaurant": "飲食店としてサインイン",
     "deleteAccount": "アカウント削除",
     "reallyDeleteAccount": "過去の履歴は消えてしまいます。本当にアカウントを削除しますか？",
+    "stripeInfo": "クレジットカード情報",
+    "noCard": "ありません",
+    "deleteCard": "カード情報削除",
+    "reallyDeleteCard": "本当にカード情報を削除してよろしいですか？",
     "status": {
       "hasLine": "連携済み",
       "noLine": "未連携",
