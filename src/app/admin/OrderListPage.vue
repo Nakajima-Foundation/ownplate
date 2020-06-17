@@ -25,20 +25,7 @@
 
             <!-- Notification Settings -->
             <div class="level-right">
-              <!-- Notification Settings Button -->
-              <notification-setting-button
-                :notification_data="notification_data || default_notification_data"
-                @openNotificationSettings="openNotificationSettings"
-              />
-
-              <!-- Notification Settings Popup-->
-              <notification-settings
-                :shopInfo="shopInfo"
-                :notification_data="notification_data"
-                :NotificationSettingsPopup="NotificationSettingsPopup"
-                @close="closeNotificationSettings"
-                v-if="notification_data"
-              />
+              <notification-index :shopInfo="shopInfo"/>
             </div>
           </div>
 
@@ -96,15 +83,13 @@ import BackButton from "~/components/BackButton";
 import { order_status } from "~/plugins/constant.js";
 import moment from "moment";
 
-import NotificationSettings from "./Notifications/NotificationSettings";
-import NotificationSettingButton from "./Notifications/NotificationSettingButton";
+import NotificationIndex from "./Notifications/Index";
 
 export default {
   components: {
     OrderedInfo,
     BackButton,
-    NotificationSettings,
-    NotificationSettingButton
+    NotificationIndex,
   },
   data() {
     return {
@@ -112,14 +97,6 @@ export default {
       orders: [],
       dayIndex: 0,
       order_detacher: () => {},
-      NotificationSettingsPopup: false,
-      notification_data: null,
-      default_notification_data: {
-        soundOn: null,
-        infinityNotification: null,
-        uid: this.$store.getters.uidAdmin,
-        createdAt: firestore.FieldValue.serverTimestamp()
-      }
     };
   },
   watch: {
@@ -148,12 +125,6 @@ export default {
     }
     this.dateWasUpdated();
 
-    const notification = await db
-      .doc(`restaurants/${this.restaurantId()}/private/notifications`)
-      .get();
-    this.notification_data = notification.exists
-      ? Object.assign(this.default_notification_data, notification.data())
-      : this.default_notification_data;
   },
   destroyed() {
     this.order_detacher();
@@ -184,12 +155,6 @@ export default {
     }
   },
   methods: {
-    openNotificationSettings() {
-      this.NotificationSettingsPopup = true;
-    },
-    closeNotificationSettings() {
-      this.NotificationSettingsPopup = false;
-    },
     updateDayIndex() {
       const dayIndex =
         this.lastSeveralDays.findIndex(day => {

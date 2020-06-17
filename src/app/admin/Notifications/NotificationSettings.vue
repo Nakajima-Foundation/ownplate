@@ -124,9 +124,18 @@ export default {
     IncompleteOrders,
   },
   props: {
-    notification_data: Object,
-    NotificationSettingsPopup: Boolean,
-    shopInfo: Object,
+    notificationData: {
+      type: Object,
+      required: true
+    },
+    NotificationSettingsPopup: {
+      type: Boolean,
+      required: true
+    },
+    shopInfo: {
+      type: Object,
+      required: true
+    }
   },
   data() {
     return {
@@ -137,8 +146,8 @@ export default {
     };
   },
   created() {
-    this.notificationConfig = this.notification_data;
-    this.soundIndex = this.getSoundIndex(this.notification_data.nameKey);
+    this.notificationConfig = this.notificationData;
+    this.soundIndex = this.getSoundIndex(this.notificationData.nameKey);
   },
   mounted() {
     this.isActive = this.NotificationSettingsPopup;
