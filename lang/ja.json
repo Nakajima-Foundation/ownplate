@@ -249,7 +249,7 @@
     "cancelOrderComplete": "この注文はキャンセルされました",
     "pleaseStay": "このページを表示させたままにしておくと、ご注文から受け渡しまでの状況を知ることができます。",
     "thanksMessage": "お店からのメッセージ",
-    "tip": "心付け",
+    "tip": "心付け(サービス料)",
     "totalCharge": "合計金額",
     "pleasePayAtRestaurant": "オンラインでの支払いは現時点では出来ません。",
     "sendSMS": "SMSメッセージを受け取る（SMSの受信には料金がかかる場合があります）",
