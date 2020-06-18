@@ -372,8 +372,13 @@
       "lineDelete": "本当に消去しますか？"
     },
     "sound": {
-      "dora": "ドラ",
-      "pikopiko": "ピコピコ"
+      "default": "ピコリン",
+      "gong": "ジャーン",
+      "magic": "ピロピロリン",
+      "doorChime": "ピンポーン",
+      "coin": "ピコーン",
+      "cheepCheep": "ピヨピヨッ",
+      "meow": "ニャーン"
     },
     "qrcode": {
       "title": "QRコード",
