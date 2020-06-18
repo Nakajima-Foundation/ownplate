@@ -372,8 +372,13 @@
       "lineDelete": "Do you really want to delete this account？"
     },
     "sound": {
-      "dora": "Dora",
-      "pikopiko": "Pico Pico"
+      "default": "Default",
+      "gong": "Gong",
+      "magic": "Magic",
+      "doorChime": "Door Chime",
+      "coin": "Coin",
+      "cheepCheep": "Cheep Cheep",
+      "meow": "Meow"
     },
     "qrcode": {
       "title": "QRcodes",

@@ -306,11 +306,31 @@ export const regionalSettings = {
 
 export const soundFiles = [
   {
-    nameKey: "admin.sound.pikopiko",
-    file: "/notification_decorative-01.mp3",
+    nameKey: "admin.sound.default",
+    file: "/sound_default.mp3"
   },
   {
-    nameKey: "admin.sound.dora",
-    file: "/dora.mp3",
+    nameKey: "admin.sound.gong",
+    file: "/sound_gong.mp3"
   },
+  {
+    nameKey: "admin.sound.magic",
+    file: "/sound_magic.mp3"
+  },
+  {
+    nameKey: "admin.sound.doorChime",
+    file: "/sound_door_chime.mp3"
+  },
+  {
+    nameKey: "admin.sound.coin",
+    file: "/sound_coin.mp3"
+  },
+  {
+    nameKey: "admin.sound.cheepCheep",
+    file: "/sound_cheep_cheep.mp3"
+  },
+  {
+    nameKey: "admin.sound.meow",
+    file: "/sound_meow.mp3"
+  }
 ];
