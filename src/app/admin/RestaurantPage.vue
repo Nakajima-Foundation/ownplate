@@ -15,7 +15,9 @@
               <!-- Back Button and Restaurant Profile -->
               <div class="level-left flex-1"></div>
               <!-- Notification Settings -->
-              <div class="level-right"><!-- ### Put Components Here ### --></div>
+              <div class="level-right">
+                <notification-index :shopInfo="shopInfo"/>
+              </div>
             </div>
 
             <!-- Cancel and Save Button -->
@@ -692,6 +694,8 @@ import HoursInput from "./inputComponents/HoursInput";
 import TextForm from "./inputComponents/TextForm";
 import State from "./inputComponents/State";
 
+import NotificationIndex from "./Notifications/Index";
+
 import {
   taxRates,
   daysOfWeek,
@@ -705,6 +709,7 @@ export default {
     TextForm,
     State,
     BackButton,
+    NotificationIndex,
     NotFound,
     PhoneEntry,
     Price

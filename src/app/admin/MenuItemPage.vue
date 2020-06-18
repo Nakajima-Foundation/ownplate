@@ -17,7 +17,9 @@
               <!-- Back Button and Restaurant Profile -->
               <div class="level-left flex-1"></div>
               <!-- Notification Settings -->
-              <div class="level-right"><!-- ### Put Components Here ### --></div>
+              <div class="level-right">
+                <notification-index :shopInfo="restaurantInfo"/>
+              </div>
             </div>
 
             <!-- Cancel and Save Button -->
@@ -373,10 +375,10 @@ import { db, storage } from "~/plugins/firebase.js";
 
 import NotFound from "~/components/NotFound";
 import BackButton from "~/components/BackButton";
-
+import Price from "~/components/Price";
 import { taxRates } from "~/plugins/constant.js";
 
-import Price from "~/components/Price";
+import NotificationIndex from "./Notifications/Index";
 
 export default {
   name: "Order",
@@ -384,6 +386,7 @@ export default {
   components: {
     Price,
     BackButton,
+    NotificationIndex,
     NotFound
   },
 

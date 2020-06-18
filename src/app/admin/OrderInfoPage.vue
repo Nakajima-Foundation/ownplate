@@ -27,7 +27,9 @@
                 </div>
               </div>
               <!-- Notification Settings -->
-              <div class="level-right"><!-- ### Put Components Here ### --></div>
+              <div class="level-right">
+                <notification-index :shopInfo="shopInfo"/>
+              </div>
             </div>
           </div>
         </div>
@@ -216,10 +218,13 @@ import moment from "moment-timezone";
 import NotFound from "~/components/NotFound";
 import { ownPlateConfig } from "~/config/project";
 
+import NotificationIndex from "./Notifications/Index";
+
 export default {
   components: {
     BackButton,
     OrderedItem,
+    NotificationIndex,
     NotFound
   },
 

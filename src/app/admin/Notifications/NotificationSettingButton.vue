@@ -8,9 +8,9 @@
     </span>
     <!-- # Show total incomplete number -->
     <span class="t-button c-status-red">{{orderCounter}}</span>
-    <span v-if="notification_data.soundOn">
+    <span v-if="notificationData.soundOn">
       <i class="material-icons c-status-green s-18">volume_up</i>
-      <span v-if="notification_data.infinityNotification">
+      <span v-if="notificationData.infinityNotification">
         <i class="material-icons c-status-green s-18">repeat</i>
       </span>
       <span v-else>
@@ -24,7 +24,7 @@
 <script>
 export default {
   props: {
-    notification_data: Object
+    notificationData: Object
   },
   methods: {
     openNotificationSettings() {
@@ -38,7 +38,6 @@ export default {
           this.$store.state.orderObj[key] ||
             []
         ).length;
-        console.log(count);
         return tmp + count;
       }, 0);
     }
