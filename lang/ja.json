@@ -189,7 +189,10 @@
     "website": "ホームページ",
     "hours": "営業時間",
     "closed": "定休日",
-    "public": "公開"
+    "public": "公開",
+    "paymentMethod": "支払い方法",
+    "onlinePayment": "オンライン決済あり",
+    "onsitePayment": "受け取り払いあり"
   },
   "transactionsAct": {
     "title": "特定商取引法に基づく表記",
