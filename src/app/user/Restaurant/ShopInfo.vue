@@ -104,6 +104,16 @@
           </div>
         </div>
         -->
+
+        <!-- Payment Method -->
+        <div class="m-t-8 m-l-16 m-r-16">
+          <div class="t-subtitle2 c-text-black-medium p-l-8">{{$t("shopInfo.paymentMethod")}}</div>
+          <div class="is-inline-flex flex-center m-l-8">
+            <span
+              class="t-body2"
+            >{{$t('shopInfo.onlinePayment')}} / {{$t('shopInfo.onsitePayment')}}</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>

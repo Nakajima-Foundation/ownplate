@@ -189,7 +189,10 @@
     "website": "Website",
     "hours": "Hours",
     "closed": "Closed",
-    "public": "Public"
+    "public": "Public",
+    "paymentMethod": "Payment Method",
+    "onlinePayment": "Online Payment",
+    "onsitePayment": "On Site Payment"
   },
   "transactionsAct": {
     "title": "Specified Commercial Transaction Act",
