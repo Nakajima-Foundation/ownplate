@@ -1,3 +1,5 @@
+![OwnPlate-Logo](https://github.com/Nakajima-Foundation/ownplate/blob/master/src/static/OwnPlate-Logo-Horizontal-YellowBlack.svg)
+
 # OwnPlate
 
 This is an open source project for a take-out order service, which allows restaurants to create their own menu + order page. Unlike Caviar or UberEats (which charges 12% to 30% + credit card transaction fee), it costs only the credit card transaction fee (via Stripe, 2.9% + 30cents). 
