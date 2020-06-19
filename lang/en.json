@@ -253,6 +253,7 @@
     "pleaseStay": "Please stay on this page. The order status will be updated below.",
     "thanksMessage": "Message from restaurant",
     "tip": "Gratuity",
+    "maxTip": "0%〜{max}%",
     "totalCharge": "Total Charge",
     "pleasePayAtRestaurant": "Online payment was not enabled yet. Please pay at the time of pickup.",
     "sendSMS": "Receive Text Messages (standard telco fee may apply)",

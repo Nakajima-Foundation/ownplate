@@ -75,8 +75,9 @@
         <div v-if="isTipEditable" class="columns is-gapless">
           <div class="column is-narrow">
             <b-input
-              class="w-96 m-t-8 m-r-16"
+              class="w-192 m-t-8 m-r-16"
               type="number"
+              :placeholder="$t('order.maxTip', {max:regionTip.max})"
               :step="tipStep"
               v-model="tip"
               v-on:input="handleTipInput"
@@ -132,13 +133,16 @@ export default {
   },
   data() {
     return {
-      tip: 0
+      tip: ""
     };
   },
   watch: {
     orderInfo() {
-      //console.log("orderInfo changed", this.orderInfo.total);
+      console.log("orderInfo changed", this.orderInfo.total);
       if (this.isTipEditable) {
+        if (this.tip === "" && this.regionTip.default === 0) {
+          return; // display the placeholder
+        }
         this.updateTip(this.regionTip.default);
       } else {
         this.tip = this.orderInfo.tip;
@@ -162,7 +166,7 @@ export default {
       return this.orderInfo.status === order_status.validation_ok;
     },
     maxTip() {
-      return this.regionTip.max && this.calcTip(this.regionTip.max);
+      return this.calcTip(this.regionTip.max);
     }
   },
   methods: {
@@ -185,7 +189,7 @@ export default {
       if (this.tip < 0) {
         console.log("negative");
         this.tip = -this.tip;
-      } else if (this.maxTip && this.tip > this.maxTip) {
+      } else if (this.tip > this.maxTip) {
         console.log("max");
         this.tip = this.maxTip;
       }
