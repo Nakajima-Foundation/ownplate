@@ -26,6 +26,7 @@ export const stripe_regions = {
     hidePostalCode: false,
     tip: {
       default: 15,
+      max: 100,
       choices: [10, 15, 18, 20]
     },
     countries: [{ code: "+1", name: "sms.country.US" }],
@@ -48,6 +49,7 @@ export const stripe_regions = {
     hidePostalCode: false,
     tip: {
       default: 15,
+      max: 100,
       choices: [10, 15, 18, 20]
     },
     countries: [
@@ -64,6 +66,7 @@ export const stripe_regions = {
     multiple: 1,
     tip: {
       default: 0,
+      max: 30,
       choices: [0, 5, 10, 20]
     },
     countries: [{ code: "+81", name: "sms.country.JP" }],

@@ -50,12 +50,16 @@
         </div>
       </div>
 
-      <hr class="devider m-t-16 m-b-0 m-l-16 m-r-16"
-          v-if="(regionTip.choices.length > 0) && isTipEditable"
-          />
+      <hr
+        class="devider m-t-16 m-b-0 m-l-16 m-r-16"
+        v-if="(regionTip.choices.length > 0) && isTipEditable"
+      />
 
       <!-- Tip -->
-      <div v-if="regionTip.choices.length > 0 && (isTipEditable || tip > 0)" class="p-t-8 p-l-16 p-r-16">
+      <div
+        v-if="regionTip.choices.length > 0 && (isTipEditable || tip > 0)"
+        class="p-t-8 p-l-16 p-r-16"
+      >
         <div class="cols">
           <div class="flex-1">
             <div class="t-body1 c-text-black-high">{{$t('order.tip')}}</div>
@@ -71,8 +75,9 @@
         <div v-if="isTipEditable" class="columns is-gapless">
           <div class="column is-narrow">
             <b-input
-              class="w-96 m-t-8 m-r-16"
+              class="w-192 m-t-8 m-r-16"
               type="number"
+              :placeholder="$t('order.maxTip', {max:regionTip.max})"
               :step="tipStep"
               v-model="tip"
               v-on:input="handleTipInput"
@@ -128,13 +133,16 @@ export default {
   },
   data() {
     return {
-      tip: 0
+      tip: ""
     };
   },
   watch: {
     orderInfo() {
-      //console.log("orderInfo changed", this.orderInfo.total);
+      console.log("orderInfo changed", this.orderInfo.total);
       if (this.isTipEditable) {
+        if (this.tip === "" && this.regionTip.default === 0) {
+          return; // display the placeholder
+        }
         this.updateTip(this.regionTip.default);
       } else {
         this.tip = this.orderInfo.tip;
@@ -156,6 +164,9 @@ export default {
     },
     isTipEditable() {
       return this.orderInfo.status === order_status.validation_ok;
+    },
+    maxTip() {
+      return this.calcTip(this.regionTip.max);
     }
   },
   methods: {
@@ -175,10 +186,12 @@ export default {
       return Number(this.tip) === this.calcTip(ratio);
     },
     handleTipInput() {
-      //console.log("tip=", this.tip);
       if (this.tip < 0) {
-        console.log("native");
+        console.log("negative");
         this.tip = -this.tip;
+      } else if (this.tip > this.maxTip) {
+        console.log("max");
+        this.tip = this.maxTip;
       }
       this.$emit("change", Number(this.tip));
     }
