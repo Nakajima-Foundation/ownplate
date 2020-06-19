@@ -8,7 +8,6 @@
   "editor.formatOnPaste": true,
   "editor.formatOnSave": true,
   "i18n-ally.localesPaths": [
-    "lang",
-    "functions/src/lang"
+    "lang"
   ]
 }
