@@ -349,6 +349,15 @@
     "incompleteOrders": "{count} 個の未完了の注文",
     "editMenuItems": "メニューの変更（{count}）",
     "editAbout": "店情報の変更",
+    "directory": {
+      "status": "お客様向けレストラン一覧への掲載状況",
+      "notListed": "未掲載",
+      "requestList": "掲載を申請する",
+      "waiting": "申請中",
+      "cancelRequest": "申請を取り消す",
+      "listed": "掲載済み",
+      "unlist": "掲載を取り消す"
+    },
     "delete": "削除",
     "shareRestaurant": "シェア",
     "pleaseSignUp": "新規ユーザー登録",

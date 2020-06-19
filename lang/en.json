@@ -349,6 +349,15 @@
     "incompleteOrders": "{count} Incomplete Order | {count} Incomplete Orders",
     "editMenuItems": "Edit Menu ({count})",
     "editAbout": "Edit Restaurant Details",
+    "directory": {
+      "status": "Restaurant Directory",
+      "notListed": "Not Listed",
+      "requestList": "Request to be Listed",
+      "waiting": "Waiting for Approval",
+      "cancelRequest": "Cancel Request",
+      "listed": "Listed",
+      "unlist": "Unlist"
+    },
     "delete": "Delete",
     "shareRestaurant": "Share",
     "pleaseSignUp": "Sign Up as a New User",
