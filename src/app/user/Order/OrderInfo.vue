@@ -39,7 +39,7 @@
       </div>
 
       <!-- Total -->
-      <div v-if="regionTip.choices.length > 0" class="p-t-8 p-l-16 p-r-16">
+      <div v-if="false && regionTip.choices.length > 0" class="p-t-8 p-l-16 p-r-16">
         <div class="cols">
           <div class="flex-1">
             <div class="t-body1 c-text-black-high">{{$t('order.total')}}</div>
@@ -50,10 +50,12 @@
         </div>
       </div>
 
-      <hr class="devider m-t-16 m-b-0 m-l-16 m-r-16" />
+      <hr class="devider m-t-16 m-b-0 m-l-16 m-r-16"
+          v-if="(regionTip.choices.length > 0) && isTipEditable"
+          />
 
       <!-- Tip -->
-      <div v-if="regionTip.choices.length > 0" class="p-t-16 p-l-16 p-r-16">
+      <div v-if="regionTip.choices.length > 0 && (isTipEditable || tip > 0)" class="p-t-8 p-l-16 p-r-16">
         <div class="cols">
           <div class="flex-1">
             <div class="t-body1 c-text-black-high">{{$t('order.tip')}}</div>
@@ -62,7 +64,10 @@
             <span class="t-body1 c-text-black-high">{{$n(tip, 'currency')}}</span>
           </div>
         </div>
-        <!-- Tip Buttons -->
+      </div>
+      <!-- Tip Buttons -->
+
+      <div v-if="regionTip.choices.length > 0" class="p-t-16 p-l-16 p-r-16">
         <div v-if="isTipEditable" class="columns is-gapless">
           <div class="column is-narrow">
             <b-input
