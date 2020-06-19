@@ -50,12 +50,16 @@
         </div>
       </div>
 
-      <hr class="devider m-t-16 m-b-0 m-l-16 m-r-16"
-          v-if="(regionTip.choices.length > 0) && isTipEditable"
-          />
+      <hr
+        class="devider m-t-16 m-b-0 m-l-16 m-r-16"
+        v-if="(regionTip.choices.length > 0) && isTipEditable"
+      />
 
       <!-- Tip -->
-      <div v-if="regionTip.choices.length > 0 && (isTipEditable || tip > 0)" class="p-t-8 p-l-16 p-r-16">
+      <div
+        v-if="regionTip.choices.length > 0 && (isTipEditable || tip > 0)"
+        class="p-t-8 p-l-16 p-r-16"
+      >
         <div class="cols">
           <div class="flex-1">
             <div class="t-body1 c-text-black-high">{{$t('order.tip')}}</div>
@@ -156,6 +160,9 @@ export default {
     },
     isTipEditable() {
       return this.orderInfo.status === order_status.validation_ok;
+    },
+    maxTip() {
+      return this.regionTip.max && this.calcTip(this.regionTip.max);
     }
   },
   methods: {
@@ -175,10 +182,12 @@ export default {
       return Number(this.tip) === this.calcTip(ratio);
     },
     handleTipInput() {
-      //console.log("tip=", this.tip);
       if (this.tip < 0) {
-        console.log("native");
+        console.log("negative");
         this.tip = -this.tip;
+      } else if (this.maxTip && this.tip > this.maxTip) {
+        console.log("max");
+        this.tip = this.maxTip;
       }
       this.$emit("change", Number(this.tip));
     }
