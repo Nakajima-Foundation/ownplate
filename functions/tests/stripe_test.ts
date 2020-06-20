@@ -8,6 +8,11 @@ import * as test_db_helper from './test_db_helper';
 import * as test_jcb_data from './data/capabilityupdated/jcb_payments';
 import * as accountupdated from './data/accountupdated/data';
 
+import * as authorized from './data/accounts/application.authorized';
+import * as deauthorized from './data/accounts/application.deauthorized';
+
+
+
 const adminDB = test_db_helper.adminDB();
 
 should()
@@ -25,5 +30,10 @@ describe('stripe tests', () => {
 
   it ('account_updated stripe test', async function() {
     await stripeLog.account_updated(adminDB, { data: accountupdated.data});
+  });
+
+  it ('authorized stripe test', async function() {
+    await stripeLog.account_authorized(adminDB, { data: authorized.authorized});
+    await stripeLog.account_deauthorized(adminDB, { data: deauthorized.deauthorized});
   });
 });
