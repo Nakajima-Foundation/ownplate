@@ -25,6 +25,21 @@ export const customRoutes = [
     component: "user/Profile.vue"
   },
   {
+    name: "terms-admin",
+    path: "/terms/admin",
+    component: "common/TermsAdmin.vue"
+  },
+  {
+    name: "terms-user",
+    path: "/terms/user",
+    component: "common/TermsUser.vue"
+  },
+  {
+    name: "privacy",
+    path: "/privacy",
+    component: "common/Privacy.vue"
+  },
+  {
     name: "r-restaurantId",
     path: "/r/:restaurantId",
     component: "user/RestaurantPage.vue"
@@ -52,7 +67,7 @@ export const customRoutes = [
       {
         name: "admin-about",
         path: "/",
-        component: "admin/RestaurantPage.vue",
+        component: "admin/RestaurantPage.vue"
       },
       {
         name: "admin-menus",
@@ -85,7 +100,7 @@ export const customRoutes = [
         name: "admin-order-info",
         path: "orders/:orderId",
         component: "admin/OrderInfoPage.vue"
-      },
+      }
     ]
   },
   {
@@ -118,39 +133,39 @@ export const customRoutes = [
     component: "super/SuperHome.vue"
   },
   {
-    path: '/s/orders',
-    component: 'super/AllOrders.vue'
+    path: "/s/orders",
+    component: "super/AllOrders.vue"
   },
   {
-    path: '/s/restaurants',
-    component: 'super/AllRestaurants.vue'
+    path: "/s/restaurants",
+    component: "super/AllRestaurants.vue"
   },
   {
-    path: '/s/callbacks',
-    component: 'super/AllStripeCallback.vue'
+    path: "/s/callbacks",
+    component: "super/AllStripeCallback.vue"
   },
   {
-    path: '/s/callbacks/:uid/:logId',
-    component: 'super/StripeCallback.vue'
+    path: "/s/callbacks/:uid/:logId",
+    component: "super/StripeCallback.vue"
   },
   {
-    path: '/callback/line',
-    component: 'auth/LineCallback.vue'
+    path: "/callback/line",
+    component: "auth/LineCallback.vue"
   },
   {
-    path: '/callback/track',
-    component: 'auth/TrackCallback.vue'
+    path: "/callback/track",
+    component: "auth/TrackCallback.vue"
   },
   {
-    path: '/t/:traceId',
-    component: 'trace/Record.vue'
+    path: "/t/:traceId",
+    component: "trace/Record.vue"
   },
   {
-    path: '/t',
-    component: 'trace/Record.vue'
+    path: "/t",
+    component: "trace/Record.vue"
   },
   {
-    path: '*',
-    component: 'common/404.vue'
+    path: "*",
+    component: "common/404.vue"
   }
 ];
