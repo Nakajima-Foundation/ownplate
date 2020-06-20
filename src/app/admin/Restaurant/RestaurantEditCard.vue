@@ -143,50 +143,6 @@ export default {
       type: String,
       required: true
     },
-    streetaddress: {
-      type: String,
-      required: true
-    },
-    city: {
-      type: String,
-      required: true
-    },
-    state: {
-      type: String,
-      required: true
-    },
-    zip: {
-      type: String,
-      required: true
-    },
-    phonenumber: {
-      type: String,
-      required: true
-    },
-    url: {
-      type: String,
-      required: false,
-      default: ""
-    },
-    tags: {
-      type: Array,
-      required: false,
-      default: null
-    },
-    uid: {
-      type: String,
-      required: false,
-      default: ""
-    },
-    defaulttaxrate: {
-      type: Number,
-      required: false,
-      default: 0
-    },
-    publicflag: {
-      type: Boolean,
-      required: true
-    },
     numberOfMenus: {
       type: Number,
       required: true

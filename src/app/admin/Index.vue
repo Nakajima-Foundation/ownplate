@@ -138,15 +138,6 @@
                     :restprofilephoto="restaurantItem.restProfilePhoto || ''"
                     :restaurantid="restaurantItem.restaurantid"
                     :restaurantname="restaurantItem.restaurantName || ''"
-                    :streetaddress="restaurantItem.streetAddress || ''"
-                    :city="restaurantItem.city || ''"
-                    :state="restaurantItem.state || ''"
-                    :zip="restaurantItem.zip || ''"
-                    :phonenumber="restaurantItem.phoneNumber || ''"
-                    :url="restaurantItem.url"
-                    :tags="restaurantItem.tags || []"
-                    :uid="restaurantItem.uid"
-                    :publicflag="restaurantItem.publicFlag || false"
                     :numberOfMenus="restaurantItem.numberOfMenus || 0"
                     :numberOfOrders="restaurantItem.numberOfOrders || 0"
                   ></restaurant-edit-card>
@@ -231,7 +222,7 @@ export default {
       this.restaurant_detacher = db
         .collection("restaurants")
         .where("uid", "==", this.uid)
-        // todo add Condition .where("deletedFlag", "==", false)
+        .where("deletedFlag", "==", false)
         .onSnapshot(async result => {
           try {
             if (result.empty) {
@@ -242,9 +233,9 @@ export default {
               .map(doc => {
                 const restaurantId = doc.id;
 
-                if (doc.data().deletedFlag === undefined) {
-                  doc.ref.update("deletedFlag", false); // for Backward compatible
-                }
+                // if (doc.data().deletedFlag === undefined) {
+                //   doc.ref.update("deletedFlag", false); // for Backward compatible
+                // }
 
                 const data = doc.data();
                 data.restaurantid = doc.id;
