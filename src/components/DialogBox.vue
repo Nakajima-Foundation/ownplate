@@ -72,7 +72,7 @@ export default {
       return this.dialog?.error;
     },
     errorMessage() {
-      Sentry.captureException(this.error);
+      Sentry.captureException(this.error?.error);
       if (this.error.message) {
         return this.error.message;
       } else if (this.error.code) {
