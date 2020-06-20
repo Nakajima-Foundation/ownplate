@@ -10,9 +10,9 @@
       </div>
 
       <!-- Restaurant Name -->
-      <div class="m-t-8 align-center t-h6 c-text-black-high">
-        {{ restaurantname || $t("editRestaurant.noRestaurant") }}
-      </div>
+      <div
+        class="m-t-8 align-center t-h6 c-text-black-high"
+      >{{ restaurantname || $t("editRestaurant.noRestaurant") }}</div>
 
       <!-- View Page -->
       <div class="m-t-8 align-center">
@@ -35,11 +35,13 @@
           class="b-reset op-button-medium primary"
           style="min-width: 288px;"
         >
-          <span class="c-onprimary p-l-24 p-r-24">{{
+          <span class="c-onprimary p-l-24 p-r-24">
+            {{
             $tc("admin.incompleteOrders", numberOfOrders, {
-              count: numberOfOrders
+            count: numberOfOrders
             })
-          }}</span>
+            }}
+          </span>
         </b-button>
       </div>
 
@@ -51,28 +53,65 @@
           style="min-width: 256px;"
           class="op-button-small secondary"
         >
-          <span class="c-primary p-l-24 p-r-24">{{
+          <span class="c-primary p-l-24 p-r-24">
+            {{
             $t("admin.editMenuItems", { count: numberOfMenus })
-          }}</span>
+            }}
+          </span>
         </b-button>
       </div>
 
       <!-- Edit Restaurant Details -->
       <div class="align-center m-t-16">
-        <nuxt-link :to="'/admin/restaurants/' + restaurantid">
-          <div class="op-button-small secondary" style="min-width: 256px;">
-            <span class="c-primary">{{ $t("admin.editAbout") }}</span>
-          </div>
-        </nuxt-link>
+        <b-button
+          tag="nuxt-link"
+          :to="'/admin/restaurants/' + restaurantid"
+          style="min-width: 256px;"
+          class="b-reset op-button-small secondary"
+        >
+          <span class="c-primary">{{ $t("admin.editAbout") }}</span>
+        </b-button>
       </div>
 
       <!-- QR code -->
       <div class="align-center m-t-16">
-        <nuxt-link :to="`/admin/restaurants/${restaurantid}/qrcode`">
-          <div class="op-button-small secondary" style="min-width: 256px;">
-            <span class="c-primary">{{ $t("admin.qrcode.title") }}</span>
-          </div>
-        </nuxt-link>
+        <b-button
+          tag="nuxt-link"
+          :to="`/admin/restaurants/${restaurantid}/qrcode`"
+          style="min-width: 256px;"
+          class="b-reset op-button-small secondary"
+        >
+          <span class="c-primary">{{ $t("admin.qrcode.title") }}</span>
+        </b-button>
+      </div>
+
+      <!-- Directory Request -->
+      <div class="align-center m-t-16">
+        <div class="t-subtitle2 c-text-black-disabled">{{ $t("admin.directory.status") }}</div>
+
+        <!-- Off Directory -->
+        <div v-if="true">
+          <div class="m-t-8 c-text-black-disabled t-subtitle1">{{ $t("admin.directory.notListed") }}</div>
+          <b-button class="b-reset op-button-pill bg-form t-button m-t-16">
+            <span class="t-button c-primary">{{ $t("admin.directory.requestList") }}</span>
+          </b-button>
+        </div>
+
+        <!-- Requested -->
+        <div v-if="false">
+          <div class="m-t-8 c-text-black-disabled t-subtitle1">{{ $t("admin.directory.waiting") }}</div>
+          <b-button class="b-reset op-button-pill bg-form t-button m-t-16">
+            <span class="t-button c-status-red">{{ $t("admin.directory.cancelRequest") }}</span>
+          </b-button>
+        </div>
+
+        <!-- On Directory -->
+        <div v-if="false">
+          <div class="m-t-8 c-status-green t-subtitle1">{{ $t("admin.directory.listed") }}</div>
+          <b-button class="b-reset op-button-pill bg-form t-button m-t-16">
+            <span class="t-button c-status-red">{{ $t("admin.directory.unlist") }}</span>
+          </b-button>
+        </div>
       </div>
 
       <!-- Delete Restaurant -->
