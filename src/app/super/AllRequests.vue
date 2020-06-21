@@ -1,0 +1,73 @@
+<template>
+  <section class="section">
+    <back-button url="/s" />
+    <h2>All Requests</h2>
+    <table>
+      <tr><td>nama</td><td>Status</td></tr>
+      <tr
+      v-for="request in requests"
+      :key="request.id"
+      >
+        <td style="width: 50%">
+          <router-link :to="`/r/${request.id}`">
+            {{request.id}}
+          </router-link>
+        </td>
+        <td>
+          <span>
+            {{request.status}}
+          </span>
+        </td>
+      </tr>
+    </table>
+  </section>
+</template>
+
+<script>
+import BackButton from "~/components/BackButton";
+import { db } from "~/plugins/firebase.js";
+import * as firebase from "firebase/app";
+
+export default {
+  components: {
+    BackButton
+  },
+  data() {
+    return {
+      requests: [],
+      detacher: null,
+      restaurantsObj: {},
+    };
+  },
+  async mounted() {
+    if (!this.$store.state.user || this.$store.getters.isNotSuperAdmin) {
+      this.$router.push("/");
+    }
+  },
+  created() {
+    this.detatcher = db
+      .collection("requestList")
+      .limit(100)
+      .orderBy("created", "desc")
+      .onSnapshot(async snapshot => {
+        this.requests = snapshot.docs.map(this.doc2data("request"));
+        const ids =  this.requests.map((a) => a.id);
+
+        const resCols = await db.collection('restaurants')
+              .where(
+                firebase.firestore.FieldPath.documentId(),
+                'in',
+                ids
+              ).get();
+        if (!resCols.empty) {
+          this.restaurantsObj = this.array2obj(resCols.docs);
+        }
+      });
+  },
+  destroyed() {
+    this.detatcher && this.detatcher();
+  },
+  methods: {
+  }
+};
+</script>
