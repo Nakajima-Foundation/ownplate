@@ -51,7 +51,6 @@ export default {
       .orderBy("created", "desc")
       .onSnapshot(async snapshot => {
         this.requests = snapshot.docs.map(this.doc2data("request"));
-        console.log(this.requests);
         const ids =  this.requests.map((a) => a.id);
 
         const resCols = await db.collection('restaurants')
