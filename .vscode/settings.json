@@ -6,5 +6,8 @@
   "editor.tabSize": 2,
   "editor.formatOnType": true,
   "editor.formatOnPaste": true,
-  "editor.formatOnSave": true
+  "editor.formatOnSave": true,
+  "i18n-ally.localesPaths": [
+    "lang"
+  ]
 }

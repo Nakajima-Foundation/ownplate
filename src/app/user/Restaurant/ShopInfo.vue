@@ -104,6 +104,20 @@
           </div>
         </div>
         -->
+
+        <!-- Payment Method -->
+        <div class="m-t-8 m-l-16 m-r-16">
+          <div class="t-subtitle2 c-text-black-medium p-l-8">{{$t("shopInfo.paymentMethod")}}</div>
+          <div class="is-inline-flex flex-center m-l-8">
+            <span
+              class="t-body2"
+              >
+              <span v-if="showPayment">{{$t('shopInfo.onlinePayment')}}</span>
+              <span v-if="showPayment && inStorePayment">/</span>
+              <span v-if="inStorePayment">{{$t('shopInfo.onsitePayment')}}</span>
+            </span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -119,6 +133,9 @@ import {
 import { ownPlateConfig } from "@/config/project";
 import TransactionsAct from "~/app/user/TransactionsAct";
 
+import { db } from "~/plugins/firebase.js";
+import { releaseConfig } from "~/plugins/config.js";
+
 export default {
   components: {
     TransactionsAct
@@ -129,13 +146,19 @@ export default {
       required: true
     }
   },
+  async created() {
+    const uid = this.shopInfo.uid;
+    const snapshot = await db.doc(`/admins/${uid}/public/payment`).get();
+    this.paymentInfo = snapshot.data() || {};
+  },
   data() {
     const d = new Date();
     return {
       url: this.shareUrl(),
       days: daysOfWeek,
       weekday: d.getDay(),
-      today: d
+      today: d,
+      paymentInfo: {},
     };
   },
   computed: {
@@ -196,6 +219,15 @@ export default {
     },
     region() {
       return ownPlateConfig.region;
+    },
+    showPayment() {
+      return !releaseConfig.hidePayment && this.stripeAccount;
+    },
+    stripeAccount() {
+      return this.paymentInfo.stripe;
+    },
+    inStorePayment() {
+      return this.paymentInfo.inStore;
     }
   },
   mounted() {

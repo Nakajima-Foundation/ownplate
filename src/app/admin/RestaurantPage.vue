@@ -10,8 +10,18 @@
         <!-- Center Column -->
         <div class="column">
           <div class="m-l-24 m-r-24 m-t-24">
+            <!-- Nav Bar -->
+            <div class="level">
+              <!-- Back Button and Restaurant Profile -->
+              <div class="level-left flex-1"></div>
+              <!-- Notification Settings -->
+              <div class="level-right">
+                <notification-index :shopInfo="shopInfo"/>
+              </div>
+            </div>
+
             <!-- Cancel and Save Button -->
-            <div class="align-center">
+            <div class="align-center m-t-24">
               <!-- Cancel Button -->
               <b-button
                 class="b-reset op-button-small tertiary m-r-16"
@@ -548,12 +558,21 @@
                 :key="index"
                 class="bg-form r-8 m-t-8 p-l-16 p-r-16 p-t-16 p-b-16"
               >
-                <div>
-                  <b-checkbox v-model="shopInfo.businessDay[index]">
-                    {{
-                    $t("week.short." + day)
-                    }}
-                  </b-checkbox>
+                <div class="cols flex-center">
+                  <!-- Enable/Disable Day -->
+                  <div class="flex-1">
+                    <b-checkbox v-model="shopInfo.businessDay[index]">
+                      {{
+                      $t("week.short." + day)
+                      }}
+                    </b-checkbox>
+                  </div>
+
+                  <!-- Copy Previous Day -->
+                  <div class="op-button-text" @click="copyPreviousDay(index)">
+                    <i class="material-icons c-primary s-18">content_copy</i>
+                    <span>{{ $t("editRestaurant.copyPreviousDay") }}</span>
+                  </div>
                 </div>
                 <div class="m-t-8">
                   <hours-input
@@ -675,6 +694,8 @@ import HoursInput from "./inputComponents/HoursInput";
 import TextForm from "./inputComponents/TextForm";
 import State from "./inputComponents/State";
 
+import NotificationIndex from "./Notifications/Index";
+
 import {
   taxRates,
   daysOfWeek,
@@ -688,6 +709,7 @@ export default {
     TextForm,
     State,
     BackButton,
+    NotificationIndex,
     NotFound,
     PhoneEntry,
     Price
@@ -793,13 +815,13 @@ export default {
     restProfilePhoto() {
       return (
         (this.shopInfo?.images?.profile?.resizedImages || {})["600"] ||
-        this.shopInfo.restProfilePhoto
+          this.shopInfo.restProfilePhoto
       );
     },
     restCoverPhoto() {
       return (
         (this.shopInfo?.images?.cover?.resizedImages || {})["600"] ||
-        this.shopInfo.restCoverPhoto
+          this.shopInfo.restCoverPhoto
       );
     },
     uid() {
@@ -869,8 +891,8 @@ export default {
       const ex = new RegExp("^(https?)://[^\\s]+$");
       err["url"] =
         this.shopInfo.url && !ex.test(this.shopInfo.url)
-          ? ["validationError.url.invalidUrl"]
-          : [];
+        ? ["validationError.url.invalidUrl"]
+        : [];
 
       err["time"] = {};
       Object.keys(daysOfWeek).forEach(key => {
@@ -880,7 +902,7 @@ export default {
           if (this.shopInfo.businessDay[key]) {
             if (
               this.shopInfo.openTimes[key] &&
-              this.shopInfo.openTimes[key][key2]
+                this.shopInfo.openTimes[key][key2]
             ) {
               const data = this.shopInfo.openTimes[key][key2];
               if (this.isNull(data.start) ^ this.isNull(data.end)) {
@@ -924,6 +946,11 @@ export default {
     }
   },
   methods: {
+    copyPreviousDay(index) {
+      const prevIndex = (index === "1") ? 7 : index - 1;
+      this.shopInfo.businessDay[index] = this.shopInfo.businessDay[prevIndex];
+      this.shopInfo.openTimes[index] = this.shopInfo.openTimes[prevIndex].map((a) => {return {...a};});
+    },
     handleProfileImage(e) {
       this.files["profile"] = e;
     },

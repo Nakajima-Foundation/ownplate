@@ -55,6 +55,24 @@
                   </b-field>-->
 
                   <div v-if="user.phoneNumber">
+                    <!-- Credit Card Info -->
+                    <div class="align-center p-t-16">
+                      <div
+                        class="t-subtitle2 c-text-black-disabled p-b-8"
+                      >{{ $t("profile.stripeInfo") }}</div>
+                      <div class="t-subtitle1 c-text-black-high">{{ cardDescription }}</div>
+                      <div v-if="storedCard">
+                        <b-button class="b-reset op-button-text" @click="handleDeleteCard">
+                          <i class="material-icons c-status-red">delete</i>
+                          <span class="c-status-red">
+                            {{
+                            $t("profile.deleteCard")
+                            }}
+                          </span>
+                        </b-button>
+                      </div>
+                    </div>
+
                     <!-- LINE -->
                     <div class="bg-form r-8 p-l-16 p-r-16 p-t-24 p-b-24 m-t-24">
                       <!-- LINE Status -->
@@ -181,13 +199,26 @@ export default {
       loginVisible: false,
       reLoginVisible: false,
       isFriend: undefined,
-      isDeletingAccount: false
+      isDeletingAccount: false,
+      storedCard: null,
+      detachStripe: null
     };
   },
-  created() {
+  async created() {
     if (this.isLineUser) {
       this.checkFriend();
     }
+    if (this.user.phoneNumber) {
+      this.detachStripe = db
+        .doc(`/users/${this.user.uid}/readonly/stripe`)
+        .onSnapshot(snapshot => {
+          const stripeInfo = snapshot.data();
+          this.storedCard = stripeInfo?.card;
+        });
+    }
+  },
+  destroyed() {
+    this.detachStripe && this.detachStripe();
   },
   watch: {
     isWindowActive(newValue) {
@@ -218,6 +249,11 @@ export default {
     },
     claims() {
       return this.$store.state.claims;
+    },
+    cardDescription() {
+      return this.storedCard
+        ? `${this.storedCard.brand} ***${this.storedCard.last4}`
+        : this.$t("profile.noCard");
     },
     lineConnection() {
       return this.isLineUser
@@ -268,6 +304,26 @@ export default {
         callback: async () => {
           window.scrollTo(0, 0);
           this.reLoginVisible = true;
+        }
+      });
+    },
+    handleDeleteCard() {
+      this.$store.commit("setAlert", {
+        code: "profile.reallyDeleteCard",
+        callback: async () => {
+          console.log("handleDeleteCard");
+          this.$store.commit("setLoading", true);
+          try {
+            const stripeDeleteCard = functions.httpsCallable(
+              "stripeDeleteCard"
+            );
+            const { data } = await stripeDeleteCard();
+            console.log("stripeDeleteCard", data);
+          } catch (error) {
+            console.error(error);
+          } finally {
+            this.$store.commit("setLoading", false);
+          }
         }
       });
     },

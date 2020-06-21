@@ -64,7 +64,7 @@ export default {
           throw new Error("something is wrong");
         }
       } catch (error) {
-        console.error(error.message, error.details);
+        console.error(error.message, error.details, error.details?.params);
         this.$store.commit("setErrorMessage", {
           code: "line.validation",
           message2: "errorPage.message.line",

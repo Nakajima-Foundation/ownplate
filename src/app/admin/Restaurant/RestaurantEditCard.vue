@@ -5,14 +5,14 @@
       <div class="align-center">
         <img
           class="w-64 h-64 r-64 cover"
-          :src="restprofilephoto || '/OwnPlate-Favicon-Default.png'"
+          :src="shopInfo.restProfilePhoto || '/OwnPlate-Favicon-Default.png'"
         />
       </div>
 
       <!-- Restaurant Name -->
-      <div class="m-t-8 align-center t-h6 c-text-black-high">
-        {{ restaurantname || $t("editRestaurant.noRestaurant") }}
-      </div>
+      <div
+        class="m-t-8 align-center t-h6 c-text-black-high"
+      >{{ shopInfo.restaurantName || $t("editRestaurant.noRestaurant") }}</div>
 
       <!-- View Page -->
       <div class="m-t-8 align-center">
@@ -35,11 +35,13 @@
           class="b-reset op-button-medium primary"
           style="min-width: 288px;"
         >
-          <span class="c-onprimary p-l-24 p-r-24">{{
+          <span class="c-onprimary p-l-24 p-r-24">
+            {{
             $tc("admin.incompleteOrders", numberOfOrders, {
-              count: numberOfOrders
+            count: numberOfOrders
             })
-          }}</span>
+            }}
+          </span>
         </b-button>
       </div>
 
@@ -51,28 +53,67 @@
           style="min-width: 256px;"
           class="op-button-small secondary"
         >
-          <span class="c-primary p-l-24 p-r-24">{{
+          <span class="c-primary p-l-24 p-r-24">
+            {{
             $t("admin.editMenuItems", { count: numberOfMenus })
-          }}</span>
+            }}
+          </span>
         </b-button>
       </div>
 
       <!-- Edit Restaurant Details -->
       <div class="align-center m-t-16">
-        <nuxt-link :to="'/admin/restaurants/' + restaurantid">
-          <div class="op-button-small secondary" style="min-width: 256px;">
-            <span class="c-primary">{{ $t("admin.editAbout") }}</span>
-          </div>
-        </nuxt-link>
+        <b-button
+          tag="nuxt-link"
+          :to="'/admin/restaurants/' + restaurantid"
+          style="min-width: 256px;"
+          class="b-reset op-button-small secondary"
+        >
+          <span class="c-primary">{{ $t("admin.editAbout") }}</span>
+        </b-button>
       </div>
 
       <!-- QR code -->
       <div class="align-center m-t-16">
-        <nuxt-link :to="`/admin/restaurants/${restaurantid}/qrcode`">
-          <div class="op-button-small secondary" style="min-width: 256px;">
-            <span class="c-primary">{{ $t("admin.qrcode.title") }}</span>
-          </div>
-        </nuxt-link>
+        <b-button
+          tag="nuxt-link"
+          :to="`/admin/restaurants/${restaurantid}/qrcode`"
+          style="min-width: 256px;"
+          class="b-reset op-button-small secondary"
+        >
+          <span class="c-primary">{{ $t("admin.qrcode.title") }}</span>
+        </b-button>
+      </div>
+
+      <!-- Directory Request -->
+      <div class="align-center m-t-16">
+        <div class="t-subtitle2 c-text-black-disabled">{{ $t("admin.directory.status") }}</div>
+
+        <!-- On Directory -->
+        <div v-if="shopInfo.onTheList">
+          <div class="m-t-8 c-status-green t-subtitle1">{{ $t("admin.directory.listed") }}</div>
+          <b-button class="b-reset op-button-pill bg-form t-button m-t-16" @click="deleteFromList">
+            <span class="t-button c-status-red">{{ $t("admin.directory.unlist") }}</span>
+          </b-button>
+        </div>
+
+        <!-- Requested -->
+        <div v-else-if="requestState==1">
+          <div class="m-t-8 c-text-black-disabled t-subtitle1">{{ $t("admin.directory.waiting") }}</div>
+          <b-button class="b-reset op-button-pill bg-form t-button m-t-16" @click="requestDelete">
+            <span class="t-button c-status-red">{{ $t("admin.directory.cancelRequest") }}</span>
+          </b-button>
+        </div>
+
+        <!-- Off Directory -->
+        <div v-else="false">
+          <div class="m-t-8 c-text-black-disabled t-subtitle1">{{ $t("admin.directory.notListed") }}</div>
+          <b-button class="b-reset op-button-pill bg-form t-button m-t-16" @click="requestList">
+            <span class="t-button c-primary">{{ $t("admin.directory.requestList") }}</span>
+          </b-button>
+        </div>
+
+
       </div>
 
       <!-- Delete Restaurant -->
@@ -88,64 +129,17 @@
 
 <script>
 import { db } from "~/plugins/firebase.js";
+import * as firebase from "firebase/app";
 
 export default {
   name: "RestaurantEditCard",
   props: {
+    shopInfo: {
+      type: Object,
+      required: true
+    },
     restaurantid: {
       type: String,
-      required: true
-    },
-    restprofilephoto: {
-      type: String,
-      required: true
-    },
-    restaurantname: {
-      type: String,
-      required: true
-    },
-    streetaddress: {
-      type: String,
-      required: true
-    },
-    city: {
-      type: String,
-      required: true
-    },
-    state: {
-      type: String,
-      required: true
-    },
-    zip: {
-      type: String,
-      required: true
-    },
-    phonenumber: {
-      type: String,
-      required: true
-    },
-    url: {
-      type: String,
-      required: false,
-      default: ""
-    },
-    tags: {
-      type: Array,
-      required: false,
-      default: null
-    },
-    uid: {
-      type: String,
-      required: false,
-      default: ""
-    },
-    defaulttaxrate: {
-      type: Number,
-      required: false,
-      default: 0
-    },
-    publicflag: {
-      type: Boolean,
       required: true
     },
     numberOfMenus: {
@@ -160,9 +154,18 @@ export default {
   data() {
     return {
       host: location.protocol + "//" + location.host,
-      share_url:
-        location.protocol + "//" + location.host + "/r/" + this.restaurantid
+      share_url: location.protocol + "//" + location.host + "/r/" + this.restaurantid,
+      requestState: 0,
     };
+  },
+  mounted() {
+    db.doc(`requestList/${this.restaurantid}`).onSnapshot(async result => {
+      if (result.exists) {
+        this.requestState = result.data().status;
+      } else {
+        this.requestState = 0;
+      }
+    });
   },
   methods: {
     deleteRestaurant() {
@@ -177,7 +180,30 @@ export default {
           );
         }
       });
-    }
+    },
+    deleteFromList() {
+      this.$store.commit("setAlert", {
+        code: "editRestaurant.reallyOnListDelete",
+        callback: () => {
+          console.log(this.restaurantid);
+          db.doc(`restaurants/${this.restaurantid}`).update(
+            "onTheList",
+            false
+          );
+        }
+      });
+    },
+    requestList() {
+      db.doc(`requestList/${this.restaurantid}`).set({
+        status: 1,
+        uid: this.$store.getters.uidAdmin,
+        created: firebase.firestore.FieldValue.serverTimestamp(),
+      })
+
+    },
+    requestDelete() {
+      db.doc(`requestList/${this.restaurantid}`).delete();
+    },
   }
 };
 </script>
