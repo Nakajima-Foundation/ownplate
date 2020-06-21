@@ -21,12 +21,17 @@ export default {
       console.log("enableSound");
       if (!this.pleyedSilent) {
         console.log("silent play");
-        this.$refs.audio.setAttribute("src", "/silence.mp3");
-        this.$refs.audio.currentTime = 0;
-        await this.$refs.audio.play();
+        try {
+          this.$refs.audio.setAttribute("src", "/silence.mp3");
+          this.$refs.audio.currentTime = 0;
+          await this.$refs.audio.play();
 
-        this.pleyedSilent = true;
-        this.$store.commit("soundEnable");
+          this.pleyedSilent = true;
+          this.$store.commit("soundEnable");
+        } catch (e) {
+          console.log(e);
+          console.log("error");
+        }
       }
     },
     async play() {

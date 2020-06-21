@@ -135,18 +135,8 @@
                   :key="restaurantItem.id"
                 >
                   <restaurant-edit-card
-                    :restprofilephoto="restaurantItem.restProfilePhoto || ''"
+                    :shopInfo="restaurantItem"
                     :restaurantid="restaurantItem.restaurantid"
-                    :restaurantname="restaurantItem.restaurantName || ''"
-                    :streetaddress="restaurantItem.streetAddress || ''"
-                    :city="restaurantItem.city || ''"
-                    :state="restaurantItem.state || ''"
-                    :zip="restaurantItem.zip || ''"
-                    :phonenumber="restaurantItem.phoneNumber || ''"
-                    :url="restaurantItem.url"
-                    :tags="restaurantItem.tags || []"
-                    :uid="restaurantItem.uid"
-                    :publicflag="restaurantItem.publicFlag || false"
                     :numberOfMenus="restaurantItem.numberOfMenus || 0"
                     :numberOfOrders="restaurantItem.numberOfOrders || 0"
                   ></restaurant-edit-card>
@@ -205,18 +195,6 @@ export default {
       region: ownPlateConfig.region,
       readyToDisplay: false,
       isCreating: false,
-      restProfilePhoto: null,
-      restProfilePhotoImageUrl: "",
-      restCoverPhoto: null,
-      restCoverPhotoImageUrl: "",
-      restaurantName: "",
-      streetAddress: "",
-      city: "",
-      state: "",
-      zip: "",
-      phoneNumber: "",
-      url: "",
-      tags: "",
       restaurantItems: null,
       detachers: [],
       restaurant_detacher: null,
@@ -231,7 +209,7 @@ export default {
       this.restaurant_detacher = db
         .collection("restaurants")
         .where("uid", "==", this.uid)
-        // todo add Condition .where("deletedFlag", "==", false)
+        .where("deletedFlag", "==", false)
         .onSnapshot(async result => {
           try {
             if (result.empty) {
@@ -241,10 +219,6 @@ export default {
             this.restaurantItems = (result.docs || [])
               .map(doc => {
                 const restaurantId = doc.id;
-
-                if (doc.data().deletedFlag === undefined) {
-                  doc.ref.update("deletedFlag", false); // for Backward compatible
-                }
 
                 const data = doc.data();
                 data.restaurantid = doc.id;

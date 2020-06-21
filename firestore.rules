@@ -117,6 +117,11 @@ service cloud.firestore {
       }
     }
 
+    match /requestList/{restaurantId} {
+      allow read, write: if isAdmin(request) && isRestaurantOwner(restaurantId, request);
+      allow read: if isSuper(request);
+    }
+
     match /hash/{hashId}{
       match /records/{eventId} {
         allow write: if hashing.sha256(request.auth.token.line).toHexString().lower() == hashId
