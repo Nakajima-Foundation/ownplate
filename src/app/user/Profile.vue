@@ -208,7 +208,7 @@ export default {
     if (this.isLineUser) {
       this.checkFriend();
     }
-    if (this.user.phoneNumber) {
+    if (this.user && this.user.phoneNumber) {
       this.detachStripe = db
         .doc(`/users/${this.user.uid}/readonly/stripe`)
         .onSnapshot(snapshot => {
