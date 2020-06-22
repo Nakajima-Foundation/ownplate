@@ -140,25 +140,15 @@
                     <h6>１１. 個人情報の開示、訂正及び利用停止、並びに個人情報の取扱いに関する苦情申出等</h6>
                     <p>会員がご自身の個人情報の開示、訂正及び利用停止などをご希望される場合の窓口、その他本プライバシーポリシーに関するお問合せの窓口は、次のとおりです。なお、個人情報の開示、訂正及び利用停止などをご希望される場合は、ご本人であることを確認の上、対応いたします。</p>
                     <div
-                      class="bg-form r-8 m-t-24 p-l-16 p-r-16 p-t-16 p-b-16 t-body2 c-text-black-medium align-center"
+                      class="bg-form r-8 m-t-24 p-l-16 p-r-16 p-t-16 p-b-16 t-body2 c-text-black-medium"
                     >
                       <div>【窓口】</div>
                       <div class="m-t-4">一般社団法人シンギュラリティ・ソサエティ</div>
                       <div class="m-t-4">個人情報取扱担当窓口</div>
-                      <a
-                        href="https://docs.google.com/forms/d/e/1FAIpQLSfGR4kk65ynfkCRGJsvJz01HZf7AU1nGLL9Rn9i4G9-qiW6MQ/viewform"
-                        target="_blank"
-                      >
-                        <div class="op-button-small bg-text-white-high m-t-16">
-                          <i class="material-icons c-primary s-18 m-r-8">mail_outline</i>
-                          <span class="c-primary t-button">
-                            {{
-                            $t("admin.suportPage")
-                            }}
-                          </span>
-                        </div>
-                      </a>
-                      <!-- <div class="m-t-4">Eメール：●●●</div> -->
+                      <div class="is-inline-flex flex-center">
+                        <span class="m-t-4">Eメール：</span>
+                        <img src="~static/email-privacy.svg" />
+                      </div>
                     </div>
                   </section>
 
