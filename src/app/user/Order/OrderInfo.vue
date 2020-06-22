@@ -58,7 +58,7 @@
       <!-- Tip -->
       <div
         v-if="regionTip.choices.length > 0 && (isTipEditable || tip > 0)"
-        class="p-t-8 p-l-16 p-r-16"
+        class="p-t-16 p-l-16 p-r-16"
       >
         <div class="cols">
           <div class="flex-1">
@@ -69,13 +69,13 @@
           </div>
         </div>
       </div>
-      <!-- Tip Buttons -->
 
+      <!-- Tip Buttons -->
       <div v-if="regionTip.choices.length > 0" class="p-t-16 p-l-16 p-r-16">
         <div v-if="isTipEditable" class="columns is-gapless">
           <div class="column is-narrow">
             <b-input
-              class="w-192 m-t-8 m-r-16"
+              class="w-192"
               type="number"
               :placeholder="$t('order.maxTip', {max:regionTip.max})"
               :step="tipStep"

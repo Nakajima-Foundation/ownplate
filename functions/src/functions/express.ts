@@ -165,6 +165,12 @@ export const stripe_parser = async (req, res) => {
       await stripeLog.capability_updated(db, event)
     } else if (event.type === "account.updated") {
       await stripeLog.account_updated(db, event);
+    } else if (event.type === "account.application.authorized") {
+      await stripeLog.account_authorized(db, event);
+    } else if (event.type === "account.application.deauthorized") {
+      await stripeLog.account_deauthorized(db, event);
+    } else {
+      await stripeLog.unknown_log(db, event);
     }
     res.json({});
   } catch (err) {

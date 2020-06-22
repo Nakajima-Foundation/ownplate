@@ -11,6 +11,7 @@
         :class="`op-button-pill ${index === 0 ? 'bg-status-red-bg' : 'bg-form'} m-t-8 m-r-8`"
         :to="`/admin/restaurants/${restaurantId()}/orders?day=${moment(day.date).format('YYYY-MM-DD')}`"
         v-for="(day, index) in lastSeveralDays"
+        :key="day.index"
         >
         <!-- # Link to the date -->
         <span :class="`t-button ${index === 0 ? 'c-status-red' : 'c-primary'}`">
