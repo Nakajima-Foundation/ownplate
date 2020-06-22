@@ -322,6 +322,13 @@
       "newsTop": "お知らせ一覧",
       "adminTop": "管理画面"
     },
+    "notes": {
+      "title": "ご注意",
+      "userRestaurantsTitle": "お客様向け飲食店一覧について",
+      "userRestaurantsBody": "登録した飲食店は自動でお客様向け飲食店一覧には表示されません。「掲載を申請する」ボタンより申請後、運営の審査を経てお客様向け飲食店一覧に掲載されます。",
+      "notificationSoundTitle": "通知音について",
+      "notificationSoundBody": "注文に関する通知音は注文一覧ページを表示中に再生されます（このページでは再生されません）。複数の店舗を利用している場合はそれぞれの注文一覧ページを別のウィンドウで開いておいてください。"
+    },
     "hidePayment": "課金の仕組みはまもなく提供される予定です。少々お待ちください。",
     "pleaseSignIn": "サインインしてください（飲食店向け）",
     "registration": "登録してください（飲食店向け）",
@@ -355,7 +362,7 @@
     "editMenuItems": "メニューの変更（{count}）",
     "editAbout": "店情報の変更",
     "directory": {
-      "status": "お客様向けレストラン一覧への掲載状況",
+      "status": "お客様向け飲食店一覧への掲載状況",
       "notListed": "未掲載",
       "requestList": "掲載を申請する",
       "waiting": "申請中",
