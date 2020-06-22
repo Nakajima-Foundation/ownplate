@@ -1,6 +1,3 @@
-import i18nEN from './lang/en.json';
-import i18nES from './lang/es.json';
-import i18nJA from './lang/ja.json';
 import { ownPlateConfig } from "./src/config/project";
 import { regionalSettings } from "./src/plugins/constant";
 import { defaultHeader } from "./src/plugins/header";
