@@ -235,8 +235,7 @@
                   <div class="t-body1 c-text-black-medium m-t-4">2020年6月22日</div>
                   <div class="t-body1 c-text-black-medium m-t-4">最終改定</div>
 
-                  <div class="t-body1 c-text-black-medium m-t-24">担当：コンテンツブレイン 小池/松村</div>
-                  <div class="t-body1 c-text-black-medium m-t-4">SS：有本/武藤</div>
+                  <div class="t-body1 c-text-black-medium m-t-24">SS：有本/武藤</div>
                 </div>
               </div>
             </div>
