@@ -141,6 +141,10 @@ export const customRoutes = [
     component: "super/AllRestaurants.vue"
   },
   {
+    path: "/s/requests",
+    component: "super/AllRequests.vue"
+  },
+  {
     path: "/s/callbacks",
     component: "super/AllStripeCallback.vue"
   },
