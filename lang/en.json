@@ -489,6 +489,8 @@
       },
       "stripe": {
         "confirm": "Failed to confirm the payment.",
+        "connect": "Failed to connect the Stripe account.",
+        "disconnect": "Failed to disconnect the Stripe account.",
         "intent": "Failed to process the payment."
       },
       "menu": {
