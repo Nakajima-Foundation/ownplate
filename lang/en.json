@@ -322,6 +322,13 @@
       "newsTop": "News Top",
       "adminTop": "Admin Top"
     },
+    "notes": {
+      "title": "Notes",
+      "userRestaurantsTitle": "About Restaurants List for User",
+      "userRestaurantsBody": "The restaurants you have added will not automatically appear on the list of restaurants for users. Please click the [Request to be Listed] button and your restaurant will be added to the list after approved. ",
+      "notificationSoundTitle": "About Notification Sound",
+      "notificationSoundBody": "Order notification sound will be played while viewing the order list page (not on this page). If you are using more than one restaurant, keep each order list page open in a separate window."
+    },
     "hidePayment": "Payment feature is coming soon. Please stay tuned.",
     "pleaseSignIn": "Sign In (for Restaurant)",
     "registration": "Registration (for Restaurant)",
