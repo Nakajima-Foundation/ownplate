@@ -9,6 +9,14 @@ export const connect = async (db: FirebaseFirestore.Firestore, data: any, contex
   utils.validate_params({ code })
 
   try {
+    const refStripe = db.doc(`/admins/${uid}/system/stripe`)
+
+    // Detect the case where this function was called again with same code twice
+    const stripeInfo = (await refStripe.get()).data();
+    if (stripeInfo && stripeInfo.code === code) {
+      return { result: true, duplicate: true }
+    }
+
     const response = await stripe.oauth.token({
       grant_type: 'authorization_code',
       code: code
@@ -16,15 +24,15 @@ export const connect = async (db: FirebaseFirestore.Firestore, data: any, contex
 
     const batch = db.batch()
     batch.set(
-      db.doc(`/admins/${uid}/system/stripe`),
-      response
+      refStripe,
+      { auth: response, code },
     )
     batch.update(
       db.doc(`/admins/${uid}/public/payment`), {
       stripe: response.stripe_user_id
     })
     await batch.commit()
-    return { result: response }
+    return { result: true }
   } catch (error) {
     throw utils.process_error(error)
   }
