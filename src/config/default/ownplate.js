@@ -14,7 +14,11 @@ export const ownPlateConfig = {
   siteDescription: "Zero Comission Take-out Service",
   releasName: "beta",
   region: "US",
-  hostName: "ownplate.today"
+  hostName: "ownplate.today",
+  stripe: {
+    dashboard: "https://dashboard.stripe.com/dashboard",
+    search: "https://dashboard.stripe.com/search",
+  },
 };
 
 export const sentryDsn = 'https://370e22db44d64d028df9d40829999274@o391740.ingest.sentry.io/5238405';

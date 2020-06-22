@@ -11,17 +11,24 @@
         <!-- Center Column -->
         <div class="column">
           <div class="m-l-24 m-r-24">
-            <!-- Back Button and Restaurant Profile -->
-            <div>
-              <!-- Back Button -->
-              <back-button :url="parentUrl" class="m-t-24" />
+            <!-- Nav Bar -->
+            <div class="level">
+              <!-- Back Button and Restaurant Profile -->
+              <div class="level-left flex-1">
+                <!-- Back Button -->
+                <back-button :url="parentUrl" class="m-t-24 m-r-16" />
 
-              <!-- Restaurant Profile -->
-              <div class="is-inline-flex flex-center m-l-16 m-t-24">
-                <div>
-                  <img :src="shopInfo.restProfilePhoto" class="w-36 h-36 r-36 cover" />
+                <!-- Restaurant Profile -->
+                <div class="is-inline-flex flex-center m-t-24">
+                  <div>
+                    <img :src="shopInfo.restProfilePhoto" class="w-36 h-36 r-36 cover" />
+                  </div>
+                  <div class="t-h6 c-text-black-high m-l-8 flex-1">{{ shopInfo.restaurantName }}</div>
                 </div>
-                <div class="t-h6 c-text-black-high m-l-8">{{ shopInfo.restaurantName }}</div>
+              </div>
+              <!-- Notification Settings -->
+              <div class="level-right">
+                <notification-index :shopInfo="shopInfo"/>
               </div>
             </div>
           </div>
@@ -49,11 +56,17 @@
                     <!-- Total Charge -->
                     <div class="m-l-16">
                       <div class="t-caption c-text-black-medium">{{$t('order.totalCharge')}}</div>
-                      <div class="t-body1 c-textl-black-high is-inline-flex flex-center">
-                        <div>{{$n(orderInfo.totalCharge, 'currency')}}</div>
-                        <div v-if="hasStripe" class="m-l-4">
+                      <div
+                        v-if="hasStripe"
+                        class="t-body1 c-textl-black-high is-inline-flex flex-center"
+                      >
+                        <a :href="search" target="stripe">
+                          <span>{{$n(orderInfo.totalCharge, 'currency')}}</span>
                           <i :class="'fab fa-cc-stripe stripe_'+orderInfo.payment.stripe"></i>
-                        </div>
+                        </a>
+                      </div>
+                      <div v-else class="t-body1 c-textl-black-high is-inline-flex flex-center">
+                        <div>{{$n(orderInfo.totalCharge, 'currency')}}</div>
                       </div>
                     </div>
                   </div>
@@ -112,8 +125,24 @@
 
                 <!-- Pickup Time -->
                 <div class="m-t-24 align-center">
-                  <div class="t-caption c-text-black-medium">{{$t('order.timeToPickup')}}</div>
-                  <div class="t-body1 c-textl-black-high m-t-4">{{timePlaced}}</div>
+                  <div class="t-caption c-text-black-medium">{{$t('order.timeRequested')}}</div>
+                  <div class="t-body1 c-textl-black-high m-t-4">{{timeRequested}}</div>
+                  <div v-if="timeEstimated">
+                    <div class="t-caption c-text-black-medium">{{$t('order.timeToPickup')}}</div>
+                    <div class="t-body1 c-textl-black-high m-t-4">{{timeEstimated}}</div>
+                  </div>
+                </div>
+
+                <!-- Estimated Time Picker -->
+                <div v-if="showTimePicker" class="m-t-16">
+                  <div class="c-text-black-medium">{{$t('order.timeToPickup')}}</div>
+                  <b-select class="m-t-8" v-model="timeOffset">
+                    <option
+                      v-for="time in estimatedTimes"
+                      :value="time.offset"
+                      :key="time.offset"
+                    >{{ time.display }}</option>
+                  </b-select>
                 </div>
 
                 <!-- Phone Number -->
@@ -174,7 +203,7 @@
 </template>
 
 <script>
-import { db, functions } from "~/plugins/firebase.js";
+import { db, functions, firestore } from "~/plugins/firebase.js";
 import BackButton from "~/components/BackButton";
 import OrderedItem from "~/app/admin/Order/OrderedItem";
 import { order_status } from "~/plugins/constant.js";
@@ -187,11 +216,15 @@ import {
 import { stripeConfirmIntent, stripeCancelIntent } from "~/plugins/stripe.js";
 import moment from "moment-timezone";
 import NotFound from "~/components/NotFound";
+import { ownPlateConfig } from "~/config/project";
+
+import NotificationIndex from "./Notifications/Index";
 
 export default {
   components: {
     BackButton,
     OrderedItem,
+    NotificationIndex,
     NotFound
   },
 
@@ -205,7 +238,8 @@ export default {
       canceling: false,
       detacher: [],
       cancelPopup: false,
-      notFound: false
+      notFound: false,
+      timeOffset: 0
     };
   },
 
@@ -248,12 +282,41 @@ export default {
     });
   },
   computed: {
-    timePlaced() {
+    search() {
+      const value = encodeURIComponent(
+        this.orderInfo.description || this.orderName
+      );
+      return `${ownPlateConfig.stripe.search}?query=${value}`;
+    },
+    showTimePicker() {
+      return this.orderInfo.status === order_status.order_placed;
+    },
+    estimatedTimes() {
+      if (!this.orderInfo.timePlaced) {
+        return [];
+      }
+      const time = this.orderInfo.timePlaced.toDate().getTime();
+      return [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 120].map(offset => {
+        const date = new Date(time + offset * 60000);
+        return {
+          offset,
+          display: `${this.$d(date, "time")}`
+        };
+      });
+    },
+    timeRequested() {
       if (!this.orderInfo.timePlaced) {
         return "";
       }
       const date = this.orderInfo.timePlaced.toDate();
       return this.$d(date, "long");
+    },
+    timeEstimated() {
+      if (this.orderInfo.timeEstimated) {
+        const date = this.orderInfo.timeEstimated.toDate();
+        return this.$d(date, "long");
+      }
+      return undefined; // backward compatibility
     },
     hasStripe() {
       return this.orderInfo.payment && this.orderInfo.payment.stripe;
@@ -377,12 +440,18 @@ export default {
       const orderUpdate = functions.httpsCallable("orderUpdate");
       this.updating = statusKey;
       try {
-        const { data } = await orderUpdate({
+        const params = {
           restaurantId: this.restaurantId() + this.forcedError("update"),
           orderId: this.orderId,
           status: newStatus,
           timezone
-        });
+        };
+        if (this.timeOffset > 0) {
+          const time = this.orderInfo.timePlaced.toDate().getTime();
+          const date = new Date(time + this.timeOffset * 60000);
+          params.timeEstimated = firestore.Timestamp.fromDate(date);
+        }
+        const { data } = await orderUpdate(params);
         console.log("update", data);
         this.$router.push(this.parentUrl);
       } catch (error) {

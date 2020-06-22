@@ -33,7 +33,7 @@
           >{{ $t("admin.payments.statusConnected") }}</div>
         </div>
         <div class="align-center m-t-24">
-          <a href="https://dashboard.stripe.com/dashboard" target="_blank">
+          <a :href="dashboard" target="stripe">
             <div class="op-button-small secondary">
               <span class="c-primary">
                 {{
@@ -44,11 +44,7 @@
           </a>
         </div>
         <div class="align-center m-t-16">
-          <b-button
-            @click="handlePaymentAccountDisconnect"
-            class="b-reset op-button-text"
-            :loading="isDisconnecting"
-          >
+          <b-button @click="handlePaymentAccountDisconnect" class="b-reset op-button-text">
             <i class="material-icons c-status-red">link_off</i>
             <span class="c-status-red">
               {{
@@ -75,26 +71,33 @@
 import { db, firestore, functions } from "~/plugins/firebase.js";
 import { releaseConfig } from "~/plugins/config.js";
 import { stripeConnect, stripeDisconnect } from "~/plugins/stripe.js";
+import { ownPlateConfig } from "~/config/project";
 export default {
   data() {
     return {
       paymentInfo: {}, // { stripe, inStore, ... }
       stripe_connnect_detacher: null,
-      inStorePayment: false,
-      isDisconnecting: false
+      inStorePayment: false
     };
   },
   async mounted() {
     const code = this.$route.query.code;
+    console.log("mounted", code);
     if (code) {
+      this.$store.commit("setLoading", true);
       try {
         const { data } = await stripeConnect({ code });
         console.log(data);
-        this.$router.replace(location.pathname);
         // TODO: show connected view
       } catch (error) {
-        // TODO: show error modal
-        console.log(error);
+        console.error(error);
+        this.$store.commit("setErrorMessage", {
+          code: "stripe.connect",
+          error
+        });
+      } finally {
+        this.$store.commit("setLoading", false);
+        this.$router.replace(location.pathname);
       }
     }
 
@@ -136,6 +139,9 @@ export default {
     }
   },
   computed: {
+    dashboard() {
+      return ownPlateConfig.stripe.dashboard;
+    },
     uid() {
       return this.$store.getters.uidAdmin;
     },
@@ -157,17 +163,20 @@ export default {
         code: "admin.payments.reallyDisconnectStripe",
         callback: async () => {
           try {
-            this.isDisconnecting = true;
+            this.$store.commit("setLoading", true);
             const { data } = await stripeDisconnect({
               STRIPE_CLIENT_ID: process.env.STRIPE_CLIENT_ID
             });
             console.log(data);
             // TODO: show connected view
           } catch (error) {
-            // TODO: show error modal
             console.error(error, error.details);
+            this.$store.commit("setErrorMessage", {
+              code: "stripe.disconnect",
+              error
+            });
           } finally {
-            this.isDisconnecting = false;
+            this.$store.commit("setLoading", false);
           }
         }
       });

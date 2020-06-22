@@ -26,6 +26,7 @@ export const stripe_regions = {
     hidePostalCode: false,
     tip: {
       default: 15,
+      max: 100,
       choices: [10, 15, 18, 20]
     },
     countries: [{ code: "+1", name: "sms.country.US" }],
@@ -48,6 +49,7 @@ export const stripe_regions = {
     hidePostalCode: false,
     tip: {
       default: 15,
+      max: 100,
       choices: [10, 15, 18, 20]
     },
     countries: [
@@ -64,6 +66,7 @@ export const stripe_regions = {
     multiple: 1,
     tip: {
       default: 0,
+      max: 30,
       choices: [0, 5, 10, 20]
     },
     countries: [{ code: "+81", name: "sms.country.JP" }],
@@ -306,11 +309,31 @@ export const regionalSettings = {
 
 export const soundFiles = [
   {
-    nameKey: "admin.sound.pikopiko",
-    file: "/notification_decorative-01.mp3",
+    nameKey: "admin.sound.default",
+    file: "/sound_default.mp3"
   },
   {
-    nameKey: "admin.sound.dora",
-    file: "/dora.mp3",
+    nameKey: "admin.sound.gong",
+    file: "/sound_gong.mp3"
   },
+  {
+    nameKey: "admin.sound.magic",
+    file: "/sound_magic.mp3"
+  },
+  {
+    nameKey: "admin.sound.doorChime",
+    file: "/sound_door_chime.mp3"
+  },
+  {
+    nameKey: "admin.sound.coin",
+    file: "/sound_coin.mp3"
+  },
+  {
+    nameKey: "admin.sound.cheepCheep",
+    file: "/sound_cheep_cheep.mp3"
+  },
+  {
+    nameKey: "admin.sound.meow",
+    file: "/sound_meow.mp3"
+  }
 ];

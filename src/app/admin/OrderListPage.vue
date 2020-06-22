@@ -7,17 +7,25 @@
       <!-- Center Column -->
       <div class="column">
         <div class="m-l-24 m-r-24">
-          <!-- Back Button and Restaurant Profile -->
-          <div>
-            <!-- Back Button -->
-            <back-button url="/admin/restaurants/" class="m-t-24" />
+          <!-- Nav Bar -->
+          <div class="level">
+            <!-- Back Button and Restaurant Profile -->
+            <div class="level-left flex-1">
+              <!-- Back Button -->
+              <back-button url="/admin/restaurants/" class="m-t-24 m-r-16" />
 
-            <!-- Restaurant Profile -->
-            <div class="is-inline-flex flex-center m-l-16 m-t-24">
-              <div>
-                <img :src="shopInfo.restProfilePhoto" class="w-36 h-36 r-36 cover" />
+              <!-- Restaurant Profile -->
+              <div class="is-inline-flex flex-center m-t-24">
+                <div>
+                  <img :src="shopInfo.restProfilePhoto" class="w-36 h-36 r-36 cover" />
+                </div>
+                <div class="t-h6 c-text-black-high m-l-8 flex-1">{{ shopInfo.restaurantName }}</div>
               </div>
-              <div class="t-h6 c-text-black-high m-l-8">{{ shopInfo.restaurantName }}</div>
+            </div>
+
+            <!-- Notification Settings -->
+            <div class="level-right">
+              <notification-index :shopInfo="shopInfo"/>
             </div>
           </div>
 
@@ -27,27 +35,15 @@
             <div class="level-left">
               <b-select v-model="dayIndex" class="m-t-24">
                 <option v-for="day in lastSeveralDays" :value="day.index" :key="day.index">
-                  {{ $d(day.date, "short") }}
-                  <span v-if="day.index === pickUpDaysInAdvance">{{ $t("date.today") }}</span>
+                  {{ $d(day.date, "short") }} {{ orderCounter[moment(day.date).format("YYYY-MM-DD")] }}
+                  <span
+                    v-if="day.index === pickUpDaysInAdvance"
+                  >{{ $t("date.today") }}</span>
                 </option>
               </b-select>
             </div>
 
-            <div class="level-right">
-              <!-- Notification Settings Button -->
-              <notification-setting-button
-                :notification_data="notification_data || default_notification_data"
-                @openNotificationSettings="openNotificationSettings"
-                />
-
-              <!-- Notification Settings Popup-->
-              <notification-settings
-                :notification_data="notification_data"
-                :NotificationSettingsPopup="NotificationSettingsPopup"
-                @close="closeNotificationSettings"
-                v-if="notification_data"
-                />
-            </div>
+            <div class="level-right"></div>
           </div>
         </div>
       </div>
@@ -87,15 +83,13 @@ import BackButton from "~/components/BackButton";
 import { order_status } from "~/plugins/constant.js";
 import moment from "moment";
 
-import NotificationSettings from "./Notifications/NotificationSettings";
-import NotificationSettingButton from "./Notifications/NotificationSettingButton";
+import NotificationIndex from "./Notifications/Index";
 
 export default {
   components: {
     OrderedInfo,
     BackButton,
-    NotificationSettings,
-    NotificationSettingButton,
+    NotificationIndex,
   },
   data() {
     return {
@@ -103,14 +97,6 @@ export default {
       orders: [],
       dayIndex: 0,
       order_detacher: () => {},
-      NotificationSettingsPopup: false,
-      notification_data: null,
-      default_notification_data: {
-        soundOn: null,
-        infinityNotification: null,
-        uid: this.$store.getters.uidAdmin,
-        createdAt: firestore.FieldValue.serverTimestamp()
-      },
     };
   },
   watch: {
@@ -120,14 +106,16 @@ export default {
     },
     "$route.query.day"() {
       this.updateDayIndex();
-    },
+    }
   },
   async created() {
     this.checkAdminPermission();
-    const restaurantDoc = await db.doc(`restaurants/${this.restaurantId()}`).get();
+    const restaurantDoc = await db
+      .doc(`restaurants/${this.restaurantId()}`)
+      .get();
     if (!restaurantDoc.exists) {
       // todo not found
-      return
+      return;
     }
     this.shopInfo = restaurantDoc.data();
     this.dayIndex = this.getPickUpDaysInAdvance();
@@ -137,36 +125,36 @@ export default {
     }
     this.dateWasUpdated();
 
-    const notification = await db
-      .doc(`restaurants/${this.restaurantId()}/private/notifications`)
-      .get();
-    this.notification_data = notification.exists ? Object.assign(
-      this.default_notification_data,
-      notification.data()
-    ) :  this.default_notification_data;
-
   },
   destroyed() {
     this.order_detacher();
   },
   computed: {
+    orderCounter() {
+      return this.lastSeveralDays.reduce((tmp, day) => {
+        const count = (
+          this.$store.state.orderObj[moment(day.date).format("YYYY-MM-DD")] ||
+          []
+        ).length;
+        if (count > 0) {
+          tmp[moment(day.date).format("YYYY-MM-DD")] = "(" + count + ")";
+        }
+        return tmp;
+      }, {});
+    },
     pickUpDaysInAdvance() {
       return this.getPickUpDaysInAdvance();
     },
     lastSeveralDays() {
-      return Array.from(Array(10 + this.pickUpDaysInAdvance).keys()).map(index => {
-        const date = midNight(this.pickUpDaysInAdvance -index);
-        return { index, date };
-      });
-    },
+      return Array.from(Array(10 + this.pickUpDaysInAdvance).keys()).map(
+        index => {
+          const date = midNight(this.pickUpDaysInAdvance - index);
+          return { index, date };
+        }
+      );
+    }
   },
   methods: {
-    openNotificationSettings() {
-      this.NotificationSettingsPopup = true;
-    },
-    closeNotificationSettings() {
-      this.NotificationSettingsPopup = false;
-    },
     updateDayIndex() {
       const dayIndex =
         this.lastSeveralDays.findIndex(day => {
@@ -200,13 +188,18 @@ export default {
         let orders = result.docs.map(this.doc2data("order"));
         orders = orders.sort((order0, order1) => {
           if (order0.status === order1.status) {
-            return order0.timePlaced > order1.timePlaced ? -1 : 1;
+            return (order0.timeEstimated || order0.timePlaced) >
+              (order1.timeEstimated || order1.timePlaced)
+              ? -1
+              : 1;
           }
           return order0.status < order1.status ? -1 : 1;
         });
         this.orders = orders.map(order => {
-          order.timePlaced =
-            (order.timePlaced && order.timePlaced.toDate()) || new Date();
+          order.timePlaced = order.timePlaced.toDate();
+          if (order.timeEstimated) {
+            order.timeEstimated = order.timeEstimated.toDate();
+          }
           return order;
         });
       });
@@ -218,8 +211,10 @@ export default {
       });
     },
     getPickUpDaysInAdvance() {
-      return this.isNull(this.shopInfo.pickUpDaysInAdvance) ? 3 : this.shopInfo.pickUpDaysInAdvance;
-    },
+      return this.isNull(this.shopInfo.pickUpDaysInAdvance)
+        ? 3
+        : this.shopInfo.pickUpDaysInAdvance;
+    }
   }
 };
 </script>

@@ -14,5 +14,9 @@ export const ownPlateConfig = {
   siteDescription: "Zero Comission Take-out Service",
   releasName: "alpha",
   region: "EU",
-  hostName: "eu.ownplate.today"
+  hostName: "eu.ownplate.today",
+  stripe: {
+    dashboard: "https://dashboard.stripe.com/dashboard",
+    search: "https://dashboard.stripe.com/search",
+  },
 };

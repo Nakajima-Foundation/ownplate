@@ -15,6 +15,10 @@ export const ownPlateConfig = {
   releasName: "beta",
   region: "JP",
   hostName: "omochikaeri.com",
+  stripe: {
+    dashboard: "https://dashboard.stripe.com/dashboard",
+    search: "https://dashboard.stripe.com/search",
+  },
   line: {
     LOGIN_CHANNEL_ID: "1654216149",
     TRACK_CHANNEL_ID: "1654259709",

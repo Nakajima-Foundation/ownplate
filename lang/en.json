@@ -18,6 +18,10 @@
     "signInRestaurant": "Sign In as a Restaurant",
     "deleteAccount": "Delete Account",
     "reallyDeleteAccount": "Do you really want to delete this account? All the data will be deleted.",
+    "stripeInfo": "Associated Credit Card",
+    "noCard": "Not saved",
+    "deleteCard": "Delete Card Info",
+    "reallyDeleteCard": "Do you really want to delete the card information？",
     "status": {
       "hasLine": "Connected",
       "noLine": "Not connected",
@@ -35,10 +39,16 @@
     "about": "About",
     "admins": "Restaurant Owners",
     "adminManual": "Manual for Owners",
+    "adminSupport": "Support for Owners",
     "users": "Food Lovers",
     "userManual": "Manual for Food Lovers",
+    "userSupport": "Support for Food Lovers",
     "home": "Home",
     "signOut": "Sign Out",
+    "termsRestaurant": "Terms for Restaurant",
+    "termsUser": "Terms for User",
+    "privacy": "Privacy Policy",
+    "updated": "Last Updated",
     "selectLanguage": "Select language",
     "yes": "Yes",
     "no": "No",
@@ -117,6 +127,7 @@
     "updateMap": "Update Map",
     "businessHourDescription": "Check the business day of the week and set the business hours. If you need to split your business hours, such as a break, please enter the latter time in the Another Hours form.",
     "businessHourOption": "Another Hours (optional)",
+    "copyPreviousDay": "Copy Previous Day",
     "draftDescription": "Save as Draft.",
     "publishDescription": "Save and publish your restaurant.",
     "draftWarning": "You can publish this by correcting the red frame.",
@@ -182,7 +193,10 @@
     "website": "Website",
     "hours": "Hours",
     "closed": "Closed",
-    "public": "Public"
+    "public": "Public",
+    "paymentMethod": "Payment Method",
+    "onlinePayment": "Online Payment",
+    "onsitePayment": "On Site Payment"
   },
   "transactionsAct": {
     "title": "Specified Commercial Transaction Act",
@@ -225,6 +239,7 @@
     "salesTax": "Sales Tax",
     "total": "Total",
     "yourPayment": "Your Payment",
+    "reuseCard": "Save it for future use",
     "whatsCVC": "What’s CVC?",
     "3digitsCVC": "The final three digits on the back",
     "4digitsCVC": "The four digits on the front",
@@ -236,14 +251,19 @@
     "thankyou": "Thank you!",
     "orderStatus": "Order Status",
     "orderId": "Order ID",
+    "cancelOrder": "Cancel Order",
+    "cancelOrderConfirm": "Do you really want to cancel this order?",
+    "cancelOrderComplete": "Order has been canceled",
     "pleaseStay": "Please stay on this page. The order status will be updated below.",
     "thanksMessage": "Message from restaurant",
     "tip": "Gratuity",
+    "maxTip": "Amount up to {max}% (optional)",
     "totalCharge": "Total Charge",
     "pleasePayAtRestaurant": "Online payment was not enabled yet. Please pay at the time of pickup.",
     "sendSMS": "Receive Text Messages (standard telco fee may apply)",
     "history": "Order History",
-    "timeToPickup": "Pickup Time",
+    "timeRequested": "Requested Pickup Time",
+    "timeToPickup": "Estimated Pickup Time",
     "notAvailable": "This restaurant is not available at this time. Please try again later",
     "orderNotice": "Order Notice",
     "status": {
@@ -302,6 +322,13 @@
       "newsTop": "News Top",
       "adminTop": "Admin Top"
     },
+    "notes": {
+      "title": "Notes",
+      "userRestaurantsTitle": "About Restaurants List for User",
+      "userRestaurantsBody": "The restaurants you have added will not automatically appear on the list of restaurants for users. Please click the [Request to be Listed] button and your restaurant will be added to the list after approved. ",
+      "notificationSoundTitle": "About Notification Sound",
+      "notificationSoundBody": "Order notification sound will be played while viewing the order list page (not on this page). If you are using more than one restaurant, keep each order list page open in a separate window."
+    },
     "hidePayment": "Payment feature is coming soon. Please stay tuned.",
     "pleaseSignIn": "Sign In (for Restaurant)",
     "registration": "Registration (for Restaurant)",
@@ -334,6 +361,15 @@
     "incompleteOrders": "{count} Incomplete Order | {count} Incomplete Orders",
     "editMenuItems": "Edit Menu ({count})",
     "editAbout": "Edit Restaurant Details",
+    "directory": {
+      "status": "Restaurant Directory",
+      "notListed": "Not Listed",
+      "requestList": "Request to be Listed",
+      "waiting": "Waiting for Approval",
+      "cancelRequest": "Cancel Request",
+      "listed": "Listed",
+      "unlist": "Unlist"
+    },
     "delete": "Delete",
     "shareRestaurant": "Share",
     "pleaseSignUp": "Sign Up as a New User",
@@ -341,6 +377,8 @@
     "passwordReset": "Reset Password",
     "pleaseCheckInbox": "Please check your inbox, an email is on the way.",
     "order": {
+      "notification": "Notification",
+      "incompleteOrders": "Incomplete Orders",
       "notificationSettings": "Notification Settings",
       "soundOn": "Notification Sound: On",
       "soundOff": "Notification Sound: Off",
@@ -358,8 +396,13 @@
       "lineDelete": "Do you really want to delete this account？"
     },
     "sound": {
-      "dora": "Dora",
-      "pikopiko": "Pico Pico"
+      "default": "Default",
+      "gong": "Gong",
+      "magic": "Magic",
+      "doorChime": "Door Chime",
+      "coin": "Coin",
+      "cheepCheep": "Cheep Cheep",
+      "meow": "Meow"
     },
     "qrcode": {
       "title": "QRcodes",
@@ -446,6 +489,8 @@
       },
       "stripe": {
         "confirm": "Failed to confirm the payment.",
+        "connect": "Failed to connect the Stripe account.",
+        "disconnect": "Failed to disconnect the Stripe account.",
         "intent": "Failed to process the payment."
       },
       "menu": {

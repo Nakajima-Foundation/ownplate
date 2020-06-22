@@ -9,6 +9,14 @@ export const connect = async (db: FirebaseFirestore.Firestore, data: any, contex
   utils.validate_params({ code })
 
   try {
+    const refStripe = db.doc(`/admins/${uid}/system/stripe`)
+
+    // Detect the case where this function was called again with same code twice
+    const stripeInfo = (await refStripe.get()).data();
+    if (stripeInfo && stripeInfo.code === code) {
+      return { result: true, duplicate: true }
+    }
+
     const response = await stripe.oauth.token({
       grant_type: 'authorization_code',
       code: code
@@ -16,15 +24,15 @@ export const connect = async (db: FirebaseFirestore.Firestore, data: any, contex
 
     const batch = db.batch()
     batch.set(
-      db.doc(`/admins/${uid}/system/stripe`),
-      response
+      refStripe,
+      { auth: response, code },
     )
     batch.update(
       db.doc(`/admins/${uid}/public/payment`), {
       stripe: response.stripe_user_id
     })
     await batch.commit()
-    return { result: response }
+    return { result: true }
   } catch (error) {
     throw utils.process_error(error)
   }
@@ -38,24 +46,20 @@ export const disconnect = async (db: FirebaseFirestore.Firestore, data: any, con
   utils.validate_params({ STRIPE_CLIENT_ID })
 
   try {
+    const refPayment = db.doc(`/admins/${uid}/public/payment`);
+    const payment = (await refPayment.get()).data();
+    const stripe_user_id = payment?.stripe
+    if (!stripe_user_id) {
+      throw new functions.https.HttpsError('invalid-argument', 'This account is not connected to Stripe.')
+    }
+
     // We remove it from the database first, so that the operator can attempt to re-connect
     // if something goes wrong.
-    await db.doc(`/admins/${uid}/public/payment`).update({
+    await refPayment.update({
       stripe: null
     });
 
-    const refStripe = db.doc(`/admins/${uid}/system/stripe`);
-    const snapshot = await refStripe.get()
-    const systemStripe = snapshot.data()
-    if (!systemStripe) {
-      throw new functions.https.HttpsError('invalid-argument', 'This account is not connected to Stripe.')
-    }
-    const stripe_user_id = systemStripe.stripe_user_id
-    if (!systemStripe.stripe_user_id) {
-      throw new functions.https.HttpsError('invalid-argument', 'This account is not connected to Stripe.')
-    }
-
-    await refStripe.delete();
+    await db.doc(`/admins/${uid}/system/stripe`).delete();
 
     const response = await stripe.oauth.deauthorize({
       client_id: STRIPE_CLIENT_ID,

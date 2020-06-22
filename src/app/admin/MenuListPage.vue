@@ -11,9 +11,28 @@
         <div class="column is-narrow w-24"></div>
         <!-- Center Column -->
         <div class="column">
-          <div class="m-l-24 m-r-24 m-t-24">
-            <!-- Back Button -->
-            <back-button url="/admin/restaurants/" />
+          <div class="m-l-24 m-r-24">
+            <!-- Nav Bar -->
+            <div class="level">
+              <!-- Back Button and Restaurant Profile -->
+              <div class="level-left flex-1">
+                <!-- Back Button -->
+                <back-button url="/admin/restaurants/" class="m-t-24 m-r-16" />
+                <!-- Restaurant Profile -->
+                <!-- <div class="is-inline-flex flex-center m-t-24">
+                  <div>
+                    <img :src="restaurantInfo.restProfilePhoto" class="w-36 h-36 r-36 cover" />
+                  </div>
+                  <div
+                    class="t-h6 c-text-black-high m-l-8 flex-1"
+                  >{{ restaurantInfo.restaurantName }}</div>
+                </div>-->
+              </div>
+              <!-- Notification Settings -->
+              <div class="level-right">
+                <notification-index :shopInfo="restaurantInfo"/>
+              </div>
+            </div>
           </div>
         </div>
         <!-- Right Gap -->
@@ -212,6 +231,8 @@ import BackButton from "~/components/BackButton";
 
 import * as firebase from "firebase/app";
 
+import NotificationIndex from "./Notifications/Index";
+
 export default {
   name: "Menus",
   components: {
@@ -219,6 +240,7 @@ export default {
     TitleCard,
     TitleInput,
     BackButton,
+    NotificationIndex,
     NotFound
   },
   data() {
