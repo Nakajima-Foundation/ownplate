@@ -88,13 +88,16 @@ export default {
       try {
         const { data } = await stripeConnect({ code });
         console.log(data);
-        this.$router.replace(location.pathname);
         // TODO: show connected view
       } catch (error) {
-        // TODO: show error modal
-        console.log(error);
+        console.error(error);
+        this.$store.commit("setErrorMessage", {
+          code: "stripe.connect",
+          error
+        });
       } finally {
         this.$store.commit("setLoading", false);
+        this.$router.replace(location.pathname);
       }
     }
 
@@ -167,8 +170,11 @@ export default {
             console.log(data);
             // TODO: show connected view
           } catch (error) {
-            // TODO: show error modal
             console.error(error, error.details);
+            this.$store.commit("setErrorMessage", {
+              code: "stripe.disconnect",
+              error
+            });
           } finally {
             this.$store.commit("setLoading", false);
           }
