@@ -92,6 +92,30 @@
                       <span class="c-onprimary">{{ $t('button.next') }}</span>
                     </b-button>
                   </div>
+
+                  <!-- Terms of Use & Privacy Policy -->
+                  <div v-if="!isLocaleJapan" class="m-t-24 t-caption">
+                    <span>By submitting this form, you agree to the</span>
+                    <router-link to="/terms/admin" target="_blank">
+                      <span class="c-primary">Terms of Service</span>
+                    </router-link>
+                    <span>and</span>
+                    <router-link to="/privacy" target="_blank">
+                      <span class="c-primary">Privacy Policy</span>
+                    </router-link>
+                    <span>.</span>
+                  </div>
+                  <div v-else class="m-t-24 t-caption">
+                    <span>送信することで、</span>
+                    <router-link to="/terms/admin" target="_blank">
+                      <span class="c-primary">利用規約</span>
+                    </router-link>
+                    <span>と</span>
+                    <router-link to="/privacy" target="_blank">
+                      <span class="c-primary">プライバシーポリシー</span>
+                    </router-link>
+                    <span>に同意したものとみなされます。</span>
+                  </div>
                 </form>
               </div>
             </div>

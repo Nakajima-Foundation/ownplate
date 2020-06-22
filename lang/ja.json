@@ -45,6 +45,10 @@
     "userSupport": "お客様向けお問い合わせ",
     "home": "ホーム",
     "signOut": "サインアウト",
+    "termsRestaurant": "飲食店向け利用規約",
+    "termsUser": "お客様向け利用規約",
+    "privacy": "プライバシーポリシー",
+    "updated": "最終更新日",
     "selectLanguage": "表示言語選択",
     "yes": "はい",
     "no": "いいえ",
@@ -252,8 +256,8 @@
     "cancelOrderComplete": "この注文はキャンセルされました",
     "pleaseStay": "このページを表示させたままにしておくと、ご注文から受け渡しまでの状況を知ることができます。",
     "thanksMessage": "お店からのメッセージ",
-    "tip": "心付け（サービス料　消費税含む）",
-    "maxTip": "0%〜{max}%",
+    "tip": "心づけ（サービス料・消費税含む）",
+    "maxTip": "{max}%までの金額（任意）",
     "totalCharge": "合計金額",
     "pleasePayAtRestaurant": "オンラインでの支払いは現時点では出来ません。",
     "sendSMS": "SMSメッセージを受け取る（SMSの受信には料金がかかる場合があります）",
@@ -318,6 +322,13 @@
       "newsTop": "お知らせ一覧",
       "adminTop": "管理画面"
     },
+    "notes": {
+      "title": "ご注意",
+      "userRestaurantsTitle": "お客様向け飲食店一覧について",
+      "userRestaurantsBody": "登録した飲食店は自動でお客様向け飲食店一覧には表示されません。「掲載を申請する」ボタンより申請後、運営の審査を経てお客様向け飲食店一覧に掲載されます。",
+      "notificationSoundTitle": "通知音について",
+      "notificationSoundBody": "注文に関する通知音は注文一覧ページを表示中に再生されます（このページでは再生されません）。複数の店舗を利用している場合はそれぞれの注文一覧ページを別のウィンドウで開いておいてください。"
+    },
     "hidePayment": "課金の仕組みはまもなく提供される予定です。少々お待ちください。",
     "pleaseSignIn": "サインインしてください（飲食店向け）",
     "registration": "登録してください（飲食店向け）",
@@ -351,7 +362,7 @@
     "editMenuItems": "メニューの変更（{count}）",
     "editAbout": "店情報の変更",
     "directory": {
-      "status": "お客様向けレストラン一覧への掲載状況",
+      "status": "お客様向け飲食店一覧への掲載状況",
       "notListed": "未掲載",
       "requestList": "掲載を申請する",
       "waiting": "申請中",
@@ -478,6 +489,8 @@
       },
       "stripe": {
         "confirm": "課金処理に失敗しました。",
+        "connect": "ストライプとの接続に失敗しました。",
+        "disconnect": "ストライプとの接続解除に失敗しました。",
         "intent": "ストライプによる課金に失敗しました。"
       },
       "menu": {

@@ -25,19 +25,48 @@
       :right="right"
       :open.sync="open"
     >
+      <!-- Logo -->
       <div class="align-center m-t-24">
         <router-link to="/">
           <img class="w-96" :src="`/${this.logo2}`" />
         </router-link>
       </div>
+
+      <!-- Home -->
       <div class="align-center m-t-24">
         <router-link to="/">
           <div class="op-button-medium tertiary w-192" @click="handleClose()">{{ $t("menu.home") }}</div>
         </router-link>
       </div>
+
+      <!-- Profile -->
       <div class="align-center m-t-24">
         <router-link to="/u/profile">
           <div class="op-button-small tertiary" @click="handleClose()">{{ $t("profile.title") }}</div>
+        </router-link>
+      </div>
+
+      <!-- Terms for Restaurant -->
+      <div class="align-center m-t-24">
+        <router-link to="/terms/admin" target="_blank">
+          <div
+            class="op-button-text t-button"
+            @click="handleClose()"
+          >{{ $t("menu.termsRestaurant") }}</div>
+        </router-link>
+      </div>
+
+      <!-- Terms for User -->
+      <div class="align-center">
+        <router-link to="/terms/user" target="_blank">
+          <div class="op-button-text t-button" @click="handleClose()">{{ $t("menu.termsUser") }}</div>
+        </router-link>
+      </div>
+
+      <!-- Privacy -->
+      <div class="align-center">
+        <router-link to="/privacy" target="_blank">
+          <div class="op-button-text t-button" @click="handleClose()">{{ $t("menu.privacy") }}</div>
         </router-link>
       </div>
     </b-sidebar>

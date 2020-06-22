@@ -45,6 +45,10 @@
     "userSupport": "Support for Food Lovers",
     "home": "Home",
     "signOut": "Sign Out",
+    "termsRestaurant": "Terms for Restaurant",
+    "termsUser": "Terms for User",
+    "privacy": "Privacy Policy",
+    "updated": "Last Updated",
     "selectLanguage": "Select language",
     "yes": "Yes",
     "no": "No",
@@ -253,7 +257,7 @@
     "pleaseStay": "Please stay on this page. The order status will be updated below.",
     "thanksMessage": "Message from restaurant",
     "tip": "Gratuity",
-    "maxTip": "0%〜{max}%",
+    "maxTip": "Amount up to {max}% (optional)",
     "totalCharge": "Total Charge",
     "pleasePayAtRestaurant": "Online payment was not enabled yet. Please pay at the time of pickup.",
     "sendSMS": "Receive Text Messages (standard telco fee may apply)",
@@ -317,6 +321,13 @@
       "title": "News",
       "newsTop": "News Top",
       "adminTop": "Admin Top"
+    },
+    "notes": {
+      "title": "Notes",
+      "userRestaurantsTitle": "About Restaurants List for User",
+      "userRestaurantsBody": "The restaurants you have added will not automatically appear on the list of restaurants for users. Please click the [Request to be Listed] button and your restaurant will be added to the list after approved. ",
+      "notificationSoundTitle": "About Notification Sound",
+      "notificationSoundBody": "Order notification sound will be played while viewing the order list page (not on this page). If you are using more than one restaurant, keep each order list page open in a separate window."
     },
     "hidePayment": "Payment feature is coming soon. Please stay tuned.",
     "pleaseSignIn": "Sign In (for Restaurant)",
@@ -478,6 +489,8 @@
       },
       "stripe": {
         "confirm": "Failed to confirm the payment.",
+        "connect": "Failed to connect the Stripe account.",
+        "disconnect": "Failed to disconnect the Stripe account.",
         "intent": "Failed to process the payment."
       },
       "menu": {
