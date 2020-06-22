@@ -16,6 +16,15 @@ service firebase.storage {
       allow read;
     }
 
+    match /images/restaurants/{restaurantId}/{userId}/resize/{size}/cover.jpg {
+      allow read;
+    }
+    match /images/restaurants/{restaurantId}/{userId}/resize/{size}/profile.jpg {
+      allow read;
+    }
+    match /images/restaurants/{restaurantId}/menus/{menuId}/{userId}/resize/{size}/item.jpg {
+      allow read;
+    }
 
     match /images/restaurants/{restaurantId}/cover.jpg {
       allow write: if false;
