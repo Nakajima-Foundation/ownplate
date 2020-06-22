@@ -38,24 +38,20 @@ export const disconnect = async (db: FirebaseFirestore.Firestore, data: any, con
   utils.validate_params({ STRIPE_CLIENT_ID })
 
   try {
+    const refPayment = db.doc(`/admins/${uid}/public/payment`);
+    const payment = (await refPayment.get()).data();
+    const stripe_user_id = payment?.stripe
+    if (!stripe_user_id) {
+      throw new functions.https.HttpsError('invalid-argument', 'This account is not connected to Stripe.')
+    }
+
     // We remove it from the database first, so that the operator can attempt to re-connect
     // if something goes wrong.
-    await db.doc(`/admins/${uid}/public/payment`).update({
+    await refPayment.update({
       stripe: null
     });
 
-    const refStripe = db.doc(`/admins/${uid}/system/stripe`);
-    const snapshot = await refStripe.get()
-    const systemStripe = snapshot.data()
-    if (!systemStripe) {
-      throw new functions.https.HttpsError('invalid-argument', 'This account is not connected to Stripe.')
-    }
-    const stripe_user_id = systemStripe.stripe_user_id
-    if (!systemStripe.stripe_user_id) {
-      throw new functions.https.HttpsError('invalid-argument', 'This account is not connected to Stripe.')
-    }
-
-    await refStripe.delete();
+    await db.doc(`/admins/${uid}/system/stripe`).delete();
 
     const response = await stripe.oauth.deauthorize({
       client_id: STRIPE_CLIENT_ID,
