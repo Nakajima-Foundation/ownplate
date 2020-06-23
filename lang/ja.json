@@ -195,8 +195,8 @@
     "closed": "定休日",
     "public": "公開",
     "paymentMethod": "支払い方法",
-    "onlinePayment": "オンライン決済あり",
-    "onsitePayment": "受け取り払いあり"
+    "onlinePayment": "オンライン決済",
+    "onsitePayment": "受け取り払い"
   },
   "transactionsAct": {
     "title": "特定商取引法に基づく表記",
