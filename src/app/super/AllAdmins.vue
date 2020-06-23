@@ -4,7 +4,8 @@
     <table>
       <tr v-for="admin in admins" :key="admin.id">
         <td>{{admin.name}}</td>
-        <td>{{admin.stripe}}</td>
+        <td>{{payment(admin).stripe}}</td>
+        <td>{{profile(admin).email}}</td>
       </tr>
     </table>
   </section>
@@ -17,6 +18,7 @@ export default {
   data() {
     return {
       admins: [],
+      infos: {},
       detacher: null
     };
   },
@@ -28,18 +30,32 @@ export default {
         this.admins = snapshot.docs.map(this.doc2data("admin"));
         console.log(this.admins);
         this.admins.forEach(async admin => {
-          const payment = (
-            await db.doc(`admins/${admin.id}/public/payment`).get()
-          ).data();
-          if (payment) {
-            admin.stripe = payment.stripe || "";
-            console.log(admin.stripe);
+          // NOTE: We are getting extra data only once for each admin
+          if (!this.infos[admin.id]) {
+            const info = {};
+            const payment = (
+              await db.doc(`admins/${admin.id}/public/payment`).get()
+            ).data();
+            info.payment = payment || {};
+            const profile = (
+              await db.doc(`admins/${admin.id}/private/profile`).get()
+            ).data();
+            info.profile = profile || {};
+            this.infos[admin.id] = info;
           }
         });
       });
   },
   destroyed() {
     this.detatcher && this.detatcher();
+  },
+  methods: {
+    profile(admin) {
+      return this.infos[admin.id]?.profile || {};
+    },
+    payment(admin) {
+      return this.infos[admin.id]?.payment || {};
+    }
   }
 };
 </script>
