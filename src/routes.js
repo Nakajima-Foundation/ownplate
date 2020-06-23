@@ -60,7 +60,6 @@ export const customRoutes = [
     component: "admin/Index.vue"
   },
   {
-    name: "admin-router",
     path: "/admin/restaurants/:restaurantId",
     component: "admin/Layout.vue",
     children: [
