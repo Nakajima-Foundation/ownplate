@@ -29,6 +29,7 @@ exportIfNeeded("orderPlace", "order/orderPlace", exports);
 
 exportIfNeeded("stripeConnect", "stripe/stripeConnect", exports);
 exportIfNeeded("stripeDisconnect", "stripe/stripeDisconnect", exports);
+exportIfNeeded("stripeVerify", "stripe/stripeVerify", exports);
 
 exportIfNeeded("stripeCreateIntent", "stripe/stripeCreateIntent", exports);
 exportIfNeeded("stripeConfirmIntent", "stripe/stripeConfirmIntent", exports);
