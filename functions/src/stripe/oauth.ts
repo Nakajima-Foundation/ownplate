@@ -71,3 +71,7 @@ export const disconnect = async (db: FirebaseFirestore.Firestore, data: any, con
     throw utils.process_error(error)
   }
 };
+
+export const verify = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
+  return { result: true }
+};
