@@ -4,6 +4,7 @@
     <table>
       <tr v-for="admin in admins" :key="admin.id">
         <td>{{admin.name}}</td>
+        <td>{{admin.stripe}}</td>
       </tr>
     </table>
   </section>
@@ -26,6 +27,15 @@ export default {
       .onSnapshot(snapshot => {
         this.admins = snapshot.docs.map(this.doc2data("admin"));
         console.log(this.admins);
+        this.admins.forEach(async admin => {
+          const payment = (
+            await db.doc(`admins/${admin.id}/public/payment`).get()
+          ).data();
+          if (payment) {
+            admin.stripe = payment.stripe || "";
+            console.log(admin.stripe);
+          }
+        });
       });
   },
   destroyed() {
