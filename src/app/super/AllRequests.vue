@@ -52,22 +52,29 @@ export default {
       .onSnapshot(async snapshot => {
         this.requests = snapshot.docs.map(this.doc2data("request"));
         const ids =  this.requests.map((a) => a.id);
-
-        const resCols = await db.collection('restaurants')
-              .where(
-                firebase.firestore.FieldPath.documentId(),
-                'in',
-                ids
-              ).get();
-        if (!resCols.empty) {
-          this.restaurantsObj = this.array2obj(resCols.docs);
-        }
+        this.arrayChunk(ids, 10).map(async (arr) => {
+          const resCols = await db.collection('restaurants')
+                .where(
+                  firebase.firestore.FieldPath.documentId(),
+                  'in',
+                  arr
+                ).get();
+          if (!resCols.empty) {
+            this.restaurantsObj = this.array2obj(resCols.docs);
+          }
+        });
       });
   },
   destroyed() {
     this.detatcher && this.detatcher();
   },
   methods: {
+    arrayChunk(arr, size = 1) {
+      const array = [...arr];
+      return array.reduce((current, value, index) => {
+        return index % size ? current : [...current, array.slice(index, index + size)];
+      }, []);
+    }
   }
 };
 </script>
