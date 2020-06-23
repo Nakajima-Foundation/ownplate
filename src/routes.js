@@ -129,7 +129,7 @@ export const customRoutes = [
   },
   {
     path: "/s",
-    component: "super/SuperHome.vue"
+    component: "super/Index.vue"
   },
   {
     path: "/s/orders",

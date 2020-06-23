@@ -8,6 +8,8 @@
       <br />
       <router-link to="/s/restaurants">All Restaurants</router-link>
       <br />
+      <router-link to="/s/requests">All Requests</router-link>
+      <br />
       <router-link to="/s/admins">All Admins</router-link>
       <br />
     </div>
