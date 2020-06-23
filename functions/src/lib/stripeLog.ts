@@ -1,11 +1,24 @@
 import * as admin from 'firebase-admin';
 
 const accountIdToUIDs = async (db, accountId) => {
+  // current
   const pubSnapshot = await db.collectionGroup("public").where("stripe", "==", accountId).get();
-  return (pubSnapshot?.docs || []).map(doc => {
-    const uid = pubSnapshot.docs[0].ref.parent.parent.id;
-    return uid;
-  });
+  if (!pubSnapshot.empty) {
+    return pubSnapshot.docs.map(doc => {
+      const uid = doc.ref.parent.parent.id;
+      return uid;
+    });
+  }
+  // ---- Backward compatibility
+  const pubSnapshot2 = await db.collectionGroup("public").where("stripeAccount", "==", accountId).get();
+  if (!pubSnapshot2.empty) {
+    return pubSnapshot2.docs.map(doc => {
+      const uid = doc.ref.parent.parent.id;
+      return uid;
+    });
+  }
+
+  return [];
 };
 
 export const account_updated = async (db, event) => {
@@ -13,38 +26,34 @@ export const account_updated = async (db, event) => {
   const { id } = object;
   const uids = await accountIdToUIDs(db, id);
 
-  await callbackAdminLog(db, uids, stripeActions.account_updated, event);
-
-  return {}
+  return await callbackAdminLog(db, uids, stripeActions.account_updated, event);
 }
 
 export const capability_updated = async (db, event) => {
   const {data: {object} } = event;
   const { account } = object;
-  console.log(account);
   const uids = await accountIdToUIDs(db, account);
   // log
-  await callbackAdminLog(db, uids, stripeActions.capability_updated, event);
-  return {};
+  return await callbackAdminLog(db, uids, stripeActions.capability_updated, event);
 }
 
 export const account_authorized = async (db, event) => {
-  const uids = ["unknown"];
-  await callbackAdminLog(db, uids, stripeActions.account_authorized, event);
-  return {};
+  const id = event.account;
+  const uids = await accountIdToUIDs(db, id);
+  return await callbackAdminLog(db, uids, stripeActions.account_authorized, event);
 }
 
 export const account_deauthorized = async (db, event) => {
-  const uids = ["unknown"];
-  await callbackAdminLog(db, uids, stripeActions.account_deauthorized, event);
-  return {};
+  const id = event.account;
+  const uids = await accountIdToUIDs(db, id);
+  return await callbackAdminLog(db, uids, stripeActions.account_deauthorized, event);
 }
 
 
 export const unknown_log = async (db, event) => {
-  const uids = ["unknown"];
-  await callbackAdminLog(db, uids, stripeActions.unknow, event);
-  return {};
+  const id = event.account || event.id;
+  const uids = await accountIdToUIDs(db, id);
+  return await callbackAdminLog(db, uids, stripeActions.unknow, event);
 }
 
 
@@ -57,15 +66,16 @@ export const stripeActions = {
 };
 
 export const callbackAdminLog = async (db, uids, action, log) => {
-  await Promise.all((uids.length > 0 ? uids : ['unknown']).map(async (uid) => {
+  return await Promise.all((uids.length > 0 ? uids : ['unknown']).map(async (uid) => {
     console.log(uid, action)
     const payload: any = {
-      data: {log: log.data.object },
+      data: {log: log },
       action,
       uid,
       type: "callback",
       created: (process.env.NODE_ENV !== "test") ?  admin.firestore.Timestamp.now() : Date.now()
     };
     await db.collection(`/admins/${uid}/stripeLogs`).add(payload);
+    return payload;
   }));
 }

@@ -2,7 +2,7 @@ export const jcb_one = {
   "object": {
     "id": "jcb_payments",
     "object": "capability",
-    "account": "acct_xxxxx",
+    "account": "acct_yyyyy",
     "requested": true,
     "requested_at": 1587331000,
     "requirements": {
