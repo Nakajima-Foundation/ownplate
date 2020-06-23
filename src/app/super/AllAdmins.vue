@@ -1,5 +1,6 @@
 <template>
   <section class="section">
+    <back-button url="/s" />
     <h2>All Admins</h2>
     <table>
       <tr v-for="admin in admins" :key="admin.id">
@@ -13,10 +14,14 @@
 </template>
 
 <script>
+import BackButton from "~/components/BackButton";
 import { db } from "~/plugins/firebase.js";
 import { stripeVerify } from "~/plugins/stripe.js";
 
 export default {
+  components: {
+    BackButton
+  },
   data() {
     return {
       admins: [],
