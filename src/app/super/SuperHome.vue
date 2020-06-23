@@ -2,9 +2,14 @@
   <section class="section">
     <div v-if="$store.getters.isSuperAdmin">
       <h2>Admin Page</h2>
-      <router-link to="/s/orders">All Orders</router-link><br/>
-      <router-link to="/s/callbacks">All Callbacks</router-link><br/>
-      <router-link to="/s/restaurants">All Restaurants</router-link><br/>
+      <router-link to="/s/orders">All Orders</router-link>
+      <br />
+      <router-link to="/s/callbacks">All Callbacks</router-link>
+      <br />
+      <router-link to="/s/restaurants">All Restaurants</router-link>
+      <br />
+      <router-link to="/s/admins">All Admins</router-link>
+      <br />
     </div>
     <b-loading v-else active />
   </section>
@@ -24,6 +29,6 @@ export default {
         this.$router.push("/");
       }
     }
-  },
+  }
 };
 </script>
