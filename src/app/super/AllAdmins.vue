@@ -5,6 +5,7 @@
       <tr v-for="admin in admins" :key="admin.id">
         <td>{{admin.name}}</td>
         <td>{{payment(admin).stripe}}</td>
+        <td>{{payment(admin).verified}}</td>
         <td>{{profile(admin).email}}</td>
       </tr>
     </table>
@@ -13,6 +14,7 @@
 
 <script>
 import { db } from "~/plugins/firebase.js";
+import { stripeVerify } from "~/plugins/stripe.js";
 
 export default {
   data() {
@@ -36,12 +38,18 @@ export default {
             const payment = (
               await db.doc(`admins/${admin.id}/public/payment`).get()
             ).data();
+            if (payment?.stripe) {
+              const { data } = await stripeVerify();
+              console.log("data", payment?.stripe, data);
+              payment.verified = data.result;
+            }
             info.payment = payment || {};
             const profile = (
               await db.doc(`admins/${admin.id}/private/profile`).get()
             ).data();
             info.profile = profile || {};
             this.infos[admin.id] = info;
+            this.infos = Object.assign({}, this.infos);
           }
         });
       });
