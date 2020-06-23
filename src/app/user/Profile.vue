@@ -208,14 +208,7 @@ export default {
     if (this.isLineUser) {
       this.checkFriend();
     }
-    if (this.user && this.user.phoneNumber) {
-      this.detachStripe = db
-        .doc(`/users/${this.user.uid}/readonly/stripe`)
-        .onSnapshot(snapshot => {
-          const stripeInfo = snapshot.data();
-          this.storedCard = stripeInfo?.card;
-        });
-    }
+    this.checkStripe();
   },
   destroyed() {
     this.detachStripe && this.detachStripe();
@@ -233,6 +226,7 @@ export default {
       }
     },
     user(newValue) {
+      this.checkStripe();
       if (newValue) {
         // We need to unset this.loginVisible, because handleDismissed will not be called
         // on successful login
@@ -292,6 +286,20 @@ export default {
     }
   },
   methods: {
+    checkStripe() {
+      if (this.detachStripe) {
+        this.detachStripe();
+        this.detachStripe = null;
+      }
+      if (this.user && this.user.phoneNumber) {
+        this.detachStripe = db
+          .doc(`/users/${this.user.uid}/readonly/stripe`)
+          .onSnapshot(snapshot => {
+            const stripeInfo = snapshot.data();
+            this.storedCard = stripeInfo?.card;
+          });
+      }
+    },
     handleLineAuth() {
       const url = lineAuthURL("/callback/line", {
         pathname: location.pathname
