@@ -4,9 +4,9 @@
     <table>
       <tr v-for="admin in admins" :key="admin.id">
         <td>{{admin.name}}</td>
+        <td>{{profile(admin).email}}</td>
         <td v-if="payment(admin).verified === false" style="color:red">{{payment(admin).stripe}}</td>
         <td v-else>{{payment(admin).stripe}}</td>
-        <td>{{profile(admin).email}}</td>
       </tr>
     </table>
   </section>
