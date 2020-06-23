@@ -1,21 +1,23 @@
 import * as admin from 'firebase-admin';
 
 const accountIdToUIDs = async (db, accountId) => {
-  // current
-  const pubSnapshot = await db.collectionGroup("public").where("stripe", "==", accountId).get();
-  if (!pubSnapshot.empty) {
-    return pubSnapshot.docs.map(doc => {
-      const uid = doc.ref.parent.parent.id;
-      return uid;
-    });
-  }
-  // ---- Backward compatibility
-  const pubSnapshot2 = await db.collectionGroup("public").where("stripeAccount", "==", accountId).get();
-  if (!pubSnapshot2.empty) {
-    return pubSnapshot2.docs.map(doc => {
-      const uid = doc.ref.parent.parent.id;
-      return uid;
-    });
+  if (accountId) {
+    // current
+    const pubSnapshot = await db.collectionGroup("public").where("stripe", "==", accountId).get();
+    if (!pubSnapshot.empty) {
+      return pubSnapshot.docs.map(doc => {
+        const uid = doc.ref.parent.parent.id;
+        return uid;
+      });
+    }
+    // ---- Backward compatibility
+    const pubSnapshot2 = await db.collectionGroup("public").where("stripeAccount", "==", accountId).get();
+    if (!pubSnapshot2.empty) {
+      return pubSnapshot2.docs.map(doc => {
+        const uid = doc.ref.parent.parent.id;
+        return uid;
+      });
+    }
   }
 
   return [];
