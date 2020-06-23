@@ -73,7 +73,9 @@ export const disconnect = async (db: FirebaseFirestore.Firestore, data: any, con
 };
 
 export const verify = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
-  //const uid = utils.validate_auth(context);
+  if (!context.auth?.token?.admin) {
+    throw new functions.https.HttpsError('permission-denied', 'You do not have permission to confirm this request.')
+  }
   const stripe = utils.get_stripe();
 
   const { account_id } = data;

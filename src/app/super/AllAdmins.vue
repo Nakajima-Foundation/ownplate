@@ -30,7 +30,6 @@ export default {
       .limit(100)
       .onSnapshot(snapshot => {
         this.admins = snapshot.docs.map(this.doc2data("admin"));
-        console.log(this.admins);
         this.admins.forEach(async admin => {
           // NOTE: We are getting extra data only once for each admin
           if (!this.infos[admin.id]) {
