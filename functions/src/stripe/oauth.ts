@@ -79,10 +79,10 @@ export const verify = async (db: FirebaseFirestore.Firestore, data: any, context
   const { account_id } = data;
   utils.validate_params({ account_id })
   try {
-    const response = await stripe.balance.retrieve({}, {
+    await stripe.balance.retrieve({}, {
       stripeAccount: account_id
     })
-    return { result: true, response }
+    return { result: true }
   } catch (error) {
     throw utils.process_error(error)
   }

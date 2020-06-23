@@ -4,8 +4,8 @@
     <table>
       <tr v-for="admin in admins" :key="admin.id">
         <td>{{admin.name}}</td>
-        <td>{{payment(admin).stripe}}</td>
-        <td>{{payment(admin).verified}}</td>
+        <td v-if="payment(admin).verified === false" style="color:red">{{payment(admin).stripe}}</td>
+        <td v-else>{{payment(admin).stripe}}</td>
         <td>{{profile(admin).email}}</td>
       </tr>
     </table>
@@ -39,11 +39,16 @@ export default {
               await db.doc(`admins/${admin.id}/public/payment`).get()
             ).data();
             if (payment?.stripe) {
-              const { data } = await stripeVerify({
-                account_id: payment?.stripe
-              });
-              console.log("data", payment?.stripe, data);
-              payment.verified = data.result;
+              try {
+                const { data } = await stripeVerify({
+                  account_id: payment?.stripe
+                });
+                console.log("data", payment?.stripe, data);
+                payment.verified = data.result;
+              } catch (error) {
+                console.error(error.message);
+                payment.verified = false;
+              }
             }
             info.payment = payment || {};
             const profile = (
