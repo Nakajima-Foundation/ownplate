@@ -45,12 +45,14 @@ service cloud.firestore {
 
     match /admins/{userId} {
       allow read, write: if request.auth.uid == userId;
+      allow read: if isSuper(request);
       match /public/{document=**} {
         allow read: if true;
         allow write: if request.auth.uid == userId;
       }
       match /private/{document=**} {
         allow read, write: if request.auth.uid == userId;
+        allow read: if isSuper(request);
         match /profile {
           allow read: if request.auth.uid == userId;
           allow write: if request.auth.uid == userId

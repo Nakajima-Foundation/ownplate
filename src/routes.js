@@ -140,6 +140,10 @@ export const customRoutes = [
     component: "super/AllRestaurants.vue"
   },
   {
+    path: "/s/admins",
+    component: "super/AllAdmins.vue"
+  },
+  {
     path: '/s/requests',
     component: 'super/AllRequests.vue'
   },
