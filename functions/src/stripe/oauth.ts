@@ -73,5 +73,17 @@ export const disconnect = async (db: FirebaseFirestore.Firestore, data: any, con
 };
 
 export const verify = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
-  return { result: true }
+  //const uid = utils.validate_auth(context);
+  const stripe = utils.get_stripe();
+
+  const { account_id } = data;
+  utils.validate_params({ account_id })
+  try {
+    const response = await stripe.balance.retrieve({}, {
+      stripeAccount: account_id
+    })
+    return { result: true, response }
+  } catch (error) {
+    throw utils.process_error(error)
+  }
 };

@@ -39,7 +39,9 @@ export default {
               await db.doc(`admins/${admin.id}/public/payment`).get()
             ).data();
             if (payment?.stripe) {
-              const { data } = await stripeVerify();
+              const { data } = await stripeVerify({
+                account_id: payment?.stripe
+              });
               console.log("data", payment?.stripe, data);
               payment.verified = data.result;
             }
