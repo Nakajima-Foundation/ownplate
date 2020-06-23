@@ -3,7 +3,7 @@
     <back-button url="/s" />
     <h2>All Requests</h2>
     <table>
-      <tr><td>nama</td><td>Status</td></tr>
+      <tr><td>nama</td><td>Status</td><td>List</td></tr>
       <tr
       v-for="request in requests"
       :key="request.id"
@@ -15,7 +15,15 @@
         </td>
         <td>
           <span>
-            {{request.status}}
+            {{request.status == 1 ? "request" : ""}}
+          </span>
+        </td>
+        <td>
+          <span v-if="!restaurantsObj[request.id] || !restaurantsObj[request.id].onTheList">
+             <b-button @click="enableList(restaurantsObj[request.id].id)">Enable</b-button>
+          </span>
+          <span v-else>
+            On the list
           </span>
         </td>
       </tr>
@@ -60,7 +68,7 @@ export default {
                   arr
                 ).get();
           if (!resCols.empty) {
-            this.restaurantsObj = this.array2obj(resCols.docs);
+            this.restaurantsObj = this.array2obj(resCols.docs.map(this.doc2data("restaurant")));
           }
         });
       });
@@ -74,6 +82,10 @@ export default {
       return array.reduce((current, value, index) => {
         return index % size ? current : [...current, array.slice(index, index + size)];
       }, []);
+    },
+    enableList(id) {
+      db.doc(`restaurants/${id}`).update("onTheList", true);
+      this.restaurantsObj[id].onTheList = true;
     }
   }
 };
