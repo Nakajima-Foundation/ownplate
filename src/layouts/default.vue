@@ -264,6 +264,17 @@ export default {
     }
   },
   beforeCreate() {
+    if (indexedDB) {
+      var idb = indexedDB.open("inPrivate");
+      idb.onsuccess = () => {
+        this.$store.commit("setFirefoxPBM", false);
+      };
+      idb.onerror = () => {
+        this.$store.commit("setFirefoxPBM", true);
+      };
+    } else {
+      this.$store.commit("setFirefoxPBM", null);
+    }
     const systemGetConfig = functions.httpsCallable("systemGetConfig");
     systemGetConfig()
       .then(result => {
