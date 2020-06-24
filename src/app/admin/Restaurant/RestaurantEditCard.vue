@@ -112,8 +112,6 @@
             <span class="t-button c-primary">{{ $t("admin.directory.requestList") }}</span>
           </b-button>
         </div>
-
-
       </div>
 
       <!-- Delete Restaurant -->
@@ -154,18 +152,25 @@ export default {
   data() {
     return {
       host: location.protocol + "//" + location.host,
-      share_url: location.protocol + "//" + location.host + "/r/" + this.restaurantid,
+      share_url:
+        location.protocol + "//" + location.host + "/r/" + this.restaurantid,
       requestState: 0,
+      detacher: null
     };
   },
   mounted() {
-    db.doc(`requestList/${this.restaurantid}`).onSnapshot(async result => {
-      if (result.exists) {
-        this.requestState = result.data().status;
-      } else {
-        this.requestState = 0;
-      }
-    });
+    this.detacher = db
+      .doc(`requestList/${this.restaurantid}`)
+      .onSnapshot(async result => {
+        if (result.exists) {
+          this.requestState = result.data().status;
+        } else {
+          this.requestState = 0;
+        }
+      });
+  },
+  destroyed() {
+    this.detacher && this.detacher();
   },
   methods: {
     deleteRestaurant() {
@@ -186,10 +191,7 @@ export default {
         code: "editRestaurant.reallyOnListDelete",
         callback: () => {
           console.log(this.restaurantid);
-          db.doc(`restaurants/${this.restaurantid}`).update(
-            "onTheList",
-            false
-          );
+          db.doc(`restaurants/${this.restaurantid}`).update("onTheList", false);
         }
       });
     },
@@ -197,13 +199,12 @@ export default {
       db.doc(`requestList/${this.restaurantid}`).set({
         status: 1,
         uid: this.$store.getters.uidAdmin,
-        created: firebase.firestore.FieldValue.serverTimestamp(),
-      })
-
+        created: firebase.firestore.FieldValue.serverTimestamp()
+      });
     },
     requestDelete() {
       db.doc(`requestList/${this.restaurantid}`).delete();
-    },
+    }
   }
 };
 </script>
