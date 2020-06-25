@@ -17,23 +17,37 @@ const adminDB = test_db_helper.adminDB();
 
 should()
 
-describe('stripe tests', () => {
-  it ('capability_updated stripe test', async function() {
-    const uid = "aaabbbccc";
-    adminDB.doc(`admins/${uid}/public/stripe`).set({
-      stripeAccount: "acct_xxxxxxxx",
+const uid = "aaabbbccc1";
+const uid2 = "aaabbbccc2";
+
+describe('stripe tests', async () => {
+  before(async() => {
+    await adminDB.doc(`admins/${uid}/public/payment`).set({
+      stripe: "acct_xxxxxxxx",
       isConnected: true
     })
-    await stripeLog.capability_updated(adminDB, { data: test_jcb_data.jcb_one});
+    await adminDB.doc(`admins/${uid2}/public/stripe`).set({
+      stripeAccount: "acct_yyyyy",
+      isConnected: true
+    })
+  });
 
+  it ('capability_updated stripe test', async function() {
+    const res = await stripeLog.capability_updated(adminDB, { data: test_jcb_data.jcb_one});
+    (res[0] as any)["uid"].should.equal(uid2);
   });
 
   it ('account_updated stripe test', async function() {
-    await stripeLog.account_updated(adminDB, { data: accountupdated.data});
+    const res = await stripeLog.account_updated(adminDB, { data: accountupdated.data});
+    (res[0] as any)["uid"].should.equal(uid);
   });
 
   it ('authorized stripe test', async function() {
-    await stripeLog.account_authorized(adminDB, { data: authorized.authorized});
-    await stripeLog.account_deauthorized(adminDB, { data: deauthorized.deauthorized});
+    const res = await stripeLog.account_authorized(adminDB, authorized.authorized);
+    (res[0] as any)["uid"].should.equal(uid);
+  });
+  it ('deauthorized stripe test', async function() {
+    const res = await stripeLog.account_deauthorized(adminDB, deauthorized.deauthorized);
+    (res[0] as any)["uid"].should.equal(uid);
   });
 });

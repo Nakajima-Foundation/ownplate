@@ -1,11 +1,30 @@
 <template>
   <div>
     <template v-if="notFound == null"></template>
-    <template v-else-if="notFound">
+    <template v-else-if="notFound && !isOwner">
       <not-found />
     </template>
     <template v-else>
       <div>
+        <!-- For Owner Preview Only -->
+        <div v-if="isPreview" class="columns is-gapless">
+          <!-- Left Gap -->
+          <div class="column is-narrow w-24"></div>
+          <!-- Center Column -->
+          <div class="column">
+            <div
+              class="bg-status-red-bg r-8 p-l-16 p-r-16 p-t-16 p-b-16 align-center m-l-24 m-r-24 m-t-24"
+            >
+              <div class="t-subtitle1 c-status-red">{{$t("shopInfo.thisIsPreview")}}</div>
+              <div class="t-subtitle1 c-status-red">{{$t("shopInfo.notPublic")}}</div>
+            </div>
+            <div class="is-hidden-tablet h-24"></div>
+          </div>
+          <!-- Right Gap -->
+          <div class="column is-narrow w-24"></div>
+        </div>
+
+        <!-- Restaurant Body Area -->
         <div class="columns is-gapless">
           <!-- Left Gap -->
           <div class="column is-narrow w-24"></div>
@@ -26,7 +45,7 @@
             </div>
 
             <!-- Restaurant Details -->
-            <div class="m-l-24 m-r-24" v-if="shopInfo.publicFlag">
+            <div class="m-l-24 m-r-24">
               <!-- Restaurant Profile Photo and Name -->
               <shop-header :shopInfo="shopInfo"></shop-header>
 
@@ -170,13 +189,13 @@ export default {
     const restaurant_detacher = db
       .doc(`restaurants/${this.restaurantId()}`)
       .onSnapshot(restaurant => {
+        const restaurant_data = restaurant.data();
+        this.shopInfo = restaurant_data;
         if (
           restaurant.exists &&
           !restaurant.data().deletedFlag &&
           restaurant.data().publicFlag
         ) {
-          const restaurant_data = restaurant.data();
-          this.shopInfo = restaurant_data;
           this.notFound = false;
         } else {
           this.notFound = true;
@@ -225,8 +244,17 @@ export default {
     }
   },
   computed: {
+    isPreview() {
+      return this.notFound && this.isOwner;
+    },
+    isOwner() {
+      return this.isAdmin && this.uid === this.shopInfo.uid;
+    },
     isUser() {
       return !!this.$store.getters.uidUser;
+    },
+    uid() {
+      return this.$store.getters.uid;
     },
     totalCount() {
       const ret = Object.keys(this.orders).reduce((total, id) => {

@@ -175,6 +175,8 @@
     "areaTop": "Areas Top"
   },
   "shopInfo": {
+    "thisIsPreview": "This is Preview Only.",
+    "notPublic": "Page is not public to users.",
     "share": "Share",
     "qrcode": "QR code",
     "copyUrl": "Copy URL",
@@ -327,7 +329,7 @@
       "userRestaurantsTitle": "About Restaurants List for User",
       "userRestaurantsBody": "The restaurants you have added will not automatically appear on the list of restaurants for users. Please click the [Request to be Listed] button and your restaurant will be added to the list after approved. ",
       "notificationSoundTitle": "About Notification Sound",
-      "notificationSoundBody": "Order notification sound will be played while viewing the order list page (not on this page). If you are using more than one restaurant, keep each order list page open in a separate window."
+      "notificationSoundBody": "Order notification sound will be played while viewing the order list page (not on this page). If you want to have multiple store notifications playing at the same time, you need to be able to view the order list pages for each one. To do so, you will need a separate window on your computer and a separate device for your tablet."
     },
     "hidePayment": "Payment feature is coming soon. Please stay tuned.",
     "pleaseSignIn": "Sign In (for Restaurant)",
