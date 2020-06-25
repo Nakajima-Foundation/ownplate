@@ -3,15 +3,29 @@
     <back-button url="/s" />
     <h2>All Requests</h2>
     <table>
-      <tr><td>nama</td><td>Status</td><td>List</td></tr>
+      <tr>
+        <td>Name</td>
+        <td>List</td>
+        <td>Pub</td>
+        <td>Delete</td>
+        <td>Status</td>
       <tr
       v-for="request in requests"
       :key="request.id"
       >
         <td style="width: 50%">
           <router-link :to="`/r/${request.id}`">
-            {{request.id}}
+            {{(restaurantsObj[request.id] || {}).restaurantName}}
           </router-link>
+        </td>
+        <td>
+          {{(restaurantsObj[request.id] || {}).onTheList ? "Y":"N"}}
+        </td>
+        <td>
+          {{(restaurantsObj[request.id] || {}).publicFlag  ? "Y":"N"}}
+        </td>
+        <td>
+          {{(restaurantsObj[request.id] || {}).deletedFlag ? "Y":"N"}}
         </td>
         <td>
           <span>
@@ -68,7 +82,7 @@ export default {
                   arr
                 ).get();
           if (!resCols.empty) {
-            this.restaurantsObj = this.array2obj(resCols.docs.map(this.doc2data("restaurant")));
+            this.restaurantsObj = Object.assign({}, this.restaurantsObj, this.array2obj(resCols.docs.map(this.doc2data("restaurant"))));
           }
         });
       });
