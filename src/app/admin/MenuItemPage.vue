@@ -18,7 +18,7 @@
               <div class="level-left flex-1"></div>
               <!-- Notification Settings -->
               <div class="level-right">
-                <notification-index :shopInfo="restaurantInfo"/>
+                <notification-index :shopInfo="restaurantInfo" />
               </div>
             </div>
 
@@ -202,6 +202,7 @@
                 >
                   <b-input
                     v-model="menuInfo.itemDescription"
+                    type="textarea"
                     :placeholder="$t('editMenu.enterItemDescription')"
                   ></b-input>
                 </b-field>
