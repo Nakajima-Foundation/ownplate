@@ -60,8 +60,10 @@ export default {
       areas:
         ownPlateConfig.region == "JP"
           ? [
-              { name: "東京", id: 12 },
-              { name: "福岡県", id: 39 }
+            { name: "東京都", id: 12 },
+            { name: "群馬県", id: 9 },
+            { name: "埼玉県", id: 10 },
+            { name: "福岡県", id: 39 }
             ]
           : [{ name: "Washington", id: 46 }]
     };

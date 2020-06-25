@@ -127,6 +127,7 @@ import { db, auth, functions } from "@/plugins/firebase.js";
 import { releaseConfig } from "~/plugins/config.js";
 import DialogBox from "~/components/DialogBox";
 import AudioPlay from "./AudioPlay";
+import * as Sentry from "@sentry/browser";
 
 export default {
   components: {
@@ -199,10 +200,6 @@ export default {
     hasUser() {
       return !this.isNull(this.$store.state.user);
     },
-    isAdmin() {
-      //console.log(this.$store.getters.uidAdmin);
-      return !!this.$store.getters.uidAdmin;
-    },
     isUser() {
       return !!this.$store.getters.uidUser;
     },
@@ -263,10 +260,26 @@ export default {
     }
   },
   beforeCreate() {
+    if (indexedDB) {
+      var idb = indexedDB.open("inPrivate");
+      idb.onsuccess = () => {
+        this.$store.commit("setFirefoxPBM", false);
+      };
+      idb.onerror = () => {
+        this.$store.commit("setFirefoxPBM", true);
+      };
+    } else {
+      this.$store.commit("setFirefoxPBM", null);
+    }
     const systemGetConfig = functions.httpsCallable("systemGetConfig");
-    systemGetConfig().then(result => {
-      this.$store.commit("setServerConfig", result.data);
-    });
+    systemGetConfig()
+      .then(result => {
+        this.$store.commit("setServerConfig", result.data);
+      })
+      .catch(error => {
+        console.error("systemGetConfig", error);
+        Sentry.captureException(error);
+      });
     this.unregisterAuthObserver = auth.onAuthStateChanged(async user => {
       if (user) {
         console.log(
@@ -275,10 +288,16 @@ export default {
           user.uid,
           user.displayName
         );
-        user.getIdTokenResult(true).then(result => {
-          this.$store.commit("setUser", user);
-          this.$store.commit("setCustomClaims", result.claims);
-        });
+        user
+          .getIdTokenResult(true)
+          .then(result => {
+            this.$store.commit("setUser", user);
+            this.$store.commit("setCustomClaims", result.claims);
+          })
+          .catch(error => {
+            console.error("getIdTokenResult", error);
+            Sentry.captureException(error);
+          });
       } else {
         console.log("authStateChanged: null");
         this.$store.commit("setUser", null);

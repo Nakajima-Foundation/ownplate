@@ -28,7 +28,7 @@
               </div>
               <!-- Notification Settings -->
               <div class="level-right">
-                <notification-index :shopInfo="shopInfo"/>
+                <notification-index :shopInfo="shopInfo" />
               </div>
             </div>
           </div>
@@ -127,16 +127,18 @@
                 <div class="m-t-24 align-center">
                   <div class="t-caption c-text-black-medium">{{$t('order.timeRequested')}}</div>
                   <div class="t-body1 c-textl-black-high m-t-4">{{timeRequested}}</div>
-                  <div v-if="timeEstimated">
+                  <div v-if="timeEstimated" class="m-t-4">
                     <div class="t-caption c-text-black-medium">{{$t('order.timeToPickup')}}</div>
                     <div class="t-body1 c-textl-black-high m-t-4">{{timeEstimated}}</div>
                   </div>
                 </div>
 
                 <!-- Estimated Time Picker -->
-                <div v-if="showTimePicker" class="m-t-16">
-                  <div class="c-text-black-medium">{{$t('order.timeToPickup')}}</div>
-                  <b-select class="m-t-8" v-model="timeOffset">
+                <div v-if="showTimePicker" class="m-t-8">
+                  <div
+                    class="t-subtitle2 c-text-black-medium align-center"
+                  >{{$t('order.timeToPickup')}}</div>
+                  <b-select class="m-t-8 align-center" v-model="timeOffset">
                     <option
                       v-for="time in estimatedTimes"
                       :value="time.offset"

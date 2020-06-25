@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="$store.getters.uidAdmin">
     <!-- Welcome Instructions -->
     <div class="columns is-gapless">
       <!-- Left Gap -->

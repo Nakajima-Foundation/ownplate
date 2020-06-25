@@ -60,7 +60,6 @@ export const customRoutes = [
     component: "admin/Index.vue"
   },
   {
-    name: "admin-router",
     path: "/admin/restaurants/:restaurantId",
     component: "admin/Layout.vue",
     children: [
@@ -130,7 +129,7 @@ export const customRoutes = [
   },
   {
     path: "/s",
-    component: "super/SuperHome.vue"
+    component: "super/Index.vue"
   },
   {
     path: "/s/orders",
@@ -139,6 +138,10 @@ export const customRoutes = [
   {
     path: "/s/restaurants",
     component: "super/AllRestaurants.vue"
+  },
+  {
+    path: "/s/admins",
+    component: "super/AllAdmins.vue"
   },
   {
     path: '/s/requests',

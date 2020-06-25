@@ -125,6 +125,9 @@ export default ({ app }) => {
       user() {
         return this.$store.state.user;
       },
+      isAdmin() {
+        return !!this.$store.getters.uidAdmin;
+      },
       isLineUser() {
         const claims = this.$store.state.claims;
         return !!claims?.line;
