@@ -116,23 +116,24 @@ export default {
       this.$router.push("/");
     },
     async onSignin() {
-      try {
-        this.isLoading = true;
-        this.errors = {};
-        await auth.signInWithEmailAndPassword(this.email, this.password);
-        console.log("onSignin success");
-        //this.$router.push("/admin/restaurants");
-      } catch (error) {
-        console.log("onSignin failed", error.code, error.message);
-        const errorCode = "admin.error.code." + error.code;
-        if (error.code === "auth/wrong-password") {
-          this.errors = { password: [errorCode] };
-        } else {
-          this.errors = { email: [errorCode] };
-        }
-      } finally {
-        this.isLoading = false;
-      }
+      this.isLoading = true;
+      this.errors = {};
+      auth
+        .signInWithEmailAndPassword(this.email, this.password)
+        .then(ret => {
+          console.log("onSignin success");
+          this.isLoading = false;
+        })
+        .catch(error => {
+          console.log("onSignin failed", error.code, error.message);
+          const errorCode = "admin.error.code." + error.code;
+          if (error.code === "auth/wrong-password") {
+            this.errors = { password: [errorCode] };
+          } else {
+            this.errors = { email: [errorCode] };
+          }
+          this.isLoading = false;
+        });
     }
   }
 };
