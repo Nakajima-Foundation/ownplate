@@ -1,13 +1,28 @@
 <template>
   <div>
-    <!-- Share / Review -->
+    <!-- Share / Favorite Buttons -->
     <div class="m-t-8 align-center">
       <div class="op-button-text m-r-8" @click="openShare()">
         <i class="material-icons">launch</i>
         <span>{{$t('shopInfo.share')}}</span>
       </div>
-      <!-- <sharing-buttons :title="name" :url="shareUrl()" /> -->
+
+      <!-- Favorite -->
+      <div class="is-inline-block">
+        <!-- # ToDo: Switch Like/Liked when user tapped -->
+        <!-- Like -->
+        <div class="op-button-text">
+          <i class="material-icons">favorite_border</i>
+          <span>{{$t('shopInfo.like')}}</span>
+        </div>
+        <!-- Liked -->
+        <div class="op-button-text" v-if="false">
+          <i class="material-icons c-status-red">favorite</i>
+          <span class="c-status-red">{{$t('shopInfo.liked')}}</span>
+        </div>
+      </div>
     </div>
+
     <!-- Share Popup-->
     <b-modal :active.sync="sharePopup" :width="488" scroll="keep">
       <div class="op-dialog p-t-24 p-l-24 p-r-24 p-b-24">
