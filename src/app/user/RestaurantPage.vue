@@ -1,7 +1,7 @@
 <template>
   <div>
     <template v-if="notFound == null"></template>
-    <template v-else-if="notFound">
+    <template v-else-if="notFound && !isOwner">
       <not-found />
     </template>
     <template v-else>
@@ -170,13 +170,13 @@ export default {
     const restaurant_detacher = db
       .doc(`restaurants/${this.restaurantId()}`)
       .onSnapshot(restaurant => {
+        const restaurant_data = restaurant.data();
+        this.shopInfo = restaurant_data;
         if (
           restaurant.exists &&
           !restaurant.data().deletedFlag &&
           restaurant.data().publicFlag
         ) {
-          const restaurant_data = restaurant.data();
-          this.shopInfo = restaurant_data;
           this.notFound = false;
         } else {
           this.notFound = true;
@@ -225,8 +225,17 @@ export default {
     }
   },
   computed: {
+    isPreview() {
+      return (this.notFound && this.isOwner);
+    },
+    isOwner() {
+      return this.isAdmin && (this.uid === this.shopInfo.uid);
+    },
     isUser() {
       return !!this.$store.getters.uidUser;
+    },
+    uid() {
+      return this.$store.getters.uid;
     },
     totalCount() {
       const ret = Object.keys(this.orders).reduce((total, id) => {
