@@ -175,6 +175,8 @@
     "areaTop": "エリア一覧"
   },
   "shopInfo": {
+    "thisIsPreview": "これは飲食店向けプレビューです。",
+    "notPublic": "お客様向けには公開されていません。",
     "share": "シェア",
     "qrcode": "飲食店QRコード",
     "copyUrl": "このお店のアドレスをコピー",

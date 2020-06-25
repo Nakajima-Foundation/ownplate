@@ -175,6 +175,8 @@
     "areaTop": "Areas Top"
   },
   "shopInfo": {
+    "thisIsPreview": "This is Preview Only.",
+    "notPublic": "Page is not public to users.",
     "share": "Share",
     "qrcode": "QR code",
     "copyUrl": "Copy URL",

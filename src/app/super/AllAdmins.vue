@@ -1,22 +1,38 @@
 <template>
   <section class="section">
+    <back-button url="/s" />
     <h2>All Admins</h2>
     <table>
+      <tr>
+        <th>Name</th>
+        <th>e-mail</th>
+        <th>Stripe</th>
+        <th>JCB</th>
+      </tr>
+
       <tr v-for="admin in admins" :key="admin.id">
-        <td>{{admin.name}}</td>
-        <td>{{profile(admin).email}}</td>
-        <td v-if="payment(admin).verified === false" style="color:red">{{payment(admin).stripe}}</td>
-        <td v-else>{{payment(admin).stripe}}</td>
+        <td style="padding-right:8px">{{admin.name}}</td>
+        <td style="padding-right:8px">{{profile(admin).email}}</td>
+        <td
+          v-if="payment(admin).verified === false"
+          style="color:red;padding-right:8px"
+        >{{payment(admin).stripe}}</td>
+        <td style="padding-right:8px" v-else>{{payment(admin).stripe}}</td>
+        <td style="padding-right:8px">{{capabilities(admin).jcb_payments}}</td>
       </tr>
     </table>
   </section>
 </template>
 
 <script>
+import BackButton from "~/components/BackButton";
 import { db } from "~/plugins/firebase.js";
 import { stripeVerify } from "~/plugins/stripe.js";
 
 export default {
+  components: {
+    BackButton
+  },
   data() {
     return {
       admins: [],
@@ -44,6 +60,9 @@ export default {
                 });
                 console.log("data", payment?.stripe, data);
                 payment.verified = data.result;
+                if (data.account) {
+                  info.account = data.account;
+                }
               } catch (error) {
                 console.error(error.message);
                 payment.verified = false;
@@ -69,6 +88,12 @@ export default {
     },
     payment(admin) {
       return this.infos[admin.id]?.payment || {};
+    },
+    account(admin) {
+      return this.infos[admin.id]?.account || {};
+    },
+    capabilities(admin) {
+      return this.account(admin)?.capabilities || {};
     }
   }
 };
