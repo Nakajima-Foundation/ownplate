@@ -139,7 +139,10 @@ export default ({ app }) => {
         return ownPlateConfig.region === "JP";
       },
       isLocaleJapan() {
-        return this.$i18n.locale === "ja";
+        // for hack
+        console.log(this.$i18n.locale);
+        // return this.$i18n.locale === "ja";
+        return this.$i18n.locale !== "en";
       },
       serviceKey() {
         return this.isJapan ? "omochikaeri" : "ownPlate";
