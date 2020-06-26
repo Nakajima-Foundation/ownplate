@@ -1,5 +1,6 @@
 <template>
   <div>
+    <div class="m-t-8 p-t-8 p-l-16">{{$t("order.no_jcb")}}</div>
     <div v-if="storedCard" class="bg-surface r-8 d-low m-t-8 p-l-16 p-r-16 p-t-16 p-b-16">
       <b-checkbox v-model="useStoredCard">
         <span class="t-body1 c-text-black-high">
