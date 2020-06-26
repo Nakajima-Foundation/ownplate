@@ -248,7 +248,7 @@ export default {
       return this.notFound && this.isOwner;
     },
     isOwner() {
-      return this.isAdmin && this.uid === this.shopInfo.uid;
+      return this.isAdmin && this.uid === this.shopInfo?.uid;
     },
     isUser() {
       return !!this.$store.getters.uidUser;
