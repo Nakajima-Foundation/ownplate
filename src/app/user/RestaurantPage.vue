@@ -190,7 +190,7 @@ export default {
       .doc(`restaurants/${this.restaurantId()}`)
       .onSnapshot(restaurant => {
         const restaurant_data = restaurant.data();
-        this.shopInfo = restaurant_data;
+        this.shopInfo = restaurant_data || {};
         if (
           restaurant.exists &&
           !restaurant.data().deletedFlag &&
@@ -248,7 +248,7 @@ export default {
       return this.notFound && this.isOwner;
     },
     isOwner() {
-      return this.isAdmin && this.uid === this.shopInfo?.uid;
+      return this.isAdmin && this.uid === this.shopInfo.uid;
     },
     isUser() {
       return !!this.$store.getters.uidUser;
