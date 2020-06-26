@@ -3,7 +3,7 @@
     <back-button url="/s/admins" />
     <h2>Restaurants</h2>
     <div v-for="restaurant in restaurants" :key="restaurant.id">
-      <shop-header :shopInfo="restaurant"></shop-header>
+      <restaurant :restaurant="restaurant"></restaurant>
     </div>
   </section>
 </template>
@@ -11,11 +11,11 @@
 <script>
 import BackButton from "~/components/BackButton";
 import { db } from "~/plugins/firebase.js";
-import ShopHeader from "~/app/user/Restaurant/ShopHeader";
+import Restaurant from "~/app/super/Components/Restaurant";
 export default {
   components: {
     BackButton,
-    ShopHeader
+    Restaurant
   },
   data() {
     return {
