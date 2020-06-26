@@ -144,6 +144,10 @@ export const customRoutes = [
     component: "super/AllAdmins.vue"
   },
   {
+    path: "/s/admins/:adminId",
+    component: "super/AdminInfo.vue"
+  },
+  {
     path: '/s/requests',
     component: 'super/AllRequests.vue'
   },

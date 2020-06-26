@@ -11,7 +11,9 @@
       </tr>
 
       <tr v-for="admin in admins" :key="admin.id">
-        <td style="padding-right:8px">{{admin.name}}</td>
+        <td style="padding-right:8px">
+          <nuxt-link :to="`/s/admins/${admin.id}`">{{admin.name}}</nuxt-link>
+        </td>
         <td style="padding-right:8px">{{profile(admin).email}}</td>
         <td
           v-if="payment(admin).verified === false"
