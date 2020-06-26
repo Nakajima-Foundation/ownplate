@@ -232,7 +232,8 @@ export const regionalSettings = {
       es: "Español",
       ja: "日本語"
     },
-    covid19trace: false
+    covid19trace: false,
+    hashTag: "ownplate",
   },
   JP: {
     CurrencyKey: "JPY",
@@ -267,7 +268,8 @@ export const regionalSettings = {
       ja: "日本語",
       en: "English (US)"
     },
-    covid19trace: true
+    covid19trace: true,
+    hashTag: "omochikaeri",
   },
   EU: {
     CurrencyKey: "EUR",
@@ -303,7 +305,8 @@ export const regionalSettings = {
       nl: "Nederlands",
       ja: "日本語"
     },
-    covid19trace: false
+    covid19trace: false,
+    hashTag: "ownplate",
   }
 };
 
