@@ -97,22 +97,32 @@ const escapeHtml = (str: string): string => {
 }
 
 
+const getMenuImage = async (restaurantName, menuId) => {
+  if (menuId) {
+    const menu =  await db.doc(`restaurants/${restaurantName}/menus/${menuId}`).get();
+    if (menu && menu.exists) {
+      const menu_data: any = menu.data();
+      return (menu_data?.images?.item?.resizedImages || {})["600"] || menu_data.itemPhoto
+    }
+  }
+  return null;
+};
 const ogpPage = async (req: any, res: any) => {
 
-  const { restaurantName } = req.params;
+  const { restaurantName, menuId } = req.params;
   const template_data = fs.readFileSync('./templates/index.html', { encoding: 'utf8' });
   try {
     const restaurant = await db.doc(`restaurants/${restaurantName}`).get();
 
-
     if (!restaurant || !restaurant.exists) {
       return res.status(404).send(template_data);
     }
+    const menuImage = await getMenuImage(restaurantName, menuId);
     const restaurant_data: any = restaurant.data();
 
     const siteName = ownPlateConfig.siteName;
     const title = restaurant_data.restaurantName || ownPlateConfig.siteName;
-    const image = (restaurant_data?.images?.profile?.resizedImages || {})["600"] ||
+    const image = menuImage || (restaurant_data?.images?.profile?.resizedImages || {})["600"] ||
       restaurant_data.restProfilePhoto;
     const description = restaurant_data.introduction || ownPlateConfig.siteDescription;
     const regexTitle = /<title.*title>/;
@@ -189,7 +199,7 @@ router.post('/stripe/callback',
 app.use('/1.0', router);
 
 app.get('/r/:restaurantName', ogpPage);
-app.get('/r/:restaurantpName/*', ogpPage);
+app.get('/r/:restaurantName/menus/:menuId', ogpPage);
 
 
 app.get('/sitemap.xml', sitemap_response);
