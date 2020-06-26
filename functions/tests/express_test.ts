@@ -41,7 +41,11 @@ const good_cafe_data = {
 describe('express function', () => {
   before(async () => {
     await adminDB.doc(`restaurants/testbar`).set(good_cafe_data);
-    await adminDB.doc(`restaurants/testbar/menus/hoge`).set({images: {item: {resizedImages: {"600": "123.jpg"}}}});
+    await adminDB.doc(`restaurants/testbar/menus/hoge`).set({
+      images: {item: {resizedImages: {"600": "123.jpg"}}},
+      itemDescription: "hello from menu",
+      itemName: "good menu",
+    });
   });
 
   it ('express simple test', async function() {
@@ -54,18 +58,23 @@ describe('express function', () => {
     const meta_tag = test_helper.parse_meta(restaurant_response.text);
 
     meta_tag['og:title'].should.not.empty;
+    meta_tag['og:title'].should.equal('Good cafe')
     meta_tag['og:site_name'].should.not.empty;
     meta_tag['og:type'].should.not.empty;
     meta_tag['og:image'].should.equal('https://example.com/images600');
+
     const restaurant_menu_response = await request.get('/r/testbar/menus/hoge');
     restaurant_menu_response.status.should.equal(200);
 
     const meta_menu_tag = test_helper.parse_meta(restaurant_menu_response.text);
 
     meta_menu_tag['og:title'].should.not.empty;
+    meta_menu_tag['og:title'].should.equal('good menu / Good cafe')
     meta_menu_tag['og:site_name'].should.not.empty;
     meta_menu_tag['og:type'].should.not.empty;
     meta_menu_tag['og:image'].should.equal("123.jpg");
+    meta_menu_tag['og:description'].should.equal('hello from menu');
+
     const restaurant_error_response = await request.get('/r/testbar2');
     restaurant_error_response.status.should.equal(404);
   });
