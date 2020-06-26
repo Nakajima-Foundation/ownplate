@@ -84,6 +84,11 @@ export const customRoutes = [
         component: "admin/OrderListPage.vue"
       },
       {
+        name: "admin-suspend",
+        path: "suspend",
+        component: "admin/OrderSuspendPage.vue"
+      },
+      {
         path: "line",
         component: "admin/ManageLine.vue"
       },
@@ -144,12 +149,12 @@ export const customRoutes = [
     component: "super/AllAdmins.vue"
   },
   {
-    path: '/s/requests',
-    component: 'super/AllRequests.vue'
+    path: "/s/requests",
+    component: "super/AllRequests.vue"
   },
   {
-    path: '/s/callbacks',
-    component: 'super/AllStripeCallback.vue'
+    path: "/s/callbacks",
+    component: "super/AllStripeCallback.vue"
   },
   {
     path: "/s/callbacks/:uid/:logId",

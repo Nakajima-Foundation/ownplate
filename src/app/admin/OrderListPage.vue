@@ -23,9 +23,21 @@
               </div>
             </div>
 
-            <!-- Notification Settings -->
+            <!-- Suspend and Notification -->
             <div class="level-right">
-              <notification-index :shopInfo="shopInfo"/>
+              <!-- Suspend Button -->
+              <b-button
+                tag="nuxt-link"
+                :to="`/admin/restaurants/${restaurantId()}/suspend`"
+                class="b-reset op-button-pill h-36 bg-form m-t-24 m-r-16"
+              >
+                <i class="material-icons c-primary m-l-8">remove_shopping_cart</i>
+                <span class="c-primary t-button">Suspend</span>
+                <span class="t-button c-status-red">0</span>
+              </b-button>
+
+              <!-- Notification Settings -->
+              <notification-index :shopInfo="shopInfo" />
             </div>
           </div>
 
@@ -89,14 +101,14 @@ export default {
   components: {
     OrderedInfo,
     BackButton,
-    NotificationIndex,
+    NotificationIndex
   },
   data() {
     return {
       shopInfo: {},
       orders: [],
       dayIndex: 0,
-      order_detacher: () => {},
+      order_detacher: () => {}
     };
   },
   watch: {
@@ -124,7 +136,6 @@ export default {
       this.updateDayIndex();
     }
     this.dateWasUpdated();
-
   },
   destroyed() {
     this.order_detacher();
