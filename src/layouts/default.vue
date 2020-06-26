@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper" @click="enableSound()">
     <!-- Header -->
-    <div class="cols flex-center bg-ownplate-white">
+    <div class="cols flex-center bg-ownplate-white"  :style="flashStyle">
       <div>
         <div class="op-button w-48 h-48" @click="handleOpen()">
           <i class="material-icons s-24 c-text-black-medium">menu</i>
@@ -163,7 +163,9 @@ export default {
       fullwidth: false,
       right: false,
 
-      langPopup: false
+      langPopup: false,
+      isFlash: false,
+      FlashToggle: false,
     };
   },
   mounted() {
@@ -175,6 +177,19 @@ export default {
     });
   },
   computed: {
+    flashStyle() {
+      if (this.isFlash) {
+        setTimeout(() => {
+          this.FlashToggle = !this.FlashToggle;
+        }, 500);
+        if (this.FlashToggle) {
+          return "background-color: pink";
+        } else {
+          return "background-color: skyblue";
+        }
+      }
+      return ""
+    },
     isLoading() {
       return this.$store.state.isLoading;
     },
@@ -212,6 +227,12 @@ export default {
     }
   },
   methods: {
+    flash() {
+      this.isFlash = true;
+      setTimeout(() => {
+        this.isFlash = false;
+      }, 5000);
+    },
     async enableSound() {
       await this.$refs.audioPlay.enableSound();
     },
@@ -324,7 +345,11 @@ export default {
           }
         }
       }
-    }
+    },
+    async "$store.state.orderEvent"() {
+      this.flash();
+    },
+
   },
   async created() {
     this.language = this.regionalSetting.defaultLanguage;
