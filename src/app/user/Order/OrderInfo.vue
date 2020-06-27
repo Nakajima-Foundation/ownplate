@@ -72,10 +72,10 @@
 
       <!-- Tip Buttons -->
       <div v-if="regionTip.choices.length > 0" class="p-t-16 p-l-16 p-r-16">
-        <div v-if="isTipEditable" class="columns is-gapless">
-          <div class="column is-narrow">
+        <div v-if="isTipEditable">
+          <div>
             <b-input
-              class="w-192"
+              class="w-full"
               type="number"
               :placeholder="$t('order.maxTip', {max:regionTip.max})"
               :step="tipStep"
@@ -85,7 +85,7 @@
               style
             />
           </div>
-          <div class="column">
+          <div>
             <b-button
               v-for="ratio in regionTip.choices"
               class="m-t-8 m-r-8 bg-form"
