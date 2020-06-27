@@ -97,25 +97,48 @@ const escapeHtml = (str: string): string => {
 }
 
 
+const getMenuData = async (restaurantName, menuId) => {
+  if (menuId) {
+    const menu =  await db.doc(`restaurants/${restaurantName}/menus/${menuId}`).get();
+    if (menu && menu.exists) {
+      const menu_data: any = menu.data();
+      return {
+        image: (menu_data?.images?.item?.resizedImages || {})["600"] || menu_data.itemPhoto,
+        description: menu_data?.itemDescription,
+        name: menu_data?.itemName,
+        exists: true,
+      };
+    }
+  }
+  return {
+    exists: false,
+  };
+};
 const ogpPage = async (req: any, res: any) => {
 
-  const { restaurantName } = req.params;
+  const { restaurantName, menuId } = req.params;
   const template_data = fs.readFileSync('./templates/index.html', { encoding: 'utf8' });
   try {
     const restaurant = await db.doc(`restaurants/${restaurantName}`).get();
 
-
     if (!restaurant || !restaurant.exists) {
       return res.status(404).send(template_data);
     }
+
+    const menuData = await getMenuData(restaurantName, menuId);
     const restaurant_data: any = restaurant.data();
 
     const siteName = ownPlateConfig.siteName;
-    const title = restaurant_data.restaurantName || ownPlateConfig.siteName;
-    const image = (restaurant_data?.images?.profile?.resizedImages || {})["600"] ||
+    const title = menuData.exists ? [menuData.name, restaurant_data.restaurantName].join(" / ") :
+      restaurant_data.restaurantName || ownPlateConfig.siteName;
+    const image = menuData.image || (restaurant_data?.images?.profile?.resizedImages || {})["600"] ||
       restaurant_data.restProfilePhoto;
-    const description = restaurant_data.introduction || ownPlateConfig.siteDescription;
+    const description = menuData.description || restaurant_data.introduction || ownPlateConfig.siteDescription;
     const regexTitle = /<title.*title>/;
+
+    const url = menuData.exists ? `https://${ownPlateConfig.hostName}/r/${restaurantName}/menus/${menuId}` :
+      `https://${ownPlateConfig.hostName}/r/${restaurantName}`;
+
     const metas =
       [
         `<title>${escapeHtml(title)}</title>`,
@@ -123,7 +146,7 @@ const ogpPage = async (req: any, res: any) => {
         `<meta property="og:title" content="${escapeHtml(title)}" />`,
         `<meta property="og:site_name" content="${escapeHtml(siteName)}" />`,
         `<meta property="og:type" content="website" />`,
-        `<meta property="og:url" content="https://${ownPlateConfig.hostName}/r/${restaurantName}" />`,
+        `<meta property="og:url" content="${url}" />`,
         `<meta property="og:description" content="${escapeHtml(description)}" />`,
         `<meta property="og:image" content="${image}" />`,
         `<meta name="twitter:card" content="summary_large_image" />`,
@@ -189,7 +212,7 @@ router.post('/stripe/callback',
 app.use('/1.0', router);
 
 app.get('/r/:restaurantName', ogpPage);
-app.get('/r/:restaurantpName/*', ogpPage);
+app.get('/r/:restaurantName/menus/:menuId', ogpPage);
 
 
 app.get('/sitemap.xml', sitemap_response);

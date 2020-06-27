@@ -28,6 +28,13 @@ export default {
       },
     };
   },
+  computed: {
+    requestTouch() {
+      const isIOS = /iP(hone|(o|a)d)/.test(navigator.userAgent)
+      console.log(this.notificationConfig.soundOn, !this.$store.state.soundEnable, isIOS);
+      return this.notificationConfig.soundOn && !this.$store.state.soundEnable && isIOS;
+    },
+  },
   async created() {
     this.notification_detacher = db.doc(`restaurants/${this.restaurantId()}/private/notifications`)
       .onSnapshot(notification => {
