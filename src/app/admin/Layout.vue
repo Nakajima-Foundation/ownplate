@@ -1,5 +1,6 @@
 <template>
 <div>
+  {{requestTouch}}
   <router-view></router-view>
   <notification-watcher />
   <sound-config-watcher :notificationConfig="notificationConfig" />
@@ -27,6 +28,13 @@ export default {
         nameKey: null,
       },
     };
+  },
+  computed: {
+    requestTouch() {
+      const isIOS = /iP(hone|(o|a)d)/.test(navigator.userAgent)
+      console.log(this.notificationConfig.soundOn, !this.$store.state.soundEnable, isIOS);
+      return this.notificationConfig.soundOn && !this.$store.state.soundEnable && isIOS;
+    },
   },
   async created() {
     this.notification_detacher = db.doc(`restaurants/${this.restaurantId()}/private/notifications`)
