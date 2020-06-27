@@ -379,6 +379,8 @@
     "passwordReset": "パスワードのリセット",
     "pleaseCheckInbox": "メールを送信しました。受信箱をご確認ください。",
     "order": {
+      "suspend": "一時休止",
+      "suspendSettings": "一時休止設定",
       "notification": "通知",
       "incompleteOrders": "未完了の注文",
       "notificationSettings": "通知設定",

@@ -379,6 +379,8 @@
     "passwordReset": "Reset Password",
     "pleaseCheckInbox": "Please check your inbox, an email is on the way.",
     "order": {
+      "suspend": "Suspend",
+      "suspendSettings": "Suspend Settings",
       "notification": "Notification",
       "incompleteOrders": "Incomplete Orders",
       "notificationSettings": "Notification Settings",

@@ -33,37 +33,120 @@
     </div>
 
     <!-- Body Area -->
-    <div>ToDo: Show all menu items with checkbox for suspending on/off.</div>
+    <div class="columns is-gapless">
+      <!-- Left Gap -->
+      <div class="column is-narrow w-24"></div>
+
+      <!-- Left Column -->
+      <div class="column">
+        <div class="m-l-24 m-r-24">
+          <div class="t-h6 c-text-black-disabled m-t-24">{{ $t("admin.order.suspendSettings") }}</div>
+          <div
+            class="bg-surface r-8 d-low p-l-16 p-r-16 p-t-16 p-b-16 m-t-8"
+          >Will put sespend settings here.</div>
+        </div>
+      </div>
+
+      <!-- Right Column -->
+      <div class="column">
+        <div class="m-l-24 m-r-24">
+          <div class="m-t-24">
+            <!-- Menu Items -->
+            <template v-for="itemId in menuLists">
+              <div v-if="itemsObj[itemId]" :key="itemId">
+                <div
+                  class="t-h6 c-text-black-disabled m-t-24"
+                  v-if="itemsObj[itemId]._dataType === 'title'"
+                >{{ itemsObj[itemId].name }}</div>
+                <order-suspend-item
+                  v-if="itemsObj[itemId]._dataType === 'menu'"
+                  :item="itemsObj[itemId]"
+                  :shopInfo="shopInfo"
+                ></order-suspend-item>
+              </div>
+            </template>
+          </div>
+        </div>
+      </div>
+      <!-- Right Gap -->
+      <div class="column is-narrow w-24"></div>
+    </div>
   </div>
 </template>
 
 <script>
-import { db, firestore } from "~/plugins/firebase.js";
+import { db, firestore, functions } from "~/plugins/firebase.js";
 import BackButton from "~/components/BackButton";
+import OrderSuspendItem from "~/app/admin/Order/OrderSuspendItem";
 
 export default {
   components: {
+    OrderSuspendItem,
     BackButton
   },
   data() {
     return {
       shopInfo: {},
-      order_detacher: () => {}
+      menus: [],
+      titles: [],
+      detacher: [],
+      notFound: null
     };
   },
-  async created() {
-    this.checkAdminPermission();
-    const restaurantDoc = await db
+  created() {
+    const restaurant_detacher = db
       .doc(`restaurants/${this.restaurantId()}`)
-      .get();
-    if (!restaurantDoc.exists) {
-      // todo not found
-      return;
-    }
-    this.shopInfo = restaurantDoc.data();
+      .onSnapshot(restaurant => {
+        const restaurant_data = restaurant.data();
+        this.shopInfo = restaurant_data;
+        if (
+          restaurant.exists &&
+          !restaurant.data().deletedFlag &&
+          restaurant.data().publicFlag
+        ) {
+          this.notFound = false;
+        } else {
+          this.notFound = true;
+        }
+      });
+    const menu_detacher = db
+      .collection(`restaurants/${this.restaurantId()}/menus`)
+      .where("deletedFlag", "==", false)
+      .where("publicFlag", "==", true)
+      .onSnapshot(menu => {
+        if (!menu.empty) {
+          this.menus = menu.docs
+            .filter(a => {
+              const data = a.data();
+              return data.validatedFlag === undefined || data.validatedFlag;
+            })
+            .map(this.doc2data("menu"));
+        }
+      });
+    const title_detacher = db
+      .collection(`restaurants/${this.restaurantId()}/titles`)
+      .onSnapshot(title => {
+        if (!title.empty) {
+          this.titles = title.docs.map(this.doc2data("title"));
+        }
+      });
+    this.detacher = [restaurant_detacher, menu_detacher, title_detacher];
   },
   destroyed() {
-    this.order_detacher();
+    if (this.detacher) {
+      this.detacher.map(detacher => {
+        detacher();
+      });
+    }
+  },
+  computed: {
+    itemsObj() {
+      return this.array2obj(this.menus.concat(this.titles));
+    },
+    menuLists() {
+      const list = this.shopInfo.menuLists || [];
+      return list;
+    }
   }
 };
 </script>

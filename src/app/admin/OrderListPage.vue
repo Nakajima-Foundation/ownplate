@@ -32,7 +32,7 @@
                 class="b-reset op-button-pill h-36 bg-form m-t-24 m-r-16"
               >
                 <i class="material-icons c-primary m-l-8">remove_shopping_cart</i>
-                <span class="c-primary t-button">Suspend</span>
+                <span class="c-primary t-button">{{ $t("admin.order.suspend") }}</span>
                 <span class="t-button c-status-red">0</span>
               </b-button>
 
