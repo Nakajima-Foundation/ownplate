@@ -41,9 +41,69 @@
       <div class="column">
         <div class="m-l-24 m-r-24">
           <div class="t-h6 c-text-black-disabled m-t-24">{{ $t("admin.order.suspendSettings") }}</div>
-          <div
-            class="bg-surface r-8 d-low p-l-16 p-r-16 p-t-16 p-b-16 m-t-8"
-          >Will put sespend settings here.</div>
+
+          <!-- Suspend New Orders -->
+          <div>
+            <div
+              class="t-subtitle2 c-text-black-medium m-t-16"
+            >{{ $t("admin.order.suspendNewOrders") }}</div>
+            <!-- # ToDo: Switch Suspend/Unsuspend buttons based on the status. -->
+            <!-- Suspend Buttons -->
+            <div v-if="true">
+              <b-button class="b-reset op-button-pill bg-form m-t-16 m-r-16">
+                <i class="material-icons p-l-8 c-primary">alarm_off</i>
+                <span class="t-button p-r-8 c-primary">{{ $t("admin.order.suspendFor10min") }}</span>
+              </b-button>
+              <b-button class="b-reset op-button-pill bg-form m-t-16 m-r-16">
+                <i class="material-icons p-l-8 c-primary">alarm_off</i>
+                <span class="t-button p-r-8 c-primary">{{ $t("admin.order.suspendFor15min") }}</span>
+              </b-button>
+              <b-button class="b-reset op-button-pill bg-form m-t-16 m-r-16">
+                <i class="material-icons p-l-8 c-primary">alarm_off</i>
+                <span class="t-button p-r-8 c-primary">{{ $t("admin.order.suspendFor20min") }}</span>
+              </b-button>
+              <b-button class="b-reset op-button-pill bg-form m-t-16 m-r-16">
+                <i class="material-icons p-l-8 c-primary">alarm_off</i>
+                <span class="t-button p-r-8 c-primary">{{ $t("admin.order.suspendFor25min") }}</span>
+              </b-button>
+              <b-button class="b-reset op-button-pill bg-form m-t-16 m-r-16">
+                <i class="material-icons p-l-8 c-primary">alarm_off</i>
+                <span class="t-button p-r-8 c-primary">{{ $t("admin.order.suspendForAllDay") }}</span>
+              </b-button>
+            </div>
+
+            <!-- Unsuspend Button -->
+            <div v-else>
+              <div class="bg-status-red-bg r-8 p-l-16 p-r-16 p-t-16 p-b-16 m-t-16 align-center">
+                <div class="t-subtitle1 c-status-red">{{ $t("admin.order.suspending") }}</div>
+                <div class="t-subtitle2 c-status-red">{{ $t("admin.order.unsuspendAt") }} 12:35 PM</div>
+              </div>
+              <b-button class="b-reset op-button-pill bg-form m-t-16 m-r-16">
+                <i class="material-icons p-l-8 c-primary">alarm_on</i>
+                <span class="t-button p-r-8 c-primary">{{ $t("admin.order.unsuspend") }}</span>
+              </b-button>
+            </div>
+          </div>
+
+          <!-- Suspend Individual Item -->
+          <!-- # ToDo: Implement select/deselect all check boxes. -->
+          <div>
+            <div
+              class="t-subtitle2 c-text-black-medium m-t-24"
+            >{{ $t("admin.order.suspendIndividualItem") }}</div>
+
+            <!-- Suspend All Items -->
+            <b-button class="b-reset op-button-pill bg-form m-t-16 m-r-16">
+              <i class="material-icons p-l-8 c-primary">check_box</i>
+              <span class="t-button p-r-8 c-primary">{{ $t("admin.order.suspendAllItems") }}</span>
+            </b-button>
+
+            <!-- Unsuspend All Items -->
+            <b-button class="b-reset op-button-pill bg-form m-t-16 m-r-16">
+              <i class="material-icons p-l-8 c-primary">check_box_outline_blank</i>
+              <span class="t-button p-r-8 c-primary">{{ $t("admin.order.unsuspendAllItems") }}</span>
+            </b-button>
+          </div>
         </div>
       </div>
 

@@ -33,6 +33,7 @@
               >
                 <i class="material-icons c-primary m-l-8">remove_shopping_cart</i>
                 <span class="c-primary t-button">{{ $t("admin.order.suspend") }}</span>
+                <!-- # ToDO: Show number of suspended items. -->
                 <span class="t-button c-status-red">0</span>
               </b-button>
 
