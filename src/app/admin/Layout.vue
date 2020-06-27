@@ -1,6 +1,5 @@
 <template>
 <div>
-  {{requestTouch}}
   <router-view></router-view>
   <notification-watcher />
   <sound-config-watcher :notificationConfig="notificationConfig" />
