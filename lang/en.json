@@ -494,7 +494,8 @@
         "confirm": "Failed to confirm the payment.",
         "connect": "Failed to connect the Stripe account.",
         "disconnect": "Failed to disconnect the Stripe account.",
-        "intent": "Failed to process the payment."
+        "intent": "Failed to process the payment.",
+        "NoJCB": "This restaurant does not accept JCB card."
       },
       "menu": {
         "save": "Failed to update the menu."
