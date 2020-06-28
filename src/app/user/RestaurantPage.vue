@@ -190,7 +190,7 @@ export default {
       .doc(`restaurants/${this.restaurantId()}`)
       .onSnapshot(restaurant => {
         const restaurant_data = restaurant.data();
-        this.shopInfo = restaurant_data;
+        this.shopInfo = restaurant_data || {};
         if (
           restaurant.exists &&
           !restaurant.data().deletedFlag &&
