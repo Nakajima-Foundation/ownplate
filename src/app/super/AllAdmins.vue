@@ -101,7 +101,10 @@ export default {
       return this.account(admin)?.capabilities || {};
     },
     showActivate(admin) {
-      return this.capabilities(admin).jcb_payments === "active";
+      return (
+        this.capabilities(admin).jcb_payments === "active" &&
+        !this.payment(admin).stripeJCB
+      );
     },
     async activate(admin) {
       const data = (
