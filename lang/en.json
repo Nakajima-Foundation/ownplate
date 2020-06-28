@@ -243,6 +243,7 @@
     "yourPayment": "Your Payment",
     "reuseCard": "Save it for future use",
     "whatsCVC": "What’s CVC?",
+    "no_jcb": "＊This restaurant does not accept JCB card",
     "3digitsCVC": "The final three digits on the back",
     "4digitsCVC": "The four digits on the front",
     "placeOrder": "Place Order - Pay Now",
@@ -493,7 +494,8 @@
         "confirm": "Failed to confirm the payment.",
         "connect": "Failed to connect the Stripe account.",
         "disconnect": "Failed to disconnect the Stripe account.",
-        "intent": "Failed to process the payment."
+        "intent": "Failed to process the payment.",
+        "NoJCB": "This restaurant does not accept JCB card."
       },
       "menu": {
         "save": "Failed to update the menu."

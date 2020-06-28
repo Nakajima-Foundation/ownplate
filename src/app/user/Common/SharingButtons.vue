@@ -1,5 +1,5 @@
 <template>
-  <social-sharing :url="targetURL" :title="title" hashtags="ownplate" inline-template>
+  <social-sharing :url="targetURL" :title="title" :hashtags="hashtag" inline-template>
     <div>
       <network network="facebook" class="facebook">
         <span style="color:#3b5998; cursor: pointer; padding: 8px;">
@@ -34,6 +34,9 @@ export default {
   computed: {
     targetURL() {
       return this.url || window.location.href;
+    },
+    hashtag() {
+      return this.regionalSetting.hashTag;
     }
   }
 };

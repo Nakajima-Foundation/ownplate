@@ -139,10 +139,30 @@ export default ({ app }) => {
         return ownPlateConfig.region === "JP";
       },
       isLocaleJapan() {
-        return this.$i18n.locale === "ja";
+        // for hack
+        console.log(this.$i18n.locale);
+        // return this.$i18n.locale === "ja";
+        return this.$i18n.locale !== "en";
       },
       serviceKey() {
         return this.isJapan ? "omochikaeri" : "ownPlate";
+      },
+      // for user agent detect
+      isIOS() {
+        return this.isOldIOS || this.isNewIOS;
+      },
+      isOldIOS() {
+        return /iP(hone|(o|a)d)/.test(navigator.userAgent);
+      },
+      isNewIOS() {
+        return this.isSafari && typeof document.ontouchstart !== 'undefined';
+      },
+      isSafari() {
+        return /Safari/.test(navigator.userAgent);
+      },
+      isAndroid() {
+        // not implemented
+        return null;
       },
     }
   });

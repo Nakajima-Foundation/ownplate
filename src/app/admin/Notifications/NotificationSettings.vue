@@ -6,7 +6,7 @@
       <!-- Body -->
       <div>
         <!-- Incomplete Orders -->
-        <incomplete-orders :shopInfo="shopInfo"/>
+        <incomplete-orders v-if="shopInfo" :shopInfo="shopInfo" />
         <!-- Settings -->
         <div>
           <div
@@ -73,7 +73,7 @@
               </b-select>
 
               <!-- Sound Test -->
-              <b-button class="b-reset op-button-pill bg-form" @click="soundPlay()">
+              <b-button class="b-reset op-button-pill bg-form" @click="delayedSoundPlay">
                 <i class="material-icons c-primary s-18 m-l-8">play_arrow</i>
                 <span class="c-primary t-button">
                   {{
@@ -121,7 +121,7 @@ import IncompleteOrders from "./IncompleteOrders";
 
 export default {
   components: {
-    IncompleteOrders,
+    IncompleteOrders
   },
   props: {
     notificationData: {
@@ -134,7 +134,7 @@ export default {
     },
     shopInfo: {
       type: Object,
-      required: true
+      required: false
     }
   },
   data() {
@@ -186,6 +186,12 @@ export default {
     },
     closeNotificationSettings() {
       this.$emit("close");
+    },
+    delayedSoundPlay() {
+      // We need to add a delay so that it won't interrupt the very first silent sound.
+      setTimeout(() => {
+        this.soundPlay();
+      }, 100);
     }
   }
 };

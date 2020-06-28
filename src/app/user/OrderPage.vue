@@ -208,7 +208,7 @@
 
                 <!-- Pay Online -->
                 <div v-if="showPayment">
-                  <stripe-card @change="handleCardStateChange" ref="stripe"></stripe-card>
+                  <stripe-card @change="handleCardStateChange" ref="stripe" :stripeJCB="stripeJCB"></stripe-card>
                   <!-- <credit-card-input></credit-card-input> -->
                   <!-- Pay Button -->
                   <div class="align-center m-t-24">
@@ -371,6 +371,9 @@ export default {
     },
     stripeAccount() {
       return this.paymentInfo.stripe;
+    },
+    stripeJCB() {
+      return this.paymentInfo.stripeJCB === true;
     },
     inStorePayment() {
       return this.paymentInfo.inStore;
@@ -539,8 +542,18 @@ export default {
         window.scrollTo(0, 0);
       } catch (error) {
         console.error(error.message, error.details);
+        let error_code = "stripe.intent";
+        if (
+          error.details &&
+          error.details.code === "card_declined" &&
+          error.details.decline_code === "card_not_supported" &&
+          !this.stripeJCB
+        ) {
+          console.log("JCB");
+          error_code = "stripe.NoJCB";
+        }
         this.$store.commit("setErrorMessage", {
-          code: "stripe.intent",
+          code: error_code,
           error
         });
       } finally {
