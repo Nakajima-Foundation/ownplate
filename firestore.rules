@@ -49,6 +49,7 @@ service cloud.firestore {
       match /public/{document=**} {
         allow read: if true;
         allow write: if request.auth.uid == userId;
+        allow write: if isSuper(request);
       }
       match /private/{document=**} {
         allow read, write: if request.auth.uid == userId;

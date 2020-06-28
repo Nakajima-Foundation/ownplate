@@ -243,6 +243,7 @@
     "yourPayment": "お支払い",
     "reuseCard": "今後の支払いのために保存する",
     "whatsCVC": "CVCとは？",
+    "no_jcb": "＊このお店では、JCBカードは使えません",
     "3digitsCVC": "カードのうら面の右端3ケタ",
     "4digitsCVC": "カードのおもて面の4ケタ",
     "placeOrder": "オンライン支払いで注文",

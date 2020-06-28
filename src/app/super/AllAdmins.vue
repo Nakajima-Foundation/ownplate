@@ -20,7 +20,10 @@
           style="color:red;padding-right:8px"
         >{{payment(admin).stripe}}</td>
         <td style="padding-right:8px" v-else>{{payment(admin).stripe}}</td>
-        <td style="padding-right:8px">{{capabilities(admin).jcb_payments}}</td>
+        <td style="padding-right:8px">
+          {{capabilities(admin).jcb_payments}}
+          <b-button v-if="showActivate(admin)" @click="activate(admin)">Activate</b-button>
+        </td>
       </tr>
     </table>
   </section>
@@ -51,32 +54,7 @@ export default {
         this.admins.forEach(async admin => {
           // NOTE: We are getting extra data only once for each admin
           if (!this.infos[admin.id]) {
-            const info = {};
-            const payment = (
-              await db.doc(`admins/${admin.id}/public/payment`).get()
-            ).data();
-            if (payment?.stripe) {
-              try {
-                const { data } = await stripeVerify({
-                  account_id: payment?.stripe
-                });
-                console.log("data", payment?.stripe, data);
-                payment.verified = data.result;
-                if (data.account) {
-                  info.account = data.account;
-                }
-              } catch (error) {
-                console.error(error.message);
-                payment.verified = false;
-              }
-            }
-            info.payment = payment || {};
-            const profile = (
-              await db.doc(`admins/${admin.id}/private/profile`).get()
-            ).data();
-            info.profile = profile || {};
-            this.infos[admin.id] = info;
-            this.infos = Object.assign({}, this.infos);
+            this.updateInfo(admin);
           }
         });
       });
@@ -85,6 +63,34 @@ export default {
     this.detatcher && this.detatcher();
   },
   methods: {
+    async updateInfo(admin) {
+      const info = {};
+      const payment = (
+        await db.doc(`admins/${admin.id}/public/payment`).get()
+      ).data();
+      if (payment?.stripe) {
+        try {
+          const { data } = await stripeVerify({
+            account_id: payment?.stripe
+          });
+          console.log("data", payment?.stripe, data);
+          payment.verified = data.result;
+          if (data.account) {
+            info.account = data.account;
+          }
+        } catch (error) {
+          console.error(error.message);
+          payment.verified = false;
+        }
+      }
+      info.payment = payment || {};
+      const profile = (
+        await db.doc(`admins/${admin.id}/private/profile`).get()
+      ).data();
+      info.profile = profile || {};
+      this.infos[admin.id] = info;
+      this.infos = Object.assign({}, this.infos);
+    },
     profile(admin) {
       return this.infos[admin.id]?.profile || {};
     },
@@ -96,6 +102,18 @@ export default {
     },
     capabilities(admin) {
       return this.account(admin)?.capabilities || {};
+    },
+    showActivate(admin) {
+      return (
+        this.capabilities(admin).jcb_payments === "active" &&
+        !this.payment(admin).stripeJCB
+      );
+    },
+    async activate(admin) {
+      await db.doc(`admins/${admin.id}/public/payment`).update({
+        stripeJCB: true
+      });
+      this.updateInfo(admin);
     }
   }
 };

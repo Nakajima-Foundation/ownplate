@@ -208,7 +208,7 @@
 
                 <!-- Pay Online -->
                 <div v-if="showPayment">
-                  <stripe-card @change="handleCardStateChange" ref="stripe"></stripe-card>
+                  <stripe-card @change="handleCardStateChange" ref="stripe" :stripeJCB="stripeJCB"></stripe-card>
                   <!-- <credit-card-input></credit-card-input> -->
                   <!-- Pay Button -->
                   <div class="align-center m-t-24">
@@ -371,6 +371,9 @@ export default {
     },
     stripeAccount() {
       return this.paymentInfo.stripe;
+    },
+    stripeJCB() {
+      return this.paymentInfo.stripeJCB === true;
     },
     inStorePayment() {
       return this.paymentInfo.inStore;
