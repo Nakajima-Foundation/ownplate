@@ -45,6 +45,11 @@ export const customRoutes = [
     component: "user/RestaurantPage.vue"
   },
   {
+    name: "r-restaurantId",
+    path: "/r/:restaurantId/menus/:menuId",
+    component: "user/RestaurantPage.vue"
+  },
+  {
     name: "r-restaurantId-order",
     path: "/r/:restaurantId/order/:orderId",
     component: "user/OrderPage.vue"
@@ -142,6 +147,10 @@ export const customRoutes = [
   {
     path: "/s/admins",
     component: "super/AllAdmins.vue"
+  },
+  {
+    path: "/s/admins/:adminId",
+    component: "super/AdminInfo.vue"
   },
   {
     path: '/s/requests',
