@@ -42,16 +42,15 @@ export default {
   },
   computed: {
     requestTouch() {
-      const isIOS = /iP(hone|(o|a)d)/.test(navigator.userAgent);
       console.log(
         this.notificationConfig.soundOn,
         !this.$store.state.soundEnable,
-        isIOS
+        this.isIOS
       );
       return (
         this.notificationConfig.soundOn &&
         !this.$store.state.soundEnable &&
-        isIOS
+        this.isIOS
       );
     }
   },
