@@ -147,6 +147,23 @@ export default ({ app }) => {
       serviceKey() {
         return this.isJapan ? "omochikaeri" : "ownPlate";
       },
+      // for user agent detect
+      isIOS() {
+        return this.isOldIOS || this.isNewIOS;
+      },
+      isOldIOS() {
+        return /iP(hone|(o|a)d)/.test(navigator.userAgent);
+      },
+      isNewIOS() {
+        return this.isSafari && typeof document.ontouchstart !== 'undefined';
+      },
+      isSafari() {
+        return /Safari/.test(navigator.userAgent);
+      },
+      isAndroid() {
+        // not implemented
+        return null;
+      },
     }
   });
 }
