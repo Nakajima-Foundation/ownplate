@@ -20,7 +20,10 @@
           style="color:red;padding-right:8px"
         >{{payment(admin).stripe}}</td>
         <td style="padding-right:8px" v-else>{{payment(admin).stripe}}</td>
-        <td style="padding-right:8px">{{capabilities(admin).jcb_payments}}</td>
+        <td style="padding-right:8px">
+          {{capabilities(admin).jcb_payments}}
+          <b-button v-if="showActivate(admin)" @click="activate(admin)">Activate</b-button>
+        </td>
       </tr>
     </table>
   </section>
@@ -96,6 +99,18 @@ export default {
     },
     capabilities(admin) {
       return this.account(admin)?.capabilities || {};
+    },
+    showActivate(admin) {
+      return this.capabilities(admin).jcb_payments === "active";
+    },
+    async activate(admin) {
+      const data = (
+        await db.doc(`admins/${admin.id}/public/payment`).get()
+      ).data();
+      console.log("activate", admin.id, data);
+      await db.doc(`admins/${admin.id}/public/payment`).update({
+        stripeJCB: true
+      });
     }
   }
 };
