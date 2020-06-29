@@ -228,7 +228,7 @@
               <div>
                 <phone-entry
                   :currentNumber="shopInfo.phoneNumber"
-                  :placeHolder="$t('editRestaurant.enterPhone')"
+                  :placeholder="$t('editRestaurant.enterPhone')"
                   @change="handlePhoneChange"
                 />
               </div>
