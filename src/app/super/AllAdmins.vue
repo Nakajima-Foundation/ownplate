@@ -60,7 +60,7 @@ export default {
       });
   },
   destroyed() {
-    this.detatcher && this.detatcher();
+    this.detacher && this.detacher();
   },
   methods: {
     async updateInfo(admin) {
