@@ -63,14 +63,13 @@
           <div class="align-right">{{order.totalCharge}}</div>
         </td>
         <td class="p-l-8">
-          <div class="align-right">{{orderName(order)}}</div>
-        </td>
-        <td class="p-l-8">
-          <div class="align-right">
+          <div v-if="order.payment">
             <a :href="searchUrl(order)" target="stripe">
+              {{orderName(order)}}
               <i v-if="order.payment" class="fab fa-cc-stripe" />
             </a>
           </div>
+          <div v-else>{{orderName(order)}}</div>
         </td>
       </tr>
       <tr class="bold">
