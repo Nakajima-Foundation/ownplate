@@ -121,6 +121,7 @@
     },
     "minutes": "minutes",
     "withinfive": "Within 5 hours",
+    "withinaday": "Within 24 hours",
     "profilePhoto": "Restaurant profile photo",
     "coverPhoto": "Restaurant cover photo",
     "setLocation": "Set location",
