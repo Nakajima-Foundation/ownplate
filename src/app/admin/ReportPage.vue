@@ -62,6 +62,16 @@
         <td class="p-l-8">
           <div class="align-right">{{order.totalCharge}}</div>
         </td>
+        <td class="p-l-8">
+          <div class="align-right">{{orderName(order)}}</div>
+        </td>
+        <td class="p-l-8">
+          <div class="align-right">
+            <a :href="searchUrl(order)" target="stripe">
+              <i v-if="order.payment" class="fab fa-cc-stripe" />
+            </a>
+          </div>
+        </td>
       </tr>
       <tr class="bold">
         <td class="p-t-8 p-l-8">
@@ -87,6 +97,8 @@
 <script>
 import { db, firestore } from "~/plugins/firebase.js";
 import BackButton from "~/components/BackButton";
+import { nameOfOrder } from "~/plugins/strings.js";
+import { ownPlateConfig } from "~/config/project";
 
 export default {
   components: {
@@ -131,6 +143,17 @@ export default {
   },
   destroyed() {
     this.detacher && this.detacher();
+  },
+  methods: {
+    orderName(order) {
+      return nameOfOrder(order);
+    },
+    searchUrl(order) {
+      const value = encodeURIComponent(
+        order.description || this.orderName(order)
+      );
+      return `${ownPlateConfig.stripe.search}?query=${value}`;
+    }
   }
 };
 </script>
