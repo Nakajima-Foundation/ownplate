@@ -16,7 +16,7 @@
               <div class="level-left flex-1"></div>
               <!-- Notification Settings -->
               <div class="level-right">
-                <notification-index :shopInfo="shopInfo"/>
+                <notification-index :shopInfo="shopInfo" />
               </div>
             </div>
 
@@ -228,7 +228,7 @@
               <div>
                 <phone-entry
                   :currentNumber="shopInfo.phoneNumber"
-                  :placeHolder="$t('editRestaurant.enterPhone')"
+                  :placeholder="$t('editRestaurant.enterPhone')"
                   @change="handlePhoneChange"
                 />
               </div>
@@ -815,13 +815,13 @@ export default {
     restProfilePhoto() {
       return (
         (this.shopInfo?.images?.profile?.resizedImages || {})["600"] ||
-          this.shopInfo.restProfilePhoto
+        this.shopInfo.restProfilePhoto
       );
     },
     restCoverPhoto() {
       return (
         (this.shopInfo?.images?.cover?.resizedImages || {})["600"] ||
-          this.shopInfo.restCoverPhoto
+        this.shopInfo.restCoverPhoto
       );
     },
     uid() {
@@ -891,8 +891,8 @@ export default {
       const ex = new RegExp("^(https?)://[^\\s]+$");
       err["url"] =
         this.shopInfo.url && !ex.test(this.shopInfo.url)
-        ? ["validationError.url.invalidUrl"]
-        : [];
+          ? ["validationError.url.invalidUrl"]
+          : [];
 
       err["time"] = {};
       Object.keys(daysOfWeek).forEach(key => {
@@ -902,7 +902,7 @@ export default {
           if (this.shopInfo.businessDay[key]) {
             if (
               this.shopInfo.openTimes[key] &&
-                this.shopInfo.openTimes[key][key2]
+              this.shopInfo.openTimes[key][key2]
             ) {
               const data = this.shopInfo.openTimes[key][key2];
               if (this.isNull(data.start) ^ this.isNull(data.end)) {
@@ -947,9 +947,13 @@ export default {
   },
   methods: {
     copyPreviousDay(index) {
-      const prevIndex = (index === "1") ? 7 : index - 1;
+      const prevIndex = index === "1" ? 7 : index - 1;
       this.shopInfo.businessDay[index] = this.shopInfo.businessDay[prevIndex];
-      this.shopInfo.openTimes[index] = this.shopInfo.openTimes[prevIndex].map((a) => {return {...a};});
+      this.shopInfo.openTimes[index] = this.shopInfo.openTimes[prevIndex].map(
+        a => {
+          return { ...a };
+        }
+      );
     },
     handleProfileImage(e) {
       this.files["profile"] = e;
