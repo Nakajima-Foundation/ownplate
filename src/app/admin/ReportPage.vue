@@ -27,6 +27,16 @@
       <!-- Right Gap -->
       <div class="column is-narrow w-24"></div>
     </div>
+    <!-- Select Date -->
+    <div class="level-left">
+      <b-select v-model="monthIndex" class="m-t-24 m-l-16">
+        <option
+          v-for="day in lastSeveralMonths"
+          :value="day.index"
+          :key="day.index"
+        >{{ moment(day.date).format("YYYY-MM") }}</option>
+      </b-select>
+    </div>
     <!-- Table -->
     <table class="m-t-16 m-l-8">
       <tr>
@@ -98,6 +108,8 @@ import { db, firestore } from "~/plugins/firebase.js";
 import BackButton from "~/components/BackButton";
 import { nameOfOrder } from "~/plugins/strings.js";
 import { ownPlateConfig } from "~/config/project";
+import { midNightOfMonth } from "~/plugins/dateUtils.js";
+import moment from "moment";
 
 export default {
   components: {
@@ -108,42 +120,73 @@ export default {
       shopInfo: {},
       orders: [],
       total: {},
+      monthIndex: 0,
       detacher: null
     };
   },
   async created() {
     const refRestaurant = db.doc(`restaurants/${this.restaurantId()}`);
     this.shopInfo = (await refRestaurant.get()).data() || {};
-
-    let query = db.collection(`restaurants/${this.restaurantId()}/orders`);
-    this.detacher = query.orderBy("timeConfirmed").onSnapshot(snapshot => {
-      let orders = snapshot.docs.map(this.doc2data("order"));
-      this.orders = orders.map(order => {
-        order.revenue = order.total - order.tax;
-        order.timeConfirmed = order.timeConfirmed.toDate();
-        return order;
-      });
-      this.total = this.orders.reduce(
-        (total, order) => {
-          total.revenue += order.revenue;
-          total.tax += order.tax;
-          total.tip += order.tip;
-          total.totalCharge += order.totalCharge;
-          return total;
-        },
-        {
-          revenue: 0,
-          tax: 0,
-          tip: 0,
-          totalCharge: 0
-        }
-      );
-    });
+    this.updateQuery();
   },
   destroyed() {
     this.detacher && this.detacher();
   },
+  watch: {
+    monthIndex() {
+      this.updateQuery();
+    }
+  },
+  computed: {
+    lastSeveralMonths() {
+      return Array.from(Array(12).keys()).map(index => {
+        const date = midNightOfMonth(-index);
+        return { index, date };
+      });
+    }
+  },
   methods: {
+    updateQuery() {
+      console.log("updateQuery", this.monthIndex);
+      this.detacher && this.detacher();
+      let query = db
+        .collection(`restaurants/${this.restaurantId()}/orders`)
+        .where(
+          "timeConfirmed",
+          ">=",
+          this.lastSeveralMonths[this.monthIndex].date
+        );
+      if (this.monthIndex > 0) {
+        query = query.where(
+          "timeConfirmed",
+          "<",
+          this.lastSeveralMonths[this.monthIndex - 1].date
+        );
+      }
+      this.detacher = query.orderBy("timeConfirmed").onSnapshot(snapshot => {
+        let orders = snapshot.docs.map(this.doc2data("order"));
+        this.orders = orders.map(order => {
+          order.revenue = order.total - order.tax;
+          order.timeConfirmed = order.timeConfirmed.toDate();
+          return order;
+        });
+        this.total = this.orders.reduce(
+          (total, order) => {
+            total.revenue += order.revenue;
+            total.tax += order.tax;
+            total.tip += order.tip;
+            total.totalCharge += order.totalCharge;
+            return total;
+          },
+          {
+            revenue: 0,
+            tax: 0,
+            tip: 0,
+            totalCharge: 0
+          }
+        );
+      });
+    },
     orderName(order) {
       return nameOfOrder(order);
     },
