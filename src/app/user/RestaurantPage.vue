@@ -53,7 +53,7 @@
               <div class="t-body1 c-text-black-medium m-t-8">{{ this.shopInfo.introduction }}</div>
 
               <!-- Share Popup -->
-              <share-popup :shopInfo="shopInfo"></share-popup>
+              <share-popup :shopInfo="shopInfo" class="align-center m-t-8"></share-popup>
 
               <!-- Restaurant Info -->
               <shop-info :shopInfo="shopInfo"></shop-info>

@@ -1,15 +1,13 @@
 <template>
   <div>
     <!-- Share / Review -->
-    <div class="m-t-8 align-center">
-      <div class="op-button-text m-r-8" @click="openShare()">
-        <i class="material-icons">launch</i>
-        <span>{{$t('shopInfo.share')}}</span>
-      </div>
-      <!-- <sharing-buttons :title="name" :url="shareUrl()" /> -->
+    <div class="op-button-text" @click="openShare()">
+      <i class="material-icons">launch</i>
+      <span>{{$t('shopInfo.share')}}</span>
     </div>
+
     <!-- Share Popup-->
-    <b-modal :active.sync="sharePopup" :width="488" scroll="keep">
+    <b-modal :active.sync="sharePopup" :width="488" scroll="keep" style="text-align: initial;">
       <div class="op-dialog p-t-24 p-l-24 p-r-24 p-b-24">
         <div class="t-h6 c-text-black-disabled p-b-8">{{$t('shopInfo.share')}}</div>
         <div class="cols">
