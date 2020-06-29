@@ -414,6 +414,9 @@
       "enter": "Record Entrance",
       "leave": "Record Leave"
     },
+    "report": {
+      "title": "Monthly Report"
+    },
     "error": {
       "email": {
         "invalid": "Invalid Email Address",
