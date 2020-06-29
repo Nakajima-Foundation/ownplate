@@ -16,9 +16,9 @@
               <!-- Restaurant Profile -->
               <div class="is-inline-flex flex-center m-t-24">
                 <div>
-                  <img :src="restaurant.restProfilePhoto" class="w-36 h-36 r-36 cover" />
+                  <img :src="shopInfo.restProfilePhoto" class="w-36 h-36 r-36 cover" />
                 </div>
-                <div class="t-h6 c-text-black-high m-l-8 flex-1">{{ restaurant.restaurantName }}</div>
+                <div class="t-h6 c-text-black-high m-l-8 flex-1">{{ shopInfo.restaurantName }}</div>
               </div>
             </div>
           </div>
@@ -27,6 +27,60 @@
       <!-- Right Gap -->
       <div class="column is-narrow w-24"></div>
     </div>
+    <!-- Table -->
+    <table class="m-t-16 m-l-8">
+      <tr>
+        <th class="p-l-8 p-b-8">
+          <div class="align-right">{{ $t('order.date')}}</div>
+        </th>
+        <th class="p-l-8">
+          <div class="align-right">{{ $t('order.revenue')}}</div>
+        </th>
+        <th class="p-l-8">
+          <div class="align-right">{{ $t('order.salesTax')}}</div>
+        </th>
+        <th class="p-l-8">
+          <div class="align-right">{{ $t('order.tipShort')}}</div>
+        </th>
+        <th class="p-l-8">
+          <div class="align-right">{{ $t('order.total')}}</div>
+        </th>
+      </tr>
+      <tr v-for="order in orders" :key="order.id">
+        <td class="p-l-8">
+          <div class="align-right">{{$d(order.timeConfirmed)}}</div>
+        </td>
+        <td class="p-l-8">
+          <div class="align-right">{{order.revenue}}</div>
+        </td>
+        <td class="p-l-8">
+          <div class="align-right">{{order.tax}}</div>
+        </td>
+        <td class="p-l-8">
+          <div class="align-right">{{order.tip}}</div>
+        </td>
+        <td class="p-l-8">
+          <div class="align-right">{{order.total}}</div>
+        </td>
+      </tr>
+      <tr class="bold">
+        <td class="p-t-8 p-l-8">
+          <div class="align-right">{{$t('order.total')}}</div>
+        </td>
+        <td class="p-t-8 p-l-8">
+          <div class="align-right">{{total.revenue}}</div>
+        </td>
+        <td class="p-t-8 p-l-8">
+          <div class="align-right">{{total.tax}}</div>
+        </td>
+        <td class="p-t-8 p-l-8">
+          <div class="align-right">{{total.tip}}</div>
+        </td>
+        <td class="p-t-8 p-l-8">
+          <div class="align-right">{{total.total}}</div>
+        </td>
+      </tr>
+    </table>
   </div>
 </template>
 
@@ -40,14 +94,40 @@ export default {
   },
   data() {
     return {
-      restaurant: {},
+      shopInfo: {},
+      orders: [],
+      total: {},
       detacher: null
     };
   },
-  created() {
+  async created() {
     const refRestaurant = db.doc(`restaurants/${this.restaurantId()}`);
-    this.detacher = refRestaurant.onSnapshot(async snapshot => {
-      this.restaurant = snapshot.data();
+    this.shopInfo = (await refRestaurant.get()).data() || {};
+
+    let query = db.collection(`restaurants/${this.restaurantId()}/orders`);
+    this.detacher = query.orderBy("timeConfirmed").onSnapshot(snapshot => {
+      let orders = snapshot.docs.map(this.doc2data("order"));
+      console.log("***", orders);
+      this.orders = orders.map(order => {
+        order.revenue = order.total - order.tax - order.tip;
+        order.timeConfirmed = order.timeConfirmed.toDate();
+        return order;
+      });
+      this.total = this.orders.reduce(
+        (total, order) => {
+          total.revenue += order.revenue;
+          total.tax += order.tax;
+          total.tip += order.tip;
+          total.total += order.total;
+          return total;
+        },
+        {
+          revenue: 0,
+          tax: 0,
+          tip: 0,
+          total: 0
+        }
+      );
     });
   },
   destroyed() {
