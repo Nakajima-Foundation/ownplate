@@ -49,8 +49,11 @@
       <div v-if="openMenuFlag" class="m-l-16 m-r-16 p-b-16">
         <hr class="devider m-t-0 m-b-0" />
 
+        <!-- Share Button -->
+        <share-popup :shopInfo="shopInfo" class="align-left" style="margin-left: -8px;"></share-popup>
+
         <!-- Item Options -->
-        <div v-if="hasOptions" class="m-t-16">
+        <div v-if="hasOptions" class="m-t-8">
           <div class="t-caption c-text-black-medium">{{$t('sitemenu.options')}}</div>
           <div v-for="(option, index) in options" :key="index" class="m-t-8">
             <div v-if="option.length === 1" class="field">
@@ -112,12 +115,13 @@
 
 <script>
 import { mapGetters, mapMutations } from "vuex";
-
 import Price from "~/components/Price";
+import SharePopup from "~/app/user/Restaurant/SharePopup";
 
 export default {
   components: {
-    Price
+    Price,
+    SharePopup
   },
   props: {
     item: {
