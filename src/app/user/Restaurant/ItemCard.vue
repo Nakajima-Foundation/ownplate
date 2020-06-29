@@ -143,6 +143,15 @@ export default {
     optionPrev: {
       type: Array,
       required: false
+    },
+    isOpen: {
+      type: Boolean,
+      required: true,
+    },
+  },
+  mounted() {
+    if(this.isOpen) {
+      this.openImage();
     }
   },
   data() {
