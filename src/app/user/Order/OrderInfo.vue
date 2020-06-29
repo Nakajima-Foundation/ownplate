@@ -30,7 +30,9 @@
       <div class="p-t-8 p-l-16 p-r-16">
         <div class="cols">
           <div class="flex-1">
-            <div class="t-body1 c-text-black-high">{{$t('order.salesTax')}}</div>
+            <div
+              class="t-body1 c-text-black-high"
+            >{{$t(orderInfo.inclusiveTax ? 'order.inclusiveTax':'order.salesTax')}}</div>
           </div>
           <div class="align-righ">
             <span class="t-body1 c-text-black-high">{{$n(orderInfo.tax, 'currency')}}</span>
