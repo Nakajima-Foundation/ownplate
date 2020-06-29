@@ -60,7 +60,7 @@
           <div class="align-right">{{order.tip}}</div>
         </td>
         <td class="p-l-8">
-          <div class="align-right">{{order.total}}</div>
+          <div class="align-right">{{order.totalCharge}}</div>
         </td>
       </tr>
       <tr class="bold">
@@ -77,7 +77,7 @@
           <div class="align-right">{{total.tip}}</div>
         </td>
         <td class="p-t-8 p-l-8">
-          <div class="align-right">{{total.total}}</div>
+          <div class="align-right">{{total.totalCharge}}</div>
         </td>
       </tr>
     </table>
@@ -107,9 +107,8 @@ export default {
     let query = db.collection(`restaurants/${this.restaurantId()}/orders`);
     this.detacher = query.orderBy("timeConfirmed").onSnapshot(snapshot => {
       let orders = snapshot.docs.map(this.doc2data("order"));
-      console.log("***", orders);
       this.orders = orders.map(order => {
-        order.revenue = order.total - order.tax - order.tip;
+        order.revenue = order.total - order.tax;
         order.timeConfirmed = order.timeConfirmed.toDate();
         return order;
       });
@@ -118,14 +117,14 @@ export default {
           total.revenue += order.revenue;
           total.tax += order.tax;
           total.tip += order.tip;
-          total.total += order.total;
+          total.totalCharge += order.totalCharge;
           return total;
         },
         {
           revenue: 0,
           tax: 0,
           tip: 0,
-          total: 0
+          totalCharge: 0
         }
       );
     });
