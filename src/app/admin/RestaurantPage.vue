@@ -513,7 +513,7 @@
                     />
                     <div class="m-l-8">
                       {{ $t("editRestaurant.minutes") }} -
-                      {{ $t("editRestaurant.withinfive") }}
+                      {{ $t("editRestaurant.withinaday") }}
                     </div>
                   </b-field>
                 </div>
@@ -855,7 +855,7 @@ export default {
           "validationError." + name + ".notNumbery"
         );
       } else {
-        if (this.shopInfo["pickUpMinimumCookTime"] > 300) {
+        if (this.shopInfo["pickUpMinimumCookTime"] > 24 * 60) {
           err["pickUpMinimumCookTime"].push(
             "validationError." + name + ".tooMuch"
           );

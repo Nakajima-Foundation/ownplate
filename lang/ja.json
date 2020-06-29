@@ -121,6 +121,7 @@
     },
     "minutes": "分",
     "withinfive": "５時間以内",
+    "withinaday": "２４時間以内",
     "profilePhoto": "プロフィール画像",
     "coverPhoto": "カバー画像",
     "setLocation": "住所を元に地図を更新",
