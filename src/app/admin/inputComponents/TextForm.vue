@@ -8,7 +8,7 @@
       <b-input
         :value="value"
         :type="type"
-        :placeholder="$t(placeHolder)"
+        :placeholder="$t(placeholder)"
         @input="input"
         :maxlength="maxlength"
       ></b-input>
@@ -34,7 +34,7 @@ export default {
       type: String,
       required: true
     },
-    placeHolder: {
+    placeholder: {
       type: String,
       required: false
     },

@@ -53,7 +53,7 @@
               <div class="t-body1 c-text-black-medium m-t-8">{{ this.shopInfo.introduction }}</div>
 
               <!-- Share Popup -->
-              <share-popup :shopInfo="shopInfo"></share-popup>
+              <share-popup :shopInfo="shopInfo" class="align-center m-t-8"></share-popup>
 
               <!-- Restaurant Info -->
               <shop-info :shopInfo="shopInfo"></shop-info>
@@ -78,6 +78,7 @@
                       :optionPrev="optionsPrev[itemId]"
                       :initialOpenMenuFlag="(orders[itemId] || 0) > 0"
                       :shopInfo="shopInfo"
+                      :isOpen="menuId === itemId"
                       @didCountChange="didCountChange($event)"
                       @didOptionValuesChange="didOptionValuesChange($event)"
                     ></item-card>
@@ -280,6 +281,9 @@ export default {
         (this.shopInfo?.images?.cover?.resizedImages || {})["1200"] ||
         this.shopInfo.restCoverPhoto
       );
+    },
+    menuId() {
+      return this.$route.params.menuId;
     }
   },
   methods: {
@@ -384,7 +388,7 @@ export default {
       });
       this.options = Object.assign({}, this.options, obj);
       //console.log(this.options);
-    }
+    },
   }
 };
 </script>
