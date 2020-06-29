@@ -473,7 +473,7 @@
                 >{{ $t("editRestaurant.taxPriceDisplay") }}</div>
                 <div class="bg-form r-8 p-l-16 p-r-16 p-t-16 p-b-16 t-body1 c-text-black-high">
                   <div>
-                    <b-checkbox v-model="shopInfo.taxInclude">
+                    <b-checkbox v-model="shopInfo.inclusiveTax">
                       {{
                       $t("editRestaurant.taxIncluded")
                       }}
@@ -746,7 +746,7 @@ export default {
         orderThanks: "",
         foodTax: 0,
         alcoholTax: 0,
-        taxInclude: 0,
+        inclusiveTax: false,
         openTimes: {
           1: [], // mon
           2: [],
@@ -1037,7 +1037,7 @@ export default {
           businessDay: this.shopInfo.businessDay,
           uid: this.shopInfo.uid,
           publicFlag: this.shopInfo.publicFlag,
-          taxInclude: this.shopInfo.taxInclude,
+          inclusiveTax: this.shopInfo.inclusiveTax,
           updatedAt: firestore.FieldValue.serverTimestamp(),
           createdAt:
             this.shopInfo.createdAt || firestore.FieldValue.serverTimestamp()

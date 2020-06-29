@@ -248,6 +248,7 @@ export const wasOrderCreated = async (db, data: any, context) => {
     }
 
     // tax rate
+    const inclusiveTax = restaurantData.inclusiveTax || false;
     const alcoholTax = restaurantData.alcoholTax || 0;
     const foodTax = restaurantData.foodTax || 0;
 
@@ -287,8 +288,13 @@ export const wasOrderCreated = async (db, data: any, context) => {
     if (sub_total === 0) {
       throw new Error("invalid order: total 0 ");
     }
-    const tax = Math.round(((alcohol_sub_total * alcoholTax) / 100 + (food_sub_total * foodTax) / 100) * multiple) / multiple;
-    const total = sub_total + tax;
+    let tax = Math.round(((alcohol_sub_total * alcoholTax) / 100 + (food_sub_total * foodTax) / 100) * multiple) / multiple;
+    let total = sub_total + tax;
+    if (inclusiveTax) {
+      tax = Math.round(((alcohol_sub_total * (1 - 1 / (1 + alcoholTax / 100)))
+        + (food_sub_total * (1 - 1 / (1 + foodTax / 100)))) * multiple) / multiple;
+      total = sub_total;
+    }
 
     // Atomically increment the orderCount of the restaurant
     let number = 0;
@@ -311,6 +317,7 @@ export const wasOrderCreated = async (db, data: any, context) => {
       number,
       sub_total,
       tax,
+      inclusiveTax,
       total
     });
   } catch (e) {

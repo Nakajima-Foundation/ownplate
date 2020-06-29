@@ -443,6 +443,7 @@ export default {
           if (restaurant.exists) {
             const restaurant_data = restaurant.data();
             this.shopInfo = restaurant_data;
+            console.log("*** R", this.shopInfo);
             const uid = restaurant_data.uid;
             const snapshot = await db
               .doc(`/admins/${uid}/public/payment`)
@@ -459,6 +460,7 @@ export default {
           async order => {
             const order_data = order.exists ? order.data() : {};
             this.orderInfo = order_data;
+            console.log("*** O", this.orderInfo);
             if (this.orderInfo.menuItems) {
               this.menuObj = this.orderInfo.menuItems;
             } else {
