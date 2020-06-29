@@ -50,7 +50,7 @@
         <hr class="devider m-t-0 m-b-0" />
 
         <!-- Share Button -->
-        <share-popup :shopInfo="shopInfo" class="align-left" style="margin-left: -8px;"></share-popup>
+        <share-popup :shopInfo="shopInfo" :suffix="urlSuffix" class="align-left" style="margin-left: -8px;"></share-popup>
 
         <!-- Item Options -->
         <div v-if="hasOptions" class="m-t-8">
@@ -149,7 +149,8 @@ export default {
     return {
       openMenuFlag: this.initialOpenMenuFlag,
       optionValues: [],
-      imagePopup: false
+      imagePopup: false,
+      urlSuffix: "/menus/" + this.item.id
     };
   },
   created() {

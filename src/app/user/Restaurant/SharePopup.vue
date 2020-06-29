@@ -46,11 +46,15 @@ export default {
     shopInfo: {
       type: Object,
       required: true
-    }
+    },
+    suffix: {
+      type: String,
+      required: false
+    },
   },
   data() {
     return {
-      url: this.shareUrl(),
+      url: this.shareUrl() + (this.suffix||""),
       sharePopup: false
     };
   },
@@ -64,4 +68,3 @@ export default {
   }
 };
 </script>
-
