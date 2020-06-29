@@ -243,6 +243,7 @@
     "tipShort": "心付",
     "subtotal": "小計",
     "salesTax": "消費税",
+    "inclusiveTax": "消費税（内税）",
     "total": "合計",
     "yourPayment": "お支払い",
     "reuseCard": "今後の支払いのために保存する",
