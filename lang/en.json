@@ -240,6 +240,7 @@
     "editItems": "Edit Items",
     "subtotal": "Subtotal",
     "salesTax": "Sales Tax",
+    "inclusiveTax": "Sales Tax (inclusive)",
     "total": "Total",
     "yourPayment": "Your Payment",
     "reuseCard": "Save it for future use",
