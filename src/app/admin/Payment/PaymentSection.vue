@@ -2,66 +2,85 @@
   <div class="m-t-24">
     <div class="t-h6 c-text-black-disabled m-b-8">{{ $t("admin.payment") }}</div>
     <div class="bg-surface r-8 d-low p-t-24 p-b-24">
-      <!-- Stripe Not Connected -->
-      <div v-if="!hasStripe">
-        <div class="align-center">
-          <div
-            class="op-status c-status-red bg-status-red-bg"
-          >{{ $t("admin.payments.statusNotConnected") }}</div>
+      <!-- Online Payment -->
+      <div class="m-l-24 m-r-24">
+        <div class="t-subtitle1 c-text-black-medium">{{ $t("admin.payments.onlinePayment") }}</div>
+        <div class="m-t-8 t-body1 c-text-black-medium">{{ $t("admin.payments.pleaseConnect") }}</div>
+
+        <!-- Stripe Not Connected -->
+        <div v-if="!hasStripe">
+          <!-- Stripe Connection Status -->
+          <div class="align-center m-t-16">
+            <div
+              class="op-status c-status-red bg-status-red-bg"
+            >{{ $t("admin.payments.statusNotConnected") }}</div>
+          </div>
+
+          <!-- Connect Button -->
+          <div class="align-center m-t-16 m-b-24">
+            <a :href="stripeLink">
+              <div class="op-button-small primary">
+                <span>
+                  {{
+                  $t("admin.payments.connectStripe")
+                  }}
+                </span>
+              </div>
+            </a>
+          </div>
         </div>
-        <div
-          class="p-l-24 p-r-24 m-t-24 t-body1 c-text-black-medium"
-        >{{ $t("admin.payments.pleaseConnect") }}</div>
-        <div class="align-center m-t-24">
-          <a :href="stripeLink">
-            <div class="op-button-medium primary" style="min-width: 288px;">
-              <span class="p-l-16 p-r-16">
+
+        <!-- Stripe Connected -->
+        <div v-if="hasStripe">
+          <!-- Stripe Connection Status -->
+          <div class="align-center m-t-16">
+            <div
+              class="op-status c-status-green bg-status-green-bg"
+            >{{ $t("admin.payments.statusConnected") }}</div>
+          </div>
+
+          <!-- Open Stripe -->
+          <div class="align-center m-t-16">
+            <a :href="dashboard" target="stripe">
+              <div class="op-button-small secondary">
+                <span class="c-primary">
+                  {{
+                  $t("admin.payments.openDashboard")
+                  }}
+                </span>
+              </div>
+            </a>
+          </div>
+
+          <!-- Disconnect Button -->
+          <div class="align-center m-t-16">
+            <b-button @click="handlePaymentAccountDisconnect" class="b-reset op-button-text">
+              <i class="material-icons c-status-red">link_off</i>
+              <span class="c-status-red">
                 {{
-                $t("admin.payments.connectStripe")
+                $t("admin.payments.disconnectStripe")
                 }}
               </span>
-            </div>
-          </a>
+            </b-button>
+          </div>
         </div>
       </div>
 
-      <!-- Stripe Connected -->
-      <div v-if="hasStripe">
-        <div class="align-center">
-          <div
-            class="op-status c-status-green bg-status-green-bg"
-          >{{ $t("admin.payments.statusConnected") }}</div>
-        </div>
-        <div class="align-center m-t-24">
-          <a :href="dashboard" target="stripe">
-            <div class="op-button-small secondary">
-              <span class="c-primary">
-                {{
-                $t("admin.payments.openDashboard")
-                }}
-              </span>
-            </div>
-          </a>
-        </div>
-        <div class="align-center m-t-16">
-          <b-button @click="handlePaymentAccountDisconnect" class="b-reset op-button-text">
-            <i class="material-icons c-status-red">link_off</i>
-            <span class="c-status-red">
-              {{
-              $t("admin.payments.disconnectStripe")
-              }}
-            </span>
-          </b-button>
-        </div>
-      </div>
+      <hr class="m-l-24 m-r-24" />
 
-      <!-- In-store Payment -->
-      <div class="align-center p-t-24">
-        <b-checkbox v-model="inStorePayment">
-          {{
-          $t("admin.payments.enableInStorePayment")
-          }}
-        </b-checkbox>
+      <!-- On-site Payment -->
+      <div class="m-l-24 m-r-24">
+        <div class="t-subtitle1 c-text-black-medium">{{ $t("admin.payments.onsitePayment") }}</div>
+        <div class="m-t-8 t-body1 c-text-black-medium">{{ $t("admin.payments.pleaseCheck") }}</div>
+
+        <!-- On-site Payment Checkbox -->
+        <div class="align-center m-t-24">
+          <b-checkbox v-model="inStorePayment">
+            {{
+            $t("admin.payments.enableOnsitePayment")
+            }}
+          </b-checkbox>
+        </div>
       </div>
     </div>
   </div>

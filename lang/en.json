@@ -356,6 +356,7 @@
     "addNewRestaurant": "Add New Restaurant",
     "noPaymentAccount": "No Payment account",
     "payments": {
+      "onlinePayment": "Online Payment",
       "statusNotConnected": "Not Connected",
       "statusConnected": "Connected",
       "pleaseConnect": "In order to receive online payments, you need to connect your Stripe account.",
@@ -363,7 +364,9 @@
       "disconnectStripe": "Disconnect Stripe Account",
       "reallyDisconnectStripe": "Do you really want to disconnect Stripe Account?",
       "openDashboard": "Open Stripe Dashboard",
-      "enableInStorePayment": "Allow in-store payment"
+      "onsitePayment": "On-site Payment",
+      "pleaseCheck": "Please enable the checkbox below to allow on-site payment.",
+      "enableOnsitePayment": "Allow On-site Payment"
     },
     "viewPage": "View Page",
     "incompleteOrders": "{count} Incomplete Order | {count} Incomplete Orders",
