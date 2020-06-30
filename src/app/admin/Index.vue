@@ -171,19 +171,21 @@
           <div class="m-t-24">
             <div class="t-h6 c-text-black-disabled">{{$t("admin.notes.title")}}</div>
             <div
-              class="r-8 p-l-16 p-r-16 p-t-16 p-b-16 m-t-8"
+              class="r-8 p-l-24 p-r-24 p-t-24 p-b-24 m-t-8"
               style="border: 2px solid rgba(0,0,0,0.1); "
             >
               <div
                 class="t-subtitle1 c-text-black-medium"
               >{{$t("admin.notes.userRestaurantsTitle")}}</div>
-              <div class="t-body1 c-text-black-high m-t-8">{{$t("admin.notes.userRestaurantsBody")}}</div>
+              <div
+                class="t-body1 c-text-black-medium m-t-8"
+              >{{$t("admin.notes.userRestaurantsBody")}}</div>
               <hr />
               <div
                 class="t-subtitle1 c-text-black-medium"
               >{{$t("admin.notes.notificationSoundTitle")}}</div>
               <div
-                class="t-body1 c-text-black-high m-t-8"
+                class="t-body1 c-text-black-medium m-t-8"
               >{{$t("admin.notes.notificationSoundBody")}}</div>
             </div>
           </div>
