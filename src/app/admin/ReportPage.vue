@@ -190,9 +190,7 @@ export default {
       return nameOfOrder(order);
     },
     orderUrl(order) {
-      return (
-        "/admin/restaurants/" + this.restaurantId() + "/orders/" + order.id
-      );
+      return `/admin/restaurants/${this.restaurantId()}/orders/${order.id}`;
     },
     searchUrl(order) {
       const value = encodeURIComponent(
