@@ -50,7 +50,16 @@
           <div class="align-right">{{ $t('order.salesTax')}}</div>
         </th>
         <th class="p-l-8">
+          <div class="align-right">{{ $t('order.revenue')}}</div>
+        </th>
+        <th class="p-l-8">
+          <div class="align-right">{{ $t('order.salesTax')}}</div>
+        </th>
+        <th class="p-l-8">
           <div class="align-right">{{ $t('order.tipShort')}}</div>
+        </th>
+        <th class="p-l-8">
+          <div class="align-right">{{ $t('order.salesTax')}}</div>
         </th>
         <th class="p-l-8">
           <div class="align-right">{{ $t('order.total')}}</div>
@@ -61,13 +70,22 @@
           <div class="align-right">{{$d(order.timeConfirmed)}}</div>
         </td>
         <td class="p-l-8">
-          <div class="align-right">{{order.revenue}}</div>
+          <div class="align-right">{{order.accounting.food.revenue}}</div>
         </td>
         <td class="p-l-8">
-          <div class="align-right">{{order.tax}}</div>
+          <div class="align-right">{{order.accounting.food.tax}}</div>
         </td>
         <td class="p-l-8">
-          <div class="align-right">{{order.tip}}</div>
+          <div class="align-right">{{order.accounting.alcohol.revenue}}</div>
+        </td>
+        <td class="p-l-8">
+          <div class="align-right">{{order.accounting.alcohol.tax}}</div>
+        </td>
+        <td class="p-l-8">
+          <div class="align-right">{{order.accounting.service.revenue}}</div>
+        </td>
+        <td class="p-l-8">
+          <div class="align-right">{{order.accounting.service.tax}}</div>
         </td>
         <td class="p-l-8">
           <div class="align-right">{{order.totalCharge}}</div>
@@ -86,13 +104,22 @@
           <div class="align-right">{{$t('order.total')}}</div>
         </td>
         <td class="p-t-8 p-l-8">
-          <div class="align-right">{{total.revenue}}</div>
+          <div class="align-right">{{total.food.revenue}}</div>
         </td>
         <td class="p-t-8 p-l-8">
-          <div class="align-right">{{total.tax}}</div>
+          <div class="align-right">{{total.food.tax}}</div>
         </td>
         <td class="p-t-8 p-l-8">
-          <div class="align-right">{{total.tip}}</div>
+          <div class="align-right">{{total.alcohol.revenue}}</div>
+        </td>
+        <td class="p-t-8 p-l-8">
+          <div class="align-right">{{total.alcohol.tax}}</div>
+        </td>
+        <td class="p-t-8 p-l-8">
+          <div class="align-right">{{total.service.revenue}}</div>
+        </td>
+        <td class="p-t-8 p-l-8">
+          <div class="align-right">{{total.service.tax}}</div>
         </td>
         <td class="p-t-8 p-l-8">
           <div class="align-right">{{total.totalCharge}}</div>
@@ -118,7 +145,21 @@ export default {
     return {
       shopInfo: {},
       orders: [],
-      total: {},
+      total: {
+        food: {
+          revenue: 0,
+          tax: 0
+        },
+        alcohol: {
+          revenue: 0,
+          tax: 0
+        },
+        service: {
+          revenue: 0,
+          tax: 0
+        },
+        totalCharge: 0
+      },
       monthIndex: 0,
       detacher: null
     };
@@ -165,22 +206,51 @@ export default {
       this.detacher = query.orderBy("timeConfirmed").onSnapshot(snapshot => {
         let orders = snapshot.docs.map(this.doc2data("order"));
         this.orders = orders.map(order => {
-          order.revenue = order.total - order.tax;
           order.timeConfirmed = order.timeConfirmed.toDate();
+          if (!order.accounting) {
+            order.accounting = {
+              food: {
+                revenue: order.total - order.tax,
+                tax: order.tax
+              },
+              alcohol: {
+                revenue: 0,
+                tax: 0
+              }
+            };
+          }
+          order.accounting.service = {
+            revenue: order.tip,
+            tax: 0
+          };
           return order;
         });
+        console.log("***", this.orders);
         this.total = this.orders.reduce(
           (total, order) => {
-            total.revenue += order.revenue;
-            total.tax += order.tax;
-            total.tip += order.tip;
+            const accounting = order.accounting;
+            total.food.revenue += accounting.food.revenue;
+            total.food.tax += accounting.food.tax;
+            total.alcohol.revenue += accounting.alcohol.revenue;
+            total.alcohol.tax += accounting.alcohol.tax;
+            total.service.revenue += accounting.service.revenue;
+            total.service.tax += accounting.service.tax;
             total.totalCharge += order.totalCharge;
             return total;
           },
           {
-            revenue: 0,
-            tax: 0,
-            tip: 0,
+            food: {
+              revenue: 0,
+              tax: 0
+            },
+            alcohol: {
+              revenue: 0,
+              tax: 0
+            },
+            service: {
+              revenue: 0,
+              tax: 0
+            },
             totalCharge: 0
           }
         );

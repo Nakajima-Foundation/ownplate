@@ -292,11 +292,16 @@ export const wasOrderCreated = async (db, data: any, context) => {
     if (sub_total === 0) {
       throw new Error("invalid order: total 0 ");
     }
-    let tax = Math.round(((alcohol_sub_total * alcoholTax) / 100 + (food_sub_total * foodTax) / 100) * multiple) / multiple;
+    let food_tax = Math.round(food_sub_total * foodTax / 100 * multiple) / multiple;
+    let alcohol_tax = Math.round(alcohol_sub_total * alcoholTax / 100 * multiple) / multiple;
+    let tax = food_tax + alcohol_tax;
     let total = sub_total + tax;
     if (inclusiveTax) {
-      tax = Math.round(((alcohol_sub_total * (1 - 1 / (1 + alcoholTax / 100)))
-        + (food_sub_total * (1 - 1 / (1 + foodTax / 100)))) * multiple) / multiple;
+      food_tax = Math.round((food_sub_total * (1 - 1 / (1 + foodTax / 100))) * multiple) / multiple;
+      alcohol_tax = Math.round((alcohol_sub_total * (1 - 1 / (1 + alcoholTax / 100))) * multiple) / multiple;
+      tax = food_tax + alcohol_tax;
+      food_sub_total -= food_tax;
+      alcohol_sub_total -= alcohol_tax;
       total = sub_total;
     }
 
@@ -322,7 +327,15 @@ export const wasOrderCreated = async (db, data: any, context) => {
       sub_total,
       tax,
       inclusiveTax,
-      total
+      total,
+      accounting: {
+        food: {
+          revenue: food_sub_total, tax: food_tax
+        },
+        alcohol: {
+          revenue: alcohol_sub_total, tax: alcohol_tax
+        }
+      }
     });
   } catch (e) {
     console.log(e);
