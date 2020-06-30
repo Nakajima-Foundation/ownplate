@@ -224,10 +224,17 @@ export default {
           const serviceTax =
             Math.round(order.tip * (1 - 1 / (1 + serviceTaxRate)) * multiple) /
             multiple;
-          order.accounting.service = {
-            revenue: order.tip - serviceTax,
-            tax: serviceTax
-          };
+          if (ownPlateConfig.region === "JP") {
+            order.accounting.service = {
+              revenue: order.tip - serviceTax,
+              tax: serviceTax
+            };
+          } else {
+            order.accounting.service = {
+              revenue: order.tip,
+              tax: 0
+            };
+          }
           return order;
         });
         this.total = this.orders.reduce(
