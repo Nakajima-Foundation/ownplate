@@ -73,13 +73,12 @@
           <div class="align-right">{{order.totalCharge}}</div>
         </td>
         <td class="p-l-8">
-          <div v-if="order.payment">
-            <a :href="searchUrl(order)" target="stripe">
-              {{orderName(order)}}
+          <div>
+            <nuxt-link :to="orderUrl(order)">{{orderName(order)}}</nuxt-link>
+            <a v-if="order.payment" :href="searchUrl(order)" target="stripe">
               <i v-if="order.payment" class="fab fa-cc-stripe" />
             </a>
           </div>
-          <div v-else>{{orderName(order)}}</div>
         </td>
       </tr>
       <tr class="bold">
@@ -189,6 +188,11 @@ export default {
     },
     orderName(order) {
       return nameOfOrder(order);
+    },
+    orderUrl(order) {
+      return (
+        "/admin/restaurants/" + this.restaurantId() + "/orders/" + order.id
+      );
     },
     searchUrl(order) {
       const value = encodeURIComponent(
