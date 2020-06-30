@@ -47,7 +47,7 @@
           <div class="align-right">{{ $t('order.revenue')}}</div>
         </th>
         <th class="p-l-8">
-          <div class="align-right">{{ $t('order.salesTax')}}</div>
+          <div class="align-right">{{ $t('order.foodTax')}}</div>
         </th>
         <th class="p-l-8">
           <div class="align-right">{{ $t('order.revenue')}}</div>
@@ -205,6 +205,8 @@ export default {
       }
       this.detacher = query.orderBy("timeConfirmed").onSnapshot(snapshot => {
         let orders = snapshot.docs.map(this.doc2data("order"));
+        const serviceTaxRate = this.shopInfo.alcoholTax / 100;
+        const multiple = this.$store.getters.stripeRegion.multiple;
         this.orders = orders.map(order => {
           order.timeConfirmed = order.timeConfirmed.toDate();
           if (!order.accounting) {
@@ -219,13 +221,15 @@ export default {
               }
             };
           }
+          const serviceTax =
+            Math.round(order.tip * serviceTaxRate * multiple) / multiple;
           order.accounting.service = {
-            revenue: order.tip,
-            tax: 0
+            revenue: order.tip - serviceTax,
+            tax: serviceTax
           };
           return order;
         });
-        console.log("***", this.orders);
+        console.log("***", serviceTaxRate, multiple);
         this.total = this.orders.reduce(
           (total, order) => {
             const accounting = order.accounting;
