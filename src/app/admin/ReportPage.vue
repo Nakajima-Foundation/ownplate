@@ -205,7 +205,6 @@ export default {
       }
       this.detacher = query.orderBy("timeConfirmed").onSnapshot(snapshot => {
         let orders = snapshot.docs.map(this.doc2data("order"));
-        const serviceTaxRate = this.shopInfo.alcoholTax / 100;
         const multiple = this.$store.getters.stripeRegion.multiple;
         this.orders = orders.map(order => {
           order.timeConfirmed = order.timeConfirmed.toDate();
@@ -221,10 +220,12 @@ export default {
               }
             };
           }
-          const serviceTax =
-            Math.round(order.tip * (1 - 1 / (1 + serviceTaxRate)) * multiple) /
-            multiple;
           if (ownPlateConfig.region === "JP") {
+            const serviceTaxRate = this.shopInfo.alcoholTax / 100;
+            const serviceTax =
+              Math.round(
+                order.tip * (1 - 1 / (1 + serviceTaxRate)) * multiple
+              ) / multiple;
             order.accounting.service = {
               revenue: order.tip - serviceTax,
               tax: serviceTax
