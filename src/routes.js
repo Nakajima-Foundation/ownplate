@@ -101,6 +101,10 @@ export const customRoutes = [
         component: "admin/QRCodePage.vue"
       },
       {
+        path: "report",
+        component: "admin/ReportPage.vue"
+      },
+      {
         name: "admin-order-info",
         path: "orders/:orderId",
         component: "admin/OrderInfoPage.vue"

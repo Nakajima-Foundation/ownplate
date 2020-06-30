@@ -238,6 +238,9 @@
     "yourOrder": "Your Order",
     "confirmOrder": "Confirm Order",
     "editItems": "Edit Items",
+    "revenue": "revenue",
+    "date": "date",
+    "tipShort": "tip",
     "subtotal": "Subtotal",
     "salesTax": "Sales Tax",
     "inclusiveTax": "Sales Tax (inclusive)",
@@ -414,6 +417,9 @@
       "restaurant": "Menu Page",
       "enter": "Record Entrance",
       "leave": "Record Leave"
+    },
+    "report": {
+      "title": "Monthly Report"
     },
     "error": {
       "email": {

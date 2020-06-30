@@ -85,6 +85,18 @@
         </b-button>
       </div>
 
+      <!-- Report Page -->
+      <div class="align-center m-t-16">
+        <b-button
+          tag="nuxt-link"
+          :to="`/admin/restaurants/${restaurantid}/report`"
+          style="min-width: 256px;"
+          class="b-reset op-button-small secondary"
+        >
+          <span class="c-primary">{{ $t("admin.report.title") }}</span>
+        </b-button>
+      </div>
+
       <!-- Directory Request -->
       <div class="align-center m-t-16">
         <div class="t-subtitle2 c-text-black-disabled">{{ $t("admin.directory.status") }}</div>
