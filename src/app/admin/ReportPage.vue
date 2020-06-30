@@ -222,14 +222,14 @@ export default {
             };
           }
           const serviceTax =
-            Math.round(order.tip * serviceTaxRate * multiple) / multiple;
+            Math.round(order.tip * (1 - 1 / (1 + serviceTaxRate)) * multiple) /
+            multiple;
           order.accounting.service = {
             revenue: order.tip - serviceTax,
             tax: serviceTax
           };
           return order;
         });
-        console.log("***", serviceTaxRate, multiple);
         this.total = this.orders.reduce(
           (total, order) => {
             const accounting = order.accounting;
