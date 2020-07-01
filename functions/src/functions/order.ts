@@ -217,6 +217,15 @@ export const getMenuObj = async (refRestaurant) => {
   return menuObj;
 };
 
+const regex = /\(\+[0-9\.]+\)/
+const optionPrice = (option: string) => {
+  const match = option.match(regex);
+  if (match) {
+    return Number(match[0].slice(1, -1))
+  }
+  return 0;
+}
+
 // export const wasOrderCreated = async (db, snapshot, context) => {
 export const wasOrderCreated = async (db, data: any, context) => {
   const uid = utils.validate_auth(context);
@@ -255,6 +264,7 @@ export const wasOrderCreated = async (db, data: any, context) => {
     const inclusiveTax = restaurantData.inclusiveTax || false;
     const alcoholTax = restaurantData.alcoholTax || 0;
     const foodTax = restaurantData.foodTax || 0;
+    const multiple = utils.getStripeRegion().multiple; //100 for USD, 1 for JPY
 
     const menuObj = await getMenuObj(restaurantRef);
 
@@ -278,12 +288,8 @@ export const wasOrderCreated = async (db, data: any, context) => {
       const menu = menuObj[menuId];
       let price = menu.price;
       const options = orderData.options[menuId];
-      const regx = /\([0-9\.]+\)/
       options.forEach(option => {
-        const match = option.match(regx);
-        if (match) {
-
-        }
+        price += Math.round(optionPrice(option) * multiple) / multiple;
       });
 
       if (menu.tax === "alcohol") {
@@ -295,7 +301,6 @@ export const wasOrderCreated = async (db, data: any, context) => {
       newItems[menuId] = { price: menu.price, itemName: menu.itemName };
     });
 
-    const multiple = utils.getStripeRegion().multiple; //100 for USD, 1 for JPY
     // calculate price.
     const sub_total = food_sub_total + alcohol_sub_total;
     if (sub_total === 0) {
