@@ -253,9 +253,11 @@ export default {
   methods: {
     openImage() {
       this.imagePopup = true;
+      // this.$router.replace("/r/" + this.restaurantId() + (this.urlSuffix||""));
     },
     closeImage() {
       this.imagePopup = false;
+      // this.$router.replace("/r/" + this.restaurantId());
     },
     pullCount() {
       if (this.count <= 0) {
