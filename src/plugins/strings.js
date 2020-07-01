@@ -3,7 +3,7 @@ export const nameOfOrder = (order) => {
     "#" + `00${order.number}`.slice(-3) : "";
 };
 
-const regex = /\([0-9\.]+\)/
+const regex = /\(\+[0-9\.]+\)/
 export const optionPrice = (option) => {
   const match = option.match(regex);
   if (match) {
