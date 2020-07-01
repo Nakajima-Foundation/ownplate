@@ -121,6 +121,7 @@
     },
     "minutes": "分",
     "withinfive": "５時間以内",
+    "withinaday": "２４時間以内",
     "profilePhoto": "プロフィール画像",
     "coverPhoto": "カバー画像",
     "setLocation": "住所を元に地図を更新",
@@ -239,12 +240,18 @@
     "yourOrder": "あなたの注文",
     "confirmOrder": "ご注文の確認",
     "editItems": "注文を変更する",
+    "revenue": "売上",
+    "date": "日付",
+    "tipShort": "心付",
     "subtotal": "小計",
     "salesTax": "消費税",
+    "foodTax": "軽減税",
+    "inclusiveTax": "消費税（内税）",
     "total": "合計",
     "yourPayment": "お支払い",
     "reuseCard": "今後の支払いのために保存する",
     "whatsCVC": "CVCとは？",
+    "no_jcb": "＊このお店では、JCBカードは使えません",
     "3digitsCVC": "カードのうら面の右端3ケタ",
     "4digitsCVC": "カードのおもて面の4ケタ",
     "placeOrder": "オンライン支払いで注文",
@@ -352,14 +359,17 @@
     "addNewRestaurant": "飲食店を追加",
     "noPaymentAccount": "お支払いのアカウントが登録されていません",
     "payments": {
+      "onlinePayment": "オンライン支払い",
       "statusNotConnected": "Stripeアカウント未接続",
       "statusConnected": "Stripeアカウント接続済み",
-      "pleaseConnect": "オンラインで支払いを受けるには、Stripeアカウントとの接続が必要です。",
+      "pleaseConnect": "オンラインで支払いを受け取るには、Stripeアカウントとの接続が必要です。",
       "connectStripe": "Stripeアカウントと接続",
       "disconnectStripe": "Stripeアカウントとの接続を解除",
       "reallyDisconnectStripe": "本当にStripeアカウントとの接続を解除してもよろしいですか？",
       "openDashboard": "Stripe のダッシュボードを開く",
-      "enableInStorePayment": "受け取り払いを許可"
+      "onsitePayment": "受け取り払い",
+      "pleaseCheck": "現地での支払いを許可する場合は以下のチェックボックスを有効にしてください。",
+      "enableOnsitePayment": "受け取り払いを許可"
     },
     "viewPage": "ページを確認",
     "incompleteOrders": "{count} 個の未完了の注文",
@@ -413,6 +423,9 @@
       "restaurant": "メニューページ",
       "enter": "入店記録",
       "leave": "退店記録"
+    },
+    "report": {
+      "title": "月次報告"
     },
     "error": {
       "email": {
@@ -495,7 +508,8 @@
         "confirm": "課金処理に失敗しました。",
         "connect": "ストライプとの接続に失敗しました。",
         "disconnect": "ストライプとの接続解除に失敗しました。",
-        "intent": "ストライプによる課金に失敗しました。"
+        "intent": "ストライプによる課金に失敗しました。",
+        "NoJCB": "このお店では、JCBカードは使えません。"
       },
       "menu": {
         "save": "メニューの保存に失敗しました。"

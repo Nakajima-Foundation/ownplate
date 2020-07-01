@@ -49,6 +49,7 @@ service cloud.firestore {
       match /public/{document=**} {
         allow read: if true;
         allow write: if request.auth.uid == userId;
+        allow write: if isSuper(request);
       }
       match /private/{document=**} {
         allow read, write: if request.auth.uid == userId;
@@ -82,6 +83,7 @@ service cloud.firestore {
         allow create: if isAdmin(request)
                         && request.resource.data.uid == request.auth.uid;
         allow update: if isAdmin(request) && isOwner(resource, request);
+        allow update: if isSuper(request);
         match /private/{privateId} {
           allow read, write: if isAdmin(request) && isRestaurantOwner(restaurantId, request);
         }

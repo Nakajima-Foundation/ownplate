@@ -121,6 +121,7 @@
     },
     "minutes": "minutes",
     "withinfive": "Within 5 hours",
+    "withinaday": "Within 24 hours",
     "profilePhoto": "Restaurant profile photo",
     "coverPhoto": "Restaurant cover photo",
     "setLocation": "Set location",
@@ -239,12 +240,18 @@
     "yourOrder": "Your Order",
     "confirmOrder": "Confirm Order",
     "editItems": "Edit Items",
+    "revenue": "revenue",
+    "date": "date",
+    "tipShort": "tip",
     "subtotal": "Subtotal",
     "salesTax": "Sales Tax",
+    "foodTax": "Food Tax",
+    "inclusiveTax": "Sales Tax (inclusive)",
     "total": "Total",
     "yourPayment": "Your Payment",
     "reuseCard": "Save it for future use",
     "whatsCVC": "What’s CVC?",
+    "no_jcb": "＊This restaurant does not accept JCB card",
     "3digitsCVC": "The final three digits on the back",
     "4digitsCVC": "The four digits on the front",
     "placeOrder": "Place Order - Pay Now",
@@ -352,6 +359,7 @@
     "addNewRestaurant": "Add New Restaurant",
     "noPaymentAccount": "No Payment account",
     "payments": {
+      "onlinePayment": "Online Payment",
       "statusNotConnected": "Not Connected",
       "statusConnected": "Connected",
       "pleaseConnect": "In order to receive online payments, you need to connect your Stripe account.",
@@ -359,7 +367,9 @@
       "disconnectStripe": "Disconnect Stripe Account",
       "reallyDisconnectStripe": "Do you really want to disconnect Stripe Account?",
       "openDashboard": "Open Stripe Dashboard",
-      "enableInStorePayment": "Allow in-store payment"
+      "onsitePayment": "On-site Payment",
+      "pleaseCheck": "Please enable the checkbox below to allow on-site payment.",
+      "enableOnsitePayment": "Allow On-site Payment"
     },
     "viewPage": "View Page",
     "incompleteOrders": "{count} Incomplete Order | {count} Incomplete Orders",
@@ -413,6 +423,9 @@
       "restaurant": "Menu Page",
       "enter": "Record Entrance",
       "leave": "Record Leave"
+    },
+    "report": {
+      "title": "Monthly Report"
     },
     "error": {
       "email": {
@@ -495,7 +508,8 @@
         "confirm": "Failed to confirm the payment.",
         "connect": "Failed to connect the Stripe account.",
         "disconnect": "Failed to disconnect the Stripe account.",
-        "intent": "Failed to process the payment."
+        "intent": "Failed to process the payment.",
+        "NoJCB": "This restaurant does not accept JCB card."
       },
       "menu": {
         "save": "Failed to update the menu."

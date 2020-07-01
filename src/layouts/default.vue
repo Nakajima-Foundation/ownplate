@@ -1,5 +1,10 @@
 <template>
   <div class="wrapper" @click="enableSound()">
+    <!-- Notification Banner -->
+    <div v-if="isFlash" @click="dismissBanner()" class="notification-banner">
+      <i class="material-icons c-text-white-full s-24">notifications_active</i>
+    </div>
+
     <!-- Header -->
     <div class="cols flex-center bg-ownplate-white">
       <div>
@@ -16,6 +21,7 @@
         <div class="w-48 h-48"></div>
       </div>
     </div>
+
     <!-- Side Bar -->
     <b-sidebar
       type="is-light"
@@ -163,7 +169,9 @@ export default {
       fullwidth: false,
       right: false,
 
-      langPopup: false
+      langPopup: false,
+      isFlash: false,
+      FlashToggle: false
     };
   },
   mounted() {
@@ -175,6 +183,20 @@ export default {
     });
   },
   computed: {
+    // # Not In Use: flashStyle()
+    flashStyle() {
+      if (this.isFlash) {
+        setTimeout(() => {
+          this.FlashToggle = !this.FlashToggle;
+        }, 200);
+        if (this.FlashToggle) {
+          return "background-color: rgba(2, 136, 209, 0.8)";
+        } else {
+          return "background-color: rgba(2, 136, 209, 0.9)";
+        }
+      }
+      return "";
+    },
     isLoading() {
       return this.$store.state.isLoading;
     },
@@ -212,6 +234,15 @@ export default {
     }
   },
   methods: {
+    flash() {
+      this.isFlash = true;
+      setTimeout(() => {
+        this.isFlash = false;
+      }, 5000);
+    },
+    dismissBanner() {
+      this.isFlash = false;
+    },
     async enableSound() {
       await this.$refs.audioPlay.enableSound();
     },
@@ -324,6 +355,9 @@ export default {
           }
         }
       }
+    },
+    async "$store.state.orderEvent"() {
+      this.flash();
     }
   },
   async created() {
@@ -364,25 +398,28 @@ export default {
 };
 </script>
 <style lang="scss">
-.b-navbar-item {
-  font-size: 0.9rem;
+.notification-banner {
+  position: fixed;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 64px;
+  animation-duration: 0.5s;
+  animation-name: bannerBlink;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+@keyframes bannerBlink {
+  from {
+    background-color: rgba(2, 136, 209, 0.6);
+  }
+  to {
+    background-color: rgba(2, 136, 209, 0.9);
+  }
 }
 
-.footer-sections {
-  width: 1200px;
-  max-width: 100%;
-  margin-right: auto;
-  margin-left: auto;
-  padding-top: 1rem;
-}
-
-.nav-item {
-  padding-left: 0.8rem;
-}
-
-.p-font-mini {
-  line-height: 1.6rem;
-}
 .underConstruction {
   text-align: center;
   color: black;

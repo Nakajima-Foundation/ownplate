@@ -24,7 +24,7 @@
     </div>
 
     <!-- Share Popup-->
-    <b-modal :active.sync="sharePopup" :width="488" scroll="keep">
+    <b-modal :active.sync="sharePopup" :width="488" scroll="keep" style="text-align: initial;">
       <div class="op-dialog p-t-24 p-l-24 p-r-24 p-b-24">
         <div class="t-h6 c-text-black-disabled p-b-8">{{$t('shopInfo.share')}}</div>
         <div class="cols">
@@ -63,11 +63,15 @@ export default {
     shopInfo: {
       type: Object,
       required: true
-    }
+    },
+    suffix: {
+      type: String,
+      required: false
+    },
   },
   data() {
     return {
-      url: this.shareUrl(),
+      url: this.shareUrl() + (this.suffix||""),
       sharePopup: false
     };
   },
@@ -81,4 +85,3 @@ export default {
   }
 };
 </script>
-

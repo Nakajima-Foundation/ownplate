@@ -208,7 +208,7 @@
 
                 <!-- Pay Online -->
                 <div v-if="showPayment">
-                  <stripe-card @change="handleCardStateChange" ref="stripe"></stripe-card>
+                  <stripe-card @change="handleCardStateChange" ref="stripe" :stripeJCB="stripeJCB"></stripe-card>
                   <!-- <credit-card-input></credit-card-input> -->
                   <!-- Pay Button -->
                   <div class="align-center m-t-24">
@@ -372,6 +372,9 @@ export default {
     stripeAccount() {
       return this.paymentInfo.stripe;
     },
+    stripeJCB() {
+      return this.paymentInfo.stripeJCB === true;
+    },
     inStorePayment() {
       return this.paymentInfo.inStore;
     },
@@ -440,6 +443,7 @@ export default {
           if (restaurant.exists) {
             const restaurant_data = restaurant.data();
             this.shopInfo = restaurant_data;
+            console.log("*** R", this.shopInfo);
             const uid = restaurant_data.uid;
             const snapshot = await db
               .doc(`/admins/${uid}/public/payment`)
@@ -456,6 +460,7 @@ export default {
           async order => {
             const order_data = order.exists ? order.data() : {};
             this.orderInfo = order_data;
+            console.log("*** O", this.orderInfo);
             if (this.orderInfo.menuItems) {
               this.menuObj = this.orderInfo.menuItems;
             } else {
@@ -539,8 +544,18 @@ export default {
         window.scrollTo(0, 0);
       } catch (error) {
         console.error(error.message, error.details);
+        let error_code = "stripe.intent";
+        if (
+          error.details &&
+          error.details.code === "card_declined" &&
+          error.details.decline_code === "card_not_supported" &&
+          !this.stripeJCB
+        ) {
+          console.log("JCB");
+          error_code = "stripe.NoJCB";
+        }
         this.$store.commit("setErrorMessage", {
-          code: "stripe.intent",
+          code: error_code,
           error
         });
       } finally {

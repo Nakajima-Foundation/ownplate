@@ -133,6 +133,10 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
           : order.timePlaced;
         order.timeEstimated = props.timeEstimated;
       }
+      if (status === order_status.customer_picked_up) {
+        // Make it compatible with striped orders.
+        props.timeConfirmed = props.updatedAt;
+      }
       transaction.update(orderRef, props)
       return { success: true }
     })
@@ -248,6 +252,7 @@ export const wasOrderCreated = async (db, data: any, context) => {
     }
 
     // tax rate
+    const inclusiveTax = restaurantData.inclusiveTax || false;
     const alcoholTax = restaurantData.alcoholTax || 0;
     const foodTax = restaurantData.foodTax || 0;
 
@@ -287,8 +292,18 @@ export const wasOrderCreated = async (db, data: any, context) => {
     if (sub_total === 0) {
       throw new Error("invalid order: total 0 ");
     }
-    const tax = Math.round(((alcohol_sub_total * alcoholTax) / 100 + (food_sub_total * foodTax) / 100) * multiple) / multiple;
-    const total = sub_total + tax;
+    let food_tax = Math.round(food_sub_total * foodTax / 100 * multiple) / multiple;
+    let alcohol_tax = Math.round(alcohol_sub_total * alcoholTax / 100 * multiple) / multiple;
+    let tax = food_tax + alcohol_tax;
+    let total = sub_total + tax;
+    if (inclusiveTax) {
+      food_tax = Math.round((food_sub_total * (1 - 1 / (1 + foodTax / 100))) * multiple) / multiple;
+      alcohol_tax = Math.round((alcohol_sub_total * (1 - 1 / (1 + alcoholTax / 100))) * multiple) / multiple;
+      tax = food_tax + alcohol_tax;
+      food_sub_total -= food_tax;
+      alcohol_sub_total -= alcohol_tax;
+      total = sub_total;
+    }
 
     // Atomically increment the orderCount of the restaurant
     let number = 0;
@@ -311,7 +326,16 @@ export const wasOrderCreated = async (db, data: any, context) => {
       number,
       sub_total,
       tax,
-      total
+      inclusiveTax,
+      total,
+      accounting: {
+        food: {
+          revenue: food_sub_total, tax: food_tax
+        },
+        alcohol: {
+          revenue: alcohol_sub_total, tax: alcohol_tax
+        }
+      }
     });
   } catch (e) {
     console.log(e);

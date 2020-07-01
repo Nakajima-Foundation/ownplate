@@ -18,7 +18,7 @@
         type="text"
         v-model="phoneNumber"
         v-on:input="validatePhoneNumber"
-        :placeholder="placeHolder"
+        :placeholder="placeholder"
       />
     </b-field>
   </div>
@@ -41,7 +41,7 @@ export default {
       type: String,
       default: ""
     },
-    placeHolder: {
+    placeholder: {
       type: String,
       required: true
     }
