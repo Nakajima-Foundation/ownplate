@@ -62,7 +62,7 @@
           <div class="t-caption c-text-black-medium">{{$t('sitemenu.options')}}</div>
           <div v-for="(option, index) in options" :key="index" class="m-t-8">
             <div v-if="option.length === 1" class="field">
-              <b-checkbox v-model="optionValues[index]">{{ formatOption(option[0]) }}</b-checkbox>
+              <b-checkbox v-model="optionValues[index]">{{ displayOption(option[0]) }}</b-checkbox>
             </div>
             <div v-else class="field">
               <b-radio
@@ -71,7 +71,7 @@
                 :name="`${item.id}${index}`"
                 :native-value="choice"
                 :key="index2"
-              >{{ formatOption(choice) }}</b-radio>
+              >{{ displayOption(choice) }}</b-radio>
             </div>
           </div>
         </div>
@@ -122,7 +122,7 @@
 import { mapGetters, mapMutations } from "vuex";
 import Price from "~/components/Price";
 import SharePopup from "~/app/user/Restaurant/SharePopup";
-import { regexOptionPrice } from "~/plugins/strings.js";
+import { formatOption } from "~/plugins/strings.js";
 
 export default {
   components: {
@@ -257,15 +257,8 @@ export default {
     }
   },
   methods: {
-    formatOption(option) {
-      const match = option.match(regexOptionPrice);
-      if (match) {
-        const price = Number(match[0].slice(1, -1));
-        return (
-          option.slice(0, match.index) + "(" + this.$n(price, "currency") + ")"
-        );
-      }
-      return option;
+    displayOption(option) {
+      return formatOption(option, price => this.$n(price, "currency"));
     },
     openImage() {
       this.imagePopup = true;

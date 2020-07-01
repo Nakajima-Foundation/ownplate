@@ -12,3 +12,15 @@ export const optionPrice = (option) => {
   return 0;
 }
 
+export const formatOption = (option, localize) => {
+  const match = option.match(regexOptionPrice);
+  if (match) {
+    const price = Number(match[0].slice(1, -1));
+    return (
+      option.slice(0, match.index) + "(" + localize(price) + ")"
+    );
+  }
+  return option;
+}
+
+
