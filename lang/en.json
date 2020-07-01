@@ -160,7 +160,7 @@
     "itemDescription": "Item description",
     "itemPhoto": "Item photo",
     "itemOptions": "Item options",
-    "itemOptionsNote": "For altenatives, use comma to separate them (e.g., \"Chicken, Pork, Tofu\")",
+    "itemOptionsNote": "For altenatives, use comma to separate them (e.g., \"Chicken, Pork, Tofu\"). You may add a price to an option with (+N), where N is the price.",
     "itemAddOption": "Add Option",
     "itemInvalidMessage": "This item is not on your menu because data is invalid.",
     "saveAsDraft": "Save as draft. This item is not on your menus.",
