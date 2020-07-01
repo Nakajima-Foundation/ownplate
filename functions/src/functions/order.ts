@@ -276,11 +276,20 @@ export const wasOrderCreated = async (db, data: any, context) => {
         return;
       }
       const menu = menuObj[menuId];
+      let price = menu.price;
+      const options = orderData.options[menuId];
+      const regx = /\([0-9\.]+\)/
+      options.forEach(option => {
+        const match = option.match(regx);
+        if (match) {
+
+        }
+      });
 
       if (menu.tax === "alcohol") {
-        alcohol_sub_total += (menu.price * num);
+        alcohol_sub_total += (price * num);
       } else {
-        food_sub_total += (menu.price * num)
+        food_sub_total += (price * num)
       }
       newOrderData[menuId] = num;
       newItems[menuId] = { price: menu.price, itemName: menu.itemName };

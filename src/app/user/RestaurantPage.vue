@@ -137,6 +137,7 @@ import NotFound from "~/components/NotFound";
 
 import { db, firestore, functions } from "~/plugins/firebase.js";
 import { order_status } from "~/plugins/constant.js";
+import { optionPrice } from "~/plugins/strings.js";
 
 export default {
   name: "ShopMenu",
@@ -387,8 +388,15 @@ export default {
         return option;
       });
       this.options = Object.assign({}, this.options, obj);
+      // DEBUG only
+      Object.keys(this.options).forEach(id => {
+        const options = this.options[id];
+        options.forEach(option => {
+          console.log("***", option, optionPrice(option));
+        });
+      });
       //console.log(this.options);
-    },
+    }
   }
 };
 </script>
