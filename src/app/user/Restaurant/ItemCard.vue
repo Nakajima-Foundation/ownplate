@@ -50,14 +50,19 @@
         <hr class="devider m-t-0 m-b-0" />
 
         <!-- Share Button -->
-        <share-popup :shopInfo="shopInfo" :suffix="urlSuffix" class="align-left" style="margin-left: -8px;"></share-popup>
+        <share-popup
+          :shopInfo="shopInfo"
+          :suffix="urlSuffix"
+          class="align-left"
+          style="margin-left: -8px;"
+        ></share-popup>
 
         <!-- Item Options -->
         <div v-if="hasOptions" class="m-t-8">
           <div class="t-caption c-text-black-medium">{{$t('sitemenu.options')}}</div>
           <div v-for="(option, index) in options" :key="index" class="m-t-8">
             <div v-if="option.length === 1" class="field">
-              <b-checkbox v-model="optionValues[index]">{{ option[0] }}</b-checkbox>
+              <b-checkbox v-model="optionValues[index]">{{ formatOption(option[0]) }}</b-checkbox>
             </div>
             <div v-else class="field">
               <b-radio
@@ -66,7 +71,7 @@
                 :name="`${item.id}${index}`"
                 :native-value="choice"
                 :key="index2"
-              >{{ choice }}</b-radio>
+              >{{ formatOption(choice) }}</b-radio>
             </div>
           </div>
         </div>
@@ -117,6 +122,7 @@
 import { mapGetters, mapMutations } from "vuex";
 import Price from "~/components/Price";
 import SharePopup from "~/app/user/Restaurant/SharePopup";
+import { regexOptionPrice } from "~/plugins/strings.js";
 
 export default {
   components: {
@@ -146,11 +152,11 @@ export default {
     },
     isOpen: {
       type: Boolean,
-      required: true,
-    },
+      required: true
+    }
   },
   mounted() {
-    if(this.isOpen) {
+    if (this.isOpen) {
       this.openImage();
     }
   },
@@ -251,6 +257,16 @@ export default {
     }
   },
   methods: {
+    formatOption(option) {
+      const match = option.match(regexOptionPrice);
+      if (match) {
+        const price = Number(match[0].slice(1, -1));
+        return (
+          option.slice(0, match.index) + "(" + this.$n(price, "currency") + ")"
+        );
+      }
+      return option;
+    },
     openImage() {
       this.imagePopup = true;
       // this.$router.replace("/r/" + this.restaurantId() + (this.urlSuffix||""));
