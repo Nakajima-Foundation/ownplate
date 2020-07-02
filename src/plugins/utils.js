@@ -32,19 +32,29 @@ export default ({ app }) => {
         }, {});
       },
       num2time(num) {
-        let ampm = "AM";
-        if (num >= 60 * 12) {
-          ampm = "PM";
-          if (num >= 60 * 13) {
-            num = num - 60 * 12;
-          }
+        if (num === 0 || num === 60 * 24) {
+          return this.$t("shopInfo.midnight");
         }
-        return [
+        if (num === 60 * 12) {
+          return this.$t("shopInfo.noon");
+        }
+        const offsetTime = (this.$i18n.locale == "ja") ? 12 : 13;
+        const isPm = (num >= 60 * 12);
+        if (num >= 60 * offsetTime) {
+          num = num - 60 * 12;
+        }
+        const formatedTime = [
           String(Math.floor(num / 60)).padStart(2, '0'),
           ":",
           String(num % 60).padStart(2, '0'),
-          " ",
-          ampm].join("");
+          " "
+        ].join("");
+
+        if (isPm) {
+          return this.$tc('shopInfo.pm', 1, {formatedTime});
+        }
+        return this.$tc('shopInfo.am', 0, {formatedTime});
+
       },
       countObj(obj) {
         if (Array.isArray(obj)) {

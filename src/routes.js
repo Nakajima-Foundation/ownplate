@@ -45,7 +45,7 @@ export const customRoutes = [
     component: "user/RestaurantPage.vue"
   },
   {
-    name: "r-restaurantId",
+    name: "r-restaurant-menu",
     path: "/r/:restaurantId/menus/:menuId",
     component: "user/RestaurantPage.vue"
   },
@@ -99,6 +99,10 @@ export const customRoutes = [
       {
         path: "qrcode",
         component: "admin/QRCodePage.vue"
+      },
+      {
+        path: "report",
+        component: "admin/ReportPage.vue"
       },
       {
         name: "admin-order-info",

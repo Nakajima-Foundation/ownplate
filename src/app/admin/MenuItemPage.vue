@@ -381,6 +381,8 @@ import { taxRates } from "~/plugins/constant.js";
 
 import NotificationIndex from "./Notifications/Index";
 
+import { ownPlateConfig } from "@/config/project";
+
 export default {
   name: "Order",
 
@@ -517,7 +519,9 @@ export default {
         }
         const itemData = {
           itemName: this.menuInfo.itemName,
-          price: Number(this.menuInfo.price),
+          price: (ownPlateConfig.region === 'JP') ?
+            Math.round(Number(this.menuInfo.price)) :
+            Number(this.menuInfo.price),
           tax: this.menuInfo.tax,
           itemDescription: this.menuInfo.itemDescription,
           itemPhoto: this.menuInfo.itemPhoto,

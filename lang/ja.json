@@ -195,6 +195,10 @@
     "phonenumber": "電話番号",
     "website": "ホームページ",
     "hours": "営業時間",
+    "midnight": "深夜 00:00",
+    "noon": "正午 12:00",
+    "am": "午前 {formatedTime}",
+    "pm": "午後 {formatedTime}",
     "closed": "定休日",
     "public": "公開",
     "paymentMethod": "支払い方法",
@@ -238,8 +242,12 @@
     "yourOrder": "あなたの注文",
     "confirmOrder": "ご注文の確認",
     "editItems": "注文を変更する",
+    "revenue": "売上",
+    "date": "日付",
+    "tipShort": "心付",
     "subtotal": "小計",
     "salesTax": "消費税",
+    "foodTax": "軽減税",
     "inclusiveTax": "消費税（内税）",
     "total": "合計",
     "yourPayment": "お支払い",
@@ -353,14 +361,17 @@
     "addNewRestaurant": "飲食店を追加",
     "noPaymentAccount": "お支払いのアカウントが登録されていません",
     "payments": {
+      "onlinePayment": "オンライン支払い",
       "statusNotConnected": "Stripeアカウント未接続",
       "statusConnected": "Stripeアカウント接続済み",
-      "pleaseConnect": "オンラインで支払いを受けるには、Stripeアカウントとの接続が必要です。",
+      "pleaseConnect": "オンラインで支払いを受け取るには、Stripeアカウントとの接続が必要です。",
       "connectStripe": "Stripeアカウントと接続",
       "disconnectStripe": "Stripeアカウントとの接続を解除",
       "reallyDisconnectStripe": "本当にStripeアカウントとの接続を解除してもよろしいですか？",
       "openDashboard": "Stripe のダッシュボードを開く",
-      "enableInStorePayment": "受け取り払いを許可"
+      "onsitePayment": "受け取り払い",
+      "pleaseCheck": "現地での支払いを許可する場合は以下のチェックボックスを有効にしてください。",
+      "enableOnsitePayment": "受け取り払いを許可"
     },
     "viewPage": "ページを確認",
     "incompleteOrders": "{count} 個の未完了の注文",
@@ -414,6 +425,9 @@
       "restaurant": "メニューページ",
       "enter": "入店記録",
       "leave": "退店記録"
+    },
+    "report": {
+      "title": "月次報告"
     },
     "error": {
       "email": {

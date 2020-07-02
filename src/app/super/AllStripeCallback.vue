@@ -7,6 +7,7 @@
         {{moment(log.created.toDate()).format("YYYY-MM-DD hh:mm")}}/{{log.uid || log.data.uid}}/{{stripeActionStrings[log.action]}}
       </router-link>
     </div>
+    <button @click="nextLoad">next</button>
   </section>
 </template>
 
@@ -23,6 +24,7 @@ export default {
       logs: [],
       detacher: null,
       stripeActionStrings,
+      last: null,
     };
   },
   async mounted() {
@@ -35,11 +37,29 @@ export default {
       .limit(100)
       .onSnapshot(snapshot => {
         this.logs = snapshot.docs.map(doc => {
+          this.last = doc;
           const log = doc.data();
           log.id = doc.id;
           return log;
         });
       });
+  },
+  methods: {
+    async nextLoad() {
+      const nextData = await db.collectionGroup("stripeLogs")
+        .orderBy("created", "desc")
+        .startAfter(this.last)
+        .limit(100).get();
+      if (!nextData.empty) {
+        nextData.docs.forEach(doc => {
+          this.last = doc;
+          const log = doc.data();
+          log.id = doc.id;
+          this.logs.push(log);
+        });
+      }
+
+    }
   },
   destroyed() {
     this.detatcher && this.detatcher();
