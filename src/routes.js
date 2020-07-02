@@ -45,7 +45,7 @@ export const customRoutes = [
     component: "user/RestaurantPage.vue"
   },
   {
-    name: "r-restaurantId",
+    name: "r-restaurant-menu",
     path: "/r/:restaurantId/menus/:menuId",
     component: "user/RestaurantPage.vue"
   },
