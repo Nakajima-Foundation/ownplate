@@ -23,4 +23,9 @@ export const formatOption = (option, localize) => {
   return option;
 }
 
+export const halfCharactors = (str) => {
+  return str.replace(/[（）＋ーＡ-Ｚａ-ｚ０-９]/g, (s) => {
+    return String.fromCharCode(s.charCodeAt(0) - 65248);
+  });
+}
 
