@@ -11,7 +11,7 @@
         >{{ specialRequest }}</div>
       </div>
       <div class="align-righ">
-        <span class="t-body1 c-text-black-high">{{ $n(item.price * count, 'currency') }}</span>
+        <span class="t-body1 c-text-black-high">{{ $n(totalPrice, 'currency') }}</span>
       </div>
     </div>
   </div>
@@ -40,6 +40,14 @@ export default {
       counter: 0,
       openMenuFlag: false
     };
+  },
+  computed: {
+    totalPrice() {
+      let price = this.item.price;
+      // TODO: Add option prices here
+      price += 10;
+      return price * this.count;
+    }
   },
   methods: {}
 };
