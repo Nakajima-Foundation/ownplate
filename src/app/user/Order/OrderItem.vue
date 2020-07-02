@@ -20,7 +20,7 @@
 <script>
 import store from "~/store/index.js";
 import { mapGetters, mapMutations } from "vuex";
-import { formatOption } from "~/plugins/strings.js";
+import { formatOption, optionPrice } from "~/plugins/strings.js";
 
 export default {
   props: {
@@ -43,7 +43,6 @@ export default {
       return this.orderItem.count;
     },
     specialRequest() {
-      console.log(this.orderItem.options);
       return this.orderItem.options
         .filter(choice => choice)
         .map(choice => this.displayOption(choice))
@@ -51,8 +50,11 @@ export default {
     },
     totalPrice() {
       let price = this.item.price;
-      // TODO: Add option prices here
-      price += 10;
+      const m = this.$store.getters.stripeRegion.multiple;
+      this.orderItem.options.forEach(option => {
+        const p = Math.round(optionPrice(option) * m) / m;
+        price += p;
+      });
       return price * this.count;
     }
   },
