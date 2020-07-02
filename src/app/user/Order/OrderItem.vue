@@ -22,17 +22,9 @@ import store from "~/store/index.js";
 import { mapGetters, mapMutations } from "vuex";
 export default {
   props: {
-    item: {
+    orderItem: {
       type: Object,
       required: true
-    },
-    count: {
-      type: Number,
-      required: true
-    },
-    specialRequest: {
-      type: String,
-      required: false
     }
   },
   data() {
@@ -42,6 +34,15 @@ export default {
     };
   },
   computed: {
+    item() {
+      return this.orderItem.item;
+    },
+    count() {
+      return this.orderItem.count;
+    },
+    specialRequest() {
+      return this.orderItem.specialRequest;
+    },
     totalPrice() {
       let price = this.item.price;
       // TODO: Add option prices here
