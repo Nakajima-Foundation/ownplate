@@ -361,6 +361,11 @@ export default {
     }
   },
   async created() {
+    console.log(navigator.userAgent.toLowerCase());
+    if (navigator.userAgent.toLowerCase().indexOf('googlebot') > -1) {
+      await this.changeLang("ja")
+    }
+
     this.language = this.regionalSetting.defaultLanguage;
     this.languages = this.regionalSetting.languages;
     this.logo = this.regionalSetting.Logo;
