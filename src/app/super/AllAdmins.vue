@@ -26,6 +26,12 @@
         </td>
       </tr>
     </table>
+    <div>
+      <b-button @click="updateQuery">
+        <span v-if="last">Next</span>
+        <span v-else>Top</span>
+      </b-button>
+    </div>
   </section>
 </template>
 
@@ -33,6 +39,7 @@
 import BackButton from "~/components/BackButton";
 import { db } from "~/plugins/firebase.js";
 import { stripeVerify } from "~/plugins/stripe.js";
+const QUERY_LIMIT = 50;
 
 export default {
   components: {
@@ -42,14 +49,29 @@ export default {
     return {
       admins: [],
       infos: {},
+      last: null,
       detacher: null
     };
   },
   created() {
-    this.detacher = db
-      .collection("admins")
-      .limit(100)
-      .onSnapshot(snapshot => {
+    this.updateQuery();
+  },
+  destroyed() {
+    this.detacher && this.detacher();
+  },
+  methods: {
+    updateQuery() {
+      this.detacher && this.detacher();
+      let query = db.collection("admins").orderBy("created", "desc");
+      if (this.last) {
+        query = query.startAfter(this.last);
+      }
+      this.detacher = query.limit(QUERY_LIMIT).onSnapshot(snapshot => {
+        if (snapshot.docs.length === QUERY_LIMIT) {
+          this.last = snapshot.docs[QUERY_LIMIT - 1];
+        } else {
+          this.last = null;
+        }
         this.admins = snapshot.docs.map(this.doc2data("admin"));
         this.admins.forEach(async admin => {
           // NOTE: We are getting extra data only once for each admin
@@ -58,11 +80,7 @@ export default {
           }
         });
       });
-  },
-  destroyed() {
-    this.detacher && this.detacher();
-  },
-  methods: {
+    },
     async updateInfo(admin) {
       const info = {};
       const payment = (
