@@ -300,7 +300,6 @@ import { nameOfOrder } from "~/plugins/strings.js";
 import { releaseConfig } from "~/plugins/config.js";
 import { stripeCreateIntent, stripeCancelIntent } from "~/plugins/stripe.js";
 import { lineAuthURL } from "~/plugins/line.js";
-import { formatOption } from "~/plugins/strings.js";
 
 export default {
   name: "Order",
@@ -413,7 +412,8 @@ export default {
             item: this.menuObj[key],
             count: num,
             id: key,
-            specialRequest: this.specialRequest(key)
+            options:
+              (this.orderInfo.options && this.orderInfo.options[key]) || []
           };
         });
       }
@@ -503,19 +503,6 @@ export default {
       console.log("handleDismissed", params);
       // The user has dismissed the login dialog (including the successful login)
       this.loginVisible = false;
-    },
-    displayOption(option) {
-      return formatOption(option, price => this.$n(price, "currency"));
-    },
-    specialRequest(key) {
-      const option = this.orderInfo.options && this.orderInfo.options[key];
-      if (option) {
-        return option
-          .filter(choice => choice)
-          .map(choice => this.displayOption(choice))
-          .join(", ");
-      }
-      return "";
     },
     async handleEditItems() {
       try {
