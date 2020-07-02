@@ -1,4 +1,5 @@
 import * as admin from 'firebase-admin';
+import * as utils from '../lib/utils'
 
 const accountIdToUIDs = async (db, accountId) => {
   if (accountId) {
@@ -24,7 +25,7 @@ const accountIdToUIDs = async (db, accountId) => {
 };
 
 export const account_updated = async (db, event) => {
-  const {data: {object} } = event;
+  const { data: { object } } = event;
   const { id } = object;
   const uids = await accountIdToUIDs(db, id);
 
@@ -32,9 +33,32 @@ export const account_updated = async (db, event) => {
 }
 
 export const capability_updated = async (db, event) => {
-  const {data: {object} } = event;
-  const { account } = object;
+  const { data: { object } } = event;
+  const { account, status, id } = object;
   const uids = await accountIdToUIDs(db, account);
+
+  const stripe = utils.get_stripe();
+  if (status === "active" && id === "jcb_payments") {
+    try {
+      // Check if JCB payments are really active (paranoia)
+      const accountInfo = await stripe.accounts.retrieve(account)
+      const capabilities: any = accountInfo.capabilities;
+      if (capabilities && capabilities.jcb_payments === "active") {
+        await Promise.all(uids.map(async (uid: string) => {
+          console.log("capability_updated: updating", uid, accountInfo)
+          await db.doc(`admins/${uid}/public/payment`).update({
+            stripeJCB: true
+          });
+        }));
+      } else {
+        console.error("capability_updated: no capabilities", capabilities)
+      }
+    } catch (error) {
+      console.error("capability_updated: failed to retrieve account info", account)
+    }
+
+  }
+
   // log
   return await callbackAdminLog(db, uids, stripeActions.capability_updated, event);
 }
@@ -71,11 +95,11 @@ export const callbackAdminLog = async (db, uids, action, log) => {
   return await Promise.all((uids.length > 0 ? uids : ['unknown']).map(async (uid) => {
     console.log(uid, action)
     const payload: any = {
-      data: {log: log },
+      data: { log: log },
       action,
       uid,
       type: "callback",
-      created: (process.env.NODE_ENV !== "test") ?  admin.firestore.Timestamp.now() : Date.now()
+      created: (process.env.NODE_ENV !== "test") ? admin.firestore.Timestamp.now() : Date.now()
     };
     await db.collection(`/admins/${uid}/stripeLogs`).add(payload);
     return payload;
