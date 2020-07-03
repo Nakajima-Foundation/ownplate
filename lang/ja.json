@@ -354,13 +354,14 @@
     "confirmPasswordPlaceHolder": "同じパスワードを入力して下さい",
     "enterName": "氏名を入力して下さい",
     "restaurant": "飲食店一覧",
-    "payment": "お支払い",
+    "payment": "お支払い方法",
     "yourRestaurants": "飲食店",
     "noRestaurant": "飲食店が登録されていません",
     "addYourRestaurant": "飲食店を追加してください",
     "addNewRestaurant": "飲食店を追加",
     "noPaymentAccount": "お支払いのアカウントが登録されていません",
     "payments": {
+      "unsetWarning": "注文を受け付けるにはお支払い方法の設定が必要です。",
       "onlinePayment": "オンライン支払い",
       "statusNotConnected": "Stripeアカウント未接続",
       "statusConnected": "Stripeアカウント接続済み",
@@ -371,6 +372,7 @@
       "openDashboard": "Stripe のダッシュボードを開く",
       "onsitePayment": "受け取り払い",
       "pleaseCheck": "現地での支払いを許可する場合は以下のチェックボックスを有効にしてください。",
+      "onsitePaymentNote": "突然のキャンセルや悪戯などによる代金の未回収にご注意ください。",
       "enableOnsitePayment": "受け取り払いを許可"
     },
     "viewPage": "ページを確認",
