@@ -14,7 +14,7 @@
     "tests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/*_test.ts"
   },
   "engines": {
-    "node": "8"
+    "node": "10"
   },
   "main": "lib/index.js",
   "dependencies": {
