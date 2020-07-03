@@ -388,7 +388,7 @@ export default {
       });
       this.options = Object.assign({}, this.options, obj);
       //console.log(this.options);
-    },
+    }
   }
 };
 </script>
