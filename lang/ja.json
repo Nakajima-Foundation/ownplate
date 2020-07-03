@@ -371,6 +371,7 @@
       "openDashboard": "Stripe のダッシュボードを開く",
       "onsitePayment": "受け取り払い",
       "pleaseCheck": "現地での支払いを許可する場合は以下のチェックボックスを有効にしてください。",
+      "onsitePaymentNote": "突然のキャンセルや悪戯などによる代金の未回収にご注意ください。",
       "enableOnsitePayment": "受け取り払いを許可"
     },
     "viewPage": "ページを確認",

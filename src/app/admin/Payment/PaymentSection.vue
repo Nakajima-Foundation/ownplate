@@ -72,6 +72,9 @@
       <div class="m-l-24 m-r-24">
         <div class="t-subtitle1 c-text-black-medium">{{ $t("admin.payments.onsitePayment") }}</div>
         <div class="m-t-8 t-body1 c-text-black-medium">{{ $t("admin.payments.pleaseCheck") }}</div>
+        <div class="m-t-8 bg-form r-8 p-l-16 p-r-16 p-t-16 p-b-16">
+          <span class="t-body2 c-status-red">{{ $t("admin.payments.onsitePaymentNote") }}</span>
+        </div>
 
         <!-- On-site Payment Checkbox -->
         <div class="align-center m-t-24">

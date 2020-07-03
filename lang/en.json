@@ -371,6 +371,7 @@
       "openDashboard": "Open Stripe Dashboard",
       "onsitePayment": "On-site Payment",
       "pleaseCheck": "Please enable the checkbox below to allow on-site payment.",
+      "onsitePaymentNote": "Please be aware of uncollected payments due to sudden cancellations or mischief.",
       "enableOnsitePayment": "Allow On-site Payment"
     },
     "viewPage": "View Page",
