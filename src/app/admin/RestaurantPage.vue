@@ -248,7 +248,6 @@
                   </div>
                   <div class="align-center t-caption">{{ $t("editCommon.current") }}</div>
                 </div>
-
                 <!-- New Photo -->
                 <div class="flex-1">
                   <croppa
@@ -924,6 +923,12 @@ export default {
         });
       });
       err["phoneNumber"] = this.errorsPhone;
+
+      // image
+      err["restProfilePhoto"] = [];
+      if (this.isNull(this.files["profile"]) && this.isNull(this.shopInfo.restProfilePhoto)) {
+        err["restProfilePhoto"].push("validationError.restProfilePhoto.empty");
+      }
       // todo more validate
       return err;
     },
@@ -956,10 +961,14 @@ export default {
       );
     },
     handleProfileImage(e) {
-      this.files["profile"] = e;
+      const newFile =  Object.assign({}, this.files);
+      newFile["profile"] = e;
+      this.files = newFile;
     },
     handleCoverImage(e) {
-      this.files["cover"] = e;
+      const newFile =  Object.assign({}, this.files);
+      newFile["cover"] = e;
+      this.files = newFile;
     },
     handlePhoneChange(payload) {
       //console.log(payload)
