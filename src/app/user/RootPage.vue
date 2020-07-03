@@ -66,6 +66,9 @@ export default {
             { name: "福岡県", id: 39 },
             { name: "福井県", id: 17 },
             { name: "大阪府", id: 26 },
+            { name: "兵庫県", id: 27 },
+            { name: "広島県", id: 33 },
+            { name: "長崎県", id: 41 }
           ]
           : [{ name: "Washington", id: 46 }]
     };
