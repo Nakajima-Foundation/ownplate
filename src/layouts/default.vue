@@ -361,10 +361,6 @@ export default {
     }
   },
   async created() {
-    console.log(navigator.userAgent.toLowerCase());
-    if (navigator.userAgent.toLowerCase().indexOf('googlebot') > -1) {
-      await this.changeLang("ja")
-    }
 
     this.language = this.regionalSetting.defaultLanguage;
     this.languages = this.regionalSetting.languages;
@@ -376,16 +372,21 @@ export default {
     }, 60 * 1000);
 
     // query
-    // setting
+    // bot
     // browser
+    // setting (is not here / after user load)
+    console.log("UA:" + navigator.userAgent.toLowerCase());
     if (this.$route.query.lang) {
       await this.changeLang(this.$route.query.lang);
+    } else if (navigator.userAgent.toLowerCase().indexOf('googlebot') > -1) {
+      await this.changeLang("ja")
     } else {
       const language =
         (window.navigator.languages && window.navigator.languages[0]) ||
         window.navigator.language ||
         window.navigator.userLanguage ||
         window.navigator.browserLanguage;
+      console.log("browserlang:" + language);
       const lang = (language || "").substr(0, 2);
       if (lang.length === 2) {
         await this.setLang(lang);
