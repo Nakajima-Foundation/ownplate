@@ -379,7 +379,11 @@ export default {
     if (this.$route.query.lang) {
       await this.changeLang(this.$route.query.lang);
     } else if (navigator.userAgent.toLowerCase().indexOf('googlebot') > -1) {
-      await this.changeLang("ja")
+      if (this.isJapan) {
+        await this.changeLang("ja")
+      } else {
+        await this.changeLang("en")
+      }
     } else {
       const language =
         (window.navigator.languages && window.navigator.languages[0]) ||
