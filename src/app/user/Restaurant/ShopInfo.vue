@@ -115,6 +115,7 @@
               <span v-if="showPayment">{{$t('shopInfo.onlinePayment')}}</span>
               <span v-if="showPayment && inStorePayment">/</span>
               <span v-if="inStorePayment">{{$t('shopInfo.onsitePayment')}}</span>
+              <span v-if="!showPayment && !inStorePayment">{{$t('shopInfo.noPaymentMethod')}}</span>
             </span>
           </div>
         </div>
