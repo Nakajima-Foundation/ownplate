@@ -219,8 +219,8 @@ import { stripeConfirmIntent, stripeCancelIntent } from "~/plugins/stripe.js";
 import moment from "moment-timezone";
 import NotFound from "~/components/NotFound";
 import { ownPlateConfig } from "~/config/project";
-
 import NotificationIndex from "./Notifications/Index";
+import { formatOption } from "~/plugins/strings.js";
 
 export default {
   components: {
@@ -366,6 +366,9 @@ export default {
     }
   },
   methods: {
+    displayOption(option) {
+      return formatOption(option, price => this.$n(price, "currency"));
+    },
     possibleTransition() {
       switch (this.orderInfo.status) {
         case order_status.order_placed:
@@ -402,9 +405,13 @@ export default {
     // NOTE: Exact same code in the order/_orderId/index.vue for the user.
     // This is intentional because we may want to present it differently to admins.
     specialRequest(key) {
-      const option = this.orderInfo.options && this.orderInfo.options[key];
-      if (option) {
-        return option.filter(choice => choice).join(", ");
+      const options = this.orderInfo.options && this.orderInfo.options[key];
+      if (options) {
+        console.log("***", options);
+        return options
+          .filter(option => option)
+          .map(option => this.displayOption(option))
+          .join(", ");
       }
       return "";
     },
