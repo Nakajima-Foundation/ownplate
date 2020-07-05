@@ -138,6 +138,8 @@ import NotFound from "~/components/NotFound";
 import { db, firestore, functions } from "~/plugins/firebase.js";
 import { order_status } from "~/plugins/constant.js";
 
+import { defaultHeader } from "../../plugins/header";
+
 export default {
   name: "ShopMenu",
 
@@ -148,6 +150,11 @@ export default {
     SharePopup,
     ShopInfo,
     NotFound
+  },
+  head() {
+    return {
+      title: [ this.shopInfo.restaurantName || "", defaultHeader.title].join(" / "),
+    };
   },
   data() {
     return {
