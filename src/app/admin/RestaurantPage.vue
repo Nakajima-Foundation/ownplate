@@ -240,7 +240,10 @@
                 {{ $t("editRestaurant.profilePhoto") }}
                 <span class="c-status-red">*</span>
               </div>
-              <div class="cols">
+              <div
+                class="cols"
+                v-bind:class="{ 'no-photo': errors['restProfilePhoto'].length !== 0 }"
+              >
                 <!-- Current Photo -->
                 <div v-if="restProfilePhoto" class="p-r-16">
                   <div>
@@ -926,7 +929,10 @@ export default {
 
       // image
       err["restProfilePhoto"] = [];
-      if (this.isNull(this.files["profile"]) && this.isNull(this.shopInfo.restProfilePhoto)) {
+      if (
+        this.isNull(this.files["profile"]) &&
+        this.isNull(this.shopInfo.restProfilePhoto)
+      ) {
         err["restProfilePhoto"].push("validationError.restProfilePhoto.empty");
       }
       // todo more validate
@@ -961,12 +967,12 @@ export default {
       );
     },
     handleProfileImage(e) {
-      const newFile =  Object.assign({}, this.files);
+      const newFile = Object.assign({}, this.files);
       newFile["profile"] = e;
       this.files = newFile;
     },
     handleCoverImage(e) {
-      const newFile =  Object.assign({}, this.files);
+      const newFile = Object.assign({}, this.files);
       newFile["cover"] = e;
       this.files = newFile;
     },
@@ -1124,3 +1130,11 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+.no-photo {
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ca513e;
+}
+</style>
