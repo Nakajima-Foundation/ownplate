@@ -40,6 +40,7 @@
     "admins": "Restaurant Owners",
     "adminManual": "Manual for Owners",
     "adminSupport": "Support for Owners",
+    "adminUserGroup": "User Group for Owners",
     "users": "Food Lovers",
     "userManual": "Manual for Food Lovers",
     "userSupport": "Support for Food Lovers",
@@ -331,6 +332,7 @@
     "welcomeMessage": "Welcome to OwnPlate",
     "userManual": "User Manual",
     "suportPage": "Support",
+    "facebookUserGroup": "User Group",
     "news": {
       "title": "News",
       "newsTop": "News Top",
