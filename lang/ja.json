@@ -412,7 +412,8 @@
       "line": "LINE通知設定",
       "lineAdd": "LINEアカウントの追加",
       "lineUsers": "登録済みLINEアカウント",
-      "lineDelete": "本当に消去しますか？"
+      "lineDelete": "本当に消去しますか？",
+      "lineSafariPrivate": "注意: Safariのプライベートブラウズモードを使用しているとLINE連携ができません。"
     },
     "sound": {
       "default": "ピコリン",
