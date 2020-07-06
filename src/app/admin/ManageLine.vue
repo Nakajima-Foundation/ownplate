@@ -27,7 +27,7 @@
             </div>
             <!-- Notification Settings -->
             <div class="level-right">
-              <notification-index :shopInfo="shopInfo"/>
+              <notification-index :shopInfo="shopInfo" />
             </div>
           </div>
         </div>
@@ -100,6 +100,15 @@
                   </span>
                 </b-button>
               </div>
+
+              <!-- Note for Safari Private Browsing Mode -->
+              <div class="bg-form r-8 p-l-16 p-r-16 p-t-16 p-b-16 m-t-24 align-left">
+                <span class="t-body2 c-text-black-medium">
+                  {{
+                  $t("admin.order.lineSafariPrivate")
+                  }}
+                </span>
+              </div>
             </div>
           </div>
         </div>
@@ -120,7 +129,7 @@ import NotificationIndex from "./Notifications/Index";
 export default {
   components: {
     BackButton,
-    NotificationIndex,
+    NotificationIndex
   },
   data() {
     return {
