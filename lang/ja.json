@@ -40,6 +40,7 @@
     "admins": "飲食店向けページ",
     "adminManual": "飲食店向けマニュアル",
     "adminSupport": "飲食店向けお問い合わせ",
+    "adminUserGroup": "飲食店向けユーザーグループ",
     "users": "お客様向けページ",
     "userManual": "お客様向けマニュアル",
     "userSupport": "お客様向けお問い合わせ",
@@ -331,6 +332,7 @@
     "welcomeMessage": "いらっしゃいませ",
     "userManual": "使い方説明",
     "suportPage": "お問い合わせ",
+    "facebookUserGroup": "ユーザーグループ",
     "news": {
       "title": "お知らせ",
       "newsTop": "お知らせ一覧",

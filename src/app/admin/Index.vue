@@ -12,9 +12,10 @@
             <div class="is-hidden-mobile h-24"></div>
             <div class="bg-ownplate-yellow r-8 align-center">
               <div class="h-24 bg-ownplate-yellow is-invisible-tablet"></div>
-              <div class="t-h6 c-ownplate-white p-b-24">{{ $t("admin.welcomeMessage") }}</div>
-              <div class="is-inline-flex">
-                <div class="m-r-24">
+              <div class="t-h6 c-ownplate-white">{{ $t("admin.welcomeMessage") }}</div>
+              <div>
+                <!-- User Manuals -->
+                <div v-if="isJapan" class="is-inline-block m-l-8 m-r-8 m-t-24">
                   <a
                     href="https://gluepass.jp/g/ownplatejp/pg/Zy8VserQdTxFVKLaFcOK"
                     target="_blank"
@@ -29,7 +30,9 @@
                     </div>
                   </a>
                 </div>
-                <div>
+
+                <!-- Support -->
+                <div v-if="isJapan" class="is-inline-block m-l-8 m-r-8 m-t-24">
                   <a
                     href="https://docs.google.com/forms/d/e/1FAIpQLSfGR4kk65ynfkCRGJsvJz01HZf7AU1nGLL9Rn9i4G9-qiW6MQ/viewform"
                     target="_blank"
@@ -39,6 +42,20 @@
                       <span class="c-primary t-button">
                         {{
                         $t("admin.suportPage")
+                        }}
+                      </span>
+                    </div>
+                  </a>
+                </div>
+
+                <!-- Facebook User Group -->
+                <div v-if="isJapan" class="is-inline-block m-l-8 m-r-8 m-t-24">
+                  <a href="https://www.facebook.com/groups/278028420106364/" target="_blank">
+                    <div class="op-button-small bg-text-white-high">
+                      <i class="fab fa-facebook c-primary m-r-8" style="font-size:18px" />
+                      <span class="c-primary t-button">
+                        {{
+                        $t("admin.facebookUserGroup")
                         }}
                       </span>
                     </div>
