@@ -1,20 +1,20 @@
 <template>
-<div>
-  <!-- Notification Settings Button -->
-  <notification-setting-button
-    :notificationData="notificationData || defaultNotificationData"
-    @openNotificationSettings="openNotificationSettings"
+  <div>
+    <!-- Notification Settings Button -->
+    <notification-setting-button
+      :notificationData="notificationData || defaultNotificationData"
+      @openNotificationSettings="openNotificationSettings"
     />
 
-  <!-- Notification Settings Popup-->
-  <notification-settings
-    :shopInfo="shopInfo"
-    :notificationData="notificationData"
-    :NotificationSettingsPopup="NotificationSettingsPopup"
-    @close="closeNotificationSettings"
-    v-if="notificationData"
+    <!-- Notification Settings Popup-->
+    <notification-settings
+      :shopInfo="shopInfo"
+      :notificationData="notificationData"
+      :NotificationSettingsPopup="NotificationSettingsPopup"
+      @close="closeNotificationSettings"
+      v-if="notificationData"
     />
-</div>
+  </div>
 </template>
 
 <script>
@@ -44,15 +44,20 @@ export default {
         uid: this.$store.getters.uidAdmin,
         createdAt: firestore.FieldValue.serverTimestamp()
       }
-    }
+    };
   },
   async created() {
-    const notification = await db
-      .doc(`restaurants/${this.restaurantId()}/private/notifications`)
-      .get();
-    this.notificationData = notification.exists
-      ? Object.assign(this.defaultNotificationData, notification.data())
-      : this.defaultNotificationData;
+    try {
+      const notification = await db
+        .doc(`restaurants/${this.restaurantId()}/private/notifications`)
+        .get();
+      this.notificationData = notification.exists
+        ? Object.assign(this.defaultNotificationData, notification.data())
+        : this.defaultNotificationData;
+    } catch (error) {
+      // We can ignore this error here
+      console.error(error.message);
+    }
   },
   methods: {
     openNotificationSettings() {
@@ -60,7 +65,7 @@ export default {
     },
     closeNotificationSettings() {
       this.NotificationSettingsPopup = false;
-    },
-  },
-}
+    }
+  }
+};
 </script>
