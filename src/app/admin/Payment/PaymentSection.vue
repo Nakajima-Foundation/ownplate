@@ -27,15 +27,13 @@
 
           <!-- Connect Button -->
           <div class="align-center m-t-16 m-b-24">
-            <a :href="stripeLink">
-              <div class="op-button-small primary">
-                <span>
-                  {{
-                  $t("admin.payments.connectStripe")
-                  }}
-                </span>
-              </div>
-            </a>
+            <div class="op-button-small primary" @click="handleLinkStripe">
+              <span>
+                {{
+                $t("admin.payments.connectStripe")
+                }}
+              </span>
+            </div>
           </div>
         </div>
 
@@ -103,6 +101,8 @@ import { db, firestore, functions } from "~/plugins/firebase.js";
 import { releaseConfig } from "~/plugins/config.js";
 import { stripeConnect, stripeDisconnect } from "~/plugins/stripe.js";
 import { ownPlateConfig } from "~/config/project";
+import * as Cookie from "cookie";
+
 export default {
   data() {
     return {
@@ -113,22 +113,25 @@ export default {
   },
   async mounted() {
     const code = this.$route.query.code;
-    console.log("mounted", code);
     if (code) {
-      this.$store.commit("setLoading", true);
-      try {
-        const { data } = await stripeConnect({ code });
-        console.log(data);
-        // TODO: show connected view
-      } catch (error) {
-        console.error(error);
-        this.$store.commit("setErrorMessage", {
-          code: "stripe.connect",
-          error
-        });
-      } finally {
-        this.$store.commit("setLoading", false);
-        this.$router.replace(location.pathname);
+      const state = this.$route.query.state;
+      const cookies = Cookie.parse(document.cookie);
+      console.log("mounted", code, state, cookies.stripe_state);
+      if (state === cookies?.stripe_state) {
+        this.$store.commit("setLoading", true);
+        try {
+          const { data } = await stripeConnect({ code });
+          console.log(data);
+        } catch (error) {
+          console.error(error);
+          this.$store.commit("setErrorMessage", {
+            code: "stripe.connect",
+            error
+          });
+        } finally {
+          this.$store.commit("setLoading", false);
+          this.$router.replace(location.pathname);
+        }
       }
     }
 
@@ -179,19 +182,7 @@ export default {
     redirectURI() {
       return `${location.protocol}//${location.host}${location.pathname}`;
     },
-    stripeLink() {
-      const params = {
-        response_type: "code",
-        scope: "read_write",
-        client_id: process.env.STRIPE_CLIENT_ID,
-        redirect_uri: encodeURI(this.redirectURI)
-      };
-      const queryString = Object.keys(params)
-        .map(key => `${key}=${params[key]}`)
-        .join("&");
 
-      return `https://connect.stripe.com/oauth/authorize?${queryString}`;
-    },
     hasStripe() {
       return !!this.paymentInfo.stripe;
     },
@@ -202,6 +193,28 @@ export default {
     }
   },
   methods: {
+    handleLinkStripe() {
+      const params = {
+        response_type: "code",
+        scope: "read_write",
+        client_id: process.env.STRIPE_CLIENT_ID,
+        state: "s" + Math.random(),
+        redirect_uri: encodeURI(this.redirectURI)
+      };
+      const queryString = Object.keys(params)
+        .map(key => `${key}=${params[key]}`)
+        .join("&");
+
+      const date = new Date();
+      date.setTime(date.getTime() + 5 * 60 * 1000); // five minutes
+      const cookie = `stripe_state=${
+        params.state
+      }; expires=${date.toUTCString()}; path=/`;
+      console.log(cookie);
+      document.cookie = cookie;
+
+      location.href = `https://connect.stripe.com/oauth/authorize?${queryString}`;
+    },
     async handlePaymentAccountDisconnect() {
       this.$store.commit("setAlert", {
         code: "admin.payments.reallyDisconnectStripe",
