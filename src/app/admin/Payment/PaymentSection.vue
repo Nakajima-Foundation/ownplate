@@ -180,9 +180,17 @@ export default {
       return `${location.protocol}//${location.host}${location.pathname}`;
     },
     stripeLink() {
-      return `https://connect.stripe.com/oauth/authorize?response_type=code&client_id=${
-        process.env.STRIPE_CLIENT_ID
-      }&scope=read_write&redirect_uri=${encodeURI(this.redirectURI)}`;
+      const params = {
+        response_type: "code",
+        scope: "read_write",
+        client_id: process.env.STRIPE_CLIENT_ID,
+        redirect_uri: encodeURI(this.redirectURI)
+      };
+      const queryString = Object.keys(params)
+        .map(key => `${key}=${params[key]}`)
+        .join("&");
+
+      return `https://connect.stripe.com/oauth/authorize?${queryString}`;
     },
     hasStripe() {
       return !!this.paymentInfo.stripe;
