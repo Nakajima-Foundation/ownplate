@@ -23,7 +23,7 @@
             </div>
             <!-- Notification Settings -->
             <div class="level-right">
-              <notification-index :shopInfo="restaurant"/>
+              <notification-index :shopInfo="restaurant" />
             </div>
           </div>
         </div>

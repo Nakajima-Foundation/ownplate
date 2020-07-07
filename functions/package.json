@@ -11,10 +11,11 @@
     "deploy_cr": "firebase deploy --only functions:createRestaurant",
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log",
-    "tests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/*_test.ts"
+    "tests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/*_test.ts",
+    "mailtests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/ses_test.ts"
   },
   "engines": {
-    "node": "8"
+    "node": "10"
   },
   "main": "lib/index.js",
   "dependencies": {
@@ -28,6 +29,7 @@
     "i18next": "^19.4.4",
     "moment": "^2.26.0",
     "moment-timezone": "^0.5.31",
+    "nodemailer": "^6.4.10",
     "sharp": "^0.25.3",
     "sitemap": "^6.1.5",
     "stripe": "^8.39.1",

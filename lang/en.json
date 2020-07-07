@@ -40,6 +40,7 @@
     "admins": "Restaurant Owners",
     "adminManual": "Manual for Owners",
     "adminSupport": "Support for Owners",
+    "adminUserGroup": "User Group for Owners",
     "users": "Food Lovers",
     "userManual": "Manual for Food Lovers",
     "userSupport": "Support for Food Lovers",
@@ -160,7 +161,7 @@
     "itemDescription": "Item description",
     "itemPhoto": "Item photo",
     "itemOptions": "Item options",
-    "itemOptionsNote": "For altenatives, use comma to separate them (e.g., \"Chicken, Pork, Tofu\")",
+    "itemOptionsNote": "For altenatives, use comma to separate them (e.g., \"Chicken, Pork, Tofu\"). You may add a price to an option with (+N), where N is the price.",
     "itemAddOption": "Add Option",
     "itemInvalidMessage": "This item is not on your menu because data is invalid.",
     "saveAsDraft": "Save as draft. This item is not on your menus.",
@@ -203,7 +204,8 @@
     "public": "Public",
     "paymentMethod": "Payment Method",
     "onlinePayment": "Online Payment",
-    "onsitePayment": "On Site Payment"
+    "onsitePayment": "On Site Payment",
+    "noPaymentMethod": "Not accepting orders online"
   },
   "transactionsAct": {
     "title": "Specified Commercial Transaction Act",
@@ -330,6 +332,7 @@
     "welcomeMessage": "Welcome to OwnPlate",
     "userManual": "User Manual",
     "suportPage": "Support",
+    "facebookUserGroup": "User Group",
     "news": {
       "title": "News",
       "newsTop": "News Top",
@@ -354,13 +357,14 @@
     "confirmPasswordPlaceHolder": "Enter same password here",
     "enterName": "Enter name here",
     "restaurant": "Restaurant",
-    "payment": "Payment",
+    "payment": "Payment Method",
     "yourRestaurants": "Your Restaurant(s)",
     "noRestaurant": "No restaurant",
     "addYourRestaurant": "Please add your restaurant",
     "addNewRestaurant": "Add New Restaurant",
     "noPaymentAccount": "No Payment account",
     "payments": {
+      "unsetWarning": "You will need to set up a payment method in order to accept orders.",
       "onlinePayment": "Online Payment",
       "statusNotConnected": "Not Connected",
       "statusConnected": "Connected",
@@ -371,6 +375,7 @@
       "openDashboard": "Open Stripe Dashboard",
       "onsitePayment": "On-site Payment",
       "pleaseCheck": "Please enable the checkbox below to allow on-site payment.",
+      "onsitePaymentNote": "Please be aware of uncollected payments due to sudden cancellations or mischief.",
       "enableOnsitePayment": "Allow On-site Payment"
     },
     "viewPage": "View Page",
@@ -409,7 +414,8 @@
       "line": "LINE Notification",
       "lineAdd": "Add a LINE account",
       "lineUsers": "Connected LINE Accounts",
-      "lineDelete": "Do you really want to delete this account？"
+      "lineDelete": "Do you really want to delete this account？",
+      "lineSafariPrivate": "Note: If you are using Safari's Private Browsing Mode, you will not be able to connect to LINE."
     },
     "sound": {
       "default": "Default",

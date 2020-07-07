@@ -412,7 +412,8 @@ export default {
             item: this.menuObj[key],
             count: num,
             id: key,
-            specialRequest: this.specialRequest(key)
+            options:
+              (this.orderInfo.options && this.orderInfo.options[key]) || []
           };
         });
       }
@@ -502,13 +503,6 @@ export default {
       console.log("handleDismissed", params);
       // The user has dismissed the login dialog (including the successful login)
       this.loginVisible = false;
-    },
-    specialRequest(key) {
-      const option = this.orderInfo.options && this.orderInfo.options[key];
-      if (option) {
-        return option.filter(choice => choice).join(", ");
-      }
-      return "";
     },
     async handleEditItems() {
       try {
