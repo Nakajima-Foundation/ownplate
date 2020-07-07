@@ -2,6 +2,14 @@
   <section class="section">
     <back-button url="/s" />
     <h2>Profiles</h2>
+    <b-input v-model="prefix" placeholder="email prefix"></b-input>
+    <b-button @click="handleSearch">Search</b-button>
+    <table>
+      <tr v-for="profile in profiles" :key="profile.uid">
+        <td>{{profile.email}}</td>
+        <td>{{profile.uid}}</td>
+      </tr>
+    </table>
   </section>
 </template>
 
@@ -15,23 +23,26 @@ export default {
   },
   data() {
     return {
-      prefix: "u",
-      detacher: null
+      prefix: "",
+      profiles: []
     };
   },
-  mounted() {
-    this.detatcher = db
-      .collectionGroup("private")
-      .limit(100)
-      .where("email", ">=", this.prefix)
-      .where("email", "<=", this.prefix + "\uf8ff")
-      .onSnapshot(snapshot => {
-        const docs = snapshot.docs.map(doc => doc.data());
-        console.log(docs);
-      });
-  },
-  destroyed() {
-    this.detacher && this.detacher();
+  methods: {
+    handleSearch() {
+      this.detatcher = db
+        .collectionGroup("private")
+        .limit(100)
+        .where("email", ">=", this.prefix)
+        .where("email", "<=", this.prefix + "\uf8ff")
+        .onSnapshot(snapshot => {
+          this.profiles = snapshot.docs.map(doc => {
+            const data = doc.data();
+            data.uid = doc.ref.parent.parent.id;
+            return data;
+          });
+          console.log(this.profiles);
+        });
+    }
   }
 };
 </script>
