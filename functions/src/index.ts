@@ -15,6 +15,7 @@ if (!admin.apps.length) {
 exportIfNeeded("api", "api", exports);
 
 exportIfNeeded("systemGetConfig", "systemGetConfig", exports);
+exportIfNeeded("superDispatch", "superDispatch", exports);
 exportIfNeeded("accountDelete", "accountDelete", exports);
 
 exportIfNeeded("lineVerifyFriend", "line/lineVerifyFriend", exports);
