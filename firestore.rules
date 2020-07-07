@@ -76,6 +76,9 @@ service cloud.firestore {
     match /{path=**}/stripeLogs/{logId} {
       allow read: if isSuper(request);
     }
+    match /{path=**}/private/{documentId} {
+      allow read: if isSuper(request);
+    }
 
     match /restaurants {
       match /{restaurantId} {
