@@ -32,8 +32,12 @@ export default {
           this.watchingMessage = true;
         },
         error => {
-          // We can ignore this error here
-          console.error(error.message);
+          if (error.code === "permission-denied") {
+            // We can ignore this type of error here
+            console.warn("Ignoring", error.code);
+          } else {
+            throw error;
+          }
         }
       );
   },
