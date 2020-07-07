@@ -7,7 +7,9 @@
     <table>
       <tr v-for="profile in profiles" :key="profile.uid">
         <td>{{profile.email}}</td>
-        <td>{{profile.uid}}</td>
+        <td>
+          <nuxt-link :to="`/s/admins/${profile.uid}`">{{profile.uid}}</nuxt-link>
+        </td>
       </tr>
     </table>
   </section>
