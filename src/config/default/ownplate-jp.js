@@ -10,7 +10,7 @@ export const firebaseConfig = {
 };
 
 export const ownPlateConfig = {
-  siteName: "おもちかえり.com",
+  siteName: "おもちかえり.com / 無料で使えるテイクアウト支援サービス",
   siteDescription: "レストランに優しいテイクアウト・サービス",
   releasName: "beta",
   region: "JP",

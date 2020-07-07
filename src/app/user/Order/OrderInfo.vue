@@ -2,12 +2,7 @@
   <div class="bg-surface r-8 d-low m-t-8 p-b-24">
     <!-- Order Items -->
     <template v-for="orderItem in orderItems">
-      <order-item
-        :item="orderItem.item"
-        :count="orderItem.count"
-        :specialRequest="orderItem.specialRequest"
-        :key="orderItem.key"
-      ></order-item>
+      <order-item :orderItem="orderItem" :key="orderItem.key"></order-item>
     </template>
 
     <hr class="devider m-t-16 m-b-0 m-l-16 m-r-16" />

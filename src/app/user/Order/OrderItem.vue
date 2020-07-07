@@ -11,7 +11,7 @@
         >{{ specialRequest }}</div>
       </div>
       <div class="align-righ">
-        <span class="t-body1 c-text-black-high">{{ $n(item.price * count, 'currency') }}</span>
+        <span class="t-body1 c-text-black-high">{{ $n(totalPrice, 'currency') }}</span>
       </div>
     </div>
   </div>
@@ -20,19 +20,13 @@
 <script>
 import store from "~/store/index.js";
 import { mapGetters, mapMutations } from "vuex";
+import { formatOption, optionPrice } from "~/plugins/strings.js";
+
 export default {
   props: {
-    item: {
+    orderItem: {
       type: Object,
       required: true
-    },
-    count: {
-      type: Number,
-      required: true
-    },
-    specialRequest: {
-      type: String,
-      required: false
     }
   },
   data() {
@@ -41,6 +35,33 @@ export default {
       openMenuFlag: false
     };
   },
-  methods: {}
+  computed: {
+    item() {
+      return this.orderItem.item;
+    },
+    count() {
+      return this.orderItem.count;
+    },
+    specialRequest() {
+      return this.orderItem.options
+        .filter(choice => choice)
+        .map(choice => this.displayOption(choice))
+        .join(", ");
+    },
+    totalPrice() {
+      let price = this.item.price;
+      const m = this.$store.getters.stripeRegion.multiple;
+      this.orderItem.options.forEach(option => {
+        const p = Math.round(optionPrice(option) * m) / m;
+        price += p;
+      });
+      return price * this.count;
+    }
+  },
+  methods: {
+    displayOption(option) {
+      return formatOption(option, price => this.$n(price, "currency"));
+    }
+  }
 };
 </script>

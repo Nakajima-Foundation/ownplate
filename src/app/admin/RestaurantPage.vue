@@ -240,7 +240,10 @@
                 {{ $t("editRestaurant.profilePhoto") }}
                 <span class="c-status-red">*</span>
               </div>
-              <div class="cols">
+              <div
+                class="cols"
+                v-bind:class="{ 'no-photo': errors['restProfilePhoto'].length !== 0 }"
+              >
                 <!-- Current Photo -->
                 <div v-if="restProfilePhoto" class="p-r-16">
                   <div>
@@ -248,7 +251,6 @@
                   </div>
                   <div class="align-center t-caption">{{ $t("editCommon.current") }}</div>
                 </div>
-
                 <!-- New Photo -->
                 <div class="flex-1">
                   <croppa
@@ -924,6 +926,15 @@ export default {
         });
       });
       err["phoneNumber"] = this.errorsPhone;
+
+      // image
+      err["restProfilePhoto"] = [];
+      if (
+        this.isNull(this.files["profile"]) &&
+        this.isNull(this.shopInfo.restProfilePhoto)
+      ) {
+        err["restProfilePhoto"].push("validationError.restProfilePhoto.empty");
+      }
       // todo more validate
       return err;
     },
@@ -956,10 +967,14 @@ export default {
       );
     },
     handleProfileImage(e) {
-      this.files["profile"] = e;
+      const newFile = Object.assign({}, this.files);
+      newFile["profile"] = e;
+      this.files = newFile;
     },
     handleCoverImage(e) {
-      this.files["cover"] = e;
+      const newFile = Object.assign({}, this.files);
+      newFile["cover"] = e;
+      this.files = newFile;
     },
     handlePhoneChange(payload) {
       //console.log(payload)
@@ -1115,3 +1130,11 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+.no-photo {
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ca513e;
+}
+</style>

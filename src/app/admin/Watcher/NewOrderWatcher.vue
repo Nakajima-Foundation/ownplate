@@ -1,5 +1,4 @@
-<template>
-</template>
+<template></template>
 
 <script>
 import { db, firestore } from "~/plugins/firebase.js";
@@ -8,20 +7,25 @@ import { order_status } from "~/plugins/constant.js";
 
 export default {
   props: {
-    notificationConfig: Object,
+    notificationConfig: Object
   },
   data() {
     return {
       order_detacher: () => {},
       orders: [],
       intervalTask: {},
-      intervalTime: 60, // (seconds)
-    }
+      intervalTime: 60 // (seconds)
+    };
   },
   async created() {
     this.dateWasUpdated();
     this.intervalTask = setInterval(() => {
-      console.log("newOrderWatcher: conf=" + this.notificationConfig.infinityNotification + " order=" + this.hasNewOrder);
+      console.log(
+        "newOrderWatcher: conf=" +
+          this.notificationConfig.infinityNotification +
+          " order=" +
+          this.hasNewOrder
+      );
       if (this.notificationConfig.infinityNotification && this.hasNewOrder) {
         this.soundPlay("NewOrderWatcher: play");
       }
@@ -54,12 +58,22 @@ export default {
         .collection(`restaurants/${this.restaurantId()}/orders`)
         .where("timePlaced", ">=", this.today)
         // .where("timePlaced", "<", this.tommorow)
-        .where("status", "==", order_status.order_placed).onSnapshot(result => {
-          this.orders = result.docs.map(this.doc2data("order"));
-          this.$store.commit("setOrders", this.orders);
-        });
-    },
+        .where("status", "==", order_status.order_placed)
+        .onSnapshot(
+          result => {
+            this.orders = result.docs.map(this.doc2data("order"));
+            this.$store.commit("setOrders", this.orders);
+          },
+          error => {
+            if (error.code === "permission-denied") {
+              // We can ignore this type of error here
+              console.warn("Ignoring", error.code);
+            } else {
+              throw error;
+            }
+          }
+        );
+    }
   }
-}
-
+};
 </script>

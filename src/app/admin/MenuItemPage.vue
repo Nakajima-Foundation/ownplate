@@ -373,15 +373,13 @@
 <script>
 import Vue from "vue";
 import { db, storage } from "~/plugins/firebase.js";
-
 import NotFound from "~/components/NotFound";
 import BackButton from "~/components/BackButton";
 import Price from "~/components/Price";
 import { taxRates } from "~/plugins/constant.js";
-
 import NotificationIndex from "./Notifications/Index";
-
 import { ownPlateConfig } from "@/config/project";
+import { halfCharactors } from "~/plugins/strings.js";
 
 export default {
   name: "Order",
@@ -519,9 +517,10 @@ export default {
         }
         const itemData = {
           itemName: this.menuInfo.itemName,
-          price: (ownPlateConfig.region === 'JP') ?
-            Math.round(Number(this.menuInfo.price)) :
-            Number(this.menuInfo.price),
+          price:
+            ownPlateConfig.region === "JP"
+              ? Math.round(Number(this.menuInfo.price))
+              : Number(this.menuInfo.price),
           tax: this.menuInfo.tax,
           itemDescription: this.menuInfo.itemDescription,
           itemPhoto: this.menuInfo.itemPhoto,
@@ -533,6 +532,15 @@ export default {
           allergens: this.menuInfo.allergens,
           validatedFlag: !this.hasError
         };
+
+        // Convert double-width characters with half-width characters in options
+        // We also convert Japanse commas with alphabet commas
+        itemData.itemOptionCheckbox = itemData.itemOptionCheckbox.map(
+          option => {
+            return halfCharactors(option.replace(/、/g, s => ","));
+          }
+        );
+
         const newData = await db
           .doc(`restaurants/${this.restaurantId()}/menus/${this.menuId}`)
           .update(itemData);

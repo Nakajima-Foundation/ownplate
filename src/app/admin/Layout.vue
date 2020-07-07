@@ -7,7 +7,6 @@
       @close="closeNotificationSettings"
       v-if="NotificationSettingsPopup"
     />
-
     <router-view></router-view>
     <notification-watcher />
     <sound-config-watcher :notificationConfig="notificationConfig" />
@@ -57,23 +56,33 @@ export default {
   async created() {
     this.notification_detacher = db
       .doc(`restaurants/${this.restaurantId()}/private/notifications`)
-      .onSnapshot(notification => {
-        console.log("onSnapshot");
-        if (notification.exists) {
-          this.notificationConfig = Object.assign(
-            this.notificationConfig,
-            notification.data()
-          );
+      .onSnapshot(
+        notification => {
+          console.log("onSnapshot");
+          if (notification.exists) {
+            this.notificationConfig = Object.assign(
+              this.notificationConfig,
+              notification.data()
+            );
+          }
+          if (this.justCreated && this.requestTouch) {
+            console.log("*** show Sound Test");
+            this.NotificationSettingsPopup = true;
+          }
+          this.justCreated = false;
+        },
+        error => {
+          if (error.code === "permission-denied") {
+            // We can ignore this type of error here
+            console.warn("Ignoring", error.code);
+          } else {
+            throw error;
+          }
         }
-        if (this.justCreated && this.requestTouch) {
-          console.log("*** show Sound Test");
-          this.NotificationSettingsPopup = true;
-        }
-        this.justCreated = false;
-      });
+      );
   },
   destroyed() {
-    this.notification_detacher();
+    this.notification_detacher && this.notification_detacher();
   },
   methods: {
     closeNotificationSettings() {
