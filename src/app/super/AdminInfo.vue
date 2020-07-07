@@ -11,7 +11,7 @@
 
 <script>
 import BackButton from "~/components/BackButton";
-import { db } from "~/plugins/firebase.js";
+import { db, functions } from "~/plugins/firebase.js";
 import Restaurant from "~/app/super/Components/Restaurant";
 export default {
   components: {
@@ -23,7 +23,14 @@ export default {
       restaurants: []
     };
   },
+  computed: {
+    superDispatch() {
+      return functions.httpsCallable("superDispatch");
+    }
+  },
   async mounted() {
+    const { data } = await this.superDispatch();
+    console.log("***", data);
     const snapshot = await db
       .collection("/restaurants/")
       .where("uid", "==", this.$route.params.adminId)
