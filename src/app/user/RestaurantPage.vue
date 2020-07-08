@@ -299,6 +299,10 @@ export default {
     },
     menuId() {
       return this.$route.params.menuId;
+    },
+    noPaymentMethod() {
+      // MEMO: ignore hidePayment. No longer used
+      return !this.paymentInfo.stripe && !this.paymentInfo.inStore;
     }
   },
   methods: {
