@@ -3,6 +3,15 @@
     "ownPlate": "OwnPlate",
     "omochikaeri": "おもちかえり.com"
   },
+  "pageTitle": {
+    "restaurantRoot": "List of shops that can take away",
+    "restaurantArea": "List of shops that can take away in {area}",
+    "terms": {
+      "admmin": "Terms and conditions for restaurant owner",
+      "user": "Terms and conditions for Customer",
+      "privacy": "Privacy policy"
+    }
+  },
   "greeting": "Hello World2",
   "underConstruction": "WARNING: This is a staging server for development.",
   "comma": ", ",

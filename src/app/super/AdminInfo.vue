@@ -1,7 +1,8 @@
 <template>
   <section class="section">
     <back-button url="/s/admins" />
-    <h2>Restaurants</h2>
+    <h1>Admin Info</h1>
+    <h4>Restaurants</h4>
     <div v-for="restaurant in restaurants" :key="restaurant.id">
       <restaurant :restaurant="restaurant"></restaurant>
     </div>

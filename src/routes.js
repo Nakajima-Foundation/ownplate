@@ -153,6 +153,10 @@ export const customRoutes = [
     component: "super/AllAdmins.vue"
   },
   {
+    path: "/s/profiles",
+    component: "super/Profiles.vue"
+  },
+  {
     path: "/s/admins/:adminId",
     component: "super/AdminInfo.vue"
   },
