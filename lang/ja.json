@@ -3,6 +3,15 @@
     "ownPlate": "OwnPlate",
     "omochikaeri": "おもちかえり.com"
   },
+  "pageTitle": {
+    "restaurantRoot": "全国のテイクアウトできるお店一覧",
+    "restaurantArea": "{area}のテイクアウトできるお店特集",
+    "terms": {
+      "admmin": "サービス利用規約（加盟店）",
+      "user": "サービス利用規約（ユーザー）",
+      "privacy": "プライバシーポリシー"
+    }
+  },
   "greeting": "こんにちは、世界",
   "underConstruction": "注意：これはテスト用のサーバーです。",
   "comma": "、",
