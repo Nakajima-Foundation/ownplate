@@ -264,7 +264,7 @@
 
             <!-- (After Paid) Restaurant Details -->
             <div v-if="paid">
-              <shop-info :compact="true" :shopInfo="shopInfo" />
+              <shop-info :compact="true" :shopInfo="shopInfo" :paymentInfo="paymentInfo" />
               <!-- <div class="align-center m-t-24">
                 <b-button class="b-reset op-button-small bg-status-blue" @click="handleOpenMenu">
                   <span class="c-text-white-full">

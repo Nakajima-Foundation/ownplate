@@ -145,12 +145,11 @@ export default {
     shopInfo: {
       type: Object,
       required: true
-    }
-  },
-  async created() {
-    const uid = this.shopInfo.uid;
-    const snapshot = await db.doc(`/admins/${uid}/public/payment`).get();
-    this.paymentInfo = snapshot.data() || {};
+    },
+    paymentInfo: {
+      type: Object,
+      required: true
+   },
   },
   data() {
     const d = new Date();
@@ -159,7 +158,6 @@ export default {
       days: daysOfWeek,
       weekday: d.getDay(),
       today: d,
-      paymentInfo: {},
     };
   },
   computed: {
