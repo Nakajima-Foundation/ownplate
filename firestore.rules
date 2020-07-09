@@ -44,7 +44,8 @@ service cloud.firestore {
     }
 
     match /admins/{userId} {
-      allow read, write: if request.auth.uid == userId;
+      // Note: We don't want to let the user update this directly
+      allow read: if request.auth.uid == userId;
       allow read: if isSuper(request);
       match /public/{document=**} {
         allow read: if true;
