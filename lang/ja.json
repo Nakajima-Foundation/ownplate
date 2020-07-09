@@ -389,7 +389,8 @@
     },
     "viewPage": "ページを確認",
     "incompleteOrders": "{count} 個の未完了の注文",
-    "editMenuItems": "メニューの変更（{count}）",
+    "editMenuItems": "メニューの変更： {count}",
+    "pleaseAddMenu": "メニューを追加してください",
     "editAbout": "店情報の変更",
     "directory": {
       "status": "お客様向け飲食店一覧への掲載状況",
@@ -400,7 +401,7 @@
       "listed": "掲載済み",
       "unlist": "掲載を取り消す"
     },
-    "delete": "削除",
+    "delete": "この飲食店を削除",
     "shareRestaurant": "シェア",
     "pleaseSignUp": "新規ユーザー登録",
     "forgotPassword": "パスワードを忘れた場合",
