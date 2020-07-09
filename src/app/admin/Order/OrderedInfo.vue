@@ -41,6 +41,12 @@
           <div>
             <i v-if="hasStripe" :class="'fab fa-cc-stripe stripe_'+order.payment.stripe"></i>
           </div>
+
+          <!-- Tip -->
+          <template v-if="order.tip">
+            <div class="t-body2 c-text-black-medium m-r-8 m-l-8">{{$t('order.tipShort')}}</div>
+            <div class="t-body2 c-text-black-high m-r-8">{{ $n(order.tip, 'currency') }}</div>
+          </template>
         </div>
       </div>
 
