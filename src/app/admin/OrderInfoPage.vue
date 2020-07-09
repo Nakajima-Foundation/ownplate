@@ -68,6 +68,12 @@
                       <div v-else class="t-body1 c-textl-black-high is-inline-flex flex-center">
                         <div>{{$n(orderInfo.totalCharge, 'currency')}}</div>
                       </div>
+                      <div v-if="orderInfo.tip">
+                        <div class="t-caption c-text-black-medium">{{$t('order.tipShort')}}</div>
+                        <div
+                          class="t-body1 c-textl-black-high is-inline-flex flex-center"
+                        >{{$n(orderInfo.tip, 'currency')}}</div>
+                      </div>
                     </div>
                   </div>
                 </div>
