@@ -45,6 +45,18 @@ export const deleteAccount = async (db: FirebaseFirestore.Firestore, data: any, 
 }
 
 export const register = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
-  //const uid = utils.validate_auth(context);
-  return { result: true }
+  const uid = utils.validate_auth(context);
+  if (!context.auth?.token.email) {
+    throw new functions.https.HttpsError('permission-denied', 'This is not a restaurant operator.')
+  }
+  const { name } = data;
+  try {
+    await db.doc(`admins/${uid}`).set({
+      name: name,
+      created: admin.firestore.Timestamp.now()
+    });
+    return { result: true }
+  } catch (error) {
+    throw utils.process_error(error)
+  }
 }

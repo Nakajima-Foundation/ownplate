@@ -130,7 +130,7 @@
 
 <script>
 import isEmail from "validator/lib/isEmail";
-import { db, auth, firestore } from "~/plugins/firebase.js";
+import { db, auth, firestore, functions } from "~/plugins/firebase.js";
 
 export default {
   name: "Signup",
@@ -181,10 +181,11 @@ export default {
           this.password
         );
         console.log("signup success", result.user.uid, this.name);
-        await db.doc(`admins/${result.user.uid}`).set({
-          name: this.name,
-          created: firestore.FieldValue.serverTimestamp()
+        const accountRegister = functions.httpsCallable("accountRegister");
+        const { data } = await accountRegister({
+          name: this.name
         });
+        console.log("accountRegister", data);
         await db.doc(`admins/${result.user.uid}/private/profile`).set({
           email: result.user.email,
           updated: firestore.FieldValue.serverTimestamp()
