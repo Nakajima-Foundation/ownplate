@@ -416,6 +416,9 @@ export default {
       return "";
     },
     async handleComplete() {
+      if (this.orderInfo.status === order_status.customer_picked_up) {
+        return; // no need to call the server
+      }
       if (this.hasStripe) {
         const orderId = this.$route.params.orderId;
         //console.log("handleComplete with Stripe", orderId);
