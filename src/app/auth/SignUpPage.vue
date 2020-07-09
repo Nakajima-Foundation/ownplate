@@ -183,6 +183,7 @@ export default {
         console.log("signup success", result.user.uid, this.name);
         await db.doc(`admins/${result.user.uid}`).set({
           name: this.name,
+          admin: false,
           created: firestore.FieldValue.serverTimestamp()
         });
         await db.doc(`admins/${result.user.uid}/private/profile`).set({
@@ -197,7 +198,7 @@ export default {
           this.deferredPush = true;
         }
       } catch (error) {
-        console.log("onSignup failed", error.code, error.message);
+        console.warn("onSignup failed", error.code, error.message);
         if (error.code === "auth/email-already-in-use") {
           this.emailTaken = email;
         } else {
