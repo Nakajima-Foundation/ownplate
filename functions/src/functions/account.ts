@@ -43,8 +43,3 @@ export const deleteAccount = async (db: FirebaseFirestore.Firestore, data: any, 
     throw utils.process_error(error)
   }
 }
-
-export const register = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
-  //const uid = utils.validate_auth(context);
-  return { result: true }
-}

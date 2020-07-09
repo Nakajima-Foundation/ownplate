@@ -17,7 +17,6 @@ exportIfNeeded("api", "api", exports);
 exportIfNeeded("systemGetConfig", "systemGetConfig", exports);
 exportIfNeeded("superDispatch", "superDispatch", exports);
 exportIfNeeded("accountDelete", "accountDelete", exports);
-exportIfNeeded("accountRegister", "accountRegister", exports);
 
 exportIfNeeded("lineVerifyFriend", "line/lineVerifyFriend", exports);
 exportIfNeeded("lineValidate", "lineValidate", exports);
