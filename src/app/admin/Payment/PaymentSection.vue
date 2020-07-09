@@ -162,6 +162,9 @@ export default {
           inStore: newValue
         });
       }
+    },
+    unsetWarning(newValue) {
+      this.$emit("updateUnsetWarning", newValue)
     }
   },
   computed: {
@@ -178,9 +181,12 @@ export default {
       return !!this.paymentInfo.stripe;
     },
     cardStyle() {
-      return !this.inStorePayment && !this.hasStripe
+      return this.unsetWarning
         ? { border: "solid 2px #b00020" }
         : {};
+    },
+    unsetWarning() {
+      return !this.inStorePayment && !this.hasStripe;
     }
   },
   methods: {
