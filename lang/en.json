@@ -256,6 +256,7 @@
     "revenue": "revenue",
     "date": "date",
     "tipShort": "tip",
+    "includingTip": "including tip",
     "subtotal": "Subtotal",
     "salesTax": "Sales Tax",
     "foodTax": "Food Tax",
