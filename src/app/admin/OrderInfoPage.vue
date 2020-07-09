@@ -49,7 +49,7 @@
               <!-- Order Overview -->
               <div>
                 <div class="align-center">
-                  <div class="is-inline-flex">
+                  <div class="is-inline-flex flex-center">
                     <!-- Order ID -->
                     <div class="t-h4 c-text-black-high">{{orderName}}</div>
 
@@ -68,12 +68,12 @@
                       <div v-else class="t-body1 c-textl-black-high is-inline-flex flex-center">
                         <div>{{$n(orderInfo.totalCharge, 'currency')}}</div>
                       </div>
-                      <div v-if="orderInfo.tip">
-                        <div class="t-caption c-text-black-medium">{{$t('order.tipShort')}}</div>
-                        <div
-                          class="t-body1 c-textl-black-high is-inline-flex flex-center"
-                        >{{$n(orderInfo.tip, 'currency')}}</div>
-                      </div>
+
+                      <!-- Tip -->
+                      <div
+                        v-if="orderInfo.tip"
+                        class="t-caption c-status-green"
+                      >( {{$t('order.includingTip')}} {{$n(orderInfo.tip, 'currency')}} )</div>
                     </div>
                   </div>
                 </div>
