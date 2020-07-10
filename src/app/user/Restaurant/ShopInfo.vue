@@ -165,7 +165,7 @@ export default {
     paymentInfo: {
       type: Object,
       required: true
-   },
+    },
   },
   async created() {
     const uid = this.shopInfo.uid;
