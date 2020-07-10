@@ -171,7 +171,6 @@ export default {
     const uid = this.shopInfo.uid;
     const snapshot = await db.doc(`/admins/${uid}/public/payment`).get();
     this.paymentInfo = snapshot.data() || {};
-    console.log(this.minimumAvailableTime);
 
     const time = this.availableDays[0].times[0].display;
     const date = this.availableDays[0].date;
