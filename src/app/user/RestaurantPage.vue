@@ -140,12 +140,7 @@ import { order_status } from "~/plugins/constant.js";
 
 import { defaultHeader } from "../../plugins/header";
 
-import PickupMixin from "./Order/pickupMixin";
-
-import moment from "moment";
-
 export default {
-  mixins: [PickupMixin],
   name: "ShopMenu",
 
   components: {
@@ -179,7 +174,7 @@ export default {
       waitForUser: false,
 
       detacher: [],
-      notFound: null
+      notFound: null,
     };
   },
   mounted() {
@@ -213,12 +208,6 @@ export default {
         } else {
           this.notFound = true;
         }
-        const time = this.availableDays[0].times[0].display;
-        const date = this.availableDays[0].date;
-        console.log(time);
-        date.setHours(time / 60);
-        date.setMinutes(time % 60);
-        console.log(moment(date).format("YYYY-MM-DD"));
       });
     const menu_detacher = db
       .collection(`restaurants/${this.restaurantId()}/menus`)
