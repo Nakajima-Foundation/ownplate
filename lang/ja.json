@@ -214,7 +214,8 @@
     "paymentMethod": "支払い方法",
     "onlinePayment": "オンライン決済",
     "onsitePayment": "受け取り払い",
-    "noPaymentMethod": "オンライン注文未対応"
+    "noPaymentMethod": "オンライン注文未対応",
+    "minimumAvailableTime": "最短受付可能時間"
   },
   "transactionsAct": {
     "title": "特定商取引法に基づく表記",
