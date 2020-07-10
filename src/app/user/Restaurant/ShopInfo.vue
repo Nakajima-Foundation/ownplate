@@ -165,20 +165,13 @@ export default {
       required: true
     },
   },
-  async created() {
-    const time = this.availableDays[0].times[0].display;
-    const date = this.availableDays[0].date;
-    moment.locale(this.$i18n.locale);
-    this.minimumAvailableTime = [moment(date).format("MM/DD (ddd)"), time].join(" ");
-  },
   data() {
     const d = new Date();
     return {
       url: this.shareUrl(),
       days: daysOfWeek,
       weekday: d.getDay(),
-      today: d,
-      minimumAvailableTime: "",
+      today: d
     };
   },
   computed: {
@@ -248,7 +241,13 @@ export default {
     },
     inStorePayment() {
       return this.paymentInfo.inStore;
-    }
+    },
+    minimumAvailableTime() {
+      const time = this.availableDays[0].times[0].display;
+      const date = this.availableDays[0].date;
+      moment.locale(this.$i18n.locale);
+      return [moment(date).format("MM/DD (ddd)"), time].join(" ");
+    },
   },
   mounted() {
     this.updateMap();
