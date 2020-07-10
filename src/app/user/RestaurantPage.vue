@@ -56,7 +56,7 @@
               <share-popup :shopInfo="shopInfo" class="align-center m-t-8"></share-popup>
 
               <!-- Restaurant Info -->
-              <shop-info :shopInfo="shopInfo"></shop-info>
+              <shop-info :shopInfo="shopInfo" :paymentInfo="paymentInfo"></shop-info>
             </div>
           </div>
 
@@ -175,6 +175,8 @@ export default {
 
       detacher: [],
       notFound: null,
+
+      paymentInfo: {},
     };
   },
   mounted() {
@@ -196,7 +198,7 @@ export default {
   created() {
     const restaurant_detacher = db
       .doc(`restaurants/${this.restaurantId()}`)
-      .onSnapshot(restaurant => {
+      .onSnapshot(async restaurant => {
         const restaurant_data = restaurant.data();
         this.shopInfo = restaurant_data || {};
         if (
@@ -208,6 +210,12 @@ export default {
         } else {
           this.notFound = true;
         }
+        const shopUid = this.shopInfo.uid;
+        const snapshot = await db
+              .doc(`/admins/${shopUid}/public/payment`)
+              .get();
+        this.paymentInfo = snapshot.data() || {};
+
       });
     const menu_detacher = db
       .collection(`restaurants/${this.restaurantId()}/menus`)
@@ -291,6 +299,10 @@ export default {
     },
     menuId() {
       return this.$route.params.menuId;
+    },
+    noPaymentMethod() {
+      // MEMO: ignore hidePayment. No longer used
+      return !this.paymentInfo.stripe && !this.paymentInfo.inStore;
     }
   },
   methods: {

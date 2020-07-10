@@ -47,18 +47,34 @@
 
       <!-- Edit Menu -->
       <div class="align-center m-t-24">
-        <b-button
-          tag="nuxt-link"
-          :to="'/admin/restaurants/' + restaurantid + '/menus'"
-          style="min-width: 256px;"
-          class="op-button-small secondary"
-        >
-          <span class="c-primary p-l-24 p-r-24">
-            {{
-            $t("admin.editMenuItems", { count: numberOfMenus })
-            }}
-          </span>
-        </b-button>
+        <!-- Menu Not Existing -->
+        <div v-if="numberOfMenus == 0">
+          <b-button
+            tag="nuxt-link"
+            :to="'/admin/restaurants/' + restaurantid + '/menus'"
+            style="min-width: 256px; border-color: #b00020;"
+            class="op-button-small secondary"
+          >
+            <span
+              class="c-status-red p-l-24 p-r-24"
+            >{{ $t("admin.editMenuItems", { count: numberOfMenus }) }}</span>
+          </b-button>
+          <div class="t-body2 c-status-red m-t-4">{{ $t("admin.pleaseAddMenu") }}</div>
+        </div>
+
+        <!-- Menu Existing -->
+        <div v-else>
+          <b-button
+            tag="nuxt-link"
+            :to="'/admin/restaurants/' + restaurantid + '/menus'"
+            style="min-width: 256px;"
+            class="op-button-small secondary"
+          >
+            <span
+              class="c-primary p-l-24 p-r-24"
+            >{{ $t("admin.editMenuItems", { count: numberOfMenus }) }}</span>
+          </b-button>
+        </div>
       </div>
 
       <!-- Edit Restaurant Details -->

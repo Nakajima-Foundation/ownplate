@@ -162,6 +162,10 @@ export default {
       type: Object,
       required: true
     },
+    paymentInfo: {
+      type: Object,
+      required: true
+   },
   },
   async created() {
     const uid = this.shopInfo.uid;
@@ -173,7 +177,6 @@ export default {
     const date = this.availableDays[0].date;
     moment.locale(this.$i18n.locale);
     this.minimumAvailableTime = [moment(date).format("MM/DD (ddd)"), time].join(" ");
-
   },
   data() {
     const d = new Date();
@@ -182,7 +185,6 @@ export default {
       days: daysOfWeek,
       weekday: d.getDay(),
       today: d,
-      paymentInfo: {},
       minimumAvailableTime: "",
     };
   },

@@ -197,7 +197,7 @@ export default {
           this.deferredPush = true;
         }
       } catch (error) {
-        console.log("onSignup failed", error.code, error.message);
+        console.warn("onSignup failed", error.code, error.message);
         if (error.code === "auth/email-already-in-use") {
           this.emailTaken = email;
         } else {

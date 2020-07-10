@@ -257,6 +257,7 @@
     "revenue": "revenue",
     "date": "date",
     "tipShort": "tip",
+    "includingTip": "including tip",
     "subtotal": "Subtotal",
     "salesTax": "Sales Tax",
     "foodTax": "Food Tax",
@@ -390,7 +391,8 @@
     },
     "viewPage": "View Page",
     "incompleteOrders": "{count} Incomplete Order | {count} Incomplete Orders",
-    "editMenuItems": "Edit Menu ({count})",
+    "editMenuItems": "Edit Menu: {count}",
+    "pleaseAddMenu": "Please Add Menu",
     "editAbout": "Edit Restaurant Details",
     "directory": {
       "status": "Restaurant Directory",
@@ -401,7 +403,7 @@
       "listed": "Listed",
       "unlist": "Unlist"
     },
-    "delete": "Delete",
+    "delete": "Delete This Restaurant",
     "shareRestaurant": "Share",
     "pleaseSignUp": "Sign Up as a New User",
     "forgotPassword": "Forgot Password？",
