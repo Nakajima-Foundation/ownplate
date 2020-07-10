@@ -166,10 +166,6 @@ export default {
     },
   },
   async created() {
-    const uid = this.shopInfo.uid;
-    const snapshot = await db.doc(`/admins/${uid}/public/payment`).get();
-    this.paymentInfo = snapshot.data() || {};
-
     const time = this.availableDays[0].times[0].display;
     const date = this.availableDays[0].date;
     moment.locale(this.$i18n.locale);

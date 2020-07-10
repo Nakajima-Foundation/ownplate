@@ -112,7 +112,7 @@ export const mutations = {
   },
   setFirefoxPBM(state, flag) {
     if (flag === true) {
-      console.warn("Firefox Private Browsing Mode detected")
+      console.warn("Firefox Private Browsing Mode detected");
     }
     state.isFirefoxPBM = flag;
   }

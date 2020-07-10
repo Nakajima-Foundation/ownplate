@@ -7,6 +7,8 @@ export default {
     },
     availableDays() {
       const today = this.dayOfWeek;
+      const now = this.$store.state.date;
+      const localMin = now.getHours() * 60 + now.getMinutes();
       return Array.from(Array(this.daysInAdvance).keys())
         .filter(offset => {
           return this.businessDays[(today + offset) % 7];
@@ -15,8 +17,6 @@ export default {
           const date = midNight(offset);
           let times = this.openSlots[(today + offset) % 7];
           if (offset === 0) {
-            const now = new Date();
-            const localMin = now.getHours() * 60 + now.getMinutes();
             times = times.filter(time => {
               return time.time >= localMin + this.minimumCookTime;
             });
@@ -29,7 +29,6 @@ export default {
     },
     businessDays() {
       return [7, 1, 2, 3, 4, 5, 6].map(day => {
-        console.log(this.shopInfo);
         return this.shopInfo.businessDay[day];
       });
     },
