@@ -113,15 +113,19 @@
         :disabled="isCheckingOut || noPaymentMethod"
         @click="handleCheckOut"
       >
-        <div class="is-flex flex-center w-224">
-          <div class="flex-1 align-left c-onprimary">
-            {{
-            $tc("sitemenu.orderCounter", totalCount, { count: totalCount })
-            }}
-          </div>
-          <div class="m-r-8 c-onprimary" v-if="noPaymentMethod">{{ $t("shopInfo.noPaymentMethodAvailable") }}</div>
-          <div class="m-r-8 c-onprimary" v-if="!noPaymentMethod">{{ $t("sitemenu.checkout") }}</div>
-          <i class="material-icons c-onprimary">shopping_cart</i>
+        <div class="is-flex flex-center">
+          <template v-if="noPaymentMethod">
+            <div class="flex-1 align-center c-onprimary">{{ $t("shopInfo.noPaymentMethod") }}</div>
+          </template>
+          <template v-if="!noPaymentMethod">
+            <div class="flex-1 align-left c-onprimary m-r-16">
+              {{
+              $tc("sitemenu.orderCounter", totalCount, { count: totalCount })
+              }}
+            </div>
+            <div class="m-r-8 c-onprimary">{{ $t("sitemenu.checkout") }}</div>
+            <i class="material-icons c-onprimary">shopping_cart</i>
+          </template>
         </div>
       </b-button>
     </template>
@@ -154,8 +158,12 @@ export default {
   },
   head() {
     return {
-      title: Object.keys(this.shopInfo).length == 0 ? document.title :
-        [ this.shopInfo.restaurantName || "", defaultHeader.title].join(" / "),
+      title:
+        Object.keys(this.shopInfo).length == 0
+          ? document.title
+          : [this.shopInfo.restaurantName || "", defaultHeader.title].join(
+              " / "
+            )
     };
   },
   data() {
@@ -178,7 +186,7 @@ export default {
       detacher: [],
       notFound: null,
 
-      paymentInfo: {},
+      paymentInfo: {}
     };
   },
   mounted() {
@@ -214,10 +222,9 @@ export default {
         }
         const shopUid = this.shopInfo.uid;
         const snapshot = await db
-              .doc(`/admins/${shopUid}/public/payment`)
-              .get();
+          .doc(`/admins/${shopUid}/public/payment`)
+          .get();
         this.paymentInfo = snapshot.data() || {};
-
       });
     const menu_detacher = db
       .collection(`restaurants/${this.restaurantId()}/menus`)

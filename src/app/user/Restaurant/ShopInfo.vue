@@ -109,9 +109,7 @@
         <div class="m-t-8 m-l-16 m-r-16">
           <div class="t-subtitle2 c-text-black-medium p-l-8">{{$t("shopInfo.paymentMethod")}}</div>
           <div class="is-inline-flex flex-center m-l-8">
-            <span
-              class="t-body2"
-              >
+            <span class="t-body2">
               <span v-if="showPayment">{{$t('shopInfo.onlinePayment')}}</span>
               <span v-if="showPayment && inStorePayment">/</span>
               <span v-if="inStorePayment">{{$t('shopInfo.onsitePayment')}}</span>
@@ -149,7 +147,7 @@ export default {
     paymentInfo: {
       type: Object,
       required: true
-   },
+    }
   },
   data() {
     const d = new Date();
@@ -157,7 +155,7 @@ export default {
       url: this.shareUrl(),
       days: daysOfWeek,
       weekday: d.getDay(),
-      today: d,
+      today: d
     };
   },
   computed: {
