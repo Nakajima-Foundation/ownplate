@@ -214,7 +214,7 @@
     "paymentMethod": "支払い方法",
     "onlinePayment": "オンライン決済",
     "onsitePayment": "受け取り払い",
-    "noPaymentMethod": "オンラインで注文できません",
+    "noPaymentMethod": "オンライン注文未対応",
     "minimumAvailableTime": "最短受付可能時間"
   },
   "transactionsAct": {

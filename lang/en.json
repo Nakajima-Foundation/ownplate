@@ -214,7 +214,7 @@
     "paymentMethod": "Payment Method",
     "onlinePayment": "Online Payment",
     "onsitePayment": "On Site Payment",
-    "noPaymentMethod": "Not accepting orders online",
+    "noPaymentMethod": "Online Order Unavailable",
     "minimumAvailableTime": "Minimum available time"
   },
   "transactionsAct": {
