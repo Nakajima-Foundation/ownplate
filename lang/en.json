@@ -214,8 +214,7 @@
     "paymentMethod": "Payment Method",
     "onlinePayment": "Online Payment",
     "onsitePayment": "On Site Payment",
-    "noPaymentMethod": "Not accepting orders online",
-    "noPaymentMethodAvailable": "Can't order"
+    "noPaymentMethod": "Online Order Unavailable"
   },
   "transactionsAct": {
     "title": "Specified Commercial Transaction Act",
