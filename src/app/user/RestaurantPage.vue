@@ -153,7 +153,8 @@ export default {
   },
   head() {
     return {
-      title: [ this.shopInfo.restaurantName || "", defaultHeader.title].join(" / "),
+      title: Object.keys(this.shopInfo).length == 0 ? document.title :
+        [ this.shopInfo.restaurantName || "", defaultHeader.title].join(" / "),
     };
   },
   data() {
