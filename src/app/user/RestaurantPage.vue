@@ -110,7 +110,7 @@
         style="width: 288px; position: fixed; bottom: 32px; left: 50%; margin-left: -144px;"
         v-if="0 != totalCount"
         :loading="isCheckingOut"
-        :disabled="isCheckingOut"
+        :disabled="isCheckingOut || noPaymentMethod"
         @click="handleCheckOut"
       >
         <div class="is-flex flex-center w-224">
@@ -119,7 +119,8 @@
             $tc("sitemenu.orderCounter", totalCount, { count: totalCount })
             }}
           </div>
-          <div class="m-r-8 c-onprimary">{{ $t("sitemenu.checkout") }}</div>
+          <div class="m-r-8 c-onprimary" v-if="noPaymentMethod">{{ $t("shopInfo.noPaymentMethodAvailable") }}</div>
+          <div class="m-r-8 c-onprimary" v-if="!noPaymentMethod">{{ $t("sitemenu.checkout") }}</div>
           <i class="material-icons c-onprimary">shopping_cart</i>
         </div>
       </b-button>
