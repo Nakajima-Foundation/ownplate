@@ -8,6 +8,7 @@ export default {
     availableDays() {
       const today = this.dayOfWeek;
       const now = this.$store.state.date;
+      console.log(this.$store.state.date); // never delete this line;
       const localMin = now.getHours() * 60 + now.getMinutes();
       return Array.from(Array(this.daysInAdvance).keys())
         .filter(offset => {
