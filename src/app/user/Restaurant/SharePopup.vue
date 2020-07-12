@@ -106,7 +106,8 @@ export default {
     handleLike() {
       db.doc(`users/${this.user.uid}/reviews/${this.restaurantId()}`).set(
         {
-          likes: !this.likes
+          likes: !this.likes,
+          restaurantId: this.restaurantId() // Making it possible to collection query (later)
         },
         { merge: true }
       );
