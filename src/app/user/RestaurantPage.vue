@@ -275,9 +275,6 @@ export default {
     isOwner() {
       return this.isAdmin && this.uid === this.shopInfo.uid;
     },
-    isUser() {
-      return !!this.$store.getters.uidUser;
-    },
     uid() {
       return this.$store.getters.uid;
     },

@@ -8,20 +8,19 @@
       </div>
 
       <!-- Favorite -->
-      <div class="is-inline-block">
-        <!-- # ToDo: Switch Like/Liked when user tapped -->
-        <!-- Like -->
+      <div class="is-inline-block" v-if="isUser">
         <div class="op-button-text" @click="handleLike">
+          <!-- Like -->
           <template v-if="liked">
             <i class="material-icons c-status-red">favorite</i>
             <span class="c-status-red">{{$t('shopInfo.liked')}}</span>
           </template>
+          <!-- Liked -->
           <template v-else>
             <i class="material-icons">favorite_border</i>
             <span>{{$t('shopInfo.like')}}</span>
           </template>
         </div>
-        <!-- Liked -->
       </div>
     </div>
 
@@ -86,7 +85,6 @@ export default {
       this.sharePopup = false;
     },
     handleLike() {
-      console.log("handleLike");
       this.liked = !this.liked;
     }
   }
