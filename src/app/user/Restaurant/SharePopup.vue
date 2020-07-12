@@ -11,7 +11,7 @@
       <div class="is-inline-block" v-if="isUser">
         <div class="op-button-text" @click="handleLike">
           <!-- Like -->
-          <template v-if="liked">
+          <template v-if="likes">
             <i class="material-icons c-status-red">favorite</i>
             <span class="c-status-red">{{$t('shopInfo.liked')}}</span>
           </template>
@@ -55,6 +55,7 @@
 
 <script>
 import SharingButtons from "~/app/user/Common/SharingButtons";
+import { db } from "~/plugins/firebase.js";
 
 export default {
   components: {
@@ -74,8 +75,27 @@ export default {
     return {
       url: this.shareUrl() + (this.suffix || ""),
       sharePopup: false,
-      liked: false
+      review: {},
+      detacher: null
     };
+  },
+  mounted() {
+    if (this.isUser) {
+      console.log("*** mounted");
+      this.detacher = db
+        .doc(`users/${this.user.uid}/restaurants/${this.restaurantId()}`)
+        .onSnapshot(snapshot => {
+          this.review = snapshot.data() || {};
+        });
+    }
+  },
+  destroyed() {
+    this.detacher && this.detacher();
+  },
+  computed: {
+    likes() {
+      return !!this.review.likes;
+    }
   },
   methods: {
     openShare() {
@@ -85,7 +105,12 @@ export default {
       this.sharePopup = false;
     },
     handleLike() {
-      this.liked = !this.liked;
+      db.doc(`users/${this.user.uid}/restaurants/${this.restaurantId()}`).set(
+        {
+          likes: !this.likes
+        },
+        { merge: true }
+      );
     }
   }
 };
