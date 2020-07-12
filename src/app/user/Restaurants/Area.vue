@@ -67,7 +67,14 @@
 import Vue from "vue";
 import { db, storage, firestore } from "~/plugins/firebase.js";
 
+import { defaultHeader } from "../../../plugins/header";
+
 export default {
+  head() {
+    return {
+      title: [this.$tc("pageTitle.restaurantArea", 0, {area: this.areaName}), defaultHeader.title].join(" / "),
+    };
+  },
   data() {
     return {
       areaName: "",

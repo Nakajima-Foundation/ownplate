@@ -21,6 +21,10 @@ service cloud.firestore {
       return get(/databases/$(database)/documents/restaurants/$(restaurantId)).data.uid == request.auth.uid;
     }
 
+    function isUndefined(data, field) {
+      return !data.keys().hasAll([field]);
+    }
+
     match /users/{userId} {
       allow read, write: if request.auth.uid == userId;
       match /public/{document=**} {
@@ -44,7 +48,9 @@ service cloud.firestore {
     }
 
     match /admins/{userId} {
-      allow read, write: if request.auth.uid == userId;
+      // Note: we don't want to allow the user to "update"
+      allow create: if request.auth.uid == userId && isUndefined(request.resource.data, 'admin');
+      allow read: if request.auth.uid == userId;
       allow read: if isSuper(request);
       match /public/{document=**} {
         allow read: if true;
@@ -74,6 +80,9 @@ service cloud.firestore {
       allow read: if isOwner(resource, request);
     }
     match /{path=**}/stripeLogs/{logId} {
+      allow read: if isSuper(request);
+    }
+    match /{path=**}/private/{documentId} {
       allow read: if isSuper(request);
     }
 

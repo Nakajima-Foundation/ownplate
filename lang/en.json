@@ -3,6 +3,15 @@
     "ownPlate": "OwnPlate",
     "omochikaeri": "おもちかえり.com"
   },
+  "pageTitle": {
+    "restaurantRoot": "List of shops that can take away",
+    "restaurantArea": "List of shops that can take away in {area}",
+    "terms": {
+      "admmin": "Terms and conditions for restaurant owner",
+      "user": "Terms and conditions for Customer",
+      "privacy": "Privacy policy"
+    }
+  },
   "greeting": "Hello World2",
   "underConstruction": "WARNING: This is a staging server for development.",
   "comma": ", ",
@@ -205,7 +214,8 @@
     "paymentMethod": "Payment Method",
     "onlinePayment": "Online Payment",
     "onsitePayment": "On Site Payment",
-    "noPaymentMethod": "Not accepting orders online"
+    "noPaymentMethod": "Online Order Unavailable",
+    "minimumAvailableTime": "Minimum available time"
   },
   "transactionsAct": {
     "title": "Specified Commercial Transaction Act",
@@ -247,6 +257,7 @@
     "revenue": "revenue",
     "date": "date",
     "tipShort": "tip",
+    "includingTip": "including tip",
     "subtotal": "Subtotal",
     "salesTax": "Sales Tax",
     "foodTax": "Food Tax",
@@ -380,7 +391,8 @@
     },
     "viewPage": "View Page",
     "incompleteOrders": "{count} Incomplete Order | {count} Incomplete Orders",
-    "editMenuItems": "Edit Menu ({count})",
+    "editMenuItems": "Edit Menu: {count}",
+    "pleaseAddMenu": "Please Add Menu",
     "editAbout": "Edit Restaurant Details",
     "directory": {
       "status": "Restaurant Directory",
@@ -391,7 +403,7 @@
       "listed": "Listed",
       "unlist": "Unlist"
     },
-    "delete": "Delete",
+    "delete": "Delete This Restaurant",
     "shareRestaurant": "Share",
     "pleaseSignUp": "Sign Up as a New User",
     "forgotPassword": "Forgot Password？",

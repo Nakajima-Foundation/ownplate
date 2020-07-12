@@ -74,7 +74,8 @@ export default {
     };
   },
   head() {
-    return RestaurantHeader;
+    const title = [this.$t("pageTitle.restaurantRoot"), ownPlateConfig.siteName].join(" / ")
+    return Object.assign(RestaurantHeader, {title});
   }
   // # Need to rewrite for Areas instead of Restaurants.
   /*

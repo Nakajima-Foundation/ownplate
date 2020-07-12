@@ -249,6 +249,15 @@
 </template>
 
 <script>
+import { defaultHeader } from "../../plugins/header";
+
+export default {
+  head() {
+    return {
+      title: [ this.$t('pageTitle.terms.user') || "", defaultHeader.title].join(" / "),
+    };
+  }
+}
 </script>
 
 <style lang="scss" scoped>
