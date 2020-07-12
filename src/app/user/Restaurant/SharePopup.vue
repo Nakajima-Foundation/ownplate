@@ -8,17 +8,18 @@
       </div>
 
       <!-- Favorite -->
-      <div class="is-inline-block">
-        <!-- # ToDo: Switch Like/Liked when user tapped -->
-        <!-- Like -->
-        <div class="op-button-text">
-          <i class="material-icons">favorite_border</i>
-          <span>{{$t('shopInfo.like')}}</span>
-        </div>
-        <!-- Liked -->
-        <div class="op-button-text" v-if="false">
-          <i class="material-icons c-status-red">favorite</i>
-          <span class="c-status-red">{{$t('shopInfo.liked')}}</span>
+      <div class="is-inline-block" v-if="isUser">
+        <div class="op-button-text" @click="handleLike">
+          <!-- Like -->
+          <template v-if="likes">
+            <i class="material-icons c-status-red">favorite</i>
+            <span class="c-status-red">{{$t('shopInfo.liked')}}</span>
+          </template>
+          <!-- Liked -->
+          <template v-else>
+            <i class="material-icons">favorite_border</i>
+            <span>{{$t('shopInfo.like')}}</span>
+          </template>
         </div>
       </div>
     </div>
@@ -54,6 +55,7 @@
 
 <script>
 import SharingButtons from "~/app/user/Common/SharingButtons";
+import { db } from "~/plugins/firebase.js";
 
 export default {
   components: {
@@ -67,13 +69,32 @@ export default {
     suffix: {
       type: String,
       required: false
-    },
+    }
   },
   data() {
     return {
-      url: this.shareUrl() + (this.suffix||""),
-      sharePopup: false
+      url: this.shareUrl() + (this.suffix || ""),
+      sharePopup: false,
+      review: {},
+      detacher: null
     };
+  },
+  mounted() {
+    if (this.isUser) {
+      this.detacher = db
+        .doc(`users/${this.user.uid}/reviews/${this.restaurantId()}`)
+        .onSnapshot(snapshot => {
+          this.review = snapshot.data() || {};
+        });
+    }
+  },
+  destroyed() {
+    this.detacher && this.detacher();
+  },
+  computed: {
+    likes() {
+      return !!this.review.likes;
+    }
   },
   methods: {
     openShare() {
@@ -81,6 +102,15 @@ export default {
     },
     closeShare() {
       this.sharePopup = false;
+    },
+    handleLike() {
+      db.doc(`users/${this.user.uid}/reviews/${this.restaurantId()}`).set(
+        {
+          likes: !this.likes,
+          restaurantId: this.restaurantId() // Making it possible to collection query (later)
+        },
+        { merge: true }
+      );
     }
   }
 };
