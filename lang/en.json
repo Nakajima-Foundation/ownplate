@@ -189,6 +189,8 @@
     "thisIsPreview": "This is Preview Only.",
     "notPublic": "Page is not public to users.",
     "share": "Share",
+    "like": "Like",
+    "liked": "Liked",
     "qrcode": "QR code",
     "copyUrl": "Copy URL",
     "UrlCopied": "URL Copied",
