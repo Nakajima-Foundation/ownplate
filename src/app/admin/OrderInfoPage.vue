@@ -49,7 +49,7 @@
               <!-- Order Overview -->
               <div>
                 <div class="align-center">
-                  <div class="is-inline-flex">
+                  <div class="is-inline-flex flex-center">
                     <!-- Order ID -->
                     <div class="t-h4 c-text-black-high">{{orderName}}</div>
 
@@ -68,6 +68,12 @@
                       <div v-else class="t-body1 c-textl-black-high is-inline-flex flex-center">
                         <div>{{$n(orderInfo.totalCharge, 'currency')}}</div>
                       </div>
+
+                      <!-- Tip -->
+                      <div
+                        v-if="orderInfo.tip"
+                        class="t-caption c-status-green"
+                      >( {{$t('order.includingTip')}} {{$n(orderInfo.tip, 'currency')}} )</div>
                     </div>
                   </div>
                 </div>
@@ -416,6 +422,9 @@ export default {
       return "";
     },
     async handleComplete() {
+      if (this.orderInfo.status === order_status.customer_picked_up) {
+        return; // no need to call the server
+      }
       if (this.hasStripe) {
         const orderId = this.$route.params.orderId;
         //console.log("handleComplete with Stripe", orderId);

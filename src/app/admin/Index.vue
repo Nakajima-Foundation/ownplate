@@ -108,6 +108,22 @@
       <div class="column is-narrow w-24"></div>
     </div>
 
+    <!-- Unset Warning -->
+    <div class="columns is-gapless" v-if="unsetWarning">
+      <!-- Left Gap -->
+      <div class="column is-narrow w-24"></div>
+      <!-- Center Column -->
+      <div class="column">
+        <div class="m-l-24 m-r-24">
+          <div class="bg-status-red-bg r-8 p-l-16 p-r-16 p-t-16 p-b-16 l m-b-8 m-t-24">
+            <span class="t-body2 c-status-red">{{ $t("admin.payments.unsetWarning") }}</span>
+          </div>
+        </div>
+      </div>
+      <!-- Right Gap -->
+      <div class="column is-narrow w-24"></div>
+    </div>
+
     <!-- Payment Setup and Restaurants -->
     <div class="columns is-gapless">
       <!-- Left Gap -->
@@ -182,7 +198,7 @@
       <div class="column">
         <div class="m-l-24 m-r-24">
           <!-- Payment -->
-          <payment-section />
+          <payment-section @updateUnsetWarning="updateUnsetWarning($event)"/>
 
           <!-- Notes -->
           <div class="m-t-24">
@@ -237,7 +253,8 @@ export default {
       restaurantItems: null,
       detachers: [],
       restaurant_detacher: null,
-      news: newsList[0]
+      news: newsList[0],
+      unsetWarning: true
     };
   },
   created() {
@@ -340,6 +357,9 @@ export default {
       } finally {
         this.isCreating = false;
       }
+    },
+    updateUnsetWarning(value) {
+      this.unsetWarning = value;
     }
   },
   destroyed() {

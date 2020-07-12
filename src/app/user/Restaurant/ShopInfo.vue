@@ -109,14 +109,20 @@
         <div class="m-t-8 m-l-16 m-r-16">
           <div class="t-subtitle2 c-text-black-medium p-l-8">{{$t("shopInfo.paymentMethod")}}</div>
           <div class="is-inline-flex flex-center m-l-8">
-            <span
-              class="t-body2"
-              >
+            <span class="t-body2">
               <span v-if="showPayment">{{$t('shopInfo.onlinePayment')}}</span>
               <span v-if="showPayment && inStorePayment">/</span>
               <span v-if="inStorePayment">{{$t('shopInfo.onsitePayment')}}</span>
               <span v-if="!showPayment && !inStorePayment">{{$t('shopInfo.noPaymentMethod')}}</span>
             </span>
+          </div>
+        </div>
+
+        <!-- Minimum Available Time -->
+        <div class="m-t-8 m-l-16 m-r-16">
+          <div class="t-subtitle2 c-text-black-medium p-l-8">{{$t("shopInfo.minimumAvailableTime")}}</div>
+          <div class="is-inline-flex flex-center m-l-8">
+            <span class="t-body2">{{minimumAvailableTime}}</span>
           </div>
         </div>
       </div>
@@ -137,7 +143,12 @@ import TransactionsAct from "~/app/user/TransactionsAct";
 import { db } from "~/plugins/firebase.js";
 import { releaseConfig } from "~/plugins/config.js";
 
+import PickupMixin from "../Order/pickupMixin";
+
+import moment from "moment";
+
 export default {
+  mixins: [PickupMixin],
   components: {
     TransactionsAct
   },
@@ -145,12 +156,11 @@ export default {
     shopInfo: {
       type: Object,
       required: true
+    },
+    paymentInfo: {
+      type: Object,
+      required: true
     }
-  },
-  async created() {
-    const uid = this.shopInfo.uid;
-    const snapshot = await db.doc(`/admins/${uid}/public/payment`).get();
-    this.paymentInfo = snapshot.data() || {};
   },
   data() {
     const d = new Date();
@@ -158,8 +168,7 @@ export default {
       url: this.shareUrl(),
       days: daysOfWeek,
       weekday: d.getDay(),
-      today: d,
-      paymentInfo: {},
+      today: d
     };
   },
   computed: {
@@ -229,6 +238,12 @@ export default {
     },
     inStorePayment() {
       return this.paymentInfo.inStore;
+    },
+    minimumAvailableTime() {
+      const time = this.availableDays[0].times[0].display;
+      const date = this.availableDays[0].date;
+      moment.locale(this.$i18n.locale);
+      return [moment(date).format("MM/DD (ddd)"), time].join(" ");
     }
   },
   mounted() {

@@ -42,11 +42,10 @@ export default {
           const order = doc.data();
           order.restaurantId = doc.ref.path.split("/")[1];
           order.id = doc.id;
-          // Note: We no longer display timePlaced for new orders.
-          order.timePlaced =
-            (order.timePlaced && order.timePlaced.toDate()) || new Date();
-          order.timeEstimated =
-            (order.timeEstimated && order.timeEstimated.toDate()) || new Date();
+          order.timePlaced = order.timePlaced.toDate();
+          if (order.timeEstimated) {
+            order.timeEstimated = order.timeEstimated.toDate();
+          }
           return order;
         });
         console.log("***", this.orders);

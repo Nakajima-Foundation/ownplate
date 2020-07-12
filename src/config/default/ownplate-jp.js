@@ -10,8 +10,8 @@ export const firebaseConfig = {
 };
 
 export const ownPlateConfig = {
-  siteName: "おもちかえり.com / 無料で使えるテイクアウト支援サービス",
-  siteDescription: "レストランに優しいテイクアウト・サービス",
+  siteName: "おもちかえり.com / 無料で使えるテイクアウト・お持ち帰り支援サービス",
+  siteDescription: "アプリインストール不要で、すぐに使えるテイクアウト・お持ち帰りサービス。食べたいお店がすぐに見つかり、オンラインで注文可能。レストランに優しい決済手数料以外は全て無料で、すぐに使えます。",
   releasName: "beta",
   region: "JP",
   hostName: "omochikaeri.com",

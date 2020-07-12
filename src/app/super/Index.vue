@@ -12,6 +12,8 @@
       <br />
       <router-link to="/s/admins">All Admins</router-link>
       <br />
+      <router-link to="/s/profiles">All Profiles</router-link>
+      <br />
     </div>
     <b-loading v-else active />
   </section>

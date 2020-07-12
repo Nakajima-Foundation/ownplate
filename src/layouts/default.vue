@@ -129,7 +129,7 @@
 </template>
 
 <script>
-import { db, auth, functions } from "@/plugins/firebase.js";
+import { db, auth, functions, analytics } from "@/plugins/firebase.js";
 import { releaseConfig } from "~/plugins/config.js";
 import DialogBox from "~/components/DialogBox";
 import AudioPlay from "./AudioPlay";
@@ -336,6 +336,17 @@ export default {
     });
   },
   watch: {
+    // https://support.google.com/analytics/answer/9234069?hl=ja
+    $route () {
+      // console.log('route changed', this.$route)
+      analytics.setCurrentScreen(document.title);
+      analytics.logEvent("page_view");
+      analytics.logEvent("screen_view", {
+        app_name: "web",
+        screen_name: document.title,
+        // app_version: version
+      });
+    },
     async "$route.query.lang"() {
       if (this.$route.query.lang) {
         await this.changeLang(this.$route.query.lang);

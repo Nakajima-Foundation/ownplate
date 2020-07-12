@@ -38,9 +38,15 @@
           <div class="t-body2 c-text-black-high m-r-8">{{ $n(order.totalCharge, 'currency') }}</div>
 
           <!-- Stripe Status -->
-          <div>
-            <i v-if="hasStripe" :class="'fab fa-cc-stripe stripe_'+order.payment.stripe"></i>
+          <div v-if="hasStripe" class="m-r-8">
+            <i :class="'fab fa-cc-stripe stripe_'+order.payment.stripe"></i>
           </div>
+
+          <!-- Tip -->
+          <div
+            v-if="order.tip"
+            class="t-caption c-status-green"
+          >( {{$t('order.includingTip')}} {{ $n(order.tip, 'currency') }} )</div>
         </div>
       </div>
 

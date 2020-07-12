@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!-- QR Header Area -->
+    <!-- Header Area -->
     <div class="columns is-gapless">
       <!-- Left Gap -->
       <div class="column is-narrow w-24"></div>
@@ -27,105 +27,124 @@
       <!-- Right Gap -->
       <div class="column is-narrow w-24"></div>
     </div>
-    <!-- Select Date -->
-    <div class="level-left">
-      <b-select v-model="monthIndex" class="m-t-24 m-l-16">
-        <option
-          v-for="day in lastSeveralMonths"
-          :value="day.index"
-          :key="day.index"
-        >{{ moment(day.date).format("YYYY-MM") }}</option>
-      </b-select>
-    </div>
-    <!-- Table -->
-    <table class="m-t-16 m-l-8">
-      <tr>
-        <th class="p-l-8 p-b-8">
-          <div class="align-right">{{ $t('order.date')}}</div>
-        </th>
-        <th class="p-l-8">
-          <div class="align-right">{{ $t('order.revenue')}}</div>
-        </th>
-        <th class="p-l-8">
-          <div class="align-right">{{ $t('order.foodTax')}}</div>
-        </th>
-        <th class="p-l-8">
-          <div class="align-right">{{ $t('order.revenue')}}</div>
-        </th>
-        <th class="p-l-8">
-          <div class="align-right">{{ $t('order.salesTax')}}</div>
-        </th>
-        <th class="p-l-8">
-          <div class="align-right">{{ $t('order.tipShort')}}</div>
-        </th>
-        <th class="p-l-8">
-          <div class="align-right">{{ $t('order.salesTax')}}</div>
-        </th>
-        <th class="p-l-8">
-          <div class="align-right">{{ $t('order.total')}}</div>
-        </th>
-      </tr>
-      <tr v-for="order in orders" :key="order.id">
-        <td class="p-l-8">
-          <div class="align-right">{{$d(order.timeConfirmed)}}</div>
-        </td>
-        <td class="p-l-8">
-          <div class="align-right">{{order.accounting.food.revenue}}</div>
-        </td>
-        <td class="p-l-8">
-          <div class="align-right">{{order.accounting.food.tax}}</div>
-        </td>
-        <td class="p-l-8">
-          <div class="align-right">{{order.accounting.alcohol.revenue}}</div>
-        </td>
-        <td class="p-l-8">
-          <div class="align-right">{{order.accounting.alcohol.tax}}</div>
-        </td>
-        <td class="p-l-8">
-          <div class="align-right">{{order.accounting.service.revenue}}</div>
-        </td>
-        <td class="p-l-8">
-          <div class="align-right">{{order.accounting.service.tax}}</div>
-        </td>
-        <td class="p-l-8">
-          <div class="align-right">{{order.totalCharge}}</div>
-        </td>
-        <td class="p-l-8">
-          <div>
-            <nuxt-link :to="orderUrl(order)">{{orderName(order)}}</nuxt-link>
-            <a v-if="order.payment" :href="searchUrl(order)" target="stripe">
-              <i v-if="order.payment" class="fab fa-cc-stripe" />
-            </a>
+
+    <!-- Body Area -->
+    <div class="columns is-gapless">
+      <!-- Left Gap -->
+      <div class="column is-narrow w-24"></div>
+      <!-- Center Column -->
+      <div class="column">
+        <div class="m-l-24 m-r-24">
+          <!-- Select Date -->
+          <b-select v-model="monthIndex" class="m-t-24">
+            <option
+              v-for="day in lastSeveralMonths"
+              :value="day.index"
+              :key="day.index"
+            >{{ moment(day.date).format("YYYY-MM") }}</option>
+          </b-select>
+
+          <!-- Table -->
+          <div class="m-t-24 bg-surface r-8 d-low p-l-16 p-r-16 p-t-16 p-b-16">
+            <table class="w-full">
+              <!-- Table Header -->
+              <tr>
+                <th class="p-l-8 p-b-8">
+                  <div class="align-right">{{ $t('order.date')}}</div>
+                </th>
+                <th class="p-l-8">
+                  <div class="align-right">{{ $t('order.revenue')}}</div>
+                </th>
+                <th class="p-l-8">
+                  <div class="align-right">{{ $t('order.foodTax')}}</div>
+                </th>
+                <th class="p-l-8">
+                  <div class="align-right">{{ $t('order.revenue')}}</div>
+                </th>
+                <th class="p-l-8">
+                  <div class="align-right">{{ $t('order.salesTax')}}</div>
+                </th>
+                <th class="p-l-8">
+                  <div class="align-right">{{ $t('order.tipShort')}}</div>
+                </th>
+                <th class="p-l-8">
+                  <div class="align-right">{{ $t('order.salesTax')}}</div>
+                </th>
+                <th class="p-l-8">
+                  <div class="align-right">{{ $t('order.total')}}</div>
+                </th>
+              </tr>
+
+              <!-- Table Body -->
+              <tr v-for="order in orders" :key="order.id">
+                <td class="p-l-8 p-t-4">
+                  <div class="align-right">{{$d(order.timeConfirmed)}}</div>
+                </td>
+                <td class="p-l-8 p-t-4">
+                  <div class="align-right">{{order.accounting.food.revenue}}</div>
+                </td>
+                <td class="p-l-8 p-t-4">
+                  <div class="align-right">{{order.accounting.food.tax}}</div>
+                </td>
+                <td class="p-l-8 p-t-4">
+                  <div class="align-right">{{order.accounting.alcohol.revenue}}</div>
+                </td>
+                <td class="p-l-8 p-t-4">
+                  <div class="align-right">{{order.accounting.alcohol.tax}}</div>
+                </td>
+                <td class="p-l-8 p-t-4">
+                  <div class="align-right">{{order.accounting.service.revenue}}</div>
+                </td>
+                <td class="p-l-8 p-t-4">
+                  <div class="align-right">{{order.accounting.service.tax}}</div>
+                </td>
+                <td class="p-l-8 p-t-4">
+                  <div class="align-right">{{order.totalCharge}}</div>
+                </td>
+                <td class="p-l-8 p-t-4">
+                  <div>
+                    <nuxt-link :to="orderUrl(order)">{{orderName(order)}}</nuxt-link>
+                    <a v-if="order.payment" :href="searchUrl(order)" target="stripe">
+                      <i v-if="order.payment" class="fab fa-cc-stripe" />
+                    </a>
+                  </div>
+                </td>
+              </tr>
+
+              <!-- Table Footer -->
+              <tr class="bold">
+                <td class="p-t-8 p-l-8">
+                  <div class="align-right">{{$t('order.total')}}</div>
+                </td>
+                <td class="p-t-8 p-l-8">
+                  <div class="align-right">{{total.food.revenue}}</div>
+                </td>
+                <td class="p-t-8 p-l-8">
+                  <div class="align-right">{{total.food.tax}}</div>
+                </td>
+                <td class="p-t-8 p-l-8">
+                  <div class="align-right">{{total.alcohol.revenue}}</div>
+                </td>
+                <td class="p-t-8 p-l-8">
+                  <div class="align-right">{{total.alcohol.tax}}</div>
+                </td>
+                <td class="p-t-8 p-l-8">
+                  <div class="align-right">{{total.service.revenue}}</div>
+                </td>
+                <td class="p-t-8 p-l-8">
+                  <div class="align-right">{{total.service.tax}}</div>
+                </td>
+                <td class="p-t-8 p-l-8">
+                  <div class="align-right">{{total.totalCharge}}</div>
+                </td>
+              </tr>
+            </table>
           </div>
-        </td>
-      </tr>
-      <tr class="bold">
-        <td class="p-t-8 p-l-8">
-          <div class="align-right">{{$t('order.total')}}</div>
-        </td>
-        <td class="p-t-8 p-l-8">
-          <div class="align-right">{{total.food.revenue}}</div>
-        </td>
-        <td class="p-t-8 p-l-8">
-          <div class="align-right">{{total.food.tax}}</div>
-        </td>
-        <td class="p-t-8 p-l-8">
-          <div class="align-right">{{total.alcohol.revenue}}</div>
-        </td>
-        <td class="p-t-8 p-l-8">
-          <div class="align-right">{{total.alcohol.tax}}</div>
-        </td>
-        <td class="p-t-8 p-l-8">
-          <div class="align-right">{{total.service.revenue}}</div>
-        </td>
-        <td class="p-t-8 p-l-8">
-          <div class="align-right">{{total.service.tax}}</div>
-        </td>
-        <td class="p-t-8 p-l-8">
-          <div class="align-right">{{total.totalCharge}}</div>
-        </td>
-      </tr>
-    </table>
+        </div>
+      </div>
+      <!-- Right Gap -->
+      <div class="column is-narrow w-24"></div>
+    </div>
   </div>
 </template>
 

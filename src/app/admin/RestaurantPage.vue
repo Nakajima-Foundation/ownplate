@@ -268,6 +268,8 @@
                     :canvas-color="'gainsboro'"
                     :show-remove-button="true"
                     @file-choose="handleProfileImage"
+                    @file-type-mismatch="handleProfileImageRemove"
+                    @image-remove="handleProfileImageRemove"
                   ></croppa>
                   <div class="align-center t-caption w-128">{{ $t("editCommon.new") }}</div>
                 </div>
@@ -311,6 +313,8 @@
                       :canvas-color="'gainsboro'"
                       :show-remove-button="true"
                       @file-choose="handleCoverImage"
+                      @file-type-mismatch="handleCoverImageRemove"
+                      @image-remove="handleCoverImageRemove"
                     ></croppa>
                     <div
                       class="align-center t-caption"
@@ -974,6 +978,16 @@ export default {
     handleCoverImage(e) {
       const newFile = Object.assign({}, this.files);
       newFile["cover"] = e;
+      this.files = newFile;
+    },
+    handleProfileImageRemove(e) {
+      const newFile = Object.assign({}, this.files);
+      newFile["profile"] = null;
+      this.files = newFile;
+    },
+    handleCoverImageRemove(e) {
+      const newFile = Object.assign({}, this.files);
+      newFile["cover"] = null;
       this.files = newFile;
     },
     handlePhoneChange(payload) {

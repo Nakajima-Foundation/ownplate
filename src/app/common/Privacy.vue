@@ -169,6 +169,15 @@
 </template>
 
 <script>
+import { defaultHeader } from "../../plugins/header";
+
+export default {
+  head() {
+    return {
+      title: [ this.$t('pageTitle.terms.privacy') || "", defaultHeader.title].join(" / "),
+    };
+  }
+}
 </script>
 
 <style lang="scss" scoped>
