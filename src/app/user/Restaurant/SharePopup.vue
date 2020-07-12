@@ -11,15 +11,17 @@
       <div class="is-inline-block">
         <!-- # ToDo: Switch Like/Liked when user tapped -->
         <!-- Like -->
-        <div class="op-button-text">
-          <i class="material-icons">favorite_border</i>
-          <span>{{$t('shopInfo.like')}}</span>
+        <div class="op-button-text" @click="handleLike">
+          <template v-if="liked">
+            <i class="material-icons c-status-red">favorite</i>
+            <span class="c-status-red">{{$t('shopInfo.liked')}}</span>
+          </template>
+          <template v-else>
+            <i class="material-icons">favorite_border</i>
+            <span>{{$t('shopInfo.like')}}</span>
+          </template>
         </div>
         <!-- Liked -->
-        <div class="op-button-text" v-if="false">
-          <i class="material-icons c-status-red">favorite</i>
-          <span class="c-status-red">{{$t('shopInfo.liked')}}</span>
-        </div>
       </div>
     </div>
 
@@ -67,12 +69,13 @@ export default {
     suffix: {
       type: String,
       required: false
-    },
+    }
   },
   data() {
     return {
-      url: this.shareUrl() + (this.suffix||""),
-      sharePopup: false
+      url: this.shareUrl() + (this.suffix || ""),
+      sharePopup: false,
+      liked: false
     };
   },
   methods: {
@@ -81,6 +84,10 @@ export default {
     },
     closeShare() {
       this.sharePopup = false;
+    },
+    handleLike() {
+      console.log("handleLike");
+      this.liked = !this.liked;
     }
   }
 };
