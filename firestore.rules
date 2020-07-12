@@ -45,7 +45,7 @@ service cloud.firestore {
       match /system/{document=**} {
         allow read, write: if false;
       }
-      match /restaurants/{document=**} {
+      match /reviews/{document=**} {
         allow read, write: if request.auth.uid == userId;
       }
     }

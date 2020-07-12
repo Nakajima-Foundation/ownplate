@@ -81,9 +81,8 @@ export default {
   },
   mounted() {
     if (this.isUser) {
-      console.log("*** mounted");
       this.detacher = db
-        .doc(`users/${this.user.uid}/restaurants/${this.restaurantId()}`)
+        .doc(`users/${this.user.uid}/reviews/${this.restaurantId()}`)
         .onSnapshot(snapshot => {
           this.review = snapshot.data() || {};
         });
@@ -105,7 +104,7 @@ export default {
       this.sharePopup = false;
     },
     handleLike() {
-      db.doc(`users/${this.user.uid}/restaurants/${this.restaurantId()}`).set(
+      db.doc(`users/${this.user.uid}/reviews/${this.restaurantId()}`).set(
         {
           likes: !this.likes
         },
