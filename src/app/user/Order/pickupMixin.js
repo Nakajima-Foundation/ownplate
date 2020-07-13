@@ -5,6 +5,7 @@ export default {
     dayOfWeek() {
       return new Date().getDay();
     },
+    // public
     availableDays() {
       const today = this.dayOfWeek;
       const now = this.$store.state.date;

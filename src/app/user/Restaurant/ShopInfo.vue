@@ -244,9 +244,11 @@ export default {
       const date = this.availableDays[0]?.date;
       moment.locale(this.$i18n.locale);
       if (!this.isNull(time) && !this.isNull(date)) {
+        this.$emit("noAvailableTime", false);
         return [moment(date).format("MM/DD (ddd)"), time].join(" ");
       } else {
-        // no minimumAvailableTime
+        this.$emit("noAvailableTime", true);
+        return this.$t("shopInfo.noAvailableTime");
       }
     }
   },
