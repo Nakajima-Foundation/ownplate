@@ -149,6 +149,7 @@ import { db, firestore, functions } from "~/plugins/firebase.js";
 import { order_status } from "~/plugins/constant.js";
 
 import { defaultHeader } from "../../plugins/header";
+import { ownPlateConfig } from "@/config/project";
 
 export default {
   name: "ShopMenu",
@@ -162,11 +163,12 @@ export default {
     NotFound
   },
   head() {
+    // TODO: add area to header
     return {
       title:
         Object.keys(this.shopInfo).length == 0
           ? document.title
-          : [this.shopInfo.restaurantName || "", defaultHeader.title].join(
+          : [this.shopInfo.restaurantName || "", ownPlateConfig.restaurantPageTitle || defaultHeader.title].join(
               " / "
             )
     };
