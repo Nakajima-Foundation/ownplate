@@ -39,6 +39,14 @@
       <!-- Right Gap -->
       <div class="column is-narrow w-24"></div>
     </div>
+    <!-- Likes -->
+    <div v-if="likes.length > 0" class="m-l-48 m-t-8">
+      <!-- Title -->
+      <div class="t-h6 c-text-black-disabled m-t-24">{{$t("find.likes")}}</div>
+      <div v-for="like in likes" :key="like.restaurantId" class="m-t-8">
+        <nuxt-link :to="`/r/${like.restaurantId}`">{{ like.restaurantName }}</nuxt-link>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -56,26 +64,43 @@ export default {
     return {
       // # Need to rewrite for Areas instead of Restaurants.
       region: ownPlateConfig.region,
+      likes: [],
       restaurants: [],
       areas:
         ownPlateConfig.region == "JP"
           ? [
-            { name: "東京都", id: 12 },
-            { name: "群馬県", id: 9  },
-            { name: "埼玉県", id: 10 },
-            { name: "福岡県", id: 39 },
-            { name: "福井県", id: 17 },
-            { name: "大阪府", id: 26 },
-            { name: "兵庫県", id: 27 },
-            { name: "広島県", id: 33 },
-            { name: "長崎県", id: 41 }
-          ]
+              { name: "東京都", id: 12 },
+              { name: "群馬県", id: 9 },
+              { name: "埼玉県", id: 10 },
+              { name: "福岡県", id: 39 },
+              { name: "福井県", id: 17 },
+              { name: "大阪府", id: 26 },
+              { name: "兵庫県", id: 27 },
+              { name: "広島県", id: 33 },
+              { name: "長崎県", id: 41 }
+            ]
           : [{ name: "Washington", id: 46 }]
     };
   },
   head() {
-    const title = [this.$t("pageTitle.restaurantRoot"), ownPlateConfig.siteName].join(" / ")
-    return Object.assign(RestaurantHeader, {title});
+    const title = [
+      this.$t("pageTitle.restaurantRoot"),
+      ownPlateConfig.siteName
+    ].join(" / ");
+    return Object.assign(RestaurantHeader, { title });
+  },
+  async mounted() {
+    if (this.isUser) {
+      const snapshot = await db
+        .collection(`users/${this.user.uid}/reviews`)
+        .orderBy("timeLiked", "desc")
+        .limit(100)
+        .get();
+      console.log(snapshot);
+      this.likes = (snapshot.docs || []).map(doc => {
+        return doc.data();
+      });
+    }
   }
   // # Need to rewrite for Areas instead of Restaurants.
   /*
