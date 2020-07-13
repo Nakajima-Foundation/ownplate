@@ -240,10 +240,14 @@ export default {
       return this.paymentInfo.inStore;
     },
     minimumAvailableTime() {
-      const time = this.availableDays[0].times[0].display;
-      const date = this.availableDays[0].date;
+      const time = this.availableDays[0]?.times[0]?.display;
+      const date = this.availableDays[0]?.date;
       moment.locale(this.$i18n.locale);
-      return [moment(date).format("MM/DD (ddd)"), time].join(" ");
+      if (!this.isNull(time) && !this.isNull(date)) {
+        return [moment(date).format("MM/DD (ddd)"), time].join(" ");
+      } else {
+        // no minimumAvailableTime
+      }
     }
   },
   mounted() {
