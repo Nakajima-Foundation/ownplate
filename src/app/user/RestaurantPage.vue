@@ -56,7 +56,9 @@
               <share-popup :shopInfo="shopInfo" class="align-center m-t-8"></share-popup>
 
               <!-- Restaurant Info -->
-              <shop-info :shopInfo="shopInfo" :paymentInfo="paymentInfo"></shop-info>
+              <shop-info :shopInfo="shopInfo" :paymentInfo="paymentInfo"
+                         @noAvailableTime="noAvailableTime=$event"
+                         ></shop-info>
             </div>
           </div>
 
@@ -110,14 +112,17 @@
         style="width: 288px; position: fixed; bottom: 32px; left: 50%; margin-left: -144px;"
         v-if="0 != totalCount"
         :loading="isCheckingOut"
-        :disabled="isCheckingOut || noPaymentMethod"
+        :disabled="isCheckingOut || noPaymentMethod || noAvailableTime"
         @click="handleCheckOut"
       >
         <div class="is-flex flex-center">
           <template v-if="noPaymentMethod">
             <div class="flex-1 align-center c-onprimary">{{ $t("shopInfo.noPaymentMethod") }}</div>
           </template>
-          <template v-if="!noPaymentMethod">
+          <template v-else-if="noAvailableTime">
+            <div class="flex-1 align-center c-onprimary">{{ $t("shopInfo.noAvailableTime") }}</div>
+          </template>
+          <template v-else="!noPaymentMethod">
             <div class="flex-1 align-left c-onprimary m-r-16">
               {{
               $tc("sitemenu.orderCounter", totalCount, { count: totalCount })
@@ -186,7 +191,8 @@ export default {
       detacher: [],
       notFound: null,
 
-      paymentInfo: {}
+      paymentInfo: {},
+      noAvailableTime: false,
     };
   },
   mounted() {
