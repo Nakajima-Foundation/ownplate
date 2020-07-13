@@ -40,7 +40,7 @@
       <div class="column is-narrow w-24"></div>
     </div>
     <!-- Likes -->
-    <div v-if="likes.length > 0" class="m-l-48 m-t-8">
+    <div v-if="likes.length > 0" class="m-l-24 m-t-8">
       <!-- Title -->
       <div class="t-h6 c-text-black-disabled m-t-24">{{$t("find.likes")}}</div>
       <div v-for="like in likes" :key="like.restaurantId" class="m-t-8">
