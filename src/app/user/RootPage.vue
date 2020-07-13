@@ -123,7 +123,6 @@ export default {
         .orderBy("timeLiked", "desc")
         .limit(100)
         .get();
-      console.log(snapshot);
       this.likes = (snapshot.docs || []).map(doc => {
         return doc.data();
       });
