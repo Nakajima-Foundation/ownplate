@@ -55,7 +55,7 @@
 
 <script>
 import SharingButtons from "~/app/user/Common/SharingButtons";
-import { db } from "~/plugins/firebase.js";
+import { db, firestore } from "~/plugins/firebase.js";
 
 export default {
   components: {
@@ -107,6 +107,8 @@ export default {
       db.doc(`users/${this.user.uid}/reviews/${this.restaurantId()}`).set(
         {
           likes: !this.likes,
+          restaurantName: this.shopInfo.restaurantName, // for quick display
+          timeLiked: firestore.FieldValue.serverTimestamp(),
           restaurantId: this.restaurantId() // Making it possible to collection query (later)
         },
         { merge: true }
