@@ -107,7 +107,8 @@ export default {
       db.doc(`users/${this.user.uid}/reviews/${this.restaurantId()}`).set(
         {
           likes: !this.likes,
-          restaurantName: this.shopInfo.restaurantName, // for quick display
+          restaurantName: this.shopInfo.restaurantName, // duplicated for quick display
+          restProfilePhoto: this.shopInfo.restProfilePhoto, // duplicated for quick display
           timeLiked: firestore.FieldValue.serverTimestamp(),
           restaurantId: this.restaurantId() // Making it possible to collection query (later)
         },

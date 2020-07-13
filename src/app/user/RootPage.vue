@@ -44,7 +44,25 @@
       <!-- Title -->
       <div class="t-h6 c-text-black-disabled m-t-24">{{$t("find.likes")}}</div>
       <div v-for="like in likes" :key="like.restaurantId" class="m-t-8">
-        <nuxt-link :to="`/r/${like.restaurantId}`">{{ like.restaurantName }}</nuxt-link>
+        <div class="h-full p-b-8 p-r-8">
+          <router-link :to="`/r/${like.restaurantId}`">
+            <div class="touchable h-full">
+              <div class="cols flex-center">
+                <!-- Restaurant Profile -->
+                <div class="m-r-16 h-48">
+                  <img :src="like.restProfilePhoto" class="w-48 h-48 r-48 cover" />
+                </div>
+
+                <!-- Restaurant Name -->
+                <div class="flex-1 p-r-8 t-subtitle1 c-primary">
+                  {{
+                  like.restaurantName
+                  }}
+                </div>
+              </div>
+            </div>
+          </router-link>
+        </div>
       </div>
     </div>
   </div>
