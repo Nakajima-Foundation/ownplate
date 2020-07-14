@@ -226,6 +226,9 @@ export default {
     suspendUntil() {
       if (this.shopInfo.suspendUntil) {
         const time = this.shopInfo.suspendUntil.toDate();
+        if (time < new Date()) {
+          return false;
+        }
         return this.$d(time, "time");
       }
       return false;
