@@ -55,7 +55,7 @@
 
 <script>
 import SharingButtons from "~/app/user/Common/SharingButtons";
-import { db } from "~/plugins/firebase.js";
+import { db, firestore } from "~/plugins/firebase.js";
 
 export default {
   components: {
@@ -85,6 +85,23 @@ export default {
         .doc(`users/${this.user.uid}/reviews/${this.restaurantId()}`)
         .onSnapshot(snapshot => {
           this.review = snapshot.data() || {};
+          if (this.review.restaurantName) {
+            // Check if the cached info is out of date, update them.
+            if (
+              this.review.restaurantName !== this.shopInfo.restaurantName ||
+              this.review.restProfilePhoto != this.shopInfo.restProfilePhoto
+            ) {
+              db.doc(
+                `users/${this.user.uid}/reviews/${this.restaurantId()}`
+              ).set(
+                {
+                  restaurantName: this.shopInfo.restaurantName, // duplicated for quick display
+                  restProfilePhoto: this.shopInfo.restProfilePhoto // duplicated for quick display
+                },
+                { merge: true }
+              );
+            }
+          }
         });
     }
   },
@@ -104,9 +121,13 @@ export default {
       this.sharePopup = false;
     },
     handleLike() {
+      // Notice that mounted() will automatically update duplicated restaurant info.
       db.doc(`users/${this.user.uid}/reviews/${this.restaurantId()}`).set(
         {
           likes: !this.likes,
+          restaurantName: this.shopInfo.restaurantName, // duplicated for quick display
+          restProfilePhoto: this.shopInfo.restProfilePhoto, // duplicated for quick display
+          timeLiked: firestore.FieldValue.serverTimestamp(),
           restaurantId: this.restaurantId() // Making it possible to collection query (later)
         },
         { merge: true }

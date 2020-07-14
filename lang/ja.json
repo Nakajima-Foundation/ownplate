@@ -183,7 +183,8 @@
   "find": {
     "area": "飲食店エリア",
     "areaAll": "全てのエリア",
-    "areaTop": "エリア一覧"
+    "areaTop": "エリア一覧",
+    "likes": "お気に入り"
   },
   "shopInfo": {
     "thisIsPreview": "これは飲食店向けプレビューです。",

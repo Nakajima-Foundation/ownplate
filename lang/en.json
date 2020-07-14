@@ -183,7 +183,8 @@
   "find": {
     "area": "Areas",
     "areaAll": "All Areas",
-    "areaTop": "Areas Top"
+    "areaTop": "Areas Top",
+    "likes": "Likes"
   },
   "shopInfo": {
     "thisIsPreview": "This is Preview Only.",
