@@ -209,7 +209,7 @@ export default {
         this.date = this.availableDays[0];
         console.log(this.date.date);
         const times = this.date.times;
-        return times.splice(0, 12);
+        return times.slice(0, 12);
       }
       return [];
     },
