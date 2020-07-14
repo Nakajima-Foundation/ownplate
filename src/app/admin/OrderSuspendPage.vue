@@ -49,7 +49,7 @@
             >{{ $t("admin.order.suspendNewOrders") }}</div>
             <!-- # ToDo: Switch Suspend/Unsuspend buttons based on the status. -->
             <!-- Suspend Buttons -->
-            <div v-if="!suspended">
+            <div v-if="!suspendUntil">
               <b-button
                 v-for="time in availableTimes"
                 :key="time.time"
@@ -74,7 +74,9 @@
             <div v-else>
               <div class="bg-status-red-bg r-8 p-l-16 p-r-16 p-t-16 p-b-16 m-t-16 align-center">
                 <div class="t-subtitle1 c-status-red">{{ $t("admin.order.suspending") }}</div>
-                <div class="t-subtitle2 c-status-red">{{ $t("admin.order.unsuspendAt") }} 12:35 PM</div>
+                <div
+                  class="t-subtitle2 c-status-red"
+                >{{ $t("admin.order.unsuspendAt") }} {{ suspendUntil }}</div>
               </div>
               <b-button class="b-reset op-button-pill bg-form m-t-16 m-r-16" @click="handleRemove">
                 <i class="material-icons p-l-8 c-primary">alarm_on</i>
@@ -221,13 +223,19 @@ export default {
       const list = this.shopInfo.menuLists || [];
       return list;
     },
-    suspended() {
-      return !!this.shopInfo.suspendUntil;
+    suspendUntil() {
+      if (this.shopInfo.suspendUntil) {
+        const time = this.shopInfo.suspendUntil.toDate();
+        return this.$d(time, "time");
+      }
+      return false;
     }
   },
   methods: {
     async handleSuspend(time) {
       const date = new Date(this.date.date);
+      date.setHours(time / 60);
+      date.setMinutes(time % 60);
       const ts = firebase.firestore.Timestamp.fromDate(date);
       console.log(ts);
       this.$store.commit("setLoading", true);
