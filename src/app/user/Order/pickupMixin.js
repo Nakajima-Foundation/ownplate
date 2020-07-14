@@ -10,6 +10,8 @@ export default {
       if (!this.shopInfo.businessDay) {
         return []; // it means shopInfo is empty (not yet loaded)
       }
+      const suspendUntil = this.shopInfo.suspendUntil && this.shopInfo.suspendUntil.toDate();
+
       const today = this.dayOfWeek;
       const now = this.$store.state.date;
       console.log(this.$store.state.date); // never delete this line;
@@ -26,6 +28,12 @@ export default {
               return time.time >= localMin + this.minimumCookTime;
             });
           }
+          if (suspendUntil && (suspendUntil - date) > 0) {
+            times = times.filter(time => {
+              return time.time >= Math.round((suspendUntil - date) / 60000);
+            });
+          }
+
           return { offset, date, times };
         })
         .filter(day => {
