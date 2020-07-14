@@ -53,6 +53,7 @@
               <b-button
                 v-for="time in availableTimes"
                 :key="time.time"
+                @click="handleSuspend(time.time)"
                 class="b-reset op-button-pill bg-form m-t-16 m-r-16"
               >
                 <i class="material-icons p-l-8 c-primary">alarm_off</i>
@@ -60,7 +61,10 @@
                   class="t-button p-r-8 c-primary"
                 >{{$t("admin.order.suspendUntil", {display:time.display})}}</span>
               </b-button>
-              <b-button class="b-reset op-button-pill bg-form m-t-16 m-r-16">
+              <b-button
+                class="b-reset op-button-pill bg-form m-t-16 m-r-16"
+                @click="handleSuspend(24*60)"
+              >
                 <i class="material-icons p-l-8 c-primary">alarm_off</i>
                 <span class="t-button p-r-8 c-primary">{{ $t("admin.order.suspendForAllDay") }}</span>
               </b-button>
@@ -81,7 +85,7 @@
 
           <!-- Suspend Individual Item -->
           <!-- # ToDo: Implement select/deselect all check boxes. -->
-          <div>
+          <div v-if="false">
             <div
               class="t-subtitle2 c-text-black-medium m-t-24"
             >{{ $t("admin.order.suspendIndividualItem") }}</div>
@@ -102,7 +106,7 @@
       </div>
 
       <!-- Right Column -->
-      <div class="column">
+      <div class="column" v-if="false">
         <div class="m-l-24 m-r-24">
           <div class="m-t-24">
             <!-- Menu Items -->
@@ -133,6 +137,7 @@ import { db, firestore, functions } from "~/plugins/firebase.js";
 import BackButton from "~/components/BackButton";
 import OrderSuspendItem from "~/app/admin/Order/OrderSuspendItem";
 import PickupMixin from "~/app/user/Order/pickupMixin";
+import * as firebase from "firebase/app";
 
 export default {
   mixins: [PickupMixin],
@@ -144,6 +149,7 @@ export default {
     return {
       shopInfo: {},
       menus: [],
+      date: null,
       titles: [],
       detacher: [],
       notFound: null
@@ -198,7 +204,9 @@ export default {
   computed: {
     availableTimes() {
       if (this.availableDays.length > 0) {
-        const times = this.availableDays[0].times;
+        this.date = this.availableDays[0];
+        console.log(this.date.date);
+        const times = this.date.times;
         return times.splice(0, 6);
       }
       return [];
@@ -212,6 +220,13 @@ export default {
     menuLists() {
       const list = this.shopInfo.menuLists || [];
       return list;
+    }
+  },
+  methods: {
+    handleSuspend(time) {
+      const date = new Date(this.date.date);
+      const ts = firebase.firestore.Timestamp.fromDate(date);
+      console.log(ts);
     }
   }
 };
