@@ -416,11 +416,8 @@
     "order": {
       "suspend": "Suspend",
       "suspendSettings": "Suspension Settings",
+      "suspendUntil": "Suspend until {display}",
       "suspendNewOrders": "Suspend New Orders",
-      "suspendFor10min": "For 10 min",
-      "suspendFor15min": "For 15 min",
-      "suspendFor20min": "For 20 min",
-      "suspendFor25min": "For 25 min",
       "suspendForAllDay": "For All Day",
       "suspending": "Suspendinding",
       "unsuspendAt": "Unsuspend at ",

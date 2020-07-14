@@ -416,11 +416,8 @@
     "order": {
       "suspend": "一時休止",
       "suspendSettings": "一時休止設定",
+      "suspendUntil": "{display} まで休止",
       "suspendNewOrders": "新規注文受付",
-      "suspendFor10min": "10分間休止",
-      "suspendFor15min": "15分間休止",
-      "suspendFor20min": "20分間休止",
-      "suspendFor25min": "25分間休止",
       "suspendForAllDay": "本日の受付は全て休止",
       "suspending": "受付休止中",
       "unsuspendAt": "解除時刻 ",

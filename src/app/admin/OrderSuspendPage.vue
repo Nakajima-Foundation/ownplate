@@ -56,7 +56,9 @@
                 class="b-reset op-button-pill bg-form m-t-16 m-r-16"
               >
                 <i class="material-icons p-l-8 c-primary">alarm_off</i>
-                <span class="t-button p-r-8 c-primary">{{time.display}}</span>
+                <span
+                  class="t-button p-r-8 c-primary"
+                >{{$t("admin.order.suspendUntil", {display:time.display})}}</span>
               </b-button>
               <b-button class="b-reset op-button-pill bg-form m-t-16 m-r-16">
                 <i class="material-icons p-l-8 c-primary">alarm_off</i>
