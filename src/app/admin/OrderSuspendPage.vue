@@ -50,21 +50,13 @@
             <!-- # ToDo: Switch Suspend/Unsuspend buttons based on the status. -->
             <!-- Suspend Buttons -->
             <div v-if="true">
-              <b-button class="b-reset op-button-pill bg-form m-t-16 m-r-16">
+              <b-button
+                v-for="time in availableTimes"
+                :key="time.time"
+                class="b-reset op-button-pill bg-form m-t-16 m-r-16"
+              >
                 <i class="material-icons p-l-8 c-primary">alarm_off</i>
-                <span class="t-button p-r-8 c-primary">{{ $t("admin.order.suspendFor10min") }}</span>
-              </b-button>
-              <b-button class="b-reset op-button-pill bg-form m-t-16 m-r-16">
-                <i class="material-icons p-l-8 c-primary">alarm_off</i>
-                <span class="t-button p-r-8 c-primary">{{ $t("admin.order.suspendFor15min") }}</span>
-              </b-button>
-              <b-button class="b-reset op-button-pill bg-form m-t-16 m-r-16">
-                <i class="material-icons p-l-8 c-primary">alarm_off</i>
-                <span class="t-button p-r-8 c-primary">{{ $t("admin.order.suspendFor20min") }}</span>
-              </b-button>
-              <b-button class="b-reset op-button-pill bg-form m-t-16 m-r-16">
-                <i class="material-icons p-l-8 c-primary">alarm_off</i>
-                <span class="t-button p-r-8 c-primary">{{ $t("admin.order.suspendFor25min") }}</span>
+                <span class="t-button p-r-8 c-primary">{{time.display}}</span>
               </b-button>
               <b-button class="b-reset op-button-pill bg-form m-t-16 m-r-16">
                 <i class="material-icons p-l-8 c-primary">alarm_off</i>
@@ -138,8 +130,10 @@
 import { db, firestore, functions } from "~/plugins/firebase.js";
 import BackButton from "~/components/BackButton";
 import OrderSuspendItem from "~/app/admin/Order/OrderSuspendItem";
+import PickupMixin from "~/app/user/Order/pickupMixin";
 
 export default {
+  mixins: [PickupMixin],
   components: {
     OrderSuspendItem,
     BackButton
@@ -200,6 +194,16 @@ export default {
     }
   },
   computed: {
+    availableTimes() {
+      if (this.availableDays.length > 0) {
+        const times = this.availableDays[0].times;
+        return times.splice(0, 6);
+      }
+      return [];
+    },
+    minimumCookTime() {
+      return 5; // NOTE: overriding mixin's minimumCookTime, can not be zero
+    },
     itemsObj() {
       return this.array2obj(this.menus.concat(this.titles));
     },

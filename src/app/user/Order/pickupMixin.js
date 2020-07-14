@@ -7,6 +7,9 @@ export default {
     },
     // public
     availableDays() {
+      if (!this.shopInfo.businessDay) {
+        return []; // it means shopInfo is empty (not yet loaded)
+      }
       const today = this.dayOfWeek;
       const now = this.$store.state.date;
       console.log(this.$store.state.date); // never delete this line;
