@@ -209,12 +209,12 @@ export default {
         this.date = this.availableDays[0];
         console.log(this.date.date);
         const times = this.date.times;
-        return times.slice(0, 12);
+        return times.slice(1, 13);
       }
       return [];
     },
     minimumCookTime() {
-      return 5; // NOTE: overriding mixin's minimumCookTime, can not be zero
+      return 1; // NOTE: overriding mixin's minimumCookTime, can not be zero
     },
     itemsObj() {
       return this.array2obj(this.menus.concat(this.titles));
