@@ -62,6 +62,7 @@
                 >{{$t("admin.order.suspendUntil", {display:time.display})}}</span>
               </b-button>
               <b-button
+                v-if="availableTimes.length > 0"
                 class="b-reset op-button-pill bg-form m-t-16 m-r-16"
                 @click="handleSuspend(24*60)"
               >
