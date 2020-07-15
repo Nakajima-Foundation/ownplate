@@ -14,6 +14,9 @@ export const dispatch = async (db: FirebaseFirestore.Firestore, data: any, conte
     switch (cmd) {
       case "getCustomeClaims":
         result = await getCustomClaims(db, uid);
+        break;
+      default:
+        throw new functions.https.HttpsError('invalid-argument', 'Invalid command.')
     }
 
     return result

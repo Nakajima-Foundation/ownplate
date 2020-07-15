@@ -2,8 +2,11 @@
   <section class="section">
     <back-button url="/s/admins" />
     <h1>Custome Claims</h1>
-    <div>Admin: {{ customClaims.admin }}</div>
-    <div>Operator: {{ customClaims.operator || false }}</div>
+    <div>Admin: {{ customClaims.admin || false }}</div>
+    <div>
+      Operator: {{ customClaims.operator || false }}
+      <b-button @click="handleOperator">Toggle</b-button>
+    </div>
     <h1>Restaurants</h1>
     <div v-for="restaurant in restaurants" :key="restaurant.id">
       <restaurant :restaurant="restaurant"></restaurant>
@@ -46,6 +49,18 @@ export default {
       .get();
     this.restaurants = snapshot.docs.map(this.doc2data("admin"));
     console.log(this.restaurants);
+  },
+  methods: {
+    async handleOperator() {
+      console.log("handleOperator");
+      const { data } = await this.superDispatch({
+        cmd: "setCustomeClaims",
+        uid: this.adminId,
+        claimId: "operator",
+        value: !this.customClaims.operator
+      });
+      console.log(data);
+    }
   }
 };
 </script>
