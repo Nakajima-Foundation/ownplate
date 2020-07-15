@@ -54,12 +54,13 @@ export default {
     async handleOperator() {
       console.log("handleOperator");
       const { data } = await this.superDispatch({
-        cmd: "setCustomeClaims",
+        cmd: "setCustomeClaim",
         uid: this.adminId,
-        claimId: "operator",
+        key: "operator",
         value: !this.customClaims.operator
       });
       console.log(data);
+      this.customClaims = data.result;
     }
   }
 };

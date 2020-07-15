@@ -6,7 +6,7 @@ export const dispatch = async (db: FirebaseFirestore.Firestore, data: any, conte
   if (!context.auth?.token?.admin) {
     throw new functions.https.HttpsError('permission-denied', 'You do not have permission to confirm this request.')
   }
-  const { cmd, uid } = data;
+  const { cmd, uid, key, value } = data;
   utils.validate_params({ cmd, uid });
 
   let result: object = { result: false, message: "not processed" };
@@ -14,6 +14,11 @@ export const dispatch = async (db: FirebaseFirestore.Firestore, data: any, conte
     switch (cmd) {
       case "getCustomeClaims":
         result = await getCustomClaims(db, uid);
+        break;
+      case "setCustomeClaim":
+        if (key === "operator") {
+          result = await setCustomClaim(db, uid, key, value);
+        }
         break;
       default:
         throw new functions.https.HttpsError('invalid-argument', 'Invalid command.')
@@ -29,4 +34,11 @@ const getCustomClaims = async (db: FirebaseFirestore.Firestore, uid: string) => 
   const userRecord = await admin.auth().getUser(uid);
   const customClaims = userRecord.customClaims || {};
   return { result: customClaims }
+}
+
+const setCustomClaim = async (db: FirebaseFirestore.Firestore, uid: string, key: string, value: boolean) => {
+  const obj = {};
+  obj[key] = value;
+  await admin.auth().setCustomUserClaims(uid, obj);
+  return await getCustomClaims(db, uid);
 }
