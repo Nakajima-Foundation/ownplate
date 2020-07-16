@@ -206,16 +206,15 @@ export default {
   },
   computed: {
     availableTimes() {
+      // Note: availableDays will change if we change shopInfo.suspendUntil.
+      // This logic works because we use availableDays when suspendUntil is not set or too old.
       if (this.availableDays.length > 0) {
         this.date = this.availableDays[0];
         console.log(this.date.date);
         const times = this.date.times;
-        return times.slice(1, 13);
+        return times.slice(1, 13); // first twelve time slots (except first) regardless of the time
       }
       return [];
-    },
-    minimumCookTime() {
-      return 1; // NOTE: overriding mixin's minimumCookTime, can not be zero
     },
     itemsObj() {
       return this.array2obj(this.menus.concat(this.titles));

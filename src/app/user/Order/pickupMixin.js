@@ -28,6 +28,8 @@ export default {
               return time.time >= localMin + this.minimumCookTime;
             });
           }
+          // We don't want to put this logic within "if (offset === 0)" so that suspention could
+          // happen on the following date than today
           if (suspendUntil && (suspendUntil - date) > 0) {
             times = times.filter(time => {
               return time.time >= Math.round((suspendUntil - date) / 60000);
