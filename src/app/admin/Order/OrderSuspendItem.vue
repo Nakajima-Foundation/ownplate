@@ -58,7 +58,6 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from "vuex";
 import Price from "~/components/Price";
 
 export default {
