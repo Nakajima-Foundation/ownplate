@@ -44,9 +44,12 @@
 
           <!-- Suspend New Orders -->
           <div>
-            <div
-              class="t-subtitle2 c-text-black-medium m-t-16"
-            >{{ $t("admin.order.suspendNewOrders") }}</div>
+            <div class="t-subtitle2 c-text-black-medium m-t-16">
+              {{ $t("admin.order.suspendNewOrders") }}
+              <span
+                v-if="date"
+              >: {{ $d(date.date, "short" )}}</span>
+            </div>
             <!-- # ToDo: Switch Suspend/Unsuspend buttons based on the status. -->
             <!-- Suspend Buttons -->
             <div v-if="!suspendUntil">
@@ -213,6 +216,8 @@ export default {
         console.log(this.date.date);
         const times = this.date.times;
         return times.slice(1, 13); // first twelve time slots (except first) regardless of the time
+      } else {
+        this.date = null;
       }
       return [];
     },

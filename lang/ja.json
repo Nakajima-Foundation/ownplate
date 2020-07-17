@@ -418,7 +418,7 @@
       "suspendSettings": "一時休止設定",
       "suspendUntil": "{display} まで休止",
       "suspendNewOrders": "新規注文受付",
-      "suspendForAllDay": "本日の受付は全て休止",
+      "suspendForAllDay": "終日休止",
       "suspending": "受付休止中",
       "unsuspendAt": "解除時刻 ",
       "unsuspend": "受付休止を解除",
