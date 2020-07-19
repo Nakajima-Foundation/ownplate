@@ -222,6 +222,8 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
       } else {
         throw new functions.https.HttpsError('permission-denied', 'The user does not have permission to cancel this request.')
       }
+      const cancelTimeKey = (uid === order.uid) ? "orderCustomerCanceledAt" : "orderRestaurantCanceledAt";
+
       phoneNumber = order.phoneNumber
       uidUser = order.uid
       orderNumber = order.number;
@@ -230,6 +232,7 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
         // No payment transaction
         transaction.set(orderRef, {
           timeCanceld: admin.firestore.FieldValue.serverTimestamp(),
+          [cancelTimeKey]: admin.firestore.FieldValue.serverTimestamp(),
           updatedAt: admin.firestore.Timestamp.now(),
           status: order_status.order_canceled,
           uidCanceledBy: uid,

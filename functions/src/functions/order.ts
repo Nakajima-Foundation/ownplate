@@ -46,6 +46,7 @@ export const place = async (db: FirebaseFirestore.Firestore, data: any, context:
         tip: roundedTip,
         sendSMS: sendSMS || false,
         updatedAt: admin.firestore.Timestamp.now(),
+        orderPlacedAt: admin.firestore.Timestamp.now(),
         timePlaced: timeToPickup && new admin.firestore.Timestamp(timeToPickup.seconds, timeToPickup.nanoseconds) || admin.firestore.FieldValue.serverTimestamp(),
       })
 
@@ -123,6 +124,7 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
         throw new functions.https.HttpsError('permission-denied', 'Paid order can not be cancele like this', status)
       }
 
+      // everything are ok
       const props: any = {
         updatedAt: admin.firestore.Timestamp.now(),
         status
@@ -131,10 +133,15 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
         props.timeEstimated = timeEstimated ?
           new admin.firestore.Timestamp(timeEstimated.seconds, timeEstimated.nanoseconds)
           : order.timePlaced;
+        props.orderAcceptedAt = admin.firestore.Timestamp.now();
         order.timeEstimated = props.timeEstimated;
+      }
+      if (status === order_status.cooking_completed) {
+        props.orderCookingCompletedAt = admin.firestore.Timestamp.now();
       }
       if (status === order_status.customer_picked_up) {
         // Make it compatible with striped orders.
+        props.orderCustomerPickedUpAt = admin.firestore.Timestamp.now();
         props.timeConfirmed = props.updatedAt;
       }
       transaction.update(orderRef, props)

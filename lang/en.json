@@ -7,7 +7,7 @@
     "restaurantRoot": "List of shops that can take away",
     "restaurantArea": "List of shops that can take away in {area}",
     "terms": {
-      "admmin": "Terms and conditions for restaurant owner",
+      "admin": "Terms and conditions for restaurant owner",
       "user": "Terms and conditions for Customer",
       "privacy": "Privacy policy"
     }
@@ -183,12 +183,15 @@
   "find": {
     "area": "Areas",
     "areaAll": "All Areas",
-    "areaTop": "Areas Top"
+    "areaTop": "Areas Top",
+    "likes": "Likes"
   },
   "shopInfo": {
     "thisIsPreview": "This is Preview Only.",
     "notPublic": "Page is not public to users.",
     "share": "Share",
+    "like": "Like",
+    "liked": "Liked",
     "qrcode": "QR code",
     "copyUrl": "Copy URL",
     "UrlCopied": "URL Copied",
@@ -215,7 +218,8 @@
     "onlinePayment": "Online Payment",
     "onsitePayment": "On Site Payment",
     "noPaymentMethod": "Online Order Unavailable",
-    "minimumAvailableTime": "Minimum available time"
+    "minimumAvailableTime": "Minimum available time",
+    "noAvailableTime": "No orderable time"
   },
   "transactionsAct": {
     "title": "Specified Commercial Transaction Act",
@@ -410,6 +414,17 @@
     "passwordReset": "Reset Password",
     "pleaseCheckInbox": "Please check your inbox, an email is on the way.",
     "order": {
+      "suspend": "Suspend",
+      "suspendSettings": "Suspension Settings",
+      "suspendUntil": "Suspend until {display}",
+      "suspendNewOrders": "Suspend New Orders",
+      "suspendForAllDay": "For All Day",
+      "suspending": "Suspendinding",
+      "unsuspendAt": "Unsuspend at ",
+      "unsuspend": "Unsuspend",
+      "suspendIndividualItem": "Individual Item",
+      "suspendAllItems": "Suspend All Items",
+      "unsuspendAllItems": "Unsuspend All Items",
       "notification": "Notification",
       "incompleteOrders": "Incomplete Orders",
       "notificationSettings": "Notification Settings",
