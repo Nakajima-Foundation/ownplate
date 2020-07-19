@@ -2,14 +2,23 @@ import { midNight } from "~/plugins/dateUtils.js";
 
 export default {
   computed: {
-    dayOfWeek() {
-      return new Date().getDay();
-    },
+    // public
     availableDays() {
-      const today = this.dayOfWeek;
+      if (!this.shopInfo.businessDay) {
+        return []; // it means shopInfo is empty (not yet loaded)
+      }
+
       const now = this.$store.state.date;
       console.log(this.$store.state.date); // never delete this line;
-      const localMin = now.getHours() * 60 + now.getMinutes();
+      const today = now.getDay();
+      let suspendUntil = new Date(now)
+      suspendUntil.setMinutes(now.getMinutes() + this.minimumCookTime);
+      if (this.shopInfo.suspendUntil) {
+        const specifiedDate = this.shopInfo.suspendUntil.toDate();
+        if (specifiedDate > suspendUntil) {
+          suspendUntil = specifiedDate;
+        }
+      }
       return Array.from(Array(this.daysInAdvance).keys())
         .filter(offset => {
           return this.businessDays[(today + offset) % 7];
@@ -17,11 +26,13 @@ export default {
         .map(offset => {
           const date = midNight(offset);
           let times = this.openSlots[(today + offset) % 7];
-          if (offset === 0) {
+          const delta = suspendUntil - date;
+          if (delta > 0) {
             times = times.filter(time => {
-              return time.time >= localMin + this.minimumCookTime;
+              return time.time >= Math.round(delta / 60000);
             });
           }
+
           return { offset, date, times };
         })
         .filter(day => {

@@ -1,8 +1,10 @@
 <template>
   <div>
     <!-- Restaurant Profile Photo -->
-    <div class="m-t-24 align-center" v-if="profileImage">
-      <img :src="profileImage" class="w-64 h-64 r-64 cover" />
+    <div class="m-t-24 align-center">
+      <div class="w-64 h-64 r-64 bg-form is-inline-block">
+        <img :src="profileImage" class="w-64 h-64 r-64 cover" />
+      </div>
     </div>
 
     <!-- Restaurant Name -->

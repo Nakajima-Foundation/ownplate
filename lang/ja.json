@@ -7,7 +7,7 @@
     "restaurantRoot": "全国のテイクアウトできるお店一覧",
     "restaurantArea": "{area}のテイクアウトできるお店特集",
     "terms": {
-      "admmin": "サービス利用規約（加盟店）",
+      "admin": "サービス利用規約（加盟店）",
       "user": "サービス利用規約（ユーザー）",
       "privacy": "プライバシーポリシー"
     }
@@ -183,12 +183,15 @@
   "find": {
     "area": "飲食店エリア",
     "areaAll": "全てのエリア",
-    "areaTop": "エリア一覧"
+    "areaTop": "エリア一覧",
+    "likes": "お気に入り"
   },
   "shopInfo": {
     "thisIsPreview": "これは飲食店向けプレビューです。",
     "notPublic": "お客様向けには公開されていません。",
     "share": "シェア",
+    "like": "お気に入りに登録",
+    "liked": "お気に入り済み",
     "qrcode": "飲食店QRコード",
     "copyUrl": "このお店のアドレスをコピー",
     "UrlCopied": "コピーしました",
@@ -215,7 +218,8 @@
     "onlinePayment": "オンライン決済",
     "onsitePayment": "受け取り払い",
     "noPaymentMethod": "オンライン注文未対応",
-    "minimumAvailableTime": "最短受付可能時間"
+    "minimumAvailableTime": "最短受付可能時間",
+    "noAvailableTime": "受付時間外"
   },
   "transactionsAct": {
     "title": "特定商取引法に基づく表記",
@@ -410,6 +414,17 @@
     "passwordReset": "パスワードのリセット",
     "pleaseCheckInbox": "メールを送信しました。受信箱をご確認ください。",
     "order": {
+      "suspend": "一時休止",
+      "suspendSettings": "一時休止設定",
+      "suspendUntil": "{display} まで休止",
+      "suspendNewOrders": "新規注文受付",
+      "suspendForAllDay": "終日休止",
+      "suspending": "受付休止中",
+      "unsuspendAt": "解除時刻 ",
+      "unsuspend": "受付休止を解除",
+      "suspendIndividualItem": "個別商品",
+      "suspendAllItems": "全ての商品を一時休止",
+      "unsuspendAllItems": "全ての商品の一時休止を解除",
       "notification": "通知",
       "incompleteOrders": "未完了の注文",
       "notificationSettings": "通知設定",
