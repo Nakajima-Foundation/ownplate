@@ -58,12 +58,10 @@
 import MarkdownIt from "markdown-it";
 import newsList from './data';
 
-import { defaultHeader } from "../../../plugins/header";
-
 export default {
   head() {
     return {
-      title: [this.news.title, defaultHeader.title].join(" / "),
+      title: [this.news.title, this.defaultTitle].join(" / "),
     };
   },
   data() {
