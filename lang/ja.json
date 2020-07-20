@@ -7,7 +7,7 @@
     "restaurantRoot": "全国のテイクアウトできるお店一覧",
     "restaurantArea": "{area}のテイクアウトできるお店特集",
     "terms": {
-      "admmin": "サービス利用規約（加盟店）",
+      "admin": "サービス利用規約（加盟店）",
       "user": "サービス利用規約（ユーザー）",
       "privacy": "プライバシーポリシー"
     }
@@ -414,6 +414,17 @@
     "passwordReset": "パスワードのリセット",
     "pleaseCheckInbox": "メールを送信しました。受信箱をご確認ください。",
     "order": {
+      "suspend": "一時休止",
+      "suspendSettings": "一時休止設定",
+      "suspendUntil": "{display} まで休止",
+      "suspendNewOrders": "新規注文受付",
+      "suspendForAllDay": "終日休止",
+      "suspending": "受付休止中",
+      "unsuspendAt": "解除時刻 ",
+      "unsuspend": "受付休止を解除",
+      "suspendIndividualItem": "個別商品",
+      "suspendAllItems": "全ての商品を一時休止",
+      "unsuspendAllItems": "全ての商品の一時休止を解除",
       "notification": "通知",
       "incompleteOrders": "未完了の注文",
       "notificationSettings": "通知設定",
