@@ -2,8 +2,8 @@
   <section class="section">
     <back-button url="/s/admins" />
     <h1>Custome Claims</h1>
-    <div>Admin: {{ customClaims.admin || false }}</div>
     <div>
+      <b-checkbox v-model="isAdmin" disabled>Admin</b-checkbox>
       <b-checkbox v-model="isOperator">Operator</b-checkbox>
     </div>
     <h1>Restaurants</h1>
@@ -29,20 +29,29 @@ export default {
     };
   },
   computed: {
+    isAdmin() {
+      return !!this.customClaims.admin;
+    },
     isOperator: {
       get() {
         return this.customClaims.operator;
       },
       async set(value) {
-        console.log("set", value);
-        const { data } = await this.superDispatch({
-          cmd: "setCustomeClaim",
-          uid: this.adminId,
-          key: "operator",
-          value: value
-        });
-        console.log(data);
-        this.customClaims = data.result;
+        this.$store.commit("setLoading", true);
+        try {
+          const { data } = await this.superDispatch({
+            cmd: "setCustomeClaim",
+            uid: this.adminId,
+            key: "operator",
+            value: value
+          });
+          console.log(data);
+          this.customClaims = data.result;
+        } catch (error) {
+          console.error(error);
+        } finally {
+          this.$store.commit("setLoading", false);
+        }
       }
     },
     adminId() {
