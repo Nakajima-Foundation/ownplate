@@ -4,8 +4,7 @@
     <h1>Custome Claims</h1>
     <div>Admin: {{ customClaims.admin || false }}</div>
     <div>
-      Operator: {{ customClaims.operator || false }}
-      <b-button @click="handleOperator">Toggle</b-button>
+      <b-checkbox v-model="isOperator">Operator</b-checkbox>
     </div>
     <h1>Restaurants</h1>
     <div v-for="restaurant in restaurants" :key="restaurant.id">
@@ -30,6 +29,22 @@ export default {
     };
   },
   computed: {
+    isOperator: {
+      get() {
+        return this.customClaims.operator;
+      },
+      async set(value) {
+        console.log("set", value);
+        const { data } = await this.superDispatch({
+          cmd: "setCustomeClaim",
+          uid: this.adminId,
+          key: "operator",
+          value: value
+        });
+        console.log(data);
+        this.customClaims = data.result;
+      }
+    },
     adminId() {
       return this.$route.params.adminId;
     },
@@ -49,19 +64,6 @@ export default {
       .get();
     this.restaurants = snapshot.docs.map(this.doc2data("admin"));
     console.log(this.restaurants);
-  },
-  methods: {
-    async handleOperator() {
-      console.log("handleOperator");
-      const { data } = await this.superDispatch({
-        cmd: "setCustomeClaim",
-        uid: this.adminId,
-        key: "operator",
-        value: !this.customClaims.operator
-      });
-      console.log(data);
-      this.customClaims = data.result;
-    }
   }
 };
 </script>
