@@ -38,8 +38,8 @@ const getCustomClaims = async (db: FirebaseFirestore.Firestore, uid: string) => 
 }
 
 const setCustomClaim = async (db: FirebaseFirestore.Firestore, uid: string, key: string, value: boolean) => {
-  const obj = {};
-  obj[key] = value;
+  const obj = { [key]: value };
   await admin.auth().setCustomUserClaims(uid, obj);
+  await db.doc(`admins/${uid}`).update(obj); // duplicated data in DB
   return await getCustomClaims(db, uid);
 }
