@@ -2,6 +2,12 @@
   <section class="section">
     <back-button url="/s" />
     <h2>All Logs</h2>
+    <table>
+      <tr v-for="log in logs" :key="log.id">
+        <td>{{ log.cmd }} {{log.key}} {{log.value}}</td>
+        <td>{{log.uid}} {{log.uidSuper}}</td>
+      </tr>
+    </table>
   </section>
 </template>
 
