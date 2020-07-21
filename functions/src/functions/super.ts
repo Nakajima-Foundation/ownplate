@@ -16,7 +16,7 @@ export const dispatch = async (db: FirebaseFirestore.Firestore, data: any, conte
       case "getCustomeClaims":
         result = await getCustomClaims(db, uid);
         break;
-      case "setCustomeClaim":
+      case "setCustomClaim":
         const userRecord = await admin.auth().getUser(uid);
         if (key === "operator" && userRecord.email) {
           result = await setCustomClaim(db, uid, key, value);
