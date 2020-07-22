@@ -341,4 +341,4 @@ export const soundFiles = [
   }
 ];
 
-export const twiml_neworder = '<Response><Say language="ja-jp">こんにちは。わたしは、おもちかえりこむです。あたらしいオーダーが入りました。</Say></Response>';
+export const twiml_neworder = '<Response><Say language="ja-jp">こんにちは。わたしは、おもちかえりどっとこむです。あたらしいオーダーが入りました。かくにんをよろしくおねがいいたします。</Say></Response>';

@@ -6,7 +6,7 @@ export const parsePhoneNumber = (phoneNumber) => {
   return phoneUtil.parse(phoneNumber);
 };
 export const intenationalFormat = (parsedNumber) => {
-  return phoneUtil.format(parsedNumber, PNF.INTERNATIONAL);
+  return phoneUtil.format(parsedNumber, PNF.PhoneNumberFormat.INTERNATIONAL);
 };
 
 const localPrefix = (number) => {
