@@ -207,8 +207,10 @@ const notifyRestaurant = async (db: FirebaseFirestore.Firestore, messageId: stri
       url
     })
     // todo make phone call
-    if (restaurant.phoneCall) {
-      await twilio.phoneCall(restaurant);
+    if (messageId === 'msg_order_placed') {
+      if (restaurant.phoneCall) {
+        await twilio.phoneCall(restaurant);
+      }
     }
   }
 }

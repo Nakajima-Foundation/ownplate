@@ -24,22 +24,16 @@ describe('twilio function', () => {
     const num2 = twilio.nationalPhoneNumber(restaurant);
     num2.should.equal("03-3333-3333")
 
-    const num3 = twilio.phoneUrl(restaurant);
-    num3.should.equal('tel:0333333333');
-
-
     const restaurantCall = {
       countryCode: "+81",
       phoneNumber: test_phone_number
     };
 
     if (test_phone_number) {
-      const num4 = twilio.intenationalPhoneNumber(restaurantCall);
-      num4.should.startWith("+81");
+      const num3 = twilio.intenationalPhoneNumber(restaurantCall);
+      num3.should.startWith("+81");
 
-      await twilio.phoneCall({
-        phoneNumber: num4
-      });
+      await twilio.phoneCall(restaurantCall);
     }
 
   })
