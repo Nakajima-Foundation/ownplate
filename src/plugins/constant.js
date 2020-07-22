@@ -340,3 +340,5 @@ export const soundFiles = [
     file: "/sound_meow.mp3"
   }
 ];
+
+export const twiml_neworder = '<Response><Say language="ja-jp">こんにちは。わたしは、おもちかえりこむです。あたらしいオーダーが入りました。</Say></Response>';
