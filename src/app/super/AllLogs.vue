@@ -9,7 +9,9 @@
           <div class="m-l-8">{{log.key}} {{log.value}}</div>
         </td>
         <td class="p-l-8">{{log.success ? "success": log.error}}</td>
-        <td class="p-l-8">{{log.email || log.uid}}</td>
+        <td class="p-l-8">
+          <nuxt-link :to="`/s/admins/${log.uid}`">{{log.email || log.uid}}</nuxt-link>
+        </td>
         <td class="p-l-8">{{log.uidSuper.slice(0,8) + "..."}}</td>
       </tr>
     </table>
