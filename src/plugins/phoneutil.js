@@ -14,8 +14,7 @@ const localPrefix = (number) => {
 };
 
 export const formatNational = (number) => {
-  const prefix = localPrefix(number);
-  return prefix + phoneUtil.format(number, PNF.NATIONAL);
+  return phoneUtil.format(number, PNF.PhoneNumberFormat.NATIONAL);
 };
 
 export const formatURL = (number) => {

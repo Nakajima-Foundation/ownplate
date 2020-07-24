@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { parsePhoneNumber, formatNational } from "~/plugins/phoneutil.js";
+import { parsePhoneNumber } from "~/plugins/phoneutil.js";
 
 export default {
   props: {
@@ -81,7 +81,6 @@ export default {
         countryCode: this.countryCode,
         errors: this.errors
         // number,
-        // national: formatNational(number)
       });
     }
   }
