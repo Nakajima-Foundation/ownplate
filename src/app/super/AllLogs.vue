@@ -4,9 +4,13 @@
     <h2>All Logs</h2>
     <table>
       <tr v-for="log in logs" :key="log.id">
-        <td>{{ log.cmd }} {{log.key}} {{log.value}}</td>
-        <td>{{log.email}}</td>
-        <td>{{log.uidSuper}}</td>
+        <td class="p-b-4">
+          {{ log.cmd }}
+          <div class="m-l-8">{{log.key}} {{log.value}}</div>
+        </td>
+        <td class="p-l-8">{{log.success ? "success": log.error}}</td>
+        <td class="p-l-8">{{log.email || log.uid}}</td>
+        <td class="p-l-8">{{log.uidSuper.slice(0,8) + "..."}}</td>
       </tr>
     </table>
   </section>
@@ -43,7 +47,6 @@ export default {
           log.createdAt = log.createdAt.toDate();
           return log;
         });
-        console.log("***", this.logs);
       });
   },
   destroyed() {
