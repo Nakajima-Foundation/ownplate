@@ -20,14 +20,28 @@ export const dispatch = async (db: FirebaseFirestore.Firestore, data: any, conte
         const userRecord = await admin.auth().getUser(uid);
         if (key === "operator" && userRecord.email) {
           result = await setCustomClaim(db, uid, key, value);
-          await db.collection(`admins/${uidSuper}/logs`).add({
-            admin: true,
+          await db.collection(`admins/${uidSuper}/adminlogs`).add({
             uid, uidSuper, cmd, key, value,
+            email: userRecord.email,
+            success: true,
+            createdAt: admin.firestore.Timestamp.now()
+          })
+        } else {
+          await db.collection(`admins/${uidSuper}/adminlogs`).add({
+            uid, uidSuper, cmd, key, value,
+            success: false,
+            error: "invalid_parameters",
             createdAt: admin.firestore.Timestamp.now()
           })
         }
         break;
       default:
+        await db.collection(`admins/${uidSuper}/adminlogs`).add({
+          uid, uidSuper, cmd, key, value,
+          success: false,
+          error: "invalid_cmd",
+          createdAt: admin.firestore.Timestamp.now()
+        })
         throw new functions.https.HttpsError('invalid-argument', 'Invalid command.')
     }
 

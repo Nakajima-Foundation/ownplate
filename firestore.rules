@@ -90,7 +90,7 @@ service cloud.firestore {
     match /{path=**}/private/{documentId} {
       allow read: if isSuper(request);
     }
-    match /{path=**}/logs/{documentId} {
+    match /{path=**}/adminlogs/{documentId} {
       allow read: if isSuper(request);
     }
 

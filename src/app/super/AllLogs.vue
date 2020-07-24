@@ -5,7 +5,8 @@
     <table>
       <tr v-for="log in logs" :key="log.id">
         <td>{{ log.cmd }} {{log.key}} {{log.value}}</td>
-        <td>{{log.uid}} {{log.uidSuper}}</td>
+        <td>{{log.email}}</td>
+        <td>{{log.uidSuper}}</td>
       </tr>
     </table>
   </section>
@@ -32,9 +33,8 @@ export default {
   },
   created() {
     this.detatcher = db
-      .collectionGroup("logs")
+      .collectionGroup("adminlogs")
       .orderBy("createdAt", "desc")
-      .where("admin", "==", true)
       .limit(100)
       .onSnapshot(snapshot => {
         this.logs = snapshot.docs.map(doc => {
