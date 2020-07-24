@@ -158,6 +158,10 @@ export const customRoutes = [
     component: "super/AllAdmins.vue"
   },
   {
+    path: "/s/logs",
+    component: "super/AllLogs.vue"
+  },
+  {
     path: "/s/profiles",
     component: "super/Profiles.vue"
   },

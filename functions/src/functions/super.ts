@@ -6,6 +6,7 @@ export const dispatch = async (db: FirebaseFirestore.Firestore, data: any, conte
   if (!context.auth?.token?.admin) {
     throw new functions.https.HttpsError('permission-denied', 'You do not have permission to confirm this request.')
   }
+  const uidSuper = utils.validate_auth(context);
   const { cmd, uid, key, value } = data;
   utils.validate_params({ cmd, uid });
 
@@ -15,13 +16,32 @@ export const dispatch = async (db: FirebaseFirestore.Firestore, data: any, conte
       case "getCustomeClaims":
         result = await getCustomClaims(db, uid);
         break;
-      case "setCustomeClaim":
+      case "setCustomClaim":
         const userRecord = await admin.auth().getUser(uid);
         if (key === "operator" && userRecord.email) {
           result = await setCustomClaim(db, uid, key, value);
+          await db.collection(`admins/${uidSuper}/adminlogs`).add({
+            uid, uidSuper, cmd, key, value,
+            email: userRecord.email,
+            success: true,
+            createdAt: admin.firestore.Timestamp.now()
+          })
+        } else {
+          await db.collection(`admins/${uidSuper}/adminlogs`).add({
+            uid, uidSuper, cmd, key, value,
+            success: false,
+            error: "invalid_parameters",
+            createdAt: admin.firestore.Timestamp.now()
+          })
         }
         break;
       default:
+        await db.collection(`admins/${uidSuper}/adminlogs`).add({
+          uid, uidSuper, cmd, key, value,
+          success: false,
+          error: "invalid_cmd",
+          createdAt: admin.firestore.Timestamp.now()
+        })
         throw new functions.https.HttpsError('invalid-argument', 'Invalid command.')
     }
 

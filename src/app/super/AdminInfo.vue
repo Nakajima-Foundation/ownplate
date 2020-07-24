@@ -40,7 +40,7 @@ export default {
         this.$store.commit("setLoading", true);
         try {
           const { data } = await this.superDispatch({
-            cmd: "setCustomeClaim",
+            cmd: "setCustomClaim",
             uid: this.adminId,
             key: "operator",
             value: value
