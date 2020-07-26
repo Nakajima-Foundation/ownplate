@@ -14,6 +14,8 @@
       <br />
       <router-link to="/s/profiles">All Profiles</router-link>
       <br />
+      <router-link to="/s/logs">All Logs</router-link>
+      <br />
     </div>
     <b-loading v-else active />
   </section>

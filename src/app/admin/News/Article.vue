@@ -59,7 +59,11 @@ import MarkdownIt from "markdown-it";
 import newsList from './data';
 
 export default {
-
+  head() {
+    return {
+      title: [this.news.title, this.defaultTitle].join(" / "),
+    };
+  },
   data() {
     const newsId = this.$route.params.newsId;
     const news = newsList.find(element => element.date === newsId);

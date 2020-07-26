@@ -5,6 +5,8 @@ import { soundFiles, regionalSettings } from "~/plugins/constant.js";
 import moment from "moment";
 import * as Cookie from "cookie";
 
+import { defaultHeader } from "./header";
+
 export default ({ app }) => {
   Vue.mixin({
     methods: {
@@ -129,6 +131,9 @@ export default ({ app }) => {
       },
     },
     computed: {
+      defaultTitle() {
+        return defaultHeader.title;
+      },
       regionalSetting() {
         return regionalSettings[ownPlateConfig.region || "US"];
       },
