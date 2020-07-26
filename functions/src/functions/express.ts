@@ -130,7 +130,7 @@ const ogpPage = async (req: any, res: any) => {
 
     const siteName = ownPlateConfig.siteName;
     const title = menuData.exists ? [menuData.name, restaurant_data.restaurantName].join(" / ") :
-      (restaurant_data.restaurantName ? [restaurant_data.restaurantName, ownPlateConfig.siteName].join(" / ") :
+      (restaurant_data.restaurantName ? [restaurant_data.restaurantName, ownPlateConfig.restaurantPageTitle].join(" / ") :
        ownPlateConfig.siteName);
     const image = menuData.image ||
       (restaurant_data?.images?.cover?.resizedImages || {})["600"] ||

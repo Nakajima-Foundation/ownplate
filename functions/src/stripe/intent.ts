@@ -231,7 +231,7 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
       if (!stripeAccount || !order.payment || !order.payment.stripe) {
         // No payment transaction
         transaction.set(orderRef, {
-          timeCanceld: admin.firestore.FieldValue.serverTimestamp(),
+          timeCanceled: admin.firestore.FieldValue.serverTimestamp(),
           [cancelTimeKey]: admin.firestore.FieldValue.serverTimestamp(),
           updatedAt: admin.firestore.Timestamp.now(),
           status: order_status.order_canceled,
@@ -253,7 +253,8 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
           stripeAccount
         })
         transaction.set(orderRef, {
-          timeCanceld: admin.firestore.FieldValue.serverTimestamp(),
+          timeCanceled: admin.firestore.FieldValue.serverTimestamp(),
+          [cancelTimeKey]: admin.firestore.FieldValue.serverTimestamp(),
           status: order_status.order_canceled,
           updatedAt: admin.firestore.Timestamp.now(),
           uidCanceledBy: uid,

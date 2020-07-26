@@ -11,6 +11,8 @@ import { ownPlateConfig } from '../common/project';
 import { createCustomer } from '../stripe/customer';
 import moment from 'moment-timezone';
 
+import * as twilio from './twilio';
+
 export const nameOfOrder = (orderNumber: number) => {
   return "#" + `00${orderNumber}`.slice(-3);
 };
@@ -204,6 +206,12 @@ const notifyRestaurant = async (db: FirebaseFirestore.Firestore, messageId: stri
       updatedAt: admin.firestore.Timestamp.now(),
       url
     })
+    // todo make phone call
+    if (messageId === 'msg_order_placed') {
+      if (restaurant.phoneCall) {
+        await twilio.phoneCall(restaurant);
+      }
+    }
   }
 }
 

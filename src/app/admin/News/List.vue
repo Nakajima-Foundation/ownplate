@@ -57,6 +57,11 @@ export default {
   components: {
     ListItem
   },
+  head() {
+    return {
+      title: ["News", this.defaultTitle].join(" / "),
+    };
+  },
   data() {
     return {
       newsList: newsList
