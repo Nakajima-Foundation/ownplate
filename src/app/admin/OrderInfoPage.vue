@@ -178,7 +178,10 @@
                     :loading="updating===orderState"
                     :disabled="!isValidTransition(orderState)"
                     @click="handleChangeStatus(orderState)"
-                  >{{ $t("order.status." + orderState) }}</b-button>
+                  >
+                    <div>{{ $t("order.status." + orderState) }}</div>
+                    <div class="t-caption c-text-black-medium">{{timeOfEvents[orderState]}}</div>
+                  </b-button>
                 </div>
                 <div class="align-center m-t-24">
                   <b-button
@@ -187,7 +190,12 @@
                     :loading="updating==='customer_picked_up'"
                     :disabled="!isValidTransition('customer_picked_up')"
                     @click="handleComplete()"
-                  >{{ $t("order.status." + 'customer_picked_up') }}</b-button>
+                  >
+                    <div>{{ $t("order.status." + 'customer_picked_up') }}</div>
+                    <div
+                      class="t-caption c-text-black-medium"
+                    >{{timeOfEvents['customer_picked_up']}}</div>
+                  </b-button>
                 </div>
               </div>
             </div>
@@ -290,6 +298,18 @@ export default {
     });
   },
   computed: {
+    timeOfEvents() {
+      const mapping = {
+        order_placed: this.timeStampToText(this.orderInfo.timePlaced),
+        order_accepted: this.timeStampToText(this.orderInfo.orderAcceptedAt),
+        cooking_completed: this.timeStampToText(
+          this.orderInfo.orderCookingCompletedAt
+        ),
+        customer_picked_up: this.timeStampToText(this.orderInfo.timeConfirmed)
+      };
+      //console.log(mapping);
+      return mapping;
+    },
     search() {
       const value = encodeURIComponent(
         this.orderInfo.description || this.orderName
@@ -372,6 +392,12 @@ export default {
     }
   },
   methods: {
+    timeStampToText(timestamp) {
+      if (timestamp) {
+        return this.$d(timestamp.toDate(), "long");
+      }
+      return "";
+    },
     displayOption(option) {
       return formatOption(option, price => this.$n(price, "currency"));
     },
