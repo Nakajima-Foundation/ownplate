@@ -269,6 +269,8 @@
     "total": "Total",
     "yourPayment": "Your Payment",
     "details": "Details",
+    "order_canceled_by_customer": "Canceled by customer",
+    "order_canceled_by_restaurant": "Canceled by restaurant",
     "reuseCard": "Save it for future use",
     "whatsCVC": "What’s CVC?",
     "no_jcb": "＊This restaurant does not accept JCB card",
