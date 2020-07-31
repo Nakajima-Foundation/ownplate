@@ -178,7 +178,10 @@
                     :loading="updating===orderState"
                     :disabled="!isValidTransition(orderState)"
                     @click="handleChangeStatus(orderState)"
-                  >{{ $t("order.status." + orderState) }}</b-button>
+                  >
+                    <div>{{ $t("order.status." + orderState) }}</div>
+                    <div class="t-caption c-text-black-medium">{{timeOfEvents[orderState]}}</div>
+                  </b-button>
                 </div>
                 <div class="align-center m-t-24">
                   <b-button
@@ -187,7 +190,12 @@
                     :loading="updating==='customer_picked_up'"
                     :disabled="!isValidTransition('customer_picked_up')"
                     @click="handleComplete()"
-                  >{{ $t("order.status." + 'customer_picked_up') }}</b-button>
+                  >
+                    <div>{{ $t("order.status." + 'customer_picked_up') }}</div>
+                    <div
+                      class="t-caption c-text-black-medium"
+                    >{{timeOfEvents['customer_picked_up']}}</div>
+                  </b-button>
                 </div>
               </div>
             </div>
@@ -290,6 +298,13 @@ export default {
     });
   },
   computed: {
+    timeOfEvents() {
+      return {
+        order_placed:
+          this.orderInfo.timePlaced &&
+          this.$d(this.orderInfo.timePlaced.toDate(), "long")
+      };
+    },
     search() {
       const value = encodeURIComponent(
         this.orderInfo.description || this.orderName
