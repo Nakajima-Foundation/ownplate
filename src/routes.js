@@ -187,7 +187,7 @@ export const customRoutes = [
   },
   {
     path: "/o/orders",
-    component: "operator/AllOrders.vue"
+    component: "super/AllOrders.vue"
   },
   {
     path: "/o/restaurants",
