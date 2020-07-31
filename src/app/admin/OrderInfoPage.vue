@@ -82,11 +82,15 @@
                 <div class="m-t-24 align-center">
                   <b-button
                     class="b-reset op-button-pill h-36 bg-status-red-bg"
-                    :disabled="!isValidTransition('order_canceled')"
+                    v-if="isValidTransition('order_canceled')"
                     @click="openCancel()"
                   >
                     <i class="material-icons c-status-red s-18 m-l-8">delete</i>
                     <span class="c-status-red t-button">{{ $t("admin.order.cancelButton" )}}</span>
+                  </b-button>
+                  <b-button v-if="cancelStatus" class="op-button-medium w-256">
+                    <div class="c-status-red">{{$t('order.'+cancelStatus)}}</div>
+                    <div class="t-caption c-text-black-medium">{{timeOfEvents[cancelStatus]}}</div>
                   </b-button>
                 </div>
 
@@ -305,6 +309,15 @@ export default {
     });
   },
   computed: {
+    cancelStatus() {
+      if (this.orderInfo.status === order_status.order_canceled) {
+        if (this.orderInfo.orderCustomerCanceledAt) {
+          return "order_canceled_by_customer";
+        }
+        return "order_canceled_by_restaurant";
+      }
+      return false;
+    },
     orderItems() {
       if (this.orderInfo.order && this.orderInfo.menuItems) {
         return Object.keys(this.orderInfo.order).map(key => {
@@ -327,8 +340,15 @@ export default {
         cooking_completed: this.timeStampToText(
           this.orderInfo.orderCookingCompletedAt
         ),
-        customer_picked_up: this.timeStampToText(this.orderInfo.timeConfirmed)
+        customer_picked_up: this.timeStampToText(this.orderInfo.timeConfirmed),
+        order_canceled_by_restaurant: this.timeStampToText(
+          this.orderInfo.orderRestaurantCanceledAt
+        ),
+        order_canceled_by_customer: this.timeStampToText(
+          this.orderInfo.orderCustomerCanceledAt
+        )
       };
+      console.log(this.orderInfo);
       //console.log(mapping);
       return mapping;
     },

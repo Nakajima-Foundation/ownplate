@@ -269,6 +269,8 @@
     "total": "合計",
     "yourPayment": "お支払い",
     "details": "明細",
+    "order_canceled_by_customer": "キャンセル済み(客)",
+    "order_canceled_by_restaurant": "キャンセル済み(店)",
     "reuseCard": "今後の支払いのために保存する",
     "whatsCVC": "CVCとは？",
     "no_jcb": "＊このお店では、JCBカードは使えません",
