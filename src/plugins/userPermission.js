@@ -20,6 +20,9 @@ export default ({app}) => {
       },
       isNotSuperAdmin() {
         return this.$store.getters.isNotSuperAdmin;
+      },
+      isNotOperator() {
+        return this.$store.getters.isNotOperator;
       }
     },
   });
