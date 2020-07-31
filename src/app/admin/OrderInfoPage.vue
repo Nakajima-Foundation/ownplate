@@ -299,19 +299,16 @@ export default {
   },
   computed: {
     timeOfEvents() {
-      const foo = {
+      const mapping = {
         order_placed: this.timeStampToText(this.orderInfo.timePlaced),
         order_accepted: this.timeStampToText(this.orderInfo.orderAcceptedAt),
         cooking_completed: this.timeStampToText(
           this.orderInfo.orderCookingCompletedAt
         ),
-        customer_picked_up: this.timeStampToText(
-          this.orderInfo.customer_picked_up_at
-        )
+        customer_picked_up: this.timeStampToText(this.orderInfo.timeConfirmed)
       };
-      console.log(this.orderInfo);
-      console.log(foo);
-      return foo;
+      //console.log(mapping);
+      return mapping;
     },
     search() {
       const value = encodeURIComponent(
