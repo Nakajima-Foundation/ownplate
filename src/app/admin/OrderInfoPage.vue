@@ -201,6 +201,11 @@
               <!-- Order Items -->
               <ordered-item v-for="id in ids" :key="id" :item="items[id]" />
             </div>
+            <div class="m-t-24">
+              <!-- Details -->
+              <div class="t-h6 c-text-black-disabled">{{ $t("order.details") }}</div>
+              <order-info :orderItems="this.orderItems" :orderInfo="this.orderInfo || {}"></order-info>
+            </div>
           </div>
         </div>
         <!-- Right Gap -->
@@ -227,12 +232,14 @@ import NotFound from "~/components/NotFound";
 import { ownPlateConfig } from "~/config/project";
 import NotificationIndex from "./Notifications/Index";
 import { formatOption } from "~/plugins/strings.js";
+import OrderInfo from "~/app/user/Order/OrderInfo";
 
 export default {
   components: {
     BackButton,
     OrderedItem,
     NotificationIndex,
+    OrderInfo,
     NotFound
   },
 
@@ -290,6 +297,21 @@ export default {
     });
   },
   computed: {
+    orderItems() {
+      if (this.orderInfo.order && this.orderInfo.menuItems) {
+        return Object.keys(this.orderInfo.order).map(key => {
+          const num = this.orderInfo.order[key];
+          return {
+            item: this.orderInfo.menuItems[key],
+            count: num,
+            id: key,
+            options:
+              (this.orderInfo.options && this.orderInfo.options[key]) || []
+          };
+        });
+      }
+      return [];
+    },
     search() {
       const value = encodeURIComponent(
         this.orderInfo.description || this.orderName
