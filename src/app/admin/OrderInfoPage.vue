@@ -299,11 +299,23 @@ export default {
   },
   computed: {
     timeOfEvents() {
-      return {
+      const foo = {
         order_placed:
           this.orderInfo.timePlaced &&
-          this.$d(this.orderInfo.timePlaced.toDate(), "long")
+          this.$d(this.orderInfo.timePlaced.toDate(), "long"),
+        order_accepted:
+          this.orderInfo.orderAcceptedAt &&
+          this.$d(this.orderInfo.orderAcceptedAt.toDate(), "long"),
+        cooking_completed:
+          this.orderInfo.orderCookingCompletedAt &&
+          this.$d(this.orderInfo.orderCookingCompletedAt.toDate(), "long"),
+        customer_picked_up:
+          this.orderInfo.customer_picked_up_at &&
+          this.$d(this.orderInfo.customer_picked_up_at.toDate(), "long")
       };
+      console.log(this.orderInfo);
+      console.log(foo);
+      return foo;
     },
     search() {
       const value = encodeURIComponent(
