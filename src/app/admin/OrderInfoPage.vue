@@ -300,18 +300,14 @@ export default {
   computed: {
     timeOfEvents() {
       const foo = {
-        order_placed:
-          this.orderInfo.timePlaced &&
-          this.$d(this.orderInfo.timePlaced.toDate(), "long"),
-        order_accepted:
-          this.orderInfo.orderAcceptedAt &&
-          this.$d(this.orderInfo.orderAcceptedAt.toDate(), "long"),
-        cooking_completed:
-          this.orderInfo.orderCookingCompletedAt &&
-          this.$d(this.orderInfo.orderCookingCompletedAt.toDate(), "long"),
-        customer_picked_up:
-          this.orderInfo.customer_picked_up_at &&
-          this.$d(this.orderInfo.customer_picked_up_at.toDate(), "long")
+        order_placed: this.timeStampToText(this.orderInfo.timePlaced),
+        order_accepted: this.timeStampToText(this.orderInfo.orderAcceptedAt),
+        cooking_completed: this.timeStampToText(
+          this.orderInfo.orderCookingCompletedAt
+        ),
+        customer_picked_up: this.timeStampToText(
+          this.orderInfo.customer_picked_up_at
+        )
       };
       console.log(this.orderInfo);
       console.log(foo);
@@ -399,6 +395,12 @@ export default {
     }
   },
   methods: {
+    timeStampToText(timestamp) {
+      if (timestamp) {
+        return this.$d(timestamp.toDate(), "long");
+      }
+      return "";
+    },
     displayOption(option) {
       return formatOption(option, price => this.$n(price, "currency"));
     },
