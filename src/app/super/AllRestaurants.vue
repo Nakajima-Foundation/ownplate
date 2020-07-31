@@ -1,6 +1,6 @@
 <template>
   <section class="section">
-    <back-button url="/s" />
+    <back-button :url="backUrl" />
     <h2>All Restaurants</h2>
     <table>
       <tr><td>nama</td><td>掲載</td><td>公開</td><td>削除</td><td>メニュー数</td></tr>
@@ -45,13 +45,27 @@ export default {
   data() {
     return {
       restaurants: [],
-      // detacher: null,
+      isLoading: false,
       last: null,
     };
   },
+  computed: {
+    isSuperPage() {
+      return location.pathname.startsWith("/s/")
+    },
+    backUrl() {
+      return this.isSuperPage ? "/s" : "/o";
+    },
+  },
   async mounted() {
-    if (!this.$store.state.user || this.$store.getters.isNotSuperAdmin) {
-      this.$router.push("/");
+    if (this.isSuperPage) {
+      if (!this.$store.state.user || this.$store.getters.isNotSuperAdmin) {
+        this.$router.push("/");
+      }
+    } else {
+      if (!this.$store.state.user || (this.$store.getters.isNotSuperAdmin && this.$store.getters.isNotOperator)) {
+        this.$router.push("/");
+      }
     }
   },
   async created() {
@@ -59,22 +73,27 @@ export default {
   },
   methods: {
     async loadData() {
-      let query = db
+      if (!this.isLoading) {
+        this.isLoading = true;
+        let query = db
             .collection("restaurants")
             .orderBy("createdAt", "desc")
             .limit(100)
-      if (this.last) {
-        query = query.startAfter(this.last);
+        if (this.last) {
+          query = query.startAfter(this.last);
+        }
+        const snapshot = await query.get();
+        if (!snapshot.empty) {
+          this.last = snapshot.docs[snapshot.docs.length -1];
+          snapshot.docs.map(this.doc2data("resuatraut")).forEach(data => {
+            this.restaurants.push(data);
+          });
+        } else {
+          this.last = null;
+        }
       }
-      const snapshot = await query.get();
-      if (!snapshot.empty) {
-        this.last = snapshot.docs[snapshot.docs.length -1];
-        snapshot.docs.map(this.doc2data("resuatraut")).forEach(data => {
-          this.restaurants.push(data);
-        });
-      } else {
-        this.last = null;
-      }
+      this.isLoading = false;
+
     },
     async nextLoad() {
       if (this.last) {

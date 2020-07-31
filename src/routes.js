@@ -191,7 +191,7 @@ export const customRoutes = [
   },
   {
     path: "/o/restaurants",
-    component: "operator/AllRestaurants.vue"
+    component: "super/AllRestaurants.vue"
   },
   {
     path: "/callback/line",
