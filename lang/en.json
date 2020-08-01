@@ -146,6 +146,7 @@
     "noRestaurant": "No restaurant name",
     "noStreetAddress": "No street address",
     "reallyDelete": "Do you really want to delete this?",
+    "reallyOnListDelete": "Do you really want to delete this from lists?",
     "city": "city",
     "zip": "zip",
     "state": "state"
