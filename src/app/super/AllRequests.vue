@@ -19,13 +19,13 @@
           </router-link>
         </td>
         <td>
-          {{(restaurantsObj[request.id] || {}).onTheList ? "Y":"N"}}
+          {{(restaurantsObj[request.id] || {}).onTheList ? "o":"-"}}
         </td>
         <td>
-          {{(restaurantsObj[request.id] || {}).publicFlag  ? "Y":"N"}}
+          {{(restaurantsObj[request.id] || {}).publicFlag  ? "o":"-"}}
         </td>
         <td>
-          {{(restaurantsObj[request.id] || {}).deletedFlag ? "Y":"N"}}
+          {{(restaurantsObj[request.id] || {}).deletedFlag ? "o":"-"}}
         </td>
         <td>
           <span>
@@ -99,7 +99,9 @@ export default {
     },
     enableList(id) {
       db.doc(`restaurants/${id}`).update("onTheList", true);
-      this.restaurantsObj[id].onTheList = true;
+      const tmp = Object.assign({}, this.restaurantsObj);
+      tmp[id].onTheList = true;
+      this.restaurantsObj = tmp;
     }
   }
 };
