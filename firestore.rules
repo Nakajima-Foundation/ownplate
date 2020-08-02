@@ -4,6 +4,9 @@ service cloud.firestore {
     function isSuper(request) {
       return request.auth.token.admin == true
     }
+    function isOperator(request) {
+      return request.auth.token.operator == true
+    }
 
     function isAdmin(request) {
       return request.auth.uid != null && request.auth.token.email != null
@@ -82,6 +85,7 @@ service cloud.firestore {
     // Rules for collection group
     match /{path=**}/orders/{orderId} {
       allow read: if isSuper(request);
+      allow read: if isOperator(request);
       allow read: if isOwner(resource, request);
     }
     match /{path=**}/stripeLogs/{logId} {
@@ -114,6 +118,7 @@ service cloud.firestore {
         }
         match /orders/{orderId} {
           allow read: if isSuper(request);
+          allow read: if isOperator(request);
           allow create: if isUser(request)
                           && request.resource.data.status == 100
                           && request.resource.data.phoneNumber == request.auth.token.phone_number

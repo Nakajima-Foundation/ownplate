@@ -47,6 +47,12 @@ export const getters = {
   },
   isNotSuperAdmin: (state) => {
     return !state.claims?.admin;
+  },
+  isOperator: (state) => {
+    return state.claims?.operator;
+  },
+  isNotOperator: (state) => {
+    return !state.claims?.operator;
   }
 };
 

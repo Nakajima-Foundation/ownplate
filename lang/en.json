@@ -146,6 +146,7 @@
     "noRestaurant": "No restaurant name",
     "noStreetAddress": "No street address",
     "reallyDelete": "Do you really want to delete this?",
+    "reallyOnListDelete": "Do you really want to delete this from lists?",
     "city": "city",
     "zip": "zip",
     "state": "state"
@@ -268,6 +269,9 @@
     "inclusiveTax": "Sales Tax (inclusive)",
     "total": "Total",
     "yourPayment": "Your Payment",
+    "details": "Details",
+    "order_canceled_by_customer": "Canceled by customer",
+    "order_canceled_by_restaurant": "Canceled by restaurant",
     "reuseCard": "Save it for future use",
     "whatsCVC": "What’s CVC?",
     "no_jcb": "＊This restaurant does not accept JCB card",
@@ -519,7 +523,7 @@
     "enter": "Enter",
     "leave": "Leave",
     "viewList": "View Trace List",
-    "list": "Trace List"
+    "list": "COVID-19 Tracking Service/Trace List"
   },
   "errorPage": {
     "popup": {

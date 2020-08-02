@@ -1,9 +1,9 @@
 <template>
   <section class="section">
-    <back-button url="/s" />
+    <back-button :url="backUrl" />
     <h2>All Restaurants</h2>
     <table>
-      <tr><td>nama</td><td>List</td><td>Pub</td><td>Del</td><td>Menu</td></tr>
+      <tr><td>nama</td><td>掲載</td><td>公開</td><td>削除</td><td>メニュー数</td></tr>
       <tr
       v-for="restaurant in restaurants"
       :key="restaurant.id"
@@ -17,19 +17,20 @@
           </span>
         </td>
         <td>
-          {{restaurant.onTheList ? "Y":"N"}}
+          {{restaurant.onTheList ? "o":"-"}}
         </td>
         <td>
-          {{restaurant.publicFlag  ? "Y":"N"}}
+          {{restaurant.publicFlag  ? "o":"-"}}
         </td>
         <td>
-          {{restaurant.deletedFlag ? "Y":"N"}}
+          {{restaurant.deletedFlag ? "o":"-"}}
         </td>
         <td>
-          {{(restaurant.menuLists||[]).length}}
+          {{(restaurant.menuLists||[]).length || "-"}}
         </td>
       </tr>
     </table>
+    <button @click="nextLoad">next</button>
   </section>
 </template>
 
@@ -37,35 +38,55 @@
 import BackButton from "~/components/BackButton";
 import { db } from "~/plugins/firebase.js";
 
+import superMixin from "./SuperMixin";
+
 export default {
+  mixins: [superMixin],
   components: {
     BackButton
   },
   data() {
     return {
       restaurants: [],
-      detacher: null
+      isLoading: false,
+      last: null,
     };
   },
   async mounted() {
-    if (!this.$store.state.user || this.$store.getters.isNotSuperAdmin) {
-      this.$router.push("/");
-    }
+    this.superPermissionCheck();
   },
-  created() {
-    this.detatcher = db
-      .collection("restaurants")
-      .limit(100)
-      .orderBy("createdAt", "desc")
-      .onSnapshot(snapshot => {
-        this.restaurants = snapshot.docs.map(this.doc2data("resuatraut"));
-        console.log(this.restaurants);
-      });
-  },
-  destroyed() {
-    this.detatcher && this.detatcher();
+  async created() {
+    await this.loadData();
   },
   methods: {
+    async loadData() {
+      if (!this.isLoading) {
+        this.isLoading = true;
+        let query = db
+            .collection("restaurants")
+            .orderBy("createdAt", "desc")
+            .limit(100)
+        if (this.last) {
+          query = query.startAfter(this.last);
+        }
+        const snapshot = await query.get();
+        if (!snapshot.empty) {
+          this.last = snapshot.docs[snapshot.docs.length -1];
+          snapshot.docs.map(this.doc2data("resuatraut")).forEach(data => {
+            this.restaurants.push(data);
+          });
+        } else {
+          this.last = null;
+        }
+      }
+      this.isLoading = false;
+
+    },
+    async nextLoad() {
+      if (this.last) {
+        this.loadData();
+      }
+    },
   }
 };
 </script>

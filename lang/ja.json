@@ -146,6 +146,7 @@
     "noRestaurant": "飲食店名が未指定です",
     "noStreetAddress": "住所が未入力です",
     "reallyDelete": "本当にこの飲食店を削除しますか？",
+    "reallyOnListDelete": "本当に掲載を取り消しますか？",
     "city": "市町村",
     "zip": "郵便番号",
     "state": "都道府県"
@@ -268,6 +269,9 @@
     "inclusiveTax": "消費税（内税）",
     "total": "合計",
     "yourPayment": "お支払い",
+    "details": "明細",
+    "order_canceled_by_customer": "キャンセル済み(客)",
+    "order_canceled_by_restaurant": "キャンセル済み(店)",
     "reuseCard": "今後の支払いのために保存する",
     "whatsCVC": "CVCとは？",
     "no_jcb": "＊このお店では、JCBカードは使えません",
@@ -519,7 +523,7 @@
     "enter": "入店",
     "leave": "退店",
     "viewList": "入退店記録を確認",
-    "list": "入退店記録"
+    "list": "COVID-19 Tracking サービス/入退店記録"
   },
   "errorPage": {
     "popup": {
