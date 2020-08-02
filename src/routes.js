@@ -182,6 +182,18 @@ export const customRoutes = [
     component: "super/StripeCallback.vue"
   },
   {
+    path: "/o",
+    component: "operator/Index.vue"
+  },
+  {
+    path: "/o/orders",
+    component: "super/AllOrders.vue"
+  },
+  {
+    path: "/o/restaurants",
+    component: "super/AllRestaurants.vue"
+  },
+  {
     path: "/callback/line",
     component: "auth/LineCallback.vue"
   },

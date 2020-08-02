@@ -82,11 +82,15 @@
                 <div class="m-t-24 align-center">
                   <b-button
                     class="b-reset op-button-pill h-36 bg-status-red-bg"
-                    :disabled="!isValidTransition('order_canceled')"
+                    v-if="isValidTransition('order_canceled')"
                     @click="openCancel()"
                   >
                     <i class="material-icons c-status-red s-18 m-l-8">delete</i>
                     <span class="c-status-red t-button">{{ $t("admin.order.cancelButton" )}}</span>
+                  </b-button>
+                  <b-button v-if="cancelStatus" class="op-button-medium w-256">
+                    <div class="c-status-red">{{$t('order.'+cancelStatus)}}</div>
+                    <div class="t-caption c-text-black-medium">{{timeOfEvents[cancelStatus]}}</div>
                   </b-button>
                 </div>
 
@@ -178,7 +182,10 @@
                     :loading="updating===orderState"
                     :disabled="!isValidTransition(orderState)"
                     @click="handleChangeStatus(orderState)"
-                  >{{ $t("order.status." + orderState) }}</b-button>
+                  >
+                    <div>{{ $t("order.status." + orderState) }}</div>
+                    <div class="t-caption c-text-black-medium">{{timeOfEvents[orderState]}}</div>
+                  </b-button>
                 </div>
                 <div class="align-center m-t-24">
                   <b-button
@@ -187,7 +194,12 @@
                     :loading="updating==='customer_picked_up'"
                     :disabled="!isValidTransition('customer_picked_up')"
                     @click="handleComplete()"
-                  >{{ $t("order.status." + 'customer_picked_up') }}</b-button>
+                  >
+                    <div>{{ $t("order.status." + 'customer_picked_up') }}</div>
+                    <div
+                      class="t-caption c-text-black-medium"
+                    >{{timeOfEvents['customer_picked_up']}}</div>
+                  </b-button>
                 </div>
               </div>
             </div>
@@ -200,6 +212,11 @@
             <div class="m-t-24">
               <!-- Order Items -->
               <ordered-item v-for="id in ids" :key="id" :item="items[id]" />
+            </div>
+            <div class="m-t-24">
+              <!-- Details -->
+              <div class="t-h6 c-text-black-disabled">{{ $t("order.details") }}</div>
+              <order-info :orderItems="this.orderItems" :orderInfo="this.orderInfo || {}"></order-info>
             </div>
           </div>
         </div>
@@ -227,12 +244,14 @@ import NotFound from "~/components/NotFound";
 import { ownPlateConfig } from "~/config/project";
 import NotificationIndex from "./Notifications/Index";
 import { formatOption } from "~/plugins/strings.js";
+import OrderInfo from "~/app/user/Order/OrderInfo";
 
 export default {
   components: {
     BackButton,
     OrderedItem,
     NotificationIndex,
+    OrderInfo,
     NotFound
   },
 
@@ -290,6 +309,49 @@ export default {
     });
   },
   computed: {
+    cancelStatus() {
+      if (this.orderInfo.status === order_status.order_canceled) {
+        if (this.orderInfo.orderCustomerCanceledAt) {
+          return "order_canceled_by_customer";
+        }
+        return "order_canceled_by_restaurant";
+      }
+      return false;
+    },
+    orderItems() {
+      if (this.orderInfo.order && this.orderInfo.menuItems) {
+        return Object.keys(this.orderInfo.order).map(key => {
+          const num = this.orderInfo.order[key];
+          return {
+            item: this.orderInfo.menuItems[key],
+            count: num,
+            id: key,
+            options:
+              (this.orderInfo.options && this.orderInfo.options[key]) || []
+          };
+        });
+      }
+      return [];
+    },
+    timeOfEvents() {
+      const mapping = {
+        order_placed: this.timeStampToText(this.orderInfo.timePlaced),
+        order_accepted: this.timeStampToText(this.orderInfo.orderAcceptedAt),
+        cooking_completed: this.timeStampToText(
+          this.orderInfo.orderCookingCompletedAt
+        ),
+        customer_picked_up: this.timeStampToText(this.orderInfo.timeConfirmed),
+        order_canceled_by_restaurant: this.timeStampToText(
+          this.orderInfo.orderRestaurantCanceledAt
+        ),
+        order_canceled_by_customer: this.timeStampToText(
+          this.orderInfo.orderCustomerCanceledAt
+        )
+      };
+      console.log(this.orderInfo);
+      //console.log(mapping);
+      return mapping;
+    },
     search() {
       const value = encodeURIComponent(
         this.orderInfo.description || this.orderName
@@ -372,6 +434,12 @@ export default {
     }
   },
   methods: {
+    timeStampToText(timestamp) {
+      if (timestamp) {
+        return this.$d(timestamp.toDate(), "long");
+      }
+      return "";
+    },
     displayOption(option) {
       return formatOption(option, price => this.$n(price, "currency"));
     },

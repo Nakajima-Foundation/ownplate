@@ -23,6 +23,29 @@
       <div class="column is-narrow w-24"></div>
     </div>
 
+    <!-- For Operator -->
+    <div v-if="$store.getters.isOperator" class="columns is-gapless">
+      <!-- Left Gap -->
+      <div class="column is-narrow w-24"></div>
+      <!-- Center Column -->
+      <div class="column">
+        <div class="m-l-24 m-r-24 m-t-24">
+          <div class="bg-form r-8 p-l-24 p-r-24 p-t-24 p-b-24">
+            <!-- Go to Super Admin Page -->
+            <div class="align-center">
+              <router-link to="/o">
+                <div class="op-button-small primary" style="min-width: 256px;">
+                  <span class="c-onprimary">Operator Page</span>
+                </div>
+              </router-link>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Right Gap -->
+      <div class="column is-narrow w-24"></div>
+    </div>
+
     <!-- For Owner and User -->
     <div class="columns is-gapless">
       <!-- Left Gap -->

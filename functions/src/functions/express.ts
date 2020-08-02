@@ -44,7 +44,7 @@ const lastmod = (restaurant) => {
   } catch (e) {
     console.log(e);
   }
-  return "2020-05-01";
+  return "2020-07-01";
 };
 
 export const sitemap_response = async (req, res) => {
@@ -57,6 +57,7 @@ export const sitemap_response = async (req, res) => {
     const docs = (await db.collection("restaurants")
                   .where("publicFlag", "==", true)
                   .where("deletedFlag", "==", false)
+                  .orderBy("updatedAt", "desc")
                   .get()).docs;
     await Promise.all(docs.map(async doc => {
       const url = urlset.ele('url');
