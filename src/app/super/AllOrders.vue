@@ -77,8 +77,7 @@ export default {
     orderSelected(order) {
       // We are re-using the restaurant owner's view.
       this.$router.push({
-        path:
-          "/admin/restaurants/" + this.restaurantId() + "/orders/" + order.id
+        path: "/admin/restaurants/" + order.restaurantId + "/orders/" + order.id
       });
     }
   }
