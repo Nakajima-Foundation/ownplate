@@ -1,15 +1,15 @@
 <template>
-<section class="section">
-  <back-button :url="backUrl" />
-  <h2>All Orders</h2>
-  <ordered-info
-    v-for="order in orders"
-    :key="order.id"
-    @selected="orderSelected($event)"
+  <section class="section">
+    <back-button :url="backUrl" />
+    <h2>All Orders</h2>
+    <ordered-info
+      v-for="order in orders"
+      :key="order.id"
+      @selected="orderSelected($event)"
       :order="order"
     />
-  <button @click="nextLoad">next</button>
-</section>
+    <button @click="nextLoad">next</button>
+  </section>
 </template>
 
 <script>
@@ -29,7 +29,7 @@ export default {
     return {
       orders: [],
       isLoading: false,
-      last: null,
+      last: null
     };
   },
   async mounted() {
@@ -43,16 +43,16 @@ export default {
       if (!this.isLoading) {
         this.isLoading = true;
         let query = db
-            .collectionGroup("orders")
-            .orderBy("timePlaced", "desc")
-            .limit(100)
+          .collectionGroup("orders")
+          .orderBy("timePlaced", "desc")
+          .limit(100);
         if (this.last) {
           query = query.startAfter(this.last);
         }
         const snapshot = await query.get();
 
         if (!snapshot.empty) {
-          this.last = snapshot.docs[snapshot.docs.length -1];
+          this.last = snapshot.docs[snapshot.docs.length - 1];
           snapshot.docs.forEach(doc => {
             const order = doc.data();
             order.restaurantId = doc.ref.path.split("/")[1];
@@ -75,9 +75,10 @@ export default {
       }
     },
     orderSelected(order) {
-      // We are re-using the end-user view of this order for now.
+      // We are re-using the restaurant owner's view.
       this.$router.push({
-        path: "/r/" + order.restaurantId + "/order/" + order.id
+        path:
+          "/admin/restaurants/" + this.restaurantId() + "/orders/" + order.id
       });
     }
   }
