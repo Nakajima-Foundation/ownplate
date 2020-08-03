@@ -27,7 +27,7 @@
                 </div>
               </div>
               <!-- Notification Settings -->
-              <div class="level-right" v-if="isShopOwner">
+              <div class="level-right">
                 <notification-index :shopInfo="shopInfo" />
               </div>
             </div>
@@ -309,9 +309,6 @@ export default {
     });
   },
   computed: {
-    isShopOwner() {
-      return this.shopInfo.uid === this.user?.uid;
-    },
     cancelStatus() {
       if (this.orderInfo.status === order_status.order_canceled) {
         if (this.orderInfo.orderCustomerCanceledAt) {
