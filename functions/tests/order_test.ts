@@ -39,10 +39,12 @@ describe('Order function', () => {
   const createOrder = async (restaurantId, orderId, orderData) => {
     const uid = "123";
     await adminDB.doc(`/users/${uid}/system/stripe`).set({});
-
+    const options = {};
+    Object.keys(orderData).map(key => {options[key] = [];})
     await adminDB.doc(`restaurants/${restaurantId}/orders/${orderId}`).set({
       status: constant.order_status.new_order,
       order: orderData,
+      options,
       uid,
     });
 
