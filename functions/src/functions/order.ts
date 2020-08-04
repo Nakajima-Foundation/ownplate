@@ -212,6 +212,8 @@ const notifyRestaurant = async (db: FirebaseFirestore.Firestore, messageId: stri
         await twilio.phoneCall(restaurant);
         const datestr = moment().format("YYYY-MM-DD");
         await db.doc(`/restaurants/${restaurantId}/log/${datestr}/phoneLog/${orderId}`).set({
+          restaurantId,
+          date: datestr,
           orderId,
           phoneNumber: restaurant.phoneNumber,
           updatedAt: admin.firestore.Timestamp.now(),
