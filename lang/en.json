@@ -147,6 +147,9 @@
     "noStreetAddress": "No street address",
     "reallyDelete": "Do you really want to delete this?",
     "reallyOnListDelete": "Do you really want to delete this from lists?",
+    "phoneCall": "Phone notification",
+    "phoneCallDescription": "Make a call when a new order comes in",
+    "phoneCallNotice": "Although it is currently provided free of charge, this feature may be a paid feature in the future due to telephone call charges. In that case, even if this function is turned on, there is no sudden cost",
     "city": "city",
     "zip": "zip",
     "state": "state"
