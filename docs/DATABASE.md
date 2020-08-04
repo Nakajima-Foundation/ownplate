@@ -1,4 +1,5 @@
-
+This document is too old.
+Please check source code.
 
 /restaurants/:restaurantsId
 ```
@@ -30,6 +31,7 @@
 ```
 
 /restaurants/:restaurantsId/order/:orderId
+```
 {
  order_time: time (timestamp, required)
  customer: userId (string, required)
@@ -44,11 +46,12 @@
    total_price: (number, required)
  ]
 }
+```
 
 The user can get own orders using CollectionGroup.
 
 
 /users/:userId
-
+```
 TBD
-
+```
