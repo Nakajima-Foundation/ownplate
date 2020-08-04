@@ -547,7 +547,32 @@
                 </div>
               </div>
             </div>
+
+            <!-- Phone Call -->
+            <div v-if="region === 'JP'" class="m-t-16">
+              <div
+                class="t-subtitle2 c-text-black-medium p-b-8"
+                >{{ $t("editRestaurant.phoneCall") }}</div>
+              <div class="bg-form r-8 p-l-16 p-r-16 p-t-16 p-b-16 t-body1 c-text-black-high">
+                <div>
+                  <b-checkbox v-model="shopInfo.phoneCall">
+                    {{
+                    $t("editRestaurant.phoneCallDescription")
+                    }}
+                  </b-checkbox>
+                  <span
+                    class="t-caption c-text-black-medium"
+                    >
+                    {{
+                    $t("editRestaurant.phoneCallNotice")
+                    }}
+                  </span>
+                </div>
+              </div>
+            </div>
           </div>
+
+
         </div>
 
         <!-- Right Column -->

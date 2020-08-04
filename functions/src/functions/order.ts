@@ -210,6 +210,7 @@ const notifyRestaurant = async (db: FirebaseFirestore.Firestore, messageId: stri
     if (messageId === 'msg_order_placed') {
       if (restaurant.phoneCall) {
         await twilio.phoneCall(restaurant);
+        // TODO: log
       }
     }
   }
