@@ -44,13 +44,6 @@
               <notification-index :shopInfo="shopInfo" />
             </div>
           </div>
-
-          <!-- Date and Sound -->
-          <div class="level">
-            <!-- Select Date -->
-            <div class="level-left"></div>
-            <div class="level-right"></div>
-          </div>
         </div>
       </div>
       <!-- Right Gap -->
@@ -74,7 +67,7 @@
               :isSuperView="true"
             />
           </div>
-          <div class="m-t-24">
+          <div class="m-t-24" v-if="last !== undefined">
             <b-button class="b-reset h-36 r-36 bg-form" :disabled="last === null" @click="next">
               <span class="p-l-16 p-r-16">{{ $t('admin.order.more') }}</span>
             </b-button>
