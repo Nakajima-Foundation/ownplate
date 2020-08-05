@@ -450,7 +450,8 @@
       "lineUsers": "登録済みLINEアカウント",
       "lineDelete": "本当に消去しますか？",
       "lineSafariPrivate": "注意: Safariのプライベートブラウズモードを使用しているとLINE連携ができません。",
-      "history": "注文履歴"
+      "history": "注文履歴",
+      "more": "もっと見る"
     },
     "sound": {
       "default": "ピコリン",

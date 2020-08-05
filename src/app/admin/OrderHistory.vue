@@ -73,6 +73,9 @@
               :order="order"
             />
           </div>
+          <div class="m-t-24">
+            <b-button :disabled="last === null" @click="next">{{ $t('admin.order.more') }}</b-button>
+          </div>
         </div>
       </div>
       <!-- Right Gap -->
@@ -100,6 +103,8 @@ export default {
   data() {
     return {
       shopInfo: {},
+      limit: 30,
+      last: undefined,
       orders: []
     };
   },
@@ -113,23 +118,30 @@ export default {
       return;
     }
     this.shopInfo = restaurantDoc.data();
-
-    let query = db
-      .collection(`restaurants/${this.restaurantId()}/orders`)
-      .orderBy("timePlaced", "desc");
-    let snapshot = await query.get();
-    let orders = snapshot.docs.map(this.doc2data("order"));
-    console.log(orders);
-    this.orders = orders.map(order => {
-      order.timePlaced = order.timePlaced.toDate();
-      if (order.timeEstimated) {
-        order.timeEstimated = order.timeEstimated.toDate();
-      }
-      return order;
-    });
+    this.next();
   },
   computed: {},
   methods: {
+    async next() {
+      let query = db
+        .collection(`restaurants/${this.restaurantId()}/orders`)
+        .orderBy("timePlaced", "desc")
+        .limit(this.limit);
+      if (this.last) {
+        query = query.startAfter(this.last);
+      }
+      const docs = (await query.get()).docs;
+      this.last = docs.length == this.limit ? docs[this.limit - 1] : null;
+      const orders = docs.map(this.doc2data("order"));
+      console.log(orders);
+      orders.forEach(order => {
+        order.timePlaced = order.timePlaced.toDate();
+        if (order.timeEstimated) {
+          order.timeEstimated = order.timeEstimated.toDate();
+        }
+        this.orders.push(order);
+      });
+    },
     orderSelected(order) {
       this.$router.push({
         path:
