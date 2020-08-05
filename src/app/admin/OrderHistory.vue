@@ -114,29 +114,19 @@ export default {
     }
     this.shopInfo = restaurantDoc.data();
 
-    let query = db.collection(`restaurants/${this.restaurantId()}/orders`);
-    //  .where("timePlaced", ">=", this.lastSeveralDays[this.dayIndex].date);
-    /*
-      this.order_detacher = query.onSnapshot(result => {
-        let orders = result.docs.map(this.doc2data("order"));
-        orders = orders.sort((order0, order1) => {
-          if (order0.status === order1.status) {
-            return (order0.timeEstimated || order0.timePlaced) >
-              (order1.timeEstimated || order1.timePlaced)
-              ? -1
-              : 1;
-          }
-          return order0.status < order1.status ? -1 : 1;
-        });
-        this.orders = orders.map(order => {
-          order.timePlaced = order.timePlaced.toDate();
-          if (order.timeEstimated) {
-            order.timeEstimated = order.timeEstimated.toDate();
-          }
-          return order;
-        });
-      });
-    */
+    let query = db
+      .collection(`restaurants/${this.restaurantId()}/orders`)
+      .orderBy("timePlaced", "desc");
+    let snapshot = await query.get();
+    let orders = snapshot.docs.map(this.doc2data("order"));
+    console.log(orders);
+    this.orders = orders.map(order => {
+      order.timePlaced = order.timePlaced.toDate();
+      if (order.timeEstimated) {
+        order.timeEstimated = order.timeEstimated.toDate();
+      }
+      return order;
+    });
   },
   computed: {},
   methods: {
