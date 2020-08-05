@@ -80,6 +80,11 @@
               :order="order"
             />
           </div>
+          <div class="m-t-24">
+            <nuxt-link
+              :to="`/admin/restaurants/${this.restaurantId()}/history`"
+            >{{$t("admin.order.history")}}</nuxt-link>
+          </div>
         </div>
       </div>
       <!-- Right Gap -->

@@ -449,7 +449,8 @@
       "lineAdd": "Add a LINE account",
       "lineUsers": "Connected LINE Accounts",
       "lineDelete": "Do you really want to delete this account？",
-      "lineSafariPrivate": "Note: If you are using Safari's Private Browsing Mode, you will not be able to connect to LINE."
+      "lineSafariPrivate": "Note: If you are using Safari's Private Browsing Mode, you will not be able to connect to LINE.",
+      "history": "注文履歴"
     },
     "sound": {
       "default": "Default",
