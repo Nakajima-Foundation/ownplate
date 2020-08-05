@@ -71,10 +71,13 @@
               :key="order.id"
               @selected="orderSelected($event)"
               :order="order"
+              :isSuperView="true"
             />
           </div>
           <div class="m-t-24">
-            <b-button :disabled="last === null" @click="next">{{ $t('admin.order.more') }}</b-button>
+            <b-button class="b-reset h-36 r-36 bg-form" :disabled="last === null" @click="next">
+              <span class="p-l-16 p-r-16">{{ $t('admin.order.more') }}</span>
+            </b-button>
           </div>
         </div>
       </div>
@@ -133,7 +136,6 @@ export default {
       const docs = (await query.get()).docs;
       this.last = docs.length == this.limit ? docs[this.limit - 1] : null;
       const orders = docs.map(this.doc2data("order"));
-      console.log(orders);
       orders.forEach(order => {
         order.timePlaced = order.timePlaced.toDate();
         if (order.timeEstimated) {
