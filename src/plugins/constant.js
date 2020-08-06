@@ -203,6 +203,17 @@ export const reservationTheDayBefore = [
   { messageKey: "editRestaurant.reservationTheDaysBefore.threeWeeks", value: 21 }
 ];
 
+export const minimumCookTimeChoices = [
+  { messageKey: "editRestaurant.minimumCookTime.halfHour", value: 30 },
+  { messageKey: "editRestaurant.minimumCookTime.oneHour", value: 60 },
+  { messageKey: "editRestaurant.minimumCookTime.twoHours", value: 120 },
+  { messageKey: "editRestaurant.minimumCookTime.oneDay", value: 60 * 24 },
+  { messageKey: "editRestaurant.minimumCookTime.twoDays", value: 60 * 24 * 2 },
+  { messageKey: "editRestaurant.minimumCookTime.threeDays", value: 60 * 24 * 3 },
+  { messageKey: "editRestaurant.minimumCookTime.fourDays", value: 60 * 24 * 4 },
+  { messageKey: "editRestaurant.minimumCookTime.fiveDays", value: 60 * 24 * 5 }
+];
+
 export const regionalSettings = {
   US: {
     CurrencyKey: "USD",

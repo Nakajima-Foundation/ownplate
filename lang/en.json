@@ -131,9 +131,20 @@
       "twoWeeks": "From two weeks in advance",
       "threeWeeks": "From three weeks in advance"
     },
+    "minimumCookTime": {
+      "halfHour": "30 minutes",
+      "oneHour": "One hour",
+      "twoHours": "Two hours",
+      "oneDay": "One day",
+      "twoDays": "Two days",
+      "threeDays": "Three days",
+      "fourDays": "Four days",
+      "fiveDays": "Five days"
+    },
     "minutes": "minutes",
     "withinfive": "Within 5 hours",
     "withinaday": "Within 24 hours",
+    "withinFiveDays": "Within 5 days",
     "profilePhoto": "Restaurant profile photo",
     "coverPhoto": "Restaurant cover photo",
     "setLocation": "Set location",

@@ -131,9 +131,20 @@
       "twoWeeks": "2週間前から予約可能",
       "threeWeeks": "3週間前から予約可能"
     },
+    "minimumCookTime": {
+      "halfHour": "30分",
+      "oneHour": "１時間",
+      "twoHours": "２時間",
+      "oneDay": "１日",
+      "twoDays": "２日",
+      "threeDays": "３日",
+      "fourDays": "４日",
+      "fiveDays": "５日"
+    },
     "minutes": "分",
     "withinfive": "5時間以内",
     "withinaday": "24時間以内",
+    "withinFiveDays": "５日以内",
     "profilePhoto": "プロフィール画像",
     "coverPhoto": "カバー画像",
     "setLocation": "住所を元に地図を更新",
