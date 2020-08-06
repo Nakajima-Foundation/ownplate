@@ -127,7 +127,9 @@
       "four": "From 4 day in advance",
       "five": "From 5 day in advance",
       "six": "From 6 day in advance",
-      "seven": "From 7 day in advance"
+      "seven": "From 7 day in advance",
+      "twoWeeks": "From two weeks in advance",
+      "threeWeeks": "From three weeks in advance"
     },
     "minutes": "minutes",
     "withinfive": "Within 5 hours",
