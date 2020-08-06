@@ -198,7 +198,9 @@ export const reservationTheDayBefore = [
   { messageKey: "editRestaurant.reservationTheDaysBefore.four", value: 4 },
   { messageKey: "editRestaurant.reservationTheDaysBefore.five", value: 5 },
   { messageKey: "editRestaurant.reservationTheDaysBefore.six", value: 6 },
-  { messageKey: "editRestaurant.reservationTheDaysBefore.seven", value: 7 }
+  { messageKey: "editRestaurant.reservationTheDaysBefore.seven", value: 7 },
+  { messageKey: "editRestaurant.reservationTheDaysBefore.twoWeeks", value: 14 },
+  { messageKey: "editRestaurant.reservationTheDaysBefore.threeWeeks", value: 21 }
 ];
 
 export const regionalSettings = {
