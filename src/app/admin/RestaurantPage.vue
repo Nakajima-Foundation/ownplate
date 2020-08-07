@@ -519,9 +519,17 @@
                     />
                     <div class="m-l-8">
                       {{ $t("editRestaurant.minutes") }} -
-                      {{ $t("editRestaurant.withinaday") }}
+                      {{ $t("editRestaurant.withinFiveDays") }}
                     </div>
                   </b-field>
+                </div>
+                <div class="m-t-8">
+                  <b-radio
+                    v-for="choice in minimumCookTimeChoices"
+                    v-model="shopInfo.pickUpMinimumCookTime"
+                    :native-value="choice.value"
+                    :key="choice.value"
+                  >{{ $t(choice.messageKey) }}</b-radio>
                 </div>
 
                 <!-- The Day Before -->
@@ -552,7 +560,7 @@
             <div v-if="region === 'JP'" class="m-t-16">
               <div
                 class="t-subtitle2 c-text-black-medium p-b-8"
-                >{{ $t("editRestaurant.phoneCall") }}</div>
+              >{{ $t("editRestaurant.phoneCall") }}</div>
               <div class="bg-form r-8 p-l-16 p-r-16 p-t-16 p-b-16 t-body1 c-text-black-high">
                 <div>
                   <b-checkbox v-model="shopInfo.phoneCall">
@@ -560,9 +568,7 @@
                     $t("editRestaurant.phoneCallDescription")
                     }}
                   </b-checkbox>
-                  <span
-                    class="t-caption c-text-black-medium"
-                    >
+                  <span class="t-caption c-text-black-medium">
                     {{
                     $t("editRestaurant.phoneCallNotice")
                     }}
@@ -571,8 +577,6 @@
               </div>
             </div>
           </div>
-
-
         </div>
 
         <!-- Right Column -->
@@ -730,7 +734,8 @@ import NotificationIndex from "./Notifications/Index";
 import {
   taxRates,
   daysOfWeek,
-  reservationTheDayBefore
+  reservationTheDayBefore,
+  minimumCookTimeChoices
 } from "~/plugins/constant.js";
 
 export default {
@@ -749,6 +754,7 @@ export default {
   data() {
     return {
       reservationTheDayBefore,
+      minimumCookTimeChoices,
       taxRates: taxRates,
       taxRateKeys: [],
 
@@ -886,7 +892,7 @@ export default {
           "validationError." + name + ".notNumbery"
         );
       } else {
-        if (this.shopInfo["pickUpMinimumCookTime"] > 24 * 60) {
+        if (this.shopInfo["pickUpMinimumCookTime"] > 24 * 60 * 5) {
           err["pickUpMinimumCookTime"].push(
             "validationError." + name + ".tooMuch"
           );
