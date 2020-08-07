@@ -1,5 +1,5 @@
 <template>
-  <span ref="download" @click="handleDownload()">
+  <span @click="handleDownload()">
     <slot></slot>
   </span>
 </template>
@@ -15,25 +15,22 @@ export default {
     },
     data: {
       type: Array,
-      required: true,
-      default: () => []
+      required: true
     },
     fields: {
       type: Array,
-      required: false,
-      default: () => []
+      required: true
     },
     fieldNames: {
       type: Array,
       required: false,
-      default: () => []
+      default: []
     }
   },
   computed: {
     createContent() {
       let content = null;
-      const keys =
-        this.fields.length > 0 ? this.fields : Object.keys(this.data[0]);
+      const keys = this.fields;
       const names = this.fieldNames.length > 0 ? this.fieldNames : keys;
       let csv = `\ufeff${names.join(",")}\n`;
       for (let index = 0; index < this.data.length; index++) {
