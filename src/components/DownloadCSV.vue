@@ -28,7 +28,7 @@ export default {
     }
   },
   computed: {
-    createContent() {
+    content() {
       const header = (this.fieldNames || this.fields).join(",");
       const rows = this.data
         .map(item => {
@@ -48,12 +48,7 @@ export default {
   },
   methods: {
     handleDownload() {
-      let content = this.createContent;
-      if (content === null) {
-        this.$emit("error");
-        return;
-      }
-      const blob = new Blob([content], {
+      const blob = new Blob([this.content], {
         type: `application/csv`
       });
       const link = document.createElement("a");
