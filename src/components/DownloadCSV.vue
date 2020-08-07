@@ -1,11 +1,10 @@
 <template>
   <span @click="handleDownload()">
-    <slot></slot>
+    <slot />
   </span>
 </template>
 
 <script>
-// Based on https://github.com/dnrsm/vue-blob-json-csv
 export default {
   props: {
     fileName: {
@@ -30,11 +29,7 @@ export default {
       const header = (this.fieldNames || this.fields).join(",");
       const rows = this.data
         .map(item => {
-          return this.fields
-            .map(field => {
-              return item[field];
-            })
-            .join(",");
+          return this.fields.map(field => item[field]).join(",");
         })
         .join("\n");
       return `\ufeff${header}\n${rows}`;
