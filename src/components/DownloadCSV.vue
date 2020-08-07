@@ -36,13 +36,11 @@ export default {
         const item = this.data[index];
         let line = this.fields
           .map(field => {
-            if (item[field] === null) {
-              return null;
-            } else if (typeof item[field] === "object") {
-              return JSON.stringify([item[field]]);
-            } else {
-              return [item[field]];
+            const value = item[field];
+            if (typeof value === "object") {
+              return JSON.stringify(value);
             }
+            return value;
           })
           .join(",");
         csv += `${line}\n`;
