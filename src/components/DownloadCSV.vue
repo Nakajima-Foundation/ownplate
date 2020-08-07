@@ -13,11 +13,6 @@ export default {
       required: false,
       default: "span"
     },
-    fileType: {
-      type: String,
-      required: false,
-      default: "csv"
-    },
     fileName: {
       type: String,
       required: false,
@@ -37,29 +32,25 @@ export default {
   computed: {
     createContent() {
       let content = null;
-      if (this.fileType === "json") {
-        content = JSON.stringify(this.data);
-      } else if (this.fileType === "csv") {
-        const keys =
-          this.fields.length > 0 ? this.fields : Object.keys(this.data[0]);
-        let csv = `\ufeff${keys.join()}\n`;
-        for (let index = 0; index < this.data.length; index++) {
-          const item = this.data[index];
-          let line = keys
-            .map(key => {
-              if (item[key] === null) {
-                return null;
-              } else if (typeof item[key] === "object") {
-                return JSON.stringify([item[key]]);
-              } else {
-                return [item[key]];
-              }
-            })
-            .join(",");
-          csv += `${line}\n`;
-        }
-        content = csv;
+      const keys =
+        this.fields.length > 0 ? this.fields : Object.keys(this.data[0]);
+      let csv = `\ufeff${keys.join()}\n`;
+      for (let index = 0; index < this.data.length; index++) {
+        const item = this.data[index];
+        let line = keys
+          .map(key => {
+            if (item[key] === null) {
+              return null;
+            } else if (typeof item[key] === "object") {
+              return JSON.stringify([item[key]]);
+            } else {
+              return [item[key]];
+            }
+          })
+          .join(",");
+        csv += `${line}\n`;
       }
+      content = csv;
       return content;
     }
   },
@@ -75,7 +66,7 @@ export default {
       });
       const link = document.createElement("a");
       link.href = window.URL.createObjectURL(blob);
-      link.download = `${this.fileName}.${this.fileType}`;
+      link.download = `${this.fileName}.csv`;
       link.click();
       this.$emit("success");
     }

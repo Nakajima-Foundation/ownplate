@@ -203,16 +203,20 @@ export default {
   },
   computed: {
     data() {
-      return [
-        {
-          foo: 1,
-          bar: 2
-        },
-        {
-          foo: 4,
-          bar: 5
-        }
-      ];
+      let foo = this.orders.map(order => {
+        return {
+          date: this.$d(order.timeConfirmed),
+          food_revenue: order.accounting.food.revenue,
+          food_tax: order.accounting.food.tax,
+          alcohol_revenue: order.accounting.alcohol.revenue,
+          alcohol_tax: order.accounting.alcohol.tax,
+          service_revenue: order.accounting.service.revenue,
+          service_tax: order.accounting.service.tax,
+          total_charge: order.totalCharge
+        };
+      });
+      console.log("***", this.orders, foo);
+      return foo;
     },
     lastSeveralMonths() {
       return Array.from(Array(12).keys()).map(index => {
