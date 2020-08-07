@@ -140,7 +140,7 @@
               </tr>
             </table>
           </div>
-          <download-csv :data="data">
+          <download-csv v-if="tableData" :data="tableData">
             <b-button class="m-t-16">Download CSV</b-button>
           </download-csv>
         </div>
@@ -202,8 +202,11 @@ export default {
     }
   },
   computed: {
-    data() {
-      let foo = this.orders.map(order => {
+    tableData() {
+      if (this.orders.length === 0) {
+        return null;
+      }
+      return this.orders.map(order => {
         return {
           date: this.$d(order.timeConfirmed),
           food_revenue: order.accounting.food.revenue,
@@ -212,11 +215,11 @@ export default {
           alcohol_tax: order.accounting.alcohol.tax,
           service_revenue: order.accounting.service.revenue,
           service_tax: order.accounting.service.tax,
-          total_charge: order.totalCharge
+          total_charge: order.totalCharge,
+          name: this.orderName(order),
+          payment: order.payment?.stripe ? "stripe" : ""
         };
       });
-      console.log("***", this.orders, foo);
-      return foo;
     },
     lastSeveralMonths() {
       return Array.from(Array(12).keys()).map(index => {
