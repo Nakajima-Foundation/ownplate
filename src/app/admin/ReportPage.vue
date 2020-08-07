@@ -145,6 +145,7 @@
             :data="tableData"
             :fields="fields"
             :fieldNames="fieldNames"
+            :fileName="fileName"
           >
             <b-button class="m-t-16">Download CSV</b-button>
           </download-csv>
@@ -207,6 +208,11 @@ export default {
     }
   },
   computed: {
+    fileName() {
+      return moment(this.lastSeveralMonths[this.monthIndex].date).format(
+        "YYYY-MM"
+      );
+    },
     fields() {
       return [
         "date",
