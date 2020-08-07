@@ -29,20 +29,21 @@ export default {
   },
   computed: {
     createContent() {
-      const names = this.fieldNames.length > 0 ? this.fieldNames : this.fields;
-      let csv = `\ufeff${names.join(",")}\n`;
-      const rows = this.data.map(item => {
-        return this.fields
-          .map(field => {
-            const value = item[field];
-            if (typeof value === "object") {
-              return JSON.stringify(value);
-            }
-            return value;
-          })
-          .join(",");
-      });
-      return csv + rows.join("\n");
+      const header = (this.fieldNames || this.fields).join(",");
+      const rows = this.data
+        .map(item => {
+          return this.fields
+            .map(field => {
+              const value = item[field];
+              if (typeof value === "object") {
+                return JSON.stringify(value);
+              }
+              return value;
+            })
+            .join(",");
+        })
+        .join("\n");
+      return `\ufeff${header}\n${rows}`;
     }
   },
   methods: {
@@ -53,7 +54,7 @@ export default {
         return;
       }
       const blob = new Blob([content], {
-        type: `application/${this.fileType}`
+        type: `application/csv`
       });
       const link = document.createElement("a");
       link.href = window.URL.createObjectURL(blob);
