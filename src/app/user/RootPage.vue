@@ -101,6 +101,7 @@ export default {
               { name: "埼玉県", id: 10 },
               { name: "福岡県", id: 39 },
               { name: "福井県", id: 17 },
+              { name: "山梨県", id: 18 },
               { name: "大阪府", id: 26 },
               { name: "兵庫県", id: 27 },
               { name: "広島県", id: 33 },
