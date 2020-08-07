@@ -30,19 +30,18 @@ export default {
   computed: {
     createContent() {
       let content = null;
-      const keys = this.fields;
-      const names = this.fieldNames.length > 0 ? this.fieldNames : keys;
+      const names = this.fieldNames.length > 0 ? this.fieldNames : this.fields;
       let csv = `\ufeff${names.join(",")}\n`;
       for (let index = 0; index < this.data.length; index++) {
         const item = this.data[index];
-        let line = keys
-          .map(key => {
-            if (item[key] === null) {
+        let line = this.fields
+          .map(field => {
+            if (item[field] === null) {
               return null;
-            } else if (typeof item[key] === "object") {
-              return JSON.stringify([item[key]]);
+            } else if (typeof item[field] === "object") {
+              return JSON.stringify([item[field]]);
             } else {
-              return [item[key]];
+              return [item[field]];
             }
           })
           .join(",");
