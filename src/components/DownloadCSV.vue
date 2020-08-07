@@ -1,18 +1,13 @@
 <template>
-  <component :is="tagName" ref="download" @click="handleDownload()">
+  <span ref="download" @click="handleDownload()">
     <slot></slot>
-  </component>
+  </span>
 </template>
 
 <script>
 // Based on https://github.com/dnrsm/vue-blob-json-csv
 export default {
   props: {
-    tagName: {
-      type: String,
-      required: false,
-      default: "span"
-    },
     fileName: {
       type: String,
       required: false,
@@ -40,7 +35,7 @@ export default {
       const keys =
         this.fields.length > 0 ? this.fields : Object.keys(this.data[0]);
       const names = this.fieldNames.length > 0 ? this.fieldNames : keys;
-      let csv = `\ufeff${names.join()}\n`;
+      let csv = `\ufeff${names.join(",")}\n`;
       for (let index = 0; index < this.data.length; index++) {
         const item = this.data[index];
         let line = keys
