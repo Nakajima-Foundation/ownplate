@@ -53,13 +53,13 @@
                   <div class="align-right">{{ $t('order.date')}}</div>
                 </th>
                 <th class="p-l-8">
-                  <div class="align-right">{{ $t('order.revenue')}}</div>
+                  <div class="align-right">{{ $t('order.foodRevenue')}}</div>
                 </th>
                 <th class="p-l-8">
                   <div class="align-right">{{ $t('order.foodTax')}}</div>
                 </th>
                 <th class="p-l-8">
-                  <div class="align-right">{{ $t('order.revenue')}}</div>
+                  <div class="align-right">{{ $t('order.foodRevenue')}}</div>
                 </th>
                 <th class="p-l-8">
                   <div class="align-right">{{ $t('order.salesTax')}}</div>

@@ -265,6 +265,8 @@
     "confirmOrder": "ご注文の確認",
     "editItems": "注文を変更する",
     "revenue": "売上",
+    "foodRevenue": "売上(食)",
+    "alcoholRevenue": "売上(酒)",
     "date": "日付",
     "tipShort": "心づけ",
     "includingTip": "心づけを含む",
