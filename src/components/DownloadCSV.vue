@@ -29,12 +29,10 @@ export default {
   },
   computed: {
     createContent() {
-      let content = null;
       const names = this.fieldNames.length > 0 ? this.fieldNames : this.fields;
       let csv = `\ufeff${names.join(",")}\n`;
-      for (let index = 0; index < this.data.length; index++) {
-        const item = this.data[index];
-        let line = this.fields
+      const rows = this.data.map(item => {
+        return this.fields
           .map(field => {
             const value = item[field];
             if (typeof value === "object") {
@@ -43,10 +41,8 @@ export default {
             return value;
           })
           .join(",");
-        csv += `${line}\n`;
-      }
-      content = csv;
-      return content;
+      });
+      return csv + rows.join("\n");
     }
   },
   methods: {
