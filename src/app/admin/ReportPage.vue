@@ -213,9 +213,10 @@ export default {
         "foodRevenue",
         "foodTax",
         "alcoholRevenue",
-        "alcoholTax",
-        "serviceRevenue",
+        "salesTax",
+        "tipShort",
         "serviceTax",
+        "total",
         "name",
         "payment"
       ];
@@ -235,8 +236,8 @@ export default {
           foodRevenue: order.accounting.food.revenue,
           foodTax: order.accounting.food.tax,
           alcoholRevenue: order.accounting.alcohol.revenue,
-          alcoholTax: order.accounting.alcohol.tax,
-          serviceRevenue: order.accounting.service.revenue,
+          salesTax: order.accounting.alcohol.tax,
+          tipShort: order.accounting.service.revenue,
           serviceTax: order.accounting.service.tax,
           total: order.totalCharge,
           name: this.orderName(order),
