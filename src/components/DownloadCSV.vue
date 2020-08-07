@@ -10,8 +10,7 @@ export default {
   props: {
     fileName: {
       type: String,
-      required: false,
-      default: "data"
+      required: true
     },
     data: {
       type: Array,
@@ -23,8 +22,7 @@ export default {
     },
     fieldNames: {
       type: Array,
-      required: false,
-      default: []
+      required: false
     }
   },
   computed: {
@@ -34,11 +32,7 @@ export default {
         .map(item => {
           return this.fields
             .map(field => {
-              const value = item[field];
-              if (typeof value === "object") {
-                return JSON.stringify(value);
-              }
-              return value;
+              return item[field];
             })
             .join(",");
         })

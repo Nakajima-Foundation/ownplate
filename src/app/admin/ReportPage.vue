@@ -144,7 +144,6 @@
             </table>
           </div>
           <download-csv
-            v-if="tableData"
             :data="tableData"
             :fields="fields"
             :fieldNames="fieldNames"
@@ -241,12 +240,9 @@ export default {
       });
     },
     tableData() {
-      if (this.orders.length === 0) {
-        return null;
-      }
       return this.orders.map(order => {
         return {
-          date: this.$d(order.timeConfirmed),
+          date: moment(order.timeConfirmed).format("YYYY/MM/DD"),
           foodRevenue: order.accounting.food.revenue,
           foodTax: order.accounting.food.tax,
           alcoholRevenue: order.accounting.alcohol.revenue,
