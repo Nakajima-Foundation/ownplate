@@ -59,7 +59,7 @@
                   <div class="align-right">{{ $t('order.foodTax')}}</div>
                 </th>
                 <th class="p-l-8">
-                  <div class="align-right">{{ $t('order.foodRevenue')}}</div>
+                  <div class="align-right">{{ $t('order.alcoholRevenue')}}</div>
                 </th>
                 <th class="p-l-8">
                   <div class="align-right">{{ $t('order.salesTax')}}</div>
@@ -140,7 +140,12 @@
               </tr>
             </table>
           </div>
-          <download-csv v-if="tableData" :data="tableData">
+          <download-csv
+            v-if="tableData"
+            :data="tableData"
+            :fields="fields"
+            :fieldNames="fieldNames"
+          >
             <b-button class="m-t-16">Download CSV</b-button>
           </download-csv>
         </div>
@@ -202,6 +207,24 @@ export default {
     }
   },
   computed: {
+    fields() {
+      return [
+        "date",
+        "foodRevenue",
+        "foodTax",
+        "alcoholRevenue",
+        "alcoholTax",
+        "serviceRevenue",
+        "serviceTax",
+        "name",
+        "payment"
+      ];
+    },
+    fieldNames() {
+      return this.fields.map(field => {
+        return this.$t(`order.${field}`);
+      });
+    },
     tableData() {
       if (this.orders.length === 0) {
         return null;
@@ -209,13 +232,13 @@ export default {
       return this.orders.map(order => {
         return {
           date: this.$d(order.timeConfirmed),
-          food_revenue: order.accounting.food.revenue,
-          food_tax: order.accounting.food.tax,
-          alcohol_revenue: order.accounting.alcohol.revenue,
-          alcohol_tax: order.accounting.alcohol.tax,
-          service_revenue: order.accounting.service.revenue,
-          service_tax: order.accounting.service.tax,
-          total_charge: order.totalCharge,
+          foodRevenue: order.accounting.food.revenue,
+          foodTax: order.accounting.food.tax,
+          alcoholRevenue: order.accounting.alcohol.revenue,
+          alcoholTax: order.accounting.alcohol.tax,
+          serviceRevenue: order.accounting.service.revenue,
+          serviceTax: order.accounting.service.tax,
+          total: order.totalCharge,
           name: this.orderName(order),
           payment: order.payment?.stripe ? "stripe" : ""
         };

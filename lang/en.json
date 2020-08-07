@@ -265,6 +265,8 @@
     "confirmOrder": "Confirm Order",
     "editItems": "Edit Items",
     "revenue": "revenue",
+    "foodRevenue": "food revenue",
+    "alcoholRevenue": "alcohol revenue",
     "date": "date",
     "tipShort": "tip",
     "includingTip": "including tip",

@@ -27,6 +27,11 @@ export default {
       type: Array,
       required: false,
       default: () => []
+    },
+    fieldNames: {
+      type: Array,
+      required: false,
+      default: () => []
     }
   },
   computed: {
@@ -34,7 +39,8 @@ export default {
       let content = null;
       const keys =
         this.fields.length > 0 ? this.fields : Object.keys(this.data[0]);
-      let csv = `\ufeff${keys.join()}\n`;
+      const names = this.fieldNames.length > 0 ? this.fieldNames : keys;
+      let csv = `\ufeff${names.join()}\n`;
       for (let index = 0; index < this.data.length; index++) {
         const item = this.data[index];
         let line = keys
