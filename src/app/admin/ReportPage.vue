@@ -140,6 +140,7 @@
               </tr>
             </table>
           </div>
+          <download-csv fileType="csv" :data="data" title="foo">Download</download-csv>
         </div>
       </div>
       <!-- Right Gap -->
@@ -151,6 +152,7 @@
 <script>
 import { db, firestore } from "~/plugins/firebase.js";
 import BackButton from "~/components/BackButton";
+import DownloadCsv from "~/components/DownloadCSV";
 import { nameOfOrder } from "~/plugins/strings.js";
 import { ownPlateConfig } from "~/config/project";
 import { midNightOfMonth } from "~/plugins/dateUtils.js";
@@ -158,7 +160,8 @@ import moment from "moment";
 
 export default {
   components: {
-    BackButton
+    BackButton,
+    DownloadCsv
   },
   data() {
     return {
@@ -197,6 +200,18 @@ export default {
     }
   },
   computed: {
+    data() {
+      return [
+        {
+          foo: 1,
+          bar: 2
+        },
+        {
+          foo: 4,
+          bar: 5
+        }
+      ];
+    },
     lastSeveralMonths() {
       return Array.from(Array(12).keys()).map(index => {
         const date = midNightOfMonth(-index);
