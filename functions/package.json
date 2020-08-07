@@ -12,6 +12,7 @@
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log",
     "tests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/*_test.ts",
+    "e_tests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/express_test.ts",
     "t_tests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/twilio_test.ts",
     "mailtests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/ses_test.ts"
   },
