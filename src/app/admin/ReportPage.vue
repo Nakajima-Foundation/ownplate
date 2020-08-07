@@ -140,7 +140,9 @@
               </tr>
             </table>
           </div>
-          <download-csv fileType="csv" :data="data" title="foo">Download</download-csv>
+          <download-csv :data="data">
+            <b-button class="m-t-16">Download CSV</b-button>
+          </download-csv>
         </div>
       </div>
       <!-- Right Gap -->

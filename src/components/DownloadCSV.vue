@@ -1,30 +1,22 @@
 <template>
   <component :is="tagName" ref="download" @click="handleDownload()">
-    <template v-if="title === ''">
-      <slot></slot>
-    </template>
-    <template>{{ title }}</template>
+    <slot></slot>
   </component>
 </template>
 
 <script>
+// Based on https://github.com/dnrsm/vue-blob-json-csv
 export default {
-  name: "VueBlobJsonCsv",
   props: {
     tagName: {
       type: String,
       required: false,
       default: "span"
     },
-    title: {
-      type: String,
-      required: false,
-      default: ""
-    },
     fileType: {
       type: String,
-      required: true,
-      default: ""
+      required: false,
+      default: "csv"
     },
     fileName: {
       type: String,
@@ -40,11 +32,6 @@ export default {
       type: Array,
       required: false,
       default: () => []
-    },
-    confirm: {
-      type: String,
-      required: false,
-      default: null
     }
   },
   computed: {
@@ -82,10 +69,6 @@ export default {
       if (content === null) {
         this.$emit("error");
         return;
-      }
-      if (this.confirm !== null) {
-        const result = confirm(this.confirm);
-        if (!result) return;
       }
       const blob = new Blob([content], {
         type: `application/${this.fileType}`
