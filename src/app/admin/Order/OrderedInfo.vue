@@ -118,6 +118,10 @@ export default {
     order: {
       type: Object,
       required: true
+    },
+    isSuperView: {
+      type: Boolean,
+      required: false
     }
   },
   async created() {
@@ -136,7 +140,11 @@ export default {
       const time = this.order.timeEstimated || this.order.timePlaced;
       //const date = `${time.getMonth() + 1}/${time.getDate()} `;
       //return date + this.num2time(time.getHours() * 60 + time.getMinutes());
-      return this.$d(time, "time");
+      if (this.isSuperView) {
+        return this.$d(time, "long");
+      } else {
+        return this.$d(time, "time");
+      }
     },
     phoneNumber() {
       return this.order.phoneNumber && parsePhoneNumber(this.order.phoneNumber);

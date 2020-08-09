@@ -53,13 +53,13 @@
                   <div class="align-right">{{ $t('order.date')}}</div>
                 </th>
                 <th class="p-l-8">
-                  <div class="align-right">{{ $t('order.revenue')}}</div>
+                  <div class="align-right">{{ $t('order.foodRevenue')}}</div>
                 </th>
                 <th class="p-l-8">
                   <div class="align-right">{{ $t('order.foodTax')}}</div>
                 </th>
                 <th class="p-l-8">
-                  <div class="align-right">{{ $t('order.revenue')}}</div>
+                  <div class="align-right">{{ $t('order.alcoholRevenue')}}</div>
                 </th>
                 <th class="p-l-8">
                   <div class="align-right">{{ $t('order.salesTax')}}</div>
@@ -72,6 +72,9 @@
                 </th>
                 <th class="p-l-8">
                   <div class="align-right">{{ $t('order.total')}}</div>
+                </th>
+                <th class="p-l-8">
+                  <div class="align-right">{{ $t('order.name')}}</div>
                 </th>
               </tr>
 
@@ -140,6 +143,19 @@
               </tr>
             </table>
           </div>
+          <download-csv
+            :data="tableData"
+            :fields="fields"
+            :fieldNames="fieldNames"
+            :fileName="fileName"
+          >
+            <b-button class="m-t-16 b-reset h-36 r-36 bg-form">
+              <span class="p-l-16 p-r-16">
+                <i class="material-icons c-primary s-18 m-r-8">save_alt</i>
+                <span class="c-primary t-button">Download CSV</span>
+              </span>
+            </b-button>
+          </download-csv>
         </div>
       </div>
       <!-- Right Gap -->
@@ -151,6 +167,7 @@
 <script>
 import { db, firestore } from "~/plugins/firebase.js";
 import BackButton from "~/components/BackButton";
+import DownloadCsv from "~/components/DownloadCSV";
 import { nameOfOrder } from "~/plugins/strings.js";
 import { ownPlateConfig } from "~/config/project";
 import { midNightOfMonth } from "~/plugins/dateUtils.js";
@@ -158,7 +175,8 @@ import moment from "moment";
 
 export default {
   components: {
-    BackButton
+    BackButton,
+    DownloadCsv
   },
   data() {
     return {
@@ -197,6 +215,46 @@ export default {
     }
   },
   computed: {
+    fileName() {
+      return moment(this.lastSeveralMonths[this.monthIndex].date).format(
+        "YYYY-MM"
+      );
+    },
+    fields() {
+      return [
+        "date",
+        "foodRevenue",
+        "foodTax",
+        "alcoholRevenue",
+        "salesTax",
+        "tipShort",
+        "serviceTax",
+        "total",
+        "name",
+        "payment"
+      ];
+    },
+    fieldNames() {
+      return this.fields.map(field => {
+        return this.$t(`order.${field}`);
+      });
+    },
+    tableData() {
+      return this.orders.map(order => {
+        return {
+          date: moment(order.timeConfirmed).format("YYYY/MM/DD"),
+          foodRevenue: order.accounting.food.revenue,
+          foodTax: order.accounting.food.tax,
+          alcoholRevenue: order.accounting.alcohol.revenue,
+          salesTax: order.accounting.alcohol.tax,
+          tipShort: order.accounting.service.revenue,
+          serviceTax: order.accounting.service.tax,
+          total: order.totalCharge,
+          name: this.orderName(order),
+          payment: order.payment?.stripe ? "stripe" : ""
+        };
+      });
+    },
     lastSeveralMonths() {
       return Array.from(Array(12).keys()).map(index => {
         const date = midNightOfMonth(-index);

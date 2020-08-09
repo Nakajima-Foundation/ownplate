@@ -89,6 +89,10 @@ export const customRoutes = [
         component: "admin/OrderListPage.vue"
       },
       {
+        path: "history",
+        component: "admin/OrderHistory.vue"
+      },
+      {
         name: "admin-suspend",
         path: "suspend",
         component: "admin/OrderSuspendPage.vue"

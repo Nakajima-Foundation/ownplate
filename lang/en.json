@@ -127,11 +127,24 @@
       "four": "From 4 day in advance",
       "five": "From 5 day in advance",
       "six": "From 6 day in advance",
-      "seven": "From 7 day in advance"
+      "seven": "From 7 day in advance",
+      "twoWeeks": "From two weeks in advance",
+      "threeWeeks": "From three weeks in advance"
+    },
+    "minimumCookTime": {
+      "halfHour": "30 minutes",
+      "oneHour": "One hour",
+      "twoHours": "Two hours",
+      "oneDay": "One day",
+      "twoDays": "Two days",
+      "threeDays": "Three days",
+      "fourDays": "Four days",
+      "fiveDays": "Five days"
     },
     "minutes": "minutes",
     "withinfive": "Within 5 hours",
     "withinaday": "Within 24 hours",
+    "withinFiveDays": "Within 5 days",
     "profilePhoto": "Restaurant profile photo",
     "coverPhoto": "Restaurant cover photo",
     "setLocation": "Set location",
@@ -147,6 +160,9 @@
     "noStreetAddress": "No street address",
     "reallyDelete": "Do you really want to delete this?",
     "reallyOnListDelete": "Do you really want to delete this from lists?",
+    "phoneCall": "Phone notification",
+    "phoneCallDescription": "Make a call when a new order comes in",
+    "phoneCallNotice": "Although it is currently provided free of charge, this feature may be a paid feature in the future due to telephone call charges. In that case, even if this function is turned on, there is no sudden cost",
     "city": "city",
     "zip": "zip",
     "state": "state"
@@ -260,8 +276,13 @@
     "confirmOrder": "Confirm Order",
     "editItems": "Edit Items",
     "revenue": "revenue",
+    "foodRevenue": "food revenue",
+    "alcoholRevenue": "alcohol revenue",
     "date": "date",
     "tipShort": "tip",
+    "serviceTax": "tip tax",
+    "name": "order name",
+    "payment": "payment",
     "includingTip": "including tip",
     "subtotal": "Subtotal",
     "salesTax": "Sales Tax",
@@ -446,7 +467,9 @@
       "lineAdd": "Add a LINE account",
       "lineUsers": "Connected LINE Accounts",
       "lineDelete": "Do you really want to delete this account？",
-      "lineSafariPrivate": "Note: If you are using Safari's Private Browsing Mode, you will not be able to connect to LINE."
+      "lineSafariPrivate": "Note: If you are using Safari's Private Browsing Mode, you will not be able to connect to LINE.",
+      "history": "Order History",
+      "more": "More"
     },
     "sound": {
       "default": "Default",
