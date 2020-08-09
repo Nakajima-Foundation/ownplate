@@ -127,11 +127,24 @@
       "four": "4日前から予約可能",
       "five": "5日前から予約可能",
       "six": "6日前から予約可能",
-      "seven": "7日前から予約可能"
+      "seven": "7日前から予約可能",
+      "twoWeeks": "2週間前から予約可能",
+      "threeWeeks": "3週間前から予約可能"
+    },
+    "minimumCookTime": {
+      "halfHour": "30分",
+      "oneHour": "１時間",
+      "twoHours": "２時間",
+      "oneDay": "１日",
+      "twoDays": "２日",
+      "threeDays": "３日",
+      "fourDays": "４日",
+      "fiveDays": "５日"
     },
     "minutes": "分",
     "withinfive": "5時間以内",
     "withinaday": "24時間以内",
+    "withinFiveDays": "５日以内",
     "profilePhoto": "プロフィール画像",
     "coverPhoto": "カバー画像",
     "setLocation": "住所を元に地図を更新",
@@ -147,6 +160,9 @@
     "noStreetAddress": "住所が未入力です",
     "reallyDelete": "本当にこの飲食店を削除しますか？",
     "reallyOnListDelete": "本当に掲載を取り消しますか？",
+    "phoneCall": "注文を電話で通知",
+    "phoneCallDescription": "オンラインで注文が入った時にお店の電話でお知らせします",
+    "phoneCallNotice": "現在は無料で提供しますが、電話の通話料がかかるため、この機能のみ将来有料機能となる可能性があります。その場合もこの機能をオンにしておいてもいきなり費用がかかることはありません。",
     "city": "市町村",
     "zip": "郵便番号",
     "state": "都道府県"
@@ -260,8 +276,13 @@
     "confirmOrder": "ご注文の確認",
     "editItems": "注文を変更する",
     "revenue": "売上",
+    "foodRevenue": "売上（食）",
+    "alcoholRevenue": "売上（酒）",
     "date": "日付",
     "tipShort": "心づけ",
+    "serviceTax": "消費税",
+    "name": "オーダー名",
+    "payment": "支払い",
     "includingTip": "心づけを含む",
     "subtotal": "小計",
     "salesTax": "消費税",
@@ -446,7 +467,9 @@
       "lineAdd": "LINEアカウントの追加",
       "lineUsers": "登録済みLINEアカウント",
       "lineDelete": "本当に消去しますか？",
-      "lineSafariPrivate": "注意: Safariのプライベートブラウズモードを使用しているとLINE連携ができません。"
+      "lineSafariPrivate": "注意: Safariのプライベートブラウズモードを使用しているとLINE連携ができません。",
+      "history": "注文履歴",
+      "more": "もっと見る"
     },
     "sound": {
       "default": "ピコリン",
