@@ -72,7 +72,7 @@
               <span class="p-l-16 p-r-16">{{ $t('admin.order.more') }}</span>
             </b-button>
           </div>
-          <download-orders />
+          <download-orders :orders="orders" />
         </div>
       </div>
       <!-- Right Gap -->
