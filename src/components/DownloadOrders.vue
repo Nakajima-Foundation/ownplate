@@ -14,6 +14,7 @@ import DownloadCsv from "~/components/DownloadCSV";
 import moment from "moment";
 import { nameOfOrder } from "~/plugins/strings.js";
 import { parsePhoneNumber, formatNational } from "~/plugins/phoneutil.js";
+import { order_status } from "~/plugins/constant.js";
 
 export default {
   components: {
@@ -31,14 +32,6 @@ export default {
         "date",
         "status",
         "totalCount",
-        /*
-        "foodRevenue",
-        "foodTax",
-        "alcoholRevenue",
-        "salesTax",
-        "tipShort",
-        "serviceTax",
-        */
         "total",
         "phoneNumber",
         "name",
@@ -56,18 +49,16 @@ export default {
         const totalCount = Object.keys(order.order).reduce((count, id) => {
           return count + order.order[id];
         }, 0);
+        const status = Object.keys(order_status).reduce((result, key) => {
+          if (order_status[key] == order.status) {
+            return key;
+          }
+          return result;
+        }, "unexpected");
         return {
           date: moment(order.timePlaced).format("YYYY/MM/DD HH:MM"),
-          status: order.status,
+          status: this.$t(`order.status.${status}`),
           totalCount: totalCount,
-          /*
-          foodRevenue: order.accounting.food.revenue,
-          foodTax: order.accounting.food.tax,
-          alcoholRevenue: order.accounting.alcohol.revenue,
-          salesTax: order.accounting.alcohol.tax,
-          tipShort: order.accounting.service.revenue,
-          serviceTax: order.accounting.service.tax,
-          */
           total: order.totalCharge,
           phoneNumber: formatNational(parsePhoneNumber(order.phoneNumber)),
           name: nameOfOrder(order),
