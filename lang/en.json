@@ -321,6 +321,9 @@
     "timeToPickup": "Estimated Pickup Time",
     "notAvailable": "This restaurant is not available at this time. Please try again later",
     "orderNotice": "Order Notice",
+    "phoneNumber": "Phone Numbers",
+    "totalCount": "Items",
+    "statusName": "Status",
     "status": {
       "unexpected": "Unexpected",
       "error": "Error",

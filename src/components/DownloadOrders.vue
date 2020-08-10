@@ -30,7 +30,7 @@ export default {
     fields() {
       return [
         "date",
-        "status",
+        "statusName",
         "totalCount",
         "total",
         "phoneNumber",
@@ -57,7 +57,7 @@ export default {
         }, "unexpected");
         return {
           date: moment(order.timePlaced).format("YYYY/MM/DD HH:MM"),
-          status: this.$t(`order.status.${status}`),
+          statusName: this.$t(`order.status.${status}`),
           totalCount: totalCount,
           total: order.totalCharge,
           phoneNumber: formatNational(parsePhoneNumber(order.phoneNumber)),
