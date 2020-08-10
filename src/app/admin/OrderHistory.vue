@@ -72,6 +72,7 @@
               <span class="p-l-16 p-r-16">{{ $t('admin.order.more') }}</span>
             </b-button>
           </div>
+          <download-orders />
         </div>
       </div>
       <!-- Right Gap -->
@@ -87,14 +88,15 @@ import OrderedInfo from "~/app/admin/Order/OrderedInfo";
 import BackButton from "~/components/BackButton";
 import { order_status } from "~/plugins/constant.js";
 import moment from "moment";
-
+import DownloadOrders from "~/components/DownloadOrders";
 import NotificationIndex from "./Notifications/Index";
 
 export default {
   components: {
     OrderedInfo,
     BackButton,
-    NotificationIndex
+    NotificationIndex,
+    DownloadOrders
   },
   data() {
     return {
