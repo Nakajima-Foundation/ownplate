@@ -1,5 +1,10 @@
 <template>
-  <download-csv :data="tableData" :fields="fields" :fieldNames="fieldNames" :fileName="'foo'">
+  <download-csv
+    :data="tableData"
+    :fields="fields"
+    :fieldNames="fieldNames"
+    :fileName="$t('order.history')"
+  >
     <b-button class="m-t-16 b-reset h-36 r-36 bg-form">
       <span class="p-l-16 p-r-16">
         <i class="material-icons c-primary s-18 m-r-8">save_alt</i>
@@ -47,7 +52,6 @@ export default {
     },
     tableData() {
       return this.orders.map(order => {
-        console.log(order);
         const totalCount = Object.keys(order.order).reduce((count, id) => {
           return count + order.order[id];
         }, 0);
