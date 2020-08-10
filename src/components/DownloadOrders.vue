@@ -29,7 +29,9 @@ export default {
   computed: {
     fields() {
       return [
-        "date",
+        "datePlaced",
+        "dateEstimated",
+        "dateConfirmed",
         "statusName",
         "totalCount",
         "total",
@@ -56,7 +58,13 @@ export default {
           return result;
         }, "unexpected");
         return {
-          date: moment(order.timePlaced).format("YYYY/MM/DD HH:MM"),
+          datePlaced: moment(order.timePlaced).format("YYYY/MM/DD HH:MM"),
+          dateEstimated:
+            order.timeEstimated &&
+            moment(order.timeEstimated).format("YYYY/MM/DD HH:MM"),
+          dateConfirmed:
+            order.timeConfirmed &&
+            moment(order.timeConfirmed.toDate()).format("YYYY/MM/DD HH:MM"),
           statusName: this.$t(`order.status.${status}`),
           totalCount: totalCount,
           total: order.totalCharge,
