@@ -13,6 +13,7 @@
 import DownloadCsv from "~/components/DownloadCSV";
 import moment from "moment";
 import { nameOfOrder } from "~/plugins/strings.js";
+import { parsePhoneNumber, formatNational } from "~/plugins/phoneutil.js";
 
 export default {
   components: {
@@ -28,13 +29,18 @@ export default {
     fields() {
       return [
         "date",
+        "status",
+        "totalCount",
+        /*
         "foodRevenue",
         "foodTax",
         "alcoholRevenue",
         "salesTax",
         "tipShort",
         "serviceTax",
+        */
         "total",
+        "phoneNumber",
         "name",
         "payment"
       ];
@@ -46,8 +52,14 @@ export default {
     },
     tableData() {
       return this.orders.map(order => {
+        console.log(order);
+        const totalCount = Object.keys(order.order).reduce((count, id) => {
+          return count + order.order[id];
+        }, 0);
         return {
-          date: moment(order.timeConfirmed).format("YYYY/MM/DD"),
+          date: moment(order.timePlaced).format("YYYY/MM/DD HH:MM"),
+          status: order.status,
+          totalCount: totalCount,
           /*
           foodRevenue: order.accounting.food.revenue,
           foodTax: order.accounting.food.tax,
@@ -57,6 +69,7 @@ export default {
           serviceTax: order.accounting.service.tax,
           */
           total: order.totalCharge,
+          phoneNumber: formatNational(parsePhoneNumber(order.phoneNumber)),
           name: nameOfOrder(order),
           payment: order.payment?.stripe ? "stripe" : ""
         };
