@@ -321,6 +321,12 @@
     "timeToPickup": "受け渡し予定時刻",
     "notAvailable": "注文可能な営業日がないので、現在は注文を受け付けていません。",
     "orderNotice": "注文時のご注意",
+    "datePlaced": "注文時刻",
+    "dateEstimated": "完了予定時刻",
+    "dateConfirmed": "受け渡し時刻",
+    "statusName": "ステータス",
+    "phoneNumber": "お客様の電話番号",
+    "totalCount": "注文総数",
     "status": {
       "unexpected": "(Unexpected)",
       "error": "エラー",
