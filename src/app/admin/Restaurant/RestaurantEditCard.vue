@@ -45,6 +45,11 @@
         </b-button>
       </div>
 
+      <!-- Notifications Settings -->
+      <div class="align-center">
+        <notification-index :shopInfo="restaurantInfo" />
+      </div>
+
       <!-- Edit Menu -->
       <div class="align-center m-t-24">
         <!-- Menu Not Existing -->
@@ -157,8 +162,13 @@
 import { db } from "~/plugins/firebase.js";
 import * as firebase from "firebase/app";
 
+import NotificationIndex from "../Notifications/Index";
+
 export default {
   name: "RestaurantEditCard",
+  components: {
+    NotificationIndex
+  },
   props: {
     shopInfo: {
       type: Object,
