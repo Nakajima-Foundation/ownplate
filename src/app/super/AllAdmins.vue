@@ -76,8 +76,9 @@ export default {
         } else {
           this.last = null;
         }
-        this.admins = snapshot.docs.map(this.doc2data("admin"));
-        this.admins.forEach(async admin => {
+        const admins = snapshot.docs.map(this.doc2data("admin"));
+        admins.forEach(async admin => {
+          this.admins.push(admin);
           // NOTE: We are getting extra data only once for each admin
           if (!this.infos[admin.id]) {
             this.updateInfo(admin);
