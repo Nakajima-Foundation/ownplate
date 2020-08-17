@@ -335,7 +335,7 @@ export default {
     },
     timeOfEvents() {
       const mapping = {
-        order_placed: this.timeStampToText(this.orderInfo.timePlaced),
+        order_placed: this.timeStampToText(this.orderInfo.orderPlacedAt),
         order_accepted: this.timeStampToText(this.orderInfo.orderAcceptedAt),
         cooking_completed: this.timeStampToText(
           this.orderInfo.orderCookingCompletedAt
