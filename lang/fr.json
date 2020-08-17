@@ -127,7 +127,7 @@
       "four": "A partir de 4 jour à l'avance",
       "five": "A partir de 5 jour à l'avance",
       "six": "A partir de 6 jour à l'avance",
-      "seven": "A partir de 7 jour à l'avance"
+      "seven": "A partir de 7 jour à l'avance",
       "twoWeeks": "From two weeks in advance",
       "threeWeeks": "From three weeks in advance"
     },
@@ -474,7 +474,7 @@
       "lineAdd": "Ajouter un compte LINE",
       "lineUsers": "Comptes LINE Connectés",
       "lineDelete": "Voulez-vous vraiment supprimer ce compte？",
-      "lineSafariPrivate": "Remarque: si vous utilisez le mode de navigation privée de Safari, vous ne pourrez pas vous connecter à LINE."
+      "lineSafariPrivate": "Remarque: si vous utilisez le mode de navigation privée de Safari, vous ne pourrez pas vous connecter à LINE.",
       "history": "Order History",
       "more": "More"
     },
