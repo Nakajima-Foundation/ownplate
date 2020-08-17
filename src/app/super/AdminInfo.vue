@@ -1,6 +1,8 @@
 <template>
   <section class="section">
     <back-button url="/s/admins" />
+    <h1>Admin</h1>
+    {{admin.name}}, {{adminPrivate.email}}
     <h1>Custome Claims</h1>
     <div>
       <b-checkbox v-model="isAdmin" disabled>Admin</b-checkbox>
@@ -25,7 +27,9 @@ export default {
   data() {
     return {
       customClaims: {},
-      restaurants: []
+      restaurants: [],
+      admin: {},
+      adminPrivate: {},
     };
   },
   computed: {
@@ -73,6 +77,18 @@ export default {
       .get();
     this.restaurants = snapshot.docs.map(this.doc2data("admin"));
     console.log(this.restaurants);
+
+    const adminPrivateSnapshot = await db
+          .doc("/admins/" + this.adminId + "/private/profile").get();
+    const adminSnapshot = await db
+          .doc("/admins/" + this.adminId).get();
+    if (adminPrivateSnapshot.exists) {
+      this.adminPrivate = adminPrivateSnapshot.data();
+    }
+    if (adminSnapshot.exists) {
+      this.admin = adminSnapshot.data();
+    }
+    console.log(this.admin, this.adminPrivate);
   }
 };
 </script>

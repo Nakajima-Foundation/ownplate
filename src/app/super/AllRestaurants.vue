@@ -3,7 +3,7 @@
     <back-button :url="backUrl" />
     <h2>All Restaurants</h2>
     <table>
-      <tr><td>nama</td><td>掲載</td><td>公開</td><td>削除</td><td>メニュー数</td></tr>
+      <tr><td>nama</td><td></td><td>掲載</td><td>公開</td><td>削除</td><td>メニュー数</td></tr>
       <tr
       v-for="restaurant in restaurants"
       :key="restaurant.id"
@@ -16,6 +16,7 @@
             {{restaurant.restaurantName}}
           </span>
         </td>
+        <td><router-link :to="`/s/admins/${restaurant.uid}`">管理人</router-link></td>
         <td>
           {{restaurant.onTheList ? "o":"-"}}
         </td>
@@ -35,6 +36,8 @@
 </template>
 
 <script>
+// TODO: 通知の状況もわかるようにする
+//
 import BackButton from "~/components/BackButton";
 import { db } from "~/plugins/firebase.js";
 
