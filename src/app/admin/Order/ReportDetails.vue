@@ -15,6 +15,7 @@
 <script>
 import DownloadCsv from "~/components/DownloadCSV";
 import moment from "moment";
+import { parsePhoneNumber, formatNational } from "~/plugins/phoneutil.js";
 import { nameOfOrder } from "~/plugins/strings.js";
 
 export default {
@@ -32,7 +33,7 @@ export default {
     }
   },
   mounted() {
-    console.log("***", this.orders);
+    //console.log("***", this.orders);
   },
   computed: {
     fields() {
@@ -55,6 +56,28 @@ export default {
       });
     },
     tableData() {
+      const items = [];
+      this.orders.forEach(order => {
+        const ids = Object.keys(order.order);
+        console.log(order);
+        console.log(ids);
+        ids.forEach(id => {
+          const menuItem = order.menuItems[id];
+          items.push({
+            name: nameOfOrder(order),
+            date: moment(order.timeConfirmed).format("YY/MM/DD HH:MM"),
+            phoneNumber: formatNational(parsePhoneNumber(order.phoneNumber)),
+            userName: order.name,
+            count: order.order[id],
+            itemName: menuItem.itemName,
+            category1: menuItem.category1 || "",
+            category2: menuItem.category2 || ""
+          });
+        });
+      });
+      console.log(items);
+      return items;
+      /*
       return this.orders.map(order => {
         return {
           date: moment(order.timeConfirmed).format("YYYY/MM/DD"),
@@ -69,6 +92,7 @@ export default {
           payment: order.payment?.stripe ? "stripe" : ""
         };
       });
+        */
     }
   }
 };
