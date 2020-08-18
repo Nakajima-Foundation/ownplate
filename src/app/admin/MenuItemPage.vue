@@ -402,8 +402,10 @@
       </div>
       <edit-category
         v-if="categoryKey"
+        :categoryKey="categoryKey"
         :restaurantInfo="restaurantInfo"
         @dismissed="handleDismissed"
+        @updated="handleCategoryUpdated"
       />
     </template>
   </div>
@@ -530,6 +532,10 @@ export default {
     }
   },
   methods: {
+    handleCategoryUpdated(categories) {
+      console.log("***", categories);
+      this.restaurantInfo[this.categoryKey] = categories;
+    },
     handleDismissed() {
       this.categoryKey = null;
     },
