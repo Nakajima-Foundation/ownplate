@@ -297,6 +297,13 @@
             <!-- Category 1 -->
             <div class="m-t-16">
               <div class="t-subtitle2 c-text-black-medium p-b-8">{{ $t("editMenu.category1") }}</div>
+              <b-select v-model="menuInfo.category1">
+                <option
+                  v-for="category in categiries1"
+                  :key="category"
+                  :value="category"
+                >{{ category }}</option>
+              </b-select>
               <div>
                 <b-button
                   class="b-reset op-button-pill h-36 bg-form"
@@ -310,9 +317,16 @@
                 </b-button>
               </div>
             </div>
-            <!-- Category 1 -->
+            <!-- Category 2 -->
             <div class="m-t-16">
               <div class="t-subtitle2 c-text-black-medium p-b-8">{{ $t("editMenu.category2") }}</div>
+              <b-select v-model="menuInfo.category2">
+                <option
+                  v-for="category in categiries2"
+                  :key="category"
+                  :value="category"
+                >{{ category }}</option>
+              </b-select>
               <div>
                 <b-button
                   class="b-reset op-button-pill h-36 bg-form"
@@ -445,7 +459,9 @@ export default {
         images: {},
         publicFlag: false,
         itemOptionCheckbox: [""],
-        allergens: {}
+        allergens: {},
+        category1: "",
+        category2: ""
       },
 
       taxRates: taxRates,
@@ -495,6 +511,12 @@ export default {
     this.notFound = false;
   },
   computed: {
+    categiries1() {
+      return this.restaurantInfo["category1"] || [];
+    },
+    categiries2() {
+      return this.restaurantInfo["category2"] || [];
+    },
     itemPhoto() {
       return (
         (this.menuInfo?.images?.item?.resizedImages || {})["600"] ||
@@ -586,7 +608,9 @@ export default {
           itemOptionCheckbox: this.menuInfo.itemOptionCheckbox || [],
           publicFlag: this.menuInfo.publicFlag || false,
           allergens: this.menuInfo.allergens,
-          validatedFlag: !this.hasError
+          validatedFlag: !this.hasError,
+          category1: this.menuInfo.category1,
+          category2: this.menuInfo.category2
         };
 
         // Convert double-width characters with half-width characters in options
