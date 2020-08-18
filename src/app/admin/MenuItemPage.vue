@@ -293,8 +293,42 @@
                 </div>
               </div>
             </div>
+
+            <!-- Category 1 -->
+            <div class="m-t-16">
+              <div class="t-subtitle2 c-text-black-medium p-b-8">{{ $t("editMenu.category1") }}</div>
+              <div>
+                <b-button
+                  class="b-reset op-button-pill h-36 bg-form"
+                  @click="editCategory('category1')"
+                >
+                  <span class="c-primary t-button">
+                    {{
+                    $t("editMenu.editCategory1")
+                    }}
+                  </span>
+                </b-button>
+              </div>
+            </div>
+            <!-- Category 1 -->
+            <div class="m-t-16">
+              <div class="t-subtitle2 c-text-black-medium p-b-8">{{ $t("editMenu.category2") }}</div>
+              <div>
+                <b-button
+                  class="b-reset op-button-pill h-36 bg-form"
+                  @click="editCategory('category2')"
+                >
+                  <span class="c-primary t-button">
+                    {{
+                    $t("editMenu.editCategory2")
+                    }}
+                  </span>
+                </b-button>
+              </div>
+            </div>
           </div>
         </div>
+
         <!-- Right Gap -->
         <div class="column is-narrow w-24"></div>
       </div>
@@ -488,6 +522,9 @@ export default {
     }
   },
   methods: {
+    editCategory(key) {
+      alert(key);
+    },
     handleMenuImage(e) {
       this.files["menu"] = e;
     },
