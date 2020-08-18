@@ -293,8 +293,56 @@
                 </div>
               </div>
             </div>
+
+            <!-- Category 1 -->
+            <div class="m-t-16">
+              <div class="t-subtitle2 c-text-black-medium p-b-8">{{ $t("editMenu.category1") }}</div>
+              <b-select v-model="menuInfo.category1">
+                <option
+                  v-for="category in categiries1"
+                  :key="category"
+                  :value="category"
+                >{{ category }}</option>
+              </b-select>
+              <div class="m-t-8">
+                <b-button
+                  class="b-reset op-button-pill h-36 bg-form"
+                  @click="editCategory('category1')"
+                >
+                  <span class="c-primary t-button">
+                    {{
+                    $t("editMenu.editCategory1")
+                    }}
+                  </span>
+                </b-button>
+              </div>
+            </div>
+            <!-- Category 2 -->
+            <div class="m-t-16">
+              <div class="t-subtitle2 c-text-black-medium p-b-8">{{ $t("editMenu.category2") }}</div>
+              <b-select v-model="menuInfo.category2">
+                <option
+                  v-for="category in categiries2"
+                  :key="category"
+                  :value="category"
+                >{{ category }}</option>
+              </b-select>
+              <div class="m-t-8">
+                <b-button
+                  class="b-reset op-button-pill h-36 bg-form"
+                  @click="editCategory('category2')"
+                >
+                  <span class="c-primary t-button">
+                    {{
+                    $t("editMenu.editCategory2")
+                    }}
+                  </span>
+                </b-button>
+              </div>
+            </div>
           </div>
         </div>
+
         <!-- Right Gap -->
         <div class="column is-narrow w-24"></div>
       </div>
@@ -366,6 +414,13 @@
         <!-- Right Gap -->
         <div class="column is-narrow w-24"></div>
       </div>
+      <edit-category
+        v-if="categoryKey"
+        :categoryKey="categoryKey"
+        :restaurantInfo="restaurantInfo"
+        @dismissed="handleDismissed"
+        @updated="handleCategoryUpdated"
+      />
     </template>
   </div>
 </template>
@@ -380,6 +435,7 @@ import { taxRates } from "~/plugins/constant.js";
 import NotificationIndex from "./Notifications/Index";
 import { ownPlateConfig } from "@/config/project";
 import { halfCharactors } from "~/plugins/strings.js";
+import EditCategory from "~/app/admin/Menus/EditCategory";
 
 export default {
   name: "Order",
@@ -388,7 +444,8 @@ export default {
     Price,
     BackButton,
     NotificationIndex,
-    NotFound
+    NotFound,
+    EditCategory
   },
 
   data() {
@@ -402,7 +459,9 @@ export default {
         images: {},
         publicFlag: false,
         itemOptionCheckbox: [""],
-        allergens: {}
+        allergens: {},
+        category1: "",
+        category2: ""
       },
 
       taxRates: taxRates,
@@ -414,7 +473,8 @@ export default {
       notFound: null,
       menuId: this.$route.params.menuId,
       submitting: false,
-      files: {}
+      files: {},
+      categoryKey: null
     };
   },
   async created() {
@@ -451,6 +511,12 @@ export default {
     this.notFound = false;
   },
   computed: {
+    categiries1() {
+      return this.restaurantInfo["category1"] || [];
+    },
+    categiries2() {
+      return this.restaurantInfo["category2"] || [];
+    },
     itemPhoto() {
       return (
         (this.menuInfo?.images?.item?.resizedImages || {})["600"] ||
@@ -488,6 +554,18 @@ export default {
     }
   },
   methods: {
+    async handleCategoryUpdated(categories) {
+      await db.doc(`restaurants/${this.restaurantId()}`).update({
+        [this.categoryKey]: categories
+      });
+      this.restaurantInfo[this.categoryKey] = categories;
+    },
+    handleDismissed() {
+      this.categoryKey = null;
+    },
+    editCategory(key) {
+      this.categoryKey = key;
+    },
     handleMenuImage(e) {
       this.files["menu"] = e;
     },
@@ -530,7 +608,9 @@ export default {
           itemOptionCheckbox: this.menuInfo.itemOptionCheckbox || [],
           publicFlag: this.menuInfo.publicFlag || false,
           allergens: this.menuInfo.allergens,
-          validatedFlag: !this.hasError
+          validatedFlag: !this.hasError,
+          category1: this.menuInfo.category1,
+          category2: this.menuInfo.category2
         };
 
         // Convert double-width characters with half-width characters in options

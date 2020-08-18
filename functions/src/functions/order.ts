@@ -321,7 +321,14 @@ export const wasOrderCreated = async (db, data: any, context) => {
         food_sub_total += (price * num)
       }
       newOrderData[menuId] = num;
-      newItems[menuId] = { price: menu.price, itemName: menu.itemName };
+      const menuItem: any = { price: menu.price, itemName: menu.itemName };
+      if (menu.category1) {
+        menuItem.category1 = menu.category1;
+      }
+      if (menu.category2) {
+        menuItem.category2 = menu.category2;
+      }
+      newItems[menuId] = menuItem;
     });
 
     // calculate price.
