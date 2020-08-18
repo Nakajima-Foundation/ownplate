@@ -11,7 +11,11 @@
       </div>
       <div class="cols m-t-16">
         <b-input class="flex-1" placeholder="New Category" v-model="newEntry" />
-        <b-button class="b-reset m-l-8 op-button-pill h-36 bg-form" @click="handleAdd">
+        <b-button
+          :disabled="!isValidEntry"
+          class="b-reset m-l-8 op-button-pill h-36 bg-form"
+          @click="handleAdd"
+        >
           <i class="material-icons c-primary">add</i>
         </b-button>
       </div>
@@ -48,6 +52,12 @@ export default {
     }
   },
   computed: {
+    isValidEntry() {
+      if (this.newEntry === "") {
+        return false;
+      }
+      return !this.categories.find(category => category === this.newEntry);
+    },
     categories() {
       return this.restaurantInfo[this.categoryKey] || [];
     }
