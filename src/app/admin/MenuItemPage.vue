@@ -400,6 +400,7 @@
         <!-- Right Gap -->
         <div class="column is-narrow w-24"></div>
       </div>
+      <edit-category v-if="categoryKey" @dismissed="handleDismissed" />
     </template>
   </div>
 </template>
@@ -414,6 +415,7 @@ import { taxRates } from "~/plugins/constant.js";
 import NotificationIndex from "./Notifications/Index";
 import { ownPlateConfig } from "@/config/project";
 import { halfCharactors } from "~/plugins/strings.js";
+import EditCategory from "~/app/admin/Menus/EditCategory";
 
 export default {
   name: "Order",
@@ -422,7 +424,8 @@ export default {
     Price,
     BackButton,
     NotificationIndex,
-    NotFound
+    NotFound,
+    EditCategory
   },
 
   data() {
@@ -448,7 +451,8 @@ export default {
       notFound: null,
       menuId: this.$route.params.menuId,
       submitting: false,
-      files: {}
+      files: {},
+      categoryKey: null
     };
   },
   async created() {
@@ -522,8 +526,11 @@ export default {
     }
   },
   methods: {
+    handleDismissed() {
+      this.categoryKey = null;
+    },
     editCategory(key) {
-      alert(key);
+      this.categoryKey = key;
     },
     handleMenuImage(e) {
       this.files["menu"] = e;
