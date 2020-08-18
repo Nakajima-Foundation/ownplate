@@ -1,6 +1,10 @@
 <template>
   <div>
-    <div>FOO</div>
+    <table class="w-full">
+      <tr v-for="row in tableData" :key="row.id">
+        <td v-for="field in fields" :key="field">{{ row[field ]}}</td>
+      </tr>
+    </table>
     <download-csv :data="tableData" :fields="fields" :fieldNames="fieldNames" :fileName="fileName">
       <b-button class="m-t-16 b-reset h-36 r-36 bg-form">
         <span class="p-l-16 p-r-16">
@@ -38,16 +42,14 @@ export default {
   computed: {
     fields() {
       return [
-        "date",
-        "foodRevenue",
-        "foodTax",
-        "alcoholRevenue",
-        "salesTax",
-        "tipShort",
-        "serviceTax",
-        "total",
         "name",
-        "payment"
+        "date",
+        "phoneNumber",
+        "userName",
+        "itemName",
+        "category1",
+        "category2",
+        "count"
       ];
     },
     fieldNames() {
@@ -64,6 +66,7 @@ export default {
         ids.forEach(id => {
           const menuItem = order.menuItems[id];
           items.push({
+            id: `${order.id}/${id}`,
             name: nameOfOrder(order),
             date: moment(order.timeConfirmed).format("YY/MM/DD HH:MM"),
             phoneNumber: formatNational(parsePhoneNumber(order.phoneNumber)),
