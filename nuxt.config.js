@@ -61,6 +61,9 @@ export default {
    ** Nuxt.js dev-modules
    */
   buildModules: [],
+  build: {
+    quiet: false
+  },
   /*
    ** Nuxt.js modules
    */
