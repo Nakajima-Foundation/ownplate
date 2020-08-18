@@ -8,10 +8,18 @@
 
 <script>
 export default {
+  props: {
+    restaurantInfo: {
+      type: Object
+    }
+  },
   data() {
     return {
       isVisible: true
     };
+  },
+  created() {
+    console.log("***", this.restaurantInfo);
   },
   watch: {
     isVisible(newValue) {

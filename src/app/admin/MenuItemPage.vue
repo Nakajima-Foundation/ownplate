@@ -400,7 +400,11 @@
         <!-- Right Gap -->
         <div class="column is-narrow w-24"></div>
       </div>
-      <edit-category v-if="categoryKey" @dismissed="handleDismissed" />
+      <edit-category
+        v-if="categoryKey"
+        :restaurantInfo="restaurantInfo"
+        @dismissed="handleDismissed"
+      />
     </template>
   </div>
 </template>
