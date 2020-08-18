@@ -304,7 +304,7 @@
                   :value="category"
                 >{{ category }}</option>
               </b-select>
-              <div>
+              <div class="m-t-8">
                 <b-button
                   class="b-reset op-button-pill h-36 bg-form"
                   @click="editCategory('category1')"
@@ -327,7 +327,7 @@
                   :value="category"
                 >{{ category }}</option>
               </b-select>
-              <div>
+              <div class="m-t-8">
                 <b-button
                   class="b-reset op-button-pill h-36 bg-form"
                   @click="editCategory('category2')"

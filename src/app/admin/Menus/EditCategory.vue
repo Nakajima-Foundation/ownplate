@@ -2,7 +2,15 @@
   <b-modal :active.sync="isVisible" :width="488">
     <div class="op-dialog p-t-24 p-l-24 p-r-24 p-b-24">
       <div>
-        <div v-for="category in categories" :key="category">{{ category }}</div>
+        <div class="m-t-4" v-for="(category, index) in categories" :key="category">
+          {{ category }}
+          <b-button
+            class="b-reset op-button-pill h-36 bg-status-red-bg m-l-8"
+            @click="handleDelete(index)"
+          >
+            <i class="material-icons c-status-red s-18 p-l-8 p-r-8">delete</i>
+          </b-button>
+        </div>
       </div>
       <b-input placeholder="New Category" v-model="newEntry" />
       <b-button @click="handleAdd">
@@ -52,6 +60,11 @@ export default {
       categories.push(this.newEntry);
       this.$emit("updated", categories);
       this.newEntry = "";
+    },
+    handleDelete(index) {
+      const categories = this.categories;
+      categories.splice(index, 1);
+      this.$emit("updated", categories);
     }
   }
 };
