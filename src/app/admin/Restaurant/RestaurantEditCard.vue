@@ -113,6 +113,19 @@
         </b-button>
       </div>
 
+      <div class="align-center m-t-16">
+
+        <b-button
+          tag="nuxt-link"
+            :to="'/admin/restaurants/' + restaurantid"
+            style="min-width: 256px;"
+          :class="shopInfo.phoneCall ? 'op-button-small secondary' : 'op-button-small primary'"
+          >
+          <span :class="shopInfo.phoneCall ? 'c-onsecondary p-l-24 p-r-24' : 'c-onprimary p-l-24 p-r-24'">
+            {{ $t("editRestaurant.phoneCallNotification") }} {{ shopInfo.phoneCall ? "ON" : "OFF" }}
+          </span>
+        </b-button>
+      </div>
       <!-- Directory Request -->
       <div class="align-center m-t-16">
         <div class="t-subtitle2 c-text-black-disabled">{{ $t("admin.directory.status") }}</div>
