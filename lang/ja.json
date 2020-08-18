@@ -163,6 +163,7 @@
     "phoneCall": "注文を電話で通知",
     "phoneCallDescription": "オンラインで注文が入った時にお店の電話でお知らせします",
     "phoneCallNotice": "現在は無料で提供しますが、電話の通話料がかかるため、この機能のみ将来有料機能となる可能性があります。その場合もこの機能をオンにしておいてもいきなり費用がかかることはありません。",
+    "phoneCallNotification": "電話通知",
     "city": "市町村",
     "zip": "郵便番号",
     "state": "都道府県"
@@ -321,6 +322,12 @@
     "timeToPickup": "受け渡し予定時刻",
     "notAvailable": "注文可能な営業日がないので、現在は注文を受け付けていません。",
     "orderNotice": "注文時のご注意",
+    "datePlaced": "注文時刻",
+    "dateEstimated": "完了予定時刻",
+    "dateConfirmed": "受け渡し時刻",
+    "statusName": "ステータス",
+    "phoneNumber": "お客様の電話番号",
+    "totalCount": "注文総数",
     "status": {
       "unexpected": "(Unexpected)",
       "error": "エラー",

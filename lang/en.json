@@ -163,6 +163,7 @@
     "phoneCall": "Phone notification",
     "phoneCallDescription": "Make a call when a new order comes in",
     "phoneCallNotice": "Although it is currently provided free of charge, this feature may be a paid feature in the future due to telephone call charges. In that case, even if this function is turned on, there is no sudden cost",
+    "phoneCallNotification": "Phone Notification",
     "city": "city",
     "zip": "zip",
     "state": "state"
@@ -321,6 +322,12 @@
     "timeToPickup": "Estimated Pickup Time",
     "notAvailable": "This restaurant is not available at this time. Please try again later",
     "orderNotice": "Order Notice",
+    "datePlaced": "Time Placed",
+    "dateEstimated": "Time Estimated",
+    "dateConfirmed": "Time Confirmed",
+    "statusName": "Status",
+    "phoneNumber": "Phone Numbers",
+    "totalCount": "Items",
     "status": {
       "unexpected": "Unexpected",
       "error": "Error",

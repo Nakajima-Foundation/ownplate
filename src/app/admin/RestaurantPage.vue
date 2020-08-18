@@ -985,7 +985,7 @@ export default {
       }
     },
     hasError: function() {
-      this.shopInfo.publicFlag = !this.hasError;
+      // this.shopInfo.publicFlag = !this.hasError;
     },
     files: function() {
       console.log(this.files);
@@ -1075,6 +1075,7 @@ export default {
           location: this.shopInfo.location,
           place_id: this.shopInfo.place_id,
           phoneNumber: this.shopInfo.phoneNumber,
+          phoneCall: this.shopInfo.phoneCall,
           countryCode: this.shopInfo.countryCode,
           url: this.shopInfo.url,
           introduction: this.shopInfo.introduction,

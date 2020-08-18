@@ -126,7 +126,3 @@ export const mutations = {
 
 export const actions = {
 };
-
-//for User
-export const store = new Vuex.Store({
-});
