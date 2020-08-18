@@ -985,7 +985,7 @@ export default {
       }
     },
     hasError: function() {
-      this.shopInfo.publicFlag = !this.hasError;
+      // this.shopInfo.publicFlag = !this.hasError;
     },
     files: function() {
       console.log(this.files);
