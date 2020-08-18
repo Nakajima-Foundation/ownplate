@@ -192,7 +192,11 @@
     "itemAddOption": "オプション追加",
     "itemInvalidMessage": "データが正しく入力されていないため、公開されません",
     "saveAsDraft": "下書きとして保存されます（メニューに表示されません）",
-    "reallyDelete": "本当に削除しますか？"
+    "reallyDelete": "本当に削除しますか？",
+    "category1": "カテゴリー１",
+    "editCategory1": "カテゴリー１を編集",
+    "category2": "カテゴリー２",
+    "editCategory2": "カテゴリー２を編集"
   },
   "editTitle": {
     "enterCategory": "カテゴリー名を入力してください",
