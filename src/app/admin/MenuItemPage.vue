@@ -532,8 +532,10 @@ export default {
     }
   },
   methods: {
-    handleCategoryUpdated(categories) {
-      console.log("***", categories);
+    async handleCategoryUpdated(categories) {
+      await db.doc(`restaurants/${this.restaurantId()}`).update({
+        [this.categoryKey]: categories
+      });
       this.restaurantInfo[this.categoryKey] = categories;
     },
     handleDismissed() {

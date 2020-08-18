@@ -1,7 +1,9 @@
 <template>
   <b-modal :active.sync="isVisible" :width="488">
     <div class="op-dialog p-t-24 p-l-24 p-r-24 p-b-24">
-      <div>Foo</div>
+      <div>
+        <div v-for="category in categories" :key="category">{{ category }}</div>
+      </div>
       <b-input placeholder="New Category" v-model="newEntry" />
       <b-button @click="handleAdd">
         <i class="material-icons">add</i>
