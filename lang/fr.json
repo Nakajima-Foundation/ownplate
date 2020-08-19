@@ -332,6 +332,12 @@
     "statusName": "Status",
     "phoneNumber": "Phone Numbers",
     "totalCount": "Items",
+    "confirmedTime": "Confirmed Time",
+    "userName": "Nom d'utilisateur",
+    "itemName": "Élément de menu",
+    "category1": "Catégorie 1",
+    "category2": "Catégorie 2",
+    "count": "Compter",
     "status": {
       "unexpected": "Inattendue",
       "error": "Erreur",
