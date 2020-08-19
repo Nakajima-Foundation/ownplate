@@ -332,6 +332,12 @@
     "statusName": "ステータス",
     "phoneNumber": "お客様の電話番号",
     "totalCount": "注文総数",
+    "confirmedTime": "受け渡し時間",
+    "userName": "注文者（任意）",
+    "itemName": "メニュー",
+    "category1": "カテゴリ１",
+    "category2": "カテゴリ２",
+    "count": "受注数",
     "status": {
       "unexpected": "(Unexpected)",
       "error": "エラー",

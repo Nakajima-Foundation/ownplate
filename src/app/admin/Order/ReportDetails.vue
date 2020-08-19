@@ -50,9 +50,9 @@ export default {
     fields() {
       return [
         "name",
-        "date",
-        "phoneNumber",
         "userName",
+        "phoneNumber",
+        "confirmedTime",
         "itemName",
         "category1",
         "category2",
@@ -75,7 +75,7 @@ export default {
           items.push({
             id: `${order.id}/${id}`,
             name: nameOfOrder(order),
-            date: moment(order.timeConfirmed).format("YY/MM/DD HH:MM"),
+            confirmedTime: moment(order.timeConfirmed).format("YY/MM/DD HH:MM"),
             phoneNumber: formatNational(parsePhoneNumber(order.phoneNumber)),
             userName: order.name,
             count: order.order[id],
