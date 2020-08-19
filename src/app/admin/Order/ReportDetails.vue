@@ -1,6 +1,13 @@
 <template>
   <div>
     <table class="w-full">
+      <tr>
+        <th
+          class="p-l-8 p-b-8"
+          v-for="(field, index) in fields"
+          :key="field"
+        >{{ fieldNames[index] }}</th>
+      </tr>
       <tr v-for="row in tableData" :key="row.id">
         <td v-for="field in fields" :key="field">{{ row[field ]}}</td>
       </tr>
