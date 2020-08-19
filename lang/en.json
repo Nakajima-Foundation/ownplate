@@ -192,7 +192,11 @@
     "itemAddOption": "Add Option",
     "itemInvalidMessage": "This item is not on your menu because data is invalid.",
     "saveAsDraft": "Save as draft. This item is not on your menus.",
-    "reallyDelete": "Do you really want to delete this?"
+    "reallyDelete": "Do you really want to delete this?",
+    "category1": "Category 1",
+    "editCategory1": "Edit Category 1",
+    "category2": "Category 2",
+    "editCategory2": "Edit Category 2"
   },
   "editTitle": {
     "enterCategory": "Enter category name",
