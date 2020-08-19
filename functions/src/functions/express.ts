@@ -166,10 +166,12 @@ const ogpPage = async (req: any, res: any) => {
 
     const bodyString = [
       '<div id="__nuxt">',
-      '<h1>',
+      '<h1 style="font-size: 50px;">',
       escapeHtml(title),
       '</h1>',
+      '<span style="font-size: 30px;">',
       escapeHtml(restaurant_data.introduction),
+      '</span>',
     ].join("\n");
 
 
