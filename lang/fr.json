@@ -192,11 +192,15 @@
     "itemAddOption": "Ajouter une option",
     "itemInvalidMessage": "Cet élément ne figure pas dans votre menu car les données ne sont pas valides.",
     "saveAsDraft": "Enregistrer comme brouillon. Cet élément ne figure pas dans vos menus.",
-    "reallyDelete": "Voulez-vous vraiment supprimer cela?"
+    "reallyDelete": "Voulez-vous vraiment supprimer cela?",
+    "category1": "Catégorie 1",
+    "editCategory1": "Modifier Catégorie 1",
+    "category2": "Catégorie 2",
+    "editCategory2": "Modifier Catégorie 2"
   },
   "editTitle": {
-    "enterCategory": "Entrez le nom de la catégorie",
-    "empty": "(Nom de catégorie vide)"
+    "enterCategory": "Entrez le nom de le groupe",
+    "empty": "(Nom du groupe vide)"
   },
   "find": {
     "area": "Région",
@@ -328,6 +332,11 @@
     "statusName": "Status",
     "phoneNumber": "Phone Numbers",
     "totalCount": "Items",
+    "userName": "Nom d'utilisateur",
+    "itemName": "Élément de menu",
+    "category1": "Catégorie 1",
+    "category2": "Catégorie 2",
+    "count": "Compter",
     "status": {
       "unexpected": "Inattendue",
       "error": "Erreur",
@@ -343,7 +352,7 @@
   },
   "button": {
     "back": "Retour",
-    "addTitle": "Ajouter une Categorie",
+    "addTitle": "Ajouter un Groupe",
     "addItem": "Ajouter un article",
     "cancel": "Annuler",
     "next": "Suivant"

@@ -192,11 +192,15 @@
     "itemAddOption": "オプション追加",
     "itemInvalidMessage": "データが正しく入力されていないため、公開されません",
     "saveAsDraft": "下書きとして保存されます（メニューに表示されません）",
-    "reallyDelete": "本当に削除しますか？"
+    "reallyDelete": "本当に削除しますか？",
+    "category1": "カテゴリー１",
+    "editCategory1": "カテゴリー１を編集",
+    "category2": "カテゴリー２",
+    "editCategory2": "カテゴリー２を編集"
   },
   "editTitle": {
-    "enterCategory": "カテゴリー名を入力してください",
-    "empty": "（カテゴリー名未入力）"
+    "enterCategory": "グループ名を入力してください",
+    "empty": "（グループ名未入力）"
   },
   "find": {
     "area": "飲食店エリア",
@@ -328,6 +332,11 @@
     "statusName": "ステータス",
     "phoneNumber": "お客様の電話番号",
     "totalCount": "注文総数",
+    "userName": "注文者（任意）",
+    "itemName": "メニュー",
+    "category1": "カテゴリ１",
+    "category2": "カテゴリ２",
+    "count": "受注数",
     "status": {
       "unexpected": "(Unexpected)",
       "error": "エラー",
@@ -343,7 +352,7 @@
   },
   "button": {
     "back": "戻る",
-    "addTitle": "カテゴリー追加",
+    "addTitle": "グループ追加",
     "addItem": "料理/ドリンク追加",
     "cancel": "キャンセル",
     "next": "次へ"
