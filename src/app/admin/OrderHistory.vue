@@ -123,12 +123,7 @@ export default {
   },
   computed: {
     fileName() {
-      return "foobar";
-      /*
-      return moment(this.lastSeveralMonths[this.monthIndex].date).format(
-        "YYYY-MM"
-      );
-      */
+      return this.$t("order.history");
     }
   },
   methods: {
