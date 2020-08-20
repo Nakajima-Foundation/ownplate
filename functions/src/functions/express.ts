@@ -147,6 +147,7 @@ const ogpPage = async (req: any, res: any) => {
       [
         `<title>${escapeHtml(title)}</title>`,
         `<meta data-n-head="1" charset="utf-8">`,
+        `<meta data-n-head="1" name="viewport" content="width=device-width,initial-scale=1">`,
         `<meta property="og:title" content="${escapeHtml(title)}" />`,
         `<meta property="og:site_name" content="${escapeHtml(siteName)}" />`,
         `<meta property="og:type" content="website" />`,
@@ -165,10 +166,12 @@ const ogpPage = async (req: any, res: any) => {
 
     const bodyString = [
       '<div id="__nuxt">',
-      '<h1>',
+      '<h1 style="font-size: 50px;">',
       escapeHtml(title),
       '</h1>',
+      '<span style="font-size: 30px;">',
       escapeHtml(restaurant_data.introduction),
+      '</span>',
     ].join("\n");
 
 

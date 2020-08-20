@@ -157,6 +157,9 @@
             </b-button>
           </download-csv>
         </div>
+        <div class="m-t-24 m-l-24 m-r-24">
+          <report-details :orders="orders" :fileName="fileName" />
+        </div>
       </div>
       <!-- Right Gap -->
       <div class="column is-narrow w-24"></div>
@@ -172,11 +175,13 @@ import { nameOfOrder } from "~/plugins/strings.js";
 import { ownPlateConfig } from "~/config/project";
 import { midNightOfMonth } from "~/plugins/dateUtils.js";
 import moment from "moment";
+import ReportDetails from "~/app/admin/Order/ReportDetails";
 
 export default {
   components: {
     BackButton,
-    DownloadCsv
+    DownloadCsv,
+    ReportDetails
   },
   data() {
     return {
