@@ -492,6 +492,12 @@ export default {
       return;
     }
     this.restaurantInfo = resRestInfo.data();
+    if (!this.restaurantInfo.category1) {
+      this.restaurantInfo.category1 = [];
+    }
+    if (!this.restaurantInfo.category2) {
+      this.restaurantInfo.category2 = [];
+    }
 
     if (this.restaurantInfo.uid !== this.uid) {
       this.notFound = true;
@@ -512,10 +518,10 @@ export default {
   },
   computed: {
     categories1() {
-      return this.restaurantInfo["category1"] || [];
+      return this.restaurantInfo.category1;
     },
     categories2() {
-      return this.restaurantInfo["category2"] || [];
+      return this.restaurantInfo.category2;
     },
     itemPhoto() {
       return (
