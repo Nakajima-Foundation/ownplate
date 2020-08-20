@@ -73,6 +73,12 @@
             </b-button>
           </div>
           <download-orders :orders="orders" />
+          <report-details
+            :orders="orders"
+            :fileName="fileName"
+            :hideTable="true"
+            :withStatus="true"
+          />
         </div>
       </div>
       <!-- Right Gap -->
@@ -90,13 +96,15 @@ import { order_status } from "~/plugins/constant.js";
 import moment from "moment";
 import DownloadOrders from "~/components/DownloadOrders";
 import NotificationIndex from "./Notifications/Index";
+import ReportDetails from "~/app/admin/Order/ReportDetails";
 
 export default {
   components: {
     OrderedInfo,
     BackButton,
     NotificationIndex,
-    DownloadOrders
+    DownloadOrders,
+    ReportDetails
   },
   data() {
     return {
@@ -118,7 +126,11 @@ export default {
     this.shopInfo = restaurantDoc.data();
     this.next();
   },
-  computed: {},
+  computed: {
+    fileName() {
+      return this.$t("order.history");
+    }
+  },
   methods: {
     async next() {
       let query = db
@@ -135,6 +147,9 @@ export default {
         order.timePlaced = order.timePlaced.toDate();
         if (order.timeEstimated) {
           order.timeEstimated = order.timeEstimated.toDate();
+        }
+        if (order.timeConfirmed) {
+          order.timeConfirmed = order.timeConfirmed.toDate();
         }
         this.orders.push(order);
       });
