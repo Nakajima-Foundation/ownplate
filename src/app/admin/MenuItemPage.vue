@@ -297,7 +297,7 @@
             <!-- Category 1 -->
             <div class="m-t-16">
               <div class="t-subtitle2 c-text-black-medium p-b-8">{{ $t("editMenu.category1") }}</div>
-              <b-select v-model="menuInfo.category1">
+              <b-select v-if="categiries1.length > 0" v-model="menuInfo.category1">
                 <option
                   v-for="category in categiries1"
                   :key="category"
@@ -320,7 +320,7 @@
             <!-- Category 2 -->
             <div class="m-t-16">
               <div class="t-subtitle2 c-text-black-medium p-b-8">{{ $t("editMenu.category2") }}</div>
-              <b-select v-model="menuInfo.category2">
+              <b-select v-if="categiries2.length > 0" v-model="menuInfo.category2">
                 <option
                   v-for="category in categiries2"
                   :key="category"
