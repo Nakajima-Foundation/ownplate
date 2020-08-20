@@ -42,7 +42,6 @@ export default {
   methods: {
     escapeCVS(value) {
       if (typeof value === "string") {
-        console.log(value);
         return value.replace(regexEscape, " ");
       }
       return value;
