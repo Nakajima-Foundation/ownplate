@@ -1,17 +1,19 @@
 <template>
   <div>
-    <table v-if="!hideTable" class="w-full">
-      <tr>
-        <th
-          class="p-l-8 p-b-8"
-          v-for="(field, index) in fields"
-          :key="field"
-        >{{ fieldNames[index] }}</th>
-      </tr>
-      <tr v-for="row in tableData" :key="row.id">
-        <td v-for="field in fields" :key="field">{{ row[field ]}}</td>
-      </tr>
-    </table>
+    <div class="m-t-24 bg-surface r-8 d-low p-l-16 p-r-16 p-t-16 p-b-16">
+      <table v-if="!hideTable" class="w-full">
+        <tr>
+          <th
+            class="p-l-8 p-b-8"
+            v-for="(field, index) in fields"
+            :key="field"
+          >{{ fieldNames[index] }}</th>
+        </tr>
+        <tr v-for="row in tableData" :key="row.id">
+          <td v-for="field in fields" :key="field">{{ row[field ]}}</td>
+        </tr>
+      </table>
+    </div>
     <download-csv :data="tableData" :fields="fields" :fieldNames="fieldNames" :fileName="fileName">
       <b-button class="m-t-16 b-reset h-36 r-36 bg-form">
         <span class="p-l-16 p-r-16">
