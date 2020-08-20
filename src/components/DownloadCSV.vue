@@ -5,6 +5,8 @@
 </template>
 
 <script>
+const regexEscape = /[,\t\n\r]/g;
+
 export default {
   props: {
     fileName: {
@@ -29,13 +31,22 @@ export default {
       const header = (this.fieldNames || this.fields).join(",");
       const rows = this.data
         .map(item => {
-          return this.fields.map(field => item[field]).join(",");
+          return this.fields
+            .map(field => this.escapeCVS(item[field]))
+            .join(",");
         })
         .join("\n");
       return `\ufeff${header}\n${rows}`;
     }
   },
   methods: {
+    escapeCVS(value) {
+      if (typeof value === "string") {
+        console.log(value);
+        return value.replace(regexEscape, " ");
+      }
+      return value;
+    },
     handleDownload() {
       const blob = new Blob([this.content], {
         type: `application/csv`
