@@ -199,8 +199,8 @@
     "editCategory2": "カテゴリー２を編集"
   },
   "editTitle": {
-    "enterCategory": "カテゴリー名を入力してください",
-    "empty": "（カテゴリー名未入力）"
+    "enterCategory": "グループ名を入力してください",
+    "empty": "（グループ名未入力）"
   },
   "find": {
     "area": "飲食店エリア",
@@ -332,7 +332,7 @@
     "statusName": "ステータス",
     "phoneNumber": "お客様の電話番号",
     "totalCount": "注文総数",
-    "confirmedTime": "受け渡し時間",
+    "confirmedTime": "受け渡し時刻",
     "userName": "注文者（任意）",
     "itemName": "メニュー",
     "category1": "カテゴリ１",
@@ -353,7 +353,7 @@
   },
   "button": {
     "back": "戻る",
-    "addTitle": "カテゴリー追加",
+    "addTitle": "グループ追加",
     "addItem": "料理/ドリンク追加",
     "cancel": "キャンセル",
     "next": "次へ"

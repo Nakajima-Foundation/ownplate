@@ -297,9 +297,9 @@
             <!-- Category 1 -->
             <div class="m-t-16">
               <div class="t-subtitle2 c-text-black-medium p-b-8">{{ $t("editMenu.category1") }}</div>
-              <b-select v-model="menuInfo.category1">
+              <b-select v-if="categories1.length > 0" v-model="menuInfo.category1">
                 <option
-                  v-for="category in categiries1"
+                  v-for="category in categories1"
                   :key="category"
                   :value="category"
                 >{{ category }}</option>
@@ -320,9 +320,9 @@
             <!-- Category 2 -->
             <div class="m-t-16">
               <div class="t-subtitle2 c-text-black-medium p-b-8">{{ $t("editMenu.category2") }}</div>
-              <b-select v-model="menuInfo.category2">
+              <b-select v-if="categories2.length > 0" v-model="menuInfo.category2">
                 <option
-                  v-for="category in categiries2"
+                  v-for="category in categories2"
                   :key="category"
                   :value="category"
                 >{{ category }}</option>
@@ -492,6 +492,12 @@ export default {
       return;
     }
     this.restaurantInfo = resRestInfo.data();
+    if (!this.restaurantInfo.category1) {
+      this.restaurantInfo.category1 = [];
+    }
+    if (!this.restaurantInfo.category2) {
+      this.restaurantInfo.category2 = [];
+    }
 
     if (this.restaurantInfo.uid !== this.uid) {
       this.notFound = true;
@@ -511,11 +517,11 @@ export default {
     this.notFound = false;
   },
   computed: {
-    categiries1() {
-      return this.restaurantInfo["category1"] || [];
+    categories1() {
+      return this.restaurantInfo.category1;
     },
-    categiries2() {
-      return this.restaurantInfo["category2"] || [];
+    categories2() {
+      return this.restaurantInfo.category2;
     },
     itemPhoto() {
       return (

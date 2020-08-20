@@ -199,8 +199,8 @@
     "editCategory2": "Edit Category 2"
   },
   "editTitle": {
-    "enterCategory": "Enter category name",
-    "empty": "(Empty category name)"
+    "enterCategory": "Enter group name",
+    "empty": "(Empty group name)"
   },
   "find": {
     "area": "Areas",
@@ -353,7 +353,7 @@
   },
   "button": {
     "back": "Back",
-    "addTitle": "Add Category",
+    "addTitle": "Add Group",
     "addItem": "Add Item",
     "cancel": "Cancel",
     "next": "Next"
