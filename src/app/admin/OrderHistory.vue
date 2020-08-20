@@ -73,7 +73,12 @@
             </b-button>
           </div>
           <download-orders :orders="orders" />
-          <report-details :orders="orders" :fileName="fileName" :hideTable="true" />
+          <report-details
+            :orders="orders"
+            :fileName="fileName"
+            :hideTable="true"
+            :withStatus="true"
+          />
         </div>
       </div>
       <!-- Right Gap -->
@@ -142,6 +147,9 @@ export default {
         order.timePlaced = order.timePlaced.toDate();
         if (order.timeEstimated) {
           order.timeEstimated = order.timeEstimated.toDate();
+        }
+        if (order.timeConfirmed) {
+          order.timeConfirmed = order.timeConfirmed.toDate();
         }
         this.orders.push(order);
       });

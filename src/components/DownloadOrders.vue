@@ -68,7 +68,7 @@ export default {
             moment(order.timeEstimated).format("YYYY/MM/DD HH:MM"),
           dateConfirmed:
             order.timeConfirmed &&
-            moment(order.timeConfirmed.toDate()).format("YYYY/MM/DD HH:MM"),
+            moment(order.timeConfirmed).format("YYYY/MM/DD HH:MM"),
           statusName: this.$t(`order.status.${status}`),
           totalCount: totalCount,
           total: order.totalCharge,

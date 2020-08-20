@@ -18,7 +18,7 @@
       <b-button class="m-t-16 b-reset h-36 r-36 bg-form">
         <span class="p-l-16 p-r-16">
           <i class="material-icons c-primary s-18 m-r-8">save_alt</i>
-          <span class="c-primary t-button">Download CSV (menu items)</span>
+          <span class="c-primary t-button">Download CSV (details)</span>
         </span>
       </b-button>
     </download-csv>
@@ -30,6 +30,7 @@ import DownloadCsv from "~/components/DownloadCSV";
 import moment from "moment";
 import { parsePhoneNumber, formatNational } from "~/plugins/phoneutil.js";
 import { nameOfOrder } from "~/plugins/strings.js";
+import { order_status } from "~/plugins/constant.js";
 
 export default {
   components: {
@@ -57,6 +58,7 @@ export default {
     fields() {
       return [
         "name",
+        "statusName",
         "userName",
         "phoneNumber",
         "dateConfirmed",
@@ -75,8 +77,12 @@ export default {
       const items = [];
       this.orders.forEach(order => {
         const ids = Object.keys(order.order);
-        console.log(order);
-        console.log(ids);
+        const status = Object.keys(order_status).reduce((result, key) => {
+          if (order_status[key] == order.status) {
+            return key;
+          }
+          return result;
+        }, "unexpected");
         ids.forEach(id => {
           const menuItem = order.menuItems[id];
           items.push({
@@ -84,11 +90,12 @@ export default {
             name: nameOfOrder(order),
             dateConfirmed:
               order.timeConfirmed &&
-              moment(order.timeConfirmed.toDate()).format("YYYY/MM/DD HH:MM"),
+              moment(order.timeConfirmed).format("YYYY/MM/DD HH:MM"),
             phoneNumber: formatNational(parsePhoneNumber(order.phoneNumber)),
             userName: order.name,
             count: order.order[id],
             itemName: menuItem.itemName,
+            statusName: this.$t(`order.status.${status}`),
             category1: menuItem.category1 || "",
             category2: menuItem.category2 || ""
           });
