@@ -73,7 +73,7 @@
             </b-button>
           </div>
           <download-orders :orders="orders" />
-          <report-details :orders="orders" :fileName="fileName" />
+          <report-details :orders="orders" :fileName="fileName" :hideTable="true" />
         </div>
       </div>
       <!-- Right Gap -->

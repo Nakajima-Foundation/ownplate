@@ -1,6 +1,6 @@
 <template>
   <div>
-    <table class="w-full">
+    <table v-if="!hideTable" class="w-full">
       <tr>
         <th
           class="p-l-8 p-b-8"
@@ -41,6 +41,11 @@ export default {
     fileName: {
       type: String,
       required: true
+    },
+    hideTable: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   mounted() {
