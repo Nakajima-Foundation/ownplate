@@ -199,8 +199,8 @@
     "editCategory2": "Modifier Catégorie 2"
   },
   "editTitle": {
-    "enterCategory": "Entrez le nom de la catégorie",
-    "empty": "(Nom de catégorie vide)"
+    "enterCategory": "Entrez le nom de le groupe",
+    "empty": "(Nom du groupe vide)"
   },
   "find": {
     "area": "Région",
@@ -353,7 +353,7 @@
   },
   "button": {
     "back": "Retour",
-    "addTitle": "Ajouter une Categorie",
+    "addTitle": "Ajouter un Groupe",
     "addItem": "Ajouter un article",
     "cancel": "Annuler",
     "next": "Suivant"
