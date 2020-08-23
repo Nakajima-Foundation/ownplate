@@ -1,6 +1,5 @@
 import twilio from 'twilio';
 import { twiml_neworder } from '../common/constant';
-import * as Sentry from '@sentry/node';
 
 import {
   parsePhoneNumber,
@@ -62,6 +61,5 @@ export const phoneCall = async (restaurant) => {
   } catch (e) {
     console.log("PhoneCall: Failed");
     console.log(e)
-    Sentry.captureException(e);
   };
 }

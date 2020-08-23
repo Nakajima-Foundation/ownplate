@@ -10,7 +10,6 @@ import * as line from './line'
 import { ownPlateConfig } from '../common/project';
 import { createCustomer } from '../stripe/customer';
 import moment from 'moment-timezone';
-import * as Sentry from '@sentry/node';
 
 import * as twilio from './twilio';
 
@@ -59,7 +58,6 @@ export const place = async (db: FirebaseFirestore.Firestore, data: any, context:
 
     return result;
   } catch (error) {
-    Sentry.captureException(error);
     throw utils.process_error(error)
   }
 }
@@ -162,7 +160,6 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
     }
     return result
   } catch (error) {
-    Sentry.captureException(error);
     throw utils.process_error(error)
   }
 }
@@ -386,7 +383,6 @@ export const wasOrderCreated = async (db, data: any, context) => {
     });
   } catch (e) {
     console.log(e);
-    Sentry.captureException(e);
     return orderRef.update("status", order_status.error);
 
   }
