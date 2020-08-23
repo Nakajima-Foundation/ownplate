@@ -3,6 +3,7 @@ import * as utils from '../lib/utils'
 import * as netutils from '../lib/netutils'
 import { ownPlateConfig } from '../common/project';
 import * as admin from 'firebase-admin';
+import * as Sentry from '@sentry/node';
 
 export const isEnabled = !!ownPlateConfig.line;
 
@@ -18,6 +19,7 @@ export const setCustomClaim = async (db: FirebaseFirestore.Firestore, data: any,
     }
     return { success: isLine }
   } catch (error) {
+    Sentry.captureException(error);
     throw utils.process_error(error)
   }
 }
@@ -40,6 +42,7 @@ export const verifyFriend = async (db: FirebaseFirestore.Firestore, data: any, c
       return { result: false }
     }
   } catch (error) {
+    Sentry.captureException(error);
     throw utils.process_error(error)
   }
 }
@@ -91,6 +94,7 @@ export const authenticate = async (db: FirebaseFirestore.Firestore, data: any, c
     const customToken = await admin.auth().createCustomToken(uidLine)
     return { profile, customToken, nonce: verified.nonce };
   } catch (error) {
+    Sentry.captureException(error);
     throw utils.process_error(error)
   }
 }
@@ -154,6 +158,7 @@ export const validate = async (db: FirebaseFirestore.Firestore, data: any, conte
 
     return { profile, nonce: verified.nonce };
   } catch (error) {
+    Sentry.captureException(error);
     throw utils.process_error(error)
   }
 }

@@ -1,6 +1,7 @@
 import * as functions from 'firebase-functions'
 import * as utils from '../lib/utils'
 import * as admin from 'firebase-admin';
+import * as Sentry from '@sentry/node';
 
 export const dispatch = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   if (!context.auth?.token?.admin) {
@@ -47,6 +48,7 @@ export const dispatch = async (db: FirebaseFirestore.Firestore, data: any, conte
 
     return result
   } catch (error) {
+    Sentry.captureException(error);
     throw utils.process_error(error)
   }
 }

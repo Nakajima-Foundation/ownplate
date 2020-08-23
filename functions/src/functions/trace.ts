@@ -1,6 +1,7 @@
 import * as functions from 'firebase-functions'
 import * as utils from '../lib/utils'
 import * as crypto from "crypto";
+import * as Sentry from '@sentry/node';
 
 export const process = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
@@ -75,6 +76,7 @@ export const process = async (db: FirebaseFirestore.Firestore, data: any, contex
 
     return { result: restaurant.restaurantName, processed }
   } catch (error) {
+    Sentry.captureException(error);
     throw utils.process_error(error)
   }
 }

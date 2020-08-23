@@ -2,6 +2,7 @@ import * as functions from 'firebase-functions'
 import * as admin from 'firebase-admin';
 import * as utils from '../lib/utils'
 import { deleteCustomer } from '../stripe/customer';
+import * as Sentry from '@sentry/node';
 
 export const deleteAccount = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
@@ -40,6 +41,7 @@ export const deleteAccount = async (db: FirebaseFirestore.Firestore, data: any, 
 
     return { result: uid, count }
   } catch (error) {
+    Sentry.captureException(error);
     throw utils.process_error(error)
   }
 }
