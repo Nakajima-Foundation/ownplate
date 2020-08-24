@@ -43,9 +43,9 @@ export default {
         .join("\n");
       let footers = "";
       if (this.formulas) {
-        const formulas = this.fields.map(field => {
+        const formulas = this.fields.map((field, index) => {
           const formula = this.formulas[field];
-          const col = "I";
+          const col = String.fromCharCode(0x41 + index); // Handles only A-Z
           return formula
             ? `=${formula}(${col}2:${col}${this.data.length + 1})`
             : "";
