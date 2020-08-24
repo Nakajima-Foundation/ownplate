@@ -73,6 +73,7 @@ export default {
         "statusName",
         "userName",
         "phoneNumber",
+        "timeRequested",
         "dateConfirmed",
         "itemName",
         "category1",
@@ -102,6 +103,9 @@ export default {
           items.push({
             id: `${order.id}/${id}`,
             name: nameOfOrder(order),
+            timeRequested:
+              order.timePlaced &&
+              moment(order.timePlaced).format("YYYY/MM/DD HH:MM"),
             dateConfirmed:
               order.timeConfirmed &&
               moment(order.timeConfirmed).format("YYYY/MM/DD HH:MM"),
