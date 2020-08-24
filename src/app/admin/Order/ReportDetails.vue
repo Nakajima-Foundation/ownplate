@@ -65,7 +65,9 @@ export default {
         "itemName",
         "category1",
         "category2",
-        "count"
+        "count",
+        "total",
+        "payment"
       ];
     },
     fieldNames() {
@@ -83,7 +85,7 @@ export default {
           }
           return result;
         }, "unexpected");
-        ids.forEach(id => {
+        ids.forEach((id, index) => {
           const menuItem = order.menuItems[id];
           items.push({
             id: `${order.id}/${id}`,
@@ -97,7 +99,9 @@ export default {
             itemName: menuItem.itemName,
             statusName: this.$t(`order.status.${status}`),
             category1: menuItem.category1 || "",
-            category2: menuItem.category2 || ""
+            category2: menuItem.category2 || "",
+            total: index === 0 ? order.totalCharge : "",
+            payment: order.payment?.stripe ? "stripe" : ""
           });
         });
       });
