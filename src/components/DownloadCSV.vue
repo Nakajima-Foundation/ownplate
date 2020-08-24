@@ -45,7 +45,10 @@ export default {
       if (this.formulas) {
         const formulas = this.fields.map(field => {
           const formula = this.formulas[field];
-          return formula ? `=${formula}(I1:I5)` : "";
+          const col = "I";
+          return formula
+            ? `=${formula}(${col}2:${col}${this.data.length + 1})`
+            : "";
         });
         footers = `\n${formulas.join(",")}`;
       }
