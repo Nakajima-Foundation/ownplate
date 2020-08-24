@@ -1,6 +1,7 @@
 import * as functions from 'firebase-functions'
 import { stripe_regions, regionalSettings } from '../common/constant'
 import Stripe from 'stripe'
+import * as Sentry from '@sentry/node';
 
 export const getRegion = () => {
   const locale = functions.config().locale;
@@ -61,6 +62,7 @@ export const get_restaurant = async (db: FirebaseFirestore.Firestore, restaurant
 
 export const process_error = (error: any) => {
   console.error(error)
+  Sentry.captureException(error);
   if (error instanceof functions.https.HttpsError) {
     return error
   }

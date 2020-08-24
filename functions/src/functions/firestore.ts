@@ -1,5 +1,6 @@
 import * as constant from '../common/constant';
 import * as utils from '../lib/utils'
+import * as Sentry from '@sentry/node';
 
 /*
 const chunk = (array, chunkSize) => {
@@ -112,6 +113,7 @@ export const wasOrderCreated = async (db, snapshot, context) => {
     });
   } catch (e) {
     console.log(e);
+    Sentry.captureException(e);
     return snapshot.ref.update("status", constant.order_status.error);
 
   }
