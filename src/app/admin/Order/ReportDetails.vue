@@ -14,7 +14,13 @@
         </tr>
       </table>
     </div>
-    <download-csv :data="tableData" :fields="fields" :fieldNames="fieldNames" :fileName="fileName">
+    <download-csv
+      :data="tableData"
+      :fields="fields"
+      :fieldNames="fieldNames"
+      :fileName="fileName"
+      :formulas="formulas"
+    >
       <b-button class="m-t-16 b-reset h-36 r-36 bg-form">
         <span class="p-l-16 p-r-16">
           <i class="material-icons c-primary s-18 m-r-8">save_alt</i>
@@ -55,6 +61,12 @@ export default {
     //console.log("***", this.orders);
   },
   computed: {
+    formulas() {
+      return {
+        count: "sum",
+        total: "sum"
+      };
+    },
     fields() {
       return [
         "name",

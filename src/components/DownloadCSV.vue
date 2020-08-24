@@ -24,6 +24,11 @@ export default {
     fieldNames: {
       type: Array,
       required: false
+    },
+    formulas: {
+      type: Object,
+      required: false,
+      default: null
     }
   },
   computed: {
@@ -36,7 +41,15 @@ export default {
             .join(",");
         })
         .join("\n");
-      return `\ufeff${header}\n${rows}`;
+      let footers = "";
+      if (this.formulas) {
+        const formulas = this.fields.map(field => {
+          const formula = this.formulas[field];
+          return formula ? `=${formula}(I1:I5)` : "";
+        });
+        footers = `\n${formulas.join(",")}`;
+      }
+      return `\ufeff${header}\n${rows}${footers}`;
     }
   },
   methods: {
