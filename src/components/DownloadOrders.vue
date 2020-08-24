@@ -62,13 +62,13 @@ export default {
           return result;
         }, "unexpected");
         return {
-          datePlaced: moment(order.timePlaced).format("YYYY/MM/DD HH:MM"),
+          datePlaced: moment(order.timePlaced).format("YYYY/MM/DD HH:mm"),
           dateEstimated:
             order.timeEstimated &&
-            moment(order.timeEstimated).format("YYYY/MM/DD HH:MM"),
+            moment(order.timeEstimated).format("YYYY/MM/DD HH:mm"),
           dateConfirmed:
             order.timeConfirmed &&
-            moment(order.timeConfirmed).format("YYYY/MM/DD HH:MM"),
+            moment(order.timeConfirmed).format("YYYY/MM/DD HH:mm"),
           statusName: this.$t(`order.status.${status}`),
           totalCount: totalCount,
           total: order.totalCharge,
