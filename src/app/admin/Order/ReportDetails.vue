@@ -105,10 +105,10 @@ export default {
             name: nameOfOrder(order),
             timeRequested:
               order.timePlaced &&
-              moment(order.timePlaced).format("YYYY/MM/DD HH:MM"),
+              moment(order.timePlaced).format("YYYY/MM/DD HH:mm"),
             dateConfirmed:
               order.timeConfirmed &&
-              moment(order.timeConfirmed).format("YYYY/MM/DD HH:MM"),
+              moment(order.timeConfirmed).format("YYYY/MM/DD HH:mm"),
             phoneNumber: formatNational(parsePhoneNumber(order.phoneNumber)),
             userName: order.name || this.$t("order.unspecified"),
             count: order.order[id],
