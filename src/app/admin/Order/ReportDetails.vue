@@ -92,7 +92,7 @@ export default {
               order.timeConfirmed &&
               moment(order.timeConfirmed).format("YYYY/MM/DD HH:MM"),
             phoneNumber: formatNational(parsePhoneNumber(order.phoneNumber)),
-            userName: order.name,
+            userName: order.name || this.$t("order.unspecified"),
             count: order.order[id],
             itemName: menuItem.itemName,
             statusName: this.$t(`order.status.${status}`),
@@ -101,24 +101,8 @@ export default {
           });
         });
       });
-      console.log(items);
+      //console.log(items);
       return items;
-      /*
-      return this.orders.map(order => {
-        return {
-          date: moment(order.timeConfirmed).format("YYYY/MM/DD"),
-          foodRevenue: order.accounting.food.revenue,
-          foodTax: order.accounting.food.tax,
-          alcoholRevenue: order.accounting.alcohol.revenue,
-          salesTax: order.accounting.alcohol.tax,
-          tipShort: order.accounting.service.revenue,
-          serviceTax: order.accounting.service.tax,
-          total: order.totalCharge,
-          name: nameOfOrder(order),
-          payment: order.payment?.stripe ? "stripe" : ""
-        };
-      });
-        */
     }
   }
 };
