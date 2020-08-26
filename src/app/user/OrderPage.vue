@@ -352,7 +352,9 @@ export default {
   },
   computed: {
     urlAdminOrderPage() {
-      return "https://www.amazon.com";
+      return `${
+        location.origin
+      }/admin/restaurants/${this.restaurantId()}/orders/${this.orderId}`;
     },
     showAddLine() {
       return (
