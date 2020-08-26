@@ -277,8 +277,8 @@
             </div>
           </div>
           <!-- QR Code -->
-          <div class="align-center">
-            <qrcode :value="'https://www.google.com'" :options="{ width: 160 }"></qrcode>
+          <div class="m-t-24 align-center">
+            <qrcode :value="urlAdminOrderPage" :options="{ width: 160 }"></qrcode>
           </div>
         </div>
         <!-- Right Gap -->
@@ -351,6 +351,9 @@ export default {
     }
   },
   computed: {
+    urlAdminOrderPage() {
+      return "https://www.amazon.com";
+    },
     showAddLine() {
       return (
         this.isLineEnabled &&
