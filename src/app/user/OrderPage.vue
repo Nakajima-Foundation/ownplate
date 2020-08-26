@@ -274,11 +274,11 @@
                   </span>
                 </b-button>
               </div>-->
+              <!-- QR Code -->
+              <div class="m-t-24 align-center">
+                <qrcode :value="urlAdminOrderPage" :options="{ width: 160 }"></qrcode>
+              </div>
             </div>
-          </div>
-          <!-- QR Code -->
-          <div class="m-t-24 align-center">
-            <qrcode :value="urlAdminOrderPage" :options="{ width: 160 }"></qrcode>
           </div>
         </div>
         <!-- Right Gap -->
