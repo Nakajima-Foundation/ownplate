@@ -276,6 +276,10 @@
               </div>-->
             </div>
           </div>
+          <!-- QR Code -->
+          <div class="align-center">
+            <qrcode :value="'https://www.google.com'" :options="{ width: 160 }"></qrcode>
+          </div>
         </div>
         <!-- Right Gap -->
         <div class="column is-narrow w-24"></div>
