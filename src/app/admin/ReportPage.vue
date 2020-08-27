@@ -290,6 +290,7 @@ export default {
         const multiple = this.$store.getters.stripeRegion.multiple;
         this.orders = orders.map(order => {
           order.timeConfirmed = order.timeConfirmed.toDate();
+          order.timePlaced = order.timePlaced.toDate();
           if (!order.accounting) {
             order.accounting = {
               food: {

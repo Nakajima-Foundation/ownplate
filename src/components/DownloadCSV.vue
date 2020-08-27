@@ -24,6 +24,11 @@ export default {
     fieldNames: {
       type: Array,
       required: false
+    },
+    formulas: {
+      type: Object,
+      required: false,
+      default: null
     }
   },
   computed: {
@@ -36,7 +41,21 @@ export default {
             .join(",");
         })
         .join("\n");
-      return `\ufeff${header}\n${rows}`;
+      let footers = "";
+      if (this.formulas) {
+        const formulas = this.fields.map((field, index) => {
+          if (index === 0) {
+            return this.$t("order.total");
+          }
+          const formula = this.formulas[field];
+          const col = String.fromCharCode(0x41 + index); // Handles only A-Z
+          return formula
+            ? `=${formula}(${col}2:${col}${this.data.length + 1})`
+            : "";
+        });
+        footers = `\n${formulas.join(",")}`;
+      }
+      return `\ufeff${header}\n${rows}${footers}`;
     }
   },
   methods: {

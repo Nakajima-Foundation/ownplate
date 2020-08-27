@@ -166,6 +166,10 @@ export const customRoutes = [
     component: "super/AllLogs.vue"
   },
   {
+    path: "/s/phonelogs",
+    component: "super/AllPhoneLogs.vue"
+  },
+  {
     path: "/s/profiles",
     component: "super/Profiles.vue"
   },

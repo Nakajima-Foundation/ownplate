@@ -140,6 +140,9 @@ service cloud.firestore {
                           && request.resource.data.restaurantId == restaurantId
                           && request.resource.data.uid == request.auth.uid;
         }
+        match /log/${datestr}/phoneLog/${orderId} {
+          allow read: if isSuper(request);
+        }
       }
     }
 
@@ -158,7 +161,9 @@ service cloud.firestore {
     match /{path=**}/records/{eventId} {
         allow read: if isRestaurantOwner(resource.data.restaurantId, request);
     }
-
+    match /{path=**}/phoneLog/{orderId} {
+        allow read: if isSuper(request);
+    }
     match /{document=**} {
       allow read, write: if false;
     }
