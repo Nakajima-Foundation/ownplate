@@ -75,6 +75,7 @@ export const sitemap_response = async (req, res) => {
 
   } catch (e) {
     console.error(e)
+    Sentry.captureException(e);
     return res.status(500).end()
   }
 };
@@ -219,6 +220,7 @@ export const stripe_parser = async (req, res) => {
     }
     res.json({});
   } catch (err) {
+    Sentry.captureException(err);
     res.status(400).send(`Webhook Error: ${err.message}`);
   }
 };

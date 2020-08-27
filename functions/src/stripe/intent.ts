@@ -81,6 +81,7 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
         timePlaced: timeToPickup && new admin.firestore.Timestamp(timeToPickup.seconds, timeToPickup.nanoseconds) || admin.firestore.FieldValue.serverTimestamp(),
         status: order_status.order_placed,
         updatedAt: admin.firestore.Timestamp.now(),
+        orderPlacedAt: admin.firestore.Timestamp.now(),
         totalCharge: totalCharge / multiple,
         tip: Math.round(tip * multiple) / multiple,
         sendSMS: sendSMS || false,

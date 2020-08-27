@@ -14,7 +14,13 @@
         </tr>
       </table>
     </div>
-    <download-csv :data="tableData" :fields="fields" :fieldNames="fieldNames" :fileName="fileName">
+    <download-csv
+      :data="tableData"
+      :fields="fields"
+      :fieldNames="fieldNames"
+      :fileName="fileName"
+      :formulas="formulas"
+    >
       <b-button class="m-t-16 b-reset h-36 r-36 bg-form">
         <span class="p-l-16 p-r-16">
           <i class="material-icons c-primary s-18 m-r-8">save_alt</i>
@@ -55,17 +61,26 @@ export default {
     //console.log("***", this.orders);
   },
   computed: {
+    formulas() {
+      return {
+        count: "sum",
+        total: "sum"
+      };
+    },
     fields() {
       return [
         "name",
         "statusName",
         "userName",
         "phoneNumber",
+        "timeRequested",
         "dateConfirmed",
         "itemName",
         "category1",
         "category2",
-        "count"
+        "count",
+        "total",
+        "payment"
       ];
     },
     fieldNames() {
@@ -83,42 +98,31 @@ export default {
           }
           return result;
         }, "unexpected");
-        ids.forEach(id => {
+        ids.forEach((id, index) => {
           const menuItem = order.menuItems[id];
           items.push({
             id: `${order.id}/${id}`,
             name: nameOfOrder(order),
+            timeRequested:
+              order.timePlaced &&
+              moment(order.timePlaced).format("YYYY/MM/DD HH:mm"),
             dateConfirmed:
               order.timeConfirmed &&
-              moment(order.timeConfirmed).format("YYYY/MM/DD HH:MM"),
+              moment(order.timeConfirmed).format("YYYY/MM/DD HH:mm"),
             phoneNumber: formatNational(parsePhoneNumber(order.phoneNumber)),
-            userName: order.name,
+            userName: order.name || this.$t("order.unspecified"),
             count: order.order[id],
             itemName: menuItem.itemName,
             statusName: this.$t(`order.status.${status}`),
             category1: menuItem.category1 || "",
-            category2: menuItem.category2 || ""
+            category2: menuItem.category2 || "",
+            total: index === 0 ? order.totalCharge : "",
+            payment: order.payment?.stripe ? "stripe" : ""
           });
         });
       });
-      console.log(items);
+      //console.log(items);
       return items;
-      /*
-      return this.orders.map(order => {
-        return {
-          date: moment(order.timeConfirmed).format("YYYY/MM/DD"),
-          foodRevenue: order.accounting.food.revenue,
-          foodTax: order.accounting.food.tax,
-          alcoholRevenue: order.accounting.alcohol.revenue,
-          salesTax: order.accounting.alcohol.tax,
-          tipShort: order.accounting.service.revenue,
-          serviceTax: order.accounting.service.tax,
-          total: order.totalCharge,
-          name: nameOfOrder(order),
-          payment: order.payment?.stripe ? "stripe" : ""
-        };
-      });
-        */
     }
   }
 };

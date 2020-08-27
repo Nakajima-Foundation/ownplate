@@ -337,6 +337,7 @@
     "category1": "カテゴリ１",
     "category2": "カテゴリ２",
     "count": "受注数",
+    "unspecified": "(未記入)",
     "status": {
       "unexpected": "(Unexpected)",
       "error": "エラー",
