@@ -338,6 +338,7 @@
     "category2": "Catégorie 2",
     "count": "Compter",
     "unspecified": "(non spécifié)",
+    "adminQRCode": "Confirmation QR Code",
     "status": {
       "unexpected": "Inattendue",
       "error": "Erreur",
