@@ -211,7 +211,8 @@ export const minimumCookTimeChoices = [
   { messageKey: "editRestaurant.minimumCookTime.twoDays", value: 60 * 24 * 2 },
   { messageKey: "editRestaurant.minimumCookTime.threeDays", value: 60 * 24 * 3 },
   { messageKey: "editRestaurant.minimumCookTime.fourDays", value: 60 * 24 * 4 },
-  { messageKey: "editRestaurant.minimumCookTime.fiveDays", value: 60 * 24 * 5 }
+  { messageKey: "editRestaurant.minimumCookTime.fiveDays", value: 60 * 24 * 5 },
+  { messageKey: "editRestaurant.minimumCookTime.sixDays", value: 60 * 24 * 6 }
 ];
 
 export const regionalSettings = {

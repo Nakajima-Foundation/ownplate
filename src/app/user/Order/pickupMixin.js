@@ -11,7 +11,7 @@ export default {
       const now = this.$store.state.date;
       console.log(this.$store.state.date); // never delete this line;
       const today = now.getDay();
-      let suspendUntil = new Date(now)
+      let suspendUntil = new Date(now);
       suspendUntil.setMinutes(now.getMinutes() + this.minimumCookTime);
       if (this.shopInfo.suspendUntil) {
         const specifiedDate = this.shopInfo.suspendUntil.toDate();
