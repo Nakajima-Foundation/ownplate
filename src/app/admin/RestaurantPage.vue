@@ -892,7 +892,7 @@ export default {
           "validationError." + name + ".notNumbery"
         );
       } else {
-        if (this.shopInfo["pickUpMinimumCookTime"] > 24 * 60 * 5) {
+        if (this.shopInfo["pickUpMinimumCookTime"] > 24 * 60 * 6) {
           err["pickUpMinimumCookTime"].push(
             "validationError." + name + ".tooMuch"
           );

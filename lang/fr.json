@@ -139,7 +139,8 @@
       "twoDays": "Two days",
       "threeDays": "Three days",
       "fourDays": "Four days",
-      "fiveDays": "Five days"
+      "fiveDays": "Five days",
+      "sixDays": "Six days"
     },
     "minutes": "minutes",
     "withinfive": "Dans les 5 heures",
