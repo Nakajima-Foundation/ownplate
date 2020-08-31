@@ -139,7 +139,8 @@
       "twoDays": "２日",
       "threeDays": "３日",
       "fourDays": "４日",
-      "fiveDays": "５日"
+      "fiveDays": "５日",
+      "sixDays": "６日"
     },
     "minutes": "分",
     "withinfive": "5時間以内",
@@ -338,6 +339,7 @@
     "category2": "カテゴリ２",
     "count": "受注数",
     "unspecified": "(未記入)",
+    "adminQRCode": "確認用QRCode",
     "status": {
       "unexpected": "(Unexpected)",
       "error": "エラー",

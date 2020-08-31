@@ -140,7 +140,7 @@ service cloud.firestore {
                           && request.resource.data.restaurantId == restaurantId
                           && request.resource.data.uid == request.auth.uid;
         }
-        match /log/${datestr}/phoneLog/${orderId} {
+        match /log/{datestr}/phoneLog/{orderId} {
           allow read: if isSuper(request);
         }
       }

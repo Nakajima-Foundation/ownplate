@@ -139,7 +139,8 @@
       "twoDays": "Two days",
       "threeDays": "Three days",
       "fourDays": "Four days",
-      "fiveDays": "Five days"
+      "fiveDays": "Five days",
+      "sixDays": "Six days"
     },
     "minutes": "minutes",
     "withinfive": "Dans les 5 heures",
@@ -338,6 +339,7 @@
     "category2": "Catégorie 2",
     "count": "Compter",
     "unspecified": "(non spécifié)",
+    "adminQRCode": "Confirmation QR Code",
     "status": {
       "unexpected": "Inattendue",
       "error": "Erreur",

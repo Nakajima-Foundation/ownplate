@@ -274,6 +274,13 @@
                   </span>
                 </b-button>
               </div>-->
+              <!-- QR Code -->
+              <div class="m-t-24">
+                <div class="t-h6 c-text-black-disabled">{{ $t('order.adminQRCode') }}</div>
+                <div class="m-t-8 align-center">
+                  <qrcode :value="urlAdminOrderPage" :options="{ width: 160 }"></qrcode>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -347,6 +354,11 @@ export default {
     }
   },
   computed: {
+    urlAdminOrderPage() {
+      return `${
+        location.origin
+      }/admin/restaurants/${this.restaurantId()}/orders/${this.orderId}`;
+    },
     showAddLine() {
       return (
         this.isLineEnabled &&
