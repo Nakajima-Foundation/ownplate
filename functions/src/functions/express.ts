@@ -8,6 +8,8 @@ import * as Sentry from '@sentry/node';
 import * as utils from '../lib/utils'
 import * as stripeLog from '../lib/stripeLog';
 
+import * as apis from './apis';
+
 import * as xmlbuilder from 'xmlbuilder';
 
 import moment from 'moment';
@@ -24,6 +26,7 @@ let db = admin.firestore();
 
 export const updateDb = (_db) => {
   db = _db;
+  apis.updateDb(db);
 }
 
 export const logger = async (req, res, next) => {
@@ -234,6 +237,7 @@ router.post('/stripe/callback',
 
 
 app.use('/1.0', router);
+app.use('/api/1.0/', apis.apiRouter);
 
 app.get('/r/:restaurantName', ogpPage);
 app.get('/r/:restaurantName/menus/:menuId', ogpPage);

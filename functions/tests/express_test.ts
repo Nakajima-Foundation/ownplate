@@ -107,4 +107,13 @@ describe('express function', () => {
 
   });
 
+
+  it ('express api test', async function() {
+    const response = await request.get('/api/1.0/restaurants');
+    response.status.should.equal(200);
+
+    console.log(response.text);
+
+  });
+
 });
