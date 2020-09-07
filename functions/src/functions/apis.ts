@@ -1,7 +1,7 @@
 import express from 'express';
 import * as admin from 'firebase-admin';
 import { ownPlateConfig } from '../common/project';
-
+import cors from 'cors'
 import * as Sentry from '@sentry/node';
 
 export const apiRouter = express.Router();
@@ -76,7 +76,6 @@ const getRestaurants = async (req: any, res: any) => {
           openTime,
         };
       });
-
       const ret = {
         id: doc.id,
         url: hostname + "/r/" + doc.id,
@@ -148,5 +147,14 @@ const getMenus = async (req: any, res: any) => {
   }));
   return response200(res, {menus});
 }
-apiRouter.get('/restaurants', getRestaurants);
-apiRouter.get('/restaurants/:restaurantId/menus', getMenus);
+
+const corsOptionsDelegate = (req, callback) => {
+  // firebaseapp.com, web.app, localhost:3000/*
+  const pattern = /(http:\/\/localhost:\d+)$|(https:\/\/[a-zA-Z0-9\-]+\.firebaseapp\.com)$|(https:\/\/[a-zA-Z0-9\-]+\.web\.app)$/
+  const corsOptions = ((req.header('Origin')||"").match(pattern)) ?
+    { origin: true } : { origin: false };
+  callback(null, corsOptions) // callback expects two parameters: error and options
+}
+
+apiRouter.get('/restaurants', cors(corsOptionsDelegate), getRestaurants);
+apiRouter.get('/restaurants/:restaurantId/menus', cors(corsOptionsDelegate), getMenus);
