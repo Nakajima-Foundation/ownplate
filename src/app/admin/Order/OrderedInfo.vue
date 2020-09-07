@@ -69,7 +69,7 @@
         <div class="cols flex-center m-t-8">
           <!-- Restaurant Profile -->
           <div class="m-r-8">
-            <img :src="restaurant.restProfilePhoto" class="w-48 h-48 r-48 cover" />
+            <img :src="resizedProfileImage(restaurant, '600')" class="w-48 h-48 r-48 cover" />
           </div>
 
           <div class="flex-1">
