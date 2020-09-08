@@ -5,7 +5,7 @@
       <div class="align-center">
         <img
           class="w-64 h-64 r-64 cover"
-          :src="shopInfo.restProfilePhoto || '/OwnPlate-Favicon-Default.png'"
+          :src="resizedProfileImage(shopInfo, '600') || '/OwnPlate-Favicon-Default.png'"
         />
       </div>
 

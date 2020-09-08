@@ -16,6 +16,9 @@ export default ({ app }) => {
       restaurantId() {
         return this.$route.params.restaurantId;
       },
+      resizedProfileImage(restaurant, size) {
+        return (restaurant.images?.profile?.resizedImages || {})[size] || restaurant.restProfilePhoto;
+      },
       shareUrl() {
         return location.protocol + "//" + location.host + "/r/" + this.restaurantId();
       },
