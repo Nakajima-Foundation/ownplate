@@ -34,6 +34,10 @@
         "function": "api"
       },
       {
+        "source": "/api/1.0/**",
+        "function": "api"
+      },
+      {
         "source": "/sitemap.xml",
         "function": "api"
       },

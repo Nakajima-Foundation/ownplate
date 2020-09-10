@@ -43,7 +43,7 @@
                       <div class="cols flex-center">
                         <!-- Restaurant Profile -->
                         <div class="m-r-16 h-48 r-48 bg-form">
-                          <img :src="restaurant.restProfilePhoto" class="w-48 h-48 r-48 cover" />
+                          <img :src="resizedProfileImage(restaurant, '600')" class="w-48 h-48 r-48 cover" />
                         </div>
 
                         <!-- Restaurant Name -->
