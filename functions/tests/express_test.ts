@@ -1,5 +1,6 @@
 import supertest from 'supertest';
 import { should } from 'chai';
+import { expect } from 'chai';
 
 import * as express from '../src/functions/express';
 import * as test_helper from './test_helper';
@@ -105,6 +106,65 @@ describe('express function', () => {
 
     console.log(response.text);
 
+  });
+
+
+  it ('express api test', async function() {
+    const response = await request.get('/api/1.0/restaurants').set("Origin", "http://localhost:3000");
+    response.status.should.equal(200);
+
+    console.log(response.headers['access-control-allow-origin']);
+
+  });
+
+
+  it ('express api cors test', async function() {
+    const response = await request.get('/api/1.0/restaurants').set("Origin", "http://localhost:3000");
+    response.status.should.equal(200);
+    response.headers['access-control-allow-origin'].should.equal("http://localhost:3000");
+  });
+
+  it ('express api cors test', async function() {
+    const response = await request.get('/api/1.0/restaurants').set("Origin", "http://localhost:8000");
+    response.status.should.equal(200);
+    response.headers['access-control-allow-origin'].should.equal("http://localhost:8000");
+  });
+
+  it ('express api cors test', async function() {
+    const response = await request.get('/api/1.0/restaurants').set("Origin", "http://localhost:8000.example.com");
+    response.status.should.equal(200);
+    expect(response.headers['access-control-allow-origin']).equal(undefined);
+  });
+
+  it ('express api cors test', async function() {
+    const response = await request.get('/api/1.0/restaurants').set("Origin", "http://localhostname:8000");
+    response.status.should.equal(200);
+    expect(response.headers['access-control-allow-origin']).equal(undefined);
+
+  });
+
+  it ('express api cors test', async function() {
+    const response = await request.get('/api/1.0/restaurants').set("Origin", "https://test-aa.firebaseapp.com");
+    response.status.should.equal(200);
+    response.headers['access-control-allow-origin'].should.equal("https://test-aa.firebaseapp.com");
+  });
+
+  it ('express api cors test', async function() {
+    const response = await request.get('/api/1.0/restaurants').set("Origin", "https://test-aa.vvv.firebaseapp.com");
+    response.status.should.equal(200);
+    expect(response.headers['access-control-allow-origin']).equal(undefined);
+  });
+
+  it ('express api cors test', async function() {
+    const response = await request.get('/api/1.0/restaurants').set("Origin", "https://test.firebaseapp.com.hoge.com");
+    response.status.should.equal(200);
+    expect(response.headers['access-control-allow-origin']).equal(undefined);
+  });
+
+  it ('express api cors test', async function() {
+    const response = await request.get('/api/1.0/restaurants').set("Origin", "https://test-aa.web.app");
+    response.status.should.equal(200);
+    response.headers['access-control-allow-origin'].should.equal("https://test-aa.web.app");
   });
 
 });

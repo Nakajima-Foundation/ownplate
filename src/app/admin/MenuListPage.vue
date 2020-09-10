@@ -49,7 +49,7 @@
           <div class="m-l-24 m-r-24">
             <!-- Restaurant Profile Photo -->
             <div class="m-t-24 align-center">
-              <img :src="restaurantInfo.restProfilePhoto" class="w-64 h-64 r-64 cover" />
+              <img :src="resizedProfileImage(restaurantInfo, '600')" class="w-64 h-64 r-64 cover" />
             </div>
 
             <!-- Restaurant Name -->

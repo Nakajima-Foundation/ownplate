@@ -21,7 +21,7 @@
                 <!-- Restaurant Profile -->
                 <div class="is-inline-flex flex-center m-t-24">
                   <div>
-                    <img :src="shopInfo.restProfilePhoto" class="w-36 h-36 r-36 cover" />
+                    <img :src="resizedProfileImage(shopInfo, '600')" class="w-36 h-36 r-36 cover" />
                   </div>
                   <div class="t-h6 c-text-black-high m-l-8 flex-1">{{ shopInfo.restaurantName }}</div>
                 </div>
