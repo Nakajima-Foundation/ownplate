@@ -113,7 +113,7 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
           case order_status.cooking_completed:
             msgKey = "msg_cooking_completed"
             return true
-          case order_status.customer_picked_up:
+          case order_status.ready_to_pickup:
             return !(order.payment && order.payment.stripe) // only "unpaid" order can be manually completed
         }
         return false
@@ -141,7 +141,7 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
       if (status === order_status.cooking_completed) {
         props.orderCookingCompletedAt = admin.firestore.Timestamp.now();
       }
-      if (status === order_status.customer_picked_up) {
+      if (status === order_status.ready_to_pickup) {
         // Make it compatible with striped orders.
         props.orderCustomerPickedUpAt = admin.firestore.Timestamp.now();
         props.timeConfirmed = props.updatedAt;

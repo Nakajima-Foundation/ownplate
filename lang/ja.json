@@ -348,7 +348,7 @@
       "order_placed": "注文済み",
       "order_accepted": "受付済み",
       "cooking_completed": "調理済み",
-      "customer_picked_up": "受け渡し準備完了",
+      "ready_to_pickup": "受け渡し準備完了",
       "order_canceled": "キャンセル済み",
       "order_refunded": "払い戻し済み"
     }

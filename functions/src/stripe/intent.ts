@@ -164,7 +164,7 @@ export const confirm = async (db: FirebaseFirestore.Firestore, data: any, contex
       })
       transaction.set(orderRef, {
         timeConfirmed: admin.firestore.FieldValue.serverTimestamp(),
-        status: order_status.customer_picked_up,
+        status: order_status.ready_to_pickup,
         updatedAt: admin.firestore.Timestamp.now(),
         payment: {
           stripe: "confirmed"
@@ -227,7 +227,7 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
         }
       } else if (uid === venderId) {
         // Admin can cancel it before confirmed
-        if (order.status >= order_status.customer_picked_up) {
+        if (order.status >= order_status.ready_to_pickup) {
           throw new functions.https.HttpsError('permission-denied', 'Invalid order state to cancel.')
         }
         sendSMS = order.sendSMS

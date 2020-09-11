@@ -26,8 +26,8 @@
   border: 0;
 }
 
-.customer_picked_up,
-.customer_picked_up:hover {
+.ready_to_pickup,
+.ready_to_pickup:hover {
   @extend .c-status-purple;
   @extend .bg-status-purple-bg;
   border: 0;
