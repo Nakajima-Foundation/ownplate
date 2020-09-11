@@ -1,7 +1,7 @@
 import * as functions from 'firebase-functions'
 import * as admin from 'firebase-admin';
 import * as utils from '../lib/utils'
-import { order_status } from '../common/constant'
+import { order_status, possible_transitions } from '../common/constant'
 import * as sms from './sms'
 import { resources } from './resources'
 import i18next from 'i18next'
@@ -78,48 +78,20 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
     const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`)
     let order: Order | undefined = undefined;
     let msgKey: string | undefined = undefined;
-    let sendSMS: boolean = false;
-    let uidUser: string | null = null;
 
     const result = await db.runTransaction(async transaction => {
       order = Order.fromSnapshot<Order>(await transaction.get(orderRef))
       if (!order) {
         throw new functions.https.HttpsError('invalid-argument', 'This order does not exist.')
       }
-      uidUser = order.uid;
-      sendSMS = order.sendSMS
 
-      const isPreviousStateChangable: Boolean = (() => {
-        switch (order.status) {
-          case order_status.order_placed:
-          case order_status.order_accepted:
-          case order_status.cooking_completed:
-            return true
-        }
-        return false
-      })();
-      if (!isPreviousStateChangable) {
+      const possible_transition = possible_transitions[order.status];
+      if (!possible_transition[status]) {
         throw new functions.https.HttpsError('failed-precondition', 'It is not possible to change state from the current state.', order.status)
       }
 
-      const isNewStatusValid: Boolean = (() => {
-        switch (status) {
-          //case order_status.order_canceled:    call stripeCancelIntent instead
-          case order_status.order_accepted:
-            if (status > order.status) {
-              msgKey = "msg_order_accepted"
-            }
-            return true
-          case order_status.cooking_completed:
-            msgKey = "msg_cooking_completed"
-            return true
-          case order_status.ready_to_pickup:
-            return !(order.payment && order.payment.stripe) // only "unpaid" order can be manually completed
-        }
-        return false
-      })();
-      if (!isNewStatusValid) {
-        throw new functions.https.HttpsError('permission-denied', 'The user does not have an authority to perform this operation.', status)
+      if (status == order_status.order_accepted) {
+        msgKey = "msg_order_accepted"
       }
 
       if (status === order_status.order_canceled && order.payment && order.payment.stripe) {
@@ -138,8 +110,8 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
         props.orderAcceptedAt = admin.firestore.Timestamp.now();
         order.timeEstimated = props.timeEstimated;
       }
-      if (status === order_status.cooking_completed) {
-        props.orderCookingCompletedAt = admin.firestore.Timestamp.now();
+      if (status === order_status.transaction_complete) {
+        props.transactionCompletedAt = admin.firestore.Timestamp.now();
       }
       if (status === order_status.ready_to_pickup) {
         // Make it compatible with striped orders.
@@ -149,14 +121,15 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
       transaction.update(orderRef, props)
       return { success: true }
     })
-    if (sendSMS && msgKey) {
+
+    if (order!.sendSMS && msgKey) {
       const params = {}
       if (status === order_status.order_accepted) {
         params["time"] = moment(order!.timeEstimated!.toDate()).tz(timezone).locale('ja').format('LLL');
         console.log("timeEstimated", params["time"]);
       }
       const orderName = nameOfOrder(order!.number)
-      await sendMessage(db, lng, msgKey, restaurant.restaurantName, orderName, uidUser, order!.phoneNumber, restaurantId, orderId, params)
+      await sendMessage(db, lng, msgKey, restaurant.restaurantName, orderName, order!.uid, order!.phoneNumber, restaurantId, orderId, params)
     }
     return result
   } catch (error) {

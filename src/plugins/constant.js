@@ -14,16 +14,21 @@ export const order_status = {
 export const possible_transitions = {
   [order_status.order_placed]: {
     order_accepted: true,
-    order_canceled: true
+    order_canceled: true,
+    [order_status.order_accepted]: true,
+    [order_status.order_canceled]: true
   },
   [order_status.order_accepted]: {
-    cooking_completed: true,
     order_canceled: true,
-    ready_to_pickup: true // both paid and unpaid
+    ready_to_pickup: true, // both paid and unpaid
+    [order_status.order_canceled]: true,
+    [order_status.ready_to_pickup]: true // both paid and unpaid
   },
   [order_status.ready_to_pickup]: {
     order_refunded: true,
-    transaction_complete: true
+    transaction_complete: true,
+    [order_status.order_refunded]: true,
+    [order_status.transaction_complete]: true
   }
 };
 
