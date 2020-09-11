@@ -113,8 +113,8 @@ export const confirm = async (db: FirebaseFirestore.Firestore, data: any, contex
   const uid = utils.validate_auth(context);
   const stripe = utils.get_stripe();
 
-  const { restaurantId, orderId } = data
-  utils.validate_params({ restaurantId, orderId })
+  const { restaurantId, orderId, lng } = data
+  utils.validate_params({ restaurantId, orderId }) // lng is optional
 
   const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`)
   const stripeRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}/system/stripe`)
@@ -134,17 +134,20 @@ export const confirm = async (db: FirebaseFirestore.Firestore, data: any, contex
     throw new functions.https.HttpsError('permission-denied', 'You do not have permission to confirm this request.')
   }
 
+  let order: Order | undefined = undefined;
+
   try {
-    return await db.runTransaction(async transaction => {
+    let result = await db.runTransaction(async transaction => {
 
       const snapshot = await transaction.get(orderRef)
-      const order = Order.fromSnapshot<Order>(snapshot)
+      order = Order.fromSnapshot<Order>(snapshot)
 
       if (!snapshot.exists) {
         throw new functions.https.HttpsError('invalid-argument', `The order does not exist. ${orderRef.path}`)
       }
       // Check the stock status.
-      if (order.status !== order_status.cooking_completed) {
+      if (order.status !== order_status.cooking_completed // backward compability (99.99% unnecessary)
+        && order.status !== order_status.order_accepted) {
         throw new functions.https.HttpsError('failed-precondition', 'This order is not ready yet.')
       }
 
@@ -173,6 +176,14 @@ export const confirm = async (db: FirebaseFirestore.Firestore, data: any, contex
 
       return { success: true }
     })
+
+    if (order!.sendSMS) {
+      let msgKey = "msg_cooking_completed"
+      const orderName = nameOfOrder(order!.number)
+      await sendMessage(db, lng, msgKey, restaurantData.restaurantName, orderName, order!.uid, order!.phoneNumber, restaurantId, orderId, {})
+    }
+
+    return result
   } catch (error) {
     throw utils.process_error(error)
   }
