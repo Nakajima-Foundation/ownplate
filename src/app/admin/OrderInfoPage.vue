@@ -448,20 +448,23 @@ export default {
         case order_status.order_placed:
           return {
             order_accepted: true,
-            cooking_completed: true,
+            //cooking_completed: true,
             order_canceled: true
           };
         case order_status.order_accepted:
           return {
             cooking_completed: true,
-            order_canceled: true
+            order_canceled: true,
+            customer_picked_up: true // both paid and unpaid
           };
+        /*
         case order_status.cooking_completed:
           return {
             order_accepted: true,
             order_canceled: true,
             customer_picked_up: true // both paid and unpaid
           };
+        */
         case order_status.customer_picked_up:
           return {
             order_refunded: true
