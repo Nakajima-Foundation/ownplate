@@ -257,7 +257,7 @@ export default {
 
   data() {
     return {
-      orderStates: ["order_placed", "order_accepted", "cooking_completed"],
+      orderStates: ["order_placed", "order_accepted"], // no longer "cooking_completed"
       updating: "",
       shopInfo: {},
       menuObj: {},
