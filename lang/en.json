@@ -349,6 +349,7 @@
       "order_accepted": "Accepted",
       "cooking_completed": "Cooking Complete",
       "ready_to_pickup": "Ready to Pickup",
+      "transaction_complete": "Pickup Complete",
       "order_canceled": "Canceled",
       "order_refunded": "Refunded"
     }

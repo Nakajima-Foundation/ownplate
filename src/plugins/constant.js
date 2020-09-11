@@ -4,8 +4,9 @@ export const order_status = {
   validation_ok: 200, // by functions
   order_placed: 300, // by user and stripe
   order_accepted: 400, // by restaurant
-  cooking_completed: 500, // by restaurant
+  cooking_completed: 500, // by restaurant (obsolete)
   ready_to_pickup: 600, // by restaurant and stripe
+  transaction_complete: 650, // by restaurant (optional)
   order_canceled: 700, // by restaurant or user
   order_refunded: 800 // by restaurant
 };

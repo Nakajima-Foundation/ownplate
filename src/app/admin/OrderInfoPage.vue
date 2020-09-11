@@ -199,6 +199,20 @@
                     <div class="t-caption c-text-black-medium">{{timeOfEvents['ready_to_pickup']}}</div>
                   </b-button>
                 </div>
+                <div class="align-center m-t-24">
+                  <b-button
+                    class="op-button-medium w-256"
+                    :class="classOf('transaction_complete')"
+                    :loading="updating==='transaction_complete'"
+                    :disabled="!isValidTransition('transaction_complete')"
+                    @click="handleChangeStatus('transaction_complete')"
+                  >
+                    <div>{{ $t("order.status.transaction_complete") }}</div>
+                    <div
+                      class="t-caption c-text-black-medium"
+                    >{{timeOfEvents['transaction_complete']}}</div>
+                  </b-button>
+                </div>
               </div>
             </div>
           </div>
@@ -465,7 +479,8 @@ export default {
         */
         case order_status.ready_to_pickup:
           return {
-            order_refunded: true
+            order_refunded: true,
+            transaction_complete: true
           };
       }
       return {};
