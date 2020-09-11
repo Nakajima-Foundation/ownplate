@@ -144,7 +144,8 @@ export const confirm = async (db: FirebaseFirestore.Firestore, data: any, contex
         throw new functions.https.HttpsError('invalid-argument', `The order does not exist. ${orderRef.path}`)
       }
       // Check the stock status.
-      if (order.status !== order_status.cooking_completed) {
+      if (order.status !== order_status.cooking_completed // backward compability (99.99% unnecessary)
+        && order.status !== order_status.order_accepted) {
         throw new functions.https.HttpsError('failed-precondition', 'This order is not ready yet.')
       }
 
