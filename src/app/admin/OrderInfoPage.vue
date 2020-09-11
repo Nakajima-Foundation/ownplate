@@ -358,6 +358,9 @@ export default {
         ),
         order_canceled_by_customer: this.timeStampToText(
           this.orderInfo.orderCustomerCanceledAt
+        ),
+        transaction_complete: this.timeStampToText(
+          this.orderInfo.transactionCompletedAt
         )
       };
       console.log(this.orderInfo);
@@ -510,6 +513,7 @@ export default {
       const timezone = moment.tz.guess();
       const newStatus = order_status[statusKey];
       if (newStatus === this.orderInfo.status) {
+        console.log("same status - no need to process");
         return;
       }
       const orderUpdate = functions.httpsCallable("orderUpdate");
