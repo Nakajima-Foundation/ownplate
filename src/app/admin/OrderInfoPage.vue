@@ -243,7 +243,7 @@
 import { db, functions, firestore } from "~/plugins/firebase.js";
 import BackButton from "~/components/BackButton";
 import OrderedItem from "~/app/admin/Order/OrderedItem";
-import { order_status } from "~/plugins/constant.js";
+import { order_status, possible_transitions } from "~/plugins/constant.js";
 import { nameOfOrder } from "~/plugins/strings.js";
 import {
   parsePhoneNumber,
@@ -456,34 +456,7 @@ export default {
       return formatOption(option, price => this.$n(price, "currency"));
     },
     possibleTransition() {
-      switch (this.orderInfo.status) {
-        case order_status.order_placed:
-          return {
-            order_accepted: true,
-            //cooking_completed: true,
-            order_canceled: true
-          };
-        case order_status.order_accepted:
-          return {
-            cooking_completed: true,
-            order_canceled: true,
-            ready_to_pickup: true // both paid and unpaid
-          };
-        /*
-        case order_status.cooking_completed:
-          return {
-            order_accepted: true,
-            order_canceled: true,
-            ready_to_pickup: true // both paid and unpaid
-          };
-        */
-        case order_status.ready_to_pickup:
-          return {
-            order_refunded: true,
-            transaction_complete: true
-          };
-      }
-      return {};
+      return possible_transitions[this.orderInfo.status] || {};
     },
     isValidTransition(newStatus) {
       return (

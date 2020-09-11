@@ -11,6 +11,22 @@ export const order_status = {
   order_refunded: 800 // by restaurant
 };
 
+export const possible_transitions = {
+  [order_status.order_placed]: {
+    order_accepted: true,
+    order_canceled: true
+  },
+  [order_status.order_accepted]: {
+    cooking_completed: true,
+    order_canceled: true,
+    ready_to_pickup: true // both paid and unpaid
+  },
+  [order_status.ready_to_pickup]: {
+    order_refunded: true,
+    transaction_complete: true
+  }
+};
+
 export const order_error = {
   validation_error: 100,
   order_canceled_by_customer: 200,
