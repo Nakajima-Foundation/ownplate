@@ -321,6 +321,9 @@ export default {
     });
   },
   computed: {
+    possibleTransitions() {
+      return possible_transitions[this.orderInfo.status] || {};
+    },
     cancelStatus() {
       if (this.orderInfo.status === order_status.order_canceled) {
         if (this.orderInfo.orderCustomerCanceledAt) {
@@ -458,13 +461,10 @@ export default {
     displayOption(option) {
       return formatOption(option, price => this.$n(price, "currency"));
     },
-    possibleTransition() {
-      return possible_transitions[this.orderInfo.status] || {};
-    },
     isValidTransition(newStatus) {
       const newStatusValue = order_status[newStatus];
       return (
-        this.possibleTransition()[newStatusValue] ||
+        this.possibleTransitions[newStatusValue] ||
         (newStatusValue === this.orderInfo.status &&
           newStatus !== "order_canceled")
       );
