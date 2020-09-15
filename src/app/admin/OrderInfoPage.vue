@@ -462,9 +462,10 @@ export default {
       return possible_transitions[this.orderInfo.status] || {};
     },
     isValidTransition(newStatus) {
+      const newStatusValue = order_status[newStatus];
       return (
-        this.possibleTransition()[newStatus] ||
-        (order_status[newStatus] === this.orderInfo.status &&
+        this.possibleTransition()[newStatusValue] ||
+        (newStatusValue === this.orderInfo.status &&
           newStatus !== "order_canceled")
       );
     },
