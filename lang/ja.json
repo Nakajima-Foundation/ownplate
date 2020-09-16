@@ -329,7 +329,7 @@
     "orderNotice": "注文時のご注意",
     "datePlaced": "注文時刻",
     "dateEstimated": "完了予定時刻",
-    "dateConfirmed": "受け渡し時刻",
+    "dateConfirmed": "準備完了時刻",
     "statusName": "ステータス",
     "phoneNumber": "お客様の電話番号",
     "totalCount": "注文総数",
@@ -348,7 +348,8 @@
       "order_placed": "注文済み",
       "order_accepted": "受付済み",
       "cooking_completed": "調理済み",
-      "customer_picked_up": "受け渡し準備完了",
+      "ready_to_pickup": "受け渡し準備完了",
+      "transaction_complete": "受け渡し完了",
       "order_canceled": "キャンセル済み",
       "order_refunded": "払い戻し済み"
     }

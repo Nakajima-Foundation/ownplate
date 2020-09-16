@@ -348,7 +348,7 @@
       "order_placed": "Commande éffectuer",
       "order_accepted": "Accepter",
       "cooking_completed": "Prêt à ramasser",
-      "customer_picked_up": "Complete",
+      "ready_to_pickup": "Complete",
       "order_canceled": "Annulé",
       "order_refunded": "Remboursé"
     }

@@ -4,10 +4,26 @@ export const order_status = {
   validation_ok: 200, // by functions
   order_placed: 300, // by user and stripe
   order_accepted: 400, // by restaurant
-  cooking_completed: 500, // by restaurant
-  customer_picked_up: 600, // by restaurant and stripe
+  cooking_completed: 500, // by restaurant (obsolete)
+  ready_to_pickup: 600, // by restaurant and stripe
+  transaction_complete: 650, // by restaurant (optional)
   order_canceled: 700, // by restaurant or user
   order_refunded: 800 // by restaurant
+};
+
+export const possible_transitions = {
+  [order_status.order_placed]: {
+    [order_status.order_accepted]: true,
+    [order_status.order_canceled]: true
+  },
+  [order_status.order_accepted]: {
+    [order_status.order_canceled]: true,
+    [order_status.ready_to_pickup]: true // both paid and unpaid
+  },
+  [order_status.ready_to_pickup]: {
+    [order_status.order_refunded]: true,
+    [order_status.transaction_complete]: true
+  }
 };
 
 export const order_error = {

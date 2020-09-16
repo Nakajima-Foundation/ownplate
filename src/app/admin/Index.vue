@@ -198,7 +198,7 @@
       <div class="column">
         <div class="m-l-24 m-r-24">
           <!-- Payment -->
-          <payment-section @updateUnsetWarning="updateUnsetWarning($event)"/>
+          <payment-section @updateUnsetWarning="updateUnsetWarning($event)" />
 
           <!-- Notes -->
           <div class="m-t-24">
@@ -302,7 +302,7 @@ export default {
                 db
                   .collection(`restaurants/${restaurant.id}/orders`)
                   .where("timePlaced", ">=", midNight())
-                  // IDEALLY: .where("status", "<", order_status.customer_picked_up)
+                  // IDEALLY: .where("status", "<", order_status.ready_to_pickup)
                   .onSnapshot(result => {
                     this.restaurantItems = this.restaurantItems.map(
                       (r2, i2) => {
@@ -311,9 +311,7 @@ export default {
                             .map(doc => doc.data())
                             .filter(data => {
                               // We need this filter here because Firebase does not allow us to do
-                              return (
-                                data.status < order_status.customer_picked_up
-                              );
+                              return data.status < order_status.ready_to_pickup;
                             }).length;
                         }
                         return r2;
