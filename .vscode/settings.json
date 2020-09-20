@@ -6,8 +6,9 @@
   "editor.tabSize": 2,
   "editor.formatOnType": true,
   "editor.formatOnPaste": true,
-  "editor.formatOnSave": true,
-  "i18n-ally.localesPaths": [
-    "lang"
-  ]
+  "i18n-ally.localesPaths": ["lang"],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "extensions.showRecommendationsOnlyOnDemand": false,
 }
