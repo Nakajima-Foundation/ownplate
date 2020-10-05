@@ -156,7 +156,8 @@ export default {
           {
             displayName,
             notify: true,
-            uid: this.uid
+            uid: this.uid,
+            restaurantId: this.restaurantId(),
           },
           { merge: true }
         );

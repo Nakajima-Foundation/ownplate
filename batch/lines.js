@@ -21,13 +21,20 @@ const main = async () => {
     if (doc) {
       // Do the real work here
       const data = doc.data();
+      const restaurantId = doc.ref.parent.parent.id;
       const uid = (await doc.ref.parent.parent.get()).data().uid;
       if (fRun) {
-        await doc.ref.update({ uid });
+        await doc.ref.update({
+          uid,
+          restaurantId,
+        });
         console.log(doc.id, "updated");
       } else {
         // console.log(doc.ref.path);
-        console.log(uid);
+        console.log({
+          uid,
+          restaurantId,
+        });
       }
 
       return query.startAfter(doc);
