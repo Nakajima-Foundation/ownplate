@@ -28,6 +28,13 @@
 
 .ready_to_pickup,
 .ready_to_pickup:hover {
+  @extend .c-status-green;
+  @extend .bg-status-green-bg;
+  border: 0;
+}
+
+.transaction_complete,
+.transaction_complete:hover {
   @extend .c-status-purple;
   @extend .bg-status-purple-bg;
   border: 0;
