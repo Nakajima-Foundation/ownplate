@@ -165,6 +165,7 @@
     "phoneCallDescription": "オンラインで注文が入った時にお店の電話でお知らせします",
     "phoneCallNotice": "現在は無料で提供しますが、電話の通話料がかかるため、この機能のみ将来有料機能となる可能性があります。その場合もこの機能をオンにしておいてもいきなり費用がかかることはありません。",
     "phoneCallNotification": "電話通知",
+    "lineNotification": "LINE通知",
     "city": "市町村",
     "zip": "郵便番号",
     "state": "都道府県"

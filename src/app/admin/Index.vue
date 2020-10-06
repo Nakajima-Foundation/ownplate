@@ -169,7 +169,8 @@
                     :restaurantid="restaurantItem.restaurantid"
                     :numberOfMenus="restaurantItem.numberOfMenus || 0"
                     :numberOfOrders="restaurantItem.numberOfOrders || 0"
-                  ></restaurant-edit-card>
+                    :lineEnable="lines[restaurantItem.id] || false"
+                    ></restaurant-edit-card>
                 </div>
 
                 <!-- Add Restaurant -->
@@ -254,7 +255,8 @@ export default {
       detachers: [],
       restaurant_detacher: null,
       news: newsList[0],
-      unsetWarning: true
+      unsetWarning: true,
+      lines: {},
     };
   },
   created() {
@@ -320,6 +322,7 @@ export default {
                   })
               );
             });
+
           } catch (error) {
             console.log("Error fetch doc,", error);
           } finally {
@@ -331,6 +334,14 @@ export default {
     } finally {
       this.readyToDisplay = true;
     }
+    db.collectionGroup("lines")
+      .where("uid", "==", this.uid)
+      .onSnapshot(result => {
+        result.docs.map(async res => {
+          const restaurantId = res.data().restaurantId;
+          this.lines[restaurantId] = true;
+        });
+      });
   },
   methods: {
     destroy_detacher() {
