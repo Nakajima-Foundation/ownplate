@@ -155,7 +155,9 @@ export default {
         await db.doc(`restaurants/${this.restaurantId()}/lines/${lineId}`).set(
           {
             displayName,
-            notify: true
+            notify: true,
+            uid: this.uid,
+            restaurantId: this.restaurantId(),
           },
           { merge: true }
         );
@@ -181,6 +183,11 @@ export default {
   },
   destroyed() {
     this.detacher && this.detacher();
+  },
+  computed: {
+    uid() {
+      return this.$store.getters.uidAdmin;
+    },
   },
   methods: {
     async handleToggle(lineUser) {

@@ -126,6 +126,19 @@
           </span>
         </b-button>
       </div>
+
+      <div class="align-center m-t-16">
+        <b-button
+          tag="nuxt-link"
+            :to="'/admin/restaurants/' + restaurantid + '/line'"
+            style="min-width: 256px;"
+          :class="lineEnable ? 'op-button-small secondary' : 'op-button-small primary'"
+          >
+          <span :class="lineEnable ? 'c-onsecondary p-l-24 p-r-24' : 'c-onprimary p-l-24 p-r-24'">
+            {{ $t("editRestaurant.lineNotification") }} {{ lineEnable ? "ON" : "OFF" }}
+          </span>
+        </b-button>
+      </div>
       <!-- Directory Request -->
       <div class="align-center m-t-16">
         <div class="t-subtitle2 c-text-black-disabled">{{ $t("admin.directory.status") }}</div>
@@ -187,6 +200,10 @@ export default {
     },
     numberOfOrders: {
       type: Number,
+      required: true
+    },
+    lineEnable: {
+      type: Boolean,
       required: true
     }
   },
