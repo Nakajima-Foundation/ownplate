@@ -12,7 +12,7 @@ export type Status =
   300 | // order_placed
   400 | // order_accepted
   500 | // cooking_completed
-  600   // customer_picked_up
+  600   // ready_to_pickup
 
 class Payment {
   stripe!: boolean

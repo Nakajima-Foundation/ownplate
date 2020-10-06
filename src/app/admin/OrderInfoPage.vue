@@ -190,15 +190,27 @@
                 <div class="align-center m-t-24">
                   <b-button
                     class="op-button-medium w-256"
-                    :class="classOf('customer_picked_up')"
-                    :loading="updating==='customer_picked_up'"
-                    :disabled="!isValidTransition('customer_picked_up')"
+                    :class="classOf('ready_to_pickup')"
+                    :loading="updating==='ready_to_pickup'"
+                    :disabled="!isValidTransition('ready_to_pickup')"
                     @click="handleComplete()"
                   >
-                    <div>{{ $t("order.status." + 'customer_picked_up') }}</div>
+                    <div>{{ $t("order.status." + 'ready_to_pickup') }}</div>
+                    <div class="t-caption c-text-black-medium">{{timeOfEvents['ready_to_pickup']}}</div>
+                  </b-button>
+                </div>
+                <div class="align-center m-t-24">
+                  <b-button
+                    class="op-button-medium w-256"
+                    :class="classOf('transaction_complete')"
+                    :loading="updating==='transaction_complete'"
+                    :disabled="!isValidTransition('transaction_complete')"
+                    @click="handleChangeStatus('transaction_complete')"
+                  >
+                    <div>{{ $t("order.status.transaction_complete") }}</div>
                     <div
                       class="t-caption c-text-black-medium"
-                    >{{timeOfEvents['customer_picked_up']}}</div>
+                    >{{timeOfEvents['transaction_complete']}}</div>
                   </b-button>
                 </div>
               </div>
@@ -231,7 +243,7 @@
 import { db, functions, firestore } from "~/plugins/firebase.js";
 import BackButton from "~/components/BackButton";
 import OrderedItem from "~/app/admin/Order/OrderedItem";
-import { order_status } from "~/plugins/constant.js";
+import { order_status, possible_transitions } from "~/plugins/constant.js";
 import { nameOfOrder } from "~/plugins/strings.js";
 import {
   parsePhoneNumber,
@@ -257,7 +269,7 @@ export default {
 
   data() {
     return {
-      orderStates: ["order_placed", "order_accepted", "cooking_completed"],
+      orderStates: ["order_placed", "order_accepted"], // no longer "cooking_completed"
       updating: "",
       shopInfo: {},
       menuObj: {},
@@ -309,6 +321,9 @@ export default {
     });
   },
   computed: {
+    possibleTransitions() {
+      return possible_transitions[this.orderInfo.status] || {};
+    },
     cancelStatus() {
       if (this.orderInfo.status === order_status.order_canceled) {
         if (this.orderInfo.orderCustomerCanceledAt) {
@@ -340,12 +355,15 @@ export default {
         cooking_completed: this.timeStampToText(
           this.orderInfo.orderCookingCompletedAt
         ),
-        customer_picked_up: this.timeStampToText(this.orderInfo.timeConfirmed),
+        ready_to_pickup: this.timeStampToText(this.orderInfo.timeConfirmed),
         order_canceled_by_restaurant: this.timeStampToText(
           this.orderInfo.orderRestaurantCanceledAt
         ),
         order_canceled_by_customer: this.timeStampToText(
           this.orderInfo.orderCustomerCanceledAt
+        ),
+        transaction_complete: this.timeStampToText(
+          this.orderInfo.transactionCompletedAt
         )
       };
       console.log(this.orderInfo);
@@ -443,36 +461,11 @@ export default {
     displayOption(option) {
       return formatOption(option, price => this.$n(price, "currency"));
     },
-    possibleTransition() {
-      switch (this.orderInfo.status) {
-        case order_status.order_placed:
-          return {
-            order_accepted: true,
-            cooking_completed: true,
-            order_canceled: true
-          };
-        case order_status.order_accepted:
-          return {
-            cooking_completed: true,
-            order_canceled: true
-          };
-        case order_status.cooking_completed:
-          return {
-            order_accepted: true,
-            order_canceled: true,
-            customer_picked_up: true // both paid and unpaid
-          };
-        case order_status.customer_picked_up:
-          return {
-            order_refunded: true
-          };
-      }
-      return {};
-    },
     isValidTransition(newStatus) {
+      const newStatusValue = order_status[newStatus];
       return (
-        this.possibleTransition()[newStatus] ||
-        (order_status[newStatus] === this.orderInfo.status &&
+        this.possibleTransitions[newStatusValue] ||
+        (newStatusValue === this.orderInfo.status &&
           newStatus !== "order_canceled")
       );
     },
@@ -490,14 +483,14 @@ export default {
       return "";
     },
     async handleComplete() {
-      if (this.orderInfo.status === order_status.customer_picked_up) {
+      if (this.orderInfo.status === order_status.ready_to_pickup) {
         return; // no need to call the server
       }
       if (this.hasStripe) {
         const orderId = this.$route.params.orderId;
         //console.log("handleComplete with Stripe", orderId);
         try {
-          this.updating = "customer_picked_up";
+          this.updating = "ready_to_pickup";
           const { data } = await stripeConfirmIntent({
             restaurantId: this.restaurantId() + this.forcedError("confirm"),
             orderId
@@ -514,13 +507,14 @@ export default {
           this.updating = "";
         }
       } else {
-        this.handleChangeStatus("customer_picked_up");
+        this.handleChangeStatus("ready_to_pickup");
       }
     },
     async handleChangeStatus(statusKey) {
       const timezone = moment.tz.guess();
       const newStatus = order_status[statusKey];
       if (newStatus === this.orderInfo.status) {
+        console.log("same status - no need to process");
         return;
       }
       const orderUpdate = functions.httpsCallable("orderUpdate");

@@ -1,9 +1,14 @@
 <template>
-  <section class="section">
+ <section class="section">
     <back-button :url="backUrl" />
     <h2>All Orders</h2>
+    <b-select v-model="orderState" class="m-t-24">
+      <option v-for="status in orderStatus" :value="status.index" :key="status.index">
+        {{status.key ? $t("order.status." + status.key) : "----"}}
+      </option>
+    </b-select>
     <ordered-info
-      v-for="order in orders"
+      v-for="order in filteredOrders"
       :key="order.id"
       :isSuperView="true"
       @selected="orderSelected($event)"
@@ -17,7 +22,7 @@
 import BackButton from "~/components/BackButton";
 import { db } from "~/plugins/firebase.js";
 import OrderedInfo from "~/app/admin/Order/OrderedInfo";
-
+import { order_status } from "~/plugins/constant.js";
 import superMixin from "./SuperMixin";
 
 export default {
@@ -29,12 +34,31 @@ export default {
   data() {
     return {
       orders: [],
+      orderState: 0,
       isLoading: false,
       last: null
     };
   },
   async mounted() {
     this.superPermissionCheck();
+  },
+  computed: {
+    orderStatus () {
+      return Object.keys(order_status).map(key => {
+        return {
+          index: order_status[key],
+          key: key === "error" ?  "" : key,
+        };
+      });
+    },
+    filteredOrders() {
+      return this.orders.filter(order => {
+        if (this.orderState === 0) {
+          return true;
+        }
+        return order.status === this.orderState;
+      });
+    },
   },
   async created() {
     await this.loadData();

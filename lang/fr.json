@@ -165,6 +165,7 @@
     "phoneCallDescription": "Make a call when a new order comes in",
     "phoneCallNotice": "Although it is currently provided free of charge, this feature may be a paid feature in the future due to telephone call charges. In that case, even if this function is turned on, there is no sudden cost",
     "phoneCallNotification": "Phone Notification",
+    "lineNotification": "LINE Notification",
     "city": "Vile",
     "zip": "Code Postal",
     "state": "Région"
@@ -207,7 +208,14 @@
     "area": "Région",
     "areaAll": "Tout les régions",
     "areaTop": "Top régions",
-    "likes": "Likes"
+    "likes": "Likes",
+    "areas": {
+      "kanto": "Kanto Area",
+      "chubu": "Chubu Area",
+      "hokuriku": "Hokuriku Area",
+      "kansai": "Kansai Area",
+      "chugoku-kyusyu": "Chugoku kyusyu Area"
+    }
   },
   "shopInfo": {
     "thisIsPreview": "Ceci est un aperçu uniquement.",
@@ -348,7 +356,7 @@
       "order_placed": "Commande éffectuer",
       "order_accepted": "Accepter",
       "cooking_completed": "Prêt à ramasser",
-      "customer_picked_up": "Complete",
+      "ready_to_pickup": "Complete",
       "order_canceled": "Annulé",
       "order_refunded": "Remboursé"
     }
@@ -443,6 +451,8 @@
     "editMenuItems": "Menu Modifier: {count}",
     "pleaseAddMenu": "Veuillez ajouter un menu",
     "editAbout": "Modifier les détails du restaurant",
+    "privateMode": "Mode privé",
+    "pleaseChangePublic": "Veuillez changer de public",
     "directory": {
       "status": "Annuaire des restaurants",
       "notListed": "Non listé",

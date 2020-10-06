@@ -25,20 +25,50 @@
           <!-- Areas -->
           <div class="columns is-gapless is-multiline">
             <area-item :name="$t('find.areaAll')" :id="'all'" />
-
-            <!-- v-for="area in areas" -->
-            <area-item
-              v-for="area in areas"
-              :name="area.name"
-              :id="String(area.id)"
-              :key="area.id"
-            />
           </div>
         </div>
       </div>
-      <!-- Right Gap -->
-      <div class="column is-narrow w-24"></div>
     </div>
+
+    <template  v-for="area in areas">
+      <!-- List Header Area -->
+      <div class="columns is-gapless">
+        <!-- Left Gap -->
+        <div class="column is-narrow w-24"></div>
+        <!-- Center Column -->
+        <div class="column">
+          <div class="m-l-24 m-r-24 m-t-24">
+            <!-- Title -->
+            <div class="t-h6 c-text-black-disabled m-t-24">{{$t("find.areas." + area.name)}}</div>
+          </div>
+        </div>
+        <!-- Right Gap -->
+        <div class="column is-narrow w-24"></div>
+      </div>
+
+      <div class="columns is-gapless">
+        <!-- Left Gap -->
+        <div class="column is-narrow w-24"></div>
+        <!-- Center Column -->
+        <div class="column">
+          <div class="m-l-24 m-r-16 m-t-16">
+            <!-- Areas -->
+            <div class="columns is-gapless is-multiline">
+              <!-- v-for="area in areas" -->
+              <area-item
+                v-for="item in area.items"
+                :name="item.name"
+                :id="String(item.id)"
+                :key="item.id"
+                />
+            </div>
+          </div>
+        </div>
+        <!-- Right Gap -->
+        <div class="column is-narrow w-24"></div>
+      </div>
+    </template>
+
     <!-- Likes Header Area -->
     <div class="columns is-gapless" v-if="likes.length > 0">
       <!-- Left Gap -->
@@ -95,19 +125,49 @@ export default {
       restaurants: [],
       areas:
         ownPlateConfig.region == "JP"
-          ? [
+        ? [
+          {
+            name: "kanto",
+            items: [
               { name: "東京都", id: 12 },
+              { name: "千葉県", id: 11 },
               { name: "群馬県", id: 9 },
               { name: "埼玉県", id: 10 },
-              { name: "福岡県", id: 39 },
-              { name: "福井県", id: 17 },
+            ]
+          },
+          {
+            name: "chubu",
+            items:[
+              { name: "静岡県", id: 21 },
               { name: "山梨県", id: 18 },
+            ],
+          },
+          {
+            name: "hokuriku",
+            items: [
+              { name: "新潟県", id: 14 },
+              { name: "福井県", id: 17 },
+            ],
+          },
+          {
+            name: "kansai",
+            items: [
+              { name: "京都府", id: 25 },
               { name: "大阪府", id: 26 },
               { name: "兵庫県", id: 27 },
+              { name: "奈良県", id: 28 },
+            ],
+          },
+          {
+            name: "chugoku-kyusyu",
+            items: [
               { name: "広島県", id: 33 },
+              { name: "福岡県", id: 39 },
               { name: "長崎県", id: 41 }
             ]
-          : [{ name: "Washington", id: 46 }]
+          },
+        ]
+      : [[{ name: "Washington", id: 46 }]]
     };
   },
   head() {
