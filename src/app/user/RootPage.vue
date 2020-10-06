@@ -167,7 +167,14 @@ export default {
             ]
           },
         ]
-      : [[{ name: "Washington", id: 46 }]]
+      : [
+        {
+          name: "USA",
+          items: [
+            {name: "Washington", id: 46 }
+          ]
+        }
+      ]
     };
   },
   head() {
