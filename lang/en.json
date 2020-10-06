@@ -165,6 +165,7 @@
     "phoneCallDescription": "Make a call when a new order comes in",
     "phoneCallNotice": "Although it is currently provided free of charge, this feature may be a paid feature in the future due to telephone call charges. In that case, even if this function is turned on, there is no sudden cost",
     "phoneCallNotification": "Phone Notification",
+    "lineNotification": "LINE Notification",
     "city": "city",
     "zip": "zip",
     "state": "state"
@@ -207,7 +208,14 @@
     "area": "Areas",
     "areaAll": "All Areas",
     "areaTop": "Areas Top",
-    "likes": "Likes"
+    "likes": "Likes",
+    "areas": {
+      "kanto": "Kanto Area",
+      "chubu": "Chubu Area",
+      "hokuriku": "Hokuriku Area",
+      "kansai": "Kansai Area",
+      "chugoku-kyusyu": "Chugoku kyusyu Area"
+    }
   },
   "shopInfo": {
     "thisIsPreview": "This is Preview Only.",
@@ -347,8 +355,9 @@
       "validation_ok": "Validated",
       "order_placed": "Order Placed",
       "order_accepted": "Accepted",
-      "cooking_completed": "Ready To Pickup",
-      "customer_picked_up": "Complete",
+      "cooking_completed": "Cooking Complete",
+      "ready_to_pickup": "Ready to Pickup",
+      "transaction_complete": "Pickup Complete",
       "order_canceled": "Canceled",
       "order_refunded": "Refunded"
     }
@@ -442,6 +451,8 @@
     "editMenuItems": "Edit Menu: {count}",
     "pleaseAddMenu": "Please Add Menu",
     "editAbout": "Edit Restaurant Details",
+    "privateMode": "Private mode",
+    "pleaseChangePublic": "Please change public",
     "directory": {
       "status": "Restaurant Directory",
       "notListed": "Not Listed",

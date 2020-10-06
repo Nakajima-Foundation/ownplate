@@ -97,6 +97,9 @@ service cloud.firestore {
     match /{path=**}/adminlogs/{documentId} {
       allow read: if isSuper(request);
     }
+    match /{path=**}/lines/{lineId} {
+      allow read: if isOwner(resource, request);
+    }
 
     match /restaurants {
       match /{restaurantId} {
