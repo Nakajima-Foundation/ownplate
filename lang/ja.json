@@ -451,6 +451,8 @@
     "editMenuItems": "メニューの変更： {count}",
     "pleaseAddMenu": "メニューを追加してください",
     "editAbout": "店情報の変更",
+    "privateMode": "非公開",
+    "pleaseChangePublic": "店情報を入力後、公開に変更してください",
     "directory": {
       "status": "お客様向け飲食店一覧への掲載状況",
       "notListed": "未掲載",

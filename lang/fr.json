@@ -451,6 +451,8 @@
     "editMenuItems": "Menu Modifier: {count}",
     "pleaseAddMenu": "Veuillez ajouter un menu",
     "editAbout": "Modifier les détails du restaurant",
+    "privateMode": "Mode privé",
+    "pleaseChangePublic": "Veuillez changer de public",
     "directory": {
       "status": "Annuaire des restaurants",
       "notListed": "Non listé",

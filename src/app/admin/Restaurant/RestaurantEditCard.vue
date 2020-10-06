@@ -53,7 +53,7 @@
             tag="nuxt-link"
             :to="'/admin/restaurants/' + restaurantid + '/menus'"
             style="min-width: 256px; border-color: #b00020;"
-            class="op-button-small secondary"
+            class="op-button-small red"
           >
             <span
               class="c-status-red p-l-24 p-r-24"
@@ -87,6 +87,18 @@
         >
           <span class="c-primary">{{ $t("admin.editAbout") }}</span>
         </b-button>
+      </div>
+
+      <div class="align-center m-t-16" v-if="!shopInfo.publicFlag">
+        <b-button
+          tag="nuxt-link"
+          :to="'/admin/restaurants/' + restaurantid"
+          style="min-width: 256px; border-color: #b00020;"
+          class="op-button-small red"
+          >
+          <span class="c-status-red p-l-24 p-r-24">{{ $t("admin.privateMode") }}</span>
+        </b-button>
+        <div class="t-body2 c-status-red m-t-4">{{ $t("admin.pleaseChangePublic") }}</div>
       </div>
 
       <!-- QR code -->
