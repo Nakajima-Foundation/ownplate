@@ -208,7 +208,14 @@
     "area": "Areas",
     "areaAll": "All Areas",
     "areaTop": "Areas Top",
-    "likes": "Likes"
+    "likes": "Likes",
+    "areas": {
+      "kanto": "Kanto Area",
+      "chubu": "Chubu Area",
+      "hokuriku": "Hokuriku Area",
+      "kansai": "Kansai Area",
+      "chugoku-kyusyu": "Chugoku kyusyu Area"
+    }
   },
   "shopInfo": {
     "thisIsPreview": "This is Preview Only.",
