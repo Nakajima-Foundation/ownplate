@@ -208,7 +208,14 @@
     "area": "飲食店エリア",
     "areaAll": "全てのエリア",
     "areaTop": "エリア一覧",
-    "likes": "お気に入り"
+    "likes": "お気に入り",
+    "areas": {
+      "kanto": "関東地方",
+      "chubu": "中部地方",
+      "hokuriku": "北陸地方",
+      "kansai": "関西地方",
+      "chugoku-kyusyu": "中国九州地方"
+    }
   },
   "shopInfo": {
     "thisIsPreview": "これは飲食店向けプレビューです。",
