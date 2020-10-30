@@ -187,32 +187,6 @@
                     <div class="t-caption c-text-black-medium">{{timeOfEvents[orderState]}}</div>
                   </b-button>
                 </div>
-                <div class="align-center m-t-24">
-                  <b-button
-                    class="op-button-medium w-256"
-                    :class="classOf('ready_to_pickup')"
-                    :loading="updating==='ready_to_pickup'"
-                    :disabled="!isValidTransition('ready_to_pickup')"
-                    @click="handleComplete()"
-                  >
-                    <div>{{ $t("order.status." + 'ready_to_pickup') }}</div>
-                    <div class="t-caption c-text-black-medium">{{timeOfEvents['ready_to_pickup']}}</div>
-                  </b-button>
-                </div>
-                <div class="align-center m-t-24">
-                  <b-button
-                    class="op-button-medium w-256"
-                    :class="classOf('transaction_complete')"
-                    :loading="updating==='transaction_complete'"
-                    :disabled="!isValidTransition('transaction_complete')"
-                    @click="handleChangeStatus('transaction_complete')"
-                  >
-                    <div>{{ $t("order.status.transaction_complete") }}</div>
-                    <div
-                      class="t-caption c-text-black-medium"
-                    >{{timeOfEvents['transaction_complete']}}</div>
-                  </b-button>
-                </div>
               </div>
             </div>
           </div>
@@ -269,7 +243,7 @@ export default {
 
   data() {
     return {
-      orderStates: ["order_placed", "order_accepted"], // no longer "cooking_completed"
+      orderStates: ["order_placed", "order_accepted", "ready_to_pickup", "transaction_complete"], // no longer "cooking_completed"
       updating: "",
       shopInfo: {},
       menuObj: {},
@@ -366,7 +340,7 @@ export default {
           this.orderInfo.transactionCompletedAt
         )
       };
-      console.log(this.orderInfo);
+       console.log(this.orderInfo);
       //console.log(mapping);
       return mapping;
     },
@@ -482,32 +456,25 @@ export default {
       }
       return "";
     },
-    async handleComplete() {
-      if (this.orderInfo.status === order_status.ready_to_pickup) {
-        return; // no need to call the server
-      }
-      if (this.hasStripe) {
-        const orderId = this.$route.params.orderId;
-        //console.log("handleComplete with Stripe", orderId);
-        try {
-          this.updating = "ready_to_pickup";
-          const { data } = await stripeConfirmIntent({
-            restaurantId: this.restaurantId() + this.forcedError("confirm"),
-            orderId
-          });
-          console.log("confirm", data);
-          this.$router.push(this.parentUrl);
-        } catch (error) {
-          console.error(error.message, error.details);
-          this.$store.commit("setErrorMessage", {
-            code: "stripe.confirm",
-            error
-          });
-        } finally {
-          this.updating = "";
-        }
-      } else {
-        this.handleChangeStatus("ready_to_pickup");
+    async handleStripe() {
+      const orderId = this.$route.params.orderId;
+      //console.log("handleComplete with Stripe", orderId);
+      try {
+        this.updating = "ready_to_pickup";
+        const { data } = await stripeConfirmIntent({
+          restaurantId: this.restaurantId() + this.forcedError("confirm"),
+          orderId
+        });
+        console.log("confirm", data);
+        this.$router.push(this.parentUrl);
+      } catch (error) {
+        console.error(error.message, error.details);
+        this.$store.commit("setErrorMessage", {
+          code: "stripe.confirm",
+          error
+        });
+      } finally {
+        this.updating = "";
       }
     },
     async handleChangeStatus(statusKey) {
@@ -515,6 +482,10 @@ export default {
       const newStatus = order_status[statusKey];
       if (newStatus === this.orderInfo.status) {
         console.log("same status - no need to process");
+        return;
+      }
+      if ((newStatus === order_status.ready_to_pickup) && this.hasStripe) {
+        this.handleStripe();
         return;
       }
       const orderUpdate = functions.httpsCallable("orderUpdate");
