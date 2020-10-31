@@ -12,6 +12,11 @@ export const order_status = {
   transaction_hide: 1000, // special status
 };
 
+export const order_status_keys = Object.keys(order_status).reduce((tmp, key) => {
+  tmp[order_status[key]] = key;
+  return tmp;
+}, {});
+
 export const possible_transitions = {
   [order_status.order_placed]: {
     [order_status.order_accepted]: true,

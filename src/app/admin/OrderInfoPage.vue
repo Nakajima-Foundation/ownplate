@@ -280,6 +280,7 @@ export default {
           if (order.exists) {
             const order_data = order.data();
             this.orderInfo = order_data;
+            console.log(order_data);
           }
         },
         error: error => {
