@@ -266,7 +266,7 @@ export default {
     };
   },
 
-  created() {
+  async created() {
     const restaurant_detacher = db
       .doc(`restaurants/${this.restaurantId()}`)
       .onSnapshot(restaurant => {
@@ -299,23 +299,12 @@ export default {
         }
       });
     this.detacher = [restaurant_detacher, menu_detacher, order_detacher];
+    this.shopOwner = await this.getShopOwner(this.$store.getters.uidAdmin);
   },
   destroyed() {
     this.detacher.map(detacher => {
       detacher();
     });
-  },
-  watch: {
-    async "shopInfo.uid"() {
-      if (this.shopInfo && this.shopInfo.uid) {
-        const admin = await db.doc(`/admins/${this.shopInfo.uid}`).get()
-        if (admin) {
-          this.shopOwner = admin.data();
-          return
-        }
-      }
-      this.showOwner = {hidePrivacy: false};
-    }
   },
   computed: {
     possibleTransitions() {
