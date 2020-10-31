@@ -1,7 +1,10 @@
 import * as functions from 'firebase-functions'
 import * as admin from 'firebase-admin';
 import * as utils from '../lib/utils'
-import { order_status, possible_transitions } from '../common/constant'
+import {
+  order_status, possible_transitions,
+  order_status_keys, timeEventMapping
+} from '../common/constant'
 import * as sms from './sms'
 import { resources } from './resources'
 import i18next from 'i18next'
@@ -99,24 +102,22 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
       }
 
       // everything are ok
+      const updateTimeKey = timeEventMapping[order_status_keys[status]];
+
       const props: any = {
         updatedAt: admin.firestore.Timestamp.now(),
-        status
+        status,
+        [updateTimeKey]: admin.firestore.Timestamp.now(),
       };
       if (status === order_status.order_accepted) {
         props.timeEstimated = timeEstimated ?
           new admin.firestore.Timestamp(timeEstimated.seconds, timeEstimated.nanoseconds)
           : order.timePlaced;
-        props.orderAcceptedAt = admin.firestore.Timestamp.now();
         order.timeEstimated = props.timeEstimated;
-      }
-      if (status === order_status.transaction_complete) {
-        props.transactionCompletedAt = admin.firestore.Timestamp.now();
       }
       if (status === order_status.ready_to_pickup) {
         // Make it compatible with striped orders.
         props.orderCustomerPickedUpAt = admin.firestore.Timestamp.now();
-        props.timeConfirmed = props.updatedAt;
       }
       transaction.update(orderRef, props)
       return { success: true }

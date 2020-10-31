@@ -193,7 +193,7 @@ export default {
       this.order_detacher();
       let query = db
         .collection(`restaurants/${this.restaurantId()}/orders`)
-        .where("timePlaced", ">=", this.lastSeveralDays[this.dayIndex].date);
+          .where("timePlaced", ">=", this.lastSeveralDays[this.dayIndex].date)
       if (this.dayIndex > 0) {
         query = query.where(
           "timePlaced",
@@ -203,7 +203,9 @@ export default {
       }
       this.order_detacher = query.onSnapshot(result => {
         let orders = result.docs.map(this.doc2data("order"));
-        orders = orders.sort((order0, order1) => {
+        orders = orders
+          .filter(a => a.status !== order_status.transaction_hide)
+          .sort((order0, order1) => {
           if (order0.status === order1.status) {
             return (order0.timeEstimated || order0.timePlaced) >
               (order1.timeEstimated || order1.timePlaced)

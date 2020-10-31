@@ -357,6 +357,8 @@
       "order_accepted": "Accepter",
       "cooking_completed": "Prêt à ramasser",
       "ready_to_pickup": "Complete",
+      "transaction_complete": "Ramassage terminé",
+      "transaction_hide": "Transaction terminée",
       "order_canceled": "Annulé",
       "order_refunded": "Remboursé"
     }

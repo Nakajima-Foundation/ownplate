@@ -4,6 +4,7 @@ import { ownPlateConfig } from "@/config/project";
 import { soundFiles, regionalSettings } from "~/plugins/constant.js";
 import moment from "moment";
 import * as Cookie from "cookie";
+import { db } from "~/plugins/firebase.js";
 
 import { defaultHeader } from "./header";
 
@@ -131,6 +132,13 @@ export default ({ app }) => {
           return (index >= 0) ? index : 0;
         }
         return 0;
+      },
+      async getShopOwner(uid) {
+        const admin = await db.doc(`/admins/${uid}`).get();
+        if (admin) {
+          return admin.data();
+        }
+        return {hidePrivacy: false};
       },
     },
     computed: {

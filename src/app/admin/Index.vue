@@ -170,6 +170,7 @@
                     :numberOfMenus="restaurantItem.numberOfMenus || 0"
                     :numberOfOrders="restaurantItem.numberOfOrders || 0"
                     :lineEnable="lines[restaurantItem.id] || false"
+                    :shopOwner="shopOwner"
                     ></restaurant-edit-card>
                 </div>
 
@@ -257,6 +258,7 @@ export default {
       news: newsList[0],
       unsetWarning: true,
       lines: {},
+      shopOwner: null,
     };
   },
   created() {
@@ -264,6 +266,7 @@ export default {
   },
   async mounted() {
     try {
+      this.shopOwner = await this.getShopOwner(this.$store.getters.uidAdmin);
       this.restaurant_detacher = db
         .collection("restaurants")
         .where("uid", "==", this.uid)
