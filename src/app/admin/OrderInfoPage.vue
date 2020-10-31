@@ -38,7 +38,17 @@
       </div>
 
       <!-- Order Body Area -->
-      <div class="columns is-gapless">
+      <div class="columns is-gapless" v-if="orderInfo.status === order_status.transaction_hide">
+        <div class="column is-narrow w-24"></div>
+        <div class="column">
+          <div class="m-l-24 m-r-24">
+            <div class="bg-surface r-8 d-low p-l-24 p-r-24 p-t-24 p-b-24 m-t-24">
+              <div>{{ $t("order.status.transaction_hide") }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="columns is-gapless" v-else>
         <!-- Left Gap -->
         <div class="column is-narrow w-24"></div>
 
@@ -438,7 +448,10 @@ export default {
           "ready_to_pickup",
           "transaction_complete"
         ];        ; // no longer "cooking_completed"
-    }
+    },
+    order_status() {
+      return order_status;
+    },
   },
   methods: {
     timeStampToText(timestamp) {
