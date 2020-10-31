@@ -8,7 +8,8 @@ export const order_status = {
   ready_to_pickup: 600, // by restaurant and stripe
   transaction_complete: 650, // by restaurant (optional)
   order_canceled: 700, // by restaurant or user
-  order_refunded: 800 // by restaurant
+  order_refunded: 800, // by restaurant
+  transaction_hide: 1000, // special status
 };
 
 export const possible_transitions = {
@@ -23,7 +24,10 @@ export const possible_transitions = {
   [order_status.ready_to_pickup]: {
     [order_status.order_refunded]: true,
     [order_status.transaction_complete]: true
-  }
+  },
+  [order_status.transaction_complete]: {
+    [order_status.transaction_hide]: true
+  },
 };
 
 export const order_error = {
@@ -32,6 +36,17 @@ export const order_error = {
   payment_error: 300,
   order_canceled_by_restaurant: 400,
   unknow_error: 900
+};
+
+export const timeEventMapping = {
+  order_placed: "orderPlacedAt",
+  order_accepted: "orderAcceptedAt",
+  cooking_completed: "orderCookingCompletedAt",
+  ready_to_pickup: "timeConfirmed",
+  order_canceled_by_restaurant: "orderRestaurantCanceledAt",
+  order_canceled_by_customer: "orderCustomerCanceledAt",
+  transaction_complete: "transactionCompletedAt",
+  transaction_hide: "transactionHideAt",
 };
 
 export const stripe_regions = {

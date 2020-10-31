@@ -217,7 +217,7 @@
 import { db, functions, firestore } from "~/plugins/firebase.js";
 import BackButton from "~/components/BackButton";
 import OrderedItem from "~/app/admin/Order/OrderedItem";
-import { order_status, possible_transitions } from "~/plugins/constant.js";
+import { order_status, possible_transitions, timeEventMapping } from "~/plugins/constant.js";
 import { nameOfOrder } from "~/plugins/strings.js";
 import {
   parsePhoneNumber,
@@ -243,7 +243,6 @@ export default {
 
   data() {
     return {
-      orderStates: ["order_placed", "order_accepted", "ready_to_pickup", "transaction_complete"], // no longer "cooking_completed"
       updating: "",
       shopInfo: {},
       menuObj: {},
@@ -252,7 +251,8 @@ export default {
       detacher: [],
       cancelPopup: false,
       notFound: false,
-      timeOffset: 0
+      timeOffset: 0,
+      shopOwner: null,
     };
   },
 
@@ -294,6 +294,18 @@ export default {
       detacher();
     });
   },
+  watch: {
+    async "shopInfo.uid"() {
+      if (this.shopInfo && this.shopInfo.uid) {
+        const admin = await db.doc(`/admins/${this.shopInfo.uid}`).get()
+        if (admin) {
+          this.shopOwner = admin.data();
+          return
+        }
+      }
+      this.showOwner = {hidePrivacy: false};
+    }
+  },
   computed: {
     possibleTransitions() {
       return possible_transitions[this.orderInfo.status] || {};
@@ -323,25 +335,10 @@ export default {
       return [];
     },
     timeOfEvents() {
-      const mapping = {
-        order_placed: this.timeStampToText(this.orderInfo.orderPlacedAt),
-        order_accepted: this.timeStampToText(this.orderInfo.orderAcceptedAt),
-        cooking_completed: this.timeStampToText(
-          this.orderInfo.orderCookingCompletedAt
-        ),
-        ready_to_pickup: this.timeStampToText(this.orderInfo.timeConfirmed),
-        order_canceled_by_restaurant: this.timeStampToText(
-          this.orderInfo.orderRestaurantCanceledAt
-        ),
-        order_canceled_by_customer: this.timeStampToText(
-          this.orderInfo.orderCustomerCanceledAt
-        ),
-        transaction_complete: this.timeStampToText(
-          this.orderInfo.transactionCompletedAt
-        )
-      };
-       console.log(this.orderInfo);
-      //console.log(mapping);
+      const mapping = Object.keys(timeEventMapping).reduce((tmp, key) => {
+        tmp[key] = this.timeStampToText(this.orderInfo[timeEventMapping[key]]);
+        return tmp;
+      }, {});
       return mapping;
     },
     search() {
@@ -423,6 +420,23 @@ export default {
         };
         return ret;
       }, {});
+    },
+    orderStates() {
+      return this.shopOwner && !!this.shopOwner.hidePrivacy ?
+        [
+          "order_placed",
+          "order_accepted",
+          "ready_to_pickup",
+          "transaction_complete",
+          "transaction_hide"
+        ]
+        :
+        [
+          "order_placed",
+          "order_accepted",
+          "ready_to_pickup",
+          "transaction_complete"
+        ];        ; // no longer "cooking_completed"
     }
   },
   methods: {

@@ -40,6 +40,13 @@
   border: 0;
 }
 
+.transaction_hide,
+.transaction_hide:hover {
+  @extend .c-status-purple;
+  @extend .bg-status-purple-bg;
+  border: 0;
+}
+
 .order_canceled,
 .order_canceled:hover {
   @extend .c-status-red;

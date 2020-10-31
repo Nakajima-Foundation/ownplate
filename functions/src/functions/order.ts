@@ -103,6 +103,7 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
         updatedAt: admin.firestore.Timestamp.now(),
         status
       };
+      // TODO: use constant timeEventMapping
       if (status === order_status.order_accepted) {
         props.timeEstimated = timeEstimated ?
           new admin.firestore.Timestamp(timeEstimated.seconds, timeEstimated.nanoseconds)
@@ -117,6 +118,9 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
         // Make it compatible with striped orders.
         props.orderCustomerPickedUpAt = admin.firestore.Timestamp.now();
         props.timeConfirmed = props.updatedAt;
+      }
+      if (status === order_status.transaction_hide) {
+        props.transactionHideAt = admin.firestore.Timestamp.now();
       }
       transaction.update(orderRef, props)
       return { success: true }
