@@ -115,10 +115,6 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
           : order.timePlaced;
         order.timeEstimated = props.timeEstimated;
       }
-      if (status === order_status.ready_to_pickup) {
-        // Make it compatible with striped orders.
-        props.orderCustomerPickedUpAt = admin.firestore.Timestamp.now();
-      }
       transaction.update(orderRef, props)
       return { success: true }
     })
