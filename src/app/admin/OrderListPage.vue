@@ -204,7 +204,7 @@ export default {
       this.order_detacher = query.onSnapshot(result => {
         let orders = result.docs.map(this.doc2data("order"));
         orders = orders
-          .filter(a => a.status !== 1000)
+          .filter(a => a.status !== order_status.transaction_hide)
           .sort((order0, order1) => {
           if (order0.status === order1.status) {
             return (order0.timeEstimated || order0.timePlaced) >

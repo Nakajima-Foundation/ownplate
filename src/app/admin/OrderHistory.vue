@@ -142,7 +142,7 @@ export default {
       }
       const docs = (await query.get()).docs;
       this.last = docs.length == this.limit ? docs[this.limit - 1] : null;
-      const orders = docs.map(this.doc2data("order"));
+      const orders = docs.map(this.doc2data("order")).filter(a => a.status !== order_status.transaction_hide);
       orders.forEach(order => {
         order.timePlaced = order.timePlaced.toDate();
         if (order.timeEstimated) {
