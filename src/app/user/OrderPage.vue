@@ -308,6 +308,8 @@ import { releaseConfig } from "~/plugins/config.js";
 import { stripeCreateIntent, stripeCancelIntent } from "~/plugins/stripe.js";
 import { lineAuthURL } from "~/plugins/line.js";
 
+import * as analyticsUtil from '~/plugins/analytics';
+
 export default {
   name: "Order",
   components: {
@@ -440,7 +442,18 @@ export default {
       if (this.isUser) {
         this.loadData();
       }
-    }
+    },
+    orderItems() {
+      analyticsUtil.sendPurchase(
+        this.orderInfo,
+        this.orderId,
+        this.orderItems.map((or) => { return {...or.item, id: or.id}}),
+        this.shopInfo,
+        this.restaurantId()
+      );
+      console.log(this.orderItems);
+    },
+
   },
   methods: {
     handleLineAuth() {
