@@ -288,7 +288,16 @@ export default {
         // save into store
         this.$store.commit("setLang", lang);
       }
-    }
+    },
+    pingAnalytics() {
+      analytics.setCurrentScreen(document.title);
+      analytics.logEvent("page_view");
+      analytics.logEvent("screen_view", {
+        app_name: "web",
+        screen_name: document.title,
+        // app_version: version
+      });
+    },
   },
   beforeCreate() {
     if (indexedDB) {
@@ -339,13 +348,7 @@ export default {
     // https://support.google.com/analytics/answer/9234069?hl=ja
     $route () {
       // console.log('route changed', this.$route)
-      analytics.setCurrentScreen(document.title);
-      analytics.logEvent("page_view");
-      analytics.logEvent("screen_view", {
-        app_name: "web",
-        screen_name: document.title,
-        // app_version: version
-      });
+      this.pingAnalytics();
     },
     async "$route.query.lang"() {
       if (this.$route.query.lang) {
@@ -407,6 +410,7 @@ export default {
         await this.setLang(lang);
       }
     }
+    this.pingAnalytics();
   },
   destroyed() {
     if (this.unregisterAuthObserver) {
