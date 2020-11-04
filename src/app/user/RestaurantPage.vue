@@ -145,10 +145,11 @@ import SharePopup from "~/app/user/Restaurant/SharePopup";
 import ShopInfo from "~/app/user/Restaurant/ShopInfo";
 import NotFound from "~/components/NotFound";
 
-import { db, firestore, functions } from "~/plugins/firebase.js";
+import { db, firestore, functions, analytics } from "~/plugins/firebase.js";
 import { order_status } from "~/plugins/constant.js";
 
 import { ownPlateConfig } from "@/config/project";
+import * as analyticsUtil from '~/plugins/analytics';
 
 export default {
   name: "ShopMenu",
@@ -273,7 +274,10 @@ export default {
         console.log("handling deferred notification");
         this.goCheckout();
       }
-    }
+    },
+    menus(values) {
+      analyticsUtil.sendMenuListView(values, this.shopInfo, this.restaurantId());
+    },
   },
   computed: {
     isPreview() {
