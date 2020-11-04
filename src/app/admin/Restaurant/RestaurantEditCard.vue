@@ -114,7 +114,7 @@
       </div>
 
       <!-- Report Page -->
-      <div class="align-center m-t-16">
+      <div class="align-center m-t-16" v-if="shopOwner && !shopOwner.hidePrivacy">
         <b-button
           tag="nuxt-link"
           :to="`/admin/restaurants/${restaurantid}/report`"
@@ -199,6 +199,10 @@ export default {
   name: "RestaurantEditCard",
   props: {
     shopInfo: {
+      type: Object,
+      required: true
+    },
+    shopOwner: {
       type: Object,
       required: true
     },

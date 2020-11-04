@@ -38,7 +38,17 @@
       </div>
 
       <!-- Order Body Area -->
-      <div class="columns is-gapless">
+      <div class="columns is-gapless" v-if="orderInfo.status === order_status.transaction_hide">
+        <div class="column is-narrow w-24"></div>
+        <div class="column">
+          <div class="m-l-24 m-r-24">
+            <div class="bg-surface r-8 d-low p-l-24 p-r-24 p-t-24 p-b-24 m-t-24">
+              <div>{{ $t("order.status.transaction_hide") }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="columns is-gapless" v-else>
         <!-- Left Gap -->
         <div class="column is-narrow w-24"></div>
 
@@ -187,32 +197,6 @@
                     <div class="t-caption c-text-black-medium">{{timeOfEvents[orderState]}}</div>
                   </b-button>
                 </div>
-                <div class="align-center m-t-24">
-                  <b-button
-                    class="op-button-medium w-256"
-                    :class="classOf('ready_to_pickup')"
-                    :loading="updating==='ready_to_pickup'"
-                    :disabled="!isValidTransition('ready_to_pickup')"
-                    @click="handleComplete()"
-                  >
-                    <div>{{ $t("order.status." + 'ready_to_pickup') }}</div>
-                    <div class="t-caption c-text-black-medium">{{timeOfEvents['ready_to_pickup']}}</div>
-                  </b-button>
-                </div>
-                <div class="align-center m-t-24">
-                  <b-button
-                    class="op-button-medium w-256"
-                    :class="classOf('transaction_complete')"
-                    :loading="updating==='transaction_complete'"
-                    :disabled="!isValidTransition('transaction_complete')"
-                    @click="handleChangeStatus('transaction_complete')"
-                  >
-                    <div>{{ $t("order.status.transaction_complete") }}</div>
-                    <div
-                      class="t-caption c-text-black-medium"
-                    >{{timeOfEvents['transaction_complete']}}</div>
-                  </b-button>
-                </div>
               </div>
             </div>
           </div>
@@ -243,7 +227,7 @@
 import { db, functions, firestore } from "~/plugins/firebase.js";
 import BackButton from "~/components/BackButton";
 import OrderedItem from "~/app/admin/Order/OrderedItem";
-import { order_status, possible_transitions } from "~/plugins/constant.js";
+import { order_status, possible_transitions, timeEventMapping } from "~/plugins/constant.js";
 import { nameOfOrder } from "~/plugins/strings.js";
 import {
   parsePhoneNumber,
@@ -269,7 +253,6 @@ export default {
 
   data() {
     return {
-      orderStates: ["order_placed", "order_accepted"], // no longer "cooking_completed"
       updating: "",
       shopInfo: {},
       menuObj: {},
@@ -278,11 +261,12 @@ export default {
       detacher: [],
       cancelPopup: false,
       notFound: false,
-      timeOffset: 0
+      timeOffset: 0,
+      shopOwner: null,
     };
   },
 
-  created() {
+  async created() {
     const restaurant_detacher = db
       .doc(`restaurants/${this.restaurantId()}`)
       .onSnapshot(restaurant => {
@@ -306,6 +290,7 @@ export default {
           if (order.exists) {
             const order_data = order.data();
             this.orderInfo = order_data;
+            console.log(order_data);
           }
         },
         error: error => {
@@ -314,6 +299,7 @@ export default {
         }
       });
     this.detacher = [restaurant_detacher, menu_detacher, order_detacher];
+    this.shopOwner = await this.getShopOwner(this.$store.getters.uidAdmin);
   },
   destroyed() {
     this.detacher.map(detacher => {
@@ -349,25 +335,10 @@ export default {
       return [];
     },
     timeOfEvents() {
-      const mapping = {
-        order_placed: this.timeStampToText(this.orderInfo.orderPlacedAt),
-        order_accepted: this.timeStampToText(this.orderInfo.orderAcceptedAt),
-        cooking_completed: this.timeStampToText(
-          this.orderInfo.orderCookingCompletedAt
-        ),
-        ready_to_pickup: this.timeStampToText(this.orderInfo.timeConfirmed),
-        order_canceled_by_restaurant: this.timeStampToText(
-          this.orderInfo.orderRestaurantCanceledAt
-        ),
-        order_canceled_by_customer: this.timeStampToText(
-          this.orderInfo.orderCustomerCanceledAt
-        ),
-        transaction_complete: this.timeStampToText(
-          this.orderInfo.transactionCompletedAt
-        )
-      };
-      console.log(this.orderInfo);
-      //console.log(mapping);
+      const mapping = Object.keys(timeEventMapping).reduce((tmp, key) => {
+        tmp[key] = this.timeStampToText(this.orderInfo[timeEventMapping[key]]);
+        return tmp;
+      }, {});
       return mapping;
     },
     search() {
@@ -449,7 +420,27 @@ export default {
         };
         return ret;
       }, {});
-    }
+    },
+    orderStates() {
+      return this.shopOwner && !!this.shopOwner.hidePrivacy ?
+        [
+          "order_placed",
+          "order_accepted",
+          "ready_to_pickup",
+          "transaction_complete",
+          "transaction_hide"
+        ]
+        :
+        [
+          "order_placed",
+          "order_accepted",
+          "ready_to_pickup",
+          "transaction_complete"
+        ];        ; // no longer "cooking_completed"
+    },
+    order_status() {
+      return order_status;
+    },
   },
   methods: {
     timeStampToText(timestamp) {
@@ -482,32 +473,25 @@ export default {
       }
       return "";
     },
-    async handleComplete() {
-      if (this.orderInfo.status === order_status.ready_to_pickup) {
-        return; // no need to call the server
-      }
-      if (this.hasStripe) {
-        const orderId = this.$route.params.orderId;
-        //console.log("handleComplete with Stripe", orderId);
-        try {
-          this.updating = "ready_to_pickup";
-          const { data } = await stripeConfirmIntent({
-            restaurantId: this.restaurantId() + this.forcedError("confirm"),
-            orderId
-          });
-          console.log("confirm", data);
-          this.$router.push(this.parentUrl);
-        } catch (error) {
-          console.error(error.message, error.details);
-          this.$store.commit("setErrorMessage", {
-            code: "stripe.confirm",
-            error
-          });
-        } finally {
-          this.updating = "";
-        }
-      } else {
-        this.handleChangeStatus("ready_to_pickup");
+    async handleStripe() {
+      const orderId = this.$route.params.orderId;
+      //console.log("handleComplete with Stripe", orderId);
+      try {
+        this.updating = "ready_to_pickup";
+        const { data } = await stripeConfirmIntent({
+          restaurantId: this.restaurantId() + this.forcedError("confirm"),
+          orderId
+        });
+        console.log("confirm", data);
+        this.$router.push(this.parentUrl);
+      } catch (error) {
+        console.error(error.message, error.details);
+        this.$store.commit("setErrorMessage", {
+          code: "stripe.confirm",
+          error
+        });
+      } finally {
+        this.updating = "";
       }
     },
     async handleChangeStatus(statusKey) {
@@ -515,6 +499,10 @@ export default {
       const newStatus = order_status[statusKey];
       if (newStatus === this.orderInfo.status) {
         console.log("same status - no need to process");
+        return;
+      }
+      if ((newStatus === order_status.ready_to_pickup) && this.hasStripe) {
+        this.handleStripe();
         return;
       }
       const orderUpdate = functions.httpsCallable("orderUpdate");
