@@ -72,12 +72,13 @@
               <span class="p-l-16 p-r-16">{{ $t('admin.order.more') }}</span>
             </b-button>
           </div>
-          <download-orders :orders="orders" />
+          <download-orders :orders="orders" v-if="shopOwner && !shopOwner.hidePrivacy" />
           <report-details
             :orders="orders"
             :fileName="fileName"
             :hideTable="true"
             :withStatus="true"
+            v-if="shopOwner && !shopOwner.hidePrivacy"
           />
         </div>
       </div>
@@ -111,7 +112,8 @@ export default {
       shopInfo: {},
       limit: 30,
       last: undefined,
-      orders: []
+      orders: [],
+      shopOwner: null,
     };
   },
   async created() {
@@ -124,6 +126,7 @@ export default {
       return;
     }
     this.shopInfo = restaurantDoc.data();
+    this.shopOwner = await this.getShopOwner(this.$store.getters.uidAdmin);
     this.next();
   },
   computed: {
@@ -142,7 +145,7 @@ export default {
       }
       const docs = (await query.get()).docs;
       this.last = docs.length == this.limit ? docs[this.limit - 1] : null;
-      const orders = docs.map(this.doc2data("order"));
+      const orders = docs.map(this.doc2data("order")).filter(a => a.status !== order_status.transaction_hide);
       orders.forEach(order => {
         order.timePlaced = order.timePlaced.toDate();
         if (order.timeEstimated) {
