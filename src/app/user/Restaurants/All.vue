@@ -83,12 +83,6 @@ export default {
     };
   },
   computed: {
-    JPPrefecture() {
-      return JPPrefecture;
-    },
-    USStates() {
-      return USStates;
-    },
     allArea() {
       return JPPrefecture.concat(USStates);
     },
