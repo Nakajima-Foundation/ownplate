@@ -33,32 +33,34 @@
           <!-- Restaurants -->
 
           <!-- Restaurant -->
-          <div v-for="(restaurants, state) in restaurantsObj">
-            <div class="t-subtitle1 c-text-black-disabled p-b-8 m-t-24">{{state}}</div>
-            <div class="columns is-gapless is-multiline">
-              <div v-for="restaurant in restaurants" class="column is-one-third">
-                <div class="h-full p-b-8 p-r-8">
-                  <router-link :to="`/r/${restaurant.id}`">
-                    <div class="touchable h-full">
-                      <div class="cols flex-center">
-                        <!-- Restaurant Profile -->
-                        <div class="m-r-16 h-48 r-48 bg-form">
-                          <img :src="resizedProfileImage(restaurant, '600')" class="w-48 h-48 r-48 cover" />
-                        </div>
+          <template v-for="(state) in allArea">
+            <div v-if="restaurantsObj[state]">
+              <div class="t-subtitle1 c-text-black-disabled p-b-8 m-t-24">{{state}}</div>
+              <div class="columns is-gapless is-multiline">
+                <div v-for="restaurant in restaurantsObj[state]" class="column is-one-third">
+                  <div class="h-full p-b-8 p-r-8">
+                    <router-link :to="`/r/${restaurant.id}`">
+                      <div class="touchable h-full">
+                        <div class="cols flex-center">
+                          <!-- Restaurant Profile -->
+                          <div class="m-r-16 h-48 r-48 bg-form">
+                            <img :src="resizedProfileImage(restaurant, '600')" class="w-48 h-48 r-48 cover" />
+                          </div>
 
-                        <!-- Restaurant Name -->
-                        <div class="flex-1 p-r-8 t-subtitle1 c-primary">
-                          {{
-                          restaurant.restaurantName
-                          }}
+                          <!-- Restaurant Name -->
+                          <div class="flex-1 p-r-8 t-subtitle1 c-primary">
+                            {{
+                            restaurant.restaurantName
+                            }}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </router-link>
+                    </router-link>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          </template>
         </div>
       </div>
       <!-- Right Gap -->
@@ -70,6 +72,7 @@
 <script>
 import { db } from "~/plugins/firebase.js";
 import { RestaurantHeader } from "~/plugins/header.js";
+import { JPPrefecture, USStates } from '~/plugins/constant';
 
 export default {
   components: {
@@ -78,6 +81,17 @@ export default {
     return {
       restaurantsObj: []
     };
+  },
+  computed: {
+    JPPrefecture() {
+      return JPPrefecture;
+    },
+    USStates() {
+      return USStates;
+    },
+    allArea() {
+      return JPPrefecture.concat(USStates);
+    },
   },
   head() {
     return RestaurantHeader;
