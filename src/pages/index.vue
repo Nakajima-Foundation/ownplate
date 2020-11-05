@@ -46,6 +46,36 @@
       <div class="column is-narrow w-24"></div>
     </div>
 
+    <!-- For Siged in user -->
+    <div v-if="isUser">
+      <div v-for="like in likes">
+        <div class="h-full p-b-8 p-r-8">
+          <router-link :to="`/r/${like.restaurantId}`">
+            <div class="touchable h-full">
+              <div class="cols flex-center">
+                <!-- Restaurant Profile -->
+                <div class="m-r-16 h-48">
+                  <img :src="resizedProfileImage(like, '600')" class="w-48 h-48 r-48 cover" />
+                </div>
+
+                <!-- Restaurant Name -->
+                <div class="flex-1 p-r-8 t-subtitle1 c-primary">
+                  {{
+                  like.restaurantName
+                  }}
+                </div>
+              </div>
+            </div>
+          </router-link>
+        </div>
+      </div>
+    </div>
+
+    <!-- For Siged in Admin -->
+    <div v-if="isAdmin">
+      admin
+    </div>
+
     <!-- For Owner and User -->
     <div class="columns is-gapless">
       <!-- Left Gap -->
@@ -266,6 +296,7 @@
 
 <script>
 import { releaseConfig } from "~/plugins/config.js";
+import { db } from "~/plugins/firebase.js";
 
 export default {
   name: "HomePage",
@@ -284,6 +315,23 @@ export default {
         this.isLocaleJapan ? "ja" : "en"
       ];
     }
-  }
+  },
+  data() {
+    return {
+      likes: [],
+    };
+  },
+  watch: {
+    async isUser() {
+      const snapshot = await db
+            .collection(`users/${this.user.uid}/reviews`)
+            .orderBy("timeLiked", "desc")
+            .limit(100)
+            .get();
+      this.likes = (snapshot.docs || []).map(doc => {
+        return doc.data();
+      });
+    },
+  },
 };
 </script>
