@@ -138,6 +138,7 @@ export default {
           {
             name: "chubu",
             items:[
+              { name: "愛知県", id: 22 },
               { name: "静岡県", id: 21 },
               { name: "山梨県", id: 18 },
             ],
@@ -155,13 +156,14 @@ export default {
               { name: "京都府", id: 25 },
               { name: "大阪府", id: 26 },
               { name: "兵庫県", id: 27 },
-              { name: "奈良県", id: 28 },
+              // { name: "奈良県", id: 28 },
             ],
           },
           {
             name: "chugoku-kyusyu",
             items: [
               { name: "広島県", id: 33 },
+              { name: "愛媛県", id: 37 },
               { name: "福岡県", id: 39 },
               { name: "長崎県", id: 41 }
             ]
