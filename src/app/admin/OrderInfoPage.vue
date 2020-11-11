@@ -242,6 +242,8 @@ import NotificationIndex from "./Notifications/Index";
 import { formatOption } from "~/plugins/strings.js";
 import OrderInfo from "~/app/user/Order/OrderInfo";
 
+import * as analyticsUtil from '~/plugins/analytics';
+
 export default {
   components: {
     BackButton,
@@ -532,14 +534,25 @@ export default {
         this.updating = "";
       }
     },
+    sendRedunded() {
+      analyticsUtil.sendPurchase(
+        this.orderInfo,
+        this.orderId,
+        this.shopInfo,
+        this.restaurantId()
+      );
+      console.log(this.orderItems);
+    },
     async handleCancel() {
       console.log("handleCancel");
+
       try {
         this.updating = "order_canceled";
         const { data } = await stripeCancelIntent({
           restaurantId: this.restaurantId() + this.forcedError("cancel"),
           orderId: this.orderId
         });
+        this.sendRedunded();
         console.log("cancel", data);
         this.$router.push(this.parentUrl);
       } catch (error) {

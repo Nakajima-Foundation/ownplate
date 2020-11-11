@@ -44,3 +44,18 @@ export const sendPurchase = (orderInfo, orderId, menus, shopInfo, restaurantId) 
     console.log(e);
   }
 };
+
+export const sendRedunded = (orderInfo, orderId, shopInfo, restaurantId) => {
+  try {
+    const analyticsData = {
+      transaction_id: orderId,
+      affiliation: shopInfo.restaurantName,
+      currency: 'JPY',
+      value: orderInfo.total,
+      items: [],
+    };
+    analytics.logEvent(firebase.analytics.EventName.REFUND, analyticsData);
+  } catch (e) {
+    console.log(e);
+  }
+};
