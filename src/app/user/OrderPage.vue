@@ -443,7 +443,9 @@ export default {
         this.loadData();
       }
     },
-    orderItems() {
+  },
+  methods: {
+    sendPurchase() {
       analyticsUtil.sendPurchase(
         this.orderInfo,
         this.orderId,
@@ -453,9 +455,15 @@ export default {
       );
       console.log(this.orderItems);
     },
-
-  },
-  methods: {
+    sendRedunded() {
+      analyticsUtil.sendPurchase(
+        this.orderInfo,
+        this.orderId,
+        this.shopInfo,
+        this.restaurantId()
+      );
+      console.log(this.orderItems);
+    },
     handleLineAuth() {
       const url = lineAuthURL("/callback/line", {
         pathname: location.pathname
@@ -559,6 +567,7 @@ export default {
           sendSMS: this.sendSMS,
           tip: this.tip || 0
         });
+        this.sendPurchase();
         console.log("createIntent", data);
         window.scrollTo(0, 0);
       } catch (error) {
@@ -594,6 +603,7 @@ export default {
           tip: this.tip || 0
         });
         console.log("place", data);
+        this.sendPurchase();
         window.scrollTo(0, 0);
       } catch (error) {
         console.error(error.message, error.details);
@@ -615,6 +625,7 @@ export default {
               restaurantId: this.restaurantId() + this.forcedError("cancel"),
               orderId: this.orderId
             });
+            this.sendRedunded();
             console.log("cancel", data);
           } catch (error) {
             // BUGBUG: Implement the error handling code here
