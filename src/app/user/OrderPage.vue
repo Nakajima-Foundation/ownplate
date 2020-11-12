@@ -456,7 +456,7 @@ export default {
       console.log(this.orderItems);
     },
     sendRedunded() {
-      analyticsUtil.sendPurchase(
+      analyticsUtil.sendRedunded(
         this.orderInfo,
         this.orderId,
         this.shopInfo,
