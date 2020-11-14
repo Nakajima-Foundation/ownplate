@@ -74,6 +74,11 @@ export const customRoutes = [
         component: "admin/RestaurantPage.vue"
       },
       {
+        name: "admin-pdf",
+        path: "pdf",
+        component: "admin/Pdf.vue"
+      },
+      {
         name: "admin-menus",
         path: "menus",
         component: "admin/MenuListPage.vue"
