@@ -99,6 +99,11 @@ export default {
      */
     extend(config, ctx) {
       config.devtool = 'eval-source-map';
+      config.module.rules.push({
+        test: /\.svg$/i,
+        loader: 'raw-loader',
+        exclude: /(node_modules)/,
+      });
     },
     babel: {
       presets: [
