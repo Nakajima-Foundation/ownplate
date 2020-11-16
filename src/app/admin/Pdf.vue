@@ -136,6 +136,39 @@ export default {
           },
         ],
 */
+
+      content.push({
+        pageBreak: 'before',
+        text: 'First page',
+        absolutePosition: {
+          x: 40,
+          y: 0
+        }
+      });
+      content.push({ svg: logosvg,
+                     width: 240,
+                     absolutePosition: {
+                       x: 40,
+                       y: 100
+                     }
+                   });
+      content.push({
+        qr: this.shareUrl(),
+        fit: '50',
+        absolutePosition: {
+          x: 135,
+          y: 120
+        }
+      });
+
+      content.push({
+        text: 'Second page',
+        absolutePosition: {
+          x: 40,
+          y: 20
+        }
+      });
+
       const docDefinition = {
         content,
         images,
