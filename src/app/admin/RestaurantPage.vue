@@ -635,6 +635,53 @@
               </div>
             </div>
           </div>
+          <div class="m-l-24 m-r-24">
+            <!-- Hours -->
+            <div class="m-t-16">
+              <div class="t-subtitle2 c-text-black-medium">{{ $t("shopInfo.temporaryClosure") }}</div>
+              <div
+                class="bg-form r-8 m-t-8 p-l-16 p-r-16 p-t-16 p-b-16"
+              >
+                <b-field>
+                  <b-datepicker
+                    v-model="newTemporaryClosure"
+                    ref="datepicker"
+                    :min-date="new Date()"
+                    :max-date="maxDate"
+                    expanded
+                    placeholder="Select a date">
+                  </b-datepicker>
+                  <b-button
+                    @click="$refs.datepicker.toggle()"
+                    icon-left="calendar-today"
+                    type="is-primary" />
+                  <b-button
+                    @click="addNewTemporaryClosure"
+                    icon-left="plus"
+                    style="margin-left: 2px"
+                    type="is-primary" />
+                </b-field>
+                <div v-for="(day, key) in temporaryClosure"
+                     style="margin-buttom: 2px; display: table;"
+
+                     >
+                  <template v-if="day.getTime() > now.getTime()">
+                    <span style="display: table-cell; vertical-align: middle;">
+                      {{moment(day).format("YYYY/MM/DD")}}
+                      {{$t('week.short.' + days[Number(moment(day).format("e"))||7])}}
+                    </span>
+                    <b-button
+                      @click="deleteTemporaryClosure(key)"
+                      class="b-reset op-button-pill h-36 bg-status-red-bg m-l-8"
+                      >
+                      <i class="material-icons c-status-red s-18 p-l-8 p-r-8">delete</i>
+                    </b-button>
+                  </template>
+                </div>
+              </div>
+
+            </div>
+          </div>
         </div>
         <!-- Right Gap -->
         <div class="column is-narrow w-24"></div>
@@ -752,6 +799,9 @@ export default {
   },
 
   data() {
+    const maxDate = new Date();
+    const now = new Date();
+    maxDate.setMonth(maxDate.getMonth() + 6);
     return {
       reservationTheDayBefore,
       minimumCookTimeChoices,
@@ -815,7 +865,11 @@ export default {
       errorsPhone: [],
       notFound: null,
       submitting: false,
-      files: {}
+      files: {},
+      newTemporaryClosure: null,
+      temporaryClosure: [],
+      maxDate,
+      now,
     };
   },
   async created() {
@@ -992,6 +1046,27 @@ export default {
     }
   },
   methods: {
+    isFuture(day) {
+      return (new Date).getTime() < day.getTime()
+    },
+    isNewTemporaryClosure(day) {
+      const func = (elem) => {
+        return elem.getTime() === day.getTime();
+      }
+      return !this.temporaryClosure.some(func);
+    },
+    deleteTemporaryClosure(key) {
+      this.temporaryClosure = this.temporaryClosure.filter((v, n) => n !== key);
+    },
+    addNewTemporaryClosure() {
+      if (!this.isNull(this.newTemporaryClosure) && this.isNewTemporaryClosure(this.newTemporaryClosure) && this.isFuture(this.newTemporaryClosure)) {
+        this.temporaryClosure.push(this.newTemporaryClosure);
+        this.temporaryClosure.sort((a, b) => {
+          return a.getTime() > b.getTime() ? 1 : -1;
+        });
+      }
+      this.newTemporaryClosure = null;
+    },
     copyPreviousDay(index) {
       const prevIndex = index === "1" ? 7 : index - 1;
       this.shopInfo.businessDay[index] = this.shopInfo.businessDay[prevIndex];
