@@ -1,8 +1,13 @@
 import { midNight } from "~/plugins/dateUtils.js";
-
+import moment from "moment";
 export default {
   computed: {
     // public
+    temporaryClosure() {
+      return (this.shopInfo.temporaryClosure || []).map((day) => {
+        return moment(day.toDate()).format("YYYY-MM-DD");
+      });
+    },
     availableDays() {
       if (!this.shopInfo.businessDay) {
         return []; // it means shopInfo is empty (not yet loaded)
@@ -22,6 +27,10 @@ export default {
       return Array.from(Array(this.daysInAdvance).keys())
         .filter(offset => {
           return this.businessDays[(today + offset) % 7];
+        })
+        .filter(offset => {
+          const date = (moment(midNight(offset)).format("YYYY-MM-DD"));
+          return !this.temporaryClosure.includes(date);
         })
         .map(offset => {
           const date = midNight(offset);

@@ -661,7 +661,7 @@
                     style="margin-left: 2px"
                     type="is-primary" />
                 </b-field>
-                <div v-for="(day, key) in temporaryClosure"
+                <div v-for="(day, key) in (shopInfo.temporaryClosure ||[])"
                      style="margin-buttom: 2px; display: table;"
 
                      >
@@ -855,7 +855,8 @@ export default {
         pickUpMinimumCookTime: 25,
         pickUpDaysInAdvance: 3,
         images: {},
-        publicFlag: false
+        publicFlag: false,
+        temporaryClosure: [],
       },
       region: ownPlateConfig.region,
       maplocation: {},
@@ -867,7 +868,6 @@ export default {
       submitting: false,
       files: {},
       newTemporaryClosure: null,
-      temporaryClosure: [],
       maxDate,
       now,
     };
@@ -896,6 +896,12 @@ export default {
     if (this.defaultTax) {
       this.shopInfo = Object.assign({}, this.shopInfo, this.defaultTax);
     }
+    if (this.shopInfo.temporaryClosure) {
+      this.shopInfo.temporaryClosure = this.shopInfo.temporaryClosure.map((day) => {
+        return day.toDate();
+      });
+    }
+
     console.log(this.shopInfo);
     this.notFound = false;
   },
@@ -906,13 +912,13 @@ export default {
     restProfilePhoto() {
       return (
         (this.shopInfo?.images?.profile?.resizedImages || {})["600"] ||
-        this.shopInfo.restProfilePhoto
+          this.shopInfo.restProfilePhoto
       );
     },
     restCoverPhoto() {
       return (
         (this.shopInfo?.images?.cover?.resizedImages || {})["600"] ||
-        this.shopInfo.restCoverPhoto
+          this.shopInfo.restCoverPhoto
       );
     },
     uid() {
@@ -982,8 +988,8 @@ export default {
       const ex = new RegExp("^(https?)://[^\\s]+$");
       err["url"] =
         this.shopInfo.url && !ex.test(this.shopInfo.url)
-          ? ["validationError.url.invalidUrl"]
-          : [];
+        ? ["validationError.url.invalidUrl"]
+        : [];
 
       err["time"] = {};
       Object.keys(daysOfWeek).forEach(key => {
@@ -993,7 +999,7 @@ export default {
           if (this.shopInfo.businessDay[key]) {
             if (
               this.shopInfo.openTimes[key] &&
-              this.shopInfo.openTimes[key][key2]
+                this.shopInfo.openTimes[key][key2]
             ) {
               const data = this.shopInfo.openTimes[key][key2];
               if (this.isNull(data.start) ^ this.isNull(data.end)) {
@@ -1020,7 +1026,7 @@ export default {
       err["restProfilePhoto"] = [];
       if (
         this.isNull(this.files["profile"]) &&
-        this.isNull(this.shopInfo.restProfilePhoto)
+          this.isNull(this.shopInfo.restProfilePhoto)
       ) {
         err["restProfilePhoto"].push("validationError.restProfilePhoto.empty");
       }
@@ -1053,15 +1059,15 @@ export default {
       const func = (elem) => {
         return elem.getTime() === day.getTime();
       }
-      return !this.temporaryClosure.some(func);
+      return !this.shopInfo.temporaryClosure.some(func);
     },
     deleteTemporaryClosure(key) {
-      this.temporaryClosure = this.temporaryClosure.filter((v, n) => n !== key);
+      this.shopInfo.temporaryClosure = this.shopInfo.temporaryClosure.filter((v, n) => n !== key);
     },
     addNewTemporaryClosure() {
       if (!this.isNull(this.newTemporaryClosure) && this.isNewTemporaryClosure(this.newTemporaryClosure) && this.isFuture(this.newTemporaryClosure)) {
-        this.temporaryClosure.push(this.newTemporaryClosure);
-        this.temporaryClosure.sort((a, b) => {
+        this.shopInfo.temporaryClosure.push(this.newTemporaryClosure);
+        this.shopInfo.temporaryClosure.sort((a, b) => {
           return a.getTime() > b.getTime() ? 1 : -1;
         });
       }
@@ -1171,6 +1177,7 @@ export default {
             return tmp;
           }, {}),
           businessDay: this.shopInfo.businessDay,
+          temporaryClosure: this.shopInfo.temporaryClosure,
           uid: this.shopInfo.uid,
           publicFlag: this.shopInfo.publicFlag,
           inclusiveTax: this.shopInfo.inclusiveTax,
