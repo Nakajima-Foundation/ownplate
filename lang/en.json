@@ -246,6 +246,7 @@
     "pm": "{formatedTime} PM",
     "closed": "Closed",
     "public": "Public",
+    "temporaryClosure": "Temporary Closure",
     "paymentMethod": "Payment Method",
     "onlinePayment": "Online Payment",
     "onsitePayment": "On Site Payment",

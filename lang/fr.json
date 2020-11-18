@@ -245,6 +245,7 @@
     "pm": "{formatedTime} Après-midi",
     "closed": "Fermer",
     "public": "Publique",
+    "temporaryClosure": "Temporairement Fermé",
     "paymentMethod": "Methode de Payment",
     "onlinePayment": "Payment en Ligne",
     "onsitePayment": "Paiement à la Livraison",
