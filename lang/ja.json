@@ -520,7 +520,9 @@
       "leave": "退店記録"
     },
     "report": {
-      "title": "月次報告"
+      "title": "月次報告",
+      "download-csv": "エクセルデータダウンロード",
+      "download-csv-details": "エクセルデータダウンロード (詳細)"
     },
     "error": {
       "email": {

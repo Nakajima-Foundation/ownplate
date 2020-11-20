@@ -520,7 +520,9 @@
       "leave": "Record Leave"
     },
     "report": {
-      "title": "Monthly Report"
+      "title": "Monthly Report",
+      "download-csv": "Download CSV",
+      "download-csv-details": "Download CSV (details)"
     },
     "error": {
       "email": {
