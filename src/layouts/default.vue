@@ -331,13 +331,14 @@ export default {
         user.getIdTokenResult(true).then(result => {
           this.$store.commit("setUser", user);
           this.$store.commit("setCustomClaims", result.claims);
-          analytics.setUserProperties({role: !!user.email ? "admin" : "customer"});
           console.log(!!user.email ? "admin" : "customer");
         })
           .catch(error => {
             console.error("getIdTokenResult", error);
             Sentry.captureException(error);
           });
+        analytics.setUserProperties({role: !!user.email ? "admin" : "customer"});
+        analytics.setUserId(user.uid);
       } else {
         analytics.setUserProperties({role: 'anonymous'});
         console.log("authStateChanged: null");
