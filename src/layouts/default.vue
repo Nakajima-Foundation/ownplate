@@ -328,17 +328,18 @@ export default {
           user.uid,
           user.displayName
         );
-        user
-          .getIdTokenResult(true)
-          .then(result => {
-            this.$store.commit("setUser", user);
-            this.$store.commit("setCustomClaims", result.claims);
-          })
+        user.getIdTokenResult(true).then(result => {
+          this.$store.commit("setUser", user);
+          this.$store.commit("setCustomClaims", result.claims);
+          analytics.setUserProperties({role: !!user.email ? "admin" : "customer"});
+          console.log(!!user.email ? "admin" : "customer");
+        })
           .catch(error => {
             console.error("getIdTokenResult", error);
             Sentry.captureException(error);
           });
       } else {
+        analytics.setUserProperties({role: 'anonymous'});
         console.log("authStateChanged: null");
         this.$store.commit("setUser", null);
       }
