@@ -51,7 +51,7 @@ export const sendRedunded = (orderInfo, orderId, shopInfo, restaurantId) => {
       transaction_id: orderId,
       affiliation: shopInfo.restaurantName,
       currency: 'JPY',
-      // value: orderInfo.total,
+      value: orderInfo.total,
       // items: [],
     };
     analytics.logEvent(firebase.analytics.EventName.REFUND, analyticsData);

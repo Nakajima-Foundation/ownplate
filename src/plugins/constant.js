@@ -289,8 +289,8 @@ export const regionalSettings = {
     CurrencyKey: "JPY",
     StateKey: "shopInfo.prefecture",
     AddressStates: JPPrefecture,
-    Logo: "Omochikaeri-Logo-Horizontal-YellowBlack.svg",
-    Logo2: "Omochikaeri-Logo-Stack-YellowBlack.svg",
+    Logo: "Omochikaeri-Logo-Horizontal-Primary.png",
+    Logo2: "Omochikaeri-Logo-Stack-Primary.png",
     FeatureHeroMobile: {
       ja: "Feature-Hero-Mobile-ja.svg",
       en: "Feature-Hero-Mobile-en.svg"
