@@ -286,7 +286,9 @@ export default {
   async mounted() {
     try {
       this.shopOwner = await this.getShopOwner(this.$store.getters.uidAdmin);
-      this.opt_out = this.shopOwner.opt_out || false;
+      const adminConfig = await db.doc(`/adminConfigs/${this.$store.getters.uidAdmin}`).get();
+      this.adminConfig  = (adminConfig.exists) ? adminConfig.data() : {};
+      this.opt_out = this.adminConfig.opt_out || false;
       this.restaurant_detacher = db
         .collection("restaurants")
         .where("uid", "==", this.uid)
@@ -368,11 +370,10 @@ export default {
   },
   watch: {
     async opt_out() {
-      if (this.shopOwner.opt_out !== this.opt_out) {
-        // TODO: set valid path
-        await db.doc(`/admins/${this.$store.getters.uidAdmin}`).update({
-          opt_out: this.opt_out
-        });
+      if (this.adminConfig.opt_out !== this.opt_out) {
+        const config = {...this.adminConfig};
+        config["opt_out"] = this.opt_out;
+        await db.doc(`/adminConfigs/${this.$store.getters.uidAdmin}`).set(config);
       }
     },
   },
