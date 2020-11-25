@@ -54,6 +54,13 @@ service cloud.firestore {
       }
     }
 
+    match /adminConfigs/{userId} {
+      // Note: we don't want to allow the user to "update"
+      allow create: if request.auth.uid == userId && isUndefined(request.resource.data, 'admin')
+              && isUndefined(request.resource.data, 'operator');
+      allow read: if request.auth.uid == userId;
+      allow update: if request.auth.uid == userId;
+    }
     match /admins/{userId} {
       // Note: we don't want to allow the user to "update"
       allow create: if request.auth.uid == userId && isUndefined(request.resource.data, 'admin')
