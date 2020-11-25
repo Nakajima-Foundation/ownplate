@@ -449,6 +449,14 @@
       "onsitePaymentNote": "突然のキャンセルや悪戯などによる代金の未回収にご注意ください。",
       "enableOnsitePayment": "受け取り払いを許可"
     },
+    "mail": {
+      "magazine": {
+        "title": "メール設定",
+        "body": "おもちかえり.comからメールでお知らせをお送りします。",
+        "optout": "受け取らない"
+      }
+      
+    },
     "viewPage": "ページを確認",
     "incompleteOrders": "{count} 個の未完了の注文",
     "editMenuItems": "メニューの変更： {count}",

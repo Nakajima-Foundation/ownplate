@@ -224,6 +224,24 @@
               >{{$t("admin.notes.notificationSoundBody")}}</div>
             </div>
           </div>
+          <!-- Mail -->
+          <div class="m-t-24">
+            <div class="t-h6 c-text-black-disabled m-b-8">{{ $t("admin.mail.magazine.title") }}</div>
+          
+            <div class="bg-surface r-8 d-low p-t-24 p-b-24">
+              <div class="m-l-24 m-r-24">
+                <div class="m-t-8 t-body1 c-text-black-medium">{{ $t("admin.mail.magazine.body") }}</div>
+              </div>
+              <!-- On-site Payment Checkbox -->
+              <div class="align-center m-t-24">
+                <b-checkbox v-model="opt_out">
+                  {{
+                  $t("admin.mail.magazine.optout")
+                  }}
+                </b-checkbox>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <!-- Right Gap -->
@@ -259,6 +277,7 @@ export default {
       unsetWarning: true,
       lines: {},
       shopOwner: null,
+      opt_out: null,
     };
   },
   created() {
@@ -267,6 +286,7 @@ export default {
   async mounted() {
     try {
       this.shopOwner = await this.getShopOwner(this.$store.getters.uidAdmin);
+      this.opt_out = this.shopOwner.opt_out || false;
       this.restaurant_detacher = db
         .collection("restaurants")
         .where("uid", "==", this.uid)
@@ -345,6 +365,16 @@ export default {
           this.lines[restaurantId] = true;
         });
       });
+  },
+  watch: {
+    async opt_out() {
+      if (this.shopOwner.opt_out !== this.opt_out) {
+        // TODO: set valid path
+        await db.doc(`/admins/${this.$store.getters.uidAdmin}`).update({
+          opt_out: this.opt_out
+        });
+      }
+    },
   },
   methods: {
     destroy_detacher() {
