@@ -34,7 +34,7 @@
       <!-- Logo -->
       <div class="align-center m-t-24">
         <router-link to="/">
-          <img class="w-96" :src="`/${this.logo2}`" />
+          <img class="w-192" :src="`/${this.logo2}`" />
         </router-link>
       </div>
 
