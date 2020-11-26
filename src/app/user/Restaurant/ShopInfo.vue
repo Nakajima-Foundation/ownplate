@@ -127,7 +127,7 @@
         </div>
 
         <!-- Minimum Available Time -->
-        <div class="m-t-8 m-l-16 m-r-16">
+        <div class="m-t-8 m-l-16 m-r-16" v-if="shopInfo.temporaryClosure && shopInfo.temporaryClosure.length > 0">
           <div class="t-subtitle2 c-text-black-medium p-l-8">{{$t("shopInfo.temporaryClosure")}}</div>
           <div class="flex-center m-l-8" v-for="(day, key) in (shopInfo.temporaryClosure ||[])">
             <span class="t-body2">
