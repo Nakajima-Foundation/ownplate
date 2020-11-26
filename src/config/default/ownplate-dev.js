@@ -18,13 +18,14 @@ export const ownPlateConfig = {
   hostName: "staging.ownplate.today",
   stripe: {
     dashboard: "https://dashboard.stripe.com/test/dashboard",
-    search: "https://dashboard.stripe.com/test/search",
+    search: "https://dashboard.stripe.com/test/search"
   },
   line: {
     LOGIN_CHANNEL_ID: "1654216149",
     TRACK_CHANNEL_ID: "1654259709",
-    FRIEND_LINK: "https://lin.ee/30PDYymgm",
+    FRIEND_LINK: "https://lin.ee/30PDYymgm"
   }
 };
 
-export const sentryDsn = 'https://8bdfd641d3b54e4bb93e37d2d412cdae@o391740.ingest.sentry.io/5238306';
+export const sentryDsn =
+  "https://8bdfd641d3b54e4bb93e37d2d412cdae@o391740.ingest.sentry.io/5238306";

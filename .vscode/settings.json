@@ -9,5 +9,6 @@
   "editor.formatOnSave": true,
   "i18n-ally.localesPaths": [
     "lang"
-  ]
+	],
+	"editor.defaultFormatter": "esbenp.prettier-vscode"
 }
