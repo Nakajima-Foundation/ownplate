@@ -246,6 +246,7 @@
     "pm": "{formatedTime} PM",
     "closed": "Closed",
     "public": "Public",
+    "temporaryClosure": "Temporary Closure",
     "paymentMethod": "Payment Method",
     "onlinePayment": "Online Payment",
     "onsitePayment": "On Site Payment",
@@ -452,6 +453,8 @@
     "incompleteOrders": "{count} Incomplete Order | {count} Incomplete Orders",
     "editMenuItems": "Edit Menu: {count}",
     "pleaseAddMenu": "Please Add Menu",
+    "itemPublished": "Published",
+    "itemNotPublished": "Not Published",
     "editAbout": "Edit Restaurant Details",
     "privateMode": "Private mode",
     "pleaseChangePublic": "Please change public",
@@ -519,7 +522,9 @@
       "leave": "Record Leave"
     },
     "report": {
-      "title": "Monthly Report"
+      "title": "Monthly Report",
+      "download-csv": "Download CSV",
+      "download-csv-details": "Download CSV (details)"
     },
     "error": {
       "email": {

@@ -52,7 +52,7 @@ export const sendRedunded = (orderInfo, orderId, shopInfo, restaurantId) => {
       affiliation: shopInfo.restaurantName,
       currency: 'JPY',
       value: orderInfo.total,
-      items: [],
+      // items: [],
     };
     analytics.logEvent(firebase.analytics.EventName.REFUND, analyticsData);
   } catch (e) {

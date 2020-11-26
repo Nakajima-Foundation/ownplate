@@ -1,8 +1,25 @@
 <template>
   <div>
     <!-- Item Card -->
-    <div class="bg-surface r-8 d-low m-t-8">
-      <div class="touchable cols" @click="linkEdit">
+    <div class="bg-surface r-8 d-low m-t-8 touchable" @click="linkEdit">
+      <!-- Published/NotPublished Badge -->
+      <div>
+        <div v-if="menuitem.publicFlag">
+          <div
+            class="bg-status-green-bg c-status-green t-overline r-8 r-b-0 p-l-8 p-t-4 p-b-4"
+          >
+            {{ $t("admin.itemPublished") }}
+          </div>
+        </div>
+        <div v-else>
+          <div
+            class="bg-status-red-bg c-status-red t-overline r-8 r-b-0 p-l-8 p-t-4 p-b-4"
+          >
+            {{ $t("admin.itemNotPublished") }}
+          </div>
+        </div>
+      </div>
+      <div class=" cols">
         <div class="flex-1 p-l-16 p-r-16 p-t-16 p-b-16">
           <div class="t-h6 c-text-black-high">{{ menuitem.itemName }}</div>
           <div class="t-body1 c-text-black-high m-t-8">
