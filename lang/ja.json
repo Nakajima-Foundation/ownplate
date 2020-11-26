@@ -455,12 +455,13 @@
         "body": "おもちかえり.comからメールでお知らせをお送りします。",
         "optout": "受け取らない"
       }
-      
     },
     "viewPage": "ページを確認",
     "incompleteOrders": "{count} 個の未完了の注文",
     "editMenuItems": "メニューの変更： {count}",
     "pleaseAddMenu": "メニューを追加してください",
+    "itemPublished": "公開中",
+    "itemNotPublished": "非公開",
     "editAbout": "店情報の変更",
     "privateMode": "非公開",
     "pleaseChangePublic": "店情報を入力後、公開に変更してください",
