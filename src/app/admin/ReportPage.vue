@@ -152,7 +152,7 @@
             <b-button class="m-t-16 b-reset h-36 r-36 bg-form">
               <span class="p-l-16 p-r-16">
                 <i class="material-icons c-primary s-18 m-r-8">save_alt</i>
-                <span class="c-primary t-button">Download CSV</span>
+                <span class="c-primary t-button">{{$t('admin.report.download-csv')}}</span>
               </span>
             </b-button>
           </download-csv>

@@ -635,6 +635,53 @@
               </div>
             </div>
           </div>
+          <div class="m-l-24 m-r-24">
+            <!-- Hours -->
+            <div class="m-t-16">
+              <div class="t-subtitle2 c-text-black-medium">{{ $t("shopInfo.temporaryClosure") }}</div>
+              <div
+                class="bg-form r-8 m-t-8 p-l-16 p-r-16 p-t-16 p-b-16"
+              >
+                <b-field>
+                  <b-datepicker
+                    v-model="newTemporaryClosure"
+                    ref="datepicker"
+                    :min-date="new Date()"
+                    :max-date="maxDate"
+                    expanded
+                    placeholder="Select a date">
+                  </b-datepicker>
+                  <b-button
+                    @click="$refs.datepicker.toggle()"
+                    icon-left="calendar-today"
+                    type="is-primary" />
+                  <b-button
+                    @click="addNewTemporaryClosure"
+                    icon-left="plus"
+                    style="margin-left: 2px"
+                    type="is-primary" />
+                </b-field>
+                <div v-for="(day, key) in (shopInfo.temporaryClosure ||[])"
+                     style="margin-buttom: 2px; display: table;"
+
+                     >
+                  <template v-if="day.getTime() > now.getTime()">
+                    <span style="display: table-cell; vertical-align: middle;">
+                      {{moment(day).format("YYYY/MM/DD")}}
+                      {{$t('week.short.' + days[Number(moment(day).format("e"))||7])}}
+                    </span>
+                    <b-button
+                      @click="deleteTemporaryClosure(key)"
+                      class="b-reset op-button-pill h-36 bg-status-red-bg m-l-8"
+                      >
+                      <i class="material-icons c-status-red s-18 p-l-8 p-r-8">delete</i>
+                    </b-button>
+                  </template>
+                </div>
+              </div>
+
+            </div>
+          </div>
         </div>
         <!-- Right Gap -->
         <div class="column is-narrow w-24"></div>
@@ -752,6 +799,9 @@ export default {
   },
 
   data() {
+    const maxDate = new Date();
+    const now = new Date();
+    maxDate.setMonth(maxDate.getMonth() + 6);
     return {
       reservationTheDayBefore,
       minimumCookTimeChoices,
@@ -805,7 +855,8 @@ export default {
         pickUpMinimumCookTime: 25,
         pickUpDaysInAdvance: 3,
         images: {},
-        publicFlag: false
+        publicFlag: false,
+        temporaryClosure: [],
       },
       region: ownPlateConfig.region,
       maplocation: {},
@@ -815,7 +866,10 @@ export default {
       errorsPhone: [],
       notFound: null,
       submitting: false,
-      files: {}
+      files: {},
+      newTemporaryClosure: null,
+      maxDate,
+      now,
     };
   },
   async created() {
@@ -842,6 +896,12 @@ export default {
     if (this.defaultTax) {
       this.shopInfo = Object.assign({}, this.shopInfo, this.defaultTax);
     }
+    if (this.shopInfo.temporaryClosure) {
+      this.shopInfo.temporaryClosure = this.shopInfo.temporaryClosure.map((day) => {
+        return day.toDate();
+      });
+    }
+
     console.log(this.shopInfo);
     this.notFound = false;
   },
@@ -852,13 +912,13 @@ export default {
     restProfilePhoto() {
       return (
         (this.shopInfo?.images?.profile?.resizedImages || {})["600"] ||
-        this.shopInfo.restProfilePhoto
+          this.shopInfo.restProfilePhoto
       );
     },
     restCoverPhoto() {
       return (
         (this.shopInfo?.images?.cover?.resizedImages || {})["600"] ||
-        this.shopInfo.restCoverPhoto
+          this.shopInfo.restCoverPhoto
       );
     },
     uid() {
@@ -928,8 +988,8 @@ export default {
       const ex = new RegExp("^(https?)://[^\\s]+$");
       err["url"] =
         this.shopInfo.url && !ex.test(this.shopInfo.url)
-          ? ["validationError.url.invalidUrl"]
-          : [];
+        ? ["validationError.url.invalidUrl"]
+        : [];
 
       err["time"] = {};
       Object.keys(daysOfWeek).forEach(key => {
@@ -939,7 +999,7 @@ export default {
           if (this.shopInfo.businessDay[key]) {
             if (
               this.shopInfo.openTimes[key] &&
-              this.shopInfo.openTimes[key][key2]
+                this.shopInfo.openTimes[key][key2]
             ) {
               const data = this.shopInfo.openTimes[key][key2];
               if (this.isNull(data.start) ^ this.isNull(data.end)) {
@@ -966,7 +1026,7 @@ export default {
       err["restProfilePhoto"] = [];
       if (
         this.isNull(this.files["profile"]) &&
-        this.isNull(this.shopInfo.restProfilePhoto)
+          this.isNull(this.shopInfo.restProfilePhoto)
       ) {
         err["restProfilePhoto"].push("validationError.restProfilePhoto.empty");
       }
@@ -992,6 +1052,27 @@ export default {
     }
   },
   methods: {
+    isFuture(day) {
+      return (new Date).getTime() < day.getTime()
+    },
+    isNewTemporaryClosure(day) {
+      const func = (elem) => {
+        return elem.getTime() === day.getTime();
+      }
+      return !this.shopInfo.temporaryClosure.some(func);
+    },
+    deleteTemporaryClosure(key) {
+      this.shopInfo.temporaryClosure = this.shopInfo.temporaryClosure.filter((v, n) => n !== key);
+    },
+    addNewTemporaryClosure() {
+      if (!this.isNull(this.newTemporaryClosure) && this.isNewTemporaryClosure(this.newTemporaryClosure) && this.isFuture(this.newTemporaryClosure)) {
+        this.shopInfo.temporaryClosure.push(this.newTemporaryClosure);
+        this.shopInfo.temporaryClosure.sort((a, b) => {
+          return a.getTime() > b.getTime() ? 1 : -1;
+        });
+      }
+      this.newTemporaryClosure = null;
+    },
     copyPreviousDay(index) {
       const prevIndex = index === "1" ? 7 : index - 1;
       this.shopInfo.businessDay[index] = this.shopInfo.businessDay[prevIndex];
@@ -1096,6 +1177,7 @@ export default {
             return tmp;
           }, {}),
           businessDay: this.shopInfo.businessDay,
+          temporaryClosure: this.shopInfo.temporaryClosure,
           uid: this.shopInfo.uid,
           publicFlag: this.shopInfo.publicFlag,
           inclusiveTax: this.shopInfo.inclusiveTax,

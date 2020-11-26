@@ -34,7 +34,7 @@
       <!-- Logo -->
       <div class="align-center m-t-24">
         <router-link to="/">
-          <img class="w-96" :src="`/${this.logo2}`" />
+          <img class="w-192" :src="`/${this.logo2}`" />
         </router-link>
       </div>
 
@@ -328,17 +328,19 @@ export default {
           user.uid,
           user.displayName
         );
-        user
-          .getIdTokenResult(true)
-          .then(result => {
-            this.$store.commit("setUser", user);
-            this.$store.commit("setCustomClaims", result.claims);
-          })
+        user.getIdTokenResult(true).then(result => {
+          this.$store.commit("setUser", user);
+          this.$store.commit("setCustomClaims", result.claims);
+          console.log(!!user.email ? "admin" : "customer");
+        })
           .catch(error => {
             console.error("getIdTokenResult", error);
             Sentry.captureException(error);
           });
+        analytics.setUserProperties({role: !!user.email ? "admin" : "customer"});
+        analytics.setUserId(user.uid);
       } else {
+        analytics.setUserProperties({role: 'anonymous'});
         console.log("authStateChanged: null");
         this.$store.commit("setUser", null);
       }
