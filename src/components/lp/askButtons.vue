@@ -1,7 +1,18 @@
 <template>
+<div class="columns is-gapless">
   <div>
-    お問い合わせ
+    <b-button class="b-reset h-36 r-36 bg-form" tag="nuxt-link" to="">
+      <span class="p-l-16 p-r-16">
+        <span class="c-primary t-button">お申し込み </span>
+      </span>
+    </b-button>
+    <b-button class="b-reset h-36 r-36 bg-form" tag="nuxt-link" to="">
+      <span class="p-l-16 p-r-16">
+        <span class="c-primary t-button">お問い合わせ </span>
+      </span>
+    </b-button>
   </div>
+</div>
 </template>
 <script>
 export default {
