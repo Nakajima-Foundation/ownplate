@@ -1,6 +1,7 @@
 <template>
   <div>
-    mediaLink
+    日経
+    NHK
   </div>
 </template>
 <script>

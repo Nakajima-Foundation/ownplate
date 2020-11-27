@@ -1,6 +1,6 @@
 <template>
   <div>
-    operator
+    わたしたちが 運営しています！
   </div>
 </template>
 <script>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    communityIcons
+    fb, youtube
   </div>
 </template>
 <script>

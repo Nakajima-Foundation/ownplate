@@ -1,6 +1,6 @@
 <template>
   <div>
-    askButtons
+    お問い合わせ
   </div>
 </template>
 <script>

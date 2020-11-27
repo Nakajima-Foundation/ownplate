@@ -1,6 +1,6 @@
 <template>
   <div>
-    moreButton
+    もっと詳しく
   </div>
 </template>
 <script>
