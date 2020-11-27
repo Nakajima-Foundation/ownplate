@@ -1,57 +1,5 @@
 <template>
-<div>
-  <!-- For Super Admin -->
-  <div v-if="$store.getters.isSuperAdmin" class="columns is-gapless">
-    <!-- Left Gap -->
-    <div class="column is-narrow w-24"></div>
-    <!-- Center Column -->
-    <div class="column">
-      <div class="m-l-24 m-r-24 m-t-24">
-        <div class="bg-form r-8 p-l-24 p-r-24 p-t-24 p-b-24">
-          <!-- Go to Super Admin Page -->
-          <div class="align-center">
-            <router-link to="/s">
-              <div class="op-button-small primary" style="min-width: 256px;">
-                <span class="c-onprimary">Super Admin Page</span>
-              </div>
-            </router-link>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- Right Gap -->
-    <div class="column is-narrow w-24"></div>
-  </div>
-  
-  <!-- For Operator -->
-  <div v-if="$store.getters.isOperator" class="columns is-gapless">
-    <!-- Left Gap -->
-    <div class="column is-narrow w-24"></div>
-    <!-- Center Column -->
-    <div class="column">
-      <div class="m-l-24 m-r-24 m-t-24">
-        <div class="bg-form r-8 p-l-24 p-r-24 p-t-24 p-b-24">
-          <!-- Go to Super Admin Page -->
-          <div class="align-center">
-            <router-link to="/o">
-              <div class="op-button-small primary" style="min-width: 256px;">
-                <span class="c-onprimary">Operator Page</span>
-              </div>
-            </router-link>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- Right Gap -->
-    <div class="column is-narrow w-24"></div>
-  </div>
-  
-  
-  <template v-if="isJapan">
-    <lp/>
-  </template>
-  <template v-else >
-    <!-- For Owner and User -->
+  <div>
     <div class="columns is-gapless">
       <!-- Left Gap -->
       <div class="column is-narrow w-24"></div>
@@ -63,7 +11,7 @@
             <div class="align-center m-b-8">
               <i class="material-icons c-text-black-disabled s-64">store</i>
             </div>
-            
+
             <!-- Go to Owner Page -->
             <div class="align-center">
               <router-link to="/admin/restaurants">
@@ -72,11 +20,43 @@
                 </div>
               </router-link>
             </div>
-            
+
+            <!-- Go to Owner Manual -->
+            <div class="align-center m-t-16" v-if="isJapan">
+              <a href="https://gluepass.jp/g/ownplatejp/pg/Zy8VserQdTxFVKLaFcOK" target="_blank">
+                <div class="op-button-text">
+                  <i class="material-icons">help_outline</i>
+                  <span>{{ $t("menu.adminManual") }}</span>
+                </div>
+              </a>
+            </div>
+
+            <!-- Go to Owner Support -->
+            <div class="align-center" v-if="isJapan">
+              <a
+                href="https://docs.google.com/forms/d/e/1FAIpQLSfGR4kk65ynfkCRGJsvJz01HZf7AU1nGLL9Rn9i4G9-qiW6MQ/viewform"
+                target="_blank"
+              >
+                <div class="op-button-text">
+                  <i class="material-icons">mail_outline</i>
+                  <span>{{ $t("menu.adminSupport") }}</span>
+                </div>
+              </a>
+            </div>
+
+            <!-- Go to Facebook User Group -->
+            <div class="align-center" v-if="isJapan">
+              <a href="https://www.facebook.com/groups/278028420106364/" target="_blank">
+                <div class="op-button-text">
+                  <i class="fab fa-facebook c-primary m-r-8" style="font-size:18px" />
+                  <span>{{ $t("menu.adminUserGroup") }}</span>
+                </div>
+              </a>
+            </div>
           </div>
         </div>
       </div>
-      
+
       <!-- Right Column -->
       <div class="column">
         <div class="m-l-24 m-r-24">
@@ -85,7 +65,7 @@
             <div class="align-center m-b-8">
               <i class="material-icons c-text-black-disabled s-64">tag_faces</i>
             </div>
-            
+
             <!-- Go to User Page -->
             <div class="align-center" v-if="!hideUsersLink">
               <router-link to="/r">
@@ -94,7 +74,7 @@
                 </div>
               </router-link>
             </div>
-            
+
             <!-- Go to User Manual -->
             <div class="align-center m-t-16">
               <a href="https://gluepass.jp/g/ownplatejp/pg/zzDScN7kc1WgNQaA9J7v" target="_blank">
@@ -104,14 +84,26 @@
                 </div>
               </a>
             </div>
-            
+
+            <!-- Go to User Support -->
+            <div class="align-center" v-if="isJapan">
+              <a
+                href="https://docs.google.com/forms/d/e/1FAIpQLSfGR4kk65ynfkCRGJsvJz01HZf7AU1nGLL9Rn9i4G9-qiW6MQ/viewform"
+                target="_blank"
+              >
+                <div class="op-button-text">
+                  <i class="material-icons">mail_outline</i>
+                  <span>{{ $t("menu.userSupport") }}</span>
+                </div>
+              </a>
+            </div>
           </div>
         </div>
       </div>
       <!-- Right Gap -->
       <div class="column is-narrow w-24"></div>
     </div>
-    
+
     <!-- Home Header Area -->
     <div class="columns is-gapless">
       <!-- Left Gap -->
@@ -129,12 +121,12 @@
                   style="height: 416px;"
                   class="cover is-hidden-mobile"
                   :src="`/${this.featureHeroTablet}`"
-                  />
+                />
                 <img
                   style="height: 752px;"
                   class="cover is-hidden-tablet"
                   :src="`/${this.featureHeroMobile}`"
-                  />
+                />
               </div>
               <div class="h-8 bg-ownplate-yellow is-invisible-tablet"></div>
             </div>
@@ -145,7 +137,7 @@
       <!-- Right Gap -->
       <div class="column is-narrow w-24"></div>
     </div>
-    
+
     <!-- Home Body Area -->
     <div class="columns is-gapless">
       <!-- Left Gap -->
@@ -188,9 +180,9 @@
                 <div class="t-body1 c-text-black-high m-t-24">Sincerely,</div>
                 <div
                   class="t-body1 c-text-black-high m-t-24"
-                  >Satoshi Nakajima, chairman of Singularity Society</div>
+                >Satoshi Nakajima, chairman of Singularity Society</div>
               </div>
-              
+
               <!-- Japanese -->
               <div v-else>
                 <div class="t-h6 c-text-black-disabled m-t-48">このサービスについて</div>
@@ -222,24 +214,8 @@
       <!-- Right Gap -->
       <div class="column is-narrow w-24"></div>
     </div>
-  </template>
   </div>
 </template>
-
 <script>
-import { releaseConfig } from "~/plugins/config.js";
-import lp from "~/app/user/lp";
-
 export default {
-  name: "HomePage",
-
-  components: {
-    lp
-  },
-  computed: {
-    hideUsersLink() {
-      return releaseConfig.hideUsersLink;
-    },
-  }
-};
-</script>
+}
