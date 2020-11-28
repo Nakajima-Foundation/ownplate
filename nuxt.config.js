@@ -61,9 +61,6 @@ export default {
    ** Nuxt.js dev-modules
    */
   buildModules: [],
-  build: {
-    quiet: false
-  },
   /*
    ** Nuxt.js modules
    */
@@ -94,6 +91,7 @@ export default {
    ** Build configuration
    */
   build: {
+    quiet: false,
     /*
      ** You can extend webpack config here
      */
