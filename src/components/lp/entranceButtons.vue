@@ -13,7 +13,7 @@
             <div class="align-center">
               <router-link to="/admin/restaurants">
                 <div class="op-button-medium primary" style="min-width: 256px;">
-                  <span class="c-onprimary">{{ $t("menu.admins") }}</span>
+                  <span class="c-onprimary">飲食店様のご利用申し込み</span>
                 </div>
               </router-link>
             </div>
@@ -22,7 +22,7 @@
         </div>
       </div>
 
-      <!-- Right Column -->
+      <!-- Center Column -->
       <div class="column">
         <div class="m-l-24 m-r-24">
           <!-- For User -->
@@ -31,7 +31,7 @@
             <div class="align-center" v-if="!hideUsersLink">
               <router-link to="/r">
                 <div class="op-button-medium primary" style="min-width: 256px;">
-                  <span class="c-onprimary">{{ $t("menu.users") }}</span>
+                  <span class="c-onprimary">お客さま入り口</span>
                 </div>
               </router-link>
             </div>
@@ -42,13 +42,13 @@
       <!-- Right Column -->
       <div class="column">
         <div class="m-l-24 m-r-24">
-          <!-- For User -->
+          <!-- For Inquiries -->
           <div class="m-t-24">
-            <!-- Go to User Page -->
+            <!-- Go to Inquiries Page -->
             <div class="align-center" v-if="!hideUsersLink">
               <router-link to="/r">
-                <div class="op-button-medium primary" style="min-width: 256px;">
-                  <span class="c-onprimary">{{ $t("menu.users") }}</span>
+                <div class="op-button-medium bg-button-inquiries" style="min-width: 256px;">
+                  <span class="c-onprimary">お問い合わせ</span>
                 </div>
               </router-link>
             </div>
