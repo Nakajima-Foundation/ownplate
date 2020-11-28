@@ -8,10 +8,10 @@
     <threeSteps />
     <askButtons />
     <communityIcons />
-    <askButtons />
     <mediaLink />
     <operators />
     <aboutService />
+    <askButtons />
     <news />
 
     <!-- Home Body Area -->
