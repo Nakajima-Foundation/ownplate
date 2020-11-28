@@ -29,3 +29,7 @@ workflows:
             filters:
               branches:
                 only: master
+        - build-and-test:
+            filters:
+              branches:
+                only: updateBabel
