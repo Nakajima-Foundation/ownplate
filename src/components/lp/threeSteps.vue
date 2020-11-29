@@ -3,7 +3,9 @@
   <div class="column is-narrow w-24"></div>
   <!-- Center Column -->
   <div class="column">
-    <h2>HOW TO START？　簡単3ステップ！</h2>
+    <div class="align-center">
+      <h2>HOW TO START？　簡単3ステップ！</h2>
+    </div>
   </div>
   <div class="column is-narrow w-24"></div>
 </div>

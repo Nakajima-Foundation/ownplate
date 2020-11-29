@@ -2,7 +2,9 @@
 <div class="columns is-gapless">
   <div class="column is-narrow w-24"></div>
   <div class="column">
-    <h2>これらのメディアで紹介されました</h2>
+    <div class="align-center">
+      <h2>これらのメディアで紹介されました</h2>
+    </div>
     <ul>
       <li>NHK WORLD https://www3.nhk.or.jp/nhkworld/en/tv/directtalk/20200807/2058664/</li>
       <li>日経新聞 https://www.nikkei.com/article/DGXMZO60735350U0A620C2916M00/</li>
