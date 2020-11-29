@@ -27,7 +27,7 @@
 
     </div>
     <!-- Right Gap -->
-    <div class="column is-narrow w-24"></div>
+    <div class="column is-narrow w-24" style="clear: both;"></div>
   </div>
 </div>
 </template>
