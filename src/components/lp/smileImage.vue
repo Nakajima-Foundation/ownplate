@@ -17,9 +17,7 @@
     <div class="column is-narrow w-24"></div>
     <!-- Center Column -->
     <div class="column">
-      <img src="/OwnPlate-Favicon-Default.png" />
-    </div>
-    <div class="column">
+      <img src="/OwnPlate-Favicon-Default.png" style="float: left;" />
 
       「無料なのに売上集計やリピーター有無も確認できる！
 			お客さまにも注文しやすくなったとよろこばれています。
