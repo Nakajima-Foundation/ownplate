@@ -606,7 +606,7 @@
                   <!-- Copy Previous Day -->
                   <div class="op-button-text" @click="copyPreviousDay(index)">
                     <i class="material-icons c-primary s-18">content_copy</i>
-                    <span>{{ $t("editRestaurant.copyPreviousDay") }}</span>
+                    <span>{{ $t(index === "1" ? "editRestaurant.copySunDay" : "editRestaurant.copyPreviousDay") }}</span>
                   </div>
                 </div>
                 <div class="m-t-8">
