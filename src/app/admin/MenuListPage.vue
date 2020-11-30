@@ -280,7 +280,6 @@ export default {
   },
   async created() {
     this.checkAdminPermission();
-    return
     const restaurantRef = db.doc(`restaurants/${this.restaurantId()}`);
     const restaurant_detacher = restaurantRef.onSnapshot(results => {
       if (results.exists && results.data().uid === this.uid) {
