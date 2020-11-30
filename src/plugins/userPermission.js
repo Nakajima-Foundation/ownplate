@@ -16,7 +16,11 @@ export default ({app}) => {
       checkAdminPermission() {
         if (!(this.$store.getters.uidAdmin)) {
           const redirectUrl = encodeURIComponent(this.$route.path);
-          this.$router.replace('/admin/user/signin?to=' + redirectUrl);
+          if (redirectUrl) {
+            this.$router.replace('/admin/user/signin?to=' + redirectUrl);
+          } else {
+            this.$router.replace('/admin/user/signin');
+          }
           return false;
         }
         return true;
