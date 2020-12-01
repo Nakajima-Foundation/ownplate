@@ -89,6 +89,7 @@
 <script>
 import { auth } from "~/plugins/firebase.js";
 
+
 export default {
   name: "Signin",
   data() {
@@ -98,11 +99,16 @@ export default {
       errors: {}
     };
   },
+  created() {
+    if (this.isAdmin) {
+      this.redirectToAdminPage();
+    }
+  },
   watch: {
     user(newValue) {
       console.log("user changed", newValue);
       if (newValue) {
-        this.$router.push("/admin/restaurants");
+        this.redirectToAdminPage();
       }
     }
   },

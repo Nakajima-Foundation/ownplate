@@ -153,6 +153,7 @@
     "businessHourDescription": "Vérifiez le jour ouvrable de la semaine et définissez les heures d'ouverture. Si vous devez fractionner vos heures d'ouverture, comme une pause, veuillez saisir cette dernière heure dans le formulaire Autres heures.",
     "businessHourOption": "Autres heures. (facultatif)",
     "copyPreviousDay": "Copier le jour précédent",
+    "copySunDay": "Copier le jour précédent",
     "draftDescription": "Enregistrer comme brouillon.",
     "publishDescription": "Enregistrez et publiez votre restaurant.",
     "draftWarning": "Vous pouvez publier ceci en corrigeant le cadre rouge.",

@@ -267,15 +267,28 @@ export default {
       shopOwner: null,
     };
   },
-
+  // if user is not signined, render login
+  // if user is not owner, render 404
+  // if restaurant don't have order, render 404.
+  
   async created() {
+    if (!this.checkAdminPermission()) {
+      return ;
+    }
+
     const restaurant_detacher = db
       .doc(`restaurants/${this.restaurantId()}`)
       .onSnapshot(restaurant => {
         if (restaurant.exists) {
           const restaurant_data = restaurant.data();
-          this.shopInfo = restaurant_data;
+          if (restaurant_data.uid === this.user.uid) {
+            this.shopInfo = restaurant_data;
+            return;
+          }
         }
+        this.notFound = true;
+      }, error => {
+          this.notFound = true;
       });
     const menu_detacher = db
       .collection(`restaurants/${this.restaurantId()}/menus`)
@@ -293,6 +306,8 @@ export default {
             const order_data = order.data();
             this.orderInfo = order_data;
             console.log(order_data);
+          } else {
+            this.notFound = true;
           }
         },
         error: error => {
