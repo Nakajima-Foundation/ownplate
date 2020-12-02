@@ -1,5 +1,6 @@
 <template>
-  <div>
+<div>
+  <header-image />
     <entrance-buttons />
     <ownplate-service-image />
     <smileImage />
@@ -18,6 +19,7 @@
   </div>
 </template>
 <script>
+import headerImage from "~/components/lp/headerImage";
 import entranceButtons from "~/components/lp/entranceButtons";
 import ownplateServiceImage from "~/components/lp/ownplateServiceImage";
 import smileImage from "~/components/lp/smileImage";
@@ -33,6 +35,7 @@ import news from "~/components/lp/news";
 
 export default {
   components: {
+    headerImage,
     entranceButtons,
     ownplateServiceImage,
     smileImage,
