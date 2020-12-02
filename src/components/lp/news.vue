@@ -5,18 +5,27 @@
     <div class="align-center">
       <h2>サービスからのお知らせ</h2>
     </div>
-    <li>2020年10月1日 機能を追加しました。</li>
-    <li>2020年10月1日 機能を追加しました。</li>
-    <li>2020年10月1日 機能を追加しました。</li>
-    <li>2020年10月1日 機能を追加しました。</li>
-
-    <li>2020年10月1日 機能を追加しました。</li>
-    <li>2020年10月1日 機能を追加しました。</li>
+          <div class="columns is-gapless is-multiline">
+            <!-- v-for="article in articles" -->
+            <li v-for="news in newsList.slice(0,5)" >
+              <nuxt-link :to="'/admin/news/' + news.date">
+                {{news.date.replace(/\-/,'年').replace(/\-/,'月')}}日 {{news.title}}
+              </nuxt-link>
+            </li>
+          </div>
+          <nuxt-link to="/admin/news">もっとみる</nuxt-link>
   </div>
   <div class="column is-narrow w-24"></div>
 </div>
 </template>
 <script>
+import newsList from "../../app/admin/News/data";
+
 export default {
+  data() {
+    return {
+      newsList: newsList
+    };
+  }
 }
 </script>
