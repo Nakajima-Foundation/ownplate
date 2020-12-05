@@ -1,7 +1,7 @@
 <template>
   <div>
-    <entrance-buttons />
     <ownplate-service-image />
+    <entrance-buttons />
     <smileImage />
     <userVoices />
     <moreButton />
@@ -33,8 +33,8 @@ import news from "~/components/lp/news";
 
 export default {
   components: {
-    entranceButtons,
     ownplateServiceImage,
+    entranceButtons,
     smileImage,
     userVoices,
     moreButton,
@@ -44,9 +44,9 @@ export default {
     mediaLink,
     operators,
     aboutService,
-    news,
+    news
   }
-}
+};
 
 /*
             <!-- Go to Owner Manual -->
