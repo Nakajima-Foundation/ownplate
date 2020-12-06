@@ -22,7 +22,7 @@
 
                   <!-- # Need to show 1-1 / 1-2 randomly -->
                   <img
-                    src="/LP-Cover-Mobile-1-1.jpg"
+                    :src="coverMobile"
                     class="cover is-hidden-tablet"
                   />
                 </div>
@@ -67,5 +67,15 @@
   </div>
 </template>
 <script>
-export default {};
+export default {
+
+  computed: {
+    coverMobile() {
+      const seed  = Math.floor(Math.random() * 2) % 2 + 1;
+      console.log(seed);
+      return `/LP-Cover-Mobile-1-${seed}.jpg`
+    }
+  },
+
+};
 </script>
