@@ -8,7 +8,8 @@
 <script>
 import { db } from "~/plugins/firebase.js";
 import pdfMake from "pdfmake/build/pdfmake.js";
-import pdfFonts from "pdfmake/build/vfs_fonts.js";
+// import pdfFonts from "pdfmake/build/vfs_fonts.js";
+import pdfFonts from "../../vfs_fonts.js";
 
 import logosvg from "!raw-loader!../../static/pr/50mm-QR-Blank.svg";
 
@@ -35,14 +36,25 @@ export default {
   async created() {
     const restaurantRef = db.doc(`restaurants/${this.restaurantId()}`);
     this.restaurantInfo = (await restaurantRef.get()).data();
-    const menus = (await restaurantRef.collection("menus").where("deletedFlag", "==", false).get()).docs.map((a) => a.data());
-    console.log(this.restaurantInfo);
-    console.log(this.menus);
-
+    const menus = (await restaurantRef.collection("menus").where("deletedFlag", "==", false).get()).docs.map((a) => a.data()).slice(0, 6);
     this.menus = _.chunk(menus, 2);
-    console.log(this.menus);
   },
   methods: {
+    convChar(val) {
+      const regex = /[Ａ-Ｚａ-ｚ０-９！＂＃＄％＆＇（）＊＋，－．／：；＜＝＞？＠［＼］＾＿｀｛｜｝]/g;
+
+      const value = val
+            .replace(regex, function (s) {
+              return String.fromCharCode(s.charCodeAt(0) - 0xfee0);
+            })
+            .replace(/[‐－―]/g, "-") // ハイフンなど
+            .replace(/[～〜]/g, "~") // チルダ
+            .replace(/−/g, "-")
+            .replace(/　/g, " "); // スペース
+      
+      return value;
+    },
+
     download() {
       pdfMake.vfs = pdfFonts.vfs;
 
@@ -55,11 +67,18 @@ export default {
         }
       };
 
+      const images = {
+        coverImage: this.restaurantInfo.restCoverPhoto,
+        logo: location.protocol + "//" + location.host + '/OwnPlate-Logo-Stack-YellowBlack.png',
+        menu: location.protocol + "//" + location.host + '/test.jpg', // TODO: Set default menu image
+      };
+      // TODO: fix Japanese kansuuji encoding issue
+      const menuSize = 130;
       const content = [
         { image: "coverImage",
           width: A4width - A4MarginHorizontal,
-          height: 150,
-          cover: { width:  A4width - A4MarginHorizontal, height: 150 },
+          height: menuSize,
+          cover: { width:  A4width - A4MarginHorizontal, height: menuSize },
         },
         { text: this.restaurantInfo.restaurantName, style: 'title',
           absolutePosition: {
@@ -67,22 +86,16 @@ export default {
           },
         },
       ];
-      const images = {
-        coverImage: this.restaurantInfo.restCoverPhoto,
-        logo: location.protocol + "//" + location.host + '/OwnPlate-Logo-Stack-YellowBlack.png',
-        menu: location.protocol + "//" + location.host + '/test.jpg', // TODO: Set default menu image
-      };
-      // TODO: fix Japanese kansuuji encoding issue
 
       const menu2colum = (menu, image, key1, key2) => {
         return [
           {
             width: '30%',
             stack: [
-              { text: "title:" + (menu.itemName || "untitled") },
+              { text: this.convChar("title:" + (menu.itemName || "untitled")) },
               { image: image ? "menu_" + key1 + "_" + key2 : 'menu',
-                width: 150, height: 150,
-                cover: { width:150, height:150 }
+                width: menuSize, height: menuSize,
+                cover: { width:menuSize, height:menuSize }
               },
 
             ]
@@ -90,16 +103,16 @@ export default {
           {
             width: '20%',
             stack: [
-              { text:  menu.itemDescription },
+              { text:  this.convChar(menu.itemDescription) },
               { text:  menu.price + "円", bold: true },
             ]
           }
         ];
       };
-      this.menus.forEach((menu, key) => {
+      this.menus.forEach((menuPair, key) => {
         const columns = [];
-        menu.forEach((m, key2) => {
-          const image1 = (m?.images?.item?.resizedImages||{})["600"] || menu[key2].itemPhoto;
+        menuPair.forEach((m, key2) => {
+          const image1 = (m?.images?.item?.resizedImages||{})["600"] || menuPair[key2].itemPhoto;
 
           if (image1) {
             images["menu_" + key + "_" + key2] = image1;
@@ -118,9 +131,32 @@ export default {
         );
       });
 
-      content.push({ svg: logosvg, width: 150 });
-      content.push({ text: 'こんにちは。これはPDFのサンプルです。日本語が入力可能かどうか確認しています。これが表示できればとても助かります。', margin: [0, 10] });
-      content.push({ qr: 'https://nodejs.keicode.com/' , fit: '50' });
+      
+      content.push({
+        columns: [ 
+          {
+            width: '35%',
+            svg: logosvg,
+            width: menuSize,
+            margin: [10, 10]
+          },
+          {
+            width: '65%',
+            stack: [
+              {
+                text: this.convChar('ネットでオーダーできるテイクアウトサービスをはじめました！こちらのQRコードからご注文できます！'), margin: [20, 0],
+              },
+              {
+                text: this.convChar([this.restaurantInfo.state, this.restaurantInfo.city, this.restaurantInfo.streetAddress].join("")), margin: [20, 0]
+              },
+              {
+                text: [this.restaurantInfo.phoneNumber].join(""), margin: [20, 0]
+              }
+            ]
+          }
+        ]
+      });
+      content.push();
 
       const docDefinition = {
         pageSize: "A4",
@@ -165,8 +201,8 @@ export default {
       const content = [
         { image: "coverImage",
           width: A4width - A4MarginHorizontal,
-          height: 150,
-          cover: { width:  A4width - A4MarginHorizontal, height: 150 },
+          height: menuSize,
+          cover: { width:  A4width - A4MarginHorizontal, height: menuSize },
         },
         {
           text: this.restaurantInfo.restaurantName, style: 'title',
