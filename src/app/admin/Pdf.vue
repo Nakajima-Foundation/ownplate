@@ -2,18 +2,27 @@
   <div>
     <button @click="download">Download menu example</button><br/>
     <button @click="download2">Download logo</button><br/>
-
   </div>
 </template>
 
 <script>
 import { db } from "~/plugins/firebase.js";
-import pdfMake from "pdfmake/build/pdfmake";
-import pdfFonts from "pdfmake/build/vfs_fonts";
+import pdfMake from "pdfmake/build/pdfmake.js";
+import pdfFonts from "pdfmake/build/vfs_fonts.js";
 
 import logosvg from "!raw-loader!../../static/pr/50mm-QR-Blank.svg";
 
 import _ from 'lodash';
+
+const fontHost = location.protocol + "//" + location.host + "/fonts/";
+
+// https://github.com/bpampuch/pdfmake/blob/7b5675d5b9d5d7b815bd721e00504b16560a6382/src/standardPageSizes.js
+const A4width = 595.28;
+const A4height = 841.89;
+
+// https://github.com/bpampuch/pdfmake/issues/359
+const A4MarginVertical = 120; // 60 * 2
+const A4MarginHorizontal = 80; // 40 * 2
 
 export default {
   name: "pdf",
@@ -35,22 +44,31 @@ export default {
   },
   methods: {
     download() {
-      pdfMake.vfs = pdfFonts.pdfMake.vfs;
+      pdfMake.vfs = pdfFonts.vfs;
 
-      const host = location.protocol + "//" + location.host + "/fonts/";
       pdfMake.fonts = {
         GenShin: {
-          normal: host + 'GenShinGothic-Normal-Sub.ttf',
-          bold: host + 'GenShinGothic-Normal-Sub.ttf',
-          italics: host + 'GenShinGothic-Normal-Sub.ttf',
-          bolditalics: host + 'GenShinGothic-Normal-Sub.ttf'
+          normal: fontHost + 'GenShinGothic-Normal-Sub.ttf',
+          bold: fontHost + 'GenShinGothic-Normal-Sub.ttf',
+          italics: fontHost + 'GenShinGothic-Normal-Sub.ttf',
+          bolditalics: fontHost + 'GenShinGothic-Normal-Sub.ttf'
         }
       };
 
       const content = [
-        { text: this.restaurantInfo.restaurantName, style: 'title' },
+        { image: "coverImage",
+          width: A4width - A4MarginHorizontal,
+          height: 150,
+          cover: { width:  A4width - A4MarginHorizontal, height: 150 },
+        },
+        { text: this.restaurantInfo.restaurantName, style: 'title',
+          absolutePosition: {
+            y: 80,
+          },
+        },
       ];
       const images = {
+        coverImage: this.restaurantInfo.restCoverPhoto,
         logo: location.protocol + "//" + location.host + '/OwnPlate-Logo-Stack-YellowBlack.png',
         menu: location.protocol + "//" + location.host + '/test.jpg', // TODO: Set default menu image
       };
@@ -61,8 +79,11 @@ export default {
           {
             width: '30%',
             stack: [
-              { text: menu.itemName || "untitled" },
-              { image: image ? "menu_" + key1 + "_" + key2 : 'menu', width: 150, },
+              { text: "title:" + (menu.itemName || "untitled") },
+              { image: image ? "menu_" + key1 + "_" + key2 : 'menu',
+                width: 150, height: 150,
+                cover: { width:150, height:150 }
+              },
 
             ]
           },
@@ -102,12 +123,14 @@ export default {
       content.push({ qr: 'https://nodejs.keicode.com/' , fit: '50' });
 
       const docDefinition = {
+        pageSize: "A4",
         content,
         images,
         styles: {
           title: {
             font: 'GenShin',
             fontSize: 24,
+            alignment: 'center',
           },
           h1: {
             font: 'GenShin',
@@ -128,33 +151,50 @@ export default {
     },
 
     download2() {
-      pdfMake.vfs = pdfFonts.pdfMake.vfs;
+      pdfMake.vfs = pdfFonts.vfs;
 
-      const host = location.protocol + "//" + location.host + "/fonts/";
       pdfMake.fonts = {
         GenShin: {
-          normal: host + 'GenShinGothic-Normal-Sub.ttf',
-          bold: host + 'GenShinGothic-Normal-Sub.ttf',
-          italics: host + 'GenShinGothic-Normal-Sub.ttf',
-          bolditalics: host + 'GenShinGothic-Normal-Sub.ttf'
+          normal: fontHost + 'GenShinGothic-Normal-Sub.ttf',
+          bold: fontHost + 'GenShinGothic-Normal-Sub.ttf',
+          italics: fontHost + 'GenShinGothic-Normal-Sub.ttf',
+          bolditalics: fontHost + 'GenShinGothic-Normal-Sub.ttf'
         }
       };
 
       const content = [
-        { text: this.restaurantInfo.restaurantName, style: 'title' },
-        { text: this.shareUrl(), style: 'title' },
+        { image: "coverImage",
+          width: A4width - A4MarginHorizontal,
+          height: 150,
+          cover: { width:  A4width - A4MarginHorizontal, height: 150 },
+        },
+        {
+          text: this.restaurantInfo.restaurantName, style: 'title',
+          absolutePosition: {
+            y: 80,
+          },
+        },
+        // end of header
+        
+        { text: "aaa"},
+        {
+          text: this.shareUrl(), style: 'title',
+        },
       ];
       const images = {
+        coverImage: this.restaurantInfo.restCoverPhoto,
         logo: location.protocol + "//" + location.host + '/OwnPlate-Logo-Stack-YellowBlack.png',
         menu: location.protocol + "//" + location.host + '/test.jpg', // TODO: Set default menu image
       };
+      console.log(this.restaurantInfo);
+      console.log(images);
       // TODO: fix Japanese kansuuji encoding issue
 
       content.push({ svg: logosvg,
                      width: 251,
                      absolutePosition: {
                        x: 60,
-                       y: 130
+                       y: 230
                      }
                    });
       content.push({
@@ -162,17 +202,21 @@ export default {
         fit: 75,
         absolutePosition: {
           x: 148,
-          y: 266
+          y: 366
         }
       });
-
+      content.push({
+        text: "hello",
+      });
       const docDefinition = {
+        pageSize: "A4",
         content,
         images,
         styles: {
           title: {
             font: 'GenShin',
             fontSize: 24,
+            alignment: 'center',
           },
           h1: {
             font: 'GenShin',
@@ -189,10 +233,8 @@ export default {
           fontSize: 14,
         }
       };
-      console.log(docDefinition);
       const pdfDoc = pdfMake.createPdf(docDefinition).download();
-    }
-
+    },
   }
 }
 </script>

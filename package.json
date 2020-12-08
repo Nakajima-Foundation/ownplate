@@ -51,7 +51,7 @@
     "nuxt": "^2.0.0",
     "nuxt-buefy": "^0.3.2",
     "nuxt-gmaps": "^1.1.9",
-    "pdfmake": "^0.1.68",
+    "pdfmake": "https://github.com/isamu/pdfmake.git#imageSupportCoverBuild",
     "validator": "^13.0.0",
     "vue": "^2.6.11",
     "vue-carousel": "^0.18.0",
