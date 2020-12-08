@@ -8,8 +8,12 @@
 <script>
 import { db } from "~/plugins/firebase.js";
 import pdfMake from "pdfmake/build/pdfmake.js";
-// import pdfFonts from "pdfmake/build/vfs_fonts.js";
-import pdfFonts from "../../vfs_fonts.js";
+
+import {
+  parsePhoneNumber,
+  formatNational,
+} from "~/plugins/phoneutil.js";
+
 
 import logosvg from "!raw-loader!../../static/pr/50mm-QR-Blank.svg";
 
@@ -36,8 +40,38 @@ export default {
   async created() {
     const restaurantRef = db.doc(`restaurants/${this.restaurantId()}`);
     this.restaurantInfo = (await restaurantRef.get()).data();
-    const menus = (await restaurantRef.collection("menus").where("deletedFlag", "==", false).get()).docs.map((a) => a.data()).slice(0, 6);
+    const menuObj = this.array2obj((await restaurantRef.collection("menus").where("deletedFlag", "==", false).get()).docs.map(this.doc2data("")));
+    
+    const menus = (this.restaurantInfo.menuLists || []).reduce((tmp, itemKey) => {
+      if (menuObj[itemKey]) {
+        tmp.push(menuObj[itemKey]);
+      }
+      return tmp;
+    }, []).slice(0, 8);
+    
     this.menus = _.chunk(menus, 2);
+  },
+  computed: {
+    // TODO: create method and move to utils. merge ShopInfo.vue
+    // TODO: merge restaurantInfo and shopInfo
+    parsedNumber() {
+      const countryCode = this.restaurantInfo.countryCode || this.countries[0].code;
+      try {
+        return parsePhoneNumber(countryCode + this.restaurantInfo.phoneNumber);
+      } catch (error) {
+        return null;
+      }
+    },
+    countries() {
+      return this.$store.getters.stripeRegion.countries;
+    },
+    nationalPhoneNumber() {
+      const number = this.parsedNumber;
+      if (number) {
+        return formatNational(number);
+      }
+      return this.restaurantInfo.phoneNumber;
+    },
   },
   methods: {
     convChar(val) {
@@ -56,7 +90,7 @@ export default {
     },
 
     download() {
-      pdfMake.vfs = pdfFonts.vfs;
+      // pdfMake.vfs = pdfFonts.vfs;
 
       pdfMake.fonts = {
         GenShin: {
@@ -68,43 +102,120 @@ export default {
       };
 
       const images = {
+        headerLogo: location.protocol + "//" + location.host + '/Omochikaeri-Logo-Horizontal-Primary.png',
         coverImage: this.restaurantInfo.restCoverPhoto,
         logo: location.protocol + "//" + location.host + '/OwnPlate-Logo-Stack-YellowBlack.png',
         menu: location.protocol + "//" + location.host + '/test.jpg', // TODO: Set default menu image
       };
       // TODO: fix Japanese kansuuji encoding issue
-      const menuSize = 130;
+      const menuSize = 60;
       const content = [
+        { image: "headerLogo",
+          width: (A4width - A4MarginHorizontal) / 4,
+          margin: [(A4width - A4MarginHorizontal) * 3 / 8, 10]
+          
+          // height: menuSize,
+          // cover: { width:  A4width - A4MarginHorizontal, height: menuSize },
+        },
+
         { image: "coverImage",
           width: A4width - A4MarginHorizontal,
           height: menuSize,
           cover: { width:  A4width - A4MarginHorizontal, height: menuSize },
         },
-        { text: this.restaurantInfo.restaurantName, style: 'title',
-          absolutePosition: {
-            y: 80,
+        {
+          text: this.restaurantInfo.restaurantName, style: 'title',
+        },
+        {
+          width: (A4width - A4MarginHorizontal),
+          table: {
+            widths:'*',
+            body: [
+              [{
+                border: [false, false, false, false],
+                text: this.restaurantInfo.introduction,
+                fillColor: "#eeeeee"
+              }]
+            ]
           },
+          style: 'description',
+        },
+        {
+          text: this.convChar([
+            "〒", this.restaurantInfo.zip, " ",
+            this.restaurantInfo.state, this.restaurantInfo.city, this.restaurantInfo.streetAddress
+          ].join("")),
+          style: 'address',
+        },
+        {
+          style: 'address',
+          text: "電話 " + this.nationalPhoneNumber,
+        },
+        {
+          width: (A4width + 100),
+          table: {
+            widths:'*',
+            width: (A4width + 100),
+            body: [
+              [{
+                border: [false, false, false, false],
+                width: (A4width + 100),
+                text: this.convChar('ネットでオーダーできるテイクアウトサービスをはじめました！\nこちらのQRコード↓↓↓↓↓からご注文できます！'),
+                alignment: 'center',
+                fillColor: "#FCC03D"
+              }],
+              [{
+                border: [false, false, false, false],
+                alignment: 'center', 
+                qr: this.shareUrl(),
+                fit: 75,
+                fillColor: "#FCC03D"
+              }],
+              [{
+                border: [false, false, false, false],
+                alignment: 'center', 
+                text: this.shareUrl(),
+                fillColor: "#FCC03D",
+                fontSize: 6,
+              }]
+            ],
+          },
+          style: 'centerMenu',
         },
       ];
 
       const menu2colum = (menu, image, key1, key2) => {
         return [
           {
-            width: '30%',
+            
+            width: '35%',
             stack: [
-              { text: this.convChar("title:" + (menu.itemName || "untitled")) },
-              { image: image ? "menu_" + key1 + "_" + key2 : 'menu',
-                width: menuSize, height: menuSize,
-                cover: { width:menuSize, height:menuSize }
+              {
+                text: this.convChar(menu.itemName || "untitled"),
+                fontSize: 10,
+                margin: [5, 5, 5, 5]
+
+              },
+              {
+                text:  "¥" + menu.price,
+                bold: true,
+                fontSize: 8,
+              },
+              {
+                text:  this.convChar(menu.itemDescription.slice(0, 100)),
+                fontSize: 6,
               },
 
             ]
           },
           {
-            width: '20%',
+            width: '15%',
             stack: [
-              { text:  this.convChar(menu.itemDescription) },
-              { text:  menu.price + "円", bold: true },
+              { image: image ? "menu_" + key1 + "_" + key2 : 'menu',
+                width: menuSize, height: menuSize,
+                cover: { width: menuSize, height: menuSize },
+                margin: [5, 5, 5, 5]
+              },
             ]
           }
         ];
@@ -125,39 +236,15 @@ export default {
         content.push(
           {
             columns,
-            columnGap: 10
+            columnGap: 10,
+            width: "50%",
+            height: 200,
           }
 
         );
       });
 
       
-      content.push({
-        columns: [ 
-          {
-            width: '35%',
-            svg: logosvg,
-            width: menuSize,
-            margin: [10, 10]
-          },
-          {
-            width: '65%',
-            stack: [
-              {
-                text: this.convChar('ネットでオーダーできるテイクアウトサービスをはじめました！こちらのQRコードからご注文できます！'), margin: [20, 0],
-              },
-              {
-                text: this.convChar([this.restaurantInfo.state, this.restaurantInfo.city, this.restaurantInfo.streetAddress].join("")), margin: [20, 0]
-              },
-              {
-                text: [this.restaurantInfo.phoneNumber].join(""), margin: [20, 0]
-              }
-            ]
-          }
-        ]
-      });
-      content.push();
-
       const docDefinition = {
         pageSize: "A4",
         content,
@@ -166,6 +253,16 @@ export default {
           title: {
             font: 'GenShin',
             fontSize: 24,
+            alignment: 'center',
+          },
+          description: {
+            font: 'GenShin',
+            fontSize: 10,
+          },
+          address: {
+            font: 'GenShin',
+            fontSize: 12,
+            color: "#0097a7",
             alignment: 'center',
           },
           h1: {
@@ -187,7 +284,7 @@ export default {
     },
 
     download2() {
-      pdfMake.vfs = pdfFonts.vfs;
+      // pdfMake.vfs = pdfFonts.vfs;
 
       pdfMake.fonts = {
         GenShin: {
@@ -211,8 +308,6 @@ export default {
           },
         },
         // end of header
-        
-        { text: "aaa"},
         {
           text: this.shareUrl(), style: 'title',
         },
@@ -222,8 +317,6 @@ export default {
         logo: location.protocol + "//" + location.host + '/OwnPlate-Logo-Stack-YellowBlack.png',
         menu: location.protocol + "//" + location.host + '/test.jpg', // TODO: Set default menu image
       };
-      console.log(this.restaurantInfo);
-      console.log(images);
       // TODO: fix Japanese kansuuji encoding issue
 
       content.push({ svg: logosvg,

@@ -14,6 +14,14 @@ vi a.json
   }
 ]
 
+[
+  {
+    "origin": ["http://localhost:3000", "https://omochikaeri.com"],
+    "method": ["GET"],
+    "maxAgeSeconds": 3600
+  }
+]
+
 # デプロイ
 
 ```
