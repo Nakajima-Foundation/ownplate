@@ -1,5 +1,9 @@
 <template>
-  <div>
+<div>
+  <template v-if="news === undefined">
+    <not-found />
+  </template>
+  <template v-else>
     <!-- Article Header Area -->
     <div class="columns is-gapless">
       <!-- Left Gap -->
@@ -14,7 +18,7 @@
               <span class="c-primary t-button">{{$t("admin.news.adminTop")}}</span>
             </div>
           </nuxt-link>
-
+          
           <!-- Back to News Top -->
           <nuxt-link :to="'/admin/news'">
             <div class="op-button-pill bg-form">
@@ -27,7 +31,7 @@
       <!-- Right Gap -->
       <div class="column is-narrow w-24"></div>
     </div>
-
+    
     <!-- Article Body Area -->
     <div class="columns is-gapless">
       <!-- Left Gap -->
@@ -41,9 +45,9 @@
                 <!-- Title -->
                 <div class="t-h6 c-text-black-disabled">{{news.title}}</div>
                 <div class="t-subtitle1 c-text-black-disabled m-t-8">{{news.date.replace(/\-/g,".")}}</div>
-
+                
                 <div class="article-list m-t-24" v-html="md.render(news.markdown)" />
-
+                
               </div>
             </div>
           </div>
@@ -52,16 +56,22 @@
       <!-- Right Gap -->
       <div class="column is-narrow w-24"></div>
     </div>
-  </div>
+  </template>
+</div>
 </template>
+
 <script>
 import MarkdownIt from "markdown-it";
 import newsList from './data';
+import NotFound from "~/components/NotFound";
 
 export default {
+  components: { 
+    NotFound
+  },
   head() {
     return {
-      title: [this.news.title, this.defaultTitle].join(" / "),
+      title: [(this.news||{}).title, this.defaultTitle].join(" / "),
     };
   },
   data() {

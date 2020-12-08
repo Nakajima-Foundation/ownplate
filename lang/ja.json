@@ -153,6 +153,7 @@
     "businessHourDescription": "営業する曜日にチェックをいれ、時間を設定してください。休憩など営業時間を分ける必要がある場合は別時間帯フォームに後半の時間を設定してください。",
     "businessHourOption": "別時間帯（オプション）",
     "copyPreviousDay": "前日をコピー",
+    "copySunDay": "日曜をコピー",
     "draftDescription": "下書きとして保存されます（お客様からお店のページは見えません）",
     "publishDescription": "保存して公開",
     "draftWarning": "赤枠のエラーを修正すると公開可能になります",
@@ -246,6 +247,7 @@
     "pm": "午後 {formatedTime}",
     "closed": "定休日",
     "public": "公開",
+    "temporaryClosure": "臨時休業",
     "paymentMethod": "支払い方法",
     "onlinePayment": "オンライン決済",
     "onsitePayment": "受け取り払い",
@@ -448,10 +450,19 @@
       "onsitePaymentNote": "突然のキャンセルや悪戯などによる代金の未回収にご注意ください。",
       "enableOnsitePayment": "受け取り払いを許可"
     },
+    "mail": {
+      "magazine": {
+        "title": "メール設定",
+        "body": "おもちかえり.comからメールでお知らせをお送りします。",
+        "optout": "受け取らない"
+      }
+    },
     "viewPage": "ページを確認",
     "incompleteOrders": "{count} 個の未完了の注文",
     "editMenuItems": "メニューの変更： {count}",
     "pleaseAddMenu": "メニューを追加してください",
+    "itemPublished": "公開中",
+    "itemNotPublished": "非公開",
     "editAbout": "店情報の変更",
     "privateMode": "非公開",
     "pleaseChangePublic": "店情報を入力後、公開に変更してください",
@@ -519,7 +530,9 @@
       "leave": "退店記録"
     },
     "report": {
-      "title": "月次報告"
+      "title": "月次報告",
+      "download-csv": "エクセルデータダウンロード",
+      "download-csv-details": "エクセルデータダウンロード (詳細)"
     },
     "error": {
       "email": {

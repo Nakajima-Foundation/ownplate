@@ -190,6 +190,16 @@ export default ({ app }) => {
         // not implemented
         return null;
       },
+      featureHeroMobile() {
+        return this.regionalSetting.FeatureHeroMobile[
+          this.isLocaleJapan ? "ja" : "en"
+        ];
+      },
+      featureHeroTablet() {
+        return this.regionalSetting.FeatureHeroTablet[
+          this.isLocaleJapan ? "ja" : "en"
+        ];
+      }
     }
   });
 }

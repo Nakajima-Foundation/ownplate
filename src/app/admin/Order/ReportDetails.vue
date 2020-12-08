@@ -24,7 +24,7 @@
       <b-button class="m-t-16 b-reset h-36 r-36 bg-form">
         <span class="p-l-16 p-r-16">
           <i class="material-icons c-primary s-18 m-r-8">save_alt</i>
-          <span class="c-primary t-button">Download CSV (details)</span>
+          <span class="c-primary t-button">{{$t('admin.report.download-csv-details')}}</span>
         </span>
       </b-button>
     </download-csv>
@@ -99,26 +99,30 @@ export default {
           return result;
         }, "unexpected");
         ids.forEach((id, index) => {
-          const menuItem = order.menuItems[id];
-          items.push({
-            id: `${order.id}/${id}`,
-            name: nameOfOrder(order),
-            timeRequested:
+          try {
+            const menuItem = order.menuItems[id];
+            items.push({
+              id: `${order.id}/${id}`,
+              name: nameOfOrder(order),
+              timeRequested:
               order.timePlaced &&
-              moment(order.timePlaced).format("YYYY/MM/DD HH:mm"),
-            dateConfirmed:
+                moment(order.timePlaced).format("YYYY/MM/DD HH:mm"),
+              dateConfirmed:
               order.timeConfirmed &&
-              moment(order.timeConfirmed).format("YYYY/MM/DD HH:mm"),
-            phoneNumber: formatNational(parsePhoneNumber(order.phoneNumber)),
-            userName: order.name || this.$t("order.unspecified"),
-            count: order.order[id],
-            itemName: menuItem.itemName,
-            statusName: this.$t(`order.status.${status}`),
-            category1: menuItem.category1 || "",
-            category2: menuItem.category2 || "",
-            total: index === 0 ? order.totalCharge : "",
-            payment: order.payment?.stripe ? "stripe" : ""
-          });
+                moment(order.timeConfirmed).format("YYYY/MM/DD HH:mm"),
+              phoneNumber: formatNational(parsePhoneNumber(order.phoneNumber)),
+              userName: order.name || this.$t("order.unspecified"),
+              count: order.order[id],
+              itemName: menuItem.itemName,
+              statusName: this.$t(`order.status.${status}`),
+              category1: menuItem.category1 || "",
+              category2: menuItem.category2 || "",
+              total: index === 0 ? order.totalCharge : "",
+              payment: order.payment?.stripe ? "stripe" : ""
+            });
+          } catch (e) {
+            // sometime data was broken
+          }
         });
       });
       //console.log(items);
