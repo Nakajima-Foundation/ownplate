@@ -21,15 +21,12 @@
                   />
 
                   <!-- # Need to show 1-1 / 1-2 randomly -->
-                  <img
-                    :src="coverMobile"
-                    class="cover is-hidden-tablet"
-                  />
+                  <img :src="coverMobile" class="cover is-hidden-tablet" />
                 </div>
 
                 <!-- Tagline -->
                 <div
-                  class="t-h5 c-ownplate-white p-t-24 p-b-16"
+                  class="t-h5 is-size-2-tablet c-ownplate-white p-t-32 p-b-24 "
                   style="font-weight: bold"
                 >
                   お店の笑顔もおもちかえり！
@@ -68,14 +65,12 @@
 </template>
 <script>
 export default {
-
   computed: {
     coverMobile() {
-      const seed  = Math.floor(Math.random() * 2) % 2 + 1;
+      const seed = (Math.floor(Math.random() * 2) % 2) + 1;
       console.log(seed);
-      return `/LP-Cover-Mobile-1-${seed}.jpg`
+      return `/LP-Cover-Mobile-1-${seed}.jpg`;
     }
-  },
-
+  }
 };
 </script>
