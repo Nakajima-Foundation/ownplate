@@ -22,6 +22,7 @@ export default ({ app }) => {
       },
       shareUrl() {
         return location.protocol + "//" + location.host + "/r/" + this.restaurantId();
+        // return "https://omochikaeri.com/r/" + this.restaurantId();
       },
       doc2data(dataType) {
         return (doc) => {

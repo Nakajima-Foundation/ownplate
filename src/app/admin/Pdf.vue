@@ -76,7 +76,7 @@ export default {
   methods: {
     convChar(val) {
       const regex = /[Ａ-Ｚａ-ｚ０-９！＂＃＄％＆＇（）＊＋，－．／：；＜＝＞？＠［＼］＾＿｀｛｜｝]/g;
-
+      
       const value = val
             .replace(regex, function (s) {
               return String.fromCharCode(s.charCodeAt(0) - 0xfee0);
@@ -88,10 +88,9 @@ export default {
       
       return value;
     },
-
+    
     download() {
-      // pdfMake.vfs = pdfFonts.vfs;
-
+      
       pdfMake.fonts = {
         GenShin: {
           normal: fontHost + 'GenShinGothic-Normal-Sub.ttf',
@@ -106,7 +105,7 @@ export default {
           bolditalics: fontHost + 'NotoSansCJKjp-Bold.ttf'
         },
       };
-
+      
       const images = {
         headerLogo: location.protocol + "//" + location.host + '/Omochikaeri-Logo-Horizontal-Primary.png',
         coverImage: this.restaurantInfo.restCoverPhoto,
@@ -123,7 +122,7 @@ export default {
           // height: menuSize,
           // cover: { width:  A4width - A4MarginHorizontal, height: menuSize },
         },
-
+        
         { image: "coverImage",
           width: A4width - A4MarginHorizontal,
           height: menuSize,
@@ -137,12 +136,23 @@ export default {
         {
           width: (A4width - A4MarginHorizontal),
           table: {
-            widths:'*',
+            widths: [5, '*', 5],
             body: [
               [{
+                text: " ",
                 border: [false, false, false, false],
-                text: this.restaurantInfo.introduction,
-                fillColor: "#eeeeee"
+                fillColor: "#eeeeee",
+              },
+               {
+                border: [false, false, false, false],
+                text: " \n" + this.restaurantInfo.introduction + "\n \n", 
+                fillColor: "#eeeeee",
+                lineHeight: 1.5,
+               },
+              {
+                text: "",
+                border: [false, false, false, false],
+                fillColor: "#eeeeee",
               }]
             ]
           },
@@ -162,23 +172,70 @@ export default {
           
         },
         {
+          layout: 'lightHorizontalLines', // optional
           table: {
-            widths:'*',
+            // headers are automatically repeated if the table spans over multiple pages
+            // you can declare how many rows should be treated as headers
+            headerRows: 0,
+            widths: [ '*', 47, '*' ],
+            
             body: [
+              [
+                {
+                  text: "",
+                  border: [false, false, false, false],
+                fillColor: "#FCC03D", 
+                },
+                {
+                  border: [false, false, false, false],
+                  text:"",
+                fillColor: "#FCC03D", 
+                },
+                {
+                  border: [false, false, false, false],
+                  text:"",
+                fillColor: "#FCC03D", 
+                },
+              ],
               [{
                 border: [false, false, false, false],
                 text: this.convChar('ネットでオーダーできるテイクアウトサービスをはじめました！\nこちらのQRコード↓↓↓↓↓からご注文できます！'),
                 alignment: 'center',
-                fillColor: "#FCC03D"
+                fillColor: "#FCC03D",
+                colSpan: 3,
+                lineHeight: 1.3,
               }],
-              [{
+              [ {
                 border: [false, false, false, false],
-                alignment: 'center', 
-                qr: this.shareUrl(),
-                fit: 75,
-                fillColor: "#FCC03D"
-              }],
-            ],
+                text: '',
+                fillColor: "#FCC03D", 
+              },
+                {
+                  border: [false, false, false, false],
+                  alignment: 'center', 
+                  qr: this.shareUrl(),
+                  fit: 75,
+                },
+                { 
+                  border: [false, false, false, false],
+                  text: '',
+                  fillColor: "#FCC03D", 
+                }
+              ],
+              [ { text: '',
+                  border: [false, false, false, false],
+                  fillColor: "#FCC03D",
+                },
+                { text: '',
+                  border: [false, false, false, false],
+                  fillColor: "#FCC03D"
+                },
+                  { text: '',
+                    border: [false, false, false, false],
+                    fillColor: "#FCC03D" 
+                  },
+              ]
+            ]
           },
           style: 'centerMenu',
         },
@@ -262,13 +319,14 @@ export default {
             font: 'NotoSans',
             fontSize: 24,
             alignment: 'center',
-            margin: [7,7],
+            margin: [0, 14],
           },
           description: {
             font: 'NotoSans',
             fontSize: 10,
           },
           address: {
+            lineHeight: 1.5,
             font: 'NotoSans',
             fontSize: 12,
             color: "#0097a7",
@@ -301,8 +359,6 @@ export default {
     },
 
     download2() {
-      // pdfMake.vfs = pdfFonts.vfs;
-
       pdfMake.fonts = {
         GenShin: {
           normal: fontHost + 'GenShinGothic-Normal-Sub.ttf',
