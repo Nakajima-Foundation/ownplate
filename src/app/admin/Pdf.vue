@@ -47,7 +47,7 @@ export default {
         tmp.push(menuObj[itemKey]);
       }
       return tmp;
-    }, []).slice(0, 8);
+    }, []).slice(0, 6);
     
     this.menus = _.chunk(menus, 2);
   },
@@ -98,7 +98,13 @@ export default {
           bold: fontHost + 'GenShinGothic-Normal-Sub.ttf',
           italics: fontHost + 'GenShinGothic-Normal-Sub.ttf',
           bolditalics: fontHost + 'GenShinGothic-Normal-Sub.ttf'
-        }
+        },
+        NotoSans: {
+          normal: fontHost + 'NotoSansCJKjp-Regular.ttf',
+          bold: fontHost + 'NotoSansCJKjp-Bold.ttf',
+          italics: fontHost + 'NotoSansCJKjp-Regular.ttf',
+          bolditalics: fontHost + 'NotoSansCJKjp-Bold.ttf'
+        },
       };
 
       const images = {
@@ -124,7 +130,9 @@ export default {
           cover: { width:  A4width - A4MarginHorizontal, height: menuSize },
         },
         {
-          text: this.restaurantInfo.restaurantName, style: 'title',
+          text: this.restaurantInfo.restaurantName,
+          bold: true,
+          style: 'title',
         },
         {
           width: (A4width - A4MarginHorizontal),
@@ -142,24 +150,23 @@ export default {
         },
         {
           text: this.convChar([
-            "〒", this.restaurantInfo.zip, " ",
-            this.restaurantInfo.state, this.restaurantInfo.city, this.restaurantInfo.streetAddress
-          ].join("")),
+            [ "〒", this.restaurantInfo.zip, " ",
+              this.restaurantInfo.state, this.restaurantInfo.city, this.restaurantInfo.streetAddress
+            ].join(""),
+            "電話 " + this.nationalPhoneNumber
+          ].join("\n"),
+                              
+                             ),
           style: 'address',
+          bold: true,
+          
         },
         {
-          style: 'address',
-          text: "電話 " + this.nationalPhoneNumber,
-        },
-        {
-          width: (A4width + 100),
           table: {
             widths:'*',
-            width: (A4width + 100),
             body: [
               [{
                 border: [false, false, false, false],
-                width: (A4width + 100),
                 text: this.convChar('ネットでオーダーできるテイクアウトサービスをはじめました！\nこちらのQRコード↓↓↓↓↓からご注文できます！'),
                 alignment: 'center',
                 fillColor: "#FCC03D"
@@ -171,18 +178,16 @@ export default {
                 fit: 75,
                 fillColor: "#FCC03D"
               }],
-              [{
-                border: [false, false, false, false],
-                alignment: 'center', 
-                text: this.shareUrl(),
-                fillColor: "#FCC03D",
-                fontSize: 6,
-              }]
             ],
           },
           style: 'centerMenu',
         },
       ];
+      content.push({
+        text: "\n★★★ メニューの例 ★★★\n\n",
+        alignment: 'center',
+        margin: [10, 0],
+      });
 
       const menu2colum = (menu, image, key1, key2) => {
         return [
@@ -191,19 +196,21 @@ export default {
             width: '35%',
             stack: [
               {
+                bold: true,
                 text: this.convChar(menu.itemName || "untitled"),
                 fontSize: 10,
-                margin: [5, 5, 5, 5]
+                margin: [0, 3]
 
               },
               {
                 text:  "¥" + menu.price,
-                bold: true,
                 fontSize: 8,
+                color: "#555555",
               },
               {
                 text:  this.convChar(menu.itemDescription.slice(0, 100)),
                 fontSize: 6,
+                margin: [0, 5]
               },
 
             ]
@@ -251,22 +258,32 @@ export default {
         images,
         styles: {
           title: {
-            font: 'GenShin',
+            bold: true,
+            font: 'NotoSans',
             fontSize: 24,
             alignment: 'center',
+            margin: [7,7],
           },
           description: {
-            font: 'GenShin',
+            font: 'NotoSans',
             fontSize: 10,
           },
           address: {
-            font: 'GenShin',
+            font: 'NotoSans',
             fontSize: 12,
             color: "#0097a7",
             alignment: 'center',
+            margin: [0, 7],
+          },
+          phone: {
+            font: 'NotoSans',
+            fontSize: 12,
+            color: "#0097a7",
+            alignment: 'center',
+            margin: [0, 5],
           },
           h1: {
-            font: 'GenShin',
+            font: 'NotoSans',
             fontSize: 18,
             bold: true
           },
@@ -276,7 +293,7 @@ export default {
           }
         },
         defaultStyle: {
-          font: 'GenShin',
+          font: 'NotoSans',
           fontSize: 14,
         }
       };
