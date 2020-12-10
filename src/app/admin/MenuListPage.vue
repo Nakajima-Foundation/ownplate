@@ -212,6 +212,21 @@
                 </span>
               </b-button>
             </div>
+            <div class="align-center m-t-16">
+              <!-- Add Category Title -->
+              <b-button
+                class="b-reset op-button-pill h-36 bg-form m-r-8 m-l-8 m-t-16"
+                :disabled="downloadSubmitting"
+                @click="downloadMenu()"
+              >
+                <i class="material-icons c-primary m-l-8">menu_book</i>
+                <span class="c-primary t-button">
+                  {{
+                  $t("button.downloadMenu")
+                  }}
+                </span>
+              </b-button>
+            </div>
           </div>
         </div>
         <!-- Right Gap -->
@@ -230,8 +245,11 @@ import NotFound from "~/components/NotFound";
 import BackButton from "~/components/BackButton";
 
 import * as firebase from "firebase/app";
+import * as pdf from '../../plugins/pdf.js';
 
 import NotificationIndex from "./Notifications/Index";
+
+import _ from 'lodash';
 
 export default {
   name: "Menus",
@@ -246,13 +264,15 @@ export default {
   data() {
     return {
       submitting: false,
+      downloadSubmitting: false,
       readyToDisplay: false,
       restaurantInfo: {},
       menuCollection: null,
       titleCollection: null,
       editings: {},
       detachers: [],
-      notFound: null
+      notFound: null,
+      menuObj: {},
     };
   },
   computed: {
@@ -267,6 +287,7 @@ export default {
         const menus = (this.menuCollection.docs || []).map(
           this.doc2data("menu")
         );
+        this.menuObj = this.array2obj(menus);
         const titles = (this.titleCollection.docs || []).map(
           this.doc2data("title")
         );
@@ -276,7 +297,27 @@ export default {
     },
     menuLists() {
       return this.restaurantInfo.menuLists || [];
-    }
+    },
+    // TODO: create method and move to utils. merge ShopInfo.vue
+    // TODO: merge restaurantInfo and shopInfo
+    parsedNumber() {
+      const countryCode = this.restaurantInfo.countryCode || this.countries[0].code;
+      try {
+        return parsePhoneNumber(countryCode + this.restaurantInfo.phoneNumber);
+      } catch (error) {
+        return null;
+      }
+    },
+    countries() {
+      return this.$store.getters.stripeRegion.countries;
+    },
+    nationalPhoneNumber() {
+      const number = this.parsedNumber;
+      if (number) {
+        return formatNational(number);
+      }
+      return this.restaurantInfo.phoneNumber;
+    },
   },
   async created() {
     this.checkAdminPermission();
@@ -321,6 +362,13 @@ export default {
     }
   },
   methods: {
+    async downloadMenu() {
+      this. downloadSubmitting = true;
+      const dl = await pdf.download(this.restaurantInfo, this.menuObj, this.nationalPhoneNumber, this.shareUrl());
+      console.log(dl);
+      this. downloadSubmitting = false;
+
+    },
     async updateTitle(title) {
       await db
         .doc(`restaurants/${this.restaurantId()}/titles/${title.id}`)
