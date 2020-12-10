@@ -92,12 +92,6 @@ export default {
     download() {
       
       pdfMake.fonts = {
-        GenShin: {
-          normal: fontHost + 'GenShinGothic-Normal-Sub.ttf',
-          bold: fontHost + 'GenShinGothic-Normal-Sub.ttf',
-          italics: fontHost + 'GenShinGothic-Normal-Sub.ttf',
-          bolditalics: fontHost + 'GenShinGothic-Normal-Sub.ttf'
-        },
         NotoSans: {
           normal: fontHost + 'NotoSansCJKjp-Regular.ttf',
           bold: fontHost + 'NotoSansCJKjp-Bold.ttf',
@@ -362,12 +356,12 @@ export default {
 
     download2() {
       pdfMake.fonts = {
-        GenShin: {
-          normal: fontHost + 'GenShinGothic-Normal-Sub.ttf',
-          bold: fontHost + 'GenShinGothic-Normal-Sub.ttf',
-          italics: fontHost + 'GenShinGothic-Normal-Sub.ttf',
-          bolditalics: fontHost + 'GenShinGothic-Normal-Sub.ttf'
-        }
+        NotoSans: {
+          normal: fontHost + 'NotoSansCJKjp-Regular.ttf',
+          bold: fontHost + 'NotoSansCJKjp-Bold.ttf',
+          italics: fontHost + 'NotoSansCJKjp-Regular.ttf',
+          bolditalics: fontHost + 'NotoSansCJKjp-Bold.ttf'
+        },
       };
 
       const content = [
@@ -418,12 +412,12 @@ export default {
         images,
         styles: {
           title: {
-            font: 'GenShin',
+            font: 'NotoSans',
             fontSize: 24,
             alignment: 'center',
           },
           h1: {
-            font: 'GenShin',
+            font: 'NotoSans',
             fontSize: 18,
             bold: true
           },
@@ -433,7 +427,7 @@ export default {
           }
         },
         defaultStyle: {
-          font: 'GenShin',
+          font: 'NotoSans',
           fontSize: 14,
         }
       };
