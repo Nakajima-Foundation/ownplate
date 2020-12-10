@@ -2,9 +2,8 @@
   <div>
     <ownplate-service-image />
     <entrance-buttons />
-    <smileImage />
     <userVoices />
-    <moreButton />
+    <!-- <moreButton /> -->
     <threeSteps />
     <askButtons />
     <communityIcons />
@@ -18,9 +17,8 @@
   </div>
 </template>
 <script>
-import entranceButtons from "~/components/lp/entranceButtons";
 import ownplateServiceImage from "~/components/lp/ownplateServiceImage";
-import smileImage from "~/components/lp/smileImage";
+import entranceButtons from "~/components/lp/entranceButtons";
 import userVoices from "~/components/lp/userVoices";
 import moreButton from "~/components/lp/moreButton";
 import threeSteps from "~/components/lp/threeSteps";
@@ -35,7 +33,6 @@ export default {
   components: {
     ownplateServiceImage,
     entranceButtons,
-    smileImage,
     userVoices,
     moreButton,
     threeSteps,
