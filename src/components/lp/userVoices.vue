@@ -1,37 +1,154 @@
 <template>
   <div>
-<div class="columns is-gapless">
-  <div class="column is-narrow w-24"></div>
-  <div class="column">
+    <div class="align-center t-h6 c-text-black-disabled p-t-32 p-b-24">
+      ご利用頂いている<br />飲食店のみなさまの声
+    </div>
+
+    <!-- User Voices Hero -->
+    <div class="columns is-gapless p-l-24 p-r-24">
+      <div class="column is-narrow w-16"></div>
+      <div class="column">
+        <div
+          class="columns is-gapless bg-ownplate-white m-t-8 r-16 p-t-16 p-l-24 p-r-24 p-b-16"
+        >
+          <div class="column is-narrow align-center">
+            <img src="/LP-UserVoice-Face-1.jpg" class="r-256" />
+          </div>
+          <div class="column is-narrow w-24"></div>
+          <div class="column">
+            <i class="material-icons c-text-black-disabled s-32"
+              >format_quote</i
+            >
+            <span class="t-subtitle1"
+              ><span class="highlight">無料</span>なのに<span class="highlight"
+                >売上集計</span
+              >や<span class="highlight">リピーター有無</span
+              >も確認できる！お客さまにも注文しやすくなったとよろこばれています。<span
+                class="highlight"
+                >お心づけ</span
+              >を入力頂けるお客様が多いのもうれしいですね。</span
+            >
+
+            <div class="t-subtitle2 m-t-16 c-text-black-disabled">
+              新潟県 『サンドしないサンド＜かつ＞ 板谷様
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="column is-narrow w-16"></div>
+    </div>
+
+    <!-- User Voices 1 -->
+    <div class="columns is-gapless p-l-24 p-r-24">
+      <div class="column is-narrow w-16"></div>
+      <div class="column">
+        <div
+          class="bg-ownplate-white m-t-8 r-16 p-t-16 p-l-24 p-r-24 p-b-16 t-body2"
+        >
+          <i class="material-icons c-text-black-disabled s-32">format_quote</i>
+          <span class="highlight">営業時間外</span
+          >でもテイクアウト注文が受付られるようになって、お客さまからとてもよろこばれています。お店としても機会損失がなくなりました。夜中に次の日の注文が入っていたのは驚きです。
+        </div>
+      </div>
+      <div class="column is-narrow w-16"></div>
+      <div class="column">
+        <div
+          class="bg-ownplate-white m-t-8 r-16 p-t-16 p-l-24 p-r-24 p-b-16 t-body2"
+        >
+          <i class="material-icons c-text-black-disabled s-32">format_quote</i>
+          電話注文ではどうしても注文の聞き間違えがあり、お客さんにもご迷惑をかけていたのですが、オンラインになってから<span
+            class="highlight"
+            >注文の間違いがなくなり</span
+          >、安心して調理に専念できます。
+        </div>
+      </div>
+      <div class="column is-narrow w-16"></div>
+      <div class="column">
+        <div
+          class="bg-ownplate-white m-t-8 r-16 p-t-16 p-l-24 p-r-24 p-b-16 t-body2"
+        >
+          <i class="material-icons c-text-black-disabled s-32">format_quote</i>
+          注文が入った時に<span class="highlight">LINE</span>や<span
+            class="highlight"
+            >電話</span
+          >で知らせてくれるので、見落としがなくなりました！
+        </div>
+      </div>
+      <div class="column is-narrow w-16"></div>
+    </div>
+
+    <!-- User Voices 2 -->
+    <div class="columns is-gapless p-l-24 p-r-24">
+      <div class="column is-narrow w-16"></div>
+      <div class="column">
+        <div
+          class="bg-ownplate-white m-t-8 r-16 p-t-16 p-l-24 p-r-24 p-b-16 t-body2"
+        >
+          <i class="material-icons c-text-black-disabled s-32">format_quote</i>
+          <span class="highlight">オンラインで手軽に決済</span
+          >できるようになり、お客さまにも喜ばれています。お店としても<span
+            class="highlight"
+            >「おつりの用意」が不要</span
+          >になりました。
+        </div>
+      </div>
+      <div class="column is-narrow w-16"></div>
+      <div class="column">
+        <div
+          class="bg-ownplate-white m-t-8 r-16 p-t-16 p-l-24 p-r-24 p-b-16 t-body2"
+        >
+          <i class="material-icons c-text-black-disabled s-32">format_quote</i>
+          お客様の<span class="highlight">購入履歴もエクセルで確認</span
+          >できるので常連さん、リピーターさんの<span class="highlight"
+            >より的確な把握</span
+          >ができるようになりました。
+        </div>
+      </div>
+      <div class="column is-narrow w-16"></div>
+      <div class="column">
+        <div
+          class="bg-ownplate-white m-t-8 r-16 p-t-16 p-l-24 p-r-24 p-b-16 t-body2"
+        >
+          <i class="material-icons c-text-black-disabled s-32">format_quote</i>
+          毎月の売上がエクセルで確認できて、記帳が楽になりました。日々の雑務を<span
+            class="highlight"
+            >大幅に効率化</span
+          >でき、万年人手不足の当店の大きなサポーターです！
+        </div>
+      </div>
+      <div class="column is-narrow w-16"></div>
+    </div>
+
+    <!-- Screenshots -->
+    <div class="columns">
+      <div
+        class="column is-three-fifths is-offset-one-fifth p-l-24 p-r-24 m-t-16 "
+      >
+        <img src="/LP-Screenshots.png" class="r-16" />
+      </div>
+    </div>
+
+    <!-- More -->
     <div class="align-center">
-      <h2>ご利用頂いている飲食店のみなさまの声</h2>
+      <a
+        href="https://gluepass.jp/g/ownplatejp/pg/Zy8VserQdTxFVKLaFcOK"
+        target="_blank"
+      >
+        <div
+          class="op-button-small bg-ownplate-yellow p-l-32 p-r-32 c-text-black-medium"
+        >
+          もっと詳しく
+        </div>
+      </a>
     </div>
-  </div>
-  <div class="column is-narrow w-24"></div>
-</div>
-<div class="columns is-gapless">
-  <!-- Left Gap -->
-  <div class="column is-narrow w-24"></div>
-    <!-- Center Column -->
-    <div class="column">
-      <ul style="list-style: '-'">
-        <li><span :style="{color: 'red', fontWeight: 600}">営業時間外</span>でもテイクアウト注文が受付られるようになって、お客さまからとてもよろこばれています。お店としても機会損失がなくなりました。夜中に次の日の注文が入っていたのは驚きです。</li>
-        <li>電話注文ではどうしても注文の聞き間違えがあり、お客さんにもご迷惑をかけていたのですが、オンラインになってから注文の間違いがなくなり、安心して調理に専念できます。</li>
-				<li>注文が入った時にLINEや電話で知らせてくれるので、見落としがなくなりました！</li>
-				<li>オンラインで手軽に決済できるようになり、お客さまにも喜ばれています。お店としても「おつりの用意」が不要になりました。 </li>
-        <li>お客様の購入履歴もエクセルで確認できるので常連さん、リピーターさんののより的確な把握ができるようになりました。</li>
-        <li>毎月の売上がエクセルで確認できて、記帳が楽になりました。日々の雑務を大幅に効率化でき、万年人手不足の当店の大きなサポーターです！</li>
-        <li>おもちかえり.comを利用しはじめてみたら、初月で２０万円売上が立ちました。</li>
-      </ul>
-    </div>
-    <div class="column">
-      <img src="/sandwich.png" class="card_image" width="80%" />
-    </div>
-    <div class="column is-narrow w-24"></div>
-  </div>
   </div>
 </template>
 <script>
-export default {
-}
+export default {};
 </script>
+<style scoped>
+.highlight {
+  background: linear-gradient(transparent 50%, #f6ff5f 50%);
+  font-weight: bold;
+}
+</style>
