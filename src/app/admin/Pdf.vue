@@ -86,7 +86,7 @@ export default {
             .replace(/−/g, "-")
             .replace(/　/g, " "); // スペース
       
-      return value;
+      return value.normalize('NFKC');
     },
     
     download() {
@@ -145,7 +145,7 @@ export default {
               },
                {
                 border: [false, false, false, false],
-                text: " \n" + this.restaurantInfo.introduction + "\n \n", 
+                text: " \n" + this.convChar(this.restaurantInfo.introduction) + "\n \n", 
                 fillColor: "#eeeeee",
                 lineHeight: 1.5,
                },
@@ -266,6 +266,7 @@ export default {
               },
               {
                 text:  this.convChar(menu.itemDescription.slice(0, 100)),
+                lineHeight: 1.3,
                 fontSize: 6,
                 margin: [0, 5]
               },
