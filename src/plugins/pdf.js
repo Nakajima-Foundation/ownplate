@@ -41,7 +41,7 @@ const menuSize = 60;
 const convChar = (val) => {
   const regex = /[Ａ-Ｚａ-ｚ０-９！＂＃＄％＆＇（）＊＋，－．／：；＜＝＞？＠［＼］＾＿｀｛｜｝]/g;
   
-  const value = val.replace(regex, function (s) {
+  const value = (val || "").replace(regex, function (s) {
     return String.fromCharCode(s.charCodeAt(0) - 0xfee0);
   })
         .replace(/[‐－―]/g, "-") 
@@ -65,7 +65,7 @@ export const download = (restaurantInfo, menuObj, nationalPhoneNumber, shareUrl)
   
   const images = {
     headerLogo: location.protocol + "//" + location.host + '/Omochikaeri-Logo-Horizontal-Primary.png',
-    coverImage: restaurantInfo.restCoverPhoto,
+    coverImage: restaurantInfo.restCoverPhoto ||  location.protocol + "//" + location.host + '/OwnPlate-Logo-Horizontal-YellowBlack.png',
     logo: location.protocol + "//" + location.host + '/OwnPlate-Logo-Stack-YellowBlack.png',
     menu: location.protocol + "//" + location.host + '/no_image.jpg',
   };
@@ -277,6 +277,7 @@ export const download = (restaurantInfo, menuObj, nationalPhoneNumber, shareUrl)
       fontSize: 14,
     }
   };
+  console.log(docDefinition);
   return pdfMake.createPdf(docDefinition).download();
 };
 

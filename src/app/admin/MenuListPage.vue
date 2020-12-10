@@ -212,7 +212,7 @@
                 </span>
               </b-button>
             </div>
-            <div class="align-center m-t-16">
+            <div class="align-center m-t-16" v-if="Object.keys(this.menuObj).length > 0">
               <!-- Add Category Title -->
               <b-button
                 class="b-reset op-button-pill h-36 bg-form m-r-8 m-l-8 m-t-16"
