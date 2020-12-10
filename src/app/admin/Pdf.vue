@@ -177,7 +177,7 @@ export default {
             // headers are automatically repeated if the table spans over multiple pages
             // you can declare how many rows should be treated as headers
             headerRows: 0,
-            widths: [ '*', 47, '*' ],
+            widths: [ '*', 55, '*' ],
             
             body: [
               [
@@ -214,6 +214,7 @@ export default {
                   border: [false, false, false, false],
                   alignment: 'center', 
                   qr: this.shareUrl(),
+                  eccLevel: "H",
                   fit: 75,
                 },
                 { 
