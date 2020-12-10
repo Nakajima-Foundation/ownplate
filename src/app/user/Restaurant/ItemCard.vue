@@ -176,10 +176,7 @@ export default {
         this.optionPrev.length > index &&
         this.optionPrev[index]
       ) {
-        if (option.length === 1) {
-          return this.optionPrev[index] == option[0]; // checkbox
-        }
-        return this.optionPrev[index]; // radio button
+        return this.optionPrev[index]
       }
       return option.length === 1 ? false : option[0];
     });
