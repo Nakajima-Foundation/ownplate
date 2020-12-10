@@ -1,6 +1,9 @@
 <template>
   <div>
-    <div class="align-center t-h6 c-text-black-disabled p-t-32 p-b-24">
+    <div
+      class="align-center is-size-3-tablet is-size-4-mobile c-text-black-disabled p-t-32 p-b-24"
+      style="line-height: 1.4; font-weight: bold;"
+    >
       ご利用頂いている<br />飲食店のみなさまの声
     </div>
 
@@ -23,9 +26,9 @@
               ><span class="highlight">無料</span>なのに<span class="highlight"
                 >売上集計</span
               >や<span class="highlight">リピーター有無</span
-              >も確認できる！お客さまにも注文しやすくなったとよろこばれています。<span
-                class="highlight"
-                >お心づけ</span
+              >も確認できる！お客さまにも<span class="highlight"
+                >注文しやすくなった</span
+              >とよろこばれています。<span class="highlight">お心づけ</span
               >を入力頂けるお客様が多いのもうれしいですね。</span
             >
 
@@ -47,7 +50,10 @@
         >
           <i class="material-icons c-text-black-disabled s-32">format_quote</i>
           <span class="highlight">営業時間外</span
-          >でもテイクアウト注文が受付られるようになって、お客さまからとてもよろこばれています。お店としても機会損失がなくなりました。夜中に次の日の注文が入っていたのは驚きです。
+          >でもテイクアウト注文が受付られるようになって、お客さまからとてもよろこばれています。お店としても<span
+            class="highlight"
+            >機会損失がなくなりました</span
+          >。夜中に次の日の注文が入っていたのは驚きです。
         </div>
       </div>
       <div class="column is-narrow w-16"></div>
@@ -110,9 +116,9 @@
           class="bg-ownplate-white m-t-8 r-16 p-t-16 p-l-24 p-r-24 p-b-16 t-body2"
         >
           <i class="material-icons c-text-black-disabled s-32">format_quote</i>
-          毎月の売上がエクセルで確認できて、記帳が楽になりました。日々の雑務を<span
+          毎月の売上がエクセルで確認できて、記帳が楽になりました。<span
             class="highlight"
-            >大幅に効率化</span
+            >日々の雑務を大幅に効率化</span
           >でき、万年人手不足の当店の大きなサポーターです！
         </div>
       </div>
