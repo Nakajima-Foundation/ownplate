@@ -69,7 +69,7 @@
                 v-for="(choice, index2) in option"
                 v-model="optionValues[index]"
                 :name="`${item.id}${index}`"
-                :native-value="choice"
+                :native-value="index2"
                 :key="index2"
               >{{ displayOption(choice) }}</b-radio>
             </div>
