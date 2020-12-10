@@ -210,11 +210,13 @@ export const getMenuObj = async (refRestaurant) => {
   return menuObj;
 };
 
-const regex = /\(\+[0-9\.]+\)/
+// const regex = /\((\+|\-)[0-9\.]+\)/
+const regex =  /\(((\+|\-)[0-9\.]+)\)/;
+
 const optionPrice = (option: string) => {
   const match = option.match(regex);
   if (match) {
-    return Number(match[0].slice(1, -1))
+    return Number(match[1]);
   }
   return 0;
 }
