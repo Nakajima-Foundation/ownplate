@@ -302,9 +302,25 @@ export default {
       const list = this.shopInfo.menuLists || [];
       return list;
     },
-    trimmedOptions() {
+    trimmedSelectedOptions() {
       return Object.keys(this.orders).reduce((ret, id) => {
         ret[id] = this.options[id];
+        return ret;
+      }, {});
+    },
+    postOptions() {
+      return Object.keys(this.trimmedSelectedOptions).reduce((ret, id) => {
+        ret[id] = (this.trimmedSelectedOptions[id]||[]).map((selectedOpt, key) => {
+          const opt = this.itemsObj[id].itemOptionCheckbox[key].split(",");
+          if (opt.length === 1) {
+            if (selectedOpt) {
+              return opt[0];
+            }
+          } else {
+            return opt[selectedOpt];
+          }
+          return "";
+        }).map(s => s.trim());
         return ret;
       }, {});
     },
@@ -347,7 +363,8 @@ export default {
     async goCheckout() {
       const order_data = {
         order: this.orders,
-        options: this.trimmedOptions,
+        options: this.postOptions,
+        rawOptions: this.trimmedSelectedOptions,
         status: order_status.new_order,
         uid: this.user.uid,
         phoneNumber: this.user.phoneNumber,
@@ -411,18 +428,7 @@ export default {
       this.orders = newObject;
     },
     didOptionValuesChange(eventArgs) {
-      const obj = {};
-      obj[eventArgs.id] = eventArgs.optionValues.map((option, index) => {
-        if (option === true) {
-          if (this.itemsObj[eventArgs.id].itemOptionCheckbox) {
-            return this.itemsObj[eventArgs.id].itemOptionCheckbox[index];
-          }
-        } else if (option === false) {
-          return "";
-        }
-        return option;
-      });
-      this.options = Object.assign({}, this.options, obj);
+      this.options = Object.assign({}, this.options, {[eventArgs.id]: eventArgs.optionValues});
       //console.log(this.options);
     }
   }
