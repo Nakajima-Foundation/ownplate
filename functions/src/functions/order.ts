@@ -282,10 +282,19 @@ export const wasOrderCreated = async (db, data: any, context) => {
       }
       const menu = menuObj[menuId];
       let price = menu.price;
-      const options = orderData.options[menuId];
-      options.forEach(option => {
-        price += Math.round(optionPrice(option) * multiple) / multiple;
-      });
+
+      const selectedOptionsRaw = orderData.rawOptions[menuId];
+      price = selectedOptionsRaw.reduce((tmp, selectedOpt, key) => {
+        const opt = menu.itemOptionCheckbox[key].split(",");
+        if (opt.length === 1) {
+          if (selectedOpt) {
+            return tmp + Math.round(optionPrice(opt[0]) * multiple) / multiple;
+          }
+        } else {
+          return tmp + Math.round(optionPrice(opt[selectedOpt]) * multiple) / multiple;
+        }
+        return tmp;
+      }, price);
 
       if (menu.tax === "alcohol") {
         alcohol_sub_total += (price * num);
