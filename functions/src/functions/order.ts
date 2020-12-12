@@ -270,7 +270,10 @@ export const wasOrderCreated = async (db, data: any, context) => {
     const newItems = {};
     Object.keys(orderData.order).map((menuId) => {
       newOrderData[menuId] = [];
-      newItems[menuId] = [];
+      newItems[menuId] = {};
+
+      const menu = menuObj[menuId];
+
       const numArray = Array.isArray(orderData.order[menuId]) ? orderData.order[menuId] : [orderData.order[menuId]];
       numArray.map((num, orderKey) => {
         //const num = orderData.order[menuId];
@@ -284,37 +287,35 @@ export const wasOrderCreated = async (db, data: any, context) => {
         if (num === 0) {
           return;
         }
-        const menu = menuObj[menuId];
-        let price = menu.price;
 
         const selectedOptionsRaw = orderData.rawOptions[menuId][orderKey];
-        price = selectedOptionsRaw.reduce((tmp, selectedOpt, key) => {
+        const price = selectedOptionsRaw.reduce((tmpPrice, selectedOpt, key) => {
           const opt = menu.itemOptionCheckbox[key].split(",");
           if (opt.length === 1) {
             if (selectedOpt) {
-              return tmp + Math.round(optionPrice(opt[0]) * multiple) / multiple;
+              return tmpPrice + Math.round(optionPrice(opt[0]) * multiple) / multiple;
             }
           } else {
-            return tmp + Math.round(optionPrice(opt[selectedOpt]) * multiple) / multiple;
+            return tmpPrice + Math.round(optionPrice(opt[selectedOpt]) * multiple) / multiple;
           }
-          return tmp;
-        }, price);
+          return tmpPrice;
+        }, menu.price);
         
         if (menu.tax === "alcohol") {
           alcohol_sub_total += (price * num);
         } else {
           food_sub_total += (price * num)
         }
-        const menuItem: any = { price: menu.price, itemName: menu.itemName };
-        if (menu.category1) {
-          menuItem.category1 = menu.category1;
-        }
-        if (menu.category2) {
-          menuItem.category2 = menu.category2;
-        }
         newOrderData[menuId].push(num);
-        newItems[menuId].push(menuItem);
       });
+      const menuItem: any = { price: menu.price, itemName: menu.itemName };
+      if (menu.category1) {
+        menuItem.category1 = menu.category1;
+      }
+      if (menu.category2) {
+        menuItem.category2 = menu.category2;
+      }
+      newItems[menuId] = menuItem;
     });
     
     // calculate price.
