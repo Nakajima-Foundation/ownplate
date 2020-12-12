@@ -158,7 +158,8 @@ export default {
     totalCount() {
       if (this.order.order) {
         return Object.keys(this.order.order).reduce((count, id) => {
-          return count + this.order.order[id];
+          const num = Array.isArray(this.order.order[id]) ? this.arraySum(this.order.order[id]) : this.order.order[id];
+          return count + num;
         }, 0);
       }
       return 0;
