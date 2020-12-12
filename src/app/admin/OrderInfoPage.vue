@@ -207,7 +207,7 @@
           <div class="m-l-24 m-r-24">
             <div class="m-t-24">
               <!-- Order Items -->
-              <ordered-item v-for="id in ids" :key="id" :item="items[id]" />
+              <ordered-item v-for="item in orderItems" :key="id" :item="item" />
             </div>
             <div class="m-t-24">
               <!-- Details -->
@@ -338,18 +338,21 @@ export default {
     },
     orderItems() {
       if (this.orderInfo.order && this.orderInfo.menuItems) {
-        return Object.keys(this.orderInfo.order).map(key => {
-          const num = this.orderInfo.order[key];
-          return {
-            item: this.orderInfo.menuItems[key],
-            count: num,
-            id: key,
-            options:
-              (this.orderInfo.options && this.orderInfo.options[key]) || []
-          };
-        });
+        return Object.keys(this.orderInfo.order).reduce((tmp, menuId) => {
+          const numArray = Array.isArray(this.orderInfo.order[menuId]) ? this.orderInfo.order[menuId] : [this.orderInfo.order[menuId]];
+          const opt = this.orderInfo.options && this.orderInfo.options[menuId] ? this.orderInfo.options[menuId] : null;
+          const optArray = Array.isArray(this.orderInfo.order[menuId]) ? this.orderInfo.options[menuId] || {} : {0:  this.orderInfo.options[menuId]}
+          Object.keys(numArray).map(numKey => {
+            tmp.push({
+              item: this.menuObj[menuId],
+              count: numArray[numKey],
+              id: menuId,
+              options: optArray[numKey],
+            });
+          });
+          return tmp;
+        }, []);
       }
-      return [];
     },
     timeOfEvents() {
       const mapping = Object.keys(timeEventMapping).reduce((tmp, key) => {
@@ -482,7 +485,8 @@ export default {
     specialRequest(key) {
       const options = this.orderInfo.options && this.orderInfo.options[key];
       if (options) {
-        console.log("***", options);
+
+          console.log("***", options);
         return options
           .filter(option => option)
           .map(option => this.displayOption(option))
