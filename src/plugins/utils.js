@@ -144,6 +144,9 @@ export default ({ app }) => {
       arraySum(arr) {
         return Object.values(arr||[0]).reduce((accumulator, currentValue) => accumulator + currentValue);
       },
+      arrayOrNumSum(arr) {
+        return Array.isArray(arr) ? this.arraySum(arr) : (arr || 0);
+      },
       getOrderItems(orderInfo, menuObj) {
         if (orderInfo.order && orderInfo.menuItems) {
           return Object.keys(orderInfo.order).reduce((tmp, menuId) => {
