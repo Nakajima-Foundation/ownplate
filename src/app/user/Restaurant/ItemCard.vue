@@ -63,15 +63,15 @@
           <div class="t-caption c-text-black-medium">{{$t('sitemenu.options')}}</div>
           <div v-for="(option, index) in options" :key="index" class="m-t-8">
             <div v-if="option.length === 1" class="field">
-              <b-checkbox v-model="optionValues[index]">{{ displayOption(option[0]) }}</b-checkbox>
+              <b-checkbox v-model="optionValues[quantityKey][index]">{{ displayOption(option[0]) }}</b-checkbox>
             </div>
             <div v-else class="field">
               <b-radio
                 v-for="(choice, index2) in option"
-                v-model="optionValues[index]"
-                :name="`${item.id}${index}`"
+                v-model="optionValues[quantityKey][index]"
+                :name="`${item.id}_${quantityKey}_${index}`"
                 :native-value="index2"
-                :key="index2"
+                :key="`${quantityKey}_${index2}`"
               >{{ displayOption(choice) }}</b-radio>
             </div>
           </div>
@@ -196,23 +196,30 @@ export default {
   },
   created() {
     //console.log("created", this.optionPrev);
-    this.optionValues = this.options.map((option, index) => {
-      if (
-        this.optionPrev &&
-        this.optionPrev.length > index &&
-        this.optionPrev[index]
-      ) {
-        return this.optionPrev[index]
-      }
-      return option.length === 1 ? false : option[0];
+    Object.keys(this.quantities).forEach((key) => {
+      const v = this.options.map((option, index) => {
+        if (
+          this.optionPrev && this.optionPrev[key] && 
+            this.optionPrev[key].length > index &&
+            this.optionPrev[key][index]
+        ) {
+          return this.optionPrev[key][index]
+        }
+        return option.length === 1 ? false : 0;
+      });
+      this.optionValues.push(v);
     });
   },
   watch: {
-    optionValues() {
-      this.$emit("didOptionValuesChange", {
-        id: this.item.id,
-        optionValues: this.optionValues
-      });
+    optionValues: {
+      handler: function(val) {
+        console.log("opt: " + JSON.stringify(val));
+        this.$emit("didOptionValuesChange", {
+          id: this.item.id,
+          optionValues: this.optionValues
+        });
+      },
+      deep: true,
     },
     openMenuFlag() {
       if (this.openMenuFlag && this.quantities[0] == 0) {
@@ -316,14 +323,23 @@ export default {
       newQuantities[key] = newValue;
       if (newQuantities[key] === 0 && newQuantities.length > 1) {
         newQuantities.splice(key, 1);
+
+        const newOP = [...this.optionValues];
+        newOP.splice(key, 1);
+        this.optionValues = newOP;
       }
       this.$emit("didQuantitiesChange", { id: this.item.id, quantities: newQuantities });
     },
     pushItem() {
+      this.optionValues.push(this.options.map((option, index) => {
+        return option.length === 1 ? false : 0;
+      }));
+
       const newQuantities = [...this.quantities];
       newQuantities.push(1);
       this.$emit("didQuantitiesChange", { id: this.item.id, quantities: newQuantities });
-    },
+
+    }
   }
 };
 </script>

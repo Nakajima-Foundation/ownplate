@@ -310,17 +310,19 @@ export default {
     },
     postOptions() {
       return Object.keys(this.trimmedSelectedOptions).reduce((ret, id) => {
-        ret[id] = (this.trimmedSelectedOptions[id]||[]).map((selectedOpt, key) => {
-          const opt = this.itemsObj[id].itemOptionCheckbox[key].split(",");
-          if (opt.length === 1) {
-            if (selectedOpt) {
-              return opt[0];
+        ret[id] = (this.trimmedSelectedOptions[id]||[]).map((item, k) => {
+          return item.map((selectedOpt, key) => {
+            const opt = this.itemsObj[id].itemOptionCheckbox[key].split(",");
+            if (opt.length === 1) {
+              if (selectedOpt) {
+                return opt[0];
+              }
+            } else {
+              return opt[selectedOpt];
             }
-          } else {
-            return opt[selectedOpt];
-          }
-          return "";
-        }).map(s => s.trim());
+            return "";
+          }).map(s => s.trim());
+        });
         return ret;
       }, {});
     },
