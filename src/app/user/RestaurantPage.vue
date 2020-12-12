@@ -362,11 +362,20 @@ export default {
         // this.isCheckingOut = false;
       }
     },
+    convOptionArray2Obj(obj) {
+      return Object.keys(obj).reduce((newObj, objKey) => {
+        newObj[objKey] = obj[objKey].reduce((tmp, value, key) => {
+          tmp[key] = value;
+          return tmp;
+        }, {});
+        return newObj
+      }, {});
+    },
     async goCheckout() {
       const order_data = {
         order: this.orders,
-        options: this.postOptions,
-        rawOptions: this.trimmedSelectedOptions,
+        options: this.convOptionArray2Obj(this.postOptions),
+        rawOptions: this.convOptionArray2Obj(this.trimmedSelectedOptions),
         status: order_status.new_order,
         uid: this.user.uid,
         phoneNumber: this.user.phoneNumber,
@@ -375,6 +384,7 @@ export default {
         timeCreated: firestore.FieldValue.serverTimestamp()
         // price never set here.
       };
+      // console.log(order_data);
       this.isCheckingOut = true;
       try {
         if (this.forcedError("checkout")) {
