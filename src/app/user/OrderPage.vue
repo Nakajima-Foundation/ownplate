@@ -419,24 +419,7 @@ export default {
       return this.orderInfo.status < order_status.cooking_completed;
     },
     orderItems() {
-      if (this.menuObj && this.orderInfo.order) {
-        return Object.keys(this.orderInfo.order).reduce((tmp, menuId) => {
-          const numArray = Array.isArray(this.orderInfo.order[menuId]) ? this.orderInfo.order[menuId] : [this.orderInfo.order[menuId]];
-          const opt = this.orderInfo.options && this.orderInfo.options[menuId] ? this.orderInfo.options[menuId] : null;
-          const optArray = Array.isArray(this.orderInfo.order[menuId]) ? this.orderInfo.options[menuId] || {} : {0:  this.orderInfo.options[menuId]}
-                
-          Object.keys(numArray).map(numKey => {
-            tmp.push({
-              item: this.menuObj[menuId],
-              count: numArray[numKey],
-              id: menuId,
-              options: optArray[numKey],
-            });
-          });
-          return tmp;
-        }, []);
-      }
-      return [];
+      return this.getOrderItems(this.orderInfo, this.menuObj);
     },
     orderId() {
       return this.$route.params.orderId;

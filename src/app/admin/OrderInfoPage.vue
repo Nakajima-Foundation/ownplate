@@ -207,7 +207,7 @@
           <div class="m-l-24 m-r-24">
             <div class="m-t-24">
               <!-- Order Items -->
-              <ordered-item v-for="item in orderItems" :key="id" :item="item" />
+              <ordered-item v-for="(item, id) in orderItems" :key="id" :item="item" />
             </div>
             <div class="m-t-24">
               <!-- Details -->
@@ -337,22 +337,7 @@ export default {
       return false;
     },
     orderItems() {
-      if (this.orderInfo.order && this.orderInfo.menuItems) {
-        return Object.keys(this.orderInfo.order).reduce((tmp, menuId) => {
-          const numArray = Array.isArray(this.orderInfo.order[menuId]) ? this.orderInfo.order[menuId] : [this.orderInfo.order[menuId]];
-          const opt = this.orderInfo.options && this.orderInfo.options[menuId] ? this.orderInfo.options[menuId] : null;
-          const optArray = Array.isArray(this.orderInfo.order[menuId]) ? this.orderInfo.options[menuId] || {} : {0:  this.orderInfo.options[menuId]}
-          Object.keys(numArray).map(numKey => {
-            tmp.push({
-              item: this.menuObj[menuId],
-              count: numArray[numKey],
-              id: menuId,
-              options: optArray[numKey],
-            });
-          });
-          return tmp;
-        }, []);
-      }
+      return this.getOrderItems(this.orderInfo, this.menuObj);
     },
     timeOfEvents() {
       const mapping = Object.keys(timeEventMapping).reduce((tmp, key) => {
@@ -416,12 +401,6 @@ export default {
     orderName() {
       return nameOfOrder(this.orderInfo);
     },
-    ids() {
-      return this.orderInfo.order ? Object.keys(this.orderInfo.order) : [];
-    },
-    count() {
-      return this.ids ? this.ids.length : 0;
-    },
     orderId() {
       return this.$route.params.orderId;
     },
@@ -430,16 +409,6 @@ export default {
         ? moment(this.orderInfo.timePlaced.toDate()).format("YYYY-MM-DD")
         : null;
       return `/admin/restaurants/${this.restaurantId()}/orders?day=${day}`;
-    },
-    items() {
-      return Object.keys(this.orderInfo.order).reduce((ret, id) => {
-        ret[id] = {
-          count: this.orderInfo.order[id],
-          option: this.specialRequest(id),
-          menu: this.menuObj[id] || {}
-        };
-        return ret;
-      }, {});
     },
     orderStates() {
       return this.shopOwner && !!this.shopOwner.hidePrivacy ?
@@ -469,9 +438,6 @@ export default {
       }
       return "";
     },
-    displayOption(option) {
-      return formatOption(option, price => this.$n(price, "currency"));
-    },
     isValidTransition(newStatus) {
       const newStatusValue = order_status[newStatus];
       return (
@@ -480,28 +446,13 @@ export default {
           newStatus !== "order_canceled")
       );
     },
-    // NOTE: Exact same code in the order/_orderId/index.vue for the user.
-    // This is intentional because we may want to present it differently to admins.
-    specialRequest(key) {
-      const options = this.orderInfo.options && this.orderInfo.options[key];
-      if (options) {
-
-          console.log("***", options);
-        return options
-          .filter(option => option)
-          .map(option => this.displayOption(option))
-          .join(", ");
-      }
-      return "";
-    },
     async handleStripe() {
-      const orderId = this.$route.params.orderId;
       //console.log("handleComplete with Stripe", orderId);
       try {
         this.updating = "ready_to_pickup";
         const { data } = await stripeConfirmIntent({
           restaurantId: this.restaurantId() + this.forcedError("confirm"),
-          orderId
+          orderId: this.orderId
         });
         console.log("confirm", data);
         this.$router.push(this.parentUrl);

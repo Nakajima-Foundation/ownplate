@@ -33,18 +33,12 @@ export default {
   },
   computed: {
     menu() {
-	return this.item.item;
+	    return this.item.item;
     },
     image() {
-      return (
-        (this.item.item.images?.item?.resizedImages || {})["600"] ||
-        this.item.item.itemPhoto
-      );
+      return (this.item.item.images?.item?.resizedImages || {})["600"] || this.item.item.itemPhoto;
     }
   },
-  mounted() {
-    //console.log(this.item.menu);
-  }
 };
 </script>
 
