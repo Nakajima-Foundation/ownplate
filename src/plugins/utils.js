@@ -141,6 +141,10 @@ export default ({ app }) => {
         }
         return {hidePrivacy: false};
       },
+      arraySum(arr) {
+        console.log(arr);
+        return Object.values(arr||[0]).reduce((accumulator, currentValue) => accumulator + currentValue);
+      },
     },
     computed: {
       defaultTitle() {

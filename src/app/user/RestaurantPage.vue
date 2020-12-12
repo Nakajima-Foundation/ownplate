@@ -76,7 +76,7 @@
                     <item-card
                       v-if="itemsObj[itemId]._dataType === 'menu'"
                       :item="itemsObj[itemId]"
-                      :count="orders[itemId] || 0"
+                      :count="orders[itemId] || [0]"
                       :optionPrev="optionsPrev[itemId]"
                       :initialOpenMenuFlag="(orders[itemId] || 0) > 0"
                       :shopInfo="shopInfo"
@@ -291,7 +291,7 @@ export default {
     },
     totalCount() {
       const ret = Object.keys(this.orders).reduce((total, id) => {
-        return total + this.orders[id];
+        return total + this.arraySum(this.orders[id]);
       }, 0);
       return ret;
     },
@@ -418,9 +418,10 @@ export default {
       }
     },
     didCountChange(eventArgs) {
+      console.log(eventArgs);
       // NOTE: We need to assign a new object to trigger computed properties
       const newObject = { ...this.orders };
-      if (eventArgs.count > 0) {
+      if (this.arraySum(eventArgs.count) > 0) {
         newObject[eventArgs.id] = eventArgs.count;
       } else {
         delete newObject[eventArgs.id];

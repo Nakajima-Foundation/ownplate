@@ -38,7 +38,7 @@
             </div>
 
             <!-- Add Button -->
-            <div @click.stop="pushCount" class="op-button-pill bg-primary-bg w-96 t-button">
+            <div @click.stop="pushCount(0)" class="op-button-pill bg-primary-bg w-96 t-button">
               <span>{{$t('sitemenu.add')}}</span>
             </div>
           </div>
@@ -58,6 +58,7 @@
         ></share-popup>
 
         <!-- Item Options -->
+        <template v-for="value, counterkey in count">
         <div v-if="hasOptions" class="m-t-8">
           <div class="t-caption c-text-black-medium">{{$t('sitemenu.options')}}</div>
           <div v-for="(option, index) in options" :key="index" class="m-t-8">
@@ -91,21 +92,23 @@
           <div class="level is-mobile m-t-8">
             <div class="level-left">
               <div
-                @click="pullCount"
+                @click="pullCount(counterkey)"
                 class="op-button-pill bg-status-red-bg w-96"
-                :disabled="count === 0"
+                :disabled="count[counterkey] === 0"
               >
                 <i class="material-icons c-status-red">remove</i>
               </div>
             </div>
-            <div class="t-h4 c-primary">{{ count }}</div>
+            <div class="t-h4 c-primary">{{ count[counterkey] }}</div>
             <div class="level-right">
-              <div @click="pushCount" class="op-button-pill bg-primary-bg w-96">
+              <div @click="pushCount(counterkey)" class="op-button-pill bg-primary-bg w-96">
                 <i class="material-icons">add</i>
               </div>
             </div>
           </div>
         </div>
+        <hr class="devider m-t-16 m-b-0" />
+        </template>
 
         <!-- Another Order with Different Options -->
         <div>
@@ -113,65 +116,10 @@
           <!-- # Show only "Add Another Order Button" first, then add "Another Order" section with the item count +1 when the button tapped.  -->
           <!-- # Once user removed the item to count 0, the "Another Order" section will be removed. -->
 
-          <!-- Another Order -->
-          <div>
-            <hr class="devider m-t-16 m-b-0" />
-            <!-- Item Options -->
-            <div v-if="hasOptions" class="m-t-16">
-              <div class="t-caption c-text-black-medium">{{$t('sitemenu.options')}}</div>
-              <div v-for="(option, index) in options" :key="index" class="m-t-8">
-                <div v-if="option.length === 1" class="field">
-                  <b-checkbox v-model="optionValues[index]">{{ option[0] }}</b-checkbox>
-                </div>
-                <div v-else class="field">
-                  <b-radio
-                    v-for="(choice, index2) in option"
-                    v-model="optionValues[index]"
-                    :name="`${item.id}${index}`"
-                    :native-value="choice"
-                    :key="index2"
-                  >{{ choice }}</b-radio>
-                </div>
-              </div>
-            </div>
-
-            <!-- Special instructions -->
-            <div v-if="false" class="m-t-16">
-              <div class="t-caption c-text-black-medium p-b-8">Special instructions</div>
-              <b-input type="textarea" placeholder="Enter special instructions here."></b-input>
-              <div
-                class="t-caption c-text-black-medium m-l-16 m-r-16 m-t-8"
-              >Please note that special requests may result in price adjustment after your order is processed.</div>
-            </div>
-
-            <!-- Item Quantity -->
-            <div class="m-t-16">
-              <div class="t-caption c-text-black-medium">{{$t('sitemenu.quantity')}}</div>
-              <div class="level is-mobile m-t-8">
-                <div class="level-left">
-                  <div
-                    @click="pullCount"
-                    class="op-button-pill bg-status-red-bg w-96"
-                    :disabled="count === 0"
-                  >
-                    <i class="material-icons c-status-red">remove</i>
-                  </div>
-                </div>
-                <div class="t-h4 c-primary">{{ count }}</div>
-                <div class="level-right">
-                  <div @click="pushCount" class="op-button-pill bg-primary-bg w-96">
-                    <i class="material-icons">add</i>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
           <!-- Add Another Order Button -->
-          <div>
-            <hr class="devider m-t-16 m-b-0" />
+          <div v-if="totalQuantity > 0">
             <div class="align-center m-t-16">
-              <div class="op-button-pill bg-form">
+              <div @click="pushItem" class="op-button-pill bg-form">
                 <i class="material-icons">add</i>
                 <span class="t-button">{{$t('sitemenu.addDifferentOptionsItem')}}</span>
               </div>
@@ -196,6 +144,12 @@ import Price from "~/components/Price";
 import SharePopup from "~/app/user/Restaurant/SharePopup";
 import { formatOption } from "~/plugins/strings.js";
 
+// menu UI algorithm
+//   init quantities = [0]
+//   if sum(quantities) > 0, show button
+//   if button push, quantities.push(1)
+//   when update quantities, if there is 0 element in quantities and quantities.size > 0, filter 0 element in quantities.
+    
 export default {
   components: {
     Price,
@@ -211,7 +165,7 @@ export default {
       required: true
     },
     count: {
-      type: Number,
+      type: Array,
       required: true
     },
     initialOpenMenuFlag: {
@@ -261,13 +215,16 @@ export default {
       });
     },
     openMenuFlag() {
-      if (this.openMenuFlag && this.count == 0) {
+      if (this.openMenuFlag && this.count[0] == 0) {
         // this.setCount(this.count + 1);
         this.setCount(this.count + 0); // Only by tapping "Add" will do both open card and add item.
       }
     }
   },
   computed: {
+    totalQuantity() {
+      return this.arraySum(this.count);
+    },
     allergensDescription() {
       return (
         this.$t("allergens.title") +
@@ -309,6 +266,9 @@ export default {
     cardStyle() {
       return this.count > 0 ? { border: "solid 2px #0097a7" } : {};
     },
+    loopNumber() {
+      return this.count;
+    },
     price() {
       return Number(this.item.price || 0);
     },
@@ -337,14 +297,14 @@ export default {
       this.imagePopup = false;
       // this.$router.replace("/r/" + this.restaurantId());
     },
-    pullCount() {
-      if (this.count <= 0) {
+    pullCount(key) {
+      if (this.count[key] <= 0) {
         return;
       }
-      this.setCount(this.count - 1);
+      this.setCount(key, this.count[key] - 1);
     },
-    pushCount() {
-      this.setCount(this.count + 1);
+    pushCount(key) {
+      this.setCount(key, this.count[key] + 1);
       if (!this.openMenuFlag) {
         this.toggleMenuFlag();
       }
@@ -352,9 +312,19 @@ export default {
     toggleMenuFlag() {
       this.openMenuFlag = !this.openMenuFlag;
     },
-    setCount(newValue) {
-      this.$emit("didCountChange", { id: this.item.id, count: newValue });
-    }
+    setCount(key, newValue) {
+      const newCount = [...this.count];
+      newCount[key] = newValue;
+      if (newCount[key] === 0 && newCount.length > 1) {
+        newCount.splice(key, 1);
+      }
+      this.$emit("didCountChange", { id: this.item.id, count: newCount });
+    },
+    pushItem() {
+      const newCount = [...this.count];
+      newCount.push(1);
+      this.$emit("didCountChange", { id: this.item.id, count: newCount });
+    },
   }
 };
 </script>
