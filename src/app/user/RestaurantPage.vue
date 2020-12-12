@@ -76,12 +76,12 @@
                     <item-card
                       v-if="itemsObj[itemId]._dataType === 'menu'"
                       :item="itemsObj[itemId]"
-                      :count="orders[itemId] || [0]"
+                      :quantities="orders[itemId] || [0]"
                       :optionPrev="optionsPrev[itemId]"
                       :initialOpenMenuFlag="(orders[itemId] || 0) > 0"
                       :shopInfo="shopInfo"
                       :isOpen="menuId === itemId"
-                      @didCountChange="didCountChange($event)"
+                      @didQuantitiesChange="didQuantitiesChange($event)"
                       @didOptionValuesChange="didOptionValuesChange($event)"
                     ></item-card>
                   </div>
@@ -110,7 +110,7 @@
       <b-button
         class="b-reset op-button-large primary"
         style="width: 288px; position: fixed; bottom: 32px; left: 50%; margin-left: -144px;"
-        v-if="0 != totalCount"
+        v-if="0 != totalQuantities"
         :loading="isCheckingOut"
         :disabled="isCheckingOut || noPaymentMethod || noAvailableTime"
         @click="handleCheckOut"
@@ -125,7 +125,7 @@
           <template v-else="!noPaymentMethod">
             <div class="flex-1 align-left c-onprimary m-r-16">
               {{
-              $tc("sitemenu.orderCounter", totalCount, { count: totalCount })
+              $tc("sitemenu.orderCounter", totalQuantities, { count: totalQuantities })
               }}
             </div>
             <div class="m-r-8 c-onprimary">{{ $t("sitemenu.checkout") }}</div>
@@ -289,7 +289,7 @@ export default {
     uid() {
       return this.$store.getters.uid;
     },
-    totalCount() {
+    totalQuantities() {
       const ret = Object.keys(this.orders).reduce((total, id) => {
         return total + this.arraySum(this.orders[id]);
       }, 0);
@@ -417,12 +417,11 @@ export default {
         this.isCheckingOut = false;
       }
     },
-    didCountChange(eventArgs) {
-      console.log(eventArgs);
+    didQuantitiesChange(eventArgs) {
       // NOTE: We need to assign a new object to trigger computed properties
       const newObject = { ...this.orders };
-      if (this.arraySum(eventArgs.count) > 0) {
-        newObject[eventArgs.id] = eventArgs.count;
+      if (this.arraySum(eventArgs.quantities) > 0) {
+        newObject[eventArgs.id] = eventArgs.quantities;
       } else {
         delete newObject[eventArgs.id];
       }

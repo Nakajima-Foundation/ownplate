@@ -38,7 +38,7 @@
             </div>
 
             <!-- Add Button -->
-            <div @click.stop="pushCount(0)" class="op-button-pill bg-primary-bg w-96 t-button">
+            <div @click.stop="pushQuantities(0)" class="op-button-pill bg-primary-bg w-96 t-button">
               <span>{{$t('sitemenu.add')}}</span>
             </div>
           </div>
@@ -58,7 +58,7 @@
         ></share-popup>
 
         <!-- Item Options -->
-        <template v-for="value, counterkey in count">
+        <template v-for="value, quantityKey in quantities">
         <div v-if="hasOptions" class="m-t-8">
           <div class="t-caption c-text-black-medium">{{$t('sitemenu.options')}}</div>
           <div v-for="(option, index) in options" :key="index" class="m-t-8">
@@ -92,16 +92,16 @@
           <div class="level is-mobile m-t-8">
             <div class="level-left">
               <div
-                @click="pullCount(counterkey)"
+                @click="pullQuantities(quantityKey)"
                 class="op-button-pill bg-status-red-bg w-96"
-                :disabled="count[counterkey] === 0"
+                :disabled="quantities[quantityKey] === 0"
               >
                 <i class="material-icons c-status-red">remove</i>
               </div>
             </div>
-            <div class="t-h4 c-primary">{{ count[counterkey] }}</div>
+            <div class="t-h4 c-primary">{{ quantities[quantityKey] }}</div>
             <div class="level-right">
-              <div @click="pushCount(counterkey)" class="op-button-pill bg-primary-bg w-96">
+              <div @click="pushQuantities(quantityKey)" class="op-button-pill bg-primary-bg w-96">
                 <i class="material-icons">add</i>
               </div>
             </div>
@@ -113,8 +113,8 @@
         <!-- Another Order with Different Options -->
         <div>
           <!-- # Enable this section If "hasOptions" and more than one order in the default section above. -->
-          <!-- # Show only "Add Another Order Button" first, then add "Another Order" section with the item count +1 when the button tapped.  -->
-          <!-- # Once user removed the item to count 0, the "Another Order" section will be removed. -->
+          <!-- # Show only "Add Another Order Button" first, then add "Another Order" section with the item quantities +1 when the button tapped.  -->
+          <!-- # Once user removed the item to quantities 0, the "Another Order" section will be removed. -->
 
           <!-- Add Another Order Button -->
           <div v-if="totalQuantity > 0">
@@ -164,7 +164,7 @@ export default {
       type: Object,
       required: true
     },
-    count: {
+    quantities: {
       type: Array,
       required: true
     },
@@ -215,15 +215,14 @@ export default {
       });
     },
     openMenuFlag() {
-      if (this.openMenuFlag && this.count[0] == 0) {
-        // this.setCount(this.count + 1);
-        this.setCount(this.count + 0); // Only by tapping "Add" will do both open card and add item.
+      if (this.openMenuFlag && this.quantities[0] == 0) {
+        this.setQuantities(this.quantities + 0); // Only by tapping "Add" will do both open card and add item.
       }
     }
   },
   computed: {
     totalQuantity() {
-      return this.arraySum(this.count);
+      return this.arraySum(this.quantities);
     },
     allergensDescription() {
       return (
@@ -264,10 +263,10 @@ export default {
       return this.options.length;
     },
     cardStyle() {
-      return this.count > 0 ? { border: "solid 2px #0097a7" } : {};
+      return this.quantities > 0 ? { border: "solid 2px #0097a7" } : {};
     },
     loopNumber() {
-      return this.count;
+      return this.quantities;
     },
     price() {
       return Number(this.item.price || 0);
@@ -297,14 +296,14 @@ export default {
       this.imagePopup = false;
       // this.$router.replace("/r/" + this.restaurantId());
     },
-    pullCount(key) {
-      if (this.count[key] <= 0) {
+    pullQuantities(key) {
+      if (this.quantities[key] <= 0) {
         return;
       }
-      this.setCount(key, this.count[key] - 1);
+      this.setQuantities(key, this.quantities[key] - 1);
     },
-    pushCount(key) {
-      this.setCount(key, this.count[key] + 1);
+    pushQuantities(key) {
+      this.setQuantities(key, this.quantities[key] + 1);
       if (!this.openMenuFlag) {
         this.toggleMenuFlag();
       }
@@ -312,18 +311,18 @@ export default {
     toggleMenuFlag() {
       this.openMenuFlag = !this.openMenuFlag;
     },
-    setCount(key, newValue) {
-      const newCount = [...this.count];
-      newCount[key] = newValue;
-      if (newCount[key] === 0 && newCount.length > 1) {
-        newCount.splice(key, 1);
+    setQuantities(key, newValue) {
+      const newQuantities = [...this.quantities];
+      newQuantities[key] = newValue;
+      if (newQuantities[key] === 0 && newQuantities.length > 1) {
+        newQuantities.splice(key, 1);
       }
-      this.$emit("didCountChange", { id: this.item.id, count: newCount });
+      this.$emit("didQuantitiesChange", { id: this.item.id, quantities: newQuantities });
     },
     pushItem() {
-      const newCount = [...this.count];
-      newCount.push(1);
-      this.$emit("didCountChange", { id: this.item.id, count: newCount });
+      const newQuantities = [...this.quantities];
+      newQuantities.push(1);
+      this.$emit("didQuantitiesChange", { id: this.item.id, quantities: newQuantities });
     },
   }
 };
