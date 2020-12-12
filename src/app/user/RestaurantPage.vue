@@ -290,8 +290,8 @@ export default {
       return this.$store.getters.uid;
     },
     totalQuantities() {
-      const ret = Object.keys(this.orders).reduce((total, id) => {
-        return total + this.arraySum(this.orders[id]);
+      const ret = Object.values(this.orders).reduce((total, order) => {
+        return total + this.arraySum(order);
       }, 0);
       return ret;
     },

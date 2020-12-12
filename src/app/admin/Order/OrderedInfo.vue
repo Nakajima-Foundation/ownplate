@@ -157,14 +157,12 @@ export default {
     },
     totalCount() {
       if (this.order.order) {
-        return Object.keys(this.order.order).reduce((count, id) => {
-          const num = Array.isArray(this.order.order[id]) ? this.arraySum(this.order.order[id]) : this.order.order[id];
-          return count + num;
+        return Object.values(this.order.order).reduce((count, order) => {
+          return count + this.arrayOrNumSum(order);
         }, 0);
       }
       return 0;
     }
   },
-  mounted() {}
 };
 </script>
