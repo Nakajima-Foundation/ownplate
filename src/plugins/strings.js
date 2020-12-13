@@ -27,7 +27,6 @@ export const convPrice = (priceStr) => {
   return Number(priceStr.replace(/ー/g, '-').replace(/＋/g, '+'));
 };
 
-// TODO: don't convert +-. 
 export const halfCharactors = (str) => {
   return str.replace(/[（）Ａ-Ｚａ-ｚ０-９]/g, (s) => {
     return String.fromCharCode(s.charCodeAt(0) - 65248);
