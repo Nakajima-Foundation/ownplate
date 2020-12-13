@@ -1,7 +1,7 @@
 <template>
   <div>
     <div
-      class="align-center is-size-3-tablet is-size-5-mobile c-text-black-disabled p-t-32"
+      class="align-center is-size-3-tablet is-size-5-mobile c-text-black-disabled p-t-48"
       style="line-height: 1.4; font-weight: bold;"
     >
       わたしたちが運営しています！

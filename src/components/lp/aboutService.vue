@@ -8,9 +8,21 @@
         <div class="columns is-gaplress">
           <div class="column is-three-fifths is-offset-one-fifth">
             <div class="m-l-24 m-r-24">
+              <!-- Title -->
+              <div
+                class="align-center is-size-3-tablet is-size-5-mobile c-text-black-disabled p-t-48"
+                style="line-height: 1.4; font-weight: bold;"
+              >
+                <div v-if="!isLocaleJapan">
+                  About
+                </div>
+                <div v-else>
+                  このサービスについて
+                </div>
+              </div>
+
               <!-- English -->
               <div v-if="!isLocaleJapan">
-                <div class="t-h6 c-text-black-disabled m-t-48">About</div>
                 <div class="t-body1 c-text-black-high m-t-24">
                   The COVID-19 has not only claimed the lives of many people,
                   but it has also caused significant damage to the economy. In
@@ -33,20 +45,12 @@
                 <div class="t-body1 c-text-black-high m-t-24">
                   We, Singularity Society, is a non-profit organization,
                   consists of software engineers, designers and business people.
-                  We are building
-                  {{ $t("serviceName." + this.serviceKey) }} with Firebase
-                  (Google) + Vue (open source), which allows us to develop this
-                  service in a very short period of time.
                 </div>
                 <div class="t-body1 c-text-black-high m-t-24">Sincerely,</div>
-                <div
-                  class="t-body1 c-text-black-high m-t-24"
-                >Satoshi Nakajima, chairman of Singularity Society</div>
               </div>
 
               <!-- Japanese -->
               <div v-else>
-                <div class="t-h6 c-text-black-disabled m-t-48">このサービスについて</div>
                 <div class="t-body1 c-text-black-high m-t-24">
                   新型コロナウィルスは、多くの人の命を奪っただけではなく、経済にも大きなダメージを与えました。
                   特に、「人の集まる場所」を提供するレストランやバーは、都市封鎖や自宅待機により直接的な被害を被り、
@@ -54,19 +58,29 @@
                 </div>
                 <div class="t-body1 c-text-black-high m-t-24">
                   私たちは、そんなレストランやバーを支援するために、「{{
-                  $t("serviceName." + this.serviceKey)
+                    $t("serviceName." + this.serviceKey)
                   }}」を作りました。 「{{
-                  $t("serviceName." + this.serviceKey)
+                    $t("serviceName." + this.serviceKey)
                   }}」を使えば、レストランは、余計な手数料なしでテイクアウトサービスを始める事ができます。
                   レストランは、専用のページを作り、そこにメニューを登録します（ウェブ・コンサルタントを雇う必要はありません）。
                   顧客はそのページから注文し、支払いを済ませ、調理時間に合わせて店に取りに行くのです。
                 </div>
                 <div class="t-body1 c-text-black-high m-t-24">
                   シンギュラリティ・ソサエティは、技術の進歩により大きく変わろうとしている世の中に向けた活動をするNPO（非営利型一般社団法人）です。
-                  「おもちかえり.com」は、Firebase と Vue
-                  という技術を使って作られています。
                 </div>
-                <div class="t-body1 c-text-black-high m-t-24">代表理事 中島聡</div>
+              </div>
+
+              <!-- Profile -->
+              <div class="align-center p-t-24 p-b-24">
+                <img src="/Profile-SNakajima.jpg" class="w-128 r-256" />
+                <div class="align-center t-body1 c-text-black-high p-t-8">
+                  <div v-if="!isLocaleJapan">
+                    Satoshi Nakajima<br />Chairman of Singularity Society
+                  </div>
+                  <div v-else>
+                    シンギュラリティ・ソサエティ<br />代表理事 中島聡
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -78,6 +92,5 @@
   </div>
 </template>
 <script>
-export default {
-}
+export default {};
 </script>
