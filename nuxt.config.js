@@ -119,6 +119,7 @@ export default {
         "@babel/plugin-proposal-optional-chaining"
       ]
     },
-    vendor: ["babel-polyfill"]
+    vendor: ["babel-polyfill"],
+    terser: false,
   }
 };
