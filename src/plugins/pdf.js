@@ -23,10 +23,10 @@ const A4ContentWidth = A4width - A4MarginHorizontal;
 
 const pdfFont = {
   NotoSans: {
-    normal: fontHost + 'NotoSansCJKjp-Regular.ttf',
-    bold: fontHost + 'NotoSansCJKjp-Bold.ttf',
-    italics: fontHost + 'NotoSansCJKjp-Regular.ttf',
-    bolditalics: fontHost + 'NotoSansCJKjp-Bold.ttf'
+    normal: fontHost + 'NotoSansCJKjp-Regular.min.ttf',
+    bold: fontHost + 'NotoSansCJKjp-Bold.min.ttf',
+    italics: fontHost + 'NotoSansCJKjp-Regular.min.ttf',
+    bolditalics: fontHost + 'NotoSansCJKjp-Bold.min.ttf'
   },
 };
 
@@ -69,6 +69,53 @@ export const download = (restaurantInfo, menuObj, nationalPhoneNumber, shareUrl)
     logo: location.protocol + "//" + location.host + '/OwnPlate-Logo-Stack-YellowBlack.png',
     menu: location.protocol + "//" + location.host + '/no_image.jpg',
   };
+
+  
+  const linkbodys = ["注文: " + shareUrl];
+  if (restaurantInfo.url) {
+    linkbodys.push("ホームページ:" + restaurantInfo.url);
+  }
+  const qrCodeBody = [
+    [
+      tableOrangeElement,
+      tableOrangeElement,
+      tableOrangeElement,
+    ],
+    [{
+      border: [false, false, false, false],
+      text: convChar('ネットでオーダーできるテイクアウトサービスをはじめました！\nこちらのQRコード↓↓↓↓↓からご注文できます！'),
+      alignment: 'center',
+      fillColor: "#FCC03D",
+      colSpan: 3,
+      lineHeight: 1.3,
+    }],
+    [
+      tableOrangeElement,
+      {
+        border: [false, false, false, false],
+        alignment: 'center', 
+        qr: shareUrl,
+        eccLevel: "H",
+        fit: 75,
+      },
+      tableOrangeElement,
+    ],
+    [{
+      border: [false, false, false, false],
+      text: linkbodys.join("\n"),
+      fontSize: 8,
+      alignment: 'center',
+      fillColor: "#FCC03D",
+      colSpan: 3,
+      lineHeight: 1.3,
+    }],
+    [
+      tableOrangeElement,
+      tableOrangeElement,
+      tableOrangeElement,
+    ],
+  ];    
+  
   const content = [
     { image: "headerLogo",
       width: (A4ContentWidth) / 4,
@@ -127,37 +174,7 @@ export const download = (restaurantInfo, menuObj, nationalPhoneNumber, shareUrl)
       table: {
         headerRows: 0,
         widths: [ '*', 55, '*' ],
-        body: [
-          [
-            tableOrangeElement,
-            tableOrangeElement,
-            tableOrangeElement,
-          ],
-          [{
-            border: [false, false, false, false],
-            text: convChar('ネットでオーダーできるテイクアウトサービスをはじめました！\nこちらのQRコード↓↓↓↓↓からご注文できます！'),
-            alignment: 'center',
-            fillColor: "#FCC03D",
-            colSpan: 3,
-            lineHeight: 1.3,
-          }],
-          [
-            tableOrangeElement,
-            {
-              border: [false, false, false, false],
-              alignment: 'center', 
-              qr: shareUrl,
-              eccLevel: "H",
-              fit: 75,
-            },
-            tableOrangeElement,
-          ],
-          [
-            tableOrangeElement,
-            tableOrangeElement,
-            tableOrangeElement,
-          ]
-        ]
+        body: qrCodeBody
       },
       style: 'centerMenu',
     },
