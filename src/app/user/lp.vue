@@ -4,14 +4,15 @@
     <entrance-buttons />
     <userVoices />
     <!-- <moreButton /> -->
-    <threeSteps />
-    <askButtons />
-    <communityIcons />
-    <mediaLink />
+    <!-- <threeSteps /> -->
+    <!-- <askButtons /> -->
+    <!-- <communityIcons /> -->
+    <!-- <mediaLink /> -->
     <operators />
     <aboutService />
-    <askButtons />
-    <news />
+    <entrance-buttons />
+    <!-- <askButtons /> -->
+    <!-- <news /> -->
 
     <!-- Home Body Area -->
   </div>
