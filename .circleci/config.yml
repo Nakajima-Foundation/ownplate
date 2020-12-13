@@ -20,7 +20,7 @@ jobs:
             - run: ./node_modules/.bin/firebase deploy --token=$FIREBASE_TOKEN --project=staging --only hosting
             - run: ./node_modules/.bin/firebase deploy --token=$FIREBASE_TOKEN --project=staging --only firestore:rules
             - run: cd functions && npm install && ../node_modules/.bin/firebase deploy --token=$FIREBASE_TOKEN --project=staging --only functions
-
+            - run: SLACKURL=$SLACKURL sh ./utils/buildbot.sh
 workflows:
     version: 2.1
     build-and-test:
