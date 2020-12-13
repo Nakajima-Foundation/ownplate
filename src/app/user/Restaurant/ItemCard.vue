@@ -38,7 +38,7 @@
             </div>
 
             <!-- Add Button -->
-            <div @click.stop="pushCount" class="op-button-pill bg-primary-bg w-96 t-button">
+            <div @click.stop="pushQuantities(0)" class="op-button-pill bg-primary-bg w-96 t-button">
               <span>{{$t('sitemenu.add')}}</span>
             </div>
           </div>
@@ -58,19 +58,20 @@
         ></share-popup>
 
         <!-- Item Options -->
+        <template v-for="value, quantityKey in quantities">
         <div v-if="hasOptions" class="m-t-8">
           <div class="t-caption c-text-black-medium">{{$t('sitemenu.options')}}</div>
           <div v-for="(option, index) in options" :key="index" class="m-t-8">
             <div v-if="option.length === 1" class="field">
-              <b-checkbox v-model="optionValues[index]">{{ displayOption(option[0]) }}</b-checkbox>
+              <b-checkbox v-model="optionValues[quantityKey][index]">{{ displayOption(option[0]) }}</b-checkbox>
             </div>
             <div v-else class="field">
               <b-radio
                 v-for="(choice, index2) in option"
-                v-model="optionValues[index]"
-                :name="`${item.id}${index}`"
+                v-model="optionValues[quantityKey][index]"
+                :name="`${item.id}_${quantityKey}_${index}`"
                 :native-value="index2"
-                :key="index2"
+                :key="`${quantityKey}_${index2}`"
               >{{ displayOption(choice) }}</b-radio>
             </div>
           </div>
@@ -91,17 +92,36 @@
           <div class="level is-mobile m-t-8">
             <div class="level-left">
               <div
-                @click="pullCount"
+                @click="pullQuantities(quantityKey)"
                 class="op-button-pill bg-status-red-bg w-96"
-                :disabled="count === 0"
+                :disabled="quantities[quantityKey] === 0"
               >
                 <i class="material-icons c-status-red">remove</i>
               </div>
             </div>
-            <div class="t-h4 c-primary">{{ count }}</div>
+            <div class="t-h4 c-primary">{{ quantities[quantityKey] }}</div>
             <div class="level-right">
-              <div @click="pushCount" class="op-button-pill bg-primary-bg w-96">
+              <div @click="pushQuantities(quantityKey)" class="op-button-pill bg-primary-bg w-96">
                 <i class="material-icons">add</i>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr class="devider m-t-16 m-b-0" />
+        </template>
+
+        <!-- Another Order with Different Options -->
+        <div>
+          <!-- # Enable this section If "hasOptions" and more than one order in the default section above. -->
+          <!-- # Show only "Add Another Order Button" first, then add "Another Order" section with the item quantities +1 when the button tapped.  -->
+          <!-- # Once user removed the item to quantities 0, the "Another Order" section will be removed. -->
+
+          <!-- Add Another Order Button -->
+          <div v-if="totalQuantity > 0">
+            <div class="align-center m-t-16">
+              <div @click="pushItem" class="op-button-pill bg-form">
+                <i class="material-icons">add</i>
+                <span class="t-button">{{$t('sitemenu.addDifferentOptionsItem')}}</span>
               </div>
             </div>
           </div>
@@ -124,6 +144,12 @@ import Price from "~/components/Price";
 import SharePopup from "~/app/user/Restaurant/SharePopup";
 import { formatOption } from "~/plugins/strings.js";
 
+// menu UI algorithm
+//   init quantities = [0]
+//   if sum(quantities) > 0, show button
+//   if button push, quantities.push(1)
+//   when update quantities, if there is 0 element in quantities and quantities.size > 0, filter 0 element in quantities.
+    
 export default {
   components: {
     Price,
@@ -138,8 +164,8 @@ export default {
       type: Object,
       required: true
     },
-    count: {
-      type: Number,
+    quantities: {
+      type: Array,
       required: true
     },
     initialOpenMenuFlag: {
@@ -170,32 +196,41 @@ export default {
   },
   created() {
     //console.log("created", this.optionPrev);
-    this.optionValues = this.options.map((option, index) => {
-      if (
-        this.optionPrev &&
-        this.optionPrev.length > index &&
-        this.optionPrev[index]
-      ) {
-        return this.optionPrev[index]
-      }
-      return option.length === 1 ? false : option[0];
+    Object.keys(this.quantities).forEach((key) => {
+      const v = this.options.map((option, index) => {
+        if (
+          this.optionPrev && this.optionPrev[key] && 
+            this.optionPrev[key].length > index &&
+            this.optionPrev[key][index]
+        ) {
+          return this.optionPrev[key][index]
+        }
+        return option.length === 1 ? false : 0;
+      });
+      this.optionValues.push(v);
     });
   },
   watch: {
-    optionValues() {
-      this.$emit("didOptionValuesChange", {
-        id: this.item.id,
-        optionValues: this.optionValues
-      });
+    optionValues: {
+      handler: function(val) {
+        console.log("opt: " + JSON.stringify(val));
+        this.$emit("didOptionValuesChange", {
+          id: this.item.id,
+          optionValues: this.optionValues
+        });
+      },
+      deep: true,
     },
     openMenuFlag() {
-      if (this.openMenuFlag && this.count == 0) {
-        // this.setCount(this.count + 1);
-        this.setCount(this.count + 0); // Only by tapping "Add" will do both open card and add item.
+      if (this.openMenuFlag && this.quantities[0] == 0) {
+        this.setQuantities(this.quantities + 0); // Only by tapping "Add" will do both open card and add item.
       }
     }
   },
   computed: {
+    totalQuantity() {
+      return this.arraySum(this.quantities);
+    },
     allergensDescription() {
       return (
         this.$t("allergens.title") +
@@ -235,7 +270,10 @@ export default {
       return this.options.length;
     },
     cardStyle() {
-      return this.count > 0 ? { border: "solid 2px #0097a7" } : {};
+      return this.quantities > 0 ? { border: "solid 2px #0097a7" } : {};
+    },
+    loopNumber() {
+      return this.quantities;
     },
     price() {
       return Number(this.item.price || 0);
@@ -265,14 +303,14 @@ export default {
       this.imagePopup = false;
       // this.$router.replace("/r/" + this.restaurantId());
     },
-    pullCount() {
-      if (this.count <= 0) {
+    pullQuantities(key) {
+      if (this.quantities[key] <= 0) {
         return;
       }
-      this.setCount(this.count - 1);
+      this.setQuantities(key, this.quantities[key] - 1);
     },
-    pushCount() {
-      this.setCount(this.count + 1);
+    pushQuantities(key) {
+      this.setQuantities(key, this.quantities[key] + 1);
       if (!this.openMenuFlag) {
         this.toggleMenuFlag();
       }
@@ -280,8 +318,27 @@ export default {
     toggleMenuFlag() {
       this.openMenuFlag = !this.openMenuFlag;
     },
-    setCount(newValue) {
-      this.$emit("didCountChange", { id: this.item.id, count: newValue });
+    setQuantities(key, newValue) {
+      const newQuantities = [...this.quantities];
+      newQuantities[key] = newValue;
+      if (newQuantities[key] === 0 && newQuantities.length > 1) {
+        newQuantities.splice(key, 1);
+
+        const newOP = [...this.optionValues];
+        newOP.splice(key, 1);
+        this.optionValues = newOP;
+      }
+      this.$emit("didQuantitiesChange", { id: this.item.id, quantities: newQuantities });
+    },
+    pushItem() {
+      this.optionValues.push(this.options.map((option, index) => {
+        return option.length === 1 ? false : 0;
+      }));
+
+      const newQuantities = [...this.quantities];
+      newQuantities.push(1);
+      this.$emit("didQuantitiesChange", { id: this.item.id, quantities: newQuantities });
+
     }
   }
 };

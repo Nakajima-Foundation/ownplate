@@ -419,19 +419,7 @@ export default {
       return this.orderInfo.status < order_status.cooking_completed;
     },
     orderItems() {
-      if (this.menuObj && this.orderInfo.order) {
-        return Object.keys(this.orderInfo.order).map(key => {
-          const num = this.orderInfo.order[key];
-          return {
-            item: this.menuObj[key],
-            count: num,
-            id: key,
-            options:
-              (this.orderInfo.options && this.orderInfo.options[key]) || []
-          };
-        });
-      }
-      return [];
+      return this.getOrderItems(this.orderInfo, this.menuObj);
     },
     orderId() {
       return this.$route.params.orderId;
