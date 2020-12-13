@@ -223,6 +223,10 @@ export const customRoutes = [
     component: "trace/Record.vue"
   },
   {
+    path: "/l/:urlKey",
+    component: "docs/link.vue"
+  },
+  {
     path: "*",
     component: "common/404.vue"
   }
