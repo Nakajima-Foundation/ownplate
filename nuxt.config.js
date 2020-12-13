@@ -120,6 +120,8 @@ export default {
       ]
     },
     vendor: ["babel-polyfill"],
-    terser: false,
+    terser: {
+      parallel: false
+    }
   }
 };
