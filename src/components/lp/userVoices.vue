@@ -32,9 +32,27 @@
               >を入力頂けるお客様が多いのもうれしいですね。</span
             >
 
-            <div class="t-subtitle2 m-t-16 c-text-black-disabled">
+            <div class="t-subtitle2 m-t-16 c-text-black-disabled p-b-24">
               新潟県 『サンドしないサンド＜かつ＞ 板谷様
             </div>
+          </div>
+          <div class="column is-narrow w-24"></div>
+          <div class="column is-narrow align-center">
+            <a
+              href="https://www.youtube.com/watch?v=gtpoZICprRo"
+              target="_blank"
+            >
+              <div>
+                <img
+                  src="/LP-UserVoice-Video-1.jpg"
+                  class="r-8 w-256 touchable"
+                />
+              </div>
+              <div class="op-button-small">
+                <i class="material-icons c-primary s-24">play_circle_filled</i>
+                <div class="m-l-4 t-button c-primary">動画を再生</div>
+              </div>
+            </a>
           </div>
         </div>
       </div>
