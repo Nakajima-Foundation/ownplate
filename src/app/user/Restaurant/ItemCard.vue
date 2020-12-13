@@ -107,7 +107,7 @@
             </div>
           </div>
         </div>
-        <hr class="devider m-t-16 m-b-0" />
+        <hr class="devider m-t-16 m-b-0"  v-if="showMoreOption" />
         </template>
 
         <!-- Another Order with Different Options -->
@@ -117,7 +117,7 @@
           <!-- # Once user removed the item to quantities 0, the "Another Order" section will be removed. -->
 
           <!-- Add Another Order Button -->
-          <div v-if="totalQuantity > 0">
+          <div v-if="showMoreOption">
             <div class="align-center m-t-16">
               <div @click="pushItem" class="op-button-pill bg-form">
                 <i class="material-icons">add</i>
@@ -268,6 +268,9 @@ export default {
     },
     hasOptions() {
       return this.options.length;
+    }, 
+    showMoreOption() {
+      return this.totalQuantity > 0 && this.hasOptions;
     },
     cardStyle() {
       return this.quantities > 0 ? { border: "solid 2px #0097a7" } : {};
