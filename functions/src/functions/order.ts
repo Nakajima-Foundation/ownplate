@@ -211,12 +211,16 @@ export const getMenuObj = async (refRestaurant) => {
 };
 
 // const regex = /\((\+|\-)[0-9\.]+\)/
-const regex =  /\(((\+|\-)[0-9\.]+)\)/;
+const regex =  /\(((\+|\-|＋|ー)[0-9\.]+)\)/;
+
+const convPrice = (priceStr) => {
+  return Number(priceStr.replace(/ー/g, '-').replace(/＋/g, '+'));
+};
 
 const optionPrice = (option: string) => {
   const match = option.match(regex);
   if (match) {
-    return Number(match[1]);
+    return convPrice(match[1]);
   }
   return 0;
 }
