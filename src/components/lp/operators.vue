@@ -1,13 +1,21 @@
 <template>
-<div class="columns is-gapless">
-  <div class="column is-narrow w-24"></div>
-  <div class="column">
-    わたしたちが 運営しています！
+  <div>
+    <div
+      class="align-center is-size-3-tablet is-size-5-mobile c-text-black-disabled p-t-32"
+      style="line-height: 1.4; font-weight: bold;"
+    >
+      わたしたちが運営しています！
+    </div>
+
+    <div class="align-center">
+      <img
+        src="/Logo-SingularitySociety.svg"
+        class="h-80 m-t-32 m-l-16 m-r-16"
+      />
+      <img src="/Logo-Itochu.svg" class="h-80 m-t-32 m-l-16 m-r-16" />
+    </div>
   </div>
-  <div class="column is-narrow w-24"></div>
-</div>
 </template>
 <script>
-export default {
-}
+export default {};
 </script>
