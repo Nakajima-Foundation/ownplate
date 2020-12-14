@@ -52,8 +52,34 @@
         </router-link>
       </div>
 
+      
+
+      <div class="align-center t-subtitle1  m-t-24">
+        {{ $t("menu.forRestaurantOwner") }}
+      </div>
+
+      <!-- manual for Restaurant -->
+      <div class="align-center">
+        <a href="https://docs.omochikaeri.com/manual/manual.pdf" target="_blank">
+          <div
+            class="op-button-text t-button"
+            @click="handleClose()"
+          >{{ $t("menu.manualLink") }}</div>
+        </a>
+      </div>
+
+      <!-- tips for Restaurant -->
+      <div class="align-center">
+        <a href="https://docs.omochikaeri.com/manual/tips.pdf" target="_blank">
+          <div
+            class="op-button-text t-button"
+            @click="handleClose()"
+          >{{ $t("menu.tipsLink") }}</div>
+        </a>
+      </div>
+      
       <!-- Terms for Restaurant -->
-      <div class="align-center m-t-24">
+      <div class="align-center">
         <router-link to="/terms/admin" target="_blank">
           <div
             class="op-button-text t-button"
@@ -62,6 +88,10 @@
         </router-link>
       </div>
 
+      <div class="align-center t-subtitle1  m-t-24">
+        {{ $t("menu.forCustomer") }}
+      </div>
+      
       <!-- Terms for User -->
       <div class="align-center">
         <router-link to="/terms/user" target="_blank">
@@ -69,6 +99,9 @@
         </router-link>
       </div>
 
+      <div class="align-center t-subtitle1  m-t-24">
+        {{ $t("menu.forAllUser") }}
+      </div>
       <!-- Privacy -->
       <div class="align-center">
         <router-link to="/privacy" target="_blank">
