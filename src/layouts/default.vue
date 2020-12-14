@@ -31,89 +31,101 @@
       :right="right"
       :open.sync="open"
     >
-      <!-- Logo -->
+      <!-- Logo / Home -->
       <div class="align-center m-t-24">
         <router-link to="/">
           <img class="w-192" :src="`/${this.logo2}`" />
         </router-link>
       </div>
 
-      <!-- Home -->
-      <div class="align-center m-t-24">
-        <router-link to="/">
-          <div class="op-button-medium tertiary w-192" @click="handleClose()">{{ $t("menu.home") }}</div>
-        </router-link>
-      </div>
-
       <!-- Profile -->
       <div class="align-center m-t-24">
         <router-link to="/u/profile">
-          <div class="op-button-small tertiary" @click="handleClose()">{{ $t("profile.title") }}</div>
+          <div class="op-button-small tertiary" @click="handleClose()">
+            {{ $t("profile.title") }}
+          </div>
         </router-link>
       </div>
 
-      
+      <!-- For Restaurant -->
+      <div class="m-t-24">
+        <div class="align-center t-subtitle1 p-b-8">
+          {{ $t("menu.forRestaurantOwner") }}
+        </div>
 
-      <div class="align-center t-subtitle1  m-t-24">
-        {{ $t("menu.forRestaurantOwner") }}
-      </div>
+        <!-- Manual for Restaurant -->
+        <div class="align-center">
+          <a
+            href="https://docs.omochikaeri.com/manual/manual.pdf"
+            target="_blank"
+          >
+            <div class="op-button-text t-button" @click="handleClose()">
+              {{ $t("menu.manualLink") }}
+            </div>
+          </a>
+        </div>
 
-      <!-- manual for Restaurant -->
-      <div class="align-center">
-        <a href="https://docs.omochikaeri.com/manual/manual.pdf" target="_blank">
-          <div
-            class="op-button-text t-button"
-            @click="handleClose()"
-          >{{ $t("menu.manualLink") }}</div>
-        </a>
-      </div>
+        <!-- Tips for Restaurant -->
+        <div class="align-center">
+          <a
+            href="https://docs.omochikaeri.com/manual/tips.pdf"
+            target="_blank"
+          >
+            <div class="op-button-text t-button" @click="handleClose()">
+              {{ $t("menu.tipsLink") }}
+            </div>
+          </a>
+        </div>
 
-      <!-- tips for Restaurant -->
-      <div class="align-center">
-        <a href="https://docs.omochikaeri.com/manual/tips.pdf" target="_blank">
-          <div
-            class="op-button-text t-button"
-            @click="handleClose()"
-          >{{ $t("menu.tipsLink") }}</div>
-        </a>
-      </div>
-      
-      <!-- Terms for Restaurant -->
-      <div class="align-center">
-        <router-link to="/terms/admin" target="_blank">
-          <div
-            class="op-button-text t-button"
-            @click="handleClose()"
-          >{{ $t("menu.termsRestaurant") }}</div>
-        </router-link>
-      </div>
-
-      <div class="align-center t-subtitle1  m-t-24">
-        {{ $t("menu.forCustomer") }}
-      </div>
-      
-      <!-- Terms for User -->
-      <div class="align-center">
-        <router-link to="/terms/user" target="_blank">
-          <div class="op-button-text t-button" @click="handleClose()">{{ $t("menu.termsUser") }}</div>
-        </router-link>
+        <!-- Terms for Restaurant -->
+        <div class="align-center">
+          <router-link to="/terms/admin" target="_blank">
+            <div class="op-button-text t-button" @click="handleClose()">
+              {{ $t("menu.termsRestaurant") }}
+            </div>
+          </router-link>
+        </div>
       </div>
 
-      <div class="align-center t-subtitle1  m-t-24">
-        {{ $t("menu.forAllUser") }}
+      <!-- For User -->
+      <div class="m-t-24">
+        <div class="align-center t-subtitle1 p-b-8">
+          {{ $t("menu.forCustomer") }}
+        </div>
+
+        <!-- Terms for User -->
+        <div class="align-center">
+          <router-link to="/terms/user" target="_blank">
+            <div class="op-button-text t-button" @click="handleClose()">
+              {{ $t("menu.termsUser") }}
+            </div>
+          </router-link>
+        </div>
       </div>
-      <!-- Privacy -->
-      <div class="align-center">
-        <router-link to="/privacy" target="_blank">
-          <div class="op-button-text t-button" @click="handleClose()">{{ $t("menu.privacy") }}</div>
-        </router-link>
+
+      <!-- For All -->
+      <div class="m-t-24">
+        <div class="align-center t-subtitle1 p-b-8">
+          {{ $t("menu.forAllUser") }}
+        </div>
+
+        <!-- Privacy -->
+        <div class="align-center">
+          <router-link to="/privacy" target="_blank">
+            <div class="op-button-text t-button" @click="handleClose()">
+              {{ $t("menu.privacy") }}
+            </div>
+          </router-link>
+        </div>
       </div>
     </b-sidebar>
 
     <!-- Main -->
     <div class="main">
       <div class="contents">
-        <div v-if="underConstruction" class="underConstruction">{{ $t("underConstruction") }}</div>
+        <div v-if="underConstruction" class="underConstruction">
+          {{ $t("underConstruction") }}
+        </div>
 
         <!-- approproate component under pages will be displayed -->
         <nuxt v-if="isReadyToRender"></nuxt>
@@ -122,7 +134,12 @@
     </div>
 
     <!-- Loading -->
-    <b-loading v-if="isLoading" :is-full-page="true" :active="true" :can-cancel="false"></b-loading>
+    <b-loading
+      v-if="isLoading"
+      :is-full-page="true"
+      :active="true"
+      :can-cancel="false"
+    ></b-loading>
 
     <!-- Footer -->
     <div class="m-t-48">
@@ -130,12 +147,19 @@
         <div class="flex-1">
           <div
             class="is-inline-block t-caption c-text-white-medium m-t-16 m-l-16"
-          >Operated by Singularity Society</div>
+          >
+            Operated by Singularity Society
+          </div>
         </div>
         <div class="align-right">
-          <div class="op-button-pill bg-sattle-white m-r-16 m-t-16" @click="openLang()">
+          <div
+            class="op-button-pill bg-sattle-white m-r-16 m-t-16"
+            @click="openLang()"
+          >
             <i class="material-icons c-text-white-high">language</i>
-            <span class="c-text-white-high t-button">{{ languages[language] }}</span>
+            <span class="c-text-white-high t-button">{{
+              languages[language]
+            }}</span>
             <i class="material-icons c-text-white-high">arrow_drop_down</i>
           </div>
         </div>
@@ -145,15 +169,30 @@
     <!-- Language Popup-->
     <b-modal :active.sync="langPopup" :width="488" scroll="keep">
       <div class="op-dialog p-t-24 p-l-24 p-r-24 p-b-24">
-        <div class="t-h6 c-text-black-disabled p-b-8">{{ $t("menu.selectLanguage") }}</div>
-        <div class="m-t-16" v-for="(lang, lang_key) in languages" :key="lang_key">
-          <div class="op-button-pill bg-form" @click="changeLangAndClose(lang_key)">
-            <i class="material-icons c-text-black-high" v-if="lang_key == language">check</i>
+        <div class="t-h6 c-text-black-disabled p-b-8">
+          {{ $t("menu.selectLanguage") }}
+        </div>
+        <div
+          class="m-t-16"
+          v-for="(lang, lang_key) in languages"
+          :key="lang_key"
+        >
+          <div
+            class="op-button-pill bg-form"
+            @click="changeLangAndClose(lang_key)"
+          >
+            <i
+              class="material-icons c-text-black-high"
+              v-if="lang_key == language"
+              >check</i
+            >
             <span class="t-button">{{ lang }}</span>
           </div>
         </div>
         <div class="m-t-24 align-center">
-          <div class="op-button-small tertiary" @click="closeLang()">{{ $t("menu.close") }}</div>
+          <div class="op-button-small tertiary" @click="closeLang()">
+            {{ $t("menu.close") }}
+          </div>
         </div>
       </div>
     </b-modal>
@@ -327,10 +366,10 @@ export default {
       analytics.logEvent("page_view");
       analytics.logEvent("screen_view", {
         app_name: "web",
-        screen_name: document.title,
+        screen_name: document.title
         // app_version: version
       });
-    },
+    }
   },
   beforeCreate() {
     if (indexedDB) {
@@ -361,19 +400,23 @@ export default {
           user.uid,
           user.displayName
         );
-        user.getIdTokenResult(true).then(result => {
-          this.$store.commit("setUser", user);
-          this.$store.commit("setCustomClaims", result.claims);
-          console.log(!!user.email ? "admin" : "customer");
-        })
+        user
+          .getIdTokenResult(true)
+          .then(result => {
+            this.$store.commit("setUser", user);
+            this.$store.commit("setCustomClaims", result.claims);
+            console.log(!!user.email ? "admin" : "customer");
+          })
           .catch(error => {
             console.error("getIdTokenResult", error);
             Sentry.captureException(error);
           });
-        analytics.setUserProperties({role: !!user.email ? "admin" : "customer"});
+        analytics.setUserProperties({
+          role: !!user.email ? "admin" : "customer"
+        });
         analytics.setUserId(user.uid);
       } else {
-        analytics.setUserProperties({role: 'anonymous'});
+        analytics.setUserProperties({ role: "anonymous" });
         console.log("authStateChanged: null");
         this.$store.commit("setUser", null);
       }
@@ -381,7 +424,7 @@ export default {
   },
   watch: {
     // https://support.google.com/analytics/answer/9234069?hl=ja
-    $route () {
+    $route() {
       // console.log('route changed', this.$route)
       this.pingAnalytics();
     },
@@ -410,7 +453,6 @@ export default {
     }
   },
   async created() {
-
     this.language = this.regionalSetting.defaultLanguage;
     this.languages = this.regionalSetting.languages;
     this.logo = this.regionalSetting.Logo;
@@ -427,11 +469,11 @@ export default {
     console.log("UA:" + navigator.userAgent.toLowerCase());
     if (this.$route.query.lang) {
       await this.changeLang(this.$route.query.lang);
-    } else if (navigator.userAgent.toLowerCase().indexOf('googlebot') > -1) {
+    } else if (navigator.userAgent.toLowerCase().indexOf("googlebot") > -1) {
       if (this.isJapan) {
-        await this.changeLang("ja")
+        await this.changeLang("ja");
       } else {
-        await this.changeLang("en")
+        await this.changeLang("en");
       }
     } else {
       const language =
