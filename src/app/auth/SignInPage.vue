@@ -9,6 +9,16 @@
         <div class="columns is-gaplress">
           <div class="column is-half is-offset-one-quarter">
             <div class="m-l-24 m-r-24">
+							<div class="bg-surface r-8 d-low m-t-24 p-l-24 p-r-24 p-t-24 p-b-24">
+								<div style="line-height: 2; font-size: 12pt; font-weight: bold;">
+									<i class="material-icons c-primary">error</i>
+									{{ $t('admin.encourageToReadManual.before') }}
+									<a href="https://docs.omochikaeri.com/manual/manual.pdf">
+										{{ $t('admin.encourageToReadManual.manualName') }}
+									</a>
+									{{ $t('admin.encourageToReadManual.after') }}
+								</div>
+							</div>
               <div class="bg-surface r-8 d-low m-t-24 p-l-24 p-r-24 p-t-24 p-b-24">
                 <form @submit.prevent="onSignin">
                   <div class="t-h6 c-text-black-disabled">{{ $t('admin.pleaseSignIn') }}</div>

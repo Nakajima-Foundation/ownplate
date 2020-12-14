@@ -425,6 +425,11 @@
       "notificationSoundBody": "Order notification sound will be played while viewing the order list page (not on this page). If you want to have multiple store notifications playing at the same time, you need to be able to view the order list pages for each one. To do so, you will need a separate window on your computer and a separate device for your tablet."
     },
     "hidePayment": "Payment feature is coming soon. Please stay tuned.",
+    "encourageToReadManual": {
+      "before": "If you haven't registered with OwnPlate.com yet, please follow this",
+      "manualName": "\"Usage Guide\"",
+      "after": "and register first before proceeding."
+    },
     "pleaseSignIn": "Sign In (for Restaurant)",
     "registration": "Registration (for Restaurant)",
     "email": "Email",

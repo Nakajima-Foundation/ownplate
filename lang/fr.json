@@ -424,6 +424,11 @@
       "notificationSoundBody": "Un son de notification de commande sera joué lors de l'affichage de la page de la liste des commandes (pas sur cette page). Si vous souhaitez que plusieurs notifications de magasin soient lues en même temps, vous devez pouvoir afficher les pages de la liste des commandes pour chacune. Pour ce faire, vous aurez besoin d'une fenêtre distincte sur votre ordinateur et d'un appareil séparé pour votre tablette."
     },
     "hidePayment": "La fonction de paiement arrive bientôt. S'il vous plaît restez à l'écoute.",
+    "encourageToReadManual": {
+      "before": "Si vous n'êtes pas encore inscrit sur OwnPlate.com, veuillez suivre",
+      "manualName": "\"ce guide d'utilisation\"",
+      "after": "et vous inscrire d'abord avant de poursuivre."
+    },
     "pleaseSignIn": "Se Connecter (pour les restaurants)",
     "registration": "S'Enregistrer (pour les restaurants)",
     "email": "Email",
