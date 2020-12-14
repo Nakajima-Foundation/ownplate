@@ -9,23 +9,41 @@
         <div class="columns is-gaplress">
           <div class="column is-half is-offset-one-quarter">
             <div class="m-l-24 m-r-24">
-							<div class="bg-surface r-8 d-low m-t-24 p-l-24 p-r-24 p-t-24 p-b-24">
-								<div style="line-height: 2; font-size: 12pt; font-weight: bold;">
-									<i class="material-icons c-primary">error</i>
-									{{ $t('admin.encourageToReadManual.before') }}
-									<a href="https://docs.omochikaeri.com/manual/manual.pdf">
-										{{ $t('admin.encourageToReadManual.manualName') }}
-									</a>
-									{{ $t('admin.encourageToReadManual.after') }}
-								</div>
-							</div>
-              <div class="bg-surface r-8 d-low m-t-24 p-l-24 p-r-24 p-t-24 p-b-24">
+              <!-- Note for the First User -->
+              <div
+                class="bg-status-green-bg r-8 m-t-24 p-l-24 p-r-24 p-t-24 p-b-24"
+              >
+                <div class="cols">
+                  <div class="flex-center">
+                    <i class="material-icons c-status-green s-32">info</i>
+                  </div>
+                  <div class="t-subtitle1 p-t-4 p-l-16">
+                    {{ $t("admin.encourageToReadManual.before") }}
+                    <a
+                      href="https://docs.omochikaeri.com/manual/manual.pdf"
+                      target="_blank"
+                    >
+                      {{ $t("admin.encourageToReadManual.manualName") }}
+                    </a>
+                    {{ $t("admin.encourageToReadManual.after") }}
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sign In Form -->
+              <div
+                class="bg-surface r-8 d-low m-t-24 p-l-24 p-r-24 p-t-24 p-b-24"
+              >
                 <form @submit.prevent="onSignin">
-                  <div class="t-h6 c-text-black-disabled">{{ $t('admin.pleaseSignIn') }}</div>
+                  <div class="t-h6 c-text-black-disabled">
+                    {{ $t("admin.pleaseSignIn") }}
+                  </div>
 
                   <!-- Email -->
                   <div class="m-t-16">
-                    <div class="t-subtitle2 c-text-black-medium m-b-4">{{ $t('admin.email') }}</div>
+                    <div class="t-subtitle2 c-text-black-medium m-b-4">
+                      {{ $t("admin.email") }}
+                    </div>
                     <b-field
                       :type="errors.email ? 'is-danger' : 'is-success'"
                       :message="errors.email && $t(errors.email[0])"
@@ -40,7 +58,9 @@
 
                   <!-- Password -->
                   <div>
-                    <div class="t-subtitle2 c-text-black-medium m-b-4">{{ $t('admin.password') }}</div>
+                    <div class="t-subtitle2 c-text-black-medium m-b-4">
+                      {{ $t("admin.password") }}
+                    </div>
                     <b-field
                       :type="errors.password ? 'is-danger' : 'is-success'"
                       :message="errors.password && $t(errors.password[0])"
@@ -57,11 +77,19 @@
 
                   <!-- Submit Button -->
                   <div class="m-t-8 align-center">
-                    <b-button class="b-reset op-button-small tertiary m-r-16" @click="handleCancel">
-                      <span class="c-text-black-medium">{{ $t('button.cancel') }}</span>
+                    <b-button
+                      class="b-reset op-button-small tertiary m-r-16"
+                      @click="handleCancel"
+                    >
+                      <span class="c-text-black-medium">{{
+                        $t("button.cancel")
+                      }}</span>
                     </b-button>
-                    <b-button class="b-reset op-button-small primary" @click="onSignin">
-                      <span class="c-onprimary">{{ $t('button.next') }}</span>
+                    <b-button
+                      class="b-reset op-button-small primary"
+                      @click="onSignin"
+                    >
+                      <span class="c-onprimary">{{ $t("button.next") }}</span>
                     </b-button>
                   </div>
 
@@ -70,7 +98,9 @@
                     <router-link to="/admin/user/signup">
                       <div class="op-button-text">
                         <i class="material-icons c-primary">person_add_alt_1</i>
-                        <span class="c-primary t-button">{{$t('admin.pleaseSignUp')}}</span>
+                        <span class="c-primary t-button">{{
+                          $t("admin.pleaseSignUp")
+                        }}</span>
                       </div>
                     </router-link>
                   </div>
@@ -80,7 +110,9 @@
                     <router-link to="/admin/user/reset">
                       <div class="op-button-text">
                         <i class="material-icons c-primary">help</i>
-                        <span class="c-primary t-button">{{$t('admin.forgotPassword')}}</span>
+                        <span class="c-primary t-button">{{
+                          $t("admin.forgotPassword")
+                        }}</span>
                       </div>
                     </router-link>
                   </div>
@@ -98,7 +130,6 @@
 
 <script>
 import { auth } from "~/plugins/firebase.js";
-
 
 export default {
   name: "Signin",
