@@ -3,7 +3,7 @@ export const nameOfOrder = (order) => {
     "#" + `00${order.number}`.slice(-3) : "";
 };
 
-export const regexOptionPrice = /\(((\+|\-|＋|ー)[0-9\.]+)\)/;
+export const regexOptionPrice = /\(((\+|\-|＋|ー|−)[0-9\.]+)\)/;
 
 export const optionPrice = (option) => {
   const match = option.match(regexOptionPrice);
@@ -24,7 +24,7 @@ export const formatOption = (option, localize) => {
   return option;
 }
 export const convPrice = (priceStr) => {
-  return Number(priceStr.replace(/ー/g, '-').replace(/＋/g, '+'));
+  return Number(priceStr.replace(/ー|−/g, '-').replace(/＋/g, '+'));
 };
 
 export const halfCharactors = (str) => {
