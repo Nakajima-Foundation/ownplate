@@ -295,6 +295,7 @@
   },
   "order": {
     "menu": "メニューページを見る",
+    "orderNotPlacedYet": "ご注文はまだ確定していません。内容を確認してページ下の注文ボタンを押してください。",
     "yourOrder": "あなたの注文",
     "confirmOrder": "ご注文の確認",
     "editItems": "注文を変更する",
