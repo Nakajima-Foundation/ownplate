@@ -293,6 +293,7 @@
   },
   "order": {
     "menu": "Afficher la page du menu",
+    "orderNotPlacedYet": "La commande n'a pas encore été passée. Veuillez confirmer la commande et appuyer sur le bouton Passer la commande en bas.",
     "yourOrder": "Votre commande",
     "confirmOrder": "Confirmer votre commande",
     "editItems": "Modifier les artciles",

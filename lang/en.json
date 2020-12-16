@@ -295,6 +295,7 @@
   },
   "order": {
     "menu": "View Menu Page",
+    "orderNotPlacedYet": "The order hasn't been placed yet. Please confirm the order and press the Place Order button at the bottom.",
     "yourOrder": "Your Order",
     "confirmOrder": "Confirm Order",
     "editItems": "Edit Items",
