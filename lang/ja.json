@@ -204,7 +204,9 @@
     "category1": "カテゴリー１",
     "editCategory1": "カテゴリー１を編集",
     "category2": "カテゴリー２",
-    "editCategory2": "カテゴリー２を編集"
+    "editCategory2": "カテゴリー２を編集",
+    "showAllMenu": "全ての商品を表示",
+    "showPublicMenu": "公開中の商品を表示"
   },
   "editTitle": {
     "enterCategory": "グループ名を入力してください",
