@@ -14,7 +14,8 @@
     "tests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/*_test.ts",
     "e_tests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/express_test.ts",
     "t_tests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/twilio_test.ts",
-    "mailtests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/ses_test.ts"
+    "mailtests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/ses_test.ts",
+    "d_tests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/dl_test.ts"
   },
   "engines": {
     "node": "10"

@@ -76,12 +76,12 @@
                     <item-card
                       v-if="itemsObj[itemId]._dataType === 'menu'"
                       :item="itemsObj[itemId]"
-                      :count="orders[itemId] || 0"
+                      :quantities="orders[itemId] || [0]"
                       :optionPrev="optionsPrev[itemId]"
                       :initialOpenMenuFlag="(orders[itemId] || 0) > 0"
                       :shopInfo="shopInfo"
                       :isOpen="menuId === itemId"
-                      @didCountChange="didCountChange($event)"
+                      @didQuantitiesChange="didQuantitiesChange($event)"
                       @didOptionValuesChange="didOptionValuesChange($event)"
                     ></item-card>
                   </div>
@@ -110,7 +110,7 @@
       <b-button
         class="b-reset op-button-large primary"
         style="width: 288px; position: fixed; bottom: 32px; left: 50%; margin-left: -144px;"
-        v-if="0 != totalCount"
+        v-if="0 != totalQuantities"
         :loading="isCheckingOut"
         :disabled="isCheckingOut || noPaymentMethod || noAvailableTime"
         @click="handleCheckOut"
@@ -125,7 +125,7 @@
           <template v-else="!noPaymentMethod">
             <div class="flex-1 align-left c-onprimary m-r-16">
               {{
-              $tc("sitemenu.orderCounter", totalCount, { count: totalCount })
+              $tc("sitemenu.orderCounter", totalQuantities, { count: totalQuantities })
               }}
             </div>
             <div class="m-r-8 c-onprimary">{{ $t("sitemenu.checkout") }}</div>
@@ -289,9 +289,9 @@ export default {
     uid() {
       return this.$store.getters.uid;
     },
-    totalCount() {
-      const ret = Object.keys(this.orders).reduce((total, id) => {
-        return total + this.orders[id];
+    totalQuantities() {
+      const ret = Object.values(this.orders).reduce((total, order) => {
+        return total + this.arraySum(order);
       }, 0);
       return ret;
     },
@@ -310,17 +310,19 @@ export default {
     },
     postOptions() {
       return Object.keys(this.trimmedSelectedOptions).reduce((ret, id) => {
-        ret[id] = (this.trimmedSelectedOptions[id]||[]).map((selectedOpt, key) => {
-          const opt = this.itemsObj[id].itemOptionCheckbox[key].split(",");
-          if (opt.length === 1) {
-            if (selectedOpt) {
-              return opt[0];
+        ret[id] = (this.trimmedSelectedOptions[id]||[]).map((item, k) => {
+          return item.map((selectedOpt, key) => {
+            const opt = this.itemsObj[id].itemOptionCheckbox[key].split(",");
+            if (opt.length === 1) {
+              if (selectedOpt) {
+                return opt[0];
+              }
+            } else {
+              return opt[selectedOpt];
             }
-          } else {
-            return opt[selectedOpt];
-          }
-          return "";
-        }).map(s => s.trim());
+            return "";
+          }).map(s => s.trim());
+        });
         return ret;
       }, {});
     },
@@ -360,11 +362,20 @@ export default {
         // this.isCheckingOut = false;
       }
     },
+    convOptionArray2Obj(obj) {
+      return Object.keys(obj).reduce((newObj, objKey) => {
+        newObj[objKey] = obj[objKey].reduce((tmp, value, key) => {
+          tmp[key] = value;
+          return tmp;
+        }, {});
+        return newObj
+      }, {});
+    },
     async goCheckout() {
       const order_data = {
         order: this.orders,
-        options: this.postOptions,
-        rawOptions: this.trimmedSelectedOptions,
+        options: this.convOptionArray2Obj(this.postOptions),
+        rawOptions: this.convOptionArray2Obj(this.trimmedSelectedOptions),
         status: order_status.new_order,
         uid: this.user.uid,
         phoneNumber: this.user.phoneNumber,
@@ -373,6 +384,7 @@ export default {
         timeCreated: firestore.FieldValue.serverTimestamp()
         // price never set here.
       };
+      // console.log(order_data);
       this.isCheckingOut = true;
       try {
         if (this.forcedError("checkout")) {
@@ -417,11 +429,11 @@ export default {
         this.isCheckingOut = false;
       }
     },
-    didCountChange(eventArgs) {
+    didQuantitiesChange(eventArgs) {
       // NOTE: We need to assign a new object to trigger computed properties
       const newObject = { ...this.orders };
-      if (eventArgs.count > 0) {
-        newObject[eventArgs.id] = eventArgs.count;
+      if (this.arraySum(eventArgs.quantities) > 0) {
+        newObject[eventArgs.id] = eventArgs.quantities;
       } else {
         delete newObject[eventArgs.id];
       }

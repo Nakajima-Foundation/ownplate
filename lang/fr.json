@@ -55,6 +55,11 @@
     "userSupport": "Aides pour les Amoureux de la nourriture",
     "home": "Acceuil",
     "signOut": "Se Déconecter",
+    "forRestaurantOwner": "Pour le restaurant",
+    "forCustomer": "Pour l'utilisateur",
+    "forAllUser": "Pour tous les utilisateurs",
+    "manualLink": "Anual (en japonais)",
+    "tipsLink": "Conseils (en japonais)",
     "termsRestaurant": "CGU pour le restaurant",
     "termsUser": "CGU pour l'utilisateur",
     "privacy": "Politique de Confidentialité",
@@ -199,7 +204,9 @@
     "category1": "Catégorie 1",
     "editCategory1": "Modifier Catégorie 1",
     "category2": "Catégorie 2",
-    "editCategory2": "Modifier Catégorie 2"
+    "editCategory2": "Modifier Catégorie 2",
+    "showAllMenu": "All items",
+    "showPublicMenu": "Public items"
   },
   "editTitle": {
     "enterCategory": "Entrez le nom de le groupe",
@@ -288,6 +295,7 @@
   },
   "order": {
     "menu": "Afficher la page du menu",
+    "orderNotPlacedYet": "La commande n'a pas encore été passée. Veuillez confirmer la commande et appuyer sur le bouton Passer la commande en bas.",
     "yourOrder": "Votre commande",
     "confirmOrder": "Confirmer votre commande",
     "editItems": "Modifier les artciles",
@@ -369,6 +377,7 @@
     "back": "Retour",
     "addTitle": "Ajouter un Groupe",
     "addItem": "Ajouter un article",
+    "downloadMenu": "Télécharger le menu",
     "cancel": "Annuler",
     "next": "Suivant"
   },
@@ -418,6 +427,11 @@
       "notificationSoundBody": "Un son de notification de commande sera joué lors de l'affichage de la page de la liste des commandes (pas sur cette page). Si vous souhaitez que plusieurs notifications de magasin soient lues en même temps, vous devez pouvoir afficher les pages de la liste des commandes pour chacune. Pour ce faire, vous aurez besoin d'une fenêtre distincte sur votre ordinateur et d'un appareil séparé pour votre tablette."
     },
     "hidePayment": "La fonction de paiement arrive bientôt. S'il vous plaît restez à l'écoute.",
+    "encourageToReadManual": {
+      "before": "Si vous n'êtes pas encore inscrit sur OwnPlate.com, veuillez suivre",
+      "manualName": "\"ce guide d'utilisation\"",
+      "after": "et vous inscrire d'abord avant de poursuivre."
+    },
     "pleaseSignIn": "Se Connecter (pour les restaurants)",
     "registration": "S'Enregistrer (pour les restaurants)",
     "email": "Email",
@@ -517,6 +531,7 @@
     "qrcode": {
       "title": "QRcodes",
       "restaurant": "Page du Menu",
+      "download": "Télécharger QR Code",
       "enter": "Enregistrer l'entrée",
       "leave": "Enregistrer une sortie"
     },

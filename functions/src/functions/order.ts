@@ -93,7 +93,7 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
         throw new functions.https.HttpsError('failed-precondition', 'It is not possible to change state from the current state.', order.status)
       }
 
-      if (status == order_status.order_accepted) {
+      if (status === order_status.order_accepted) {
         msgKey = "msg_order_accepted"
       }
 
@@ -211,12 +211,16 @@ export const getMenuObj = async (refRestaurant) => {
 };
 
 // const regex = /\((\+|\-)[0-9\.]+\)/
-const regex =  /\(((\+|\-)[0-9\.]+)\)/;
+const regex =  /\(((\+|\-|＋|ー|−)[0-9\.]+)\)/;
+
+const convPrice = (priceStr) => {
+  return Number(priceStr.replace(/ー|−/g, '-').replace(/＋/g, '+'));
+};
 
 const optionPrice = (option: string) => {
   const match = option.match(regex);
   if (match) {
-    return Number(match[1]);
+    return convPrice(match[1]);
   }
   return 0;
 }
@@ -269,39 +273,45 @@ export const wasOrderCreated = async (db, data: any, context) => {
     const newOrderData = {};
     const newItems = {};
     Object.keys(orderData.order).map((menuId) => {
-      const num = orderData.order[menuId];
-      if (!Number.isInteger(num)) {
-        throw new Error("invalid number: not integer");
-      }
-      if (num < 0) {
-        throw new Error("invalid number: negative number");
-      }
-      // skip 0 order
-      if (num === 0) {
-        return;
-      }
+      newOrderData[menuId] = [];
+      newItems[menuId] = {};
+
       const menu = menuObj[menuId];
-      let price = menu.price;
 
-      const selectedOptionsRaw = orderData.rawOptions[menuId];
-      price = selectedOptionsRaw.reduce((tmp, selectedOpt, key) => {
-        const opt = menu.itemOptionCheckbox[key].split(",");
-        if (opt.length === 1) {
-          if (selectedOpt) {
-            return tmp + Math.round(optionPrice(opt[0]) * multiple) / multiple;
-          }
-        } else {
-          return tmp + Math.round(optionPrice(opt[selectedOpt]) * multiple) / multiple;
+      const numArray = Array.isArray(orderData.order[menuId]) ? orderData.order[menuId] : [orderData.order[menuId]];
+      numArray.map((num, orderKey) => {
+        //const num = orderData.order[menuId];
+        if (!Number.isInteger(num)) {
+        throw new Error("invalid number: not integer");
         }
-        return tmp;
-      }, price);
+        if (num < 0) {
+          throw new Error("invalid number: negative number");
+        }
+        // skip 0 order
+        if (num === 0) {
+          return;
+        }
 
-      if (menu.tax === "alcohol") {
-        alcohol_sub_total += (price * num);
-      } else {
-        food_sub_total += (price * num)
-      }
-      newOrderData[menuId] = num;
+        const selectedOptionsRaw = orderData.rawOptions[menuId][orderKey];
+        const price = selectedOptionsRaw.reduce((tmpPrice, selectedOpt, key) => {
+          const opt = menu.itemOptionCheckbox[key].split(",");
+          if (opt.length === 1) {
+            if (selectedOpt) {
+              return tmpPrice + Math.round(optionPrice(opt[0]) * multiple) / multiple;
+            }
+          } else {
+            return tmpPrice + Math.round(optionPrice(opt[selectedOpt]) * multiple) / multiple;
+          }
+          return tmpPrice;
+        }, menu.price);
+        
+        if (menu.tax === "alcohol") {
+          alcohol_sub_total += (price * num);
+        } else {
+          food_sub_total += (price * num)
+        }
+        newOrderData[menuId].push(num);
+      });
       const menuItem: any = { price: menu.price, itemName: menu.itemName };
       if (menu.category1) {
         menuItem.category1 = menu.category1;
@@ -311,7 +321,7 @@ export const wasOrderCreated = async (db, data: any, context) => {
       }
       newItems[menuId] = menuItem;
     });
-
+    
     // calculate price.
     const sub_total = food_sub_total + alcohol_sub_total;
     if (sub_total === 0) {

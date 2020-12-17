@@ -16,7 +16,7 @@
   "underConstruction": "WARNING: This is a staging server for development.",
   "comma": ", ",
   "profile": {
-    "title": "Profile",
+    "title": "My Page",
     "loginStatus": "Sign-in Status",
     "displayName": "Name",
     "lineConnection": "LINE connnection",
@@ -55,6 +55,11 @@
     "userSupport": "Support for Food Lovers",
     "home": "Home",
     "signOut": "Sign Out",
+    "forRestaurantOwner": "For Restaurant",
+    "forCustomer": "For User",
+    "forAllUser": "For all user",
+    "manualLink": "Manual (in Japanese)",
+    "tipsLink": "Tips (in Japanese)",
     "termsRestaurant": "Terms for Restaurant",
     "termsUser": "Terms for User",
     "privacy": "Privacy Policy",
@@ -199,7 +204,9 @@
     "category1": "Category 1",
     "editCategory1": "Edit Category 1",
     "category2": "Category 2",
-    "editCategory2": "Edit Category 2"
+    "editCategory2": "Edit Category 2",
+    "showAllMenu": "Tous les articles",
+    "showPublicMenu": "Objets publics"
   },
   "editTitle": {
     "enterCategory": "Enter group name",
@@ -225,7 +232,7 @@
     "share": "Share",
     "like": "Like",
     "liked": "Liked",
-    "qrcode": "QR code",
+    "qrcode": "QR Code",
     "copyUrl": "Copy URL",
     "UrlCopied": "URL Copied",
     "UrlCopyFailed": "URL Copy failed",
@@ -282,13 +289,15 @@
     "orderCounter": "{count} item | {count} items",
     "add": "Add",
     "options": "Options",
-    "quantity": "Quantity"
+    "quantity": "Quantity",
+    "addDifferentOptionsItem": "Add Different Options Item"
   },
   "date": {
     "today": "Today"
   },
   "order": {
     "menu": "View Menu Page",
+    "orderNotPlacedYet": "The order hasn't been placed yet. Please confirm the order and press the Place Order button at the bottom.",
     "yourOrder": "Your Order",
     "confirmOrder": "Confirm Order",
     "editItems": "Edit Items",
@@ -370,6 +379,7 @@
     "back": "Back",
     "addTitle": "Add Group",
     "addItem": "Add Item",
+    "downloadMenu": "Download menu",
     "cancel": "Cancel",
     "next": "Next"
   },
@@ -418,6 +428,11 @@
       "notificationSoundBody": "Order notification sound will be played while viewing the order list page (not on this page). If you want to have multiple store notifications playing at the same time, you need to be able to view the order list pages for each one. To do so, you will need a separate window on your computer and a separate device for your tablet."
     },
     "hidePayment": "Payment feature is coming soon. Please stay tuned.",
+    "encourageToReadManual": {
+      "before": "If you haven't registered with OwnPlate.com yet, please follow this",
+      "manualName": "\"Usage Guide\"",
+      "after": "and register first before proceeding."
+    },
     "pleaseSignIn": "Sign In (for Restaurant)",
     "registration": "Registration (for Restaurant)",
     "email": "Email",
@@ -519,6 +534,7 @@
     "qrcode": {
       "title": "QRcodes",
       "restaurant": "Menu Page",
+      "download": "Download QR Code",
       "enter": "Record Entrance",
       "leave": "Record Leave"
     },

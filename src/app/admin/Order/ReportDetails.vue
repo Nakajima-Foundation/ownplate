@@ -112,7 +112,7 @@ export default {
                 moment(order.timeConfirmed).format("YYYY/MM/DD HH:mm"),
               phoneNumber: formatNational(parsePhoneNumber(order.phoneNumber)),
               userName: order.name || this.$t("order.unspecified"),
-              count: order.order[id],
+              count: this.arrayOrNumSum(order.order[id]),
               itemName: menuItem.itemName,
               statusName: this.$t(`order.status.${status}`),
               category1: menuItem.category1 || "",
@@ -125,7 +125,6 @@ export default {
           }
         });
       });
-      //console.log(items);
       return items;
     }
   }

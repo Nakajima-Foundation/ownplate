@@ -16,15 +16,15 @@
   "underConstruction": "注意：これはテスト用のサーバーです。",
   "comma": "、",
   "profile": {
-    "title": "プロフィール",
+    "title": "マイページ",
     "loginStatus": "サインイン状況",
     "displayName": "名前",
     "lineConnection": "LINE連携",
     "lineFriend": "公式アカウントとの友達設定",
     "undefined": "未設定",
     "friendLink": "友だち設定する",
-    "signIn": "一般ユーザーとしてサインイン",
-    "signInRestaurant": "飲食店としてサインイン",
+    "signIn": "テイクアウトのお客様",
+    "signInRestaurant": "飲食店の管理者様",
     "deleteAccount": "アカウント削除",
     "reallyDeleteAccount": "過去の履歴は消えてしまいます。本当にアカウントを削除しますか？",
     "stripeInfo": "クレジットカード情報",
@@ -55,8 +55,13 @@
     "userSupport": "お客様向けお問い合わせ",
     "home": "ホーム",
     "signOut": "サインアウト",
-    "termsRestaurant": "飲食店向け利用規約",
-    "termsUser": "お客様向け利用規約",
+    "forRestaurantOwner": "飲食店の管理者様へ",
+    "forCustomer": "テイクアウトのお客様へ",
+    "forAllUser": "全てのご利用者様へ",
+    "manualLink": "使い方マニュアル",
+    "tipsLink": "おもちかえり活用術",
+    "termsRestaurant": "利用規約",
+    "termsUser": "利用規約",
     "privacy": "プライバシーポリシー",
     "updated": "最終更新日",
     "selectLanguage": "表示言語選択",
@@ -199,7 +204,9 @@
     "category1": "カテゴリー１",
     "editCategory1": "カテゴリー１を編集",
     "category2": "カテゴリー２",
-    "editCategory2": "カテゴリー２を編集"
+    "editCategory2": "カテゴリー２を編集",
+    "showAllMenu": "全ての商品を表示",
+    "showPublicMenu": "公開中の商品を表示"
   },
   "editTitle": {
     "enterCategory": "グループ名を入力してください",
@@ -282,13 +289,15 @@
     "orderCounter": "{count} 個",
     "add": "追加",
     "options": "オプション",
-    "quantity": "数量"
+    "quantity": "数量",
+    "addDifferentOptionsItem": "別オプションの商品を追加"
   },
   "date": {
     "today": "本日"
   },
   "order": {
     "menu": "メニューページを見る",
+    "orderNotPlacedYet": "ご注文はまだ確定していません。内容を確認してページ下の注文ボタンを押してください。",
     "yourOrder": "あなたの注文",
     "confirmOrder": "ご注文の確認",
     "editItems": "注文を変更する",
@@ -370,6 +379,7 @@
     "back": "戻る",
     "addTitle": "グループ追加",
     "addItem": "料理/ドリンク追加",
+    "downloadMenu": "メニューをダウンロード",
     "cancel": "キャンセル",
     "next": "次へ"
   },
@@ -418,6 +428,11 @@
       "notificationSoundBody": "注文に関する通知音は注文一覧ページを表示中に再生されます（このページでは再生されません）。複数の店舗の通知音を同時に再生したい場合はそれぞれの注文一覧ページを表示できる環境を用意してください。パソコンでは別ウィンドウ、タブレットでは別端末が必要になります。"
     },
     "hidePayment": "課金の仕組みはまもなく提供される予定です。少々お待ちください。",
+    "encourageToReadManual": {
+      "before": "おもちかえり.com へのご登録がまだの方は、まずこちらの",
+      "manualName": "「ご利用の手引き」",
+      "after": "に目を通して、ご登録を進めてください。"
+    },
     "pleaseSignIn": "サインインしてください（飲食店向け）",
     "registration": "登録してください（飲食店向け）",
     "email": "メールアドレス",
@@ -526,6 +541,7 @@
     "qrcode": {
       "title": "QRコード",
       "restaurant": "メニューページ",
+      "download": "QRコードダウンロード",
       "enter": "入店記録",
       "leave": "退店記録"
     },

@@ -53,7 +53,7 @@ export default {
     tableData() {
       return this.orders.map(order => {
         const totalCount = Object.keys(order.order).reduce((count, id) => {
-          return count + order.order[id];
+          return count + this.arrayOrNumSum(order.order[id]);
         }, 0);
         const status = Object.keys(order_status).reduce((result, key) => {
           if (order_status[key] == order.status) {

@@ -558,6 +558,7 @@
 
             <!-- Phone Call -->
             <div v-if="region === 'JP'" class="m-t-16">
+              <a id="phoneCall" />
               <div
                 class="t-subtitle2 c-text-black-medium p-b-8"
               >{{ $t("editRestaurant.phoneCall") }}</div>
@@ -870,6 +871,7 @@ export default {
       newTemporaryClosure: null,
       maxDate,
       now,
+      updateFirstCall: true,
     };
   },
   async created() {
@@ -902,11 +904,18 @@ export default {
       });
     }
 
-    console.log(this.shopInfo);
     this.notFound = false;
   },
   mounted() {
     this.hello();
+  },
+  updated() {
+    if (this.updateFirstCall) {
+      if (window.location.hash) {
+        document.getElementById(window.location.hash.slice(1)).scrollIntoView();
+      }
+      this.updateFirstCall = false;
+    }
   },
   computed: {
     restProfilePhoto() {

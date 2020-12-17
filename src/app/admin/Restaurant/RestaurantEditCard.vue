@@ -129,7 +129,7 @@
 
         <b-button
           tag="nuxt-link"
-            :to="'/admin/restaurants/' + restaurantid"
+            :to="'/admin/restaurants/' + restaurantid + '#phoneCall'"
             style="min-width: 256px;"
           :class="shopInfo.phoneCall ? 'op-button-small secondary' : 'op-button-small primary'"
           >
