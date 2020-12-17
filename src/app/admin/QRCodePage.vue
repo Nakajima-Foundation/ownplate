@@ -53,6 +53,12 @@
                 <div class="op-button-text t-button">{{ restaurant.restaurantName }}</div>
               </a>
             </div>
+            <!-- Download -->
+            <div class="align-center">
+              <a href="#" @click="download">
+                <div class="op-button-text t-button">{{ $t("admin.qrcode.download") }}</div>
+              </a>
+            </div>
           </div>
         </div>
       </div>
