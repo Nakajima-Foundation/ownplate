@@ -238,7 +238,6 @@ export default {
         return option.length === 1 ? false : 0;
       });
       this.optionValues.push(v);
->>>>>>> v2.0.0
     });
   },
   watch: {
