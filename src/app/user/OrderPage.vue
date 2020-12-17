@@ -136,7 +136,19 @@
                   <div class="t-body1 m-t-8">{{ shopInfo.orderThanks }}</div>
                 </div>
               </template>
+
+              <div class="align-center m-t-24">
+                <i class="fab fa-line c-status-green"></i>
+                <a target="_blank" :href="this.shopInfo.lineUrl">
+                  <span class="c-status-green">{{
+                    $t("order.lineLink")
+                    }}</span>
+                </a>
+                <div class="c-primary t-body1 m-t-8">{{ $t("order.lineMessage") }}</div>
+              </div>
+              
             </div>
+            <!-- End of After Paid -->
 
             <!-- Before Paid -->
             <div v-else>
@@ -429,6 +441,9 @@ export default {
     }
   },
   computed: {
+    hasLineUrl() {
+      return this.shopInfo.lineUrl;
+    },
     urlAdminOrderPage() {
       return `${
         location.origin

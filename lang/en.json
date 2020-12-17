@@ -106,6 +106,8 @@
     "enterZip": "Enter Zip",
     "enterPhone": "Enter Phone Number",
     "enterWebsite": "Enter Website URL",
+    "enterLineUrl": "Enter LINE Official Account URL",
+    "enterInstagramUrl": "Enter Instagram URL",
     "enterIntroduction": "Enter shop introduction",
     "enterOrderNotice": "Enter order notifications",
     "enterOrderThanks": "Enter order thanks message",
@@ -171,6 +173,10 @@
     "phoneCallDescription": "Make a call when a new order comes in",
     "phoneCallNotice": "Although it is currently provided free of charge, this feature may be a paid feature in the future due to telephone call charges. In that case, even if this function is turned on, there is no sudden cost",
     "phoneCallNotification": "Phone Notification",
+    "acceptUserMessage": "Accept a message with customer",
+    "acceptUserMessageDescription": "Accept a message with customer",
+    "acceptUserMessageNotice": "Allows customers to enter a single message on the order confirmation screen.",
+
     "lineNotification": "LINE Notification",
     "city": "city",
     "zip": "zip",
@@ -247,6 +253,8 @@
     "address": "Address",
     "phonenumber": "Phones Number",
     "website": "Website",
+    "lineUrl": "LINE Official Account URL",
+    "instagramUrl": "Instagram URL",
     "hours": "Hours",
     "midnight": "12:00 midnight",
     "noon": "12:00 noon",
@@ -373,7 +381,9 @@
       "transaction_hide": "Transaction Complete",
       "order_canceled": "Canceled",
       "order_refunded": "Refunded"
-    }
+    },
+    "lineLink": "Restaurant's LINE Official Account URL",
+    "lineMessage": "If you add LINE Official Account as a friend, you will receive information directly from the restaurant."
   },
   "button": {
     "back": "Back",

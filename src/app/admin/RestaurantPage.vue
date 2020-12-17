@@ -405,6 +405,30 @@
               />
             </div>
 
+            <!-- Line URL -->
+            <div>
+              <text-form
+                v-model="shopInfo.lineUrl"
+                :error="errors['lineUrl']"
+                titleKey="shopInfo.lineUrl"
+                placeholder="editRestaurant.enterLineUrl"
+                :maxlength="100"
+                :required="false"
+              />
+            </div>
+
+            <!-- Line URL -->
+            <div>
+              <text-form
+                v-model="shopInfo.instagramUrl"
+                :error="errors['instagramUrl']"
+                titleKey="shopInfo.instagramUrl"
+                placeholder="editRestaurant.enterInstagramUrl"
+                :maxlength="100"
+                :required="false"
+              />
+            </div>
+            
             <!-- Tax -->
             <div>
               <!-- Tax Input Required -->
@@ -577,6 +601,9 @@
                 </div>
               </div>
             </div>
+            <!-- End of Phone Call -->
+
+
           </div>
         </div>
 
@@ -829,9 +856,13 @@ export default {
         place_id: null,
         phoneNumber: "",
         url: "",
+        lineUrl: "",
+        instagramUrl: "",
         introduction: "",
         orderNotice: "",
         orderThanks: "",
+        phoneCall: false,
+        acceptUserMessage: false,
         foodTax: 0,
         alcoholTax: 0,
         inclusiveTax: false,
@@ -998,6 +1029,14 @@ export default {
       err["url"] =
         this.shopInfo.url && !ex.test(this.shopInfo.url)
         ? ["validationError.url.invalidUrl"]
+        : [];
+      err["lineUrl"] =
+        this.shopInfo.lineUrl && !ex.test(this.shopInfo.lineUrl)
+        ? ["validationError.lineUrl.invalidUrl"]
+        : [];
+      err["instagramUrl"] =
+        this.shopInfo.instagramUrl && !ex.test(this.shopInfo.instagramUrl)
+        ? ["validationError.instagramUrl.invalidUrl"]
         : [];
 
       err["time"] = {};
@@ -1168,6 +1207,8 @@ export default {
           phoneCall: this.shopInfo.phoneCall,
           countryCode: this.shopInfo.countryCode,
           url: this.shopInfo.url,
+          lineUrl: this.shopInfo.lineUrl,
+          instagramUrl: this.shopInfo.instagramUrl,
           introduction: this.shopInfo.introduction,
           orderNotice: this.shopInfo.orderNotice,
           orderThanks: this.shopInfo.orderThanks,
