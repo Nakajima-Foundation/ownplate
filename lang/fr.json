@@ -531,6 +531,7 @@
     "qrcode": {
       "title": "QRcodes",
       "restaurant": "Page du Menu",
+      "download": "Télécharger QR Code",
       "enter": "Enregistrer l'entrée",
       "leave": "Enregistrer une sortie"
     },

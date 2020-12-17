@@ -232,7 +232,7 @@
     "share": "Share",
     "like": "Like",
     "liked": "Liked",
-    "qrcode": "QR code",
+    "qrcode": "QR Code",
     "copyUrl": "Copy URL",
     "UrlCopied": "URL Copied",
     "UrlCopyFailed": "URL Copy failed",
@@ -534,6 +534,7 @@
     "qrcode": {
       "title": "QRcodes",
       "restaurant": "Menu Page",
+      "download": "Download QR Code",
       "enter": "Record Entrance",
       "leave": "Record Leave"
     },

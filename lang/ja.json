@@ -541,6 +541,7 @@
     "qrcode": {
       "title": "QRコード",
       "restaurant": "メニューページ",
+      "download": "QRコードダウンロード",
       "enter": "入店記録",
       "leave": "退店記録"
     },
