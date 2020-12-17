@@ -44,8 +44,8 @@
           <div class="t-h6 c-text-black-disabled m-t-24 p-b-8">{{ $t("admin.qrcode.restaurant") }}</div>
           <div class="bg-surface r-8 d-low p-l-24 p-r-24 p-t-24 p-b-24">
             <!-- QR Code -->
-            <div class="align-center">
-              <qrcode :value="urlMenu" :options="{ width: 160 }"></qrcode>
+            <div class="align-center" @click="download">
+              <qrcode :value="urlMenu" :options="{ width: 160 }" ref="qrcode" ></qrcode>
             </div>
             <!-- Link -->
             <div class="align-center">
@@ -175,6 +175,14 @@ export default {
     urlMenu() {
       return this.shareUrl();
     }
-  }
+  },
+  methods: {
+    download() {
+      const a = document.createElement('a');
+      a.href = this.$refs.qrcode.$el.toDataURL('image/png');
+      a.download = 'qrcode.png';
+      a.click();
+    },
+  },
 };
 </script>
