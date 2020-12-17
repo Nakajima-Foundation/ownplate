@@ -155,7 +155,7 @@
     <!-- More -->
     <div class="align-center">
       <a
-        href="https://gluepass.jp/g/ownplatejp/pg/Zy8VserQdTxFVKLaFcOK"
+        href="/l/manual"
         target="_blank"
       >
         <div
