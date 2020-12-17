@@ -204,7 +204,9 @@
     "category1": "Catégorie 1",
     "editCategory1": "Modifier Catégorie 1",
     "category2": "Catégorie 2",
-    "editCategory2": "Modifier Catégorie 2"
+    "editCategory2": "Modifier Catégorie 2",
+    "showAllMenu": "All items",
+    "showPublicMenu": "Public items"
   },
   "editTitle": {
     "enterCategory": "Entrez le nom de le groupe",
