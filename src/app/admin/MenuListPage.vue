@@ -97,14 +97,14 @@
               </div>
             </div>
             <!-- No Menu -->
-            <div v-if="!existsMenu">
+            <div v-if="!existsMenu || menuCounter > 5">
               <div class="border-primary r-8 p-l-24 p-r-24 p-t-24 p-b-24 m-t-24">
                 <div class="align-center t-subtitle1 c-primary">{{ $t("editMenu.pleaseAddItem") }}</div>
                 <div class="align-center">
                   <b-button
                     class="b-reset op-button-pill h-36 bg-form m-r-8 m-l-8 m-t-16"
                     :disabled="submitting"
-                    @click="addTitle()"
+                    @click="addTitle('top')"
                   >
                     <i class="material-icons c-primary m-l-8">add</i>
                     <span class="c-primary t-button">
@@ -116,7 +116,7 @@
                   <b-button
                     class="b-reset op-button-pill h-36 bg-form m-l-8 m-r-8 m-t-16"
                     :disabled="submitting"
-                    @click="addMenu()"
+                    @click="addMenu('top')"
                   >
                     <i class="material-icons c-primary m-l-8">add</i>
                     <span class="c-primary t-button">
@@ -232,7 +232,7 @@
                 </span>
               </b-button>
             </div>
-            <div class="align-center m-t-16" v-if="Object.keys(this.menuObj).length > 0">
+            <div class="align-center m-t-16" v-if="menuCounter > 0">
               <!-- Add Category Title -->
               <b-button
                 class="b-reset op-button-pill h-36 bg-form m-r-8 m-l-8 m-t-16"
@@ -297,6 +297,9 @@ export default {
     };
   },
   computed: {
+    menuCounter() {
+      return Object.keys(this.menuObj).length;
+    },
     uid() {
       return this.$store.getters.uidAdmin;
     },
@@ -402,7 +405,7 @@ export default {
         .update("name", title.name);
       this.changeTitleMode(title.id, false);
     },
-    async addTitle() {
+    async addTitle(operation) {
       this.submitting = true;
       try {
         const data = {
@@ -416,8 +419,11 @@ export default {
           .add(data);
         const newMenuLists = this.menuLists;
         // newMenuLists.unshift(newTitle.id);
-        newMenuLists.push(newTitle.id);
-
+        if (operation === "top") {
+          Newmenulists.unshift(newTitle.id);
+        } else {
+          newMenuLists.push(newTitle.id);
+        }
         await this.saveMenuList(newMenuLists);
       } catch (e) {
         console.log(e);
@@ -425,7 +431,7 @@ export default {
         this.submitting = false;
       }
     },
-    async addMenu() {
+    async addMenu(operation) {
       this.submitting = true;
       try {
         const itemData = {
@@ -444,7 +450,11 @@ export default {
           .add(itemData);
 
         const newMenuLists = this.menuLists;
-        newMenuLists.push(newData.id);
+        if (operation === "top") {
+          newMenuLists.unshift(newData.id);
+        } else {
+          newMenuLists.push(newData.id);
+        }
         await this.saveMenuList(newMenuLists);
         this.$router.push({
           path: `/admin/restaurants/${this.restaurantId()}/menus/${newData.id}`
