@@ -420,7 +420,7 @@ export default {
         const newMenuLists = this.menuLists;
         // newMenuLists.unshift(newTitle.id);
         if (operation === "top") {
-          Newmenulists.unshift(newTitle.id);
+          newMenuLists.unshift(newTitle.id);
         } else {
           newMenuLists.push(newTitle.id);
         }

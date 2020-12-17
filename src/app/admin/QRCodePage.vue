@@ -54,10 +54,8 @@
               </a>
             </div>
             <!-- Download -->
-            <div class="align-center">
-              <a href="#" @click="download">
-                <div class="op-button-text t-button">{{ $t("admin.qrcode.download") }}</div>
-              </a>
+            <div class="align-center" @click="download">
+              <div class="op-button-text t-button">{{ $t("admin.qrcode.download") }}</div>
             </div>
           </div>
         </div>

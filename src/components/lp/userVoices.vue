@@ -39,7 +39,7 @@
           <div class="column is-narrow w-24"></div>
           <div class="column is-narrow align-center">
             <a
-              href="https://www.youtube.com/watch?v=gtpoZICprRo"
+              href="https://www.youtube.com/watch?v=4VUGm2v6B7E"
               target="_blank"
             >
               <div>
@@ -155,7 +155,7 @@
     <!-- More -->
     <div class="align-center">
       <a
-        href="/l/manual"
+        href="/l/tips"
         target="_blank"
       >
         <div
