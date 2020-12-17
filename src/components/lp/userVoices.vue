@@ -155,7 +155,7 @@
     <!-- More -->
     <div class="align-center">
       <a
-        href="/l/manual"
+        href="/l/tips"
         target="_blank"
       >
         <div
