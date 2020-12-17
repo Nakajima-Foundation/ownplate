@@ -77,15 +77,34 @@
         <!-- Right Column -->
         <div class="column">
           <div class="m-l-24 m-r-24">
+            <div @click="publicFilterToggle()" class="is-inline-block">
+              <div
+                v-if="publicFilter"
+                class="op-button-pill bg-status-green-bg"
+              >
+                <span class="c-status-green t-button">
+                  {{
+                  $t("editMenu.showPublicMenu")
+                  }}
+                </span>
+              </div>
+              <div v-else class="op-button-pill bg-status-green-bg">
+                <span class="c-status-blue t-button">
+                  {{
+                  $t("editMenu.showAllMenu")
+                  }}
+                </span>
+              </div>
+            </div>
             <!-- No Menu -->
-            <div v-if="!existsMenu">
+            <div v-if="!existsMenu || menuCounter > 5">
               <div class="border-primary r-8 p-l-24 p-r-24 p-t-24 p-b-24 m-t-24">
                 <div class="align-center t-subtitle1 c-primary">{{ $t("editMenu.pleaseAddItem") }}</div>
                 <div class="align-center">
                   <b-button
                     class="b-reset op-button-pill h-36 bg-form m-r-8 m-l-8 m-t-16"
                     :disabled="submitting"
-                    @click="addTitle()"
+                    @click="addTitle('top')"
                   >
                     <i class="material-icons c-primary m-l-8">add</i>
                     <span class="c-primary t-button">
@@ -97,7 +116,7 @@
                   <b-button
                     class="b-reset op-button-pill h-36 bg-form m-l-8 m-r-8 m-t-16"
                     :disabled="submitting"
-                    @click="addMenu()"
+                    @click="addMenu('top')"
                   >
                     <i class="material-icons c-primary m-l-8">add</i>
                     <span class="c-primary t-button">
@@ -126,7 +145,7 @@
                       :position="
                         index == 0
                           ? 'first'
-                          : menuLists.length - 1 === index
+                          : menuLength - 1 === index
                           ? 'last'
                           : ''
                       "
@@ -143,7 +162,7 @@
                       :position="
                         index == 0
                           ? 'first'
-                          : menuLists.length - 1 === index
+                          : menuLength - 1 === index
                           ? 'last'
                           : ''
                       "
@@ -160,7 +179,8 @@
                 <div
                   v-else-if="
                     itemsObj[menuList] &&
-                      itemsObj[menuList]._dataType === 'menu'
+                      itemsObj[menuList]._dataType === 'menu' &&
+                      (!publicFilter || itemsObj[menuList].publicFlag)
                   "
                 >
                   <item-edit-card
@@ -212,6 +232,21 @@
                 </span>
               </b-button>
             </div>
+            <div class="align-center m-t-16" v-if="menuCounter > 0">
+              <!-- Add Category Title -->
+              <b-button
+                class="b-reset op-button-pill h-36 bg-form m-r-8 m-l-8 m-t-16"
+                :disabled="downloadSubmitting"
+                @click="downloadMenu()"
+              >
+                <i class="material-icons c-primary m-l-8">menu_book</i>
+                <span class="c-primary t-button">
+                  {{
+                  $t("button.downloadMenu")
+                  }}
+                </span>
+              </b-button>
+            </div>
           </div>
         </div>
         <!-- Right Gap -->
@@ -230,8 +265,11 @@ import NotFound from "~/components/NotFound";
 import BackButton from "~/components/BackButton";
 
 import * as firebase from "firebase/app";
+import * as pdf from '../../plugins/pdf.js';
 
 import NotificationIndex from "./Notifications/Index";
+
+import _ from 'lodash';
 
 export default {
   name: "Menus",
@@ -246,27 +284,37 @@ export default {
   data() {
     return {
       submitting: false,
+      downloadSubmitting: false,
       readyToDisplay: false,
       restaurantInfo: {},
       menuCollection: null,
       titleCollection: null,
       editings: {},
       detachers: [],
-      notFound: null
+      notFound: null,
+      menuObj: {},
+      publicFilter: false,
     };
   },
   computed: {
+    menuCounter() {
+      return Object.keys(this.menuObj).length;
+    },
     uid() {
       return this.$store.getters.uidAdmin;
     },
     existsMenu() {
-      return this.menuLists.length > 0;
+      return this.menuLength > 0;
+    },
+    menuLength() {
+      return this.menuLists.length;
     },
     itemsObj() {
       if (this.menuCollection && this.titleCollection) {
         const menus = (this.menuCollection.docs || []).map(
           this.doc2data("menu")
         );
+        this.menuObj = this.array2obj(menus);
         const titles = (this.titleCollection.docs || []).map(
           this.doc2data("title")
         );
@@ -276,7 +324,27 @@ export default {
     },
     menuLists() {
       return this.restaurantInfo.menuLists || [];
-    }
+    },
+    // TODO: create method and move to utils. merge ShopInfo.vue
+    // TODO: merge restaurantInfo and shopInfo
+    parsedNumber() {
+      const countryCode = this.restaurantInfo.countryCode || this.countries[0].code;
+      try {
+        return parsePhoneNumber(countryCode + this.restaurantInfo.phoneNumber);
+      } catch (error) {
+        return null;
+      }
+    },
+    countries() {
+      return this.$store.getters.stripeRegion.countries;
+    },
+    nationalPhoneNumber() {
+      const number = this.parsedNumber;
+      if (number) {
+        return formatNational(number);
+      }
+      return this.restaurantInfo.phoneNumber;
+    },
   },
   async created() {
     this.checkAdminPermission();
@@ -321,13 +389,23 @@ export default {
     }
   },
   methods: {
+    publicFilterToggle() {
+      this.publicFilter = !this.publicFilter
+    },
+    async downloadMenu() {
+      this. downloadSubmitting = true;
+      const dl = await pdf.download(this.restaurantInfo, this.menuObj, this.nationalPhoneNumber, this.shareUrl());
+      console.log(dl);
+      this. downloadSubmitting = false;
+
+    },
     async updateTitle(title) {
       await db
         .doc(`restaurants/${this.restaurantId()}/titles/${title.id}`)
         .update("name", title.name);
       this.changeTitleMode(title.id, false);
     },
-    async addTitle() {
+    async addTitle(operation) {
       this.submitting = true;
       try {
         const data = {
@@ -341,8 +419,11 @@ export default {
           .add(data);
         const newMenuLists = this.menuLists;
         // newMenuLists.unshift(newTitle.id);
-        newMenuLists.push(newTitle.id);
-
+        if (operation === "top") {
+          newMenuLists.unshift(newTitle.id);
+        } else {
+          newMenuLists.push(newTitle.id);
+        }
         await this.saveMenuList(newMenuLists);
       } catch (e) {
         console.log(e);
@@ -350,7 +431,7 @@ export default {
         this.submitting = false;
       }
     },
-    async addMenu() {
+    async addMenu(operation) {
       this.submitting = true;
       try {
         const itemData = {
@@ -369,7 +450,11 @@ export default {
           .add(itemData);
 
         const newMenuLists = this.menuLists;
-        newMenuLists.push(newData.id);
+        if (operation === "top") {
+          newMenuLists.unshift(newData.id);
+        } else {
+          newMenuLists.push(newData.id);
+        }
         await this.saveMenuList(newMenuLists);
         this.$router.push({
           path: `/admin/restaurants/${this.restaurantId()}/menus/${newData.id}`
@@ -405,22 +490,35 @@ export default {
 
     //
     async positionUp(itemKey) {
-      const pos = this.menuLists.indexOf(itemKey);
+      let pos = this.menuLists.indexOf(itemKey);
       if (pos !== 0 && pos !== -1) {
         const newMenuLists = [...this.menuLists];
-        const tmp = newMenuLists[pos - 1];
-        newMenuLists[pos - 1] = newMenuLists[pos];
-        newMenuLists[pos] = tmp;
+        let tmp = null;
+        do {
+          tmp = newMenuLists[pos - 1];
+          newMenuLists[pos - 1] = newMenuLists[pos];
+          newMenuLists[pos] = tmp;
+          pos = pos - 1;
+          // if public filter case,
+          //  loop swap while tmp obj is public or title. pos == 0 means you are top.
+        } while (this.publicFilter && this.menuObj[tmp] && !this.menuObj[tmp].publicFlag && pos !== 0)
         await this.saveMenuList(newMenuLists);
       }
     },
     async positionDown(itemKey) {
-      const pos = this.menuLists.indexOf(itemKey);
-      if (pos !== this.menuLists.length && pos !== -1) {
+      let pos = this.menuLists.indexOf(itemKey);
+      if (pos < this.menuLength - 1 && pos !== -1) {
         const newMenuLists = [...this.menuLists];
-        const tmp = newMenuLists[pos + 1];
-        newMenuLists[pos + 1] = newMenuLists[pos];
-        newMenuLists[pos] = tmp;
+        let tmp = null
+        do {
+          tmp = newMenuLists[pos + 1];
+          newMenuLists[pos + 1] = newMenuLists[pos];
+          newMenuLists[pos] = tmp;
+          pos = pos + 1;
+          // if public filter case,
+          //  loop swap while tmp obj is public or title. pos == this.menuLength means you are bottom.
+        } while (this.publicFilter && this.menuObj[tmp] && !this.menuObj[tmp].publicFlag && pos < this.menuLength - 1)
+        console.log(newMenuLists);
         await this.saveMenuList(newMenuLists);
       }
     },

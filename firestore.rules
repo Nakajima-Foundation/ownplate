@@ -168,6 +168,10 @@ service cloud.firestore {
         allow read: if hashing.sha256(request.auth.token.line).toHexString().lower() == hashId;
       }
     }
+    match /link/{linkId}{
+      allow read: if true;
+      allow write: if false;
+    }
     match /{path=**}/records/{eventId} {
         allow read: if isRestaurantOwner(resource.data.restaurantId, request);
     }

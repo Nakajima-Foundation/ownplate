@@ -61,9 +61,6 @@ export default {
    ** Nuxt.js dev-modules
    */
   buildModules: [],
-  build: {
-    quiet: false
-  },
   /*
    ** Nuxt.js modules
    */
@@ -94,11 +91,17 @@ export default {
    ** Build configuration
    */
   build: {
+    quiet: false,
     /*
      ** You can extend webpack config here
      */
     extend(config, ctx) {
       config.devtool = 'eval-source-map';
+      config.module.rules.push({
+        test: /\.svg$/i,
+        loader: 'raw-loader',
+        exclude: /(node_modules)/,
+      });
     },
     babel: {
       presets: [
@@ -116,6 +119,9 @@ export default {
         "@babel/plugin-proposal-optional-chaining"
       ]
     },
-    vendor: ["babel-polyfill"]
+    vendor: ["babel-polyfill"],
+    terser: {
+      parallel: false
+    }
   }
 };

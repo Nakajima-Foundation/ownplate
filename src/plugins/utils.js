@@ -22,6 +22,7 @@ export default ({ app }) => {
       },
       shareUrl() {
         return location.protocol + "//" + location.host + "/r/" + this.restaurantId();
+        // return "https://omochikaeri.com/r/" + this.restaurantId();
       },
       doc2data(dataType) {
         return (doc) => {
@@ -135,10 +136,35 @@ export default ({ app }) => {
       },
       async getShopOwner(uid) {
         const admin = await db.doc(`/admins/${uid}`).get();
-        if (admin) {
+        if (admin && admin.exists) {
           return admin.data();
         }
         return {hidePrivacy: false};
+      },
+      arraySum(arr) {
+        return Object.values(arr||[0]).reduce((accumulator, currentValue) => accumulator + currentValue);
+      },
+      arrayOrNumSum(arr) {
+        return Array.isArray(arr) ? this.arraySum(arr) : (arr || 0);
+      },
+      getOrderItems(orderInfo, menuObj) {
+        if (orderInfo.order && orderInfo.menuItems) {
+          return Object.keys(orderInfo.order).reduce((tmp, menuId) => {
+            const numArray = Array.isArray(orderInfo.order[menuId]) ? orderInfo.order[menuId] : [orderInfo.order[menuId]];
+            const opt = orderInfo.options && orderInfo.options[menuId] ? orderInfo.options[menuId] : null;
+            const optArray = Array.isArray(orderInfo.order[menuId]) ? orderInfo.options[menuId] || {} : {0:  orderInfo.options[menuId]};
+            Object.keys(numArray).map(numKey => {
+              tmp.push({
+                item: orderInfo.menuItems[menuId] || menuObj[menuId] || {},
+                count: numArray[numKey],
+                id: menuId,
+                options: optArray[numKey],
+              });
+            });
+            return tmp;
+          }, []);
+        }
+        return [];
       },
     },
     computed: {
@@ -190,6 +216,16 @@ export default ({ app }) => {
         // not implemented
         return null;
       },
+      featureHeroMobile() {
+        return this.regionalSetting.FeatureHeroMobile[
+          this.isLocaleJapan ? "ja" : "en"
+        ];
+      },
+      featureHeroTablet() {
+        return this.regionalSetting.FeatureHeroTablet[
+          this.isLocaleJapan ? "ja" : "en"
+        ];
+      }
     }
   });
 }

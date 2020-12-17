@@ -137,7 +137,7 @@ export const confirm = async (db: FirebaseFirestore.Firestore, data: any, contex
   let order: Order | undefined = undefined;
 
   try {
-    let result = await db.runTransaction(async transaction => {
+    const result = await db.runTransaction(async transaction => {
 
       const snapshot = await transaction.get(orderRef)
       order = Order.fromSnapshot<Order>(snapshot)
@@ -178,7 +178,7 @@ export const confirm = async (db: FirebaseFirestore.Firestore, data: any, contex
     })
 
     if (order!.sendSMS) {
-      let msgKey = "msg_cooking_completed"
+      const msgKey = "msg_cooking_completed"
       const orderName = nameOfOrder(order!.number)
       await sendMessage(db, lng, msgKey, restaurantData.restaurantName, orderName, order!.uid, order!.phoneNumber, restaurantId, orderId, {})
     }

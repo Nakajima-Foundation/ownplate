@@ -74,6 +74,11 @@ export const customRoutes = [
         component: "admin/RestaurantPage.vue"
       },
       {
+        name: "admin-pdf",
+        path: "pdf",
+        component: "admin/Pdf.vue"
+      },
+      {
         name: "admin-menus",
         path: "menus",
         component: "admin/MenuListPage.vue"
@@ -216,6 +221,10 @@ export const customRoutes = [
   {
     path: "/t",
     component: "trace/Record.vue"
+  },
+  {
+    path: "/l/:urlKey",
+    component: "docs/link.vue"
   },
   {
     path: "*",
