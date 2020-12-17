@@ -50,6 +50,14 @@
           </div>
         </div>
       </div>
+      <div>
+        <div
+          class="t-overline r-8 r-b-0 p-l-8 p-t-4 p-b-4"
+          v-if="menuitem.itemMemo"
+          >
+          {{menuitem.itemMemo.split("\n")[0]}}
+        </div>
+      </div>
     </div>
 
     <!-- Card Actions -->
