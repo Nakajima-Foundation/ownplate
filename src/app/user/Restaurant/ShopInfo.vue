@@ -58,6 +58,26 @@
             </div>
           </a>
         </div>
+        
+        <!-- Restaurant Website -->
+        <div v-if="hasLineUrl" class="m-t-8 m-l-16 m-r-16">
+          <a target="_blank" :href="this.shopInfo.lineUrl">
+            <div class="op-button-text">
+              <i class="fab fa-line c-status-green"></i>
+              <span>{{this.shopInfo.lineUrl}}</span>
+            </div>
+          </a>
+        </div>
+
+        <!-- Restaurant Website -->
+        <div v-if="hasInstagramUrl" class="m-t-8 m-l-16 m-r-16">
+          <a target="_blank" :href="this.shopInfo.instagramUrl">
+            <div class="op-button-text">
+              <i class="fab fa-instagram"></i>
+              <span>{{this.shopInfo.instagramUrl}}</span>
+            </div>
+          </a>
+        </div>
 
         <!-- Transactions Act -->
         <div class="m-t-8 m-l-16 m-r-16">
@@ -237,6 +257,12 @@ export default {
     },
     hasUrl() {
       return this.shopInfo.url;
+    },
+    hasLineUrl() {
+      return this.shopInfo.lineUrl;
+    },
+    hasInstagramUrl() {
+      return this.shopInfo.instagramUrl;
     },
     region() {
       return ownPlateConfig.region;
