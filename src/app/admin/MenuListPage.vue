@@ -77,6 +77,25 @@
         <!-- Right Column -->
         <div class="column">
           <div class="m-l-24 m-r-24">
+            <div @click="publicFilterToggle()" class="is-inline-block">
+              <div
+                v-if="publicFilter"
+                class="op-button-pill bg-status-green-bg"
+              >
+                <span class="c-status-green t-button">
+                  {{
+                  $t("editMenu.showPublicMenu")
+                  }}
+                </span>
+              </div>
+              <div v-else class="op-button-pill bg-status-green-bg">
+                <span class="c-status-blue t-button">
+                  {{
+                  $t("editMenu.showAllMenu")
+                  }}
+                </span>
+              </div>
+            </div>
             <!-- No Menu -->
             <div v-if="!existsMenu">
               <div class="border-primary r-8 p-l-24 p-r-24 p-t-24 p-b-24 m-t-24">
@@ -126,7 +145,7 @@
                       :position="
                         index == 0
                           ? 'first'
-                          : menuLists.length - 1 === index
+                          : menuLength - 1 === index
                           ? 'last'
                           : ''
                       "
@@ -143,7 +162,7 @@
                       :position="
                         index == 0
                           ? 'first'
-                          : menuLists.length - 1 === index
+                          : menuLength - 1 === index
                           ? 'last'
                           : ''
                       "
@@ -160,7 +179,8 @@
                 <div
                   v-else-if="
                     itemsObj[menuList] &&
-                      itemsObj[menuList]._dataType === 'menu'
+                      itemsObj[menuList]._dataType === 'menu' &&
+                      (!publicFilter || itemsObj[menuList].publicFlag)
                   "
                 >
                   <item-edit-card
@@ -273,6 +293,7 @@ export default {
       detachers: [],
       notFound: null,
       menuObj: {},
+      publicFilter: false,
     };
   },
   computed: {
@@ -280,7 +301,10 @@ export default {
       return this.$store.getters.uidAdmin;
     },
     existsMenu() {
-      return this.menuLists.length > 0;
+      return this.menuLength > 0;
+    },
+    menuLength() {
+      return this.menuLists.length;
     },
     itemsObj() {
       if (this.menuCollection && this.titleCollection) {
@@ -362,6 +386,9 @@ export default {
     }
   },
   methods: {
+    publicFilterToggle() {
+      this.publicFilter = !this.publicFilter
+    },
     async downloadMenu() {
       this. downloadSubmitting = true;
       const dl = await pdf.download(this.restaurantInfo, this.menuObj, this.nationalPhoneNumber, this.shareUrl());
@@ -453,22 +480,35 @@ export default {
 
     //
     async positionUp(itemKey) {
-      const pos = this.menuLists.indexOf(itemKey);
+      let pos = this.menuLists.indexOf(itemKey);
       if (pos !== 0 && pos !== -1) {
         const newMenuLists = [...this.menuLists];
-        const tmp = newMenuLists[pos - 1];
-        newMenuLists[pos - 1] = newMenuLists[pos];
-        newMenuLists[pos] = tmp;
+        let tmp = null;
+        do {
+          tmp = newMenuLists[pos - 1];
+          newMenuLists[pos - 1] = newMenuLists[pos];
+          newMenuLists[pos] = tmp;
+          pos = pos - 1;
+          // if public filter case,
+          //  loop swap while tmp obj is public or title. pos == 0 means you are top.
+        } while (this.publicFilter && this.menuObj[tmp] && !this.menuObj[tmp].publicFlag && pos !== 0)
         await this.saveMenuList(newMenuLists);
       }
     },
     async positionDown(itemKey) {
-      const pos = this.menuLists.indexOf(itemKey);
-      if (pos !== this.menuLists.length && pos !== -1) {
+      let pos = this.menuLists.indexOf(itemKey);
+      if (pos < this.menuLength - 1 && pos !== -1) {
         const newMenuLists = [...this.menuLists];
-        const tmp = newMenuLists[pos + 1];
-        newMenuLists[pos + 1] = newMenuLists[pos];
-        newMenuLists[pos] = tmp;
+        let tmp = null
+        do {
+          tmp = newMenuLists[pos + 1];
+          newMenuLists[pos + 1] = newMenuLists[pos];
+          newMenuLists[pos] = tmp;
+          pos = pos + 1;
+          // if public filter case,
+          //  loop swap while tmp obj is public or title. pos == this.menuLength means you are bottom.
+        } while (this.publicFilter && this.menuObj[tmp] && !this.menuObj[tmp].publicFlag && pos < this.menuLength - 1)
+        console.log(newMenuLists);
         await this.saveMenuList(newMenuLists);
       }
     },
