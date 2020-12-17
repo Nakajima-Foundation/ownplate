@@ -136,7 +136,7 @@ export default ({ app }) => {
       },
       async getShopOwner(uid) {
         const admin = await db.doc(`/admins/${uid}`).get();
-        if (admin) {
+        if (admin && admin.exists) {
           return admin.data();
         }
         return {hidePrivacy: false};
