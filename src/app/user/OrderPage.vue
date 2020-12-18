@@ -219,6 +219,15 @@
                   :can-cancel="true"
                 ></b-loading>
               </b-notification>
+              <!-- Your Message to the Restaurant -->
+               <template
+                v-if="paid && hasMemo"
+                >
+                <div class="bg-form m-t-24 p-l-16 p-r-16 p-t-16 p-b-16 r-8">
+                  <div class="t-caption">{{ $t("order.orderMessage") }}</div>
+                  <div class="t-body1 m-t-8">{{ orderInfo.memo }}</div>
+                </div>
+              </template>
             </div>
           </div>
         </div>
@@ -536,7 +545,10 @@ export default {
     },
     orderId() {
       return this.$route.params.orderId;
-    }
+    },
+    hasMemo() {
+      return this.orderInfo && !this.isEmpty(this.orderInfo.memo)
+    },
   },
   watch: {
     isUser() {
