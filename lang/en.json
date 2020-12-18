@@ -532,7 +532,8 @@
       "lineDelete": "Do you really want to delete this account？",
       "lineSafariPrivate": "Note: If you are using Safari's Private Browsing Mode, you will not be able to connect to LINE.",
       "history": "Order History",
-      "more": "More"
+      "more": "More",
+      "messageFromCustomer": "Message from the customer"
     },
     "sound": {
       "default": "Default",
