@@ -104,6 +104,7 @@ import OrderStatus from "~/app/admin/Order/OrderStatus";
 import { nameOfOrder } from "~/plugins/strings.js";
 import { parsePhoneNumber, formatNational } from "~/plugins/phoneutil.js";
 import { db } from "~/plugins/firebase.js";
+import { order_status } from "~/plugins/constant.js";
 
 export default {
   components: {
@@ -162,7 +163,10 @@ export default {
         }, 0);
       }
       return 0;
-    }
+    },
+    paymentIsNotCompleted() {
+      return this.hasStripe && this.order.status <  order_status.ready_to_pickup 
+    },
   },
 };
 </script>
