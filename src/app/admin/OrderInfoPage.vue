@@ -430,6 +430,9 @@ export default {
     order_status() {
       return order_status;
     },
+    paymentIsNotCompleted() {
+      return this.hasStripe && this.orderInfo.status <  order_status.ready_to_pickup 
+    },
   },
   methods: {
     timeStampToText(timestamp) {
