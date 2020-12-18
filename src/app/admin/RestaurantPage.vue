@@ -1084,6 +1084,9 @@ export default {
     hasError() {
       const num = this.countObj(this.errors);
       return num > 0;
+    },
+    isSetLocation() {
+      return Object.keys(this.shopInfo.location).length !== 0;
     }
   },
   watch: {
