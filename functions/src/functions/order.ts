@@ -23,7 +23,7 @@ export const nameOfOrder = (orderNumber: number) => {
 // This function is called by users to place orders without paying
 export const place = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
-  const { restaurantId, orderId, tip, sendSMS, timeToPickup, lng } = data;
+  const { restaurantId, orderId, tip, sendSMS, timeToPickup, lng, memo } = data;
   utils.validate_params({ restaurantId, orderId }) // tip, sendSMS and lng are optinoal
 
   try {
@@ -53,6 +53,7 @@ export const place = async (db: FirebaseFirestore.Firestore, data: any, context:
         updatedAt: admin.firestore.Timestamp.now(),
         orderPlacedAt: admin.firestore.Timestamp.now(),
         timePlaced: timeToPickup && new admin.firestore.Timestamp(timeToPickup.seconds, timeToPickup.nanoseconds) || admin.firestore.FieldValue.serverTimestamp(),
+        memo: memo || "",
       })
 
       return { success: true }

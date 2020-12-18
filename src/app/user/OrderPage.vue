@@ -262,7 +262,31 @@
                   </div>
                 </div>
               </template>
-
+              <!-- Order Notice -->
+              <template
+                v-if="
+                  shopInfo &&
+                    shopInfo.acceptUserMessage
+                "
+              >
+                <div class="m-t-24">
+                  <div class="t-h6 c-text-black-disabled">
+                    {{ $t("order.orderMessage") }}
+                  </div>
+                  <div
+                    class="bg-surface r-8 d-low m-t-8 p-l-16 p-r-16 p-t-16 p-b-16"
+                  >
+                    <div class="cols">
+                      <b-input
+                        v-model="memo"
+                        type="textarea"
+                        :placeholder="$t('order.enterMessage')"
+                        style="width: 100%"
+                        ></b-input>
+                    </div>
+                  </div>
+                </div>
+              </template>
               <!-- Payment -->
               <div class="m-t-24">
                 <!-- Title -->
@@ -423,7 +447,8 @@ export default {
       tip: 0,
       sendSMS: true,
       paymentInfo: {},
-      notFound: false
+      notFound: false,
+      memo: ""
     };
   },
   created() {
@@ -643,7 +668,8 @@ export default {
           orderId: this.orderId,
           description: `${this.orderName} ${this.shopInfo.restaurantName} ${this.shopInfo.phoneNumber}`,
           sendSMS: this.sendSMS,
-          tip: this.tip || 0
+          tip: this.tip || 0,
+          memo: this.memo || "",
         });
         this.sendPurchase();
         console.log("createIntent", data);
@@ -678,7 +704,8 @@ export default {
           timeToPickup,
           orderId: this.orderId,
           sendSMS: this.sendSMS,
-          tip: this.tip || 0
+          tip: this.tip || 0,
+          memo: this.memo || "",
         });
         console.log("place", data);
         this.sendPurchase();
