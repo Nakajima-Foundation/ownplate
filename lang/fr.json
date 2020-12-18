@@ -355,6 +355,8 @@
     "timeToPickup": "Temps de ramassage estimé",
     "notAvailable": "Ce restaurant n'est pas disponible pour le moment. Veuillez réessayer plus tard",
     "orderNotice": "Avis de la commande",
+    "orderMessage": "Message to the restaurant",
+    "enterMessage": "You can send a message to the restaurant.",
     "datePlaced": "Time Placed",
     "dateEstimated": "Time Estimated",
     "dateConfirmed": "Time Confirmed",

@@ -357,6 +357,8 @@
     "timeToPickup": "Estimated Pickup Time",
     "notAvailable": "This restaurant is not available at this time. Please try again later",
     "orderNotice": "Order Notice",
+    "orderMessage": "Message to the restaurant",
+    "enterMessage": "You can send a message to the restaurant.",
     "datePlaced": "Time Placed",
     "dateEstimated": "Time Estimated",
     "dateConfirmed": "Time Confirmed",
