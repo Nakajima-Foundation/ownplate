@@ -224,10 +224,9 @@
                   :can-cancel="true"
                 ></b-loading>
               </b-notification>
+
               <!-- Your Message to the Restaurant -->
-               <template
-                v-if="paid && hasMemo"
-                >
+              <template v-if="paid && hasMemo">
                 <div class="bg-form m-t-24 p-l-16 p-r-16 p-t-16 p-b-16 r-8">
                   <div class="t-caption">{{ $t("order.orderMessage") }}</div>
                   <div class="t-body1 m-t-8">{{ orderInfo.memo }}</div>
@@ -276,13 +275,9 @@
                   </div>
                 </div>
               </template>
+
               <!-- Order Notice -->
-              <template
-                v-if="
-                  shopInfo &&
-                    shopInfo.acceptUserMessage
-                "
-              >
+              <template v-if="shopInfo && shopInfo.acceptUserMessage">
                 <div class="m-t-24">
                   <div class="t-h6 c-text-black-disabled">
                     {{ $t("order.orderMessage") }}
@@ -296,7 +291,7 @@
                         type="textarea"
                         :placeholder="$t('order.enterMessage')"
                         style="width: 100%"
-                        ></b-input>
+                      ></b-input>
                     </div>
                   </div>
                 </div>
@@ -552,8 +547,8 @@ export default {
       return this.$route.params.orderId;
     },
     hasMemo() {
-      return this.orderInfo && !this.isEmpty(this.orderInfo.memo)
-    },
+      return this.orderInfo && !this.isEmpty(this.orderInfo.memo);
+    }
   },
   watch: {
     isUser() {
@@ -686,7 +681,7 @@ export default {
           description: `${this.orderName} ${this.shopInfo.restaurantName} ${this.shopInfo.phoneNumber}`,
           sendSMS: this.sendSMS,
           tip: this.tip || 0,
-          memo: this.memo || "",
+          memo: this.memo || ""
         });
         this.sendPurchase();
         console.log("createIntent", data);
@@ -722,7 +717,7 @@ export default {
           orderId: this.orderId,
           sendSMS: this.sendSMS,
           tip: this.tip || 0,
-          memo: this.memo || "",
+          memo: this.memo || ""
         });
         console.log("place", data);
         this.sendPurchase();
