@@ -74,7 +74,7 @@
         <!-- Restaurant LINE -->
         <div v-if="hasLineUrl" class="m-t-8 m-l-16 m-r-16">
           <a target="_blank" :href="this.shopInfo.lineUrl">
-            <div class="op-button-text">
+            <div class="op-button-text" style="color:#4EC263;">
               <i class="fab fa-line fa-lg m-r-8"></i>
               <span>{{ this.shopInfo.lineUrl }}</span>
             </div>
@@ -84,7 +84,7 @@
         <!-- Restaurant Instagram -->
         <div v-if="hasInstagramUrl" class="m-t-8 m-l-16 m-r-16">
           <a target="_blank" :href="this.shopInfo.instagramUrl">
-            <div class="op-button-text">
+            <div class="op-button-text" style="color:#E3356C;">
               <i class="fab fa-instagram fa-lg m-r-8"></i>
               <span>{{ this.shopInfo.instagramUrl }}</span>
             </div>
