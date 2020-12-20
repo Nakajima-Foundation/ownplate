@@ -46,7 +46,27 @@
           </div>
         </router-link>
       </div>
+      
+      <!-- Order History -->
+      <div class="align-center m-t-24" v-if="isCustomer">
+        <router-link to="/u/history">
+          <div
+            class="op-button-small tertiary" @click="handleClose()">
+            {{ $t("order.history") }}
+          </div>
+        </router-link>
+      </div>
 
+      <!-- Order History -->
+      <div class="align-center m-t-24" v-if="isCustomer">
+        <router-link to="/r/favorites">
+          <div
+            class="op-button-small tertiary" @click="handleClose()">
+            {{ $t("find.likes") }}
+          </div>
+        </router-link>
+      </div>
+      
       <!-- For Restaurant -->
       <div class="m-t-24">
         <div class="align-center t-subtitle1 p-b-8">
