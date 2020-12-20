@@ -137,16 +137,21 @@
                 </div>
               </template>
 
-              <div class="align-center m-t-24">
-                <i class="fab fa-line c-status-green"></i>
+              <!-- Restaurant LINE -->
+              <div
+                v-if="hasLineUrl"
+                class="align-center m-t-16 bg-form r-8 p-t-16 p-l-16 p-r-16 p-b-16"
+              >
                 <a target="_blank" :href="this.shopInfo.lineUrl">
-                  <span class="c-status-green">{{
-                    $t("order.lineLink")
-                    }}</span>
+                  <div class="op-button-pill bg-status-green c-text-white-full">
+                    <i class="fab fa-line"></i>
+                    <span class="t-subtitle2">{{ $t("order.lineLink") }}</span>
+                  </div>
                 </a>
-                <div class="c-primary t-body1 m-t-8">{{ $t("order.lineMessage") }}</div>
+                <div class="t-body2 m-t-8">
+                  {{ $t("order.lineMessage") }}
+                </div>
               </div>
-              
             </div>
             <!-- End of After Paid -->
 
