@@ -84,7 +84,7 @@
         <!-- Restaurant Instagram -->
         <div v-if="hasInstagramUrl" class="m-t-8 m-l-16 m-r-16">
           <a target="_blank" :href="this.shopInfo.instagramUrl">
-            <div class="op-button-text" style="color:#E3356C;">
+            <div class="op-button-text" style="color:#DD2A7B;">
               <i class="fab fa-instagram fa-lg m-r-8"></i>
               <span>{{ this.shopInfo.instagramUrl }}</span>
             </div>
