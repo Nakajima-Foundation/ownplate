@@ -357,6 +357,8 @@
     "timeToPickup": "受け渡し予定時刻",
     "notAvailable": "注文可能な営業日がないので、現在は注文を受け付けていません。",
     "orderNotice": "注文時のご注意",
+    "orderMessage": "お店へメッセージ",
+    "enterMessage": "お店へメッセージを伝えることができます。「注文時のご注意」にお願いがある場合には、それを参考にメッセージを作成してください。",
     "datePlaced": "注文時刻",
     "dateEstimated": "完了予定時刻",
     "dateConfirmed": "準備完了時刻",
@@ -539,7 +541,8 @@
       "lineDelete": "本当に消去しますか？",
       "lineSafariPrivate": "注意: Safariのプライベートブラウズモードを使用しているとLINE連携ができません。",
       "history": "注文履歴",
-      "more": "もっと見る"
+      "more": "もっと見る",
+      "messageFromCustomer": "お客様からのメッセージ"
     },
     "sound": {
       "default": "ピコリン",

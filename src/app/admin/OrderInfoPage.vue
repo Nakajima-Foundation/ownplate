@@ -177,6 +177,17 @@
                     <div>{{orderInfo.name}}</div>
                   </div>
                 </div>
+
+                <!-- Message from customer -->
+                <div v-if="hasMemo" class="m-t-16 bg-form">
+                  <div class="t-caption c-text-black-medium align-center">
+                    {{$t('admin.order.messageFromCustomer')}}
+                  </div>
+                  <div class="t-body1 m-t-4">
+                    <div>{{orderInfo.memo}}</div>
+                  </div>
+                </div>
+                
               </div>
 
               <!-- Order Status -->
@@ -324,6 +335,9 @@ export default {
     });
   },
   computed: {
+    hasMemo() {
+      return this.orderInfo && !this.isEmpty(this.orderInfo.memo)
+    },
     possibleTransitions() {
       return possible_transitions[this.orderInfo.status] || {};
     },

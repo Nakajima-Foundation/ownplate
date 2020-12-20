@@ -14,6 +14,9 @@ export default ({ app }) => {
       isNull(value) {
         return value === null || value === undefined;
       },
+      isEmpty(value) {
+        return value === null || value === undefined || value === "";
+      },
       restaurantId() {
         return this.$route.params.restaurantId;
       },

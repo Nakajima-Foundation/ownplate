@@ -357,6 +357,8 @@
     "timeToPickup": "Estimated Pickup Time",
     "notAvailable": "This restaurant is not available at this time. Please try again later",
     "orderNotice": "Order Notice",
+    "orderMessage": "Message to the restaurant",
+    "enterMessage": "You can send a message to the restaurant.",
     "datePlaced": "Time Placed",
     "dateEstimated": "Time Estimated",
     "dateConfirmed": "Time Confirmed",
@@ -532,7 +534,8 @@
       "lineDelete": "Do you really want to delete this account？",
       "lineSafariPrivate": "Note: If you are using Safari's Private Browsing Mode, you will not be able to connect to LINE.",
       "history": "Order History",
-      "more": "More"
+      "more": "More",
+      "messageFromCustomer": "Message from the customer"
     },
     "sound": {
       "default": "Default",

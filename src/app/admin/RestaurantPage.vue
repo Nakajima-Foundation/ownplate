@@ -603,6 +603,23 @@
             </div>
             <!-- End of Phone Call -->
 
+            <div
+              class="t-subtitle2 c-text-black-medium p-b-8"
+              >{{ $t("editRestaurant.acceptUserMessage") }}</div>
+            <div class="bg-form r-8 p-l-16 p-r-16 p-t-16 p-b-16 t-body1 c-text-black-high">
+              <div>
+                <b-checkbox v-model="shopInfo.acceptUserMessage">
+                  {{
+                  $t("editRestaurant.acceptUserMessageDescription")
+                  }}
+                </b-checkbox>
+                <span class="t-caption c-text-black-medium">
+                  {{
+                  $t("editRestaurant.acceptUserMessageNotice")
+                  }}
+                </span>
+              </div>
+            </div>
 
           </div>
         </div>
@@ -1208,6 +1225,7 @@ export default {
           place_id: this.shopInfo.place_id,
           phoneNumber: this.shopInfo.phoneNumber,
           phoneCall: this.shopInfo.phoneCall,
+          acceptUserMessage: this.shopInfo.acceptUserMessage,
           countryCode: this.shopInfo.countryCode,
           url: this.shopInfo.url,
           lineUrl: this.shopInfo.lineUrl,
