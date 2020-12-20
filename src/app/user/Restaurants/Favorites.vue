@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Likes Header Area -->
-    <div class="columns is-gapless" v-if="likes.length > 0">
+    <div class="columns is-gapless">
       <!-- Left Gap -->
       <div class="column is-narrow w-24"></div>
       <!-- Center Column -->
@@ -9,6 +9,15 @@
         <div class="m-l-24 m-r-24 m-t-24">
           <!-- Title -->
           <div class="t-h6 c-text-black-disabled m-t-24">{{$t("find.likes")}}</div>
+          <div v-if="likes.length === 0">
+            <div class="h-full p-b-8 p-r-8">
+              <div class="touchable bg-surface r-8 d-low p-l-16 p-r-16 p-t-16 p-b-16 h-full">
+                <div class="cols flex-center">
+                  No favorite Restaurants
+                </div>
+              </div>
+            </div>
+          </div>
           <div v-for="like in likes" :key="like.restaurantId" class="m-t-8">
             <div class="h-full p-b-8 p-r-8">
               <router-link :to="`/r/${like.restaurantId}`">
@@ -72,9 +81,13 @@
 <script>
 import { db } from "~/plugins/firebase.js";
 import { RestaurantHeader } from "~/plugins/header.js";
+import AreaItem from "~/app/user/Restaurants/AreaItem";
 import { ownPlateConfig } from "@/config/project";
 
 export default {
+  components: {
+    AreaItem
+  },
   data() {
     return {
       likes: [],
