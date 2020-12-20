@@ -15,6 +15,11 @@ export const customRoutes = [
     component: "user/Restaurants/Area.vue"
   },
   {
+    name: "favorites",
+    path: "/r/favorites",
+    component: "user/Restaurants/Favorites.vue"
+  },
+  {
     name: "history",
     path: "/u/history",
     component: "user/OrderHistory.vue"
