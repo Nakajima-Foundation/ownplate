@@ -405,7 +405,7 @@
               />
             </div>
 
-            <!-- Line URL -->
+            <!-- LINE URL -->
             <div>
               <text-form
                 v-model="shopInfo.lineUrl"
@@ -417,7 +417,7 @@
               />
             </div>
 
-            <!-- Line URL -->
+            <!-- Instagram URL -->
             <div>
               <text-form
                 v-model="shopInfo.instagramUrl"
