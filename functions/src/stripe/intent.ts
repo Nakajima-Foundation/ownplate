@@ -100,7 +100,7 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
       }
     })
 
-    await notifyNewOrder(db, restaurantId, orderId, orderNumber, lng);
+    await notifyNewOrder(db, restaurantId, orderId, restaurantData.restaurantName, orderNumber, lng);
 
     return result;
   } catch (error) {
@@ -288,7 +288,7 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
       await sendMessage(db, lng, 'msg_order_canceled', restaurant.restaurantName, orderName, uidUser, phoneNumber, restaurantId, orderId)
     }
     if (uid !== venderId) {
-      await notifyCanceledOrder(db, restaurantId, orderId, orderNumber, lng)
+      await notifyCanceledOrder(db, restaurantId, orderId, restaurant.restaurantName, orderNumber, lng)
     }
     return result
   } catch (error) {

@@ -27,6 +27,7 @@ export const place = async (db: FirebaseFirestore.Firestore, data: any, context:
   utils.validate_params({ restaurantId, orderId }) // tip, sendSMS and lng are optinoal
 
   try {
+    const restaurantData = await utils.get_restaurant(db, restaurantId);
     const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`)
 
     let orderNumber: number = 0;
@@ -57,7 +58,8 @@ export const place = async (db: FirebaseFirestore.Firestore, data: any, context:
 
       return { success: true }
     })
-    await notifyNewOrder(db, restaurantId, orderId, orderNumber, lng);
+    
+    await notifyNewOrder(db, restaurantId, orderId, restaurantData.restaurantName, orderNumber, lng);
 
     return result;
   } catch (error) {
@@ -154,7 +156,7 @@ export const sendMessage = async (db: FirebaseFirestore.Firestore, lng: string,
   }
 }
 
-const notifyRestaurant = async (db: FirebaseFirestore.Firestore, messageId: string, restaurantId: string, orderId: string, orderNumber: number, lng: string) => {
+const notifyRestaurant = async (db: FirebaseFirestore.Firestore, messageId: string, restaurantId: string, orderId: string, restaurantName: string, orderNumber: number, lng: string) => {
   const docs = (await db.collection(`/restaurants/${restaurantId}/lines`).get()).docs;
   const t = await i18next.init({
     lng: lng || utils.getStripeRegion().langs[0],
@@ -162,7 +164,7 @@ const notifyRestaurant = async (db: FirebaseFirestore.Firestore, messageId: stri
   })
   const url = `https://${ownPlateConfig.hostName}/admin/restaurants/${restaurantId}/orders/${orderId}`
   const orderName = nameOfOrder(orderNumber);
-  const message = `${t(messageId)} ${orderName}`;
+  const message = `${restaurantName} ${t(messageId)} ${orderName}`;
   docs.forEach(async doc => {
     const lineUser = doc.data();
     if (lineUser.notify) {
@@ -179,7 +181,6 @@ const notifyRestaurant = async (db: FirebaseFirestore.Firestore, messageId: stri
       updatedAt: admin.firestore.Timestamp.now(),
       url
     })
-    // todo make phone call
     if (messageId === 'msg_order_placed') {
       if (restaurant.phoneCall) {
         await twilio.phoneCall(restaurant);
@@ -196,12 +197,12 @@ const notifyRestaurant = async (db: FirebaseFirestore.Firestore, messageId: stri
   }
 }
 
-export const notifyNewOrder = async (db: FirebaseFirestore.Firestore, restaurantId: string, orderId: string, orderNumber: number, lng: string) => {
-  return notifyRestaurant(db, 'msg_order_placed', restaurantId, orderId, orderNumber, lng)
+export const notifyNewOrder = async (db: FirebaseFirestore.Firestore, restaurantId: string, orderId: string, restaurantName: string, orderNumber: number, lng: string) => {
+  return notifyRestaurant(db, 'msg_order_placed', restaurantId, orderId, restaurantName, orderNumber, lng)
 };
 
-export const notifyCanceledOrder = async (db: FirebaseFirestore.Firestore, restaurantId: string, orderId: string, orderNumber: number, lng: string) => {
-  return notifyRestaurant(db, 'msg_order_canceled_by_user', restaurantId, orderId, orderNumber, lng)
+export const notifyCanceledOrder = async (db: FirebaseFirestore.Firestore, restaurantId: string, orderId: string, restaurantName: string, orderNumber: number, lng: string) => {
+  return notifyRestaurant(db, 'msg_order_canceled_by_user', restaurantId, orderId, restaurantName, orderNumber, lng)
 };
 
 export const getMenuObj = async (refRestaurant) => {
