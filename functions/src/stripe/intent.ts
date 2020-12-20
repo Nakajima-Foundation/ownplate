@@ -109,6 +109,7 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
 };
 
 // This function is called by admin to confurm a "payment intent" (to complete the payment transaction)
+// ready_to_pickup
 export const confirm = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
   const stripe = utils.get_stripe();

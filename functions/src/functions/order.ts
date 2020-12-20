@@ -96,7 +96,9 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
       if (status === order_status.order_accepted) {
         msgKey = "msg_order_accepted"
       }
-
+      if (status === order_status.ready_to_pickup) {
+        msgKey = "msg_cooking_completed"
+      }
       if (status === order_status.order_canceled && order.payment && order.payment.stripe) {
         throw new functions.https.HttpsError('permission-denied', 'Paid order can not be cancele like this', status)
       }
@@ -126,6 +128,7 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
         console.log("timeEstimated", params["time"]);
       }
       const orderName = nameOfOrder(order!.number)
+      // To customer
       await sendMessage(db, lng, msgKey, restaurant.restaurantName, orderName, order!.uid, order!.phoneNumber, restaurantId, orderId, params)
     }
     return result
