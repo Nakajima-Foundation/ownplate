@@ -12,7 +12,9 @@
             <!-- Back Button -->
             <back-button url="/u/profile/" class="m-t-24" />
             <!-- Title -->
-            <div class="t-h6 c-text-black-disabled m-t-24">{{$t('order.history')}}</div>
+            <div class="t-h6 c-text-black-disabled m-t-24">
+              {{ $t("order.history") }}
+            </div>
           </div>
         </div>
       </div>
