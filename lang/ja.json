@@ -186,7 +186,7 @@
     "menu": "メニュー",
     "enterItemName": "料理/ドリンク名を入力してください",
     "enterItemDescription": "説明文を入力してください",
-    "enterItemMemo": "メモ(お客様の画面には表示されません。１行目のみ、メニュー一覧上に表示されます。秘密情報は書かないようにしてください)",
+    "enterItemMemo": "メモ（お客様の画面には表示されません。1行目のみ、メニュー一覧上に表示されます。秘密情報は書かないようにしてください）",
     "enterItemOption": "オプションを入力してください",
     "item": "料理/ドリンク",
     "noItem": "何も登録されていません",
@@ -201,7 +201,7 @@
     "alcoholJP": "それ以外（酒、グッズなど）",
     "displayPrice": "表示金額",
     "itemDescription": "説明文",
-    "itemMemo": "メモ(管理画面のみ表示される情報です)",
+    "itemMemo": "メモ（管理画面のみ表示される情報です）",
     "itemPhoto": "写真",
     "itemOptions": "オプション",
     "itemOptionsNote": "二択や三択の場合、半角カンマで区切ってください（例:「チキン, ポーク, 豆腐」）。有料オプションの場合には、最後に(+100)のように値段を指定してください（例：「大盛り (+150)」）",
@@ -213,8 +213,8 @@
     "editCategory1": "カテゴリー１を編集",
     "category2": "カテゴリー２",
     "editCategory2": "カテゴリー２を編集",
-    "showAllMenu": "全ての商品を表示",
-    "showPublicMenu": "公開中の商品を表示"
+    "showAllMenu": "全ての商品",
+    "showPublicMenu": "公開中のみ"
   },
   "editTitle": {
     "enterCategory": "グループ名を入力してください",
