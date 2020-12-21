@@ -41,32 +41,33 @@
       <!-- Profile -->
       <div class="align-center m-t-24">
         <router-link to="/u/profile">
-          <div class="op-button-small tertiary" @click="handleClose()">
-            {{ $t("profile.title") }}
-          </div>
-        </router-link>
-      </div>
-      
-      <!-- Order History -->
-      <div class="align-center m-t-24" v-if="isCustomer">
-        <router-link to="/u/history">
-          <div
-            class="op-button-small tertiary" @click="handleClose()">
-            {{ $t("order.history") }}
+          <div class="op-button-small primary" @click="handleClose()">
+            <i class="material-icons m-r-8">person</i>
+            <span>{{ $t("profile.title") }}</span>
           </div>
         </router-link>
       </div>
 
       <!-- Order History -->
-      <div class="align-center m-t-24" v-if="isCustomer">
-        <router-link to="/r/favorites">
-          <div
-            class="op-button-small tertiary" @click="handleClose()">
-            {{ $t("find.likes") }}
+      <div class="align-center m-t-16" v-if="isCustomer">
+        <router-link to="/u/history">
+          <div class="op-button-small primary" @click="handleClose()">
+            <i class="material-icons m-r-8">history</i>
+            <span>{{ $t("order.history") }}</span>
           </div>
         </router-link>
       </div>
-      
+
+      <!-- Favorites -->
+      <div class="align-center m-t-16" v-if="isCustomer">
+        <router-link to="/r/favorites">
+          <div class="op-button-small primary" @click="handleClose()">
+            <i class="material-icons m-r-8">favorite</i>
+            <span>{{ $t("find.likes") }}</span>
+          </div>
+        </router-link>
+      </div>
+
       <!-- For Restaurant -->
       <div class="m-t-24">
         <div class="align-center t-subtitle1 p-b-8">

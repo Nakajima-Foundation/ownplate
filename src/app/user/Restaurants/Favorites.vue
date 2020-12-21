@@ -1,23 +1,48 @@
 <template>
   <div>
-    <!-- Likes Header Area -->
+    <!-- Favorites Header Area -->
+    <div class="columns is-gapless">
+      <!-- Left Gap -->
+      <div class="column is-narrow w-24"></div>
+      <!-- Center Column -->
+      <div class="column">
+        <div class="m-l-24 m-r-24">
+          <!-- Back Button and Restaurant Profile -->
+          <div>
+            <!-- Back Button -->
+            <back-button url="/u/profile/" class="m-t-24" />
+            <!-- Title -->
+            <div class="t-h6 c-text-black-disabled m-t-24">
+              {{ $t("find.likes") }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Right Gap -->
+      <div class="column is-narrow w-24"></div>
+    </div>
+
+    <!-- Favorites Body Area -->
     <div class="columns is-gapless">
       <!-- Left Gap -->
       <div class="column is-narrow w-24"></div>
       <!-- Center Column -->
       <div class="column">
         <div class="m-l-24 m-r-24 m-t-24">
-          <!-- Title -->
-          <div class="t-h6 c-text-black-disabled m-t-24">{{$t("find.likes")}}</div>
+          <!-- No Likes -->
           <div v-if="likes.length === 0">
             <div class="h-full p-b-8 p-r-8">
-              <div class="touchable bg-surface r-8 d-low p-l-16 p-r-16 p-t-16 p-b-16 h-full">
+              <div
+                class="touchable bg-surface r-8 d-low p-l-16 p-r-16 p-t-16 p-b-16 h-full"
+              >
                 <div class="cols flex-center">
                   No favorite Restaurants
                 </div>
               </div>
             </div>
           </div>
+
+          <!-- Likes -->
           <div v-for="like in likes" :key="like.restaurantId" class="m-t-8">
             <div class="h-full p-b-8 p-r-8">
               <router-link :to="`/r/${like.restaurantId}`">
@@ -25,14 +50,15 @@
                   <div class="cols flex-center">
                     <!-- Restaurant Profile -->
                     <div class="m-r-16 h-48">
-                      <img :src="resizedProfileImage(like, '600')" class="w-48 h-48 r-48 cover" />
+                      <img
+                        :src="resizedProfileImage(like, '600')"
+                        class="w-48 h-48 r-48 cover"
+                      />
                     </div>
 
                     <!-- Restaurant Name -->
                     <div class="flex-1 p-r-8 t-subtitle1 c-primary">
-                      {{
-                      like.restaurantName
-                      }}
+                      {{ like.restaurantName }}
                     </div>
                   </div>
                 </div>
@@ -53,7 +79,9 @@
       <div class="column">
         <div class="m-l-24 m-r-24 m-t-24">
           <!-- Title -->
-          <div class="t-h6 c-text-black-disabled m-t-24">{{$t("find.area")}}</div>
+          <div class="t-h6 c-text-black-disabled m-t-24">
+            {{ $t("find.area") }}
+          </div>
         </div>
       </div>
       <!-- Right Gap -->
@@ -74,7 +102,6 @@
         </div>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -83,15 +110,17 @@ import { db } from "~/plugins/firebase.js";
 import { RestaurantHeader } from "~/plugins/header.js";
 import AreaItem from "~/app/user/Restaurants/AreaItem";
 import { ownPlateConfig } from "@/config/project";
+import BackButton from "~/components/BackButton";
 
 export default {
   components: {
-    AreaItem
+    AreaItem,
+    BackButton
   },
   data() {
     return {
       likes: [],
-      restaurants: [],
+      restaurants: []
     };
   },
   head() {
