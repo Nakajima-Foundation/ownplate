@@ -56,7 +56,7 @@
         <!-- Manual for Restaurant -->
         <div class="align-center">
           <a
-            href="https://docs.omochikaeri.com/manual/manual.pdf"
+            href="https://docs.omochikaeri.com/manuals/manual.pdf"
             target="_blank"
           >
             <div class="op-button-text t-button" @click="handleClose()">
@@ -68,7 +68,7 @@
         <!-- Tips for Restaurant -->
         <div class="align-center">
           <a
-            href="https://docs.omochikaeri.com/manual/tips.pdf"
+            href="https://docs.omochikaeri.com/manuals/tips.pdf"
             target="_blank"
           >
             <div class="op-button-text t-button" @click="handleClose()">

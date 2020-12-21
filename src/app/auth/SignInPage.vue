@@ -20,7 +20,7 @@
                   <div class="t-subtitle1 p-t-4 p-l-16">
                     {{ $t("admin.encourageToReadManual.before") }}
                     <a
-                      href="https://docs.omochikaeri.com/manual/manual.pdf"
+                      href="https://docs.omochikaeri.com/manuals/manual.pdf"
                       target="_blank"
                     >
                       {{ $t("admin.encourageToReadManual.manualName") }}
