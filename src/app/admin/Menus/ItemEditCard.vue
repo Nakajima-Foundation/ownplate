@@ -4,21 +4,23 @@
     <div class="bg-surface r-8 d-low m-t-8 touchable" @click="linkEdit">
       <!-- Published/NotPublished Badge -->
       <div>
-        <div v-if="menuitem.publicFlag">
+        <div v-if="menuitem.publicFlag" class="p-t-8 p-l-8 p-r-8 p-b-8">
           <div
-            class="bg-status-green-bg c-status-green t-overline r-8 r-b-0 p-l-8 p-t-4 p-b-4"
+            class="bg-status-green-bg c-status-green t-overline p-l-8 p-r-8 p-t-4 p-b-4 r-4"
           >
             {{ $t("admin.itemPublished") }}
           </div>
         </div>
-        <div v-else>
+        <div v-else class="p-t-8 p-l-8 p-r-8 p-b-8">
           <div
-            class="bg-status-red-bg c-status-red t-overline r-8 r-b-0 p-l-8 p-t-4 p-b-4"
+            class="bg-status-red-bg c-status-red t-overline p-l-8 p-r-8 p-t-4 p-b-4 r-4"
           >
             {{ $t("admin.itemNotPublished") }}
           </div>
         </div>
       </div>
+
+      <!-- Item Details -->
       <div class=" cols">
         <div class="flex-1 p-l-16 p-r-16 p-t-16 p-b-16">
           <div class="t-h6 c-text-black-high">{{ menuitem.itemName }}</div>
@@ -50,12 +52,13 @@
           </div>
         </div>
       </div>
-      <div>
+
+      <!-- Owner Memo -->
+      <div v-if="menuitem.itemMemo" class="p-l-8 p-r-8 p-b-8">
         <div
-          class="t-overline r-8 r-b-0 p-l-8 p-t-4 p-b-4"
-          v-if="menuitem.itemMemo"
-          >
-          {{menuitem.itemMemo.split("\n")[0]}}
+          class="bg-form t-overline c-text-black-medium p-l-8 p-r-8 p-t-4 p-b-4 r-4"
+        >
+          {{ menuitem.itemMemo.split("\n")[0] }}
         </div>
       </div>
     </div>

@@ -30,7 +30,7 @@
               </div>
               <!-- Notification Settings -->
               <div class="level-right">
-                <notification-index :shopInfo="restaurantInfo"/>
+                <notification-index :shopInfo="restaurantInfo" />
               </div>
             </div>
           </div>
@@ -49,18 +49,21 @@
           <div class="m-l-24 m-r-24">
             <!-- Restaurant Profile Photo -->
             <div class="m-t-24 align-center">
-              <img :src="resizedProfileImage(restaurantInfo, '600')" class="w-64 h-64 r-64 cover" />
+              <img
+                :src="resizedProfileImage(restaurantInfo, '600')"
+                class="w-64 h-64 r-64 cover"
+              />
             </div>
 
             <!-- Restaurant Name -->
-            <div
-              class="m-t-8 align-center t-h6 c-text-black-high"
-            >{{ restaurantInfo.restaurantName }}</div>
+            <div class="m-t-8 align-center t-h6 c-text-black-high">
+              {{ restaurantInfo.restaurantName }}
+            </div>
 
             <!-- Restaurant Descriptions -->
-            <div
-              class="t-body1 c-text-black-medium align-center m-t-8"
-            >{{ restaurantInfo.introduction }}</div>
+            <div class="t-body1 c-text-black-medium align-center m-t-8">
+              {{ restaurantInfo.introduction }}
+            </div>
 
             <!-- Preview Link -->
             <div class="m-t-8 align-center">
@@ -77,29 +80,63 @@
         <!-- Right Column -->
         <div class="column">
           <div class="m-l-24 m-r-24">
-            <div @click="publicFilterToggle()" class="is-inline-block">
+            <!-- Toggle to View All or Public Only -->
+            <div class="m-t-24 align-center">
+              <div @click="publicFilterToggle()" class="op-button">
+                <div
+                  v-if="publicFilter"
+                  class="op-button bg-status-green-bg r-64 p-t-4 p-b-4 p-l-4 p-r-4"
+                >
+                  <div class="op-button-pill c-status-green t-subtitle2">
+                    {{ $t("editMenu.showAllMenu") }}
+                  </div>
+                  <div
+                    class="op-button-pill bg-status-green c-text-white-full t-subtitle2"
+                  >
+                    {{ $t("editMenu.showPublicMenu") }}
+                  </div>
+                </div>
+                <div
+                  v-else
+                  class="op-button bg-status-green-bg r-64 p-t-4 p-b-4 p-l-4 p-r-4"
+                >
+                  <div
+                    class="op-button-pill c-text-white-full t-subtitle2 bg-status-green"
+                  >
+                    {{ $t("editMenu.showAllMenu") }}
+                  </div>
+                  <div class="op-button-pill c-status-green t-subtitle2">
+                    {{ $t("editMenu.showPublicMenu") }}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Toggle to View All or Public Only -->
+            <!-- <div @click="publicFilterToggle()" class="m-t-24 align-center">
               <div
                 v-if="publicFilter"
                 class="op-button-pill bg-status-green-bg"
               >
                 <span class="c-status-green t-button">
-                  {{
-                  $t("editMenu.showPublicMenu")
-                  }}
+                  {{ $t("editMenu.showPublicMenu") }}
                 </span>
               </div>
               <div v-else class="op-button-pill bg-status-green-bg">
                 <span class="c-status-blue t-button">
-                  {{
-                  $t("editMenu.showAllMenu")
-                  }}
+                  {{ $t("editMenu.showAllMenu") }}
                 </span>
               </div>
-            </div>
+            </div> -->
+
             <!-- No Menu -->
             <div v-if="!existsMenu || menuCounter > 5">
-              <div class="border-primary r-8 p-l-24 p-r-24 p-t-24 p-b-24 m-t-24">
-                <div class="align-center t-subtitle1 c-primary">{{ $t("editMenu.pleaseAddItem") }}</div>
+              <div
+                class="border-primary r-8 p-l-24 p-r-24 p-t-24 p-b-24 m-t-24"
+              >
+                <div class="align-center t-subtitle1 c-primary">
+                  {{ $t("editMenu.pleaseAddItem") }}
+                </div>
                 <div class="align-center">
                   <b-button
                     class="b-reset op-button-pill h-36 bg-form m-r-8 m-l-8 m-t-16"
@@ -108,9 +145,7 @@
                   >
                     <i class="material-icons c-primary m-l-8">add</i>
                     <span class="c-primary t-button">
-                      {{
-                      $t("button.addTitle")
-                      }}
+                      {{ $t("button.addTitle") }}
                     </span>
                   </b-button>
                   <b-button
@@ -120,9 +155,7 @@
                   >
                     <i class="material-icons c-primary m-l-8">add</i>
                     <span class="c-primary t-button">
-                      {{
-                      $t("button.addItem")
-                      }}
+                      {{ $t("button.addItem") }}
                     </span>
                   </b-button>
                 </div>
@@ -212,9 +245,7 @@
               >
                 <i class="material-icons c-primary m-l-8">add</i>
                 <span class="c-primary t-button">
-                  {{
-                  $t("button.addTitle")
-                  }}
+                  {{ $t("button.addTitle") }}
                 </span>
               </b-button>
 
@@ -226,9 +257,7 @@
               >
                 <i class="material-icons c-primary m-l-8">add</i>
                 <span class="c-primary t-button">
-                  {{
-                  $t("button.addItem")
-                  }}
+                  {{ $t("button.addItem") }}
                 </span>
               </b-button>
             </div>
@@ -241,9 +270,7 @@
               >
                 <i class="material-icons c-primary m-l-8">menu_book</i>
                 <span class="c-primary t-button">
-                  {{
-                  $t("button.downloadMenu")
-                  }}
+                  {{ $t("button.downloadMenu") }}
                 </span>
               </b-button>
             </div>
@@ -265,11 +292,11 @@ import NotFound from "~/components/NotFound";
 import BackButton from "~/components/BackButton";
 
 import * as firebase from "firebase/app";
-import * as pdf from '../../plugins/pdf.js';
+import * as pdf from "../../plugins/pdf.js";
 
 import NotificationIndex from "./Notifications/Index";
 
-import _ from 'lodash';
+import _ from "lodash";
 
 export default {
   name: "Menus",
@@ -293,7 +320,7 @@ export default {
       detachers: [],
       notFound: null,
       menuObj: {},
-      publicFilter: false,
+      publicFilter: false
     };
   },
   computed: {
@@ -328,7 +355,8 @@ export default {
     // TODO: create method and move to utils. merge ShopInfo.vue
     // TODO: merge restaurantInfo and shopInfo
     parsedNumber() {
-      const countryCode = this.restaurantInfo.countryCode || this.countries[0].code;
+      const countryCode =
+        this.restaurantInfo.countryCode || this.countries[0].code;
       try {
         return parsePhoneNumber(countryCode + this.restaurantInfo.phoneNumber);
       } catch (error) {
@@ -344,7 +372,7 @@ export default {
         return formatNational(number);
       }
       return this.restaurantInfo.phoneNumber;
-    },
+    }
   },
   async created() {
     this.checkAdminPermission();
@@ -390,14 +418,18 @@ export default {
   },
   methods: {
     publicFilterToggle() {
-      this.publicFilter = !this.publicFilter
+      this.publicFilter = !this.publicFilter;
     },
     async downloadMenu() {
-      this. downloadSubmitting = true;
-      const dl = await pdf.download(this.restaurantInfo, this.menuObj, this.nationalPhoneNumber, this.shareUrl());
+      this.downloadSubmitting = true;
+      const dl = await pdf.download(
+        this.restaurantInfo,
+        this.menuObj,
+        this.nationalPhoneNumber,
+        this.shareUrl()
+      );
       console.log(dl);
-      this. downloadSubmitting = false;
-
+      this.downloadSubmitting = false;
     },
     async updateTitle(title) {
       await db
@@ -501,7 +533,12 @@ export default {
           pos = pos - 1;
           // if public filter case,
           //  loop swap while tmp obj is public or title. pos == 0 means you are top.
-        } while (this.publicFilter && this.menuObj[tmp] && !this.menuObj[tmp].publicFlag && pos !== 0)
+        } while (
+          this.publicFilter &&
+          this.menuObj[tmp] &&
+          !this.menuObj[tmp].publicFlag &&
+          pos !== 0
+        );
         await this.saveMenuList(newMenuLists);
       }
     },
@@ -509,7 +546,7 @@ export default {
       let pos = this.menuLists.indexOf(itemKey);
       if (pos < this.menuLength - 1 && pos !== -1) {
         const newMenuLists = [...this.menuLists];
-        let tmp = null
+        let tmp = null;
         do {
           tmp = newMenuLists[pos + 1];
           newMenuLists[pos + 1] = newMenuLists[pos];
@@ -517,7 +554,12 @@ export default {
           pos = pos + 1;
           // if public filter case,
           //  loop swap while tmp obj is public or title. pos == this.menuLength means you are bottom.
-        } while (this.publicFilter && this.menuObj[tmp] && !this.menuObj[tmp].publicFlag && pos < this.menuLength - 1)
+        } while (
+          this.publicFilter &&
+          this.menuObj[tmp] &&
+          !this.menuObj[tmp].publicFlag &&
+          pos < this.menuLength - 1
+        );
         console.log(newMenuLists);
         await this.saveMenuList(newMenuLists);
       }
