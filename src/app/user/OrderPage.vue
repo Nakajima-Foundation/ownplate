@@ -137,16 +137,21 @@
                 </div>
               </template>
 
-              <div class="align-center m-t-24">
-                <i class="fab fa-line c-status-green"></i>
+              <!-- Restaurant LINE -->
+              <div
+                v-if="hasLineUrl"
+                class="align-center m-t-16 bg-form r-8 p-t-16 p-l-16 p-r-16 p-b-16"
+              >
                 <a target="_blank" :href="this.shopInfo.lineUrl">
-                  <span class="c-status-green">{{
-                    $t("order.lineLink")
-                    }}</span>
+                  <div class="op-button-pill bg-status-green c-text-white-full">
+                    <i class="fab fa-line"></i>
+                    <span class="t-subtitle2">{{ $t("order.lineLink") }}</span>
+                  </div>
                 </a>
-                <div class="c-primary t-body1 m-t-8">{{ $t("order.lineMessage") }}</div>
+                <div class="t-body2 m-t-8">
+                  {{ $t("order.lineMessage") }}
+                </div>
               </div>
-              
             </div>
             <!-- End of After Paid -->
 
@@ -219,6 +224,14 @@
                   :can-cancel="true"
                 ></b-loading>
               </b-notification>
+
+              <!-- Your Message to the Restaurant -->
+              <template v-if="paid && hasMemo">
+                <div class="bg-form m-t-24 p-l-16 p-r-16 p-t-16 p-b-16 r-8">
+                  <div class="t-caption">{{ $t("order.orderMessage") }}</div>
+                  <div class="t-body1 m-t-8">{{ orderInfo.memo }}</div>
+                </div>
+              </template>
             </div>
           </div>
         </div>
@@ -263,6 +276,26 @@
                 </div>
               </template>
 
+              <!-- Order Notice -->
+              <template v-if="shopInfo && shopInfo.acceptUserMessage">
+                <div class="m-t-24">
+                  <div class="t-h6 c-text-black-disabled">
+                    {{ $t("order.orderMessage") }}
+                  </div>
+                  <div
+                    class="bg-surface r-8 d-low m-t-8 p-l-16 p-r-16 p-t-16 p-b-16"
+                  >
+                    <div class="cols">
+                      <b-input
+                        v-model="memo"
+                        type="textarea"
+                        :placeholder="$t('order.enterMessage')"
+                        style="width: 100%"
+                      ></b-input>
+                    </div>
+                  </div>
+                </div>
+              </template>
               <!-- Payment -->
               <div class="m-t-24">
                 <!-- Title -->
@@ -423,7 +456,8 @@ export default {
       tip: 0,
       sendSMS: true,
       paymentInfo: {},
-      notFound: false
+      notFound: false,
+      memo: ""
     };
   },
   created() {
@@ -511,6 +545,9 @@ export default {
     },
     orderId() {
       return this.$route.params.orderId;
+    },
+    hasMemo() {
+      return this.orderInfo && !this.isEmpty(this.orderInfo.memo);
     }
   },
   watch: {
@@ -643,7 +680,8 @@ export default {
           orderId: this.orderId,
           description: `${this.orderName} ${this.shopInfo.restaurantName} ${this.shopInfo.phoneNumber}`,
           sendSMS: this.sendSMS,
-          tip: this.tip || 0
+          tip: this.tip || 0,
+          memo: this.memo || ""
         });
         this.sendPurchase();
         console.log("createIntent", data);
@@ -678,7 +716,8 @@ export default {
           timeToPickup,
           orderId: this.orderId,
           sendSMS: this.sendSMS,
-          tip: this.tip || 0
+          tip: this.tip || 0,
+          memo: this.memo || ""
         });
         console.log("place", data);
         this.sendPurchase();
