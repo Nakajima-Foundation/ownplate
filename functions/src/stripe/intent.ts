@@ -6,6 +6,8 @@ import Order from '../models/Order'
 import * as utils from '../lib/utils'
 import { sendMessage, notifyNewOrder, nameOfOrder, notifyCanceledOrder } from '../functions/order';
 
+import moment from 'moment-timezone';
+
 // This function is called by user to create a "payment intent" (to start the payment transaction)
 export const create = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
@@ -178,10 +180,14 @@ export const confirm = async (db: FirebaseFirestore.Firestore, data: any, contex
       return { success: true }
     })
 
-    if (order!.sendSMS) {
-      const msgKey = "msg_cooking_completed"
-      const orderName = nameOfOrder(order!.number)
-      await sendMessage(db, lng, msgKey, restaurantData.restaurantName, orderName, order!.uid, order!.phoneNumber, restaurantId, orderId, {})
+    if (order && order!.sendSMS && order!.timeEstimated) {
+      const diffDay =  (moment().toDate().getTime() - order!.timeEstimated.toDate().getTime()) / 1000 / 3600 / 24;
+      console.log("timeEstimated_diff_days = " + String(diffDay)); 
+      if (diffDay < 1) {
+        const msgKey = "msg_cooking_completed"
+        const orderName = nameOfOrder(order!.number)
+        await sendMessage(db, lng, msgKey, restaurantData.restaurantName, orderName, order!.uid, order!.phoneNumber, restaurantId, orderId, {});
+      }
     }
 
     return result

@@ -99,7 +99,13 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
         msgKey = "msg_order_accepted"
       }
       if (status === order_status.ready_to_pickup) {
-        msgKey = "msg_cooking_completed"
+        if (order && order.timeEstimated) {
+          const diffDay =  (moment().toDate().getTime() - order.timeEstimated.toDate().getTime()) / 1000 / 3600 / 24;
+          console.log("timeEstimated_diff_days = " + String(diffDay)); 
+          if (diffDay < 1) {
+            msgKey = "msg_cooking_completed"
+          }
+        }
       }
       if (status === order_status.order_canceled && order.payment && order.payment.stripe) {
         throw new functions.https.HttpsError('permission-denied', 'Paid order can not be cancele like this', status)
