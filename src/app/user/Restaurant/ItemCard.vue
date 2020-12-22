@@ -57,12 +57,9 @@
         <hr class="devider m-t-0 m-b-0" />
 
         <!-- Share Button -->
-        <share-popup
-          :shopInfo="shopInfo"
-          :suffix="urlSuffix"
-          class="align-left"
-          style="margin-left: -8px;"
-        ></share-popup>
+        <div class="align-center m-t-8">
+          <share-popup :shopInfo="shopInfo" :suffix="urlSuffix"></share-popup>
+        </div>
 
         <!-- Item Options -->
         <template v-for="(value, quantityKey) in quantities">
