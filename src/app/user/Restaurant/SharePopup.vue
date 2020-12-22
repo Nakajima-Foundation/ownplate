@@ -68,43 +68,7 @@ export default {
     return {
       url: this.shareUrl() + (this.suffix || ""),
       sharePopup: false,
-      review: {},
-      detacher: null
     };
-  },
-  mounted() {
-    if (this.isUser) {
-      this.detacher = db
-        .doc(`users/${this.user.uid}/reviews/${this.restaurantId()}`)
-        .onSnapshot(snapshot => {
-          this.review = snapshot.data() || {};
-          if (this.review.restaurantName) {
-            // Check if the cached info is out of date, update them.
-            if (
-              this.review.restaurantName !== this.shopInfo.restaurantName ||
-              this.review.restProfilePhoto != this.shopInfo.restProfilePhoto
-            ) {
-              db.doc(
-                `users/${this.user.uid}/reviews/${this.restaurantId()}`
-              ).set(
-                {
-                  restaurantName: this.shopInfo.restaurantName, // duplicated for quick display
-                  restProfilePhoto: this.shopInfo.restProfilePhoto // duplicated for quick display
-                },
-                { merge: true }
-              );
-            }
-          }
-        });
-    }
-  },
-  destroyed() {
-    this.detacher && this.detacher();
-  },
-  computed: {
-    likes() {
-      return !!this.review.likes;
-    }
   },
   methods: {
     openShare() {
