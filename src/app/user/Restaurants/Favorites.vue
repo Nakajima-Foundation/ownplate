@@ -29,8 +29,9 @@
       <!-- Center Column -->
       <div class="column">
         <div class="m-l-24 m-r-24 m-t-24">
+          <div v-if="likes === null" />
           <!-- No Likes -->
-          <div v-if="likes.length === 0">
+          <div v-else-if="likes.length === 0">
             <div class="h-full p-b-8 p-r-8">
               <div
                 class="touchable bg-surface r-8 d-low p-l-16 p-r-16 p-t-16 p-b-16 h-full"
@@ -43,26 +44,28 @@
           </div>
 
           <!-- Likes -->
-          <div v-for="like in likes" :key="like.restaurantId" class="m-t-8">
-            <div class="h-full p-b-8 p-r-8">
-              <router-link :to="`/r/${like.restaurantId}`">
-                <div class="touchable h-full">
-                  <div class="cols flex-center">
-                    <!-- Restaurant Profile -->
-                    <div class="m-r-16 h-48">
-                      <img
-                        :src="resizedProfileImage(like, '600')"
-                        class="w-48 h-48 r-48 cover"
-                      />
-                    </div>
-
-                    <!-- Restaurant Name -->
-                    <div class="flex-1 p-r-8 t-subtitle1 c-primary">
-                      {{ like.restaurantName }}
+          <div v-else >
+            <div v-for="like in likes" :key="like.restaurantId" class="m-t-8">
+              <div class="h-full p-b-8 p-r-8">
+                <router-link :to="`/r/${like.restaurantId}`">
+                  <div class="touchable h-full">
+                    <div class="cols flex-center">
+                      <!-- Restaurant Profile -->
+                      <div class="m-r-16 h-48">
+                        <img
+                          :src="resizedProfileImage(like, '600')"
+                          class="w-48 h-48 r-48 cover"
+                          />
+                      </div>
+                      
+                      <!-- Restaurant Name -->
+                      <div class="flex-1 p-r-8 t-subtitle1 c-primary">
+                        {{ like.restaurantName }}
+                      </div>
                     </div>
                   </div>
-                </div>
-              </router-link>
+                </router-link>
+              </div>
             </div>
           </div>
         </div>
@@ -119,7 +122,7 @@ export default {
   },
   data() {
     return {
-      likes: [],
+      likes: null,
       restaurants: []
     };
   },
@@ -139,6 +142,8 @@ export default {
         .get();
       this.likes = (snapshot.docs || []).map(doc => {
         return doc.data();
+      }).filter((doc) => {
+        return !!doc.likes;
       });
     }
   }

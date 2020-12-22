@@ -195,6 +195,8 @@ export default {
         .get();
       this.likes = (snapshot.docs || []).map(doc => {
         return doc.data();
+      }).filter((doc) => {
+        return !!doc.likes;
       });
     }
   }
