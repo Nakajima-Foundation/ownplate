@@ -66,6 +66,32 @@
                   </b-field>-->
 
                   <div v-if="user.phoneNumber">
+                    <!-- Order History -->
+                    <div class="align-center m-t-24">
+                      <router-link to="/u/history">
+                        <div
+                          class="op-button-medium primary"
+                          style="min-width: 256px;"
+                        >
+                          <i class="material-icons m-r-8">history</i>
+                          <span>{{ $t("order.history") }}</span>
+                        </div>
+                      </router-link>
+                    </div>
+
+                    <!-- Favorites -->
+                    <div class="align-center m-t-24">
+                      <router-link to="/r/favorites">
+                        <div
+                          class="op-button-medium primary"
+                          style="min-width: 256px;"
+                        >
+                          <i class="material-icons m-r-8">favorite</i>
+                          <span>{{ $t("find.likes") }}</span>
+                        </div>
+                      </router-link>
+                    </div>
+
                     <!-- Credit Card Info -->
                     <div class="align-center p-t-16">
                       <div class="t-subtitle2 c-text-black-disabled p-b-8">
@@ -151,18 +177,6 @@
                           </b-button>
                         </div>
                       </div>
-                    </div>
-
-                    <!-- Order History -->
-                    <div class="align-center m-t-24">
-                      <router-link to="/u/history">
-                        <div
-                          class="op-button-medium primary"
-                          style="min-width: 256px;"
-                        >
-                          {{ $t("order.history") }}
-                        </div>
-                      </router-link>
                     </div>
                   </div>
 

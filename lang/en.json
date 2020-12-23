@@ -106,6 +106,8 @@
     "enterZip": "Enter Zip",
     "enterPhone": "Enter Phone Number",
     "enterWebsite": "Enter Website URL",
+    "enterLineUrl": "Enter LINE Official Account URL",
+    "enterInstagramUrl": "Enter Instagram URL",
     "enterIntroduction": "Enter shop introduction",
     "enterOrderNotice": "Enter order notifications",
     "enterOrderThanks": "Enter order thanks message",
@@ -171,6 +173,10 @@
     "phoneCallDescription": "Make a call when a new order comes in",
     "phoneCallNotice": "Although it is currently provided free of charge, this feature may be a paid feature in the future due to telephone call charges. In that case, even if this function is turned on, there is no sudden cost",
     "phoneCallNotification": "Phone Notification",
+    "acceptUserMessage": "Accept a message with customer",
+    "acceptUserMessageDescription": "Accept a message with customer",
+    "acceptUserMessageNotice": "Allows customers to enter a single message on the order confirmation screen.",
+
     "lineNotification": "LINE Notification",
     "city": "city",
     "zip": "zip",
@@ -180,6 +186,7 @@
     "menu": "Menu",
     "enterItemName": "Enter item name",
     "enterItemDescription": "Enter item description",
+    "enterItemMemo": "Memo (Memo will not be displayed on customer's page. Please do not write confidential information)",
     "enterItemOption": "Enter item option",
     "item": "Item",
     "noItem": "No Item",
@@ -194,6 +201,7 @@
     "alcoholJP": "Anything else like alcohol, goods",
     "displayPrice": "Price example",
     "itemDescription": "Item description",
+    "itemMemo": "Memo",
     "itemPhoto": "Item photo",
     "itemOptions": "Item options",
     "itemOptionsNote": "For altenatives, use comma to separate them (e.g., \"Chicken, Pork, Tofu\"). You may add a price to an option with (+N), where N is the price.",
@@ -205,8 +213,8 @@
     "editCategory1": "Edit Category 1",
     "category2": "Category 2",
     "editCategory2": "Edit Category 2",
-    "showAllMenu": "Tous les articles",
-    "showPublicMenu": "Objets publics"
+    "showAllMenu": "All Items",
+    "showPublicMenu": "Published Items"
   },
   "editTitle": {
     "enterCategory": "Enter group name",
@@ -247,6 +255,8 @@
     "address": "Address",
     "phonenumber": "Phones Number",
     "website": "Website",
+    "lineUrl": "LINE Official Account URL",
+    "instagramUrl": "Instagram URL",
     "hours": "Hours",
     "midnight": "12:00 midnight",
     "noon": "12:00 noon",
@@ -347,6 +357,8 @@
     "timeToPickup": "Estimated Pickup Time",
     "notAvailable": "This restaurant is not available at this time. Please try again later",
     "orderNotice": "Order Notice",
+    "orderMessage": "Message to the restaurant",
+    "enterMessage": "You can send a message to the restaurant.",
     "datePlaced": "Time Placed",
     "dateEstimated": "Time Estimated",
     "dateConfirmed": "Time Confirmed",
@@ -373,7 +385,9 @@
       "transaction_hide": "Transaction Complete",
       "order_canceled": "Canceled",
       "order_refunded": "Refunded"
-    }
+    },
+    "lineLink": "Restaurant's LINE Official Account URL",
+    "lineMessage": "If you add LINE Official Account as a friend, you will receive information directly from the restaurant."
   },
   "button": {
     "back": "Back",
@@ -520,7 +534,8 @@
       "lineDelete": "Do you really want to delete this account？",
       "lineSafariPrivate": "Note: If you are using Safari's Private Browsing Mode, you will not be able to connect to LINE.",
       "history": "Order History",
-      "more": "More"
+      "more": "More",
+      "messageFromCustomer": "Message from the customer"
     },
     "sound": {
       "default": "Default",

@@ -3,6 +3,9 @@ import { analytics } from "~/plugins/firebase.js";
 
 // see https://firebase.google.com/docs/analytics/measure-ecommerce
 
+// Event List
+// https://firebase.google.com/docs/reference/js/firebase.analytics.EventName
+
 export const sku_item_data = (menu, shopInfo) => {
   return {
     item_id: 'SKU_' + menu.id,

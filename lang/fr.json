@@ -106,6 +106,8 @@
     "enterZip": "Enter Code Postal",
     "enterPhone": "Enter numéro de Téléphone",
     "enterWebsite": "Enter lien du site Web",
+    "enterLineUrl": "Enter LINE Official Account URL",
+    "enterInstagramUrl": "Enter Instagram URL",
     "enterIntroduction": "Entrez une présentation de la boutique",
     "enterOrderNotice": "Entrez les notifications de commande",
     "enterOrderThanks": "Entrez le message de remerciement de la commande",
@@ -171,6 +173,10 @@
     "phoneCallDescription": "Make a call when a new order comes in",
     "phoneCallNotice": "Although it is currently provided free of charge, this feature may be a paid feature in the future due to telephone call charges. In that case, even if this function is turned on, there is no sudden cost",
     "phoneCallNotification": "Phone Notification",
+    "acceptUserMessage": "Accept a message with customer",
+    "acceptUserMessageDescription": "Accept a message with customer",
+    "acceptUserMessageNotice": "Allows customers to enter a single message on the order confirmation screen.",
+
     "lineNotification": "LINE Notification",
     "city": "Vile",
     "zip": "Code Postal",
@@ -180,6 +186,7 @@
     "menu": "Menu",
     "enterItemName": "Entrez le nom de l'article",
     "enterItemDescription": "Entrez la description de l'article",
+    "enterItemMemo": "Memo (Memo will not be displayed on customer's page. Please do not write confidential information)",
     "enterItemOption": "Entrez l'option d'article",
     "item": "Article",
     "noItem": "Aucun Article",
@@ -194,6 +201,7 @@
     "alcoholJP": "Tout autre chose comme l'alcool, les marchandises",
     "displayPrice": "Exemple de prix",
     "itemDescription": "Description de l'article",
+    "itemMemo": "Memo",
     "itemPhoto": "Photo de l'article",
     "itemOptions": "Option de l'article",
     "itemOptionsNote": "Pour les alternatives, utilisez une virgule pour les séparer (ex: \"Poulet, Boeuf, Mouton \"). Vous pouvez ajouter un prix à une option avec (+ N), où N est le prix.",
@@ -205,8 +213,8 @@
     "editCategory1": "Modifier Catégorie 1",
     "category2": "Catégorie 2",
     "editCategory2": "Modifier Catégorie 2",
-    "showAllMenu": "All items",
-    "showPublicMenu": "Public items"
+    "showAllMenu": "Tous les points",
+    "showPublicMenu": "Produits publiés"
   },
   "editTitle": {
     "enterCategory": "Entrez le nom de le groupe",
@@ -246,6 +254,8 @@
     "address": "Adresse",
     "phonenumber": "Téléphone",
     "website": "Site web",
+    "lineUrl": "LINE Official Account URL",
+    "instagramUrl": "Instagram URL",
     "hours": "Heures",
     "midnight": "12:00 minuit",
     "noon": "12:00 midi",
@@ -345,6 +355,8 @@
     "timeToPickup": "Temps de ramassage estimé",
     "notAvailable": "Ce restaurant n'est pas disponible pour le moment. Veuillez réessayer plus tard",
     "orderNotice": "Avis de la commande",
+    "orderMessage": "Message to the restaurant",
+    "enterMessage": "You can send a message to the restaurant.",
     "datePlaced": "Time Placed",
     "dateEstimated": "Time Estimated",
     "dateConfirmed": "Time Confirmed",
@@ -372,6 +384,8 @@
       "order_canceled": "Annulé",
       "order_refunded": "Remboursé"
     }
+    "lineLink": "Restaurant's LINE Official Account URL",
+    "lineMessage": "If you add LINE Official Account as a friend, you will receive information directly from the restaurant."
   },
   "button": {
     "back": "Retour",
@@ -517,7 +531,8 @@
       "lineDelete": "Voulez-vous vraiment supprimer ce compte？",
       "lineSafariPrivate": "Remarque: si vous utilisez le mode de navigation privée de Safari, vous ne pourrez pas vous connecter à LINE.",
       "history": "Order History",
-      "more": "More"
+      "more": "More",
+      "messageFromCustomer": "Message from the customer"
     },
     "sound": {
       "default": "Défault",

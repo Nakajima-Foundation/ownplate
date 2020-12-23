@@ -41,20 +41,22 @@
               >
                 <span class="c-onprimary p-l-24 p-r-24">
                   {{
-                  $t(
-                  submitting
-                  ? "editCommon.saving"
-                  : shopInfo.publicFlag
-                  ? "editCommon.save"
-                  : "editCommon.saveDraft"
-                  )
+                    $t(
+                      submitting
+                        ? "editCommon.saving"
+                        : shopInfo.publicFlag
+                        ? "editCommon.save"
+                        : "editCommon.saveDraft"
+                    )
                   }}
                 </span>
               </b-button>
             </div>
 
             <!-- Public Checkbox -->
-            <div class="m-t-24 align-center bg-form p-l-16 p-r-16 p-t-16 p-b-16 r-8">
+            <div
+              class="m-t-24 align-center bg-form p-l-16 p-r-16 p-t-16 p-b-16 r-8"
+            >
               <b-checkbox
                 v-model="shopInfo.publicFlag"
                 :disabled="hasError"
@@ -64,23 +66,25 @@
               </b-checkbox>
               <!-- Messages -->
               <div class="m-t-4">
-                <div
-                  v-if="shopInfo.publicFlag"
-                  class="t-subtitle2"
-                >{{ $t("editRestaurant.publishDescription") }}</div>
+                <div v-if="shopInfo.publicFlag" class="t-subtitle2">
+                  {{ $t("editRestaurant.publishDescription") }}
+                </div>
                 <div
                   v-if="!shopInfo.publicFlag"
                   class="t-subtitle2 c-status-red"
-                >{{ $t("editRestaurant.draftDescription") }}</div>
-                <div
-                  v-if="hasError"
-                  class="t-subtitle2 c-status-red"
-                >{{ $t("editRestaurant.draftWarning") }}</div>
+                >
+                  {{ $t("editRestaurant.draftDescription") }}
+                </div>
+                <div v-if="hasError" class="t-subtitle2 c-status-red">
+                  {{ $t("editRestaurant.draftWarning") }}
+                </div>
               </div>
             </div>
 
             <!-- Required Note -->
-            <div class="t-subtitle2 c-status-red m-t-24">* {{ $t("editRestaurant.required") }}</div>
+            <div class="t-subtitle2 c-status-red m-t-24">
+              * {{ $t("editRestaurant.required") }}
+            </div>
           </div>
         </div>
         <!-- Right Gap -->
@@ -192,17 +196,18 @@
             <!-- Map -->
             <div>
               <div class="align-center">
-                <b-button class="b-reset op-button-small primary" @click="updateAndUpdateMap">
+                <b-button
+                  class="b-reset op-button-small primary"
+                  @click="updateAndUpdateMap"
+                >
                   <span class="c-onprimary p-l-24 p-r-24">
-                    {{
-                    $t("editRestaurant.updateMap")
-                    }}
+                    {{ $t("editRestaurant.updateMap") }}
                   </span>
                 </b-button>
               </div>
-              <div
-                class="align-center t-subtitle2 c-status-red m-t-8"
-              >{{ $t("editRestaurant.updateMapDescription") }}</div>
+              <div class="align-center t-subtitle2 c-status-red m-t-8">
+                {{ $t("editRestaurant.updateMapDescription") }}
+              </div>
               <div class="m-t-16">
                 <GMap
                   ref="gMap"
@@ -242,14 +247,21 @@
               </div>
               <div
                 class="cols"
-                v-bind:class="{ 'no-photo': errors['restProfilePhoto'].length !== 0 }"
+                v-bind:class="{
+                  'no-photo': errors['restProfilePhoto'].length !== 0
+                }"
               >
                 <!-- Current Photo -->
                 <div v-if="restProfilePhoto" class="p-r-16">
                   <div>
-                    <img class="w-128 h-128 r-4 cover" :src="restProfilePhoto" />
+                    <img
+                      class="w-128 h-128 r-4 cover"
+                      :src="restProfilePhoto"
+                    />
                   </div>
-                  <div class="align-center t-caption">{{ $t("editCommon.current") }}</div>
+                  <div class="align-center t-caption">
+                    {{ $t("editCommon.current") }}
+                  </div>
                 </div>
                 <!-- New Photo -->
                 <div class="flex-1">
@@ -271,30 +283,35 @@
                     @file-type-mismatch="handleProfileImageRemove"
                     @image-remove="handleProfileImageRemove"
                   ></croppa>
-                  <div class="align-center t-caption w-128">{{ $t("editCommon.new") }}</div>
+                  <div class="align-center t-caption w-128">
+                    {{ $t("editCommon.new") }}
+                  </div>
                 </div>
               </div>
 
               <!-- Description -->
-              <div
-                class="t-body2 c-text-black-medium p-l-8 p-r-8 m-t-8"
-              >{{ $t("editCommon.clickAndUploadDetail") }}</div>
+              <div class="t-body2 c-text-black-medium p-l-8 p-r-8 m-t-8">
+                {{ $t("editCommon.clickAndUploadDetail") }}
+              </div>
             </div>
 
             <!-- Cover Photo -->
             <div class="m-t-16">
-              <div
-                class="t-subtitle2 c-text-black-medium p-b-8"
-              >{{ $t("editRestaurant.coverPhoto") }}</div>
+              <div class="t-subtitle2 c-text-black-medium p-b-8">
+                {{ $t("editRestaurant.coverPhoto") }}
+              </div>
               <div>
                 <div v-if="restCoverPhoto" class="p-b-8">
                   <div>
-                    <img class="h-128 r-4 cover" :src="restCoverPhoto" style="width: 272px;" />
+                    <img
+                      class="h-128 r-4 cover"
+                      :src="restCoverPhoto"
+                      style="width: 272px;"
+                    />
                   </div>
-                  <div
-                    class="align-center t-caption"
-                    style="width: 272px;"
-                  >{{ $t("editCommon.current") }}</div>
+                  <div class="align-center t-caption" style="width: 272px;">
+                    {{ $t("editCommon.current") }}
+                  </div>
                 </div>
                 <div class="cols">
                   <div>
@@ -316,15 +333,14 @@
                       @file-type-mismatch="handleCoverImageRemove"
                       @image-remove="handleCoverImageRemove"
                     ></croppa>
-                    <div
-                      class="align-center t-caption"
-                      style="width: 272px;"
-                    >{{ $t("editCommon.new") }}</div>
+                    <div class="align-center t-caption" style="width: 272px;">
+                      {{ $t("editCommon.new") }}
+                    </div>
                   </div>
                 </div>
-                <div
-                  class="t-body2 c-text-black-medium p-l-8 p-r-8 m-t-8"
-                >{{ $t("editCommon.clickAndUploadDetail") }}</div>
+                <div class="t-body2 c-text-black-medium p-l-8 p-r-8 m-t-8">
+                  {{ $t("editCommon.clickAndUploadDetail") }}
+                </div>
               </div>
             </div>
           </div>
@@ -405,15 +421,39 @@
               />
             </div>
 
+            <!-- LINE URL -->
+            <div>
+              <text-form
+                v-model="shopInfo.lineUrl"
+                :error="errors['lineUrl']"
+                titleKey="shopInfo.lineUrl"
+                placeholder="editRestaurant.enterLineUrl"
+                :maxlength="100"
+                :required="false"
+              />
+            </div>
+
+            <!-- Instagram URL -->
+            <div>
+              <text-form
+                v-model="shopInfo.instagramUrl"
+                :error="errors['instagramUrl']"
+                titleKey="shopInfo.instagramUrl"
+                placeholder="editRestaurant.enterInstagramUrl"
+                :maxlength="100"
+                :required="false"
+              />
+            </div>
+
             <!-- Tax -->
             <div>
               <!-- Tax Input Required -->
               <div v-if="requireTaxInput">
                 <div class="cols">
                   <div class="m-r-16">
-                    <div
-                      class="t-subtitle2 c-text-black-medium p-b-8"
-                    >{{ $t("editRestaurant.foodTax") }}</div>
+                    <div class="t-subtitle2 c-text-black-medium p-b-8">
+                      {{ $t("editRestaurant.foodTax") }}
+                    </div>
                     <b-field
                       class="is-inline-flex"
                       style="align-items: center;"
@@ -434,9 +474,9 @@
                     </b-field>
                   </div>
                   <div>
-                    <div
-                      class="t-subtitle2 c-text-black-medium p-b-8"
-                    >{{ $t("editRestaurant.alcoholTax") }}</div>
+                    <div class="t-subtitle2 c-text-black-medium p-b-8">
+                      {{ $t("editRestaurant.alcoholTax") }}
+                    </div>
                     <b-field
                       class="is-inline-flex"
                       style="align-items: center;"
@@ -462,9 +502,14 @@
               <!-- Tax Input Not Required -->
               <div v-if="!requireTaxInput">
                 <div>
-                  <div class="t-subtitle2 c-text-black-medium p-b-8">{{ $t("editRestaurant.tax") }}</div>
+                  <div class="t-subtitle2 c-text-black-medium p-b-8">
+                    {{ $t("editRestaurant.tax") }}
+                  </div>
                   <div class="bg-form r-8 p-l-16 p-r-16 p-t-16 p-b-8">
-                    <div v-for="taxItem in taxRates" class="p-b-8 t-body1 c-text-black-high">
+                    <div
+                      v-for="taxItem in taxRates"
+                      class="p-b-8 t-body1 c-text-black-high"
+                    >
                       {{ $t("editMenu." + taxRateKeys[taxItem]) }}
                       {{ shopInfo[taxItem + "Tax"] }}%
                     </div>
@@ -474,15 +519,15 @@
 
               <!-- Tax Display -->
               <div v-if="requireTaxPriceDisplay" class="m-t-16">
+                <div class="t-subtitle2 c-text-black-medium p-b-8">
+                  {{ $t("editRestaurant.taxPriceDisplay") }}
+                </div>
                 <div
-                  class="t-subtitle2 c-text-black-medium p-b-8"
-                >{{ $t("editRestaurant.taxPriceDisplay") }}</div>
-                <div class="bg-form r-8 p-l-16 p-r-16 p-t-16 p-b-16 t-body1 c-text-black-high">
+                  class="bg-form r-8 p-l-16 p-r-16 p-t-16 p-b-16 t-body1 c-text-black-high"
+                >
                   <div>
                     <b-checkbox v-model="shopInfo.inclusiveTax">
-                      {{
-                      $t("editRestaurant.taxIncluded")
-                      }}
+                      {{ $t("editRestaurant.taxIncluded") }}
                     </b-checkbox>
                   </div>
                   <div class="m-t-8">
@@ -495,13 +540,17 @@
 
             <!-- Time to Pickup -->
             <div v-if="requireTaxPriceDisplay" class="m-t-16">
+              <div class="t-subtitle2 c-text-black-medium p-b-8">
+                {{ $t("editRestaurant.timeToPickup") }}
+              </div>
               <div
-                class="t-subtitle2 c-text-black-medium p-b-8"
-              >{{ $t("editRestaurant.timeToPickup") }}</div>
-              <div class="bg-form r-8 p-l-16 p-r-16 p-t-16 p-b-16 t-body1 c-text-black-high">
+                class="bg-form r-8 p-l-16 p-r-16 p-t-16 p-b-16 t-body1 c-text-black-high"
+              >
                 <!-- Preparation Time -->
                 <div class="m-r-16">
-                  <div class="p-b-4">{{ $t("editRestaurant.preparationTime") }}</div>
+                  <div class="p-b-4">
+                    {{ $t("editRestaurant.preparationTime") }}
+                  </div>
                   <b-field
                     class="cols"
                     style="align-items: center;"
@@ -529,12 +578,15 @@
                     v-model="shopInfo.pickUpMinimumCookTime"
                     :native-value="choice.value"
                     :key="choice.value"
-                  >{{ $t(choice.messageKey) }}</b-radio>
+                    >{{ $t(choice.messageKey) }}</b-radio
+                  >
                 </div>
 
                 <!-- The Day Before -->
                 <div class="m-t-8">
-                  <div class="p-b-4">{{ $t("editRestaurant.reservationTheDayBefore") }}</div>
+                  <div class="p-b-4">
+                    {{ $t("editRestaurant.reservationTheDayBefore") }}
+                  </div>
                   <b-field
                     class="is-inline-flex"
                     style="align-items: center;"
@@ -549,7 +601,8 @@
                         v-for="(day, index) in reservationTheDayBefore"
                         :key="index"
                         :value="day.value"
-                      >{{ $t(day.messageKey) }}</option>
+                        >{{ $t(day.messageKey) }}</option
+                      >
                     </b-select>
                   </b-field>
                 </div>
@@ -559,21 +612,35 @@
             <!-- Phone Call -->
             <div v-if="region === 'JP'" class="m-t-16">
               <a id="phoneCall" />
+              <div class="t-subtitle2 c-text-black-medium p-b-8">
+                {{ $t("editRestaurant.phoneCall") }}
+              </div>
               <div
-                class="t-subtitle2 c-text-black-medium p-b-8"
-              >{{ $t("editRestaurant.phoneCall") }}</div>
-              <div class="bg-form r-8 p-l-16 p-r-16 p-t-16 p-b-16 t-body1 c-text-black-high">
-                <div>
-                  <b-checkbox v-model="shopInfo.phoneCall">
-                    {{
-                    $t("editRestaurant.phoneCallDescription")
-                    }}
-                  </b-checkbox>
-                  <span class="t-caption c-text-black-medium">
-                    {{
-                    $t("editRestaurant.phoneCallNotice")
-                    }}
-                  </span>
+                class="bg-form r-8 p-l-16 p-r-16 p-t-16 p-b-16 t-body1 c-text-black-high"
+              >
+                <b-checkbox v-model="shopInfo.phoneCall">
+                  {{ $t("editRestaurant.phoneCallDescription") }}
+                </b-checkbox>
+                <div class="t-caption c-text-black-medium p-t-8">
+                  {{ $t("editRestaurant.phoneCallNotice") }}
+                </div>
+              </div>
+            </div>
+            <!-- End of Phone Call -->
+
+            <!-- Order Memo from Takeout Customer -->
+            <div class="m-t-16">
+              <div class="t-subtitle2 c-text-black-medium p-b-8">
+                {{ $t("editRestaurant.acceptUserMessage") }}
+              </div>
+              <div
+                class="bg-form r-8 p-l-16 p-r-16 p-t-16 p-b-16 t-body1 c-text-black-high"
+              >
+                <b-checkbox v-model="shopInfo.acceptUserMessage">
+                  {{ $t("editRestaurant.acceptUserMessageDescription") }}
+                </b-checkbox>
+                <div class="t-caption c-text-black-medium p-t-8">
+                  {{ $t("editRestaurant.acceptUserMessageNotice") }}
                 </div>
               </div>
             </div>
@@ -585,10 +652,12 @@
           <div class="m-l-24 m-r-24">
             <!-- Hours -->
             <div class="m-t-16">
-              <div class="t-subtitle2 c-text-black-medium">{{ $t("shopInfo.hours") }}</div>
-              <div
-                class="t-subtitle2 c-status-red"
-              >{{ $t("editRestaurant.businessHourDescription") }}</div>
+              <div class="t-subtitle2 c-text-black-medium">
+                {{ $t("shopInfo.hours") }}
+              </div>
+              <div class="t-subtitle2 c-status-red">
+                {{ $t("editRestaurant.businessHourDescription") }}
+              </div>
               <div
                 v-for="(day, index) in days"
                 :key="index"
@@ -598,16 +667,20 @@
                   <!-- Enable/Disable Day -->
                   <div class="flex-1">
                     <b-checkbox v-model="shopInfo.businessDay[index]">
-                      {{
-                      $t("week.short." + day)
-                      }}
+                      {{ $t("week.short." + day) }}
                     </b-checkbox>
                   </div>
 
                   <!-- Copy Previous Day -->
                   <div class="op-button-text" @click="copyPreviousDay(index)">
                     <i class="material-icons c-primary s-18">content_copy</i>
-                    <span>{{ $t(index === "1" ? "editRestaurant.copySunDay" : "editRestaurant.copyPreviousDay") }}</span>
+                    <span>{{
+                      $t(
+                        index === "1"
+                          ? "editRestaurant.copySunDay"
+                          : "editRestaurant.copyPreviousDay"
+                      )
+                    }}</span>
                   </div>
                 </div>
                 <div class="m-t-8">
@@ -622,7 +695,9 @@
                   ></hours-input>
                 </div>
                 <div class="m-t-8">
-                  <div class="t-caption p-b-4">{{ $t("editRestaurant.businessHourOption") }}</div>
+                  <div class="t-caption p-b-4">
+                    {{ $t("editRestaurant.businessHourOption") }}
+                  </div>
                   <hours-input
                     v-model="shopInfo.openTimes[index][1]"
                     :type="
@@ -639,10 +714,10 @@
           <div class="m-l-24 m-r-24">
             <!-- Hours -->
             <div class="m-t-16">
-              <div class="t-subtitle2 c-text-black-medium">{{ $t("shopInfo.temporaryClosure") }}</div>
-              <div
-                class="bg-form r-8 m-t-8 p-l-16 p-r-16 p-t-16 p-b-16"
-              >
+              <div class="t-subtitle2 c-text-black-medium">
+                {{ $t("shopInfo.temporaryClosure") }}
+              </div>
+              <div class="bg-form r-8 m-t-8 p-l-16 p-r-16 p-t-16 p-b-16">
                 <b-field>
                   <b-datepicker
                     v-model="newTemporaryClosure"
@@ -650,37 +725,46 @@
                     :min-date="new Date()"
                     :max-date="maxDate"
                     expanded
-                    placeholder="Select a date">
+                    placeholder="Select a date"
+                  >
                   </b-datepicker>
                   <b-button
                     @click="$refs.datepicker.toggle()"
                     icon-left="calendar-today"
-                    type="is-primary" />
+                    type="is-primary"
+                  />
                   <b-button
                     @click="addNewTemporaryClosure"
                     icon-left="plus"
                     style="margin-left: 2px"
-                    type="is-primary" />
+                    type="is-primary"
+                  />
                 </b-field>
-                <div v-for="(day, key) in (shopInfo.temporaryClosure ||[])"
-                     style="margin-buttom: 2px; display: table;"
-
-                     >
+                <div
+                  v-for="(day, key) in shopInfo.temporaryClosure || []"
+                  style="margin-buttom: 2px; display: table;"
+                >
                   <template v-if="day.getTime() > now.getTime()">
                     <span style="display: table-cell; vertical-align: middle;">
-                      {{moment(day).format("YYYY/MM/DD")}}
-                      {{$t('week.short.' + days[Number(moment(day).format("e"))||7])}}
+                      {{ moment(day).format("YYYY/MM/DD") }}
+                      {{
+                        $t(
+                          "week.short." +
+                            days[Number(moment(day).format("e")) || 7]
+                        )
+                      }}
                     </span>
                     <b-button
                       @click="deleteTemporaryClosure(key)"
                       class="b-reset op-button-pill h-36 bg-status-red-bg m-l-8"
+                    >
+                      <i class="material-icons c-status-red s-18 p-l-8 p-r-8"
+                        >delete</i
                       >
-                      <i class="material-icons c-status-red s-18 p-l-8 p-r-8">delete</i>
                     </b-button>
                   </template>
                 </div>
               </div>
-
             </div>
           </div>
         </div>
@@ -696,7 +780,9 @@
         <div class="column">
           <div class="m-l-24 m-r-24 m-t-24">
             <!-- Public Checkbox -->
-            <div class="m-t-24 align-center bg-form p-l-16 p-r-16 p-t-16 p-b-16 r-8">
+            <div
+              class="m-t-24 align-center bg-form p-l-16 p-r-16 p-t-16 p-b-16 r-8"
+            >
               <b-checkbox
                 v-model="shopInfo.publicFlag"
                 :disabled="hasError"
@@ -706,18 +792,18 @@
               </b-checkbox>
               <!-- Messages -->
               <div class="m-t-4">
-                <div
-                  v-if="shopInfo.publicFlag"
-                  class="t-subtitle2"
-                >{{ $t("editRestaurant.publishDescription") }}</div>
+                <div v-if="shopInfo.publicFlag" class="t-subtitle2">
+                  {{ $t("editRestaurant.publishDescription") }}
+                </div>
                 <div
                   v-if="!shopInfo.publicFlag"
                   class="t-subtitle2 c-status-red"
-                >{{ $t("editRestaurant.draftDescription") }}</div>
-                <div
-                  v-if="hasError"
-                  class="t-subtitle2 c-status-red"
-                >{{ $t("editRestaurant.draftWarning") }}</div>
+                >
+                  {{ $t("editRestaurant.draftDescription") }}
+                </div>
+                <div v-if="hasError" class="t-subtitle2 c-status-red">
+                  {{ $t("editRestaurant.draftWarning") }}
+                </div>
               </div>
             </div>
 
@@ -742,13 +828,13 @@
               >
                 <span class="c-onprimary p-l-24 p-r-24">
                   {{
-                  $t(
-                  submitting
-                  ? "editCommon.saving"
-                  : shopInfo.publicFlag
-                  ? "editCommon.save"
-                  : "editCommon.saveDraft"
-                  )
+                    $t(
+                      submitting
+                        ? "editCommon.saving"
+                        : shopInfo.publicFlag
+                        ? "editCommon.save"
+                        : "editCommon.saveDraft"
+                    )
                   }}
                 </span>
               </b-button>
@@ -829,9 +915,13 @@ export default {
         place_id: null,
         phoneNumber: "",
         url: "",
+        lineUrl: "",
+        instagramUrl: "",
         introduction: "",
         orderNotice: "",
         orderThanks: "",
+        phoneCall: false,
+        acceptUserMessage: false,
         foodTax: 0,
         alcoholTax: 0,
         inclusiveTax: false,
@@ -857,7 +947,7 @@ export default {
         pickUpDaysInAdvance: 3,
         images: {},
         publicFlag: false,
-        temporaryClosure: [],
+        temporaryClosure: []
       },
       region: ownPlateConfig.region,
       maplocation: {},
@@ -871,7 +961,7 @@ export default {
       newTemporaryClosure: null,
       maxDate,
       now,
-      updateFirstCall: true,
+      updateFirstCall: true
     };
   },
   async created() {
@@ -899,9 +989,11 @@ export default {
       this.shopInfo = Object.assign({}, this.shopInfo, this.defaultTax);
     }
     if (this.shopInfo.temporaryClosure) {
-      this.shopInfo.temporaryClosure = this.shopInfo.temporaryClosure.map((day) => {
-        return day.toDate();
-      });
+      this.shopInfo.temporaryClosure = this.shopInfo.temporaryClosure.map(
+        day => {
+          return day.toDate();
+        }
+      );
     }
 
     this.notFound = false;
@@ -921,13 +1013,13 @@ export default {
     restProfilePhoto() {
       return (
         (this.shopInfo?.images?.profile?.resizedImages || {})["600"] ||
-          this.shopInfo.restProfilePhoto
+        this.shopInfo.restProfilePhoto
       );
     },
     restCoverPhoto() {
       return (
         (this.shopInfo?.images?.cover?.resizedImages || {})["600"] ||
-          this.shopInfo.restCoverPhoto
+        this.shopInfo.restCoverPhoto
       );
     },
     uid() {
@@ -997,8 +1089,16 @@ export default {
       const ex = new RegExp("^(https?)://[^\\s]+$");
       err["url"] =
         this.shopInfo.url && !ex.test(this.shopInfo.url)
-        ? ["validationError.url.invalidUrl"]
-        : [];
+          ? ["validationError.url.invalidUrl"]
+          : [];
+      err["lineUrl"] =
+        this.shopInfo.lineUrl && !ex.test(this.shopInfo.lineUrl)
+          ? ["validationError.lineUrl.invalidUrl"]
+          : [];
+      err["instagramUrl"] =
+        this.shopInfo.instagramUrl && !ex.test(this.shopInfo.instagramUrl)
+          ? ["validationError.instagramUrl.invalidUrl"]
+          : [];
 
       err["time"] = {};
       Object.keys(daysOfWeek).forEach(key => {
@@ -1008,7 +1108,7 @@ export default {
           if (this.shopInfo.businessDay[key]) {
             if (
               this.shopInfo.openTimes[key] &&
-                this.shopInfo.openTimes[key][key2]
+              this.shopInfo.openTimes[key][key2]
             ) {
               const data = this.shopInfo.openTimes[key][key2];
               if (this.isNull(data.start) ^ this.isNull(data.end)) {
@@ -1035,7 +1135,7 @@ export default {
       err["restProfilePhoto"] = [];
       if (
         this.isNull(this.files["profile"]) &&
-          this.isNull(this.shopInfo.restProfilePhoto)
+        this.isNull(this.shopInfo.restProfilePhoto)
       ) {
         err["restProfilePhoto"].push("validationError.restProfilePhoto.empty");
       }
@@ -1045,6 +1145,9 @@ export default {
     hasError() {
       const num = this.countObj(this.errors);
       return num > 0;
+    },
+    isSetLocation() {
+      return Object.keys(this.shopInfo.location).length !== 0;
     }
   },
   watch: {
@@ -1062,19 +1165,25 @@ export default {
   },
   methods: {
     isFuture(day) {
-      return (new Date).getTime() < day.getTime()
+      return new Date().getTime() < day.getTime();
     },
     isNewTemporaryClosure(day) {
-      const func = (elem) => {
+      const func = elem => {
         return elem.getTime() === day.getTime();
-      }
+      };
       return !this.shopInfo.temporaryClosure.some(func);
     },
     deleteTemporaryClosure(key) {
-      this.shopInfo.temporaryClosure = this.shopInfo.temporaryClosure.filter((v, n) => n !== key);
+      this.shopInfo.temporaryClosure = this.shopInfo.temporaryClosure.filter(
+        (v, n) => n !== key
+      );
     },
     addNewTemporaryClosure() {
-      if (!this.isNull(this.newTemporaryClosure) && this.isNewTemporaryClosure(this.newTemporaryClosure) && this.isFuture(this.newTemporaryClosure)) {
+      if (
+        !this.isNull(this.newTemporaryClosure) &&
+        this.isNewTemporaryClosure(this.newTemporaryClosure) &&
+        this.isFuture(this.newTemporaryClosure)
+      ) {
         this.shopInfo.temporaryClosure.push(this.newTemporaryClosure);
         this.shopInfo.temporaryClosure.sort((a, b) => {
           return a.getTime() > b.getTime() ? 1 : -1;
@@ -1166,8 +1275,11 @@ export default {
           place_id: this.shopInfo.place_id,
           phoneNumber: this.shopInfo.phoneNumber,
           phoneCall: this.shopInfo.phoneCall,
+          acceptUserMessage: this.shopInfo.acceptUserMessage,
           countryCode: this.shopInfo.countryCode,
           url: this.shopInfo.url,
+          lineUrl: this.shopInfo.lineUrl,
+          instagramUrl: this.shopInfo.instagramUrl,
           introduction: this.shopInfo.introduction,
           orderNotice: this.shopInfo.orderNotice,
           orderThanks: this.shopInfo.orderThanks,
