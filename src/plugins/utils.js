@@ -14,6 +14,9 @@ export default ({ app }) => {
       isNull(value) {
         return value === null || value === undefined;
       },
+      isEmpty(value) {
+        return value === null || value === undefined || value === "";
+      },
       restaurantId() {
         return this.$route.params.restaurantId;
       },
@@ -179,6 +182,9 @@ export default ({ app }) => {
       },
       isAdmin() {
         return !!this.$store.getters.uidAdmin;
+      },
+      isCustomer() {
+        return !!this.$store.getters.uidUser;
       },
       isLineUser() {
         const claims = this.$store.state.claims;

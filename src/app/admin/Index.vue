@@ -17,7 +17,7 @@
                 <!-- User Manuals -->
                 <div v-if="isJapan" class="is-inline-block m-l-8 m-r-8 m-t-24">
                   <a
-                    href="https://gluepass.jp/g/ownplatejp/pg/Zy8VserQdTxFVKLaFcOK"
+                    href="https://docs.omochikaeri.com/manuals/manual.pdf"
                     target="_blank"
                   >
                     <div class="op-button-small bg-text-white-high">

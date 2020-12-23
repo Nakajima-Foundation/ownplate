@@ -6,12 +6,14 @@ import Order from '../models/Order'
 import * as utils from '../lib/utils'
 import { sendMessage, notifyNewOrder, nameOfOrder, notifyCanceledOrder } from '../functions/order';
 
+import moment from 'moment-timezone';
+
 // This function is called by user to create a "payment intent" (to start the payment transaction)
 export const create = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
   const stripe = utils.get_stripe();
 
-  const { orderId, restaurantId, paymentMethodId, description, tip, sendSMS, timeToPickup, lng } = data;
+  const { orderId, restaurantId, paymentMethodId, description, tip, sendSMS, timeToPickup, lng, memo } = data;
   utils.validate_params({ orderId, restaurantId }); // lng, paymentMethodId, tip and sendSMS are optional
 
   const restaurantData = await utils.get_restaurant(db, restaurantId);
@@ -86,6 +88,7 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
         tip: Math.round(tip * multiple) / multiple,
         sendSMS: sendSMS || false,
         description: request.description,
+        memo: memo || "",
         payment: {
           stripe: "pending"
         }
@@ -100,7 +103,7 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
       }
     })
 
-    await notifyNewOrder(db, restaurantId, orderId, orderNumber, lng);
+    await notifyNewOrder(db, restaurantId, orderId, restaurantData.restaurantName, orderNumber, lng);
 
     return result;
   } catch (error) {
@@ -109,6 +112,7 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
 };
 
 // This function is called by admin to confurm a "payment intent" (to complete the payment transaction)
+// ready_to_pickup
 export const confirm = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
   const stripe = utils.get_stripe();
@@ -177,10 +181,14 @@ export const confirm = async (db: FirebaseFirestore.Firestore, data: any, contex
       return { success: true }
     })
 
-    if (order!.sendSMS) {
-      const msgKey = "msg_cooking_completed"
-      const orderName = nameOfOrder(order!.number)
-      await sendMessage(db, lng, msgKey, restaurantData.restaurantName, orderName, order!.uid, order!.phoneNumber, restaurantId, orderId, {})
+    if (order && order!.sendSMS && order!.timeEstimated) {
+      const diffDay =  (moment().toDate().getTime() - order!.timeEstimated.toDate().getTime()) / 1000 / 3600 / 24;
+      console.log("timeEstimated_diff_days = " + String(diffDay)); 
+      if (diffDay < 1) {
+        const msgKey = "msg_cooking_completed"
+        const orderName = nameOfOrder(order!.number)
+        await sendMessage(db, lng, msgKey, restaurantData.restaurantName, orderName, order!.uid, order!.phoneNumber, restaurantId, orderId, {});
+      }
     }
 
     return result
@@ -287,7 +295,7 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
       await sendMessage(db, lng, 'msg_order_canceled', restaurant.restaurantName, orderName, uidUser, phoneNumber, restaurantId, orderId)
     }
     if (uid !== venderId) {
-      await notifyCanceledOrder(db, restaurantId, orderId, orderNumber, lng)
+      await notifyCanceledOrder(db, restaurantId, orderId, restaurant.restaurantName, orderNumber, lng)
     }
     return result
   } catch (error) {

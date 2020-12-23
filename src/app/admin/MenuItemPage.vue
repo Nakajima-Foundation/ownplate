@@ -208,6 +208,25 @@
                 </b-field>
               </div>
             </div>
+            
+            <!-- Item Memo -->
+            <div class="m-t-16">
+              <div class="t-subtitle2 c-text-black-medium p-b-8">
+                {{ $t("editMenu.itemMemo") }}
+                <span class="c-status-red"></span>
+              </div>
+              <div>
+                <b-field
+                  type="is-success"
+                >
+                  <b-input
+                    v-model="menuInfo.itemMemo"
+                    type="textarea"
+                    :placeholder="$t('editMenu.enterItemMemo')"
+                  ></b-input>
+                </b-field>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -455,6 +474,7 @@ export default {
         price: 0,
         tax: "food",
         itemDescription: "",
+        itemMemo: "",
         itemPhoto: "",
         images: {},
         publicFlag: false,
@@ -607,6 +627,7 @@ export default {
               : Number(this.menuInfo.price),
           tax: this.menuInfo.tax,
           itemDescription: this.menuInfo.itemDescription,
+          itemMemo: this.menuInfo.itemMemo,
           itemPhoto: this.menuInfo.itemPhoto,
           images: {
             item: this.menuInfo.images.item || {}

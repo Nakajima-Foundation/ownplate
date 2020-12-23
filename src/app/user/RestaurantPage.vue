@@ -15,8 +15,12 @@
             <div
               class="bg-status-red-bg r-8 p-l-16 p-r-16 p-t-16 p-b-16 align-center m-l-24 m-r-24 m-t-24"
             >
-              <div class="t-subtitle1 c-status-red">{{$t("shopInfo.thisIsPreview")}}</div>
-              <div class="t-subtitle1 c-status-red">{{$t("shopInfo.notPublic")}}</div>
+              <div class="t-subtitle1 c-status-red">
+                {{ $t("shopInfo.thisIsPreview") }}
+              </div>
+              <div class="t-subtitle1 c-status-red">
+                {{ $t("shopInfo.notPublic") }}
+              </div>
             </div>
             <div class="is-hidden-tablet h-24"></div>
           </div>
@@ -37,8 +41,14 @@
               <div class="column">
                 <div class="is-hidden-mobile h-24"></div>
                 <div class="bg-form h-192">
-                  <img :src="coverImage" class="h-192 w-full cover is-hidden-tablet" />
-                  <img :src="coverImage" class="h-192 w-full cover r-8 is-hidden-mobile" />
+                  <img
+                    :src="coverImage"
+                    class="h-192 w-full cover is-hidden-tablet"
+                  />
+                  <img
+                    :src="coverImage"
+                    class="h-192 w-full cover r-8 is-hidden-mobile"
+                  />
                 </div>
               </div>
               <div class="column is-narrow w-24"></div>
@@ -50,15 +60,25 @@
               <shop-header :shopInfo="shopInfo"></shop-header>
 
               <!-- Restaurant Descriptions -->
-              <div class="t-body1 c-text-black-medium m-t-8">{{ this.shopInfo.introduction }}</div>
+              <div class="t-body1 c-text-black-medium m-t-8">
+                {{ this.shopInfo.introduction }}
+              </div>
 
-              <!-- Share Popup -->
-              <share-popup :shopInfo="shopInfo" class="align-center m-t-8"></share-popup>
+              <!-- Share and Favorite -->
+              <div class="align-center">
+                <!-- Share Popup -->
+                <share-popup :shopInfo="shopInfo"></share-popup>
+
+                <!-- Favorite Button -->
+                <favorite-button :shopInfo="shopInfo"></favorite-button>
+              </div>
 
               <!-- Restaurant Info -->
-              <shop-info :shopInfo="shopInfo" :paymentInfo="paymentInfo"
-                         @noAvailableTime="noAvailableTime=$event"
-                         ></shop-info>
+              <shop-info
+                :shopInfo="shopInfo"
+                :paymentInfo="paymentInfo"
+                @noAvailableTime="noAvailableTime = $event"
+              ></shop-info>
             </div>
           </div>
 
@@ -72,7 +92,9 @@
                     <div
                       class="t-h6 c-text-black-disabled m-t-24"
                       v-if="itemsObj[itemId]._dataType === 'title'"
-                    >{{ itemsObj[itemId].name }}</div>
+                    >
+                      {{ itemsObj[itemId].name }}
+                    </div>
                     <item-card
                       v-if="itemsObj[itemId]._dataType === 'menu'"
                       :item="itemsObj[itemId]"
@@ -117,15 +139,21 @@
       >
         <div class="is-flex flex-center">
           <template v-if="noPaymentMethod">
-            <div class="flex-1 align-center c-onprimary">{{ $t("shopInfo.noPaymentMethod") }}</div>
+            <div class="flex-1 align-center c-onprimary">
+              {{ $t("shopInfo.noPaymentMethod") }}
+            </div>
           </template>
           <template v-else-if="noAvailableTime">
-            <div class="flex-1 align-center c-onprimary">{{ $t("shopInfo.noAvailableTime") }}</div>
+            <div class="flex-1 align-center c-onprimary">
+              {{ $t("shopInfo.noAvailableTime") }}
+            </div>
           </template>
           <template v-else="!noPaymentMethod">
             <div class="flex-1 align-left c-onprimary m-r-16">
               {{
-              $tc("sitemenu.orderCounter", totalQuantities, { count: totalQuantities })
+                $tc("sitemenu.orderCounter", totalQuantities, {
+                  count: totalQuantities
+                })
               }}
             </div>
             <div class="m-r-8 c-onprimary">{{ $t("sitemenu.checkout") }}</div>
@@ -142,6 +170,7 @@ import ItemCard from "~/app/user/Restaurant/ItemCard";
 import PhoneLogin from "~/app/auth/PhoneLogin";
 import ShopHeader from "~/app/user/Restaurant/ShopHeader";
 import SharePopup from "~/app/user/Restaurant/SharePopup";
+import FavoriteButton from "~/app/user/Restaurant/FavoriteButton";
 import ShopInfo from "~/app/user/Restaurant/ShopInfo";
 import NotFound from "~/components/NotFound";
 
@@ -149,7 +178,7 @@ import { db, firestore, functions, analytics } from "~/plugins/firebase.js";
 import { order_status } from "~/plugins/constant.js";
 
 import { ownPlateConfig } from "@/config/project";
-import * as analyticsUtil from '~/plugins/analytics';
+import * as analyticsUtil from "~/plugins/analytics";
 
 export default {
   name: "ShopMenu",
@@ -159,6 +188,7 @@ export default {
     PhoneLogin,
     ShopHeader,
     SharePopup,
+    FavoriteButton,
     ShopInfo,
     NotFound
   },
@@ -168,9 +198,10 @@ export default {
       title:
         Object.keys(this.shopInfo).length == 0
           ? document.title
-          : [this.shopInfo.restaurantName || "", ownPlateConfig.restaurantPageTitle || this.defaultTitle].join(
-              " / "
-            )
+          : [
+              this.shopInfo.restaurantName || "",
+              ownPlateConfig.restaurantPageTitle || this.defaultTitle
+            ].join(" / ")
     };
   },
   data() {
@@ -194,7 +225,7 @@ export default {
       notFound: null,
 
       paymentInfo: {},
-      noAvailableTime: false,
+      noAvailableTime: false
     };
   },
   mounted() {
@@ -276,8 +307,12 @@ export default {
       }
     },
     menus(values) {
-      analyticsUtil.sendMenuListView(values, this.shopInfo, this.restaurantId());
-    },
+      analyticsUtil.sendMenuListView(
+        values,
+        this.shopInfo,
+        this.restaurantId()
+      );
+    }
   },
   computed: {
     isPreview() {
@@ -310,18 +345,20 @@ export default {
     },
     postOptions() {
       return Object.keys(this.trimmedSelectedOptions).reduce((ret, id) => {
-        ret[id] = (this.trimmedSelectedOptions[id]||[]).map((item, k) => {
-          return item.map((selectedOpt, key) => {
-            const opt = this.itemsObj[id].itemOptionCheckbox[key].split(",");
-            if (opt.length === 1) {
-              if (selectedOpt) {
-                return opt[0];
+        ret[id] = (this.trimmedSelectedOptions[id] || []).map((item, k) => {
+          return item
+            .map((selectedOpt, key) => {
+              const opt = this.itemsObj[id].itemOptionCheckbox[key].split(",");
+              if (opt.length === 1) {
+                if (selectedOpt) {
+                  return opt[0];
+                }
+              } else {
+                return opt[selectedOpt];
               }
-            } else {
-              return opt[selectedOpt];
-            }
-            return "";
-          }).map(s => s.trim());
+              return "";
+            })
+            .map(s => s.trim());
         });
         return ret;
       }, {});
@@ -368,7 +405,7 @@ export default {
           tmp[key] = value;
           return tmp;
         }, {});
-        return newObj
+        return newObj;
       }, {});
     },
     async goCheckout() {
@@ -440,7 +477,9 @@ export default {
       this.orders = newObject;
     },
     didOptionValuesChange(eventArgs) {
-      this.options = Object.assign({}, this.options, {[eventArgs.id]: eventArgs.optionValues});
+      this.options = Object.assign({}, this.options, {
+        [eventArgs.id]: eventArgs.optionValues
+      });
       //console.log(this.options);
     }
   }

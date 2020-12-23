@@ -2,15 +2,17 @@
   <div>
     <!-- Restaurant Details -->
     <div class="m-t-24">
-      <div class="t-h6 c-text-black-disabled">{{$t('shopInfo.restaurantDetails')}}</div>
+      <div class="t-h6 c-text-black-disabled">
+        {{ $t("shopInfo.restaurantDetails") }}
+      </div>
 
       <div class="bg-surface r-8 d-low m-t-8 p-b-24">
         <!-- Restaurant Location -->
         <div v-if="hasLocation">
           <GMap
             ref="gMap"
-            :cluster="{options: {styles: 'clusterStyle'}}"
-            :options="{fullscreenControl: false, styles: 'mapStyle'}"
+            :cluster="{ options: { styles: 'clusterStyle' } }"
+            :options="{ fullscreenControl: false, styles: 'mapStyle' }"
             :zoom="18"
             @loaded="updateMap"
           ></GMap>
@@ -18,17 +20,27 @@
           <div class="m-t-16 m-l-16 m-r-16">
             <a
               target="_blank"
-              :href="'https://www.google.com/maps/search/?api=1&query=' + this.shopInfo.location.lat + ',' +  this.shopInfo.location.lng + '&query_place_id=' + this.shopInfo.place_id"
+              :href="
+                'https://www.google.com/maps/search/?api=1&query=' +
+                  this.shopInfo.location.lat +
+                  ',' +
+                  this.shopInfo.location.lng +
+                  '&query_place_id=' +
+                  this.shopInfo.place_id
+              "
               class="p-font-middle"
             >
               <div class="op-button-text">
                 <i class="material-icons">place</i>
-                <span
-                  v-if="region === 'JP'"
-                >〒{{this.shopInfo.zip}} {{this.shopInfo.state}} {{this.shopInfo.city}} {{this.shopInfo.streetAddress}}</span>
-                <span
-                  v-else
-                >{{this.shopInfo.streetAddress}}, {{this.shopInfo.city}}, {{this.shopInfo.state}} {{this.shopInfo.zip}}</span>
+                <span v-if="region === 'JP'"
+                  >〒{{ this.shopInfo.zip }} {{ this.shopInfo.state }}
+                  {{ this.shopInfo.city }}
+                  {{ this.shopInfo.streetAddress }}</span
+                >
+                <span v-else
+                  >{{ this.shopInfo.streetAddress }}, {{ this.shopInfo.city }},
+                  {{ this.shopInfo.state }} {{ this.shopInfo.zip }}</span
+                >
               </div>
             </a>
           </div>
@@ -40,12 +52,12 @@
           <a v-if="phoneUrl" :href="phoneUrl">
             <div class="op-button-text">
               <i class="material-icons">phone</i>
-              <span>{{nationalPhoneNumber}}</span>
+              <span>{{ nationalPhoneNumber }}</span>
             </div>
           </a>
           <div v-else class="op-button-text">
             <i class="material-icons">phone</i>
-            <span>{{nationalPhoneNumber}}</span>
+            <span>{{ nationalPhoneNumber }}</span>
           </div>
         </div>
 
@@ -54,7 +66,27 @@
           <a target="_blank" :href="this.shopInfo.url">
             <div class="op-button-text">
               <i class="material-icons">language</i>
-              <span>{{this.shopInfo.url}}</span>
+              <span>{{ this.shopInfo.url }}</span>
+            </div>
+          </a>
+        </div>
+
+        <!-- Restaurant LINE -->
+        <div v-if="hasLineUrl" class="m-t-8 m-l-16 m-r-16">
+          <a target="_blank" :href="this.shopInfo.lineUrl">
+            <div class="op-button-text" style="color:#4EC263;">
+              <i class="fab fa-line fa-lg m-r-8"></i>
+              <span>{{ this.shopInfo.lineUrl }}</span>
+            </div>
+          </a>
+        </div>
+
+        <!-- Restaurant Instagram -->
+        <div v-if="hasInstagramUrl" class="m-t-8 m-l-16 m-r-16">
+          <a target="_blank" :href="this.shopInfo.instagramUrl">
+            <div class="op-button-text" style="color:#DD2A7B;">
+              <i class="fab fa-instagram fa-lg m-r-8"></i>
+              <span>{{ this.shopInfo.instagramUrl }}</span>
             </div>
           </a>
         </div>
@@ -66,23 +98,29 @@
 
         <!-- Restaurant Hours -->
         <div class="m-l-16 m-r-16 m-t-16">
-          <div class="t-subtitle2 c-text-black-medium p-l-8">{{$t("shopInfo.hours")}}</div>
+          <div class="t-subtitle2 c-text-black-medium p-l-8">
+            {{ $t("shopInfo.hours") }}
+          </div>
           <template v-for="(day, key) in days">
             <div
               class="cols p-l-8 p-r-8 p-t-4 p-b-4 r-4 t-body2"
-              :style="(weekday==(key%7)) ? {'background-color': 'rgba(104, 159, 56, 0.1)'} : {}"
+              :style="
+                weekday == key % 7
+                  ? { 'background-color': 'rgba(104, 159, 56, 0.1)' }
+                  : {}
+              "
             >
-              <div class="w-64">{{$t('week.short.' + day)}}</div>
+              <div class="w-64">{{ $t("week.short." + day) }}</div>
               <div class="flex-1">
                 <template v-if="shopInfo.businessDay[key]">
-                  <template v-for="(data) in shopInfo.openTimes[key]">
+                  <template v-for="data in shopInfo.openTimes[key]">
                     <template v-if="validDate(data)">
-                      {{num2time(data.start)}} - {{num2time(data.end)}}
+                      {{ num2time(data.start) }} - {{ num2time(data.end) }}
                       <br />
                     </template>
                   </template>
                 </template>
-                <template v-else>{{$t('shopInfo.closed')}}</template>
+                <template v-else>{{ $t("shopInfo.closed") }}</template>
               </div>
               <div>
                 <template v-if="isOpen[key]">
@@ -107,35 +145,58 @@
 
         <!-- Payment Method -->
         <div class="m-t-8 m-l-16 m-r-16">
-          <div class="t-subtitle2 c-text-black-medium p-l-8">{{$t("shopInfo.paymentMethod")}}</div>
+          <div class="t-subtitle2 c-text-black-medium p-l-8">
+            {{ $t("shopInfo.paymentMethod") }}
+          </div>
           <div class="is-inline-flex flex-center m-l-8">
             <span class="t-body2">
-              <span v-if="showPayment">{{$t('shopInfo.onlinePayment')}}</span>
+              <span v-if="showPayment">{{ $t("shopInfo.onlinePayment") }}</span>
               <span v-if="showPayment && inStorePayment">/</span>
-              <span v-if="inStorePayment">{{$t('shopInfo.onsitePayment')}}</span>
-              <span v-if="!showPayment && !inStorePayment">{{$t('shopInfo.noPaymentMethod')}}</span>
+              <span v-if="inStorePayment">{{
+                $t("shopInfo.onsitePayment")
+              }}</span>
+              <span v-if="!showPayment && !inStorePayment">{{
+                $t("shopInfo.noPaymentMethod")
+              }}</span>
             </span>
           </div>
         </div>
 
         <!-- Minimum Available Time -->
         <div class="m-t-8 m-l-16 m-r-16">
-          <div class="t-subtitle2 c-text-black-medium p-l-8">{{$t("shopInfo.minimumAvailableTime")}}</div>
+          <div class="t-subtitle2 c-text-black-medium p-l-8">
+            {{ $t("shopInfo.minimumAvailableTime") }}
+          </div>
           <div class="is-inline-flex flex-center m-l-8">
-            <span class="t-body2">{{minimumAvailableTime}}</span>
+            <span class="t-body2">{{ minimumAvailableTime }}</span>
           </div>
         </div>
 
         <!-- Minimum Available Time -->
-        <div class="m-t-8 m-l-16 m-r-16" v-if="shopInfo.temporaryClosure && shopInfo.temporaryClosure.length > 0">
-          <div class="t-subtitle2 c-text-black-medium p-l-8">{{$t("shopInfo.temporaryClosure")}}</div>
-          <div class="flex-center m-l-8" v-for="(day, key) in (shopInfo.temporaryClosure ||[])">
+        <div
+          class="m-t-8 m-l-16 m-r-16"
+          v-if="
+            shopInfo.temporaryClosure && shopInfo.temporaryClosure.length > 0
+          "
+        >
+          <div class="t-subtitle2 c-text-black-medium p-l-8">
+            {{ $t("shopInfo.temporaryClosure") }}
+          </div>
+          <div
+            class="flex-center m-l-8"
+            v-for="(day, key) in shopInfo.temporaryClosure || []"
+          >
             <span class="t-body2">
-              {{moment(day.toDate()).format("YYYY/MM/DD")}} {{$t('week.short.' + days[Number(moment(day.toDate()).format("e"))||7])}}
-            </span><br />
+              {{ moment(day.toDate()).format("YYYY/MM/DD") }}
+              {{
+                $t(
+                  "week.short." +
+                    days[Number(moment(day.toDate()).format("e")) || 7]
+                )
+              }} </span
+            ><br />
           </div>
         </div>
-
       </div>
     </div>
   </div>
@@ -237,6 +298,12 @@ export default {
     },
     hasUrl() {
       return this.shopInfo.url;
+    },
+    hasLineUrl() {
+      return this.shopInfo.lineUrl;
+    },
+    hasInstagramUrl() {
+      return this.shopInfo.instagramUrl;
     },
     region() {
       return ownPlateConfig.region;

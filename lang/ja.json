@@ -106,6 +106,8 @@
     "enterZip": "郵便番号を入力して下さい",
     "enterPhone": "電話番号を入力して下さい",
     "enterWebsite": "ホームページのURLを入力して下さい",
+    "enterLineUrl": "例: https://lin.ee/xxxx",
+    "enterInstagramUrl": "例: https://www.instagram.com/xxxx",
     "enterIntroduction": "お店を紹介文を入力して下さい",
     "enterOrderNotice": "注文の注意点を入力して下さい",
     "enterOrderThanks": "注文後のありがとうメッセージを入力して下さい",
@@ -171,6 +173,10 @@
     "phoneCallDescription": "オンラインで注文が入った時にお店の電話でお知らせします",
     "phoneCallNotice": "現在は無料で提供しますが、電話の通話料がかかるため、この機能のみ将来有料機能となる可能性があります。その場合もこの機能をオンにしておいてもいきなり費用がかかることはありません。",
     "phoneCallNotification": "電話通知",
+    "acceptUserMessage": "メッセージを受付",
+    "acceptUserMessageDescription": "お客様からのメッセージを受付ける",
+    "acceptUserMessageNotice": "注文確認画面で、お客様が一言メッセージを入力可能にします。注文時の注意書きの後にメッセージ欄が表示されるので、「注文時の注意書き」にメッセージに書く内容を記載してください。(例: お得な割引の連絡をするのでメールアドレスを入力してください. / 誕生月の場合はお知らせください。プレゼントを用意します。)",
+
     "lineNotification": "LINE通知",
     "city": "市町村",
     "zip": "郵便番号",
@@ -180,6 +186,7 @@
     "menu": "メニュー",
     "enterItemName": "料理/ドリンク名を入力してください",
     "enterItemDescription": "説明文を入力してください",
+    "enterItemMemo": "メモ（お客様の画面には表示されません。1行目のみ、メニュー一覧上に表示されます。秘密情報は書かないようにしてください）",
     "enterItemOption": "オプションを入力してください",
     "item": "料理/ドリンク",
     "noItem": "何も登録されていません",
@@ -194,6 +201,7 @@
     "alcoholJP": "それ以外（酒、グッズなど）",
     "displayPrice": "表示金額",
     "itemDescription": "説明文",
+    "itemMemo": "メモ（管理画面のみ表示される情報です）",
     "itemPhoto": "写真",
     "itemOptions": "オプション",
     "itemOptionsNote": "二択や三択の場合、半角カンマで区切ってください（例:「チキン, ポーク, 豆腐」）。有料オプションの場合には、最後に(+100)のように値段を指定してください（例：「大盛り (+150)」）",
@@ -205,8 +213,8 @@
     "editCategory1": "カテゴリー１を編集",
     "category2": "カテゴリー２",
     "editCategory2": "カテゴリー２を編集",
-    "showAllMenu": "全ての商品を表示",
-    "showPublicMenu": "公開中の商品を表示"
+    "showAllMenu": "全ての商品",
+    "showPublicMenu": "公開中のみ"
   },
   "editTitle": {
     "enterCategory": "グループ名を入力してください",
@@ -247,6 +255,8 @@
     "address": "場所",
     "phonenumber": "電話番号",
     "website": "ホームページ",
+    "lineUrl": "LINE公式アカウントURL",
+    "instagramUrl": "インスタグラムURL",
     "hours": "営業時間",
     "midnight": "深夜 00:00",
     "noon": "正午 12:00",
@@ -347,6 +357,8 @@
     "timeToPickup": "受け渡し予定時刻",
     "notAvailable": "注文可能な営業日がないので、現在は注文を受け付けていません。",
     "orderNotice": "注文時のご注意",
+    "orderMessage": "お店へメッセージ",
+    "enterMessage": "お店へメッセージを伝えることができます。「注文時のご注意」にお願いがある場合には、それを参考にメッセージを作成してください。",
     "datePlaced": "注文時刻",
     "dateEstimated": "完了予定時刻",
     "dateConfirmed": "準備完了時刻",
@@ -373,7 +385,9 @@
       "transaction_hide": "受注処理完了",
       "order_canceled": "キャンセル済み",
       "order_refunded": "払い戻し済み"
-    }
+    },
+    "lineLink": "お店のLINE公式アカウント",
+    "lineMessage": "LINE公式アカウントを友だち登録すると、お店から情報が直接届きます。"
   },
   "button": {
     "back": "戻る",
@@ -527,7 +541,8 @@
       "lineDelete": "本当に消去しますか？",
       "lineSafariPrivate": "注意: Safariのプライベートブラウズモードを使用しているとLINE連携ができません。",
       "history": "注文履歴",
-      "more": "もっと見る"
+      "more": "もっと見る",
+      "messageFromCustomer": "お客様からのメッセージ"
     },
     "sound": {
       "default": "ピコリン",

@@ -41,8 +41,29 @@
       <!-- Profile -->
       <div class="align-center m-t-24">
         <router-link to="/u/profile">
-          <div class="op-button-small tertiary" @click="handleClose()">
-            {{ $t("profile.title") }}
+          <div class="op-button-small primary" @click="handleClose()">
+            <i class="material-icons m-r-8">person</i>
+            <span>{{ $t("profile.title") }}</span>
+          </div>
+        </router-link>
+      </div>
+
+      <!-- Order History -->
+      <div class="align-center m-t-16" v-if="isCustomer">
+        <router-link to="/u/history">
+          <div class="op-button-small primary" @click="handleClose()">
+            <i class="material-icons m-r-8">history</i>
+            <span>{{ $t("order.history") }}</span>
+          </div>
+        </router-link>
+      </div>
+
+      <!-- Favorites -->
+      <div class="align-center m-t-16" v-if="isCustomer">
+        <router-link to="/r/favorites">
+          <div class="op-button-small primary" @click="handleClose()">
+            <i class="material-icons m-r-8">favorite</i>
+            <span>{{ $t("find.likes") }}</span>
           </div>
         </router-link>
       </div>
@@ -56,7 +77,7 @@
         <!-- Manual for Restaurant -->
         <div class="align-center">
           <a
-            href="https://docs.omochikaeri.com/manual/manual.pdf"
+            href="https://docs.omochikaeri.com/manuals/manual.pdf"
             target="_blank"
           >
             <div class="op-button-text t-button" @click="handleClose()">
@@ -68,7 +89,7 @@
         <!-- Tips for Restaurant -->
         <div class="align-center">
           <a
-            href="https://docs.omochikaeri.com/manual/tips.pdf"
+            href="https://docs.omochikaeri.com/manuals/tips.pdf"
             target="_blank"
           >
             <div class="op-button-text t-button" @click="handleClose()">
