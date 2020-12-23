@@ -12,7 +12,7 @@
         src="/Logo-SingularitySociety.svg"
         class="h-80 m-t-32 m-l-16 m-r-16"
       />
-      <img src="/Logo-Itochu.svg" class="h-80 m-t-32 m-l-16 m-r-16" />
+      <!-- img src="/Logo-Itochu.svg" class="h-80 m-t-32 m-l-16 m-r-16" / -->
     </div>
   </div>
 </template>
