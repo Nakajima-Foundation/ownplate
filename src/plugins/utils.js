@@ -222,6 +222,13 @@ export default ({ app }) => {
         // not implemented
         return null;
       },
+      isInLine() {
+        return /Line/.test(navigator.userAgent);
+      },
+      isInFacebook() {
+      },
+      isInTwitter() {
+      },
       featureHeroMobile() {
         return this.regionalSetting.FeatureHeroMobile[
           this.isLocaleJapan ? "ja" : "en"
