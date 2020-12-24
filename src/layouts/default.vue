@@ -474,6 +474,14 @@ export default {
     }
   },
   async created() {
+    if (this.isInLine) {
+      if (/\?/.test(window.location.href)) {
+        window.location.href = window.location.href + "&openExternalBrowser=1";
+      } else {
+        window.location.href = window.location.href + "?openExternalBrowser=1";
+      }
+      return
+    }
     this.language = this.regionalSetting.defaultLanguage;
     this.languages = this.regionalSetting.languages;
     this.logo = this.regionalSetting.Logo;
