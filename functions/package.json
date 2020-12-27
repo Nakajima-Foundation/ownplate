@@ -43,7 +43,7 @@
     "xmlbuilder": "^15.1.1"
   },
   "devDependencies": {
-    "@firebase/testing": "^0.20.5",
+    "@firebase/rules-unit-testing": "^1.1.6",
     "@types/chai": "^4.2.11",
     "@types/mocha": "^7.0.2",
     "@types/stripe": "^7.13.22",
