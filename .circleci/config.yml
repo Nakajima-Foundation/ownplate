@@ -12,6 +12,7 @@ jobs:
       - node/with-cache:
           steps:
             - run: npm install
+            - run: yum search openjdk
             - run: npm rebuild node-sass
             - run: npm install --save-dev firebase-tools
             - run: cp src/config/default/ownplate-dev.js src/config/project.js
@@ -28,4 +29,4 @@ workflows:
         - build-and-test:
             filters:
               branches:
-                only: master
+                only: functionsTest
