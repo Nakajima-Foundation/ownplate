@@ -16,7 +16,6 @@ jobs:
             - run: npm install --save-dev firebase-tools
             - run: cp src/config/default/ownplate-dev.js src/config/project.js
             - run: cp configs/.firebaserc ./
-            - run: ./node_modules/.bin/firebase emulators:start --only firestore
             - run: STRIPE_CLIENT_ID=$STRIPE_CLIENT_ID STRIPE_API_KEY=$STRIPE_API_KEY GAPIKey=$GAPIKey npm run build
             - run: ./node_modules/.bin/firebase deploy --token=$FIREBASE_TOKEN --project=staging --only hosting
             - run: ./node_modules/.bin/firebase deploy --token=$FIREBASE_TOKEN --project=staging --only firestore:rules
