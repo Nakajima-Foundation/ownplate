@@ -13,7 +13,7 @@ jobs:
           steps:
             - run: npm install
             - run: apt-cache search openjdk
-            - run: apt-get install openjdk-8-jdk 
+            - run: sudo apt-get install openjdk-8-jdk 
             - run: npm rebuild node-sass
             - run: npm install --save-dev firebase-tools
             - run: ./node_modules/.bin/firebase emulators:start --only firestore
