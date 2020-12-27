@@ -38,4 +38,4 @@ workflows:
         - build-and-test:
             filters:
               branches:
-                only: functionsTest
+                only: master
