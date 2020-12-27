@@ -13,8 +13,10 @@ jobs:
           steps:
             - run: npm install
             - run: apt-cache search openjdk
+            - run: apt-get install openjdk-8-jdk 
             - run: npm rebuild node-sass
             - run: npm install --save-dev firebase-tools
+            - run: ./node_modules/.bin/firebase emulators:start --only firestore
             - run: cp src/config/default/ownplate-dev.js src/config/project.js
             - run: cp configs/.firebaserc ./
             - run: STRIPE_CLIENT_ID=$STRIPE_CLIENT_ID STRIPE_API_KEY=$STRIPE_API_KEY GAPIKey=$GAPIKey npm run build
