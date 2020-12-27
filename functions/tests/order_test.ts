@@ -84,7 +84,7 @@ describe('Order function', () => {
     const updatedOrder = await adminDB.doc(`restaurants/${restaurantId}/orders/${orderId}`).get();
     const updatedOrderdata = updatedOrder.data() || {};
 
-    // console.log(updatedOrderdata);
+    console.log(updatedOrderdata);
     updatedOrderdata.number.should.equal(10);
     updatedOrderdata.order.hoge1[0].should.equal(10);
     updatedOrderdata.status.should.equal(200);
