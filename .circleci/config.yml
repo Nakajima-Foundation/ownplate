@@ -20,9 +20,9 @@ jobs:
                 command: ./node_modules/.bin/firebase emulators:start --only firestore
                 background: true
             - run: cp configs/.firebaserc ./
+            - run: cp src/config/default/ownplate-dev.js src/config/project.js
             - run: STRIPE_CLIENT_ID=$STRIPE_CLIENT_ID STRIPE_API_KEY=$STRIPE_API_KEY GAPIKey=$GAPIKey npm run build
             - run: cp dist/index.html functions/templates/index.html  
-            - run: cp src/config/default/ownplate-dev.js src/config/project.js
             - run: cp src/config/default/ownplate-dev.js functions/src/common/project.js
             - run: cp src/plugins/constant.js functions/src/common/constant.js
             - run: cp src/plugins/phoneutil.js functions/src/common/phoneutil.js
