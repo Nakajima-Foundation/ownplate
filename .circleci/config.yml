@@ -6,8 +6,10 @@ jobs:
     executor:  node/default
     steps:
       - checkout
-      - node/install:
-          install-yarn: true
+      - node/install-packages:
+          cache-path: ~/project/node_modules
+          override-ci-command: npm install
+          node-version: 12.0.1
       - run: npm install
       - run: npm rebuild node-sass
       - run: npm install --save-dev firebase-tools
