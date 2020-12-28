@@ -6,8 +6,6 @@ jobs:
     executor:  node/default
     steps:
       - checkout
-      - node/install:
-          node-version: 12.1.0
       - node/install-packages:
           cache-path: ~/project/node_modules
           override-ci-command: npm install
