@@ -9,18 +9,18 @@ jobs:
       - checkout
       - node/install:
           node-version: 12.1.0
-      - node/with-cache:
-          steps:
-            - run: npm install
-            - run: npm rebuild node-sass
-            - run: npm install --save-dev firebase-tools
-            - run: cp src/config/default/ownplate-dev.js src/config/project.js
-            - run: cp configs/.firebaserc ./
-            - run: STRIPE_CLIENT_ID=$STRIPE_CLIENT_ID STRIPE_API_KEY=$STRIPE_API_KEY GAPIKey=$GAPIKey npm run build
-            - run: ./node_modules/.bin/firebase deploy --token=$FIREBASE_TOKEN --project=staging --only hosting
-            - run: ./node_modules/.bin/firebase deploy --token=$FIREBASE_TOKEN --project=staging --only firestore:rules
-            - run: cd functions && npm install && ../node_modules/.bin/firebase deploy --token=$FIREBASE_TOKEN --project=staging --only functions
-            - run: SLACKURL=$SLACKURL sh ./utils/buildbot.sh
+      - node/install-packages:
+          cache-path: ~/project/node_modules
+          override-ci-command: npm install
+      - run: npm rebuild node-sass
+      - run: npm install --save-dev firebase-tools
+      - run: cp src/config/default/ownplate-dev.js src/config/project.js
+      - run: cp configs/.firebaserc ./
+      - run: STRIPE_CLIENT_ID=$STRIPE_CLIENT_ID STRIPE_API_KEY=$STRIPE_API_KEY GAPIKey=$GAPIKey npm run build
+      - run: ./node_modules/.bin/firebase deploy --token=$FIREBASE_TOKEN --project=staging --only hosting
+      - run: ./node_modules/.bin/firebase deploy --token=$FIREBASE_TOKEN --project=staging --only firestore:rules
+      - run: cd functions && npm install && ../node_modules/.bin/firebase deploy --token=$FIREBASE_TOKEN --project=staging --only functions
+      - run: SLACKURL=$SLACKURL sh ./utils/buildbot.sh
 workflows:
     version: 2.1
     build-and-test:
