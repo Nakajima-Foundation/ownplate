@@ -8,7 +8,7 @@ jobs:
     steps:
       - checkout
       - node/install:
-          node-version: 12.20.0
+          install-npm: true
       - run: npm install
       - run: npm rebuild node-sass
       - run: npm install --save-dev firebase-tools
