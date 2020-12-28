@@ -19,7 +19,6 @@ jobs:
       - run: cd functions && npm install && ../node_modules/.bin/firebase deploy --token=$FIREBASE_TOKEN --project=staging --only functions
       - run: SLACKURL=$SLACKURL sh ./utils/buildbot.sh
 workflows:
-    version: 2.1
     test-and-deploy:
       jobs:
         - test-and-deploy:
