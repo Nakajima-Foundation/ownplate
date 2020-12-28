@@ -9,7 +9,6 @@ jobs:
       - checkout
       - node/install:
           node-version: 12.20.0
-          npm-version: 6.9.0
       - run: npm install
       - run: npm rebuild node-sass
       - run: npm install --save-dev firebase-tools
