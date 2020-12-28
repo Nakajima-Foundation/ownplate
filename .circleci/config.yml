@@ -9,9 +9,7 @@ jobs:
       - checkout
       - node/install:
           node-version: 12.1.0
-      - node/install-packages:
-          cache-path: ~/project/node_modules
-          override-ci-command: npm install
+      - run: npm install
       - run: npm rebuild node-sass
       - run: npm install --save-dev firebase-tools
       - run: cp src/config/default/ownplate-dev.js src/config/project.js
