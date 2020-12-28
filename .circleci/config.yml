@@ -2,14 +2,12 @@ version: 2.1
 orbs:
   node: circleci/node@4.1.0
 jobs:
-  build-and-test:
-    executor:
-      name: node/default
+  test-and-deploy:
+    executor:  node/default
     steps:
       - checkout
       - node/install:
           install-yarn: true
-          node-version: 12.1.0
       - run: npm install
       - run: npm rebuild node-sass
       - run: npm install --save-dev firebase-tools
@@ -22,9 +20,13 @@ jobs:
       - run: SLACKURL=$SLACKURL sh ./utils/buildbot.sh
 workflows:
     version: 2.1
-    build-and-test:
+    test-and-deploy:
       jobs:
-        - build-and-test:
+        - test-and-deploy:
             filters:
               branches:
                 only: updateOrb
+            matrix:
+              parameters:
+                version:
+                  - 12.1.0
