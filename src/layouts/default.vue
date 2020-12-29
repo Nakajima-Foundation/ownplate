@@ -68,6 +68,18 @@
         </router-link>
       </div>
 
+      <!-- Favorites -->
+
+      {{shopInfo && shopInfo.restaurantName}}
+      <div class="align-center m-t-16" v-if="isCustomer">
+        <router-link to="/r">
+          <div class="op-button-small primary" @click="handleClose()">
+            <i class="material-icons m-r-8">restaurant</i>
+            <span>{{ $t("find.allRestaurants") }}</span>
+          </div>
+        </router-link>
+      </div>
+      
       <!-- For Restaurant -->
       <div class="m-t-24" v-if="!isCustomer">
         <div class="align-center t-subtitle1 p-b-8">
