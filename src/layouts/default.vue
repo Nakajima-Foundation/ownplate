@@ -69,7 +69,7 @@
       </div>
 
       <!-- For Restaurant -->
-      <div class="m-t-24">
+      <div class="m-t-24" v-if="!isCustomer">
         <div class="align-center t-subtitle1 p-b-8">
           {{ $t("menu.forRestaurantOwner") }}
         </div>
@@ -107,9 +107,9 @@
           </router-link>
         </div>
       </div>
-
+      
       <!-- For User -->
-      <div class="m-t-24">
+      <div class="m-t-24" v-if="!isAdmin">
         <div class="align-center t-subtitle1 p-b-8">
           {{ $t("menu.forCustomer") }}
         </div>
