@@ -399,8 +399,8 @@
     "next": "次へ"
   },
   "sms": {
-    "signin": "電話番号認証",
-    "phonenumber": "電話番号",
+    "signin": "本人確認",
+    "phonenumber": "携帯電話番号",
     "pleasetype": "090-1111-1111",
     "notice": "確認のためのSMSが送られてきます",
     "send": "送信",
