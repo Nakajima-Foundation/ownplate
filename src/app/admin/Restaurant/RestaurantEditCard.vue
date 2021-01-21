@@ -114,7 +114,7 @@
       </div>
 
       <!-- Report Page -->
-      <div class="align-center m-t-16" v-if="shopOwner && !shopOwner.hidePrivacy">
+      <div class="align-center m-t-16" v-if="shopOwner">
         <b-button
           tag="nuxt-link"
           :to="`/admin/restaurants/${restaurantid}/report`"

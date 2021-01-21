@@ -72,13 +72,13 @@
               <span class="p-l-16 p-r-16">{{ $t('admin.order.more') }}</span>
             </b-button>
           </div>
-          <download-orders :orders="orders" v-if="shopOwner && !shopOwner.hidePrivacy" />
+          <download-orders :orders="orders" v-if="shopOwner" />
           <report-details
             :orders="orders"
             :fileName="fileName"
             :hideTable="true"
             :withStatus="true"
-            v-if="shopOwner && !shopOwner.hidePrivacy"
+            v-if="shopOwner"
           />
         </div>
       </div>
