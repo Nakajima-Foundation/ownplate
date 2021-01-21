@@ -41,7 +41,7 @@
       <!-- Profile -->
       <div class="align-center m-t-24">
         <router-link to="/u/profile">
-          <div class="op-button-small primary" @click="handleClose()">
+          <div class="op-button-small primary w-224" @click="handleClose()">
             <i class="material-icons m-r-8">person</i>
             <span>{{ $t("profile.title") }}</span>
           </div>
@@ -51,7 +51,7 @@
       <!-- Order History -->
       <div class="align-center m-t-16" v-if="isCustomer">
         <router-link to="/u/history">
-          <div class="op-button-small primary" @click="handleClose()">
+          <div class="op-button-small primary w-224" @click="handleClose()">
             <i class="material-icons m-r-8">history</i>
             <span>{{ $t("order.history") }}</span>
           </div>
@@ -61,15 +61,26 @@
       <!-- Favorites -->
       <div class="align-center m-t-16" v-if="isCustomer">
         <router-link to="/r/favorites">
-          <div class="op-button-small primary" @click="handleClose()">
+          <div class="op-button-small primary w-224" @click="handleClose()">
             <i class="material-icons m-r-8">favorite</i>
             <span>{{ $t("find.likes") }}</span>
           </div>
         </router-link>
       </div>
 
+      <!-- Restaurants -->
+      {{ shopInfo && shopInfo.restaurantName }}
+      <div class="align-center m-t-16" v-if="isCustomer">
+        <router-link to="/r">
+          <div class="op-button-small primary w-224" @click="handleClose()">
+            <i class="material-icons m-r-8">restaurant</i>
+            <span>{{ $t("find.allRestaurants") }}</span>
+          </div>
+        </router-link>
+      </div>
+
       <!-- For Restaurant -->
-      <div class="m-t-24">
+      <div class="m-t-24" v-if="!isCustomer">
         <div class="align-center t-subtitle1 p-b-8">
           {{ $t("menu.forRestaurantOwner") }}
         </div>
@@ -109,7 +120,7 @@
       </div>
 
       <!-- For User -->
-      <div class="m-t-24">
+      <div class="m-t-24" v-if="!isAdmin">
         <div class="align-center t-subtitle1 p-b-8">
           {{ $t("menu.forCustomer") }}
         </div>
@@ -480,7 +491,7 @@ export default {
       } else {
         window.location.href = window.location.href + "?openExternalBrowser=1";
       }
-      return
+      return;
     }
     this.language = this.regionalSetting.defaultLanguage;
     this.languages = this.regionalSetting.languages;

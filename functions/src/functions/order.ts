@@ -297,6 +297,11 @@ export const wasOrderCreated = async (db, data: any, context) => {
 
     const newOrderData = {};
     const newItems = {};
+    if (Object.keys(orderData.order).some((menuId) => {
+      return menuObj[menuId] === undefined;
+    })) {
+      return orderRef.update("status", order_status.error);
+    }
     Object.keys(orderData.order).map((menuId) => {
       newOrderData[menuId] = [];
       newItems[menuId] = {};

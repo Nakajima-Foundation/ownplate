@@ -225,6 +225,7 @@
     "areaAll": "全てのエリア",
     "areaTop": "エリア一覧",
     "likes": "お気に入り",
+    "allRestaurants": "お店を探す",
     "areas": {
       "kanto": "関東地方",
       "chubu": "中部地方",
@@ -398,8 +399,8 @@
     "next": "次へ"
   },
   "sms": {
-    "signin": "電話番号認証",
-    "phonenumber": "電話番号",
+    "signin": "本人確認",
+    "phonenumber": "携帯電話番号",
     "pleasetype": "090-1111-1111",
     "notice": "確認のためのSMSが送られてきます",
     "send": "送信",
