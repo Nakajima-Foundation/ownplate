@@ -212,6 +212,7 @@ export default {
         console.log("result", this.confirmationResult);
       } catch (error) {
         console.log("error", error);
+        console.log("error", error.code);
         Sentry.captureException(error);
         this.errors = ["sms." + error.code];
       } finally {
@@ -248,6 +249,7 @@ export default {
         this.$emit("dismissed", true);
       } catch (error) {
         console.log("error", error);
+        console.log("error", error.code);
         Sentry.captureException(error);
         this.errors = ["sms." + error.code];
       } finally {
