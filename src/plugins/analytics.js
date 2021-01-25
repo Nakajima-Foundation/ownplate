@@ -1,4 +1,4 @@
-import * as firebase from "firebase/app";
+import firebase from "firebase/app";
 import { analytics } from "~/plugins/firebase.js";
 
 // see https://firebase.google.com/docs/analytics/measure-ecommerce
