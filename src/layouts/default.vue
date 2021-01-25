@@ -69,7 +69,6 @@
       </div>
 
       <!-- Restaurants -->
-      {{ shopInfo && shopInfo.restaurantName }}
       <div class="align-center m-t-16" v-if="isCustomer">
         <router-link to="/r">
           <div class="op-button-small primary w-224" @click="handleClose()">
