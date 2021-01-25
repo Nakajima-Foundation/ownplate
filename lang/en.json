@@ -556,8 +556,8 @@
     },
     "report": {
       "title": "Monthly Report",
-      "download-csv": "Download CSV",
-      "download-csv-details": "Download CSV (details)"
+      "download-csv": "Download Excel File (Earnings)",
+      "download-csv-details": "Download Excel File (Details)"
     },
     "error": {
       "email": {
