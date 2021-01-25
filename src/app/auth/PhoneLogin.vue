@@ -211,7 +211,7 @@ export default {
         );
         console.log("result", this.confirmationResult);
       } catch (error) {
-        console.log("error", error);
+        console.log(JSON.stringify(error));
         console.log("error", error.code);
         Sentry.captureException(error);
         this.errors = ["sms." + error.code];
@@ -248,7 +248,7 @@ export default {
         this.verificationCode = "";
         this.$emit("dismissed", true);
       } catch (error) {
-        console.log("error", error);
+        console.log(JSON.stringify(error));
         console.log("error", error.code);
         Sentry.captureException(error);
         this.errors = ["sms." + error.code];

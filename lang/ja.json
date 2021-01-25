@@ -423,7 +423,8 @@
     "invalidValidationCode": "正しくない文字が含まれています",
     "auth/invalid-phone-number": "正しい電話番号を入力してください",
     "auth/invalid-verification-code": "SMS確認コードが無効です。SMS確認コードを再送信して再度入力してください",
-    "auth/missing-verification-code": "SMS確認コードが入力されていません"
+    "auth/missing-verification-code": "SMS確認コードが入力されていません",
+    "auth/code-expired": "SMS確認コードが有効期限切れです。SMS確認コードを再送信して再度入力してください"
   },
   "admin": {
     "welcomeMessage": "いらっしゃいませ",
@@ -563,7 +564,7 @@
     },
     "report": {
       "title": "月次報告",
-      "download-csv": "エクセルデータダウンロード",
+      "download-csv": "エクセルデータダウンロード (売上)",
       "download-csv-details": "エクセルデータダウンロード (詳細)"
     },
     "error": {
