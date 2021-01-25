@@ -552,7 +552,9 @@
       "leave": "Enregistrer une sortie"
     },
     "report": {
-      "title": "Rapport mensuel"
+      "title": "Rapport mensuel",
+      "download-csv": "Télécharger le fichier Excel (Gains)",
+      "download-csv-details": "Télécharger le fichier Excel (Détails)"
     },
     "error": {
       "email": {
