@@ -48,7 +48,7 @@
 <script>
 import BackButton from "~/components/BackButton";
 import { db } from "~/plugins/firebase.js";
-import * as firebase from "firebase/app";
+import firebase from "firebase/app";
 
 export default {
   components: {

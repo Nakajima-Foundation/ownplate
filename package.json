@@ -40,7 +40,7 @@
     "babel-polyfill": "^6.26.0",
     "bulma-social": "^1.0.1",
     "cookie": "^0.4.1",
-    "firebase": "^7.15.5",
+    "firebase": "^8.2.4",
     "google-libphonenumber": "^3.2.10",
     "lodash": "^4.17.20",
     "markdown-it": "^11.0.0",
