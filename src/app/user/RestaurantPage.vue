@@ -325,6 +325,20 @@ export default {
     uid() {
       return this.$store.getters.uid;
     },
+    totalPrice() {
+      const subTotal = Object.keys(this.prices).reduce((tmp, menuId) => {
+        tmp[menuId] = this.prices[menuId].reduce((a, b) => a + b, 0);
+        return tmp;
+      }, {});
+      const total =  Object.keys(subTotal).reduce((tmp, menuId) => {
+        return tmp + subTotal[menuId];
+      },0);
+      return {
+        subTotal: subTotal,
+        total: total,
+      };
+      // total: 
+    },
     prices() {
       const ret = {};
 
