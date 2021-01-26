@@ -115,6 +115,7 @@
                   </div>
                 </div>
 
+                <div v-if="paymentIsNotCompleted">カード決済の為、受け渡し前に必ず「受け渡し準備完了」にしてください</div>
                 <!-- Cancel Button -->
                 <div class="m-t-24 align-center">
                   <b-button
