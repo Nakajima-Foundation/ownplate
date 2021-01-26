@@ -129,10 +129,14 @@ const ogpPage = async (req: any, res: any) => {
     if (!restaurant || !restaurant.exists) {
       return res.status(404).send(template_data);
     }
-
     const menuData = await getMenuData(restaurantName, menuId);
     const restaurant_data: any = restaurant.data();
 
+    const ownerData = await getShopOwner(restaurant_data.uid);
+    if (!ownerData) {
+      return res.status(404).send(template_data);
+    }
+    
     const siteName = ownPlateConfig.siteName;
     const title = menuData.exists ? [menuData.name, restaurant_data.restaurantName].join(" / ") :
       (restaurant_data.restaurantName ? [restaurant_data.restaurantName, ownPlateConfig.restaurantPageTitle].join(" / ") :
@@ -164,7 +168,10 @@ const ogpPage = async (req: any, res: any) => {
         `<meta name="twitter:creator" content="@omochikaericom" />`,
         `<meta name="twitter:description" content="${description}" />`,
         `<meta name="twitter:image" content="${image}" />`,
-      ].join("\n");
+      ];
+    if (ownerData.hidePrivacy) {
+      metas.push(`<meta name="robots" content="noindex" />`);
+    }
     res.set('Cache-Control', 'public, max-age=300, s-maxage=600');
 
     const regexBody = /<div id="__nuxt">/;
@@ -182,7 +189,7 @@ const ogpPage = async (req: any, res: any) => {
 
     res.send(template_data
              .replace(/<meta[^>]*>/g, "")
-             .replace(regexTitle, metas)
+             .replace(regexTitle, metas.join("\n"))
              .replace(regexBody, bodyString));
   } catch (e) {
     console.log(e);
@@ -196,6 +203,14 @@ const debugError = async (req: any, res: any) => {
     throw new Error("sample error");
     res.send({});
   }, 10);
+};
+
+const getShopOwner = async (uid) => {
+  const admin = await db.doc(`/admins/${uid}`).get();
+  if (admin && admin.exists) {
+    return admin.data();
+  }
+  return {hidePrivacy: false};
 };
 
 export const stripe_parser = async (req, res) => {
