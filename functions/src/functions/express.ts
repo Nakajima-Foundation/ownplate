@@ -206,9 +206,9 @@ const debugError = async (req: any, res: any) => {
 };
 
 const getShopOwner = async (uid) => {
-  const admin = await db.doc(`/admins/${uid}`).get();
-  if (admin && admin.exists) {
-    return admin.data();
+  const owner = await db.doc(`/admins/${uid}`).get();
+  if (owner && owner.exists) {
+    return owner.data();
   }
   return {hidePrivacy: false};
 };
