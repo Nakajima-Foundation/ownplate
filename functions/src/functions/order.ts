@@ -226,30 +226,6 @@ export const notifyCanceledOrder = async (db: FirebaseFirestore.Firestore, resta
   return notifyRestaurant(db, 'msg_order_canceled_by_user', restaurantId, orderId, restaurantName, orderNumber, lng)
 };
 
-export const getMenuObj = async (refRestaurant) => {
-  const menuObj = {};
-  const menusCollections = await refRestaurant.collection("menus").get();
-  menusCollections.forEach((m) => {
-    menuObj[m.id] = m.data();
-  });
-  return menuObj;
-};
-
-// const regex = /\((\+|\-)[0-9\.]+\)/
-const regex =  /\(((\+|\-|＋|ー|−)[0-9\.]+)\)/;
-
-const convPrice = (priceStr) => {
-  return Number(priceStr.replace(/ー|−/g, '-').replace(/＋/g, '+'));
-};
-
-const optionPrice = (option: string) => {
-  const match = option.match(regex);
-  if (match) {
-    return convPrice(match[1]);
-  }
-  return 0;
-}
-
 // export const wasOrderCreated = async (db, snapshot, context) => {
 export const wasOrderCreated = async (db, data: any, context) => {
   const uid = utils.validate_auth(context);
@@ -290,7 +266,7 @@ export const wasOrderCreated = async (db, data: any, context) => {
     const foodTax = restaurantData.foodTax || 0;
     const multiple = utils.getStripeRegion().multiple; //100 for USD, 1 for JPY
 
-    const menuObj = await getMenuObj(restaurantRef);
+    const menuObj = await utils.getMenuObj(restaurantRef);
 
     let food_sub_total = 0;
     let alcohol_sub_total = 0;
@@ -327,10 +303,10 @@ export const wasOrderCreated = async (db, data: any, context) => {
           const opt = menu.itemOptionCheckbox[key].split(",");
           if (opt.length === 1) {
             if (selectedOpt) {
-              return tmpPrice + Math.round(optionPrice(opt[0]) * multiple) / multiple;
+              return tmpPrice + Math.round(utils.optionPrice(opt[0]) * multiple) / multiple;
             }
           } else {
-            return tmpPrice + Math.round(optionPrice(opt[selectedOpt]) * multiple) / multiple;
+            return tmpPrice + Math.round(utils.optionPrice(opt[selectedOpt]) * multiple) / multiple;
           }
           return tmpPrice;
         }, menu.price);
