@@ -180,6 +180,7 @@ import { order_status } from "~/plugins/constant.js";
 import { ownPlateConfig } from "@/config/project";
 import * as analyticsUtil from "~/plugins/analytics";
 
+
 export default {
   name: "ShopMenu",
 
@@ -324,6 +325,46 @@ export default {
     uid() {
       return this.$store.getters.uid;
     },
+    totalPrice() {
+      const subTotal = Object.keys(this.prices).reduce((tmp, menuId) => {
+        tmp[menuId] = this.prices[menuId].reduce((a, b) => a + b, 0);
+        return tmp;
+      }, {});
+      const total =  Object.keys(subTotal).reduce((tmp, menuId) => {
+        return tmp + subTotal[menuId];
+      },0);
+      return {
+        subTotal: subTotal,
+        total: total,
+      };
+      // total: 
+    },
+    prices() {
+      const ret = {};
+
+      const multiple = this.$store.getters.stripeRegion.multiple;
+      Object.keys(this.orders).map((menuId) => {
+        const menu = this.itemsObj[menuId];
+        ret[menuId] = [];
+        this.orders[menuId].map((num, orderKey) => {
+          const selectedOptionsRaw = this.trimmedSelectedOptions[menuId][orderKey];
+          const price = selectedOptionsRaw.reduce((tmpPrice, selectedOpt, key) => {
+            const opt = menu.itemOptionCheckbox[key].split(",");
+            if (opt.length === 1) {
+              if (selectedOpt) {
+                return tmpPrice + Math.round(this.optionPrice(opt[0]) * multiple) / multiple;
+              }
+            } else {
+              return tmpPrice + Math.round(this.optionPrice(opt[selectedOpt]) * multiple) / multiple;
+            }
+            return tmpPrice;
+          }, menu.price);
+          ret[menuId].push(price * num);
+        });
+      });
+      console.log(ret);
+      return ret;
+    },
     totalQuantities() {
       const ret = Object.values(this.orders).reduce((total, order) => {
         return total + this.arraySum(order);
@@ -378,6 +419,14 @@ export default {
     }
   },
   methods: {
+    optionPrice(option) {
+      const regex =  /\(((\+|\-|＋|ー|−)[0-9\.]+)\)/;
+      const match = option.match(regex);
+      if (match) {
+        return Number(match[1].replace(/ー|−/g, '-').replace(/＋/g, '+'));
+      }
+      return 0;
+    },
     handleCheckOut() {
       // The user has clicked the CheckOut button
       this.retryCount = 0;
