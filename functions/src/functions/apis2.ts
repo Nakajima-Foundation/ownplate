@@ -78,7 +78,15 @@ export const nameOfOrder = (order) => {
 };
 
 
-// 日時、商品、数量、単価、金額、支払方法…といった情報です
+const convTime = (time: any) => {
+  try {
+    return time && moment(time.toDate()).format("YYYY/MM/DD HH:mm");
+  } catch (e) {
+    return time && moment(time.seconds).format("YYYY/MM/DD HH:mm");
+  }
+  
+};
+
 const getOrders = async (req: any, res: any) => {
   const refRestaurant = db.doc(`restaurants/${req.restaurantId}`);
   const orderCollection = await refRestaurant.collection('orders').orderBy("timeCreated", "desc").get();
@@ -107,8 +115,8 @@ const getOrders = async (req: any, res: any) => {
       const ret = {
         id: item.id,
         name: nameOfOrder(order),
-        timeRequested: order.timePlaced && moment(order.timePlaced.toDate()).format("YYYY/MM/DD HH:mm"),
-        dateConfirmed: order.timeConfirmed && moment(order.timeConfirmed.toDate()).format("YYYY/MM/DD HH:mm"),
+        timeRequested: convTime(order.timePlaced),
+        dateConfirmed: convTime(order.timeConfirmed),
         items,
         payment: {
           tax: order.tax,
