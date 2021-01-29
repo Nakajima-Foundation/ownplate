@@ -524,6 +524,7 @@
       "infinityNotificationOn": "Remind Every Minute",
       "infinityNotificationOff": "Notify One Time",
       "soundTest": "Test",
+      "paymentIsNotCompleted": "Note: Please complete the credit card payment process by clicking the 'Ready to Pickup' button before giving the items to the customer.",
       "cancelButton": "Cancel this order",
       "cancelTitle": "Order Canceling",
       "cancelMessage": "Please contact to the customer and tell the order will be canceled.",

@@ -115,7 +115,14 @@
                   </div>
                 </div>
 
-                <div v-if="paymentIsNotCompleted">カード決済の為、受け渡し前に必ず「受け渡し準備完了」にしてください</div>
+                <!-- Note for Payment Completion -->
+                <div
+                  v-if="paymentIsNotCompleted"
+                  class="m-t-16 bg-status-amber-bg r-8 p-t-8 p-b-8 p-l-16 p-r-16 t-body2 c-status-amber"
+                >
+                  {{ $t("admin.order.paymentIsNotCompleted") }}
+                </div>
+
                 <!-- Cancel Button -->
                 <div class="m-t-24 align-center">
                   <b-button

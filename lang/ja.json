@@ -532,6 +532,7 @@
       "infinityNotificationOn": "1分おきに再通知",
       "infinityNotificationOff": "受注時のみ通知",
       "soundTest": "テスト",
+      "paymentIsNotCompleted": "ご注意：商品の受け渡し前に「受け渡し準備完了」ボタンを押してカード決済処理を完了させてください。",
       "cancelButton": "注文をキャンセル",
       "cancelTitle": "注文のキャンセル",
       "cancelMessage": "お客様にご連絡の上、ご注文がキャンセルされることをお伝え下さい。",
