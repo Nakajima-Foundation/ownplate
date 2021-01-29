@@ -150,6 +150,9 @@ export default ({ app }) => {
       arrayOrNumSum(arr) {
         return Array.isArray(arr) ? this.arraySum(arr) : (arr || 0);
       },
+      forceArray(arr) {
+        return Array.isArray(arr) ? arr : [arr];
+      },
       getOrderItems(orderInfo, menuObj) {
         if (orderInfo.order && orderInfo.menuItems) {
           return Object.keys(orderInfo.order).reduce((tmp, menuId) => {
