@@ -60,6 +60,11 @@ export default {
   mounted() {
     //console.log("***", this.orders);
   },
+  methods: {
+    writeonFirstLine(index, key, text) {
+      return (index === 0 && Number(key) === 0) ? text : "-";
+    },
+  },
   computed: {
     formulas() {
       return {
@@ -76,11 +81,13 @@ export default {
         "timeRequested",
         "dateConfirmed",
         "itemName",
+        "options",
         "category1",
         "category2",
         "count",
         "total",
-        "payment"
+        "payment",
+        "memo",
       ];
     },
     fieldNames() {
@@ -98,31 +105,39 @@ export default {
           }
           return result;
         }, "unexpected");
-        ids.forEach((id, index) => {
-          try {
-            const menuItem = order.menuItems[id];
-            items.push({
-              id: `${order.id}/${id}`,
-              name: nameOfOrder(order),
-              timeRequested:
-              order.timePlaced &&
-                moment(order.timePlaced).format("YYYY/MM/DD HH:mm"),
-              dateConfirmed:
-              order.timeConfirmed &&
-                moment(order.timeConfirmed).format("YYYY/MM/DD HH:mm"),
-              phoneNumber: formatNational(parsePhoneNumber(order.phoneNumber)),
-              userName: order.name || this.$t("order.unspecified"),
-              count: this.arrayOrNumSum(order.order[id]),
-              itemName: menuItem.itemName,
-              statusName: this.$t(`order.status.${status}`),
-              category1: menuItem.category1 || "",
-              category2: menuItem.category2 || "",
-              total: index === 0 ? order.totalCharge : "",
-              payment: order.payment?.stripe ? "stripe" : ""
-            });
-          } catch (e) {
-            // sometime data was broken
-          }
+        ids.forEach((menuId, index) => {
+          const orderItems = this.forceArray(order.order[menuId]);
+          const options = order.options[menuId] || [];
+          Object.keys(orderItems).forEach(key => {
+            console.log(options[key]);
+            try {
+              const menuItem = order.menuItems[menuId];
+              items.push({
+                id: `${order.id}/${menuId}`,
+                name: nameOfOrder(order),
+                timeRequested: this.writeonFirstLine(index, key, 
+                order.timePlaced &&
+                  moment(order.timePlaced).format("YYYY/MM/DD HH:mm")),
+                dateConfirmed: this.writeonFirstLine(index, key, 
+                order.timeConfirmed &&
+                  moment(order.timeConfirmed).format("YYYY/MM/DD HH:mm")),
+                phoneNumber: this.writeonFirstLine(index, key, formatNational(parsePhoneNumber(order.phoneNumber))),
+                userName: this.writeonFirstLine(index, key, order.name || this.$t("order.unspecified")),
+                count: orderItems[key],
+                options: (options[key]||[]).join("/"),
+                memo: this.writeonFirstLine(index, key, order.memo),
+                itemName: menuItem.itemName,
+                statusName: this.writeonFirstLine(index, key, this.$t(`order.status.${status}`)),
+                category1: menuItem.category1 || "",
+                category2: menuItem.category2 || "",
+                total: index === 0 && Number(key) === 0 ? order.totalCharge : "",
+                payment: order.payment?.stripe ? "stripe" : ""
+              });
+            } catch (e) {
+              console.log(e);
+              // sometime data was broken
+            }
+          });
         });
       });
       return items;

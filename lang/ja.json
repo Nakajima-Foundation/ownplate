@@ -368,6 +368,8 @@
     "totalCount": "注文総数",
     "userName": "注文者（任意）",
     "itemName": "メニュー",
+    "options": "オプション",
+    "memo": "メモ",
     "category1": "カテゴリ１",
     "category2": "カテゴリ２",
     "count": "受注数",

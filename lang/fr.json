@@ -366,6 +366,8 @@
     "totalCount": "Items",
     "userName": "Nom d'utilisateur",
     "itemName": "Élément de menu",
+    "options": "Option",
+    "memo": "Note",
     "category1": "Catégorie 1",
     "category2": "Catégorie 2",
     "count": "Compter",
