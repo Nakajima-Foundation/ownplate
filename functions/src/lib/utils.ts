@@ -68,3 +68,27 @@ export const process_error = (error: any) => {
   }
   return new functions.https.HttpsError("internal", error.message, error);
 }
+
+// const regex = /\((\+|\-)[0-9\.]+\)/
+const regex =  /\(((\+|\-|＋|ー|−)[0-9\.]+)\)/;
+
+const convPrice = (priceStr) => {
+  return Number(priceStr.replace(/ー|−/g, '-').replace(/＋/g, '+'));
+};
+
+export const optionPrice = (option: string) => {
+  const match = option.match(regex);
+  if (match) {
+    return convPrice(match[1]);
+  }
+  return 0;
+}
+
+export const getMenuObj = async (refRestaurant) => {
+  const menuObj = {};
+  const menusCollections = await refRestaurant.collection("menus").get();
+  menusCollections.forEach((m) => {
+    menuObj[m.id] = m.data();
+  });
+  return menuObj;
+};
