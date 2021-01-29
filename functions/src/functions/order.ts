@@ -273,6 +273,7 @@ export const wasOrderCreated = async (db, data: any, context) => {
 
     const newOrderData = {};
     const newItems = {};
+    const newPrices = {};
     if (Object.keys(orderData.order).some((menuId) => {
       return menuObj[menuId] === undefined;
     })) {
@@ -281,7 +282,8 @@ export const wasOrderCreated = async (db, data: any, context) => {
     Object.keys(orderData.order).map((menuId) => {
       newOrderData[menuId] = [];
       newItems[menuId] = {};
-
+      newPrices[menuId] = [];
+      
       const menu = menuObj[menuId];
 
       const numArray = Array.isArray(orderData.order[menuId]) ? orderData.order[menuId] : [orderData.order[menuId]];
@@ -317,6 +319,7 @@ export const wasOrderCreated = async (db, data: any, context) => {
           food_sub_total += (price * num)
         }
         newOrderData[menuId].push(num);
+        newPrices[menuId].push(price * num);
       });
       const menuItem: any = { price: menu.price, itemName: menu.itemName };
       if (menu.category1) {
@@ -363,6 +366,7 @@ export const wasOrderCreated = async (db, data: any, context) => {
     return orderRef.update({
       order: newOrderData,
       menuItems: newItems, // Clone of ordered menu items (simplified)
+      prices: newPrices,
       status: order_status.validation_ok,
       number,
       sub_total,

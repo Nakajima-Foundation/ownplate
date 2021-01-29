@@ -37,6 +37,7 @@ const good_cafe_data = {
   defaultTaxRate: 10,
   publicFlag: true,
   deletedFlag: false,
+  inclusiveTax: true,
 };
 
 describe('express function', () => {
@@ -91,6 +92,7 @@ describe('express function', () => {
         "timeEstimated":{"seconds":1611631800,"nanoseconds":904000000},
         "options":{"VbXMnx4wdTgh1VBpBRIr":{"0":[]}},
         "order":{"VbXMnx4wdTgh1VBpBRIr":[1]},
+        "prices":{"VbXMnx4wdTgh1VBpBRIr":[1212]},
         "inclusiveTax":false,
         "name":"😃",
         "sendSMS":true,
@@ -102,7 +104,10 @@ describe('express function', () => {
         "sub_total":1000
       });
     await adminDB.doc(`restaurants/testbar/orders/12123`).set(
-      {"sendSMS":true,"tax":84,"sub_total":1051,"accounting":{"alcohol":{"revenue":0,"tax":0},"food":{"revenue":1051,"tax":84}},"updatedAt":{"seconds":1611624733,"nanoseconds":407000000},
+      {"sendSMS":true,
+       "tax":84,
+       "sub_total":1051,
+       "accounting":{"alcohol":{"revenue":0,"tax":0},"food":{"revenue":1051,"tax":84}},"updatedAt":{"seconds":1611624733,"nanoseconds":407000000},
        "menuItems":{"DJHHNW17WqhT7O51lhxB":{"itemName":"aaa 炒めももの","price":741,"category1":"222"}},"memo":"","timePlaced":{"seconds":1611631800,"nanoseconds":996000000},"totalCharge":1135,"phoneNumber":"+819011111111",
        "options": {
          "DJHHNW17WqhT7O51lhxB": {
@@ -112,6 +117,7 @@ describe('express function', () => {
        "name":"😃",
        "timeCreated":{"seconds":1611624725,"nanoseconds":303000000},
        "order":{"DJHHNW17WqhT7O51lhxB":[1]},
+       "prices":{"DJHHNW17WqhT7O51lhxB":[1222]},
        "inclusiveTax":false,
        "number":374,"status":300,"total":1135,"rawOptions":{"DJHHNW17WqhT7O51lhxB":{"0":[0,0,0]}},"uid":"hdLfvObioAWvymcZsGlq5PKL0CX2","tip":0,"orderPlacedAt":{"seconds":1611624733,"nanoseconds":407000000}});
   });
@@ -243,7 +249,7 @@ describe('express function', () => {
     const response = await request.get('/api/2.0/restaurants/testbar/orders')
       .set("Authorization", "Bearer apiKeyMaster");
     response.status.should.equal(200);
-    // console.log(JSON.stringify(JSON.parse(response.text), undefined, 1));
+    console.log(JSON.stringify(JSON.parse(response.text), undefined, 1));
   });
   
 });
