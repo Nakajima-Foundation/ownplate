@@ -88,6 +88,20 @@
                 >
               </div>
             </div>
+
+            <!-- Options Applied Price -->
+            <div
+              class="align-center m-t-8 bg-form p-t-16 p-l-16 p-r-16 p-b-16 r-8"
+            >
+              <div class="t-caption c-text-black-medium">
+                {{ $t("sitemenu.optionsAppliedPrice") }}
+              </div>
+              <div class="t-body1 c-text-black-medium m-t-4">
+                <!-- # Need to replace this value with the Options Applied Price -->
+                <Price :shopInfo="shopInfo" :menu="item" />
+                <!-- # Need to replace this value with the Options Applied Price -->
+              </div>
+            </div>
           </div>
 
           <!-- Special instructions -->
