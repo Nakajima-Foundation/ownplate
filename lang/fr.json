@@ -298,7 +298,8 @@
     "checkout": "Payement",
     "orderCounter": "{count} article | {count} artciles",
     "add": "Ajouter",
-    "options": "Options",
+		"options": "Options",
+		"optionsAppliedPrice": "Options Applied Price",
     "quantity": "Quantité"
   },
   "date": {

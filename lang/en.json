@@ -300,6 +300,7 @@
     "orderCounter": "{count} item | {count} items",
     "add": "Add",
     "options": "Options",
+    "optionsAppliedPrice": "Options Applied Price",
     "quantity": "Quantity",
     "addDifferentOptionsItem": "Add Different Options Item"
   },
