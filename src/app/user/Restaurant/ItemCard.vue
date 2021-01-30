@@ -107,9 +107,27 @@
 
           <!-- Item Quantity -->
           <div class="m-t-16">
-            <div class="t-caption c-text-black-medium">
-              {{ $t("sitemenu.quantity") }}
+            <div class="level is-mobile m-t-8">
+              <div class="level-left">
+                <div class="t-caption c-text-black-medium">
+                  {{ $t("sitemenu.quantity") }}
+                </div>
+              </div>
+
+              <div class="level-right">
+                <div
+                  v-if="prices[quantityKey] > 0"
+                  class="t-caption c-text-black-medium"
+                >
+                  {{ $t("sitemenu.subTotal")
+                  }}<Price
+                    :shopInfo="shopInfo"
+                    :menu="{ price: prices[quantityKey] }"
+                  />
+                </div>
+              </div>
             </div>
+
             <div class="level is-mobile m-t-8">
               <div class="level-left">
                 <div
@@ -204,6 +222,10 @@ export default {
     },
     isOpen: {
       type: Boolean,
+      required: true
+    },
+    prices: {
+      type: Array,
       required: true
     }
   },
@@ -300,7 +322,7 @@ export default {
       return this.totalQuantity > 0 && this.hasOptions;
     },
     cardStyle() {
-      return this.quantities > 0 ? { border: "solid 2px #0097a7" } : {};
+      return this.totalQuantity > 0 ? { border: "solid 2px #0097a7" } : {};
     },
     loopNumber() {
       return this.quantities;

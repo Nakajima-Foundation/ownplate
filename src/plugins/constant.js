@@ -46,12 +46,12 @@ export const order_error = {
 export const timeEventMapping = {
   order_placed: "orderPlacedAt",
   order_accepted: "orderAcceptedAt",
-  cooking_completed: "orderCookingCompletedAt",
+  cooking_completed: "orderCookingCompletedAt", // obsolete
   ready_to_pickup: "timeConfirmed",
   order_canceled_by_restaurant: "orderRestaurantCanceledAt",
   order_canceled_by_customer: "orderCustomerCanceledAt",
   transaction_complete: "transactionCompletedAt",
-  transaction_hide: "transactionHideAt",
+  transaction_hide: "transactionHideAt", // special condition
 };
 
 export const stripe_regions = {

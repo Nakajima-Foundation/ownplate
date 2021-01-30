@@ -103,6 +103,7 @@
                       :initialOpenMenuFlag="(orders[itemId] || 0) > 0"
                       :shopInfo="shopInfo"
                       :isOpen="menuId === itemId"
+                      :prices="prices[itemId] || []"
                       @didQuantitiesChange="didQuantitiesChange($event)"
                       @didOptionValuesChange="didOptionValuesChange($event)"
                     ></item-card>
@@ -149,15 +150,30 @@
             </div>
           </template>
           <template v-else="!noPaymentMethod">
-            <div class="flex-1 align-left c-onprimary m-r-16">
-              {{
-                $tc("sitemenu.orderCounter", totalQuantities, {
-                  count: totalQuantities
-                })
-              }}
+            <div>
+              <div class="level t-subtitle1 c-text-white-full">
+                <div class="level-left">
+                  {{
+                    $tc("sitemenu.orderCounter", totalQuantities, {
+                      count: totalQuantities
+                    })
+                  }}
+                </div>
+                <div class="level-right m-l-8">
+                  <Price
+                    :shopInfo="shopInfo"
+                    :menu="{ price: totalPrice.total }"
+                  />
+                </div>
+              </div>
+
+              <div class="is-inline-flex flex-center m-t-4">
+                <div class="m-r-8 c-onprimary">
+                  {{ $t("sitemenu.checkout") }}
+                </div>
+                <i class="material-icons c-onprimary">shopping_cart</i>
+              </div>
             </div>
-            <div class="m-r-8 c-onprimary">{{ $t("sitemenu.checkout") }}</div>
-            <i class="material-icons c-onprimary">shopping_cart</i>
           </template>
         </div>
       </b-button>
@@ -173,6 +189,7 @@ import SharePopup from "~/app/user/Restaurant/SharePopup";
 import FavoriteButton from "~/app/user/Restaurant/FavoriteButton";
 import ShopInfo from "~/app/user/Restaurant/ShopInfo";
 import NotFound from "~/components/NotFound";
+import Price from "~/components/Price";
 
 import { db, firestore, functions, analytics } from "~/plugins/firebase.js";
 import { order_status } from "~/plugins/constant.js";
@@ -190,7 +207,8 @@ export default {
     SharePopup,
     FavoriteButton,
     ShopInfo,
-    NotFound
+    NotFound,
+    Price
   },
   head() {
     // TODO: add area to header
@@ -324,6 +342,58 @@ export default {
     uid() {
       return this.$store.getters.uid;
     },
+    totalPrice() {
+      const subTotal = Object.keys(this.prices).reduce((tmp, menuId) => {
+        tmp[menuId] = this.prices[menuId].reduce((a, b) => a + b, 0);
+        return tmp;
+      }, {});
+      const total = Object.keys(subTotal).reduce((tmp, menuId) => {
+        return tmp + subTotal[menuId];
+      }, 0);
+      return {
+        subTotal: subTotal,
+        total: total
+      };
+      // total:
+    },
+    prices() {
+      const ret = {};
+
+      const multiple = this.$store.getters.stripeRegion.multiple;
+      Object.keys(this.orders).map(menuId => {
+        const menu = this.itemsObj[menuId];
+        ret[menuId] = [];
+        this.orders[menuId].map((num, orderKey) => {
+          const selectedOptionsRaw = this.trimmedSelectedOptions[menuId][
+            orderKey
+          ];
+          const price = selectedOptionsRaw.reduce(
+            (tmpPrice, selectedOpt, key) => {
+              const opt = menu.itemOptionCheckbox[key].split(",");
+              if (opt.length === 1) {
+                if (selectedOpt) {
+                  return (
+                    tmpPrice +
+                    Math.round(this.optionPrice(opt[0]) * multiple) / multiple
+                  );
+                }
+              } else {
+                return (
+                  tmpPrice +
+                  Math.round(this.optionPrice(opt[selectedOpt]) * multiple) /
+                    multiple
+                );
+              }
+              return tmpPrice;
+            },
+            menu.price
+          );
+          ret[menuId].push(price * num);
+        });
+      });
+      console.log(ret);
+      return ret;
+    },
     totalQuantities() {
       const ret = Object.values(this.orders).reduce((total, order) => {
         return total + this.arraySum(order);
@@ -378,6 +448,14 @@ export default {
     }
   },
   methods: {
+    optionPrice(option) {
+      const regex = /\(((\+|\-|＋|ー|−)[0-9\.]+)\)/;
+      const match = option.match(regex);
+      if (match) {
+        return Number(match[1].replace(/ー|−/g, "-").replace(/＋/g, "+"));
+      }
+      return 0;
+    },
     handleCheckOut() {
       // The user has clicked the CheckOut button
       this.retryCount = 0;

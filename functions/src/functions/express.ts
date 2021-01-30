@@ -9,6 +9,7 @@ import * as utils from '../lib/utils'
 import * as stripeLog from '../lib/stripeLog';
 
 import * as apis from './apis';
+import * as apis2 from './apis2';
 
 import * as xmlbuilder from 'xmlbuilder';
 
@@ -27,6 +28,7 @@ let db = admin.firestore();
 export const updateDb = (_db) => {
   db = _db;
   apis.updateDb(db);
+  apis2.updateDb(db);
 }
 
 export const logger = async (req, res, next) => {
@@ -129,10 +131,14 @@ const ogpPage = async (req: any, res: any) => {
     if (!restaurant || !restaurant.exists) {
       return res.status(404).send(template_data);
     }
-
     const menuData = await getMenuData(restaurantName, menuId);
     const restaurant_data: any = restaurant.data();
 
+    const ownerData = await getShopOwner(restaurant_data.uid);
+    if (!ownerData) {
+      return res.status(404).send(template_data);
+    }
+    
     const siteName = ownPlateConfig.siteName;
     const title = menuData.exists ? [menuData.name, restaurant_data.restaurantName].join(" / ") :
       (restaurant_data.restaurantName ? [restaurant_data.restaurantName, ownPlateConfig.restaurantPageTitle].join(" / ") :
@@ -164,7 +170,10 @@ const ogpPage = async (req: any, res: any) => {
         `<meta name="twitter:creator" content="@omochikaericom" />`,
         `<meta name="twitter:description" content="${description}" />`,
         `<meta name="twitter:image" content="${image}" />`,
-      ].join("\n");
+      ];
+    if (ownerData.hidePrivacy) {
+      metas.push(`<meta name="robots" content="noindex" />`);
+    }
     res.set('Cache-Control', 'public, max-age=300, s-maxage=600');
 
     const regexBody = /<div id="__nuxt">/;
@@ -182,7 +191,7 @@ const ogpPage = async (req: any, res: any) => {
 
     res.send(template_data
              .replace(/<meta[^>]*>/g, "")
-             .replace(regexTitle, metas)
+             .replace(regexTitle, metas.join("\n"))
              .replace(regexBody, bodyString));
   } catch (e) {
     console.log(e);
@@ -196,6 +205,14 @@ const debugError = async (req: any, res: any) => {
     throw new Error("sample error");
     res.send({});
   }, 10);
+};
+
+const getShopOwner = async (uid) => {
+  const owner = await db.doc(`/admins/${uid}`).get();
+  if (owner && owner.exists) {
+    return owner.data();
+  }
+  return {hidePrivacy: false};
 };
 
 export const stripe_parser = async (req, res) => {
@@ -239,6 +256,7 @@ router.post('/stripe/callback',
 
 app.use('/1.0', router);
 app.use('/api/1.0/', apis.apiRouter);
+app.use('/api/2.0/', apis2.apiRouter);
 
 app.get('/r/:restaurantName', ogpPage);
 app.get('/r/:restaurantName/menus/:menuId', ogpPage);

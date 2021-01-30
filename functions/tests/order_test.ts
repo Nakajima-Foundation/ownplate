@@ -2,6 +2,7 @@ import { should } from 'chai';
 import { expect } from 'chai';
 
 import * as order from './../src/functions/order'
+import * as utils from './../src/lib/utils'
 
 import * as constant from './../src/common/constant';
 import * as test_db_helper from './test_db_helper';
@@ -66,7 +67,7 @@ describe('Order function', () => {
 
     // menuObj test
     const refRestaurant = adminDB.doc(`restaurants/${restaurantId}`);
-    const menuObj = await order.getMenuObj(refRestaurant);
+    const menuObj = await utils.getMenuObj(refRestaurant);
 
     Object.keys(menuObj).length.should.equal(2);
     menuObj["hoge1"].price.should.equal(100);

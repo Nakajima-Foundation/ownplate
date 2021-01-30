@@ -143,7 +143,7 @@ import { db, firestore, functions } from "~/plugins/firebase.js";
 import BackButton from "~/components/BackButton";
 import OrderSuspendItem from "~/app/admin/Order/OrderSuspendItem";
 import PickupMixin from "~/app/user/Order/pickupMixin";
-import * as firebase from "firebase/app";
+import firebase from "firebase/app";
 
 export default {
   mixins: [PickupMixin],
