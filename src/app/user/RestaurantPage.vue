@@ -103,6 +103,7 @@
                       :initialOpenMenuFlag="(orders[itemId] || 0) > 0"
                       :shopInfo="shopInfo"
                       :isOpen="menuId === itemId"
+                      :prices="prices[itemId]||[]"
                       @didQuantitiesChange="didQuantitiesChange($event)"
                       @didOptionValuesChange="didOptionValuesChange($event)"
                     ></item-card>
