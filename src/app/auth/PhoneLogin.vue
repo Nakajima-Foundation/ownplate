@@ -130,6 +130,7 @@
 
 <script>
 import { db, firestore, auth, authObject } from "~/plugins/firebase.js";
+import * as Sentry from "@sentry/browser";
 
 export default {
   props: {
@@ -210,7 +211,9 @@ export default {
         );
         console.log("result", this.confirmationResult);
       } catch (error) {
-        console.log("error", error);
+        console.log(JSON.stringify(error));
+        console.log("error", error.code);
+        Sentry.captureException(error);
         this.errors = ["sms." + error.code];
       } finally {
         this.isLoading = false;
@@ -245,7 +248,9 @@ export default {
         this.verificationCode = "";
         this.$emit("dismissed", true);
       } catch (error) {
-        console.log("error", error);
+        console.log(JSON.stringify(error));
+        console.log("error", error.code);
+        Sentry.captureException(error);
         this.errors = ["sms." + error.code];
       } finally {
         this.isLoading = false;

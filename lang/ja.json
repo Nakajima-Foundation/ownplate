@@ -225,6 +225,7 @@
     "areaAll": "全てのエリア",
     "areaTop": "エリア一覧",
     "likes": "お気に入り",
+    "allRestaurants": "お店を探す",
     "areas": {
       "kanto": "関東地方",
       "chubu": "中部地方",
@@ -299,6 +300,7 @@
     "orderCounter": "{count} 個",
     "add": "追加",
     "options": "オプション",
+    "subTotal": "小計: ",
     "quantity": "数量",
     "addDifferentOptionsItem": "別オプションの商品を追加"
   },
@@ -367,6 +369,8 @@
     "totalCount": "注文総数",
     "userName": "注文者（任意）",
     "itemName": "メニュー",
+    "options": "オプション",
+    "memo": "メモ",
     "category1": "カテゴリ１",
     "category2": "カテゴリ２",
     "count": "受注数",
@@ -398,8 +402,8 @@
     "next": "次へ"
   },
   "sms": {
-    "signin": "電話番号認証",
-    "phonenumber": "電話番号",
+    "signin": "本人確認",
+    "phonenumber": "携帯電話番号",
     "pleasetype": "090-1111-1111",
     "notice": "確認のためのSMSが送られてきます",
     "send": "送信",
@@ -422,7 +426,8 @@
     "invalidValidationCode": "正しくない文字が含まれています",
     "auth/invalid-phone-number": "正しい電話番号を入力してください",
     "auth/invalid-verification-code": "SMS確認コードが無効です。SMS確認コードを再送信して再度入力してください",
-    "auth/missing-verification-code": "SMS確認コードが入力されていません"
+    "auth/missing-verification-code": "SMS確認コードが入力されていません",
+    "auth/code-expired": "SMS確認コードが有効期限切れです。SMS確認コードを再送信して再度入力してください"
   },
   "admin": {
     "welcomeMessage": "いらっしゃいませ",
@@ -530,6 +535,7 @@
       "infinityNotificationOn": "1分おきに再通知",
       "infinityNotificationOff": "受注時のみ通知",
       "soundTest": "テスト",
+      "paymentIsNotCompleted": "ご注意：商品の受け渡し前に「受け渡し準備完了」ボタンを押してカード決済処理を完了させてください。",
       "cancelButton": "注文をキャンセル",
       "cancelTitle": "注文のキャンセル",
       "cancelMessage": "お客様にご連絡の上、ご注文がキャンセルされることをお伝え下さい。",
@@ -562,7 +568,7 @@
     },
     "report": {
       "title": "月次報告",
-      "download-csv": "エクセルデータダウンロード",
+      "download-csv": "エクセルデータダウンロード (売上)",
       "download-csv-details": "エクセルデータダウンロード (詳細)"
     },
     "error": {

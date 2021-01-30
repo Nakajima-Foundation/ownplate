@@ -1,77 +1,85 @@
 <template>
-<div>
-  <template v-if="news === undefined">
-    <not-found />
-  </template>
-  <template v-else>
-    <!-- Article Header Area -->
-    <div class="columns is-gapless">
-      <!-- Left Gap -->
-      <div class="column is-narrow w-24"></div>
-      <!-- Center Column -->
-      <div class="column">
-        <div class="m-l-24 m-r-24 m-t-24">
-          <!-- Back to Admin Top -->
-          <nuxt-link :to="'/admin/restaurants'">
-            <div class="op-button-pill bg-form m-r-16">
-              <i class="material-icons c-primary s-18">home</i>
-              <span class="c-primary t-button">{{$t("admin.news.adminTop")}}</span>
-            </div>
-          </nuxt-link>
-          
-          <!-- Back to News Top -->
-          <nuxt-link :to="'/admin/news'">
-            <div class="op-button-pill bg-form">
-              <i class="material-icons c-primary s-18">list</i>
-              <span class="c-primary t-button">{{$t("admin.news.newsTop")}}</span>
-            </div>
-          </nuxt-link>
+  <div>
+    <template v-if="news === undefined">
+      <not-found />
+    </template>
+    <template v-else>
+      <!-- Article Header Area -->
+      <div class="columns is-gapless">
+        <!-- Left Gap -->
+        <div class="column is-narrow w-24"></div>
+        <!-- Center Column -->
+        <div class="column">
+          <div class="m-l-24 m-r-24 m-t-24">
+            <!-- Back to Admin Top -->
+            <nuxt-link :to="'/admin/restaurants'">
+              <div class="op-button-pill bg-form m-r-16">
+                <i class="material-icons c-primary s-18">home</i>
+                <span class="c-primary t-button">{{
+                  $t("admin.news.adminTop")
+                }}</span>
+              </div>
+            </nuxt-link>
+
+            <!-- Back to News Top -->
+            <nuxt-link :to="'/admin/news'">
+              <div class="op-button-pill bg-form">
+                <i class="material-icons c-primary s-18">list</i>
+                <span class="c-primary t-button">{{
+                  $t("admin.news.newsTop")
+                }}</span>
+              </div>
+            </nuxt-link>
+          </div>
         </div>
+        <!-- Right Gap -->
+        <div class="column is-narrow w-24"></div>
       </div>
-      <!-- Right Gap -->
-      <div class="column is-narrow w-24"></div>
-    </div>
-    
-    <!-- Article Body Area -->
-    <div class="columns is-gapless">
-      <!-- Left Gap -->
-      <div class="column is-narrow w-24"></div>
-      <!-- Center Column -->
-      <div class="column">
-        <div class="columns is-gaplress">
-          <div class="column is-three-fifths is-offset-one-fifth">
-            <div class="m-l-24 m-r-24">
-              <div class="m-t-24">
-                <!-- Title -->
-                <div class="t-h6 c-text-black-disabled">{{news.title}}</div>
-                <div class="t-subtitle1 c-text-black-disabled m-t-8">{{news.date.replace(/\-/g,".")}}</div>
-                
-                <div class="article-list m-t-24" v-html="md.render(news.markdown)" />
-                
+
+      <!-- Article Body Area -->
+      <div class="columns is-gapless">
+        <!-- Left Gap -->
+        <div class="column is-narrow w-24"></div>
+        <!-- Center Column -->
+        <div class="column">
+          <div class="columns is-gaplress">
+            <div class="column is-three-fifths is-offset-one-fifth">
+              <div class="m-l-24 m-r-24">
+                <div class="m-t-24">
+                  <!-- Title -->
+                  <div class="t-h6 c-text-black-disabled">{{ news.title }}</div>
+                  <div class="t-subtitle1 c-text-black-disabled m-t-8">
+                    {{ news.date.replace(/\-/g, ".") }}
+                  </div>
+
+                  <div
+                    class="article-list m-t-24"
+                    v-html="md.render(news.markdown)"
+                  />
+                </div>
               </div>
             </div>
           </div>
         </div>
+        <!-- Right Gap -->
+        <div class="column is-narrow w-24"></div>
       </div>
-      <!-- Right Gap -->
-      <div class="column is-narrow w-24"></div>
-    </div>
-  </template>
-</div>
+    </template>
+  </div>
 </template>
 
 <script>
 import MarkdownIt from "markdown-it";
-import newsList from './data';
+import newsList from "./data";
 import NotFound from "~/components/NotFound";
 
 export default {
-  components: { 
+  components: {
     NotFound
   },
   head() {
     return {
-      title: [(this.news||{}).title, this.defaultTitle].join(" / "),
+      title: [(this.news || {}).title, this.defaultTitle].join(" / ")
     };
   },
   data() {
@@ -79,13 +87,19 @@ export default {
     const news = newsList.find(element => element.date === newsId);
     return {
       md: new MarkdownIt(),
-      news,
+      news
     };
   }
 };
 </script>
 
 <style lang="scss" scoped>
+/deep/ .article-list h2 {
+  @extend .t-h6;
+  @extend .c-text-black-disabled;
+  margin-bottom: 32px;
+}
+
 /deep/ .article-list ul {
   list-style: outside;
   list-style-type: disc;
