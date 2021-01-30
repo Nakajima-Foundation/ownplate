@@ -98,7 +98,7 @@
               </div>
               <div class="t-body1 c-text-black-medium m-t-4">
                 <!-- # Need to replace this value with the Options Applied Price -->
-                <Price :shopInfo="shopInfo" :menu="item" />
+                <Price :shopInfo="shopInfo" :menu="{price: prices[quantityKey]}" />
                 <!-- # Need to replace this value with the Options Applied Price -->
               </div>
             </div>
@@ -218,6 +218,10 @@ export default {
     },
     isOpen: {
       type: Boolean,
+      required: true
+    },
+    prices: {
+      type: Array,
       required: true
     }
   },
