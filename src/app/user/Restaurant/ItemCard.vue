@@ -322,7 +322,7 @@ export default {
       return this.totalQuantity > 0 && this.hasOptions;
     },
     cardStyle() {
-      return this.quantities > 0 ? { border: "solid 2px #0097a7" } : {};
+      return this.totalQuantity > 0 ? { border: "solid 2px #0097a7" } : {};
     },
     loopNumber() {
       return this.quantities;
