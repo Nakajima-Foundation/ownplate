@@ -300,7 +300,7 @@
     "orderCounter": "{count} 個",
     "add": "追加",
     "options": "オプション",
-    "optionsAppliedPrice": "オプション適用後の価格",
+    "subTotal": "小計: ",
     "quantity": "数量",
     "addDifferentOptionsItem": "別オプションの商品を追加"
   },

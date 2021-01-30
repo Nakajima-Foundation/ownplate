@@ -88,20 +88,6 @@
                 >
               </div>
             </div>
-
-            <!-- Options Applied Price -->
-            <div
-              class="align-center m-t-8 bg-form p-t-16 p-l-16 p-r-16 p-b-16 r-8"
-            >
-              <div class="t-caption c-text-black-medium">
-                {{ $t("sitemenu.optionsAppliedPrice") }}
-              </div>
-              <div class="t-body1 c-text-black-medium m-t-4">
-                <!-- # Need to replace this value with the Options Applied Price -->
-                <Price :shopInfo="shopInfo" :menu="{price: prices[quantityKey]}" />
-                <!-- # Need to replace this value with the Options Applied Price -->
-              </div>
-            </div>
           </div>
 
           <!-- Special instructions -->
@@ -121,9 +107,27 @@
 
           <!-- Item Quantity -->
           <div class="m-t-16">
-            <div class="t-caption c-text-black-medium">
-              {{ $t("sitemenu.quantity") }}
+            <div class="level is-mobile m-t-8">
+              <div class="level-left">
+                <div class="t-caption c-text-black-medium">
+                  {{ $t("sitemenu.quantity") }}
+                </div>
+              </div>
+
+              <div class="level-right">
+                <div
+                  v-if="prices[quantityKey] > 0"
+                  class="t-caption c-text-black-medium"
+                >
+                  {{ $t("sitemenu.subTotal")
+                  }}<Price
+                    :shopInfo="shopInfo"
+                    :menu="{ price: prices[quantityKey] }"
+                  />
+                </div>
+              </div>
             </div>
+
             <div class="level is-mobile m-t-8">
               <div class="level-left">
                 <div

@@ -299,7 +299,7 @@
     "orderCounter": "{count} article | {count} artciles",
     "add": "Ajouter",
 		"options": "Options",
-		"optionsAppliedPrice": "Options Applied Price",
+		"subTotal": "Sous-total: ",
     "quantity": "Quantité"
   },
   "date": {
