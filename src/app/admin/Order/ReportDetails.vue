@@ -124,7 +124,7 @@ export default {
                 phoneNumber: this.writeonFirstLine(index, key, formatNational(parsePhoneNumber(order.phoneNumber))),
                 userName: this.writeonFirstLine(index, key, order.name || this.$t("order.unspecified")),
                 count: orderItems[key],
-                options: (options[key]||[]).join("/"),
+                options: (options[key]||[]).filter(a => String(a) !== "").join("/"),
                 memo: this.writeonFirstLine(index, key, order.memo),
                 itemName: menuItem.itemName,
                 statusName: this.writeonFirstLine(index, key, this.$t(`order.status.${status}`)),
