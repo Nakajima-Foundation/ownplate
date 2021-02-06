@@ -21,8 +21,18 @@
       </div>
 
       <!-- Item Details -->
-      <div class=" cols">
-        <div class="flex-1 p-l-16 p-r-16 p-t-16 p-b-16">
+      <div class="is-clearfix">
+        <div class="p-r-16 p-t-16 p-b-16 p-l-16 is-pulled-right">
+          <div v-if="image" class="p-b-8">
+            <img
+              :src="image"
+              width="96"
+              height="96"
+              class="w-96 h-96 r-4 cover"
+            />
+          </div>
+        </div>
+        <div class="p-l-16 p-r-16 p-t-16 p-b-16">
           <div class="t-h6 c-text-black-high">{{ menuitem.itemName }}</div>
           <div class="t-body1 c-text-black-high m-t-8">
             <Price :shopInfo="shopInfo" :menu="menuitem" />
@@ -38,18 +48,6 @@
             v-if="menuitem.allergens.length > 0"
             class="t-body2 c-text-black-medium m-t-8"
           >{{ menuitem.allergensDescription }}</div>-->
-        </div>
-        <div class="p-r-16 p-t-16 p-b-16">
-          <div class="w-96 is-pulled-right">
-            <div v-if="image" class="p-b-8">
-              <img
-                :src="image"
-                width="96"
-                height="96"
-                class="w-96 h-96 r-4 cover"
-              />
-            </div>
-          </div>
         </div>
       </div>
 
