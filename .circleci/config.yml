@@ -11,7 +11,7 @@ jobs:
           node-version: 12.1.0
       - node/with-cache:
           steps:
-            - run: npm install
+            - run: npm ci
             - run: apt-cache search openjdk
             - run: sudo apt-get install openjdk-8-jdk 
             - run: npm rebuild node-sass
@@ -26,7 +26,7 @@ jobs:
             - run: cp src/config/default/ownplate-jp.js functions/src/common/project.js
             - run: cp src/plugins/constant.js functions/src/common/constant.js
             - run: cp src/plugins/phoneutil.js functions/src/common/phoneutil.js
-            - run: cd functions && npm install && npm run coverage
+            - run: cd functions && npm ci && npm run coverage
             - run: ./node_modules/.bin/firebase deploy --token=$FIREBASE_TOKEN --project=staging --only hosting
             - run: ./node_modules/.bin/firebase deploy --token=$FIREBASE_TOKEN --project=staging --only firestore:rules
             - run: cd functions && npm install && ../node_modules/.bin/firebase deploy --token=$FIREBASE_TOKEN --project=staging --only functions
