@@ -203,7 +203,7 @@
                       会員がご自身の個人情報の開示、訂正及び利用停止などをご希望される場合の窓口、その他本プライバシーポリシーに関するお問合せの窓口は、次のとおりです。なお、個人情報の開示、訂正及び利用停止などをご希望される場合は、ご本人であることを確認の上、対応いたします。
                     </p>
                     <div
-                      class="bg-form r-8 m-t-24 p-l-16 p-r-16 p-t-16 p-b-16 t-body2 c-text-black-medium"
+                      class="bg-form rounded-lg m-t-24 p-l-16 p-r-16 p-t-16 p-b-16 t-body2 c-text-black-medium"
                     >
                       <div>【窓口】</div>
                       <div class="m-t-4">

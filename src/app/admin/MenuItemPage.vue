@@ -57,7 +57,7 @@
 
             <!-- Public Checkbox -->
             <div
-              class="m-t-24 align-center bg-form p-l-16 p-r-16 p-t-16 p-b-16 r-8"
+              class="m-t-24 align-center bg-form p-l-16 p-r-16 p-t-16 p-b-16 rounded-lg"
             >
               <b-checkbox
                 v-model="menuInfo.publicFlag"
@@ -255,7 +255,7 @@
                 <!-- Current Photo -->
                 <div v-if="itemPhoto" class="p-r-16">
                   <div>
-                    <img class="w-32 h-32 r-4 cover" :src="itemPhoto" />
+                    <img class="w-32 h-32 rounded cover" :src="itemPhoto" />
                   </div>
                   <div class="align-center t-caption">
                     {{ $t("editCommon.current") }}
@@ -409,7 +409,7 @@
           <div class="m-l-24 m-r-24 m-t-24">
             <!-- Public Checkbox -->
             <div
-              class="m-t-24 align-center bg-form p-l-16 p-r-16 p-t-16 p-b-16 r-8"
+              class="m-t-24 align-center bg-form p-l-16 p-r-16 p-t-16 p-b-16 rounded-lg"
             >
               <b-checkbox
                 v-model="menuInfo.publicFlag"

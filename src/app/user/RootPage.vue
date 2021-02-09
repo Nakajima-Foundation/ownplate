@@ -93,7 +93,7 @@
                     <div class="m-r-16 h-12">
                       <img
                         :src="resizedProfileImage(like, '600')"
-                        class="w-12 h-12 r-48 cover"
+                        class="w-12 h-12 rounded-full cover"
                       />
                     </div>
 

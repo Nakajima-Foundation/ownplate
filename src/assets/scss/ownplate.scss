@@ -265,21 +265,21 @@ $sides: (top, bottom, left, right);
 }
 
 // Rounded Corners Sizes
-@each $corner-size in $sizes {
-  .r-#{$corner-size} {
-    border-radius: #{$corner-size}px;
-  }
-}
+// @each $corner-size in $sizes {
+//   .r-#{$corner-size} {
+//     border-radius: #{$corner-size}px;
+//   }
+// }
 // To make the bottom rounded corners sharp.
-.r-b-0 {
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-}
+// .r-b-0 {
+//   border-bottom-left-radius: 0;
+//   border-bottom-right-radius: 0;
+// }
 // To make the top rounded corners sharp.
-.r-t-0 {
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-}
+// .r-t-0 {
+//   border-top-left-radius: 0;
+//   border-top-right-radius: 0;
+// }
 
 // Icon Sizes
 @each $icon-size in $sizes {
@@ -341,7 +341,8 @@ body,
   @extend .p-b-4;
   @extend .p-l-16;
   @extend .p-r-16;
-  @extend .r-32;
+  // @extend .r-32;
+  border-radius: 32px;
   @extend .t-subtitle2;
 }
 
@@ -395,7 +396,8 @@ body,
 
 .op-button-pill {
   @extend .op-button;
-  @extend .r-36;
+  // @extend .r-36;
+  border-radius: 36px;
   @extend .p-l-16;
   @extend .p-r-16;
   @extend .c-primary;
@@ -410,7 +412,8 @@ body,
 
 .op-button-small {
   @extend .op-button;
-  @extend .r-48;
+  // @extend .r-48;
+  border-radius: 48px;
   @extend .p-l-24;
   @extend .p-r-24;
   min-width: 128px;
@@ -440,7 +443,8 @@ body,
 
 .op-button-medium {
   @extend .op-button;
-  @extend .r-64;
+  // @extend .r-64;
+  border-radius: 64px;
   @extend .p-l-16;
   @extend .p-r-16;
   min-width: 128px;
@@ -467,7 +471,8 @@ body,
   min-width: 128px;
   // @extend .h-80;
   height: 80px;
-  @extend .r-80;
+  // @extend .r-80;
+  border-radius: 80px;
   @extend .p-l-16;
   @extend .p-r-16;
   @extend .t-h6;
@@ -499,7 +504,8 @@ body,
   margin: 0;
 }
 .op-dialog {
-  @extend .r-8;
+  // @extend .r-8;
+  border-radius: 8px;
   @extend .m-t-24;
   @extend .m-b-24;
   @extend .m-l-8;
@@ -555,9 +561,24 @@ body,
   }
 }
 
+// # Keep following CSS for Tailwind CSS ////////////////////
+
 // # Reset Tailwind CSS
 img,
 svg,
 canvas {
   display: inline-block;
+}
+
+// # Missing classes in Tailwind CSS
+.w-9 {
+  width: 2.25rem;
+}
+.h-9 {
+  height: 2.25rem;
+}
+
+// # To Override Buefy's <b-button>
+.rounded-full {
+  border-radius: 9999px;
 }

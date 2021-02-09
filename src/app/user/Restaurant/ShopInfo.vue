@@ -6,7 +6,7 @@
         {{ $t("shopInfo.restaurantDetails") }}
       </div>
 
-      <div class="bg-surface r-8 d-low m-t-8 p-b-24">
+      <div class="bg-surface rounded-lg d-low m-t-8 p-b-24">
         <!-- Restaurant Location -->
         <div v-if="hasLocation">
           <GMap
@@ -103,7 +103,7 @@
           </div>
           <template v-for="(day, key) in days">
             <div
-              class="cols p-l-8 p-r-8 p-t-4 p-b-4 r-4 t-body2"
+              class="cols p-l-8 p-r-8 p-t-4 p-b-4 rounded t-body2"
               :style="
                 weekday == key % 7
                   ? { 'background-color': 'rgba(104, 159, 56, 0.1)' }

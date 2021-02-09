@@ -5,7 +5,7 @@
 
       <!-- For Restaurants -->
       <div
-        class="column bg-primary r-8 m-l-24 m-r-24 align-center p-t-24 p-l-24 p-r-24 p-b-32"
+        class="column bg-primary rounded-lg m-l-24 m-r-24 align-center p-t-24 p-l-24 p-r-24 p-b-32"
       >
         <i class="material-icons c-text-black-disabled s-64">store</i>
         <div class="t-subtitle2 c-ownplate-white">
@@ -35,7 +35,7 @@
 
       <!-- For Food Lovers -->
       <div
-        class="column is-narrow bg-ownplate-white r-8 m-l-24 m-r-24 align-center p-t-24 p-l-24 p-r-24 p-b-32"
+        class="column is-narrow bg-ownplate-white rounded-lg m-l-24 m-r-24 align-center p-t-24 p-l-24 p-r-24 p-b-32"
       >
         <i class="material-icons c-text-black-disabled s-64">local_mall</i>
         <div class="t-subtitle2 c-text-black-medium">

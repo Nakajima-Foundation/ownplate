@@ -5,7 +5,7 @@
       <div
         v-if="!restaurant"
         @click="$emit('selected', order)"
-        class="touchable bg-surface r-8 d-low p-l-16 p-r-16 p-t-16 p-b-16"
+        class="touchable bg-surface rounded-lg d-low p-l-16 p-r-16 p-t-16 p-b-16"
       >
         <div class="cols flex-center">
           <!-- Order Status -->
@@ -64,7 +64,7 @@
       <div
         v-if="restaurant"
         @click="$emit('selected', order)"
-        class="touchable bg-surface r-8 d-low p-l-16 p-r-16 p-t-16 p-b-16"
+        class="touchable bg-surface rounded-lg d-low p-l-16 p-r-16 p-t-16 p-b-16"
       >
         <div class="cols flex-center">
           <!-- Order Status -->
@@ -83,7 +83,7 @@
           <div class="m-r-8">
             <img
               :src="resizedProfileImage(restaurant, '600')"
-              class="w-12 h-12 r-48 cover"
+              class="w-12 h-12 rounded-full cover"
             />
           </div>
 

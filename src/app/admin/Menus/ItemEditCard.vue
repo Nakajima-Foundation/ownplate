@@ -1,19 +1,19 @@
 <template>
   <div>
     <!-- Item Card -->
-    <div class="bg-surface r-8 d-low m-t-8 touchable" @click="linkEdit">
+    <div class="bg-surface rounded-lg d-low m-t-8 touchable" @click="linkEdit">
       <!-- Published/NotPublished Badge -->
       <div>
         <div v-if="menuitem.publicFlag" class="p-t-8 p-l-8 p-r-8 p-b-8">
           <div
-            class="bg-status-green-bg c-status-green t-overline p-l-8 p-r-8 p-t-4 p-b-4 r-4"
+            class="bg-status-green-bg c-status-green t-overline p-l-8 p-r-8 p-t-4 p-b-4 rounded"
           >
             {{ $t("admin.itemPublished") }}
           </div>
         </div>
         <div v-else class="p-t-8 p-l-8 p-r-8 p-b-8">
           <div
-            class="bg-status-red-bg c-status-red t-overline p-l-8 p-r-8 p-t-4 p-b-4 r-4"
+            class="bg-status-red-bg c-status-red t-overline p-l-8 p-r-8 p-t-4 p-b-4 rounded"
           >
             {{ $t("admin.itemNotPublished") }}
           </div>
@@ -28,7 +28,7 @@
               :src="image"
               width="96"
               height="96"
-              class="w-24 h-24 r-4 cover"
+              class="w-24 h-24 rounded cover"
             />
           </div>
         </div>
@@ -54,7 +54,7 @@
       <!-- Owner Memo -->
       <div v-if="menuitem.itemMemo" class="p-l-8 p-r-8 p-b-8">
         <div
-          class="bg-form t-overline c-text-black-medium p-l-8 p-r-8 p-t-4 p-b-4 r-4"
+          class="bg-form t-overline c-text-black-medium p-l-8 p-r-8 p-t-4 p-b-4 rounded"
         >
           {{ menuitem.itemMemo.split("\n")[0] }}
         </div>

@@ -22,7 +22,7 @@
                 <div>
                   <img
                     :src="resizedProfileImage(shopInfo, '600')"
-                    class="w-8 h-8 r-36 cover"
+                    class="w-9 h-9 rounded-full cover"
                   />
                 </div>
                 <div class="t-h6 c-text-black-high m-l-8 flex-1">
@@ -78,7 +78,7 @@
           </div>
           <div class="m-t-24" v-if="last !== undefined">
             <b-button
-              class="b-reset h-10 r-36 bg-form"
+              class="b-reset h-10 rounded-full bg-form"
               :disabled="last === null"
               @click="next"
             >

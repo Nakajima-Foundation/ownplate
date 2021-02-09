@@ -10,7 +10,7 @@
           <div class="column is-narrow w-6"></div>
           <div class="column">
             <div class="is-hidden-mobile h-6"></div>
-            <div class="bg-ownplate-yellow r-8 align-center">
+            <div class="bg-ownplate-yellow rounded-lg align-center">
               <div class="h-6 bg-ownplate-yellow is-invisible-tablet"></div>
               <div class="t-h6 c-ownplate-white">
                 {{ $t("admin.welcomeMessage") }}
@@ -86,7 +86,7 @@
       <div class="column">
         <div class="m-l-24 m-r-24">
           <div
-            class="r-8 p-l-16 p-r-16 p-t-8 p-b-8 m-t-24"
+            class="rounded-lg p-l-16 p-r-16 p-t-8 p-b-8 m-t-24"
             style="border: 2px solid rgba(0,0,0,0.1); "
           >
             <div class="cols">
@@ -120,7 +120,7 @@
       <div class="column">
         <div class="m-l-24 m-r-24">
           <div
-            class="bg-status-red-bg r-8 p-l-16 p-r-16 p-t-16 p-b-16 l m-b-8 m-t-24"
+            class="bg-status-red-bg rounded-lg p-l-16 p-r-16 p-t-16 p-b-16 l m-b-8 m-t-24"
           >
             <span class="t-body2 c-status-red">{{
               $t("admin.payments.unsetWarning")
@@ -149,7 +149,9 @@
               <!-- No Restaurant -->
               <div v-if="existsRestaurant === null"></div>
               <div v-else-if="!existsRestaurant">
-                <div class="border-primary r-8 p-l-24 p-r-24 p-t-24 p-b-24">
+                <div
+                  class="border-primary rounded-lg p-l-24 p-r-24 p-t-24 p-b-24"
+                >
                   <div class="align-center t-subtitle1 c-primary">
                     {{ $t("admin.addYourRestaurant") }}
                   </div>
@@ -217,7 +219,7 @@
               {{ $t("admin.notes.title") }}
             </div>
             <div
-              class="r-8 p-l-24 p-r-24 p-t-24 p-b-24 m-t-8"
+              class="rounded-lg p-l-24 p-r-24 p-t-24 p-b-24 m-t-8"
               style="border: 2px solid rgba(0,0,0,0.1); "
             >
               <div class="t-subtitle1 c-text-black-medium">
@@ -241,7 +243,7 @@
               {{ $t("admin.mail.magazine.title") }}
             </div>
 
-            <div class="bg-surface r-8 d-low p-t-24 p-b-24">
+            <div class="bg-surface rounded-lg d-low p-t-24 p-b-24">
               <div class="m-l-24 m-r-24">
                 <div class="m-t-8 t-body1 c-text-black-medium">
                   {{ $t("admin.mail.magazine.body") }}

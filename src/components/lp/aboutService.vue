@@ -72,7 +72,7 @@
 
               <!-- Profile -->
               <div class="align-center p-t-24 p-b-24">
-                <img src="/Profile-SNakajima.jpg" class="w-32 r-256" />
+                <img src="/Profile-SNakajima.jpg" class="w-32 rounded-full" />
                 <div class="align-center t-body1 c-text-black-high p-t-8">
                   <div v-if="!isLocaleJapan">
                     Satoshi Nakajima<br />Chairman of Singularity Society

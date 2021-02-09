@@ -55,7 +55,7 @@
 
             <!-- Public Checkbox -->
             <div
-              class="m-t-24 align-center bg-form p-l-16 p-r-16 p-t-16 p-b-16 r-8"
+              class="m-t-24 align-center bg-form p-l-16 p-r-16 p-t-16 p-b-16 rounded-lg"
             >
               <b-checkbox
                 v-model="shopInfo.publicFlag"
@@ -254,7 +254,10 @@
                 <!-- Current Photo -->
                 <div v-if="restProfilePhoto" class="p-r-16">
                   <div>
-                    <img class="w-32 h-32 r-4 cover" :src="restProfilePhoto" />
+                    <img
+                      class="w-32 h-32 rounded cover"
+                      :src="restProfilePhoto"
+                    />
                   </div>
                   <div class="align-center t-caption">
                     {{ $t("editCommon.current") }}
@@ -301,7 +304,7 @@
                 <div v-if="restCoverPhoto" class="p-b-8">
                   <div>
                     <img
-                      class="h-32 r-4 cover"
+                      class="h-32 rounded cover"
                       :src="restCoverPhoto"
                       style="width: 272px;"
                     />
@@ -502,7 +505,7 @@
                   <div class="t-subtitle2 c-text-black-medium p-b-8">
                     {{ $t("editRestaurant.tax") }}
                   </div>
-                  <div class="bg-form r-8 p-l-16 p-r-16 p-t-16 p-b-8">
+                  <div class="bg-form rounded-lg p-l-16 p-r-16 p-t-16 p-b-8">
                     <div
                       v-for="taxItem in taxRates"
                       class="p-b-8 t-body1 c-text-black-high"
@@ -520,7 +523,7 @@
                   {{ $t("editRestaurant.taxPriceDisplay") }}
                 </div>
                 <div
-                  class="bg-form r-8 p-l-16 p-r-16 p-t-16 p-b-16 t-body1 c-text-black-high"
+                  class="bg-form rounded-lg p-l-16 p-r-16 p-t-16 p-b-16 t-body1 c-text-black-high"
                 >
                   <div>
                     <b-checkbox v-model="shopInfo.inclusiveTax">
@@ -541,7 +544,7 @@
                 {{ $t("editRestaurant.timeToPickup") }}
               </div>
               <div
-                class="bg-form r-8 p-l-16 p-r-16 p-t-16 p-b-16 t-body1 c-text-black-high"
+                class="bg-form rounded-lg p-l-16 p-r-16 p-t-16 p-b-16 t-body1 c-text-black-high"
               >
                 <!-- Preparation Time -->
                 <div class="m-r-16">
@@ -613,7 +616,7 @@
                 {{ $t("editRestaurant.phoneCall") }}
               </div>
               <div
-                class="bg-form r-8 p-l-16 p-r-16 p-t-16 p-b-16 t-body1 c-text-black-high"
+                class="bg-form rounded-lg p-l-16 p-r-16 p-t-16 p-b-16 t-body1 c-text-black-high"
               >
                 <b-checkbox v-model="shopInfo.phoneCall">
                   {{ $t("editRestaurant.phoneCallDescription") }}
@@ -631,7 +634,7 @@
                 {{ $t("editRestaurant.acceptUserMessage") }}
               </div>
               <div
-                class="bg-form r-8 p-l-16 p-r-16 p-t-16 p-b-16 t-body1 c-text-black-high"
+                class="bg-form rounded-lg p-l-16 p-r-16 p-t-16 p-b-16 t-body1 c-text-black-high"
               >
                 <b-checkbox v-model="shopInfo.acceptUserMessage">
                   {{ $t("editRestaurant.acceptUserMessageDescription") }}
@@ -658,7 +661,7 @@
               <div
                 v-for="(day, index) in days"
                 :key="index"
-                class="bg-form r-8 m-t-8 p-l-16 p-r-16 p-t-16 p-b-16"
+                class="bg-form rounded-lg m-t-8 p-l-16 p-r-16 p-t-16 p-b-16"
               >
                 <div class="cols flex-center">
                   <!-- Enable/Disable Day -->
@@ -714,7 +717,7 @@
               <div class="t-subtitle2 c-text-black-medium">
                 {{ $t("shopInfo.temporaryClosure") }}
               </div>
-              <div class="bg-form r-8 m-t-8 p-l-16 p-r-16 p-t-16 p-b-16">
+              <div class="bg-form rounded-lg m-t-8 p-l-16 p-r-16 p-t-16 p-b-16">
                 <b-field>
                   <b-datepicker
                     v-model="newTemporaryClosure"
@@ -778,7 +781,7 @@
           <div class="m-l-24 m-r-24 m-t-24">
             <!-- Public Checkbox -->
             <div
-              class="m-t-24 align-center bg-form p-l-16 p-r-16 p-t-16 p-b-16 r-8"
+              class="m-t-24 align-center bg-form p-l-16 p-r-16 p-t-16 p-b-16 rounded-lg"
             >
               <b-checkbox
                 v-model="shopInfo.publicFlag"
