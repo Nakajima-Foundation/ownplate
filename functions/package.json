@@ -12,7 +12,7 @@
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log",
     "coverage": "nyc npm run tests",
-    "tests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/*_test.ts",
+    "tests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/*_test.ts --timeout 30000",
     "e_tests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/express_test.ts",
     "t_tests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/twilio_test.ts",
     "mailtests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/ses_test.ts",
