@@ -70,6 +70,7 @@ export default {
     "@nuxtjs/dotenv",
     "@nuxtjs/style-resources",
     "@nuxtjs/axios",
+    "@nuxtjs/tailwindcss",
     [
       "nuxt-gmaps",
       {
