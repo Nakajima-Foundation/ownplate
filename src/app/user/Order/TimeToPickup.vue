@@ -6,7 +6,7 @@
         {{ $t("order.timeRequested") }}
       </div>
       <div
-        class="bg-surface rounded-lg d-low m-t-8 p-t-16 p-b-16 p-l-16 p-r-16"
+        class="bg-surface rounded-lg shadow m-t-8 p-t-16 p-b-16 p-l-16 p-r-16"
       >
         <b-select v-model="dayIndex">
           <option

@@ -32,7 +32,7 @@
 
               <!-- Sign In Form -->
               <div
-                class="bg-surface rounded-lg d-low m-t-24 p-l-24 p-r-24 p-t-24 p-b-24"
+                class="bg-surface rounded-lg shadow m-t-24 p-l-24 p-r-24 p-t-24 p-b-24"
               >
                 <form @submit.prevent="onSignin">
                   <div class="t-h6 c-text-black-disabled">

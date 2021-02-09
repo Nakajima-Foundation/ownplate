@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Item Card -->
-    <div class="bg-surface rounded-lg d-low m-t-8" :style="cardStyle">
+    <div class="bg-surface rounded-lg shadow m-t-8" :style="cardStyle">
       <div class="cols">
         <div class="flex-1 p-l-16 p-r-16 p-t-16 p-b-16">
           <!-- Suspend Checkbox -->
@@ -57,7 +57,7 @@
     <!-- Image Popup-->
     <b-modal :active.sync="imagePopup" :width="488" scroll="keep">
       <div class="align-center p-l-8 p-r-8" @click.stop="closeImage()">
-        <img :src="image" class="rounded-lg d-medium" />
+        <img :src="image" class="rounded-lg shadow-lg" />
       </div>
     </b-modal>
   </div>

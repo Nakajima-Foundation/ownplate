@@ -266,7 +266,7 @@
                     {{ $t("order.orderNotice") }}
                   </div>
                   <div
-                    class="bg-surface rounded-lg d-low m-t-8 p-l-16 p-r-16 p-t-16 p-b-16"
+                    class="bg-surface rounded-lg shadow m-t-8 p-l-16 p-r-16 p-t-16 p-b-16"
                   >
                     <div class="cols">
                       <div class="p-r-8">
@@ -287,7 +287,7 @@
                     {{ $t("order.orderMessage") }}
                   </div>
                   <div
-                    class="bg-surface rounded-lg d-low m-t-8 p-l-16 p-r-16 p-t-16 p-b-16"
+                    class="bg-surface rounded-lg shadow m-t-8 p-l-16 p-r-16 p-t-16 p-b-16"
                   >
                     <div class="cols">
                       <b-input

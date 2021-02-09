@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-surface rounded-lg d-low m-t-8 p-b-24">
+  <div class="bg-surface rounded-lg shadow m-t-8 p-b-24">
     <!-- Order Items -->
     <template v-for="orderItem in orderItems">
       <order-item :orderItem="orderItem" :key="orderItem.key"></order-item>

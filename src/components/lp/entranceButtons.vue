@@ -13,7 +13,7 @@
         </div>
         <router-link to="/admin/restaurants">
           <div
-            class="op-button-medium d-low bg-ownplate-white m-t-16 m-l-16 m-r-16 p-l-32 p-r-32 c-text-black-medium"
+            class="op-button-medium shadow bg-ownplate-white m-t-16 m-l-16 m-r-16 p-l-32 p-r-32 c-text-black-medium"
           >
             ご利用を開始
           </div>
@@ -23,7 +23,7 @@
           target="_blank"
         >
           <div
-            class="op-button-medium d-low bg-ownplate-yellow m-t-16 m-l-16 m-r-16 p-l-32 p-r-32 c-text-black-medium"
+            class="op-button-medium shadow bg-ownplate-yellow m-t-16 m-l-16 m-r-16 p-l-32 p-r-32 c-text-black-medium"
           >
             お問い合わせ
           </div>
@@ -42,7 +42,9 @@
           テイクアウトご利用のお客様はこちら
         </div>
         <router-link to="/r">
-          <div class="op-button-small d-low c-ownplate-white bg-primary m-t-16">
+          <div
+            class="op-button-small shadow c-ownplate-white bg-primary m-t-16"
+          >
             テイクアウトのお店を探す
           </div>
         </router-link>

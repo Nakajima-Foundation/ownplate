@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="bg-surface rounded-lg d-low p-t-24 p-b-24 m-b-16">
+    <div class="bg-surface rounded-lg shadow p-t-24 p-b-24 m-b-16">
       <!-- Restaurant Profile Photo -->
       <div class="align-center">
         <img

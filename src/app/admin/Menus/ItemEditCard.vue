@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Item Card -->
-    <div class="bg-surface rounded-lg d-low m-t-8 touchable" @click="linkEdit">
+    <div class="bg-surface rounded-lg shadow m-t-8 touchable" @click="linkEdit">
       <!-- Published/NotPublished Badge -->
       <div>
         <div v-if="menuitem.publicFlag" class="p-t-8 p-l-8 p-r-8 p-b-8">
