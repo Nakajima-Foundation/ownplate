@@ -14,7 +14,9 @@
           </div>
 
           <!-- Time Stamp -->
-          <div class="t-caption c-text-black-medium align-right flex-1">{{ timestamp || "0:00pm"}}</div>
+          <div class="t-caption c-text-black-medium align-right flex-1">
+            {{ timestamp || "0:00pm" }}
+          </div>
         </div>
 
         <div class="cols flex-center m-t-8">
@@ -23,30 +25,38 @@
 
           <!-- User Name/Phone -->
           <div class="t-body1 c-text-black-medium align-right flex-1">
-            <div class="is-inline-block m-r-8" v-if="order.name">{{ order.name }}</div>
-            <div class="is-inline-block" v-if="!order.name && phoneNumber">{{ nationalPhoneNumber }}</div>
+            <div class="is-inline-block m-r-8" v-if="order.name">
+              {{ order.name }}
+            </div>
+            
+            <div class="is-inline-block" v-if="!order.name && phoneNumber">
+              {{ nationalPhoneNumber }}
+            </div>
           </div>
         </div>
 
         <div class="cols flex-center m-t-8">
           <!-- Order Count -->
-          <div
-            class="t-body2 c-text-black-medium m-r-8"
-          >{{$tc('sitemenu.orderCounter', totalCount, {count: totalCount})}}</div>
+          <div class="t-body2 c-text-black-medium m-r-8">
+            {{
+              $tc("sitemenu.orderCounter", totalCount, { count: totalCount })
+            }}
+          </div>
 
           <!-- Total -->
-          <div class="t-body2 c-text-black-high m-r-8">{{ $n(order.totalCharge, 'currency') }}</div>
+          <div class="t-body2 c-text-black-high m-r-8">
+            {{ $n(order.totalCharge, "currency") }}
+          </div>
 
           <!-- Stripe Status -->
           <div v-if="hasStripe" class="m-r-8">
-            <i :class="'fab fa-cc-stripe stripe_'+order.payment.stripe"></i>
+            <i :class="'fab fa-cc-stripe stripe_' + order.payment.stripe"></i>
           </div>
 
           <!-- Tip -->
-          <div
-            v-if="order.tip"
-            class="t-caption c-status-green"
-          >( {{$t('order.includingTip')}} {{ $n(order.tip, 'currency') }} )</div>
+          <div v-if="order.tip" class="t-caption c-status-green">
+            ( {{ $t("order.includingTip") }} {{ $n(order.tip, "currency") }} )
+          </div>
         </div>
       </div>
 
@@ -63,34 +73,52 @@
           </div>
 
           <!-- Time Stamp -->
-          <div class="t-caption c-text-black-medium align-right flex-1">{{ timestamp || "0:00pm"}}</div>
+          <div class="t-caption c-text-black-medium align-right flex-1">
+            {{ timestamp || "0:00pm" }}
+          </div>
         </div>
 
         <div class="cols flex-center m-t-8">
           <!-- Restaurant Profile -->
           <div class="m-r-8">
-            <img :src="resizedProfileImage(restaurant, '600')" class="w-48 h-48 r-48 cover" />
+            <img
+              :src="resizedProfileImage(restaurant, '600')"
+              class="w-12 h-12 r-48 cover"
+            />
           </div>
 
           <div class="flex-1">
             <!-- Restaurant Name -->
-            <div class="t-body1 c-text-black-high">{{restaurant.restaurantName}}</div>
+            <div class="t-body1 c-text-black-high">
+              {{ restaurant.restaurantName }}
+            </div>
             <div class="cols flex-center">
               <!-- Order Count -->
-              <div
-                class="t-body2 c-text-black-medium m-r-8"
-              >{{$tc('sitemenu.orderCounter', totalCount, {count: totalCount})}}</div>
+              <div class="t-body2 c-text-black-medium m-r-8">
+                {{
+                  $tc("sitemenu.orderCounter", totalCount, {
+                    count: totalCount
+                  })
+                }}
+              </div>
 
               <!-- Total -->
-              <div class="t-body2 c-text-black-high m-r-8">{{ $n(order.totalCharge, 'currency') }}</div>
+              <div class="t-body2 c-text-black-high m-r-8">
+                {{ $n(order.totalCharge, "currency") }}
+              </div>
 
               <!-- Stripe Status -->
               <div>
-                <i v-if="hasStripe" :class="'fab fa-cc-stripe stripe_'+order.payment.stripe"></i>
+                <i
+                  v-if="hasStripe"
+                  :class="'fab fa-cc-stripe stripe_' + order.payment.stripe"
+                ></i>
               </div>
 
               <!-- Order ID -->
-              <div class="t-body2 c-text-black-high flex-1 align-right">{{ orderName }}</div>
+              <div class="t-body2 c-text-black-high flex-1 align-right">
+                {{ orderName }}
+              </div>
             </div>
           </div>
         </div>
@@ -165,8 +193,8 @@ export default {
       return 0;
     },
     paymentIsNotCompleted() {
-      return this.hasStripe && this.order.status <  order_status.ready_to_pickup 
-    },
-  },
+      return this.hasStripe && this.order.status < order_status.ready_to_pickup;
+    }
+  }
 };
 </script>

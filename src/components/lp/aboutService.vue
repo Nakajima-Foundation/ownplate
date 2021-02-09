@@ -2,7 +2,7 @@
   <div>
     <div class="columns is-gapless">
       <!-- Left Gap -->
-      <div class="column is-narrow w-24"></div>
+      <div class="column is-narrow w-6"></div>
       <!-- Center Column -->
       <div class="column">
         <div class="columns is-gaplress">
@@ -72,7 +72,7 @@
 
               <!-- Profile -->
               <div class="align-center p-t-24 p-b-24">
-                <img src="/Profile-SNakajima.jpg" class="w-128 r-256" />
+                <img src="/Profile-SNakajima.jpg" class="w-32 r-256" />
                 <div class="align-center t-body1 c-text-black-high p-t-8">
                   <div v-if="!isLocaleJapan">
                     Satoshi Nakajima<br />Chairman of Singularity Society
@@ -87,7 +87,7 @@
         </div>
       </div>
       <!-- Right Gap -->
-      <div class="column is-narrow w-24"></div>
+      <div class="column is-narrow w-6"></div>
     </div>
   </div>
 </template>

@@ -11,14 +11,14 @@
               :src="image"
               width="96"
               height="96"
-              class="w-96 h-96 r-4 cover"
+              class="w-24 h-24 r-4 cover"
             />
           </div>
 
           <!-- Add Button -->
           <div
             @click.stop="pushQuantities(0)"
-            class="op-button-pill bg-primary-bg w-96 t-button"
+            class="op-button-pill bg-primary-bg w-24 t-button"
           >
             <span>{{ $t("sitemenu.add") }}</span>
           </div>
@@ -130,7 +130,7 @@
               <div class="level-left">
                 <div
                   @click="pullQuantities(quantityKey)"
-                  class="op-button-pill bg-status-red-bg w-96"
+                  class="op-button-pill bg-status-red-bg w-24"
                   :disabled="quantities[quantityKey] === 0"
                 >
                   <i class="material-icons c-status-red">remove</i>
@@ -140,7 +140,7 @@
               <div class="level-right">
                 <div
                   @click="pushQuantities(quantityKey)"
-                  class="op-button-pill bg-primary-bg w-96"
+                  class="op-button-pill bg-primary-bg w-24"
                 >
                   <i class="material-icons">add</i>
                 </div>

@@ -3,7 +3,7 @@
     <!-- Header Area -->
     <div class="columns is-gapless">
       <!-- Left Gap -->
-      <div class="column is-narrow w-24"></div>
+      <div class="column is-narrow w-6"></div>
       <!-- Center Column -->
       <div class="column">
         <div class="m-l-24 m-r-24">
@@ -16,22 +16,27 @@
               <!-- Restaurant Profile -->
               <div class="is-inline-flex flex-center m-t-24">
                 <div>
-                  <img :src="resizedProfileImage(shopInfo, '600')" class="w-36 h-36 r-36 cover" />
+                  <img
+                    :src="resizedProfileImage(shopInfo, '600')"
+                    class="w-8 h-8 r-36 cover"
+                  />
                 </div>
-                <div class="t-h6 c-text-black-high m-l-8 flex-1">{{ shopInfo.restaurantName }}</div>
+                <div class="t-h6 c-text-black-high m-l-8 flex-1">
+                  {{ shopInfo.restaurantName }}
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
       <!-- Right Gap -->
-      <div class="column is-narrow w-24"></div>
+      <div class="column is-narrow w-6"></div>
     </div>
 
     <!-- Body Area -->
     <div class="columns is-gapless">
       <!-- Left Gap -->
-      <div class="column is-narrow w-24"></div>
+      <div class="column is-narrow w-6"></div>
       <!-- Center Column -->
       <div class="column">
         <div class="m-l-24 m-r-24">
@@ -41,7 +46,8 @@
               v-for="day in lastSeveralMonths"
               :value="day.index"
               :key="day.index"
-            >{{ moment(day.date).format("YYYY-MM") }}</option>
+              >{{ moment(day.date).format("YYYY-MM") }}</option
+            >
           </b-select>
 
           <!-- Table -->
@@ -50,64 +56,82 @@
               <!-- Table Header -->
               <tr>
                 <th class="p-l-8 p-b-8">
-                  <div class="align-right">{{ $t('order.date')}}</div>
+                  <div class="align-right">{{ $t("order.date") }}</div>
                 </th>
                 <th class="p-l-8">
-                  <div class="align-right">{{ $t('order.foodRevenue')}}</div>
+                  <div class="align-right">{{ $t("order.foodRevenue") }}</div>
                 </th>
                 <th class="p-l-8">
-                  <div class="align-right">{{ $t('order.foodTax')}}</div>
+                  <div class="align-right">{{ $t("order.foodTax") }}</div>
                 </th>
                 <th class="p-l-8">
-                  <div class="align-right">{{ $t('order.alcoholRevenue')}}</div>
+                  <div class="align-right">
+                    {{ $t("order.alcoholRevenue") }}
+                  </div>
                 </th>
                 <th class="p-l-8">
-                  <div class="align-right">{{ $t('order.salesTax')}}</div>
+                  <div class="align-right">{{ $t("order.salesTax") }}</div>
                 </th>
                 <th class="p-l-8">
-                  <div class="align-right">{{ $t('order.tipShort')}}</div>
+                  <div class="align-right">{{ $t("order.tipShort") }}</div>
                 </th>
                 <th class="p-l-8">
-                  <div class="align-right">{{ $t('order.salesTax')}}</div>
+                  <div class="align-right">{{ $t("order.salesTax") }}</div>
                 </th>
                 <th class="p-l-8">
-                  <div class="align-right">{{ $t('order.total')}}</div>
+                  <div class="align-right">{{ $t("order.total") }}</div>
                 </th>
                 <th class="p-l-8">
-                  <div class="align-right">{{ $t('order.name')}}</div>
+                  <div class="align-right">{{ $t("order.name") }}</div>
                 </th>
               </tr>
 
               <!-- Table Body -->
               <tr v-for="order in orders" :key="order.id">
                 <td class="p-l-8 p-t-4">
-                  <div class="align-right">{{$d(order.timeConfirmed)}}</div>
+                  <div class="align-right">{{ $d(order.timeConfirmed) }}</div>
                 </td>
                 <td class="p-l-8 p-t-4">
-                  <div class="align-right">{{order.accounting.food.revenue}}</div>
+                  <div class="align-right">
+                    {{ order.accounting.food.revenue }}
+                  </div>
                 </td>
                 <td class="p-l-8 p-t-4">
-                  <div class="align-right">{{order.accounting.food.tax}}</div>
+                  <div class="align-right">{{ order.accounting.food.tax }}</div>
                 </td>
                 <td class="p-l-8 p-t-4">
-                  <div class="align-right">{{order.accounting.alcohol.revenue}}</div>
+                  <div class="align-right">
+                    {{ order.accounting.alcohol.revenue }}
+                  </div>
                 </td>
                 <td class="p-l-8 p-t-4">
-                  <div class="align-right">{{order.accounting.alcohol.tax}}</div>
+                  <div class="align-right">
+                    {{ order.accounting.alcohol.tax }}
+                  </div>
                 </td>
                 <td class="p-l-8 p-t-4">
-                  <div class="align-right">{{order.accounting.service.revenue}}</div>
+                  <div class="align-right">
+                    {{ order.accounting.service.revenue }}
+                  </div>
                 </td>
                 <td class="p-l-8 p-t-4">
-                  <div class="align-right">{{order.accounting.service.tax}}</div>
+                  <div class="align-right">
+                    {{ order.accounting.service.tax }}
+                  </div>
                 </td>
                 <td class="p-l-8 p-t-4">
-                  <div class="align-right">{{order.totalCharge}}</div>
+                  <div class="align-right">{{ order.totalCharge }}</div>
                 </td>
                 <td class="p-l-8 p-t-4">
                   <div>
-                    <nuxt-link :to="orderUrl(order)">{{orderName(order)}}</nuxt-link>
-                    <a v-if="order.payment" :href="searchUrl(order)" target="stripe">
+                    <nuxt-link :to="orderUrl(order)">{{
+                      orderName(order)
+                    }}</nuxt-link>
+                    <a
+                      v-if="order.payment"
+                      :href="searchUrl(order)"
+                      target="stripe"
+                    >
                       <i v-if="order.payment" class="fab fa-cc-stripe" />
                     </a>
                   </div>
@@ -117,28 +141,28 @@
               <!-- Table Footer -->
               <tr class="bold">
                 <td class="p-t-8 p-l-8">
-                  <div class="align-right">{{$t('order.total')}}</div>
+                  <div class="align-right">{{ $t("order.total") }}</div>
                 </td>
                 <td class="p-t-8 p-l-8">
-                  <div class="align-right">{{total.food.revenue}}</div>
+                  <div class="align-right">{{ total.food.revenue }}</div>
                 </td>
                 <td class="p-t-8 p-l-8">
-                  <div class="align-right">{{total.food.tax}}</div>
+                  <div class="align-right">{{ total.food.tax }}</div>
                 </td>
                 <td class="p-t-8 p-l-8">
-                  <div class="align-right">{{total.alcohol.revenue}}</div>
+                  <div class="align-right">{{ total.alcohol.revenue }}</div>
                 </td>
                 <td class="p-t-8 p-l-8">
-                  <div class="align-right">{{total.alcohol.tax}}</div>
+                  <div class="align-right">{{ total.alcohol.tax }}</div>
                 </td>
                 <td class="p-t-8 p-l-8">
-                  <div class="align-right">{{total.service.revenue}}</div>
+                  <div class="align-right">{{ total.service.revenue }}</div>
                 </td>
                 <td class="p-t-8 p-l-8">
-                  <div class="align-right">{{total.service.tax}}</div>
+                  <div class="align-right">{{ total.service.tax }}</div>
                 </td>
                 <td class="p-t-8 p-l-8">
-                  <div class="align-right">{{total.totalCharge}}</div>
+                  <div class="align-right">{{ total.totalCharge }}</div>
                 </td>
               </tr>
             </table>
@@ -149,10 +173,12 @@
             :fieldNames="fieldNames"
             :fileName="fileName"
           >
-            <b-button class="m-t-16 b-reset h-36 r-36 bg-form">
+            <b-button class="m-t-16 b-reset h-10 r-36 bg-form">
               <span class="p-l-16 p-r-16">
                 <i class="material-icons c-primary s-18 m-r-8">save_alt</i>
-                <span class="c-primary t-button">{{$t('admin.report.download-csv')}}</span>
+                <span class="c-primary t-button">{{
+                  $t("admin.report.download-csv")
+                }}</span>
               </span>
             </b-button>
           </download-csv>
@@ -162,7 +188,7 @@
         </div>
       </div>
       <!-- Right Gap -->
-      <div class="column is-narrow w-24"></div>
+      <div class="column is-narrow w-6"></div>
     </div>
   </div>
 </template>

@@ -6,7 +6,7 @@
       <!-- Edit Header Area -->
       <div class="columns is-gapless">
         <!-- Left Gap -->
-        <div class="column is-narrow w-24"></div>
+        <div class="column is-narrow w-6"></div>
         <!-- Center Column -->
         <div class="column">
           <div class="m-l-24 m-r-24 m-t-24">
@@ -88,13 +88,13 @@
           </div>
         </div>
         <!-- Right Gap -->
-        <div class="column is-narrow w-24"></div>
+        <div class="column is-narrow w-6"></div>
       </div>
 
       <!-- Edit Body Area 1 -->
       <div class="columns is-gapless">
         <!-- Left Gap -->
-        <div class="column is-narrow w-24"></div>
+        <div class="column is-narrow w-6"></div>
         <!-- Left Column -->
         <div class="column">
           <div class="m-l-24 m-r-24">
@@ -254,10 +254,7 @@
                 <!-- Current Photo -->
                 <div v-if="restProfilePhoto" class="p-r-16">
                   <div>
-                    <img
-                      class="w-128 h-128 r-4 cover"
-                      :src="restProfilePhoto"
-                    />
+                    <img class="w-32 h-32 r-4 cover" :src="restProfilePhoto" />
                   </div>
                   <div class="align-center t-caption">
                     {{ $t("editCommon.current") }}
@@ -283,7 +280,7 @@
                     @file-type-mismatch="handleProfileImageRemove"
                     @image-remove="handleProfileImageRemove"
                   ></croppa>
-                  <div class="align-center t-caption w-128">
+                  <div class="align-center t-caption w-32">
                     {{ $t("editCommon.new") }}
                   </div>
                 </div>
@@ -304,7 +301,7 @@
                 <div v-if="restCoverPhoto" class="p-b-8">
                   <div>
                     <img
-                      class="h-128 r-4 cover"
+                      class="h-32 r-4 cover"
                       :src="restCoverPhoto"
                       style="width: 272px;"
                     />
@@ -346,13 +343,13 @@
           </div>
         </div>
         <!-- Right Gap -->
-        <div class="column is-narrow w-24"></div>
+        <div class="column is-narrow w-6"></div>
       </div>
 
       <!-- Devider -->
       <div class="columns is-gapless">
         <!-- Left Gap -->
-        <div class="column is-narrow w-24"></div>
+        <div class="column is-narrow w-6"></div>
         <!-- Center Column -->
         <div class="column">
           <div class="m-l-24 m-r-24">
@@ -360,13 +357,13 @@
           </div>
         </div>
         <!-- Right Gap -->
-        <div class="column is-narrow w-24"></div>
+        <div class="column is-narrow w-6"></div>
       </div>
 
       <!-- Edit Body Area 2 -->
       <div class="columns is-gapless">
         <!-- Left Gap -->
-        <div class="column is-narrow w-24"></div>
+        <div class="column is-narrow w-6"></div>
         <!-- Left Column -->
         <div class="column">
           <div class="m-l-24 m-r-24">
@@ -468,7 +465,7 @@
                         placeholder="8.2"
                         type="text"
                         maxlength="5"
-                        class="w-96"
+                        class="w-24"
                       />
                       <div class="m-l-8">%</div>
                     </b-field>
@@ -491,7 +488,7 @@
                         placeholder="10.2"
                         type="text"
                         maxlength="5"
-                        class="w-96"
+                        class="w-24"
                       />
                       <div class="m-l-8">%</div>
                     </b-field>
@@ -564,7 +561,7 @@
                       v-model.number="shopInfo.pickUpMinimumCookTime"
                       placeholder="10"
                       type="text"
-                      class="w-96"
+                      class="w-24"
                     />
                     <div class="m-l-8">
                       {{ $t("editRestaurant.minutes") }} -
@@ -756,7 +753,7 @@
                     </span>
                     <b-button
                       @click="deleteTemporaryClosure(key)"
-                      class="b-reset op-button-pill h-36 bg-status-red-bg m-l-8"
+                      class="b-reset op-button-pill h-10 bg-status-red-bg m-l-8"
                     >
                       <i class="material-icons c-status-red s-18 p-l-8 p-r-8"
                         >delete</i
@@ -769,13 +766,13 @@
           </div>
         </div>
         <!-- Right Gap -->
-        <div class="column is-narrow w-24"></div>
+        <div class="column is-narrow w-6"></div>
       </div>
 
       <!-- Edit Footer Area -->
       <div class="columns is-gapless">
         <!-- Left Gap -->
-        <div class="column is-narrow w-24"></div>
+        <div class="column is-narrow w-6"></div>
         <!-- Center Column -->
         <div class="column">
           <div class="m-l-24 m-r-24 m-t-24">
@@ -842,7 +839,7 @@
           </div>
         </div>
         <!-- Right Gap -->
-        <div class="column is-narrow w-24"></div>
+        <div class="column is-narrow w-6"></div>
       </div>
     </div>
   </div>
