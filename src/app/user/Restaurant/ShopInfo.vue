@@ -45,7 +45,7 @@
             </a>
           </div>
         </div>
-        <div v-else class="h-8"></div>
+        <div v-else class="h-2"></div>
 
         <!-- Restaurant Phone Number -->
         <div class="m-t-8 m-l-16 m-r-16">
@@ -110,7 +110,7 @@
                   : {}
               "
             >
-              <div class="w-64">{{ $t("week.short." + day) }}</div>
+              <div class="w-16">{{ $t("week.short." + day) }}</div>
               <div class="flex-1">
                 <template v-if="shopInfo.businessDay[key]">
                   <template v-for="data in shopInfo.openTimes[key]">

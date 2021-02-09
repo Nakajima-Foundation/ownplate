@@ -3,16 +3,18 @@
     <!-- Welcome Instructions -->
     <div class="columns is-gapless">
       <!-- Left Gap -->
-      <div class="column is-narrow w-24"></div>
+      <div class="column is-narrow w-6"></div>
       <!-- Center Column -->
       <div class="column">
         <div class="columns is-gapless">
-          <div class="column is-narrow w-24"></div>
+          <div class="column is-narrow w-6"></div>
           <div class="column">
-            <div class="is-hidden-mobile h-24"></div>
+            <div class="is-hidden-mobile h-6"></div>
             <div class="bg-ownplate-yellow r-8 align-center">
-              <div class="h-24 bg-ownplate-yellow is-invisible-tablet"></div>
-              <div class="t-h6 c-ownplate-white">{{ $t("admin.welcomeMessage") }}</div>
+              <div class="h-6 bg-ownplate-yellow is-invisible-tablet"></div>
+              <div class="t-h6 c-ownplate-white">
+                {{ $t("admin.welcomeMessage") }}
+              </div>
               <div>
                 <!-- User Manuals -->
                 <div v-if="isJapan" class="is-inline-block m-l-8 m-r-8 m-t-24">
@@ -21,11 +23,11 @@
                     target="_blank"
                   >
                     <div class="op-button-small bg-text-white-high">
-                      <i class="material-icons c-primary s-18 m-r-8">help_outline</i>
+                      <i class="material-icons c-primary s-18 m-r-8"
+                        >help_outline</i
+                      >
                       <span class="c-primary t-button">
-                        {{
-                        $t("admin.userManual")
-                        }}
+                        {{ $t("admin.userManual") }}
                       </span>
                     </div>
                   </a>
@@ -38,11 +40,11 @@
                     target="_blank"
                   >
                     <div class="op-button-small bg-text-white-high">
-                      <i class="material-icons c-primary s-18 m-r-8">mail_outline</i>
+                      <i class="material-icons c-primary s-18 m-r-8"
+                        >mail_outline</i
+                      >
                       <span class="c-primary t-button">
-                        {{
-                        $t("admin.suportPage")
-                        }}
+                        {{ $t("admin.suportPage") }}
                       </span>
                     </div>
                   </a>
@@ -50,32 +52,36 @@
 
                 <!-- Facebook User Group -->
                 <div v-if="isJapan" class="is-inline-block m-l-8 m-r-8 m-t-24">
-                  <a href="https://www.facebook.com/groups/278028420106364/" target="_blank">
+                  <a
+                    href="https://www.facebook.com/groups/278028420106364/"
+                    target="_blank"
+                  >
                     <div class="op-button-small bg-text-white-high">
-                      <i class="fab fa-facebook c-primary m-r-8" style="font-size:18px" />
+                      <i
+                        class="fab fa-facebook c-primary m-r-8"
+                        style="font-size:18px"
+                      />
                       <span class="c-primary t-button">
-                        {{
-                        $t("admin.facebookUserGroup")
-                        }}
+                        {{ $t("admin.facebookUserGroup") }}
                       </span>
                     </div>
                   </a>
                 </div>
               </div>
-              <div class="h-24 bg-ownplate-yellow is-invisible-tablet"></div>
+              <div class="h-6 bg-ownplate-yellow is-invisible-tablet"></div>
             </div>
           </div>
-          <div class="column is-narrow w-24"></div>
+          <div class="column is-narrow w-6"></div>
         </div>
       </div>
       <!-- Right Gap -->
-      <div class="column is-narrow w-24"></div>
+      <div class="column is-narrow w-6"></div>
     </div>
 
     <!-- News -->
     <div class="columns is-gapless" v-if="region === 'JP'">
       <!-- Left Gap -->
-      <div class="column is-narrow w-24"></div>
+      <div class="column is-narrow w-6"></div>
       <!-- Center Column -->
       <div class="column">
         <div class="m-l-24 m-r-24">
@@ -84,77 +90,79 @@
             style="border: 2px solid rgba(0,0,0,0.1); "
           >
             <div class="cols">
-              <div class="t-subtitle2 c-text-black-disabled">{{ news.date.replace(/\-/g, ".") }}</div>
+              <div class="t-subtitle2 c-text-black-disabled">
+                {{ news.date.replace(/\-/g, ".") }}
+              </div>
               <div class="t-subtitle2 c-primary flex-1 align-right">
                 <nuxt-link :to="'/admin/news/'">
-                  {{
-                  $t("admin.news.newsTop")
-                  }}
+                  {{ $t("admin.news.newsTop") }}
                 </nuxt-link>
               </div>
             </div>
             <!-- News Item -->
             <div class="t-subtitle1 c-primary m-t-4">
               <nuxt-link :to="'/admin/news/' + news.date">
-                {{
-                news.title
-                }}
+                {{ news.title }}
               </nuxt-link>
             </div>
           </div>
         </div>
       </div>
       <!-- Right Gap -->
-      <div class="column is-narrow w-24"></div>
+      <div class="column is-narrow w-6"></div>
     </div>
 
     <!-- Unset Warning -->
     <div class="columns is-gapless" v-if="unsetWarning">
       <!-- Left Gap -->
-      <div class="column is-narrow w-24"></div>
+      <div class="column is-narrow w-6"></div>
       <!-- Center Column -->
       <div class="column">
         <div class="m-l-24 m-r-24">
-          <div class="bg-status-red-bg r-8 p-l-16 p-r-16 p-t-16 p-b-16 l m-b-8 m-t-24">
-            <span class="t-body2 c-status-red">{{ $t("admin.payments.unsetWarning") }}</span>
+          <div
+            class="bg-status-red-bg r-8 p-l-16 p-r-16 p-t-16 p-b-16 l m-b-8 m-t-24"
+          >
+            <span class="t-body2 c-status-red">{{
+              $t("admin.payments.unsetWarning")
+            }}</span>
           </div>
         </div>
       </div>
       <!-- Right Gap -->
-      <div class="column is-narrow w-24"></div>
+      <div class="column is-narrow w-6"></div>
     </div>
 
     <!-- Payment Setup and Restaurants -->
     <div class="columns is-gapless">
       <!-- Left Gap -->
-      <div class="column is-narrow w-24"></div>
+      <div class="column is-narrow w-6"></div>
 
       <!-- Left Column -->
       <div class="column">
         <div class="m-l-24 m-r-24">
           <!-- Restaurants -->
           <div class="m-t-24">
-            <div class="t-h6 c-text-black-disabled m-b-8">{{ $t("admin.restaurant") }}</div>
+            <div class="t-h6 c-text-black-disabled m-b-8">
+              {{ $t("admin.restaurant") }}
+            </div>
             <div v-if="readyToDisplay">
               <!-- No Restaurant -->
               <div v-if="existsRestaurant === null"></div>
               <div v-else-if="!existsRestaurant">
                 <div class="border-primary r-8 p-l-24 p-r-24 p-t-24 p-b-24">
-                  <div
-                    class="align-center t-subtitle1 c-primary"
-                  >{{ $t("admin.addYourRestaurant") }}</div>
+                  <div class="align-center t-subtitle1 c-primary">
+                    {{ $t("admin.addYourRestaurant") }}
+                  </div>
                   <div class="align-center m-t-16">
                     <b-button
-                      class="b-reset op-button-pill h-36 bg-form"
+                      class="b-reset op-button-pill h-10 bg-form"
                       style="min-width: 128px;"
                       @click="handleNew"
                       :loading="isCreating"
                     >
                       <i class="material-icons c-primary m-l-8">add</i>
                       <span class="c-primary t-button">
-                        {{
-                        $t("admin.addNewRestaurant")
-                        }}
+                        {{ $t("admin.addNewRestaurant") }}
                       </span>
                     </b-button>
                   </div>
@@ -163,7 +171,10 @@
 
               <!-- Existing Restaurant -->
               <div v-if="existsRestaurant">
-                <div v-for="restaurantItem in restaurantItems" :key="restaurantItem.id">
+                <div
+                  v-for="restaurantItem in restaurantItems"
+                  :key="restaurantItem.id"
+                >
                   <restaurant-edit-card
                     :shopInfo="restaurantItem"
                     :restaurantid="restaurantItem.restaurantid"
@@ -171,22 +182,20 @@
                     :numberOfOrders="restaurantItem.numberOfOrders || 0"
                     :lineEnable="lines[restaurantItem.id] || false"
                     :shopOwner="shopOwner"
-                    ></restaurant-edit-card>
+                  ></restaurant-edit-card>
                 </div>
 
                 <!-- Add Restaurant -->
                 <div class="align-center m-t-16">
                   <b-button
-                    class="b-reset op-button-pill h-36 bg-form"
+                    class="b-reset op-button-pill h-10 bg-form"
                     style="min-width: 128px;"
                     @click="handleNew"
                     :loading="isCreating"
                   >
                     <i class="material-icons c-primary m-l-8">add</i>
                     <span class="c-primary t-button">
-                      {{
-                      $t("admin.addNewRestaurant")
-                      }}
+                      {{ $t("admin.addNewRestaurant") }}
                     </span>
                   </b-button>
                 </div>
@@ -204,40 +213,44 @@
 
           <!-- Notes -->
           <div class="m-t-24">
-            <div class="t-h6 c-text-black-disabled">{{$t("admin.notes.title")}}</div>
+            <div class="t-h6 c-text-black-disabled">
+              {{ $t("admin.notes.title") }}
+            </div>
             <div
               class="r-8 p-l-24 p-r-24 p-t-24 p-b-24 m-t-8"
               style="border: 2px solid rgba(0,0,0,0.1); "
             >
-              <div
-                class="t-subtitle1 c-text-black-medium"
-              >{{$t("admin.notes.userRestaurantsTitle")}}</div>
-              <div
-                class="t-body1 c-text-black-medium m-t-8"
-              >{{$t("admin.notes.userRestaurantsBody")}}</div>
+              <div class="t-subtitle1 c-text-black-medium">
+                {{ $t("admin.notes.userRestaurantsTitle") }}
+              </div>
+              <div class="t-body1 c-text-black-medium m-t-8">
+                {{ $t("admin.notes.userRestaurantsBody") }}
+              </div>
               <hr />
-              <div
-                class="t-subtitle1 c-text-black-medium"
-              >{{$t("admin.notes.notificationSoundTitle")}}</div>
-              <div
-                class="t-body1 c-text-black-medium m-t-8"
-              >{{$t("admin.notes.notificationSoundBody")}}</div>
+              <div class="t-subtitle1 c-text-black-medium">
+                {{ $t("admin.notes.notificationSoundTitle") }}
+              </div>
+              <div class="t-body1 c-text-black-medium m-t-8">
+                {{ $t("admin.notes.notificationSoundBody") }}
+              </div>
             </div>
           </div>
           <!-- Mail -->
           <div class="m-t-24">
-            <div class="t-h6 c-text-black-disabled m-b-8">{{ $t("admin.mail.magazine.title") }}</div>
-          
+            <div class="t-h6 c-text-black-disabled m-b-8">
+              {{ $t("admin.mail.magazine.title") }}
+            </div>
+
             <div class="bg-surface r-8 d-low p-t-24 p-b-24">
               <div class="m-l-24 m-r-24">
-                <div class="m-t-8 t-body1 c-text-black-medium">{{ $t("admin.mail.magazine.body") }}</div>
+                <div class="m-t-8 t-body1 c-text-black-medium">
+                  {{ $t("admin.mail.magazine.body") }}
+                </div>
               </div>
               <!-- On-site Payment Checkbox -->
               <div class="align-center m-t-24">
                 <b-checkbox v-model="opt_out">
-                  {{
-                  $t("admin.mail.magazine.optout")
-                  }}
+                  {{ $t("admin.mail.magazine.optout") }}
                 </b-checkbox>
               </div>
             </div>
@@ -245,7 +258,7 @@
         </div>
       </div>
       <!-- Right Gap -->
-      <div class="column is-narrow w-24"></div>
+      <div class="column is-narrow w-6"></div>
     </div>
   </div>
 </template>
@@ -277,7 +290,7 @@ export default {
       unsetWarning: true,
       lines: {},
       shopOwner: null,
-      opt_out: null,
+      opt_out: null
     };
   },
   created() {
@@ -286,8 +299,10 @@ export default {
   async mounted() {
     try {
       this.shopOwner = await this.getShopOwner(this.$store.getters.uidAdmin);
-      const adminConfig = await db.doc(`/adminConfigs/${this.$store.getters.uidAdmin}`).get();
-      this.adminConfig  = (adminConfig.exists) ? adminConfig.data() : {};
+      const adminConfig = await db
+        .doc(`/adminConfigs/${this.$store.getters.uidAdmin}`)
+        .get();
+      this.adminConfig = adminConfig.exists ? adminConfig.data() : {};
       this.opt_out = this.adminConfig.opt_out || false;
       this.restaurant_detacher = db
         .collection("restaurants")
@@ -347,7 +362,6 @@ export default {
                   })
               );
             });
-
           } catch (error) {
             console.log("Error fetch doc,", error);
           } finally {
@@ -371,11 +385,13 @@ export default {
   watch: {
     async opt_out() {
       if (this.adminConfig.opt_out !== this.opt_out) {
-        const config = {...this.adminConfig};
+        const config = { ...this.adminConfig };
         config["opt_out"] = this.opt_out;
-        await db.doc(`/adminConfigs/${this.$store.getters.uidAdmin}`).set(config);
+        await db
+          .doc(`/adminConfigs/${this.$store.getters.uidAdmin}`)
+          .set(config);
       }
-    },
+    }
   },
   methods: {
     destroy_detacher() {

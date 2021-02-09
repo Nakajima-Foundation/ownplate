@@ -3,7 +3,7 @@
     <!-- Header Area -->
     <div class="columns is-gapless">
       <!-- Left Gap -->
-      <div class="column is-narrow w-24"></div>
+      <div class="column is-narrow w-6"></div>
       <!-- Center Column -->
       <div class="column">
         <div class="m-l-24 m-r-24">
@@ -20,35 +20,40 @@
               <!-- Restaurant Profile -->
               <div class="is-inline-flex flex-center m-t-24">
                 <div>
-                  <img :src="resizedProfileImage(shopInfo, '600')" class="w-36 h-36 r-36 cover" />
+                  <img
+                    :src="resizedProfileImage(shopInfo, '600')"
+                    class="w-8 h-8 r-36 cover"
+                  />
                 </div>
-                <div class="t-h6 c-text-black-high m-l-8 flex-1">{{ shopInfo.restaurantName }}</div>
+                <div class="t-h6 c-text-black-high m-l-8 flex-1">
+                  {{ shopInfo.restaurantName }}
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
       <!-- Right Gap -->
-      <div class="column is-narrow w-24"></div>
+      <div class="column is-narrow w-6"></div>
     </div>
 
     <!-- Body Area -->
     <div class="columns is-gapless">
       <!-- Left Gap -->
-      <div class="column is-narrow w-24"></div>
+      <div class="column is-narrow w-6"></div>
 
       <!-- Left Column -->
       <div class="column">
         <div class="m-l-24 m-r-24">
-          <div class="t-h6 c-text-black-disabled m-t-24">{{ $t("admin.order.suspendSettings") }}</div>
+          <div class="t-h6 c-text-black-disabled m-t-24">
+            {{ $t("admin.order.suspendSettings") }}
+          </div>
 
           <!-- Suspend New Orders -->
           <div>
             <div class="t-subtitle2 c-text-black-medium m-t-16">
               {{ $t("admin.order.suspendNewOrders") }}
-              <span
-                v-if="date"
-              >: {{ $d(date.date, "short" )}}</span>
+              <span v-if="date">: {{ $d(date.date, "short") }}</span>
             </div>
             <!-- # ToDo: Switch Suspend/Unsuspend buttons based on the status. -->
             <!-- Suspend Buttons -->
@@ -60,31 +65,42 @@
                 class="b-reset op-button-pill bg-form m-t-16 m-r-16"
               >
                 <i class="material-icons p-l-8 c-primary">alarm_off</i>
-                <span
-                  class="t-button p-r-8 c-primary"
-                >{{$t("admin.order.suspendUntil", {display:time.display})}}</span>
+                <span class="t-button p-r-8 c-primary">{{
+                  $t("admin.order.suspendUntil", { display: time.display })
+                }}</span>
               </b-button>
               <b-button
                 v-if="availableTimes.length > 0"
                 class="b-reset op-button-pill bg-form m-t-16 m-r-16"
-                @click="handleSuspend(24*60)"
+                @click="handleSuspend(24 * 60)"
               >
                 <i class="material-icons p-l-8 c-primary">alarm_off</i>
-                <span class="t-button p-r-8 c-primary">{{ $t("admin.order.suspendForAllDay") }}</span>
+                <span class="t-button p-r-8 c-primary">{{
+                  $t("admin.order.suspendForAllDay")
+                }}</span>
               </b-button>
             </div>
 
             <!-- Unsuspend Button -->
             <div v-else>
-              <div class="bg-status-red-bg r-8 p-l-16 p-r-16 p-t-16 p-b-16 m-t-16 align-center">
-                <div class="t-subtitle1 c-status-red">{{ $t("admin.order.suspending") }}</div>
-                <div
-                  class="t-subtitle2 c-status-red"
-                >{{ $t("admin.order.unsuspendAt") }} {{ suspendUntil }}</div>
+              <div
+                class="bg-status-red-bg r-8 p-l-16 p-r-16 p-t-16 p-b-16 m-t-16 align-center"
+              >
+                <div class="t-subtitle1 c-status-red">
+                  {{ $t("admin.order.suspending") }}
+                </div>
+                <div class="t-subtitle2 c-status-red">
+                  {{ $t("admin.order.unsuspendAt") }} {{ suspendUntil }}
+                </div>
               </div>
-              <b-button class="b-reset op-button-pill bg-form m-t-16 m-r-16" @click="handleRemove">
+              <b-button
+                class="b-reset op-button-pill bg-form m-t-16 m-r-16"
+                @click="handleRemove"
+              >
                 <i class="material-icons p-l-8 c-primary">alarm_on</i>
-                <span class="t-button p-r-8 c-primary">{{ $t("admin.order.unsuspend") }}</span>
+                <span class="t-button p-r-8 c-primary">{{
+                  $t("admin.order.unsuspend")
+                }}</span>
               </b-button>
             </div>
           </div>
@@ -92,20 +108,26 @@
           <!-- Suspend Individual Item -->
           <!-- # ToDo: Implement select/deselect all check boxes. -->
           <div v-if="false">
-            <div
-              class="t-subtitle2 c-text-black-medium m-t-24"
-            >{{ $t("admin.order.suspendIndividualItem") }}</div>
+            <div class="t-subtitle2 c-text-black-medium m-t-24">
+              {{ $t("admin.order.suspendIndividualItem") }}
+            </div>
 
             <!-- Suspend All Items -->
             <b-button class="b-reset op-button-pill bg-form m-t-16 m-r-16">
               <i class="material-icons p-l-8 c-primary">check_box</i>
-              <span class="t-button p-r-8 c-primary">{{ $t("admin.order.suspendAllItems") }}</span>
+              <span class="t-button p-r-8 c-primary">{{
+                $t("admin.order.suspendAllItems")
+              }}</span>
             </b-button>
 
             <!-- Unsuspend All Items -->
             <b-button class="b-reset op-button-pill bg-form m-t-16 m-r-16">
-              <i class="material-icons p-l-8 c-primary">check_box_outline_blank</i>
-              <span class="t-button p-r-8 c-primary">{{ $t("admin.order.unsuspendAllItems") }}</span>
+              <i class="material-icons p-l-8 c-primary"
+                >check_box_outline_blank</i
+              >
+              <span class="t-button p-r-8 c-primary">{{
+                $t("admin.order.unsuspendAllItems")
+              }}</span>
             </b-button>
           </div>
         </div>
@@ -121,7 +143,9 @@
                 <div
                   class="t-h6 c-text-black-disabled m-t-24"
                   v-if="itemsObj[itemId]._dataType === 'title'"
-                >{{ itemsObj[itemId].name }}</div>
+                >
+                  {{ itemsObj[itemId].name }}
+                </div>
                 <order-suspend-item
                   v-if="itemsObj[itemId]._dataType === 'menu'"
                   :item="itemsObj[itemId]"
@@ -133,7 +157,7 @@
         </div>
       </div>
       <!-- Right Gap -->
-      <div class="column is-narrow w-24"></div>
+      <div class="column is-narrow w-6"></div>
     </div>
   </div>
 </template>

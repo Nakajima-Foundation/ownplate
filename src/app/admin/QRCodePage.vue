@@ -3,7 +3,7 @@
     <!-- QR Header Area -->
     <div class="columns is-gapless">
       <!-- Left Gap -->
-      <div class="column is-narrow w-24"></div>
+      <div class="column is-narrow w-6"></div>
       <!-- Center Column -->
       <div class="column">
         <div class="m-l-24 m-r-24">
@@ -16,9 +16,14 @@
               <!-- Restaurant Profile -->
               <div class="is-inline-flex flex-center m-t-24">
                 <div>
-                  <img :src="resizedProfileImage(restaurant, '600')" class="w-36 h-36 r-36 cover" />
+                  <img
+                    :src="resizedProfileImage(restaurant, '600')"
+                    class="w-8 h-8 r-36 cover"
+                  />
                 </div>
-                <div class="t-h6 c-text-black-high m-l-8 flex-1">{{ restaurant.restaurantName }}</div>
+                <div class="t-h6 c-text-black-high m-l-8 flex-1">
+                  {{ restaurant.restaurantName }}
+                </div>
               </div>
             </div>
             <!-- Notification Settings -->
@@ -29,33 +34,43 @@
         </div>
       </div>
       <!-- Right Gap -->
-      <div class="column is-narrow w-24"></div>
+      <div class="column is-narrow w-6"></div>
     </div>
 
     <!-- QR Codes -->
     <div class="columns is-gapless">
       <!-- Left Gap -->
-      <div class="column is-narrow w-24"></div>
+      <div class="column is-narrow w-6"></div>
 
       <!-- Left Column -->
       <div class="column">
         <div class="m-l-24 m-r-24">
           <!-- Menu Page -->
-          <div class="t-h6 c-text-black-disabled m-t-24 p-b-8">{{ $t("admin.qrcode.restaurant") }}</div>
+          <div class="t-h6 c-text-black-disabled m-t-24 p-b-8">
+            {{ $t("admin.qrcode.restaurant") }}
+          </div>
           <div class="bg-surface r-8 d-low p-l-24 p-r-24 p-t-24 p-b-24">
             <!-- QR Code -->
             <div class="align-center" @click="download">
-              <qrcode :value="urlMenu" :options="{ width: 160 }" ref="qrcode" ></qrcode>
+              <qrcode
+                :value="urlMenu"
+                :options="{ width: 160 }"
+                ref="qrcode"
+              ></qrcode>
             </div>
             <!-- Link -->
             <div class="align-center">
               <a :href="urlMenu" target="_blank">
-                <div class="op-button-text t-button">{{ restaurant.restaurantName }}</div>
+                <div class="op-button-text t-button">
+                  {{ restaurant.restaurantName }}
+                </div>
               </a>
             </div>
             <!-- Download -->
             <div class="align-center" @click="download">
-              <div class="op-button-text t-button">{{ $t("admin.qrcode.download") }}</div>
+              <div class="op-button-text t-button">
+                {{ $t("admin.qrcode.download") }}
+              </div>
             </div>
           </div>
         </div>
@@ -66,7 +81,9 @@
         <div class="m-l-24 m-r-24">
           <!-- Trace -->
           <div v-if="trace && regionalSetting.covid19trace">
-            <div class="t-h6 c-text-black-disabled m-t-24 p-b-8">{{ $t("trace.list") }}</div>
+            <div class="t-h6 c-text-black-disabled m-t-24 p-b-8">
+              {{ $t("trace.list") }}
+            </div>
             <div class="bg-surface r-8 d-low p-l-24 p-r-24 p-t-24 p-b-24">
               <!-- Enter -->
               <div>
@@ -77,7 +94,9 @@
                 <!-- Link -->
                 <div class="align-center">
                   <a :href="urlEnter">
-                    <div class="op-button-text t-button">{{ $t("admin.qrcode.enter") }}</div>
+                    <div class="op-button-text t-button">
+                      {{ $t("admin.qrcode.enter") }}
+                    </div>
                   </a>
                 </div>
               </div>
@@ -91,15 +110,21 @@
                 <!-- Link -->
                 <div class="align-center">
                   <a :href="urlLeave">
-                    <div class="op-button-text t-button">{{ $t("admin.qrcode.leave") }}</div>
+                    <div class="op-button-text t-button">
+                      {{ $t("admin.qrcode.leave") }}
+                    </div>
                   </a>
                 </div>
               </div>
 
               <!-- Trace List -->
               <div class="align-center m-t-24">
-                <router-link :to="`/admin/restaurants/${restaurantId()}/traces`">
-                  <div class="op-button-small tertiary">{{ $t("trace.viewList") }}</div>
+                <router-link
+                  :to="`/admin/restaurants/${restaurantId()}/traces`"
+                >
+                  <div class="op-button-small tertiary">
+                    {{ $t("trace.viewList") }}
+                  </div>
                 </router-link>
               </div>
             </div>
@@ -107,7 +132,7 @@
         </div>
       </div>
       <!-- Right Gap -->
-      <div class="column is-narrow w-24"></div>
+      <div class="column is-narrow w-6"></div>
     </div>
   </div>
 </template>
@@ -182,11 +207,11 @@ export default {
   },
   methods: {
     download() {
-      const a = document.createElement('a');
-      a.href = this.$refs.qrcode.$el.toDataURL('image/png');
-      a.download = 'qrcode.png';
+      const a = document.createElement("a");
+      a.href = this.$refs.qrcode.$el.toDataURL("image/png");
+      a.download = "qrcode.png";
       a.click();
-    },
-  },
+    }
+  }
 };
 </script>
