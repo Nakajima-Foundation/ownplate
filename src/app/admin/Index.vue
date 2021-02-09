@@ -243,7 +243,7 @@
               {{ $t("admin.mail.magazine.title") }}
             </div>
 
-            <div class="bg-surface rounded-lg d-low p-t-24 p-b-24">
+            <div class="bg-surface rounded-lg shadow p-t-24 p-b-24">
               <div class="m-l-24 m-r-24">
                 <div class="m-t-8 t-body1 c-text-black-medium">
                   {{ $t("admin.mail.magazine.body") }}

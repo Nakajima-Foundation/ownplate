@@ -4,7 +4,7 @@
       {{ $t("admin.payment") }}
     </div>
 
-    <div class="bg-surface rounded-lg d-low p-t-24 p-b-24" :style="cardStyle">
+    <div class="bg-surface rounded-lg shadow p-t-24 p-b-24" :style="cardStyle">
       <!-- Online Payment -->
       <div class="m-l-24 m-r-24">
         <div class="t-subtitle1 c-text-black-medium">

@@ -2,7 +2,7 @@
   <div>
     <div
       v-if="!hideTable"
-      class="m-t-24 bg-surface rounded-lg d-low p-l-16 p-r-16 p-t-16 p-b-16"
+      class="m-t-24 bg-surface rounded-lg shadow p-l-16 p-r-16 p-t-16 p-b-16"
     >
       <table class="w-full">
         <tr>

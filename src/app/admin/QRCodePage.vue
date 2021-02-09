@@ -49,7 +49,7 @@
           <div class="t-h6 c-text-black-disabled m-t-24 p-b-8">
             {{ $t("admin.qrcode.restaurant") }}
           </div>
-          <div class="bg-surface rounded-lg d-low p-l-24 p-r-24 p-t-24 p-b-24">
+          <div class="bg-surface rounded-lg shadow p-l-24 p-r-24 p-t-24 p-b-24">
             <!-- QR Code -->
             <div class="align-center" @click="download">
               <qrcode
@@ -85,7 +85,7 @@
               {{ $t("trace.list") }}
             </div>
             <div
-              class="bg-surface rounded-lg d-low p-l-24 p-r-24 p-t-24 p-b-24"
+              class="bg-surface rounded-lg shadow p-l-24 p-r-24 p-t-24 p-b-24"
             >
               <!-- Enter -->
               <div>

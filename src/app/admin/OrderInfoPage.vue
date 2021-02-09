@@ -51,7 +51,7 @@
         <div class="column">
           <div class="m-l-24 m-r-24">
             <div
-              class="bg-surface rounded-lg d-low p-l-24 p-r-24 p-t-24 p-b-24 m-t-24"
+              class="bg-surface rounded-lg shadow p-l-24 p-r-24 p-t-24 p-b-24 m-t-24"
             >
               <div>{{ $t("order.status.transaction_hide") }}</div>
             </div>
@@ -66,7 +66,7 @@
         <div class="column">
           <div class="m-l-24 m-r-24">
             <div
-              class="bg-surface rounded-lg d-low p-l-24 p-r-24 p-t-24 p-b-24 m-t-24"
+              class="bg-surface rounded-lg shadow p-l-24 p-r-24 p-t-24 p-b-24 m-t-24"
             >
               <!-- Order Overview -->
               <div>
@@ -173,7 +173,7 @@
                     <!-- CTA: Cancel -->
                     <div class="align-center m-t-16">
                       <b-button
-                        class="b-reset op-button-small d-low bg-status-red w-64"
+                        class="b-reset op-button-small shadow bg-status-red w-64"
                         :loading="updating === 'order_canceled'"
                         @click="handleCancel"
                       >

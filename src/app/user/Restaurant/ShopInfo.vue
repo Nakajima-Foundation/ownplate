@@ -6,7 +6,7 @@
         {{ $t("shopInfo.restaurantDetails") }}
       </div>
 
-      <div class="bg-surface rounded-lg d-low m-t-8 p-b-24">
+      <div class="bg-surface rounded-lg shadow m-t-8 p-b-24">
         <!-- Restaurant Location -->
         <div v-if="hasLocation">
           <GMap

@@ -66,7 +66,7 @@
                 >
                   <!-- Name and Status -->
                   <div
-                    class="flex-1 bg-surface rounded-lg d-low p-l-16 p-r-16 p-t-16 p-b-16 touchable"
+                    class="flex-1 bg-surface rounded-lg shadow p-l-16 p-r-16 p-t-16 p-b-16 touchable"
                     @click="handleToggle(lineUser)"
                   >
                     <!-- Enabled -->

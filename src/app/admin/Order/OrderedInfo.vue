@@ -5,7 +5,7 @@
       <div
         v-if="!restaurant"
         @click="$emit('selected', order)"
-        class="touchable bg-surface rounded-lg d-low p-l-16 p-r-16 p-t-16 p-b-16"
+        class="touchable bg-surface rounded-lg shadow p-l-16 p-r-16 p-t-16 p-b-16"
       >
         <div class="cols flex-center">
           <!-- Order Status -->
@@ -64,7 +64,7 @@
       <div
         v-if="restaurant"
         @click="$emit('selected', order)"
-        class="touchable bg-surface rounded-lg d-low p-l-16 p-r-16 p-t-16 p-b-16"
+        class="touchable bg-surface rounded-lg shadow p-l-16 p-r-16 p-t-16 p-b-16"
       >
         <div class="cols flex-center">
           <!-- Order Status -->

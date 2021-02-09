@@ -156,7 +156,7 @@
     <div class="align-center">
       <a href="/l/tips" target="_blank">
         <div
-          class="op-button-small d-low bg-ownplate-yellow p-l-32 p-r-32 c-text-black-medium"
+          class="op-button-small shadow bg-ownplate-yellow p-l-32 p-r-32 c-text-black-medium"
         >
           もっと詳しく
         </div>

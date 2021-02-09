@@ -34,7 +34,7 @@
           <div v-else-if="likes.length === 0">
             <div class="h-full p-b-8 p-r-8">
               <div
-                class="touchable bg-surface rounded-lg d-low p-l-16 p-r-16 p-t-16 p-b-16 h-full"
+                class="touchable bg-surface rounded-lg shadow p-l-16 p-r-16 p-t-16 p-b-16 h-full"
               >
                 <div class="cols flex-center">
                   No favorite Restaurants

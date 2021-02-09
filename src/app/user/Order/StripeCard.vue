@@ -5,7 +5,7 @@
     </div>
     <div
       v-if="storedCard"
-      class="bg-surface rounded-lg d-low m-t-8 p-l-16 p-r-16 p-t-16 p-b-16"
+      class="bg-surface rounded-lg shadow m-t-8 p-l-16 p-r-16 p-t-16 p-b-16"
     >
       <b-checkbox v-model="useStoredCard">
         <span class="t-body1 c-text-black-high">
@@ -17,7 +17,7 @@
     <div v-show="!useStoredCard">
       <!-- Enter New Card -->
       <div
-        class="bg-surface rounded-lg d-low m-t-8 p-l-16 p-r-16 p-t-16 p-b-16"
+        class="bg-surface rounded-lg shadow m-t-8 p-l-16 p-r-16 p-t-16 p-b-16"
       >
         <div id="card-element"></div>
       </div>

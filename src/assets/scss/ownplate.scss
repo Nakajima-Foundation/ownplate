@@ -198,12 +198,12 @@ html {
 }
 
 // Drop Shadow Styles
-.d-medium {
-  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1);
-}
-.d-low {
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-}
+// .d-medium {
+//   box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1);
+// }
+// .d-low {
+//   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+// }
 
 // Border Styles
 .border-primary {
@@ -423,7 +423,8 @@ body,
   &.primary {
     @extend .bg-primary;
     @extend .c-onprimary;
-    @extend .d-low;
+    // @extend .d-low;
+    @apply shadow;
   }
   &.secondary {
     border: 2px solid map-get($op-colors, primary);
@@ -454,7 +455,8 @@ body,
   &.primary {
     @extend .bg-primary;
     @extend .c-onprimary;
-    @extend .d-medium;
+    // @extend .d-medium;
+    @apply shadow-md;
   }
   &.secondary {
     border: 2px solid map-get($op-colors, primary);
@@ -479,7 +481,8 @@ body,
   &.primary {
     @extend .bg-primary;
     @extend .c-onprimary;
-    @extend .d-medium;
+    // @extend .d-medium;
+    @apply shadow-md;
   }
   &.secondary {
     border: 2px solid map-get($op-colors, primary);
@@ -511,7 +514,8 @@ body,
   @extend .m-l-8;
   @extend .m-r-8;
   @extend .bg-surface;
-  @extend .d-medium;
+  // @extend .d-medium;
+  @apply shadow-lg;
 }
 .modal-content {
   max-height: calc(100vh - 48px);
@@ -530,7 +534,8 @@ body,
   @extend .bg-surface;
 }
 .b-sidebar .sidebar-content {
-  @extend .d-medium;
+  // @extend .d-medium;
+  @apply shadow-lg;
   // @extend .w-72;
   width: 288px;
 }

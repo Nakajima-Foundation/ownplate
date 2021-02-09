@@ -14,7 +14,7 @@
                 {{ $t("profile.title") }}
               </div>
               <div
-                class="bg-surface rounded-lg d-low p-l-24 p-r-24 p-t-24 p-b-24"
+                class="bg-surface rounded-lg shadow p-l-24 p-r-24 p-t-24 p-b-24"
               >
                 <!-- Login Status -->
                 <div class="align-center">

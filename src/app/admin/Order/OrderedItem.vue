@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="bg-surface rounded-lg d-low m-t-8">
+    <div class="bg-surface rounded-lg shadow m-t-8">
       <div class="cols">
         <div class="flex-1 p-l-16 p-r-16 p-t-16 p-b-16">
           <div class="t-h6 c-text-black-high">{{ menu.itemName }}</div>
