@@ -153,7 +153,7 @@
 
     <!-- Main -->
     <div class="main">
-      <div class="contents">
+      <div class="main-contents">
         <div v-if="underConstruction" class="underConstruction">
           {{ $t("underConstruction") }}
         </div>

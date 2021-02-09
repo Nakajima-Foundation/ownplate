@@ -299,7 +299,7 @@ body,
 .main {
   flex: 1;
 }
-.contents {
+.main-contents {
   max-width: 1080px;
   margin: auto;
 }
@@ -549,4 +549,11 @@ body,
   #signInButton {
     transform: scale(0.9);
   }
+}
+
+// # Reset Tailwind CSS
+img,
+svg,
+canvas {
+  display: inline-block;
 }
