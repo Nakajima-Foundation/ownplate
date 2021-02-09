@@ -18,7 +18,7 @@
                 <div>
                   <img
                     :src="resizedProfileImage(shopInfo, '600')"
-                    class="w-8 h-8 r-36 cover"
+                    class="w-9 h-9 rounded-full cover"
                   />
                 </div>
                 <div class="t-h6 c-text-black-high m-l-8 flex-1">
@@ -51,7 +51,9 @@
           </b-select>
 
           <!-- Table -->
-          <div class="m-t-24 bg-surface r-8 d-low p-l-16 p-r-16 p-t-16 p-b-16">
+          <div
+            class="m-t-24 bg-surface rounded-lg d-low p-l-16 p-r-16 p-t-16 p-b-16"
+          >
             <table class="w-full">
               <!-- Table Header -->
               <tr>
@@ -173,7 +175,7 @@
             :fieldNames="fieldNames"
             :fileName="fileName"
           >
-            <b-button class="m-t-16 b-reset h-10 r-36 bg-form">
+            <b-button class="m-t-16 b-reset h-10 rounded-full bg-form">
               <span class="p-l-16 p-r-16">
                 <i class="material-icons c-primary s-18 m-r-8">save_alt</i>
                 <span class="c-primary t-button">{{

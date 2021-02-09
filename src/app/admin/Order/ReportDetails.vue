@@ -2,7 +2,7 @@
   <div>
     <div
       v-if="!hideTable"
-      class="m-t-24 bg-surface r-8 d-low p-l-16 p-r-16 p-t-16 p-b-16"
+      class="m-t-24 bg-surface rounded-lg d-low p-l-16 p-r-16 p-t-16 p-b-16"
     >
       <table class="w-full">
         <tr>
@@ -22,7 +22,7 @@
       :fileName="fileName"
       :formulas="formulas"
     >
-      <b-button class="m-t-16 b-reset h-10 r-36 bg-form">
+      <b-button class="m-t-16 b-reset h-10 rounded-full bg-form">
         <span class="p-l-16 p-r-16">
           <i class="material-icons c-primary s-18 m-r-8">save_alt</i>
           <span class="c-primary t-button">{{

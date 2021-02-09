@@ -22,7 +22,7 @@
                 <div>
                   <img
                     :src="resizedProfileImage(shopInfo, '600')"
-                    class="w-8 h-8 r-36 cover"
+                    class="w-9 h-9 rounded-full cover"
                   />
                 </div>
                 <div class="t-h6 c-text-black-high m-l-8 flex-1">
@@ -84,7 +84,7 @@
             <!-- Unsuspend Button -->
             <div v-else>
               <div
-                class="bg-status-red-bg r-8 p-l-16 p-r-16 p-t-16 p-b-16 m-t-16 align-center"
+                class="bg-status-red-bg rounded-lg p-l-16 p-r-16 p-t-16 p-b-16 m-t-16 align-center"
               >
                 <div class="t-subtitle1 c-status-red">
                   {{ $t("admin.order.suspending") }}

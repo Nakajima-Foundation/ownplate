@@ -4,7 +4,11 @@
     <!-- Center Column -->
     <div class="column">
       <div class="align-center">
-        <b-button class="b-reset h-10 r-36 bg-form" tag="nuxt-link" to="">
+        <b-button
+          class="b-reset h-10 rounded-full bg-form"
+          tag="nuxt-link"
+          to=""
+        >
           <span class="p-l-16 p-r-16">
             <span class="c-primary t-button">もっと詳しく</span>
           </span>

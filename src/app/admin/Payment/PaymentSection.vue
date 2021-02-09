@@ -1,29 +1,33 @@
 <template>
   <div class="m-t-24">
-    <div class="t-h6 c-text-black-disabled m-b-8">{{ $t("admin.payment") }}</div>
+    <div class="t-h6 c-text-black-disabled m-b-8">
+      {{ $t("admin.payment") }}
+    </div>
 
-    <div class="bg-surface r-8 d-low p-t-24 p-b-24" :style="cardStyle">
+    <div class="bg-surface rounded-lg d-low p-t-24 p-b-24" :style="cardStyle">
       <!-- Online Payment -->
       <div class="m-l-24 m-r-24">
-        <div class="t-subtitle1 c-text-black-medium">{{ $t("admin.payments.onlinePayment") }}</div>
-        <div class="m-t-8 t-body1 c-text-black-medium">{{ $t("admin.payments.pleaseConnect") }}</div>
+        <div class="t-subtitle1 c-text-black-medium">
+          {{ $t("admin.payments.onlinePayment") }}
+        </div>
+        <div class="m-t-8 t-body1 c-text-black-medium">
+          {{ $t("admin.payments.pleaseConnect") }}
+        </div>
 
         <!-- Stripe Not Connected -->
         <div v-if="!hasStripe">
           <!-- Stripe Connection Status -->
           <div class="align-center m-t-16">
-            <div
-              class="op-status c-status-red bg-status-red-bg"
-            >{{ $t("admin.payments.statusNotConnected") }}</div>
+            <div class="op-status c-status-red bg-status-red-bg">
+              {{ $t("admin.payments.statusNotConnected") }}
+            </div>
           </div>
 
           <!-- Connect Button -->
           <div class="align-center m-t-16 m-b-24">
             <div class="op-button-small primary" @click="handleLinkStripe">
               <span>
-                {{
-                $t("admin.payments.connectStripe")
-                }}
+                {{ $t("admin.payments.connectStripe") }}
               </span>
             </div>
           </div>
@@ -33,9 +37,9 @@
         <div v-if="hasStripe">
           <!-- Stripe Connection Status -->
           <div class="align-center m-t-16">
-            <div
-              class="op-status c-status-green bg-status-green-bg"
-            >{{ $t("admin.payments.statusConnected") }}</div>
+            <div class="op-status c-status-green bg-status-green-bg">
+              {{ $t("admin.payments.statusConnected") }}
+            </div>
           </div>
 
           <!-- Open Stripe -->
@@ -43,9 +47,7 @@
             <a :href="dashboard" target="stripe">
               <div class="op-button-small secondary">
                 <span class="c-primary">
-                  {{
-                  $t("admin.payments.openDashboard")
-                  }}
+                  {{ $t("admin.payments.openDashboard") }}
                 </span>
               </div>
             </a>
@@ -53,12 +55,13 @@
 
           <!-- Disconnect Button -->
           <div class="align-center m-t-16">
-            <b-button @click="handlePaymentAccountDisconnect" class="b-reset op-button-text">
+            <b-button
+              @click="handlePaymentAccountDisconnect"
+              class="b-reset op-button-text"
+            >
               <i class="material-icons c-status-red">link_off</i>
               <span class="c-status-red">
-                {{
-                $t("admin.payments.disconnectStripe")
-                }}
+                {{ $t("admin.payments.disconnectStripe") }}
               </span>
             </b-button>
           </div>
@@ -69,18 +72,22 @@
 
       <!-- On-site Payment -->
       <div class="m-l-24 m-r-24">
-        <div class="t-subtitle1 c-text-black-medium">{{ $t("admin.payments.onsitePayment") }}</div>
-        <div class="m-t-8 t-body1 c-text-black-medium">{{ $t("admin.payments.pleaseCheck") }}</div>
-        <div class="m-t-8 bg-form r-8 p-l-16 p-r-16 p-t-16 p-b-16">
-          <span class="t-body2 c-status-red">{{ $t("admin.payments.onsitePaymentNote") }}</span>
+        <div class="t-subtitle1 c-text-black-medium">
+          {{ $t("admin.payments.onsitePayment") }}
+        </div>
+        <div class="m-t-8 t-body1 c-text-black-medium">
+          {{ $t("admin.payments.pleaseCheck") }}
+        </div>
+        <div class="m-t-8 bg-form rounded-lg p-l-16 p-r-16 p-t-16 p-b-16">
+          <span class="t-body2 c-status-red">{{
+            $t("admin.payments.onsitePaymentNote")
+          }}</span>
         </div>
 
         <!-- On-site Payment Checkbox -->
         <div class="align-center m-t-24">
           <b-checkbox v-model="inStorePayment">
-            {{
-            $t("admin.payments.enableOnsitePayment")
-            }}
+            {{ $t("admin.payments.enableOnsitePayment") }}
           </b-checkbox>
         </div>
       </div>
@@ -164,7 +171,7 @@ export default {
       }
     },
     unsetWarning(newValue) {
-      this.$emit("updateUnsetWarning", newValue)
+      this.$emit("updateUnsetWarning", newValue);
     }
   },
   computed: {
@@ -181,9 +188,7 @@ export default {
       return !!this.paymentInfo.stripe;
     },
     cardStyle() {
-      return this.unsetWarning
-        ? { border: "solid 2px #b00020" }
-        : {};
+      return this.unsetWarning ? { border: "solid 2px #b00020" } : {};
     },
     unsetWarning() {
       return !this.inStorePayment && !this.hasStripe;
