@@ -297,6 +297,18 @@
                         <i class="material-icons c-status-red s-18 p-l-8 p-r-8">delete</i>
                       </b-button>
                     </div>
+                    プレビュー
+                    <li v-for="(opt, k) in itemOptions[key]">
+                      <b-checkbox v-if="itemOptions[key].length == 1" >
+                        '{{displayOption(opt)}}' {{optionPrice(opt)}}
+                      </b-checkbox> 
+                      <b-radio  v-else
+                                v-model="dummyCheckbox[key]"
+                                :native-value="k"
+                                >
+                        '{{displayOption(opt)}}' {{optionPrice(opt)}}
+                      </b-radio>
+                    </li>
                   </template>
                 </div>
                 <!-- Add Option -->
@@ -453,7 +465,7 @@ import Price from "~/components/Price";
 import { taxRates } from "~/plugins/constant.js";
 import NotificationIndex from "./Notifications/Index";
 import { ownPlateConfig } from "@/config/project";
-import { halfCharactors } from "~/plugins/strings.js";
+import { halfCharactors, formatOption, optionPrice } from "~/plugins/strings.js";
 import EditCategory from "~/app/admin/Menus/EditCategory";
 
 export default {
@@ -469,6 +481,7 @@ export default {
 
   data() {
     return {
+      dummyCheckbox:[],
       menuInfo: {
         itemName: "",
         price: 0,
@@ -537,6 +550,11 @@ export default {
     this.notFound = false;
   },
   computed: {
+    itemOptions() {
+      return this.menuInfo.itemOptionCheckbox.map((v) => {
+        return v.split(',');
+      });
+    },
     categories1() {
       return this.restaurantInfo.category1;
     },
@@ -580,6 +598,16 @@ export default {
     }
   },
   methods: {
+    displayOption(option) {
+      return formatOption(option, price => this.$n(price, "currency"));
+    },
+    optionPrice(str) {
+      const price = optionPrice(str);
+      if (price === 0) {
+        return this.$t("editMenu.free");
+      }
+      return this.$n(price, "currency");
+    },
     async handleCategoryUpdated(categories) {
       await db.doc(`restaurants/${this.restaurantId()}`).update({
         [this.categoryKey]: categories
