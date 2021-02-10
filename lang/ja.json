@@ -194,6 +194,7 @@
     "required": "必須",
     "itemName": "料理/ドリンク名",
     "price": "値段",
+    "free": "無料",
     "tax": "消費税",
     "food": "食品",
     "alcohol": "酒類",

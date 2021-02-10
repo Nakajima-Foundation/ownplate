@@ -194,6 +194,7 @@
     "required": "Requis",
     "itemName": "Nom de l'article",
     "price": "Prix",
+    "free": "Free",
     "tax": "Taxe",
     "food": "Nouriture",
     "alcohol": "Alcool",
