@@ -9,6 +9,11 @@
 @import "./_variables.scss";
 @import "./orders.scss";
 
+// Import Tailwind　CSS
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 // Import OwnPlate Styles
 @import "./reset.scss";
 @import "./ownplate.scss";
