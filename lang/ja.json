@@ -227,11 +227,13 @@
     "likes": "お気に入り",
     "allRestaurants": "お店を探す",
     "areas": {
+      "hokkaido": "北海道",
       "kanto": "関東地方",
       "chubu": "中部地方",
       "hokuriku": "北陸地方",
       "kansai": "関西地方",
-      "chugoku-kyusyu": "中国九州地方",
+      "chugoku": "中国四国地方",
+      "kyusyu": "九州地方",
       "USA": "USA"
     }
   },

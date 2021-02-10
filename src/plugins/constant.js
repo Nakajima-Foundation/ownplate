@@ -316,7 +316,7 @@ export const regionalSettings = {
     defaultLanguage: "ja",
     languages: {
       ja: "日本語",
-      en: "English (US)"
+      en: "English (US)",
     },
     covid19trace: true,
     hashTag: "omochikaeri",

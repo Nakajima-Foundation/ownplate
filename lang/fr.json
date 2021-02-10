@@ -227,11 +227,14 @@
     "likes": "Likes",
     "allRestaurants": "Find Restaurants",
     "areas": {
+      "hokkaido": "Hokkaido Area",
       "kanto": "Kanto Area",
       "chubu": "Chubu Area",
       "hokuriku": "Hokuriku Area",
       "kansai": "Kansai Area",
-      "chugoku-kyusyu": "Chugoku kyusyu Area"
+      "chugoku": "Chugoku Shikoku Area",
+      "kyusyu": "kyusyu Area",
+      "USA": "USA"
     }
   },
   "shopInfo": {
