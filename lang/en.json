@@ -277,7 +277,9 @@
     "onsitePayment": "On Site Payment",
     "noPaymentMethod": "Online Order Unavailable",
     "minimumAvailableTime": "Minimum available time",
-    "noAvailableTime": "No orderable time"
+    "noAvailableTime": "No orderable time",
+    "viewMore": "View More",
+    "viewLess": "Close"
   },
   "transactionsAct": {
     "title": "Specified Commercial Transaction Act",
