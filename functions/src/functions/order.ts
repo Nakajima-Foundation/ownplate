@@ -267,7 +267,7 @@ export const wasOrderCreated = async (db, data: any, context) => {
     const multiple = utils.getStripeRegion().multiple; //100 for USD, 1 for JPY
 
     const menuIds = Object.keys(orderData.order);
-    const menuObj = await utils.getMenuObj(restaurantRef);
+    const menuObj = await utils.getMenuObj(restaurantRef, menuIds);
 
     let food_sub_total = 0;
     let alcohol_sub_total = 0;

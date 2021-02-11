@@ -3,6 +3,8 @@ import { stripe_regions, regionalSettings } from '../common/constant'
 import Stripe from 'stripe'
 import * as Sentry from '@sentry/node';
 
+import * as admin from 'firebase-admin';
+
 export const getRegion = () => {
   const locale = functions.config().locale;
   return (locale && locale.region) || "US";
@@ -84,11 +86,29 @@ export const optionPrice = (option: string) => {
   return 0;
 }
 
-export const getMenuObj = async (refRestaurant) => {
+const chunk = (arr: string[], chunkSize: number) => {
+  const ret: string[][] = [];
+  let len = arr.length;
+  for (let i=0; i < len;  i += chunkSize) {
+    const tmp = arr.slice(i, i + chunkSize);
+    ret.push(tmp);
+  }
+  return ret;
+}
+
+export const getMenuObj = async (refRestaurant, menuIds) => {
   const menuObj = {};
-  const menusCollections = await refRestaurant.collection("menus").get();
-  menusCollections.forEach((m) => {
-    menuObj[m.id] = m.data();
-  });
+  
+  await Promise.all(chunk(menuIds, 10).map((async (menuIdsChunk) => {
+    const menusCollections = await refRestaurant.collection("menus").where(
+      admin.firestore.FieldPath.documentId(),
+      'in',
+      menuIdsChunk,
+    ).get();
+    menusCollections.forEach((m) => {
+      menuObj[m.id] = m.data();
+    });
+    return 
+  })));
   return menuObj;
 };
