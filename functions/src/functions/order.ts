@@ -241,7 +241,7 @@ export const wasOrderCreated = async (db, data: any, context) => {
     if (!restaurantDoc.exists) {
       return orderRef.update("status", order_status.error);
     }
-    let restaurantData = restaurantDoc.data();
+    const restaurantData = restaurantDoc.data();
 
     if (restaurantData.deletedFlag || !restaurantData.publicFlag) {
       return orderRef.update("status", order_status.error);
@@ -351,14 +351,14 @@ export const wasOrderCreated = async (db, data: any, context) => {
     }
 
     // Atomically increment the orderCount of the restaurant
-    let number = 0;
+    let orderCount = 0;
     await db.runTransaction(async (tr) => {
       // We need to read restaurantData again for this transaction
-      restaurantData = (await restaurantRef.get()).data();
-      if (restaurantData) {
-        number = restaurantData.orderCount || 0;
+      const trRestaurantData = (await tr.get(restaurantRef)).data();
+      if (trRestaurantData) {
+        orderCount = trRestaurantData.orderCount || 0;
         await tr.update(restaurantRef, {
-          orderCount: (number + 1) % 1000000
+          orderCount: (orderCount + 1) % 1000000
         });
       }
     });
@@ -369,7 +369,7 @@ export const wasOrderCreated = async (db, data: any, context) => {
       menuItems: newItems, // Clone of ordered menu items (simplified)
       prices: newPrices,
       status: order_status.validation_ok,
-      number,
+      number: orderCount,
       sub_total,
       tax,
       inclusiveTax,
