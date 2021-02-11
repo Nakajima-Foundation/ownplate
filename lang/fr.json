@@ -194,6 +194,10 @@
     "required": "Requis",
     "itemName": "Nom de l'article",
     "price": "Prix",
+    "free": "Free",
+		    "optionsPreview": "Aperçu des options",
+    "priceChange": "Changement de prix",
+		"noPriceChange": "Pas de changement",
     "tax": "Taxe",
     "food": "Nouriture",
     "alcohol": "Alcool",
@@ -227,11 +231,14 @@
     "likes": "Likes",
     "allRestaurants": "Find Restaurants",
     "areas": {
+      "hokkaido": "Hokkaido Area",
       "kanto": "Kanto Area",
       "chubu": "Chubu Area",
       "hokuriku": "Hokuriku Area",
       "kansai": "Kansai Area",
-      "chugoku-kyusyu": "Chugoku kyusyu Area"
+      "chugoku": "Chugoku Shikoku Area",
+      "kyusyu": "kyusyu Area",
+      "USA": "USA"
     }
   },
   "shopInfo": {

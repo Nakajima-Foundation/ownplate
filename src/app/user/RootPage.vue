@@ -127,12 +127,19 @@ export default {
         ownPlateConfig.region == "JP"
         ? [
           {
+            name: "hokkaido",
+            items: [
+              { name: "北海道", id: 0 },
+            ]
+          },
+          {
             name: "kanto",
             items: [
               { name: "東京都", id: 12 },
               { name: "千葉県", id: 11 },
               { name: "群馬県", id: 9 },
               { name: "埼玉県", id: 10 },
+              { name: "栃木県", id: 8 },
             ]
           },
           {
@@ -147,6 +154,7 @@ export default {
             name: "hokuriku",
             items: [
               { name: "新潟県", id: 14 },
+              { name: "富山県", id: 15 },
               { name: "福井県", id: 17 },
             ],
           },
@@ -160,10 +168,15 @@ export default {
             ],
           },
           {
-            name: "chugoku-kyusyu",
+            name: "chugoku",
             items: [
               { name: "広島県", id: 33 },
               { name: "愛媛県", id: 37 },
+            ]
+          },
+          {
+            name: "kyusyu",
+            items: [
               { name: "福岡県", id: 39 },
               { name: "長崎県", id: 41 }
             ]
