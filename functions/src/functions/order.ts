@@ -266,7 +266,8 @@ export const wasOrderCreated = async (db, data: any, context) => {
     const foodTax = restaurantData.foodTax || 0;
     const multiple = utils.getStripeRegion().multiple; //100 for USD, 1 for JPY
 
-    const menuObj = await utils.getMenuObj(restaurantRef);
+    const menuIds = Object.keys(orderData.order);
+    const menuObj = await utils.getMenuObj(restaurantRef, menuIds);
 
     let food_sub_total = 0;
     let alcohol_sub_total = 0;
@@ -274,12 +275,12 @@ export const wasOrderCreated = async (db, data: any, context) => {
     const newOrderData = {};
     const newItems = {};
     const newPrices = {};
-    if (Object.keys(orderData.order).some((menuId) => {
+    if (menuIds.some((menuId) => {
       return menuObj[menuId] === undefined;
     })) {
       return orderRef.update("status", order_status.error);
     }
-    Object.keys(orderData.order).map((menuId) => {
+    menuIds.map((menuId) => {
       newOrderData[menuId] = [];
       newItems[menuId] = {};
       newPrices[menuId] = [];
