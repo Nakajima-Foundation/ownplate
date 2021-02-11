@@ -277,7 +277,9 @@
     "onsitePayment": "Paiement à la Livraison",
     "noPaymentMethod": "Commande en ligne indisponible",
     "minimumAvailableTime": "Temps disponible minimum",
-    "noAvailableTime": "Aucun de temps de commande"
+    "noAvailableTime": "Aucun de temps de commande",
+		"viewMore": "Voir plus",
+    "viewLess": "Proche"
   },
   "transactionsAct": {
     "title": "Loi sur les transactions commerciales spécifiées",

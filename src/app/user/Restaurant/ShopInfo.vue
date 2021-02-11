@@ -61,140 +61,146 @@
           </div>
         </div>
 
-        <!-- Restaurant Website -->
-        <div v-if="hasUrl" class="m-t-8 m-l-16 m-r-16">
-          <a target="_blank" :href="this.shopInfo.url">
-            <div class="op-button-text">
-              <i class="material-icons">language</i>
-              <span>{{ this.shopInfo.url }}</span>
-            </div>
-          </a>
-        </div>
-
-        <!-- Restaurant LINE -->
-        <div v-if="hasLineUrl" class="m-t-8 m-l-16 m-r-16">
-          <a target="_blank" :href="this.shopInfo.lineUrl">
-            <div class="op-button-text" style="color:#4EC263;">
-              <i class="fab fa-line fa-lg m-r-8"></i>
-              <span>{{ this.shopInfo.lineUrl }}</span>
-            </div>
-          </a>
-        </div>
-
-        <!-- Restaurant Instagram -->
-        <div v-if="hasInstagramUrl" class="m-t-8 m-l-16 m-r-16">
-          <a target="_blank" :href="this.shopInfo.instagramUrl">
-            <div class="op-button-text" style="color:#DD2A7B;">
-              <i class="fab fa-instagram fa-lg m-r-8"></i>
-              <span>{{ this.shopInfo.instagramUrl }}</span>
-            </div>
-          </a>
-        </div>
-
-        <!-- Transactions Act -->
-        <div class="m-t-8 m-l-16 m-r-16">
-          <transactions-act></transactions-act>
-        </div>
-
-        <!-- Restaurant Hours -->
-        <div class="m-l-16 m-r-16 m-t-16">
-          <div class="t-subtitle2 c-text-black-medium p-l-8">
-            {{ $t("shopInfo.hours") }}
-          </div>
-          <template v-for="(day, key) in days">
-            <div
-              class="cols p-l-8 p-r-8 p-t-4 p-b-4 r-4 t-body2"
-              :style="
-                weekday == key % 7
-                  ? { 'background-color': 'rgba(104, 159, 56, 0.1)' }
-                  : {}
-              "
-            >
-              <div class="w-64">{{ $t("week.short." + day) }}</div>
-              <div class="flex-1">
-                <template v-if="shopInfo.businessDay[key]">
-                  <template v-for="data in shopInfo.openTimes[key]">
-                    <template v-if="validDate(data)">
-                      {{ num2time(data.start) }} - {{ num2time(data.end) }}
-                      <br />
-                    </template>
-                  </template>
-                </template>
-                <template v-else>{{ $t("shopInfo.closed") }}</template>
-              </div>
-              <div>
-                <template v-if="isOpen[key]">
-                  <span class="c-status-green">Open</span>
-                </template>
-              </div>
-            </div>
-          </template>
-        </div>
-        <!-- # Want to update to popup version -->
-        <!--
-				<div class="align-center">
-          <div class="op-status c-status-green bg-status-green-bg m-t-16">Open Now</div>
-          <div class="p-t-8 t-caption c-status-green">Tue 4:30 AM - 9:00 PM</div>
-        </div>
-        <div class="align-center">
-          <div class="op-button-text m-t-8 m-b-16">
-            <span>View All Hours</span>
-          </div>
-        </div>
-        -->
-
-        <!-- Payment Method -->
-        <div class="m-t-8 m-l-16 m-r-16">
-          <div class="t-subtitle2 c-text-black-medium p-l-8">
-            {{ $t("shopInfo.paymentMethod") }}
-          </div>
-          <div class="is-inline-flex flex-center m-l-8">
-            <span class="t-body2">
-              <span v-if="showPayment">{{ $t("shopInfo.onlinePayment") }}</span>
-              <span v-if="showPayment && inStorePayment">/</span>
-              <span v-if="inStorePayment">{{
-                $t("shopInfo.onsitePayment")
-              }}</span>
-              <span v-if="!showPayment && !inStorePayment">{{
-                $t("shopInfo.noPaymentMethod")
-              }}</span>
-            </span>
-          </div>
-        </div>
-
-        <!-- Minimum Available Time -->
-        <div class="m-t-8 m-l-16 m-r-16">
-          <div class="t-subtitle2 c-text-black-medium p-l-8">
-            {{ $t("shopInfo.minimumAvailableTime") }}
-          </div>
-          <div class="is-inline-flex flex-center m-l-8">
-            <span class="t-body2">{{ minimumAvailableTime }}</span>
-          </div>
-        </div>
-
         <!-- Minimum Available Time -->
         <div
-          class="m-t-8 m-l-16 m-r-16"
-          v-if="
-            shopInfo.temporaryClosure && shopInfo.temporaryClosure.length > 0
-          "
+          class="m-t-8 m-l-16 m-r-16 bg-status-blue-bg r-8 p-l-16 p-r-16 p-t-8 p-b-8"
         >
-          <div class="t-subtitle2 c-text-black-medium p-l-8">
-            {{ $t("shopInfo.temporaryClosure") }}
+          <div class="t-subtitle2 c-text-black-medium">
+            {{ $t("shopInfo.minimumAvailableTime") }}
           </div>
+          <div class="t-body2">
+            {{ minimumAvailableTime }}
+          </div>
+        </div>
+
+        <!-- More Info Button -->
+        <div class="align-center p-t-16">
           <div
-            class="flex-center m-l-8"
-            v-for="(day, key) in shopInfo.temporaryClosure || []"
+            @click="toggleMoreInfo()"
+            class="op-button-pill bg-form w-128 t-subtitle2"
           >
-            <span class="t-body2">
-              {{ moment(day.toDate()).format("YYYY/MM/DD") }}
-              {{
-                $t(
-                  "week.short." +
-                    days[Number(moment(day.toDate()).format("e")) || 7]
-                )
-              }} </span
-            ><br />
+            <div v-if="moreInfo">{{ $t("shopInfo.viewLess") }}</div>
+            <div v-else>{{ $t("shopInfo.viewMore") }}</div>
+          </div>
+        </div>
+
+        <!-- More Info -->
+        <div v-if="moreInfo">
+          <!-- Restaurant Website -->
+          <div v-if="hasUrl" class="m-t-8 m-l-16 m-r-16">
+            <a target="_blank" :href="this.shopInfo.url">
+              <div class="op-button-text">
+                <i class="material-icons">language</i>
+                <span>{{ this.shopInfo.url }}</span>
+              </div>
+            </a>
+          </div>
+
+          <!-- Restaurant LINE -->
+          <div v-if="hasLineUrl" class="m-t-8 m-l-16 m-r-16">
+            <a target="_blank" :href="this.shopInfo.lineUrl">
+              <div class="op-button-text" style="color:#4EC263;">
+                <i class="fab fa-line fa-lg m-r-8"></i>
+                <span>{{ this.shopInfo.lineUrl }}</span>
+              </div>
+            </a>
+          </div>
+
+          <!-- Restaurant Instagram -->
+          <div v-if="hasInstagramUrl" class="m-t-8 m-l-16 m-r-16">
+            <a target="_blank" :href="this.shopInfo.instagramUrl">
+              <div class="op-button-text" style="color:#DD2A7B;">
+                <i class="fab fa-instagram fa-lg m-r-8"></i>
+                <span>{{ this.shopInfo.instagramUrl }}</span>
+              </div>
+            </a>
+          </div>
+
+          <!-- Transactions Act -->
+          <div class="m-t-8 m-l-16 m-r-16">
+            <transactions-act></transactions-act>
+          </div>
+
+          <!-- Restaurant Hours -->
+          <div class="m-l-16 m-r-16 m-t-16">
+            <div class="t-subtitle2 c-text-black-medium p-l-8">
+              {{ $t("shopInfo.hours") }}
+            </div>
+            <template v-for="(day, key) in days">
+              <div
+                class="cols p-l-8 p-r-8 p-t-4 p-b-4 r-4 t-body2"
+                :style="
+                  weekday == key % 7
+                    ? { 'background-color': 'rgba(104, 159, 56, 0.1)' }
+                    : {}
+                "
+              >
+                <div class="w-64">{{ $t("week.short." + day) }}</div>
+                <div class="flex-1">
+                  <template v-if="shopInfo.businessDay[key]">
+                    <template v-for="data in shopInfo.openTimes[key]">
+                      <template v-if="validDate(data)">
+                        {{ num2time(data.start) }} - {{ num2time(data.end) }}
+                        <br />
+                      </template>
+                    </template>
+                  </template>
+                  <template v-else>{{ $t("shopInfo.closed") }}</template>
+                </div>
+                <div>
+                  <template v-if="isOpen[key]">
+                    <span class="c-status-green">Open</span>
+                  </template>
+                </div>
+              </div>
+            </template>
+          </div>
+
+          <!-- Payment Method -->
+          <div class="m-t-8 m-l-16 m-r-16">
+            <div class="t-subtitle2 c-text-black-medium p-l-8">
+              {{ $t("shopInfo.paymentMethod") }}
+            </div>
+            <div class="is-inline-flex flex-center m-l-8">
+              <span class="t-body2">
+                <span v-if="showPayment">{{
+                  $t("shopInfo.onlinePayment")
+                }}</span>
+                <span v-if="showPayment && inStorePayment">/</span>
+                <span v-if="inStorePayment">{{
+                  $t("shopInfo.onsitePayment")
+                }}</span>
+                <span v-if="!showPayment && !inStorePayment">{{
+                  $t("shopInfo.noPaymentMethod")
+                }}</span>
+              </span>
+            </div>
+          </div>
+
+          <!-- Temporary Closure -->
+          <div
+            class="m-t-8 m-l-16 m-r-16"
+            v-if="
+              shopInfo.temporaryClosure && shopInfo.temporaryClosure.length > 0
+            "
+          >
+            <div class="t-subtitle2 c-text-black-medium p-l-8">
+              {{ $t("shopInfo.temporaryClosure") }}
+            </div>
+            <div
+              class="flex-center m-l-8"
+              v-for="(day, key) in shopInfo.temporaryClosure || []"
+            >
+              <span class="t-body2">
+                {{ moment(day.toDate()).format("YYYY/MM/DD") }}
+                {{
+                  $t(
+                    "week.short." +
+                      days[Number(moment(day.toDate()).format("e")) || 7]
+                  )
+                }} </span
+              ><br />
+            </div>
           </div>
         </div>
       </div>
@@ -237,6 +243,7 @@ export default {
   data() {
     const d = new Date();
     return {
+      moreInfo: false,
       url: this.shareUrl(),
       days: daysOfWeek,
       weekday: d.getDay(),
@@ -334,6 +341,9 @@ export default {
     this.updateMap();
   },
   methods: {
+    toggleMoreInfo() {
+      this.moreInfo = !this.moreInfo;
+    },
     updateMap() {
       if (this.hasLocation) {
         if (this.$refs.gMap && this.$refs.gMap.map) {
