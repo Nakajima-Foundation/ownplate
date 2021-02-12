@@ -136,7 +136,9 @@
       "six": "From 6 day in advance",
       "seven": "From 7 day in advance",
       "twoWeeks": "From two weeks in advance",
-      "threeWeeks": "From three weeks in advance"
+      "threeWeeks": "From three weeks in advance",
+      "twoMonths": "From two months in advance",
+      "threeMonths": "From three months in advance"
     },
     "minimumCookTime": {
       "halfHour": "30 minutes",

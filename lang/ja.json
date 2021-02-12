@@ -136,7 +136,9 @@
       "six": "6日前から予約可能",
       "seven": "7日前から予約可能",
       "twoWeeks": "2週間前から予約可能",
-      "threeWeeks": "3週間前から予約可能"
+      "threeWeeks": "3週間前から予約可能",
+      "twoMonths": "2ヶ月前から予約可能",
+      "threeMonths": "3ヶ月前から予約可能"
     },
     "minimumCookTime": {
       "halfHour": "30分",
