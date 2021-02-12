@@ -1,22 +1,41 @@
 <template>
   <b-modal :active.sync="isVisible" :width="488">
-    <div class="op-dialog p-t-24 p-l-24 p-r-24 p-b-24">
-      <div style="height:16em;overflow-y:scroll;border:1px #ccc solid;border-radius:4px">
-        <div class="p-l-4 p-r-4" v-for="(category, index) in categories" :key="category">
-          <span style="position:relative; top:10px">{{ category }}</span>
-          <b-button class="b-reset h-36 m-l-8" @click="handleDelete(index)">
-            <i class="material-icons c-status-red s-18 p-l-8 p-r-8">delete</i>
-          </b-button>
+    <div class="op-dialog p-t-16 p-l-24 p-r-24 p-b-24">
+      <!-- Items List -->
+      <div class="p-b-8">
+        <div
+          v-for="(category, index) in categories"
+          :key="category"
+          class="bg-form cols flex-center r-4 m-t-8"
+        >
+          <div class="flex-1 p-l-16 p-t-8 p-b-8">
+            <span>{{ category }}</span>
+          </div>
+          <div>
+            <b-button
+              class="b-reset op-button-text bg-transparent"
+              @click="handleDelete(index)"
+            >
+              <i class="material-icons c-status-red s-18 p-l-8 p-r-8">delete</i>
+            </b-button>
+          </div>
         </div>
       </div>
-      <div class="cols m-t-16">
-        <b-input class="flex-1" placeholder="New Category" v-model="newEntry" />
+
+      <!-- Add Item -->
+      <div class="cols">
+        <b-input
+          class="flex-1"
+          :placeholder="$t('editMenu.newCategory')"
+          v-model="newEntry"
+        />
         <b-button
           :disabled="!isValidEntry"
-          class="b-reset m-l-8 op-button-pill h-36 bg-form"
+          class="b-reset m-l-8 op-button-pill bg-form t-button"
           @click="handleAdd"
         >
-          <i class="material-icons c-primary">add</i>
+          <i class="material-icons c-primary p-l-8">add</i>
+          <span class="c-primary">{{ $t("editMenu.newCategoryAdd") }}</span>
         </b-button>
       </div>
     </div>

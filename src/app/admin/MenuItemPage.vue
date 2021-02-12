@@ -100,7 +100,7 @@
         <div class="column">
           <div class="m-l-24 m-r-24">
             <!-- Item Name -->
-            <div class="m-t-16">
+            <div class="m-t-24">
               <div class="t-subtitle2 c-text-black-medium p-b-8">
                 {{ $t("editMenu.itemName") }}
                 <span class="c-status-red">*</span>
@@ -118,7 +118,7 @@
             </div>
 
             <!-- Item Price -->
-            <div class="m-t-16">
+            <div class="m-t-24">
               <div class="t-subtitle2 c-text-black-medium p-b-8">
                 {{ $t("editMenu.price") }}
                 <span class="c-status-red">*</span>
@@ -148,7 +148,7 @@
             </div>
 
             <!-- Item Tax -->
-            <div class="m-t-16">
+            <div class="m-t-24">
               <div class="t-subtitle2 c-text-black-medium p-b-8">
                 {{ $t("editMenu.tax") }}
                 <span class="c-status-red">*</span>
@@ -175,7 +175,10 @@
             </div>
 
             <!-- Price Example -->
-            <div v-if="requireTaxPriceDisplay" class="m-t-16">
+            <div
+              v-if="requireTaxPriceDisplay"
+              class="m-t-24 bg-form r-8 p-l-16 p-r-16 p-t-16 p-b-16"
+            >
               <span class="t-subtitle2"
                 >{{ $t("editMenu.displayPrice") }}:</span
               >
@@ -185,7 +188,7 @@
             </div>
 
             <!-- Allergens -->
-            <div class="m-t-16">
+            <div class="m-t-24">
               <div class="t-subtitle2 c-text-black-medium p-b-8">
                 {{ $t("allergens.title") }}
                 <span class="c-status-red"></span>
@@ -202,7 +205,7 @@
             </div>
 
             <!-- Item Description -->
-            <div class="m-t-16">
+            <div class="m-t-24">
               <div class="t-subtitle2 c-text-black-medium p-b-8">
                 {{ $t("editMenu.itemDescription") }}
                 <span class="c-status-red"></span>
@@ -225,7 +228,7 @@
             </div>
 
             <!-- Item Memo -->
-            <div class="m-t-16">
+            <div class="m-t-24">
               <div class="t-subtitle2 c-text-black-medium p-b-8">
                 {{ $t("editMenu.itemMemo") }}
                 <span class="c-status-red"></span>
@@ -247,7 +250,7 @@
         <div class="column">
           <div class="m-l-24 m-r-24">
             <!-- Item Photo -->
-            <div class="m-t-16">
+            <div class="m-t-24">
               <div class="t-subtitle2 c-text-black-medium p-b-8">
                 {{ $t("editMenu.itemPhoto") }}
               </div>
@@ -293,7 +296,7 @@
             </div>
 
             <!-- Item Options -->
-            <div class="m-t-16">
+            <div class="m-t-24">
               <div class="t-subtitle2 c-text-black-medium p-b-8">
                 {{ $t("editMenu.itemOptions") }}
                 <span class="c-status-red"></span>
@@ -378,58 +381,81 @@
               </div>
             </div>
 
-            <!-- Category 1 -->
-            <div class="m-t-16">
+            <!-- CSV Categories -->
+            <div class="m-t-24">
               <div class="t-subtitle2 c-text-black-medium p-b-8">
-                {{ $t("editMenu.category1") }}
+                {{ $t("editMenu.csvCategories") }}
               </div>
-              <b-select
-                v-if="categories1.length > 0"
-                v-model="menuInfo.category1"
-              >
-                <option
-                  v-for="category in categories1"
-                  :key="category"
-                  :value="category"
-                  >{{ category }}</option
-                >
-              </b-select>
-              <div class="m-t-8">
-                <b-button
-                  class="b-reset op-button-pill h-36 bg-form"
-                  @click="editCategory('category1')"
-                >
-                  <span class="c-primary t-button">
-                    {{ $t("editMenu.editCategory1") }}
-                  </span>
-                </b-button>
+
+              <div class="t-body2 c-text-black-medium p-b-8">
+                {{ $t("editMenu.csvCategoriesNote") }}
               </div>
-            </div>
-            <!-- Category 2 -->
-            <div class="m-t-16">
-              <div class="t-subtitle2 c-text-black-medium p-b-8">
-                {{ $t("editMenu.category2") }}
-              </div>
-              <b-select
-                v-if="categories2.length > 0"
-                v-model="menuInfo.category2"
-              >
-                <option
-                  v-for="category in categories2"
-                  :key="category"
-                  :value="category"
-                  >{{ category }}</option
-                >
-              </b-select>
-              <div class="m-t-8">
-                <b-button
-                  class="b-reset op-button-pill h-36 bg-form"
-                  @click="editCategory('category2')"
-                >
-                  <span class="c-primary t-button">
-                    {{ $t("editMenu.editCategory2") }}
-                  </span>
-                </b-button>
+
+              <div class="bg-form r-8 p-l-16 p-r-16 p-t-8 p-b-8">
+                <!-- Category 1 -->
+                <div>
+                  <div class="cols flex-center">
+                    <div class="flex-1 t-subtitle2 c-text-black-disabled">
+                      {{ $t("editMenu.category1") }}
+                    </div>
+                    <div>
+                      <b-button
+                        class="b-reset op-button-text bg-transparent"
+                        @click="editCategory('category1')"
+                      >
+                        <span class="c-primary t-button">
+                          {{ $t("editMenu.editCategory1") }}
+                        </span>
+                      </b-button>
+                    </div>
+                  </div>
+
+                  <b-select
+                    v-if="categories1.length > 0"
+                    v-model="menuInfo.category1"
+                    expanded
+                  >
+                    <option
+                      v-for="category in categories1"
+                      :key="category"
+                      :value="category"
+                      >{{ category }}</option
+                    >
+                  </b-select>
+                </div>
+
+                <!-- Category 2 -->
+                <div>
+                  <div class="cols flex-center">
+                    <div class="flex-1 t-subtitle2 c-text-black-disabled">
+                      {{ $t("editMenu.category2") }}
+                    </div>
+                    <div>
+                      <b-button
+                        class="b-reset op-button-text bg-transparent"
+                        @click="editCategory('category2')"
+                      >
+                        <span class="c-primary t-button">
+                          {{ $t("editMenu.editCategory2") }}
+                        </span>
+                      </b-button>
+                    </div>
+                  </div>
+
+                  <b-select
+                    v-if="categories2.length > 0"
+                    v-model="menuInfo.category2"
+                    expanded
+                    class="m-b-8"
+                  >
+                    <option
+                      v-for="category in categories2"
+                      :key="category"
+                      :value="category"
+                      >{{ category }}</option
+                    >
+                  </b-select>
+                </div>
               </div>
             </div>
           </div>
