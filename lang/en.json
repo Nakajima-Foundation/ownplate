@@ -313,6 +313,7 @@
     "checkout": "Checkout",
     "orderCounter": "{count} item | {count} items",
     "add": "Add",
+    "soldOut": "Sold Out",
     "options": "Options",
     "subTotal": "Subtotal: ",
     "quantity": "Quantity",

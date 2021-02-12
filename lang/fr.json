@@ -313,9 +313,11 @@
     "checkout": "Payement",
     "orderCounter": "{count} article | {count} artciles",
     "add": "Ajouter",
+		"soldOut": "Complet",
 		"options": "Options",
 		"subTotal": "Sous-total: ",
-    "quantity": "Quantité"
+    "quantity": "Quantité",
+		"addDifferentOptionsItem": "Add Different Options Item"
   },
   "date": {
     "today": "Aujourd'hui"

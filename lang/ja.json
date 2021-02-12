@@ -313,6 +313,7 @@
     "checkout": "お会計",
     "orderCounter": "{count} 個",
     "add": "追加",
+    "soldOut": "売り切れ",
     "options": "オプション",
     "subTotal": "小計: ",
     "quantity": "数量",
