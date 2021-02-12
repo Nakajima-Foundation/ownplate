@@ -14,6 +14,9 @@ import { ownPlateConfig } from '../common/project';
 import { createCustomer } from '../stripe/customer';
 import moment from 'moment-timezone';
 
+import { Context } from '../models/TestType'
+import * as firebase from "@firebase/rules-unit-testing";
+console.log(firebase);
 import * as twilio from './twilio';
 
 export const nameOfOrder = (orderNumber: number) => {
@@ -21,7 +24,8 @@ export const nameOfOrder = (orderNumber: number) => {
 };
 
 // This function is called by users to place orders without paying
-export const place = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
+// export const place = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
+export const place = async (db: FirebaseFirestore.Firestore | any, data: any, context: functions.https.CallableContext | Context) => {
   const uid = utils.validate_auth(context);
   const { restaurantId, orderId, tip, sendSMS, timeToPickup, lng, memo } = data;
   utils.validate_params({ restaurantId, orderId }) // tip, sendSMS and lng are optinoal
@@ -32,7 +36,7 @@ export const place = async (db: FirebaseFirestore.Firestore, data: any, context:
 
     let orderNumber: number = 0;
     const result = await db.runTransaction(async transaction => {
-      const order = Order.fromSnapshot<Order>(await transaction.get(orderRef))
+      const order = (await transaction.get(orderRef)).data();
       if (!order) {
         throw new functions.https.HttpsError('invalid-argument', 'This order does not exist.')
       }
@@ -46,6 +50,15 @@ export const place = async (db: FirebaseFirestore.Firestore, data: any, context:
       const multiple = utils.getStripeRegion().multiple; // 100 for USD, 1 for JPY
       const roundedTip = Math.round(tip * multiple) / multiple
 
+      // transaction for stock orderTotal
+      const menuIds = Object.keys(order.order);
+      menuIds.map((menuId) => {
+        const numArray = Array.isArray(order.order[menuId]) ? order.order[menuId] : [order.order[menuId]];
+        numArray.map((num, orderKey) => {
+          // TODO read and write total counter
+        });
+      });
+      
       transaction.update(orderRef, {
         status: order_status.order_placed,
         totalCharge: order.total + tip,
@@ -291,7 +304,7 @@ export const wasOrderCreated = async (db, data: any, context) => {
       numArray.map((num, orderKey) => {
         //const num = orderData.order[menuId];
         if (!Number.isInteger(num)) {
-        throw new Error("invalid number: not integer");
+          throw new Error("invalid number: not integer");
         }
         if (num < 0) {
           throw new Error("invalid number: negative number");

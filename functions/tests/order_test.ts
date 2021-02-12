@@ -7,8 +7,9 @@ import * as utils from './../src/lib/utils'
 import * as constant from './../src/common/constant';
 import * as test_db_helper from './test_db_helper';
 
-const adminDB = test_db_helper.adminDB();
+import { Context } from '../src/models/TestType'
 
+const adminDB = test_db_helper.adminDB();
 should()
 
 describe('Order function', () => {
@@ -113,7 +114,7 @@ describe('Order function', () => {
 
       await createOrder(restaurantId, orderId, data);
       const newOrderData = (await adminDB.doc(`restaurants/${restaurantId}/orders/${orderId}`).get()).data() || {};
-
+      newOrderData["orderId"] = orderId;
       index ++;
       return newOrderData;
     };
@@ -191,6 +192,13 @@ describe('Order function', () => {
     newOrderData10.status.should.equal(constant.order_status.error);
 
 
+    const newOrderData12 =  await makeOrder({
+      hoge1: 1,
+    });
+    const uid = "123";
+    const { orderId } = newOrderData12;
+    const placed = await order.place(adminDB, {restaurantId, orderId}, {auth: { uid, token:{ phone_number: "xxxx"}}} as Context );
+    console.log(placed);
 
 
 
