@@ -15,8 +15,6 @@ import { createCustomer } from '../stripe/customer';
 import moment from 'moment-timezone';
 
 import { Context } from '../models/TestType'
-import * as firebase from "@firebase/rules-unit-testing";
-console.log(firebase);
 import * as twilio from './twilio';
 
 export const nameOfOrder = (orderNumber: number) => {
@@ -25,7 +23,7 @@ export const nameOfOrder = (orderNumber: number) => {
 
 // This function is called by users to place orders without paying
 // export const place = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
-export const place = async (db: FirebaseFirestore.Firestore | any, data: any, context: functions.https.CallableContext | Context) => {
+ export const place = async (db, data: any, context: functions.https.CallableContext | Context) => {
   const uid = utils.validate_auth(context);
   const { restaurantId, orderId, tip, sendSMS, timeToPickup, lng, memo } = data;
   utils.validate_params({ restaurantId, orderId }) // tip, sendSMS and lng are optinoal
@@ -52,12 +50,32 @@ export const place = async (db: FirebaseFirestore.Firestore | any, data: any, co
 
       // transaction for stock orderTotal
       const menuIds = Object.keys(order.order);
-      menuIds.map((menuId) => {
+      const now = moment().tz("Asia/Tokyo").format('YYYYMMDD');
+      
+      await Promise.all(menuIds.map(async (menuId) => {
         const numArray = Array.isArray(order.order[menuId]) ? order.order[menuId] : [order.order[menuId]];
-        numArray.map((num, orderKey) => {
-          // TODO read and write total counter
-        });
-      });
+        await Promise.all(numArray.map(async (num, orderKey) => {
+          const path = `restaurants/${restaurantId}/menus/${menuId}/orderTotal/${now}`
+          const totalRef = db.doc(path)
+          const total = (await transaction.get(totalRef)).data();
+
+          if (!total) {
+            const data = {
+              uid: restaurantData.uid,
+              restaurantId,
+              menuId,
+              date: now,
+              count: num,
+            };
+            await transaction.set(totalRef, data);
+          } else {
+            const data = {
+              count: total.count + num
+            };
+            await transaction.update(totalRef, data);
+          }
+        }));
+      }));
       
       transaction.update(orderRef, {
         status: order_status.order_placed,
@@ -69,7 +87,7 @@ export const place = async (db: FirebaseFirestore.Firestore | any, data: any, co
         timePlaced: timeToPickup && new admin.firestore.Timestamp(timeToPickup.seconds, timeToPickup.nanoseconds) || admin.firestore.FieldValue.serverTimestamp(),
         memo: memo || "",
       })
-
+      
       return { success: true }
     })
     

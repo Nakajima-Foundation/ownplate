@@ -7,6 +7,8 @@ import * as utils from './../src/lib/utils'
 import * as constant from './../src/common/constant';
 import * as test_db_helper from './test_db_helper';
 
+import moment from 'moment-timezone';
+
 import { Context } from '../src/models/TestType'
 
 const adminDB = test_db_helper.adminDB();
@@ -17,6 +19,7 @@ describe('Order function', () => {
   const createRestaurantData = async (restaurantId) => {
     await adminDB.doc(`restaurants/${restaurantId}`).set({
       orderCount: 10,
+      uid: "121212",
       foodTax: 5,
       alcoholTax: 8,
       publicFlag: true,
@@ -201,6 +204,17 @@ describe('Order function', () => {
     console.log(placed);
 
 
+    const newOrderData13 =  await makeOrder({
+      hoge1: 1,
+    });
+    const newOrderRes13 = newOrderData13;
+    const placed2 = await order.place(adminDB, {restaurantId, orderId: newOrderRes13.orderId}, {auth: { uid, token:{ phone_number: "xxxx"}}} as Context );
+    console.log(placed2);
+
+    const now = moment().tz("Asia/Tokyo").format('YYYYMMDD');
+    const path = `restaurants/${restaurantId}/menus/hoge1/orderTotal/${now}`
+    const totalRes = (await adminDB.doc(path).get()).data();
+    console.log(totalRes);
 
   });
 
