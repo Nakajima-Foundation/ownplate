@@ -15,14 +15,25 @@
             />
           </div>
 
-          <!-- Add Button -->
+          <!-- Add / Sold Out Button -->
           <div
+            v-if="isSoldOut"
+            class="bg-status-red-bg w-96 h-36 r-32 t-button is-flex"
+            style="flex-direction: column; justify-content: center"
+          >
+            <div class="c-status-red align-center">
+              {{ $t("sitemenu.soldOut") }}
+            </div>
+          </div>
+          <div
+            v-else
             @click.stop="pushQuantities(0)"
             class="op-button-pill bg-primary-bg w-96 t-button"
           >
             <span>{{ $t("sitemenu.add") }}</span>
           </div>
         </div>
+
         <div class="p-l-16 p-r-16 p-t-16 p-b-16">
           <!-- Item Name -->
           <div class="t-h6 c-text-black-high">{{ title }}</div>
@@ -103,8 +114,17 @@
             </div>
           </div>
 
-          <!-- Item Quantity -->
-          <div class="m-t-16">
+          <!-- Item Quantity / Sold Out -->
+          <div
+            v-if="isSoldOut"
+            class="bg-status-red-bg h-36 r-32 t-button is-flex m-t-16"
+            style="flex-direction: column; justify-content: center"
+          >
+            <div class="c-status-red align-center">
+              {{ $t("sitemenu.soldOut") }}
+            </div>
+          </div>
+          <div v-else class="m-t-16">
             <div class="level is-mobile m-t-8">
               <div class="level-left">
                 <div class="t-caption c-text-black-medium">
@@ -275,6 +295,9 @@ export default {
     }
   },
   computed: {
+    isSoldOut() {
+      return !!this.item.soldOut;
+    },
     totalQuantity() {
       return this.arraySum(this.quantities);
     },

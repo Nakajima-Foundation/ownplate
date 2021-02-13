@@ -313,9 +313,11 @@
     "checkout": "Payement",
     "orderCounter": "{count} article | {count} artciles",
     "add": "Ajouter",
+		"soldOut": "Complet",
 		"options": "Options",
 		"subTotal": "Sous-total: ",
-    "quantity": "Quantité"
+    "quantity": "Quantité",
+		"addDifferentOptionsItem": "Add Different Options Item"
   },
   "date": {
     "today": "Aujourd'hui"
@@ -501,6 +503,9 @@
     "incompleteOrders": "{count} Commande incomplète | {count} Commandes incomplètes",
     "editMenuItems": "Menu Modifier: {count}",
     "pleaseAddMenu": "Veuillez ajouter un menu",
+    "itemSoldOut": "Complet",
+    "itemPublished": "Published",
+    "itemNotPublished": "Not Published",
     "editAbout": "Modifier les détails du restaurant",
     "privateMode": "Mode privé",
     "pleaseChangePublic": "Veuillez changer de public",

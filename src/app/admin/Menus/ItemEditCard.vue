@@ -1,27 +1,39 @@
 <template>
   <div>
     <!-- Item Card -->
-    <div class="bg-surface r-8 d-low m-t-8 touchable" @click="linkEdit">
+    <div class="bg-surface r-8 d-low m-t-8">
       <!-- Published/NotPublished Badge -->
-      <div>
-        <div v-if="menuitem.publicFlag" class="p-t-8 p-l-8 p-r-8 p-b-8">
-          <div
-            class="bg-status-green-bg c-status-green t-overline p-l-8 p-r-8 p-t-4 p-b-4 r-4"
-          >
-            {{ $t("admin.itemPublished") }}
+      <div class="cols flex-center">
+        <div class="flex-1">
+          <div v-if="menuitem.publicFlag" class="p-t-8 p-l-8 p-r-8 p-b-8">
+            <div
+              class="bg-status-green-bg c-status-green t-overline p-l-8 p-r-8 p-t-4 p-b-4 r-4"
+            >
+              {{ $t("admin.itemPublished") }}
+            </div>
+          </div>
+          <div v-else class="p-t-8 p-l-8 p-r-8 p-b-8">
+            <div
+              class="bg-status-red-bg c-status-red t-overline p-l-8 p-r-8 p-t-4 p-b-4 r-4"
+            >
+              {{ $t("admin.itemNotPublished") }}
+            </div>
           </div>
         </div>
-        <div v-else class="p-t-8 p-l-8 p-r-8 p-b-8">
-          <div
-            class="bg-status-red-bg c-status-red t-overline p-l-8 p-r-8 p-t-4 p-b-4 r-4"
-          >
-            {{ $t("admin.itemNotPublished") }}
-          </div>
+        <div class="p-r-16">
+          <b-checkbox :value="soldOut" @input="soldOutToggle">
+            <div v-if="soldOut" class="t-button c-status-red">
+              {{ $t("admin.itemSoldOut") }}
+            </div>
+            <div v-else class="t-button c-text-black-disabled">
+              {{ $t("admin.itemSoldOut") }}
+            </div>
+          </b-checkbox>
         </div>
       </div>
 
       <!-- Item Details -->
-      <div class="is-clearfix">
+      <div class="is-clearfix touchable" @click="linkEdit">
         <div class="p-r-16 p-t-16 p-b-16 p-l-16 is-pulled-right">
           <div v-if="image" class="p-b-8">
             <img
@@ -67,7 +79,7 @@
         <div class="flex-1">
           <!-- Position Up -->
           <b-button
-            class="b-reset op-button-pill h-36 bg-primary-bg m-r-8"
+            class="b-reset op-button-pill h-36 bg-form m-r-8"
             v-if="position !== 'first'"
             @click="positionUp"
           >
@@ -77,7 +89,7 @@
           </b-button>
           <!-- Disable if First -->
           <b-button
-            class="b-reset op-button-pill h-36 bg-primary-bg m-r-8"
+            class="b-reset op-button-pill h-36 bg-form m-r-8"
             disabled
             v-else
           >
@@ -88,7 +100,7 @@
 
           <!-- Position Down -->
           <b-button
-            class="b-reset op-button-pill h-36 bg-primary-bg m-r-8"
+            class="b-reset op-button-pill h-36 bg-form m-r-8"
             v-if="position !== 'last'"
             @click="positionDown"
           >
@@ -98,7 +110,7 @@
           </b-button>
           <!-- Disable if Last -->
           <b-button
-            class="b-reset op-button-pill h-36 bg-primary-bg m-r-8"
+            class="b-reset op-button-pill h-36 bg-form m-r-8"
             disabled
             v-else
           >
@@ -109,7 +121,7 @@
 
           <!-- Duplicate -->
           <b-button
-            class="b-reset op-button-pill h-36 bg-primary-bg m-r-8"
+            class="b-reset op-button-pill h-36 bg-form m-r-8"
             @click="forkItem"
           >
             <i class="material-icons c-primary s-18 p-l-8 p-r-8">queue</i>
@@ -117,7 +129,7 @@
         </div>
         <div>
           <b-button
-            class="b-reset op-button-pill h-36 bg-status-red-bg"
+            class="b-reset op-button-pill h-36 bg-form"
             @click="deleteItem"
           >
             <i class="material-icons c-status-red s-18 p-l-8 p-r-8">delete</i>
@@ -129,6 +141,7 @@
 </template>
 
 <script>
+import { db } from "~/plugins/firebase.js";
 import store from "~/store/index.js";
 import Price from "~/components/Price";
 
@@ -156,15 +169,23 @@ export default {
         (this.menuitem?.images?.item?.resizedImages || {})["600"] ||
         this.menuitem.itemPhoto
       );
+    },
+    soldOut() {
+      return !!this.menuitem.soldOut; // = !soldOut;
     }
   },
   data() {
-    console.log(this.shopInfo);
     return {
       counter: 0
     };
   },
   methods: {
+    soldOutToggle(e) {
+      const path = `restaurants/${this.restaurantId()}/menus/${
+        this.menuitem.id
+      }`;
+      db.doc(path).update("soldOut", e);
+    },
     linkEdit() {
       this.$router.push({
         path: `/admin/restaurants/${this.restaurantId()}/menus/${
