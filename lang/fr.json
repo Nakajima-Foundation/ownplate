@@ -136,7 +136,9 @@
       "six": "A partir de 6 jour à l'avance",
       "seven": "A partir de 7 jour à l'avance",
       "twoWeeks": "From two weeks in advance",
-      "threeWeeks": "From three weeks in advance"
+      "threeWeeks": "From three weeks in advance",
+      "twoMonths": "From two months in advance",
+      "threeMonths": "From three months in advance"
     },
     "minimumCookTime": {
       "halfHour": "30 minutes",
@@ -195,7 +197,7 @@
     "itemName": "Nom de l'article",
     "price": "Prix",
     "free": "Free",
-		    "optionsPreview": "Aperçu des options",
+		"optionsPreview": "Aperçu des options",
     "priceChange": "Changement de prix",
 		"noPriceChange": "Pas de changement",
     "tax": "Taxe",
@@ -213,7 +215,11 @@
     "itemInvalidMessage": "Cet élément ne figure pas dans votre menu car les données ne sont pas valides.",
     "saveAsDraft": "Enregistrer comme brouillon. Cet élément ne figure pas dans vos menus.",
     "reallyDelete": "Voulez-vous vraiment supprimer cela?",
-    "category1": "Catégorie 1",
+    "csvCategories": "Paramètres de catégorie pour le fichier Excel (facultatif)",
+    "csvCategoriesNote": "Il s'agit d'un paramétrage de catégorie à utiliser dans le fichier Excel qui peut être téléchargé à partir de l'historique des commandes.",
+    "newCategory": "Nouveau point",
+		"newCategoryAdd": "Ajouter",
+		"category1": "Catégorie 1",
     "editCategory1": "Modifier Catégorie 1",
     "category2": "Catégorie 2",
     "editCategory2": "Modifier Catégorie 2",
@@ -307,9 +313,11 @@
     "checkout": "Payement",
     "orderCounter": "{count} article | {count} artciles",
     "add": "Ajouter",
+		"soldOut": "Complet",
 		"options": "Options",
 		"subTotal": "Sous-total: ",
-    "quantity": "Quantité"
+    "quantity": "Quantité",
+		"addDifferentOptionsItem": "Add Different Options Item"
   },
   "date": {
     "today": "Aujourd'hui"
@@ -495,6 +503,9 @@
     "incompleteOrders": "{count} Commande incomplète | {count} Commandes incomplètes",
     "editMenuItems": "Menu Modifier: {count}",
     "pleaseAddMenu": "Veuillez ajouter un menu",
+    "itemSoldOut": "Complet",
+    "itemPublished": "Published",
+    "itemNotPublished": "Not Published",
     "editAbout": "Modifier les détails du restaurant",
     "privateMode": "Mode privé",
     "pleaseChangePublic": "Veuillez changer de public",

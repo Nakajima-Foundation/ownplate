@@ -236,7 +236,9 @@ export const reservationTheDayBefore = [
   { messageKey: "editRestaurant.reservationTheDaysBefore.six", value: 6 },
   { messageKey: "editRestaurant.reservationTheDaysBefore.seven", value: 7 },
   { messageKey: "editRestaurant.reservationTheDaysBefore.twoWeeks", value: 14 },
-  { messageKey: "editRestaurant.reservationTheDaysBefore.threeWeeks", value: 21 }
+  { messageKey: "editRestaurant.reservationTheDaysBefore.threeWeeks", value: 21 },
+  { messageKey: "editRestaurant.reservationTheDaysBefore.twoMonths", value: 60 },
+  { messageKey: "editRestaurant.reservationTheDaysBefore.threeMonths", value: 90 }
 ];
 
 export const minimumCookTimeChoices = [

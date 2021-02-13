@@ -181,7 +181,7 @@
           <div
             class="m-t-8 m-l-16 m-r-16"
             v-if="
-              shopInfo.temporaryClosure && shopInfo.temporaryClosure.length > 0
+                  temporaryClosure.length > 0
             "
           >
             <div class="t-subtitle2 c-text-black-medium p-l-8">
@@ -189,7 +189,7 @@
             </div>
             <div
               class="flex-center m-l-8"
-              v-for="(day, key) in shopInfo.temporaryClosure || []"
+              v-for="(day, key) in temporaryClosure"
             >
               <span class="t-body2">
                 {{ moment(day.toDate()).format("YYYY/MM/DD") }}
@@ -251,6 +251,13 @@ export default {
     };
   },
   computed: {
+
+    temporaryClosure() {
+      const now = Date.now();
+      return (this.shopInfo.temporaryClosure || []).filter((day) => {
+        return day.seconds + 3600 * 24 > now / 1000;
+      });;
+    },
     phoneUrl() {
       const number = this.parsedNumber;
       if (number) {
