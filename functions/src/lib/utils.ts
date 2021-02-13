@@ -89,8 +89,8 @@ export const optionPrice = (option: string) => {
 
 const chunk = (arr: string[], chunkSize: number) => {
   const ret: string[][] = [];
-  let len = arr.length;
-  for (let i=0; i < len;  i += chunkSize) {
+  const len = arr.length;
+  for (let i = 0; i < len;  i += chunkSize) {
     const tmp = arr.slice(i, i + chunkSize);
     ret.push(tmp);
   }

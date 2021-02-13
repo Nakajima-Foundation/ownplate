@@ -21,6 +21,37 @@ export const nameOfOrder = (orderNumber: number) => {
   return "#" + `00${orderNumber}`.slice(-3);
 };
 
+const updateOrderTotalData = async (db, transaction, order, restaurantId, ownerUid) => {
+  const menuIds = Object.keys(order);
+  const now = moment().tz("Asia/Tokyo").format('YYYYMMDD');
+  
+  await Promise.all(menuIds.map(async (menuId) => {
+    const numArray = Array.isArray(order[menuId]) ? order[menuId] : [order[menuId]];
+    const num = numArray.reduce((sum, current) => {
+      return sum + current
+    }, 0);
+    const path = `restaurants/${restaurantId}/menus/${menuId}/orderTotal/${now}`
+    const totalRef = db.doc(path)
+    const total = (await transaction.get(totalRef)).data();
+    
+    if (!total) {
+      const addData = {
+        uid: ownerUid,
+        restaurantId,
+        menuId,
+        date: now,
+        count: num,
+      };
+      await transaction.set(totalRef, addData);
+    } else {
+      const updateData = {
+        count: total.count + num
+      };
+      await transaction.update(totalRef, updateData);
+    }
+  }));
+};
+
 // This function is called by users to place orders without paying
 // export const place = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
  export const place = async (db, data: any, context: functions.https.CallableContext | Context) => {
@@ -49,33 +80,7 @@ export const nameOfOrder = (orderNumber: number) => {
       const roundedTip = Math.round(tip * multiple) / multiple
 
       // transaction for stock orderTotal
-      const menuIds = Object.keys(order.order);
-      const now = moment().tz("Asia/Tokyo").format('YYYYMMDD');
-      
-      await Promise.all(menuIds.map(async (menuId) => {
-        const numArray = Array.isArray(order.order[menuId]) ? order.order[menuId] : [order.order[menuId]];
-        await Promise.all(numArray.map(async (num, orderKey) => {
-          const path = `restaurants/${restaurantId}/menus/${menuId}/orderTotal/${now}`
-          const totalRef = db.doc(path)
-          const total = (await transaction.get(totalRef)).data();
-
-          if (!total) {
-            const data = {
-              uid: restaurantData.uid,
-              restaurantId,
-              menuId,
-              date: now,
-              count: num,
-            };
-            await transaction.set(totalRef, data);
-          } else {
-            const data = {
-              count: total.count + num
-            };
-            await transaction.update(totalRef, data);
-          }
-        }));
-      }));
+      await updateOrderTotalData(db, transaction, order.order, restaurantId, restaurantData.uid);
       
       transaction.update(orderRef, {
         status: order_status.order_placed,
