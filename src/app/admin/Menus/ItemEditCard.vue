@@ -4,16 +4,6 @@
     <div class="bg-surface r-8 d-low m-t-8">
       <!-- Published/NotPublished Badge -->
       <div class="cols flex-center">
-        <div class="p-l-16">
-          <b-checkbox :value="soldOut" @input="soldOutToggle" >
-            <div v-if="soldOut" class="t-button c-status-red">
-              {{ $t("admin.itemSoldOut") }}
-            </div>
-            <div v-else class="t-button c-text-black-disabled">
-              {{ $t("admin.itemSoldOut") }}
-            </div>
-          </b-checkbox>
-        </div>
         <div class="flex-1">
           <div v-if="menuitem.publicFlag" class="p-t-8 p-l-8 p-r-8 p-b-8">
             <div
@@ -29,6 +19,16 @@
               {{ $t("admin.itemNotPublished") }}
             </div>
           </div>
+        </div>
+        <div class="p-r-16">
+          <b-checkbox :value="soldOut" @input="soldOutToggle">
+            <div v-if="soldOut" class="t-button c-status-red">
+              {{ $t("admin.itemSoldOut") }}
+            </div>
+            <div v-else class="t-button c-text-black-disabled">
+              {{ $t("admin.itemSoldOut") }}
+            </div>
+          </b-checkbox>
         </div>
       </div>
 
@@ -172,7 +172,7 @@ export default {
     },
     soldOut() {
       return !!this.menuitem.soldOut; // = !soldOut;
-    },
+    }
   },
   data() {
     return {
@@ -181,7 +181,9 @@ export default {
   },
   methods: {
     soldOutToggle(e) {
-      const path = `restaurants/${this.restaurantId()}/menus/${this.menuitem.id}`; 
+      const path = `restaurants/${this.restaurantId()}/menus/${
+        this.menuitem.id
+      }`;
       db.doc(path).update("soldOut", e);
     },
     linkEdit() {

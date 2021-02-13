@@ -67,7 +67,7 @@
         </div>
         <div>
           <b-button
-            class="b-reset op-button-pill h-36 bg-status-red-bg"
+            class="b-reset op-button-pill h-36 bg-form"
             @click="deleteItem"
           >
             <i class="material-icons c-status-red s-18 p-l-8 p-r-8">delete</i>
