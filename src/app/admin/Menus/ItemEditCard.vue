@@ -5,7 +5,7 @@
       <!-- Published/NotPublished Badge -->
       <div class="cols flex-center">
         <div class="p-l-16">
-          <b-checkbox>
+          <b-checkbox :value="soldOut" @input="soldOutToggle" >
             <div v-if="soldOut" class="t-button c-status-red">
               {{ $t("admin.itemSoldOut") }}
             </div>
@@ -141,6 +141,7 @@
 </template>
 
 <script>
+import { db } from "~/plugins/firebase.js";
 import store from "~/store/index.js";
 import Price from "~/components/Price";
 
@@ -168,18 +169,20 @@ export default {
         (this.menuitem?.images?.item?.resizedImages || {})["600"] ||
         this.menuitem.itemPhoto
       );
-    }
+    },
+    soldOut() {
+      return !!this.menuitem.soldOut; // = !soldOut;
+    },
   },
   data() {
-    console.log(this.shopInfo);
     return {
-      soldOut: false,
       counter: 0
     };
   },
   methods: {
-    soldOut() {
-      this.soldOut = !soldOut;
+    soldOutToggle(e) {
+      const path = `restaurants/${this.restaurantId()}/menus/${this.menuitem.id}`; 
+      db.doc(path).update("soldOut", e);
     },
     linkEdit() {
       this.$router.push({
