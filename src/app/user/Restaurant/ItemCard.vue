@@ -254,7 +254,6 @@ export default {
   },
   data() {
     return {
-      isSoldOut: false,
       openMenuFlag: this.initialOpenMenuFlag,
       optionValues: [],
       imagePopup: false,
@@ -296,6 +295,9 @@ export default {
     }
   },
   computed: {
+    isSoldOut() {
+      return !!this.item.soldOut;
+    },
     totalQuantity() {
       return this.arraySum(this.quantities);
     },
