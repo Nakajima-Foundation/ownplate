@@ -502,6 +502,7 @@
     "incompleteOrders": "{count} Incomplete Order | {count} Incomplete Orders",
     "editMenuItems": "Edit Menu: {count}",
     "pleaseAddMenu": "Please Add Menu",
+    "itemSoldOut": "Sold Out",
     "itemPublished": "Published",
     "itemNotPublished": "Not Published",
     "editAbout": "Edit Restaurant Details",

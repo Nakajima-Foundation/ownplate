@@ -510,6 +510,7 @@
     "incompleteOrders": "{count} 個の未完了の注文",
     "editMenuItems": "メニューの変更： {count}",
     "pleaseAddMenu": "メニューを追加してください",
+    "itemSoldOut": "売り切れ",
     "itemPublished": "公開中",
     "itemNotPublished": "非公開",
     "editAbout": "店情報の変更",
