@@ -67,7 +67,7 @@ describe('Order function', () => {
 
     // menuObj test
     const refRestaurant = adminDB.doc(`restaurants/${restaurantId}`);
-    const menuObj = await utils.getMenuObj(refRestaurant);
+    const menuObj = await utils.getMenuObj(refRestaurant, ["hoge1", "hoge2"]);
 
     Object.keys(menuObj).length.should.equal(2);
     menuObj["hoge1"].price.should.equal(100);

@@ -136,7 +136,9 @@
       "six": "From 6 day in advance",
       "seven": "From 7 day in advance",
       "twoWeeks": "From two weeks in advance",
-      "threeWeeks": "From three weeks in advance"
+      "threeWeeks": "From three weeks in advance",
+      "twoMonths": "From two months in advance",
+      "threeMonths": "From three months in advance"
     },
     "minimumCookTime": {
       "halfHour": "30 minutes",
@@ -194,6 +196,10 @@
     "required": "Required",
     "itemName": "Item name",
     "price": "Price",
+    "free": "Free",
+    "optionsPreview": "Options Preview",
+    "priceChange": "Price Change",
+    "noPriceChange": "No Change",
     "tax": "Tax",
     "food": "Food",
     "alcohol": "Alcohol",
@@ -209,6 +215,10 @@
     "itemInvalidMessage": "This item is not on your menu because data is invalid.",
     "saveAsDraft": "Save as draft. This item is not on your menus.",
     "reallyDelete": "Do you really want to delete this?",
+    "csvCategories": "Category settings for Excel file (optional)",
+    "csvCategoriesNote": "This is a category setting for use within the Excel file that can be downloaded from the Order History.",
+    "newCategory": "New Item",
+    "newCategoryAdd": "Add",
     "category1": "Category 1",
     "editCategory1": "Edit Category 1",
     "category2": "Category 2",
@@ -227,11 +237,13 @@
     "likes": "Likes",
     "allRestaurants": "Find Restaurants",
     "areas": {
+      "hokkaido": "Hokkaido Area",
       "kanto": "Kanto Area",
       "chubu": "Chubu Area",
       "hokuriku": "Hokuriku Area",
       "kansai": "Kansai Area",
-      "chugoku-kyusyu": "Chugoku kyusyu Area",
+      "chugoku": "Chugoku Shikoku Area",
+      "kyusyu": "kyusyu Area",
       "USA": "USA"
     }
   },
@@ -271,7 +283,9 @@
     "onsitePayment": "On Site Payment",
     "noPaymentMethod": "Online Order Unavailable",
     "minimumAvailableTime": "Minimum available time",
-    "noAvailableTime": "No orderable time"
+    "noAvailableTime": "No orderable time",
+    "viewMore": "View More",
+    "viewLess": "Close"
   },
   "transactionsAct": {
     "title": "Specified Commercial Transaction Act",
@@ -299,6 +313,7 @@
     "checkout": "Checkout",
     "orderCounter": "{count} item | {count} items",
     "add": "Add",
+    "soldOut": "Sold Out",
     "options": "Options",
     "subTotal": "Subtotal: ",
     "quantity": "Quantity",
@@ -487,6 +502,7 @@
     "incompleteOrders": "{count} Incomplete Order | {count} Incomplete Orders",
     "editMenuItems": "Edit Menu: {count}",
     "pleaseAddMenu": "Please Add Menu",
+    "itemSoldOut": "Sold Out",
     "itemPublished": "Published",
     "itemNotPublished": "Not Published",
     "editAbout": "Edit Restaurant Details",
