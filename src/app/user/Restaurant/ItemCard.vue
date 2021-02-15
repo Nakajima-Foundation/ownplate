@@ -2,8 +2,39 @@
   <div>
     <!-- Item Card -->
     <div class="bg-surface r-8 d-low m-t-8" :style="cardStyle">
-      <div class="touchable cols" @click="toggleMenuFlag()">
-        <div class="flex-1 p-l-16 p-r-16 p-t-16 p-b-16">
+      <div class="touchable is-clearfix" @click="toggleMenuFlag()">
+        <div class="p-r-16 p-t-16 p-b-16 p-l-16 is-pulled-right">
+          <!-- Image -->
+          <div v-if="image" class="p-b-8">
+            <img
+              @click.stop="openImage()"
+              :src="image"
+              width="96"
+              height="96"
+              class="w-96 h-96 r-4 cover"
+            />
+          </div>
+
+          <!-- Add / Sold Out Button -->
+          <div
+            v-if="isSoldOut"
+            class="bg-status-red-bg w-96 h-36 r-32 t-button is-flex"
+            style="flex-direction: column; justify-content: center"
+          >
+            <div class="c-status-red align-center">
+              {{ $t("sitemenu.soldOut") }}
+            </div>
+          </div>
+          <div
+            v-else
+            @click.stop="pushQuantities(0)"
+            class="op-button-pill bg-primary-bg w-96 t-button"
+          >
+            <span>{{ $t("sitemenu.add") }}</span>
+          </div>
+        </div>
+
+        <div class="p-l-16 p-r-16 p-t-16 p-b-16">
           <!-- Item Name -->
           <div class="t-h6 c-text-black-high">{{ title }}</div>
 
@@ -26,28 +57,6 @@
             class="t-body2 c-text-black-medium m-t-8"
           >
             {{ allergensDescription }}
-          </div>
-        </div>
-        <div class="p-r-16 p-t-16 p-b-16">
-          <div class="w-96 is-pulled-right">
-            <!-- Image -->
-            <div v-if="image" class="p-b-8">
-              <img
-                @click.stop="openImage()"
-                :src="image"
-                width="96"
-                height="96"
-                class="w-96 h-96 r-4 cover"
-              />
-            </div>
-
-            <!-- Add Button -->
-            <div
-              @click.stop="pushQuantities(0)"
-              class="op-button-pill bg-primary-bg w-96 t-button"
-            >
-              <span>{{ $t("sitemenu.add") }}</span>
-            </div>
           </div>
         </div>
       </div>
@@ -105,8 +114,17 @@
             </div>
           </div>
 
-          <!-- Item Quantity -->
-          <div class="m-t-16">
+          <!-- Item Quantity / Sold Out -->
+          <div
+            v-if="isSoldOut"
+            class="bg-status-red-bg h-36 r-32 t-button is-flex m-t-16"
+            style="flex-direction: column; justify-content: center"
+          >
+            <div class="c-status-red align-center">
+              {{ $t("sitemenu.soldOut") }}
+            </div>
+          </div>
+          <div v-else class="m-t-16">
             <div class="level is-mobile m-t-8">
               <div class="level-left">
                 <div class="t-caption c-text-black-medium">
@@ -277,6 +295,9 @@ export default {
     }
   },
   computed: {
+    isSoldOut() {
+      return !!this.item.soldOut;
+    },
     totalQuantity() {
       return this.arraySum(this.quantities);
     },

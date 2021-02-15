@@ -151,7 +151,7 @@
           </template>
           <template v-else="!noPaymentMethod">
             <div>
-              <div class="level t-subtitle1 c-text-white-full">
+              <div class="level is-mobile t-subtitle1 c-text-white-full">
                 <div class="level-left">
                   {{
                     $tc("sitemenu.orderCounter", totalQuantities, {

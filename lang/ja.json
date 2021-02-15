@@ -136,7 +136,9 @@
       "six": "6日前から予約可能",
       "seven": "7日前から予約可能",
       "twoWeeks": "2週間前から予約可能",
-      "threeWeeks": "3週間前から予約可能"
+      "threeWeeks": "3週間前から予約可能",
+      "twoMonths": "2ヶ月前から予約可能",
+      "threeMonths": "3ヶ月前から予約可能"
     },
     "minimumCookTime": {
       "halfHour": "30分",
@@ -194,6 +196,10 @@
     "required": "必須",
     "itemName": "料理/ドリンク名",
     "price": "値段",
+    "free": "無料",
+    "optionsPreview": "オプションプレビュー",
+    "priceChange": "値段変化",
+    "noPriceChange": "なし",
     "tax": "消費税",
     "food": "食品",
     "alcohol": "酒類",
@@ -209,10 +215,14 @@
     "itemInvalidMessage": "データが正しく入力されていないため、公開されません",
     "saveAsDraft": "下書きとして保存されます（メニューに表示されません）",
     "reallyDelete": "本当に削除しますか？",
-    "category1": "カテゴリー１",
-    "editCategory1": "カテゴリー１を編集",
-    "category2": "カテゴリー２",
-    "editCategory2": "カテゴリー２を編集",
+    "csvCategories": "エクセルデータ用カテゴリー設定（任意）",
+    "csvCategoriesNote": "注文履歴からダウンロードできるエクセルデータ内で利用するためのカテゴリー設定です",
+    "newCategory": "新しい項目",
+    "newCategoryAdd": "追加",
+    "category1": "カテゴリー1",
+    "editCategory1": "カテゴリー1を編集",
+    "category2": "カテゴリー2",
+    "editCategory2": "カテゴリー2を編集",
     "showAllMenu": "全ての商品",
     "showPublicMenu": "公開中のみ"
   },
@@ -227,11 +237,13 @@
     "likes": "お気に入り",
     "allRestaurants": "お店を探す",
     "areas": {
+      "hokkaido": "北海道",
       "kanto": "関東地方",
       "chubu": "中部地方",
       "hokuriku": "北陸地方",
       "kansai": "関西地方",
-      "chugoku-kyusyu": "中国九州地方",
+      "chugoku": "中国四国地方",
+      "kyusyu": "九州地方",
       "USA": "USA"
     }
   },
@@ -271,7 +283,9 @@
     "onsitePayment": "受け取り払い",
     "noPaymentMethod": "オンライン注文未対応",
     "minimumAvailableTime": "最短受付可能時間",
-    "noAvailableTime": "受付時間外"
+    "noAvailableTime": "受付時間外",
+    "viewMore": "もっと見る",
+    "viewLess": "閉じる"
   },
   "transactionsAct": {
     "title": "特定商取引法に基づく表記",
@@ -299,6 +313,7 @@
     "checkout": "お会計",
     "orderCounter": "{count} 個",
     "add": "追加",
+    "soldOut": "売り切れ",
     "options": "オプション",
     "subTotal": "小計: ",
     "quantity": "数量",
@@ -495,6 +510,7 @@
     "incompleteOrders": "{count} 個の未完了の注文",
     "editMenuItems": "メニューの変更： {count}",
     "pleaseAddMenu": "メニューを追加してください",
+    "itemSoldOut": "売り切れ",
     "itemPublished": "公開中",
     "itemNotPublished": "非公開",
     "editAbout": "店情報の変更",
