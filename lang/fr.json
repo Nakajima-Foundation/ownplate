@@ -499,6 +499,13 @@
       "onsitePaymentNote": "Veuillez être conscient des paiements non recouvrés en raison d'annulations soudaines ou de méfaits.",
       "enableOnsitePayment": "Autoriser le Paiement à la Livraison"
     },
+    "mail": {
+      "magazine": {
+        "title": "Paramètres du courrier électronique",
+        "body": "Recevez des courriels sur les nouvelles informations.",
+        "optout": "Ne pas recevoir"
+      }
+    },
     "viewPage": "Voir page",
     "incompleteOrders": "{count} Commande incomplète | {count} Commandes incomplètes",
     "editMenuItems": "Menu Modifier: {count}",

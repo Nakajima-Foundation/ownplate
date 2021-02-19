@@ -498,6 +498,13 @@
       "onsitePaymentNote": "Please be aware of uncollected payments due to sudden cancellations or mischief.",
       "enableOnsitePayment": "Allow On-site Payment"
     },
+    "mail": {
+      "magazine": {
+        "title": "Email Settings",
+        "body": "Receive emails about new information.",
+        "optout": "Don't Receive"
+      }
+    },
     "viewPage": "View Page",
     "incompleteOrders": "{count} Incomplete Order | {count} Incomplete Orders",
     "editMenuItems": "Edit Menu: {count}",
