@@ -1,21 +1,53 @@
 <template>
- <section class="section">
-    <back-button :url="backUrl" />
-    <h2>All Orders</h2>
-    <b-select v-model="orderState" class="m-t-24">
-      <option v-for="status in orderStatus" :value="status.index" :key="status.index">
-        {{status.key ? $t("order.status." + status.key) : "----"}}
-      </option>
-    </b-select>
-    <ordered-info
-      v-for="order in filteredOrders"
-      :key="order.id"
-      :isSuperView="true"
-      @selected="orderSelected($event)"
-      :order="order"
-    />
-    <button @click="nextLoad">next</button>
-  </section>
+  <div>
+    <!-- Order Header Area -->
+    <div class="columns is-gapless">
+      <!-- Left Gap -->
+      <div class="column is-narrow w-24"></div>
+      <!-- Center Column -->
+      <div class="column">
+        <div class="m-l-24 m-r-24">
+          <!-- Nav Bar -->
+          <div class="level">
+            <!-- Back Button and Restaurant Profile -->
+            <div class="level-left flex-1">
+              <!-- Back Button -->
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Right Gap -->
+      <div class="column is-narrow w-24"></div>
+    </div>      
+    <!-- Order Body Area -->
+    <div class="columns is-gapless">
+      <!-- Left Gap -->
+      <div class="column is-narrow w-24"></div>
+      <!-- Center Column -->
+      <div class="column">
+        <div class="m-l-24 m-r-16 m-t-24">
+          <back-button :url="backUrl" />
+          <h2>All Orders</h2>
+          <b-select v-model="orderState" class="m-t-24">
+            <option v-for="status in orderStatus" :value="status.index" :key="status.index">
+              {{status.key ? $t("order.status." + status.key) : "----"}}
+            </option>
+          </b-select>
+          <!-- Orders -->
+          <div class="columns is-gapless is-multiline">
+            <ordered-info
+              v-for="order in filteredOrders"
+              :key="order.id"
+              :isSuperView="true"
+              @selected="orderSelected($event)"
+              :order="order"
+              />
+            <button @click="nextLoad">next</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
