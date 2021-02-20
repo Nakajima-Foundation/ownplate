@@ -336,7 +336,7 @@
     "serviceTax": "tip tax",
     "name": "order name",
     "payment": "payment",
-    "includingTip": "including tip",
+    "includingTip": "Including Tip",
     "subtotal": "Subtotal",
     "salesTax": "Sales Tax",
     "foodTax": "Food Tax",
@@ -403,7 +403,11 @@
       "transaction_complete": "Pickup Complete",
       "transaction_hide": "Transaction Complete",
       "order_canceled": "Canceled",
-      "order_refunded": "Refunded"
+      "order_refunded": "Refunded",
+      "stripe_pending": "Payment Pending",
+      "stripe_confirmed": "Payment Confirmed",
+      "stripe_canceled": "Payment Canceled",
+      "onsitePayment": "Onsite Payment"
     },
     "lineLink": "Restaurant's LINE Official Account URL",
     "lineMessage": "If you add LINE Official Account as a friend, you will receive information directly from the restaurant."
@@ -561,8 +565,8 @@
       "lineUsers": "Connected LINE Accounts",
       "lineDelete": "Do you really want to delete this account？",
       "lineSafariPrivate": "Note: If you are using Safari's Private Browsing Mode, you will not be able to connect to LINE.",
-      "history": "Order History",
-      "more": "More",
+      "history": "All Order History",
+      "more": "View More",
       "messageFromCustomer": "Message from the customer"
     },
     "sound": {

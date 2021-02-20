@@ -62,7 +62,7 @@
 }
 
 .stripe_pending {
-  @extend .c-text-black-disabled;
+  @extend .c-status-amber;
 }
 .stripe_confirmed {
   @extend .c-status-green;
