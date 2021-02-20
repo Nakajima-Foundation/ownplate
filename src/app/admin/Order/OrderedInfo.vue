@@ -169,7 +169,7 @@ import OrderStatus from "~/app/admin/Order/OrderStatus";
 import { nameOfOrder } from "~/plugins/strings.js";
 import { parsePhoneNumber, formatNational } from "~/plugins/phoneutil.js";
 import { db } from "~/plugins/firebase.js";
-import { order_status } from "~/plugins/constant.js";
+import { order_status, order_status_keys } from "~/plugins/constant.js";
 
 export default {
   components: {
@@ -200,12 +200,7 @@ export default {
   },
   computed: {
     statusKey() {
-      return Object.keys(order_status).reduce((result, key) => {
-        if (order_status[key] == this.order.status) {
-          return key;
-        }
-        return result;
-      }, "unexpected");
+      return order_status_keys[this.order.status];
     },
     hasStripe() {
       return this.order.payment && this.order.payment.stripe;
