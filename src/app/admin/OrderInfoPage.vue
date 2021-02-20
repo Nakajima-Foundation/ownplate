@@ -80,36 +80,37 @@
                       <div class="t-caption c-text-black-medium">
                         {{ $t("order.totalCharge") }}
                       </div>
-                      <div
-                        v-if="hasStripe"
-                        class="t-body1 c-textl-black-high is-inline-flex flex-center"
-                      >
+                      <div v-if="hasStripe" class="t-body1 c-textl-black-high">
                         <a :href="search" target="stripe">
-                          <span>{{
-                            $n(orderInfo.totalCharge, "currency")
-                          }}</span>
-                          <i
+                          <div>{{ $n(orderInfo.totalCharge, "currency") }}</div>
+                          <div
                             :class="
-                              'fab fa-cc-stripe stripe_' +
-                                orderInfo.payment.stripe
+                              't-overline stripe_' + orderInfo.payment.stripe
                             "
-                          ></i>
+                          >
+                            {{
+                              $t(
+                                "order.status.stripe_" +
+                                  orderInfo.payment.stripe
+                              )
+                            }}
+                          </div>
                         </a>
                       </div>
-                      <div
-                        v-else
-                        class="t-body1 c-textl-black-high is-inline-flex flex-center"
-                      >
+                      <div v-else class="t-body1 c-textl-black-high">
                         <div>{{ $n(orderInfo.totalCharge, "currency") }}</div>
+                        <div class="t-overline c-status-amber">
+                          {{ $t("order.status.onsitePayment") }}
+                        </div>
                       </div>
 
                       <!-- Tip -->
                       <div
                         v-if="orderInfo.tip"
-                        class="t-caption c-status-green"
+                        class="t-overline c-status-blue"
                       >
-                        ( {{ $t("order.includingTip") }}
-                        {{ $n(orderInfo.tip, "currency") }} )
+                        {{ $t("order.includingTip") }}
+                        {{ $n(orderInfo.tip, "currency") }}
                       </div>
                     </div>
                   </div>

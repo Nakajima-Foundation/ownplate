@@ -17,9 +17,14 @@
               <!-- Restaurant Profile -->
               <div class="is-inline-flex flex-center m-t-24">
                 <div>
-                  <img :src="resizedProfileImage(shopInfo, '600')" class="w-36 h-36 r-36 cover" />
+                  <img
+                    :src="resizedProfileImage(shopInfo, '600')"
+                    class="w-36 h-36 r-36 cover"
+                  />
                 </div>
-                <div class="t-h6 c-text-black-high m-l-8 flex-1">{{ shopInfo.restaurantName }}</div>
+                <div class="t-h6 c-text-black-high m-l-8 flex-1">
+                  {{ shopInfo.restaurantName }}
+                </div>
               </div>
             </div>
 
@@ -31,8 +36,12 @@
                 :to="`/admin/restaurants/${restaurantId()}/suspend`"
                 class="b-reset op-button-pill h-36 bg-form m-t-24 m-r-16"
               >
-                <i class="material-icons c-primary m-l-8">remove_shopping_cart</i>
-                <span class="c-primary t-button">{{ $t("admin.order.suspend") }}</span>
+                <i class="material-icons c-primary m-l-8"
+                  >remove_shopping_cart</i
+                >
+                <span class="c-primary t-button">{{
+                  $t("admin.order.suspend")
+                }}</span>
                 <!-- # ToDO: Show number of suspended items. -->
                 <span class="t-button c-status-red">0</span>
               </b-button>
@@ -47,11 +56,16 @@
             <!-- Select Date -->
             <div class="level-left">
               <b-select v-model="dayIndex" class="m-t-24">
-                <option v-for="day in lastSeveralDays" :value="day.index" :key="day.index">
-                  {{ $d(day.date, "short") }} {{ orderCounter[moment(day.date).format("YYYY-MM-DD")] }}
-                  <span
-                    v-if="day.index === pickUpDaysInAdvance"
-                  >{{ $t("date.today") }}</span>
+                <option
+                  v-for="day in lastSeveralDays"
+                  :value="day.index"
+                  :key="day.index"
+                >
+                  {{ $d(day.date, "short") }}
+                  {{ orderCounter[moment(day.date).format("YYYY-MM-DD")] }}
+                  <span v-if="day.index === pickUpDaysInAdvance">{{
+                    $t("date.today")
+                  }}</span>
                 </option>
               </b-select>
             </div>
@@ -80,10 +94,14 @@
               :order="order"
             />
           </div>
+
+          <!-- Go to History -->
           <div class="m-t-24">
-            <nuxt-link
-              :to="`/admin/restaurants/${this.restaurantId()}/history`"
-            >{{$t("admin.order.history")}}</nuxt-link>
+            <nuxt-link :to="`/admin/restaurants/${this.restaurantId()}/history`"
+              ><div class="op-button-pill bg-form t-subtitle2">
+                {{ $t("admin.order.history") }}
+              </div></nuxt-link
+            >
           </div>
         </div>
       </div>
@@ -193,7 +211,7 @@ export default {
       this.order_detacher();
       let query = db
         .collection(`restaurants/${this.restaurantId()}/orders`)
-          .where("timePlaced", ">=", this.lastSeveralDays[this.dayIndex].date)
+        .where("timePlaced", ">=", this.lastSeveralDays[this.dayIndex].date);
       if (this.dayIndex > 0) {
         query = query.where(
           "timePlaced",
@@ -206,14 +224,14 @@ export default {
         orders = orders
           .filter(a => a.status !== order_status.transaction_hide)
           .sort((order0, order1) => {
-          if (order0.status === order1.status) {
-            return (order0.timeEstimated || order0.timePlaced) >
-              (order1.timeEstimated || order1.timePlaced)
-              ? -1
-              : 1;
-          }
-          return order0.status < order1.status ? -1 : 1;
-        });
+            if (order0.status === order1.status) {
+              return (order0.timeEstimated || order0.timePlaced) >
+                (order1.timeEstimated || order1.timePlaced)
+                ? -1
+                : 1;
+            }
+            return order0.status < order1.status ? -1 : 1;
+          });
         this.orders = orders.map(order => {
           order.timePlaced = order.timePlaced.toDate();
           if (order.timeEstimated) {

@@ -336,7 +336,7 @@
     "serviceTax": "消費税",
     "name": "オーダー名",
     "payment": "支払い",
-    "includingTip": "心づけを含む",
+    "includingTip": "心づけ有り",
     "subtotal": "小計",
     "salesTax": "消費税",
     "foodTax": "軽減税",
@@ -403,7 +403,11 @@
       "transaction_complete": "受け渡し完了",
       "transaction_hide": "受注処理完了",
       "order_canceled": "キャンセル済み",
-      "order_refunded": "払い戻し済み"
+      "order_refunded": "払い戻し済み",
+      "stripe_pending": "カード決済未完了",
+      "stripe_confirmed": "カード決済完了",
+      "stripe_canceled": "決済キャンセル",
+      "onsitePayment": "受け取り払い"
     },
     "lineLink": "お店のLINE公式アカウント",
     "lineMessage": "LINE公式アカウントを友だち登録すると、お店から情報が直接届きます。"
@@ -562,8 +566,8 @@
       "lineUsers": "登録済みLINEアカウント",
       "lineDelete": "本当に消去しますか？",
       "lineSafariPrivate": "注意: Safariのプライベートブラウズモードを使用しているとLINE連携ができません。",
-      "history": "注文履歴",
-      "more": "もっと見る",
+      "history": "全ての注文履歴",
+      "more": "更に表示",
       "messageFromCustomer": "お客様からのメッセージ"
     },
     "sound": {
