@@ -3,7 +3,7 @@
     <back-button :url="backUrl" />
     <h2>All Restaurants</h2>
     <table>
-      <tr><td>nama</td><td></td><td>掲載</td><td>公開</td><td>削除</td><td>メニュー数</td></tr>
+      <tr><td>nama</td><td></td><td>掲載</td><td>公開</td><td>削除</td><td>メニュー数</td><td></td><td>電話通知</td></tr>
       <tr
       v-for="restaurant in restaurants"
       :key="restaurant.id"
@@ -28,6 +28,12 @@
         </td>
         <td>
           {{(restaurant.menuLists||[]).length || "-"}}
+        </td>
+        <td>
+          {{moment(restaurant.createdAt.toDate()).format("YYYY/MM/DD HH:mm")}}
+        </td>
+        <td>
+          {{!!restaurant.phoneCall ? "o":"-" }}
         </td>
       </tr>
     </table>
