@@ -197,9 +197,9 @@
     "itemName": "Nom de l'article",
     "price": "Prix",
     "free": "Free",
-		"optionsPreview": "Aperçu des options",
+    "optionsPreview": "Aperçu des options",
     "priceChange": "Changement de prix",
-		"noPriceChange": "Pas de changement",
+    "noPriceChange": "Pas de changement",
     "tax": "Taxe",
     "food": "Nouriture",
     "alcohol": "Alcool",
@@ -218,8 +218,8 @@
     "csvCategories": "Paramètres de catégorie pour le fichier Excel (facultatif)",
     "csvCategoriesNote": "Il s'agit d'un paramétrage de catégorie à utiliser dans le fichier Excel qui peut être téléchargé à partir de l'historique des commandes.",
     "newCategory": "Nouveau point",
-		"newCategoryAdd": "Ajouter",
-		"category1": "Catégorie 1",
+    "newCategoryAdd": "Ajouter",
+    "category1": "Catégorie 1",
     "editCategory1": "Modifier Catégorie 1",
     "category2": "Catégorie 2",
     "editCategory2": "Modifier Catégorie 2",
@@ -284,7 +284,7 @@
     "noPaymentMethod": "Commande en ligne indisponible",
     "minimumAvailableTime": "Temps disponible minimum",
     "noAvailableTime": "Aucun de temps de commande",
-		"viewMore": "Voir plus",
+    "viewMore": "Voir plus",
     "viewLess": "Proche"
   },
   "transactionsAct": {
@@ -313,11 +313,11 @@
     "checkout": "Payement",
     "orderCounter": "{count} article | {count} artciles",
     "add": "Ajouter",
-		"soldOut": "Complet",
-		"options": "Options",
-		"subTotal": "Sous-total: ",
+    "soldOut": "Complet",
+    "options": "Options",
+    "subTotal": "Sous-total: ",
     "quantity": "Quantité",
-		"addDifferentOptionsItem": "Add Different Options Item"
+    "addDifferentOptionsItem": "Add Different Options Item"
   },
   "date": {
     "today": "Aujourd'hui"
@@ -403,8 +403,12 @@
       "transaction_complete": "Ramassage terminé",
       "transaction_hide": "Transaction terminée",
       "order_canceled": "Annulé",
-      "order_refunded": "Remboursé"
-    }
+      "order_refunded": "Remboursé",
+      "stripe_pending": "Paiement en attente",
+      "stripe_confirmed": "Paiement confirmé",
+      "stripe_canceled": "Paiement annulé",
+      "onsitePayment": "Paiement sur place"
+    },
     "lineLink": "Restaurant's LINE Official Account URL",
     "lineMessage": "If you add LINE Official Account as a friend, you will receive information directly from the restaurant."
   },
@@ -499,6 +503,13 @@
       "onsitePaymentNote": "Veuillez être conscient des paiements non recouvrés en raison d'annulations soudaines ou de méfaits.",
       "enableOnsitePayment": "Autoriser le Paiement à la Livraison"
     },
+    "mail": {
+      "magazine": {
+        "title": "Paramètres du courrier électronique",
+        "body": "Recevez des courriels sur les nouvelles informations.",
+        "optout": "Ne pas recevoir"
+      }
+    },
     "viewPage": "Voir page",
     "incompleteOrders": "{count} Commande incomplète | {count} Commandes incomplètes",
     "editMenuItems": "Menu Modifier: {count}",
@@ -542,9 +553,9 @@
       "soundOn": "Son de notification: Activé",
       "soundOff": "Son de notification: Désactivé",
       "infinityNotificationOn": "Rappelez chaque minute",
-			"infinityNotificationOff": "Notifier une fois",
-			"soundTest": "Tester",
-			"paymentIsNotCompleted": "Note : Veuillez compléter la procédure de paiement par carte de crédit en cliquant sur le bouton 'Complete' avant de remettre les articles au client.",
+      "infinityNotificationOff": "Notifier une fois",
+      "soundTest": "Tester",
+      "paymentIsNotCompleted": "Note : Veuillez compléter la procédure de paiement par carte de crédit en cliquant sur le bouton 'Complete' avant de remettre les articles au client.",
       "cancelButton": "Annuler cette commande",
       "cancelTitle": "Annulation de commande",
       "cancelMessage": "Veuillez contacter le client et lui dire que la commande sera annulée.",
@@ -555,8 +566,8 @@
       "lineUsers": "Comptes LINE Connectés",
       "lineDelete": "Voulez-vous vraiment supprimer ce compte？",
       "lineSafariPrivate": "Remarque: si vous utilisez le mode de navigation privée de Safari, vous ne pourrez pas vous connecter à LINE.",
-      "history": "Order History",
-      "more": "More",
+      "history": "Tout l'historique de l'ordre",
+      "more": "En savoir plus",
       "messageFromCustomer": "Message from the customer"
     },
     "sound": {

@@ -160,8 +160,11 @@ export default ({ app }) => {
             const opt = orderInfo.options && orderInfo.options[menuId] ? orderInfo.options[menuId] : null;
             const optArray = Array.isArray(orderInfo.order[menuId]) ? orderInfo.options[menuId] || {} : {0:  orderInfo.options[menuId]};
             Object.keys(numArray).map(numKey => {
+              const item = orderInfo.menuItems[menuId] || menuObj[menuId] || {};
+              item.images = (menuObj[menuId] || {}).images;
+              item.itemPhoto = (menuObj[menuId] || {}).itemPhoto;
               tmp.push({
-                item: orderInfo.menuItems[menuId] || menuObj[menuId] || {},
+                item,
                 count: numArray[numKey],
                 id: menuId,
                 options: optArray[numKey],

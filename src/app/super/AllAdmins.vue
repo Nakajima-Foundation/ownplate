@@ -5,7 +5,8 @@
     <table>
       <tr>
         <th>Name</th>
-        <th>e-mail</th>
+        <th>e-mail</th> 
+        <th>Created</th>
         <th>A</th>
         <th>O</th>
         <th>Stripe</th>
@@ -17,6 +18,7 @@
           <nuxt-link :to="`/s/admins/${admin.id}`">{{admin.name || "(no name)"}}</nuxt-link>
         </td>
         <td style="padding-right:8px">{{profile(admin).email}}</td>
+        <td style="padding-right:8px">{{moment(admin.created.toDate()).format("YYYY/MM/DD HH:mm")}}</td>
         <td style="padding-right:8px">{{admin.admin ? "A" : ""}}</td>
         <td style="padding-right:8px">{{admin.operator ? "O" : ""}}</td>
         <td
