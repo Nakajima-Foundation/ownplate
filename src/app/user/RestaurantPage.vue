@@ -225,8 +225,6 @@ export default {
   data() {
     return {
       retryCount: 0,
-      tabIndex: 0,
-      tabs: ["#menus", "#about"],
       loginVisible: false,
       isCheckingOut: false,
       orders: {},
@@ -234,7 +232,6 @@ export default {
       optionsPrev: {}, // from the store.cart
       restaurantsId: this.restaurantId(),
       shopInfo: {},
-      // isCardModalActive: false
       menus: [],
       titles: [],
       waitForUser: false,
@@ -247,11 +244,6 @@ export default {
     };
   },
   mounted() {
-    const index = this.tabs.findIndex(tab => tab === this.$route.hash);
-    if (index > -1) {
-      this.tabIndex = index;
-    }
-
     // Check if we came here as the result of "Edit Items"
     const url = new URL(window.location.href);
     if (url.hash.length > 1) {
@@ -315,9 +307,6 @@ export default {
     }
   },
   watch: {
-    tabIndex() {
-      this.$router.push(this.tabs[this.tabIndex]);
-    },
     user(newValue) {
       console.log("user changed");
       if (this.waitForUser && newValue) {
