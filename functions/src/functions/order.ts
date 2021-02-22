@@ -21,10 +21,12 @@ export const nameOfOrder = (orderNumber: number) => {
   return "#" + `00${orderNumber}`.slice(-3);
 };
 
+
 export const updateOrderTotalData = async (db, transaction, order, restaurantId, ownerUid, timePlaced, positive) => {
+  const timezone =  functions.config() && functions.config().order && functions.config().order.timezone || "Asia/Tokyo";
+
   const menuIds = Object.keys(order);
-  // const now = moment().tz("Asia/Tokyo").format('YYYYMMDD');
-  const date = moment(timePlaced.toDate()).tz("Asia/Tokyo").format('YYYYMMDD');
+  const date = moment(timePlaced.toDate()).tz(timezone).format('YYYYMMDD');
   
   await Promise.all(menuIds.map(async (menuId) => {
     const numArray = Array.isArray(order[menuId]) ? order[menuId] : [order[menuId]];
