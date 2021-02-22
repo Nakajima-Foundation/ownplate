@@ -17,6 +17,7 @@ export const parse_meta = (body) => {
 export const createRestaurantData = async (db, restaurantId) => {
   await db.doc(`restaurants/${restaurantId}`).set({
     orderCount: 10,
+    uid: "121212",
     foodTax: 5,
     alcoholTax: 8,
     publicFlag: true,
@@ -43,7 +44,9 @@ export const createOrder = async (db, restaurantId, orderId, orderData, func) =>
   await db.doc(`/users/${uid}/system/stripe`).set({});
 
   const options = {};
-  Object.keys(orderData).map(key => {options[key] = {0: []};})
+  Object.keys(orderData).map(key => {
+    options[key] = Array.isArray(orderData[key]) ? {0: [], 1:[]} : {0: []};
+  });
   const menuItems = {};
   // TODO set valid menu adta
   Object.keys(orderData).map(key => {menuItems[key] = {
