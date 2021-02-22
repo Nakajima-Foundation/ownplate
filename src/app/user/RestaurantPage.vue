@@ -100,7 +100,7 @@
                       :item="itemsObj[itemId]"
                       :quantities="orders[itemId] || [0]"
                       :optionPrev="optionsPrev[itemId]"
-                      :initialOpenMenuFlag="(orders[itemId] || 0) > 0"
+                      :initialOpenMenuFlag="(orders[itemId] || []).length > 0"
                       :shopInfo="shopInfo"
                       :isOpen="menuId === itemId"
                       :prices="prices[itemId] || []"
@@ -350,7 +350,6 @@ export default {
       const ret = {};
 
       const multiple = this.$store.getters.stripeRegion.multiple;
-      console.log(this.orders, this.trimmedSelectedOptions);
       Object.keys(this.orders).map(menuId => {
         const menu = this.itemsObj[menuId];
         ret[menuId] = [];
