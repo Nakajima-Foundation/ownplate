@@ -245,10 +245,8 @@ export default {
   },
   mounted() {
     // Check if we came here as the result of "Edit Items"
-    const url = new URL(window.location.href);
-    if (url.hash.length > 1) {
-      const prevOrderId = url.hash.slice(1);
-      const cart = this.$store.state.carts[prevOrderId] || {};
+    if (this.$store.state.carts[this.restaurantId()]) {
+      const cart = this.$store.state.carts[this.restaurantId()] || {};
       //console.log("cart", cart);
       this.orders = cart.orders || {};
       this.optionsPrev = cart.options || {};
@@ -502,7 +500,7 @@ export default {
         // when the user clicks the "Edit Items" on the next page.
         // In that case, we will come back here with #id so that we can retrieve it (see mounted).
         this.$store.commit("saveCart", {
-          id: res.id,
+          id: this.restaurantId(),
           cart: {
             orders: this.orders,
             options: this.options

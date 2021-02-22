@@ -474,6 +474,12 @@ export default {
       });
     }
   },
+  beforeRouteLeave(to, from, next) {
+    if (to.name === "r-restaurantId") {
+      this.deleteOrderInfo();
+    }
+    next();
+  },
   computed: {
     hasLineUrl() {
       return this.shopInfo.lineUrl;
@@ -652,7 +658,7 @@ export default {
       // The user has dismissed the login dialog (including the successful login)
       this.loginVisible = false;
     },
-    async handleEditItems() {
+    async deleteOrderInfo() {
       try {
         this.isDeleting = true;
         await db
@@ -663,8 +669,10 @@ export default {
         this.isDeleting = false;
         console.log("failed");
       }
+    },
+    async handleEditItems() {
       this.$router.push({
-        path: `/r/${this.restaurantId()}#${this.orderId}`
+        path: `/r/${this.restaurantId()}`
       });
     },
     async handlePayment() {
