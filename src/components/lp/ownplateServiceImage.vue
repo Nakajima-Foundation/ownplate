@@ -26,10 +26,10 @@
 
                 <!-- Tagline -->
                 <div
-                  class="t-h5 is-size-2-tablet c-ownplate-white p-t-32 p-b-24 bg-red-500"
+                  class="t-h5 is-size-2-tablet c-ownplate-white p-t-32 p-b-24"
                   style="font-weight: bold"
                 >
-                  お店の笑顔もおもちかえり！hello
+                  お店の笑顔もおもちかえり！
                 </div>
                 <div
                   class="h-4 w-288 bg-ownplate-white"
