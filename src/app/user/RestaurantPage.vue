@@ -260,6 +260,7 @@ export default {
       //console.log("cart", cart);
       this.orders = cart.orders || {};
       this.optionsPrev = cart.options || {};
+      this.options = cart.options || {};
     }
   },
   created() {
@@ -360,6 +361,7 @@ export default {
       const ret = {};
 
       const multiple = this.$store.getters.stripeRegion.multiple;
+      console.log(this.orders, this.trimmedSelectedOptions);
       Object.keys(this.orders).map(menuId => {
         const menu = this.itemsObj[menuId];
         ret[menuId] = [];
