@@ -7,8 +7,11 @@ import * as utils from './../src/lib/utils'
 import * as constant from './../src/common/constant';
 import * as test_db_helper from './test_db_helper';
 
-const adminDB = test_db_helper.adminDB();
+import moment from 'moment-timezone';
 
+import { Context } from '../src/models/TestType'
+
+const adminDB = test_db_helper.adminDB();
 should()
 
 describe('Order function', () => {
@@ -16,6 +19,7 @@ describe('Order function', () => {
   const createRestaurantData = async (restaurantId) => {
     await adminDB.doc(`restaurants/${restaurantId}`).set({
       orderCount: 10,
+      uid: "121212",
       foodTax: 5,
       alcoholTax: 8,
       publicFlag: true,
@@ -41,7 +45,9 @@ describe('Order function', () => {
     const uid = "123";
     await adminDB.doc(`/users/${uid}/system/stripe`).set({});
     const options = {};
-    Object.keys(orderData).map(key => {options[key] = {0: []};})
+    Object.keys(orderData).map(key => {
+      options[key] = Array.isArray(orderData[key]) ? {0: [], 1:[]} : {0: []};
+    });
     const menuItems = {};
     // TODO set valid menu adta
     Object.keys(orderData).map(key => {menuItems[key] = {
@@ -113,7 +119,7 @@ describe('Order function', () => {
 
       await createOrder(restaurantId, orderId, data);
       const newOrderData = (await adminDB.doc(`restaurants/${restaurantId}/orders/${orderId}`).get()).data() || {};
-
+      newOrderData["orderId"] = orderId;
       index ++;
       return newOrderData;
     };
@@ -190,10 +196,41 @@ describe('Order function', () => {
     expect(newOrderData10.total).equal(undefined);
     newOrderData10.status.should.equal(constant.order_status.error);
 
+    const checkOrderTotal = async (count) => {
+      const now = moment().tz("Asia/Tokyo").format('YYYYMMDD');
+      const path = `restaurants/${restaurantId}/menus/hoge1/orderTotal/${now}`
+      const totalRes = (await adminDB.doc(path).get()).data() || {};
+      totalRes.count.should.equal(count);
+    };
 
+    const newOrderData12 =  await makeOrder({
+      hoge1: 1,
+    });
+    const uid = "123";
+    const { orderId } = newOrderData12;
+    const placed = await order.place(adminDB, {restaurantId, orderId}, {auth: { uid, token:{ phone_number: "xxxx"}}} as Context );
 
+    placed.success.should.equal(true);
+    await checkOrderTotal(1);
 
+    const newOrderData13 =  await makeOrder({
+      hoge1: 1,
+    });
+    const newOrderRes13 = newOrderData13;
+    const placed2 = await order.place(adminDB, {restaurantId, orderId: newOrderRes13.orderId}, {auth: { uid, token:{ phone_number: "xxxx"}}} as Context );
+    placed2.success.should.equal(true);
+    await checkOrderTotal(2);
 
+    const newOrderData14 =  await makeOrder({
+      hoge1: [1, 1],
+    });
+
+    const newOrderRes14 = newOrderData14;
+    const placed14 = await order.place(adminDB, {restaurantId, orderId: newOrderRes14.orderId}, {auth: { uid, token:{ phone_number: "xxxx"}}} as Context );
+    placed14.success.should.equal(true);
+    await checkOrderTotal(4);
+
+    
   });
 
 });
