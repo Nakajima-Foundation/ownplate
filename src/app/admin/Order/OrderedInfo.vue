@@ -5,48 +5,79 @@
       <div
         v-if="!restaurant"
         @click="$emit('selected', order)"
-        class="touchable bg-surface r-8 d-low p-l-16 p-r-16 p-t-16 p-b-16"
+        class="touchable bg-surface r-8 d-low"
       >
-        <div class="cols flex-center">
+        <!-- Order Status -->
+        <div class="p-l-8 p-r-8 p-t-8 p-b-8">
+          <div
+            class="t-overline p-l-8 p-r-8 p-t-4 p-b-4 r-4 align-center"
+            :class="statusKey"
+          >
+            {{ $t("order.status." + statusKey) }}
+          </div>
+        </div>
+
+        <div class="cols flex-center p-l-8 p-r-8">
           <!-- Order Status -->
-          <div>
+          <!-- <div>
             <order-status :order="order" />
+          </div> -->
+
+          <!-- Payment Status -->
+          <div>
+            <div
+              v-if="hasStripe"
+              :class="'t-overline stripe_' + order.payment.stripe"
+            >
+              {{ $t("order.status.stripe_" + order.payment.stripe) }}
+            </div>
+            <div v-else class="t-overline c-status-amber">
+              {{ $t("order.status.onsitePayment") }}
+            </div>
           </div>
 
           <!-- Time Stamp -->
-          <div class="t-caption c-text-black-medium align-right flex-1">{{ timestamp || "0:00pm"}}</div>
+          <div class="t-caption c-text-black-medium align-right flex-1">
+            {{ timestamp || "0:00pm" }}
+          </div>
         </div>
 
-        <div class="cols flex-center m-t-8">
+        <div class="cols flex-center p-t-8 p-l-8 p-r-8">
           <!-- Order ID -->
           <div class="t-h6 c-text-black-high">{{ orderName }}</div>
 
           <!-- User Name/Phone -->
           <div class="t-body1 c-text-black-medium align-right flex-1">
-            <div class="is-inline-block m-r-8" v-if="order.name">{{ order.name }}</div>
-            <div class="is-inline-block" v-if="!order.name && phoneNumber">{{ nationalPhoneNumber }}</div>
+            <div class="is-inline-block" v-if="order.name">
+              {{ order.name }}
+            </div>
+
+            <div class="is-inline-block" v-if="!order.name && phoneNumber">
+              {{ nationalPhoneNumber }}
+            </div>
           </div>
         </div>
 
-        <div class="cols flex-center m-t-8">
+        <div class="cols flex-center p-t-8 p-l-8 p-r-8 p-b-8">
           <!-- Order Count -->
-          <div
-            class="t-body2 c-text-black-medium m-r-8"
-          >{{$tc('sitemenu.orderCounter', totalCount, {count: totalCount})}}</div>
+          <div class="t-body2 c-text-black-medium m-r-8">
+            {{
+              $tc("sitemenu.orderCounter", totalCount, { count: totalCount })
+            }}
+          </div>
 
           <!-- Total -->
-          <div class="t-body2 c-text-black-high m-r-8">{{ $n(order.totalCharge, 'currency') }}</div>
-
-          <!-- Stripe Status -->
-          <div v-if="hasStripe" class="m-r-8">
-            <i :class="'fab fa-cc-stripe stripe_'+order.payment.stripe"></i>
+          <div class="t-body2 c-text-black-high m-r-8">
+            {{ $n(order.totalCharge, "currency") }}
           </div>
 
           <!-- Tip -->
           <div
             v-if="order.tip"
-            class="t-caption c-status-green"
-          >( {{$t('order.includingTip')}} {{ $n(order.tip, 'currency') }} )</div>
+            class="t-overline c-status-blue flex-1 align-right"
+          >
+            {{ $t("order.includingTip") }} {{ $n(order.tip, "currency") }}
+          </div>
         </div>
       </div>
 
@@ -54,43 +85,77 @@
       <div
         v-if="restaurant"
         @click="$emit('selected', order)"
-        class="touchable bg-surface r-8 d-low p-l-16 p-r-16 p-t-16 p-b-16"
+        class="touchable bg-surface r-8 d-low"
       >
-        <div class="cols flex-center">
+        <!-- Order Status -->
+        <div class="p-l-8 p-r-8 p-t-8 p-b-8">
+          <div
+            class="t-overline p-l-8 p-r-8 p-t-4 p-b-4 r-4 align-center"
+            :class="statusKey"
+          >
+            {{ $t("order.status." + statusKey) }}
+          </div>
+        </div>
+
+        <div class="cols flex-center p-l-8 p-r-8">
           <!-- Order Status -->
-          <div>
+          <!-- <div>
             <order-status :order="order" />
+          </div> -->
+
+          <!-- Payment Status -->
+          <div>
+            <div
+              v-if="hasStripe"
+              :class="'t-overline stripe_' + order.payment.stripe"
+            >
+              {{ $t("order.status.stripe_" + order.payment.stripe) }}
+            </div>
+            <div v-else class="t-overline c-status-amber">
+              {{ $t("order.status.onsitePayment") }}
+            </div>
           </div>
 
           <!-- Time Stamp -->
-          <div class="t-caption c-text-black-medium align-right flex-1">{{ timestamp || "0:00pm"}}</div>
+          <div class="t-caption c-text-black-medium align-right flex-1">
+            {{ timestamp || "0:00pm" }}
+            <!-- # ToDo: Want to show not only time but also date for the user -->
+          </div>
         </div>
 
-        <div class="cols flex-center m-t-8">
+        <div class="cols flex-center p-t-8 p-l-8 p-r-8 p-b-8">
           <!-- Restaurant Profile -->
           <div class="m-r-8">
-            <img :src="resizedProfileImage(restaurant, '600')" class="w-48 h-48 r-48 cover" />
+            <img
+              :src="resizedProfileImage(restaurant, '600')"
+              class="w-48 h-48 r-48 cover"
+            />
           </div>
 
           <div class="flex-1">
             <!-- Restaurant Name -->
-            <div class="t-body1 c-text-black-high">{{restaurant.restaurantName}}</div>
+            <div class="t-body1 c-text-black-high">
+              {{ restaurant.restaurantName }}
+            </div>
             <div class="cols flex-center">
               <!-- Order Count -->
-              <div
-                class="t-body2 c-text-black-medium m-r-8"
-              >{{$tc('sitemenu.orderCounter', totalCount, {count: totalCount})}}</div>
+              <div class="t-body2 c-text-black-medium m-r-8">
+                {{
+                  $tc("sitemenu.orderCounter", totalCount, {
+                    count: totalCount
+                  })
+                }}
+              </div>
 
               <!-- Total -->
-              <div class="t-body2 c-text-black-high m-r-8">{{ $n(order.totalCharge, 'currency') }}</div>
-
-              <!-- Stripe Status -->
-              <div>
-                <i v-if="hasStripe" :class="'fab fa-cc-stripe stripe_'+order.payment.stripe"></i>
+              <div class="t-body2 c-text-black-high m-r-8">
+                {{ $n(order.totalCharge, "currency") }}
               </div>
 
               <!-- Order ID -->
-              <div class="t-body2 c-text-black-high flex-1 align-right">{{ orderName }}</div>
+              <div class="t-subtitle2 c-text-black-high flex-1 align-right">
+                {{ orderName }}
+              </div>
             </div>
           </div>
         </div>
@@ -104,7 +169,7 @@ import OrderStatus from "~/app/admin/Order/OrderStatus";
 import { nameOfOrder } from "~/plugins/strings.js";
 import { parsePhoneNumber, formatNational } from "~/plugins/phoneutil.js";
 import { db } from "~/plugins/firebase.js";
-import { order_status } from "~/plugins/constant.js";
+import { order_status, order_status_keys } from "~/plugins/constant.js";
 
 export default {
   components: {
@@ -134,6 +199,9 @@ export default {
     }
   },
   computed: {
+    statusKey() {
+      return order_status_keys[this.order.status];
+    },
     hasStripe() {
       return this.order.payment && this.order.payment.stripe;
     },
@@ -165,8 +233,8 @@ export default {
       return 0;
     },
     paymentIsNotCompleted() {
-      return this.hasStripe && this.order.status <  order_status.ready_to_pickup 
-    },
-  },
+      return this.hasStripe && this.order.status < order_status.ready_to_pickup;
+    }
+  }
 };
 </script>

@@ -20,9 +20,14 @@
               <!-- Restaurant Profile -->
               <div class="is-inline-flex flex-center m-t-24">
                 <div>
-                  <img :src="resizedProfileImage(shopInfo, '600')" class="w-36 h-36 r-36 cover" />
+                  <img
+                    :src="resizedProfileImage(shopInfo, '600')"
+                    class="w-36 h-36 r-36 cover"
+                  />
                 </div>
-                <div class="t-h6 c-text-black-high m-l-8 flex-1">{{ shopInfo.restaurantName }}</div>
+                <div class="t-h6 c-text-black-high m-l-8 flex-1">
+                  {{ shopInfo.restaurantName }}
+                </div>
               </div>
             </div>
 
@@ -34,8 +39,12 @@
                 :to="`/admin/restaurants/${restaurantId()}/suspend`"
                 class="b-reset op-button-pill h-36 bg-form m-t-24 m-r-16"
               >
-                <i class="material-icons c-primary m-l-8">remove_shopping_cart</i>
-                <span class="c-primary t-button">{{ $t("admin.order.suspend") }}</span>
+                <i class="material-icons c-primary m-l-8"
+                  >remove_shopping_cart</i
+                >
+                <span class="c-primary t-button">{{
+                  $t("admin.order.suspend")
+                }}</span>
                 <!-- # ToDO: Show number of suspended items. -->
                 <span class="t-button c-status-red">0</span>
               </b-button>
@@ -67,12 +76,24 @@
               :isSuperView="true"
             />
           </div>
-          <div class="m-t-24" v-if="last !== undefined">
-            <b-button class="b-reset h-36 r-36 bg-form" :disabled="last === null" @click="next">
-              <span class="p-l-16 p-r-16">{{ $t('admin.order.more') }}</span>
+
+          <!-- More -->
+          <div class="m-t-16" v-if="last !== undefined">
+            <b-button
+              class="b-reset op-button-pill bg-form w-full"
+              :disabled="last === null"
+              @click="next"
+            >
+              <span class="t-subtitle2 c-primary p-l-16 p-r-16">{{
+                $t("admin.order.more")
+              }}</span>
             </b-button>
           </div>
+
+          <!-- Download Orders -->
           <download-orders :orders="orders" v-if="shopOwner" />
+
+          <!-- Download Report -->
           <report-details
             :orders="orders"
             :fileName="fileName"
@@ -113,7 +134,7 @@ export default {
       limit: 30,
       last: undefined,
       orders: [],
-      shopOwner: null,
+      shopOwner: null
     };
   },
   async created() {
@@ -145,7 +166,9 @@ export default {
       }
       const docs = (await query.get()).docs;
       this.last = docs.length == this.limit ? docs[this.limit - 1] : null;
-      const orders = docs.map(this.doc2data("order")).filter(a => a.status !== order_status.transaction_hide);
+      const orders = docs
+        .map(this.doc2data("order"))
+        .filter(a => a.status !== order_status.transaction_hide);
       orders.forEach(order => {
         order.timePlaced = order.timePlaced.toDate();
         if (order.timeEstimated) {
