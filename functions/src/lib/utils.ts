@@ -3,6 +3,7 @@ import { stripe_regions, regionalSettings } from '../common/constant'
 import Stripe from 'stripe'
 import * as Sentry from '@sentry/node';
 
+import { Context } from '../models/TestType'
 import * as admin from 'firebase-admin';
 
 export const getRegion = () => {
@@ -20,7 +21,7 @@ export const getRegionalSetting = () => {
   return regionalSettings[region] || regionalSettings["US"];
 }
 
-export const validate_auth = (context: functions.https.CallableContext) => {
+export const validate_auth = (context: functions.https.CallableContext | Context) => {
   if (!context.auth) {
     throw new functions.https.HttpsError('failed-precondition', 'The function must be called while authenticated.')
   }
@@ -88,8 +89,8 @@ export const optionPrice = (option: string) => {
 
 const chunk = (arr: string[], chunkSize: number) => {
   const ret: string[][] = [];
-  let len = arr.length;
-  for (let i=0; i < len;  i += chunkSize) {
+  const len = arr.length;
+  for (let i = 0; i < len;  i += chunkSize) {
     const tmp = arr.slice(i, i + chunkSize);
     ret.push(tmp);
   }
