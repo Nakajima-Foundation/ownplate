@@ -157,7 +157,7 @@ describe('Order function', () => {
     });
     const uid = "123";
     const { orderId } = newOrderData12;
-    const placed = await order.place(adminDB, {restaurantId, orderId}, {auth: { uid, token:{ phone_number: "xxxx"}}} as Context );
+    const placed = await order.place(adminDB, {restaurantId, orderId, timeToPickup: {seconds: 1613986197, nanoseconds: 0}}, {auth: { uid, token:{ phone_number: "xxxx"}}} as Context );
 
     placed.success.should.equal(true);
     await checkOrderTotal(1);
@@ -166,7 +166,7 @@ describe('Order function', () => {
       hoge1: 1,
     });
     const newOrderRes13 = newOrderData13;
-    const placed2 = await order.place(adminDB, {restaurantId, orderId: newOrderRes13.orderId}, {auth: { uid, token:{ phone_number: "xxxx"}}} as Context );
+    const placed2 = await order.place(adminDB, {restaurantId, orderId: newOrderRes13.orderId, timeToPickup: {seconds: 1613986197, nanoseconds: 0}}, {auth: { uid, token:{ phone_number: "xxxx"}}} as Context );
     placed2.success.should.equal(true);
     await checkOrderTotal(2);
 
@@ -175,7 +175,7 @@ describe('Order function', () => {
     });
 
     const newOrderRes14 = newOrderData14;
-    const placed14 = await order.place(adminDB, {restaurantId, orderId: newOrderRes14.orderId}, {auth: { uid, token:{ phone_number: "xxxx"}}} as Context );
+    const placed14 = await order.place(adminDB, {restaurantId, orderId: newOrderRes14.orderId,  timeToPickup: {seconds: 1613986197, nanoseconds: 0}}, {auth: { uid, token:{ phone_number: "xxxx"}}} as Context );
     placed14.success.should.equal(true);
     await checkOrderTotal(4);
 

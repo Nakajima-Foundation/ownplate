@@ -21,16 +21,19 @@ export const nameOfOrder = (orderNumber: number) => {
   return "#" + `00${orderNumber}`.slice(-3);
 };
 
-const updateOrderTotalData = async (db, transaction, order, restaurantId, ownerUid) => {
+
+export const updateOrderTotalData = async (db, transaction, order, restaurantId, ownerUid, timePlaced, positive) => {
+  const timezone =  functions.config() && functions.config().order && functions.config().order.timezone || "Asia/Tokyo";
+
   const menuIds = Object.keys(order);
-  const now = moment().tz("Asia/Tokyo").format('YYYYMMDD');
+  const date = moment(timePlaced.toDate()).tz(timezone).format('YYYYMMDD');
   
   await Promise.all(menuIds.map(async (menuId) => {
     const numArray = Array.isArray(order[menuId]) ? order[menuId] : [order[menuId]];
     const num = numArray.reduce((sum, current) => {
       return sum + current
     }, 0);
-    const path = `restaurants/${restaurantId}/menus/${menuId}/orderTotal/${now}`
+    const path = `restaurants/${restaurantId}/menus/${menuId}/orderTotal/${date}`
     const totalRef = db.doc(path)
     const total = (await transaction.get(totalRef)).data();
     
@@ -39,13 +42,14 @@ const updateOrderTotalData = async (db, transaction, order, restaurantId, ownerU
         uid: ownerUid,
         restaurantId,
         menuId,
-        date: now,
+        date,
         count: num,
       };
       await transaction.set(totalRef, addData);
     } else {
+      const count = positive ? total.count + num : total.count - num;
       const updateData = {
-        count: total.count + num
+        count,
       };
       await transaction.update(totalRef, updateData);
     }
@@ -80,7 +84,8 @@ const updateOrderTotalData = async (db, transaction, order, restaurantId, ownerU
       const roundedTip = Math.round(tip * multiple) / multiple
 
       // transaction for stock orderTotal
-      await updateOrderTotalData(db, transaction, order.order, restaurantId, restaurantData.uid);
+      const timePlaced = timeToPickup && new admin.firestore.Timestamp(timeToPickup.seconds, timeToPickup.nanoseconds) || admin.firestore.FieldValue.serverTimestamp()
+      await updateOrderTotalData(db, transaction, order.order, restaurantId, restaurantData.uid, timePlaced, true);
       
       transaction.update(orderRef, {
         status: order_status.order_placed,
@@ -89,7 +94,7 @@ const updateOrderTotalData = async (db, transaction, order, restaurantId, ownerU
         sendSMS: sendSMS || false,
         updatedAt: admin.firestore.Timestamp.now(),
         orderPlacedAt: admin.firestore.Timestamp.now(),
-        timePlaced: timeToPickup && new admin.firestore.Timestamp(timeToPickup.seconds, timeToPickup.nanoseconds) || admin.firestore.FieldValue.serverTimestamp(),
+        timePlaced,
         memo: memo || "",
       })
       
