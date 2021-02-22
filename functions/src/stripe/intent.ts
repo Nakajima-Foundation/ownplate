@@ -4,7 +4,8 @@ import { order_status } from '../common/constant'
 import Stripe from 'stripe'
 import Order from '../models/Order'
 import * as utils from '../lib/utils'
-import { sendMessage, notifyNewOrder, nameOfOrder, notifyCanceledOrder } from '../functions/order';
+import { updateOrderTotalData, sendMessage, notifyNewOrder, nameOfOrder, notifyCanceledOrder } from '../functions/order';
+
 
 import moment from 'moment-timezone';
 
@@ -79,8 +80,10 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
         stripeAccount
       })
 
+      const timePlaced = timeToPickup && new admin.firestore.Timestamp(timeToPickup.seconds, timeToPickup.nanoseconds) || admin.firestore.FieldValue.serverTimestamp()
+      await updateOrderTotalData(db, transaction, order.order, restaurantId, uid, timePlaced, true);
       transaction.set(orderRef, {
-        timePlaced: timeToPickup && new admin.firestore.Timestamp(timeToPickup.seconds, timeToPickup.nanoseconds) || admin.firestore.FieldValue.serverTimestamp(),
+        timePlaced,
         status: order_status.order_placed,
         updatedAt: admin.firestore.Timestamp.now(),
         orderPlacedAt: admin.firestore.Timestamp.now(),
@@ -250,6 +253,7 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
 
       if (!stripeAccount || !order.payment || !order.payment.stripe) {
         // No payment transaction
+        await updateOrderTotalData(db, transaction, order.order, restaurantId, uid, order.timePlaced, false);
         transaction.set(orderRef, {
           timeCanceled: admin.firestore.FieldValue.serverTimestamp(),
           [cancelTimeKey]: admin.firestore.FieldValue.serverTimestamp(),
@@ -272,6 +276,7 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
           idempotencyKey: `${order.id}-cancel`,
           stripeAccount
         })
+        await updateOrderTotalData(db, transaction, order.order, restaurantId, restaurant.uid, order.timePlaced, false);
         transaction.set(orderRef, {
           timeCanceled: admin.firestore.FieldValue.serverTimestamp(),
           [cancelTimeKey]: admin.firestore.FieldValue.serverTimestamp(),

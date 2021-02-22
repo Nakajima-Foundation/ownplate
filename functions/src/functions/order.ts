@@ -21,7 +21,7 @@ export const nameOfOrder = (orderNumber: number) => {
   return "#" + `00${orderNumber}`.slice(-3);
 };
 
-const updateOrderTotalData = async (db, transaction, order, restaurantId, ownerUid, timePlaced) => {
+export const updateOrderTotalData = async (db, transaction, order, restaurantId, ownerUid, timePlaced, positive) => {
   const menuIds = Object.keys(order);
   // const now = moment().tz("Asia/Tokyo").format('YYYYMMDD');
   const date = moment(timePlaced.toDate()).tz("Asia/Tokyo").format('YYYYMMDD');
@@ -45,8 +45,9 @@ const updateOrderTotalData = async (db, transaction, order, restaurantId, ownerU
       };
       await transaction.set(totalRef, addData);
     } else {
+      const count = positive ? total.count + num : total.count - num;
       const updateData = {
-        count: total.count + num
+        count,
       };
       await transaction.update(totalRef, updateData);
     }
@@ -82,7 +83,7 @@ const updateOrderTotalData = async (db, transaction, order, restaurantId, ownerU
 
       // transaction for stock orderTotal
       const timePlaced = timeToPickup && new admin.firestore.Timestamp(timeToPickup.seconds, timeToPickup.nanoseconds) || admin.firestore.FieldValue.serverTimestamp()
-      await updateOrderTotalData(db, transaction, order.order, restaurantId, restaurantData.uid, timePlaced);
+      await updateOrderTotalData(db, transaction, order.order, restaurantId, restaurantData.uid, timePlaced, true);
       
       transaction.update(orderRef, {
         status: order_status.order_placed,
