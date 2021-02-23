@@ -19,7 +19,7 @@
                 <div>
                   <img
                     :src="resizedProfileImage(shopInfo, '600')"
-                    class="w-9 h-9 r-36 cover"
+                    class="w-9 h-9 rounded-full cover"
                   />
                 </div>
                 <div class="t-h6 c-text-black-high m-l-8 flex-1">

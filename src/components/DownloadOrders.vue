@@ -5,7 +5,7 @@
     :fieldNames="fieldNames"
     :fileName="$t('order.history')"
   >
-    <b-button class="m-t-16 b-reset h-9 r-36 bg-form">
+    <b-button class="b-reset op-button-pill h-9 rounded-full bg-form m-t-16">
       <span class="p-l-16 p-r-16">
         <i class="material-icons c-primary s-18 m-r-8">save_alt</i>
         <span class="c-primary t-button">{{

@@ -10,7 +10,7 @@
           <div class="column is-half is-offset-one-quarter">
             <div class="m-l-24 m-r-24">
               <div
-                class="bg-surface r-8 d-low m-t-24 p-l-24 p-r-24 p-t-24 p-b-24"
+                class="bg-surface rounded-lg d-low m-t-24 p-l-24 p-r-24 p-t-24 p-b-24"
               >
                 <form @submit.prevent="onSignup">
                   <div class="t-h6 c-text-black-disabled">

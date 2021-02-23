@@ -12,7 +12,7 @@
       <div class="column is-narrow w-4"></div>
       <div class="column">
         <div
-          class="columns is-gapless bg-ownplate-white m-t-8 r-16 p-t-16 p-l-24 p-r-24 p-b-16"
+          class="columns is-gapless bg-ownplate-white m-t-8 rounded-2xl p-t-16 p-l-24 p-r-24 p-b-16"
         >
           <div class="column is-narrow align-center">
             <img src="/LP-UserVoice-Face-1.jpg" class="r-256" />
@@ -45,7 +45,7 @@
               <div>
                 <img
                   src="/LP-UserVoice-Video-1.jpg"
-                  class="r-8 w-64 touchable"
+                  class="rounded-lg w-64 touchable"
                 />
               </div>
               <div class="op-button-small">
@@ -64,7 +64,7 @@
       <div class="column is-narrow w-4"></div>
       <div class="column">
         <div
-          class="bg-ownplate-white m-t-8 r-16 p-t-16 p-l-24 p-r-24 p-b-16 t-body2"
+          class="bg-ownplate-white m-t-8 rounded-2xl p-t-16 p-l-24 p-r-24 p-b-16 t-body2"
         >
           <i class="material-icons c-text-black-disabled s-32">format_quote</i>
           <span class="highlight">営業時間外</span
@@ -77,7 +77,7 @@
       <div class="column is-narrow w-4"></div>
       <div class="column">
         <div
-          class="bg-ownplate-white m-t-8 r-16 p-t-16 p-l-24 p-r-24 p-b-16 t-body2"
+          class="bg-ownplate-white m-t-8 rounded-2xl p-t-16 p-l-24 p-r-24 p-b-16 t-body2"
         >
           <i class="material-icons c-text-black-disabled s-32">format_quote</i>
           電話注文ではどうしても注文の聞き間違えがあり、お客さんにもご迷惑をかけていたのですが、オンラインになってから<span
@@ -89,7 +89,7 @@
       <div class="column is-narrow w-4"></div>
       <div class="column">
         <div
-          class="bg-ownplate-white m-t-8 r-16 p-t-16 p-l-24 p-r-24 p-b-16 t-body2"
+          class="bg-ownplate-white m-t-8 rounded-2xl p-t-16 p-l-24 p-r-24 p-b-16 t-body2"
         >
           <i class="material-icons c-text-black-disabled s-32">format_quote</i>
           注文が入った時に<span class="highlight">LINE</span>や<span
@@ -106,7 +106,7 @@
       <div class="column is-narrow w-4"></div>
       <div class="column">
         <div
-          class="bg-ownplate-white m-t-8 r-16 p-t-16 p-l-24 p-r-24 p-b-16 t-body2"
+          class="bg-ownplate-white m-t-8 rounded-2xl p-t-16 p-l-24 p-r-24 p-b-16 t-body2"
         >
           <i class="material-icons c-text-black-disabled s-32">format_quote</i>
           <span class="highlight">オンラインで手軽に決済</span
@@ -119,7 +119,7 @@
       <div class="column is-narrow w-4"></div>
       <div class="column">
         <div
-          class="bg-ownplate-white m-t-8 r-16 p-t-16 p-l-24 p-r-24 p-b-16 t-body2"
+          class="bg-ownplate-white m-t-8 rounded-2xl p-t-16 p-l-24 p-r-24 p-b-16 t-body2"
         >
           <i class="material-icons c-text-black-disabled s-32">format_quote</i>
           お客様の<span class="highlight">購入履歴もエクセルで確認</span
@@ -131,7 +131,7 @@
       <div class="column is-narrow w-4"></div>
       <div class="column">
         <div
-          class="bg-ownplate-white m-t-8 r-16 p-t-16 p-l-24 p-r-24 p-b-16 t-body2"
+          class="bg-ownplate-white m-t-8 rounded-2xl p-t-16 p-l-24 p-r-24 p-b-16 t-body2"
         >
           <i class="material-icons c-text-black-disabled s-32">format_quote</i>
           毎月の売上がエクセルで確認できて、記帳が楽になりました。<span

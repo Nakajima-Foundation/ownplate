@@ -23,7 +23,7 @@
                   <div>
                     <img
                       :src="resizedProfileImage(shopInfo, '600')"
-                      class="w-9 h-9 r-36 cover"
+                      class="w-9 h-9 rounded-full cover"
                     />
                   </div>
                   <div class="t-h6 c-text-black-high m-l-8 flex-1">
@@ -51,7 +51,7 @@
         <div class="column">
           <div class="m-l-24 m-r-24">
             <div
-              class="bg-surface r-8 d-low p-l-24 p-r-24 p-t-24 p-b-24 m-t-24"
+              class="bg-surface rounded-lg d-low p-l-24 p-r-24 p-t-24 p-b-24 m-t-24"
             >
               <div>{{ $t("order.status.transaction_hide") }}</div>
             </div>
@@ -66,7 +66,7 @@
         <div class="column">
           <div class="m-l-24 m-r-24">
             <div
-              class="bg-surface r-8 d-low p-l-24 p-r-24 p-t-24 p-b-24 m-t-24"
+              class="bg-surface rounded-lg d-low p-l-24 p-r-24 p-t-24 p-b-24 m-t-24"
             >
               <!-- Order Overview -->
               <div>
@@ -119,7 +119,7 @@
                 <!-- Note for Payment Completion -->
                 <div
                   v-if="paymentIsNotCompleted"
-                  class="m-t-16 bg-status-amber-bg r-8 p-t-8 p-b-8 p-l-16 p-r-16 t-body2 c-status-amber"
+                  class="m-t-16 bg-status-amber-bg rounded-lg p-t-8 p-b-8 p-l-16 p-r-16 t-body2 c-status-amber"
                 >
                   {{ $t("admin.order.paymentIsNotCompleted") }}
                 </div>
@@ -247,7 +247,7 @@
                 <!-- Message from customer -->
                 <div
                   v-if="hasMemo"
-                  class="m-t-16 bg-form r-8 p-t-16 p-l-16 p-r-16 p-b-16"
+                  class="m-t-16 bg-form rounded-lg p-t-16 p-l-16 p-r-16 p-b-16"
                 >
                   <div class="t-caption c-text-black-medium">
                     {{ $t("admin.order.messageFromCustomer") }}

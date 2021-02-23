@@ -52,7 +52,7 @@
             </div>
             <div class="t-body1 c-text-black-high">
               <template v-for="(day, key) in days">
-                <div class="cols p-l-8 p-r-8 p-t-4 p-b-4 r-4 t-body2">
+                <div class="cols p-l-8 p-r-8 p-t-4 p-b-4 rounded t-body2">
                   <div class="w-16">{{ $t("week.short." + day) }}</div>
                   <div class="flex-1">
                     <template v-if="(shopInfo.businessDay || {})[key]">

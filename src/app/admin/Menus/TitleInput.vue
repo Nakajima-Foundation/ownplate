@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Title Card -->
-    <div class="bg-form r-8 p-l-16 p-r-16 p-t-16 p-b-16 m-t-24">
+    <div class="bg-form rounded-lg p-l-16 p-r-16 p-t-16 p-b-16 m-t-24">
       <b-field>
         <b-input
           ref="textInput"

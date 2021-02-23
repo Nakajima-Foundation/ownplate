@@ -13,7 +13,7 @@
           <!-- Center Column -->
           <div class="column">
             <div
-              class="bg-status-red-bg r-8 p-l-16 p-r-16 p-t-16 p-b-16 align-center m-l-24 m-r-24 m-t-24"
+              class="bg-status-red-bg rounded-lg p-l-16 p-r-16 p-t-16 p-b-16 align-center m-l-24 m-r-24 m-t-24"
             >
               <div class="t-subtitle1 c-status-red">
                 {{ $t("shopInfo.thisIsPreview") }}
@@ -47,7 +47,7 @@
                   />
                   <img
                     :src="coverImage"
-                    class="h-48 w-full cover r-8 is-hidden-mobile"
+                    class="h-48 w-full cover rounded-lg is-hidden-mobile"
                   />
                 </div>
               </div>

@@ -6,7 +6,7 @@
         {{ $t("shopInfo.restaurantDetails") }}
       </div>
 
-      <div class="bg-surface r-8 d-low m-t-8 p-b-24">
+      <div class="bg-surface rounded-lg d-low m-t-8 p-b-24">
         <!-- Restaurant Location -->
         <div v-if="hasLocation">
           <GMap
@@ -63,7 +63,7 @@
 
         <!-- Minimum Available Time -->
         <div
-          class="m-t-8 m-l-16 m-r-16 bg-status-blue-bg r-8 p-l-16 p-r-16 p-t-8 p-b-8"
+          class="m-t-8 m-l-16 m-r-16 bg-status-blue-bg rounded-lg p-l-16 p-r-16 p-t-8 p-b-8"
         >
           <div class="t-subtitle2 c-text-black-medium">
             {{ $t("shopInfo.minimumAvailableTime") }}
@@ -128,7 +128,7 @@
             </div>
             <template v-for="(day, key) in days">
               <div
-                class="cols p-l-8 p-r-8 p-t-4 p-b-4 r-4 t-body2"
+                class="cols p-l-8 p-r-8 p-t-4 p-b-4 rounded t-body2"
                 :style="
                   weekday == key % 7
                     ? { 'background-color': 'rgba(104, 159, 56, 0.1)' }

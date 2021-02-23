@@ -57,7 +57,7 @@
 
             <!-- Public Checkbox -->
             <div
-              class="m-t-24 align-center bg-form p-l-16 p-r-16 p-t-16 p-b-16 r-8"
+              class="m-t-24 align-center bg-form p-l-16 p-r-16 p-t-16 p-b-16 rounded-lg"
             >
               <b-checkbox
                 v-model="menuInfo.publicFlag"
@@ -177,7 +177,7 @@
             <!-- Price Example -->
             <div
               v-if="requireTaxPriceDisplay"
-              class="m-t-24 bg-form r-8 p-l-16 p-r-16 p-t-16 p-b-16"
+              class="m-t-24 bg-form rounded-lg p-l-16 p-r-16 p-t-16 p-b-16"
             >
               <span class="t-subtitle2"
                 >{{ $t("editMenu.displayPrice") }}:</span
@@ -258,7 +258,7 @@
                 <!-- Current Photo -->
                 <div v-if="itemPhoto" class="p-r-16">
                   <div>
-                    <img class="w-32 h-32 r-4 cover" :src="itemPhoto" />
+                    <img class="w-32 h-32 rounded cover" :src="itemPhoto" />
                   </div>
                   <div class="align-center t-caption">
                     {{ $t("editCommon.current") }}
@@ -329,7 +329,7 @@
 
                     <!-- Option Preview -->
                     <div
-                      class="bg-form t-subtitle2 p-l-16 p-r-16 p-t-8 p-b-8 m-b-16 r-8"
+                      class="bg-form t-subtitle2 p-l-16 p-r-16 p-t-8 p-b-8 m-b-16 rounded-lg"
                     >
                       <div class="t-caption p-b-8 c-text-black-disabled cols">
                         <div class="flex-1">
@@ -391,7 +391,7 @@
                 {{ $t("editMenu.csvCategoriesNote") }}
               </div>
 
-              <div class="bg-form r-8 p-l-16 p-r-16 p-t-8 p-b-8">
+              <div class="bg-form rounded-lg p-l-16 p-r-16 p-t-8 p-b-8">
                 <!-- Category 1 -->
                 <div>
                   <div class="cols flex-center">
@@ -474,7 +474,7 @@
           <div class="m-l-24 m-r-24 m-t-24">
             <!-- Public Checkbox -->
             <div
-              class="m-t-24 align-center bg-form p-l-16 p-r-16 p-t-16 p-b-16 r-8"
+              class="m-t-24 align-center bg-form p-l-16 p-r-16 p-t-16 p-b-16 rounded-lg"
             >
               <b-checkbox
                 v-model="menuInfo.publicFlag"

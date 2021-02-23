@@ -22,7 +22,7 @@
                 <div>
                   <img
                     :src="resizedProfileImage(shopInfo, '600')"
-                    class="w-9 h-9 r-36 cover"
+                    class="w-9 h-9 rounded-full cover"
                   />
                 </div>
                 <div class="t-h6 c-text-black-high m-l-8 flex-1">
@@ -66,7 +66,7 @@
                 >
                   <!-- Name and Status -->
                   <div
-                    class="flex-1 bg-surface r-8 d-low p-l-16 p-r-16 p-t-16 p-b-16 touchable"
+                    class="flex-1 bg-surface rounded-lg d-low p-l-16 p-r-16 p-t-16 p-b-16 touchable"
                     @click="handleToggle(lineUser)"
                   >
                     <!-- Enabled -->
@@ -119,7 +119,7 @@
 
               <!-- Note for Safari Private Browsing Mode -->
               <div
-                class="bg-form r-8 p-l-16 p-r-16 p-t-16 p-b-16 m-t-24 align-left"
+                class="bg-form rounded-lg p-l-16 p-r-16 p-t-16 p-b-16 m-t-24 align-left"
               >
                 <span class="t-body2 c-text-black-medium">
                   {{ $t("admin.order.lineSafariPrivate") }}

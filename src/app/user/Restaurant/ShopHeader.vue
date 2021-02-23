@@ -2,8 +2,8 @@
   <div>
     <!-- Restaurant Profile Photo -->
     <div class="m-t-24 align-center">
-      <div class="w-16 h-16 r-64 bg-form is-inline-block">
-        <img :src="profileImage" class="w-16 h-16 r-64 cover" />
+      <div class="w-16 h-16 rounded-full bg-form is-inline-block">
+        <img :src="profileImage" class="w-16 h-16 rounded-full cover" />
       </div>
     </div>
 

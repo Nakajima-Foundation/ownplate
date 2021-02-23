@@ -21,7 +21,7 @@
                 <!-- Restaurant Profile -->
                 <!-- <div class="is-inline-flex flex-center m-t-24">
                   <div>
-                    <img :src="restaurantInfo.restProfilePhoto" class="w-9 h-9 r-36 cover" />
+                    <img :src="restaurantInfo.restProfilePhoto" class="w-9 h-9 rounded-full cover" />
                   </div>
                   <div
                     class="t-h6 c-text-black-high m-l-8 flex-1"
@@ -51,7 +51,7 @@
             <div class="m-t-24 align-center">
               <img
                 :src="resizedProfileImage(restaurantInfo, '600')"
-                class="w-16 h-16 r-64 cover"
+                class="w-16 h-16 rounded-full cover"
               />
             </div>
 
@@ -85,7 +85,7 @@
               <div @click="publicFilterToggle()" class="op-button">
                 <div
                   v-if="publicFilter"
-                  class="op-button bg-status-green-bg r-64 p-t-4 p-b-4 p-l-4 p-r-4"
+                  class="op-button bg-status-green-bg rounded-full p-t-4 p-b-4 p-l-4 p-r-4"
                 >
                   <div class="op-button-pill c-status-green t-subtitle2">
                     {{ $t("editMenu.showAllMenu") }}
@@ -98,7 +98,7 @@
                 </div>
                 <div
                   v-else
-                  class="op-button bg-status-green-bg r-64 p-t-4 p-b-4 p-l-4 p-r-4"
+                  class="op-button bg-status-green-bg rounded-full p-t-4 p-b-4 p-l-4 p-r-4"
                 >
                   <div
                     class="op-button-pill c-text-white-full t-subtitle2 bg-status-green"
@@ -132,7 +132,7 @@
             <!-- No Menu -->
             <div v-if="!existsMenu || menuCounter > 5">
               <div
-                class="border-primary r-8 p-l-24 p-r-24 p-t-24 p-b-24 m-t-24"
+                class="border-primary rounded-lg p-l-24 p-r-24 p-t-24 p-b-24 m-t-24"
               >
                 <div class="align-center t-subtitle1 c-primary">
                   {{ $t("editMenu.pleaseAddItem") }}

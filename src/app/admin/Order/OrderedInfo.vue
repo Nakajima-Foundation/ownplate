@@ -5,12 +5,12 @@
       <div
         v-if="!restaurant"
         @click="$emit('selected', order)"
-        class="touchable bg-surface r-8 d-low"
+        class="touchable bg-surface rounded-lg d-low"
       >
         <!-- Order Status -->
         <div class="p-l-8 p-r-8 p-t-8 p-b-8">
           <div
-            class="t-overline p-l-8 p-r-8 p-t-4 p-b-4 r-4 align-center"
+            class="t-overline p-l-8 p-r-8 p-t-4 p-b-4 rounded align-center"
             :class="statusKey"
           >
             {{ $t("order.status." + statusKey) }}
@@ -85,12 +85,12 @@
       <div
         v-if="restaurant"
         @click="$emit('selected', order)"
-        class="touchable bg-surface r-8 d-low"
+        class="touchable bg-surface rounded-lg d-low"
       >
         <!-- Order Status -->
         <div class="p-l-8 p-r-8 p-t-8 p-b-8">
           <div
-            class="t-overline p-l-8 p-r-8 p-t-4 p-b-4 r-4 align-center"
+            class="t-overline p-l-8 p-r-8 p-t-4 p-b-4 rounded align-center"
             :class="statusKey"
           >
             {{ $t("order.status." + statusKey) }}
@@ -128,7 +128,7 @@
           <div class="m-r-8">
             <img
               :src="resizedProfileImage(restaurant, '600')"
-              class="w-12 h-12 r-48 cover"
+              class="w-12 h-12 rounded-full cover"
             />
           </div>
 

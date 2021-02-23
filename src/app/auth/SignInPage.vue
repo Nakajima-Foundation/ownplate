@@ -11,7 +11,7 @@
             <div class="m-l-24 m-r-24">
               <!-- Note for the First User -->
               <div
-                class="bg-status-green-bg r-8 m-t-24 p-l-24 p-r-24 p-t-24 p-b-24"
+                class="bg-status-green-bg rounded-lg m-t-24 p-l-24 p-r-24 p-t-24 p-b-24"
               >
                 <div class="cols">
                   <div class="flex-center">
@@ -32,7 +32,7 @@
 
               <!-- Sign In Form -->
               <div
-                class="bg-surface r-8 d-low m-t-24 p-l-24 p-r-24 p-t-24 p-b-24"
+                class="bg-surface rounded-lg d-low m-t-24 p-l-24 p-r-24 p-t-24 p-b-24"
               >
                 <form @submit.prevent="onSignin">
                   <div class="t-h6 c-text-black-disabled">

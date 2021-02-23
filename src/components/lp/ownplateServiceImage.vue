@@ -11,13 +11,13 @@
           <div class="column">
             <div class="h-6 is-hidden-mobile"></div>
             <!-- Feature Hero -->
-            <div class="bg-ownplate-yellow r-8 align-center">
+            <div class="bg-ownplate-yellow rounded-lg align-center">
               <div>
                 <!-- Faces and Foods -->
                 <div>
                   <img
                     src="/LP-Cover-Tablet-1.jpg"
-                    class="cover is-hidden-mobile r-8 r-b-0"
+                    class="cover is-hidden-mobile rounded-lg r-b-0"
                   />
 
                   <!-- # Need to show 1-1 / 1-2 randomly -->

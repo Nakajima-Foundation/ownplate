@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Item Card -->
-    <div class="bg-surface r-8 d-low m-t-8" :style="cardStyle">
+    <div class="bg-surface rounded-lg d-low m-t-8" :style="cardStyle">
       <div class="touchable is-clearfix" @click="toggleMenuFlag()">
         <div class="p-r-16 p-t-16 p-b-16 p-l-16 is-pulled-right">
           <!-- Image -->
@@ -11,14 +11,14 @@
               :src="image"
               width="96"
               height="96"
-              class="w-24 h-24 r-4 cover"
+              class="w-24 h-24 rounded cover"
             />
           </div>
 
           <!-- Add / Sold Out Button -->
           <div
             v-if="isSoldOut"
-            class="bg-status-red-bg w-24 h-9 r-32 t-button is-flex"
+            class="bg-status-red-bg w-24 h-9 rounded-full t-button is-flex"
             style="flex-direction: column; justify-content: center"
           >
             <div class="c-status-red align-center">
@@ -79,7 +79,7 @@
             <div
               v-for="(option, index) in options"
               :key="index"
-              class="m-t-8 bg-form p-t-16 p-l-16 p-r-16 p-b-16 r-8"
+              class="m-t-8 bg-form p-t-16 p-l-16 p-r-16 p-b-16 rounded-lg"
             >
               <div v-if="option.length === 1" class="field">
                 <b-checkbox v-model="optionValues[quantityKey][index]">{{
@@ -117,7 +117,7 @@
           <!-- Item Quantity / Sold Out -->
           <div
             v-if="isSoldOut"
-            class="bg-status-red-bg h-9 r-32 t-button is-flex m-t-16"
+            class="bg-status-red-bg h-9 rounded-full t-button is-flex m-t-16"
             style="flex-direction: column; justify-content: center"
           >
             <div class="c-status-red align-center">
@@ -194,7 +194,7 @@
     <!-- Image Popup-->
     <b-modal :active.sync="imagePopup" :width="488" scroll="keep">
       <div class="align-center p-l-8 p-r-8" @click.stop="closeImage()">
-        <img :src="image" class="r-8 d-medium" />
+        <img :src="image" class="rounded-lg d-medium" />
       </div>
     </b-modal>
   </div>

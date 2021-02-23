@@ -7,7 +7,7 @@
       <!-- Center Column -->
       <div class="column">
         <div class="m-l-24 m-r-24 m-t-24">
-          <div class="bg-form r-8 p-l-24 p-r-24 p-t-24 p-b-24">
+          <div class="bg-form rounded-lg p-l-24 p-r-24 p-t-24 p-b-24">
             <!-- Go to Super Admin Page -->
             <div class="align-center">
               <router-link to="/s">
@@ -30,7 +30,7 @@
       <!-- Center Column -->
       <div class="column">
         <div class="m-l-24 m-r-24 m-t-24">
-          <div class="bg-form r-8 p-l-24 p-r-24 p-t-24 p-b-24">
+          <div class="bg-form rounded-lg p-l-24 p-r-24 p-t-24 p-b-24">
             <!-- Go to Super Admin Page -->
             <div class="align-center">
               <router-link to="/o">
@@ -130,7 +130,7 @@
             <div class="column is-narrow w-6"></div>
             <div class="column">
               <!-- Feature Hero -->
-              <div class="bg-ownplate-yellow r-8 align-center m-t-24">
+              <div class="bg-ownplate-yellow rounded-lg align-center m-t-24">
                 <div class="h-2 bg-ownplate-yellow is-invisible-tablet"></div>
                 <div>
                   <img

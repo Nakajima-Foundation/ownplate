@@ -1,10 +1,10 @@
 <template>
   <div>
-    <div class="bg-surface r-8 d-low p-t-24 p-b-24 m-b-16">
+    <div class="bg-surface rounded-lg d-low p-t-24 p-b-24 m-b-16">
       <!-- Restaurant Profile Photo -->
       <div class="align-center">
         <img
-          class="w-16 h-16 r-64 cover"
+          class="w-16 h-16 rounded-full cover"
           :src="
             resizedProfileImage(shopInfo, '600') ||
               '/OwnPlate-Favicon-Default.png'

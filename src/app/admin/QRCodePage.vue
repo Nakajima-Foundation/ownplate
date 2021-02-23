@@ -18,7 +18,7 @@
                 <div>
                   <img
                     :src="resizedProfileImage(restaurant, '600')"
-                    class="w-9 h-9 r-36 cover"
+                    class="w-9 h-9 rounded-full cover"
                   />
                 </div>
                 <div class="t-h6 c-text-black-high m-l-8 flex-1">
@@ -49,7 +49,7 @@
           <div class="t-h6 c-text-black-disabled m-t-24 p-b-8">
             {{ $t("admin.qrcode.restaurant") }}
           </div>
-          <div class="bg-surface r-8 d-low p-l-24 p-r-24 p-t-24 p-b-24">
+          <div class="bg-surface rounded-lg d-low p-l-24 p-r-24 p-t-24 p-b-24">
             <!-- QR Code -->
             <div class="align-center" @click="download">
               <qrcode
@@ -84,7 +84,9 @@
             <div class="t-h6 c-text-black-disabled m-t-24 p-b-8">
               {{ $t("trace.list") }}
             </div>
-            <div class="bg-surface r-8 d-low p-l-24 p-r-24 p-t-24 p-b-24">
+            <div
+              class="bg-surface rounded-lg d-low p-l-24 p-r-24 p-t-24 p-b-24"
+            >
               <!-- Enter -->
               <div>
                 <!-- QR Code -->

@@ -2,7 +2,7 @@
   <div>
     <!-- Title Card -->
     <div
-      class="bg-form r-8 p-l-16 p-r-16 p-t-16 p-b-16 m-t-24"
+      class="bg-form rounded-lg p-l-16 p-r-16 p-t-16 p-b-16 m-t-24"
       @click="toEdit()"
     >
       <div class="t-h6 c-text-black-disabled" if v-if="title.name == ''">
