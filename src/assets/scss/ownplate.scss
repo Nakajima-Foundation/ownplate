@@ -253,16 +253,16 @@ $sides: (top, bottom, left, right);
 }
 
 // Width and Height Sizes
-@each $dimension-size in $sizes {
-  // Width Sizes
-  .w-#{$dimension-size} {
-    width: #{$dimension-size}px;
-  }
-  // Height Sizes
-  .h-#{$dimension-size} {
-    height: #{$dimension-size}px;
-  }
-}
+// @each $dimension-size in $sizes {
+//   // Width Sizes
+//   .w-#{$dimension-size} {
+//     width: #{$dimension-size}px;
+//   }
+//   // Height Sizes
+//   .h-#{$dimension-size} {
+//     height: #{$dimension-size}px;
+//   }
+// }
 
 // Rounded Corners Sizes
 @each $corner-size in $sizes {
@@ -304,12 +304,12 @@ body,
   margin: auto;
 }
 
-.w-full {
-  width: 100%;
-}
-.h-full {
-  height: 100%;
-}
+// .w-full {
+//   width: 100%;
+// }
+// .h-full {
+//   height: 100%;
+// }
 
 // Cover Photo
 .cover {
@@ -414,7 +414,8 @@ body,
   @extend .p-l-24;
   @extend .p-r-24;
   min-width: 128px;
-  @extend .h-48;
+  // @extend .h-48;
+  height: 48px;
   @extend .t-subtitle1;
   &.primary {
     @extend .bg-primary;
@@ -443,7 +444,8 @@ body,
   @extend .p-l-16;
   @extend .p-r-16;
   min-width: 128px;
-  @extend .h-64;
+  // @extend .h-64;
+  height: 64px;
   @extend .t-h6;
   &.primary {
     @extend .bg-primary;
@@ -463,7 +465,8 @@ body,
 .op-button-large {
   @extend .op-button;
   min-width: 128px;
-  @extend .h-80;
+  // @extend .h-80;
+  height: 80px;
   @extend .r-80;
   @extend .p-l-16;
   @extend .p-r-16;
@@ -522,7 +525,8 @@ body,
 }
 .b-sidebar .sidebar-content {
   @extend .d-medium;
-  @extend .w-288;
+  // @extend .w-288;
+  width: 288px;
 }
 
 // For Small Screen like iPhone SE
