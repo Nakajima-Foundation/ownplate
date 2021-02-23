@@ -4,7 +4,7 @@ import { order_status } from '../common/constant'
 import Stripe from 'stripe'
 import Order from '../models/Order'
 import * as utils from '../lib/utils'
-import { updateOrderTotalData, sendMessage, notifyNewOrder, nameOfOrder, notifyCanceledOrder } from '../functions/order';
+import { updateOrderTotalData, sendMessageToCustomer, notifyNewOrderToRestaurant, nameOfOrder, notifyCanceledOrderToRestaurant } from '../functions/order';
 
 
 import moment from 'moment-timezone';
@@ -106,7 +106,7 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
       }
     })
 
-    await notifyNewOrder(db, restaurantId, orderId, restaurantData.restaurantName, orderNumber, lng);
+    await notifyNewOrderToRestaurant(db, restaurantId, orderId, restaurantData.restaurantName, orderNumber, lng);
 
     return result;
   } catch (error) {
@@ -190,7 +190,7 @@ export const confirm = async (db: FirebaseFirestore.Firestore, data: any, contex
       if (diffDay < 1) {
         const msgKey = "msg_cooking_completed"
         const orderName = nameOfOrder(order!.number)
-        await sendMessage(db, lng, msgKey, restaurantData.restaurantName, orderName, order!.uid, order!.phoneNumber, restaurantId, orderId, {});
+        await sendMessageToCustomer(db, lng, msgKey, restaurantData.restaurantName, orderName, order!.uid, order!.phoneNumber, restaurantId, orderId, {});
       }
     }
 
@@ -297,10 +297,10 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
     })
     const orderName = nameOfOrder(orderNumber)
     if (sendSMS) {
-      await sendMessage(db, lng, 'msg_order_canceled', restaurant.restaurantName, orderName, uidUser, phoneNumber, restaurantId, orderId)
+      await sendMessageToCustomer(db, lng, 'msg_order_canceled', restaurant.restaurantName, orderName, uidUser, phoneNumber, restaurantId, orderId)
     }
     if (uid !== venderId) {
-      await notifyCanceledOrder(db, restaurantId, orderId, restaurant.restaurantName, orderNumber, lng)
+      await notifyCanceledOrderToRestaurant(db, restaurantId, orderId, restaurant.restaurantName, orderNumber, lng)
     }
     return result
   } catch (error) {

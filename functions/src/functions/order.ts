@@ -103,7 +103,7 @@ export const updateOrderTotalData = async (db, transaction, order, restaurantId,
       return { success: true }
     })
     
-    await notifyNewOrder(db, restaurantId, orderId, restaurantData.restaurantName, orderNumber, lng);
+    await notifyNewOrderToRestaurant(db, restaurantId, orderId, restaurantData.restaurantName, orderNumber, lng);
 
     return result;
   } catch (error) {
@@ -181,7 +181,7 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
       }
       const orderName = nameOfOrder(order!.number)
       // To customer
-      await sendMessage(db, lng, msgKey, restaurant.restaurantName, orderName, order!.uid, order!.phoneNumber, restaurantId, orderId, params)
+      await sendMessageToCustomer(db, lng, msgKey, restaurant.restaurantName, orderName, order!.uid, order!.phoneNumber, restaurantId, orderId, params)
     }
     return result
   } catch (error) {
@@ -189,7 +189,7 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
   }
 }
 
-export const sendMessage = async (db: FirebaseFirestore.Firestore, lng: string,
+export const sendMessageToCustomer = async (db: FirebaseFirestore.Firestore, lng: string,
   msgKey: string, restaurantName: string, orderNumber: string,
   uidUser: string | null, phoneNumber: string | undefined,
   restaurantId: string, orderId: string, params: object = {}) => {
@@ -227,7 +227,7 @@ const notifyRestaurantToLineUser = async (url: string, message: string, lineUser
   }));
   return results;
 };
-export const notifyRestaurant = async (db: any, messageId: string, restaurantId: string, orderId: string, restaurantName: string, orderNumber: number, lng: string) => {
+export const notifyRestaurantToRestaurant = async (db: any, messageId: string, restaurantId: string, orderId: string, restaurantName: string, orderNumber: number, lng: string) => {
   const datestr = moment().format("YYYY-MM-DD");
   const restaurant = (await db.doc(`/restaurants/${restaurantId}`).get()).data();
   if (!restaurant) { // paranoia
@@ -280,12 +280,12 @@ export const notifyRestaurant = async (db: any, messageId: string, restaurantId:
   }
 }
 
-export const notifyNewOrder = async (db: FirebaseFirestore.Firestore, restaurantId: string, orderId: string, restaurantName: string, orderNumber: number, lng: string) => {
-  return notifyRestaurant(db, 'msg_order_placed', restaurantId, orderId, restaurantName, orderNumber, lng)
+export const notifyNewOrderToRestaurant = async (db: FirebaseFirestore.Firestore, restaurantId: string, orderId: string, restaurantName: string, orderNumber: number, lng: string) => {
+  return notifyRestaurantToRestaurant(db, 'msg_order_placed', restaurantId, orderId, restaurantName, orderNumber, lng)
 };
 
-export const notifyCanceledOrder = async (db: FirebaseFirestore.Firestore, restaurantId: string, orderId: string, restaurantName: string, orderNumber: number, lng: string) => {
-  return notifyRestaurant(db, 'msg_order_canceled_by_user', restaurantId, orderId, restaurantName, orderNumber, lng)
+export const notifyCanceledOrderToRestaurant = async (db: FirebaseFirestore.Firestore, restaurantId: string, orderId: string, restaurantName: string, orderNumber: number, lng: string) => {
+  return notifyRestaurantToRestaurant(db, 'msg_order_canceled_by_user', restaurantId, orderId, restaurantName, orderNumber, lng)
 };
 
 // export const wasOrderCreated = async (db, snapshot, context) => {
