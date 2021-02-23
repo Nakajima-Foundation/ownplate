@@ -9,7 +9,7 @@
 
     <!-- User Voices Hero -->
     <div class="columns is-gapless p-l-24 p-r-24">
-      <div class="column is-narrow w-16"></div>
+      <div class="column is-narrow w-4"></div>
       <div class="column">
         <div
           class="columns is-gapless bg-ownplate-white m-t-8 r-16 p-t-16 p-l-24 p-r-24 p-b-16"
@@ -17,7 +17,7 @@
           <div class="column is-narrow align-center">
             <img src="/LP-UserVoice-Face-1.jpg" class="r-256" />
           </div>
-          <div class="column is-narrow w-24"></div>
+          <div class="column is-narrow w-6"></div>
           <div class="column">
             <i class="material-icons c-text-black-disabled s-32"
               >format_quote</i
@@ -36,7 +36,7 @@
               新潟県 『サンドしないサンド＜かつ＞ 板谷様
             </div>
           </div>
-          <div class="column is-narrow w-24"></div>
+          <div class="column is-narrow w-6"></div>
           <div class="column is-narrow align-center">
             <a
               href="https://www.youtube.com/watch?v=4VUGm2v6B7E"
@@ -45,7 +45,7 @@
               <div>
                 <img
                   src="/LP-UserVoice-Video-1.jpg"
-                  class="r-8 w-256 touchable"
+                  class="r-8 w-64 touchable"
                 />
               </div>
               <div class="op-button-small">
@@ -56,12 +56,12 @@
           </div>
         </div>
       </div>
-      <div class="column is-narrow w-16"></div>
+      <div class="column is-narrow w-4"></div>
     </div>
 
     <!-- User Voices 1 -->
     <div class="columns is-gapless p-l-24 p-r-24">
-      <div class="column is-narrow w-16"></div>
+      <div class="column is-narrow w-4"></div>
       <div class="column">
         <div
           class="bg-ownplate-white m-t-8 r-16 p-t-16 p-l-24 p-r-24 p-b-16 t-body2"
@@ -74,7 +74,7 @@
           >。夜中に次の日の注文が入っていたのは驚きです。
         </div>
       </div>
-      <div class="column is-narrow w-16"></div>
+      <div class="column is-narrow w-4"></div>
       <div class="column">
         <div
           class="bg-ownplate-white m-t-8 r-16 p-t-16 p-l-24 p-r-24 p-b-16 t-body2"
@@ -86,7 +86,7 @@
           >、安心して調理に専念できます。
         </div>
       </div>
-      <div class="column is-narrow w-16"></div>
+      <div class="column is-narrow w-4"></div>
       <div class="column">
         <div
           class="bg-ownplate-white m-t-8 r-16 p-t-16 p-l-24 p-r-24 p-b-16 t-body2"
@@ -98,12 +98,12 @@
           >で知らせてくれるので、見落としがなくなりました！
         </div>
       </div>
-      <div class="column is-narrow w-16"></div>
+      <div class="column is-narrow w-4"></div>
     </div>
 
     <!-- User Voices 2 -->
     <div class="columns is-gapless p-l-24 p-r-24">
-      <div class="column is-narrow w-16"></div>
+      <div class="column is-narrow w-4"></div>
       <div class="column">
         <div
           class="bg-ownplate-white m-t-8 r-16 p-t-16 p-l-24 p-r-24 p-b-16 t-body2"
@@ -116,7 +116,7 @@
           >になりました。
         </div>
       </div>
-      <div class="column is-narrow w-16"></div>
+      <div class="column is-narrow w-4"></div>
       <div class="column">
         <div
           class="bg-ownplate-white m-t-8 r-16 p-t-16 p-l-24 p-r-24 p-b-16 t-body2"
@@ -128,7 +128,7 @@
           >ができるようになりました。
         </div>
       </div>
-      <div class="column is-narrow w-16"></div>
+      <div class="column is-narrow w-4"></div>
       <div class="column">
         <div
           class="bg-ownplate-white m-t-8 r-16 p-t-16 p-l-24 p-r-24 p-b-16 t-body2"
@@ -140,7 +140,7 @@
           >でき、万年人手不足の当店の大きなサポーターです！
         </div>
       </div>
-      <div class="column is-narrow w-16"></div>
+      <div class="column is-narrow w-4"></div>
     </div>
 
     <!-- Screenshots -->
@@ -154,10 +154,7 @@
 
     <!-- More -->
     <div class="align-center">
-      <a
-        href="/l/tips"
-        target="_blank"
-      >
+      <a href="/l/tips" target="_blank">
         <div
           class="op-button-small d-low bg-ownplate-yellow p-l-32 p-r-32 c-text-black-medium"
         >

@@ -3,13 +3,13 @@
     <!-- Home Header Area -->
     <div class="columns is-gapless">
       <!-- Left Gap -->
-      <div class="column is-narrow w-24"></div>
+      <div class="column is-narrow w-6"></div>
       <!-- Center Column -->
       <div class="column">
         <div class="columns is-gapless">
-          <div class="column is-narrow w-24"></div>
+          <div class="column is-narrow w-6"></div>
           <div class="column">
-            <div class="h-24 is-hidden-mobile"></div>
+            <div class="h-6 is-hidden-mobile"></div>
             <!-- Feature Hero -->
             <div class="bg-ownplate-yellow r-8 align-center">
               <div>
@@ -32,7 +32,7 @@
                   お店の笑顔もおもちかえり！
                 </div>
                 <div
-                  class="h-4 w-288 bg-ownplate-white"
+                  class="h-1 w-72 bg-ownplate-white"
                   style="display: inline-block"
                 ></div>
 
@@ -52,14 +52,14 @@
                   />
                 </div>
               </div>
-              <div class="h-8 bg-ownplate-yellow is-invisible-tablet"></div>
+              <div class="h-2 bg-ownplate-yellow is-invisible-tablet"></div>
             </div>
           </div>
-          <div class="column is-narrow w-24"></div>
+          <div class="column is-narrow w-6"></div>
         </div>
       </div>
       <!-- Right Gap -->
-      <div class="column is-narrow w-24"></div>
+      <div class="column is-narrow w-6"></div>
     </div>
   </div>
 </template>

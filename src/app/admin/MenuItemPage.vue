@@ -8,7 +8,7 @@
       <!-- Edit Header Area -->
       <div class="columns is-gapless">
         <!-- Left Gap -->
-        <div class="column is-narrow w-24"></div>
+        <div class="column is-narrow w-6"></div>
         <!-- Center Column -->
         <div class="column">
           <div class="m-l-24 m-r-24">
@@ -88,13 +88,13 @@
           </div>
         </div>
         <!-- Right Gap -->
-        <div class="column is-narrow w-24"></div>
+        <div class="column is-narrow w-6"></div>
       </div>
 
       <!-- Edit Body Area -->
       <div class="columns is-gapless">
         <!-- Left Gap -->
-        <div class="column is-narrow w-24"></div>
+        <div class="column is-narrow w-6"></div>
 
         <!-- Left Column -->
         <div class="column">
@@ -258,7 +258,7 @@
                 <!-- Current Photo -->
                 <div v-if="itemPhoto" class="p-r-16">
                   <div>
-                    <img class="w-128 h-128 r-4 cover" :src="itemPhoto" />
+                    <img class="w-32 h-32 r-4 cover" :src="itemPhoto" />
                   </div>
                   <div class="align-center t-caption">
                     {{ $t("editCommon.current") }}
@@ -283,7 +283,7 @@
                     :show-remove-button="true"
                     @file-choose="handleMenuImage"
                   ></croppa>
-                  <div class="align-center t-caption w-128">
+                  <div class="align-center t-caption w-32">
                     {{ $t("editCommon.new") }}
                   </div>
                 </div>
@@ -318,7 +318,7 @@
                         class="flex-1"
                       />
                       <b-button
-                        class="b-reset op-button-pill h-36 bg-status-red-bg m-l-8"
+                        class="b-reset op-button-pill h-9 bg-status-red-bg m-l-8"
                         @click="deleteOption(key)"
                       >
                         <i class="material-icons c-status-red s-18 p-l-8 p-r-8"
@@ -369,7 +369,7 @@
                 <!-- Add Option -->
                 <div>
                   <b-button
-                    class="b-reset op-button-pill h-36 bg-form"
+                    class="b-reset op-button-pill h-9 bg-form"
                     @click="addOption"
                   >
                     <i class="material-icons c-primary m-l-8">add</i>
@@ -462,13 +462,13 @@
         </div>
 
         <!-- Right Gap -->
-        <div class="column is-narrow w-24"></div>
+        <div class="column is-narrow w-6"></div>
       </div>
 
       <!-- Edit Footer Area -->
       <div class="columns is-gapless">
         <!-- Left Gap -->
-        <div class="column is-narrow w-24"></div>
+        <div class="column is-narrow w-6"></div>
         <!-- Center Column -->
         <div class="column">
           <div class="m-l-24 m-r-24 m-t-24">
@@ -533,7 +533,7 @@
           </div>
         </div>
         <!-- Right Gap -->
-        <div class="column is-narrow w-24"></div>
+        <div class="column is-narrow w-6"></div>
       </div>
       <edit-category
         v-if="categoryKey"

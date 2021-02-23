@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="columns m-t-24 p-b-16">
-      <div class="column is-narrow w-24"></div>
+      <div class="column is-narrow w-6"></div>
 
       <!-- For Restaurants -->
       <div
@@ -31,7 +31,7 @@
       </div>
 
       <!-- Gap for Mobile -->
-      <div class="h-16 is-hidden-tablet"></div>
+      <div class="h-4 is-hidden-tablet"></div>
 
       <!-- For Food Lovers -->
       <div
@@ -47,7 +47,7 @@
           </div>
         </router-link>
       </div>
-      <div class="column is-narrow w-24"></div>
+      <div class="column is-narrow w-6"></div>
     </div>
   </div>
 </template>

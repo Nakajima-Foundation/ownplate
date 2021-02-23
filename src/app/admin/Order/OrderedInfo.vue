@@ -128,7 +128,7 @@
           <div class="m-r-8">
             <img
               :src="resizedProfileImage(restaurant, '600')"
-              class="w-48 h-48 r-48 cover"
+              class="w-12 h-12 r-48 cover"
             />
           </div>
 

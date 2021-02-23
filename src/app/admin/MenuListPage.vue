@@ -8,7 +8,7 @@
       <!-- Edit Header Area -->
       <div class="columns is-gapless">
         <!-- Left Gap -->
-        <div class="column is-narrow w-24"></div>
+        <div class="column is-narrow w-6"></div>
         <!-- Center Column -->
         <div class="column">
           <div class="m-l-24 m-r-24">
@@ -21,7 +21,7 @@
                 <!-- Restaurant Profile -->
                 <!-- <div class="is-inline-flex flex-center m-t-24">
                   <div>
-                    <img :src="restaurantInfo.restProfilePhoto" class="w-36 h-36 r-36 cover" />
+                    <img :src="restaurantInfo.restProfilePhoto" class="w-9 h-9 r-36 cover" />
                   </div>
                   <div
                     class="t-h6 c-text-black-high m-l-8 flex-1"
@@ -36,13 +36,13 @@
           </div>
         </div>
         <!-- Right Gap -->
-        <div class="column is-narrow w-24"></div>
+        <div class="column is-narrow w-6"></div>
       </div>
 
       <!-- Edit Body Area -->
       <div class="columns is-gapless">
         <!-- Left Gap -->
-        <div class="column is-narrow w-24"></div>
+        <div class="column is-narrow w-6"></div>
 
         <!-- Left Column -->
         <div class="column">
@@ -51,7 +51,7 @@
             <div class="m-t-24 align-center">
               <img
                 :src="resizedProfileImage(restaurantInfo, '600')"
-                class="w-64 h-64 r-64 cover"
+                class="w-16 h-16 r-64 cover"
               />
             </div>
 
@@ -139,7 +139,7 @@
                 </div>
                 <div class="align-center">
                   <b-button
-                    class="b-reset op-button-pill h-36 bg-form m-r-8 m-l-8 m-t-16"
+                    class="b-reset op-button-pill h-9 bg-form m-r-8 m-l-8 m-t-16"
                     :disabled="submitting"
                     @click="addTitle('top')"
                   >
@@ -149,7 +149,7 @@
                     </span>
                   </b-button>
                   <b-button
-                    class="b-reset op-button-pill h-36 bg-form m-l-8 m-r-8 m-t-16"
+                    class="b-reset op-button-pill h-9 bg-form m-l-8 m-r-8 m-t-16"
                     :disabled="submitting"
                     @click="addMenu('top')"
                   >
@@ -239,7 +239,7 @@
             <div class="align-center m-t-16">
               <!-- Add Category Title -->
               <b-button
-                class="b-reset op-button-pill h-36 bg-form m-r-8 m-l-8 m-t-16"
+                class="b-reset op-button-pill h-9 bg-form m-r-8 m-l-8 m-t-16"
                 :disabled="submitting"
                 @click="addTitle()"
               >
@@ -251,7 +251,7 @@
 
               <!-- Add Menu Item -->
               <b-button
-                class="b-reset op-button-pill h-36 bg-form m-l-8 m-r-8 m-t-16"
+                class="b-reset op-button-pill h-9 bg-form m-l-8 m-r-8 m-t-16"
                 :disabled="submitting"
                 @click="addMenu()"
               >
@@ -264,7 +264,7 @@
             <div class="align-center m-t-16" v-if="menuCounter > 0">
               <!-- Add Category Title -->
               <b-button
-                class="b-reset op-button-pill h-36 bg-form m-r-8 m-l-8 m-t-16"
+                class="b-reset op-button-pill h-9 bg-form m-r-8 m-l-8 m-t-16"
                 :disabled="downloadSubmitting"
                 @click="downloadMenu()"
               >
@@ -277,7 +277,7 @@
           </div>
         </div>
         <!-- Right Gap -->
-        <div class="column is-narrow w-24"></div>
+        <div class="column is-narrow w-6"></div>
       </div>
     </div>
   </div>

@@ -40,7 +40,7 @@
               :src="image"
               width="96"
               height="96"
-              class="w-96 h-96 r-4 cover"
+              class="w-24 h-24 r-4 cover"
             />
           </div>
         </div>
@@ -79,7 +79,7 @@
         <div class="flex-1">
           <!-- Position Up -->
           <b-button
-            class="b-reset op-button-pill h-36 bg-form m-r-8"
+            class="b-reset op-button-pill h-9 bg-form m-r-8"
             v-if="position !== 'first'"
             @click="positionUp"
           >
@@ -89,7 +89,7 @@
           </b-button>
           <!-- Disable if First -->
           <b-button
-            class="b-reset op-button-pill h-36 bg-form m-r-8"
+            class="b-reset op-button-pill h-9 bg-form m-r-8"
             disabled
             v-else
           >
@@ -100,7 +100,7 @@
 
           <!-- Position Down -->
           <b-button
-            class="b-reset op-button-pill h-36 bg-form m-r-8"
+            class="b-reset op-button-pill h-9 bg-form m-r-8"
             v-if="position !== 'last'"
             @click="positionDown"
           >
@@ -110,7 +110,7 @@
           </b-button>
           <!-- Disable if Last -->
           <b-button
-            class="b-reset op-button-pill h-36 bg-form m-r-8"
+            class="b-reset op-button-pill h-9 bg-form m-r-8"
             disabled
             v-else
           >
@@ -121,7 +121,7 @@
 
           <!-- Duplicate -->
           <b-button
-            class="b-reset op-button-pill h-36 bg-form m-r-8"
+            class="b-reset op-button-pill h-9 bg-form m-r-8"
             @click="forkItem"
           >
             <i class="material-icons c-primary s-18 p-l-8 p-r-8">queue</i>
@@ -129,7 +129,7 @@
         </div>
         <div>
           <b-button
-            class="b-reset op-button-pill h-36 bg-form"
+            class="b-reset op-button-pill h-9 bg-form"
             @click="deleteItem"
           >
             <i class="material-icons c-status-red s-18 p-l-8 p-r-8">delete</i>

@@ -8,17 +8,17 @@
     <!-- Header -->
     <div class="cols flex-center bg-ownplate-white">
       <div>
-        <div class="op-button w-48 h-48" @click="handleOpen()">
+        <div class="op-button w-12 h-12" @click="handleOpen()">
           <i class="material-icons s-24 c-text-black-medium">menu</i>
         </div>
       </div>
       <div class="flex-1 align-center">
         <router-link to="/">
-          <img class="h-24" :src="`/${this.logo}`" />
+          <img class="h-6" :src="`/${this.logo}`" />
         </router-link>
       </div>
       <div>
-        <div class="w-48 h-48"></div>
+        <div class="w-12 h-12"></div>
       </div>
     </div>
 
@@ -34,14 +34,14 @@
       <!-- Logo / Home -->
       <div class="align-center m-t-24">
         <router-link to="/">
-          <img class="w-192" :src="`/${this.logo2}`" />
+          <img class="w-48" :src="`/${this.logo2}`" />
         </router-link>
       </div>
 
       <!-- Profile -->
       <div class="align-center m-t-24">
         <router-link to="/u/profile">
-          <div class="op-button-small primary w-224" @click="handleClose()">
+          <div class="op-button-small primary w-56" @click="handleClose()">
             <i class="material-icons m-r-8">person</i>
             <span>{{ $t("profile.title") }}</span>
           </div>
@@ -51,7 +51,7 @@
       <!-- Order History -->
       <div class="align-center m-t-16" v-if="isCustomer">
         <router-link to="/u/history">
-          <div class="op-button-small primary w-224" @click="handleClose()">
+          <div class="op-button-small primary w-56" @click="handleClose()">
             <i class="material-icons m-r-8">history</i>
             <span>{{ $t("order.history") }}</span>
           </div>
@@ -61,7 +61,7 @@
       <!-- Favorites -->
       <div class="align-center m-t-16" v-if="isCustomer">
         <router-link to="/r/favorites">
-          <div class="op-button-small primary w-224" @click="handleClose()">
+          <div class="op-button-small primary w-56" @click="handleClose()">
             <i class="material-icons m-r-8">favorite</i>
             <span>{{ $t("find.likes") }}</span>
           </div>
@@ -71,7 +71,7 @@
       <!-- Restaurants -->
       <div class="align-center m-t-16" v-if="isCustomer">
         <router-link to="/r">
-          <div class="op-button-small primary w-224" @click="handleClose()">
+          <div class="op-button-small primary w-56" @click="handleClose()">
             <i class="material-icons m-r-8">restaurant</i>
             <span>{{ $t("find.allRestaurants") }}</span>
           </div>
@@ -174,7 +174,7 @@
 
     <!-- Footer -->
     <div class="m-t-48">
-      <div class="bg-ownplate-gray cols h-128">
+      <div class="bg-ownplate-gray cols h-32">
         <div class="flex-1">
           <div
             class="is-inline-block t-caption c-text-white-medium m-t-16 m-l-16"

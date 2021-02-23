@@ -1,16 +1,17 @@
 <template>
   <div>
-    <div v-if="!hideTable" class="m-t-24 bg-surface r-8 d-low p-l-16 p-r-16 p-t-16 p-b-16">
+    <div
+      v-if="!hideTable"
+      class="m-t-24 bg-surface r-8 d-low p-l-16 p-r-16 p-t-16 p-b-16"
+    >
       <table class="w-full">
         <tr>
-          <th
-            class="p-l-8 p-b-8"
-            v-for="(field, index) in fields"
-            :key="field"
-          >{{ fieldNames[index] }}</th>
+          <th class="p-l-8 p-b-8" v-for="(field, index) in fields" :key="field">
+            {{ fieldNames[index] }}
+          </th>
         </tr>
         <tr v-for="row in tableData" :key="row.id">
-          <td v-for="field in fields" :key="field">{{ row[field ]}}</td>
+          <td v-for="field in fields" :key="field">{{ row[field] }}</td>
         </tr>
       </table>
     </div>
@@ -21,10 +22,12 @@
       :fileName="fileName"
       :formulas="formulas"
     >
-      <b-button class="m-t-16 b-reset h-36 r-36 bg-form">
+      <b-button class="m-t-16 b-reset h-9 r-36 bg-form">
         <span class="p-l-16 p-r-16">
           <i class="material-icons c-primary s-18 m-r-8">save_alt</i>
-          <span class="c-primary t-button">{{$t('admin.report.download-csv-details')}}</span>
+          <span class="c-primary t-button">{{
+            $t("admin.report.download-csv-details")
+          }}</span>
         </span>
       </b-button>
     </download-csv>
@@ -62,8 +65,8 @@ export default {
   },
   methods: {
     writeonFirstLine(index, key, text) {
-      return (index === 0 && Number(key) === 0) ? text : "-";
-    },
+      return index === 0 && Number(key) === 0 ? text : "-";
+    }
   },
   computed: {
     formulas() {
@@ -87,7 +90,7 @@ export default {
         "count",
         "total",
         "payment",
-        "memo",
+        "memo"
       ];
     },
     fieldNames() {
@@ -115,22 +118,43 @@ export default {
               items.push({
                 id: `${order.id}/${menuId}`,
                 name: nameOfOrder(order),
-                timeRequested: this.writeonFirstLine(index, key, 
-                order.timePlaced &&
-                  moment(order.timePlaced).format("YYYY/MM/DD HH:mm")),
-                dateConfirmed: this.writeonFirstLine(index, key, 
-                order.timeConfirmed &&
-                  moment(order.timeConfirmed).format("YYYY/MM/DD HH:mm")),
-                phoneNumber: this.writeonFirstLine(index, key, formatNational(parsePhoneNumber(order.phoneNumber))),
-                userName: this.writeonFirstLine(index, key, order.name || this.$t("order.unspecified")),
+                timeRequested: this.writeonFirstLine(
+                  index,
+                  key,
+                  order.timePlaced &&
+                    moment(order.timePlaced).format("YYYY/MM/DD HH:mm")
+                ),
+                dateConfirmed: this.writeonFirstLine(
+                  index,
+                  key,
+                  order.timeConfirmed &&
+                    moment(order.timeConfirmed).format("YYYY/MM/DD HH:mm")
+                ),
+                phoneNumber: this.writeonFirstLine(
+                  index,
+                  key,
+                  formatNational(parsePhoneNumber(order.phoneNumber))
+                ),
+                userName: this.writeonFirstLine(
+                  index,
+                  key,
+                  order.name || this.$t("order.unspecified")
+                ),
                 count: orderItems[key],
-                options: (options[key]||[]).filter(a => String(a) !== "").join("/"),
+                options: (options[key] || [])
+                  .filter(a => String(a) !== "")
+                  .join("/"),
                 memo: this.writeonFirstLine(index, key, order.memo),
                 itemName: menuItem.itemName,
-                statusName: this.writeonFirstLine(index, key, this.$t(`order.status.${status}`)),
+                statusName: this.writeonFirstLine(
+                  index,
+                  key,
+                  this.$t(`order.status.${status}`)
+                ),
                 category1: menuItem.category1 || "",
                 category2: menuItem.category2 || "",
-                total: index === 0 && Number(key) === 0 ? order.totalCharge : "",
+                total:
+                  index === 0 && Number(key) === 0 ? order.totalCharge : "",
                 payment: order.payment?.stripe ? "stripe" : ""
               });
             } catch (e) {

@@ -7,7 +7,7 @@
       <!-- Order Header Area -->
       <div class="columns is-gapless">
         <!-- Left Gap -->
-        <div class="column is-narrow w-24"></div>
+        <div class="column is-narrow w-6"></div>
         <!-- Center Column -->
         <div class="column">
           <div class="m-l-24 m-r-24">
@@ -23,7 +23,7 @@
                   <div>
                     <img
                       :src="resizedProfileImage(shopInfo, '600')"
-                      class="w-36 h-36 r-36 cover"
+                      class="w-9 h-9 r-36 cover"
                     />
                   </div>
                   <div class="t-h6 c-text-black-high m-l-8 flex-1">
@@ -39,7 +39,7 @@
           </div>
         </div>
         <!-- Right Gap -->
-        <div class="column is-narrow w-24"></div>
+        <div class="column is-narrow w-6"></div>
       </div>
 
       <!-- Order Body Area -->
@@ -47,7 +47,7 @@
         class="columns is-gapless"
         v-if="orderInfo.status === order_status.transaction_hide"
       >
-        <div class="column is-narrow w-24"></div>
+        <div class="column is-narrow w-6"></div>
         <div class="column">
           <div class="m-l-24 m-r-24">
             <div
@@ -60,7 +60,7 @@
       </div>
       <div class="columns is-gapless" v-else>
         <!-- Left Gap -->
-        <div class="column is-narrow w-24"></div>
+        <div class="column is-narrow w-6"></div>
 
         <!-- Left Column -->
         <div class="column">
@@ -127,7 +127,7 @@
                 <!-- Cancel Button -->
                 <div class="m-t-24 align-center">
                   <b-button
-                    class="b-reset op-button-pill h-36 bg-status-red-bg"
+                    class="b-reset op-button-pill h-9 bg-status-red-bg"
                     v-if="isValidTransition('order_canceled')"
                     @click="openCancel()"
                   >
@@ -136,7 +136,7 @@
                       $t("admin.order.cancelButton")
                     }}</span>
                   </b-button>
-                  <b-button v-if="cancelStatus" class="op-button-medium w-256">
+                  <b-button v-if="cancelStatus" class="op-button-medium w-64">
                     <div class="c-status-red">
                       {{ $t("order." + cancelStatus) }}
                     </div>
@@ -162,7 +162,7 @@
                     >
                       <div>
                         <a :href="nationalPhoneURI">
-                          <div class="op-button-small w-256 secondary">
+                          <div class="op-button-small w-64 secondary">
                             {{ nationalPhoneNumber }}
                           </div>
                         </a>
@@ -174,7 +174,7 @@
                     <!-- CTA: Cancel -->
                     <div class="align-center m-t-16">
                       <b-button
-                        class="b-reset op-button-small d-low bg-status-red w-256"
+                        class="b-reset op-button-small d-low bg-status-red w-64"
                         :loading="updating === 'order_canceled'"
                         @click="handleCancel"
                       >
@@ -266,7 +266,7 @@
                   class="align-center m-t-24"
                 >
                   <b-button
-                    class="op-button-medium w-256"
+                    class="op-button-medium w-64"
                     :class="classOf(orderState)"
                     :loading="updating === orderState"
                     :disabled="!isValidTransition(orderState)"
@@ -307,7 +307,7 @@
           </div>
         </div>
         <!-- Right Gap -->
-        <div class="column is-narrow w-24"></div>
+        <div class="column is-narrow w-6"></div>
       </div>
     </template>
   </div>

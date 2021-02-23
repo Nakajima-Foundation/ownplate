@@ -4,15 +4,18 @@
       <!-- Restaurant Profile Photo -->
       <div class="align-center">
         <img
-          class="w-64 h-64 r-64 cover"
-          :src="resizedProfileImage(shopInfo, '600') || '/OwnPlate-Favicon-Default.png'"
+          class="w-16 h-16 r-64 cover"
+          :src="
+            resizedProfileImage(shopInfo, '600') ||
+              '/OwnPlate-Favicon-Default.png'
+          "
         />
       </div>
 
       <!-- Restaurant Name -->
-      <div
-        class="m-t-8 align-center t-h6 c-text-black-high"
-      >{{ shopInfo.restaurantName || $t("editRestaurant.noRestaurant") }}</div>
+      <div class="m-t-8 align-center t-h6 c-text-black-high">
+        {{ shopInfo.restaurantName || $t("editRestaurant.noRestaurant") }}
+      </div>
 
       <!-- View Page -->
       <div class="m-t-8 align-center">
@@ -37,9 +40,9 @@
         >
           <span class="c-onprimary p-l-24 p-r-24">
             {{
-            $tc("admin.incompleteOrders", numberOfOrders, {
-            count: numberOfOrders
-            })
+              $tc("admin.incompleteOrders", numberOfOrders, {
+                count: numberOfOrders
+              })
             }}
           </span>
         </b-button>
@@ -55,11 +58,13 @@
             style="min-width: 256px; border-color: #b00020;"
             class="op-button-small red"
           >
-            <span
-              class="c-status-red p-l-24 p-r-24"
-            >{{ $t("admin.editMenuItems", { count: numberOfMenus }) }}</span>
+            <span class="c-status-red p-l-24 p-r-24">{{
+              $t("admin.editMenuItems", { count: numberOfMenus })
+            }}</span>
           </b-button>
-          <div class="t-body2 c-status-red m-t-4">{{ $t("admin.pleaseAddMenu") }}</div>
+          <div class="t-body2 c-status-red m-t-4">
+            {{ $t("admin.pleaseAddMenu") }}
+          </div>
         </div>
 
         <!-- Menu Existing -->
@@ -70,9 +75,9 @@
             style="min-width: 256px;"
             class="op-button-small secondary"
           >
-            <span
-              class="c-primary p-l-24 p-r-24"
-            >{{ $t("admin.editMenuItems", { count: numberOfMenus }) }}</span>
+            <span class="c-primary p-l-24 p-r-24">{{
+              $t("admin.editMenuItems", { count: numberOfMenus })
+            }}</span>
           </b-button>
         </div>
       </div>
@@ -95,10 +100,14 @@
           :to="'/admin/restaurants/' + restaurantid"
           style="min-width: 256px; border-color: #b00020;"
           class="op-button-small red"
-          >
-          <span class="c-status-red p-l-24 p-r-24">{{ $t("admin.privateMode") }}</span>
+        >
+          <span class="c-status-red p-l-24 p-r-24">{{
+            $t("admin.privateMode")
+          }}</span>
         </b-button>
-        <div class="t-body2 c-status-red m-t-4">{{ $t("admin.pleaseChangePublic") }}</div>
+        <div class="t-body2 c-status-red m-t-4">
+          {{ $t("admin.pleaseChangePublic") }}
+        </div>
       </div>
 
       <!-- QR code -->
@@ -126,15 +135,25 @@
       </div>
 
       <div class="align-center m-t-16">
-
         <b-button
           tag="nuxt-link"
-            :to="'/admin/restaurants/' + restaurantid + '#phoneCall'"
-            style="min-width: 256px;"
-          :class="shopInfo.phoneCall ? 'op-button-small secondary' : 'op-button-small primary'"
+          :to="'/admin/restaurants/' + restaurantid + '#phoneCall'"
+          style="min-width: 256px;"
+          :class="
+            shopInfo.phoneCall
+              ? 'op-button-small secondary'
+              : 'op-button-small primary'
+          "
+        >
+          <span
+            :class="
+              shopInfo.phoneCall
+                ? 'c-onsecondary p-l-24 p-r-24'
+                : 'c-onprimary p-l-24 p-r-24'
+            "
           >
-          <span :class="shopInfo.phoneCall ? 'c-onsecondary p-l-24 p-r-24' : 'c-onprimary p-l-24 p-r-24'">
-            {{ $t("editRestaurant.phoneCallNotification") }} {{ shopInfo.phoneCall ? "ON" : "OFF" }}
+            {{ $t("editRestaurant.phoneCallNotification") }}
+            {{ shopInfo.phoneCall ? "ON" : "OFF" }}
           </span>
         </b-button>
       </div>
@@ -142,40 +161,72 @@
       <div class="align-center m-t-16">
         <b-button
           tag="nuxt-link"
-            :to="'/admin/restaurants/' + restaurantid + '/line'"
-            style="min-width: 256px;"
-          :class="lineEnable ? 'op-button-small secondary' : 'op-button-small primary'"
+          :to="'/admin/restaurants/' + restaurantid + '/line'"
+          style="min-width: 256px;"
+          :class="
+            lineEnable ? 'op-button-small secondary' : 'op-button-small primary'
+          "
+        >
+          <span
+            :class="
+              lineEnable
+                ? 'c-onsecondary p-l-24 p-r-24'
+                : 'c-onprimary p-l-24 p-r-24'
+            "
           >
-          <span :class="lineEnable ? 'c-onsecondary p-l-24 p-r-24' : 'c-onprimary p-l-24 p-r-24'">
-            {{ $t("editRestaurant.lineNotification") }} {{ lineEnable ? "ON" : "OFF" }}
+            {{ $t("editRestaurant.lineNotification") }}
+            {{ lineEnable ? "ON" : "OFF" }}
           </span>
         </b-button>
       </div>
       <!-- Directory Request -->
       <div class="align-center m-t-16">
-        <div class="t-subtitle2 c-text-black-disabled">{{ $t("admin.directory.status") }}</div>
+        <div class="t-subtitle2 c-text-black-disabled">
+          {{ $t("admin.directory.status") }}
+        </div>
 
         <!-- On Directory -->
         <div v-if="shopInfo.onTheList">
-          <div class="m-t-8 c-status-green t-subtitle1">{{ $t("admin.directory.listed") }}</div>
-          <b-button class="b-reset op-button-pill bg-form t-button m-t-16" @click="deleteFromList">
-            <span class="t-button c-status-red">{{ $t("admin.directory.unlist") }}</span>
+          <div class="m-t-8 c-status-green t-subtitle1">
+            {{ $t("admin.directory.listed") }}
+          </div>
+          <b-button
+            class="b-reset op-button-pill bg-form t-button m-t-16"
+            @click="deleteFromList"
+          >
+            <span class="t-button c-status-red">{{
+              $t("admin.directory.unlist")
+            }}</span>
           </b-button>
         </div>
 
         <!-- Requested -->
-        <div v-else-if="requestState==1">
-          <div class="m-t-8 c-text-black-disabled t-subtitle1">{{ $t("admin.directory.waiting") }}</div>
-          <b-button class="b-reset op-button-pill bg-form t-button m-t-16" @click="requestDelete">
-            <span class="t-button c-status-red">{{ $t("admin.directory.cancelRequest") }}</span>
+        <div v-else-if="requestState == 1">
+          <div class="m-t-8 c-text-black-disabled t-subtitle1">
+            {{ $t("admin.directory.waiting") }}
+          </div>
+          <b-button
+            class="b-reset op-button-pill bg-form t-button m-t-16"
+            @click="requestDelete"
+          >
+            <span class="t-button c-status-red">{{
+              $t("admin.directory.cancelRequest")
+            }}</span>
           </b-button>
         </div>
 
         <!-- Off Directory -->
         <div v-else="false">
-          <div class="m-t-8 c-text-black-disabled t-subtitle1">{{ $t("admin.directory.notListed") }}</div>
-          <b-button class="b-reset op-button-pill bg-form t-button m-t-16" @click="requestList">
-            <span class="t-button c-primary">{{ $t("admin.directory.requestList") }}</span>
+          <div class="m-t-8 c-text-black-disabled t-subtitle1">
+            {{ $t("admin.directory.notListed") }}
+          </div>
+          <b-button
+            class="b-reset op-button-pill bg-form t-button m-t-16"
+            @click="requestList"
+          >
+            <span class="t-button c-primary">{{
+              $t("admin.directory.requestList")
+            }}</span>
           </b-button>
         </div>
       </div>

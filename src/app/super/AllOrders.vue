@@ -3,7 +3,7 @@
     <!-- Order Header Area -->
     <div class="columns is-gapless">
       <!-- Left Gap -->
-      <div class="column is-narrow w-24"></div>
+      <div class="column is-narrow w-6"></div>
       <!-- Center Column -->
       <div class="column">
         <div class="m-l-24 m-r-24">
@@ -17,20 +17,24 @@
         </div>
       </div>
       <!-- Right Gap -->
-      <div class="column is-narrow w-24"></div>
-    </div>      
+      <div class="column is-narrow w-6"></div>
+    </div>
     <!-- Order Body Area -->
     <div class="columns is-gapless">
       <!-- Left Gap -->
-      <div class="column is-narrow w-24"></div>
+      <div class="column is-narrow w-6"></div>
       <!-- Center Column -->
       <div class="column">
         <div class="m-l-24 m-r-16 m-t-24">
           <back-button :url="backUrl" />
           <h2>All Orders</h2>
           <b-select v-model="orderState" class="m-t-24">
-            <option v-for="status in orderStatus" :value="status.index" :key="status.index">
-              {{status.key ? $t("order.status." + status.key) : "----"}}
+            <option
+              v-for="status in orderStatus"
+              :value="status.index"
+              :key="status.index"
+            >
+              {{ status.key ? $t("order.status." + status.key) : "----" }}
             </option>
           </b-select>
           <!-- Orders -->
@@ -41,7 +45,7 @@
               :isSuperView="true"
               @selected="orderSelected($event)"
               :order="order"
-              />
+            />
             <button @click="nextLoad">next</button>
           </div>
         </div>
@@ -75,11 +79,11 @@ export default {
     this.superPermissionCheck();
   },
   computed: {
-    orderStatus () {
+    orderStatus() {
       return Object.keys(order_status).map(key => {
         return {
           index: order_status[key],
-          key: key === "error" ?  "" : key,
+          key: key === "error" ? "" : key
         };
       });
     },
@@ -90,7 +94,7 @@ export default {
         }
         return order.status === this.orderState;
       });
-    },
+    }
   },
   async created() {
     await this.loadData();

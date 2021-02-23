@@ -3,7 +3,7 @@
     <!-- List Header Area -->
     <div class="columns is-gapless">
       <!-- Left Gap -->
-      <div class="column is-narrow w-24"></div>
+      <div class="column is-narrow w-6"></div>
       <!-- Center Column -->
       <div class="column">
         <div class="m-l-24 m-r-24 m-t-24">
@@ -11,47 +11,55 @@
           <nuxt-link :to="'/r'">
             <div class="op-button-pill bg-form">
               <i class="material-icons c-primary s-18">list</i>
-              <span class="c-primary t-button">{{$t("find.areaTop")}}</span>
+              <span class="c-primary t-button">{{ $t("find.areaTop") }}</span>
             </div>
           </nuxt-link>
 
           <!-- Title -->
-          <div class="t-h6 c-text-black-disabled m-t-24">{{$t("find.areaAll")}}</div>
+          <div class="t-h6 c-text-black-disabled m-t-24">
+            {{ $t("find.areaAll") }}
+          </div>
         </div>
       </div>
       <!-- Right Gap -->
-      <div class="column is-narrow w-24"></div>
+      <div class="column is-narrow w-6"></div>
     </div>
 
     <!-- List Body Area -->
     <div class="columns is-gapless">
       <!-- Left Gap -->
-      <div class="column is-narrow w-24"></div>
+      <div class="column is-narrow w-6"></div>
       <!-- Center Column -->
       <div class="column">
         <div class="m-l-24 m-r-16">
           <!-- Restaurants -->
 
           <!-- Restaurant -->
-          <template v-for="(state) in allArea">
+          <template v-for="state in allArea">
             <div v-if="restaurantsObj[state]">
-              <div class="t-subtitle1 c-text-black-disabled p-b-8 m-t-24">{{state}}</div>
+              <div class="t-subtitle1 c-text-black-disabled p-b-8 m-t-24">
+                {{ state }}
+              </div>
               <div class="columns is-gapless is-multiline">
-                <div v-for="restaurant in restaurantsObj[state]" class="column is-one-third">
+                <div
+                  v-for="restaurant in restaurantsObj[state]"
+                  class="column is-one-third"
+                >
                   <div class="h-full p-b-8 p-r-8">
                     <router-link :to="`/r/${restaurant.id}`">
                       <div class="touchable h-full">
                         <div class="cols flex-center">
                           <!-- Restaurant Profile -->
                           <div class="m-r-16 h-48 r-48 bg-form">
-                            <img :src="resizedProfileImage(restaurant, '600')" class="w-48 h-48 r-48 cover" />
+                            <img
+                              :src="resizedProfileImage(restaurant, '600')"
+                              class="w-12 h-12 r-48 cover"
+                            />
                           </div>
 
                           <!-- Restaurant Name -->
                           <div class="flex-1 p-r-8 t-subtitle1 c-primary">
-                            {{
-                            restaurant.restaurantName
-                            }}
+                            {{ restaurant.restaurantName }}
                           </div>
                         </div>
                       </div>
@@ -64,7 +72,7 @@
         </div>
       </div>
       <!-- Right Gap -->
-      <div class="column is-narrow w-24"></div>
+      <div class="column is-narrow w-6"></div>
     </div>
   </div>
 </template>
@@ -72,11 +80,10 @@
 <script>
 import { db } from "~/plugins/firebase.js";
 import { RestaurantHeader } from "~/plugins/header.js";
-import { JPPrefecture, USStates } from '~/plugins/constant';
+import { JPPrefecture, USStates } from "~/plugins/constant";
 
 export default {
-  components: {
-  },
+  components: {},
   data() {
     return {
       restaurantsObj: []
@@ -85,7 +92,7 @@ export default {
   computed: {
     allArea() {
       return JPPrefecture.concat(USStates);
-    },
+    }
   },
   head() {
     return RestaurantHeader;

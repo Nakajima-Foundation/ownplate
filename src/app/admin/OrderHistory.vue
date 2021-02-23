@@ -3,7 +3,7 @@
     <!-- Order Header Area -->
     <div class="columns is-gapless">
       <!-- Left Gap -->
-      <div class="column is-narrow w-24"></div>
+      <div class="column is-narrow w-6"></div>
       <!-- Center Column -->
       <div class="column">
         <div class="m-l-24 m-r-24">
@@ -22,7 +22,7 @@
                 <div>
                   <img
                     :src="resizedProfileImage(shopInfo, '600')"
-                    class="w-36 h-36 r-36 cover"
+                    class="w-9 h-9 r-36 cover"
                   />
                 </div>
                 <div class="t-h6 c-text-black-high m-l-8 flex-1">
@@ -37,7 +37,7 @@
               <b-button
                 tag="nuxt-link"
                 :to="`/admin/restaurants/${restaurantId()}/suspend`"
-                class="b-reset op-button-pill h-36 bg-form m-t-24 m-r-16"
+                class="b-reset op-button-pill h-9 bg-form m-t-24 m-r-16"
               >
                 <i class="material-icons c-primary m-l-8"
                   >remove_shopping_cart</i
@@ -56,13 +56,13 @@
         </div>
       </div>
       <!-- Right Gap -->
-      <div class="column is-narrow w-24"></div>
+      <div class="column is-narrow w-6"></div>
     </div>
 
     <!-- Order Body Area -->
     <div class="columns is-gapless">
       <!-- Left Gap -->
-      <div class="column is-narrow w-24"></div>
+      <div class="column is-narrow w-6"></div>
       <!-- Center Column -->
       <div class="column">
         <div class="m-l-24 m-r-16 m-t-24">
@@ -104,7 +104,7 @@
         </div>
       </div>
       <!-- Right Gap -->
-      <div class="column is-narrow w-24"></div>
+      <div class="column is-narrow w-6"></div>
     </div>
   </div>
 </template>
