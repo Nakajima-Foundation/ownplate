@@ -113,3 +113,7 @@ export const getMenuObj = async (refRestaurant, menuIds) => {
   })));
   return menuObj;
 };
+
+export const nameOfOrder = (orderNumber: number) => {
+  return "#" + `00${orderNumber}`.slice(-3);
+};
