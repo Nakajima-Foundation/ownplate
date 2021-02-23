@@ -30,8 +30,28 @@ describe('Order function', () => {
       restaurantId,
       uid: "121212",
     });
+    const orderData = {
+      "updatedAt":{"seconds":1613988208,"nanoseconds":981000000},
+      "prices":{"VbXMnx4wdTgh1VBpBRIr":[1000]},
+      "total":1080,"timePlaced":{"seconds":1614051000,"nanoseconds":756000000},
+      "tax":80,"timeCreated":{"seconds":1613988203,"nanoseconds":388000000},
+      "sendSMS":true,"orderPlacedAt":{"seconds":1613988208,"nanoseconds":981000000},
+      "options":{"VbXMnx4wdTgh1VBpBRIr":{"0":["","","","1"]}},
+      "rawOptions":{"VbXMnx4wdTgh1VBpBRIr":{"0":[false,false,false,0]}},
+      "memo":"","accounting":{"alcohol":{"revenue":0,"tax":0},
+                              "food":{"tax":80,"revenue":1000}},
+      "order":{"VbXMnx4wdTgh1VBpBRIr":[1]},
+      "number":412,"sub_total":1000,"inclusiveTax":false,"totalCharge":1080,
+      "uid":"hdLfvObioAWvymcZsGlq5PKL0CX2","phoneNumber":"+819011111111","name":"山田",
+      "status":300,
+      "menuItems":{
+        "VbXMnx4wdTgh1VBpBRIr":{"category1":"333333","itemName":"1212","price":1000,"category2":"44"}
+      },
+      "tip":0,
+      "id": 123,
+    };
     
-    await notify.notifyRestaurant(adminDB,  'msg_order_placed', restaurantId, orderId, "hello", 123, "jp");
+    await notify.notifyRestaurant(adminDB,  'msg_order_placed', restaurantId, orderData, "hello", "jp");
   });
 });
 
