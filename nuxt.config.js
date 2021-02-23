@@ -85,7 +85,7 @@ export default {
   },
   styleResources: {
     scss: [
-      "~/assets/css/tailwind.css",
+      // "~/assets/css/tailwind.css",
       "~/assets/scss/main.scss"
       // "~/assets/web-grid-master/dist/web-grid.css"
       // "~/assets/iota/iota.scss"
