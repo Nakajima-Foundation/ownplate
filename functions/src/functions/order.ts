@@ -17,6 +17,8 @@ import moment from 'moment-timezone';
 import { Context } from '../models/TestType'
 import * as twilio from './twilio';
 
+import * as ses from './ses';
+
 export const nameOfOrder = (orderNumber: number) => {
   return "#" + `00${orderNumber}`.slice(-3);
 };
@@ -248,6 +250,13 @@ export const notifyRestaurant = async (db: any, messageId: string, restaurantId:
     });
   }
   
+  if (restaurant.mailNofitication) {
+    const adminUser = process.env.NODE_ENV === "test" ? {email: process.env.TESTMAIL} : await admin.auth().getUser(restaurant.uid);
+    if (adminUser.email) {
+      await ses.sendMail(adminUser.email, message, message);
+      // console.log(res);
+    }
+  }
   // notify to web.
   await db.doc(`/admins/${restaurant.uid}/private/notification`).set({
     message,

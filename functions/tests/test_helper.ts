@@ -21,6 +21,7 @@ export const createRestaurantData = async (db, restaurantId) => {
     foodTax: 5,
     alcoholTax: 8,
     publicFlag: true,
+    mailNofitication: true,
   });
   // create menu.
   await db.doc(`restaurants/${restaurantId}/menus/hoge1`).set({
