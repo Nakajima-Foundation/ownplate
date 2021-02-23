@@ -264,6 +264,13 @@ $sides: (top, bottom, left, right);
 //   }
 // }
 
+// .w-full {
+//   width: 100%;
+// }
+// .h-full {
+//   height: 100%;
+// }
+
 // Rounded Corners Sizes
 @each $corner-size in $sizes {
   .r-#{$corner-size} {
@@ -303,13 +310,6 @@ body,
   max-width: 1080px;
   margin: auto;
 }
-
-// .w-full {
-//   width: 100%;
-// }
-// .h-full {
-//   height: 100%;
-// }
 
 // Cover Photo
 .cover {
@@ -554,3 +554,5 @@ body,
     transform: scale(0.9);
   }
 }
+
+// Tailwind CSS Workaround
