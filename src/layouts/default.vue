@@ -1,5 +1,9 @@
 <template>
   <div class="wrapper" @click="enableSound()">
+    <!-- ### The commentout below is for Tailwind CSS workaround. ### -->
+    <!-- w-16 h-16 w-24 h-24 w-48 h-48 w-full h-full -->
+    <!-- ### Try to add the class name here if it doesn't work in your page. ### -->
+
     <!-- Notification Banner -->
     <div v-if="isFlash" @click="dismissBanner()" class="notification-banner">
       <i class="material-icons c-text-white-full s-24">notifications_active</i>
