@@ -206,30 +206,38 @@ export const sendMessage = async (db: FirebaseFirestore.Firestore, lng: string,
   }
 }
 
+const createNotifyRestaurantMessage = async (messageId: string, restaurantName: string, orderNumber: number, lng: string) => {
+  const t = await i18next.init({
+    lng: lng || utils.getStripeRegion().langs[0],
+    resources
+  })
+  const orderName = nameOfOrder(orderNumber);
+  const message = `${restaurantName} ${t(messageId)} ${orderName}`;
+  return message;
+};
+const notifyRestaurantToLineUser = async (url: string, message: string, lineUsers: any[]) => {
+  const results = await Promise.all(lineUsers.map(async doc => {
+    const lineUser = doc.data();
+    if (lineUser.notify) {
+      await line.sendMessageDirect(doc.id, `${message} ${url}?openExternalBrowser=1`)
+    }
+    return lineUser;
+  }));
+  return results;
+};
 export const notifyRestaurant = async (db: any, messageId: string, restaurantId: string, orderId: string, restaurantName: string, orderNumber: number, lng: string) => {
   const datestr = moment().format("YYYY-MM-DD");
   const restaurant = (await db.doc(`/restaurants/${restaurantId}`).get()).data();
   if (!restaurant) { // paranoia
     return;
   }
-  
-  const lineUsers = (await db.collection(`/restaurants/${restaurantId}/lines`).get()).docs;
-  const t = await i18next.init({
-    lng: lng || utils.getStripeRegion().langs[0],
-    resources
-  })
   const url = `https://${ownPlateConfig.hostName}/admin/restaurants/${restaurantId}/orders/${orderId}`
-  const orderName = nameOfOrder(orderNumber);
-  const message = `${restaurantName} ${t(messageId)} ${orderName}`;
+  const message = await createNotifyRestaurantMessage(messageId, restaurantName, orderNumber, lng)
 
+  // line push.
+  const lineUsers = (await db.collection(`/restaurants/${restaurantId}/lines`).get()).docs;
   if (lineUsers.length > 0) {
-    const results = await Promise.all(lineUsers.map(async doc => {
-      const lineUser = doc.data();
-      if (lineUser.notify) {
-        await line.sendMessageDirect(doc.id, `${message} ${url}?openExternalBrowser=1`)
-      }
-      return lineUser;
-    }));
+    const results = await notifyRestaurantToLineUser(url, message, lineUsers);
     await db.doc(`/restaurants/${restaurantId}/log/${datestr}/lineLog/${orderId}-${messageId}`).set({
       restaurantId,
       date: datestr,
@@ -240,6 +248,7 @@ export const notifyRestaurant = async (db: any, messageId: string, restaurantId:
     });
   }
   
+  // notify to web.
   await db.doc(`/admins/${restaurant.uid}/private/notification`).set({
     message,
     sound: true,
@@ -247,6 +256,7 @@ export const notifyRestaurant = async (db: any, messageId: string, restaurantId:
     updatedAt: admin.firestore.Timestamp.now(),
     url
   })
+  // phone notify.
   if (messageId === 'msg_order_placed') {
     if (restaurant.phoneCall) {
       await twilio.phoneCall(restaurant);
