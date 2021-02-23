@@ -555,4 +555,9 @@ body,
   }
 }
 
-// Tailwind CSS Workaround
+// Overwrites for Tailwind CSS
+
+img,
+svg {
+  display: inline-block;
+}
