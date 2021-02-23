@@ -198,20 +198,22 @@ export const sendMessage = async (db: FirebaseFirestore.Firestore, lng: string,
   const url = `https://${ownPlateConfig.hostName}/r/${restaurantId}/order/${orderId}?openExternalBrowser=1`
   const message = `${t(msgKey, params)} ${restaurantName} ${orderNumber} ${url}`;
   if (line.isEnabled) {
+    // for JP
     await line.sendMessage(db, uidUser, message)
   } else {
+    // for others
     await sms.pushSMS("OwnPlate", message, phoneNumber)
   }
 }
 
-const notifyRestaurant = async (db: FirebaseFirestore.Firestore, messageId: string, restaurantId: string, orderId: string, restaurantName: string, orderNumber: number, lng: string) => {
+export const notifyRestaurant = async (db: any, messageId: string, restaurantId: string, orderId: string, restaurantName: string, orderNumber: number, lng: string) => {
   const datestr = moment().format("YYYY-MM-DD");
   const restaurant = (await db.doc(`/restaurants/${restaurantId}`).get()).data();
   if (!restaurant) { // paranoia
     return;
   }
   
-  const docs = (await db.collection(`/restaurants/${restaurantId}/lines`).get()).docs;
+  const lineUsers = (await db.collection(`/restaurants/${restaurantId}/lines`).get()).docs;
   const t = await i18next.init({
     lng: lng || utils.getStripeRegion().langs[0],
     resources
@@ -220,8 +222,8 @@ const notifyRestaurant = async (db: FirebaseFirestore.Firestore, messageId: stri
   const orderName = nameOfOrder(orderNumber);
   const message = `${restaurantName} ${t(messageId)} ${orderName}`;
 
-  if (docs.length > 0) {
-    const results = await Promise.all(docs.map(async doc => {
+  if (lineUsers.length > 0) {
+    const results = await Promise.all(lineUsers.map(async doc => {
       const lineUser = doc.data();
       if (lineUser.notify) {
         await line.sendMessageDirect(doc.id, `${message} ${url}?openExternalBrowser=1`)
