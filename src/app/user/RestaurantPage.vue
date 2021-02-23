@@ -40,14 +40,14 @@
               <div class="column is-narrow w-6"></div>
               <div class="column">
                 <div class="is-hidden-mobile h-6"></div>
-                <div class="bg-form h-12">
+                <div class="bg-form h-48">
                   <img
                     :src="coverImage"
-                    class="h-12 w-full cover is-hidden-tablet"
+                    class="h-48 w-full cover is-hidden-tablet"
                   />
                   <img
                     :src="coverImage"
-                    class="h-12 w-full cover r-8 is-hidden-mobile"
+                    class="h-48 w-full cover r-8 is-hidden-mobile"
                   />
                 </div>
               </div>

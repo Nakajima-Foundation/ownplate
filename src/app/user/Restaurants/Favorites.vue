@@ -51,7 +51,7 @@
                   <div class="touchable h-full">
                     <div class="cols flex-center">
                       <!-- Restaurant Profile -->
-                      <div class="m-r-16 h-12">
+                      <div class="m-r-16 h-48">
                         <img
                           :src="resizedProfileImage(like, '600')"
                           class="w-12 h-12 r-48 cover"
