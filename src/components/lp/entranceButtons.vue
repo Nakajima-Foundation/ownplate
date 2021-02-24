@@ -1,12 +1,12 @@
 <template>
   <div class="mx-6 mt-6 text-center lg:grid lg:grid-cols-3 lg:gap-4">
     <!-- For Restaurants -->
-    <div class="bg-op-teal rounded-lg p-6 lg:col-span-2">
+    <div class="bg-op-teal rounded-lg pt-6 lg:col-span-2">
       <i class="material-icons text-7xl opacity-60">store</i>
       <div class="text-white text-sm font-bold">
         飲食店の方はこちら
       </div>
-      <div class="lg:inline-flex lg:space-x-8">
+      <div class="pb-4 lg:inline-flex lg:space-x-8">
         <!-- Go to Restaurant Admin Page -->
         <div class="mt-4">
           <router-link to="/admin/restaurants">
@@ -33,6 +33,28 @@
               >
             </div>
           </a>
+        </div>
+      </div>
+      <!-- Go to Samples -->
+      <div class="bg-black bg-opacity-10 rounded-b-lb py-4">
+        <div class="lg:inline-flex lg:items-center lg:space-x-4">
+          <div class="text-white text-sm font-bold mb-2 lg:mb-0">
+            サンプルの店舗を見る
+          </div>
+          <div class="inline-flex items-center space-x-4">
+            <a
+              href="https://omochikaeri.com/r/bYArBMUJBe4KdVzZijLH"
+              class="inline-flex items-center h-10 rounded-full bg-white bg-opacity-20 px-4 hover:bg-opacity-30"
+            >
+              <span class="text-white text-sm font-bold">居酒屋</span>
+            </a>
+            <a
+              href="https://omochikaeri.com/r/wwCgtIEZQo6QnXRyxYYS"
+              class="inline-flex items-center h-10 rounded-full bg-white bg-opacity-20 px-4 hover:bg-opacity-30"
+            >
+              <span class="text-white text-sm font-bold">パティスリー</span>
+            </a>
+          </div>
         </div>
       </div>
     </div>
