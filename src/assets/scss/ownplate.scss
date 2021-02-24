@@ -19,6 +19,7 @@ $op-colors: (
   test: #ff0000,
   transparent: rgba(0, 0, 0, 0),
   ownplate-yellow: #fbc02d,
+  op-yellow: #fbc02d,
   ownplate-gray: #616161,
   ownplate-white: #ffffff,
   ownplate-black: #000000,
@@ -28,6 +29,7 @@ $op-colors: (
   sattle-black: rgba(0, 0, 0, 0.1),
   dialog-overlay: rgba(0, 0, 0, 0.5),
   primary: #0097a7,
+  op-teal: #0097a7,
   primary-bg: rgba(0, 151, 167, 0.1),
   onprimary: #ffffff,
   text-black-full: #000000,
@@ -189,6 +191,9 @@ html {
 @each $name, $value in $op-colors {
   // Text Colors
   .c-#{$name} {
+    color: $value;
+  }
+  .text-#{$name} {
     color: $value;
   }
   // Background Colors
