@@ -146,7 +146,7 @@ describe('Order function', () => {
     newOrderData10.status.should.equal(constant.order_status.error);
 
     const checkOrderTotal = async (count) => {
-      const now = moment().tz("Asia/Tokyo").format('YYYYMMDD');
+      const now = moment(1613986197000).tz("Asia/Tokyo").format('YYYYMMDD');
       const path = `restaurants/${restaurantId}/menus/hoge1/orderTotal/${now}`
       const totalRes = (await adminDB.doc(path).get()).data() || {};
       totalRes.count.should.equal(count);
