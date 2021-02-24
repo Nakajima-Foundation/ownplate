@@ -36,7 +36,7 @@
         </div>
       </div>
       <!-- Go to Samples -->
-      <div class="bg-black bg-opacity-10 rounded-b-lb py-4">
+      <div class="bg-black bg-opacity-10 rounded-b-lg py-4">
         <div class="lg:inline-flex lg:items-center lg:space-x-4">
           <div class="text-white text-sm font-bold mb-2 lg:mb-0">
             サンプルの店舗を見る
