@@ -7,7 +7,7 @@
       <!-- Article Header Area -->
       <div class="columns is-gapless">
         <!-- Left Gap -->
-        <div class="column is-narrow w-24"></div>
+        <div class="column is-narrow w-6"></div>
         <!-- Center Column -->
         <div class="column">
           <div class="m-l-24 m-r-24 m-t-24">
@@ -33,13 +33,13 @@
           </div>
         </div>
         <!-- Right Gap -->
-        <div class="column is-narrow w-24"></div>
+        <div class="column is-narrow w-6"></div>
       </div>
 
       <!-- Article Body Area -->
       <div class="columns is-gapless">
         <!-- Left Gap -->
-        <div class="column is-narrow w-24"></div>
+        <div class="column is-narrow w-6"></div>
         <!-- Center Column -->
         <div class="column">
           <div class="columns is-gaplress">
@@ -62,7 +62,7 @@
           </div>
         </div>
         <!-- Right Gap -->
-        <div class="column is-narrow w-24"></div>
+        <div class="column is-narrow w-6"></div>
       </div>
     </template>
   </div>

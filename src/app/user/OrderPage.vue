@@ -10,7 +10,7 @@
       <!-- Order Header Area -->
       <div class="columns is-gapless">
         <!-- Left Gap -->
-        <div class="column is-narrow w-24"></div>
+        <div class="column is-narrow w-6"></div>
         <!-- Center Column -->
         <div class="column">
           <div class="m-l-24 m-r-24">
@@ -19,7 +19,7 @@
               <b-button
                 :loading="isDeleting"
                 @click="handleEditItems"
-                class="b-reset h-36 r-36 bg-form"
+                class="b-reset h-9 rounded-full bg-form"
               >
                 <span class="p-l-16 p-r-16">
                   <i class="material-icons c-primary s-18 m-r-8">arrow_back</i>
@@ -115,7 +115,7 @@
               <!-- Cancel Message -->
               <div
                 v-if="canceled"
-                class="bg-status-red-bg r-8 p-l-16 p-r-16 p-t-16 p-b-16 align-center"
+                class="bg-status-red-bg rounded-lg p-l-16 p-r-16 p-t-16 p-b-16 align-center"
               >
                 <span class="t-subtitle1 c-status-red">{{
                   $t("order.cancelOrderComplete")
@@ -131,7 +131,9 @@
                     !canceled
                 "
               >
-                <div class="bg-form m-t-24 p-l-16 p-r-16 p-t-16 p-b-16 r-8">
+                <div
+                  class="bg-form m-t-24 p-l-16 p-r-16 p-t-16 p-b-16 rounded-lg"
+                >
                   <div class="t-caption">{{ $t("order.thanksMessage") }}</div>
                   <div class="t-body1 m-t-8">{{ shopInfo.orderThanks }}</div>
                 </div>
@@ -140,7 +142,7 @@
               <!-- Restaurant LINE -->
               <div
                 v-if="hasLineUrl"
-                class="align-center m-t-16 bg-form r-8 p-t-16 p-l-16 p-r-16 p-b-16"
+                class="align-center m-t-16 bg-form rounded-lg p-t-16 p-l-16 p-r-16 p-b-16"
               >
                 <a target="_blank" :href="this.shopInfo.lineUrl">
                   <div class="op-button-pill bg-status-green c-text-white-full">
@@ -158,7 +160,7 @@
             <!-- Before Paid -->
             <div v-else>
               <div
-                class="align-center bg-status-red-bg p-t-24 p-l-24 p-r-24 p-b-24 t-subtitle1 c-status-red r-8 m-t-16"
+                class="align-center bg-status-red-bg p-t-24 p-l-24 p-r-24 p-b-24 t-subtitle1 c-status-red rounded-lg m-t-16"
               >
                 {{ $t("order.orderNotPlacedYet") }}
               </div>
@@ -166,13 +168,13 @@
           </div>
         </div>
         <!-- Right Gap -->
-        <div class="column is-narrow w-24"></div>
+        <div class="column is-narrow w-6"></div>
       </div>
 
       <!-- Order Body Area -->
       <div class="columns is-gapless">
         <!-- Left Gap -->
-        <div class="column is-narrow w-24"></div>
+        <div class="column is-narrow w-6"></div>
         <!-- Left Column -->
         <div class="column">
           <div class="m-l-24 m-r-24">
@@ -196,7 +198,7 @@
               <!-- Cancel Message -->
               <div
                 v-if="canceled"
-                class="bg-status-red-bg r-8 p-l-16 p-r-16 p-t-16 p-b-16 align-center m-t-24"
+                class="bg-status-red-bg rounded-lg p-l-16 p-r-16 p-t-16 p-b-16 align-center m-t-24"
               >
                 <span class="t-subtitle1 c-status-red">{{
                   $t("order.cancelOrderComplete")
@@ -227,7 +229,9 @@
 
               <!-- Your Message to the Restaurant -->
               <template v-if="paid && hasMemo">
-                <div class="bg-form m-t-24 p-l-16 p-r-16 p-t-16 p-b-16 r-8">
+                <div
+                  class="bg-form m-t-24 p-l-16 p-r-16 p-t-16 p-b-16 rounded-lg"
+                >
                   <div class="t-caption">{{ $t("order.orderMessage") }}</div>
                   <div class="t-body1 m-t-8">{{ orderInfo.memo }}</div>
                 </div>
@@ -262,7 +266,7 @@
                     {{ $t("order.orderNotice") }}
                   </div>
                   <div
-                    class="bg-surface r-8 d-low m-t-8 p-l-16 p-r-16 p-t-16 p-b-16"
+                    class="bg-surface rounded-lg d-low m-t-8 p-l-16 p-r-16 p-t-16 p-b-16"
                   >
                     <div class="cols">
                       <div class="p-r-8">
@@ -283,7 +287,7 @@
                     {{ $t("order.orderMessage") }}
                   </div>
                   <div
-                    class="bg-surface r-8 d-low m-t-8 p-l-16 p-r-16 p-t-16 p-b-16"
+                    class="bg-surface rounded-lg d-low m-t-8 p-l-16 p-r-16 p-t-16 p-b-16"
                   >
                     <div class="cols">
                       <b-input
@@ -331,7 +335,7 @@
                 <!-- Pay at Restaurant -->
                 <div v-else class="m-t-8">
                   <div
-                    class="bg-form r-8 p-l-16 p-r-16 p-t-16 p-b-16 t-body2 c-text-black-high"
+                    class="bg-form rounded-lg p-l-16 p-r-16 p-t-16 p-b-16 t-body2 c-text-black-high"
                   >
                     {{ $t("order.pleasePayAtRestaurant") }}
                   </div>
@@ -360,7 +364,7 @@
 
                 <!-- Send SMS Checkbox -->
                 <div v-if="!isLineEnabled" class="m-t-24">
-                  <div class="bg-form r-8 p-l-16 p-r-16 p-t-16 p-b-16">
+                  <div class="bg-form rounded-lg p-l-16 p-r-16 p-t-16 p-b-16">
                     <b-checkbox v-model="sendSMS">
                       <span class="t-body2 c-text-black-high">{{
                         $t("order.sendSMS")
@@ -403,7 +407,7 @@
           </div>
         </div>
         <!-- Right Gap -->
-        <div class="column is-narrow w-24"></div>
+        <div class="column is-narrow w-6"></div>
       </div>
     </template>
   </div>

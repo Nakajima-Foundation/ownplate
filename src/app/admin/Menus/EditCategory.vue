@@ -6,7 +6,7 @@
         <div
           v-for="(category, index) in categories"
           :key="category"
-          class="bg-form cols flex-center r-4 m-t-8"
+          class="bg-form cols flex-center rounded m-t-8"
         >
           <div class="flex-1 p-l-16 p-t-8 p-b-8">
             <span>{{ category }}</span>

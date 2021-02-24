@@ -9,11 +9,11 @@
         <!-- For Owner Preview Only -->
         <div v-if="isPreview" class="columns is-gapless">
           <!-- Left Gap -->
-          <div class="column is-narrow w-24"></div>
+          <div class="column is-narrow w-6"></div>
           <!-- Center Column -->
           <div class="column">
             <div
-              class="bg-status-red-bg r-8 p-l-16 p-r-16 p-t-16 p-b-16 align-center m-l-24 m-r-24 m-t-24"
+              class="bg-status-red-bg rounded-lg p-l-16 p-r-16 p-t-16 p-b-16 align-center m-l-24 m-r-24 m-t-24"
             >
               <div class="t-subtitle1 c-status-red">
                 {{ $t("shopInfo.thisIsPreview") }}
@@ -22,36 +22,36 @@
                 {{ $t("shopInfo.notPublic") }}
               </div>
             </div>
-            <div class="is-hidden-tablet h-24"></div>
+            <div class="is-hidden-tablet h-6"></div>
           </div>
           <!-- Right Gap -->
-          <div class="column is-narrow w-24"></div>
+          <div class="column is-narrow w-6"></div>
         </div>
 
         <!-- Restaurant Body Area -->
         <div class="columns is-gapless">
           <!-- Left Gap -->
-          <div class="column is-narrow w-24"></div>
+          <div class="column is-narrow w-6"></div>
 
           <!-- Left Column -->
           <div class="column">
             <!-- Restaurant Cover Photo -->
             <div class="columns is-gapless">
-              <div class="column is-narrow w-24"></div>
+              <div class="column is-narrow w-6"></div>
               <div class="column">
-                <div class="is-hidden-mobile h-24"></div>
-                <div class="bg-form h-192">
+                <div class="is-hidden-mobile h-6"></div>
+                <div class="bg-form h-48">
                   <img
                     :src="coverImage"
-                    class="h-192 w-full cover is-hidden-tablet"
+                    class="h-48 w-full cover is-hidden-tablet"
                   />
                   <img
                     :src="coverImage"
-                    class="h-192 w-full cover r-8 is-hidden-mobile"
+                    class="h-48 w-full cover rounded-lg is-hidden-mobile"
                   />
                 </div>
               </div>
-              <div class="column is-narrow w-24"></div>
+              <div class="column is-narrow w-6"></div>
             </div>
 
             <!-- Restaurant Details -->
@@ -113,7 +113,7 @@
             </div>
           </div>
           <!-- Right Gap -->
-          <div class="column is-narrow w-24"></div>
+          <div class="column is-narrow w-6"></div>
         </div>
       </div>
 
