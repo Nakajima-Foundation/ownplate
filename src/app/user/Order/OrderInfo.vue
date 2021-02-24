@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-surface r-8 d-low m-t-8 p-b-24">
+  <div class="bg-surface rounded-lg d-low m-t-8 p-b-24">
     <!-- Order Items -->
     <template v-for="orderItem in orderItems">
       <order-item :orderItem="orderItem" :key="orderItem.key"></order-item>
@@ -13,10 +13,14 @@
       <div class="p-t-16 p-l-16 p-r-16">
         <div class="cols">
           <div class="flex-1">
-            <div class="t-body1 c-text-black-high">{{$t('order.subtotal')}}</div>
+            <div class="t-body1 c-text-black-high">
+              {{ $t("order.subtotal") }}
+            </div>
           </div>
           <div class="align-righ">
-            <span class="t-body1 c-text-black-high">{{$n(orderInfo.sub_total, 'currency')}}</span>
+            <span class="t-body1 c-text-black-high">{{
+              $n(orderInfo.sub_total, "currency")
+            }}</span>
           </div>
         </div>
       </div>
@@ -25,31 +29,44 @@
       <div class="p-t-8 p-l-16 p-r-16">
         <div class="cols">
           <div class="flex-1">
-            <div
-              class="t-body1 c-text-black-high"
-            >{{$t(orderInfo.inclusiveTax ? 'order.inclusiveTax':'order.salesTax')}}</div>
+            <div class="t-body1 c-text-black-high">
+              {{
+                $t(
+                  orderInfo.inclusiveTax
+                    ? "order.inclusiveTax"
+                    : "order.salesTax"
+                )
+              }}
+            </div>
           </div>
           <div class="align-righ">
-            <span class="t-body1 c-text-black-high">{{$n(orderInfo.tax, 'currency')}}</span>
+            <span class="t-body1 c-text-black-high">{{
+              $n(orderInfo.tax, "currency")
+            }}</span>
           </div>
         </div>
       </div>
 
       <!-- Total -->
-      <div v-if="false && regionTip.choices.length > 0" class="p-t-8 p-l-16 p-r-16">
+      <div
+        v-if="false && regionTip.choices.length > 0"
+        class="p-t-8 p-l-16 p-r-16"
+      >
         <div class="cols">
           <div class="flex-1">
-            <div class="t-body1 c-text-black-high">{{$t('order.total')}}</div>
+            <div class="t-body1 c-text-black-high">{{ $t("order.total") }}</div>
           </div>
           <div class="align-righ">
-            <span class="t-body1 c-text-black-high">{{$n(orderInfo.total, 'currency')}}</span>
+            <span class="t-body1 c-text-black-high">{{
+              $n(orderInfo.total, "currency")
+            }}</span>
           </div>
         </div>
       </div>
 
       <hr
         class="devider m-t-16 m-b-0 m-l-16 m-r-16"
-        v-if="(regionTip.choices.length > 0) && isTipEditable"
+        v-if="regionTip.choices.length > 0 && isTipEditable"
       />
 
       <!-- Tip -->
@@ -59,10 +76,12 @@
       >
         <div class="cols">
           <div class="flex-1">
-            <div class="t-body1 c-text-black-high">{{$t('order.tip')}}</div>
+            <div class="t-body1 c-text-black-high">{{ $t("order.tip") }}</div>
           </div>
           <div class="align-righ">
-            <span class="t-body1 c-text-black-high">{{$n(tip, 'currency')}}</span>
+            <span class="t-body1 c-text-black-high">{{
+              $n(tip, "currency")
+            }}</span>
           </div>
         </div>
       </div>
@@ -74,7 +93,7 @@
             <b-input
               class="w-full"
               type="number"
-              :placeholder="$t('order.maxTip', {max:regionTip.max})"
+              :placeholder="$t('order.maxTip', { max: regionTip.max })"
               :step="tipStep"
               v-model="tip"
               v-on:input="handleTipInput"
@@ -89,7 +108,8 @@
               @click="updateTip(ratio)"
               :type="isSameAmount(ratio) ? 'is-primary' : ''"
               :key="ratio"
-            >{{ ratio + "%" }}</b-button>
+              >{{ ratio + "%" }}</b-button
+            >
           </div>
         </div>
       </div>
@@ -100,10 +120,12 @@
       <div class="p-t-24 p-l-16 p-r-16">
         <div class="cols">
           <div class="flex-1">
-            <div class="t-h6 c-status-green">{{$t('order.totalCharge')}}</div>
+            <div class="t-h6 c-status-green">{{ $t("order.totalCharge") }}</div>
           </div>
           <div class="align-righ">
-            <span class="t-h6 c-status-green">{{$n(orderInfo.total + Number(tip), 'currency')}}</span>
+            <span class="t-h6 c-status-green">{{
+              $n(orderInfo.total + Number(tip), "currency")
+            }}</span>
           </div>
         </div>
       </div>
