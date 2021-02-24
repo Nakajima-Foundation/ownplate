@@ -23,7 +23,7 @@ export const sendMail = async (to, title, body) => {
       },
       debug: true
     });
-    await smtpTransporter.sendMail(mailOptions);
+    return await smtpTransporter.sendMail(mailOptions);
   } else {
     console.log("no aws smtp config");
     console.log(mailOptions);
