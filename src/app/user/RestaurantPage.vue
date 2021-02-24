@@ -100,7 +100,7 @@
                       :item="itemsObj[itemId]"
                       :quantities="orders[itemId] || [0]"
                       :optionPrev="optionsPrev[itemId]"
-                      :initialOpenMenuFlag="(orders[itemId] || 0) > 0"
+                      :initialOpenMenuFlag="(orders[itemId] || []).length > 0"
                       :shopInfo="shopInfo"
                       :isOpen="menuId === itemId"
                       :prices="prices[itemId] || []"
@@ -225,8 +225,6 @@ export default {
   data() {
     return {
       retryCount: 0,
-      tabIndex: 0,
-      tabs: ["#menus", "#about"],
       loginVisible: false,
       isCheckingOut: false,
       orders: {},
@@ -234,7 +232,6 @@ export default {
       optionsPrev: {}, // from the store.cart
       restaurantsId: this.restaurantId(),
       shopInfo: {},
-      // isCardModalActive: false
       menus: [],
       titles: [],
       waitForUser: false,
@@ -247,19 +244,13 @@ export default {
     };
   },
   mounted() {
-    const index = this.tabs.findIndex(tab => tab === this.$route.hash);
-    if (index > -1) {
-      this.tabIndex = index;
-    }
-
     // Check if we came here as the result of "Edit Items"
-    const url = new URL(window.location.href);
-    if (url.hash.length > 1) {
-      const prevOrderId = url.hash.slice(1);
-      const cart = this.$store.state.carts[prevOrderId] || {};
+    if (this.$store.state.carts[this.restaurantId()]) {
+      const cart = this.$store.state.carts[this.restaurantId()] || {};
       //console.log("cart", cart);
       this.orders = cart.orders || {};
       this.optionsPrev = cart.options || {};
+      this.options = cart.options || {};
     }
   },
   created() {
@@ -314,9 +305,6 @@ export default {
     }
   },
   watch: {
-    tabIndex() {
-      this.$router.push(this.tabs[this.tabIndex]);
-    },
     user(newValue) {
       console.log("user changed");
       if (this.waitForUser && newValue) {
@@ -512,7 +500,7 @@ export default {
         // when the user clicks the "Edit Items" on the next page.
         // In that case, we will come back here with #id so that we can retrieve it (see mounted).
         this.$store.commit("saveCart", {
-          id: res.id,
+          id: this.restaurantId(),
           cart: {
             orders: this.orders,
             options: this.options
