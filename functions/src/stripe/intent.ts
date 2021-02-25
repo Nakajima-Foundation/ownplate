@@ -4,8 +4,9 @@ import { order_status } from '../common/constant'
 import Stripe from 'stripe'
 import Order from '../models/Order'
 import * as utils from '../lib/utils'
-import { updateOrderTotalData, sendMessageToCustomer, notifyNewOrderToRestaurant, nameOfOrder, notifyCanceledOrderToRestaurant } from '../functions/order';
+import { updateOrderTotalData } from '../functions/order';
 
+import { sendMessageToCustomer, notifyNewOrderToRestaurant, notifyCanceledOrderToRestaurant } from '../functions/notify';
 
 import moment from 'moment-timezone';
 
@@ -189,7 +190,7 @@ export const confirm = async (db: FirebaseFirestore.Firestore, data: any, contex
       console.log("timeEstimated_diff_days = " + String(diffDay)); 
       if (diffDay < 1) {
         const msgKey = "msg_cooking_completed"
-        const orderName = nameOfOrder(order!.number)
+        const orderName = utils.nameOfOrder(order!.number)
         await sendMessageToCustomer(db, lng, msgKey, restaurantData.restaurantName, orderName, order!.uid, order!.phoneNumber, restaurantId, orderId, {});
       }
     }
@@ -295,7 +296,7 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
         throw error
       }
     })
-    const orderName = nameOfOrder(orderNumber)
+    const orderName = utils.nameOfOrder(orderNumber)
     if (sendSMS) {
       await sendMessageToCustomer(db, lng, 'msg_order_canceled', restaurant.restaurantName, orderName, uidUser, phoneNumber, restaurantId, orderId)
     }

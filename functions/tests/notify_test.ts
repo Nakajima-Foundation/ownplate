@@ -4,6 +4,7 @@ import { should } from 'chai';
 import * as test_db_helper from './test_db_helper';
 import * as test_helper from './test_helper';
 import * as order from './../src/functions/order'
+import * as notify from './../src/functions/notify'
 const adminDB = test_db_helper.adminDB();
 
 should()
