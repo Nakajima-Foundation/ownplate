@@ -1,109 +1,59 @@
 <template>
   <div>
-    <!-- Favorites Header Area -->
-    <div class="columns is-gapless">
-      <!-- Left Gap -->
-      <div class="column is-narrow w-6"></div>
-      <!-- Center Column -->
-      <div class="column">
-        <div class="m-l-24 m-r-24">
-          <!-- Back Button and Restaurant Profile -->
-          <div>
-            <!-- Back Button -->
-            <back-button url="/u/profile/" class="m-t-24" />
-            <!-- Title -->
-            <div class="t-h6 c-text-black-disabled m-t-24">
-              {{ $t("find.likes") }}
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Right Gap -->
-      <div class="column is-narrow w-6"></div>
+    <div class="mt-6 mx-6">
+      <back-button url="/u/profile/" />
     </div>
 
-    <!-- Favorites Body Area -->
-    <div class="columns is-gapless">
-      <!-- Left Gap -->
-      <div class="column is-narrow w-6"></div>
-      <!-- Center Column -->
-      <div class="column">
-        <div class="m-l-24 m-r-24 m-t-24">
-          <div v-if="likes === null" />
-          <!-- No Likes -->
-          <div v-else-if="likes.length === 0">
-            <div class="h-full p-b-8 p-r-8">
-              <div
-                class="touchable bg-surface rounded-lg d-low p-l-16 p-r-16 p-t-16 p-b-16 h-full"
-              >
-                <div class="cols flex-center">
-                  No favorite Restaurants
+    <div class="text-xl font-bold text-black text-opacity-40 mt-6 mx-6">
+      {{ $t("find.likes") }}
+    </div>
+
+    <!-- Likes -->
+    <div>
+      <div v-if="likes === null" />
+      <div v-else-if="likes.length === 0">
+        <div
+          class="mt-2 mx-6 border-2 border-dashed border-black border-opacity-10 p-4 text-center rounded-xl"
+        >
+          <span class="text-base text-black text-opacity-40">
+            {{ $t("find.noLikes") }}</span
+          >
+        </div>
+      </div>
+      <div v-else>
+        <div
+          class="mt-2 mx-6 grid items-center grid-cols-1 gap-2 lg:grid-cols-3 xl:grid-cols-4"
+        >
+          <div v-for="like in likes" :key="like.restaurantId">
+            <router-link :to="`/r/${like.restaurantId}`">
+              <div class="flex items-center">
+                <div class="w-12 h-12 rounded-full bg-black bg-opacity-10 mr-4">
+                  <img
+                    :src="resizedProfileImage(like, '600')"
+                    class="w-12 h-12 rounded-full cover"
+                  />
+                </div>
+                <div class="flex-1 text-base font-bold pr-2">
+                  {{ like.restaurantName }}
                 </div>
               </div>
-            </div>
-          </div>
-
-          <!-- Likes -->
-          <div v-else>
-            <div v-for="like in likes" :key="like.restaurantId" class="m-t-8">
-              <div class="h-full p-b-8 p-r-8">
-                <router-link :to="`/r/${like.restaurantId}`">
-                  <div class="touchable h-full">
-                    <div class="cols flex-center">
-                      <!-- Restaurant Profile -->
-                      <div class="m-r-16 h-12">
-                        <img
-                          :src="resizedProfileImage(like, '600')"
-                          class="w-12 h-12 rounded-full cover"
-                        />
-                      </div>
-
-                      <!-- Restaurant Name -->
-                      <div class="flex-1 p-r-8 t-subtitle1 c-primary">
-                        {{ like.restaurantName }}
-                      </div>
-                    </div>
-                  </div>
-                </router-link>
-              </div>
-            </div>
+            </router-link>
           </div>
         </div>
       </div>
-      <!-- Right Gap -->
-      <div class="column is-narrow w-6"></div>
     </div>
 
-    <!-- List Header Area -->
-    <div class="columns is-gapless">
-      <!-- Left Gap -->
-      <div class="column is-narrow w-6"></div>
-      <!-- Center Column -->
-      <div class="column">
-        <div class="m-l-24 m-r-24 m-t-24">
-          <!-- Title -->
-          <div class="t-h6 c-text-black-disabled m-t-24">
-            {{ $t("find.area") }}
-          </div>
+    <div class="mt-6 mx-6">
+      <nuxt-link :to="'/r'">
+        <div
+          class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
+        >
+          <i class="material-icons text-lg text-op-teal mr-2">list</i>
+          <span class="text-sm font-bold text-op-teal">{{
+            $t("find.areaTop")
+          }}</span>
         </div>
-      </div>
-      <!-- Right Gap -->
-      <div class="column is-narrow w-6"></div>
-    </div>
-
-    <!-- List Body Area -->
-    <div class="columns is-gapless">
-      <!-- Left Gap -->
-      <div class="column is-narrow w-6"></div>
-      <!-- Center Column -->
-      <div class="column">
-        <div class="m-l-24 m-r-16 m-t-16">
-          <!-- Areas -->
-          <div class="columns is-gapless is-multiline">
-            <area-item :name="$t('find.areaAll')" :id="'all'" />
-          </div>
-        </div>
-      </div>
+      </nuxt-link>
     </div>
   </div>
 </template>

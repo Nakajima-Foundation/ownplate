@@ -14,7 +14,7 @@
 
     <!-- Areas -->
     <div v-for="area in areas">
-      <div class="text-xl font-bold text-black text-opacity-40 mt-6 mx-6">
+      <div class="text-base font-bold text-black text-opacity-40 mt-6 mx-6">
         {{ $t("find.areas." + area.name) }}
       </div>
       <div

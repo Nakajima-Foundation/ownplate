@@ -232,9 +232,10 @@
   },
   "find": {
     "area": "Région",
-    "areaAll": "Tout les régions",
+    "areaAll": "Tous les restaurants",
     "areaTop": "Top régions",
     "likes": "Likes",
+    "noLikes": "Pas de restaurants préférés",
     "allRestaurants": "Find Restaurants",
     "areas": {
       "hokkaido": "Hokkaido Area",
