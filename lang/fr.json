@@ -684,7 +684,7 @@
     },
     "notFound": {
       "message1": "La page que vous recherchez est introuvable.",
-      "message2": "Essayez de contacter le restaurant d'une autre manière"
+      "message2": "Essayez de contacter le restaurant d'une autre manière."
     },
     "requireLogin": {
       "message1": "Vous devez être connecté pour voir votre commande"
