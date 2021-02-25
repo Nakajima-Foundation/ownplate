@@ -232,9 +232,10 @@
   },
   "find": {
     "area": "飲食店エリア",
-    "areaAll": "全てのエリア",
+    "areaAll": "全ての飲食店",
     "areaTop": "エリア一覧",
     "likes": "お気に入り",
+    "noLikes": "お気に入りはありません",
     "allRestaurants": "お店を探す",
     "areas": {
       "hokkaido": "北海道",

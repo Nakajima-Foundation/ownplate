@@ -232,9 +232,10 @@
   },
   "find": {
     "area": "Areas",
-    "areaAll": "All Areas",
+    "areaAll": "All Restaurants",
     "areaTop": "Areas Top",
     "likes": "Likes",
+    "noLikes": "No Favorite Restaurants",
     "allRestaurants": "Find Restaurants",
     "areas": {
       "hokkaido": "Hokkaido Area",
@@ -683,7 +684,7 @@
     },
     "notFound": {
       "message1": "The page you're looking for can't be found.",
-      "message2": "Try contacting the restaurant in other way"
+      "message2": "Try contacting the restaurant in other way."
     },
     "requireLogin": {
       "message1": "You must be signed in to see your order"
