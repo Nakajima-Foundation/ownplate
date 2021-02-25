@@ -1,115 +1,58 @@
 <template>
   <div>
-    <!-- List Header Area -->
-    <div class="columns is-gapless">
-      <!-- Left Gap -->
-      <div class="column is-narrow w-6"></div>
-      <!-- Center Column -->
-      <div class="column">
-        <div class="m-l-24 m-r-24 m-t-24">
-          <!-- Title -->
-          <div class="t-h6 c-text-black-disabled m-t-24">
-            {{ $t("find.area") }}
-          </div>
-        </div>
+    <!-- View All -->
+    <div>
+      <div class="text-xl font-bold text-black text-opacity-40 mt-6 mx-6">
+        {{ $t("find.area") }}
       </div>
-      <!-- Right Gap -->
-      <div class="column is-narrow w-6"></div>
-    </div>
-
-    <!-- List Body Area -->
-    <div class="columns is-gapless">
-      <!-- Left Gap -->
-      <div class="column is-narrow w-6"></div>
-      <!-- Center Column -->
-      <div class="column">
-        <div class="m-l-24 m-r-16 m-t-16">
-          <!-- Areas -->
-          <div class="columns is-gapless is-multiline">
-            <area-item :name="$t('find.areaAll')" :id="'all'" />
-          </div>
-        </div>
+      <div
+        class="mt-2 mx-6 grid grid-cols-1 gap-2 lg:grid-cols-3 xl:grid-cols-4"
+      >
+        <area-item :name="$t('find.areaAll')" :id="'all'" />
       </div>
     </div>
 
-    <template v-for="area in areas">
-      <!-- List Header Area -->
-      <div class="columns is-gapless">
-        <!-- Left Gap -->
-        <div class="column is-narrow w-6"></div>
-        <!-- Center Column -->
-        <div class="column">
-          <div class="m-l-24 m-r-24 m-t-24">
-            <!-- Title -->
-            <div class="t-h6 c-text-black-disabled m-t-24">
-              {{ $t("find.areas." + area.name) }}
-            </div>
-          </div>
-        </div>
-        <!-- Right Gap -->
-        <div class="column is-narrow w-6"></div>
+    <!-- Areas -->
+    <div v-for="area in areas">
+      <div class="text-base font-bold text-black text-opacity-40 mt-6 mx-6">
+        {{ $t("find.areas." + area.name) }}
       </div>
-
-      <div class="columns is-gapless">
-        <!-- Left Gap -->
-        <div class="column is-narrow w-6"></div>
-        <!-- Center Column -->
-        <div class="column">
-          <div class="m-l-24 m-r-16 m-t-16">
-            <!-- Areas -->
-            <div class="columns is-gapless is-multiline">
-              <!-- v-for="area in areas" -->
-              <area-item
-                v-for="item in area.items"
-                :name="item.name"
-                :id="String(item.id)"
-                :key="item.id"
-              />
-            </div>
-          </div>
-        </div>
-        <!-- Right Gap -->
-        <div class="column is-narrow w-6"></div>
+      <div
+        class="mt-2 mx-6 grid grid-cols-1 gap-2 lg:grid-cols-3 xl:grid-cols-4"
+      >
+        <area-item
+          v-for="item in area.items"
+          :name="item.name"
+          :id="String(item.id)"
+          :key="item.id"
+        />
       </div>
-    </template>
+    </div>
 
-    <!-- Likes Header Area -->
-    <div class="columns is-gapless" v-if="likes.length > 0">
-      <!-- Left Gap -->
-      <div class="column is-narrow w-6"></div>
-      <!-- Center Column -->
-      <div class="column">
-        <div class="m-l-24 m-r-24 m-t-24">
-          <!-- Title -->
-          <div class="t-h6 c-text-black-disabled m-t-24">
-            {{ $t("find.likes") }}
-          </div>
-          <div v-for="like in likes" :key="like.restaurantId" class="m-t-8">
-            <div class="h-full p-b-8 p-r-8">
-              <router-link :to="`/r/${like.restaurantId}`">
-                <div class="touchable h-full">
-                  <div class="cols flex-center">
-                    <!-- Restaurant Profile -->
-                    <div class="m-r-16 h-12">
-                      <img
-                        :src="resizedProfileImage(like, '600')"
-                        class="w-12 h-12 rounded-full cover"
-                      />
-                    </div>
-
-                    <!-- Restaurant Name -->
-                    <div class="flex-1 p-r-8 t-subtitle1 c-primary">
-                      {{ like.restaurantName }}
-                    </div>
-                  </div>
-                </div>
-              </router-link>
+    <!-- Likes -->
+    <div v-if="likes.length > 0">
+      <div class="text-xl font-bold text-black text-opacity-40 mt-6 mx-6">
+        {{ $t("find.likes") }}
+      </div>
+      <div
+        class="mt-2 mx-6 grid items-center grid-cols-1 gap-2 lg:grid-cols-3 xl:grid-cols-4"
+      >
+        <div v-for="like in likes" :key="like.restaurantId">
+          <router-link :to="`/r/${like.restaurantId}`">
+            <div class="flex items-center">
+              <div class="w-12 h-12 rounded-full bg-black bg-opacity-10 mr-4">
+                <img
+                  :src="resizedProfileImage(like, '600')"
+                  class="w-12 h-12 rounded-full cover"
+                />
+              </div>
+              <div class="flex-1 text-base font-bold pr-2">
+                {{ like.restaurantName }}
+              </div>
             </div>
-          </div>
+          </router-link>
         </div>
       </div>
-      <!-- Right Gap -->
-      <div class="column is-narrow w-6"></div>
     </div>
   </div>
 </template>

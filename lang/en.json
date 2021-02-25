@@ -232,9 +232,10 @@
   },
   "find": {
     "area": "Areas",
-    "areaAll": "All Areas",
+    "areaAll": "All Restaurants",
     "areaTop": "Areas Top",
     "likes": "Likes",
+    "noLikes": "No Favorite Restaurants",
     "allRestaurants": "Find Restaurants",
     "areas": {
       "hokkaido": "Hokkaido Area",
