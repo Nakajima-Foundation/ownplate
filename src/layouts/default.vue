@@ -2,8 +2,9 @@
   <div class="wrapper" @click="enableSound()">
     <!-- ### The commentout below is for Tailwind CSS workaround. ### -->
     <!-- w-9 h-9 w-16 h-16 w-24 h-24 w-48 h-48 w-full h-full -->
-    <!-- mt-1 p-4 -->
+    <!-- mt-1 mr-4 p-4 -->
     <!-- rounded rounded-full -->
+    <!-- xl:grid-cols-4 -->
     <!-- ### Try to add the class name here if it doesn't work after build. ### -->
 
     <!-- Notification Banner -->
@@ -262,7 +263,7 @@
               class="material-icons text-lg text-black text-opacity-60 mr-2"
               v-if="lang_key == language"
               >check</i
-            ><span class="text-sm font-bold text-op-teal">{{ lang }} </span></a
+            ><span class="text-sm font-bold text-op-teal">{{ lang }}</span></a
           >
         </div>
 
