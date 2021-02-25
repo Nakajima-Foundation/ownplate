@@ -2,6 +2,7 @@
   <div class="wrapper" @click="enableSound()">
     <!-- ### The commentout below is for Tailwind CSS workaround. ### -->
     <!-- w-9 h-9 w-16 h-16 w-24 h-24 w-48 h-48 w-full h-full -->
+    <!-- mt-1 p-4 -->
     <!-- rounded rounded-full -->
     <!-- ### Try to add the class name here if it doesn't work after build. ### -->
 
