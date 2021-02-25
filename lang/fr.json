@@ -506,8 +506,8 @@
     },
     "mail": {
       "magazine": {
-        "title": "Paramètres du courrier électronique",
-        "body": "Recevez des courriels sur les nouvelles informations.",
+        "title": "Bulletins d'information par courrier électronique",
+        "body": "Recevez des courriels sur les actualités, les conseils et les rubriques.",
         "optout": "Ne pas recevoir"
       }
     },
