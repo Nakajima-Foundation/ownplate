@@ -30,7 +30,7 @@ describe('Order function', () => {
       uid: "121212",
     });
     
-    await order.notifyRestaurant(adminDB,  'msg_order_placed', restaurantId, orderId, "hello", 123, "jp");
+    await order.notifyRestaurantToRestaurant(adminDB,  'msg_order_placed', restaurantId, orderId, "hello", 123, "jp");
   });
 });
 
