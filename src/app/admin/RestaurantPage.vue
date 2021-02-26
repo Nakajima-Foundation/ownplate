@@ -1,6 +1,7 @@
 <template>
   <div>
     <div v-if="notFound == null"></div>
+
     <!-- Never show before load restaurant data -->
     <div v-else>
       <!-- Edit Header Area -->
@@ -609,6 +610,24 @@
               </div>
             </div>
 
+            <!-- Email Notification -->
+            <div v-if="region === 'JP'" class="m-t-16">
+              <a id="emailNotification" />
+              <div class="t-subtitle2 c-text-black-medium p-b-8">
+                {{ $t("editRestaurant.emailNotificationTitle") }}
+              </div>
+              <div
+                class="bg-form rounded-lg p-l-16 p-r-16 p-t-16 p-b-16 t-body1 c-text-black-high"
+              >
+                <b-checkbox v-model="shopInfo.emailNotification">
+                  {{ $t("editRestaurant.emailNotificationDescription") }}
+                </b-checkbox>
+                <div class="t-caption c-text-black-medium p-t-8">
+                  {{ $t("editRestaurant.emailNotificationNotice") }}
+                </div>
+              </div>
+            </div>
+
             <!-- Phone Call -->
             <div v-if="region === 'JP'" class="m-t-16">
               <a id="phoneCall" />
@@ -626,7 +645,6 @@
                 </div>
               </div>
             </div>
-            <!-- End of Phone Call -->
 
             <!-- Order Memo from Takeout Customer -->
             <div class="m-t-16">
@@ -921,6 +939,7 @@ export default {
         orderNotice: "",
         orderThanks: "",
         phoneCall: false,
+        emailNotification: false,
         acceptUserMessage: false,
         foodTax: 0,
         alcoholTax: 0,
@@ -1275,6 +1294,7 @@ export default {
           place_id: this.shopInfo.place_id,
           phoneNumber: this.shopInfo.phoneNumber,
           phoneCall: this.shopInfo.phoneCall,
+          emailNotification: this.shopInfo.emailNotification,
           acceptUserMessage: this.shopInfo.acceptUserMessage,
           countryCode: this.shopInfo.countryCode,
           url: this.shopInfo.url,

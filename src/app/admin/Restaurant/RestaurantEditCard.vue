@@ -1,241 +1,277 @@
 <template>
-  <div>
-    <div class="bg-surface rounded-lg d-low p-t-24 p-b-24 m-b-16">
-      <!-- Restaurant Profile Photo -->
-      <div class="align-center">
+  <div class="bg-white shadow rounded-lg p-4">
+    <!-- Restaurant Name and Delete Button-->
+    <div class="flex">
+      <div class="flex-1 text-lg font-bold">
+        {{ shopInfo.restaurantName || $t("editRestaurant.noRestaurant") }}
+      </div>
+      <div class="pl-4">
+        <a
+          @click="deleteRestaurant"
+          class="text-black text-opacity-30 hover:text-red-700"
+        >
+          <i class="material-icons text-xl">delete_outline</i>
+        </a>
+      </div>
+    </div>
+
+    <!-- Restaurant Photo and Details -->
+    <div class="flex justify-center items-center space-x-4 mt-4">
+      <div class="flex-shrink-0">
         <img
-          class="w-16 h-16 rounded-full cover"
+          class="w-20 h-20 rounded-full cover"
           :src="
             resizedProfileImage(shopInfo, '600') ||
               '/OwnPlate-Favicon-Default.png'
           "
         />
       </div>
-
-      <!-- Restaurant Name -->
-      <div class="m-t-8 align-center t-h6 c-text-black-high">
-        {{ shopInfo.restaurantName || $t("editRestaurant.noRestaurant") }}
+      <div>
+        <div>
+          <nuxt-link :to="'/r/' + restaurantid">
+            <div
+              class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
+            >
+              <i class="material-icons text-lg text-op-teal mr-2">launch</i>
+              <span class="text-sm font-bold text-op-teal">{{
+                $t("admin.viewPage")
+              }}</span>
+            </div>
+          </nuxt-link>
+        </div>
+        <div class="mt-2">
+          <nuxt-link :to="'/admin/restaurants/' + restaurantid">
+            <div
+              class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
+            >
+              <i class="material-icons text-lg text-op-teal mr-2">edit</i>
+              <span class="text-sm font-bold text-op-teal">{{
+                $t("admin.editAbout")
+              }}</span>
+            </div>
+          </nuxt-link>
+        </div>
       </div>
+    </div>
 
-      <!-- View Page -->
-      <div class="m-t-8 align-center">
-        <nuxt-link target="_blank" :to="'/r/' + restaurantid">
-          <div class="op-button-text">
-            <i class="material-icons">launch</i>
-            <span>{{ $t("admin.viewPage") }}</span>
-          </div>
-        </nuxt-link>
-        <!-- # Will have share button/popup here -->
-      </div>
-
-      <!-- # Will put a number of active orders here -->
-
-      <!-- View Orders -->
-      <div class="align-center m-t-16">
-        <b-button
-          tag="nuxt-link"
-          :to="'/admin/restaurants/' + restaurantid + '/orders'"
-          class="b-reset op-button-medium primary"
-          style="min-width: 288px;"
+    <!-- Not Published Alert -->
+    <div class="mt-4" v-if="!shopInfo.publicFlag">
+      <nuxt-link :to="'/admin/restaurants/' + restaurantid">
+        <div
+          class="bg-red-100 rounded-md text-sm font-bold text-red-700 px-4 py-2"
         >
-          <span class="c-onprimary p-l-24 p-r-24">
-            {{
+          {{ $t("admin.privateMode") }}: {{ $t("admin.pleaseChangePublic") }}
+        </div>
+      </nuxt-link>
+    </div>
+
+    <!-- View Orders -->
+    <div class="mt-4 text-center">
+      <nuxt-link :to="'/admin/restaurants/' + restaurantid + '/orders'">
+        <div
+          class="h-16 rounded-full inline-flex justify-center items-center px-8 shadow w-full"
+          :class="numberOfOrders > 0 ? 'bg-yellow-500' : 'bg-op-teal'"
+        >
+          <span class="text-lg font-bold text-white">
+            {{ $tc("admin.viewOrders") }}</span
+          ><span
+            class="text-sm font-bold text-white bg-white bg-opacity-20 px-3 py-2 rounded-full ml-4"
+            >{{
               $tc("admin.incompleteOrders", numberOfOrders, {
                 count: numberOfOrders
               })
-            }}
-          </span>
-        </b-button>
-      </div>
-
-      <!-- Edit Menu -->
-      <div class="align-center m-t-24">
-        <!-- Menu Not Existing -->
-        <div v-if="numberOfMenus == 0">
-          <b-button
-            tag="nuxt-link"
-            :to="'/admin/restaurants/' + restaurantid + '/menus'"
-            style="min-width: 256px; border-color: #b00020;"
-            class="op-button-small red"
+            }}</span
           >
-            <span class="c-status-red p-l-24 p-r-24">{{
-              $t("admin.editMenuItems", { count: numberOfMenus })
-            }}</span>
-          </b-button>
-          <div class="t-body2 c-status-red m-t-4">
-            {{ $t("admin.pleaseAddMenu") }}
+        </div>
+      </nuxt-link>
+    </div>
+
+    <!-- Edit Menu -->
+    <div class="mt-4 text-center">
+      <!-- Menu Not Existing -->
+      <div v-if="numberOfMenus == 0">
+        <nuxt-link :to="'/admin/restaurants/' + restaurantid + '/menus'">
+          <div
+            class="h-12 rounded-full inline-flex justify-center items-center px-6 border-2 border-solid border-red-700 w-full"
+          >
+            <span class="text-red-700 text-base font-bold">
+              {{ $t("admin.editMenuItems") }}</span
+            >
+            <span
+              class="text-base font-bold text-red-700 bg-red-100 px-2 rounded-full ml-2"
+              >{{ numberOfMenus }}</span
+            >
           </div>
+        </nuxt-link>
+        <div class="text-sm font-bold text-red-700 mt-2">
+          {{ $t("admin.pleaseAddMenu") }}
         </div>
+      </div>
 
-        <!-- Menu Existing -->
-        <div v-else>
-          <b-button
-            tag="nuxt-link"
-            :to="'/admin/restaurants/' + restaurantid + '/menus'"
-            style="min-width: 256px;"
-            class="op-button-small secondary"
+      <!-- Menu Existing -->
+      <div v-else>
+        <nuxt-link :to="'/admin/restaurants/' + restaurantid + '/menus'">
+          <div
+            class="h-12 rounded-full inline-flex justify-center items-center px-6 border-2 border-solid border-op-teal w-full"
           >
-            <span class="c-primary p-l-24 p-r-24">{{
-              $t("admin.editMenuItems", { count: numberOfMenus })
+            <span class="text-op-teal text-base font-bold">
+              {{ $t("admin.editMenuItems") }}</span
+            >
+            <span
+              class="text-base font-bold bg-black bg-opacity-5 px-2 rounded-full ml-2"
+              >{{ numberOfMenus }}</span
+            >
+          </div>
+        </nuxt-link>
+      </div>
+    </div>
+
+    <!-- QR Code and Monthly Report -->
+    <div class="flex justify-center items-center space-x-4 mt-4">
+      <div>
+        <nuxt-link :to="`/admin/restaurants/${restaurantid}/qrcode`">
+          <div
+            class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
+          >
+            <i class="material-icons text-lg text-op-teal mr-2">qr_code_2 </i>
+            <span class="text-sm font-bold text-op-teal">{{
+              $t("admin.qrcode.title")
             }}</span>
-          </b-button>
-        </div>
+          </div>
+        </nuxt-link>
       </div>
 
-      <!-- Edit Restaurant Details -->
-      <div class="align-center m-t-16">
-        <b-button
-          tag="nuxt-link"
-          :to="'/admin/restaurants/' + restaurantid"
-          style="min-width: 256px;"
-          class="b-reset op-button-small secondary"
-        >
-          <span class="c-primary">{{ $t("admin.editAbout") }}</span>
-        </b-button>
+      <div v-if="shopOwner">
+        <nuxt-link :to="`/admin/restaurants/${restaurantid}/report`">
+          <div
+            class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
+          >
+            <i class="material-icons text-lg text-op-teal mr-2">description</i>
+            <span class="text-sm font-bold text-op-teal">{{
+              $t("admin.report.title")
+            }}</span>
+          </div>
+        </nuxt-link>
       </div>
+    </div>
 
-      <div class="align-center m-t-16" v-if="!shopInfo.publicFlag">
-        <b-button
-          tag="nuxt-link"
-          :to="'/admin/restaurants/' + restaurantid"
-          style="min-width: 256px; border-color: #b00020;"
-          class="op-button-small red"
-        >
-          <span class="c-status-red p-l-24 p-r-24">{{
-            $t("admin.privateMode")
-          }}</span>
-        </b-button>
-        <div class="t-body2 c-status-red m-t-4">
-          {{ $t("admin.pleaseChangePublic") }}
-        </div>
-      </div>
-
-      <!-- QR code -->
-      <div class="align-center m-t-16">
-        <b-button
-          tag="nuxt-link"
-          :to="`/admin/restaurants/${restaurantid}/qrcode`"
-          style="min-width: 256px;"
-          class="b-reset op-button-small secondary"
-        >
-          <span class="c-primary">{{ $t("admin.qrcode.title") }}</span>
-        </b-button>
-      </div>
-
-      <!-- Report Page -->
-      <div class="align-center m-t-16" v-if="shopOwner">
-        <b-button
-          tag="nuxt-link"
-          :to="`/admin/restaurants/${restaurantid}/report`"
-          style="min-width: 256px;"
-          class="b-reset op-button-small secondary"
-        >
-          <span class="c-primary">{{ $t("admin.report.title") }}</span>
-        </b-button>
-      </div>
-
-      <div class="align-center m-t-16">
-        <b-button
-          tag="nuxt-link"
-          :to="'/admin/restaurants/' + restaurantid + '#phoneCall'"
-          style="min-width: 256px;"
+    <!-- Notifications Settings -->
+    <div
+      class="text-center bg-black bg-opacity-5 rounded-lg pt-3 pb-2 mt-4 flex justify-evenly"
+    >
+      <nuxt-link
+        :to="'/admin/restaurants/' + restaurantid + '#emailNotification'"
+      >
+        <div
           :class="
-            shopInfo.phoneCall
-              ? 'op-button-small secondary'
-              : 'op-button-small primary'
+            shopInfo.emailNotification
+              ? 'text-green-600'
+              : 'text-black text-opacity-40'
           "
         >
-          <span
-            :class="
-              shopInfo.phoneCall
-                ? 'c-onsecondary p-l-24 p-r-24'
-                : 'c-onprimary p-l-24 p-r-24'
-            "
-          >
+          <div class="text-sm font-bold">
+            {{ $t("editRestaurant.emailNotification") }}
+          </div>
+          <div class="text-base font-bold">
+            {{ shopInfo.emailNotification ? "ON" : "OFF" }}
+          </div>
+        </div>
+      </nuxt-link>
+
+      <nuxt-link :to="'/admin/restaurants/' + restaurantid + '#phoneCall'">
+        <div
+          :class="
+            shopInfo.phoneCall ? 'text-green-600' : 'text-black text-opacity-40'
+          "
+        >
+          <div class="text-sm font-bold">
             {{ $t("editRestaurant.phoneCallNotification") }}
-            {{ shopInfo.phoneCall ? "ON" : "OFF" }}
-          </span>
-        </b-button>
-      </div>
-
-      <div class="align-center m-t-16">
-        <b-button
-          tag="nuxt-link"
-          :to="'/admin/restaurants/' + restaurantid + '/line'"
-          style="min-width: 256px;"
-          :class="
-            lineEnable ? 'op-button-small secondary' : 'op-button-small primary'
-          "
-        >
-          <span
-            :class="
-              lineEnable
-                ? 'c-onsecondary p-l-24 p-r-24'
-                : 'c-onprimary p-l-24 p-r-24'
-            "
-          >
-            {{ $t("editRestaurant.lineNotification") }}
-            {{ lineEnable ? "ON" : "OFF" }}
-          </span>
-        </b-button>
-      </div>
-      <!-- Directory Request -->
-      <div class="align-center m-t-16">
-        <div class="t-subtitle2 c-text-black-disabled">
-          {{ $t("admin.directory.status") }}
-        </div>
-
-        <!-- On Directory -->
-        <div v-if="shopInfo.onTheList">
-          <div class="m-t-8 c-status-green t-subtitle1">
-            {{ $t("admin.directory.listed") }}
           </div>
-          <b-button
-            class="b-reset op-button-pill bg-form t-button m-t-16"
-            @click="deleteFromList"
+          <div class="text-base font-bold">
+            {{ shopInfo.phoneCall ? "ON" : "OFF" }}
+          </div>
+        </div>
+      </nuxt-link>
+
+      <nuxt-link :to="'/admin/restaurants/' + restaurantid + '/line'">
+        <div
+          :class="lineEnable ? 'text-green-600' : 'text-black text-opacity-40'"
+        >
+          <div class="text-sm font-bold">
+            {{ $t("editRestaurant.lineNotification") }}
+          </div>
+          <div class="text-base font-bold">
+            {{ lineEnable ? "ON" : "OFF" }}
+          </div>
+        </div>
+      </nuxt-link>
+    </div>
+
+    <!-- Directory Request -->
+    <div>
+      <!-- On Directory -->
+      <div v-if="shopInfo.onTheList" class="text-center mt-4">
+        <div>
+          <span class="text-sm font-bold text-black text-opacity-40"
+            >{{ $t("admin.directory.status") }}:</span
           >
-            <span class="t-button c-status-red">{{
+          <span class="text-sm font-bold text-green-600">{{
+            $t("admin.directory.listed")
+          }}</span>
+        </div>
+        <div class="mt-2">
+          <a
+            @click="deleteFromList"
+            class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
+          >
+            <span class="text-sm font-bold text-op-teal">{{
               $t("admin.directory.unlist")
             }}</span>
-          </b-button>
-        </div>
-
-        <!-- Requested -->
-        <div v-else-if="requestState == 1">
-          <div class="m-t-8 c-text-black-disabled t-subtitle1">
-            {{ $t("admin.directory.waiting") }}
-          </div>
-          <b-button
-            class="b-reset op-button-pill bg-form t-button m-t-16"
-            @click="requestDelete"
-          >
-            <span class="t-button c-status-red">{{
-              $t("admin.directory.cancelRequest")
-            }}</span>
-          </b-button>
-        </div>
-
-        <!-- Off Directory -->
-        <div v-else="false">
-          <div class="m-t-8 c-text-black-disabled t-subtitle1">
-            {{ $t("admin.directory.notListed") }}
-          </div>
-          <b-button
-            class="b-reset op-button-pill bg-form t-button m-t-16"
-            @click="requestList"
-          >
-            <span class="t-button c-primary">{{
-              $t("admin.directory.requestList")
-            }}</span>
-          </b-button>
+          </a>
         </div>
       </div>
 
-      <!-- Delete Restaurant -->
-      <div class="m-t-24 align-center">
-        <div class="op-button-text c-status-red" @click="deleteRestaurant">
-          <i class="material-icons">delete</i>
-          <span>{{ $t("admin.delete") }}</span>
+      <!-- Requested -->
+      <div v-else-if="requestState == 1" class="text-center mt-4">
+        <div>
+          <span class="text-sm font-bold text-black text-opacity-40"
+            >{{ $t("admin.directory.status") }}:</span
+          >
+          <span class="text-sm font-bold text-yellow-500">{{
+            $t("admin.directory.waiting")
+          }}</span>
+        </div>
+        <div class="mt-2">
+          <a
+            @click="requestDelete"
+            class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
+          >
+            <span class="text-sm font-bold text-red-700">{{
+              $t("admin.directory.cancelRequest")
+            }}</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Off Directory -->
+      <div v-else class="text-center mt-4">
+        <div>
+          <span class="text-sm font-bold text-black text-opacity-40"
+            >{{ $t("admin.directory.status") }}:</span
+          >
+          <span class="text-sm font-bold text-black text-opacity-60">
+            {{ $t("admin.directory.notListed") }}</span
+          >
+        </div>
+        <div class="mt-2">
+          <a
+            @click="requestList"
+            class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
+          >
+            <span class="text-sm font-bold text-op-teal">
+              {{ $t("admin.directory.requestList") }}</span
+            >
+          </a>
         </div>
       </div>
     </div>
