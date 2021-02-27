@@ -171,10 +171,14 @@
     "noStreetAddress": "No street address",
     "reallyDelete": "Do you really want to delete this?",
     "reallyOnListDelete": "Do you really want to delete this from lists?",
-    "phoneCall": "Phone notification",
+    "phoneCall": "Phone Notification",
     "phoneCallDescription": "Make a call when a new order comes in",
     "phoneCallNotice": "Although it is currently provided free of charge, this feature may be a paid feature in the future due to telephone call charges. In that case, even if this function is turned on, there is no sudden cost",
     "phoneCallNotification": "Phone Notification",
+    "emailNotification": "Email Notification",
+    "emailNotificationTitle": "Email Notification",
+    "emailNotificationDescription": "Send an email when a new order comes in",
+    "emailNotificationNotice": "If you can't find it in your inbox, please check your spam folder.",
     "acceptUserMessage": "Accept a message with customer",
     "acceptUserMessageDescription": "Accept a message with customer",
     "acceptUserMessageNotice": "Allows customers to enter a single message on the order confirmation screen.",
@@ -449,7 +453,7 @@
     "auth/missing-verification-code": "The phone auth credential was created with an empty SMS verification code."
   },
   "admin": {
-    "welcomeMessage": "Welcome to OwnPlate",
+    "welcomeMessage": "Welcome!",
     "userManual": "User Manual",
     "suportPage": "Support",
     "facebookUserGroup": "User Group",
@@ -505,21 +509,22 @@
     },
     "mail": {
       "magazine": {
-        "title": "Email Settings",
-        "body": "Receive emails about new information.",
+        "title": "Email Newsletters",
+        "body": "Receive emails about news, tips, and features.",
         "optout": "Don't Receive"
       }
     },
     "viewPage": "View Page",
-    "incompleteOrders": "{count} Incomplete Order | {count} Incomplete Orders",
-    "editMenuItems": "Edit Menu: {count}",
-    "pleaseAddMenu": "Please Add Menu",
+    "viewOrders": "View Orders",
+    "incompleteOrders": "{count} Incomplete | {count} Incomplete",
+    "editMenuItems": "Menu",
+    "pleaseAddMenu": "No Menu Added",
     "itemSoldOut": "Sold Out",
     "itemPublished": "Published",
     "itemNotPublished": "Not Published",
-    "editAbout": "Edit Restaurant Details",
+    "editAbout": "Edit Info",
     "privateMode": "Private mode",
-    "pleaseChangePublic": "Please change public",
+    "pleaseChangePublic": "Please change to public mode after entered restaurant details.",
     "directory": {
       "status": "Restaurant Directory",
       "notListed": "Not Listed",
@@ -580,14 +585,14 @@
       "meow": "Meow"
     },
     "qrcode": {
-      "title": "QRcodes",
+      "title": "QR codes",
       "restaurant": "Menu Page",
       "download": "Download QR Code",
       "enter": "Record Entrance",
       "leave": "Record Leave"
     },
     "report": {
-      "title": "Monthly Report",
+      "title": "Reports",
       "download-csv": "Download Excel File (Earnings)",
       "download-csv-details": "Download Excel File (Details)"
     },

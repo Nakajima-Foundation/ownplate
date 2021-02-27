@@ -175,6 +175,10 @@
     "phoneCallDescription": "Make a call when a new order comes in",
     "phoneCallNotice": "Although it is currently provided free of charge, this feature may be a paid feature in the future due to telephone call charges. In that case, even if this function is turned on, there is no sudden cost",
     "phoneCallNotification": "Phone Notification",
+    "emailNotification": "Notification par email",
+    "emailNotificationTitle": "Notification par email",
+    "emailNotificationDescription": "Envoyer un courriel lorsqu'une nouvelle commande arrive",
+    "emailNotificationNotice": "Si vous ne le trouvez pas dans votre boîte de réception, veuillez vérifier votre dossier de courrier indésirable.",
     "acceptUserMessage": "Accept a message with customer",
     "acceptUserMessageDescription": "Accept a message with customer",
     "acceptUserMessageNotice": "Allows customers to enter a single message on the order confirmation screen.",
@@ -450,7 +454,7 @@
     "auth/missing-verification-code": "Les informations d'identification d'authentification du téléphone ont été créées avec un code de vérification SMS vide."
   },
   "admin": {
-    "welcomeMessage": "Bienvenue chez OwnPlate",
+    "welcomeMessage": "Bienvenue !",
     "userManual": "Manuel de l'Utilisateur",
     "suportPage": "Aide",
     "facebookUserGroup": "Groupe",
@@ -506,21 +510,22 @@
     },
     "mail": {
       "magazine": {
-        "title": "Paramètres du courrier électronique",
-        "body": "Recevez des courriels sur les nouvelles informations.",
+        "title": "Bulletins d'information par courrier électronique",
+        "body": "Recevez des courriels sur les actualités, les conseils et les rubriques.",
         "optout": "Ne pas recevoir"
       }
     },
     "viewPage": "Voir page",
-    "incompleteOrders": "{count} Commande incomplète | {count} Commandes incomplètes",
-    "editMenuItems": "Menu Modifier: {count}",
-    "pleaseAddMenu": "Veuillez ajouter un menu",
+    "viewOrders": "Voir les commandes",
+    "incompleteOrders": "{count} incomplète | {count} incomplètes",
+    "editMenuItems": "Menu",
+    "pleaseAddMenu": "Aucun menu ajouté",
     "itemSoldOut": "Complet",
     "itemPublished": "Published",
     "itemNotPublished": "Not Published",
     "editAbout": "Modifier les détails du restaurant",
     "privateMode": "Mode privé",
-    "pleaseChangePublic": "Veuillez changer de public",
+    "pleaseChangePublic": "Veuillez passer en mode public après avoir saisi les coordonnées du restaurant.",
     "directory": {
       "status": "Annuaire des restaurants",
       "notListed": "Non listé",

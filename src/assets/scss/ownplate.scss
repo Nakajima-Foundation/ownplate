@@ -201,6 +201,10 @@ html {
   .bg-#{$name} {
     background-color: $value;
   }
+  // Border Colors
+  .border-#{$name} {
+    border-color: $value;
+  }
 }
 
 // Drop Shadow Styles
@@ -376,6 +380,13 @@ body,
     justify-content: center;
     align-items: center;
   }
+}
+
+// Keep this class for Tailwind CSS
+.button.b-reset-tw {
+  padding: 0;
+  background-color: initial;
+  border: 0;
 }
 
 .op-button {
