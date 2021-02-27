@@ -58,7 +58,7 @@
     <div class="mt-4" v-if="!shopInfo.publicFlag">
       <nuxt-link :to="'/admin/restaurants/' + restaurantid">
         <div
-          class="bg-red-100 rounded-md text-sm font-bold text-red-700 px-4 py-2"
+          class="bg-red-700 bg-opacity-10 rounded-md text-sm font-bold text-red-700 px-4 py-2"
         >
           {{ $t("admin.privateMode") }}: {{ $t("admin.pleaseChangePublic") }}
         </div>
@@ -98,7 +98,7 @@
               {{ $t("admin.editMenuItems") }}</span
             >
             <span
-              class="text-base font-bold text-red-700 bg-red-100 px-2 rounded-full ml-2"
+              class="text-base font-bold text-red-700 bg-red-700 bg-opacity-10 px-2 rounded-full ml-2"
               >{{ numberOfMenus }}</span
             >
           </div>

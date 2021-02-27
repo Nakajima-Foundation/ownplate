@@ -522,9 +522,9 @@
     "pleaseAddMenu": "メニューが登録されていません",
     "itemSoldOut": "売り切れ",
     "itemPublished": "公開中",
-    "itemNotPublished": "非公開",
+    "itemNotPublished": "非公開中",
     "editAbout": "店情報の変更",
-    "privateMode": "非公開",
+    "privateMode": "非公開中",
     "pleaseChangePublic": "店情報を入力後、公開に変更してください。",
     "directory": {
       "status": "お客様向け飲食店一覧への掲載状況",

@@ -4,7 +4,10 @@
       {{ $t("admin.payment") }}
     </div>
 
-    <div class="bg-white shadow rounded-lg p-4" :style="cardStyle">
+    <div
+      class="bg-white shadow rounded-lg p-4"
+      :class="unsetWarning ? 'border-red-700 border-2 border-solid' : ''"
+    >
       <!-- Online Payment -->
       <div>
         <div class="text-base font-bold text-black text-opacity-60 pb-2">
@@ -180,9 +183,10 @@ export default {
     hasStripe() {
       return !!this.paymentInfo.stripe;
     },
-    cardStyle() {
-      return this.unsetWarning ? { border: "solid 2px #b00020" } : {};
-    },
+    // # Not In Use
+    // cardStyle() {
+    //   return this.unsetWarning ? { border: "solid 2px #b00020" } : {};
+    // },
     unsetWarning() {
       return !this.inStorePayment && !this.hasStripe;
     }
