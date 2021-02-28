@@ -2,6 +2,8 @@ import * as admin from 'firebase-admin';
 import * as utils from '../lib/utils'
 import moment from 'moment-timezone';
 
+import * as fs from 'fs';
+
 import i18next from 'i18next'
 import { resources } from './resources'
 
@@ -42,14 +44,32 @@ const createNotifyRestaurantLineMessage = async (messageId: string, restaurantNa
   const message = `${restaurantName} ${t(messageId)} ${orderName}`;
   return message;
 };
-const createNotifyRestaurantMailMessage = async (messageId: string, restaurantName: string, order: any, orderNumber: number, lng: string) => {
-  const t = await i18next.init({
-    lng: lng || utils.getStripeRegion().langs[0],
-    resources
-  })
+const createNotifyRestaurantMailMessage = async (messageId: string, restaurantName: string, order: any, orderNumber: number, _lng: string, url: string) => {
+  const lng = _lng || utils.getStripeRegion().langs[0];
+  const path = `./mail_templates/${messageId}/${lng}.html`;
+  const template_data = fs.readFileSync(path, { encoding: 'utf8' });
+
   const orderName = utils.nameOfOrder(orderNumber);
-  const message = `${restaurantName} ${t(messageId)} ${orderName} ${JSON.stringify(order)}`;
-  return message;
+  const orders = Object.keys(order.order).map(menuId => {
+    const menu = order.menuItems[menuId];
+    const name = menu.itemName;
+    const count = order.order[menuId].reduce((sum, ele) => sum + ele, 0);
+    return `${name} × ${count}`;
+  }).join("\n");
+  const data = {
+    restaurantName,
+    orderName,
+    orders,
+    totalCharge: order.totalCharge,
+    url
+  };
+  const replacedTemp = Object.keys(data).reduce((tmp, key) => {
+    const regex = new RegExp('\\$\{' + key + '\}', 'g')
+    return tmp.replace(regex, data[key]);
+  }, template_data);
+
+  // const message = `${restaurantName} ${t(messageId)} ${orderName} ${JSON.stringify(order)}`;
+  return replacedTemp;
 };
 const notifyRestaurantToLineUser = async (url: string, message: string, lineUsers: any[]) => {
   const results = await Promise.all(lineUsers.map(async doc => {
@@ -72,7 +92,7 @@ export const notifyRestaurant = async (db: any, messageId: string, restaurantId:
 
   const url = `https://${ownPlateConfig.hostName}/admin/restaurants/${restaurantId}/orders/${orderId}`
   const lineMessage = await createNotifyRestaurantLineMessage(messageId, restaurantName, orderNumber, lng);
-  const mailMessage = await createNotifyRestaurantMailMessage(messageId, restaurantName, order, orderNumber, lng);
+  const mailMessage = await createNotifyRestaurantMailMessage(messageId, restaurantName, order, orderNumber, lng, url);
   // line push.
   const lineUsers = (await db.collection(`/restaurants/${restaurantId}/lines`).get()).docs;
   if (lineUsers.length > 0) {
