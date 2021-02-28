@@ -51,7 +51,7 @@ describe('Order function', () => {
       "id": 123,
     };
     
-    await notify.notifyRestaurant(adminDB,  'msg_order_placed', restaurantId, orderData, "美味しいレストラン", "jp");
+    await notify.notifyRestaurant(adminDB,  'msg_order_placed', restaurantId, orderData, "美味しいレストラン", "ja");
   });
 });
 
