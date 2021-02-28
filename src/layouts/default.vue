@@ -1,25 +1,46 @@
 <template>
   <div class="wrapper" @click="enableSound()">
+    <!-- ### The commentout below is for Tailwind CSS workaround. ### -->
+
+    <!-- w-9 h-9 w-16 h-16 w-20 h-20 w-24 h-24 w-48 h-48 w-full h-full -->
+    <!-- mt-1 ml-2 mr-4 p-4 px-1 px-2 px-3 py-2 pt-3 pt-4 pb-2 -->
+
+    <!-- rounded rounded-md rounded-full -->
+    <!-- border-solid border-black border-red-700 border-opacity-10 border-2 border-t-2 -->
+
+    <!-- lg:grid-cols-2 lg:gap-x-12 xl:grid-cols-4 -->
+    <!-- flex-shrink-0 space-x-4 space-y-2 justify-evenly -->
+
+    <!-- bg-red-700 bg-yellow-500 bg-opacity-80 -->
+    <!-- text-green-600 text-yellow-500 text-red-700 text-opacity-30 hover:text-red-700 -->
+
+    <!-- ### Try to add the class name here if it doesn't work after build. ### -->
+
     <!-- Notification Banner -->
-    <div v-if="isFlash" @click="dismissBanner()" class="notification-banner">
-      <i class="material-icons c-text-white-full s-24">notifications_active</i>
+    <div
+      v-if="isFlash"
+      @click="dismissBanner()"
+      class="bg-blue-500 fixed z-50 w-full h-16 flex justify-center items-center animate-pulse"
+    >
+      <i class="material-icons text-white text-2xl">notifications_active</i>
     </div>
 
     <!-- Header -->
-    <div class="cols flex-center bg-ownplate-white">
-      <div>
-        <div class="op-button w-48 h-48" @click="handleOpen()">
-          <i class="material-icons s-24 c-text-black-medium">menu</i>
-        </div>
+    <div class="flex items-center h-12 bg-white">
+      <div class="w-12">
+        <a
+          @click="handleOpen()"
+          class="w-12 h-12 inline-flex justify-center items-center"
+        >
+          <i class="material-icons text-black opacity-50 text-2xl">menu</i>
+        </a>
       </div>
-      <div class="flex-1 align-center">
+      <div class="flex-1 text-center">
         <router-link to="/">
-          <img class="h-24" :src="`/${this.logo}`" />
+          <img class="h-6" :src="`/${this.logo}`" />
         </router-link>
       </div>
-      <div>
-        <div class="w-48 h-48"></div>
-      </div>
+      <div class="w-12"></div>
     </div>
 
     <!-- Side Bar -->
@@ -32,118 +53,152 @@
       :open.sync="open"
     >
       <!-- Logo / Home -->
-      <div class="align-center m-t-24">
+      <div class="text-center mt-6">
         <router-link to="/">
-          <img class="w-192" :src="`/${this.logo2}`" />
+          <img class="w-48" :src="`/${this.logo2}`" @click="handleClose()" />
         </router-link>
       </div>
 
       <!-- Profile -->
-      <div class="align-center m-t-24">
+      <div class="text-center mt-6">
         <router-link to="/u/profile">
-          <div class="op-button-small primary w-224" @click="handleClose()">
-            <i class="material-icons m-r-8">person</i>
+          <div
+            class="inline-flex justify-center items-center rounded-full h-12 w-56 bg-op-teal text-white font-bold"
+            @click="handleClose()"
+          >
+            <i class="material-icons mr-2">person</i>
             <span>{{ $t("profile.title") }}</span>
           </div>
         </router-link>
       </div>
 
       <!-- Order History -->
-      <div class="align-center m-t-16" v-if="isCustomer">
+      <div class="text-center mt-2" v-if="isCustomer">
         <router-link to="/u/history">
-          <div class="op-button-small primary w-224" @click="handleClose()">
-            <i class="material-icons m-r-8">history</i>
+          <div
+            class="inline-flex justify-center items-center rounded-full h-12 w-56 bg-op-teal text-white font-bold"
+            @click="handleClose()"
+          >
+            <i class="material-icons mr-2">history</i>
             <span>{{ $t("order.history") }}</span>
           </div>
         </router-link>
       </div>
 
       <!-- Favorites -->
-      <div class="align-center m-t-16" v-if="isCustomer">
+      <div class="text-center mt-2" v-if="isCustomer">
         <router-link to="/r/favorites">
-          <div class="op-button-small primary w-224" @click="handleClose()">
-            <i class="material-icons m-r-8">favorite</i>
+          <div
+            class="inline-flex justify-center items-center rounded-full h-12 w-56 bg-op-teal text-white font-bold"
+            @click="handleClose()"
+          >
+            <i class="material-icons mr-2">favorite</i>
             <span>{{ $t("find.likes") }}</span>
           </div>
         </router-link>
       </div>
 
-      <!-- Restaurants -->
-      <div class="align-center m-t-16" v-if="isCustomer">
+      <!-- Find Restaurants -->
+      <div class="text-center mt-2" v-if="isCustomer">
         <router-link to="/r">
-          <div class="op-button-small primary w-224" @click="handleClose()">
-            <i class="material-icons m-r-8">restaurant</i>
+          <div
+            class="inline-flex justify-center items-center rounded-full h-12 w-56 bg-op-teal text-white font-bold"
+            @click="handleClose()"
+          >
+            <i class="material-icons mr-2">restaurant</i>
             <span>{{ $t("find.allRestaurants") }}</span>
           </div>
         </router-link>
       </div>
 
-      <!-- For Restaurant -->
-      <div class="m-t-24" v-if="!isCustomer">
-        <div class="align-center t-subtitle1 p-b-8">
+      <!-- Admin Top -->
+      <div class="text-center mt-2" v-if="isAdmin">
+        <router-link to="/admin/restaurants">
+          <div
+            class="inline-flex justify-center items-center rounded-full h-12 w-56 bg-op-teal text-white font-bold"
+            @click="handleClose()"
+          >
+            <i class="material-icons mr-2">home</i>
+            <span>{{ $t("admin.news.adminTop") }}</span>
+          </div>
+        </router-link>
+      </div>
+
+      <!-- Links for Admin -->
+      <div v-if="!isCustomer">
+        <div class="text-center font-bold opacity-70 mt-6 mb-4">
           {{ $t("menu.forRestaurantOwner") }}
         </div>
 
-        <!-- Manual for Restaurant -->
-        <div class="align-center">
+        <!-- Manual -->
+        <div class="text-center mt-2">
           <a
             href="https://docs.omochikaeri.com/manuals/manual.pdf"
             target="_blank"
+            class="inline-flex justify-center items-center text-sm font-bold text-op-teal"
+            @click="handleClose()"
           >
-            <div class="op-button-text t-button" @click="handleClose()">
-              {{ $t("menu.manualLink") }}
-            </div>
+            {{ $t("menu.manualLink") }}
           </a>
         </div>
 
-        <!-- Tips for Restaurant -->
-        <div class="align-center">
+        <!-- Tips -->
+        <div class="text-center mt-2">
           <a
             href="https://docs.omochikaeri.com/manuals/tips.pdf"
             target="_blank"
+            class="inline-flex justify-center items-center text-sm font-bold text-op-teal"
+            @click="handleClose()"
           >
-            <div class="op-button-text t-button" @click="handleClose()">
-              {{ $t("menu.tipsLink") }}
-            </div>
+            {{ $t("menu.tipsLink") }}
           </a>
         </div>
 
-        <!-- Terms for Restaurant -->
-        <div class="align-center">
-          <router-link to="/terms/admin" target="_blank">
-            <div class="op-button-text t-button" @click="handleClose()">
+        <!-- Terms -->
+        <div class="text-center mt-2">
+          <router-link to="/terms/admin">
+            <div
+              class="inline-flex justify-center items-center text-sm font-bold text-op-teal"
+              @click="handleClose()"
+            >
               {{ $t("menu.termsRestaurant") }}
             </div>
           </router-link>
         </div>
       </div>
 
-      <!-- For User -->
-      <div class="m-t-24" v-if="!isAdmin">
-        <div class="align-center t-subtitle1 p-b-8">
+      <!-- Links for Customer -->
+      <div v-if="!isAdmin">
+        <div class="text-center font-bold opacity-70 mt-6 mb-4">
           {{ $t("menu.forCustomer") }}
         </div>
 
-        <!-- Terms for User -->
-        <div class="align-center">
-          <router-link to="/terms/user" target="_blank">
-            <div class="op-button-text t-button" @click="handleClose()">
+        <!-- Terms -->
+        <div class="text-center mt-2">
+          <router-link to="/terms/user">
+            <div
+              class="inline-flex justify-center items-center text-sm font-bold text-op-teal"
+              @click="handleClose()"
+            >
               {{ $t("menu.termsUser") }}
             </div>
           </router-link>
         </div>
       </div>
 
-      <!-- For All -->
-      <div class="m-t-24">
-        <div class="align-center t-subtitle1 p-b-8">
+      <!-- Links for All -->
+      <div>
+        <div class="text-center font-bold opacity-70 mt-6 mb-4">
           {{ $t("menu.forAllUser") }}
         </div>
 
         <!-- Privacy -->
-        <div class="align-center">
-          <router-link to="/privacy" target="_blank">
-            <div class="op-button-text t-button" @click="handleClose()">
+        <div class="text-center mt-2">
+          <router-link to="/privacy">
+            <div
+              class="inline-flex justify-center items-center text-sm font-bold text-op-teal"
+              @click="handleClose()"
+            >
               {{ $t("menu.privacy") }}
             </div>
           </router-link>
@@ -154,7 +209,10 @@
     <!-- Main -->
     <div class="main">
       <div class="contents">
-        <div v-if="underConstruction" class="underConstruction">
+        <div
+          v-if="underConstruction"
+          class="bg-yellow-200 text-center p-2 font-bold text-red-500"
+        >
           {{ $t("underConstruction") }}
         </div>
 
@@ -173,60 +231,66 @@
     ></b-loading>
 
     <!-- Footer -->
-    <div class="m-t-48">
-      <div class="bg-ownplate-gray cols h-128">
-        <div class="flex-1">
-          <div
-            class="is-inline-block t-caption c-text-white-medium m-t-16 m-l-16"
+    <div class="bg-op-gray h-52 mt-12">
+      <div class="mt-4 mx-4 text-right">
+        <a
+          class="inline-flex justify-center items-center rounded-full h-10 bg-white bg-opacity-10 pl-4 pr-2"
+          @click="openLang()"
+        >
+          <i class="material-icons text-lg text-white text-opacity-50 mr-2"
+            >language</i
           >
-            Operated by Singularity Society
-          </div>
-        </div>
-        <div class="align-right">
-          <div
-            class="op-button-pill bg-sattle-white m-r-16 m-t-16"
-            @click="openLang()"
+          <span class="text-white text-sm font-bold text-opacity-80 mr-2">{{
+            languages[language]
+          }}</span>
+
+          <i class="material-icons text-lg text-white text-opacity-50"
+            >arrow_drop_down</i
           >
-            <i class="material-icons c-text-white-high">language</i>
-            <span class="c-text-white-high t-button">{{
-              languages[language]
-            }}</span>
-            <i class="material-icons c-text-white-high">arrow_drop_down</i>
-          </div>
-        </div>
+        </a>
+      </div>
+      <div class="mt-2 mx-6 text-right">
+        <span class="text-xs text-white text-opacity-50">
+          Operated by Singularity Society
+        </span>
       </div>
     </div>
 
     <!-- Language Popup-->
     <b-modal :active.sync="langPopup" :width="488" scroll="keep">
-      <div class="op-dialog p-t-24 p-l-24 p-r-24 p-b-24">
-        <div class="t-h6 c-text-black-disabled p-b-8">
+      <div class="bg-white rounded-lg my-6 mx-2 shadow-lg p-6">
+        <div class="text-xl font-bold text-black text-opacity-40">
           {{ $t("menu.selectLanguage") }}
         </div>
-        <div
-          class="m-t-16"
-          v-for="(lang, lang_key) in languages"
-          :key="lang_key"
-        >
-          <div
-            class="op-button-pill bg-form"
+
+        <!-- Languages -->
+        <div class="mt-4" v-for="(lang, lang_key) in languages" :key="lang_key">
+          <a
+            class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
             @click="changeLangAndClose(lang_key)"
-          >
-            <i
-              class="material-icons c-text-black-high"
+            ><i
+              class="material-icons text-lg text-black text-opacity-60 mr-2"
               v-if="lang_key == language"
               >check</i
-            >
-            <span class="t-button">{{ lang }}</span>
-          </div>
+            ><span class="text-sm font-bold text-op-teal">{{ lang }}</span></a
+          >
         </div>
-        <div class="m-t-24 align-center">
-          <div class="op-button-small tertiary" @click="closeLang()">
-            {{ $t("menu.close") }}
-          </div>
+
+        <!-- Close -->
+        <div class="mt-6 text-center">
+          <a
+            class="inline-flex justify-center items-center rounded-full h-12 bg-black bg-opacity-5"
+            style="min-width: 10rem;"
+            @click="closeLang()"
+            ><span class="font-bold text-black text-opacity-60 px-4"
+              >{{ $t("menu.close") }}
+            </span></a
+          >
         </div>
       </div>
     </b-modal>
+
+    <!-- Audio Play -->
     <audio-play ref="audioPlay" />
   </div>
 </template>
@@ -286,20 +350,6 @@ export default {
     });
   },
   computed: {
-    // # Not In Use: flashStyle()
-    flashStyle() {
-      if (this.isFlash) {
-        setTimeout(() => {
-          this.FlashToggle = !this.FlashToggle;
-        }, 200);
-        if (this.FlashToggle) {
-          return "background-color: rgba(2, 136, 209, 0.8)";
-        } else {
-          return "background-color: rgba(2, 136, 209, 0.9)";
-        }
-      }
-      return "";
-    },
     isLoading() {
       return this.$store.state.isLoading;
     },
@@ -539,33 +589,5 @@ export default {
 };
 </script>
 <style lang="scss">
-.notification-banner {
-  position: fixed;
-  z-index: 100;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 64px;
-  animation-duration: 0.5s;
-  animation-name: bannerBlink;
-  animation-iteration-count: infinite;
-  animation-direction: alternate;
-}
-@keyframes bannerBlink {
-  from {
-    background-color: rgba(2, 136, 209, 0.6);
-  }
-  to {
-    background-color: rgba(2, 136, 209, 0.9);
-  }
-}
-
-.underConstruction {
-  text-align: center;
-  color: black;
-  background: yellow;
-  @extend .p-t-4;
-  @extend .p-b-4;
-}
+// ### Need this commentout for CSS parser bug. Don't remove.
 </style>

@@ -2,7 +2,7 @@
   <div>
     <!-- Title Card -->
     <div
-      class="bg-form r-8 p-l-16 p-r-16 p-t-16 p-b-16 m-t-24"
+      class="bg-form rounded-lg p-l-16 p-r-16 p-t-16 p-b-16 m-t-24"
       @click="toEdit()"
     >
       <div class="t-h6 c-text-black-disabled" if v-if="title.name == ''">
@@ -17,7 +17,7 @@
         <div class="flex-1">
           <!-- Position Up -->
           <b-button
-            class="b-reset op-button-pill h-36 bg-form m-r-8"
+            class="b-reset op-button-pill h-9 bg-form m-r-8"
             v-if="position !== 'first'"
             @click="positionUp"
           >
@@ -27,7 +27,7 @@
           </b-button>
           <!-- Disable if First -->
           <b-button
-            class="b-reset op-button-pill h-36 bg-form m-r-8"
+            class="b-reset op-button-pill h-9 bg-form m-r-8"
             disabled
             v-else
           >
@@ -38,7 +38,7 @@
 
           <!-- Position Down -->
           <b-button
-            class="b-reset op-button-pill h-36 bg-form m-r-8"
+            class="b-reset op-button-pill h-9 bg-form m-r-8"
             v-if="position !== 'last'"
             @click="positionDown"
           >
@@ -48,7 +48,7 @@
           </b-button>
           <!-- Disable if Last -->
           <b-button
-            class="b-reset op-button-pill h-36 bg-form m-r-8"
+            class="b-reset op-button-pill h-9 bg-form m-r-8"
             disabled
             v-else
           >
@@ -59,7 +59,7 @@
 
           <!-- Duplicate -->
           <b-button
-            class="b-reset op-button-pill h-36 bg-form m-r-8"
+            class="b-reset op-button-pill h-9 bg-form m-r-8"
             @click="forkItem"
           >
             <i class="material-icons c-primary s-18 p-l-8 p-r-8">queue</i>
@@ -67,7 +67,7 @@
         </div>
         <div>
           <b-button
-            class="b-reset op-button-pill h-36 bg-form"
+            class="b-reset op-button-pill h-9 bg-form"
             @click="deleteItem"
           >
             <i class="material-icons c-status-red s-18 p-l-8 p-r-8">delete</i>

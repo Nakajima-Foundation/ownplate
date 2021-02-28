@@ -1,20 +1,20 @@
 <template>
   <div>
     <!-- Item Card -->
-    <div class="bg-surface r-8 d-low m-t-8">
+    <div class="bg-surface rounded-lg d-low m-t-8">
       <!-- Published/NotPublished Badge -->
       <div class="cols flex-center">
         <div class="flex-1">
           <div v-if="menuitem.publicFlag" class="p-t-8 p-l-8 p-r-8 p-b-8">
             <div
-              class="bg-status-green-bg c-status-green t-overline p-l-8 p-r-8 p-t-4 p-b-4 r-4"
+              class="bg-status-green-bg c-status-green t-overline p-l-8 p-r-8 p-t-4 p-b-4 rounded"
             >
               {{ $t("admin.itemPublished") }}
             </div>
           </div>
           <div v-else class="p-t-8 p-l-8 p-r-8 p-b-8">
             <div
-              class="bg-status-red-bg c-status-red t-overline p-l-8 p-r-8 p-t-4 p-b-4 r-4"
+              class="bg-status-red-bg c-status-red t-overline p-l-8 p-r-8 p-t-4 p-b-4 rounded"
             >
               {{ $t("admin.itemNotPublished") }}
             </div>
@@ -40,7 +40,7 @@
               :src="image"
               width="96"
               height="96"
-              class="w-96 h-96 r-4 cover"
+              class="w-24 h-24 rounded cover"
             />
           </div>
         </div>
@@ -66,7 +66,7 @@
       <!-- Owner Memo -->
       <div v-if="menuitem.itemMemo" class="p-l-8 p-r-8 p-b-8">
         <div
-          class="bg-form t-overline c-text-black-medium p-l-8 p-r-8 p-t-4 p-b-4 r-4"
+          class="bg-form t-overline c-text-black-medium p-l-8 p-r-8 p-t-4 p-b-4 rounded"
         >
           {{ menuitem.itemMemo.split("\n")[0] }}
         </div>
@@ -79,7 +79,7 @@
         <div class="flex-1">
           <!-- Position Up -->
           <b-button
-            class="b-reset op-button-pill h-36 bg-form m-r-8"
+            class="b-reset op-button-pill h-9 bg-form m-r-8"
             v-if="position !== 'first'"
             @click="positionUp"
           >
@@ -89,7 +89,7 @@
           </b-button>
           <!-- Disable if First -->
           <b-button
-            class="b-reset op-button-pill h-36 bg-form m-r-8"
+            class="b-reset op-button-pill h-9 bg-form m-r-8"
             disabled
             v-else
           >
@@ -100,7 +100,7 @@
 
           <!-- Position Down -->
           <b-button
-            class="b-reset op-button-pill h-36 bg-form m-r-8"
+            class="b-reset op-button-pill h-9 bg-form m-r-8"
             v-if="position !== 'last'"
             @click="positionDown"
           >
@@ -110,7 +110,7 @@
           </b-button>
           <!-- Disable if Last -->
           <b-button
-            class="b-reset op-button-pill h-36 bg-form m-r-8"
+            class="b-reset op-button-pill h-9 bg-form m-r-8"
             disabled
             v-else
           >
@@ -121,7 +121,7 @@
 
           <!-- Duplicate -->
           <b-button
-            class="b-reset op-button-pill h-36 bg-form m-r-8"
+            class="b-reset op-button-pill h-9 bg-form m-r-8"
             @click="forkItem"
           >
             <i class="material-icons c-primary s-18 p-l-8 p-r-8">queue</i>
@@ -129,7 +129,7 @@
         </div>
         <div>
           <b-button
-            class="b-reset op-button-pill h-36 bg-form"
+            class="b-reset op-button-pill h-9 bg-form"
             @click="deleteItem"
           >
             <i class="material-icons c-status-red s-18 p-l-8 p-r-8">delete</i>

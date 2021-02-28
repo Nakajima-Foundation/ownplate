@@ -6,7 +6,7 @@
         {{ $t("shopInfo.restaurantDetails") }}
       </div>
 
-      <div class="bg-surface r-8 d-low m-t-8 p-b-24">
+      <div class="bg-surface rounded-lg d-low m-t-8 p-b-24">
         <!-- Restaurant Location -->
         <div v-if="hasLocation">
           <GMap
@@ -45,7 +45,7 @@
             </a>
           </div>
         </div>
-        <div v-else class="h-8"></div>
+        <div v-else class="h-2"></div>
 
         <!-- Restaurant Phone Number -->
         <div class="m-t-8 m-l-16 m-r-16">
@@ -63,7 +63,7 @@
 
         <!-- Minimum Available Time -->
         <div
-          class="m-t-8 m-l-16 m-r-16 bg-status-blue-bg r-8 p-l-16 p-r-16 p-t-8 p-b-8"
+          class="m-t-8 m-l-16 m-r-16 bg-status-blue-bg rounded-lg p-l-16 p-r-16 p-t-8 p-b-8"
         >
           <div class="t-subtitle2 c-text-black-medium">
             {{ $t("shopInfo.minimumAvailableTime") }}
@@ -77,7 +77,7 @@
         <div class="align-center p-t-16">
           <div
             @click="toggleMoreInfo()"
-            class="op-button-pill bg-form w-128 t-subtitle2"
+            class="op-button-pill bg-form w-32 t-subtitle2"
           >
             <div v-if="moreInfo">{{ $t("shopInfo.viewLess") }}</div>
             <div v-else>{{ $t("shopInfo.viewMore") }}</div>
@@ -128,14 +128,14 @@
             </div>
             <template v-for="(day, key) in days">
               <div
-                class="cols p-l-8 p-r-8 p-t-4 p-b-4 r-4 t-body2"
+                class="cols p-l-8 p-r-8 p-t-4 p-b-4 rounded t-body2"
                 :style="
                   weekday == key % 7
                     ? { 'background-color': 'rgba(104, 159, 56, 0.1)' }
                     : {}
                 "
               >
-                <div class="w-64">{{ $t("week.short." + day) }}</div>
+                <div class="w-16">{{ $t("week.short." + day) }}</div>
                 <div class="flex-1">
                   <template v-if="shopInfo.businessDay[key]">
                     <template v-for="data in shopInfo.openTimes[key]">
@@ -178,12 +178,7 @@
           </div>
 
           <!-- Temporary Closure -->
-          <div
-            class="m-t-8 m-l-16 m-r-16"
-            v-if="
-                  temporaryClosure.length > 0
-            "
-          >
+          <div class="m-t-8 m-l-16 m-r-16" v-if="temporaryClosure.length > 0">
             <div class="t-subtitle2 c-text-black-medium p-l-8">
               {{ $t("shopInfo.temporaryClosure") }}
             </div>
@@ -251,12 +246,11 @@ export default {
     };
   },
   computed: {
-
     temporaryClosure() {
       const now = Date.now();
-      return (this.shopInfo.temporaryClosure || []).filter((day) => {
+      return (this.shopInfo.temporaryClosure || []).filter(day => {
         return day.seconds + 3600 * 24 > now / 1000;
-      });;
+      });
     },
     phoneUrl() {
       const number = this.parsedNumber;

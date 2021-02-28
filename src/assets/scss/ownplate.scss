@@ -19,7 +19,9 @@ $op-colors: (
   test: #ff0000,
   transparent: rgba(0, 0, 0, 0),
   ownplate-yellow: #fbc02d,
+  op-yellow: #fbc02d,
   ownplate-gray: #616161,
+  op-gray: #616161,
   ownplate-white: #ffffff,
   ownplate-black: #000000,
   background: #f4f4f5,
@@ -28,6 +30,7 @@ $op-colors: (
   sattle-black: rgba(0, 0, 0, 0.1),
   dialog-overlay: rgba(0, 0, 0, 0.5),
   primary: #0097a7,
+  op-teal: #0097a7,
   primary-bg: rgba(0, 151, 167, 0.1),
   onprimary: #ffffff,
   text-black-full: #000000,
@@ -191,9 +194,16 @@ html {
   .c-#{$name} {
     color: $value;
   }
+  .text-#{$name} {
+    color: $value;
+  }
   // Background Colors
   .bg-#{$name} {
     background-color: $value;
+  }
+  // Border Colors
+  .border-#{$name} {
+    border-color: $value;
   }
 }
 
@@ -253,16 +263,23 @@ $sides: (top, bottom, left, right);
 }
 
 // Width and Height Sizes
-@each $dimension-size in $sizes {
-  // Width Sizes
-  .w-#{$dimension-size} {
-    width: #{$dimension-size}px;
-  }
-  // Height Sizes
-  .h-#{$dimension-size} {
-    height: #{$dimension-size}px;
-  }
-}
+// @each $dimension-size in $sizes {
+//   // Width Sizes
+//   .w-#{$dimension-size} {
+//     width: #{$dimension-size}px;
+//   }
+//   // Height Sizes
+//   .h-#{$dimension-size} {
+//     height: #{$dimension-size}px;
+//   }
+// }
+
+// .w-full {
+//   width: 100%;
+// }
+// .h-full {
+//   height: 100%;
+// }
 
 // Rounded Corners Sizes
 @each $corner-size in $sizes {
@@ -304,13 +321,6 @@ body,
   margin: auto;
 }
 
-.w-full {
-  width: 100%;
-}
-.h-full {
-  height: 100%;
-}
-
 // Cover Photo
 .cover {
   object-fit: cover;
@@ -341,7 +351,8 @@ body,
   @extend .p-b-4;
   @extend .p-l-16;
   @extend .p-r-16;
-  @extend .r-32;
+  // @extend .r-32;
+  border-radius: 9999px;
   @extend .t-subtitle2;
 }
 
@@ -371,6 +382,13 @@ body,
   }
 }
 
+// Keep this class for Tailwind CSS
+.button.b-reset-tw {
+  padding: 0;
+  background-color: initial;
+  border: 0;
+}
+
 .op-button {
   cursor: pointer;
   display: inline-flex;
@@ -395,7 +413,8 @@ body,
 
 .op-button-pill {
   @extend .op-button;
-  @extend .r-36;
+  // @extend .r-36;
+  border-radius: 9999px;
   @extend .p-l-16;
   @extend .p-r-16;
   @extend .c-primary;
@@ -410,11 +429,13 @@ body,
 
 .op-button-small {
   @extend .op-button;
-  @extend .r-48;
+  // @extend .r-48;
+  border-radius: 9999px;
   @extend .p-l-24;
   @extend .p-r-24;
   min-width: 128px;
-  @extend .h-48;
+  // @extend .h-48;
+  height: 48px;
   @extend .t-subtitle1;
   &.primary {
     @extend .bg-primary;
@@ -439,11 +460,13 @@ body,
 
 .op-button-medium {
   @extend .op-button;
-  @extend .r-64;
+  // @extend .r-64;
+  border-radius: 9999px;
   @extend .p-l-16;
   @extend .p-r-16;
   min-width: 128px;
-  @extend .h-64;
+  // @extend .h-64;
+  height: 64px;
   @extend .t-h6;
   &.primary {
     @extend .bg-primary;
@@ -463,8 +486,10 @@ body,
 .op-button-large {
   @extend .op-button;
   min-width: 128px;
-  @extend .h-80;
-  @extend .r-80;
+  // @extend .h-80;
+  height: 80px;
+  // @extend .r-80;
+  border-radius: 9999px;
   @extend .p-l-16;
   @extend .p-r-16;
   @extend .t-h6;
@@ -496,7 +521,8 @@ body,
   margin: 0;
 }
 .op-dialog {
-  @extend .r-8;
+  // @extend .r-8;
+  border-radius: 0.5rem;
   @extend .m-t-24;
   @extend .m-b-24;
   @extend .m-l-8;
@@ -522,7 +548,8 @@ body,
 }
 .b-sidebar .sidebar-content {
   @extend .d-medium;
-  @extend .w-288;
+  // @extend .w-288;
+  width: 288px;
 }
 
 // For Small Screen like iPhone SE
@@ -549,4 +576,12 @@ body,
   #signInButton {
     transform: scale(0.9);
   }
+}
+
+// Overwrites for Tailwind CSS
+
+img,
+svg,
+canvas {
+  display: inline-block;
 }

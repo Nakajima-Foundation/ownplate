@@ -1,82 +1,61 @@
 <template>
   <div>
-    <!-- List Header Area -->
-    <div class="columns is-gapless">
-      <!-- Left Gap -->
-      <div class="column is-narrow w-24"></div>
-      <!-- Center Column -->
-      <div class="column">
-        <div class="m-l-24 m-r-24 m-t-24">
-          <!-- Link Button -->
-          <nuxt-link :to="'/r'">
-            <div class="op-button-pill bg-form">
-              <i class="material-icons c-primary s-18">list</i>
-              <span class="c-primary t-button">{{$t("find.areaTop")}}</span>
-            </div>
-          </nuxt-link>
-
-          <!-- Title -->
-          <div class="t-h6 c-text-black-disabled m-t-24">{{$t("find.areaAll")}}</div>
+    <div class="mt-6 mx-6">
+      <nuxt-link :to="'/r'">
+        <div
+          class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
+        >
+          <i class="material-icons text-lg text-op-teal mr-2">list</i>
+          <span class="text-sm font-bold text-op-teal">{{
+            $t("find.areaTop")
+          }}</span>
         </div>
-      </div>
-      <!-- Right Gap -->
-      <div class="column is-narrow w-24"></div>
+      </nuxt-link>
     </div>
 
-    <!-- List Body Area -->
-    <div class="columns is-gapless">
-      <!-- Left Gap -->
-      <div class="column is-narrow w-24"></div>
-      <!-- Center Column -->
-      <div class="column">
-        <div class="m-l-24 m-r-16">
-          <!-- Restaurants -->
+    <div class="text-xl font-bold text-black text-opacity-40 mt-6 mx-6">
+      {{ $t("find.areaAll") }}
+    </div>
 
-          <!-- Restaurant -->
-          <template v-for="(state) in allArea">
-            <div v-if="restaurantsObj[state]">
-              <div class="t-subtitle1 c-text-black-disabled p-b-8 m-t-24">{{state}}</div>
-              <div class="columns is-gapless is-multiline">
-                <div v-for="restaurant in restaurantsObj[state]" class="column is-one-third">
-                  <div class="h-full p-b-8 p-r-8">
-                    <router-link :to="`/r/${restaurant.id}`">
-                      <div class="touchable h-full">
-                        <div class="cols flex-center">
-                          <!-- Restaurant Profile -->
-                          <div class="m-r-16 h-48 r-48 bg-form">
-                            <img :src="resizedProfileImage(restaurant, '600')" class="w-48 h-48 r-48 cover" />
-                          </div>
-
-                          <!-- Restaurant Name -->
-                          <div class="flex-1 p-r-8 t-subtitle1 c-primary">
-                            {{
-                            restaurant.restaurantName
-                            }}
-                          </div>
-                        </div>
-                      </div>
-                    </router-link>
-                  </div>
+    <!-- Restaurants -->
+    <template v-for="state in allArea">
+      <div v-if="restaurantsObj[state]">
+        <div
+          class="text-base font-bold text-black text-opacity-40 mt-6 mx-6 mb-2"
+        >
+          {{ state }}
+        </div>
+        <div
+          class="mt-2 mx-6 grid items-center grid-cols-1 gap-2 lg:grid-cols-3 xl:grid-cols-4"
+        >
+          <div v-for="restaurant in restaurantsObj[state]">
+            <router-link :to="`/r/${restaurant.id}`">
+              <div class="flex items-center">
+                <div class="w-12 h-12 rounded-full bg-black bg-opacity-10 mr-4">
+                  <img
+                    :src="resizedProfileImage(restaurant, '600')"
+                    class="w-12 h-12 rounded-full cover"
+                  />
+                </div>
+                <div class="flex-1 text-base font-bold pr-2">
+                  {{ restaurant.restaurantName }}
                 </div>
               </div>
-            </div>
-          </template>
+            </router-link>
+          </div>
         </div>
       </div>
-      <!-- Right Gap -->
-      <div class="column is-narrow w-24"></div>
-    </div>
+    </template>
   </div>
 </template>
 
 <script>
 import { db } from "~/plugins/firebase.js";
 import { RestaurantHeader } from "~/plugins/header.js";
-import { JPPrefecture, USStates } from '~/plugins/constant';
+import { JPPrefecture, USStates } from "~/plugins/constant";
 
 export default {
-  components: {
-  },
+  components: {},
   data() {
     return {
       restaurantsObj: []
@@ -85,7 +64,7 @@ export default {
   computed: {
     allArea() {
       return JPPrefecture.concat(USStates);
-    },
+    }
   },
   head() {
     return RestaurantHeader;

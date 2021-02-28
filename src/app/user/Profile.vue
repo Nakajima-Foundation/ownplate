@@ -3,7 +3,7 @@
     <!-- Profile Body Area -->
     <div class="columns is-gapless">
       <!-- Left Gap -->
-      <div class="column is-narrow w-24"></div>
+      <div class="column is-narrow w-6"></div>
       <!-- Center Column -->
       <div class="column">
         <div class="columns is-gaplress">
@@ -13,7 +13,9 @@
               <div class="t-h6 c-text-black-disabled m-t-24 m-b-8">
                 {{ $t("profile.title") }}
               </div>
-              <div class="bg-surface r-8 d-low p-l-24 p-r-24 p-t-24 p-b-24">
+              <div
+                class="bg-surface rounded-lg d-low p-l-24 p-r-24 p-t-24 p-b-24"
+              >
                 <!-- Login Status -->
                 <div class="align-center">
                   <div class="t-subtitle2 c-text-black-disabled p-b-8">
@@ -114,7 +116,9 @@
                     </div>
 
                     <!-- LINE -->
-                    <div class="bg-form r-8 p-l-16 p-r-16 p-t-24 p-b-24 m-t-24">
+                    <div
+                      class="bg-form rounded-lg p-l-16 p-r-16 p-t-24 p-b-24 m-t-24"
+                    >
                       <!-- LINE Status -->
                       <div class="align-center">
                         <div class="t-subtitle2 c-text-black-disabled p-b-8">
@@ -233,7 +237,7 @@
         </div>
       </div>
       <!-- Right Gap -->
-      <div class="column is-narrow w-24"></div>
+      <div class="column is-narrow w-6"></div>
     </div>
   </div>
 </template>

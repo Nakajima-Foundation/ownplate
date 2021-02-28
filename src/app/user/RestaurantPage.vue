@@ -9,11 +9,11 @@
         <!-- For Owner Preview Only -->
         <div v-if="isPreview" class="columns is-gapless">
           <!-- Left Gap -->
-          <div class="column is-narrow w-24"></div>
+          <div class="column is-narrow w-6"></div>
           <!-- Center Column -->
           <div class="column">
             <div
-              class="bg-status-red-bg r-8 p-l-16 p-r-16 p-t-16 p-b-16 align-center m-l-24 m-r-24 m-t-24"
+              class="bg-status-red-bg rounded-lg p-l-16 p-r-16 p-t-16 p-b-16 align-center m-l-24 m-r-24 m-t-24"
             >
               <div class="t-subtitle1 c-status-red">
                 {{ $t("shopInfo.thisIsPreview") }}
@@ -22,36 +22,36 @@
                 {{ $t("shopInfo.notPublic") }}
               </div>
             </div>
-            <div class="is-hidden-tablet h-24"></div>
+            <div class="is-hidden-tablet h-6"></div>
           </div>
           <!-- Right Gap -->
-          <div class="column is-narrow w-24"></div>
+          <div class="column is-narrow w-6"></div>
         </div>
 
         <!-- Restaurant Body Area -->
         <div class="columns is-gapless">
           <!-- Left Gap -->
-          <div class="column is-narrow w-24"></div>
+          <div class="column is-narrow w-6"></div>
 
           <!-- Left Column -->
           <div class="column">
             <!-- Restaurant Cover Photo -->
             <div class="columns is-gapless">
-              <div class="column is-narrow w-24"></div>
+              <div class="column is-narrow w-6"></div>
               <div class="column">
-                <div class="is-hidden-mobile h-24"></div>
-                <div class="bg-form h-192">
+                <div class="is-hidden-mobile h-6"></div>
+                <div class="bg-form h-48">
                   <img
                     :src="coverImage"
-                    class="h-192 w-full cover is-hidden-tablet"
+                    class="h-48 w-full cover is-hidden-tablet"
                   />
                   <img
                     :src="coverImage"
-                    class="h-192 w-full cover r-8 is-hidden-mobile"
+                    class="h-48 w-full cover rounded-lg is-hidden-mobile"
                   />
                 </div>
               </div>
-              <div class="column is-narrow w-24"></div>
+              <div class="column is-narrow w-6"></div>
             </div>
 
             <!-- Restaurant Details -->
@@ -100,7 +100,7 @@
                       :item="itemsObj[itemId]"
                       :quantities="orders[itemId] || [0]"
                       :optionPrev="optionsPrev[itemId]"
-                      :initialOpenMenuFlag="(orders[itemId] || 0) > 0"
+                      :initialOpenMenuFlag="(orders[itemId] || []).length > 0"
                       :shopInfo="shopInfo"
                       :isOpen="menuId === itemId"
                       :prices="prices[itemId] || []"
@@ -113,7 +113,7 @@
             </div>
           </div>
           <!-- Right Gap -->
-          <div class="column is-narrow w-24"></div>
+          <div class="column is-narrow w-6"></div>
         </div>
       </div>
 
@@ -225,8 +225,6 @@ export default {
   data() {
     return {
       retryCount: 0,
-      tabIndex: 0,
-      tabs: ["#menus", "#about"],
       loginVisible: false,
       isCheckingOut: false,
       orders: {},
@@ -234,7 +232,6 @@ export default {
       optionsPrev: {}, // from the store.cart
       restaurantsId: this.restaurantId(),
       shopInfo: {},
-      // isCardModalActive: false
       menus: [],
       titles: [],
       waitForUser: false,
@@ -247,19 +244,13 @@ export default {
     };
   },
   mounted() {
-    const index = this.tabs.findIndex(tab => tab === this.$route.hash);
-    if (index > -1) {
-      this.tabIndex = index;
-    }
-
     // Check if we came here as the result of "Edit Items"
-    const url = new URL(window.location.href);
-    if (url.hash.length > 1) {
-      const prevOrderId = url.hash.slice(1);
-      const cart = this.$store.state.carts[prevOrderId] || {};
+    if (this.$store.state.carts[this.restaurantId()]) {
+      const cart = this.$store.state.carts[this.restaurantId()] || {};
       //console.log("cart", cart);
       this.orders = cart.orders || {};
       this.optionsPrev = cart.options || {};
+      this.options = cart.options || {};
     }
   },
   created() {
@@ -314,9 +305,6 @@ export default {
     }
   },
   watch: {
-    tabIndex() {
-      this.$router.push(this.tabs[this.tabIndex]);
-    },
     user(newValue) {
       console.log("user changed");
       if (this.waitForUser && newValue) {
@@ -512,7 +500,7 @@ export default {
         // when the user clicks the "Edit Items" on the next page.
         // In that case, we will come back here with #id so that we can retrieve it (see mounted).
         this.$store.commit("saveCart", {
-          id: res.id,
+          id: this.restaurantId(),
           cart: {
             orders: this.orders,
             options: this.options
