@@ -27,15 +27,15 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
     throw new functions.https.HttpsError('invalid-argument', 'This restaurant does not support payment.')
   }
 
+  let order: Order | undefined = undefined;
   try {
-    let orderNumber: number = 0;
     const result = await db.runTransaction(async transaction => {
 
       const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`)
       const stripeRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}/system/stripe`)
       const snapshot = await transaction.get(orderRef)
-      const order = Order.fromSnapshot<Order>(snapshot)
-      orderNumber = order.number;
+      order = Order.fromSnapshot<Order>(snapshot)
+      order.id = orderId;
 
       // Check the stock status.
       if (order.status !== order_status.validation_ok) {
@@ -107,7 +107,7 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
       }
     })
 
-    await notifyNewOrderToRestaurant(db, restaurantId, orderId, restaurantData.restaurantName, orderNumber, lng);
+    await notifyNewOrderToRestaurant(db, restaurantId, order, restaurantData.restaurantName, lng);
 
     return result;
   } catch (error) {
@@ -149,6 +149,7 @@ export const confirm = async (db: FirebaseFirestore.Firestore, data: any, contex
 
       const snapshot = await transaction.get(orderRef)
       order = Order.fromSnapshot<Order>(snapshot)
+      order.id = orderId;
 
       if (!snapshot.exists) {
         throw new functions.https.HttpsError('invalid-argument', `The order does not exist. ${orderRef.path}`)
@@ -219,14 +220,14 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
 
   let sendSMS: boolean = false
   let phoneNumber: string | undefined = undefined;
-  let orderNumber: number = 0;
   let uidUser: string | null = null;
+  let order: Order | undefined = undefined;
 
   try {
     const result = await db.runTransaction(async transaction => {
 
       const snapshot = await transaction.get(orderRef)
-      const order = Order.fromSnapshot<Order>(snapshot)
+      order = Order.fromSnapshot<Order>(snapshot)
 
       if (!snapshot.exists) {
         throw new functions.https.HttpsError('invalid-argument', `The order does not exist.`)
@@ -250,7 +251,6 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
 
       phoneNumber = order.phoneNumber
       uidUser = order.uid
-      orderNumber = order.number;
 
       if (!stripeAccount || !order.payment || !order.payment.stripe) {
         // No payment transaction
@@ -296,12 +296,12 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
         throw error
       }
     })
-    const orderName = utils.nameOfOrder(orderNumber)
+    const orderName = utils.nameOfOrder(order.number);
     if (sendSMS) {
       await sendMessageToCustomer(db, lng, 'msg_order_canceled', restaurant.restaurantName, orderName, uidUser, phoneNumber, restaurantId, orderId)
     }
     if (uid !== venderId) {
-      await notifyCanceledOrderToRestaurant(db, restaurantId, orderId, restaurant.restaurantName, orderNumber, lng)
+      await notifyCanceledOrderToRestaurant(db, restaurantId, order, restaurant.restaurantName, lng)
     }
     return result
   } catch (error) {

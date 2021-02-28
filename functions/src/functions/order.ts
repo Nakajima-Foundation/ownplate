@@ -55,18 +55,18 @@ export const updateOrderTotalData = async (db, transaction, order, restaurantId,
   const uid = utils.validate_auth(context);
   const { restaurantId, orderId, tip, sendSMS, timeToPickup, lng, memo } = data;
   utils.validate_params({ restaurantId, orderId }) // tip, sendSMS and lng are optinoal
+  let order: Order | undefined = undefined;
 
   try {
     const restaurantData = await utils.get_restaurant(db, restaurantId);
     const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`)
 
-    let orderNumber: number = 0;
     const result = await db.runTransaction(async transaction => {
-      const order = (await transaction.get(orderRef)).data();
+      order = (await transaction.get(orderRef)).data();
       if (!order) {
         throw new functions.https.HttpsError('invalid-argument', 'This order does not exist.')
       }
-      orderNumber = order.number;
+      order.id = orderId;
       if (uid !== order.uid) {
         throw new functions.https.HttpsError('permission-denied', 'The user is not the owner of this order.')
       }
@@ -94,7 +94,7 @@ export const updateOrderTotalData = async (db, transaction, order, restaurantId,
       return { success: true }
     })
     
-    await notifyNewOrderToRestaurant(db, restaurantId, orderId, restaurantData.restaurantName, orderNumber, lng);
+    await notifyNewOrderToRestaurant(db, restaurantId, order, restaurantData.restaurantName, lng);
 
     return result;
   } catch (error) {
@@ -121,6 +121,7 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
 
     const result = await db.runTransaction(async transaction => {
       order = Order.fromSnapshot<Order>(await transaction.get(orderRef))
+      order.id = orderId;
       if (!order) {
         throw new functions.https.HttpsError('invalid-argument', 'This order does not exist.')
       }
@@ -210,7 +211,7 @@ export const wasOrderCreated = async (db, data: any, context) => {
 
     if (!orderData || !orderData.status || orderData.status !== order_status.new_order ||
       !orderData.uid || orderData.uid !== uid) {
-      console.log("invalid order:" + String(order.id));
+      console.log("invalid order:" + String(orderId));
       throw new functions.https.HttpsError('invalid-argument', 'This order does not exist.')
     }
 

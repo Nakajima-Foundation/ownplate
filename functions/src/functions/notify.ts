@@ -42,6 +42,15 @@ const createNotifyRestaurantLineMessage = async (messageId: string, restaurantNa
   const message = `${restaurantName} ${t(messageId)} ${orderName}`;
   return message;
 };
+const createNotifyRestaurantMailMessage = async (messageId: string, restaurantName: string, order: any, orderNumber: number, lng: string) => {
+  const t = await i18next.init({
+    lng: lng || utils.getStripeRegion().langs[0],
+    resources
+  })
+  const orderName = utils.nameOfOrder(orderNumber);
+  const message = `${restaurantName} ${t(messageId)} ${orderName} ${JSON.stringify(order)}`;
+  return message;
+};
 const notifyRestaurantToLineUser = async (url: string, message: string, lineUsers: any[]) => {
   const results = await Promise.all(lineUsers.map(async doc => {
     const lineUser = doc.data();
@@ -52,15 +61,18 @@ const notifyRestaurantToLineUser = async (url: string, message: string, lineUser
   }));
   return results;
 };
-export const notifyRestaurant = async (db: any, messageId: string, restaurantId: string, orderId: string, restaurantName: string, orderNumber: number, lng: string) => {
+export const notifyRestaurant = async (db: any, messageId: string, restaurantId: string, order: any, restaurantName: string, lng: string) => {
   const datestr = moment().format("YYYY-MM-DD");
   const restaurant = (await db.doc(`/restaurants/${restaurantId}`).get()).data();
   if (!restaurant) { // paranoia
     return;
   }
-  const url = `https://${ownPlateConfig.hostName}/admin/restaurants/${restaurantId}/orders/${orderId}`
-  const lineMessage = await createNotifyRestaurantLineMessage(messageId, restaurantName, orderNumber, lng)
+  const orderId = order.id;
+  const orderNumber = order.number;
 
+  const url = `https://${ownPlateConfig.hostName}/admin/restaurants/${restaurantId}/orders/${orderId}`
+  const lineMessage = await createNotifyRestaurantLineMessage(messageId, restaurantName, orderNumber, lng);
+  const mailMessage = await createNotifyRestaurantMailMessage(messageId, restaurantName, order, orderNumber, lng);
   // line push.
   const lineUsers = (await db.collection(`/restaurants/${restaurantId}/lines`).get()).docs;
   if (lineUsers.length > 0) {
@@ -78,7 +90,7 @@ export const notifyRestaurant = async (db: any, messageId: string, restaurantId:
   if (restaurant.mailNofitication) {
     const adminUser = process.env.NODE_ENV === "test" ? {email: process.env.TESTMAIL} : await admin.auth().getUser(restaurant.uid);
     if (adminUser.email) {
-      await ses.sendMail(adminUser.email, lineMessage, lineMessage);
+      await ses.sendMail(adminUser.email, lineMessage, mailMessage);
       // console.log(res);
     }
   }
@@ -105,10 +117,10 @@ export const notifyRestaurant = async (db: any, messageId: string, restaurantId:
   }
 }
 
-export const notifyNewOrderToRestaurant = async (db: FirebaseFirestore.Firestore, restaurantId: string, orderId: string, restaurantName: string, orderNumber: number, lng: string) => {
-  return notifyRestaurant(db, 'msg_order_placed', restaurantId, orderId, restaurantName, orderNumber, lng)
+export const notifyNewOrderToRestaurant = async (db: FirebaseFirestore.Firestore, restaurantId: string, order: any, restaurantName: string, lng: string) => {
+  return notifyRestaurant(db, 'msg_order_placed', restaurantId, order, restaurantName, lng)
 };
 
-export const notifyCanceledOrderToRestaurant = async (db: FirebaseFirestore.Firestore, restaurantId: string, orderId: string, restaurantName: string, orderNumber: number, lng: string) => {
-  return notifyRestaurant(db, 'msg_order_canceled_by_user', restaurantId, orderId, restaurantName, orderNumber, lng)
+export const notifyCanceledOrderToRestaurant = async (db: FirebaseFirestore.Firestore, restaurantId: string, order: any, restaurantName: string, lng: string) => {
+  return notifyRestaurant(db, 'msg_order_canceled_by_user', restaurantId, order, restaurantName, lng)
 };
