@@ -296,7 +296,7 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
         throw error
       }
     })
-    const orderName = utils.nameOfOrder(order.number);
+    const orderName = utils.nameOfOrder(order!.number);
     if (sendSMS) {
       await sendMessageToCustomer(db, lng, 'msg_order_canceled', restaurant.restaurantName, orderName, uidUser, phoneNumber, restaurantId, orderId)
     }
