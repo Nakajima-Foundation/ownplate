@@ -1,8 +1,8 @@
 <template>
   <div>
-    <div class="t-subtitle2 c-text-black-medium p-b-8">
-      {{$t(titleKey)}}
-      <span class="c-status-red" v-if="required === true">*</span>
+    <div class="text-sm font-bold pb-2">
+      {{ $t(titleKey) }}
+      <span class="text-red-700" v-if="required === true">*</span>
     </div>
     <b-field :type="error.length > 0 ? 'is-danger' : 'is-success'">
       <b-input

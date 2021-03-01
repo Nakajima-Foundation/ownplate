@@ -283,6 +283,8 @@
     "closed": "Fermer",
     "public": "Publique",
     "temporaryClosure": "Temporairement Fermé",
+    "temporaryClosureAdd": "Ajouter",
+    "temporaryClosureDescription": "Veuillez sélectionner une date et appuyer sur Ajouter.",
     "paymentMethod": "Methode de Payment",
     "onlinePayment": "Payment en Ligne",
     "onsitePayment": "Paiement à la Livraison",
