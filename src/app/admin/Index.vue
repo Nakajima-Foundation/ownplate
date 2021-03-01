@@ -102,7 +102,7 @@
       }}</span>
     </div>
 
-    <!-- Payment Setup and Restaurants -->
+    <!-- Restaurants and Payment Setup -->
     <div class="mt-6 mx-6 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12">
       <!-- Restaurants -->
       <div>

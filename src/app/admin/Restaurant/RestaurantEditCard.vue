@@ -126,35 +126,6 @@
       </div>
     </div>
 
-    <!-- QR Code and Monthly Report -->
-    <div class="flex justify-center items-center space-x-4 mt-4">
-      <div>
-        <nuxt-link :to="`/admin/restaurants/${restaurantid}/qrcode`">
-          <div
-            class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
-          >
-            <i class="material-icons text-lg text-op-teal mr-2">qr_code_2 </i>
-            <span class="text-sm font-bold text-op-teal">{{
-              $t("admin.qrcode.title")
-            }}</span>
-          </div>
-        </nuxt-link>
-      </div>
-
-      <div v-if="shopOwner">
-        <nuxt-link :to="`/admin/restaurants/${restaurantid}/report`">
-          <div
-            class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
-          >
-            <i class="material-icons text-lg text-op-teal mr-2">description</i>
-            <span class="text-sm font-bold text-op-teal">{{
-              $t("admin.report.title")
-            }}</span>
-          </div>
-        </nuxt-link>
-      </div>
-    </div>
-
     <!-- Notifications Settings -->
     <div
       class="text-center bg-black bg-opacity-5 rounded-lg pt-3 pb-2 mt-4 flex justify-evenly"
@@ -205,6 +176,35 @@
           </div>
         </div>
       </nuxt-link>
+    </div>
+
+    <!-- QR Code and Monthly Report -->
+    <div class="flex justify-center items-center space-x-4 mt-4">
+      <div>
+        <nuxt-link :to="`/admin/restaurants/${restaurantid}/qrcode`">
+          <div
+            class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
+          >
+            <i class="material-icons text-lg text-op-teal mr-2">qr_code_2 </i>
+            <span class="text-sm font-bold text-op-teal">{{
+              $t("admin.qrcode.title")
+            }}</span>
+          </div>
+        </nuxt-link>
+      </div>
+
+      <div v-if="shopOwner">
+        <nuxt-link :to="`/admin/restaurants/${restaurantid}/report`">
+          <div
+            class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
+          >
+            <i class="material-icons text-lg text-op-teal mr-2">description</i>
+            <span class="text-sm font-bold text-op-teal">{{
+              $t("admin.report.title")
+            }}</span>
+          </div>
+        </nuxt-link>
+      </div>
     </div>
 
     <!-- Directory Request -->
