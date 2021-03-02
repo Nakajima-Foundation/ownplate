@@ -45,13 +45,13 @@ describe('Order function', () => {
       "uid":"hdLfvObioAWvymcZsGlq5PKL0CX2","phoneNumber":"+819011111111","name":"山田",
       "status":300,
       "menuItems":{
-        "VbXMnx4wdTgh1VBpBRIr":{"category1":"333333","itemName":"1212","price":1000,"category2":"44"}
+        "VbXMnx4wdTgh1VBpBRIr":{"category1":"333333","itemName":"美味しい料理","price":1000,"category2":"44"}
       },
       "tip":0,
       "id": 123,
     };
     
-    await notify.notifyRestaurant(adminDB,  'msg_order_placed', restaurantId, orderData, "hello", "jp");
+    await notify.notifyRestaurant(adminDB,  'msg_order_placed', restaurantId, orderData, "美味しいレストラン", "ja");
   });
 });
 
