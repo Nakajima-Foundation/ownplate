@@ -26,6 +26,7 @@ export default class Order extends Doc {
   @Field uid!: string
   @Field payment?: Payment
   @Field phoneNumber?: string
+  @Field menuItems?: any
   @Field number: number = 0
   @Field sendSMS: boolean = false
   @Field timePlaced!: admin.firestore.Timestamp
