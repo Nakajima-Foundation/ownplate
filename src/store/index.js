@@ -74,6 +74,11 @@ export const mutations = {
     // state.carts = {};
     state.carts[payload.id] = payload.cart;
   },
+  resetCart(state, restaurantId) {
+    console.log("reset cart", restaurantId);
+    // state.carts = {};
+    state.carts[restaurantId] = null;
+  },
   setServerConfig(state, config) {
     state.server = config;
     console.log("store:setServerConfig", state.server.region);
