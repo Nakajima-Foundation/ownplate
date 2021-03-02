@@ -696,6 +696,7 @@ export default {
           memo: this.memo || ""
         });
         this.sendPurchase();
+        this.$store.commit("resetCart", this.restaurantId());
         console.log("createIntent", data);
         window.scrollTo(0, 0);
       } catch (error) {
@@ -733,6 +734,7 @@ export default {
         });
         console.log("place", data);
         this.sendPurchase();
+        this.$store.commit("resetCart", this.restaurantId());
         window.scrollTo(0, 0);
       } catch (error) {
         console.error(error.message, error.details);
