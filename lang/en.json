@@ -283,6 +283,8 @@
     "closed": "Closed",
     "public": "Public",
     "temporaryClosure": "Temporary Closure",
+    "temporaryClosureAdd": "Add",
+    "temporaryClosureDescription": "Please select a date and then press Add",
     "paymentMethod": "Payment Method",
     "onlinePayment": "Online Payment",
     "onsitePayment": "On Site Payment",

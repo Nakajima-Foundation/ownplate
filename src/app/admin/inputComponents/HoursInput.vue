@@ -1,29 +1,33 @@
 <template>
-  <div>
-    <div class="cols" style="align-items: center;">
-      <div>
-        <b-field :type="type">
-          <b-select v-model="value.start" :disabled="disabled" @input="updateValue">
-            <option
-              v-for="(timeItem, index) of timeList"
-              :key="timeItem"
-              :value="index === 0 ? null : (index - 1) * 30"
-            >{{ timeItem }}</option>
-          </b-select>
-        </b-field>
-      </div>
-      <div class="p-l-8 p-r-8">-</div>
-      <div>
-        <b-field :type="type">
-          <b-select v-model="value.end" :disabled="disabled" @input="updateValue">
-            <option
-              v-for="(timeItem, index) of timeList"
-              :key="timeItem"
-              :value="index === 0 ? null : (index - 1) * 30"
-            >{{ timeItem }}</option>
-          </b-select>
-        </b-field>
-      </div>
+  <div class="flex items-center">
+    <div>
+      <b-field :type="type">
+        <b-select
+          v-model="value.start"
+          :disabled="disabled"
+          @input="updateValue"
+        >
+          <option
+            v-for="(timeItem, index) of timeList"
+            :key="timeItem"
+            :value="index === 0 ? null : (index - 1) * 30"
+            >{{ timeItem }}</option
+          >
+        </b-select>
+      </b-field>
+    </div>
+    <div class="px-2">-</div>
+    <div>
+      <b-field :type="type">
+        <b-select v-model="value.end" :disabled="disabled" @input="updateValue">
+          <option
+            v-for="(timeItem, index) of timeList"
+            :key="timeItem"
+            :value="index === 0 ? null : (index - 1) * 30"
+            >{{ timeItem }}</option
+          >
+        </b-select>
+      </b-field>
     </div>
   </div>
 </template>
