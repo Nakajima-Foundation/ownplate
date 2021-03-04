@@ -1,55 +1,31 @@
 <template>
   <div>
-    <!-- History Header Area -->
-    <div class="columns is-gapless">
-      <!-- Left Gap -->
-      <div class="column is-narrow w-6"></div>
-      <!-- Center Column -->
-      <div class="column">
-        <div class="m-l-24 m-r-24">
-          <!-- Back Button and Restaurant Profile -->
-          <div>
-            <!-- Back Button -->
-            <back-button url="/u/profile/" class="m-t-24" />
-            <!-- Title -->
-            <div class="t-h6 c-text-black-disabled m-t-24">
-              {{ $t("order.history") }}
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Right Gap -->
-      <div class="column is-narrow w-6"></div>
+    <!-- Back -->
+    <div class="mt-6 mx-6">
+      <back-button url="/u/profile/" />
     </div>
 
-    <!-- History Body Area -->
-    <div class="columns is-gapless">
-      <!-- Left Gap -->
-      <div class="column is-narrow w-6"></div>
-      <!-- Center Column -->
-      <div class="column">
-        <div class="m-l-24 m-r-16 m-t-24">
-          <!-- Orders -->
-          <div class="columns is-gapless is-multiline">
-            <ordered-info
-              v-for="order in orders"
-              :key="order.id"
-              @selected="orderSelected($event)"
-              :order="order"
-            />
-          </div>
-
-          <!-- Phone Login-->
-          <b-modal :active.sync="loginVisible" :width="488" scroll="keep">
-            <div class="op-dialog p-t-24 p-l-24 p-r-24 p-b-24">
-              <phone-login v-on:dismissed="handleDismissed" />
-            </div>
-          </b-modal>
-        </div>
-      </div>
-      <!-- Right Gap -->
-      <div class="column is-narrow w-6"></div>
+    <!-- Title -->
+    <div class="mt-6 mx-6 text-xl font-bold text-black text-opacity-30">
+      {{ $t("order.history") }}
     </div>
+
+    <!-- Orders -->
+    <div class="mx-6 mt-6 grid grid-cols-1 gap-2 lg:grid-cols-3 xl:grid-cols-4">
+      <ordered-info
+        v-for="order in orders"
+        :key="order.id"
+        @selected="orderSelected($event)"
+        :order="order"
+      />
+    </div>
+
+    <!-- Phone Login-->
+    <b-modal :active.sync="loginVisible" :width="488" scroll="keep">
+      <div class="mx-2 my-6 p-6 bg-white shadow-lg rounded-lg">
+        <phone-login v-on:dismissed="handleDismissed" />
+      </div>
+    </b-modal>
   </div>
 </template>
 
