@@ -7,407 +7,416 @@
       <not-found />
     </template>
     <template v-else>
-      <!-- Order Header Area -->
-      <div class="columns is-gapless">
-        <!-- Left Gap -->
-        <div class="column is-narrow w-6"></div>
-        <!-- Center Column -->
-        <div class="column">
-          <div class="m-l-24 m-r-24">
-            <!-- Back Button (Edit Order) -->
-            <div v-if="just_validated" class="m-t-24">
-              <b-button
-                :loading="isDeleting"
-                @click="handleEditItems"
-                class="b-reset h-9 rounded-full bg-form"
-              >
-                <span class="p-l-16 p-r-16">
-                  <i class="material-icons c-primary s-18 m-r-8">arrow_back</i>
-                  <span class="c-primary t-button">{{
-                    $t("button.back")
-                  }}</span>
-                </span>
-              </b-button>
-            </div>
-
-            <!-- Restaurant Profile Photo and Name -->
-            <shop-header :shopInfo="shopInfo"></shop-header>
-
-            <!-- After Paid -->
-            <div v-if="paid">
-              <!-- Thank you Message -->
-              <div class="m-t-24">
-                <div class="t-h6 c-primary align-center">
-                  {{ $t("order.thankyou") }}
-                </div>
-                <div class="t-h6 c-primary align-center m-t-8">
-                  {{ $t("order.pleaseStay") }}
-                </div>
-              </div>
-
-              <!-- Line Button -->
-              <div v-if="showAddLine" class="m-t-24 align-center">
-                <b-button
-                  class="b-reset op-button-small"
-                  style="background:#18b900"
-                  @click="handleLineAuth"
-                >
-                  <i
-                    class="fab fa-line c-text-white-full m-l-24 m-r-8"
-                    style="font-size:24px"
-                  />
-                  <span class="c-text-white-full m-r-24">{{
-                    $t("line.notifyMe")
-                  }}</span>
-                </b-button>
-              </div>
-
-              <!-- Order Status -->
-              <div class="align-center m-t-24">
-                <div class="is-inline-flex">
-                  <div class="m-r-24">
-                    <div class="t-subtitle2 c-text-black-medium">
-                      {{ $t("order.orderStatus") }}
-                    </div>
-                    <div class="op-status m-t-8" :class="orderStatusKey">
-                      {{ $t("order.status." + orderStatusKey) }}
-                    </div>
-                  </div>
-                  <div>
-                    <div class="t-subtitle2 c-text-black-medium">
-                      {{ $t("order.orderId") }}
-                    </div>
-                    <div class="t-h5 c-text-black-high m-t-8">
-                      {{ orderName }}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Time to Pickup -->
-
-              <div
-                v-if="waiting"
-                class="align-center t-body2 c-text-black-medium m-t-16"
-              >
-                <div>
-                  {{ $t("order.timeRequested") + ": " + timeRequested }}
-                </div>
-                <div v-if="timeEstimated">
-                  {{ $t("order.timeToPickup") + ": " + timeEstimated }}
-                </div>
-              </div>
-
-              <!-- Cancel Button -->
-              <div class="align-center m-t-24">
-                <b-button
-                  v-if="just_paid"
-                  class="b-reset op-button-text bg-transparent"
-                  @click="handleCancelPayment"
-                >
-                  <i class="material-icons c-status-red s-18">highlight_off</i>
-                  <span class="c-status-red">{{
-                    $t("order.cancelOrder")
-                  }}</span>
-                </b-button>
-              </div>
-
-              <!-- Cancel Message -->
-              <div
-                v-if="canceled"
-                class="bg-status-red-bg rounded-lg p-l-16 p-r-16 p-t-16 p-b-16 align-center"
-              >
-                <span class="t-subtitle1 c-status-red">{{
-                  $t("order.cancelOrderComplete")
-                }}</span>
-              </div>
-
-              <!-- Special Thank you Message from the Restaurant -->
-              <template
-                v-if="
-                  shopInfo &&
-                    shopInfo.orderThanks &&
-                    shopInfo.orderThanks.length > 0 &&
-                    !canceled
-                "
-              >
-                <div
-                  class="bg-form m-t-24 p-l-16 p-r-16 p-t-16 p-b-16 rounded-lg"
-                >
-                  <div class="t-caption">{{ $t("order.thanksMessage") }}</div>
-                  <div class="t-body1 m-t-8">{{ shopInfo.orderThanks }}</div>
-                </div>
-              </template>
-
-              <!-- Restaurant LINE -->
-              <div
-                v-if="hasLineUrl"
-                class="align-center m-t-16 bg-form rounded-lg p-t-16 p-l-16 p-r-16 p-b-16"
-              >
-                <a target="_blank" :href="this.shopInfo.lineUrl">
-                  <div class="op-button-pill bg-status-green c-text-white-full">
-                    <i class="fab fa-line"></i>
-                    <span class="t-subtitle2">{{ $t("order.lineLink") }}</span>
-                  </div>
-                </a>
-                <div class="t-body2 m-t-8">
-                  {{ $t("order.lineMessage") }}
-                </div>
-              </div>
-            </div>
-            <!-- End of After Paid -->
-
-            <!-- Before Paid -->
-            <div v-else>
-              <div
-                class="align-center bg-status-red-bg p-t-24 p-l-24 p-r-24 p-b-24 t-subtitle1 c-status-red rounded-lg m-t-16"
-              >
-                {{ $t("order.orderNotPlacedYet") }}
-              </div>
+      <!-- Back Button (Edit Order) -->
+      <div v-if="just_validated" class="mt-6 mx-6">
+        <b-button
+          :loading="isDeleting"
+          @click="handleEditItems"
+          class="b-reset-tw"
+        >
+          <div
+            class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5"
+          >
+            <i class="material-icons text-lg text-op-teal mr-2">arrow_back</i>
+            <div class="text-sm font-bold text-op-teal">
+              {{ $t("button.back") }}
             </div>
           </div>
-        </div>
-        <!-- Right Gap -->
-        <div class="column is-narrow w-6"></div>
+        </b-button>
       </div>
 
-      <!-- Order Body Area -->
-      <div class="columns is-gapless">
-        <!-- Left Gap -->
-        <div class="column is-narrow w-6"></div>
-        <!-- Left Column -->
-        <div class="column">
-          <div class="m-l-24 m-r-24">
-            <!-- Order Details -->
-            <div class="m-t-24">
-              <!-- Title -->
-              <div v-if="paid" class="t-h6 c-text-black-disabled">
-                {{ $t("order.yourOrder") + ": " + orderName }}
-              </div>
-              <div v-else class="t-h6 c-text-black-disabled">
-                {{ $t("order.confirmOrder") }}
-              </div>
+      <!-- Restaurant Profile Photo and Name -->
+      <div class="mt-4">
+        <shop-header :shopInfo="shopInfo"></shop-header>
+      </div>
 
-              <!-- Details -->
-              <order-info
-                :orderItems="this.orderItems"
-                :orderInfo="this.orderInfo || {}"
-                @change="handleTipChange"
-              ></order-info>
+      <!-- After Paid -->
+      <div v-if="paid">
+        <!-- Thank you Message -->
+        <div class="mt-4 mx-6">
+          <div class="text-xl font-bold text-op-teal text-center">
+            {{ $t("order.thankyou") }}
+          </div>
+          <div class="text-xl font-bold text-op-teal text-center mt-2">
+            {{ $t("order.pleaseStay") }}
+          </div>
+        </div>
 
-              <!-- Cancel Message -->
+        <!-- Line Button -->
+        <div v-if="showAddLine" class="mt-6 text-center">
+          <b-button @click="handleLineAuth" class="b-reset-tw">
+            <div
+              class="inline-flex justify-center items-center h-12 px-6 rounded-full"
+              style="background: #18b900"
+            >
+              <i class="fab fa-line text-2xl text-white mr-2" />
+              <div class="text-base font-bold text-white">
+                {{ $t("line.notifyMe") }}
+              </div>
+            </div>
+          </b-button>
+        </div>
+
+        <!-- Order Status -->
+        <div class="mt-6 text-center">
+          <div class="inline-flex space-x-4">
+            <div>
+              <div class="text-sm font-bold text-black text-opacity-60">
+                {{ $t("order.orderStatus") }}
+              </div>
               <div
-                v-if="canceled"
-                class="bg-status-red-bg rounded-lg p-l-16 p-r-16 p-t-16 p-b-16 align-center m-t-24"
+                class="inline-block px-4 py-1 rounded-full mt-2"
+                :class="orderStatusKey"
               >
-                <span class="t-subtitle1 c-status-red">{{
-                  $t("order.cancelOrderComplete")
-                }}</span>
-              </div>
-
-              <!-- View Menu Page Button -->
-              <div class="align-center m-t-24" v-if="paid">
-                <b-button
-                  class="b-reset op-button-small secondary"
-                  @click="handleOpenMenu"
-                >
-                  <span class="c-primary p-l-24 p-r-24">
-                    {{ $t("order.menu") }}
-                  </span>
-                </b-button>
-              </div>
-
-              <!-- Validating -->
-              <b-notification :closable="false" v-if="newOrder">
-                {{ $t("order.validating") }}
-                <b-loading
-                  :is-full-page="false"
-                  :active.sync="newOrder"
-                  :can-cancel="true"
-                ></b-loading>
-              </b-notification>
-
-              <!-- Your Message to the Restaurant -->
-              <template v-if="paid && hasMemo">
-                <div
-                  class="bg-form m-t-24 p-l-16 p-r-16 p-t-16 p-b-16 rounded-lg"
-                >
-                  <div class="t-caption">{{ $t("order.orderMessage") }}</div>
-                  <div class="t-body1 m-t-8">{{ orderInfo.memo }}</div>
+                <div class="text-sm font-bold">
+                  {{ $t("order.status." + orderStatusKey) }}
                 </div>
-              </template>
+              </div>
+            </div>
+            <div>
+              <div class="text-sm font-bold text-black text-opacity-60">
+                {{ $t("order.orderId") }}
+              </div>
+              <div class="mt-1">
+                <div class="text-2xl">{{ orderName }}</div>
+              </div>
             </div>
           </div>
         </div>
 
-        <!-- Right Column -->
-        <div class="column">
-          <div class="m-l-24 m-r-24">
-            <!-- (Before Paid) Order Details -->
-            <div v-if="just_validated">
-              <!-- Time to Pickup -->
-              <time-to-pickup
-                v-if="shopInfo.businessDay"
-                :shopInfo="shopInfo"
-                ref="time"
-                @notAvailable="handleNotAvailable"
-              />
+        <!-- Time to Pickup -->
+        <div v-if="waiting" class="mt-4 text-sm text-center">
+          <div>
+            {{ $t("order.timeRequested") + ": " + timeRequested }}
+          </div>
+          <div v-if="timeEstimated">
+            {{ $t("order.timeToPickup") + ": " + timeEstimated }}
+          </div>
+        </div>
 
-              <!-- Order Notice -->
-              <template
-                v-if="
-                  shopInfo &&
-                    shopInfo.orderNotice &&
-                    shopInfo.orderNotice.length > 0
-                "
+        <!-- Cancel Button -->
+        <div class="mt-6 text-center">
+          <b-button
+            v-if="just_paid"
+            @click="handleCancelPayment"
+            class="b-reset-tw"
+          >
+            <div class="inline-flex justify-center items-center">
+              <i class="material-icons text-lg mr-2 text-red-700"
+                >highlight_off</i
               >
-                <div class="m-t-24">
-                  <div class="t-h6 c-text-black-disabled">
-                    {{ $t("order.orderNotice") }}
-                  </div>
-                  <div
-                    class="bg-surface rounded-lg d-low m-t-8 p-l-16 p-r-16 p-t-16 p-b-16"
-                  >
-                    <div class="cols">
-                      <div class="p-r-8">
-                        <i class="material-icons s-24 c-status-red">error</i>
-                      </div>
-                      <div class="t-body1 c-status-red">
-                        {{ shopInfo.orderNotice }}
-                      </div>
+              <div class="text-base font-bold text-red-700">
+                {{ $t("order.cancelOrder") }}
+              </div>
+            </div>
+          </b-button>
+        </div>
+
+        <!-- Canceled Message -->
+        <div
+          v-if="canceled"
+          class="mt-6 mx-6 bg-red-700 bg-opacity-10 rounded-lg p-4 text-center"
+        >
+          <span class="text-base font-bold text-red-700">{{
+            $t("order.cancelOrderComplete")
+          }}</span>
+        </div>
+
+        <!-- Special Thank you Message from the Restaurant -->
+        <template
+          v-if="
+            shopInfo &&
+              shopInfo.orderThanks &&
+              shopInfo.orderThanks.length > 0 &&
+              !canceled
+          "
+        >
+          <div class="mt-6 mx-6 bg-black bg-opacity-5 rounded-lg p-4">
+            <div class="text-xs">{{ $t("order.thanksMessage") }}</div>
+            <div class="text-base mt-2">{{ shopInfo.orderThanks }}</div>
+          </div>
+        </template>
+
+        <!-- Restaurant LINE -->
+        <div
+          v-if="hasLineUrl"
+          class="mt-6 mx-6 bg-black bg-opacity-5 rounded-lg p-4 text-center"
+        >
+          <a target="_blank" :href="this.shopInfo.lineUrl">
+            <div
+              class="inline-flex justify-center items-center h-12 px-6 rounded-full"
+              style="background: #18b900"
+            >
+              <i class="fab fa-line text-2xl text-white mr-2" />
+              <div class="text-base font-bold text-white">
+                {{ $t("order.lineLink") }}
+              </div>
+            </div>
+          </a>
+
+          <div class="text-sm mt-2">
+            {{ $t("order.lineMessage") }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Before Paid -->
+      <div v-else class="mt-4 mx-6">
+        <div class="bg-red-700 bg-opacity-10 rounded-lg p-6 text-center">
+          <div class="text-base font-bold text-red-700">
+            {{ $t("order.orderNotPlacedYet") }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Order Body -->
+      <div class="mt-6 mx-6 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12">
+        <!-- Left -->
+        <div>
+          <!-- Title -->
+          <div class="text-xl font-bold text-black text-opacity-30">
+            <div v-if="paid">
+              {{ $t("order.yourOrder") + ": " + orderName }}
+            </div>
+            <div v-else>
+              {{ $t("order.confirmOrder") }}
+            </div>
+          </div>
+
+          <!-- Details -->
+          <div class="mt-2">
+            <order-info
+              :orderItems="this.orderItems"
+              :orderInfo="this.orderInfo || {}"
+              @change="handleTipChange"
+            ></order-info>
+          </div>
+
+          <!-- Your Message to the Restaurant -->
+          <template v-if="paid && hasMemo">
+            <div class="bg-white rounded-lg p-4 shadow mt-4">
+              <div class="text-xs font-bold text-black text-opacity-60">
+                {{ $t("order.orderMessage") }}
+              </div>
+              <div class="mt-1 text-base">{{ orderInfo.memo }}</div>
+            </div>
+          </template>
+
+          <!-- Canceled Message -->
+          <div
+            v-if="canceled"
+            class="mt-6 bg-red-700 bg-opacity-10 rounded-lg p-4 text-center"
+          >
+            <span class="text-base font-bold text-red-700">{{
+              $t("order.cancelOrderComplete")
+            }}</span>
+          </div>
+
+          <!-- View Menu Page Button -->
+          <div v-if="paid" class="mt-6 text-center">
+            <b-button class="b-reset-tw" @click="handleOpenMenu">
+              <div
+                class="inline-flex justify-center items-center h-12 px-6 rounded-full border-2 border-op-teal"
+              >
+                <div class="text-base font-bold text-op-teal">
+                  {{ $t("order.menu") }}
+                </div>
+              </div>
+            </b-button>
+          </div>
+
+          <!-- Validating -->
+          <b-notification :closable="false" v-if="newOrder">
+            {{ $t("order.validating") }}
+            <b-loading
+              :is-full-page="false"
+              :active.sync="newOrder"
+              :can-cancel="true"
+            ></b-loading>
+          </b-notification>
+        </div>
+
+        <!-- Right -->
+        <div class="mt-4 lg:mt-0">
+          <!-- (Before Paid) Order Details -->
+          <div v-if="just_validated">
+            <!-- Time to Pickup -->
+            <div>
+              <div class="text-xl font-bold text-black text-opacity-30">
+                {{ $t("order.timeRequested") }}
+              </div>
+
+              <div class="mt-2">
+                <time-to-pickup
+                  v-if="shopInfo.businessDay"
+                  :shopInfo="shopInfo"
+                  ref="time"
+                  @notAvailable="handleNotAvailable"
+                />
+              </div>
+            </div>
+
+            <!-- Order Notice -->
+            <template
+              v-if="
+                shopInfo &&
+                  shopInfo.orderNotice &&
+                  shopInfo.orderNotice.length > 0
+              "
+            >
+              <div class="mt-6">
+                <div class="text-xl font-bold text-black text-opacity-30">
+                  {{ $t("order.orderNotice") }}
+                </div>
+
+                <div class="bg-white rounded-lg shadow p-4 mt-2">
+                  <div class="flex">
+                    <div class="mr-2">
+                      <i class="material-icons text-2xl text-red-700">error</i>
+                    </div>
+                    <div class="flex-1 text-base text-red-700">
+                      {{ shopInfo.orderNotice }}
                     </div>
                   </div>
                 </div>
-              </template>
+              </div>
+            </template>
 
-              <!-- Order Notice -->
-              <template v-if="shopInfo && shopInfo.acceptUserMessage">
-                <div class="m-t-24">
-                  <div class="t-h6 c-text-black-disabled">
-                    {{ $t("order.orderMessage") }}
-                  </div>
-                  <div
-                    class="bg-surface rounded-lg d-low m-t-8 p-l-16 p-r-16 p-t-16 p-b-16"
+            <!-- Message -->
+            <template v-if="shopInfo && shopInfo.acceptUserMessage">
+              <div class="mt-6">
+                <div class="text-xl font-bold text-black text-opacity-30">
+                  {{ $t("order.orderMessage") }}
+                </div>
+
+                <div class="bg-white rounded-lg shadow p-4 mt-2">
+                  <b-input
+                    v-model="memo"
+                    type="textarea"
+                    :placeholder="$t('order.enterMessage')"
+                    class="w-full"
+                  ></b-input>
+                </div>
+              </div>
+            </template>
+
+            <!-- Payment -->
+            <div class="mt-6">
+              <div class="text-xl font-bold text-black text-opacity-30">
+                {{ $t("order.yourPayment") }}
+              </div>
+
+              <!-- Pay Online -->
+              <div v-if="showPayment" class="mt-2">
+                <stripe-card
+                  @change="handleCardStateChange"
+                  ref="stripe"
+                  :stripeJCB="stripeJCB"
+                ></stripe-card>
+
+                <div class="mt-6 text-center">
+                  <b-button
+                    :loading="isPaying"
+                    :disabled="!cardState.complete || notAvailable"
+                    @click="handlePayment"
+                    class="b-reset-tw"
                   >
-                    <div class="cols">
-                      <b-input
-                        v-model="memo"
-                        type="textarea"
-                        :placeholder="$t('order.enterMessage')"
-                        style="width: 100%"
-                      ></b-input>
-                    </div>
-                  </div>
-                </div>
-              </template>
-              <!-- Payment -->
-              <div class="m-t-24">
-                <!-- Title -->
-                <div class="t-h6 c-text-black-disabled">
-                  {{ $t("order.yourPayment") }}
-                </div>
-
-                <!-- Pay Online -->
-                <div v-if="showPayment">
-                  <stripe-card
-                    @change="handleCardStateChange"
-                    ref="stripe"
-                    :stripeJCB="stripeJCB"
-                  ></stripe-card>
-                  <!-- <credit-card-input></credit-card-input> -->
-                  <!-- Pay Button -->
-                  <div class="align-center m-t-24">
-                    <b-button
-                      class="b-reset op-button-medium primary"
+                    <div
+                      class="inline-flex justify-center items-center h-16 px-6 rounded-full bg-op-teal shadow"
                       style="min-width: 288px;"
-                      :loading="isPaying"
-                      :disabled="!cardState.complete || notAvailable"
-                      @click="handlePayment"
                     >
-                      <span class="c-onprimary p-l-24 p-r-24">
+                      <div class="text-xl font-bold text-white">
                         {{ $t("order.placeOrder") }}
                         <!-- {{ $n(orderInfo.total + tip, "currency") }} -->
-                      </span>
-                    </b-button>
-                  </div>
+                      </div>
+                    </div>
+                  </b-button>
                 </div>
+              </div>
 
-                <!-- Pay at Restaurant -->
-                <div v-else class="m-t-8">
-                  <div
-                    class="bg-form rounded-lg p-l-16 p-r-16 p-t-16 p-b-16 t-body2 c-text-black-high"
-                  >
+              <!-- Pay at Restaurant -->
+              <div v-else class="mt-2">
+                <div class="bg-black bg-opacity-5 rounded-lg p-4">
+                  <div class="text-sm">
                     {{ $t("order.pleasePayAtRestaurant") }}
                   </div>
                 </div>
+              </div>
 
-                <!-- Pay Button -->
-                <div v-if="inStorePayment" class="align-center m-t-24">
-                  <div class="t-subtitle2 c-text-black-disabled">
-                    {{ $t("order.or") }}
-                  </div>
+              <!-- Pay Button -->
+              <div v-if="inStorePayment" class="mt-4 text-center">
+                <div class="text-sm font-bold text-black text-opacity-60">
+                  {{ $t("order.or") }}
+                </div>
+
+                <div class="mt-4">
                   <b-button
-                    class="b-reset op-button-medium primary m-t-24"
-                    style="min-width: 288px;"
                     :loading="isPlacing"
                     :disabled="notAvailable"
                     @click="handleNoPayment"
+                    class="b-reset-tw"
                   >
-                    <span class="c-onprimary p-l-24 p-r-24">{{
-                      $t("order.placeOrderNoPayment")
-                    }}</span>
+                    <div
+                      class="inline-flex justify-center items-center h-16 px-6 rounded-full bg-op-teal shadow"
+                      style="min-width: 288px;"
+                    >
+                      <div class="text-xl font-bold text-white">
+                        {{ $t("order.placeOrderNoPayment") }}
+                      </div>
+                    </div>
                   </b-button>
-                  <div class="t-subtitle2 c-text-black-disabled m-t-8">
-                    {{ $t("order.placeOrderNoPaymentNote") }}
-                  </div>
                 </div>
 
-                <!-- Send SMS Checkbox -->
-                <div v-if="!isLineEnabled" class="m-t-24">
-                  <div class="bg-form rounded-lg p-l-16 p-r-16 p-t-16 p-b-16">
-                    <b-checkbox v-model="sendSMS">
-                      <span class="t-body2 c-text-black-high">{{
-                        $t("order.sendSMS")
-                      }}</span>
-                    </b-checkbox>
-                  </div>
+                <div class="mt-2 text-sm font-bold text-black text-opacity-60">
+                  {{ $t("order.placeOrderNoPaymentNote") }}
                 </div>
               </div>
-            </div>
 
-            <!-- (After Paid) Restaurant Details -->
-            <div v-if="paid">
-              <shop-info
-                :compact="true"
-                :shopInfo="shopInfo"
-                :paymentInfo="paymentInfo"
-              />
-              <!-- <div class="align-center m-t-24">
-                <b-button class="b-reset op-button-small bg-status-blue" @click="handleOpenMenu">
-                  <span class="c-text-white-full">
-                    {{
-                    $t("order.menu")
-                    }}
-                  </span>
-                </b-button>
-              </div>-->
-              <!-- QR Code -->
-              <div class="m-t-24">
-                <div class="t-h6 c-text-black-disabled">
-                  {{ $t("order.adminQRCode") }}
-                </div>
-                <div class="m-t-8 align-center">
-                  <qrcode
-                    :value="urlAdminOrderPage"
-                    :options="{ width: 160 }"
-                  ></qrcode>
+              <!-- Send SMS Checkbox -->
+              <div v-if="!isLineEnabled" class="mt-6">
+                <div class="bg-black bg-opacity-5 rounded-lg p-4">
+                  <b-checkbox v-model="sendSMS">
+                    <div class="text-sm font-bold">
+                      {{ $t("order.sendSMS") }}
+                    </div>
+                  </b-checkbox>
                 </div>
               </div>
             </div>
           </div>
+
+          <!-- (After Paid) Restaurant Details -->
+          <div v-if="paid">
+            <!-- Restaurant Info -->
+            <div>
+              <div class="text-xl font-bold text-black text-opacity-30">
+                {{ $t("shopInfo.restaurantDetails") }}
+              </div>
+
+              <div class="mt-2">
+                <shop-info
+                  :compact="true"
+                  :shopInfo="shopInfo"
+                  :paymentInfo="paymentInfo"
+                />
+              </div>
+            </div>
+
+            <!-- QR Code -->
+            <div class="mt-6">
+              <div class="text-xl font-bold text-black text-opacity-30">
+                {{ $t("order.adminQRCode") }}
+              </div>
+
+              <div class="bg-white rounded-lg shadow p-4 mt-2 text-center">
+                <qrcode
+                  :value="urlAdminOrderPage"
+                  :options="{ width: 160 }"
+                ></qrcode>
+              </div>
+            </div>
+          </div>
         </div>
-        <!-- Right Gap -->
-        <div class="column is-narrow w-6"></div>
       </div>
     </template>
   </div>

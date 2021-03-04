@@ -1,12 +1,12 @@
 <template>
   <div>
     <!-- Restaurant Details -->
-    <div class="m-t-24">
-      <div class="t-h6 c-text-black-disabled">
+    <div>
+      <!-- <div class="t-h6 c-text-black-disabled">
         {{ $t("shopInfo.restaurantDetails") }}
-      </div>
+      </div> -->
 
-      <div class="bg-surface rounded-lg d-low m-t-8 p-b-24">
+      <div class="bg-white rounded-lg shadow">
         <!-- Restaurant Location -->
         <div v-if="hasLocation">
           <GMap

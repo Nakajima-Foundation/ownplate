@@ -151,8 +151,8 @@
       <!-- Action Buttons -->
       <div class="mt-6 text-center">
         <a
-          class="inline-flex justify-center items-center h-12 rounded-full px-6 bg-black bg-opacity-5"
           @click="closeNotificationSettings()"
+          class="inline-flex justify-center items-center h-12 rounded-full px-6 bg-black bg-opacity-5"
           style="min-width: 8rem;"
         >
           <div class="text-base font-bold text-black text-opacity-60">

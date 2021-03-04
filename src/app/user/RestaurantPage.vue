@@ -74,11 +74,19 @@
               </div>
 
               <!-- Restaurant Info -->
-              <shop-info
-                :shopInfo="shopInfo"
-                :paymentInfo="paymentInfo"
-                @noAvailableTime="noAvailableTime = $event"
-              ></shop-info>
+              <div>
+                <div class="text-xl font-bold text-black text-opacity-30">
+                  {{ $t("shopInfo.restaurantDetails") }}
+                </div>
+
+                <div class="mt-2">
+                  <shop-info
+                    :shopInfo="shopInfo"
+                    :paymentInfo="paymentInfo"
+                    @noAvailableTime="noAvailableTime = $event"
+                  ></shop-info>
+                </div>
+              </div>
             </div>
           </div>
 
