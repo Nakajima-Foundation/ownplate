@@ -4,10 +4,14 @@
 
     <!-- Never show before load restaurant data -->
     <div v-else>
-      <!-- Notifications -->
-      <div class="mx-6 flex">
+      <!-- Header -->
+      <div class="mt-6 mx-6 lg:flex lg:items-center">
         <div class="flex-1"></div>
-        <div><notification-index :shopInfo="shopInfo" /></div>
+
+        <!-- Notifications -->
+        <div class="mt-4 lg:mt-0 flex-shrink-0 text-right">
+          <notification-index :shopInfo="restaurantInfo" />
+        </div>
       </div>
 
       <!-- Save and Cancel -->

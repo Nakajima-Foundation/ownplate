@@ -1,41 +1,46 @@
 <template>
   <b-modal :active.sync="isVisible" :width="488">
-    <div class="op-dialog p-t-16 p-l-24 p-r-24 p-b-24">
+    <div class="mx-2 my-6 p-6 bg-white shadow-lg rounded-lg">
       <!-- Items List -->
-      <div class="p-b-8">
+      <div>
         <div
           v-for="(category, index) in categories"
           :key="category"
-          class="bg-form cols flex-center rounded m-t-8"
+          class="flex items-center bg-black bg-opacity-5 rounded mb-2"
         >
-          <div class="flex-1 p-l-16 p-t-8 p-b-8">
-            <span>{{ category }}</span>
+          <div class="flex-1 px-4 py-2">
+            <span class="text-sm font-bold">{{ category }}</span>
           </div>
           <div>
-            <b-button
-              class="b-reset op-button-text bg-transparent"
-              @click="handleDelete(index)"
-            >
-              <i class="material-icons c-status-red s-18 p-l-8 p-r-8">delete</i>
+            <b-button class="b-reset-tw" @click="handleDelete(index)">
+              <div class="inline-flex justify-center items-center h-9 px-4">
+                <i class="material-icons text-lg text-red-700">delete</i>
+              </div>
             </b-button>
           </div>
         </div>
       </div>
 
       <!-- Add Item -->
-      <div class="cols">
+      <div class="flex">
         <b-input
-          class="flex-1"
+          class="flex-1 mr-2"
           :placeholder="$t('editMenu.newCategory')"
           v-model="newEntry"
         />
         <b-button
           :disabled="!isValidEntry"
-          class="b-reset m-l-8 op-button-pill bg-form t-button"
+          class="b-reset-tw"
           @click="handleAdd"
         >
-          <i class="material-icons c-primary p-l-8">add</i>
-          <span class="c-primary">{{ $t("editMenu.newCategoryAdd") }}</span>
+          <div
+            class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5"
+          >
+            <i class="material-icons text-lg text-op-teal mr-2">add</i>
+            <div class="text-sm font-bold text-op-teal">
+              {{ $t("editMenu.newCategoryAdd") }}
+            </div>
+          </div>
         </b-button>
       </div>
     </div>

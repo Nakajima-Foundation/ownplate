@@ -2,17 +2,29 @@
   <div class="wrapper" @click="enableSound()">
     <!-- ### The commentout below is for Tailwind CSS workaround. ### -->
 
-    <!-- w-9 h-9 w-16 h-16 w-20 h-20 w-24 h-24 w-32 h-32 w-48 h-48 w-full h-full -->
-    <!-- mt-1 mb-1 ml-2 mr-4 p-4 px-1 px-2 px-3 py-2 pt-3 pt-4 pb-2 -->
+    <!-- w-9 h-9 w-12 h-12 w-16 h-16 w-20 h-20 w-24 h-24 w-32 h-32 w-48 h-48 w-full h-full -->
+    <!-- mx-2 mt-1 mt-2 mb-1 mb-2 ml-2 ml-4 mr-4 p-1 p-4 px-1 px-2 px-3 py-1 py-2 pt-2 pt-3 pt-4 pb-2 -->
+    <!-- lg:mx-4 lg:mx-auto lg:mt-0 lg:ml-4 lg:mr-4 lg:max-w-2xl -->
 
     <!-- rounded rounded-md rounded-full rounded-r -->
-    <!-- border-solid border-black border-red-700 border-opacity-10 border-2 border-t-2 -->
+    <!-- border-solid border-2 border-t-2 -->
+    <!-- border-black border-red-700 -->
+    <!-- border-opacity-10 -->
 
-    <!-- lg:grid-cols-2 lg:gap-x-12 xl:grid-cols-4 -->
-    <!-- flex-shrink-0 space-x-4 space-y-2 justify-evenly -->
+    <!-- lg:grid-cols-2 lg:grid-cols-3 lg:gap-x-12 xl:grid-cols-4 -->
+    <!-- space-x-2 space-x-4 space-y-2 space-y-4 justify-evenly justify-end -->
+    <!-- lg:flex-1 flex-col flex-shrink-0 -->
 
-    <!-- bg-red-700 bg-yellow-500 bg-opacity-50 bg-opacity-80 -->
-    <!-- text-green-600 text-yellow-500 text-red-700 text-opacity-30 hover:text-red-700 -->
+    <!-- flow-root clear-both float-right -->
+
+    <!-- bg-pink-500 bg-purple-500 bg-blue-500 bg-green-600 bg-yellow-500 bg-red-700 -->
+    <!-- bg-opacity-0 bg-opacity-5 bg-opacity-10 bg-opacity-50 bg-opacity-80 -->
+
+    <!-- text-pink-500 text-purple-500 text-blue-500 text-green-600 text-yellow-500 text-red-700 hover:text-red-700 -->
+    <!-- text-opacity-30 text-opacity-60 text-opacity-80 -->
+    <!-- lg:text-center -->
+
+    <!-- cursor-pointer -->
 
     <!-- ### Try to add the class name here if it doesn't work after build. ### -->
 

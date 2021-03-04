@@ -591,3 +591,89 @@ svg,
 canvas {
   display: inline-block;
 }
+
+// Order Status
+.validation_ok,
+.validation_ok:hover {
+  // color: red;
+  // background: #ffeeee;
+  // border: 0;
+  @apply bg-pink-500 bg-opacity-10 text-pink-500;
+}
+
+.order_placed,
+.order_placed:hover {
+  // @extend .c-status-amber;
+  // @extend .bg-status-amber-bg;
+  // border: 0;
+  @apply bg-yellow-500 bg-opacity-10 text-yellow-500;
+}
+
+.order_accepted,
+.order_accepted:hover {
+  // @extend .c-status-blue;
+  // @extend .bg-status-blue-bg;
+  // border: 0;
+  @apply bg-blue-500 bg-opacity-10 text-blue-500;
+}
+
+.cooking_completed,
+.cooking_completed:hover {
+  // @extend .c-status-green;
+  // @extend .bg-status-green-bg;
+  // border: 0;
+  @apply bg-green-600 bg-opacity-10 text-green-600;
+}
+
+.ready_to_pickup,
+.ready_to_pickup:hover {
+  // @extend .c-status-green;
+  // @extend .bg-status-green-bg;
+  // border: 0;
+  @apply bg-green-600 bg-opacity-10 text-green-600;
+}
+
+.transaction_complete,
+.transaction_complete:hover {
+  // @extend .c-status-purple;
+  // @extend .bg-status-purple-bg;
+  // border: 0;
+  @apply bg-purple-600 bg-opacity-10 text-purple-600;
+}
+
+.transaction_hide,
+.transaction_hide:hover {
+  // @extend .c-status-purple;
+  // @extend .bg-status-purple-bg;
+  // border: 0;
+  @apply bg-purple-600 bg-opacity-10 text-purple-600;
+}
+
+.order_canceled,
+.order_canceled:hover {
+  // @extend .c-status-red;
+  // @extend .bg-status-red-bg;
+  // border: 0;
+  @apply bg-red-700 bg-opacity-10 text-red-700;
+}
+
+.order_refunded,
+.order_refunded:hover {
+  // color: #3506a8;
+  // background: #f5e4f6;
+  // border: 0;
+  @apply bg-pink-500 bg-opacity-10 text-pink-500;
+}
+
+.stripe_pending {
+  // @extend .c-status-amber;
+  @apply text-yellow-500;
+}
+.stripe_confirmed {
+  // @extend .c-status-green;
+  @apply text-green-600;
+}
+.stripe_canceled {
+  // @extend .c-status-red;
+  @apply text-red-700;
+}

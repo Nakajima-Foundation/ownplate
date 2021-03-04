@@ -421,7 +421,7 @@
   },
   "button": {
     "back": "Retour",
-    "addTitle": "Ajouter un Groupe",
+    "addTitle": "Ajouter un titre de groupe",
     "addItem": "Ajouter un article",
     "downloadMenu": "Télécharger le menu",
     "cancel": "Annuler",

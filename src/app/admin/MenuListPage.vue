@@ -5,279 +5,247 @@
       <not-found />
     </template>
     <div v-else-if="readyToDisplay">
-      <!-- Edit Header Area -->
-      <div class="columns is-gapless">
-        <!-- Left Gap -->
-        <div class="column is-narrow w-6"></div>
-        <!-- Center Column -->
-        <div class="column">
-          <div class="m-l-24 m-r-24">
-            <!-- Nav Bar -->
-            <div class="level">
-              <!-- Back Button and Restaurant Profile -->
-              <div class="level-left flex-1">
-                <!-- Back Button -->
-                <back-button url="/admin/restaurants/" class="m-t-24 m-r-16" />
-                <!-- Restaurant Profile -->
-                <!-- <div class="is-inline-flex flex-center m-t-24">
-                  <div>
-                    <img :src="restaurantInfo.restProfilePhoto" class="w-9 h-9 rounded-full cover" />
-                  </div>
-                  <div
-                    class="t-h6 c-text-black-high m-l-8 flex-1"
-                  >{{ restaurantInfo.restaurantName }}</div>
-                </div>-->
+      <!-- Header -->
+      <div class="mt-6 mx-6 lg:flex lg:items-center">
+        <!-- Back and Preview -->
+        <div class="flex space-x-4">
+          <div class="flex-shrink-0">
+            <back-button url="/admin/restaurants/" />
+          </div>
+          <div class="flex-shrink-0">
+            <nuxt-link :to="'/r/' + restaurantId()">
+              <div
+                class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
+              >
+                <i class="material-icons text-lg text-op-teal mr-2">launch</i>
+                <span class="text-sm font-bold text-op-teal">{{
+                  $t("admin.viewPage")
+                }}</span>
               </div>
-              <!-- Notification Settings -->
-              <div class="level-right">
-                <notification-index :shopInfo="restaurantInfo" />
-              </div>
-            </div>
+            </nuxt-link>
           </div>
         </div>
-        <!-- Right Gap -->
-        <div class="column is-narrow w-6"></div>
-      </div>
 
-      <!-- Edit Body Area -->
-      <div class="columns is-gapless">
-        <!-- Left Gap -->
-        <div class="column is-narrow w-6"></div>
-
-        <!-- Left Column -->
-        <div class="column">
-          <div class="m-l-24 m-r-24">
-            <!-- Restaurant Profile Photo -->
-            <div class="m-t-24 align-center">
+        <!-- Photo and Name -->
+        <div class="mt-4 lg:mt-0 lg:flex-1 lg:flex lg:items-center lg:mx-4">
+          <div class="flex items-center">
+            <div class="flex-shrink-0 rounded-full bg-black bg-opacity-10 mr-4">
               <img
                 :src="resizedProfileImage(restaurantInfo, '600')"
-                class="w-16 h-16 rounded-full cover"
+                class="w-9 h-9 rounded-full cover"
               />
             </div>
-
-            <!-- Restaurant Name -->
-            <div class="m-t-8 align-center t-h6 c-text-black-high">
+            <div class="text-base font-bold">
               {{ restaurantInfo.restaurantName }}
             </div>
-
-            <!-- Restaurant Descriptions -->
-            <div class="t-body1 c-text-black-medium align-center m-t-8">
-              {{ restaurantInfo.introduction }}
-            </div>
-
-            <!-- Preview Link -->
-            <div class="m-t-8 align-center">
-              <nuxt-link target="_blank" :to="'/r/' + restaurantId()">
-                <div class="op-button-text">
-                  <i class="material-icons">launch</i>
-                  <span>{{ $t("admin.viewPage") }}</span>
-                </div>
-              </nuxt-link>
-            </div>
           </div>
         </div>
 
-        <!-- Right Column -->
-        <div class="column">
-          <div class="m-l-24 m-r-24">
-            <!-- Toggle to View All or Public Only -->
-            <div class="m-t-24 align-center">
-              <div @click="publicFilterToggle()" class="op-button">
-                <div
-                  v-if="publicFilter"
-                  class="op-button bg-status-green-bg rounded-full p-t-4 p-b-4 p-l-4 p-r-4"
-                >
-                  <div class="op-button-pill c-status-green t-subtitle2">
-                    {{ $t("editMenu.showAllMenu") }}
-                  </div>
-                  <div
-                    class="op-button-pill bg-status-green c-text-white-full t-subtitle2"
-                  >
-                    {{ $t("editMenu.showPublicMenu") }}
-                  </div>
-                </div>
-                <div
-                  v-else
-                  class="op-button bg-status-green-bg rounded-full p-t-4 p-b-4 p-l-4 p-r-4"
-                >
-                  <div
-                    class="op-button-pill c-text-white-full t-subtitle2 bg-status-green"
-                  >
-                    {{ $t("editMenu.showAllMenu") }}
-                  </div>
-                  <div class="op-button-pill c-status-green t-subtitle2">
-                    {{ $t("editMenu.showPublicMenu") }}
-                  </div>
-                </div>
+        <!-- Notifications -->
+        <div class="mt-4 lg:mt-0 flex-shrink-0">
+          <notification-index :shopInfo="restaurantInfo" />
+        </div>
+      </div>
+
+      <!-- Toggle to View All or Public Only -->
+      <div class="mt-6 mx-6 lg:text-center">
+        <a
+          @click="publicFilterToggle()"
+          class="inline-flex items-center rounded-full p-1 bg-green-600 bg-opacity-10"
+        >
+          <div v-if="publicFilter">
+            <div class="inline-flex items-center rounded-full h-9 px-4">
+              <div class="text-sm font-bold text-green-600">
+                {{ $t("editMenu.showAllMenu") }}
               </div>
             </div>
-
-            <!-- Toggle to View All or Public Only -->
-            <!-- <div @click="publicFilterToggle()" class="m-t-24 align-center">
-              <div
-                v-if="publicFilter"
-                class="op-button-pill bg-status-green-bg"
-              >
-                <span class="c-status-green t-button">
-                  {{ $t("editMenu.showPublicMenu") }}
-                </span>
+            <div
+              class="inline-flex items-center rounded-full h-9 px-4 bg-green-600"
+            >
+              <div class="text-sm font-bold text-white">
+                {{ $t("editMenu.showPublicMenu") }}
               </div>
-              <div v-else class="op-button-pill bg-status-green-bg">
-                <span class="c-status-blue t-button">
-                  {{ $t("editMenu.showAllMenu") }}
-                </span>
-              </div>
-            </div> -->
-
-            <!-- No Menu -->
-            <div v-if="!existsMenu || menuCounter > 5">
-              <div
-                class="border-primary rounded-lg p-l-24 p-r-24 p-t-24 p-b-24 m-t-24"
-              >
-                <div class="align-center t-subtitle1 c-primary">
-                  {{ $t("editMenu.pleaseAddItem") }}
-                </div>
-                <div class="align-center">
-                  <b-button
-                    class="b-reset op-button-pill h-9 bg-form m-r-8 m-l-8 m-t-16"
-                    :disabled="submitting"
-                    @click="addTitle('top')"
-                  >
-                    <i class="material-icons c-primary m-l-8">add</i>
-                    <span class="c-primary t-button">
-                      {{ $t("button.addTitle") }}
-                    </span>
-                  </b-button>
-                  <b-button
-                    class="b-reset op-button-pill h-9 bg-form m-l-8 m-r-8 m-t-16"
-                    :disabled="submitting"
-                    @click="addMenu('top')"
-                  >
-                    <i class="material-icons c-primary m-l-8">add</i>
-                    <span class="c-primary t-button">
-                      {{ $t("button.addItem") }}
-                    </span>
-                  </b-button>
-                </div>
-              </div>
-            </div>
-
-            <!-- Category Titles / Menu Items -->
-            <div v-if="existsMenu">
-              <div v-for="(menuList, index) in menuLists" :key="menuList">
-                <!-- Category Title -->
-                <div
-                  v-if="
-                    itemsObj[menuList] &&
-                      itemsObj[menuList]._dataType === 'title'
-                  "
-                >
-                  <div v-if="editings[menuList] === true">
-                    <title-input
-                      :title="itemsObj[menuList]"
-                      :position="
-                        index == 0
-                          ? 'first'
-                          : menuLength - 1 === index
-                          ? 'last'
-                          : ''
-                      "
-                      @toEditMode="toEditMode($event)"
-                      @positionUp="positionUp($event)"
-                      @positionDown="positionDown($event)"
-                      @forkItem="forkTitleItem($event)"
-                      @updateTitle="updateTitle($event)"
-                    ></title-input>
-                  </div>
-                  <div v-else>
-                    <title-card
-                      :title="itemsObj[menuList]"
-                      :position="
-                        index == 0
-                          ? 'first'
-                          : menuLength - 1 === index
-                          ? 'last'
-                          : ''
-                      "
-                      @toEditMode="toEditMode($event)"
-                      @positionUp="positionUp($event)"
-                      @positionDown="positionDown($event)"
-                      @forkItem="forkTitleItem($event)"
-                      @deleteItem="deleteItem($event)"
-                    ></title-card>
-                  </div>
-                </div>
-
-                <!-- Menu Item -->
-                <div
-                  v-else-if="
-                    itemsObj[menuList] &&
-                      itemsObj[menuList]._dataType === 'menu' &&
-                      (!publicFilter || itemsObj[menuList].publicFlag)
-                  "
-                >
-                  <item-edit-card
-                    :menuitem="itemsObj[menuList]"
-                    :position="
-                      index == 0
-                        ? 'first'
-                        : menuLists.length - 1 === index
-                        ? 'last'
-                        : ''
-                    "
-                    :shopInfo="restaurantInfo"
-                    @positionUp="positionUp($event)"
-                    @positionDown="positionDown($event)"
-                    @forkItem="forkMenuItem($event)"
-                    @deleteItem="deleteItem($event)"
-                  ></item-edit-card>
-                </div>
-              </div>
-            </div>
-
-            <!-- Add Category Title / Menu Item -->
-            <div class="align-center m-t-16">
-              <!-- Add Category Title -->
-              <b-button
-                class="b-reset op-button-pill h-9 bg-form m-r-8 m-l-8 m-t-16"
-                :disabled="submitting"
-                @click="addTitle()"
-              >
-                <i class="material-icons c-primary m-l-8">add</i>
-                <span class="c-primary t-button">
-                  {{ $t("button.addTitle") }}
-                </span>
-              </b-button>
-
-              <!-- Add Menu Item -->
-              <b-button
-                class="b-reset op-button-pill h-9 bg-form m-l-8 m-r-8 m-t-16"
-                :disabled="submitting"
-                @click="addMenu()"
-              >
-                <i class="material-icons c-primary m-l-8">add</i>
-                <span class="c-primary t-button">
-                  {{ $t("button.addItem") }}
-                </span>
-              </b-button>
-            </div>
-            <div class="align-center m-t-16" v-if="menuCounter > 0">
-              <!-- Add Category Title -->
-              <b-button
-                class="b-reset op-button-pill h-9 bg-form m-r-8 m-l-8 m-t-16"
-                :disabled="downloadSubmitting"
-                @click="downloadMenu()"
-              >
-                <i class="material-icons c-primary m-l-8">menu_book</i>
-                <span class="c-primary t-button">
-                  {{ $t("button.downloadMenu") }}
-                </span>
-              </b-button>
             </div>
           </div>
+
+          <div v-else>
+            <div
+              class="inline-flex items-center rounded-full h-9 px-4 bg-green-600"
+            >
+              <div class="text-sm font-bold text-white">
+                {{ $t("editMenu.showAllMenu") }}
+              </div>
+            </div>
+            <div class="inline-flex items-center rounded-full h-9 px-4 ">
+              <div class="text-sm font-bold text-green-600">
+                {{ $t("editMenu.showPublicMenu") }}
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <!-- No Menu or Too Many Menu-->
+      <div
+        v-if="!existsMenu || menuCounter > 5"
+        class="mt-6 mx-6 border-2 border-op-teal rounded-lg p-4 pb-2 lg:max-w-2xl lg:mx-auto"
+      >
+        <div class="text-center text-sm font-bold text-op-teal">
+          {{ $t("editMenu.pleaseAddItem") }}
         </div>
-        <!-- Right Gap -->
-        <div class="column is-narrow w-6"></div>
+
+        <div class="mt-4 text-center">
+          <b-button
+            @click="addTitle('top')"
+            :disabled="submitting"
+            class="b-reset-tw mx-2 mb-2"
+          >
+            <div
+              class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
+            >
+              <i class="material-icons text-lg text-op-teal mr-2">add</i>
+              <span class="text-sm font-bold text-op-teal">{{
+                $t("button.addTitle")
+              }}</span>
+            </div>
+          </b-button>
+
+          <b-button
+            @click="addMenu('top')"
+            :disabled="submitting"
+            class="b-reset-tw mx-2 mb-2"
+          >
+            <div
+              class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
+            >
+              <i class="material-icons text-lg text-op-teal mr-2">add</i>
+              <span class="text-sm font-bold text-op-teal">
+                {{ $t("button.addItem") }}</span
+              >
+            </div>
+          </b-button>
+        </div>
+      </div>
+
+      <!-- Category Titles / Menu Items -->
+      <div
+        v-if="existsMenu"
+        class="mt-6 mx-6 grid-col-1 space-y-4 lg:max-w-2xl lg:mx-auto"
+      >
+        <div v-for="(menuList, index) in menuLists" :key="menuList">
+          <!-- Category Title -->
+          <div
+            v-if="
+              itemsObj[menuList] && itemsObj[menuList]._dataType === 'title'
+            "
+          >
+            <div v-if="editings[menuList] === true">
+              <title-input
+                :title="itemsObj[menuList]"
+                :position="
+                  index == 0 ? 'first' : menuLength - 1 === index ? 'last' : ''
+                "
+                @toEditMode="toEditMode($event)"
+                @positionUp="positionUp($event)"
+                @positionDown="positionDown($event)"
+                @forkItem="forkTitleItem($event)"
+                @updateTitle="updateTitle($event)"
+              ></title-input>
+            </div>
+            <div v-else>
+              <title-card
+                :title="itemsObj[menuList]"
+                :position="
+                  index == 0 ? 'first' : menuLength - 1 === index ? 'last' : ''
+                "
+                @toEditMode="toEditMode($event)"
+                @positionUp="positionUp($event)"
+                @positionDown="positionDown($event)"
+                @forkItem="forkTitleItem($event)"
+                @deleteItem="deleteItem($event)"
+              ></title-card>
+            </div>
+          </div>
+
+          <!-- Menu Item -->
+          <div
+            v-else-if="
+              itemsObj[menuList] &&
+                itemsObj[menuList]._dataType === 'menu' &&
+                (!publicFilter || itemsObj[menuList].publicFlag)
+            "
+          >
+            <item-edit-card
+              :menuitem="itemsObj[menuList]"
+              :position="
+                index == 0
+                  ? 'first'
+                  : menuLists.length - 1 === index
+                  ? 'last'
+                  : ''
+              "
+              :shopInfo="restaurantInfo"
+              @positionUp="positionUp($event)"
+              @positionDown="positionDown($event)"
+              @forkItem="forkMenuItem($event)"
+              @deleteItem="deleteItem($event)"
+            ></item-edit-card>
+          </div>
+        </div>
+      </div>
+
+      <!-- Add Group Title, Menu Item, and Download Menu -->
+      <div
+        class="mt-6 mx-6 border-2 border-op-teal rounded-lg p-4 pb-2 lg:max-w-2xl lg:mx-auto"
+      >
+        <div class="text-center">
+          <b-button
+            @click="addTitle()"
+            :disabled="submitting"
+            class="b-reset-tw mx-2 mb-2"
+          >
+            <div
+              class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
+            >
+              <i class="material-icons text-lg text-op-teal mr-2">add</i>
+              <span class="text-sm font-bold text-op-teal">{{
+                $t("button.addTitle")
+              }}</span>
+            </div>
+          </b-button>
+
+          <b-button
+            @click="addMenu()"
+            :disabled="submitting"
+            class="b-reset-tw mx-2 mb-2"
+          >
+            <div
+              class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
+            >
+              <i class="material-icons text-lg text-op-teal mr-2">add</i>
+              <span class="text-sm font-bold text-op-teal">
+                {{ $t("button.addItem") }}</span
+              >
+            </div>
+          </b-button>
+        </div>
+
+        <div class="text-center mt-2" v-if="menuCounter > 0">
+          <b-button
+            @click="downloadMenu()"
+            :disabled="downloadSubmitting"
+            class="b-reset-tw mx-2 mb-2"
+          >
+            <div
+              class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
+            >
+              <i class="material-icons text-lg text-op-teal mr-2">menu_book</i>
+              <span class="text-sm font-bold text-op-teal">
+                {{ $t("button.downloadMenu") }}</span
+              >
+            </div>
+          </b-button>
+        </div>
       </div>
     </div>
   </div>
