@@ -342,6 +342,7 @@
     "tipShort": "心づけ",
     "serviceTax": "消費税",
     "name": "オーダー名",
+    "restaurantName": "飲食店名",
     "payment": "支払い",
     "includingTip": "心づけ有り",
     "subtotal": "小計",

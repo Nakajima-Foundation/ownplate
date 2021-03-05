@@ -342,6 +342,7 @@
     "tipShort": "tip",
     "serviceTax": "tip tax",
     "name": "order name",
+    "restaurantName": "Restaurant name",
     "payment": "payment",
     "includingTip": "Including Tip",
     "subtotal": "Subtotal",
