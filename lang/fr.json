@@ -342,6 +342,7 @@
     "tipShort": "Pourboire",
     "serviceTax": "tip tax",
     "name": "order name",
+    "restaurantName": "Nom du restaurant",
     "payment": "payment",
     "includingTip": "avec pourboire",
     "subtotal": "Sous-Total",
