@@ -1,14 +1,14 @@
 <template>
   <div>
     <!-- Restaurant Profile Photo -->
-    <div class="m-t-24 align-center">
-      <div class="w-16 h-16 rounded-full bg-form is-inline-block">
+    <div class="text-center">
+      <div class="inline-block w-16 h-16 rounded-full bg-black bg-opacity-50">
         <img :src="profileImage" class="w-16 h-16 rounded-full cover" />
       </div>
     </div>
 
     <!-- Restaurant Name -->
-    <div class="m-t-8 align-center t-h6 c-text-black-high">
+    <div class="mt-2 text-center text-xl font-bold">
       {{ shopInfo.restaurantName }}
     </div>
   </div>

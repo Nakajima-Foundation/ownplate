@@ -201,6 +201,7 @@ html {
   .bg-#{$name} {
     background-color: $value;
   }
+
   // Border Colors
   .border-#{$name} {
     border-color: $value;
@@ -590,6 +591,10 @@ img,
 svg,
 canvas {
   display: inline-block;
+}
+
+.bg-op-teal.bg-opacity-10 {
+  background-color: rgba(0, 151, 167, 0.1);
 }
 
 // Order Status

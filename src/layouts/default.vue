@@ -2,11 +2,12 @@
   <div class="wrapper" @click="enableSound()">
     <!-- ### The commentout below is for Tailwind CSS workaround. ### -->
 
-    <!-- w-9 h-9 w-12 h-12 w-16 h-16 w-20 h-20 w-24 h-24 w-32 h-32 w-48 h-48 w-full h-full -->
-    <!-- mx-2 mt-1 mt-2 mb-1 mb-2 ml-2 ml-4 mr-4 p-1 p-4 px-1 px-2 px-3 py-1 py-2 pt-2 pt-3 pt-4 pb-2 -->
-    <!-- lg:mx-4 lg:mx-auto lg:mt-0 lg:ml-4 lg:mr-4 lg:max-w-2xl -->
+    <!-- w-4 h-4 w-9 h-9 w-12 h-12 w-16 h-16 w-20 h-20 w-24 h-24 w-32 h-32 w-48 h-48 w-72 w-full h-full -->
+    <!-- mx-2 mx-4 mt-1 mt-2 mb-1 mb-2 ml-1 ml-2 ml-4 mr-1 mr-2 mr-4 -->
+    <!-- p-1 p-4 px-1 px-2 px-3 py-1 py-2 pt-0 pt-2 pt-3 pt-4 pb-2 pb-4 -->
+    <!-- lg:mx-0 lg:mx-4 lg:mx-auto lg:mx-6 lg:mt-0 lg:mt-6 lg:ml-4 lg:mr-4 lg:max-w-2xl -->
 
-    <!-- rounded rounded-md rounded-full rounded-r -->
+    <!-- rounded rounded-md rounded-lg rounded-full rounded-r lg:rounded-lg -->
     <!-- border-solid border-2 border-t-2 -->
     <!-- border-black border-red-700 -->
     <!-- border-opacity-10 -->

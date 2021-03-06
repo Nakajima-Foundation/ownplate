@@ -1,45 +1,65 @@
 <template>
   <div class="is-inline-block">
     <!-- Share  Buttons -->
-    <div class="op-button-text m-r-8" @click="openShare()">
-      <i class="material-icons">launch</i>
-      <span>{{ $t("shopInfo.share") }}</span>
-    </div>
+    <a @click="openShare()" class="inline-flex justify-center items-center">
+      <i class="material-icons text-lg text-op-teal mr-2">launch</i>
+      <div class="text-sm font-bold text-op-teal">
+        {{ $t("shopInfo.share") }}
+      </div>
+    </a>
 
     <!-- Share Popup-->
     <b-modal
       :active.sync="sharePopup"
       :width="488"
       scroll="keep"
-      style="text-align: initial;"
+      style="text-align: initial; "
     >
-      <div class="op-dialog p-t-24 p-l-24 p-r-24 p-b-24">
-        <div class="t-h6 c-text-black-disabled p-b-8">
+      <div class="mx-2 my-6 p-6 bg-white shadow-lg rounded-lg">
+        <!-- Title -->
+        <div class="text-xl font-bold text-black text-opacity-40">
           {{ $t("shopInfo.share") }}
         </div>
-        <div class="cols">
-          <div>
+
+        <!-- Body -->
+        <div class="flex">
+          <div class="flex-shrink-0 mr-2">
             <qrcode :value="url" :options="{ width: 160 }"></qrcode>
           </div>
-          <div>
+
+          <div class="flex-1">
             <nuxt-link to="#" @click.native="copyClipboard(url)" event>
-              <div class="op-button-text m-t-8">
-                <i class="material-icons">file_copy</i>
-                <span>{{ $t("shopInfo.copyUrl") }}</span>
+              <div class="inline-flex justify-center items-center">
+                <i class="material-icons text-lg text-op-teal mr-2"
+                  >file_copy</i
+                >
+                <div class="text-sm font-bold text-op-teal">
+                  {{ $t("shopInfo.copyUrl") }}
+                </div>
               </div>
             </nuxt-link>
-            <div class="m-l-8 t-body2 c-text-black-disabled">
+
+            <div class="text-sm text-black text-opacity-30">
               {{ this.url }}
             </div>
-            <div class="m-t-24">
+
+            <div class="mt-6">
               <sharing-buttons :title="shopInfo.restaurantName" :url="url" />
             </div>
           </div>
         </div>
-        <div class="m-t-24 align-center">
-          <div class="op-button-small tertiary" @click="closeShare()">
-            {{ $t("menu.close") }}
-          </div>
+
+        <!-- Actions -->
+        <div class="mt-6 text-center">
+          <a
+            @click="closeShare()"
+            class="inline-flex justify-center items-center h-12 rounded-full px-6 bg-black bg-opacity-5"
+            style="min-width: 8rem;"
+          >
+            <div class="text-base font-bold text-black text-opacity-60">
+              {{ $t("menu.close") }}
+            </div>
+          </a>
         </div>
       </div>
     </b-modal>
@@ -67,7 +87,7 @@ export default {
   data() {
     return {
       url: this.shareUrl() + (this.suffix || ""),
-      sharePopup: false,
+      sharePopup: false
     };
   },
   methods: {

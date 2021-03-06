@@ -1,84 +1,103 @@
 <template>
   <div>
-    <div v-if="!stripeJCB" class="m-t-8 p-t-8 p-l-16">
+    <div v-if="!stripeJCB" class="text-sm font-bold text-black text-opacity-60">
       {{ $t("order.no_jcb") }}
     </div>
-    <div
-      v-if="storedCard"
-      class="bg-surface rounded-lg d-low m-t-8 p-l-16 p-r-16 p-t-16 p-b-16"
-    >
+
+    <div v-if="storedCard" class="bg-white rounded-lg shadow p-4 mt-2">
       <b-checkbox v-model="useStoredCard">
-        <span class="t-body1 c-text-black-high">
+        <div class="text-base">
           <span>{{ storedCard.brand }}</span>
           <span>**** **** **** {{ storedCard.last4 }}</span>
-        </span>
+        </div>
       </b-checkbox>
     </div>
+
     <div v-show="!useStoredCard">
       <!-- Enter New Card -->
-      <div
-        class="bg-surface rounded-lg d-low m-t-8 p-l-16 p-r-16 p-t-16 p-b-16"
-      >
+      <div class="bg-white rounded-lg shadow p-4 mt-2">
         <div id="card-element"></div>
       </div>
+
       <!-- About CVC -->
-      <div>
+      <div class="mt-1">
         <!-- CVC Button -->
-        <div class="align-right">
-          <div class="op-button-text" @click="openCVC()">
-            <i class="material-icons">help_outline</i>
-            <span>{{ $t("order.whatsCVC") }}</span>
-          </div>
+        <div class="text-right">
+          <a class="inline-flex justify-center items-center" @click="openCVC()">
+            <i class="material-icons text-lg text-op-teal mr-1">help_outline</i>
+            <span class="text-sm font-bold text-op-teal">{{
+              $t("order.whatsCVC")
+            }}</span>
+          </a>
         </div>
+
         <!-- CVC Popup-->
         <b-modal :active.sync="CVCPopup" :width="488" scroll="keep">
-          <div class="op-dialog p-t-24 p-l-24 p-r-24 p-b-24">
+          <div class="mx-2 my-6 p-6 bg-white shadow-lg rounded-lg">
             <!-- Title -->
-            <div class="t-h6 c-text-black-disabled">
+            <div class="text-xl font-bold text-black text-opacity-40">
               {{ $t("order.whatsCVC") }}
-            </div>
-
-            <!-- 4 Digits -->
-            <div
-              class="bg-form rounded-lg align-center m-t-24 p-l-24 p-r-24 p-t-24 p-b-24"
-            >
-              <div class="t-h6 c-text-black-medium">
-                Visa, MasterCard, JCB, Diners Club, DISCOVER
-              </div>
-              <div class="t-subtitle1 c-status-blue m-t-8">
-                {{ $t("order.3digitsCVC") }}
-              </div>
-              <div class="m-t-8">
-                <img src="~/static/CVC-3digits-1.svg" />
-              </div>
-              <div class="m-t-4">
-                <img src="~/static/CVC-3digits-2.svg" />
-              </div>
             </div>
 
             <!-- 3 Digits -->
             <div
-              class="bg-form rounded-lg align-center m-t-24 p-l-24 p-r-24 p-t-24 p-b-24"
+              class="bg-black bg-opacity-5 rounded-lg m-t-24 p-4 mt-6 text-center"
             >
-              <div class="t-h6 c-text-black-medium">American Express</div>
-              <div class="t-subtitle1 c-status-blue m-t-8">
-                {{ $t("order.4digitsCVC") }}
+              <div class="text-xl font-bold">
+                Visa, MasterCard, JCB, Diners Club, DISCOVER
               </div>
-              <div class="m-t-8">
-                <img src="~/static/CVC-4digits-Amex.svg" />
+
+              <div class="mt-2 text-base font-bold text-center text-blue-500">
+                {{ $t("order.3digitsCVC") }}
+              </div>
+
+              <div class="mt-2">
+                <img src="/CVC-3digits-1.svg" />
+              </div>
+
+              <div class="mt-1">
+                <img src="/CVC-3digits-2.svg" />
               </div>
             </div>
-            <div class="m-t-24 align-center">
-              <div class="op-button-small tertiary" @click="closeCVC()">
-                {{ $t("menu.close") }}
+
+            <!-- 4 Digits -->
+            <div
+              class="bg-black bg-opacity-5 rounded-lg m-t-24 p-4 mt-6 text-center"
+            >
+              <div class="text-xl font-bold">American Express</div>
+
+              <div class="mt-2 text-base font-bold text-center text-blue-500">
+                {{ $t("order.4digitsCVC") }}
               </div>
+
+              <div class="mt-2">
+                <img src="/CVC-4digits-Amex.svg" />
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="mt-6 text-center">
+              <a
+                @click="closeCVC()"
+                class="inline-flex justify-center items-center h-12 rounded-full px-6 bg-black bg-opacity-5"
+                style="min-width: 8rem;"
+              >
+                <div class="text-base font-bold text-black text-opacity-60">
+                  {{ $t("menu.close") }}
+                </div>
+              </a>
             </div>
           </div>
         </b-modal>
       </div>
+
       <!-- Save Card Info for Reuse -->
-      <div class="m-l-16 m-t-8">
-        <b-checkbox v-model="reuse">{{ $t("order.reuseCard") }}</b-checkbox>
+      <div class="mt-2 text-center">
+        <b-checkbox v-model="reuse"
+          ><div class="text-sm font-bold">
+            {{ $t("order.reuseCard") }}
+          </div></b-checkbox
+        >
       </div>
     </div>
   </div>

@@ -332,7 +332,7 @@
               <div class="text-xs font-bold text-black text-opacity-60">
                 {{ $t("admin.order.messageFromCustomer") }}
               </div>
-              <div class="mt-1 text-base">
+              <div class="mt-2 text-base">
                 {{ orderInfo.memo }}
               </div>
             </div>
