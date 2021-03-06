@@ -131,9 +131,11 @@
               !canceled
           "
         >
-          <div class="mt-6 mx-6 bg-black bg-opacity-5 rounded-lg p-4">
-            <div class="text-xs">{{ $t("order.thanksMessage") }}</div>
-            <div class="text-base mt-2">{{ shopInfo.orderThanks }}</div>
+          <div class="mt-6 mx-6 bg-white rounded-lg p-4 shadow">
+            <div class="text-xs font-bold text-black text-opacity-60">
+              {{ $t("order.thanksMessage") }}
+            </div>
+            <div class="mt-2 text-base">{{ shopInfo.orderThanks }}</div>
           </div>
         </template>
 

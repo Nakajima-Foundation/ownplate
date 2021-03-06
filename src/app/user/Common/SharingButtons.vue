@@ -1,20 +1,34 @@
 <template>
-  <social-sharing :url="targetURL" :title="title" :hashtags="hashtag" inline-template>
+  <social-sharing
+    :url="targetURL"
+    :title="title"
+    :hashtags="hashtag"
+    inline-template
+  >
     <div>
-      <network network="facebook" class="facebook">
-        <span style="color:#3b5998; cursor: pointer; padding: 8px;">
-          <i class="fab fa-facebook"></i>
-          <span class="t-subtitle1 m-l-4">Facebook</span>
-        </span>
-      </network>
-      <br />
-      <br />
-      <network network="twitter" class="twitter">
-        <span style="color:#00acee; cursor: pointer; padding: 8px;">
-          <i class="fab fa-twitter"></i>
-          <span class="t-subtitle1 m-l-4">Twitter</span>
-        </span>
-      </network>
+      <div>
+        <network network="facebook" class="facebook">
+          <a
+            class="inline-flex justify-center items-center"
+            style="color:#3b5998;"
+          >
+            <i class="fab fa-facebook mr-2"></i>
+            <div class="text-sm font-bold">Facebook</div>
+          </a>
+        </network>
+      </div>
+
+      <div class="mt-2">
+        <network network="twitter" class="twitter">
+          <a
+            class="inline-flex justify-center items-center"
+            style="color:#00acee;"
+          >
+            <i class="fab fa-twitter mr-2"></i>
+            <div class="text-sm font-bold">Twitter</div>
+          </a>
+        </network>
+      </div>
     </div>
   </social-sharing>
 </template>

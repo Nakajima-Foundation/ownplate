@@ -1,11 +1,14 @@
 <template>
   <div>
     <!-- Item Card -->
-    <div class="bg-surface rounded-lg d-low m-t-8" :style="cardStyle">
-      <div class="touchable is-clearfix" @click="toggleMenuFlag()">
-        <div class="p-r-16 p-t-16 p-b-16 p-l-16 is-pulled-right">
+    <div
+      class="bg-white rounded-lg shadow"
+      :class="this.totalQuantity > 0 ? 'border-2 border-op-teal' : ''"
+    >
+      <div @click="toggleMenuFlag()" class="flow-root cursor-pointer">
+        <div class="p-4 float-right">
           <!-- Image -->
-          <div v-if="image" class="p-b-8">
+          <div v-if="image" class="pb-2">
             <img
               @click.stop="openImage()"
               :src="image"
@@ -16,158 +19,174 @@
           </div>
 
           <!-- Add / Sold Out Button -->
-          <div
-            v-if="isSoldOut"
-            class="bg-status-red-bg w-24 h-9 rounded-full t-button is-flex"
-            style="flex-direction: column; justify-content: center"
-          >
-            <div class="c-status-red align-center">
-              {{ $t("sitemenu.soldOut") }}
+          <div>
+            <div
+              v-if="isSoldOut"
+              class="inline-flex justify-center items-center h-9 rounded-full w-24 bg-red-700 bg-opacity-10"
+            >
+              <div class="text-sm font-bold text-red-700">
+                {{ $t("sitemenu.soldOut") }}
+              </div>
             </div>
-          </div>
-          <div
-            v-else
-            @click.stop="pushQuantities(0)"
-            class="op-button-pill bg-primary-bg w-24 t-button"
-          >
-            <span>{{ $t("sitemenu.add") }}</span>
+            <div
+              v-else
+              @click.stop="pushQuantities(0)"
+              class="inline-flex justify-center items-center h-9 rounded-full w-24 bg-op-teal bg-opacity-10"
+            >
+              <div class="text-sm font-bold text-op-teal">
+                {{ $t("sitemenu.add") }}
+              </div>
+            </div>
           </div>
         </div>
 
-        <div class="p-l-16 p-r-16 p-t-16 p-b-16">
+        <div class="p-4">
           <!-- Item Name -->
-          <div class="t-h6 c-text-black-high">{{ title }}</div>
+          <div class="text-xl font-bold">{{ title }}</div>
 
           <!-- Price -->
-          <div class="t-body1 c-text-black-high m-t-8">
+          <div class="mt-2 text-base">
             <Price :shopInfo="shopInfo" :menu="item" />
           </div>
 
           <!-- Description -->
-          <div
-            v-if="description !== null"
-            class="t-body2 c-text-black-medium m-t-8"
-          >
+          <div v-if="description !== null" class="mt-2 text-sm">
             {{ description }}
           </div>
 
           <!-- Allergens -->
-          <div
-            v-if="allergens.length > 0"
-            class="t-body2 c-text-black-medium m-t-8"
-          >
+          <div v-if="allergens.length > 0" class="mt-2 text-xs font-bold">
             {{ allergensDescription }}
           </div>
         </div>
       </div>
 
       <!-- Item Order Details -->
-      <div v-if="openMenuFlag" class="m-l-16 m-r-16 p-b-16">
-        <hr class="devider m-t-0 m-b-0" />
-
+      <div
+        v-if="openMenuFlag"
+        class="border-t-2 border-solid border-black border-opacity-10 mt-0 mx-4 pb-4"
+      >
         <!-- Share Button -->
-        <div class="align-center m-t-8">
+        <div class="text-center mt-2">
           <share-popup :shopInfo="shopInfo" :suffix="urlSuffix"></share-popup>
         </div>
 
         <!-- Item Options -->
         <template v-for="(value, quantityKey) in quantities">
-          <div v-if="hasOptions" class="m-t-8">
-            <div class="t-caption c-text-black-medium">
+          <div v-if="hasOptions">
+            <div class="text-xs">
               {{ $t("sitemenu.options") }}
             </div>
-            <div
-              v-for="(option, index) in options"
-              :key="index"
-              class="m-t-8 bg-form p-t-16 p-l-16 p-r-16 p-b-16 rounded-lg"
-            >
-              <div v-if="option.length === 1" class="field">
-                <b-checkbox v-model="optionValues[quantityKey][index]">{{
-                  displayOption(option[0])
-                }}</b-checkbox>
-              </div>
-              <div v-else class="field">
-                <b-radio
-                  v-for="(choice, index2) in option"
-                  v-model="optionValues[quantityKey][index]"
-                  :name="`${item.id}_${quantityKey}_${index}`"
-                  :native-value="index2"
-                  :key="`${quantityKey}_${index2}`"
-                  >{{ displayOption(choice) }}</b-radio
-                >
+
+            <div class="grid grid-cols-1 space-y-2 mt-2">
+              <div
+                v-for="(option, index) in options"
+                :key="index"
+                class="bg-black bg-opacity-5 rounded-lg p-4"
+              >
+                <div v-if="option.length === 1" class="field">
+                  <b-checkbox v-model="optionValues[quantityKey][index]"
+                    ><div class="text-sm font-bold">
+                      {{ displayOption(option[0]) }}
+                    </div></b-checkbox
+                  >
+                </div>
+                <div v-else class="field">
+                  <b-radio
+                    v-for="(choice, index2) in option"
+                    v-model="optionValues[quantityKey][index]"
+                    :name="`${item.id}_${quantityKey}_${index}`"
+                    :native-value="index2"
+                    :key="`${quantityKey}_${index2}`"
+                    ><div class="text-sm font-bold">
+                      {{ displayOption(choice) }}
+                    </div></b-radio
+                  >
+                </div>
               </div>
             </div>
           </div>
 
           <!-- Special instructions -->
-          <div v-if="false" class="m-t-16">
-            <div class="t-caption c-text-black-medium p-b-8">
+          <div v-if="false" class="mt-4">
+            <div class="text-xs">
               Special instructions
             </div>
-            <b-input
-              type="textarea"
-              placeholder="Enter special instructions here."
-            ></b-input>
-            <div class="t-caption c-text-black-medium m-l-16 m-r-16 m-t-8">
+
+            <div class="mt-2">
+              <b-input
+                type="textarea"
+                placeholder="Enter special instructions here."
+              ></b-input>
+            </div>
+
+            <div class="mt-2 text-xs">
               Please note that special requests may result in price adjustment
               after your order is processed.
             </div>
           </div>
 
           <!-- Item Quantity / Sold Out -->
+          <div class="mt-4">
+            <div v-if="isSoldOut">
+              <div
+                class="flex justify-center items-center h-9 rounded-full bg-red-700 bg-opacity-10"
+              >
+                <div class="text-sm font-bold text-red-700">
+                  {{ $t("sitemenu.soldOut") }}
+                </div>
+              </div>
+            </div>
+
+            <div v-else>
+              <div>
+                <div class="flex">
+                  <div class="text-xs">
+                    {{ $t("sitemenu.quantity") }}
+                  </div>
+                  <div
+                    v-if="prices[quantityKey] > 0"
+                    class="flex-1 text-right text-xs"
+                  >
+                    {{ $t("sitemenu.subTotal")
+                    }}<Price
+                      :shopInfo="shopInfo"
+                      :menu="{ price: prices[quantityKey] }"
+                    />
+                  </div>
+                </div>
+                <div></div>
+              </div>
+
+              <div class="mt-2 flex items-center">
+                <div>
+                  <a
+                    @click="pullQuantities(quantityKey)"
+                    class="inline-flex justify-center items-center h-9 w-24 rounded-full bg-red-700 bg-opacity-10"
+                    :disabled="quantities[quantityKey] === 0"
+                  >
+                    <i class="material-icons text-lg text-red-700">remove</i>
+                  </a>
+                </div>
+                <div class="flex-1 text-center text-3xl text-op-teal">
+                  {{ quantities[quantityKey] }}
+                </div>
+                <div>
+                  <a
+                    @click="pushQuantities(quantityKey)"
+                    class="inline-flex justify-center items-center h-9 w-24 rounded-full bg-op-teal bg-opacity-10"
+                  >
+                    <i class="material-icons text-lg text-op-teal">add</i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div
-            v-if="isSoldOut"
-            class="bg-status-red-bg h-9 rounded-full t-button is-flex m-t-16"
-            style="flex-direction: column; justify-content: center"
-          >
-            <div class="c-status-red align-center">
-              {{ $t("sitemenu.soldOut") }}
-            </div>
-          </div>
-          <div v-else class="m-t-16">
-            <div class="level is-mobile m-t-8">
-              <div class="level-left">
-                <div class="t-caption c-text-black-medium">
-                  {{ $t("sitemenu.quantity") }}
-                </div>
-              </div>
-
-              <div class="level-right">
-                <div
-                  v-if="prices[quantityKey] > 0"
-                  class="t-caption c-text-black-medium"
-                >
-                  {{ $t("sitemenu.subTotal")
-                  }}<Price
-                    :shopInfo="shopInfo"
-                    :menu="{ price: prices[quantityKey] }"
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div class="level is-mobile m-t-8">
-              <div class="level-left">
-                <div
-                  @click="pullQuantities(quantityKey)"
-                  class="op-button-pill bg-status-red-bg w-24"
-                  :disabled="quantities[quantityKey] === 0"
-                >
-                  <i class="material-icons c-status-red">remove</i>
-                </div>
-              </div>
-              <div class="t-h4 c-primary">{{ quantities[quantityKey] }}</div>
-              <div class="level-right">
-                <div
-                  @click="pushQuantities(quantityKey)"
-                  class="op-button-pill bg-primary-bg w-24"
-                >
-                  <i class="material-icons">add</i>
-                </div>
-              </div>
-            </div>
-          </div>
-          <hr class="devider m-t-16 m-b-0" v-if="showMoreOption" />
+            class="border-t-2 border-solid border-black border-opacity-10 mt-4 pb-4"
+            v-if="showMoreOption"
+          ></div>
         </template>
 
         <!-- Another Order with Different Options -->
@@ -178,13 +197,16 @@
 
           <!-- Add Another Order Button -->
           <div v-if="showMoreOption">
-            <div class="align-center m-t-16">
-              <div @click="pushItem" class="op-button-pill bg-form">
-                <i class="material-icons">add</i>
-                <span class="t-button">{{
+            <div class="text-center">
+              <a
+                @click="pushItem"
+                class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5"
+              >
+                <i class="material-icons text-lg text-op-teal mr-2">add</i>
+                <span class="text-sm font-bold text-op-teal">{{
                   $t("sitemenu.addDifferentOptionsItem")
                 }}</span>
-              </div>
+              </a>
             </div>
           </div>
         </div>
@@ -193,8 +215,8 @@
 
     <!-- Image Popup-->
     <b-modal :active.sync="imagePopup" :width="488" scroll="keep">
-      <div class="align-center p-l-8 p-r-8" @click.stop="closeImage()">
-        <img :src="image" class="rounded-lg d-medium" />
+      <div class="px-2 text-center" @click.stop="closeImage()">
+        <img :src="image" class="rounded-lg shadow-lg" />
       </div>
     </b-modal>
   </div>
@@ -342,9 +364,10 @@ export default {
     showMoreOption() {
       return this.totalQuantity > 0 && this.hasOptions;
     },
-    cardStyle() {
-      return this.totalQuantity > 0 ? { border: "solid 2px #0097a7" } : {};
-    },
+    // # Not In Use
+    // cardStyle() {
+    //   return this.totalQuantity > 0 ? { border: "solid 2px #0097a7" } : {};
+    // },
     loopNumber() {
       return this.quantities;
     },
