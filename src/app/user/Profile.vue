@@ -1,243 +1,221 @@
 <template>
-  <div>
-    <!-- Profile Body Area -->
-    <div class="columns is-gapless">
-      <!-- Left Gap -->
-      <div class="column is-narrow w-6"></div>
-      <!-- Center Column -->
-      <div class="column">
-        <div class="columns is-gaplress">
-          <div class="column is-three-fifths is-offset-one-fifth">
-            <div class="m-l-24 m-r-24">
-              <!-- Profile Card -->
-              <div class="t-h6 c-text-black-disabled m-t-24 m-b-8">
-                {{ $t("profile.title") }}
+  <div class="mx-6 mt-6 lg:max-w-2xl lg:mx-auto">
+    <!-- Title -->
+    <div class="text-xl font-bold text-black text-opacity-30">
+      {{ $t("profile.title") }}
+    </div>
+
+    <!-- Card -->
+    <div class="bg-white rounded-lg shadow mt-2 p-6">
+      <!-- Login Status -->
+      <div class="text-center">
+        <div class="text-sm font-bold text-black text-opacity-30">
+          {{ $t("profile.loginStatus") }}
+        </div>
+
+        <div class="text-base font-bold mt-2">
+          {{ loginStatus }}
+        </div>
+      </div>
+
+      <!-- Not Signed In -->
+      <div v-if="!user">
+        <!-- Sign In as a User -->
+        <div class="mt-6 text-center">
+          <a
+            class="inline-flex justify-center items-center h-16 px-6 rounded-full border-2 border-op-teal"
+            @click.prevent="handleSignIn"
+          >
+            <i class="material-icons text-2xl text-op-teal mr-2">local_mall</i>
+            <div class="text-lg font-bold text-op-teal">
+              {{ $t("profile.signIn") }}
+            </div>
+          </a>
+        </div>
+
+        <!-- Sign In as a Restaurant -->
+        <div class="mt-6 text-center">
+          <router-link to="/admin/user/signin">
+            <div
+              class="inline-flex justify-center items-center h-16 px-6 rounded-full border-2 border-op-teal"
+            >
+              <i class="material-icons text-2xl text-op-teal mr-2">store</i>
+              <div class="text-lg font-bold text-op-teal">
+                {{ $t("profile.signInRestaurant") }}
               </div>
+            </div>
+          </router-link>
+        </div>
+
+        <!-- Phone Login-->
+        <b-modal :active.sync="loginVisible" :width="488" scroll="keep">
+          <div class="mx-2 my-6 p-6 bg-white shadow-lg rounded-lg">
+            <phone-login v-on:dismissed="handleDismissed" />
+          </div>
+        </b-modal>
+      </div>
+
+      <!-- Signed In -->
+      <div v-if="user && claims">
+        <!-- For Takeout User -->
+        <div v-if="user.phoneNumber">
+          <!-- Order History -->
+          <div class="mt-6 text-center">
+            <router-link to="/u/history">
               <div
-                class="bg-surface rounded-lg d-low p-l-24 p-r-24 p-t-24 p-b-24"
+                class="inline-flex justify-center items-center h-16 rounded-full bg-op-teal shadow"
+                style="min-width: 16rem;"
               >
-                <!-- Login Status -->
-                <div class="align-center">
-                  <div class="t-subtitle2 c-text-black-disabled p-b-8">
-                    {{ $t("profile.loginStatus") }}
-                  </div>
-                  <div class="t-subtitle1 c-text-black-high">
-                    {{ loginStatus }}
+                <i class="material-icons text-2xl text-white mr-2">history</i>
+                <div class="text-xl font-bold text-white">
+                  {{ $t("order.history") }}
+                </div>
+              </div>
+            </router-link>
+          </div>
+
+          <!-- Favorites -->
+          <div class="mt-6 text-center">
+            <router-link to="/r/favorites">
+              <div
+                class="inline-flex justify-center items-center h-16 rounded-full bg-op-teal shadow"
+                style="min-width: 16rem;"
+              >
+                <i class="material-icons text-2xl text-white mr-2">favorite</i>
+                <div class="text-xl font-bold text-white">
+                  {{ $t("find.likes") }}
+                </div>
+              </div>
+            </router-link>
+          </div>
+
+          <!-- Credit Card Info -->
+          <div class="mt-6 text-center">
+            <div class="text-sm font-bold text-black text-opacity-30">
+              {{ $t("profile.stripeInfo") }}
+            </div>
+
+            <div class="text-base font-bold mt-2">
+              {{ cardDescription }}
+            </div>
+
+            <div v-if="storedCard" class="mt-2">
+              <b-button @click="handleDeleteCard" class="b-reset-tw">
+                <div class="inline-flex justify-center items-center">
+                  <i class="material-icons text-lg text-red-700 mr-2">delete</i>
+                  <div class="text-sm font-bold text-red-700">
+                    {{ $t("profile.deleteCard") }}
                   </div>
                 </div>
+              </b-button>
+            </div>
+          </div>
 
-                <!-- Not Signed In -->
-                <div v-if="!user">
-                  <!-- Sign In as a User -->
-                  <div class="align-center m-t-24">
-                    <div
-                      class="op-button-medium secondary"
-                      @click.prevent="handleSignIn"
-                    >
-                      <i class="material-icons m-r-8">local_mall</i>
-                      <span>{{ $t("profile.signIn") }}</span>
-                    </div>
-                  </div>
+          <!-- LINE -->
+          <div class="mt-6 p-4 rounded-lg bg-black bg-opacity-5">
+            <!-- LINE Status -->
+            <div class="text-center">
+              <div class="text-sm font-bold text-black text-opacity-30">
+                {{ $t("profile.lineConnection") }}
+              </div>
 
-                  <!-- Sign In as a Restaurant -->
-                  <div class="align-center m-t-24">
-                    <router-link to="/admin/user/signin">
-                      <div class="op-button-medium secondary">
-                        <i class="material-icons m-r-8">store</i>
-                        <span>{{ $t("profile.signInRestaurant") }}</span>
-                      </div>
-                    </router-link>
-                  </div>
+              <div class="text-base font-bold mt-2">
+                {{ lineConnection }}
+              </div>
+            </div>
 
-                  <!-- Phone Login-->
-                  <b-modal
-                    :active.sync="loginVisible"
-                    :width="488"
-                    scroll="keep"
+            <!-- LINE Connected -->
+            <div v-if="isLineUser">
+              <!-- Friend Status -->
+              <div class="mt-4 text-center">
+                <div class="text-sm font-bold text-black text-opacity-30">
+                  {{ $t("profile.lineFriend") }}
+                </div>
+
+                <div class="text-base font-bold mt-2">
+                  {{ lineFriend }}
+                </div>
+              </div>
+
+              <!-- Not Friend -->
+              <div v-if="isFriend === false" class="mt-4 text-center">
+                <b-button tag="a" :href="friendLink" class="b-reset-tw">
+                  <div
+                    class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5"
+                    style="background:#18b900"
                   >
-                    <div class="op-dialog p-t-24 p-l-24 p-r-24 p-b-24">
-                      <phone-login v-on:dismissed="handleDismissed" />
-                    </div>
-                  </b-modal>
-                </div>
-
-                <!-- Signed In -->
-                <div v-if="user && claims">
-                  <!-- <b-field class="m-t-8" :label="$t('profile.displayName')">
-                    <p>{{ displayName }}</p>
-                  </b-field>-->
-
-                  <div v-if="user.phoneNumber">
-                    <!-- Order History -->
-                    <div class="align-center m-t-24">
-                      <router-link to="/u/history">
-                        <div
-                          class="op-button-medium primary"
-                          style="min-width: 256px;"
-                        >
-                          <i class="material-icons m-r-8">history</i>
-                          <span>{{ $t("order.history") }}</span>
-                        </div>
-                      </router-link>
-                    </div>
-
-                    <!-- Favorites -->
-                    <div class="align-center m-t-24">
-                      <router-link to="/r/favorites">
-                        <div
-                          class="op-button-medium primary"
-                          style="min-width: 256px;"
-                        >
-                          <i class="material-icons m-r-8">favorite</i>
-                          <span>{{ $t("find.likes") }}</span>
-                        </div>
-                      </router-link>
-                    </div>
-
-                    <!-- Credit Card Info -->
-                    <div class="align-center p-t-16">
-                      <div class="t-subtitle2 c-text-black-disabled p-b-8">
-                        {{ $t("profile.stripeInfo") }}
-                      </div>
-                      <div class="t-subtitle1 c-text-black-high">
-                        {{ cardDescription }}
-                      </div>
-                      <div v-if="storedCard">
-                        <b-button
-                          class="b-reset op-button-text"
-                          @click="handleDeleteCard"
-                        >
-                          <i class="material-icons c-status-red">delete</i>
-                          <span class="c-status-red">
-                            {{ $t("profile.deleteCard") }}
-                          </span>
-                        </b-button>
-                      </div>
-                    </div>
-
-                    <!-- LINE -->
-                    <div
-                      class="bg-form rounded-lg p-l-16 p-r-16 p-t-24 p-b-24 m-t-24"
-                    >
-                      <!-- LINE Status -->
-                      <div class="align-center">
-                        <div class="t-subtitle2 c-text-black-disabled p-b-8">
-                          {{ $t("profile.lineConnection") }}
-                        </div>
-                        <div class="t-subtitle1 c-text-black-high">
-                          {{ lineConnection }}
-                        </div>
-                      </div>
-
-                      <!-- LINE Connected -->
-                      <div v-if="isLineUser">
-                        <!-- Friend Status -->
-                        <div class="m-t-24 align-center">
-                          <div class="t-subtitle2 c-text-black-disabled p-b-8">
-                            {{ $t("profile.lineFriend") }}
-                          </div>
-                          <div class="t-subtitle1 c-text-black-high">
-                            {{ lineFriend }}
-                          </div>
-                        </div>
-
-                        <!-- Not Friend -->
-                        <div
-                          v-if="isFriend === false"
-                          class="align-center m-t-16"
-                        >
-                          <b-button
-                            class="b-reset op-button-small"
-                            style="background:#18b900"
-                            tag="a"
-                            :href="friendLink"
-                          >
-                            <i
-                              class="fab fa-line c-text-white-full m-l-24 m-r-8"
-                              style="font-size:24px"
-                            />
-                            <span class="c-text-white-full m-r-24">{{
-                              $t("profile.friendLink")
-                            }}</span>
-                          </b-button>
-                        </div>
-                      </div>
-
-                      <!-- LINE Not Connected -->
-                      <div v-else>
-                        <div v-if="isLineEnabled" class="align-center m-t-24">
-                          <b-button
-                            class="b-reset op-button-small"
-                            style="background:#18b900"
-                            @click="handleLineAuth"
-                          >
-                            <i
-                              class="fab fa-line c-text-white-full m-l-24 m-r-8"
-                              style="font-size:24px"
-                            />
-                            <span class="c-text-white-full m-r-24">{{
-                              $t("line.notifyMe")
-                            }}</span>
-                          </b-button>
-                        </div>
-                      </div>
+                    <i class="fab fa-line text-white text-2xl mr-2" />
+                    <div class="text-sm font-bold text-white">
+                      {{ $t("profile.friendLink") }}
                     </div>
                   </div>
+                </b-button>
+              </div>
+            </div>
 
-                  <!-- Sign Out -->
-                  <div class="align-center m-t-48">
-                    <div
-                      class="op-button-small tertiary"
-                      @click.prevent="handleSignOut"
-                    >
-                      {{ $t("menu.signOut") }}
+            <!-- LINE Not Connected -->
+            <div v-else>
+              <div v-if="isLineEnabled" class="mt-4 text-center">
+                <b-button @click="handleLineAuth" class="b-reset-tw">
+                  <div
+                    class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5"
+                    style="background:#18b900"
+                  >
+                    <i class="fab fa-line text-white text-2xl mr-2" />
+                    <div class="text-sm font-bold text-white">
+                      {{ $t("line.notifyMe") }}
                     </div>
                   </div>
-
-                  <!-- Delete Account and Phone Login -->
-                  <div v-if="user.phoneNumber">
-                    <!-- Delete Account -->
-                    <div class="m-t-16 align-center">
-                      <b-button
-                        class="b-reset op-button-text"
-                        @click="handleDeleteAccount"
-                      >
-                        <i class="material-icons c-status-red">delete</i>
-                        <span class="c-status-red">
-                          {{ $t("profile.deleteAccount") }}
-                        </span>
-                      </b-button>
-                    </div>
-
-                    <!-- Phone Login-->
-                    <b-modal
-                      :active.sync="reLoginVisible"
-                      :width="488"
-                      scroll="keep"
-                    >
-                      <div class="op-dialog p-t-24 p-l-24 p-r-24 p-b-24">
-                        <phone-login
-                          v-on:dismissed="continueDelete"
-                          :relogin="user.phoneNumber"
-                        />
-                      </div>
-                    </b-modal>
-                  </div>
-                </div>
-
-                <!-- Loading -->
-                <b-loading
-                  :is-full-page="false"
-                  :active="isDeletingAccount"
-                  :can-cancel="true"
-                ></b-loading>
+                </b-button>
               </div>
             </div>
           </div>
         </div>
+
+        <!-- Sign Out -->
+        <div class="mt-12 text-center">
+          <a
+            @click.prevent="handleSignOut"
+            class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5"
+          >
+            <div class="text-sm font-bold text-op-teal">
+              {{ $t("menu.signOut") }}
+            </div>
+          </a>
+        </div>
+
+        <!-- Delete Account and Phone Login -->
+        <div v-if="user.phoneNumber">
+          <!-- Delete Account -->
+          <div class="mt-4 text-center">
+            <b-button @click="handleDeleteAccount" class="b-reset-tw">
+              <div class="inline-flex justify-center items-center">
+                <i class="material-icons text-lg text-red-700 mr-2">delete</i>
+                <div class="text-sm font-bold text-red-700">
+                  {{ $t("profile.deleteAccount") }}
+                </div>
+              </div>
+            </b-button>
+          </div>
+
+          <!-- Phone Login-->
+          <b-modal :active.sync="reLoginVisible" :width="488" scroll="keep">
+            <div class="mx-2 my-6 p-6 bg-white shadow-lg rounded-lg">
+              <phone-login
+                v-on:dismissed="continueDelete"
+                :relogin="user.phoneNumber"
+              />
+            </div>
+          </b-modal>
+        </div>
       </div>
-      <!-- Right Gap -->
-      <div class="column is-narrow w-6"></div>
+
+      <!-- Loading -->
+      <b-loading
+        :is-full-page="false"
+        :active="isDeletingAccount"
+        :can-cancel="true"
+      ></b-loading>
     </div>
   </div>
 </template>
