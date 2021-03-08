@@ -109,6 +109,7 @@ export const notifyRestaurant = async (db: any, messageId: string, restaurantId:
   
   if (restaurant.mailNofitication) {
     const adminUser = process.env.NODE_ENV === "test" ? {email: process.env.TESTMAIL} : await admin.auth().getUser(restaurant.uid);
+    console.log(adminUser.email)
     if (adminUser.email) {
       await ses.sendMail(adminUser.email, lineMessage, mailMessage);
       // console.log(res);
