@@ -60,7 +60,7 @@ const createNotifyRestaurantMailMessage = async (messageId: string, restaurantNa
     restaurantName,
     orderName,
     orders,
-    totalCharge: order.totalCharge,
+    // totalCharge: order.total,
     url
   };
   const replacedTemp = Object.keys(data).reduce((tmp, key) => {
