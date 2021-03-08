@@ -7,7 +7,7 @@ should()
 
 describe('SES function', () => {
   it ('ses function', async function() {
-    const to = "isamu@to-kyo.to";
+    const to = "isamu.a@gmail.com";
     const title = "こんにちは";
     const body = "こんにちは。本文。";
 

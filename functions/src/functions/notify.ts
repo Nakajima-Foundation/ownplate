@@ -107,7 +107,7 @@ export const notifyRestaurant = async (db: any, messageId: string, restaurantId:
     });
   }
   
-  if (restaurant.mailNofitication) {
+  if (restaurant.emailNotification) {
     const adminUser = process.env.NODE_ENV === "test" ? {email: process.env.TESTMAIL} : await admin.auth().getUser(restaurant.uid);
     console.log(adminUser.email)
     if (adminUser.email) {
