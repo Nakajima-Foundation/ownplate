@@ -69,14 +69,17 @@
           <!-- Right -->
           <div>
             <!-- For Responsible -->
-            <div class="mx-6 lg:mx-0">
+            <div class="mx-6 mt-6 lg:mx-0">
               <!-- Menu Items -->
               <div class="grid grid-col-1 space-y-2">
                 <template v-for="itemId in menuLists">
                   <div v-if="itemsObj[itemId]" :key="itemId">
                     <div
                       v-if="itemsObj[itemId]._dataType === 'title'"
-                      class="text-xl font-bold text-black text-opacity-30 mt-6"
+                      class="text-xl font-bold text-black text-opacity-30"
+                      :class="
+                        menuLists[0] === itemsObj[itemId].id ? '' : 'mt-6'
+                      "
                     >
                       {{ itemsObj[itemId].name }}
                     </div>
