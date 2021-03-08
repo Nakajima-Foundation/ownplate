@@ -23,6 +23,7 @@ export default class Order extends Doc {
   @Field order: { [id: string]: Menu } = {}
   @Field sub_total: number = 0
   @Field total: number = 0
+  @Field totalCharge: number = 0
   @Field uid!: string
   @Field payment?: Payment
   @Field phoneNumber?: string
