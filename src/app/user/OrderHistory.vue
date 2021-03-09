@@ -17,6 +17,7 @@
         :key="order.id"
         @selected="orderSelected($event)"
         :order="order"
+        :isSuperView="true"
       />
     </div>
 
