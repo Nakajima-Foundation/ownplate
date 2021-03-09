@@ -4,65 +4,42 @@
       <not-found />
     </template>
     <template v-else>
-      <!-- Article Header Area -->
-      <div class="columns is-gapless">
-        <!-- Left Gap -->
-        <div class="column is-narrow w-6"></div>
-        <!-- Center Column -->
-        <div class="column">
-          <div class="m-l-24 m-r-24 m-t-24">
-            <!-- Back to Admin Top -->
-            <nuxt-link :to="'/admin/restaurants'">
-              <div class="op-button-pill bg-form m-r-16">
-                <i class="material-icons c-primary s-18">home</i>
-                <span class="c-primary t-button">{{
-                  $t("admin.news.adminTop")
-                }}</span>
-              </div>
-            </nuxt-link>
-
-            <!-- Back to News Top -->
-            <nuxt-link :to="'/admin/news'">
-              <div class="op-button-pill bg-form">
-                <i class="material-icons c-primary s-18">list</i>
-                <span class="c-primary t-button">{{
-                  $t("admin.news.newsTop")
-                }}</span>
-              </div>
-            </nuxt-link>
-          </div>
-        </div>
-        <!-- Right Gap -->
-        <div class="column is-narrow w-6"></div>
-      </div>
-
-      <!-- Article Body Area -->
-      <div class="columns is-gapless">
-        <!-- Left Gap -->
-        <div class="column is-narrow w-6"></div>
-        <!-- Center Column -->
-        <div class="column">
-          <div class="columns is-gaplress">
-            <div class="column is-three-fifths is-offset-one-fifth">
-              <div class="m-l-24 m-r-24">
-                <div class="m-t-24">
-                  <!-- Title -->
-                  <div class="t-h6 c-text-black-disabled">{{ news.title }}</div>
-                  <div class="t-subtitle1 c-text-black-disabled m-t-8">
-                    {{ news.date.replace(/\-/g, ".") }}
-                  </div>
-
-                  <div
-                    class="article-list m-t-24"
-                    v-html="md.render(news.markdown)"
-                  />
-                </div>
-              </div>
+      <!-- Header -->
+      <div class="mt-6 mx-6 flex items-center space-x-4">
+        <nuxt-link :to="'/admin/restaurants'">
+          <div
+            class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
+          >
+            <i class="material-icons text-lg text-op-teal mr-2">home</i>
+            <div class="text-sm font-bold text-op-teal">
+              {{ $t("admin.news.adminTop") }}
             </div>
           </div>
+        </nuxt-link>
+
+        <nuxt-link :to="'/admin/news'">
+          <div
+            class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
+          >
+            <i class="material-icons text-lg text-op-teal mr-2">list</i>
+            <div class="text-sm font-bold text-op-teal">
+              {{ $t("admin.news.newsTop") }}
+            </div>
+          </div>
+        </nuxt-link>
+      </div>
+
+      <!-- Body -->
+      <div class="text-base mx-auto max-w-screen-md px-6 mt-6">
+        <div class="text-xl font-bold text-black text-opacity-30">
+          {{ news.title }}
         </div>
-        <!-- Right Gap -->
-        <div class="column is-narrow w-6"></div>
+
+        <div class="text-base font-bold text-black text-opacity-30 mt-2">
+          {{ news.date.replace(/\-/g, ".") }}
+        </div>
+
+        <div class="article-list mt-6" v-html="md.render(news.markdown)" />
       </div>
     </template>
   </div>
@@ -95,32 +72,26 @@ export default {
 
 <style lang="scss" scoped>
 /deep/ .article-list h2 {
-  @extend .t-h6;
-  @extend .c-text-black-disabled;
-  margin-bottom: 32px;
+  @apply text-xl font-bold text-black text-opacity-30 mb-8;
 }
 
 /deep/ .article-list ul {
-  list-style: outside;
-  list-style-type: disc;
-  padding-left: 24px;
+  @apply list-outside list-disc pl-6;
 }
 
 /deep/ .article-list > ul {
-  list-style: none;
-  padding: 0;
+  @apply list-none p-0;
 }
+
 /deep/ .article-list > ul > li {
-  @extend .t-h6;
-  @extend .c-text-black-disabled;
+  @apply text-xl font-bold text-black text-opacity-30;
 }
+
 /deep/ .article-list > ul > li:not(:first-child) {
-  padding-top: 24px;
+  @apply list-none pt-6;
 }
 
 /deep/ .article-list > ul > li ul li {
-  @extend .t-body1;
-  @extend .c-text-black-high;
-  margin-top: 16px;
+  @apply text-base font-normal text-black mt-4;
 }
 </style>
