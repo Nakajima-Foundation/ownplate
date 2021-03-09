@@ -82,9 +82,12 @@ export default {
               order.restaurantId = doc.ref.path.split("/")[1];
               order.id = doc.id;
               // HACK: Remove it later
-              order.orderPlacedAt =
-                (order.orderPlacedAt && order.orderPlacedAt.toDate()) ||
-                new Date();
+              order.timePlaced =
+                (order.timePlaced && order.timePlaced.toDate()) || new Date();
+              new Date();
+              if (order.timeEstimated) {
+                order.timeEstimated = order.timeEstimated.toDate();
+              }
               return order;
             });
           });

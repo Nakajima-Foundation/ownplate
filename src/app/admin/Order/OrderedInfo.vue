@@ -184,9 +184,6 @@ export default {
       //const date = `${time.getMonth() + 1}/${time.getDate()} `;
       //return date + this.num2time(time.getHours() * 60 + time.getMinutes());
       if (this.isSuperView) {
-        if (time.toDate) {
-          return this.$d(time.toDate(), "long");
-        }
         return this.$d(time, "long");
       } else {
         return this.$d(time, "time");
