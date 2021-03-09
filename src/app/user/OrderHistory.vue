@@ -17,6 +17,7 @@
         :key="order.id"
         @selected="orderSelected($event)"
         :order="order"
+        :isSuperView="true"
       />
     </div>
 
@@ -73,7 +74,7 @@ export default {
         this.detatcher = db
           .collectionGroup("orders")
           .where("uid", "==", this.uid)
-          .orderBy("timePlaced", "desc")
+          .orderBy("orderPlacedAt", "desc")
           .limit(25)
           .onSnapshot(snapshot => {
             this.orders = snapshot.docs.map(doc => {
@@ -83,6 +84,10 @@ export default {
               // HACK: Remove it later
               order.timePlaced =
                 (order.timePlaced && order.timePlaced.toDate()) || new Date();
+              new Date();
+              if (order.timeEstimated) {
+                order.timeEstimated = order.timeEstimated.toDate();
+              }
               return order;
             });
           });
