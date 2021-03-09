@@ -44,6 +44,16 @@ const createNotifyRestaurantLineMessage = async (messageId: string, restaurantNa
   const message = `${restaurantName} ${t(messageId)} ${orderName}`;
   return message;
 };
+
+const createNotifyRestaurantMailTitle = async (messageId: string, restaurantName: string, orderNumber: number, lng: string) => {
+  const t = await i18next.init({
+    lng: lng || utils.getStripeRegion().langs[0],
+    resources
+  })
+  const orderName = utils.nameOfOrder(orderNumber);
+  const message = `${t(messageId)} ${restaurantName} ${orderName}`;
+  return message;
+};
 const createNotifyRestaurantMailMessage = async (messageId: string, restaurantName: string, order: any, orderNumber: number, _lng: string, url: string) => {
   const lng = _lng || utils.getStripeRegion().langs[0];
   const path = `./mail_templates/${messageId}/${lng}.html`;
@@ -92,6 +102,7 @@ export const notifyRestaurant = async (db: any, messageId: string, restaurantId:
 
   const url = `https://${ownPlateConfig.hostName}/admin/restaurants/${restaurantId}/orders/${orderId}`
   const lineMessage = await createNotifyRestaurantLineMessage(messageId, restaurantName, orderNumber, lng);
+  const mailTitle = await createNotifyRestaurantMailTitle(messageId, restaurantName, orderNumber, lng);
   const mailMessage = await createNotifyRestaurantMailMessage(messageId, restaurantName, order, orderNumber, lng, url);
   // line push.
   const lineUsers = (await db.collection(`/restaurants/${restaurantId}/lines`).get()).docs;
@@ -111,7 +122,7 @@ export const notifyRestaurant = async (db: any, messageId: string, restaurantId:
     const adminUser = process.env.NODE_ENV === "test" ? {email: process.env.TESTMAIL} : await admin.auth().getUser(restaurant.uid);
     console.log(adminUser.email)
     if (adminUser.email) {
-      await ses.sendMail(adminUser.email, lineMessage, mailMessage);
+      await ses.sendMail(adminUser.email, mailTitle, mailMessage);
       // console.log(res);
     }
   }
