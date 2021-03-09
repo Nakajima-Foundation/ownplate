@@ -73,7 +73,7 @@ export default {
         this.detatcher = db
           .collectionGroup("orders")
           .where("uid", "==", this.uid)
-          .orderBy("timePlaced", "desc")
+          .orderBy("orderPlacedAt", "desc")
           .limit(25)
           .onSnapshot(snapshot => {
             this.orders = snapshot.docs.map(doc => {
@@ -81,8 +81,9 @@ export default {
               order.restaurantId = doc.ref.path.split("/")[1];
               order.id = doc.id;
               // HACK: Remove it later
-              order.timePlaced =
-                (order.timePlaced && order.timePlaced.toDate()) || new Date();
+              order.orderPlacedAt =
+                (order.orderPlacedAt && order.orderPlacedAt.toDate()) ||
+                new Date();
               return order;
             });
           });
