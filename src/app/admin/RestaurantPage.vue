@@ -510,7 +510,7 @@
           </div>
 
           <!-- Time to Pickup -->
-          <div v-if="requireTaxPriceDisplay" class="mt-4">
+          <div class="mt-4">
             <div class="text-sm font-bold pb-2">
               {{ $t("editRestaurant.timeToPickup") }}
             </div>
