@@ -1,136 +1,111 @@
 <template>
   <div>
-    <!-- Header Area -->
-    <div class="columns is-gapless">
-      <!-- Left Gap -->
-      <div class="column is-narrow w-6"></div>
-      <!-- Center Column -->
-      <div class="column">
-        <div class="m-l-24 m-r-24">
-          <!-- Nav Bar -->
-          <div class="level">
-            <!-- Back Button and Restaurant Profile -->
-            <div class="level-left flex-1">
-              <!-- Back Button -->
-              <back-button
-                :url="`/admin/restaurants/${restaurantId()}/orders`"
-                class="m-t-24 m-r-16"
-              />
+    <!-- Header -->
+    <div class="mt-6 mx-6 lg:flex lg:items-center">
+      <!-- Back -->
+      <div class="flex space-x-4">
+        <div class="flex-shrink-0">
+          <back-button :url="`/admin/restaurants/${restaurantId()}/orders`" />
+        </div>
+      </div>
 
-              <!-- Restaurant Profile -->
-              <div class="is-inline-flex flex-center m-l-16 m-t-24">
-                <div>
-                  <img
-                    :src="resizedProfileImage(shopInfo, '600')"
-                    class="w-9 h-9 rounded-full cover"
-                  />
-                </div>
-                <div class="t-h6 c-text-black-high m-l-8 flex-1">
-                  {{ shopInfo.restaurantName }}
-                </div>
-              </div>
-            </div>
-            <!-- Notification Settings -->
-            <div class="level-right">
-              <notification-index :shopInfo="shopInfo" />
-            </div>
+      <!-- Photo and Name -->
+      <div class="mt-4 lg:mt-0 lg:flex-1 lg:flex lg:items-center lg:mx-4">
+        <div class="flex items-center">
+          <div class="flex-shrink-0 rounded-full bg-black bg-opacity-10 mr-4">
+            <img
+              :src="resizedProfileImage(shopInfo, '600')"
+              class="w-9 h-9 rounded-full cover"
+            />
+          </div>
+          <div class="text-base font-bold">
+            {{ shopInfo.restaurantName }}
           </div>
         </div>
       </div>
-      <!-- Right Gap -->
-      <div class="column is-narrow w-6"></div>
+
+      <!-- Notifications -->
+      <div class="mt-4 lg:mt-0 flex-shrink-0">
+        <notification-index :shopInfo="shopInfo" />
+      </div>
     </div>
 
-    <!-- Body Area -->
-    <div class="columns is-gapless">
-      <!-- Left Gap -->
-      <div class="column is-narrow w-6"></div>
-      <!-- Center Column -->
-      <div class="column">
-        <div class="columns is-gaplress">
-          <div class="column is-three-fifths is-offset-one-fifth">
-            <div class="m-l-24 m-r-24">
-              <!-- LINE Users -->
-              <div class="m-t-24">
-                <div
-                  v-if="lineUsers.length > 0"
-                  class="t-h6 c-text-black-disabled"
-                >
-                  {{ $t("admin.order.lineUsers") }}
-                </div>
-                <!-- LINE User -->
-                <div
-                  v-for="lineUser in lineUsers"
-                  :key="lineUser.id"
-                  class="cols flex-center m-t-8"
-                >
-                  <!-- Name and Status -->
-                  <div
-                    class="flex-1 bg-surface rounded-lg d-low p-l-16 p-r-16 p-t-16 p-b-16 touchable"
-                    @click="handleToggle(lineUser)"
-                  >
-                    <!-- Enabled -->
-                    <div v-if="lineUser.notify" class="cols flex-1">
-                      <i class="material-icons m-r-8 c-status-green"
-                        >check_box</i
-                      >
-                      <span class="t-subtitle1 c-text-black-high">{{
-                        lineUser.displayName
-                      }}</span>
-                    </div>
+    <!-- Body -->
+    <div class="mt-6 mx-6 grid-col-1 space-y-4 lg:max-w-2xl lg:mx-auto">
+      <!-- Title -->
+      <div
+        v-if="lineUsers.length > 0"
+        class="text-xl font-bold text-black text-opacity-30"
+      >
+        {{ $t("admin.order.lineUsers") }}
+      </div>
 
-                    <!-- Disabled -->
-                    <div v-else class="cols flex-1">
-                      <i class="material-icons m-r-8 c-text-black-disabled"
-                        >check_box_outline_blank</i
-                      >
-                      <span class="t-subtitle1 c-text-black-disabled">{{
-                        lineUser.displayName
-                      }}</span>
-                    </div>
-                  </div>
-
-                  <!-- Delete -->
-                  <div
-                    class="op-button-pill bg-status-red-bg m-l-8"
-                    @click.stop="handleDelete(lineUser.id)"
-                  >
-                    <i class="material-icons c-status-red touchable">delete</i>
-                  </div>
-                </div>
-              </div>
-
-              <!-- LINE Button -->
-              <div class="align-center m-t-24">
-                <b-button
-                  class="b-reset op-button-small"
-                  style="background:#18b900"
-                  @click="handleLineAuth"
-                >
-                  <i
-                    class="fab fa-line c-text-white-full m-l-24 m-r-8"
-                    style="font-size:24px"
-                  />
-                  <span class="c-text-white-full m-r-24">
-                    {{ $t("admin.order.lineAdd") }}
-                  </span>
-                </b-button>
-              </div>
-
-              <!-- Note for Safari Private Browsing Mode -->
-              <div
-                class="bg-form rounded-lg p-l-16 p-r-16 p-t-16 p-b-16 m-t-24 align-left"
+      <!-- LINE Users -->
+      <div class="mt-6 grid grid-cols-1 space-y-2">
+        <div
+          v-for="lineUser in lineUsers"
+          :key="lineUser.id"
+          class="flex items-center"
+        >
+          <!-- User Name -->
+          <div
+            class="flex-1 bg-white rounded-lg shadow p-4 cursor-pointer"
+            @click="handleToggle(lineUser)"
+          >
+            <!-- Enabled -->
+            <div v-if="lineUser.notify" class="flex items-center">
+              <i class="material-icons text-2xl text-green-600 mr-2"
+                >check_box</i
               >
-                <span class="t-body2 c-text-black-medium">
-                  {{ $t("admin.order.lineSafariPrivate") }}
-                </span>
+              <div class="text-base font-bold">
+                {{ lineUser.displayName }}
+              </div>
+            </div>
+
+            <!-- Disabled -->
+            <div v-else class="flex items-center">
+              <i class="material-icons text-2xl text-black text-opacity-30 mr-2"
+                >check_box_outline_blank</i
+              >
+              <div class="text-base font-bold text-black text-opacity-30">
+                {{ lineUser.displayName }}
               </div>
             </div>
           </div>
+
+          <!-- Delete -->
+          <div>
+            <a
+              class="ml-4 inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5"
+              @click.stop="handleDelete(lineUser.id)"
+            >
+              <i class="material-icons text-lg text-red-700">delete</i>
+            </a>
+          </div>
         </div>
       </div>
-      <!-- Right Gap -->
-      <div class="column is-narrow w-6"></div>
+
+      <!-- Add LINE User -->
+      <div class="mt-6 text-center">
+        <b-button @click="handleLineAuth" class="b-reset-tw">
+          <div
+            class="inline-flex justify-center items-center h-12 px-6 rounded-full"
+            style="background: #18b900"
+          >
+            <i class="fab fa-line text-2xl text-white mr-2" />
+            <div class="text-base font-bold text-white">
+              {{ $t("admin.order.lineAdd") }}
+            </div>
+          </div>
+        </b-button>
+      </div>
+
+      <!-- Note for Safari Private Browsing Mode -->
+      <div class="mt-6 bg-black bg-opacity-5 rounded-lg p-4">
+        <span class="t-body2 c-text-black-medium">
+          {{ $t("admin.order.lineSafariPrivate") }}
+        </span>
+      </div>
     </div>
   </div>
 </template>

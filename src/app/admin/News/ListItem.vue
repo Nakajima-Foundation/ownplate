@@ -1,20 +1,10 @@
 <template>
-  <!-- Item Card -->
-  <div class="column is-one-third">
-    <div class="h-full p-b-8 p-r-8">
-      <nuxt-link :to="'/admin/news/' + id">
-        <div
-          class="touchable bg-surface rounded-lg d-low p-l-16 p-r-16 p-t-8 p-b-8 h-full"
-        >
-          <!-- Date -->
-          <div class="t-subtitle2 c-text-black-disabled">{{ date }}</div>
-
-          <!-- Title -->
-          <div class="t-body1 c-text-black-high">{{ title }}</div>
-        </div>
-      </nuxt-link>
+  <nuxt-link :to="'/admin/news/' + id">
+    <div class="bg-white shadow rounded-lg px-4 py-2">
+      <div class="text-sm font-bold text-black text-opacity-30">{{ date }}</div>
+      <div class="text-base text-black text-opacity-60">{{ title }}</div>
     </div>
-  </div>
+  </nuxt-link>
 </template>
 
 <script>
