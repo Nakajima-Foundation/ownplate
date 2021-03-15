@@ -32,7 +32,7 @@
           <div class="text-base">
             {{
               $t(
-                "order.inclusiveTax"
+                orderInfo.inclusiveTax ? "order.inclusiveTax" : "order.salesTax"
               )
             }}
           </div>
