@@ -501,14 +501,17 @@
                     </div>
                   </b-checkbox>
                 </div>
-                <div class="mt-2">
+                <div v-if="region === 'JP'" class="mt-2">
+                  <div class="text-xs font-bold text-red-700">
+                    {{ $t("editRestaurant.taxPriceDisplayJp") }}
+                  </div>
+                  <div class="mt-1">
+                    {{ $t("editRestaurant.taxPriceDisplayJpEx") }}
+                  </div>
+                </div>
+                <div v-else class="mt-2">
                   {{ $tc("tax.taxExample", examplePriceI18n) }} -
                   <Price :shopInfo="shopInfo" :menu="sampleMenu" />
-                </div>
-                <div v-if="region === 'JP'" class="mt-1">
-                  <span class="text-xs font-bold text-red-700">
-                    {{ $t("editRestaurant.taxPriceDisplayJp") }}</span
-                  >
                 </div>
               </div>
             </div>
