@@ -119,6 +119,7 @@
     "foodTax": "Taxe sur nouriture",
     "alcoholTax": "Taxe boisson",
     "taxPriceDisplay": "Option d'affichage des taxes",
+    "taxPriceDisplayJp": "L'étiquetage avec taxe est obligatoire au Japon.",
     "taxIncluded": "Taxe Inclue",
     "taxExcluded": "Taxe Exclue",
     "about": "A Propos",
