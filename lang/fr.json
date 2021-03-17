@@ -94,9 +94,9 @@
   },
   "tax": {
     "price": "{count}",
-    "include": " (with tax)",
+    "include": " (inc. tax)",
     "exclude": " (+ tax)",
-    "taxExample": "Exemple de {count} produit."
+    "taxExample": "Si le prix est défini comme {count} dans les paramètres, il sera affiché comme : "
   },
   "editRestaurant": {
     "enterRestaurantName": "Entrer le nom d'un restaurant",
@@ -118,7 +118,8 @@
     "tax": " Taxe de vente",
     "foodTax": "Taxe sur nouriture",
     "alcoholTax": "Taxe boisson",
-    "taxPriceDisplay": "Option d'affichage des taxes",
+    "taxPriceDisplay": "Calcul de la taxe",
+    "taxPriceDisplayJp": "L'étiquetage avec taxe est obligatoire au Japon.",
     "taxIncluded": "Taxe Inclue",
     "taxExcluded": "Taxe Exclue",
     "about": "A Propos",
