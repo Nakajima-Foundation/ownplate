@@ -505,7 +505,7 @@
                   {{ $tc("tax.taxExample", examplePriceI18n) }} -
                   <Price :shopInfo="shopInfo" :menu="sampleMenu" />
                 </div>
-                <div class="mt-1">
+                <div v-if="region === 'JP'" class="mt-1">
                   <span class="text-xs font-bold text-red-700">
                     {{ $t("editRestaurant.taxPriceDisplayJp") }}</span
                   >
