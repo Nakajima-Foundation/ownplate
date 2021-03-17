@@ -96,7 +96,7 @@
     "price": "{count}",
     "include": "（税込）",
     "exclude": "（+ 税）",
-    "taxExample": "{count}の商品の例"
+    "taxExample": "商品設定で{count}とした場合のメニュー表示例: "
   },
   "editRestaurant": {
     "enterRestaurantName": "飲食店名を入力して下さい",
@@ -120,7 +120,6 @@
     "alcoholTax": "消費税率（酒類）",
     "taxPriceDisplay": "税額計算方法",
     "taxPriceDisplayJp": "日本では義務化により税込で表示されます。",
-    "taxPriceDisplayJpEx": "メニューで¥1,000と登録した商品の例: ¥1,100（税込）",
     "taxIncluded": "内税",
     "taxExcluded": "外税",
     "about": "飲食店情報",

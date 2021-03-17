@@ -94,9 +94,9 @@
   },
   "tax": {
     "price": "{count}",
-    "include": " (with tax)",
+    "include": " (inc. tax)",
     "exclude": " (+ tax)",
-    "taxExample": "Example of {count} product."
+    "taxExample": "If set the price as {count} in the settings, will be shown as: "
   },
   "editRestaurant": {
     "enterRestaurantName": "Enter restaurant name",
@@ -120,7 +120,6 @@
     "alcoholTax": "Alcohol Tax",
     "taxPriceDisplay": "Tax Calculation",
     "taxPriceDisplayJp": "Tax Included labeling is mandatory in Japan.",
-    "taxPriceDisplayJpEx": "If the price set as ¥1,000 in the settings, will be displayed as ¥1,100 (with tax) in the menu.",
     "taxIncluded": "Tax Icnluded",
     "taxExcluded": "Tax Excluded",
     "about": "About",
