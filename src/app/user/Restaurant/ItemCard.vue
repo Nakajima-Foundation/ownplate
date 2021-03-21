@@ -389,7 +389,18 @@ export default {
   },
   methods: {
     displayOption(option) {
-      return formatOption(option, price => this.$n(price, "currency"));
+      const taxRate = (() => {
+        if (this.shopInfo.inclusiveTax) {
+          return 1;
+        }
+        if (this.item.tax === "alcohol") {
+          return 1 + this.shopInfo.alcoholTax * 0.01;
+        }
+        return 1 + this.shopInfo.foodTax * 0.01;
+      })();
+      return formatOption(option, price => {
+        return this.$n(price * taxRate, "currency")
+      });
     },
     openImage() {
       this.imagePopup = true;
