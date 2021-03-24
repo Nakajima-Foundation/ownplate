@@ -550,6 +550,7 @@ export default {
     }
   },
   async created() {
+    console.log(process.env.CIRCLE_SHA1);
     if (this.isInLine) {
       if (/\?/.test(window.location.href)) {
         window.location.href = window.location.href + "&openExternalBrowser=1";
