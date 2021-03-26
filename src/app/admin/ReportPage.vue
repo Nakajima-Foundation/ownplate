@@ -1,198 +1,192 @@
 <template>
   <div>
-    <!-- Header Area -->
-    <div class="columns is-gapless">
-      <!-- Left Gap -->
-      <div class="column is-narrow w-6"></div>
-      <!-- Center Column -->
-      <div class="column">
-        <div class="m-l-24 m-r-24">
-          <!-- Nav Bar -->
-          <div class="level">
-            <!-- Back Button and Restaurant Profile -->
-            <div class="level-left flex-1">
-              <!-- Back Button -->
-              <back-button url="/admin/restaurants/" class="m-t-24 m-r-16" />
-              <!-- Restaurant Profile -->
-              <div class="is-inline-flex flex-center m-t-24">
-                <div>
-                  <img
-                    :src="resizedProfileImage(shopInfo, '600')"
-                    class="w-9 h-9 rounded-full cover"
-                  />
-                </div>
-                <div class="t-h6 c-text-black-high m-l-8 flex-1">
-                  {{ shopInfo.restaurantName }}
-                </div>
-              </div>
+    <!-- Header -->
+    <div class="mt-6 mx-6 lg:flex lg:items-center">
+      <!-- Back and Preview -->
+      <div class="flex space-x-4">
+        <div class="flex-shrink-0">
+          <back-button url="/admin/restaurants/" />
+        </div>
+        <div class="flex-shrink-0">
+          <nuxt-link :to="'/r/' + restaurantId()">
+            <div
+              class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
+            >
+              <i class="material-icons text-lg text-op-teal mr-2">launch</i>
+              <span class="text-sm font-bold text-op-teal">{{
+                $t("admin.viewPage")
+              }}</span>
             </div>
+          </nuxt-link>
+        </div>
+      </div>
+
+      <!-- Photo and Name -->
+      <div class="mt-4 lg:mt-0 lg:flex-1 lg:flex lg:items-center lg:mx-4">
+        <div class="flex items-center">
+          <div class="flex-shrink-0 rounded-full bg-black bg-opacity-10 mr-4">
+            <img
+              :src="resizedProfileImage(shopInfo, '600')"
+              class="w-9 h-9 rounded-full cover"
+            />
+          </div>
+          <div class="text-base font-bold">
+            {{ shopInfo.restaurantName }}
           </div>
         </div>
       </div>
-      <!-- Right Gap -->
-      <div class="column is-narrow w-6"></div>
     </div>
 
-    <!-- Body Area -->
-    <div class="columns is-gapless">
-      <!-- Left Gap -->
-      <div class="column is-narrow w-6"></div>
-      <!-- Center Column -->
-      <div class="column">
-        <div class="m-l-24 m-r-24">
-          <!-- Select Date -->
-          <b-select v-model="monthIndex" class="m-t-24">
-            <option
-              v-for="day in lastSeveralMonths"
-              :value="day.index"
-              :key="day.index"
-              >{{ moment(day.date).format("YYYY-MM") }}</option
-            >
-          </b-select>
+    <!-- Date -->
+    <div class="mx-6 mt-6">
+      <b-select v-model="monthIndex">
+        <option
+          v-for="day in lastSeveralMonths"
+          :value="day.index"
+          :key="day.index"
+          >{{ moment(day.date).format("YYYY-MM") }}</option
+        >
+      </b-select>
+    </div>
 
-          <!-- Table -->
+    <!-- Table -->
+    <div class="mx-6 mt-6">
+      <table class="w-full bg-white rounded-lg shadow">
+        <!-- Table Header -->
+        <tr>
+          <th class="p-2 text-xs font-bold">
+            <div class="text-right">{{ $t("order.date") }}</div>
+          </th>
+          <th class="p-2 text-xs font-bold">
+            <div class="text-right">{{ $t("order.foodRevenue") }}</div>
+          </th>
+          <th class="p-2 text-xs font-bold">
+            <div class="text-right">{{ $t("order.foodTax") }}</div>
+          </th>
+          <th class="p-2 text-xs font-bold">
+            <div class="text-right">
+              {{ $t("order.alcoholRevenue") }}
+            </div>
+          </th>
+          <th class="p-2 text-xs font-bold">
+            <div class="text-right">{{ $t("order.salesTax") }}</div>
+          </th>
+          <th class="p-2 text-xs font-bold">
+            <div class="text-right">{{ $t("order.tipShort") }}</div>
+          </th>
+          <th class="p-2 text-xs font-bold">
+            <div class="text-right">{{ $t("order.salesTax") }}</div>
+          </th>
+          <th class="p-2 text-xs font-bold">
+            <div class="text-right">{{ $t("order.total") }}</div>
+          </th>
+          <th class="p-2 text-xs font-bold">
+            <div class="text-right">{{ $t("order.name") }}</div>
+          </th>
+        </tr>
+
+        <!-- Table Body -->
+        <tr v-for="order in orders" :key="order.id" class="text-sm">
+          <td class="p-2">
+            <div class="text-right">{{ $d(order.timeConfirmed) }}</div>
+          </td>
+          <td class="p-2">
+            <div class="text-right">
+              {{ order.accounting.food.revenue }}
+            </div>
+          </td>
+          <td class="p-2">
+            <div class="text-right">{{ order.accounting.food.tax }}</div>
+          </td>
+          <td class="p-2">
+            <div class="text-right">
+              {{ order.accounting.alcohol.revenue }}
+            </div>
+          </td>
+          <td class="p-2">
+            <div class="text-right">
+              {{ order.accounting.alcohol.tax }}
+            </div>
+          </td>
+          <td class="p-2">
+            <div class="text-right">
+              {{ order.accounting.service.revenue }}
+            </div>
+          </td>
+          <td class="p-2">
+            <div class="text-right">
+              {{ order.accounting.service.tax }}
+            </div>
+          </td>
+          <td class="p-2">
+            <div class="text-right">{{ order.totalCharge }}</div>
+          </td>
+          <td class="p-2">
+            <div>
+              <nuxt-link :to="orderUrl(order)">{{
+                orderName(order)
+              }}</nuxt-link>
+              <a v-if="order.payment" :href="searchUrl(order)" target="stripe">
+                <i v-if="order.payment" class="fab fa-cc-stripe" />
+              </a>
+            </div>
+          </td>
+        </tr>
+
+        <!-- Table Footer -->
+        <tr class="text-sm font-bold">
+          <td class="p-2">
+            <div class="text-right">{{ $t("order.total") }}</div>
+          </td>
+          <td class="p-2">
+            <div class="text-right">{{ total.food.revenue }}</div>
+          </td>
+          <td class="p-2">
+            <div class="text-right">{{ total.food.tax }}</div>
+          </td>
+          <td class="p-2">
+            <div class="text-right">{{ total.alcohol.revenue }}</div>
+          </td>
+          <td class="p-2">
+            <div class="text-right">{{ total.alcohol.tax }}</div>
+          </td>
+          <td class="p-2">
+            <div class="text-right">{{ total.service.revenue }}</div>
+          </td>
+          <td class="p-2">
+            <div class="text-right">{{ total.service.tax }}</div>
+          </td>
+          <td class="p-2">
+            <div class="text-right">{{ total.totalCharge }}</div>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Download -->
+    <div class="mx-6 mt-6 text-center">
+      <download-csv
+        :data="tableData"
+        :fields="fields"
+        :fieldNames="fieldNames"
+        :fileName="fileName"
+      >
+        <b-button class="b-reset-tw">
           <div
-            class="m-t-24 bg-surface rounded-lg d-low p-l-16 p-r-16 p-t-16 p-b-16"
+            class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
           >
-            <table class="w-full">
-              <!-- Table Header -->
-              <tr>
-                <th class="p-l-8 p-b-8">
-                  <div class="align-right">{{ $t("order.date") }}</div>
-                </th>
-                <th class="p-l-8">
-                  <div class="align-right">{{ $t("order.foodRevenue") }}</div>
-                </th>
-                <th class="p-l-8">
-                  <div class="align-right">{{ $t("order.foodTax") }}</div>
-                </th>
-                <th class="p-l-8">
-                  <div class="align-right">
-                    {{ $t("order.alcoholRevenue") }}
-                  </div>
-                </th>
-                <th class="p-l-8">
-                  <div class="align-right">{{ $t("order.salesTax") }}</div>
-                </th>
-                <th class="p-l-8">
-                  <div class="align-right">{{ $t("order.tipShort") }}</div>
-                </th>
-                <th class="p-l-8">
-                  <div class="align-right">{{ $t("order.salesTax") }}</div>
-                </th>
-                <th class="p-l-8">
-                  <div class="align-right">{{ $t("order.total") }}</div>
-                </th>
-                <th class="p-l-8">
-                  <div class="align-right">{{ $t("order.name") }}</div>
-                </th>
-              </tr>
-
-              <!-- Table Body -->
-              <tr v-for="order in orders" :key="order.id">
-                <td class="p-l-8 p-t-4">
-                  <div class="align-right">{{ $d(order.timeConfirmed) }}</div>
-                </td>
-                <td class="p-l-8 p-t-4">
-                  <div class="align-right">
-                    {{ order.accounting.food.revenue }}
-                  </div>
-                </td>
-                <td class="p-l-8 p-t-4">
-                  <div class="align-right">{{ order.accounting.food.tax }}</div>
-                </td>
-                <td class="p-l-8 p-t-4">
-                  <div class="align-right">
-                    {{ order.accounting.alcohol.revenue }}
-                  </div>
-                </td>
-                <td class="p-l-8 p-t-4">
-                  <div class="align-right">
-                    {{ order.accounting.alcohol.tax }}
-                  </div>
-                </td>
-                <td class="p-l-8 p-t-4">
-                  <div class="align-right">
-                    {{ order.accounting.service.revenue }}
-                  </div>
-                </td>
-                <td class="p-l-8 p-t-4">
-                  <div class="align-right">
-                    {{ order.accounting.service.tax }}
-                  </div>
-                </td>
-                <td class="p-l-8 p-t-4">
-                  <div class="align-right">{{ order.totalCharge }}</div>
-                </td>
-                <td class="p-l-8 p-t-4">
-                  <div>
-                    <nuxt-link :to="orderUrl(order)">{{
-                      orderName(order)
-                    }}</nuxt-link>
-                    <a
-                      v-if="order.payment"
-                      :href="searchUrl(order)"
-                      target="stripe"
-                    >
-                      <i v-if="order.payment" class="fab fa-cc-stripe" />
-                    </a>
-                  </div>
-                </td>
-              </tr>
-
-              <!-- Table Footer -->
-              <tr class="bold">
-                <td class="p-t-8 p-l-8">
-                  <div class="align-right">{{ $t("order.total") }}</div>
-                </td>
-                <td class="p-t-8 p-l-8">
-                  <div class="align-right">{{ total.food.revenue }}</div>
-                </td>
-                <td class="p-t-8 p-l-8">
-                  <div class="align-right">{{ total.food.tax }}</div>
-                </td>
-                <td class="p-t-8 p-l-8">
-                  <div class="align-right">{{ total.alcohol.revenue }}</div>
-                </td>
-                <td class="p-t-8 p-l-8">
-                  <div class="align-right">{{ total.alcohol.tax }}</div>
-                </td>
-                <td class="p-t-8 p-l-8">
-                  <div class="align-right">{{ total.service.revenue }}</div>
-                </td>
-                <td class="p-t-8 p-l-8">
-                  <div class="align-right">{{ total.service.tax }}</div>
-                </td>
-                <td class="p-t-8 p-l-8">
-                  <div class="align-right">{{ total.totalCharge }}</div>
-                </td>
-              </tr>
-            </table>
+            <i class="material-icons text-lg text-op-teal mr-2">save_alt</i>
+            <div class="text-sm font-bold text-op-teal">
+              {{ $t("admin.report.download-csv") }}
+            </div>
           </div>
-          <download-csv
-            :data="tableData"
-            :fields="fields"
-            :fieldNames="fieldNames"
-            :fileName="fileName"
-          >
-            <b-button
-              class="b-reset op-button-pill h-9 rounded-full bg-form m-t-16"
-            >
-              <span class="p-l-16 p-r-16">
-                <i class="material-icons c-primary s-18 m-r-8">save_alt</i>
-                <span class="c-primary t-button">{{
-                  $t("admin.report.download-csv")
-                }}</span>
-              </span>
-            </b-button>
-          </download-csv>
-        </div>
-        <div class="m-t-24 m-l-24 m-r-24">
-          <report-details :orders="orders" :fileName="fileName" />
-        </div>
-      </div>
-      <!-- Right Gap -->
-      <div class="column is-narrow w-6"></div>
+        </b-button>
+      </download-csv>
+    </div>
+
+    <!-- Report Details -->
+    <div class="mx-6 mt-6 text-center">
+      <report-details :orders="orders" :fileName="fileName" />
     </div>
   </div>
 </template>
