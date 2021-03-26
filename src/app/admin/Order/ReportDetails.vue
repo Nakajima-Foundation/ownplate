@@ -1,20 +1,24 @@
 <template>
   <div>
-    <div
-      v-if="!hideTable"
-      class="m-t-24 bg-surface rounded-lg d-low p-l-16 p-r-16 p-t-16 p-b-16"
-    >
-      <table class="w-full">
+    <div v-if="!hideTable" class="pb-6">
+      <table class="w-full bg-white rounded-lg shadow">
         <tr>
-          <th class="p-l-8 p-b-8" v-for="(field, index) in fields" :key="field">
+          <th
+            v-for="(field, index) in fields"
+            :key="field"
+            class="p-2 text-xs font-bold"
+          >
             {{ fieldNames[index] }}
           </th>
         </tr>
         <tr v-for="row in tableData" :key="row.id">
-          <td v-for="field in fields" :key="field">{{ row[field] }}</td>
+          <td v-for="field in fields" :key="field" class="p-2 text-xs">
+            {{ row[field] }}
+          </td>
         </tr>
       </table>
     </div>
+
     <download-csv
       :data="tableData"
       :fields="fields"
@@ -22,13 +26,15 @@
       :fileName="fileName"
       :formulas="formulas"
     >
-      <b-button class="b-reset op-button-pill h-9 rounded-full bg-form m-t-16">
-        <span class="p-l-16 p-r-16">
-          <i class="material-icons c-primary s-18 m-r-8">save_alt</i>
-          <span class="c-primary t-button">{{
-            $t("admin.report.download-csv-details")
-          }}</span>
-        </span>
+      <b-button class="b-reset-tw">
+        <div
+          class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
+        >
+          <i class="material-icons text-lg text-op-teal mr-2">save_alt</i>
+          <div class="text-sm font-bold text-op-teal">
+            {{ $t("admin.report.download-csv-details") }}
+          </div>
+        </div>
       </b-button>
     </download-csv>
   </div>

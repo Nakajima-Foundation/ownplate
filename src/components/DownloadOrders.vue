@@ -5,13 +5,15 @@
     :fieldNames="fieldNames"
     :fileName="$t('order.history')"
   >
-    <b-button class="b-reset op-button-pill h-9 rounded-full bg-form m-t-16">
-      <span class="p-l-16 p-r-16">
-        <i class="material-icons c-primary s-18 m-r-8">save_alt</i>
-        <span class="c-primary t-button">{{
-          $t("admin.report.download-csv")
-        }}</span>
-      </span>
+    <b-button class="b-reset-tw">
+      <div
+        class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
+      >
+        <i class="material-icons text-lg text-op-teal mr-2">save_alt</i>
+        <div class="text-sm font-bold text-op-teal">
+          {{ $t("admin.report.download-csv") }}
+        </div>
+      </div>
     </b-button>
   </download-csv>
 </template>
