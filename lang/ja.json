@@ -399,7 +399,7 @@
     "category2": "カテゴリ２",
     "count": "受注数",
     "unspecified": "(未記入)",
-    "adminQRCode": "確認用QRCode",
+    "adminQRCode": "飲食店確認用QRCode",
     "status": {
       "unexpected": "(Unexpected)",
       "error": "エラー",
