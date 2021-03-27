@@ -7,6 +7,7 @@ import * as Cookie from "cookie";
 import { db } from "~/plugins/firebase.js";
 
 import { defaultHeader } from "./header";
+import { formatOption } from "~/plugins/strings.js";
 
 export default ({ app }) => {
   Vue.mixin({
@@ -174,6 +175,20 @@ export default ({ app }) => {
           }, []);
         }
         return [];
+      },
+      taxRate(shopInfo, item) {
+        if (shopInfo.inclusiveTax) {
+          return 1;
+        }
+        if (item.tax === "alcohol") {
+          return 1 + shopInfo.alcoholTax * 0.01;
+        }
+        return 1 + shopInfo.foodTax * 0.01;
+      },
+      displayOption(option, shopInfo, item) {
+        return formatOption(option, price => {
+          return this.$n(price * this.taxRate(shopInfo, item), "currency");
+        });
       },
     },
     computed: {

@@ -87,7 +87,7 @@
                 <div v-if="option.length === 1" class="field">
                   <b-checkbox v-model="optionValues[quantityKey][index]"
                     ><div class="text-sm font-bold">
-                      {{ displayOption(option[0]) }}
+                      {{ displayOption(option[0], shopInfo, item) }}
                     </div></b-checkbox
                   >
                 </div>
@@ -99,7 +99,7 @@
                     :native-value="index2"
                     :key="`${quantityKey}_${index2}`"
                     ><div class="text-sm font-bold">
-                      {{ displayOption(choice) }}
+                      {{ displayOption(choice, shopInfo, item) }}
                     </div></b-radio
                   >
                 </div>
@@ -226,7 +226,6 @@
 import { mapGetters, mapMutations } from "vuex";
 import Price from "~/components/Price";
 import SharePopup from "~/app/user/Restaurant/SharePopup";
-import { formatOption } from "~/plugins/strings.js";
 
 // menu UI algorithm
 //   init quantities = [0]
@@ -388,20 +387,6 @@ export default {
     }
   },
   methods: {
-    displayOption(option) {
-      const taxRate = (() => {
-        if (this.shopInfo.inclusiveTax) {
-          return 1;
-        }
-        if (this.item.tax === "alcohol") {
-          return 1 + this.shopInfo.alcoholTax * 0.01;
-        }
-        return 1 + this.shopInfo.foodTax * 0.01;
-      })();
-      return formatOption(option, price => {
-        return this.$n(price * taxRate, "currency")
-      });
-    },
     openImage() {
       this.imagePopup = true;
       // this.$router.replace("/r/" + this.restaurantId() + (this.urlSuffix||""));

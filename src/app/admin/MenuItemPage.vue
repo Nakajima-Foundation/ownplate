@@ -319,7 +319,7 @@
                         <div
                           class="text-sm font-bold text-black text-opacity-60"
                         >
-                          {{ displayOption(opt) }}
+                          {{ displayOption(opt, restaurantInfo, menuInfo) }}
                         </div>
                       </b-checkbox>
                       <b-radio
@@ -331,12 +331,12 @@
                         <div
                           class="text-sm font-bold text-black text-opacity-60"
                         >
-                          {{ displayOption(opt) }}
+                          {{ displayOption(opt, restaurantInfo, menuInfo) }}
                         </div>
                       </b-radio>
                     </div>
                     <div class="text-sm font-bold text-black text-opacity-60">
-                      {{ optionPrice(opt) }}
+                      {{ displayOptionPrice(opt) }}
                     </div>
                   </div>
                 </div>
@@ -661,11 +661,8 @@ export default {
     }
   },
   methods: {
-    displayOption(option) {
-      return formatOption(option, price => this.$n(price, "currency"));
-    },
-    optionPrice(str) {
-      const price = optionPrice(str);
+    displayOptionPrice(str) {
+      const price = optionPrice(str) * this.taxRate(this.restaurantInfo, this.menuInfo);
       if (price === 0) {
         return this.$t("editMenu.noPriceChange");
       } else if (price > 0) {
