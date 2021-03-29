@@ -1,86 +1,89 @@
 <template>
-  <div class="m-t-24">
-    <div class="t-h6 c-text-black-disabled m-b-8">{{ $t("admin.payment") }}</div>
+  <div>
+    <div class="text-xl font-bold text-black text-opacity-40 mb-2">
+      {{ $t("admin.payment") }}
+    </div>
 
-    <div class="bg-surface r-8 d-low p-t-24 p-b-24" :style="cardStyle">
+    <div
+      class="bg-white shadow rounded-lg p-4"
+      :class="unsetWarning ? 'border-red-700 border-2 border-solid' : ''"
+    >
       <!-- Online Payment -->
-      <div class="m-l-24 m-r-24">
-        <div class="t-subtitle1 c-text-black-medium">{{ $t("admin.payments.onlinePayment") }}</div>
-        <div class="m-t-8 t-body1 c-text-black-medium">{{ $t("admin.payments.pleaseConnect") }}</div>
+      <div>
+        <div class="text-base font-bold text-black text-opacity-60 pb-2">
+          {{ $t("admin.payments.onlinePayment") }}
+        </div>
+        <div class="text-base text-black text-opacity-60">
+          {{ $t("admin.payments.pleaseConnect") }}
+        </div>
 
         <!-- Stripe Not Connected -->
         <div v-if="!hasStripe">
-          <!-- Stripe Connection Status -->
-          <div class="align-center m-t-16">
-            <div
-              class="op-status c-status-red bg-status-red-bg"
-            >{{ $t("admin.payments.statusNotConnected") }}</div>
+          <div class="text-sm font-bold text-red-700 text-center mt-2">
+            {{ $t("admin.payments.statusNotConnected") }}
           </div>
 
-          <!-- Connect Button -->
-          <div class="align-center m-t-16 m-b-24">
-            <div class="op-button-small primary" @click="handleLinkStripe">
-              <span>
-                {{
+          <div class="text-center mt-2">
+            <a
+              @click="handleLinkStripe"
+              class="h-12 rounded-full bg-op-teal inline-flex items-center px-8 shadow"
+              ><span class="text-white text-base font-bold">{{
                 $t("admin.payments.connectStripe")
-                }}
-              </span>
-            </div>
+              }}</span></a
+            >
           </div>
         </div>
 
         <!-- Stripe Connected -->
         <div v-if="hasStripe">
-          <!-- Stripe Connection Status -->
-          <div class="align-center m-t-16">
-            <div
-              class="op-status c-status-green bg-status-green-bg"
-            >{{ $t("admin.payments.statusConnected") }}</div>
+          <div class="text-sm font-bold text-green-600 text-center mt-2">
+            {{ $t("admin.payments.statusConnected") }}
           </div>
 
-          <!-- Open Stripe -->
-          <div class="align-center m-t-16">
-            <a :href="dashboard" target="stripe">
-              <div class="op-button-small secondary">
-                <span class="c-primary">
-                  {{
-                  $t("admin.payments.openDashboard")
-                  }}
-                </span>
-              </div>
-            </a>
+          <div class="text-center mt-2">
+            <a
+              :href="dashboard"
+              target="stripe"
+              class="h-12 rounded-full inline-flex items-center px-6 border-2 border-op-teal"
+              ><span class="text-op-teal text-base font-bold">{{
+                $t("admin.payments.openDashboard")
+              }}</span></a
+            >
           </div>
 
-          <!-- Disconnect Button -->
-          <div class="align-center m-t-16">
-            <b-button @click="handlePaymentAccountDisconnect" class="b-reset op-button-text">
-              <i class="material-icons c-status-red">link_off</i>
-              <span class="c-status-red">
-                {{
+          <div class="text-center mt-6">
+            <a
+              @click="handlePaymentAccountDisconnect"
+              class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
+            >
+              <i class="material-icons text-lg text-red-700 mr-2">link_off</i>
+              <span class="text-sm font-bold text-red-700">{{
                 $t("admin.payments.disconnectStripe")
-                }}
-              </span>
-            </b-button>
+              }}</span>
+            </a>
           </div>
         </div>
       </div>
 
-      <hr class="m-l-24 m-r-24" />
-
       <!-- On-site Payment -->
-      <div class="m-l-24 m-r-24">
-        <div class="t-subtitle1 c-text-black-medium">{{ $t("admin.payments.onsitePayment") }}</div>
-        <div class="m-t-8 t-body1 c-text-black-medium">{{ $t("admin.payments.pleaseCheck") }}</div>
-        <div class="m-t-8 bg-form r-8 p-l-16 p-r-16 p-t-16 p-b-16">
-          <span class="t-body2 c-status-red">{{ $t("admin.payments.onsitePaymentNote") }}</span>
+      <div
+        class="border-t-2 border-solid border-black border-opacity-10 pt-4 mt-4"
+      >
+        <div class="text-base font-bold text-black text-opacity-60 pb-2">
+          {{ $t("admin.payments.onsitePayment") }}
+        </div>
+        <div class="text-base text-black text-opacity-60">
+          {{ $t("admin.payments.pleaseCheck") }}
+        </div>
+        <div class="bg-black bg-opacity-5 rounded-lg p-4 mt-2">
+          <span class="text-sm text-red-700">{{
+            $t("admin.payments.onsitePaymentNote")
+          }}</span>
         </div>
 
-        <!-- On-site Payment Checkbox -->
-        <div class="align-center m-t-24">
+        <div class="text-center mt-4">
           <b-checkbox v-model="inStorePayment">
-            {{
-            $t("admin.payments.enableOnsitePayment")
-            }}
+            {{ $t("admin.payments.enableOnsitePayment") }}
           </b-checkbox>
         </div>
       </div>
@@ -164,7 +167,7 @@ export default {
       }
     },
     unsetWarning(newValue) {
-      this.$emit("updateUnsetWarning", newValue)
+      this.$emit("updateUnsetWarning", newValue);
     }
   },
   computed: {
@@ -180,11 +183,10 @@ export default {
     hasStripe() {
       return !!this.paymentInfo.stripe;
     },
-    cardStyle() {
-      return this.unsetWarning
-        ? { border: "solid 2px #b00020" }
-        : {};
-    },
+    // # Not In Use
+    // cardStyle() {
+    //   return this.unsetWarning ? { border: "solid 2px #b00020" } : {};
+    // },
     unsetWarning() {
       return !this.inStorePayment && !this.hasStripe;
     }

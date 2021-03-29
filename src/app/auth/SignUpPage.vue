@@ -1,129 +1,149 @@
 <template>
-  <div>
-    <!-- Sign Up -->
-    <div class="columns is-gapless">
-      <!-- Left Gap -->
-      <div class="column is-narrow w-24"></div>
-      <!-- Center Column -->
-      <div class="column">
-        <div class="columns is-gaplress">
-          <div class="column is-half is-offset-one-quarter">
-            <div class="m-l-24 m-r-24">
-              <div class="bg-surface r-8 d-low m-t-24 p-l-24 p-r-24 p-t-24 p-b-24">
-                <form @submit.prevent="onSignup">
-                  <div class="t-h6 c-text-black-disabled">{{ $t('admin.registration') }}</div>
+  <div class="mx-6 mt-6 lg:max-w-2xl lg:mx-auto">
+    <div class="bg-white rounded-lg shadow mt-6 p-6">
+      <form @submit.prevent="onSignup">
+        <!-- Title -->
+        <div class="text-xl font-bold text-black text-opacity-30">
+          {{ $t("admin.registration") }}
+        </div>
 
-                  <!-- Email -->
-                  <div class="m-t-16">
-                    <div class="t-subtitle2 c-text-black-medium m-b-4">{{ $t('admin.email') }}</div>
-                    <b-field
-                      :type="errors.email ? 'is-danger' : 'is-success'"
-                      :message="errors.email && $t(errors.email[0])"
-                    >
-                      <b-input
-                        v-model="email"
-                        type="email"
-                        :placeholder="$t('admin.emailPlaceHolder')"
-                        maxlength="256"
-                      />
-                    </b-field>
-                  </div>
+        <!-- Email -->
+        <div class="mt-4">
+          <div class="text-sm font-bold">
+            {{ $t("admin.email") }}
+          </div>
 
-                  <!-- Name -->
-                  <div>
-                    <div class="t-subtitle2 c-text-black-medium m-b-4">{{ $t('admin.name') }}</div>
-                    <b-field>
-                      <b-input
-                        v-model="name"
-                        type="text"
-                        :placeholder="$t('admin.enterName')"
-                        maxlength="100"
-                      />
-                    </b-field>
-                  </div>
-
-                  <!-- Password -->
-                  <div>
-                    <div class="t-subtitle2 c-text-black-medium m-b-4">{{ $t('admin.password') }}</div>
-                    <b-field
-                      :type="errors.password ? 'is-danger' : 'is-success'"
-                      :message="errors.password && $t(errors.password[0])"
-                    >
-                      <b-input
-                        v-model="password"
-                        type="password"
-                        :placeholder="$t('admin.passwordPlaceHolder')"
-                        maxlength="30"
-                        password-reveal
-                      />
-                    </b-field>
-                  </div>
-
-                  <!-- Confirm Password -->
-                  <div>
-                    <div
-                      class="t-subtitle2 c-text-black-medium m-b-4"
-                    >{{ $t('admin.confirmPassword') }}</div>
-
-                    <b-field
-                      :type="errors.confirm ? 'is-danger' : 'is-success'"
-                      :message="errors.confirm && $t(errors.confirm[0])"
-                    >
-                      <b-input
-                        v-model="confirmPassword"
-                        type="password"
-                        :placeholder="$t('admin.confirmPasswordPlaceHolder')"
-                        maxlength="30"
-                        password-reveal
-                      />
-                    </b-field>
-                  </div>
-
-                  <!-- Submit Button -->
-                  <div class="m-t-8 align-center">
-                    <b-button class="b-reset op-button-small tertiary m-r-16" @click="handleCancel">
-                      <span class="c-text-black-medium">{{ $t('button.cancel') }}</span>
-                    </b-button>
-                    <b-button
-                      class="b-reset op-button-small primary"
-                      :disabled="Object.keys(errors).length > 0"
-                      @click="onSignup"
-                    >
-                      <span class="c-onprimary">{{ $t('button.next') }}</span>
-                    </b-button>
-                  </div>
-
-                  <!-- Terms of Use & Privacy Policy -->
-                  <div v-if="!isLocaleJapan" class="m-t-24 t-caption">
-                    <span>By submitting this form, you agree to the</span>
-                    <router-link to="/terms/admin" target="_blank">
-                      <span class="c-primary">Terms of Service</span>
-                    </router-link>
-                    <span>and</span>
-                    <router-link to="/privacy" target="_blank">
-                      <span class="c-primary">Privacy Policy</span>
-                    </router-link>
-                    <span>.</span>
-                  </div>
-                  <div v-else class="m-t-24 t-caption">
-                    <span>送信することで、</span>
-                    <router-link to="/terms/admin" target="_blank">
-                      <span class="c-primary">利用規約</span>
-                    </router-link>
-                    <span>と</span>
-                    <router-link to="/privacy" target="_blank">
-                      <span class="c-primary">プライバシーポリシー</span>
-                    </router-link>
-                    <span>に同意したものとみなされます。</span>
-                  </div>
-                </form>
-              </div>
-            </div>
+          <div class="mt-1">
+            <b-field
+              :type="errors.email ? 'is-danger' : 'is-success'"
+              :message="errors.email && $t(errors.email[0])"
+            >
+              <b-input
+                v-model="email"
+                type="email"
+                :placeholder="$t('admin.emailPlaceHolder')"
+                maxlength="256"
+              />
+            </b-field>
           </div>
         </div>
-      </div>
-      <!-- Right Gap -->
-      <div class="column is-narrow w-24"></div>
+
+        <!-- Name -->
+        <div>
+          <div class="text-sm font-bold">
+            {{ $t("admin.name") }}
+          </div>
+
+          <div class="mt-1">
+            <b-field>
+              <b-input
+                v-model="name"
+                type="text"
+                :placeholder="$t('admin.enterName')"
+                maxlength="100"
+              />
+            </b-field>
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div>
+          <div class="text-sm font-bold">
+            {{ $t("admin.password") }}
+          </div>
+
+          <div class="mt-1">
+            <b-field
+              :type="errors.password ? 'is-danger' : 'is-success'"
+              :message="errors.password && $t(errors.password[0])"
+            >
+              <b-input
+                v-model="password"
+                type="password"
+                :placeholder="$t('admin.passwordPlaceHolder')"
+                maxlength="30"
+                password-reveal
+              />
+            </b-field>
+          </div>
+        </div>
+
+        <!-- Confirm Password -->
+        <div>
+          <div class="text-sm font-bold">
+            {{ $t("admin.confirmPassword") }}
+          </div>
+
+          <div class="mt-1">
+            <b-field
+              :type="errors.confirm ? 'is-danger' : 'is-success'"
+              :message="errors.confirm && $t(errors.confirm[0])"
+            >
+              <b-input
+                v-model="confirmPassword"
+                type="password"
+                :placeholder="$t('admin.confirmPasswordPlaceHolder')"
+                maxlength="30"
+                password-reveal
+              />
+            </b-field>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="mt-2 text-center">
+          <b-button @click="handleCancel" class="b-reset-tw mr-4 mb-2">
+            <div
+              class="inline-flex justify-center items-center h-12 w-32 rounded-full bg-black bg-opacity-5"
+            >
+              <div class="text-base font-bold text-black text-opacity-60">
+                {{ $t("button.cancel") }}
+              </div>
+            </div>
+          </b-button>
+
+          <b-button
+            :disabled="Object.keys(errors).length > 0"
+            @click="onSignup"
+            class="b-reset-tw"
+          >
+            <div
+              class="inline-flex justify-center items-center h-12 w-32 rounded-full bg-op-teal shadow"
+            >
+              <div class="text-base font-bold text-white">
+                {{ $t("button.next") }}
+              </div>
+            </div>
+          </b-button>
+        </div>
+
+        <!-- Terms of Use & Privacy Policy -->
+        <div class="mt-6 text-xs">
+          <div v-if="!isLocaleJapan">
+            <span>By submitting this form, you agree to the</span>
+            <router-link to="/terms/admin" target="_blank">
+              <span class="text-op-teal">Terms of Service</span>
+            </router-link>
+            <span>and</span>
+            <router-link to="/privacy" target="_blank">
+              <span class="text-op-teal">Privacy Policy</span>
+            </router-link>
+            <span>.</span>
+          </div>
+
+          <div v-else>
+            <span>送信することで、</span>
+            <router-link to="/terms/admin" target="_blank">
+              <span class="text-op-teal">利用規約</span>
+            </router-link>
+            <span>と</span>
+            <router-link to="/privacy" target="_blank">
+              <span class="text-op-teal">プライバシーポリシー</span>
+            </router-link>
+            <span>に同意したものとみなされます。</span>
+          </div>
+        </div>
+      </form>
     </div>
   </div>
 </template>

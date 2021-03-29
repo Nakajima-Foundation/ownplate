@@ -1,18 +1,20 @@
 <template>
-  <!-- Favorite Button -->
-  <div class="is-inline-block" v-if="isUser">
-    <div class="op-button-text" @click="handleLike">
-      <!-- Like -->
-      <template v-if="likes">
-        <i class="material-icons c-status-red">favorite</i>
-        <span class="c-status-red">{{ $t("shopInfo.liked") }}</span>
-      </template>
-      <!-- Liked -->
-      <template v-else>
-        <i class="material-icons">favorite_border</i>
-        <span>{{ $t("shopInfo.like") }}</span>
-      </template>
-    </div>
+  <div class="inline-block" v-if="isUser">
+    <a @click="handleLike">
+      <div v-if="likes" class="inline-flex justify-center items-center">
+        <i class="material-icons text-lg text-red-700 mr-2">favorite</i>
+        <div class="text-sm font-bold text-red-700">
+          {{ $t("shopInfo.liked") }}
+        </div>
+      </div>
+
+      <div v-else class="inline-flex justify-center items-center">
+        <i class="material-icons text-lg text-op-teal">favorite_border</i>
+        <div class="text-sm font-bold text-op-teal">
+          {{ $t("shopInfo.like") }}
+        </div>
+      </div>
+    </a>
   </div>
 </template>
 

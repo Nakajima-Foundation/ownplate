@@ -1,140 +1,135 @@
 <template>
-  <div>
-    <!-- Item Card -->
-    <div class="bg-surface r-8 d-low m-t-8">
-      <!-- Published/NotPublished Badge -->
-      <div class="cols flex-center">
-        <div class="flex-1">
-          <div v-if="menuitem.publicFlag" class="p-t-8 p-l-8 p-r-8 p-b-8">
+  <div class="lg:flex">
+    <div class="lg:flex-1">
+      <!-- Item Card -->
+      <div class="bg-white rounded-lg shadow">
+        <!-- Published Status and Sold Out Checkbox -->
+        <div class="flex items-center">
+          <div class="flex-1 mx-2 mt-2">
             <div
-              class="bg-status-green-bg c-status-green t-overline p-l-8 p-r-8 p-t-4 p-b-4 r-4"
+              v-if="menuitem.publicFlag"
+              class="p-2 rounded bg-opacity-10 bg-green-600"
             >
-              {{ $t("admin.itemPublished") }}
+              <div class="text-xs font-bold text-green-600">
+                {{ $t("admin.itemPublished") }}
+              </div>
             </div>
-          </div>
-          <div v-else class="p-t-8 p-l-8 p-r-8 p-b-8">
-            <div
-              class="bg-status-red-bg c-status-red t-overline p-l-8 p-r-8 p-t-4 p-b-4 r-4"
-            >
-              {{ $t("admin.itemNotPublished") }}
+            <div v-else class="p-2 rounded bg-opacity-10 bg-red-700">
+              <div class="text-xs font-bold text-red-700">
+                {{ $t("admin.itemNotPublished") }}
+              </div>
             </div>
-          </div>
-        </div>
-        <div class="p-r-16">
-          <b-checkbox :value="soldOut" @input="soldOutToggle">
-            <div v-if="soldOut" class="t-button c-status-red">
-              {{ $t("admin.itemSoldOut") }}
-            </div>
-            <div v-else class="t-button c-text-black-disabled">
-              {{ $t("admin.itemSoldOut") }}
-            </div>
-          </b-checkbox>
-        </div>
-      </div>
-
-      <!-- Item Details -->
-      <div class="is-clearfix touchable" @click="linkEdit">
-        <div class="p-r-16 p-t-16 p-b-16 p-l-16 is-pulled-right">
-          <div v-if="image" class="p-b-8">
-            <img
-              :src="image"
-              width="96"
-              height="96"
-              class="w-96 h-96 r-4 cover"
-            />
-          </div>
-        </div>
-        <div class="p-l-16 p-r-16 p-t-16 p-b-16">
-          <div class="t-h6 c-text-black-high">{{ menuitem.itemName }}</div>
-          <div class="t-body1 c-text-black-high m-t-8">
-            <Price :shopInfo="shopInfo" :menu="menuitem" />
           </div>
 
-          <!-- # Need to add *** v-if="menuitem.itemDescription !== null" ***? -->
-          <div class="t-body2 c-text-black-medium m-t-8">
+          <div class="mr-4 pt-4">
+            <b-checkbox :value="soldOut" @input="soldOutToggle">
+              <div v-if="soldOut" class="text-sm font-bold text-red-700">
+                {{ $t("admin.itemSoldOut") }}
+              </div>
+              <div v-else class="text-sm font-bold text-black text-opacity-30">
+                {{ $t("admin.itemSoldOut") }}
+              </div>
+            </b-checkbox>
+          </div>
+        </div>
+
+        <!-- Item Details -->
+        <a class="flow-root" @click="linkEdit">
+          <div class="p-4 float-right">
+            <div v-if="image">
+              <img
+                :src="image"
+                width="96"
+                height="96"
+                class="w-24 h-24 rounded cover"
+              />
+            </div>
+          </div>
+
+          <div class="p-4">
+            <div class="text-xl font-bold text-black text-opacity-80">
+              {{ menuitem.itemName }}
+            </div>
+            <div class="text-base text-black text-opacity-80 mt-2">
+              <Price :shopInfo="shopInfo" :menu="menuitem" />
+            </div>
+
+            <!-- # Remove the description part to make the list length shorter -->
+            <!-- <div class="mt-2 text-sm text-black text-opacity-60">
             {{ menuitem.itemDescription }}
+          </div> -->
           </div>
+        </a>
 
-          <!-- # Need to add allergensDescription -->
-          <!-- <div
-            v-if="menuitem.allergens.length > 0"
-            class="t-body2 c-text-black-medium m-t-8"
-          >{{ menuitem.allergensDescription }}</div>-->
-        </div>
-      </div>
-
-      <!-- Owner Memo -->
-      <div v-if="menuitem.itemMemo" class="p-l-8 p-r-8 p-b-8">
-        <div
-          class="bg-form t-overline c-text-black-medium p-l-8 p-r-8 p-t-4 p-b-4 r-4"
-        >
-          {{ menuitem.itemMemo.split("\n")[0] }}
+        <!-- Owner Memo -->
+        <div v-if="menuitem.itemMemo" class="mx-2 pb-2">
+          <div class="p-2 rounded bg-black bg-opacity-5 text-xs">
+            {{ menuitem.itemMemo.split("\n")[0] }}
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- Card Actions -->
-    <div class="m-t-8 p-b-8 p-l-8 p-r-8">
-      <div class="cols">
-        <div class="flex-1">
-          <!-- Position Up -->
-          <b-button
-            class="b-reset op-button-pill h-36 bg-form m-r-8"
-            v-if="position !== 'first'"
-            @click="positionUp"
+    <div class="mt-2 text-right lg:mt-0 lg:ml-4 lg:flex-shrink-0">
+      <!-- Card Actions -->
+      <div class="inline-flex space-x-2">
+        <!-- Up -->
+        <b-button
+          v-if="position !== 'first'"
+          @click="positionUp"
+          class="b-reset-tw"
+        >
+          <div
+            class="inline-flex justify-center items-center px-4 h-9 rounded-full bg-black bg-opacity-5"
           >
-            <i class="material-icons c-primary s-18 p-l-8 p-r-8"
-              >arrow_upward</i
-            >
-          </b-button>
-          <!-- Disable if First -->
-          <b-button
-            class="b-reset op-button-pill h-36 bg-form m-r-8"
-            disabled
-            v-else
+            <i class="material-icons text-lg text-op-teal">arrow_upward</i>
+          </div>
+        </b-button>
+        <b-button v-else disabled class="b-reset-tw">
+          <div
+            class="inline-flex justify-center items-center px-4 h-9 rounded-full bg-black bg-opacity-5"
           >
-            <i class="material-icons c-text-black-disabled s-18 p-l-8 p-r-8"
-              >arrow_upward</i
-            >
-          </b-button>
+            <i class="material-icons text-lg text-op-teal">arrow_upward</i>
+          </div>
+        </b-button>
 
-          <!-- Position Down -->
-          <b-button
-            class="b-reset op-button-pill h-36 bg-form m-r-8"
-            v-if="position !== 'last'"
-            @click="positionDown"
+        <!-- Down -->
+        <b-button
+          v-if="position !== 'last'"
+          @click="positionDown"
+          class="b-reset-tw"
+        >
+          <div
+            class="inline-flex justify-center items-center px-4 h-9 rounded-full bg-black bg-opacity-5"
           >
-            <i class="material-icons c-primary s-18 p-l-8 p-r-8"
-              >arrow_downward</i
-            >
-          </b-button>
-          <!-- Disable if Last -->
-          <b-button
-            class="b-reset op-button-pill h-36 bg-form m-r-8"
-            disabled
-            v-else
+            <i class="material-icons text-lg text-op-teal">arrow_downward</i>
+          </div>
+        </b-button>
+        <b-button v-else disabled class="b-reset-tw">
+          <div
+            class="inline-flex justify-center items-center px-4 h-9 rounded-full bg-black bg-opacity-5"
           >
-            <i class="material-icons c-text-black-disabled s-18 p-l-8 p-r-8"
-              >arrow_downward</i
-            >
-          </b-button>
+            <i class="material-icons text-lg text-op-teal">arrow_downward</i>
+          </div>
+        </b-button>
 
-          <!-- Duplicate -->
-          <b-button
-            class="b-reset op-button-pill h-36 bg-form m-r-8"
-            @click="forkItem"
+        <!-- Duplicate -->
+        <b-button @click="forkItem" class="b-reset-tw">
+          <div
+            class="inline-flex justify-center items-center px-4 h-9 rounded-full bg-black bg-opacity-5"
           >
-            <i class="material-icons c-primary s-18 p-l-8 p-r-8">queue</i>
-          </b-button>
-        </div>
-        <div>
-          <b-button
-            class="b-reset op-button-pill h-36 bg-form"
-            @click="deleteItem"
+            <i class="material-icons text-lg text-op-teal">queue</i>
+          </div>
+        </b-button>
+
+        <!-- Delete -->
+        <b-button @click="deleteItem" class="b-reset-tw">
+          <div
+            class="inline-flex justify-center items-center px-4 h-9 rounded-full bg-black bg-opacity-5"
           >
-            <i class="material-icons c-status-red s-18 p-l-8 p-r-8">delete</i>
-          </b-button>
-        </div>
+            <i class="material-icons text-lg text-red-700">delete</i>
+          </div>
+        </b-button>
       </div>
     </div>
   </div>

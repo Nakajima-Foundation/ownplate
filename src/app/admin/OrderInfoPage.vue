@@ -4,310 +4,356 @@
       <not-found />
     </template>
     <template v-else>
-      <!-- Order Header Area -->
-      <div class="columns is-gapless">
-        <!-- Left Gap -->
-        <div class="column is-narrow w-24"></div>
-        <!-- Center Column -->
-        <div class="column">
-          <div class="m-l-24 m-r-24">
-            <!-- Nav Bar -->
-            <div class="level">
-              <!-- Back Button and Restaurant Profile -->
-              <div class="level-left flex-1">
-                <!-- Back Button -->
-                <back-button :url="parentUrl" class="m-t-24 m-r-16" />
-
-                <!-- Restaurant Profile -->
-                <div class="is-inline-flex flex-center m-t-24">
-                  <div>
-                    <img
-                      :src="resizedProfileImage(shopInfo, '600')"
-                      class="w-36 h-36 r-36 cover"
-                    />
-                  </div>
-                  <div class="t-h6 c-text-black-high m-l-8 flex-1">
-                    {{ shopInfo.restaurantName }}
-                  </div>
-                </div>
-              </div>
-              <!-- Notification Settings -->
-              <div class="level-right">
-                <notification-index :shopInfo="shopInfo" />
-              </div>
-            </div>
+      <!-- Header -->
+      <div class="mt-6 mx-6 lg:flex lg:items-center">
+        <!-- Back and Preview -->
+        <div class="flex space-x-4">
+          <div class="flex-shrink-0">
+            <back-button :url="parentUrl" />
           </div>
-        </div>
-        <!-- Right Gap -->
-        <div class="column is-narrow w-24"></div>
-      </div>
-
-      <!-- Order Body Area -->
-      <div
-        class="columns is-gapless"
-        v-if="orderInfo.status === order_status.transaction_hide"
-      >
-        <div class="column is-narrow w-24"></div>
-        <div class="column">
-          <div class="m-l-24 m-r-24">
-            <div
-              class="bg-surface r-8 d-low p-l-24 p-r-24 p-t-24 p-b-24 m-t-24"
-            >
-              <div>{{ $t("order.status.transaction_hide") }}</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="columns is-gapless" v-else>
-        <!-- Left Gap -->
-        <div class="column is-narrow w-24"></div>
-
-        <!-- Left Column -->
-        <div class="column">
-          <div class="m-l-24 m-r-24">
-            <div
-              class="bg-surface r-8 d-low p-l-24 p-r-24 p-t-24 p-b-24 m-t-24"
-            >
-              <!-- Order Overview -->
-              <div>
-                <div class="align-center">
-                  <div class="is-inline-flex flex-center">
-                    <!-- Order ID -->
-                    <div class="t-h4 c-text-black-high">{{ orderName }}</div>
-
-                    <!-- Total Charge -->
-                    <div class="m-l-16">
-                      <div class="t-caption c-text-black-medium">
-                        {{ $t("order.totalCharge") }}
-                      </div>
-                      <div v-if="hasStripe" class="t-body1 c-textl-black-high">
-                        <a :href="search" target="stripe">
-                          <div>{{ $n(orderInfo.totalCharge, "currency") }}</div>
-                          <div
-                            :class="
-                              't-overline stripe_' + orderInfo.payment.stripe
-                            "
-                          >
-                            {{
-                              $t(
-                                "order.status.stripe_" +
-                                  orderInfo.payment.stripe
-                              )
-                            }}
-                          </div>
-                        </a>
-                      </div>
-                      <div v-else class="t-body1 c-textl-black-high">
-                        <div>{{ $n(orderInfo.totalCharge, "currency") }}</div>
-                        <div class="t-overline c-status-amber">
-                          {{ $t("order.status.onsitePayment") }}
-                        </div>
-                      </div>
-
-                      <!-- Tip -->
-                      <div
-                        v-if="orderInfo.tip"
-                        class="t-overline c-status-blue"
-                      >
-                        {{ $t("order.includingTip") }}
-                        {{ $n(orderInfo.tip, "currency") }}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Note for Payment Completion -->
-                <div
-                  v-if="paymentIsNotCompleted"
-                  class="m-t-16 bg-status-amber-bg r-8 p-t-8 p-b-8 p-l-16 p-r-16 t-body2 c-status-amber"
-                >
-                  {{ $t("admin.order.paymentIsNotCompleted") }}
-                </div>
-
-                <!-- Cancel Button -->
-                <div class="m-t-24 align-center">
-                  <b-button
-                    class="b-reset op-button-pill h-36 bg-status-red-bg"
-                    v-if="isValidTransition('order_canceled')"
-                    @click="openCancel()"
-                  >
-                    <i class="material-icons c-status-red s-18 m-l-8">delete</i>
-                    <span class="c-status-red t-button">{{
-                      $t("admin.order.cancelButton")
-                    }}</span>
-                  </b-button>
-                  <b-button v-if="cancelStatus" class="op-button-medium w-256">
-                    <div class="c-status-red">
-                      {{ $t("order." + cancelStatus) }}
-                    </div>
-                    <div class="t-caption c-text-black-medium">
-                      {{ timeOfEvents[cancelStatus] }}
-                    </div>
-                  </b-button>
-                </div>
-
-                <!-- Cancel Popup-->
-                <b-modal :active.sync="cancelPopup" :width="488" scroll="keep">
-                  <div class="op-dialog p-t-24 p-l-24 p-r-24 p-b-24">
-                    <div class="t-h6 c-text-black-disabled">
-                      {{ $t("admin.order.cancelTitle") }}
-                    </div>
-                    <div class="t-body1 c-text-black-high m-t-24">
-                      {{ $t("admin.order.cancelMessage") }}
-                    </div>
-                    <!-- CTA: Call -->
-                    <div
-                      v-if="orderInfo.phoneNumber"
-                      class="m-t-24 align-center"
-                    >
-                      <div>
-                        <a :href="nationalPhoneURI">
-                          <div class="op-button-small w-256 secondary">
-                            {{ nationalPhoneNumber }}
-                          </div>
-                        </a>
-                      </div>
-                      <div class="t-subtitle2 c-text-black-medium m-t-8">
-                        {{ orderInfo.name }}
-                      </div>
-                    </div>
-                    <!-- CTA: Cancel -->
-                    <div class="align-center m-t-16">
-                      <b-button
-                        class="b-reset op-button-small d-low bg-status-red w-256"
-                        :loading="updating === 'order_canceled'"
-                        @click="handleCancel"
-                      >
-                        <span class="c-text-white-full">{{
-                          $t("admin.order.delete")
-                        }}</span>
-                      </b-button>
-                      <div class="t-subtitle2 c-status-red m-t-8">
-                        {{ $t("admin.order.deleteConfirm") }}
-                      </div>
-                    </div>
-                    <!-- CTA: Close -->
-                    <div class="m-t-24 align-center">
-                      <div
-                        class="op-button-small tertiary"
-                        @click="closeCancel()"
-                      >
-                        {{ $t("menu.close") }}
-                      </div>
-                    </div>
-                  </div>
-                </b-modal>
-
-                <!-- Pickup Time -->
-                <div class="m-t-24 align-center">
-                  <div class="t-caption c-text-black-medium">
-                    {{ $t("order.timeRequested") }}
-                  </div>
-                  <div class="t-body1 c-textl-black-high m-t-4">
-                    {{ timeRequested }}
-                  </div>
-                  <div v-if="timeEstimated" class="m-t-4">
-                    <div class="t-caption c-text-black-medium">
-                      {{ $t("order.timeToPickup") }}
-                    </div>
-                    <div class="t-body1 c-textl-black-high m-t-4">
-                      {{ timeEstimated }}
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Estimated Time Picker -->
-                <div v-if="showTimePicker" class="m-t-8">
-                  <div class="t-subtitle2 c-text-black-medium align-center">
-                    {{ $t("order.timeToPickup") }}
-                  </div>
-                  <b-select class="m-t-8 align-center" v-model="timeOffset">
-                    <option
-                      v-for="time in estimatedTimes"
-                      :value="time.offset"
-                      :key="time.offset"
-                      >{{ time.display }}</option
-                    >
-                  </b-select>
-                </div>
-
-                <!-- Phone Number -->
-                <div v-if="orderInfo.phoneNumber" class="align-center m-t-16">
-                  <div class="t-caption c-text-black-medium">
-                    {{ $t("sms.phonenumber") }}
-                  </div>
-                  <div class="t-body1 m-t-4">
-                    <div>
-                      <a :href="nationalPhoneURI">{{ nationalPhoneNumber }}</a>
-                    </div>
-                    <div>{{ orderInfo.name }}</div>
-                  </div>
-                </div>
-
-                <!-- Message from customer -->
-                <div
-                  v-if="hasMemo"
-                  class="m-t-16 bg-form r-8 p-t-16 p-l-16 p-r-16 p-b-16"
-                >
-                  <div class="t-caption c-text-black-medium">
-                    {{ $t("admin.order.messageFromCustomer") }}
-                  </div>
-                  <div class="t-body1 m-t-8">
-                    {{ orderInfo.memo }}
-                  </div>
-                </div>
+          <div class="flex-shrink-0">
+            <nuxt-link :to="'/r/' + restaurantId()">
+              <div
+                class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
+              >
+                <i class="material-icons text-lg text-op-teal mr-2">launch</i>
+                <span class="text-sm font-bold text-op-teal">{{
+                  $t("admin.viewPage")
+                }}</span>
               </div>
-
-              <!-- Order Status -->
-              <div>
-                <div
-                  v-for="orderState in orderStates"
-                  :key="orderState"
-                  class="align-center m-t-24"
-                >
-                  <b-button
-                    class="op-button-medium w-256"
-                    :class="classOf(orderState)"
-                    :loading="updating === orderState"
-                    :disabled="!isValidTransition(orderState)"
-                    @click="handleChangeStatus(orderState)"
-                  >
-                    <div>{{ $t("order.status." + orderState) }}</div>
-                    <div class="t-caption c-text-black-medium">
-                      {{ timeOfEvents[orderState] }}
-                    </div>
-                  </b-button>
-                </div>
-              </div>
-            </div>
+            </nuxt-link>
           </div>
         </div>
 
-        <!-- Right Column -->
-        <div class="column">
-          <div class="m-l-24 m-r-24">
-            <div class="m-t-24">
-              <!-- Order Items -->
-              <ordered-item
-                v-for="(item, id) in orderItems"
-                :key="id"
-                :item="item"
+        <!-- Photo and Name -->
+        <div class="mt-4 lg:mt-0 lg:flex-1 lg:flex lg:items-center lg:mx-4">
+          <div class="flex items-center">
+            <div class="flex-shrink-0 rounded-full bg-black bg-opacity-10 mr-4">
+              <img
+                :src="resizedProfileImage(shopInfo, '600')"
+                class="w-9 h-9 rounded-full cover"
               />
             </div>
-            <div class="m-t-24">
-              <!-- Details -->
-              <div class="t-h6 c-text-black-disabled">
-                {{ $t("order.details") }}
-              </div>
-              <order-info
-                :orderItems="this.orderItems"
-                :orderInfo="this.orderInfo || {}"
-              ></order-info>
+            <div class="text-base font-bold">
+              {{ shopInfo.restaurantName }}
             </div>
           </div>
         </div>
-        <!-- Right Gap -->
-        <div class="column is-narrow w-24"></div>
+
+        <!-- Suspend Button -->
+        <div class="mt-4 lg:mt-0 lg:mr-4 flex-shrink-0">
+          <b-button
+            tag="nuxt-link"
+            :to="`/admin/restaurants/${restaurantId()}/suspend`"
+            class="b-reset-tw"
+          >
+            <div
+              v-if="this.shopInfo.suspendUntil"
+              class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-red-700 bg-opacity-5"
+            >
+              <i class="material-icons text-lg text-red-700 mr-2"
+                >remove_shopping_cart</i
+              >
+              <div class="text-sm font-bold text-red-700">
+                {{ $t("admin.order.suspending") }}
+              </div>
+            </div>
+
+            <div
+              v-else
+              class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5"
+            >
+              <i class="material-icons text-lg text-op-teal mr-2"
+                >remove_shopping_cart</i
+              >
+              <div class="text-sm font-bold text-op-teal">
+                {{ $t("admin.order.suspendSettings") }}
+              </div>
+            </div>
+          </b-button>
+        </div>
+
+        <!-- Notifications -->
+        <div class="mt-4 lg:mt-0 flex-shrink-0">
+          <notification-index :shopInfo="shopInfo" />
+        </div>
+      </div>
+
+      <!-- Body -->
+      <div
+        v-if="orderInfo.status === order_status.transaction_hide"
+        class="mt-6 mx-6"
+      >
+        <div class="bg-white rounded-lg shadow p-4">
+          <div>{{ $t("order.status.transaction_hide") }}</div>
+        </div>
+      </div>
+
+      <div v-else class="mt-6 mx-6 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12">
+        <!-- Left -->
+        <div>
+          <div class="bg-white shadow rounded-lg p-4">
+            <!-- Order ID, Total, Payment, and Tips -->
+            <div class="text-center">
+              <div class="inline-flex justify-center items-center">
+                <div class="text-4xl">
+                  {{ orderName }}
+                </div>
+
+                <div class="ml-4">
+                  <div class="text-xs">
+                    {{ $t("order.totalCharge") }}
+                  </div>
+
+                  <div v-if="hasStripe" class="text-base">
+                    <a :href="search" target="stripe">
+                      <div>{{ $n(orderInfo.totalCharge, "currency") }}</div>
+                      <div
+                        :class="
+                          'text-xs font-bold stripe_' + orderInfo.payment.stripe
+                        "
+                      >
+                        {{
+                          $t("order.status.stripe_" + orderInfo.payment.stripe)
+                        }}
+                      </div>
+                    </a>
+                  </div>
+
+                  <div v-else class="text-base">
+                    <div>{{ $n(orderInfo.totalCharge, "currency") }}</div>
+                    <div class="text-xs font-bold text-yellow-500">
+                      {{ $t("order.status.onsitePayment") }}
+                    </div>
+                  </div>
+
+                  <div
+                    v-if="orderInfo.tip"
+                    class="text-xs font-bold text-blue-500"
+                  >
+                    {{ $t("order.includingTip") }}
+                    {{ $n(orderInfo.tip, "currency") }}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Note for Payment Completion -->
+            <div
+              v-if="paymentIsNotCompleted"
+              class="mt-4 bg-yellow-500 bg-opacity-10 rounded-lg p-4 text-sm font-bold text-yellow-500"
+            >
+              {{ $t("admin.order.paymentIsNotCompleted") }}
+            </div>
+
+            <!-- Cancel Button -->
+            <div class="mt-6 text-center">
+              <b-button
+                class="b-reset-tw"
+                v-if="isValidTransition('order_canceled')"
+                @click="openCancel()"
+              >
+                <div
+                  class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5"
+                >
+                  <i class="material-icons text-lg mr-2 text-red-700">delete</i>
+                  <div class="text-sm font-bold text-red-700">
+                    {{ $t("admin.order.cancelButton") }}
+                  </div>
+                </div>
+              </b-button>
+
+              <b-button v-if="cancelStatus" class="b-reset-tw">
+                <div
+                  class="inline-flex justify-center items-center rounded-full h-16 w-64 bg-red-700 bg-opacity-10 text-red-700"
+                >
+                  <div>
+                    <div class="text-base font-extrabold">
+                      {{ $t("order." + cancelStatus) }}
+                    </div>
+                    <div class="text-xs">
+                      {{ timeOfEvents[cancelStatus] }}
+                    </div>
+                  </div>
+                </div>
+              </b-button>
+            </div>
+
+            <!-- Cancel Popup-->
+            <b-modal :active.sync="cancelPopup" :width="488" scroll="keep">
+              <div class="mx-2 my-6 p-6 bg-white shadow-lg rounded-lg">
+                <!-- Title -->
+                <div class="text-xl font-bold text-black text-opacity-40">
+                  {{ $t("admin.order.cancelTitle") }}
+                </div>
+
+                <!-- Message -->
+                <div class="mt-6 text-base">
+                  {{ $t("admin.order.cancelMessage") }}
+                </div>
+
+                <!-- Call -->
+                <div v-if="orderInfo.phoneNumber" class="mt-6 text-center">
+                  <div>
+                    <a
+                      :href="nationalPhoneURI"
+                      class="inline-flex justify-center items-center h-12 px-6 rounded-full border-2 border-op-teal"
+                    >
+                      <div class="text-base font-bold text-op-teal">
+                        {{ nationalPhoneNumber }}
+                      </div>
+                    </a>
+                  </div>
+                  <div class="font-bold mt-2">
+                    {{ orderInfo.name }}
+                  </div>
+                </div>
+
+                <!-- Cancel -->
+                <div class="mt-4 text-center">
+                  <b-button
+                    :loading="updating === 'order_canceled'"
+                    @click="handleCancel"
+                    class="b-reset-tw"
+                  >
+                    <div
+                      class="inline-flex justify-center items-center h-12 px-6 rounded-full bg-red-700"
+                    >
+                      <div class="text-base font-bold text-white">
+                        {{ $t("admin.order.delete") }}
+                      </div>
+                    </div>
+                  </b-button>
+                  <div class="mt-2 text-sm font-bold text-red-700">
+                    {{ $t("admin.order.deleteConfirm") }}
+                  </div>
+                </div>
+
+                <!-- Close -->
+                <div class="mt-6 text-center">
+                  <a
+                    @click="closeCancel()"
+                    class="inline-flex justify-center items-center h-12 rounded-full px-6 bg-black bg-opacity-5"
+                    style="min-width: 8rem;"
+                  >
+                    <div class="text-base font-bold text-black text-opacity-60">
+                      {{ $t("menu.close") }}
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </b-modal>
+
+            <!-- Pickup Time -->
+            <div class="mt-6 text-center">
+              <div class="text-xs font-bold">
+                {{ $t("order.timeRequested") }}
+              </div>
+              <div class="text-base mt-1">
+                {{ timeRequested }}
+              </div>
+              <div v-if="timeEstimated" class="mt-2">
+                <div class="text-xs font-bold">
+                  {{ $t("order.timeToPickup") }}
+                </div>
+                <div class="text-base mt-1">
+                  {{ timeEstimated }}
+                </div>
+              </div>
+            </div>
+
+            <!-- Estimated Time Picker -->
+            <div v-if="showTimePicker" class="mt-4 flex flex-col items-center">
+              <div class="text-xs font-bold">
+                {{ $t("order.timeToPickup") }}
+              </div>
+              <b-select class="mt-2" v-model="timeOffset">
+                <option
+                  v-for="time in estimatedTimes"
+                  :value="time.offset"
+                  :key="time.offset"
+                  >{{ time.display }}</option
+                >
+              </b-select>
+            </div>
+
+            <!-- Phone Number -->
+            <div v-if="orderInfo.phoneNumber" class="mt-4 text-center">
+              <div class="text-xs font-bold">
+                {{ $t("sms.phonenumber") }}
+              </div>
+              <div class="text-base mt-1">
+                <div>
+                  <a :href="nationalPhoneURI" class="text-base font-bold">{{
+                    nationalPhoneNumber
+                  }}</a>
+                </div>
+                <div class="text-base">{{ orderInfo.name }}</div>
+              </div>
+            </div>
+
+            <!-- Order Status -->
+            <div>
+              <div
+                v-for="orderState in orderStates"
+                :key="orderState"
+                class="mt-4 text-center"
+              >
+                <b-button
+                  :loading="updating === orderState"
+                  :disabled="!isValidTransition(orderState)"
+                  @click="handleChangeStatus(orderState)"
+                  class="b-reset-tw"
+                >
+                  <div
+                    class="inline-flex justify-center items-center rounded-full h-16 w-64"
+                    :class="classOf(orderState)"
+                  >
+                    <div>
+                      <div class="text-base font-extrabold">
+                        {{ $t("order.status." + orderState) }}
+                      </div>
+                      <div class="text-xs">
+                        {{ timeOfEvents[orderState] }}
+                      </div>
+                    </div>
+                  </div>
+                </b-button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right -->
+        <div class="mt-4 lg:mt-0">
+          <div class="grid grid-cols-1 space-y-4">
+            <!-- Message from customer -->
+            <div v-if="hasMemo" class="bg-white rounded-lg p-4 shadow">
+              <div class="text-xs font-bold text-black text-opacity-60">
+                {{ $t("admin.order.messageFromCustomer") }}
+              </div>
+              <div class="mt-2 text-base">
+                {{ orderInfo.memo }}
+              </div>
+            </div>
+
+            <!-- Order Items -->
+            <!-- # Not In Use -->
+            <!-- <div class="grid grid-cols-1 space-y-2">
+            <ordered-item
+              v-for="(item, id) in orderItems"
+              :key="id"
+              :item="item"
+            />
+						</div> -->
+
+            <!-- Order Details -->
+            <order-info
+              :orderItems="this.orderItems"
+              :orderInfo="this.orderInfo || {}"
+            ></order-info>
+          </div>
+        </div>
       </div>
     </template>
   </div>

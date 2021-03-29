@@ -1,78 +1,56 @@
 <template>
   <div>
-    <!-- List Header Area -->
-    <div class="columns is-gapless">
-      <!-- Left Gap -->
-      <div class="column is-narrow w-24"></div>
-      <!-- Center Column -->
-      <div class="column">
-        <div class="m-l-24 m-r-24 m-t-24">
-          <!-- Link Button -->
-          <nuxt-link :to="'/r'">
-            <div class="op-button-pill bg-form">
-              <i class="material-icons c-primary s-18">list</i>
-              <span class="c-primary t-button">{{$t("find.areaTop")}}</span>
-            </div>
-          </nuxt-link>
-
-          <!-- Title -->
-          <div class="t-h6 c-text-black-disabled m-t-24">{{areaName}}</div>
+    <div class="mt-6 mx-6">
+      <nuxt-link :to="'/r'">
+        <div
+          class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
+        >
+          <i class="material-icons text-lg text-op-teal mr-2">list</i>
+          <span class="text-sm font-bold text-op-teal">{{
+            $t("find.areaTop")
+          }}</span>
         </div>
-      </div>
-      <!-- Right Gap -->
-      <div class="column is-narrow w-24"></div>
+      </nuxt-link>
     </div>
 
-    <!-- List Body Area -->
-    <div class="columns is-gapless">
-      <!-- Left Gap -->
-      <div class="column is-narrow w-24"></div>
-      <!-- Center Column -->
-      <div class="column">
-        <div class="m-l-24 m-r-16 m-t-24">
-          <!-- Restaurants -->
-          <div class="columns is-gapless is-multiline">
-            <!-- Restaurant -->
-            <div v-for="restaurant in restaurants" class="column is-one-third">
-              <div class="h-full p-b-8 p-r-8">
-                <router-link :to="`/r/${restaurant.id}`">
-                  <div class="touchable h-full">
-                    <div class="cols flex-center">
-                      <!-- Restaurant Profile -->
-                      <div class="m-r-16 h-48">
-                        <img :src="resizedProfileImage(restaurant, '600')" class="w-48 h-48 r-48 cover" />
-                      </div>
+    <div class="text-xl font-bold text-black text-opacity-40 mt-6 mx-6">
+      {{ areaName }}
+    </div>
 
-                      <!-- Restaurant Name -->
-                      <div class="flex-1 p-r-8 t-subtitle1 c-primary">
-                        {{
-                        restaurant.restaurantName
-                        }}
-                      </div>
-                    </div>
-                  </div>
-                </router-link>
-              </div>
+    <!-- Restaurants -->
+    <div
+      class="mt-2 mx-6 grid items-center grid-cols-1 gap-2 lg:grid-cols-3 xl:grid-cols-4"
+    >
+      <div v-for="restaurant in restaurants">
+        <router-link :to="`/r/${restaurant.id}`">
+          <div class="flex items-center">
+            <div class="w-12 h-12 rounded-full bg-black bg-opacity-10 mr-4">
+              <img
+                :src="resizedProfileImage(restaurant, '600')"
+                class="w-12 h-12 rounded-full cover"
+              />
+            </div>
+            <div class="flex-1 text-base font-bold pr-2">
+              {{ restaurant.restaurantName }}
             </div>
           </div>
-        </div>
+        </router-link>
       </div>
-      <!-- Right Gap -->
-      <div class="column is-narrow w-24"></div>
     </div>
   </div>
 </template>
 
 <script>
-import Vue from "vue";
 import { db, storage, firestore } from "~/plugins/firebase.js";
-
 import { defaultHeader } from "../../../plugins/header";
 
 export default {
   head() {
     return {
-      title: [this.$tc("pageTitle.restaurantArea", 0, {area: this.areaName}), defaultHeader.title].join(" / "),
+      title: [
+        this.$tc("pageTitle.restaurantArea", 0, { area: this.areaName }),
+        defaultHeader.title
+      ].join(" / ")
     };
   },
   data() {

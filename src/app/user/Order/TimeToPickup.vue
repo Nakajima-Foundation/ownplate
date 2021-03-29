@@ -1,30 +1,35 @@
 <template>
   <div>
     <!-- Date Picker -->
-    <div v-if="availableDays.length > 0" class="m-t-24">
-      <div class="t-h6 c-text-black-disabled">{{ $t('order.timeRequested') }}</div>
-      <div class="bg-surface r-8 d-low m-t-8 p-t-16 p-b-16 p-l-16 p-r-16">
+    <div v-if="availableDays.length > 0">
+      <div class="bg-white rounded-lg shadow p-4">
         <b-select v-model="dayIndex">
-          <option v-for="(day, index) in availableDays" :value="index" :key="day.offset">
-            {{ $d(day.date, "short" )}}
-            <span v-if="day.offset===0">{{$t('date.today')}}</span>
+          <option
+            v-for="(day, index) in availableDays"
+            :value="index"
+            :key="day.offset"
+          >
+            {{ $d(day.date, "short") }}
+            <span v-if="day.offset === 0">{{ $t("date.today") }}</span>
           </option>
         </b-select>
-        <b-select v-model="time" class="m-t-8">
+        <b-select v-model="time" class="mt-2">
           <option
             v-for="time in availableDays[dayIndex].times"
             :value="time.time"
             :key="time.time"
-          >{{ time.display }}</option>
+            >{{ time.display }}</option
+          >
         </b-select>
       </div>
     </div>
 
     <!-- Not Available -->
-    <div
-      v-else
-      class="bg-status-red-bg r-8 p-l-16 p-r-16 p-t-16 p-b-16 t-subtitle1 c-status-red m-t-24"
-    >{{$t('order.notAvailable')}}</div>
+    <div v-else class="bg-red-700 bg-opacity-10 p-4 rounded-lg">
+      <div class="text-base font-bold text-red-700">
+        {{ $t("order.notAvailable") }}
+      </div>
+    </div>
   </div>
 </template>
 
@@ -37,7 +42,7 @@ export default {
   data() {
     return {
       dayIndex: 0,
-      time: 0,
+      time: 0
     };
   },
   props: {
