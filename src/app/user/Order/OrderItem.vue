@@ -74,9 +74,8 @@ export default {
     },
     totalPrice() {
       let price = this.item.price;
-      const m = this.$store.getters.stripeRegion.multiple;
       this.orderItem.options.forEach(option => {
-        const p = Math.round(optionPrice(option) * m) / m;
+        const p = this.roundPrice(optionPrice(option));
         price += p;
       });
       return price * this.count;

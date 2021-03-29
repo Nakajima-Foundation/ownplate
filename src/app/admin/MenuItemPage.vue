@@ -662,7 +662,7 @@ export default {
   },
   methods: {
     displayOptionPrice(str) {
-      const price = optionPrice(str) * this.taxRate(this.restaurantInfo, this.menuInfo);
+      const price = this.roundPrice(optionPrice(str) * this.taxRate(this.restaurantInfo, this.menuInfo));
       if (price === 0) {
         return this.$t("editMenu.noPriceChange");
       } else if (price > 0) {
