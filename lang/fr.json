@@ -94,9 +94,9 @@
   },
   "tax": {
     "price": "{count}",
-    "include": " (with tax)",
+    "include": " (inc. tax)",
     "exclude": " (+ tax)",
-    "taxExample": "Exemple de {count} produit."
+    "taxExample": "Si le prix est défini comme {count} dans les paramètres, il sera affiché comme : "
   },
   "editRestaurant": {
     "enterRestaurantName": "Entrer le nom d'un restaurant",
@@ -118,7 +118,8 @@
     "tax": " Taxe de vente",
     "foodTax": "Taxe sur nouriture",
     "alcoholTax": "Taxe boisson",
-    "taxPriceDisplay": "Option d'affichage des taxes",
+    "taxPriceDisplay": "Calcul de la taxe",
+    "taxPriceDisplayJp": "L'étiquetage avec taxe est obligatoire au Japon.",
     "taxIncluded": "Taxe Inclue",
     "taxExcluded": "Taxe Exclue",
     "about": "A Propos",
@@ -175,6 +176,10 @@
     "phoneCallDescription": "Make a call when a new order comes in",
     "phoneCallNotice": "Although it is currently provided free of charge, this feature may be a paid feature in the future due to telephone call charges. In that case, even if this function is turned on, there is no sudden cost",
     "phoneCallNotification": "Phone Notification",
+    "emailNotification": "Notification par email",
+    "emailNotificationTitle": "Notification par email",
+    "emailNotificationDescription": "Envoyer un courriel lorsqu'une nouvelle commande arrive",
+    "emailNotificationNotice": "Si vous ne le trouvez pas dans votre boîte de réception, veuillez vérifier votre dossier de courrier indésirable.",
     "acceptUserMessage": "Accept a message with customer",
     "acceptUserMessageDescription": "Accept a message with customer",
     "acceptUserMessageNotice": "Allows customers to enter a single message on the order confirmation screen.",
@@ -232,9 +237,10 @@
   },
   "find": {
     "area": "Région",
-    "areaAll": "Tout les régions",
+    "areaAll": "Tous les restaurants",
     "areaTop": "Top régions",
     "likes": "Likes",
+    "noLikes": "Pas de restaurants préférés",
     "allRestaurants": "Find Restaurants",
     "areas": {
       "hokkaido": "Hokkaido Area",
@@ -278,6 +284,8 @@
     "closed": "Fermer",
     "public": "Publique",
     "temporaryClosure": "Temporairement Fermé",
+    "temporaryClosureAdd": "Ajouter",
+    "temporaryClosureDescription": "Veuillez sélectionner une date et appuyer sur Ajouter.",
     "paymentMethod": "Methode de Payment",
     "onlinePayment": "Payment en Ligne",
     "onsitePayment": "Paiement à la Livraison",
@@ -335,6 +343,7 @@
     "tipShort": "Pourboire",
     "serviceTax": "tip tax",
     "name": "order name",
+    "restaurantName": "Nom du restaurant",
     "payment": "payment",
     "includingTip": "avec pourboire",
     "subtotal": "Sous-Total",
@@ -414,7 +423,7 @@
   },
   "button": {
     "back": "Retour",
-    "addTitle": "Ajouter un Groupe",
+    "addTitle": "Ajouter un titre de groupe",
     "addItem": "Ajouter un article",
     "downloadMenu": "Télécharger le menu",
     "cancel": "Annuler",
@@ -449,7 +458,7 @@
     "auth/missing-verification-code": "Les informations d'identification d'authentification du téléphone ont été créées avec un code de vérification SMS vide."
   },
   "admin": {
-    "welcomeMessage": "Bienvenue chez OwnPlate",
+    "welcomeMessage": "Bienvenue !",
     "userManual": "Manuel de l'Utilisateur",
     "suportPage": "Aide",
     "facebookUserGroup": "Groupe",
@@ -505,21 +514,22 @@
     },
     "mail": {
       "magazine": {
-        "title": "Paramètres du courrier électronique",
-        "body": "Recevez des courriels sur les nouvelles informations.",
+        "title": "Bulletins d'information par courrier électronique",
+        "body": "Recevez des courriels sur les actualités, les conseils et les rubriques.",
         "optout": "Ne pas recevoir"
       }
     },
     "viewPage": "Voir page",
-    "incompleteOrders": "{count} Commande incomplète | {count} Commandes incomplètes",
-    "editMenuItems": "Menu Modifier: {count}",
-    "pleaseAddMenu": "Veuillez ajouter un menu",
+    "viewOrders": "Voir les commandes",
+    "incompleteOrders": "{count} incomplète | {count} incomplètes",
+    "editMenuItems": "Menu",
+    "pleaseAddMenu": "Aucun menu ajouté",
     "itemSoldOut": "Complet",
     "itemPublished": "Published",
     "itemNotPublished": "Not Published",
     "editAbout": "Modifier les détails du restaurant",
     "privateMode": "Mode privé",
-    "pleaseChangePublic": "Veuillez changer de public",
+    "pleaseChangePublic": "Veuillez passer en mode public après avoir saisi les coordonnées du restaurant.",
     "directory": {
       "status": "Annuaire des restaurants",
       "notListed": "Non listé",
@@ -684,7 +694,7 @@
     },
     "notFound": {
       "message1": "La page que vous recherchez est introuvable.",
-      "message2": "Essayez de contacter le restaurant d'une autre manière"
+      "message2": "Essayez de contacter le restaurant d'une autre manière."
     },
     "requireLogin": {
       "message1": "Vous devez être connecté pour voir votre commande"

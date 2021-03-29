@@ -1,13 +1,13 @@
 <template>
   <span>
-    <span v-if="shopInfo.inclusiveTax">
+    <span v-if="true">
       {{ $tc("tax.price", taxObj.price_i18n) }}
-      <span class="t-caption">{{ $tc("tax.include") }}</span>
+      <span class="text-xs">{{ $tc("tax.include") }}</span>
       <br />
     </span>
-    <span v-if="!shopInfo.inclusiveTax">
+    <span v-else >
       {{ $tc("tax.price", taxObj.price_i18n) }}
-      <span class="t-caption">{{ $tc("tax.exclude") }}</span>
+      <span class="text-xs">{{ $tc("tax.exclude") }}</span>
       <br />
     </span>
   </span>
@@ -28,7 +28,16 @@ export default {
   },
   computed: {
     taxObj() {
-      const price = Number(this.menu.price);
+      const price =  Math.round(((menu, shopInfo) => {
+        if (!shopInfo.inclusiveTax) {
+          if (this.menu.tax === "alcohol") {
+            return (1 + shopInfo.alcoholTax * 0.01) * menu.price;
+          }
+          return (1 + shopInfo.foodTax * 0.01) * menu.price;
+        } else {
+          return menu.price;
+        }
+      })(this.menu, this.shopInfo));
 
       return {
         price_i18n: this.$n(price, "currency")

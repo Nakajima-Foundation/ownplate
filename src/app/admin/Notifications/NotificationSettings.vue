@@ -1,101 +1,147 @@
 <template>
-  <b-modal :active.sync="isActive" :width="488" scroll="keep" @close="closeNotificationSettings">
-    <div class="op-dialog p-t-24 p-l-24 p-r-24 p-b-24">
+  <b-modal
+    :active.sync="isActive"
+    :width="488"
+    scroll="keep"
+    @close="closeNotificationSettings"
+  >
+    <div class="mx-2 my-6 p-6 bg-white shadow-lg rounded-lg">
       <!-- Title -->
-      <div class="t-h6 c-text-black-disabled">{{ $t("admin.order.notification") }}</div>
+      <div class="text-xl font-bold text-black text-opacity-40">
+        {{ $t("admin.order.notification") }}
+      </div>
+
       <!-- Body -->
-      <div>
+      <div class="mt-6">
         <!-- Incomplete Orders -->
-        <incomplete-orders v-if="shopInfo" :shopInfo="shopInfo" />
-        <!-- Settings -->
         <div>
-          <div
-            class="t-subtitle2 c-text-black-medium p-b-8 m-t-24"
-          >{{ $t("admin.order.notificationSettings") }}</div>
-          <!-- Sound ON/OFF -->
-          <div @click="soundToggle()" class="is-inline-block m-r-16">
-            <div v-if="notificationConfig.soundOn" class="op-button-pill bg-status-green-bg">
-              <i class="material-icons c-status-green s-18">volume_up</i>
-              <span class="c-status-green t-button">
-                {{
-                $t("admin.order.soundOn")
-                }}
-              </span>
-            </div>
-            <div v-else class="op-button-pill bg-status-red-bg">
-              <i class="material-icons c-status-red s-18">volume_off</i>
-              <span class="c-status-red t-button">
-                {{
-                $t("admin.order.soundOff")
-                }}
-              </span>
-            </div>
+          <incomplete-orders v-if="shopInfo" :shopInfo="shopInfo" />
+        </div>
+
+        <!-- Settings -->
+        <div class="mt-6">
+          <div class="text-sm font-bold text-black text-opacity-60 mb-2">
+            {{ $t("admin.order.notificationSettings") }}
           </div>
+
+          <!-- Sound ON/OFF -->
+          <a @click="soundToggle()">
+            <div
+              v-if="notificationConfig.soundOn"
+              class="inline-flex justify-center items-center px-4 h-9 rounded-full bg-green-600 bg-opacity-10"
+            >
+              <i class="material-icons text-lg text-green-600 mr-2"
+                >volume_up</i
+              >
+              <div class="text-sm font-bold text-green-600">
+                {{ $t("admin.order.soundOn") }}
+              </div>
+            </div>
+
+            <div
+              v-else
+              class="inline-flex justify-center items-center px-4 h-9 rounded-full bg-red-700 bg-opacity-10"
+            >
+              <i class="material-icons text-lg text-red-700 mr-2">volume_off</i>
+              <div class="text-sm font-bold text-red-700">
+                {{ $t("admin.order.soundOff") }}
+              </div>
+            </div>
+          </a>
 
           <!-- Sound ON Settings -->
           <div
             v-if="notificationConfig.soundOn"
-            class="m-l-16 p-l-16 p-t-8 m-t-8"
-            style="border-left: 2px solid rgba(0,0,0,0.1); "
+            class="border-2 border-black border-opacity-10 rounded-lg mt-2 ml-4 p-4"
           >
             <!-- Infinity Notification ON/OFF -->
-            <div @click="infinityNotificationToggle()" class="is-inline-block">
-              <div
-                v-if="notificationConfig.infinityNotification"
-                class="op-button-pill bg-status-green-bg"
-              >
-                <i class="material-icons c-status-green s-18">repeat</i>
-                <span class="c-status-green t-button">
-                  {{
-                  $t("admin.order.infinityNotificationOn")
-                  }}
-                </span>
+            <a @click="infinityNotificationToggle()" class="inline-block">
+              <div v-if="notificationConfig.infinityNotification">
+                <div
+                  class="inline-flex justify-center items-center px-4 h-9 rounded-full bg-green-600 bg-opacity-10 mr-2 mb-2"
+                >
+                  <i class="material-icons text-lg text-green-600 mr-2"
+                    >repeat</i
+                  >
+                  <span class="text-sm font-bold text-green-600">
+                    {{ $t("admin.order.infinityNotificationOn") }}
+                  </span>
+                </div>
+
+                <div
+                  class="inline-flex justify-center items-center px-4 h-9 rounded-full bg-black bg-opacity-5 mr-2 mb-2"
+                >
+                  <i
+                    class="material-icons text-lg text-black text-opacity-30 mr-2"
+                    >looks_one</i
+                  >
+                  <span class="text-sm font-bold text-black text-opacity-30">
+                    {{ $t("admin.order.infinityNotificationOff") }}
+                  </span>
+                </div>
               </div>
-              <div v-else class="op-button-pill bg-status-green-bg">
-                <i class="material-icons c-status-green s-18">looks_one</i>
-                <span class="c-status-green t-button">
-                  {{
-                  $t("admin.order.infinityNotificationOff")
-                  }}
-                </span>
+
+              <div v-else>
+                <div
+                  class="inline-flex justify-center items-center px-4 h-9 rounded-full bg-black bg-opacity-5 mr-2 mb-2"
+                >
+                  <i
+                    class="material-icons text-lg text-black text-opacity-30 mr-2"
+                    >repeat</i
+                  >
+                  <span class="text-sm font-bold text-black text-opacity-30">
+                    {{ $t("admin.order.infinityNotificationOn") }}
+                  </span>
+                </div>
+
+                <div
+                  class="inline-flex justify-center items-center px-4 h-9 rounded-full bg-green-600 bg-opacity-10 mr-2 mb-2"
+                >
+                  <i class="material-icons text-lg text-green-600 mr-2"
+                    >looks_one</i
+                  >
+                  <span class="text-sm font-bold text-green-600">
+                    {{ $t("admin.order.infinityNotificationOff") }}
+                  </span>
+                </div>
               </div>
-            </div>
+            </a>
 
             <!-- Sound Type and Test -->
-            <div class="cols flex-center m-t-16">
-              <!-- Sound Type -->
-              <b-select v-model="soundIndex" class="m-r-16">
+            <div class="flex items-center mt-2">
+              <b-select v-model="soundIndex" class="mr-2">
                 <option
                   v-for="(soundFile, index) in soundFiles"
                   :value="index"
                   :key="index"
-                >{{ $t(soundFile.nameKey) }}</option>
+                  >{{ $t(soundFile.nameKey) }}</option
+                >
               </b-select>
 
-              <!-- Sound Test -->
-              <b-button class="b-reset op-button-pill bg-form" @click="delayedSoundPlay">
-                <i class="material-icons c-primary s-18 m-l-8">play_arrow</i>
-                <span class="c-primary t-button">
-                  {{
-                  $t("admin.order.soundTest")
-                  }}
+              <a
+                class="inline-flex justify-center items-center px-4 h-9 rounded-full bg-black bg-opacity-5"
+                @click="delayedSoundPlay"
+              >
+                <i class="material-icons text-lg text-op-teal mr-2"
+                  >play_arrow</i
+                >
+                <span class="text-sm font-bold text-op-teal">
+                  {{ $t("admin.order.soundTest") }}
                 </span>
-              </b-button>
+              </a>
             </div>
           </div>
 
           <!-- LINE Connection -->
-          <div class="m-t-24">
+          <div class="mt-4">
             <router-link
               v-if="isLineEnabled"
-              class="op-button-pill bg-status-green-bg"
+              class="inline-flex justify-center items-center px-4 h-9 rounded-full bg-black bg-opacity-5"
               :to="`/admin/restaurants/${restaurantId()}/line`"
             >
-              <i class="fab fa-line c-status-green" style="font-size:24px" />
-              <span class="c-status-green t-button">
-                {{
-                $t("admin.order.line")
-                }}
+              <i class="fab fa-line text-2xl text-op-teal mr-2" />
+              <span class="text-sm font-bold text-op-teal">
+                {{ $t("admin.order.line") }}
               </span>
             </router-link>
           </div>
@@ -103,11 +149,16 @@
       </div>
 
       <!-- Action Buttons -->
-      <div class="m-t-24 align-center">
-        <div
-          class="op-button-small tertiary"
+      <div class="mt-6 text-center">
+        <a
           @click="closeNotificationSettings()"
-        >{{ $t("menu.close") }}</div>
+          class="inline-flex justify-center items-center h-12 rounded-full px-6 bg-black bg-opacity-5"
+          style="min-width: 8rem;"
+        >
+          <div class="text-base font-bold text-black text-opacity-60">
+            {{ $t("menu.close") }}
+          </div>
+        </a>
       </div>
     </div>
   </b-modal>

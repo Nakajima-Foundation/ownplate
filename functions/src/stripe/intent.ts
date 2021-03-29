@@ -4,7 +4,9 @@ import { order_status } from '../common/constant'
 import Stripe from 'stripe'
 import Order from '../models/Order'
 import * as utils from '../lib/utils'
-import { sendMessage, notifyNewOrder, nameOfOrder, notifyCanceledOrder } from '../functions/order';
+import { updateOrderTotalData } from '../functions/order';
+
+import { sendMessageToCustomer, notifyNewOrderToRestaurant, notifyCanceledOrderToRestaurant } from '../functions/notify';
 
 import moment from 'moment-timezone';
 
@@ -25,15 +27,15 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
     throw new functions.https.HttpsError('invalid-argument', 'This restaurant does not support payment.')
   }
 
+  let order: Order | undefined = undefined;
   try {
-    let orderNumber: number = 0;
     const result = await db.runTransaction(async transaction => {
 
       const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`)
       const stripeRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}/system/stripe`)
       const snapshot = await transaction.get(orderRef)
-      const order = Order.fromSnapshot<Order>(snapshot)
-      orderNumber = order.number;
+      order = Order.fromSnapshot<Order>(snapshot)
+      order.id = orderId;
 
       // Check the stock status.
       if (order.status !== order_status.validation_ok) {
@@ -79,8 +81,10 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
         stripeAccount
       })
 
+      const timePlaced = timeToPickup && new admin.firestore.Timestamp(timeToPickup.seconds, timeToPickup.nanoseconds) || admin.firestore.FieldValue.serverTimestamp()
+      await updateOrderTotalData(db, transaction, order.order, restaurantId, uid, timePlaced, true);
       transaction.set(orderRef, {
-        timePlaced: timeToPickup && new admin.firestore.Timestamp(timeToPickup.seconds, timeToPickup.nanoseconds) || admin.firestore.FieldValue.serverTimestamp(),
+        timePlaced,
         status: order_status.order_placed,
         updatedAt: admin.firestore.Timestamp.now(),
         orderPlacedAt: admin.firestore.Timestamp.now(),
@@ -103,7 +107,7 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
       }
     })
 
-    await notifyNewOrder(db, restaurantId, orderId, restaurantData.restaurantName, orderNumber, lng);
+    await notifyNewOrderToRestaurant(db, restaurantId, order, restaurantData.restaurantName, lng);
 
     return result;
   } catch (error) {
@@ -145,6 +149,7 @@ export const confirm = async (db: FirebaseFirestore.Firestore, data: any, contex
 
       const snapshot = await transaction.get(orderRef)
       order = Order.fromSnapshot<Order>(snapshot)
+      order.id = orderId;
 
       if (!snapshot.exists) {
         throw new functions.https.HttpsError('invalid-argument', `The order does not exist. ${orderRef.path}`)
@@ -186,8 +191,8 @@ export const confirm = async (db: FirebaseFirestore.Firestore, data: any, contex
       console.log("timeEstimated_diff_days = " + String(diffDay)); 
       if (diffDay < 1) {
         const msgKey = "msg_cooking_completed"
-        const orderName = nameOfOrder(order!.number)
-        await sendMessage(db, lng, msgKey, restaurantData.restaurantName, orderName, order!.uid, order!.phoneNumber, restaurantId, orderId, {});
+        const orderName = utils.nameOfOrder(order!.number)
+        await sendMessageToCustomer(db, lng, msgKey, restaurantData.restaurantName, orderName, order!.uid, order!.phoneNumber, restaurantId, orderId, {});
       }
     }
 
@@ -215,14 +220,14 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
 
   let sendSMS: boolean = false
   let phoneNumber: string | undefined = undefined;
-  let orderNumber: number = 0;
   let uidUser: string | null = null;
+  let order: Order | undefined = undefined;
 
   try {
     const result = await db.runTransaction(async transaction => {
 
       const snapshot = await transaction.get(orderRef)
-      const order = Order.fromSnapshot<Order>(snapshot)
+      order = Order.fromSnapshot<Order>(snapshot)
 
       if (!snapshot.exists) {
         throw new functions.https.HttpsError('invalid-argument', `The order does not exist.`)
@@ -246,10 +251,10 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
 
       phoneNumber = order.phoneNumber
       uidUser = order.uid
-      orderNumber = order.number;
 
       if (!stripeAccount || !order.payment || !order.payment.stripe) {
         // No payment transaction
+        await updateOrderTotalData(db, transaction, order.order, restaurantId, uid, order.timePlaced, false);
         transaction.set(orderRef, {
           timeCanceled: admin.firestore.FieldValue.serverTimestamp(),
           [cancelTimeKey]: admin.firestore.FieldValue.serverTimestamp(),
@@ -272,6 +277,7 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
           idempotencyKey: `${order.id}-cancel`,
           stripeAccount
         })
+        await updateOrderTotalData(db, transaction, order.order, restaurantId, restaurant.uid, order.timePlaced, false);
         transaction.set(orderRef, {
           timeCanceled: admin.firestore.FieldValue.serverTimestamp(),
           [cancelTimeKey]: admin.firestore.FieldValue.serverTimestamp(),
@@ -290,12 +296,12 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
         throw error
       }
     })
-    const orderName = nameOfOrder(orderNumber)
+    const orderName = utils.nameOfOrder(order!.number);
     if (sendSMS) {
-      await sendMessage(db, lng, 'msg_order_canceled', restaurant.restaurantName, orderName, uidUser, phoneNumber, restaurantId, orderId)
+      await sendMessageToCustomer(db, lng, 'msg_order_canceled', restaurant.restaurantName, orderName, uidUser, phoneNumber, restaurantId, orderId)
     }
     if (uid !== venderId) {
-      await notifyCanceledOrder(db, restaurantId, orderId, restaurant.restaurantName, orderNumber, lng)
+      await notifyCanceledOrderToRestaurant(db, restaurantId, order, restaurant.restaurantName, lng)
     }
     return result
   } catch (error) {

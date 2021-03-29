@@ -1,13 +1,15 @@
 <template>
   <div>
     <!-- Item Card -->
-    <div class="bg-surface r-8 d-low m-t-8" :style="cardStyle">
+    <div class="bg-surface rounded-lg d-low m-t-8" :style="cardStyle">
       <div class="cols">
         <div class="flex-1 p-l-16 p-r-16 p-t-16 p-b-16">
           <!-- Suspend Checkbox -->
           <div class="m-b-16">
             <b-checkbox v-model="suspend">
-              <span class="t-button" :style="suspendText">{{ $t("admin.order.suspend") }}</span>
+              <span class="t-button" :style="suspendText">{{
+                $t("admin.order.suspend")
+              }}</span>
             </b-checkbox>
           </div>
 
@@ -23,16 +25,20 @@
           <div
             v-if="description !== null"
             class="t-body2 c-text-black-medium m-t-8"
-          >{{ description }}</div>
+          >
+            {{ description }}
+          </div>
 
           <!-- Allergens -->
           <div
             v-if="allergens.length > 0"
             class="t-body2 c-text-black-medium m-t-8"
-          >{{ allergensDescription }}</div>
+          >
+            {{ allergensDescription }}
+          </div>
         </div>
         <div class="p-r-16 p-t-16 p-b-16">
-          <div class="w-96 is-pulled-right">
+          <div class="w-24 is-pulled-right">
             <!-- Image -->
             <div v-if="image" class="p-b-8">
               <img
@@ -40,7 +46,7 @@
                 :src="image"
                 width="96"
                 height="96"
-                class="w-96 h-96 r-4 cover"
+                class="w-24 h-24 rounded cover"
               />
             </div>
           </div>
@@ -51,7 +57,7 @@
     <!-- Image Popup-->
     <b-modal :active.sync="imagePopup" :width="488" scroll="keep">
       <div class="align-center p-l-8 p-r-8" @click.stop="closeImage()">
-        <img :src="image" class="r-8 d-medium" />
+        <img :src="image" class="rounded-lg d-medium" />
       </div>
     </b-modal>
   </div>

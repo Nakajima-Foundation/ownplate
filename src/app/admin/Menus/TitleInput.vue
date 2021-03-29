@@ -1,79 +1,79 @@
 <template>
-  <div>
-    <!-- Title Card -->
-    <div class="bg-form r-8 p-l-16 p-r-16 p-t-16 p-b-16 m-t-24">
-      <b-field>
-        <b-input
-          ref="textInput"
-          v-model="title.name"
-          @blur="blur"
-          :placeholder="$t('editTitle.enterCategory')"
-        ></b-input>
-      </b-field>
+  <div class="lg:flex">
+    <div class="lg:flex-1">
+      <!-- Title Card -->
+      <div class="bg-black bg-opacity-5 rounded-lg p-4">
+        <b-field>
+          <b-input
+            ref="textInput"
+            v-model="title.name"
+            @blur="blur"
+            :placeholder="$t('editTitle.enterCategory')"
+          ></b-input>
+        </b-field>
+      </div>
     </div>
 
-    <!-- Card Actions -->
-    <div class="m-t-8 p-b-8 p-l-8 p-r-8">
-      <div class="cols">
-        <div class="flex-1">
-          <!-- Position Up -->
-          <b-button
-            class="b-reset op-button-pill h-36 bg-form m-r-8"
-            v-if="position !== 'first'"
-            @click="positionUp"
+    <div class="mt-2 text-right lg:mt-0 lg:ml-4 lg:flex-shrink-0">
+      <!-- Card Actions -->
+      <div class="inline-flex space-x-2">
+        <!-- Up -->
+        <b-button
+          v-if="position !== 'first'"
+          @click="positionUp"
+          class="b-reset-tw"
+        >
+          <div
+            class="inline-flex justify-center items-center px-4 h-9 rounded-full bg-black bg-opacity-5"
           >
-            <i class="material-icons c-primary s-18 p-l-8 p-r-8"
-              >arrow_upward</i
-            >
-          </b-button>
-          <!-- Disable if First -->
-          <b-button
-            class="b-reset op-button-pill h-36 bg-form m-r-8"
-            disabled
-            v-else
+            <i class="material-icons text-lg text-op-teal">arrow_upward</i>
+          </div>
+        </b-button>
+        <b-button v-else disabled class="b-reset-tw">
+          <div
+            class="inline-flex justify-center items-center px-4 h-9 rounded-full bg-black bg-opacity-5"
           >
-            <i class="material-icons c-text-black-disabled s-18 p-l-8 p-r-8"
-              >arrow_upward</i
-            >
-          </b-button>
+            <i class="material-icons text-lg text-op-teal">arrow_upward</i>
+          </div>
+        </b-button>
 
-          <!-- Position Down -->
-          <b-button
-            class="b-reset op-button-pill h-36 bg-form m-r-8"
-            v-if="position !== 'last'"
-            @click="positionDown"
+        <!-- Down -->
+        <b-button
+          v-if="position !== 'last'"
+          @click="positionDown"
+          class="b-reset-tw"
+        >
+          <div
+            class="inline-flex justify-center items-center px-4 h-9 rounded-full bg-black bg-opacity-5"
           >
-            <i class="material-icons c-primary s-18 p-l-8 p-r-8"
-              >arrow_downward</i
-            >
-          </b-button>
-          <!-- Disable if Last -->
-          <b-button
-            class="b-reset op-button-pill h-36 bg-form m-r-8"
-            disabled
-            v-else
+            <i class="material-icons text-lg text-op-teal">arrow_downward</i>
+          </div>
+        </b-button>
+        <b-button v-else disabled class="b-reset-tw">
+          <div
+            class="inline-flex justify-center items-center px-4 h-9 rounded-full bg-black bg-opacity-5"
           >
-            <i class="material-icons c-text-black-disabled s-18 p-l-8 p-r-8"
-              >arrow_downward</i
-            >
-          </b-button>
+            <i class="material-icons text-lg text-op-teal">arrow_downward</i>
+          </div>
+        </b-button>
 
-          <!-- Duplicate -->
-          <b-button
-            class="b-reset op-button-pill h-36 bg-form m-r-8"
-            @click="forkItem"
+        <!-- Duplicate -->
+        <b-button @click="forkItem" class="b-reset-tw">
+          <div
+            class="inline-flex justify-center items-center px-4 h-9 rounded-full bg-black bg-opacity-5"
           >
-            <i class="material-icons c-primary s-18 p-l-8 p-r-8">queue</i>
-          </b-button>
-        </div>
-        <div>
-          <b-button
-            class="b-reset op-button-pill h-36 bg-status-red-bg"
-            disabled
+            <i class="material-icons text-lg text-op-teal">queue</i>
+          </div>
+        </b-button>
+
+        <!-- Delete -->
+        <b-button disabled class="b-reset-tw">
+          <div
+            class="inline-flex justify-center items-center px-4 h-9 rounded-full bg-black bg-opacity-5"
           >
-            <i class="material-icons c-status-red s-18 p-l-8 p-r-8">delete</i>
-          </b-button>
-        </div>
+            <i class="material-icons text-lg text-red-700">delete</i>
+          </div>
+        </b-button>
       </div>
     </div>
   </div>

@@ -1,14 +1,16 @@
 <template>
   <div>
     <!-- Restaurant Profile Photo -->
-    <div class="m-t-24 align-center">
-      <div class="w-64 h-64 r-64 bg-form is-inline-block">
-        <img :src="profileImage" class="w-64 h-64 r-64 cover" />
+    <div class="text-center">
+      <div class="inline-block w-16 h-16 rounded-full bg-black bg-opacity-50">
+        <img :src="profileImage" class="w-16 h-16 rounded-full cover" />
       </div>
     </div>
 
     <!-- Restaurant Name -->
-    <div class="m-t-8 align-center t-h6 c-text-black-high">{{ shopInfo.restaurantName }}</div>
+    <div class="mt-2 text-center text-xl font-bold">
+      {{ shopInfo.restaurantName }}
+    </div>
   </div>
 </template>
 
@@ -22,7 +24,7 @@ export default {
   },
   computed: {
     profileImage() {
-      return this.resizedProfileImage(this.shopInfo, '600');
+      return this.resizedProfileImage(this.shopInfo, "600");
     }
   }
 };

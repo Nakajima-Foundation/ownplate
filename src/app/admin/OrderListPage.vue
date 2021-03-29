@@ -1,112 +1,118 @@
 <template>
   <div>
-    <!-- Order Header Area -->
-    <div class="columns is-gapless">
-      <!-- Left Gap -->
-      <div class="column is-narrow w-24"></div>
-      <!-- Center Column -->
-      <div class="column">
-        <div class="m-l-24 m-r-24">
-          <!-- Nav Bar -->
-          <div class="level">
-            <!-- Back Button and Restaurant Profile -->
-            <div class="level-left flex-1">
-              <!-- Back Button -->
-              <back-button url="/admin/restaurants/" class="m-t-24 m-r-16" />
-
-              <!-- Restaurant Profile -->
-              <div class="is-inline-flex flex-center m-t-24">
-                <div>
-                  <img
-                    :src="resizedProfileImage(shopInfo, '600')"
-                    class="w-36 h-36 r-36 cover"
-                  />
-                </div>
-                <div class="t-h6 c-text-black-high m-l-8 flex-1">
-                  {{ shopInfo.restaurantName }}
-                </div>
-              </div>
+    <!-- Header -->
+    <div class="mt-6 mx-6 lg:flex lg:items-center">
+      <!-- Back and Preview -->
+      <div class="flex space-x-4">
+        <div class="flex-shrink-0">
+          <back-button url="/admin/restaurants/" />
+        </div>
+        <div class="flex-shrink-0">
+          <nuxt-link :to="'/r/' + restaurantId()">
+            <div
+              class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
+            >
+              <i class="material-icons text-lg text-op-teal mr-2">launch</i>
+              <span class="text-sm font-bold text-op-teal">{{
+                $t("admin.viewPage")
+              }}</span>
             </div>
-
-            <!-- Suspend and Notification -->
-            <div class="level-right">
-              <!-- Suspend Button -->
-              <b-button
-                tag="nuxt-link"
-                :to="`/admin/restaurants/${restaurantId()}/suspend`"
-                class="b-reset op-button-pill h-36 bg-form m-t-24 m-r-16"
-              >
-                <i class="material-icons c-primary m-l-8"
-                  >remove_shopping_cart</i
-                >
-                <span class="c-primary t-button">{{
-                  $t("admin.order.suspend")
-                }}</span>
-                <!-- # ToDO: Show number of suspended items. -->
-                <span class="t-button c-status-red">0</span>
-              </b-button>
-
-              <!-- Notification Settings -->
-              <notification-index :shopInfo="shopInfo" />
-            </div>
-          </div>
-
-          <!-- Date and Sound -->
-          <div class="level">
-            <!-- Select Date -->
-            <div class="level-left">
-              <b-select v-model="dayIndex" class="m-t-24">
-                <option
-                  v-for="day in lastSeveralDays"
-                  :value="day.index"
-                  :key="day.index"
-                >
-                  {{ $d(day.date, "short") }}
-                  {{ orderCounter[moment(day.date).format("YYYY-MM-DD")] }}
-                  <span v-if="day.index === pickUpDaysInAdvance">{{
-                    $t("date.today")
-                  }}</span>
-                </option>
-              </b-select>
-            </div>
-
-            <div class="level-right"></div>
-          </div>
+          </nuxt-link>
         </div>
       </div>
-      <!-- Right Gap -->
-      <div class="column is-narrow w-24"></div>
-    </div>
 
-    <!-- Order Body Area -->
-    <div class="columns is-gapless">
-      <!-- Left Gap -->
-      <div class="column is-narrow w-24"></div>
-      <!-- Center Column -->
-      <div class="column">
-        <div class="m-l-24 m-r-16 m-t-24">
-          <!-- Orders -->
-          <div class="columns is-gapless is-multiline">
-            <ordered-info
-              v-for="order in orders"
-              :key="order.id"
-              @selected="orderSelected($event)"
-              :order="order"
+      <!-- Photo and Name -->
+      <div class="mt-4 lg:mt-0 lg:flex-1 lg:flex lg:items-center lg:mx-4">
+        <div class="flex items-center">
+          <div class="flex-shrink-0 rounded-full bg-black bg-opacity-10 mr-4">
+            <img
+              :src="resizedProfileImage(shopInfo, '600')"
+              class="w-9 h-9 rounded-full cover"
             />
           </div>
-
-          <!-- Go to History -->
-          <div class="m-t-24">
-            <nuxt-link :to="`/admin/restaurants/${this.restaurantId()}/history`"
-              ><div class="op-button-pill bg-form t-subtitle2">
-                {{ $t("admin.order.history") }}
-              </div></nuxt-link
-            >
+          <div class="text-base font-bold">
+            {{ shopInfo.restaurantName }}
           </div>
         </div>
       </div>
-      <!-- Right Gap -->
-      <div class="column is-narrow w-24"></div>
+
+      <!-- Suspend Button -->
+      <div class="mt-4 lg:mt-0 lg:mr-4 flex-shrink-0">
+        <b-button
+          tag="nuxt-link"
+          :to="`/admin/restaurants/${restaurantId()}/suspend`"
+          class="b-reset-tw"
+        >
+          <div
+            v-if="this.shopInfo.suspendUntil"
+            class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-red-700 bg-opacity-5"
+          >
+            <i class="material-icons text-lg text-red-700 mr-2"
+              >remove_shopping_cart</i
+            >
+            <div class="text-sm font-bold text-red-700">
+              {{ $t("admin.order.suspending") }}
+            </div>
+          </div>
+
+          <div
+            v-else
+            class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5"
+          >
+            <i class="material-icons text-lg text-op-teal mr-2"
+              >remove_shopping_cart</i
+            >
+            <div class="text-sm font-bold text-op-teal">
+              {{ $t("admin.order.suspendSettings") }}
+            </div>
+          </div>
+        </b-button>
+      </div>
+
+      <!-- Notifications -->
+      <div class="mt-4 lg:mt-0 flex-shrink-0">
+        <notification-index :shopInfo="shopInfo" />
+      </div>
+    </div>
+
+    <!-- Date -->
+    <div class="mx-6 mt-6">
+      <b-select v-model="dayIndex">
+        <option
+          v-for="day in lastSeveralDays"
+          :value="day.index"
+          :key="day.index"
+        >
+          {{ $d(day.date, "short") }}
+          {{ orderCounter[moment(day.date).format("YYYY-MM-DD")] }}
+          <span v-if="day.index === pickUpDaysInAdvance">{{
+            $t("date.today")
+          }}</span>
+        </option>
+      </b-select>
+    </div>
+
+    <!-- Orders -->
+    <div class="mx-6 mt-6 grid grid-cols-1 gap-2 lg:grid-cols-3 xl:grid-cols-4">
+      <ordered-info
+        v-for="order in orders"
+        :key="order.id"
+        @selected="orderSelected($event)"
+        :order="order"
+      />
+    </div>
+
+    <!-- Go to History -->
+    <div class="mx-6 mt-6">
+      <nuxt-link :to="`/admin/restaurants/${this.restaurantId()}/history`"
+        ><div
+          class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5"
+        >
+          <div class="text-sm font-bold text-op-teal">
+            {{ $t("admin.order.history") }}
+          </div>
+        </div></nuxt-link
+      >
     </div>
   </div>
 </template>

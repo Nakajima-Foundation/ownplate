@@ -5,102 +5,91 @@
       <not-found />
     </template>
     <template v-else>
+      <!-- Restaurant Page -->
       <div>
         <!-- For Owner Preview Only -->
-        <div v-if="isPreview" class="columns is-gapless">
-          <!-- Left Gap -->
-          <div class="column is-narrow w-24"></div>
-          <!-- Center Column -->
-          <div class="column">
-            <div
-              class="bg-status-red-bg r-8 p-l-16 p-r-16 p-t-16 p-b-16 align-center m-l-24 m-r-24 m-t-24"
-            >
-              <div class="t-subtitle1 c-status-red">
-                {{ $t("shopInfo.thisIsPreview") }}
-              </div>
-              <div class="t-subtitle1 c-status-red">
-                {{ $t("shopInfo.notPublic") }}
-              </div>
-            </div>
-            <div class="is-hidden-tablet h-24"></div>
+        <div v-if="isPreview" class="bg-red-700 bg-opacity-10 text-center p-4">
+          <div class="text-base font-bold text-red-700">
+            {{ $t("shopInfo.thisIsPreview") }}
           </div>
-          <!-- Right Gap -->
-          <div class="column is-narrow w-24"></div>
+          <div class="text-base font-bold text-red-700">
+            {{ $t("shopInfo.notPublic") }}
+          </div>
         </div>
 
-        <!-- Restaurant Body Area -->
-        <div class="columns is-gapless">
-          <!-- Left Gap -->
-          <div class="column is-narrow w-24"></div>
-
-          <!-- Left Column -->
-          <div class="column">
-            <!-- Restaurant Cover Photo -->
-            <div class="columns is-gapless">
-              <div class="column is-narrow w-24"></div>
-              <div class="column">
-                <div class="is-hidden-mobile h-24"></div>
-                <div class="bg-form h-192">
-                  <img
-                    :src="coverImage"
-                    class="h-192 w-full cover is-hidden-tablet"
-                  />
-                  <img
-                    :src="coverImage"
-                    class="h-192 w-full cover r-8 is-hidden-mobile"
-                  />
-                </div>
-              </div>
-              <div class="column is-narrow w-24"></div>
+        <!-- Body -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12 lg:mx-6">
+          <!-- Left -->
+          <div>
+            <!-- Cover Image -->
+            <div class="lg:mt-6">
+              <img :src="coverImage" class="h-48 w-full cover lg:rounded-lg" />
             </div>
 
-            <!-- Restaurant Details -->
-            <div class="m-l-24 m-r-24">
+            <!-- For Responsible  -->
+            <div class="mx-6 lg:mx-0">
               <!-- Restaurant Profile Photo and Name -->
-              <shop-header :shopInfo="shopInfo"></shop-header>
+              <div class="mt-4">
+                <shop-header :shopInfo="shopInfo"></shop-header>
+              </div>
 
               <!-- Restaurant Descriptions -->
-              <div class="t-body1 c-text-black-medium m-t-8">
+              <div class="mt-2 text-base">
                 {{ this.shopInfo.introduction }}
               </div>
 
               <!-- Share and Favorite -->
-              <div class="align-center">
+              <div class="mt-4 flex justify-center items-center space-x-4">
                 <!-- Share Popup -->
-                <share-popup :shopInfo="shopInfo"></share-popup>
+                <div><share-popup :shopInfo="shopInfo"></share-popup></div>
 
                 <!-- Favorite Button -->
-                <favorite-button :shopInfo="shopInfo"></favorite-button>
+                <div>
+                  <favorite-button :shopInfo="shopInfo"></favorite-button>
+                </div>
               </div>
 
               <!-- Restaurant Info -->
-              <shop-info
-                :shopInfo="shopInfo"
-                :paymentInfo="paymentInfo"
-                @noAvailableTime="noAvailableTime = $event"
-              ></shop-info>
+              <div class="mt-4">
+                <div class="text-xl font-bold text-black text-opacity-30">
+                  {{ $t("shopInfo.restaurantDetails") }}
+                </div>
+
+                <div class="mt-2">
+                  <shop-info
+                    :shopInfo="shopInfo"
+                    :paymentInfo="paymentInfo"
+                    @noAvailableTime="noAvailableTime = $event"
+                  ></shop-info>
+                </div>
+              </div>
             </div>
           </div>
 
-          <!-- Right Column -->
-          <div class="column">
-            <div class="m-l-24 m-r-24">
-              <div class="m-t-24">
-                <!-- Menu Items -->
+          <!-- Right -->
+          <div>
+            <!-- For Responsible -->
+            <div class="mx-6 mt-6 lg:mx-0">
+              <!-- Menu Items -->
+              <div class="grid grid-col-1 space-y-2">
                 <template v-for="itemId in menuLists">
                   <div v-if="itemsObj[itemId]" :key="itemId">
                     <div
-                      class="t-h6 c-text-black-disabled m-t-24"
                       v-if="itemsObj[itemId]._dataType === 'title'"
+                      class="text-xl font-bold text-black text-opacity-30"
+                      :class="
+                        menuLists[0] === itemsObj[itemId].id ? '' : 'mt-6'
+                      "
                     >
                       {{ itemsObj[itemId].name }}
                     </div>
+
                     <item-card
                       v-if="itemsObj[itemId]._dataType === 'menu'"
                       :item="itemsObj[itemId]"
                       :quantities="orders[itemId] || [0]"
                       :optionPrev="optionsPrev[itemId]"
-                      :initialOpenMenuFlag="(orders[itemId] || 0) > 0"
+                      :initialOpenMenuFlag="(orders[itemId] || []).length > 0"
                       :shopInfo="shopInfo"
                       :isOpen="menuId === itemId"
                       :prices="prices[itemId] || []"
@@ -112,54 +101,54 @@
               </div>
             </div>
           </div>
-          <!-- Right Gap -->
-          <div class="column is-narrow w-24"></div>
         </div>
       </div>
 
       <!-- Phone Login-->
       <b-modal :active.sync="loginVisible" :width="488" scroll="keep">
-        <div class="op-dialog p-t-24 p-l-24 p-r-24 p-b-24">
+        <div class="mx-2 my-6 p-6 bg-white shadow-lg rounded-lg">
           <phone-login v-on:dismissed="handleDismissed" />
         </div>
       </b-modal>
 
       <!-- Cart Button -->
-      <div
-        v-if="isCheckingOut"
-        style="position: fixed; top: 0px; left: 0px;"
-        class="w-full h-full bg-dialog-overlay"
-      ></div>
+      <div v-if="isCheckingOut" class="fixed top-0 left-0 w-full h-full"></div>
       <b-button
-        class="b-reset op-button-large primary"
-        style="width: 288px; position: fixed; bottom: 32px; left: 50%; margin-left: -144px;"
         v-if="0 != totalQuantities"
         :loading="isCheckingOut"
         :disabled="isCheckingOut || noPaymentMethod || noAvailableTime"
         @click="handleCheckOut"
+        class="b-reset-tw"
+        style="width: 18rem; position: fixed; z-index: 10; bottom: 2rem; left: 50%; margin-left: -9rem;"
       >
-        <div class="is-flex flex-center">
+        <div
+          class="inline-flex justify-center items-center h-20 w-72 rounded-full bg-op-teal shadow-lg"
+        >
           <template v-if="noPaymentMethod">
-            <div class="flex-1 align-center c-onprimary">
+            <div class="text-white text-base font-bold">
               {{ $t("shopInfo.noPaymentMethod") }}
             </div>
           </template>
+
           <template v-else-if="noAvailableTime">
-            <div class="flex-1 align-center c-onprimary">
+            <div class="text-white text-base font-bold">
               {{ $t("shopInfo.noAvailableTime") }}
             </div>
           </template>
+
           <template v-else="!noPaymentMethod">
-            <div>
-              <div class="level is-mobile t-subtitle1 c-text-white-full">
-                <div class="level-left">
+            <div class="inline-flex flex-col justify-center items-center">
+              <div
+                class="inline-flex justify-center items-center text-white text-base font-bold"
+              >
+                <div class="mr-2">
                   {{
                     $tc("sitemenu.orderCounter", totalQuantities, {
                       count: totalQuantities
                     })
                   }}
                 </div>
-                <div class="level-right m-l-8">
+                <div class="">
                   <Price
                     :shopInfo="shopInfo"
                     :menu="{ price: totalPrice.total }"
@@ -167,11 +156,13 @@
                 </div>
               </div>
 
-              <div class="is-inline-flex flex-center m-t-4">
-                <div class="m-r-8 c-onprimary">
+              <div
+                class="is-inline-flex flex-center justify-center items-center text-white"
+              >
+                <div class="text-xl font-bold mr-2">
                   {{ $t("sitemenu.checkout") }}
                 </div>
-                <i class="material-icons c-onprimary">shopping_cart</i>
+                <i class="material-icons text-2xl">shopping_cart</i>
               </div>
             </div>
           </template>
@@ -225,8 +216,6 @@ export default {
   data() {
     return {
       retryCount: 0,
-      tabIndex: 0,
-      tabs: ["#menus", "#about"],
       loginVisible: false,
       isCheckingOut: false,
       orders: {},
@@ -234,7 +223,6 @@ export default {
       optionsPrev: {}, // from the store.cart
       restaurantsId: this.restaurantId(),
       shopInfo: {},
-      // isCardModalActive: false
       menus: [],
       titles: [],
       waitForUser: false,
@@ -247,19 +235,13 @@ export default {
     };
   },
   mounted() {
-    const index = this.tabs.findIndex(tab => tab === this.$route.hash);
-    if (index > -1) {
-      this.tabIndex = index;
-    }
-
     // Check if we came here as the result of "Edit Items"
-    const url = new URL(window.location.href);
-    if (url.hash.length > 1) {
-      const prevOrderId = url.hash.slice(1);
-      const cart = this.$store.state.carts[prevOrderId] || {};
+    if (this.$store.state.carts[this.restaurantId()]) {
+      const cart = this.$store.state.carts[this.restaurantId()] || {};
       //console.log("cart", cart);
       this.orders = cart.orders || {};
       this.optionsPrev = cart.options || {};
+      this.options = cart.options || {};
     }
   },
   created() {
@@ -314,9 +296,6 @@ export default {
     }
   },
   watch: {
-    tabIndex() {
-      this.$router.push(this.tabs[this.tabIndex]);
-    },
     user(newValue) {
       console.log("user changed");
       if (this.waitForUser && newValue) {
@@ -512,7 +491,7 @@ export default {
         // when the user clicks the "Edit Items" on the next page.
         // In that case, we will come back here with #id so that we can retrieve it (see mounted).
         this.$store.commit("saveCart", {
-          id: res.id,
+          id: this.restaurantId(),
           cart: {
             orders: this.orders,
             options: this.options

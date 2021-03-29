@@ -71,8 +71,13 @@ export const mutations = {
   },
   saveCart(state, payload) {
     console.log("saving cart", payload.id, payload.cart);
-    state.carts = {};
+    // state.carts = {};
     state.carts[payload.id] = payload.cart;
+  },
+  resetCart(state, restaurantId) {
+    console.log("reset cart", restaurantId);
+    // state.carts = {};
+    state.carts[restaurantId] = null;
   },
   setServerConfig(state, config) {
     state.server = config;

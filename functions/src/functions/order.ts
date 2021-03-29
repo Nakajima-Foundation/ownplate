@@ -5,32 +5,28 @@ import {
   order_status, possible_transitions,
   order_status_keys, timeEventMapping
 } from '../common/constant'
-import * as sms from './sms'
-import { resources } from './resources'
-import i18next from 'i18next'
 import Order from '../models/Order'
-import * as line from './line'
-import { ownPlateConfig } from '../common/project';
 import { createCustomer } from '../stripe/customer';
 import moment from 'moment-timezone';
 
+import { sendMessageToCustomer, notifyNewOrderToRestaurant } from './notify';
+
 import { Context } from '../models/TestType'
-import * as twilio from './twilio';
 
-export const nameOfOrder = (orderNumber: number) => {
-  return "#" + `00${orderNumber}`.slice(-3);
-};
 
-const updateOrderTotalData = async (db, transaction, order, restaurantId, ownerUid) => {
+
+export const updateOrderTotalData = async (db, transaction, order, restaurantId, ownerUid, timePlaced, positive) => {
+  const timezone =  functions.config() && functions.config().order && functions.config().order.timezone || "Asia/Tokyo";
+
   const menuIds = Object.keys(order);
-  const now = moment().tz("Asia/Tokyo").format('YYYYMMDD');
+  const date = moment(timePlaced.toDate()).tz(timezone).format('YYYYMMDD');
   
   await Promise.all(menuIds.map(async (menuId) => {
     const numArray = Array.isArray(order[menuId]) ? order[menuId] : [order[menuId]];
     const num = numArray.reduce((sum, current) => {
       return sum + current
     }, 0);
-    const path = `restaurants/${restaurantId}/menus/${menuId}/orderTotal/${now}`
+    const path = `restaurants/${restaurantId}/menus/${menuId}/orderTotal/${date}`
     const totalRef = db.doc(path)
     const total = (await transaction.get(totalRef)).data();
     
@@ -39,13 +35,14 @@ const updateOrderTotalData = async (db, transaction, order, restaurantId, ownerU
         uid: ownerUid,
         restaurantId,
         menuId,
-        date: now,
+        date,
         count: num,
       };
       await transaction.set(totalRef, addData);
     } else {
+      const count = positive ? total.count + num : total.count - num;
       const updateData = {
-        count: total.count + num
+        count,
       };
       await transaction.update(totalRef, updateData);
     }
@@ -58,18 +55,18 @@ const updateOrderTotalData = async (db, transaction, order, restaurantId, ownerU
   const uid = utils.validate_auth(context);
   const { restaurantId, orderId, tip, sendSMS, timeToPickup, lng, memo } = data;
   utils.validate_params({ restaurantId, orderId }) // tip, sendSMS and lng are optinoal
+  let order: Order | undefined = undefined;
 
   try {
     const restaurantData = await utils.get_restaurant(db, restaurantId);
     const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`)
 
-    let orderNumber: number = 0;
     const result = await db.runTransaction(async transaction => {
-      const order = (await transaction.get(orderRef)).data();
+      order = (await transaction.get(orderRef)).data();
       if (!order) {
         throw new functions.https.HttpsError('invalid-argument', 'This order does not exist.')
       }
-      orderNumber = order.number;
+      order.id = orderId;
       if (uid !== order.uid) {
         throw new functions.https.HttpsError('permission-denied', 'The user is not the owner of this order.')
       }
@@ -80,7 +77,8 @@ const updateOrderTotalData = async (db, transaction, order, restaurantId, ownerU
       const roundedTip = Math.round(tip * multiple) / multiple
 
       // transaction for stock orderTotal
-      await updateOrderTotalData(db, transaction, order.order, restaurantId, restaurantData.uid);
+      const timePlaced = timeToPickup && new admin.firestore.Timestamp(timeToPickup.seconds, timeToPickup.nanoseconds) || admin.firestore.FieldValue.serverTimestamp()
+      await updateOrderTotalData(db, transaction, order.order, restaurantId, restaurantData.uid, timePlaced, true);
       
       transaction.update(orderRef, {
         status: order_status.order_placed,
@@ -89,14 +87,14 @@ const updateOrderTotalData = async (db, transaction, order, restaurantId, ownerU
         sendSMS: sendSMS || false,
         updatedAt: admin.firestore.Timestamp.now(),
         orderPlacedAt: admin.firestore.Timestamp.now(),
-        timePlaced: timeToPickup && new admin.firestore.Timestamp(timeToPickup.seconds, timeToPickup.nanoseconds) || admin.firestore.FieldValue.serverTimestamp(),
+        timePlaced,
         memo: memo || "",
       })
-      
+      // order.totalCharge = order.total + tip;
       return { success: true }
     })
     
-    await notifyNewOrder(db, restaurantId, orderId, restaurantData.restaurantName, orderNumber, lng);
+    await notifyNewOrderToRestaurant(db, restaurantId, order, restaurantData.restaurantName, lng);
 
     return result;
   } catch (error) {
@@ -123,6 +121,7 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
 
     const result = await db.runTransaction(async transaction => {
       order = Order.fromSnapshot<Order>(await transaction.get(orderRef))
+      order.id = orderId;
       if (!order) {
         throw new functions.https.HttpsError('invalid-argument', 'This order does not exist.')
       }
@@ -172,95 +171,15 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
         params["time"] = moment(order!.timeEstimated!.toDate()).tz(timezone).locale('ja').format('LLL');
         console.log("timeEstimated", params["time"]);
       }
-      const orderName = nameOfOrder(order!.number)
+      const orderName = utils.nameOfOrder(order!.number)
       // To customer
-      await sendMessage(db, lng, msgKey, restaurant.restaurantName, orderName, order!.uid, order!.phoneNumber, restaurantId, orderId, params)
+      await sendMessageToCustomer(db, lng, msgKey, restaurant.restaurantName, orderName, order!.uid, order!.phoneNumber, restaurantId, orderId, params)
     }
     return result
   } catch (error) {
     throw utils.process_error(error)
   }
 }
-
-export const sendMessage = async (db: FirebaseFirestore.Firestore, lng: string,
-  msgKey: string, restaurantName: string, orderNumber: string,
-  uidUser: string | null, phoneNumber: string | undefined,
-  restaurantId: string, orderId: string, params: object = {}) => {
-  const t = await i18next.init({
-    lng: lng || utils.getStripeRegion().langs[0],
-    resources
-  })
-  const url = `https://${ownPlateConfig.hostName}/r/${restaurantId}/order/${orderId}?openExternalBrowser=1`
-  const message = `${t(msgKey, params)} ${restaurantName} ${orderNumber} ${url}`;
-  if (line.isEnabled) {
-    await line.sendMessage(db, uidUser, message)
-  } else {
-    await sms.pushSMS("OwnPlate", message, phoneNumber)
-  }
-}
-
-const notifyRestaurant = async (db: FirebaseFirestore.Firestore, messageId: string, restaurantId: string, orderId: string, restaurantName: string, orderNumber: number, lng: string) => {
-  const datestr = moment().format("YYYY-MM-DD");
-  const restaurant = (await db.doc(`/restaurants/${restaurantId}`).get()).data();
-  if (!restaurant) { // paranoia
-    return;
-  }
-  
-  const docs = (await db.collection(`/restaurants/${restaurantId}/lines`).get()).docs;
-  const t = await i18next.init({
-    lng: lng || utils.getStripeRegion().langs[0],
-    resources
-  })
-  const url = `https://${ownPlateConfig.hostName}/admin/restaurants/${restaurantId}/orders/${orderId}`
-  const orderName = nameOfOrder(orderNumber);
-  const message = `${restaurantName} ${t(messageId)} ${orderName}`;
-
-  if (docs.length > 0) {
-    const results = await Promise.all(docs.map(async doc => {
-      const lineUser = doc.data();
-      if (lineUser.notify) {
-        await line.sendMessageDirect(doc.id, `${message} ${url}?openExternalBrowser=1`)
-      }
-      return lineUser;
-    }));
-    await db.doc(`/restaurants/${restaurantId}/log/${datestr}/lineLog/${orderId}-${messageId}`).set({
-      restaurantId,
-      date: datestr,
-      orderId,
-      messageId,
-      results,
-      updatedAt: admin.firestore.Timestamp.now(),
-    });
-  }
-  
-  await db.doc(`/admins/${restaurant.uid}/private/notification`).set({
-    message,
-    sound: true,
-    path: `/admin/restaurants/${restaurantId}`,
-    updatedAt: admin.firestore.Timestamp.now(),
-    url
-  })
-  if (messageId === 'msg_order_placed') {
-    if (restaurant.phoneCall) {
-      await twilio.phoneCall(restaurant);
-      await db.doc(`/restaurants/${restaurantId}/log/${datestr}/phoneLog/${orderId}`).set({
-        restaurantId,
-        date: datestr,
-        orderId,
-        phoneNumber: restaurant.phoneNumber,
-        updatedAt: admin.firestore.Timestamp.now(),
-      });
-    }
-  }
-}
-
-export const notifyNewOrder = async (db: FirebaseFirestore.Firestore, restaurantId: string, orderId: string, restaurantName: string, orderNumber: number, lng: string) => {
-  return notifyRestaurant(db, 'msg_order_placed', restaurantId, orderId, restaurantName, orderNumber, lng)
-};
-
-export const notifyCanceledOrder = async (db: FirebaseFirestore.Firestore, restaurantId: string, orderId: string, restaurantName: string, orderNumber: number, lng: string) => {
-  return notifyRestaurant(db, 'msg_order_canceled_by_user', restaurantId, orderId, restaurantName, orderNumber, lng)
-};
 
 // export const wasOrderCreated = async (db, snapshot, context) => {
 export const wasOrderCreated = async (db, data: any, context) => {
@@ -292,7 +211,7 @@ export const wasOrderCreated = async (db, data: any, context) => {
 
     if (!orderData || !orderData.status || orderData.status !== order_status.new_order ||
       !orderData.uid || orderData.uid !== uid) {
-      console.log("invalid order:" + String(order.id));
+      console.log("invalid order:" + String(orderId));
       throw new functions.https.HttpsError('invalid-argument', 'This order does not exist.')
     }
 

@@ -65,10 +65,13 @@ export default {
               notification.data()
             );
           }
+          /*
+          // see PR 674
           if (this.justCreated && this.requestTouch) {
             console.log("*** show Sound Test");
             this.NotificationSettingsPopup = true;
           }
+          */
           this.justCreated = false;
         },
         error => {

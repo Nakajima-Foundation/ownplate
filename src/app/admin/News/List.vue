@@ -1,50 +1,35 @@
 <template>
   <div>
-    <!-- List Header Area -->
-    <div class="columns is-gapless">
-      <!-- Left Gap -->
-      <div class="column is-narrow w-24"></div>
-      <!-- Center Column -->
-      <div class="column">
-        <div class="m-l-24 m-r-24 m-t-24">
-          <!-- Link Button -->
-          <nuxt-link :to="'/admin/restaurants'">
-            <div class="op-button-pill bg-form">
-              <i class="material-icons c-primary s-18">home</i>
-              <span class="c-primary t-button">{{$t("admin.news.adminTop")}}</span>
-            </div>
-          </nuxt-link>
-
-          <!-- Title -->
-          <div class="t-h6 c-text-black-disabled m-t-24">{{$t("admin.news.title")}}</div>
-        </div>
-      </div>
-      <!-- Right Gap -->
-      <div class="column is-narrow w-24"></div>
-    </div>
-
-    <!-- List Body Area -->
-    <div class="columns is-gapless">
-      <!-- Left Gap -->
-      <div class="column is-narrow w-24"></div>
-      <!-- Center Column -->
-      <div class="column">
-        <div class="m-l-24 m-r-16 m-t-16">
-          <!-- Articles -->
-          <div class="columns is-gapless is-multiline">
-            <!-- v-for="article in articles" -->
-            <list-item
-              v-for="news in newsList"
-              :date="news.date.replace(/\-/g,'.')"
-              :title="news.title"
-              :id="news.date"
-              :key="news.date"
-            />
+    <!-- Header -->
+    <div class="mt-6 mx-6">
+      <nuxt-link :to="'/admin/restaurants'">
+        <div
+          class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
+        >
+          <i class="material-icons text-lg text-op-teal mr-2">home</i>
+          <div class="text-sm font-bold text-op-teal">
+            {{ $t("admin.news.adminTop") }}
           </div>
         </div>
-      </div>
-      <!-- Right Gap -->
-      <div class="column is-narrow w-24"></div>
+      </nuxt-link>
+    </div>
+
+    <!-- Title -->
+    <div class="text-xl font-bold text-black text-opacity-40 mt-6 mx-6">
+      {{ $t("admin.news.title") }}
+    </div>
+
+    <!-- Articles -->
+    <div
+      class="mt-2 mx-6 grid items-center grid-cols-1 gap-2 lg:grid-cols-3 xl:grid-cols-4"
+    >
+      <list-item
+        v-for="news in newsList"
+        :date="news.date.replace(/\-/g, '.')"
+        :title="news.title"
+        :id="news.date"
+        :key="news.date"
+      />
     </div>
   </div>
 </template>
@@ -59,7 +44,7 @@ export default {
   },
   head() {
     return {
-      title: ["News", this.defaultTitle].join(" / "),
+      title: ["News", this.defaultTitle].join(" / ")
     };
   },
   data() {

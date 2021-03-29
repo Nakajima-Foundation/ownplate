@@ -1,18 +1,36 @@
 <template>
-  <div class="p-t-16 p-l-16 p-r-16">
-    <div class="cols">
-      <div class="flex-1">
-        <div
-          class="t-body1 c-text-black-high"
-        >{{ item.itemName }} {{count > 1 ? " x " + String(count) : "" }}</div>
-        <div
-          v-if="specialRequest"
-          class="p-l-8 p-r-8 p-t-8 t-caption c-text-black-medium"
-        >{{ specialRequest }}</div>
+  <div class="flex space-x-2">
+    <div>
+      <div
+        class="inline-flex justify-center items-center h-9 w-12 bg-blue-500 bg-opacity-10 rounded flex-shrink-0"
+      >
+        <div class="text-lg font-bold text-blue-500">
+          {{ "x " + String(count) }}
+        </div>
       </div>
-      <div class="align-righ">
-        <span class="t-body1 c-text-black-high">{{ $n(totalPrice, 'currency') }}</span>
+      <div v-if="image" class="flex-shrink-0 mt-1">
+        <img
+          :src="image"
+          width="48"
+          height="48"
+          class="w-12 h-12 rounded cover"
+        />
       </div>
+    </div>
+
+    <div class="flex-1">
+      <div class="text-base font-bold">
+        {{ item.itemName }}
+      </div>
+      <div v-if="specialRequest" class="text-xs font-bold mt-1">
+        {{ specialRequest }}
+      </div>
+    </div>
+
+    <div class="text-right flex-shrink-0">
+      <span class="text-base font-bold text-black text-opacity-30">{{
+        $n(totalPrice, "currency")
+      }}</span>
     </div>
   </div>
 </template>
@@ -38,6 +56,12 @@ export default {
   computed: {
     item() {
       return this.orderItem.item;
+    },
+    image() {
+      return (
+        (this.item?.images?.item?.resizedImages || {})["600"] ||
+        this.item.itemPhoto
+      );
     },
     count() {
       return this.orderItem.count;

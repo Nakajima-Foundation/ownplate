@@ -1,139 +1,118 @@
 <template>
   <div>
-    <!-- Header Area -->
-    <div class="columns is-gapless">
-      <!-- Left Gap -->
-      <div class="column is-narrow w-24"></div>
-      <!-- Center Column -->
-      <div class="column">
-        <div class="m-l-24 m-r-24">
-          <!-- Nav Bar -->
-          <div class="level">
-            <!-- Back Button and Restaurant Profile -->
-            <div class="level-left flex-1">
-              <!-- Back Button -->
-              <back-button
-                :url="`/admin/restaurants/${restaurantId()}/orders`"
-                class="m-t-24 m-r-16"
-              />
-
-              <!-- Restaurant Profile -->
-              <div class="is-inline-flex flex-center m-t-24">
-                <div>
-                  <img :src="resizedProfileImage(shopInfo, '600')" class="w-36 h-36 r-36 cover" />
-                </div>
-                <div class="t-h6 c-text-black-high m-l-8 flex-1">{{ shopInfo.restaurantName }}</div>
-              </div>
+    <!-- Header -->
+    <div class="mt-6 mx-6 lg:flex lg:items-center">
+      <!-- Back and Preview -->
+      <div class="flex space-x-4">
+        <div class="flex-shrink-0">
+          <back-button :url="`/admin/restaurants/${restaurantId()}/orders`" />
+        </div>
+        <div class="flex-shrink-0">
+          <nuxt-link :to="'/r/' + restaurantId()">
+            <div
+              class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
+            >
+              <i class="material-icons text-lg text-op-teal mr-2">launch</i>
+              <span class="text-sm font-bold text-op-teal">{{
+                $t("admin.viewPage")
+              }}</span>
             </div>
+          </nuxt-link>
+        </div>
+      </div>
+
+      <!-- Photo and Name -->
+      <div class="mt-4 lg:mt-0 lg:flex-1 lg:flex lg:items-center lg:mx-4">
+        <div class="flex items-center">
+          <div class="flex-shrink-0 rounded-full bg-black bg-opacity-10 mr-4">
+            <img
+              :src="resizedProfileImage(shopInfo, '600')"
+              class="w-9 h-9 rounded-full cover"
+            />
+          </div>
+          <div class="text-base font-bold">
+            {{ shopInfo.restaurantName }}
           </div>
         </div>
       </div>
-      <!-- Right Gap -->
-      <div class="column is-narrow w-24"></div>
+
+      <!-- Notifications -->
+      <div class="mt-4 lg:mt-0 flex-shrink-0">
+        <notification-index :shopInfo="shopInfo" />
+      </div>
     </div>
 
-    <!-- Body Area -->
-    <div class="columns is-gapless">
-      <!-- Left Gap -->
-      <div class="column is-narrow w-24"></div>
+    <!-- Title -->
+    <div class="mt-6 mx-6 text-xl font-bold text-black text-opacity-30">
+      {{ $t("admin.order.suspendSettings") }}
+    </div>
 
-      <!-- Left Column -->
-      <div class="column">
-        <div class="m-l-24 m-r-24">
-          <div class="t-h6 c-text-black-disabled m-t-24">{{ $t("admin.order.suspendSettings") }}</div>
+    <!-- Date -->
+    <div class="mt-4 mx-6 text-sm font-bold text-black text-opacity-60">
+      {{ $t("admin.order.suspendNewOrders") }}
+      <span v-if="date">: {{ $d(date.date, "short") }}</span>
+    </div>
 
-          <!-- Suspend New Orders -->
-          <div>
-            <div class="t-subtitle2 c-text-black-medium m-t-16">
-              {{ $t("admin.order.suspendNewOrders") }}
-              <span
-                v-if="date"
-              >: {{ $d(date.date, "short" )}}</span>
-            </div>
-            <!-- # ToDo: Switch Suspend/Unsuspend buttons based on the status. -->
-            <!-- Suspend Buttons -->
-            <div v-if="!suspendUntil">
-              <b-button
-                v-for="time in availableTimes"
-                :key="time.time"
-                @click="handleSuspend(time.time)"
-                class="b-reset op-button-pill bg-form m-t-16 m-r-16"
-              >
-                <i class="material-icons p-l-8 c-primary">alarm_off</i>
-                <span
-                  class="t-button p-r-8 c-primary"
-                >{{$t("admin.order.suspendUntil", {display:time.display})}}</span>
-              </b-button>
-              <b-button
-                v-if="availableTimes.length > 0"
-                class="b-reset op-button-pill bg-form m-t-16 m-r-16"
-                @click="handleSuspend(24*60)"
-              >
-                <i class="material-icons p-l-8 c-primary">alarm_off</i>
-                <span class="t-button p-r-8 c-primary">{{ $t("admin.order.suspendForAllDay") }}</span>
-              </b-button>
-            </div>
-
-            <!-- Unsuspend Button -->
-            <div v-else>
-              <div class="bg-status-red-bg r-8 p-l-16 p-r-16 p-t-16 p-b-16 m-t-16 align-center">
-                <div class="t-subtitle1 c-status-red">{{ $t("admin.order.suspending") }}</div>
-                <div
-                  class="t-subtitle2 c-status-red"
-                >{{ $t("admin.order.unsuspendAt") }} {{ suspendUntil }}</div>
-              </div>
-              <b-button class="b-reset op-button-pill bg-form m-t-16 m-r-16" @click="handleRemove">
-                <i class="material-icons p-l-8 c-primary">alarm_on</i>
-                <span class="t-button p-r-8 c-primary">{{ $t("admin.order.unsuspend") }}</span>
-              </b-button>
+    <!-- Suspend and Unsuspend  -->
+    <div class="mt-6 mx-6">
+      <div v-if="!suspendUntil">
+        <b-button
+          v-for="time in availableTimes"
+          :key="time.time"
+          @click="handleSuspend(time.time)"
+          class="b-reset-tw mr-4 mb-4"
+        >
+          <div
+            class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5"
+          >
+            <i class="material-icons text-lg text-op-teal mr-2">alarm_off</i>
+            <div class="text-sm font-bold text-op-teal">
+              {{ $t("admin.order.suspendUntil", { display: time.display }) }}
             </div>
           </div>
+        </b-button>
 
-          <!-- Suspend Individual Item -->
-          <!-- # ToDo: Implement select/deselect all check boxes. -->
-          <div v-if="false">
+        <div class="mt-4">
+          <b-button
+            v-if="availableTimes.length > 0"
+            class="b-reset-tw"
+            @click="handleSuspend(24 * 60)"
+          >
             <div
-              class="t-subtitle2 c-text-black-medium m-t-24"
-            >{{ $t("admin.order.suspendIndividualItem") }}</div>
-
-            <!-- Suspend All Items -->
-            <b-button class="b-reset op-button-pill bg-form m-t-16 m-r-16">
-              <i class="material-icons p-l-8 c-primary">check_box</i>
-              <span class="t-button p-r-8 c-primary">{{ $t("admin.order.suspendAllItems") }}</span>
-            </b-button>
-
-            <!-- Unsuspend All Items -->
-            <b-button class="b-reset op-button-pill bg-form m-t-16 m-r-16">
-              <i class="material-icons p-l-8 c-primary">check_box_outline_blank</i>
-              <span class="t-button p-r-8 c-primary">{{ $t("admin.order.unsuspendAllItems") }}</span>
-            </b-button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Right Column -->
-      <div class="column" v-if="false">
-        <div class="m-l-24 m-r-24">
-          <div class="m-t-24">
-            <!-- Menu Items -->
-            <template v-for="itemId in menuLists">
-              <div v-if="itemsObj[itemId]" :key="itemId">
-                <div
-                  class="t-h6 c-text-black-disabled m-t-24"
-                  v-if="itemsObj[itemId]._dataType === 'title'"
-                >{{ itemsObj[itemId].name }}</div>
-                <order-suspend-item
-                  v-if="itemsObj[itemId]._dataType === 'menu'"
-                  :item="itemsObj[itemId]"
-                  :shopInfo="shopInfo"
-                ></order-suspend-item>
+              class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5"
+            >
+              <i class="material-icons text-lg text-op-teal mr-2">alarm_off</i>
+              <div class="text-sm font-bold text-op-teal">
+                {{ $t("admin.order.suspendForAllDay") }}
               </div>
-            </template>
-          </div>
+            </div>
+          </b-button>
         </div>
       </div>
-      <!-- Right Gap -->
-      <div class="column is-narrow w-24"></div>
+
+      <div v-else>
+        <div class="mt-4 p-4 bg-red-700 bg-opacity-10 rounded-lg text-center">
+          <div class="text-base font-bold text-red-700">
+            {{ $t("admin.order.suspending") }}
+          </div>
+          <div class="text-sm font-bold text-red-700 mt-2">
+            {{ $t("admin.order.unsuspendAt") }} {{ suspendUntil }}
+          </div>
+        </div>
+
+        <div class="mt-4">
+          <b-button class="b-reset-tw" @click="handleRemove">
+            <div
+              class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5"
+            >
+              <i class="material-icons text-lg text-op-teal mr-2">alarm_on</i>
+              <div class="text-sm font-bold text-op-teal">
+                {{ $t("admin.order.unsuspend") }}
+              </div>
+            </div>
+          </b-button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -145,11 +124,14 @@ import OrderSuspendItem from "~/app/admin/Order/OrderSuspendItem";
 import PickupMixin from "~/app/user/Order/pickupMixin";
 import firebase from "firebase/app";
 
+import NotificationIndex from "./Notifications/Index";
+
 export default {
   mixins: [PickupMixin],
   components: {
     OrderSuspendItem,
-    BackButton
+    BackButton,
+    NotificationIndex
   },
   data() {
     return {
