@@ -389,7 +389,11 @@ export default {
   methods: {
     openImage() {
       this.imagePopup = true;
-      this.$router.replace("/r/" + this.restaurantId() + (this.urlSuffix||""));
+      const current = this.$router.history.current.path;
+      const to = "/r/" + this.restaurantId() + (this.urlSuffix||"");
+      if (current !== to) {
+        this.$router.replace(to);
+      }
     },
     closeImage() {
       this.imagePopup = false;
