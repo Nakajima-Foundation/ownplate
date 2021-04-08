@@ -239,7 +239,7 @@ export default {
       detacher: [],
       notFound: null,
 
-      imagePopup: true,
+      imagePopup: false,
 
       paymentInfo: {},
       noAvailableTime: false
