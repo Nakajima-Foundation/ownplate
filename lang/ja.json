@@ -83,7 +83,8 @@
     "saving": "保存中",
     "saveDraft": "下書きとして保存",
     "new": "新規",
-    "copy": "コピー",
+    "copy": "飲食店を複製",
+    "copyAlert": "この飲食店を複製して、新しい飲食店を非公開として作成します。",
     "current": "変更前",
     "clickAndUpload": "ここをクリック",
     "clickAndUploadDetail": "グレー部分をクリックもしくは画像をドラッグ＆ドロップしてアップロード（JPEG形式）"

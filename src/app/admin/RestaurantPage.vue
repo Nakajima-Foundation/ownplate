@@ -1267,9 +1267,12 @@ export default {
       }
     },
     async confirmCopy() {
-      if (confirm("ok")) {
-        this.copyRestaurant();
-      }
+      this.$store.commit("setAlert", {
+        code: "editCommon.copyAlert",
+        callback: async () => {
+          this.copyRestaurant();
+        },
+      });
     },
     async copyRestaurant() {
       const restaurantData = this.getEditShopInfo();
