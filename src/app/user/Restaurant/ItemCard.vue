@@ -214,7 +214,7 @@
     </div>
 
     <!-- Image Popup-->
-    <b-modal :active.sync="imagePopup" :width="488" scroll="keep">
+    <b-modal :active.sync="imagePopup" :width="488" scroll="keep" :on-cancel="closeImage">
       <div class="px-2 text-center" @click.stop="closeImage()">
         <img :src="image" class="rounded-lg shadow-lg" />
       </div>
@@ -389,11 +389,11 @@ export default {
   methods: {
     openImage() {
       this.imagePopup = true;
-      // this.$router.replace("/r/" + this.restaurantId() + (this.urlSuffix||""));
+      this.$router.replace("/r/" + this.restaurantId() + (this.urlSuffix||""));
     },
     closeImage() {
       this.imagePopup = false;
-      // this.$router.replace("/r/" + this.restaurantId());
+      this.$router.replace("/r/" + this.restaurantId());
     },
     pullQuantities(key) {
       if (this.quantities[key] <= 0) {
