@@ -23,7 +23,10 @@
           <div>
             <!-- Cover Image -->
             <div class="lg:mt-6">
-              <img :src="coverImage" class="h-48 w-full cover lg:rounded-lg" />
+              <img
+                @click.stop="openImage()"
+                :src="coverImage"
+                class="h-48 w-full cover lg:rounded-lg" />
             </div>
 
             <!-- For Responsible  -->
@@ -169,6 +172,12 @@
         </div>
       </b-button>
     </template>
+    <!-- Image Popup-->
+    <b-modal :active.sync="imagePopup" :width="488" scroll="keep">
+      <div class="px-2 text-center" @click.stop="closeImage()">
+        <img :src="coverImage" class="rounded-lg shadow-lg" />
+      </div>
+    </b-modal>
   </div>
 </template>
 
@@ -229,6 +238,8 @@ export default {
 
       detacher: [],
       notFound: null,
+
+      imagePopup: true,
 
       paymentInfo: {},
       noAvailableTime: false
@@ -427,6 +438,12 @@ export default {
     }
   },
   methods: {
+    openImage() {
+      this.imagePopup = true;
+    },
+    closeImage() {
+      this.imagePopup = false;
+    },
     optionPrice(option) {
       const regex = /\(((\+|\-|＋|ー|−)[0-9\.]+)\)/;
       const match = option.match(regex);
