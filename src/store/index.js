@@ -35,6 +35,9 @@ export const getters = {
   uidUser: (state) => {
     return state.user && state.user.phoneNumber && state.user.uid;
   },
+  isAnonymous: (state) => {
+    return state.user === undefined || state.user === null;
+  },
   userWasInitialized: (state) => {
     // Check if state.user has been initialized (as the result of notication from Firebase)
     return state.user !== undefined;

@@ -70,7 +70,7 @@
     >
       <!-- Logo / Home -->
       <div class="text-center mt-6">
-        <router-link to="/">
+        <router-link :to="home_path">
           <img class="w-48" :src="`/${this.logo2}`" @click="handleClose()" />
         </router-link>
       </div>
@@ -115,7 +115,7 @@
       </div>
 
       <!-- Find Restaurants -->
-      <div class="text-center mt-2" v-if="isCustomer">
+      <div class="text-center mt-2" v-if="isCustomer || isAnonymous ">
         <router-link to="/r">
           <div
             class="inline-flex justify-center items-center rounded-full h-12 w-56 bg-op-teal text-white font-bold"
@@ -400,7 +400,10 @@ export default {
     profile_path() {
       const path_prefix = this.isAdmin ? "admins" : "users";
       return `${path_prefix}/${this.uid}/private/profile`;
-    }
+    },
+    home_path() {
+      return this.isAdmin ? "/admin/restaurants/" : "/r";
+    },
   },
   methods: {
     flash() {
