@@ -489,7 +489,7 @@
           >
             <span class="text-black text-opacity-60 text-base font-bold">{{
               $t("button.cancel")
-              }}</span>
+            }}</span>
           </div>
         </b-button>
 
@@ -512,34 +512,32 @@
         </b-button>
       </div>
 
-      <!-- Copy Menu -->
-      <div class="bg-black bg-opacity-5 mx-6 rounded-lg p-4 mt-6 text-center">
+      <!-- Copy -->
+      <div class="text-center mt-6 mx-6 lg:max-w-sm lg:mx-auto">
         <div>
-            <b-select
-              v-model="copyRestaurantId"
-              expanded
-              >
-              <option
-                v-for="restaurant in restaurants"
-                :key="restaurant.id"
-                :value="restaurant.id"
-                >{{ restaurant.restaurantName }}</option
-                                                  >
-            </b-select>
-        </div>
-        <div>
-        <div class="mt-1 text-sm font-bold">
           <b-button @click="copyItem" :disabled="submitting" class="b-reset-tw">
             <div
-              class="h-12 rounded-full bg-op-teal inline-flex justify-center items-center px-6 shadow"
-              style="min-width:8rem;"
-              >
-              <span class="text-white text-base font-bold">{{
+              class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
+            >
+              <i class="material-icons text-lg text-op-teal mr-2">
+                queue
+              </i>
+              <span class="text-sm font-bold text-op-teal">{{
                 $t("editCommon.copyMenu")
-                }}</span>
+              }}</span>
             </div>
           </b-button>
-            </div>
+        </div>
+
+        <div class="mt-4">
+          <b-select v-model="copyRestaurantId" expanded>
+            <option
+              v-for="restaurant in restaurants"
+              :key="restaurant.id"
+              :value="restaurant.id"
+              >{{ restaurant.restaurantName }}</option
+            >
+          </b-select>
         </div>
       </div>
     </template>
@@ -604,7 +602,7 @@ export default {
       files: {},
       categoryKey: null,
       restaurants: [],
-      copyRestaurantId: null,
+      copyRestaurantId: null
     };
   },
   async created() {
@@ -647,11 +645,14 @@ export default {
     this.notFound = false;
 
     const restaurantsCollection = await db
-          .collection("restaurants")
-          .where("uid", "==", this.uid)
-          .where("deletedFlag", "==", false).get();
+      .collection("restaurants")
+      .where("uid", "==", this.uid)
+      .where("deletedFlag", "==", false)
+      .get();
     if (!restaurantsCollection.empty && restaurantsCollection.docs.length > 0) {
-      this.restaurants = restaurantsCollection.docs.map(r => this.doc2data("r")(r));
+      this.restaurants = restaurantsCollection.docs.map(r =>
+        this.doc2data("r")(r)
+      );
     }
   },
   computed: {
@@ -704,7 +705,8 @@ export default {
   },
   methods: {
     displayOptionPrice(str) {
-      const price = optionPrice(str) * this.taxRate(this.restaurantInfo, this.menuInfo);
+      const price =
+        optionPrice(str) * this.taxRate(this.restaurantInfo, this.menuInfo);
       if (price === 0) {
         return this.$t("editMenu.noPriceChange");
       } else if (price > 0) {
@@ -735,7 +737,6 @@ export default {
       this.menuInfo.itemOptionCheckbox.push("");
     },
     async copyItem() {
-
       if (this.copyRestaurantId !== null) {
         const shop = this.restaurants.find(r => r.id === this.copyRestaurantId);
         this.$store.commit("setAlert", {
@@ -749,8 +750,8 @@ export default {
             newItem.uid = this.$store.getters.uidAdmin;
 
             const newData = await db
-                  .collection(`restaurants/${shop.id}/menus`)
-                  .add(newItem);
+              .collection(`restaurants/${shop.id}/menus`)
+              .add(newItem);
 
             const menuLists = shop.menuLists;
             menuLists.push(newData.id);
@@ -758,7 +759,7 @@ export default {
             await db
               .doc(`restaurants/${shop.id}`)
               .update("menuLists", menuLists);
-          },
+          }
         });
       }
     },
@@ -766,9 +767,9 @@ export default {
       const itemData = {
         itemName: this.menuInfo.itemName,
         price:
-        ownPlateConfig.region === "JP"
-          ? Math.round(Number(this.menuInfo.price))
-          : Number(this.menuInfo.price),
+          ownPlateConfig.region === "JP"
+            ? Math.round(Number(this.menuInfo.price))
+            : Number(this.menuInfo.price),
         tax: this.menuInfo.tax,
         itemDescription: this.menuInfo.itemDescription,
         itemMemo: this.menuInfo.itemMemo,

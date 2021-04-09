@@ -83,6 +83,10 @@
     "saving": "Enregistrement",
     "saveDraft": "Enregistrer comme brouillon",
     "new": "Nouveau",
+    "copy": "Copier ce restaurant",
+    "copyAlert": "Copiez ce restaurant et créez-le en tant que nouveau restaurant privé.",
+    "copyMenu": "Copiez cet élément dans le restaurant suivant",
+    "copyMenuAlert": "Copiez cet élément dans le restaurant en tant que nouvel élément privé.",
     "current": "Actuel",
     "clickAndUpload": "Cliquer et Télécharger",
     "clickAndUploadDetail": "Cliquez sur la zone grise ou Glissez-déposez pour télécharger l'image (JPEG uniquement)"
