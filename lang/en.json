@@ -85,6 +85,8 @@
     "new": "New",
     "copy": "Copy restaurant.",
     "copyAlert": "Copy this restaurant and create it as a new private restaurant.",
+    "copyMenu": "Copy this menu",
+    "copyMenuAlert": "Copy this menu to the restaurant as a new private menu.",
     "current": "Current",
     "clickAndUpload": "Click and Upload",
     "clickAndUploadDetail": "Click gray area or Drag & Drop to upload image(JPEG only)"
