@@ -23,6 +23,9 @@
         <!-- Alert Message -->
         <div v-if="alert">
           <!-- Message -->
+          <div class="align-center m-t-16" v-if="alert.title">
+            <div class="t-h6 c-text-black-medium">{{ alert.title }}</div>
+          </div>
           <div class="align-center m-t-16">
             <div class="t-h6 c-text-black-medium">{{ $t(alert.code) }}</div>
           </div>
