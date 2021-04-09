@@ -10,7 +10,7 @@
 
         <!-- Notifications -->
         <div class="mt-4 lg:mt-0 flex-shrink-0 text-right">
-          <notification-index :shopInfo="restaurantInfo" />
+          <notification-index :shopInfo="shopInfo" />
         </div>
       </div>
 
@@ -857,6 +857,27 @@
           </div>
         </b-button>
       </div>
+      <!-- Copy -->
+      <div class="flex justify-center space-x-4 mt-6">
+        <!-- Copy Button -->
+        <b-button
+          @click="confirmCopy"
+          :disabled="submitting"
+          class="b-reset-tw"
+        >
+          <div
+            class="h-12 rounded-full bg-op-teal inline-flex justify-center items-center px-6 shadow"
+            style="min-width:8rem;"
+          >
+            <span class="text-white text-base font-bold">{{
+              $t(
+              submitting
+              ? "editCommon.saving" : "editCommon.copy"
+              )
+            }}</span>
+          </div>
+        </b-button>
+      </div>
     </div>
   </div>
 </template>
@@ -1245,6 +1266,106 @@ export default {
         this.setCurrentLocation(this.shopInfo.location);
       }
     },
+    async confirmCopy() {
+      this.$store.commit("setAlert", {
+        code: "editCommon.copyAlert",
+        callback: async () => {
+          this.copyRestaurant();
+        },
+      });
+    },
+    async copyRestaurant() {
+      const restaurantData = this.getEditShopInfo();
+      restaurantData.restaurantName = restaurantData.restaurantName + " - COPY";
+      restaurantData.publicFlag = false;
+      restaurantData.deletedFlag = false;
+      restaurantData.createdAt = firestore.FieldValue.serverTimestamp();
+
+      const doc = await db.collection("restaurants").add(restaurantData);
+      const id = doc.id;
+
+      const menuListIds = {};
+      const menus = await db.collection(`restaurants/${this.restaurantId()}/menus`).where("deletedFlag", "==", false).get()
+
+      await Promise.all(menus.docs.map(async (a) => {
+        const newMenu = await db.collection(`restaurants/${id}/menus`).add(a.data());
+        menuListIds[a.id] = newMenu.id;
+        return;
+      }));
+      // console.log(menus.docs);
+      const titles = await db.collection(`restaurants/${this.restaurantId()}/titles`).where("deletedFlag", "==", false).get()
+
+      await Promise.all(titles.docs.map(async (a) => {
+        const newMenu = await db.collection(`restaurants/${id}/titles`).add(a.data());
+        menuListIds[a.id] = newMenu.id;
+        return;
+      }));
+
+      const newMenuList = [];
+      this.shopInfo.menuLists.forEach((a) => {
+        if (menuListIds[a]) {
+          newMenuList.push(menuListIds[a]);
+        }
+      });
+
+      await db.doc(`restaurants/${id}`).update("menuLists", newMenuList);
+
+      this.$router.push({
+        path: `/admin/restaurants/${id}`
+      });
+    },
+    getEditShopInfo() {
+      const restaurantData = {
+        restProfilePhoto: this.shopInfo.restProfilePhoto,
+        restCoverPhoto: this.shopInfo.restCoverPhoto,
+        restaurantName: this.shopInfo.restaurantName,
+        ownerName: this.shopInfo.ownerName,
+        streetAddress: this.shopInfo.streetAddress,
+        images: {
+          cover: this.shopInfo?.images?.cover || {},
+          profile: this.shopInfo?.images?.profile || {}
+        },
+        city: this.shopInfo.city,
+        state: this.shopInfo.state,
+        zip: this.shopInfo.zip,
+        location: this.shopInfo.location,
+        place_id: this.shopInfo.place_id,
+        phoneNumber: this.shopInfo.phoneNumber,
+        phoneCall: this.shopInfo.phoneCall,
+        emailNotification: this.shopInfo.emailNotification,
+        acceptUserMessage: this.shopInfo.acceptUserMessage,
+        countryCode: this.shopInfo.countryCode,
+        url: this.shopInfo.url,
+        lineUrl: this.shopInfo.lineUrl,
+        instagramUrl: this.shopInfo.instagramUrl,
+        introduction: this.shopInfo.introduction,
+        orderNotice: this.shopInfo.orderNotice,
+        orderThanks: this.shopInfo.orderThanks,
+        pickUpMinimumCookTime: this.shopInfo.pickUpMinimumCookTime,
+        pickUpDaysInAdvance: this.shopInfo.pickUpDaysInAdvance,
+        foodTax: Number(this.shopInfo.foodTax),
+        alcoholTax: Number(this.shopInfo.alcoholTax),
+        openTimes: Object.keys(this.shopInfo.openTimes).reduce((tmp, key) => {
+          tmp[key] = this.shopInfo.openTimes[key]
+            .filter(el => {
+              return el !== null && el?.end !== null && el?.start !== null;
+            })
+            .sort((a, b) => {
+              return a.start < b.start ? -1 : 1;
+            });
+          return tmp;
+        }, {}),
+        businessDay: this.shopInfo.businessDay,
+        temporaryClosure: this.shopInfo.temporaryClosure,
+        uid: this.shopInfo.uid,
+        publicFlag: this.shopInfo.publicFlag,
+        inclusiveTax: this.shopInfo.inclusiveTax,
+        updatedAt: firestore.FieldValue.serverTimestamp(),
+        createdAt:
+        this.shopInfo.createdAt || firestore.FieldValue.serverTimestamp()
+      };
+      return restaurantData;
+    },
     async submitRestaurant() {
       this.submitting = true;
       const restaurantId = this.restaurantId();
@@ -1272,55 +1393,7 @@ export default {
             resizedImages: {}
           };
         }
-        const restaurantData = {
-          restProfilePhoto: this.shopInfo.restProfilePhoto,
-          restCoverPhoto: this.shopInfo.restCoverPhoto,
-          restaurantName: this.shopInfo.restaurantName,
-          ownerName: this.shopInfo.ownerName,
-          streetAddress: this.shopInfo.streetAddress,
-          images: {
-            cover: this.shopInfo?.images?.cover || {},
-            profile: this.shopInfo?.images?.profile || {}
-          },
-          city: this.shopInfo.city,
-          state: this.shopInfo.state,
-          zip: this.shopInfo.zip,
-          location: this.shopInfo.location,
-          place_id: this.shopInfo.place_id,
-          phoneNumber: this.shopInfo.phoneNumber,
-          phoneCall: this.shopInfo.phoneCall,
-          emailNotification: this.shopInfo.emailNotification,
-          acceptUserMessage: this.shopInfo.acceptUserMessage,
-          countryCode: this.shopInfo.countryCode,
-          url: this.shopInfo.url,
-          lineUrl: this.shopInfo.lineUrl,
-          instagramUrl: this.shopInfo.instagramUrl,
-          introduction: this.shopInfo.introduction,
-          orderNotice: this.shopInfo.orderNotice,
-          orderThanks: this.shopInfo.orderThanks,
-          pickUpMinimumCookTime: this.shopInfo.pickUpMinimumCookTime,
-          pickUpDaysInAdvance: this.shopInfo.pickUpDaysInAdvance,
-          foodTax: Number(this.shopInfo.foodTax),
-          alcoholTax: Number(this.shopInfo.alcoholTax),
-          openTimes: Object.keys(this.shopInfo.openTimes).reduce((tmp, key) => {
-            tmp[key] = this.shopInfo.openTimes[key]
-              .filter(el => {
-                return el !== null && el?.end !== null && el?.start !== null;
-              })
-              .sort((a, b) => {
-                return a.start < b.start ? -1 : 1;
-              });
-            return tmp;
-          }, {}),
-          businessDay: this.shopInfo.businessDay,
-          temporaryClosure: this.shopInfo.temporaryClosure,
-          uid: this.shopInfo.uid,
-          publicFlag: this.shopInfo.publicFlag,
-          inclusiveTax: this.shopInfo.inclusiveTax,
-          updatedAt: firestore.FieldValue.serverTimestamp(),
-          createdAt:
-            this.shopInfo.createdAt || firestore.FieldValue.serverTimestamp()
-        };
+        const restaurantData = this.getEditShopInfo();
         await this.updateRestaurantData(restaurantData);
 
         this.$router.push({
