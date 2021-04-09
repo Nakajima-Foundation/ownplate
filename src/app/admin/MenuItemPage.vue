@@ -513,7 +513,7 @@
       </div>
 
       <!-- Copy Menu -->
-      <div class="bg-black bg-opacity-5 mx-6 rounded-lg p-4 mt-6 text-center" v-if="restaurants.length > 0">
+      <div class="bg-black bg-opacity-5 mx-6 rounded-lg p-4 mt-6 text-center">
         <div>
             <b-select
               v-model="copyRestaurantId"
@@ -650,7 +650,7 @@ export default {
           .collection("restaurants")
           .where("uid", "==", this.uid)
           .where("deletedFlag", "==", false).get();
-    if (!restaurantsCollection.empty && restaurantsCollection.docs.length > 1) {
+    if (!restaurantsCollection.empty && restaurantsCollection.docs.length > 0) {
       this.restaurants = restaurantsCollection.docs.map(r => this.doc2data("r")(r));
     }
   },
