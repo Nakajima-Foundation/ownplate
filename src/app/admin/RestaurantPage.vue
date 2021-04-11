@@ -857,23 +857,22 @@
           </div>
         </b-button>
       </div>
+
       <!-- Copy -->
-      <div class="flex justify-center space-x-4 mt-6">
-        <!-- Copy Button -->
+      <div class="text-center mt-6">
         <b-button
           @click="confirmCopy"
           :disabled="submitting"
           class="b-reset-tw"
         >
           <div
-            class="h-12 rounded-full bg-op-teal inline-flex justify-center items-center px-6 shadow"
-            style="min-width:8rem;"
+            class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
           >
-            <span class="text-white text-base font-bold">{{
-              $t(
-              submitting
-              ? "editCommon.saving" : "editCommon.copy"
-              )
+            <i class="material-icons text-lg text-op-teal mr-2">
+              queue
+            </i>
+            <span class="text-sm font-bold text-op-teal">{{
+              $t(submitting ? "editCommon.saving" : "editCommon.copy")
             }}</span>
           </div>
         </b-button>
@@ -1271,7 +1270,7 @@ export default {
         code: "editCommon.copyAlert",
         callback: async () => {
           this.copyRestaurant();
-        },
+        }
       });
     },
     async copyRestaurant() {
@@ -1285,24 +1284,38 @@ export default {
       const id = doc.id;
 
       const menuListIds = {};
-      const menus = await db.collection(`restaurants/${this.restaurantId()}/menus`).where("deletedFlag", "==", false).get()
+      const menus = await db
+        .collection(`restaurants/${this.restaurantId()}/menus`)
+        .where("deletedFlag", "==", false)
+        .get();
 
-      await Promise.all(menus.docs.map(async (a) => {
-        const newMenu = await db.collection(`restaurants/${id}/menus`).add(a.data());
-        menuListIds[a.id] = newMenu.id;
-        return;
-      }));
+      await Promise.all(
+        menus.docs.map(async a => {
+          const newMenu = await db
+            .collection(`restaurants/${id}/menus`)
+            .add(a.data());
+          menuListIds[a.id] = newMenu.id;
+          return;
+        })
+      );
       // console.log(menus.docs);
-      const titles = await db.collection(`restaurants/${this.restaurantId()}/titles`).where("deletedFlag", "==", false).get()
+      const titles = await db
+        .collection(`restaurants/${this.restaurantId()}/titles`)
+        .where("deletedFlag", "==", false)
+        .get();
 
-      await Promise.all(titles.docs.map(async (a) => {
-        const newMenu = await db.collection(`restaurants/${id}/titles`).add(a.data());
-        menuListIds[a.id] = newMenu.id;
-        return;
-      }));
+      await Promise.all(
+        titles.docs.map(async a => {
+          const newMenu = await db
+            .collection(`restaurants/${id}/titles`)
+            .add(a.data());
+          menuListIds[a.id] = newMenu.id;
+          return;
+        })
+      );
 
       const newMenuList = [];
-      this.shopInfo.menuLists.forEach((a) => {
+      this.shopInfo.menuLists.forEach(a => {
         if (menuListIds[a]) {
           newMenuList.push(menuListIds[a]);
         }
@@ -1362,7 +1375,7 @@ export default {
         inclusiveTax: this.shopInfo.inclusiveTax,
         updatedAt: firestore.FieldValue.serverTimestamp(),
         createdAt:
-        this.shopInfo.createdAt || firestore.FieldValue.serverTimestamp()
+          this.shopInfo.createdAt || firestore.FieldValue.serverTimestamp()
       };
       return restaurantData;
     },
