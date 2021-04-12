@@ -126,7 +126,8 @@ export default {
                 name: "kyusyu",
                 items: [
                   { name: "福岡県", id: 39 },
-                  { name: "長崎県", id: 41 }
+                  { name: "長崎県", id: 41 },
+                  { name: "大分県", id: 43 }
                 ]
               }
             ]

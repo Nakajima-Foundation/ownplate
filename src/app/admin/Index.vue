@@ -218,7 +218,7 @@
             {{ $t("admin.mail.magazine.title") }}
           </div>
 
-          <div class="bg-white shadow rounded-lg p-4" :style="cardStyle">
+          <div class="bg-white shadow rounded-lg p-4">
             <div class="text-base text-black text-opacity-60">
               {{ $t("admin.mail.magazine.body") }}
             </div>
