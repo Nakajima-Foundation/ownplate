@@ -280,6 +280,7 @@ export default {
         .collection("restaurants")
         .where("uid", "==", this.uid)
         .where("deletedFlag", "==", false)
+        .orderBy("createdAt", "asc")
         .onSnapshot(async result => {
           try {
             if (result.empty) {
