@@ -311,18 +311,20 @@ export default {
                 tmp[doc.id] = data;
                 return tmp;
               }, {})
-            console.log(this.restaurantItems);
+
             if (Object.keys(this.restaurantLists).length === 0) {
               this.restaurantLists = Object.keys(this.restaurantItems);
             }
-            console.log( this.restaurantLists);
+
             await Promise.all(
               Object.keys(this.restaurantItems).map(async restaurantId => {
                 const menus = await db
                       .collection(`restaurants/${restaurantId}/menus`)
                       .where("deletedFlag", "==", false)
                       .get();
-                this.restaurantItems[restaurantId].numberOfMenus = menus.size;
+                const obj = {...this.restaurantItems};
+                obj[restaurantId].numberOfMenus = menus.size;
+                this.restaurantItems = obj;
               })
             );
 
@@ -334,12 +336,14 @@ export default {
                   .where("timePlaced", ">=", midNight())
                 // IDEALLY: .where("status", "<", order_status.ready_to_pickup)
                   .onSnapshot(result => {
-                    this.restaurantItems[restaurantId].numberOfOrders = result.docs
+                    const obj = {...this.restaurantItems[restaurantId]};
+                    obj.numberOfOrders = result.docs
                       .map(doc => doc.data())
                       .filter(data => {
                         // We need this filter here because Firebase does not allow us to do
                         return data.status < order_status.ready_to_pickup;
                       }).length;
+                    this.restaurantItems[restaurantId] = obj;
                   })
               );
             });
