@@ -211,6 +211,9 @@ export default ({ app }) => {
       isCustomer() {
         return !!this.$store.getters.uidUser;
       },
+      isAnonymous() {
+        return this.$store.getters.isAnonymous;
+      },
       isLineUser() {
         const claims = this.$store.state.claims;
         return !!claims?.line;

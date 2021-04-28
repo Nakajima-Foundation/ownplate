@@ -83,6 +83,10 @@
     "saving": "Saving",
     "saveDraft": "Save as Draft",
     "new": "New",
+    "copy": "Copy This Restaurant",
+    "copyAlert": "Copy this restaurant and create it as a new private restaurant.",
+    "copyMenu": "Copy this item to the following restaurant",
+    "copyMenuAlert": "Copy this item to the restaurant as a new private item.",
     "current": "Current",
     "clickAndUpload": "Click and Upload",
     "clickAndUploadDetail": "Click gray area or Drag & Drop to upload image(JPEG only)"

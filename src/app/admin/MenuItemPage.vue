@@ -511,6 +511,35 @@
           </div>
         </b-button>
       </div>
+
+      <!-- Copy -->
+      <div class="text-center mt-6 mx-6 lg:max-w-sm lg:mx-auto">
+        <div>
+          <b-button @click="copyItem" :disabled="submitting" class="b-reset-tw">
+            <div
+              class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
+            >
+              <i class="material-icons text-lg text-op-teal mr-2">
+                queue
+              </i>
+              <span class="text-sm font-bold text-op-teal">{{
+                $t("editCommon.copyMenu")
+              }}</span>
+            </div>
+          </b-button>
+        </div>
+
+        <div class="mt-4">
+          <b-select v-model="copyRestaurantId" expanded>
+            <option
+              v-for="restaurant in restaurants"
+              :key="restaurant.id"
+              :value="restaurant.id"
+              >{{ restaurant.restaurantName }}</option
+            >
+          </b-select>
+        </div>
+      </div>
     </template>
   </div>
 </template>
@@ -518,6 +547,7 @@
 <script>
 import Vue from "vue";
 import { db, storage } from "~/plugins/firebase.js";
+import firebase from "firebase/app";
 import NotFound from "~/components/NotFound";
 import BackButton from "~/components/BackButton";
 import Price from "~/components/Price";
@@ -570,7 +600,9 @@ export default {
       menuId: this.$route.params.menuId,
       submitting: false,
       files: {},
-      categoryKey: null
+      categoryKey: null,
+      restaurants: [],
+      copyRestaurantId: null
     };
   },
   async created() {
@@ -611,6 +643,17 @@ export default {
     }
     this.menuInfo = Object.assign({}, this.menuInfo, resMenuInfo.data());
     this.notFound = false;
+
+    const restaurantsCollection = await db
+      .collection("restaurants")
+      .where("uid", "==", this.uid)
+      .where("deletedFlag", "==", false)
+      .get();
+    if (!restaurantsCollection.empty && restaurantsCollection.docs.length > 0) {
+      this.restaurants = restaurantsCollection.docs.map(r =>
+        this.doc2data("r")(r)
+      );
+    }
   },
   computed: {
     itemOptions() {
@@ -692,6 +735,56 @@ export default {
     addOption() {
       this.menuInfo.itemOptionCheckbox.push("");
     },
+    async copyItem() {
+      if (this.copyRestaurantId !== null) {
+        const shop = this.restaurants.find(r => r.id === this.copyRestaurantId);
+        this.$store.commit("setAlert", {
+          title: shop.restaurantName,
+          code: "editCommon.copyMenuAlert",
+          callback: async () => {
+            const newItem = this.getNewItemData();
+            newItem.publicFlag = false;
+            newItem.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+            newItem.deletedFlag = false;
+            newItem.uid = this.$store.getters.uidAdmin;
+
+            const newData = await db
+              .collection(`restaurants/${shop.id}/menus`)
+              .add(newItem);
+
+            const menuLists = shop.menuLists;
+            menuLists.push(newData.id);
+
+            await db
+              .doc(`restaurants/${shop.id}`)
+              .update("menuLists", menuLists);
+          }
+        });
+      }
+    },
+    getNewItemData() {
+      const itemData = {
+        itemName: this.menuInfo.itemName,
+        price:
+          ownPlateConfig.region === "JP"
+            ? Math.round(Number(this.menuInfo.price))
+            : Number(this.menuInfo.price),
+        tax: this.menuInfo.tax,
+        itemDescription: this.menuInfo.itemDescription,
+        itemMemo: this.menuInfo.itemMemo,
+        itemPhoto: this.menuInfo.itemPhoto,
+        images: {
+          item: this.menuInfo.images.item || {}
+        },
+        itemOptionCheckbox: this.menuInfo.itemOptionCheckbox || [],
+        publicFlag: this.menuInfo.publicFlag || false,
+        allergens: this.menuInfo.allergens,
+        validatedFlag: !this.hasError,
+        category1: this.menuInfo.category1,
+        category2: this.menuInfo.category2
+      };
+      return itemData;
+    },
     async submitItem() {
       this.submitting = true;
       //upload image
@@ -709,26 +802,7 @@ export default {
             resizedImages: {}
           };
         }
-        const itemData = {
-          itemName: this.menuInfo.itemName,
-          price:
-            ownPlateConfig.region === "JP"
-              ? Math.round(Number(this.menuInfo.price))
-              : Number(this.menuInfo.price),
-          tax: this.menuInfo.tax,
-          itemDescription: this.menuInfo.itemDescription,
-          itemMemo: this.menuInfo.itemMemo,
-          itemPhoto: this.menuInfo.itemPhoto,
-          images: {
-            item: this.menuInfo.images.item || {}
-          },
-          itemOptionCheckbox: this.menuInfo.itemOptionCheckbox || [],
-          publicFlag: this.menuInfo.publicFlag || false,
-          allergens: this.menuInfo.allergens,
-          validatedFlag: !this.hasError,
-          category1: this.menuInfo.category1,
-          category2: this.menuInfo.category2
-        };
+        const itemData = this.getNewItemData();
 
         // Convert double-width characters with half-width characters in options
         // We also convert Japanse commas with alphabet commas
