@@ -99,6 +99,17 @@
             </b-field>
           </div>
 
+          <!-- Item Name -->
+          <div class="mt-6">
+            <div class="text-sm font-bold pb-2">
+              {{ $t("editMenu.itemAliasesName") }}
+            </div>
+              <b-input
+                v-model="menuInfo.itemAliasesName"
+                :placeholder="$t('editMenu.enterItemAliasesName')"
+              ></b-input>
+          </div>
+
           <!-- Item Price -->
           <div class="mt-6">
             <div class="text-sm font-bold pb-2">
@@ -577,6 +588,7 @@ export default {
       dummyCheckbox: [],
       menuInfo: {
         itemName: "",
+        itemAliasesName: "",
         price: 0,
         tax: "food",
         itemDescription: "",
@@ -765,6 +777,7 @@ export default {
     getNewItemData() {
       const itemData = {
         itemName: this.menuInfo.itemName,
+        itemAliasesName: this.menuInfo.itemAliasesName || "",
         price:
           ownPlateConfig.region === "JP"
             ? Math.round(Number(this.menuInfo.price))

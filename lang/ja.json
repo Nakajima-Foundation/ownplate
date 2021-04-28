@@ -196,6 +196,7 @@
   "editMenu": {
     "menu": "メニュー",
     "enterItemName": "商品名を入力してください",
+    "enterItemAliasesName": "商品の別名（外国語等）を入力してください。これは管理画面でのみ表示されます",
     "enterItemDescription": "説明文を入力してください",
     "enterItemMemo": "メモ（お客様の画面には表示されません。1行目のみ、メニュー一覧上に表示されます。秘密情報は書かないようにしてください）",
     "enterItemOption": "オプションを入力してください",
@@ -204,6 +205,7 @@
     "pleaseAddItem": "下のボタンを押して商品を追加して下さい。",
     "required": "必須",
     "itemName": "商品名",
+    "itemAliasesName": "商品別名",
     "price": "値段",
     "free": "無料",
     "optionsPreview": "オプションプレビュー",
