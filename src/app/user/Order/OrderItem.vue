@@ -21,6 +21,9 @@
     <div class="flex-1">
       <div class="text-base font-bold">
         {{ item.itemName }}
+        <span v-if="isAdmin && item.itemAliasesName">
+          / {{ item.itemAliasesName }}
+        </span>
       </div>
       <div v-if="specialRequest" class="text-xs font-bold mt-1">
         {{ specialRequest }}
@@ -65,6 +68,9 @@ export default {
     },
     count() {
       return this.orderItem.count;
+    },
+    isAdmin() {
+      return this.$store.getters.isAdmin;
     },
     specialRequest() {
       return this.orderItem.options
