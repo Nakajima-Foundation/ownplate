@@ -52,6 +52,48 @@
           </nuxt-link>
         </div>
       </div>
+      <div>
+        <!-- Up -->
+        <b-button
+          v-if="position !== 'first'"
+          @click="positionUp"
+          class="b-reset-tw"
+        >
+          <div
+            class="inline-flex justify-center items-center px-4 h-9 rounded-full bg-black bg-opacity-5"
+          >
+            <i class="material-icons text-lg text-op-teal">arrow_upward</i>
+          </div>
+        </b-button>
+        <b-button v-else disabled class="b-reset-tw">
+          <div
+            class="inline-flex justify-center items-center px-4 h-9 rounded-full bg-black bg-opacity-5"
+          >
+            <i class="material-icons text-lg text-op-teal">arrow_upward</i>
+          </div>
+        </b-button>
+
+        <!-- Down -->
+        <b-button
+          v-if="position !== 'last'"
+          @click="positionDown"
+          class="b-reset-tw"
+        >
+          <div
+            class="inline-flex justify-center items-center px-4 h-9 rounded-full bg-black bg-opacity-5"
+          >
+            <i class="material-icons text-lg text-op-teal">arrow_downward</i>
+          </div>
+        </b-button>
+        <b-button v-else disabled class="b-reset-tw">
+          <div
+            class="inline-flex justify-center items-center px-4 h-9 rounded-full bg-black bg-opacity-5"
+          >
+            <i class="material-icons text-lg text-op-teal">arrow_downward</i>
+          </div>
+        </b-button>
+
+      </div>
     </div>
 
     <!-- Not Published Alert -->
@@ -308,6 +350,10 @@ export default {
     lineEnable: {
       type: Boolean,
       required: true
+    },
+    position: {
+      type: String,
+      required: true
     }
   },
   data() {
@@ -338,12 +384,15 @@ export default {
       console.log("deleteRestaurant");
       this.$store.commit("setAlert", {
         code: "editRestaurant.reallyDelete",
-        callback: () => {
+        callback: async() => {
           console.log(this.restaurantid);
+          this.$emit("deleteFromRestaurantLists", this.restaurantid);
+
           db.doc(`restaurants/${this.restaurantid}`).update(
             "deletedFlag",
             true
           );
+
         }
       });
     },
@@ -365,7 +414,13 @@ export default {
     },
     requestDelete() {
       db.doc(`requestList/${this.restaurantid}`).delete();
-    }
+    },
+    positionUp() {
+      this.$emit("positionUp", this.restaurantid);
+    },
+    positionDown() {
+      this.$emit("positionDown", this.restaurantid);
+    },
   }
 };
 </script>
