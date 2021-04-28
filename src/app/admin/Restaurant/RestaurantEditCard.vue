@@ -80,7 +80,7 @@
       </div>
 
       <!-- Edit Menu -->
-      <div class="mt-4 text-center">
+      <div class="mt-4 text-center px-4">
         <!-- Menu Not Existing -->
         <div v-if="numberOfMenus == 0">
           <nuxt-link :to="'/admin/restaurants/' + restaurantid + '/menus'">
