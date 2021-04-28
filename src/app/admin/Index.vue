@@ -145,6 +145,7 @@
                 :key="restaurantId"
               >
                 <restaurant-edit-card
+                  v-if="restaurantItems[restaurantId]"
                   :shopInfo="restaurantItems[restaurantId]"
                   :restaurantid="restaurantId"
                   :numberOfMenus="restaurantItems[restaurantId].numberOfMenus || 0"
