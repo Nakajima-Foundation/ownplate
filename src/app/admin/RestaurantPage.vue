@@ -741,7 +741,7 @@
                   :min-date="new Date()"
                   :max-date="maxDate"
                   expanded
-                  placeholder="Select a date"
+                  :placeholder="$t('shopInfo.temporaryClosureSelect')"
                 >
                 </b-datepicker>
                 <!-- <b-button
@@ -1329,7 +1329,7 @@ export default {
       if (restaurantListsDoc.exists) {
         const restaurantLists = restaurantListsDoc.data().lists;
         restaurantLists.push(id);
-        await db.doc(path).set({lists: restaurantLists}, { merge: true });
+        await db.doc(path).set({ lists: restaurantLists }, { merge: true });
       }
       // end of list
       this.$router.push({
