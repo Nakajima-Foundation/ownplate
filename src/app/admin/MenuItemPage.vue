@@ -710,11 +710,13 @@ export default {
       return num > 0;
     }
   },
+  /*
   watch: {
     hasError: function() {
       this.menuInfo.publicFlag = !this.hasError;
     }
   },
+  */
   methods: {
     displayOptionPrice(str) {
       const price = this.roundPrice(optionPrice(str) * this.taxRate(this.restaurantInfo, this.menuInfo));
