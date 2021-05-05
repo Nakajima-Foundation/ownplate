@@ -1323,6 +1323,15 @@ export default {
 
       await db.doc(`restaurants/${id}`).update("menuLists", newMenuList);
 
+      // push list
+      const path = `/admins/${this.uid}/public/RestaurantLists`;
+      const restaurantListsDoc = await db.doc(path).get();
+      if (restaurantListsDoc.exists) {
+        const restaurantLists = restaurantListsDoc.data().lists;
+        restaurantLists.push(id);
+        await db.doc(path).set({lists: restaurantLists}, { merge: true });
+      }
+      // end of list
       this.$router.push({
         path: `/admin/restaurants/${id}`
       });

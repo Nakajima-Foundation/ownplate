@@ -56,7 +56,10 @@ export const getters = {
   },
   isNotOperator: (state) => {
     return !state.claims?.operator;
-  }
+  },
+  isAdmin: (state) => {
+    return !!(state.user && state.user.email && state.user.uid);
+  },
 };
 
 export const mutations = {

@@ -196,6 +196,7 @@
   "editMenu": {
     "menu": "Menu",
     "enterItemName": "Enter item name",
+    "enterItemAliasesName": "Please enter an alias for the item (e.g. foreign language)",
     "enterItemDescription": "Enter item description",
     "enterItemMemo": "Memo (Memo will not be displayed on customer's page. Please do not write confidential information)",
     "enterItemOption": "Enter item option",
@@ -204,6 +205,7 @@
     "pleaseAddItem": "Please create your menu from the bottom button.",
     "required": "Required",
     "itemName": "Item name",
+    "itemAliasesName": "Item Alias (This information is only displayed in the admin page.)",
     "price": "Price",
     "free": "Free",
     "optionsPreview": "Options Preview",

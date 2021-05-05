@@ -20,7 +20,7 @@ export const updateOrderTotalData = async (db, transaction, order, restaurantId,
 
   const menuIds = Object.keys(order);
   const date = moment(timePlaced.toDate()).tz(timezone).format('YYYYMMDD');
-  
+
   await Promise.all(menuIds.map(async (menuId) => {
     const numArray = Array.isArray(order[menuId]) ? order[menuId] : [order[menuId]];
     const num = numArray.reduce((sum, current) => {
@@ -29,7 +29,7 @@ export const updateOrderTotalData = async (db, transaction, order, restaurantId,
     const path = `restaurants/${restaurantId}/menus/${menuId}/orderTotal/${date}`
     const totalRef = db.doc(path)
     const total = (await transaction.get(totalRef)).data();
-    
+
     if (!total) {
       const addData = {
         uid: ownerUid,
@@ -79,7 +79,7 @@ export const updateOrderTotalData = async (db, transaction, order, restaurantId,
       // transaction for stock orderTotal
       const timePlaced = timeToPickup && new admin.firestore.Timestamp(timeToPickup.seconds, timeToPickup.nanoseconds) || admin.firestore.FieldValue.serverTimestamp()
       await updateOrderTotalData(db, transaction, order.order, restaurantId, restaurantData.uid, timePlaced, true);
-      
+
       transaction.update(orderRef, {
         status: order_status.order_placed,
         totalCharge: order.total + tip,
@@ -93,7 +93,7 @@ export const updateOrderTotalData = async (db, transaction, order, restaurantId,
       // order.totalCharge = order.total + tip;
       return { success: true }
     })
-    
+
     await notifyNewOrderToRestaurant(db, restaurantId, order, restaurantData.restaurantName, lng);
 
     return result;
@@ -137,7 +137,7 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
       if (status === order_status.ready_to_pickup) {
         if (order && order.timeEstimated) {
           const diffDay =  (moment().toDate().getTime() - order.timeEstimated.toDate().getTime()) / 1000 / 3600 / 24;
-          console.log("timeEstimated_diff_days = " + String(diffDay)); 
+          console.log("timeEstimated_diff_days = " + String(diffDay));
           if (diffDay < 1) {
             msgKey = "msg_cooking_completed"
           }
@@ -239,7 +239,7 @@ export const wasOrderCreated = async (db, data: any, context) => {
       newOrderData[menuId] = [];
       newItems[menuId] = {};
       newPrices[menuId] = [];
-      
+
       const menu = menuObj[menuId];
 
       const numArray = Array.isArray(orderData.order[menuId]) ? orderData.order[menuId] : [orderData.order[menuId]];
@@ -268,7 +268,7 @@ export const wasOrderCreated = async (db, data: any, context) => {
           }
           return tmpPrice;
         }, menu.price);
-        
+
         if (menu.tax === "alcohol") {
           alcohol_sub_total += (price * num);
         } else {
@@ -278,6 +278,9 @@ export const wasOrderCreated = async (db, data: any, context) => {
         newPrices[menuId].push(price * num);
       });
       const menuItem: any = { price: menu.price, itemName: menu.itemName };
+      if (menu.itemAliasesName) {
+        menuItem.itemAliasesName = menu.itemAliasesName;
+      }
       if (menu.category1) {
         menuItem.category1 = menu.category1;
       }
@@ -286,7 +289,7 @@ export const wasOrderCreated = async (db, data: any, context) => {
       }
       newItems[menuId] = menuItem;
     });
-    
+
     // calculate price.
     const sub_total = food_sub_total + alcohol_sub_total;
     if (sub_total === 0) {

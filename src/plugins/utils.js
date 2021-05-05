@@ -187,8 +187,12 @@ export default ({ app }) => {
       },
       displayOption(option, shopInfo, item) {
         return formatOption(option, price => {
-          return this.$n(price * this.taxRate(shopInfo, item), "currency");
+          return this.$n(this.roundPrice(price * this.taxRate(shopInfo, item)), "currency");
         });
+      },
+      roundPrice(price) {
+        const m = this.$store.getters.stripeRegion.multiple;
+        return Math.round( price * m) / m;
       },
     },
     computed: {
