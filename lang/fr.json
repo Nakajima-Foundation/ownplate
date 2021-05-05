@@ -196,6 +196,7 @@
   "editMenu": {
     "menu": "Menu",
     "enterItemName": "Entrez le nom de l'article",
+    "enterItemAliasesName": "Veuillez entrer un alias pour le produit (par exemple, une langue étrangère).",
     "enterItemDescription": "Entrez la description de l'article",
     "enterItemMemo": "Memo (Memo will not be displayed on customer's page. Please do not write confidential information)",
     "enterItemOption": "Entrez l'option d'article",
@@ -204,6 +205,7 @@
     "pleaseAddItem": "Veuillez créer votre menu à partir du bouton du bas.",
     "required": "Requis",
     "itemName": "Nom de l'article",
+    "itemAliasesName": "Alias de l'élément (Cette information n'est affichée que dans la page d'administration).",
     "price": "Prix",
     "free": "Free",
     "optionsPreview": "Aperçu des options",

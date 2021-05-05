@@ -141,17 +141,24 @@
           <div v-if="existsRestaurant">
             <div class="grid grid-cols-1 space-y-2">
               <div
-                v-for="restaurantItem in restaurantItems"
-                :key="restaurantItem.id"
+                v-for="(restaurantId, index) in restaurantLists"
+                :key="restaurantId"
               >
                 <restaurant-edit-card
-                  :shopInfo="restaurantItem"
-                  :restaurantid="restaurantItem.restaurantid"
-                  :numberOfMenus="restaurantItem.numberOfMenus || 0"
-                  :numberOfOrders="restaurantItem.numberOfOrders || 0"
-                  :lineEnable="lines[restaurantItem.id] || false"
+                  v-if="restaurantItems[restaurantId]"
+                  :shopInfo="restaurantItems[restaurantId]"
+                  :restaurantid="restaurantId"
+                  :numberOfMenus="restaurantItems[restaurantId].numberOfMenus || 0"
+                  :numberOfOrders="restaurantItems[restaurantId].numberOfOrders || 0"
+                  :lineEnable="lines[restaurantId] || false"
                   :shopOwner="shopOwner"
-                ></restaurant-edit-card>
+                  :position="
+                             index == 0 ? 'first' : restaurantLists.length - 1 === index ? 'last' : ''
+                             "
+                  @positionUp="positionUp($event)"
+                  @positionDown="positionDown($event)"
+                  @deleteFromRestaurantLists="deleteFromRestaurantLists($event)"
+                  ></restaurant-edit-card>
               </div>
             </div>
 
@@ -262,7 +269,8 @@ export default {
       unsetWarning: true,
       lines: {},
       shopOwner: null,
-      opt_out: null
+      opt_out: null,
+      restaurantLists: [],
     };
   },
   created() {
@@ -272,65 +280,71 @@ export default {
     try {
       this.shopOwner = await this.getShopOwner(this.$store.getters.uidAdmin);
       const adminConfig = await db
-        .doc(`/adminConfigs/${this.$store.getters.uidAdmin}`)
-        .get();
+            .doc(`/adminConfigs/${this.$store.getters.uidAdmin}`)
+            .get();
       this.adminConfig = adminConfig.exists ? adminConfig.data() : {};
       this.opt_out = this.adminConfig.opt_out || false;
+
+
+      const restaurantLists = await db
+            .doc(`/admins/${this.$store.getters.uidAdmin}/public/RestaurantLists`)
+            .get();
+      this.restaurantLists = (restaurantLists.exists ? restaurantLists.data() : {}).lists || [];
+
       this.restaurant_detacher = db
         .collection("restaurants")
         .where("uid", "==", this.uid)
         .where("deletedFlag", "==", false)
+        .orderBy("createdAt", "asc")
         .onSnapshot(async result => {
           try {
             if (result.empty) {
-              this.restaurantItems = []; // so that we present "No restaurant"
+              this.restaurantItems = {}; // so that we present "No restaurant"
               return;
             }
             this.restaurantItems = (result.docs || [])
-              .map(doc => {
+              .reduce((tmp, doc) => {
                 const restaurantId = doc.id;
 
                 const data = doc.data();
                 data.restaurantid = doc.id;
                 data.id = doc.id;
-                return data;
-              })
-              .filter(res => {
-                return !res.deletedFlag;
-              });
+                tmp[doc.id] = data;
+                return tmp;
+              }, {})
 
-            this.restaurantItems = await Promise.all(
-              this.restaurantItems.map(async restaurant => {
+            if (Object.keys(this.restaurantLists).length === 0) {
+              this.restaurantLists = Object.keys(this.restaurantItems);
+            }
+
+            await Promise.all(
+              Object.keys(this.restaurantItems).map(async restaurantId => {
                 const menus = await db
-                  .collection(`restaurants/${restaurant.id}/menus`)
-                  .where("deletedFlag", "==", false)
-                  .get();
-                restaurant.numberOfMenus = menus.size;
-                return restaurant;
+                      .collection(`restaurants/${restaurantId}/menus`)
+                      .where("deletedFlag", "==", false)
+                      .get();
+                const obj = {...this.restaurantItems};
+                obj[restaurantId].numberOfMenus = menus.size;
+                this.restaurantItems = obj;
               })
             );
 
             this.destroy_detacher();
-            this.detachers = this.restaurantItems.map((restaurant, index) => {
+            this.detachers = Object.keys(this.restaurantItems).map((restaurantId) => {
               return (
                 db
-                  .collection(`restaurants/${restaurant.id}/orders`)
+                  .collection(`restaurants/${restaurantId}/orders`)
                   .where("timePlaced", ">=", midNight())
-                  // IDEALLY: .where("status", "<", order_status.ready_to_pickup)
+                // IDEALLY: .where("status", "<", order_status.ready_to_pickup)
                   .onSnapshot(result => {
-                    this.restaurantItems = this.restaurantItems.map(
-                      (r2, i2) => {
-                        if (index === i2) {
-                          r2.numberOfOrders = result.docs
-                            .map(doc => doc.data())
-                            .filter(data => {
-                              // We need this filter here because Firebase does not allow us to do
-                              return data.status < order_status.ready_to_pickup;
-                            }).length;
-                        }
-                        return r2;
-                      }
-                    );
+                    const obj = {...this.restaurantItems[restaurantId]};
+                    obj.numberOfOrders = result.docs
+                      .map(doc => doc.data())
+                      .filter(data => {
+                        // We need this filter here because Firebase does not allow us to do
+                        return data.status < order_status.ready_to_pickup;
+                      }).length;
+                    this.restaurantItems[restaurantId] = obj;
                   })
               );
             });
@@ -339,6 +353,7 @@ export default {
           } finally {
             this.readyToDisplay = true;
           }
+          console.log(this.restaurantItems);
         });
     } catch (error) {
       console.log("Error fetch doc,", error);
@@ -382,6 +397,11 @@ export default {
           deletedFlag: false,
           createdAt: firestore.FieldValue.serverTimestamp()
         });
+
+        // update Lists
+        this.restaurantLists.push(doc.id);
+        this.saveRestaurantLists();
+
         this.$router.push(`/admin/restaurants/${doc.id}`);
       } catch (error) {
         console.log(error);
@@ -391,6 +411,49 @@ export default {
     },
     updateUnsetWarning(value) {
       this.unsetWarning = value;
+    },
+    async positionUp(itemKey) {
+      const pos = this.restaurantLists.indexOf(itemKey);
+      if (pos !== 0 && pos !== -1) {
+        const newRestaurantLists = [...this.restaurantLists];
+        const tmp = newRestaurantLists[pos - 1];
+        newRestaurantLists[pos - 1] = newRestaurantLists[pos];
+        newRestaurantLists[pos] = tmp;
+
+        this.restaurantLists = newRestaurantLists;
+        await this.saveRestaurantLists();
+      }
+    },
+    async positionDown(itemKey) {
+      const pos = this.restaurantLists.indexOf(itemKey);
+      if (pos < this.restaurantLists.length - 1 && pos !== -1) {
+        const newRestaurantLists = [...this.restaurantLists];
+        const tmp = newRestaurantLists[pos + 1];
+        newRestaurantLists[pos + 1] = newRestaurantLists[pos];
+        newRestaurantLists[pos] = tmp;
+
+        this.restaurantLists = newRestaurantLists;
+
+        await this.saveRestaurantLists();
+      }
+    },
+    async deleteFromRestaurantLists(restaurantId) {
+      // push list
+      const newRestaurantLists = [...this.restaurantLists];
+      const pos = newRestaurantLists.indexOf(restaurantId);
+      newRestaurantLists.splice(pos, 1);
+      this.restaurantLists = newRestaurantLists;
+
+      const path = `/admins/${this.$store.getters.uidAdmin}/public/RestaurantLists`;
+      await db.doc(path).set({lists: newRestaurantLists}, { merge: true });
+      // end of list
+    },
+    async saveRestaurantLists() {
+      await db
+            .doc(`/admins/${this.$store.getters.uidAdmin}/public/RestaurantLists`)
+            .set({lists: this.restaurantLists},
+                 { merge: true }
+                );
     }
   },
   destroyed() {
@@ -400,6 +463,9 @@ export default {
     }
   },
   computed: {
+    restaurantLength() {
+      return this.menuLists.length;
+    },
     uid() {
       return this.$store.getters.uidAdmin;
     },
@@ -407,7 +473,7 @@ export default {
       if (this.restaurantItems === null) {
         return null;
       }
-      if (this.restaurantItems.length > 0) {
+      if (Object.keys(this.restaurantItems).length > 0) {
         return true;
       }
       return false;

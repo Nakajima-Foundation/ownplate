@@ -528,7 +528,6 @@ export default {
           !this.menuObj[tmp].publicFlag &&
           pos < this.menuLength - 1
         );
-        console.log(newMenuLists);
         await this.saveMenuList(newMenuLists);
       }
     },

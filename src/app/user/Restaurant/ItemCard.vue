@@ -214,9 +214,20 @@
     </div>
 
     <!-- Image Popup-->
-    <b-modal :active.sync="imagePopup" :width="488" scroll="keep" :on-cancel="closeImage">
+    <b-modal
+      :active.sync="imagePopup"
+      :width="488"
+      scroll="keep"
+      :on-cancel="closeImage"
+    >
       <div class="px-2 text-center" @click.stop="closeImage()">
         <img :src="image" class="rounded-lg shadow-lg" />
+        <div class="text-left text-white text-base font-bold mt-4">
+          {{ title }}
+        </div>
+        <div class="text-left text-white text-sm font-bold">
+          <Price :shopInfo="shopInfo" :menu="item" />
+        </div>
       </div>
     </b-modal>
   </div>
@@ -390,7 +401,7 @@ export default {
     openImage() {
       this.imagePopup = true;
       const current = this.$router.history.current.path;
-      const to = "/r/" + this.restaurantId() + (this.urlSuffix||"");
+      const to = "/r/" + this.restaurantId() + (this.urlSuffix || "");
       if (current !== to) {
         this.$router.replace(to);
       }

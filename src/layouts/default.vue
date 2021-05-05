@@ -23,7 +23,7 @@
 
     <!-- text-pink-500 text-purple-500 text-blue-500 text-green-600 text-yellow-500 text-red-700 hover:text-red-700 text-black -->
     <!-- text-opacity-30 text-opacity-60 text-opacity-80 -->
-    <!-- lg:text-center -->
+    <!-- text-left lg:text-center -->
     <!-- font-normal -->
 
     <!-- list-outside list-disc list-none -->
