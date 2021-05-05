@@ -26,7 +26,8 @@
               <img
                 @click.stop="openImage()"
                 :src="coverImage"
-                class="h-48 w-full cover lg:rounded-lg" />
+                class="h-48 w-full object-cover lg:rounded-lg"
+              />
             </div>
 
             <!-- For Responsible  -->

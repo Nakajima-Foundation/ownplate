@@ -10,7 +10,7 @@
       <div class="flex justify-center items-center space-x-4 mt-4">
         <div class="flex-shrink-0">
           <img
-            class="w-20 h-20 rounded-full cover"
+            class="w-20 h-20 rounded-full object-cover"
             :src="
               resizedProfileImage(shopInfo, '600') ||
                 '/OwnPlate-Favicon-Default.png'

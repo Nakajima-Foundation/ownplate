@@ -13,7 +13,7 @@
           :src="image"
           width="48"
           height="48"
-          class="w-12 h-12 rounded cover"
+          class="w-12 h-12 rounded object-cover"
         />
       </div>
     </div>
