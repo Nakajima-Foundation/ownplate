@@ -646,7 +646,7 @@
           <!-- Hours -->
           <div class="mt-4 lg:mt-0">
             <div class="text-sm font-bold pb-2">
-              {{ $t("shopInfo.hours") }}
+              {{ $t("shopInfo.hours") }} <span class="text-red-700">*</span>
             </div>
             <div class="text-sm font-bold text-red-700">
               {{ $t("editRestaurant.businessHourDescription") }}
