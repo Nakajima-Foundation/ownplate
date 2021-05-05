@@ -401,6 +401,7 @@ export default {
     deleteRestaurant() {
       console.log("deleteRestaurant");
       this.$store.commit("setAlert", {
+        title: this.shopInfo.restaurantName,
         code: "editRestaurant.reallyDelete",
         callback: async () => {
           console.log(this.restaurantid);
