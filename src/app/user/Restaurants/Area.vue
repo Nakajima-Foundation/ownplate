@@ -78,6 +78,8 @@ export default {
         const data = doc.data();
         data.id = doc.id;
         return data;
+      }).sort((a, b) => {
+        return a.restaurantName > b.restaurantName ? 1 : -1;
       });
     }
   }

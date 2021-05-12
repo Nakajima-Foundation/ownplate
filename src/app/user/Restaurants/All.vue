@@ -86,7 +86,11 @@ export default {
         tmp[data.state].push(data);
         return tmp;
       }, {});
-      console.log(this.restaurantsObj);
+      Object.keys(this.restaurantsObj).map((key) => {
+        this.restaurantsObj[key].sort((a, b) => {
+          return a.restaurantName > b.restaurantName ? 1 : -1;
+        })
+      });
       // console.log(this.restaurants.length, this.restaurants);
     } catch (error) {
       console.log(error);
