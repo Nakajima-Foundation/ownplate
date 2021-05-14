@@ -57,7 +57,7 @@
         <!-- Email Sent -->
         <div
           v-if="emailSent"
-          class="align-center m-t-16 t-subtitle1 c-status-blue mt-4 text-center text-base font-bold text-blue-500"
+          class="mt-4 text-center text-base font-bold text-blue-500"
         >
           {{ $t("admin.pleaseCheckInbox") }}
         </div>

@@ -18,7 +18,7 @@
                 <div>
                   <img
                     :src="resizedProfileImage(restaurant, '600')"
-                    class="w-9 h-9 rounded-full cover"
+                    class="w-9 h-9 rounded-full object-cover"
                   />
                 </div>
                 <div class="t-h6 c-text-black-high m-l-8 flex-1">

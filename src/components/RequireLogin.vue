@@ -1,12 +1,13 @@
 <template>
   <section class="section">
-    <div class="notFoundPageText">{{$t('errorPage.requireLogin.message1')}}</div>
+    <div class="text-xl font-bold text-black text-opacity-30 text-center">
+      {{ $t("errorPage.requireLogin.message1") }}
+    </div>
+
     <div>
-      <b-modal :active.sync="loginVisible" :width="640">
-        <div class="card">
-          <div class="card-content">
-            <phone-login v-on:dismissed="handleDismissed" />
-          </div>
+      <b-modal :active.sync="loginVisible" :width="488" scroll="keep">
+        <div class="mx-2 my-6 p-6 bg-white shadow-lg rounded-lg">
+          <phone-login v-on:dismissed="handleDismissed" />
         </div>
       </b-modal>
     </div>
@@ -31,20 +32,3 @@ export default {
   }
 };
 </script>
-
-<style lang="scss" scoped>
-.notFoundPageText {
-  text-align: center;
-  margin-bottom: 80px;
-  font-size: 1.5rem;
-}
-.image {
-  width: 50%;
-  margin: auto;
-  margin-top: 150px;
-  margin-bottom: 80px;
-}
-.notFoundPage {
-  margin: auto;
-}
-</style>
