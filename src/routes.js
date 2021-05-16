@@ -138,6 +138,10 @@ export const customRoutes = [
     ]
   },
   {
+    path: "/admin/orders",
+    component: "admin/AllOrders.vue"
+  },
+  {
     name: "admin-news-list",
     path: "/admin/news",
     component: "admin/News/List.vue"
