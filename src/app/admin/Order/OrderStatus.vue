@@ -1,6 +1,11 @@
 <template>
   <div>
-    <div class="op-status" :class="statusKey">{{ $t("order.status." + statusKey) }}</div>
+    <div
+      class="inline-block py-2 px-4 rounded-full text-sm font-bold"
+      :class="statusKey"
+    >
+      {{ $t("order.status." + statusKey) }}
+    </div>
   </div>
 </template>
 

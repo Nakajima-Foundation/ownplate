@@ -135,12 +135,12 @@
                 <div>
                   <img
                     style="height: 416px;"
-                    class="cover is-hidden-mobile"
+                    class="object-cover is-hidden-mobile"
                     :src="`/${this.featureHeroTablet}`"
                   />
                   <img
                     style="height: 752px;"
-                    class="cover is-hidden-tablet"
+                    class="object-cover is-hidden-tablet"
                     :src="`/${this.featureHeroMobile}`"
                   />
                 </div>
