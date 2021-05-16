@@ -88,34 +88,34 @@ $op-colors: (
   margin-top: 0;
 }
 // Text Styles
-.t-h1 {
-  font-weight: 300;
-  font-size: 96px;
-  line-height: 112px;
-  letter-spacing: -1.5px;
-}
-.t-h2 {
-  font-weight: 300;
-  font-size: 60px;
-  line-height: 72px;
-  letter-spacing: -0.5px;
-}
-.t-h3 {
-  font-weight: normal;
-  font-size: 48px;
-  line-height: 56px;
-}
-.t-h4 {
-  font-weight: normal;
-  font-size: 34px;
-  line-height: 36px;
-}
-.t-h5 {
-  font-weight: normal;
-  font-size: 24px;
-  line-height: 24px;
-  letter-spacing: 0.18px;
-}
+// .t-h1 {
+//   font-weight: 300;
+//   font-size: 96px;
+//   line-height: 112px;
+//   letter-spacing: -1.5px;
+// }
+// .t-h2 {
+//   font-weight: 300;
+//   font-size: 60px;
+//   line-height: 72px;
+//   letter-spacing: -0.5px;
+// }
+// .t-h3 {
+//   font-weight: normal;
+//   font-size: 48px;
+//   line-height: 56px;
+// }
+// .t-h4 {
+//   font-weight: normal;
+//   font-size: 34px;
+//   line-height: 36px;
+// }
+// .t-h5 {
+//   font-weight: normal;
+//   font-size: 24px;
+//   line-height: 24px;
+//   letter-spacing: 0.18px;
+// }
 .t-h6 {
   // font-weight: 500;
   font-weight: bold;
@@ -157,32 +157,32 @@ $op-colors: (
   letter-spacing: 0.1px;
   // text-transform: uppercase;
 }
-.t-caption {
-  font-style: normal;
-  font-weight: normal;
-  font-size: 12px;
-  line-height: 16px;
-  letter-spacing: 0.2px;
-}
-.t-overline {
-  // font-weight: 500;
-  font-weight: bold;
-  font-size: 10px;
-  line-height: 16px;
-  // letter-spacing: 1.5px;
-  letter-spacing: 0.5px;
-  // text-transform: uppercase;
-}
+// .t-caption {
+//   font-style: normal;
+//   font-weight: normal;
+//   font-size: 12px;
+//   line-height: 16px;
+//   letter-spacing: 0.2px;
+// }
+// .t-overline {
+//   // font-weight: 500;
+//   font-weight: bold;
+//   font-size: 10px;
+//   line-height: 16px;
+//   // letter-spacing: 1.5px;
+//   letter-spacing: 0.5px;
+//   // text-transform: uppercase;
+// }
 
-.align-left {
-  text-align: left;
-}
+// .align-left {
+//   text-align: left;
+// }
 .align-center {
   text-align: center;
 }
-.align-right {
-  text-align: right;
-}
+// .align-right {
+//   text-align: right;
+// }
 
 html {
   background-color: map-get($op-colors, background);
@@ -217,13 +217,13 @@ html {
 }
 
 // Border Styles
-.border-primary {
-  border: 2px solid map-get($op-colors, primary);
-  box-sizing: border-box;
-}
-.button.border-primary:hover {
-  border: 2px solid map-get($op-colors, primary);
-}
+// .border-primary {
+//   border: 2px solid map-get($op-colors, primary);
+//   box-sizing: border-box;
+// }
+// .button.border-primary:hover {
+//   border: 2px solid map-get($op-colors, primary);
+// }
 
 // OwnPlate Sizes
 $sizes: (
@@ -283,21 +283,21 @@ $sides: (top, bottom, left, right);
 // }
 
 // Rounded Corners Sizes
-@each $corner-size in $sizes {
-  .r-#{$corner-size} {
-    border-radius: #{$corner-size}px;
-  }
-}
+// @each $corner-size in $sizes {
+//   .r-#{$corner-size} {
+//     border-radius: #{$corner-size}px;
+//   }
+// }
 // To make the bottom rounded corners sharp.
-.r-b-0 {
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-}
+// .r-b-0 {
+//   border-bottom-left-radius: 0;
+//   border-bottom-right-radius: 0;
+// }
 // To make the top rounded corners sharp.
-.r-t-0 {
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-}
+// .r-t-0 {
+//   border-top-left-radius: 0;
+//   border-top-right-radius: 0;
+// }
 
 // Icon Sizes
 @each $icon-size in $sizes {
@@ -305,6 +305,9 @@ $sides: (top, bottom, left, right);
     font-size: #{$icon-size}px;
   }
 }
+// s-18
+// s-48
+// s-64
 
 // Push footer down to the bottom
 body,
@@ -323,9 +326,9 @@ body,
 }
 
 // Cover Photo
-.cover {
-  object-fit: cover;
-}
+// .cover {
+//   object-fit: cover;
+// }
 
 // Flex Box
 .cols {
@@ -345,17 +348,17 @@ body,
   border-top: 1px solid map-get($op-colors, sattle-black);
 }
 
-// OwnPlate Status
-.op-status {
-  display: inline-block;
-  @extend .p-t-4;
-  @extend .p-b-4;
-  @extend .p-l-16;
-  @extend .p-r-16;
-  // @extend .r-32;
-  border-radius: 9999px;
-  @extend .t-subtitle2;
-}
+// // OwnPlate Status
+// .op-status {
+//   display: inline-block;
+//   @extend .p-t-4;
+//   @extend .p-b-4;
+//   @extend .p-l-16;
+//   @extend .p-r-16;
+//   // @extend .r-32;
+//   border-radius: 9999px;
+//   @extend .t-subtitle2;
+// }
 
 // OwnPlate Buttons
 
@@ -600,85 +603,55 @@ canvas {
 // Order Status
 .validation_ok,
 .validation_ok:hover {
-  // color: red;
-  // background: #ffeeee;
-  // border: 0;
   @apply bg-pink-500 bg-opacity-10 text-pink-500;
 }
 
 .order_placed,
 .order_placed:hover {
-  // @extend .c-status-amber;
-  // @extend .bg-status-amber-bg;
-  // border: 0;
   @apply bg-yellow-500 bg-opacity-10 text-yellow-500;
 }
 
 .order_accepted,
 .order_accepted:hover {
-  // @extend .c-status-blue;
-  // @extend .bg-status-blue-bg;
-  // border: 0;
   @apply bg-blue-500 bg-opacity-10 text-blue-500;
 }
 
 .cooking_completed,
 .cooking_completed:hover {
-  // @extend .c-status-green;
-  // @extend .bg-status-green-bg;
-  // border: 0;
   @apply bg-green-600 bg-opacity-10 text-green-600;
 }
 
 .ready_to_pickup,
 .ready_to_pickup:hover {
-  // @extend .c-status-green;
-  // @extend .bg-status-green-bg;
-  // border: 0;
   @apply bg-green-600 bg-opacity-10 text-green-600;
 }
 
 .transaction_complete,
 .transaction_complete:hover {
-  // @extend .c-status-purple;
-  // @extend .bg-status-purple-bg;
-  // border: 0;
   @apply bg-purple-600 bg-opacity-10 text-purple-600;
 }
 
 .transaction_hide,
 .transaction_hide:hover {
-  // @extend .c-status-purple;
-  // @extend .bg-status-purple-bg;
-  // border: 0;
   @apply bg-purple-600 bg-opacity-10 text-purple-600;
 }
 
 .order_canceled,
 .order_canceled:hover {
-  // @extend .c-status-red;
-  // @extend .bg-status-red-bg;
-  // border: 0;
   @apply bg-red-700 bg-opacity-10 text-red-700;
 }
 
 .order_refunded,
 .order_refunded:hover {
-  // color: #3506a8;
-  // background: #f5e4f6;
-  // border: 0;
   @apply bg-pink-500 bg-opacity-10 text-pink-500;
 }
 
 .stripe_pending {
-  // @extend .c-status-amber;
   @apply text-yellow-500;
 }
 .stripe_confirmed {
-  // @extend .c-status-green;
   @apply text-green-600;
 }
 .stripe_canceled {
-  // @extend .c-status-red;
   @apply text-red-700;
 }

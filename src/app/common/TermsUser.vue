@@ -377,7 +377,7 @@
         </p>
       </section>
 
-      <div class="align-right t-body1 c-text-black-medium m-t-24">
+      <div class="text-right t-body1 c-text-black-medium m-t-24">
         以上
       </div>
 

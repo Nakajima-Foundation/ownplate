@@ -106,7 +106,7 @@
         <div class="mr-2">
           <img
             :src="resizedProfileImage(restaurant, '600')"
-            class="w-12 h-12 rounded-full cover"
+            class="w-12 h-12 rounded-full object-cover"
           />
         </div>
         <div class="flex-1">
@@ -138,7 +138,7 @@
 </template>
 
 <script>
-import OrderStatus from "~/app/admin/Order/OrderStatus";
+import OrderStatus from "~/app/admin/Order/OrderStatus"; // # Not In Use?
 import { nameOfOrder } from "~/plugins/strings.js";
 import { parsePhoneNumber, formatNational } from "~/plugins/phoneutil.js";
 import { db } from "~/plugins/firebase.js";
