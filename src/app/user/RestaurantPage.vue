@@ -489,6 +489,7 @@ export default {
         rawOptions: this.convOptionArray2Obj(this.trimmedSelectedOptions),
         status: order_status.new_order,
         uid: this.user.uid,
+        ownerUid: this.shopInfo.uid,
         phoneNumber: this.user.phoneNumber,
         name: this.user.displayName,
         updatedAt: firestore.FieldValue.serverTimestamp(),
