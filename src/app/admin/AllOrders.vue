@@ -101,7 +101,15 @@ export default {
       return this.$store.getters.uidAdmin;
     },
     orderStatus() {
-      return Object.keys(order_status).map(key => {
+      return Object.keys(order_status).filter(key => {
+        return [
+          "order_placed", // by user and stripe
+          "order_accepted", // by restaurant
+          "ready_to_pickup", // by restaurant and stripe
+          "transaction_complete", // by restaurant (optional)
+          "order_canceled", // by restaurant or user
+        ].includes(key);
+      }).map(key => {
         return {
           index: order_status[key],
           key: key === "error" ? "" : key
