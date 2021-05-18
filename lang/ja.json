@@ -527,6 +527,7 @@
         "optout": "受け取らない"
       }
     },
+    "viewAllOrders": "全飲食店の注文をまとめて確認",
     "viewPage": "ページを確認",
     "viewOrders": "注文を確認",
     "incompleteOrders": "{count}件の未完了",

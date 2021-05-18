@@ -106,8 +106,10 @@
     <div class="mt-6 mx-6 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12">
       <!-- Restaurants -->
       <div>
-        <div class="text-xl font-bold text-black text-opacity-40 mb-2">
-          {{ $t("admin.restaurant") }}
+        <div class="pb-2">
+          <span class="text-xl font-bold text-black text-opacity-40 mb-2">
+            {{ $t("admin.restaurant") }}
+          </span>
         </div>
 
         <div v-if="readyToDisplay">
@@ -118,6 +120,7 @@
               <div class="text-center text-base font-bold text-op-teal">
                 {{ $t("admin.addYourRestaurant") }}
               </div>
+
               <div class="text-center mt-4">
                 <b-button
                   @click="handleNew"
@@ -139,6 +142,18 @@
 
           <!-- Existing Restaurant -->
           <div v-if="existsRestaurant">
+            <div v-if="restaurantLists.length > 1" class="mb-2">
+              <nuxt-link :to="'/admin/orders/'">
+                <div
+                  class="bg-black bg-opacity-5 rounded-lg px-4 py-3 text-center"
+                >
+                  <span class="text-sm font-bold">{{
+                    $t("admin.viewAllOrders")
+                  }}</span>
+                </div>
+              </nuxt-link>
+            </div>
+
             <div class="grid grid-cols-1 space-y-2">
               <div
                 v-for="(restaurantId, index) in restaurantLists"
@@ -148,17 +163,25 @@
                   v-if="restaurantItems[restaurantId]"
                   :shopInfo="restaurantItems[restaurantId]"
                   :restaurantid="restaurantId"
-                  :numberOfMenus="restaurantItems[restaurantId].numberOfMenus || 0"
-                  :numberOfOrders="restaurantItems[restaurantId].numberOfOrders || 0"
+                  :numberOfMenus="
+                    restaurantItems[restaurantId].numberOfMenus || 0
+                  "
+                  :numberOfOrders="
+                    restaurantItems[restaurantId].numberOfOrders || 0
+                  "
                   :lineEnable="lines[restaurantId] || false"
                   :shopOwner="shopOwner"
                   :position="
-                             index == 0 ? 'first' : restaurantLists.length - 1 === index ? 'last' : ''
-                             "
+                    index == 0
+                      ? 'first'
+                      : restaurantLists.length - 1 === index
+                      ? 'last'
+                      : ''
+                  "
                   @positionUp="positionUp($event)"
                   @positionDown="positionDown($event)"
                   @deleteFromRestaurantLists="deleteFromRestaurantLists($event)"
-                  ></restaurant-edit-card>
+                ></restaurant-edit-card>
               </div>
             </div>
 
@@ -270,7 +293,7 @@ export default {
       lines: {},
       shopOwner: null,
       opt_out: null,
-      restaurantLists: [],
+      restaurantLists: []
     };
   },
   created() {
@@ -280,16 +303,16 @@ export default {
     try {
       this.shopOwner = await this.getShopOwner(this.$store.getters.uidAdmin);
       const adminConfig = await db
-            .doc(`/adminConfigs/${this.$store.getters.uidAdmin}`)
-            .get();
+        .doc(`/adminConfigs/${this.$store.getters.uidAdmin}`)
+        .get();
       this.adminConfig = adminConfig.exists ? adminConfig.data() : {};
       this.opt_out = this.adminConfig.opt_out || false;
 
-
       const restaurantLists = await db
-            .doc(`/admins/${this.$store.getters.uidAdmin}/public/RestaurantLists`)
-            .get();
-      this.restaurantLists = (restaurantLists.exists ? restaurantLists.data() : {}).lists || [];
+        .doc(`/admins/${this.$store.getters.uidAdmin}/public/RestaurantLists`)
+        .get();
+      this.restaurantLists =
+        (restaurantLists.exists ? restaurantLists.data() : {}).lists || [];
 
       this.restaurant_detacher = db
         .collection("restaurants")
@@ -302,16 +325,15 @@ export default {
               this.restaurantItems = {}; // so that we present "No restaurant"
               return;
             }
-            this.restaurantItems = (result.docs || [])
-              .reduce((tmp, doc) => {
-                const restaurantId = doc.id;
+            this.restaurantItems = (result.docs || []).reduce((tmp, doc) => {
+              const restaurantId = doc.id;
 
-                const data = doc.data();
-                data.restaurantid = doc.id;
-                data.id = doc.id;
-                tmp[doc.id] = data;
-                return tmp;
-              }, {})
+              const data = doc.data();
+              data.restaurantid = doc.id;
+              data.id = doc.id;
+              tmp[doc.id] = data;
+              return tmp;
+            }, {});
 
             if (Object.keys(this.restaurantLists).length === 0) {
               this.restaurantLists = Object.keys(this.restaurantItems);
@@ -320,34 +342,36 @@ export default {
             await Promise.all(
               Object.keys(this.restaurantItems).map(async restaurantId => {
                 const menus = await db
-                      .collection(`restaurants/${restaurantId}/menus`)
-                      .where("deletedFlag", "==", false)
-                      .get();
-                const obj = {...this.restaurantItems};
+                  .collection(`restaurants/${restaurantId}/menus`)
+                  .where("deletedFlag", "==", false)
+                  .get();
+                const obj = { ...this.restaurantItems };
                 obj[restaurantId].numberOfMenus = menus.size;
                 this.restaurantItems = obj;
               })
             );
 
             this.destroy_detacher();
-            this.detachers = Object.keys(this.restaurantItems).map((restaurantId) => {
-              return (
-                db
-                  .collection(`restaurants/${restaurantId}/orders`)
-                  .where("timePlaced", ">=", midNight())
-                // IDEALLY: .where("status", "<", order_status.ready_to_pickup)
-                  .onSnapshot(result => {
-                    const obj = {...this.restaurantItems[restaurantId]};
-                    obj.numberOfOrders = result.docs
-                      .map(doc => doc.data())
-                      .filter(data => {
-                        // We need this filter here because Firebase does not allow us to do
-                        return data.status < order_status.ready_to_pickup;
-                      }).length;
-                    this.restaurantItems[restaurantId] = obj;
-                  })
-              );
-            });
+            this.detachers = Object.keys(this.restaurantItems).map(
+              restaurantId => {
+                return (
+                  db
+                    .collection(`restaurants/${restaurantId}/orders`)
+                    .where("timePlaced", ">=", midNight())
+                    // IDEALLY: .where("status", "<", order_status.ready_to_pickup)
+                    .onSnapshot(result => {
+                      const obj = { ...this.restaurantItems[restaurantId] };
+                      obj.numberOfOrders = result.docs
+                        .map(doc => doc.data())
+                        .filter(data => {
+                          // We need this filter here because Firebase does not allow us to do
+                          return data.status < order_status.ready_to_pickup;
+                        }).length;
+                      this.restaurantItems[restaurantId] = obj;
+                    })
+                );
+              }
+            );
           } catch (error) {
             console.log("Error fetch doc,", error);
           } finally {
@@ -445,15 +469,13 @@ export default {
       this.restaurantLists = newRestaurantLists;
 
       const path = `/admins/${this.$store.getters.uidAdmin}/public/RestaurantLists`;
-      await db.doc(path).set({lists: newRestaurantLists}, { merge: true });
+      await db.doc(path).set({ lists: newRestaurantLists }, { merge: true });
       // end of list
     },
     async saveRestaurantLists() {
       await db
-            .doc(`/admins/${this.$store.getters.uidAdmin}/public/RestaurantLists`)
-            .set({lists: this.restaurantLists},
-                 { merge: true }
-                );
+        .doc(`/admins/${this.$store.getters.uidAdmin}/public/RestaurantLists`)
+        .set({ lists: this.restaurantLists }, { merge: true });
     }
   },
   destroyed() {

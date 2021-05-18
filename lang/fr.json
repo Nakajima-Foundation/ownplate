@@ -527,6 +527,7 @@
         "optout": "Ne pas recevoir"
       }
     },
+    "viewAllOrders": "Voir toutes les commandes de tous les restaurants",
     "viewPage": "Voir page",
     "viewOrders": "Voir les commandes",
     "incompleteOrders": "{count} incomplète | {count} incomplètes",
