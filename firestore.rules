@@ -19,6 +19,9 @@ service cloud.firestore {
     function isOwner(resource, request) {
       return resource.data.uid == request.auth.uid;
     }
+    function isResuaurantOwner(resource, request) {
+      return resource.data.ownerUid == request.auth.uid;
+    }
 
     function isRestaurantOwner(restaurantId, request) {
       return get(/databases/$(database)/documents/restaurants/$(restaurantId)).data.uid == request.auth.uid;
@@ -94,6 +97,7 @@ service cloud.firestore {
       allow read: if isSuper(request);
       allow read: if isOperator(request);
       allow read: if isOwner(resource, request);
+      allow read: if isResuaurantOwner(resource, request);
     }
     match /{path=**}/stripeLogs/{logId} {
       allow read: if isSuper(request);

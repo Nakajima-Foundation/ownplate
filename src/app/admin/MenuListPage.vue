@@ -32,7 +32,7 @@
             <div class="flex-shrink-0 rounded-full bg-black bg-opacity-10 mr-4">
               <img
                 :src="resizedProfileImage(restaurantInfo, '600')"
-                class="w-9 h-9 rounded-full cover"
+                class="w-9 h-9 rounded-full object-cover"
               />
             </div>
             <div class="text-base font-bold">

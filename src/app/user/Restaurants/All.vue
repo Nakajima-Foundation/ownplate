@@ -34,7 +34,7 @@
                 <div class="w-12 h-12 rounded-full bg-black bg-opacity-10 mr-4">
                   <img
                     :src="resizedProfileImage(restaurant, '600')"
-                    class="w-12 h-12 rounded-full cover"
+                    class="w-12 h-12 rounded-full object-cover"
                   />
                 </div>
                 <div class="flex-1 text-base font-bold pr-2">
@@ -86,7 +86,11 @@ export default {
         tmp[data.state].push(data);
         return tmp;
       }, {});
-      console.log(this.restaurantsObj);
+      Object.keys(this.restaurantsObj).map((key) => {
+        this.restaurantsObj[key].sort((a, b) => {
+          return a.restaurantName > b.restaurantName ? 1 : -1;
+        })
+      });
       // console.log(this.restaurants.length, this.restaurants);
     } catch (error) {
       console.log(error);
