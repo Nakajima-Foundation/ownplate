@@ -338,6 +338,7 @@
     "today": "Today"
   },
   "order": {
+    "allOrders": "All Orders",
     "menu": "View Menu Page",
     "orderNotPlacedYet": "The order hasn't been placed yet. Please confirm the order and press the Place Order button at the bottom.",
     "yourOrder": "Your Order",
@@ -525,6 +526,7 @@
         "optout": "Don't Receive"
       }
     },
+    "viewAllOrders": "View All Orders from All Restaurants",
     "viewPage": "View Page",
     "viewOrders": "View Orders",
     "incompleteOrders": "{count} Incomplete | {count} Incomplete",
