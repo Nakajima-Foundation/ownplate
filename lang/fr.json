@@ -338,6 +338,7 @@
     "today": "Aujourd'hui"
   },
   "order": {
+    "allOrders": "Toutes les commandes",
     "menu": "Afficher la page du menu",
     "orderNotPlacedYet": "La commande n'a pas encore été passée. Veuillez confirmer la commande et appuyer sur le bouton Passer la commande en bas.",
     "yourOrder": "Votre commande",
@@ -526,6 +527,7 @@
         "optout": "Ne pas recevoir"
       }
     },
+    "viewAllOrders": "Voir toutes les commandes de tous les restaurants",
     "viewPage": "Voir page",
     "viewOrders": "Voir les commandes",
     "incompleteOrders": "{count} incomplète | {count} incomplètes",
