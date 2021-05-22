@@ -45,6 +45,11 @@ export const customRoutes = [
     component: "common/Privacy.vue"
   },
   {
+    name: "ownerPage",
+    path: "/o/:ownerUid",
+    component: "user/RestaurantIndex.vue"
+  },
+  {
     name: "r-restaurantId",
     path: "/r/:restaurantId",
     component: "user/RestaurantPage.vue",
