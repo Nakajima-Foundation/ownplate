@@ -52,7 +52,7 @@ export const updateOrderTotalData = async (db, transaction, order, restaurantId,
 // This function is called by users to place orders without paying
 // export const place = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
  export const place = async (db, data: any, context: functions.https.CallableContext | Context) => {
-  const uid = utils.validate_auth(context);
+  const customerUid = utils.validate_auth(context);
   const { restaurantId, orderId, tip, sendSMS, timeToPickup, lng, memo } = data;
   utils.validate_params({ restaurantId, orderId }) // tip, sendSMS and lng are optinoal
   let order: Order | undefined = undefined;
@@ -67,7 +67,7 @@ export const updateOrderTotalData = async (db, transaction, order, restaurantId,
         throw new functions.https.HttpsError('invalid-argument', 'This order does not exist.')
       }
       order.id = orderId;
-      if (uid !== order.uid) {
+      if (customerUid !== order.uid) {
         throw new functions.https.HttpsError('permission-denied', 'The user is not the owner of this order.')
       }
       if (order.status !== order_status.validation_ok) {
@@ -104,14 +104,14 @@ export const updateOrderTotalData = async (db, transaction, order, restaurantId,
 
 // This function is called by admins (restaurant operators) to update the status of order
 export const update = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
-  const uid = utils.validate_auth(context);
+  const ownerUid = utils.validate_admin_auth(context);
   const { restaurantId, orderId, status, lng, timezone, timeEstimated } = data;
   utils.validate_params({ restaurantId, orderId, status, timezone }) // lng, timeEstimated is optional
 
   try {
     const restaurantDoc = await db.doc(`restaurants/${restaurantId}`).get()
     const restaurant = restaurantDoc.data() || {}
-    if (restaurant.uid !== uid) {
+    if (restaurant.uid !== ownerUid) {
       throw new functions.https.HttpsError('permission-denied', 'The user does not have an authority to perform this operation.')
     }
 
@@ -183,7 +183,7 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
 
 // export const wasOrderCreated = async (db, snapshot, context) => {
 export const wasOrderCreated = async (db, data: any, context) => {
-  const uid = utils.validate_auth(context);
+  const customerUid = utils.validate_auth(context);
 
   const { restaurantId, orderId } = data;
   utils.validate_params({ restaurantId, orderId });
@@ -210,7 +210,7 @@ export const wasOrderCreated = async (db, data: any, context) => {
     const orderData = order.data()
 
     if (!orderData || !orderData.status || orderData.status !== order_status.new_order ||
-      !orderData.uid || orderData.uid !== uid) {
+      !orderData.uid || orderData.uid !== customerUid) {
       console.log("invalid order:" + String(orderId));
       throw new functions.https.HttpsError('invalid-argument', 'This order does not exist.')
     }
@@ -320,7 +320,7 @@ export const wasOrderCreated = async (db, data: any, context) => {
         });
       }
     });
-    await createCustomer(db, uid, context.auth.token.phone_number)
+    await createCustomer(db, customerUid, context.auth.token.phone_number)
 
     return orderRef.update({
       order: newOrderData,

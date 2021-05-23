@@ -292,6 +292,12 @@ export default {
     };
   },
   computed: {
+    ownerUid() {
+      return this.$store.getters.isSubAccount ? this.$store.getters.parentId : this.uid;
+    },
+    isOwner() {
+      return !this.$store.getters.isSubAccount;
+    },
     menuCounter() {
       return Object.keys(this.menuObj).length;
     },
@@ -346,7 +352,7 @@ export default {
     this.checkAdminPermission();
     const restaurantRef = db.doc(`restaurants/${this.restaurantId()}`);
     const restaurant_detacher = restaurantRef.onSnapshot(results => {
-      if (results.exists && results.data().uid === this.uid) {
+      if (results.exists && results.data().uid === this.ownerUid) {
         this.restaurantInfo = results.data();
         this.readyToDisplay = true;
         this.notFound = false;

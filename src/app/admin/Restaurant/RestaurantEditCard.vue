@@ -31,8 +31,7 @@
               </div>
             </nuxt-link>
           </div>
-
-          <div class="mt-2">
+          <div class="mt-2" v-if="isOwner">
             <nuxt-link :to="'/admin/restaurants/' + restaurantid">
               <div
                 class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
@@ -122,7 +121,8 @@
       <!-- Notifications Settings -->
       <div
         class="text-center bg-black bg-opacity-5 rounded-lg pt-3 pb-2 mt-4 flex justify-evenly"
-      >
+        v-if="isOwner"
+        >
         <nuxt-link
           :to="'/admin/restaurants/' + restaurantid + '#emailNotification'"
         >
@@ -190,7 +190,7 @@
           </nuxt-link>
         </div>
 
-        <div v-if="shopOwner">
+        <div v-if="isOwner">
           <nuxt-link :to="`/admin/restaurants/${restaurantid}/report`">
             <div
               class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
@@ -207,7 +207,7 @@
       </div>
 
       <!-- Directory Request -->
-      <div>
+      <div v-if="isOwner">
         <!-- On Directory -->
         <div v-if="shopInfo.onTheList" class="text-center mt-4">
           <div>
@@ -277,7 +277,7 @@
     </div>
 
     <!-- Sort and Delete -->
-    <div class="flex justify-end space-x-2 mt-2 pb-2">
+    <div class="flex justify-end space-x-2 mt-2 pb-2" v-if="isOwner">
       <!-- Up -->
       <div>
         <template v-if="position !== 'first'">
@@ -372,7 +372,11 @@ export default {
     position: {
       type: String,
       required: true
-    }
+    },
+    isOwner: {
+      type: Boolean,
+      required: true
+    },
   },
   data() {
     return {

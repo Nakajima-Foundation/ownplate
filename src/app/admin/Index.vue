@@ -181,12 +181,13 @@
                   @positionUp="positionUp($event)"
                   @positionDown="positionDown($event)"
                   @deleteFromRestaurantLists="deleteFromRestaurantLists($event)"
+                  :isOwner="isOwner"
                 ></restaurant-edit-card>
               </div>
             </div>
 
             <!-- Add Restaurant -->
-            <div v-if="existsRestaurant" class="text-center mt-4">
+            <div v-if="existsRestaurant && isOwner" class="text-center mt-4">
               <b-button
                 @click="handleNew"
                 :loading="isCreating"
@@ -207,7 +208,7 @@
       </div>
 
       <!-- Payment Setup -->
-      <div class="mt-6 lg:mt-0">
+      <div class="mt-6 lg:mt-0" v-if="isOwner">
         <!-- Payment -->
         <payment-section @updateUnsetWarning="updateUnsetWarning($event)" />
 
@@ -301,13 +302,17 @@ export default {
   },
   async mounted() {
     try {
-      this.shopOwner = await this.getShopOwner(this.$store.getters.uidAdmin);
-      const adminConfig = await db
-        .doc(`/adminConfigs/${this.$store.getters.uidAdmin}`)
-        .get();
-      this.adminConfig = adminConfig.exists ? adminConfig.data() : {};
-      this.opt_out = this.adminConfig.opt_out || false;
+      if (this.isOwner) {
+        this.shopOwner = await this.getShopOwner(this.ownerUid);
 
+        const adminConfig = await db
+              .doc(`/adminConfigs/${this.ownerUid}`)
+              .get();
+        this.adminConfig = adminConfig.exists ? adminConfig.data() : {};
+        this.opt_out = this.adminConfig.opt_out || false;
+      } else {
+        this.shopOwner = {};
+      }
       const restaurantLists = await db
         .doc(`/admins/${this.$store.getters.uidAdmin}/public/RestaurantLists`)
         .get();
@@ -316,7 +321,7 @@ export default {
 
       this.restaurant_detacher = db
         .collection("restaurants")
-        .where("uid", "==", this.uid)
+        .where("uid", "==", this.$store.getters.parentId)
         .where("deletedFlag", "==", false)
         .orderBy("createdAt", "asc")
         .onSnapshot(async result => {
@@ -485,6 +490,12 @@ export default {
     }
   },
   computed: {
+    ownerUid() {
+      return this.$store.getters.isSubAccount ? this.$store.getters.parentId : this.uid;
+    },
+    isOwner() {
+      return !this.$store.getters.isSubAccount;
+    },
     restaurantLength() {
       return this.menuLists.length;
     },
