@@ -448,7 +448,6 @@ export default {
           if (order.exists) {
             const order_data = order.data();
             this.orderInfo = order_data;
-            console.log(order_data);
           } else {
             this.notFound = true;
           }
@@ -468,7 +467,7 @@ export default {
   },
   computed: {
     ownerUid() {
-      return this.$store.getters.isSubAccount ? this.$store.getters.parentId : this.uid;
+      return this.$store.getters.isSubAccount ? this.$store.getters.parentId : this.$store.getters.uidAdmin;
     },
     isOwner() {
       return !this.$store.getters.isSubAccount;

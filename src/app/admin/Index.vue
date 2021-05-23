@@ -321,7 +321,7 @@ export default {
 
       this.restaurant_detacher = db
         .collection("restaurants")
-        .where("uid", "==", this.$store.getters.parentId)
+        .where("uid", "==", this.ownerUid)
         .where("deletedFlag", "==", false)
         .orderBy("createdAt", "asc")
         .onSnapshot(async result => {
