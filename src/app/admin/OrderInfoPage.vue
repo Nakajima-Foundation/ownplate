@@ -422,7 +422,7 @@ export default {
         restaurant => {
           if (restaurant.exists) {
             const restaurant_data = restaurant.data();
-            if (restaurant_data.uid === this.user.uid) {
+            if (restaurant_data.uid === this.ownerUid) {
               this.shopInfo = restaurant_data;
               return;
             }
@@ -448,7 +448,6 @@ export default {
           if (order.exists) {
             const order_data = order.data();
             this.orderInfo = order_data;
-            console.log(order_data);
           } else {
             this.notFound = true;
           }
@@ -467,6 +466,12 @@ export default {
     });
   },
   computed: {
+    ownerUid() {
+      return this.$store.getters.isSubAccount ? this.$store.getters.parentId : this.$store.getters.uidAdmin;
+    },
+    isOwner() {
+      return !this.$store.getters.isSubAccount;
+    },
     hasMemo() {
       return this.orderInfo && !this.isEmpty(this.orderInfo.memo);
     },

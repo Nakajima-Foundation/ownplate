@@ -28,6 +28,20 @@ export const validate_auth = (context: functions.https.CallableContext | Context
   return context.auth.uid
 }
 
+export const validate_admin_auth = (context: functions.https.CallableContext | Context) => {
+  if (!context.auth) {
+    throw new functions.https.HttpsError('failed-precondition', 'The function must be called while authenticated.')
+  }
+  return context.auth?.token?.parentUid || context.auth.uid;
+}
+export const is_admin_auth = (context: functions.https.CallableContext | Context) => {
+  if (!context.auth) {
+    throw new functions.https.HttpsError('failed-precondition', 'The function must be called while authenticated.')
+  }
+  return !!context.auth?.token?.email;
+}
+
+
 export const getStripeWebhookSecretKey = () => {
   return functions.config() && functions.config().stripe && functions.config().stripe.whsecret_key || process.env.WH_STRIPE_SECRET;
 }
@@ -99,7 +113,7 @@ const chunk = (arr: string[], chunkSize: number) => {
 
 export const getMenuObj = async (refRestaurant, menuIds) => {
   const menuObj = {};
-  
+
   await Promise.all(chunk(menuIds, 10).map((async (menuIdsChunk) => {
     const menusCollections = await refRestaurant.collection("menus").where(
       admin.firestore.FieldPath.documentId(),
@@ -109,7 +123,7 @@ export const getMenuObj = async (refRestaurant, menuIds) => {
     menusCollections.forEach((m) => {
       menuObj[m.id] = m.data();
     });
-    return 
+    return
   })));
   return menuObj;
 };
