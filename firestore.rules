@@ -27,7 +27,8 @@ service cloud.firestore {
       return get(/databases/$(database)/documents/restaurants/$(restaurantId)).data.uid == request.auth.uid;
     }
     function isRestaurantSubAccount(restaurantId, request) {
-      return get(/databases/$(database)/documents/restaurants/$(restaurantId)).data.uid == request.auth.token.parentUid;
+      let parantUid = get(/databases/$(database)/documents/restaurants/$(restaurantId)).data.uid;
+      return (restaurantId in get(/databases/$(database)/documents/admins/$(parantUid)/children/$(request.auth.uid)).data.restaurantLists) && parantUid == request.auth.token.parentUid;
     }
 
     function isUndefined(data, field) {
@@ -132,6 +133,7 @@ service cloud.firestore {
         match /menus/{menuId} {
           allow read: if true
           allow write: if isAdmin(request) && isRestaurantOwner(restaurantId, request);
+          allow write: if isAdmin(request) && isRestaurantSubAccount(restaurantId, request);
         }
         match /titles/{titleId} {
           allow read: if true
@@ -172,7 +174,6 @@ service cloud.firestore {
     match /requestList/{restaurantId} {
       allow read, write: if isAdmin(request) && isRestaurantOwner(restaurantId, request);
       allow read: if isSuper(request);
-      allow read: if isAdmin(request) && isRestaurantSubAccount(restaurantId, request); // avoid error
     }
 
     match /hash/{hashId}{
