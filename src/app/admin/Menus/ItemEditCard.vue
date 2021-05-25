@@ -187,11 +187,13 @@ export default {
       db.doc(path).update("soldOut", e);
     },
     linkEdit() {
-      this.$router.push({
-        path: `/admin/restaurants/${this.restaurantId()}/menus/${
+      if (this.isOwner) {
+        this.$router.push({
+          path: `/admin/restaurants/${this.restaurantId()}/menus/${
           this.menuitem.id
         }`
-      });
+        });
+      }
     },
     positionUp() {
       this.$emit("positionUp", this.menuitem.id);
