@@ -87,6 +87,10 @@ service cloud.firestore {
             && request.resource.data.email == request.auth.token.email;
         }
       }
+      match /children/{childId} {
+        allow read, write: if request.auth.uid == userId;
+        allow read: if request.auth.uid == childId;
+      }
       match /readonly/{document=**} {
         allow read: if request.auth.uid == userId;
       }

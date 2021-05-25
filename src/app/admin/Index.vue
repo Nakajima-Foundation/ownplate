@@ -310,14 +310,21 @@ export default {
               .get();
         this.adminConfig = adminConfig.exists ? adminConfig.data() : {};
         this.opt_out = this.adminConfig.opt_out || false;
+
+        const restaurantLists = await db
+              .doc(`/admins/${this.$store.getters.uidAdmin}/public/RestaurantLists`)
+              .get();
+        this.restaurantLists =
+          (restaurantLists.exists ? restaurantLists.data() : {}).lists || [];
+
       } else {
+        const restaurantLists = await db
+              .doc(`/admins/${this.ownerUid}/children/${this.$store.getters.uidAdmin}`)
+              .get();
+        this.restaurantLists =
+          (restaurantLists.exists ? restaurantLists.data() : {}).restaurantLists || [];
         this.shopOwner = {};
       }
-      const restaurantLists = await db
-        .doc(`/admins/${this.$store.getters.uidAdmin}/public/RestaurantLists`)
-        .get();
-      this.restaurantLists =
-        (restaurantLists.exists ? restaurantLists.data() : {}).lists || [];
 
       this.restaurant_detacher = db
         .collection("restaurants")
@@ -340,7 +347,7 @@ export default {
               return tmp;
             }, {});
 
-            if (Object.keys(this.restaurantLists).length === 0) {
+            if (this.isOwner && Object.keys(this.restaurantLists).length === 0) {
               this.restaurantLists = Object.keys(this.restaurantItems);
             }
 
@@ -418,69 +425,79 @@ export default {
     },
     async handleNew() {
       console.log("handleNew");
-      try {
-        this.isCreating = true;
-        const doc = await db.collection("restaurants").add({
-          uid: this.uid,
-          publicFlag: false,
-          deletedFlag: false,
-          createdAt: firestore.FieldValue.serverTimestamp()
-        });
+      if (this.isOwner) {
+        try {
+          this.isCreating = true;
+          const doc = await db.collection("restaurants").add({
+            uid: this.uid,
+            publicFlag: false,
+            deletedFlag: false,
+            createdAt: firestore.FieldValue.serverTimestamp()
+          });
 
-        // update Lists
-        this.restaurantLists.push(doc.id);
-        this.saveRestaurantLists();
+          // update Lists
+          this.restaurantLists.push(doc.id);
+          this.saveRestaurantLists();
 
-        this.$router.push(`/admin/restaurants/${doc.id}`);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        this.isCreating = false;
+          this.$router.push(`/admin/restaurants/${doc.id}`);
+        } catch (error) {
+          console.log(error);
+        } finally {
+          this.isCreating = false;
+        }
       }
     },
     updateUnsetWarning(value) {
       this.unsetWarning = value;
     },
     async positionUp(itemKey) {
-      const pos = this.restaurantLists.indexOf(itemKey);
-      if (pos !== 0 && pos !== -1) {
-        const newRestaurantLists = [...this.restaurantLists];
-        const tmp = newRestaurantLists[pos - 1];
-        newRestaurantLists[pos - 1] = newRestaurantLists[pos];
-        newRestaurantLists[pos] = tmp;
+      if (this.isOwner) {
+        const pos = this.restaurantLists.indexOf(itemKey);
+        if (pos !== 0 && pos !== -1) {
+          const newRestaurantLists = [...this.restaurantLists];
+          const tmp = newRestaurantLists[pos - 1];
+          newRestaurantLists[pos - 1] = newRestaurantLists[pos];
+          newRestaurantLists[pos] = tmp;
 
-        this.restaurantLists = newRestaurantLists;
-        await this.saveRestaurantLists();
+          this.restaurantLists = newRestaurantLists;
+          await this.saveRestaurantLists();
+        }
       }
     },
     async positionDown(itemKey) {
-      const pos = this.restaurantLists.indexOf(itemKey);
-      if (pos < this.restaurantLists.length - 1 && pos !== -1) {
-        const newRestaurantLists = [...this.restaurantLists];
-        const tmp = newRestaurantLists[pos + 1];
-        newRestaurantLists[pos + 1] = newRestaurantLists[pos];
-        newRestaurantLists[pos] = tmp;
+      if (this.isOwner) {
+        const pos = this.restaurantLists.indexOf(itemKey);
+        if (pos < this.restaurantLists.length - 1 && pos !== -1) {
+          const newRestaurantLists = [...this.restaurantLists];
+          const tmp = newRestaurantLists[pos + 1];
+          newRestaurantLists[pos + 1] = newRestaurantLists[pos];
+          newRestaurantLists[pos] = tmp;
 
-        this.restaurantLists = newRestaurantLists;
+          this.restaurantLists = newRestaurantLists;
 
-        await this.saveRestaurantLists();
+          await this.saveRestaurantLists();
+        }
       }
     },
     async deleteFromRestaurantLists(restaurantId) {
-      // push list
-      const newRestaurantLists = [...this.restaurantLists];
-      const pos = newRestaurantLists.indexOf(restaurantId);
-      newRestaurantLists.splice(pos, 1);
-      this.restaurantLists = newRestaurantLists;
+      if (this.isOwner) {
+        // push list
+        const newRestaurantLists = [...this.restaurantLists];
+        const pos = newRestaurantLists.indexOf(restaurantId);
+        newRestaurantLists.splice(pos, 1);
+        this.restaurantLists = newRestaurantLists;
 
-      const path = `/admins/${this.$store.getters.uidAdmin}/public/RestaurantLists`;
-      await db.doc(path).set({ lists: newRestaurantLists }, { merge: true });
-      // end of list
+        const path = `/admins/${this.$store.getters.uidAdmin}/public/RestaurantLists`;
+        await db.doc(path).set({ lists: newRestaurantLists }, { merge: true });
+        // end of list
+      }
     },
     async saveRestaurantLists() {
-      await db
-        .doc(`/admins/${this.$store.getters.uidAdmin}/public/RestaurantLists`)
-        .set({ lists: this.restaurantLists }, { merge: true });
+      if (this.isOwner) {
+        await db
+          .doc(`/admins/${this.$store.getters.uidAdmin}/public/RestaurantLists`)
+          .set({ lists: this.restaurantLists }, { merge: true });
+      }
     }
   },
   destroyed() {
