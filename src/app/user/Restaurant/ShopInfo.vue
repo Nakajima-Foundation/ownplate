@@ -2,9 +2,13 @@
   <div class="bg-white rounded-lg shadow">
     <!-- Location -->
     <div v-if="hasLocation">
-      <a target="_blank" :href="mapQuery">
-        <img :src="`https://maps.googleapis.com/maps/api/staticmap?center=${this.shopInfo.location.lat},${this.shopInfo.location.lng}&zoom=16&size=800x300&scale=2&maptype=roadmap&markers=color:red%7Clabel:G%7C${this.shopInfo.location.lat},${this.shopInfo.location.lng}&key=${gmapKey}`" class="GMap__Wrapper" />
-      </a>
+      <div>
+        <a target="_blank" :href="mapQuery">
+          <img :src="`https://maps.googleapis.com/maps/api/staticmap?center=${this.shopInfo.location.lat},${this.shopInfo.location.lng}&zoom=16&size=800x300&scale=2&maptype=roadmap&markers=color:red%7Clabel:G%7C${this.shopInfo.location.lat},${this.shopInfo.location.lng}&key=${gmapKey}`"
+                class="h-48 w-full object-cover lg:rounded-lg "
+               />
+        </a>
+      </div>
       <div class="mt-4 mx-4 pb-2">
         <a
           target="_blank" :href="mapQuery"
