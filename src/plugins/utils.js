@@ -266,7 +266,10 @@ export default ({ app }) => {
         return this.regionalSetting.FeatureHeroTablet[
           this.isLocaleJapan ? "ja" : "en"
         ];
-      }
+      },
+      gmapKey() {
+        return process.env.gapikey;
+      },
     }
   });
 }

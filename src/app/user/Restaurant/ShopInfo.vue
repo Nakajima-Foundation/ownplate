@@ -2,25 +2,12 @@
   <div class="bg-white rounded-lg shadow">
     <!-- Location -->
     <div v-if="hasLocation">
-      <GMap
-        ref="gMap"
-        :cluster="{ options: { styles: 'clusterStyle' } }"
-        :options="{ fullscreenControl: false, styles: 'mapStyle' }"
-        :zoom="18"
-        @loaded="updateMap"
-      ></GMap>
-
+      <a target="_blank" :href="mapQuery">
+        <img :src="`https://maps.googleapis.com/maps/api/staticmap?center=${this.shopInfo.location.lat},${this.shopInfo.location.lng}&zoom=16&size=800x300&scale=2&maptype=roadmap&markers=color:red%7Clabel:G%7C${this.shopInfo.location.lat},${this.shopInfo.location.lng}&key=${gmapKey}`" class="GMap__Wrapper" />
+      </a>
       <div class="mt-4 mx-4 pb-2">
         <a
-          target="_blank"
-          :href="
-            'https://www.google.com/maps/search/?api=1&query=' +
-              this.shopInfo.location.lat +
-              ',' +
-              this.shopInfo.location.lng +
-              '&query_place_id=' +
-              this.shopInfo.place_id
-          "
+          target="_blank" :href="mapQuery"
         >
           <a class="inline-flex justify-center items-center">
             <i class="material-icons text-lg text-op-teal mr-2">place</i>
@@ -344,30 +331,19 @@ export default {
         this.$emit("noAvailableTime", true);
         return this.$t("shopInfo.noAvailableTime");
       }
-    }
-  },
-  mounted() {
-    this.updateMap();
+    },
+    mapQuery() {
+      return 'https://www.google.com/maps/search/?api=1&query=' +
+        this.shopInfo.location.lat +
+        ',' +
+        this.shopInfo.location.lng +
+        '&query_place_id=' +
+        this.shopInfo.place_id
+    },
   },
   methods: {
     toggleMoreInfo() {
       this.moreInfo = !this.moreInfo;
-    },
-    updateMap() {
-      if (this.hasLocation) {
-        if (this.$refs.gMap && this.$refs.gMap.map) {
-          const location = this.shopInfo.location;
-          //console.log(location);
-          if (location) {
-            this.$refs.gMap.map.setCenter(location);
-            const marker = new google.maps.Marker({
-              position: new google.maps.LatLng(location.lat, location.lng),
-              title: this.shopInfo.restaurantName,
-              map: this.$refs.gMap.map
-            });
-          }
-        }
-      }
     },
     validDate(date) {
       return !this.isNull(date.start) && !this.isNull(date.end);
