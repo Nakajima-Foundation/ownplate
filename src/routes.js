@@ -143,8 +143,19 @@ export const customRoutes = [
     ]
   },
   {
+    name: "admin-orders-allorders",
     path: "/admin/orders",
     component: "admin/AllOrders.vue"
+  },
+  {
+    name: "admin-subaccounts-accounts",
+    path: "/admin/subaccounts",
+    component: "admin/SubAccounts/Accounts.vue"
+  },
+  {
+    name: "admin-subaccounts-accounts",
+    path: "/admin/subaccounts/accounts/:subAccountId",
+    component: "admin/SubAccounts/Account.vue"
   },
   {
     name: "admin-news-list",
