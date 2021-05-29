@@ -47,7 +47,7 @@
     "moment-timezone": "^0.5.31",
     "node-fetch": "^2.6.1",
     "node-forge": "^0.10.0",
-    "nuxt": "^2.14.12",
+    "nuxt": "^2.15.6",
     "nuxt-buefy": "^0.3.2",
     "nuxt-gmaps": "^1.1.9",
     "pdfmake": "^0.1.69",
