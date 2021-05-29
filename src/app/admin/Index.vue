@@ -94,7 +94,7 @@
 
     <!-- Unset Warning -->
     <div
-      v-if="unsetWarning"
+      v-if="unsetWarning && isOwner"
       class="mx-6 mt-6 bg-red-700 bg-opacity-10 rounded-lg p-4"
     >
       <span class="text-red-700 text-sm">{{
