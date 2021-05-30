@@ -10,7 +10,7 @@
       <!-- Title -->
       <div class="mt-4 lg:mt-0 lg:flex-1 lg:flex lg:items-center lg:mx-4">
         <span class="text-base font-bold">
-          {{ $t("SubAccounts.Index") }}
+          {{ $t("admin.subAccounts.index") }}
         </span>
       </div>
     </div>
@@ -26,17 +26,17 @@
     </div>
 
     <div class="mx-6 mt-6">
-      {{ $t("SubAccounts.Invite") }}
+      {{ $t("admin.subAccounts.invite") }}
       <b-input
         v-model="name"
-        :placeholder="$t('SubAccounts.enterName')"
+        :placeholder="$t('admin.subAccounts.enterName')"
         ></b-input>
       <b-input
         v-model="email"
-        :placeholder="$t('SubAccounts.enterEmail')"
+        :placeholder="$t('admin.subAccounts.enterEmail')"
         ></b-input>
       <b-button @click="invite">
-        {{$t("editCommon.save")}}
+        {{$t("admin.subAccounts.send")}}
       </b-button>
 
     </div>
@@ -66,7 +66,7 @@ export default {
     /*
     const messageDetacher  = await db.collectionGroup(`messages`)
           .where("fromUid", "==", this.uid)
-          .orderBy("created", "desc")
+          .orderBy("createdAt", "desc")
           .onSnapshot((messageCollection) => {
       this.messages = messageCollection.docs.map(this.doc2data("message"));
     });

@@ -101,6 +101,9 @@ service cloud.firestore {
       match /system/{document=**} {
         allow read, write: if false;
       }
+      match /messages/{document=**} {
+        allow read: if request.auth.uid == userId;
+      }
     }
 
     // Rules for collection group
