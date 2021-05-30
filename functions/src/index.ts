@@ -40,3 +40,5 @@ exportIfNeeded("stripeUpdateCustomer", "stripe/stripeUpdateCustomer", exports);
 exportIfNeeded("stripeDeleteCard", "stripe/stripeDeleteCard", exports);
 
 exportIfNeeded("imageProcessing", "image/imageProcessing", exports);
+
+exportIfNeeded("subAccountInvite", "subaccount/invite", exports);

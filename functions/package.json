@@ -16,6 +16,7 @@
     "e_tests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/express_test.ts",
     "n_tests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/notify_test.ts --timeout 30000",
     "t_tests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/twilio_test.ts",
+    "s_tests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/subaccount_test.ts",
     "mailtests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/ses_test.ts",
     "d_tests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/dl_test.ts"
   },
@@ -44,6 +45,7 @@
     "stripe": "^8.39.1",
     "twilio": "^3.63.0",
     "uuid-v4": "^0.1.0",
+    "validator": "^13.6.0",
     "xmlbuilder": "^15.1.1"
   },
   "devDependencies": {

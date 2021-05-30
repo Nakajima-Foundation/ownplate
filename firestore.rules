@@ -19,6 +19,9 @@ service cloud.firestore {
     function isOwner(resource, request) {
       return resource.data.uid == request.auth.uid;
     }
+    function isFromUser(resource, request) {
+      return resource.data.fromUid == request.auth.uid;
+    }
     function isResuaurantOwner(resource, request) {
       return resource.data.ownerUid == request.auth.uid;
     }
@@ -118,6 +121,10 @@ service cloud.firestore {
     }
     match /{path=**}/lines/{lineId} {
       allow read: if isOwner(resource, request);
+    }
+
+    match /{path=**}/messages/{messageId} {
+      allow read: if isFromUser(resource, request);
     }
 
     match /restaurants {

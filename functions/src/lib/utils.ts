@@ -34,6 +34,15 @@ export const validate_admin_auth = (context: functions.https.CallableContext | C
   }
   return context.auth?.token?.parentUid || context.auth.uid;
 }
+export const validate_parent_admin_auth = (context: functions.https.CallableContext | Context) => {
+  if (!context.auth) {
+    throw new functions.https.HttpsError('failed-precondition', 'The function must be called while authenticated.')
+  }
+  if (context.auth?.token?.parentUid) {
+    throw new functions.https.HttpsError('failed-precondition', 'The function must be called parent user.')
+  }
+  return context.auth.uid;
+}
 export const is_admin_auth = (context: functions.https.CallableContext | Context) => {
   if (!context.auth) {
     throw new functions.https.HttpsError('failed-precondition', 'The function must be called while authenticated.')

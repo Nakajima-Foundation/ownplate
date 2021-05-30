@@ -20,12 +20,17 @@
       <div v-for="(child, k) in children" :key="k">
         <nuxt-link :to="`/admin/subaccounts/accounts/${child.id}`">
           {{child.name}}/{{child.email}}/{{rList(child.restaurantLists)}}
+          {{child.accepted === true ? "" : "not accepted now"}}
         </nuxt-link>
       </div>
     </div>
 
     <div class="mx-6 mt-6">
       {{ $t("SubAccounts.Invite") }}
+      <b-input
+        v-model="name"
+        :placeholder="$t('SubAccounts.enterName')"
+        ></b-input>
       <b-input
         v-model="email"
         :placeholder="$t('SubAccounts.enterEmail')"
@@ -40,7 +45,7 @@
 
 <script>
 import BackButton from "~/components/BackButton";
-import { db } from "~/plugins/firebase.js";
+import { db, functions } from "~/plugins/firebase.js";
 
 export default {
   components: {
@@ -53,25 +58,49 @@ export default {
           .orderBy("createdAt", "asc").get();
     this.restaurantObj = this.array2obj(restaurantCollection.docs.map(this.doc2data("restaurant")));
 
-    const childrenCollection = await db.collection(`admins/${this.uid}/children`).get()
-    this.children = childrenCollection.docs.map(this.doc2data("admin"));
+    const childDetacher  = await db.collection(`admins/${this.uid}/children`).onSnapshot((childrenCollection) => {
+      this.children = childrenCollection.docs.map(this.doc2data("admin"));
+    });
+    this.detachers.push(childDetacher);
 
+    /*
+    const messageDetacher  = await db.collectionGroup(`messages`)
+          .where("fromUid", "==", this.uid)
+          .orderBy("created", "desc")
+          .onSnapshot((messageCollection) => {
+      this.messages = messageCollection.docs.map(this.doc2data("message"));
+    });
+    this.detachers.push(messageDetacher);
+    */
+  },
+  destroyed() {
+    if (this.detachers.length > 0) {
+      this.detachers.map(d => {
+        d();
+      });
+    }
   },
   data() {
     return {
+      detachers: [],
       children: [],
+      messages: [],
       restaurantObj: {},
       email: "",
+      name: "",
     }
   },
   methods: {
     rList(restaurantLists) {
-      return restaurantLists.map((r) => {
+      return (restaurantLists ||[]).map((r) => {
         return this.restaurantObj[r].restaurantName;
       }).slice(0,2).join(",");
     },
-    invite() {
-      console.log("TODO");
+    async invite() {
+      const inviteFunc = functions.httpsCallable("subAccountInvite");
+      const res = await inviteFunc({email: this.email, name: this.name});
+      this.email = "";
+      this.name = "";
     },
   },
   computed: {
