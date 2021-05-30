@@ -55,3 +55,12 @@ export const invite = async (db, data: any, context: functions.https.CallableCon
   }
 
 }
+
+
+export const accept = async (db, data: any, context: functions.https.CallableContext | Context) => {
+
+
+}
+export const deny = async (db, data: any, context: functions.https.CallableContext | Context) => {
+
+}
