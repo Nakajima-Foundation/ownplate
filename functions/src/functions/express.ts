@@ -11,6 +11,8 @@ import * as stripeLog from '../lib/stripeLog';
 import * as apis from './apis';
 import * as apis2 from './apis2';
 
+import * as smaregi from './smaregi';
+
 import * as xmlbuilder from 'xmlbuilder';
 
 import moment from 'moment';
@@ -138,7 +140,7 @@ const ogpPage = async (req: any, res: any) => {
     if (!ownerData) {
       return res.status(404).send(template_data);
     }
-    
+
     const siteName = ownPlateConfig.siteName;
     const title = menuData.exists ? [menuData.name, restaurant_data.restaurantName].join(" / ") :
       (restaurant_data.restaurantName ? [restaurant_data.restaurantName, ownPlateConfig.restaurantPageTitle].join(" / ") :
@@ -254,9 +256,12 @@ router.post('/stripe/callback',
             stripe_parser);
 
 
+app.use(express.json())
 app.use('/1.0', router);
 app.use('/api/1.0/', apis.apiRouter);
 app.use('/api/2.0/', apis2.apiRouter);
+
+app.use('/smaregi/1.0', smaregi.smaregiRouter);
 
 app.get('/r/:restaurantName', ogpPage);
 app.get('/r/:restaurantName/menus/:menuId', ogpPage);
