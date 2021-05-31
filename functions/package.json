@@ -17,6 +17,7 @@
     "n_tests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/notify_test.ts --timeout 30000",
     "t_tests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/twilio_test.ts",
     "mailtests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/ses_test.ts",
+    "smaregitests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/smaregi_test.ts",
     "d_tests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/dl_test.ts"
   },
   "engines": {
@@ -37,6 +38,7 @@
     "lodash": "^4.17.21",
     "moment": "^2.26.0",
     "moment-timezone": "^0.5.31",
+    "node-fetch": "^2.6.1",
     "nodemailer": "^6.6.1",
     "nyc": "^15.1.0",
     "sharp": "^0.25.3",
