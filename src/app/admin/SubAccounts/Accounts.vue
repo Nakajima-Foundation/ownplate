@@ -20,7 +20,7 @@
       <div v-for="(child, k) in children" :key="k">
         <nuxt-link :to="`/admin/subaccounts/accounts/${child.id}`">
           {{child.name}}/{{child.email}}/{{rList(child.restaurantLists)}}
-          {{child.accepted === true ? "" : "not accepted now"}}
+          {{$t("admin.subAccounts.messageResult." + (child.accepted === true ? "accepted" : "waiting"))}}
         </nuxt-link>
       </div>
     </div>
@@ -35,11 +35,25 @@
         v-model="email"
         :placeholder="$t('admin.subAccounts.enterEmail')"
         ></b-input>
-      <b-button @click="invite">
-        {{$t("admin.subAccounts.send")}}
+      <b-button @click="invite" :disabled="sending">
+        {{$t(sending ? "admin.subAccounts.sending" : "admin.subAccounts.send")}}
       </b-button>
-
+      <div v-if="errors.length > 0">
+        <div v-for="(error, k) in errors" :key="k">
+          {{$t(error)}}
+        </div>
+      </div>
     </div>
+    <div class="mx-6 mt-6">
+      <div v-for="(message, k) in messages" :key="k">
+        <div v-if="message.fromDisplay">
+          <div v-if="message.type === 'childInvitation'">
+            To: {{message.email}}/{{$t("admin.subAccounts.messageResult." +  (message.accepted === true ? "accepted" : (message.accepted === false ? "denied" : "waiting")))}}/{{moment(message.createdAt.toDate()).format("YYYY/MM/DD HH:mm")}}
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -63,15 +77,15 @@ export default {
     });
     this.detachers.push(childDetacher);
 
-    /*
     const messageDetacher  = await db.collectionGroup(`messages`)
           .where("fromUid", "==", this.uid)
           .orderBy("createdAt", "desc")
           .onSnapshot((messageCollection) => {
       this.messages = messageCollection.docs.map(this.doc2data("message"));
-    });
+            console.log(this.messages);
+          });
     this.detachers.push(messageDetacher);
-    */
+
   },
   destroyed() {
     if (this.detachers.length > 0) {
@@ -85,9 +99,11 @@ export default {
       detachers: [],
       children: [],
       messages: [],
+      errors: [],
       restaurantObj: {},
       email: "",
       name: "",
+      sending: false,
     }
   },
   methods: {
@@ -97,10 +113,24 @@ export default {
       }).slice(0,2).join(",");
     },
     async invite() {
-      const inviteFunc = functions.httpsCallable("subAccountInvite");
-      const res = await inviteFunc({email: this.email, name: this.name});
-      this.email = "";
-      this.name = "";
+      this.sending = true;
+      try {
+        const inviteFunc = functions.httpsCallable("subAccountInvite");
+        const res = await inviteFunc({email: this.email, name: this.name});
+        this.email = "";
+        this.name = "";
+      } catch (e) {
+        this.errors = ["admin.subAccounts.inviteInputError"];
+      }
+      this.sending = false;
+    },
+  },
+  watch: {
+    email() {
+      this.errors = [];
+    },
+    name() {
+      this.errors = [];
     },
   },
   computed: {

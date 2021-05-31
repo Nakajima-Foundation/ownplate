@@ -641,8 +641,15 @@
       "index": "サブアカウント管理",
       "invite": "招待",
       "send": "送信",
+      "sending": "送信中",
       "enterName": "サブアカウントに付ける名前を入力して下さい",
-      "enterEmail": "招待するサブアカウントのメールアドレスを入力して下さい"
+      "enterEmail": "招待するサブアカウントのメールアドレスを入力して下さい",
+      "inviteInputError": "入力項目を確かめてください",
+      "messageResult": {
+        "waiting": "送信済み",
+        "accepted": "登録済み",
+        "denied": "拒否されました"
+      }
     }
   },
   "week": {

@@ -33,14 +33,12 @@ export default {
         code: "admin.messages.childInvitationAccept",
         callback: async () => {
           this.$store.commit("setLoading", true);
-          console.log(this.message.id);
-          // const inviteFunc = functions.httpsCallable("subAccountAccept");
-          // await inviteFunc({message: this.message.id});
+          const inviteFunc = functions.httpsCallable("subAccountInvitationAccept");
+          await inviteFunc({messageId: this.message.id});
           this.$store.commit("setLoading", false);
-
+          this.$router.go({path: this.$router.currentRoute.path, force: true})
         }
       });
-      console.log("accept");
     },
     childInvitationDeny() {
       console.log("deny");
@@ -48,9 +46,8 @@ export default {
         code: "admin.messages.childInvitationDeny",
         callback: async () => {
           this.$store.commit("setLoading", true);
-          console.log(this.message.id);
-          // const inviteFunc = functions.httpsCallable("subAccountDeny");
-          // await inviteFunc({message: this.message.id});
+          const inviteFunc = functions.httpsCallable("subAccountInvitationDeny");
+          await inviteFunc({messageId: this.message.id});
           this.$store.commit("setLoading", false);
 
         }
