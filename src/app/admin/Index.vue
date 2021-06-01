@@ -102,6 +102,20 @@
       }}</span>
     </div>
 
+    <!-- Messages -->
+    <div class="mt-6 mx-6 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12" v-if="messages.length > 0">
+      <div>
+        <div class="pb-2">
+          <span class="text-xl font-bold text-black text-opacity-40 mb-2">
+            {{ $t("admin.messages.title") }}
+          </span>
+        </div>
+        <div v-for="(message, k) in messages" :key="k">
+          <MessageCard :message="message"/>
+        </div>
+      </div>
+    </div>
+
     <!-- Restaurants and Payment Setup -->
     <div class="mt-6 mx-6 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12">
       <!-- Restaurants -->
@@ -274,12 +288,14 @@ import { midNight } from "~/plugins/dateUtils.js";
 import { ownPlateConfig } from "@/config/project";
 import PaymentSection from "~/app/admin/Payment/PaymentSection";
 import newsList from "./News/data";
+import MessageCard from "./Messages/MessageCard";
 
 export default {
   name: "Restaurant",
   components: {
     PaymentSection,
-    RestaurantEditCard
+    RestaurantEditCard,
+    MessageCard
   },
   data() {
     return {
@@ -289,12 +305,14 @@ export default {
       restaurantItems: null,
       detachers: [],
       restaurant_detacher: null,
+      message_detacher: null,
       news: newsList[0],
       unsetWarning: true,
       lines: {},
       shopOwner: null,
       opt_out: null,
-      restaurantLists: []
+      restaurantLists: [],
+      messages: []
     };
   },
   created() {
@@ -404,6 +422,12 @@ export default {
           this.lines[restaurantId] = true;
         });
       });
+
+    this.message_detacher = db.collection(`/admins/${this.uid}/messages`)
+          .orderBy("createdAt", "desc")
+          .onSnapshot((messageCollection) => {
+            this.messages = messageCollection.docs.map(this.doc2data("message"));
+          });
   },
   watch: {
     async opt_out() {
@@ -504,6 +528,9 @@ export default {
     this.destroy_detacher();
     if (this.restaurant_detacher) {
       this.restaurant_detacher();
+    }
+    if (this.message_detacher) {
+      this.message_detacher();
     }
   },
   computed: {
