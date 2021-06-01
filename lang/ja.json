@@ -626,6 +626,30 @@
         "auth/invalid-email": "無効なメールアドレスです。",
         "auth/unauthorized-continue-uri": "ドメインがホワイトリストに登録されていません。"
       }
+    },
+    "messages": {
+      "title": "メッセージ",
+      "childInvitationAccept": "招待を受け入れて子アカウントになる",
+      "childInvitationDeny": "招待を拒否する",
+      "accept": "受け入れる",
+      "deny": "拒否する",
+      "childInvitationMessage1": "以下のお店を管理するオーナーから招待状が届きました",
+      "childInvitationMessage2": "こちらのお店",
+      "childInvitationMessage3": "このお店を管理するサブアカウントに変更する場合は、受け入れるを押してください。拒否する場合には、拒否を押してください。"
+    },
+    "subAccounts": {
+      "index": "サブアカウント管理",
+      "invite": "招待",
+      "send": "送信",
+      "sending": "送信中",
+      "enterName": "サブアカウントに付ける名前を入力して下さい",
+      "enterEmail": "招待するサブアカウントのメールアドレスを入力して下さい",
+      "inviteInputError": "入力項目を確かめてください",
+      "messageResult": {
+        "waiting": "送信済み",
+        "accepted": "登録済み",
+        "denied": "拒否されました"
+      }
     }
   },
   "week": {

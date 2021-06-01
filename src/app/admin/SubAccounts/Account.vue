@@ -10,7 +10,12 @@
 
     <!-- Order Status -->
     <div class="mx-6 mt-6">
-      {{child.name}}/{{child.email}} {{child.accepted === true ? "" : "not accepted now"}}
+      <b-input
+        v-model="name"
+        :placeholder="$t('SubAccounts.enterName')"
+        ></b-input>
+
+      email: {{child.email}} / {{child.accepted === true ? "" : "not accepted now"}}
       <div v-for="(restaurant, k) in restaurants" :key="k">
         <b-checkbox v-model="restaurantListObj[restaurant.id]">{{restaurant.restaurantName}}</b-checkbox>
       </div>
@@ -40,7 +45,8 @@ export default {
 
     const childrenDoc = await db.doc(`admins/${this.uid}/children/${this.subAccountId}`).get()
     this.child = childrenDoc.data();
-    this.restaurantListObj = this.child.restaurantLists.reduce((t, c) => {t[c] = true; return t;}, {})
+    this.restaurantListObj = (this.child.restaurantLists||[]).reduce((t, c) => {t[c] = true; return t;}, {})
+    this.name = this.child.name;
   },
   data() {
     return {
@@ -48,6 +54,7 @@ export default {
       restaurants: [],
       child: {},
       restaurantListObj: {},
+      name: "",
     }
   },
   methods: {
@@ -57,7 +64,11 @@ export default {
       });
     },
     async saveList() {
-      await db.doc(`admins/${this.uid}/children/${this.subAccountId}`).update("restaurantLists", this.newRestaurantList);
+      await db.doc(`admins/${this.uid}/children/${this.subAccountId}`).update({
+        restaurantLists: this.newRestaurantList,
+        name: this.name
+      });
+      this.$router.push("/admin/subaccounts/");
     },
   },
   computed: {

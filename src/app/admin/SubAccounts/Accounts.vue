@@ -10,7 +10,7 @@
       <!-- Title -->
       <div class="mt-4 lg:mt-0 lg:flex-1 lg:flex lg:items-center lg:mx-4">
         <span class="text-base font-bold">
-          {{ $t("SubAccounts.Index") }}
+          {{ $t("admin.subAccounts.index") }}
         </span>
       </div>
     </div>
@@ -20,27 +20,46 @@
       <div v-for="(child, k) in children" :key="k">
         <nuxt-link :to="`/admin/subaccounts/accounts/${child.id}`">
           {{child.name}}/{{child.email}}/{{rList(child.restaurantLists)}}
+          {{$t("admin.subAccounts.messageResult." + (child.accepted === true ? "accepted" : "waiting"))}}
         </nuxt-link>
       </div>
     </div>
 
     <div class="mx-6 mt-6">
-      {{ $t("SubAccounts.Invite") }}
+      {{ $t("admin.subAccounts.invite") }}
+      <b-input
+        v-model="name"
+        :placeholder="$t('admin.subAccounts.enterName')"
+        ></b-input>
       <b-input
         v-model="email"
-        :placeholder="$t('SubAccounts.enterEmail')"
+        :placeholder="$t('admin.subAccounts.enterEmail')"
         ></b-input>
-      <b-button @click="invite">
-        {{$t("editCommon.save")}}
+      <b-button @click="invite" :disabled="sending">
+        {{$t(sending ? "admin.subAccounts.sending" : "admin.subAccounts.send")}}
       </b-button>
-
+      <div v-if="errors.length > 0">
+        <div v-for="(error, k) in errors" :key="k">
+          {{$t(error)}}
+        </div>
+      </div>
     </div>
+    <div class="mx-6 mt-6">
+      <div v-for="(message, k) in messages" :key="k">
+        <div v-if="message.fromDisplay">
+          <div v-if="message.type === 'childInvitation'">
+            To: {{message.email}}/{{$t("admin.subAccounts.messageResult." +  (message.accepted === true ? "accepted" : (message.accepted === false ? "denied" : "waiting")))}}/{{moment(message.createdAt.toDate()).format("YYYY/MM/DD HH:mm")}}
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 
 <script>
 import BackButton from "~/components/BackButton";
-import { db } from "~/plugins/firebase.js";
+import { db, functions } from "~/plugins/firebase.js";
 
 export default {
   components: {
@@ -53,25 +72,65 @@ export default {
           .orderBy("createdAt", "asc").get();
     this.restaurantObj = this.array2obj(restaurantCollection.docs.map(this.doc2data("restaurant")));
 
-    const childrenCollection = await db.collection(`admins/${this.uid}/children`).get()
-    this.children = childrenCollection.docs.map(this.doc2data("admin"));
+    const childDetacher  = await db.collection(`admins/${this.uid}/children`).onSnapshot((childrenCollection) => {
+      this.children = childrenCollection.docs.map(this.doc2data("admin"));
+    });
+    this.detachers.push(childDetacher);
 
+    const messageDetacher  = await db.collectionGroup(`messages`)
+          .where("fromUid", "==", this.uid)
+          .orderBy("createdAt", "desc")
+          .onSnapshot((messageCollection) => {
+      this.messages = messageCollection.docs.map(this.doc2data("message"));
+            console.log(this.messages);
+          });
+    this.detachers.push(messageDetacher);
+
+  },
+  destroyed() {
+    if (this.detachers.length > 0) {
+      this.detachers.map(d => {
+        d();
+      });
+    }
   },
   data() {
     return {
+      detachers: [],
       children: [],
+      messages: [],
+      errors: [],
       restaurantObj: {},
       email: "",
+      name: "",
+      sending: false,
     }
   },
   methods: {
     rList(restaurantLists) {
-      return restaurantLists.map((r) => {
+      return (restaurantLists ||[]).map((r) => {
         return this.restaurantObj[r].restaurantName;
       }).slice(0,2).join(",");
     },
-    invite() {
-      console.log("TODO");
+    async invite() {
+      this.sending = true;
+      try {
+        const inviteFunc = functions.httpsCallable("subAccountInvite");
+        const res = await inviteFunc({email: this.email, name: this.name});
+        this.email = "";
+        this.name = "";
+      } catch (e) {
+        this.errors = ["admin.subAccounts.inviteInputError"];
+      }
+      this.sending = false;
+    },
+  },
+  watch: {
+    email() {
+      this.errors = [];
+    },
+    name() {
+      this.errors = [];
     },
   },
   computed: {
