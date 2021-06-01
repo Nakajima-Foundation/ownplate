@@ -40,3 +40,5 @@ exportIfNeeded("stripeUpdateCustomer", "stripe/stripeUpdateCustomer", exports);
 exportIfNeeded("stripeDeleteCard", "stripe/stripeDeleteCard", exports);
 
 exportIfNeeded("imageProcessing", "image/imageProcessing", exports);
+
+exportIfNeeded("smaregiAuth", "smaregi/auth", exports);
