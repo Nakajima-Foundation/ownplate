@@ -41,7 +41,6 @@ exportIfNeeded("stripeDeleteCard", "stripe/stripeDeleteCard", exports);
 
 exportIfNeeded("imageProcessing", "image/imageProcessing", exports);
 
-
 exportIfNeeded("smaregiAuth", "smaregi/auth", exports);
 
 exportIfNeeded("subAccountInvite", "subaccount/invite", exports);
