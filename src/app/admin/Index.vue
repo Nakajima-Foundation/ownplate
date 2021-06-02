@@ -110,7 +110,7 @@
             {{ $t("admin.messages.title") }}
           </span>
         </div>
-        <div v-for="(message, k) in messages" :key="k">
+        <div v-for="(message, k) in messages" :key="k" class="border-2 border-solid border-op-teal rounded-lg p-6">
           <MessageCard :message="message"/>
         </div>
       </div>
@@ -426,7 +426,7 @@ export default {
     this.message_detacher = db.collection(`/admins/${this.uid}/messages`)
           .orderBy("createdAt", "desc")
           .onSnapshot((messageCollection) => {
-            this.messages = messageCollection.docs.map(this.doc2data("message"));
+            this.messages = messageCollection.docs.map(this.doc2data("message")).filter(a => a.toDisplay);
           });
   },
   watch: {
