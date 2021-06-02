@@ -158,6 +158,16 @@ export const customRoutes = [
     component: "admin/SubAccounts/Account.vue"
   },
   {
+    name: "admin-smaregi-index",
+    path: "/admin/smaregi/index",
+    component: "admin/Smaregi/Index.vue"
+  },
+  {
+    name: "admin-smaregi-index",
+    path: "/admin/smaregi/callback",
+    component: "admin/Smaregi/Callback.vue"
+  },
+  {
     name: "admin-news-list",
     path: "/admin/news",
     component: "admin/News/List.vue"
