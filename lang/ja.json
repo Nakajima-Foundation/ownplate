@@ -174,7 +174,7 @@
     "updateMapDescription": "飲食店名や住所を元に地図を更新",
     "noRestaurant": "飲食店名が未指定です",
     "noStreetAddress": "住所が未入力です",
-    "reallyDelete": "本当にこの飲食店を削除しますか？",
+    "reallyDelete": "本当にこの飲食店を削除しますか？削除すると、お店/メニューの情報が全て消えます",
     "reallyOnListDelete": "本当に掲載を取り消しますか？",
     "phoneCall": "注文を電話で通知",
     "phoneCallDescription": "オンラインで注文が入った時にお店の電話でお知らせします",
