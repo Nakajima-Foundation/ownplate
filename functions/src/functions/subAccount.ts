@@ -57,7 +57,10 @@ export const invite = async (db, data: any, context: functions.https.CallableCon
       createdAt: firebase.firestore.Timestamp.now()
     };
     await db.doc(`/admins/${childUid}/messages/childInvitation${adminUid}`).set(invitationData);
-    return {};
+    return {
+      result: true,
+      childUid: childUid
+    };
   } catch (error) {
     throw utils.process_error(error)
   }
@@ -111,6 +114,12 @@ export const accept = async (db, data: any, context: functions.https.CallableCon
         await tr.get(childRef);
         await tr.get(messageRef);
 
+        const childDoc = await tr.get(childRef);
+        const messageDoc = await tr.get(messageRef);
+
+        if (!childDoc || !childDoc.exists || !messageDoc || !messageDoc.exists) {
+          throw new functions.https.HttpsError('invalid-argument', `The child or message does not exist.`)
+        }
         //  accepted
         await tr.update(childRef, {accepted: true})
 
@@ -130,9 +139,12 @@ export const deny = async (db, data: any, context: functions.https.CallableConte
       await db.runTransaction(async (tr) => {
 
         const childRef = db.doc(`admins/${messageData.fromUid}/children/${messageData.toUid}`);
-        await tr.get(childRef);
-        await tr.get(messageRef);
+        const childDoc = await tr.get(childRef);
+        const messageDoc = await tr.get(messageRef);
 
+        if (!childDoc || !childDoc.exists || !messageDoc || !messageDoc.exists) {
+          throw new functions.https.HttpsError('invalid-argument', `The child or message does not exist.`)
+        }
         //  deny
         await tr.delete(childRef)
 
@@ -145,12 +157,34 @@ export const deny = async (db, data: any, context: functions.https.CallableConte
     throw utils.process_error(error)
   }
   return {};
-  // is admin
-  // is not child
+}
 
-  // check invitation
+export const deleteChild = async (db, data: any, context: functions.https.CallableContext | Context) => {
+  // check admin
+  const adminUid = utils.validate_parent_admin_auth(context);
+  const { childUid } = data;
 
-  // delete child
+  try {
+    await db.runTransaction(async (tr) => {
 
-  // upadte invitationData
+      const childRef = db.doc(`admins/${adminUid}/children/${childUid}`);
+      const childDoc = await tr.get(childRef);
+
+      const messageRef = db.doc(`/admins/${childUid}/messages/childInvitation${adminUid}`);
+      const messageDoc = await tr.get(messageRef);
+
+      if (!childDoc || !childDoc.exists || !messageDoc || !messageDoc.exists) {
+        throw new functions.https.HttpsError('invalid-argument', `The child or message does not exist.`)
+      }
+      // ok!!
+      const customClaims = { };
+      await firebase.auth().setCustomUserClaims(childUid, customClaims);
+
+      await tr.delete(childRef)
+      await tr.delete(messageRef)
+    });
+  } catch (error) {
+    throw utils.process_error(error)
+  }
+  return { retult: true};
 }

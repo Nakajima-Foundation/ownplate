@@ -15,7 +15,8 @@
         :placeholder="$t('SubAccounts.enterName')"
         ></b-input>
 
-      email: {{child.email}} / {{child.accepted === true ? "" : "not accepted now"}}
+      email: {{child.email}} / {{$t("admin.subAccounts.messageResult." + (child.accepted === true ? "accepted" : "waiting"))}}<br/>
+      <span class="font-bold">{{$t("admin.subAccounts.selectRestaurant")}}</span>
       <div v-for="(restaurant, k) in restaurants" :key="k">
         <b-checkbox v-model="restaurantListObj[restaurant.id]">{{restaurant.restaurantName}}</b-checkbox>
       </div>

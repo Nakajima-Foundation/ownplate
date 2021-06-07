@@ -17,11 +17,14 @@
 
     <!-- Order Status -->
     <div class="mx-6 mt-6">
-      <div v-for="(child, k) in children" :key="k">
+      <div v-for="(child, k) in children" :key="k" class="flex items-center">
         <nuxt-link :to="`/admin/subaccounts/accounts/${child.id}`">
           {{child.name}}/{{child.email}}/{{rList(child.restaurantLists)}}
           {{$t("admin.subAccounts.messageResult." + (child.accepted === true ? "accepted" : "waiting"))}}
         </nuxt-link>
+        <b-button @click="deleteChild(child.id)">
+          サブアカウント解除
+        </b-button>
       </div>
     </div>
 
@@ -82,7 +85,6 @@ export default {
           .orderBy("createdAt", "desc")
           .onSnapshot((messageCollection) => {
       this.messages = messageCollection.docs.map(this.doc2data("message"));
-            console.log(this.messages);
           });
     this.detachers.push(messageDetacher);
 
@@ -107,6 +109,21 @@ export default {
     }
   },
   methods: {
+    deleteChild(childId) {
+      console.log(childId);
+      this.$store.commit("setAlert", {
+        code: "admin.subAccounts.confirmDeletechild",
+        callback: async () => {
+          this.$store.commit("setLoading", true);
+          console.log("A");
+          const subAccountDeleteChildFunc = functions.httpsCallable("subAccountDeleteChild");
+          console.log("B");
+          await subAccountDeleteChildFunc({childUid: childId});
+          console.log("C");
+          this.$store.commit("setLoading", false);
+        }
+      });
+    },
     rList(restaurantLists) {
       return (restaurantLists ||[]).map((r) => {
         return this.restaurantObj[r].restaurantName;
@@ -117,8 +134,13 @@ export default {
       try {
         const inviteFunc = functions.httpsCallable("subAccountInvite");
         const res = await inviteFunc({email: this.email, name: this.name});
-        this.email = "";
-        this.name = "";
+        if (res.data.result) {
+          this.$router.push("/admin/subAccounts/accounts/" + res.data.childUid);
+          this.email = "";
+          this.name = "";
+        } else {
+          this.errors = ["admin.subAccounts.inviteInputError"];
+        }
       } catch (e) {
         this.errors = ["admin.subAccounts.inviteInputError"];
       }

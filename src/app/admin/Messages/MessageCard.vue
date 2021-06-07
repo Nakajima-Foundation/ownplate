@@ -1,16 +1,14 @@
 <template>
   <div v-if="message.toDisplay">
-<div v-if="message.type==='childInvitation'">
-  {{$t('admin.messages.childInvitationMessage1')}}<br/>
-  <nuxt-link :to="'/o/' + message.fromUid">{{$t('admin.messages.childInvitationMessage2')}}</nuxt-link><br/>
-  {{$t('admin.messages.childInvitationMessage3')}}<br/>
-  {{moment(message.createdAt.toDate()).format("YYYY/MM/DD HH:mm")}}<br/>
-  <b-button @click="childInvitationAccept">{{$t('admin.messages.accept')}}</b-button>
-  <b-button @click="childInvitationDeny">{{$t('admin.messages.deny')}}</b-button>
-
-</div>
-
-</div>
+    <div v-if="message.type==='childInvitation'">
+      {{moment(message.createdAt.toDate()).format("YYYY/MM/DD HH:mm")}}<br/>
+      {{$t('admin.messages.childInvitationMessage1')}}<br/>
+      <nuxt-link :to="'/o/' + message.fromUid">{{$t('admin.messages.childInvitationMessage2')}}</nuxt-link><br/>
+      {{$t('admin.messages.childInvitationMessage3')}}<br/>
+      <b-button @click="childInvitationAccept">{{$t('admin.messages.accept')}}</b-button>
+      <b-button @click="childInvitationDeny">{{$t('admin.messages.deny')}}</b-button>
+    </div>
+  </div>
 </template>
 
 
@@ -30,7 +28,8 @@ export default {
   methods: {
     childInvitationAccept() {
       this.$store.commit("setAlert", {
-        code: "admin.messages.childInvitationAccept",
+        title: "admin.messages.childInvitationAccept",
+        code: "admin.messages.childInvitationAcceptMessage",
         callback: async () => {
           this.$store.commit("setLoading", true);
           const inviteFunc = functions.httpsCallable("subAccountInvitationAccept");
