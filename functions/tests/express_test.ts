@@ -252,7 +252,7 @@ describe('express function', () => {
     console.log(JSON.stringify(JSON.parse(response.text), undefined, 1));
   });
 
-
+/*
   it ('express smaregi webhook test', async function() {
     const response = await request.post('/smaregi/1.0/webhook')
       .send({action: "created"})
@@ -262,5 +262,5 @@ describe('express function', () => {
     response.status.should.equal(200);
     console.log(JSON.stringify(JSON.parse(response.text), undefined, 1));
   });
-
+*/
 });
