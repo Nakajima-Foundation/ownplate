@@ -229,6 +229,31 @@
         <!-- Notes -->
         <div class="mt-6">
           <div class="text-xl font-bold text-black text-opacity-40 mb-2">
+            {{ $t("admin.subAccounts.title") }}
+          </div>
+
+          <div
+            class="bg-white shadow rounded-lg p-4"
+            >
+            <div class="text-center mt-2">
+              {{ $t("admin.subAccounts.description") }}
+            </div>
+            <div class="text-center mt-2">
+              <router-link to="/admin/subaccounts"
+                target="stripe"
+                class="h-12 rounded-full inline-flex items-center px-6 border-2 border-op-teal"
+                           >
+                <span class="text-op-teal text-base font-bold">{{
+                  $t("admin.subAccounts.openDashboard")
+                  }}</span>
+                </router-link>
+            </div>
+          </div>
+        </div>
+
+        <!-- Notes -->
+        <div class="mt-6">
+          <div class="text-xl font-bold text-black text-opacity-40 mb-2">
             {{ $t("admin.notes.title") }}
           </div>
 
@@ -414,14 +439,16 @@ export default {
     } finally {
       this.readyToDisplay = true;
     }
-    db.collectionGroup("lines")
-      .where("uid", "==", this.uid)
-      .onSnapshot(result => {
-        result.docs.map(async res => {
-          const restaurantId = res.data().restaurantId;
-          this.lines[restaurantId] = true;
+    if (this.isOwner) {
+      db.collectionGroup("lines")
+        .where("uid", "==", this.uid)
+        .onSnapshot(result => {
+          result.docs.map(async res => {
+            const restaurantId = res.data().restaurantId;
+            this.lines[restaurantId] = true;
+          });
         });
-      });
+    }
 
     this.message_detacher = db.collection(`/admins/${this.uid}/messages`)
           .orderBy("createdAt", "desc")

@@ -9,38 +9,55 @@
 
       <!-- Title -->
       <div class="mt-4 lg:mt-0 lg:flex-1 lg:flex lg:items-center lg:mx-4">
-        <span class="text-base font-bold">
+        <span class="text-base font-bold  text-xl">
           {{ $t("admin.subAccounts.index") }}
         </span>
       </div>
     </div>
 
     <!-- Order Status -->
+
     <div class="mx-6 mt-6">
+      <div class="mt-2 text-base font-bold">
+        {{ $t("admin.subAccounts.subaccountlist") }}
+      </div>
       <div v-for="(child, k) in children" :key="k" class="flex items-center">
         <nuxt-link :to="`/admin/subaccounts/accounts/${child.id}`">
           {{child.name}}/{{child.email}}/{{rList(child.restaurantLists)}}
           {{$t("admin.subAccounts.messageResult." + (child.accepted === true ? "accepted" : "waiting"))}}
         </nuxt-link>
         <b-button @click="deleteChild(child.id)">
-          サブアカウント解除
+           {{ $t("admin.subAccounts.deleteSubaccount")}}
         </b-button>
       </div>
     </div>
 
     <div class="mx-6 mt-6">
-      {{ $t("admin.subAccounts.invite") }}
-      <b-input
-        v-model="name"
-        :placeholder="$t('admin.subAccounts.enterName')"
-        ></b-input>
-      <b-input
-        v-model="email"
-        :placeholder="$t('admin.subAccounts.enterEmail')"
-        ></b-input>
-      <b-button @click="invite" :disabled="sending">
-        {{$t(sending ? "admin.subAccounts.sending" : "admin.subAccounts.send")}}
-      </b-button>
+      <span class="text-base font-bold text-xl">
+        {{ $t("admin.subAccounts.invite") }}
+      </span>
+
+      <div class="bg-white shadow rounded-lg p-4 mt-2" >
+        <span class="text-base font-bold">
+          {{ $t("admin.subAccounts.name") }}
+        </span>
+        <b-input
+          v-model="name"
+          :placeholder="$t('admin.subAccounts.enterName')"
+          ></b-input>
+        {{ $t("admin.subAccounts.email") }} : <b-input
+                                                v-model="email"
+                                                :placeholder="$t('admin.subAccounts.enterEmail')"
+                                                ></b-input>
+        <div class="text-xs font-bold text-red-700">
+          * 招待されるサブアカウントは、事前にユーザ登録をする必要があります
+        </div>
+        <div>
+          <b-button @click="invite" :disabled="sending">
+            {{$t(sending ? "admin.subAccounts.sending" : "admin.subAccounts.send")}}
+          </b-button>
+        </div>
+      </div>
       <div v-if="errors.length > 0">
         <div v-for="(error, k) in errors" :key="k">
           {{$t(error)}}
@@ -48,10 +65,13 @@
       </div>
     </div>
     <div class="mx-6 mt-6">
+      <span class="text-base font-bold">
+        {{ $t("admin.subAccounts.invitedList") }}
+      </span>
       <div v-for="(message, k) in messages" :key="k">
         <div v-if="message.fromDisplay">
           <div v-if="message.type === 'childInvitation'">
-            To: {{message.email}}/{{$t("admin.subAccounts.messageResult." +  (message.accepted === true ? "accepted" : (message.accepted === false ? "denied" : "waiting")))}}/{{moment(message.createdAt.toDate()).format("YYYY/MM/DD HH:mm")}}
+            {{message.email}}/{{$t("admin.subAccounts.messageResult." +  (message.accepted === true ? "accepted" : (message.accepted === false ? "denied" : "waiting")))}}/{{moment(message.createdAt.toDate()).format("YYYY/MM/DD HH:mm")}}
           </div>
         </div>
       </div>

@@ -10,19 +10,33 @@
 
     <!-- Order Status -->
     <div class="mx-6 mt-6">
-      <b-input
-        v-model="name"
-        :placeholder="$t('SubAccounts.enterName')"
-        ></b-input>
+      <div class="mt-2">
+        <span class="text-base font-bold">
+          {{ $t("admin.subAccounts.name") }}
+        </span>
+        <b-input
+          v-model="name"
+          :placeholder="$t('SubAccounts.enterName')"
+          ></b-input>
 
-      email: {{child.email}} / {{$t("admin.subAccounts.messageResult." + (child.accepted === true ? "accepted" : "waiting"))}}<br/>
-      <span class="font-bold">{{$t("admin.subAccounts.selectRestaurant")}}</span>
-      <div v-for="(restaurant, k) in restaurants" :key="k">
-        <b-checkbox v-model="restaurantListObj[restaurant.id]">{{restaurant.restaurantName}}</b-checkbox>
+        <span class="text-base font-bold">
+          {{ $t("admin.subAccounts.email") }}
+        </span><br/>
+        {{child.email}} / {{$t("admin.subAccounts.messageResult." + (child.accepted === true ? "accepted" : "waiting"))}}<br/>
       </div>
-      <b-button @click="saveList">
-        {{$t("editCommon.save")}}
-      </b-button>
+      <div
+        class="bg-white shadow rounded-lg p-4 mt-2"
+        >
+        <span class="font-bold">{{$t("admin.subAccounts.selectRestaurant")}}</span>
+        <div v-for="(restaurant, k) in restaurants" :key="k">
+          <b-checkbox v-model="restaurantListObj[restaurant.id]">{{restaurant.restaurantName}}</b-checkbox>
+        </div>
+      </div>
+      <div class="mt-2">
+        <b-button @click="saveList">
+          {{$t("editCommon.save")}}
+        </b-button>
+      </div>
     </div>
   </div>
 </template>
