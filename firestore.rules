@@ -136,7 +136,12 @@ service cloud.firestore {
         allow create: if isAdmin(request)
                         && request.resource.data.uid == request.auth.uid;
         allow update: if isAdmin(request) && isOwner(resource, request);
+        allow update: if isAdmin(request) && isRestaurantSubAccount(restaurantId, request);
         allow update: if isSuper(request);
+        match /private/notifications {
+          allow read, write: if isAdmin(request) && isRestaurantOwner(restaurantId, request);
+          allow read, write: if isAdmin(request) && isRestaurantSubAccount(restaurantId, request);
+        }
         match /private/{privateId} {
           allow read, write: if isAdmin(request) && isRestaurantOwner(restaurantId, request);
         }
@@ -169,6 +174,7 @@ service cloud.firestore {
         }
         match /lines/{lineId} {
           allow read, write: if isRestaurantOwner(restaurantId, request);
+          allow read, write: if isAdmin(request) && isRestaurantSubAccount(restaurantId, request);
         }
         match /trace/{traceId} {
           allow create: if isRestaurantOwner(restaurantId, request)
