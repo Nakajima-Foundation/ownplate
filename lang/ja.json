@@ -629,8 +629,8 @@
     },
     "messages": {
       "title": "メッセージ",
-      "childInvitationAccept": "招待を受け入れて子アカウントになる",
-      "childInvitationAcceptMessage": "子アカウントになると、このアカウントで追加した飲食店は操作できなくなります",
+      "childInvitationAccept": "招待を受け入れてサブアカウントになる",
+      "childInvitationAcceptMessage": "サブアカウントになると、このアカウントで追加した飲食店は操作できなくなります",
       "childInvitationDeny": "招待を拒否する",
       "accept": "受け入れる",
       "deny": "拒否する",

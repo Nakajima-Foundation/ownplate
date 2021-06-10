@@ -625,6 +625,41 @@
         "auth/invalid-email": "The email address is badly formatted.",
         "auth/unauthorized-continue-uri": "Domain not whitelisted by project"
       }
+    },
+    "messages": {
+      "title": "Message",
+      "childInvitationAccept": "Accept the invitation and become a Sub-account",
+      "childInvitationAcceptMessage": "If you become a Sub-account, you will not be able to operate the restaurants added with this account.",
+      "childInvitationDeny": "Reject invitation",
+      "accept": "Accept",
+      "deny": "Reject",
+      "childInvitationMessage1": "I received an invitation from the owner who manages the following restaurants",
+      "childInvitationMessage2": "This restaurants",
+      "childInvitationMessage3": "If you want to change to a sub-account that manages this store, press Accept. If you want to decline, press Reject."
+    },
+    "subAccounts": {
+      "index": "Sub-account management",
+      "openDashboard": "Open Sub-account management",
+      "description": "You can set / manage sub-accounts that can only be operated at specific stores.",
+      "title": "Sub-account management",
+      "subaccountlist": "Sub-account list",
+      "email": "Email",
+      "name": "Sub-account name",
+      "invite": "Invite",
+      "invitedList": "Invited List",
+      "deleteSubaccount": "Delete Sub-account",
+      "send": "Send",
+      "sending": "Sending",
+      "enterName": "Please enter the name you want to give to the sub-account",
+      "enterEmail": "Please enter the email address of the sub-account you are inviting",
+      "inviteInputError": "Please check the input items",
+      "messageResult": {
+        "waiting": "Sent and waiting",
+        "accepted": "Accepted",
+        "denied": "Denied"
+      },
+      "selectRestaurant": "Please select a store that can operate this account.",
+      "confirmDeletechild": "Cancel the sub-account"
     }
   },
   "week": {
