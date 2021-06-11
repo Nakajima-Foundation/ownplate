@@ -248,6 +248,17 @@
                   }}</span>
                 </router-link>
             </div>
+            <div class="mt-4 text-center">
+              <a
+                href="https://docs.omochikaeri.com/manuals/aboutsubaccount.pdf"
+                target="_blank"
+                class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
+                >
+                <span class="text-sm font-bold text-op-teal">
+                  {{ $t("admin.subAccounts.manualLink") }}</span
+                                                           >
+              </a>
+            </div>
           </div>
         </div>
 

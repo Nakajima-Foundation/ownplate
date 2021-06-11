@@ -641,6 +641,7 @@
     "subAccounts": {
       "index": "サブアカウント管理",
       "openDashboard": "サブアカウント管理画面",
+      "manualLink": "サブアカウントの使い方",
       "description": "特定の店舗のみ操作できるサブアカウントを設定/管理できます。",
       "title": "サブアカウント管理",
       "subaccountlist": "サブアカウント一覧",
