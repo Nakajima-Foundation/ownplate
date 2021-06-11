@@ -661,6 +661,10 @@
       },
       "selectRestaurant": "このアカウントが操作できるお店を選択してください。",
       "confirmDeletechild": "サブアカウントを解除します"
+    },
+    "smaregi": {
+      "index": "スマレジ連携",
+      "smaregiShopList": "スマレジ店舗一覧"
     }
   },
   "week": {
