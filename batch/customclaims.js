@@ -15,24 +15,28 @@ const main = async () => {
 
   const db = admin.firestore();
 
-  const updateFlag = async (flag) => {
-    const users = await db.collection("admins").where("admin", "==", flag).get();
+  const updateFlag = async (flag, key) => {
+    const users = await db.collection("admins").where(key, "==", flag).get();
 
     await Promise.all(users.docs.map(async (userSnap) => {
       const user = userSnap.data();
 
       const uid = userSnap.id;
-      // console.log(user, uid);
-      const customClaims = {admin: flag};
+      console.log(user.name, uid);
+      const customClaims = {[key]: flag};
+      console.log(customClaims);
       await admin.auth().setCustomUserClaims(uid, customClaims);
       const updated = await admin.auth().getUser(uid);
-      console.log(updated);
+      // console.log(updated);
       return;
     }));
     return;
   };
-  await updateFlag(true);
-  await updateFlag(false);
+  await updateFlag(true, "admin");
+  await updateFlag(false, "admin");
+
+  await updateFlag(true, "operator");
+  await updateFlag(false, "operator");
 
   process.exit(0);
 };

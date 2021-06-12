@@ -87,7 +87,7 @@
 
       <!-- No Menu or Too Many Menu-->
       <div
-        v-if="!existsMenu || menuCounter > 5"
+        v-if="(!existsMenu || menuCounter > 5) && isOwner"
         class="mt-6 mx-6 border-2 border-op-teal rounded-lg p-4 pb-2 lg:max-w-2xl lg:mx-auto"
       >
         <div class="text-center text-sm font-bold text-op-teal">
@@ -197,7 +197,8 @@
       <!-- Add Group Title, Menu Item, and Download Menu -->
       <div
         class="mt-6 mx-6 border-2 border-op-teal rounded-lg p-4 pb-2 lg:max-w-2xl lg:mx-auto"
-      >
+        v-if="isOwner"
+        >
         <div class="text-center">
           <b-button
             @click="addTitle()"
@@ -292,6 +293,12 @@ export default {
     };
   },
   computed: {
+    ownerUid() {
+      return this.$store.getters.isSubAccount ? this.$store.getters.parentId : this.uid;
+    },
+    isOwner() {
+      return !this.$store.getters.isSubAccount;
+    },
     menuCounter() {
       return Object.keys(this.menuObj).length;
     },
@@ -346,7 +353,7 @@ export default {
     this.checkAdminPermission();
     const restaurantRef = db.doc(`restaurants/${this.restaurantId()}`);
     const restaurant_detacher = restaurantRef.onSnapshot(results => {
-      if (results.exists && results.data().uid === this.uid) {
+      if (results.exists && results.data().uid === this.ownerUid) {
         this.restaurantInfo = results.data();
         this.readyToDisplay = true;
         this.notFound = false;

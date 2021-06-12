@@ -94,12 +94,26 @@
 
     <!-- Unset Warning -->
     <div
-      v-if="unsetWarning"
+      v-if="unsetWarning && isOwner"
       class="mx-6 mt-6 bg-red-700 bg-opacity-10 rounded-lg p-4"
     >
       <span class="text-red-700 text-sm">{{
         $t("admin.payments.unsetWarning")
       }}</span>
+    </div>
+
+    <!-- Messages -->
+    <div class="mt-6 mx-6 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12" v-if="messages.length > 0">
+      <div>
+        <div class="pb-2">
+          <span class="text-xl font-bold text-black text-opacity-40 mb-2">
+            {{ $t("admin.messages.title") }}
+          </span>
+        </div>
+        <div v-for="(message, k) in messages" :key="k" class="border-2 border-solid border-op-teal rounded-lg p-6">
+          <MessageCard :message="message"/>
+        </div>
+      </div>
     </div>
 
     <!-- Restaurants and Payment Setup -->
@@ -181,12 +195,13 @@
                   @positionUp="positionUp($event)"
                   @positionDown="positionDown($event)"
                   @deleteFromRestaurantLists="deleteFromRestaurantLists($event)"
+                  :isOwner="isOwner"
                 ></restaurant-edit-card>
               </div>
             </div>
 
             <!-- Add Restaurant -->
-            <div v-if="existsRestaurant" class="text-center mt-4">
+            <div v-if="existsRestaurant && isOwner" class="text-center mt-4">
               <b-button
                 @click="handleNew"
                 :loading="isCreating"
@@ -207,9 +222,45 @@
       </div>
 
       <!-- Payment Setup -->
-      <div class="mt-6 lg:mt-0">
+      <div class="mt-6 lg:mt-0" v-if="isOwner">
         <!-- Payment -->
         <payment-section @updateUnsetWarning="updateUnsetWarning($event)" />
+
+        <!-- Notes -->
+        <div class="mt-6">
+          <div class="text-xl font-bold text-black text-opacity-40 mb-2">
+            {{ $t("admin.subAccounts.title") }}
+          </div>
+
+          <div
+            class="bg-white shadow rounded-lg p-4"
+            >
+            <div class="text-center mt-2">
+              {{ $t("admin.subAccounts.description") }}
+            </div>
+            <div class="text-center mt-2">
+              <router-link to="/admin/subaccounts"
+                target="stripe"
+                class="h-12 rounded-full inline-flex items-center px-6 border-2 border-op-teal"
+                           >
+                <span class="text-op-teal text-base font-bold">{{
+                  $t("admin.subAccounts.openDashboard")
+                  }}</span>
+                </router-link>
+            </div>
+            <div class="mt-4 text-center">
+              <a
+                href="https://docs.omochikaeri.com/manuals/aboutsubaccount.pdf"
+                target="_blank"
+                class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
+                >
+                <span class="text-sm font-bold text-op-teal">
+                  {{ $t("admin.subAccounts.manualLink") }}</span
+                                                           >
+              </a>
+            </div>
+          </div>
+        </div>
 
         <!-- Notes -->
         <div class="mt-6">
@@ -273,12 +324,14 @@ import { midNight } from "~/plugins/dateUtils.js";
 import { ownPlateConfig } from "@/config/project";
 import PaymentSection from "~/app/admin/Payment/PaymentSection";
 import newsList from "./News/data";
+import MessageCard from "./Messages/MessageCard";
 
 export default {
   name: "Restaurant",
   components: {
     PaymentSection,
-    RestaurantEditCard
+    RestaurantEditCard,
+    MessageCard
   },
   data() {
     return {
@@ -288,12 +341,14 @@ export default {
       restaurantItems: null,
       detachers: [],
       restaurant_detacher: null,
+      message_detacher: null,
       news: newsList[0],
       unsetWarning: true,
       lines: {},
       shopOwner: null,
       opt_out: null,
-      restaurantLists: []
+      restaurantLists: [],
+      messages: []
     };
   },
   created() {
@@ -301,22 +356,33 @@ export default {
   },
   async mounted() {
     try {
-      this.shopOwner = await this.getShopOwner(this.$store.getters.uidAdmin);
-      const adminConfig = await db
-        .doc(`/adminConfigs/${this.$store.getters.uidAdmin}`)
-        .get();
-      this.adminConfig = adminConfig.exists ? adminConfig.data() : {};
-      this.opt_out = this.adminConfig.opt_out || false;
+      if (this.isOwner) {
+        this.shopOwner = await this.getShopOwner(this.ownerUid);
 
-      const restaurantLists = await db
-        .doc(`/admins/${this.$store.getters.uidAdmin}/public/RestaurantLists`)
-        .get();
-      this.restaurantLists =
-        (restaurantLists.exists ? restaurantLists.data() : {}).lists || [];
+        const adminConfig = await db
+              .doc(`/adminConfigs/${this.ownerUid}`)
+              .get();
+        this.adminConfig = adminConfig.exists ? adminConfig.data() : {};
+        this.opt_out = this.adminConfig.opt_out || false;
+
+        const restaurantLists = await db
+              .doc(`/admins/${this.$store.getters.uidAdmin}/public/RestaurantLists`)
+              .get();
+        this.restaurantLists =
+          (restaurantLists.exists ? restaurantLists.data() : {}).lists || [];
+
+      } else {
+        const restaurantLists = await db
+              .doc(`/admins/${this.ownerUid}/children/${this.$store.getters.uidAdmin}`)
+              .get();
+        this.restaurantLists =
+          (restaurantLists.exists ? restaurantLists.data() : {}).restaurantLists || [];
+        this.shopOwner = {};
+      }
 
       this.restaurant_detacher = db
         .collection("restaurants")
-        .where("uid", "==", this.uid)
+        .where("uid", "==", this.ownerUid)
         .where("deletedFlag", "==", false)
         .orderBy("createdAt", "asc")
         .onSnapshot(async result => {
@@ -335,7 +401,7 @@ export default {
               return tmp;
             }, {});
 
-            if (Object.keys(this.restaurantLists).length === 0) {
+            if (this.isOwner && Object.keys(this.restaurantLists).length === 0) {
               this.restaurantLists = Object.keys(this.restaurantItems);
             }
 
@@ -384,14 +450,22 @@ export default {
     } finally {
       this.readyToDisplay = true;
     }
-    db.collectionGroup("lines")
-      .where("uid", "==", this.uid)
-      .onSnapshot(result => {
-        result.docs.map(async res => {
-          const restaurantId = res.data().restaurantId;
-          this.lines[restaurantId] = true;
+    if (this.isOwner) {
+      db.collectionGroup("lines")
+        .where("uid", "==", this.uid)
+        .onSnapshot(result => {
+          result.docs.map(async res => {
+            const restaurantId = res.data().restaurantId;
+            this.lines[restaurantId] = true;
+          });
         });
-      });
+    }
+
+    this.message_detacher = db.collection(`/admins/${this.uid}/messages`)
+          .orderBy("createdAt", "desc")
+          .onSnapshot((messageCollection) => {
+            this.messages = messageCollection.docs.map(this.doc2data("message")).filter(a => a.toDisplay);
+          });
   },
   watch: {
     async opt_out() {
@@ -413,69 +487,79 @@ export default {
     },
     async handleNew() {
       console.log("handleNew");
-      try {
-        this.isCreating = true;
-        const doc = await db.collection("restaurants").add({
-          uid: this.uid,
-          publicFlag: false,
-          deletedFlag: false,
-          createdAt: firestore.FieldValue.serverTimestamp()
-        });
+      if (this.isOwner) {
+        try {
+          this.isCreating = true;
+          const doc = await db.collection("restaurants").add({
+            uid: this.uid,
+            publicFlag: false,
+            deletedFlag: false,
+            createdAt: firestore.FieldValue.serverTimestamp()
+          });
 
-        // update Lists
-        this.restaurantLists.push(doc.id);
-        this.saveRestaurantLists();
+          // update Lists
+          this.restaurantLists.push(doc.id);
+          this.saveRestaurantLists();
 
-        this.$router.push(`/admin/restaurants/${doc.id}`);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        this.isCreating = false;
+          this.$router.push(`/admin/restaurants/${doc.id}`);
+        } catch (error) {
+          console.log(error);
+        } finally {
+          this.isCreating = false;
+        }
       }
     },
     updateUnsetWarning(value) {
       this.unsetWarning = value;
     },
     async positionUp(itemKey) {
-      const pos = this.restaurantLists.indexOf(itemKey);
-      if (pos !== 0 && pos !== -1) {
-        const newRestaurantLists = [...this.restaurantLists];
-        const tmp = newRestaurantLists[pos - 1];
-        newRestaurantLists[pos - 1] = newRestaurantLists[pos];
-        newRestaurantLists[pos] = tmp;
+      if (this.isOwner) {
+        const pos = this.restaurantLists.indexOf(itemKey);
+        if (pos !== 0 && pos !== -1) {
+          const newRestaurantLists = [...this.restaurantLists];
+          const tmp = newRestaurantLists[pos - 1];
+          newRestaurantLists[pos - 1] = newRestaurantLists[pos];
+          newRestaurantLists[pos] = tmp;
 
-        this.restaurantLists = newRestaurantLists;
-        await this.saveRestaurantLists();
+          this.restaurantLists = newRestaurantLists;
+          await this.saveRestaurantLists();
+        }
       }
     },
     async positionDown(itemKey) {
-      const pos = this.restaurantLists.indexOf(itemKey);
-      if (pos < this.restaurantLists.length - 1 && pos !== -1) {
-        const newRestaurantLists = [...this.restaurantLists];
-        const tmp = newRestaurantLists[pos + 1];
-        newRestaurantLists[pos + 1] = newRestaurantLists[pos];
-        newRestaurantLists[pos] = tmp;
+      if (this.isOwner) {
+        const pos = this.restaurantLists.indexOf(itemKey);
+        if (pos < this.restaurantLists.length - 1 && pos !== -1) {
+          const newRestaurantLists = [...this.restaurantLists];
+          const tmp = newRestaurantLists[pos + 1];
+          newRestaurantLists[pos + 1] = newRestaurantLists[pos];
+          newRestaurantLists[pos] = tmp;
 
-        this.restaurantLists = newRestaurantLists;
+          this.restaurantLists = newRestaurantLists;
 
-        await this.saveRestaurantLists();
+          await this.saveRestaurantLists();
+        }
       }
     },
     async deleteFromRestaurantLists(restaurantId) {
-      // push list
-      const newRestaurantLists = [...this.restaurantLists];
-      const pos = newRestaurantLists.indexOf(restaurantId);
-      newRestaurantLists.splice(pos, 1);
-      this.restaurantLists = newRestaurantLists;
+      if (this.isOwner) {
+        // push list
+        const newRestaurantLists = [...this.restaurantLists];
+        const pos = newRestaurantLists.indexOf(restaurantId);
+        newRestaurantLists.splice(pos, 1);
+        this.restaurantLists = newRestaurantLists;
 
-      const path = `/admins/${this.$store.getters.uidAdmin}/public/RestaurantLists`;
-      await db.doc(path).set({ lists: newRestaurantLists }, { merge: true });
-      // end of list
+        const path = `/admins/${this.$store.getters.uidAdmin}/public/RestaurantLists`;
+        await db.doc(path).set({ lists: newRestaurantLists }, { merge: true });
+        // end of list
+      }
     },
     async saveRestaurantLists() {
-      await db
-        .doc(`/admins/${this.$store.getters.uidAdmin}/public/RestaurantLists`)
-        .set({ lists: this.restaurantLists }, { merge: true });
+      if (this.isOwner) {
+        await db
+          .doc(`/admins/${this.$store.getters.uidAdmin}/public/RestaurantLists`)
+          .set({ lists: this.restaurantLists }, { merge: true });
+      }
     }
   },
   destroyed() {
@@ -483,8 +567,17 @@ export default {
     if (this.restaurant_detacher) {
       this.restaurant_detacher();
     }
+    if (this.message_detacher) {
+      this.message_detacher();
+    }
   },
   computed: {
+    ownerUid() {
+      return this.$store.getters.isSubAccount ? this.$store.getters.parentId : this.uid;
+    },
+    isOwner() {
+      return !this.$store.getters.isSubAccount;
+    },
     restaurantLength() {
       return this.menuLists.length;
     },

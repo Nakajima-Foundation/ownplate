@@ -12,7 +12,7 @@ import moment from 'moment-timezone';
 
 // This function is called by user to create a "payment intent" (to start the payment transaction)
 export const create = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
-  const uid = utils.validate_auth(context);
+  const customerUid = utils.validate_auth(context);
   const stripe = utils.get_stripe();
 
   const { orderId, restaurantId, paymentMethodId, description, tip, sendSMS, timeToPickup, lng, memo } = data;
@@ -50,7 +50,7 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
         amount: totalCharge,
         description: `${description} ${orderId}`,
         currency: utils.getStripeRegion().currency,
-        metadata: { uid, restaurantId, orderId }
+        metadata: { uid: customerUid, restaurantId, orderId }
       } as Stripe.PaymentIntentCreateParams
 
       if (paymentMethodId) {
@@ -58,7 +58,7 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
         request.payment_method = paymentMethodId
       } else {
         // If no paymentMethodId, we expect that there is a customer Id associated with a token
-        const refStripe = db.doc(`/users/${uid}/system/stripe`)
+        const refStripe = db.doc(`/users/${customerUid}/system/stripe`)
         const stripeInfo = (await refStripe.get()).data();
         if (!stripeInfo) {
           throw new functions.https.HttpsError('aborted', 'No stripeInfo.')
@@ -82,7 +82,7 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
       })
 
       const timePlaced = timeToPickup && new admin.firestore.Timestamp(timeToPickup.seconds, timeToPickup.nanoseconds) || admin.firestore.FieldValue.serverTimestamp()
-      await updateOrderTotalData(db, transaction, order.order, restaurantId, uid, timePlaced, true);
+      await updateOrderTotalData(db, transaction, order.order, restaurantId, customerUid, timePlaced, true);
       transaction.set(orderRef, {
         timePlaced,
         status: order_status.order_placed,
@@ -118,7 +118,7 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
 // This function is called by admin to confurm a "payment intent" (to complete the payment transaction)
 // ready_to_pickup
 export const confirm = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
-  const uid = utils.validate_auth(context);
+  const ownerUid = utils.validate_admin_auth(context);
   const stripe = utils.get_stripe();
 
   const { restaurantId, orderId, lng } = data
@@ -138,7 +138,7 @@ export const confirm = async (db: FirebaseFirestore.Firestore, data: any, contex
     throw new functions.https.HttpsError('invalid-argument', 'This restaurant does not support payment.')
   }
 
-  if (venderId !== uid) {
+  if (venderId !== ownerUid) {
     throw new functions.https.HttpsError('permission-denied', 'You do not have permission to confirm this request.')
   }
 
@@ -188,7 +188,7 @@ export const confirm = async (db: FirebaseFirestore.Firestore, data: any, contex
 
     if (order && order!.sendSMS && order!.timeEstimated) {
       const diffDay =  (moment().toDate().getTime() - order!.timeEstimated.toDate().getTime()) / 1000 / 3600 / 24;
-      console.log("timeEstimated_diff_days = " + String(diffDay)); 
+      console.log("timeEstimated_diff_days = " + String(diffDay));
       if (diffDay < 1) {
         const msgKey = "msg_cooking_completed"
         const orderName = utils.nameOfOrder(order!.number)
@@ -204,7 +204,10 @@ export const confirm = async (db: FirebaseFirestore.Firestore, data: any, contex
 
 // This function is called by user or admin to cencel an exsting order (before accepted by admin)
 export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
-  const uid = utils.validate_auth(context);
+  const isAdmin = utils.is_admin_auth(context);
+  console.log("is_admin:" + String(isAdmin));
+
+  const uid = isAdmin ? utils.validate_admin_auth(context) : utils.validate_auth(context);
   const stripe = utils.get_stripe();
 
   const { restaurantId, orderId, lng } = data
@@ -233,19 +236,17 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
         throw new functions.https.HttpsError('invalid-argument', `The order does not exist.`)
       }
 
-      if (uid === order.uid) {
-        // User can cancel an order before accepted
-        if (order.status !== order_status.order_placed) {
-          throw new functions.https.HttpsError('permission-denied', 'Invalid order state to cancel.')
-        }
-      } else if (uid === venderId) {
+      if (isAdmin) {
         // Admin can cancel it before confirmed
-        if (order.status >= order_status.ready_to_pickup) {
+        if (uid !== venderId || order.status >= order_status.ready_to_pickup) {
           throw new functions.https.HttpsError('permission-denied', 'Invalid order state to cancel.')
         }
         sendSMS = order.sendSMS
       } else {
-        throw new functions.https.HttpsError('permission-denied', 'The user does not have permission to cancel this request.')
+        // User can cancel an order before accepted
+        if (uid !== order.uid || order.status !== order_status.order_placed) {
+          throw new functions.https.HttpsError('permission-denied', 'Invalid order state to cancel.')
+        }
       }
       const cancelTimeKey = (uid === order.uid) ? "orderCustomerCanceledAt" : "orderRestaurantCanceledAt";
 

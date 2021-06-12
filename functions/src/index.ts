@@ -40,3 +40,11 @@ exportIfNeeded("stripeUpdateCustomer", "stripe/stripeUpdateCustomer", exports);
 exportIfNeeded("stripeDeleteCard", "stripe/stripeDeleteCard", exports);
 
 exportIfNeeded("imageProcessing", "image/imageProcessing", exports);
+
+exportIfNeeded("smaregiAuth", "smaregi/auth", exports);
+exportIfNeeded("smaregiStoreList", "smaregi/storeList", exports);
+
+exportIfNeeded("subAccountInvite", "subaccount/invite", exports);
+exportIfNeeded("subAccountInvitationAccept", "subaccount/accept", exports);
+exportIfNeeded("subAccountInvitationDeny", "subaccount/deny", exports);
+exportIfNeeded("subAccountDeleteChild", "subaccount/delete", exports);

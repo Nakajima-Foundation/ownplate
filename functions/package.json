@@ -12,15 +12,18 @@
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log",
     "coverage": "nyc npm run tests",
-    "tests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/*_test.ts",
+    "tests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/*_test.ts --timeout 30000",
     "e_tests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/express_test.ts",
+    "o_tests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/order_test.ts",
     "n_tests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/notify_test.ts --timeout 30000",
     "t_tests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/twilio_test.ts",
+    "s_tests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/subaccount_test.ts",
     "mailtests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/ses_test.ts",
+    "smaregitests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/smaregi_test.ts",
     "d_tests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/dl_test.ts"
   },
   "engines": {
-    "node": "10"
+    "node": "12"
   },
   "main": "lib/index.js",
   "dependencies": {
@@ -34,15 +37,18 @@
     "firebase-functions": "^3.13.0",
     "google-libphonenumber": "^3.2.10",
     "i18next": "^19.4.4",
+    "lodash": "^4.17.21",
     "moment": "^2.26.0",
     "moment-timezone": "^0.5.31",
-    "nodemailer": "^6.4.10",
+    "node-fetch": "^2.6.1",
+    "nodemailer": "^6.6.1",
     "nyc": "^15.1.0",
     "sharp": "^0.25.3",
     "sitemap": "^6.1.5",
     "stripe": "^8.39.1",
-    "twilio": "^3.55.0",
+    "twilio": "^3.63.0",
     "uuid-v4": "^0.1.0",
+    "validator": "^13.6.0",
     "xmlbuilder": "^15.1.1"
   },
   "devDependencies": {
@@ -57,7 +63,7 @@
     "firebase-functions-test": "^0.2.3",
     "mocha": "^7.1.1",
     "supertest": "^4.0.2",
-    "ts-node": "^8.8.1",
+    "ts-node": "^10.0.0",
     "tslint": "^5.12.0",
     "typescript": "^3.2.2"
   },

@@ -60,6 +60,12 @@ export const getters = {
   isAdmin: (state) => {
     return !!(state.user && state.user.email && state.user.uid);
   },
+  isSubAccount: (state) => {
+    return !!state.claims?.parentUid;
+  },
+  parentId: (state) => {
+    return state.claims?.parentUid;
+  },
 };
 
 export const mutations = {

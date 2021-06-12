@@ -19,12 +19,19 @@ service cloud.firestore {
     function isOwner(resource, request) {
       return resource.data.uid == request.auth.uid;
     }
+    function isFromUser(resource, request) {
+      return resource.data.fromUid == request.auth.uid;
+    }
     function isResuaurantOwner(resource, request) {
       return resource.data.ownerUid == request.auth.uid;
     }
 
     function isRestaurantOwner(restaurantId, request) {
       return get(/databases/$(database)/documents/restaurants/$(restaurantId)).data.uid == request.auth.uid;
+    }
+    function isRestaurantSubAccount(restaurantId, request) {
+      let parantUid = get(/databases/$(database)/documents/restaurants/$(restaurantId)).data.uid;
+      return (restaurantId in get(/databases/$(database)/documents/admins/$(parantUid)/children/$(request.auth.uid)).data.restaurantLists) && parantUid == request.auth.token.parentUid;
     }
 
     function isUndefined(data, field) {
@@ -84,11 +91,18 @@ service cloud.firestore {
             && request.resource.data.email == request.auth.token.email;
         }
       }
+      match /children/{childId} {
+        allow read, write: if request.auth.uid == userId;
+        allow read: if request.auth.uid == childId;
+      }
       match /readonly/{document=**} {
         allow read: if request.auth.uid == userId;
       }
       match /system/{document=**} {
         allow read, write: if false;
+      }
+      match /messages/{document=**} {
+        allow read: if request.auth.uid == userId;
       }
     }
 
@@ -112,19 +126,29 @@ service cloud.firestore {
       allow read: if isOwner(resource, request);
     }
 
+    match /{path=**}/messages/{messageId} {
+      allow read: if isFromUser(resource, request);
+    }
+
     match /restaurants {
       match /{restaurantId} {
         allow read: if true
         allow create: if isAdmin(request)
                         && request.resource.data.uid == request.auth.uid;
         allow update: if isAdmin(request) && isOwner(resource, request);
+        allow update: if isAdmin(request) && isRestaurantSubAccount(restaurantId, request);
         allow update: if isSuper(request);
+        match /private/notifications {
+          allow read, write: if isAdmin(request) && isRestaurantOwner(restaurantId, request);
+          allow read, write: if isAdmin(request) && isRestaurantSubAccount(restaurantId, request);
+        }
         match /private/{privateId} {
           allow read, write: if isAdmin(request) && isRestaurantOwner(restaurantId, request);
         }
         match /menus/{menuId} {
           allow read: if true
           allow write: if isAdmin(request) && isRestaurantOwner(restaurantId, request);
+          allow write: if isAdmin(request) && isRestaurantSubAccount(restaurantId, request);
         }
         match /titles/{titleId} {
           allow read: if true
@@ -139,6 +163,8 @@ service cloud.firestore {
                           && request.resource.data.uid == request.auth.uid;
           allow read: if isAdmin(request)
                           && isRestaurantOwner(restaurantId, request);
+          allow read: if isAdmin(request)
+                          && isRestaurantSubAccount(restaurantId, request);
           allow read: if isUser(request) && isOwner(resource, request);
           allow delete: if isOwner(resource, request)
                           && resource.data.status == 200; // validated
@@ -148,6 +174,7 @@ service cloud.firestore {
         }
         match /lines/{lineId} {
           allow read, write: if isRestaurantOwner(restaurantId, request);
+          allow read, write: if isAdmin(request) && isRestaurantSubAccount(restaurantId, request);
         }
         match /trace/{traceId} {
           allow create: if isRestaurantOwner(restaurantId, request)
