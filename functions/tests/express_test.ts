@@ -239,7 +239,7 @@ describe('express function', () => {
       .set("Authorization", "Bearer 123");
     response.status.should.equal(401);
   });
-  
+
   it ('express api key test', async function() {
     const response = await request.get('/api/2.0/restaurants/testbar/orders');
     response.status.should.equal(401);
@@ -251,5 +251,16 @@ describe('express function', () => {
     response.status.should.equal(200);
     console.log(JSON.stringify(JSON.parse(response.text), undefined, 1));
   });
-  
+
+/*
+  it ('express smaregi webhook test', async function() {
+    const response = await request.post('/smaregi/1.0/webhook')
+      .send({action: "created"})
+      .set("Content-Type", "application/json")
+      .set("Smaregi-Contract-Id", "123")
+      .set("Smaregi-Event", "abc");
+    response.status.should.equal(200);
+    console.log(JSON.stringify(JSON.parse(response.text), undefined, 1));
+  });
+*/
 });

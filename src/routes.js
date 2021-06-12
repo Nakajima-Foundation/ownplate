@@ -45,6 +45,11 @@ export const customRoutes = [
     component: "common/Privacy.vue"
   },
   {
+    name: "ownerPage",
+    path: "/o/:ownerUid",
+    component: "user/RestaurantIndex.vue"
+  },
+  {
     name: "r-restaurantId",
     path: "/r/:restaurantId",
     component: "user/RestaurantPage.vue",
@@ -138,8 +143,29 @@ export const customRoutes = [
     ]
   },
   {
+    name: "admin-orders-allorders",
     path: "/admin/orders",
     component: "admin/AllOrders.vue"
+  },
+  {
+    name: "admin-subaccounts-accounts",
+    path: "/admin/subaccounts",
+    component: "admin/SubAccounts/Accounts.vue"
+  },
+  {
+    name: "admin-subaccounts-accounts",
+    path: "/admin/subaccounts/accounts/:subAccountId",
+    component: "admin/SubAccounts/Account.vue"
+  },
+  {
+    name: "admin-smaregi-index",
+    path: "/admin/smaregi/index",
+    component: "admin/Smaregi/Index.vue"
+  },
+  {
+    name: "admin-smaregi-index",
+    path: "/admin/smaregi/callback",
+    component: "admin/Smaregi/Callback.vue"
   },
   {
     name: "admin-news-list",

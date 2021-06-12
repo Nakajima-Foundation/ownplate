@@ -120,7 +120,6 @@
 <script>
 import { db, firestore, functions } from "~/plugins/firebase.js";
 import BackButton from "~/components/BackButton";
-import OrderSuspendItem from "~/app/admin/Order/OrderSuspendItem";
 import PickupMixin from "~/app/user/Order/pickupMixin";
 import firebase from "firebase/app";
 
@@ -129,7 +128,6 @@ import NotificationIndex from "./Notifications/Index";
 export default {
   mixins: [PickupMixin],
   components: {
-    OrderSuspendItem,
     BackButton,
     NotificationIndex
   },

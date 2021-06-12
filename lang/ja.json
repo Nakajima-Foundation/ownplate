@@ -174,7 +174,7 @@
     "updateMapDescription": "飲食店名や住所を元に地図を更新",
     "noRestaurant": "飲食店名が未指定です",
     "noStreetAddress": "住所が未入力です",
-    "reallyDelete": "本当にこの飲食店を削除しますか？",
+    "reallyDelete": "本当にこの飲食店を削除しますか？削除すると、お店/メニューの情報が全て消えます",
     "reallyOnListDelete": "本当に掲載を取り消しますか？",
     "phoneCall": "注文を電話で通知",
     "phoneCallDescription": "オンラインで注文が入った時にお店の電話でお知らせします",
@@ -433,7 +433,7 @@
     "back": "戻る",
     "addTitle": "商品グループ名を追加",
     "addItem": "商品を追加",
-    "downloadMenu": "メニューをダウンロード",
+    "downloadMenu": "チラシをダウンロード",
     "cancel": "キャンセル",
     "next": "次へ"
   },
@@ -626,6 +626,46 @@
         "auth/invalid-email": "無効なメールアドレスです。",
         "auth/unauthorized-continue-uri": "ドメインがホワイトリストに登録されていません。"
       }
+    },
+    "messages": {
+      "title": "メッセージ",
+      "childInvitationAccept": "招待を受け入れてサブアカウントになる",
+      "childInvitationAcceptMessage": "サブアカウントになると、このアカウントで追加した飲食店は操作できなくなります",
+      "childInvitationDeny": "招待を拒否する",
+      "accept": "受け入れる",
+      "deny": "拒否する",
+      "childInvitationMessage1": "以下のお店を管理するオーナーから招待状が届きました",
+      "childInvitationMessage2": "こちらのお店",
+      "childInvitationMessage3": "このお店を管理するサブアカウントに変更する場合は、受け入れるを押してください。拒否する場合には、拒否を押してください。"
+    },
+    "subAccounts": {
+      "index": "サブアカウント管理",
+      "openDashboard": "サブアカウント管理画面",
+      "manualLink": "サブアカウントの使い方",
+      "description": "特定の店舗のみ操作できるサブアカウントを設定/管理できます。",
+      "title": "サブアカウント管理",
+      "subaccountlist": "サブアカウント一覧",
+      "email": "メールアドレス",
+      "name": "サブアカウント名",
+      "invite": "招待する",
+      "invitedList": "送信済み招待",
+      "deleteSubaccount": "サブアカウント解除",
+      "send": "送信",
+      "sending": "送信中",
+      "enterName": "サブアカウントに付ける名前を入力して下さい",
+      "enterEmail": "招待するサブアカウントのメールアドレスを入力して下さい",
+      "inviteInputError": "入力項目を確かめてください",
+      "messageResult": {
+        "waiting": "送信済み",
+        "accepted": "登録済み",
+        "denied": "拒否されました"
+      },
+      "selectRestaurant": "このアカウントが操作できるお店を選択してください。",
+      "confirmDeletechild": "サブアカウントを解除します"
+    },
+    "smaregi": {
+      "index": "スマレジ連携",
+      "smaregiShopList": "スマレジ店舗一覧"
     }
   },
   "week": {

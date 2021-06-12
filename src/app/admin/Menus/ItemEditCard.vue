@@ -70,7 +70,9 @@
       </div>
     </div>
 
-    <div class="mt-2 text-right lg:mt-0 lg:ml-4 lg:flex-shrink-0">
+    <div class="mt-2 text-right lg:mt-0 lg:ml-4 lg:flex-shrink-0"
+         v-if="isOwner"
+         >
       <!-- Card Actions -->
       <div class="inline-flex space-x-2">
         <!-- Up -->
@@ -159,6 +161,9 @@ export default {
     }
   },
   computed: {
+    isOwner() {
+      return !this.$store.getters.isSubAccount;
+    },
     image() {
       return (
         (this.menuitem?.images?.item?.resizedImages || {})["600"] ||
@@ -182,11 +187,13 @@ export default {
       db.doc(path).update("soldOut", e);
     },
     linkEdit() {
-      this.$router.push({
-        path: `/admin/restaurants/${this.restaurantId()}/menus/${
+      if (this.isOwner) {
+        this.$router.push({
+          path: `/admin/restaurants/${this.restaurantId()}/menus/${
           this.menuitem.id
         }`
-      });
+        });
+      }
     },
     positionUp() {
       this.$emit("positionUp", this.menuitem.id);
