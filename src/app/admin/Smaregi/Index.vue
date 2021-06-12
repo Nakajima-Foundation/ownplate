@@ -27,7 +27,8 @@
             <span class="text-base font-bold  text-xl">
               {{ $t("admin.smaregi.smaregiShopList") }}
             </span>
-            <div v-for="(shop, k) in shopList" :key="k">
+            <div v-if="isEdit">
+              <div v-for="(shop, k) in shopList" :key="k">
                 {{shop.storeName}}
                 <b-select v-model="selectedRestaurant[k]">
                   <option
@@ -38,8 +39,24 @@
                     {{ restaurant.restaurantName }}
                   </option>
                 </b-select>
-
+              </div>
+              <div v-if="isDuplicateError">
+                *お店の指定が重複しています
+              </div>
+              <b-button @click="saveShops">保存</b-button>
             </div>
+            <div v-else>
+              <div v-for="(shop, k) in shopList" :key="k">
+                <div class="mt-2 text-base font-bold">
+                  {{shop.storeName}}
+                </div>
+                {{(restaurantObj[selectedRestaurant[k]] ||{}).restaurantName}}
+              </div>
+              <div class="mt-4">
+                <b-button @click="isEdit=true">編集</b-button>
+              </div>
+            </div>
+
         </div>
     </div>
   </div>
@@ -65,17 +82,21 @@ export default {
       isLoading: false,
       selectedRestaurant: {},
       restaurants: [],
+      restaurantObj: {},
+      contractId: null,
+      isEdit: false,
+      isDuplicateError: false,
     };
   },
 
   async created() {
-    const smaregiDoc = await db.doc(`admins/${this.uid}/public/smaregi`).get();
-    // console.log(this.uid);
+    const smaregiDoc = await db.doc(`admins/${this.uid}/private/smaregi`).get();
     this.enable = (smaregiDoc && smaregiDoc.exists);
+
     if (this.enable) {
       const smaregiData = smaregiDoc.data();
+      this.contractId = smaregiData?.smaregi?.contract?.id;
 
-      // console.log(smaregiData);
       try {
         const smaregiAuth = functions.httpsCallable("smaregiStoreList");
         this.isLoading = true;
@@ -88,19 +109,77 @@ export default {
         this.isLoading = false;
       }
       const restaurantColleciton =  await db.collection("restaurants")
-            .where("uid", "==", this.uid)
+            .where("publicFlag", "==", true)
             .where("deletedFlag", "==", false)
-            .orderBy("createdAt", "asc").get();
-      this.restaurants = restaurantColleciton.docs.map(this.doc2data("message"));
-      this.restaurants.unshift({id: "00000", restaurantName: "-----------------"})
-      console.log(this.restaurants);
-
-      this.shopList.map((s) => {
-        console.log(s);
-        // this.selectedRestaurant
+            .where("uid", "==", this.uid)
+            .get();
+      this.restaurants = restaurantColleciton.docs.map(this.doc2data("message")).sort((a, b) => {
+        return a.restaurantName > b.restaurantName ? 1 : -1;
       });
+      this.restaurantObj = this.restaurants.reduce((tmp, current) => {
+        tmp[current.id] = current;
+        return tmp;
+      }, {});
 
+      this.restaurants.unshift({id: "00000", restaurantName: "-----------------"})
+
+      const storeCollection = await db.collection(`/smaregi/${this.contractId}/stores`).where("uid", "==", this.uid).get();
+      const stores = storeCollection.docs.map(this.doc2data("stores"));
+
+      const storeObj = stores.reduce((tmp, current) => {
+        tmp[current.storeId] = current;
+        return tmp;
+      }, {});
+
+      const selectedRestaurant = {};
+      (this.shopList ||[]).map((store, key) => {
+        const storeId = store.storeId;
+        if (storeObj[storeId]) {
+          selectedRestaurant[key] = storeObj[storeId].restaurantId;
+        };
+      });
+      this.selectedRestaurant = selectedRestaurant;
     }
+  },
+  methods: {
+    saveShops() {
+      const filteredList = (this.shopList ||[]).reduce((tmp, store, key) => {
+        const restaurantId = this.selectedRestaurant[key];
+        console.log(restaurantId);
+        if (restaurantId && restaurantId !== "00000") {
+          tmp.push(restaurantId);
+        }
+        return tmp;
+      }, []);
+      console.log(filteredList.length,  Array.from(new Set(filteredList)).length);
+      this.isDuplicateError = (filteredList.length !== Array.from(new Set(filteredList)).length);
+      if (this.isDuplicateError) {
+        console.log("error");
+        return ;
+      }
+
+      (this.shopList ||[]).map((store, key) => {
+        const restaurantId = this.selectedRestaurant[key];
+        // check uniq.
+        const storeId = store.storeId;
+        const path = `/smaregi/${this.contractId}/stores/${storeId}`
+        console.log(path);
+        if (restaurantId && restaurantId !== "00000") {
+          const data = {
+            contractId: this.contractId,
+            storeId: storeId,
+            uid: this.uid,
+            restaurantId,
+          }
+          db.doc(path).set(data);
+          // console.log(this.selectedRestaurant[key]);
+        } else {
+          db.doc(path).delete();
+          console.log("TODO DELETE");
+        }
+      });
+      this.isEdit = false;
+    },
   },
   computed: {
     uid() {

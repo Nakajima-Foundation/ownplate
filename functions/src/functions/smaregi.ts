@@ -43,11 +43,23 @@ export const auth = async (db: FirebaseFirestore.Firestore, data: any, context: 
     }
 
     const ret = await userRes.json();
+    if (ret.is_owner!) {
+      throw new functions.https.HttpsError('invalid-argument', 'You are not owner.')
+    }
+    const contractId = ret.contract.id;
+    const smaregiRef = db.doc(`/smaregi/${contractId}`);
+    const smaregiDoc = await smaregiRef.get();
+    const smaregiData = smaregiDoc.data();
+    if (smaregiDoc && smaregiData && (smaregiData.uid !== adminUid)) {
+      throw new functions.https.HttpsError('invalid-argument', 'This smaregi account already connected.')
+    }
+    await smaregiRef.set({contractId, uid: adminUid});
     await db.doc(`admins/${adminUid}/private/smaregi`).set({smaregi: ret}, {merge: true});
     await db.doc(`admins/${adminUid}/public/smaregi`).set({smaregi: true}, {merge: true});
 
     return {result: true};
   } catch (e) {
+    console.log(e);
     return {result: false};
   }
 };
