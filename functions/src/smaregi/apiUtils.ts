@@ -80,6 +80,7 @@ const api_call = async (contractId, path, access_token, method, data = {}) => {
       return encodeURIComponent(k) + '=' + encodeURIComponent(data[k]);
     }).join('&');
     requst_url = requst_url + "?" + query;
+    console.log(requst_url);
   } else {
     options.body = JSON.stringify(data);
   }

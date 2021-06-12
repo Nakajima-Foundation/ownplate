@@ -5,7 +5,6 @@ import * as utils from '../lib/utils'
 import { generateBody } from "../smaregi/apiUtils";
 
 const clientSecrets = (functions.config() && functions.config().smaregi && functions.config().smaregi.clientsecrets);
-
 const host = (functions.config() && functions.config().smaregi && functions.config().smaregi.host);
 
 export const auth = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
@@ -73,7 +72,7 @@ export const storeList = async (db: FirebaseFirestore.Firestore, data: any, cont
     contractId: smaregiContractId,
     clientId: client_id,
     clientSecret: clientSecret,
-      hostName: "api.smaregi.dev",
+      hostName: "api.smaregi.dev", //TODO
       scopes: [
         "pos.stock:read", "pos.stock:write",
         "pos.stores:read", "pos.stores:write",

@@ -40,6 +40,10 @@ class SmaregiApi {
     this.initApi("products");
     return this;
   }
+  stock() {
+    this.initApi("stock");
+    return this;
+  }
   categories() {
     this.initApi("categories");
     return this;
@@ -57,9 +61,9 @@ class SmaregiApi {
   get() {
     return this.stacks.join("/")
   }
-  async list() {
+  async list(params: any = {}) {
     const path =  this.stacks.join("/")
-    const json = await apiUtils.get_func(this.contractId, path, this.access_token, {});
+    const json = await apiUtils.get_func(this.contractId, path, this.access_token, params);
     return json;
   }
   async create(data) {
