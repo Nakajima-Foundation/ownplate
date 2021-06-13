@@ -53,6 +53,10 @@ class SmaregiApi {
     this.stackParam([value]);
     return this;
   }
+  storeProducts() {
+    this.stackParam(["products"]);
+    return this;
+  }
   type(value) {
     this.stackParam(["type", value]);
     return this;

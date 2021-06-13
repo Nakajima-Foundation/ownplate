@@ -28,3 +28,8 @@ export const ownPlateConfig = {
 };
 
 export const sentryDsn = 'https://127aea38118f4362a1167c0bc5607846@o391740.ingest.sentry.io/5238403';
+
+export const smaregi = {
+  authUrl: "https://id.smaregi.dev/authorize",
+  clientId: "cc470a5f488dcab4ce1f40bbf0838670",
+};

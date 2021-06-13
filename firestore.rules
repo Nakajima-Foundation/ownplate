@@ -19,6 +19,9 @@ service cloud.firestore {
     function isOwner(resource, request) {
       return resource.data.uid == request.auth.uid;
     }
+    function isNewOwner(request) {
+      return request.resource.data.uid == request.auth.uid;
+    }
     function isFromUser(resource, request) {
       return resource.data.fromUid == request.auth.uid;
     }
@@ -28,6 +31,9 @@ service cloud.firestore {
 
     function isRestaurantOwner(restaurantId, request) {
       return get(/databases/$(database)/documents/restaurants/$(restaurantId)).data.uid == request.auth.uid;
+    }
+    function isSmaregiOwner(contractId, request) {
+      return get(/databases/$(database)/documents/smaregi/$(contractId)).data.uid == request.auth.uid;
     }
     function isRestaurantSubAccount(restaurantId, request) {
       let parantUid = get(/databases/$(database)/documents/restaurants/$(restaurantId)).data.uid;
@@ -130,8 +136,7 @@ service cloud.firestore {
       allow read: if isFromUser(resource, request);
     }
 
-    match /restaurants {
-      match /{restaurantId} {
+    match /restaurants/{restaurantId} {
         allow read: if true
         allow create: if isAdmin(request)
                         && request.resource.data.uid == request.auth.uid;
@@ -184,7 +189,23 @@ service cloud.firestore {
         match /log/{datestr}/phoneLog/{orderId} {
           allow read: if isSuper(request);
         }
-      }
+    }
+
+    match /smaregi/{contractId} {
+        allow read: if isAdmin(request) && isOwner(resource, request);
+        match /stores/{storeId} {
+            allow read: if isAdmin(request) && isSmaregiOwner(contractId, request) && isOwner(resource, request);
+            allow write: if isAdmin(request) && isNewOwner(request) && isSmaregiOwner(contractId, request);
+            allow delete: if isAdmin(request) && isSmaregiOwner(contractId, request);
+            match /products/{prodcts} {
+                allow create: if isAdmin(request) && isNewOwner(request) && isSmaregiOwner(contractId, request);
+                allow read, update: if isAdmin(request) && isOwner(resource, request) && isSmaregiOwner(contractId, request);
+                allow delete: if isAdmin(request) && isSmaregiOwner(contractId, request);
+            }
+            match /stocks/{prodcts} {
+                allow read: if isAdmin(request) && isOwner(resource, request) && isSmaregiOwner(contractId, request);
+            }
+        }
     }
 
     match /requestList/{restaurantId} {
