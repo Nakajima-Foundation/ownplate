@@ -665,6 +665,8 @@
     },
     "smaregi": {
       "index": "スマレジ連携",
+      "authenticating": "連携中",
+      "authenticationError": "連携に失敗しました",
       "smaregiShopList": "スマレジ店舗一覧"
     }
   },
