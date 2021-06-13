@@ -200,6 +200,7 @@ service cloud.firestore {
             match /products/{prodcts} {
                 allow create: if isAdmin(request) && isNewOwner(request) && isSmaregiOwner(contractId, request);
                 allow read, update: if isAdmin(request) && isOwner(resource, request) && isSmaregiOwner(contractId, request);
+                allow delete: if isAdmin(request) && isSmaregiOwner(contractId, request);
             }
             match /stocks/{prodcts} {
                 allow read: if isAdmin(request) && isOwner(resource, request) && isSmaregiOwner(contractId, request);

@@ -8,5 +8,5 @@ const db = admin.firestore();
 export default functions
   .region("asia-northeast1")
   .https.onCall(async (data, context) => {
-  return await smaregi.storeList(db, data, context);
+  return await smaregi.productList(db, data, context);
 });

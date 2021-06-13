@@ -168,6 +168,11 @@ export const customRoutes = [
     component: "admin/Smaregi/Callback.vue"
   },
   {
+    name: "admin-smaregi-store",
+    path: "/admin/smaregi/store/:storeId",
+    component: "admin/Smaregi/Store.vue"
+  },
+  {
     name: "admin-news-list",
     path: "/admin/news",
     component: "admin/News/List.vue"

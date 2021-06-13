@@ -30,7 +30,9 @@
             <div v-if="isEdit">
               <div v-for="(shop, k) in shopList" :key="k">
                 {{shop.storeName}}
-                <b-select v-model="selectedRestaurant[k]">
+                <b-select v-model="selectedRestaurant[k]"
+                          :class="selectedRestaurant[k] && duplicateElement[selectedRestaurant[k]] ? 'border-red-700 border-2 border-solid' : ''"
+                          >
                   <option
                     v-for="restaurant in restaurants"
                     :value="restaurant.id"
@@ -43,12 +45,15 @@
               <div v-if="isDuplicateError">
                 *お店の指定が重複しています
               </div>
-              <b-button @click="saveShops">保存</b-button>
+              <b-button @click="saveShops" :disabled="isDuplicateError">保存</b-button>
             </div>
+
             <div v-else>
               <div v-for="(shop, k) in shopList" :key="k">
                 <div class="mt-2 text-base font-bold">
-                  {{shop.storeName}}
+                  <router-link :to="`/admin/smaregi/store/${shop.storeId}`" >
+                    {{shop.storeName}}
+                  </router-link>
                 </div>
                 {{(restaurantObj[selectedRestaurant[k]] ||{}).restaurantName}}
               </div>
@@ -56,7 +61,6 @@
                 <b-button @click="isEdit=true">編集</b-button>
               </div>
             </div>
-
         </div>
     </div>
   </div>
@@ -64,7 +68,7 @@
 
 <script>
 import { smaregi } from "@/config/project";
-import { db, functions } from "~/plugins/firebase.js";
+import { db, functionsJp } from "~/plugins/firebase.js";
 
 import BackButton from "~/components/BackButton";
 
@@ -85,7 +89,6 @@ export default {
       restaurantObj: {},
       contractId: null,
       isEdit: false,
-      isDuplicateError: false,
     };
   },
 
@@ -98,7 +101,7 @@ export default {
       this.contractId = smaregiData?.smaregi?.contract?.id;
 
       try {
-        const smaregiAuth = functions.httpsCallable("smaregiStoreList");
+        const smaregiAuth = functionsJp.httpsCallable("smaregiStoreList");
         this.isLoading = true;
         const { data } = await smaregiAuth({
           client_id: smaregi.clientId,
@@ -143,16 +146,6 @@ export default {
   },
   methods: {
     saveShops() {
-      const filteredList = (this.shopList ||[]).reduce((tmp, store, key) => {
-        const restaurantId = this.selectedRestaurant[key];
-        console.log(restaurantId);
-        if (restaurantId && restaurantId !== "00000") {
-          tmp.push(restaurantId);
-        }
-        return tmp;
-      }, []);
-      console.log(filteredList.length,  Array.from(new Set(filteredList)).length);
-      this.isDuplicateError = (filteredList.length !== Array.from(new Set(filteredList)).length);
       if (this.isDuplicateError) {
         console.log("error");
         return ;
@@ -166,6 +159,7 @@ export default {
         console.log(path);
         if (restaurantId && restaurantId !== "00000") {
           const data = {
+            storeName: store.storeName,
             contractId: this.contractId,
             storeId: storeId,
             uid: this.uid,
@@ -182,6 +176,25 @@ export default {
     },
   },
   computed: {
+    isDuplicateError() {
+      return Object.keys(this.duplicateElement).length > 0;
+    },
+    duplicateElement() {
+      const counter = Object.values(this.selectedRestaurant).reduce((tmp, ele) => {
+        if (tmp[ele] === undefined) {
+          tmp[ele] = 1;
+        } else {
+          tmp[ele] ++;
+        }
+        return tmp;
+      }, {});
+      return Object.keys(counter).reduce((tmp, key) => {
+        if (counter[key] > 1) {
+          tmp[key] = true;
+        }
+        return tmp;
+      }, {});
+    },
     uid() {
       return this.$store.getters.uidAdmin;
     },

@@ -101,3 +101,42 @@ export const storeList = async (db: FirebaseFirestore.Firestore, data: any, cont
   return {res: storeListData};
 
 }
+
+
+export const productList = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
+  const { client_id, store_id } = data;
+
+  const adminUid = utils.validate_auth(context);
+  const clientSecret = clientSecrets[client_id]
+
+  const smaregiDoc = await  db.doc(`admins/${adminUid}/private/smaregi`).get()
+  if (!smaregiDoc || !smaregiDoc.exists) {
+    throw new functions.https.HttpsError('invalid-argument', 'This data does not exist.')
+  }
+  const smaregiData = smaregiDoc.data();
+  const smaregiContractId = smaregiData?.smaregi?.contract?.id;
+  if (!smaregiContractId) {
+    throw new functions.https.HttpsError('invalid-argument', 'This data does not exist.')
+  }
+
+  const config = {
+    contractId: smaregiContractId,
+    clientId: client_id,
+    clientSecret: clientSecret,
+      hostName: "api.smaregi.dev", //TODO
+      scopes: [
+        "pos.stock:read", "pos.stock:write",
+        "pos.stores:read", "pos.stores:write",
+        "pos.customers:read", "pos.customers:write",
+        "pos.products:read", "pos.products:write"
+      ]
+  };
+
+  const api = new SmaregiApi(config);
+  await api.auth();
+  const storesApi = api.stores();
+  const productListData = await storesApi.id(store_id).storeProducts().list();
+
+  return {res: productListData};
+
+}
