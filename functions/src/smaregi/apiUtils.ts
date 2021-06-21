@@ -45,7 +45,6 @@ export const authentication = async (clientId, clientSecret, contractId, scopes)
 }
 
 const actual_call = async (requst_url, options) => {
-  console.log(requst_url, options);
   const res = await fetch(requst_url, options);
   if (res.status === 200) {
     try {
@@ -80,7 +79,6 @@ const api_call = async (contractId, path, access_token, method, data = {}) => {
       return encodeURIComponent(k) + '=' + encodeURIComponent(data[k]);
     }).join('&');
     requst_url = requst_url + "?" + query;
-    console.log(requst_url);
   } else {
     options.body = JSON.stringify(data);
   }

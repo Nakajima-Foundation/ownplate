@@ -43,11 +43,23 @@ export const auth = async (db: FirebaseFirestore.Firestore, data: any, context: 
     }
 
     const ret = await userRes.json();
+    if (ret.is_owner!) {
+      throw new functions.https.HttpsError('invalid-argument', 'You are not owner.')
+    }
+    const contractId = ret.contract.id;
+    const smaregiRef = db.doc(`/smaregi/${contractId}`);
+    const smaregiDoc = await smaregiRef.get();
+    const smaregiData = smaregiDoc.data();
+    if (smaregiDoc && smaregiData && (smaregiData.uid !== adminUid)) {
+      throw new functions.https.HttpsError('invalid-argument', 'This smaregi account already connected.')
+    }
+    await smaregiRef.set({contractId, uid: adminUid});
     await db.doc(`admins/${adminUid}/private/smaregi`).set({smaregi: ret}, {merge: true});
     await db.doc(`admins/${adminUid}/public/smaregi`).set({smaregi: true}, {merge: true});
 
     return {result: true};
   } catch (e) {
+    console.log(e);
     return {result: false};
   }
 };
@@ -87,5 +99,44 @@ export const storeList = async (db: FirebaseFirestore.Firestore, data: any, cont
   const storeListData = await storesApi.list();
 
   return {res: storeListData};
+
+}
+
+
+export const productList = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
+  const { client_id, store_id } = data;
+
+  const adminUid = utils.validate_auth(context);
+  const clientSecret = clientSecrets[client_id]
+
+  const smaregiDoc = await  db.doc(`admins/${adminUid}/private/smaregi`).get()
+  if (!smaregiDoc || !smaregiDoc.exists) {
+    throw new functions.https.HttpsError('invalid-argument', 'This data does not exist.')
+  }
+  const smaregiData = smaregiDoc.data();
+  const smaregiContractId = smaregiData?.smaregi?.contract?.id;
+  if (!smaregiContractId) {
+    throw new functions.https.HttpsError('invalid-argument', 'This data does not exist.')
+  }
+
+  const config = {
+    contractId: smaregiContractId,
+    clientId: client_id,
+    clientSecret: clientSecret,
+      hostName: "api.smaregi.dev", //TODO
+      scopes: [
+        "pos.stock:read", "pos.stock:write",
+        "pos.stores:read", "pos.stores:write",
+        "pos.customers:read", "pos.customers:write",
+        "pos.products:read", "pos.products:write"
+      ]
+  };
+
+  const api = new SmaregiApi(config);
+  await api.auth();
+  const storesApi = api.stores();
+  const productListData = await storesApi.id(store_id).storeProducts().list();
+
+  return {res: productListData};
 
 }

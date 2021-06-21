@@ -45,6 +45,18 @@ export const customRoutes = [
     component: "common/Privacy.vue"
   },
   {
+    path: "/op",
+    component: "operator/Index.vue"
+  },
+  {
+    path: "/op/orders",
+    component: "super/AllOrders.vue"
+  },
+  {
+    path: "/op/restaurants",
+    component: "super/AllRestaurants.vue"
+  },
+  {
     name: "ownerPage",
     path: "/o/:ownerUid",
     component: "user/RestaurantIndex.vue"
@@ -168,6 +180,11 @@ export const customRoutes = [
     component: "admin/Smaregi/Callback.vue"
   },
   {
+    name: "admin-smaregi-store",
+    path: "/admin/smaregi/store/:storeId",
+    component: "admin/Smaregi/Store.vue"
+  },
+  {
     name: "admin-news-list",
     path: "/admin/news",
     component: "admin/News/List.vue"
@@ -235,18 +252,6 @@ export const customRoutes = [
   {
     path: "/s/callbacks/:uid/:logId",
     component: "super/StripeCallback.vue"
-  },
-  {
-    path: "/o",
-    component: "operator/Index.vue"
-  },
-  {
-    path: "/o/orders",
-    component: "super/AllOrders.vue"
-  },
-  {
-    path: "/o/restaurants",
-    component: "super/AllRestaurants.vue"
   },
   {
     path: "/callback/line",

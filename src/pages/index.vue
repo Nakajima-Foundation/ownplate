@@ -33,7 +33,7 @@
           <div class="bg-form rounded-lg p-l-24 p-r-24 p-t-24 p-b-24">
             <!-- Go to Super Admin Page -->
             <div class="align-center">
-              <router-link to="/o">
+              <router-link to="/op">
                 <div class="op-button-small primary" style="min-width: 256px;">
                   <span class="c-onprimary">Operator Page</span>
                 </div>

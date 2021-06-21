@@ -2,9 +2,9 @@
   <section class="section">
     <div v-if="$store.getters.isSuperAdmin || $store.getters.isOperator">
       <h2>Operator Page</h2>
-      <router-link to="/o/orders">All Orders</router-link>
+      <router-link to="/op/orders">All Orders</router-link>
       <br />
-      <router-link to="/o/restaurants">All Restaurants</router-link>
+      <router-link to="/op/restaurants">All Restaurants</router-link>
       <br />
     </div>
   </section>
