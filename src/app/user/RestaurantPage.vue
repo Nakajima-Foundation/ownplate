@@ -293,6 +293,7 @@ export default {
       });
     const title_detacher = db
       .collection(`restaurants/${this.restaurantId()}/titles`)
+      .where("deletedFlag", "==", false)
       .onSnapshot(title => {
         if (!title.empty) {
           this.titles = title.docs.map(this.doc2data("title"));
