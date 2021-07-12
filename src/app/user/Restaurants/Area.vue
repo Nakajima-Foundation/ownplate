@@ -37,14 +37,22 @@
         </router-link>
       </div>
     </div>
+
+    <div class="mt-2 mx-6 h-3/5">
+      <Map :restaurants="restaurants" v-if="restaurants.length > 0"/>
+    </div>
   </div>
 </template>
 
 <script>
 import { db, storage, firestore } from "~/plugins/firebase.js";
 import { defaultHeader } from "../../../plugins/header";
+import Map from "~/components/Map";
 
 export default {
+  components: {
+    Map,
+  },
   head() {
     return {
       title: [
