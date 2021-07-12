@@ -7,7 +7,6 @@
       :center="{ lat: center_lat, lng: center_lng }"
       :options="{ fullscreenControl: false }"
       :zoom="zoom"
-      @loaded="mapLoaded"
     >
       <GMapMarker v-for="restaurant in restaurants"
                   :key="restaurant.id"
@@ -52,16 +51,11 @@ export default {
       zoom: 13,
     };
   },
-  methods: {
-    mapLoaded() {
-      }
-  },
   created() {
-    console.log(this.restaurants);
     this.restaurants.map((restaurant) => {
       if (restaurant.location) {
-        console.log(restaurant.location.lat,
-                    restaurant.location.lng)
+        // TODO: filter invalid position data.
+
         if (restaurant.location.lat > this.max_lat) {
           this.max_lat = restaurant.location.lat;
         }
@@ -76,12 +70,11 @@ export default {
         }
       }
     });
-    if (this.min_lng !== 1000) {
-      this.center_lng = (this.max_lng + this.min_lng) / 2;
+    if (this.min_lng === 1000 || this.min_lat === 1000) {
+      return;
     }
-    if (this.min_lat !== 1000) {
-      this.center_lat = (this.max_lat + this.min_lat) / 2;
-    }
+    this.center_lng = (this.max_lng + this.min_lng) / 2;
+    this.center_lat = (this.max_lat + this.min_lat) / 2;
 
     // https://easyramble.com/latitude-and-longitude-per-kilometer.html
     // lat 1 is 111km?
