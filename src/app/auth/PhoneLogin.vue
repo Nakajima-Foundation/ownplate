@@ -43,7 +43,7 @@
                 type="text"
                 v-model="phoneNumber"
                 v-on:input="validatePhoneNumber"
-                maxlength="30"
+                maxlength="20"
                 :placeholder="$t('sms.pleasetype')"
               />
             </b-field>
@@ -225,6 +225,9 @@ export default {
   },
   computed: {
     SMSPhoneNumber() {
+      if ((this.phoneNumber ||"").startsWith("+")) {
+        return this.phoneNumber;
+      }
       return this.relogin || this.countryCode + this.phoneNumber;
     },
     countries() {
@@ -243,7 +246,7 @@ export default {
   methods: {
     validatePhoneNumber() {
       this.errors = [];
-      const regex = /^[0-9()\-]{8,15}$/;
+      const regex = /^\+?[0-9()\-]{8,20}$/;
       if (!regex.test(this.phoneNumber)) {
         this.errors.push("sms.invalidPhoneNumber");
       }
