@@ -43,10 +43,16 @@
                 type="text"
                 v-model="phoneNumber"
                 v-on:input="validatePhoneNumber"
-                maxlength="30"
+                maxlength="20"
                 :placeholder="$t('sms.pleasetype')"
               />
             </b-field>
+          </div>
+          <div v-if="!isLocaleJapan">
+            <div class="text-xs mt-2">
+              For foreign customers:<br/>
+              For mobile phones contracted in countries other than Japan, please add the country code to the phone number like +001-555-1111. You need to be able to receive SMS while roaming. <br/>
+            </div>
           </div>
         </div>
       </div>
@@ -225,6 +231,9 @@ export default {
   },
   computed: {
     SMSPhoneNumber() {
+      if ((this.phoneNumber ||"").startsWith("+")) {
+        return this.phoneNumber;
+      }
       return this.relogin || this.countryCode + this.phoneNumber;
     },
     countries() {
@@ -243,7 +252,7 @@ export default {
   methods: {
     validatePhoneNumber() {
       this.errors = [];
-      const regex = /^[0-9()\-]{8,15}$/;
+      const regex = /^\+?[0-9()\-]{8,20}$/;
       if (!regex.test(this.phoneNumber)) {
         this.errors.push("sms.invalidPhoneNumber");
       }
