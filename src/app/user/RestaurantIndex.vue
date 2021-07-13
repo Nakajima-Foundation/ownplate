@@ -29,6 +29,9 @@
         </div>
       </div>
     </template>
+    <div>
+      <Map :restaurants="restaurants" v-if="restaurants.length > 0"/>
+    </div>
   </div>
 </template>
 
@@ -36,10 +39,13 @@
 import { db } from "~/plugins/firebase.js";
 import { JPPrefecture, USStates } from "~/plugins/constant";
 import { restaurant2AreaObj, sortRestaurantObj } from "./RestaurantUtils";
+import Map from "~/components/Map";
 
 export default {
   name: "RestaurantIndex",
-
+  components: {
+    Map,
+  },
   data() {
     return {
       restaurants: [],
@@ -54,6 +60,7 @@ export default {
           .where("onTheList", "==", true)
           .where("uid", "==", ownerUid).get();
     this.restaurantsObj = restaurant2AreaObj(restaurantsCollection.docs);
+    this.restaurants = restaurantsCollection.docs.map(this.doc2data(""));
     sortRestaurantObj(this.restaurantsObj);
   },
   computed: {
