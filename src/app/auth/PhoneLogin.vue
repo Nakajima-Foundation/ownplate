@@ -48,6 +48,12 @@
               />
             </b-field>
           </div>
+          <div v-if="!isLocaleJapan">
+            <div class="text-xs mt-2">
+              For foreign customers:<br/>
+              For mobile phones contracted in countries other than Japan, please add the country code to the phone number like +001-555-1111. You need to be able to receive SMS while roaming. <br/>
+            </div>
+          </div>
         </div>
       </div>
 
