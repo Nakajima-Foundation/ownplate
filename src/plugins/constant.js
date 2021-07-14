@@ -319,6 +319,7 @@ export const regionalSettings = {
     languages: {
       ja: "日本語",
       en: "English (US)",
+      fr: "French",
     },
     covid19trace: true,
     hashTag: "omochikaeri",

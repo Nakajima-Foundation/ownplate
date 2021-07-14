@@ -4,6 +4,7 @@ import VueI18n from 'vue-i18n';
 import i18nEN from '../../lang/en.json';
 import i18nES from '../../lang/es.json';
 import i18nJA from '../../lang/ja.json';
+import i18nFR from '../../lang/fr.json';
 
 import * as constant from './constant.js';
 
@@ -45,6 +46,7 @@ const i18n = new VueI18n({
     en: i18nEN,
     es: i18nES,
     ja: i18nJA,
+    fr: i18nFR,
   },
   numberFormats: {
     en: numberFormats,
