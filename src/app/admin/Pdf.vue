@@ -51,7 +51,7 @@ export default {
       pdf.download(this.restaurantInfo,  this.menuObj, this.nationalPhoneNumber, this.shareUrl());
     },
     download2() {
-      
+
     },
   }
 }

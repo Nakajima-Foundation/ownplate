@@ -392,6 +392,12 @@ export default {
     OrderInfo,
     NotFound
   },
+  head() {
+    return {
+      title: this.shopInfo.restaurantName ?
+        ["Admin Order Info", this.shopInfo.restaurantName , this.defaultTitle].join(" / ") : this.defaultTitle
+    }
+  },
 
   data() {
     return {
