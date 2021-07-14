@@ -131,6 +131,12 @@ export default {
     BackButton,
     NotificationIndex
   },
+  head() {
+    return {
+      title: this.shopInfo.restaurantName ?
+        ["Admin Order Suspend", this.shopInfo.restaurantName , this.defaultTitle].join(" / ") : this.defaultTitle
+    }
+  },
   data() {
     return {
       shopInfo: {},

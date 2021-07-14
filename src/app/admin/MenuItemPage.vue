@@ -574,6 +574,12 @@ import EditCategory from "~/app/admin/Menus/EditCategory";
 
 export default {
   name: "Order",
+  head() {
+    return {
+      title: this.menuInfo.itemName ?
+        ["Admin Menu Item", this.menuInfo.itemName, this.restaurantInfo.restaurantName , this.defaultTitle].join(" / ") : this.defaultTitle
+    }
+  },
 
   components: {
     Price,

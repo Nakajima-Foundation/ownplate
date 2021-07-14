@@ -207,6 +207,12 @@ export default {
     DownloadCsv,
     ReportDetails
   },
+  head() {
+    return {
+      title: this.shopInfo.restaurantName ?
+        ["Admin Report", this.shopInfo.restaurantName , this.defaultTitle].join(" / ") : this.defaultTitle
+    }
+  },
   data() {
     return {
       shopInfo: {},
