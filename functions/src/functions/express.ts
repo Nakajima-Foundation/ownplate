@@ -265,6 +265,7 @@ app.use('/smaregi/1.0', smaregi.smaregiRouter);
 
 app.get('/r/:restaurantName', ogpPage);
 app.get('/r/:restaurantName/menus/:menuId', ogpPage);
+app.get('/r/:restaurantName/order/:orderId', ogpPage);
 
 
 app.get('/sitemap.xml', sitemap_response);
