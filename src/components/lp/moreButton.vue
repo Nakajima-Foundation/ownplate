@@ -10,7 +10,7 @@
           to=""
         >
           <span class="p-l-16 p-r-16">
-            <span class="c-primary t-button">もっと詳しく</span>
+            <span class="c-primary t-button">{{ $t("lp.moreDetails") }}</span>
           </span>
         </b-button>
       </div>

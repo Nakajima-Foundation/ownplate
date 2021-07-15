@@ -3,8 +3,9 @@
     <!-- User Voices Title -->
     <div
       class="text-center mt-16 text-2xl font-bold text-black opacity-40 lg:text-3xl"
-    >
-      ご利用頂いている<br />飲食店のみなさまの声
+      >
+      {{ $t("lp.customerVoice1") }}
+       <br />{{ $t("lp.customerVoice2") }}
     </div>
 
     <!-- User Voices Hero -->
@@ -126,7 +127,7 @@
           class="h-16 rounded-full bg-op-yellow inline-flex items-center px-8 shadow"
         >
           <span class="text-black opacity-60 text-xl font-bold"
-            >もっと詳しく</span
+            >{{ $t("lp.moreDetails") }}</span
           >
         </div>
       </a>

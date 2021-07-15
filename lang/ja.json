@@ -338,12 +338,20 @@
     "today": "本日"
   },
   "lp": {
+    "enjoyOmochilaeri": "お店の笑顔もおもちかえり！",
+    "operationTeams": "わたしたちが運営しています！",
     "easy3Steps": "HOW TO START？　簡単3ステップ！",
     "forOwner": "飲食店の方はこちら",
+    "moreDetails": "もっと詳しく",
     "tryService": "ご利用を開始",
     "ask": "お問い合わせ",
-
-    "forCustomer": "テイクアウトご利用のお客様はこちら"
+    "forCustomer": "テイクアウトご利用のお客様はこちら",
+    "customerVoice1": "ご利用頂いている",
+    "customerVoice2": "飲食店のみなさまの声",
+    "goToSampleRestaurant": "サンプルの店舗を見る",
+    "izakaya": "居酒屋",
+    "patisserie": "パティスリー",
+    "searchRestaurant": "テイクアウトのお店を探す"
   },
   "order": {
     "allOrders": "全ての注文",
