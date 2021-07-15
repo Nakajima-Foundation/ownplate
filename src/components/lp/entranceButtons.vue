@@ -4,7 +4,7 @@
     <div class="bg-op-teal rounded-lg pt-6 lg:col-span-2">
       <i class="material-icons text-7xl opacity-60">store</i>
       <div class="text-white text-sm font-bold">
-        飲食店の方はこちら
+        {{ $t("lp.forOwner") }}
       </div>
       <div class="pb-4 lg:inline-flex lg:space-x-8">
         <!-- Go to Restaurant Admin Page -->
@@ -14,7 +14,7 @@
               class="h-16 rounded-full bg-white inline-flex items-center px-8 shadow"
             >
               <span class="text-black opacity-60 text-xl font-bold"
-                >ご利用を開始</span
+                    >{{ $t("lp.tryService") }}</span
               >
             </div>
           </router-link>
@@ -29,7 +29,7 @@
               class="h-16 rounded-full bg-op-yellow inline-flex items-center px-8 shadow"
             >
               <span class="text-black opacity-60 text-xl font-bold"
-                >お問い合わせ</span
+                >{{ $t("lp.ask") }}</span
               >
             </div>
           </a>
@@ -63,7 +63,7 @@
     <div class="bg-white rounded-lg p-6 mt-4 lg:mt-0">
       <i class="material-icons text-7xl opacity-60">local_mall</i>
       <div class="text-black opacity-60 text-sm font-bold">
-        テイクアウトご利用のお客様はこちら
+        {{ $t("lp.forCustomer") }}
       </div>
       <!-- Go to Restaurants List -->
       <div class="mt-4">

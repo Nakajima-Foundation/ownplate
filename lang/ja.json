@@ -337,6 +337,14 @@
   "date": {
     "today": "本日"
   },
+  "lp": {
+    "easy3Steps": "HOW TO START？　簡単3ステップ！",
+    "forOwner": "飲食店の方はこちら",
+    "tryService": "ご利用を開始",
+    "ask": "お問い合わせ",
+
+    "forCustomer": "テイクアウトご利用のお客様はこちら"
+  },
   "order": {
     "allOrders": "全ての注文",
     "menu": "メニューページを見る",
