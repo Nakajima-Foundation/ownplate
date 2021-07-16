@@ -31,6 +31,10 @@
         "function": "api"
       },
       {
+        "source": "/r/*/order/*",
+        "function": "api"
+      },
+      {
         "source": "/1.0/**",
         "function": "api"
       },

@@ -228,7 +228,8 @@ export default ({ app }) => {
         // for hack
         console.log(this.$i18n.locale);
         // return this.$i18n.locale === "ja";
-        return this.$i18n.locale !== "en";
+	// TODO: why not ja ?
+        return this.$i18n.locale !== "en" && this.$i18n.locale !== "fr";
       },
       serviceKey() {
         return this.isJapan ? "omochikaeri" : "ownPlate";

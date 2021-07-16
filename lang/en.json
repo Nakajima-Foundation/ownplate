@@ -337,6 +337,23 @@
   "date": {
     "today": "Today"
   },
+  "lp": {
+    "enjoyOmochilaeri": "Enjoy our service!",
+    "operationTeams": "Operation Teams",
+    "easy3Steps": "HOW TO START？　EASY 3 STEPS!",
+    "forOwner": "For Restaurant Owner",
+    "moreDetails": "More details",
+    "tryService": "Try Omochikaeri service",
+    "ask": "Contact Us",
+    "forCustomer": "For customer",
+    "customerVoice1": "Customer Voices",
+    "customerVoice2": "",
+    "goToSampleRestaurant": "Go to sample restaurant",
+    "izakaya": "Izakaya",
+    "patisserie": "pastry shop",
+    "searchRestaurant": "Search for restaurant"
+
+  },
   "order": {
     "allOrders": "All Orders",
     "menu": "View Menu Page",
