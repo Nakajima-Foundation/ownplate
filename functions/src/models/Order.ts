@@ -15,7 +15,7 @@ export type Status =
   600   // ready_to_pickup
 
 class Payment {
-  stripe!: boolean
+  stripe!: string
 }
 
 export default class Order extends Doc {

@@ -1,6 +1,8 @@
 import * as functions from 'firebase-functions'
 import * as admin from 'firebase-admin';
-import { order_status } from '../common/constant'
+import {
+  order_status, next_transitions
+} from '../common/constant'
 import Stripe from 'stripe'
 import Order from '../models/Order'
 import * as utils from '../lib/utils'
@@ -84,13 +86,13 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
       const timePlaced = timeToPickup && new admin.firestore.Timestamp(timeToPickup.seconds, timeToPickup.nanoseconds) || admin.firestore.FieldValue.serverTimestamp()
       await updateOrderTotalData(db, transaction, order.order, restaurantId, customerUid, timePlaced, true);
       transaction.set(orderRef, {
-        timePlaced,
         status: order_status.order_placed,
-        updatedAt: admin.firestore.Timestamp.now(),
-        orderPlacedAt: admin.firestore.Timestamp.now(),
         totalCharge: totalCharge / multiple,
         tip: Math.round(tip * multiple) / multiple,
         sendSMS: sendSMS || false,
+        updatedAt: admin.firestore.Timestamp.now(),
+        orderPlacedAt: admin.firestore.Timestamp.now(),
+        timePlaced,
         description: request.description,
         memo: memo || "",
         payment: {
@@ -155,15 +157,21 @@ export const confirm = async (db: FirebaseFirestore.Firestore, data: any, contex
         throw new functions.https.HttpsError('invalid-argument', `The order does not exist. ${orderRef.path}`)
       }
       // Check the stock status.
-      if (order.status !== order_status.cooking_completed // backward compability (99.99% unnecessary)
-        && order.status !== order_status.order_accepted) {
+      // order.status !== order_status.cooking_completed // backward compability (99.99% unnecessary)
+      if ( order.status !== order_status.order_placed // from 2021-07-17
+        && order.status !== order_status.order_accepted) { // obsolete but backward compability
         throw new functions.https.HttpsError('failed-precondition', 'This order is not ready yet.')
+      }
+      if (!order.payment || (order.payment.stripe !== "pending")) {
+        throw new functions.https.HttpsError('failed-precondition', 'Stripe process was done.')
       }
 
       const stripeRecord = (await transaction.get(stripeRef)).data();
       if (!stripeRecord || !stripeRecord.paymentIntent || !stripeRecord.paymentIntent.id) {
         throw new functions.https.HttpsError('failed-precondition', 'This order has no paymentIntendId.', stripeRecord)
       }
+      const nextStatus = next_transitions[order.status];
+
       const paymentIntentId = stripeRecord.paymentIntent.id;
 
       // Check the stock status.
@@ -171,9 +179,10 @@ export const confirm = async (db: FirebaseFirestore.Firestore, data: any, contex
         idempotencyKey: order.id,
         stripeAccount
       })
+
       transaction.set(orderRef, {
         timeConfirmed: admin.firestore.FieldValue.serverTimestamp(),
-        status: order_status.ready_to_pickup,
+        status: nextStatus,
         updatedAt: admin.firestore.Timestamp.now(),
         payment: {
           stripe: "confirmed"
