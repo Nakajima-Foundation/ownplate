@@ -1,98 +1,110 @@
 <template>
-  <div>
-    <template v-if="!isUser">
-      <RequireLogin :loginVisible="loginVisible" @dismissed="handleDismissed" />
-    </template>
-    <template v-else-if="notFound">
-      <not-found />
-    </template>
-    <template v-else>
-      <!-- Back Button (Edit Order) -->
-      <div v-if="just_validated" class="mt-6 mx-6">
-        <b-button
-          :loading="isDeleting"
-          @click="handleEditItems"
-          class="b-reset-tw"
+<div>
+  <template v-if="!isUser">
+    <RequireLogin :loginVisible="loginVisible" @dismissed="handleDismissed" />
+  </template>
+  <template v-else-if="notFound">
+    <not-found />
+  </template>
+  <template v-else>
+    <!-- Back Button (Edit Order) -->
+    <div v-if="just_validated" class="mt-6 mx-6">
+      <b-button
+        :loading="isDeleting"
+        @click="handleEditItems"
+        class="b-reset-tw"
         >
-          <div
-            class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5"
+        <div
+          class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5"
           >
-            <i class="material-icons text-lg text-op-teal mr-2">arrow_back</i>
-            <div class="text-sm font-bold text-op-teal">
-              {{ $t("button.back") }}
+          <i class="material-icons text-lg text-op-teal mr-2">arrow_back</i>
+          <div class="text-sm font-bold text-op-teal">
+            {{ $t("button.back") }}
+          </div>
+        </div>
+      </b-button>
+    </div>
+
+    <!-- Restaurant Profile Photo and Name -->
+    <div class="mt-4">
+      <shop-header :shopInfo="shopInfo"></shop-header>
+    </div>
+
+    <!-- After Paid -->
+    <div v-if="paid">
+      <!-- Thank you Message -->
+      <div class="mt-4 mx-6">
+        <div class="text-xl font-bold text-op-teal text-center">
+          {{ $t("order.thankyou") }}
+        </div>
+        <div class="text-xl font-bold text-op-teal text-center mt-2">
+          {{ $t("order.pleaseStay") }}
+        </div>
+      </div>
+
+      <!-- Line Button -->
+      <div v-if="showAddLine" class="mt-6 text-center">
+        <b-button @click="handleLineAuth" class="b-reset-tw">
+          <div
+            class="inline-flex justify-center items-center h-12 px-6 rounded-full"
+            style="background: #18b900"
+            >
+            <i class="fab fa-line text-2xl text-white mr-2" />
+            <div class="text-base font-bold text-white">
+              {{ $t("line.notifyMe") }}
             </div>
           </div>
         </b-button>
       </div>
 
-      <!-- Restaurant Profile Photo and Name -->
-      <div class="mt-4">
-        <shop-header :shopInfo="shopInfo"></shop-header>
+      <!-- Order Status -->
+      <div class="mt-6 text-center">
+        <div class="inline-flex space-x-4">
+          <div>
+            <div class="text-sm font-bold text-black text-opacity-60">
+              {{ $t("order.orderStatus") }}
+            </div>
+            <div
+              class="inline-block px-4 py-1 rounded-full mt-2"
+              :class="orderStatusKey"
+              >
+              <div class="text-sm font-bold">
+                {{ $t("order.status." + orderStatusKey) }}
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="text-sm font-bold text-black text-opacity-60">
+              {{ $t("order.orderId") }}
+            </div>
+            <div class="mt-1">
+              <div class="text-2xl">{{ orderName }}</div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <!-- After Paid -->
-      <div v-if="paid">
-        <!-- Thank you Message -->
-        <div class="mt-4 mx-6">
-          <div class="text-xl font-bold text-op-teal text-center">
-            {{ $t("order.thankyou") }}
-          </div>
-          <div class="text-xl font-bold text-op-teal text-center mt-2">
-            {{ $t("order.pleaseStay") }}
-          </div>
-        </div>
 
-        <!-- Line Button -->
-        <div v-if="showAddLine" class="mt-6 text-center">
-          <b-button @click="handleLineAuth" class="b-reset-tw">
-            <div
-              class="inline-flex justify-center items-center h-12 px-6 rounded-full"
-              style="background: #18b900"
-            >
-              <i class="fab fa-line text-2xl text-white mr-2" />
-              <div class="text-base font-bold text-white">
-                {{ $t("line.notifyMe") }}
-              </div>
-            </div>
-          </b-button>
+      <!-- Time to Pickup -->
+      <div v-if="waiting" class="mt-4 text-sm text-center">
+        <div>
+          {{ $t("order.timeRequested") + ": " + timeRequested }}
         </div>
+        <div v-if="timeEstimated">
+          {{ $t("order.timeToPickup") + ": " + timeEstimated }}
+        </div>
+      </div>
 
-        <!-- Order Status -->
-        <div class="mt-6 text-center">
-          <div class="inline-flex space-x-4">
-            <div>
-              <div class="text-sm font-bold text-black text-opacity-60">
-                {{ $t("order.orderStatus") }}
-              </div>
-              <div
-                class="inline-block px-4 py-1 rounded-full mt-2"
-                :class="orderStatusKey"
-              >
-                <div class="text-sm font-bold">
-                  {{ $t("order.status." + orderStatusKey) }}
-                </div>
-              </div>
-            </div>
-            <div>
-              <div class="text-sm font-bold text-black text-opacity-60">
-                {{ $t("order.orderId") }}
-              </div>
-              <div class="mt-1">
-                <div class="text-2xl">{{ orderName }}</div>
-              </div>
-            </div>
-          </div>
+      <div v-if="hasStripe" class="mt-6 mx-6 bg-black bg-opacity-5 rounded-lg p-4 text-center">
+        <div class="font-bold">
+          {{ $t("order.onlinePaymentStatus") }}
         </div>
+        <div :class="'stripe_' + orderInfo.payment.stripe">
+          {{ $t("order.status.stripe_user_" + orderInfo.payment.stripe) }}<br/>
+          {{ $t("order.status.stripe_user_message_" + orderInfo.payment.stripe) }}<br/>
 
-        <!-- Time to Pickup -->
-        <div v-if="waiting" class="mt-4 text-sm text-center">
-          <div>
-            {{ $t("order.timeRequested") + ": " + timeRequested }}
-          </div>
-          <div v-if="timeEstimated">
-            {{ $t("order.timeToPickup") + ": " + timeEstimated }}
-          </div>
         </div>
+      </div>
 
         <!-- Cancel Button -->
         <div class="mt-6 text-center">
@@ -496,6 +508,9 @@ export default {
     next();
   },
   computed: {
+    hasStripe() {
+      return this.orderInfo.payment && this.orderInfo.payment.stripe;
+    },
     hasLineUrl() {
       return this.shopInfo.lineUrl;
     },
