@@ -352,7 +352,6 @@
     "izakaya": "Izakaya",
     "patisserie": "pastry shop",
     "searchRestaurant": "Search for restaurant"
-
   },
   "order": {
     "allOrders": "All Orders",
@@ -442,7 +441,15 @@
       "stripe_confirmed": "Payment Confirmed",
       "stripe_canceled": "Payment Canceled",
       "onsitePayment": "Onsite Payment"
+      "stripe_user_pending": "カード決済未完了",
+      "stripe_user_message_pending": "(お店側で決済処理が終わっていません)",
+      "stripe_user_confirmed": "カード決済完了",
+      "stripe_user_message_confirmed": "クレジットカードでお支払済みです。",
+      "stripe_user_canceled": "決済キャンセル",
+      "stripe_user_message_canceled": "カード決済はキャンセルされました",
+      "stripe_user_message_just_payment_canceled": "現地払いをお願いします"
     },
+    "onlinePaymentStatus": "カード決済の状況",
     "lineLink": "Restaurant's LINE Official Account URL",
     "lineMessage": "If you add LINE Official Account as a friend, you will receive information directly from the restaurant."
   },
@@ -479,6 +486,7 @@
     "invalidValidationCode": "Invalid Validation Code",
     "auth/invalid-phone-number": "Invalid Phone Number",
     "auth/invalid-verification-code": "The SMS verification code used to create the phone auth credential is invalid. Please resend the verification code sms and be sure use the verification code provided by the user.",
+    "auth/missing-verification-code": "SMS確認コードが入力されていません",
     "auth/missing-verification-code": "The phone auth credential was created with an empty SMS verification code."
   },
   "admin": {
@@ -594,8 +602,13 @@
       "cancelButton": "Cancel this order",
       "cancelTitle": "Order Canceling",
       "cancelMessage": "Please contact to the customer and tell the order will be canceled.",
+      "paymentCancelButton": "カード決済のみをキャンセル",
       "delete": "Cancel this order",
       "deleteConfirm": "(This action is undoable)",
+      "paymentCancelTitle": "カード決済のみキャンセル",
+      "paymentCancelMessage": "現地払いに変更となります。お客様にご連絡の上、現地払いになることをお伝え下さい。注文はキャンセルされません。",
+      "paymentCancel": "カード決済のみキャンセル",
+      "paymentCancelConfirm": "（キャンセルの取り消しは出来ません）",
       "line": "LINE Notification",
       "lineAdd": "Add a LINE account",
       "lineUsers": "Connected LINE Accounts",
@@ -678,6 +691,12 @@
       },
       "selectRestaurant": "Please select a store that can operate this account.",
       "confirmDeletechild": "Cancel the sub-account"
+    },
+    "smaregi": {
+      "index": "スマレジ連携",
+      "authenticating": "連携中",
+      "authenticationError": "連携に失敗しました",
+      "smaregiShopList": "スマレジ店舗一覧"
     }
   },
   "week": {
@@ -741,6 +760,8 @@
       },
       "stripe": {
         "confirm": "Failed to confirm the payment.",
+        "confirm2": "続けて失敗する場合は、カード決済を取り消して現地払いに変更してください",
+        "cancel": "カード決済のキャンセルに失敗しました",
         "connect": "Failed to connect the Stripe account.",
         "disconnect": "Failed to disconnect the Stripe account.",
         "intent": "Failed to process the payment.",
