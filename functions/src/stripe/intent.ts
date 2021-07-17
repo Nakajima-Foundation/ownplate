@@ -318,3 +318,85 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
     throw utils.process_error(error)
   }
 };
+
+
+// This function is called by admin to cencel an exsting order
+export const cancelStripePayment = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
+  const uid = utils.validate_admin_auth(context);
+
+  const stripe = utils.get_stripe();
+
+  const { restaurantId, orderId, lng } = data
+  utils.validate_params({ restaurantId, orderId }) // lng is optional
+
+  const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`)
+  const stripeRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}/system/stripe`)
+  const restaurant = await utils.get_restaurant(db, restaurantId)
+  const venderId = restaurant['uid']
+
+  const paymentSnapshot = await db.doc(`/admins/${venderId}/public/payment`).get()
+  const stripeAccount = paymentSnapshot.data()?.stripe
+
+  let sendSMS: boolean = false
+  let phoneNumber: string | undefined = undefined;
+  let uidUser: string | null = null;
+  let order: Order | undefined = undefined;
+
+  try {
+    const result = await db.runTransaction(async transaction => {
+
+      const snapshot = await transaction.get(orderRef)
+      order = Order.fromSnapshot<Order>(snapshot)
+
+      if (!snapshot.exists) {
+        throw new functions.https.HttpsError('invalid-argument', `The order does not exist.`)
+      }
+
+      if (!stripeAccount || !order.payment || !order.payment.stripe) {
+        throw new functions.https.HttpsError('permission-denied', 'Invalid order state to cancel payment.')
+      }
+      // Admin can cancel it before confirmed
+      if (order.payment.stripe !== "pending") {
+        throw new functions.https.HttpsError('permission-denied', 'Invalid payment state to cancel.')
+      }
+
+      phoneNumber = order.phoneNumber
+      uidUser = order.uid
+
+      const stripeRecord = (await transaction.get(stripeRef)).data();
+      if (!stripeRecord || !stripeRecord.paymentIntent || !stripeRecord.paymentIntent.id) {
+        throw new functions.https.HttpsError('failed-precondition', 'This order has no paymentIntendId.', stripeRecord)
+      }
+      const paymentIntentId = stripeRecord.paymentIntent.id;
+
+      try {
+        // Check the stock status.
+        const paymentIntent = await stripe.paymentIntents.cancel(paymentIntentId, {
+          idempotencyKey: `${order.id}-cancel`,
+          stripeAccount
+        })
+        transaction.set(orderRef, {
+          orderRestaurantPaymentCanceledAt: admin.firestore.FieldValue.serverTimestamp(),
+          updatedAt: admin.firestore.Timestamp.now(),
+          uidPaymentCanceledBy: uid,
+          payment: {
+            stripe: "canceled"
+          }
+        }, { merge: true })
+        transaction.set(stripeRef, {
+          paymentIntent
+        }, { merge: true });
+        return { success: true, payment: "stripe" }
+      } catch (error) {
+        throw error
+      }
+    })
+    const orderName = utils.nameOfOrder(order!.number);
+    if (sendSMS) {
+      await sendMessageToCustomer(db, lng, 'msg_stripe_payment_canceled', restaurant.restaurantName, orderName, uidUser, phoneNumber, restaurantId, orderId)
+    }
+    return result
+  } catch (error) {
+    throw utils.process_error(error)
+  }
+};
