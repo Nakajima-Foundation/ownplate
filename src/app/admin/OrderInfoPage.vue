@@ -146,89 +146,6 @@
               {{ $t("admin.order.paymentIsNotCompleted") }}
             </div>
 
-            <!-- Payment Cancel Button -->
-            <div class="mt-6 text-center">
-              <b-button
-                v-if="paymentIsNotCompleted"
-                @click="openPaymentCancel"
-                class="b-reset-tw"
-                >
-                <div
-                  class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5"
-                >
-                  <i class="material-icons text-lg mr-2 text-red-700">credit_card</i>
-                  <div class="text-sm font-bold text-red-700">
-                    {{ $t("admin.order.paymentCancelButton") }}
-                  </div>
-                </div>
-              </b-button>
-            </div>
-
-            <!-- Payment Cancel Popup-->
-            <b-modal :active.sync="paymentCancelPopup" :width="488" scroll="keep">
-              <div class="mx-2 my-6 p-6 bg-white shadow-lg rounded-lg">
-                <!-- Title -->
-                <div class="text-xl font-bold text-black text-opacity-40">
-                  {{ $t("admin.order.paymentCancelTitle") }}
-                </div>
-
-                <!-- Message -->
-                <div class="mt-6 text-base">
-                  {{ $t("admin.order.paymentCancelMessage") }}
-                </div>
-
-                <!-- Call -->
-                <div v-if="orderInfo.phoneNumber" class="mt-6 text-center">
-                  <div>
-                    <a
-                      :href="nationalPhoneURI"
-                      class="inline-flex justify-center items-center h-12 px-6 rounded-full border-2 border-op-teal"
-                    >
-                      <div class="text-base font-bold text-op-teal">
-                        {{ nationalPhoneNumber }}
-                      </div>
-                    </a>
-                  </div>
-                  <div class="font-bold mt-2">
-                    {{ orderInfo.name }}
-                  </div>
-                </div>
-
-                <!-- Cancel -->
-                <div class="mt-4 text-center">
-                  <b-button
-                    :loading="updating === 'payment_canceled'"
-                    @click="handlePaymentCancel"
-                    class="b-reset-tw"
-                  >
-                    <div
-                      class="inline-flex justify-center items-center h-12 px-6 rounded-full bg-red-700"
-                    >
-                      <div class="text-base font-bold text-white">
-                        {{ $t("admin.order.paymentCancel") }}
-                      </div>
-                    </div>
-                  </b-button>
-                  <div class="mt-2 text-sm font-bold text-red-700">
-                    {{ $t("admin.order.paymentCancelConfirm") }}
-                  </div>
-                </div>
-
-                <!-- Close -->
-                <div class="mt-6 text-center">
-                  <a
-                    @click="closePaymentCancel()"
-                    class="inline-flex justify-center items-center h-12 rounded-full px-6 bg-black bg-opacity-5"
-                    style="min-width: 8rem;"
-                  >
-                    <div class="text-base font-bold text-black text-opacity-60">
-                      {{ $t("menu.close") }}
-                    </div>
-                  </a>
-                </div>
-              </div>
-            </b-modal>
-
 
 
             <!-- Cancel Button -->
@@ -406,6 +323,91 @@
                 </b-button>
               </div>
             </div>
+
+            <!-- Payment Cancel Button -->
+            <div class="mt-6 text-center">
+              <b-button
+                v-if="paymentIsNotCompleted"
+                @click="openPaymentCancel"
+                class="b-reset-tw"
+                >
+                <div
+                  class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5"
+                >
+                  <i class="material-icons text-lg mr-2 text-red-700">credit_card</i>
+                  <div class="text-sm font-bold text-red-700">
+                    {{ $t("admin.order.paymentCancelButton") }}
+                  </div>
+                </div>
+              </b-button>
+            </div>
+
+            <!-- Payment Cancel Popup-->
+            <b-modal :active.sync="paymentCancelPopup" :width="488" scroll="keep">
+              <div class="mx-2 my-6 p-6 bg-white shadow-lg rounded-lg">
+                <!-- Title -->
+                <div class="text-xl font-bold text-black text-opacity-40">
+                  {{ $t("admin.order.paymentCancelTitle") }}
+                </div>
+
+                <!-- Message -->
+                <div class="mt-6 text-base">
+                  {{ $t("admin.order.paymentCancelMessage") }}
+                </div>
+
+                <!-- Call -->
+                <div v-if="orderInfo.phoneNumber" class="mt-6 text-center">
+                  <div>
+                    <a
+                      :href="nationalPhoneURI"
+                      class="inline-flex justify-center items-center h-12 px-6 rounded-full border-2 border-op-teal"
+                    >
+                      <div class="text-base font-bold text-op-teal">
+                        {{ nationalPhoneNumber }}
+                      </div>
+                    </a>
+                  </div>
+                  <div class="font-bold mt-2">
+                    {{ orderInfo.name }}
+                  </div>
+                </div>
+
+                <!-- Cancel -->
+                <div class="mt-4 text-center">
+                  <b-button
+                    :loading="updating === 'payment_canceled'"
+                    @click="handlePaymentCancel"
+                    class="b-reset-tw"
+                  >
+                    <div
+                      class="inline-flex justify-center items-center h-12 px-6 rounded-full bg-red-700"
+                    >
+                      <div class="text-base font-bold text-white">
+                        {{ $t("admin.order.paymentCancel") }}
+                      </div>
+                    </div>
+                  </b-button>
+                  <div class="mt-2 text-sm font-bold text-red-700">
+                    {{ $t("admin.order.paymentCancelConfirm") }}
+                  </div>
+                </div>
+
+                <!-- Close -->
+                <div class="mt-6 text-center">
+                  <a
+                    @click="closePaymentCancel()"
+                    class="inline-flex justify-center items-center h-12 rounded-full px-6 bg-black bg-opacity-5"
+                    style="min-width: 8rem;"
+                  >
+                    <div class="text-base font-bold text-black text-opacity-60">
+                      {{ $t("menu.close") }}
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </b-modal>
+
+
           </div>
         </div>
 

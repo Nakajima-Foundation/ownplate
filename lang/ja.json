@@ -446,7 +446,8 @@
       "stripe_user_confirmed": "カード決済完了",
       "stripe_user_message_confirmed": "クレジットカードでお支払済みです。",
       "stripe_user_canceled": "決済キャンセル",
-      "stripe_user_message_canceled": "決済はキャンセルされました"
+      "stripe_user_message_canceled": "カード決済はキャンセルされました",
+      "stripe_user_message_just_payment_canceled": "現地払いをお願いします"
     },
     "onlinePaymentStatus": "カード決済の状況",
     "lineLink": "お店のLINE公式アカウント",
