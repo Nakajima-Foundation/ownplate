@@ -131,6 +131,14 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
         throw new functions.https.HttpsError('failed-precondition', 'It is not possible to change state from the current state.', order.status)
       }
 
+      if (status === order_status.order_canceled && order.payment && order.payment.stripe) {
+        throw new functions.https.HttpsError('permission-denied', 'Paid order can not be cancele like this', status)
+      }
+      if ((order.status === order_status.ready_to_pickup || order.status === order_status.order_accepted) &&
+        order.payment && order.payment.stripe &&  order.payment && (order.payment.stripe === "pending")) {
+        throw new functions.https.HttpsError('permission-denied', 'Paid order can not be change like this', status)
+      }
+
       if (status === order_status.order_accepted) {
         msgKey = "msg_order_accepted"
       }
@@ -142,9 +150,6 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
             msgKey = "msg_cooking_completed"
           }
         }
-      }
-      if (status === order_status.order_canceled && order.payment && order.payment.stripe) {
-        throw new functions.https.HttpsError('permission-denied', 'Paid order can not be cancele like this', status)
       }
 
       // everything are ok
