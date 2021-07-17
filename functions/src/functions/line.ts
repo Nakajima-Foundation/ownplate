@@ -178,6 +178,7 @@ export const sendMessageDirect = async (lineId: string, message: string) => {
   })
 }
 
+/*
 export const sendMessage = async (db: FirebaseFirestore.Firestore, uid: string | null, message: string) => {
   if (uid === null) {
     return;
@@ -188,4 +189,17 @@ export const sendMessage = async (db: FirebaseFirestore.Firestore, uid: string |
     return;
   }
   return sendMessageDirect(sub, message);
+}
+*/
+
+export const getLineId = async (db: FirebaseFirestore.Firestore, uid: string | null) => {
+  if (uid === null) {
+    return;
+  }
+  const data = (await db.doc(`/users/${uid}/system/line`).get()).data() || (await db.doc(`/admins/${uid}/system/line`).get()).data();
+  const sub = data && data.profile && data.profile.userId
+  if (!sub) {
+    return;
+  }
+  return sub;
 }

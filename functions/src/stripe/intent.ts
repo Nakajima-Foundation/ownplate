@@ -308,7 +308,7 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
     })
     const orderName = utils.nameOfOrder(order!.number);
     if (sendSMS) {
-      await sendMessageToCustomer(db, lng, 'msg_order_canceled', restaurant.restaurantName, orderName, uidUser, phoneNumber, restaurantId, orderId)
+      await sendMessageToCustomer(db, lng, 'msg_order_canceled', restaurant.restaurantName, orderName, uidUser, phoneNumber, restaurantId, orderId, {}, true)
     }
     if (uid !== venderId) {
       await notifyCanceledOrderToRestaurant(db, restaurantId, order, restaurant.restaurantName, lng)
@@ -337,9 +337,6 @@ export const cancelStripePayment = async (db: FirebaseFirestore.Firestore, data:
   const paymentSnapshot = await db.doc(`/admins/${venderId}/public/payment`).get()
   const stripeAccount = paymentSnapshot.data()?.stripe
 
-  let sendSMS: boolean = false
-  let phoneNumber: string | undefined = undefined;
-  let uidUser: string | null = null;
   let order: Order | undefined = undefined;
 
   try {
@@ -359,9 +356,6 @@ export const cancelStripePayment = async (db: FirebaseFirestore.Firestore, data:
       if (order.payment.stripe !== "pending") {
         throw new functions.https.HttpsError('permission-denied', 'Invalid payment state to cancel.')
       }
-
-      phoneNumber = order.phoneNumber
-      uidUser = order.uid
 
       const stripeRecord = (await transaction.get(stripeRef)).data();
       if (!stripeRecord || !stripeRecord.paymentIntent || !stripeRecord.paymentIntent.id) {
@@ -392,8 +386,11 @@ export const cancelStripePayment = async (db: FirebaseFirestore.Firestore, data:
       }
     })
     const orderName = utils.nameOfOrder(order!.number);
-    if (sendSMS) {
-      await sendMessageToCustomer(db, lng, 'msg_stripe_payment_canceled', restaurant.restaurantName, orderName, uidUser, phoneNumber, restaurantId, orderId)
+    if (order!.sendSMS) {
+      const phoneNumber = order!.phoneNumber;
+      const uidUser = order!.uid;
+
+      await sendMessageToCustomer(db, lng, 'msg_stripe_payment_canceled', restaurant.restaurantName, orderName, uidUser, phoneNumber, restaurantId, orderId, {}, true)
     }
     return result
   } catch (error) {

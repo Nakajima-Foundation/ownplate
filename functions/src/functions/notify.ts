@@ -25,7 +25,8 @@ export const sendMessageToCustomer = async (
   phoneNumber: string | undefined,
   restaurantId: string,
   orderId: string,
-  params: object = {}
+  params: object = {},
+  forceSMS: boolean = false
 ) => {
   const t = await i18next.init({
     lng: lng || utils.getStripeRegion().langs[0],
@@ -38,7 +39,14 @@ export const sendMessageToCustomer = async (
   )} ${restaurantName} ${orderNumber} ${url}`;
   if (line.isEnabled) {
     // for JP
-    await line.sendMessage(db, uidUser, message);
+    const lineId = await line.getLineId(db, uidUser);
+    if (lineId) {
+      await line.sendMessageDirect(lineId, message);
+    }
+    if (forceSMS) {
+      await sms.pushSMS("omochikaeri", message, phoneNumber);
+    }
+    // await line.sendMessage(db, uidUser, message);
   } else {
     // for others
     await sms.pushSMS("OwnPlate", message, phoneNumber);
