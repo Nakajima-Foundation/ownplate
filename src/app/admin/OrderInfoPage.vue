@@ -622,7 +622,8 @@ export default {
         console.error(error.message, error.details);
         this.$store.commit("setErrorMessage", {
           code: "stripe.confirm",
-          error
+          error,
+          message2: "errorPage.code.stripe.confirm2",
         });
       } finally {
         this.updating = "";
