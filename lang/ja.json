@@ -440,8 +440,15 @@
       "stripe_pending": "カード決済未完了",
       "stripe_confirmed": "カード決済完了",
       "stripe_canceled": "決済キャンセル",
-      "onsitePayment": "受け取り払い"
+      "onsitePayment": "受け取り払い",
+      "stripe_user_pending": "カード決済未完了",
+      "stripe_user_message_pending": "(お店側で決済処理が終わっていません)",
+      "stripe_user_confirmed": "カード決済完了",
+      "stripe_user_message_confirmed": "クレジットカードでお支払済みです。",
+      "stripe_user_canceled": "決済キャンセル",
+      "stripe_user_message_canceled": "決済はキャンセルされました"
     },
+    "onlinePaymentStatus": "カード決済の状況",
     "lineLink": "お店のLINE公式アカウント",
     "lineMessage": "LINE公式アカウントを友だち登録すると、お店から情報が直接届きます。"
   },
