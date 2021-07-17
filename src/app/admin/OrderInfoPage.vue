@@ -542,6 +542,12 @@ export default {
     hasStripe() {
       return this.orderInfo.payment && this.orderInfo.payment.stripe;
     },
+    paymentIsNotCompleted() {
+      return (
+        // this.hasStripe && this.orderInfo.status < order_status.ready_to_pickup
+        this.hasStripe && this.orderInfo.payment.stripe === "pending"
+      );
+    },
     phoneNumber() {
       return (
         this.orderInfo &&
@@ -586,11 +592,6 @@ export default {
     order_status() {
       return order_status;
     },
-    paymentIsNotCompleted() {
-      return (
-        this.hasStripe && this.orderInfo.status < order_status.ready_to_pickup
-      );
-    }
   },
   methods: {
     timeStampToText(timestamp) {
@@ -634,7 +635,7 @@ export default {
         console.log("same status - no need to process");
         return;
       }
-      if (newStatus === order_status.ready_to_pickup && this.hasStripe) {
+      if ((newStatus === order_status.ready_to_pickup || newStatus === order_status.order_accepted) && this.paymentIsNotCompleted) {
         this.handleStripe();
         return;
       }
