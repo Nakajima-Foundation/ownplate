@@ -279,6 +279,9 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
       if (!stripeRecord || !stripeRecord.paymentIntent || !stripeRecord.paymentIntent.id) {
         throw new functions.https.HttpsError('failed-precondition', 'This order has no paymentIntendId.', stripeRecord)
       }
+      if (order.payment.stripe !== "pending") {
+        throw new functions.https.HttpsError('permission-denied', 'Invalid payment state to cancel.')
+      }
       const paymentIntentId = stripeRecord.paymentIntent.id;
 
       try {
