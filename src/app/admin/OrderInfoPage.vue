@@ -152,7 +152,7 @@
             <div class="mt-6 text-center">
               <b-button
                 class="b-reset-tw"
-                v-if="isValidTransition('order_canceled')"
+                v-if="isValidTransition('order_canceled') && (paymentIsNotCompleted || !hasStripe)"
                 @click="openCancel()"
               >
                 <div
