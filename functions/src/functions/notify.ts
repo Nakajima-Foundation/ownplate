@@ -88,6 +88,11 @@ export const createNotifyRestaurantMailMessage = async (
   const path = `./mail_templates/${messageId}/${lng}.html`;
   const template_data = fs.readFileSync(path, { encoding: "utf8" });
 
+  const t = await i18next.init({
+    lng: lng || utils.getStripeRegion().langs[0],
+    resources
+  });
+
   const orderName = utils.nameOfOrder(orderNumber);
   const orders = Object.keys(order.order)
     .map(menuId => {
@@ -100,7 +105,7 @@ export const createNotifyRestaurantMailMessage = async (
 
         try {
           if (order.options && order.options[menuId] && order.options[menuId][key] && order.options[menuId][key].length > 0) {
-            messages.push("オプション: " + order.options[menuId][key].join("/"))
+            messages.push(t("option") + ": " + order.options[menuId][key].join("/"))
           }
         } catch (e) {
           console.log(e);
@@ -115,8 +120,7 @@ export const createNotifyRestaurantMailMessage = async (
     orderName,
     orders,
     totalCharge: order.totalCharge,
-    payment: !!order.payment ? "カード払い" : "現地払い",
-    // totalCharge: order.total,
+    payment: t(!!order.payment ? "card_payment" : "payment_in_store"),
     url
   };
   const replacedTemp = Object.keys(data).reduce((tmp, key) => {
