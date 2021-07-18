@@ -18,6 +18,7 @@
     "n_tests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/notify_test.ts --timeout 30000",
     "t_tests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/twilio_test.ts",
     "s_tests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/subaccount_test.ts",
+    "m_tests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/mail_template_test.ts",
     "mailtests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/ses_test.ts",
     "smaregitests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/smaregi_test.ts",
     "d_tests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/dl_test.ts"

@@ -1,6 +1,9 @@
 export const resource = {
   translation: {
     hello: "今日は、世界。",
+    option: "オプション",
+    card_payment:  "カード払い",
+    payment_in_store: "現地払い",
     msg_order_accepted:
       "ありがとうございます。ご注文は受理されました。調理完了の予定時刻は{{time}}です。",
     msg_cooking_completed: "ご注文の準備ができました。ピックアップが可能です。",
