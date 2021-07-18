@@ -90,7 +90,7 @@ export const updateOrderTotalData = async (db, transaction, order, restaurantId,
         timePlaced,
         memo: memo || "",
       })
-      // order.totalCharge = order.total + tip;
+      order = Object.assign(order, {totalCharge: order.total + tip});
       return { success: true }
     })
 

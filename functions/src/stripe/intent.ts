@@ -97,6 +97,7 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
           stripe: "pending"
         }
       }, { merge: true });
+      order = Object.assign(order, {totalCharge: totalCharge / multiple});
 
       transaction.set(stripeRef, {
         paymentIntent
