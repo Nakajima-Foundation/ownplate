@@ -203,8 +203,8 @@ const createNewOrderData = async (restaurantRef, orderRef, orderData, multiple) 
   const newItems = {};
   const newPrices = {};
 
-  let _food_sub_total = 0;
-  let _alcohol_sub_total = 0;
+  let food_sub_total = 0;
+  let alcohol_sub_total = 0;
   // end of ret
 
   if (menuIds.some((menuId) => {
@@ -235,11 +235,12 @@ const createNewOrderData = async (restaurantRef, orderRef, orderData, multiple) 
     });
     newPrices[menuId] = prices;
     newOrderData[menuId] = newOrder;
+
     const total = prices.reduce((sum, price) => sum + price, 0);
     if (menu.tax === "alcohol") {
-      _alcohol_sub_total += total;
+      alcohol_sub_total += total;
     } else {
-      _food_sub_total += total;
+      food_sub_total += total;
     }
     const menuItem: any = { price: menu.price, itemName: menu.itemName };
     if (menu.itemAliasesName) {
@@ -253,7 +254,50 @@ const createNewOrderData = async (restaurantRef, orderRef, orderData, multiple) 
     }
     newItems[menuId] = menuItem;
   });
-  return { newOrderData, newItems, newPrices, _food_sub_total, _alcohol_sub_total }
+  return { newOrderData, newItems, newPrices, food_sub_total, alcohol_sub_total }
+};
+
+const orderAccounting = (restaurantData, food_sub_total, alcohol_sub_total, multiple) => {
+  // tax rate
+  const inclusiveTax = restaurantData.inclusiveTax || false;
+  const alcoholTax = restaurantData.alcoholTax || 0;
+  const foodTax = restaurantData.foodTax || 0;
+  
+  // calculate price.
+  const sub_total = food_sub_total + alcohol_sub_total;
+  if (sub_total === 0) {
+    throw new Error("invalid order: total 0 ");
+  }
+  if (inclusiveTax) {
+    const food_tax = Math.round((food_sub_total * (1 - 1 / (1 + foodTax / 100))) * multiple) / multiple;
+    const alcohol_tax = Math.round((alcohol_sub_total * (1 - 1 / (1 + alcoholTax / 100))) * multiple) / multiple;
+    const tax = food_tax + alcohol_tax;
+    return {
+      tax,
+      inclusiveTax,
+      sub_total,
+      total: sub_total,
+      food_sub_total: food_sub_total - food_tax,
+      food_tax,
+      alcohol_sub_total: alcohol_sub_total - alcohol_tax,
+      alcohol_tax,
+    }
+  } else {
+    const food_tax = Math.round(food_sub_total * foodTax / 100 * multiple) / multiple;
+    const alcohol_tax = Math.round(alcohol_sub_total * alcoholTax / 100 * multiple) / multiple;
+    const tax = food_tax + alcohol_tax;
+    const total = sub_total + tax;
+    return {
+      tax,
+      inclusiveTax,
+      sub_total,
+      total,
+      food_sub_total,
+      food_tax,
+      alcohol_sub_total,
+      alcohol_tax,
+    }
+  }
 };
 
 // export const wasOrderCreated = async (db, snapshot, context) => {
@@ -290,33 +334,10 @@ export const wasOrderCreated = async (db, data: any, context) => {
       throw new functions.https.HttpsError('invalid-argument', 'This order does not exist.')
     }
 
-    // tax rate
-    const inclusiveTax = restaurantData.inclusiveTax || false;
-    const alcoholTax = restaurantData.alcoholTax || 0;
-    const foodTax = restaurantData.foodTax || 0;
     const multiple = utils.getStripeRegion().multiple; //100 for USD, 1 for JPY
 
-    const { newOrderData, newItems, newPrices, _food_sub_total, _alcohol_sub_total } = await createNewOrderData(restaurantRef, orderRef, orderData, multiple);
-    let food_sub_total = _food_sub_total;
-    let alcohol_sub_total = _alcohol_sub_total;
+    const { newOrderData, newItems, newPrices, food_sub_total, alcohol_sub_total } = await createNewOrderData(restaurantRef, orderRef, orderData, multiple);
 
-    // calculate price.
-    const sub_total = food_sub_total + alcohol_sub_total;
-    if (sub_total === 0) {
-      throw new Error("invalid order: total 0 ");
-    }
-    let food_tax = Math.round(food_sub_total * foodTax / 100 * multiple) / multiple;
-    let alcohol_tax = Math.round(alcohol_sub_total * alcoholTax / 100 * multiple) / multiple;
-    let tax = food_tax + alcohol_tax;
-    let total = sub_total + tax;
-    if (inclusiveTax) {
-      food_tax = Math.round((food_sub_total * (1 - 1 / (1 + foodTax / 100))) * multiple) / multiple;
-      alcohol_tax = Math.round((alcohol_sub_total * (1 - 1 / (1 + alcoholTax / 100))) * multiple) / multiple;
-      tax = food_tax + alcohol_tax;
-      food_sub_total -= food_tax;
-      alcohol_sub_total -= alcohol_tax;
-      total = sub_total;
-    }
 
     // Atomically increment the orderCount of the restaurant
     let orderCount = 0;
@@ -330,6 +351,9 @@ export const wasOrderCreated = async (db, data: any, context) => {
         });
       }
     });
+    
+    const accountingResult = orderAccounting(restaurantData, food_sub_total, alcohol_sub_total, multiple);
+
     await createCustomer(db, customerUid, context.auth.token.phone_number)
 
     return orderRef.update({
@@ -338,16 +362,18 @@ export const wasOrderCreated = async (db, data: any, context) => {
       prices: newPrices,
       status: order_status.validation_ok,
       number: orderCount,
-      sub_total,
-      tax,
-      inclusiveTax,
-      total,
+      sub_total: accountingResult.sub_total,
+      tax: accountingResult.tax,
+      inclusiveTax: accountingResult.inclusiveTax,
+      total: accountingResult.total,
       accounting: {
         food: {
-          revenue: food_sub_total, tax: food_tax
+          revenue: accountingResult.food_sub_total,
+          tax: accountingResult.food_tax
         },
         alcohol: {
-          revenue: alcohol_sub_total, tax: alcohol_tax
+          revenue: accountingResult.alcohol_sub_total,
+          tax: accountingResult.alcohol_tax
         }
       }
     });
