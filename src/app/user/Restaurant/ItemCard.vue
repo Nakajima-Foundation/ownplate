@@ -151,7 +151,7 @@
                     {{ $t("sitemenu.subTotal")
                     }}<Price
                       :shopInfo="shopInfo"
-                      :menu="{ price: prices[quantityKey] }"
+                      :menu="{ price: prices[quantityKey], tax: item.tax }"
                     />
                   </div>
                 </div>
