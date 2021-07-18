@@ -13,8 +13,6 @@ import { sendMessageToCustomer, notifyNewOrderToRestaurant } from './notify';
 
 import { Context } from '../models/TestType'
 
-
-
 export const updateOrderTotalData = async (db, transaction, order, restaurantId, ownerUid, timePlaced, positive) => {
   const timezone =  functions.config() && functions.config().order && functions.config().order.timezone || "Asia/Tokyo";
 
@@ -181,6 +179,83 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
   }
 }
 
+// for wasOrderCreated
+const getOptionPrice = (selectedOptionsRaw, menu, multiple) => {
+  return selectedOptionsRaw.reduce((tmpPrice, selectedOpt, key) => {
+    const opt = menu.itemOptionCheckbox[key].split(",");
+    if (opt.length === 1) {
+      if (selectedOpt) {
+        return tmpPrice + Math.round(utils.optionPrice(opt[0]) * multiple) / multiple;
+      }
+    } else {
+      return tmpPrice + Math.round(utils.optionPrice(opt[selectedOpt]) * multiple) / multiple;
+    }
+    return tmpPrice;
+  }, 0);
+};
+
+const createNewOrderData = async (restaurantRef, orderRef, orderData, multiple) => {
+  const menuIds = Object.keys(orderData.order);
+  const menuObj = await utils.getMenuObj(restaurantRef, menuIds);
+
+  // ret
+  const newOrderData = {};
+  const newItems = {};
+  const newPrices = {};
+
+  let _food_sub_total = 0;
+  let _alcohol_sub_total = 0;
+  // end of ret
+
+  if (menuIds.some((menuId) => {
+    return menuObj[menuId] === undefined;
+  })) {
+    return orderRef.update("status", order_status.error);
+  }
+  menuIds.map((menuId) => {
+    const menu = menuObj[menuId];
+
+    const prices: number[] = [];
+    const newOrder: number[] = [];
+
+    const numArray = Array.isArray(orderData.order[menuId]) ? orderData.order[menuId] : [orderData.order[menuId]];
+    numArray.map((num, orderKey) => {
+      if (!Number.isInteger(num)) {
+        throw new Error("invalid number: not integer");
+      }
+      if (num < 0) {
+        throw new Error("invalid number: negative number");
+      }
+      if (num === 0) {
+        return;
+      }
+      const price = menu.price + getOptionPrice(orderData.rawOptions[menuId][orderKey], menu, multiple);
+      newOrder.push(num);
+      prices.push(price * num);
+    });
+    newPrices[menuId] = prices;
+    newOrderData[menuId] = newOrder;
+    const total = prices.reduce((sum, price) => sum + price, 0);
+    if (menu.tax === "alcohol") {
+      _alcohol_sub_total += total;
+    } else {
+      _food_sub_total += total;
+    }
+    const menuItem: any = { price: menu.price, itemName: menu.itemName };
+    if (menu.itemAliasesName) {
+      menuItem.itemAliasesName = menu.itemAliasesName;
+    }
+    if (menu.category1) {
+      menuItem.category1 = menu.category1;
+    }
+    if (menu.category2) {
+      menuItem.category2 = menu.category2;
+    }
+    newItems[menuId] = menuItem;
+  });
+  return { newOrderData, newItems, newPrices, _food_sub_total, _alcohol_sub_total }
+};
+
 // export const wasOrderCreated = async (db, snapshot, context) => {
 export const wasOrderCreated = async (db, data: any, context) => {
   const customerUid = utils.validate_auth(context);
@@ -221,74 +296,9 @@ export const wasOrderCreated = async (db, data: any, context) => {
     const foodTax = restaurantData.foodTax || 0;
     const multiple = utils.getStripeRegion().multiple; //100 for USD, 1 for JPY
 
-    const menuIds = Object.keys(orderData.order);
-    const menuObj = await utils.getMenuObj(restaurantRef, menuIds);
-
-    let food_sub_total = 0;
-    let alcohol_sub_total = 0;
-
-    const newOrderData = {};
-    const newItems = {};
-    const newPrices = {};
-    if (menuIds.some((menuId) => {
-      return menuObj[menuId] === undefined;
-    })) {
-      return orderRef.update("status", order_status.error);
-    }
-    menuIds.map((menuId) => {
-      newOrderData[menuId] = [];
-      newItems[menuId] = {};
-      newPrices[menuId] = [];
-
-      const menu = menuObj[menuId];
-
-      const numArray = Array.isArray(orderData.order[menuId]) ? orderData.order[menuId] : [orderData.order[menuId]];
-      numArray.map((num, orderKey) => {
-        //const num = orderData.order[menuId];
-        if (!Number.isInteger(num)) {
-          throw new Error("invalid number: not integer");
-        }
-        if (num < 0) {
-          throw new Error("invalid number: negative number");
-        }
-        // skip 0 order
-        if (num === 0) {
-          return;
-        }
-
-        const selectedOptionsRaw = orderData.rawOptions[menuId][orderKey];
-        const price = selectedOptionsRaw.reduce((tmpPrice, selectedOpt, key) => {
-          const opt = menu.itemOptionCheckbox[key].split(",");
-          if (opt.length === 1) {
-            if (selectedOpt) {
-              return tmpPrice + Math.round(utils.optionPrice(opt[0]) * multiple) / multiple;
-            }
-          } else {
-            return tmpPrice + Math.round(utils.optionPrice(opt[selectedOpt]) * multiple) / multiple;
-          }
-          return tmpPrice;
-        }, menu.price);
-
-        if (menu.tax === "alcohol") {
-          alcohol_sub_total += (price * num);
-        } else {
-          food_sub_total += (price * num)
-        }
-        newOrderData[menuId].push(num);
-        newPrices[menuId].push(price * num);
-      });
-      const menuItem: any = { price: menu.price, itemName: menu.itemName };
-      if (menu.itemAliasesName) {
-        menuItem.itemAliasesName = menu.itemAliasesName;
-      }
-      if (menu.category1) {
-        menuItem.category1 = menu.category1;
-      }
-      if (menu.category2) {
-        menuItem.category2 = menu.category2;
-      }
-      newItems[menuId] = menuItem;
-    });
+    const { newOrderData, newItems, newPrices, _food_sub_total, _alcohol_sub_total } = await createNewOrderData(restaurantRef, orderRef, orderData, multiple);
+    let food_sub_total = _food_sub_total;
+    let alcohol_sub_total = _alcohol_sub_total;
 
     // calculate price.
     const sub_total = food_sub_total + alcohol_sub_total;
