@@ -440,7 +440,7 @@
       "stripe_pending": "Payment Pending",
       "stripe_confirmed": "Payment Confirmed",
       "stripe_canceled": "Payment Canceled",
-      "onsitePayment": "Onsite Payment"
+      "onsitePayment": "Onsite Payment",
       "stripe_user_pending": "カード決済未完了",
       "stripe_user_message_pending": "(お店側で決済処理が終わっていません)",
       "stripe_user_confirmed": "カード決済完了",
@@ -482,7 +482,7 @@
       "TG": "TOGO (+228)",
       "BN": "Bénin (+229)",
       "CI": "Cote d'ivoire (+225)",
-      "SE": "Senegal (+335)"
+      "SE": "Senegal (+335)",
       "ES": "Spain (+34)",
       "DE": "Germany (+49)",
       "JP": "Japan (+81)"
