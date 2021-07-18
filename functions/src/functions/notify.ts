@@ -76,7 +76,7 @@ const createNotifyRestaurantMailTitle = async (
   return message;
 };
 
-const createNotifyRestaurantMailMessage = async (
+export const createNotifyRestaurantMailMessage = async (
   messageId: string,
   restaurantName: string,
   order: any,
@@ -93,14 +93,29 @@ const createNotifyRestaurantMailMessage = async (
     .map(menuId => {
       const menu = order.menuItems[menuId];
       const name = menu.itemName;
-      const count = order.order[menuId].reduce((sum, ele) => sum + ele, 0);
-      return `${name} × ${count}`;
+      return Object.keys(order.order[menuId]).map((key) => {
+        const count = order.order[menuId][key];
+        const messages: string[] = [];
+        messages.push(`★ ${name} × ${count}`);
+
+        try {
+          if (order.options && order.options[menuId] && order.options[menuId][key] && order.options[menuId][key].length > 0) {
+            messages.push("オプション: " + order.options[menuId][key].join("/"))
+          }
+        } catch (e) {
+          console.log(e);
+        }
+
+        return messages.join("\n");
+      }).join("\n\n");
     })
-    .join("\n");
+    .join("\n\n");
   const data = {
     restaurantName,
     orderName,
     orders,
+    totalCharge: order.totalCharge,
+    payment: !!order.payment ? "カード払い" : "現地払い",
     // totalCharge: order.total,
     url
   };
