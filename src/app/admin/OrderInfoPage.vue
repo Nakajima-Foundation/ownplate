@@ -690,11 +690,14 @@ export default {
     },
     isValidTransition(newStatus) {
       const newStatusValue = order_status[newStatus];
+      return this.possibleTransitions[newStatusValue];
+      /*
       return (
         this.possibleTransitions[newStatusValue] ||
         (newStatusValue === this.orderInfo.status &&
           newStatus !== "order_canceled")
       );
+      */
     },
     async handleStripe() {
       //console.log("handleComplete with Stripe", orderId);
