@@ -446,7 +446,8 @@
       "stripe_user_confirmed": "カード決済完了",
       "stripe_user_message_confirmed": "クレジットカードでお支払済みです。",
       "stripe_user_canceled": "決済キャンセル",
-      "stripe_user_message_canceled": "決済はキャンセルされました"
+      "stripe_user_message_canceled": "カード決済はキャンセルされました",
+      "stripe_user_message_just_payment_canceled": "現地払いをお願いします"
     },
     "onlinePaymentStatus": "カード決済の状況",
     "lineLink": "お店のLINE公式アカウント",
@@ -477,6 +478,11 @@
       "US": "米国 (+1)",
       "UK": "英国 (+44)",
       "FR": "フランス (+33)",
+      "BF": "ブルキナファソ (+235)",
+      "TG": "トーゴ (+228)",
+      "BN": "ベナン (+229)",
+      "CI": "コートジボワール (+225)",
+      "SE": "セネガル (+335)",
       "ES": "スペイン (+34)",
       "DE": "ドイツ (+49)",
       "JP": "日本 (+81)"
@@ -597,12 +603,17 @@
       "infinityNotificationOn": "1分おきに再通知",
       "infinityNotificationOff": "受注時のみ通知",
       "soundTest": "テスト",
-      "paymentIsNotCompleted": "ご注意：商品の受け渡し前に「受け渡し準備完了」ボタンを押してカード決済処理を完了させてください。",
+      "paymentIsNotCompleted": "ご注意：「受付済み」ボタンを押すとカード決済が処理されます。",
       "cancelButton": "注文をキャンセル",
       "cancelTitle": "注文のキャンセル",
       "cancelMessage": "お客様にご連絡の上、ご注文がキャンセルされることをお伝え下さい。",
+      "paymentCancelButton": "カード決済のみをキャンセル",
       "delete": "この注文をキャンセルする",
       "deleteConfirm": "（キャンセルの取り消しは出来ません）",
+      "paymentCancelTitle": "カード決済のみキャンセル",
+      "paymentCancelMessage": "現地払いに変更となります。お客様にご連絡の上、現地払いになることをお伝え下さい。注文はキャンセルされません。",
+      "paymentCancel": "カード決済のみキャンセル",
+      "paymentCancelConfirm": "（キャンセルの取り消しは出来ません）",
       "line": "LINE通知設定",
       "lineAdd": "LINEアカウントの追加",
       "lineUsers": "登録済みLINEアカウント",
@@ -753,10 +764,12 @@
         "cancel": "注文のキャンセルに失敗しました。"
       },
       "stripe": {
-        "confirm": "課金処理に失敗しました。",
+        "confirm": "カード決済処理に失敗しました。",
+        "confirm2": "続けて失敗する場合は、カード決済を取り消して現地払いに変更してください",
+        "cancel": "カード決済のキャンセルに失敗しました",
         "connect": "ストライプとの接続に失敗しました。",
         "disconnect": "ストライプとの接続解除に失敗しました。",
-        "intent": "ストライプによる課金に失敗しました。",
+        "intent": "ストライプによるカード決済に失敗しました。",
         "NoJCB": "このお店では、JCBカードは使えません。"
       },
       "menu": {
