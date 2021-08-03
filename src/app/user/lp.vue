@@ -14,6 +14,7 @@
       <entrance-buttons />
       <!-- <askButtons /> -->
       <!-- <news /> -->
+      <news />
     </div>
   </div>
 </template>

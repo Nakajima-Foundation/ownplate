@@ -5,6 +5,11 @@ export const customRoutes = [
     component: "user/RootPage.vue"
   },
   {
+    name: "news",
+    path: "/news",
+    component: "user/News.vue"
+  },
+  {
     name: "RestaurantsAll",
     path: "/r/area/all",
     component: "user/Restaurants/All.vue"
