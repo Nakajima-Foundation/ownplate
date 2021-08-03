@@ -454,7 +454,8 @@
     },
     "onlinePaymentStatus": "カード決済の状況",
     "lineLink": "お店のLINE公式アカウント",
-    "lineMessage": "LINE公式アカウントを友だち登録すると、お店から情報が直接届きます。"
+    "lineMessage": "LINE公式アカウントを友だち登録すると、お店から情報が直接届きます。",
+    "customerOrderHistory": "注文履歴"
   },
   "button": {
     "back": "戻る",
