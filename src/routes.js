@@ -132,6 +132,11 @@ export const customRoutes = [
         component: "admin/OrderHistory.vue"
       },
       {
+        name: "user-histories",
+        path: "userhistory/:userId",
+        component: "admin/UserHistory.vue"
+      },
+      {
         name: "admin-suspend",
         path: "suspend",
         component: "admin/OrderSuspendPage.vue"
