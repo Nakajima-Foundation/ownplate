@@ -455,7 +455,12 @@
     "onlinePaymentStatus": "カード決済の状況",
     "lineLink": "お店のLINE公式アカウント",
     "lineMessage": "LINE公式アカウントを友だち登録すると、お店から情報が直接届きます。",
-    "customerOrderHistory": "注文履歴"
+    "customerOrderHistory": "注文履歴",
+    "orderTimes": "注文",
+    "orderTimesUnit": "{count}回",
+    "cancelTimes": "キャンセル",
+    "cancelTimesUnit": "{count}回",
+    "lastOrder": "前回"
   },
   "button": {
     "back": "戻る",

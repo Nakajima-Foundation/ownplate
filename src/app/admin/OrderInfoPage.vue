@@ -292,9 +292,16 @@
                 </div>
                 <div class="text-base">{{ orderInfo.name }}</div>
               </div>
+              <div>
+                {{ $t("order.orderTimes") }}: {{ $tc("order.orderTimesUnit", userLog.counter || 0) }} /
+                {{ $t("order.cancelTimes") }}: {{ $tc("order.cancelTimesUnit", userLog.cancelCounter || 0) }}
+              </div>
+              <div>
+                {{ $t("order.lastOrder") }}: {{userLog.lastOrder ? moment(userLog.lastOrder.toDate()).format("YYYY/MM/DD HH:mm") : "--"}}
+              </div>
             </div>
             <div class="mt-6 text-center">
-              <nuxt-link :to="'/admin/restaurants/' + restaurantId() + '/userhistory/' + orderInfo.ownerUid + '?orderId=' + orderId">
+              <nuxt-link :to="'/admin/restaurants/' + restaurantId() + '/userhistory/' + orderInfo.uid + '?orderId=' + orderId">
                 <div
                   class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
                   >
@@ -510,7 +517,8 @@ export default {
       paymentCancelPopup: false,
       notFound: false,
       timeOffset: 0,
-      shopOwner: null
+      shopOwner: null,
+      userLog: {},
     };
   },
   // if user is not signined, render login
@@ -570,6 +578,15 @@ export default {
     this.detacher.map(detacher => {
       detacher();
     });
+  },
+  watch: {
+    orderInfo() {
+      db.doc(`restaurants/${this.restaurantId()}/userLog/${this.orderInfo.uid}`).get().then((res) => {
+        if (res.exists) {
+          this.userLog = res.data();
+        }
+      });
+    },
   },
   computed: {
     ownerUid() {
