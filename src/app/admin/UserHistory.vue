@@ -43,6 +43,27 @@
       </div>
     </div>
 
+    <div v-if="orders[0] && orders[0].phoneNumber" class="mt-4 text-center">
+      <div class="text-xs font-bold">
+        {{ $t("sms.phonenumber") }}
+      </div>
+      <div class="text-base mt-1">
+        <div>
+          <a :href="nationalPhoneURI" class="text-base font-bold">{{
+            nationalPhoneNumber
+            }}</a>
+        </div>
+        <div class="text-base">{{ orders[0].name }}</div>
+      </div>
+      <div>
+        {{ $t("order.orderTimes") }}: {{ $tc("order.orderTimesUnit", userLog.counter || 0) }} /
+        {{ $t("order.cancelTimes") }}: {{ $tc("order.cancelTimesUnit", userLog.cancelCounter || 0) }}
+      </div>
+      <div>
+        {{ $t("order.lastOrder") }}: {{userLog.lastOrder ? moment(userLog.lastOrder.toDate()).format("YYYY/MM/DD HH:mm") : "--"}}
+      </div>
+    </div>
+
     <!-- Orders -->
     <div class="mx-6 mt-6 grid grid-cols-1 gap-2 lg:grid-cols-3 xl:grid-cols-4">
       <ordered-info
@@ -78,6 +99,11 @@ import BackButton from "~/components/BackButton";
 import { order_status } from "~/plugins/constant.js";
 import moment from "moment";
 import NotificationIndex from "./Notifications/Index";
+import {
+  parsePhoneNumber,
+  formatNational,
+  formatURL
+} from "~/plugins/phoneutil.js";
 
 export default {
   components: {
@@ -97,7 +123,8 @@ export default {
       limit: 30,
       last: undefined,
       orders: [],
-      shopOwner: null
+      shopOwner: null,
+      userLog: {},
     };
   },
   async created() {
@@ -112,6 +139,8 @@ export default {
     this.shopInfo = restaurantDoc.data();
     this.shopOwner = await this.getShopOwner(this.$store.getters.uidAdmin);
     this.next();
+
+    this.getUserLog();
   },
   computed: {
     fileName() {
@@ -123,12 +152,31 @@ export default {
     orderId() {
       return this.$route.query.orderId;
     },
+    phoneNumber() {
+      return (
+        this.orders[0] &&
+        this.orders[0].phoneNumber &&
+          parsePhoneNumber(this.orders[0].phoneNumber)
+      );
+    },
+    nationalPhoneNumber() {
+      return formatNational(this.phoneNumber);
+    },
+    nationalPhoneURI() {
+      return formatURL(this.phoneNumber);
+    },
   },
   methods: {
+    async getUserLog() {
+      const res = await db.doc(`restaurants/${this.restaurantId()}/userLog/${this.uid}`).get();
+      if (res.exists) {
+        this.userLog = res.data();
+      }
+    },
     async next() {
       let query = db
           .collection(`restaurants/${this.restaurantId()}/orders`)
-          .where("ownerUid", "==", this.uid)
+          .where("uid", "==", this.uid)
           .orderBy("timePlaced", "desc")
           .limit(this.limit);
       if (this.last) {

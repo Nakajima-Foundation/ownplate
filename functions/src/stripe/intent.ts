@@ -2,13 +2,15 @@ import * as functions from 'firebase-functions'
 import * as admin from 'firebase-admin';
 import {
   order_status, next_transitions
-} from '../common/constant'
+} from '../common/constant';
 import Stripe from 'stripe'
 import Order from '../models/Order'
 import * as utils from '../lib/utils'
-import { updateOrderTotalData } from '../functions/order';
+import { updateOrderTotalDataAndUserLog } from '../functions/order';
 
 import { sendMessageToCustomer, notifyNewOrderToRestaurant, notifyCanceledOrderToRestaurant } from '../functions/notify';
+
+import { Context } from '../models/TestType';
 
 import moment from 'moment-timezone';
 
@@ -84,7 +86,7 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
       })
 
       const timePlaced = timeToPickup && new admin.firestore.Timestamp(timeToPickup.seconds, timeToPickup.nanoseconds) || admin.firestore.FieldValue.serverTimestamp()
-      await updateOrderTotalData(db, transaction, order.order, restaurantId, customerUid, timePlaced, true);
+      await updateOrderTotalDataAndUserLog(db, transaction, customerUid, order.order, restaurantId, customerUid, timePlaced, true);
       transaction.set(orderRef, {
         status: order_status.order_placed,
         totalCharge: totalCharge / multiple,
@@ -213,7 +215,7 @@ export const confirm = async (db: FirebaseFirestore.Firestore, data: any, contex
 };
 
 // This function is called by user or admin to cencel an exsting order (before accepted by admin)
-export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
+export const cancel = async (db: any, data: any, context: functions.https.CallableContext) => {
   const isAdmin = utils.is_admin_auth(context);
   console.log("is_admin:" + String(isAdmin));
 
@@ -265,7 +267,7 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
 
       if (!stripeAccount || !order.payment || !order.payment.stripe) {
         // No payment transaction
-        await updateOrderTotalData(db, transaction, order.order, restaurantId, uid, order.timePlaced, false);
+        await updateOrderTotalDataAndUserLog(db, transaction, uidUser, order.order, restaurantId, uid, order.timePlaced, false);
         transaction.set(orderRef, {
           timeCanceled: admin.firestore.FieldValue.serverTimestamp(),
           [cancelTimeKey]: admin.firestore.FieldValue.serverTimestamp(),
@@ -291,7 +293,7 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
           idempotencyKey: `${order.id}-cancel`,
           stripeAccount
         })
-        await updateOrderTotalData(db, transaction, order.order, restaurantId, restaurant.uid, order.timePlaced, false);
+        await updateOrderTotalDataAndUserLog(db, transaction, uidUser, order.order, restaurantId, restaurant.uid, order.timePlaced, false);
         transaction.set(orderRef, {
           timeCanceled: admin.firestore.FieldValue.serverTimestamp(),
           [cancelTimeKey]: admin.firestore.FieldValue.serverTimestamp(),
@@ -325,7 +327,7 @@ export const cancel = async (db: FirebaseFirestore.Firestore, data: any, context
 
 
 // This function is called by admin to cencel an exsting order
-export const cancelStripePayment = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
+export const cancelStripePayment = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext | Context) => {
   const uid = utils.validate_admin_auth(context);
 
   const stripe = utils.get_stripe();
