@@ -215,7 +215,7 @@ export const confirm = async (db: FirebaseFirestore.Firestore, data: any, contex
 };
 
 // This function is called by user or admin to cencel an exsting order (before accepted by admin)
-export const cancel = async (db: any, data: any, context: functions.https.CallableContext) => {
+export const cancel = async (db: any, data: any, context: functions.https.CallableContext | Context) => {
   const isAdmin = utils.is_admin_auth(context);
   console.log("is_admin:" + String(isAdmin));
 
