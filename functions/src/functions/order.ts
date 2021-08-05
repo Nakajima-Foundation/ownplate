@@ -13,21 +13,36 @@ import { sendMessageToCustomer, notifyNewOrderToRestaurant } from './notify';
 
 import { Context } from '../models/TestType'
 
-export const updateOrderTotalData = async (db, transaction, order, restaurantId, ownerUid, timePlaced, positive) => {
+export const updateOrderTotalDataAndUserLog = async (db, transaction, customerUid, order, restaurantId, ownerUid, timePlaced, positive) => {
   const timezone =  functions.config() && functions.config().order && functions.config().order.timezone || "Asia/Tokyo";
 
   const menuIds = Object.keys(order);
   const date = moment(timePlaced.toDate()).tz(timezone).format('YYYYMMDD');
 
+  // Firestore transactions require all reads to be executed before all writes.
+
+  // Read !!
+  const totalRef: {[key: string]: any} = {};
+  const totals: {[key: string]: any} = {};
+  const nums: {[key: string]: number} = {};
   await Promise.all(menuIds.map(async (menuId) => {
     const numArray = Array.isArray(order[menuId]) ? order[menuId] : [order[menuId]];
-    const num = numArray.reduce((sum, current) => {
+    nums[menuId] = numArray.reduce((sum, current) => {
       return sum + current
     }, 0);
     const path = `restaurants/${restaurantId}/menus/${menuId}/orderTotal/${date}`
-    const totalRef = db.doc(path)
-    const total = (await transaction.get(totalRef)).data();
+    totalRef[menuId] = db.doc(path)
+    totals[menuId] = (await transaction.get(totalRef[menuId])).data();
+  }));
 
+  const userLogPath = `restaurants/${restaurantId}/userLog/${customerUid}`;
+  const userLogRef = db.doc(userLogPath)
+  const userLog = (await transaction.get(userLogRef)).data();
+
+  // Write!!
+  await Promise.all(menuIds.map(async (menuId) => {
+    const num = nums[menuId];
+    const total = totals[menuId]
     if (!total) {
       const addData = {
         uid: ownerUid,
@@ -36,15 +51,35 @@ export const updateOrderTotalData = async (db, transaction, order, restaurantId,
         date,
         count: num,
       };
-      await transaction.set(totalRef, addData);
+      await transaction.set(totalRef[menuId], addData);
     } else {
       const count = positive ? total.count + num : total.count - num;
       const updateData = {
         count,
       };
-      await transaction.update(totalRef, updateData);
+      await transaction.update(totalRef[menuId], updateData);
     }
   }));
+  if (!userLog) {
+    const data = {
+      uid: customerUid,
+      counter: positive ? 1 : 0,
+      cancelCounter: positive ? 0 : 1,
+      lastOrder: timePlaced,
+      restaurantId,
+      ownerUid,
+    }
+    await transaction.set(userLogRef, data);
+  } else {
+    const counter = userLog.counter + (positive ? 1 : 0);
+    const cancelCounter = userLog.cancelCounter + (positive ?	0 : 1);
+    const updateData = {
+      counter,
+      cancelCounter,
+      lastOrder: timePlaced
+    };
+    await transaction.update(userLogRef, updateData);
+  }
 };
 
 // This function is called by users to place orders without paying
@@ -55,6 +90,7 @@ export const updateOrderTotalData = async (db, transaction, order, restaurantId,
   utils.validate_params({ restaurantId, orderId }) // tip, sendSMS and lng are optinoal
   let order: Order | undefined = undefined;
 
+   const timePlaced = timeToPickup && new admin.firestore.Timestamp(timeToPickup.seconds, timeToPickup.nanoseconds) || admin.firestore.FieldValue.serverTimestamp()
   try {
     const restaurantData = await utils.get_restaurant(db, restaurantId);
     const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`)
@@ -75,9 +111,9 @@ export const updateOrderTotalData = async (db, transaction, order, restaurantId,
       const roundedTip = Math.round(tip * multiple) / multiple
 
       // transaction for stock orderTotal
-      const timePlaced = timeToPickup && new admin.firestore.Timestamp(timeToPickup.seconds, timeToPickup.nanoseconds) || admin.firestore.FieldValue.serverTimestamp()
-      await updateOrderTotalData(db, transaction, order.order, restaurantId, restaurantData.uid, timePlaced, true);
+      await updateOrderTotalDataAndUserLog(db, transaction, customerUid, order.order, restaurantId, restaurantData.uid, timePlaced, true);
 
+      // customerUid
       transaction.update(orderRef, {
         status: order_status.order_placed,
         totalCharge: order.total + tip,
@@ -267,7 +303,7 @@ const orderAccounting = (restaurantData, food_sub_total, alcohol_sub_total, mult
   const inclusiveTax = restaurantData.inclusiveTax || false;
   const alcoholTax = restaurantData.alcoholTax || 0;
   const foodTax = restaurantData.foodTax || 0;
-  
+
   // calculate price.
   const sub_total = food_sub_total + alcohol_sub_total;
   if (sub_total === 0) {
@@ -356,7 +392,7 @@ export const wasOrderCreated = async (db, data: any, context) => {
         });
       }
     });
-    
+
     const accountingResult = orderAccounting(restaurantData, food_sub_total, alcohol_sub_total, multiple);
 
     await createCustomer(db, customerUid, context.auth.token.phone_number)

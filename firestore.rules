@@ -151,6 +151,10 @@ service cloud.firestore {
         match /private/{privateId} {
           allow read, write: if isAdmin(request) && isRestaurantOwner(restaurantId, request);
         }
+        match /userLog/{userId} {
+          allow read: if isAdmin(request) && isRestaurantOwner(restaurantId, request);
+          allow write: if false // only server side of function can write here (see functions/order.ts)
+        }
         match /menus/{menuId} {
           allow read: if true
           allow write: if isAdmin(request) && isRestaurantOwner(restaurantId, request);
