@@ -15,7 +15,7 @@ import { Context } from '../models/TestType';
 import moment from 'moment-timezone';
 
 // This function is called by user to create a "payment intent" (to start the payment transaction)
-export const create = async (db: FirebaseFirestore.Firestore, data: any, context: Context) => {
+export const create = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const customerUid = utils.validate_auth(context);
   const stripe = utils.get_stripe();
 
@@ -122,7 +122,7 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
 
 // This function is called by admin to confurm a "payment intent" (to complete the payment transaction)
 // ready_to_pickup
-export const confirm = async (db: FirebaseFirestore.Firestore, data: any, context: Context) => {
+export const confirm = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const ownerUid = utils.validate_admin_auth(context);
   const stripe = utils.get_stripe();
 
@@ -215,7 +215,7 @@ export const confirm = async (db: FirebaseFirestore.Firestore, data: any, contex
 };
 
 // This function is called by user or admin to cencel an exsting order (before accepted by admin)
-export const cancel = async (db: any, data: any, context: Context) => {
+export const cancel = async (db: any, data: any, context: functions.https.CallableContext) => {
   const isAdmin = utils.is_admin_auth(context);
   console.log("is_admin:" + String(isAdmin));
 
@@ -327,7 +327,7 @@ export const cancel = async (db: any, data: any, context: Context) => {
 
 
 // This function is called by admin to cencel an exsting order
-export const cancelStripePayment = async (db: FirebaseFirestore.Firestore, data: any, context: Context) => {
+export const cancelStripePayment = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext | Context) => {
   const uid = utils.validate_admin_auth(context);
 
   const stripe = utils.get_stripe();
