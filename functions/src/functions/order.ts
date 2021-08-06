@@ -65,7 +65,8 @@ export const updateOrderTotalDataAndUserLog = async (db, transaction, customerUi
       uid: customerUid,
       counter: positive ? 1 : 0,
       cancelCounter: positive ? 0 : 1,
-      lastOrder: timePlaced,
+      currentOrder: timePlaced,
+      // lastOrder: timePlaced,
       restaurantId,
       ownerUid,
     }
@@ -76,7 +77,8 @@ export const updateOrderTotalDataAndUserLog = async (db, transaction, customerUi
     const updateData = {
       counter,
       cancelCounter,
-      lastOrder: timePlaced
+      currentOrder: timePlaced,
+      lastOrder: userLog.currentOrder || timePlaced
     };
     await transaction.update(userLogRef, updateData);
   }
