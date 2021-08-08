@@ -1,7 +1,8 @@
 import * as functions from 'firebase-functions'
 import * as admin from 'firebase-admin';
 import {
-  order_status, next_transitions
+  order_status, next_transitions,
+  order_status_keys, timeEventMapping
 } from '../common/constant';
 import Stripe from 'stripe'
 import Order from '../models/Order'
@@ -183,10 +184,11 @@ export const confirm = async (db: FirebaseFirestore.Firestore, data: any, contex
         stripeAccount
       })
 
+      const updateTimeKey = timeEventMapping[order_status_keys[nextStatus]];
       transaction.set(orderRef, {
-        timeConfirmed: admin.firestore.FieldValue.serverTimestamp(),
+        // timeConfirmed: admin.firestore.FieldValue.serverTimestamp(),
         status: nextStatus,
-        updatedAt: admin.firestore.Timestamp.now(),
+        [updateTimeKey]: admin.firestore.Timestamp.now(),
         payment: {
           stripe: "confirmed"
         }
