@@ -319,7 +319,7 @@
                 v-for="orderState in orderStates"
                 :key="orderState"
                 class="mt-4 text-center"
-              >
+                >
                 <b-button
                   :loading="updating === orderState"
                   :disabled="!isValidTransition(orderState)"
@@ -731,7 +731,7 @@ export default {
     async handleStripe() {
       //console.log("handleComplete with Stripe", orderId);
       try {
-        this.updating = "ready_to_pickup";
+        // this.updating = "ready_to_pickup";
         const { data } = await stripeConfirmIntent({
           restaurantId: this.restaurantId() + this.forcedError("confirm"),
           orderId: this.orderId
@@ -756,12 +756,12 @@ export default {
         console.log("same status - no need to process");
         return;
       }
+      this.updating = statusKey;
       if ((newStatus === order_status.ready_to_pickup || newStatus === order_status.order_accepted) && this.paymentIsNotCompleted) {
         this.handleStripe();
         return;
       }
       const orderUpdate = functions.httpsCallable("orderUpdate");
-      this.updating = statusKey;
       try {
         const params = {
           restaurantId: this.restaurantId() + this.forcedError("update"),
@@ -853,9 +853,11 @@ export default {
       this.cancelPopup = false;
     },
     openPaymentCancel() {
+      console.log("openPaymentCancel");
       this.paymentCancelPopup = true;
     },
     closePaymentCancel() {
+      console.log("closePaymentCancel");
       this.paymentCancelPopup = false;
     }
   }

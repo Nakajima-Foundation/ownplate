@@ -16,6 +16,7 @@
     "customclaims": "babel-node --presets @babel/env  ./batch/customclaims.js",
     "makenews": "babel-node --presets @babel/env  ./batch/news.js",
     "user": "babel-node --presets @babel/env  ./batch/user.js",
+    "userlog": "babel-node --presets @babel/env  ./batch/generate-user-log.js",
     "ppp": "babel-node --presets @babel/env  ./batch/setParent.js",
     "batch": "babel-node --presets @babel/env",
     "deploy_staging": "nuxt build &&  cp dist/index.html functions/templates/index.html && firebase deploy --only hosting --project=staging && firebase deploy --only functions --project=staging",
