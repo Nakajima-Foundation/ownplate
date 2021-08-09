@@ -75,7 +75,7 @@ export default {
           .collectionGroup("orders")
           .where("uid", "==", this.uid)
           .orderBy("orderPlacedAt", "desc")
-          .limit(25)
+          .limit(200)
           .onSnapshot(snapshot => {
             this.orders = snapshot.docs.map(doc => {
               const order = doc.data();
