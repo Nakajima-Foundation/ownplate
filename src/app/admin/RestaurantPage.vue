@@ -196,15 +196,17 @@
               >
             </div>
             <div v-if="searchResults.length > 0">
-              <b-select v-model="selectedResult">
-                <option
-                  v-for="(result, key) in searchResults"
-                  :value="key"
-                  :key="key"
-                  >
-                  {{result.formatted_address}}
-                </option>
-              </b-select>
+              <div class="mt-4">
+                <b-select v-model="selectedResult">
+                  <option
+                    v-for="(result, key) in searchResults"
+                    :value="key"
+                    :key="key"
+                    >
+                    {{result.formatted_address}}
+                  </option>
+                </b-select>
+              </div>
             </div>
             <div v-else>
               住所を入力して検索してください
