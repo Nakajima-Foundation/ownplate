@@ -173,7 +173,7 @@ export const confirm = async (db: FirebaseFirestore.Firestore, data: any, contex
 
       const stripeRecord = (await transaction.get(stripeRef)).data();
       if (!stripeRecord || !stripeRecord.paymentIntent || !stripeRecord.paymentIntent.id) {
-        throw new functions.https.HttpsError('failed-precondition', 'This order has no paymentIntendId.', stripeRecord)
+        throw new functions.https.HttpsError('failed-precondition', 'This order has no paymentIntendId.')
       }
       const nextStatus = next_transitions[order.status];
 

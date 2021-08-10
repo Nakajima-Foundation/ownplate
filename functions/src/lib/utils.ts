@@ -92,7 +92,7 @@ export const process_error = (error: any) => {
   if (error instanceof functions.https.HttpsError) {
     return error
   }
-  return new functions.https.HttpsError("internal", error.message, error);
+  return new functions.https.HttpsError("internal", error.message);
 }
 
 // const regex = /\((\+|\-)[0-9\.]+\)/
