@@ -88,7 +88,7 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
 
       const timePlaced = timeToPickup && new admin.firestore.Timestamp(timeToPickup.seconds, timeToPickup.nanoseconds) || admin.firestore.FieldValue.serverTimestamp()
       await updateOrderTotalDataAndUserLog(db, transaction, customerUid, order.order, restaurantId, customerUid, timePlaced, true);
-      transaction.set(orderRef, {
+      const updateData = {
         status: order_status.order_placed,
         totalCharge: totalCharge / multiple,
         tip: Math.round(tip * multiple) / multiple,
@@ -101,8 +101,9 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
         payment: {
           stripe: "pending"
         }
-      }, { merge: true });
-      order = Object.assign(order, {totalCharge: totalCharge / multiple});
+      };
+      transaction.set(orderRef, updateData, { merge: true });
+      order = Object.assign(order, updateData);
 
       transaction.set(stripeRef, {
         paymentIntent
