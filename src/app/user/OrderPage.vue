@@ -459,6 +459,11 @@ import * as analyticsUtil from "~/plugins/analytics";
 
 export default {
   name: "Order",
+  head() {
+    return {
+      title: [this.defaultTitle, "Order Page"].join(" / ")
+    }
+  },
   components: {
     ShopHeader,
     OrderInfo,

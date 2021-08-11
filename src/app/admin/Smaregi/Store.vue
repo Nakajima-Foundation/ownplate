@@ -69,6 +69,11 @@ export default {
     BackButton
   },
   name: "Smaregi-store",
+  head() {
+    return {
+      title: [this.defaultTitle, "Admin Smaregi Store"].join(" / ")
+    }
+  },
   data() {
     return {
       enable: null,

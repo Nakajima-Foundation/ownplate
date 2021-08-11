@@ -231,6 +231,11 @@ export default {
   components: {
     PhoneLogin
   },
+  head() {
+    return {
+      title: [this.defaultTitle, "Profile"].join(" / ")
+    }
+  },
   data() {
     return {
       loginVisible: false,

@@ -244,6 +244,13 @@ import lp from "~/app/user/lp";
 
 export default {
   name: "HomePage",
+  head() {
+    return {
+      title: [
+        this.defaultTitle, "Top"
+      ].join(" / ")
+    };
+  },
 
   components: {
     lp

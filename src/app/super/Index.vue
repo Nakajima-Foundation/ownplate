@@ -26,6 +26,11 @@
 <script>
 import { functions } from "~/plugins/firebase.js";
 export default {
+  head() {
+    return {
+      title: [this.defaultTitle, "Super Index"].join(" / ")
+    }
+  },
   async mounted() {
     if (!this.$store.state.user || this.$store.getters.isNotSuperAdmin) {
       this.$router.push("/");

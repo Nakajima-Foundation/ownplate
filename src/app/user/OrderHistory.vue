@@ -37,6 +37,11 @@ import PhoneLogin from "~/app/auth/PhoneLogin";
 import BackButton from "~/components/BackButton";
 
 export default {
+  head() {
+    return {
+      title: [this.defaultTitle, "User Order History"].join(" / ")
+    }
+  },
   components: {
     OrderedInfo,
     PhoneLogin,

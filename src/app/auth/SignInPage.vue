@@ -129,6 +129,13 @@ import { auth } from "~/plugins/firebase.js";
 
 export default {
   name: "Signin",
+  head() {
+    return {
+      title: [
+        this.defaultTitle, "Signin Admin"
+      ].join(" / ")
+    };
+  },
   data() {
     return {
       email: "",

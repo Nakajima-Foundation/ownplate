@@ -20,6 +20,11 @@ import BackButton from "~/components/BackButton";
 import { db } from "~/plugins/firebase.js";
 
 export default {
+  head() {
+    return {
+      title: [this.defaultTitle, "Super All Profiles"].join(" / ")
+    }
+  },
   components: {
     BackButton
   },
