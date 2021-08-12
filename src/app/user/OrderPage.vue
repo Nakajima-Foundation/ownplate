@@ -449,7 +449,7 @@ import NotFound from "~/components/NotFound";
 import RequireLogin from "~/components/RequireLogin";
 
 import { db, firestore, functions } from "~/plugins/firebase.js";
-import { order_status } from "~/plugins/constant.js";
+import { order_status, order_status_keys } from "~/plugins/constant.js";
 import { nameOfOrder } from "~/plugins/strings.js";
 import { releaseConfig } from "~/plugins/config.js";
 import { stripeCreateIntent, stripeCancelIntent } from "~/plugins/stripe.js";
@@ -461,7 +461,18 @@ export default {
   name: "Order",
   head() {
     return {
-      title: [this.defaultTitle, "Order Page"].join(" / ")
+      title: this.shopInfo.restaurantName && this.statusKey ?
+        [
+          this.defaultTitle,
+          this.shopInfo ? this.shopInfo.restaurantName : "--",
+          "Order Page",
+          this.$t("order.status." + this.statusKey),
+        ].join(" / "):
+      [
+          this.defaultTitle,
+        "Order Page",
+      ].join(" / ")
+
     }
   },
   components: {
@@ -518,6 +529,9 @@ export default {
     isJustCancelPayment() {
       return (this.hasStripe && this.orderInfo.payment.stripe === "canceled" &&
               this.orderInfo.status !== order_status.order_canceled);
+    },
+    statusKey() {
+      return this.orderInfo ? order_status_keys[this.orderInfo.status] : null;
     },
     hasStripe() {
       return this.orderInfo.payment && this.orderInfo.payment.stripe;
