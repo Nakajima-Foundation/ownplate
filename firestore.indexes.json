@@ -339,6 +339,28 @@
       ]
     },
     {
+      "collectionGroup": "reviews",
+      "fieldPath": "timeLiked",
+      "indexes": [
+        {
+          "order": "ASCENDING",
+          "queryScope": "COLLECTION"
+        },
+        {
+          "order": "DESCENDING",
+          "queryScope": "COLLECTION"
+        },
+        {
+          "arrayConfig": "CONTAINS",
+          "queryScope": "COLLECTION"
+        },
+        {
+          "order": "DESCENDING",
+          "queryScope": "COLLECTION_GROUP"
+        }
+      ]
+    },
+    {
       "collectionGroup": "stripeLogs",
       "fieldPath": "created",
       "indexes": [

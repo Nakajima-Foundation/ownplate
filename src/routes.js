@@ -260,6 +260,10 @@ export const customRoutes = [
     component: "super/AllStripeCallback.vue"
   },
   {
+    path: "/s/favorites",
+    component: "super/AllFavorites.vue"
+  },
+  {
     path: "/s/callbacks/:uid/:logId",
     component: "super/StripeCallback.vue"
   },

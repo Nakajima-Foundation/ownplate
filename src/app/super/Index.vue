@@ -12,6 +12,8 @@
       <br />
       <router-link to="/s/admins">All Admins</router-link>
       <br />
+      <router-link to="/s/favorites">All Favorites</router-link>
+      <br />
       <router-link to="/s/profiles">All Profiles</router-link>
       <br />
       <router-link to="/s/logs">All Logs</router-link>
