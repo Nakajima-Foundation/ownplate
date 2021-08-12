@@ -285,17 +285,17 @@ const createNewOrderData = async (restaurantRef, orderRef, orderData, multiple) 
     } else {
       food_sub_total += total;
     }
-    const menuItem: any = { price: menu.price, itemName: menu.itemName };
-    if (menu.itemAliasesName) {
-      menuItem.itemAliasesName = menu.itemAliasesName;
-    }
-    if (menu.category1) {
-      menuItem.category1 = menu.category1;
-    }
-    if (menu.category2) {
-      menuItem.category2 = menu.category2;
-    }
-    newItems[menuId] = menuItem;
+    const menuItem: any = {
+      price: menu.price,
+      itemName: menu.itemName,
+      itemPhoto: menu.itemPhoto,
+      images: menu.images,
+      itemAliasesName: menu.itemAliasesName,
+      category1: menu.category1,
+      category2: menu.category2,
+    };
+
+    newItems[menuId] = utils.filterData(menuItem);
   });
   return { newOrderData, newItems, newPrices, food_sub_total, alcohol_sub_total }
 };
