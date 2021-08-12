@@ -2,7 +2,22 @@
   <div>
     <ownplate-service-image />
     <div class="max-w-screen-xl mx-auto">
-      <entrance-buttons />
+
+      <div class="mx-6 mt-6 text-center lg:grid lg:grid-cols-3 lg:gap-4">
+        <!-- For Food Lovers -->
+        <entrance-buttons-food-lovers />
+      </div>
+
+      <div class="mx-6 mt-6 text-center lg:grid lg:grid-cols-3 lg:gap-4">
+        <div class="bg-white rounded-lg p-6 mt-4 lg:mt-0">
+          <!-- Order History -->
+          <history-button />
+
+          <!-- Favorites -->
+          <favorite-button />
+        </div>
+      </div>
+
       <userVoices />
       <!-- <moreButton /> -->
       <!-- <threeSteps /> -->
@@ -21,6 +36,7 @@
 <script>
 import ownplateServiceImage from "~/components/lp/ownplateServiceImage";
 import entranceButtons from "~/components/lp/entranceButtons";
+import entranceButtonsFoodLovers from "~/components/lp/entranceButtonsFoodLovers";
 import userVoices from "~/components/lp/userVoices";
 import moreButton from "~/components/lp/moreButton";
 import threeSteps from "~/components/lp/threeSteps";
@@ -31,10 +47,14 @@ import operators from "~/components/lp/operators";
 import aboutService from "~/components/lp/aboutService";
 import news from "~/components/lp/news";
 
+import HistoryButton from "@/components/users/HistoryButton";
+import FavoriteButton from "@/components/users/FavoriteButton";
+
 export default {
   components: {
     ownplateServiceImage,
     entranceButtons,
+    entranceButtonsFoodLovers,
     userVoices,
     moreButton,
     threeSteps,
@@ -43,7 +63,11 @@ export default {
     mediaLink,
     operators,
     aboutService,
-    news
+    news,
+
+    HistoryButton,
+    FavoriteButton
+
   }
 };
 

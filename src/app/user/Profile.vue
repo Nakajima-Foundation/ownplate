@@ -60,34 +60,10 @@
         <!-- For Takeout User -->
         <div v-if="user.phoneNumber">
           <!-- Order History -->
-          <div class="mt-6 text-center">
-            <router-link to="/u/history">
-              <div
-                class="inline-flex justify-center items-center h-16 rounded-full bg-op-teal shadow"
-                style="min-width: 16rem;"
-              >
-                <i class="material-icons text-2xl text-white mr-2">history</i>
-                <div class="text-xl font-bold text-white">
-                  {{ $t("order.history") }}
-                </div>
-              </div>
-            </router-link>
-          </div>
+          <history-button />
 
           <!-- Favorites -->
-          <div class="mt-6 text-center">
-            <router-link to="/r/favorites">
-              <div
-                class="inline-flex justify-center items-center h-16 rounded-full bg-op-teal shadow"
-                style="min-width: 16rem;"
-              >
-                <i class="material-icons text-2xl text-white mr-2">favorite</i>
-                <div class="text-xl font-bold text-white">
-                  {{ $t("find.likes") }}
-                </div>
-              </div>
-            </router-link>
-          </div>
+          <favorite-button />
 
           <!-- Credit Card Info -->
           <div class="mt-6 text-center">
@@ -227,9 +203,14 @@ import { ownPlateConfig } from "@/config/project";
 import PhoneLogin from "~/app/auth/PhoneLogin";
 import { lineAuthURL } from "~/plugins/line.js";
 
+import HistoryButton from "@/components/users/HistoryButton";
+import FavoriteButton from "@/components/users/FavoriteButton";
+
 export default {
   components: {
-    PhoneLogin
+    PhoneLogin,
+    HistoryButton,
+    FavoriteButton,
   },
   head() {
     return {
