@@ -6,10 +6,8 @@
       <div class="mx-6 mt-6 text-center lg:grid lg:grid-cols-3 lg:gap-4">
         <!-- For Food Lovers -->
         <entrance-buttons-food-lovers />
-      </div>
 
-      <div class="mx-6 mt-6 text-center lg:grid lg:grid-cols-3 lg:gap-4">
-        <div class="bg-white rounded-lg p-6 mt-4 lg:mt-0">
+        <div class="bg-white rounded-lg mt-4 lg:col-span-2">
           <!-- Order History -->
           <history-button />
 
