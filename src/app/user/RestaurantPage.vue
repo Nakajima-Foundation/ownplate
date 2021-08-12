@@ -49,7 +49,7 @@
 
                 <!-- Favorite Button -->
                 <div>
-                  <favorite-button :shopInfo="shopInfo"></favorite-button>
+                  <favorite-button :shopInfo="shopInfo" :keepLike="false"></favorite-button>
                 </div>
               </div>
 
