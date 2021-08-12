@@ -156,7 +156,7 @@
           class="mt-4 mx-6 bg-black bg-opacity-5 rounded-lg p-4 text-center"
           >
           <div>
-            <favorite-button :shopInfo="shopInfo" :keepLike="true"></favorite-button>
+            <favorite-button :shopInfo="shopInfo" :keepLike="false"></favorite-button>
           </div>
         </div>
 
