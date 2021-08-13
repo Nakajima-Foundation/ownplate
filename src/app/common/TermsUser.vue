@@ -385,7 +385,7 @@
         一般社団法人シンギュラリティ・ソサエティ
       </div>
       <div class="t-body1 c-text-black-medium m-t-4">
-        2020年6月22日
+        2021年8月16日
       </div>
       <div class="t-body1 c-text-black-medium m-t-4">最終改定</div>
 
