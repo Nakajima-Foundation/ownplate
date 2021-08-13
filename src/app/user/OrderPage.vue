@@ -137,21 +137,29 @@
         </div>
 
         <!-- Special Thank you Message from the Restaurant -->
-        <template
-          v-if="
-            shopInfo &&
-              shopInfo.orderThanks &&
-              shopInfo.orderThanks.length > 0 &&
-              !canceled
-          "
-        >
-          <div class="mt-6 mx-6 bg-white rounded-lg p-4 shadow">
-            <div class="text-xs font-bold text-black text-opacity-60">
-              {{ $t("order.thanksMessage") }}
-            </div>
-            <div class="mt-2 text-base">{{ shopInfo.orderThanks }}</div>
+        <div class="mt-4 mx-6 bg-white rounded-lg p-4 shadow"
+             v-if="
+                   shopInfo &&
+                   shopInfo.orderThanks &&
+                   shopInfo.orderThanks.length > 0 &&
+                   !canceled
+                   "
+             >
+          <div class="text-xs font-bold text-black text-opacity-60">
+            {{ $t("order.thanksMessage") }}
           </div>
-        </template>
+          <div class="mt-2 text-base">{{ shopInfo.orderThanks }}</div>
+        </div>
+
+        <!-- Favorite Button -->
+        <div
+          class="mt-4 mx-6 bg-black bg-opacity-5 rounded-lg p-4 text-center"
+          >
+          <div>
+            <favorite-button :shopInfo="shopInfo" :keepLike="false"></favorite-button>
+          </div>
+        </div>
+
 
         <!-- Restaurant LINE -->
         <div
@@ -175,6 +183,7 @@
           </div>
         </div>
       </div>
+      <!-- end of Thanks -->
 
       <!-- Before Paid -->
       <div v-else class="mt-4 mx-6">
@@ -447,6 +456,7 @@ import TimeToPickup from "~/app/user/Order/TimeToPickup";
 import PhoneLogin from "~/app/auth/PhoneLogin";
 import NotFound from "~/components/NotFound";
 import RequireLogin from "~/components/RequireLogin";
+import FavoriteButton from "~/app/user/Restaurant/FavoriteButton";
 
 import { db, firestore, functions } from "~/plugins/firebase.js";
 import { order_status, order_status_keys } from "~/plugins/constant.js";
@@ -483,7 +493,8 @@ export default {
     StripeCard,
     TimeToPickup,
     NotFound,
-    RequireLogin
+    RequireLogin,
+    FavoriteButton
   },
   data() {
     return {
