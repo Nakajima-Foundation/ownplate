@@ -140,3 +140,13 @@ export const getMenuObj = async (refRestaurant, menuIds) => {
 export const nameOfOrder = (orderNumber: number) => {
   return "#" + `00${orderNumber}`.slice(-3);
 };
+
+export const filterData = (data: { [key: string]: any }) => {
+  return Object.keys(data).reduce((tmp: { [key: string]: any }, key) => {
+    if (data[key] !== null && data[key] !== undefined) {
+      tmp[key] = data[key];
+    }
+    return tmp;
+  }, {});
+  return data;
+};
