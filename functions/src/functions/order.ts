@@ -293,6 +293,7 @@ const createNewOrderData = async (restaurantRef, orderRef, orderData, multiple) 
       itemAliasesName: menu.itemAliasesName,
       category1: menu.category1,
       category2: menu.category2,
+      tax: menu.tax,
     };
 
     newItems[menuId] = utils.filterData(menuItem);
