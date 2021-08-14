@@ -51,6 +51,11 @@ import { db } from "~/plugins/firebase.js";
 import firebase from "firebase/app";
 
 export default {
+  head() {
+    return {
+      title: [this.defaultTitle, "Super All Requests"].join(" / ")
+    }
+  },
   components: {
     BackButton
   },

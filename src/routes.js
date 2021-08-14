@@ -5,6 +5,11 @@ export const customRoutes = [
     component: "user/RootPage.vue"
   },
   {
+    name: "news",
+    path: "/news",
+    component: "user/News.vue"
+  },
+  {
     name: "RestaurantsAll",
     path: "/r/area/all",
     component: "user/Restaurants/All.vue"
@@ -125,6 +130,11 @@ export const customRoutes = [
       {
         path: "history",
         component: "admin/OrderHistory.vue"
+      },
+      {
+        name: "user-histories",
+        path: "userhistory/:userId",
+        component: "admin/UserHistory.vue"
       },
       {
         name: "admin-suspend",
@@ -248,6 +258,10 @@ export const customRoutes = [
   {
     path: "/s/callbacks",
     component: "super/AllStripeCallback.vue"
+  },
+  {
+    path: "/s/favorites",
+    component: "super/AllFavorites.vue"
   },
   {
     path: "/s/callbacks/:uid/:logId",

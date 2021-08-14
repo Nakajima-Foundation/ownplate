@@ -24,9 +24,9 @@ const release_note_fd = fs.openSync(release_notes, "w");
 fs.writeSync(release_note_fd, "# Release notes\n");
 fs.writeSync(release_note_fd, "\n");
 
-const currentData = getData("current.md");
-fs.writeSync(release_note_fd, currentData.markdown);
-fs.writeSync(release_note_fd, "\n");
+// const currentData = getData("current.md");
+// fs.writeSync(release_note_fd, currentData.markdown);
+// fs.writeSync(release_note_fd, "\n");
 
 const removeFirstLine = (str) => {
   const tmp = str.split("\n");

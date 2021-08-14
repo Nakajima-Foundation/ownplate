@@ -5,7 +5,7 @@
     <table>
       <tr>
         <th>Name</th>
-        <th>e-mail</th> 
+        <th>e-mail</th>
         <th>Created</th>
         <th>A</th>
         <th>O</th>
@@ -50,6 +50,11 @@ const QUERY_LIMIT = 50;
 export default {
   components: {
     BackButton
+  },
+  head() {
+    return {
+      title: [this.defaultTitle, "Super All Admin"].join(" / ")
+    }
   },
   data() {
     return {

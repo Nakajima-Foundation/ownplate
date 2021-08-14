@@ -102,7 +102,9 @@
         <div :class="'stripe_' + orderInfo.payment.stripe">
           {{ $t("order.status.stripe_user_" + orderInfo.payment.stripe) }}<br/>
           {{ $t("order.status.stripe_user_message_" + orderInfo.payment.stripe) }}<br/>
-
+        </div>
+        <div v-if="isJustCancelPayment">
+          {{ $t("order.status.stripe_user_message_just_payment_canceled") }}
         </div>
       </div>
 
@@ -135,21 +137,29 @@
         </div>
 
         <!-- Special Thank you Message from the Restaurant -->
-        <template
-          v-if="
-            shopInfo &&
-              shopInfo.orderThanks &&
-              shopInfo.orderThanks.length > 0 &&
-              !canceled
-          "
-        >
-          <div class="mt-6 mx-6 bg-white rounded-lg p-4 shadow">
-            <div class="text-xs font-bold text-black text-opacity-60">
-              {{ $t("order.thanksMessage") }}
-            </div>
-            <div class="mt-2 text-base">{{ shopInfo.orderThanks }}</div>
+        <div class="mt-4 mx-6 bg-white rounded-lg p-4 shadow"
+             v-if="
+                   shopInfo &&
+                   shopInfo.orderThanks &&
+                   shopInfo.orderThanks.length > 0 &&
+                   !canceled
+                   "
+             >
+          <div class="text-xs font-bold text-black text-opacity-60">
+            {{ $t("order.thanksMessage") }}
           </div>
-        </template>
+          <div class="mt-2 text-base">{{ shopInfo.orderThanks }}</div>
+        </div>
+
+        <!-- Favorite Button -->
+        <div
+          class="mt-4 mx-6 bg-black bg-opacity-5 rounded-lg p-4 text-center"
+          >
+          <div>
+            <favorite-button :shopInfo="shopInfo" :keepLike="false"></favorite-button>
+          </div>
+        </div>
+
 
         <!-- Restaurant LINE -->
         <div
@@ -173,6 +183,7 @@
           </div>
         </div>
       </div>
+      <!-- end of Thanks -->
 
       <!-- Before Paid -->
       <div v-else class="mt-4 mx-6">
@@ -445,9 +456,10 @@ import TimeToPickup from "~/app/user/Order/TimeToPickup";
 import PhoneLogin from "~/app/auth/PhoneLogin";
 import NotFound from "~/components/NotFound";
 import RequireLogin from "~/components/RequireLogin";
+import FavoriteButton from "~/app/user/Restaurant/FavoriteButton";
 
 import { db, firestore, functions } from "~/plugins/firebase.js";
-import { order_status } from "~/plugins/constant.js";
+import { order_status, order_status_keys } from "~/plugins/constant.js";
 import { nameOfOrder } from "~/plugins/strings.js";
 import { releaseConfig } from "~/plugins/config.js";
 import { stripeCreateIntent, stripeCancelIntent } from "~/plugins/stripe.js";
@@ -457,6 +469,22 @@ import * as analyticsUtil from "~/plugins/analytics";
 
 export default {
   name: "Order",
+  head() {
+    return {
+      title: this.shopInfo.restaurantName && this.statusKey ?
+        [
+          this.defaultTitle,
+          this.shopInfo ? this.shopInfo.restaurantName : "--",
+          "Order Page",
+          this.$t("order.status." + this.statusKey),
+        ].join(" / "):
+      [
+          this.defaultTitle,
+        "Order Page",
+      ].join(" / ")
+
+    }
+  },
   components: {
     ShopHeader,
     OrderInfo,
@@ -465,7 +493,8 @@ export default {
     StripeCard,
     TimeToPickup,
     NotFound,
-    RequireLogin
+    RequireLogin,
+    FavoriteButton
   },
   data() {
     return {
@@ -508,6 +537,13 @@ export default {
     next();
   },
   computed: {
+    isJustCancelPayment() {
+      return (this.hasStripe && this.orderInfo.payment.stripe === "canceled" &&
+              this.orderInfo.status !== order_status.order_canceled);
+    },
+    statusKey() {
+      return this.orderInfo ? order_status_keys[this.orderInfo.status] : null;
+    },
     hasStripe() {
       return this.orderInfo.payment && this.orderInfo.payment.stripe;
     },

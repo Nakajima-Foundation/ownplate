@@ -84,6 +84,7 @@ export default {
                 name: "kanto",
                 items: [
                   { name: "東京都", id: 12 },
+                  { name: "神奈川県", id: 13 },
                   { name: "千葉県", id: 11 },
                   { name: "群馬県", id: 9 },
                   { name: "埼玉県", id: 10 },
@@ -133,6 +134,7 @@ export default {
                   { name: "福岡県", id: 39 },
                   { name: "長崎県", id: 41 },
                   { name: "大分県", id: 43 },
+                  { name: "鹿児島県", id: 45 },
                   { name: "沖縄県", id: 46 }
                 ]
               }

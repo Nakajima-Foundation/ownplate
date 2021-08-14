@@ -72,6 +72,13 @@ import { auth } from "~/plugins/firebase.js";
 
 export default {
   name: "Reset",
+  head() {
+    return {
+      title: [
+        this.defaultTitle, "Reset Password"
+      ].join(" / ")
+    };
+  },
   data() {
     return {
       email: "",

@@ -184,13 +184,32 @@
           <!-- Map -->
           <div>
             <div class="text-center">
+              {{ $t("editRestaurant.setupMap")}}
+            </div>
+            <div class="text-center">
               <a
                 @click="updateAndUpdateMap"
                 class="h-12 rounded-full bg-op-teal inline-flex items-center px-6 shadow"
                 ><div class="text-white text-base font-bold">
-                  {{ $t("editRestaurant.updateMap") }}
+                  {{ $t("editRestaurant.searchMap") }}
                 </div></a
               >
+            </div>
+            <div v-if="searchResults.length > 0">
+              <div class="mt-4">
+                <b-select v-model="selectedResult">
+                  <option
+                    v-for="(result, key) in searchResults"
+                    :value="key"
+                    :key="key"
+                    >
+                    {{result.formatted_address}}
+                  </option>
+                </b-select>
+              </div>
+            </div>
+            <div v-else>
+              住所を入力して検索してください
             </div>
 
             <div class="text-center text-sm font-bold text-red-700 mt-2">
@@ -744,11 +763,7 @@
                   :placeholder="$t('shopInfo.temporaryClosureSelect')"
                 >
                 </b-datepicker>
-                <!-- <b-button
-                  @click="$refs.datepicker.toggle()"
-                  icon-left="calendar-today"
-                  type="is-primary"
-                /> -->
+
                 <b-button @click="addNewTemporaryClosure" class="b-reset-tw">
                   <div
                     class="inline-flex justify-center items-center h-9 bg-black bg-opacity-5 px-4 rounded-r"
@@ -1001,7 +1016,9 @@ export default {
       newTemporaryClosure: null,
       maxDate,
       now,
-      updateFirstCall: true
+      updateFirstCall: true,
+      searchResults: [],
+      selectedResult: 0
     };
   },
   async created() {
@@ -1201,7 +1218,12 @@ export default {
     },
     files: function() {
       console.log(this.files);
-    }
+    },
+    selectedResult: function() {
+      const res = this.searchResults[this.selectedResult];
+      this.setCurrentLocation(res.geometry.location);
+      this.place_id = res.place_id;
+    },
   },
   methods: {
     isFuture(day) {
@@ -1451,6 +1473,7 @@ export default {
 
       const res = await API.google_geocode(keyword);
       if (res && res[0] && res[0].geometry) {
+        this.searchResults = res;
         this.setCurrentLocation(res[0].geometry.location);
         this.place_id = res[0].place_id;
       }

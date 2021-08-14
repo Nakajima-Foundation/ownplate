@@ -51,6 +51,11 @@ import superMixin from "./SuperMixin";
 
 export default {
   mixins: [superMixin],
+  head() {
+    return {
+      title: [this.defaultTitle, "Super All Restaurants"].join(" / ")
+    }
+  },
   components: {
     BackButton
   },

@@ -154,6 +154,13 @@ import { db, auth, firestore } from "~/plugins/firebase.js";
 
 export default {
   name: "Signup",
+  head() {
+    return {
+      title: [
+        this.defaultTitle, "Signup"
+      ].join(" / ")
+    };
+  },
   data() {
     return {
       email: "",

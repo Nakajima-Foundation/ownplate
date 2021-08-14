@@ -162,7 +162,9 @@
     "withinFiveDays": "Within 5 days",
     "profilePhoto": "Restaurant profile photo",
     "coverPhoto": "Restaurant cover photo",
+    "setupMap": "Restaurant location",
     "setLocation": "Set location",
+    "searchMap": "Set the location from the address",
     "updateMap": "Update Map",
     "businessHourDescription": "Check the business day of the week and set the business hours. If you need to split your business hours, such as a break, please enter the latter time in the Another Hours form.",
     "businessHourOption": "Another Hours (optional)",
@@ -312,7 +314,7 @@
     "price": "Selling Price",
     "priceDescription": "Please check the product page.",
     "otherFees": "Other Expenses",
-    "otherFeesDescription": "You are responsible for any expenses related to transportation to and from the store.",
+    "otherFeesDescription": "You are responsible for any expenses related to transportation to and from the restaurant.",
     "payment": "Time and Method of Payment",
     "paymentDescription": "Credit Card Payment / Store Payment",
     "paymentDescriptionCard": "Credit Card Payment",
@@ -320,7 +322,7 @@
     "delivery": "Time and Method of Delivery",
     "deliveryDescription": "Customer's specified date and store pickup.",
     "cancellation": "Cancellation",
-    "cancellationDescription": "You can cancel your order on the Internet before the order state is Order Placed; After the state has changed, please contact the store."
+    "cancellationDescription": "You can cancel your order on the Internet before the order state is Order Placed; After the state has changed, please contact the restaurant."
   },
   "sitemenu": {
     "menu": "Menu",
@@ -345,6 +347,7 @@
     "moreDetails": "More details",
     "tryService": "Try Omochikaeri service",
     "ask": "Contact Us",
+    "whatsnew": "What's new?",
     "forCustomer": "For customer",
     "customerVoice1": "Customer Voices",
     "customerVoice2": "",
@@ -352,7 +355,6 @@
     "izakaya": "Izakaya",
     "patisserie": "pastry shop",
     "searchRestaurant": "Search for restaurant"
-
   },
   "order": {
     "allOrders": "All Orders",
@@ -441,10 +443,24 @@
       "stripe_pending": "Payment Pending",
       "stripe_confirmed": "Payment Confirmed",
       "stripe_canceled": "Payment Canceled",
-      "onsitePayment": "Onsite Payment"
+      "onsitePayment": "Onsite Payment",
+      "stripe_user_pending": "Card payment not completed",
+      "stripe_user_message_pending": "(The card payment process has not been completed on the restaurant side)",
+      "stripe_user_confirmed": "Card payment completed",
+      "stripe_user_message_confirmed": "I have already paid by credit card.",
+      "stripe_user_canceled": "Payment cancel",
+      "stripe_user_message_canceled": "Card payment has been cancelled",
+      "stripe_user_message_just_payment_canceled": "Please pay in the restaurant"
     },
+    "onlinePaymentStatus": "Status of the card payment",
     "lineLink": "Restaurant's LINE Official Account URL",
-    "lineMessage": "If you add LINE Official Account as a friend, you will receive information directly from the restaurant."
+    "lineMessage": "If you add LINE Official Account as a friend, you will receive information directly from the restaurant.",
+    "customerOrderHistory": "Order history",
+    "orderTimes": "Order",
+    "orderTimesUnit": "{count} times",
+    "cancelTimes": "Cancel",
+    "cancelTimesUnit": "{count} times",
+    "lastOrder": "Last order"
   },
   "button": {
     "back": "Back",
@@ -471,6 +487,11 @@
       "US": "United States (+1)",
       "UK": "United Kingdom (+44)",
       "FR": "France (+33)",
+      "BF": "Burkina Faso (+235)",
+      "TG": "TOGO (+228)",
+      "BN": "Bénin (+229)",
+      "CI": "Cote d'ivoire (+225)",
+      "SE": "Senegal (+335)",
       "ES": "Spain (+34)",
       "DE": "Germany (+49)",
       "JP": "Japan (+81)"
@@ -479,6 +500,7 @@
     "invalidValidationCode": "Invalid Validation Code",
     "auth/invalid-phone-number": "Invalid Phone Number",
     "auth/invalid-verification-code": "The SMS verification code used to create the phone auth credential is invalid. Please resend the verification code sms and be sure use the verification code provided by the user.",
+    "auth/missing-verification-code": "SMS verification code is missing.",
     "auth/missing-verification-code": "The phone auth credential was created with an empty SMS verification code."
   },
   "admin": {
@@ -496,7 +518,7 @@
       "userRestaurantsTitle": "About Restaurants List for User",
       "userRestaurantsBody": "The restaurants you have added will not automatically appear on the list of restaurants for users. Please click the [Request to be Listed] button and your restaurant will be added to the list after approved. ",
       "notificationSoundTitle": "About Notification Sound",
-      "notificationSoundBody": "Order notification sound will be played while viewing the order list page (not on this page). If you want to have multiple store notifications playing at the same time, you need to be able to view the order list pages for each one. To do so, you will need a separate window on your computer and a separate device for your tablet."
+      "notificationSoundBody": "Order notification sound will be played while viewing the order list page (not on this page). If you want to have multiple restaurant notifications playing at the same time, you need to be able to view the order list pages for each one. To do so, you will need a separate window on your computer and a separate device for your tablet."
     },
     "hidePayment": "Payment feature is coming soon. Please stay tuned.",
     "encourageToReadManual": {
@@ -590,12 +612,17 @@
       "infinityNotificationOn": "Remind Every Minute",
       "infinityNotificationOff": "Notify One Time",
       "soundTest": "Test",
-      "paymentIsNotCompleted": "Note: Please complete the credit card payment process by clicking the 'Ready to Pickup' button before giving the items to the customer.",
+      "paymentIsNotCompleted": "Note: Please complete the credit card payment process by clicking the 'Accepted' button before giving the items to the customer.",
       "cancelButton": "Cancel this order",
       "cancelTitle": "Order Canceling",
       "cancelMessage": "Please contact to the customer and tell the order will be canceled.",
+      "paymentCancelButton": "Cancel only card payment",
       "delete": "Cancel this order",
       "deleteConfirm": "(This action is undoable)",
+      "paymentCancelTitle": "Cancel only card payment",
+      "paymentCancelMessage": "It will be changed to payment in the restaurant. Please contact the customer and let them know that you will be paying in the restaurant. The order will not be cancelled.",
+      "paymentCancel": "Cancel only card payment",
+      "paymentCancelConfirm": "(This action is undoable)",
       "line": "LINE Notification",
       "lineAdd": "Add a LINE account",
       "lineUsers": "Connected LINE Accounts",
@@ -603,7 +630,10 @@
       "lineSafariPrivate": "Note: If you are using Safari's Private Browsing Mode, you will not be able to connect to LINE.",
       "history": "All Order History",
       "more": "View More",
-      "messageFromCustomer": "Message from the customer"
+      "messageFromCustomer": "Message from the customer",
+      "willOrderChange": "Change order",
+      "cancelOrderChange": "Cancel an order change",
+      "confirmOrderChange": "Change order"
     },
     "sound": {
       "default": "Default",
@@ -652,13 +682,13 @@
       "deny": "Reject",
       "childInvitationMessage1": "I received an invitation from the owner who manages the following restaurants",
       "childInvitationMessage2": "This restaurants",
-      "childInvitationMessage3": "If you want to change to a sub-account that manages this store, press Accept. If you want to decline, press Reject."
+      "childInvitationMessage3": "If you want to change to a sub-account that manages this restaurant, press Accept. If you want to decline, press Reject."
     },
     "subAccounts": {
       "index": "Sub-account management",
       "openDashboard": "Open Sub-account management",
       "manualLink": "How to use sub-account",
-      "description": "You can set / manage sub-accounts that can only be operated at specific stores.",
+      "description": "You can set / manage sub-accounts that can only be operated at specific restaurants.",
       "title": "Sub-account management",
       "subaccountlist": "Sub-account list",
       "email": "Email",
@@ -676,8 +706,14 @@
         "accepted": "Accepted",
         "denied": "Denied"
       },
-      "selectRestaurant": "Please select a store that can operate this account.",
+      "selectRestaurant": "Please select a restaurant that can operate this account.",
       "confirmDeletechild": "Cancel the sub-account"
+    },
+    "smaregi": {
+      "index": "Smaregi",
+      "authenticating": "Authenticating",
+      "authenticationError": "Faild Authentication",
+      "smaregiShopList": "Smaregi store list"
     }
   },
   "week": {
@@ -741,6 +777,8 @@
       },
       "stripe": {
         "confirm": "Failed to confirm the payment.",
+        "confirm2": "If you continue to fail, please cancel the card payment and change to pay in the restaurant.",
+        "cancel": "Failed to cancel card payment",
         "connect": "Failed to connect the Stripe account.",
         "disconnect": "Failed to disconnect the Stripe account.",
         "intent": "Failed to process the payment.",

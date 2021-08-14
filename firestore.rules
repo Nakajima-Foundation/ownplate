@@ -128,6 +128,9 @@ service cloud.firestore {
     match /{path=**}/adminlogs/{documentId} {
       allow read: if isSuper(request);
     }
+    match /{path=**}/reviews/{lineId} {
+      allow read: if isSuper(request);
+    }
     match /{path=**}/lines/{lineId} {
       allow read: if isOwner(resource, request);
     }
@@ -150,6 +153,10 @@ service cloud.firestore {
         }
         match /private/{privateId} {
           allow read, write: if isAdmin(request) && isRestaurantOwner(restaurantId, request);
+        }
+        match /userLog/{userId} {
+          allow read: if isAdmin(request) && isRestaurantOwner(restaurantId, request);
+          allow write: if false // only server side of function can write here (see functions/order.ts)
         }
         match /menus/{menuId} {
           allow read: if true

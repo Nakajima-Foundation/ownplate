@@ -50,6 +50,11 @@ export default {
   components: {
     BackButton
   },
+  head() {
+    return {
+      title: [this.defaultTitle, "Admin Subaccount Account"].join(" / ")
+    }
+  },
   async created() {
     const restaurantCollection = await db.collection("restaurants")
           .where("uid", "==", this.uid)

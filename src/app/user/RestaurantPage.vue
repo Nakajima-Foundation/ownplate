@@ -49,7 +49,7 @@
 
                 <!-- Favorite Button -->
                 <div>
-                  <favorite-button :shopInfo="shopInfo"></favorite-button>
+                  <favorite-button :shopInfo="shopInfo" :keepLike="false"></favorite-button>
                 </div>
               </div>
 
@@ -154,7 +154,7 @@
                 </div>
                 <div class="">
                   <Price
-                    :shopInfo="shopInfo"
+                    :shopInfo="{inclusiveTax: true}"
                     :menu="{ price: totalPrice.total }"
                   />
                 </div>
@@ -340,7 +340,16 @@ export default {
         return tmp;
       }, {});
       const total = Object.keys(subTotal).reduce((tmp, menuId) => {
-        return tmp + subTotal[menuId];
+        const menu = this.itemsObj[menuId];
+
+        if (!this.shopInfo.inclusiveTax) {
+          if (menu.tax === "alcohol") {
+            return (1 + this.shopInfo.alcoholTax * 0.01) * subTotal[menuId] + tmp;
+          }
+          return (1 + this.shopInfo.foodTax * 0.01) * subTotal[menuId] + tmp;
+        } else {
+          return tmp + subTotal[menuId];
+        }
       }, 0);
       return {
         subTotal: subTotal,

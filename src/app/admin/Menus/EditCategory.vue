@@ -59,6 +59,11 @@ export default {
       required: true
     }
   },
+  head() {
+    return {
+      title: [this.defaultTitle, "Admin Edit Category"].join(" / ")
+    }
+  },
   data() {
     return {
       isVisible: true,

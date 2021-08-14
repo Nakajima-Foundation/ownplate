@@ -25,7 +25,8 @@ export const sendMessageToCustomer = async (
   phoneNumber: string | undefined,
   restaurantId: string,
   orderId: string,
-  params: object = {}
+  params: object = {},
+  forceSMS: boolean = false
 ) => {
   const t = await i18next.init({
     lng: lng || utils.getStripeRegion().langs[0],
@@ -38,7 +39,14 @@ export const sendMessageToCustomer = async (
   )} ${restaurantName} ${orderNumber} ${url}`;
   if (line.isEnabled) {
     // for JP
-    await line.sendMessage(db, uidUser, message);
+    const lineId = await line.getLineId(db, uidUser);
+    if (lineId) {
+      await line.sendMessageDirect(lineId, message);
+    }
+    if (forceSMS) {
+      await sms.pushSMS("omochikaeri", message, phoneNumber);
+    }
+    // await line.sendMessage(db, uidUser, message);
   } else {
     // for others
     await sms.pushSMS("OwnPlate", message, phoneNumber);
@@ -76,7 +84,7 @@ const createNotifyRestaurantMailTitle = async (
   return message;
 };
 
-const createNotifyRestaurantMailMessage = async (
+export const createNotifyRestaurantMailMessage = async (
   messageId: string,
   restaurantName: string,
   order: any,
@@ -88,20 +96,39 @@ const createNotifyRestaurantMailMessage = async (
   const path = `./mail_templates/${messageId}/${lng}.html`;
   const template_data = fs.readFileSync(path, { encoding: "utf8" });
 
+  const t = await i18next.init({
+    lng: lng || utils.getStripeRegion().langs[0],
+    resources
+  });
+
   const orderName = utils.nameOfOrder(orderNumber);
   const orders = Object.keys(order.order)
     .map(menuId => {
       const menu = order.menuItems[menuId];
       const name = menu.itemName;
-      const count = order.order[menuId].reduce((sum, ele) => sum + ele, 0);
-      return `${name} × ${count}`;
+      return Object.keys(order.order[menuId]).map((key) => {
+        const count = order.order[menuId][key];
+        const messages: string[] = [];
+        messages.push(`★ ${name} × ${count}`);
+
+        try {
+          if (order.options && order.options[menuId] && order.options[menuId][key] && order.options[menuId][key].length > 0) {
+            messages.push(t("option") + ": " + order.options[menuId][key].join("/"))
+          }
+        } catch (e) {
+          console.log(e);
+        }
+
+        return messages.join("\n");
+      }).join("\n\n");
     })
-    .join("\n");
+    .join("\n\n");
   const data = {
     restaurantName,
     orderName,
     orders,
-    // totalCharge: order.total,
+    totalCharge: order.totalCharge,
+    payment: t(!!order.payment ? "card_payment" : "payment_in_store"),
     url
   };
   const replacedTemp = Object.keys(data).reduce((tmp, key) => {
