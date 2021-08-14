@@ -37,6 +37,11 @@ import PhoneLogin from "~/app/auth/PhoneLogin";
 import BackButton from "~/components/BackButton";
 
 export default {
+  head() {
+    return {
+      title: [this.defaultTitle, "User Order History"].join(" / ")
+    }
+  },
   components: {
     OrderedInfo,
     PhoneLogin,
@@ -75,7 +80,7 @@ export default {
           .collectionGroup("orders")
           .where("uid", "==", this.uid)
           .orderBy("orderPlacedAt", "desc")
-          .limit(25)
+          .limit(200)
           .onSnapshot(snapshot => {
             this.orders = snapshot.docs.map(doc => {
               const order = doc.data();

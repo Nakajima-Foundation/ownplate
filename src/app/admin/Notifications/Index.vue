@@ -30,6 +30,11 @@ export default {
       required: true
     }
   },
+  head() {
+    return {
+      title: [this.defaultTitle, "Admin Notification Index"].join(" / ")
+    }
+  },
   components: {
     NotificationSettings,
     NotificationSettingButton

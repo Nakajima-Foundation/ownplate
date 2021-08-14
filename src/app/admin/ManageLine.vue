@@ -122,6 +122,11 @@ export default {
     BackButton,
     NotificationIndex
   },
+  head() {
+    return {
+      title: ["Admin Manage Line", this.defaultTitle].join(" / ")
+    }
+  },
   data() {
     return {
       shopInfo: {},

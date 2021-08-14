@@ -28,15 +28,13 @@ export default {
       type: Object,
       required: true
     },
-    suffix: {
-      type: String,
-      required: false
-    }
+    keepLike: {
+      type: Boolean,
+      required: false,
+    },
   },
   data() {
     return {
-      url: this.shareUrl() + (this.suffix || ""),
-      sharePopup: false,
       review: {},
       detacher: null
     };
@@ -78,16 +76,19 @@ export default {
   methods: {
     handleLike() {
       // Notice that mounted() will automatically update duplicated restaurant info.
-      db.doc(`users/${this.user.uid}/reviews/${this.restaurantId()}`).set(
-        {
-          likes: !this.likes,
-          restaurantName: this.shopInfo.restaurantName, // duplicated for quick display
-          restProfilePhoto: this.shopInfo.restProfilePhoto, // duplicated for quick display
-          timeLiked: firestore.FieldValue.serverTimestamp(),
-          restaurantId: this.restaurantId() // Making it possible to collection query (later)
-        },
-        { merge: true }
-      );
+      const nextState = !this.likes;
+      if (nextState || !this.keepLike) {
+        db.doc(`users/${this.user.uid}/reviews/${this.restaurantId()}`).set(
+          {
+            likes: nextState,
+            restaurantName: this.shopInfo.restaurantName, // duplicated for quick display
+            restProfilePhoto: this.shopInfo.restProfilePhoto, // duplicated for quick display
+            timeLiked: firestore.FieldValue.serverTimestamp(),
+            restaurantId: this.restaurantId() // Making it possible to collection query (later)
+          },
+          { merge: true }
+        );
+      }
     }
   }
 };

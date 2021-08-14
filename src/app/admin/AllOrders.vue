@@ -89,6 +89,11 @@ export default {
     DownloadCsv,
     BackButton
   },
+  head() {
+    return {
+      title: ["Admin All Order", this.defaultTitle].join(" / ")
+    }
+  },
   data() {
     return {
       orders: [],

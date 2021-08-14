@@ -162,7 +162,9 @@
     "withinFiveDays": "Within 5 days",
     "profilePhoto": "Photo de Profil du Restaurant",
     "coverPhoto": "Photo de Couverture du Restaurant",
+    "setupMap": "Restaurant location",
     "setLocation": "Définir l'emplacement",
+    "searchMap": "Set the location from the address",
     "updateMap": "Mettre à jour la carte",
     "businessHourDescription": "Vérifiez le jour ouvrable de la semaine et définissez les heures d'ouverture. Si vous devez fractionner vos heures d'ouverture, comme une pause, veuillez saisir cette dernière heure dans le formulaire Autres heures.",
     "businessHourOption": "Autres heures. (facultatif)",
@@ -337,6 +339,23 @@
   "date": {
     "today": "Aujourd'hui"
   },
+  "lp": {
+    "enjoyOmochilaeri": "Profitez de notre service !",
+    "operationTeams": "Équipes d'intervention",
+    "easy3Steps": "COMMENT COMMENCER？ 3 ÉTAPES FACILES !",
+    "forOwner": "Pour les propriétaires de restaurant",
+    "moreDetails": "Plus de détails",
+    "tryService": "Essayez le service Omochikaeri",
+    "ask": "Nous contacter",
+    "whatsnew": "Quoi de neuf ?",
+    "forCustomer": "Pour les clients",
+    "customerVoice1": "Voix des clients",
+    "customerVoice2": "",
+    "goToSampleRestaurant": "Aller au restaurant d'échantillons",
+    "izakaya": "Izakaya",
+    "patisserie": "Pâtisserie",
+    "searchRestaurant": "Rechercher un restaurant"
+  },
   "order": {
     "allOrders": "Toutes les commandes",
     "menu": "Afficher la page du menu",
@@ -424,10 +443,24 @@
       "stripe_pending": "Paiement en attente",
       "stripe_confirmed": "Paiement confirmé",
       "stripe_canceled": "Paiement annulé",
-      "onsitePayment": "Paiement sur place"
+      "onsitePayment": "Paiement sur place",
+      "stripe_user_pending": "Card payment not completed",
+      "stripe_user_message_pending": "(The card payment process has not been completed on the restaurant side)",
+      "stripe_user_confirmed": "Card payment completed",
+      "stripe_user_message_confirmed": "I have already paid by credit card.",
+      "stripe_user_canceled": "Payment cancel",
+      "stripe_user_message_canceled": "Card payment has been cancelled",
+      "stripe_user_message_just_payment_canceled": "Please pay in the restaurant"
     },
+    "onlinePaymentStatus": "Status of the card payment",
     "lineLink": "Restaurant's LINE Official Account URL",
-    "lineMessage": "If you add LINE Official Account as a friend, you will receive information directly from the restaurant."
+    "lineMessage": "If you add LINE Official Account as a friend, you will receive information directly from the restaurant.",
+    "customerOrderHistory": "Order history",
+    "orderTimes": "Order",
+    "orderTimesUnit": "{count} times",
+    "cancelTimes": "Cancel",
+    "cancelTimesUnit": "{count} times",
+    "lastOrder": "Last order"
   },
   "button": {
     "back": "Retour",
@@ -452,17 +485,22 @@
     "countryCode": "Indicatif Pays",
     "country": {
       "US": "United States (+1)",
+      "UK": "Royaume-Uni (+44)",
       "FR": "France (+33)",
       "BF": "Burkina Faso (+235)",
       "TG": "TOGO (+228)",
       "BN": "Bénin (+229)",
-      "CI": "Cote d'ivoire (+81)",
-      "SE": "Senegal (+335)"
+      "CI": "Cote d'ivoire (+225)",
+      "SE": "Senegal (+335)",
+      "ES": "Espagne (+34)",
+      "DE": "Allemagne (+49)",
+      "JP": "Japon (+81)"
     },
     "invalidPhoneNumber": "Numéro de téléphone invalide",
     "invalidValidationCode": "Code de verification invalide",
     "auth/invalid-phone-number": "Numéro de téléphone invalide",
     "auth/invalid-verification-code": "Le code de vérification par SMS utilisé pour créer les informations d'identification d'authentification du téléphone n'est pas valide. Veuillez renvoyer le code de vérification par SMS et assurez-vous d'utiliser le code de vérification fourni par l'utilisateur.",
+    "auth/missing-verification-code": "SMS確認コードが入力されていません",
     "auth/missing-verification-code": "Les informations d'identification d'authentification du téléphone ont été créées avec un code de vérification SMS vide."
   },
   "admin": {
@@ -578,8 +616,13 @@
       "cancelButton": "Annuler cette commande",
       "cancelTitle": "Annulation de commande",
       "cancelMessage": "Veuillez contacter le client et lui dire que la commande sera annulée.",
+      "paymentCancelButton": "カード決済のみをキャンセル",
       "delete": "Annuler cette commande",
       "deleteConfirm": "(Cette action est annulable)",
+      "paymentCancelTitle": "カード決済のみキャンセル",
+      "paymentCancelMessage": "現地払いに変更となります。お客様にご連絡の上、現地払いになることをお伝え下さい。注文はキャンセルされません。",
+      "paymentCancel": "カード決済のみキャンセル",
+      "paymentCancelConfirm": "（キャンセルの取り消しは出来ません）",
       "line": "Notification LINE",
       "lineAdd": "Ajouter un compte LINE",
       "lineUsers": "Comptes LINE Connectés",
@@ -587,7 +630,10 @@
       "lineSafariPrivate": "Remarque: si vous utilisez le mode de navigation privée de Safari, vous ne pourrez pas vous connecter à LINE.",
       "history": "Tout l'historique de l'ordre",
       "more": "En savoir plus",
-      "messageFromCustomer": "Message from the customer"
+      "messageFromCustomer": "Message from the customer",
+      "willOrderChange": "Change order",
+      "cancelOrderChange": "Cancel an order change",
+      "confirmOrderChange": "Change order"
     },
     "sound": {
       "default": "Défault",
@@ -662,6 +708,12 @@
       },
       "selectRestaurant": "Please select a store that can operate this account.",
       "confirmDeletechild": "Cancel the sub-account"
+    },
+    "smaregi": {
+      "index": "Smaregi",
+      "authenticating": "Authenticating",
+      "authenticationError": "Faild Authentication",
+      "smaregiShopList": "Smaregi store list"
     }
   },
   "week": {
@@ -725,6 +777,8 @@
       },
       "stripe": {
         "confirm": "Échec de la confirmation du paiement.",
+        "confirm2": "続けて失敗する場合は、カード決済を取り消して現地払いに変更してください",
+        "cancel": "カード決済のキャンセルに失敗しました",
         "connect": "Échec de la connexion du compte Stripe.",
         "disconnect": "Échec de la déconnexion du compte Stripe.",
         "intent": "Échec du traitement du paiement.",

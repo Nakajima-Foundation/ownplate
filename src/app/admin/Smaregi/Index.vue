@@ -78,6 +78,11 @@ export default {
     BackButton
   },
   name: "Restaurant",
+  head() {
+    return {
+      title: [this.defaultTitle, "Admin Smaregi Index"].join(" / ")
+    }
+  },
   data() {
     return {
       authUrl: `${smaregi.authUrl}?response_type=code&client_id=${smaregi.clientId}&scope=openid+email+offline_access`,

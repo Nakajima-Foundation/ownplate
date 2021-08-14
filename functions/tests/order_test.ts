@@ -2,6 +2,7 @@ import { should } from 'chai';
 import { expect } from 'chai';
 
 import * as order from './../src/functions/order'
+import * as intent from './../src/stripe/intent'
 import * as utils from './../src/lib/utils'
 
 import * as constant from './../src/common/constant';
@@ -144,6 +145,24 @@ describe('Order function', () => {
     expect(newOrderData10.tax).equal(undefined);
     expect(newOrderData10.total).equal(undefined);
     newOrderData10.status.should.equal(constant.order_status.error);
+  });
+
+  it ('Order function, counter test', async function() {
+    const restaurantId = "testbar4";
+    const uid = "123";
+    await test_helper.createRestaurantData(adminDB, restaurantId);
+
+    let index = 0;
+
+    const makeOrder = async (data) => {
+      const orderId = "hoge" + String(index);
+
+      await test_helper.createOrder(adminDB, restaurantId, orderId, data, order.wasOrderCreated);
+      const newOrderData = (await adminDB.doc(`restaurants/${restaurantId}/orders/${orderId}`).get()).data() || {};
+      newOrderData["orderId"] = orderId;
+      index ++;
+      return newOrderData;
+    };
 
     const checkOrderTotal = async (count) => {
       const now = moment(1613986197000).tz("Asia/Tokyo").format('YYYYMMDD');
@@ -152,34 +171,61 @@ describe('Order function', () => {
       totalRes.count.should.equal(count);
     };
 
+    const checkUserLog = async (ok: number, cancel: number) => {
+      const userLogPath = `restaurants/${restaurantId}/userLog/${uid}`;
+      const log =  (await adminDB.doc(userLogPath).get()).data() || {};
+      log.counter.should.equal(ok);
+      log.cancelCounter.should.equal(cancel);
+    };
+
+    const deleteOrderTotal = async () => {
+      const now = moment(1613986197000).tz("Asia/Tokyo").format('YYYYMMDD');
+      const path = `restaurants/${restaurantId}/menus/hoge1/orderTotal/${now}`
+      await adminDB.doc(path).delete();
+    };
+
+    const deleteUserLog = async () => {
+      const userLogPath = `restaurants/${restaurantId}/userLog/${uid}`;
+      await adminDB.doc(userLogPath).delete();
+    };
+    await deleteOrderTotal();
+    await deleteUserLog();
+
     const newOrderData12 =  await makeOrder({
       hoge1: 1,
     });
-    const uid = "123";
+
     const { orderId } = newOrderData12;
-    const placed = await order.place(adminDB, {restaurantId, orderId, timeToPickup: {seconds: 1613986197, nanoseconds: 0}}, {auth: { uid, token:{ phone_number: "xxxx"}}} as Context );
+    const context = {auth: { uid, token:{ phone_number: "xxxx"}}} as Context;
+    const placed = await order.place(adminDB, {restaurantId, orderId, timeToPickup: {seconds: 1613986197, nanoseconds: 0}}, context );
 
     placed.success.should.equal(true);
     await checkOrderTotal(1);
+    await checkUserLog(1, 0);
 
     const newOrderData13 =  await makeOrder({
       hoge1: 1,
     });
     const newOrderRes13 = newOrderData13;
-    const placed2 = await order.place(adminDB, {restaurantId, orderId: newOrderRes13.orderId, timeToPickup: {seconds: 1613986197, nanoseconds: 0}}, {auth: { uid, token:{ phone_number: "xxxx"}}} as Context );
+    const placed2 = await order.place(adminDB, {restaurantId, orderId: newOrderRes13.orderId, timeToPickup: {seconds: 1613986197, nanoseconds: 0}}, context );
     placed2.success.should.equal(true);
     await checkOrderTotal(2);
+    await checkUserLog(2, 0);
 
     const newOrderData14 =  await makeOrder({
       hoge1: [1, 1],
     });
 
     const newOrderRes14 = newOrderData14;
-    const placed14 = await order.place(adminDB, {restaurantId, orderId: newOrderRes14.orderId,  timeToPickup: {seconds: 1613986197, nanoseconds: 0}}, {auth: { uid, token:{ phone_number: "xxxx"}}} as Context );
+    const placed14 = await order.place(adminDB, {restaurantId, orderId: newOrderRes14.orderId,  timeToPickup: {seconds: 1613986197, nanoseconds: 0}}, context );
     placed14.success.should.equal(true);
     await checkOrderTotal(4);
+    await checkUserLog(3, 0);
 
-    
+    await intent.cancel(adminDB, {restaurantId, orderId: newOrderRes14.orderId, lng: "ja"}, context)
+    await checkUserLog(3, 1);
+
+
   });
 
 });

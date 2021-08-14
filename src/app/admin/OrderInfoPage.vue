@@ -146,11 +146,13 @@
               {{ $t("admin.order.paymentIsNotCompleted") }}
             </div>
 
+
+
             <!-- Cancel Button -->
             <div class="mt-6 text-center">
               <b-button
                 class="b-reset-tw"
-                v-if="isValidTransition('order_canceled')"
+                v-if="isValidTransition('order_canceled') && (paymentIsNotCompleted || !hasStripe)"
                 @click="openCancel()"
               >
                 <div
@@ -290,6 +292,25 @@
                 </div>
                 <div class="text-base">{{ orderInfo.name }}</div>
               </div>
+              <div>
+                {{ $t("order.orderTimes") }}: {{ $tc("order.orderTimesUnit", userLog.counter || 0) }} /
+                {{ $t("order.cancelTimes") }}: {{ $tc("order.cancelTimesUnit", userLog.cancelCounter || 0) }}
+              </div>
+              <div>
+                {{ $t("order.lastOrder") }}: {{userLog.lastOrder ? moment(userLog.lastOrder.toDate()).format("YYYY/MM/DD HH:mm") : "--"}}
+              </div>
+            </div>
+            <div class="mt-6 text-center">
+              <nuxt-link :to="'/admin/restaurants/' + restaurantId() + '/userhistory/' + orderInfo.uid + '?orderId=' + orderId">
+                <div
+                  class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
+                  >
+                  <i class="material-icons text-lg text-op-teal mr-2">face</i>
+                  <span class="text-sm font-bold text-op-teal">{{
+                    $t("order.customerOrderHistory")
+                    }}</span>
+                </div>
+              </nuxt-link>
             </div>
 
             <!-- Order Status -->
@@ -298,7 +319,7 @@
                 v-for="orderState in orderStates"
                 :key="orderState"
                 class="mt-4 text-center"
-              >
+                >
                 <b-button
                   :loading="updating === orderState"
                   :disabled="!isValidTransition(orderState)"
@@ -321,6 +342,91 @@
                 </b-button>
               </div>
             </div>
+
+            <!-- Payment Cancel Button -->
+            <div class="mt-6 text-center">
+              <b-button
+                v-if="paymentIsNotCompleted"
+                @click="openPaymentCancel"
+                class="b-reset-tw"
+                >
+                <div
+                  class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5"
+                >
+                  <i class="material-icons text-lg mr-2 text-red-700">credit_card</i>
+                  <div class="text-sm font-bold text-red-700">
+                    {{ $t("admin.order.paymentCancelButton") }}
+                  </div>
+                </div>
+              </b-button>
+            </div>
+
+            <!-- Payment Cancel Popup-->
+            <b-modal :active.sync="paymentCancelPopup" :width="488" scroll="keep">
+              <div class="mx-2 my-6 p-6 bg-white shadow-lg rounded-lg">
+                <!-- Title -->
+                <div class="text-xl font-bold text-black text-opacity-40">
+                  {{ $t("admin.order.paymentCancelTitle") }}
+                </div>
+
+                <!-- Message -->
+                <div class="mt-6 text-base">
+                  {{ $t("admin.order.paymentCancelMessage") }}
+                </div>
+
+                <!-- Call -->
+                <div v-if="orderInfo.phoneNumber" class="mt-6 text-center">
+                  <div>
+                    <a
+                      :href="nationalPhoneURI"
+                      class="inline-flex justify-center items-center h-12 px-6 rounded-full border-2 border-op-teal"
+                    >
+                      <div class="text-base font-bold text-op-teal">
+                        {{ nationalPhoneNumber }}
+                      </div>
+                    </a>
+                  </div>
+                  <div class="font-bold mt-2">
+                    {{ orderInfo.name }}
+                  </div>
+                </div>
+
+                <!-- Cancel -->
+                <div class="mt-4 text-center">
+                  <b-button
+                    :loading="updating === 'payment_canceled'"
+                    @click="handlePaymentCancel"
+                    class="b-reset-tw"
+                  >
+                    <div
+                      class="inline-flex justify-center items-center h-12 px-6 rounded-full bg-red-700"
+                    >
+                      <div class="text-base font-bold text-white">
+                        {{ $t("admin.order.paymentCancel") }}
+                      </div>
+                    </div>
+                  </b-button>
+                  <div class="mt-2 text-sm font-bold text-red-700">
+                    {{ $t("admin.order.paymentCancelConfirm") }}
+                  </div>
+                </div>
+
+                <!-- Close -->
+                <div class="mt-6 text-center">
+                  <a
+                    @click="closePaymentCancel()"
+                    class="inline-flex justify-center items-center h-12 rounded-full px-6 bg-black bg-opacity-5"
+                    style="min-width: 8rem;"
+                  >
+                    <div class="text-base font-bold text-black text-opacity-60">
+                      {{ $t("menu.close") }}
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </b-modal>
+
+
           </div>
         </div>
 
@@ -374,7 +480,7 @@ import {
   formatNational,
   formatURL
 } from "~/plugins/phoneutil.js";
-import { stripeConfirmIntent, stripeCancelIntent } from "~/plugins/stripe.js";
+import { stripeConfirmIntent, stripeCancelIntent, stripePaymentCancelIntent } from "~/plugins/stripe.js";
 import moment from "moment-timezone";
 import NotFound from "~/components/NotFound";
 import { ownPlateConfig } from "~/config/project";
@@ -392,6 +498,12 @@ export default {
     OrderInfo,
     NotFound
   },
+  head() {
+    return {
+      title: this.shopInfo.restaurantName ?
+        ["Admin Order Info", this.shopInfo.restaurantName , this.defaultTitle].join(" / ") : this.defaultTitle
+    }
+  },
 
   data() {
     return {
@@ -402,9 +514,11 @@ export default {
       canceling: false,
       detacher: [],
       cancelPopup: false,
+      paymentCancelPopup: false,
       notFound: false,
       timeOffset: 0,
-      shopOwner: null
+      shopOwner: null,
+      userLog: {},
     };
   },
   // if user is not signined, render login
@@ -464,6 +578,15 @@ export default {
     this.detacher.map(detacher => {
       detacher();
     });
+  },
+  watch: {
+    orderInfo() {
+      db.doc(`restaurants/${this.restaurantId()}/userLog/${this.orderInfo.uid}`).get().then((res) => {
+        if (res.exists) {
+          this.userLog = res.data();
+        }
+      });
+    },
   },
   computed: {
     ownerUid() {
@@ -536,6 +659,12 @@ export default {
     hasStripe() {
       return this.orderInfo.payment && this.orderInfo.payment.stripe;
     },
+    paymentIsNotCompleted() {
+      return (
+        // this.hasStripe && this.orderInfo.status < order_status.ready_to_pickup
+        this.hasStripe && this.orderInfo.payment.stripe === "pending"
+      );
+    },
     phoneNumber() {
       return (
         this.orderInfo &&
@@ -580,11 +709,6 @@ export default {
     order_status() {
       return order_status;
     },
-    paymentIsNotCompleted() {
-      return (
-        this.hasStripe && this.orderInfo.status < order_status.ready_to_pickup
-      );
-    }
   },
   methods: {
     timeStampToText(timestamp) {
@@ -595,16 +719,19 @@ export default {
     },
     isValidTransition(newStatus) {
       const newStatusValue = order_status[newStatus];
+      return this.possibleTransitions[newStatusValue];
+      /*
       return (
         this.possibleTransitions[newStatusValue] ||
         (newStatusValue === this.orderInfo.status &&
           newStatus !== "order_canceled")
       );
+      */
     },
     async handleStripe() {
       //console.log("handleComplete with Stripe", orderId);
       try {
-        this.updating = "ready_to_pickup";
+        // this.updating = "ready_to_pickup";
         const { data } = await stripeConfirmIntent({
           restaurantId: this.restaurantId() + this.forcedError("confirm"),
           orderId: this.orderId
@@ -615,7 +742,8 @@ export default {
         console.error(error.message, error.details);
         this.$store.commit("setErrorMessage", {
           code: "stripe.confirm",
-          error
+          error,
+          message2: "errorPage.code.stripe.confirm2",
         });
       } finally {
         this.updating = "";
@@ -628,12 +756,12 @@ export default {
         console.log("same status - no need to process");
         return;
       }
-      if (newStatus === order_status.ready_to_pickup && this.hasStripe) {
+      this.updating = statusKey;
+      if ((newStatus === order_status.ready_to_pickup || newStatus === order_status.order_accepted) && this.paymentIsNotCompleted) {
         this.handleStripe();
         return;
       }
       const orderUpdate = functions.httpsCallable("orderUpdate");
-      this.updating = statusKey;
       try {
         const params = {
           restaurantId: this.restaurantId() + this.forcedError("update"),
@@ -690,6 +818,28 @@ export default {
         this.updating = "";
       }
     },
+    async handlePaymentCancel() {
+      console.log("handlePaymentCancel");
+
+      try {
+        this.updating = "payment_canceled";
+        const { data } = await stripePaymentCancelIntent({
+          restaurantId: this.restaurantId() + this.forcedError("cancel"),
+          orderId: this.orderId
+        });
+        // this.sendRedunded();
+        console.log("paymentCancel", data);
+        this.$router.push(this.parentUrl);
+      } catch (error) {
+        console.error(error.message, error.details);
+        this.$store.commit("setErrorMessage", {
+          code: "stripe.cancel",
+          error
+        });
+      } finally {
+        this.updating = "";
+      }
+    },
     classOf(statusKey) {
       if (order_status[statusKey] == this.orderInfo.status) {
         return statusKey;
@@ -701,6 +851,14 @@ export default {
     },
     closeCancel() {
       this.cancelPopup = false;
+    },
+    openPaymentCancel() {
+      console.log("openPaymentCancel");
+      this.paymentCancelPopup = true;
+    },
+    closePaymentCancel() {
+      console.log("closePaymentCancel");
+      this.paymentCancelPopup = false;
     }
   }
 };

@@ -83,6 +83,11 @@ import superMixin from "./SuperMixin";
 import DownloadCsv from "~/components/DownloadCSV";
 
 export default {
+  head() {
+    return {
+      title: [this.defaultTitle, "Super All Orders"].join(" / ")
+    }
+  },
   mixins: [superMixin],
   components: {
     OrderedInfo,
@@ -169,7 +174,7 @@ export default {
           query = query.startAfter(this.last);
         }
         const snapshot = await query.get();
-        
+
         if (!snapshot.empty) {
           this.last = snapshot.docs[snapshot.docs.length - 1];
           let i = 0;
@@ -183,7 +188,7 @@ export default {
               const snapshot = await db
                     .doc(`restaurants/${order.restaurantId}`)
                     .get();
-              this.restaurants[order.restaurantId] = snapshot.data(); 
+              this.restaurants[order.restaurantId] = snapshot.data();
             }
             order.restaurant = this.restaurants[order.restaurantId];
             if (order.timeEstimated) {

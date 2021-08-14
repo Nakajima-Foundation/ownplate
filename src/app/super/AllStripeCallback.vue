@@ -19,6 +19,11 @@ export default {
   components: {
     BackButton
   },
+  head() {
+    return {
+      title: [this.defaultTitle, "Super All Stripe Callback"].join(" / ")
+    }
+  },
   data() {
     return {
       logs: [],

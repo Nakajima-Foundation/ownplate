@@ -4,7 +4,7 @@
     <!-- Center Column -->
     <div class="column">
       <div class="align-center">
-        <h2>HOW TO START？　簡単3ステップ！</h2>
+        <h2>{{ $t("lp.easy3Steps") }}</h2>
       </div>
     </div>
     <div class="column is-narrow w-6"></div>

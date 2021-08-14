@@ -92,7 +92,7 @@ export const process_error = (error: any) => {
   if (error instanceof functions.https.HttpsError) {
     return error
   }
-  return new functions.https.HttpsError("internal", error.message, error);
+  return new functions.https.HttpsError("internal", error.message);
 }
 
 // const regex = /\((\+|\-)[0-9\.]+\)/
@@ -139,4 +139,14 @@ export const getMenuObj = async (refRestaurant, menuIds) => {
 
 export const nameOfOrder = (orderNumber: number) => {
   return "#" + `00${orderNumber}`.slice(-3);
+};
+
+export const filterData = (data: { [key: string]: any }) => {
+  return Object.keys(data).reduce((tmp: { [key: string]: any }, key) => {
+    if (data[key] !== null && data[key] !== undefined) {
+      tmp[key] = data[key];
+    }
+    return tmp;
+  }, {});
+  return data;
 };

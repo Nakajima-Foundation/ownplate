@@ -333,6 +333,11 @@ export default {
     RestaurantEditCard,
     MessageCard
   },
+  head() {
+    return {
+      title: ["Admin Index", this.defaultTitle].join(" / ")
+    }
+  },
   data() {
     return {
       region: ownPlateConfig.region,

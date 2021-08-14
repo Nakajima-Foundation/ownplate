@@ -43,6 +43,11 @@ import Map from "~/components/Map";
 
 export default {
   name: "RestaurantIndex",
+  head() {
+    return {
+      title: [this.defaultTitle, "Restaurant Index"].join(" / ")
+    }
+  },
   components: {
     Map,
   },
