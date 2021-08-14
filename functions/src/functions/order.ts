@@ -5,7 +5,6 @@ import {
   order_status, possible_transitions,
   order_status_keys, timeEventMapping
 } from '../common/constant'
-import Order from '../models/Order'
 import { createCustomer } from '../stripe/customer';
 import moment from 'moment-timezone';
 
@@ -86,19 +85,19 @@ export const updateOrderTotalDataAndUserLog = async (db, transaction, customerUi
 
 // This function is called by users to place orders without paying
 // export const place = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
- export const place = async (db, data: any, context: functions.https.CallableContext | Context) => {
+export const place = async (db, data: any, context: functions.https.CallableContext | Context) => {
   const customerUid = utils.validate_auth(context);
   const { restaurantId, orderId, tip, sendSMS, timeToPickup, lng, memo } = data;
+  const _tip = Number(tip) || 0;
   utils.validate_params({ restaurantId, orderId }) // tip, sendSMS and lng are optinoal
-  let order: Order | undefined = undefined;
 
-   const timePlaced = timeToPickup && new admin.firestore.Timestamp(timeToPickup.seconds, timeToPickup.nanoseconds) || admin.firestore.FieldValue.serverTimestamp()
+  const timePlaced = timeToPickup && new admin.firestore.Timestamp(timeToPickup.seconds, timeToPickup.nanoseconds) || admin.firestore.FieldValue.serverTimestamp()
   try {
     const restaurantData = await utils.get_restaurant(db, restaurantId);
     const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`)
 
     const result = await db.runTransaction(async transaction => {
-      order = (await transaction.get(orderRef)).data();
+      const order = (await transaction.get(orderRef)).data();
       if (!order) {
         throw new functions.https.HttpsError('invalid-argument', 'This order does not exist.')
       }
@@ -110,7 +109,7 @@ export const updateOrderTotalDataAndUserLog = async (db, transaction, customerUi
         throw new functions.https.HttpsError('failed-precondition', 'The order has been already placed or canceled')
       }
       const multiple = utils.getStripeRegion().multiple; // 100 for USD, 1 for JPY
-      const roundedTip = Math.round(tip * multiple) / multiple
+      const roundedTip = Math.round(_tip * multiple) / multiple
 
       // transaction for stock orderTotal
       await updateOrderTotalDataAndUserLog(db, transaction, customerUid, order.order, restaurantId, restaurantData.uid, timePlaced, true);
@@ -118,7 +117,7 @@ export const updateOrderTotalDataAndUserLog = async (db, transaction, customerUi
       // customerUid
       transaction.update(orderRef, {
         status: order_status.order_placed,
-        totalCharge: order.total + tip,
+        totalCharge: order.total + _tip,
         tip: roundedTip,
         sendSMS: sendSMS || false,
         updatedAt: admin.firestore.Timestamp.now(),
@@ -126,11 +125,11 @@ export const updateOrderTotalDataAndUserLog = async (db, transaction, customerUi
         timePlaced,
         memo: memo || "",
       })
-      order = Object.assign(order, {totalCharge: order.total + tip});
-      return { success: true }
+      Object.assign(order, {totalCharge: order.total + _tip, tip});
+      return { success: true, order }
     })
 
-    await notifyNewOrderToRestaurant(db, restaurantId, order, restaurantData.restaurantName, lng);
+    await notifyNewOrderToRestaurant(db, restaurantId, result.order, restaurantData.restaurantName, lng);
 
     return result;
   } catch (error) {
@@ -152,15 +151,14 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
     }
 
     const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`)
-    let order: Order | undefined = undefined;
     let msgKey: string | undefined = undefined;
 
     const result = await db.runTransaction(async transaction => {
-      order = Order.fromSnapshot<Order>(await transaction.get(orderRef))
-      order.id = orderId;
+      const order = (await transaction.get(orderRef)).data();
       if (!order) {
         throw new functions.https.HttpsError('invalid-argument', 'This order does not exist.')
       }
+      order.id = orderId;
 
       const possible_transition = possible_transitions[order.status];
       if (!possible_transition[status]) {
@@ -203,9 +201,10 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
         order.timeEstimated = props.timeEstimated;
       }
       transaction.update(orderRef, props)
-      return { success: true }
+      return { success: true, order }
     })
 
+    const order = result.order;
     if (order!.sendSMS && msgKey) {
       const params = {}
       if (status === order_status.order_accepted) {
