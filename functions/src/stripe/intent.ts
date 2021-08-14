@@ -328,7 +328,6 @@ export const cancel = async (db: any, data: any, context: functions.https.Callab
   }
 };
 
-
 // This function is called by admin to cencel an exsting order
 export const cancelStripePayment = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext | Context) => {
   const uid = utils.validate_admin_auth(context);
@@ -406,3 +405,7 @@ export const cancelStripePayment = async (db: FirebaseFirestore.Firestore, data:
     throw utils.process_error(error)
   }
 };
+
+export const orderChange = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext | Context) => {
+  return {};
+}
