@@ -456,8 +456,41 @@
             <!-- Order Details -->
             <order-info
               :orderItems="this.orderItems"
-              :orderInfo="this.orderInfo || {}"
-            ></order-info>
+              :orderInfo="isOrderChange ? editable_order_info : this.orderInfo || {}"
+              :editable="isOrderChange"
+              :editedAvailableOrders="editedAvailableOrders"
+              @input="updateEnable"
+              ></order-info>
+            <div>
+              <div class="mt-4">
+                <b-button
+                  @click="toggleIsOrderChange"
+                  class="b-reset-tw"
+                  >
+                  <div
+                    class="inline-flex justify-center items-center h-12 px-6 rounded-full bg-red-700"
+                    >
+                    <div class="text-base font-bold text-white">
+                      {{ isOrderChange ? $t("admin.order.cancelOrderChange") : $t("admin.order.willOrderChange") }}
+                    </div>
+                  </div>
+                </b-button>
+                <b-button
+                  @click="handleOrderChange"
+                  class="b-reset-tw"
+                  v-if="isOrderChange"
+                  >
+                  <div
+                    class="inline-flex justify-center items-center h-12 px-6 rounded-full bg-red-700"
+                    >
+                    <div class="text-base font-bold text-white">
+                      {{ $t("admin.order.confirmOrderChange") }}
+                    </div>
+                  </div>
+                </b-button>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
@@ -519,6 +552,8 @@ export default {
       timeOffset: 0,
       shopOwner: null,
       userLog: {},
+      isOrderChange: false,
+      editedAvailableOrders: [],
     };
   },
   // if user is not signined, render login
@@ -585,6 +620,11 @@ export default {
         if (res.exists) {
           this.userLog = res.data();
         }
+      });
+    },
+    orderItems() {
+      Object.keys(this.orderItems).map(key => {
+        this.editedAvailableOrders[key] = true;
       });
     },
   },
@@ -709,8 +749,54 @@ export default {
     order_status() {
       return order_status;
     },
+    // for editable order
+    edited_available_order_info() {
+      const ret = []
+      Object.keys(this.editedAvailableOrders).forEach((key) => {
+        if (this.editedAvailableOrders[key]) {
+          const indexes  = this.orderItems[key].orderIndex;
+          ret.push({menuId: indexes[0], index: Number(indexes[1])});
+        }
+      });
+      return ret;
+    },
+    editable_order_info() {
+      const menuObj = this.orderInfo.menuItems;
+      const multiple = this.regionMultiple;
+      const ret = this.edited_available_order_info.reduce((tmp, info) => {
+        const { menuId, index } = info;
+        const menu = menuObj[menuId];
+        if (menu.tax === "alcohol") {
+          tmp.alcohol_sub_total = tmp.alcohol_sub_total + this.orderInfo.prices[menuId][index];
+        } else {
+          tmp.food_sub_total = tmp.food_sub_total + this.orderInfo.prices[menuId][index];
+        };
+        return tmp;
+      }, {sub_total: 0, tax: 0, food_sub_total: 0, alcohol_sub_total: 0});
+      ret.sub_total = ret.food_sub_total + ret.alcohol_sub_total;
+
+      const { alcoholTax, foodTax, inclusiveTax } = this.shopInfo;
+      if (inclusiveTax) {
+        ret.food_tax = Math.round((ret.food_sub_total * (1 - 1 / (1 + foodTax / 100))) * multiple) / multiple;
+        ret.alcohol_tax = Math.round((alcohol_sub_total * (1 - 1 / (1 + alcoholTax / 100))) * multiple) / multiple;
+        ret.tax = food_tax + alcohol_tax;
+        ret.total = ret.sub_total;
+      } else {
+        ret.food_tax = Math.round(ret.food_sub_total * foodTax / 100 * multiple) / multiple;
+        ret.alcohol_tax = Math.round(ret.alcohol_sub_total * alcoholTax / 100 * multiple) / multiple;
+        ret.tax = ret.food_tax + ret.alcohol_tax;
+        ret.total = ret.sub_total + ret.tax;
+      }
+      return Object.assign({}, this.orderInfo, ret);
+    },
   },
   methods: {
+    updateEnable(value) {
+      this.$set(this.editedAvailableOrders, value[0],  value[1]);
+    },
+    toggleIsOrderChange() {
+      this.isOrderChange = !this.isOrderChange;
+    },
     timeStampToText(timestamp) {
       if (timestamp) {
         return this.$d(timestamp.toDate(), "long");
@@ -817,6 +903,35 @@ export default {
       } finally {
         this.updating = "";
       }
+    },
+    async handleOrderChange() {
+      this.$store.commit("setAlert", {
+        title: "admin.order.confirmOrderChange",
+        callback: async () => {
+          const timezone = moment.tz.guess();
+          const orderChange = functions.httpsCallable("orderChange");
+          try {
+            const params = {
+              restaurantId: this.restaurantId() + this.forcedError("update"),
+              orderId: this.orderId,
+              newOrder: this.edited_available_order_info,
+            };
+            console.log(params);
+
+            const { data } = await orderChange(params);
+            console.log("update", data);
+            // this.$router.push(this.parentUrl);
+          } catch (error) {
+            console.error(error.message, error.details);
+            this.$store.commit("setErrorMessage", {
+              code: "order.update",
+              error
+            });
+          } finally {
+            this.updating = "";
+          }
+        }
+      });
     },
     async handlePaymentCancel() {
       console.log("handlePaymentCancel");
