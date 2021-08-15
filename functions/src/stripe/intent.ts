@@ -7,7 +7,11 @@ import {
 import Stripe from 'stripe'
 import Order from '../models/Order'
 import * as utils from '../lib/utils'
-import { updateOrderTotalDataAndUserLog } from '../functions/order';
+import {
+  orderAccounting,
+  createNewOrderData,
+  updateOrderTotalDataAndUserLog
+} from '../functions/order';
 
 import { sendMessageToCustomer, notifyNewOrderToRestaurant, notifyCanceledOrderToRestaurant } from '../functions/notify';
 
@@ -406,6 +410,99 @@ export const cancelStripePayment = async (db: FirebaseFirestore.Firestore, data:
   }
 };
 
-export const orderChange = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext | Context) => {
-  return {};
+const getUpdateOrder = (newOrder, order, options, rawOptions) => {
+  // console.log(newOrder, order, options, rawOptions);
+  const updateOrderData = {};
+  const updateOptions = {};
+  const updateRawOptions = {};
+
+  newOrder.forEach(data => {
+    const { menuId, index } = data;
+    if (!utils.isEmpty(order[menuId]) && !utils.isEmpty(order[menuId][index])) {
+      if (utils.isEmpty(updateOrderData[menuId])) {
+        updateOrderData[menuId] = [];
+        updateOptions[menuId] = {};
+        updateRawOptions[menuId] = {};
+      }
+      updateOrderData[menuId].push(order[menuId][index]);
+      const optionIndex = updateOrderData[menuId].length - 1;
+      updateOptions[menuId][optionIndex] = options[menuId][optionIndex];
+      updateRawOptions[menuId][optionIndex] = rawOptions[menuId][optionIndex];
+    }
+  });
+
+  return {
+    updateOrderData, updateOptions, updateRawOptions
+  }
+};
+export const orderChange = async (db: any, data: any, context: functions.https.CallableContext | Context) => {
+  const ownerUid = utils.validate_admin_auth(context);
+  const { restaurantId, orderId, newOrder, timezone } = data;
+  utils.validate_params({ restaurantId, orderId, newOrder, timezone }) // lng, timeEstimated is optional
+  const multiple = utils.getStripeRegion().multiple; // 100 for USD, 1 for JPY
+
+  // get menu
+  try {
+    const restaurantRef = db.doc(`restaurants/${restaurantId}`)
+    const restaurantDoc = await restaurantRef.get()
+    const restaurantData = restaurantDoc.data() || {}
+    if (restaurantData.uid !== ownerUid) {
+      throw new functions.https.HttpsError('permission-denied', 'The user does not have an authority to perform this operation.')
+    }
+    const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`)
+
+    // const result = await db.runTransaction(async transaction => {
+    const order = (await orderRef.get()).data();
+
+    if (!order) {
+      throw new functions.https.HttpsError('invalid-argument', 'This order does not exist.')
+    }
+    order.id = orderId;
+    // update menu, order, options, rawOptions
+    const { updateOrderData, updateOptions, updateRawOptions } = getUpdateOrder(newOrder, order.order, order.options, order.rawOptions);
+
+    // update price
+    const baseData = {
+      order: updateOrderData,
+      rawOptions: updateRawOptions,
+    };
+    const { newOrderData, newItems, newPrices, food_sub_total, alcohol_sub_total } = await createNewOrderData(restaurantRef, orderRef, baseData, multiple);
+
+    const accountingResult = orderAccounting(restaurantData, food_sub_total, alcohol_sub_total, multiple);
+    // was created new order data
+
+    const orderUpdateData = {
+      order: newOrderData,
+      menuItems: newItems, // Clone of ordered menu items (simplified)
+      prices: newPrices,
+      options: updateOptions,
+      rawOptions: updateRawOptions,
+
+      // status: order_status.validation_ok,
+      // number: orderCount,
+      sub_total: accountingResult.sub_total,
+      tax: accountingResult.tax,
+      inclusiveTax: accountingResult.inclusiveTax,
+      total: accountingResult.total,
+      accounting: {
+        food: {
+          revenue: accountingResult.food_sub_total,
+          tax: accountingResult.food_tax
+        },
+        alcohol: {
+          revenue: accountingResult.alcohol_sub_total,
+          tax: accountingResult.alcohol_tax
+        }
+      }
+    };
+    // console.log(orderUpdateData);
+    orderRef.update(orderUpdateData);
+
+    // update stripe
+
+
+    return {};
+  } catch (error) {
+    throw utils.process_error(error)
+  }
 }

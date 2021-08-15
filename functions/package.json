@@ -15,6 +15,7 @@
     "tests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/*_test.ts --timeout 30000",
     "e_tests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/express_test.ts",
     "o_tests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/order_test.ts",
+    "oc_tests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/order_change_test.ts",
     "n_tests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/notify_test.ts --timeout 30000",
     "t_tests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/twilio_test.ts",
     "s_tests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/subaccount_test.ts",

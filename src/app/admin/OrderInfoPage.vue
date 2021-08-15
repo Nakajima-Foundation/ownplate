@@ -754,8 +754,10 @@ export default {
       const ret = []
       Object.keys(this.editedAvailableOrders).forEach((key) => {
         if (this.editedAvailableOrders[key]) {
-          const indexes  = this.orderItems[key].orderIndex;
-          ret.push({menuId: indexes[0], index: Number(indexes[1])});
+          const indexes  = this.orderItems[key]?.orderIndex;
+          if (indexes) {
+            ret.push({menuId: indexes[0], index: Number(indexes[1])});
+          }
         }
       });
       return ret;
