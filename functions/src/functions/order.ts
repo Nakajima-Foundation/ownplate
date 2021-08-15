@@ -200,7 +200,7 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
           : order.timePlaced;
         order.timeEstimated = props.timeEstimated;
       }
-      transaction.update(orderRef, props)
+      await transaction.update(orderRef, props)
       return { success: true, order }
     })
 

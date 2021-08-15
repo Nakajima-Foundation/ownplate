@@ -18,27 +18,60 @@ import { sendMessageToCustomer, notifyNewOrderToRestaurant, notifyCanceledOrderT
 import { Context } from '../models/TestType';
 
 import moment from 'moment-timezone';
+import * as crypto from "crypto";
 
-// This function is called by user to create a "payment intent" (to start the payment transaction)
-export const create = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
-  const customerUid = utils.validate_auth(context);
-  const stripe = utils.get_stripe();
+const multiple = utils.getStripeRegion().multiple; // 100 for USD, 1 for JPY
+const stripe = utils.get_stripe();
 
-  const { orderId, restaurantId, paymentMethodId, description, tip, sendSMS, timeToPickup, lng, memo } = data;
-  utils.validate_params({ orderId, restaurantId }); // lng, paymentMethodId, tip and sendSMS are optional
-
-  const restaurantData = await utils.get_restaurant(db, restaurantId);
-  const venderId = restaurantData['uid']
-
-  const paymentSnapshot = await db.doc(`/admins/${venderId}/public/payment`).get()
+const getCustomerStripeInfo = async (db: any, customerUid: string) => {
+  const refStripe = db.doc(`/users/${customerUid}/system/stripe`)
+  const stripeInfo = (await refStripe.get()).data();
+  if (!stripeInfo) {
+    throw new functions.https.HttpsError('aborted', 'No stripeInfo.')
+  }
+  return stripeInfo;
+};
+const getStripeAccount = async (db: any, venderId: string) => {
+  const paymentSnapshot = await db.doc(`/admins/${venderId}/public/payment`).get();
   const stripeAccount = paymentSnapshot.data()?.stripe
   if (!stripeAccount) {
     throw new functions.https.HttpsError('invalid-argument', 'This restaurant does not support payment.')
   }
+  return stripeAccount;
+}
+const getPaymentMethodData = async (db: any, venderId: string, customerUid: string) => {
+  const stripeAccount = await getStripeAccount(db, venderId);
+
+  const stripeInfo = await getCustomerStripeInfo(db, customerUid);
+  const token = await stripe.tokens.create({
+    customer: stripeInfo.customerId
+  }, {
+    stripeAccount: stripeAccount
+  })
+  const paymentMethodData = {
+    type: "card",
+    card: {
+      token: token.id
+    }
+  };
+  return paymentMethodData;
+};
+
+// This function is called by user to create a "payment intent" (to start the payment transaction)
+export const create = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
+  const customerUid = utils.validate_auth(context);
+
+  const { orderId, restaurantId, description, tip, sendSMS, timeToPickup, lng, memo } = data;
+  const _tip = Number(tip) || 0;
+  utils.validate_params({ orderId, restaurantId }); // lng, tip and sendSMS are optional
+
+  const restaurantData = await utils.get_restaurant(db, restaurantId);
+  const venderId = restaurantData['uid']
 
   let order: Order | undefined = undefined;
   try {
     const result = await db.runTransaction(async transaction => {
+      const stripeAccount = await getStripeAccount(db, venderId);
 
       const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`)
       const stripeRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}/system/stripe`)
@@ -51,39 +84,19 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
         throw new functions.https.HttpsError('aborted', 'This order is invalid.')
       }
 
-      const multiple = utils.getStripeRegion().multiple; // 100 for USD, 1 for JPY
-      const totalCharge = Math.round((order.total + Math.max(0, tip)) * multiple)
+      const totalChargeWithTipAndMultipled = Math.round((order.total + Math.max(0, _tip)) * multiple)
+
+      // We expect that there is a customer Id associated with a token
+      const payment_method_data = await getPaymentMethodData(db, venderId, customerUid);
 
       const request = {
         setup_future_usage: 'off_session',
-        amount: totalCharge,
+        amount: totalChargeWithTipAndMultipled,
         description: `${description} ${orderId}`,
         currency: utils.getStripeRegion().currency,
-        metadata: { uid: customerUid, restaurantId, orderId }
+        metadata: { uid: customerUid, restaurantId, orderId },
+        payment_method_data,
       } as Stripe.PaymentIntentCreateParams
-
-      if (paymentMethodId) {
-        // This code is obsolete, but keep it for a while in case we need it.
-        request.payment_method = paymentMethodId
-      } else {
-        // If no paymentMethodId, we expect that there is a customer Id associated with a token
-        const refStripe = db.doc(`/users/${customerUid}/system/stripe`)
-        const stripeInfo = (await refStripe.get()).data();
-        if (!stripeInfo) {
-          throw new functions.https.HttpsError('aborted', 'No stripeInfo.')
-        }
-        const token = await stripe.tokens.create({
-          customer: stripeInfo.customerId
-        }, {
-          stripeAccount: stripeAccount
-        })
-        request["payment_method_data"] = {
-          type: "card",
-          card: {
-            token: token.id
-          }
-        };
-      }
 
       const paymentIntent = await stripe.paymentIntents.create(request, {
         idempotencyKey: orderRef.path,
@@ -94,8 +107,8 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
       await updateOrderTotalDataAndUserLog(db, transaction, customerUid, order.order, restaurantId, customerUid, timePlaced, true);
       const updateData = {
         status: order_status.order_placed,
-        totalCharge: totalCharge / multiple,
-        tip: Math.round(tip * multiple) / multiple,
+        totalCharge: totalChargeWithTipAndMultipled / multiple,
+        tip: Math.round(_tip * multiple) / multiple,
         sendSMS: sendSMS || false,
         updatedAt: admin.firestore.Timestamp.now(),
         orderPlacedAt: admin.firestore.Timestamp.now(),
@@ -130,7 +143,6 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
 // ready_to_pickup
 export const confirm = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const ownerUid = utils.validate_admin_auth(context);
-  const stripe = utils.get_stripe();
 
   const { restaurantId, orderId, lng } = data
   utils.validate_params({ restaurantId, orderId }) // lng is optional
@@ -143,11 +155,7 @@ export const confirm = async (db: FirebaseFirestore.Firestore, data: any, contex
     throw new functions.https.HttpsError('invalid-argument', 'Dose not exist a restaurant.')
   }
   const venderId = restaurantData['uid']
-  const paymentSnapshot = await db.doc(`/admins/${venderId}/public/payment`).get()
-  const stripeAccount = paymentSnapshot.data()?.stripe
-  if (!stripeAccount) {
-    throw new functions.https.HttpsError('invalid-argument', 'This restaurant does not support payment.')
-  }
+  const stripeAccount = await getStripeAccount(db, venderId);
 
   if (venderId !== ownerUid) {
     throw new functions.https.HttpsError('permission-denied', 'You do not have permission to confirm this request.')
@@ -227,7 +235,6 @@ export const cancel = async (db: any, data: any, context: functions.https.Callab
   console.log("is_admin:" + String(isAdmin));
 
   const uid = isAdmin ? utils.validate_admin_auth(context) : utils.validate_auth(context);
-  const stripe = utils.get_stripe();
 
   const { restaurantId, orderId, lng } = data
   utils.validate_params({ restaurantId, orderId }) // lng is optional
@@ -237,8 +244,7 @@ export const cancel = async (db: any, data: any, context: functions.https.Callab
   const restaurant = await utils.get_restaurant(db, restaurantId)
   const venderId = restaurant['uid']
 
-  const paymentSnapshot = await db.doc(`/admins/${venderId}/public/payment`).get()
-  const stripeAccount = paymentSnapshot.data()?.stripe
+  const stripeAccount = await getStripeAccount(db, venderId);
 
   let sendSMS: boolean = false
   let phoneNumber: string | undefined = undefined;
@@ -336,8 +342,6 @@ export const cancel = async (db: any, data: any, context: functions.https.Callab
 export const cancelStripePayment = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext | Context) => {
   const uid = utils.validate_admin_auth(context);
 
-  const stripe = utils.get_stripe();
-
   const { restaurantId, orderId, lng } = data
   utils.validate_params({ restaurantId, orderId }) // lng is optional
 
@@ -346,8 +350,7 @@ export const cancelStripePayment = async (db: FirebaseFirestore.Firestore, data:
   const restaurant = await utils.get_restaurant(db, restaurantId)
   const venderId = restaurant['uid']
 
-  const paymentSnapshot = await db.doc(`/admins/${venderId}/public/payment`).get()
-  const stripeAccount = paymentSnapshot.data()?.stripe
+  const stripeAccount = await getStripeAccount(db, venderId);
 
   let order: Order | undefined = undefined;
 
@@ -439,26 +442,22 @@ export const orderChange = async (db: any, data: any, context: functions.https.C
   const ownerUid = utils.validate_admin_auth(context);
   const { restaurantId, orderId, newOrder, timezone } = data;
   utils.validate_params({ restaurantId, orderId, newOrder, timezone }) // lng, timeEstimated is optional
-  const multiple = utils.getStripeRegion().multiple; // 100 for USD, 1 for JPY
 
   // get menu
   try {
     const restaurantRef = db.doc(`restaurants/${restaurantId}`)
-    const restaurantDoc = await restaurantRef.get()
-    const restaurantData = restaurantDoc.data() || {}
+    const restaurantData = (await restaurantRef.get()).data() || {}
     if (restaurantData.uid !== ownerUid) {
       throw new functions.https.HttpsError('permission-denied', 'The user does not have an authority to perform this operation.')
     }
     const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`)
 
-    // const result = await db.runTransaction(async transaction => {
     const order = (await orderRef.get()).data();
 
     if (!order) {
       throw new functions.https.HttpsError('invalid-argument', 'This order does not exist.')
     }
     order.id = orderId;
-    // update menu, order, options, rawOptions
     const { updateOrderData, updateOptions, updateRawOptions } = getUpdateOrder(newOrder, order.order, order.options, order.rawOptions);
 
     // update price
@@ -477,13 +476,13 @@ export const orderChange = async (db: any, data: any, context: functions.https.C
       prices: newPrices,
       options: updateOptions,
       rawOptions: updateRawOptions,
-
       // status: order_status.validation_ok,
       // number: orderCount,
       sub_total: accountingResult.sub_total,
       tax: accountingResult.tax,
       inclusiveTax: accountingResult.inclusiveTax,
       total: accountingResult.total,
+      totalCharge: accountingResult.total + (Number(order.tip) ||0),
       accounting: {
         food: {
           revenue: accountingResult.food_sub_total,
@@ -493,13 +492,62 @@ export const orderChange = async (db: any, data: any, context: functions.https.C
           revenue: accountingResult.alcohol_sub_total,
           tax: accountingResult.alcohol_tax
         }
-      }
+      },
+      orderUpdatedAt: admin.firestore.Timestamp.now(),
     };
-    // console.log(orderUpdateData);
-    orderRef.update(orderUpdateData);
 
-    // update stripe
 
+    if (!order.payment) {
+      orderRef.update(orderUpdateData);
+    } else {
+      // update stripe
+      const result = await db.runTransaction(async transaction => {
+        const customerUid = order.uid;
+        const venderId = restaurantData['uid'];
+        const stripeAccount = await getStripeAccount(db, venderId);
+        const stripeRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}/system/stripe`);
+
+        (await transaction.get(orderRef)).data();
+
+        const stripeRecord = (await transaction.get(stripeRef)).data();
+        if (!stripeRecord || !stripeRecord.paymentIntent || !stripeRecord.paymentIntent.id) {
+          throw new functions.https.HttpsError('failed-precondition', 'This order has no paymentIntendId.')
+        }
+
+        // get System Stripe
+        const payment_method_data = await getPaymentMethodData(db, venderId, customerUid);
+
+        const description = `#${order.number} ${restaurantData.restaurantName} ${order.phoneNumber}`;
+        const request = {
+          setup_future_usage: 'off_session',
+          amount: orderUpdateData.totalCharge * multiple,
+          description: `${description} ${orderId} orderChange`,
+          currency: utils.getStripeRegion().currency,
+          metadata: { uid: customerUid, restaurantId, orderId },
+          payment_method_data,
+        } as Stripe.PaymentIntentCreateParams;
+
+        const hash = crypto
+          .createHash("sha256")
+          .update(JSON.stringify(newOrderData))
+          .digest("hex");
+
+        const paymentIntent = await stripe.paymentIntents.create(request, {
+          idempotencyKey: orderRef.path + hash,
+          stripeAccount
+        })
+
+        await transaction.update(orderRef, orderUpdateData);
+
+        await transaction.set(stripeRef, {
+          paymentIntent
+        }, { merge: true });
+        return {};
+      });
+      console.log(result);
+    }
+
+    // send to customer
 
     return {};
   } catch (error) {
