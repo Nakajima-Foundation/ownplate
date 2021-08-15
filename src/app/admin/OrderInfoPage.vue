@@ -915,6 +915,7 @@ export default {
               restaurantId: this.restaurantId() + this.forcedError("update"),
               orderId: this.orderId,
               newOrder: this.edited_available_order_info,
+              timezone,
             };
             console.log(params);
 
