@@ -462,32 +462,46 @@
               @input="updateEnable"
               ></order-info>
             <div>
-              <div class="mt-4">
-                <b-button
-                  @click="toggleIsOrderChange"
-                  class="b-reset-tw"
-                  >
-                  <div
-                    class="inline-flex justify-center items-center h-12 px-6 rounded-full bg-red-700"
+              <div class="bg-white rounded-lg shadow p-4 text-center" v-if="orderInfo.orderUpdatedAt">
+                <div>注文内容の変更</div>
+                {{timeStampToText(orderInfo.orderUpdatedAt)}}変更済み
+              </div>
+
+              <div class="bg-white rounded-lg shadow p-4 text-center" v-if="availableOrderChange">
+                <div>注文内容の変更</div>
+                <div class="mt-4">
+                  <b-button
+                    @click="toggleIsOrderChange"
+                    class="b-reset-tw"
                     >
-                    <div class="text-base font-bold text-white">
-                      {{ isOrderChange ? $t("admin.order.cancelOrderChange") : $t("admin.order.willOrderChange") }}
+                    <div
+                      class="inline-flex justify-center items-center h-12 px-6 rounded-full bg-red-700"
+                      >
+                      <div class="text-base font-bold text-white">
+                        {{ isOrderChange ? $t("admin.order.cancelOrderChange") : $t("admin.order.willOrderChange") }}
+                      </div>
                     </div>
-                  </div>
-                </b-button>
-                <b-button
-                  @click="handleOrderChange"
-                  class="b-reset-tw"
-                  v-if="isOrderChange"
-                  >
-                  <div
-                    class="inline-flex justify-center items-center h-12 px-6 rounded-full bg-red-700"
+                  </b-button>
+                </div>
+                <div class="mt-4">
+                  <b-button
+                    @click="handleOrderChange"
+
+                    :loading="changing"
+                    :disabled="!availableChangeButton"
+
+                    class="b-reset-tw"
+                    v-if="isOrderChange"
                     >
-                    <div class="text-base font-bold text-white">
-                      {{ $t("admin.order.confirmOrderChange") }}
+                    <div
+                      class="inline-flex justify-center items-center h-12 px-6 rounded-full bg-red-700"
+                      >
+                      <div class="text-base font-bold text-white">
+                        {{ $t("admin.order.confirmOrderChange") }}
+                      </div>
                     </div>
-                  </div>
-                </b-button>
+                  </b-button>
+                </div>
               </div>
             </div>
 
@@ -541,6 +555,7 @@ export default {
   data() {
     return {
       updating: "",
+      changing: false,
       shopInfo: {},
       menuObj: {},
       orderInfo: {},
@@ -791,6 +806,14 @@ export default {
       }
       return Object.assign({}, this.orderInfo, ret);
     },
+    availableOrderChange() {
+      return this.orderInfo && this.orderInfo.status === order_status.order_placed &&
+        this.isNull(this.orderInfo.orderUpdatedAt);
+    },
+    availableChangeButton() {
+      return this.edited_available_order_info.length !== this.editedAvailableOrders.length
+      // return false;
+    },
   },
   methods: {
     updateEnable(value) {
@@ -820,6 +843,7 @@ export default {
       //console.log("handleComplete with Stripe", orderId);
       try {
         // this.updating = "ready_to_pickup";
+        this.$store.commit("setLoading", true);
         const { data } = await stripeConfirmIntent({
           restaurantId: this.restaurantId() + this.forcedError("confirm"),
           orderId: this.orderId
@@ -834,6 +858,7 @@ export default {
           message2: "errorPage.code.stripe.confirm2",
         });
       } finally {
+        this.$store.commit("setLoading", false);
         this.updating = "";
       }
     },
@@ -851,6 +876,7 @@ export default {
       }
       const orderUpdate = functions.httpsCallable("orderUpdate");
       try {
+        this.$store.commit("setLoading", true);
         const params = {
           restaurantId: this.restaurantId() + this.forcedError("update"),
           orderId: this.orderId,
@@ -863,7 +889,7 @@ export default {
           params.timeEstimated = firestore.Timestamp.fromDate(date);
         }
         const { data } = await orderUpdate(params);
-        console.log("update", data);
+        // console.log("update", data);
         this.$router.push(this.parentUrl);
       } catch (error) {
         console.error(error.message, error.details);
@@ -872,6 +898,7 @@ export default {
           error
         });
       } finally {
+        this.$store.commit("setLoading", false);
         this.updating = "";
       }
     },
@@ -913,6 +940,8 @@ export default {
           const timezone = moment.tz.guess();
           const orderChange = functions.httpsCallable("orderChange");
           try {
+            this.changing = true;
+            this.$store.commit("setLoading", true);
             const params = {
               restaurantId: this.restaurantId() + this.forcedError("update"),
               orderId: this.orderId,
@@ -922,6 +951,8 @@ export default {
             console.log(params);
 
             const { data } = await orderChange(params);
+            this.isOrderChange = false;
+
             console.log("update", data);
             // this.$router.push(this.parentUrl);
           } catch (error) {
@@ -931,7 +962,8 @@ export default {
               error
             });
           } finally {
-            this.updating = "";
+            this.$store.commit("setLoading", false);
+            this.changing = false;
           }
         }
       });
