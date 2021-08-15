@@ -443,7 +443,6 @@ export const orderChange = async (db: any, data: any, context: functions.https.C
   const { restaurantId, orderId, newOrder, timezone } = data;
   utils.validate_params({ restaurantId, orderId, newOrder, timezone }) // lng, timeEstimated is optional
 
-  // get menu
   try {
     const restaurantRef = db.doc(`restaurants/${restaurantId}`)
     const restaurantData = (await restaurantRef.get()).data() || {}
@@ -451,12 +450,16 @@ export const orderChange = async (db: any, data: any, context: functions.https.C
       throw new functions.https.HttpsError('permission-denied', 'The user does not have an authority to perform this operation.')
     }
     const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`)
-
     const order = (await orderRef.get()).data();
-
     if (!order) {
       throw new functions.https.HttpsError('invalid-argument', 'This order does not exist.')
     }
+
+    if (!utils.isEmpty(order.orderUpdatedAt) || (order.status !== order_status.order_placed)) {
+      throw new functions.https.HttpsError('failed-precondition', 'It is not possible to change the order.')
+    }
+
+    // generate new order
     order.id = orderId;
     const { updateOrderData, updateOptions, updateRawOptions } = getUpdateOrder(newOrder, order.order, order.options, order.rawOptions);
 
@@ -496,7 +499,6 @@ export const orderChange = async (db: any, data: any, context: functions.https.C
       orderUpdatedAt: admin.firestore.Timestamp.now(),
     };
 
-
     if (!order.payment) {
       orderRef.update(orderUpdateData);
     } else {
@@ -505,11 +507,12 @@ export const orderChange = async (db: any, data: any, context: functions.https.C
         const customerUid = order.uid;
         const venderId = restaurantData['uid'];
         const stripeAccount = await getStripeAccount(db, venderId);
+
         const stripeRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}/system/stripe`);
+        const stripeRecord = (await transaction.get(stripeRef)).data();
 
         (await transaction.get(orderRef)).data();
 
-        const stripeRecord = (await transaction.get(stripeRef)).data();
         if (!stripeRecord || !stripeRecord.paymentIntent || !stripeRecord.paymentIntent.id) {
           throw new functions.https.HttpsError('failed-precondition', 'This order has no paymentIntendId.')
         }
