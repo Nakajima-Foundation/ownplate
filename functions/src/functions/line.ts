@@ -6,7 +6,7 @@ import * as admin from "firebase-admin";
 
 export const isEnabled = !!ownPlateConfig.line;
 
-export const setCustomClaim = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
+export const setCustomClaim = async (db: admin.firestore, data: any, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
   const isLine = uid.slice(0, 5) === "line:";
   try {
@@ -22,7 +22,7 @@ export const setCustomClaim = async (db: FirebaseFirestore.Firestore, data: any,
   }
 };
 
-export const verifyFriend = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
+export const verifyFriend = async (db: admin.firestore, data: any, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
   const isLine = uid.slice(0, 5) === "line:";
   const uidLine = isLine ? uid.slice(5) : context.auth?.token?.line?.slice(5);
@@ -44,7 +44,7 @@ export const verifyFriend = async (db: FirebaseFirestore.Firestore, data: any, c
   }
 };
 
-export const authenticate = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
+export const authenticate = async (db: admin.firestore, data: any, context: functions.https.CallableContext) => { // eslint-disable-line
   const { code, redirect_uri, client_id } = data;
   utils.validate_params({ code, redirect_uri, client_id });
   const LINE_TRACK_KEY = functions.config().line.track;
@@ -96,7 +96,7 @@ export const authenticate = async (db: FirebaseFirestore.Firestore, data: any, c
   }
 };
 
-export const validate = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
+export const validate = async (db: admin.firestore, data: any, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
 
   const { code, redirect_uri, client_id } = data;
@@ -184,7 +184,7 @@ export const sendMessageDirect = async (lineId: string, message: string) => {
 };
 
 /*
-export const sendMessage = async (db: FirebaseFirestore.Firestore, uid: string | null, message: string) => {
+export const sendMessage = async (db: admin.firestore, uid: string | null, message: string) => {
   if (uid === null) {
     return;
   }
@@ -197,7 +197,7 @@ export const sendMessage = async (db: FirebaseFirestore.Firestore, uid: string |
 }
 */
 
-export const getLineId = async (db: FirebaseFirestore.Firestore, uid: string | null) => {
+export const getLineId = async (db: admin.firestore, uid: string | null) => {
   if (uid === null) {
     return;
   }

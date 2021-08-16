@@ -3,7 +3,7 @@ import * as admin from "firebase-admin";
 import * as utils from "../lib/utils";
 import { deleteCustomer } from "../stripe/customer";
 
-export const deleteAccount = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
+export const deleteAccount = async (db: admin.firestore, data: any, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
 
   try {
@@ -19,7 +19,7 @@ export const deleteAccount = async (db: FirebaseFirestore.Firestore, data: any, 
       }
       return null;
     };
-    let query: FirebaseFirestore.Query<FirebaseFirestore.DocumentData> | null = refCollection;
+    let query: admin.firestore.Query<admin.firestore.DocumentData> | null = refCollection;
     let count = -1;
     do {
       query = await next(query);

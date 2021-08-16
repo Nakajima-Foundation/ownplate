@@ -69,7 +69,7 @@ export const invitationValidateProcess = async (
   db,
   data: any,
   context: functions.https.CallableContext | Context,
-  callback: (adminUid: string, messageData: firebase.firestore.DocumentData, messageRef: firebase.firestore.DocumentReference) => Promise<void>
+  callback: (adminUid: string, messageData: firebase.firestore.DocumentData, messageRef: firebase.firestore.DocumentReference) => Promise<void> // eslint-disable-line
 ) => {
   // check admin and is not child yet.
   const { messageId } = data;
@@ -89,7 +89,7 @@ const childInvitationProcess = async (
   db: any,
   data: any,
   context: functions.https.CallableContext | Context,
-  callback: (messageData: firebase.firestore.DocumentData, messageRef: firebase.firestore.DocumentReference) => Promise<void>
+  callback: (messageData: firebase.firestore.DocumentData, messageRef: firebase.firestore.DocumentReference) => Promise<void> // eslint-disable-line
 ) => {
   await invitationValidateProcess(db, data, context, async (adminUid: string, messageData: firebase.firestore.DocumentData, messageRef: firebase.firestore.DocumentReference) => {
     if (messageData.type === "childInvitation") {

@@ -1,7 +1,7 @@
 {
   "name": "functions",
   "scripts": {
-    "lint": "eslint --ext .js,.ts .",
+    "lint": "eslint --ext .js,.ts ./src/",
     "format": "prettier --write '{src,tests}/**/*.{js,ts}'  --print-width=180",
     "build": "tsc",
     "serve": "npm run build && firebase serve --only functions",

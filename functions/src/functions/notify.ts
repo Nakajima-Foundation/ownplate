@@ -16,7 +16,7 @@ import * as ses from "./ses";
 
 // for customer
 export const sendMessageToCustomer = async (
-  db: FirebaseFirestore.Firestore,
+  db: firebase.firestore,
   lng: string,
   msgKey: string,
   restaurantName: string,
@@ -110,7 +110,7 @@ export const createNotifyRestaurantMailMessage = async (messageId: string, resta
     orderName,
     orders,
     totalCharge: order.totalCharge,
-    payment: t(!!order.payment ? "card_payment" : "payment_in_store"),
+    payment: t(order.payment ? "card_payment" : "payment_in_store"),
     url,
   };
   const replacedTemp = Object.keys(data).reduce((tmp, key) => {
@@ -196,10 +196,10 @@ export const notifyRestaurant = async (db: any, messageId: string, restaurantId:
   }
 };
 
-export const notifyNewOrderToRestaurant = async (db: FirebaseFirestore.Firestore, restaurantId: string, order: any, restaurantName: string, lng: string) => {
+export const notifyNewOrderToRestaurant = async (db: firebase.firestore, restaurantId: string, order: any, restaurantName: string, lng: string) => {
   return notifyRestaurant(db, "msg_order_placed", restaurantId, order, restaurantName, lng);
 };
 
-export const notifyCanceledOrderToRestaurant = async (db: FirebaseFirestore.Firestore, restaurantId: string, order: any, restaurantName: string, lng: string) => {
+export const notifyCanceledOrderToRestaurant = async (db: firebase.firestore, restaurantId: string, order: any, restaurantName: string, lng: string) => {
   return notifyRestaurant(db, "msg_order_canceled_by_user", restaurantId, order, restaurantName, lng);
 };

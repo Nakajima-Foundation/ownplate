@@ -2,7 +2,7 @@ import * as functions from "firebase-functions";
 import * as utils from "../lib/utils";
 import * as admin from "firebase-admin";
 
-export const dispatch = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
+export const dispatch = async (db: admin.firestore, data: any, context: functions.https.CallableContext) => {
   if (!context.auth?.token?.admin) {
     throw new functions.https.HttpsError("permission-denied", "You do not have permission to confirm this request.");
   }
@@ -16,7 +16,7 @@ export const dispatch = async (db: FirebaseFirestore.Firestore, data: any, conte
       case "getCustomeClaims":
         result = await getCustomClaims(db, uid);
         break;
-      case "setCustomClaim":
+      case "setCustomClaim": {
         const userRecord = await admin.auth().getUser(uid);
         if (key === "operator" && userRecord.email) {
           result = await setCustomClaim(db, uid, key, value);
@@ -43,6 +43,7 @@ export const dispatch = async (db: FirebaseFirestore.Firestore, data: any, conte
           });
         }
         break;
+      }
       default:
         await db.collection(`admins/${uidSuper}/adminlogs`).add({
           uid,
@@ -63,13 +64,13 @@ export const dispatch = async (db: FirebaseFirestore.Firestore, data: any, conte
   }
 };
 
-const getCustomClaims = async (db: FirebaseFirestore.Firestore, uid: string) => {
+const getCustomClaims = async (db: admin.firestore, uid: string) => {
   const userRecord = await admin.auth().getUser(uid);
   const customClaims = userRecord.customClaims || {};
   return { result: customClaims };
 };
 
-const setCustomClaim = async (db: FirebaseFirestore.Firestore, uid: string, key: string, value: boolean) => {
+const setCustomClaim = async (db: admin.firestore, uid: string, key: string, value: boolean) => {
   const obj = { [key]: value };
   await admin.auth().setCustomUserClaims(uid, obj);
   await db.doc(`admins/${uid}`).update(obj); // duplicated data in DB

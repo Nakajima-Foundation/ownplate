@@ -195,10 +195,9 @@ const ogpPage = async (req: any, res: any) => {
     res.send(template_data);
   }
 };
-const debugError = async (req: any, res: any) => {
+const debugError = async (req: any, res: any) => { // eslint-disable-line
   setTimeout(() => {
     throw new Error("sample error");
-    res.send({});
   }, 10);
 };
 

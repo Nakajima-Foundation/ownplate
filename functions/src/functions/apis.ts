@@ -138,7 +138,7 @@ const getMenus = async (req: any, res: any) => {
 
 const corsOptionsDelegate = (req, callback) => {
   // firebaseapp.com, web.app, localhost:3000/*
-  const pattern = /(http:\/\/localhost:\d+)$|(https:\/\/[a-zA-Z0-9\-]+\.firebaseapp\.com)$|(https:\/\/[a-zA-Z0-9\-]+\.web\.app)$/;
+  const pattern = /(http:\/\/localhost:\d+)$|(https:\/\/[a-zA-Z0-9-]+\.firebaseapp\.com)$|(https:\/\/[a-zA-Z0-9-]+\.web\.app)$/;
   const corsOptions = (req.header("Origin") || "").match(pattern) ? { origin: true } : { origin: false };
   callback(null, corsOptions); // callback expects two parameters: error and options
 };

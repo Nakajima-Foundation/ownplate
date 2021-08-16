@@ -69,7 +69,7 @@ const getPaymentMethodData = async (db: any, restaurantOwnerUid: string, custome
 };
 
 // This function is called by user to create a "payment intent" (to start the payment transaction)
-export const create = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
+export const create = async (db: admin.firestore, data: any, context: functions.https.CallableContext) => {
   const customerUid = utils.validate_auth(context);
 
   const { orderId, restaurantId, description, tip, sendSMS, timeToPickup, lng, memo } = data;
@@ -144,7 +144,7 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
 
 // This function is called by admin to confurm a "payment intent" (to complete the payment transaction)
 // ready_to_pickup
-export const confirm = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
+export const confirm = async (db: admin.firestore, data: any, context: functions.https.CallableContext) => {
   const ownerUid = utils.validate_admin_auth(context);
 
   const { restaurantId, orderId } = data;
@@ -317,7 +317,7 @@ export const cancel = async (db: any, data: any, context: functions.https.Callab
 };
 
 // This function is called by admin to cencel an exsting order
-export const cancelStripePayment = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext | Context) => {
+export const cancelStripePayment = async (db: admin.firestore, data: any, context: functions.https.CallableContext | Context) => {
   const uid = utils.validate_admin_auth(context);
 
   const { restaurantId, orderId, lng } = data;

@@ -1,3 +1,4 @@
+import * as admin from "firebase-admin";
 import * as functions from "firebase-functions";
 import fetch from "node-fetch";
 import SmaregiApi from "../smaregi/smaregiapi";
@@ -7,7 +8,7 @@ import { generateBody } from "../smaregi/apiUtils";
 const clientSecrets = functions.config() && functions.config().smaregi && functions.config().smaregi.clientsecrets;
 const host = functions.config() && functions.config().smaregi && functions.config().smaregi.host;
 
-export const auth = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
+export const auth = async (db: admin.firestore, data: any, context: functions.https.CallableContext) => {
   const { code, client_id } = data;
 
   const adminUid = utils.validate_auth(context);
@@ -63,7 +64,7 @@ export const auth = async (db: FirebaseFirestore.Firestore, data: any, context: 
   }
 };
 
-export const storeList = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
+export const storeList = async (db: admin.firestore, data: any, context: functions.https.CallableContext) => {
   const { client_id } = data;
 
   const adminUid = utils.validate_auth(context);
@@ -95,7 +96,7 @@ export const storeList = async (db: FirebaseFirestore.Firestore, data: any, cont
   return { res: storeListData };
 };
 
-export const productList = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
+export const productList = async (db: admin.firestore, data: any, context: functions.https.CallableContext) => {
   const { client_id, store_id } = data;
 
   const adminUid = utils.validate_auth(context);

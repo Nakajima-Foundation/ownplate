@@ -74,7 +74,7 @@ export const validate_params = (params) => {
   }
 };
 
-export const get_restaurant = async (db: FirebaseFirestore.Firestore, restaurantId: String) => {
+export const get_restaurant = async (db: admin.firestore, restaurantId: String) => {
   const snapshot = await db.doc(`/restaurants/${restaurantId}`).get();
   const data = snapshot.data();
   if (!data) {
@@ -93,7 +93,7 @@ export const process_error = (error: any) => {
 };
 
 // const regex = /\((\+|\-)[0-9\.]+\)/
-const regex = /\(((\+|\-|＋|ー|−)[0-9\.]+)\)/;
+const regex = /\(((\+|-|＋|ー|−)[0-9.]+)\)/;
 
 const convPrice = (priceStr) => {
   return Number(priceStr.replace(/ー|−/g, "-").replace(/＋/g, "+"));
@@ -143,7 +143,6 @@ export const filterData = (data: { [key: string]: any }) => {
     }
     return tmp;
   }, {});
-  return data;
 };
 
 export const isEmpty = (value: any) => {
