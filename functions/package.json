@@ -1,7 +1,8 @@
 {
   "name": "functions",
   "scripts": {
-    "lint": "tslint --project tsconfig.json",
+    "lint": "eslint --ext .js,.ts ./src/",
+    "format": "prettier --write '{src,tests}/**/*.{js,ts}'  --print-width=180",
     "build": "tsc",
     "serve": "npm run build && firebase serve --only functions",
     "shell": "npm run build && firebase functions:shell",
@@ -38,7 +39,6 @@
     "firebase-functions": "^3.13.0",
     "google-libphonenumber": "^3.2.10",
     "i18next": "^19.4.4",
-    "lodash": "^4.17.21",
     "moment": "^2.26.0",
     "moment-timezone": "^0.5.31",
     "node-fetch": "^2.6.1",
@@ -58,14 +58,19 @@
     "@types/chai": "^4.2.21",
     "@types/mocha": "^9.0.0",
     "@types/stripe": "^7.13.22",
+    "@typescript-eslint/eslint-plugin": "^4.29.2",
+    "@typescript-eslint/parser": "^4.29.2",
     "chai": "^4.3.4",
     "chai-string": "^1.5.0",
     "cheerio": "^1.0.0-rc.3",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.23.4",
     "firebase-functions-test": "^0.2.3",
     "mocha": "^9.0.3",
+    "prettier": "^2.3.2",
     "supertest": "^4.0.2",
     "ts-node": "^10.0.0",
-    "tslint": "^5.12.0",
     "typescript": "^3.2.2"
   },
   "private": true

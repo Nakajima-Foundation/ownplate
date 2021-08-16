@@ -1,15 +1,14 @@
-import * as firebase from 'firebase-admin';
+import * as firebase from "firebase-admin";
 
-import * as functions from 'firebase-functions'
+import * as functions from "firebase-functions";
 // import * as admin from 'firebase-admin';
-import * as utils from '../lib/utils'
+import * as utils from "../lib/utils";
 
 import isEmail from "validator/lib/isEmail";
 
-import { Context } from '../models/TestType'
+import { Context } from "../models/TestType";
 
 export const invite = async (db, data: any, context: functions.https.CallableContext | Context) => {
-
   // check admin
   const adminUid = utils.validate_parent_admin_auth(context);
   const { email, name } = data;
@@ -17,25 +16,25 @@ export const invite = async (db, data: any, context: functions.https.CallableCon
   // get user
   try {
     if (!isEmail(email)) {
-      throw new functions.https.HttpsError('invalid-argument', 'invalid email.')
+      throw new functions.https.HttpsError("invalid-argument", "invalid email.");
     }
 
-    const user = await firebase.auth().getUserByEmail(email)
+    const user = await firebase.auth().getUserByEmail(email);
     if (!user) {
-      throw new functions.https.HttpsError('invalid-argument', 'User does not exist.')
+      throw new functions.https.HttpsError("invalid-argument", "User does not exist.");
     }
     if (user.customClaims?.parentUid) {
-      throw new functions.https.HttpsError('invalid-argument', 'User is child.')
+      throw new functions.https.HttpsError("invalid-argument", "User is child.");
     }
     const childUid = user.uid;
 
     if (childUid === adminUid) {
-      throw new functions.https.HttpsError('invalid-argument', 'U called your self.')
+      throw new functions.https.HttpsError("invalid-argument", "U called your self.");
     }
-    const childRef = db.doc(`admins/${adminUid}/children/${childUid}`)
-    const childDoc = await childRef.get()
+    const childRef = db.doc(`admins/${adminUid}/children/${childUid}`);
+    const childDoc = await childRef.get();
     if (childDoc && childDoc.exists) {
-      throw new functions.https.HttpsError('invalid-argument', 'Already invited.')
+      throw new functions.https.HttpsError("invalid-argument", "Already invited.");
     }
 
     // ok
@@ -43,7 +42,7 @@ export const invite = async (db, data: any, context: functions.https.CallableCon
       name,
       email,
       createdAt: firebase.firestore.Timestamp.now(),
-    }
+    };
     await childRef.set(childData);
     // send invite
 
@@ -54,22 +53,24 @@ export const invite = async (db, data: any, context: functions.https.CallableCon
       fromDisplay: true,
       toDisplay: true,
       email,
-      createdAt: firebase.firestore.Timestamp.now()
+      createdAt: firebase.firestore.Timestamp.now(),
     };
     await db.doc(`/admins/${childUid}/messages/childInvitation${adminUid}`).set(invitationData);
     return {
       result: true,
-      childUid: childUid
+      childUid: childUid,
     };
   } catch (error) {
-    throw utils.process_error(error)
+    throw utils.process_error(error);
   }
+};
 
-}
-
-export const invitationValidateProcess = async (db, data: any, context: functions.https.CallableContext | Context,
-                                                callback: (adminUid: string, messageData: firebase.firestore.DocumentData,
-                                                           messageRef: firebase.firestore.DocumentReference) => Promise<void>) => {
+export const invitationValidateProcess = async (
+  db,
+  data: any,
+  context: functions.https.CallableContext | Context,
+  callback: (adminUid: string, messageData: firebase.firestore.DocumentData, messageRef: firebase.firestore.DocumentReference) => Promise<void> // eslint-disable-line
+) => {
   // check admin and is not child yet.
   const { messageId } = data;
   const adminUid = utils.validate_parent_admin_auth(context);
@@ -78,27 +79,31 @@ export const invitationValidateProcess = async (db, data: any, context: function
   const messageRef = db.doc(`/admins/${adminUid}/messages/${messageId}`);
   const messageDoc = await messageRef.get();
   if (!messageDoc) {
-    throw new functions.https.HttpsError('invalid-argument', 'This message does not exist.')
+    throw new functions.https.HttpsError("invalid-argument", "This message does not exist.");
   }
   const messageData = messageDoc.data();
   await callback(adminUid, messageData, messageRef);
   return {};
-}
-const childInvitationProcess = async (db: any, data: any, context: functions.https.CallableContext | Context,
-                                      callback: (messageData: firebase.firestore.DocumentData, messageRef: firebase.firestore.DocumentReference) => Promise<void>) => {
+};
+const childInvitationProcess = async (
+  db: any,
+  data: any,
+  context: functions.https.CallableContext | Context,
+  callback: (messageData: firebase.firestore.DocumentData, messageRef: firebase.firestore.DocumentReference) => Promise<void> // eslint-disable-line
+) => {
   await invitationValidateProcess(db, data, context, async (adminUid: string, messageData: firebase.firestore.DocumentData, messageRef: firebase.firestore.DocumentReference) => {
     if (messageData.type === "childInvitation") {
       // validation
       if (messageData.toDisplay === false) {
-        throw new functions.https.HttpsError('invalid-argument', 'This message is expired.')
+        throw new functions.https.HttpsError("invalid-argument", "This message is expired.");
       }
       if (messageData.toUid !== adminUid) {
-        throw new functions.https.HttpsError('invalid-argument', 'Invalid User access.')
+        throw new functions.https.HttpsError("invalid-argument", "Invalid User access.");
       }
       // ok!!
       await callback(messageData, messageRef);
     } else {
-      throw new functions.https.HttpsError('invalid-argument', 'Invalid invitation type.')
+      throw new functions.https.HttpsError("invalid-argument", "Invalid invitation type.");
     }
   });
 };
@@ -106,7 +111,6 @@ export const accept = async (db, data: any, context: functions.https.CallableCon
   try {
     await childInvitationProcess(db, data, context, async (messageData, messageRef) => {
       await db.runTransaction(async (tr) => {
-
         const customClaims = { parentUid: messageData.fromUid };
         await firebase.auth().setCustomUserClaims(messageData.toUid, customClaims);
 
@@ -118,46 +122,45 @@ export const accept = async (db, data: any, context: functions.https.CallableCon
         const messageDoc = await tr.get(messageRef);
 
         if (!childDoc || !childDoc.exists || !messageDoc || !messageDoc.exists) {
-          throw new functions.https.HttpsError('invalid-argument', `The child or message does not exist.`)
+          throw new functions.https.HttpsError("invalid-argument", `The child or message does not exist.`);
         }
         //  accepted
-        await tr.update(childRef, {accepted: true})
+        await tr.update(childRef, { accepted: true });
 
         // update invitationData
-        await tr.update(messageRef, {toDisplay: false, accepted: true});
+        await tr.update(messageRef, { toDisplay: false, accepted: true });
         return {};
       });
     });
   } catch (error) {
-    throw utils.process_error(error)
+    throw utils.process_error(error);
   }
   return {};
-}
+};
 export const deny = async (db, data: any, context: functions.https.CallableContext | Context) => {
   try {
     await childInvitationProcess(db, data, context, async (messageData, messageRef) => {
       await db.runTransaction(async (tr) => {
-
         const childRef = db.doc(`admins/${messageData.fromUid}/children/${messageData.toUid}`);
         const childDoc = await tr.get(childRef);
         const messageDoc = await tr.get(messageRef);
 
         if (!childDoc || !childDoc.exists || !messageDoc || !messageDoc.exists) {
-          throw new functions.https.HttpsError('invalid-argument', `The child or message does not exist.`)
+          throw new functions.https.HttpsError("invalid-argument", `The child or message does not exist.`);
         }
         //  deny
-        await tr.delete(childRef)
+        await tr.delete(childRef);
 
         // update invitationData
-        await tr.update(messageRef, {toDisplay: false, accepted: false});
+        await tr.update(messageRef, { toDisplay: false, accepted: false });
         return {};
       });
     });
   } catch (error) {
-    throw utils.process_error(error)
+    throw utils.process_error(error);
   }
   return {};
-}
+};
 
 export const deleteChild = async (db, data: any, context: functions.https.CallableContext | Context) => {
   // check admin
@@ -166,7 +169,6 @@ export const deleteChild = async (db, data: any, context: functions.https.Callab
 
   try {
     await db.runTransaction(async (tr) => {
-
       const childRef = db.doc(`admins/${adminUid}/children/${childUid}`);
       const childDoc = await tr.get(childRef);
 
@@ -174,17 +176,17 @@ export const deleteChild = async (db, data: any, context: functions.https.Callab
       const messageDoc = await tr.get(messageRef);
 
       if (!childDoc || !childDoc.exists || !messageDoc || !messageDoc.exists) {
-        throw new functions.https.HttpsError('invalid-argument', `The child or message does not exist.`)
+        throw new functions.https.HttpsError("invalid-argument", `The child or message does not exist.`);
       }
       // ok!!
-      const customClaims = { };
+      const customClaims = {};
       await firebase.auth().setCustomUserClaims(childUid, customClaims);
 
-      await tr.delete(childRef)
-      await tr.delete(messageRef)
+      await tr.delete(childRef);
+      await tr.delete(messageRef);
     });
   } catch (error) {
-    throw utils.process_error(error)
+    throw utils.process_error(error);
   }
-  return { retult: true};
-}
+  return { retult: true };
+};

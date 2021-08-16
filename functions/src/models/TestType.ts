@@ -1,10 +1,10 @@
 export interface Context {
   auth: {
-    uid: string,
+    uid: string;
     token: {
-      phone_number: string,
-      parentUid: string,
-      email: string
-    }
-  }
-};
+      phone_number: string;
+      parentUid: string;
+      email: string;
+    };
+  };
+}
