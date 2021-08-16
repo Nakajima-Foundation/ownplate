@@ -226,8 +226,7 @@ export const confirm = async (db: FirebaseFirestore.Firestore, data: any, contex
       console.log("timeEstimated_diff_days = " + String(diffDay));
       if (diffDay < 1) {
         const msgKey = "msg_cooking_completed"
-        const orderName = utils.nameOfOrder(newOrder.number)
-        await sendMessageToCustomer(db, lng, msgKey, restaurantData.restaurantName, orderName, newOrder.uid, newOrder.phoneNumber, restaurantId, orderId, {});
+        await sendMessageToCustomer(db, lng, msgKey, restaurantData.restaurantName, newOrder, restaurantId, orderId, {});
       }
     }
 
@@ -317,9 +316,8 @@ export const cancel = async (db: any, data: any, context: functions.https.Callab
       return { success: true, payment: "stripe", byUser: (uid === order.uid), order }
     })
     console.log(result.order)
-    const orderName = utils.nameOfOrder(result.order.number);
     if (isAdmin && result.order.sendSMS) {
-      await sendMessageToCustomer(db, lng, 'msg_order_canceled', restaurant.restaurantName, orderName, result.order.uid, result.order.phoneNumber, restaurantId, orderId, {}, true)
+      await sendMessageToCustomer(db, lng, 'msg_order_canceled', restaurant.restaurantName, result.order, restaurantId, orderId, {}, true)
     }
     if (!isAdmin) {
       await notifyCanceledOrderToRestaurant(db, restaurantId, result.order, restaurant.restaurantName, lng)
@@ -379,9 +377,8 @@ export const cancelStripePayment = async (db: FirebaseFirestore.Firestore, data:
       Object.assign(order, updateData);
       return { success: true, payment: "stripe", order }
     })
-    const orderName = utils.nameOfOrder(result.order.number);
     if (result.order.sendSMS) {
-      await sendMessageToCustomer(db, lng, 'msg_stripe_payment_canceled', restaurant.restaurantName, orderName, result.order.uid, result.order.phoneNumber, restaurantId, orderId, {}, true)
+      await sendMessageToCustomer(db, lng, 'msg_stripe_payment_canceled', restaurant.restaurantName, result.order, restaurantId, orderId, {}, true)
     }
     return { success: true, payment: "stripe" }
   } catch (error) {
@@ -521,8 +518,7 @@ export const orderChange = async (db: any, data: any, context: functions.https.C
       });
     }
     if (order.sendSMS) {
-      const orderName = utils.nameOfOrder(newOrder.number)
-      await sendMessageToCustomer(db, lng, 'msg_order_updated', restaurantData.restaurantName, orderName, order.uid, order.phoneNumber, restaurantId, orderId, {}, true)
+      await sendMessageToCustomer(db, lng, 'msg_order_updated', restaurantData.restaurantName, order, restaurantId, orderId, {}, true)
     }
 
     // send to customer

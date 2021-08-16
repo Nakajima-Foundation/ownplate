@@ -1,4 +1,4 @@
-import * as admin from "firebase-admin";
+import * as firebase from 'firebase-admin';
 import * as utils from "../lib/utils";
 import moment from "moment-timezone";
 
@@ -20,14 +20,14 @@ export const sendMessageToCustomer = async (
   lng: string,
   msgKey: string,
   restaurantName: string,
-  orderNumber: string,
-  uidUser: string | null,
-  phoneNumber: string | undefined,
+  orderData: firebase.firestore.DocumentData,
   restaurantId: string,
   orderId: string,
   params: object = {},
   forceSMS: boolean = false
 ) => {
+  const orderNumber = utils.nameOfOrder(orderData.number)
+
   const t = await i18next.init({
     lng: lng || utils.getStripeRegion().langs[0],
     resources
@@ -39,17 +39,17 @@ export const sendMessageToCustomer = async (
   )} ${restaurantName} ${orderNumber} ${url}`;
   if (line.isEnabled) {
     // for JP
-    const lineId = await line.getLineId(db, uidUser);
+    const lineId = await line.getLineId(db, orderData.uid);
     if (lineId) {
       await line.sendMessageDirect(lineId, message);
     }
     if (forceSMS) {
-      await sms.pushSMS("omochikaeri", message, phoneNumber);
+      await sms.pushSMS("omochikaeri", message, orderData.phoneNumber);
     }
     // await line.sendMessage(db, uidUser, message);
   } else {
     // for others
-    await sms.pushSMS("OwnPlate", message, phoneNumber);
+    await sms.pushSMS("OwnPlate", message, orderData.phoneNumber);
   }
 };
 
@@ -221,7 +221,7 @@ export const notifyRestaurant = async (
         orderId,
         messageId,
         results,
-        updatedAt: admin.firestore.Timestamp.now()
+        updatedAt: firebase.firestore.Timestamp.now()
       });
   }
 
@@ -229,7 +229,7 @@ export const notifyRestaurant = async (
     const adminUser =
       process.env.NODE_ENV === "test"
         ? { email: process.env.TESTMAIL }
-        : await admin.auth().getUser(restaurant.uid);
+        : await firebase.auth().getUser(restaurant.uid);
     console.log(adminUser.email);
     if (adminUser.email) {
       await ses.sendMail(adminUser.email, mailTitle, mailMessage);
@@ -241,7 +241,7 @@ export const notifyRestaurant = async (
     lineMessage,
     sound: true,
     path: `/admin/restaurants/${restaurantId}`,
-    updatedAt: admin.firestore.Timestamp.now(),
+    updatedAt: firebase.firestore.Timestamp.now(),
     url
   });
 
@@ -256,7 +256,7 @@ export const notifyRestaurant = async (
           date: datestr,
           orderId,
           phoneNumber: restaurant.phoneNumber,
-          updatedAt: admin.firestore.Timestamp.now()
+          updatedAt: firebase.firestore.Timestamp.now()
         });
     }
   }

@@ -211,9 +211,7 @@ export const update = async (db: FirebaseFirestore.Firestore, data: any, context
         params["time"] = moment(orderData.timeEstimated.toDate()).tz(timezone).locale('ja').format('LLL');
         console.log("timeEstimated", params["time"]);
       }
-      const orderName = utils.nameOfOrder(orderData.number)
-      // To customer
-      await sendMessageToCustomer(db, lng, msgKey, restaurant.restaurantName, orderName, orderData.uid, orderData.phoneNumber, restaurantId, orderId, params)
+      await sendMessageToCustomer(db, lng, msgKey, restaurant.restaurantName, orderData, restaurantId, orderId, params)
     }
     return result
   } catch (error) {
