@@ -1,18 +1,16 @@
-import { should } from 'chai';
+import { should } from "chai";
 //import { expect } from 'chai';
 
-import * as ses from './../src/functions/ses'
+import * as ses from "./../src/functions/ses";
 
-should()
+should();
 
-describe('SES function', () => {
-  it ('ses function', async function() {
+describe("SES function", () => {
+  it("ses function", async function () {
     const to = "isamu.a@gmail.com";
     const title = "こんにちは";
     const body = "こんにちは。本文。";
 
     await ses.sendMail(to, title, body);
-  })
-
-
+  });
 });

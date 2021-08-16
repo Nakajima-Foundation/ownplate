@@ -1,12 +1,12 @@
-import * as cheerio from 'cheerio'
-import * as constant from './../src/common/constant';
+import * as cheerio from "cheerio";
+import * as constant from "./../src/common/constant";
 
 export const parse_meta = (body) => {
   const parsed = cheerio.load(body);
   const meta = {};
-  parsed('head meta').map((i, el) => {
-    const property = parsed(el).attr('property')
-    const content = parsed(el).attr('content')
+  parsed("head meta").map((i, el) => {
+    const property = parsed(el).attr("property");
+    const content = parsed(el).attr("content");
     if (property && content) {
       meta[property] = content;
     }
@@ -39,21 +39,29 @@ export const createRestaurantData = async (db, restaurantId) => {
     publicFlag: true,
     tax: "alcohol",
   });
-}
-export const createOrder = async (db, restaurantId, orderId, orderData, func) => {
+};
+export const createOrder = async (
+  db,
+  restaurantId,
+  orderId,
+  orderData,
+  func
+) => {
   const uid = "123";
   await db.doc(`/users/${uid}/system/stripe`).set({});
 
   const options = {};
-  Object.keys(orderData).map(key => {
-    options[key] = Array.isArray(orderData[key]) ? {0: [], 1:[]} : {0: []};
+  Object.keys(orderData).map((key) => {
+    options[key] = Array.isArray(orderData[key]) ? { 0: [], 1: [] } : { 0: [] };
   });
   const menuItems = {};
   // TODO set valid menu adta
-  Object.keys(orderData).map(key => {menuItems[key] = {
-    itemName: "aaa",
-    price: 100,
-  };});
+  Object.keys(orderData).map((key) => {
+    menuItems[key] = {
+      itemName: "aaa",
+      price: 100,
+    };
+  });
   await db.doc(`restaurants/${restaurantId}/orders/${orderId}`).set({
     status: constant.order_status.new_order,
     menuItems,
@@ -62,7 +70,11 @@ export const createOrder = async (db, restaurantId, orderId, orderData, func) =>
     rawOptions: options,
     uid,
   });
-  
+
   // call function
-  await func(db, {restaurantId, orderId}, {auth: { uid, token:{ phone_number: "xxxx"} }});
-}
+  await func(
+    db,
+    { restaurantId, orderId },
+    { auth: { uid, token: { phone_number: "xxxx" } } }
+  );
+};
