@@ -15,7 +15,6 @@ import {
 import { sendMessageToCustomer, notifyNewOrderToRestaurant, notifyCanceledOrderToRestaurant } from '../functions/notify';
 import { Context } from '../models/TestType';
 
-import moment from 'moment-timezone';
 import * as crypto from "crypto";
 
 const multiple = utils.getStripeRegion().multiple; // 100 for USD, 1 for JPY
@@ -86,14 +85,13 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
   try {
     const result = await db.runTransaction(async transaction => {
       const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
-      const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`)
       const stripeRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}/system/stripe`)
 
+      const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`)
       const order = await getOrderData(transaction, orderRef);
       if (order.status !== order_status.validation_ok) {
         throw new functions.https.HttpsError('failed-precondition', 'This order is invalid.')
       }
-
       const totalChargeWithTipAndMultipled = Math.round((order.total + Math.max(0, _tip)) * multiple)
 
       // We expect that there is a customer Id associated with a token
@@ -107,13 +105,10 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
         payment_method_data,
       } as Stripe.PaymentIntentCreateParams
 
-      const paymentIntent = await stripe.paymentIntents.create(request, {
-        idempotencyKey: orderRef.path,
-        stripeAccount
-      })
-
+      const paymentIntent = await stripe.paymentIntents.create(request, { idempotencyKey: orderRef.path, stripeAccount });
       const timePlaced = timeToPickup && new admin.firestore.Timestamp(timeToPickup.seconds, timeToPickup.nanoseconds) || admin.firestore.FieldValue.serverTimestamp()
       await updateOrderTotalDataAndUserLog(db, transaction, customerUid, order.order, restaurantId, customerUid, timePlaced, true);
+
       const updateData = {
         status: order_status.order_placed,
         totalCharge: totalChargeWithTipAndMultipled / multiple,
@@ -132,7 +127,6 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
       transaction.set(stripeRef, {
         paymentIntent
       }, { merge: true });
-
       Object.assign(order, updateData);
       return { success: true, order };
     })
@@ -150,8 +144,8 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
 export const confirm = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const ownerUid = utils.validate_admin_auth(context);
 
-  const { restaurantId, orderId, lng } = data
-  utils.validate_params({ restaurantId, orderId }) // lng is optional
+  const { restaurantId, orderId } = data;
+  utils.validate_params({ restaurantId, orderId });
 
   const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`)
   const stripeRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}/system/stripe`)
@@ -171,7 +165,6 @@ export const confirm = async (db: FirebaseFirestore.Firestore, data: any, contex
       }
       order.id = orderId;
 
-      // order.status !== order_status.cooking_completed // backward compability (99.99% unnecessary)
       if ( order.status !== order_status.order_placed // from 2021-07-17
         && order.status !== order_status.order_accepted) { // obsolete but backward compability
         throw new functions.https.HttpsError('failed-precondition', 'This order is not ready yet.')
@@ -205,16 +198,6 @@ export const confirm = async (db: FirebaseFirestore.Firestore, data: any, contex
       Object.assign(order, updateData);
       return { success: true, order }
     })
-
-    const newOrder = result.order;
-    if (newOrder && newOrder.sendSMS && newOrder.timeEstimated) {
-      const diffDay =  (moment().toDate().getTime() - newOrder.timeEstimated.toDate().getTime()) / 1000 / 3600 / 24;
-      console.log("timeEstimated_diff_days = " + String(diffDay));
-      if (diffDay < 1) {
-        const msgKey = "msg_cooking_completed"
-        await sendMessageToCustomer(db, lng, msgKey, restaurantData.restaurantName, newOrder, restaurantId, orderId, {});
-      }
-    }
 
     return result
   } catch (error) {
@@ -300,7 +283,6 @@ export const cancel = async (db: any, data: any, context: functions.https.Callab
       Object.assign(order, updateData);
       return { success: true, payment: "stripe", byUser: (uid === order.uid), order }
     })
-    console.log(result.order)
     if (isAdmin && result.order.sendSMS) {
       await sendMessageToCustomer(db, lng, 'msg_order_canceled', restaurant.restaurantName, result.order, restaurantId, orderId, {}, true)
     }
