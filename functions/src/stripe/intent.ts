@@ -252,8 +252,6 @@ export const cancel = async (db: any, data: any, context: functions.https.Callab
   const restaurant = await utils.get_restaurant(db, restaurantId)
   const restaurantOwnerUid = restaurant['uid']
 
-  const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
-
   try {
     const result = await db.runTransaction(async transaction => {
 
@@ -284,7 +282,7 @@ export const cancel = async (db: any, data: any, context: functions.https.Callab
           status: order_status.order_canceled,
           uidCanceledBy: uid,
         }, { merge: true })
-        return { success: true, payment: false }
+        return { success: true, payment: false, order }
       }
 
       if (order.payment.stripe !== "pending") {
@@ -292,6 +290,8 @@ export const cancel = async (db: any, data: any, context: functions.https.Callab
       }
       const stripeRecord = await getStripeOrderRecord(transaction, stripeRef);
       const paymentIntentId = stripeRecord.paymentIntent.id;
+
+      const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
 
       // Check the stock status.
       const paymentIntent = await stripe.paymentIntents.cancel(paymentIntentId, {
@@ -316,6 +316,7 @@ export const cancel = async (db: any, data: any, context: functions.https.Callab
       Object.assign(order, updateData);
       return { success: true, payment: "stripe", byUser: (uid === order.uid), order }
     })
+    console.log(result.order)
     const orderName = utils.nameOfOrder(result.order.number);
     if (isAdmin && result.order.sendSMS) {
       await sendMessageToCustomer(db, lng, 'msg_order_canceled', restaurant.restaurantName, orderName, result.order.uid, result.order.phoneNumber, restaurantId, orderId, {}, true)
