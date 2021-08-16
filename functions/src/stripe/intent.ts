@@ -1,19 +1,18 @@
-import * as functions from 'firebase-functions'
+import Stripe from 'stripe'
 import * as admin from 'firebase-admin';
+import * as functions from 'firebase-functions'
+
 import {
   order_status, next_transitions,
   order_status_keys, timeEventMapping
 } from '../common/constant';
-import Stripe from 'stripe'
 import * as utils from '../lib/utils'
 import {
   orderAccounting,
   createNewOrderData,
   updateOrderTotalDataAndUserLog
 } from '../functions/order';
-
 import { sendMessageToCustomer, notifyNewOrderToRestaurant, notifyCanceledOrderToRestaurant } from '../functions/notify';
-
 import { Context } from '../models/TestType';
 
 import moment from 'moment-timezone';
@@ -81,28 +80,24 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
   const { orderId, restaurantId, description, tip, sendSMS, timeToPickup, lng, memo } = data;
   const _tip = Number(tip) || 0;
   utils.validate_params({ orderId, restaurantId }); // lng, tip and sendSMS are optional
-
   const restaurantData = await utils.get_restaurant(db, restaurantId);
   const restaurantOwnerUid = restaurantData['uid']
 
   try {
     const result = await db.runTransaction(async transaction => {
       const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
-
       const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`)
       const stripeRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}/system/stripe`)
 
       const order = await getOrderData(transaction, orderRef);
-      // Check the stock status.
       if (order.status !== order_status.validation_ok) {
-        throw new functions.https.HttpsError('aborted', 'This order is invalid.')
+        throw new functions.https.HttpsError('failed-precondition', 'This order is invalid.')
       }
 
       const totalChargeWithTipAndMultipled = Math.round((order.total + Math.max(0, _tip)) * multiple)
 
       // We expect that there is a customer Id associated with a token
       const payment_method_data = await getPaymentMethodData(db, restaurantOwnerUid, customerUid);
-
       const request = {
         setup_future_usage: 'off_session',
         amount: totalChargeWithTipAndMultipled,
@@ -139,9 +134,7 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
       }, { merge: true });
 
       Object.assign(order, updateData);
-      return {
-        success: true, order
-      }
+      return { success: true, order };
     })
 
     await notifyNewOrderToRestaurant(db, restaurantId, result.order, restaurantData.restaurantName, lng);
@@ -162,14 +155,9 @@ export const confirm = async (db: FirebaseFirestore.Firestore, data: any, contex
 
   const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`)
   const stripeRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}/system/stripe`)
-  const restaurantSnapshot = await orderRef.parent.parent!.get()
-  const restaurantData = restaurantSnapshot.data()
-  if (!restaurantData) {
-    throw new functions.https.HttpsError('invalid-argument', 'Dose not exist a restaurant.')
-  }
+  const restaurantData = await utils.get_restaurant(db, restaurantId);
   const restaurantOwnerUid = restaurantData['uid']
   const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
-
   if (restaurantOwnerUid !== ownerUid) {
     throw new functions.https.HttpsError('permission-denied', 'You do not have permission to confirm this request.')
   }
@@ -183,7 +171,6 @@ export const confirm = async (db: FirebaseFirestore.Firestore, data: any, contex
       }
       order.id = orderId;
 
-      // Check the stock status.
       // order.status !== order_status.cooking_completed // backward compability (99.99% unnecessary)
       if ( order.status !== order_status.order_placed // from 2021-07-17
         && order.status !== order_status.order_accepted) { // obsolete but backward compability
@@ -197,7 +184,6 @@ export const confirm = async (db: FirebaseFirestore.Firestore, data: any, contex
       const stripeRecord = await getStripeOrderRecord(transaction, stripeRef);
       const paymentIntentId = stripeRecord.paymentIntent.id;
 
-      // Check the stock status.
       const paymentIntent = await stripe.paymentIntents.confirm(paymentIntentId, {
         idempotencyKey: order.id,
         stripeAccount
@@ -292,7 +278,6 @@ export const cancel = async (db: any, data: any, context: functions.https.Callab
 
       const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
 
-      // Check the stock status.
       const paymentIntent = await stripe.paymentIntents.cancel(paymentIntentId, {
         idempotencyKey: `${order.id}-cancel`,
         stripeAccount
@@ -357,7 +342,6 @@ export const cancelStripePayment = async (db: FirebaseFirestore.Firestore, data:
       const stripeRecord = await getStripeOrderRecord(transaction, stripeRef);
       const paymentIntentId = stripeRecord.paymentIntent.id;
 
-      // Check the stock status.
       const paymentIntent = await stripe.paymentIntents.cancel(paymentIntentId, {
         idempotencyKey: `${order.id}-cancel`,
         stripeAccount
