@@ -1,4 +1,4 @@
-import * as firebase from 'firebase-admin';
+import * as firebase from "firebase-admin";
 import * as utils from "../lib/utils";
 import moment from "moment-timezone";
 
@@ -26,11 +26,11 @@ export const sendMessageToCustomer = async (
   params: object = {},
   forceSMS: boolean = false
 ) => {
-  const orderNumber = utils.nameOfOrder(orderData.number)
+  const orderNumber = utils.nameOfOrder(orderData.number);
 
   const t = await i18next.init({
     lng: lng || utils.getStripeRegion().langs[0],
-    resources
+    resources,
   });
   const url = `https://${ownPlateConfig.hostName}/r/${restaurantId}/order/${orderId}?openExternalBrowser=1`;
   const message = `${t(
@@ -62,7 +62,7 @@ const createNotifyRestaurantLineMessage = async (
 ) => {
   const t = await i18next.init({
     lng: lng || utils.getStripeRegion().langs[0],
-    resources
+    resources,
   });
   const orderName = utils.nameOfOrder(orderNumber);
   const message = `${t(messageId)} ${orderName} ${restaurantName}`;
@@ -77,7 +77,7 @@ const createNotifyRestaurantMailTitle = async (
 ) => {
   const t = await i18next.init({
     lng: lng || utils.getStripeRegion().langs[0],
-    resources
+    resources,
   });
   const orderName = utils.nameOfOrder(orderNumber);
   const message = `${t(messageId)} ${orderName} ${restaurantName}`;
@@ -98,29 +98,38 @@ export const createNotifyRestaurantMailMessage = async (
 
   const t = await i18next.init({
     lng: lng || utils.getStripeRegion().langs[0],
-    resources
+    resources,
   });
 
   const orderName = utils.nameOfOrder(orderNumber);
   const orders = Object.keys(order.order)
-    .map(menuId => {
+    .map((menuId) => {
       const menu = order.menuItems[menuId];
       const name = menu.itemName;
-      return Object.keys(order.order[menuId]).map((key) => {
-        const count = order.order[menuId][key];
-        const messages: string[] = [];
-        messages.push(`★ ${name} × ${count}`);
+      return Object.keys(order.order[menuId])
+        .map((key) => {
+          const count = order.order[menuId][key];
+          const messages: string[] = [];
+          messages.push(`★ ${name} × ${count}`);
 
-        try {
-          if (order.options && order.options[menuId] && order.options[menuId][key] && order.options[menuId][key].length > 0) {
-            messages.push(t("option") + ": " + order.options[menuId][key].join("/"))
+          try {
+            if (
+              order.options &&
+              order.options[menuId] &&
+              order.options[menuId][key] &&
+              order.options[menuId][key].length > 0
+            ) {
+              messages.push(
+                t("option") + ": " + order.options[menuId][key].join("/")
+              );
+            }
+          } catch (e) {
+            console.log(e);
           }
-        } catch (e) {
-          console.log(e);
-        }
 
-        return messages.join("\n");
-      }).join("\n\n");
+          return messages.join("\n");
+        })
+        .join("\n\n");
     })
     .join("\n\n");
   const data = {
@@ -129,7 +138,7 @@ export const createNotifyRestaurantMailMessage = async (
     orders,
     totalCharge: order.totalCharge,
     payment: t(!!order.payment ? "card_payment" : "payment_in_store"),
-    url
+    url,
   };
   const replacedTemp = Object.keys(data).reduce((tmp, key) => {
     const regex = new RegExp("\\${" + key + "}", "g");
@@ -146,7 +155,7 @@ const notifyRestaurantToLineUser = async (
   lineUsers: any[]
 ) => {
   const results = await Promise.all(
-    lineUsers.map(async doc => {
+    lineUsers.map(async (doc) => {
       const lineUser = doc.data();
       if (lineUser.notify) {
         await line.sendMessageDirect(
@@ -221,7 +230,7 @@ export const notifyRestaurant = async (
         orderId,
         messageId,
         results,
-        updatedAt: firebase.firestore.Timestamp.now()
+        updatedAt: firebase.firestore.Timestamp.now(),
       });
   }
 
@@ -242,7 +251,7 @@ export const notifyRestaurant = async (
     sound: true,
     path: `/admin/restaurants/${restaurantId}`,
     updatedAt: firebase.firestore.Timestamp.now(),
-    url
+    url,
   });
 
   // phone notify.
@@ -256,7 +265,7 @@ export const notifyRestaurant = async (
           date: datestr,
           orderId,
           phoneNumber: restaurant.phoneNumber,
-          updatedAt: firebase.firestore.Timestamp.now()
+          updatedAt: firebase.firestore.Timestamp.now(),
         });
     }
   }

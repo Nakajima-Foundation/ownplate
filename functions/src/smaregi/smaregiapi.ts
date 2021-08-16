@@ -4,7 +4,7 @@ import * as apiUtils from "./apiUtils";
 class SmaregiApi {
   stacks: string[];
   scopes: string;
-  access_token: string |null;
+  access_token: string | null;
   contractId: string;
   clientId: string;
   clientSecret: string;
@@ -20,21 +20,21 @@ class SmaregiApi {
     apiUtils.updateAuthHost(config.authHostName || "id.smaregi.dev");
   }
   initApi(name) {
-    this.stacks = [name]
-    return this
+    this.stacks = [name];
+    return this;
   }
   stackParam(params) {
-    this.stacks = this.stacks.concat(params)
+    this.stacks = this.stacks.concat(params);
   }
 
   // api base
   coupons() {
     this.initApi("coupons");
-    return this
+    return this;
   }
   stores() {
     this.initApi("stores");
-    return this
+    return this;
   }
   products() {
     this.initApi("products");
@@ -63,33 +63,58 @@ class SmaregiApi {
   }
   // api calld
   get() {
-    return this.stacks.join("/")
+    return this.stacks.join("/");
   }
   async list(params: any = {}) {
-    const path =  this.stacks.join("/")
-    const json = await apiUtils.get_func(this.contractId, path, this.access_token, params);
+    const path = this.stacks.join("/");
+    const json = await apiUtils.get_func(
+      this.contractId,
+      path,
+      this.access_token,
+      params
+    );
     return json;
   }
   async create(data) {
-    const path =  this.stacks.join("/")
-    const json = await apiUtils.post_func(this.contractId, path, this.access_token, data);
-    return json
+    const path = this.stacks.join("/");
+    const json = await apiUtils.post_func(
+      this.contractId,
+      path,
+      this.access_token,
+      data
+    );
+    return json;
   }
   async update(data) {
-    const path =  this.stacks.join("/")
-    const json = await apiUtils.patch_func(this.contractId, path, this.access_token, data);
-    return json
+    const path = this.stacks.join("/");
+    const json = await apiUtils.patch_func(
+      this.contractId,
+      path,
+      this.access_token,
+      data
+    );
+    return json;
   }
   async delete(data = {}) {
-    const path =  this.stacks.join("/")
-    const json = await apiUtils.delete_func(this.contractId, path, this.access_token, data);
-    return json
+    const path = this.stacks.join("/");
+    const json = await apiUtils.delete_func(
+      this.contractId,
+      path,
+      this.access_token,
+      data
+    );
+    return json;
   }
   setAccessToken(token: string) {
     this.access_token = token;
   }
   async auth() {
-    const body = await apiUtils.authentication(this.clientId, this.clientSecret, this.contractId, this.scopes);
+    const body = await apiUtils.authentication(
+      this.clientId,
+      this.clientSecret,
+      this.contractId,
+      this.scopes
+    );
     this.access_token = body.access_token;
   }
 }

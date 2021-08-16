@@ -18,7 +18,7 @@ export const sendMail = async (to, title, body) => {
     to,
     text: body,
     // html: html,
-    subject: title
+    subject: title,
   };
   if (aws_key && aws_secret) {
     const smtpTransporter = nodemailer.createTransport({
@@ -27,9 +27,9 @@ export const sendMail = async (to, title, body) => {
       secure: true,
       auth: {
         user: aws_key,
-        pass: aws_secret
+        pass: aws_secret,
       },
-      debug: true
+      debug: true,
     });
     return await smtpTransporter.sendMail(mailOptions);
   } else {
