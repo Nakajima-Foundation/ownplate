@@ -5,11 +5,7 @@ import * as Sentry from "@sentry/node";
 
 import exportIfNeeded from "./lib/exportifneeded";
 
-const senty_dsn =
-  (functions.config() &&
-    functions.config().senty &&
-    functions.config().senty.dsn) ||
-  process.env.SENTY_DSN;
+const senty_dsn = (functions.config() && functions.config().senty && functions.config().senty.dsn) || process.env.SENTY_DSN;
 Sentry.init({ dsn: senty_dsn });
 
 if (!admin.apps.length) {
@@ -42,11 +38,7 @@ exportIfNeeded("stripeCreateIntent", "stripe/stripeCreateIntent", exports);
 exportIfNeeded("stripeConfirmIntent", "stripe/stripeConfirmIntent", exports);
 exportIfNeeded("stripeCancelIntent", "stripe/stripeCancelIntent", exports);
 
-exportIfNeeded(
-  "stripePaymentCancelIntent",
-  "stripe/stripePaymentCancelIntent",
-  exports
-);
+exportIfNeeded("stripePaymentCancelIntent", "stripe/stripePaymentCancelIntent", exports);
 
 exportIfNeeded("stripeUpdateCustomer", "stripe/stripeUpdateCustomer", exports);
 exportIfNeeded("stripeDeleteCard", "stripe/stripeDeleteCard", exports);

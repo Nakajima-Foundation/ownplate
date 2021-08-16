@@ -1,12 +1,7 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 import * as utils from "../lib/utils";
-import {
-  order_status,
-  possible_transitions,
-  order_status_keys,
-  timeEventMapping,
-} from "../common/constant";
+import { order_status, possible_transitions, order_status_keys, timeEventMapping } from "../common/constant";
 import { createCustomer } from "../stripe/customer";
 import moment from "moment-timezone";
 
@@ -14,21 +9,8 @@ import { sendMessageToCustomer, notifyNewOrderToRestaurant } from "./notify";
 
 import { Context } from "../models/TestType";
 
-export const updateOrderTotalDataAndUserLog = async (
-  db,
-  transaction,
-  customerUid,
-  order,
-  restaurantId,
-  ownerUid,
-  timePlaced,
-  positive
-) => {
-  const timezone =
-    (functions.config() &&
-      functions.config().order &&
-      functions.config().order.timezone) ||
-    "Asia/Tokyo";
+export const updateOrderTotalDataAndUserLog = async (db, transaction, customerUid, order, restaurantId, ownerUid, timePlaced, positive) => {
+  const timezone = (functions.config() && functions.config().order && functions.config().order.timezone) || "Asia/Tokyo";
 
   const menuIds = Object.keys(order);
   const date = moment(timePlaced.toDate()).tz(timezone).format("YYYYMMDD");
@@ -41,9 +23,7 @@ export const updateOrderTotalDataAndUserLog = async (
   const nums: { [key: string]: number } = {};
   await Promise.all(
     menuIds.map(async (menuId) => {
-      const numArray = Array.isArray(order[menuId])
-        ? order[menuId]
-        : [order[menuId]];
+      const numArray = Array.isArray(order[menuId]) ? order[menuId] : [order[menuId]];
       nums[menuId] = numArray.reduce((sum, current) => {
         return sum + current;
       }, 0);
@@ -106,23 +86,13 @@ export const updateOrderTotalDataAndUserLog = async (
 
 // This function is called by users to place orders without paying
 // export const place = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
-export const place = async (
-  db,
-  data: any,
-  context: functions.https.CallableContext | Context
-) => {
+export const place = async (db, data: any, context: functions.https.CallableContext | Context) => {
   const customerUid = utils.validate_auth(context);
   const { restaurantId, orderId, tip, sendSMS, timeToPickup, lng, memo } = data;
   const _tip = Number(tip) || 0;
   utils.validate_params({ restaurantId, orderId }); // tip, sendSMS and lng are optinoal
 
-  const timePlaced =
-    (timeToPickup &&
-      new admin.firestore.Timestamp(
-        timeToPickup.seconds,
-        timeToPickup.nanoseconds
-      )) ||
-    admin.firestore.FieldValue.serverTimestamp();
+  const timePlaced = (timeToPickup && new admin.firestore.Timestamp(timeToPickup.seconds, timeToPickup.nanoseconds)) || admin.firestore.FieldValue.serverTimestamp();
   try {
     const restaurantData = await utils.get_restaurant(db, restaurantId);
     const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`);
@@ -130,38 +100,20 @@ export const place = async (
     const result = await db.runTransaction(async (transaction) => {
       const order = (await transaction.get(orderRef)).data();
       if (!order) {
-        throw new functions.https.HttpsError(
-          "invalid-argument",
-          "This order does not exist."
-        );
+        throw new functions.https.HttpsError("invalid-argument", "This order does not exist.");
       }
       order.id = orderId;
       if (customerUid !== order.uid) {
-        throw new functions.https.HttpsError(
-          "permission-denied",
-          "The user is not the owner of this order."
-        );
+        throw new functions.https.HttpsError("permission-denied", "The user is not the owner of this order.");
       }
       if (order.status !== order_status.validation_ok) {
-        throw new functions.https.HttpsError(
-          "failed-precondition",
-          "The order has been already placed or canceled"
-        );
+        throw new functions.https.HttpsError("failed-precondition", "The order has been already placed or canceled");
       }
       const multiple = utils.getStripeRegion().multiple; // 100 for USD, 1 for JPY
       const roundedTip = Math.round(_tip * multiple) / multiple;
 
       // transaction for stock orderTotal
-      await updateOrderTotalDataAndUserLog(
-        db,
-        transaction,
-        customerUid,
-        order.order,
-        restaurantId,
-        restaurantData.uid,
-        timePlaced,
-        true
-      );
+      await updateOrderTotalDataAndUserLog(db, transaction, customerUid, order.order, restaurantId, restaurantData.uid, timePlaced, true);
 
       // customerUid
       transaction.update(orderRef, {
@@ -178,13 +130,7 @@ export const place = async (
       return { success: true, order };
     });
 
-    await notifyNewOrderToRestaurant(
-      db,
-      restaurantId,
-      result.order,
-      restaurantData.restaurantName,
-      lng
-    );
+    await notifyNewOrderToRestaurant(db, restaurantId, result.order, restaurantData.restaurantName, lng);
 
     return result;
   } catch (error) {
@@ -193,11 +139,7 @@ export const place = async (
 };
 
 // This function is called by admins (restaurant operators) to update the status of order
-export const update = async (
-  db: FirebaseFirestore.Firestore,
-  data: any,
-  context: functions.https.CallableContext
-) => {
+export const update = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const ownerUid = utils.validate_admin_auth(context);
   const { restaurantId, orderId, status, lng, timezone, timeEstimated } = data;
   utils.validate_params({ restaurantId, orderId, status, timezone }); // lng, timeEstimated is optional
@@ -206,10 +148,7 @@ export const update = async (
     const restaurantDoc = await db.doc(`restaurants/${restaurantId}`).get();
     const restaurant = restaurantDoc.data() || {};
     if (restaurant.uid !== ownerUid) {
-      throw new functions.https.HttpsError(
-        "permission-denied",
-        "The user does not have an authority to perform this operation."
-      );
+      throw new functions.https.HttpsError("permission-denied", "The user does not have an authority to perform this operation.");
     }
 
     const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`);
@@ -218,46 +157,26 @@ export const update = async (
     const result = await db.runTransaction(async (transaction) => {
       const order = (await transaction.get(orderRef)).data();
       if (!order) {
-        throw new functions.https.HttpsError(
-          "invalid-argument",
-          "This order does not exist."
-        );
+        throw new functions.https.HttpsError("invalid-argument", "This order does not exist.");
       }
       order.id = orderId;
 
       const possible_transition = possible_transitions[order.status];
       if (!possible_transition[status]) {
-        throw new functions.https.HttpsError(
-          "failed-precondition",
-          "It is not possible to change state from the current state.",
-          order.status
-        );
+        throw new functions.https.HttpsError("failed-precondition", "It is not possible to change state from the current state.", order.status);
       }
 
-      if (
-        status === order_status.order_canceled &&
-        order.payment &&
-        order.payment.stripe
-      ) {
-        throw new functions.https.HttpsError(
-          "permission-denied",
-          "Paid order can not be cancele like this",
-          status
-        );
+      if (status === order_status.order_canceled && order.payment && order.payment.stripe) {
+        throw new functions.https.HttpsError("permission-denied", "Paid order can not be cancele like this", status);
       }
       if (
-        (order.status === order_status.ready_to_pickup ||
-          order.status === order_status.order_accepted) &&
+        (order.status === order_status.ready_to_pickup || order.status === order_status.order_accepted) &&
         order.payment &&
         order.payment.stripe &&
         order.payment &&
         order.payment.stripe === "pending"
       ) {
-        throw new functions.https.HttpsError(
-          "permission-denied",
-          "Paid order can not be change like this",
-          status
-        );
+        throw new functions.https.HttpsError("permission-denied", "Paid order can not be change like this", status);
       }
 
       if (status === order_status.order_accepted) {
@@ -265,12 +184,7 @@ export const update = async (
       }
       if (status === order_status.ready_to_pickup) {
         if (order && order.timeEstimated) {
-          const diffDay =
-            (moment().toDate().getTime() -
-              order.timeEstimated.toDate().getTime()) /
-            1000 /
-            3600 /
-            24;
+          const diffDay = (moment().toDate().getTime() - order.timeEstimated.toDate().getTime()) / 1000 / 3600 / 24;
           console.log("timeEstimated_diff_days = " + String(diffDay));
           if (diffDay < 1) {
             msgKey = "msg_cooking_completed";
@@ -287,12 +201,7 @@ export const update = async (
         [updateTimeKey]: admin.firestore.Timestamp.now(),
       };
       if (status === order_status.order_accepted) {
-        props.timeEstimated = timeEstimated
-          ? new admin.firestore.Timestamp(
-              timeEstimated.seconds,
-              timeEstimated.nanoseconds
-            )
-          : order.timePlaced;
+        props.timeEstimated = timeEstimated ? new admin.firestore.Timestamp(timeEstimated.seconds, timeEstimated.nanoseconds) : order.timePlaced;
         order.timeEstimated = props.timeEstimated;
       }
       await transaction.update(orderRef, props);
@@ -303,22 +212,10 @@ export const update = async (
     if (orderData.sendSMS && msgKey) {
       const params = {};
       if (status === order_status.order_accepted) {
-        params["time"] = moment(orderData.timeEstimated.toDate())
-          .tz(timezone)
-          .locale("ja")
-          .format("LLL");
+        params["time"] = moment(orderData.timeEstimated.toDate()).tz(timezone).locale("ja").format("LLL");
         console.log("timeEstimated", params["time"]);
       }
-      await sendMessageToCustomer(
-        db,
-        lng,
-        msgKey,
-        restaurant.restaurantName,
-        orderData,
-        restaurantId,
-        orderId,
-        params
-      );
+      await sendMessageToCustomer(db, lng, msgKey, restaurant.restaurantName, orderData, restaurantId, orderId, params);
     }
     return result;
   } catch (error) {
@@ -332,26 +229,16 @@ const getOptionPrice = (selectedOptionsRaw, menu, multiple) => {
     const opt = menu.itemOptionCheckbox[key].split(",");
     if (opt.length === 1) {
       if (selectedOpt) {
-        return (
-          tmpPrice + Math.round(utils.optionPrice(opt[0]) * multiple) / multiple
-        );
+        return tmpPrice + Math.round(utils.optionPrice(opt[0]) * multiple) / multiple;
       }
     } else {
-      return (
-        tmpPrice +
-        Math.round(utils.optionPrice(opt[selectedOpt]) * multiple) / multiple
-      );
+      return tmpPrice + Math.round(utils.optionPrice(opt[selectedOpt]) * multiple) / multiple;
     }
     return tmpPrice;
   }, 0);
 };
 
-export const createNewOrderData = async (
-  restaurantRef,
-  orderRef,
-  orderData,
-  multiple
-) => {
+export const createNewOrderData = async (restaurantRef, orderRef, orderData, multiple) => {
   const menuIds = Object.keys(orderData.order);
   const menuObj = await utils.getMenuObj(restaurantRef, menuIds);
 
@@ -377,9 +264,7 @@ export const createNewOrderData = async (
     const prices: number[] = [];
     const newOrder: number[] = [];
 
-    const numArray = Array.isArray(orderData.order[menuId])
-      ? orderData.order[menuId]
-      : [orderData.order[menuId]];
+    const numArray = Array.isArray(orderData.order[menuId]) ? orderData.order[menuId] : [orderData.order[menuId]];
     numArray.map((num, orderKey) => {
       if (!Number.isInteger(num)) {
         throw new Error("invalid number: not integer");
@@ -390,9 +275,7 @@ export const createNewOrderData = async (
       if (num === 0) {
         return;
       }
-      const price =
-        menu.price +
-        getOptionPrice(orderData.rawOptions[menuId][orderKey], menu, multiple);
+      const price = menu.price + getOptionPrice(orderData.rawOptions[menuId][orderKey], menu, multiple);
       newOrder.push(num);
       prices.push(price * num);
     });
@@ -427,12 +310,7 @@ export const createNewOrderData = async (
   };
 };
 
-export const orderAccounting = (
-  restaurantData,
-  food_sub_total,
-  alcohol_sub_total,
-  multiple
-) => {
+export const orderAccounting = (restaurantData, food_sub_total, alcohol_sub_total, multiple) => {
   // tax rate
   const inclusiveTax = restaurantData.inclusiveTax || false;
   const alcoholTax = restaurantData.alcoholTax || 0;
@@ -444,13 +322,8 @@ export const orderAccounting = (
     throw new Error("invalid order: total 0 ");
   }
   if (inclusiveTax) {
-    const food_tax =
-      Math.round(food_sub_total * (1 - 1 / (1 + foodTax / 100)) * multiple) /
-      multiple;
-    const alcohol_tax =
-      Math.round(
-        alcohol_sub_total * (1 - 1 / (1 + alcoholTax / 100)) * multiple
-      ) / multiple;
+    const food_tax = Math.round(food_sub_total * (1 - 1 / (1 + foodTax / 100)) * multiple) / multiple;
+    const alcohol_tax = Math.round(alcohol_sub_total * (1 - 1 / (1 + alcoholTax / 100)) * multiple) / multiple;
     const tax = food_tax + alcohol_tax;
     return {
       tax,
@@ -463,11 +336,8 @@ export const orderAccounting = (
       alcohol_tax,
     };
   } else {
-    const food_tax =
-      Math.round(((food_sub_total * foodTax) / 100) * multiple) / multiple;
-    const alcohol_tax =
-      Math.round(((alcohol_sub_total * alcoholTax) / 100) * multiple) /
-      multiple;
+    const food_tax = Math.round(((food_sub_total * foodTax) / 100) * multiple) / multiple;
+    const alcohol_tax = Math.round(((alcohol_sub_total * alcoholTax) / 100) * multiple) / multiple;
     const tax = food_tax + alcohol_tax;
     const total = sub_total + tax;
     return {
@@ -507,36 +377,18 @@ export const wasOrderCreated = async (db, data: any, context) => {
     const order = await orderRef.get();
 
     if (!order) {
-      throw new functions.https.HttpsError(
-        "invalid-argument",
-        "This order does not exist."
-      );
+      throw new functions.https.HttpsError("invalid-argument", "This order does not exist.");
     }
     const orderData = order.data();
 
-    if (
-      !orderData ||
-      !orderData.status ||
-      orderData.status !== order_status.new_order ||
-      !orderData.uid ||
-      orderData.uid !== customerUid
-    ) {
+    if (!orderData || !orderData.status || orderData.status !== order_status.new_order || !orderData.uid || orderData.uid !== customerUid) {
       console.log("invalid order:" + String(orderId));
-      throw new functions.https.HttpsError(
-        "invalid-argument",
-        "This order does not exist."
-      );
+      throw new functions.https.HttpsError("invalid-argument", "This order does not exist.");
     }
 
     const multiple = utils.getStripeRegion().multiple; //100 for USD, 1 for JPY
 
-    const {
-      newOrderData,
-      newItems,
-      newPrices,
-      food_sub_total,
-      alcohol_sub_total,
-    } = await createNewOrderData(restaurantRef, orderRef, orderData, multiple);
+    const { newOrderData, newItems, newPrices, food_sub_total, alcohol_sub_total } = await createNewOrderData(restaurantRef, orderRef, orderData, multiple);
 
     // Atomically increment the orderCount of the restaurant
     let orderCount = 0;
@@ -551,12 +403,7 @@ export const wasOrderCreated = async (db, data: any, context) => {
       }
     });
 
-    const accountingResult = orderAccounting(
-      restaurantData,
-      food_sub_total,
-      alcohol_sub_total,
-      multiple
-    );
+    const accountingResult = orderAccounting(restaurantData, food_sub_total, alcohol_sub_total, multiple);
 
     await createCustomer(db, customerUid, context.auth.token.phone_number);
 

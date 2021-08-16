@@ -2,11 +2,7 @@ import * as functions from "firebase-functions";
 import * as utils from "../lib/utils";
 import * as crypto from "crypto";
 
-export const process = async (
-  db: FirebaseFirestore.Firestore,
-  data: any,
-  context: functions.https.CallableContext
-) => {
+export const process = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
   const { eventId } = data;
   utils.validate_params({ eventId });
@@ -20,31 +16,16 @@ export const process = async (
 
     const record = (await refRecord.get()).data();
     if (!record) {
-      throw new functions.https.HttpsError(
-        "invalid-argument",
-        "No document for the specified eventId."
-      );
+      throw new functions.https.HttpsError("invalid-argument", "No document for the specified eventId.");
     }
-    const snapshot = await db
-      .collectionGroup("trace")
-      .limit(1)
-      .where("traceId", "==", record.traceId)
-      .get();
+    const snapshot = await db.collectionGroup("trace").limit(1).where("traceId", "==", record.traceId).get();
     if (snapshot.empty) {
-      throw new functions.https.HttpsError(
-        "invalid-argument",
-        "No document for the specified traceId."
-      );
+      throw new functions.https.HttpsError("invalid-argument", "No document for the specified traceId.");
     }
     const trace = snapshot.docs[0].data();
-    const restaurant = (
-      await db.doc(`restaurants/${trace.restaurantId}`).get()
-    ).data();
+    const restaurant = (await db.doc(`restaurants/${trace.restaurantId}`).get()).data();
     if (!restaurant) {
-      throw new functions.https.HttpsError(
-        "invalid-argument",
-        "No document for the specified restaurantId."
-      );
+      throw new functions.https.HttpsError("invalid-argument", "No document for the specified restaurantId.");
     }
 
     await refRecord.update({
@@ -56,19 +37,12 @@ export const process = async (
     // Enter-Leave Pairing (leaving others as unprocessed)
     if (trace.event === "leave") {
       const refRecords = db.collection(`hash/${hash}/records/`);
-      const records = (
-        await refRecords.orderBy("timeCreated", "desc").limit(2).get()
-      ).docs;
+      const records = (await refRecords.orderBy("timeCreated", "desc").limit(2).get()).docs;
       if (records.length === 2) {
         const lastDoc = records[1];
         const lastRecord = lastDoc.data();
-        const duration =
-          record.timeCreated.seconds - lastRecord.timeCreated.seconds;
-        if (
-          lastRecord.restaurantId === trace.restaurantId &&
-          lastRecord.event === "enter" &&
-          duration < 12 * 3600
-        ) {
+        const duration = record.timeCreated.seconds - lastRecord.timeCreated.seconds;
+        if (lastRecord.restaurantId === trace.restaurantId && lastRecord.event === "enter" && duration < 12 * 3600) {
           processed = true;
           await db.runTransaction(async (tx) => {
             tx.update(lastDoc.ref, {

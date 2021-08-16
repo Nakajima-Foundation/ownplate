@@ -44,9 +44,7 @@ describe("Order function", () => {
       order.wasOrderCreated
     );
 
-    const updatedOrder = await adminDB
-      .doc(`restaurants/${restaurantId}/orders/${orderId}`)
-      .get();
+    const updatedOrder = await adminDB.doc(`restaurants/${restaurantId}/orders/${orderId}`).get();
     const updatedOrderdata = updatedOrder.data() || {};
 
     // console.log(updatedOrderdata);
@@ -58,9 +56,7 @@ describe("Order function", () => {
     updatedOrderdata.total.should.equal(1050);
 
     // check order counter on restaurant
-    const restaurantDoc = await adminDB
-      .doc(`restaurants/${restaurantId}`)
-      .get();
+    const restaurantDoc = await adminDB.doc(`restaurants/${restaurantId}`).get();
     const data = restaurantDoc.data();
     if (data) {
       data.orderCount.should.equal(11);
@@ -77,19 +73,8 @@ describe("Order function", () => {
     const makeOrder = async (data) => {
       const orderId = "hoge" + String(index);
 
-      await test_helper.createOrder(
-        adminDB,
-        restaurantId,
-        orderId,
-        data,
-        order.wasOrderCreated
-      );
-      const newOrderData =
-        (
-          await adminDB
-            .doc(`restaurants/${restaurantId}/orders/${orderId}`)
-            .get()
-        ).data() || {};
+      await test_helper.createOrder(adminDB, restaurantId, orderId, data, order.wasOrderCreated);
+      const newOrderData = (await adminDB.doc(`restaurants/${restaurantId}/orders/${orderId}`).get()).data() || {};
       newOrderData["orderId"] = orderId;
       index++;
       return newOrderData;
@@ -176,19 +161,8 @@ describe("Order function", () => {
     const makeOrder = async (data) => {
       const orderId = "hoge" + String(index);
 
-      await test_helper.createOrder(
-        adminDB,
-        restaurantId,
-        orderId,
-        data,
-        order.wasOrderCreated
-      );
-      const newOrderData =
-        (
-          await adminDB
-            .doc(`restaurants/${restaurantId}/orders/${orderId}`)
-            .get()
-        ).data() || {};
+      await test_helper.createOrder(adminDB, restaurantId, orderId, data, order.wasOrderCreated);
+      const newOrderData = (await adminDB.doc(`restaurants/${restaurantId}/orders/${orderId}`).get()).data() || {};
       newOrderData["orderId"] = orderId;
       index++;
       return newOrderData;
@@ -278,11 +252,7 @@ describe("Order function", () => {
     await checkOrderTotal(4);
     await checkUserLog(3, 0);
 
-    await intent.cancel(
-      adminDB,
-      { restaurantId, orderId: newOrderRes14.orderId, lng: "ja" },
-      context
-    );
+    await intent.cancel(adminDB, { restaurantId, orderId: newOrderRes14.orderId, lng: "ja" }, context);
     await checkUserLog(3, 1);
   });
 });

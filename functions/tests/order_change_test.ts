@@ -27,19 +27,8 @@ describe("Order function", () => {
     const makeOrder = async (data) => {
       const orderId = "hoge" + String(index);
 
-      await test_helper.createOrder(
-        adminDB,
-        restaurantId,
-        orderId,
-        data,
-        order.wasOrderCreated
-      );
-      const newOrderData =
-        (
-          await adminDB
-            .doc(`restaurants/${restaurantId}/orders/${orderId}`)
-            .get()
-        ).data() || {};
+      await test_helper.createOrder(adminDB, restaurantId, orderId, data, order.wasOrderCreated);
+      const newOrderData = (await adminDB.doc(`restaurants/${restaurantId}/orders/${orderId}`).get()).data() || {};
       newOrderData["orderId"] = orderId;
       index++;
       return newOrderData;

@@ -32,12 +32,7 @@ export const generateBody = (obj) => {
     .join("&");
 };
 
-export const authentication = async (
-  clientId,
-  clientSecret,
-  contractId,
-  scopes
-) => {
+export const authentication = async (clientId, clientSecret, contractId, scopes) => {
   const buff = Buffer.from([clientId, clientSecret].join(":"));
   const base64str = buff.toString("base64");
 

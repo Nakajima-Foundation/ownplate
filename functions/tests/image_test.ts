@@ -17,55 +17,35 @@ describe("Image function", () => {
     const uid = "123";
     // cover
     const okPath11 = `images/restaurants/0LHzyxxnKZ0eZs3bCaEx/${uid}/cover.jpg`;
-    imageUtil
-      .validImagePath(okPath11, constant.matchImagePaths)
-      .should.equal(true);
+    imageUtil.validImagePath(okPath11, constant.matchImagePaths).should.equal(true);
 
     const ngPath11 = `images/restaurants/0LHzyxxnKZ0eZs3bCaEx/${uid}/cover1.jpg`;
-    imageUtil
-      .validImagePath(ngPath11, constant.matchImagePaths)
-      .should.equal(false);
+    imageUtil.validImagePath(ngPath11, constant.matchImagePaths).should.equal(false);
 
     // profile
     const okPath12 = `images/restaurants/0LHzyxxnKZ0eZs3bCaEx/${uid}/profile.jpg`;
-    imageUtil
-      .validImagePath(okPath12, constant.matchImagePaths)
-      .should.equal(true);
+    imageUtil.validImagePath(okPath12, constant.matchImagePaths).should.equal(true);
 
     const ngPath12 = `images/restaurants/0LHzyxxnKZ0eZs3bCaEx/${uid}/profile1.jpg`;
-    imageUtil
-      .validImagePath(ngPath12, constant.matchImagePaths)
-      .should.equal(false);
+    imageUtil.validImagePath(ngPath12, constant.matchImagePaths).should.equal(false);
 
     const okPath13 = `images/restaurants/0LHzyxxnKZ0eZs3bCaEx/menus/6cDoe8lyrn898YtwiQfg/${uid}/item.jpg`;
-    imageUtil
-      .validImagePath(okPath13, constant.matchImagePaths)
-      .should.equal(true);
+    imageUtil.validImagePath(okPath13, constant.matchImagePaths).should.equal(true);
 
     const ngPath13 = `images/restaurants/0LHzyxxnKZ0eZs3bCaEx/menus/6cDoe8lyrn898YtwiQfg/${uid}/item2.jpg`;
-    imageUtil
-      .validImagePath(ngPath13, constant.matchImagePaths)
-      .should.equal(false);
+    imageUtil.validImagePath(ngPath13, constant.matchImagePaths).should.equal(false);
   });
 
   it("should test getStorePath", function () {
     const uid = "123";
     const path1 = `images/restaurants/0LHzyxxnKZ0eZs3bCaEx/${uid}/cover.jpg`;
-    imageUtil
-      .getFirestorePath(path1)
-      .should.equal(`restaurants/0LHzyxxnKZ0eZs3bCaEx`);
+    imageUtil.getFirestorePath(path1).should.equal(`restaurants/0LHzyxxnKZ0eZs3bCaEx`);
 
     const path2 = `images/restaurants/0LHzyxxnKZ0eZs3bCaEx/${uid}/profile.jpg`;
-    imageUtil
-      .getFirestorePath(path2)
-      .should.equal(`restaurants/0LHzyxxnKZ0eZs3bCaEx`);
+    imageUtil.getFirestorePath(path2).should.equal(`restaurants/0LHzyxxnKZ0eZs3bCaEx`);
 
     const path3 = `images/restaurants/0LHzyxxnKZ0eZs3bCaEx/menus/6cDoe8lyrn898YtwiQfg/${uid}/item.jpg`;
-    imageUtil
-      .getFirestorePath(path3)
-      .should.equal(
-        `restaurants/0LHzyxxnKZ0eZs3bCaEx/menus/6cDoe8lyrn898YtwiQfg`
-      );
+    imageUtil.getFirestorePath(path3).should.equal(`restaurants/0LHzyxxnKZ0eZs3bCaEx/menus/6cDoe8lyrn898YtwiQfg`);
 
     const ngPath1 = `images/restaurants/0LHzyxxnKZ0eZs3bCaEx/${uid}/cover1.jpg`;
     imageUtil.getFirestorePath(ngPath1).should.equal("");
@@ -89,24 +69,12 @@ describe("Image function", () => {
   it("should test getToFileFullPath", function () {
     const uid = "123";
     const path1 = `images/restaurants/0LHzyxxnKZ0eZs3bCaEx/${uid}/cover.jpg`;
-    imageUtil
-      .getToFileFullPath(path1, 100)
-      .should.equal(
-        "images/restaurants/0LHzyxxnKZ0eZs3bCaEx/123/resize/100/cover.jpg"
-      );
+    imageUtil.getToFileFullPath(path1, 100).should.equal("images/restaurants/0LHzyxxnKZ0eZs3bCaEx/123/resize/100/cover.jpg");
 
     const path2 = `images/restaurants/0LHzyxxnKZ0eZs3bCaEx/${uid}/profile.jpg`;
-    imageUtil
-      .getToFileFullPath(path2, 200)
-      .should.equal(
-        "images/restaurants/0LHzyxxnKZ0eZs3bCaEx/123/resize/200/profile.jpg"
-      );
+    imageUtil.getToFileFullPath(path2, 200).should.equal("images/restaurants/0LHzyxxnKZ0eZs3bCaEx/123/resize/200/profile.jpg");
 
     const path3 = `images/restaurants/0LHzyxxnKZ0eZs3bCaEx/menus/6cDoe8lyrn898YtwiQfg/${uid}/item.jpg`;
-    imageUtil
-      .getToFileFullPath(path3, 300)
-      .should.equal(
-        "images/restaurants/0LHzyxxnKZ0eZs3bCaEx/menus/6cDoe8lyrn898YtwiQfg/123/resize/300/item.jpg"
-      );
+    imageUtil.getToFileFullPath(path3, 300).should.equal("images/restaurants/0LHzyxxnKZ0eZs3bCaEx/menus/6cDoe8lyrn898YtwiQfg/123/resize/300/item.jpg");
   });
 });

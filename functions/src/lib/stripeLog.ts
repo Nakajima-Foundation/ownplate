@@ -4,10 +4,7 @@ import * as utils from "../lib/utils";
 const accountIdToUIDs = async (db, accountId) => {
   if (accountId) {
     // current
-    const pubSnapshot = await db
-      .collectionGroup("public")
-      .where("stripe", "==", accountId)
-      .get();
+    const pubSnapshot = await db.collectionGroup("public").where("stripe", "==", accountId).get();
     if (!pubSnapshot.empty) {
       return pubSnapshot.docs.map((doc) => {
         const uid = doc.ref.parent.parent.id;
@@ -15,10 +12,7 @@ const accountIdToUIDs = async (db, accountId) => {
       });
     }
     // ---- Backward compatibility
-    const pubSnapshot2 = await db
-      .collectionGroup("public")
-      .where("stripeAccount", "==", accountId)
-      .get();
+    const pubSnapshot2 = await db.collectionGroup("public").where("stripeAccount", "==", accountId).get();
     if (!pubSnapshot2.empty) {
       return pubSnapshot2.docs.map((doc) => {
         const uid = doc.ref.parent.parent.id;
@@ -66,42 +60,24 @@ export const capability_updated = async (db, event) => {
         console.error("capability_updated: no capabilities", capabilities);
       }
     } catch (error) {
-      console.error(
-        "capability_updated: failed to retrieve account info",
-        account
-      );
+      console.error("capability_updated: failed to retrieve account info", account);
     }
   }
 
   // log
-  return await callbackAdminLog(
-    db,
-    uids,
-    stripeActions.capability_updated,
-    event
-  );
+  return await callbackAdminLog(db, uids, stripeActions.capability_updated, event);
 };
 
 export const account_authorized = async (db, event) => {
   const id = event.account;
   const uids = await accountIdToUIDs(db, id);
-  return await callbackAdminLog(
-    db,
-    uids,
-    stripeActions.account_authorized,
-    event
-  );
+  return await callbackAdminLog(db, uids, stripeActions.account_authorized, event);
 };
 
 export const account_deauthorized = async (db, event) => {
   const id = event.account;
   const uids = await accountIdToUIDs(db, id);
-  return await callbackAdminLog(
-    db,
-    uids,
-    stripeActions.account_deauthorized,
-    event
-  );
+  return await callbackAdminLog(db, uids, stripeActions.account_deauthorized, event);
 };
 
 export const unknown_log = async (db, event) => {
@@ -127,10 +103,7 @@ export const callbackAdminLog = async (db, uids, action, log) => {
         action,
         uid,
         type: "callback",
-        created:
-          process.env.NODE_ENV !== "test"
-            ? admin.firestore.Timestamp.now()
-            : Date.now(),
+        created: process.env.NODE_ENV !== "test" ? admin.firestore.Timestamp.now() : Date.now(),
       };
       await db.collection(`/admins/${uid}/stripeLogs`).add(payload);
       return payload;

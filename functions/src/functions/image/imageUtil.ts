@@ -8,13 +8,7 @@ import UUID from "uuid-v4";
 
 import * as constant from "./constant";
 
-const runSharp = async (
-  bucket,
-  fromFileFullPath,
-  toFileFullPath,
-  size,
-  contentType
-) => {
+const runSharp = async (bucket, fromFileFullPath, toFileFullPath, size, contentType) => {
   const tmpResizeFile = path.join(os.tmpdir(), UUID());
 
   try {
@@ -39,9 +33,7 @@ const runSharp = async (
     });
     // generate public image url see: https://stackoverflow.com/questions/42956250/get-download-url-from-file-uploaded-with-cloud-functions-for-firebase
     const file = ret[0];
-    return `https://firebasestorage.googleapis.com/v0/b/${
-      bucket.name
-    }/o/${encodeURIComponent(file.name)}?alt=media&token=${uuid}`;
+    return `https://firebasestorage.googleapis.com/v0/b/${bucket.name}/o/${encodeURIComponent(file.name)}?alt=media&token=${uuid}`;
   } catch (e) {
     console.log("error", e);
   }
@@ -59,13 +51,7 @@ export const resizedImage = async (object, toFileFullPath, size) => {
   const bucketObj = admin.storage().bucket(object.bucket);
 
   const fromTempFilePath = await downloadFileFromBucket(object);
-  const ret = await runSharp(
-    bucketObj,
-    fromTempFilePath,
-    toFileFullPath,
-    size,
-    object.contentType
-  );
+  const ret = await runSharp(bucketObj, fromTempFilePath, toFileFullPath, size, object.contentType);
 
   // Once the thumbnail has been uploaded delete the local file to free up disk space.
   fs.unlinkSync(fromTempFilePath);

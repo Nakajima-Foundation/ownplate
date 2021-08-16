@@ -1,14 +1,8 @@
 import * as AWS from "aws-sdk";
 import * as functions from "firebase-functions";
 
-const aws_key =
-  (functions.config() && functions.config().aws && functions.config().aws.id) ||
-  process.env.AWS_ID;
-const aws_secret =
-  (functions.config() &&
-    functions.config().aws &&
-    functions.config().aws.secret) ||
-  process.env.AWS_SECRET;
+const aws_key = (functions.config() && functions.config().aws && functions.config().aws.id) || process.env.AWS_ID;
+const aws_secret = (functions.config() && functions.config().aws && functions.config().aws.secret) || process.env.AWS_SECRET;
 
 if (aws_key) {
   AWS.config.update({

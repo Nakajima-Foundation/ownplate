@@ -40,13 +40,7 @@ export const createRestaurantData = async (db, restaurantId) => {
     tax: "alcohol",
   });
 };
-export const createOrder = async (
-  db,
-  restaurantId,
-  orderId,
-  orderData,
-  func
-) => {
+export const createOrder = async (db, restaurantId, orderId, orderData, func) => {
   const uid = "123";
   await db.doc(`/users/${uid}/system/stripe`).set({});
 
@@ -72,9 +66,5 @@ export const createOrder = async (
   });
 
   // call function
-  await func(
-    db,
-    { restaurantId, orderId },
-    { auth: { uid, token: { phone_number: "xxxx" } } }
-  );
+  await func(db, { restaurantId, orderId }, { auth: { uid, token: { phone_number: "xxxx" } } });
 };

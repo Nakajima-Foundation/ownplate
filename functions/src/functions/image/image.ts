@@ -11,11 +11,7 @@ export const generateResizeImage = async (db, object) => {
   await Promise.all(
     constant.sizeOfResize.map(async (size) => {
       const toFileFullPath = imageUtil.getToFileFullPath(filePath, size);
-      const resizedImage = await imageUtil.resizedImage(
-        object,
-        toFileFullPath,
-        size
-      );
+      const resizedImage = await imageUtil.resizedImage(object, toFileFullPath, size);
       return (resizedImages[size] = resizedImage);
     })
   );

@@ -6,11 +6,7 @@ import * as admin from "firebase-admin";
 
 export const isEnabled = !!ownPlateConfig.line;
 
-export const setCustomClaim = async (
-  db: FirebaseFirestore.Firestore,
-  data: any,
-  context: functions.https.CallableContext
-) => {
+export const setCustomClaim = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
   const isLine = uid.slice(0, 5) === "line:";
   try {
@@ -26,25 +22,18 @@ export const setCustomClaim = async (
   }
 };
 
-export const verifyFriend = async (
-  db: FirebaseFirestore.Firestore,
-  data: any,
-  context: functions.https.CallableContext
-) => {
+export const verifyFriend = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
   const isLine = uid.slice(0, 5) === "line:";
   const uidLine = isLine ? uid.slice(5) : context.auth?.token?.line?.slice(5);
   try {
     //return sendMessageInternal(uidLine, "test message");
     const LINE_MESSAGE_TOKEN = functions.config().line.message_token;
-    const profile = await netutils.request(
-      `https://api.line.me/v2/bot/profile/${uidLine}`,
-      {
-        headers: {
-          Authorization: `Bearer ${LINE_MESSAGE_TOKEN}`,
-        },
-      }
-    );
+    const profile = await netutils.request(`https://api.line.me/v2/bot/profile/${uidLine}`, {
+      headers: {
+        Authorization: `Bearer ${LINE_MESSAGE_TOKEN}`,
+      },
+    });
     if (profile.userId && profile.displayName) {
       return { result: true, profile };
     } else {
@@ -55,11 +44,7 @@ export const verifyFriend = async (
   }
 };
 
-export const authenticate = async (
-  db: FirebaseFirestore.Firestore,
-  data: any,
-  context: functions.https.CallableContext
-) => {
+export const authenticate = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const { code, redirect_uri, client_id } = data;
   utils.validate_params({ code, redirect_uri, client_id });
   const LINE_TRACK_KEY = functions.config().line.track;
@@ -67,39 +52,25 @@ export const authenticate = async (
   try {
     // We validate the OAuth token (code) given to the redirected page.
     // Result: access_token, id_token, expires_in, refresh_token, scope, token_type
-    const access = await netutils.postForm(
-      "https://api.line.me/oauth2/v2.1/token",
-      {
-        grant_type: "authorization_code",
-        code,
-        redirect_uri,
-        client_id,
-        client_secret: LINE_TRACK_KEY,
-      }
-    );
+    const access = await netutils.postForm("https://api.line.me/oauth2/v2.1/token", {
+      grant_type: "authorization_code",
+      code,
+      redirect_uri,
+      client_id,
+      client_secret: LINE_TRACK_KEY,
+    });
     if (!access.id_token || !access.access_token) {
-      throw new functions.https.HttpsError(
-        "invalid-argument",
-        "Validation failed.",
-        { params: access }
-      );
+      throw new functions.https.HttpsError("invalid-argument", "Validation failed.", { params: access });
     }
 
     // We verify this code.
     // amr, aud, exp, iat, iss, name, sub
-    const verified = await netutils.postForm(
-      "https://api.line.me/oauth2/v2.1/verify",
-      {
-        id_token: access.id_token,
-        client_id,
-      }
-    );
+    const verified = await netutils.postForm("https://api.line.me/oauth2/v2.1/verify", {
+      id_token: access.id_token,
+      client_id,
+    });
     if (!verified.sub) {
-      throw new functions.https.HttpsError(
-        "invalid-argument",
-        "Verification failed.",
-        { params: verified }
-      );
+      throw new functions.https.HttpsError("invalid-argument", "Verification failed.", { params: verified });
     }
 
     // We get user's profile
@@ -125,11 +96,7 @@ export const authenticate = async (
   }
 };
 
-export const validate = async (
-  db: FirebaseFirestore.Firestore,
-  data: any,
-  context: functions.https.CallableContext
-) => {
+export const validate = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
 
   const { code, redirect_uri, client_id } = data;
@@ -140,39 +107,25 @@ export const validate = async (
   try {
     // We validate the OAuth token (code) given to the redirected page.
     // Result: access_token, id_token, expires_in, refresh_token, scope, token_type
-    const access = await netutils.postForm(
-      "https://api.line.me/oauth2/v2.1/token",
-      {
-        grant_type: "authorization_code",
-        code,
-        redirect_uri,
-        client_id,
-        client_secret: LINE_SECRET_KEY,
-      }
-    );
+    const access = await netutils.postForm("https://api.line.me/oauth2/v2.1/token", {
+      grant_type: "authorization_code",
+      code,
+      redirect_uri,
+      client_id,
+      client_secret: LINE_SECRET_KEY,
+    });
     if (!access.id_token || !access.access_token) {
-      throw new functions.https.HttpsError(
-        "invalid-argument",
-        "Validation failed.",
-        { params: access }
-      );
+      throw new functions.https.HttpsError("invalid-argument", "Validation failed.", { params: access });
     }
 
     // We verify this code.
     // amr, aud, exp, iat, iss, name, sub
-    const verified = await netutils.postForm(
-      "https://api.line.me/oauth2/v2.1/verify",
-      {
-        id_token: access.id_token,
-        client_id,
-      }
-    );
+    const verified = await netutils.postForm("https://api.line.me/oauth2/v2.1/verify", {
+      id_token: access.id_token,
+      client_id,
+    });
     if (!verified.sub) {
-      throw new functions.https.HttpsError(
-        "invalid-argument",
-        "Verification failed.",
-        { params: verified }
-      );
+      throw new functions.https.HttpsError("invalid-argument", "Verification failed.", { params: verified });
     }
 
     // We get user's profile
@@ -209,11 +162,7 @@ export const validate = async (
 };
 
 export const sendMessageDirect = async (lineId: string, message: string) => {
-  const LINE_MESSAGE_TOKEN =
-    (functions.config() &&
-      functions.config().line &&
-      functions.config().line.message_token) ||
-    process.env.LINE_MESSAGE_TOKEN;
+  const LINE_MESSAGE_TOKEN = (functions.config() && functions.config().line && functions.config().line.message_token) || process.env.LINE_MESSAGE_TOKEN;
 
   if (!LINE_MESSAGE_TOKEN) {
     console.log("no line message token");
@@ -248,16 +197,11 @@ export const sendMessage = async (db: FirebaseFirestore.Firestore, uid: string |
 }
 */
 
-export const getLineId = async (
-  db: FirebaseFirestore.Firestore,
-  uid: string | null
-) => {
+export const getLineId = async (db: FirebaseFirestore.Firestore, uid: string | null) => {
   if (uid === null) {
     return;
   }
-  const data =
-    (await db.doc(`/users/${uid}/system/line`).get()).data() ||
-    (await db.doc(`/admins/${uid}/system/line`).get()).data();
+  const data = (await db.doc(`/users/${uid}/system/line`).get()).data() || (await db.doc(`/admins/${uid}/system/line`).get()).data();
   const sub = data && data.profile && data.profile.userId;
   if (!sub) {
     return;

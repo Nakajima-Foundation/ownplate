@@ -58,18 +58,9 @@ export const sitemap_response = async (req, res) => {
   try {
     const hostname = "https://" + ownPlateConfig.hostName;
 
-    const urlset = xmlbuilder
-      .create("urlset")
-      .att("xmlns", "http://www.sitemaps.org/schemas/sitemap/0.9");
+    const urlset = xmlbuilder.create("urlset").att("xmlns", "http://www.sitemaps.org/schemas/sitemap/0.9");
 
-    const docs = (
-      await db
-        .collection("restaurants")
-        .where("publicFlag", "==", true)
-        .where("deletedFlag", "==", false)
-        .orderBy("updatedAt", "desc")
-        .get()
-    ).docs;
+    const docs = (await db.collection("restaurants").where("publicFlag", "==", true).where("deletedFlag", "==", false).orderBy("updatedAt", "desc").get()).docs;
     await Promise.all(
       docs.map(async (doc) => {
         const url = urlset.ele("url");
@@ -108,15 +99,11 @@ const escapeHtml = (str: string): string => {
 
 const getMenuData = async (restaurantName, menuId) => {
   if (menuId) {
-    const menu = await db
-      .doc(`restaurants/${restaurantName}/menus/${menuId}`)
-      .get();
+    const menu = await db.doc(`restaurants/${restaurantName}/menus/${menuId}`).get();
     if (menu && menu.exists) {
       const menu_data: any = menu.data();
       return {
-        image:
-          (menu_data?.images?.item?.resizedImages || {})["600"] ||
-          menu_data.itemPhoto,
+        image: (menu_data?.images?.item?.resizedImages || {})["600"] || menu_data.itemPhoto,
         description: menu_data?.itemDescription,
         name: menu_data?.itemName,
         exists: true,
@@ -150,10 +137,7 @@ const ogpPage = async (req: any, res: any) => {
     const title = menuData.exists
       ? [menuData.name, restaurant_data.restaurantName].join(" / ")
       : restaurant_data.restaurantName
-      ? [
-          restaurant_data.restaurantName,
-          ownPlateConfig.restaurantPageTitle,
-        ].join(" / ")
+      ? [restaurant_data.restaurantName, ownPlateConfig.restaurantPageTitle].join(" / ")
       : ownPlateConfig.siteName;
     const image =
       menuData.image ||
@@ -161,14 +145,9 @@ const ogpPage = async (req: any, res: any) => {
       restaurant_data.restCoverPhoto ||
       (restaurant_data?.images?.profile?.resizedImages || {})["600"] ||
       restaurant_data.restProfilePhoto;
-    const description =
-      menuData.description ||
-      restaurant_data.introduction ||
-      ownPlateConfig.siteDescription;
+    const description = menuData.description || restaurant_data.introduction || ownPlateConfig.siteDescription;
     const regexTitle = /<title.*title>/;
-    const url = menuData.exists
-      ? `https://${ownPlateConfig.hostName}/r/${restaurantName}/menus/${menuId}`
-      : `https://${ownPlateConfig.hostName}/r/${restaurantName}`;
+    const url = menuData.exists ? `https://${ownPlateConfig.hostName}/r/${restaurantName}/menus/${menuId}` : `https://${ownPlateConfig.hostName}/r/${restaurantName}`;
 
     const metas = [
       `<title>${escapeHtml(title)}</title>`,
@@ -237,11 +216,7 @@ export const stripe_parser = async (req, res) => {
 
   const sig = req.headers["stripe-signature"];
   try {
-    const event = stripe.webhooks.constructEvent(
-      req.rawBody.toString(),
-      sig,
-      endpointSecret
-    );
+    const event = stripe.webhooks.constructEvent(req.rawBody.toString(), sig, endpointSecret);
 
     // const {data:{object}} = event
     if (!event) {

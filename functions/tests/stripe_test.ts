@@ -45,17 +45,11 @@ describe("stripe tests", async () => {
   });
 
   it("authorized stripe test", async function () {
-    const res = await stripeLog.account_authorized(
-      adminDB,
-      authorized.authorized
-    );
+    const res = await stripeLog.account_authorized(adminDB, authorized.authorized);
     (res[0] as any)["uid"].should.equal(uid);
   });
   it("deauthorized stripe test", async function () {
-    const res = await stripeLog.account_deauthorized(
-      adminDB,
-      deauthorized.deauthorized
-    );
+    const res = await stripeLog.account_deauthorized(adminDB, deauthorized.deauthorized);
     (res[0] as any)["uid"].should.equal(uid);
   });
 });

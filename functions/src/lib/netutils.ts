@@ -1,11 +1,7 @@
 import * as https from "https";
 import * as url from "url";
 
-export const request = (
-  _url: string,
-  _options: any,
-  postData?: any
-): Promise<any> => {
+export const request = (_url: string, _options: any, postData?: any): Promise<any> => {
   const parsedURL = url.parse(_url);
   const options = Object.assign(
     {
@@ -57,11 +53,7 @@ export const postForm = (_url: string, params: any): Promise<any> => {
   );
 };
 
-export const postJson = (
-  _url: string,
-  _options: any,
-  json: any
-): Promise<any> => {
+export const postJson = (_url: string, _options: any, json: any): Promise<any> => {
   const postData = JSON.stringify(json);
   console.log("postJson", postData);
   const headers = {

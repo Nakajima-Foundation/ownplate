@@ -1,11 +1,7 @@
 import * as functions from "firebase-functions";
 import * as utils from "../lib/utils";
 
-export const connect = async (
-  db: FirebaseFirestore.Firestore,
-  data: any,
-  context: functions.https.CallableContext
-) => {
+export const connect = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
   const stripe = utils.get_stripe();
 
@@ -38,11 +34,7 @@ export const connect = async (
   }
 };
 
-export const disconnect = async (
-  db: FirebaseFirestore.Firestore,
-  data: any,
-  context: functions.https.CallableContext
-) => {
+export const disconnect = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
   const stripe = utils.get_stripe();
 
@@ -54,10 +46,7 @@ export const disconnect = async (
     const payment = (await refPayment.get()).data();
     const stripe_user_id = payment?.stripe;
     if (!stripe_user_id) {
-      throw new functions.https.HttpsError(
-        "invalid-argument",
-        "This account is not connected to Stripe."
-      );
+      throw new functions.https.HttpsError("invalid-argument", "This account is not connected to Stripe.");
     }
 
     // We remove it from the database first, so that the operator can attempt to re-connect
@@ -79,16 +68,9 @@ export const disconnect = async (
   }
 };
 
-export const verify = async (
-  db: FirebaseFirestore.Firestore,
-  data: any,
-  context: functions.https.CallableContext
-) => {
+export const verify = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   if (!context.auth?.token?.admin) {
-    throw new functions.https.HttpsError(
-      "permission-denied",
-      "You do not have permission to confirm this request."
-    );
+    throw new functions.https.HttpsError("permission-denied", "You do not have permission to confirm this request.");
   }
   const stripe = utils.get_stripe();
 

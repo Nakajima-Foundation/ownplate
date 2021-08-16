@@ -4,20 +4,10 @@ import SmaregiApi from "../smaregi/smaregiapi";
 import * as utils from "../lib/utils";
 import { generateBody } from "../smaregi/apiUtils";
 
-const clientSecrets =
-  functions.config() &&
-  functions.config().smaregi &&
-  functions.config().smaregi.clientsecrets;
-const host =
-  functions.config() &&
-  functions.config().smaregi &&
-  functions.config().smaregi.host;
+const clientSecrets = functions.config() && functions.config().smaregi && functions.config().smaregi.clientsecrets;
+const host = functions.config() && functions.config().smaregi && functions.config().smaregi.host;
 
-export const auth = async (
-  db: FirebaseFirestore.Firestore,
-  data: any,
-  context: functions.https.CallableContext
-) => {
+export const auth = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const { code, client_id } = data;
 
   const adminUid = utils.validate_auth(context);
@@ -53,28 +43,18 @@ export const auth = async (
 
     const ret = await userRes.json();
     if (ret.is_owner!) {
-      throw new functions.https.HttpsError(
-        "invalid-argument",
-        "You are not owner."
-      );
+      throw new functions.https.HttpsError("invalid-argument", "You are not owner.");
     }
     const contractId = ret.contract.id;
     const smaregiRef = db.doc(`/smaregi/${contractId}`);
     const smaregiDoc = await smaregiRef.get();
     const smaregiData = smaregiDoc.data();
     if (smaregiDoc && smaregiData && smaregiData.uid !== adminUid) {
-      throw new functions.https.HttpsError(
-        "invalid-argument",
-        "This smaregi account already connected."
-      );
+      throw new functions.https.HttpsError("invalid-argument", "This smaregi account already connected.");
     }
     await smaregiRef.set({ contractId, uid: adminUid });
-    await db
-      .doc(`admins/${adminUid}/private/smaregi`)
-      .set({ smaregi: ret }, { merge: true });
-    await db
-      .doc(`admins/${adminUid}/public/smaregi`)
-      .set({ smaregi: true }, { merge: true });
+    await db.doc(`admins/${adminUid}/private/smaregi`).set({ smaregi: ret }, { merge: true });
+    await db.doc(`admins/${adminUid}/public/smaregi`).set({ smaregi: true }, { merge: true });
 
     return { result: true };
   } catch (e) {
@@ -83,11 +63,7 @@ export const auth = async (
   }
 };
 
-export const storeList = async (
-  db: FirebaseFirestore.Firestore,
-  data: any,
-  context: functions.https.CallableContext
-) => {
+export const storeList = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const { client_id } = data;
 
   const adminUid = utils.validate_auth(context);
@@ -95,18 +71,12 @@ export const storeList = async (
 
   const smaregiDoc = await db.doc(`admins/${adminUid}/private/smaregi`).get();
   if (!smaregiDoc || !smaregiDoc.exists) {
-    throw new functions.https.HttpsError(
-      "invalid-argument",
-      "This data does not exist."
-    );
+    throw new functions.https.HttpsError("invalid-argument", "This data does not exist.");
   }
   const smaregiData = smaregiDoc.data();
   const smaregiContractId = smaregiData?.smaregi?.contract?.id;
   if (!smaregiContractId) {
-    throw new functions.https.HttpsError(
-      "invalid-argument",
-      "This data does not exist."
-    );
+    throw new functions.https.HttpsError("invalid-argument", "This data does not exist.");
   }
 
   const config = {
@@ -114,16 +84,7 @@ export const storeList = async (
     clientId: client_id,
     clientSecret: clientSecret,
     hostName: "api.smaregi.dev", //TODO
-    scopes: [
-      "pos.stock:read",
-      "pos.stock:write",
-      "pos.stores:read",
-      "pos.stores:write",
-      "pos.customers:read",
-      "pos.customers:write",
-      "pos.products:read",
-      "pos.products:write",
-    ],
+    scopes: ["pos.stock:read", "pos.stock:write", "pos.stores:read", "pos.stores:write", "pos.customers:read", "pos.customers:write", "pos.products:read", "pos.products:write"],
   };
 
   const api = new SmaregiApi(config);
@@ -134,11 +95,7 @@ export const storeList = async (
   return { res: storeListData };
 };
 
-export const productList = async (
-  db: FirebaseFirestore.Firestore,
-  data: any,
-  context: functions.https.CallableContext
-) => {
+export const productList = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const { client_id, store_id } = data;
 
   const adminUid = utils.validate_auth(context);
@@ -146,18 +103,12 @@ export const productList = async (
 
   const smaregiDoc = await db.doc(`admins/${adminUid}/private/smaregi`).get();
   if (!smaregiDoc || !smaregiDoc.exists) {
-    throw new functions.https.HttpsError(
-      "invalid-argument",
-      "This data does not exist."
-    );
+    throw new functions.https.HttpsError("invalid-argument", "This data does not exist.");
   }
   const smaregiData = smaregiDoc.data();
   const smaregiContractId = smaregiData?.smaregi?.contract?.id;
   if (!smaregiContractId) {
-    throw new functions.https.HttpsError(
-      "invalid-argument",
-      "This data does not exist."
-    );
+    throw new functions.https.HttpsError("invalid-argument", "This data does not exist.");
   }
 
   const config = {
@@ -165,16 +116,7 @@ export const productList = async (
     clientId: client_id,
     clientSecret: clientSecret,
     hostName: "api.smaregi.dev", //TODO
-    scopes: [
-      "pos.stock:read",
-      "pos.stock:write",
-      "pos.stores:read",
-      "pos.stores:write",
-      "pos.customers:read",
-      "pos.customers:write",
-      "pos.products:read",
-      "pos.products:write",
-    ],
+    scopes: ["pos.stock:read", "pos.stock:write", "pos.stores:read", "pos.stores:write", "pos.customers:read", "pos.customers:write", "pos.products:read", "pos.products:write"],
   };
 
   const api = new SmaregiApi(config);

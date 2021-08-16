@@ -1,29 +1,13 @@
 import twilio from "twilio";
 import { twiml_neworder } from "../common/constant";
 
-import {
-  parsePhoneNumber,
-  formatNational,
-  intenationalFormat,
-} from "../common/phoneutil.js";
+import { parsePhoneNumber, formatNational, intenationalFormat } from "../common/phoneutil.js";
 
 import * as functions from "firebase-functions";
 
-const sid =
-  (functions.config() &&
-    functions.config().twilio &&
-    functions.config().twilio.sid) ||
-  process.env.TWILIO_SID;
-const token =
-  (functions.config() &&
-    functions.config().twilio &&
-    functions.config().twilio.token) ||
-  process.env.TWILIO_TOKEN;
-const from =
-  (functions.config() &&
-    functions.config().twilio &&
-    functions.config().twilio.phone) ||
-  process.env.TWILIO_PHONE;
+const sid = (functions.config() && functions.config().twilio && functions.config().twilio.sid) || process.env.TWILIO_SID;
+const token = (functions.config() && functions.config().twilio && functions.config().twilio.token) || process.env.TWILIO_TOKEN;
+const from = (functions.config() && functions.config().twilio && functions.config().twilio.phone) || process.env.TWILIO_PHONE;
 
 export const parsedNumber = (restaurant) => {
   const countryCode = restaurant.countryCode;

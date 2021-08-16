@@ -38,9 +38,7 @@ const getRestaurantData = async (restaurantId) => {
 };
 
 const getRestaurantApiKey = async (restaurantId) => {
-  const apiKey = await db
-    .doc(`restaurants/${restaurantId}/private/apikey`)
-    .get();
+  const apiKey = await db.doc(`restaurants/${restaurantId}/private/apikey`).get();
   if (!apiKey || !apiKey.exists) {
     return null;
   }
@@ -75,9 +73,7 @@ export const apiKeyAuth = async (req, res, next) => {
   next();
 };
 export const nameOfOrder = (order) => {
-  return order && order.number !== undefined
-    ? "#" + `00${order.number}`.slice(-3)
-    : "";
+  return order && order.number !== undefined ? "#" + `00${order.number}`.slice(-3) : "";
 };
 
 const convTime = (time: any) => {
@@ -93,10 +89,7 @@ const convTime = (time: any) => {
 
 const getOrders = async (req: any, res: any) => {
   const refRestaurant = db.doc(`restaurants/${req.restaurantId}`);
-  const orderCollection = await refRestaurant
-    .collection("orders")
-    .orderBy("timeCreated", "desc")
-    .get();
+  const orderCollection = await refRestaurant.collection("orders").orderBy("timeCreated", "desc").get();
 
   try {
     const orders = orderCollection.docs
@@ -166,9 +159,4 @@ const getOrders = async (req: any, res: any) => {
   }
 };
 
-apiRouter.get(
-  "/restaurants/:restaurantId/orders",
-  getRestaurant,
-  apiKeyAuth,
-  getOrders
-);
+apiRouter.get("/restaurants/:restaurantId/orders", getRestaurant, apiKeyAuth, getOrders);

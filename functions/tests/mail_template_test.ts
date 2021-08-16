@@ -46,14 +46,7 @@ const order = {
 
 describe("mail template function", () => {
   it("ja mail template function", async function () {
-    const mail = await createNotifyRestaurantMailMessage(
-      "msg_order_placed",
-      "レストランA",
-      order,
-      123,
-      "ja",
-      "https://example.com"
-    );
+    const mail = await createNotifyRestaurantMailMessage("msg_order_placed", "レストランA", order, 123, "ja", "https://example.com");
     const bodys = mail.split("\n");
     const expectBodys = [
       "レストランA様",
@@ -86,14 +79,7 @@ describe("mail template function", () => {
     });
   });
   it("en mail template function", async function () {
-    const mail = await createNotifyRestaurantMailMessage(
-      "msg_order_placed",
-      "レストランA",
-      order,
-      123,
-      "en",
-      "https://example.com"
-    );
+    const mail = await createNotifyRestaurantMailMessage("msg_order_placed", "レストランA", order, 123, "en", "https://example.com");
     const bodys = mail.split("\n");
 
     const expectBodys = [

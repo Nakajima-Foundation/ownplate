@@ -67,54 +67,29 @@ class SmaregiApi {
   }
   async list(params: any = {}) {
     const path = this.stacks.join("/");
-    const json = await apiUtils.get_func(
-      this.contractId,
-      path,
-      this.access_token,
-      params
-    );
+    const json = await apiUtils.get_func(this.contractId, path, this.access_token, params);
     return json;
   }
   async create(data) {
     const path = this.stacks.join("/");
-    const json = await apiUtils.post_func(
-      this.contractId,
-      path,
-      this.access_token,
-      data
-    );
+    const json = await apiUtils.post_func(this.contractId, path, this.access_token, data);
     return json;
   }
   async update(data) {
     const path = this.stacks.join("/");
-    const json = await apiUtils.patch_func(
-      this.contractId,
-      path,
-      this.access_token,
-      data
-    );
+    const json = await apiUtils.patch_func(this.contractId, path, this.access_token, data);
     return json;
   }
   async delete(data = {}) {
     const path = this.stacks.join("/");
-    const json = await apiUtils.delete_func(
-      this.contractId,
-      path,
-      this.access_token,
-      data
-    );
+    const json = await apiUtils.delete_func(this.contractId, path, this.access_token, data);
     return json;
   }
   setAccessToken(token: string) {
     this.access_token = token;
   }
   async auth() {
-    const body = await apiUtils.authentication(
-      this.clientId,
-      this.clientSecret,
-      this.contractId,
-      this.scopes
-    );
+    const body = await apiUtils.authentication(this.clientId, this.clientSecret, this.contractId, this.scopes);
     this.access_token = body.access_token;
   }
 }

@@ -8,9 +8,7 @@ import { smaregi } from "../common/project";
 import { response200 } from "./apis";
 import moment from "moment";
 
-const clientSecrets = (functions.config() &&
-  functions.config().smaregi &&
-  functions.config().smaregi.clientsecrets) || {
+const clientSecrets = (functions.config() && functions.config().smaregi && functions.config().smaregi.clientsecrets) || {
   [smaregi.clientId]: process.env.SmaregiClientSecret,
 };
 
@@ -30,9 +28,7 @@ const subscribe = async (req: any, res: any) => {
   console.log(JSON.stringify(req.headers));
   console.log(JSON.stringify(req.body));
 
-  await db
-    .collection("smaregiLog/log/subscribe")
-    .add({ data: req.body, createdAt: admin.firestore.Timestamp.now() });
+  await db.collection("smaregiLog/log/subscribe").add({ data: req.body, createdAt: admin.firestore.Timestamp.now() });
   return response200(res, {});
 };
 
@@ -45,16 +41,7 @@ export const processAction = async (data) => {
       clientId: smaregi.clientId,
       clientSecret: clientSecret,
       hostName: smaregi.apiHost,
-      scopes: [
-        "pos.stock:read",
-        "pos.stock:write",
-        "pos.stores:read",
-        "pos.stores:write",
-        "pos.customers:read",
-        "pos.customers:write",
-        "pos.products:read",
-        "pos.products:write",
-      ],
+      scopes: ["pos.stock:read", "pos.stock:write", "pos.stores:read", "pos.stores:write", "pos.customers:read", "pos.customers:write", "pos.products:read", "pos.products:write"],
     };
 
     data.ids.map(async (idData) => {
@@ -68,13 +55,11 @@ export const processAction = async (data) => {
       });
       if (stockListData && stockListData[0]) {
         const amount = stockListData[0].stockAmount;
-        await db
-          .doc(`smaregiData/${storeId}/smaregiProducts/${productId}`)
-          .set({
-            store_id: storeId,
-            product_id: productId,
-            amount,
-          });
+        await db.doc(`smaregiData/${storeId}/smaregiProducts/${productId}`).set({
+          store_id: storeId,
+          product_id: productId,
+          amount,
+        });
       }
     });
   }

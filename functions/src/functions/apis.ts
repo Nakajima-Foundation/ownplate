@@ -26,11 +26,7 @@ export const response200 = (res, payload) => {
 const hostname = "https://" + ownPlateConfig.hostName;
 
 const num2time = (num) => {
-  return [
-    String(Math.floor(num / 60)).padStart(2, "0"),
-    ":",
-    String(num % 60).padStart(2, "0"),
-  ].join("");
+  return [String(Math.floor(num / 60)).padStart(2, "0"), ":", String(num % 60).padStart(2, "0")].join("");
 };
 
 const week = {
@@ -45,32 +41,10 @@ const week = {
 
 const getRestaurants = async (req: any, res: any) => {
   try {
-    const docs = (
-      await db
-        .collection("restaurants")
-        .where("publicFlag", "==", true)
-        .where("deletedFlag", "==", false)
-        .orderBy("updatedAt", "desc")
-        .limit(20)
-        .get()
-    ).docs;
+    const docs = (await db.collection("restaurants").where("publicFlag", "==", true).where("deletedFlag", "==", false).orderBy("updatedAt", "desc").limit(20).get()).docs;
     const restaurants = await Promise.all(
       docs.map(async (doc) => {
-        const {
-          restaurantName,
-          ownerName,
-          introduction,
-          location,
-          url,
-          phoneNumber,
-          zip,
-          state,
-          city,
-          streetAddress,
-          images,
-          businessDay,
-          openTimes,
-        } = doc.data();
+        const { restaurantName, ownerName, introduction, location, url, phoneNumber, zip, state, city, streetAddress, images, businessDay, openTimes } = doc.data();
 
         const converBusinessDay = Object.keys(week).map((key) => {
           const openTime = businessDay[key]
@@ -138,25 +112,10 @@ const getMenus = async (req: any, res: any) => {
   if (!restaurant_data.publicFlag || restaurant_data.deletedFlag) {
     return res.status(404).send("");
   }
-  const docs = (
-    await db
-      .collection(`restaurants/${restaurantId}/menus`)
-      .where("publicFlag", "==", true)
-      .where("deletedFlag", "==", false)
-      .limit(20)
-      .get()
-  ).docs;
+  const docs = (await db.collection(`restaurants/${restaurantId}/menus`).where("publicFlag", "==", true).where("deletedFlag", "==", false).limit(20).get()).docs;
   const menus = await Promise.all(
     docs.map(async (doc) => {
-      const {
-        itemName,
-        itemDescription,
-        images,
-        price,
-        tax,
-        allergens,
-        itemOptionCheckbox,
-      } = doc.data();
+      const { itemName, itemDescription, images, price, tax, allergens, itemOptionCheckbox } = doc.data();
       return {
         id: doc.id,
         url: hostname + "/r/" + restaurantId + "/menus/" + doc.id,
@@ -179,17 +138,10 @@ const getMenus = async (req: any, res: any) => {
 
 const corsOptionsDelegate = (req, callback) => {
   // firebaseapp.com, web.app, localhost:3000/*
-  const pattern =
-    /(http:\/\/localhost:\d+)$|(https:\/\/[a-zA-Z0-9\-]+\.firebaseapp\.com)$|(https:\/\/[a-zA-Z0-9\-]+\.web\.app)$/;
-  const corsOptions = (req.header("Origin") || "").match(pattern)
-    ? { origin: true }
-    : { origin: false };
+  const pattern = /(http:\/\/localhost:\d+)$|(https:\/\/[a-zA-Z0-9\-]+\.firebaseapp\.com)$|(https:\/\/[a-zA-Z0-9\-]+\.web\.app)$/;
+  const corsOptions = (req.header("Origin") || "").match(pattern) ? { origin: true } : { origin: false };
   callback(null, corsOptions); // callback expects two parameters: error and options
 };
 
 apiRouter.get("/restaurants", cors(corsOptionsDelegate), getRestaurants);
-apiRouter.get(
-  "/restaurants/:restaurantId/menus",
-  cors(corsOptionsDelegate),
-  getMenus
-);
+apiRouter.get("/restaurants/:restaurantId/menus", cors(corsOptionsDelegate), getMenus);

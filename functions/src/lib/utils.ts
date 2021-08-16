@@ -21,82 +21,46 @@ export const getRegionalSetting = () => {
   return regionalSettings[region] || regionalSettings["US"];
 };
 
-export const validate_auth = (
-  context: functions.https.CallableContext | Context
-) => {
+export const validate_auth = (context: functions.https.CallableContext | Context) => {
   if (!context.auth) {
-    throw new functions.https.HttpsError(
-      "failed-precondition",
-      "The function must be called while authenticated."
-    );
+    throw new functions.https.HttpsError("failed-precondition", "The function must be called while authenticated.");
   }
   return context.auth.uid;
 };
 
-export const validate_admin_auth = (
-  context: functions.https.CallableContext | Context
-) => {
+export const validate_admin_auth = (context: functions.https.CallableContext | Context) => {
   if (!context.auth) {
-    throw new functions.https.HttpsError(
-      "failed-precondition",
-      "The function must be called while authenticated."
-    );
+    throw new functions.https.HttpsError("failed-precondition", "The function must be called while authenticated.");
   }
   return context.auth?.token?.parentUid || context.auth.uid;
 };
-export const validate_parent_admin_auth = (
-  context: functions.https.CallableContext | Context
-) => {
+export const validate_parent_admin_auth = (context: functions.https.CallableContext | Context) => {
   if (!context.auth) {
-    throw new functions.https.HttpsError(
-      "failed-precondition",
-      "The function must be called while authenticated."
-    );
+    throw new functions.https.HttpsError("failed-precondition", "The function must be called while authenticated.");
   }
   if (context.auth?.token?.parentUid) {
-    throw new functions.https.HttpsError(
-      "failed-precondition",
-      "The function must be called parent user."
-    );
+    throw new functions.https.HttpsError("failed-precondition", "The function must be called parent user.");
   }
   return context.auth.uid;
 };
-export const is_admin_auth = (
-  context: functions.https.CallableContext | Context
-) => {
+export const is_admin_auth = (context: functions.https.CallableContext | Context) => {
   if (!context.auth) {
-    throw new functions.https.HttpsError(
-      "failed-precondition",
-      "The function must be called while authenticated."
-    );
+    throw new functions.https.HttpsError("failed-precondition", "The function must be called while authenticated.");
   }
   return !!context.auth?.token?.email;
 };
 
 export const getStripeWebhookSecretKey = () => {
-  return (
-    (functions.config() &&
-      functions.config().stripe &&
-      functions.config().stripe.whsecret_key) ||
-    process.env.WH_STRIPE_SECRET
-  );
+  return (functions.config() && functions.config().stripe && functions.config().stripe.whsecret_key) || process.env.WH_STRIPE_SECRET;
 };
 export const getStripeSecretKey = () => {
-  return (
-    (functions.config() &&
-      functions.config().stripe &&
-      functions.config().stripe.secret_key) ||
-    process.env.STRIPE_SECRET
-  );
+  return (functions.config() && functions.config().stripe && functions.config().stripe.secret_key) || process.env.STRIPE_SECRET;
 };
 
 export const get_stripe = () => {
   const STRIPE_SECRET_KEY = getStripeSecretKey();
   if (!STRIPE_SECRET_KEY) {
-    throw new functions.https.HttpsError(
-      "invalid-argument",
-      "The functions requires STRIPE_SECRET_KEY."
-    );
+    throw new functions.https.HttpsError("invalid-argument", "The functions requires STRIPE_SECRET_KEY.");
   }
   return new Stripe(STRIPE_SECRET_KEY, { apiVersion: "2020-03-02" });
 };
@@ -106,25 +70,15 @@ export const validate_params = (params) => {
     return params[key] === undefined;
   });
   if (errors.length > 0) {
-    throw new functions.https.HttpsError(
-      "invalid-argument",
-      "Missing parameters.",
-      { params: errors }
-    );
+    throw new functions.https.HttpsError("invalid-argument", "Missing parameters.", { params: errors });
   }
 };
 
-export const get_restaurant = async (
-  db: FirebaseFirestore.Firestore,
-  restaurantId: String
-) => {
+export const get_restaurant = async (db: FirebaseFirestore.Firestore, restaurantId: String) => {
   const snapshot = await db.doc(`/restaurants/${restaurantId}`).get();
   const data = snapshot.data();
   if (!data) {
-    throw new functions.https.HttpsError(
-      "invalid-argument",
-      "There is no restaurant with this id."
-    );
+    throw new functions.https.HttpsError("invalid-argument", "There is no restaurant with this id.");
   }
   return data;
 };
@@ -168,10 +122,7 @@ export const getMenuObj = async (refRestaurant, menuIds) => {
 
   await Promise.all(
     chunk(menuIds, 10).map(async (menuIdsChunk) => {
-      const menusCollections = await refRestaurant
-        .collection("menus")
-        .where(admin.firestore.FieldPath.documentId(), "in", menuIdsChunk)
-        .get();
+      const menusCollections = await refRestaurant.collection("menus").where(admin.firestore.FieldPath.documentId(), "in", menuIdsChunk).get();
       menusCollections.forEach((m) => {
         menuObj[m.id] = m.data();
       });

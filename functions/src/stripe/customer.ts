@@ -1,11 +1,7 @@
 import * as functions from "firebase-functions";
 import * as utils from "../lib/utils";
 
-export const createCustomer = async (
-  db: FirebaseFirestore.Firestore,
-  uid: string,
-  phoneNumber: string
-) => {
+export const createCustomer = async (db: FirebaseFirestore.Firestore, uid: string, phoneNumber: string) => {
   const stripe = utils.get_stripe();
   await db.runTransaction(async (tr) => {
     const refStripe = db.doc(`/users/${uid}/system/stripe`);
@@ -24,11 +20,7 @@ export const createCustomer = async (
   });
 };
 
-export const deleteCard = async (
-  db: FirebaseFirestore.Firestore,
-  data: any,
-  context: functions.https.CallableContext
-) => {
+export const deleteCard = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
 
   try {
@@ -61,10 +53,7 @@ export const deleteCard = async (
   }
 };
 
-export const deleteCustomer = async (
-  db: FirebaseFirestore.Firestore,
-  uid: string
-) => {
+export const deleteCustomer = async (db: FirebaseFirestore.Firestore, uid: string) => {
   const stripe = utils.get_stripe();
   const refStripeSystem = db.doc(`/users/${uid}/system/stripe`);
   const refStripeReadOnly = db.doc(`/users/${uid}/readonly/stripe`);
@@ -84,11 +73,7 @@ export const deleteCustomer = async (
   });
 };
 
-export const update = async (
-  db: FirebaseFirestore.Firestore,
-  data: any,
-  context: functions.https.CallableContext
-) => {
+export const update = async (db: FirebaseFirestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
   const { tokenId, reuse } = data;
   utils.validate_params({ tokenId });
@@ -109,10 +94,7 @@ export const update = async (
     await db.runTransaction(async (tr) => {
       const stripeInfo = (await tr.get(refStripeSystem)).data();
       if (!stripeInfo) {
-        throw new functions.https.HttpsError(
-          "invalid-argument",
-          "This user does not have a stripe customer."
-        );
+        throw new functions.https.HttpsError("invalid-argument", "This user does not have a stripe customer.");
       }
       // Store the stripe info in the readonly area (accessible from the client) only if the user wants to reuse it.
       // Notice that we still need to associate the stripe info the the customer internally.

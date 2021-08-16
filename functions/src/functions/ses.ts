@@ -1,16 +1,8 @@
 import * as functions from "firebase-functions";
 import * as nodemailer from "nodemailer";
 
-const aws_key =
-  (functions.config() &&
-    functions.config().aws &&
-    functions.config().aws.ses_user) ||
-  process.env.AWS_SES_USER;
-const aws_secret =
-  (functions.config() &&
-    functions.config().aws &&
-    functions.config().aws.ses_pass) ||
-  process.env.AWS_SES_PASS;
+const aws_key = (functions.config() && functions.config().aws && functions.config().aws.ses_user) || process.env.AWS_SES_USER;
+const aws_secret = (functions.config() && functions.config().aws && functions.config().aws.ses_pass) || process.env.AWS_SES_PASS;
 
 export const sendMail = async (to, title, body) => {
   const mailOptions = {
