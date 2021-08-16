@@ -414,12 +414,10 @@ export const orderChange = async (db: any, data: any, context: functions.https.C
 
     const orderUpdateData = {
       order: newOrderData,
-      menuItems: newItems, // Clone of ordered menu items (simplified)
+      menuItems: newItems,
       prices: newPrices,
       options: updateOptions,
       rawOptions: updateRawOptions,
-      // status: order_status.validation_ok,
-      // number: orderCount,
       sub_total: accountingResult.sub_total,
       tax: accountingResult.tax,
       inclusiveTax: accountingResult.inclusiveTax,
@@ -486,9 +484,6 @@ export const orderChange = async (db: any, data: any, context: functions.https.C
     if (order.sendSMS) {
       await sendMessageToCustomer(db, lng, 'msg_order_updated', restaurantData.restaurantName, order, restaurantId, orderId, {}, true)
     }
-
-    // send to customer
-
     return {};
   } catch (error) {
     throw utils.process_error(error)
