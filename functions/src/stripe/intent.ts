@@ -5,7 +5,6 @@ import {
   order_status_keys, timeEventMapping
 } from '../common/constant';
 import Stripe from 'stripe'
-import Order from '../models/Order'
 import * as utils from '../lib/utils'
 import {
   orderAccounting,
@@ -68,15 +67,16 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
   const restaurantData = await utils.get_restaurant(db, restaurantId);
   const venderId = restaurantData['uid']
 
-  let order: Order | undefined = undefined;
   try {
     const result = await db.runTransaction(async transaction => {
       const stripeAccount = await getStripeAccount(db, venderId);
 
       const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`)
       const stripeRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}/system/stripe`)
-      const snapshot = await transaction.get(orderRef)
-      order = Order.fromSnapshot<Order>(snapshot)
+      const order = (await transaction.get(orderRef)).data();
+      if (!order) {
+        throw new functions.https.HttpsError('invalid-argument', 'This order does not exist.')
+      }
       order.id = orderId;
 
       // Check the stock status.
@@ -120,18 +120,17 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
         }
       };
       transaction.set(orderRef, updateData, { merge: true });
-      order = Object.assign(order, updateData);
-
       transaction.set(stripeRef, {
         paymentIntent
       }, { merge: true });
 
+      Object.assign(order, updateData);
       return {
-        success: true
+        success: true, order
       }
     })
 
-    await notifyNewOrderToRestaurant(db, restaurantId, order, restaurantData.restaurantName, lng);
+    await notifyNewOrderToRestaurant(db, restaurantId, result.order, restaurantData.restaurantName, lng);
 
     return result;
   } catch (error) {
@@ -161,13 +160,14 @@ export const confirm = async (db: FirebaseFirestore.Firestore, data: any, contex
     throw new functions.https.HttpsError('permission-denied', 'You do not have permission to confirm this request.')
   }
 
-  let order: Order | undefined = undefined;
-
   try {
     const result = await db.runTransaction(async transaction => {
 
       const snapshot = await transaction.get(orderRef)
-      order = Order.fromSnapshot<Order>(snapshot)
+      const order = (await transaction.get(orderRef)).data();
+      if (!order) {
+        throw new functions.https.HttpsError('invalid-argument', 'This order does not exist.')
+      }
       order.id = orderId;
 
       if (!snapshot.exists) {
@@ -198,28 +198,30 @@ export const confirm = async (db: FirebaseFirestore.Firestore, data: any, contex
       })
 
       const updateTimeKey = timeEventMapping[order_status_keys[nextStatus]];
-      transaction.set(orderRef, {
-        // timeConfirmed: admin.firestore.FieldValue.serverTimestamp(),
+      const updateData = {
         status: nextStatus,
         [updateTimeKey]: admin.firestore.Timestamp.now(),
         payment: {
           stripe: "confirmed"
         }
-      }, { merge: true })
+      };
+      transaction.set(orderRef, updateData, { merge: true })
       transaction.set(stripeRef, {
         paymentIntent
       }, { merge: true });
 
-      return { success: true }
+      Object.assign(order, updateData);
+      return { success: true, order }
     })
 
-    if (order && order!.sendSMS && order!.timeEstimated) {
-      const diffDay =  (moment().toDate().getTime() - order!.timeEstimated.toDate().getTime()) / 1000 / 3600 / 24;
+    const newOrder = result.order;
+    if (newOrder && newOrder.sendSMS && newOrder.timeEstimated) {
+      const diffDay =  (moment().toDate().getTime() - newOrder.timeEstimated.toDate().getTime()) / 1000 / 3600 / 24;
       console.log("timeEstimated_diff_days = " + String(diffDay));
       if (diffDay < 1) {
         const msgKey = "msg_cooking_completed"
-        const orderName = utils.nameOfOrder(order!.number)
-        await sendMessageToCustomer(db, lng, msgKey, restaurantData.restaurantName, orderName, order!.uid, order!.phoneNumber, restaurantId, orderId, {});
+        const orderName = utils.nameOfOrder(newOrder.number)
+        await sendMessageToCustomer(db, lng, msgKey, restaurantData.restaurantName, orderName, newOrder.uid, newOrder.phoneNumber, restaurantId, orderId, {});
       }
     }
 
@@ -247,20 +249,14 @@ export const cancel = async (db: any, data: any, context: functions.https.Callab
   const stripeAccount = await getStripeAccount(db, venderId);
 
   let sendSMS: boolean = false
-  let phoneNumber: string | undefined = undefined;
-  let uidUser: string | null = null;
-  let order: Order | undefined = undefined;
 
   try {
     const result = await db.runTransaction(async transaction => {
 
-      const snapshot = await transaction.get(orderRef)
-      order = Order.fromSnapshot<Order>(snapshot)
-
-      if (!snapshot.exists) {
-        throw new functions.https.HttpsError('invalid-argument', `The order does not exist.`)
+      const order = (await transaction.get(orderRef)).data();
+      if (!order) {
+        throw new functions.https.HttpsError('invalid-argument', 'This order does not exist.')
       }
-
       if (isAdmin) {
         // Admin can cancel it before confirmed
         if (uid !== venderId || order.status >= order_status.ready_to_pickup) {
@@ -275,12 +271,9 @@ export const cancel = async (db: any, data: any, context: functions.https.Callab
       }
       const cancelTimeKey = (uid === order.uid) ? "orderCustomerCanceledAt" : "orderRestaurantCanceledAt";
 
-      phoneNumber = order.phoneNumber
-      uidUser = order.uid
-
-      if (!stripeAccount || !order.payment || !order.payment.stripe) {
+      if (!order.payment || !order.payment.stripe) {
         // No payment transaction
-        await updateOrderTotalDataAndUserLog(db, transaction, uidUser, order.order, restaurantId, uid, order.timePlaced, false);
+        await updateOrderTotalDataAndUserLog(db, transaction, order.uid, order.order, restaurantId, uid, order.timePlaced, false);
         transaction.set(orderRef, {
           timeCanceled: admin.firestore.FieldValue.serverTimestamp(),
           [cancelTimeKey]: admin.firestore.FieldValue.serverTimestamp(),
@@ -300,37 +293,35 @@ export const cancel = async (db: any, data: any, context: functions.https.Callab
       }
       const paymentIntentId = stripeRecord.paymentIntent.id;
 
-      try {
-        // Check the stock status.
-        const paymentIntent = await stripe.paymentIntents.cancel(paymentIntentId, {
-          idempotencyKey: `${order.id}-cancel`,
-          stripeAccount
-        })
-        await updateOrderTotalDataAndUserLog(db, transaction, uidUser, order.order, restaurantId, restaurant.uid, order.timePlaced, false);
-        transaction.set(orderRef, {
-          timeCanceled: admin.firestore.FieldValue.serverTimestamp(),
-          [cancelTimeKey]: admin.firestore.FieldValue.serverTimestamp(),
-          status: order_status.order_canceled,
-          updatedAt: admin.firestore.Timestamp.now(),
-          uidCanceledBy: uid,
-          payment: {
-            stripe: "canceled"
-          }
-        }, { merge: true })
-        transaction.set(stripeRef, {
-          paymentIntent
-        }, { merge: true });
-        return { success: true, payment: "stripe", byUser: (uid === order.uid) }
-      } catch (error) {
-        throw error
-      }
+      // Check the stock status.
+      const paymentIntent = await stripe.paymentIntents.cancel(paymentIntentId, {
+        idempotencyKey: `${order.id}-cancel`,
+        stripeAccount
+      })
+      await updateOrderTotalDataAndUserLog(db, transaction, order.uid, order.order, restaurantId, restaurant.uid, order.timePlaced, false);
+      const updateData = {
+        timeCanceled: admin.firestore.FieldValue.serverTimestamp(),
+        [cancelTimeKey]: admin.firestore.FieldValue.serverTimestamp(),
+        status: order_status.order_canceled,
+        updatedAt: admin.firestore.Timestamp.now(),
+        uidCanceledBy: uid,
+        payment: {
+          stripe: "canceled"
+        }
+      };
+      transaction.set(orderRef, updateData, { merge: true })
+      transaction.set(stripeRef, {
+        paymentIntent
+      }, { merge: true });
+      Object.assign(order, updateData);
+      return { success: true, payment: "stripe", byUser: (uid === order.uid), order }
     })
-    const orderName = utils.nameOfOrder(order!.number);
+    const orderName = utils.nameOfOrder(result.order.number);
     if (sendSMS) {
-      await sendMessageToCustomer(db, lng, 'msg_order_canceled', restaurant.restaurantName, orderName, uidUser, phoneNumber, restaurantId, orderId, {}, true)
+      await sendMessageToCustomer(db, lng, 'msg_order_canceled', restaurant.restaurantName, orderName, result.order.uid, result.order.phoneNumber, restaurantId, orderId, {}, true)
     }
     if (uid !== venderId) {
-      await notifyCanceledOrderToRestaurant(db, restaurantId, order, restaurant.restaurantName, lng)
+      await notifyCanceledOrderToRestaurant(db, restaurantId, result.order, restaurant.restaurantName, lng)
     }
     return result
   } catch (error) {
@@ -352,24 +343,16 @@ export const cancelStripePayment = async (db: FirebaseFirestore.Firestore, data:
 
   const stripeAccount = await getStripeAccount(db, venderId);
 
-  let order: Order | undefined = undefined;
-
   try {
     const result = await db.runTransaction(async transaction => {
 
-      const snapshot = await transaction.get(orderRef)
-      order = Order.fromSnapshot<Order>(snapshot)
-
-      if (!snapshot.exists) {
-        throw new functions.https.HttpsError('invalid-argument', `The order does not exist.`)
+      const order = (await transaction.get(orderRef)).data();
+      if (!order) {
+        throw new functions.https.HttpsError('invalid-argument', 'This order does not exist.')
       }
 
-      if (!stripeAccount || !order.payment || !order.payment.stripe) {
+      if (!order.payment || !order.payment.stripe || order.payment.stripe !== "pending") {
         throw new functions.https.HttpsError('permission-denied', 'Invalid order state to cancel payment.')
-      }
-      // Admin can cancel it before confirmed
-      if (order.payment.stripe !== "pending") {
-        throw new functions.https.HttpsError('permission-denied', 'Invalid payment state to cancel.')
       }
 
       const stripeRecord = (await transaction.get(stripeRef)).data();
@@ -378,36 +361,31 @@ export const cancelStripePayment = async (db: FirebaseFirestore.Firestore, data:
       }
       const paymentIntentId = stripeRecord.paymentIntent.id;
 
-      try {
-        // Check the stock status.
-        const paymentIntent = await stripe.paymentIntents.cancel(paymentIntentId, {
-          idempotencyKey: `${order.id}-cancel`,
-          stripeAccount
-        })
-        transaction.set(orderRef, {
-          orderRestaurantPaymentCanceledAt: admin.firestore.FieldValue.serverTimestamp(),
-          updatedAt: admin.firestore.Timestamp.now(),
-          uidPaymentCanceledBy: uid,
-          payment: {
-            stripe: "canceled"
-          }
-        }, { merge: true })
-        transaction.set(stripeRef, {
-          paymentIntent
-        }, { merge: true });
-        return { success: true, payment: "stripe" }
-      } catch (error) {
-        throw error
-      }
+      // Check the stock status.
+      const paymentIntent = await stripe.paymentIntents.cancel(paymentIntentId, {
+        idempotencyKey: `${order.id}-cancel`,
+        stripeAccount
+      })
+      const updateData = {
+        orderRestaurantPaymentCanceledAt: admin.firestore.FieldValue.serverTimestamp(),
+        updatedAt: admin.firestore.Timestamp.now(),
+        uidPaymentCanceledBy: uid,
+        payment: {
+          stripe: "canceled"
+        }
+      };
+      transaction.set(orderRef, updateData, { merge: true })
+      transaction.set(stripeRef, {
+        paymentIntent
+      }, { merge: true });
+      Object.assign(order, updateData);
+      return { success: true, payment: "stripe", order }
     })
-    const orderName = utils.nameOfOrder(order!.number);
-    if (order!.sendSMS) {
-      const phoneNumber = order!.phoneNumber;
-      const uidUser = order!.uid;
-
-      await sendMessageToCustomer(db, lng, 'msg_stripe_payment_canceled', restaurant.restaurantName, orderName, uidUser, phoneNumber, restaurantId, orderId, {}, true)
+    const orderName = utils.nameOfOrder(result.order.number);
+    if (result.order.sendSMS) {
+      await sendMessageToCustomer(db, lng, 'msg_stripe_payment_canceled', restaurant.restaurantName, orderName, result.order.uid, result.order.phoneNumber, restaurantId, orderId, {}, true)
     }
-    return result
+    return { success: true, payment: "stripe" }
   } catch (error) {
     throw utils.process_error(error)
   }
