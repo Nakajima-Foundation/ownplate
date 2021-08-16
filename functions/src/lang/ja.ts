@@ -10,6 +10,7 @@ export const resource = {
     msg_order_canceled: "あなたの注文はキャンセルされました。",
     msg_stripe_payment_canceled: "カード決済失敗したため、カード払いが取り消されました。現地にてお支払いしてください。",
     msg_order_placed: "注文が入りました",
+    msg_order_updated: "注文内容が変更されました",
     msg_order_canceled_by_user: "注文がキャンセルされました"
   }
 };

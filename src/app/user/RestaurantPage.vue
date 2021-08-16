@@ -360,7 +360,7 @@ export default {
     prices() {
       const ret = {};
 
-      const multiple = this.$store.getters.stripeRegion.multiple;
+      const multiple = this.regionMultiple;
       Object.keys(this.orders).map(menuId => {
         const menu = this.itemsObj[menuId];
         ret[menuId] = [];

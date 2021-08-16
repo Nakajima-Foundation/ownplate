@@ -169,6 +169,7 @@ export default ({ app }) => {
                 count: numArray[numKey],
                 id: menuId,
                 options: optArray[numKey],
+                orderIndex: [menuId, numKey],
               });
             });
             return tmp;
@@ -228,11 +229,14 @@ export default ({ app }) => {
         // for hack
         console.log(this.$i18n.locale);
         // return this.$i18n.locale === "ja";
-	// TODO: why not ja ?
+	      // TODO: why not ja ?
         return this.$i18n.locale !== "en" && this.$i18n.locale !== "fr";
       },
       serviceKey() {
         return this.isJapan ? "omochikaeri" : "ownPlate";
+      },
+      regionMultiple() {
+        return this.$store.getters.stripeRegion.multiple;
       },
       // for user agent detect
       isIOS() {

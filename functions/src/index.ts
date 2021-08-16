@@ -28,6 +28,8 @@ exportIfNeeded("wasOrderCreated2", "order/wasOrderCreated2", exports);
 exportIfNeeded("orderUpdate", "order/orderUpdate", exports);
 exportIfNeeded("orderPlace", "order/orderPlace", exports);
 
+exportIfNeeded("orderChange", "stripe/orderChange", exports);
+
 exportIfNeeded("stripeConnect", "stripe/stripeConnect", exports);
 exportIfNeeded("stripeDisconnect", "stripe/stripeDisconnect", exports);
 exportIfNeeded("stripeVerify", "stripe/stripeVerify", exports);
