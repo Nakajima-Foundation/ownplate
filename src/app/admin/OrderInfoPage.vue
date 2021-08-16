@@ -848,7 +848,7 @@ export default {
           restaurantId: this.restaurantId() + this.forcedError("confirm"),
           orderId: this.orderId
         });
-        console.log("confirm", data);
+        // console.log("confirm", data);
         this.$router.push(this.parentUrl);
       } catch (error) {
         console.error(error.message, error.details);
@@ -909,7 +909,7 @@ export default {
         this.shopInfo,
         this.restaurantId()
       );
-      console.log(this.orderItems);
+      // console.log(this.orderItems);
     },
     async handleCancel() {
       console.log("handleCancel");
@@ -921,7 +921,7 @@ export default {
           orderId: this.orderId
         });
         this.sendRedunded();
-        console.log("cancel", data);
+        // console.log("cancel", data);
         this.$router.push(this.parentUrl);
       } catch (error) {
         console.error(error.message, error.details);
@@ -948,13 +948,11 @@ export default {
               newOrder: this.edited_available_order_info,
               timezone,
             };
-            console.log(params);
 
             const { data } = await orderChange(params);
             this.isOrderChange = false;
 
-            console.log("update", data);
-            // this.$router.push(this.parentUrl);
+            // console.log("update", data);
           } catch (error) {
             console.error(error.message, error.details);
             this.$store.commit("setErrorMessage", {
