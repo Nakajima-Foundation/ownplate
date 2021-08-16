@@ -30,16 +30,34 @@ const getCustomerStripeInfo = async (db: any, customerUid: string) => {
   }
   return stripeInfo;
 };
-const getStripeAccount = async (db: any, venderId: string) => {
-  const paymentSnapshot = await db.doc(`/admins/${venderId}/public/payment`).get();
+const getOrderData = async (transaction: any, orderRef: any) => {
+  const orderDoc = await transaction.get(orderRef);
+  const order = orderDoc.data();
+  if (!order) {
+    throw new functions.https.HttpsError('invalid-argument', 'This order does not exist.')
+  }
+  order.id = orderDoc.id;
+  return order;
+};
+
+const getStripeOrderRecord = async (transaction: any, stripeRef: any) => {
+  const stripeRecord = (await transaction.get(stripeRef)).data();
+  if (!stripeRecord || !stripeRecord.paymentIntent || !stripeRecord.paymentIntent.id) {
+    throw new functions.https.HttpsError('failed-precondition', 'This order has no paymentIntendId.')
+  }
+  return stripeRecord;
+};
+
+const getStripeAccount = async (db: any, restaurantOwnerUid: string) => {
+  const paymentSnapshot = await db.doc(`/admins/${restaurantOwnerUid}/public/payment`).get();
   const stripeAccount = paymentSnapshot.data()?.stripe
   if (!stripeAccount) {
     throw new functions.https.HttpsError('invalid-argument', 'This restaurant does not support payment.')
   }
   return stripeAccount;
 }
-const getPaymentMethodData = async (db: any, venderId: string, customerUid: string) => {
-  const stripeAccount = await getStripeAccount(db, venderId);
+const getPaymentMethodData = async (db: any, restaurantOwnerUid: string, customerUid: string) => {
+  const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
 
   const stripeInfo = await getCustomerStripeInfo(db, customerUid);
   const token = await stripe.tokens.create({
@@ -65,20 +83,16 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
   utils.validate_params({ orderId, restaurantId }); // lng, tip and sendSMS are optional
 
   const restaurantData = await utils.get_restaurant(db, restaurantId);
-  const venderId = restaurantData['uid']
+  const restaurantOwnerUid = restaurantData['uid']
 
   try {
     const result = await db.runTransaction(async transaction => {
-      const stripeAccount = await getStripeAccount(db, venderId);
+      const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
 
       const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`)
       const stripeRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}/system/stripe`)
-      const order = (await transaction.get(orderRef)).data();
-      if (!order) {
-        throw new functions.https.HttpsError('invalid-argument', 'This order does not exist.')
-      }
-      order.id = orderId;
 
+      const order = await getOrderData(transaction, orderRef);
       // Check the stock status.
       if (order.status !== order_status.validation_ok) {
         throw new functions.https.HttpsError('aborted', 'This order is invalid.')
@@ -87,7 +101,7 @@ export const create = async (db: FirebaseFirestore.Firestore, data: any, context
       const totalChargeWithTipAndMultipled = Math.round((order.total + Math.max(0, _tip)) * multiple)
 
       // We expect that there is a customer Id associated with a token
-      const payment_method_data = await getPaymentMethodData(db, venderId, customerUid);
+      const payment_method_data = await getPaymentMethodData(db, restaurantOwnerUid, customerUid);
 
       const request = {
         setup_future_usage: 'off_session',
@@ -153,26 +167,22 @@ export const confirm = async (db: FirebaseFirestore.Firestore, data: any, contex
   if (!restaurantData) {
     throw new functions.https.HttpsError('invalid-argument', 'Dose not exist a restaurant.')
   }
-  const venderId = restaurantData['uid']
-  const stripeAccount = await getStripeAccount(db, venderId);
+  const restaurantOwnerUid = restaurantData['uid']
+  const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
 
-  if (venderId !== ownerUid) {
+  if (restaurantOwnerUid !== ownerUid) {
     throw new functions.https.HttpsError('permission-denied', 'You do not have permission to confirm this request.')
   }
 
   try {
     const result = await db.runTransaction(async transaction => {
 
-      const snapshot = await transaction.get(orderRef)
       const order = (await transaction.get(orderRef)).data();
       if (!order) {
         throw new functions.https.HttpsError('invalid-argument', 'This order does not exist.')
       }
       order.id = orderId;
 
-      if (!snapshot.exists) {
-        throw new functions.https.HttpsError('invalid-argument', `The order does not exist. ${orderRef.path}`)
-      }
       // Check the stock status.
       // order.status !== order_status.cooking_completed // backward compability (99.99% unnecessary)
       if ( order.status !== order_status.order_placed // from 2021-07-17
@@ -183,12 +193,8 @@ export const confirm = async (db: FirebaseFirestore.Firestore, data: any, contex
         throw new functions.https.HttpsError('failed-precondition', 'Stripe process was done.')
       }
 
-      const stripeRecord = (await transaction.get(stripeRef)).data();
-      if (!stripeRecord || !stripeRecord.paymentIntent || !stripeRecord.paymentIntent.id) {
-        throw new functions.https.HttpsError('failed-precondition', 'This order has no paymentIntendId.')
-      }
       const nextStatus = next_transitions[order.status];
-
+      const stripeRecord = await getStripeOrderRecord(transaction, stripeRef);
       const paymentIntentId = stripeRecord.paymentIntent.id;
 
       // Check the stock status.
@@ -244,9 +250,9 @@ export const cancel = async (db: any, data: any, context: functions.https.Callab
   const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`)
   const stripeRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}/system/stripe`)
   const restaurant = await utils.get_restaurant(db, restaurantId)
-  const venderId = restaurant['uid']
+  const restaurantOwnerUid = restaurant['uid']
 
-  const stripeAccount = await getStripeAccount(db, venderId);
+  const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
 
   let sendSMS: boolean = false
 
@@ -259,7 +265,7 @@ export const cancel = async (db: any, data: any, context: functions.https.Callab
       }
       if (isAdmin) {
         // Admin can cancel it before confirmed
-        if (uid !== venderId || order.status >= order_status.ready_to_pickup) {
+        if (uid !== restaurantOwnerUid || order.status >= order_status.ready_to_pickup) {
           throw new functions.https.HttpsError('permission-denied', 'Invalid order state to cancel.')
         }
         sendSMS = order.sendSMS
@@ -284,13 +290,10 @@ export const cancel = async (db: any, data: any, context: functions.https.Callab
         return { success: true, payment: false }
       }
 
-      const stripeRecord = (await transaction.get(stripeRef)).data();
-      if (!stripeRecord || !stripeRecord.paymentIntent || !stripeRecord.paymentIntent.id) {
-        throw new functions.https.HttpsError('failed-precondition', 'This order has no paymentIntendId.', stripeRecord)
-      }
       if (order.payment.stripe !== "pending") {
         throw new functions.https.HttpsError('permission-denied', 'Invalid payment state to cancel.')
       }
+      const stripeRecord = await getStripeOrderRecord(transaction, stripeRef);
       const paymentIntentId = stripeRecord.paymentIntent.id;
 
       // Check the stock status.
@@ -320,7 +323,7 @@ export const cancel = async (db: any, data: any, context: functions.https.Callab
     if (sendSMS) {
       await sendMessageToCustomer(db, lng, 'msg_order_canceled', restaurant.restaurantName, orderName, result.order.uid, result.order.phoneNumber, restaurantId, orderId, {}, true)
     }
-    if (uid !== venderId) {
+    if (uid !== restaurantOwnerUid) {
       await notifyCanceledOrderToRestaurant(db, restaurantId, result.order, restaurant.restaurantName, lng)
     }
     return result
@@ -339,9 +342,9 @@ export const cancelStripePayment = async (db: FirebaseFirestore.Firestore, data:
   const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`)
   const stripeRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}/system/stripe`)
   const restaurant = await utils.get_restaurant(db, restaurantId)
-  const venderId = restaurant['uid']
+  const restaurantOwnerUid = restaurant['uid']
 
-  const stripeAccount = await getStripeAccount(db, venderId);
+  const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
 
   try {
     const result = await db.runTransaction(async transaction => {
@@ -355,10 +358,7 @@ export const cancelStripePayment = async (db: FirebaseFirestore.Firestore, data:
         throw new functions.https.HttpsError('permission-denied', 'Invalid order state to cancel payment.')
       }
 
-      const stripeRecord = (await transaction.get(stripeRef)).data();
-      if (!stripeRecord || !stripeRecord.paymentIntent || !stripeRecord.paymentIntent.id) {
-        throw new functions.https.HttpsError('failed-precondition', 'This order has no paymentIntendId.', stripeRecord)
-      }
+      const stripeRecord = await getStripeOrderRecord(transaction, stripeRef);
       const paymentIntentId = stripeRecord.paymentIntent.id;
 
       // Check the stock status.
@@ -392,7 +392,6 @@ export const cancelStripePayment = async (db: FirebaseFirestore.Firestore, data:
 };
 
 const getUpdateOrder = (newOrder, order, options, rawOptions) => {
-  // console.log(newOrder, order, options, rawOptions);
   const updateOrderData = {};
   const updateOptions = {};
   const updateRawOptions = {};
@@ -483,20 +482,16 @@ export const orderChange = async (db: any, data: any, context: functions.https.C
       // update stripe
       const result = await db.runTransaction(async transaction => {
         const customerUid = order.uid;
-        const venderId = restaurantData['uid'];
-        const stripeAccount = await getStripeAccount(db, venderId);
+        const restaurantOwnerUid = restaurantData['uid'];
+        const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
 
         const stripeRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}/system/stripe`);
-        const stripeRecord = (await transaction.get(stripeRef)).data();
+        await getStripeOrderRecord(transaction, stripeRef);
 
         (await transaction.get(orderRef)).data();
 
-        if (!stripeRecord || !stripeRecord.paymentIntent || !stripeRecord.paymentIntent.id) {
-          throw new functions.https.HttpsError('failed-precondition', 'This order has no paymentIntendId.')
-        }
-
         // get System Stripe
-        const payment_method_data = await getPaymentMethodData(db, venderId, customerUid);
+        const payment_method_data = await getPaymentMethodData(db, restaurantOwnerUid, customerUid);
 
         const description = `#${order.number} ${restaurantData.restaurantName} ${order.phoneNumber}`;
         const request = {
