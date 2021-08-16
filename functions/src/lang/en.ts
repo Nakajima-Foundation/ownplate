@@ -10,6 +10,7 @@ export const resource = {
     msg_order_canceled: "Your order has been canceled.",
     msg_stripe_payment_canceled: "The card payment was canceled because the card payment failed. Please pay in the restaurant.",
     msg_order_placed: "Order Placed",
+    msg_order_updated: "Your order has been changed.",
     msg_order_canceled_by_user: "Order Canceled"
   }
 };

@@ -254,8 +254,6 @@ export const cancel = async (db: any, data: any, context: functions.https.Callab
 
   const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
 
-  let sendSMS: boolean = false
-
   try {
     const result = await db.runTransaction(async transaction => {
 
@@ -268,7 +266,6 @@ export const cancel = async (db: any, data: any, context: functions.https.Callab
         if (uid !== restaurantOwnerUid || order.status >= order_status.ready_to_pickup) {
           throw new functions.https.HttpsError('permission-denied', 'Invalid order state to cancel.')
         }
-        sendSMS = order.sendSMS
       } else {
         // User can cancel an order before accepted
         if (uid !== order.uid || order.status !== order_status.order_placed) {
@@ -320,10 +317,10 @@ export const cancel = async (db: any, data: any, context: functions.https.Callab
       return { success: true, payment: "stripe", byUser: (uid === order.uid), order }
     })
     const orderName = utils.nameOfOrder(result.order.number);
-    if (sendSMS) {
+    if (isAdmin && result.order.sendSMS) {
       await sendMessageToCustomer(db, lng, 'msg_order_canceled', restaurant.restaurantName, orderName, result.order.uid, result.order.phoneNumber, restaurantId, orderId, {}, true)
     }
-    if (uid !== restaurantOwnerUid) {
+    if (!isAdmin) {
       await notifyCanceledOrderToRestaurant(db, restaurantId, result.order, restaurant.restaurantName, lng)
     }
     return result
@@ -417,15 +414,16 @@ const getUpdateOrder = (newOrder, order, options, rawOptions) => {
 };
 export const orderChange = async (db: any, data: any, context: functions.https.CallableContext | Context) => {
   const ownerUid = utils.validate_admin_auth(context);
-  const { restaurantId, orderId, newOrder, timezone } = data;
+  const { restaurantId, orderId, newOrder, timezone, lng } = data;
   utils.validate_params({ restaurantId, orderId, newOrder, timezone }) // lng, timeEstimated is optional
 
+  const restaurantRef = db.doc(`restaurants/${restaurantId}`)
+  const restaurantData = (await restaurantRef.get()).data() || {}
+  if (restaurantData.uid !== ownerUid) {
+    throw new functions.https.HttpsError('permission-denied', 'The user does not have an authority to perform this operation.')
+  }
+
   try {
-    const restaurantRef = db.doc(`restaurants/${restaurantId}`)
-    const restaurantData = (await restaurantRef.get()).data() || {}
-    if (restaurantData.uid !== ownerUid) {
-      throw new functions.https.HttpsError('permission-denied', 'The user does not have an authority to perform this operation.')
-    }
     const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`)
     const order = (await orderRef.get()).data();
     if (!order) {
@@ -480,7 +478,7 @@ export const orderChange = async (db: any, data: any, context: functions.https.C
       orderRef.update(orderUpdateData);
     } else {
       // update stripe
-      const result = await db.runTransaction(async transaction => {
+      await db.runTransaction(async transaction => {
         const customerUid = order.uid;
         const restaurantOwnerUid = restaurantData['uid'];
         const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
@@ -520,7 +518,10 @@ export const orderChange = async (db: any, data: any, context: functions.https.C
         }, { merge: true });
         return {};
       });
-      console.log(result);
+    }
+    if (order.sendSMS) {
+      const orderName = utils.nameOfOrder(newOrder.number)
+      await sendMessageToCustomer(db, lng, 'msg_order_updated', restaurantData.restaurantName, orderName, order.uid, order.phoneNumber, restaurantId, orderId, {}, true)
     }
 
     // send to customer
