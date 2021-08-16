@@ -2,7 +2,7 @@ import * as admin from "firebase-admin";
 import * as functions from "firebase-functions";
 import * as utils from "../lib/utils";
 
-export const createCustomer = async (db: admin.firestore, uid: string, phoneNumber: string) => {
+export const createCustomer = async (db: admin.firestore.Firestore, uid: string, phoneNumber: string) => {
   const stripe = utils.get_stripe();
   await db.runTransaction(async (tr) => {
     const refStripe = db.doc(`/users/${uid}/system/stripe`);
@@ -21,7 +21,7 @@ export const createCustomer = async (db: admin.firestore, uid: string, phoneNumb
   });
 };
 
-export const deleteCard = async (db: admin.firestore, data: any, context: functions.https.CallableContext) => {
+export const deleteCard = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
 
   try {
@@ -54,7 +54,7 @@ export const deleteCard = async (db: admin.firestore, data: any, context: functi
   }
 };
 
-export const deleteCustomer = async (db: admin.firestore, uid: string) => {
+export const deleteCustomer = async (db: admin.firestore.Firestore, uid: string) => {
   const stripe = utils.get_stripe();
   const refStripeSystem = db.doc(`/users/${uid}/system/stripe`);
   const refStripeReadOnly = db.doc(`/users/${uid}/readonly/stripe`);
@@ -74,7 +74,7 @@ export const deleteCustomer = async (db: admin.firestore, uid: string) => {
   });
 };
 
-export const update = async (db: admin.firestore, data: any, context: functions.https.CallableContext) => {
+export const update = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
   const { tokenId, reuse } = data;
   utils.validate_params({ tokenId });

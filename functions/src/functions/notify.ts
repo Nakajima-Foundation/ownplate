@@ -16,7 +16,7 @@ import * as ses from "./ses";
 
 // for customer
 export const sendMessageToCustomer = async (
-  db: firebase.firestore,
+  db: firebase.firestore.Firestore,
   lng: string,
   msgKey: string,
   restaurantName: string,
@@ -196,10 +196,10 @@ export const notifyRestaurant = async (db: any, messageId: string, restaurantId:
   }
 };
 
-export const notifyNewOrderToRestaurant = async (db: firebase.firestore, restaurantId: string, order: any, restaurantName: string, lng: string) => {
+export const notifyNewOrderToRestaurant = async (db: firebase.firestore.Firestore, restaurantId: string, order: any, restaurantName: string, lng: string) => {
   return notifyRestaurant(db, "msg_order_placed", restaurantId, order, restaurantName, lng);
 };
 
-export const notifyCanceledOrderToRestaurant = async (db: firebase.firestore, restaurantId: string, order: any, restaurantName: string, lng: string) => {
+export const notifyCanceledOrderToRestaurant = async (db: firebase.firestore.Firestore, restaurantId: string, order: any, restaurantName: string, lng: string) => {
   return notifyRestaurant(db, "msg_order_canceled_by_user", restaurantId, order, restaurantName, lng);
 };

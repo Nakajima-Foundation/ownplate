@@ -85,7 +85,7 @@ export const updateOrderTotalDataAndUserLog = async (db, transaction, customerUi
 };
 
 // This function is called by users to place orders without paying
-// export const place = async (db: admin.firestore, data: any, context: functions.https.CallableContext) => {
+// export const place = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => {
 export const place = async (db, data: any, context: functions.https.CallableContext | Context) => {
   const customerUid = utils.validate_auth(context);
   const { restaurantId, orderId, tip, sendSMS, timeToPickup, lng, memo } = data;
@@ -139,7 +139,7 @@ export const place = async (db, data: any, context: functions.https.CallableCont
 };
 
 // This function is called by admins (restaurant operators) to update the status of order
-export const update = async (db: admin.firestore, data: any, context: functions.https.CallableContext) => {
+export const update = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const ownerUid = utils.validate_admin_auth(context);
   const { restaurantId, orderId, status, lng, timezone, timeEstimated } = data;
   utils.validate_params({ restaurantId, orderId, status, timezone }); // lng, timeEstimated is optional

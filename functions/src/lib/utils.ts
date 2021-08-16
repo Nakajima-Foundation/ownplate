@@ -74,7 +74,7 @@ export const validate_params = (params) => {
   }
 };
 
-export const get_restaurant = async (db: admin.firestore, restaurantId: String) => {
+export const get_restaurant = async (db: admin.firestore.Firestore, restaurantId: String) => {
   const snapshot = await db.doc(`/restaurants/${restaurantId}`).get();
   const data = snapshot.data();
   if (!data) {
