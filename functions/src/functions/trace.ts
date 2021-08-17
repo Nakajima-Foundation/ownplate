@@ -3,7 +3,7 @@ import * as functions from "firebase-functions";
 import * as utils from "../lib/utils";
 import * as crypto from "crypto";
 
-export const process = async (db: admin.firestore, data: any, context: functions.https.CallableContext) => {
+export const process = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
   const { eventId } = data;
   utils.validate_params({ eventId });

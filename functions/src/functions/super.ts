@@ -2,7 +2,7 @@ import * as functions from "firebase-functions";
 import * as utils from "../lib/utils";
 import * as admin from "firebase-admin";
 
-export const dispatch = async (db: admin.firestore, data: any, context: functions.https.CallableContext) => {
+export const dispatch = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => {
   if (!context.auth?.token?.admin) {
     throw new functions.https.HttpsError("permission-denied", "You do not have permission to confirm this request.");
   }
@@ -64,13 +64,13 @@ export const dispatch = async (db: admin.firestore, data: any, context: function
   }
 };
 
-const getCustomClaims = async (db: admin.firestore, uid: string) => {
+const getCustomClaims = async (db: admin.firestore.Firestore, uid: string) => {
   const userRecord = await admin.auth().getUser(uid);
   const customClaims = userRecord.customClaims || {};
   return { result: customClaims };
 };
 
-const setCustomClaim = async (db: admin.firestore, uid: string, key: string, value: boolean) => {
+const setCustomClaim = async (db: admin.firestore.Firestore, uid: string, key: string, value: boolean) => {
   const obj = { [key]: value };
   await admin.auth().setCustomUserClaims(uid, obj);
   await db.doc(`admins/${uid}`).update(obj); // duplicated data in DB
