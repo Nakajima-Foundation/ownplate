@@ -461,7 +461,7 @@
               :editedAvailableOrders="editedAvailableOrders"
               @input="updateEnable"
               ></order-info>
-            <div>
+            <div v-if="editedAvailableOrders.length > 1">
               <div class="bg-white rounded-lg shadow p-4 text-center" v-if="orderInfo.orderUpdatedAt">
                 <div>注文内容の変更</div>
                 {{timeStampToText(orderInfo.orderUpdatedAt)}}変更済み
@@ -811,8 +811,7 @@ export default {
         this.isNull(this.orderInfo.orderUpdatedAt);
     },
     availableChangeButton() {
-      return this.edited_available_order_info.length !== this.editedAvailableOrders.length
-      // return false;
+      return (this.edited_available_order_info.length !== this.editedAvailableOrders.length) && (this.edited_available_order_info.length > 0)
     },
   },
   methods: {
