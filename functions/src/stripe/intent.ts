@@ -412,6 +412,9 @@ export const orderChange = async (db: any, data: any, context: functions.https.C
   if (restaurantData.uid !== ownerUid) {
     throw new functions.https.HttpsError("permission-denied", "The user does not have an authority to perform this operation.");
   }
+  if (newOrder.length === 0) {
+    throw new functions.https.HttpsError("permission-denied", "Cannot be changed to an empty order.");
+  }
 
   try {
     const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`);
