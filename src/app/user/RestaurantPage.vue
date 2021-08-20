@@ -192,7 +192,7 @@ import ShopInfo from "~/app/user/Restaurant/ShopInfo";
 import NotFound from "~/components/NotFound";
 import Price from "~/components/Price";
 
-import { db, firestore, functions, analytics } from "~/plugins/firebase.js";
+import { db, firestore, functions } from "~/plugins/firebase.js";
 import { order_status } from "~/plugins/constant.js";
 
 import { ownPlateConfig } from "@/config/project";
@@ -392,7 +392,7 @@ export default {
           ret[menuId].push(price * num);
         });
       });
-      console.log(ret);
+      // console.log(ret);
       return ret;
     },
     totalQuantities() {
@@ -531,6 +531,25 @@ export default {
           restaurantId: this.restaurantId(),
           orderId: res.id
         });
+
+        try {
+          const menus = [];
+          Object.keys(this.orders).forEach((menuId) => {
+            this.orders[menuId].forEach(quantity => {
+              const menu = Object.assign({}, this.itemsObj[menuId]);
+              menu.quantity = quantity;
+              menus.push(menu);
+            });
+          });
+          analyticsUtil.sendBeginCheckoout(
+            this.totalPrice.total,
+            menus,
+            this.shopInfo,
+            this.restaurantId()
+          );
+        } catch (e) {
+          console.log(e);
+        }
         this.$router.push({
           path: `/r/${this.restaurantId()}/order/${res.id}`
         });
