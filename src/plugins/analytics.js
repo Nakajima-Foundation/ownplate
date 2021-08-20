@@ -5,6 +5,8 @@ import { analytics } from "~/plugins/firebase.js";
 
 // Event List
 // https://firebase.google.com/docs/reference/js/firebase.analytics.EventName
+// https://developers.google.com/gtagjs/reference/ga4-events#login
+// https://firebase.google.com/docs/reference/js/firebase.analytics.Analytics
 
 export const sku_item_data = (menu, shopInfo, restaurantId) => {
   return {
