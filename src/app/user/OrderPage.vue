@@ -696,6 +696,17 @@ export default {
                 }
               }
             }
+            if (this.just_validated) {
+              analyticsUtil.sendViewCart(
+                this.orderInfo,
+                this.orderId,
+                this.orderItems.map(or => {
+                  return { ...or.item, id: or.id };
+                }),
+                this.shopInfo,
+                this.restaurantId()
+              );
+            }
           },
           error => {
             console.error(error.message);
