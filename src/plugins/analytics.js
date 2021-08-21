@@ -115,6 +115,7 @@ export const sendSelectItem = (item, shopInfo, restaurantId) => {
     const analyticsData = {
       items: sku_item_data(item, shopInfo, restaurantId),
     };
+    // console.log(analyticsData);
     analytics.logEvent(firebase.analytics.EventName.SELECT_ITEM, analyticsData);
   } catch (e) {
     console.log(e);
@@ -128,6 +129,7 @@ export const sendAddToCart = (item, shopInfo, restaurantId, quantity) => {
       value: item.price,
       items: sku_item_data2(item, shopInfo, restaurantId, quantity),
     };
+    // console.log(analyticsData);
     analytics.logEvent(firebase.analytics.EventName.ADD_TO_CART, analyticsData);
   } catch (e) {
     console.log(e);
@@ -141,7 +143,24 @@ export const sendRemoveFromCart = (item, shopInfo, restaurantId, quantity) => {
       value: item.price,
       items: sku_item_data2(item, shopInfo, restaurantId, quantity),
     };
+    // console.log(analyticsData);
     analytics.logEvent(firebase.analytics.EventName.REMOVE_FROM_CART, analyticsData);
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+export const sendViewCart = (orderInfo, orderId, menus, shopInfo, restaurantId) => {
+  try {
+    const analyticsData = {
+      currency: 'JPY',
+      value: orderInfo.total,
+      items: menus.map((item) => {
+        return sku_item_data(item, shopInfo, restaurantId);
+      }),
+    };
+    // console.log(analyticsData);
+    analytics.logEvent(firebase.analytics.EventName.VIEW_CART, analyticsData);
   } catch (e) {
     console.log(e);
   }

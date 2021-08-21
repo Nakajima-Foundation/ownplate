@@ -428,17 +428,35 @@ export default {
       if (this.quantities[key] <= 0) {
         return;
       }
-
       this.setQuantities(key, this.quantities[key] - 1);
+      analyticsUtil.sendRemoveFromCart(
+        this.item,
+        this.shopInfo,
+        this.restaurantId(),
+        1
+      )
     },
     pushQuantities(key) {
       this.setQuantities(key, this.quantities[key] + 1);
       if (!this.openMenuFlag) {
         this.toggleMenuFlag();
       }
+      analyticsUtil.sendAddToCart(
+        this.item,
+        this.shopInfo,
+        this.restaurantId(),
+        1
+      )
     },
     toggleMenuFlag() {
       this.openMenuFlag = !this.openMenuFlag;
+      if (this.openMenuFlag) {
+        analyticsUtil.sendSelectItem(
+          this.item,
+          this.shopInfo,
+          this.restaurantId()
+        );
+      }
     },
     setQuantities(key, newValue) {
       const newQuantities = [...this.quantities];
