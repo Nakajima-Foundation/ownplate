@@ -83,6 +83,8 @@ service cloud.firestore {
               && isUndefined(request.resource.data, 'operator');
       allow read: if request.auth.uid == userId;
       allow read: if isSuper(request);
+
+      allow write: if isSuper(request);
       match /public/{document=**} {
         allow read: if true;
         allow write: if request.auth.uid == userId;
