@@ -114,6 +114,13 @@ service cloud.firestore {
       }
     }
 
+    match /owners/{ownerId} {
+      // Note: we don't want to allow the user to "update"
+      allow write: if request.auth.uid == userId && isUndefined(request.resource.data, 'admin')
+              && isUndefined(request.resource.data, 'operator');
+      allow read: if true
+    }
+
     // Rules for collection group
     match /{path=**}/orders/{orderId} {
       allow read: if isSuper(request);

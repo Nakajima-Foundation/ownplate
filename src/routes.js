@@ -94,6 +94,11 @@ export const customRoutes = [
     component: "user/TransactionsAct.vue"
   },
   {
+    name: "adminOwner",
+    path: "/admin/owner",
+    component: "admin/Owner.vue"
+  },
+  {
     name: "admin",
     path: "/admin/restaurants",
     component: "admin/Index.vue"
