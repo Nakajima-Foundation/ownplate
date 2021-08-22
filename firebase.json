@@ -35,6 +35,10 @@
         "function": "api"
       },
       {
+        "source": "/o/*",
+        "function": "api"
+      },
+      {
         "source": "/1.0/**",
         "function": "api"
       },
