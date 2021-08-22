@@ -2,11 +2,11 @@
   <div>
     <!-- Restaurants -->
     <div v-if="ownerData.name">
-      <div class="grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12 lg:mx-6">
+      <div class="grid grid-cols-1">
         <!-- Left -->
         <div>
           <!-- Cover Image -->
-          <div class="lg:mt-6">
+          <div>
             <img
               @click.stop="openImage()"
               :src="coverImage"
