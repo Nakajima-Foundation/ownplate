@@ -195,6 +195,69 @@ const ogpPage = async (req: any, res: any) => {
     res.send(template_data);
   }
 };
+
+
+const ownerPage = async (req: any, res: any) => {
+  const { ownerId } = req.params;
+  const template_data = fs.readFileSync("./templates/index.html", {
+    encoding: "utf8",
+  });
+  try {
+    const ownerData = await getOwnerData(ownerId);
+    if (!ownerData) {
+      return res.send(template_data);
+    }
+
+    const siteName = ownPlateConfig.siteName;
+    const title = [ownerData.name].join(" / ");
+    const image =  (ownerData?.images?.cover?.resizedImages || {})["600"];
+    const description = ownerData.description;
+    const regexTitle = /<title.*title>/;
+    const url = `https://${ownPlateConfig.hostName}/o/${ownerId}`;
+
+    const metas = [
+      `<title>${escapeHtml(title)}</title>`,
+      `<meta data-n-head="1" charset="utf-8">`,
+      `<meta data-n-head="1" name="viewport" content="width=device-width,initial-scale=1">`,
+      `<meta name="description" content="${escapeHtml(description)}"/>`,
+      `<meta property="og:title" content="${escapeHtml(title)}" />`,
+      `<meta property="og:site_name" content="${escapeHtml(siteName)}" />`,
+      `<meta property="og:type" content="website" />`,
+      `<meta property="og:url" content="${url}" />`,
+      `<meta property="og:description" content="${escapeHtml(description)}" />`,
+      `<meta property="og:image" content="${image}" />`,
+      `<meta name="twitter:card" content="summary_large_image" />`,
+      `<meta name="twitter:site" content="@omochikaericom" />`,
+      `<meta name="twitter:creator" content="@omochikaericom" />`,
+      `<meta name="twitter:description" content="${description}" />`,
+      `<meta name="twitter:image" content="${image}" />`,
+    ];
+    res.set("Cache-Control", "public, max-age=300, s-maxage=600");
+
+    const regexBody = /<div id="__nuxt">/;
+
+    const bodyString = [
+      '<div id="__nuxt">',
+      '<h1 style="font-size: 50px;">',
+      escapeHtml(title),
+      "</h1>",
+      '<span style="font-size: 30px;">',
+      escapeHtml(ownerData.introduction),
+      "</span>",
+    ].join("\n");
+
+    res.send(
+      template_data
+        .replace(/<meta[^>]*>/g, "")
+        .replace(regexTitle, metas.join("\n"))
+        .replace(regexBody, bodyString)
+    );
+  } catch (e) {
+    console.log(e);
+    Sentry.captureException(e);
+    res.send(template_data);
+  }
+};
 const debugError = async (req: any, res: any) => { // eslint-disable-line
   setTimeout(() => {
     throw new Error("sample error");
@@ -203,6 +266,14 @@ const debugError = async (req: any, res: any) => { // eslint-disable-line
 
 const getShopOwner = async (uid) => {
   const owner = await db.doc(`/admins/${uid}`).get();
+  if (owner && owner.exists) {
+    return owner.data();
+  }
+  return { hidePrivacy: false };
+};
+
+const getOwnerData = async (uid) => {
+  const owner = await db.doc(`/owners/${uid}`).get();
   if (owner && owner.exists) {
     return owner.data();
   }
@@ -252,6 +323,9 @@ app.use("/smaregi/1.0", smaregi.smaregiRouter);
 app.get("/r/:restaurantName", ogpPage);
 app.get("/r/:restaurantName/menus/:menuId", ogpPage);
 app.get("/r/:restaurantName/order/:orderId", ogpPage);
+
+app.get("/o/:ownerId", ownerPage);
+
 
 app.get("/sitemap.xml", sitemap_response);
 

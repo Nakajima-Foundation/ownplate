@@ -40,6 +40,19 @@ const good_cafe_data = {
   inclusiveTax: true,
 };
 
+const ownerData = {
+  images: {
+    cover: {
+      resizedImages: {
+        "600": "https://example.com/images600",
+      },
+    },
+  },
+  name: "Good cafe owner",
+  introduction: "こんにちは",
+  description: "hello",
+};
+
 describe("express function", () => {
   before(async () => {
     await adminDB.doc(`restaurants/testbar`).set(good_cafe_data);
@@ -141,6 +154,7 @@ describe("express function", () => {
       tip: 0,
       orderPlacedAt: { seconds: 1611624733, nanoseconds: 407000000 },
     });
+    await adminDB.doc('owners/123').set(ownerData);
   });
 
   it("express simple test", async function () {
@@ -265,6 +279,13 @@ describe("express function", () => {
     const response = await request.get("/api/2.0/restaurants/testbar/orders").set("Authorization", "Bearer apiKeyMaster");
     response.status.should.equal(200);
     console.log(JSON.stringify(JSON.parse(response.text), undefined, 1));
+  });
+
+
+  it("owner test", async function () {
+    const response = await request.get("/o/123");
+    response.status.should.equal(200);
+    console.log(response.text);
   });
 
   /*
