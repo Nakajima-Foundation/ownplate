@@ -194,6 +194,23 @@
         </div>
       </div>
 
+      <div v-if="orderInfo.phoneNumber" class="mt-4 text-center">
+        <div class="text-base font-bold">
+          お客様の情報
+        </div>
+        <div class="text-xs font-bold">
+          {{ $t("sms.phonenumber") }}
+        </div>
+        <div class="text-base mt-1">
+          <div>
+            <a :href="nationalPhoneURI" class="text-base font-bold">{{
+              nationalPhoneNumber
+              }}</a>
+          </div>
+          <div class="text-base">{{ orderInfo.name }}</div>
+        </div>
+      </div>
+
       <!-- Order Body -->
       <div class="mt-6 mx-6 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12">
         <!-- Left -->
@@ -467,6 +484,12 @@ import { lineAuthURL } from "~/plugins/line.js";
 
 import * as analyticsUtil from "~/plugins/analytics";
 
+import {
+  parsePhoneNumber,
+  formatNational,
+  formatURL
+} from "~/plugins/phoneutil.js";
+
 export default {
   name: "Order",
   head() {
@@ -620,7 +643,20 @@ export default {
     },
     hasMemo() {
       return this.orderInfo && !this.isEmpty(this.orderInfo.memo);
-    }
+    },
+    phoneNumber() {
+      return (
+        this.orderInfo &&
+        this.orderInfo.phoneNumber &&
+        parsePhoneNumber(this.orderInfo.phoneNumber)
+      );
+    },
+    nationalPhoneNumber() {
+      return formatNational(this.phoneNumber);
+    },
+    nationalPhoneURI() {
+      return formatURL(this.phoneNumber);
+    },
   },
   watch: {
     isUser() {
