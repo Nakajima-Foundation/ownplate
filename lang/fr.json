@@ -462,7 +462,8 @@
     "orderTimesUnit": "{count} times",
     "cancelTimes": "Cancel",
     "cancelTimesUnit": "{count} times",
-    "lastOrder": "Last order"
+    "lastOrder": "Last order",
+    "thisOrder": "This order"
   },
   "button": {
     "back": "Retour",

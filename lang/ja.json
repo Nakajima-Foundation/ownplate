@@ -462,7 +462,8 @@
     "orderTimesUnit": "{count}回",
     "cancelTimes": "キャンセル",
     "cancelTimesUnit": "{count}回",
-    "lastOrder": "前回"
+    "lastOrder": "前回",
+    "thisOrder": "今回"
   },
   "button": {
     "back": "戻る",
