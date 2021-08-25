@@ -297,9 +297,12 @@
                 {{ $t("order.cancelTimes") }}: {{ $tc("order.cancelTimesUnit", userLog.cancelCounter || 0) }}
               </div>
               <div>
-                <div v-if="isWarningOrder" class="p-2 border-4 border-red-700 inline-flex rounded-full">
-                  {{ $t("order.lastOrder") }}: {{userLog.lastOrder ? moment(userLog.lastOrder.toDate()).format("YYYY/MM/DD HH:mm") : "--"}}<br />
-                  {{ $t("order.thisOrder") }}: {{orderInfo.timePlaced ? moment(orderInfo.timePlaced.toDate()).format("YYYY/MM/DD HH:mm") : "--"}}
+                <div v-if="isWarningOrder" class="bg-red-700 bg-opacity-10 rounded-lg p-4 text-center  inline-flex ">
+                  <div class="text-base font-bold text-red-700">
+                    {{ $t("order.continuousOrder") }}<br/>
+                    {{ $t("order.lastOrder") }}: {{userLog.lastOrder ? moment(userLog.lastOrder.toDate()).format("YYYY/MM/DD HH:mm") : "--"}}<br />
+                    {{ $t("order.thisOrder") }}: {{orderInfo.timePlaced ? moment(orderInfo.timePlaced.toDate()).format("YYYY/MM/DD HH:mm") : "--"}}
+                  </div>
                 </div>
                 <div v-else>
                   {{ $t("order.lastOrder") }}: {{userLog.lastOrder ? moment(userLog.lastOrder.toDate()).format("YYYY/MM/DD HH:mm") : "--"}}
