@@ -462,6 +462,7 @@
     "orderTimesUnit": "{count}回",
     "cancelTimes": "キャンセル",
     "cancelTimesUnit": "{count}回",
+    "continuousOrder": "注意: 連続した注文です",
     "lastOrder": "前回",
     "thisOrder": "今回"
   },

@@ -462,6 +462,7 @@
     "orderTimesUnit": "{count} times",
     "cancelTimes": "Cancel",
     "cancelTimesUnit": "{count} times",
+    "continuousOrder": "Warning: a continuous order",
     "lastOrder": "Last order",
     "thisOrder": "This order"
   },
