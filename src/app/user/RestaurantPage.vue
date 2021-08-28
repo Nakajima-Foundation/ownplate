@@ -72,36 +72,44 @@
 
           <!-- Right -->
           <div>
+            <div class="mx-6 mt-6 lg:mx-0">
+              <template v-for="(title, key) in titleLists">
+                <a :href="`#${title.id}`"
+                   class="inline-flex justify-center items-center h-9 m-1 rounded-full bg-black bg-opacity-5"
+                   >
+                  <div class="text-sm font-bold text-op-teal">
+                    {{title.name}}
+                  </div>
+                </a>
+              </template>
+            </div>
             <!-- For Responsible -->
             <div class="mx-6 mt-6 lg:mx-0">
               <!-- Menu Items -->
               <div class="grid grid-col-1 space-y-2">
-                <template v-for="itemId in menuLists">
-                  <div v-if="itemsObj[itemId]" :key="itemId">
-                    <div
-                      v-if="itemsObj[itemId]._dataType === 'title'"
-                      class="text-xl font-bold text-black text-opacity-30"
-                      :class="
-                        menuLists[0] === itemsObj[itemId].id ? '' : 'mt-6'
-                      "
+                <div v-for="(item, key) in itemLists" :key="key">
+                  <div
+                    v-if="item._dataType === 'title'"
+                    class="text-xl font-bold text-black text-opacity-30"
+                    :class="key === 0 ? '' : 'mt-6'"
+                    :id="item.id"
                     >
-                      {{ itemsObj[itemId].name }}
-                    </div>
-
-                    <item-card
-                      v-if="itemsObj[itemId]._dataType === 'menu'"
-                      :item="itemsObj[itemId]"
-                      :quantities="orders[itemId] || [0]"
-                      :optionPrev="optionsPrev[itemId]"
-                      :initialOpenMenuFlag="(orders[itemId] || []).length > 0"
-                      :shopInfo="shopInfo"
-                      :isOpen="menuId === itemId"
-                      :prices="prices[itemId] || []"
-                      @didQuantitiesChange="didQuantitiesChange($event)"
-                      @didOptionValuesChange="didOptionValuesChange($event)"
-                    ></item-card>
+                    {{ item.name }}
                   </div>
-                </template>
+
+                  <item-card
+                    v-if="item._dataType === 'menu'"
+                    :item="item"
+                    :quantities="orders[item.id] || [0]"
+                    :optionPrev="optionsPrev[item.id]"
+                    :initialOpenMenuFlag="(orders[item.id] || []).length > 0"
+                    :shopInfo="shopInfo"
+                    :isOpen="menuId === item.id"
+                    :prices="prices[item.id] || []"
+                    @didQuantitiesChange="didQuantitiesChange($event)"
+                    @didOptionValuesChange="didOptionValuesChange($event)"
+                    ></item-card>
+                </div>
               </div>
             </div>
           </div>
@@ -407,6 +415,18 @@ export default {
     menuLists() {
       const list = this.shopInfo.menuLists || [];
       return list;
+    },
+    itemLists() {
+      return this.menuLists.map((itemId) => {
+        return this.itemsObj[itemId];
+      }).filter((item) => {
+        return item;
+      });
+    },
+    titleLists() {
+      return this.itemLists.filter((item) => {
+        return item._dataType === "title"
+      });
     },
     trimmedSelectedOptions() {
       return Object.keys(this.orders).reduce((ret, id) => {
