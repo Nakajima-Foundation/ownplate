@@ -232,6 +232,10 @@ export const customRoutes = [
     component: "super/AllRestaurants.vue"
   },
   {
+    path: "/s/restaurants/:restaurantId",
+    component: "super/Restaurants.vue"
+  },
+  {
     path: "/s/admins",
     component: "super/AllAdmins.vue"
   },

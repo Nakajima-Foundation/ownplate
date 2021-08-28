@@ -39,13 +39,19 @@
           </b-select>
           <!-- Orders -->
           <div class="mx-6 mt-6 grid grid-cols-1 gap-2 lg:grid-cols-3 xl:grid-cols-4">
-            <ordered-info
+            <div
               v-for="order in filteredOrders"
               :key="order.id"
-              :isSuperView="true"
-              @selected="orderSelected($event)"
-              :order="order"
-            />
+              >
+              <ordered-info
+                :isSuperView="true"
+                @selected="orderSelected($event)"
+                :order="order"
+                />
+              <router-link :to="`/s/restaurants/${order.restaurantId}`" >
+                {{order.restaurant.restaurantName}}
+              </router-link>
+            </div>
           </div>
           <div>
             <b-button @click="nextLoad">more</b-button>
