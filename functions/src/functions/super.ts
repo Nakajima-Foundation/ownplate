@@ -92,7 +92,7 @@ export const superTwilioCall = async (db: any, data: any, context: functions.htt
   utils.validate_params({ restaurantId });
 
   const restaurantData = await utils.get_restaurant(db, restaurantId);
-  if (restaurantData && restaurantData.phoneCall) {
+  if (restaurantData) {
     const datestr = moment().format("YYYY-MM-DD");
     await twilio.phoneCall(restaurantData);
     await db.collection(`/restaurants/${restaurantId}/log/${datestr}/phoneLog`).add({
