@@ -95,6 +95,9 @@
                     :id="item.id"
                     >
                     {{ item.name }}
+                    <span @click="openCategory">
+                      {{ $t("shopInfo.category") }}
+                    </span>
                   </div>
 
                   <item-card
@@ -187,6 +190,22 @@
         <img :src="coverImage" class="rounded-lg shadow-lg" />
       </div>
     </b-modal>
+    <!-- Image Popup-->
+    <b-modal :active.sync="categoryPopup" :width="488" scroll="keep">
+      <div class="px-2 text-center" @click.stop="closeCategory()">
+        <div class="mx-2 my-6 p-6 bg-white shadow-lg rounded-lg">
+          <template v-for="(title, key) in titleLists">
+            <a :href="`#${title.id}`"
+               class="inline-flex justify-center items-center h-9 m-1 rounded-full bg-black bg-opacity-5"
+               >
+              <div class="text-sm font-bold text-op-teal">
+                {{title.name}}
+              </div>
+            </a>
+          </template>
+        </div>
+      </div>
+    </b-modal>
   </div>
 </template>
 
@@ -249,6 +268,7 @@ export default {
       notFound: null,
 
       imagePopup: false,
+      categoryPopup: false,
 
       paymentInfo: {},
       noAvailableTime: false
@@ -475,6 +495,13 @@ export default {
     closeImage() {
       this.imagePopup = false;
     },
+    openCategory() {
+      this.categoryPopup = true;
+    },
+    closeCategory() {
+      this.categoryPopup = false;
+    },
+
     optionPrice(option) {
       const regex = /\(((\+|\-|＋|ー|−)[0-9\.]+)\)/;
       const match = option.match(regex);
