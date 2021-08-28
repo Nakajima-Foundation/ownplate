@@ -301,10 +301,6 @@ export const stripe_parser = async (req, res) => {
       await stripeLog.account_authorized(db, event);
     } else if (event.type === "account.application.deauthorized") {
       await stripeLog.account_deauthorized(db, event);
-    } else if (event.type === "invoice.created") {
-      console.log(event);
-    } else if (event.type === "invoice.payment_succeeded") {
-      console.log(event);
     } else {
       await stripeLog.unknown_log(db, event);
     }
