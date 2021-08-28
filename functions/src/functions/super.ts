@@ -102,4 +102,5 @@ export const superTwilioCall = async (db: any, data: any, context: functions.htt
       updatedAt: admin.firestore.Timestamp.now(),
     });
   }
+  return {};
 }
