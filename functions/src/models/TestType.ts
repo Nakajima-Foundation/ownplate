@@ -5,6 +5,7 @@ export interface Context {
       phone_number: string;
       parentUid: string;
       email: string;
+      admin: boolean;
     };
   };
 }
