@@ -23,7 +23,7 @@
       </div>
       <div class="text-center mt-4 lg:mt-0 lg:flex-shrink-0">
         <div>
-          <iframe width="300" height="145" src="https://www.youtube.com/embed/lt3iVMj2vfI" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen
+          <iframe width="300" height="145" src="https://www.youtube.com/embed/B2nMqFC0ssA" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen
                   class="rounded-lg w-64 touchable inline-block"
                   ></iframe>
         </div>
