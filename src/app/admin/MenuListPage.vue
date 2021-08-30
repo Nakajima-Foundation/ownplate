@@ -265,8 +265,6 @@ import * as pdf from "../../plugins/pdf.js";
 
 import NotificationIndex from "./Notifications/Index";
 
-import _ from "lodash";
-
 export default {
   name: "Menus",
   components: {
