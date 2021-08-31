@@ -480,6 +480,7 @@
                     </div>
                   </b-button>
                 </div>
+                <stripe-pay />
               </div>
 
               <!-- Pay at Restaurant -->
@@ -576,6 +577,7 @@ import ShopHeader from "~/app/user/Restaurant/ShopHeader";
 import OrderInfo from "~/app/user/Order/OrderInfo";
 import ShopInfo from "~/app/user/Restaurant/ShopInfo";
 import StripeCard from "~/app/user/Order/StripeCard";
+import StripePay from "~/app/user/Order/StripePay";
 import TimeToPickup from "~/app/user/Order/TimeToPickup";
 import PhoneLogin from "~/app/auth/PhoneLogin";
 import NotFound from "~/components/NotFound";
@@ -624,6 +626,7 @@ export default {
     PhoneLogin,
     ShopInfo,
     StripeCard,
+    StripePay,
     TimeToPickup,
     NotFound,
     RequireLogin,

@@ -1,3 +1,6 @@
+import path from 'path';
+import fs from 'fs';
+
 import { ownPlateConfig } from "./src/config/project";
 import { regionalSettings } from "./src/plugins/constant";
 import { defaultHeader } from "./src/plugins/header";
@@ -27,6 +30,14 @@ export default {
         }
         routes.push(r);
       });
+    }
+  },
+  server: {
+    port: 3000,
+    host: "0.0.0.0",
+    https: {
+      key: fs.readFileSync(path.resolve(__dirname, "keys/localhost-key.pem")),
+      cert: fs.readFileSync(path.resolve(__dirname, "keys/localhost.pem"))
     }
   },
   /*
