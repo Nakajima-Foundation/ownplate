@@ -495,16 +495,17 @@ export default {
       if (this.isOwner) {
         try {
           this.isCreating = true;
-          const doc = await db.collection("restaurants").add({
+          const doc = await db.collection("restaurants").doc();
+          // update Lists
+          this.restaurantLists.push(doc.id);
+          this.saveRestaurantLists();
+
+          doc.set({
             uid: this.uid,
             publicFlag: false,
             deletedFlag: false,
             createdAt: firestore.FieldValue.serverTimestamp()
           });
-
-          // update Lists
-          this.restaurantLists.push(doc.id);
-          this.saveRestaurantLists();
 
           this.$router.push(`/admin/restaurants/${doc.id}`);
         } catch (error) {
