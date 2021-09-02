@@ -215,6 +215,11 @@ export const customRoutes = [
     component: "auth/SignUpPage.vue"
   },
   {
+    name: "admin-signup",
+    path: "/admin/user/signup/:partner",
+    component: "auth/SignUpPage.vue"
+  },
+  {
     name: "admin-reset",
     path: "/admin/user/reset",
     component: "auth/ResetPasswordPage.vue"

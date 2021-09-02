@@ -3,6 +3,10 @@
     <div class="bg-white rounded-lg shadow mt-6 p-6">
       <form @submit.prevent="onSignup">
         <!-- Title -->
+        <div v-if="partner">
+          <img :src="`/partners/${partner.logo}`" class="w-12"/>
+          {{partner.name}}パートナー様
+        </div>
         <div class="text-xl font-bold text-black text-opacity-30">
           {{ $t("admin.registration") }}
         </div>
@@ -151,6 +155,7 @@
 <script>
 import isEmail from "validator/lib/isEmail";
 import { db, auth, firestore } from "~/plugins/firebase.js";
+import { partners } from "~/plugins/constant";
 
 export default {
   name: "Signup",
@@ -172,6 +177,17 @@ export default {
     };
   },
   computed: {
+    partner() {
+      if (this.$route.params.partner) {
+        const match = partners.find((a) => {
+          return a.id === this.$route.params.partner;
+        });
+        if (match) {
+          return match;
+        }
+      }
+      return null;
+    },
     errors() {
       let errors = {};
       if (this.password !== this.confirmPassword) {
