@@ -224,10 +224,18 @@ export default {
           this.password
         );
         console.log("signup success", result.user.uid, this.name);
-        await db.doc(`admins/${result.user.uid}`).set({
-          name: this.name,
-          created: firestore.FieldValue.serverTimestamp()
-        });
+        if (this.partner) {
+          await db.doc(`admins/${result.user.uid}`).set({
+            name: this.name,
+            created: firestore.FieldValue.serverTimestamp(),
+            partners: [this.partner.id]
+          });
+        } else {
+          await db.doc(`admins/${result.user.uid}`).set({
+            name: this.name,
+            created: firestore.FieldValue.serverTimestamp()
+          });
+        }
         await db.doc(`admins/${result.user.uid}/private/profile`).set({
           email: result.user.email,
           updated: firestore.FieldValue.serverTimestamp()

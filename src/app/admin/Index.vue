@@ -1,7 +1,11 @@
 <template>
   <div v-if="$store.getters.uidAdmin">
     <!-- Welcome -->
-    <!-- {{(shopOwner||{}).partners}} -->
+
+    <div v-for="(part, k) in partner" :key="k">
+      <img :src="`/partners/${part.logo}`" class="w-12"/>
+      {{part.name}}パートナー様
+    </div>
     <div class="bg-op-yellow p-4">
       <div class="text-center text-2xl font-bold text-white pb-4">
         {{ $t("admin.welcomeMessage") }}
@@ -326,6 +330,7 @@ import { ownPlateConfig } from "@/config/project";
 import PaymentSection from "~/app/admin/Payment/PaymentSection";
 import newsList from "./News/data";
 import MessageCard from "./Messages/MessageCard";
+import { partners } from "~/plugins/constant";
 
 export default {
   name: "Restaurant",
@@ -578,6 +583,14 @@ export default {
     }
   },
   computed: {
+    partner() {
+      return ((this.shopOwner||{}).partners || []).map((p) => {
+        const match = partners.find((a) => {
+          return a.id === p
+        });
+        return match
+      });
+    },
     ownerUid() {
       return this.$store.getters.isSubAccount ? this.$store.getters.parentId : this.uid;
     },
