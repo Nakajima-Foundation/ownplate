@@ -480,7 +480,11 @@
                     </div>
                   </b-button>
                 </div>
-                <stripe-pay />
+                <stripe-pay
+                  :paymentInfo="paymentInfo"
+                  :orderInfo="orderInfo"
+                  :shopInfo="shopInfo"
+                  />
               </div>
 
               <!-- Pay at Restaurant -->

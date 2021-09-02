@@ -9,21 +9,39 @@
 <script>
 import { getAppleStripeInstance } from "~/plugins/stripe.js";
 export default {
+  props: {
+    paymentInfo: {
+      type: Object,
+      required: true
+    },
+    orderInfo: {
+      type: Object,
+      required: true
+    },
+    shopInfo: {
+      type: Object,
+      required: true
+    }
+  },
   data() {
     return {
-      stripe: getAppleStripeInstance(),
+      // connected accoutn
+      // stripe: getAppleStripeInstance(this.paymentInfo.stripe),
+      stripe: getAppleStripeInstance(this.paymentInfo.stripe),
       amount: 1000
     };
   },
   mounted() {
+    console.log(this.orderInfo.total);
     const paymentRequest = this.stripe.paymentRequest({
       country: 'JP',
       currency: 'jpy',
       total: {
-        label: 'Demo total',  // 支払いラベルを指定
-        amount: this.amount,  // 支払い金額を指定
+        label: this.shopInfo.restaurantName,
+        amount: this.orderInfo.total,
       },
       requestPayerName: true,
+      disableWallets: ["googlePay", "browserCard"],
     });
     console.log(paymentRequest);
     const elements = this.stripe.elements();
