@@ -401,4 +401,11 @@ export const soundFiles = [
   }
 ];
 
+
+export const partners = [{
+  id: "singularitysociety",
+  name: "シンギュラリティ・ソサイエティ",
+  logo: "singularitysociety.png",
+}];
+
 export const twiml_neworder = '<Response><Say language="ja-jp">こんにちは。わたしは、おもちかえりどっとこむです。あたらしいオーダーが入りました。かくにんをよろしくおねがいいたします。</Say></Response>';

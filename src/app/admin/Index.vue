@@ -1,6 +1,7 @@
 <template>
   <div v-if="$store.getters.uidAdmin">
     <!-- Welcome -->
+    <!-- {{(shopOwner||{}).partners}} -->
     <div class="bg-op-yellow p-4">
       <div class="text-center text-2xl font-bold text-white pb-4">
         {{ $t("admin.welcomeMessage") }}
@@ -363,7 +364,6 @@ export default {
     try {
       if (this.isOwner) {
         this.shopOwner = await this.getShopOwner(this.ownerUid);
-
         const adminConfig = await db
               .doc(`/adminConfigs/${this.ownerUid}`)
               .get();
