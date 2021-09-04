@@ -7,7 +7,9 @@
 </template>
 
 <script>
-import { getAppleStripeInstance } from "~/plugins/stripe.js";
+import {
+ getStripeInstance
+} from "~/plugins/stripe.js";
 export default {
   props: {
     paymentInfo: {
@@ -27,7 +29,8 @@ export default {
     return {
       // connected accoutn
       // stripe: getAppleStripeInstance(this.paymentInfo.stripe),
-      stripe: getAppleStripeInstance(this.paymentInfo.stripe),
+      // stripe: getAppleStripeInstance(this.paymentInfo.stripe),
+      stripe: getStripeInstance(),
       amount: 1000
     };
   },
@@ -57,6 +60,18 @@ export default {
         document.getElementById('paymentRequestButton').style.display = 'none';
       }
     });
-  }
+    const paymentmethodHandler = (ev) => {
+      console.log(ev.paymentMethod.id);
+      console.log(ev.paymentMethod);
+      this.callbackPay(ev.paymentMethod.id);
+      ev.complete('success');
+    }
+    paymentRequest.on('paymentmethod', paymentmethodHandler);
+  },
+  methods: {
+    callbackPay(paymentId) {
+      this.$emit("stripePayPayment", paymentId);
+    },
+  },
 }
 </script>
