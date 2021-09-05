@@ -301,6 +301,7 @@
     "noPaymentMethod": "オンライン注文未対応",
     "minimumAvailableTime": "最短受付可能時間",
     "noAvailableTime": "受付時間外",
+    "category": "カテゴリー",
     "viewMore": "もっと見る",
     "viewLess": "閉じる"
   },
