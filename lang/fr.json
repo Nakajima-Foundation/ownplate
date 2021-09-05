@@ -301,6 +301,7 @@
     "noPaymentMethod": "Commande en ligne indisponible",
     "minimumAvailableTime": "Temps disponible minimum",
     "noAvailableTime": "Aucun de temps de commande",
+    "category": "category",
     "viewMore": "Voir plus",
     "viewLess": "Proche"
   },

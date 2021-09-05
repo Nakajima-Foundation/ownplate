@@ -301,6 +301,7 @@
     "noPaymentMethod": "Online Order Unavailable",
     "minimumAvailableTime": "Minimum available time",
     "noAvailableTime": "No orderable time",
+    "category": "category",
     "viewMore": "View More",
     "viewLess": "Close"
   },
