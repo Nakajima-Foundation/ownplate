@@ -55,7 +55,8 @@ export const processAction = async (data) => {
       });
       if (stockListData && stockListData[0]) {
         const amount = stockListData[0].stockAmount;
-        await db.doc(`smaregiData/${storeId}/smaregiProducts/${productId}`).set({
+        await db.doc(`smaregiData/${contractId}/stores/${storeId}/smaregiProducts/${productId}`).set({
+          updatedAt: admin.firestore.Timestamp.now(),
           store_id: storeId,
           product_id: productId,
           amount,
@@ -73,12 +74,13 @@ const webhook = async (req: any, res: any) => {
 
   const contractId = req.body.contractId;
   const time = moment().format("YYYYMMDDHHmmss.SSS");
+  
   // await db.collection("smaregiLog/log/webhook").add({data: req.body, createdAt: admin.firestore.Timestamp.now()});
 
   // tslint:disable-next-line
   processAction(data);
 
-  await db.doc(`smaregiLog/${contractId}/webhookLog/${time}`).set({
+  await db.doc(`smaregiLog/${contractId}/month/${moment().format("YYYYMM")}}/webhookLog/${time}`).set({
     data,
     contractId,
     createdAt: admin.firestore.Timestamp.now(),
