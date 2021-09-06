@@ -80,7 +80,7 @@ const webhook = async (req: any, res: any) => {
   // tslint:disable-next-line
   processAction(data);
 
-  await db.doc(`smaregiLog/${contractId}/month/${moment().format("YYYYMM")}}/webhookLog/${time}`).set({
+  await db.doc(`smaregiLog/${contractId}/month/${moment().format("YYYYMM")}/webhookLog/${time}`).set({
     data,
     contractId,
     createdAt: admin.firestore.Timestamp.now(),
