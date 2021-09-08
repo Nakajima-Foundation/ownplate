@@ -5,7 +5,10 @@
         <!-- Title -->
         <div v-if="partner">
           <img :src="`/partners/${partner.logo}`" class="w-12"/>
-          {{partner.name}}パートナー様
+          <span class="font-bold">
+            {{partner.name}}
+          </span>
+          <hr />
         </div>
         <div class="text-xl font-bold text-black text-opacity-30">
           {{ $t("admin.registration") }}
