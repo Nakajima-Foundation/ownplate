@@ -406,6 +406,10 @@ export const partners = [{
   id: "singularitysociety",
   name: "シンギュラリティ・ソサイエティ",
   logo: "singularitysociety.png",
+}, {
+  id: "legssystem",
+  name: "【おもちかえり.com × LEGSsystem】",
+  logo: "legssystem.png",
 }];
 
 export const twiml_neworder = '<Response><Say language="ja-jp">こんにちは。わたしは、おもちかえりどっとこむです。あたらしいオーダーが入りました。かくにんをよろしくおねがいいたします。</Say></Response>';
