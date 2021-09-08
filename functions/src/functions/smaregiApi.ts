@@ -25,8 +25,8 @@ export const updateDb = (_db) => {
 };
 
 const subscribe = async (req: any, res: any) => {
-  console.log(JSON.stringify(req.headers));
-  console.log(JSON.stringify(req.body));
+  // console.log(JSON.stringify(req.headers));
+  // console.log(JSON.stringify(req.body));
 
   await db.collection("smaregiLog/log/subscribe").add({ data: req.body, createdAt: admin.firestore.Timestamp.now() });
   return response200(res, {});
@@ -36,6 +36,7 @@ export const processAction = async (data) => {
   const contractId = data.contractId;
   const clientSecret = clientSecrets[smaregi.clientId];
   if (data.action === "edited" && data.event === "pos:stock") {
+    // get data 
     const config = {
       contractId: contractId,
       clientId: smaregi.clientId,
@@ -55,12 +56,38 @@ export const processAction = async (data) => {
       });
       if (stockListData && stockListData[0]) {
         const amount = stockListData[0].stockAmount;
-        await db.doc(`smaregiData/${contractId}/stores/${storeId}/smaregiProducts/${productId}`).set({
+        db.doc(`smaregiData/${contractId}/stores/${storeId}/smaregiProducts/${productId}`).set({
           updatedAt: admin.firestore.Timestamp.now(),
-          store_id: storeId,
-          product_id: productId,
-          amount,
+          storeId: storeId,
+          productId: productId,
+          amount: Number(amount),
         });
+        // if (Number(amount) < 3) {
+        
+        const smaregiPath = `/smaregi/${contractId}/stores/${storeId}/products/${productId}`;
+        const smaregiData = (await db.doc(smaregiPath).get()).data();
+        if (smaregiData) {
+          // console.log(smaregiData);
+          const { restaurantId, menuId } = smaregiData;
+          const stockPath = `/restaurants/${restaurantId}/menus/${menuId}/smaregiStock/data`;
+          db.doc(stockPath).set({
+            restaurantId,
+            menuId,
+            storeId: storeId,
+            productId: productId,
+            updatedAt: admin.firestore.Timestamp.now(),
+            amount: Number(amount),
+          });
+          const menuPath = `/restaurants/${restaurantId}/menus/${menuId}`;
+          if (Number(amount) < 3) { 
+            db.doc(menuPath).update({
+              soldOut: true,
+              smaregiStock: Number(amount)
+            });
+          } else {
+            db.doc(menuPath).update({smaregiStock: Number(amount)});
+          }
+        }
       }
     });
   }
@@ -69,8 +96,8 @@ export const processAction = async (data) => {
 const webhook = async (req: any, res: any) => {
   const data = req.body;
 
-  console.log(JSON.stringify(req.headers));
-  console.log(JSON.stringify(data));
+  // console.log(JSON.stringify(req.headers));
+  // console.log(JSON.stringify(data));
 
   const contractId = req.body.contractId;
   const time = moment().format("YYYYMMDDHHmmss.SSS");
