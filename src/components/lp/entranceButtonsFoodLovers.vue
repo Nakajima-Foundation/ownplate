@@ -17,6 +17,25 @@
           </div>
     </router-link>
   </div>
+
+  <!-- Go to Samples -->
+  <div class="rounded-b-lg py-4">
+    <div class="lg:inline-flex lg:items-center lg:space-x-4">
+      <div class="inline-flex items-center space-x-4">
+        <router-link to="/r/area/12"
+          class="inline-flex items-center h-10 bg-op-yellow rounded-full bg-white bg-opacity-20 px-4 hover:bg-opacity-30"
+          >
+          <span class="text-white text-sm font-bold">{{ $t("lp.tokyo") }}</span>
+        </router-link>
+        <router-link to="/r/area/26"
+          class="inline-flex items-center h-10 bg-op-yellow rounded-full bg-white bg-opacity-20 px-4 hover:bg-opacity-30"
+          >
+          <span class="text-white text-sm font-bold">{{ $t("lp.osaka") }}</span>
+        </router-link>
+      </div>
+    </div>
+  </div>
+
 </div>
 </template>
 

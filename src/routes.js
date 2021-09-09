@@ -215,6 +215,11 @@ export const customRoutes = [
     component: "auth/SignUpPage.vue"
   },
   {
+    name: "admin-signup",
+    path: "/admin/user/signup/:partner",
+    component: "auth/SignUpPage.vue"
+  },
+  {
     name: "admin-reset",
     path: "/admin/user/reset",
     component: "auth/ResetPasswordPage.vue"
@@ -230,6 +235,10 @@ export const customRoutes = [
   {
     path: "/s/restaurants",
     component: "super/AllRestaurants.vue"
+  },
+  {
+    path: "/s/restaurants/:restaurantId",
+    component: "super/Restaurants.vue"
   },
   {
     path: "/s/admins",

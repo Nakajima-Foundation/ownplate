@@ -301,6 +301,7 @@
     "noPaymentMethod": "オンライン注文未対応",
     "minimumAvailableTime": "最短受付可能時間",
     "noAvailableTime": "受付時間外",
+    "category": "カテゴリー",
     "viewMore": "もっと見る",
     "viewLess": "閉じる"
   },
@@ -352,6 +353,8 @@
     "customerVoice1": "ご利用頂いている",
     "customerVoice2": "飲食店のみなさまの声",
     "goToSampleRestaurant": "サンプルの店舗を見る",
+    "tokyo": "東京",
+    "osaka": "大阪",
     "izakaya": "居酒屋",
     "patisserie": "パティスリー",
     "searchRestaurant": "テイクアウトのお店を探す"
@@ -460,7 +463,10 @@
     "orderTimesUnit": "{count}回",
     "cancelTimes": "キャンセル",
     "cancelTimesUnit": "{count}回",
-    "lastOrder": "前回"
+    "yourInfo": "お客様の情報",
+    "continuousOrder": "注意: 連続した注文です",
+    "lastOrder": "前回",
+    "thisOrder": "今回"
   },
   "button": {
     "back": "戻る",

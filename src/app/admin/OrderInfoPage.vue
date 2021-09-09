@@ -297,7 +297,16 @@
                 {{ $t("order.cancelTimes") }}: {{ $tc("order.cancelTimesUnit", userLog.cancelCounter || 0) }}
               </div>
               <div>
-                {{ $t("order.lastOrder") }}: {{userLog.lastOrder ? moment(userLog.lastOrder.toDate()).format("YYYY/MM/DD HH:mm") : "--"}}
+                <div v-if="isWarningOrder" class="bg-red-700 bg-opacity-10 rounded-lg p-4 text-center  inline-flex ">
+                  <div class="text-base font-bold text-red-700">
+                    {{ $t("order.continuousOrder") }}<br/>
+                    {{ $t("order.lastOrder") }}: {{userLog.lastOrder ? moment(userLog.lastOrder.toDate()).format("YYYY/MM/DD HH:mm") : "--"}}<br />
+                    {{ $t("order.thisOrder") }}: {{orderInfo.timePlaced ? moment(orderInfo.timePlaced.toDate()).format("YYYY/MM/DD HH:mm") : "--"}}
+                  </div>
+                </div>
+                <div v-else>
+                  {{ $t("order.lastOrder") }}: {{userLog.lastOrder ? moment(userLog.lastOrder.toDate()).format("YYYY/MM/DD HH:mm") : "--"}}
+                </div>
               </div>
             </div>
             <div class="mt-6 text-center">
@@ -589,6 +598,26 @@ export default {
     },
   },
   computed: {
+    orderInterval() {
+      if (this.orderInfo.timePlaced && this.userLog.lastOrder) {
+        // console.log(this.orderInfo.timePlaced.toDate(),   this.userLog.lastOrder.toDate());
+        const intervalHour = (this.orderInfo.timePlaced -  this.userLog.lastOrder) / 3600
+        return intervalHour;
+      }
+      return -1000000;
+    },
+    isWarningOrder() {
+      if (this.orderInterval === 0) {
+        return false;
+      }
+      if (this.orderInterval < 4 && this.orderInterval > -4) {
+        return true;
+      }
+      return false;
+      //(this.orderInterval === 0) {
+      // (this.orderInterval < 0) {
+      // (this.orderInterval >= 6)
+    },
     ownerUid() {
       return this.$store.getters.isSubAccount ? this.$store.getters.parentId : this.$store.getters.uidAdmin;
     },
