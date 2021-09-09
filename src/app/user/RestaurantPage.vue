@@ -72,12 +72,12 @@
 
           <!-- Right -->
           <div>
-            <div class="mx-6 mt-6 lg:mx-0">
+            <div class="mx-6 mt-2 lg:mx-0">
               <template v-for="(title, key) in titleLists">
                 <a :href="`#${title.id}`"
-                   class="inline-flex justify-center items-center h-9 m-1 rounded-full bg-black bg-opacity-5"
+                   class="inline-flex justify-center items-center h-9 rounded-full bg-black bg-opacity-5 mx-1 mt-2"
                    >
-                  <div class="text-sm font-bold text-op-teal">
+                  <div class="text-sm font-bold text-op-teal mx-3">
                     {{title.name}}
                   </div>
                 </a>
@@ -196,9 +196,9 @@
         <div class="mx-2 my-6 p-6 bg-white shadow-lg rounded-lg">
           <template v-for="(title, key) in titleLists">
             <a :href="`#${title.id}`"
-               class="inline-flex justify-center items-center h-9 m-1 rounded-full bg-black bg-opacity-5"
+               class="inline-flex justify-center items-center h-9 rounded-full bg-black bg-opacity-5 mx-1 mt-2"
                >
-              <div class="text-sm font-bold text-op-teal">
+              <div class="text-sm font-bold text-op-teal mx-3">
                 {{title.name}}
               </div>
             </a>
