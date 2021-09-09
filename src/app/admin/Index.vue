@@ -2,9 +2,18 @@
   <div v-if="$store.getters.uidAdmin">
     <!-- Welcome -->
 
-    <div v-for="(part, k) in partner" :key="k">
-      <img :src="`/partners/${part.logo}`" class="w-12"/>
-      {{part.name}}パートナー様
+    <div v-if="partner.length > 0" class="mt-2">
+      <div v-for="(part, k) in partner" :key="k" class="flex">
+        <div class="flex-1">
+          <img :src="`/partners/${part.logo}`" class="w-12"/>
+          <span class="font-bold">
+            {{part.name}}
+          </span>
+        </div>
+        <div class="text-right font-bold" v-if="part.ask">
+          <a href="#" @click="openContact()">サポート問い合わせ</a>
+        </div>
+      </div>
     </div>
     <div class="bg-op-yellow p-4">
       <div class="text-center text-2xl font-bold text-white pb-4">
@@ -318,6 +327,9 @@
         </div>
       </div>
     </div>
+    <b-modal :active.sync="isOpen" :width="488">
+      <PartnersContact :id="(partner[0]||{}).id"/>
+    </b-modal>
   </div>
 </template>
 
@@ -330,14 +342,15 @@ import { ownPlateConfig } from "@/config/project";
 import PaymentSection from "~/app/admin/Payment/PaymentSection";
 import newsList from "./News/data";
 import MessageCard from "./Messages/MessageCard";
-import { partners } from "~/plugins/constant";
+import PartnersContact from "./Partners/Contact";
 
 export default {
   name: "Restaurant",
   components: {
     PaymentSection,
     RestaurantEditCard,
-    MessageCard
+    MessageCard,
+    PartnersContact
   },
   head() {
     return {
@@ -359,7 +372,8 @@ export default {
       shopOwner: null,
       opt_out: null,
       restaurantLists: [],
-      messages: []
+      messages: [],
+      isOpen: false,
     };
   },
   created() {
@@ -571,7 +585,10 @@ export default {
           .doc(`/admins/${this.$store.getters.uidAdmin}/public/RestaurantLists`)
           .set({ lists: this.restaurantLists }, { merge: true });
       }
-    }
+    },
+    openContact() {
+      this.isOpen = true;
+    },
   },
   destroyed() {
     this.destroy_detacher();
@@ -584,12 +601,7 @@ export default {
   },
   computed: {
     partner() {
-      return ((this.shopOwner||{}).partners || []).map((p) => {
-        const match = partners.find((a) => {
-          return a.id === p
-        });
-        return match
-      });
+      return this.getPartnet(this.shopOwner);
     },
     ownerUid() {
       return this.$store.getters.isSubAccount ? this.$store.getters.parentId : this.uid;

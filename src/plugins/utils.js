@@ -9,6 +9,8 @@ import { db } from "~/plugins/firebase.js";
 import { defaultHeader } from "./header";
 import { formatOption } from "~/plugins/strings.js";
 
+import { partners } from "~/plugins/constant";
+
 export default ({ app }) => {
   Vue.mixin({
     methods: {
@@ -195,6 +197,14 @@ export default ({ app }) => {
         const m = this.$store.getters.stripeRegion.multiple;
         return Math.round( price * m) / m;
       },
+      getPartnet(shopOwner) {
+        return ((shopOwner||{}).partners || []).map((p) => {
+          const match = partners.find((a) => {
+            return a.id === p
+          });
+          return match
+       });
+      }, 
     },
     computed: {
       defaultTitle() {
