@@ -94,8 +94,8 @@
                     :class="key === 0 ? '' : 'mt-6'"
                     :id="item.id"
                     >
-                    {{ item.name }}
                     <span @click="openCategory">
+                      {{ item.name }}
                       {{ $t("shopInfo.category") }}
                     </span>
                   </div>
