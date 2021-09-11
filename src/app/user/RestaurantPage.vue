@@ -395,10 +395,10 @@ export default {
         this.orders[menuId].map((num, orderKey) => {
           const selectedOptionsRaw = this.trimmedSelectedOptions[menuId][
             orderKey
-          ];
+          ] || [];
           const price = selectedOptionsRaw.reduce(
             (tmpPrice, selectedOpt, key) => {
-              const opt = menu.itemOptionCheckbox[key].split(",");
+              const opt = (menu.itemOptionCheckbox[key]||"").split(",");
               if (opt.length === 1) {
                 if (selectedOpt) {
                   return (
