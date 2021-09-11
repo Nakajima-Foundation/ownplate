@@ -178,6 +178,22 @@ export default ({ app }) => {
         }
         return [];
       },
+      itemOptionCheckbox2options (itemOptionCheckbox) {
+        // HACK: Dealing with a special case (probalby a bug in the menu editor)
+        if (
+          itemOptionCheckbox &&
+            itemOptionCheckbox.length === 1 &&
+            !itemOptionCheckbox[0]
+        ) {
+          console.log("Special case: itemOptionCheckbox===['']");
+          return [];
+        }
+        return (itemOptionCheckbox || []).map(option => {
+          return option.split(",").map(choice => {
+            return choice.trim();
+          });
+        });
+      },
       taxRate(shopInfo, item) {
         if (shopInfo.inclusiveTax) {
           return 1;
