@@ -104,7 +104,7 @@
                     v-if="item._dataType === 'menu'"
                     :item="item"
                     :quantities="orders[item.id] || [0]"
-                    :optionPrev="optionsPrev[item.id]"
+                    :optionPrev="selectedOptionsPrev[item.id]"
                     :initialOpenMenuFlag="(orders[item.id] || []).length > 0"
                     :shopInfo="shopInfo"
                     :isOpen="menuId === item.id"
@@ -256,8 +256,8 @@ export default {
       loginVisible: false,
       isCheckingOut: false,
       orders: {},
-      options: {},
-      optionsPrev: {}, // from the store.cart
+      selectedOptions: {},
+      selectedOptionsPrev: {}, // from the store.cart
       restaurantsId: this.restaurantId(),
       shopInfo: {},
       menus: [],
@@ -280,8 +280,8 @@ export default {
       const cart = this.$store.state.carts[this.restaurantId()] || {};
       //console.log("cart", cart);
       this.orders = cart.orders || {};
-      this.optionsPrev = cart.options || {};
-      this.options = cart.options || {};
+      this.selectedOptionsPrev = cart.options || {};
+      this.selectedOptions = cart.options || {};
     }
   },
   created() {
@@ -450,7 +450,16 @@ export default {
     },
     trimmedSelectedOptions() {
       return Object.keys(this.orders).reduce((ret, id) => {
-        ret[id] = this.options[id];
+        const options = this.itemOptionCheckbox2options(this.itemsObj[id].itemOptionCheckbox);
+        const selectedOption = this.selectedOptions[id].map((selected) => {
+          if (Array.isArray(selected) && selected.length > options.length) {
+            const newopt = [...selected];
+            return newopt.slice(0, options.length);
+          }
+          return selected;
+        });
+        ret[id] = selectedOption;
+        // ret[id] = this.selectedOptions[id];
         return ret;
       }, {});
     },
@@ -570,7 +579,7 @@ export default {
           id: this.restaurantId(),
           cart: {
             orders: this.orders,
-            options: this.options
+            options: this.selectedOptions
           }
         });
         const wasOrderCreated = functions.httpsCallable("wasOrderCreated2");
@@ -629,10 +638,10 @@ export default {
       this.orders = newObject;
     },
     didOptionValuesChange(eventArgs) {
-      this.options = Object.assign({}, this.options, {
+      this.selectedOptions = Object.assign({}, this.selectedOptions, {
         [eventArgs.id]: eventArgs.optionValues
       });
-      //console.log(this.options);
+      //console.log(this.selectedOptions);
     }
   }
 };
