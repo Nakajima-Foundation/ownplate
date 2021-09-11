@@ -388,17 +388,17 @@ export default {
     prices() {
       const ret = {};
 
-      const multiple = this.regionMultiple;
+      const multiple = this.$store.getters.stripeRegion.multiple;
       Object.keys(this.orders).map(menuId => {
         const menu = this.itemsObj[menuId];
         ret[menuId] = [];
         this.orders[menuId].map((num, orderKey) => {
           const selectedOptionsRaw = this.trimmedSelectedOptions[menuId][
             orderKey
-          ];
+          ] || [];
           const price = selectedOptionsRaw.reduce(
             (tmpPrice, selectedOpt, key) => {
-              const opt = menu.itemOptionCheckbox[key].split(",");
+              const opt = (menu.itemOptionCheckbox[key]||"").split(",");
               if (opt.length === 1) {
                 if (selectedOpt) {
                   return (
