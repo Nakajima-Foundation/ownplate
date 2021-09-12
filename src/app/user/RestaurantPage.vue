@@ -438,7 +438,7 @@ export default {
     },
     itemLists() {
       return this.menuLists.map((itemId) => {
-        return this.itemsObj[itemId];
+        return {...this.itemsObj[itemId]};
       }).filter((item) => {
         return item;
       });
@@ -513,7 +513,7 @@ export default {
 
     optionPrice(option) {
       const regex = /\(((\+|\-|＋|ー|−)[0-9\.]+)\)/;
-      const match = option.match(regex);
+      const match = (option||"").match(regex);
       if (match) {
         return Number(match[1].replace(/ー|−/g, "-").replace(/＋/g, "+"));
       }
