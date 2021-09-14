@@ -361,20 +361,7 @@ export default {
       return [];
     },
     options() {
-      // HACK: Dealing with a special case (probalby a bug in the menu editor)
-      if (
-        this.item.itemOptionCheckbox &&
-        this.item.itemOptionCheckbox.length === 1 &&
-        !this.item.itemOptionCheckbox[0]
-      ) {
-        console.log("Special case: itemOptionCheckbox===['']");
-        return [];
-      }
-      return (this.item.itemOptionCheckbox || []).map(option => {
-        return option.split(",").map(choice => {
-          return choice.trim();
-        });
-      });
+      return this.itemOptionCheckbox2options(this.item.itemOptionCheckbox);
     },
     hasOptions() {
       return this.options.length;
