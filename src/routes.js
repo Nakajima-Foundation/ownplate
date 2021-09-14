@@ -282,6 +282,10 @@ export const customRoutes = [
     component: "super/StripeCallback.vue"
   },
   {
+    path: "/s/partners",
+    component: "super/Partner.vue"
+  },
+  {
     path: "/callback/line",
     component: "auth/LineCallback.vue"
   },
