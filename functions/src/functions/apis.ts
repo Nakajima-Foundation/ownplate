@@ -115,14 +115,14 @@ const getMenus = async (req: any, res: any) => {
   const docs = (await db.collection(`restaurants/${restaurantId}/menus`).where("publicFlag", "==", true).where("deletedFlag", "==", false).limit(20).get()).docs;
   const menus = await Promise.all(
     docs.map(async (doc) => {
-      const { itemName, itemDescription, images, price, tax, allergens, itemOptionCheckbox } = doc.data();
+      const { itemName, itemDescription, images, itemPhoto, price, tax, allergens, itemOptionCheckbox } = doc.data();
       return {
         id: doc.id,
         url: hostname + "/r/" + restaurantId + "/menus/" + doc.id,
         itemInfo: {
           name: itemName,
           description: itemDescription,
-          image: (images?.item?.resizedImages || {})["600"] || null,
+          image: (images?.item?.resizedImages || {})["600"] || itemPhoto || null,
         },
         price: {
           price,
