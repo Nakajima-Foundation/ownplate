@@ -28,7 +28,7 @@
               {{ $t("admin.smaregi.smaregiShopList") }}
             </span>
             <div v-if="isEdit">
-              <div v-for="(shop, k) in shopList" :key="k">
+              <div v-for="(shop, k) in shopList" :key="k" class="border-2">
                 {{shop.storeName}}
                 <b-select v-model="selectedRestaurant[k]"
                           :class="selectedRestaurant[k] && duplicateElement[selectedRestaurant[k]] ? 'border-red-700 border-2 border-solid' : ''"
@@ -41,6 +41,29 @@
                     {{ restaurant.restaurantName }}
                   </option>
                 </b-select>
+
+                在庫切れしきい値:
+                <b-select v-model="outOfStockData[k]">
+                  <option
+                    v-for="threshold in outOfStockThresholds"
+                    :value="threshold.value"
+                    :key="threshold.value"
+                    >
+                    {{ threshold.name }}
+                  </option>
+                </b-select>
+                
+                在庫復活しきい値:
+                <b-select v-model="inStockData[k]">
+                  <option
+                    v-for="threshold in inStockThresholds"
+                    :value="threshold.value"
+                    :key="threshold.value"
+                  >
+                    {{ threshold.name }}
+                  </option>
+                </b-select>
+                
               </div>
               <div v-if="isDuplicateError">
                 *お店の指定が重複しています
@@ -55,7 +78,8 @@
                     {{shop.storeName}}
                   </router-link>
                 </div>
-                {{(restaurantObj[selectedRestaurant[k]] ||{}).restaurantName}}
+                {{(restaurantObj[selectedRestaurant[k]] ||{}).restaurantName}}<br />
+                在庫切れしきい値: {{showStockThreshold((inStockData ||{})[k])}} / 在庫復活しきい値: {{showStockThreshold((outOfStockData||{})[k])}}
               </div>
               <div class="mt-4">
                 <b-button @click="isEdit=true">編集</b-button>
@@ -72,6 +96,27 @@ import { db, functionsJp } from "~/plugins/firebase.js";
 
 import BackButton from "~/components/BackButton";
 
+const outOfStockThresholds = [
+  { value: 999999, name: "なし"},
+  { value: 0, name: "0"},
+  { value: 1, name: "1"},
+  { value: 2, name: "2"},
+  { value: 3, name: "3"},
+  { value: 4, name: "4"},
+  { value: 5, name: "5"},
+  { value: 10, name: "10"},
+  { value: 20, name: "20"},
+];
+
+const inStockThresholds = [
+  { value: 999999, name: "なし"},
+  { value: 50, name: "50"},
+  { value: 20, name: "20"},
+  { value: 10, name: "10"},
+  { value: 5, name: "5"},
+  { value: 4, name: "4"},
+  { value: 3, name: "3"},
+];
 
 export default {
   components: {
@@ -94,6 +139,12 @@ export default {
       restaurantObj: {},
       contractId: null,
       isEdit: false,
+
+      outOfStockThresholds,
+      outOfStockData: {},
+
+      inStockThresholds,
+      inStockData: {},
     };
   },
 
@@ -112,7 +163,7 @@ export default {
           client_id: smaregi.clientId,
         });
         this.shopList = data.res;
-        console.log("smaregiAuth", data);
+        // console.log("smaregiAuth", data);
       } finally {
         this.isLoading = false;
       }
@@ -143,7 +194,11 @@ export default {
       (this.shopList ||[]).map((store, key) => {
         const storeId = store.storeId;
         if (storeObj[storeId]) {
+          const { outOfStock, inStock } = storeObj[storeId];
           selectedRestaurant[key] = storeObj[storeId].restaurantId;
+          
+          this.outOfStockData[key] = outOfStock === undefined ? 999999 : outOfStock;
+          this.inStockData[key] = inStock === undefined ? 999999 : inStock;
         };
       });
       this.selectedRestaurant = selectedRestaurant;
@@ -158,10 +213,12 @@ export default {
 
       (this.shopList ||[]).map((store, key) => {
         const restaurantId = this.selectedRestaurant[key];
+        const outOfStock = this.outOfStockData[key];
+        const inStock = this.inStockData[key];
         // check uniq.
         const storeId = store.storeId;
         const path = `/smaregi/${this.contractId}/stores/${storeId}`
-        console.log(path);
+
         if (restaurantId && restaurantId !== "00000") {
           const data = {
             storeName: store.storeName,
@@ -169,6 +226,12 @@ export default {
             storeId: storeId,
             uid: this.uid,
             restaurantId,
+          }
+          if (outOfStock !== 999999 && outOfStock !== undefined) {
+            data.outOfStock = outOfStock;
+          }
+          if (inStock !== 999999 && inStock !== undefined) {
+            data.inStock = inStock;
           }
           db.doc(path).set(data);
           // console.log(this.selectedRestaurant[key]);
@@ -178,6 +241,12 @@ export default {
         }
       });
       this.isEdit = false;
+    },
+    showStockThreshold(value) {
+      if (value === undefined || value === 999999) {
+        return "----";
+      }
+      return value;
     },
   },
   computed: {
