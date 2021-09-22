@@ -354,7 +354,7 @@ export default {
     },
     allergens() {
       if (this.item.allergens) {
-        return Object.keys(this.item.allergens).filter(allergen => {
+        return this.$store.getters.stripeRegion.allergens.filter(allergen => {
           return this.item.allergens[allergen];
         });
       }
