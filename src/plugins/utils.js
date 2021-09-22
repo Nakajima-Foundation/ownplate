@@ -213,7 +213,7 @@ export default ({ app }) => {
         const m = this.$store.getters.stripeRegion.multiple;
         return Math.round( price * m) / m;
       },
-      getPartnet(shopOwner) {
+      getPartner(shopOwner) {
         return ((shopOwner||{}).partners || []).map((p) => {
           const match = partners.find((a) => {
             return a.id === p

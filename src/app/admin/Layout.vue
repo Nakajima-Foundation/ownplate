@@ -73,7 +73,7 @@ export default {
       );
     },
     partner() {
-        return this.getPartnet(this.shopOwner);
+        return this.getPartner(this.shopOwner);
     },
     ownerUid() {
       return this.$store.getters.isSubAccount ? this.$store.getters.parentId : this.uid;
