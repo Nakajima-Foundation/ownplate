@@ -45,6 +45,12 @@ export const processAction = async (data) => {
       scopes: ["pos.stock:read", "pos.stock:write", "pos.stores:read", "pos.stores:write", "pos.customers:read", "pos.customers:write", "pos.products:read", "pos.products:write"],
     };
 
+    const storePath = `/smaregi/${contractId}/stores/${storeId}`;
+    const storeData = (await db.doc(storePath).get()).data() || {};
+
+    const outOfStock = storeData.outOfStock || null;
+    const inStock = storeData.inStock || null;
+    
     data.ids.map(async (idData) => {
       const { storeId, productId } = idData;
       const api = new SmaregiApi(config);
@@ -79,9 +85,14 @@ export const processAction = async (data) => {
             amount: Number(amount),
           });
           const menuPath = `/restaurants/${restaurantId}/menus/${menuId}`;
-          if (Number(amount) < 3) { 
+          if (outOfStock !== null && (Number(amount) <= outOfStock) {
             db.doc(menuPath).update({
               soldOut: true,
+              smaregiStock: Number(amount)
+            });
+          } else if (inStock !== null && (Number(amount) >= outOfStock) {
+            db.doc(menuPath).update({
+              soldOut: false,
               smaregiStock: Number(amount)
             });
           } else {
