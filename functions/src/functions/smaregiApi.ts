@@ -33,6 +33,7 @@ const subscribe = async (req: any, res: any) => {
 };
 
 export const processAction = async (data) => {
+  console.log("processAction")
   const contractId = data.contractId;
   const clientSecret = clientSecrets[smaregi.clientId];
   if (data.action === "edited" && data.event === "pos:stock") {
@@ -45,14 +46,16 @@ export const processAction = async (data) => {
       scopes: ["pos.stock:read", "pos.stock:write", "pos.stores:read", "pos.stores:write", "pos.customers:read", "pos.customers:write", "pos.products:read", "pos.products:write"],
     };
 
-    const storePath = `/smaregi/${contractId}/stores/${storeId}`;
-    const storeData = (await db.doc(storePath).get()).data() || {};
-
-    const outOfStock = storeData.outOfStock || null;
-    const inStock = storeData.inStock || null;
-    
     data.ids.map(async (idData) => {
       const { storeId, productId } = idData;
+      console.log({ storeId, productId })
+
+      const storePath = `/smaregi/${contractId}/stores/${storeId}`;
+      const storeData = (await db.doc(storePath).get()).data() || {};
+      const outOfStock = storeData.outOfStock || null;
+      const inStock = storeData.inStock || null;
+      console.log({inStock, outOfStock});
+
       const api = new SmaregiApi(config);
       await api.auth();
       const stockApi = api.stock();
@@ -62,6 +65,7 @@ export const processAction = async (data) => {
       });
       if (stockListData && stockListData[0]) {
         const amount = stockListData[0].stockAmount;
+        console.log(amount);
         db.doc(`smaregiData/${contractId}/stores/${storeId}/smaregiProducts/${productId}`).set({
           updatedAt: admin.firestore.Timestamp.now(),
           storeId: storeId,
@@ -85,12 +89,12 @@ export const processAction = async (data) => {
             amount: Number(amount),
           });
           const menuPath = `/restaurants/${restaurantId}/menus/${menuId}`;
-          if (outOfStock !== null && (Number(amount) <= outOfStock) {
+          if (outOfStock !== null && (Number(amount) <= outOfStock)) {
             db.doc(menuPath).update({
               soldOut: true,
               smaregiStock: Number(amount)
             });
-          } else if (inStock !== null && (Number(amount) >= outOfStock) {
+          } else if (inStock !== null && (Number(amount) >= outOfStock)) {
             db.doc(menuPath).update({
               soldOut: false,
               smaregiStock: Number(amount)

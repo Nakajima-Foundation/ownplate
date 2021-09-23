@@ -79,7 +79,7 @@
                   </router-link>
                 </div>
                 {{(restaurantObj[selectedRestaurant[k]] ||{}).restaurantName}}<br />
-                在庫切れしきい値: {{showStockThreshold((inStockData ||{})[k])}} / 在庫復活しきい値: {{showStockThreshold((outOfStockData||{})[k])}}
+                在庫切れしきい値: {{showStockThreshold((outOfStockData ||{})[k])}} / 在庫復活しきい値: {{showStockThreshold((inStockData||{})[k])}}
               </div>
               <div class="mt-4">
                 <b-button @click="isEdit=true">編集</b-button>
