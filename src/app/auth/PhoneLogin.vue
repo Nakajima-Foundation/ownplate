@@ -40,7 +40,8 @@
               :message="hasError ? $t(errors[0]) : $t('sms.notice')"
             >
               <b-input
-                type="text"
+                type="tel"
+                autocomplete="tel" 
                 v-model="phoneNumber"
                 v-on:input="validatePhoneNumber"
                 maxlength="20"
