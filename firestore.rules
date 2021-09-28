@@ -243,6 +243,12 @@ service cloud.firestore {
       allow read: if true;
       allow write: if false;
     }
+    match /phoneLog/{year}/{month}/{id} {
+      allow create: if true;
+      allow update: if false;
+      allow read: if false;
+    }
+    
     match /{path=**}/records/{eventId} {
         allow read: if isRestaurantOwner(resource.data.restaurantId, request);
     }

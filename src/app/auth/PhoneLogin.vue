@@ -274,6 +274,15 @@ export default {
           this.recaptchaVerifier
         );
         console.log("result", this.confirmationResult);
+
+        const path = this.moment().format("YYYY/MMDD");
+        db.collection(`/phoneLog/${path}`).add({
+          date: this.moment().format("YYYY-MM-DD"),
+          month: this.moment().format("YYYYMM"),
+          phoneNumber: this.SMSPhoneNumber,
+          updated: firestore.FieldValue.serverTimestamp()
+        });
+        
       } catch (error) {
         console.log(JSON.stringify(error));
         console.log("error", error.code);
