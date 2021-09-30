@@ -87,32 +87,40 @@
             <div class="mx-6 mt-3 lg:mx-0">
               <!-- Menu Items -->
               <div class="grid grid-col-1 space-y-2">
-                <div v-for="(item, key) in itemLists" :key="key">
+                <template v-for="(item, key) in itemLists">
                   <div
                     v-if="item._dataType === 'title'"
-                    class="text-xl font-bold text-black text-opacity-30"
-                    :class="key === 0 ? '' : 'mt-6'"
-                    :id="item.id"
+                    :key="key"
                     >
-                    <span @click="openCategory">
-                      {{ item.name }}
-                      {{ $t("shopInfo.category") }}
-                    </span>
+                    <div
+                      class="text-xl font-bold text-black text-opacity-30"
+                      :class="key === 0 ? '' : 'mt-6'"
+                      :id="item.id"
+                      >
+                      <span @click="openCategory">
+                        {{ item.name }}
+                        {{ $t("shopInfo.category") }}
+                      </span>
+                    </div>
                   </div>
 
-                  <item-card
+                  <div
                     v-if="item._dataType === 'menu'"
-                    :item="item"
-                    :quantities="orders[item.id] || [0]"
-                    :optionPrev="selectedOptionsPrev[item.id]"
-                    :initialOpenMenuFlag="(orders[item.id] || []).length > 0"
-                    :shopInfo="shopInfo"
-                    :isOpen="menuId === item.id"
-                    :prices="prices[item.id] || []"
-                    @didQuantitiesChange="didQuantitiesChange($event)"
-                    @didOptionValuesChange="didOptionValuesChange($event)"
-                    ></item-card>
-                </div>
+                    :key="key"
+                    >
+                    <item-card
+                      :item="item"
+                      :quantities="orders[item.id] || [0]"
+                      :optionPrev="selectedOptionsPrev[item.id]"
+                      :initialOpenMenuFlag="(orders[item.id] || []).length > 0"
+                      :shopInfo="shopInfo"
+                      :isOpen="menuId === item.id"
+                      :prices="prices[item.id] || []"
+                      @didQuantitiesChange="didQuantitiesChange($event)"
+                      @didOptionValuesChange="didOptionValuesChange($event)"
+                      ></item-card>
+                  </div>
+                </template>
               </div>
             </div>
           </div>
