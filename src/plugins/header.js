@@ -61,7 +61,8 @@ export const RestaurantHeader = {
     { charset: "utf-8" },
     { name: "viewport", content: "width=device-width, initial-scale=1" },
     { hid: "description" },
-    { hid: "og:image" }
+    { hid: "og:image" },
+    { name: "google", content: "notranslate" },
   ],
   link,
 };
