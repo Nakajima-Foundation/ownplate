@@ -69,6 +69,9 @@ export const RestaurantHeader = {
 
 export const defaultHeader = {
   title: ownPlateConfig.siteName || process.env.npm_package_name,
+  htmlAttrs: {
+    lang: 'ja'
+  },
   script,
   meta: [
     {
