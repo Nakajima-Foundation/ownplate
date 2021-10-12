@@ -72,7 +72,16 @@ export default {
   methods: {
     writeonFirstLine(index, key, text) {
       return index === 0 && Number(key) === 0 ? text : "-";
-    }
+    },
+    timeConvert(timeData) {
+      if (!timeData) {
+        return null;
+      }
+      if (timeData.seconds) {
+        return moment(timeData.toDate()).format("YYYY/MM/DD HH:mm")
+      }
+      return moment(timeData).format("YYYY/MM/DD HH:mm")
+    },
   },
   computed: {
     formulas() {
@@ -87,8 +96,15 @@ export default {
         "statusName",
         "userName",
         "phoneNumber",
-        "timeRequested",
+
+        "datePlaced",
+        "dateAccepted",
         "dateConfirmed",
+        "dateCompleted",
+        
+        "timeRequested",
+        "timeToPickup",
+
         "itemName",
         "options",
         "category1",
@@ -127,14 +143,32 @@ export default {
                 timeRequested: this.writeonFirstLine(
                   index,
                   key,
-                  order.timePlaced &&
-                    moment(order.timePlaced).format("YYYY/MM/DD HH:mm")
+                  this.timeConvert(order.timePlaced)
+                ),
+                timeToPickup: this.writeonFirstLine(
+                  index,
+                  key,
+                  this.timeConvert(order.timeEstimated)
+                ),
+                datePlaced: this.writeonFirstLine(
+                  index,
+                  key,
+                  this.timeConvert(order.orderPlacedAt)
+                ),
+                dateAccepted: this.writeonFirstLine(
+                  index,
+                  key,
+                  this.timeConvert(order.orderAcceptedAt)
                 ),
                 dateConfirmed: this.writeonFirstLine(
                   index,
                   key,
-                  order.timeConfirmed &&
-                    moment(order.timeConfirmed).format("YYYY/MM/DD HH:mm")
+                  this.timeConvert(order.timeConfirmed)
+                ),
+                dateCompleted: this.writeonFirstLine(
+                  index,
+                  key,
+                  this.timeConvert(order.transactionCompletedAt)
                 ),
                 phoneNumber: this.writeonFirstLine(
                   index,
