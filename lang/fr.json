@@ -78,6 +78,15 @@
     "invalid": "Identifiant invalide. Vous ne pouvez utiliser que des chiffres et des nombres.",
     "alreadyTaken": "Cet identifiant n'est pas disponible."
   },
+  "restaurantCsv": {
+    "date": "date",
+    "restaurantName": "restaurant name",
+    "onTheList": "on the list",
+    "publicFlag": "is public",
+    "deletedFlag": "is deleted",
+    "menu": "number of menu",
+    "uid": "uid"
+  },
   "editCommon": {
     "save": "Enregistrer",
     "saving": "Enregistrement",
