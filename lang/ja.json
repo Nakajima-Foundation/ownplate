@@ -78,6 +78,15 @@
     "invalid": "数字の半角小文字英字のみ使えます。",
     "alreadyTaken": "このIDはすでに使われています。"
   },
+  "restaurantCsv": {
+    "date": "登録日",
+    "restaurantName": "飲食店名",
+    "onTheList": "掲載",
+    "publicFlag": "公開",
+    "deletedFlag": "削除",
+    "menu": "メニュー数",
+    "uid": "uid"
+  },
   "editCommon": {
     "save": "保存",
     "saving": "保存中",
