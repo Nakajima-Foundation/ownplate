@@ -10,11 +10,19 @@ export default {
     notificationConfig: Object
   },
   data() {
+    // intervalTime was 60
+    const intervalTime = [
+      "OQBBSOa3CgEv35smSDVK", // debug
+      "GiZEOBRwDGmdpuqKKlyq",
+      "KNfeQdS7DM07ObWlZTsn",
+    ].includes(this.restaurantId()) ? 4: 60
+    // console.log(intervalTime);
+
     return {
       order_detacher: () => {},
       orders: [],
       intervalTask: {},
-      intervalTime: 60 // (seconds)
+      intervalTime // (seconds)
     };
   },
   async created() {
