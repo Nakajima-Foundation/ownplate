@@ -118,9 +118,9 @@ export default {
           const orderItems = this.forceArray(order.order[menuId]);
           const options = order.options[menuId] || [];
           Object.keys(orderItems).forEach(key => {
-            console.log(options[key]);
+            const opt = Array.isArray(options[key] || []) ? options[key] || [] : [options[key]];
             try {
-              const menuItem = order.menuItems[menuId];
+              const menuItem = (order.menuItems || {})[menuId] || {};
               items.push({
                 id: `${order.id}/${menuId}`,
                 name: nameOfOrder(order),
@@ -147,9 +147,7 @@ export default {
                   order.name || this.$t("order.unspecified")
                 ),
                 count: orderItems[key],
-                options: (options[key] || [])
-                  .filter(a => String(a) !== "")
-                  .join("/"),
+                options: opt.filter(a => String(a) !== "").join("/"),
                 memo: this.writeonFirstLine(index, key, order.memo),
                 itemName: menuItem.itemName,
                 statusName: this.writeonFirstLine(

@@ -645,6 +645,7 @@
       "lineSafariPrivate": "注意: Safariのプライベートブラウズモードを使用しているとLINE連携ができません。",
       "history": "全ての注文履歴",
       "more": "更に表示",
+      "all": "全て表示",
       "messageFromCustomer": "お客様からのメッセージ",
       "willOrderChange": "注文を変更する",
       "cancelOrderChange": "注文の変更を取り消す",
