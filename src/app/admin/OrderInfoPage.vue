@@ -826,8 +826,8 @@ export default {
       const { alcoholTax, foodTax, inclusiveTax } = this.shopInfo;
       if (inclusiveTax) {
         ret.food_tax = Math.round((ret.food_sub_total * (1 - 1 / (1 + foodTax / 100))) * multiple) / multiple;
-        ret.alcohol_tax = Math.round((alcohol_sub_total * (1 - 1 / (1 + alcoholTax / 100))) * multiple) / multiple;
-        ret.tax = food_tax + alcohol_tax;
+        ret.alcohol_tax = Math.round((ret.alcohol_sub_total * (1 - 1 / (1 + alcoholTax / 100))) * multiple) / multiple;
+        ret.tax = ret.food_tax + ret.alcohol_tax;
         ret.total = ret.sub_total;
       } else {
         ret.food_tax = Math.round(ret.food_sub_total * foodTax / 100 * multiple) / multiple;
