@@ -10,6 +10,8 @@ import { Context } from "../models/TestType";
 
 import * as crypto from "crypto";
 
+import moment from "moment-timezone";
+
 const multiple = utils.getStripeRegion().multiple; // 100 for USD, 1 for JPY
 const stripe = utils.get_stripe();
 
@@ -143,11 +145,11 @@ export const create = async (db: admin.firestore.Firestore, data: any, context: 
 };
 
 // This function is called by admin to confurm a "payment intent" (to complete the payment transaction)
-// ready_to_pickup
+// order_accepted  not ready_to_pickup.
 export const confirm = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const ownerUid = utils.validate_admin_auth(context);
 
-  const { restaurantId, orderId } = data;
+  const { restaurantId, orderId, lng, timezone, timeEstimated } = data;
   utils.validate_params({ restaurantId, orderId });
 
   const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`);
@@ -168,8 +170,8 @@ export const confirm = async (db: admin.firestore.Firestore, data: any, context:
       order.id = orderId;
 
       if (
-        order.status !== order_status.order_placed && // from 2021-07-17
-        order.status !== order_status.order_accepted
+        order.status !== order_status.order_placed // from 2021-07-17
+        // && order.status !== order_status.order_accepted
       ) {
         // obsolete but backward compability
         throw new functions.https.HttpsError("failed-precondition", "This order is not ready yet.");
@@ -190,11 +192,16 @@ export const confirm = async (db: admin.firestore.Firestore, data: any, context:
       const updateTimeKey = timeEventMapping[order_status_keys[nextStatus]];
       const updateData = {
         status: nextStatus,
+        updatedAt: admin.firestore.Timestamp.now(),
         [updateTimeKey]: admin.firestore.Timestamp.now(),
         payment: {
           stripe: "confirmed",
         },
-      };
+      } as any;
+      if (nextStatus === order_status.order_accepted) {
+        updateData.timeEstimated = timeEstimated ? new admin.firestore.Timestamp(timeEstimated.seconds, timeEstimated.nanoseconds) : order.timePlaced;
+        order.timeEstimated = updateData.timeEstimated;
+      }
       transaction.set(orderRef, updateData, { merge: true });
       transaction.set(
         stripeRef,
@@ -208,6 +215,14 @@ export const confirm = async (db: admin.firestore.Firestore, data: any, context:
       return { success: true, order };
     });
 
+    const orderData = result.order;
+
+    const params = {
+      time: moment(orderData.timeEstimated.toDate()).tz(timezone||"Asia/Tokyo").locale("ja").format("LLL")
+    };
+    console.log("timeEstimated", params["time"]);
+    await sendMessageToCustomer(db, lng, "msg_order_accepted", restaurantData.restaurantName, orderData, restaurantId, orderId, params);
+    
     return result;
   } catch (error) {
     throw utils.process_error(error);

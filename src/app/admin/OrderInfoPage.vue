@@ -546,6 +546,8 @@ import OrderInfo from "~/app/user/Order/OrderInfo";
 
 import * as analyticsUtil from "~/plugins/analytics";
 
+const timezone = moment.tz.guess();
+
 export default {
   components: {
     BackButton,
@@ -867,15 +869,25 @@ export default {
       );
       */
     },
+    getEestimateTime() {
+      const time = this.orderInfo.timePlaced.toDate().getTime();
+      const date = new Date(time + this.timeOffset * 60000);
+      return firestore.Timestamp.fromDate(date);
+    },
     async handleStripe() {
       //console.log("handleComplete with Stripe", orderId);
       try {
         // this.updating = "ready_to_pickup";
         this.$store.commit("setLoading", true);
-        const { data } = await stripeConfirmIntent({
+        const params = {
+          timezone,
           restaurantId: this.restaurantId() + this.forcedError("confirm"),
           orderId: this.orderId
-        });
+        };
+        if (this.timeOffset > 0) {
+          params.timeEstimated = this.getEestimateTime();
+        }
+        const { data } = await stripeConfirmIntent(params);
         // console.log("confirm", data);
         this.$router.push(this.parentUrl);
       } catch (error) {
@@ -891,7 +903,6 @@ export default {
       }
     },
     async handleChangeStatus(statusKey) {
-      const timezone = moment.tz.guess();
       const newStatus = order_status[statusKey];
       if (newStatus === this.orderInfo.status) {
         console.log("same status - no need to process");
@@ -912,9 +923,7 @@ export default {
           timezone
         };
         if (this.timeOffset > 0) {
-          const time = this.orderInfo.timePlaced.toDate().getTime();
-          const date = new Date(time + this.timeOffset * 60000);
-          params.timeEstimated = firestore.Timestamp.fromDate(date);
+          params.timeEstimated = this.getEestimateTime();
         }
         const { data } = await orderUpdate(params);
         // console.log("update", data);
@@ -965,7 +974,6 @@ export default {
       this.$store.commit("setAlert", {
         title: "admin.order.confirmOrderChange",
         callback: async () => {
-          const timezone = moment.tz.guess();
           const orderChange = functions.httpsCallable("orderChange");
           try {
             this.changing = true;

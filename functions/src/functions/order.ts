@@ -194,17 +194,16 @@ export const update = async (db: admin.firestore.Firestore, data: any, context: 
 
       // everything are ok
       const updateTimeKey = timeEventMapping[order_status_keys[status]];
-
-      const props: any = {
-        updatedAt: admin.firestore.Timestamp.now(),
+      const updateData: any = {
         status,
+        updatedAt: admin.firestore.Timestamp.now(),
         [updateTimeKey]: admin.firestore.Timestamp.now(),
       };
       if (status === order_status.order_accepted) {
-        props.timeEstimated = timeEstimated ? new admin.firestore.Timestamp(timeEstimated.seconds, timeEstimated.nanoseconds) : order.timePlaced;
-        order.timeEstimated = props.timeEstimated;
+        updateData.timeEstimated = timeEstimated ? new admin.firestore.Timestamp(timeEstimated.seconds, timeEstimated.nanoseconds) : order.timePlaced;
+        order.timeEstimated = updateData.timeEstimated;
       }
-      await transaction.update(orderRef, props);
+      await transaction.update(orderRef, updateData);
       return { success: true, order };
     });
 
