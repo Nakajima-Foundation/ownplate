@@ -671,7 +671,7 @@ export default {
         this.orderInfo,
         this.orderId,
         this.orderItems.map(or => {
-          return { ...or.item, id: or.id };
+          return { ...or.item, id: or.id, quantity: or.count };
         }),
         this.shopInfo,
         this.restaurantId()
@@ -737,7 +737,7 @@ export default {
                 this.orderInfo,
                 this.orderId,
                 this.orderItems.map(or => {
-                  return { ...or.item, id: or.id };
+                  return { ...or.item, id: or.id, quantity: or.count };
                 }),
                 this.shopInfo,
                 this.restaurantId()

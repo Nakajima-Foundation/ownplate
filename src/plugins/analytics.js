@@ -73,7 +73,7 @@ export const sendPurchase = (orderInfo, orderId, menus, shopInfo, restaurantId) 
       value: orderInfo.total,
       tax: orderInfo.tax,
       items: menus.map((item) => {
-        return sku_item_data(item, shopInfo, restaurantId);
+        return sku_item_data2(item, shopInfo, restaurantId, item.quantity);
       }),
     };
     // console.log(analyticsData);
@@ -157,11 +157,12 @@ export const sendRemoveFromCart = (item, shopInfo, restaurantId, quantity) => {
 
 export const sendViewCart = (orderInfo, orderId, menus, shopInfo, restaurantId) => {
   try {
+    console.log(menus);
     const analyticsData = {
       currency: 'JPY',
       value: orderInfo.total,
       items: menus.map((item) => {
-        return sku_item_data(item, shopInfo, restaurantId);
+        return sku_item_data2(item, shopInfo, restaurantId, item.quantity);
       }),
     };
     // console.log(analyticsData);
