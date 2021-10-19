@@ -1,4 +1,4 @@
-import { ownPlateConfig } from "../config/project";
+import { ownPlateConfig, gtmID } from "../config/project";
 
 const hostName = ownPlateConfig.hostName;
 
@@ -50,13 +50,36 @@ const link = [
   }
 ];
 
+const gtmHeadTag = `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${gtmID}');`;
+
+const gtmBodyTag = `<iframe src="https://www.googletagmanager.com/ns.html?id=${gtmID}" height="0" width="0" style="display:none;visibility:hidden"></iframe>`;
+
+
 const script = [
   { src: "https://js.stripe.com/v3/" },
+  {
+    hid: 'gtmHead',
+    innerHTML: gtmHeadTag
+  }
 ];
+
+const noscript = [
+  {
+    hid: 'gtmBody',
+    innerHTML: gtmBodyTag,
+    pbody: true
+  }
+];
+
+const gtags = {
+  'gtmHead': ['innerHTML'],
+  'gtmBody': ['innerHTML']
+};
 
 export const RestaurantHeader = {
   title: ownPlateConfig.siteName || process.env.npm_package_name,
   script,
+  noscript,
   meta: [
     { charset: "utf-8" },
     { name: "viewport", content: "width=device-width, initial-scale=1" },
@@ -65,6 +88,7 @@ export const RestaurantHeader = {
     { name: "google", content: "notranslate" },
   ],
   link,
+  __dangerouslyDisableSanitizersByTagID: gtags,
 };
 
 export const defaultHeader = {
@@ -73,6 +97,7 @@ export const defaultHeader = {
     lang: 'ja'
   },
   script,
+  noscript,
   meta: [
     {
       hid: 'og:image', property: 'og:image', content: 'https://' + hostName + '/' +
@@ -87,4 +112,6 @@ export const defaultHeader = {
     }
   ],
   link,
+  __dangerouslyDisableSanitizersByTagID: gtags,
+
 };
