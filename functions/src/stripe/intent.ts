@@ -246,7 +246,9 @@ export const cancel = async (db: any, data: any, context: functions.https.Callab
 
   try {
     const result = await db.runTransaction(async (transaction) => {
-      const order = (await transaction.get(orderRef)).data();
+      const orderDoc = await transaction.get(orderRef);
+      const order = (orderDoc).data();
+      order.id = orderDoc.id;
       if (!order) {
         throw new functions.https.HttpsError("invalid-argument", "This order does not exist.");
       }
@@ -287,7 +289,7 @@ export const cancel = async (db: any, data: any, context: functions.https.Callab
       const paymentIntentId = stripeRecord.paymentIntent.id;
 
       const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
-
+      
       const paymentIntent = await stripe.paymentIntents.cancel(paymentIntentId, {
         idempotencyKey: `${order.id}-cancel`,
         stripeAccount,
