@@ -94,6 +94,11 @@ export const customRoutes = [
     component: "user/TransactionsAct.vue"
   },
   {
+    name: "adminOwner",
+    path: "/admin/owner",
+    component: "admin/Owner.vue"
+  },
+  {
     name: "admin",
     path: "/admin/restaurants",
     component: "admin/Index.vue"
@@ -215,6 +220,11 @@ export const customRoutes = [
     component: "auth/SignUpPage.vue"
   },
   {
+    name: "admin-signup",
+    path: "/admin/user/signup/:partner",
+    component: "auth/SignUpPage.vue"
+  },
+  {
     name: "admin-reset",
     path: "/admin/user/reset",
     component: "auth/ResetPasswordPage.vue"
@@ -230,6 +240,10 @@ export const customRoutes = [
   {
     path: "/s/restaurants",
     component: "super/AllRestaurants.vue"
+  },
+  {
+    path: "/s/restaurants/:restaurantId",
+    component: "super/Restaurants.vue"
   },
   {
     path: "/s/admins",
@@ -266,6 +280,10 @@ export const customRoutes = [
   {
     path: "/s/callbacks/:uid/:logId",
     component: "super/StripeCallback.vue"
+  },
+  {
+    path: "/s/partners",
+    component: "super/Partner.vue"
   },
   {
     path: "/callback/line",

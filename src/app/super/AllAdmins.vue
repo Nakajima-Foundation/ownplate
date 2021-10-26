@@ -45,9 +45,13 @@
 import BackButton from "~/components/BackButton";
 import { db } from "~/plugins/firebase.js";
 import { stripeVerify } from "~/plugins/stripe.js";
+
+import superMixin from "./SuperMixin";
+
 const QUERY_LIMIT = 50;
 
 export default {
+  mixins: [superMixin],
   components: {
     BackButton
   },
@@ -63,6 +67,9 @@ export default {
       last: null,
       detacher: null
     };
+  },
+  async mounted() {
+    this.superPermissionCheck();
   },
   created() {
     this.updateQuery();

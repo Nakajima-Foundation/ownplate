@@ -223,6 +223,7 @@
                 :options="{ fullscreenControl: false }"
                 :zoom="18"
                 @loaded="hello"
+                @click="gmapClick"
               ></GMap>
             </div>
           </div>
@@ -1223,6 +1224,7 @@ export default {
       const res = this.searchResults[this.selectedResult];
       this.setCurrentLocation(res.geometry.location);
       this.place_id = res.place_id;
+      this.setLocation();
     },
   },
   methods: {
@@ -1292,6 +1294,11 @@ export default {
       if (this.shopInfo && this.shopInfo.location) {
         this.setCurrentLocation(this.shopInfo.location);
       }
+    },
+    gmapClick(arg) {
+      this.setCurrentLocation({lat: arg.event.latLng.lat(), lng: arg.event.latLng.lng()}, false);
+      this.place_id = null;
+      this.setLocation();
     },
     async confirmCopy() {
       this.$store.commit("setAlert", {
@@ -1478,7 +1485,7 @@ export default {
         this.place_id = res[0].place_id;
       }
     },
-    setCurrentLocation(location) {
+    setCurrentLocation(location, move=true) {
       if (
         this.$refs.gMap &&
         this.$refs.gMap.map &&
@@ -1486,7 +1493,9 @@ export default {
         location.lat &&
         location.lng
       ) {
-        this.$refs.gMap.map.setCenter(location);
+        if (move) {
+          this.$refs.gMap.map.setCenter(location);
+        }
         this.removeAllMarker();
         const marker = new google.maps.Marker({
           position: new google.maps.LatLng(location.lat, location.lng),

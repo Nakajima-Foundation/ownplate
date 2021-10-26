@@ -83,6 +83,8 @@ service cloud.firestore {
               && isUndefined(request.resource.data, 'operator');
       allow read: if request.auth.uid == userId;
       allow read: if isSuper(request);
+
+      allow write: if isSuper(request);
       match /public/{document=**} {
         allow read: if true;
         allow write: if request.auth.uid == userId;
@@ -110,6 +112,13 @@ service cloud.firestore {
       match /messages/{document=**} {
         allow read: if request.auth.uid == userId;
       }
+    }
+
+    match /owners/{ownerId} {
+      // Note: we don't want to allow the user to "update"
+      allow write: if request.auth.uid == userId && isUndefined(request.resource.data, 'admin')
+              && isUndefined(request.resource.data, 'operator');
+      allow read: if true
     }
 
     // Rules for collection group
@@ -234,6 +243,12 @@ service cloud.firestore {
       allow read: if true;
       allow write: if false;
     }
+    match /phoneLog/{year}/{month}/{id} {
+      allow create: if true;
+      allow update: if false;
+      allow read: if false;
+    }
+    
     match /{path=**}/records/{eventId} {
         allow read: if isRestaurantOwner(resource.data.restaurantId, request);
     }

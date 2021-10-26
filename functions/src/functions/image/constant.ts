@@ -4,12 +4,8 @@
 
 export const sizeOfResize = [600, 1200];
 
-export const coverPath = {path: "images/restaurants/*/*/cover.jpg"};
-export const profilePath = {path: "images/restaurants/*/*/profile.jpg"};
-export const menuItemPath = {path: "images/restaurants/*/menus/*/*/item.jpg"};
+export const coverPath = { path: "images/restaurants/*/*/cover.jpg" };
+export const profilePath = { path: "images/restaurants/*/*/profile.jpg" };
+export const menuItemPath = { path: "images/restaurants/*/menus/*/*/item.jpg" };
 
-export const matchImagePaths = [
-  coverPath,
-  profilePath,
-  menuItemPath,
-];
+export const matchImagePaths = [coverPath, profilePath, menuItemPath];

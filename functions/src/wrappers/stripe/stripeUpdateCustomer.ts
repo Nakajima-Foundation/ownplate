@@ -1,7 +1,7 @@
-import * as functions from 'firebase-functions';
-import * as admin from 'firebase-admin';
+import * as functions from "firebase-functions";
+import * as admin from "firebase-admin";
 
-import * as StripeCustomer from '../..//stripe/customer'
+import * as StripeCustomer from "../..//stripe/customer";
 
 const db = admin.firestore();
 

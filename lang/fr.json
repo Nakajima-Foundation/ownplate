@@ -78,6 +78,15 @@
     "invalid": "Identifiant invalide. Vous ne pouvez utiliser que des chiffres et des nombres.",
     "alreadyTaken": "Cet identifiant n'est pas disponible."
   },
+  "restaurantCsv": {
+    "date": "date",
+    "restaurantName": "restaurant name",
+    "onTheList": "on the list",
+    "publicFlag": "is public",
+    "deletedFlag": "is deleted",
+    "menu": "number of menu",
+    "uid": "uid"
+  },
   "editCommon": {
     "save": "Enregistrer",
     "saving": "Enregistrement",
@@ -301,6 +310,7 @@
     "noPaymentMethod": "Commande en ligne indisponible",
     "minimumAvailableTime": "Temps disponible minimum",
     "noAvailableTime": "Aucun de temps de commande",
+    "category": "category",
     "viewMore": "Voir plus",
     "viewLess": "Proche"
   },
@@ -352,6 +362,8 @@
     "customerVoice1": "Voix des clients",
     "customerVoice2": "",
     "goToSampleRestaurant": "Aller au restaurant d'échantillons",
+    "tokyo": "Tokyo",
+    "osaka": "Osaka",
     "izakaya": "Izakaya",
     "patisserie": "Pâtisserie",
     "searchRestaurant": "Rechercher un restaurant"
@@ -413,8 +425,10 @@
     "orderMessage": "Message to the restaurant",
     "enterMessage": "You can send a message to the restaurant.",
     "datePlaced": "Time Placed",
+    "dateAccepted": "Time Accepted",
     "dateEstimated": "Time Estimated",
     "dateConfirmed": "Time Confirmed",
+    "dateCompleted": "Time Completed",
     "statusName": "Status",
     "phoneNumber": "Phone Numbers",
     "totalCount": "Items",
@@ -460,7 +474,10 @@
     "orderTimesUnit": "{count} times",
     "cancelTimes": "Cancel",
     "cancelTimesUnit": "{count} times",
-    "lastOrder": "Last order"
+    "yourInfo": "Your information",
+    "continuousOrder": "Warning: a continuous order",
+    "lastOrder": "Last order",
+    "thisOrder": "This order"
   },
   "button": {
     "back": "Retour",
@@ -630,6 +647,7 @@
       "lineSafariPrivate": "Remarque: si vous utilisez le mode de navigation privée de Safari, vous ne pourrez pas vous connecter à LINE.",
       "history": "Tout l'historique de l'ordre",
       "more": "En savoir plus",
+      "all": "View All",
       "messageFromCustomer": "Message from the customer",
       "willOrderChange": "Change order",
       "cancelOrderChange": "Cancel an order change",

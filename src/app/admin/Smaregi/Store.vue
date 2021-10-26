@@ -25,7 +25,7 @@
       </span>
       <div v-if="isEdit">
 
-        <div v-for="(product, key) in productList" :key="key" class="mt4" >
+        <div v-for="(product, key) in productList" :key="key" class="mt4 border-2" >
           {{product.productCode}} / {{product.productName}} / {{product.price}}円
 
           <b-select v-model="selectedMenu[key]" :class="selectedMenu[key] && duplicateElement[selectedMenu[key]] ? 'border-red-700 border-2 border-solid' : ''">
