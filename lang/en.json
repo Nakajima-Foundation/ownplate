@@ -78,6 +78,15 @@
     "invalid": "Invalid ID. You can use only alphabets and numbers.",
     "alreadyTaken": "This ID is not available."
   },
+  "restaurantCsv": {
+    "date": "date",
+    "restaurantName": "restaurant name",
+    "onTheList": "on the list",
+    "publicFlag": "is public",
+    "deletedFlag": "is deleted",
+    "menu": "number of menu",
+    "uid": "uid"
+  },
   "editCommon": {
     "save": "Save",
     "saving": "Saving",
@@ -301,6 +310,7 @@
     "noPaymentMethod": "Online Order Unavailable",
     "minimumAvailableTime": "Minimum available time",
     "noAvailableTime": "No orderable time",
+    "category": "category",
     "viewMore": "View More",
     "viewLess": "Close"
   },
@@ -352,6 +362,8 @@
     "customerVoice1": "Customer Voices",
     "customerVoice2": "",
     "goToSampleRestaurant": "Go to sample restaurant",
+    "tokyo": "Tokyo",
+    "osaka": "Osaka",
     "izakaya": "Izakaya",
     "patisserie": "pastry shop",
     "searchRestaurant": "Search for restaurant"
@@ -413,8 +425,10 @@
     "orderMessage": "Message to the restaurant",
     "enterMessage": "You can send a message to the restaurant.",
     "datePlaced": "Time Placed",
+    "dateAccepted": "Time Accepted",
     "dateEstimated": "Time Estimated",
     "dateConfirmed": "Time Confirmed",
+    "dateCompleted": "Time Completed",
     "statusName": "Status",
     "phoneNumber": "Phone Numbers",
     "totalCount": "Items",
@@ -460,7 +474,10 @@
     "orderTimesUnit": "{count} times",
     "cancelTimes": "Cancel",
     "cancelTimesUnit": "{count} times",
-    "lastOrder": "Last order"
+    "yourInfo": "Your information",
+    "continuousOrder": "Warning: a continuous order",
+    "lastOrder": "Last order",
+    "thisOrder": "This order"
   },
   "button": {
     "back": "Back",
@@ -630,6 +647,7 @@
       "lineSafariPrivate": "Note: If you are using Safari's Private Browsing Mode, you will not be able to connect to LINE.",
       "history": "All Order History",
       "more": "View More",
+      "all": "View All",
       "messageFromCustomer": "Message from the customer",
       "willOrderChange": "Change order",
       "cancelOrderChange": "Cancel an order change",

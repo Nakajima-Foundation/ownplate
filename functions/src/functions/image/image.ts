@@ -1,5 +1,5 @@
-import * as imageUtil from './imageUtil';
-import * as constant from './constant';
+import * as imageUtil from "./imageUtil";
+import * as constant from "./constant";
 
 export const generateResizeImage = async (db, object) => {
   const filePath = object.name; // images/restaurants/0LHzyxxnKZ0eZs3bCaEx/cover.jpg
@@ -8,23 +8,29 @@ export const generateResizeImage = async (db, object) => {
   const imageId = imageUtil.getImageId(filePath);
 
   const resizedImages = {};
-  await Promise.all(constant.sizeOfResize.map(async (size) => {
-
-    const toFileFullPath = imageUtil.getToFileFullPath(filePath, size);
-    const resizedImage = await imageUtil.resizedImage(object, toFileFullPath, size)
-    return resizedImages[size] = resizedImage;
-  }));
+  await Promise.all(
+    constant.sizeOfResize.map(async (size) => {
+      const toFileFullPath = imageUtil.getToFileFullPath(filePath, size);
+      const resizedImage = await imageUtil.resizedImage(object, toFileFullPath, size);
+      return (resizedImages[size] = resizedImage);
+    })
+  );
 
   if (Object.keys(resizedImages).length > 0) {
-    await db.doc(firestorePath).set({
-      images: {[imageId]:{
-        original: filePath,
-        resizedImages,
-      }}
-    }, {merge:true});
+    await db.doc(firestorePath).set(
+      {
+        images: {
+          [imageId]: {
+            original: filePath,
+            resizedImages,
+          },
+        },
+      },
+      { merge: true }
+    );
   }
   return true;
-}
+};
 
 export const imageProcessing = async (db, object) => {
   const filePath = object.name; // groups/PMVo9s1nCVoncEwju4P3/articles/6jInK0L8x16NYzh6touo/E42IMDbmuOAZHYkxhO1Q
@@ -39,4 +45,4 @@ export const imageProcessing = async (db, object) => {
     console.log("not hit", filePath);
     return false;
   }
-}
+};

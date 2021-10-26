@@ -2,8 +2,8 @@
   <div class="bg-white rounded-lg shadow p-4">
     <!-- Order Items -->
     <div class="grid grid-cols-1 space-y-4">
-      <template v-for="orderItem in orderItems">
-        <order-item :orderItem="orderItem" :key="orderItem.key"></order-item>
+      <template v-for="(orderItem, key) in orderItems">
+        <order-item :orderItem="orderItem" :key="orderItem.key" :editable="editable" :available="(editedAvailableOrders||{})[key]" @input="updateAvailable" :mkey="key"></order-item>
       </template>
     </div>
 
@@ -151,7 +151,15 @@ export default {
     orderInfo: {
       type: Object,
       required: true
-    }
+    },
+    editable: {
+      type: Boolean,
+      required: false,
+    },
+    editedAvailableOrders: {
+      type: Array,
+      required: false
+    },
   },
   data() {
     return {
@@ -192,6 +200,10 @@ export default {
     }
   },
   methods: {
+    updateAvailable(value) {
+      this.$emit("input", value)
+    },
+
     calcTip(ratio) {
       const m = this.$store.getters.stripeRegion.multiple;
       const value = Math.round((this.orderInfo.total * ratio * m) / 100) / m;

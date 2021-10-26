@@ -1,5 +1,18 @@
 <template>
   <div>
+    <div v-if="partner.length > 0" class="mt-3 mx-6 items-center">
+      <div v-for="(part, k) in partner" :key="k" class="flex">
+        <div class="flex-1">
+          <img :src="`/partners/${part.logo}`" class="w-12"/>
+          <span class="font-bold">
+            {{part.name}}
+          </span>
+        </div>
+        <div class="text-right font-bold" v-if="part.ask">
+          <a href="#" @click="openContact()">サポート問い合わせ</a>
+        </div>
+      </div>
+    </div>
     <!-- Notification Settings Popup-->
     <notification-settings
       :notificationData="notificationConfig"
@@ -11,6 +24,9 @@
     <notification-watcher />
     <sound-config-watcher :notificationConfig="notificationConfig" />
     <new-order-watcher :notificationConfig="notificationConfig" />
+    <b-modal :active.sync="isOpen" :width="488">
+      <PartnersContact :id="(partner[0]||{}).id"/>
+    </b-modal>
   </div>
 </template>
 
@@ -20,13 +36,15 @@ import NotificationWatcher from "./Watcher/NotificationWatcher";
 import SoundConfigWatcher from "./Watcher/SoundConfigWatcher";
 import NewOrderWatcher from "./Watcher/NewOrderWatcher";
 import NotificationSettings from "./Notifications/NotificationSettings";
+import PartnersContact from "./Partners/Contact";
 
 export default {
   components: {
     NotificationWatcher,
     SoundConfigWatcher,
     NewOrderWatcher,
-    NotificationSettings
+    NotificationSettings,
+    PartnersContact
   },
   data() {
     return {
@@ -36,7 +54,9 @@ export default {
         nameKey: null
       },
       justCreated: true,
-      NotificationSettingsPopup: false
+      NotificationSettingsPopup: false,
+      shopOwner: null,
+      isOpen: false,
     };
   },
   computed: {
@@ -51,7 +71,16 @@ export default {
         !this.$store.state.soundEnable &&
         this.isIOS
       );
-    }
+    },
+    partner() {
+        return this.getPartner(this.shopOwner);
+    },
+    ownerUid() {
+      return this.$store.getters.isSubAccount ? this.$store.getters.parentId : this.uid;
+    },
+    uid() {
+      return this.$store.getters.uidAdmin;
+    },
   },
   async created() {
     this.notification_detacher = db
@@ -83,6 +112,7 @@ export default {
           }
         }
       );
+    this.shopOwner = await this.getShopOwner(this.ownerUid);
   },
   destroyed() {
     this.notification_detacher && this.notification_detacher();
@@ -90,7 +120,10 @@ export default {
   methods: {
     closeNotificationSettings() {
       this.NotificationSettingsPopup = false;
-    }
+    },
+    openContact() {
+      this.isOpen = true;
+    },
   }
 };
 </script>

@@ -22,5 +22,3 @@ export const order_status = {
    -  user "orderCustomerCanceledAt" new
    -  restaurant "orderRestaurantCanceledAt" new
 
-
-#

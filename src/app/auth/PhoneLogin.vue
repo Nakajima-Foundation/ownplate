@@ -40,7 +40,8 @@
               :message="hasError ? $t(errors[0]) : $t('sms.notice')"
             >
               <b-input
-                type="text"
+                type="tel"
+                autocomplete="tel" 
                 v-model="phoneNumber"
                 v-on:input="validatePhoneNumber"
                 maxlength="20"
@@ -273,6 +274,15 @@ export default {
           this.recaptchaVerifier
         );
         console.log("result", this.confirmationResult);
+
+        const path = this.moment().format("YYYY/MMDD");
+        db.collection(`/phoneLog/${path}`).add({
+          date: this.moment().format("YYYY-MM-DD"),
+          month: this.moment().format("YYYYMM"),
+          phoneNumber: this.SMSPhoneNumber,
+          updated: firestore.FieldValue.serverTimestamp()
+        });
+        
       } catch (error) {
         console.log(JSON.stringify(error));
         console.log("error", error.code);

@@ -72,7 +72,16 @@ export default {
   methods: {
     writeonFirstLine(index, key, text) {
       return index === 0 && Number(key) === 0 ? text : "-";
-    }
+    },
+    timeConvert(timeData) {
+      if (!timeData) {
+        return null;
+      }
+      if (timeData.seconds) {
+        return moment(timeData.toDate()).format("YYYY/MM/DD HH:mm")
+      }
+      return moment(timeData).format("YYYY/MM/DD HH:mm")
+    },
   },
   computed: {
     formulas() {
@@ -87,8 +96,15 @@ export default {
         "statusName",
         "userName",
         "phoneNumber",
-        "timeRequested",
+
+        "datePlaced",
+        "dateAccepted",
         "dateConfirmed",
+        "dateCompleted",
+        
+        "timeRequested",
+        "timeToPickup",
+
         "itemName",
         "options",
         "category1",
@@ -118,23 +134,41 @@ export default {
           const orderItems = this.forceArray(order.order[menuId]);
           const options = order.options[menuId] || [];
           Object.keys(orderItems).forEach(key => {
-            console.log(options[key]);
+            const opt = Array.isArray(options[key] || []) ? options[key] || [] : [options[key]];
             try {
-              const menuItem = order.menuItems[menuId];
+              const menuItem = (order.menuItems || {})[menuId] || {};
               items.push({
                 id: `${order.id}/${menuId}`,
                 name: nameOfOrder(order),
                 timeRequested: this.writeonFirstLine(
                   index,
                   key,
-                  order.timePlaced &&
-                    moment(order.timePlaced).format("YYYY/MM/DD HH:mm")
+                  this.timeConvert(order.timePlaced)
+                ),
+                timeToPickup: this.writeonFirstLine(
+                  index,
+                  key,
+                  this.timeConvert(order.timeEstimated)
+                ),
+                datePlaced: this.writeonFirstLine(
+                  index,
+                  key,
+                  this.timeConvert(order.orderPlacedAt)
+                ),
+                dateAccepted: this.writeonFirstLine(
+                  index,
+                  key,
+                  this.timeConvert(order.orderAcceptedAt)
                 ),
                 dateConfirmed: this.writeonFirstLine(
                   index,
                   key,
-                  order.timeConfirmed &&
-                    moment(order.timeConfirmed).format("YYYY/MM/DD HH:mm")
+                  this.timeConvert(order.timeConfirmed)
+                ),
+                dateCompleted: this.writeonFirstLine(
+                  index,
+                  key,
+                  this.timeConvert(order.transactionCompletedAt)
                 ),
                 phoneNumber: this.writeonFirstLine(
                   index,
@@ -147,9 +181,7 @@ export default {
                   order.name || this.$t("order.unspecified")
                 ),
                 count: orderItems[key],
-                options: (options[key] || [])
-                  .filter(a => String(a) !== "")
-                  .join("/"),
+                options: opt.filter(a => String(a) !== "").join("/"),
                 memo: this.writeonFirstLine(index, key, order.memo),
                 itemName: menuItem.itemName,
                 statusName: this.writeonFirstLine(

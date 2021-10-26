@@ -33,3 +33,5 @@ export const smaregi = {
   authUrl: "https://id.smaregi.dev/authorize",
   clientId: "cc470a5f488dcab4ce1f40bbf0838670",
 };
+
+export const gtmID = "GTM-WF3G3ZG";

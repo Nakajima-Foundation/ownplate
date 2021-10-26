@@ -1,16 +1,8 @@
 import * as functions from "firebase-functions";
 import * as nodemailer from "nodemailer";
 
-const aws_key =
-  (functions.config() &&
-    functions.config().aws &&
-    functions.config().aws.ses_user) ||
-  process.env.AWS_SES_USER;
-const aws_secret =
-  (functions.config() &&
-    functions.config().aws &&
-    functions.config().aws.ses_pass) ||
-  process.env.AWS_SES_PASS;
+const aws_key = (functions.config() && functions.config().aws && functions.config().aws.ses_user) || process.env.AWS_SES_USER;
+const aws_secret = (functions.config() && functions.config().aws && functions.config().aws.ses_pass) || process.env.AWS_SES_PASS;
 
 export const sendMail = async (to, title, body) => {
   const mailOptions = {
@@ -18,7 +10,7 @@ export const sendMail = async (to, title, body) => {
     to,
     text: body,
     // html: html,
-    subject: title
+    subject: title,
   };
   if (aws_key && aws_secret) {
     const smtpTransporter = nodemailer.createTransport({
@@ -27,9 +19,9 @@ export const sendMail = async (to, title, body) => {
       secure: true,
       auth: {
         user: aws_key,
-        pass: aws_secret
+        pass: aws_secret,
       },
-      debug: true
+      debug: true,
     });
     return await smtpTransporter.sendMail(mailOptions);
   } else {

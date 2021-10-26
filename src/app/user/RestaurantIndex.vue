@@ -1,6 +1,34 @@
 <template>
   <div>
     <!-- Restaurants -->
+    <div v-if="ownerData.name">
+      <div class="grid grid-cols-1">
+        <!-- Left -->
+        <div>
+          <!-- Cover Image -->
+          <div>
+            <img
+              @click.stop="openImage()"
+              :src="coverImage"
+              class="h-48 w-full object-cover lg:rounded-lg"
+              />
+          </div>
+        </div>
+      </div>
+
+      <!-- For Responsible  -->
+      <div class="mx-6 lg:mx-0">
+        <div class="mt-4">
+          <div class="mt-2 text-center text-xl font-bold">
+            {{ ownerData.name }}
+          </div>
+        </div>
+
+        <div class="mt-2 text-base">
+          {{ownerData.description}}
+        </div>
+      </div>
+    </div>
     <template v-for="state in allArea">
       <div v-if="restaurantsObj[state]">
         <div
@@ -55,6 +83,7 @@ export default {
     return {
       restaurants: [],
       restaurantsObj: {},
+      ownerData: {},
     };
   },
   async created() {
@@ -67,11 +96,20 @@ export default {
     this.restaurantsObj = restaurant2AreaObj(restaurantsCollection.docs);
     this.restaurants = restaurantsCollection.docs.map(this.doc2data(""));
     sortRestaurantObj(this.restaurantsObj);
+
+    const ownerDoc = await db.doc(`owners/${ownerUid}`).get();
+    this.ownerData = ownerDoc.data() || {};
   },
   computed: {
     allArea() {
       return JPPrefecture.concat(USStates);
-    }
+    },
+    coverImage() {
+      return (
+        (this.ownerData?.images?.cover?.resizedImages || {})["1200"] ||
+        this.ownerData.restCoverPhoto
+      );
+    },
   },
 }
 </script>

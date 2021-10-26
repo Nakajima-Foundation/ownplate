@@ -1,7 +1,7 @@
-import * as functions from 'firebase-functions';
-import * as admin from 'firebase-admin';
+import * as functions from "firebase-functions";
+import * as admin from "firebase-admin";
 
-import * as imageFunctions from '../../functions/image/image'
+import * as imageFunctions from "../../functions/image/image";
 
 const db = admin.firestore();
 

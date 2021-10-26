@@ -3,6 +3,7 @@
     <ownplate-service-image />
     <div class="max-w-screen-xl mx-auto">
       <entrance-buttons />
+      <demo />
       <userVoices />
       <!-- <moreButton /> -->
       <!-- <threeSteps /> -->
@@ -22,6 +23,7 @@
 import ownplateServiceImage from "~/components/lp/ownplateServiceImage";
 import entranceButtons from "~/components/lp/entranceButtons";
 import userVoices from "~/components/lp/userVoices";
+import demo from "~/components/lp/demo";
 import moreButton from "~/components/lp/moreButton";
 import threeSteps from "~/components/lp/threeSteps";
 import askButtons from "~/components/lp/askButtons";
@@ -36,6 +38,7 @@ export default {
     ownplateServiceImage,
     entranceButtons,
     userVoices,
+    demo,
     moreButton,
     threeSteps,
     askButtons,

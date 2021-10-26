@@ -72,34 +72,53 @@
 
           <!-- Right -->
           <div>
+            <div class="mx-6 mt-2 lg:mx-0">
+              <template v-for="(title, key) in titleLists">
+                <a :href="`#${title.id}`"
+                   class="inline-flex justify-center items-center h-9 rounded-full bg-black bg-opacity-5 mx-2 mt-2"
+                   >
+                  <div class="text-sm font-bold text-op-teal mx-2">
+                    {{title.name}}
+                  </div>
+                </a>
+              </template>
+            </div>
             <!-- For Responsible -->
-            <div class="mx-6 mt-6 lg:mx-0">
+            <div class="mx-6 mt-3 lg:mx-0">
               <!-- Menu Items -->
               <div class="grid grid-col-1 space-y-2">
-                <template v-for="itemId in menuLists">
-                  <div v-if="itemsObj[itemId]" :key="itemId">
-                    <div
-                      v-if="itemsObj[itemId]._dataType === 'title'"
-                      class="text-xl font-bold text-black text-opacity-30"
-                      :class="
-                        menuLists[0] === itemsObj[itemId].id ? '' : 'mt-6'
-                      "
+                <template v-for="(item, key) in itemLists">
+                  <div
+                    v-if="item._dataType === 'title'"
+                    :key="key"
                     >
-                      {{ itemsObj[itemId].name }}
+                    <div
+                      class="text-xl font-bold text-black text-opacity-30"
+                      :class="key === 0 ? '' : 'mt-6'"
+                      :id="item.id"
+                      >
+                      <span @click="openCategory">
+                        {{ item.name }}
+                        {{ $t("shopInfo.category") }}
+                      </span>
                     </div>
+                  </div>
 
+                  <div
+                    v-if="item._dataType === 'menu'"
+                    :key="key"
+                    >
                     <item-card
-                      v-if="itemsObj[itemId]._dataType === 'menu'"
-                      :item="itemsObj[itemId]"
-                      :quantities="orders[itemId] || [0]"
-                      :optionPrev="optionsPrev[itemId]"
-                      :initialOpenMenuFlag="(orders[itemId] || []).length > 0"
+                      :item="item"
+                      :quantities="orders[item.id] || [0]"
+                      :optionPrev="selectedOptionsPrev[item.id]"
+                      :initialOpenMenuFlag="(orders[item.id] || []).length > 0"
                       :shopInfo="shopInfo"
-                      :isOpen="menuId === itemId"
-                      :prices="prices[itemId] || []"
+                      :isOpen="menuId === item.id"
+                      :prices="prices[item.id] || []"
                       @didQuantitiesChange="didQuantitiesChange($event)"
                       @didOptionValuesChange="didOptionValuesChange($event)"
-                    ></item-card>
+                      ></item-card>
                   </div>
                 </template>
               </div>
@@ -179,6 +198,22 @@
         <img :src="coverImage" class="rounded-lg shadow-lg" />
       </div>
     </b-modal>
+    <!-- Image Popup-->
+    <b-modal :active.sync="categoryPopup" :width="488" scroll="keep">
+      <div class="px-2 text-center" @click.stop="closeCategory()">
+        <div class="mx-2 my-6 p-6 bg-white shadow-lg rounded-lg">
+          <template v-for="(title, key) in titleLists">
+            <a :href="`#${title.id}`"
+               class="inline-flex justify-center items-center h-9 rounded-full bg-black bg-opacity-5 mx-1 mt-2"
+               >
+              <div class="text-sm font-bold text-op-teal mx-3">
+                {{title.name}}
+              </div>
+            </a>
+          </template>
+        </div>
+      </div>
+    </b-modal>
   </div>
 </template>
 
@@ -192,7 +227,7 @@ import ShopInfo from "~/app/user/Restaurant/ShopInfo";
 import NotFound from "~/components/NotFound";
 import Price from "~/components/Price";
 
-import { db, firestore, functions, analytics } from "~/plugins/firebase.js";
+import { db, firestore, functions } from "~/plugins/firebase.js";
 import { order_status } from "~/plugins/constant.js";
 
 import { ownPlateConfig } from "@/config/project";
@@ -229,8 +264,8 @@ export default {
       loginVisible: false,
       isCheckingOut: false,
       orders: {},
-      options: {},
-      optionsPrev: {}, // from the store.cart
+      selectedOptions: {},
+      selectedOptionsPrev: {}, // from the store.cart
       restaurantsId: this.restaurantId(),
       shopInfo: {},
       menus: [],
@@ -241,6 +276,7 @@ export default {
       notFound: null,
 
       imagePopup: false,
+      categoryPopup: false,
 
       paymentInfo: {},
       noAvailableTime: false
@@ -252,8 +288,8 @@ export default {
       const cart = this.$store.state.carts[this.restaurantId()] || {};
       //console.log("cart", cart);
       this.orders = cart.orders || {};
-      this.optionsPrev = cart.options || {};
-      this.options = cart.options || {};
+      this.selectedOptionsPrev = cart.options || {};
+      this.selectedOptions = cart.options || {};
     }
   },
   created() {
@@ -367,10 +403,10 @@ export default {
         this.orders[menuId].map((num, orderKey) => {
           const selectedOptionsRaw = this.trimmedSelectedOptions[menuId][
             orderKey
-          ];
+          ] || [];
           const price = selectedOptionsRaw.reduce(
             (tmpPrice, selectedOpt, key) => {
-              const opt = menu.itemOptionCheckbox[key].split(",");
+              const opt = (menu.itemOptionCheckbox[key]||"").split(",");
               if (opt.length === 1) {
                 if (selectedOpt) {
                   return (
@@ -392,7 +428,7 @@ export default {
           ret[menuId].push(price * num);
         });
       });
-      console.log(ret);
+      // console.log(ret);
       return ret;
     },
     totalQuantities() {
@@ -408,9 +444,30 @@ export default {
       const list = this.shopInfo.menuLists || [];
       return list;
     },
+    itemLists() {
+      return this.menuLists.map((itemId) => {
+        return {...this.itemsObj[itemId]};
+      }).filter((item) => {
+        return item;
+      });
+    },
+    titleLists() {
+      return this.itemLists.filter((item) => {
+        return item._dataType === "title"
+      });
+    },
     trimmedSelectedOptions() {
       return Object.keys(this.orders).reduce((ret, id) => {
-        ret[id] = this.options[id];
+        const options = this.itemOptionCheckbox2options(this.itemsObj[id].itemOptionCheckbox);
+        const selectedOption = this.selectedOptions[id].map((selected) => {
+          if (Array.isArray(selected) && selected.length > options.length) {
+            const newopt = [...selected];
+            return newopt.slice(0, options.length);
+          }
+          return selected;
+        });
+        ret[id] = selectedOption;
+        // ret[id] = this.selectedOptions[id];
         return ret;
       }, {});
     },
@@ -455,9 +512,16 @@ export default {
     closeImage() {
       this.imagePopup = false;
     },
+    openCategory() {
+      this.categoryPopup = true;
+    },
+    closeCategory() {
+      this.categoryPopup = false;
+    },
+
     optionPrice(option) {
       const regex = /\(((\+|\-|＋|ー|−)[0-9\.]+)\)/;
-      const match = option.match(regex);
+      const match = (option||"").match(regex);
       if (match) {
         return Number(match[1].replace(/ー|−/g, "-").replace(/＋/g, "+"));
       }
@@ -523,7 +587,7 @@ export default {
           id: this.restaurantId(),
           cart: {
             orders: this.orders,
-            options: this.options
+            options: this.selectedOptions
           }
         });
         const wasOrderCreated = functions.httpsCallable("wasOrderCreated2");
@@ -531,6 +595,25 @@ export default {
           restaurantId: this.restaurantId(),
           orderId: res.id
         });
+
+        try {
+          const menus = [];
+          Object.keys(this.orders).forEach((menuId) => {
+            this.orders[menuId].forEach(quantity => {
+              const menu = Object.assign({}, this.itemsObj[menuId]);
+              menu.quantity = quantity;
+              menus.push(menu);
+            });
+          });
+          analyticsUtil.sendBeginCheckoout(
+            this.totalPrice.total,
+            menus,
+            this.shopInfo,
+            this.restaurantId()
+          );
+        } catch (e) {
+          console.log(e);
+        }
         this.$router.push({
           path: `/r/${this.restaurantId()}/order/${res.id}`
         });
@@ -563,10 +646,10 @@ export default {
       this.orders = newObject;
     },
     didOptionValuesChange(eventArgs) {
-      this.options = Object.assign({}, this.options, {
+      this.selectedOptions = Object.assign({}, this.selectedOptions, {
         [eventArgs.id]: eventArgs.optionValues
       });
-      //console.log(this.options);
+      //console.log(this.selectedOptions);
     }
   }
 };

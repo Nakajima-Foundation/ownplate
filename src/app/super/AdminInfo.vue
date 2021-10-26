@@ -2,6 +2,9 @@
   <section class="section">
     <back-button url="/s/admins" />
     <h1>Admin</h1>
+    <div>
+      <b-checkbox v-model="admin.opt_out">Opt out</b-checkbox>
+    </div>
     {{admin.name}}, {{adminPrivate.email}}
     <h1>Custome Claims</h1>
     <div>
@@ -70,6 +73,12 @@ export default {
       return functions.httpsCallable("superDispatch");
     }
   },
+  watch: {
+    "admin.opt_out"() {
+      console.log(this.admin);
+      db.doc("/admins/" + this.adminId).set(this.admin, {merge: true});
+    },
+  },
   async mounted() {
     const { data } = await this.superDispatch({
       cmd: "getCustomeClaims",
@@ -81,7 +90,6 @@ export default {
       .where("uid", "==", this.adminId)
       .get();
     this.restaurants = snapshot.docs.map(this.doc2data("admin"));
-    console.log(this.restaurants);
 
     const adminPrivateSnapshot = await db
           .doc("/admins/" + this.adminId + "/private/profile").get();

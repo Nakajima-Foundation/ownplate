@@ -1,23 +1,23 @@
-import { should } from 'chai';
-import { expect } from 'chai';
+import { should } from "chai";
+import { expect } from "chai";
 
-import * as order from './../src/functions/order'
-import * as intent from './../src/stripe/intent'
-import * as utils from './../src/lib/utils'
+import * as order from "./../src/functions/order";
+import * as intent from "./../src/stripe/intent";
+import * as utils from "./../src/lib/utils";
 
-import * as constant from './../src/common/constant';
-import * as test_db_helper from './test_db_helper';
-import * as test_helper from './test_helper';
+import * as constant from "./../src/common/constant";
+import * as test_db_helper from "./test_db_helper";
+import * as test_helper from "./test_helper";
 
-import moment from 'moment-timezone';
+import moment from "moment-timezone";
 
-import { Context } from '../src/models/TestType'
+import { Context } from "../src/models/TestType";
 
 const adminDB = test_db_helper.adminDB();
-should()
+should();
 
-describe('Order function', () => {
-  it ('Order function, orderCounter test', async function() {
+describe("Order function", () => {
+  it("Order function, orderCounter test", async function () {
     const restaurantId = "testbar1";
     await test_helper.createRestaurantData(adminDB, restaurantId);
 
@@ -34,9 +34,15 @@ describe('Order function', () => {
     // create order
     const orderId = "hoge";
 
-    await test_helper.createOrder(adminDB, restaurantId, orderId, {
-      hoge1: 10,
-    }, order.wasOrderCreated);
+    await test_helper.createOrder(
+      adminDB,
+      restaurantId,
+      orderId,
+      {
+        hoge1: 10,
+      },
+      order.wasOrderCreated
+    );
 
     const updatedOrder = await adminDB.doc(`restaurants/${restaurantId}/orders/${orderId}`).get();
     const updatedOrderdata = updatedOrder.data() || {};
@@ -57,7 +63,7 @@ describe('Order function', () => {
     }
   });
 
-  it ('Order function, error test', async function() {
+  it("Order function, error test", async function () {
     // create restaurant
     const restaurantId = "testbar3";
     await test_helper.createRestaurantData(adminDB, restaurantId);
@@ -70,7 +76,7 @@ describe('Order function', () => {
       await test_helper.createOrder(adminDB, restaurantId, orderId, data, order.wasOrderCreated);
       const newOrderData = (await adminDB.doc(`restaurants/${restaurantId}/orders/${orderId}`).get()).data() || {};
       newOrderData["orderId"] = orderId;
-      index ++;
+      index++;
       return newOrderData;
     };
 
@@ -81,7 +87,6 @@ describe('Order function', () => {
       hoge3: 5,
     });
     newOrderData.status.should.equal(constant.order_status.error);
-
 
     // zero order test - skip 0 order
     const newOrderData2 = await makeOrder({
@@ -135,9 +140,8 @@ describe('Order function', () => {
 
     newOrderData6.status.should.equal(constant.order_status.error);
 
-
     // invalid number data test
-    const newOrderData10 =  await makeOrder({
+    const newOrderData10 = await makeOrder({
       hoge1: "abc",
     });
 
@@ -147,7 +151,7 @@ describe('Order function', () => {
     newOrderData10.status.should.equal(constant.order_status.error);
   });
 
-  it ('Order function, counter test', async function() {
+  it("Order function, counter test", async function () {
     const restaurantId = "testbar4";
     const uid = "123";
     await test_helper.createRestaurantData(adminDB, restaurantId);
@@ -160,27 +164,27 @@ describe('Order function', () => {
       await test_helper.createOrder(adminDB, restaurantId, orderId, data, order.wasOrderCreated);
       const newOrderData = (await adminDB.doc(`restaurants/${restaurantId}/orders/${orderId}`).get()).data() || {};
       newOrderData["orderId"] = orderId;
-      index ++;
+      index++;
       return newOrderData;
     };
 
     const checkOrderTotal = async (count) => {
-      const now = moment(1613986197000).tz("Asia/Tokyo").format('YYYYMMDD');
-      const path = `restaurants/${restaurantId}/menus/hoge1/orderTotal/${now}`
+      const now = moment(1613986197000).tz("Asia/Tokyo").format("YYYYMMDD");
+      const path = `restaurants/${restaurantId}/menus/hoge1/orderTotal/${now}`;
       const totalRes = (await adminDB.doc(path).get()).data() || {};
       totalRes.count.should.equal(count);
     };
 
     const checkUserLog = async (ok: number, cancel: number) => {
       const userLogPath = `restaurants/${restaurantId}/userLog/${uid}`;
-      const log =  (await adminDB.doc(userLogPath).get()).data() || {};
+      const log = (await adminDB.doc(userLogPath).get()).data() || {};
       log.counter.should.equal(ok);
       log.cancelCounter.should.equal(cancel);
     };
 
     const deleteOrderTotal = async () => {
-      const now = moment(1613986197000).tz("Asia/Tokyo").format('YYYYMMDD');
-      const path = `restaurants/${restaurantId}/menus/hoge1/orderTotal/${now}`
+      const now = moment(1613986197000).tz("Asia/Tokyo").format("YYYYMMDD");
+      const path = `restaurants/${restaurantId}/menus/hoge1/orderTotal/${now}`;
       await adminDB.doc(path).delete();
     };
 
@@ -191,41 +195,64 @@ describe('Order function', () => {
     await deleteOrderTotal();
     await deleteUserLog();
 
-    const newOrderData12 =  await makeOrder({
+    const newOrderData12 = await makeOrder({
       hoge1: 1,
     });
 
     const { orderId } = newOrderData12;
-    const context = {auth: { uid, token:{ phone_number: "xxxx"}}} as Context;
-    const placed = await order.place(adminDB, {restaurantId, orderId, timeToPickup: {seconds: 1613986197, nanoseconds: 0}}, context );
+    const context = {
+      auth: { uid, token: { phone_number: "xxxx" } },
+    } as Context;
+    const placed = await order.place(
+      adminDB,
+      {
+        restaurantId,
+        orderId,
+        timeToPickup: { seconds: 1613986197, nanoseconds: 0 },
+      },
+      context
+    );
 
     placed.success.should.equal(true);
     await checkOrderTotal(1);
     await checkUserLog(1, 0);
 
-    const newOrderData13 =  await makeOrder({
+    const newOrderData13 = await makeOrder({
       hoge1: 1,
     });
     const newOrderRes13 = newOrderData13;
-    const placed2 = await order.place(adminDB, {restaurantId, orderId: newOrderRes13.orderId, timeToPickup: {seconds: 1613986197, nanoseconds: 0}}, context );
+    const placed2 = await order.place(
+      adminDB,
+      {
+        restaurantId,
+        orderId: newOrderRes13.orderId,
+        timeToPickup: { seconds: 1613986197, nanoseconds: 0 },
+      },
+      context
+    );
     placed2.success.should.equal(true);
     await checkOrderTotal(2);
     await checkUserLog(2, 0);
 
-    const newOrderData14 =  await makeOrder({
+    const newOrderData14 = await makeOrder({
       hoge1: [1, 1],
     });
 
     const newOrderRes14 = newOrderData14;
-    const placed14 = await order.place(adminDB, {restaurantId, orderId: newOrderRes14.orderId,  timeToPickup: {seconds: 1613986197, nanoseconds: 0}}, context );
+    const placed14 = await order.place(
+      adminDB,
+      {
+        restaurantId,
+        orderId: newOrderRes14.orderId,
+        timeToPickup: { seconds: 1613986197, nanoseconds: 0 },
+      },
+      context
+    );
     placed14.success.should.equal(true);
     await checkOrderTotal(4);
     await checkUserLog(3, 0);
 
-    await intent.cancel(adminDB, {restaurantId, orderId: newOrderRes14.orderId, lng: "ja"}, context)
+    await intent.cancel(adminDB, { restaurantId, orderId: newOrderRes14.orderId, lng: "ja" }, context);
     await checkUserLog(3, 1);
-
-
   });
-
 });

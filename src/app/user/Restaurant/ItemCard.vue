@@ -237,6 +237,7 @@
 import { mapGetters, mapMutations } from "vuex";
 import Price from "~/components/Price";
 import SharePopup from "~/app/user/Restaurant/SharePopup";
+import * as analyticsUtil from "~/plugins/analytics";
 
 // menu UI algorithm
 //   init quantities = [0]
@@ -324,6 +325,13 @@ export default {
       if (this.openMenuFlag && this.quantities[0] == 0) {
         this.setQuantities(this.quantities + 0); // Only by tapping "Add" will do both open card and add item.
       }
+      if (this.openMenuFlag) {
+        analyticsUtil.sendViewItem(
+          this.item,
+          this.shopInfo,
+          this.restaurantId()
+        );
+      }
     }
   },
   computed: {
@@ -346,27 +354,14 @@ export default {
     },
     allergens() {
       if (this.item.allergens) {
-        return Object.keys(this.item.allergens).filter(allergen => {
+        return this.$store.getters.stripeRegion.allergens.filter(allergen => {
           return this.item.allergens[allergen];
         });
       }
       return [];
     },
     options() {
-      // HACK: Dealing with a special case (probalby a bug in the menu editor)
-      if (
-        this.item.itemOptionCheckbox &&
-        this.item.itemOptionCheckbox.length === 1 &&
-        !this.item.itemOptionCheckbox[0]
-      ) {
-        console.log("Special case: itemOptionCheckbox===['']");
-        return [];
-      }
-      return (this.item.itemOptionCheckbox || []).map(option => {
-        return option.split(",").map(choice => {
-          return choice.trim();
-        });
-      });
+      return this.itemOptionCheckbox2options(this.item.itemOptionCheckbox);
     },
     hasOptions() {
       return this.options.length;
@@ -404,6 +399,12 @@ export default {
       const to = "/r/" + this.restaurantId() + (this.urlSuffix || "");
       if (current !== to) {
         this.$router.replace(to);
+
+        analyticsUtil.sendViewItem(
+          this.item,
+          this.shopInfo,
+          this.restaurantId()
+        );
       }
     },
     closeImage() {
@@ -415,15 +416,34 @@ export default {
         return;
       }
       this.setQuantities(key, this.quantities[key] - 1);
+      analyticsUtil.sendRemoveFromCart(
+        this.item,
+        this.shopInfo,
+        this.restaurantId(),
+        1
+      )
     },
     pushQuantities(key) {
       this.setQuantities(key, this.quantities[key] + 1);
       if (!this.openMenuFlag) {
         this.toggleMenuFlag();
       }
+      analyticsUtil.sendAddToCart(
+        this.item,
+        this.shopInfo,
+        this.restaurantId(),
+        1
+      )
     },
     toggleMenuFlag() {
       this.openMenuFlag = !this.openMenuFlag;
+      if (this.openMenuFlag) {
+        analyticsUtil.sendSelectItem(
+          this.item,
+          this.shopInfo,
+          this.restaurantId()
+        );
+      }
     },
     setQuantities(key, newValue) {
       const newQuantities = [...this.quantities];

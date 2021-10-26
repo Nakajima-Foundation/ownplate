@@ -1,11 +1,11 @@
-import * as admin from 'firebase-admin';
-import * as functions from 'firebase-functions';
+import * as admin from "firebase-admin";
+import * as functions from "firebase-functions";
 
-import * as Sentry from '@sentry/node';
+import * as Sentry from "@sentry/node";
 
-import exportIfNeeded from './lib/exportifneeded';
+import exportIfNeeded from "./lib/exportifneeded";
 
-const senty_dsn = functions.config() && functions.config().senty && functions.config().senty.dsn || process.env.SENTY_DSN;
+const senty_dsn = (functions.config() && functions.config().senty && functions.config().senty.dsn) || process.env.SENTY_DSN;
 Sentry.init({ dsn: senty_dsn });
 
 if (!admin.apps.length) {
@@ -15,7 +15,10 @@ if (!admin.apps.length) {
 exportIfNeeded("api", "api", exports);
 
 exportIfNeeded("systemGetConfig", "systemGetConfig", exports);
+
 exportIfNeeded("superDispatch", "superDispatch", exports);
+exportIfNeeded("superTwilio", "superTwilio", exports);
+
 exportIfNeeded("accountDelete", "accountDelete", exports);
 
 exportIfNeeded("lineVerifyFriend", "line/lineVerifyFriend", exports);
@@ -27,6 +30,8 @@ exportIfNeeded("traceProcess", "traceProcess", exports);
 exportIfNeeded("wasOrderCreated2", "order/wasOrderCreated2", exports);
 exportIfNeeded("orderUpdate", "order/orderUpdate", exports);
 exportIfNeeded("orderPlace", "order/orderPlace", exports);
+
+exportIfNeeded("orderChange", "stripe/orderChange", exports);
 
 exportIfNeeded("stripeConnect", "stripe/stripeConnect", exports);
 exportIfNeeded("stripeDisconnect", "stripe/stripeDisconnect", exports);
