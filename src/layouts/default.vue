@@ -313,8 +313,8 @@
 
 <script>
 import { db, auth, functions, analytics } from "@/plugins/firebase.js";
-import { releaseConfig } from "~/plugins/config.js";
-import DialogBox from "~/components/DialogBox";
+import { releaseConfig } from "@/plugins/config.js";
+import DialogBox from "@/components/DialogBox.vue";
 import AudioPlay from "./AudioPlay";
 import * as Sentry from "@sentry/browser";
 
