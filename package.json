@@ -52,6 +52,7 @@
     "vue-i18n": "^8.17.4",
     "vue-router": "^3.5.2",
     "vue-social-sharing": "^2.4.7",
+    "vuex": "^3.6.2",
     "y18n": "^5.0.8"
   },
   "devDependencies": {

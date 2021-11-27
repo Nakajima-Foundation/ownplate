@@ -1,6 +1,3 @@
-import Vue from 'vue';
-import VueI18n from 'vue-i18n';
-
 import i18nEN from '../../lang/en.json';
 import i18nES from '../../lang/es.json';
 import i18nJA from '../../lang/ja.json';
@@ -10,10 +7,7 @@ import * as constant from './constant.js';
 
 import { ownPlateConfig } from "@/config/project";
 
-Vue.use(VueI18n);
-
 const region = ownPlateConfig.region || "US";
-
 const region_data = constant.stripe_regions[region];
 
 const numberFormats = {
@@ -38,7 +32,7 @@ const dateTimeFormats = {
 
 const locale = region_data.langs[0] || 'en';
 
-const i18n = new VueI18n({
+const data = {
   // locales: ['en', 'es', 'ja'],
   locale,
   fallbackLocale: locale,
@@ -56,8 +50,6 @@ const i18n = new VueI18n({
     en: dateTimeFormats,
     ja: dateTimeFormats
   }
-});
-
-export default ({ app }) => {
-  app.i18n = i18n;
 };
+
+export default data;

@@ -233,8 +233,8 @@
         </div>
 
         <!-- approproate component under pages will be displayed -->
-        <nuxt v-if="isReadyToRender"></nuxt>
-        <dialog-box :dialog="dialog" />
+        <router-view v-if="isReadyToRender"/>
+m        <dialog-box :dialog="dialog" />
       </div>
     </div>
 

@@ -1,23 +1,22 @@
 import Vue from 'vue';
-import { storage } from "~/plugins/firebase.js";
+import { storage } from "@/plugins/firebase.js";
 import { ownPlateConfig } from "@/config/project";
-import { soundFiles, regionalSettings } from "~/plugins/constant.js";
+import { soundFiles, regionalSettings } from "@/plugins/constant.js";
 import moment from "moment";
 import * as Cookie from "cookie";
-import { db } from "~/plugins/firebase.js";
+import { db } from "@/plugins/firebase.js";
 
 import { defaultHeader } from "./header";
-import { formatOption } from "~/plugins/strings.js";
+import { formatOption } from "@/plugins/strings.js";
 
-import { partners } from "~/plugins/constant";
+import { partners } from "@/plugins/constant";
 
-export default ({ app }) => {
-  Vue.mixin({
-    methods: {
-      isNull(value) {
-        return value === null || value === undefined;
-      },
-      isEmpty(value) {
+const mixins = {
+  methods: {
+    isNull(value) {
+      return value === null || value === undefined;
+    },
+    isEmpty(value) {
         return value === null || value === undefined || value === "";
       },
       restaurantId() {
@@ -299,5 +298,7 @@ export default ({ app }) => {
         ];
       }
     }
-  });
-}
+};
+
+
+export default mixins;

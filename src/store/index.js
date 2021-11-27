@@ -1,13 +1,11 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import { stripe_regions } from "~/plugins/constant.js";
+import { stripe_regions } from "@/plugins/constant.js";
 import moment from "moment";
 
 Vue.use(Vuex);
 
-export const strict = false;
-
-export const state = () => ({
+const state = () => ({
   user: undefined, // undefined:not authorized, null:no user
   claims: undefined, // custom claims
   lang: undefined,
@@ -25,7 +23,7 @@ export const state = () => ({
   isFirefoxPBM: undefined // true, false, null
 });
 
-export const getters = {
+const getters = {
   uid: (state) => {
     return state.user && state.user.uid;
   },
@@ -68,7 +66,7 @@ export const getters = {
   },
 };
 
-export const mutations = {
+const mutations = {
   setActive(state, flag) {
     state.isWindowActive = flag;
   },
@@ -141,5 +139,11 @@ export const mutations = {
   }
 };
 
-export const actions = {
+const actions = {
 };
+export default new Vuex.Store({
+  state,
+  getters,
+  actions,
+  mutations,
+})
