@@ -28,7 +28,7 @@
           </div>
 
           <div class="flex-1">
-            <nuxt-link to="#" @click.native="copyClipboard(url)" event>
+            <router-link to="#" @click.native="copyClipboard(url)" event>
               <div class="inline-flex justify-center items-center">
                 <i class="material-icons text-lg text-op-teal mr-2"
                   >file_copy</i
@@ -37,7 +37,7 @@
                   {{ $t("shopInfo.copyUrl") }}
                 </div>
               </div>
-            </nuxt-link>
+            </router-link>
 
             <div class="text-sm text-black text-opacity-30">
               {{ this.url }}
