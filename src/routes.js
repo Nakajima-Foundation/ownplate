@@ -5,19 +5,8 @@ Vue.use(VueRouter);
 
 import NotFound from "@/app/common/404.vue";
 
-const router = new VueRouter({
-  mode: 'history',
-  base: process.env.BASE_URL,
-  routes: [
-    {
-      path: "*",
-      // component: "common/404.vue"
-      component: NotFound,
-    }
-  ]
-});
 
-export const customRoutes = [
+const customRoutes = [
   {
     name: "r",
     path: "/r",
@@ -331,5 +320,16 @@ export const customRoutes = [
 ];
 
 
+const routes = customRoutes.map((data) => {
+  const component = import("@/app/" + data.component);
+  data.component = component;
+  return data
+});
+
+const router = new VueRouter({
+  mode: 'history',
+  base: process.env.BASE_URL,
+  routes,
+});
 
 export default router;
