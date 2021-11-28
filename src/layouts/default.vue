@@ -234,7 +234,7 @@
 
         <!-- approproate component under pages will be displayed -->
         <router-view v-if="isReadyToRender"/>
-m        <dialog-box :dialog="dialog" />
+        <dialog-box :dialog="dialog" />
       </div>
     </div>
 
