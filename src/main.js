@@ -1,6 +1,8 @@
 import Vue from "vue";
 import VueI18n from 'vue-i18n';
 
+import Buefy from 'buefy';
+
 import store from '@/store/index.js';
 import routes from '@/routes'
 
@@ -13,12 +15,10 @@ import App from "./layouts/default.vue";
 
 Vue.use(VueI18n);
 
-const i18n = new VueI18n({
-  locale: 'ja',
-  messages: i18nData,
-});
+const i18n = new VueI18n(i18nData);
 
 Vue.mixin(mixins);
+Vue.use(Buefy)
 
 
 new Vue({

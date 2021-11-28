@@ -3,9 +3,18 @@ import VueRouter from 'vue-router';
 
 Vue.use(VueRouter);
 
+import NotFound from "@/app/common/404.vue";
+
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
+  routes: [
+    {
+      path: "*",
+      // component: "common/404.vue"
+      component: NotFound,
+    }
+  ]
 });
 
 export const customRoutes = [

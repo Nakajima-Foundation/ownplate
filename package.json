@@ -35,6 +35,7 @@
     "@sentry/browser": "^5.15.5",
     "@sentry/integrations": "^5.15.5",
     "babel-polyfill": "^6.26.0",
+    "buefy": "^0.9.13",
     "bulma-social": "^1.0.1",
     "cookie": "^0.4.1",
     "firebase": "^8.2.4",
