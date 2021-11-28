@@ -1,8 +1,5 @@
-import Vue from 'vue';
-
-export default ({app}) => {
-  Vue.mixin({
-    methods: {
+const mixins = {
+  methods: {
       redirectToAdminPage() {
         const redirect = this.$route.query["to"];
         const pathRegex = /^\/[a-zA-Z0-9-\_\/]+$/;
@@ -44,5 +41,7 @@ export default ({app}) => {
         return this.$store.getters.isNotOperator;
       }
     },
-  });
-}
+};
+
+export default mixins;
+

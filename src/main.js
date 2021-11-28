@@ -7,15 +7,15 @@ import store from '@/store/index.js';
 import routes from '@/routes'
 
 import i18nData from "@/plugins/vue-i18n";
-import mixins from "@/plugins/utils";
 
+import mixins from "@/plugins/utils";
+import userPermission from "@/plugins/userPermission";
+  
 require('@/assets/scss/main.scss');
 
 
 import "./index.css";
 
-// import App from '@/components/App';
-// import App from "./components/App.vue";
 import App from "./layouts/default.vue";
 
 Vue.use(VueI18n);
@@ -23,8 +23,8 @@ Vue.use(VueI18n);
 const i18n = new VueI18n(i18nData);
 
 Vue.mixin(mixins);
-Vue.use(Buefy)
-
+Vue.mixin(userPermission);
+Vue.use(Buefy);
 
 new Vue({
   router: routes,

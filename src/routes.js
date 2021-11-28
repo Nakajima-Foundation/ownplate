@@ -78,7 +78,6 @@ const customRoutes = [
     component: "user/RestaurantIndex.vue"
   },
   {
-    name: "r-restaurantId",
     path: "/r/:restaurantId",
     component: "user/RestaurantPage.vue",
     children: [
@@ -191,7 +190,7 @@ const customRoutes = [
     component: "admin/SubAccounts/Accounts.vue"
   },
   {
-    name: "admin-subaccounts-accounts",
+    name: "admin-subaccounts-accounts-account",
     path: "/admin/subaccounts/accounts/:subAccountId",
     component: "admin/SubAccounts/Account.vue"
   },
@@ -201,7 +200,7 @@ const customRoutes = [
     component: "admin/Smaregi/Index.vue"
   },
   {
-    name: "admin-smaregi-index",
+    name: "admin-smaregi-callback",
     path: "/admin/smaregi/callback",
     component: "admin/Smaregi/Callback.vue"
   },
@@ -231,7 +230,7 @@ const customRoutes = [
     component: "auth/SignUpPage.vue"
   },
   {
-    name: "admin-signup",
+    name: "admin-signup-partner",
     path: "/admin/user/signup/:partner",
     component: "auth/SignUpPage.vue"
   },
@@ -328,7 +327,6 @@ const loadComponent = (data) => {
   if (data.children) {
     return {
       path: data.path,
-      name: data.name,
       component,
       children: data.children.map((child) => {
         return loadComponent(child);
