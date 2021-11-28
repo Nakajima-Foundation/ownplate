@@ -20,7 +20,7 @@
 
         <div>
           <div>
-            <nuxt-link :to="'/r/' + restaurantid">
+            <router-link :to="'/r/' + restaurantid">
               <div
                 class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
               >
@@ -29,10 +29,10 @@
                   $t("admin.viewPage")
                 }}</span>
               </div>
-            </nuxt-link>
+            </router-link>
           </div>
           <div class="mt-2" v-if="isOwner">
-            <nuxt-link :to="'/admin/restaurants/' + restaurantid">
+            <router-link :to="'/admin/restaurants/' + restaurantid">
               <div
                 class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
               >
@@ -41,25 +41,25 @@
                   $t("admin.editAbout")
                 }}</span>
               </div>
-            </nuxt-link>
+            </router-link>
           </div>
         </div>
       </div>
 
       <!-- Not Published Alert -->
       <div class="mt-4" v-if="!shopInfo.publicFlag">
-        <nuxt-link :to="'/admin/restaurants/' + restaurantid">
+        <router-link :to="'/admin/restaurants/' + restaurantid">
           <div
             class="bg-red-700 bg-opacity-10 rounded-md text-sm font-bold text-red-700 px-4 py-2"
           >
             {{ $t("admin.privateMode") }}: {{ $t("admin.pleaseChangePublic") }}
           </div>
-        </nuxt-link>
+        </router-link>
       </div>
 
       <!-- View Orders -->
       <div class="mt-4 text-center">
-        <nuxt-link :to="'/admin/restaurants/' + restaurantid + '/orders'">
+        <router-link :to="'/admin/restaurants/' + restaurantid + '/orders'">
           <div
             class="h-16 rounded-full inline-flex justify-center items-center px-8 shadow w-full"
             :class="numberOfOrders > 0 ? 'bg-yellow-500' : 'bg-op-teal'"
@@ -75,14 +75,14 @@
               }}</span
             >
           </div>
-        </nuxt-link>
+        </router-link>
       </div>
 
       <!-- Edit Menu -->
       <div class="mt-4 text-center px-4">
         <!-- Menu Not Existing -->
         <div v-if="numberOfMenus == 0">
-          <nuxt-link :to="'/admin/restaurants/' + restaurantid + '/menus'">
+          <router-link :to="'/admin/restaurants/' + restaurantid + '/menus'">
             <div
               class="h-12 rounded-full inline-flex justify-center items-center px-6 border-2 border-solid border-red-700 w-full"
             >
@@ -94,7 +94,7 @@
                 >{{ numberOfMenus }}</span
               >
             </div>
-          </nuxt-link>
+          </router-link>
           <div class="text-sm font-bold text-red-700 mt-2">
             {{ $t("admin.pleaseAddMenu") }}
           </div>
@@ -102,7 +102,7 @@
 
         <!-- Menu Existing -->
         <div v-else>
-          <nuxt-link :to="'/admin/restaurants/' + restaurantid + '/menus'">
+          <router-link :to="'/admin/restaurants/' + restaurantid + '/menus'">
             <div
               class="h-12 rounded-full inline-flex justify-center items-center px-6 border-2 border-solid border-op-teal w-full"
             >
@@ -114,7 +114,7 @@
                 >{{ numberOfMenus }}</span
               >
             </div>
-          </nuxt-link>
+          </router-link>
         </div>
       </div>
 
@@ -123,7 +123,7 @@
         class="text-center bg-black bg-opacity-5 rounded-lg pt-3 pb-2 mt-4 flex justify-evenly"
         v-if="isOwner"
         >
-        <nuxt-link
+        <router-link
           :to="'/admin/restaurants/' + restaurantid + '#emailNotification'"
         >
           <div
@@ -140,9 +140,9 @@
               {{ shopInfo.emailNotification ? "ON" : "OFF" }}
             </div>
           </div>
-        </nuxt-link>
+        </router-link>
 
-        <nuxt-link :to="'/admin/restaurants/' + restaurantid + '#phoneCall'">
+        <router-link :to="'/admin/restaurants/' + restaurantid + '#phoneCall'">
           <div
             :class="
               shopInfo.phoneCall
@@ -157,9 +157,9 @@
               {{ shopInfo.phoneCall ? "ON" : "OFF" }}
             </div>
           </div>
-        </nuxt-link>
+        </router-link>
 
-        <nuxt-link :to="'/admin/restaurants/' + restaurantid + '/line'">
+        <router-link :to="'/admin/restaurants/' + restaurantid + '/line'">
           <div
             :class="
               lineEnable ? 'text-green-600' : 'text-black text-opacity-40'
@@ -172,13 +172,13 @@
               {{ lineEnable ? "ON" : "OFF" }}
             </div>
           </div>
-        </nuxt-link>
+        </router-link>
       </div>
 
       <!-- QR Code and Monthly Report -->
       <div class="flex justify-center items-center space-x-4 mt-4">
         <div>
-          <nuxt-link :to="`/admin/restaurants/${restaurantid}/qrcode`">
+          <router-link :to="`/admin/restaurants/${restaurantid}/qrcode`">
             <div
               class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
             >
@@ -187,11 +187,11 @@
                 $t("admin.qrcode.title")
               }}</span>
             </div>
-          </nuxt-link>
+          </router-link>
         </div>
 
         <div v-if="isOwner">
-          <nuxt-link :to="`/admin/restaurants/${restaurantid}/report`">
+          <router-link :to="`/admin/restaurants/${restaurantid}/report`">
             <div
               class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
             >
@@ -202,7 +202,7 @@
                 $t("admin.report.title")
               }}</span>
             </div>
-          </nuxt-link>
+          </router-link>
         </div>
       </div>
 

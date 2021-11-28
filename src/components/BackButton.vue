@@ -1,6 +1,6 @@
 <template>
   <div>
-    <nuxt-link :to="url">
+    <router-link :to="url">
       <div
         class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
       >
@@ -9,7 +9,7 @@
           $t("button.back")
         }}</span>
       </div>
-    </nuxt-link>
+    </router-link>
   </div>
 </template>
 

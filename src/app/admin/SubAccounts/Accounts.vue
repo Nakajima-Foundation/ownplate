@@ -22,10 +22,10 @@
         {{ $t("admin.subAccounts.subaccountlist") }}
       </div>
       <div v-for="(child, k) in children" :key="k" class="flex items-center">
-        <nuxt-link :to="`/admin/subaccounts/accounts/${child.id}`">
+        <router-link :to="`/admin/subaccounts/accounts/${child.id}`">
           {{child.name}}/{{child.email}}/{{rList(child.restaurantLists)}}
           {{$t("admin.subAccounts.messageResult." + (child.accepted === true ? "accepted" : "waiting"))}}
-        </nuxt-link>
+        </router-link>
         <b-button @click="deleteChild(child.id)">
            {{ $t("admin.subAccounts.deleteSubaccount")}}
         </b-button>

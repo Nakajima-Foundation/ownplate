@@ -8,7 +8,7 @@
           <back-button url="/admin/restaurants/" />
         </div>
         <div class="flex-shrink-0">
-          <nuxt-link :to="'/r/' + restaurantId()">
+          <router-link :to="'/r/' + restaurantId()">
             <div
               class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
             >
@@ -17,7 +17,7 @@
                 $t("admin.viewPage")
               }}</span>
             </div>
-          </nuxt-link>
+          </router-link>
         </div>
       </div>
 
@@ -123,9 +123,9 @@
           </td>
           <td class="p-2">
             <div>
-              <nuxt-link :to="orderUrl(order)">{{
+              <router-link :to="orderUrl(order)">{{
                 orderName(order)
-              }}</nuxt-link>
+              }}</router-link>
               <a v-if="order.payment" :href="searchUrl(order)" target="stripe">
                 <i v-if="order.payment" class="fab fa-cc-stripe" />
               </a>
