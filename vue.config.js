@@ -3,7 +3,7 @@ const vueSrc = "./src";
 module.exports = {
   runtimeCompiler: true,
   css: {
-    modules: true
+    requireModuleExtension: true
   },
   configureWebpack: {
     resolve: {

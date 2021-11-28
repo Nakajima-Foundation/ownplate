@@ -1,9 +1,7 @@
-import Vue from "vue";
-import Vuex from "vuex";
+import { createStore } from "vuex";
 import { stripe_regions } from "@/plugins/constant.js";
 import moment from "moment";
 
-Vue.use(Vuex);
 
 const state = () => ({
   user: undefined, // undefined:not authorized, null:no user
@@ -141,7 +139,7 @@ const mutations = {
 
 const actions = {
 };
-export default new Vuex.Store({
+export default createStore({
   state,
   getters,
   actions,

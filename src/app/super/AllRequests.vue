@@ -9,6 +9,7 @@
         <td>Pub</td>
         <td>Delete</td>
         <td>Status</td>
+      </tr>
       <tr
       v-for="request in requests"
       :key="request.id"

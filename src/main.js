@@ -1,5 +1,7 @@
-import Vue from "vue";
-import VueI18n from 'vue-i18n';
+import { createApp } from "vue";
+import { createI18n } from "vue-i18n";
+// import Vue from "vue";
+// import VueI18n from 'vue-i18n';
 
 import Buefy from 'buefy';
 
@@ -18,17 +20,16 @@ import "./index.css";
 
 import App from "./layouts/default.vue";
 
-Vue.use(VueI18n);
+const i18n = createI18n(i18nData);
 
-const i18n = new VueI18n(i18nData);
+const app = createApp(App);
+app.use(store);
+app.use(routes);
+app.use(i18n);
+app.mixin(mixins);
+app.mixin(userPermission);
+// app.use(Buefy);
+app.mount("#app");
 
-Vue.mixin(mixins);
-Vue.mixin(userPermission);
-Vue.use(Buefy);
 
-new Vue({
-  router: routes,
-  i18n: i18n,
-  store,
-  render: h => h(App)
-}).$mount("#app");
+
