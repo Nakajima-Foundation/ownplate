@@ -7,7 +7,7 @@ import {
   formatNational,
 } from "~/plugins/phoneutil.js";
 
-import logosvg from "!raw-loader!../static/pr/50mm-QR-Blank.svg";
+import logosvg from "!raw-loader!./50mm-QR-Blank.svg";
 
 const fontHost = location.protocol + "//" + location.host + "/fonts/";
 
