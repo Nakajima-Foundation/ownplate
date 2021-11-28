@@ -9,6 +9,9 @@ import routes from '@/routes'
 import i18nData from "@/plugins/vue-i18n";
 import mixins from "@/plugins/utils";
 
+require('@/assets/scss/main.scss');
+
+
 import "./index.css";
 
 // import App from '@/components/App';

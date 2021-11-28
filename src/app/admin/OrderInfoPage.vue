@@ -1048,9 +1048,3 @@ export default {
 };
 </script>
 
-<style lang="scss">
-.light {
-  @extend .bg-form;
-  border: none;
-}
-</style>
