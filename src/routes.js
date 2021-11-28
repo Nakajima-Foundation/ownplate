@@ -3,10 +3,13 @@ import VueRouter from 'vue-router';
 
 Vue.use(VueRouter);
 
-import NotFound from "@/app/common/404.vue";
-
 
 const customRoutes = [
+  {
+    name: "lp",
+    path: "/",
+    component: "home/Lp.vue"
+  },
   {
     name: "r",
     path: "/r",
@@ -319,12 +322,27 @@ const customRoutes = [
   }
 ];
 
+const loadComponent = (data) => {
+  const component = () => import("@/app/" + data.component);
+  // 
+  if (data.children) {
+    return {
+      path: data.path,
+      name: data.name,
+      component,
+      children: data.children.map((child) => {
+        return loadComponent(child);
+      }),
+    };
+  }
 
-const routes = customRoutes.map((data) => {
-  const component = import("@/app/" + data.component);
-  data.component = component;
-  return data
-});
+  return {
+    path: data.path,
+    name: data.name,
+    component,
+  };
+}
+const routes = customRoutes.map(loadComponent);
 
 const router = new VueRouter({
   mode: 'history',
