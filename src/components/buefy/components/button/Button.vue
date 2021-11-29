@@ -36,7 +36,7 @@
     </component>
 </template>
 
-<script lang="ts">
+<script>
 import { defineComponent } from 'vue'
 
 import Icon from '../icon/Icon.vue'
@@ -72,7 +72,7 @@ export default defineComponent({
         nativeType: {
             type: String,
             default: 'button',
-            validator: (value: string) => {
+            validator: (value) => {
                 return [
                     'button',
                     'submit',
@@ -83,7 +83,7 @@ export default defineComponent({
         tag: {
             type: String,
             default: 'button',
-            validator: (value: string) => {
+            validator: (value) => {
                 return config.defaultLinkTags.indexOf(value) >= 0
             }
         }

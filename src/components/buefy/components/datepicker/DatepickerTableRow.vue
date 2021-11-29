@@ -7,11 +7,10 @@
             @click.prevent="clickWeekNumber(getWeekNumber(week[6]))">
             <span>{{ getWeekNumber(week[6]) }}</span>
         </a>
-        <template v-for="(weekDay, index) in week">
+        <template v-for="(weekDay, index) in week" :key="index">
             <a
                 :ref="`day-${weekDay.getMonth()}-${weekDay.getDate()}`"
                 v-if="selectableDate(weekDay) && !disabled"
-                :key="index"
                 :class="[classObject(weekDay), {'has-event': eventsDateMatch(weekDay)}, indicators]"
                 class="datepicker-cell"
                 role="button"
