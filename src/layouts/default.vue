@@ -66,7 +66,7 @@
       :fullwidth="fullwidth"
       :overlay="overlay"
       :right="right"
-      :open.sync="open"
+      v-model:open="open"
     >
       <!-- Logo / Home -->
       <div class="text-center mt-6">
