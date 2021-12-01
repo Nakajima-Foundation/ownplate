@@ -1,8 +1,11 @@
 <template>
   <span>
     <span v-if="true">
-      {{ $tc("tax.price", taxObj.price_i18n) }}
-      <span class="text-xs">{{ $tc("tax.include") }}</span>
+      {{ taxObj.price_i18n }}
+      <span v-if="false">
+        {{ $tc("tax.price", taxObj.price_i18n) }}
+      </span>
+       <span class="text-xs">{{ $tc("tax.include") }}</span>
       <br />
     </span>
     <span v-else >
