@@ -41,31 +41,22 @@ const app = createApp(App);
 app.use(store);
 app.use(routes);
 app.use(i18n);
-//app.use(Buefy);
 
 app.mixin(mixins);
 app.mixin(userPermission);
 
-// app.use(Buefy);
-/*
-b-button
-b-checkbox
-b-datepicker
-b-field
-b-input
-b-loading
-b-modal
-b-notification
-b-radio
-b-select
-b-sidebar
-*/
-// app.component(Icon.name, Icon) 
 app.component(Button.name, Button);
+app.component(Checkbox.name, Checkbox);
+app.component(CheckboxButton.name, CheckboxButton);
+app.component(Datepicker.name, Datepicker);
+app.component(Field.name, Field);
 app.component(Input.name, Input);
-app.component(Sidebar.name, Sidebar);
 app.component(Loading.name, Loading);
 app.component(Modal.name, Modal);
+app.component(Notification.name, Notification);
+app.component(Radio.name, Radio);
+app.component(Select.name, Select);
+app.component(Sidebar.name, Sidebar);
 
 app.mount("#app");
 
