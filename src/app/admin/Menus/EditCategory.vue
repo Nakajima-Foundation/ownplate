@@ -1,5 +1,5 @@
 <template>
-  <b-modal :active.sync="isVisible" :width="488">
+  <b-modal v-model:active="isVisible" :width="488">
     <div class="mx-2 my-6 p-6 bg-white shadow-lg rounded-lg">
       <!-- Items List -->
       <div>

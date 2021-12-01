@@ -273,7 +273,7 @@
     </div>
 
     <!-- Language Popup-->
-    <b-modal :active.sync="langPopup" :width="488" scroll="keep">
+    <b-modal v-model:active="langPopup" :width="488" scroll="keep">
       <div class="bg-white rounded-lg my-6 mx-2 shadow-lg p-6">
         <div class="text-xl font-bold text-black text-opacity-40">
           {{ $t("menu.selectLanguage") }}

@@ -1,6 +1,6 @@
 <template>
   <div v-if="dialog">
-    <b-modal :active.sync="isVisible" :width="488">
+    <b-modal v-model:active="isVisible" :width="488">
       <div class="op-dialog p-t-24 p-l-24 p-r-24 p-b-24">
         <div class="align-center">
           <i class="material-icons s-48 c-status-red">warning</i>

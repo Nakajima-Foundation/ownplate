@@ -272,7 +272,7 @@
             {{ $t("order.validating") }}
             <b-loading
               :is-full-page="false"
-              :active.sync="newOrder"
+              v-model:active="newOrder"
               :can-cancel="true"
             ></b-loading>
           </b-notification>

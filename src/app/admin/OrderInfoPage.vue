@@ -182,7 +182,7 @@
             </div>
 
             <!-- Cancel Popup-->
-            <b-modal :active.sync="cancelPopup" :width="488" scroll="keep">
+            <b-modal v-model:active="cancelPopup" :width="488" scroll="keep">
               <div class="mx-2 my-6 p-6 bg-white shadow-lg rounded-lg">
                 <!-- Title -->
                 <div class="text-xl font-bold text-black text-opacity-40">
@@ -371,7 +371,7 @@
             </div>
 
             <!-- Payment Cancel Popup-->
-            <b-modal :active.sync="paymentCancelPopup" :width="488" scroll="keep">
+            <b-modal v-model:active="paymentCancelPopup" :width="488" scroll="keep">
               <div class="mx-2 my-6 p-6 bg-white shadow-lg rounded-lg">
                 <!-- Title -->
                 <div class="text-xl font-bold text-black text-opacity-40">

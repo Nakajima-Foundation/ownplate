@@ -32,7 +32,7 @@
         </div>
 
         <!-- CVC Popup-->
-        <b-modal :active.sync="CVCPopup" :width="488" scroll="keep">
+        <b-modal v-model:active="CVCPopup" :width="488" scroll="keep">
           <div class="mx-2 my-6 p-6 bg-white shadow-lg rounded-lg">
             <!-- Title -->
             <div class="text-xl font-bold text-black text-opacity-40">

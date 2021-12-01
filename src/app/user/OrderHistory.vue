@@ -22,7 +22,7 @@
     </div>
 
     <!-- Phone Login-->
-    <b-modal :active.sync="loginVisible" :width="488" scroll="keep">
+    <b-modal v-model:active="loginVisible" :width="488" scroll="keep">
       <div class="mx-2 my-6 p-6 bg-white shadow-lg rounded-lg">
         <phone-login v-on:dismissed="handleDismissed" />
       </div>

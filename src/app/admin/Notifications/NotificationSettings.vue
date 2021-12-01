@@ -1,6 +1,6 @@
 <template>
   <b-modal
-    :active.sync="isActive"
+    v-model:active="isActive"
     :width="488"
     scroll="keep"
     @close="closeNotificationSettings"

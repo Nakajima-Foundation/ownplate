@@ -327,7 +327,7 @@
         </div>
       </div>
     </div>
-    <b-modal :active.sync="isOpen" :width="488">
+    <b-modal v-model:active="isOpen" :width="488">
       <PartnersContact :id="(partner[0]||{}).id"/>
     </b-modal>
   </div>

@@ -215,7 +215,7 @@
 
     <!-- Image Popup-->
     <b-modal
-      :active.sync="imagePopup"
+      v-model:active="imagePopup"
       :width="488"
       scroll="keep"
       :on-cancel="closeImage"
