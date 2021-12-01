@@ -79,7 +79,7 @@ const customRoutes = [
     children: [
       {
         name: "r-restaurant-Page",
-        path: "/",
+        path: "",
         component: "user/Blank.vue",
       },
       {
@@ -115,7 +115,7 @@ const customRoutes = [
     children: [
       {
         name: "admin-about",
-        path: "/",
+        path: "",
         component: "admin/RestaurantPage.vue"
       },
       {
