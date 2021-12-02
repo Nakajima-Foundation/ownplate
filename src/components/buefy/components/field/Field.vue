@@ -188,6 +188,7 @@ export default {
                 this.$slots.message
         },
         numberInputClasses() {
+        /*
             if (this.$slots.default) {
                 const numberinput = this.$slots.default.filter((node) => node.tag && node.tag.toLowerCase().indexOf('numberinput') >= 0)[0]
                 if (numberinput) {
@@ -203,6 +204,7 @@ export default {
                     return classes
                 }
             }
+*/
             return null
         }
     },
@@ -246,9 +248,11 @@ export default {
         },
         hasAddons() {
             let renderedNode = 0
+/*
             if (this.$slots.default) {
                 renderedNode = this.$slots.default.reduce((i, node) => node.tag ? i + 1 : i, 0)
             }
+*/
             return (
                 renderedNode > 1 &&
                 this.addons &&

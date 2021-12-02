@@ -72,8 +72,9 @@ export default {
     },
     mixins: [FormElementMixin],
     inheritAttrs: false,
+    emits: ['update:modelValue'],
     props: {
-        value: [Number, String],
+        modelValue: [Number, String],
         type: {
             type: String,
             default: 'text'
@@ -98,7 +99,7 @@ export default {
     },
     data() {
         return {
-            newValue: this.value,
+            newValue: this.modelValue,
             newType: this.type,
             newAutocomplete: this.autocomplete || config.defaultInputAutocomplete,
             isPasswordVisible: false,
@@ -114,7 +115,7 @@ export default {
             },
             set(value) {
                 this.newValue = value
-                this.$emit('input', value)
+                this.$emit('update:modelValue', value)
             }
         },
         rootClasses() {
@@ -215,7 +216,7 @@ export default {
         * When v-model is changed:
         *   1. Set internal value.
         */
-        value(value) {
+        modelValue(value) {
             this.newValue = value
         }
     },
