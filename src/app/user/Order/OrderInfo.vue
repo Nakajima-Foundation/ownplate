@@ -69,7 +69,7 @@
           </div>
           <div class="text-right">
             <div class="text-base">
-              {{ $n(tip, "currency") }}
+              {{ $n(tipNum, "currency") }}
             </div>
           </div>
         </div>
@@ -183,6 +183,9 @@ export default {
     OrderItem
   },
   computed: {
+    tipNum() {
+      return Number(this.tip || "0");
+    },
     regionTip() {
       return this.$store.getters.stripeRegion.tip;
     },
