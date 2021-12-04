@@ -2,14 +2,18 @@
   <div class="bg-white rounded-lg shadow">
     <!-- Location -->
     <div v-if="hasLocation">
-      <GMapMap
-        ref="gMap"
-        :cluster="{ options: { styles: 'clusterStyle' } }"
-        :options="{ fullscreenControl: false, styles: 'mapStyle' }"
-        :zoom="18"
-        @loaded="updateMap"
-      ></GMapMap>
-
+      <div class="mt-2 mx-6 h-48">
+        <GMapMap
+          :center="{ lat: shopInfo.location.lat, lng: shopInfo.location.lng }"
+          :options="{ fullscreenControl: false, styles: 'mapStyle' }"
+          :zoom="18"
+          style="width: 100%; height: 100%"
+          v-if="hasLocation"
+          >
+          <GMapMarker :position="{lat: shopInfo.location.lat, lng: shopInfo.location.lng}"
+                    />
+        </GMapMap>
+      </div>
       <div class="mt-4 mx-4 pb-2">
         <a
           target="_blank"
@@ -346,28 +350,9 @@ export default {
       }
     }
   },
-  mounted() {
-    this.updateMap();
-  },
   methods: {
     toggleMoreInfo() {
       this.moreInfo = !this.moreInfo;
-    },
-    updateMap() {
-      if (this.hasLocation) {
-        if (this.$refs.gMap && this.$refs.gMap.map) {
-          const location = this.shopInfo.location;
-          //console.log(location);
-          if (location) {
-            this.$refs.gMap.map.setCenter(location);
-            const marker = new google.maps.Marker({
-              position: new google.maps.LatLng(location.lat, location.lng),
-              title: this.shopInfo.restaurantName,
-              map: this.$refs.gMap.map
-            });
-          }
-        }
-      }
     },
     validDate(date) {
       return !this.isNull(date.start) && !this.isNull(date.end);
@@ -375,10 +360,3 @@ export default {
   }
 };
 </script>
-<style type="scss" scped>
-.GMap__Wrapper {
-  width: 100%;
-  height: 160px;
-  border-radius: 8px 8px 0 0;
-}
-</style>
