@@ -8,7 +8,7 @@
       :type="errors['state'].length > 0 ? 'is-danger' : 'is-success'"
       v-if="Array.isArray(states)"
     >
-      <b-select :value="value" placeholder="select" @input="input">
+      <b-select :value="modelValue" placeholder="select" @input="input">
         <option v-for="stateItem in states" :key="stateItem">{{
           stateItem
         }}</option>
@@ -19,7 +19,7 @@
       v-else
     >
       <b-input
-        :value="value"
+        :value="modelValue"
         type="text"
         :placeholder="$t('editRestaurant.enterCity')"
         maxlength="15"
@@ -36,14 +36,14 @@ export default {
       type: Object,
       required: true
     },
-    value: {
+    modelValue: {
       type: String,
       required: true
     }
   },
   methods: {
     input(e) {
-      this.$emit("input", e);
+      this.$emit("update:modelValue", e);
     }
   },
   data() {
