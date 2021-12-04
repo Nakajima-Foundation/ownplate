@@ -6,7 +6,7 @@
     </div>
     <b-field :type="error.length > 0 ? 'is-danger' : 'is-success'">
       <b-input
-        :value="value"
+        :value="modelValue"
         :type="type"
         :placeholder="$t(placeholder)"
         @input="input"
@@ -46,14 +46,14 @@ export default {
       type: Array,
       required: true
     },
-    value: {
+    modelValue: {
       type: String,
       required: true
     }
   },
   methods: {
     input(e) {
-      this.$emit("input", e);
+      this.$emit("update:modelValue", e.target.value);
     }
   }
 };
