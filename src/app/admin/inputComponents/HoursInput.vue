@@ -3,7 +3,7 @@
     <div>
       <b-field :type="type">
         <b-select
-          v-model="value.start"
+          v-model="modelValue.start"
           :disabled="disabled"
           @input="updateValue"
         >
@@ -19,7 +19,7 @@
     <div class="px-2">-</div>
     <div>
       <b-field :type="type">
-        <b-select v-model="value.end" :disabled="disabled" @input="updateValue">
+        <b-select v-model="modelValue.end" :disabled="disabled" @input="updateValue">
           <option
             v-for="(timeItem, index) of timeList"
             :key="timeItem"
@@ -44,7 +44,7 @@ export default {
       type: String,
       required: true
     },
-    value: {
+    modelValue: {
       type: Object,
       required: true,
       default: () => ({})
@@ -52,7 +52,7 @@ export default {
   },
   methods: {
     updateValue() {
-      this.$emit("input", this.value);
+      this.$emit("update:modelValue", this.modelValue);
     }
   },
   data() {
