@@ -211,20 +211,20 @@
             <div v-else>
               住所を入力して検索してください
             </div>
-
             <div class="text-center text-sm font-bold text-red-700 mt-2">
               {{ $t("editRestaurant.updateMapDescription") }}
             </div>
 
-            <div class="mt-4">
-              <GMap
-                ref="gMap"
-                :center="{ lat: 44.933076, lng: 15.629058 }"
+            <div class="mt-4 h-48">
+              <GMapMap
+                :center="isSetMapLocation ? maplocation : { lat: 35.6809591, lng: 139.7673068 }"
                 :options="{ fullscreenControl: false }"
                 :zoom="18"
                 @loaded="hello"
                 @click="gmapClick"
-              ></GMap>
+                >
+                <GMapMarker :position="maplocation" v-if="isSetMapLocation" />
+              </GMapMap>
             </div>
           </div>
         </div>
@@ -939,7 +939,7 @@ export default {
         ["Admin Restaurant", this.shopInfo.restaurantName , this.defaultTitle].join(" / ") : this.defaultTitle
     }
   },
-
+  
   data() {
     const maxDate = new Date();
     const now = new Date();
@@ -949,12 +949,12 @@ export default {
       minimumCookTimeChoices,
       taxRates: taxRates,
       taxRateKeys: [],
-
+      
       examplePriceI18n: this.$n(1000, "currency"),
       sampleMenu: { price: 1000, tax: "food" },
       requireTaxInput: false,
       requireTaxPriceDisplay: false,
-
+      
       defaultTax: {},
       disabled: false, // ??
       filteredItems: [], // ??
@@ -1027,12 +1027,12 @@ export default {
     this.requireTaxInput = this.regionalSetting.requireTaxInput;
     this.requireTaxPriceDisplay = this.regionalSetting.requireTaxPriceDisplay;
     this.defaultTax = this.regionalSetting.defaultTax;
-
+    
     this.checkAdminPermission();
-
+    
     // never use onSnapshot here.
     const restaurant = await db.doc(`restaurants/${this.restaurantId()}`).get();
-
+    
     if (!restaurant.exists) {
       this.notFound = true;
       return;
@@ -1053,7 +1053,7 @@ export default {
         }
       );
     }
-
+    
     this.notFound = false;
   },
   mounted() {
@@ -1071,13 +1071,13 @@ export default {
     restProfilePhoto() {
       return (
         (this.shopInfo?.images?.profile?.resizedImages || {})["600"] ||
-        this.shopInfo.restProfilePhoto
+          this.shopInfo.restProfilePhoto
       );
     },
     restCoverPhoto() {
       return (
         (this.shopInfo?.images?.cover?.resizedImages || {})["600"] ||
-        this.shopInfo.restCoverPhoto
+          this.shopInfo.restCoverPhoto
       );
     },
     uid() {
@@ -1129,7 +1129,7 @@ export default {
       ) {
         err["pickUpDaysInAdvance"].push("validationError." + name + ".invalid");
       }
-
+      
       if (this.requireTaxInput) {
         ["foodTax", "alcoholTax"].forEach(name => {
           err[name] = [];
@@ -1143,21 +1143,21 @@ export default {
           }
         });
       }
-
+      
       const ex = new RegExp("^(https?)://[^\\s]+$");
       err["url"] =
         this.shopInfo.url && !ex.test(this.shopInfo.url)
-          ? ["validationError.url.invalidUrl"]
-          : [];
+        ? ["validationError.url.invalidUrl"]
+        : [];
       err["lineUrl"] =
         this.shopInfo.lineUrl && !ex.test(this.shopInfo.lineUrl)
-          ? ["validationError.lineUrl.invalidUrl"]
-          : [];
+        ? ["validationError.lineUrl.invalidUrl"]
+        : [];
       err["instagramUrl"] =
         this.shopInfo.instagramUrl && !ex.test(this.shopInfo.instagramUrl)
-          ? ["validationError.instagramUrl.invalidUrl"]
-          : [];
-
+        ? ["validationError.instagramUrl.invalidUrl"]
+        : [];
+      
       err["time"] = {};
       Object.keys(daysOfWeek).forEach(key => {
         err["time"][key] = [];
@@ -1166,7 +1166,7 @@ export default {
           if (this.shopInfo.businessDay[key]) {
             if (
               this.shopInfo.openTimes[key] &&
-              this.shopInfo.openTimes[key][key2]
+                this.shopInfo.openTimes[key][key2]
             ) {
               const data = this.shopInfo.openTimes[key][key2];
               if (this.isNull(data.start) ^ this.isNull(data.end)) {
@@ -1188,12 +1188,12 @@ export default {
         });
       });
       err["phoneNumber"] = this.errorsPhone;
-
+      
       // image
       err["restProfilePhoto"] = [];
       if (
         this.isNull(this.files["profile"]) &&
-        this.isNull(this.shopInfo.restProfilePhoto)
+          this.isNull(this.shopInfo.restProfilePhoto)
       ) {
         err["restProfilePhoto"].push("validationError.restProfilePhoto.empty");
       }
@@ -1206,6 +1206,9 @@ export default {
     },
     isSetLocation() {
       return Object.keys(this.shopInfo.location).length !== 0;
+    },
+    isSetMapLocation() {
+      return Object.keys(this.maplocation).length !== 0;
     }
   },
   watch: {
@@ -1296,7 +1299,7 @@ export default {
       }
     },
     gmapClick(arg) {
-      this.setCurrentLocation({lat: arg.event.latLng.lat(), lng: arg.event.latLng.lng()}, false);
+      this.setCurrentLocation({lat: arg.latLng.lat(), lng: arg.latLng.lng()});
       this.place_id = null;
       this.setLocation();
     },
@@ -1485,24 +1488,8 @@ export default {
         this.place_id = res[0].place_id;
       }
     },
-    setCurrentLocation(location, move=true) {
-      if (
-        this.$refs.gMap &&
-        this.$refs.gMap.map &&
-        location &&
-        location.lat &&
-        location.lng
-      ) {
-        if (move) {
-          this.$refs.gMap.map.setCenter(location);
-        }
-        this.removeAllMarker();
-        const marker = new google.maps.Marker({
-          position: new google.maps.LatLng(location.lat, location.lng),
-          title: "hello",
-          map: this.$refs.gMap.map
-        });
-        this.markers.push(marker);
+    setCurrentLocation(location) {
+      if (location && location.lat && location.lng) {
         this.maplocation = location;
       }
     },
@@ -1510,14 +1497,6 @@ export default {
       if (this.maplocation) {
         this.shopInfo.location = this.maplocation;
         this.shopInfo.place_id = this.place_id;
-      }
-    },
-    removeAllMarker() {
-      if (this.markers && this.markers.length > 0) {
-        this.markers.map(marker => {
-          marker.setMap(null);
-        });
-        this.markers = [];
       }
     },
     async updateRestaurantData(restaurantData) {
