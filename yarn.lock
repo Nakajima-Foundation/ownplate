@@ -911,12 +911,10 @@
     "@babel/helper-validator-identifier" "^7.15.7"
     to-fast-properties "^2.0.0"
 
-"@chenfengyuan/vue-qrcode@^1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@chenfengyuan/vue-qrcode/-/vue-qrcode-1.0.2.tgz#37d71902e166e1ae58176bd6cb9c40905c1b0949"
-  integrity sha512-hwy1d4YMJAyEh+V7dLPG8eAKACRvugzSB4ylwb6QNqo84KHTF50/5EJcBYdUhTRPfAqrxG0i6jDAXONWOGyQbQ==
-  dependencies:
-    qrcode "^1.4.4"
+"@chenfengyuan/vue-qrcode@^2.0.0-rc.1":
+  version "2.0.0-rc.1"
+  resolved "https://registry.yarnpkg.com/@chenfengyuan/vue-qrcode/-/vue-qrcode-2.0.0-rc.1.tgz#524ab4dd03c136428fa7f56e2ed82dc9bfaee0ac"
+  integrity sha512-TcdJtpnTX7TlkCV4j0ym+UwjHHhEPFbK3MKJQd4gBEiNZZmClXAwLORnrpsK5XeJtwpk0Hk4DryC7wlja6McAg==
 
 "@eslint/eslintrc@^1.0.4":
   version "1.0.4"

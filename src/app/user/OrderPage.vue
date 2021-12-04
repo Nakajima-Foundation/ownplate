@@ -451,10 +451,10 @@
               </div>
 
               <div class="bg-white rounded-lg shadow p-4 mt-2 text-center">
-                <qrcode
+                <vue-qrcode
                   :value="urlAdminOrderPage"
                   :options="{ width: 160 }"
-                ></qrcode>
+                ></vue-qrcode>
               </div>
             </div>
           </div>

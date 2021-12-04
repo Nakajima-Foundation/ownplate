@@ -24,7 +24,7 @@
         <!-- Body -->
         <div class="flex">
           <div class="flex-shrink-0 mr-2">
-            <qrcode :value="url" :options="{ width: 160 }"></qrcode>
+            <vue-qrcode :value="url" :options="{ width: 160 }"></vue-qrcode>
           </div>
 
           <div class="flex-1">

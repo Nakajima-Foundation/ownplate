@@ -6,7 +6,7 @@ import { createI18n } from "vue-i18n";
 // import Buefy from 'buefy/src/index';
 // import 'buefy/dist/buefy.css';
 import VueGoogleMaps from '@fawmi/vue-google-maps';
-
+import VueQrcode from "@chenfengyuan/vue-qrcode";
 
 import store from '@/store/index.js';
 import routes from '@/routes';
@@ -64,6 +64,10 @@ app.component(Notification.name, Notification);
 app.component(Radio.name, Radio);
 app.component(Select.name, Select);
 app.component(Sidebar.name, Sidebar);
+
+if (VueQrcode.name) {
+  app.component(VueQrcode.name, VueQrcode);
+}
 
 app.mount("#app");
 

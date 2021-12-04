@@ -52,11 +52,11 @@
           <div class="bg-surface rounded-lg d-low p-l-24 p-r-24 p-t-24 p-b-24">
             <!-- QR Code -->
             <div class="align-center" @click="download">
-              <qrcode
+              <vue-qrcode
                 :value="urlMenu"
                 :options="{ width: 160 }"
                 ref="qrcode"
-              ></qrcode>
+              ></vue-qrcode>
             </div>
             <!-- Link -->
             <div class="align-center">
@@ -91,7 +91,7 @@
               <div>
                 <!-- QR Code -->
                 <div class="align-center">
-                  <qrcode :value="urlEnter" :options="{ width: 160 }"></qrcode>
+                  <vue-qrcode :value="urlEnter" :options="{ width: 160 }"></vue-qrcode>
                 </div>
                 <!-- Link -->
                 <div class="align-center">
@@ -107,7 +107,7 @@
               <div class="m-t-48">
                 <!-- QR Code -->
                 <div class="align-center">
-                  <qrcode :value="urlLeave" :options="{ width: 160 }"></qrcode>
+                  <vue-qrcode :value="urlLeave" :options="{ width: 160 }"></vue-qrcode>
                 </div>
                 <!-- Link -->
                 <div class="align-center">
