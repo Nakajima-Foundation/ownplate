@@ -38,7 +38,7 @@
       </div>
     </div>
 
-    <div class="mt-2 mx-6 h-3/5">
+    <div class="mt-2 mx-6 h-64">
       <Map :restaurants="restaurants" v-if="restaurants.length > 0"/>
     </div>
   </div>

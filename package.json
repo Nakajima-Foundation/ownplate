@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "@chenfengyuan/vue-qrcode": "^1.0.2",
+    "@fawmi/vue-google-maps": "^0.9.4",
     "@sentry/browser": "^5.15.5",
     "@sentry/integrations": "^5.15.5",
     "bulma-social": "^1.0.1",

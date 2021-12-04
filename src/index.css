@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.vue-map-container,
+.vue-map-container .vue-map {
+    width: 100%;
+    height: 100%;
+}

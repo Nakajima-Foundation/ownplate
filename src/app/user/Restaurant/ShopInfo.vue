@@ -2,13 +2,13 @@
   <div class="bg-white rounded-lg shadow">
     <!-- Location -->
     <div v-if="hasLocation">
-      <GMap
+      <GMapMap
         ref="gMap"
         :cluster="{ options: { styles: 'clusterStyle' } }"
         :options="{ fullscreenControl: false, styles: 'mapStyle' }"
         :zoom="18"
         @loaded="updateMap"
-      ></GMap>
+      ></GMapMap>
 
       <div class="mt-4 mx-4 pb-2">
         <a

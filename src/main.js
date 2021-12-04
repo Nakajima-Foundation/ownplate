@@ -5,6 +5,8 @@ import { createI18n } from "vue-i18n";
 
 // import Buefy from 'buefy/src/index';
 // import 'buefy/dist/buefy.css';
+import VueGoogleMaps from '@fawmi/vue-google-maps';
+
 
 import store from '@/store/index.js';
 import routes from '@/routes';
@@ -42,6 +44,11 @@ app.use(store);
 app.use(routes);
 app.use(i18n);
 
+app.use(VueGoogleMaps, {
+  load: {
+    key: process.env.VUE_APP_GAPIKey,
+  },
+});
 app.mixin(mixins);
 app.mixin(userPermission);
 
