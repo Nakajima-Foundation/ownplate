@@ -160,7 +160,10 @@
                 </div>
                 <div>
                   <template v-if="isOpen[key]">
-                    <div class="font-bold text-green-600">Open</div>
+                    <div v-if="isTodayTemporaryClosure"  class="font-bold text-red-600">
+                      {{ $t("shopInfo.temporaryClosure") }} 
+                    </div>
+                    <div v-else class="font-bold text-green-600">Open</div>
                   </template>
                 </div>
               </div>
@@ -259,6 +262,12 @@ export default {
       return (this.shopInfo.temporaryClosure || []).filter(day => {
         return day.seconds + 3600 * 24 > now / 1000;
       });
+    },
+    isTodayTemporaryClosure() {
+      const res = this.temporaryClosure.find((day) => {
+        return moment(day.toDate()).format("YYYYMMDD") === moment().format("YYYYMMDD");
+      });
+      return !!res;
     },
     phoneUrl() {
       const number = this.parsedNumber;
