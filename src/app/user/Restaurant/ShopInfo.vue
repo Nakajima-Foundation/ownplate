@@ -144,7 +144,7 @@
             <template v-for="(day, key) in days">
               <div
                 class="flex px-2 py-1 rounded text-sm"
-                :class="weekday == key % 7 ? 'bg-green-600 bg-opacity-10' : ''"
+                :class="weekday == key % 7 ? isTodayTemporaryClosure ? 'bg-red-600 bg-opacity-10' : 'bg-green-600 bg-opacity-10' : ''"
               >
                 <div class="w-16">{{ $t("week.short." + day) }}</div>
                 <div class="flex-1">
