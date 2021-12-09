@@ -198,7 +198,7 @@
           </div>
 
           <div class="mt-1 ml-1">
-            <div v-for="(day, key) in temporaryClosure" class="text-sm">
+            <div v-for="(day, key) in dispTemporaryClosure" class="text-sm">
               {{ moment(day.toDate()).format("YYYY/MM/DD") }}
               {{
                 $t(
@@ -257,14 +257,14 @@ export default {
     };
   },
   computed: {
-    temporaryClosure() {
+    dispTemporaryClosure() {
       const now = Date.now();
       return (this.shopInfo.temporaryClosure || []).filter(day => {
         return day.seconds + 3600 * 24 > now / 1000;
       });
     },
     isTodayTemporaryClosure() {
-      const res = this.temporaryClosure.find((day) => {
+      const res = this.dispTemporaryClosure.find((day) => {
         return moment(day.toDate()).format("YYYYMMDD") === moment().format("YYYYMMDD");
       });
       return !!res;
