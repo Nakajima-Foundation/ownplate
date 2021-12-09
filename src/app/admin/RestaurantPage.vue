@@ -275,9 +275,10 @@
 
               <!-- New Photo -->
               <div class="flex-1">
-                <croppa
+                <vue-cropper
                   :width="128"
                   :height="128"
+                  :src="restProfilePhoto"
                   :prevent-white-space="true"
                   :zoom-speed="5"
                   :accept="'image/jpeg'"
@@ -292,7 +293,7 @@
                   @file-choose="handleProfileImage"
                   @file-type-mismatch="handleProfileImageRemove"
                   @image-remove="handleProfileImageRemove"
-                ></croppa>
+                ></vue-cropper>
                 <div class="text-center text-xs mt-1 w-32">
                   {{ $t("editCommon.new") }}
                 </div>
@@ -326,11 +327,10 @@
               </div>
 
               <!-- New Photo -->
-              <div>
-                <croppa
-                  :width="272"
-                  :height="128"
+              <div class="m-4">
+                <vue-cropper
                   :prevent-white-space="true"
+                  :src="restCoverPhoto"
                   :zoom-speed="5"
                   :accept="'image/jpeg'"
                   :placeholder="$t('editCommon.clickAndUpload')"
@@ -344,7 +344,7 @@
                   @file-choose="handleCoverImage"
                   @file-type-mismatch="handleCoverImageRemove"
                   @image-remove="handleCoverImageRemove"
-                ></croppa>
+                ></vue-cropper>
                 <div class="text-center text-xs mt-1" style="width: 272px;">
                   {{ $t("editCommon.new") }}
                 </div>
