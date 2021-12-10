@@ -125,8 +125,12 @@ const ogpPage = async (req: any, res: any) => {
     if (!restaurant || !restaurant.exists) {
       return res.status(404).send(template_data);
     }
-    const menuData = await getMenuData(restaurantName, menuId);
     const restaurant_data: any = restaurant.data();
+    if (restaurant_data.deletedFlag || !restaurant_data.publicFlag) {
+      return res.status(404).send(template_data);
+    }
+
+    const menuData = await getMenuData(restaurantName, menuId);
 
     const ownerData = await getShopOwner(restaurant_data.uid);
     if (!ownerData) {
