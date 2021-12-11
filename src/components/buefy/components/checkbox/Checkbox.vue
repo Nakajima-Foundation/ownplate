@@ -3,7 +3,6 @@
         class="b-checkbox checkbox"
         :class="[size, { 'is-disabled': disabled }]"
         ref="label"
-        :disabled="disabled"
         @click="focus"
         @keydown.prevent.enter="$refs.label.click()">
         <input

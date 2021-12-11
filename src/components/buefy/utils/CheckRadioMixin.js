@@ -1,6 +1,7 @@
 export default {
+    emits: ['update:modelValue'],
     props: {
-        value: [String, Number, Boolean, Function, Object, Array],
+        modelValue: [String, Number, Boolean, Function, Object, Array],
         nativeValue: [String, Number, Boolean, Function, Object, Array],
         type: String,
         disabled: Boolean,
@@ -10,7 +11,7 @@ export default {
     },
     data() {
         return {
-            newValue: this.value
+            newValue: this.modelValue
         }
     },
     computed: {
@@ -20,7 +21,7 @@ export default {
             },
             set(value) {
                 this.newValue = value
-                this.$emit('input', value)
+                this.$emit('update:modelValue', value)
             }
         }
     },
@@ -28,7 +29,7 @@ export default {
         /**
         * When v-model change, set internal value.
         */
-        value(value) {
+        modelValue(value) {
             this.newValue = value
         }
     },
