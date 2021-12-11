@@ -221,6 +221,16 @@ export default {
             }
         },
 
+        querySelectorAll(el, ret = []) {
+            ret.push(el);
+            if (el.children !== undefined) {
+                for (const child of el.children) {
+                    this.querySelectorAll(child, ret);
+                }
+            }
+            return ret;
+        },
+      
         /**
         * White-listed items to not close when clicked.
         */
@@ -229,7 +239,9 @@ export default {
             if (el === this.$refs.trigger) return true
             // All chidren from dropdown
             if (this.$refs.dropdownMenu !== undefined) {
-                const children = this.$refs.dropdownMenu.querySelectorAll('*')
+                // For vue 3
+                // const children = this.$refs.dropdownMenu.querySelectorAll('*')
+                const children = this.querySelectorAll(this.$refs.dropdownMenu);
                 for (const child of children) {
                     if (el === child) {
                         return true
@@ -238,7 +250,8 @@ export default {
             }
             // All children from trigger
             if (this.$refs.trigger !== undefined) {
-                const children = this.$refs.trigger.querySelectorAll('*')
+                const children = this.querySelectorAll(this.$refs.dropdownMenu);
+                // const children = this.$refs.trigger.querySelectorAll('*')
                 for (const child of children) {
                     if (el === child) {
                         return true
