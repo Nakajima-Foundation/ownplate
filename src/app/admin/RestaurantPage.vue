@@ -754,16 +754,15 @@
 
               <!-- Date Picker -->
               <b-field>
-                <b-datepicker
+                <input type="date"
                   icon="calendar-today"
                   v-model="newTemporaryClosure"
                   ref="datepicker"
-                  :min-date="new Date()"
-                  :max-date="maxDate"
+                  :min="moment().format('YYYY-MM-DD')"
+                  :max="moment(maxDate).format('YYYY-MM-DD')"
                   expanded
                   :placeholder="$t('shopInfo.temporaryClosureSelect')"
-                >
-                </b-datepicker>
+                />
 
                 <b-button @click="addNewTemporaryClosure" class="b-reset-tw">
                   <div
@@ -1209,7 +1208,10 @@ export default {
     },
     isSetMapLocation() {
       return Object.keys(this.maplocation).length !== 0;
-    }
+    },
+    newTemporaryClosureDate() {
+      return this.newTemporaryClosure === null ? null : new Date(this.newTemporaryClosure);
+    },
   },
   watch: {
     notFound: function() {
@@ -1247,11 +1249,11 @@ export default {
     },
     addNewTemporaryClosure() {
       if (
-        !this.isNull(this.newTemporaryClosure) &&
-        this.isNewTemporaryClosure(this.newTemporaryClosure) &&
-        this.isFuture(this.newTemporaryClosure)
+        !this.isNull(this.newTemporaryClosureDate) &&
+        this.isNewTemporaryClosure(this.newTemporaryClosureDate) &&
+        this.isFuture(this.newTemporaryClosureDate)
       ) {
-        this.shopInfo.temporaryClosure.push(this.newTemporaryClosure);
+        this.shopInfo.temporaryClosure.push(this.newTemporaryClosureDate);
         this.shopInfo.temporaryClosure.sort((a, b) => {
           return a.getTime() > b.getTime() ? 1 : -1;
         });
