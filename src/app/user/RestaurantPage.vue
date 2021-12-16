@@ -76,6 +76,7 @@
               <template v-for="(title, key) in titleLists">
                 <a :href="`#${title.id}`"
                    class="inline-flex justify-center items-center h-9 rounded-full bg-black bg-opacity-5 mx-2 mt-2"
+                   v-if="title.name !== ''"
                    >
                   <div class="text-sm font-bold text-op-teal mx-2">
                     {{title.name}}
