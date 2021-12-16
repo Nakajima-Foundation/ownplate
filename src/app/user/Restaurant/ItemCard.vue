@@ -322,9 +322,6 @@ export default {
       deep: true
     },
     openMenuFlag() {
-      if (this.openMenuFlag && this.quantities[0] == 0) {
-        this.setQuantities(this.quantities + 0); // Only by tapping "Add" will do both open card and add item.
-      }
       if (this.openMenuFlag) {
         analyticsUtil.sendViewItem(
           this.item,
