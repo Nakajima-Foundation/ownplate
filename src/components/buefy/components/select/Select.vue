@@ -49,7 +49,7 @@ export default {
     mixins: [FormElementMixin],
     inheritAttrs: false,
     props: {
-        value: {
+        modelValue: {
             type: [String, Number, Boolean, Object, Array, Function],
             default: null
         },
@@ -59,7 +59,7 @@ export default {
     },
     data() {
         return {
-            selected: this.value,
+            selected: this.modelValue,
             _elementRef: 'select'
         }
     },
