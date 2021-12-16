@@ -144,7 +144,7 @@
             <template v-for="(day, key) in days">
               <div
                 class="flex px-2 py-1 rounded text-sm"
-                :class="weekday == key % 7 ? 'bg-green-600 bg-opacity-10' : ''"
+                :class="weekday == key % 7 ? isTodayTemporaryClosure ? 'bg-red-700 bg-opacity-10' : 'bg-green-600 bg-opacity-10' : ''"
               >
                 <div class="w-16">{{ $t("week.short." + day) }}</div>
                 <div class="flex-1">
@@ -160,7 +160,10 @@
                 </div>
                 <div>
                   <template v-if="isOpen[key]">
-                    <div class="font-bold text-green-600">Open</div>
+                    <div v-if="isTodayTemporaryClosure"  class="font-bold text-red-700">
+                      {{ $t("shopInfo.temporaryClosure") }} 
+                    </div>
+                    <div v-else class="font-bold text-green-600">Open</div>
                   </template>
                 </div>
               </div>
@@ -195,7 +198,7 @@
           </div>
 
           <div class="mt-1 ml-1">
-            <div v-for="(day, key) in temporaryClosure" class="text-sm">
+            <div v-for="(day, key) in dispTemporaryClosure" class="text-sm">
               {{ moment(day.toDate()).format("YYYY/MM/DD") }}
               {{
                 $t(
@@ -254,11 +257,17 @@ export default {
     };
   },
   computed: {
-    temporaryClosure() {
+    dispTemporaryClosure() {
       const now = Date.now();
       return (this.shopInfo.temporaryClosure || []).filter(day => {
         return day.seconds + 3600 * 24 > now / 1000;
       });
+    },
+    isTodayTemporaryClosure() {
+      const res = this.dispTemporaryClosure.find((day) => {
+        return moment(day.toDate()).format("YYYYMMDD") === moment().format("YYYYMMDD");
+      });
+      return !!res;
     },
     phoneUrl() {
       const number = this.parsedNumber;

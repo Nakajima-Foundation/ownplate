@@ -196,7 +196,7 @@
 
       <div v-if="orderInfo.phoneNumber" class="mt-4 text-center">
         <div class="text-base font-bold">
-          お客様の情報
+          {{ $t("order.customerInfo") }}
         </div>
         <div class="text-xs font-bold">
           {{ $t("sms.phonenumber") }}
