@@ -90,7 +90,7 @@ export default {
         *   1. Set the selected option.
         *   2. If it's invalid, validate again.
         */
-        value(value) {
+        modelValue(value) {
             this.selected = value
             !this.isValid && this.checkHtml5Validity()
         }
