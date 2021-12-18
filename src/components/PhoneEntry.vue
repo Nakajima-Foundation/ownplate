@@ -28,6 +28,7 @@
 import { parsePhoneNumber } from "~/plugins/phoneutil.js";
 
 export default {
+  emits: ["change"],
   props: {
     notice: {
       type: String,
