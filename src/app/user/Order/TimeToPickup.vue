@@ -9,7 +9,7 @@
             :value="index"
             :key="day.offset"
           >
-            {{ $d(day.date) }}
+            {{ $d(day.date, "short") }}
             <span v-if="day.offset === 0">{{ $t("date.today") }}</span>
           </option>
         </b-select>
