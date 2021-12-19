@@ -847,7 +847,7 @@ export default {
   },
   methods: {
     updateEnable(value) {
-      this.$set(this.editedAvailableOrders, value[0],  value[1]);
+      this.editedAvailableOrders[value[0]] = value[1];
     },
     toggleIsOrderChange() {
       this.isOrderChange = !this.isOrderChange;

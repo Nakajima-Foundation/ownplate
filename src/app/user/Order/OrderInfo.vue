@@ -142,6 +142,7 @@ import OrderItem from "~/app/user/Order/OrderItem";
 
 export default {
   name: "Order",
+  emits: ["input"],
 
   props: {
     orderItems: {
