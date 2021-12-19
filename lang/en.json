@@ -650,6 +650,8 @@
       "more": "View More",
       "all": "View All",
       "messageFromCustomer": "Message from the customer",
+      "changeOrderDetail": "Change order details",
+      "alreadyChanged": "already changed",
       "willOrderChange": "Change order",
       "cancelOrderChange": "Cancel an order change",
       "confirmOrderChange": "Change order"
