@@ -124,6 +124,8 @@
     "enterIntroduction": "お店を紹介文を入力して下さい",
     "enterOrderNotice": "注文の注意点を入力して下さい",
     "enterOrderThanks": "注文後のありがとうメッセージを入力して下さい",
+    "enablePrelineTitle": "改行を反映",
+    "enablePrelineDescription": "紹介文、注意書きなどに入力した改行を反映します",
     "introduction": "お店の紹介文",
     "orderNotice": "注文時の注意書き",
     "orderThanks": "注文後のありがとうメッセージ",
