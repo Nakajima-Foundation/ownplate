@@ -320,9 +320,7 @@
                     </div>
                     <div class="flex-1 text-base text-red-700"
                          :class="shopInfo.enablePreline ? 'whitespace-pre-line' : ''"
-                         >
-                      {{ shopInfo.orderNotice }}
-                    </div>
+                         >{{ shopInfo.orderNotice }}</div>
                   </div>
                 </div>
               </div>
