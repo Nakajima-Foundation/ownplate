@@ -51,7 +51,18 @@
 
           <!-- Description -->
           <div v-if="description !== null" class="mt-2 text-sm">
-            {{ description }}
+            <template v-if="!shopInfo.enablePreline">
+              {{ description }}
+            </template>
+            <template v-else>
+              <div v-if="openMenuFlag"
+                   class="whitespace-pre-line"
+                   >{{ description }}
+              </div>
+              <template v-else>
+                {{descriptionOneLine}}...
+              </template>
+            </template>
           </div>
 
           <!-- Allergens -->
@@ -322,9 +333,6 @@ export default {
       deep: true
     },
     openMenuFlag() {
-      if (this.openMenuFlag && this.quantities[0] == 0) {
-        this.setQuantities(this.quantities + 0); // Only by tapping "Add" will do both open card and add item.
-      }
       if (this.openMenuFlag) {
         analyticsUtil.sendViewItem(
           this.item,
@@ -390,6 +398,9 @@ export default {
     },
     description() {
       return this.item.itemDescription;
+    },
+    descriptionOneLine() {
+      return (this.item.itemDescription || "" ).split(/\r?\n/).[0];
     }
   },
   methods: {

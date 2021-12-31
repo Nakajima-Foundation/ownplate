@@ -37,6 +37,27 @@
               {{ status.key ? $t("order.status." + status.key) : "----" }}
             </option>
           </b-select>
+          <!-- button -->
+          <div>
+            <div class="inline-flex m-t-24">
+              <div class="flex">
+                <b-select v-model="monthValue">
+                  <option
+                    v-for="(month, k) in months"
+                    :value="month"
+                    :key="k"
+                  >
+                  {{ month }}
+                </option>
+              </b-select>
+            </div>
+            <div class="flex">
+              <b-button @click="LoadTillMonth">Load</b-button>
+              {{isLoading ? "Loading..." : ""}}
+            </div>
+            </div>
+          </div>
+
           <!-- Orders -->
           <div class="mx-6 mt-6 grid grid-cols-1 gap-2 lg:grid-cols-3 xl:grid-cols-4">
             <div
@@ -56,6 +77,8 @@
           <div>
             <b-button @click="nextLoad">more</b-button>
           </div>
+          
+            
           <download-csv
             :data="tableData"
             :fields="fields"
@@ -87,6 +110,7 @@ import { order_status, order_status_keys } from "~/plugins/constant.js";
 import { nameOfOrder } from "~/plugins/strings.js";
 import superMixin from "./SuperMixin";
 import DownloadCsv from "~/components/DownloadCSV";
+import moment from "moment";
 
 export default {
   head() {
@@ -101,12 +125,17 @@ export default {
     BackButton
   },
   data() {
+    const months = [0, 1, 2, 3, 4, 5].map((a) => {
+      return moment().subtract(a, 'month').format("YYYY-MM");
+    });
     return {
       orders: [],
       orderState: 0,
+      monthValue: months[0],
       isLoading: false,
       last: null,
       restaurants: {},
+      months,
     };
   },
   async mounted() {
@@ -212,6 +241,12 @@ export default {
       if (this.last) {
         this.loadData();
       }
+    },
+    async LoadTillMonth() {
+      const limit = moment(this.monthValue + "-01 00:00:00+09:00");
+      while(moment(this.orders[this.orders.length - 1].timeCreated.toDate()) > limit) { 
+        await this.loadData();
+     }
     },
     orderSelected(order) {
       // We are re-using the restaurant owner's view.
