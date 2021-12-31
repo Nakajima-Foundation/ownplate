@@ -46,7 +46,7 @@ const data = {
     en: numberFormats,
     ja: numberFormats
   },
-  dateTimeFormats: {
+  datetimeFormats: {
     en: dateTimeFormats,
     ja: dateTimeFormats
   }

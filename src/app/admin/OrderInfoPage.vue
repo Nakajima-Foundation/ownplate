@@ -107,7 +107,7 @@
 
                   <div v-if="hasStripe" class="text-base">
                     <a :href="search" target="stripe">
-                      <div>{{ $n(orderInfo.totalCharge, "currency") }}</div>
+                      <div>{{ $n(orderInfo.totalCharge || 0, "currency") }}</div>
                       <div
                         :class="
                           'text-xs font-bold stripe_' + orderInfo.payment.stripe
@@ -121,7 +121,7 @@
                   </div>
 
                   <div v-else class="text-base">
-                    <div>{{ $n(orderInfo.totalCharge, "currency") }}</div>
+                    <div>{{ $n(orderInfo.totalCharge || 0, "currency") }}</div>
                     <div class="text-xs font-bold text-yellow-500">
                       {{ $t("order.status.onsitePayment") }}
                     </div>
@@ -132,7 +132,7 @@
                     class="text-xs font-bold text-blue-500"
                   >
                     {{ $t("order.includingTip") }}
-                    {{ $n(orderInfo.tip, "currency") }}
+                    {{ $n(orderInfo.tip || 0, "currency") }}
                   </div>
                 </div>
               </div>
@@ -847,7 +847,7 @@ export default {
   },
   methods: {
     updateEnable(value) {
-      this.$set(this.editedAvailableOrders, value[0],  value[1]);
+      this.editedAvailableOrders[value[0]] = value[1];
     },
     toggleIsOrderChange() {
       this.isOrderChange = !this.isOrderChange;

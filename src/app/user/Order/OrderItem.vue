@@ -1,6 +1,6 @@
 <template>
   <div class="flex space-x-2">
-    <b-checkbox v-if="editable" :value="available" @input="input" />
+    <b-checkbox v-if="editable" v-model="available" @update:modelValue="input" />
     <div>
       <div
         class="inline-flex justify-center items-center h-9 w-12 bg-blue-500 bg-opacity-10 rounded flex-shrink-0"
@@ -66,6 +66,7 @@ import { mapGetters, mapMutations } from "vuex";
 import { formatOption, optionPrice } from "~/plugins/strings.js";
 
 export default {
+  emits: ["input"],
   props: {
     orderItem: {
       type: Object,
