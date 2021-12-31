@@ -38,8 +38,11 @@
               </div>
 
               <!-- Restaurant Descriptions -->
-              <div class="mt-2 text-base">
-                {{ this.shopInfo.introduction }}
+              <div class="mt-2 text-base"
+                   :class="shopInfo.enablePreline ? 'whitespace-pre-line' : ''"
+                   >
+                  {{ this.shopInfo.introduction }}
+
               </div>
 
               <!-- Share and Favorite -->

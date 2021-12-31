@@ -124,6 +124,8 @@
     "enterIntroduction": "Entrez une présentation de la boutique",
     "enterOrderNotice": "Entrez les notifications de commande",
     "enterOrderThanks": "Entrez le message de remerciement de la commande",
+    "enablePrelineTitle": "Enable line breaks",
+    "enablePrelineDescription": "Enable line breaks for the introduction, order notice, order thanks of  the restaurant and item description of menu",
     "introduction": "Présentation de la boutique",
     "orderNotice": "Notifications de commande",
     "orderThanks": "Mot de remerciement de la commande",
