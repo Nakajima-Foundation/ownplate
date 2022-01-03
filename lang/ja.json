@@ -124,6 +124,8 @@
     "enterIntroduction": "お店を紹介文を入力して下さい",
     "enterOrderNotice": "注文の注意点を入力して下さい",
     "enterOrderThanks": "注文後のありがとうメッセージを入力して下さい",
+    "enablePrelineTitle": "改行を反映",
+    "enablePrelineDescription": "お店の紹介文、注文のご注意、お店からのメッセージ、メニューの説明文に入力した改行を反映します",
     "introduction": "お店の紹介文",
     "orderNotice": "注文時の注意書き",
     "orderThanks": "注文後のありがとうメッセージ",
@@ -407,6 +409,7 @@
     "thankyou": "ご注文、ありがとうございます",
     "orderStatus": "ご注文状況",
     "orderId": "ご注文番号",
+    
     "cancelOrder": "ご注文のキャンセルはこちら",
     "cancelOrderConfirm": "本当にご注文をキャンセルしてもよろしいですか？",
     "cancelOrderComplete": "この注文はキャンセルされました",
@@ -650,6 +653,8 @@
       "more": "更に表示",
       "all": "全て表示",
       "messageFromCustomer": "お客様からのメッセージ",
+      "changeOrderDetail": "注文内容の変更",
+      "alreadyChanged": "変更済み",
       "willOrderChange": "注文を変更する",
       "cancelOrderChange": "注文の変更を取り消す",
       "confirmOrderChange": "注文の変更を確定"

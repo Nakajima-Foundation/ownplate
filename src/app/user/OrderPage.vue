@@ -148,7 +148,9 @@
           <div class="text-xs font-bold text-black text-opacity-60">
             {{ $t("order.thanksMessage") }}
           </div>
-          <div class="mt-2 text-base">{{ shopInfo.orderThanks }}</div>
+          <div class="mt-2 text-base"
+               :class="shopInfo.enablePreline ? 'whitespace-pre-line' : ''"
+               >{{ shopInfo.orderThanks }}</div>
         </div>
 
         <!-- Favorite Button -->
@@ -316,9 +318,9 @@
                     <div class="mr-2">
                       <i class="material-icons text-2xl text-red-700">error</i>
                     </div>
-                    <div class="flex-1 text-base text-red-700">
-                      {{ shopInfo.orderNotice }}
-                    </div>
+                    <div class="flex-1 text-base text-red-700"
+                         :class="shopInfo.enablePreline ? 'whitespace-pre-line' : ''"
+                         >{{ shopInfo.orderNotice }}</div>
                   </div>
                 </div>
               </div>

@@ -124,6 +124,8 @@
     "enterIntroduction": "Enter shop introduction",
     "enterOrderNotice": "Enter order notifications",
     "enterOrderThanks": "Enter order thanks message",
+    "enablePrelineTitle": "Enable line breaks",
+    "enablePrelineDescription": "Enable line breaks for the introduction, order notice, order thanks of  the restaurant and item description of menu",
     "introduction": "Shop Introduction",
     "orderNotice": "Order notifications",
     "orderThanks": "Order thanks message",
@@ -650,6 +652,8 @@
       "more": "View More",
       "all": "View All",
       "messageFromCustomer": "Message from the customer",
+      "changeOrderDetail": "Change order details",
+      "alreadyChanged": "already changed",
       "willOrderChange": "Change order",
       "cancelOrderChange": "Cancel an order change",
       "confirmOrderChange": "Change order"
