@@ -377,6 +377,21 @@
             />
           </div>
 
+          <!-- Enable Pre Line -->
+          <div class="mb-4">
+            <a id="preline" />
+            <div class="text-sm font-bold pb-2">
+              {{ $t("editRestaurant.enablePrelineTitle") }}
+            </div>
+            <div class="bg-black bg-opacity-5 rounded-lg p-4">
+              <b-checkbox v-model="shopInfo.enablePreline">
+                <div class="text-sm font-bold">
+                  {{ $t("editRestaurant.enablePrelineDescription") }}
+                </div>
+              </b-checkbox>
+            </div>
+          </div>
+          
           <!-- Description -->
           <div>
             <text-form
@@ -976,6 +991,7 @@ export default {
         orderNotice: "",
         orderThanks: "",
         phoneCall: false,
+        enablePreline: false,
         emailNotification: false,
         acceptUserMessage: false,
         foodTax: 0,
@@ -1396,6 +1412,7 @@ export default {
         lineUrl: this.shopInfo.lineUrl,
         instagramUrl: this.shopInfo.instagramUrl,
         introduction: this.shopInfo.introduction,
+        enablePreline: this.shopInfo.enablePreline,
         orderNotice: this.shopInfo.orderNotice,
         orderThanks: this.shopInfo.orderThanks,
         pickUpMinimumCookTime: this.shopInfo.pickUpMinimumCookTime,

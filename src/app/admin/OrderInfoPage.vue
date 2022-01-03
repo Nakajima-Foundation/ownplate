@@ -472,12 +472,12 @@
               ></order-info>
             <div v-if="editedAvailableOrders.length > 1">
               <div class="bg-white rounded-lg shadow p-4 text-center" v-if="orderInfo.orderUpdatedAt">
-                <div>注文内容の変更</div>
-                {{timeStampToText(orderInfo.orderUpdatedAt)}}変更済み
+                <div>{{ $t("admin.order.changeOrderDetail") }}</div>
+                {{timeStampToText(orderInfo.orderUpdatedAt)}} {{ $t("admin.order.alreadyChanged") }}
               </div>
 
               <div class="bg-white rounded-lg shadow p-4 text-center" v-if="availableOrderChange">
-                <div>注文内容の変更</div>
+                <div>{{ $t("admin.order.changeOrderDetail") }}</div>
                 <div class="mt-4">
                   <b-button
                     @click="toggleIsOrderChange"
