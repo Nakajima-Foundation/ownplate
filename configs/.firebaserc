@@ -1,5 +1,14 @@
 {
   "projects": {
     "staging": "ownplate-dev"
+  },
+  "targets": {
+    "ownplate-dev": {
+      "hosting": {
+        "app": [
+          "ownplate-dev"
+        ]
+      }
+    }
   }
 }
