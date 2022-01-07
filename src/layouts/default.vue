@@ -26,6 +26,8 @@
     <!-- text-left text-center text-right lg:text-center -->
     <!-- font-normal -->
 
+    <!-- whitespace-pre-line -->
+
     <!-- list-outside list-disc list-none -->
 
     <!-- cursor-pointer -->
