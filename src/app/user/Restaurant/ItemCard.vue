@@ -400,7 +400,7 @@ export default {
       return this.item.itemDescription;
     },
     descriptionOneLine() {
-      return (this.item.itemDescription || "" ).split(/\r?\n/).[0];
+      return (this.item.itemDescription || "" ).split(/\r?\n/)[0];
     }
   },
   methods: {
