@@ -10,6 +10,8 @@ import VueQrcode from "@chenfengyuan/vue-qrcode";
 import VueCropper from "vue-cropperjs";
 import "cropperjs/dist/cropper.css";
 
+import VueSocialSharing from 'vue-social-sharing'
+
 import store from '@/store/index.js';
 import routes from '@/routes';
 
@@ -44,6 +46,7 @@ const app = createApp(App);
 app.use(store);
 app.use(routes);
 app.use(i18n);
+app.use(VueSocialSharing);
 
 app.use(VueGoogleMaps, {
   load: {
