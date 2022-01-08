@@ -90,14 +90,6 @@ const mixins = {
           return tmp;
         }, {});
       },
-      copyClipboard: async function (text) {
-        try {
-          await this.$copyText(text);
-          this.$buefy.toast.open(app.i18n.tc('shopInfo.UrlCopied'));
-        } catch (e) {
-          this.$buefy.toast.open(app.i18n.tc('shopInfo.UrlCopyFailed'));
-        }
-      },
       forcedError(key) {
         const debug = this.$route.query.error;
         return debug === key ? "---forced-error---" : "";

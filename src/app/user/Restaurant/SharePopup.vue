@@ -28,7 +28,7 @@
           </div>
 
           <div class="flex-1">
-            <router-link to="#" @click.native="copyClipboard(url)" event>
+            <router-link to="#" @click.native="copyClipboard()" event>
               <div class="inline-flex justify-center items-center">
                 <i class="material-icons text-lg text-op-teal mr-2"
                   >file_copy</i
@@ -38,7 +38,12 @@
                 </div>
               </div>
             </router-link>
-
+            <div v-if="showOkMessage" class=" font-bold text-red-600">
+              {{ $t("shopInfo.UrlCopied") }}
+            </div>
+            <div v-if="showNgMessage" class=" font-bold text-red-600">
+              {{ $t("shopInfo.UrlCopyFailed") }}
+            </div>
             <div class="text-sm text-black text-opacity-30">
               {{ this.url }}
             </div>
@@ -67,12 +72,20 @@
 </template>
 
 <script>
+import { defineComponent, ref } from 'vue'
+
 import SharingButtons from "~/app/user/Common/SharingButtons";
 import { db, firestore } from "~/plugins/firebase.js";
 
-export default {
+import useClipboard from 'vue-clipboard3'
+import {
+  useShareUrl,
+  sleep,
+} from "~/utils/utils";
+
+export default defineComponent({
   components: {
-    SharingButtons
+    SharingButtons,
   },
   props: {
     shopInfo: {
@@ -84,19 +97,42 @@ export default {
       required: false
     }
   },
-  data() {
+  setup() {
+    const { toClipboard } = useClipboard()
+    const shareUrl = useShareUrl();
+
+    const showOkMessage = ref(false);
+    const showNgMessage = ref(false);
+
+    const sharePopup = ref(false);
+    const openShare = () => {
+      sharePopup.value = true;
+    };
+    const closeShare = () => {
+      sharePopup.value = false;
+    }
+    const copyClipboard = async () => {
+      try {
+        await toClipboard(shareUrl.value);
+        showOkMessage.value = true;
+        await sleep(2);
+        showOkMessage.value = false;
+      } catch (e) {
+        showNgMessage.value = true;
+        await sleep(2);
+        showNgMessage.value = false;
+      }
+    };
     return {
-      url: this.shareUrl() + (this.suffix || ""),
-      sharePopup: false
+      sharePopup,
+      openShare,
+      closeShare,
+
+      copyClipboard,
+
+      showOkMessage,
+      showNgMessage,
     };
   },
-  methods: {
-    openShare() {
-      this.sharePopup = true;
-    },
-    closeShare() {
-      this.sharePopup = false;
-    }
-  }
-};
+});
 </script>
