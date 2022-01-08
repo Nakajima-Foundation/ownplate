@@ -275,25 +275,11 @@
 
               <!-- New Photo -->
               <div class="flex-1">
-                <vue-cropper
-                  :width="128"
-                  :height="128"
-                  :src="restProfilePhoto"
-                  :prevent-white-space="true"
-                  :zoom-speed="5"
-                  :accept="'image/jpeg'"
-                  :placeholder="$t('editCommon.clickAndUpload')"
-                  :placeholder-font-size="13"
-                  :disable-drag-to-move="true"
-                  :disable-scroll-to-zoom="true"
-                  :disable-rotation="true"
-                  initial-position="center"
-                  :canvas-color="'gainsboro'"
-                  :show-remove-button="true"
-                  @file-choose="handleProfileImage"
-                  @file-type-mismatch="handleProfileImageRemove"
-                  @image-remove="handleProfileImageRemove"
-                ></vue-cropper>
+                <div class="rounded object-cover"
+                     style="width: 128px; height: 128px;"
+                     >
+                  <ImageUpload @setImage="handleProfileImage" />
+                </div>
                 <div class="text-center text-xs mt-1 w-32">
                   {{ $t("editCommon.new") }}
                 </div>
@@ -310,10 +296,16 @@
           <div class="mt-4">
             <div class="text-sm font-bold pb-2">
               {{ $t("editRestaurant.coverPhoto") }}
+              <span class="text-red-700">*</span>
             </div>
-            <div>
+            <div class="flex"
+                 v-bind:class="{
+                               'p-2 rounded border border-red-700':
+                               errors['restCoverPhoto'].length !== 0
+                               }"
+                 >
               <!-- Current Photo -->
-              <div v-if="restCoverPhoto" class="pb-2">
+              <div v-if="restCoverPhoto" class="mr-4">
                 <div>
                   <img
                     class="rounded object-cover"
@@ -327,33 +319,21 @@
               </div>
 
               <!-- New Photo -->
-              <div class="m-4">
-                <vue-cropper
-                  :prevent-white-space="true"
-                  :src="restCoverPhoto"
-                  :zoom-speed="5"
-                  :accept="'image/jpeg'"
-                  :placeholder="$t('editCommon.clickAndUpload')"
-                  :placeholder-font-size="13"
-                  :disable-drag-to-move="true"
-                  :disable-scroll-to-zoom="true"
-                  :disable-rotation="true"
-                  initial-position="center"
-                  :canvas-color="'gainsboro'"
-                  :show-remove-button="true"
-                  @file-choose="handleCoverImage"
-                  @file-type-mismatch="handleCoverImageRemove"
-                  @image-remove="handleCoverImageRemove"
-                ></vue-cropper>
+              <div class="flex-1">
+                <div class="rounded object-cover"
+                     style="width: 272px; height: 128px;"
+                     >
+                  <ImageUpload @setImage="handleCoverImage" />
+                </div>
                 <div class="text-center text-xs mt-1" style="width: 272px;">
                   {{ $t("editCommon.new") }}
                 </div>
               </div>
 
-              <!-- Description -->
-              <div class="text-sm text-black text-opacity-60 pt-2">
-                {{ $t("editCommon.clickAndUploadDetail") }}
-              </div>
+            </div>
+            <!-- Description -->
+            <div class="text-sm text-black text-opacity-60 pt-2">
+              {{ $t("editCommon.clickAndUploadDetail") }}
             </div>
           </div>
         </div>
@@ -927,6 +907,7 @@ import TextForm from "./inputComponents/TextForm";
 import State from "./inputComponents/State";
 
 import NotificationIndex from "./Notifications/Index";
+import ImageUpload from "~/components/ImageUpload";
 
 import {
   taxRates,
@@ -945,7 +926,8 @@ export default {
     NotificationIndex,
     NotFound,
     PhoneEntry,
-    Price
+    Price,
+    ImageUpload,
   },
   head() {
     return {
@@ -1212,6 +1194,13 @@ export default {
       ) {
         err["restProfilePhoto"].push("validationError.restProfilePhoto.empty");
       }
+      err["restCoverPhoto"] = [];
+      if (
+        this.isNull(this.files["cover"]) &&
+          this.isNull(this.shopInfo.restCoverPhoto)
+      ) {
+        err["restCoverPhoto"].push("validationError.restCoverPhoto.empty");
+      }
       // todo more validate
       return err;
     },
@@ -1293,16 +1282,6 @@ export default {
     handleCoverImage(e) {
       const newFile = Object.assign({}, this.files);
       newFile["cover"] = e;
-      this.files = newFile;
-    },
-    handleProfileImageRemove(e) {
-      const newFile = Object.assign({}, this.files);
-      newFile["profile"] = null;
-      this.files = newFile;
-    },
-    handleCoverImageRemove(e) {
-      const newFile = Object.assign({}, this.files);
-      newFile["cover"] = null;
       this.files = newFile;
     },
     handlePhoneChange(payload) {

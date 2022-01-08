@@ -44,7 +44,6 @@
     "validator": "^13.0.0",
     "vue": "^3.2.22",
     "vue-clipboard3": "^1.0.1",
-    "vue-cropperjs": "^5.0.0",
     "vue-i18n": "^9.2.0-beta.22",
     "vue-router": "^4.0.12",
     "vue-social-sharing": "^4.0.0-alpha4",

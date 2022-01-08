@@ -7,8 +7,6 @@ import { createI18n } from "vue-i18n";
 // import 'buefy/dist/buefy.css';
 import VueGoogleMaps from '@fawmi/vue-google-maps';
 import VueQrcode from "@chenfengyuan/vue-qrcode";
-import VueCropper from "vue-cropperjs";
-import "cropperjs/dist/cropper.css";
 
 import VueSocialSharing from 'vue-social-sharing'
 
@@ -68,7 +66,6 @@ app.component(Radio.name, Radio);
 app.component(Select.name, Select);
 app.component(Sidebar.name, Sidebar);
 
-app.component("VueCropper", VueCropper);
 if (VueQrcode.name) {
   app.component(VueQrcode.name, VueQrcode);
 }

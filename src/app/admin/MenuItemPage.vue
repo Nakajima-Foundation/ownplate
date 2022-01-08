@@ -257,22 +257,11 @@
 
               <!-- New Photo -->
               <div class="flex-1">
-                <croppa
-                  :width="128"
-                  :height="128"
-                  :prevent-white-space="true"
-                  :zoom-speed="5"
-                  :accept="'image/jpeg'"
-                  :placeholder="$t('editCommon.clickAndUpload')"
-                  :placeholder-font-size="13"
-                  :disable-drag-to-move="true"
-                  :disable-scroll-to-zoom="true"
-                  :disable-rotation="true"
-                  initial-position="center"
-                  :canvas-color="'gainsboro'"
-                  :show-remove-button="true"
-                  @file-choose="handleMenuImage"
-                ></croppa>
+                <div class="rounded object-cover"
+                     style="width: 128px; height: 128px;"
+                     >
+                  <ImageUpload @setImage="handleMenuImage" />
+                </div>
                 <div class="text-center text-xs mt-1 w-32">
                   {{ $t("editCommon.new") }}
                 </div>
@@ -562,6 +551,7 @@ import firebase from "firebase/app";
 import NotFound from "~/components/NotFound";
 import BackButton from "~/components/BackButton";
 import Price from "~/components/Price";
+import ImageUpload from "~/components/ImageUpload";
 import { taxRates } from "~/plugins/constant.js";
 import NotificationIndex from "./Notifications/Index";
 import { ownPlateConfig } from "@/config/project";
@@ -586,7 +576,8 @@ export default {
     BackButton,
     NotificationIndex,
     NotFound,
-    EditCategory
+    EditCategory,
+    ImageUpload
   },
 
   data() {
