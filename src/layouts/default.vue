@@ -319,6 +319,7 @@ import { releaseConfig } from "~/plugins/config.js";
 import DialogBox from "~/components/DialogBox";
 import AudioPlay from "./AudioPlay";
 import * as Sentry from "@sentry/browser";
+import { ownPlateConfig } from "@/config/project";
 
 export default {
   components: {
@@ -485,15 +486,7 @@ export default {
     } else {
       this.$store.commit("setFirefoxPBM", null);
     }
-    const systemGetConfig = functions.httpsCallable("systemGetConfig");
-    systemGetConfig()
-      .then(result => {
-        this.$store.commit("setServerConfig", result.data);
-      })
-      .catch(error => {
-        console.error("systemGetConfig", error);
-        Sentry.captureException(error);
-      });
+    this.$store.commit("setServerConfig", {region: ownPlateConfig.region});
     this.unregisterAuthObserver = auth.onAuthStateChanged(async user => {
       if (user) {
         console.log(
