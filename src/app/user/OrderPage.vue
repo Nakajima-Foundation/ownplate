@@ -235,7 +235,11 @@
               @change="handleTipChange"
             ></order-info>
           </div>
-          
+
+          <!-- Customer info -->
+          <div class="mt-2" v-if="shopInfo.isEC && hasCustomerInfo">
+              <CustomerInfo :customer="customer" v-if="shopInfo.isEC" :phoneNumber="nationalPhoneNumber" />
+          </div>
           <!-- Your Message to the Restaurant -->
           <template v-if="paid && hasMemo">
             <div class="bg-white rounded-lg p-4 shadow mt-4">
@@ -533,7 +537,7 @@
             <!-- Restaurant Info -->
             <div>
               <div class="text-xl font-bold text-black text-opacity-30">
-                {{ $t("shopInfo.restaurantDetails") }}
+                {{ shopInfo.isEC ? $t("shopInfo.ecShopDetails") : $t("shopInfo.restaurantDetails") }}
               </div>
 
               <div class="mt-2">
@@ -546,7 +550,7 @@
             </div>
 
             <!-- QR Code -->
-            <div class="mt-6">
+            <div class="mt-6" v-if="!shopInfo.isEC">
               <div class="text-xl font-bold text-black text-opacity-30">
                 {{ $t("order.adminQRCode") }}
               </div>
@@ -576,6 +580,7 @@ import PhoneLogin from "~/app/auth/PhoneLogin";
 import NotFound from "~/components/NotFound";
 import RequireLogin from "~/components/RequireLogin";
 import FavoriteButton from "~/app/user/Restaurant/FavoriteButton";
+import CustomerInfo from "~/components/CustomerInfo";
 
 import { db, firestore, functions } from "~/plugins/firebase.js";
 import { order_status, order_status_keys } from "~/plugins/constant.js";
@@ -621,6 +626,7 @@ export default {
     TimeToPickup,
     NotFound,
     RequireLogin,
+    CustomerInfo,
     FavoriteButton
   },
   data() {
@@ -740,6 +746,9 @@ export default {
     waiting() {
       return this.orderInfo.status < order_status.cooking_completed;
     },
+    hasCustomerInfo() {
+      return this.orderInfo.status > order_status.validation_ok;
+    },
     orderItems() {
       return this.getOrderItems(this.orderInfo, this.menuObj);
     },
@@ -757,7 +766,7 @@ export default {
       );
     },
     nationalPhoneNumber() {
-      return formatNational(this.phoneNumber);
+      return (this.phoneNumber) ? formatNational(this.phoneNumber): "";
     },
     nationalPhoneURI() {
       return formatURL(this.phoneNumber);
@@ -788,6 +797,10 @@ export default {
       const num = this.countObj(this.ecErrors);
       return num > 0;
     },
+    customer() {
+      return this.orderInfo?.customerInfo || {};
+    },
+    
   },
   watch: {
     isUser() {
