@@ -223,7 +223,8 @@ export const confirm = async (db: admin.firestore.Firestore, data: any, context:
       time: moment(orderData.timeEstimated.toDate()).tz(timezone||"Asia/Tokyo").locale("ja").format("LLL")
     };
     console.log("timeEstimated", params["time"]);
-    await sendMessageToCustomer(db, lng, "msg_order_accepted", restaurantData.restaurantName, orderData, restaurantId, orderId, params);
+    const msgKey = orderData.isEC ? "msg_ec_order_accepted" : "msg_order_accepted";
+    await sendMessageToCustomer(db, lng, msgKey, restaurantData.restaurantName, orderData, restaurantId, orderId, params);
     
     return result;
   } catch (error) {

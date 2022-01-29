@@ -182,14 +182,18 @@ export const update = async (db: admin.firestore.Firestore, data: any, context: 
       }
 
       if (status === order_status.order_accepted) {
-        msgKey = "msg_order_accepted";
+        msgKey = order.isEC ? "msg_ec_order_accepted" : "msg_order_accepted";
       }
       if (status === order_status.ready_to_pickup) {
-        if (order && order.timeEstimated) {
-          const diffDay = (moment().toDate().getTime() - order.timeEstimated.toDate().getTime()) / 1000 / 3600 / 24;
-          console.log("timeEstimated_diff_days = " + String(diffDay));
-          if (diffDay < 1) {
-            msgKey = "msg_cooking_completed";
+        if (order.isEC) {
+          msgKey = "msg_ec_cooking_completed";
+        } else {
+          if (order && order.timeEstimated) {
+            const diffDay = (moment().toDate().getTime() - order.timeEstimated.toDate().getTime()) / 1000 / 3600 / 24;
+            console.log("timeEstimated_diff_days = " + String(diffDay));
+            if (diffDay < 1) {
+              msgKey = "msg_cooking_completed";
+            }
           }
         }
       }
