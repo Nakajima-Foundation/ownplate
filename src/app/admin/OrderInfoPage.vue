@@ -464,6 +464,7 @@
 
             <!-- Order Details -->
             <order-info
+              :shopInfo="shopInfo ||{}"
               :orderItems="this.orderItems"
               :orderInfo="isOrderChange ? editable_order_info : this.orderInfo || {}"
               :editable="isOrderChange"

@@ -196,7 +196,7 @@
         </div>
       </div>
 
-      <div v-if="orderInfo.phoneNumber" class="mt-4 text-center">
+      <div v-if="orderInfo.phoneNumber && !shopInfo.isEC" class="mt-4 text-center">
         <div class="text-base font-bold">
           {{ $t("order.customerInfo") }}
         </div>
@@ -230,6 +230,7 @@
           <!-- Details -->
           <div class="mt-2">
             <order-info
+              :shopInfo="shopInfo ||{}"
               :orderItems="this.orderItems"
               :orderInfo="this.orderInfo || {}"
               @change="handleTipChange"
