@@ -125,6 +125,7 @@ export const place = async (db, data: any, context: functions.https.CallableCont
         orderPlacedAt: admin.firestore.Timestamp.now(),
         timePlaced,
         memo: memo || "",
+        isEC: restaurantData.isEC,
         customerInfo: customerInfo || {},
       });
       Object.assign(order, { totalCharge: order.total + _tip, tip });

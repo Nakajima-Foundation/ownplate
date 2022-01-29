@@ -120,6 +120,7 @@ export const create = async (db: admin.firestore.Firestore, data: any, context: 
         timePlaced,
         description: request.description,
         memo: memo || "",
+        isEC: restaurantData.isEC,
         customerInfo: customerInfo || {},
         payment: {
           stripe: "pending",
