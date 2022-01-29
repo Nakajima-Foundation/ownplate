@@ -483,6 +483,7 @@
     "lastOrder": "前回",
     "thisOrder": "今回",
     "ec": {
+      "customerInfo": "お客様情報",
       "formtitle": "配送先",
       "zip": "郵便番号",
       "address": "住所",

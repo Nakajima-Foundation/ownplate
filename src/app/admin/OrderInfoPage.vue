@@ -514,6 +514,8 @@
               </div>
             </div>
 
+            <!-- Customer info -->
+            <CustomerInfo :customer="customer" v-if="shopInfo.isEC"/>
           </div>
         </div>
       </div>
@@ -543,6 +545,7 @@ import { ownPlateConfig } from "~/config/project";
 import NotificationIndex from "./Notifications/Index";
 import { formatOption } from "~/plugins/strings.js";
 import OrderInfo from "~/app/user/Order/OrderInfo";
+import CustomerInfo from "~/components/CustomerInfo";
 
 import * as analyticsUtil from "~/plugins/analytics";
 
@@ -554,6 +557,7 @@ export default {
     OrderedItem,
     NotificationIndex,
     OrderInfo,
+    CustomerInfo,
     NotFound
   },
   head() {
@@ -843,6 +847,9 @@ export default {
     },
     availableChangeButton() {
       return (this.edited_available_order_info.length !== this.editedAvailableOrders.length) && (this.edited_available_order_info.length > 0)
+    },
+    customer() {
+      return this.orderInfo.customerInfo || {};
     },
   },
   methods: {
