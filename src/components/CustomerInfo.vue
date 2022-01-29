@@ -20,6 +20,10 @@
     <div class="mb-2">
       {{customer.email}}
     </div>
+    <div class="text-base font-bold">{{ $t("order.ec.phone") }}</div>
+    <div class="mb-2">
+      {{phoneNumber}}
+    </div>
   </div>
 </div>
 </template>
@@ -31,6 +35,10 @@ export default {
       type: Object,
       required: false,
       default: {},
+    },
+    phoneNumber: {
+      type: String,
+      required: false,
     }
   }
 }

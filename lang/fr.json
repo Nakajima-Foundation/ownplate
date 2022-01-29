@@ -480,7 +480,17 @@
     "yourInfo": "Your information",
     "continuousOrder": "Warning: a continuous order",
     "lastOrder": "Last order",
-    "thisOrder": "This order"
+    "thisOrder": "This order",
+    "ec": {
+      "customerInfo": "Customer info",
+      "formtitle": "Shipping information",
+      "zip": "Zip code",
+      "address": "Address",
+      "addressNotice": "Please enter all address information",
+      "name": "Full name",
+      "email": "Email",
+      "phone": "Phone"
+    }
   },
   "button": {
     "back": "Retour",

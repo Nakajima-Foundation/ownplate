@@ -489,7 +489,8 @@
       "address": "住所",
       "addressNotice": "都道府県から部屋番号まで入力してください",
       "name": "お名前",
-      "email": "メールアドレス"
+      "email": "メールアドレス",
+      "phone": "電話番号"
     }
   },
   "button": {

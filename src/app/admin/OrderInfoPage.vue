@@ -515,7 +515,7 @@
             </div>
 
             <!-- Customer info -->
-            <CustomerInfo :customer="customer" v-if="shopInfo.isEC"/>
+            <CustomerInfo :customer="customer" v-if="shopInfo.isEC" :phoneNumber="nationalPhoneNumber" />
           </div>
         </div>
       </div>
@@ -763,7 +763,7 @@ export default {
       );
     },
     nationalPhoneNumber() {
-      return formatNational(this.phoneNumber);
+      return (this.phoneNumber) ? formatNational(this.phoneNumber): "";
     },
     nationalPhoneURI() {
       return formatURL(this.phoneNumber);
