@@ -285,6 +285,7 @@
     "name": "飲食店名",
     "ownerName": "責任者氏名",
     "restaurantDetails": "飲食店情報",
+    "ecShopDetails": "店舗情報",
     "streetAddress": "番地以下",
     "city": "市区町村",
     "state": "州",
