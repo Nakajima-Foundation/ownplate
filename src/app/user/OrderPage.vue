@@ -86,7 +86,7 @@
 
 
       <!-- Time to Pickup -->
-      <div v-if="waiting" class="mt-4 text-sm text-center">
+      <div v-if="waiting && !shopInfo.isEC" class="mt-4 text-sm text-center">
         <div>
           {{ $t("order.timeRequested") + ": " + timeRequested }}
         </div>
@@ -384,7 +384,7 @@
             </div>
             
             <!-- Time to Pickup -->
-            <div>
+            <div v-if="!shopInfo.isEC">
               <div class="text-xl font-bold text-black text-opacity-30">
                 {{ $t("order.timeRequested") }}
               </div>
@@ -566,6 +566,7 @@
 </template>
 
 <script>
+import firebase from "firebase/app";
 import ShopHeader from "~/app/user/Restaurant/ShopHeader";
 import OrderInfo from "~/app/user/Order/OrderInfo";
 import ShopInfo from "~/app/user/Restaurant/ShopInfo";
@@ -922,8 +923,7 @@ export default {
       if (this.shopInfo.isEC && this.hasEcError) {
         return;
       }
-      const timeToPickup = this.$refs.time.timeToPickup();
-      //console.log("handlePayment", timeToPickup);
+      const timeToPickup = this.shopInfo.isEC ? firebase.firestore.Timestamp.now() : this.$refs.time.timeToPickup();
 
       this.isPaying = true;
       try {
@@ -966,7 +966,7 @@ export default {
       if (this.shopInfo.isEC && this.hasEcError) {
         return;
       }
-      const timeToPickup = this.$refs.time.timeToPickup();
+      const timeToPickup = this.shopInfo.isEC ? firebase.firestore.Timestamp.now() : this.$refs.time.timeToPickup();
       const orderPlace = functions.httpsCallable("orderPlace");
       try {
         this.isPlacing = true;
