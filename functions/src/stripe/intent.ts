@@ -74,7 +74,7 @@ const getPaymentMethodData = async (db: any, restaurantOwnerUid: string, custome
 export const create = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const customerUid = utils.validate_auth(context);
 
-  const { orderId, restaurantId, description, tip, sendSMS, timeToPickup, lng, memo } = data;
+  const { orderId, restaurantId, description, tip, sendSMS, timeToPickup, lng, memo, customerInfo } = data;
   const _tip = Number(tip) || 0;
   utils.validate_params({ orderId, restaurantId }); // lng, tip and sendSMS are optional
   const restaurantData = await utils.get_restaurant(db, restaurantId);
@@ -120,6 +120,7 @@ export const create = async (db: admin.firestore.Firestore, data: any, context: 
         timePlaced,
         description: request.description,
         memo: memo || "",
+        customerInfo: customerInfo || {},
         payment: {
           stripe: "pending",
         },

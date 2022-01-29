@@ -88,7 +88,7 @@ export const updateOrderTotalDataAndUserLog = async (db, transaction, customerUi
 // export const place = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => {
 export const place = async (db, data: any, context: functions.https.CallableContext | Context) => {
   const customerUid = utils.validate_auth(context);
-  const { restaurantId, orderId, tip, sendSMS, timeToPickup, lng, memo } = data;
+  const { restaurantId, orderId, tip, sendSMS, timeToPickup, lng, memo, customerInfo } = data;
   const _tip = Number(tip) || 0;
   utils.validate_params({ restaurantId, orderId }); // tip, sendSMS and lng are optinoal
 
@@ -125,6 +125,7 @@ export const place = async (db, data: any, context: functions.https.CallableCont
         orderPlacedAt: admin.firestore.Timestamp.now(),
         timePlaced,
         memo: memo || "",
+        customerInfo: customerInfo || {},
       });
       Object.assign(order, { totalCharge: order.total + _tip, tip });
       return { success: true, order };
