@@ -341,7 +341,7 @@
                   >
                     <div>
                       <div class="text-base font-extrabold">
-                        {{ $t("order.status." + orderState) }}
+                        {{ $t("order.status." + convOrderStateForText(orderState)) }}
                       </div>
                       <div class="text-xs">
                         {{ timeOfEvents[orderState] }}
@@ -1031,6 +1031,17 @@ export default {
       } finally {
         this.updating = "";
       }
+    },
+    convOrderStateForText(orderState) {
+      if (this.shopInfo.isEC) {
+        if (orderState === "ready_to_pickup") {
+          return "ready_to_shipping";
+        }
+        if (orderState === "transaction_complete") {
+          return "shipping_complete";
+        }
+      }
+      return orderState;
     },
     classOf(statusKey) {
       if (order_status[statusKey] == this.orderInfo.status) {
