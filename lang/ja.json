@@ -833,5 +833,21 @@
     "requireLogin": {
       "message1": "オーダーを確認するにはログインが必要です"
     }
+  },
+  "validationError": {
+    "zip": {
+      "empty": "郵便番号を入力してください",
+      "invalidZip": "正しい郵便番号を入力してください"
+    },
+    "address": {
+      "empty": "住所を入力してください"
+    },
+    "name": {
+      "empty": "お名前(氏名)を入力してください"
+    },
+    "email": {
+      "empty": "メールアドレスを入力してください",
+      "invalidEmail": "正しいメールアドレスを入力してください"
+    }
   }
 }

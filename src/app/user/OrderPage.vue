@@ -310,9 +310,9 @@
                     />
                 </b-field>
               </div>
-              <div v-if="ecErrors['zip'].length > 0" class="mb-2">
+              <div v-if="ecErrors['zip'].length > 0" class="mb-2 text-red-700 font-bold">
                 <div v-for="(error, key) in ecErrors['zip']">
-                  {{error}}
+                  {{ $t(error) }}
                 </div>
               </div>
               <div class="text-base">
@@ -334,9 +334,9 @@
                     />
                 </b-field>
               </div>
-              <div v-if="ecErrors['address'].length > 0" class="mb-2">
+              <div v-if="ecErrors['address'].length > 0" class="mb-2 text-red-700 font-bold">
                 <div v-for="(error, key) in ecErrors['address']">
-                  {{error}}
+                  {{ $t(error) }}
                 </div>
               </div>
               <div class="text-base">{{ $t("order.ec.name") }}</div>
@@ -355,9 +355,9 @@
                   />
                 </b-field>
               </div>
-              <div v-if="ecErrors['name'].length > 0" class="mb-2">
+              <div v-if="ecErrors['name'].length > 0" class="mb-2 text-red-700 font-bold">
                 <div v-for="(error, key) in ecErrors['name']">
-                  {{error}}
+                  {{ $t(error) }}
                 </div>
               </div>
               <div class="text-base">{{ $t("order.ec.email") }}</div>
@@ -376,9 +376,9 @@
                   />
                 </b-field>
               </div>
-              <div v-if="ecErrors['email'].length > 0" class="mb-2">
+              <div v-if="ecErrors['email'].length > 0" class="mb-2 text-red-700 font-bold">
                 <div v-for="(error, key) in ecErrors['email']">
-                  {{error}}
+                  {{ $t(error) }}
                 </div>
               </div>
             </div>

@@ -831,5 +831,21 @@
     "requireLogin": {
       "message1": "You must be signed in to see your order"
     }
+  },
+  "validationError": {
+    "zip": {
+      "empty": "Please enter your zip code",
+      "invalidZip": "Please enter your valid zip code"
+    },
+    "address": {
+      "empty": "Please enter your shipping address"
+    },
+    "name": {
+      "empty": "Please enter your full name"
+    },
+    "email": {
+      "empty": "Please enter your email address",
+      "invalidEmail": "Please enter your valid email address"
+    }
   }
 }
