@@ -69,7 +69,7 @@
               :class="orderStatusKey"
               >
               <div class="text-sm font-bold">
-                {{ $t("order.status." + orderStatusKey) }}
+                {{ $t("order.status." + convOrderStateForText(orderStatusKey, orderInfo)) }}
               </div>
             </div>
           </div>
