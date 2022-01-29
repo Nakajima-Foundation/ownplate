@@ -481,7 +481,15 @@
     "yourInfo": "お客様の情報",
     "continuousOrder": "注意: 連続した注文です",
     "lastOrder": "前回",
-    "thisOrder": "今回"
+    "thisOrder": "今回",
+    "ec": {
+      "formtitle": "配送先",
+      "zip": "郵便番号",
+      "address": "住所",
+      "addressNotice": "都道府県から部屋番号まで入力してください",
+      "name": "お名前",
+      "email": "メールアドレス"
+    }
   },
   "button": {
     "back": "戻る",
