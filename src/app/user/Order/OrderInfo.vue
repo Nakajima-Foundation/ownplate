@@ -60,7 +60,7 @@
 
       <!-- Tip -->
       <div
-        v-if="regionTip.choices.length > 0 && (isTipEditable || tip > 0)"
+        v-if="regionTip.choices.length > 0 && (isTipEditable || tip > 0) && enableTip"
         class="border-t-2 border-solid border-black border-opacity-10 mt-4 pt-4"
       >
         <div class="flex">
@@ -76,7 +76,7 @@
       </div>
 
       <!-- Tip Buttons -->
-      <div v-if="regionTip.choices.length > 0" class="mt-2">
+      <div v-if="regionTip.choices.length > 0 && enableTip" class="mt-2">
         <div v-if="isTipEditable">
           <div>
             <b-input
@@ -152,6 +152,10 @@ export default {
       type: Object,
       required: true
     },
+    shopInfo: {
+      type: Object,
+      required: true
+    },
     editable: {
       type: Boolean,
       required: false,
@@ -194,6 +198,9 @@ export default {
     },
     isTipEditable() {
       return this.orderInfo.status === order_status.validation_ok;
+    },
+    enableTip() {
+      return !this.shopInfo.isEC;
     },
     maxTip() {
       return this.calcTip(this.regionTip.max);

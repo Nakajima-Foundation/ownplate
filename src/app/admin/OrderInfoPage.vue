@@ -341,7 +341,7 @@
                   >
                     <div>
                       <div class="text-base font-extrabold">
-                        {{ $t("order.status." + orderState) }}
+                        {{ $t("order.status." + convOrderStateForText(orderState, orderInfo)) }}
                       </div>
                       <div class="text-xs">
                         {{ timeOfEvents[orderState] }}
@@ -464,6 +464,7 @@
 
             <!-- Order Details -->
             <order-info
+              :shopInfo="shopInfo ||{}"
               :orderItems="this.orderItems"
               :orderInfo="isOrderChange ? editable_order_info : this.orderInfo || {}"
               :editable="isOrderChange"
@@ -514,6 +515,8 @@
               </div>
             </div>
 
+            <!-- Customer info -->
+            <CustomerInfo :customer="customer" v-if="shopInfo.isEC" :phoneNumber="nationalPhoneNumber" />
           </div>
         </div>
       </div>
@@ -543,6 +546,7 @@ import { ownPlateConfig } from "~/config/project";
 import NotificationIndex from "./Notifications/Index";
 import { formatOption } from "~/plugins/strings.js";
 import OrderInfo from "~/app/user/Order/OrderInfo";
+import CustomerInfo from "~/components/CustomerInfo";
 
 import * as analyticsUtil from "~/plugins/analytics";
 
@@ -554,6 +558,7 @@ export default {
     OrderedItem,
     NotificationIndex,
     OrderInfo,
+    CustomerInfo,
     NotFound
   },
   head() {
@@ -759,7 +764,7 @@ export default {
       );
     },
     nationalPhoneNumber() {
-      return formatNational(this.phoneNumber);
+      return (this.phoneNumber) ? formatNational(this.phoneNumber): "";
     },
     nationalPhoneURI() {
       return formatURL(this.phoneNumber);
@@ -843,6 +848,9 @@ export default {
     },
     availableChangeButton() {
       return (this.edited_available_order_info.length !== this.editedAvailableOrders.length) && (this.edited_available_order_info.length > 0)
+    },
+    customer() {
+      return this.orderInfo.customerInfo || {};
     },
   },
   methods: {

@@ -285,6 +285,7 @@
     "name": "飲食店名",
     "ownerName": "責任者氏名",
     "restaurantDetails": "飲食店情報",
+    "ecShopDetails": "店舗情報",
     "streetAddress": "番地以下",
     "city": "市区町村",
     "state": "州",
@@ -455,6 +456,8 @@
       "cooking_completed": "調理済み",
       "ready_to_pickup": "受け渡し準備完了",
       "transaction_complete": "受け渡し完了",
+      "ready_to_shipping": "発送準備完了",
+      "shipping_complete": "発送完了",
       "transaction_hide": "受注処理完了",
       "order_canceled": "キャンセル済み",
       "order_refunded": "払い戻し済み",
@@ -481,7 +484,17 @@
     "yourInfo": "お客様の情報",
     "continuousOrder": "注意: 連続した注文です",
     "lastOrder": "前回",
-    "thisOrder": "今回"
+    "thisOrder": "今回",
+    "ec": {
+      "customerInfo": "お客様情報",
+      "formtitle": "配送先",
+      "zip": "郵便番号",
+      "address": "住所",
+      "addressNotice": "都道府県から部屋番号まで入力してください",
+      "name": "お名前",
+      "email": "メールアドレス",
+      "phone": "電話番号"
+    }
   },
   "button": {
     "back": "戻る",
@@ -821,6 +834,22 @@
     },
     "requireLogin": {
       "message1": "オーダーを確認するにはログインが必要です"
+    }
+  },
+  "validationError": {
+    "zip": {
+      "empty": "郵便番号を入力してください",
+      "invalidZip": "正しい郵便番号を入力してください"
+    },
+    "address": {
+      "empty": "住所を入力してください"
+    },
+    "name": {
+      "empty": "お名前(氏名)を入力してください"
+    },
+    "email": {
+      "empty": "メールアドレスを入力してください",
+      "invalidEmail": "正しいメールアドレスを入力してください"
     }
   }
 }

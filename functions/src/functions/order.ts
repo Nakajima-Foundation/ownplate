@@ -88,7 +88,7 @@ export const updateOrderTotalDataAndUserLog = async (db, transaction, customerUi
 // export const place = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => {
 export const place = async (db, data: any, context: functions.https.CallableContext | Context) => {
   const customerUid = utils.validate_auth(context);
-  const { restaurantId, orderId, tip, sendSMS, timeToPickup, lng, memo } = data;
+  const { restaurantId, orderId, tip, sendSMS, timeToPickup, lng, memo, customerInfo } = data;
   const _tip = Number(tip) || 0;
   utils.validate_params({ restaurantId, orderId }); // tip, sendSMS and lng are optinoal
 
@@ -125,6 +125,8 @@ export const place = async (db, data: any, context: functions.https.CallableCont
         orderPlacedAt: admin.firestore.Timestamp.now(),
         timePlaced,
         memo: memo || "",
+        isEC: restaurantData.isEC,
+        customerInfo: customerInfo || {},
       });
       Object.assign(order, { totalCharge: order.total + _tip, tip });
       return { success: true, order };
@@ -180,14 +182,18 @@ export const update = async (db: admin.firestore.Firestore, data: any, context: 
       }
 
       if (status === order_status.order_accepted) {
-        msgKey = "msg_order_accepted";
+        msgKey = order.isEC ? "msg_ec_order_accepted" : "msg_order_accepted";
       }
       if (status === order_status.ready_to_pickup) {
-        if (order && order.timeEstimated) {
-          const diffDay = (moment().toDate().getTime() - order.timeEstimated.toDate().getTime()) / 1000 / 3600 / 24;
-          console.log("timeEstimated_diff_days = " + String(diffDay));
-          if (diffDay < 1) {
-            msgKey = "msg_cooking_completed";
+        if (order.isEC) {
+          msgKey = "msg_ec_cooking_completed";
+        } else {
+          if (order && order.timeEstimated) {
+            const diffDay = (moment().toDate().getTime() - order.timeEstimated.toDate().getTime()) / 1000 / 3600 / 24;
+            console.log("timeEstimated_diff_days = " + String(diffDay));
+            if (diffDay < 1) {
+              msgKey = "msg_cooking_completed";
+            }
           }
         }
       }

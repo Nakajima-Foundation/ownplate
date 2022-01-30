@@ -63,7 +63,7 @@
       </div>
 
       <!-- Minimum Available Time -->
-      <div class="mt-2 px-4 py-2 rounded-lg bg-blue-500 bg-opacity-10">
+      <div class="mt-2 px-4 py-2 rounded-lg bg-blue-500 bg-opacity-10" v-if="!shopInfo.isEC">
         <div class="text-sm font-bold">
           {{ $t("shopInfo.minimumAvailableTime") }}
         </div>
