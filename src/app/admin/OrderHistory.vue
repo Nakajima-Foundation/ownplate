@@ -125,6 +125,7 @@
         :fileName="fileName"
         :hideTable="true"
         :withStatus="true"
+        :shopInfo="shopInfo"
         v-if="shopOwner"
       />
     </div>

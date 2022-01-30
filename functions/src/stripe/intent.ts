@@ -74,7 +74,7 @@ const getPaymentMethodData = async (db: any, restaurantOwnerUid: string, custome
 export const create = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const customerUid = utils.validate_auth(context);
 
-  const { orderId, restaurantId, description, tip, sendSMS, timeToPickup, lng, memo } = data;
+  const { orderId, restaurantId, description, tip, sendSMS, timeToPickup, lng, memo, customerInfo } = data;
   const _tip = Number(tip) || 0;
   utils.validate_params({ orderId, restaurantId }); // lng, tip and sendSMS are optional
   const restaurantData = await utils.get_restaurant(db, restaurantId);
@@ -120,6 +120,8 @@ export const create = async (db: admin.firestore.Firestore, data: any, context: 
         timePlaced,
         description: request.description,
         memo: memo || "",
+        isEC: restaurantData.isEC,
+        customerInfo: customerInfo || {},
         payment: {
           stripe: "pending",
         },
@@ -221,7 +223,8 @@ export const confirm = async (db: admin.firestore.Firestore, data: any, context:
       time: moment(orderData.timeEstimated.toDate()).tz(timezone||"Asia/Tokyo").locale("ja").format("LLL")
     };
     console.log("timeEstimated", params["time"]);
-    await sendMessageToCustomer(db, lng, "msg_order_accepted", restaurantData.restaurantName, orderData, restaurantId, orderId, params);
+    const msgKey = orderData.isEC ? "msg_ec_order_accepted" : "msg_order_accepted";
+    await sendMessageToCustomer(db, lng, msgKey, restaurantData.restaurantName, orderData, restaurantId, orderId, params);
     
     return result;
   } catch (error) {

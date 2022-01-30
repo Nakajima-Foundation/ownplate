@@ -14,7 +14,7 @@ if (!admin.apps.length) {
 
 exportIfNeeded("api", "api", exports);
 
-exportIfNeeded("systemGetConfig", "systemGetConfig", exports);
+// exportIfNeeded("systemGetConfig", "systemGetConfig", exports);
 
 exportIfNeeded("superDispatch", "superDispatch", exports);
 exportIfNeeded("superTwilio", "superTwilio", exports);

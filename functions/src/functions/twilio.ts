@@ -41,7 +41,6 @@ export const phoneCall = async (restaurant) => {
     return;
   }
   const client = twilio(sid, token, {
-    region: "us1",
     edge: "tokyo",
   });
   console.log("PhoneCall: start");
@@ -49,6 +48,7 @@ export const phoneCall = async (restaurant) => {
     const call = await client.calls.create({
       twiml: twiml_neworder,
       to,
+      timeout: 100,
       from,
     });
     console.log("PhoneCall: Success");

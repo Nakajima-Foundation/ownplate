@@ -69,7 +69,7 @@
               :class="orderStatusKey"
               >
               <div class="text-sm font-bold">
-                {{ $t("order.status." + orderStatusKey) }}
+                {{ $t("order.status." + convOrderStateForText(orderStatusKey, orderInfo)) }}
               </div>
             </div>
           </div>
@@ -86,7 +86,7 @@
 
 
       <!-- Time to Pickup -->
-      <div v-if="waiting" class="mt-4 text-sm text-center">
+      <div v-if="waiting && !shopInfo.isEC" class="mt-4 text-sm text-center">
         <div>
           {{ $t("order.timeRequested") + ": " + timeRequested }}
         </div>
@@ -196,7 +196,7 @@
         </div>
       </div>
 
-      <div v-if="orderInfo.phoneNumber" class="mt-4 text-center">
+      <div v-if="orderInfo.phoneNumber && !shopInfo.isEC" class="mt-4 text-center">
         <div class="text-base font-bold">
           {{ $t("order.customerInfo") }}
         </div>
@@ -230,12 +230,17 @@
           <!-- Details -->
           <div class="mt-2">
             <order-info
+              :shopInfo="shopInfo ||{}"
               :orderItems="this.orderItems"
               :orderInfo="this.orderInfo || {}"
               @change="handleTipChange"
             ></order-info>
           </div>
 
+          <!-- Customer info -->
+          <div class="mt-2" v-if="shopInfo.isEC && hasCustomerInfo">
+              <CustomerInfo :customer="customer" v-if="shopInfo.isEC" :phoneNumber="nationalPhoneNumber" />
+          </div>
           <!-- Your Message to the Restaurant -->
           <template v-if="paid && hasMemo">
             <div class="bg-white rounded-lg p-4 shadow mt-4">
@@ -284,8 +289,107 @@
         <div class="mt-4 lg:mt-0">
           <!-- (Before Paid) Order Details -->
           <div v-if="just_validated">
+            <!-- For EC -->
+            <div v-if="shopInfo.isEC"
+                 class="text-xl font-bold text-black text-opacity-30"
+                 >
+              {{ $t("order.ec.formtitle") }}
+            </div>
+            
+            <div v-if="shopInfo.isEC"
+                 class="bg-white rounded-lg shadow p-4 mb-4 mt-2">
+              <div class="text-base">{{ $t("order.ec.zip") }}</div>
+              <div class="mt-2">
+                <b-field
+                  :type="
+                         ecErrors['zip'].length > 0 ? 'is-danger' : 'is-success'
+                         "
+                  >
+                  <b-input
+                    class="w-full"
+                    type="text"
+                    :placeholder="$t('order.ec.zip')"
+                    v-model="customerInfo.zip"
+                    :error="ecErrors['zip']"
+                    maxlength="10"
+                    />
+                </b-field>
+              </div>
+              <div v-if="ecErrors['zip'].length > 0" class="mb-2 text-red-700 font-bold">
+                <div v-for="(error, key) in ecErrors['zip']">
+                  {{ $t(error) }}
+                </div>
+              </div>
+              <div class="text-base">
+                {{ $t("order.ec.address") }}
+                <span class="text-sm font-bold text-red-700">*{{$t("order.ec.addressNotice")}}</span>
+              </div>
+              <div class="mt-2">
+                <b-field
+                  :type="
+                         ecErrors['address'].length > 0 ? 'is-danger' : 'is-success'
+                         "
+                  >
+                  <b-input
+                    class="w-full"
+                    type="text"
+                    :placeholder="$t('order.ec.address')"
+                    v-model="customerInfo.address"
+                    maxlength="100"
+                    />
+                </b-field>
+              </div>
+              <div v-if="ecErrors['address'].length > 0" class="mb-2 text-red-700 font-bold">
+                <div v-for="(error, key) in ecErrors['address']">
+                  {{ $t(error) }}
+                </div>
+              </div>
+              <div class="text-base">{{ $t("order.ec.name") }}</div>
+              <div class="mt-2">
+                <b-field
+                  :type="
+                         ecErrors['name'].length > 0 ? 'is-danger' : 'is-success'
+                         "
+                  >
+                <b-input
+                  class="w-full"
+                  type="text"
+                  :placeholder="$t('order.ec.name')"
+                  v-model="customerInfo.name"
+                  maxlength="30"
+                  />
+                </b-field>
+              </div>
+              <div v-if="ecErrors['name'].length > 0" class="mb-2 text-red-700 font-bold">
+                <div v-for="(error, key) in ecErrors['name']">
+                  {{ $t(error) }}
+                </div>
+              </div>
+              <div class="text-base">{{ $t("order.ec.email") }}</div>
+              <div class="mt-2">
+                <b-field
+                  :type="
+                         ecErrors['email'].length > 0 ? 'is-danger' : 'is-success'
+                         "
+                  >
+                <b-input
+                  class="w-full"
+                  type="text"
+                  :placeholder="$t('order.ec.email')"
+                  v-model="customerInfo.email"
+                  maxlength="30"
+                  />
+                </b-field>
+              </div>
+              <div v-if="ecErrors['email'].length > 0" class="mb-2 text-red-700 font-bold">
+                <div v-for="(error, key) in ecErrors['email']">
+                  {{ $t(error) }}
+                </div>
+              </div>
+            </div>
+            
             <!-- Time to Pickup -->
-            <div>
+            <div v-if="!shopInfo.isEC">
               <div class="text-xl font-bold text-black text-opacity-30">
                 {{ $t("order.timeRequested") }}
               </div>
@@ -434,7 +538,7 @@
             <!-- Restaurant Info -->
             <div>
               <div class="text-xl font-bold text-black text-opacity-30">
-                {{ $t("shopInfo.restaurantDetails") }}
+                {{ shopInfo.isEC ? $t("shopInfo.ecShopDetails") : $t("shopInfo.restaurantDetails") }}
               </div>
 
               <div class="mt-2">
@@ -447,7 +551,7 @@
             </div>
 
             <!-- QR Code -->
-            <div class="mt-6">
+            <div class="mt-6" v-if="!shopInfo.isEC">
               <div class="text-xl font-bold text-black text-opacity-30">
                 {{ $t("order.adminQRCode") }}
               </div>
@@ -467,6 +571,7 @@
 </template>
 
 <script>
+import firebase from "firebase/app";
 import ShopHeader from "~/app/user/Restaurant/ShopHeader";
 import OrderInfo from "~/app/user/Order/OrderInfo";
 import ShopInfo from "~/app/user/Restaurant/ShopInfo";
@@ -476,6 +581,7 @@ import PhoneLogin from "~/app/auth/PhoneLogin";
 import NotFound from "~/components/NotFound";
 import RequireLogin from "~/components/RequireLogin";
 import FavoriteButton from "~/app/user/Restaurant/FavoriteButton";
+import CustomerInfo from "~/components/CustomerInfo";
 
 import { db, firestore, functions } from "~/plugins/firebase.js";
 import { order_status, order_status_keys } from "~/plugins/constant.js";
@@ -485,6 +591,8 @@ import { stripeCreateIntent, stripeCancelIntent } from "~/plugins/stripe.js";
 import { lineAuthURL } from "~/plugins/line.js";
 
 import * as analyticsUtil from "~/plugins/analytics";
+
+import isEmail from "validator/lib/isEmail";
 
 import {
   parsePhoneNumber,
@@ -519,6 +627,7 @@ export default {
     TimeToPickup,
     NotFound,
     RequireLogin,
+    CustomerInfo,
     FavoriteButton
   },
   data() {
@@ -538,7 +647,8 @@ export default {
       sendSMS: true,
       paymentInfo: {},
       notFound: false,
-      memo: ""
+      memo: "",
+      customerInfo: {},
     };
   },
   created() {
@@ -637,6 +747,9 @@ export default {
     waiting() {
       return this.orderInfo.status < order_status.cooking_completed;
     },
+    hasCustomerInfo() {
+      return this.orderInfo.status > order_status.validation_ok;
+    },
     orderItems() {
       return this.getOrderItems(this.orderInfo, this.menuObj);
     },
@@ -654,11 +767,41 @@ export default {
       );
     },
     nationalPhoneNumber() {
-      return formatNational(this.phoneNumber);
+      return (this.phoneNumber) ? formatNational(this.phoneNumber): "";
     },
     nationalPhoneURI() {
       return formatURL(this.phoneNumber);
     },
+    // for EC
+    ecErrors() {
+      const err = {};
+      [
+        "zip",
+        "address",
+        "name",
+        "email"
+      ].forEach(name => {
+        err[name] = [];
+        if (this.customerInfo[name] === undefined || this.customerInfo[name] === "") {
+          err[name].push("validationError." + name + ".empty");
+        }
+      });
+      if (this.customerInfo['zip'] && !this.customerInfo['zip'].match(/^((\d|[０-９]){3}(-|ー)(\d|[０-９]){4})|(\d|[０-９]){7}$/)) {
+        err['zip'].push("validationError.zip.invalidZip");
+      }
+      if (this.customerInfo['email'] && !isEmail(this.customerInfo['email'])) {
+        err['email'].push("validationError.email.invalidEmail");
+      }
+      return err;
+    },
+    hasEcError() {
+      const num = this.countObj(this.ecErrors);
+      return num > 0;
+    },
+    customer() {
+      return this.orderInfo?.customerInfo || {};
+    },
+    
   },
   watch: {
     isUser() {
@@ -791,8 +934,10 @@ export default {
       });
     },
     async handlePayment() {
-      const timeToPickup = this.$refs.time.timeToPickup();
-      //console.log("handlePayment", timeToPickup);
+      if (this.shopInfo.isEC && this.hasEcError) {
+        return;
+      }
+      const timeToPickup = this.shopInfo.isEC ? firebase.firestore.Timestamp.now() : this.$refs.time.timeToPickup();
 
       this.isPaying = true;
       try {
@@ -804,7 +949,8 @@ export default {
           description: `${this.orderName} ${this.shopInfo.restaurantName} ${this.shopInfo.phoneNumber}`,
           sendSMS: this.sendSMS,
           tip: this.tip || 0,
-          memo: this.memo || ""
+          memo: this.memo || "",
+          customerInfo: this.customerInfo || {},
         });
         this.sendPurchase();
         this.$store.commit("resetCart", this.restaurantId());
@@ -831,7 +977,10 @@ export default {
       }
     },
     async handleNoPayment() {
-      const timeToPickup = this.$refs.time.timeToPickup();
+      if (this.shopInfo.isEC && this.hasEcError) {
+        return;
+      }
+      const timeToPickup = this.shopInfo.isEC ? firebase.firestore.Timestamp.now() : this.$refs.time.timeToPickup();
       const orderPlace = functions.httpsCallable("orderPlace");
       try {
         this.isPlacing = true;
@@ -841,7 +990,8 @@ export default {
           orderId: this.orderId,
           sendSMS: this.sendSMS,
           tip: this.tip || 0,
-          memo: this.memo || ""
+          memo: this.memo || "",
+          customerInfo: this.customerInfo || {},
         });
         console.log("place", data);
         this.sendPurchase();

@@ -49,7 +49,7 @@ export default {
   },
   data() {
     return {
-      countryCode: "+1",
+      countryCode: "+81",
       errors: [],
       phoneNumber: this.currentNumber
     };

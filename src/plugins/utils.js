@@ -147,6 +147,17 @@ const mixins = {
       forceArray(arr) {
         return Array.isArray(arr) ? arr : [arr];
       },
+      convOrderStateForText(orderState, orderInfo) {
+        if (orderInfo?.isEC) {
+          if (orderState === "ready_to_pickup") {
+            return "ready_to_shipping";
+          }
+          if (orderState === "transaction_complete") {
+            return "shipping_complete";
+          }
+        }
+        return orderState;
+      },
       getOrderItems(orderInfo, menuObj) {
         if (orderInfo.order && orderInfo.menuItems) {
           return Object.keys(orderInfo.order).reduce((tmp, menuId) => {

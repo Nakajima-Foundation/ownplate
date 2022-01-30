@@ -59,7 +59,7 @@
               <!-- Restaurant Info -->
               <div class="mt-4">
                 <div class="text-xl font-bold text-black text-opacity-30">
-                  {{ $t("shopInfo.restaurantDetails") }}
+                  {{ shopInfo.isEC ? $t("shopInfo.ecShopDetails") : $t("shopInfo.restaurantDetails") }}
                 </div>
 
                 <div class="mt-2">
