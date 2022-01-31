@@ -493,6 +493,8 @@
       "address": "住所",
       "addressNotice": "市区町村から部屋番号まで入力してください",
       "name": "お名前",
+      "searchAddressFromZip": "郵便番号から住所を検索",
+      "select": "選択",
       "email": "メールアドレス",
       "phone": "電話番号"
     }

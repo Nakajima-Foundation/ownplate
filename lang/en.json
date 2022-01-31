@@ -485,6 +485,8 @@
       "customerInfo": "Customer info",
       "formtitle": "Shipping information",
       "zip": "Zip code",
+      "searchAddressFromZip": "Search for an address by zip code",
+      "select": "Select",
       "address": "Address",
       "addressNotice": "Please enter all address information",
       "name": "Full name",
