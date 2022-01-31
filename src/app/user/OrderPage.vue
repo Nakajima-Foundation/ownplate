@@ -327,10 +327,10 @@
               
               <!-- conv zip to address -->
               <div class="mb-2">
-                <b-button @click="getAddress()">郵便番号から住所を検索</b-button>
+                <b-button @click="getAddress()">{{ $t('order.ec.searchAddressFromZip') }}</b-button>
               </div>
               <div v-for="(address, key) in addressList" :key="key" class="font-bold flex mb-2">
-                <b-button @click="updateAddress(address)" class="flex-item mr-2">選択</b-button>
+                <b-button @click="updateAddress(address)" class="flex-item mr-2">{{ $t('order.ec.select') }}</b-button>
                 <span class="flex-item mt-auto mb-auto inline-block">
                   {{address.address1}}{{address.address2}}{{address.address3}}
                 </span>

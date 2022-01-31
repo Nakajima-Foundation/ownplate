@@ -146,8 +146,6 @@
               {{ $t("admin.order.paymentIsNotCompleted") }}
             </div>
 
-
-
             <!-- Cancel Button -->
             <div class="mt-6 text-center">
               <b-button
@@ -247,7 +245,7 @@
             </b-modal>
 
             <!-- Pickup Time -->
-            <div class="mt-6 text-center">
+            <div class="mt-2 text-center">
               <div class="text-xs font-bold">
                 {{ $t("order.timeRequested") }}
               </div>
@@ -278,9 +276,11 @@
                 >
               </b-select>
             </div>
+          </div>
 
+          <div class="bg-white shadow rounded-lg p-4 mt-2">
             <!-- Phone Number -->
-            <div v-if="orderInfo.phoneNumber" class="mt-4 text-center">
+            <div v-if="orderInfo.phoneNumber" class="mt-2 text-center">
               <div class="text-xs font-bold">
                 {{ $t("sms.phonenumber") }}
               </div>
@@ -321,7 +321,9 @@
                 </div>
               </router-link>
             </div>
+          </div>
 
+          <div class="bg-white shadow rounded-lg p-4 mt-2">
             <!-- Order Status -->
             <div>
               <div
