@@ -494,6 +494,12 @@
       "phone": "Phone"
     }
   },
+  "editEC": {
+    "postageList": "Shipping list",
+    "freeThreshold": "Set free shipping",
+    "copy": "Copy shipping above",
+    "setPostageFreeThreshold": "Set the amount of free shipping"
+  },
   "button": {
     "back": "Back",
     "addTitle": "Add Group Title",

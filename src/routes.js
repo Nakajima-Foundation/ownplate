@@ -147,6 +147,10 @@ export const customRoutes = [
         component: "admin/OrderSuspendPage.vue"
       },
       {
+        path: "postage",
+        component: "admin/Postage.vue"
+      },
+      {
         path: "line",
         component: "admin/ManageLine.vue"
       },
