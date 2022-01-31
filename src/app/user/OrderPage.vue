@@ -298,8 +298,12 @@
             
             <div v-if="shopInfo.isEC"
                  class="bg-white rounded-lg shadow p-4 mb-4 mt-2">
-              <div class="text-base">{{ $t("order.ec.zip") }}</div>
-              <div class="mt-2">
+              <!-- zip -->
+              <div class="text-sm font-bold pb-2">
+                {{ $t("order.ec.zip") }}
+                <span class="text-red-700">*</span>
+              </div>
+              <div>
                 <b-field
                   :type="
                          ecErrors['zip'].length > 0 ? 'is-danger' : 'is-success'
@@ -320,11 +324,41 @@
                   {{ $t(error) }}
                 </div>
               </div>
-              <div class="text-base">
-                {{ $t("order.ec.address") }}
-                <span class="text-sm font-bold text-red-700">*{{$t("order.ec.addressNotice")}}</span>
+              
+              <!-- conv zip to address -->
+              <div class="mb-2">
+                <b-button @click="getAddress()">郵便番号から住所を検索</b-button>
               </div>
-              <div class="mt-2">
+              <div v-for="(address, key) in addressList" :key="key" class="font-bold flex mb-2">
+                <b-button @click="updateAddress(address)" class="flex-item mr-2">選択</b-button>
+                <span class="flex-item mt-auto mb-auto inline-block">
+                  {{address.address1}}{{address.address2}}{{address.address3}}
+                </span>
+              </div>
+
+              <!-- prefecture -->
+              <div class="text-sm font-bold pb-2">
+                {{ $t("shopInfo.prefecture") }}
+                <span class="text-red-700">*</span>
+              </div>
+              <b-field
+                :type="ecErrors['prefectureId'].length > 0 ? 'is-danger' : 'is-success'"
+                >
+                <b-select v-model="customerInfo.prefectureId" placeholder="select" @input="updatePrefecture">
+                  <option v-for="(stateItem, key) in regionalSetting.AddressStates"
+                          :value="key + 1"
+                          :key="stateItem">{{
+                    stateItem
+                    }}</option>
+                </b-select>
+              </b-field>
+
+              <!-- address -->
+              <div class="text-sm font-bold pb-2">
+                {{ $t("order.ec.address") }}
+                <span class="text-red-700">*{{$t("order.ec.addressNotice")}}</span>
+              </div>
+              <div>
                 <b-field
                   :type="
                          ecErrors['address'].length > 0 ? 'is-danger' : 'is-success'
@@ -344,8 +378,13 @@
                   {{ $t(error) }}
                 </div>
               </div>
-              <div class="text-base">{{ $t("order.ec.name") }}</div>
-              <div class="mt-2">
+
+              <!-- name -->
+              <div class="text-sm font-bold pb-2">
+                {{ $t("order.ec.name") }}
+                <span class="text-red-700">*</span>
+              </div>
+              <div>
                 <b-field
                   :type="
                          ecErrors['name'].length > 0 ? 'is-danger' : 'is-success'
@@ -365,8 +404,13 @@
                   {{ $t(error) }}
                 </div>
               </div>
-              <div class="text-base">{{ $t("order.ec.email") }}</div>
-              <div class="mt-2">
+
+              <!-- email -->
+              <div class="text-sm font-bold pb-2">
+                {{ $t("order.ec.email") }}
+                <span class="text-red-700">*</span>
+              </div>
+              <div>
                 <b-field
                   :type="
                          ecErrors['email'].length > 0 ? 'is-danger' : 'is-success'
@@ -637,6 +681,7 @@ export default {
       isPaying: false,
       restaurantsId: this.restaurantId(),
       shopInfo: { restaurantName: "" },
+      addressList: [],
       cardState: {},
       orderInfo: {},
       menuObj: null,
@@ -779,7 +824,8 @@ export default {
         "zip",
         "address",
         "name",
-        "email"
+        "email",
+        "prefectureId"
       ].forEach(name => {
         err[name] = [];
         if (this.customerInfo[name] === undefined || this.customerInfo[name] === "") {
@@ -801,7 +847,6 @@ export default {
     customer() {
       return this.orderInfo?.customerInfo || {};
     },
-    
   },
   watch: {
     isUser() {
@@ -1031,6 +1076,49 @@ export default {
           }
         }
       });
+    },
+    updateAddress(address) {
+      const { address1, address2, address3, prefectureId, prefecture } = address;
+
+      const data = {
+        address: [address2, address3].join(""),
+        prefectureId,
+        prefecture,
+      };
+
+      this.customerInfo = Object.assign({}, this.customerInfo, data);
+      this.addressList = [];
+    },
+    updatePrefecture() {
+      const prefecture = this.getPrefecture();
+      if (prefecture) {
+        this.customerInfo = Object.assign({}, this.customerInfo, {prefecture});
+      }
+    },
+    getPrefecture() {
+      if (this.customerInfo?.prefectureId) {
+        return this.regionalSetting.AddressStates[this.customerInfo?.prefectureId - 1];
+      }
+      return null;
+    },
+    async getAddress() {
+      const zip = this.customerInfo['zip'];
+      if (this.ecErrors['zip'].length > 0) {
+        return;
+      }
+      const validZip = zip.replace(/-|ー/g, "").replace(/[！-～]/g, (s) => {
+        return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
+      });
+
+      const zipDoc = await db.doc(`/zipcode/${validZip}`).get();
+      const data = zipDoc.data();
+      // console.log(data);
+      if (zipDoc.exists) {
+        this.addressList = data.addresses
+      } else {
+        this.addressList = [];
+      }
+      // console.log(zip, data);
     }
   }
 };
