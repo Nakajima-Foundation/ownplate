@@ -489,8 +489,9 @@
       "customerInfo": "お客様情報",
       "formtitle": "配送先",
       "zip": "郵便番号",
+      "prefecture": "都道府県",
       "address": "住所",
-      "addressNotice": "都道府県から部屋番号まで入力してください",
+      "addressNotice": "市区町村から部屋番号まで入力してください",
       "name": "お名前",
       "email": "メールアドレス",
       "phone": "電話番号"
@@ -839,7 +840,7 @@
   "validationError": {
     "zip": {
       "empty": "郵便番号を入力してください",
-      "invalidZip": "正しい郵便番号を入力してください"
+      "invalidZip": "正しい7桁の郵便番号を入力してください"
     },
     "address": {
       "empty": "住所を入力してください"
