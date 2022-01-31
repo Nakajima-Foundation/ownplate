@@ -103,6 +103,7 @@ export default {
 
           "ec.name",
           "ec.zip",
+          "ec.prefecture",
           "ec.address",
           "ec.email",
           
@@ -225,6 +226,11 @@ export default {
                   index,
                   key,
                   order?.customerInfo?.zip,
+                ),
+                "ec.prefecture": this.writeonFirstLine(
+                  index,
+                  key,
+                  order?.customerInfo?.prefecture,
                 ),
                 "ec.address": this.writeonFirstLine(
                   index,

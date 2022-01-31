@@ -10,7 +10,7 @@
     </div>
     <div class="text-base font-bold">{{ $t("order.ec.address") }}</div>
     <div class="mb-2">
-      {{customer.address}}
+      {{customer.prefecture}}{{customer.address}}
     </div>
     <div class="text-base font-bold">{{ $t("order.ec.name") }}</div>
     <div class="mb-2">

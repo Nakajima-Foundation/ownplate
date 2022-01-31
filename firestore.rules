@@ -113,7 +113,9 @@ service cloud.firestore {
         allow read: if request.auth.uid == userId;
       }
     }
-
+    match /zipcode/{zipCode} {
+      allow get: if true
+    }
     match /owners/{ownerId} {
       // Note: we don't want to allow the user to "update"
       allow write: if request.auth.uid == userId && isUndefined(request.resource.data, 'admin')
