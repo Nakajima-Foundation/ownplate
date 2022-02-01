@@ -233,6 +233,7 @@
               :shopInfo="shopInfo ||{}"
               :orderItems="this.orderItems"
               :orderInfo="this.orderInfo || {}"
+              :shippingCost="shippingCost"
               @change="handleTipChange"
             ></order-info>
           </div>
@@ -634,6 +635,8 @@ import { releaseConfig } from "~/plugins/config.js";
 import { stripeCreateIntent, stripeCancelIntent } from "~/plugins/stripe.js";
 import { lineAuthURL } from "~/plugins/line.js";
 
+import { costCal } from "~/plugins/commonUtils";
+
 import * as analyticsUtil from "~/plugins/analytics";
 
 import isEmail from "validator/lib/isEmail";
@@ -691,6 +694,7 @@ export default {
       tip: 0,
       sendSMS: true,
       paymentInfo: {},
+      postageInfo: {},
       notFound: false,
       memo: "",
       customerInfo: {},
@@ -844,6 +848,10 @@ export default {
       const num = this.countObj(this.ecErrors);
       return num > 0;
     },
+
+    shippingCost() {
+      return costCal(this.postageInfo, this.customerInfo?.prefectureId, this.orderInfo.total);
+    },
     customer() {
       return this.orderInfo?.customerInfo || {};
     },
@@ -892,11 +900,18 @@ export default {
             this.shopInfo = restaurant_data;
             console.log("*** R", this.shopInfo);
             const uid = restaurant_data.uid;
-            const snapshot = await db
-              .doc(`/admins/${uid}/public/payment`)
-              .get();
-            this.paymentInfo = snapshot.data() || {};
+            db.doc(`/admins/${uid}/public/payment`)
+              .get().then((snapshot) => {
+                this.paymentInfo = snapshot.data() || {};
+              });
+            if (this.shopInfo.isEC) {
+              db.doc(`restaurants/${this.restaurantId()}/ec/postage`)
+                .get().then((snapshot) => {
+                  this.postageInfo = snapshot.data() || {};
+                });
+            }
             //console.log("restaurant", uid, this.paymentInfo);
+            
           } else {
             this.notFound = true;
           }

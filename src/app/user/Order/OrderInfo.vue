@@ -44,6 +44,23 @@
         </div>
       </div>
 
+      <!-- Postage for EC or delivery -->
+      <div v-if="shopInfo.isEC"
+           class="border-t-2 border-solid border-black border-opacity-10 mt-4 pt-4">
+        <div class="flex">
+          <div class="flex-1">
+            <div class="text-base">
+              {{ $t("order.shippingCost") }}
+            </div>
+          </div>
+          <div class="text-right">
+            <div class="text-base">
+              {{ $n(shippingCost || 0, "currency") }}
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Total -->
       <div v-if="false && regionTip.choices.length > 0" class="flex mt-2">
         <div class="flex-1">
@@ -127,7 +144,7 @@
           </div>
           <div class="text-right">
             <div class="text-xl font-bold text-green-600">
-              {{ $n(orderInfo.total + Number(tip), "currency") }}
+              {{ $n(orderInfo.total + Number(tip) + Number(shippingCost || 0), "currency") }}
             </div>
           </div>
         </div>
@@ -162,6 +179,10 @@ export default {
     },
     editedAvailableOrders: {
       type: Array,
+      required: false
+    },
+    shippingCost: {
+      type: Number,
       required: false
     },
   },
