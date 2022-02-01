@@ -499,6 +499,12 @@
       "phone": "電話番号"
     }
   },
+  "editEC": {
+    "postageList": "送料リスト",
+    "freeThreshold": "送料無料設定",
+    "copy": "上の料金をコピー",
+    "setPostageFreeThreshold": "送料無料になる金額を設定する"
+  },
   "button": {
     "back": "戻る",
     "addTitle": "商品グループ名を追加",
