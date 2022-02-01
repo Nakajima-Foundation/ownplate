@@ -4,6 +4,7 @@ import * as utils from "../lib/utils";
 import { order_status, possible_transitions, order_status_keys, timeEventMapping } from "../common/constant";
 import { createCustomer } from "../stripe/customer";
 import moment from "moment-timezone";
+import { costCal } from "../common/commonUtils";
 
 import { sendMessageToCustomer, notifyNewOrderToRestaurant } from "./notify";
 
@@ -97,6 +98,8 @@ export const place = async (db, data: any, context: functions.https.CallableCont
     const restaurantData = await utils.get_restaurant(db, restaurantId);
     const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`);
 
+    const postage = restaurantData.isEC ? await utils.get_restaurant_postage(db, restaurantId) : {};
+
     const result = await db.runTransaction(async (transaction) => {
       const order = (await transaction.get(orderRef)).data();
       if (!order) {
@@ -114,12 +117,14 @@ export const place = async (db, data: any, context: functions.https.CallableCont
 
       // transaction for stock orderTotal
       await updateOrderTotalDataAndUserLog(db, transaction, customerUid, order.order, restaurantId, restaurantData.uid, timePlaced, true);
-
+      const shippingCost = restaurantData.isEC ? costCal(postage, customerInfo?.prefectureId, order.total) : 0;
+      
       // customerUid
       transaction.update(orderRef, {
         status: order_status.order_placed,
-        totalCharge: order.total + _tip,
+        totalCharge: order.total + _tip + (shippingCost || 0),
         tip: roundedTip,
+        shippingCost,
         sendSMS: sendSMS || false,
         updatedAt: admin.firestore.Timestamp.now(),
         orderPlacedAt: admin.firestore.Timestamp.now(),
@@ -128,7 +133,7 @@ export const place = async (db, data: any, context: functions.https.CallableCont
         isEC: restaurantData.isEC || false,
         customerInfo: customerInfo || {},
       });
-      Object.assign(order, { totalCharge: order.total + _tip, tip });
+      Object.assign(order, { totalCharge: order.total + _tip + (shippingCost || 0), tip, shippingCost });
       return { success: true, order };
     });
 

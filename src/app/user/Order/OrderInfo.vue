@@ -54,8 +54,9 @@
             </div>
           </div>
           <div class="text-right">
+            {{ orderInfo.shoppingCost }}
             <div class="text-base">
-              {{ $n(shippingCost || 0, "currency") }}
+              {{ $n(actualShippingCost, "currency") }}
             </div>
           </div>
         </div>
@@ -143,8 +144,9 @@
             </div>
           </div>
           <div class="text-right">
+
             <div class="text-xl font-bold text-green-600">
-              {{ $n(orderInfo.total + Number(tip) + Number(shippingCost || 0), "currency") }}
+              {{ $n(orderInfo.total + Number(tip) + Number(actualShippingCost), "currency") }}
             </div>
           </div>
         </div>
@@ -208,6 +210,9 @@ export default {
     OrderItem
   },
   computed: {
+    actualShippingCost() {
+      return this.orderInfo.shippingCost ? this.orderInfo.shippingCost : (this.shippingCost || 0)
+    },
     regionTip() {
       return this.$store.getters.stripeRegion.tip;
     },

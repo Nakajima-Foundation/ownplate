@@ -83,6 +83,18 @@ export const get_restaurant = async (db: admin.firestore.Firestore, restaurantId
   return data;
 };
 
+export const get_restaurant_postage = async (db: admin.firestore.Firestore, restaurantId: String) => {
+  const snapshot = await db.doc(`/restaurants/${restaurantId}/ec/postage`).get();
+  const data = snapshot.data() || {};
+  return data;
+};
+
+export const get_restaurant_delivery_area = async (db: admin.firestore.Firestore, restaurantId: String) => {
+  const snapshot = await db.doc(`/restaurants/${restaurantId}/delivery/area`).get();
+  const data = snapshot.data() || {};
+  return data;
+};
+
 export const process_error = (error: any) => {
   console.error(error);
   Sentry.captureException(error);
