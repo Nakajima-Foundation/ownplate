@@ -151,6 +151,10 @@ export const customRoutes = [
         component: "admin/Postage.vue"
       },
       {
+        path: "deliveryarea",
+        component: "admin/Delivery.vue"
+      },
+      {
         path: "line",
         component: "admin/ManageLine.vue"
       },
