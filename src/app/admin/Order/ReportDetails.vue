@@ -123,6 +123,7 @@ export default {
           "category2",
           "count",
           "total",
+          "shippingCost",
           "payment",
           "memo"
       ];
@@ -241,6 +242,11 @@ export default {
                   index,
                   key,
                   order?.customerInfo?.email,
+                ),
+                shippingCost: this.writeonFirstLine(
+                  index,
+                  key,
+                  order?.shippingCost,
                 ),
                 count: orderItems[key],
                 options: opt.filter(a => String(a) !== "").join("/"),
