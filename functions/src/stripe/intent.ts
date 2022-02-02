@@ -6,6 +6,7 @@ import { order_status, next_transitions, order_status_keys, timeEventMapping } f
 import * as utils from "../lib/utils";
 import { orderAccounting, createNewOrderData, updateOrderTotalDataAndUserLog } from "../functions/order";
 import { sendMessageToCustomer, notifyNewOrderToRestaurant, notifyCanceledOrderToRestaurant } from "../functions/notify";
+import { costCal } from "../common/commonUtils";
 import { Context } from "../models/TestType";
 
 import * as crypto from "crypto";
@@ -79,6 +80,7 @@ export const create = async (db: admin.firestore.Firestore, data: any, context: 
   utils.validate_params({ orderId, restaurantId }); // lng, tip and sendSMS are optional
   const restaurantData = await utils.get_restaurant(db, restaurantId);
   const restaurantOwnerUid = restaurantData["uid"];
+  const postage = restaurantData.isEC ? await utils.get_restaurant_postage(db, restaurantId) : {};
 
   try {
     const result = await db.runTransaction(async (transaction) => {
@@ -90,7 +92,9 @@ export const create = async (db: admin.firestore.Firestore, data: any, context: 
       if (order.status !== order_status.validation_ok) {
         throw new functions.https.HttpsError("failed-precondition", "This order is invalid.");
       }
-      const totalChargeWithTipAndMultipled = Math.round((order.total + Math.max(0, _tip)) * multiple);
+      const shippingCost = restaurantData.isEC ? costCal(postage, customerInfo?.prefectureId, order.total) : 0;
+
+      const totalChargeWithTipAndMultipled = Math.round((order.total + Math.max(0, _tip) + (shippingCost || 0)) * multiple);
 
       // We expect that there is a customer Id associated with a token
       const payment_method_data = await getPaymentMethodData(db, restaurantOwnerUid, customerUid);
@@ -114,6 +118,7 @@ export const create = async (db: admin.firestore.Firestore, data: any, context: 
         status: order_status.order_placed,
         totalCharge: totalChargeWithTipAndMultipled / multiple,
         tip: Math.round(_tip * multiple) / multiple,
+        shippingCost,
         sendSMS: sendSMS || false,
         updatedAt: admin.firestore.Timestamp.now(),
         orderPlacedAt: admin.firestore.Timestamp.now(),
@@ -461,6 +466,9 @@ export const orderChange = async (db: any, data: any, context: functions.https.C
     const accountingResult = orderAccounting(restaurantData, food_sub_total, alcohol_sub_total, multiple);
     // was created new order data
 
+    const postage = restaurantData.isEC ? await utils.get_restaurant_postage(db, restaurantId) : {};
+    const shippingCost = restaurantData.isEC ? costCal(postage, order?.customerInfo?.prefectureId, accountingResult.total) : 0;
+
     const orderUpdateData = {
       order: newOrderData,
       menuItems: newItems,
@@ -471,7 +479,8 @@ export const orderChange = async (db: any, data: any, context: functions.https.C
       tax: accountingResult.tax,
       inclusiveTax: accountingResult.inclusiveTax,
       total: accountingResult.total,
-      totalCharge: accountingResult.total + (Number(order.tip) || 0),
+      totalCharge: accountingResult.total + (Number(order.tip) || 0) + (shippingCost || 0),
+      shippingCost,
       accounting: {
         food: {
           revenue: accountingResult.food_sub_total,

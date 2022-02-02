@@ -494,6 +494,21 @@
       "phone": "Phone"
     }
   },
+  "editEC": {
+    "postageList": "Shipping list",
+    "freeThreshold": "Set free shipping",
+    "copy": "Copy shipping above",
+    "setPostageFreeThreshold": "Set the amount of free shipping"
+  },
+  "delivery": {
+    "areaSetting": "Delivery area setting",
+    "deliveryRange": "Delivery range radius",
+    "updateDeliveryRange": "Update range",
+    "areaTextExample": "港区北青山　１〜３丁目、南青山１〜７丁目",
+    "setAreaMap": "Set on the map",
+    "setAreaText": "Set on the text",
+    "setAreaMapNotice": "Specify the approximate deliverable range in a circle centered on the store. This range is a guide, so please judge whether delivery is possible at the time of ordering and accept the order."
+  },
   "button": {
     "back": "Back",
     "addTitle": "Add Group Title",

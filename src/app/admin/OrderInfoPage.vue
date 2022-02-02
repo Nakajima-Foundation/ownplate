@@ -550,6 +550,8 @@ import { formatOption } from "~/plugins/strings.js";
 import OrderInfo from "~/app/user/Order/OrderInfo";
 import CustomerInfo from "~/components/CustomerInfo";
 
+import { costCal } from "~/plugins/commonUtils";
+
 import * as analyticsUtil from "~/plugins/analytics";
 
 const timezone = moment.tz.guess();
@@ -581,6 +583,7 @@ export default {
       detacher: [],
       cancelPopup: false,
       paymentCancelPopup: false,
+      postageInfo: {},
       notFound: false,
       timeOffset: 0,
       shopOwner: null,
@@ -606,6 +609,12 @@ export default {
             const restaurant_data = restaurant.data();
             if (restaurant_data.uid === this.ownerUid) {
               this.shopInfo = restaurant_data;
+              if (this.shopInfo.isEC) {
+                db.doc(`restaurants/${this.restaurantId()}/ec/postage`)
+                  .get().then((snapshot) => {
+                    this.postageInfo = snapshot.data() || {};
+                  });
+              }
               return;
             }
           }
@@ -842,7 +851,9 @@ export default {
         ret.tax = ret.food_tax + ret.alcohol_tax;
         ret.total = ret.sub_total + ret.tax;
       }
-      return Object.assign({}, this.orderInfo, ret);
+      // const sh
+      const shippingCost = costCal(this.postageInfo, this.orderInfo?.customerInfo?.prefectureId, ret.total);
+      return Object.assign({}, this.orderInfo, ret, {shippingCost});
     },
     availableOrderChange() {
       return this.orderInfo && this.orderInfo.status === order_status.order_placed &&
