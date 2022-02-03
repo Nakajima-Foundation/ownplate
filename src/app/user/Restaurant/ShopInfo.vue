@@ -7,6 +7,7 @@
         :cluster="{ options: { styles: 'clusterStyle' } }"
         :options="{ fullscreenControl: false, styles: 'mapStyle' }"
         :zoom="18"
+        style="width: 100%; height: 160px"
         @loaded="updateMap"
       ></GMap>
 
@@ -387,7 +388,7 @@ export default {
 <style type="scss" scped>
 .GMap__Wrapper {
   width: 100%;
-  height: 160px;
+  height: 100% !important;
   border-radius: 8px 8px 0 0;
 }
 </style>

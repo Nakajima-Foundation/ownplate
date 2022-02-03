@@ -15,9 +15,9 @@
         </b-select>
         <b-select v-model="time" class="mt-2">
           <option
-            v-for="time in availableDays[dayIndex].times"
+            v-for="(time, index) in availableDays[dayIndex].times"
             :value="time.time"
-            :key="time.time"
+            :key="index"
             >{{ time.display }}</option
           >
         </b-select>
