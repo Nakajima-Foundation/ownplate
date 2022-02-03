@@ -55,7 +55,7 @@
       </div>
       <div class="flex-1 text-center">
         <router-link to="/">
-          <img class="h-6" :src="`/${this.logo}`" />
+          <img :class="this.logoClass" :src="`/${this.logo}`" />
         </router-link>
       </div>
       <div class="w-12"></div>
@@ -344,8 +344,6 @@ export default {
       ],
       unregisterAuthObserver: null,
       timerId: null,
-      logo: "",
-      logo2: "",
       // todo support scrset https://kanoto.info/201912/673/
       // srcset: regionalSetting.Logo.map((logo) => {}
 
@@ -406,7 +404,34 @@ export default {
     },
     home_path() {
       return this.isAdmin ? "/admin/restaurants/" : "/r";
-    }
+    },
+    restaurant() {
+      return this.$route.params.restaurantId;
+    },
+    specialLogo() {
+      return {
+        "5OInKqrhlpe7LHYNYXuU": {
+          class: "h-8",
+          image: "kuuya-logo.jpg",
+        },
+      };
+    },
+    logoClass() {
+      if (this.restaurant && this.specialLogo[this.restaurant]) {
+        return this.specialLogo[this.restaurant].class;
+      }
+      return "h-6";
+    },
+    logo() {
+      if (this.restaurant && this.specialLogo[this.restaurant]) {
+        return this.specialLogo[this.restaurant].image;
+      } else {
+        return this.regionalSetting.Logo;
+      }
+    },
+    logo2() {
+      return this.regionalSetting.Logo2;
+    },
   },
   methods: {
     flash() {
@@ -559,8 +584,6 @@ export default {
     }
     this.language = this.regionalSetting.defaultLanguage;
     this.languages = this.regionalSetting.languages;
-    this.logo = this.regionalSetting.Logo;
-    this.logo2 = this.regionalSetting.Logo2;
 
     this.timerId = window.setInterval(() => {
       this.$store.commit("updateDate");
