@@ -96,13 +96,14 @@
                     :key="key"
                     >
                     <div
-                      class="text-xl font-bold text-black text-opacity-30"
+                      class="text-xl font-bold text-black text-opacity-30 inline-flex justify-center items-center"
                       :class="key === 0 ? '' : 'mt-6'"
                       :id="item.id"
+                      @click="openCategory"
                       >
-                      <span @click="openCategory">
+                      <i class="material-icons mr-2">menu_book</i>
+                      <span>
                         {{ item.name }}
-                        {{ $t("shopInfo.category") }}
                       </span>
                     </div>
                   </div>
