@@ -441,7 +441,11 @@
               <div class="text-xl font-bold text-black text-opacity-30">
                 {{ $t("order.ec.formtitle") }}
               </div>
-              <OrderPageMap :shopInfo="shopInfo" :fullAddress="fullAddress" />
+              <OrderPageMap
+                @updateHome="updateHome"
+                :shopInfo="shopInfo"
+                :fullAddress="fullAddress"
+                :deliveryInfo="deliveryInfo" />
             </div>
 
             
@@ -715,6 +719,7 @@ export default {
       sendSMS: true,
       paymentInfo: {},
       postageInfo: {},
+      deliveryInfo: {},
       notFound: false,
       memo: "",
       customerInfo: {},
@@ -870,6 +875,8 @@ export default {
           err['email'].push("validationError.email.invalidEmail");
         }
       }
+      // TODO delivery validation 
+      // if delivery, check location
       return err;
     },
     hasEcError() {
@@ -892,6 +899,9 @@ export default {
     }
   },
   methods: {
+    updateHome(pos) {
+      this.customerInfo.location = pos;
+    },
     sendPurchase() {
       analyticsUtil.sendPurchase(
         this.orderInfo,
@@ -936,6 +946,13 @@ export default {
               db.doc(`restaurants/${this.restaurantId()}/ec/postage`)
                 .get().then((snapshot) => {
                   this.postageInfo = snapshot.data() || {};
+                });
+            }
+            // todo if support delivery
+            if (true) {
+              db.doc(`restaurants/${this.restaurantId()}/delivery/area`)
+                .get().then((snapshot) => {
+                  this.deliveryInfo = snapshot.data() || {};
                 });
             }
             //console.log("restaurant", uid, this.paymentInfo);

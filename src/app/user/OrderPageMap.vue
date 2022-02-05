@@ -1,6 +1,9 @@
 <template>
 <div class="h-2/5">
-<GMap
+
+<div v-if="deliveryInfo.enableAreaMap">
+  配達位置の指定
+  <GMap
     ref="gMap"
     :center="{ lat: 35.6809591, lng: 139.7673068 }"
     :options="{ fullscreenControl: false }"
@@ -9,10 +12,18 @@
      @click="gmapClick"
     style="height: 500px"
     ></GMap>
-<span if="estimatedDistance !== null">
-  推定距離: {{estimatedDistance}}m: 配達可能距離 {{radius}}m
-</span>
-<button @click="conv">conv</button>
+  <div if="estimatedDistance !== null">
+    推定距離: {{estimatedDistance}}m: 配達可能距離 {{radius}}m
+  </div>
+  <div>
+    <b-button @click="conv">住所を反映</b-button>
+  </div>
+</div>
+<div v-if="deliveryInfo.enableAreaText">
+  配達可能エリアの説明
+  <pre>{{deliveryInfo.areaText}}</pre>
+</div>
+  
 </div>
 </template>
 
@@ -20,6 +31,10 @@
 export default {
   props: {
     shopInfo: {
+      type: Object,
+      required: true
+    },
+    deliveryInfo: {
       type: Object,
       required: true
     },
@@ -31,7 +46,18 @@ export default {
   computed: {
     location() {
       return this.shopInfo.location;
-    }
+    },
+    radius() {
+      if (this.deliveryInfo && this.deliveryInfo.radius) {
+        return this.deliveryInfo.radius;
+      }
+      return 1;
+    },
+  },
+  watch: {
+    radius() {
+      this.updateCircle();
+    },
   },
   data() {
     return {
@@ -39,7 +65,6 @@ export default {
       home: null,
       markers: [],
       circles: [],
-      radius: 500,
       estimatedDistance: null,
       maplocation: null,
     };
@@ -73,6 +98,9 @@ export default {
       }
     },
     updateMarker() {
+      if (!this.$refs.gMap || !this.$refs.gMap.map) {
+        return
+      }
       this.removeAllMarker();
       if (this.center) {
         const marker = new google.maps.Marker({
@@ -96,6 +124,9 @@ export default {
       }
     },
     updateCircle() {
+      if (!this.$refs.gMap || !this.$refs.gMap.map) {
+        return 
+      }
       this.removeAllCircle();
       this.$refs.gMap.map.setCenter(this.maplocation);
       const circle = new google.maps.Circle({
@@ -108,6 +139,7 @@ export default {
         strokeOpacity: 1,
         strokeWeight: 1
       });
+      circle.addListener("click", this.gmapClick); // todo remove lister
       this.circles.push(circle);
     },
     removeAllMarker() {
@@ -121,24 +153,27 @@ export default {
     removeAllCircle() {
       if (this.circles && this.circles.length > 0) {
         this.circles.map(circle => {
+          circle.removeListener("click");
           circle.setMap(null);
         });
         this.circles = [];
       }
     },
-    gmapClick() {
+    gmapClick(arg) {
+      const latLng = arg?.event?.latLng || arg.latLng;
+      this.setHome(latLng.lat(), latLng.lng());
+    },
+    setHome(lat, lng) {
+      this.home = new google.maps.LatLng(lat, lng);
+      this.$emit("updateHome", {lat, lng});
+      this.updateMarker();
     },
     conv() {
       const geocoder = new google.maps.Geocoder();
       geocoder.geocode({ 'address': this.fullAddress, 'language': 'ja'}).then((response) => {
         const res = response.results[0];
-        const lat = res.geometry.location.lat();
-        const lng = res.geometry.location.lng();
-        this.home = new google.maps.LatLng(lat, lng);
-        this.updateMarker();
-        
+        this.setHome(res.geometry.location.lat(), res.geometry.location.lng());
         this.estimatedDistance = this.haversine_distance(lat, lng, this.shopInfo.location.lat, this.shopInfo.location.lng);
-        console.log(this.estimatedDistance);
       });
     },
     // https://developers-jp.googleblog.com/2019/12/how-calculate-distances-map-maps-javascript-api.html
