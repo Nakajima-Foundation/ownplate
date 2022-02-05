@@ -22,7 +22,7 @@
         {{customer.email}}
       </div>
     </template>
-    <template v-if="customer.location">
+    <template v-if="customer.location && shopInfo.location">
       <div class="text-base font-bold">{{ $t("delivery.deliveryLocation") }}</div>
       <div class="mb-2">
         <GMap
