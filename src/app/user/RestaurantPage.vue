@@ -568,7 +568,7 @@ export default {
         status: order_status.new_order,
         uid: this.user.uid,
         ownerUid: this.shopInfo.uid,
-        isDelivery: true, // for test
+        // isDelivery: true, // for test
         phoneNumber: this.user.phoneNumber,
         name: this.user.displayName,
         updatedAt: firestore.FieldValue.serverTimestamp(),
