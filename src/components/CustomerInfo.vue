@@ -16,10 +16,32 @@
     <div class="mb-2">
       {{customer.name}}
     </div>
-    <div class="text-base font-bold">{{ $t("order.ec.email") }}</div>
-    <div class="mb-2">
-      {{customer.email}}
-    </div>
+    <template v-if="customer.email">
+      <div class="text-base font-bold">{{ $t("order.ec.email") }}</div>
+      <div class="mb-2">
+        {{customer.email}}
+      </div>
+    </template>
+    <template v-if="customer.location">
+      <div class="text-base font-bold">{{ $t("delivery.deliveryLocation") }}</div>
+      <div class="mb-2">
+        <GMap
+          :center="shopInfo.location"
+          :options="{ fullscreenControl: false }"
+          :zoom="15"
+          style="height: 500px"
+        >
+          <GMapMarker
+            :position="customer.location"
+            :options="{icon: { url: 'http://maps.google.co.jp/mapfiles/ms/icons/blue-dot.png' }}"
+            />
+          <GMapMarker
+            :position="shopInfo.location"
+            :options="{icon: { url: 'http://maps.google.co.jp/mapfiles/ms/icons/restaurant.png' }}"
+            />
+        </GMap>
+      </div>
+    </template>
     <div class="text-base font-bold">{{ $t("order.ec.phone") }}</div>
     <div class="mb-2">
       {{phoneNumber}}
@@ -31,6 +53,10 @@
 <script>
 export default {
   props: {
+    shopInfo: {
+      type: Object,
+      required: true
+    },
     customer: {
       type: Object,
       required: false,

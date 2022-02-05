@@ -1,28 +1,36 @@
 <template>
 <div class="h-2/5">
-
-<div v-if="deliveryInfo.enableAreaMap">
-  配達位置の指定
+  
+  <div
+    class="text-xm font-bold text-black text-opacity-30 mt-2">
+    {{ $t("delivery.setDeliveryLocation") }}
+  </div>
   <GMap
     ref="gMap"
     :center="{ lat: 35.6809591, lng: 139.7673068 }"
     :options="{ fullscreenControl: false }"
     :zoom="15"
     @loaded="mapLoaded"
-     @click="gmapClick"
+    @click="gmapClick"
     style="height: 500px"
     ></GMap>
   <div if="estimatedDistance !== null">
-    推定距離: {{estimatedDistance}}m: 配達可能距離 {{radius}}m
+    {{ $t("delivery.estimatedDistance") }}: {{estimatedDistance}}m: 
+    <div v-if="deliveryInfo.enableAreaMap">
+      {{ $t("delivery.availableDeliveryDistance") }} {{radius}}m
+    </div>
   </div>
   <div>
-    <b-button @click="conv">住所を反映</b-button>
+    <b-button @click="conv">{{ $t("delivery.setTheAddressInTheDeliveryLocation") }}</b-button>
   </div>
-</div>
-<div v-if="deliveryInfo.enableAreaText">
-  配達可能エリアの説明
-  <pre>{{deliveryInfo.areaText}}</pre>
-</div>
+  
+  <div v-if="deliveryInfo.enableAreaText">
+    <div
+      class="text-xm font-bold text-black text-opacity-30 mt-2">
+      {{ $t("delivery.aboutDeliveryArea") }}
+    </div>
+    <pre>{{deliveryInfo.areaText}}</pre>
+  </div>
   
 </div>
 </template>
@@ -124,7 +132,7 @@ export default {
       }
     },
     updateCircle() {
-      if (!this.$refs.gMap || !this.$refs.gMap.map) {
+      if (!this.$refs.gMap || !this.$refs.gMap.map || !this.deliveryInfo.enableAreaMap) {
         return 
       }
       this.removeAllCircle();
@@ -167,13 +175,13 @@ export default {
       this.home = new google.maps.LatLng(lat, lng);
       this.$emit("updateHome", {lat, lng});
       this.updateMarker();
+      this.estimatedDistance = this.haversine_distance(lat, lng, this.shopInfo.location.lat, this.shopInfo.location.lng);
     },
     conv() {
       const geocoder = new google.maps.Geocoder();
       geocoder.geocode({ 'address': this.fullAddress, 'language': 'ja'}).then((response) => {
         const res = response.results[0];
         this.setHome(res.geometry.location.lat(), res.geometry.location.lng());
-        this.estimatedDistance = this.haversine_distance(lat, lng, this.shopInfo.location.lat, this.shopInfo.location.lng);
       });
     },
     // https://developers-jp.googleblog.com/2019/12/how-calculate-distances-map-maps-javascript-api.html

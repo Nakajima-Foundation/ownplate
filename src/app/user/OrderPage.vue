@@ -239,9 +239,13 @@
           </div>
 
           <!-- Customer info -->
-          <div class="mt-2" v-if="shopInfo.isEC && hasCustomerInfo">
-              <CustomerInfo :customer="customer" v-if="shopInfo.isEC" :phoneNumber="nationalPhoneNumber" />
+          <div class="mt-2" v-if="shopInfo && (shopInfo.isEC || orderInfo.isDelivery) && hasCustomerInfo">
+            <CustomerInfo
+              :shopInfo="shopInfo"
+              :customer="customer"
+              :phoneNumber="nationalPhoneNumber" />
           </div>
+
           <!-- Your Message to the Restaurant -->
           <template v-if="paid && hasMemo">
             <div class="bg-white rounded-lg p-4 shadow mt-4">
@@ -441,11 +445,16 @@
               <div class="text-xl font-bold text-black text-opacity-30">
                 {{ $t("order.ec.formtitle") }}
               </div>
+              <span v-if="ecErrors['location'].length > 0" class="text-red-700 font-bold">
+                <div v-for="(error, key) in ecErrors['location']">
+                  {{ $t(error) }}
+                </div>
+              </span>
               <OrderPageMap
-                @updateHome="updateHome"
-                :shopInfo="shopInfo"
-                :fullAddress="fullAddress"
-                :deliveryInfo="deliveryInfo" />
+                  @updateHome="updateHome"
+                  :shopInfo="shopInfo"
+                  :fullAddress="fullAddress"
+                  :deliveryInfo="deliveryInfo" />
             </div>
 
             
@@ -875,6 +884,13 @@ export default {
           err['email'].push("validationError.email.invalidEmail");
         }
       }
+      if (this.orderInfo.isDelivery) {
+        console.log(this.customerInfo);
+        err['location'] = []
+        if (!this.customerInfo.location || !this.customerInfo.location.lat) {
+          err['location'].push("validationError.location.noLocation");
+        }
+      }
       // TODO delivery validation 
       // if delivery, check location
       return err;
@@ -900,7 +916,9 @@ export default {
   },
   methods: {
     updateHome(pos) {
-      this.customerInfo.location = pos;
+      const cust = {...this.customerInfo};
+      cust.location = pos;
+      this.customerInfo = cust;
     },
     sendPurchase() {
       analyticsUtil.sendPurchase(
