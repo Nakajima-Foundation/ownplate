@@ -297,6 +297,14 @@ export default {
     }
   },
   created() {
+    // Hot fix for flyer. TODO: remove after end of summer in 2022.
+    if (location.hash && location.hash.startsWith("#utm")) {
+      const str = location.hash.slice(1);
+      const url = location.pathname + "?" + str
+      this.$router.push({
+        path: url
+      });
+    }
     const restaurant_detacher = db
       .doc(`restaurants/${this.restaurantId()}`)
       .onSnapshot(async restaurant => {
