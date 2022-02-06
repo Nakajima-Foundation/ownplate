@@ -8,7 +8,7 @@ jobs:
     steps:
       - checkout
       - node/install:
-          node-version: 16.11.0
+          node-version: 17.2.0
       - node/with-cache:
           steps:
             - run: npm install
