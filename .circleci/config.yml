@@ -9,29 +9,28 @@ jobs:
       - checkout
       - node/install:
           node-version: 16.13.2
-      - node/with-cache:
-          steps:
-            - run: npm install
-            - run: apt-cache search openjdk
-            - run: sudo apt-get update
-            - run: sudo apt-get install openjdk-11-jdk
-            - run: npm rebuild node-sass
-            - run: npm install --save-dev firebase-tools
-            - run:
-                command: ./node_modules/.bin/firebase emulators:start --only firestore
-                background: true
-            - run: cp configs/.firebaserc ./
-            - run: cp src/config/default/ownplate-dev.js src/config/project.js
-            - run: STRIPE_CLIENT_ID=$STRIPE_CLIENT_ID STRIPE_API_KEY=$STRIPE_API_KEY GAPIKey=$GAPIKey npm run build
-            - run: cp dist/index.html functions/templates/index.html
-            - run: cp src/config/default/ownplate-jp.js functions/src/common/project.js
-            - run: cp src/plugins/constant.js functions/src/common/constant.js
-            - run: cp src/plugins/phoneutil.js functions/src/common/phoneutil.js
-            - run: cd functions && npm install && npm run coverage
-            - run: ./node_modules/.bin/firebase deploy --token=$FIREBASE_TOKEN --project=staging --only hosting:app
-            - run: ./node_modules/.bin/firebase deploy --token=$FIREBASE_TOKEN --project=staging --only firestore:rules
-            - run: cd functions && npm install && ../node_modules/.bin/firebase deploy --token=$FIREBASE_TOKEN --project=staging --only functions
-            - run: SLACKURL=$SLACKURL sh ./utils/buildbot.sh
+      - node/install-packages:
+          check-cache: always
+      - run: apt-cache search openjdk
+      - run: sudo apt-get update
+      - run: sudo apt-get install openjdk-11-jdk
+      - run: npm rebuild node-sass
+      - run: npm install --save-dev firebase-tools
+      - run:
+          command: ./node_modules/.bin/firebase emulators:start --only firestore
+          background: true
+      - run: cp configs/.firebaserc ./
+      - run: cp src/config/default/ownplate-dev.js src/config/project.js
+      - run: STRIPE_CLIENT_ID=$STRIPE_CLIENT_ID STRIPE_API_KEY=$STRIPE_API_KEY GAPIKey=$GAPIKey npm run build
+      - run: cp dist/index.html functions/templates/index.html
+      - run: cp src/config/default/ownplate-jp.js functions/src/common/project.js
+      - run: cp src/plugins/constant.js functions/src/common/constant.js
+      - run: cp src/plugins/phoneutil.js functions/src/common/phoneutil.js
+      - run: cd functions && npm install && npm run coverage
+      - run: ./node_modules/.bin/firebase deploy --token=$FIREBASE_TOKEN --project=staging --only hosting:app
+      - run: ./node_modules/.bin/firebase deploy --token=$FIREBASE_TOKEN --project=staging --only firestore:rules
+      - run: cd functions && npm install && ../node_modules/.bin/firebase deploy --token=$FIREBASE_TOKEN --project=staging --only functions
+      - run: SLACKURL=$SLACKURL sh ./utils/buildbot.sh
 workflows:
     version: 2.1
     build-and-test:
