@@ -518,7 +518,12 @@
             </div>
 
             <!-- Customer info -->
-            <CustomerInfo :customer="customer" v-if="shopInfo.isEC" :phoneNumber="nationalPhoneNumber" />
+            <CustomerInfo
+              :shopInfo="shopInfo"
+              :customer="customer"
+              :phoneNumber="nationalPhoneNumber"
+              v-if="shopInfo && (shopInfo.isEC || orderInfo.isDelivery)"
+              />
           </div>
         </div>
       </div>

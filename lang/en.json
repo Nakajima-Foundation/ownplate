@@ -422,6 +422,8 @@
     "history": "Order History",
     "timeRequested": "Requested Pickup Time",
     "timeToPickup": "Estimated Pickup Time",
+    "deliveryTimeRequested": "Requested Delivery Time",
+    "deliveryTimeToPickup": "Estimated Delivery Time",
     "notAvailable": "This restaurant is not available at this time. Please try again later",
     "orderNotice": "Order Notice",
     "orderMessage": "Message to the restaurant",
@@ -505,8 +507,14 @@
     "deliveryRange": "Delivery range radius",
     "updateDeliveryRange": "Update range",
     "areaTextExample": "港区北青山　１〜３丁目、南青山１〜７丁目",
+    "deliveryLocation": "Delivery destination",
     "setAreaMap": "Set on the map",
     "setAreaText": "Set on the text",
+    "setDeliveryLocation": "Set delivery destination",
+    "estimatedDistance": "Estimated distance",
+    "setTheAddressInTheDeliveryLocation": "Set  the address in the delivery destination",
+    "availableDeliveryDistance": "Available Delivery Distance",
+    "aboutDeliveryArea": "Aboout Delivery Area",
     "setAreaMapNotice": "Specify the approximate deliverable range in a circle centered on the store. This range is a guide, so please judge whether delivery is possible at the time of ordering and accept the order."
   },
   "button": {
@@ -859,6 +867,9 @@
     },
     "name": {
       "empty": "Please enter your full name"
+    },
+    "location": {
+      "noLocation": "After entering the address, please update the delivery distination on the map. You can also update by tapping "
     },
     "email": {
       "empty": "Please enter your email address",
