@@ -71,6 +71,10 @@ const getPaymentMethodData = async (db: any, restaurantOwnerUid: string, custome
   return paymentMethodData;
 };
 
+const getHash = (message: string) => {
+  return crypto.createHash("sha256").update(message).digest("hex")  
+};
+
 // This function is called by user to create a "payment intent" (to start the payment transaction)
 export const create = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const customerUid = utils.validate_auth(context);
@@ -107,8 +111,9 @@ export const create = async (db: admin.firestore.Firestore, data: any, context: 
         payment_method_data,
       } as Stripe.PaymentIntentCreateParams;
 
+      const idempotencyKey = getHash([orderRef.path, payment_method_data.card.token].join("-"));
       const paymentIntent = await stripe.paymentIntents.create(request, {
-        idempotencyKey: orderRef.path,
+        idempotencyKey,
         stripeAccount,
       });
       const timePlaced = (timeToPickup && new admin.firestore.Timestamp(timeToPickup.seconds, timeToPickup.nanoseconds)) || admin.firestore.FieldValue.serverTimestamp();
@@ -191,8 +196,9 @@ export const confirm = async (db: admin.firestore.Firestore, data: any, context:
       const stripeRecord = await getStripeOrderRecord(transaction, stripeRef);
       const paymentIntentId = stripeRecord.paymentIntent.id;
 
+      const idempotencyKey = getHash([order.id, paymentIntentId].join("-"));
       const paymentIntent = await stripe.paymentIntents.confirm(paymentIntentId, {
-        idempotencyKey: order.id,
+        idempotencyKey,
         stripeAccount,
       });
 
@@ -298,8 +304,9 @@ export const cancel = async (db: any, data: any, context: functions.https.Callab
 
       const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
       
+      const idempotencyKey = getHash([order.id, paymentIntentId].join("-"));
       const paymentIntent = await stripe.paymentIntents.cancel(paymentIntentId, {
-        idempotencyKey: `${order.id}-cancel`,
+        idempotencyKey: `${idempotencyKey}-cancel`,
         stripeAccount,
       });
       await updateOrderTotalDataAndUserLog(db, transaction, order.uid, order.order, restaurantId, restaurant.uid, order.timePlaced, false);
@@ -369,8 +376,9 @@ export const cancelStripePayment = async (db: admin.firestore.Firestore, data: a
       const stripeRecord = await getStripeOrderRecord(transaction, stripeRef);
       const paymentIntentId = stripeRecord.paymentIntent.id;
 
+      const idempotencyKey = getHash([order.id, paymentIntentId].join("-"));
       const paymentIntent = await stripe.paymentIntents.cancel(paymentIntentId, {
-        idempotencyKey: `${order.id}-cancel`,
+        idempotencyKey: `${idempotencyKey}-cancel`,
         stripeAccount,
       });
       const updateData = {
@@ -521,7 +529,7 @@ export const orderChange = async (db: any, data: any, context: functions.https.C
           payment_method_data,
         } as Stripe.PaymentIntentCreateParams;
 
-        const hash = crypto.createHash("sha256").update(JSON.stringify(newOrderData)).digest("hex");
+        const hash = getHash(JSON.stringify(newOrderData));
 
         const paymentIntent = await stripe.paymentIntents.create(request, {
           idempotencyKey: orderRef.path + hash,
