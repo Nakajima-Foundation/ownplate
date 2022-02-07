@@ -270,7 +270,10 @@ export const createNewOrderData = async (restaurantRef, orderRef, orderData, mul
   }
   menuIds.map((menuId) => {
     const menu = menuObj[menuId];
-
+    if (menu.soldOut) {
+      return;
+    }
+    
     const prices: number[] = [];
     const newOrder: number[] = [];
 
