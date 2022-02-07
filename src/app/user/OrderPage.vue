@@ -239,9 +239,13 @@
           </div>
 
           <!-- Customer info -->
-          <div class="mt-2" v-if="shopInfo.isEC && hasCustomerInfo">
-              <CustomerInfo :customer="customer" v-if="shopInfo.isEC" :phoneNumber="nationalPhoneNumber" />
+          <div class="mt-2" v-if="shopInfo && (shopInfo.isEC || orderInfo.isDelivery) && hasCustomerInfo">
+            <CustomerInfo
+              :shopInfo="shopInfo"
+              :customer="customer"
+              :phoneNumber="nationalPhoneNumber" />
           </div>
+
           <!-- Your Message to the Restaurant -->
           <template v-if="paid && hasMemo">
             <div class="bg-white rounded-lg p-4 shadow mt-4">
@@ -290,14 +294,15 @@
         <div class="mt-4 lg:mt-0">
           <!-- (Before Paid) Order Details -->
           <div v-if="just_validated">
-            <!-- For EC -->
-            <div v-if="shopInfo.isEC"
+
+            <!-- For EC and Delivery -->
+            <div v-if="shopInfo.isEC || orderInfo.isDelivery"
                  class="text-xl font-bold text-black text-opacity-30"
                  >
               {{ $t("order.ec.formtitle") }}
             </div>
             
-            <div v-if="shopInfo.isEC"
+            <div v-if="shopInfo.isEC || orderInfo.isDelivery"
                  class="bg-white rounded-lg shadow p-4 mb-4 mt-2">
               <!-- zip -->
               <div class="text-sm font-bold pb-2">
@@ -407,36 +412,61 @@
               </div>
 
               <!-- email -->
-              <div class="text-sm font-bold pb-2">
-                {{ $t("order.ec.email") }}
-                <span class="text-red-700">*</span>
-              </div>
-              <div>
-                <b-field
-                  :type="
+              <template v-if="shopInfo.isEC">
+                <div class="text-sm font-bold pb-2">
+                  {{ $t("order.ec.email") }}
+                  <span class="text-red-700">*</span>
+                </div>
+                <div>
+                  <b-field
+                    :type="
                          ecErrors['email'].length > 0 ? 'is-danger' : 'is-success'
                          "
                   >
-                <b-input
-                  class="w-full"
-                  type="text"
-                  :placeholder="$t('order.ec.email')"
-                  v-model="customerInfo.email"
-                  maxlength="30"
-                  />
-                </b-field>
+                  <b-input
+                    class="w-full"
+                    type="text"
+                    :placeholder="$t('order.ec.email')"
+                    v-model="customerInfo.email"
+                    maxlength="30"
+                    />
+                  </b-field>
+                </div>
+                <div v-if="ecErrors['email'].length > 0" class="mb-2 text-red-700 font-bold">
+                  <div v-for="(error, key) in ecErrors['email']">
+                    {{ $t(error) }}
+                  </div>
+                </div>
+              </template>
+            </div>
+
+            <!-- map for delivery -->
+            <div class="mt-4" v-if="orderInfo.isDelivery">
+              <div class="text-xl font-bold text-black text-opacity-30">
+                {{ $t("order.ec.formtitle") }}
               </div>
-              <div v-if="ecErrors['email'].length > 0" class="mb-2 text-red-700 font-bold">
-                <div v-for="(error, key) in ecErrors['email']">
+              <span v-if="ecErrors['location'].length > 0" class="text-red-700 font-bold">
+                <div v-for="(error, key) in ecErrors['location']">
                   {{ $t(error) }}
                 </div>
-              </div>
+              </span>
+              <OrderPageMap
+                  @updateHome="updateHome"
+                  :shopInfo="shopInfo"
+                  :fullAddress="fullAddress"
+                  :deliveryInfo="deliveryInfo" />
             </div>
+
             
             <!-- Time to Pickup -->
             <div v-if="!shopInfo.isEC">
               <div class="text-xl font-bold text-black text-opacity-30">
-                {{ $t("order.timeRequested") }}
+                <span v-if="orderInfo.isDelivery">
+                  {{ $t("order.deliveryTimeRequested") }}
+                </span>
+                <span v-else>
+                  {{ $t("order.timeRequested") }}
+                </span>
               </div>
 
               <div class="mt-2">
@@ -628,6 +658,8 @@ import RequireLogin from "~/components/RequireLogin";
 import FavoriteButton from "~/app/user/Restaurant/FavoriteButton";
 import CustomerInfo from "~/components/CustomerInfo";
 
+import OrderPageMap from "./OrderPageMap";
+
 import { db, firestore, functions } from "~/plugins/firebase.js";
 import { order_status, order_status_keys } from "~/plugins/constant.js";
 import { nameOfOrder } from "~/plugins/strings.js";
@@ -675,6 +707,7 @@ export default {
     NotFound,
     RequireLogin,
     CustomerInfo,
+    OrderPageMap,
     FavoriteButton
   },
   data() {
@@ -695,6 +728,7 @@ export default {
       sendSMS: true,
       paymentInfo: {},
       postageInfo: {},
+      deliveryInfo: {},
       notFound: false,
       memo: "",
       customerInfo: {},
@@ -822,15 +856,21 @@ export default {
       return formatURL(this.phoneNumber);
     },
     // for EC
+    fullAddress() {
+      return this.customerInfo ? [this.customerInfo.prefecture, this.customerInfo.address].join("") : "";
+    },
     ecErrors() {
       const err = {};
-      [
+      const attrs = [
         "zip",
         "address",
         "name",
-        "email",
         "prefectureId"
-      ].forEach(name => {
+      ]
+      if (this.shopInfo.isEC) {
+        attrs.push("email")
+      }
+      attrs.forEach(name => {
         err[name] = [];
         if (this.customerInfo[name] === undefined || this.customerInfo[name] === "") {
           err[name].push("validationError." + name + ".empty");
@@ -839,9 +879,20 @@ export default {
       if (this.customerInfo['zip'] && !this.customerInfo['zip'].match(/^((\d|[０-９]){3}(-|ー)(\d|[０-９]){4})|(\d|[０-９]){7}$/)) {
         err['zip'].push("validationError.zip.invalidZip");
       }
-      if (this.customerInfo['email'] && !isEmail(this.customerInfo['email'])) {
-        err['email'].push("validationError.email.invalidEmail");
+      if (this.shopInfo.isEC) {
+        if (this.customerInfo['email'] && !isEmail(this.customerInfo['email'])) {
+          err['email'].push("validationError.email.invalidEmail");
+        }
       }
+      if (this.orderInfo.isDelivery) {
+        console.log(this.customerInfo);
+        err['location'] = []
+        if (!this.customerInfo.location || !this.customerInfo.location.lat) {
+          err['location'].push("validationError.location.noLocation");
+        }
+      }
+      // TODO delivery validation 
+      // if delivery, check location
       return err;
     },
     hasEcError() {
@@ -864,6 +915,11 @@ export default {
     }
   },
   methods: {
+    updateHome(pos) {
+      const cust = {...this.customerInfo};
+      cust.location = pos;
+      this.customerInfo = cust;
+    },
     sendPurchase() {
       analyticsUtil.sendPurchase(
         this.orderInfo,
@@ -908,6 +964,13 @@ export default {
               db.doc(`restaurants/${this.restaurantId()}/ec/postage`)
                 .get().then((snapshot) => {
                   this.postageInfo = snapshot.data() || {};
+                });
+            }
+            // todo if support delivery
+            if (true) {
+              db.doc(`restaurants/${this.restaurantId()}/delivery/area`)
+                .get().then((snapshot) => {
+                  this.deliveryInfo = snapshot.data() || {};
                 });
             }
             //console.log("restaurant", uid, this.paymentInfo);
