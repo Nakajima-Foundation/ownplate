@@ -9,6 +9,8 @@ import { db } from "~/plugins/firebase.js";
 import { defaultHeader } from "./header";
 import { formatOption } from "~/plugins/strings.js";
 
+import { partners } from "~/plugins/constant";
+
 export default ({ app }) => {
   Vue.mixin({
     methods: {
@@ -154,6 +156,17 @@ export default ({ app }) => {
       forceArray(arr) {
         return Array.isArray(arr) ? arr : [arr];
       },
+      convOrderStateForText(orderState, orderInfo) {
+        if (orderInfo?.isEC) {
+          if (orderState === "ready_to_pickup") {
+            return "ready_to_shipping";
+          }
+          if (orderState === "transaction_complete") {
+            return "shipping_complete";
+          }
+        }
+        return orderState;
+      },
       getOrderItems(orderInfo, menuObj) {
         if (orderInfo.order && orderInfo.menuItems) {
           return Object.keys(orderInfo.order).reduce((tmp, menuId) => {
@@ -169,12 +182,29 @@ export default ({ app }) => {
                 count: numArray[numKey],
                 id: menuId,
                 options: optArray[numKey],
+                orderIndex: [menuId, numKey],
               });
             });
             return tmp;
           }, []);
         }
         return [];
+      },
+      itemOptionCheckbox2options (itemOptionCheckbox) {
+        // HACK: Dealing with a special case (probalby a bug in the menu editor)
+        if (
+          itemOptionCheckbox &&
+            itemOptionCheckbox.length === 1 &&
+            !itemOptionCheckbox[0]
+        ) {
+          console.log("Special case: itemOptionCheckbox===['']");
+          return [];
+        }
+        return (itemOptionCheckbox || []).map(option => {
+          return option.split(",").map(choice => {
+            return choice.trim();
+          });
+        });
       },
       taxRate(shopInfo, item) {
         if (shopInfo.inclusiveTax) {
@@ -194,6 +224,14 @@ export default ({ app }) => {
         const m = this.$store.getters.stripeRegion.multiple;
         return Math.round( price * m) / m;
       },
+      getPartner(shopOwner) {
+        return ((shopOwner||{}).partners || []).map((p) => {
+          const match = partners.find((a) => {
+            return a.id === p
+          });
+          return match
+       });
+      }, 
     },
     computed: {
       defaultTitle() {
@@ -228,10 +266,14 @@ export default ({ app }) => {
         // for hack
         console.log(this.$i18n.locale);
         // return this.$i18n.locale === "ja";
-        return this.$i18n.locale !== "en";
+	      // TODO: why not ja ?
+        return this.$i18n.locale !== "en" && this.$i18n.locale !== "fr";
       },
       serviceKey() {
         return this.isJapan ? "omochikaeri" : "ownPlate";
+      },
+      regionMultiple() {
+        return this.$store.getters.stripeRegion.multiple;
       },
       // for user agent detect
       isIOS() {

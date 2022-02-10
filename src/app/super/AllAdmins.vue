@@ -5,7 +5,7 @@
     <table>
       <tr>
         <th>Name</th>
-        <th>e-mail</th> 
+        <th>e-mail</th>
         <th>Created</th>
         <th>A</th>
         <th>O</th>
@@ -45,11 +45,20 @@
 import BackButton from "~/components/BackButton";
 import { db } from "~/plugins/firebase.js";
 import { stripeVerify } from "~/plugins/stripe.js";
+
+import superMixin from "./SuperMixin";
+
 const QUERY_LIMIT = 50;
 
 export default {
+  mixins: [superMixin],
   components: {
     BackButton
+  },
+  head() {
+    return {
+      title: [this.defaultTitle, "Super All Admin"].join(" / ")
+    }
   },
   data() {
     return {
@@ -58,6 +67,9 @@ export default {
       last: null,
       detacher: null
     };
+  },
+  async mounted() {
+    this.superPermissionCheck();
   },
   created() {
     this.updateQuery();

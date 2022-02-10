@@ -150,7 +150,7 @@
             <div class="mt-6 text-center">
               <b-button
                 class="b-reset-tw"
-                v-if="isValidTransition('order_canceled')"
+                v-if="isValidTransition('order_canceled') && (paymentIsNotCompleted || !hasStripe)"
                 @click="openCancel()"
               >
                 <div
@@ -245,7 +245,7 @@
             </b-modal>
 
             <!-- Pickup Time -->
-            <div class="mt-6 text-center">
+            <div class="mt-2 text-center">
               <div class="text-xs font-bold">
                 {{ $t("order.timeRequested") }}
               </div>
@@ -276,9 +276,11 @@
                 >
               </b-select>
             </div>
+          </div>
 
+          <div class="bg-white shadow rounded-lg p-4 mt-2">
             <!-- Phone Number -->
-            <div v-if="orderInfo.phoneNumber" class="mt-4 text-center">
+            <div v-if="orderInfo.phoneNumber" class="mt-2 text-center">
               <div class="text-xs font-bold">
                 {{ $t("sms.phonenumber") }}
               </div>
@@ -290,15 +292,45 @@
                 </div>
                 <div class="text-base">{{ orderInfo.name }}</div>
               </div>
+              <div>
+                {{ $t("order.orderTimes") }}: {{ $tc("order.orderTimesUnit", userLog.counter || 0) }} /
+                {{ $t("order.cancelTimes") }}: {{ $tc("order.cancelTimesUnit", userLog.cancelCounter || 0) }}
+              </div>
+              <div>
+                <div v-if="isWarningOrder" class="bg-red-700 bg-opacity-10 rounded-lg p-4 text-center  inline-flex ">
+                  <div class="text-base font-bold text-red-700">
+                    {{ $t("order.continuousOrder") }}<br/>
+                    {{ $t("order.lastOrder") }}: {{userLog.lastOrder ? moment(userLog.lastOrder.toDate()).format("YYYY/MM/DD HH:mm") : "--"}}<br />
+                    {{ $t("order.thisOrder") }}: {{orderInfo.timePlaced ? moment(orderInfo.timePlaced.toDate()).format("YYYY/MM/DD HH:mm") : "--"}}
+                  </div>
+                </div>
+                <div v-else>
+                  {{ $t("order.lastOrder") }}: {{userLog.lastOrder ? moment(userLog.lastOrder.toDate()).format("YYYY/MM/DD HH:mm") : "--"}}
+                </div>
+              </div>
             </div>
+            <div class="mt-6 text-center">
+              <nuxt-link :to="'/admin/restaurants/' + restaurantId() + '/userhistory/' + orderInfo.uid + '?orderId=' + orderId">
+                <div
+                  class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
+                  >
+                  <i class="material-icons text-lg text-op-teal mr-2">face</i>
+                  <span class="text-sm font-bold text-op-teal">{{
+                    $t("order.customerOrderHistory")
+                    }}</span>
+                </div>
+              </nuxt-link>
+            </div>
+          </div>
 
+          <div class="bg-white shadow rounded-lg p-4 mt-2">
             <!-- Order Status -->
             <div>
               <div
                 v-for="orderState in orderStates"
                 :key="orderState"
                 class="mt-4 text-center"
-              >
+                >
                 <b-button
                   :loading="updating === orderState"
                   :disabled="!isValidTransition(orderState)"
@@ -311,7 +343,7 @@
                   >
                     <div>
                       <div class="text-base font-extrabold">
-                        {{ $t("order.status." + orderState) }}
+                        {{ $t("order.status." + convOrderStateForText(orderState, orderInfo)) }}
                       </div>
                       <div class="text-xs">
                         {{ timeOfEvents[orderState] }}
@@ -321,6 +353,91 @@
                 </b-button>
               </div>
             </div>
+
+            <!-- Payment Cancel Button -->
+            <div class="mt-6 text-center">
+              <b-button
+                v-if="paymentIsNotCompleted"
+                @click="openPaymentCancel"
+                class="b-reset-tw"
+                >
+                <div
+                  class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5"
+                >
+                  <i class="material-icons text-lg mr-2 text-red-700">credit_card</i>
+                  <div class="text-sm font-bold text-red-700">
+                    {{ $t("admin.order.paymentCancelButton") }}
+                  </div>
+                </div>
+              </b-button>
+            </div>
+
+            <!-- Payment Cancel Popup-->
+            <b-modal :active.sync="paymentCancelPopup" :width="488" scroll="keep">
+              <div class="mx-2 my-6 p-6 bg-white shadow-lg rounded-lg">
+                <!-- Title -->
+                <div class="text-xl font-bold text-black text-opacity-40">
+                  {{ $t("admin.order.paymentCancelTitle") }}
+                </div>
+
+                <!-- Message -->
+                <div class="mt-6 text-base">
+                  {{ $t("admin.order.paymentCancelMessage") }}
+                </div>
+
+                <!-- Call -->
+                <div v-if="orderInfo.phoneNumber" class="mt-6 text-center">
+                  <div>
+                    <a
+                      :href="nationalPhoneURI"
+                      class="inline-flex justify-center items-center h-12 px-6 rounded-full border-2 border-op-teal"
+                    >
+                      <div class="text-base font-bold text-op-teal">
+                        {{ nationalPhoneNumber }}
+                      </div>
+                    </a>
+                  </div>
+                  <div class="font-bold mt-2">
+                    {{ orderInfo.name }}
+                  </div>
+                </div>
+
+                <!-- Cancel -->
+                <div class="mt-4 text-center">
+                  <b-button
+                    :loading="updating === 'payment_canceled'"
+                    @click="handlePaymentCancel"
+                    class="b-reset-tw"
+                  >
+                    <div
+                      class="inline-flex justify-center items-center h-12 px-6 rounded-full bg-red-700"
+                    >
+                      <div class="text-base font-bold text-white">
+                        {{ $t("admin.order.paymentCancel") }}
+                      </div>
+                    </div>
+                  </b-button>
+                  <div class="mt-2 text-sm font-bold text-red-700">
+                    {{ $t("admin.order.paymentCancelConfirm") }}
+                  </div>
+                </div>
+
+                <!-- Close -->
+                <div class="mt-6 text-center">
+                  <a
+                    @click="closePaymentCancel()"
+                    class="inline-flex justify-center items-center h-12 rounded-full px-6 bg-black bg-opacity-5"
+                    style="min-width: 8rem;"
+                  >
+                    <div class="text-base font-bold text-black text-opacity-60">
+                      {{ $t("menu.close") }}
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </b-modal>
+
+
           </div>
         </div>
 
@@ -349,9 +466,64 @@
 
             <!-- Order Details -->
             <order-info
+              :shopInfo="shopInfo ||{}"
               :orderItems="this.orderItems"
-              :orderInfo="this.orderInfo || {}"
-            ></order-info>
+              :orderInfo="isOrderChange ? editable_order_info : this.orderInfo || {}"
+              :editable="isOrderChange"
+              :editedAvailableOrders="editedAvailableOrders"
+              @input="updateEnable"
+              ></order-info>
+            <div v-if="editedAvailableOrders.length > 1">
+              <div class="bg-white rounded-lg shadow p-4 text-center" v-if="orderInfo.orderUpdatedAt">
+                <div>{{ $t("admin.order.changeOrderDetail") }}</div>
+                {{timeStampToText(orderInfo.orderUpdatedAt)}} {{ $t("admin.order.alreadyChanged") }}
+              </div>
+
+              <div class="bg-white rounded-lg shadow p-4 text-center" v-if="availableOrderChange">
+                <div>{{ $t("admin.order.changeOrderDetail") }}</div>
+                <div class="mt-4">
+                  <b-button
+                    @click="toggleIsOrderChange"
+                    class="b-reset-tw"
+                    >
+                    <div
+                      class="inline-flex justify-center items-center h-12 px-6 rounded-full bg-red-700"
+                      >
+                      <div class="text-base font-bold text-white">
+                        {{ isOrderChange ? $t("admin.order.cancelOrderChange") : $t("admin.order.willOrderChange") }}
+                      </div>
+                    </div>
+                  </b-button>
+                </div>
+                <div class="mt-4">
+                  <b-button
+                    @click="handleOrderChange"
+
+                    :loading="changing"
+                    :disabled="!availableChangeButton"
+
+                    class="b-reset-tw"
+                    v-if="isOrderChange"
+                    >
+                    <div
+                      class="inline-flex justify-center items-center h-12 px-6 rounded-full bg-red-700"
+                      >
+                      <div class="text-base font-bold text-white">
+                        {{ $t("admin.order.confirmOrderChange") }}
+                      </div>
+                    </div>
+                  </b-button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Customer info -->
+            <CustomerInfo
+              :shopInfo="shopInfo"
+              :customer="customer"
+              :phoneNumber="nationalPhoneNumber"
+              v-if="shopInfo && (shopInfo.isEC || orderInfo.isDelivery)"
+              />
           </div>
         </div>
       </div>
@@ -374,15 +546,20 @@ import {
   formatNational,
   formatURL
 } from "~/plugins/phoneutil.js";
-import { stripeConfirmIntent, stripeCancelIntent } from "~/plugins/stripe.js";
+import { stripeConfirmIntent, stripeCancelIntent, stripePaymentCancelIntent } from "~/plugins/stripe.js";
 import moment from "moment-timezone";
 import NotFound from "~/components/NotFound";
 import { ownPlateConfig } from "~/config/project";
 import NotificationIndex from "./Notifications/Index";
 import { formatOption } from "~/plugins/strings.js";
 import OrderInfo from "~/app/user/Order/OrderInfo";
+import CustomerInfo from "~/components/CustomerInfo";
+
+import { costCal } from "~/plugins/commonUtils";
 
 import * as analyticsUtil from "~/plugins/analytics";
+
+const timezone = moment.tz.guess();
 
 export default {
   components: {
@@ -390,21 +567,34 @@ export default {
     OrderedItem,
     NotificationIndex,
     OrderInfo,
+    CustomerInfo,
     NotFound
+  },
+  head() {
+    return {
+      title: this.shopInfo.restaurantName ?
+        ["Admin Order Info", this.shopInfo.restaurantName , this.defaultTitle].join(" / ") : this.defaultTitle
+    }
   },
 
   data() {
     return {
       updating: "",
+      changing: false,
       shopInfo: {},
       menuObj: {},
       orderInfo: {},
       canceling: false,
       detacher: [],
       cancelPopup: false,
+      paymentCancelPopup: false,
+      postageInfo: {},
       notFound: false,
       timeOffset: 0,
-      shopOwner: null
+      shopOwner: null,
+      userLog: {},
+      isOrderChange: false,
+      editedAvailableOrders: [],
     };
   },
   // if user is not signined, render login
@@ -424,6 +614,12 @@ export default {
             const restaurant_data = restaurant.data();
             if (restaurant_data.uid === this.ownerUid) {
               this.shopInfo = restaurant_data;
+              if (this.shopInfo.isEC) {
+                db.doc(`restaurants/${this.restaurantId()}/ec/postage`)
+                  .get().then((snapshot) => {
+                    this.postageInfo = snapshot.data() || {};
+                  });
+              }
               return;
             }
           }
@@ -465,7 +661,41 @@ export default {
       detacher();
     });
   },
+  watch: {
+    orderInfo() {
+      db.doc(`restaurants/${this.restaurantId()}/userLog/${this.orderInfo.uid}`).get().then((res) => {
+        if (res.exists) {
+          this.userLog = res.data();
+        }
+      });
+    },
+    orderItems() {
+      Object.keys(this.orderItems).map(key => {
+        this.editedAvailableOrders[key] = true;
+      });
+    },
+  },
   computed: {
+    orderInterval() {
+      if (this.orderInfo.timePlaced && this.userLog.lastOrder) {
+        // console.log(this.orderInfo.timePlaced.toDate(),   this.userLog.lastOrder.toDate());
+        const intervalHour = (this.orderInfo.timePlaced -  this.userLog.lastOrder) / 3600
+        return intervalHour;
+      }
+      return -1000000;
+    },
+    isWarningOrder() {
+      if (this.orderInterval === 0) {
+        return false;
+      }
+      if (this.orderInterval < 4 && this.orderInterval > -4) {
+        return true;
+      }
+      return false;
+      //(this.orderInterval === 0) {
+      // (this.orderInterval < 0) {
+      // (this.orderInterval >= 6)
+    },
     ownerUid() {
       return this.$store.getters.isSubAccount ? this.$store.getters.parentId : this.$store.getters.uidAdmin;
     },
@@ -536,6 +766,12 @@ export default {
     hasStripe() {
       return this.orderInfo.payment && this.orderInfo.payment.stripe;
     },
+    paymentIsNotCompleted() {
+      return (
+        // this.hasStripe && this.orderInfo.status < order_status.ready_to_pickup
+        this.hasStripe && this.orderInfo.payment.stripe === "pending"
+      );
+    },
     phoneNumber() {
       return (
         this.orderInfo &&
@@ -544,7 +780,7 @@ export default {
       );
     },
     nationalPhoneNumber() {
-      return formatNational(this.phoneNumber);
+      return (this.phoneNumber) ? formatNational(this.phoneNumber): "";
     },
     nationalPhoneURI() {
       return formatURL(this.phoneNumber);
@@ -580,13 +816,68 @@ export default {
     order_status() {
       return order_status;
     },
-    paymentIsNotCompleted() {
-      return (
-        this.hasStripe && this.orderInfo.status < order_status.ready_to_pickup
-      );
-    }
+    // for editable order
+    edited_available_order_info() {
+      const ret = []
+      Object.keys(this.editedAvailableOrders).forEach((key) => {
+        if (this.editedAvailableOrders[key]) {
+          const indexes  = this.orderItems[key]?.orderIndex;
+          if (indexes) {
+            ret.push({menuId: indexes[0], index: Number(indexes[1])});
+          }
+        }
+      });
+      return ret;
+    },
+    editable_order_info() {
+      const menuObj = this.orderInfo.menuItems;
+      const multiple = this.regionMultiple;
+      const ret = this.edited_available_order_info.reduce((tmp, info) => {
+        const { menuId, index } = info;
+        const menu = menuObj[menuId];
+        if (menu.tax === "alcohol") {
+          tmp.alcohol_sub_total = tmp.alcohol_sub_total + this.orderInfo.prices[menuId][index];
+        } else {
+          tmp.food_sub_total = tmp.food_sub_total + this.orderInfo.prices[menuId][index];
+        };
+        return tmp;
+      }, {sub_total: 0, tax: 0, food_sub_total: 0, alcohol_sub_total: 0});
+      ret.sub_total = ret.food_sub_total + ret.alcohol_sub_total;
+
+      const { alcoholTax, foodTax, inclusiveTax } = this.shopInfo;
+      if (inclusiveTax) {
+        ret.food_tax = Math.round((ret.food_sub_total * (1 - 1 / (1 + foodTax / 100))) * multiple) / multiple;
+        ret.alcohol_tax = Math.round((ret.alcohol_sub_total * (1 - 1 / (1 + alcoholTax / 100))) * multiple) / multiple;
+        ret.tax = ret.food_tax + ret.alcohol_tax;
+        ret.total = ret.sub_total;
+      } else {
+        ret.food_tax = Math.round(ret.food_sub_total * foodTax / 100 * multiple) / multiple;
+        ret.alcohol_tax = Math.round(ret.alcohol_sub_total * alcoholTax / 100 * multiple) / multiple;
+        ret.tax = ret.food_tax + ret.alcohol_tax;
+        ret.total = ret.sub_total + ret.tax;
+      }
+      // const sh
+      const shippingCost = costCal(this.postageInfo, this.orderInfo?.customerInfo?.prefectureId, ret.total);
+      return Object.assign({}, this.orderInfo, ret, {shippingCost});
+    },
+    availableOrderChange() {
+      return this.orderInfo && this.orderInfo.status === order_status.order_placed &&
+        this.isNull(this.orderInfo.orderUpdatedAt);
+    },
+    availableChangeButton() {
+      return (this.edited_available_order_info.length !== this.editedAvailableOrders.length) && (this.edited_available_order_info.length > 0)
+    },
+    customer() {
+      return this.orderInfo.customerInfo || {};
+    },
   },
   methods: {
+    updateEnable(value) {
+      this.$set(this.editedAvailableOrders, value[0],  value[1]);
+    },
+    toggleIsOrderChange() {
+      this.isOrderChange = !this.isOrderChange;
+    },
     timeStampToText(timestamp) {
       if (timestamp) {
         return this.$d(timestamp.toDate(), "long");
@@ -595,46 +886,62 @@ export default {
     },
     isValidTransition(newStatus) {
       const newStatusValue = order_status[newStatus];
+      return this.possibleTransitions[newStatusValue];
+      /*
       return (
         this.possibleTransitions[newStatusValue] ||
         (newStatusValue === this.orderInfo.status &&
           newStatus !== "order_canceled")
       );
+      */
+    },
+    getEestimateTime() {
+      const time = this.orderInfo.timePlaced.toDate().getTime();
+      const date = new Date(time + this.timeOffset * 60000);
+      return firestore.Timestamp.fromDate(date);
     },
     async handleStripe() {
       //console.log("handleComplete with Stripe", orderId);
       try {
-        this.updating = "ready_to_pickup";
-        const { data } = await stripeConfirmIntent({
+        // this.updating = "ready_to_pickup";
+        this.$store.commit("setLoading", true);
+        const params = {
+          timezone,
           restaurantId: this.restaurantId() + this.forcedError("confirm"),
           orderId: this.orderId
-        });
-        console.log("confirm", data);
+        };
+        if (this.timeOffset > 0) {
+          params.timeEstimated = this.getEestimateTime();
+        }
+        const { data } = await stripeConfirmIntent(params);
+        // console.log("confirm", data);
         this.$router.push(this.parentUrl);
       } catch (error) {
         console.error(error.message, error.details);
         this.$store.commit("setErrorMessage", {
           code: "stripe.confirm",
-          error
+          error,
+          message2: "errorPage.code.stripe.confirm2",
         });
       } finally {
+        this.$store.commit("setLoading", false);
         this.updating = "";
       }
     },
     async handleChangeStatus(statusKey) {
-      const timezone = moment.tz.guess();
       const newStatus = order_status[statusKey];
       if (newStatus === this.orderInfo.status) {
         console.log("same status - no need to process");
         return;
       }
-      if (newStatus === order_status.ready_to_pickup && this.hasStripe) {
+      this.updating = statusKey;
+      if ((newStatus === order_status.ready_to_pickup || newStatus === order_status.order_accepted) && this.paymentIsNotCompleted) {
         this.handleStripe();
         return;
       }
       const orderUpdate = functions.httpsCallable("orderUpdate");
-      this.updating = statusKey;
       try {
+        this.$store.commit("setLoading", true);
         const params = {
           restaurantId: this.restaurantId() + this.forcedError("update"),
           orderId: this.orderId,
@@ -642,12 +949,10 @@ export default {
           timezone
         };
         if (this.timeOffset > 0) {
-          const time = this.orderInfo.timePlaced.toDate().getTime();
-          const date = new Date(time + this.timeOffset * 60000);
-          params.timeEstimated = firestore.Timestamp.fromDate(date);
+          params.timeEstimated = this.getEestimateTime();
         }
         const { data } = await orderUpdate(params);
-        console.log("update", data);
+        // console.log("update", data);
         this.$router.push(this.parentUrl);
       } catch (error) {
         console.error(error.message, error.details);
@@ -656,6 +961,7 @@ export default {
           error
         });
       } finally {
+        this.$store.commit("setLoading", false);
         this.updating = "";
       }
     },
@@ -666,7 +972,7 @@ export default {
         this.shopInfo,
         this.restaurantId()
       );
-      console.log(this.orderItems);
+      // console.log(this.orderItems);
     },
     async handleCancel() {
       console.log("handleCancel");
@@ -678,12 +984,66 @@ export default {
           orderId: this.orderId
         });
         this.sendRedunded();
-        console.log("cancel", data);
+        // console.log("cancel", data);
         this.$router.push(this.parentUrl);
       } catch (error) {
         console.error(error.message, error.details);
         this.$store.commit("setErrorMessage", {
           code: "order.cancel",
+          error
+        });
+      } finally {
+        this.updating = "";
+      }
+    },
+    async handleOrderChange() {
+      this.$store.commit("setAlert", {
+        title: "admin.order.confirmOrderChange",
+        callback: async () => {
+          const orderChange = functions.httpsCallable("orderChange");
+          try {
+            this.changing = true;
+            this.$store.commit("setLoading", true);
+            const params = {
+              restaurantId: this.restaurantId() + this.forcedError("update"),
+              orderId: this.orderId,
+              newOrder: this.edited_available_order_info,
+              timezone,
+            };
+
+            const { data } = await orderChange(params);
+            this.isOrderChange = false;
+
+            // console.log("update", data);
+          } catch (error) {
+            console.error(error.message, error.details);
+            this.$store.commit("setErrorMessage", {
+              code: "order.update",
+              error
+            });
+          } finally {
+            this.$store.commit("setLoading", false);
+            this.changing = false;
+          }
+        }
+      });
+    },
+    async handlePaymentCancel() {
+      console.log("handlePaymentCancel");
+
+      try {
+        this.updating = "payment_canceled";
+        const { data } = await stripePaymentCancelIntent({
+          restaurantId: this.restaurantId() + this.forcedError("cancel"),
+          orderId: this.orderId
+        });
+        // this.sendRedunded();
+        console.log("paymentCancel", data);
+        this.$router.push(this.parentUrl);
+      } catch (error) {
+        console.error(error.message, error.details);
+        this.$store.commit("setErrorMessage", {
+          code: "stripe.cancel",
           error
         });
       } finally {
@@ -701,6 +1061,14 @@ export default {
     },
     closeCancel() {
       this.cancelPopup = false;
+    },
+    openPaymentCancel() {
+      console.log("openPaymentCancel");
+      this.paymentCancelPopup = true;
+    },
+    closePaymentCancel() {
+      console.log("closePaymentCancel");
+      this.paymentCancelPopup = false;
     }
   }
 };

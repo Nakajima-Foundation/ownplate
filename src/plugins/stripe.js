@@ -15,6 +15,8 @@ export const stripeConfirmIntent
   = functions.httpsCallable("stripeConfirmIntent");
 export const stripeCancelIntent
   = functions.httpsCallable("stripeCancelIntent");
+export const stripePaymentCancelIntent
+  = functions.httpsCallable("stripePaymentCancelIntent");
 export const stripeConnect = functions.httpsCallable("stripeConnect");
 export const stripeDisconnect = functions.httpsCallable("stripeDisconnect");
 export const stripeVerify = functions.httpsCallable("stripeVerify");

@@ -53,6 +53,7 @@
 import { db } from "~/plugins/firebase.js";
 import { RestaurantHeader } from "~/plugins/header.js";
 import { JPPrefecture, USStates } from "~/plugins/constant";
+import { restaurant2AreaObj, sortRestaurantObj } from "../RestaurantUtils";
 
 export default {
   components: {},
@@ -77,21 +78,10 @@ export default {
         .where("deletedFlag", "==", false)
         .where("onTheList", "==", true)
         .get();
-      this.restaurantsObj = (res.docs || []).reduce((tmp, doc) => {
-        const data = doc.data();
-        data.id = doc.id;
-        if (!tmp[data.state]) {
-          tmp[data.state] = [];
-        }
-        tmp[data.state].push(data);
-        return tmp;
-      }, {});
-      Object.keys(this.restaurantsObj).map((key) => {
-        this.restaurantsObj[key].sort((a, b) => {
-          return a.restaurantName > b.restaurantName ? 1 : -1;
-        })
-      });
-      // console.log(this.restaurants.length, this.restaurants);
+      const restaurants = res.docs || [];
+      this.restaurantsObj = restaurant2AreaObj(restaurants);
+      sortRestaurantObj(this.restaurantsObj);
+
     } catch (error) {
       console.log(error);
     }

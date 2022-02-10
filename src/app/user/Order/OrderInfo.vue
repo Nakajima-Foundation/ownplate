@@ -2,8 +2,8 @@
   <div class="bg-white rounded-lg shadow p-4">
     <!-- Order Items -->
     <div class="grid grid-cols-1 space-y-4">
-      <template v-for="orderItem in orderItems">
-        <order-item :orderItem="orderItem" :key="orderItem.key"></order-item>
+      <template v-for="(orderItem, key) in orderItems">
+        <order-item :orderItem="orderItem" :key="orderItem.key" :editable="editable" :available="(editedAvailableOrders||{})[key]" @input="updateAvailable" :mkey="key"></order-item>
       </template>
     </div>
 
@@ -44,6 +44,24 @@
         </div>
       </div>
 
+      <!-- Postage for EC or delivery -->
+      <div v-if="shopInfo.isEC"
+           class="border-t-2 border-solid border-black border-opacity-10 mt-4 pt-4">
+        <div class="flex">
+          <div class="flex-1">
+            <div class="text-base">
+              {{ $t("order.shippingCost") }}
+            </div>
+          </div>
+          <div class="text-right">
+            {{ orderInfo.shoppingCost }}
+            <div class="text-base">
+              {{ $n(actualShippingCost, "currency") }}
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Total -->
       <div v-if="false && regionTip.choices.length > 0" class="flex mt-2">
         <div class="flex-1">
@@ -60,7 +78,7 @@
 
       <!-- Tip -->
       <div
-        v-if="regionTip.choices.length > 0 && (isTipEditable || tip > 0)"
+        v-if="regionTip.choices.length > 0 && (isTipEditable || tip > 0) && enableTip"
         class="border-t-2 border-solid border-black border-opacity-10 mt-4 pt-4"
       >
         <div class="flex">
@@ -76,7 +94,7 @@
       </div>
 
       <!-- Tip Buttons -->
-      <div v-if="regionTip.choices.length > 0" class="mt-2">
+      <div v-if="regionTip.choices.length > 0 && enableTip" class="mt-2">
         <div v-if="isTipEditable">
           <div>
             <b-input
@@ -126,8 +144,9 @@
             </div>
           </div>
           <div class="text-right">
+
             <div class="text-xl font-bold text-green-600">
-              {{ $n(orderInfo.total + Number(tip), "currency") }}
+              {{ $n(orderInfo.total + Number(tip) + Number(actualShippingCost), "currency") }}
             </div>
           </div>
         </div>
@@ -151,7 +170,23 @@ export default {
     orderInfo: {
       type: Object,
       required: true
-    }
+    },
+    shopInfo: {
+      type: Object,
+      required: true
+    },
+    editable: {
+      type: Boolean,
+      required: false,
+    },
+    editedAvailableOrders: {
+      type: Array,
+      required: false
+    },
+    shippingCost: {
+      type: Number,
+      required: false
+    },
   },
   data() {
     return {
@@ -175,6 +210,9 @@ export default {
     OrderItem
   },
   computed: {
+    actualShippingCost() {
+      return this.orderInfo.shippingCost ? this.orderInfo.shippingCost : (this.shippingCost || 0)
+    },
     regionTip() {
       return this.$store.getters.stripeRegion.tip;
     },
@@ -187,11 +225,18 @@ export default {
     isTipEditable() {
       return this.orderInfo.status === order_status.validation_ok;
     },
+    enableTip() {
+      return !this.shopInfo.isEC;
+    },
     maxTip() {
       return this.calcTip(this.regionTip.max);
     }
   },
   methods: {
+    updateAvailable(value) {
+      this.$emit("input", value)
+    },
+
     calcTip(ratio) {
       const m = this.$store.getters.stripeRegion.multiple;
       const value = Math.round((this.orderInfo.total * ratio * m) / 100) / m;

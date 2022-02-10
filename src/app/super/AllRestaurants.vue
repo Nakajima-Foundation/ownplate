@@ -37,7 +37,48 @@
         </td>
       </tr>
     </table>
-    <button @click="nextLoad">next</button>
+    <hr />
+    <b-button
+      class="b-reset op-button-pill h-9 rounded-full bg-form m-t-16"
+      @click="nextLoad"
+      >
+      <span class="p-l-16 p-r-16">
+        <span class="c-primary t-button">
+          Next
+        </span>
+      </span>
+    </b-button>
+    <br/>
+
+    <b-button
+      class="b-reset op-button-pill h-9 rounded-full bg-form m-t-16"
+      @click="allLoad"
+      >
+      <span class="p-l-16 p-r-16">
+        <span class="c-primary t-button">
+          All
+        </span>
+      </span>
+    </b-button>
+    <br />
+
+    <download-csv
+      :data="tableData"
+      :fields="fields"
+      :fieldNames="fieldNames"
+      :fileName="fileName"
+      >
+      <b-button
+        class="b-reset op-button-pill h-9 rounded-full bg-form m-t-16"
+        >
+        <span class="p-l-16 p-r-16">
+          <i class="material-icons c-primary s-18 m-r-8">save_alt</i>
+          <span class="c-primary t-button">
+            Download
+          </span>
+        </span>
+      </b-button>
+    </download-csv>
   </section>
 </template>
 
@@ -48,11 +89,18 @@ import BackButton from "~/components/BackButton";
 import { db } from "~/plugins/firebase.js";
 
 import superMixin from "./SuperMixin";
+import DownloadCsv from "~/components/DownloadCSV";
 
 export default {
   mixins: [superMixin],
+  head() {
+    return {
+      title: [this.defaultTitle, "Super All Restaurants"].join(" / ")
+    }
+  },
   components: {
-    BackButton
+    BackButton,
+    DownloadCsv,
   },
   data() {
     return {
@@ -66,6 +114,42 @@ export default {
   },
   async created() {
     await this.loadData();
+  },
+  computed: {
+    fileName() {
+      return "restaurant"
+    },
+    fields() {
+      return [
+        "date",
+        "restaurantName",
+        "state",
+        "onTheList",
+        "publicFlag",
+        "deletedFlag",
+        "menu",
+        "uid",
+      ];
+    },
+    fieldNames() {
+      return this.fields.map(field => {
+        return this.$t(`restaurantCsv.${field}`);
+      });
+    },
+    tableData() {
+      return this.restaurants.map((restaurant) => {
+        return {
+          date: this.moment(restaurant.createdAt.toDate()).format("YYYY/MM/DD"),
+          restaurantName: restaurant.restaurantName,
+          state: restaurant.state,
+          onTheList: restaurant.onTheList ? 1 : 0,
+          publicFlag: restaurant.publicFlag ? 1 : 0,
+          deletedFlag: restaurant.deletedFlag? 1 : 0,
+          menu: (restaurant.menuLists||[]).length || "-",
+          uid: restaurant.uid,
+        };
+      });
+    },
   },
   methods: {
     async loadData() {
@@ -94,6 +178,11 @@ export default {
     async nextLoad() {
       if (this.last) {
         this.loadData();
+      }
+    },
+    async allLoad() {
+      while (this.last) {
+        await this.loadData();
       }
     },
   }

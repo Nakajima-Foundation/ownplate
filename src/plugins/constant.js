@@ -35,6 +35,13 @@ export const possible_transitions = {
   },
 };
 
+export const next_transitions = {
+  [order_status.order_placed]: order_status.order_accepted,
+  [order_status.order_accepted]: order_status.ready_to_pickup,
+  [order_status.ready_to_pickup]: order_status.transaction_complete,
+  [order_status.transaction_complete]: order_status.transaction_hide,
+};
+
 export const order_error = {
   validation_error: 100,
   order_canceled_by_customer: 200,
@@ -319,6 +326,7 @@ export const regionalSettings = {
     languages: {
       ja: "日本語",
       en: "English (US)",
+      fr: "French",
     },
     covid19trace: true,
     hashTag: "omochikaeri",
@@ -393,4 +401,16 @@ export const soundFiles = [
   }
 ];
 
-export const twiml_neworder = '<Response><Say language="ja-jp">こんにちは。わたしは、おもちかえりどっとこむです。あたらしいオーダーが入りました。かくにんをよろしくおねがいいたします。</Say></Response>';
+
+export const partners = [{
+  id: "singularitysociety",
+  name: "シンギュラリティ・ソサイエティ",
+  logo: "singularitysociety.png",
+}, {
+  id: "legssystem",
+  name: "【おもちかえり.com × LEGSsystem】",
+  logo: "legssystem.png",
+  ask: true,
+}];
+
+export const twiml_neworder = '<Response><Say language="ja-jp">こんにちは。わたしは、おもちかえりどっとこむです。あたらしいオーダーが入りました。かくにんをよろしくおねがいいたします。おもちかえりどっとこむでした。</Say></Response>';

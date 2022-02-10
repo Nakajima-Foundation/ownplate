@@ -1,5 +1,6 @@
 <template>
   <div class="flex space-x-2">
+    <b-checkbox v-if="editable" :value="available" @input="input" />
     <div>
       <div
         class="inline-flex justify-center items-center h-9 w-12 bg-blue-500 bg-opacity-10 rounded flex-shrink-0"
@@ -20,20 +21,41 @@
 
     <div class="flex-1">
       <div class="text-base font-bold">
-        {{ item.itemName }}
+        <s v-if="editable && !available">
+            {{ item.itemName }}
+        </s>
+        <span v-else>
+            {{ item.itemName }}
+        </span>
         <span v-if="isAdmin && item.itemAliasesName">
-          / {{ item.itemAliasesName }}
+          <s v-if="editable && !available">
+            / {{ item.itemAliasesName }}
+          </s>
+          <span v-else>
+            / {{ item.itemAliasesName }}
+          </span>
         </span>
       </div>
       <div v-if="specialRequest" class="text-xs font-bold mt-1">
-        {{ specialRequest }}
+        <s v-if="editable && !available">
+          {{ specialRequest }}
+        </s>
+        <span v-else>
+          {{ specialRequest }}
+        </span>
       </div>
     </div>
 
     <div class="text-right flex-shrink-0">
-      <span class="text-base font-bold text-black text-opacity-30">{{
-        $n(totalPrice, "currency")
-      }}</span>
+
+      <span class="text-base font-bold text-black text-opacity-30">
+        <s v-if="editable && !available">
+          {{ $n(totalPrice, "currency") }}
+        </s>
+        <span v-else>
+          {{ $n(totalPrice, "currency") }}
+        </span>
+      </span>
     </div>
   </div>
 </template>
@@ -48,13 +70,19 @@ export default {
     orderItem: {
       type: Object,
       required: true
-    }
-  },
-  data() {
-    return {
-      counter: 0,
-      openMenuFlag: false
-    };
+    },
+    editable: {
+      type: Boolean,
+      required: false,
+    },
+    available: {
+      type: Boolean,
+      required: false,
+    },
+    mkey: {
+      type: Number,
+      required: true
+    },
   },
   computed: {
     item() {
@@ -88,9 +116,12 @@ export default {
     }
   },
   methods: {
+    input(value) {
+      this.$emit("input", [this.mkey, value])
+    },
     displayOption(option) {
       return formatOption(option, price => this.$n(price, "currency"));
-    }
+    },
   }
 };
 </script>

@@ -37,19 +37,48 @@
               {{ status.key ? $t("order.status." + status.key) : "----" }}
             </option>
           </b-select>
+          <!-- button -->
+          <div>
+            <div class="inline-flex m-t-24">
+              <div class="flex">
+                <b-select v-model="monthValue">
+                  <option
+                    v-for="(month, k) in months"
+                    :value="month"
+                    :key="k"
+                  >
+                  {{ month }}
+                </option>
+              </b-select>
+            </div>
+            <div class="flex">
+              <b-button @click="LoadTillMonth">Load</b-button>
+              {{isLoading ? "Loading..." : ""}}
+            </div>
+            </div>
+          </div>
+
           <!-- Orders -->
           <div class="mx-6 mt-6 grid grid-cols-1 gap-2 lg:grid-cols-3 xl:grid-cols-4">
-            <ordered-info
+            <div
               v-for="order in filteredOrders"
               :key="order.id"
-              :isSuperView="true"
-              @selected="orderSelected($event)"
-              :order="order"
-            />
+              >
+              <ordered-info
+                :isSuperView="true"
+                @selected="orderSelected($event)"
+                :order="order"
+                />
+              <router-link :to="`/s/restaurants/${order.restaurantId}`" >
+                {{order.restaurant.restaurantName}}
+              </router-link>
+            </div>
           </div>
           <div>
             <b-button @click="nextLoad">more</b-button>
           </div>
+          
+            
           <download-csv
             :data="tableData"
             :fields="fields"
@@ -81,8 +110,14 @@ import { order_status, order_status_keys } from "~/plugins/constant.js";
 import { nameOfOrder } from "~/plugins/strings.js";
 import superMixin from "./SuperMixin";
 import DownloadCsv from "~/components/DownloadCSV";
+import moment from "moment";
 
 export default {
+  head() {
+    return {
+      title: [this.defaultTitle, "Super All Orders"].join(" / ")
+    }
+  },
   mixins: [superMixin],
   components: {
     OrderedInfo,
@@ -90,12 +125,17 @@ export default {
     BackButton
   },
   data() {
+    const months = [0, 1, 2, 3, 4, 5].map((a) => {
+      return moment().subtract(a, 'month').format("YYYY-MM");
+    });
     return {
       orders: [],
       orderState: 0,
+      monthValue: months[0],
       isLoading: false,
       last: null,
       restaurants: {},
+      months,
     };
   },
   async mounted() {
@@ -169,7 +209,7 @@ export default {
           query = query.startAfter(this.last);
         }
         const snapshot = await query.get();
-        
+
         if (!snapshot.empty) {
           this.last = snapshot.docs[snapshot.docs.length - 1];
           let i = 0;
@@ -183,7 +223,7 @@ export default {
               const snapshot = await db
                     .doc(`restaurants/${order.restaurantId}`)
                     .get();
-              this.restaurants[order.restaurantId] = snapshot.data(); 
+              this.restaurants[order.restaurantId] = snapshot.data();
             }
             order.restaurant = this.restaurants[order.restaurantId];
             if (order.timeEstimated) {
@@ -201,6 +241,12 @@ export default {
       if (this.last) {
         this.loadData();
       }
+    },
+    async LoadTillMonth() {
+      const limit = moment(this.monthValue + "-01 00:00:00+09:00");
+      while(moment(this.orders[this.orders.length - 1].timeCreated.toDate()) > limit) { 
+        await this.loadData();
+     }
     },
     orderSelected(order) {
       // We are re-using the restaurant owner's view.

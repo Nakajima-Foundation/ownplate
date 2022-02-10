@@ -4,7 +4,7 @@ export default {
       return location.pathname.startsWith("/s/")
     },
     backUrl() {
-      return this.isSuperPage ? "/s" : "/o";
+      return this.isSuperPage ? "/s" : "/op";
     },
   },
   methods: {

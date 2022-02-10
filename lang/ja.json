@@ -78,6 +78,15 @@
     "invalid": "数字の半角小文字英字のみ使えます。",
     "alreadyTaken": "このIDはすでに使われています。"
   },
+  "restaurantCsv": {
+    "date": "登録日",
+    "restaurantName": "飲食店名",
+    "onTheList": "掲載",
+    "publicFlag": "公開",
+    "deletedFlag": "削除",
+    "menu": "メニュー数",
+    "uid": "uid"
+  },
   "editCommon": {
     "save": "保存",
     "saving": "保存中",
@@ -115,6 +124,8 @@
     "enterIntroduction": "お店を紹介文を入力して下さい",
     "enterOrderNotice": "注文の注意点を入力して下さい",
     "enterOrderThanks": "注文後のありがとうメッセージを入力して下さい",
+    "enablePrelineTitle": "改行を反映",
+    "enablePrelineDescription": "お店の紹介文、注文のご注意、お店からのメッセージ、メニューの説明文に入力した改行を反映します",
     "introduction": "お店の紹介文",
     "orderNotice": "注文時の注意書き",
     "orderThanks": "注文後のありがとうメッセージ",
@@ -162,7 +173,9 @@
     "withinFiveDays": "５日以内",
     "profilePhoto": "プロフィール画像",
     "coverPhoto": "カバー画像",
+    "setupMap": "地図の設定",
     "setLocation": "住所を元に地図を更新",
+    "searchMap": "住所から地図を検索",
     "updateMap": "場所をセット",
     "businessHourDescription": "営業する曜日にチェックをいれ、時間を設定してください。休憩など営業時間を分ける必要がある場合は別時間帯フォームに後半の時間を設定してください。",
     "businessHourOption": "別時間帯（オプション）",
@@ -174,7 +187,7 @@
     "updateMapDescription": "飲食店名や住所を元に地図を更新",
     "noRestaurant": "飲食店名が未指定です",
     "noStreetAddress": "住所が未入力です",
-    "reallyDelete": "本当にこの飲食店を削除しますか？",
+    "reallyDelete": "本当にこの飲食店を削除しますか？削除すると、お店/メニューの情報が全て消えます",
     "reallyOnListDelete": "本当に掲載を取り消しますか？",
     "phoneCall": "注文を電話で通知",
     "phoneCallDescription": "オンラインで注文が入った時にお店の電話でお知らせします",
@@ -272,6 +285,7 @@
     "name": "飲食店名",
     "ownerName": "責任者氏名",
     "restaurantDetails": "飲食店情報",
+    "ecShopDetails": "店舗情報",
     "streetAddress": "番地以下",
     "city": "市区町村",
     "state": "州",
@@ -299,6 +313,7 @@
     "noPaymentMethod": "オンライン注文未対応",
     "minimumAvailableTime": "最短受付可能時間",
     "noAvailableTime": "受付時間外",
+    "category": "カテゴリー",
     "viewMore": "もっと見る",
     "viewLess": "閉じる"
   },
@@ -336,6 +351,25 @@
   },
   "date": {
     "today": "本日"
+  },
+  "lp": {
+    "enjoyOmochilaeri": "お店の笑顔もおもちかえり！",
+    "operationTeams": "わたしたちが運営しています！",
+    "easy3Steps": "HOW TO START？　簡単3ステップ！",
+    "forOwner": "飲食店の方はこちら",
+    "moreDetails": "もっと詳しく",
+    "tryService": "ご利用を開始",
+    "ask": "お問い合わせ",
+    "whatsnew": "新着情報",
+    "forCustomer": "テイクアウトご利用のお客様はこちら",
+    "customerVoice1": "ご利用頂いている",
+    "customerVoice2": "飲食店のみなさまの声",
+    "goToSampleRestaurant": "サンプルの店舗を見る",
+    "tokyo": "東京",
+    "osaka": "大阪",
+    "izakaya": "居酒屋",
+    "patisserie": "パティスリー",
+    "searchRestaurant": "テイクアウトのお店を探す"
   },
   "order": {
     "allOrders": "全ての注文",
@@ -376,6 +410,7 @@
     "thankyou": "ご注文、ありがとうございます",
     "orderStatus": "ご注文状況",
     "orderId": "ご注文番号",
+    
     "cancelOrder": "ご注文のキャンセルはこちら",
     "cancelOrderConfirm": "本当にご注文をキャンセルしてもよろしいですか？",
     "cancelOrderComplete": "この注文はキャンセルされました",
@@ -389,17 +424,22 @@
     "history": "注文履歴",
     "timeRequested": "受け渡し希望時刻",
     "timeToPickup": "受け渡し予定時刻",
+    "deliveryTimeRequested": "配達希望時刻",
+    "deliveryTimeToPickup": "配達予定時刻",
     "notAvailable": "注文可能な営業日がないため、現在は注文を受け付けていません。",
     "orderNotice": "注文時のご注意",
     "orderMessage": "お店へメッセージ",
     "enterMessage": "お店へメッセージを伝えることができます。「注文時のご注意」にお願いがある場合には、それを参考にメッセージを作成してください。",
     "datePlaced": "注文時刻",
+    "dateAccepted": "注文受付時刻",
     "dateEstimated": "完了予定時刻",
     "dateConfirmed": "準備完了時刻",
+    "dateCompleted": "受渡完了時刻",
     "statusName": "ステータス",
     "phoneNumber": "お客様の電話番号",
     "totalCount": "注文総数",
     "userName": "注文者（任意）",
+    "customerInfo": "お客様の情報",
     "itemName": "メニュー",
     "options": "オプション",
     "memo": "メモ",
@@ -418,22 +458,76 @@
       "cooking_completed": "調理済み",
       "ready_to_pickup": "受け渡し準備完了",
       "transaction_complete": "受け渡し完了",
+      "ready_to_shipping": "発送準備完了",
+      "shipping_complete": "発送完了",
       "transaction_hide": "受注処理完了",
       "order_canceled": "キャンセル済み",
       "order_refunded": "払い戻し済み",
       "stripe_pending": "カード決済未完了",
       "stripe_confirmed": "カード決済完了",
       "stripe_canceled": "決済キャンセル",
-      "onsitePayment": "受け取り払い"
+      "onsitePayment": "受け取り払い",
+      "stripe_user_pending": "カード決済未完了",
+      "stripe_user_message_pending": "(お店側で決済処理が終わっていません)",
+      "stripe_user_confirmed": "カード決済完了",
+      "stripe_user_message_confirmed": "クレジットカードでお支払済みです。",
+      "stripe_user_canceled": "決済キャンセル",
+      "stripe_user_message_canceled": "カード決済はキャンセルされました",
+      "stripe_user_message_just_payment_canceled": "現地払いをお願いします"
     },
+    "onlinePaymentStatus": "カード決済の状況",
     "lineLink": "お店のLINE公式アカウント",
-    "lineMessage": "LINE公式アカウントを友だち登録すると、お店から情報が直接届きます。"
+    "lineMessage": "LINE公式アカウントを友だち登録すると、お店から情報が直接届きます。",
+    "customerOrderHistory": "注文履歴",
+    "orderTimes": "注文",
+    "orderTimesUnit": "{count}回",
+    "cancelTimes": "キャンセル",
+    "cancelTimesUnit": "{count}回",
+    "yourInfo": "お客様の情報",
+    "continuousOrder": "注意: 連続した注文です",
+    "lastOrder": "前回",
+    "thisOrder": "今回",
+    "shippingCost": "送料",
+    "ec": {
+      "customerInfo": "お客様情報",
+      "formtitle": "配送先",
+      "zip": "郵便番号",
+      "prefecture": "都道府県",
+      "address": "住所",
+      "addressNotice": "市区町村から部屋番号まで入力してください",
+      "name": "お名前",
+      "searchAddressFromZip": "郵便番号から住所を検索",
+      "select": "選択",
+      "email": "メールアドレス",
+      "phone": "電話番号"
+    }
+  },
+  "editEC": {
+    "postageList": "送料リスト",
+    "freeThreshold": "送料無料設定",
+    "copy": "上の料金をコピー",
+    "setPostageFreeThreshold": "送料無料になる金額を設定する"
+  },
+  "delivery": {
+    "areaSetting": "配達エリア設定",
+    "deliveryRange": "配達可能範囲半径",
+    "updateDeliveryRange": "範囲を更新",
+    "areaTextExample": "港区北青山　１〜３丁目、南青山１〜７丁目",
+    "deliveryLocation": "配送先",
+    "setAreaMap": "地図で指定",
+    "setAreaText": "文章で指定",
+    "setDeliveryLocation": "配達位置の指定",
+    "estimatedDistance": "推定距離",
+    "setTheAddressInTheDeliveryLocation": "住所を配送先の場所に反映する",
+    "availableDeliveryDistance": "配達可能距離",
+    "aboutDeliveryArea": "配達可能エリアについて",
+    "setAreaMapNotice": "おおよその配達可能範囲を,お店を中心とした円で指定します。この範囲は目安なので、注文時に配達可能かどうか判断をして、注文を受け付けてください。"
   },
   "button": {
     "back": "戻る",
     "addTitle": "商品グループ名を追加",
     "addItem": "商品を追加",
-    "downloadMenu": "メニューをダウンロード",
+    "downloadMenu": "チラシをダウンロード",
     "cancel": "キャンセル",
     "next": "次へ"
   },
@@ -454,6 +548,11 @@
       "US": "米国 (+1)",
       "UK": "英国 (+44)",
       "FR": "フランス (+33)",
+      "BF": "ブルキナファソ (+235)",
+      "TG": "トーゴ (+228)",
+      "BN": "ベナン (+229)",
+      "CI": "コートジボワール (+225)",
+      "SE": "セネガル (+335)",
       "ES": "スペイン (+34)",
       "DE": "ドイツ (+49)",
       "JP": "日本 (+81)"
@@ -574,12 +673,17 @@
       "infinityNotificationOn": "1分おきに再通知",
       "infinityNotificationOff": "受注時のみ通知",
       "soundTest": "テスト",
-      "paymentIsNotCompleted": "ご注意：商品の受け渡し前に「受け渡し準備完了」ボタンを押してカード決済処理を完了させてください。",
+      "paymentIsNotCompleted": "ご注意：「受付済み」ボタンを押すとカード決済が処理されます。",
       "cancelButton": "注文をキャンセル",
       "cancelTitle": "注文のキャンセル",
       "cancelMessage": "お客様にご連絡の上、ご注文がキャンセルされることをお伝え下さい。",
+      "paymentCancelButton": "カード決済のみをキャンセル",
       "delete": "この注文をキャンセルする",
       "deleteConfirm": "（キャンセルの取り消しは出来ません）",
+      "paymentCancelTitle": "カード決済のみキャンセル",
+      "paymentCancelMessage": "現地払いに変更となります。お客様にご連絡の上、現地払いになることをお伝え下さい。注文はキャンセルされません。",
+      "paymentCancel": "カード決済のみキャンセル",
+      "paymentCancelConfirm": "（キャンセルの取り消しは出来ません）",
       "line": "LINE通知設定",
       "lineAdd": "LINEアカウントの追加",
       "lineUsers": "登録済みLINEアカウント",
@@ -587,7 +691,13 @@
       "lineSafariPrivate": "注意: Safariのプライベートブラウズモードを使用しているとLINE連携ができません。",
       "history": "全ての注文履歴",
       "more": "更に表示",
-      "messageFromCustomer": "お客様からのメッセージ"
+      "all": "全て表示",
+      "messageFromCustomer": "お客様からのメッセージ",
+      "changeOrderDetail": "注文内容の変更",
+      "alreadyChanged": "変更済み",
+      "willOrderChange": "注文を変更する",
+      "cancelOrderChange": "注文の変更を取り消す",
+      "confirmOrderChange": "注文の変更を確定"
     },
     "sound": {
       "default": "ピコリン",
@@ -626,6 +736,48 @@
         "auth/invalid-email": "無効なメールアドレスです。",
         "auth/unauthorized-continue-uri": "ドメインがホワイトリストに登録されていません。"
       }
+    },
+    "messages": {
+      "title": "メッセージ",
+      "childInvitationAccept": "招待を受け入れてサブアカウントになる",
+      "childInvitationAcceptMessage": "サブアカウントになると、このアカウントで追加した飲食店は操作できなくなります",
+      "childInvitationDeny": "招待を拒否する",
+      "accept": "受け入れる",
+      "deny": "拒否する",
+      "childInvitationMessage1": "以下のお店を管理するオーナーから招待状が届きました",
+      "childInvitationMessage2": "こちらのお店",
+      "childInvitationMessage3": "このお店を管理するサブアカウントに変更する場合は、受け入れるを押してください。拒否する場合には、拒否を押してください。"
+    },
+    "subAccounts": {
+      "index": "サブアカウント管理",
+      "openDashboard": "サブアカウント管理画面",
+      "manualLink": "サブアカウントの使い方",
+      "description": "特定の店舗のみ操作できるサブアカウントを設定/管理できます。",
+      "title": "サブアカウント管理",
+      "subaccountlist": "サブアカウント一覧",
+      "email": "メールアドレス",
+      "name": "サブアカウント名",
+      "invite": "招待する",
+      "invitedList": "送信済み招待",
+      "deleteSubaccount": "サブアカウント解除",
+      "send": "送信",
+      "sending": "送信中",
+      "enterName": "サブアカウントに付ける名前を入力して下さい",
+      "enterEmail": "招待するサブアカウントのメールアドレスを入力して下さい",
+      "inviteInputError": "入力項目を確かめてください",
+      "messageResult": {
+        "waiting": "送信済み",
+        "accepted": "登録済み",
+        "denied": "拒否されました"
+      },
+      "selectRestaurant": "このアカウントが操作できるお店を選択してください。",
+      "confirmDeletechild": "サブアカウントを解除します"
+    },
+    "smaregi": {
+      "index": "スマレジ連携",
+      "authenticating": "連携中",
+      "authenticationError": "連携に失敗しました",
+      "smaregiShopList": "スマレジ店舗一覧"
     }
   },
   "week": {
@@ -688,10 +840,12 @@
         "cancel": "注文のキャンセルに失敗しました。"
       },
       "stripe": {
-        "confirm": "課金処理に失敗しました。",
+        "confirm": "カード決済処理に失敗しました。",
+        "confirm2": "続けて失敗する場合は、カード決済を取り消して現地払いに変更してください",
+        "cancel": "カード決済のキャンセルに失敗しました",
         "connect": "ストライプとの接続に失敗しました。",
         "disconnect": "ストライプとの接続解除に失敗しました。",
-        "intent": "ストライプによる課金に失敗しました。",
+        "intent": "ストライプによるカード決済に失敗しました。",
         "NoJCB": "このお店では、JCBカードは使えません。"
       },
       "menu": {
@@ -707,6 +861,25 @@
     },
     "requireLogin": {
       "message1": "オーダーを確認するにはログインが必要です"
+    }
+  },
+  "validationError": {
+    "zip": {
+      "empty": "郵便番号を入力してください",
+      "invalidZip": "正しい7桁の郵便番号を入力してください"
+    },
+    "address": {
+      "empty": "住所を入力してください"
+    },
+    "name": {
+      "empty": "お名前(氏名)を入力してください"
+    },
+    "location": {
+      "noLocation": "住所入力後、配達位置を地図に反映してください。タップで入力も可能です"
+    },
+    "email": {
+      "empty": "メールアドレスを入力してください",
+      "invalidEmail": "正しいメールアドレスを入力してください"
     }
   }
 }

@@ -186,7 +186,10 @@
 
     <!-- Report Details -->
     <div class="mx-6 mt-6 text-center">
-      <report-details :orders="orders" :fileName="fileName" />
+      <report-details
+        :orders="orders"
+        :shopInfo="shopInfo"
+        :fileName="fileName" />
     </div>
   </div>
 </template>
@@ -206,6 +209,12 @@ export default {
     BackButton,
     DownloadCsv,
     ReportDetails
+  },
+  head() {
+    return {
+      title: this.shopInfo.restaurantName ?
+        ["Admin Report", this.shopInfo.restaurantName , this.defaultTitle].join(" / ") : this.defaultTitle
+    }
   },
   data() {
     return {

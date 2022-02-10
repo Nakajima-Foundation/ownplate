@@ -265,8 +265,6 @@ import * as pdf from "../../plugins/pdf.js";
 
 import NotificationIndex from "./Notifications/Index";
 
-import _ from "lodash";
-
 export default {
   name: "Menus",
   components: {
@@ -276,6 +274,12 @@ export default {
     BackButton,
     NotificationIndex,
     NotFound
+  },
+  head() {
+    return {
+      title: this.restaurantInfo.restaurantName ?
+        ["Admin Menu List", this.restaurantInfo.restaurantName , this.defaultTitle].join(" / ") : this.defaultTitle
+    }
   },
   data() {
     return {

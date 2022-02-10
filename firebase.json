@@ -8,12 +8,14 @@
       "cp dist/index.html functions/templates/index.html",
       "cp src/plugins/constant.js functions/src/common/constant.js",
       "cp src/plugins/phoneutil.js functions/src/common/phoneutil.js",
+      "cp src/plugins/commonUtils.js functions/src/common/commonUtils.js",
       "cp src/config/project.js functions/src/common/project.js",
       "npm --prefix \"$RESOURCE_DIR\" run lint",
       "npm --prefix \"$RESOURCE_DIR\" run build"
     ]
   },
   "hosting": {
+    "target": "app",
     "public": "dist",
     "ignore": [
       "firebase.json",
@@ -31,6 +33,14 @@
         "function": "api"
       },
       {
+        "source": "/r/*/order/*",
+        "function": "api"
+      },
+      {
+        "source": "/o/*",
+        "function": "api"
+      },
+      {
         "source": "/1.0/**",
         "function": "api"
       },
@@ -40,6 +50,10 @@
       },
       {
         "source": "/api/2.0/**",
+        "function": "api"
+      },
+      {
+        "source": "/smaregi/1.0/**",
         "function": "api"
       },
       {

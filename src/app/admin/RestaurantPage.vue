@@ -184,13 +184,32 @@
           <!-- Map -->
           <div>
             <div class="text-center">
+              {{ $t("editRestaurant.setupMap")}}
+            </div>
+            <div class="text-center">
               <a
                 @click="updateAndUpdateMap"
                 class="h-12 rounded-full bg-op-teal inline-flex items-center px-6 shadow"
                 ><div class="text-white text-base font-bold">
-                  {{ $t("editRestaurant.updateMap") }}
+                  {{ $t("editRestaurant.searchMap") }}
                 </div></a
               >
+            </div>
+            <div v-if="searchResults.length > 0">
+              <div class="mt-4">
+                <b-select v-model="selectedResult">
+                  <option
+                    v-for="(result, key) in searchResults"
+                    :value="key"
+                    :key="key"
+                    >
+                    {{result.formatted_address}}
+                  </option>
+                </b-select>
+              </div>
+            </div>
+            <div v-else>
+              住所を入力して検索してください
             </div>
 
             <div class="text-center text-sm font-bold text-red-700 mt-2">
@@ -203,7 +222,9 @@
                 :center="{ lat: 44.933076, lng: 15.629058 }"
                 :options="{ fullscreenControl: false }"
                 :zoom="18"
+                style="width: 100%; height: 160px"
                 @loaded="hello"
+                @click="gmapClick"
               ></GMap>
             </div>
           </div>
@@ -357,6 +378,21 @@
             />
           </div>
 
+          <!-- Enable Pre Line -->
+          <div class="mb-4">
+            <a id="preline" />
+            <div class="text-sm font-bold pb-2">
+              {{ $t("editRestaurant.enablePrelineTitle") }}
+            </div>
+            <div class="bg-black bg-opacity-5 rounded-lg p-4">
+              <b-checkbox v-model="shopInfo.enablePreline">
+                <div class="text-sm font-bold">
+                  {{ $t("editRestaurant.enablePrelineDescription") }}
+                </div>
+              </b-checkbox>
+            </div>
+          </div>
+          
           <!-- Description -->
           <div>
             <text-form
@@ -744,11 +780,7 @@
                   :placeholder="$t('shopInfo.temporaryClosureSelect')"
                 >
                 </b-datepicker>
-                <!-- <b-button
-                  @click="$refs.datepicker.toggle()"
-                  icon-left="calendar-today"
-                  type="is-primary"
-                /> -->
+
                 <b-button @click="addNewTemporaryClosure" class="b-reset-tw">
                   <div
                     class="inline-flex justify-center items-center h-9 bg-black bg-opacity-5 px-4 rounded-r"
@@ -917,6 +949,12 @@ export default {
     PhoneEntry,
     Price
   },
+  head() {
+    return {
+      title: this.shopInfo.restaurantName ?
+        ["Admin Restaurant", this.shopInfo.restaurantName , this.defaultTitle].join(" / ") : this.defaultTitle
+    }
+  },
 
   data() {
     const maxDate = new Date();
@@ -954,6 +992,7 @@ export default {
         orderNotice: "",
         orderThanks: "",
         phoneCall: false,
+        enablePreline: false,
         emailNotification: false,
         acceptUserMessage: false,
         foodTax: 0,
@@ -995,7 +1034,9 @@ export default {
       newTemporaryClosure: null,
       maxDate,
       now,
-      updateFirstCall: true
+      updateFirstCall: true,
+      searchResults: [],
+      selectedResult: 0
     };
   },
   async created() {
@@ -1195,7 +1236,13 @@ export default {
     },
     files: function() {
       console.log(this.files);
-    }
+    },
+    selectedResult: function() {
+      const res = this.searchResults[this.selectedResult];
+      this.setCurrentLocation(res.geometry.location);
+      this.place_id = res.place_id;
+      this.setLocation();
+    },
   },
   methods: {
     isFuture(day) {
@@ -1264,6 +1311,11 @@ export default {
       if (this.shopInfo && this.shopInfo.location) {
         this.setCurrentLocation(this.shopInfo.location);
       }
+    },
+    gmapClick(arg) {
+      this.setCurrentLocation({lat: arg.event.latLng.lat(), lng: arg.event.latLng.lng()}, false);
+      this.place_id = null;
+      this.setLocation();
     },
     async confirmCopy() {
       this.$store.commit("setAlert", {
@@ -1361,6 +1413,7 @@ export default {
         lineUrl: this.shopInfo.lineUrl,
         instagramUrl: this.shopInfo.instagramUrl,
         introduction: this.shopInfo.introduction,
+        enablePreline: this.shopInfo.enablePreline,
         orderNotice: this.shopInfo.orderNotice,
         orderThanks: this.shopInfo.orderThanks,
         pickUpMinimumCookTime: this.shopInfo.pickUpMinimumCookTime,
@@ -1445,11 +1498,12 @@ export default {
 
       const res = await API.google_geocode(keyword);
       if (res && res[0] && res[0].geometry) {
+        this.searchResults = res;
         this.setCurrentLocation(res[0].geometry.location);
         this.place_id = res[0].place_id;
       }
     },
-    setCurrentLocation(location) {
+    setCurrentLocation(location, move=true) {
       if (
         this.$refs.gMap &&
         this.$refs.gMap.map &&
@@ -1457,7 +1511,9 @@ export default {
         location.lat &&
         location.lng
       ) {
-        this.$refs.gMap.map.setCenter(location);
+        if (move) {
+          this.$refs.gMap.map.setCenter(location);
+        }
         this.removeAllMarker();
         const marker = new google.maps.Marker({
           position: new google.maps.LatLng(location.lat, location.lng),

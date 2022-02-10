@@ -69,7 +69,6 @@ export default {
     //"nuxt-buefy",
     "@nuxtjs/dotenv",
     "@nuxtjs/style-resources",
-    "@nuxtjs/axios",
     [
       "nuxt-gmaps",
       {

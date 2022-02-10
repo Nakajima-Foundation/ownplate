@@ -78,6 +78,15 @@
     "invalid": "Identifiant invalide. Vous ne pouvez utiliser que des chiffres et des nombres.",
     "alreadyTaken": "Cet identifiant n'est pas disponible."
   },
+  "restaurantCsv": {
+    "date": "date",
+    "restaurantName": "restaurant name",
+    "onTheList": "on the list",
+    "publicFlag": "is public",
+    "deletedFlag": "is deleted",
+    "menu": "number of menu",
+    "uid": "uid"
+  },
   "editCommon": {
     "save": "Enregistrer",
     "saving": "Enregistrement",
@@ -115,6 +124,8 @@
     "enterIntroduction": "Entrez une présentation de la boutique",
     "enterOrderNotice": "Entrez les notifications de commande",
     "enterOrderThanks": "Entrez le message de remerciement de la commande",
+    "enablePrelineTitle": "Enable line breaks",
+    "enablePrelineDescription": "Enable line breaks for the introduction, order notice, order thanks of  the restaurant and item description of menu",
     "introduction": "Présentation de la boutique",
     "orderNotice": "Notifications de commande",
     "orderThanks": "Mot de remerciement de la commande",
@@ -162,7 +173,9 @@
     "withinFiveDays": "Within 5 days",
     "profilePhoto": "Photo de Profil du Restaurant",
     "coverPhoto": "Photo de Couverture du Restaurant",
+    "setupMap": "Restaurant location",
     "setLocation": "Définir l'emplacement",
+    "searchMap": "Set the location from the address",
     "updateMap": "Mettre à jour la carte",
     "businessHourDescription": "Vérifiez le jour ouvrable de la semaine et définissez les heures d'ouverture. Si vous devez fractionner vos heures d'ouverture, comme une pause, veuillez saisir cette dernière heure dans le formulaire Autres heures.",
     "businessHourOption": "Autres heures. (facultatif)",
@@ -299,6 +312,7 @@
     "noPaymentMethod": "Commande en ligne indisponible",
     "minimumAvailableTime": "Temps disponible minimum",
     "noAvailableTime": "Aucun de temps de commande",
+    "category": "category",
     "viewMore": "Voir plus",
     "viewLess": "Proche"
   },
@@ -336,6 +350,25 @@
   },
   "date": {
     "today": "Aujourd'hui"
+  },
+  "lp": {
+    "enjoyOmochilaeri": "Profitez de notre service !",
+    "operationTeams": "Équipes d'intervention",
+    "easy3Steps": "COMMENT COMMENCER？ 3 ÉTAPES FACILES !",
+    "forOwner": "Pour les propriétaires de restaurant",
+    "moreDetails": "Plus de détails",
+    "tryService": "Essayez le service Omochikaeri",
+    "ask": "Nous contacter",
+    "whatsnew": "Quoi de neuf ?",
+    "forCustomer": "Pour les clients",
+    "customerVoice1": "Voix des clients",
+    "customerVoice2": "",
+    "goToSampleRestaurant": "Aller au restaurant d'échantillons",
+    "tokyo": "Tokyo",
+    "osaka": "Osaka",
+    "izakaya": "Izakaya",
+    "patisserie": "Pâtisserie",
+    "searchRestaurant": "Rechercher un restaurant"
   },
   "order": {
     "allOrders": "Toutes les commandes",
@@ -389,17 +422,22 @@
     "history": "Historique de Commande",
     "timeRequested": "Heure de ramassage demandée",
     "timeToPickup": "Temps de ramassage estimé",
+    "deliveryTimeRequested": "Requested Delivery Time",
+    "deliveryTimeToPickup": "Estimated Delivery Time",
     "notAvailable": "Ce restaurant n'est pas disponible pour le moment. Veuillez réessayer plus tard",
     "orderNotice": "Avis de la commande",
     "orderMessage": "Message to the restaurant",
     "enterMessage": "You can send a message to the restaurant.",
     "datePlaced": "Time Placed",
+    "dateAccepted": "Time Accepted",
     "dateEstimated": "Time Estimated",
     "dateConfirmed": "Time Confirmed",
+    "dateCompleted": "Time Completed",
     "statusName": "Status",
     "phoneNumber": "Phone Numbers",
     "totalCount": "Items",
     "userName": "Nom d'utilisateur",
+    "customerInfo": "Your Info",
     "itemName": "Élément de menu",
     "options": "Option",
     "memo": "Note",
@@ -424,10 +462,58 @@
       "stripe_pending": "Paiement en attente",
       "stripe_confirmed": "Paiement confirmé",
       "stripe_canceled": "Paiement annulé",
-      "onsitePayment": "Paiement sur place"
+      "onsitePayment": "Paiement sur place",
+      "stripe_user_pending": "Card payment not completed",
+      "stripe_user_message_pending": "(The card payment process has not been completed on the restaurant side)",
+      "stripe_user_confirmed": "Card payment completed",
+      "stripe_user_message_confirmed": "I have already paid by credit card.",
+      "stripe_user_canceled": "Payment cancel",
+      "stripe_user_message_canceled": "Card payment has been cancelled",
+      "stripe_user_message_just_payment_canceled": "Please pay in the restaurant"
     },
+    "onlinePaymentStatus": "Status of the card payment",
     "lineLink": "Restaurant's LINE Official Account URL",
-    "lineMessage": "If you add LINE Official Account as a friend, you will receive information directly from the restaurant."
+    "lineMessage": "If you add LINE Official Account as a friend, you will receive information directly from the restaurant.",
+    "customerOrderHistory": "Order history",
+    "orderTimes": "Order",
+    "orderTimesUnit": "{count} times",
+    "cancelTimes": "Cancel",
+    "cancelTimesUnit": "{count} times",
+    "yourInfo": "Your information",
+    "continuousOrder": "Warning: a continuous order",
+    "lastOrder": "Last order",
+    "thisOrder": "This order",
+    "ec": {
+      "customerInfo": "Customer info",
+      "formtitle": "Shipping information",
+      "zip": "Zip code",
+      "address": "Address",
+      "addressNotice": "Please enter all address information",
+      "name": "Full name",
+      "email": "Email",
+      "phone": "Phone"
+    }
+  },
+  "editEC": {
+    "postageList": "Shipping list",
+    "freeThreshold": "Set free shipping",
+    "copy": "Copy shipping above",
+    "setPostageFreeThreshold": "Set the amount of free shipping"
+  },
+  "delivery": {
+    "areaSetting": "Delivery area setting",
+    "deliveryRange": "Delivery range radius",
+    "updateDeliveryRange": "Update range",
+    "areaTextExample": "港区北青山　１〜３丁目、南青山１〜７丁目",
+    "deliveryLocation": "Delivery destination",
+    "setAreaMap": "Set on the map",
+    "setAreaText": "Set on the text",
+    "setDeliveryLocation": "Set delivery destination",
+    "estimatedDistance": "Estimated distance",
+    "setTheAddressInTheDeliveryLocation": "Set  the address in the delivery destination",
+    "availableDeliveryDistance": "Available Delivery Distance",
+    "aboutDeliveryArea": "Aboout Delivery Area",
+    "setAreaMapNotice": "Specify the approximate deliverable range in a circle centered on the store. This range is a guide, so please judge whether delivery is possible at the time of ordering and accept the order."
   },
   "button": {
     "back": "Retour",
@@ -452,17 +538,22 @@
     "countryCode": "Indicatif Pays",
     "country": {
       "US": "United States (+1)",
+      "UK": "Royaume-Uni (+44)",
       "FR": "France (+33)",
       "BF": "Burkina Faso (+235)",
       "TG": "TOGO (+228)",
       "BN": "Bénin (+229)",
-      "CI": "Cote d'ivoire (+81)",
-      "SE": "Senegal (+335)"
+      "CI": "Cote d'ivoire (+225)",
+      "SE": "Senegal (+335)",
+      "ES": "Espagne (+34)",
+      "DE": "Allemagne (+49)",
+      "JP": "Japon (+81)"
     },
     "invalidPhoneNumber": "Numéro de téléphone invalide",
     "invalidValidationCode": "Code de verification invalide",
     "auth/invalid-phone-number": "Numéro de téléphone invalide",
     "auth/invalid-verification-code": "Le code de vérification par SMS utilisé pour créer les informations d'identification d'authentification du téléphone n'est pas valide. Veuillez renvoyer le code de vérification par SMS et assurez-vous d'utiliser le code de vérification fourni par l'utilisateur.",
+    "auth/missing-verification-code": "SMS確認コードが入力されていません",
     "auth/missing-verification-code": "Les informations d'identification d'authentification du téléphone ont été créées avec un code de vérification SMS vide."
   },
   "admin": {
@@ -578,8 +669,13 @@
       "cancelButton": "Annuler cette commande",
       "cancelTitle": "Annulation de commande",
       "cancelMessage": "Veuillez contacter le client et lui dire que la commande sera annulée.",
+      "paymentCancelButton": "Cancel only card payment",
       "delete": "Annuler cette commande",
       "deleteConfirm": "(Cette action est annulable)",
+      "paymentCancelTitle": "Cancel only card payment",
+      "paymentCancelMessage": "It will be changed to payment in the restaurant. Please contact the customer and let them know that you will be paying in the restaurant. The order will not be cancelled.",
+      "paymentCancel": "Cancel only card payment",
+      "paymentCancelConfirm": "(This action is undoable)",
       "line": "Notification LINE",
       "lineAdd": "Ajouter un compte LINE",
       "lineUsers": "Comptes LINE Connectés",
@@ -587,7 +683,13 @@
       "lineSafariPrivate": "Remarque: si vous utilisez le mode de navigation privée de Safari, vous ne pourrez pas vous connecter à LINE.",
       "history": "Tout l'historique de l'ordre",
       "more": "En savoir plus",
-      "messageFromCustomer": "Message from the customer"
+      "all": "View All",
+      "messageFromCustomer": "Message from the customer",
+      "changeOrderDetail": "Change order details",
+      "alreadyChanged": "already changed",
+      "willOrderChange": "Change order",
+      "cancelOrderChange": "Cancel an order change",
+      "confirmOrderChange": "Change order"
     },
     "sound": {
       "default": "Défault",
@@ -626,6 +728,48 @@
         "auth/invalid-email": "L'adresse e-mail est mal formatée.",
         "auth/unauthorized-continue-uri": "Domaine non ajouté à la liste blanche du projet"
       }
+    },
+    "messages": {
+      "title": "Message",
+      "childInvitationAccept": "Accept the invitation and become a Sub-account",
+      "childInvitationAcceptMessage": "If you become a Sub-account, you will not be able to operate the restaurants added with this account.",
+      "childInvitationDeny": "Reject invitation",
+      "accept": "Accept",
+      "deny": "Reject",
+      "childInvitationMessage1": "I received an invitation from the owner who manages the following restaurants",
+      "childInvitationMessage2": "This restaurants",
+      "childInvitationMessage3": "If you want to change to a sub-account that manages this store, press Accept. If you want to decline, press Reject."
+    },
+    "subAccounts": {
+      "index": "Sub-account management",
+      "openDashboard": "Open Sub-account management",
+      "manualLink": "How to use sub-account",
+      "description": "You can set / manage sub-accounts that can only be operated at specific stores.",
+      "title": "Sub-account management",
+      "subaccountlist": "Sub-account list",
+      "email": "Email",
+      "name": "Sub-account name",
+      "invite": "Invite",
+      "invitedList": "Invited List",
+      "deleteSubaccount": "Delete Sub-account",
+      "send": "Send",
+      "sending": "Sending",
+      "enterName": "Please enter the name you want to give to the sub-account",
+      "enterEmail": "Please enter the email address of the sub-account you are inviting",
+      "inviteInputError": "Please check the input items",
+      "messageResult": {
+        "waiting": "Sent and waiting",
+        "accepted": "Accepted",
+        "denied": "Denied"
+      },
+      "selectRestaurant": "Please select a store that can operate this account.",
+      "confirmDeletechild": "Cancel the sub-account"
+    },
+    "smaregi": {
+      "index": "Smaregi",
+      "authenticating": "Authenticating",
+      "authenticationError": "Faild Authentication",
+      "smaregiShopList": "Smaregi store list"
     }
   },
   "week": {
@@ -689,6 +833,8 @@
       },
       "stripe": {
         "confirm": "Échec de la confirmation du paiement.",
+        "confirm2": "If you continue to fail, please cancel the card payment and change to pay in the restaurant.",
+        "cancel": "Failed to cancel card payment",
         "connect": "Échec de la connexion du compte Stripe.",
         "disconnect": "Échec de la déconnexion du compte Stripe.",
         "intent": "Échec du traitement du paiement.",
@@ -707,6 +853,25 @@
     },
     "requireLogin": {
       "message1": "Vous devez être connecté pour voir votre commande"
+    }
+  },
+  "validationError": {
+    "zip": {
+      "empty": "Please enter your zip code",
+      "invalidZip": "Please enter your valid zip code"
+    },
+    "address": {
+      "empty": "Please enter your shipping address"
+    },
+    "name": {
+      "empty": "Please enter your full name"
+    },
+    "location": {
+      "noLocation": "After entering the address, please update the delivery distination on the map. You can also update by tapping "
+    },
+    "email": {
+      "empty": "Please enter your email address",
+      "invalidEmail": "Please enter your valid email address"
     }
   }
 }

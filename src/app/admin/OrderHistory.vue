@@ -99,6 +99,20 @@
       </b-button>
     </div>
 
+    <!-- More -->
+    <div class="mx-6 mt-6 text-center" v-if="last !== undefined">
+      <b-button :disabled="last === null" @click="all" class="b-reset-tw">
+        <div
+          class="inline-flex justify-center items-center w-48 h-9 px-4 rounded-full bg-black bg-opacity-5"
+        >
+          <div class="text-sm font-bold text-op-teal">
+            {{ $t("admin.order.all") }}
+          </div>
+        </div>
+      </b-button>
+    </div>
+
+    
     <!-- Download Orders -->
     <div class="mx-6 mt-6 text-center">
       <download-orders :orders="orders" v-if="shopOwner" />
@@ -111,6 +125,7 @@
         :fileName="fileName"
         :hideTable="true"
         :withStatus="true"
+        :shopInfo="shopInfo"
         v-if="shopOwner"
       />
     </div>
@@ -136,10 +151,16 @@ export default {
     DownloadOrders,
     ReportDetails
   },
+  head() {
+    return {
+      title: this.shopInfo.restaurantName ?
+        ["Admin Order History", this.shopInfo.restaurantName , this.defaultTitle].join(" / ") : this.defaultTitle
+    }
+  },
   data() {
     return {
       shopInfo: {},
-      limit: 30,
+      limit: 60,
       last: undefined,
       orders: [],
       shopOwner: null
@@ -187,6 +208,11 @@ export default {
         }
         this.orders.push(order);
       });
+    },
+    async all() {
+      while (this.last) {
+        await this.next();
+      }
     },
     orderSelected(order) {
       this.$router.push({

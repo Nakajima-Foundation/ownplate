@@ -12,7 +12,7 @@
           class="text-xs font-bold rounded p-1 text-center"
           :class="statusKey"
         >
-          {{ $t("order.status." + statusKey) }}
+          {{ $t("order.status." + convOrderStateForText(statusKey, order)) }}
         </div>
       </div>
 
@@ -80,7 +80,7 @@
           class="text-xs font-bold rounded p-1 text-center"
           :class="statusKey"
         >
-          {{ $t("order.status." + statusKey) }}
+          {{ $t("order.status." + convOrderStateForText(statusKey, order)) }}
         </div>
       </div>
 
@@ -138,17 +138,12 @@
 </template>
 
 <script>
-import OrderStatus from "~/app/admin/Order/OrderStatus"; // # Not In Use?
 import { nameOfOrder } from "~/plugins/strings.js";
 import { parsePhoneNumber, formatNational } from "~/plugins/phoneutil.js";
 import { db } from "~/plugins/firebase.js";
 import { order_status, order_status_keys } from "~/plugins/constant.js";
 
 export default {
-  components: {
-    // # Not In Use?
-    OrderStatus
-  },
   data() {
     return {
       restaurant: null

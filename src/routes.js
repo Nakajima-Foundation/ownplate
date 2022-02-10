@@ -5,6 +5,11 @@ export const customRoutes = [
     component: "user/RootPage.vue"
   },
   {
+    name: "news",
+    path: "/news",
+    component: "user/News.vue"
+  },
+  {
     name: "RestaurantsAll",
     path: "/r/area/all",
     component: "user/Restaurants/All.vue"
@@ -45,6 +50,18 @@ export const customRoutes = [
     component: "common/Privacy.vue"
   },
   {
+    path: "/op",
+    component: "operator/Index.vue"
+  },
+  {
+    path: "/op/orders",
+    component: "super/AllOrders.vue"
+  },
+  {
+    path: "/op/restaurants",
+    component: "super/AllRestaurants.vue"
+  },
+  {
     name: "ownerPage",
     path: "/o/:ownerUid",
     component: "user/RestaurantIndex.vue"
@@ -75,6 +92,11 @@ export const customRoutes = [
     name: "r-restaurantId-transactionsAct",
     path: "/r/:restaurantId/transactionsAct",
     component: "user/TransactionsAct.vue"
+  },
+  {
+    name: "adminOwner",
+    path: "/admin/owner",
+    component: "admin/Owner.vue"
   },
   {
     name: "admin",
@@ -115,9 +137,22 @@ export const customRoutes = [
         component: "admin/OrderHistory.vue"
       },
       {
+        name: "user-histories",
+        path: "userhistory/:userId",
+        component: "admin/UserHistory.vue"
+      },
+      {
         name: "admin-suspend",
         path: "suspend",
         component: "admin/OrderSuspendPage.vue"
+      },
+      {
+        path: "postage",
+        component: "admin/Postage.vue"
+      },
+      {
+        path: "deliveryarea",
+        component: "admin/Delivery.vue"
       },
       {
         path: "line",
@@ -143,8 +178,34 @@ export const customRoutes = [
     ]
   },
   {
+    name: "admin-orders-allorders",
     path: "/admin/orders",
     component: "admin/AllOrders.vue"
+  },
+  {
+    name: "admin-subaccounts-accounts",
+    path: "/admin/subaccounts",
+    component: "admin/SubAccounts/Accounts.vue"
+  },
+  {
+    name: "admin-subaccounts-accounts",
+    path: "/admin/subaccounts/accounts/:subAccountId",
+    component: "admin/SubAccounts/Account.vue"
+  },
+  {
+    name: "admin-smaregi-index",
+    path: "/admin/smaregi/index",
+    component: "admin/Smaregi/Index.vue"
+  },
+  {
+    name: "admin-smaregi-index",
+    path: "/admin/smaregi/callback",
+    component: "admin/Smaregi/Callback.vue"
+  },
+  {
+    name: "admin-smaregi-store",
+    path: "/admin/smaregi/store/:storeId",
+    component: "admin/Smaregi/Store.vue"
   },
   {
     name: "admin-news-list",
@@ -167,6 +228,11 @@ export const customRoutes = [
     component: "auth/SignUpPage.vue"
   },
   {
+    name: "admin-signup",
+    path: "/admin/user/signup/:partner",
+    component: "auth/SignUpPage.vue"
+  },
+  {
     name: "admin-reset",
     path: "/admin/user/reset",
     component: "auth/ResetPasswordPage.vue"
@@ -182,6 +248,10 @@ export const customRoutes = [
   {
     path: "/s/restaurants",
     component: "super/AllRestaurants.vue"
+  },
+  {
+    path: "/s/restaurants/:restaurantId",
+    component: "super/Restaurants.vue"
   },
   {
     path: "/s/admins",
@@ -212,20 +282,16 @@ export const customRoutes = [
     component: "super/AllStripeCallback.vue"
   },
   {
+    path: "/s/favorites",
+    component: "super/AllFavorites.vue"
+  },
+  {
     path: "/s/callbacks/:uid/:logId",
     component: "super/StripeCallback.vue"
   },
   {
-    path: "/o",
-    component: "operator/Index.vue"
-  },
-  {
-    path: "/o/orders",
-    component: "super/AllOrders.vue"
-  },
-  {
-    path: "/o/restaurants",
-    component: "super/AllRestaurants.vue"
+    path: "/s/partners",
+    component: "super/Partner.vue"
   },
   {
     path: "/callback/line",

@@ -12,7 +12,7 @@
 
       <!-- Tagline -->
       <div class="text-white text-center text-2xl font-bold py-8 lg:text-4xl">
-        お店の笑顔もおもちかえり！
+        {{ $t("lp.enjoyOmochilaeri") }}
       </div>
 
       <div class="block h-1 w-72 bg-white m-auto"></div>
