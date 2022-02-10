@@ -4,8 +4,8 @@
     <div v-if="hasLocation">
       <div>
         <a target="_blank" :href="mapQuery">
-          <img :src="`https://maps.googleapis.com/maps/api/staticmap?center=${this.shopInfo.location.lat},${this.shopInfo.location.lng}&zoom=16&size=800x300&scale=2&maptype=roadmap&markers=color:red%7Clabel:G%7C${this.shopInfo.location.lat},${this.shopInfo.location.lng}&key=${gmapKey}`"
-                class="h-48 w-full object-cover lg:rounded-lg "
+          <img :src="`https://maps.googleapis.com/maps/api/staticmap?center=${this.shopInfo.location.lat},${this.shopInfo.location.lng}&zoom=16&size=800x${this.mapWidth}&scale=2&maptype=roadmap&markers=color:red%7Clabel:G%7C${this.shopInfo.location.lat},${this.shopInfo.location.lng}&key=${gmapKey}`"
+                class="w-full object-cover lg:rounded-lg "
                />
         </a>
       </div>
@@ -248,6 +248,16 @@ export default {
     };
   },
   computed: {
+    mapWidth() {
+      // two rows
+      if (window.innerWidth > 1024) {
+        return 200;
+      }
+      if (window.innerWidth > 600) {
+        return 150;
+      }
+      return 300;
+    },
     dispTemporaryClosure() {
       const now = Date.now();
       return (this.shopInfo.temporaryClosure || []).filter(day => {
