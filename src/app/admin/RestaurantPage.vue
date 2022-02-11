@@ -222,7 +222,7 @@
                 :center="{ lat: 44.933076, lng: 15.629058 }"
                 :options="{ fullscreenControl: false }"
                 :zoom="18"
-                style="width: 100%; height: 160px"
+                style="width: 100%; height: 240px; position: relative; overflow: hidden;"
                 @loaded="hello"
                 @click="gmapClick"
               ></GMap>
