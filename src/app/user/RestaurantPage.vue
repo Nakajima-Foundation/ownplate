@@ -59,7 +59,7 @@
               <!-- Restaurant Info -->
               <div class="mt-4">
                 <div class="text-xl font-bold text-black text-opacity-30">
-                  {{ $t("shopInfo.restaurantDetails") }}
+                  {{ shopInfo.isEC ? $t("shopInfo.ecShopDetails") : $t("shopInfo.restaurantDetails") }}
                 </div>
 
                 <div class="mt-2">
@@ -79,7 +79,6 @@
               <template v-for="(title, key) in titleLists">
                 <a :href="`#${title.id}`"
                    class="inline-flex justify-center items-center h-9 rounded-full bg-black bg-opacity-5 mx-2 mt-2"
-                   v-if="title.name !== ''"
                    >
                   <div class="text-sm font-bold text-op-teal mx-2">
                     {{title.name}}
@@ -97,13 +96,14 @@
                     :key="key"
                     >
                     <div
-                      class="text-xl font-bold text-black text-opacity-30"
+                      class="text-xl font-bold text-black text-opacity-30 inline-flex justify-center items-center"
                       :class="key === 0 ? '' : 'mt-6'"
                       :id="item.id"
+                      @click="openCategory"
                       >
-                      <span @click="openCategory">
+                      <i class="material-icons mr-2">menu_book</i>
+                      <span>
                         {{ item.name }}
-                        {{ $t("shopInfo.category") }}
                       </span>
                     </div>
                   </div>
@@ -210,7 +210,7 @@
             <a :href="`#${title.id}`"
                class="inline-flex justify-center items-center h-9 rounded-full bg-black bg-opacity-5 mx-1 mt-2"
                >
-              <div class="text-sm font-bold text-op-teal mx-3">
+              <div class="text-sm font-bold text-op-teal mx-2">
                 {{title.name}}
               </div>
             </a>
@@ -297,6 +297,14 @@ export default {
     }
   },
   created() {
+    // Hot fix for flyer. TODO: remove after end of summer in 2022.
+    if (location.hash && location.hash.startsWith("#utm")) {
+      const str = location.hash.slice(1);
+      const url = location.pathname + "?" + str
+      this.$router.push({
+        path: url
+      });
+    }
     const restaurant_detacher = db
       .doc(`restaurants/${this.restaurantId()}`)
       .onSnapshot(async restaurant => {
@@ -457,7 +465,7 @@ export default {
     },
     titleLists() {
       return this.itemLists.filter((item) => {
-        return item._dataType === "title"
+        return item._dataType === "title" && item.name !== '';
       });
     },
     trimmedSelectedOptions() {
@@ -569,6 +577,7 @@ export default {
         status: order_status.new_order,
         uid: this.user.uid,
         ownerUid: this.shopInfo.uid,
+        // isDelivery: true, // for test
         phoneNumber: this.user.phoneNumber,
         name: this.user.displayName,
         updatedAt: firestore.FieldValue.serverTimestamp(),

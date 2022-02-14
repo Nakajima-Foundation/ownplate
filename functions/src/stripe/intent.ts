@@ -6,6 +6,7 @@ import { order_status, next_transitions, order_status_keys, timeEventMapping } f
 import * as utils from "../lib/utils";
 import { orderAccounting, createNewOrderData, updateOrderTotalDataAndUserLog } from "../functions/order";
 import { sendMessageToCustomer, notifyNewOrderToRestaurant, notifyCanceledOrderToRestaurant } from "../functions/notify";
+import { costCal } from "../common/commonUtils";
 import { Context } from "../models/TestType";
 
 import * as crypto from "crypto";
@@ -70,15 +71,20 @@ const getPaymentMethodData = async (db: any, restaurantOwnerUid: string, custome
   return paymentMethodData;
 };
 
+const getHash = (message: string) => {
+  return crypto.createHash("sha256").update(message).digest("hex")  
+};
+
 // This function is called by user to create a "payment intent" (to start the payment transaction)
 export const create = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const customerUid = utils.validate_auth(context);
 
-  const { orderId, restaurantId, description, tip, sendSMS, timeToPickup, lng, memo } = data;
+  const { orderId, restaurantId, description, tip, sendSMS, timeToPickup, lng, memo, customerInfo } = data;
   const _tip = Number(tip) || 0;
   utils.validate_params({ orderId, restaurantId }); // lng, tip and sendSMS are optional
   const restaurantData = await utils.get_restaurant(db, restaurantId);
   const restaurantOwnerUid = restaurantData["uid"];
+  const postage = restaurantData.isEC ? await utils.get_restaurant_postage(db, restaurantId) : {};
 
   try {
     const result = await db.runTransaction(async (transaction) => {
@@ -90,7 +96,9 @@ export const create = async (db: admin.firestore.Firestore, data: any, context: 
       if (order.status !== order_status.validation_ok) {
         throw new functions.https.HttpsError("failed-precondition", "This order is invalid.");
       }
-      const totalChargeWithTipAndMultipled = Math.round((order.total + Math.max(0, _tip)) * multiple);
+      const shippingCost = restaurantData.isEC ? costCal(postage, customerInfo?.prefectureId, order.total) : 0;
+
+      const totalChargeWithTipAndMultipled = Math.round((order.total + Math.max(0, _tip) + (shippingCost || 0)) * multiple);
 
       // We expect that there is a customer Id associated with a token
       const payment_method_data = await getPaymentMethodData(db, restaurantOwnerUid, customerUid);
@@ -103,8 +111,9 @@ export const create = async (db: admin.firestore.Firestore, data: any, context: 
         payment_method_data,
       } as Stripe.PaymentIntentCreateParams;
 
+      const idempotencyKey = getHash([orderRef.path, payment_method_data.card.token].join("-"));
       const paymentIntent = await stripe.paymentIntents.create(request, {
-        idempotencyKey: orderRef.path,
+        idempotencyKey,
         stripeAccount,
       });
       const timePlaced = (timeToPickup && new admin.firestore.Timestamp(timeToPickup.seconds, timeToPickup.nanoseconds)) || admin.firestore.FieldValue.serverTimestamp();
@@ -114,12 +123,15 @@ export const create = async (db: admin.firestore.Firestore, data: any, context: 
         status: order_status.order_placed,
         totalCharge: totalChargeWithTipAndMultipled / multiple,
         tip: Math.round(_tip * multiple) / multiple,
+        shippingCost,
         sendSMS: sendSMS || false,
         updatedAt: admin.firestore.Timestamp.now(),
         orderPlacedAt: admin.firestore.Timestamp.now(),
         timePlaced,
         description: request.description,
         memo: memo || "",
+        isEC: restaurantData.isEC || false,
+        customerInfo: customerInfo || {},
         payment: {
           stripe: "pending",
         },
@@ -184,8 +196,9 @@ export const confirm = async (db: admin.firestore.Firestore, data: any, context:
       const stripeRecord = await getStripeOrderRecord(transaction, stripeRef);
       const paymentIntentId = stripeRecord.paymentIntent.id;
 
+      const idempotencyKey = getHash([order.id, paymentIntentId].join("-"));
       const paymentIntent = await stripe.paymentIntents.confirm(paymentIntentId, {
-        idempotencyKey: order.id,
+        idempotencyKey,
         stripeAccount,
       });
 
@@ -221,7 +234,8 @@ export const confirm = async (db: admin.firestore.Firestore, data: any, context:
       time: moment(orderData.timeEstimated.toDate()).tz(timezone||"Asia/Tokyo").locale("ja").format("LLL")
     };
     console.log("timeEstimated", params["time"]);
-    await sendMessageToCustomer(db, lng, "msg_order_accepted", restaurantData.restaurantName, orderData, restaurantId, orderId, params);
+    const msgKey = orderData.isEC ? "msg_ec_order_accepted" : "msg_order_accepted";
+    await sendMessageToCustomer(db, lng, msgKey, restaurantData.restaurantName, orderData, restaurantId, orderId, params);
     
     return result;
   } catch (error) {
@@ -290,8 +304,9 @@ export const cancel = async (db: any, data: any, context: functions.https.Callab
 
       const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
       
+      const idempotencyKey = getHash([order.id, paymentIntentId].join("-"));
       const paymentIntent = await stripe.paymentIntents.cancel(paymentIntentId, {
-        idempotencyKey: `${order.id}-cancel`,
+        idempotencyKey: `${idempotencyKey}-cancel`,
         stripeAccount,
       });
       await updateOrderTotalDataAndUserLog(db, transaction, order.uid, order.order, restaurantId, restaurant.uid, order.timePlaced, false);
@@ -361,8 +376,9 @@ export const cancelStripePayment = async (db: admin.firestore.Firestore, data: a
       const stripeRecord = await getStripeOrderRecord(transaction, stripeRef);
       const paymentIntentId = stripeRecord.paymentIntent.id;
 
+      const idempotencyKey = getHash([order.id, paymentIntentId].join("-"));
       const paymentIntent = await stripe.paymentIntents.cancel(paymentIntentId, {
-        idempotencyKey: `${order.id}-cancel`,
+        idempotencyKey: `${idempotencyKey}-cancel`,
         stripeAccount,
       });
       const updateData = {
@@ -458,6 +474,9 @@ export const orderChange = async (db: any, data: any, context: functions.https.C
     const accountingResult = orderAccounting(restaurantData, food_sub_total, alcohol_sub_total, multiple);
     // was created new order data
 
+    const postage = restaurantData.isEC ? await utils.get_restaurant_postage(db, restaurantId) : {};
+    const shippingCost = restaurantData.isEC ? costCal(postage, order?.customerInfo?.prefectureId, accountingResult.total) : 0;
+
     const orderUpdateData = {
       order: newOrderData,
       menuItems: newItems,
@@ -468,7 +487,8 @@ export const orderChange = async (db: any, data: any, context: functions.https.C
       tax: accountingResult.tax,
       inclusiveTax: accountingResult.inclusiveTax,
       total: accountingResult.total,
-      totalCharge: accountingResult.total + (Number(order.tip) || 0),
+      totalCharge: accountingResult.total + (Number(order.tip) || 0) + (shippingCost || 0),
+      shippingCost,
       accounting: {
         food: {
           revenue: accountingResult.food_sub_total,
@@ -509,7 +529,7 @@ export const orderChange = async (db: any, data: any, context: functions.https.C
           payment_method_data,
         } as Stripe.PaymentIntentCreateParams;
 
-        const hash = crypto.createHash("sha256").update(JSON.stringify(newOrderData)).digest("hex");
+        const hash = getHash(JSON.stringify(newOrderData));
 
         const paymentIntent = await stripe.paymentIntents.create(request, {
           idempotencyKey: orderRef.path + hash,

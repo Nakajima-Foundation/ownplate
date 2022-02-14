@@ -56,6 +56,10 @@ export default {
       type: Array,
       required: true
     },
+    shopInfo: {
+      type: Object,
+      required: true
+    },
     fileName: {
       type: String,
       required: true
@@ -91,6 +95,40 @@ export default {
       };
     },
     fields() {
+      if (this.shopInfo?.isEC) {
+        return [
+          "name",
+          "statusName",
+          "userName",
+
+          "ec.name",
+          "ec.zip",
+          "ec.prefecture",
+          "ec.address",
+          "ec.email",
+          
+          "phoneNumber",
+          
+          "datePlaced",
+          "dateAccepted",
+          "dateConfirmed",
+          "dateCompleted",
+        
+          "timeRequested",
+          "timeToPickup",
+
+          "itemName",
+          "options",
+          "category1",
+          "category2",
+          "count",
+          "total",
+          "shippingCost",
+          "payment",
+          "memo"
+      ];
+
+      } 
       return [
         "name",
         "statusName",
@@ -179,6 +217,36 @@ export default {
                   index,
                   key,
                   order.name || this.$t("order.unspecified")
+                ),
+                "ec.name": this.writeonFirstLine(
+                  index,
+                  key,
+                  order?.customerInfo?.name,
+                ),
+                "ec.zip": this.writeonFirstLine(
+                  index,
+                  key,
+                  order?.customerInfo?.zip,
+                ),
+                "ec.prefecture": this.writeonFirstLine(
+                  index,
+                  key,
+                  order?.customerInfo?.prefecture,
+                ),
+                "ec.address": this.writeonFirstLine(
+                  index,
+                  key,
+                  order?.customerInfo?.address,
+                ),
+                "ec.email": this.writeonFirstLine(
+                  index,
+                  key,
+                  order?.customerInfo?.email,
+                ),
+                shippingCost: this.writeonFirstLine(
+                  index,
+                  key,
+                  order?.shippingCost,
                 ),
                 count: orderItems[key],
                 options: opt.filter(a => String(a) !== "").join("/"),

@@ -59,7 +59,7 @@
 
       <!-- View Orders -->
       <div class="mt-4 text-center">
-        <nuxt-link :to="'/admin/restaurants/' + restaurantid + '/orders'">
+        <nuxt-link :to="'/admin/restaurants/' + restaurantid + (shopInfo.isEC ? '/history' :'/orders')">
           <div
             class="h-16 rounded-full inline-flex justify-center items-center px-8 shadow w-full"
             :class="numberOfOrders > 0 ? 'bg-yellow-500' : 'bg-op-teal'"

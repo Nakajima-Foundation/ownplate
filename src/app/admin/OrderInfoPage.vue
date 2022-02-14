@@ -146,8 +146,6 @@
               {{ $t("admin.order.paymentIsNotCompleted") }}
             </div>
 
-
-
             <!-- Cancel Button -->
             <div class="mt-6 text-center">
               <b-button
@@ -247,7 +245,7 @@
             </b-modal>
 
             <!-- Pickup Time -->
-            <div class="mt-6 text-center">
+            <div class="mt-2 text-center">
               <div class="text-xs font-bold">
                 {{ $t("order.timeRequested") }}
               </div>
@@ -278,9 +276,11 @@
                 >
               </b-select>
             </div>
+          </div>
 
+          <div class="bg-white shadow rounded-lg p-4 mt-2">
             <!-- Phone Number -->
-            <div v-if="orderInfo.phoneNumber" class="mt-4 text-center">
+            <div v-if="orderInfo.phoneNumber" class="mt-2 text-center">
               <div class="text-xs font-bold">
                 {{ $t("sms.phonenumber") }}
               </div>
@@ -321,7 +321,9 @@
                 </div>
               </nuxt-link>
             </div>
+          </div>
 
+          <div class="bg-white shadow rounded-lg p-4 mt-2">
             <!-- Order Status -->
             <div>
               <div
@@ -341,7 +343,7 @@
                   >
                     <div>
                       <div class="text-base font-extrabold">
-                        {{ $t("order.status." + orderState) }}
+                        {{ $t("order.status." + convOrderStateForText(orderState, orderInfo)) }}
                       </div>
                       <div class="text-xs">
                         {{ timeOfEvents[orderState] }}
@@ -464,6 +466,7 @@
 
             <!-- Order Details -->
             <order-info
+              :shopInfo="shopInfo ||{}"
               :orderItems="this.orderItems"
               :orderInfo="isOrderChange ? editable_order_info : this.orderInfo || {}"
               :editable="isOrderChange"
@@ -514,6 +517,13 @@
               </div>
             </div>
 
+            <!-- Customer info -->
+            <CustomerInfo
+              :shopInfo="shopInfo"
+              :customer="customer"
+              :phoneNumber="nationalPhoneNumber"
+              v-if="shopInfo && (shopInfo.isEC || orderInfo.isDelivery)"
+              />
           </div>
         </div>
       </div>
@@ -543,6 +553,9 @@ import { ownPlateConfig } from "~/config/project";
 import NotificationIndex from "./Notifications/Index";
 import { formatOption } from "~/plugins/strings.js";
 import OrderInfo from "~/app/user/Order/OrderInfo";
+import CustomerInfo from "~/components/CustomerInfo";
+
+import { costCal } from "~/plugins/commonUtils";
 
 import * as analyticsUtil from "~/plugins/analytics";
 
@@ -554,6 +567,7 @@ export default {
     OrderedItem,
     NotificationIndex,
     OrderInfo,
+    CustomerInfo,
     NotFound
   },
   head() {
@@ -574,6 +588,7 @@ export default {
       detacher: [],
       cancelPopup: false,
       paymentCancelPopup: false,
+      postageInfo: {},
       notFound: false,
       timeOffset: 0,
       shopOwner: null,
@@ -599,6 +614,12 @@ export default {
             const restaurant_data = restaurant.data();
             if (restaurant_data.uid === this.ownerUid) {
               this.shopInfo = restaurant_data;
+              if (this.shopInfo.isEC) {
+                db.doc(`restaurants/${this.restaurantId()}/ec/postage`)
+                  .get().then((snapshot) => {
+                    this.postageInfo = snapshot.data() || {};
+                  });
+              }
               return;
             }
           }
@@ -759,7 +780,7 @@ export default {
       );
     },
     nationalPhoneNumber() {
-      return formatNational(this.phoneNumber);
+      return (this.phoneNumber) ? formatNational(this.phoneNumber): "";
     },
     nationalPhoneURI() {
       return formatURL(this.phoneNumber);
@@ -835,7 +856,9 @@ export default {
         ret.tax = ret.food_tax + ret.alcohol_tax;
         ret.total = ret.sub_total + ret.tax;
       }
-      return Object.assign({}, this.orderInfo, ret);
+      // const sh
+      const shippingCost = costCal(this.postageInfo, this.orderInfo?.customerInfo?.prefectureId, ret.total);
+      return Object.assign({}, this.orderInfo, ret, {shippingCost});
     },
     availableOrderChange() {
       return this.orderInfo && this.orderInfo.status === order_status.order_placed &&
@@ -843,6 +866,9 @@ export default {
     },
     availableChangeButton() {
       return (this.edited_available_order_info.length !== this.editedAvailableOrders.length) && (this.edited_available_order_info.length > 0)
+    },
+    customer() {
+      return this.orderInfo.customerInfo || {};
     },
   },
   methods: {

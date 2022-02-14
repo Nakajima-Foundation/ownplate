@@ -156,6 +156,17 @@ export default ({ app }) => {
       forceArray(arr) {
         return Array.isArray(arr) ? arr : [arr];
       },
+      convOrderStateForText(orderState, orderInfo) {
+        if (orderInfo?.isEC) {
+          if (orderState === "ready_to_pickup") {
+            return "ready_to_shipping";
+          }
+          if (orderState === "transaction_complete") {
+            return "shipping_complete";
+          }
+        }
+        return orderState;
+      },
       getOrderItems(orderInfo, menuObj) {
         if (orderInfo.order && orderInfo.menuItems) {
           return Object.keys(orderInfo.order).reduce((tmp, menuId) => {
@@ -297,7 +308,10 @@ export default ({ app }) => {
         return this.regionalSetting.FeatureHeroTablet[
           this.isLocaleJapan ? "ja" : "en"
         ];
-      }
+      },
+      gmapKey() {
+        return process.env.gapikey;
+      },
     }
   });
 }
