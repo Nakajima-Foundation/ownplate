@@ -12,7 +12,7 @@
           class="text-xs font-bold rounded p-1 text-center"
           :class="statusKey"
         >
-          {{ $t("order.status." + statusKey) }}
+          {{ $t("order.status." + convOrderStateForText(statusKey, order)) }}
         </div>
       </div>
 
@@ -80,7 +80,7 @@
           class="text-xs font-bold rounded p-1 text-center"
           :class="statusKey"
         >
-          {{ $t("order.status." + statusKey) }}
+          {{ $t("order.status." + convOrderStateForText(statusKey, order)) }}
         </div>
       </div>
 

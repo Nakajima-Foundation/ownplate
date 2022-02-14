@@ -2,11 +2,22 @@
   <div class="wrapper" @click="enableSound()">
     <!-- ### The commentout below is for Tailwind CSS workaround. ### -->
 
-    <!-- w-4 h-4 w-9 h-9 w-12 h-12 w-16 h-16 w-20 h-20 w-24 h-24 w-32 h-32 w-48 h-48 w-72 w-full h-full -->
-    <!-- mx-2 mx-4 mt-1 mt-2 mt-4 mb-1 mb-2 mb-8 ml-1 ml-2 ml-4 mr-1 mr-2 mr-4 -->
-    <!-- p-0 p-1 p-2 p-4 px-1 px-2 px-3 px-4 py-1 py-2 py-3 pt-0 pt-2 pt-3 pt-4 pt-6 pl-6 pb-2 pb-4 pb-6 -->
+    <!-- h-1 h-2 h-3 h-4 h-5 h-6 h-7 h-8 h-9 h-10 h-12 h-13 h-16 h-20 h-24 h-32 h-48 h-52 h-64 h-80 h-full -->
+    <!-- w-1 w-2 w-4 w-6 w-9 w-12 w-16 w-20 w-24 w-32 w-48 w-56 w-64 w-72 w-200 w-288 w-500 w-full -->
+    <!-- m-1 m-3 m-4 m-5 m-6 m-auto -->
+    <!-- mx-0 mx-1 mx-2 mx-4 mx-6 mx-auto -->  
+    <!-- mt-0 mt-1 mt-2 mt-3 mt-4 mt-6 mt-8 mt-auto -->
+    <!-- mb-0 mb-1 mb-2 mb-4 mb-8 mb-auto -->
+    <!-- ml-0 ml-1 ml-2 ml-4 ml-auto -->
+    <!-- mr-0 mr-1 mr-2 mr-4 my-6 my-auto -->
+    <!-- p-0 p-1 p-2 p-4 p-6 -->
+    <!-- px-1 px-2 px-3 px-4 px-6 px-8 -->
+    <!-- py-1 py-2 py-3 py-4 py-6 py-8 -->
+    <!-- pt-0 pt-2 pt-3 pt-4 pt-6 -->
+    <!-- pl-4 pl-6 -->
+    <!-- pr-2 pr-4 pr-6  -->
+    <!-- pb-2 pb-4 pb-5 pb-6 -->
     <!-- lg:mx-0 lg:mx-4 lg:mx-auto lg:mx-6 lg:mt-0 lg:mt-6 lg:ml-4 lg:mr-4 lg:max-w-sm lg:max-w-2xl -->
-
     <!-- object-cover rounded rounded-md rounded-lg rounded-full rounded-r lg:rounded-lg -->
     <!-- border-solid border-2 border-t-2 -->
     <!-- border-black border-red-700 -->
@@ -55,7 +66,7 @@
       </div>
       <div class="flex-1 text-center">
         <router-link to="/">
-          <img class="h-6" :src="`/${this.logo}`" />
+          <img :class="this.logoClass" :src="`/${this.logo}`" />
         </router-link>
       </div>
       <div class="w-12"></div>
@@ -319,6 +330,7 @@ import { releaseConfig } from "~/plugins/config.js";
 import DialogBox from "~/components/DialogBox";
 import AudioPlay from "./AudioPlay";
 import * as Sentry from "@sentry/browser";
+import { ownPlateConfig } from "@/config/project";
 
 export default {
   components: {
@@ -343,8 +355,6 @@ export default {
       ],
       unregisterAuthObserver: null,
       timerId: null,
-      logo: "",
-      logo2: "",
       // todo support scrset https://kanoto.info/201912/673/
       // srcset: regionalSetting.Logo.map((logo) => {}
 
@@ -405,7 +415,34 @@ export default {
     },
     home_path() {
       return this.isAdmin ? "/admin/restaurants/" : "/r";
-    }
+    },
+    restaurant() {
+      return this.$route.params.restaurantId;
+    },
+    specialLogo() {
+      return {
+        "5OInKqrhlpe7LHYNYXuU": {
+          class: "h-8",
+          image: "kuuya-logo.jpg",
+        },
+      };
+    },
+    logoClass() {
+      if (this.restaurant && this.specialLogo[this.restaurant]) {
+        return this.specialLogo[this.restaurant].class;
+      }
+      return "h-6";
+    },
+    logo() {
+      if (this.restaurant && this.specialLogo[this.restaurant]) {
+        return this.specialLogo[this.restaurant].image;
+      } else {
+        return this.regionalSetting.Logo;
+      }
+    },
+    logo2() {
+      return this.regionalSetting.Logo2;
+    },
   },
   methods: {
     flash() {
@@ -485,15 +522,7 @@ export default {
     } else {
       this.$store.commit("setFirefoxPBM", null);
     }
-    const systemGetConfig = functions.httpsCallable("systemGetConfig");
-    systemGetConfig()
-      .then(result => {
-        this.$store.commit("setServerConfig", result.data);
-      })
-      .catch(error => {
-        console.error("systemGetConfig", error);
-        Sentry.captureException(error);
-      });
+    this.$store.commit("setServerConfig", {region: ownPlateConfig.region});
     this.unregisterAuthObserver = auth.onAuthStateChanged(async user => {
       if (user) {
         console.log(
@@ -566,8 +595,6 @@ export default {
     }
     this.language = this.regionalSetting.defaultLanguage;
     this.languages = this.regionalSetting.languages;
-    this.logo = this.regionalSetting.Logo;
-    this.logo2 = this.regionalSetting.Logo2;
 
     this.timerId = window.setInterval(() => {
       this.$store.commit("updateDate");
