@@ -5,6 +5,10 @@ import * as StripeCustomer from "../..//stripe/customer";
 
 const db = admin.firestore();
 
-export default functions.https.onCall(async (data, context) => {
+export default functions
+  .runWith({
+    memory: "1GB" as "1GB",
+  })    
+  .https.onCall(async (data, context) => {
   return await StripeCustomer.deleteCard(db, data, context);
 });

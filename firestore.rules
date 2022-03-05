@@ -39,7 +39,15 @@ service cloud.firestore {
       let parantUid = get(/databases/$(database)/documents/restaurants/$(restaurantId)).data.uid;
       return (restaurantId in get(/databases/$(database)/documents/admins/$(parantUid)/children/$(request.auth.uid)).data.restaurantLists) && parantUid == request.auth.token.parentUid;
     }
-
+    function isGroupOwnerForRestaurant(resource, request) {
+      return isGroupOwner(resource.data.uid, request);
+    }
+    function isGroupOwnerForOrder(resource, request) {
+      return isGroupOwner(resource.data.ownerUid, request);
+    }
+    function isGroupOwner(userId, request) {
+      return get(/databases/$(database)/documents/admins/$(userId)/groups/data).data.groupId == request.auth.token.groupId
+    }
     function isUndefined(data, field) {
       return !data.keys().hasAll([field]);
     }
@@ -84,6 +92,8 @@ service cloud.firestore {
       allow read: if request.auth.uid == userId;
       allow read: if isSuper(request);
 
+      allow read: if isGroupOwner(userId, request)
+
       allow write: if isSuper(request);
       match /public/{document=**} {
         allow read: if true;
@@ -118,7 +128,7 @@ service cloud.firestore {
     }
     match /owners/{ownerId} {
       // Note: we don't want to allow the user to "update"
-      allow write: if request.auth.uid == userId && isUndefined(request.resource.data, 'admin')
+      allow write: if request.auth.uid == ownerId && isUndefined(request.resource.data, 'admin')
               && isUndefined(request.resource.data, 'operator');
       allow read: if true
     }
@@ -129,6 +139,7 @@ service cloud.firestore {
       allow read: if isOperator(request);
       allow read: if isOwner(resource, request);
       allow read: if isResuaurantOwner(resource, request);
+      allow read: if isGroupOwnerForOrder(resource, request);
     }
     match /{path=**}/stripeLogs/{logId} {
       allow read: if isSuper(request);
@@ -273,6 +284,10 @@ service cloud.firestore {
     }
     match /{path=**}/phoneLog/{orderId} {
         allow read: if isSuper(request);
+    }
+    match /{path=**}/groups/{data} {
+        allow read: if isSuper(request);
+        allow read: if resource.data.groupId == request.auth.token.groupId;
     }
     match /{document=**} {
       allow read, write: if false;

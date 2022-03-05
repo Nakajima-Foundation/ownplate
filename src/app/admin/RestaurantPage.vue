@@ -220,7 +220,7 @@
                 :center="isSetMapLocation ? maplocation : { lat: 35.6809591, lng: 139.7673068 }"
                 :options="{ fullscreenControl: false }"
                 :zoom="18"
-                style="width: 100%; height: 160px"
+                style="width: 100%; height: 240px; position: relative; overflow: hidden;"
                 @loaded="hello"
                 @click="gmapClick"
                 >

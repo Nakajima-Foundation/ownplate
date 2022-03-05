@@ -2,29 +2,16 @@
   <div class="bg-white rounded-lg shadow">
     <!-- Location -->
     <div v-if="hasLocation">
-      <div class="mt-2 mx-6 h-48">
-        <GMapMap
-          :center="{ lat: shopInfo.location.lat, lng: shopInfo.location.lng }"
-          :options="{ fullscreenControl: false, styles: 'mapStyle' }"
-          :zoom="18"
-          style="width: 100%; height: 100%"
-          v-if="hasLocation"
-          >
-          <GMapMarker :position="{lat: shopInfo.location.lat, lng: shopInfo.location.lng}"
-                    />
-        </GMapMap>
+      <div>
+        <a target="_blank" :href="mapQuery">
+          <img :src="`https://maps.googleapis.com/maps/api/staticmap?center=${shopInfo.location.lat},${shopInfo.location.lng}&zoom=16&size=800x${mapWidth}&scale=2&maptype=roadmap&markers=color:red%7Clabel:G%7C${shopInfo.location.lat},${shopInfo.location.lng}&key=${gmapKey}`"
+                class="w-full object-cover lg:rounded-lg "
+               />
+        </a>
       </div>
       <div class="mt-4 mx-4 pb-2">
         <a
-          target="_blank"
-          :href="
-            'https://www.google.com/maps/search/?api=1&query=' +
-              this.shopInfo.location.lat +
-              ',' +
-              this.shopInfo.location.lng +
-              '&query_place_id=' +
-              this.shopInfo.place_id
-          "
+          target="_blank" :href="mapQuery"
         >
           <a class="inline-flex justify-center items-center">
             <i class="material-icons text-lg text-op-teal mr-2">place</i>
@@ -261,6 +248,16 @@ export default {
     };
   },
   computed: {
+    mapWidth() {
+      // two rows
+      if (window.innerWidth > 1024) {
+        return 200;
+      }
+      if (window.innerWidth > 600) {
+        return 150;
+      }
+      return 300;
+    },
     dispTemporaryClosure() {
       const now = Date.now();
       return (this.shopInfo.temporaryClosure || []).filter(day => {
@@ -357,7 +354,15 @@ export default {
         this.$emit("noAvailableTime", true);
         return this.$t("shopInfo.noAvailableTime");
       }
-    }
+    },
+    mapQuery() {
+      return 'https://www.google.com/maps/search/?api=1&query=' +
+        this.shopInfo.location.lat +
+        ',' +
+        this.shopInfo.location.lng +
+        '&query_place_id=' +
+        this.shopInfo.place_id
+    },
   },
   methods: {
     toggleMoreInfo() {
