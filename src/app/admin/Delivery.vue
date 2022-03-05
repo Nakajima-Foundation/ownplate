@@ -1,16 +1,22 @@
 <template>
 
 <div class="mt-4 mx-6">
-    <div class="mt-4">
-        <div class="text-sm font-bold pb-2">
-          {{ $t("delivery.areaSetting") }}
-        </div>
+    <div class="bg-black bg-opacity-5 rounded-lg p-4">
+      <div class="text-sm font-bold">
+        <b-checkbox v-model="enableDelivery" />自社デリバリーを有効にする
+      </div>
     </div>
-
+    
+    
     <!-- area map -->
-    <div class="mt-4">
+    <div class="bg-black bg-opacity-5 rounded-lg p-4 mt-4">
+      <div class="text-lm font-bold pb-2">
+        {{ $t("delivery.areaSetting") }}
+      </div>
+
+      <div>
         <div class="text-sm font-bold pb-2 flex">
-          <b-checkbox v-model="enableAreaMap" />
+          <b-checkbox v-model="enableAreaMap" :disabled="!enableDelivery" />
           {{ $t("delivery.setAreaMap") }}
         </div>
         <div>
@@ -31,36 +37,88 @@
           </span>
           <span class="flex-item mt-auto mb-auto inline-block mr-2">
             <input v-model="radius"
-                   :disabled="!enableAreaMap"
+                   :disabled="!enableAreaMap || !enableDelivery"
                    /> m
           </span>
           <b-button
             class="h-12 rounded-full bg-op-teal inline-flex justify-center items-center px-6 shadow"
             style="min-width:8rem;"
-            :disabled="!enableAreaMap"
+            :disabled="!enableAreaMap || !enableDelivery"
             @click="updateCircle">
             <span class="text-white text-base font-bold">
               {{ $t("delivery.updateDeliveryRange") }}
             </span>
           </b-button>
         </div>
+      </div>
+      <!-- area text -->
+      <div class="mt-4">
+        <div class="text-sm font-bold pb-2 flex">
+          <b-checkbox v-model="enableAreaText" :disabled="!enableDelivery" />
+          {{ $t("delivery.setAreaText") }}
+        </div>
+        
+        <b-input
+          v-model="areaText"
+          type="textarea"
+          :placeholder="$t('delivery.areaTextExample')"
+          :disabled="!enableAreaText || !enableDelivery"
+          >
+        </b-input>
+      </div>
     </div>
-    <!-- area text -->
-    <div class="mt-4">
-      <div class="text-sm font-bold pb-2 flex">
-        <b-checkbox v-model="enableAreaText" />
-        {{ $t("delivery.setAreaText") }}
+
+   <div class="bg-black bg-opacity-5 rounded-lg p-4 mt-4">
+      <div class="text-lm font-bold pb-2">
+         {{ $t("delivery.deliveryThreshold") }}:
+      </div>
+     <div class="flex mt-2">
+       <b-checkbox v-model="enableDeliveryThreshold" :disabled="!enableDelivery" />
+       <span class="flex-item mt-auto mb-auto inline-block mr-2">
+         <input v-model="deliveryThreshold"
+                :disabled="!enableDelivery"
+                /> 円
+       </span>
+     </div>
+     <div class="text-sm">
+       * 商品の合計金額がこの価格を超えた場合に、配達の受付を可能とします。
+     </div>
+   </div>
+
+   <div class="bg-black bg-opacity-5 rounded-lg p-4 mt-4">
+      <div class="text-lm font-bold pb-2">
+        {{ $t("delivery.deliveryFeeSetting") }}
+      </div>
+      <div class="flex mt-2">
+        <span class="flex-item mt-auto mb-auto inline-block mr-2 font-bold">
+          {{ $t("delivery.deliveryFee") }}:
+        </span>
+        <span class="flex-item mt-auto mb-auto inline-block mr-2">
+          <input v-model="deliveryFee"
+                 :disabled="!enableDelivery"
+                 /> 円
+        </span>
+      </div>
+      <div class="text-sm">
+        * 配達料金を必要としない場合には0円としてください。
       </div>
 
-      <b-input
-        v-model="areaText"
-        type="textarea"
-        :placeholder="$t('delivery.areaTextExample')"
-        :disabled="!enableAreaText"
-        >
-    </b-input>
+      <div class="flex mt-2">
+        <b-checkbox v-model="enableDeliveryFree" :disabled="!enableDelivery" />
+        <span class="flex-item mt-auto mb-auto inline-block mr-2 font-bold">
+          {{ $t("delivery.deliveryFreeThreshold") }}:
+        </span>
+        <span class="flex-item mt-auto mb-auto inline-block mr-2">
+          <input v-model="deliveryFreeThreshold"
+                 :disabled="!enableDelivery"
+                 /> 円
+        </span>
+      </div>
+      <div class="text-sm">
+        * 商品の合計金額がこの価格を超えた場合に、自動的に配達料金を0円とします。
+      </div>
     </div>
-
+    
     <!-- Save Button -->
     <div class="mt-4 text-center">
       <b-button
@@ -89,10 +147,16 @@ import { db, firestore } from "~/plugins/firebase.js";
 export default {
   data() {
     return {
+      enableDelivery: false,
+      enableDeliveryFree: false,
+      enableDeliveryThreshold: false,
       enableAreaMap: true,
       enableAreaText: false,
       notFound: null,
       shopInfo: {},
+      deliveryFee: 0,
+      deliveryFreeThreshold: 8000,
+      deliveryThreshold: 3000,
       markers: [],
       circles: [],
       radius: 500,
@@ -118,12 +182,18 @@ export default {
     const restaurant_data = restaurant.data();
     this.shopInfo = Object.assign({}, this.shopInfo, restaurant_data);
     const location = this.shopInfo.location;
+    this.enableDelivery = this.shopInfo.enableDelivery || false;
     
     const deliveryDoc = await db.doc(`restaurants/${this.restaurantId()}/delivery/area`).get();
     if (deliveryDoc.exists) {
       const data = deliveryDoc.data();
       this.enableAreaMap = data.enableAreaMap;
       this.enableAreaText = data.enableAreaText;
+      this.enableDeliveryFree = data.enableDeliveryFree || this.enableDeliveryFree;
+      this.enableDeliveryThreshold = data.enableDeliveryThreshold || this.enableDeliveryThreshold;
+      this.deliveryFee = data.deliveryFee || this.deliveryFee;
+      this.deliveryFreeThreshold = data.deliveryFreeThreshold || this.deliveryFreeThreshold;
+      this.deliveryThreshold = data.deliveryThreshold || this.deliveryThreshold;
       this.radius = data.radius;
       this.areaText = data.areaText;
     }
@@ -135,14 +205,22 @@ export default {
   },
   methods: {
     async saveDeliveryArea() {
+      await db.doc(`restaurants/${this.restaurantId()}`).update({enableDelivery: this.enableDelivery});
+      
       const data = {
         enableAreaMap: this.enableAreaMap,
         enableAreaText: this.enableAreaText,
         radius: this.radius,
         areaText: this.areaText,
+        enableDeliveryFree: this.enableDeliveryFree,
+        enableDeliveryThreshold: this.enableDeliveryThreshold,
+        deliveryFee: this.deliveryFee,
+        deliveryFreeThreshold: this.deliveryFreeThreshold,
+        deliveryThreshold: this.deliveryThreshold,
         uid: this.uid
       };
       await db.doc(`restaurants/${this.restaurantId()}/delivery/area`).set(data);
+      this.$router.push("/admin/restaurants/" + this.restaurantId());
     },
     mapLoaded() {
       if (this.shopInfo && this.shopInfo.location) {
