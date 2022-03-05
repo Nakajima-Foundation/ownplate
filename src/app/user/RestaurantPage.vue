@@ -75,6 +75,43 @@
 
           <!-- Right -->
           <div>
+            <div class="mx-6 mt-2 lg:mx-0" v-if="shopInfo.enableDelivery">
+              <div class="bg-white rounded-lg shadow">
+                <div class="p-4">
+                  <div class="text-ms font-bold">
+                    受け取り方法
+                  </div>
+                  <div>
+                    <b-radio
+                      name="howtoreceive"
+                      v-model="howtoreceive"
+                      native-value="takeout"
+                      >
+                      テイクアウト
+                    </b-radio>
+                    <b-radio
+                      name="howtoreceive"
+                      v-model="howtoreceive"
+                      native-value="delivery"
+                      >
+                      デリバリー
+                    </b-radio>
+                  </div>
+                  <div>
+                    <div v-if="deliveryData.enableDeliveryThreshold">
+                      デリバリーは合計{{deliveryData.deliveryThreshold}}円以上の注文から可能。
+                    </div>
+                    <div v-if="deliveryData.deliveryFee > 0">
+                      配送料が{{deliveryData.deliveryFee}}円かかります。
+                      <span v-if="deliveryData.enableDeliveryFree">
+                        {{deliveryData.deliveryFreeThreshold}}円以上で配送料無料
+                      </span>
+                    </div>
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
             <div class="mx-6 mt-2 lg:mx-0">
               <template v-for="(title, key) in titleLists">
                 <a :href="`#${title.id}`"
@@ -143,13 +180,14 @@
       <b-button
         v-if="0 != totalQuantities"
         :loading="isCheckingOut"
-        :disabled="isCheckingOut || noPaymentMethod || noAvailableTime"
+        :disabled="isCheckingOut || noPaymentMethod || noAvailableTime || cantDelivery"
         @click="handleCheckOut"
         class="b-reset-tw"
         style="width: 18rem; position: fixed; z-index: 10; bottom: 2rem; left: 50%; margin-left: -9rem;"
       >
         <div
-          class="inline-flex justify-center items-center h-20 w-72 rounded-full bg-op-teal shadow-lg"
+          class="inline-flex justify-center items-center w-72 rounded-full bg-op-teal shadow-lg"
+          :class="shopInfo.enableDelivery ? 'pt-2 pb-2' : 'h-20'"
         >
           <template v-if="noPaymentMethod">
             <div class="text-white text-base font-bold">
@@ -162,12 +200,49 @@
               {{ $t("shopInfo.noAvailableTime") }}
             </div>
           </template>
-
+          
           <template v-else="!noPaymentMethod">
             <div class="inline-flex flex-col justify-center items-center">
+              <!-- delivery -->
+              <template
+                v-if="shopInfo.enableDelivery && cantDelivery && deliveryData.enableDeliveryThreshold"
+                >
+                <div
+                  class="inline-flex justify-center items-center text-white text-base font-bold"
+                  >
+                  {{deliveryData.deliveryThreshold}}円以上で配送可能
+                </div>
+                <div
+                  class="inline-flex justify-center items-center text-white text-base font-bold"
+                  >
+                  あと{{diffDeliveryThreshold}}円
+                </div>
+              </template>
+              <template
+                v-else-if="deliveryData.enableDeliveryFree && !isDeliveryFree">
+                <div
+                  class="inline-flex justify-center items-center text-white text-base font-bold"
+                  >
+                  {{deliveryData.deliveryFreeThreshold}}円以上で配送料無料
+                </div>
+                <div
+                  class="inline-flex justify-center items-center text-white text-base font-bold"
+                  >
+                  あと{{diffDeliveryFreeThreshold}}円
+                </div>
+              </template>
               <div
                 class="inline-flex justify-center items-center text-white text-base font-bold"
-              >
+                v-if="shopInfo.enableDelivery"
+                >
+                <div class="mr-2">
+                  配送料:{{isDeliveryFree ? 0 : deliveryData.deliveryFee}}円(税込み)
+                </div>
+              </div>
+              <!-- total and price -->
+              <div
+                class="inline-flex justify-center items-center text-white text-base font-bold"
+                >
                 <div class="mr-2">
                   {{
                     $tc("sitemenu.orderCounter", totalQuantities, {
@@ -272,10 +347,13 @@ export default {
       selectedOptionsPrev: {}, // from the store.cart
       restaurantsId: this.restaurantId(),
       shopInfo: {},
+      deliveryData: {},
       menus: [],
       titles: [],
       waitForUser: false,
 
+      howtoreceive: "takeout",
+      
       detacher: [],
       notFound: null,
 
@@ -348,6 +426,13 @@ export default {
         }
       });
     this.detacher = [restaurant_detacher, menu_detacher, title_detacher];
+
+    db.doc(`restaurants/${this.restaurantId()}/delivery/area`).get().then((deliveryDoc) => {
+      if (deliveryDoc.exists) {
+        this.deliveryData = deliveryDoc.data();
+      }
+    });
+    
   },
   destroyed() {
     if (this.detacher) {
@@ -511,6 +596,27 @@ export default {
     },
     menuId() {
       return this.$route.params.menuId;
+    },
+    diffDeliveryThreshold() {
+      return this.deliveryData.deliveryThreshold - (this.totalPrice.total || 0);
+    },
+    diffDeliveryFreeThreshold() {
+      return this.deliveryData.deliveryFreeThreshold - (this.totalPrice.total || 0);
+    },
+    isDeliveryFree() {
+      if (this.shopInfo.enableDelivery && this.deliveryData.enableDeliveryFree) {
+        return (this.totalPrice.total || 0) >= this.deliveryData.deliveryFreeThreshold;
+      }
+      return false;
+    },
+    cantDelivery() {
+      if (!this.shopInfo.enableDelivery) {
+        return false;
+      }
+      if (this.deliveryData.enableDeliveryThreshold) {
+        return (this.totalPrice.total || 0) < this.deliveryData.deliveryThreshold
+      }
+      return false;
     },
     noPaymentMethod() {
       // MEMO: ignore hidePayment. No longer used
