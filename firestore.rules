@@ -256,6 +256,10 @@ service cloud.firestore {
             }
         }
     }
+    match /smaregiData/{contractId}/stores/{storeId}/smaregiProducts/{productId} {
+        allow read: if isAdmin(request) && isSmaregiOwner(contractId, request);
+        allow write: if false // only server side of function can update stock from smaregi (see T.B.D.)
+    }
 
     match /requestList/{restaurantId} {
       allow read, write: if isAdmin(request) && isRestaurantOwner(restaurantId, request);
