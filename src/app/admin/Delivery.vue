@@ -214,9 +214,9 @@ export default {
         areaText: this.areaText,
         enableDeliveryFree: this.enableDeliveryFree,
         enableDeliveryThreshold: this.enableDeliveryThreshold,
-        deliveryFee: this.deliveryFee,
-        deliveryFreeThreshold: this.deliveryFreeThreshold,
-        deliveryThreshold: this.deliveryThreshold,
+        deliveryFee: Number(this.deliveryFee || 0),
+        deliveryFreeThreshold: Number(this.deliveryFreeThreshold || 0),
+        deliveryThreshold: Number(this.deliveryThreshold || 0),
         uid: this.uid
       };
       await db.doc(`restaurants/${this.restaurantId()}/delivery/area`).set(data);

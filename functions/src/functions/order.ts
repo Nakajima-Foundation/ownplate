@@ -398,7 +398,6 @@ export const wasOrderCreated = async (db, data: any, context) => {
       console.log("invalid order:" + String(orderId));
       throw new functions.https.HttpsError("invalid-argument", "This order does not exist.");
     }
-
     const multiple = utils.getStripeRegion().multiple; //100 for USD, 1 for JPY
 
     const { newOrderData, newItems, newPrices, food_sub_total, alcohol_sub_total } = await createNewOrderData(restaurantRef, orderRef, orderData, multiple);
@@ -418,6 +417,17 @@ export const wasOrderCreated = async (db, data: any, context) => {
 
     const accountingResult = orderAccounting(restaurantData, food_sub_total, alcohol_sub_total, multiple);
 
+    const deliveryData = orderData.isDelivery ? await utils.get_restaurant_delivery_area(db, restaurantId) : {};
+    const deliveryFee = (() => {
+      if (orderData.isDelivery) {
+        if (deliveryData.enableDeliveryFree && (deliveryData.deliveryFreeThreshold <= accountingResult.total)) {
+          return 0;
+        }
+        return deliveryData.deliveryFee || 0
+      }
+      return 0;
+    })();
+
     await createCustomer(db, customerUid, context.auth.token.phone_number);
 
     return orderRef.update({
@@ -429,7 +439,8 @@ export const wasOrderCreated = async (db, data: any, context) => {
       sub_total: accountingResult.sub_total,
       tax: accountingResult.tax,
       inclusiveTax: accountingResult.inclusiveTax,
-      total: accountingResult.total,
+      deliveryFee,
+      total: accountingResult.total + deliveryFee,
       accounting: {
         food: {
           revenue: accountingResult.food_sub_total,
