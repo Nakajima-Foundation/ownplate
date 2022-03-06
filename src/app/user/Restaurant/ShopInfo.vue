@@ -56,7 +56,7 @@
       <!-- Minimum Available Time -->
       <div class="mt-2 px-4 py-2 rounded-lg bg-blue-500 bg-opacity-10" v-if="!shopInfo.isEC">
         <div class="text-sm font-bold">
-          {{ $t("shopInfo.minimumAvailableTime") }}
+          {{  $t("shopInfo." + (isDelivery ? "delivery" : "takeout")) }}:{{ $t("shopInfo.minimumAvailableTime") }}
         </div>
         <div class="text-sm">
           {{ minimumAvailableTime }}
@@ -235,7 +235,11 @@ export default {
     paymentInfo: {
       type: Object,
       required: true
-    }
+    },
+    isDelivery: {
+      type: Boolean,
+      required: false,
+    },
   },
   data() {
     const d = new Date();
@@ -344,8 +348,10 @@ export default {
       return this.paymentInfo.inStore;
     },
     minimumAvailableTime() {
-      const time = this.availableDays[0]?.times[0]?.display;
-      const date = this.availableDays[0]?.date;
+      // const days = this.availableDays;
+      const days = this.isDelivery ? this.deliveryAvailableDays : this.availableDays;
+      const time = days[0]?.times[0]?.display;
+      const date = days[0]?.date;
       moment.locale(this.$i18n.locale);
       if (!this.isNull(time) && !this.isNull(date)) {
         this.$emit("noAvailableTime", false);
