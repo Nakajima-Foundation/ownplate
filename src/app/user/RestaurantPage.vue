@@ -188,7 +188,7 @@
         <div
           class="inline-flex justify-center items-center w-72 rounded-full bg-op-teal shadow-lg"
           :class="shopInfo.enableDelivery ? 'pt-2 pb-2' : 'h-20'"
-        >
+          >
           <template v-if="noPaymentMethod">
             <div class="text-white text-base font-bold">
               {{ $t("shopInfo.noPaymentMethod") }}
@@ -204,41 +204,43 @@
           <template v-else="!noPaymentMethod">
             <div class="inline-flex flex-col justify-center items-center">
               <!-- delivery -->
-              <template
-                v-if="shopInfo.enableDelivery && cantDelivery && deliveryData.enableDeliveryThreshold"
-                >
+              <template v-if="isDelivery">
+                <template
+                  v-if="shopInfo.enableDelivery && cantDelivery && deliveryData.enableDeliveryThreshold"
+                  >
+                  <div
+                    class="inline-flex justify-center items-center text-white text-base font-bold"
+                    >
+                    {{deliveryData.deliveryThreshold}}円以上で配送可能
+                  </div>
+                  <div
+                    class="inline-flex justify-center items-center text-white text-base font-bold"
+                    >
+                    あと{{diffDeliveryThreshold}}円
+                  </div>
+                </template>
+                <template
+                  v-else-if="deliveryData.enableDeliveryFree && !isDeliveryFree">
+                  <div
+                    class="inline-flex justify-center items-center text-white text-base font-bold"
+                    >
+                    {{deliveryData.deliveryFreeThreshold}}円以上で配送料無料
+                  </div>
+                  <div
+                    class="inline-flex justify-center items-center text-white text-base font-bold"
+                    >
+                    あと{{diffDeliveryFreeThreshold}}円
+                  </div>
+                </template>
                 <div
                   class="inline-flex justify-center items-center text-white text-base font-bold"
+                  v-if="shopInfo.enableDelivery"
                   >
-                  {{deliveryData.deliveryThreshold}}円以上で配送可能
-                </div>
-                <div
-                  class="inline-flex justify-center items-center text-white text-base font-bold"
-                  >
-                  あと{{diffDeliveryThreshold}}円
+                  <div class="mr-2">
+                    配送料:{{isDeliveryFree ? 0 : deliveryData.deliveryFee}}円(税込み)
+                  </div>
                 </div>
               </template>
-              <template
-                v-else-if="deliveryData.enableDeliveryFree && !isDeliveryFree">
-                <div
-                  class="inline-flex justify-center items-center text-white text-base font-bold"
-                  >
-                  {{deliveryData.deliveryFreeThreshold}}円以上で配送料無料
-                </div>
-                <div
-                  class="inline-flex justify-center items-center text-white text-base font-bold"
-                  >
-                  あと{{diffDeliveryFreeThreshold}}円
-                </div>
-              </template>
-              <div
-                class="inline-flex justify-center items-center text-white text-base font-bold"
-                v-if="shopInfo.enableDelivery"
-                >
-                <div class="mr-2">
-                  配送料:{{isDeliveryFree ? 0 : deliveryData.deliveryFee}}円(税込み)
-                </div>
-              </div>
               <!-- total and price -->
               <div
                 class="inline-flex justify-center items-center text-white text-base font-bold"
@@ -618,6 +620,9 @@ export default {
       }
       return false;
     },
+    isDelivery() {
+      return this.howtoreceive === "delivery";
+    },
     noPaymentMethod() {
       // MEMO: ignore hidePayment. No longer used
       return !this.paymentInfo.stripe && !this.paymentInfo.inStore;
@@ -683,7 +688,7 @@ export default {
         status: order_status.new_order,
         uid: this.user.uid,
         ownerUid: this.shopInfo.uid,
-        // isDelivery: true, // for test
+        isDelivery: this.shopInfo.enableDelivery && this.isDelivery,   // true, // for test
         phoneNumber: this.user.phoneNumber,
         name: this.user.displayName,
         updatedAt: firestore.FieldValue.serverTimestamp(),
