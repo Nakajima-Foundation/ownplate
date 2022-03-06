@@ -138,6 +138,14 @@
               </div>
             </div>
 
+            <!-- Notice Delivery -->
+            <div v-if="orderInfo.isDelivery" class="text-center mt-2">
+              <div
+                class="text-base font-bold text-red-700 bg-red-700 bg-opacity-10 rounded-lg p-4  inline-flex">
+                {{ $t("admin.order.deliveryOrder") }}
+              </div>
+            </div>
+            
             <!-- Note for Payment Completion -->
             <div
               v-if="paymentIsNotCompleted"

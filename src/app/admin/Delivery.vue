@@ -3,7 +3,7 @@
 <div class="mt-4 mx-6">
     <div class="bg-black bg-opacity-5 rounded-lg p-4">
       <div class="text-sm font-bold">
-        <b-checkbox v-model="enableDelivery" />自社デリバリーを有効にする
+        <b-checkbox v-model="enableDelivery" />{{  $t("delivery.enableDelivery") }}
       </div>
     </div>
     
@@ -77,11 +77,12 @@
        <span class="flex-item mt-auto mb-auto inline-block mr-2">
          <input v-model="deliveryThreshold"
                 :disabled="!enableDelivery"
-                /> 円
+                 type="number"
+                /> {{ $t("delivery.yen") }}
        </span>
      </div>
      <div class="text-sm">
-       * 商品の合計金額がこの価格を超えた場合に、配達の受付を可能とします。
+       * {{ $t("delivery.deliveryThresholdNotice") }}
      </div>
    </div>
 
@@ -96,11 +97,12 @@
         <span class="flex-item mt-auto mb-auto inline-block mr-2">
           <input v-model="deliveryFee"
                  :disabled="!enableDelivery"
-                 /> 円
+                 type="number"
+                 /> {{ $t("delivery.yen") }}
         </span>
       </div>
       <div class="text-sm">
-        * 配達料金を必要としない場合には0円としてください。
+        * {{ $t("delivery.deliveryFeeSettingNotice") }} 
       </div>
 
       <div class="flex mt-2">
@@ -111,14 +113,34 @@
         <span class="flex-item mt-auto mb-auto inline-block mr-2">
           <input v-model="deliveryFreeThreshold"
                  :disabled="!enableDelivery"
-                 /> 円
+                 type="number"
+                 /> {{ $t("delivery.yen") }}
         </span>
       </div>
       <div class="text-sm">
-        * 商品の合計金額がこの価格を超えた場合に、自動的に配達料金を0円とします。
+         * {{ $t("delivery.deliveryFreeThresholdNotice") }}
       </div>
     </div>
-    
+
+   <div class="bg-black bg-opacity-5 rounded-lg p-4 mt-4">
+     <div class="text-lm font-bold pb-2">
+       {{ $t("editRestaurant.deliveryPreparationTime") }}
+     </div>
+     <div>
+       {{ $t("editRestaurant.preparationTime") }} {{ $t("delivery.reference") }}
+       {{shopInfo.pickUpMinimumCookTime}} {{ $t("editRestaurant.minutes") }}
+     </div>
+     <div>
+       * {{ $t("delivery.preparationTimeNotice") }}
+     </div>
+     <div>
+       {{ $t("editRestaurant.deliveryPreparationTime") }}
+         <input v-model="deliveryMinimumCookTime"
+                :disabled="!enableDelivery"
+                type="number"
+                > {{ $t("editRestaurant.minutes") }}
+     </div>
+   </div>
     <!-- Save Button -->
     <div class="mt-4 text-center">
       <b-button
@@ -157,6 +179,7 @@ export default {
       deliveryFee: 0,
       deliveryFreeThreshold: 8000,
       deliveryThreshold: 3000,
+      deliveryMinimumCookTime: 60,
       markers: [],
       circles: [],
       radius: 500,
@@ -183,7 +206,8 @@ export default {
     this.shopInfo = Object.assign({}, this.shopInfo, restaurant_data);
     const location = this.shopInfo.location;
     this.enableDelivery = this.shopInfo.enableDelivery || false;
-    
+    this.deliveryMinimumCookTime = this.shopInfo.deliveryMinimumCookTime || this. deliveryMinimumCookTime;
+
     const deliveryDoc = await db.doc(`restaurants/${this.restaurantId()}/delivery/area`).get();
     if (deliveryDoc.exists) {
       const data = deliveryDoc.data();
@@ -205,7 +229,10 @@ export default {
   },
   methods: {
     async saveDeliveryArea() {
-      await db.doc(`restaurants/${this.restaurantId()}`).update({enableDelivery: this.enableDelivery});
+      await db.doc(`restaurants/${this.restaurantId()}`).update({
+        enableDelivery: this.enableDelivery,
+        deliveryMinimumCookTime: Number(this.deliveryMinimumCookTime || 0),
+      });
       
       const data = {
         enableAreaMap: this.enableAreaMap,
