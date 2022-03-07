@@ -44,7 +44,7 @@
         </div>
       </div>
 
-      <!-- Postage for EC or delivery -->
+      <!-- Postage for EC -->
       <div v-if="shopInfo.isEC"
            class="border-t-2 border-solid border-black border-opacity-10 mt-4 pt-4">
         <div class="flex">
@@ -57,6 +57,23 @@
             {{ orderInfo.shoppingCost }}
             <div class="text-base">
               {{ $n(actualShippingCost, "currency") }}
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Postage for delivery -->
+      <div v-if="shopInfo.enableDelivery"
+           class="border-t-2 border-solid border-black border-opacity-10 mt-4 pt-4">
+        <div class="flex">
+          <div class="flex-1">
+            <div class="text-base">
+              {{ $t("delivery.deliveryFee") }}
+            </div>
+          </div>
+          <div class="text-right">
+            <div class="text-base">
+              {{ $n(orderInfo.deliveryFee || 0, "currency") }}
             </div>
           </div>
         </div>

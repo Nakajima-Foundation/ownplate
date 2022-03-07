@@ -1,14 +1,8 @@
 import { midNight } from "~/plugins/dateUtils.js";
 import moment from "moment";
 export default {
-  computed: {
-    // public
-    temporaryClosure() {
-      return (this.shopInfo.temporaryClosure || []).map((day) => {
-        return moment(day.toDate()).format("YYYY-MM-DD");
-      });
-    },
-    availableDays() {
+  methods: {
+    getAvailableDays(minimumTime) {
       if (!this.shopInfo.businessDay) {
         return []; // it means shopInfo is empty (not yet loaded)
       }
@@ -17,7 +11,7 @@ export default {
       console.log(this.$store.state.date); // never delete this line;
       const today = now.getDay();
       let suspendUntil = new Date(now);
-      suspendUntil.setMinutes(now.getMinutes() + this.minimumCookTime);
+      suspendUntil.setMinutes(now.getMinutes() + minimumTime);
       if (this.shopInfo.suspendUntil) {
         const specifiedDate = this.shopInfo.suspendUntil.toDate();
         if (specifiedDate > suspendUntil) {
@@ -47,6 +41,20 @@ export default {
         .filter(day => {
           return day.times.length > 0;
         });
+    }
+  },
+  computed: {
+    // public
+    temporaryClosure() {
+      return (this.shopInfo.temporaryClosure || []).map((day) => {
+        return moment(day.toDate()).format("YYYY-MM-DD");
+      });
+    },
+    availableDays() {
+      return this.getAvailableDays(this.minimumCookTime);
+    },
+    deliveryAvailableDays() {
+      return this.getAvailableDays(this.minimumDeliveryTime);
     },
     businessDays() {
       return [7, 1, 2, 3, 4, 5, 6].map(day => {
@@ -72,6 +80,9 @@ export default {
     },
     minimumCookTime() {
       return this.shopInfo.pickUpMinimumCookTime || 25;
+    },
+    minimumDeliveryTime() {
+      return this.shopInfo.deliveryMinimumCookTime || 25;
     },
     daysInAdvance() {
       const tmp = this.isNull(this.shopInfo.pickUpDaysInAdvance)

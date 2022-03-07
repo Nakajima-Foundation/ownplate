@@ -198,7 +198,20 @@ export default {
       const orders = docs
         .map(this.doc2data("order"))
         .filter(a => a.status !== order_status.transaction_hide);
+
+      const customers = {};
+      if (this.shopInfo.isEC || this.shopInfo.enableDelivery) {
+        const ids = orders.map((order) => order.id);
+        await Promise.all(this.arrayChunk(ids, 10).map(async (arr) => {
+          const cuss = await db.collectionGroup("customer").where("orderId", "in", arr).get();
+          cuss.docs.map((cus) => {
+            const data = cus.data();
+            customers[data.orderId] = data;
+          });
+        }));
+      }
       orders.forEach(order => {
+        order.customerInfo = order.customerInfo || customers[order.id] || {};
         order.timePlaced = order.timePlaced.toDate();
         if (order.timeEstimated) {
           order.timeEstimated = order.timeEstimated.toDate();

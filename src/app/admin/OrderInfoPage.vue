@@ -138,6 +138,14 @@
               </div>
             </div>
 
+            <!-- Notice Delivery -->
+            <div v-if="orderInfo.isDelivery" class="text-center mt-2">
+              <div
+                class="text-base font-bold text-red-700 bg-red-700 bg-opacity-10 rounded-lg p-4  inline-flex">
+                {{ $t("admin.order.deliveryOrder") }}
+              </div>
+            </div>
+            
             <!-- Note for Payment Completion -->
             <div
               v-if="paymentIsNotCompleted"
@@ -584,6 +592,7 @@ export default {
       shopInfo: {},
       menuObj: {},
       orderInfo: {},
+      customer: {},
       canceling: false,
       detacher: [],
       cancelPopup: false,
@@ -644,6 +653,11 @@ export default {
           if (order.exists) {
             const order_data = order.data();
             this.orderInfo = order_data;
+            if ((this.orderInfo.isDelivery || this.shopInfo.isEC)) {
+              db.doc(`restaurants/${this.restaurantId()}/orders/${this.orderId}/customer/data`).get().then(doc => {
+                this.customer = doc.data() || this.orderInfo?.customerInfo || {};
+              });
+            }
           } else {
             this.notFound = true;
           }
@@ -866,9 +880,6 @@ export default {
     },
     availableChangeButton() {
       return (this.edited_available_order_info.length !== this.editedAvailableOrders.length) && (this.edited_available_order_info.length > 0)
-    },
-    customer() {
-      return this.orderInfo.customerInfo || {};
     },
   },
   methods: {

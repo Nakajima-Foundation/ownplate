@@ -223,6 +223,15 @@ service cloud.firestore {
           match /system/{document=**} {
             allow read, write: if false;
           }
+          match /customer/data {
+            allow read: if isSuper(request);
+            allow write: if false // only server side of function can write here (see functions/order.ts and stripe/intent.ts)
+            allow read: if isAdmin(request)
+                            && isRestaurantOwner(restaurantId, request);
+            allow read: if isAdmin(request)
+                            && isRestaurantSubAccount(restaurantId, request);
+            allow read: if isUser(request) && isOwner(resource, request);
+          }
         }
         match /lines/{lineId} {
           allow read, write: if isRestaurantOwner(restaurantId, request);
@@ -283,6 +292,13 @@ service cloud.firestore {
       allow read: if false;
     }
     
+    match /{path=**}/customer/{data} {
+        allow read: if isSuper(request);
+        allow read: if isAdmin(request)
+                        && isRestaurantOwner(resource.data.restaurantId, request);
+        allow read: if isAdmin(request)
+                        && isRestaurantSubAccount(resource.data.restaurantId, request);
+    }
     match /{path=**}/records/{eventId} {
         allow read: if isRestaurantOwner(resource.data.restaurantId, request);
     }

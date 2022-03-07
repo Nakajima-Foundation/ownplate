@@ -49,18 +49,27 @@ export default {
     shopInfo: {
       type: Object,
       required: true
-    }
+    },
+    isDelivery: {
+      type: Boolean,
+      required: false,
+    },
+  },
+  computed: {
+    days() {
+      return this.isDelivery ? this.deliveryAvailableDays : this.availableDays;
+    },
   },
   mounted() {
-    if (this.availableDays.length > 0) {
-      this.time = this.availableDays[0].times[0].time;
+    if (this.days.length > 0) {
+      this.time = this.days[0].times[0].time;
     } else {
       this.$emit("notAvailable", true);
     }
   },
   watch: {
     dayIndex(newValue) {
-      this.time = this.availableDays[newValue].times[0].time;
+      this.time = this.days[newValue].times[0].time;
     },
     time() {
       console.log("time changed");
@@ -68,7 +77,7 @@ export default {
   },
   methods: {
     timeToPickup() {
-      const date = this.availableDays[this.dayIndex].date;
+      const date = this.days[this.dayIndex].date;
       date.setHours(this.time / 60);
       date.setMinutes(this.time % 60);
       const ts = firebase.firestore.Timestamp.fromDate(date);

@@ -473,6 +473,7 @@
                 <time-to-pickup
                   v-if="shopInfo.businessDay"
                   :shopInfo="shopInfo"
+                  :isDelivery="orderInfo.isDelivery || false"
                   ref="time"
                   @notAvailable="handleNotAvailable"
                 />
@@ -620,6 +621,7 @@
                 <shop-info
                   :compact="true"
                   :shopInfo="shopInfo"
+                  :isDelivery="orderInfo.isDelivery"
                   :paymentInfo="paymentInfo"
                 />
               </div>
@@ -720,6 +722,7 @@ export default {
       addressList: [],
       cardState: {},
       orderInfo: {},
+      customer: {},
       menuObj: null,
       detacher: [],
       isDeleting: false,
@@ -885,7 +888,6 @@ export default {
         }
       }
       if (this.orderInfo.isDelivery) {
-        console.log(this.customerInfo);
         err['location'] = []
         if (!this.customerInfo.location || !this.customerInfo.location.lat) {
           err['location'].push("validationError.location.noLocation");
@@ -902,9 +904,6 @@ export default {
 
     shippingCost() {
       return costCal(this.postageInfo, this.customerInfo?.prefectureId, this.orderInfo.total);
-    },
-    customer() {
-      return this.orderInfo?.customerInfo || {};
     },
   },
   watch: {
@@ -930,7 +929,6 @@ export default {
         this.shopInfo,
         this.restaurantId()
       );
-      console.log(this.orderItems);
     },
     sendRedunded() {
       analyticsUtil.sendRedunded(
@@ -939,7 +937,6 @@ export default {
         this.shopInfo,
         this.restaurantId()
       );
-      console.log(this.orderItems);
     },
     handleLineAuth() {
       const url = lineAuthURL("/callback/line", {
@@ -954,7 +951,7 @@ export default {
           if (restaurant.exists) {
             const restaurant_data = restaurant.data();
             this.shopInfo = restaurant_data;
-            console.log("*** R", this.shopInfo);
+            // console.log("*** R", this.shopInfo);
             const uid = restaurant_data.uid;
             db.doc(`/admins/${uid}/public/payment`)
               .get().then((snapshot) => {
@@ -966,8 +963,7 @@ export default {
                   this.postageInfo = snapshot.data() || {};
                 });
             }
-            // todo if support delivery
-            if (true) {
+            if (this.shopInfo.enableDelivery) {
               db.doc(`restaurants/${this.restaurantId()}/delivery/area`)
                 .get().then((snapshot) => {
                   this.deliveryInfo = snapshot.data() || {};
@@ -985,7 +981,7 @@ export default {
           async order => {
             const order_data = order.exists ? order.data() : {};
             this.orderInfo = order_data;
-            console.log("*** O", this.orderInfo);
+            // console.log("*** O", this.orderInfo);
             if (this.orderInfo.menuItems) {
               this.menuObj = this.orderInfo.menuItems;
             } else {
@@ -1010,6 +1006,9 @@ export default {
                 this.shopInfo,
                 this.restaurantId()
               );
+            }
+            if ((this.orderInfo.isDelivery || this.shopInfo.isEC) && this.hasCustomerInfo) {
+              this.customer = (await db.doc(`restaurants/${this.restaurantId()}/orders/${this.orderId}/customer/data`).get()).data() || this.orderInfo?.customerInfo || {};
             }
           },
           error => {
