@@ -80,7 +80,7 @@
               <div class="bg-white rounded-lg shadow">
                 <div class="p-4">
                   <div class="text-ms font-bold">
-                    受け取り方法
+                    {{ $t("shopInfo.howToReceive") }}
                   </div>
                   <div>
                     <b-radio
@@ -88,14 +88,14 @@
                       v-model="howtoreceive"
                       native-value="takeout"
                       >
-                      テイクアウト
+                      {{ $t("shopInfo.takeout") }}
                     </b-radio>
                     <b-radio
                       name="howtoreceive"
                       v-model="howtoreceive"
                       native-value="delivery"
                       >
-                      デリバリー
+                      {{ $t("shopInfo.delivery") }}
                     </b-radio>
                   </div>
                   <div>
@@ -108,8 +108,20 @@
                         {{deliveryData.deliveryFreeThreshold}}円以上で配送料無料
                       </span>
                     </div>
-                    
                   </div>
+                  <div v-if="howtoreceive === 'delivery'"
+                       class="mt-2 px-4 py-2 rounded-lg bg-blue-500 bg-opacity-10"
+                       >
+                    配達可能エリア
+                    <div v-if="deliveryData.enableAreaMap">
+                      おおよそお店から{{deliveryData.radius}}m 以内
+                    </div>
+                    <div v-if="deliveryData.enableAreaText">
+                      <pre class="bg-transparent p-0">{{deliveryData.areaText}}</pre>
+                    </div>
+                    詳細は、次の注文画面で表示します
+                  </div>
+                    
                 </div>
               </div>
             </div>

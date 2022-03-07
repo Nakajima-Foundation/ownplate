@@ -541,7 +541,7 @@
                 <div class="mt-6 text-center">
                   <b-button
                     :loading="isPaying"
-                    :disabled="!cardState.complete || notAvailable"
+                    :disabled="!cardState.complete || notAvailable || notSubmitAddress"
                     @click="handlePayment"
                     class="b-reset-tw"
                   >
@@ -576,7 +576,7 @@
                 <div class="mt-4">
                   <b-button
                     :loading="isPlacing"
-                    :disabled="notAvailable"
+                    :disabled="notAvailable || notSubmitAddress"
                     @click="handleNoPayment"
                     class="b-reset-tw"
                   >
@@ -596,6 +596,11 @@
                 </div>
               </div>
 
+              <!-- Error message for ec and delivery -->
+              <div v-if="requireAddress && hasEcError" class="text-center text-red-700 font-bold mt-2">
+                入力が完了していません。確認をしてください。
+              </div>
+            
               <!-- Send SMS Checkbox -->
               <div v-if="!isLineEnabled" class="mt-6">
                 <div class="bg-black bg-opacity-5 rounded-lg p-4">
@@ -893,8 +898,6 @@ export default {
           err['location'].push("validationError.location.noLocation");
         }
       }
-      // TODO delivery validation 
-      // if delivery, check location
       return err;
     },
     hasEcError() {
@@ -905,7 +908,14 @@ export default {
     shippingCost() {
       return costCal(this.postageInfo, this.customerInfo?.prefectureId, this.orderInfo.total);
     },
+    requireAddress() {
+      return this.shopInfo.isEC || this.orderInfo.isDelivery;
+    },
+    notSubmitAddress() {
+      return this.requireAddress && this.hasEcError
+    },
   },
+  // end of computed
   watch: {
     isUser() {
       if (this.isUser) {
@@ -1056,7 +1066,7 @@ export default {
       });
     },
     async handlePayment() {
-      if (this.shopInfo.isEC && this.hasEcError) {
+      if (this.requireAddress && this.hasEcError) {
         return;
       }
       const timeToPickup = this.shopInfo.isEC ? firebase.firestore.Timestamp.now() : this.$refs.time.timeToPickup();
@@ -1099,7 +1109,7 @@ export default {
       }
     },
     async handleNoPayment() {
-      if (this.shopInfo.isEC && this.hasEcError) {
+      if (this.requireAddress && this.hasEcError) {
         return;
       }
       const timeToPickup = this.shopInfo.isEC ? firebase.firestore.Timestamp.now() : this.$refs.time.timeToPickup();

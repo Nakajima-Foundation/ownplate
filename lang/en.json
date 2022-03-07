@@ -301,6 +301,7 @@
     "noon": "12:00 noon",
     "am": "{formatedTime} AM",
     "pm": "{formatedTime} PM",
+    "howToReceive": "How to receive",
     "closed": "Closed",
     "public": "Public",
     "temporaryClosure": "Temporary Closure",

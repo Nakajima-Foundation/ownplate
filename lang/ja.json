@@ -302,6 +302,7 @@
     "noon": "正午 12:00",
     "am": "午前 {formatedTime}",
     "pm": "午後 {formatedTime}",
+    "howToReceive": "受け取り方法",
     "closed": "定休日",
     "public": "公開",
     "temporaryClosure": "臨時休業",

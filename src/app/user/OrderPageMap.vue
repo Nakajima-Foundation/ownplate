@@ -1,6 +1,9 @@
 <template>
 <div class="h-2/5">
   
+  <div>
+    <b-button @click="conv">{{ $t("delivery.setTheAddressInTheDeliveryLocation") }}</b-button>
+  </div>
   <div
     class="text-xm font-bold text-black text-opacity-30 mt-2">
     {{ $t("delivery.setDeliveryLocation") }}
@@ -12,7 +15,7 @@
     :zoom="15"
     @loaded="mapLoaded"
     @click="gmapClick"
-    style="height: 500px"
+    style="height: 100%"
     ></GMap>
   <div if="estimatedDistance !== null">
     {{ $t("delivery.estimatedDistance") }}: {{estimatedDistance}}m: 
@@ -20,16 +23,13 @@
       {{ $t("delivery.availableDeliveryDistance") }} {{radius}}m
     </div>
   </div>
-  <div>
-    <b-button @click="conv">{{ $t("delivery.setTheAddressInTheDeliveryLocation") }}</b-button>
-  </div>
   
   <div v-if="deliveryInfo.enableAreaText">
     <div
       class="text-xm font-bold text-black text-opacity-30 mt-2">
       {{ $t("delivery.aboutDeliveryArea") }}
     </div>
-    <pre>{{deliveryInfo.areaText}}</pre>
+    <pre class="p-0 mt-2 mb-2 bg-transparent">{{deliveryInfo.areaText}}</pre>
   </div>
   
 </div>
