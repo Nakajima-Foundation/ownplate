@@ -119,6 +119,7 @@ export const place = async (db, data: any, context: functions.https.CallableCont
       const roundedTip = Math.round(_tip * multiple) / multiple;
 
       if (hasCustomer) {
+        // for transaction lock
         await transaction.get(customerRef);
       }
       // transaction for stock orderTotal

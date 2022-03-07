@@ -100,6 +100,7 @@ export const create = async (db: admin.firestore.Firestore, data: any, context: 
       const shippingCost = restaurantData.isEC ? costCal(postage, customerInfo?.prefectureId, order.total) : 0;
       const hasCustomer = restaurantData.isEC || order.isDelivery;
       if (hasCustomer) {
+        // for transaction lock
         await transaction.get(customerRef);
       }
 
