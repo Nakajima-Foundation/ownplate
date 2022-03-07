@@ -66,6 +66,10 @@ service cloud.firestore {
             && request.resource.data.phoneNumber == request.auth.token.phone_number;
         }
       }
+      match /address/data {
+        allow read, write: if request.auth.uid == userId; // Only the person can r/w.
+        allow read, write: if false; // paranoia
+      }
       match /readonly/{document=**} {
         allow read: if request.auth.uid == userId;
       }

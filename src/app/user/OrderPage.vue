@@ -438,6 +438,14 @@
                   </div>
                 </div>
               </template>
+
+              <div>
+                <b-checkbox v-model="isSaveAddress">
+                  <div class="text-sm font-bold">
+                    {{ $t("order.saveAddress") }}
+                  </div>
+                </b-checkbox>
+              </div>
             </div>
 
             <!-- map for delivery -->
@@ -734,6 +742,7 @@ export default {
       isPlacing: false,
       tip: 0,
       sendSMS: true,
+      isSaveAddress: true,
       paymentInfo: {},
       postageInfo: {},
       deliveryInfo: {},
@@ -1017,9 +1026,16 @@ export default {
                 this.restaurantId()
               );
             }
-            if ((this.orderInfo.isDelivery || this.shopInfo.isEC) && this.hasCustomerInfo) {
-              this.customer = (await db.doc(`restaurants/${this.restaurantId()}/orders/${this.orderId}/customer/data`).get()).data() || this.orderInfo?.customerInfo || {};
+            
+            if (this.orderInfo.isDelivery || this.shopInfo.isEC) {
+              if (this.just_validated) {
+                this.customerInfo = {...(await this.loadAddress() || {})};
+              }
+              if (this.hasCustomerInfo) {
+                this.customer = (await db.doc(`restaurants/${this.restaurantId()}/orders/${this.orderId}/customer/data`).get()).data() || this.orderInfo?.customerInfo || {};
+              }
             }
+            // console.log(`/users/${uid}/address/data`);
           },
           error => {
             console.error(error.message);
@@ -1066,9 +1082,15 @@ export default {
       });
     },
     async handlePayment() {
-      if (this.requireAddress && this.hasEcError) {
-        return;
+      if (this.requireAddres) {
+        if (this.hasEcError) {
+          return;
+        }
+        if (this.isSaveAddress) {
+          await this.saveAddress();
+        }
       }
+
       const timeToPickup = this.shopInfo.isEC ? firebase.firestore.Timestamp.now() : this.$refs.time.timeToPickup();
 
       this.isPaying = true;
@@ -1109,8 +1131,13 @@ export default {
       }
     },
     async handleNoPayment() {
-      if (this.requireAddress && this.hasEcError) {
-        return;
+      if (this.requireAddress) {
+        if (this.hasEcError) {
+          return;
+        }
+        if (this.isSaveAddress) {
+          await this.saveAddress();
+        }
       }
       const timeToPickup = this.shopInfo.isEC ? firebase.firestore.Timestamp.now() : this.$refs.time.timeToPickup();
       const orderPlace = functions.httpsCallable("orderPlace");
@@ -1187,6 +1214,14 @@ export default {
         return this.regionalSetting.AddressStates[this.customerInfo?.prefectureId - 1];
       }
       return null;
+    },
+    async saveAddress() {
+      const uid = this.user.uid;
+      await db.doc(`/users/${uid}/address/data`).set(this.customerInfo)
+    },
+    async loadAddress() {
+      const uid = this.user.uid;
+      return (await db.doc(`/users/${uid}/address/data`).get()).data();
     },
     async getAddress() {
       const zip = this.customerInfo['zip'];
