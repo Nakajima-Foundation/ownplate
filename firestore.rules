@@ -292,6 +292,13 @@ service cloud.firestore {
       allow read: if false;
     }
     
+    match /{path=**}/customer/{data} {
+        allow read: if isSuper(request);
+        allow read: if isAdmin(request)
+                        && isRestaurantOwner(resource.data.restaurantId, request);
+        allow read: if isAdmin(request)
+                        && isRestaurantSubAccount(resource.data.restaurantId, request);
+    }
     match /{path=**}/records/{eventId} {
         allow read: if isRestaurantOwner(resource.data.restaurantId, request);
     }

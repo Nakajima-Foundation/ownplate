@@ -74,7 +74,7 @@ export default {
   created() {
     this.detatcher = db
       .collection("requestList")
-      .limit(100)
+      .limit(500)
       .orderBy("created", "desc")
       .onSnapshot(async snapshot => {
         this.requests = snapshot.docs.map(this.doc2data("request"));
@@ -96,12 +96,6 @@ export default {
     this.detatcher && this.detatcher();
   },
   methods: {
-    arrayChunk(arr, size = 1) {
-      const array = [...arr];
-      return array.reduce((current, value, index) => {
-        return index % size ? current : [...current, array.slice(index, index + size)];
-      }, []);
-    },
     enableList(id) {
       db.doc(`restaurants/${id}`).update("onTheList", true);
       const tmp = Object.assign({}, this.restaurantsObj);

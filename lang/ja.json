@@ -491,6 +491,7 @@
     "lastOrder": "前回",
     "thisOrder": "今回",
     "shippingCost": "送料",
+    "isDelivery": "デリバリー",
     "ec": {
       "customerInfo": "お客様情報",
       "formtitle": "配送先",
