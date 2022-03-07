@@ -97,6 +97,7 @@ export const place = async (db, data: any, context: functions.https.CallableCont
   try {
     const restaurantData = await utils.get_restaurant(db, restaurantId);
     const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`);
+    const customerRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}/customer/data`);
 
     const postage = restaurantData.isEC ? await utils.get_restaurant_postage(db, restaurantId) : {};
 
@@ -112,15 +113,29 @@ export const place = async (db, data: any, context: functions.https.CallableCont
       if (order.status !== order_status.validation_ok) {
         throw new functions.https.HttpsError("failed-precondition", "The order has been already placed or canceled");
       }
+      const hasCustomer = restaurantData.isEC || order.isDelivery;
+      
       const multiple = utils.getStripeRegion().multiple; // 100 for USD, 1 for JPY
       const roundedTip = Math.round(_tip * multiple) / multiple;
 
+      if (hasCustomer) {
+        await transaction.get(customerRef);
+      }
       // transaction for stock orderTotal
       await updateOrderTotalDataAndUserLog(db, transaction, customerUid, order.order, restaurantId, restaurantData.uid, timePlaced, true);
       const shippingCost = restaurantData.isEC ? costCal(postage, customerInfo?.prefectureId, order.total) : 0;
       
+      if (hasCustomer) {
+        await transaction.set(customerRef, {
+          ...customerInfo,
+          uid: customerUid,
+          orderId,
+          restaurantId,
+          createdAt: admin.firestore.Timestamp.now(),
+        });
+      }
       // customerUid
-      transaction.update(orderRef, {
+      await transaction.update(orderRef, {
         status: order_status.order_placed,
         totalCharge: order.total + _tip + (shippingCost || 0),
         tip: roundedTip,
@@ -131,7 +146,7 @@ export const place = async (db, data: any, context: functions.https.CallableCont
         timePlaced,
         memo: memo || "",
         isEC: restaurantData.isEC || false,
-        customerInfo: customerInfo || {},
+        // customerInfo: customerInfo || {},
       });
       Object.assign(order, { totalCharge: order.total + _tip + (shippingCost || 0), tip, shippingCost });
       return { success: true, order };
@@ -418,15 +433,7 @@ export const wasOrderCreated = async (db, data: any, context) => {
     const accountingResult = orderAccounting(restaurantData, food_sub_total, alcohol_sub_total, multiple);
 
     const deliveryData = orderData.isDelivery ? await utils.get_restaurant_delivery_area(db, restaurantId) : {};
-    const deliveryFee = (() => {
-      if (orderData.isDelivery) {
-        if (deliveryData.enableDeliveryFree && (deliveryData.deliveryFreeThreshold <= accountingResult.total)) {
-          return 0;
-        }
-        return deliveryData.deliveryFee || 0
-      }
-      return 0;
-    })();
+    const deliveryFee = utils.get_delivery_cost(orderData, deliveryData, accountingResult.total);
 
     await createCustomer(db, customerUid, context.auth.token.phone_number);
 

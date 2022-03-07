@@ -91,12 +91,17 @@ export const create = async (db: admin.firestore.Firestore, data: any, context: 
       const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
       const stripeRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}/system/stripe`);
 
+      const customerRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}/customer/data`);
       const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`);
       const order = await getOrderData(transaction, orderRef);
       if (order.status !== order_status.validation_ok) {
         throw new functions.https.HttpsError("failed-precondition", "This order is invalid.");
       }
       const shippingCost = restaurantData.isEC ? costCal(postage, customerInfo?.prefectureId, order.total) : 0;
+      const hasCustomer = restaurantData.isEC || order.isDelivery;
+      if (hasCustomer) {
+        await transaction.get(customerRef);
+      }
 
       const totalChargeWithTipAndMultipled = Math.round((order.total + Math.max(0, _tip) + (shippingCost || 0)) * multiple);
 
@@ -117,8 +122,19 @@ export const create = async (db: admin.firestore.Firestore, data: any, context: 
         stripeAccount,
       });
       const timePlaced = (timeToPickup && new admin.firestore.Timestamp(timeToPickup.seconds, timeToPickup.nanoseconds)) || admin.firestore.FieldValue.serverTimestamp();
-      await updateOrderTotalDataAndUserLog(db, transaction, customerUid, order.order, restaurantId, customerUid, timePlaced, true);
 
+      // start write transaction
+      await updateOrderTotalDataAndUserLog(db, transaction, customerUid, order.order, restaurantId, customerUid, timePlaced, true);
+      if (hasCustomer) {
+        await transaction.set(customerRef, {
+          ...customerInfo,
+          uid: customerUid,
+          orderId,
+          restaurantId,
+          createdAt: admin.firestore.Timestamp.now(),
+        });
+      }
+      
       const updateData = {
         status: order_status.order_placed,
         totalCharge: totalChargeWithTipAndMultipled / multiple,
@@ -131,7 +147,7 @@ export const create = async (db: admin.firestore.Firestore, data: any, context: 
         description: request.description,
         memo: memo || "",
         isEC: restaurantData.isEC || false,
-        customerInfo: customerInfo || {},
+        // customerInfo: customerInfo || {},
         payment: {
           stripe: "pending",
         },
