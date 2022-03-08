@@ -100,26 +100,27 @@
                   </div>
                   <div>
                     <div v-if="deliveryData.enableDeliveryThreshold">
-                      デリバリーは合計{{deliveryData.deliveryThreshold}}円以上の注文から可能。
+                      {{ $tc('shopInfo.deliveryThresholdNotice', 0, {price: deliveryData.deliveryThreshold}) }}
                     </div>
                     <div v-if="deliveryData.deliveryFee > 0">
-                      配送料が{{deliveryData.deliveryFee}}円かかります。
+                      {{ $tc('shopInfo.deliveryFeeInfo', 0, {price: deliveryData.deliveryFee}) }}
                       <span v-if="deliveryData.enableDeliveryFree">
-                        {{deliveryData.deliveryFreeThreshold}}円以上で配送料無料
+                        {{ $tc('shopInfo.deliveryFeeThresholdInfo', 0, {price: deliveryData.deliveryFreeThreshold}) }}
                       </span>
                     </div>
                   </div>
                   <div v-if="howtoreceive === 'delivery'"
                        class="mt-2 px-4 py-2 rounded-lg bg-blue-500 bg-opacity-10"
                        >
-                    配達可能エリア
+                    {{ $t("shopInfo.deliveryArea") }}
                     <div v-if="deliveryData.enableAreaMap">
-                      おおよそお店から{{deliveryData.radius}}m 以内
+                      {{ $tc('shopInfo.deliveryAreaRadius', 0, { radius: deliveryData.radius}) }}
                     </div>
                     <div v-if="deliveryData.enableAreaText">
                       <pre class="bg-transparent p-0">{{deliveryData.areaText}}</pre>
                     </div>
-                    詳細は、次の注文画面で表示します
+                    {{ $t("shopInfo.deliveryAreaInfo") }} 
+
                   </div>
                     
                 </div>
@@ -224,12 +225,12 @@
                   <div
                     class="inline-flex justify-center items-center text-white text-base font-bold"
                     >
-                    {{deliveryData.deliveryThreshold}}円以上で配送可能
+                    {{ $tc('shopInfo.buttonDeliveryFeeThreshold', 0, {price: $n(deliveryData.deliveryThreshold, "currency") }) }}
                   </div>
                   <div
                     class="inline-flex justify-center items-center text-white text-base font-bold"
                     >
-                    あと{{diffDeliveryThreshold}}円
+                    {{ $tc('shopInfo.buttonDeliveryFeeDiff', 0, {price: $n(diffDeliveryThreshold, "currency")}) }}
                   </div>
                 </template>
                 <template
@@ -237,12 +238,12 @@
                   <div
                     class="inline-flex justify-center items-center text-white text-base font-bold"
                     >
-                    {{deliveryData.deliveryFreeThreshold}}円以上で配送料無料
+                    {{ $tc('shopInfo.deliveryFeeThresholdInfo', 0, {price: $n(deliveryData.deliveryFreeThreshold, "currency") }) }}
                   </div>
                   <div
                     class="inline-flex justify-center items-center text-white text-base font-bold"
                     >
-                    あと{{diffDeliveryFreeThreshold}}円
+                    {{ $tc('shopInfo.buttonDeliveryFeeDiff', 0, {price: $n(diffDeliveryFreeThreshold, "currency")}) }}
                   </div>
                 </template>
                 <div
@@ -250,7 +251,8 @@
                   v-if="shopInfo.enableDelivery"
                   >
                   <div class="mr-2">
-                    配送料:{{isDeliveryFree ? 0 : deliveryData.deliveryFee}}円(税込み)
+                    {{ $tc('shopInfo.buttonDeliveryFee', 0, {price: $n(isDeliveryFree ? 0 : deliveryData.deliveryFee, "currency") }) }}
+                    <span class="text-xs" v-if="!isDeliveryFree && deliveryData.deliveryFee > 0">{{ $tc("tax.include") }}</span>
                   </div>
                 </div>
               </template>
@@ -628,7 +630,8 @@ export default {
       if (!this.shopInfo.enableDelivery) {
         return false;
       }
-      if (this.deliveryData.enableDeliveryThreshold) {
+      
+      if (this.isDelivery && this.deliveryData.enableDeliveryThreshold) {
         return (this.totalPrice.total || 0) < this.deliveryData.deliveryThreshold
       }
       return false;

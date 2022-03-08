@@ -189,9 +189,19 @@
 
       <!-- Before Paid -->
       <div v-else class="mt-4 mx-6">
-        <div class="bg-red-700 bg-opacity-10 rounded-lg p-6 text-center">
+        <div class="bg-red-700 bg-opacity-10 rounded-lg p-4 text-center">
           <div class="text-base font-bold text-red-700">
             {{ $t("order.orderNotPlacedYet") }}
+          </div>
+        </div>
+        <div class="bg-red-700 bg-opacity-10 rounded-lg p-4 text-center mt-4" v-if="shopInfo.enableDelivery">
+          <div class="text-base font-bold text-red-700">
+            <span v-if="orderInfo.isDelivery">
+              {{ $t("order.thisIsDeliveryOrder") }}
+            </span>
+            <span v-else>
+              {{ $t("order.thisIsTakeoutOrder") }}
+            </span>
           </div>
         </div>
       </div>
@@ -606,7 +616,7 @@
 
               <!-- Error message for ec and delivery -->
               <div v-if="requireAddress && hasEcError" class="text-center text-red-700 font-bold mt-2">
-                入力が完了していません。確認をしてください。
+                {{ $t("order.alertReqireAddress") }}
               </div>
             
               <!-- Send SMS Checkbox -->

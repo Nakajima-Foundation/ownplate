@@ -43,10 +43,10 @@
         </b-button>
       </div>
       <div class="text-center mt-2 font-bold">
-        * 個人情報を消去します
+        * {{ $t("profile.resetAddressMessage") }}
       </div>
       <div class="text-center font-bold">
-        変更はデリバリー注文時に行えます
+         {{ $t("profile.resetAddressModify") }}
       </div>
     </div>
   </div>
