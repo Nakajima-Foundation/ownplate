@@ -17,6 +17,8 @@
   "comma": "、",
   "profile": {
     "title": "マイページ",
+    "address": "アドレス",
+    "resetAddress": "リセット",
     "loginStatus": "サインイン状況",
     "displayName": "名前",
     "lineConnection": "LINE連携",
