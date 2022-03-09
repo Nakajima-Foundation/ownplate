@@ -65,6 +65,9 @@
           <!-- Favorites -->
           <favorite-button />
 
+          <!-- Address -->
+          <address-button />
+            
           <!-- Credit Card Info -->
           <div class="mt-6 text-center">
             <div class="text-sm font-bold text-black text-opacity-30">
@@ -205,12 +208,14 @@ import { lineAuthURL } from "~/plugins/line.js";
 
 import HistoryButton from "@/components/users/HistoryButton";
 import FavoriteButton from "@/components/users/FavoriteButton";
+import AddressButton from "@/components/users/AddressButton";
 
 export default {
   components: {
     PhoneLogin,
     HistoryButton,
     FavoriteButton,
+    AddressButton,
   },
   head() {
     return {

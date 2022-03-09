@@ -35,6 +35,11 @@ export const customRoutes = [
     component: "user/Profile.vue"
   },
   {
+    name: "address",
+    path: "/u/address",
+    component: "user/Address.vue"
+  },
+  {
     name: "terms-admin",
     path: "/terms/admin",
     component: "common/TermsAdmin.vue"
