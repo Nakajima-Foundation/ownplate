@@ -301,6 +301,9 @@ export default ({ app }) => {
       isInLine() {
         return /Line/.test(navigator.userAgent);
       },
+      isInLIFF() {
+        return /LIFF/.test(navigator.userAgent);
+      },
       isInFacebook() {
       },
       isInTwitter() {

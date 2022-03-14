@@ -585,13 +585,15 @@ export default {
   },
   async created() {
     console.log(process.env.CIRCLE_SHA1);
-    if (this.isInLine) {
-      if (/\?/.test(window.location.href)) {
-        window.location.href = window.location.href + "&openExternalBrowser=1";
-      } else {
-        window.location.href = window.location.href + "?openExternalBrowser=1";
+    if (!this.isInLIFF) {
+      if (this.isInLine) {
+        if (/\?/.test(window.location.href)) {
+          window.location.href = window.location.href + "&openExternalBrowser=1";
+        } else {
+          window.location.href = window.location.href + "?openExternalBrowser=1";
+        }
+        return;
       }
-      return;
     }
     this.language = this.regionalSetting.defaultLanguage;
     this.languages = this.regionalSetting.languages;
