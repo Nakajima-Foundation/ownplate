@@ -21,9 +21,9 @@ export const ownPlateConfig = {
     search: "https://dashboard.stripe.com/test/search"
   },
   line: {
-    LOGIN_CHANNEL_ID: "1654216149",
+    LOGIN_CHANNEL_ID: "1656180429",
     TRACK_CHANNEL_ID: "1654259709",
-    FRIEND_LINK: "https://lin.ee/30PDYymgm"
+    FRIEND_LINK: "https://page.line.me/800eidxz"
   }
 };
 
