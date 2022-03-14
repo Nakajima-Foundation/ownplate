@@ -326,7 +326,6 @@
 
 <script>
 import { db, auth, functions, analytics } from "@/plugins/firebase.js";
-import { releaseConfig } from "~/plugins/config.js";
 import DialogBox from "~/components/DialogBox";
 import AudioPlay from "./AudioPlay";
 import * as Sentry from "@sentry/browser";
@@ -396,9 +395,6 @@ export default {
         return true; // We are opening the restaurant page
       }
       return false;
-    },
-    underConstruction() {
-      return releaseConfig.underConstruction;
     },
     hasUser() {
       return !this.isNull(this.$store.state.user);

@@ -10,6 +10,7 @@ import { defaultHeader } from "./header";
 import { formatOption } from "~/plugins/strings.js";
 
 import { partners } from "~/plugins/constant";
+import { releaseConfig } from "~/plugins/config.js";
 
 export default ({ app }) => {
   Vue.mixin({
@@ -240,6 +241,9 @@ export default ({ app }) => {
       }, 
     },
     computed: {
+      underConstruction() {
+        return releaseConfig.underConstruction;
+      },
       defaultTitle() {
         return defaultHeader.title;
       },

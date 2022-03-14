@@ -133,8 +133,12 @@
             </div>
 
             <!-- LINE Not Connected -->
-            <div v-else>
+            <div v-if="!isLineUser || underConstruction">
               <div v-if="isLineEnabled" class="mt-4 text-center">
+                <div v-if="isLineUser && underConstruction"
+                     class="text-base font-bold mb-2">
+                  再設定 for Dev
+                </div>
                 <b-button @click="handleLineAuth" class="b-reset-tw">
                   <div
                     class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5"
