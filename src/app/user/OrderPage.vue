@@ -276,6 +276,9 @@
             }}</span>
           </div>
 
+          
+          <span @click="receipt()" >{{ isLoadingReceipt ? "loading receipt" : "receipt" }}</span>
+
           <!-- View Menu Page Button -->
           <div v-if="paid" class="mt-6 text-center">
             <b-button class="b-reset-tw" @click="handleOpenMenu">
@@ -689,7 +692,7 @@ import { db, firestore, functions } from "~/plugins/firebase.js";
 import { order_status, order_status_keys } from "~/plugins/constant.js";
 import { nameOfOrder } from "~/plugins/strings.js";
 import { releaseConfig } from "~/plugins/config.js";
-import { stripeCreateIntent, stripeCancelIntent } from "~/plugins/stripe.js";
+import { stripeCreateIntent, stripeCancelIntent, stripeReceipt } from "~/plugins/stripe.js";
 import { lineAuthURL } from "~/plugins/line.js";
 
 import { costCal } from "~/plugins/commonUtils";
@@ -753,6 +756,7 @@ export default {
       tip: 0,
       sendSMS: true,
       isSaveAddress: true,
+      isLoadingReceipt: false,
       paymentInfo: {},
       postageInfo: {},
       deliveryInfo: {},
@@ -1200,6 +1204,25 @@ export default {
           }
         }
       });
+    },
+    async receipt() {
+      if (this.isLoadingReceipt) {
+        return;
+      }
+      this.isLoadingReceipt = true;
+      try {
+        const res = await stripeReceipt({
+          restaurantId: this.restaurantId(),
+          orderId: this.orderId,
+        });
+        if (res.data && res.data.receipt_url) {
+          window.open(res.data.receipt_url)
+        }
+      } catch (e) {
+        console.log("error");
+      }
+      this.isLoadingReceipt = false;
+      
     },
     updateAddress(address) {
       const { address1, address2, address3, prefectureId, prefecture } = address;

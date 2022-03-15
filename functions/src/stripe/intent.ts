@@ -42,7 +42,7 @@ const getStripeOrderRecord = async (transaction: any, stripeRef: any) => {
   return stripeRecord;
 };
 
-const getStripeAccount = async (db: any, restaurantOwnerUid: string) => {
+export const getStripeAccount = async (db: any, restaurantOwnerUid: string) => {
   const paymentSnapshot = await db.doc(`/admins/${restaurantOwnerUid}/public/payment`).get();
   const stripeAccount = paymentSnapshot.data()?.stripe;
   if (!stripeAccount) {
@@ -200,7 +200,6 @@ export const confirm = async (db: admin.firestore.Firestore, data: any, context:
 
       if (
         order.status !== order_status.order_placed // from 2021-07-17
-        // && order.status !== order_status.order_accepted
       ) {
         // obsolete but backward compability
         throw new functions.https.HttpsError("failed-precondition", "This order is not ready yet.");
