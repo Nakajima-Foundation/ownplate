@@ -203,13 +203,20 @@ export default {
       if (this.shopInfo.isEC || this.shopInfo.enableDelivery) {
         const ids = orders.map((order) => order.id);
         await Promise.all(this.arrayChunk(ids, 10).map(async (arr) => {
-          const cuss = await db.collectionGroup("customer").where("orderId", "in", arr).get();
-          cuss.docs.map((cus) => {
-            const data = cus.data();
-            customers[data.orderId] = data;
-          });
+          try {
+            const cuss = await db.collectionGroup("customer")
+                  .where("restaurantId", "==", this.restaurantId())
+                  .where("orderId", "in", arr).get();
+            cuss.docs.map((cus) => {
+              const data = cus.data();
+              customers[data.orderId] = data;
+            });
+          } catch (e) {
+            console.log(e);
+          }
         }));
       }
+
       orders.forEach(order => {
         order.customerInfo = order.customerInfo || customers[order.id] || {};
         order.timePlaced = order.timePlaced.toDate();

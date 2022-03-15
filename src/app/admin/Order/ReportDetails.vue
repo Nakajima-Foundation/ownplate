@@ -102,7 +102,9 @@ export default {
         (async () => {
           const customers = {...this.customers};
           await Promise.all(this.arrayChunk(ids, 10).map(async (arr) => {
-            const cuss = await db.collectionGroup("customer").where("orderId", "in", arr).get();
+            const cuss = await db.collectionGroup("customer")
+                  .where("restaurantId", "==", this.restaurantId())
+                  .where("orderId", "in", arr).get();
             cuss.docs.map((cus) => {
               const data = cus.data();
               customers[data.orderId] = data;
