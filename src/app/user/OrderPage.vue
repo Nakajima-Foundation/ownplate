@@ -276,9 +276,25 @@
             }}</span>
           </div>
 
+          <!-- Receipt -->
+          <template v-if="paid && hasStripe"> 
+            <div class="bg-white rounded-lg shadow p-4 mt-4">
+              <!-- Details -->
+              <div class="mt-2 text-xl font-bold text-black">
+                {{ $t("order.receipt.receipt") }}
+              </div>
+              <div class="mt-2">
+                <span @click="receipt()" class=" cursor-pointer">{{  $t(isLoadingReceipt ? "order.receipt.loading" : "order.receipt.getReceipt") }}</span>
+              </div>
+              <div class="mt-2 text-xs font-bold">
+                 {{ $t("order.receipt.explain1") }}
+              </div>
+              <div class="text-xs font-bold">
+                 {{ $t("order.receipt.explain2") }}
+              </div>
+            </div>
+          </template>
           
-          <span @click="receipt()" >{{ isLoadingReceipt ? "loading receipt" : "receipt" }}</span>
-
           <!-- View Menu Page Button -->
           <div v-if="paid" class="mt-6 text-center">
             <b-button class="b-reset-tw" @click="handleOpenMenu">
