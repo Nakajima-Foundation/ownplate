@@ -276,6 +276,25 @@
             }}</span>
           </div>
 
+          <!-- Receipt -->
+          <template v-if="paid && hasStripe"> 
+            <div class="bg-white rounded-lg shadow p-4 mt-4">
+              <!-- Details -->
+              <div class="mt-2 text-xl font-bold text-black">
+                {{ $t("order.receipt.receipt") }}
+              </div>
+              <div class="mt-2">
+                <span @click="receipt()" class=" cursor-pointer">{{  $t(isLoadingReceipt ? "order.receipt.loading" : "order.receipt.getReceipt") }}</span>
+              </div>
+              <div class="mt-2 text-xs font-bold">
+                 {{ $t("order.receipt.explain1") }}
+              </div>
+              <div class="text-xs font-bold">
+                 {{ $t("order.receipt.explain2") }}
+              </div>
+            </div>
+          </template>
+          
           <!-- View Menu Page Button -->
           <div v-if="paid" class="mt-6 text-center">
             <b-button class="b-reset-tw" @click="handleOpenMenu">
@@ -689,7 +708,7 @@ import { db, firestore, functions } from "~/plugins/firebase.js";
 import { order_status, order_status_keys } from "~/plugins/constant.js";
 import { nameOfOrder } from "~/plugins/strings.js";
 import { releaseConfig } from "~/plugins/config.js";
-import { stripeCreateIntent, stripeCancelIntent } from "~/plugins/stripe.js";
+import { stripeCreateIntent, stripeCancelIntent, stripeReceipt } from "~/plugins/stripe.js";
 import { lineAuthURL } from "~/plugins/line.js";
 
 import { costCal } from "~/plugins/commonUtils";
@@ -753,6 +772,7 @@ export default {
       tip: 0,
       sendSMS: true,
       isSaveAddress: true,
+      isLoadingReceipt: false,
       paymentInfo: {},
       postageInfo: {},
       deliveryInfo: {},
@@ -1200,6 +1220,25 @@ export default {
           }
         }
       });
+    },
+    async receipt() {
+      if (this.isLoadingReceipt) {
+        return;
+      }
+      this.isLoadingReceipt = true;
+      try {
+        const res = await stripeReceipt({
+          restaurantId: this.restaurantId(),
+          orderId: this.orderId,
+        });
+        if (res.data && res.data.receipt_url) {
+          window.open(res.data.receipt_url)
+        }
+      } catch (e) {
+        console.log("error");
+      }
+      this.isLoadingReceipt = false;
+      
     },
     updateAddress(address) {
       const { address1, address2, address3, prefectureId, prefecture } = address;

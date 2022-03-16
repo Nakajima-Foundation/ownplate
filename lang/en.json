@@ -492,6 +492,13 @@
       "stripe_user_message_canceled": "Card payment has been cancelled",
       "stripe_user_message_just_payment_canceled": "Please pay in the restaurant"
     },
+    "receipt": {
+      "receipt": "Receipt",
+      "loading": "Loading...",
+      "getReceipt": "View receipt",
+      "explain1": "You can view the receipt of Stripe's credit card payment",
+      "explain2": "A new tab will open. If you can't open it, please allow it"
+    },
     "onlinePaymentStatus": "Status of the card payment",
     "lineLink": "Restaurant's LINE Official Account URL",
     "lineMessage": "If you add LINE Official Account as a friend, you will receive information directly from the restaurant.",

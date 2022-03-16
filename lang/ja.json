@@ -496,6 +496,13 @@
       "stripe_user_message_canceled": "カード決済はキャンセルされました",
       "stripe_user_message_just_payment_canceled": "現地払いをお願いします"
     },
+    "receipt": {
+      "receipt": "領収書",
+      "loading": "取得中...",
+      "getReceipt": "領収書を表示",
+      "explain1": "Stripe社のクレジット決済のレシートを表示できます",
+      "explain2": "新しいタブが開きます。開かない場合は許可をしてください"
+    },
     "onlinePaymentStatus": "カード決済の状況",
     "lineLink": "お店のLINE公式アカウント",
     "lineMessage": "LINE公式アカウントを友だち登録すると、お店から情報が直接届きます。",

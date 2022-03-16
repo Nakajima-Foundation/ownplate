@@ -21,6 +21,7 @@ export const stripeConnect = functions.httpsCallable("stripeConnect");
 export const stripeDisconnect = functions.httpsCallable("stripeDisconnect");
 export const stripeVerify = functions.httpsCallable("stripeVerify");
 export const stripeUpdateCustomer = functions.httpsCallable("stripeUpdateCustomer");
+export const stripeReceipt  = functions.httpsCallable("stripeReceipt");
 
 export const stripeActions = {
   capability_updated: 1,

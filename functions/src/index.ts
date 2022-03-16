@@ -46,6 +46,8 @@ exportIfNeeded("stripePaymentCancelIntent", "stripe/stripePaymentCancelIntent", 
 exportIfNeeded("stripeUpdateCustomer", "stripe/stripeUpdateCustomer", exports);
 exportIfNeeded("stripeDeleteCard", "stripe/stripeDeleteCard", exports);
 
+exportIfNeeded("stripeReceipt", "stripe/stripeReceipt", exports);
+
 exportIfNeeded("imageProcessing", "image/imageProcessing", exports);
 
 exportIfNeeded("smaregiAuth", "smaregi/auth", exports);
