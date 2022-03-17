@@ -51,7 +51,7 @@
     "nuxt": "^2.15.6",
     "nuxt-buefy": "^0.4.8",
     "nuxt-gmaps": "^1.2.10",
-    "pdfmake": "^0.1.69",
+    "pdfmake": "0.3.0-beta.1",
     "validator": "^13.0.0",
     "vue": "^2.6.12",
     "vue-clipboard2": "^0.3.1",
