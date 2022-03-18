@@ -401,7 +401,7 @@ export default {
     },
     async downloadMenu() {
       this.downloadSubmitting = true;
-      const dl = await pdf.download(
+      const dl = await pdf.menuDownload(
         this.restaurantInfo,
         this.menuObj,
         this.nationalPhoneNumber,

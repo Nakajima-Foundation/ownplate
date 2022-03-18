@@ -48,10 +48,10 @@ export default {
   },
   methods: {
     download() {
-      pdf.download(this.restaurantInfo,  this.menuObj, this.nationalPhoneNumber, this.shareUrl());
+      pdf.menuDownload(this.restaurantInfo,  this.menuObj, this.nationalPhoneNumber, this.shareUrl());
     },
     download2() {
-
+      pdf.orderDownload(this.restaurantInfo, "hello");
     },
   }
 }

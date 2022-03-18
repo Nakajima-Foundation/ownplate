@@ -53,7 +53,7 @@ const convChar = (val) => {
 };
 
 
-export const download = (restaurantInfo, menuObj, nationalPhoneNumber, shareUrl) => {
+export const menuDownload = (restaurantInfo, menuObj, nationalPhoneNumber, shareUrl) => {
   pdfMake.fonts = pdfFont;
   
   const menus = _.chunk((restaurantInfo.menuLists || []).reduce((tmp, itemKey) => {
@@ -367,5 +367,96 @@ export const download2 = (restaurantInfo, shareUrl) => {
       fontSize: 14,
     }
   };
+  console.log(docDefinition);
   const pdfDoc = pdfMake.createPdf(docDefinition).download();
+  return pdfDoc;
+};
+
+
+
+export const orderDownload = (restaurantInfo) => {
+  pdfMake.fonts = pdfFont;
+
+  const content = [
+    {
+      text: "テイクアウト", style: 'title',
+    },
+    {
+      text: "注文日: 2064/10/20 10:12",
+      margin: [0, 0],
+    },
+    {
+      text: " 受け渡し: 2064/10/25 10:12",
+      margin: [0, 0],
+    },
+    {
+      text: "注文:",
+      margin: [0, 0],
+    },
+    {
+      text: "ラーメン 大盛り 1つ:",
+      margin: [0, 0],
+    },
+    {
+      text: "チャーハン 大盛り 1つ:",
+      margin: [0, 0],
+    },
+    {
+      text: "合計: 2000円",
+      margin: [0, 0],
+    },
+    {
+      text: "クレジット決済",
+      margin: [0, 0],
+    },
+    {
+      text: "デリバリー",
+      margin: [0, 0],
+    },
+    {
+      text: "注文:",
+      margin: [0, 0],
+    },
+  ];
+  const images = {
+  };
+
+  content.push({
+    text: "hello",
+  });
+  const convMm2pt = (mm) => {
+    return Math.round(mm / 0.35278 * 100) /100;
+  };
+  const docDefinition = {
+    pageSize: {width: convMm2pt(58), height: convMm2pt(200)},
+
+    // [left, top, right, bottom] or [horizontal, vertical] or just a number for equal margins
+    pageMargins: [ 2, 2, 2, 2 ],
+
+    content,
+    images,
+    styles: {
+      title: {
+        font: 'NotoSans',
+        fontSize: 24,
+        alignment: 'center',
+      },
+      h1: {
+        font: 'NotoSans',
+        fontSize: 18,
+        bold: true
+      },
+      style2: {
+        alignment: 'right',
+        color: 'blue',
+      }
+    },
+    defaultStyle: {
+      font: 'NotoSans',
+      fontSize: 12,
+    }
+  };
+  console.log(docDefinition);
+  const pdfDoc = pdfMake.createPdf(docDefinition).download();
+  return pdfDoc;
 };
