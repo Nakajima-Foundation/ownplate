@@ -10,6 +10,11 @@ const hostName = ownPlateConfig.hostName;
 const setComponent = (route, resolve) => {
   const r = { ...route };
   r.component = resolve(__dirname, "src/app/" + route.component);
+  if (r.children) {
+    r.children = r.children.map(child => {
+      return setComponent(child, resolve);
+    });
+  }
   return r;
 };
 
@@ -20,11 +25,6 @@ export default {
     extendRoutes(routes, resolve) {
       customRoutes.map(route => {
         const r = setComponent(route, resolve);
-        if (r.children) {
-          r.children = r.children.map(child => {
-            return setComponent(child, resolve);
-          });
-        }
         routes.push(r);
       });
     }

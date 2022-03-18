@@ -277,7 +277,7 @@
           </div>
 
           <!-- Receipt -->
-          <template v-if="paid && hasStripe"> 
+          <template v-if="order_accepted && hasStripe"> 
             <div class="bg-white rounded-lg shadow p-4 mt-4">
               <!-- Details -->
               <div class="mt-2 text-xl font-bold text-black">
@@ -491,7 +491,7 @@
                   @updateHome="updateHome"
                   :shopInfo="shopInfo"
                   :fullAddress="fullAddress"
-                  :deliveryInfo="deliveryInfo" />
+                  :deliveryInfo="deliveryData" />
             </div>
 
             
@@ -727,10 +727,10 @@ export default {
   name: "Order",
   head() {
     return {
-      title: this.shopInfo.restaurantName && this.statusKey ?
+      title: this.shopInfo?.restaurantName && this.statusKey ?
         [
           this.defaultTitle,
-          this.shopInfo ? this.shopInfo.restaurantName : "--",
+          this.shopInfo ? this.shopInfo?.restaurantName : "--",
           "Order Page",
           this.$t("order.status." + this.statusKey),
         ].join(" / "):
@@ -754,13 +754,30 @@ export default {
     OrderPageMap,
     FavoriteButton
   },
+  props: {
+    shopInfo: {
+      type: Object,
+      required: true
+    },
+    paymentInfo: {
+      type: Object,
+      required: true
+    },
+    deliveryData: {
+      type: Object,
+      required: true
+    },
+    notFound: {
+      type: Boolean,
+      required: false,
+    },
+  },
   data() {
     return {
       notAvailable: false,
       loginVisible: false,
       isPaying: false,
       restaurantsId: this.restaurantId(),
-      shopInfo: { restaurantName: "" },
       addressList: [],
       cardState: {},
       orderInfo: {},
@@ -773,17 +790,14 @@ export default {
       sendSMS: true,
       isSaveAddress: true,
       isLoadingReceipt: false,
-      paymentInfo: {},
       postageInfo: {},
-      deliveryInfo: {},
-      notFound: false,
       memo: "",
       customerInfo: {},
     };
   },
   created() {
     if (this.isUser) {
-      this.loadData();
+      this.loadUserData();
     } else if (!this.isUser) {
       this.loginVisible = true;
     }
@@ -874,6 +888,9 @@ export default {
     paid() {
       return this.orderInfo.status >= order_status.order_placed;
     },
+    order_accepted() {
+      return this.orderInfo.status >= order_status.order_accepted;
+    },
     waiting() {
       return this.orderInfo.status < order_status.cooking_completed;
     },
@@ -956,9 +973,17 @@ export default {
   },
   // end of computed
   watch: {
+    shopInfo(newValue) {
+      if (this.shopInfo.isEC) {
+        db.doc(`restaurants/${this.restaurantId()}/ec/postage`)
+          .get().then((snapshot) => {
+            this.postageInfo = snapshot.data() || {};
+          });
+      }
+    },
     isUser() {
       if (this.isUser) {
-        this.loadData();
+        this.loadUserData();
       }
     }
   },
@@ -993,37 +1018,7 @@ export default {
       });
       location.href = url;
     },
-    loadData() {
-      const restaurant_detacher = db
-        .doc(`restaurants/${this.restaurantId()}`)
-        .onSnapshot(async restaurant => {
-          if (restaurant.exists) {
-            const restaurant_data = restaurant.data();
-            this.shopInfo = restaurant_data;
-            // console.log("*** R", this.shopInfo);
-            const uid = restaurant_data.uid;
-            db.doc(`/admins/${uid}/public/payment`)
-              .get().then((snapshot) => {
-                this.paymentInfo = snapshot.data() || {};
-              });
-            if (this.shopInfo.isEC) {
-              db.doc(`restaurants/${this.restaurantId()}/ec/postage`)
-                .get().then((snapshot) => {
-                  this.postageInfo = snapshot.data() || {};
-                });
-            }
-            if (this.shopInfo.enableDelivery) {
-              db.doc(`restaurants/${this.restaurantId()}/delivery/area`)
-                .get().then((snapshot) => {
-                  this.deliveryInfo = snapshot.data() || {};
-                });
-            }
-            //console.log("restaurant", uid, this.paymentInfo);
-            
-          } else {
-            this.notFound = true;
-          }
-        });
+    loadUserData() {
       const order_detacher = db
         .doc(`restaurants/${this.restaurantId()}/orders/${this.orderId}`)
         .onSnapshot(
@@ -1061,6 +1056,7 @@ export default {
               if (this.just_validated) {
                 this.customerInfo = {...(await this.loadAddress() || {})};
               }
+              console.log(this.customerInfo);
               if (this.hasCustomerInfo) {
                 this.customer = (await db.doc(`restaurants/${this.restaurantId()}/orders/${this.orderId}/customer/data`).get()).data() || this.orderInfo?.customerInfo || {};
               }
@@ -1072,7 +1068,7 @@ export default {
             this.notFound = true;
           }
         );
-      this.detacher = [restaurant_detacher, order_detacher];
+      this.detacher = [ order_detacher];
     },
 
     handleOpenMenu() {
@@ -1112,6 +1108,7 @@ export default {
       });
     },
     async handlePayment() {
+      console.log(this.requireAddress, this.isSaveAddress)
       if (this.requireAddres) {
         if (this.hasEcError) {
           return;
@@ -1161,6 +1158,7 @@ export default {
       }
     },
     async handleNoPayment() {
+      console.log(this.requireAddress, this.isSaveAddress)
       if (this.requireAddress) {
         if (this.hasEcError) {
           return;
@@ -1266,6 +1264,7 @@ export default {
     },
     async saveAddress() {
       const uid = this.user.uid;
+      console.log(this.customerInfo) 
       await db.doc(`/users/${uid}/address/data`).set(this.customerInfo)
     },
     async loadAddress() {

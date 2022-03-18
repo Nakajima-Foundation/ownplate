@@ -342,6 +342,24 @@ export default {
     NotFound,
     Price
   },
+  props: {
+    shopInfo: {
+      type: Object,
+      required: true
+    },
+    paymentInfo: {
+      type: Object,
+      required: true
+    },
+    deliveryData: {
+      type: Object,
+      required: true
+    },
+    notFound: {
+      type: Boolean,
+      required: false,
+    },
+  },
   head() {
     // TODO: add area to header
     return {
@@ -349,7 +367,7 @@ export default {
         Object.keys(this.shopInfo).length == 0
           ? document.title
           : [
-              this.shopInfo.restaurantName || "",
+              this.shopInfo?.restaurantName || "",
               ownPlateConfig.restaurantPageTitle || this.defaultTitle
             ].join(" / ")
     };
@@ -363,8 +381,7 @@ export default {
       selectedOptions: {},
       selectedOptionsPrev: {}, // from the store.cart
       restaurantsId: this.restaurantId(),
-      shopInfo: {},
-      deliveryData: {},
+      // deliveryData: {},
       menus: [],
       titles: [],
       waitForUser: false,
@@ -372,12 +389,10 @@ export default {
       howtoreceive: "takeout",
       
       detacher: [],
-      notFound: null,
 
       imagePopup: false,
       categoryPopup: false,
 
-      paymentInfo: {},
       noAvailableTime: false
     };
   },
@@ -400,26 +415,6 @@ export default {
         path: url
       });
     }
-    const restaurant_detacher = db
-      .doc(`restaurants/${this.restaurantId()}`)
-      .onSnapshot(async restaurant => {
-        const restaurant_data = restaurant.data();
-        this.shopInfo = restaurant_data || {};
-        if (
-          restaurant.exists &&
-          !restaurant.data().deletedFlag &&
-          restaurant.data().publicFlag
-        ) {
-          this.notFound = false;
-        } else {
-          this.notFound = true;
-        }
-        const shopUid = this.shopInfo.uid;
-        const snapshot = await db
-          .doc(`/admins/${shopUid}/public/payment`)
-          .get();
-        this.paymentInfo = snapshot.data() || {};
-      });
     const menu_detacher = db
       .collection(`restaurants/${this.restaurantId()}/menus`)
       .where("deletedFlag", "==", false)
@@ -442,14 +437,8 @@ export default {
           this.titles = title.docs.map(this.doc2data("title"));
         }
       });
-    this.detacher = [restaurant_detacher, menu_detacher, title_detacher];
+    this.detacher = [menu_detacher, title_detacher];
 
-    db.doc(`restaurants/${this.restaurantId()}/delivery/area`).get().then((deliveryDoc) => {
-      if (deliveryDoc.exists) {
-        this.deliveryData = deliveryDoc.data();
-      }
-    });
-    
   },
   destroyed() {
     if (this.detacher) {
