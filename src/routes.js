@@ -1,3 +1,29 @@
+const getUserPages = (prefix) => {
+  return [
+    {
+      path: "/",
+      component: "user/RestaurantPage.vue",
+      children: [
+        {
+          name: "r-restaurant-Page_" + prefix,
+          path: "/",
+          component: "user/Blank.vue",
+        },
+        {
+          name: "r-restaurant-Menu_" + prefix,
+          path: "menus/:menuId",
+          component: "user/Blank.vue",
+        }
+      ]
+    },
+    {
+      name: "r-restaurantId-order_" + prefix,
+      path: "/r/:restaurantId/order/:orderId",
+      component: "user/OrderPage.vue"
+    },
+  ];
+};
+
 export const customRoutes = [
   {
     name: "r",
@@ -72,33 +98,22 @@ export const customRoutes = [
     component: "user/RestaurantIndex.vue"
   },
   {
-    name: "r-restaurant-Wrapper",
+//    name: "r-restaurant-Wrapper",
     path: "/r/:restaurantId",
     component: "user/RestaurantWrapper.vue",
-    children: [
-      {
-        name: "r-restaurantId",
-        path: "/",
-        component: "user/RestaurantPage.vue",
-        children: [
-          {
-            name: "r-restaurant-Page",
-            path: "/",
-            component: "user/Blank.vue",
-          },
-          {
-            name: "r-restaurant-Menu",
-            path: "menus/:menuId",
-            component: "user/Blank.vue",
-          }
-        ]
-      },
-      {
-        name: "r-restaurantId-order",
-        path: "/r/:restaurantId/order/:orderId",
-        component: "user/OrderPage.vue"
-      },
-    ]
+    props: {
+      mode: "normal",
+    },
+    children: getUserPages("normal"),
+  },
+  {
+//    name: "r-restaurant-Wrapper",
+    path: "/liff/:indexId/r/:restaurantId",
+    component: "user/RestaurantWrapper.vue",
+    props: {
+      mode: "liff",
+    },
+    children: getUserPages("liff"),
   },
   {
     name: "adminOwner",
@@ -195,7 +210,7 @@ export const customRoutes = [
     component: "admin/SubAccounts/Accounts.vue"
   },
   {
-    name: "admin-subaccounts-accounts",
+    name: "admin-subaccounts-account",
     path: "/admin/subaccounts/accounts/:subAccountId",
     component: "admin/SubAccounts/Account.vue"
   },
@@ -205,7 +220,7 @@ export const customRoutes = [
     component: "admin/Smaregi/Index.vue"
   },
   {
-    name: "admin-smaregi-index",
+    name: "admin-smaregi-callback",
     path: "/admin/smaregi/callback",
     component: "admin/Smaregi/Callback.vue"
   },
@@ -235,7 +250,7 @@ export const customRoutes = [
     component: "auth/SignUpPage.vue"
   },
   {
-    name: "admin-signup",
+    name: "admin-signup-partner",
     path: "/admin/user/signup/:partner",
     component: "auth/SignUpPage.vue"
   },

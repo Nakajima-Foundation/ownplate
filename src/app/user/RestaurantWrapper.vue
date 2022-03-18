@@ -12,6 +12,12 @@ import { db } from "~/plugins/firebase.js";
 
 export default {
   name: "RestaurantWrapper",
+  props: {
+    mode: {
+      type: String,
+      required: true
+    },
+  },
   data() {
     return {
       shopInfo: {},
@@ -27,12 +33,17 @@ export default {
       .onSnapshot(async restaurant => {
         const restaurant_data = restaurant.data();
         this.shopInfo = restaurant_data || {};
-        if (
-          restaurant.exists &&
-          !restaurant.data().deletedFlag &&
-          restaurant.data().publicFlag
-        ) {
-          this.notFound = false;
+        const exist_and_publig =
+              restaurant.exists &&
+              !restaurant.data().deletedFlag &&
+          restaurant.data().publicFlag;
+        
+        if (exist_and_publig) {
+          if (this.mode === 'liff') {
+           this.notFound = !this.shopInfo.supportLiff;
+          } else {
+            this.notFound = false;
+          }
         } else {
           this.notFound = true;
         }
