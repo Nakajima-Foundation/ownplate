@@ -98,7 +98,6 @@ export const customRoutes = [
     component: "user/RestaurantIndex.vue"
   },
   {
-//    name: "r-restaurant-Wrapper",
     path: "/r/:restaurantId",
     component: "user/RestaurantWrapper.vue",
     props: {
@@ -107,13 +106,26 @@ export const customRoutes = [
     children: getUserPages("normal"),
   },
   {
-//    name: "r-restaurant-Wrapper",
-    path: "/liff/:indexId/r/:restaurantId",
-    component: "user/RestaurantWrapper.vue",
-    props: {
-      mode: "liff",
-    },
-    children: getUserPages("liff"),
+    path: "/liff/:indexId/pc",
+    component: "liff/PC.vue",
+  },
+  {
+    path: "/liff/:indexId",
+    component: "liff/LiffWrapper.vue",
+    children: [
+      {
+        path: "/",
+        component: "liff/Index.vue",
+      },
+      {
+        path: "r/:restaurantId",
+        component: "user/RestaurantWrapper.vue",
+        props: {
+          mode: "liff",
+        },
+        children: getUserPages("liff"),
+      },
+    ],
   },
   {
     name: "adminOwner",
