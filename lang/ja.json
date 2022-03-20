@@ -375,6 +375,11 @@
     "easy3Steps": "HOW TO START？　簡単3ステップ！",
     "forOwner": "飲食店の方はこちら",
     "moreDetails": "もっと詳しく",
+    "demoVideo": "ご利用イメージ",
+    "orderFlow": "注文の流れ",
+    "flyerCreation": "チラシ作成",
+    "cardPayment": "カード決済機能",
+    "playVideo": "動画を再生",
     "tryService": "ご利用を開始",
     "ask": "お問い合わせ",
     "whatsnew": "新着情報",
@@ -669,7 +674,8 @@
     },
     "thirdPartyService": {
       "title": "システム連携",
-      "openSmaregi": "スマレジ連携設定"
+      "openSmaregi": "スマレジ連携設定",
+      "smaregiManualLink": "スマレジ連携の使い方"
     },
     "viewAllOrders": "全飲食店の注文をまとめて確認",
     "viewPage": "ページを確認",
