@@ -4,7 +4,7 @@
     <div
       class="text-center mt-16 text-2xl font-bold text-black opacity-40 lg:text-3xl"
       >
-        ご利用イメージ
+      {{ $t("lp.demoVideo") }}
     </div>
 
     <!-- User Voices Hero -->
@@ -17,7 +17,7 @@
         </div>
         <div class="inline-flex items-center mt-2">
           <span class="ml-1 text-base font-bold text-op-teal"
-                >注文の流れ</span
+                >{{ $t("lp.orderFlow") }}</span
                              >
         </div>
       </div>
@@ -29,7 +29,19 @@
         </div>
         <div class="inline-flex items-center mt-2">
           <span class="ml-1 text-base font-bold text-op-teal"
-                >チラシ作成を再生</span
+                >{{ $t("lp.flyerCreation") }}</span
+                             >
+        </div>
+      </div>
+      <div class="text-center mt-4 lg:mt-0 lg:flex-shrink-0">
+        <div>
+          <iframe width="300" height="145" src="https://www.youtube.com/embed/ATvzuL8nJlk" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen
+                  class="rounded-lg w-64 touchable inline-block"
+                  ></iframe>
+        </div>
+        <div class="inline-flex items-center mt-2">
+          <span class="ml-1 text-base font-bold text-op-teal"
+                >{{ $t("lp.cardPayment") }}</span
                              >
         </div>
       </div>

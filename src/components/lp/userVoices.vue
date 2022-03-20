@@ -48,7 +48,7 @@
               >play_circle_filled</i
             >
             <span class="ml-1 text-base font-bold text-op-teal"
-              >動画を再生</span
+              >{{ $t("lp.playVideo") }}</span
             >
           </div>
         </a>

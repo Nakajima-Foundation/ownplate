@@ -374,6 +374,11 @@
     "easy3Steps": "COMMENT COMMENCER？ 3 ÉTAPES FACILES !",
     "forOwner": "Pour les propriétaires de restaurant",
     "moreDetails": "Plus de détails",
+    "demoVideo": "Demo video",
+    "orderFlow": "Order Flow",
+    "flyerCreation": "Flyer Creation",
+    "cardPayment": "Card Payment",
+    "playVideo": "Play video",
     "tryService": "Essayez le service Omochikaeri",
     "ask": "Nous contacter",
     "whatsnew": "Quoi de neuf ?",
@@ -656,6 +661,11 @@
         "body": "Recevez des courriels sur les actualités, les conseils et les rubriques.",
         "optout": "Ne pas recevoir"
       }
+    },
+    "thirdPartyService": {
+      "title": "Third Party Service",
+      "openSmaregi": "Open Smaregi",
+      "smaregiManualLink": "How to use smaregi"
     },
     "viewAllOrders": "Voir toutes les commandes de tous les restaurants",
     "viewPage": "Voir page",
