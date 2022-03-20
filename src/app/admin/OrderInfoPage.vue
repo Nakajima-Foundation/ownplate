@@ -330,6 +330,17 @@
               </nuxt-link>
             </div>
           </div>
+          <!-- Print -->
+          <div class="bg-white shadow rounded-lg p-4 mt-2 text-center">
+            <b-button
+              @click="print()"
+              class="b-reset-tw">
+              <div
+                class="inline-flex justify-center items-center rounded-full h-16 w-64 light">
+                Print
+              </div>
+            </b-button>
+          </div>
 
           <div class="bg-white shadow rounded-lg p-4 mt-2">
             <!-- Order Status -->
@@ -564,7 +575,7 @@ import OrderInfo from "~/app/user/Order/OrderInfo";
 import CustomerInfo from "~/components/CustomerInfo";
 
 import { costCal } from "~/plugins/commonUtils";
-
+import { printOrder } from "~/plugins/pdf";
 import * as analyticsUtil from "~/plugins/analytics";
 
 const timezone = moment.tz.guess();
@@ -905,6 +916,10 @@ export default {
           newStatus !== "order_canceled")
       );
       */
+    },
+    print() {
+      printOrder(this.orderInfo);
+      console.log("AA");
     },
     getEestimateTime() {
       const time = this.orderInfo.timePlaced.toDate().getTime();
