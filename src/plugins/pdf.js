@@ -304,3 +304,6 @@ export const menuDownload = (restaurantInfo, menuObj, nationalPhoneNumber, share
   return pdfMake.createPdf(docDefinition).download();
 };
 
+export const printOrder = (orderInfo) => {
+  console.log(orderInfo);
+};
