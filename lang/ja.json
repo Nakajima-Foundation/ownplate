@@ -415,7 +415,11 @@
     "thisIsDeliveryOrder": "これはデリバリーの注文です",
     "thisIsTakeoutOrder": "これはテイクアウトの注文です",
     "alertReqireAddress": "入力が完了していません。確認をしてください。",
+<<<<<<< Updated upstream
     "orderErrorMessage": "注文処理できませんでした。カートいれた商品が売り切れた可能性があります。ページを戻って、再度注文をしてください。",
+=======
+    "orderErrorMessage": "注文処理できませんでした。カートに入れた商品が売り切れになった可能性があります。ページを戻って、再度注文をしてください。",
+>>>>>>> Stashed changes
     "saveAddress": "配送先を保存",
     "order_canceled_by_customer": "キャンセル済み(客)",
     "order_canceled_by_restaurant": "キャンセル済み(店)",
