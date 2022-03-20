@@ -479,7 +479,7 @@ export default {
         return tmp;
       }, {});
       const total = Object.keys(subTotal).reduce((tmp, menuId) => {
-        const menu = this.itemsObj[menuId];
+        const menu = this.itemsObj[menuId] || {};
 
         if (!this.shopInfo.inclusiveTax) {
           if (menu.tax === "alcohol") {
@@ -501,7 +501,7 @@ export default {
 
       const multiple = this.$store.getters.stripeRegion.multiple;
       Object.keys(this.orders).map(menuId => {
-        const menu = this.itemsObj[menuId];
+        const menu = this.itemsObj[menuId] || {};
         ret[menuId] = [];
         this.orders[menuId].map((num, orderKey) => {
           const selectedOptionsRaw = this.trimmedSelectedOptions[menuId][
@@ -561,7 +561,7 @@ export default {
     },
     trimmedSelectedOptions() {
       return Object.keys(this.orders).reduce((ret, id) => {
-        const options = this.itemOptionCheckbox2options(this.itemsObj[id].itemOptionCheckbox);
+        const options = this.itemOptionCheckbox2options((this.itemsObj[id] ||{}).itemOptionCheckbox);
         const selectedOption = this.selectedOptions[id].map((selected) => {
           if (Array.isArray(selected) && selected.length > options.length) {
             const newopt = [...selected];
@@ -579,7 +579,7 @@ export default {
         ret[id] = (this.trimmedSelectedOptions[id] || []).map((item, k) => {
           return item
             .map((selectedOpt, key) => {
-              const opt = this.itemsObj[id].itemOptionCheckbox[key].split(",");
+              const opt = (this.itemsObj[id]||{}).itemOptionCheckbox[key].split(",");
               if (opt.length === 1) {
                 if (selectedOpt) {
                   return opt[0];
