@@ -660,6 +660,10 @@
         "optout": "Don't Receive"
       }
     },
+    "thirdPartyService": {
+      "title": "Third Party Service",
+      "openSmaregi": "Open Smaregi"
+    },
     "viewAllOrders": "View All Orders from All Restaurants",
     "viewPage": "View Page",
     "viewOrders": "View Orders",
