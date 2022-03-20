@@ -1,40 +1,20 @@
 import pdfMake from "pdfmake/build/pdfmake.js";
 import _ from 'lodash';
 
-
 import {
   parsePhoneNumber,
   formatNational,
 } from "~/plugins/phoneutil.js";
 
-import logosvg from "!raw-loader!../static/pr/50mm-QR-Blank.svg";
-
 const fontHost = location.protocol + "//" + location.host + "/fonts/";
-
-// https://github.com/bpampuch/pdfmake/blob/7b5675d5b9d5d7b815bd721e00504b16560a6382/src/standardPageSizes.js
-const A4width = 595.28;
-const A4height = 841.89;
-
-// https://github.com/bpampuch/pdfmake/issues/359
-const A4MarginVertical = 120; // 60 * 2
-const A4MarginHorizontal = 80; // 40 * 2
-
-const A4ContentWidth = A4width - A4MarginHorizontal;
 
 const pdfFont = {
   NotoSans: {
     normal: fontHost + 'NotoSansCJKjp-Regular.min.ttf',
     bold: fontHost + 'NotoSansCJKjp-Bold.min.ttf',
-    italics: fontHost + 'NotoSansCJKjp-Regular.min.ttf',
-    bolditalics: fontHost + 'NotoSansCJKjp-Bold.min.ttf'
   },
 };
-
-const tableOrangeElement = {
-  text: "",
-  border: [false, false, false, false],
-  fillColor: "#FCC03D", 
-};
+pdfMake.fonts = pdfFont;
 
 const styles = {
   title: {
@@ -52,7 +32,10 @@ const styles = {
     color: 'blue',
   }
 };
-const menuSize = 60;
+const defaultStyle = {
+  font: 'NotoSans',
+  fontSize: 8,
+};    
 
 const convChar = (val) => {
   const regex = /[Ａ-Ｚａ-ｚ０-９！＂＃＄％＆＇（）＊＋，－．／：；＜＝＞？＠［＼］＾＿｀｛｜｝]/g;
@@ -79,8 +62,6 @@ const pageMargins = [ 0, 2, 0, 2 ];
 
 
 export const orderDownloadData = () => {
-  pdfMake.fonts = pdfFont;
-
   const content = [
     {
       text: "テイクアウト", style: 'title',
@@ -137,16 +118,13 @@ export const orderDownloadData = () => {
     content,
     images,
     styles,
-    defaultStyle: {
-      font: 'NotoSans',
-      fontSize: 8,
-    }
+    defaultStyle,
   };
   const pdfDoc = pdfMake.createPdf(docDefinition);
   return pdfDoc;
 };
 
-export const orderDownload = () => {
+export const orderPdfDownload = () => {
   const pdfDoc = orderDownloadData();
   return pdfDoc.download();
 };
@@ -155,9 +133,7 @@ export const orderPrintData = () => {
   return pdfDoc.getBase64();
 };
 
-
-export const testDownload = (restaurantInfo) => {
-  pdfMake.fonts = pdfFont;
+export const testDownload = () => {
 
   const content = [
     {
@@ -221,25 +197,25 @@ export const testDownload = (restaurantInfo) => {
     content,
     images,
     styles,
-    defaultStyle: {
-      font: 'NotoSans',
-      fontSize: 12,
-    }
+    defaultStyle,
   };
-  console.log(docDefinition);
-  // const pdfDoc = pdfMake.createPdf(docDefinition).download();
-  // return pdfDoc;
   const pdfDoc = pdfMake.createPdf(docDefinition).getBase64();
   return pdfDoc;
 };
 
 export const printOrder = (orderInfo) => {
-  pdfMake.fonts = pdfFont;
   const docDefinition = {
     pageSize,
   };
-  console.log(orderInfo);
   const pdfDoc = pdfMake.createPdf(docDefinition).download();
   return pdfDoc;
 
+};
+
+export const data2UrlSchema = (data, size) => {
+  const passprnt_uri = "starpassprnt://v1/print/nopreview?" +
+        "back=" + encodeURIComponent(window.location.href) +
+        "&pdf=" + encodeURIComponent(data) + 
+        "&size=" + size;
+  return passprnt_uri;
 };

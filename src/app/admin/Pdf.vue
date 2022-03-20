@@ -3,9 +3,7 @@
     <button @click="download">Download menu example</button><br/>
     <button @click="testPrint">Download test print</button><br/>
     <button @click="testDownload">Download test download</button><br/>
-    <button @click="testDownloadAsync">Download test download async</button><br/>
     <button @click="download4">Download logo print</button><br/>
-    <button @click="download5">Download logo download</button><br/>
   </div>
 </template>
 
@@ -57,26 +55,13 @@ export default {
     },
     async testPrint() {
       const data = await pdf2.orderPrintData();
-      let passprnt_uri = "starpassprnt://v1/print/nopreview?";
-      passprnt_uri = passprnt_uri + "back=" + encodeURIComponent(window.location.href);
-      passprnt_uri = passprnt_uri + "&pdf=" + encodeURIComponent(data);
-      passprnt_uri = passprnt_uri + "&size=2";
+      const passprnt_uri = pdf2.data2UrlSchema(data, "2");
       location.href = passprnt_uri;
     },
     async testDownload() {
-      const data = await pdf2.orderDownload();
+      const data = await pdf2.orderPdfDownload();
       console.log(data);
 
-    },
-    async testDownloadAsync() {
-      setTimeout(async () => {
-        const data = await pdf2.orderPrintData();
-        let passprnt_uri = "starpassprnt://v1/print/nopreview?";
-        passprnt_uri = passprnt_uri + "back=" + encodeURIComponent(window.location.href);
-        passprnt_uri = passprnt_uri + "&pdf=" + encodeURIComponent(data);
-        passprnt_uri = passprnt_uri + "&size=2";
-        location.href = passprnt_uri;
-      }, 5000);
     },
     async download4() {
       const data = await pdf2.testDownload();
