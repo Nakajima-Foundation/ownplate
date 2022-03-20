@@ -414,6 +414,7 @@
     "thisIsDeliveryOrder": "This is a delivery order",
     "thisIsTakeoutOrder": "This is a takeaway order",
     "alertReqireAddress": "The input is not completed. Please check.",
+    "orderErrorMessage": "The order could not be processed. The item may have been sold out in the cart. Please go back to the page and place your order again.",
     "saveAddress": "Save delivery address",
     "order_canceled_by_customer": "Canceled by customer",
     "order_canceled_by_restaurant": "Canceled by restaurant",

@@ -6,6 +6,13 @@
   <template v-else-if="notFound">
     <not-found />
   </template>
+  <template v-else-if="orderError">
+    <div class="mt-4 mx-6">
+      <div class="text-xl font-bold text-center">
+        {{ $t("order.orderErrorMessage") }}
+      </div>
+    </div>
+  </template>
   <template v-else>
     <!-- Back Button (Edit Order) -->
     <div v-if="just_validated" class="mt-6 mx-6">
@@ -872,6 +879,9 @@ export default {
       return Object.keys(order_status).reduce((result, key) => {
         return order_status[key] === this.orderInfo.status ? key : result;
       }, "unexpected");
+    },
+    orderError() {
+      return this.orderInfo.status === order_status.error;
     },
     newOrder() {
       return this.orderInfo.status === order_status.new_order;
