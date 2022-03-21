@@ -575,7 +575,7 @@ import OrderInfo from "~/app/user/Order/OrderInfo";
 import CustomerInfo from "~/components/CustomerInfo";
 
 import { costCal } from "~/plugins/commonUtils";
-import { printOrder } from "~/plugins/pdf";
+import { downloadOrderPdf, printOrder } from "~/plugins/pdf2";
 import * as analyticsUtil from "~/plugins/analytics";
 
 const timezone = moment.tz.guess();
@@ -918,7 +918,9 @@ export default {
       */
     },
     print() {
-      printOrder(this.orderInfo);
+      // printOrder(this.orderInfo);
+      console.log(this.orderItems);
+      downloadOrderPdf(this.orderInfo, this.orderItems);
       console.log("AA");
     },
     getEestimateTime() {

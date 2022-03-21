@@ -1,4 +1,8 @@
 import pdfMake from "pdfmake/build/pdfmake.js";
+import moment from "moment";
+import { nameOfOrder } from "~/plugins/strings.js";
+import { formatOption, optionPrice } from "~/plugins/strings.js";
+
 import _ from 'lodash';
 
 import {
@@ -203,14 +207,61 @@ export const testDownload = () => {
   return pdfDoc;
 };
 
-export const printOrder = (orderInfo) => {
+export const printOrderData = (orderInfo, orderItems) => {
+  const content = [];
+  console.log(orderInfo, orderItems);
+  // 番号
+  content.push({
+    text: nameOfOrder(orderInfo) + "   " + Number(orderInfo.totalCharge).toLocaleString() + "円   " + orderInfo.name ,
+    margin: [2, 0],
+  });
+  // 日付
+  content.push({
+    text: "受渡: " + moment(orderInfo.timeEstimated.toDate()).format("YYYY/MM/DD HH:mm"),
+    margin: [2, 0],
+  });
+  orderItems.forEach((orderItem) => {
+    console.log(orderItem);
+    content.push({
+      text: [orderItem.item.itemName, " x " + String(orderItem.count)].join(""),
+      margin: [convMm2pt(0.5), convMm2pt(0.3)],
+    });
+    const option = displayOption(orderItem.options||[]);
+    if (option !== "") {
+      content.push({
+        text: option,
+        margin: [convMm2pt(0.5), convMm2pt(0.3)],
+      });
+    }
+    console.log(orderItem);
+  });
+  // オーダー内容
+  // 合計金額
+  // 名前
+  // 決済
+  // デリバリー or テイクアウト
   const docDefinition = {
     pageSize,
+    pageMargins,
+
+    content,
+    styles,
+    defaultStyle,
   };
-  const pdfDoc = pdfMake.createPdf(docDefinition).download();
+  const pdfDoc = pdfMake.createPdf(docDefinition);
   return pdfDoc;
 
 };
+export const printOrder = (orderInfo, orderItems) => {
+  const pdfDoc = printOrderData(orderInfo, orderItems);
+  return pdfDoc.getBase64();
+};
+export const downloadOrderPdf = (orderInfo, orderItems) => {
+  const pdfDoc = printOrderData(orderInfo, orderItems);
+  pdfDoc.download();
+  
+};
+
 
 export const data2UrlSchema = (data, size) => {
   const passprnt_uri = "starpassprnt://v1/print/nopreview?" +
@@ -218,4 +269,13 @@ export const data2UrlSchema = (data, size) => {
         "&pdf=" + encodeURIComponent(data) + 
         "&size=" + size;
   return passprnt_uri;
+};
+
+export const displayOption = (options) => {
+  return options
+    .filter(choice => choice)
+    .map(choice => {
+      return formatOption(choice, price => Number(price).toLocaleString());
+    }).join(", ");
+
 };
