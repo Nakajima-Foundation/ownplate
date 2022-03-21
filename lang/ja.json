@@ -375,6 +375,11 @@
     "easy3Steps": "HOW TO START？　簡単3ステップ！",
     "forOwner": "飲食店の方はこちら",
     "moreDetails": "もっと詳しく",
+    "demoVideo": "ご利用イメージ",
+    "orderFlow": "注文の流れ",
+    "flyerCreation": "チラシ作成",
+    "cardPayment": "カード決済機能",
+    "playVideo": "動画を再生",
     "tryService": "ご利用を開始",
     "ask": "お問い合わせ",
     "whatsnew": "新着情報",
@@ -415,6 +420,7 @@
     "thisIsDeliveryOrder": "これはデリバリーの注文です",
     "thisIsTakeoutOrder": "これはテイクアウトの注文です",
     "alertReqireAddress": "入力が完了していません。確認をしてください。",
+    "orderErrorMessage": "注文処理できませんでした。カートに入れた商品が売り切れになった可能性があります。ページを戻って、再度注文をしてください。",
     "saveAddress": "配送先を保存",
     "order_canceled_by_customer": "キャンセル済み(客)",
     "order_canceled_by_restaurant": "キャンセル済み(店)",
@@ -665,6 +671,11 @@
         "body": "おもちかえり.comからメルマガをお送りします。",
         "optout": "受け取らない"
       }
+    },
+    "thirdPartyService": {
+      "title": "システム連携",
+      "openSmaregi": "スマレジ連携設定",
+      "smaregiManualLink": "スマレジ連携の使い方"
     },
     "viewAllOrders": "全飲食店の注文をまとめて確認",
     "viewPage": "ページを確認",

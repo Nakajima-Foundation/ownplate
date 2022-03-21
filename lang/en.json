@@ -374,6 +374,11 @@
     "easy3Steps": "HOW TO START？　EASY 3 STEPS!",
     "forOwner": "For Restaurant Owner",
     "moreDetails": "More details",
+    "demoVideo": "Demo video",
+    "orderFlow": "Order Flow",
+    "flyerCreation": "Flyer Creation",
+    "cardPayment": "Card Payment",
+    "playVideo": "Play video",
     "tryService": "Try Omochikaeri service",
     "ask": "Contact Us",
     "whatsnew": "What's new?",
@@ -414,6 +419,7 @@
     "thisIsDeliveryOrder": "This is a delivery order",
     "thisIsTakeoutOrder": "This is a takeaway order",
     "alertReqireAddress": "The input is not completed. Please check.",
+    "orderErrorMessage": "The order could not be processed. The item may have been sold out in the cart. Please go back to the page and place your order again.",
     "saveAddress": "Save delivery address",
     "order_canceled_by_customer": "Canceled by customer",
     "order_canceled_by_restaurant": "Canceled by restaurant",
@@ -658,6 +664,11 @@
         "body": "Receive emails about news, tips, and features.",
         "optout": "Don't Receive"
       }
+    },
+    "thirdPartyService": {
+      "title": "Third Party Service",
+      "openSmaregi": "Open Smaregi",
+      "smaregiManualLink": "How to use smaregi"
     },
     "viewAllOrders": "View All Orders from All Restaurants",
     "viewPage": "View Page",
