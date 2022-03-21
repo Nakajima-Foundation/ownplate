@@ -330,6 +330,29 @@
               </nuxt-link>
             </div>
           </div>
+          <!-- Print -->
+          <div class="bg-white shadow rounded-lg p-4 mt-2 text-center" v-if="isDev">
+            <div>
+              <b-button
+                @click="print()"
+                class="b-reset-tw">
+                <div
+                  class="inline-flex justify-center items-center rounded-full h-16 w-64 light">
+                  Print
+                </div>
+              </b-button>
+            </div>
+            <div class="mt-2">
+              <b-button
+                @click="download()"
+                class="b-reset-tw">
+                <div
+                  class="inline-flex justify-center items-center rounded-full h-16 w-64 light">
+                  Download
+                </div>
+              </b-button>
+            </div>
+          </div>
 
           <div class="bg-white shadow rounded-lg p-4 mt-2">
             <!-- Order Status -->
@@ -564,7 +587,7 @@ import OrderInfo from "~/app/user/Order/OrderInfo";
 import CustomerInfo from "~/components/CustomerInfo";
 
 import { costCal } from "~/plugins/commonUtils";
-
+import { downloadOrderPdf, printOrder, data2UrlSchema } from "~/plugins/pdf2";
 import * as analyticsUtil from "~/plugins/analytics";
 
 const timezone = moment.tz.guess();
@@ -905,6 +928,15 @@ export default {
           newStatus !== "order_canceled")
       );
       */
+    },
+    download() {
+      downloadOrderPdf(this.orderInfo, this.orderItems);
+    },
+    async print() {
+      const data = await printOrder(this.orderInfo, this.orderItems);
+      const passprnt_uri = data2UrlSchema(data, "2");
+      location.href = passprnt_uri;
+      
     },
     getEestimateTime() {
       const time = this.orderInfo.timePlaced.toDate().getTime();
