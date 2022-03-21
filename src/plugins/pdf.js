@@ -7,8 +7,6 @@ import {
   formatNational,
 } from "~/plugins/phoneutil.js";
 
-import logosvg from "!raw-loader!../static/pr/50mm-QR-Blank.svg";
-
 const fontHost = location.protocol + "//" + location.host + "/fonts/";
 
 // https://github.com/bpampuch/pdfmake/blob/7b5675d5b9d5d7b815bd721e00504b16560a6382/src/standardPageSizes.js
@@ -50,10 +48,6 @@ const convChar = (val) => {
         .replace(/　/g, " ");
   
   return value.normalize('NFKC');
-};
-
-const convMm2pt = (mm) => {
-  return Math.round(mm / 0.35278 * 100) /100;
 };
 
 //
@@ -300,10 +294,6 @@ export const menuDownload = (restaurantInfo, menuObj, nationalPhoneNumber, share
       fontSize: 14,
     },
   };
-  console.log(docDefinition);
   return pdfMake.createPdf(docDefinition).download();
 };
 
-export const printOrder = (orderInfo) => {
-  console.log(orderInfo);
-};
