@@ -210,9 +210,10 @@ export const testDownload = () => {
 export const printOrderData = (orderInfo, orderItems) => {
   const content = [];
   console.log(orderInfo, orderItems);
-  // 番号
+  // 番号, 合計金額, 名前
   content.push({
     text: nameOfOrder(orderInfo) + "   " + Number(orderInfo.totalCharge).toLocaleString() + "円   " + orderInfo.name ,
+    fontSize: 12,
     margin: [2, 0],
   });
   // 日付
@@ -220,6 +221,8 @@ export const printOrderData = (orderInfo, orderItems) => {
     text: "受渡: " + moment(orderInfo.timeEstimated.toDate()).format("YYYY/MM/DD HH:mm"),
     margin: [2, 0],
   });
+
+  // オーダー内容
   orderItems.forEach((orderItem) => {
     console.log(orderItem);
     content.push({
@@ -229,15 +232,13 @@ export const printOrderData = (orderInfo, orderItems) => {
     const option = displayOption(orderItem.options||[]);
     if (option !== "") {
       content.push({
-        text: option,
+        text: "opt: " + option,
         margin: [convMm2pt(0.5), convMm2pt(0.3)],
+        fontSize: 6,
       });
     }
     console.log(orderItem);
   });
-  // オーダー内容
-  // 合計金額
-  // 名前
   // 決済
   // デリバリー or テイクアウト
   const docDefinition = {

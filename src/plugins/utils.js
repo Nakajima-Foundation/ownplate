@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import { storage } from "~/plugins/firebase.js";
-import { ownPlateConfig } from "@/config/project";
+import { firebaseConfig, ownPlateConfig } from "@/config/project";
 import { soundFiles, regionalSettings } from "~/plugins/constant.js";
 import moment from "moment";
 import * as Cookie from "cookie";
@@ -311,6 +311,9 @@ export default ({ app }) => {
       isInFacebook() {
       },
       isInTwitter() {
+      },
+      isDev() {
+        return firebaseConfig.projectId === "ownplate-dev";
       },
       featureHeroMobile() {
         return this.regionalSetting.FeatureHeroMobile[
