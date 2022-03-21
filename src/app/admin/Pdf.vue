@@ -1,7 +1,9 @@
 <template>
   <div>
     <button @click="download">Download menu example</button><br/>
-    <button @click="download2">Download logo</button><br/>
+    <button @click="testPrint">Download test print</button><br/>
+    <button @click="testDownload">Download test download</button><br/>
+    <button @click="download4">Download logo print</button><br/>
   </div>
 </template>
 
@@ -9,6 +11,7 @@
 import { db } from "~/plugins/firebase.js";
 
 import * as pdf from '../../plugins/pdf.js';
+import * as pdf2 from '../../plugins/pdf2.js';
 
 export default {
   name: "pdf",
@@ -48,10 +51,33 @@ export default {
   },
   methods: {
     download() {
-      pdf.download(this.restaurantInfo,  this.menuObj, this.nationalPhoneNumber, this.shareUrl());
+      pdf.menuDownload(this.restaurantInfo,  this.menuObj, this.nationalPhoneNumber, this.shareUrl());
     },
-    download2() {
+    async testPrint() {
+      const data = await pdf2.orderPrintData();
+      const passprnt_uri = pdf2.data2UrlSchema(data, "2");
+      location.href = passprnt_uri;
+    },
+    async testDownload() {
+      const data = await pdf2.orderPdfDownload();
+      console.log(data);
 
+    },
+    async download4() {
+      const data = await pdf2.testDownload();
+      console.log(data);
+
+      let passprnt_uri = "starpassprnt://v1/print/nopreview?";
+      
+      passprnt_uri = passprnt_uri + "back=" + encodeURIComponent(window.location.href);
+
+      passprnt_uri = passprnt_uri + "&pdf=" + encodeURIComponent(data);
+
+      // var target = document.getElementById("print");
+      // target.href = passprnt_uri;
+      console.log(passprnt_uri)
+    },
+    async download5() {
     },
   }
 }

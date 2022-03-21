@@ -7,8 +7,6 @@ import {
   formatNational,
 } from "~/plugins/phoneutil.js";
 
-import logosvg from "!raw-loader!../static/pr/50mm-QR-Blank.svg";
-
 const fontHost = location.protocol + "//" + location.host + "/fonts/";
 
 // https://github.com/bpampuch/pdfmake/blob/7b5675d5b9d5d7b815bd721e00504b16560a6382/src/standardPageSizes.js
@@ -52,8 +50,46 @@ const convChar = (val) => {
   return value.normalize('NFKC');
 };
 
+//
+const styles = {
+  title: {
+    bold: true,
+    font: 'NotoSans',
+    fontSize: 24,
+    alignment: 'center',
+    margin: [0, 14],
+  },
+  description: {
+    font: 'NotoSans',
+    fontSize: 10,
+  },
+  address: {
+    lineHeight: 1.5,
+    font: 'NotoSans',
+    fontSize: 12,
+    color: "#0097a7",
+    alignment: 'center',
+    margin: [0, 7],
+  },
+  phone: {
+    font: 'NotoSans',
+    fontSize: 12,
+    color: "#0097a7",
+    alignment: 'center',
+    margin: [0, 5],
+  },
+  h1: {
+    font: 'NotoSans',
+    fontSize: 18,
+        bold: true
+  },
+  style2: {
+    alignment: 'right',
+    color: 'blue',
+  }
+};
 
-export const download = (restaurantInfo, menuObj, nationalPhoneNumber, shareUrl) => {
+export const menuDownload = (restaurantInfo, menuObj, nationalPhoneNumber, shareUrl) => {
   pdfMake.fonts = pdfFont;
   
   const menus = _.chunk((restaurantInfo.menuLists || []).reduce((tmp, itemKey) => {
@@ -252,120 +288,12 @@ export const download = (restaurantInfo, menuObj, nationalPhoneNumber, shareUrl)
     pageSize: "A4",
     content,
     images,
-    styles: {
-      title: {
-        bold: true,
-        font: 'NotoSans',
-        fontSize: 24,
-        alignment: 'center',
-        margin: [0, 14],
-      },
-      description: {
-        font: 'NotoSans',
-        fontSize: 10,
-      },
-      address: {
-        lineHeight: 1.5,
-        font: 'NotoSans',
-        fontSize: 12,
-        color: "#0097a7",
-        alignment: 'center',
-        margin: [0, 7],
-      },
-      phone: {
-        font: 'NotoSans',
-        fontSize: 12,
-        color: "#0097a7",
-        alignment: 'center',
-        margin: [0, 5],
-      },
-      h1: {
-        font: 'NotoSans',
-        fontSize: 18,
-        bold: true
-      },
-      style2: {
-        alignment: 'right',
-        color: 'blue',
-      }
-    },
+    styles,
     defaultStyle: {
       font: 'NotoSans',
       fontSize: 14,
-    }
+    },
   };
-  console.log(docDefinition);
   return pdfMake.createPdf(docDefinition).download();
 };
 
-export const download2 = (restaurantInfo, shareUrl) => {
-  pdfMake.fonts = pdfFont;
-
-  const content = [
-    { image: "coverImage",
-      width: A4ContentWidth,
-      height: menuSize,
-      cover: { width:  A4ContentWidth, height: menuSize },
-    },
-    {
-      text: restaurantInfo.restaurantName, style: 'title',
-      absolutePosition: {
-        y: 80,
-      },
-    },
-    // end of header
-    {
-      text: shareUrl, style: 'title',
-    },
-  ];
-  const images = {
-    coverImage: restaurantInfo.restCoverPhoto,
-    logo: location.protocol + "//" + location.host + '/OwnPlate-Logo-Stack-YellowBlack.png',
-    menu: location.protocol + "//" + location.host + '/test.jpg', // TODO: Set default menu image
-  };
-
-  content.push({ svg: logosvg,
-                 width: 251,
-                 absolutePosition: {
-                   x: 60,
-                   y: 230
-                 }
-               });
-  content.push({
-    qr: shareUrl,
-    fit: 75,
-    absolutePosition: {
-      x: 148,
-      y: 366
-    }
-  });
-  content.push({
-    text: "hello",
-  });
-  const docDefinition = {
-    pageSize: "A4",
-    content,
-    images,
-    styles: {
-      title: {
-        font: 'NotoSans',
-        fontSize: 24,
-        alignment: 'center',
-      },
-      h1: {
-        font: 'NotoSans',
-        fontSize: 18,
-        bold: true
-      },
-      style2: {
-        alignment: 'right',
-        color: 'blue',
-      }
-    },
-    defaultStyle: {
-      font: 'NotoSans',
-      fontSize: 14,
-    }
-  };
-  const pdfDoc = pdfMake.createPdf(docDefinition).download();
-};
