@@ -1,19 +1,30 @@
 <template>
   <div>
-<div v-if="error === 'no_liff'">
-  no liff
-</div>
-<div v-if="error === 'pc'">
-  pc
-</div>
-<div v-else>
-  <router-view />
-</div>
-</div>
+    <div v-if="error === 'redirect_liff'">
+      redirecting....
+    </div>
+    <div v-else-if="error === 'no_liff'">
+      no liff
+    </div>
+    <div v-else-if="error === 'pc'">
+      <PC :liffUrl="liffUrl" />
+    </div>
+    <div v-else-if="loading">
+      loading...
+    </div>
+    <div v-else>
+      <router-view />
+    </div>
+  </div>
 </template>
 
 <script>
 import liff from "@line/liff";
+import { db, functions, auth } from "~/plugins/firebase.js";
+
+import queryString from "query-string";
+
+import PC from "./PC.vue";
 
 /*
  liff flow
@@ -31,16 +42,24 @@ import liff from "@line/liff";
 */
 
 export default {
+  components: {
+    PC,
+  },
   data() {
     return {
       error: null,
+      liffUrl: "",
+      indexId: "",
+      loading: true,
+      liffId: "",
+      liffIdToken: "",
     };
   },
   async created() {
+    this.indexId = this.$route.params.indexId;
 
     // step 1.
     const loadLiffConfig = () => {
-      const id = this.$route.params.indexId;
       // TODO get config from firestore
       return {
         liffId: "1656180429-yJ8ZmlBv",
@@ -60,19 +79,38 @@ export default {
       };
     };
 
+    const parseLiffState = (liffstate) => {
+      if (!liffstate) return {};
+      const splited = liffstate.split("?");
+      if (splited.length < 2) {
+        return {
+          liffStatePath: splited[0] || "",
+          liffStateQuery: {},
+        };
+      }
+      return {
+        liffStatePath: splited[0],
+        liffStateQuery: queryString.parse(splited[1]),
+      };
+    };
+
+    
     const checkInLiff = () => {
+      const { liffStatePath, liffStateQuery } = parseLiffState(this.$route.query["liff.state"]);
+      
+      // https://staging.ownplate.today/liff/test/r/123 -> https://liff.line.me/1656180429-yJ8ZmlBv/r/123 
+      const omochikaeriLiffBasePath = "/liff/" + this.indexId; // /liff/test
+      const relativePath = window.location.pathname.slice(omochikaeriLiffBasePath.length); // /r/123
+      this.liffUrl = "https://liff.line.me/" + this.liffId + relativePath // test/r/123
+      
       if (!liff.isInClient()) {
         const { isWeb, isIOS, isAndroid } = getOS();
-        // TODO redirect to liff or show pc
-        /*
         if (liffStateQuery && liffStateQuery["redirect"]) {
-          const path = liffStatePath || "";
-          if (path.startsWith("/map")) {
-            router.push(shareTopPath + path);
-          }
-          return { isPC: true };
+          this.liffUrl = "https://liff.line.me/" + this.liffId + liffStatePath;
+          this.error = "pc";
+          return false;
         }
-        */
+
         if (isIOS || isAndroid) {
           const params = { ...this.$route.query};
           params["redirect"] = "true";
@@ -81,36 +119,31 @@ export default {
                   return key + "=" + encodeURIComponent(params[key]);
                 })
                 .join("&");
-          // TODO
-          // window.location.pathname
-          // https://staging.ownplate.today/liff/test
-          const liffUrl = "https://liff.line.me/1656180429-yJ8ZmlBv/r/fgaz8vntMltJo8hEfsDk";
-          // hoge.com/liff/aaa/bbb -> liff.com/liffprefix/bbb
-          location.replace(liffUrl + "?" + qs);
+
+          location.replace(this.liffUrl + "?" + qs);
+          this.error = "redirect_liff";
           return false;
-        }
-        if (isWeb) {
-          this.error = "pc";
         }
         if (location.hostname === "localhost") {
           // for debug
-          return true;
+          // return true;
         }
+        this.error = "pc";
         return false;
       }
       return true;
     };
 
-    const liffInit = (config) => {
+    const liffInit = () => {
       if (location.hostname === "localhost") {
         return;
       }
-      liff.init({ liffId: config.liffId }).then(async () => {
+      liff.init({ liffId: this.liffId }).then(async () => {
         try {
           if (!liff.isLoggedIn()) {
             liff.login();
           }
-          const liffIdToken = await liff.getIDToken();
+          this.liffIdToken = await liff.getIDToken();
         } catch (e) {
           console.log("liff_login", e);
         }
@@ -123,13 +156,41 @@ export default {
       this.error = "no_liff";
       return;
     }
+    this.liffId = config.liffId;
     // step 2.
     if (!checkInLiff()) {
-      this.error = "pc";
       return;
     }
     // step 3.
     liffInit(config);
-}
+
+    this.loading = false;
+  },
+  computed: {
+    userLoad() {
+      return [this.$store.state.user, this.liffIdToken];
+    },
+  },
+  watch: {
+    userLoad(value) {
+      if (this.$store.state.user !== undefined && this.liffIdToken !== undefined) {
+        // TODO
+        // not user or not liff user or not current liff user
+        if (this.$store.state.user === null) {
+          const liffAuthenticate = functions.httpsCallable("liffAuthenticate");
+          (async () => {
+            const { data } = (await liffAuthenticate({
+              indexId: this.indexId,
+              liffId: this.liffId,
+              token: this.liffIdToken,
+            }));
+            if (data.customToken) {
+              const user = await aith.signInWithCustomToken(data.customToken);
+            }
+          })();
+        }
+      }
+    },
+  }
 };
 </script>
