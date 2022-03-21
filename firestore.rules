@@ -278,6 +278,16 @@ service cloud.firestore {
       allow read, write: if isAdmin(request) && isRestaurantOwner(restaurantId, request);
       allow read: if isSuper(request);
     }
+    
+    match /liff/{indexId} {
+      allow read: if true;
+      allow write: if false;  // only set by hands
+
+      match /secret/data {
+        allow read: if false; // only server side of function can use this data.
+        allow write: if false;
+      }
+    }
 
     match /hash/{hashId}{
       match /records/{eventId} {

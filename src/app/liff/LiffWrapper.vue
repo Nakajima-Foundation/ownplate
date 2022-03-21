@@ -6,6 +6,9 @@
     <div v-else-if="error === 'no_liff'">
       no liff
     </div>
+    <div v-if="error === 'no_restaurant'">
+      <not-found />
+    </div>
     <div v-else-if="error === 'pc'">
       <PC :liffUrl="liffUrl" />
     </div>
@@ -25,13 +28,15 @@ import { db, functions, auth } from "~/plugins/firebase.js";
 import queryString from "query-string";
 
 import PC from "./PC.vue";
+import NotFound from "~/components/NotFound";
 
 /*
  liff flow
  1. load liff config
    -> if not liff app, then go error page.
- 2. check if it is in liff and 
-   -> if not liff
+ 1.1. check valid restaurantId if params has restaurantId
+ 2. check if it is in liff
+   -> if not in liff
       redirect to liff if sp
       redirect to pc page if pc
  3. do liff auth
@@ -41,9 +46,39 @@ import PC from "./PC.vue";
  5. everything ok
 */
 
+const getOS = () => {
+  const os = liff.getOS();
+  const isAndroid = os === "android";
+  const isIOS = os === "ios";
+  const isWeb = os === "web";
+  return {
+    os,
+    isAndroid,
+    isIOS,
+    isWeb,
+  };
+};
+
+const parseLiffState = (liffstate) => {
+  if (!liffstate) return {};
+  const splited = liffstate.split("?");
+  if (splited.length < 2) {
+    return {
+      liffStatePath: splited[0] || "",
+      liffStateQuery: {},
+    };
+  }
+  return {
+    liffStatePath: splited[0],
+    liffStateQuery: queryString.parse(splited[1]),
+  };
+};
+
+
 export default {
   components: {
     PC,
+    NotFound,
   },
   data() {
     return {
@@ -51,6 +86,7 @@ export default {
       liffUrl: "",
       indexId: "",
       loading: true,
+      config: null,
       liffId: "",
       liffIdToken: "",
     };
@@ -59,49 +95,19 @@ export default {
     this.indexId = this.$route.params.indexId;
 
     // step 1.
-    const loadLiffConfig = () => {
-      // TODO get config from firestore
-      return {
-        liffId: "1656180429-yJ8ZmlBv",
-      };
+    const loadLiffConfig = async () => {
+      const data = (await db.doc(`/liff/${this.indexId}`).get()).data();
+      return data;
     };
-    // step 2
-    const getOS = () => {
-      const os = liff.getOS();
-      const isAndroid = os === "android";
-      const isIOS = os === "ios";
-      const isWeb = os === "web";
-      return {
-        os,
-        isAndroid,
-        isIOS,
-        isWeb,
-      };
-    };
-
-    const parseLiffState = (liffstate) => {
-      if (!liffstate) return {};
-      const splited = liffstate.split("?");
-      if (splited.length < 2) {
-        return {
-          liffStatePath: splited[0] || "",
-          liffStateQuery: {},
-        };
-      }
-      return {
-        liffStatePath: splited[0],
-        liffStateQuery: queryString.parse(splited[1]),
-      };
-    };
-
     
+    // step 2
     const checkInLiff = () => {
       const { liffStatePath, liffStateQuery } = parseLiffState(this.$route.query["liff.state"]);
       
       // https://staging.ownplate.today/liff/test/r/123 -> https://liff.line.me/1656180429-yJ8ZmlBv/r/123 
       const omochikaeriLiffBasePath = "/liff/" + this.indexId; // /liff/test
       const relativePath = window.location.pathname.slice(omochikaeriLiffBasePath.length); // /r/123
-      this.liffUrl = "https://liff.line.me/" + this.liffId + relativePath // test/r/123
+      this.liffUrl = "https://liff.line.me/" + this.liffId + relativePath // 1656180429-yJ8ZmlBv/r/123
       
       if (!liff.isInClient()) {
         const { isWeb, isIOS, isAndroid } = getOS();
@@ -126,7 +132,7 @@ export default {
         }
         if (location.hostname === "localhost") {
           // for debug
-          // return true;
+          return true;
         }
         this.error = "pc";
         return false;
@@ -151,18 +157,32 @@ export default {
     };
 
     // step 1.
-    const config = loadLiffConfig();
-    if (config === null) {
+    this.config = await loadLiffConfig();
+
+    if (this.config === null || this.config === undefined) {
       this.error = "no_liff";
       return;
     }
-    this.liffId = config.liffId;
+    
+    // step 1.1.
+    if (this.$route.params.restaurantId) {
+      const hasRestaurant = (this.config.restaurants || []).some((restaurantId) => {
+        return restaurantId === this.$route.params.restaurantId
+      });
+      if (!hasRestaurant) {
+        this.error = "no_restaurant";
+        return;
+      }
+    }
+
+    
+    this.liffId = this.config.liffId;
     // step 2.
     if (!checkInLiff()) {
       return;
     }
     // step 3.
-    liffInit(config);
+    liffInit(this.config);
 
     this.loading = false;
   },
