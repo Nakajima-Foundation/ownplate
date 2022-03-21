@@ -324,7 +324,7 @@ export default {
   watch: {
     optionValues: {
       handler: function(val) {
-        console.log("opt: " + JSON.stringify(val));
+        // console.log("opt: " + JSON.stringify(val));
         this.$emit("didOptionValuesChange", {
           id: this.item.id,
           optionValues: this.optionValues

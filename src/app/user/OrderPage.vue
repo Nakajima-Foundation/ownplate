@@ -6,6 +6,13 @@
   <template v-else-if="notFound">
     <not-found />
   </template>
+  <template v-else-if="orderError">
+    <div class="mt-4 mx-6">
+      <div class="text-xl font-bold text-center">
+        {{ $t("order.orderErrorMessage") }}
+      </div>
+    </div>
+  </template>
   <template v-else>
     <!-- Back Button (Edit Order) -->
     <div v-if="just_validated" class="mt-6 mx-6">
@@ -189,9 +196,19 @@
 
       <!-- Before Paid -->
       <div v-else class="mt-4 mx-6">
-        <div class="bg-red-700 bg-opacity-10 rounded-lg p-6 text-center">
+        <div class="bg-red-700 bg-opacity-10 rounded-lg p-4 text-center">
           <div class="text-base font-bold text-red-700">
             {{ $t("order.orderNotPlacedYet") }}
+          </div>
+        </div>
+        <div class="bg-red-700 bg-opacity-10 rounded-lg p-4 text-center mt-4" v-if="shopInfo.enableDelivery">
+          <div class="text-base font-bold text-red-700">
+            <span v-if="orderInfo.isDelivery">
+              {{ $t("order.thisIsDeliveryOrder") }}
+            </span>
+            <span v-else>
+              {{ $t("order.thisIsTakeoutOrder") }}
+            </span>
           </div>
         </div>
       </div>
@@ -266,6 +283,25 @@
             }}</span>
           </div>
 
+          <!-- Receipt -->
+          <template v-if="order_accepted && hasStripe"> 
+            <div class="bg-white rounded-lg shadow p-4 mt-4">
+              <!-- Details -->
+              <div class="mt-2 text-xl font-bold text-black">
+                {{ $t("order.receipt.receipt") }}
+              </div>
+              <div class="mt-2">
+                <span @click="receipt()" class=" cursor-pointer">{{  $t(isLoadingReceipt ? "order.receipt.loading" : "order.receipt.getReceipt") }}</span>
+              </div>
+              <div class="mt-2 text-xs font-bold">
+                 {{ $t("order.receipt.explain1") }}
+              </div>
+              <div class="text-xs font-bold">
+                 {{ $t("order.receipt.explain2") }}
+              </div>
+            </div>
+          </template>
+          
           <!-- View Menu Page Button -->
           <div v-if="paid" class="mt-6 text-center">
             <b-button class="b-reset-tw" @click="handleOpenMenu">
@@ -438,6 +474,14 @@
                   </div>
                 </div>
               </template>
+
+              <div>
+                <b-checkbox v-model="isSaveAddress">
+                  <div class="text-sm font-bold">
+                    {{ $t("order.saveAddress") }}
+                  </div>
+                </b-checkbox>
+              </div>
             </div>
 
             <!-- map for delivery -->
@@ -454,7 +498,7 @@
                   @updateHome="updateHome"
                   :shopInfo="shopInfo"
                   :fullAddress="fullAddress"
-                  :deliveryInfo="deliveryInfo" />
+                  :deliveryInfo="deliveryData" />
             </div>
 
             
@@ -473,6 +517,7 @@
                 <time-to-pickup
                   v-if="shopInfo.businessDay"
                   :shopInfo="shopInfo"
+                  :isDelivery="orderInfo.isDelivery || false"
                   ref="time"
                   @notAvailable="handleNotAvailable"
                 />
@@ -540,7 +585,7 @@
                 <div class="mt-6 text-center">
                   <b-button
                     :loading="isPaying"
-                    :disabled="!cardState.complete || notAvailable"
+                    :disabled="!cardState.complete || notAvailable || notSubmitAddress"
                     @click="handlePayment"
                     class="b-reset-tw"
                   >
@@ -575,7 +620,7 @@
                 <div class="mt-4">
                   <b-button
                     :loading="isPlacing"
-                    :disabled="notAvailable"
+                    :disabled="notAvailable || notSubmitAddress"
                     @click="handleNoPayment"
                     class="b-reset-tw"
                   >
@@ -595,6 +640,11 @@
                 </div>
               </div>
 
+              <!-- Error message for ec and delivery -->
+              <div v-if="requireAddress && hasEcError" class="text-center text-red-700 font-bold mt-2">
+                {{ $t("order.alertReqireAddress") }}
+              </div>
+            
               <!-- Send SMS Checkbox -->
               <div v-if="!isLineEnabled" class="mt-6">
                 <div class="bg-black bg-opacity-5 rounded-lg p-4">
@@ -620,6 +670,7 @@
                 <shop-info
                   :compact="true"
                   :shopInfo="shopInfo"
+                  :isDelivery="orderInfo.isDelivery"
                   :paymentInfo="paymentInfo"
                 />
               </div>
@@ -664,7 +715,7 @@ import { db, firestore, functions } from "~/plugins/firebase.js";
 import { order_status, order_status_keys } from "~/plugins/constant.js";
 import { nameOfOrder } from "~/plugins/strings.js";
 import { releaseConfig } from "~/plugins/config.js";
-import { stripeCreateIntent, stripeCancelIntent } from "~/plugins/stripe.js";
+import { stripeCreateIntent, stripeCancelIntent, stripeReceipt } from "~/plugins/stripe.js";
 import { lineAuthURL } from "~/plugins/line.js";
 
 import { costCal } from "~/plugins/commonUtils";
@@ -683,10 +734,10 @@ export default {
   name: "Order",
   head() {
     return {
-      title: this.shopInfo.restaurantName && this.statusKey ?
+      title: this.shopInfo?.restaurantName && this.statusKey ?
         [
           this.defaultTitle,
-          this.shopInfo ? this.shopInfo.restaurantName : "--",
+          this.shopInfo ? this.shopInfo?.restaurantName : "--",
           "Order Page",
           this.$t("order.status." + this.statusKey),
         ].join(" / "):
@@ -710,33 +761,50 @@ export default {
     OrderPageMap,
     FavoriteButton
   },
+  props: {
+    shopInfo: {
+      type: Object,
+      required: true
+    },
+    paymentInfo: {
+      type: Object,
+      required: true
+    },
+    deliveryData: {
+      type: Object,
+      required: true
+    },
+    notFound: {
+      type: Boolean,
+      required: false,
+    },
+  },
   data() {
     return {
       notAvailable: false,
       loginVisible: false,
       isPaying: false,
       restaurantsId: this.restaurantId(),
-      shopInfo: { restaurantName: "" },
       addressList: [],
       cardState: {},
       orderInfo: {},
+      customer: {},
       menuObj: null,
       detacher: [],
       isDeleting: false,
       isPlacing: false,
       tip: 0,
       sendSMS: true,
-      paymentInfo: {},
+      isSaveAddress: true,
+      isLoadingReceipt: false,
       postageInfo: {},
-      deliveryInfo: {},
-      notFound: false,
       memo: "",
       customerInfo: {},
     };
   },
   created() {
     if (this.isUser) {
-      this.loadData();
+      this.loadUserData();
     } else if (!this.isUser) {
       this.loginVisible = true;
     }
@@ -812,6 +880,9 @@ export default {
         return order_status[key] === this.orderInfo.status ? key : result;
       }, "unexpected");
     },
+    orderError() {
+      return this.orderInfo.status === order_status.error;
+    },
     newOrder() {
       return this.orderInfo.status === order_status.new_order;
     },
@@ -826,6 +897,9 @@ export default {
     },
     paid() {
       return this.orderInfo.status >= order_status.order_placed;
+    },
+    order_accepted() {
+      return this.orderInfo.status >= order_status.order_accepted;
     },
     waiting() {
       return this.orderInfo.status < order_status.cooking_completed;
@@ -885,14 +959,11 @@ export default {
         }
       }
       if (this.orderInfo.isDelivery) {
-        console.log(this.customerInfo);
         err['location'] = []
         if (!this.customerInfo.location || !this.customerInfo.location.lat) {
           err['location'].push("validationError.location.noLocation");
         }
       }
-      // TODO delivery validation 
-      // if delivery, check location
       return err;
     },
     hasEcError() {
@@ -903,14 +974,26 @@ export default {
     shippingCost() {
       return costCal(this.postageInfo, this.customerInfo?.prefectureId, this.orderInfo.total);
     },
-    customer() {
-      return this.orderInfo?.customerInfo || {};
+    requireAddress() {
+      return this.shopInfo.isEC || this.orderInfo.isDelivery;
+    },
+    notSubmitAddress() {
+      return this.requireAddress && this.hasEcError
     },
   },
+  // end of computed
   watch: {
+    shopInfo(newValue) {
+      if (this.shopInfo.isEC) {
+        db.doc(`restaurants/${this.restaurantId()}/ec/postage`)
+          .get().then((snapshot) => {
+            this.postageInfo = snapshot.data() || {};
+          });
+      }
+    },
     isUser() {
       if (this.isUser) {
-        this.loadData();
+        this.loadUserData();
       }
     }
   },
@@ -930,7 +1013,6 @@ export default {
         this.shopInfo,
         this.restaurantId()
       );
-      console.log(this.orderItems);
     },
     sendRedunded() {
       analyticsUtil.sendRedunded(
@@ -939,7 +1021,6 @@ export default {
         this.shopInfo,
         this.restaurantId()
       );
-      console.log(this.orderItems);
     },
     handleLineAuth() {
       const url = lineAuthURL("/callback/line", {
@@ -947,45 +1028,14 @@ export default {
       });
       location.href = url;
     },
-    loadData() {
-      const restaurant_detacher = db
-        .doc(`restaurants/${this.restaurantId()}`)
-        .onSnapshot(async restaurant => {
-          if (restaurant.exists) {
-            const restaurant_data = restaurant.data();
-            this.shopInfo = restaurant_data;
-            console.log("*** R", this.shopInfo);
-            const uid = restaurant_data.uid;
-            db.doc(`/admins/${uid}/public/payment`)
-              .get().then((snapshot) => {
-                this.paymentInfo = snapshot.data() || {};
-              });
-            if (this.shopInfo.isEC) {
-              db.doc(`restaurants/${this.restaurantId()}/ec/postage`)
-                .get().then((snapshot) => {
-                  this.postageInfo = snapshot.data() || {};
-                });
-            }
-            // todo if support delivery
-            if (true) {
-              db.doc(`restaurants/${this.restaurantId()}/delivery/area`)
-                .get().then((snapshot) => {
-                  this.deliveryInfo = snapshot.data() || {};
-                });
-            }
-            //console.log("restaurant", uid, this.paymentInfo);
-            
-          } else {
-            this.notFound = true;
-          }
-        });
+    loadUserData() {
       const order_detacher = db
         .doc(`restaurants/${this.restaurantId()}/orders/${this.orderId}`)
         .onSnapshot(
           async order => {
             const order_data = order.exists ? order.data() : {};
             this.orderInfo = order_data;
-            console.log("*** O", this.orderInfo);
+            // console.log("*** O", this.orderInfo);
             if (this.orderInfo.menuItems) {
               this.menuObj = this.orderInfo.menuItems;
             } else {
@@ -1011,13 +1061,24 @@ export default {
                 this.restaurantId()
               );
             }
+            
+            if (this.orderInfo.isDelivery || this.shopInfo.isEC) {
+              if (this.just_validated) {
+                this.customerInfo = {...(await this.loadAddress() || {})};
+              }
+              console.log(this.customerInfo);
+              if (this.hasCustomerInfo) {
+                this.customer = (await db.doc(`restaurants/${this.restaurantId()}/orders/${this.orderId}/customer/data`).get()).data() || this.orderInfo?.customerInfo || {};
+              }
+            }
+            // console.log(`/users/${uid}/address/data`);
           },
           error => {
             console.error(error.message);
             this.notFound = true;
           }
         );
-      this.detacher = [restaurant_detacher, order_detacher];
+      this.detacher = [ order_detacher];
     },
 
     handleOpenMenu() {
@@ -1057,9 +1118,16 @@ export default {
       });
     },
     async handlePayment() {
-      if (this.shopInfo.isEC && this.hasEcError) {
-        return;
+      console.log(this.requireAddress, this.isSaveAddress)
+      if (this.requireAddres) {
+        if (this.hasEcError) {
+          return;
+        }
+        if (this.isSaveAddress) {
+          await this.saveAddress();
+        }
       }
+
       const timeToPickup = this.shopInfo.isEC ? firebase.firestore.Timestamp.now() : this.$refs.time.timeToPickup();
 
       this.isPaying = true;
@@ -1100,8 +1168,14 @@ export default {
       }
     },
     async handleNoPayment() {
-      if (this.shopInfo.isEC && this.hasEcError) {
-        return;
+      console.log(this.requireAddress, this.isSaveAddress)
+      if (this.requireAddress) {
+        if (this.hasEcError) {
+          return;
+        }
+        if (this.isSaveAddress) {
+          await this.saveAddress();
+        }
       }
       const timeToPickup = this.shopInfo.isEC ? firebase.firestore.Timestamp.now() : this.$refs.time.timeToPickup();
       const orderPlace = functions.httpsCallable("orderPlace");
@@ -1155,6 +1229,25 @@ export default {
         }
       });
     },
+    async receipt() {
+      if (this.isLoadingReceipt) {
+        return;
+      }
+      this.isLoadingReceipt = true;
+      try {
+        const res = await stripeReceipt({
+          restaurantId: this.restaurantId(),
+          orderId: this.orderId,
+        });
+        if (res.data && res.data.receipt_url) {
+          window.open(res.data.receipt_url)
+        }
+      } catch (e) {
+        console.log("error");
+      }
+      this.isLoadingReceipt = false;
+      
+    },
     updateAddress(address) {
       const { address1, address2, address3, prefectureId, prefecture } = address;
 
@@ -1178,6 +1271,15 @@ export default {
         return this.regionalSetting.AddressStates[this.customerInfo?.prefectureId - 1];
       }
       return null;
+    },
+    async saveAddress() {
+      const uid = this.user.uid;
+      console.log(this.customerInfo) 
+      await db.doc(`/users/${uid}/address/data`).set(this.customerInfo)
+    },
+    async loadAddress() {
+      const uid = this.user.uid;
+      return (await db.doc(`/users/${uid}/address/data`).get()).data();
     },
     async getAddress() {
       const zip = this.customerInfo['zip'];

@@ -41,6 +41,7 @@
 </template>
 
 <script>
+import { db } from "~/plugins/firebase.js";
 import DownloadCsv from "~/components/DownloadCSV";
 import moment from "moment";
 import { parsePhoneNumber, formatNational } from "~/plugins/phoneutil.js";
@@ -70,6 +71,11 @@ export default {
       default: false
     }
   },
+  data(){
+    return {
+      customers: {},
+    };
+  },
   mounted() {
     //console.log("***", this.orders);
   },
@@ -87,6 +93,28 @@ export default {
       return moment(timeData).format("YYYY/MM/DD HH:mm")
     },
   },
+  watch: {
+    orders: function() {
+      // load customer
+      const ids = this.orders.map(o => o.id);
+      
+      if (this.shopInfo.isEC || this.shopInfo.enableDelivery) {
+        (async () => {
+          const customers = {...this.customers};
+          await Promise.all(this.arrayChunk(ids, 10).map(async (arr) => {
+            const cuss = await db.collectionGroup("customer")
+                  .where("restaurantId", "==", this.restaurantId())
+                  .where("orderId", "in", arr).get();
+            cuss.docs.map((cus) => {
+              const data = cus.data();
+              customers[data.orderId] = data;
+            });
+          }));
+          this.customers = customers;
+        })();
+      }
+    },
+  },
   computed: {
     formulas() {
       return {
@@ -95,7 +123,7 @@ export default {
       };
     },
     fields() {
-      if (this.shopInfo?.isEC) {
+      if (this.shopInfo?.isEC || this.shopInfo?.enableDelivery) {
         return [
           "name",
           "statusName",
@@ -125,6 +153,7 @@ export default {
           "total",
           "shippingCost",
           "payment",
+          "isDelivery",
           "memo"
       ];
 
@@ -158,9 +187,17 @@ export default {
         return this.$t(`order.${field}`);
       });
     },
+    mergedOrder() {
+      return this.orders.map((o) => {
+        if (this.customers[o.id]) {
+          o.customerInfo =  o.customerInfo || this.customers[o.id] || {};
+        }
+        return o;
+      });
+    },
     tableData() {
       const items = [];
-      this.orders.forEach(order => {
+      this.mergedOrder.forEach((order) => {
         const ids = Object.keys(order.order);
         const status = Object.keys(order_status).reduce((result, key) => {
           if (order_status[key] == order.status) {
@@ -168,6 +205,7 @@ export default {
           }
           return result;
         }, "unexpected");
+
         ids.forEach((menuId, index) => {
           const orderItems = this.forceArray(order.order[menuId]);
           const options = order.options[menuId] || [];
@@ -248,6 +286,11 @@ export default {
                   key,
                   order?.shippingCost,
                 ),
+                isDelivery: this.writeonFirstLine(
+                  index,
+                  key,
+                  order?.isDelivery ? "1": "",
+                ),
                 count: orderItems[key],
                 options: opt.filter(a => String(a) !== "").join("/"),
                 memo: this.writeonFirstLine(index, key, order.memo),
@@ -261,7 +304,11 @@ export default {
                 category2: menuItem.category2 || "",
                 total:
                   index === 0 && Number(key) === 0 ? order.totalCharge : "",
-                payment: order.payment?.stripe ? "stripe" : ""
+                payment: this.writeonFirstLine(
+                  index,
+                  key,
+                  order.payment?.stripe ? "stripe" : ""
+                ),
               });
             } catch (e) {
               console.log(e);

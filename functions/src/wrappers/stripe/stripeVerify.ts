@@ -5,6 +5,10 @@ import * as StripeOAuth from "../..//stripe/oauth";
 
 const db = admin.firestore();
 
-export default functions.https.onCall(async (data, context) => {
+export default functions
+  .runWith({
+    memory: "1GB" as "1GB",
+  })    
+  .https.onCall(async (data, context) => {
   return await StripeOAuth.verify(db, data, context);
 });

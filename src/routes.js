@@ -35,6 +35,11 @@ export const customRoutes = [
     component: "user/Profile.vue"
   },
   {
+    name: "address",
+    path: "/u/address",
+    component: "user/Address.vue"
+  },
+  {
     name: "terms-admin",
     path: "/terms/admin",
     component: "common/TermsAdmin.vue"
@@ -67,31 +72,33 @@ export const customRoutes = [
     component: "user/RestaurantIndex.vue"
   },
   {
-    name: "r-restaurantId",
+    name: "r-restaurant-Wrapper",
     path: "/r/:restaurantId",
-    component: "user/RestaurantPage.vue",
+    component: "user/RestaurantWrapper.vue",
     children: [
       {
-        name: "r-restaurant-Page",
+        name: "r-restaurantId",
         path: "/",
-        component: "user/Blank.vue",
+        component: "user/RestaurantPage.vue",
+        children: [
+          {
+            name: "r-restaurant-Page",
+            path: "/",
+            component: "user/Blank.vue",
+          },
+          {
+            name: "r-restaurant-Menu",
+            path: "menus/:menuId",
+            component: "user/Blank.vue",
+          }
+        ]
       },
       {
-        name: "r-restaurant-Menu",
-        path: "menus/:menuId",
-        component: "user/Blank.vue",
-      }
+        name: "r-restaurantId-order",
+        path: "/r/:restaurantId/order/:orderId",
+        component: "user/OrderPage.vue"
+      },
     ]
-  },
-  {
-    name: "r-restaurantId-order",
-    path: "/r/:restaurantId/order/:orderId",
-    component: "user/OrderPage.vue"
-  },
-  {
-    name: "r-restaurantId-transactionsAct",
-    path: "/r/:restaurantId/transactionsAct",
-    component: "user/TransactionsAct.vue"
   },
   {
     name: "adminOwner",
@@ -151,7 +158,7 @@ export const customRoutes = [
         component: "admin/Postage.vue"
       },
       {
-        path: "deliveryarea",
+        path: "delivery",
         component: "admin/Delivery.vue"
       },
       {

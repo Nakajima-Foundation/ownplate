@@ -42,7 +42,7 @@ const getStripeOrderRecord = async (transaction: any, stripeRef: any) => {
   return stripeRecord;
 };
 
-const getStripeAccount = async (db: any, restaurantOwnerUid: string) => {
+export const getStripeAccount = async (db: any, restaurantOwnerUid: string) => {
   const paymentSnapshot = await db.doc(`/admins/${restaurantOwnerUid}/public/payment`).get();
   const stripeAccount = paymentSnapshot.data()?.stripe;
   if (!stripeAccount) {
@@ -91,12 +91,18 @@ export const create = async (db: admin.firestore.Firestore, data: any, context: 
       const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
       const stripeRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}/system/stripe`);
 
+      const customerRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}/customer/data`);
       const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`);
       const order = await getOrderData(transaction, orderRef);
       if (order.status !== order_status.validation_ok) {
         throw new functions.https.HttpsError("failed-precondition", "This order is invalid.");
       }
       const shippingCost = restaurantData.isEC ? costCal(postage, customerInfo?.prefectureId, order.total) : 0;
+      const hasCustomer = restaurantData.isEC || order.isDelivery;
+      if (hasCustomer) {
+        // for transaction lock
+        await transaction.get(customerRef);
+      }
 
       const totalChargeWithTipAndMultipled = Math.round((order.total + Math.max(0, _tip) + (shippingCost || 0)) * multiple);
 
@@ -117,8 +123,19 @@ export const create = async (db: admin.firestore.Firestore, data: any, context: 
         stripeAccount,
       });
       const timePlaced = (timeToPickup && new admin.firestore.Timestamp(timeToPickup.seconds, timeToPickup.nanoseconds)) || admin.firestore.FieldValue.serverTimestamp();
-      await updateOrderTotalDataAndUserLog(db, transaction, customerUid, order.order, restaurantId, customerUid, timePlaced, true);
 
+      // start write transaction
+      await updateOrderTotalDataAndUserLog(db, transaction, customerUid, order.order, restaurantId, customerUid, timePlaced, true);
+      if (hasCustomer) {
+        await transaction.set(customerRef, {
+          ...customerInfo,
+          uid: customerUid,
+          orderId,
+          restaurantId,
+          createdAt: admin.firestore.Timestamp.now(),
+        });
+      }
+      
       const updateData = {
         status: order_status.order_placed,
         totalCharge: totalChargeWithTipAndMultipled / multiple,
@@ -131,7 +148,7 @@ export const create = async (db: admin.firestore.Firestore, data: any, context: 
         description: request.description,
         memo: memo || "",
         isEC: restaurantData.isEC || false,
-        customerInfo: customerInfo || {},
+        // customerInfo: customerInfo || {},
         payment: {
           stripe: "pending",
         },
@@ -183,7 +200,6 @@ export const confirm = async (db: admin.firestore.Firestore, data: any, context:
 
       if (
         order.status !== order_status.order_placed // from 2021-07-17
-        // && order.status !== order_status.order_accepted
       ) {
         // obsolete but backward compability
         throw new functions.https.HttpsError("failed-precondition", "This order is not ready yet.");

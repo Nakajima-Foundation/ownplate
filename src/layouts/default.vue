@@ -326,7 +326,6 @@
 
 <script>
 import { db, auth, functions, analytics } from "@/plugins/firebase.js";
-import { releaseConfig } from "~/plugins/config.js";
 import DialogBox from "~/components/DialogBox";
 import AudioPlay from "./AudioPlay";
 import * as Sentry from "@sentry/browser";
@@ -396,9 +395,6 @@ export default {
         return true; // We are opening the restaurant page
       }
       return false;
-    },
-    underConstruction() {
-      return releaseConfig.underConstruction;
     },
     hasUser() {
       return !this.isNull(this.$store.state.user);
@@ -585,13 +581,15 @@ export default {
   },
   async created() {
     console.log(process.env.CIRCLE_SHA1);
-    if (this.isInLine) {
-      if (/\?/.test(window.location.href)) {
-        window.location.href = window.location.href + "&openExternalBrowser=1";
-      } else {
-        window.location.href = window.location.href + "?openExternalBrowser=1";
+    if (!this.isInLIFF) {
+      if (this.isInLine) {
+        if (/\?/.test(window.location.href)) {
+          window.location.href = window.location.href + "&openExternalBrowser=1";
+        } else {
+          window.location.href = window.location.href + "?openExternalBrowser=1";
+        }
+        return;
       }
-      return;
     }
     this.language = this.regionalSetting.defaultLanguage;
     this.languages = this.regionalSetting.languages;
