@@ -28,9 +28,7 @@ jobs:
       - run: cp src/plugins/phoneutil.js functions/src/common/phoneutil.js
       - run: cp src/plugins/commonUtils.js functions/src/common/commonUtils.js
       - run: cd functions && npm install && npm run coverage
-      - run: ./node_modules/.bin/firebase deploy --token=$FIREBASE_TOKEN --project=staging --only hosting:app
-      - run: ./node_modules/.bin/firebase deploy --token=$FIREBASE_TOKEN --project=staging --only firestore:rules
-      - run: cd functions && npm install && ../node_modules/.bin/firebase deploy --token=$FIREBASE_TOKEN --project=staging --only functions
+      - run: ./node_modules/.bin/firebase deploy --token=$FIREBASE_TOKEN --project=staging
       - run: SLACKURL=$SLACKURL sh ./utils/buildbot.sh
 workflows:
     version: 2.1

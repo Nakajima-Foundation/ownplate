@@ -255,6 +255,9 @@ export default {
     },
     duplicateElement() {
       const counter = Object.values(this.selectedRestaurant).reduce((tmp, ele) => {
+        if (ele === "00000") {
+          return tmp;
+        }
         if (tmp[ele] === undefined) {
           tmp[ele] = 1;
         } else {

@@ -138,6 +138,14 @@
               </div>
             </div>
 
+            <!-- Notice Delivery -->
+            <div v-if="orderInfo.isDelivery" class="text-center mt-2">
+              <div
+                class="text-base font-bold text-red-700 bg-red-700 bg-opacity-10 rounded-lg p-4  inline-flex">
+                {{ $t("admin.order.deliveryOrder") }}
+              </div>
+            </div>
+            
             <!-- Note for Payment Completion -->
             <div
               v-if="paymentIsNotCompleted"
@@ -320,6 +328,29 @@
                     }}</span>
                 </div>
               </nuxt-link>
+            </div>
+          </div>
+          <!-- Print -->
+          <div class="bg-white shadow rounded-lg p-4 mt-2 text-center" v-if="isDev">
+            <div>
+              <b-button
+                @click="print()"
+                class="b-reset-tw">
+                <div
+                  class="inline-flex justify-center items-center rounded-full h-16 w-64 light">
+                  Print
+                </div>
+              </b-button>
+            </div>
+            <div class="mt-2">
+              <b-button
+                @click="download()"
+                class="b-reset-tw">
+                <div
+                  class="inline-flex justify-center items-center rounded-full h-16 w-64 light">
+                  Download
+                </div>
+              </b-button>
             </div>
           </div>
 
@@ -556,7 +587,7 @@ import OrderInfo from "~/app/user/Order/OrderInfo";
 import CustomerInfo from "~/components/CustomerInfo";
 
 import { costCal } from "~/plugins/commonUtils";
-
+import { downloadOrderPdf, printOrder, data2UrlSchema } from "~/plugins/pdf2";
 import * as analyticsUtil from "~/plugins/analytics";
 
 const timezone = moment.tz.guess();
@@ -584,6 +615,7 @@ export default {
       shopInfo: {},
       menuObj: {},
       orderInfo: {},
+      customer: {},
       canceling: false,
       detacher: [],
       cancelPopup: false,
@@ -644,6 +676,11 @@ export default {
           if (order.exists) {
             const order_data = order.data();
             this.orderInfo = order_data;
+            if ((this.orderInfo.isDelivery || this.shopInfo.isEC)) {
+              db.doc(`restaurants/${this.restaurantId()}/orders/${this.orderId}/customer/data`).get().then(doc => {
+                this.customer = doc.data() || this.orderInfo?.customerInfo || {};
+              });
+            }
           } else {
             this.notFound = true;
           }
@@ -867,9 +904,6 @@ export default {
     availableChangeButton() {
       return (this.edited_available_order_info.length !== this.editedAvailableOrders.length) && (this.edited_available_order_info.length > 0)
     },
-    customer() {
-      return this.orderInfo.customerInfo || {};
-    },
   },
   methods: {
     updateEnable(value) {
@@ -894,6 +928,15 @@ export default {
           newStatus !== "order_canceled")
       );
       */
+    },
+    download() {
+      downloadOrderPdf(this.orderInfo, this.orderItems);
+    },
+    async print() {
+      const data = await printOrder(this.orderInfo, this.orderItems);
+      const passprnt_uri = data2UrlSchema(data, "2");
+      location.href = passprnt_uri;
+      
     },
     getEestimateTime() {
       const time = this.orderInfo.timePlaced.toDate().getTime();

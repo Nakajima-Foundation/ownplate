@@ -59,6 +59,12 @@
           {{ $n(order.totalCharge, "currency") }}
         </div>
 
+        <div class="text-sm mr-2"  v-if="order.isDelivery">
+          <i class="material-icons">
+            delivery_dining
+          </i>
+        </div>
+
         <div
           v-if="order.tip"
           class="flex-1 text-right text-xs font-bold text-blue-500"
@@ -125,6 +131,11 @@
 
             <div class="text-sm mr-2">
               {{ $n(order.totalCharge, "currency") }}
+            </div>
+            <div class="text-sm mr-2"  v-if="order.isDelivery">
+              <i class="material-icons">
+                delivery_dining
+              </i>
             </div>
 
             <div class="flex-1 text-right text-sm font-bold">

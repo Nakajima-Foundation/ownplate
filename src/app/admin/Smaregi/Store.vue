@@ -26,9 +26,8 @@
       <div v-if="isEdit">
 
         <div v-for="(product, key) in productList" :key="key" class="mt4 border-2" >
-          {{product.productCode}} / {{product.productName}} / {{product.price}}円
-
-          <b-select v-model="selectedMenu[key]" :class="selectedMenu[key] && duplicateElement[selectedMenu[key]] ? 'border-red-700 border-2 border-solid' : ''">
+          スマレジ: {{product.productCode}} / {{product.productName}} / {{product.price}}円 / 在庫数 {{(stockObj[product.productId] || {}).amount || 0}} <br />
+           おもちかえり: <b-select v-model="selectedMenu[key]" :class="selectedMenu[key] && duplicateElement[selectedMenu[key]] ? 'border-red-700 border-2 border-solid' : ''">
             <option
               v-for="menu in menus"
               :value="menu.id"
@@ -46,7 +45,8 @@
       <div v-else>
         <div class="mt-4">
             <div v-for="(product, key) in productList" :key="key" class="mt-2 border-2" >
-              スマレジ:{{product.productCode}} / {{product.productName}} / {{product.price}}円<br/>
+              スマレジ:{{product.productCode}} / {{product.productName}} / {{product.price}}円 / 在庫数 {{(stockObj[product.productId] || {}).amount || 0}} <br/>
+              
 
               おもちかえり: <span v-if="menuObj[selectedMenu[key]]">{{menuObj[selectedMenu[key]].itemName}} / {{menuObj[selectedMenu[key]].price}}円</span>
           </div>
@@ -84,6 +84,7 @@ export default {
       storeData: {},
       menus: [],
       menuObj: {},
+      stockObj: {},
       selectedMenu: {},
       isEdit: false,
     };
@@ -135,6 +136,9 @@ export default {
       return tmp;
     }, {});
 
+    const stockCollection = await db.collection(`smaregiData/${this.contractId}/stores/${this.storeId}/smaregiProducts`).get();
+    this.stockObj = this.array2obj(stockCollection.docs.map(this.doc2data("stock")));
+    
     const selectedMenu = {};
     (this.productList ||[]).map((product, key) => {
       const productId = product.productId;
@@ -181,6 +185,9 @@ export default {
     },
     duplicateElement() {
       const counter = Object.values(this.selectedMenu).reduce((tmp, ele) => {
+        if (ele === "00000") {
+          return tmp;
+        }
         if (tmp[ele] === undefined) {
           tmp[ele] = 1;
         } else {

@@ -39,6 +39,9 @@
                 </div>
                 <div class="flex-1 text-base font-bold pr-2">
                   {{ restaurant.restaurantName }}
+                  <i class="material-icons align-middle" v-if="restaurant.enableDelivery">
+                    delivery_dining
+                  </i>
                 </div>
               </div>
             </router-link>

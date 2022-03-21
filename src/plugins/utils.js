@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import { storage } from "~/plugins/firebase.js";
-import { ownPlateConfig } from "@/config/project";
+import { firebaseConfig, ownPlateConfig } from "@/config/project";
 import { soundFiles, regionalSettings } from "~/plugins/constant.js";
 import moment from "moment";
 import * as Cookie from "cookie";
@@ -10,6 +10,7 @@ import { defaultHeader } from "./header";
 import { formatOption } from "~/plugins/strings.js";
 
 import { partners } from "~/plugins/constant";
+import { releaseConfig } from "~/plugins/config.js";
 
 export default ({ app }) => {
   Vue.mixin({
@@ -25,6 +26,12 @@ export default ({ app }) => {
       },
       resizedProfileImage(restaurant, size) {
         return (restaurant.images?.profile?.resizedImages || {})[size] || restaurant.restProfilePhoto;
+      },
+      arrayChunk(arr, size = 1) {
+        const array = [...arr];
+        return array.reduce((current, value, index) => {
+          return index % size ? current : [...current, array.slice(index, index + size)];
+        }, []);
       },
       shareUrl() {
         return location.protocol + "//" + location.host + "/r/" + this.restaurantId();
@@ -234,6 +241,9 @@ export default ({ app }) => {
       }, 
     },
     computed: {
+      underConstruction() {
+        return releaseConfig.underConstruction;
+      },
       defaultTitle() {
         return defaultHeader.title;
       },
@@ -295,9 +305,15 @@ export default ({ app }) => {
       isInLine() {
         return /Line/.test(navigator.userAgent);
       },
+      isInLIFF() {
+        return /LIFF/.test(navigator.userAgent);
+      },
       isInFacebook() {
       },
       isInTwitter() {
+      },
+      isDev() {
+        return firebaseConfig.projectId === "ownplate-dev";
       },
       featureHeroMobile() {
         return this.regionalSetting.FeatureHeroMobile[

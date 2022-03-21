@@ -131,7 +131,7 @@
               :message="hasError ? $t(errors[0]) : ''"
             >
               <b-input
-                type="text"
+                type="tel"
                 v-model="verificationCode"
                 v-on:input="validateVerificationCode"
                 maxlength="6"
