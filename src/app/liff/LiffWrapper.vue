@@ -84,7 +84,7 @@ export default {
     return {
       error: null,
       liffUrl: "",
-      indexId: "",
+      liffIndexId: "",
       loading: true,
       config: null,
       liffId: "",
@@ -92,11 +92,11 @@ export default {
     };
   },
   async created() {
-    this.indexId = this.$route.params.indexId;
+    this.liffIndexId = this.$route.params.liffIndexId;
 
     // step 1.
     const loadLiffConfig = async () => {
-      const data = (await db.doc(`/liff/${this.indexId}`).get()).data();
+      const data = (await db.doc(`/liff/${this.liffIndexId}`).get()).data();
       return data;
     };
     
@@ -105,7 +105,7 @@ export default {
       const { liffStatePath, liffStateQuery } = parseLiffState(this.$route.query["liff.state"]);
       
       // https://staging.ownplate.today/liff/test/r/123 -> https://liff.line.me/1656180429-yJ8ZmlBv/r/123 
-      const omochikaeriLiffBasePath = "/liff/" + this.indexId; // /liff/test
+      const omochikaeriLiffBasePath = "/liff/" + this.liffIndexId; // /liff/test
       const relativePath = window.location.pathname.slice(omochikaeriLiffBasePath.length); // /r/123
       this.liffUrl = "https://liff.line.me/" + this.liffId + relativePath // 1656180429-yJ8ZmlBv/r/123
       
@@ -200,12 +200,12 @@ export default {
           const liffAuthenticate = functions.httpsCallable("liffAuthenticate");
           (async () => {
             const { data } = (await liffAuthenticate({
-              indexId: this.indexId,
+              liffIndexId: this.liffIndexId,
               liffId: this.liffId,
               token: this.liffIdToken,
             }));
             if (data.customToken) {
-              const user = await aith.signInWithCustomToken(data.customToken);
+              const user = await auth.signInWithCustomToken(data.customToken);
             }
           })();
         }

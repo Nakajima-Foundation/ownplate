@@ -6,5 +6,5 @@ import * as Line from "../functions/line";
 const db = admin.firestore();
 
 export default functions.https.onCall(async (data, context) => {
-  return await Line.authenticate(db, data, context);
+  return await Line.liffAuthenticate(db, data, context);
 });

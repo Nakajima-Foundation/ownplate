@@ -18,7 +18,7 @@ const getUserPages = (prefix) => {
     },
     {
       name: "r-restaurantId-order_" + prefix,
-      path: "/r/:restaurantId/order/:orderId",
+      path: "order/:orderId",
       component: "user/OrderPage.vue"
     },
   ];
@@ -106,11 +106,11 @@ export const customRoutes = [
     children: getUserPages("normal"),
   },
   {
-    path: "/liff/:indexId/pc",
+    path: "/liff/:liffIndexId/pc",
     component: "liff/PC.vue",
   },
   {
-    path: "/liff/:indexId",
+    path: "/liff/:liffIndexId",
     component: "liff/LiffWrapper.vue",
     children: [
       {

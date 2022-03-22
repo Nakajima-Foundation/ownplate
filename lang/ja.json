@@ -42,6 +42,7 @@
       "email": "Email",
       "phone": "電話番号",
       "line": "LINE",
+      "liff": "LINE",
       "unexpected": "想定外",
       "isFriend": "友達設定済み",
       "noFriend": "未設定",

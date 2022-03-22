@@ -37,6 +37,8 @@ export const sendMessageToCustomer = async (
   if (line.isEnabled) {
     // for JP
     const lineId = await line.getLineId(db, orderData.uid);
+
+    // TODO create new api for liff
     if (lineId) {
       await line.sendMessageDirect(lineId, message);
     }

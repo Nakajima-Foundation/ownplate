@@ -3,6 +3,7 @@
   :shopInfo="shopInfo"
   :paymentInfo="paymentInfo"
   :deliveryData="deliveryData"
+  :mode="mode"
   :notFound="notFound"
   />
 </template>

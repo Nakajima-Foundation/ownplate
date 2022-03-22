@@ -3,8 +3,12 @@ import * as utils from "../lib/utils";
 import * as netutils from "../lib/netutils";
 import { ownPlateConfig } from "../common/project";
 import * as admin from "firebase-admin";
+import * as crypto from "crypto";
 
 export const isEnabled = !!ownPlateConfig.line;
+
+const LINE_MESSAGE_TOKEN = (functions.config() && functions.config().line && functions.config().line.message_token) || process.env.LINE_MESSAGE_TOKEN;
+const LIFF_SALT = (functions.config() && functions.config().line && functions.config().line.liff_salt) || process.env.LIFF_SALT;
 
 export const setCustomClaim = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
@@ -28,7 +32,6 @@ export const verifyFriend = async (db: admin.firestore.Firestore, data: any, con
   const uidLine = isLine ? uid.slice(5) : context.auth?.token?.line?.slice(5);
   try {
     //return sendMessageInternal(uidLine, "test message");
-    const LINE_MESSAGE_TOKEN = functions.config().line.message_token;
     const profile = await netutils.request(`https://api.line.me/v2/bot/profile/${uidLine}`, {
       headers: {
         Authorization: `Bearer ${LINE_MESSAGE_TOKEN}`,
@@ -161,9 +164,8 @@ export const validate = async (db: admin.firestore.Firestore, data: any, context
   }
 };
 
+// TODO create new api for liff
 export const sendMessageDirect = async (lineId: string, message: string) => {
-  const LINE_MESSAGE_TOKEN = (functions.config() && functions.config().line && functions.config().line.message_token) || process.env.LINE_MESSAGE_TOKEN;
-
   if (!LINE_MESSAGE_TOKEN) {
     console.log("no line message token");
     return;
@@ -207,4 +209,60 @@ export const getLineId = async (db: admin.firestore.Firestore, uid: string | nul
     return;
   }
   return sub;
+};
+
+
+
+export const liffAuthenticate = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => { // eslint-disable-line
+
+  const { liffIndexId, token } = data;
+  utils.validate_params({ liffIndexId, token });
+  
+  try {
+    const liffConfig = (await db.doc(`/liff/${liffIndexId}`).get()).data();
+    console.log(liffConfig);
+    if (!liffConfig) {
+      throw new functions.https.HttpsError("invalid-argument", "Verification failed.");
+    }
+    
+    // We verify this code.
+    const verified = await netutils.postForm("https://api.line.me/oauth2/v2.1/verify", {
+      id_token: token,
+      client_id: liffConfig.clientId,
+    });
+    // console.log(verified);
+    if (!verified.sub) {
+      throw new functions.https.HttpsError("invalid-argument", "Verification failed.", { params: verified });
+    }
+
+    const lineUid = verified.sub;
+    const uidBase = [LIFF_SALT, liffConfig.clientId, lineUid].join(":");
+    const userId = "liff:" + crypto.createHash("sha256").update(uidBase).digest("hex");
+
+    try {
+      await admin.auth().getUser(userId);
+    } catch (e) {
+      // no user
+      await admin.auth().createUser({uid: userId})
+      await admin.auth().setCustomUserClaims(userId, {
+        line: lineUid,
+        lineChannelId: liffConfig.clientId,
+      });
+    }
+    const customToken = await admin.auth().createCustomToken(userId);
+    console.log(customToken);
+
+    await db.doc(`/users/${userId}/system/line`).set(
+      {
+        verified,
+        liffIndexId,
+        lineChannelId: liffConfig.clientId,
+      },
+      { merge: true }
+    );
+    
+    return { nonce: verified.nonce, customToken };
+  } catch (error) {
+    throw utils.process_error(error);
+  }
 };

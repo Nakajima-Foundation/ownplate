@@ -37,6 +37,9 @@ export default ({app}) => {
       isUser() {
         return !!this.$store.getters.uidUser;
       },
+      isLiffUser() {
+        return (this.mode === "liff") && this.$store.state.claims.lineChannelId;
+      },
       isNotSuperAdmin() {
         return this.$store.getters.isNotSuperAdmin;
       },
