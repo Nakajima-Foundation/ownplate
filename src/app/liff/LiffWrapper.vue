@@ -84,7 +84,6 @@ export default {
     return {
       error: null,
       liffUrl: "",
-      liffIndexId: "",
       loading: true,
       config: null,
       liffId: "",
@@ -92,7 +91,6 @@ export default {
     };
   },
   async created() {
-    this.liffIndexId = this.$route.params.liffIndexId;
 
     // step 1.
     const loadLiffConfig = async () => {

@@ -125,6 +125,11 @@ export const customRoutes = [
         },
         children: getUserPages("liff"),
       },
+      {
+        name: "liffHistory",
+        path: "u/history",
+        component: "user/OrderHistory.vue"
+      },
     ],
   },
   {

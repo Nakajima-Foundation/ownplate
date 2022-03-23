@@ -65,7 +65,7 @@
         </a>
       </div>
       <div class="flex-1 text-center">
-        <router-link to="/">
+        <router-link :to="base_path">
           <img :class="this.logoClass" :src="`/${this.logo}`" />
         </router-link>
       </div>
@@ -82,14 +82,14 @@
       :open.sync="open"
     >
       <!-- Logo / Home -->
-      <div class="text-center mt-6">
+      <div class="text-center mt-6 mb-4">
         <router-link :to="home_path">
           <img class="w-48" :src="`/${this.logo2}`" @click="handleClose()" />
         </router-link>
       </div>
 
       <!-- Profile -->
-      <div class="text-center mt-6">
+      <div class="text-center mt-2" v-if="!inLiff">
         <router-link to="/u/profile">
           <div
             class="inline-flex justify-center items-center rounded-full h-12 w-56 bg-op-teal text-white font-bold"
@@ -102,8 +102,8 @@
       </div>
 
       <!-- Order History -->
-      <div class="text-center mt-2" v-if="isCustomer">
-        <router-link to="/u/history">
+      <div class="text-center mt-2" v-if="isCustomer || inLiff">
+        <router-link :to="historyPage">
           <div
             class="inline-flex justify-center items-center rounded-full h-12 w-56 bg-op-teal text-white font-bold"
             @click="handleClose()"
@@ -115,7 +115,7 @@
       </div>
 
       <!-- Favorites -->
-      <div class="text-center mt-2" v-if="isCustomer">
+      <div class="text-center mt-2" v-if="isCustomer && !inLiff">
         <router-link to="/r/favorites">
           <div
             class="inline-flex justify-center items-center rounded-full h-12 w-56 bg-op-teal text-white font-bold"
@@ -128,7 +128,7 @@
       </div>
 
       <!-- Find Restaurants -->
-      <div class="text-center mt-2" v-if="isCustomer || isAnonymous">
+      <div class="text-center mt-2" v-if="(isCustomer || isAnonymous) && !inLiff">
         <router-link to="/r">
           <div
             class="inline-flex justify-center items-center rounded-full h-12 w-56 bg-op-teal text-white font-bold"
@@ -154,7 +154,7 @@
       </div>
 
       <!-- Links for Admin -->
-      <div v-if="!isCustomer">
+      <div v-if="!isCustomer && !inLiff">
         <div class="text-center font-bold opacity-70 mt-6 mb-4">
           {{ $t("menu.forRestaurantOwner") }}
         </div>
@@ -409,8 +409,14 @@ export default {
       const path_prefix = this.isAdmin ? "admins" : "users";
       return `${path_prefix}/${this.uid}/private/profile`;
     },
+    base_path() {
+      return this.inLiff ?  this.liff_base_path : '/'
+    },
     home_path() {
-      return this.isAdmin ? "/admin/restaurants/" : "/r";
+      return this.inLiff ? this.liff_base_path : (this.isAdmin ? "/admin/restaurants/" : "/r");
+    },
+    historyPage() {
+      return this.inLiff ?  this.liff_base_path + "/u/history" : '/u/history';
     },
     restaurant() {
       return this.$route.params.restaurantId;
