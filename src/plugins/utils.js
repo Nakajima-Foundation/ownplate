@@ -302,7 +302,16 @@ export default ({ app }) => {
         // not implemented
         return null;
       },
-      isInLine() {
+      inLiff() { // BY pathh
+        return !!this.$route.params.liffIndexId;
+      },
+      liffIndexId() {
+        return this.$route.params.liffIndexId;
+      },
+      liff_base_path() {
+        return `/liff/${this.liffIndexId}`;
+      },
+      isInLine() { // By UA
         return /Line/.test(navigator.userAgent);
       },
       isInLIFF() {

@@ -35,6 +35,7 @@
     "@babel/runtime": "^7.7.7",
     "@chenfengyuan/vue-qrcode": "^1.0.2",
     "@johmun/vue-tags-input": "^2.1.0",
+    "@line/liff": "^2.18.2",
     "@nuxtjs/dotenv": "^1.4.1",
     "@sentry/browser": "^5.15.5",
     "@sentry/integrations": "^5.15.5",

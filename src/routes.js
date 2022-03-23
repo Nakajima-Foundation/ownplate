@@ -1,3 +1,29 @@
+const getUserPages = (prefix) => {
+  return [
+    {
+      path: "/",
+      component: "user/RestaurantPage.vue",
+      children: [
+        {
+          name: "r-restaurant-Page_" + prefix,
+          path: "/",
+          component: "user/Blank.vue",
+        },
+        {
+          name: "r-restaurant-Menu_" + prefix,
+          path: "menus/:menuId",
+          component: "user/Blank.vue",
+        }
+      ]
+    },
+    {
+      name: "r-restaurantId-order_" + prefix,
+      path: "order/:orderId",
+      component: "user/OrderPage.vue"
+    },
+  ];
+};
+
 export const customRoutes = [
   {
     name: "r",
@@ -72,33 +98,49 @@ export const customRoutes = [
     component: "user/RestaurantIndex.vue"
   },
   {
-    name: "r-restaurant-Wrapper",
     path: "/r/:restaurantId",
     component: "user/RestaurantWrapper.vue",
+    props: {
+      mode: "normal",
+    },
+    children: getUserPages("normal"),
+  },
+  {
+    path: "/liff/:liffIndexId/pc",
+    component: "liff/PC.vue",
+  },
+  {
+    path: "/liff/:liffIndexId",
+    component: "liff/LiffWrapper.vue",
     children: [
       {
-        name: "r-restaurantId",
         path: "/",
-        component: "user/RestaurantPage.vue",
-        children: [
-          {
-            name: "r-restaurant-Page",
-            path: "/",
-            component: "user/Blank.vue",
-          },
-          {
-            name: "r-restaurant-Menu",
-            path: "menus/:menuId",
-            component: "user/Blank.vue",
-          }
-        ]
+        component: "liff/Index.vue",
       },
       {
-        name: "r-restaurantId-order",
-        path: "/r/:restaurantId/order/:orderId",
-        component: "user/OrderPage.vue"
+        path: "r/:restaurantId",
+        component: "user/RestaurantWrapper.vue",
+        props: {
+          mode: "liff",
+        },
+        children: getUserPages("liff"),
       },
-    ]
+      {
+        name: "liffHistory",
+        path: "u/history",
+        component: "user/OrderHistory.vue"
+      },
+      {
+        name: "liff-terms-user",
+        path: "terms/user",
+        component: "common/TermsUser.vue"
+      },
+      {
+        name: "liff-privacy",
+        path: "privacy",
+        component: "common/Privacy.vue"
+      },
+    ],
   },
   {
     name: "adminOwner",
@@ -195,7 +237,7 @@ export const customRoutes = [
     component: "admin/SubAccounts/Accounts.vue"
   },
   {
-    name: "admin-subaccounts-accounts",
+    name: "admin-subaccounts-account",
     path: "/admin/subaccounts/accounts/:subAccountId",
     component: "admin/SubAccounts/Account.vue"
   },
@@ -205,7 +247,7 @@ export const customRoutes = [
     component: "admin/Smaregi/Index.vue"
   },
   {
-    name: "admin-smaregi-index",
+    name: "admin-smaregi-callback",
     path: "/admin/smaregi/callback",
     component: "admin/Smaregi/Callback.vue"
   },
@@ -235,7 +277,7 @@ export const customRoutes = [
     component: "auth/SignUpPage.vue"
   },
   {
-    name: "admin-signup",
+    name: "admin-signup-partner",
     path: "/admin/user/signup/:partner",
     component: "auth/SignUpPage.vue"
   },

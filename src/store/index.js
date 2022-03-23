@@ -35,6 +35,9 @@ export const getters = {
   uidUser: (state) => {
     return state.user && state.user.phoneNumber && state.user.uid;
   },
+  uidLiff: (state) => {
+    return state.user && state.claims.lineChannelId && state.user.uid;
+  },
   isAnonymous: (state) => {
     return state.user === undefined || state.user === null;
   },
