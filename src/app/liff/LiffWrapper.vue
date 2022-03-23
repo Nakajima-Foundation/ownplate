@@ -16,7 +16,7 @@
       loading...
     </div>
     <div v-else>
-      <router-view />
+      <router-view :config="config"/>
     </div>
   </div>
 </template>

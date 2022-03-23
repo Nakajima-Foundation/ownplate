@@ -1089,7 +1089,11 @@ export default {
     },
 
     handleOpenMenu() {
-      this.$router.push(`/r/${this.restaurantId()}`);
+      if (this.inLiff) {
+        this.$router.push(this.liff_base_path + "/r/" + this.restaurantId());
+      } else {
+        this.$router.push(`/r/${this.restaurantId()}`);
+      }
     },
     handleNotAvailable(flag) {
       console.log("handleNotAvailable", flag);

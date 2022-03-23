@@ -130,6 +130,16 @@ export const customRoutes = [
         path: "u/history",
         component: "user/OrderHistory.vue"
       },
+      {
+        name: "liff-terms-user",
+        path: "terms/user",
+        component: "common/TermsUser.vue"
+      },
+      {
+        name: "liff-privacy",
+        path: "privacy",
+        component: "common/Privacy.vue"
+      },
     ],
   },
   {

@@ -2,7 +2,7 @@
   <div>
     <!-- Back -->
     <div class="mt-6 mx-6">
-      <back-button url="/u/profile/" />
+      <back-button :url="inLiff ? liff_base_path : '/u/profile/'" />
     </div>
 
     <!-- Title -->

@@ -83,7 +83,7 @@
     >
       <!-- Logo / Home -->
       <div class="text-center mt-6 mb-4">
-        <router-link :to="home_path">
+        <router-link :to="top_path">
           <img class="w-48" :src="`/${this.logo2}`" @click="handleClose()" />
         </router-link>
       </div>
@@ -204,7 +204,7 @@
 
         <!-- Terms -->
         <div class="text-center mt-2">
-          <router-link to="/terms/user">
+          <router-link :to="base_path + '/terms/user'">
             <div
               class="inline-flex justify-center items-center text-sm font-bold text-op-teal"
               @click="handleClose()"
@@ -223,7 +223,7 @@
 
         <!-- Privacy -->
         <div class="text-center mt-2">
-          <router-link to="/privacy">
+          <router-link :to="base_path + '/privacy'">
             <div
               class="inline-flex justify-center items-center text-sm font-bold text-op-teal"
               @click="handleClose()"
@@ -409,14 +409,17 @@ export default {
       const path_prefix = this.isAdmin ? "admins" : "users";
       return `${path_prefix}/${this.uid}/private/profile`;
     },
-    base_path() {
+    top_path() {
       return this.inLiff ?  this.liff_base_path : '/'
     },
+    base_path() {
+      return this.inLiff ?  this.liff_base_path : ''
+    },
     home_path() {
-      return this.inLiff ? this.liff_base_path : (this.isAdmin ? "/admin/restaurants/" : "/r");
+      return this.inLiff ? this.top_path : (this.isAdmin ? "/admin/restaurants/" : "/r");
     },
     historyPage() {
-      return this.inLiff ?  this.liff_base_path + "/u/history" : '/u/history';
+      return this.base_path + "/u/history";
     },
     restaurant() {
       return this.$route.params.restaurantId;
