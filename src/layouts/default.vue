@@ -65,7 +65,7 @@
         </a>
       </div>
       <div class="flex-1 text-center">
-        <router-link :to="base_path">
+        <router-link :to="top_path">
           <img :class="this.logoClass" :src="`/${this.logo}`" />
         </router-link>
       </div>
@@ -83,7 +83,7 @@
     >
       <!-- Logo / Home -->
       <div class="text-center mt-6 mb-4">
-        <router-link :to="top_path">
+        <router-link :to="home_path">
           <img class="w-48" :src="`/${this.logo2}`" @click="handleClose()" />
         </router-link>
       </div>
@@ -410,13 +410,17 @@ export default {
       return `${path_prefix}/${this.uid}/private/profile`;
     },
     top_path() {
+      // /liff/hoge or /
       return this.inLiff ?  this.liff_base_path : '/'
     },
+    // Don't use this path as link
     base_path() {
+      // /liff/hoge or ''
       return this.inLiff ?  this.liff_base_path : ''
     },
     home_path() {
-      return this.inLiff ? this.top_path : (this.isAdmin ? "/admin/restaurants/" : "/r");
+      // /liff/hoge or /admin/restaurants or /r
+      return this.inLiff ? this.liff_base_path : (this.isAdmin ? "/admin/restaurants/" : "/r");
     },
     historyPage() {
       return this.base_path + "/u/history";
