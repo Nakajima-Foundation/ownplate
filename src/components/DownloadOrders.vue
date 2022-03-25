@@ -76,7 +76,7 @@ export default {
           statusName: this.$t(`order.status.${status}`),
           totalCount: totalCount,
           total: order.totalCharge,
-          phoneNumber: formatNational(parsePhoneNumber(order.phoneNumber)),
+          phoneNumber: order.phoneNumber ? formatNational(parsePhoneNumber(order.phoneNumber)) : "LINE",
           name: nameOfOrder(order),
           payment: order.payment?.stripe ? "stripe" : ""
         };
