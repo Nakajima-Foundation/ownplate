@@ -265,7 +265,7 @@ export const liffAuthenticate = async (db: admin.firestore.Firestore, data: any,
       await admin.auth().createUser({uid: userId})
       await admin.auth().setCustomUserClaims(userId, {
         line: lineUid,
-        lineChannelId: liffConfig.clientId,
+        liffId: liffConfig.liffId,
       });
     }
     const customToken = await admin.auth().createCustomToken(userId);
