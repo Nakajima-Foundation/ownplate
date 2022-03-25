@@ -164,9 +164,8 @@ export const validate = async (db: admin.firestore.Firestore, data: any, context
   }
 };
 
-// TODO create new api for liff
-export const sendMessageDirect = async (lineId: string, message: string) => {
-  if (!LINE_MESSAGE_TOKEN) {
+export const sendMessageDirect = async (lineId: string, message: string, token: string) => {
+  if (!token) {
     console.log("no line message token");
     return;
   }
@@ -175,7 +174,7 @@ export const sendMessageDirect = async (lineId: string, message: string) => {
     {
       headers: {
         //Authorization: `Bearer ${data.access.access_token}`
-        Authorization: `Bearer ${LINE_MESSAGE_TOKEN}`,
+        Authorization: `Bearer ${token}`,
       },
     },
     {
@@ -204,11 +203,32 @@ export const getLineId = async (db: admin.firestore.Firestore, uid: string | nul
     return;
   }
   const data = (await db.doc(`/users/${uid}/system/line`).get()).data() || (await db.doc(`/admins/${uid}/system/line`).get()).data();
-  const sub = data && data.profile && data.profile.userId;
-  if (!sub) {
-    return;
+  // liff case
+  if (data && data.liffIndexId) {
+    const liffPrivateConfig = (await db.doc(`/liff/${data.liffIndexId}/liffPrivate/data`).get()).data();
+    if (!liffPrivateConfig) {
+      console.log("getLineId: no liffPrivateConfig");
+      return {};
+    }
+    const token = liffPrivateConfig.message_token;
+    const liffId = data.liffId;
+    
+    const sub = data?.verified?.sub;
+    return {
+      lineId: sub,
+      liffId,
+      token,
+    }
+  } else {
+    const sub = data && data.profile && data.profile.userId;
+    if (!sub) {
+      return {};
+    }
+    
+    return {
+      lineId: sub,
+    }
   }
-  return sub;
 };
 
 
@@ -220,7 +240,6 @@ export const liffAuthenticate = async (db: admin.firestore.Firestore, data: any,
   
   try {
     const liffConfig = (await db.doc(`/liff/${liffIndexId}`).get()).data();
-    console.log(liffConfig);
     if (!liffConfig) {
       throw new functions.https.HttpsError("invalid-argument", "Verification failed.");
     }
@@ -250,12 +269,12 @@ export const liffAuthenticate = async (db: admin.firestore.Firestore, data: any,
       });
     }
     const customToken = await admin.auth().createCustomToken(userId);
-    console.log(customToken);
 
     await db.doc(`/users/${userId}/system/line`).set(
       {
         verified,
         liffIndexId,
+        liffId: liffConfig.liffId,
         lineChannelId: liffConfig.clientId,
       },
       { merge: true }
