@@ -259,6 +259,9 @@ export default ({ app }) => {
       isCustomer() {
         return !!this.$store.getters.uidUser;
       },
+      isLiffUser() {
+        return !!this.$store.getters.uidLiff;
+      },
       isAnonymous() {
         return this.$store.getters.isAnonymous;
       },

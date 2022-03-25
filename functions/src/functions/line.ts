@@ -267,18 +267,19 @@ export const liffAuthenticate = async (db: admin.firestore.Firestore, data: any,
         line: lineUid,
         liffId: liffConfig.liffId,
       });
+      await db.doc(`/users/${userId}/system/line`).set(
+        {
+          verified,
+          liffIndexId,
+          liffId: liffConfig.liffId,
+          lineChannelId: liffConfig.clientId,
+          createdAt: admin.firestore.Timestamp.now(),
+        },
+        { merge: true }
+      );
     }
     const customToken = await admin.auth().createCustomToken(userId);
 
-    await db.doc(`/users/${userId}/system/line`).set(
-      {
-        verified,
-        liffIndexId,
-        liffId: liffConfig.liffId,
-        lineChannelId: liffConfig.clientId,
-      },
-      { merge: true }
-    );
     
     return { nonce: verified.nonce, customToken };
   } catch (error) {

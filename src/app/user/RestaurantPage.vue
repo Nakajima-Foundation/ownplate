@@ -699,6 +699,7 @@ export default {
         uid: this.user.uid,
         ownerUid: this.shopInfo.uid,
         isDelivery: this.shopInfo.enableDelivery && this.isDelivery || false,   // true, // for test
+        isLiff: this.isLiffUser,
         phoneNumber: this.user.phoneNumber,
         name: this.user.displayName,
         updatedAt: firestore.FieldValue.serverTimestamp(),
