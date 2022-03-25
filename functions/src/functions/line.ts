@@ -240,7 +240,6 @@ export const liffAuthenticate = async (db: admin.firestore.Firestore, data: any,
   
   try {
     const liffConfig = (await db.doc(`/liff/${liffIndexId}`).get()).data();
-    console.log(liffConfig);
     if (!liffConfig) {
       throw new functions.https.HttpsError("invalid-argument", "Verification failed.");
     }

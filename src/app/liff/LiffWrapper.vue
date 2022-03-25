@@ -6,7 +6,7 @@
     <div v-else-if="error === 'no_liff'">
       no liff
     </div>
-    <div v-if="error === 'no_restaurant'">
+    <div v-else-if="error === 'no_restaurant'">
       <not-found />
     </div>
     <div v-else-if="error === 'pc'">
@@ -16,14 +16,14 @@
       loading...
     </div>
     <div v-else>
-      <router-view :config="config"/>
+      <router-view :config="config" v-if="user" />
     </div>
   </div>
 </template>
 
 <script>
 import liff from "@line/liff";
-import { db, functions, auth } from "~/plugins/firebase.js";
+import { db, functionsJp, auth } from "~/plugins/firebase.js";
 
 import queryString from "query-string";
 
@@ -91,7 +91,6 @@ export default {
     };
   },
   async created() {
-
     // step 1.
     const loadLiffConfig = async () => {
       const data = (await db.doc(`/liff/${this.liffIndexId}`).get()).data();
@@ -138,20 +137,20 @@ export default {
       return true;
     };
 
-    const liffInit = () => {
+    // step3
+    const liffInit = async () => {
       if (location.hostname === "localhost") {
         return;
       }
-      liff.init({ liffId: this.liffId }).then(async () => {
-        try {
-          if (!liff.isLoggedIn()) {
-            liff.login();
-          }
-          this.liffIdToken = await liff.getIDToken();
-        } catch (e) {
-          console.log("liff_login", e);
+      await liff.init({ liffId: this.liffId });
+      try {
+        if (!liff.isLoggedIn()) {
+          liff.login();
         }
-      });
+        this.liffIdToken = await liff.getIDToken();
+      } catch (e) {
+        console.log("liff_login", e);
+      };
     };
 
     // step 1.
@@ -180,22 +179,27 @@ export default {
       return;
     }
     // step 3.
-    liffInit(this.config);
-
-    this.loading = false;
+    await liffInit(this.config);
+    
+    if (location.hostname === "localhost") {
+      this.loading = false;
+    }
   },
   computed: {
     userLoad() {
       return [this.$store.state.user, this.liffIdToken];
     },
+    user() {
+      return this.$store.state.user;
+    },
   },
   watch: {
     userLoad(value) {
-      if (this.$store.state.user !== undefined && this.liffIdToken !== undefined) {
+      if (this.$store.state.user !== undefined && this.liffIdToken !== "") {
         // TODO
         // not user or not liff user or not current liff user
         if (this.$store.state.user === null) {
-          const liffAuthenticate = functions.httpsCallable("liffAuthenticate");
+          const liffAuthenticate = functionsJp.httpsCallable("liffAuthenticate");
           (async () => {
             const { data } = (await liffAuthenticate({
               liffIndexId: this.liffIndexId,
@@ -205,7 +209,10 @@ export default {
             if (data.customToken) {
               const user = await auth.signInWithCustomToken(data.customToken);
             }
+            this.loading = false;
           })();
+        } else {
+          this.loading = false;
         }
       }
     },
