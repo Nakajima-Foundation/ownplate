@@ -1,7 +1,7 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 
-import * as Line from "../../functions/line";
+import * as liff from "../functions/liff";
 
 const db = admin.firestore();
 
@@ -11,5 +11,5 @@ export default functions
     memory: "1GB" as "1GB",
   })    
   .https.onCall(async (data, context) => {
-  return await Line.verifyFriend(db, data, context);
+  return await liff.liffVerifyFriend(db, data, context);
 });

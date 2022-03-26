@@ -205,7 +205,7 @@
 
 <script>
 import { parsePhoneNumber, formatNational } from "~/plugins/phoneutil.js";
-import { db, auth, firestore, functions } from "~/plugins/firebase.js";
+import { db, auth, firestore, functions, functionsJp } from "~/plugins/firebase.js";
 import { ownPlateConfig } from "@/config/project";
 import PhoneLogin from "~/app/auth/PhoneLogin";
 import { lineAuthURL } from "~/plugins/line.js";
@@ -400,7 +400,7 @@ export default {
       this.loginVisible = false;
     },
     async checkFriend() {
-      const lineVerifyFriend = functions.httpsCallable("lineVerifyFriend");
+      const lineVerifyFriend = functionsJp.httpsCallable("lineVerifyFriend");
       try {
         const { data } = await lineVerifyFriend({});
         this.isFriend = data.result;
