@@ -6,8 +6,11 @@ import * as utils from "../lib/utils";
 import { generateBody } from "../smaregi/apiUtils";
 
 const clientSecrets = functions.config() && functions.config().smaregi && functions.config().smaregi.clientsecrets;
-const host = functions.config() && functions.config().smaregi && functions.config().smaregi.host;
+const host = functions.config() && functions.config().smaregi && functions.config().smaregi.host; // https://id.smaregi.dev
+const apiHost = functions.config() && functions.config().smaregi && functions.config().smaregi.host_name; // like api.smaregi.dev
+const authHost = functions.config() && functions.config().smaregi && functions.config().smaregi.auth_host_name;  // id.smaregi.dev
 
+console.log(apiHost, authHost);
 export const auth = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const { code, client_id } = data;
 
@@ -84,7 +87,8 @@ export const storeList = async (db: admin.firestore.Firestore, data: any, contex
     contractId: smaregiContractId,
     clientId: client_id,
     clientSecret: clientSecret,
-    hostName: "api.smaregi.dev", //TODO
+    hostName: apiHost,
+    authHostName: authHost,
     scopes: ["pos.stock:read", "pos.stock:write", "pos.stores:read", "pos.stores:write", "pos.customers:read", "pos.customers:write", "pos.products:read", "pos.products:write"],
   };
 
@@ -116,7 +120,8 @@ export const productList = async (db: admin.firestore.Firestore, data: any, cont
     contractId: smaregiContractId,
     clientId: client_id,
     clientSecret: clientSecret,
-    hostName: "api.smaregi.dev", //TODO
+    hostName: apiHost,
+    authHostName: authHost,
     scopes: ["pos.stock:read", "pos.stock:write", "pos.stores:read", "pos.stores:write", "pos.customers:read", "pos.customers:write", "pos.products:read", "pos.products:write"],
   };
 

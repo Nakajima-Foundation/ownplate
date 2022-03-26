@@ -39,13 +39,22 @@
         </div>
 
         <div class="flex-1 text-right text-base">
+          
           <div v-if="order.name">
+            <i class="fab fa-line text-lg mr-2" style="color:#4EC263;" v-if="order.isLiff" />
             {{ order.name }}
           </div>
 
-          <div v-if="!order.name && phoneNumber">
+          <div v-else-if="phoneNumber">
             {{ nationalPhoneNumber }}
           </div>
+
+          <div v-else>
+            <i class="fab fa-line text-lg mr-2" style="color:#4EC263;" v-if="order.isLiff" />
+            LINE
+          </div>
+
+          
         </div>
       </div>
 
@@ -64,7 +73,6 @@
             delivery_dining
           </i>
         </div>
-
         <div
           v-if="order.tip"
           class="flex-1 text-right text-xs font-bold text-blue-500"
@@ -196,10 +204,10 @@ export default {
       }
     },
     phoneNumber() {
-      return this.order.phoneNumber && parsePhoneNumber(this.order.phoneNumber);
+      return this.order.phoneNumber ? parsePhoneNumber(this.order.phoneNumber) : "";
     },
     nationalPhoneNumber() {
-      return formatNational(this.phoneNumber);
+      return this.phoneNumber === "" ? "" : formatNational(this.phoneNumber);
     },
     orderName() {
       return nameOfOrder(this.order);

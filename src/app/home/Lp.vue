@@ -1,5 +1,5 @@
 <template>
-  <div>
+<div>
     <ownplate-service-image />
     <div class="max-w-screen-xl mx-auto">
       <entrance-buttons />
@@ -16,6 +16,7 @@
       <!-- <askButtons /> -->
       <!-- <news /> -->
       <news />
+      <snslink />
     </div>
   </div>
 </template>
@@ -32,6 +33,7 @@ import mediaLink from "~/components/lp/mediaLink";
 import operators from "~/components/lp/operators";
 import aboutService from "~/components/lp/aboutService";
 import news from "~/components/lp/news";
+import snslink from "~/components/lp/link";
 
 export default {
   components: {
@@ -46,7 +48,8 @@ export default {
     mediaLink,
     operators,
     aboutService,
-    news
+    news,
+    snslink,
   }
 };
 

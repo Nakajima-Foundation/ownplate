@@ -259,6 +259,12 @@ export default ({ app }) => {
       isCustomer() {
         return !!this.$store.getters.uidUser;
       },
+      isLiffUser() {
+        return !!this.$store.getters.uidLiff;
+      },
+      userLiffId() {
+        return this.$store.getters.liffId;
+      },
       isAnonymous() {
         return this.$store.getters.isAnonymous;
       },
@@ -302,7 +308,16 @@ export default ({ app }) => {
         // not implemented
         return null;
       },
-      isInLine() {
+      inLiff() { // BY pathh
+        return !!this.$route.params.liffIndexId;
+      },
+      liffIndexId() {
+        return this.$route.params.liffIndexId;
+      },
+      liff_base_path() {
+        return `/liff/${this.liffIndexId}`;
+      },
+      isInLine() { // By UA
         return /Line/.test(navigator.userAgent);
       },
       isInLIFF() {
