@@ -1,3 +1,4 @@
+import * as functions from "firebase-functions";
 import * as firebase from "firebase-admin";
 import * as utils from "../lib/utils";
 import moment from "moment-timezone";
@@ -13,6 +14,9 @@ import * as line from "./line";
 import * as sms from "./sms";
 import * as twilio from "./twilio";
 import * as ses from "./ses";
+
+const LINE_MESSAGE_TOKEN = (functions.config() && functions.config().line && functions.config().line.message_token) || process.env.LINE_MESSAGE_TOKEN;
+
 
 // for customer
 export const sendMessageToCustomer = async (
@@ -36,11 +40,19 @@ export const sendMessageToCustomer = async (
   const message = `${t(msgKey, params)} ${restaurantName} ${orderNumber} ${url}`;
   if (line.isEnabled) {
     // for JP
-    const lineId = await line.getLineId(db, orderData.uid);
+    const { lineId, liffId, token }  = await line.getLineId(db, orderData.uid) as any;
+
     if (lineId) {
-      await line.sendMessageDirect(lineId, message);
+      if (token) {
+        // liff
+        const liffUrl = `https://liff.line.me/${liffId}/r/${restaurantId}/order/${orderId}`;
+        const liffMessage = `${t(msgKey, params)} ${restaurantName} ${orderNumber} ${liffUrl}`;
+        await line.sendMessageDirect(lineId, liffMessage, token);
+      } else {
+        await line.sendMessageDirect(lineId, message, LINE_MESSAGE_TOKEN);
+      }
     }
-    if (forceSMS) {
+    if (forceSMS && orderData.phoneNumber) {
       await sms.pushSMS("omochikaeri", message, orderData.phoneNumber);
     }
     // await line.sendMessage(db, uidUser, message);
@@ -127,7 +139,7 @@ const notifyRestaurantToLineUser = async (url: string, message: string, lineUser
     lineUsers.map(async (doc) => {
       const lineUser = doc.data();
       if (lineUser.notify) {
-        await line.sendMessageDirect(doc.id, `${message} ${url}?openExternalBrowser=1`);
+        await line.sendMessageDirect(doc.id, `${message} ${url}?openExternalBrowser=1`, LINE_MESSAGE_TOKEN);
       }
       return lineUser;
     })

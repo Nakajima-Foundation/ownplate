@@ -249,7 +249,7 @@ export default {
                 phoneNumber: this.writeonFirstLine(
                   index,
                   key,
-                  formatNational(parsePhoneNumber(order.phoneNumber))
+                  order.phoneNumber ? formatNational(parsePhoneNumber(order.phoneNumber)) : "LINE"
                 ),
                 userName: this.writeonFirstLine(
                   index,

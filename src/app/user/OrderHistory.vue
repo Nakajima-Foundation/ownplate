@@ -2,7 +2,7 @@
   <div>
     <!-- Back -->
     <div class="mt-6 mx-6">
-      <back-button url="/u/profile/" />
+      <back-button :url="inLiff ? liff_base_path : '/u/profile/'" />
     </div>
 
     <!-- Title -->
@@ -69,7 +69,7 @@ export default {
   },
   computed: {
     uid() {
-      return this.$store.getters.uidUser;
+      return this.$store.getters.uidUser || this.$store.getters.uidLiff;
     }
   },
   methods: {
@@ -109,9 +109,15 @@ export default {
       }
     },
     orderSelected(order) {
-      this.$router.push({
-        path: "/r/" + order.restaurantId + "/order/" + order.id
-      });
+      if (this.inLiff) {
+        this.$router.push({
+          path: this.liff_base_path + "/r/" + order.restaurantId + "/order/" + order.id
+        });
+      } else {
+        this.$router.push({
+          path: "/r/" + order.restaurantId + "/order/" + order.id
+        });
+      }
     }
   }
 };

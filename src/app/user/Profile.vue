@@ -311,6 +311,8 @@ export default {
           )}`;
         } else if (this.user.uid.slice(0, 5) === "line:") {
           return this.$t("profile.status.line");
+        } else if (this.user.uid.slice(0, 5) === "liff:") {
+          return this.$t("profile.status.liff");
         }
         return this.$t("profile.status.unexpected");
       }

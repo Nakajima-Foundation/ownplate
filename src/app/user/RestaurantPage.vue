@@ -359,6 +359,10 @@ export default {
       type: Boolean,
       required: false,
     },
+    mode: {
+      type: String,
+      required: true
+    },
   },
   head() {
     // TODO: add area to header
@@ -658,7 +662,8 @@ export default {
     handleCheckOut() {
       // The user has clicked the CheckOut button
       this.retryCount = 0;
-      if (this.isUser) {
+
+      if (this.isUser || this.isLiffUser) {
         this.goCheckout();
       } else {
         window.scrollTo(0, 0);
@@ -668,7 +673,7 @@ export default {
     handleDismissed() {
       // The user has dismissed the login dialog (including the successful login)
       this.loginVisible = false;
-      if (this.isUser) {
+      if (this.isUser || this.isLiffUser) {
         this.goCheckout();
       } else {
         console.log("this.user it not ready yet");
@@ -694,6 +699,7 @@ export default {
         uid: this.user.uid,
         ownerUid: this.shopInfo.uid,
         isDelivery: this.shopInfo.enableDelivery && this.isDelivery || false,   // true, // for test
+        isLiff: this.isLiffUser,
         phoneNumber: this.user.phoneNumber,
         name: this.user.displayName,
         updatedAt: firestore.FieldValue.serverTimestamp(),
@@ -743,9 +749,16 @@ export default {
         } catch (e) {
           console.log(e);
         }
-        this.$router.push({
-          path: `/r/${this.restaurantId()}/order/${res.id}`
-        });
+        if (this.mode === 'liff') {
+          const liffIndexId = this.$route.params.liffIndexId;
+          this.$router.push({
+            path: `/liff/${liffIndexId}/r/${this.restaurantId()}/order/${res.id}`
+          });
+        } else {
+          this.$router.push({
+            path: `/r/${this.restaurantId()}/order/${res.id}`
+          });
+        }
       } catch (error) {
         if (error.code === "permission-denied" && this.retryCount < 3) {
           this.retryCount++;

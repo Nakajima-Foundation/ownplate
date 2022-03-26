@@ -12,8 +12,14 @@ service cloud.firestore {
       return request.auth.uid != null && request.auth.token.email != null
     }
 
-    function isUser(request) {
+    function isPhoneUser(request) {
       return request.auth.uid != null && request.auth.token.phone_number != null
+    }
+    function isLiffUser(request) {
+      return request.auth.uid != null && request.auth.token.liffId != null
+    }
+    function isUser(request) {
+      return isPhoneUser(request) || isLiffUser(request)
     }
 
     function isOwner(resource, request) {
@@ -213,9 +219,12 @@ service cloud.firestore {
         match /orders/{orderId} {
           allow read: if isSuper(request);
           allow read: if isOperator(request);
-          allow create: if isUser(request)
+          allow create: if isPhoneUser(request)
                           && request.resource.data.status == 100
                           && request.resource.data.phoneNumber == request.auth.token.phone_number
+                          && request.resource.data.uid == request.auth.uid;
+          allow create: if isLiffUser(request)
+                          && request.resource.data.status == 100
                           && request.resource.data.uid == request.auth.uid;
           allow read: if isAdmin(request)
                           && isRestaurantOwner(restaurantId, request);
@@ -277,6 +286,16 @@ service cloud.firestore {
     match /requestList/{restaurantId} {
       allow read, write: if isAdmin(request) && isRestaurantOwner(restaurantId, request);
       allow read: if isSuper(request);
+    }
+    
+    match /liff/{indexId} {
+      allow read: if true;
+      allow write: if false;  // only set by hands
+
+      match /secret/data {
+        allow read: if false; // only server side of function can use this data.
+        allow write: if false;
+      }
     }
 
     match /hash/{hashId}{

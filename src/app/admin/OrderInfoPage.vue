@@ -288,12 +288,15 @@
 
           <div class="bg-white shadow rounded-lg p-4 mt-2">
             <!-- Phone Number -->
-            <div v-if="orderInfo.phoneNumber" class="mt-2 text-center">
-              <div class="text-xs font-bold">
+            <div class="mt-2 text-center">
+              <div class="text-xs font-bold" v-if="orderInfo.phoneNumber">
                 {{ $t("sms.phonenumber") }}
               </div>
+              <div class="text-xs font-bold" v-if="orderInfo.isLiff">
+                <i class="fab fa-line text-lg mr-2" style="color:#4EC263;" v-if="orderInfo.isLiff" />LINE
+              </div>
               <div class="text-base mt-1">
-                <div>
+                <div v-if="orderInfo.phoneNumber">
                   <a :href="nationalPhoneURI" class="text-base font-bold">{{
                     nationalPhoneNumber
                   }}</a>

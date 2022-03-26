@@ -1,6 +1,6 @@
 <template>
 <div>
-  <template v-if="!isUser">
+  <template v-if="!isUser && !isLiffUser">
     <RequireLogin :loginVisible="loginVisible" @dismissed="handleDismissed" />
   </template>
   <template v-else-if="notFound">
@@ -778,6 +778,10 @@ export default {
       type: Boolean,
       required: false,
     },
+    mode: {
+      type: String,
+      required: true
+    },
   },
   data() {
     return {
@@ -803,7 +807,7 @@ export default {
     };
   },
   created() {
-    if (this.isUser) {
+    if (this.isUser || this.isLiffUser) {
       this.loadUserData();
     } else if (!this.isUser) {
       this.loginVisible = true;
@@ -995,6 +999,11 @@ export default {
       if (this.isUser) {
         this.loadUserData();
       }
+    },
+    isLiffUser() {
+      if (this.isLiffUser) {
+        this.loadUserData();
+      }
     }
   },
   methods: {
@@ -1066,7 +1075,6 @@ export default {
               if (this.just_validated) {
                 this.customerInfo = {...(await this.loadAddress() || {})};
               }
-              console.log(this.customerInfo);
               if (this.hasCustomerInfo) {
                 this.customer = (await db.doc(`restaurants/${this.restaurantId()}/orders/${this.orderId}/customer/data`).get()).data() || this.orderInfo?.customerInfo || {};
               }
@@ -1074,7 +1082,6 @@ export default {
             // console.log(`/users/${uid}/address/data`);
           },
           error => {
-            console.error(error.message);
             this.notFound = true;
           }
         );
@@ -1082,7 +1089,11 @@ export default {
     },
 
     handleOpenMenu() {
-      this.$router.push(`/r/${this.restaurantId()}`);
+      if (this.inLiff) {
+        this.$router.push(this.liff_base_path + "/r/" + this.restaurantId());
+      } else {
+        this.$router.push(`/r/${this.restaurantId()}`);
+      }
     },
     handleNotAvailable(flag) {
       console.log("handleNotAvailable", flag);
@@ -1118,7 +1129,6 @@ export default {
       });
     },
     async handlePayment() {
-      console.log(this.requireAddress, this.isSaveAddress)
       if (this.requireAddres) {
         if (this.hasEcError) {
           return;

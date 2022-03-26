@@ -42,6 +42,7 @@
       "email": "Email",
       "phone": "電話番号",
       "line": "LINE",
+      "liff": "LINE",
       "unexpected": "想定外",
       "isFriend": "友達設定済み",
       "noFriend": "未設定",
@@ -675,6 +676,7 @@
     "thirdPartyService": {
       "title": "システム連携",
       "openSmaregi": "スマレジ連携設定",
+      "smaregiAppMarket": "スマレジアプリマーケットへ",
       "smaregiManualLink": "スマレジ連携の使い方"
     },
     "viewAllOrders": "全飲食店の注文をまとめて確認",
