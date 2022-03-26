@@ -262,6 +262,9 @@ export default ({ app }) => {
       isLiffUser() {
         return !!this.$store.getters.uidLiff;
       },
+      userLiffId() {
+        return this.$store.getters.liffId;
+      },
       isAnonymous() {
         return this.$store.getters.isAnonymous;
       },

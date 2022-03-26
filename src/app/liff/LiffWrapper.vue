@@ -172,6 +172,12 @@ export default {
       }
     }
 
+    if (location.hostname ==! "localhost") {
+      // if not liff user, force sign out
+      if (this.user && !this.isLiffUser) {
+        auth.signOut();
+      }
+    }
     
     this.liffId = this.config.liffId;
     // step 2.
@@ -196,8 +202,6 @@ export default {
   watch: {
     userLoad(value) {
       if (this.$store.state.user !== undefined && this.liffIdToken !== "") {
-        // TODO
-        // not user or not liff user or not current liff user
         if (this.$store.state.user === null) {
           const liffAuthenticate = functionsJp.httpsCallable("liffAuthenticate");
           (async () => {
@@ -212,6 +216,10 @@ export default {
             this.loading = false;
           })();
         } else {
+          // force sign out if current user is not cuurrent liff user
+          if (this.config.liffId !== this.userLiffId) {
+            auth.signOut();
+          }
           this.loading = false;
         }
       }
