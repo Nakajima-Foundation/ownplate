@@ -67,7 +67,8 @@
 
           <!-- Address -->
           <address-button />
-            
+        </div>
+        <div>
           <!-- Credit Card Info -->
           <div class="mt-6 text-center">
             <div class="text-sm font-bold text-black text-opacity-30">
@@ -89,7 +90,8 @@
               </b-button>
             </div>
           </div>
-
+        </div>
+        <div>
           <!-- LINE -->
           <div class="mt-6 p-4 rounded-lg bg-black bg-opacity-5">
             <!-- LINE Status -->
@@ -102,9 +104,11 @@
                 {{ lineConnection }}
               </div>
             </div>
+          </div>
 
+          <div>
             <!-- LINE Connected -->
-            <div v-if="isLineUser">
+            <div v-if="isLineUser || isLiffUser">
               <!-- Friend Status -->
               <div class="mt-4 text-center">
                 <div class="text-sm font-bold text-black text-opacity-30">
@@ -133,7 +137,8 @@
             </div>
 
             <!-- LINE Not Connected -->
-            <div v-if="!isLineUser || underConstruction">
+            
+            <div v-if="!inLiff && (!isLineUser || underConstruction)">
               <div v-if="isLineEnabled" class="mt-4 text-center">
                 <div v-if="isLineUser && underConstruction"
                      class="text-base font-bold mb-2">
@@ -156,7 +161,7 @@
         </div>
 
         <!-- Sign Out -->
-        <div class="mt-12 text-center">
+        <div class="mt-12 text-center" v-if="!isLiffUser">
           <a
             @click.prevent="handleSignOut"
             class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5"
@@ -192,7 +197,8 @@
           </b-modal>
         </div>
       </div>
-
+      <!-- end of Signed in -->
+      
       <!-- Loading -->
       <b-loading
         :is-full-page="false"
@@ -213,6 +219,7 @@ import { lineAuthURL } from "~/plugins/line.js";
 import HistoryButton from "@/components/users/HistoryButton";
 import FavoriteButton from "@/components/users/FavoriteButton";
 import AddressButton from "@/components/users/AddressButton";
+import liff from "@line/liff";
 
 export default {
   components: {
@@ -233,26 +240,35 @@ export default {
       isFriend: undefined,
       isDeletingAccount: false,
       storedCard: null,
-      detachStripe: null
+      detachStripe: null,
+      liffConfig: null,
     };
   },
   async created() {
-    if (this.isLineUser) {
+    if (this.isLineUser || this.isLiffUser) {
       this.checkFriend();
     }
     this.checkStripe();
+    if (this.inLiff) {
+      this.liffConfig = (await db.doc(`liff/${this.liffIndexId}`).get()).data();
+    }
   },
   destroyed() {
     this.detachStripe && this.detachStripe();
   },
   watch: {
     isWindowActive(newValue) {
-      if (newValue && this.isLineUser && !this.isFriend) {
+      if (newValue && (this.isLineUser || this.isLiffUser) && !this.isFriend) {
         this.isFriend = undefined;
         this.checkFriend();
       }
     },
     isLineUser(newValue) {
+      if (this.isFriend === undefined) {
+        this.checkFriend();
+      }
+    },
+    isLiffUser(newValue) {
       if (this.isFriend === undefined) {
         this.checkFriend();
       }
@@ -271,7 +287,14 @@ export default {
       return this.$store.state.isWindowActive;
     },
     friendLink() {
-      return ownPlateConfig.line.FRIEND_LINK;
+      // TODO liff.
+      if (this.isLiffUser) {
+        if (this.liffConfig) {
+          return this.liffConfig.friendUrl;
+        }
+      } else {
+        return ownPlateConfig.line.FRIEND_LINK;
+      }
     },
     claims() {
       return this.$store.state.claims;
@@ -325,7 +348,7 @@ export default {
         this.detachStripe();
         this.detachStripe = null;
       }
-      if (this.user && this.user.phoneNumber) {
+      if (this.user && (this.user.phoneNumber || this.isLiffUser)) {
         this.detachStripe = db
           .doc(`/users/${this.user.uid}/readonly/stripe`)
           .onSnapshot(snapshot => {
@@ -400,12 +423,22 @@ export default {
       this.loginVisible = false;
     },
     async checkFriend() {
-      const lineVerifyFriend = functionsJp.httpsCallable("lineVerifyFriend");
-      try {
-        const { data } = await lineVerifyFriend({});
-        this.isFriend = data.result;
-      } catch (error) {
-        console.error(error);
+      if (this.isLiffUser) {
+        try {
+          const res = await liff.getFriendship();
+          this.isFriend = res.friendFlag;
+        } catch (error) {
+          console.log(error);
+          // alert(JSON.stringify(error));
+        }
+      } else {
+        const lineVerifyFriend = functionsJp.httpsCallable("lineVerifyFriend");
+        try {
+          const { data } = await lineVerifyFriend(this.isLiffUser ? {liffIndexId: this.liffIndexId} : {});
+          this.isFriend = data.result;
+        } catch (error) {
+          console.error(error);
+        }
       }
     }
   }

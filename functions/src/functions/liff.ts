@@ -65,27 +65,3 @@ export const liffAuthenticate = async (db: admin.firestore.Firestore, data: any,
   }
 };
 
-export const liffVerifyFriend = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => {
-  const uid = utils.validate_auth(context);
-  const isLine = uid.slice(0, 5) === "liff:";
-  const uidLine = isLine ? uid.slice(5) : context.auth?.token?.line?.slice(5);
-
-  const { liffIndexId } = data;
-
-  const { token } = await getLiffPrivateConfig(db, liffIndexId);
-
-  try {
-    const profile = await netutils.request(`https://api.line.me/v2/bot/profile/${uidLine}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    if (profile.userId && profile.displayName) {
-      return { result: true, profile };
-    } else {
-      return { result: false };
-    }
-  } catch (error) {
-    throw utils.process_error(error);
-  }
-};

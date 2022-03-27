@@ -89,8 +89,8 @@
       </div>
 
       <!-- Profile -->
-      <div class="text-center mt-2" v-if="!inLiff">
-        <router-link to="/u/profile">
+      <div class="text-center mt-2">
+        <router-link :to="base_path + '/u/profile'">
           <div
             class="inline-flex justify-center items-center rounded-full h-12 w-56 bg-op-teal text-white font-bold"
             @click="handleClose()"
