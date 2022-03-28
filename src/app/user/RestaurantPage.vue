@@ -323,6 +323,7 @@ import ShopInfo from "~/app/user/Restaurant/ShopInfo";
 import NotFound from "~/components/NotFound";
 import Price from "~/components/Price";
 
+import liff from "@line/liff";
 import { db, firestore, functions } from "~/plugins/firebase.js";
 import { order_status } from "~/plugins/constant.js";
 
@@ -691,6 +692,18 @@ export default {
       }, {});
     },
     async goCheckout() {
+      const name = await (async () => {
+        if (this.isLiffUser) {
+          try {
+            const user = await liff.getProfile() || {};
+            return user.displayName;
+          } catch(e) {
+            return "";
+          }
+        }
+        return this.user.displayName;
+      })();
+
       const order_data = {
         order: this.orders,
         options: this.convOptionArray2Obj(this.postOptions),
@@ -701,7 +714,7 @@ export default {
         isDelivery: this.shopInfo.enableDelivery && this.isDelivery || false,   // true, // for test
         isLiff: this.isLiffUser,
         phoneNumber: this.user.phoneNumber,
-        name: this.user.displayName,
+        name: name,
         updatedAt: firestore.FieldValue.serverTimestamp(),
         timeCreated: firestore.FieldValue.serverTimestamp()
         // price never set here.
