@@ -338,6 +338,7 @@
               {{ $t("order.ec.formtitle") }}
             </div>
             
+            <!-- For EC and Delivery -->
             <div v-if="shopInfo.isEC || orderInfo.isDelivery"
                  class="bg-white rounded-lg shadow p-4 mb-4 mt-2">
               <!-- zip -->
@@ -483,6 +484,7 @@
                 </b-checkbox>
               </div>
             </div>
+            <!-- End of EC and Delivery -->
 
             <!-- map for delivery -->
             <div class="mt-4" v-if="orderInfo.isDelivery">
@@ -657,6 +659,7 @@
               </div>
             </div>
           </div>
+          <!-- end of just_validated >
 
           <!-- (After Paid) Restaurant Details -->
           <div v-if="paid">
