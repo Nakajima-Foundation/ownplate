@@ -17,6 +17,7 @@ import * as ses from "./ses";
 
 const LINE_MESSAGE_TOKEN = (functions.config() && functions.config().line && functions.config().line.message_token) || process.env.LINE_MESSAGE_TOKEN;
 
+export const isEnabled = !!ownPlateConfig.line;
 
 // for customer
 export const sendMessageToCustomer = async (
@@ -38,16 +39,19 @@ export const sendMessageToCustomer = async (
   });
   const url = `https://${ownPlateConfig.hostName}/r/${restaurantId}/order/${orderId}?openExternalBrowser=1`;
   const message = `${t(msgKey, params)} ${restaurantName} ${orderNumber} ${url}`;
-  if (line.isEnabled) {
+  if (isEnabled) {
     // for JP
-    const { lineId, liffId, token }  = await line.getLineId(db, orderData.uid) as any;
+    const { lineId, liffIndexId, liffId } = await line.getLineId(db, orderData.uid) as any;
 
     if (lineId) {
-      if (token) {
+      if (liffIndexId) {
         // liff
-        const liffUrl = `https://liff.line.me/${liffId}/r/${restaurantId}/order/${orderId}`;
-        const liffMessage = `${t(msgKey, params)} ${restaurantName} ${orderNumber} ${liffUrl}`;
-        await line.sendMessageDirect(lineId, liffMessage, token);
+        const { token } = await line.getLiffPrivateConfig(db, liffIndexId);
+        if (token) {
+          const liffUrl = `https://liff.line.me/${liffId}/r/${restaurantId}/order/${orderId}`;
+          const liffMessage = `${t(msgKey, params)} ${restaurantName} ${orderNumber} ${liffUrl}`;
+          await line.sendMessageDirect(lineId, liffMessage, token);
+        }
       } else {
         await line.sendMessageDirect(lineId, message, LINE_MESSAGE_TOKEN);
       }

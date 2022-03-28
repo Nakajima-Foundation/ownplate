@@ -131,6 +131,11 @@ export const customRoutes = [
         component: "user/OrderHistory.vue"
       },
       {
+        name: "liffProfile",
+        path: "u/profile",
+        component: "user/Profile.vue"
+      },
+      {
         name: "liff-terms-user",
         path: "terms/user",
         component: "common/TermsUser.vue"

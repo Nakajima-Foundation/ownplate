@@ -851,6 +851,7 @@
     "mollusc": "Mollusque"
   },
   "line": {
+    "registerAsAFriend": "Please register as a friend",
     "authenticating": "Authentication LINE",
     "notifyMe": "Recevoir notification LINE",
     "addFriend": "Suivre",

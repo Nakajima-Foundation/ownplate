@@ -863,6 +863,7 @@
     "mollusc": "軟体動物"
   },
   "line": {
+    "registerAsAFriend": "友達登録をお願いします",
     "authenticating": "LINE認証",
     "notifyMe": "LINEで通知を受けとる",
     "addFriend": "友だち追加",

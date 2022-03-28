@@ -308,7 +308,7 @@ export default ({ app }) => {
         // not implemented
         return null;
       },
-      inLiff() { // BY pathh
+      inLiff() { // BY path
         return !!this.$route.params.liffIndexId;
       },
       liffIndexId() {
