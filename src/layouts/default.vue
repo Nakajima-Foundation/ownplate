@@ -3,7 +3,7 @@
     <!-- ### The commentout below is for Tailwind CSS workaround. ### -->
 
     <!-- h-1 h-2 h-3 h-4 h-5 h-6 h-7 h-8 h-9 h-10 h-12 h-13 h-16 h-20 h-24 h-32 h-48 h-52 h-64 h-80 h-full -->
-    <!-- w-1 w-2 w-4 w-6 w-9 w-12 w-16 w-20 w-24 w-32 w-48 w-56 w-64 w-72 w-200 w-288 w-500 w-full -->
+    <!-- w-1 w-2 w-4 w-6 w-9 w-12 w-16 w-20 w-24 w-32 w-48 w-56 w-64 w-72 w-96 w-200 w-288 w-500 w-full -->
     <!-- m-1 m-3 m-4 m-5 m-6 m-auto -->
     <!-- mx-0 mx-1 mx-2 mx-4 mx-6 mx-auto -->  
     <!-- mt-0 mt-1 mt-2 mt-3 mt-4 mt-6 mt-8 mt-auto -->
@@ -31,7 +31,8 @@
 
     <!-- bg-pink-500 bg-purple-500 bg-blue-500 bg-green-600 bg-yellow-500 bg-red-700 -->
     <!-- bg-opacity-0 bg-opacity-5 bg-opacity-10 bg-opacity-50 bg-opacity-80 -->
-
+    <!-- bg-black bg-white bg-opacity-50 -->
+    
     <!-- text-pink-500 text-purple-500 text-blue-500 text-green-600 text-yellow-500 text-red-700 hover:text-red-700 text-black -->
     <!-- text-opacity-30 text-opacity-60 text-opacity-80 -->
     <!-- text-left text-center text-right lg:text-center -->
@@ -42,7 +43,8 @@
     <!-- list-outside list-disc list-none -->
 
     <!-- cursor-pointer -->
-
+    <!-- fixed top-0 left-0 z-50 flex flex-1 h-screen w-screen items-center justify-center max-h-full overflow-y-scroll rounded-xl shadow relative  ->
+         
     <!-- ### Try to add the class name here if it doesn't work after build. ### -->
 
     <!-- Notification Banner -->

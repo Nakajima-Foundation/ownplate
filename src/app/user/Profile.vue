@@ -393,7 +393,6 @@ export default {
       });
     },
     async continueDelete(result) {
-      console.log(result);
       this.reLoginVisible = false;
       if (result) {
         this.isDeletingAccount = true;

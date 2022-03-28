@@ -16,6 +16,16 @@
       loading...
     </div>
     <div v-else>
+
+      <modal v-if="openModal">
+        <div class="w-96 h-48 relative flex items-center">
+          <div class="flex flex-1 w-full justify-center	">
+            <a :href="friendUrl">
+              {{ $t("line.registerAsAFriend") }}
+            </a>
+          </div>
+        </div>
+      </modal>
       <router-view :config="config" v-if="user" />
     </div>
   </div>
@@ -29,6 +39,8 @@ import queryString from "query-string";
 
 import PC from "./PC.vue";
 import NotFound from "~/components/NotFound";
+
+import Modal from "~/components/Modal";
 
 /*
  liff flow
@@ -78,6 +90,7 @@ const parseLiffState = (liffstate) => {
 export default {
   components: {
     PC,
+    Modal,
     NotFound,
   },
   data() {
@@ -88,6 +101,8 @@ export default {
       config: null,
       liffId: "",
       liffIdToken: "",
+      // openModal: true,
+      openModal: false,
     };
   },
   async created() {
@@ -198,6 +213,12 @@ export default {
     user() {
       return this.$store.state.user;
     },
+    friendUrl() {
+      if (this.config) {
+        return this.config.friendUrl;
+      }
+      return null;
+    },
   },
   watch: {
     userLoad(value) {
@@ -222,6 +243,12 @@ export default {
           }
           this.loading = false;
         }
+        if (location.hostname !== "localhost") {
+          liff.getFriendship().then(friendship => {
+            this.openModal = !friendship.friendFlag;
+          });
+        }
+        
       }
     },
   }

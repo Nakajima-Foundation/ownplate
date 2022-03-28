@@ -292,8 +292,10 @@
               <div class="text-xs font-bold" v-if="orderInfo.phoneNumber">
                 {{ $t("sms.phonenumber") }}
               </div>
+              <!--Line icon -->
               <div class="text-xs font-bold" v-if="orderInfo.isLiff">
                 <i class="fab fa-line text-lg mr-2" style="color:#4EC263;" v-if="orderInfo.isLiff" />LINE
+                ({{orderInfo.uid.slice(5,15)}})
               </div>
               <div class="text-base mt-1">
                 <div v-if="orderInfo.phoneNumber">

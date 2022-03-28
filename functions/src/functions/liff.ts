@@ -3,7 +3,6 @@ import * as utils from "../lib/utils";
 import * as netutils from "../lib/netutils";
 import * as admin from "firebase-admin";
 import * as crypto from "crypto";
-import { getLiffPrivateConfig } from "./line";
 
 const LIFF_SALT = (functions.config() && functions.config().line && functions.config().line.liff_salt) || process.env.LIFF_SALT;
 
