@@ -32,7 +32,7 @@
   "main": "lib/index.js",
   "dependencies": {
     "@sentry/node": "^5.15.5",
-    "aws-sdk": "^2.663.0",
+    "aws-sdk": "^2.1103.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "firebase-admin": "^10.0.2",
@@ -49,7 +49,7 @@
     "stripe": "^8.39.1",
     "twilio": "^3.76.0",
     "uuid-v4": "^0.1.0",
-    "validator": "^13.6.0",
+    "validator": "^13.7.0",
     "xmlbuilder": "^15.1.1"
   },
   "devDependencies": {
