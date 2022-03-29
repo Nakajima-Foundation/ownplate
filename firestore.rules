@@ -250,6 +250,10 @@ service cloud.firestore {
           allow read, write: if isRestaurantOwner(restaurantId, request);
           allow read, write: if isAdmin(request) && isRestaurantSubAccount(restaurantId, request);
         }
+        match /liffCustomer/{uid} {
+          allow read: if isRestaurantOwner(restaurantId, request);
+          allow write: if uid == request.auth.uid && isNewOwner(resource, request);
+        }
         match /trace/{traceId} {
           allow create: if isRestaurantOwner(restaurantId, request)
                           && request.resource.data.restaurantId == restaurantId

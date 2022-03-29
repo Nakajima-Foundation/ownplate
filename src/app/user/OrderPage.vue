@@ -1141,6 +1141,17 @@ export default {
         }
       }
 
+      const saveLiffCustomer = async () => {
+        const uid = this.user.uid;
+        await db.doc(`restaurants/${this.restaurantId()}/liffCustomer/${uid}`).set({
+          uid,
+          restaurantId: this.restaurantId(),
+          name: this.orderInfo.name || "",
+          orderId: this.orderId,  //  (this is last)
+          updatedAt: firestore.FieldValue.serverTimestamp(),
+        }, { merge: true })
+      };
+      
       const timeToPickup = this.shopInfo.isEC ? firebase.firestore.Timestamp.now() : this.$refs.time.timeToPickup();
 
       this.isPaying = true;
@@ -1156,11 +1167,15 @@ export default {
           memo: this.memo || "",
           customerInfo: this.customerInfo || {},
         });
+        if (this.isLiffUser) {
+          await saveLiffCustomer();
+        }
         this.sendPurchase();
         this.$store.commit("resetCart", this.restaurantId());
         console.log("createIntent", data);
         window.scrollTo(0, 0);
       } catch (error) {
+        // alert(JSON.stringify(error));
         console.error(error.message, error.details);
         let error_code = "stripe.intent";
         if (
@@ -1203,11 +1218,15 @@ export default {
           memo: this.memo || "",
           customerInfo: this.customerInfo || {},
         });
+        if (this.isLiffUser) {
+          await saveLiffCustomer();
+        }
         console.log("place", data);
         this.sendPurchase();
         this.$store.commit("resetCart", this.restaurantId());
         window.scrollTo(0, 0);
       } catch (error) {
+        // alert(JSON.stringify(error));
         console.error(error.message, error.details);
         this.$store.commit("setErrorMessage", {
           code: "order.place",
