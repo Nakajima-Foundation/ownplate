@@ -62,7 +62,7 @@
     "@typescript-eslint/parser": "^4.29.2",
     "chai": "^4.3.4",
     "chai-string": "^1.5.0",
-    "cheerio": "^1.0.0-rc.3",
+    "cheerio": "^1.0.0-rc.10",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.23.4",
