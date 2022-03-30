@@ -51,7 +51,6 @@
     "moment-timezone": "^0.5.31",
     "node-fetch": "^2.6.1",
     "pdfmake": "0.3.0-beta.1",
-    "tailwindcss": "^3.0.23",
     "validator": "^13.0.0",
     "vue": "^2.6.12",
     "vue-clipboard2": "^0.3.1",
@@ -67,6 +66,7 @@
     "@babel/plugin-proposal-optional-chaining": "^7.9.0",
     "@vue/cli": "^5.0.4",
     "@vue/cli-service": "^5.0.4",
+    "autoprefixer": "^10.4.4",
     "babel-eslint": "^10.1.0",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.10.0",
@@ -74,9 +74,11 @@
     "eslint-plugin-prettier": "^3.1.2",
     "eslint-plugin-vue": "^6.2.2",
     "firebase-admin": "^9.10.0",
+    "postcss": "^8.4.12",
     "prettier": "^1.19.1",
     "raw-loader": "^4.0.2",
     "sass-loader": "^10.2.0",
+    "tailwindcss": "^3.0.23",
     "vue-template-compiler": "^2.6.14"
   }
 }
