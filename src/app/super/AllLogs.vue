@@ -23,7 +23,7 @@ import BackButton from "~/components/BackButton";
 import { db } from "~/plugins/firebase.js";
 
 export default {
-  head() {
+  metaInfo() {
     return {
       title: [this.defaultTitle, "Super All Log"].join(" / ")
     }

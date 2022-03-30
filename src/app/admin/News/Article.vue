@@ -54,7 +54,7 @@ export default {
   components: {
     NotFound
   },
-  head() {
+  metaInfo() {
     return {
       title: [(this.news || {}).title, this.defaultTitle].join(" / ")
     };

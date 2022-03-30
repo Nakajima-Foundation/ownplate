@@ -56,7 +56,7 @@ export default {
   components: {
     Map,
   },
-  head() {
+  metaInfo() {
     return {
       title: [
         this.$tc("pageTitle.restaurantArea", 0, { area: this.areaName }),

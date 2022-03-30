@@ -23,7 +23,7 @@ import BackButton from "~/components/BackButton";
 import { db, functions } from "~/plugins/firebase.js";
 import Restaurant from "~/app/super/Components/Restaurant";
 export default {
-  head() {
+  metaInfo() {
     return {
       title: [this.defaultTitle, "Super Admin info"].join(" / ")
     }

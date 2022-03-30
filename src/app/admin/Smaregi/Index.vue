@@ -123,7 +123,7 @@ export default {
     BackButton
   },
   name: "Restaurant",
-  head() {
+  metaInfo() {
     return {
       title: [this.defaultTitle, "Admin Smaregi Index"].join(" / ")
     }

@@ -4,7 +4,6 @@ import i18n from "@/plugins/vue-i18n";
 import router from '@/routes';
 import store from '@/store/index.js';
 
-
 import App from "./layouts/default.vue";
 
 import mixin from "@/plugins/utils";
@@ -51,7 +50,8 @@ if (process.env.NODE_ENV !== "development") {
   }
 };
 
-
+import VueMeta from 'vue-meta'
+Vue.use(VueMeta, {});
 
 Vue.use(Buefy);
 Vue.mixin(mixin);

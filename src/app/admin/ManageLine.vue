@@ -122,7 +122,7 @@ export default {
     BackButton,
     NotificationIndex
   },
-  head() {
+  metaInfo() {
     return {
       title: ["Admin Manage Line", this.defaultTitle].join(" / ")
     }

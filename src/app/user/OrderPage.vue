@@ -735,7 +735,7 @@ import {
 
 export default {
   name: "Order",
-  head() {
+  metaInfo() {
     return {
       title: this.shopInfo?.restaurantName && this.statusKey ?
         [

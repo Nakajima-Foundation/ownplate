@@ -275,7 +275,7 @@ export default {
     NotificationIndex,
     NotFound
   },
-  head() {
+  metaInfo() {
     return {
       title: this.restaurantInfo.restaurantName ?
         ["Admin Menu List", this.restaurantInfo.restaurantName , this.defaultTitle].join(" / ") : this.defaultTitle

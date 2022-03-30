@@ -59,7 +59,7 @@ export default {
       required: true
     }
   },
-  head() {
+  metaInfo() {
     return {
       title: [this.defaultTitle, "Admin Edit Category"].join(" / ")
     }

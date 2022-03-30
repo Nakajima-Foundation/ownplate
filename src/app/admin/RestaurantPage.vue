@@ -949,7 +949,7 @@ export default {
     PhoneEntry,
     Price
   },
-  head() {
+  metaInfo() {
     return {
       title: this.shopInfo.restaurantName ?
         ["Admin Restaurant", this.shopInfo.restaurantName , this.defaultTitle].join(" / ") : this.defaultTitle

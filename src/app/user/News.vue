@@ -38,7 +38,7 @@ import MarkdownIt from "markdown-it";
 import newsList from "../admin/News/data";
 
 export default {
-  head() {
+  metaInfo() {
     return {
       title: ["News", this.defaultTitle].join(" / ")
     };

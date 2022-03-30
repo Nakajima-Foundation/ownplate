@@ -228,7 +228,7 @@ export default {
     FavoriteButton,
     AddressButton,
   },
-  head() {
+  metaInfo() {
     return {
       title: [this.defaultTitle, "Profile"].join(" / ")
     }

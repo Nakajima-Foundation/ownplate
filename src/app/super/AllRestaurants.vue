@@ -93,7 +93,7 @@ import DownloadCsv from "~/components/DownloadCSV";
 
 export default {
   mixins: [superMixin],
-  head() {
+  metaInfo() {
     return {
       title: [this.defaultTitle, "Super All Restaurants"].join(" / ")
     }

@@ -42,7 +42,7 @@ export default {
   components: {
     ListItem
   },
-  head() {
+  metaInfo() {
     return {
       title: ["News", this.defaultTitle].join(" / ")
     };

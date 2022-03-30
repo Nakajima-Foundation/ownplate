@@ -55,7 +55,7 @@ export default {
   components: {
     BackButton
   },
-  head() {
+  metaInfo() {
     return {
       title: [this.defaultTitle, "Super All Admin"].join(" / ")
     }

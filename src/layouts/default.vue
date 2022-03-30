@@ -332,12 +332,14 @@ import DialogBox from "~/components/DialogBox";
 import AudioPlay from "./AudioPlay";
 import * as Sentry from "@sentry/browser";
 import { ownPlateConfig } from "@/config/project";
+import { defaultHeader } from "../plugins/header";
 
 export default {
   components: {
     DialogBox,
     AudioPlay
   },
+  metaInfo:  defaultHeader,
   data() {
     return {
       language: "en",

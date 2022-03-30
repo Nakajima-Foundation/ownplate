@@ -50,7 +50,7 @@ export default {
   components: {
     BackButton
   },
-  head() {
+  metaInfo() {
     return {
       title: [this.defaultTitle, "Admin Subaccount Account"].join(" / ")
     }

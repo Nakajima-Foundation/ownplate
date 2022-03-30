@@ -514,7 +514,7 @@ export default {
     MessageCard,
     PartnersContact
   },
-  head() {
+  metaInfo() {
     return {
       title: ["Admin Index", this.defaultTitle].join(" / ")
     }

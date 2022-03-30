@@ -365,7 +365,7 @@ export default {
       required: false,
     },
   },
-  head() {
+  metaInfo() {
     // TODO: add area to header
     return {
       title:

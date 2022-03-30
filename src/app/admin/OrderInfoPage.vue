@@ -606,7 +606,7 @@ export default {
     CustomerInfo,
     NotFound
   },
-  head() {
+  metaInfo() {
     return {
       title: this.shopInfo.restaurantName ?
         ["Admin Order Info", this.shopInfo.restaurantName , this.defaultTitle].join(" / ") : this.defaultTitle

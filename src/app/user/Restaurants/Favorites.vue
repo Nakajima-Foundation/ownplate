@@ -76,7 +76,7 @@ export default {
       restaurants: []
     };
   },
-  head() {
+  metaInfo() {
     const title = [
       this.$t("pageTitle.restaurantRoot"),
       ownPlateConfig.siteName

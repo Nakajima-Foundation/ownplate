@@ -71,7 +71,7 @@ import Map from "~/components/Map";
 
 export default {
   name: "RestaurantIndex",
-  head() {
+  metaInfo() {
     return {
       title: [this.defaultTitle, "Restaurant Index"].join(" / ")
     }

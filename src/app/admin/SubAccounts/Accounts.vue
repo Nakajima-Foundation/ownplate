@@ -85,7 +85,7 @@ import BackButton from "~/components/BackButton";
 import { db, functions } from "~/plugins/firebase.js";
 
 export default {
-  head() {
+  metaInfo() {
     return {
       title: [this.defaultTitle, "Admin Subaccount Accounts"].join(" / ")
     }

@@ -111,7 +111,7 @@ export default {
     BackButton,
     NotificationIndex,
   },
-  head() {
+  metaInfo() {
     return {
       title: this.shopInfo.restaurantName ?
         ["Admin Order History", this.shopInfo.restaurantName , this.defaultTitle].join(" / ") : this.defaultTitle

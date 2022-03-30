@@ -14,7 +14,7 @@ import BackButton from "~/components/BackButton";
 import { db } from "~/plugins/firebase.js";
 import { stripeActionStrings } from "~/plugins/stripe"
 export default {
-  head() {
+  metaInfo() {
     return {
       title: [this.defaultTitle, "Super All Stripe Callback"].join(" / ")
     }

@@ -21,7 +21,7 @@ export default {
   components: {
     BackButton
   },
-  head() {
+  metaInfo() {
     return {
       title: [this.defaultTitle, "Super Partners"].join(" / ")
     }

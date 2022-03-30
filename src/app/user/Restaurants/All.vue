@@ -70,7 +70,7 @@ export default {
       return JPPrefecture.concat(USStates);
     }
   },
-  head() {
+  metaInfo() {
     return RestaurantHeader;
   },
   async created() {

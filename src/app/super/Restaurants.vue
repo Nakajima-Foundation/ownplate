@@ -28,7 +28,7 @@ import { db, functions } from "~/plugins/firebase.js";
 
 export default {
   mixins: [superMixin],
-  head() {
+  metaInfo() {
     return {
       title: [this.defaultTitle, "Super All Restaurants"].join(" / ")
     }
