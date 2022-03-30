@@ -71,6 +71,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  /*
 /deep/ .article-list h2 {
   @apply text-xl font-bold text-black text-opacity-30 mb-8;
 }
@@ -94,4 +95,5 @@ export default {
 /deep/ .article-list > ul > li ul li {
   @apply text-base font-normal text-black mt-4;
 }
+  */
 </style>
