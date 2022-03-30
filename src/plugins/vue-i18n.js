@@ -58,6 +58,5 @@ const i18n = new VueI18n({
   }
 });
 
-export default ({ app }) => {
-  app.i18n = i18n;
-};
+export default i18n;
+

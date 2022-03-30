@@ -248,7 +248,7 @@
         </div>
 
         <!-- approproate component under pages will be displayed -->
-        <nuxt v-if="isReadyToRender"></nuxt>
+        <router-view v-if="isReadyToRender"/>
         <dialog-box :dialog="dialog" />
       </div>
     </div>

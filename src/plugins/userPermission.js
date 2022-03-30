@@ -1,27 +1,26 @@
 import Vue from 'vue';
 
-export default ({app}) => {
-  Vue.mixin({
-    methods: {
-      redirectToAdminPage() {
-        const redirect = this.$route.query["to"];
-        const pathRegex = /^\/[a-zA-Z0-9-\_\/]+$/;
-        
-        if (redirect && pathRegex.test(redirect)) {
-          this.$router.push(redirect);
+const mixin = {
+  methods: {
+    redirectToAdminPage() {
+      const redirect = this.$route.query["to"];
+      const pathRegex = /^\/[a-zA-Z0-9-\_\/]+$/;
+      
+      if (redirect && pathRegex.test(redirect)) {
+        this.$router.push(redirect);
+      } else {
+        this.$router.push("/admin/restaurants");
+      }
+    },
+    checkAdminPermission() {
+      if (!(this.$store.getters.uidAdmin)) {
+        const redirectUrl = encodeURIComponent(this.$route.path);
+        if (redirectUrl) {
+          this.$router.replace('/admin/user/signin?to=' + redirectUrl);
         } else {
-          this.$router.push("/admin/restaurants");
-        }
-      },
-      checkAdminPermission() {
-        if (!(this.$store.getters.uidAdmin)) {
-          const redirectUrl = encodeURIComponent(this.$route.path);
-          if (redirectUrl) {
-            this.$router.replace('/admin/user/signin?to=' + redirectUrl);
-          } else {
-            this.$router.replace('/admin/user/signin');
+          this.$router.replace('/admin/user/signin');
           }
-          return false;
+        return false;
         }
         return true;
       },
@@ -47,5 +46,6 @@ export default ({app}) => {
         return this.$store.getters.isNotOperator;
       }
     },
-  });
-}
+};
+
+export default  mixin;

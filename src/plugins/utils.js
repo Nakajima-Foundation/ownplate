@@ -12,8 +12,7 @@ import { formatOption } from "~/plugins/strings.js";
 import { partners } from "~/plugins/constant";
 import { releaseConfig } from "~/plugins/config.js";
 
-export default ({ app }) => {
-  Vue.mixin({
+const mixin = {
     methods: {
       isNull(value) {
         return value === null || value === undefined;
@@ -98,6 +97,7 @@ export default ({ app }) => {
           return tmp;
         }, {});
       },
+/*
       copyClipboard: async function (text) {
         try {
           await this.$copyText(text);
@@ -106,6 +106,7 @@ export default ({ app }) => {
           this.$buefy.toast.open(app.i18n.tc('shopInfo.UrlCopyFailed'));
         }
       },
+*/
       forcedError(key) {
         const debug = this.$route.query.error;
         return debug === key ? "---forced-error---" : "";
@@ -344,5 +345,6 @@ export default ({ app }) => {
         return process.env.gapikey;
       },
     }
-  });
-}
+};
+
+export default  mixin;
