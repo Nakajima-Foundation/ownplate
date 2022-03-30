@@ -595,7 +595,7 @@ export default {
     }
   },
   async created() {
-    console.log(process.env.CIRCLE_SHA1);
+    console.log(process.env.VUE_APP_CIRCLE_SHA1);
     if (!this.isInLIFF) {
       if (this.isInLine) {
         if (/\?/.test(window.location.href)) {

@@ -1,7 +1,7 @@
-import { functions } from "~/plugins/firebase"
+import { functions } from "~/plugins/firebase";
 
 export const getStripeInstance = (stripeAccount) => {
-  const stripeAPIToken = process.env.STRIPE_API_KEY;
+  const stripeAPIToken = process.env.VUE_APP_STRIPE_API_KEY;
   if (stripeAccount) {
     return Stripe(stripeAPIToken, {
       stripeAccount

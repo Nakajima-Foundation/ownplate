@@ -783,7 +783,7 @@ export default {
     },
     mode: {
       type: String,
-      required: true
+      required: false
     },
   },
   data() {
