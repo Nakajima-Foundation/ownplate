@@ -8,7 +8,7 @@
           <back-button url="/admin/restaurants/" />
         </div>
         <div class="flex-shrink-0">
-          <nuxt-link :to="'/r/' + restaurantId()">
+          <router-link :to="'/r/' + restaurantId()">
             <div
               class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
             >
@@ -17,7 +17,7 @@
                 $t("admin.viewPage")
               }}</span>
             </div>
-          </nuxt-link>
+          </router-link>
         </div>
       </div>
 
@@ -39,7 +39,7 @@
       <!-- Suspend Button -->
       <div class="mt-4 lg:mt-0 lg:mr-4 flex-shrink-0">
         <b-button
-          tag="nuxt-link"
+          tag="router-link"
           :to="`/admin/restaurants/${restaurantId()}/suspend`"
           class="b-reset-tw"
         >
@@ -104,14 +104,14 @@
 
     <!-- Go to History -->
     <div class="mx-6 mt-6">
-      <nuxt-link :to="`/admin/restaurants/${this.restaurantId()}/history`"
+      <router-link :to="`/admin/restaurants/${this.restaurantId()}/history`"
         ><div
           class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5"
         >
           <div class="text-sm font-bold text-op-teal">
             {{ $t("admin.order.history") }}
           </div>
-        </div></nuxt-link
+        </div></router-link
       >
     </div>
   </div>

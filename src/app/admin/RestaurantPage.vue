@@ -19,7 +19,7 @@
         <!-- Cancel Button -->
         <b-button
           class="b-reset-tw"
-          tag="nuxt-link"
+          tag="router-link"
           :to="`/admin/restaurants/`"
         >
           <div
@@ -855,7 +855,7 @@
         <!-- Cancel Button -->
         <b-button
           class="b-reset-tw"
-          tag="nuxt-link"
+          tag="router-link"
           :to="`/admin/restaurants/`"
         >
           <div

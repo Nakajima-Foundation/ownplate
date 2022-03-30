@@ -91,18 +91,18 @@
         </div>
 
         <div>
-          <nuxt-link :to="'/admin/news/'">
+          <router-link :to="'/admin/news/'">
             <span class="text-sm font-bold">{{
               $t("admin.news.newsTop")
             }}</span>
-          </nuxt-link>
+          </router-link>
         </div>
       </div>
 
       <div class="mt-2">
-        <nuxt-link :to="'/admin/news/' + news.date">
+        <router-link :to="'/admin/news/' + news.date">
           <span class="text-base font-bold">{{ news.title }}</span>
-        </nuxt-link>
+        </router-link>
       </div>
     </div>
 
@@ -171,7 +171,7 @@
           <!-- Existing Restaurant -->
           <div v-if="existsRestaurant">
             <div v-if="restaurantLists.length > 1" class="mb-2">
-              <nuxt-link :to="'/admin/orders/'">
+              <router-link :to="'/admin/orders/'">
                 <div
                   class="bg-black bg-opacity-5 rounded-lg px-4 py-3 text-center"
                 >
@@ -179,7 +179,7 @@
                     $t("admin.viewAllOrders")
                   }}</span>
                 </div>
-              </nuxt-link>
+              </router-link>
             </div>
 
             <div class="grid grid-cols-1 space-y-2">
@@ -577,6 +577,7 @@ export default {
               this.restaurantItems = {}; // so that we present "No restaurant"
               return;
             }
+            console.log(result.docs);
             this.restaurantItems = (result.docs || []).reduce((tmp, doc) => {
               const restaurantId = doc.id;
 
@@ -586,7 +587,7 @@ export default {
               tmp[doc.id] = data;
               return tmp;
             }, {});
-
+            
             if (this.isOwner && Object.keys(this.restaurantLists).length === 0) {
               this.restaurantLists = Object.keys(this.restaurantItems);
             }

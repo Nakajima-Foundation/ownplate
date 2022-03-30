@@ -6,7 +6,7 @@
     <template v-else>
       <!-- Header -->
       <div class="mt-6 mx-6 flex items-center space-x-4">
-        <nuxt-link :to="'/'">
+        <router-link :to="'/'">
           <div
             class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
           >
@@ -15,7 +15,7 @@
               {{ $t("button.back") }}
             </div>
           </div>
-        </nuxt-link>
+        </router-link>
 
       </div>
 

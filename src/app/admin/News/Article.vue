@@ -6,7 +6,7 @@
     <template v-else>
       <!-- Header -->
       <div class="mt-6 mx-6 flex items-center space-x-4">
-        <nuxt-link :to="'/admin/restaurants'">
+        <router-link :to="'/admin/restaurants'">
           <div
             class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
           >
@@ -15,9 +15,9 @@
               {{ $t("admin.news.adminTop") }}
             </div>
           </div>
-        </nuxt-link>
+        </router-link>
 
-        <nuxt-link :to="'/admin/news'">
+        <router-link :to="'/admin/news'">
           <div
             class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
           >
@@ -26,7 +26,7 @@
               {{ $t("admin.news.newsTop") }}
             </div>
           </div>
-        </nuxt-link>
+        </router-link>
       </div>
 
       <!-- Body -->
