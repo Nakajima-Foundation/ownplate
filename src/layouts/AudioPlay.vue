@@ -35,9 +35,13 @@ export default {
       }
     },
     async play() {
-      this.$refs.audio.setAttribute("src", this.soundFile);
-      this.$refs.audio.currentTime = 0;
-      await this.$refs.audio.play();
+      try {
+        this.$refs.audio.setAttribute("src", this.soundFile);
+        this.$refs.audio.currentTime = 0;
+        await this.$refs.audio.play();
+      } catch (e) {
+        console.log(e);
+      }
       return;
     },
   },

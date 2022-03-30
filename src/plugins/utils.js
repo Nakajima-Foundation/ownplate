@@ -97,16 +97,15 @@ const mixin = {
           return tmp;
         }, {});
       },
-/*
       copyClipboard: async function (text) {
+        // TODO: check no-nuxt branch
         try {
           await this.$copyText(text);
-          this.$buefy.toast.open(app.i18n.tc('shopInfo.UrlCopied'));
+          this.$buefy.toast.open(this.i18n.tc('shopInfo.UrlCopied'));
         } catch (e) {
-          this.$buefy.toast.open(app.i18n.tc('shopInfo.UrlCopyFailed'));
+          this.$buefy.toast.open(this.i18n.tc('shopInfo.UrlCopyFailed'));
         }
       },
-*/
       forcedError(key) {
         const debug = this.$route.query.error;
         return debug === key ? "---forced-error---" : "";
