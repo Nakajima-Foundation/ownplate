@@ -1131,6 +1131,16 @@ export default {
         path: `/r/${this.restaurantId()}`
       });
     },
+    async saveLiffCustomer() {
+      const uid = this.user.uid;
+      const data = {
+        uid,
+        restaurantId: this.restaurantId(),
+        name: this.orderInfo.name || "",
+        orderId: this.orderId,  //  (this is last)
+        updatedAt: firestore.FieldValue.serverTimestamp(),
+      }
+    },
     async handlePayment() {
       if (this.requireAddres) {
         if (this.hasEcError) {
@@ -1141,17 +1151,6 @@ export default {
         }
       }
 
-      const saveLiffCustomer = async () => {
-        const uid = this.user.uid;
-        await db.doc(`restaurants/${this.restaurantId()}/liffCustomer/${uid}`).set({
-          uid,
-          restaurantId: this.restaurantId(),
-          name: this.orderInfo.name || "",
-          orderId: this.orderId,  //  (this is last)
-          updatedAt: firestore.FieldValue.serverTimestamp(),
-        }, { merge: true })
-      };
-      
       const timeToPickup = this.shopInfo.isEC ? firebase.firestore.Timestamp.now() : this.$refs.time.timeToPickup();
 
       this.isPaying = true;
@@ -1168,7 +1167,7 @@ export default {
           customerInfo: this.customerInfo || {},
         });
         if (this.isLiffUser) {
-          await saveLiffCustomer();
+          await this.saveLiffCustomer();
         }
         this.sendPurchase();
         this.$store.commit("resetCart", this.restaurantId());
@@ -1219,7 +1218,7 @@ export default {
           customerInfo: this.customerInfo || {},
         });
         if (this.isLiffUser) {
-          await saveLiffCustomer();
+          await this.saveLiffCustomer();
         }
         console.log("place", data);
         this.sendPurchase();
