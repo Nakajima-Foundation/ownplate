@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 const getUserPages = (prefix) => {
   return [
@@ -30,6 +30,11 @@ const getUserPages = (prefix) => {
 };
 
 export const customRoutes = [
+  {
+    name: "top",
+    path: "/",
+    component: "index.vue"
+  },
   {
     name: "r",
     path: "/r",
@@ -401,6 +406,10 @@ const loadComponent = (data) => {
 const routes = customRoutes.map(loadComponent);
 
 
-const router = new VueRouter(routes);
+const router = new VueRouter({
+  mode: 'history',
+  base: "/",
+  routes
+});
 
 export default router;
