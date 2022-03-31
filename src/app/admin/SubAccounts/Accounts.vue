@@ -135,23 +135,21 @@ export default {
   },
   methods: {
     deleteChild(childId) {
-      console.log(childId);
       this.$store.commit("setAlert", {
         code: "admin.subAccounts.confirmDeletechild",
         callback: async () => {
           this.$store.commit("setLoading", true);
-          console.log("A");
           const subAccountDeleteChildFunc = functions.httpsCallable("subAccountDeleteChild");
-          console.log("B");
           await subAccountDeleteChildFunc({childUid: childId});
-          console.log("C");
           this.$store.commit("setLoading", false);
         }
       });
     },
     rList(restaurantLists) {
       return (restaurantLists ||[]).map((r) => {
-        return this.restaurantObj[r].restaurantName;
+        return this.restaurantObj[r]?.restaurantName;
+      }).filter((name) => {
+        return !!name;
       }).slice(0,2).join(",");
     },
     async invite() {

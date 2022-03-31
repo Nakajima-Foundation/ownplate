@@ -577,7 +577,6 @@ export default {
               this.restaurantItems = {}; // so that we present "No restaurant"
               return;
             }
-            console.log(result.docs);
             this.restaurantItems = (result.docs || []).reduce((tmp, doc) => {
               const restaurantId = doc.id;
 
@@ -630,7 +629,6 @@ export default {
           } finally {
             this.readyToDisplay = true;
           }
-          console.log(this.restaurantItems);
         });
     } catch (error) {
       console.log("Error fetch doc,", error);
