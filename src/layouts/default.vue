@@ -1,52 +1,5 @@
 <template>
   <div class="wrapper" @click="enableSound()">
-    <!-- ### The commentout below is for Tailwind CSS workaround. ### -->
-
-    <!-- h-1 h-2 h-3 h-4 h-5 h-6 h-7 h-8 h-9 h-10 h-12 h-13 h-16 h-20 h-24 h-32 h-48 h-52 h-64 h-80 h-full -->
-    <!-- w-1 w-2 w-4 w-6 w-9 w-12 w-16 w-20 w-24 w-32 w-48 w-56 w-64 w-72 w-96 w-200 w-288 w-500 w-full -->
-    <!-- m-1 m-3 m-4 m-5 m-6 m-auto -->
-    <!-- mx-0 mx-1 mx-2 mx-4 mx-6 mx-auto -->  
-    <!-- mt-0 mt-1 mt-2 mt-3 mt-4 mt-6 mt-8 mt-auto -->
-    <!-- mb-0 mb-1 mb-2 mb-4 mb-8 mb-auto -->
-    <!-- ml-0 ml-1 ml-2 ml-4 ml-auto -->
-    <!-- mr-0 mr-1 mr-2 mr-4 my-6 my-auto -->
-    <!-- p-0 p-1 p-2 p-4 p-6 -->
-    <!-- px-1 px-2 px-3 px-4 px-6 px-8 -->
-    <!-- py-1 py-2 py-3 py-4 py-6 py-8 -->
-    <!-- pt-0 pt-2 pt-3 pt-4 pt-6 -->
-    <!-- pl-4 pl-6 -->
-    <!-- pr-2 pr-4 pr-6  -->
-    <!-- pb-2 pb-4 pb-5 pb-6 -->
-    <!-- lg:mx-0 lg:mx-4 lg:mx-auto lg:mx-6 lg:mt-0 lg:mt-6 lg:ml-4 lg:mr-4 lg:max-w-sm lg:max-w-2xl -->
-    <!-- object-cover rounded rounded-md rounded-lg rounded-full rounded-r lg:rounded-lg -->
-    <!-- border-solid border-2 border-t-2 -->
-    <!-- border-black border-red-700 -->
-    <!-- border-opacity-10 -->
-
-    <!-- lg:grid-cols-2 lg:grid-cols-3 lg:gap-x-12 xl:grid-cols-4 -->
-    <!-- space-x-2 space-x-4 space-y-2 space-y-4 justify-evenly justify-end -->
-    <!-- lg:flex-1 flex-col flex-shrink-0 -->
-
-    <!-- flow-root clear-both float-right -->
-
-    <!-- bg-pink-500 bg-purple-500 bg-blue-500 bg-green-600 bg-yellow-500 bg-red-700 -->
-    <!-- bg-opacity-0 bg-opacity-5 bg-opacity-10 bg-opacity-50 bg-opacity-80 -->
-    <!-- bg-black bg-white bg-opacity-50 -->
-    
-    <!-- text-pink-500 text-purple-500 text-blue-500 text-green-600 text-yellow-500 text-red-700 hover:text-red-700 text-black -->
-    <!-- text-opacity-30 text-opacity-60 text-opacity-80 -->
-    <!-- text-left text-center text-right lg:text-center -->
-    <!-- font-normal -->
-
-    <!-- whitespace-pre-line -->
-
-    <!-- list-outside list-disc list-none -->
-
-    <!-- cursor-pointer -->
-    <!-- fixed top-0 left-0 z-50 flex flex-1 h-screen w-screen items-center justify-center max-h-full overflow-y-scroll rounded-xl shadow relative  ->
-         
-    <!-- ### Try to add the class name here if it doesn't work after build. ### -->
-
     <!-- Notification Banner -->
     <div
       v-if="isFlash"
