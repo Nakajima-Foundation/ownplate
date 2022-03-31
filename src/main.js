@@ -1,6 +1,6 @@
 // core
 import Vue from "vue";
-import router from "@/routes";
+import router from "@/router";
 import store from "@/store/index";
 
 // plugins
@@ -20,17 +20,17 @@ import * as Sentry from "@sentry/browser";
 import { Vue as VueIntegration } from "@sentry/integrations";
 
 // components
-import App from "./components/App.vue";
-import GMap from "./components/gmaps/GMap.vue";
-import GMapInfoWindow from "./components/gmaps/GMapInfoWindow.vue";
-import GMapMarker from "./components/gmaps/GMapMarker.vue";
+import App from "@/components/App.vue";
+import GMap from "@/components/gmaps/GMap.vue";
+import GMapInfoWindow from "@/components/gmaps/GMapInfoWindow.vue";
+import GMapMarker from "@/components/gmaps/GMapMarker.vue";
 
 // config
 import { sentryDsn } from "@/config/project";
 
 // css
 import "buefy/dist/buefy.css";
-import "./assets/css/tailwind.css";
+import "@/assets/css/tailwind.css";
 // '@import "./src/assets/scss/main.scss"' in vue.config.js
 
 // components

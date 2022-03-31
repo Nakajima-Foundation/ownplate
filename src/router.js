@@ -1,5 +1,5 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
+import Vue from 'vue';
+import VueRouter from 'vue-router';
 
 Vue.use(VueRouter);
 
@@ -33,7 +33,7 @@ export const customRoutes = [
   {
     name: "top",
     path: "/",
-    component: "index.vue"
+    component: "top.vue"
   },
   {
     name: "r",
@@ -402,9 +402,9 @@ const loadComponent = (data) => {
     name: data.name,
     component,
   };
-}
-const routes = customRoutes.map(loadComponent);
+};
 
+const routes = customRoutes.map(loadComponent);
 
 const router = new VueRouter({
   mode: 'history',
