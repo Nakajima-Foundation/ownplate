@@ -13,7 +13,7 @@ export const json_response = async (response) => {
 export const google_geocode = async (keyword) => {
   const parameters = {
     "address": keyword,
-    "key": process.env.gapikey,
+    "key": process.env.VUE_APP_GAPIKey,
   };
   const qs = Object.keys(parameters).map((key) => {
     return `${key}=${encodeURIComponent(parameters[key])}`;

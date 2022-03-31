@@ -341,7 +341,7 @@ const mixin = {
         ];
       },
       gmapKey() {
-        return process.env.gapikey;
+        return process.env.VUE_APP_GAPIKey;
       },
     }
 };
