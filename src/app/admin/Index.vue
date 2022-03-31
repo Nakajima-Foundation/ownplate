@@ -2,15 +2,15 @@
   <div v-if="$store.getters.uidAdmin">
     <!-- Welcome -->
 
-    <div v-if="partner.length > 0" class="mt-2">
+    <div v-if="partner.length > 0" class="mt-2 mb-1">
       <div v-for="(part, k) in partner" :key="k" class="flex">
-        <div class="flex-1">
+        <div class="flex-1 ml-4">
           <img :src="`/partners/${part.logo}`" class="w-12"/>
           <span class="font-bold">
             {{part.name}}
           </span>
         </div>
-        <div class="text-right font-bold" v-if="part.ask">
+        <div class="text-right font-bold mr-4" v-if="part.ask">
           <a href="#" @click="openContact()">サポート問い合わせ</a>
         </div>
       </div>
@@ -577,7 +577,6 @@ export default {
               this.restaurantItems = {}; // so that we present "No restaurant"
               return;
             }
-            console.log(result.docs);
             this.restaurantItems = (result.docs || []).reduce((tmp, doc) => {
               const restaurantId = doc.id;
 
@@ -630,7 +629,6 @@ export default {
           } finally {
             this.readyToDisplay = true;
           }
-          console.log(this.restaurantItems);
         });
     } catch (error) {
       console.log("Error fetch doc,", error);

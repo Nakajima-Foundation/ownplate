@@ -29,7 +29,7 @@ import GMapMarker from "@/components/gmaps/GMapMarker.vue";
 import { sentryDsn } from "@/config/project";
 
 // css
-import "buefy/dist/buefy.css";
+// import "buefy/dist/buefy.css";
 import "@/assets/css/tailwind.css";
 // '@import "./src/assets/scss/main.scss"' in vue.config.js
 

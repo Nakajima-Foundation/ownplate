@@ -15,8 +15,7 @@
       </div>
     </div>
 
-    <!-- Order Status -->
-
+    <!-- Sub Account list -->
     <div class="mx-6 mt-6">
       <div class="mt-2 text-base font-bold">
         {{ $t("admin.subAccounts.subaccountlist") }}
@@ -50,7 +49,7 @@
                                                 :placeholder="$t('admin.subAccounts.enterEmail')"
                                                 ></b-input>
         <div class="text-xs font-bold text-red-700">
-          * 招待されるサブアカウントは、事前にユーザ登録をする必要があります
+          * {{ $t("admin.subAccounts.accountNotice") }}
         </div>
         <div>
           <b-button @click="invite" :disabled="sending">
@@ -135,23 +134,21 @@ export default {
   },
   methods: {
     deleteChild(childId) {
-      console.log(childId);
       this.$store.commit("setAlert", {
         code: "admin.subAccounts.confirmDeletechild",
         callback: async () => {
           this.$store.commit("setLoading", true);
-          console.log("A");
           const subAccountDeleteChildFunc = functions.httpsCallable("subAccountDeleteChild");
-          console.log("B");
           await subAccountDeleteChildFunc({childUid: childId});
-          console.log("C");
           this.$store.commit("setLoading", false);
         }
       });
     },
     rList(restaurantLists) {
       return (restaurantLists ||[]).map((r) => {
-        return this.restaurantObj[r].restaurantName;
+        return this.restaurantObj[r]?.restaurantName;
+      }).filter((name) => {
+        return !!name;
       }).slice(0,2).join(",");
     },
     async invite() {

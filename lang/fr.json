@@ -795,6 +795,7 @@
       "openDashboard": "Open Sub-account management",
       "manualLink": "How to use sub-account",
       "description": "You can set / manage sub-accounts that can only be operated at specific stores.",
+      "accountNotice": "The sub-account to be invited must be registered as a user.",
       "title": "Sub-account management",
       "subaccountlist": "Sub-account list",
       "email": "Email",
