@@ -17,6 +17,19 @@ import 'buefy/dist/buefy.css';
 
 import './assets/css/tailwind.css';
 
+// gmaps
+import GMap from './components/gmaps/GMap.vue';
+import GMapInfoWindow from './components/gmaps/GMapInfoWindow.vue';
+import GMapMarker from './components/gmaps/GMapMarker.vue';
+
+Vue.component('GMap', GMap);
+Vue.component('GMapInfoWindow', GMapInfoWindow);
+Vue.component('GMapMarker', GMapMarker);
+Vue.prototype.$GMaps = {
+  apiKey: process.env.VUE_APP_GAPIKey,
+  loaded: false,
+};
+
 // QR
 // "~plugins/qrcode.js",
 import VueQrcode from '@chenfengyuan/vue-qrcode';
