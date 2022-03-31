@@ -21,7 +21,7 @@
       </div>
       <div class="flex-1 text-center">
         <router-link :to="top_path">
-          <img :class="this.logoClass" :src="`/${this.logo}`" />
+          <img :class="this.logoClass" class="m-auto" :src="`/${this.logo}`" />
         </router-link>
       </div>
       <div class="w-12"></div>
@@ -39,7 +39,7 @@
       <!-- Logo / Home -->
       <div class="text-center mt-6 mb-4">
         <router-link :to="home_path">
-          <img class="w-48" :src="`/${this.logo2}`" @click="handleClose()" />
+          <img class="w-48 m-auto" :src="`/${this.logo2}`" @click="handleClose()" />
         </router-link>
       </div>
 
