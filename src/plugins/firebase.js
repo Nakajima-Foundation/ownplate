@@ -1,9 +1,12 @@
-import firebase from "firebase/app";
-import "firebase/firestore";
-import "firebase/storage";
-import "firebase/auth";
-import "firebase/functions";
-import "firebase/analytics";
+import firebase from "firebase/compat/app"
+import { initializeApp } from "firebase/app"
+
+// for v8
+import "firebase/compat/firestore";
+import "firebase/compat/storage";
+import "firebase/compat/auth";
+import "firebase/compat/functions";
+import "firebase/compat/analytics";
 
 import { firebaseConfig } from "@/config/project";
 

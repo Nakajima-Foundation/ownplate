@@ -30,7 +30,7 @@
 </template>
 <script>
 import { db } from "~/plugins/firebase.js";
-import firebase from "firebase/app";
+import firebase from "firebase/compat/app";
 
 export default {
   props: {
