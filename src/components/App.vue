@@ -282,7 +282,7 @@
 <script>
 import { db, auth, functions, analytics } from "@/plugins/firebase.js";
 import DialogBox from "~/components/DialogBox";
-import AudioPlay from "./AudioPlay";
+import AudioPlay from "~/components/AudioPlay";
 import * as Sentry from "@sentry/browser";
 import { ownPlateConfig } from "@/config/project";
 import { defaultHeader } from "../plugins/header";

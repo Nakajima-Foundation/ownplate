@@ -20,7 +20,7 @@ import * as Sentry from "@sentry/browser";
 import { Vue as VueIntegration } from "@sentry/integrations";
 
 // components
-import App from "./layouts/default.vue";
+import App from "./components/App.vue";
 import GMap from "./components/gmaps/GMap.vue";
 import GMapInfoWindow from "./components/gmaps/GMapInfoWindow.vue";
 import GMapMarker from "./components/gmaps/GMapMarker.vue";
