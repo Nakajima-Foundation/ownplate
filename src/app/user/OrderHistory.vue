@@ -31,7 +31,9 @@
 </template>
 
 <script>
-import { db, firestore, functions } from "~/plugins/firebase.js";
+import { db } from "~/plugins/firebase9.js";
+import { collectionGroup, query, onSnapshot, where, orderBy, limit } from "firebase/firestore";
+
 import OrderedInfo from "~/app/admin/Order/OrderedInfo";
 import PhoneLogin from "~/app/auth/PhoneLogin";
 import BackButton from "~/components/BackButton";
@@ -50,7 +52,7 @@ export default {
   data() {
     return {
       loginVisible: false,
-      detatcher: null,
+      detacher: null,
       orders: [],
     };
   },
@@ -60,7 +62,7 @@ export default {
     this.getHistory();
   },
   destroyed() {
-    this.detatcher && this.detatcher();
+    this.detacher && this.detacher();
   },
   watch: {
     uid(newValue) {
@@ -74,14 +76,16 @@ export default {
   },
   methods: {
     getHistory() {
-      this.detatcher && this.detatcher();
+      this.detacher && this.detacher();
       if (this.uid) {
-        this.detatcher = db
-          .collectionGroup("orders")
-          .where("uid", "==", this.uid)
-          .orderBy("orderPlacedAt", "desc")
-          .limit(200)
-          .onSnapshot((snapshot) => {
+        this.detacher = onSnapshot(
+          query(
+            collectionGroup(db,"orders"),
+            where("uid", "==", this.uid),
+            orderBy("orderPlacedAt", "desc"),
+            limit(200)
+          ),
+          (snapshot) => {
             this.orders = snapshot.docs.map((doc) => {
               const order = doc.data();
               order.restaurantId = doc.ref.path.split("/")[1];
@@ -94,10 +98,11 @@ export default {
                 order.timeEstimated = order.timeEstimated.toDate();
               }
               return order;
-            });
-          });
+            })
+          }
+        );
       } else {
-        this.detatcher = null;
+        this.detacher = null;
       }
     },
     handleDismissed(success) {

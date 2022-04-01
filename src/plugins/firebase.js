@@ -1,5 +1,4 @@
 import firebase from "firebase/compat/app";
-import { initializeApp } from "firebase/app";
 
 // for v8
 import "firebase/compat/firestore";
