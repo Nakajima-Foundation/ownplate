@@ -1,7 +1,6 @@
 <template>
   <div>
-    <audio id="audio" ref="audio" :src="soundFile">
-    </audio>
+    <audio id="audio" ref="audio" :src="soundFile"></audio>
   </div>
 </template>
 <script>
@@ -9,11 +8,11 @@ export default {
   data() {
     return {
       pleyedSilent: false,
-    }
+    };
   },
   computed: {
     soundFile() {
-      return this.$store.state.soundFile
+      return this.$store.state.soundFile;
     },
   },
   methods: {
@@ -48,8 +47,10 @@ export default {
   watch: {
     async "$store.state.orderEvent"() {
       await this.play();
-      console.log(`soundEnable = ${this.$store.state.soundEnable}, soundOn=${this.$store.state.soundOn}, soundFile=${this.$store.state.soundFile}`);
+      console.log(
+        `soundEnable = ${this.$store.state.soundEnable}, soundOn=${this.$store.state.soundOn}, soundFile=${this.$store.state.soundFile}`
+      );
     },
-  }
-}
+  },
+};
 </script>

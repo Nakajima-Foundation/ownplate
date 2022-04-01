@@ -1,11 +1,11 @@
-import Vue from 'vue';
+import Vue from "vue";
 
 const mixin = {
   methods: {
     redirectToAdminPage() {
       const redirect = this.$route.query["to"];
       const pathRegex = /^\/[a-zA-Z0-9-\_\/]+$/;
-      
+
       if (redirect && pathRegex.test(redirect)) {
         this.$router.push(redirect);
       } else {
@@ -13,36 +13,36 @@ const mixin = {
       }
     },
     checkAdminPermission() {
-      if (!(this.$store.getters.uidAdmin)) {
+      if (!this.$store.getters.uidAdmin) {
         const redirectUrl = encodeURIComponent(this.$route.path);
         if (redirectUrl) {
-          this.$router.replace('/admin/user/signin?to=' + redirectUrl);
+          this.$router.replace("/admin/user/signin?to=" + redirectUrl);
         } else {
-          this.$router.replace('/admin/user/signin');
-          }
+          this.$router.replace("/admin/user/signin");
+        }
         return false;
-        }
-        return true;
-      },
-      checkUserPermission() {
-        if (!(this.$store.getters.uidUser)) {
-          this.$router.replace('/admin/user/signin');
-          return false;
-        }
-        return true;
-      },
-    },
-    computed: {
-      isUser() {
-        return !!this.$store.getters.uidUser;
-      },
-      isNotSuperAdmin() {
-        return this.$store.getters.isNotSuperAdmin;
-      },
-      isNotOperator() {
-        return this.$store.getters.isNotOperator;
       }
+      return true;
     },
+    checkUserPermission() {
+      if (!this.$store.getters.uidUser) {
+        this.$router.replace("/admin/user/signin");
+        return false;
+      }
+      return true;
+    },
+  },
+  computed: {
+    isUser() {
+      return !!this.$store.getters.uidUser;
+    },
+    isNotSuperAdmin() {
+      return this.$store.getters.isNotSuperAdmin;
+    },
+    isNotOperator() {
+      return this.$store.getters.isNotOperator;
+    },
+  },
 };
 
-export default  mixin;
+export default mixin;

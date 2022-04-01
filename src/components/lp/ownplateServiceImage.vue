@@ -20,12 +20,12 @@
       <!-- Features -->
       <div>
         <img
-          style="height: 752px;"
+          style="height: 752px"
           class="object-cover lg:hidden"
           :src="`/${this.featureHeroMobile}`"
         />
         <img
-          style="height: 416px;"
+          style="height: 416px"
           class="hidden lg:inline-block object-cover"
           :src="`/${this.featureHeroTablet}`"
         />
@@ -41,7 +41,7 @@ export default {
       const seed = (Math.floor(Math.random() * 2) % 2) + 1;
       console.log(seed);
       return `/LP-Cover-Mobile-1-${seed}.jpg`;
-    }
-  }
+    },
+  },
 };
 </script>

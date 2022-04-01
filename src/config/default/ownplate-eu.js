@@ -6,7 +6,7 @@ export const firebaseConfig = {
   storageBucket: "ownplate-eu.appspot.com",
   messagingSenderId: "875408575790",
   appId: "1:875408575790:web:91ca59aeda88277f47febf",
-  measurementId: "G-5H2NQFNWST"
+  measurementId: "G-5H2NQFNWST",
 };
 
 export const ownPlateConfig = {

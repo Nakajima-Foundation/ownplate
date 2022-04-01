@@ -112,7 +112,6 @@
       </b-button>
     </div>
 
-    
     <!-- Download Orders -->
     <div class="mx-6 mt-6 text-center">
       <download-orders :orders="orders" v-if="shopOwner" />
@@ -149,13 +148,18 @@ export default {
     BackButton,
     NotificationIndex,
     DownloadOrders,
-    ReportDetails
+    ReportDetails,
   },
   metaInfo() {
     return {
-      title: this.shopInfo.restaurantName ?
-        ["Admin Order History", this.shopInfo.restaurantName , this.defaultTitle].join(" / ") : this.defaultTitle
-    }
+      title: this.shopInfo.restaurantName
+        ? [
+            "Admin Order History",
+            this.shopInfo.restaurantName,
+            this.defaultTitle,
+          ].join(" / ")
+        : this.defaultTitle,
+    };
   },
   data() {
     return {
@@ -163,7 +167,7 @@ export default {
       limit: 60,
       last: undefined,
       orders: [],
-      shopOwner: null
+      shopOwner: null,
     };
   },
   async created() {
@@ -182,7 +186,7 @@ export default {
   computed: {
     fileName() {
       return this.$t("order.history");
-    }
+    },
   },
   methods: {
     async next() {
@@ -197,27 +201,31 @@ export default {
       this.last = docs.length == this.limit ? docs[this.limit - 1] : null;
       const orders = docs
         .map(this.doc2data("order"))
-        .filter(a => a.status !== order_status.transaction_hide);
+        .filter((a) => a.status !== order_status.transaction_hide);
 
       const customers = {};
       if (this.shopInfo.isEC || this.shopInfo.enableDelivery) {
         const ids = orders.map((order) => order.id);
-        await Promise.all(this.arrayChunk(ids, 10).map(async (arr) => {
-          try {
-            const cuss = await db.collectionGroup("customer")
-                  .where("restaurantId", "==", this.restaurantId())
-                  .where("orderId", "in", arr).get();
-            cuss.docs.map((cus) => {
-              const data = cus.data();
-              customers[data.orderId] = data;
-            });
-          } catch (e) {
-            console.log(e);
-          }
-        }));
+        await Promise.all(
+          this.arrayChunk(ids, 10).map(async (arr) => {
+            try {
+              const cuss = await db
+                .collectionGroup("customer")
+                .where("restaurantId", "==", this.restaurantId())
+                .where("orderId", "in", arr)
+                .get();
+              cuss.docs.map((cus) => {
+                const data = cus.data();
+                customers[data.orderId] = data;
+              });
+            } catch (e) {
+              console.log(e);
+            }
+          })
+        );
       }
 
-      orders.forEach(order => {
+      orders.forEach((order) => {
         order.customerInfo = order.customerInfo || customers[order.id] || {};
         order.timePlaced = order.timePlaced.toDate();
         if (order.timeEstimated) {
@@ -237,9 +245,9 @@ export default {
     orderSelected(order) {
       this.$router.push({
         path:
-          "/admin/restaurants/" + this.restaurantId() + "/orders/" + order.id
+          "/admin/restaurants/" + this.restaurantId() + "/orders/" + order.id,
       });
-    }
-  }
+    },
+  },
 };
 </script>

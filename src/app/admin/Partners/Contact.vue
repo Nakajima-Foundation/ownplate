@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="id==='legssystem'">
+    <div v-if="id === 'legssystem'">
       <pre>
 レグセントジョイラー株式会社
 企業・店舗ITソリューション/電子マネー推進事業部
@@ -20,5 +20,5 @@ export default {
   props: {
     id: String,
   },
-}
+};
 </script>

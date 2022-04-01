@@ -22,7 +22,7 @@ export const state = () => ({
   isWindowActive: false, // active status of browser window
   dialog: null, // for DialogBox
   isLoading: false, // for full-page loading animation
-  isFirefoxPBM: undefined // true, false, null
+  isFirefoxPBM: undefined, // true, false, null
 });
 
 export const getters = {
@@ -109,7 +109,7 @@ export const mutations = {
     state.claims = claims;
   },
   pingOrderEvent(state) {
-    state.orderEvent = (state.orderEvent) + 1;
+    state.orderEvent = state.orderEvent + 1;
   },
   setOrders(state, orders) {
     state.orderObj = orders.reduce((tmp, order) => {
@@ -144,16 +144,14 @@ export const mutations = {
       console.warn("Firefox Private Browsing Mode detected");
     }
     state.isFirefoxPBM = flag;
-  }
+  },
 };
 
-export const actions = {
-};
+export const actions = {};
 
 export default new Vuex.Store({
   state,
   getters,
   actions,
   mutations,
-})
-
+});

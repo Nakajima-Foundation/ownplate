@@ -3,37 +3,48 @@
     <back-button :url="backUrl" />
     <h2>All Restaurants</h2>
     <table>
-      <tr><td>nama</td><td></td><td>掲載</td><td>公開</td><td>削除</td><td>メニュー数</td><td></td><td>電話通知</td></tr>
-      <tr
-      v-for="restaurant in restaurants"
-      :key="restaurant.id"
-      >
+      <tr>
+        <td>nama</td>
+        <td></td>
+        <td>掲載</td>
+        <td>公開</td>
+        <td>削除</td>
+        <td>メニュー数</td>
+        <td></td>
+        <td>電話通知</td>
+      </tr>
+      <tr v-for="restaurant in restaurants" :key="restaurant.id">
         <td style="width: 50%">
-          <router-link :to="`/r/${restaurant.id}`" v-if="restaurant.publicFlag && !restaurant.deletedFlag">
-            {{restaurant.restaurantName}}
+          <router-link
+            :to="`/r/${restaurant.id}`"
+            v-if="restaurant.publicFlag && !restaurant.deletedFlag"
+          >
+            {{ restaurant.restaurantName }}
           </router-link>
           <span v-else>
-            {{restaurant.restaurantName}}
+            {{ restaurant.restaurantName }}
           </span>
         </td>
-        <td><router-link :to="`/s/admins/${restaurant.uid}`">管理人</router-link></td>
         <td>
-          {{restaurant.onTheList ? "o":"-"}}
+          <router-link :to="`/s/admins/${restaurant.uid}`">管理人</router-link>
         </td>
         <td>
-          {{restaurant.publicFlag  ? "o":"-"}}
+          {{ restaurant.onTheList ? "o" : "-" }}
         </td>
         <td>
-          {{restaurant.deletedFlag ? "o":"-"}}
+          {{ restaurant.publicFlag ? "o" : "-" }}
         </td>
         <td>
-          {{(restaurant.menuLists||[]).length || "-"}}
+          {{ restaurant.deletedFlag ? "o" : "-" }}
         </td>
         <td>
-          {{moment(restaurant.createdAt.toDate()).format("YYYY/MM/DD HH:mm")}}
+          {{ (restaurant.menuLists || []).length || "-" }}
         </td>
         <td>
-          {{!!restaurant.phoneCall ? "o":"-" }}
+          {{ moment(restaurant.createdAt.toDate()).format("YYYY/MM/DD HH:mm") }}
+        </td>
+        <td>
+          {{ !!restaurant.phoneCall ? "o" : "-" }}
         </td>
       </tr>
     </table>
@@ -41,23 +52,19 @@
     <b-button
       class="b-reset op-button-pill h-9 rounded-full bg-form m-t-16"
       @click="nextLoad"
-      >
+    >
       <span class="p-l-16 p-r-16">
-        <span class="c-primary t-button">
-          Next
-        </span>
+        <span class="c-primary t-button"> Next </span>
       </span>
     </b-button>
-    <br/>
+    <br />
 
     <b-button
       class="b-reset op-button-pill h-9 rounded-full bg-form m-t-16"
       @click="allLoad"
-      >
+    >
       <span class="p-l-16 p-r-16">
-        <span class="c-primary t-button">
-          All
-        </span>
+        <span class="c-primary t-button"> All </span>
       </span>
     </b-button>
     <br />
@@ -67,15 +74,11 @@
       :fields="fields"
       :fieldNames="fieldNames"
       :fileName="fileName"
-      >
-      <b-button
-        class="b-reset op-button-pill h-9 rounded-full bg-form m-t-16"
-        >
+    >
+      <b-button class="b-reset op-button-pill h-9 rounded-full bg-form m-t-16">
         <span class="p-l-16 p-r-16">
           <i class="material-icons c-primary s-18 m-r-8">save_alt</i>
-          <span class="c-primary t-button">
-            Download
-          </span>
+          <span class="c-primary t-button"> Download </span>
         </span>
       </b-button>
     </download-csv>
@@ -95,8 +98,8 @@ export default {
   mixins: [superMixin],
   metaInfo() {
     return {
-      title: [this.defaultTitle, "Super All Restaurants"].join(" / ")
-    }
+      title: [this.defaultTitle, "Super All Restaurants"].join(" / "),
+    };
   },
   components: {
     BackButton,
@@ -117,7 +120,7 @@ export default {
   },
   computed: {
     fileName() {
-      return "restaurant"
+      return "restaurant";
     },
     fields() {
       return [
@@ -132,7 +135,7 @@ export default {
       ];
     },
     fieldNames() {
-      return this.fields.map(field => {
+      return this.fields.map((field) => {
         return this.$t(`restaurantCsv.${field}`);
       });
     },
@@ -144,8 +147,8 @@ export default {
           state: restaurant.state,
           onTheList: restaurant.onTheList ? 1 : 0,
           publicFlag: restaurant.publicFlag ? 1 : 0,
-          deletedFlag: restaurant.deletedFlag? 1 : 0,
-          menu: (restaurant.menuLists||[]).length || "-",
+          deletedFlag: restaurant.deletedFlag ? 1 : 0,
+          menu: (restaurant.menuLists || []).length || "-",
           uid: restaurant.uid,
         };
       });
@@ -156,16 +159,16 @@ export default {
       if (!this.isLoading) {
         this.isLoading = true;
         let query = db
-            .collection("restaurants")
-            .orderBy("createdAt", "desc")
-            .limit(100)
+          .collection("restaurants")
+          .orderBy("createdAt", "desc")
+          .limit(100);
         if (this.last) {
           query = query.startAfter(this.last);
         }
         const snapshot = await query.get();
         if (!snapshot.empty) {
-          this.last = snapshot.docs[snapshot.docs.length -1];
-          snapshot.docs.map(this.doc2data("resuatraut")).forEach(data => {
+          this.last = snapshot.docs[snapshot.docs.length - 1];
+          snapshot.docs.map(this.doc2data("resuatraut")).forEach((data) => {
             this.restaurants.push(data);
           });
         } else {
@@ -173,7 +176,6 @@ export default {
         }
       }
       this.isLoading = false;
-
     },
     async nextLoad() {
       if (this.last) {
@@ -185,6 +187,6 @@ export default {
         await this.loadData();
       }
     },
-  }
+  },
 };
 </script>

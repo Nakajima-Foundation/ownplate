@@ -5,7 +5,7 @@
     <div>
       <b-checkbox v-model="admin.opt_out">Opt out</b-checkbox>
     </div>
-    {{admin.name}}, {{adminPrivate.email}}
+    {{ admin.name }}, {{ adminPrivate.email }}
     <h1>Custome Claims</h1>
     <div>
       <b-checkbox v-model="isAdmin" disabled>Admin</b-checkbox>
@@ -25,12 +25,12 @@ import Restaurant from "~/app/super/Components/Restaurant";
 export default {
   metaInfo() {
     return {
-      title: [this.defaultTitle, "Super Admin info"].join(" / ")
-    }
+      title: [this.defaultTitle, "Super Admin info"].join(" / "),
+    };
   },
   components: {
     BackButton,
-    Restaurant
+    Restaurant,
   },
   data() {
     return {
@@ -55,7 +55,7 @@ export default {
             cmd: "setCustomClaim",
             uid: this.adminId,
             key: "operator",
-            value: value
+            value: value,
           });
           console.log(data);
           this.customClaims = data.result;
@@ -64,25 +64,25 @@ export default {
         } finally {
           this.$store.commit("setLoading", false);
         }
-      }
+      },
     },
     adminId() {
       return this.$route.params.adminId;
     },
     superDispatch() {
       return functions.httpsCallable("superDispatch");
-    }
+    },
   },
   watch: {
     "admin.opt_out"() {
       console.log(this.admin);
-      db.doc("/admins/" + this.adminId).set(this.admin, {merge: true});
+      db.doc("/admins/" + this.adminId).set(this.admin, { merge: true });
     },
   },
   async mounted() {
     const { data } = await this.superDispatch({
       cmd: "getCustomeClaims",
-      uid: this.adminId
+      uid: this.adminId,
     });
     this.customClaims = data.result;
     const snapshot = await db
@@ -92,9 +92,9 @@ export default {
     this.restaurants = snapshot.docs.map(this.doc2data("admin"));
 
     const adminPrivateSnapshot = await db
-          .doc("/admins/" + this.adminId + "/private/profile").get();
-    const adminSnapshot = await db
-          .doc("/admins/" + this.adminId).get();
+      .doc("/admins/" + this.adminId + "/private/profile")
+      .get();
+    const adminSnapshot = await db.doc("/admins/" + this.adminId).get();
     if (adminPrivateSnapshot.exists) {
       this.adminPrivate = adminPrivateSnapshot.data();
     }
@@ -102,6 +102,6 @@ export default {
       this.admin = adminSnapshot.data();
     }
     console.log(this.admin, this.adminPrivate);
-  }
+  },
 };
 </script>

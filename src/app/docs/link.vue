@@ -14,7 +14,7 @@ export default {
   },
   data() {
     return {
-      notFound: false
+      notFound: false,
     };
   },
 
@@ -25,10 +25,10 @@ export default {
     if (admin && admin.data()) {
       // TODO: record access log.
       window.location.href = admin.data().url;
-      return ;
+      return;
     } else {
       this.notFound = true;
     }
   },
-}
+};
 </script>

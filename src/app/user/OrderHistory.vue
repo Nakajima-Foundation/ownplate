@@ -39,19 +39,19 @@ import BackButton from "~/components/BackButton";
 export default {
   metaInfo() {
     return {
-      title: [this.defaultTitle, "User Order History"].join(" / ")
-    }
+      title: [this.defaultTitle, "User Order History"].join(" / "),
+    };
   },
   components: {
     OrderedInfo,
     PhoneLogin,
-    BackButton
+    BackButton,
   },
   data() {
     return {
       loginVisible: false,
       detatcher: null,
-      orders: []
+      orders: [],
     };
   },
   async created() {
@@ -65,12 +65,12 @@ export default {
   watch: {
     uid(newValue) {
       this.getHistory();
-    }
+    },
   },
   computed: {
     uid() {
       return this.$store.getters.uidUser || this.$store.getters.uidLiff;
-    }
+    },
   },
   methods: {
     getHistory() {
@@ -81,8 +81,8 @@ export default {
           .where("uid", "==", this.uid)
           .orderBy("orderPlacedAt", "desc")
           .limit(200)
-          .onSnapshot(snapshot => {
-            this.orders = snapshot.docs.map(doc => {
+          .onSnapshot((snapshot) => {
+            this.orders = snapshot.docs.map((doc) => {
               const order = doc.data();
               order.restaurantId = doc.ref.path.split("/")[1];
               order.id = doc.id;
@@ -111,14 +111,19 @@ export default {
     orderSelected(order) {
       if (this.inLiff) {
         this.$router.push({
-          path: this.liff_base_path + "/r/" + order.restaurantId + "/order/" + order.id
+          path:
+            this.liff_base_path +
+            "/r/" +
+            order.restaurantId +
+            "/order/" +
+            order.id,
         });
       } else {
         this.$router.push({
-          path: "/r/" + order.restaurantId + "/order/" + order.id
+          path: "/r/" + order.restaurantId + "/order/" + order.id,
         });
       }
-    }
-  }
+    },
+  },
 };
 </script>

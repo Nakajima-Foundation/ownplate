@@ -4,7 +4,9 @@
     <h2>All Callbacks</h2>
     <div v-for="log in logs" :key="log.id">
       <router-link :to="`/s/callbacks/${log.uid}/${log.id}`">
-        {{moment(log.created.toDate()).format("YYYY-MM-DD hh:mm")}}/{{log.uid || log.data.uid}}/{{stripeActionStrings[log.action]}}
+        {{ moment(log.created.toDate()).format("YYYY-MM-DD hh:mm") }}/{{
+          log.uid || log.data.uid
+        }}/{{ stripeActionStrings[log.action] }}
       </router-link>
     </div>
     <button @click="nextLoad">next</button>
@@ -14,15 +16,15 @@
 <script>
 import BackButton from "~/components/BackButton";
 import { db } from "~/plugins/firebase.js";
-import { stripeActionStrings } from "~/plugins/stripe"
+import { stripeActionStrings } from "~/plugins/stripe";
 export default {
   components: {
-    BackButton
+    BackButton,
   },
   metaInfo() {
     return {
-      title: [this.defaultTitle, "Super All Stripe Callback"].join(" / ")
-    }
+      title: [this.defaultTitle, "Super All Stripe Callback"].join(" / "),
+    };
   },
   data() {
     return {
@@ -40,8 +42,8 @@ export default {
       .collectionGroup("stripeLogs")
       .orderBy("created", "desc")
       .limit(100)
-      .onSnapshot(snapshot => {
-        this.logs = snapshot.docs.map(doc => {
+      .onSnapshot((snapshot) => {
+        this.logs = snapshot.docs.map((doc) => {
           this.last = doc;
           const log = doc.data();
           log.id = doc.id;
@@ -51,23 +53,24 @@ export default {
   },
   methods: {
     async nextLoad() {
-      const nextData = await db.collectionGroup("stripeLogs")
+      const nextData = await db
+        .collectionGroup("stripeLogs")
         .orderBy("created", "desc")
         .startAfter(this.last)
-        .limit(100).get();
+        .limit(100)
+        .get();
       if (!nextData.empty) {
-        nextData.docs.forEach(doc => {
+        nextData.docs.forEach((doc) => {
           this.last = doc;
           const log = doc.data();
           log.id = doc.id;
           this.logs.push(log);
         });
       }
-
-    }
+    },
   },
   destroyed() {
     this.detatcher && this.detatcher();
   },
-}
+};
 </script>

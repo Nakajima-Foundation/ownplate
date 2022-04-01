@@ -44,8 +44,9 @@
           v-for="day in lastSeveralMonths"
           :value="day.index"
           :key="day.index"
-          >{{ moment(day.date).format("YYYY-MM") }}</option
         >
+          {{ moment(day.date).format("YYYY-MM") }}
+        </option>
       </b-select>
     </div>
 
@@ -189,7 +190,8 @@
       <report-details
         :orders="orders"
         :shopInfo="shopInfo"
-        :fileName="fileName" />
+        :fileName="fileName"
+      />
     </div>
   </div>
 </template>
@@ -208,13 +210,18 @@ export default {
   components: {
     BackButton,
     DownloadCsv,
-    ReportDetails
+    ReportDetails,
   },
   metaInfo() {
     return {
-      title: this.shopInfo.restaurantName ?
-        ["Admin Report", this.shopInfo.restaurantName , this.defaultTitle].join(" / ") : this.defaultTitle
-    }
+      title: this.shopInfo.restaurantName
+        ? [
+            "Admin Report",
+            this.shopInfo.restaurantName,
+            this.defaultTitle,
+          ].join(" / ")
+        : this.defaultTitle,
+    };
   },
   data() {
     return {
@@ -223,20 +230,20 @@ export default {
       total: {
         food: {
           revenue: 0,
-          tax: 0
+          tax: 0,
         },
         alcohol: {
           revenue: 0,
-          tax: 0
+          tax: 0,
         },
         service: {
           revenue: 0,
-          tax: 0
+          tax: 0,
         },
-        totalCharge: 0
+        totalCharge: 0,
       },
       monthIndex: 0,
-      detacher: null
+      detacher: null,
     };
   },
   async created() {
@@ -250,7 +257,7 @@ export default {
   watch: {
     monthIndex() {
       this.updateQuery();
-    }
+    },
   },
   computed: {
     fileName() {
@@ -269,16 +276,16 @@ export default {
         "serviceTax",
         "total",
         "name",
-        "payment"
+        "payment",
       ];
     },
     fieldNames() {
-      return this.fields.map(field => {
+      return this.fields.map((field) => {
         return this.$t(`order.${field}`);
       });
     },
     tableData() {
-      return this.orders.map(order => {
+      return this.orders.map((order) => {
         return {
           date: moment(order.timeConfirmed).format("YYYY/MM/DD"),
           foodRevenue: order.accounting.food.revenue,
@@ -289,16 +296,16 @@ export default {
           serviceTax: order.accounting.service.tax,
           total: order.totalCharge,
           name: this.orderName(order),
-          payment: order.payment?.stripe ? "stripe" : ""
+          payment: order.payment?.stripe ? "stripe" : "",
         };
       });
     },
     lastSeveralMonths() {
-      return Array.from(Array(12).keys()).map(index => {
+      return Array.from(Array(12).keys()).map((index) => {
         const date = midNightOfMonth(-index);
         return { index, date };
       });
-    }
+    },
   },
   methods: {
     updateQuery() {
@@ -318,22 +325,22 @@ export default {
           this.lastSeveralMonths[this.monthIndex - 1].date
         );
       }
-      this.detacher = query.orderBy("timeConfirmed").onSnapshot(snapshot => {
+      this.detacher = query.orderBy("timeConfirmed").onSnapshot((snapshot) => {
         let orders = snapshot.docs.map(this.doc2data("order"));
         const multiple = this.$store.getters.stripeRegion.multiple;
-        this.orders = orders.map(order => {
+        this.orders = orders.map((order) => {
           order.timeConfirmed = order.timeConfirmed.toDate();
           order.timePlaced = order.timePlaced.toDate();
           if (!order.accounting) {
             order.accounting = {
               food: {
                 revenue: order.total - order.tax,
-                tax: order.tax
+                tax: order.tax,
               },
               alcohol: {
                 revenue: 0,
-                tax: 0
-              }
+                tax: 0,
+              },
             };
           }
           if (ownPlateConfig.region === "JP") {
@@ -344,12 +351,12 @@ export default {
               ) / multiple;
             order.accounting.service = {
               revenue: order.tip - serviceTax,
-              tax: serviceTax
+              tax: serviceTax,
             };
           } else {
             order.accounting.service = {
               revenue: order.tip,
-              tax: 0
+              tax: 0,
             };
           }
           return order;
@@ -369,17 +376,17 @@ export default {
           {
             food: {
               revenue: 0,
-              tax: 0
+              tax: 0,
             },
             alcohol: {
               revenue: 0,
-              tax: 0
+              tax: 0,
             },
             service: {
               revenue: 0,
-              tax: 0
+              tax: 0,
             },
-            totalCharge: 0
+            totalCharge: 0,
           }
         );
       });
@@ -395,7 +402,7 @@ export default {
         order.description || this.orderName(order)
       );
       return `${ownPlateConfig.stripe.search}?query=${value}`;
-    }
-  }
+    },
+  },
 };
 </script>

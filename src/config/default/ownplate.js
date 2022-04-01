@@ -6,7 +6,7 @@ export const firebaseConfig = {
   storageBucket: "own-plate.appspot.com",
   messagingSenderId: "19014867930",
   appId: "1:19014867930:web:dcd3046191b97b4182bee3",
-  measurementId: "G-T3NN72K8R7"
+  measurementId: "G-T3NN72K8R7",
 };
 
 export const ownPlateConfig = {
@@ -22,4 +22,5 @@ export const ownPlateConfig = {
   },
 };
 
-export const sentryDsn = 'https://370e22db44d64d028df9d40829999274@o391740.ingest.sentry.io/5238405';
+export const sentryDsn =
+  "https://370e22db44d64d028df9d40829999274@o391740.ingest.sentry.io/5238405";

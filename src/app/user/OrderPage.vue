@@ -1,119 +1,131 @@
 <template>
-<div>
-  <template v-if="!isUser && !isLiffUser">
-    <RequireLogin :loginVisible="loginVisible" @dismissed="handleDismissed" />
-  </template>
-  <template v-else-if="notFound">
-    <not-found />
-  </template>
-  <template v-else-if="orderError">
-    <div class="mt-4 mx-6">
-      <div class="text-xl font-bold text-center">
-        {{ $t("order.orderErrorMessage") }}
-      </div>
-    </div>
-  </template>
-  <template v-else>
-    <!-- Back Button (Edit Order) -->
-    <div v-if="just_validated" class="mt-6 mx-6">
-      <b-button
-        :loading="isDeleting"
-        @click="handleEditItems"
-        class="b-reset-tw"
-        >
-        <div
-          class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5"
-          >
-          <i class="material-icons text-lg text-op-teal mr-2">arrow_back</i>
-          <div class="text-sm font-bold text-op-teal">
-            {{ $t("button.back") }}
-          </div>
-        </div>
-      </b-button>
-    </div>
-
-    <!-- Restaurant Profile Photo and Name -->
-    <div class="mt-4">
-      <shop-header :shopInfo="shopInfo"></shop-header>
-    </div>
-
-    <!-- After Paid -->
-    <div v-if="paid">
-      <!-- Thank you Message -->
+  <div>
+    <template v-if="!isUser && !isLiffUser">
+      <RequireLogin :loginVisible="loginVisible" @dismissed="handleDismissed" />
+    </template>
+    <template v-else-if="notFound">
+      <not-found />
+    </template>
+    <template v-else-if="orderError">
       <div class="mt-4 mx-6">
-        <div class="text-xl font-bold text-op-teal text-center">
-          {{ $t("order.thankyou") }}
-        </div>
-        <div class="text-xl font-bold text-op-teal text-center mt-2">
-          {{ $t("order.pleaseStay") }}
+        <div class="text-xl font-bold text-center">
+          {{ $t("order.orderErrorMessage") }}
         </div>
       </div>
-
-      <!-- Line Button -->
-      <div v-if="showAddLine" class="mt-6 text-center">
-        <b-button @click="handleLineAuth" class="b-reset-tw">
+    </template>
+    <template v-else>
+      <!-- Back Button (Edit Order) -->
+      <div v-if="just_validated" class="mt-6 mx-6">
+        <b-button
+          :loading="isDeleting"
+          @click="handleEditItems"
+          class="b-reset-tw"
+        >
           <div
-            class="inline-flex justify-center items-center h-12 px-6 rounded-full"
-            style="background: #18b900"
-            >
-            <i class="fab fa-line text-2xl text-white mr-2" />
-            <div class="text-base font-bold text-white">
-              {{ $t("line.notifyMe") }}
+            class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5"
+          >
+            <i class="material-icons text-lg text-op-teal mr-2">arrow_back</i>
+            <div class="text-sm font-bold text-op-teal">
+              {{ $t("button.back") }}
             </div>
           </div>
         </b-button>
       </div>
 
-      <!-- Order Status -->
-      <div class="mt-6 text-center">
-        <div class="inline-flex space-x-4">
-          <div>
-            <div class="text-sm font-bold text-black text-opacity-60">
-              {{ $t("order.orderStatus") }}
-            </div>
+      <!-- Restaurant Profile Photo and Name -->
+      <div class="mt-4">
+        <shop-header :shopInfo="shopInfo"></shop-header>
+      </div>
+
+      <!-- After Paid -->
+      <div v-if="paid">
+        <!-- Thank you Message -->
+        <div class="mt-4 mx-6">
+          <div class="text-xl font-bold text-op-teal text-center">
+            {{ $t("order.thankyou") }}
+          </div>
+          <div class="text-xl font-bold text-op-teal text-center mt-2">
+            {{ $t("order.pleaseStay") }}
+          </div>
+        </div>
+
+        <!-- Line Button -->
+        <div v-if="showAddLine" class="mt-6 text-center">
+          <b-button @click="handleLineAuth" class="b-reset-tw">
             <div
-              class="inline-block px-4 py-1 rounded-full mt-2"
-              :class="orderStatusKey"
+              class="inline-flex justify-center items-center h-12 px-6 rounded-full"
+              style="background: #18b900"
+            >
+              <i class="fab fa-line text-2xl text-white mr-2" />
+              <div class="text-base font-bold text-white">
+                {{ $t("line.notifyMe") }}
+              </div>
+            </div>
+          </b-button>
+        </div>
+
+        <!-- Order Status -->
+        <div class="mt-6 text-center">
+          <div class="inline-flex space-x-4">
+            <div>
+              <div class="text-sm font-bold text-black text-opacity-60">
+                {{ $t("order.orderStatus") }}
+              </div>
+              <div
+                class="inline-block px-4 py-1 rounded-full mt-2"
+                :class="orderStatusKey"
               >
-              <div class="text-sm font-bold">
-                {{ $t("order.status." + convOrderStateForText(orderStatusKey, orderInfo)) }}
+                <div class="text-sm font-bold">
+                  {{
+                    $t(
+                      "order.status." +
+                        convOrderStateForText(orderStatusKey, orderInfo)
+                    )
+                  }}
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="text-sm font-bold text-black text-opacity-60">
+                {{ $t("order.orderId") }}
+              </div>
+              <div class="mt-1">
+                <div class="text-2xl">{{ orderName }}</div>
               </div>
             </div>
           </div>
+        </div>
+
+        <!-- Time to Pickup -->
+        <div v-if="waiting && !shopInfo.isEC" class="mt-4 text-sm text-center">
           <div>
-            <div class="text-sm font-bold text-black text-opacity-60">
-              {{ $t("order.orderId") }}
-            </div>
-            <div class="mt-1">
-              <div class="text-2xl">{{ orderName }}</div>
-            </div>
+            {{ $t("order.timeRequested") + ": " + timeRequested }}
+          </div>
+          <div v-if="timeEstimated">
+            {{ $t("order.timeToPickup") + ": " + timeEstimated }}
           </div>
         </div>
-      </div>
 
-
-      <!-- Time to Pickup -->
-      <div v-if="waiting && !shopInfo.isEC" class="mt-4 text-sm text-center">
-        <div>
-          {{ $t("order.timeRequested") + ": " + timeRequested }}
+        <div
+          v-if="hasStripe"
+          class="mt-6 mx-6 bg-black bg-opacity-5 rounded-lg p-4 text-center"
+        >
+          <div class="font-bold">
+            {{ $t("order.onlinePaymentStatus") }}
+          </div>
+          <div :class="'stripe_' + orderInfo.payment.stripe">
+            {{ $t("order.status.stripe_user_" + orderInfo.payment.stripe)
+            }}<br />
+            {{
+              $t(
+                "order.status.stripe_user_message_" + orderInfo.payment.stripe
+              )
+            }}<br />
+          </div>
+          <div v-if="isJustCancelPayment">
+            {{ $t("order.status.stripe_user_message_just_payment_canceled") }}
+          </div>
         </div>
-        <div v-if="timeEstimated">
-          {{ $t("order.timeToPickup") + ": " + timeEstimated }}
-        </div>
-      </div>
-
-      <div v-if="hasStripe" class="mt-6 mx-6 bg-black bg-opacity-5 rounded-lg p-4 text-center">
-        <div class="font-bold">
-          {{ $t("order.onlinePaymentStatus") }}
-        </div>
-        <div :class="'stripe_' + orderInfo.payment.stripe">
-          {{ $t("order.status.stripe_user_" + orderInfo.payment.stripe) }}<br/>
-          {{ $t("order.status.stripe_user_message_" + orderInfo.payment.stripe) }}<br/>
-        </div>
-        <div v-if="isJustCancelPayment">
-          {{ $t("order.status.stripe_user_message_just_payment_canceled") }}
-        </div>
-      </div>
 
         <!-- Cancel Button -->
         <div class="mt-6 text-center">
@@ -144,31 +156,35 @@
         </div>
 
         <!-- Special Thank you Message from the Restaurant -->
-        <div class="mt-4 mx-6 bg-white rounded-lg p-4 shadow"
-             v-if="
-                   shopInfo &&
-                   shopInfo.orderThanks &&
-                   shopInfo.orderThanks.length > 0 &&
-                   !canceled
-                   "
-             >
+        <div
+          class="mt-4 mx-6 bg-white rounded-lg p-4 shadow"
+          v-if="
+            shopInfo &&
+            shopInfo.orderThanks &&
+            shopInfo.orderThanks.length > 0 &&
+            !canceled
+          "
+        >
           <div class="text-xs font-bold text-black text-opacity-60">
             {{ $t("order.thanksMessage") }}
           </div>
-          <div class="mt-2 text-base"
-               :class="shopInfo.enablePreline ? 'whitespace-pre-line' : ''"
-               >{{ shopInfo.orderThanks }}</div>
-        </div>
-
-        <!-- Favorite Button -->
-        <div
-          class="mt-4 mx-6 bg-black bg-opacity-5 rounded-lg p-4 text-center"
+          <div
+            class="mt-2 text-base"
+            :class="shopInfo.enablePreline ? 'whitespace-pre-line' : ''"
           >
-          <div>
-            <favorite-button :shopInfo="shopInfo" :keepLike="false"></favorite-button>
+            {{ shopInfo.orderThanks }}
           </div>
         </div>
 
+        <!-- Favorite Button -->
+        <div class="mt-4 mx-6 bg-black bg-opacity-5 rounded-lg p-4 text-center">
+          <div>
+            <favorite-button
+              :shopInfo="shopInfo"
+              :keepLike="false"
+            ></favorite-button>
+          </div>
+        </div>
 
         <!-- Restaurant LINE -->
         <div
@@ -201,7 +217,10 @@
             {{ $t("order.orderNotPlacedYet") }}
           </div>
         </div>
-        <div class="bg-red-700 bg-opacity-10 rounded-lg p-4 text-center mt-4" v-if="shopInfo.enableDelivery">
+        <div
+          class="bg-red-700 bg-opacity-10 rounded-lg p-4 text-center mt-4"
+          v-if="shopInfo.enableDelivery"
+        >
           <div class="text-base font-bold text-red-700">
             <span v-if="orderInfo.isDelivery">
               {{ $t("order.thisIsDeliveryOrder") }}
@@ -213,7 +232,10 @@
         </div>
       </div>
 
-      <div v-if="orderInfo.phoneNumber && !shopInfo.isEC" class="mt-4 text-center">
+      <div
+        v-if="orderInfo.phoneNumber && !shopInfo.isEC"
+        class="mt-4 text-center"
+      >
         <div class="text-base font-bold">
           {{ $t("order.customerInfo") }}
         </div>
@@ -224,7 +246,7 @@
           <div>
             <a :href="nationalPhoneURI" class="text-base font-bold">{{
               nationalPhoneNumber
-              }}</a>
+            }}</a>
           </div>
           <div class="text-base">{{ orderInfo.name }}</div>
         </div>
@@ -247,7 +269,7 @@
           <!-- Details -->
           <div class="mt-2">
             <order-info
-              :shopInfo="shopInfo ||{}"
+              :shopInfo="shopInfo || {}"
               :orderItems="this.orderItems"
               :orderInfo="this.orderInfo || {}"
               :shippingCost="shippingCost"
@@ -256,11 +278,19 @@
           </div>
 
           <!-- Customer info -->
-          <div class="mt-2" v-if="shopInfo && (shopInfo.isEC || orderInfo.isDelivery) && hasCustomerInfo">
+          <div
+            class="mt-2"
+            v-if="
+              shopInfo &&
+              (shopInfo.isEC || orderInfo.isDelivery) &&
+              hasCustomerInfo
+            "
+          >
             <CustomerInfo
               :shopInfo="shopInfo"
               :customer="customer"
-              :phoneNumber="nationalPhoneNumber" />
+              :phoneNumber="nationalPhoneNumber"
+            />
           </div>
 
           <!-- Your Message to the Restaurant -->
@@ -284,24 +314,30 @@
           </div>
 
           <!-- Receipt -->
-          <template v-if="order_accepted && hasStripe"> 
+          <template v-if="order_accepted && hasStripe">
             <div class="bg-white rounded-lg shadow p-4 mt-4">
               <!-- Details -->
               <div class="mt-2 text-xl font-bold text-black">
                 {{ $t("order.receipt.receipt") }}
               </div>
               <div class="mt-2">
-                <span @click="receipt()" class=" cursor-pointer">{{  $t(isLoadingReceipt ? "order.receipt.loading" : "order.receipt.getReceipt") }}</span>
+                <span @click="receipt()" class="cursor-pointer">{{
+                  $t(
+                    isLoadingReceipt
+                      ? "order.receipt.loading"
+                      : "order.receipt.getReceipt"
+                  )
+                }}</span>
               </div>
               <div class="mt-2 text-xs font-bold">
-                 {{ $t("order.receipt.explain1") }}
+                {{ $t("order.receipt.explain1") }}
               </div>
               <div class="text-xs font-bold">
-                 {{ $t("order.receipt.explain2") }}
+                {{ $t("order.receipt.explain2") }}
               </div>
             </div>
           </template>
-          
+
           <!-- View Menu Page Button -->
           <div v-if="paid" class="mt-6 text-center">
             <b-button class="b-reset-tw" @click="handleOpenMenu">
@@ -330,17 +366,19 @@
         <div class="mt-4 lg:mt-0">
           <!-- (Before Paid) Order Details -->
           <div v-if="just_validated">
-
             <!-- For EC and Delivery -->
-            <div v-if="shopInfo.isEC || orderInfo.isDelivery"
-                 class="text-xl font-bold text-black text-opacity-30"
-                 >
+            <div
+              v-if="shopInfo.isEC || orderInfo.isDelivery"
+              class="text-xl font-bold text-black text-opacity-30"
+            >
               {{ $t("order.ec.formtitle") }}
             </div>
-            
+
             <!-- For EC and Delivery -->
-            <div v-if="shopInfo.isEC || orderInfo.isDelivery"
-                 class="bg-white rounded-lg shadow p-4 mb-4 mt-2">
+            <div
+              v-if="shopInfo.isEC || orderInfo.isDelivery"
+              class="bg-white rounded-lg shadow p-4 mb-4 mt-2"
+            >
               <!-- zip -->
               <div class="text-sm font-bold pb-2">
                 {{ $t("order.ec.zip") }}
@@ -349,9 +387,9 @@
               <div>
                 <b-field
                   :type="
-                         ecErrors['zip'].length > 0 ? 'is-danger' : 'is-success'
-                         "
-                  >
+                    ecErrors['zip'].length > 0 ? 'is-danger' : 'is-success'
+                  "
+                >
                   <b-input
                     class="w-full"
                     type="text"
@@ -359,23 +397,37 @@
                     v-model="customerInfo.zip"
                     :error="ecErrors['zip']"
                     maxlength="10"
-                    />
+                  />
                 </b-field>
               </div>
-              <div v-if="ecErrors['zip'].length > 0" class="mb-2 text-red-700 font-bold">
+              <div
+                v-if="ecErrors['zip'].length > 0"
+                class="mb-2 text-red-700 font-bold"
+              >
                 <div v-for="(error, key) in ecErrors['zip']">
                   {{ $t(error) }}
                 </div>
               </div>
-              
+
               <!-- conv zip to address -->
               <div class="mb-2">
-                <b-button @click="getAddress()">{{ $t('order.ec.searchAddressFromZip') }}</b-button>
+                <b-button @click="getAddress()">{{
+                  $t("order.ec.searchAddressFromZip")
+                }}</b-button>
               </div>
-              <div v-for="(address, key) in addressList" :key="key" class="font-bold flex mb-2">
-                <b-button @click="updateAddress(address)" class="flex-item mr-2">{{ $t('order.ec.select') }}</b-button>
+              <div
+                v-for="(address, key) in addressList"
+                :key="key"
+                class="font-bold flex mb-2"
+              >
+                <b-button
+                  @click="updateAddress(address)"
+                  class="flex-item mr-2"
+                  >{{ $t("order.ec.select") }}</b-button
+                >
                 <span class="flex-item mt-auto mb-auto inline-block">
-                  {{address.address1}}{{address.address2}}{{address.address3}}
+                  {{ address.address1 }}{{ address.address2
+                  }}{{ address.address3 }}
                 </span>
               </div>
 
@@ -385,38 +437,53 @@
                 <span class="text-red-700">*</span>
               </div>
               <b-field
-                :type="ecErrors['prefectureId'].length > 0 ? 'is-danger' : 'is-success'"
+                :type="
+                  ecErrors['prefectureId'].length > 0
+                    ? 'is-danger'
+                    : 'is-success'
+                "
+              >
+                <b-select
+                  v-model="customerInfo.prefectureId"
+                  placeholder="select"
+                  @input="updatePrefecture"
                 >
-                <b-select v-model="customerInfo.prefectureId" placeholder="select" @input="updatePrefecture">
-                  <option v-for="(stateItem, key) in regionalSetting.AddressStates"
-                          :value="key + 1"
-                          :key="stateItem">{{
-                    stateItem
-                    }}</option>
+                  <option
+                    v-for="(stateItem, key) in regionalSetting.AddressStates"
+                    :value="key + 1"
+                    :key="stateItem"
+                  >
+                    {{ stateItem }}
+                  </option>
                 </b-select>
               </b-field>
 
               <!-- address -->
               <div class="text-sm font-bold pb-2">
                 {{ $t("order.ec.address") }}
-                <span class="text-red-700">*{{$t("order.ec.addressNotice")}}</span>
+                <span class="text-red-700"
+                  >*{{ $t("order.ec.addressNotice") }}</span
+                >
               </div>
               <div>
                 <b-field
                   :type="
-                         ecErrors['address'].length > 0 ? 'is-danger' : 'is-success'
-                         "
-                  >
+                    ecErrors['address'].length > 0 ? 'is-danger' : 'is-success'
+                  "
+                >
                   <b-input
                     class="w-full"
                     type="text"
                     :placeholder="$t('order.ec.address')"
                     v-model="customerInfo.address"
                     maxlength="100"
-                    />
+                  />
                 </b-field>
               </div>
-              <div v-if="ecErrors['address'].length > 0" class="mb-2 text-red-700 font-bold">
+              <div
+                v-if="ecErrors['address'].length > 0"
+                class="mb-2 text-red-700 font-bold"
+              >
                 <div v-for="(error, key) in ecErrors['address']">
                   {{ $t(error) }}
                 </div>
@@ -430,19 +497,22 @@
               <div>
                 <b-field
                   :type="
-                         ecErrors['name'].length > 0 ? 'is-danger' : 'is-success'
-                         "
-                  >
-                <b-input
-                  class="w-full"
-                  type="text"
-                  :placeholder="$t('order.ec.name')"
-                  v-model="customerInfo.name"
-                  maxlength="30"
+                    ecErrors['name'].length > 0 ? 'is-danger' : 'is-success'
+                  "
+                >
+                  <b-input
+                    class="w-full"
+                    type="text"
+                    :placeholder="$t('order.ec.name')"
+                    v-model="customerInfo.name"
+                    maxlength="30"
                   />
                 </b-field>
               </div>
-              <div v-if="ecErrors['name'].length > 0" class="mb-2 text-red-700 font-bold">
+              <div
+                v-if="ecErrors['name'].length > 0"
+                class="mb-2 text-red-700 font-bold"
+              >
                 <div v-for="(error, key) in ecErrors['name']">
                   {{ $t(error) }}
                 </div>
@@ -457,19 +527,22 @@
                 <div>
                   <b-field
                     :type="
-                         ecErrors['email'].length > 0 ? 'is-danger' : 'is-success'
-                         "
+                      ecErrors['email'].length > 0 ? 'is-danger' : 'is-success'
+                    "
                   >
-                  <b-input
-                    class="w-full"
-                    type="text"
-                    :placeholder="$t('order.ec.email')"
-                    v-model="customerInfo.email"
-                    maxlength="30"
+                    <b-input
+                      class="w-full"
+                      type="text"
+                      :placeholder="$t('order.ec.email')"
+                      v-model="customerInfo.email"
+                      maxlength="30"
                     />
                   </b-field>
                 </div>
-                <div v-if="ecErrors['email'].length > 0" class="mb-2 text-red-700 font-bold">
+                <div
+                  v-if="ecErrors['email'].length > 0"
+                  class="mb-2 text-red-700 font-bold"
+                >
                   <div v-for="(error, key) in ecErrors['email']">
                     {{ $t(error) }}
                   </div>
@@ -491,19 +564,22 @@
               <div class="text-xl font-bold text-black text-opacity-30">
                 {{ $t("order.ec.formtitle") }}
               </div>
-              <span v-if="ecErrors['location'].length > 0" class="text-red-700 font-bold">
+              <span
+                v-if="ecErrors['location'].length > 0"
+                class="text-red-700 font-bold"
+              >
                 <div v-for="(error, key) in ecErrors['location']">
                   {{ $t(error) }}
                 </div>
               </span>
               <OrderPageMap
-                  @updateHome="updateHome"
-                  :shopInfo="shopInfo"
-                  :fullAddress="fullAddress"
-                  :deliveryInfo="deliveryData" />
+                @updateHome="updateHome"
+                :shopInfo="shopInfo"
+                :fullAddress="fullAddress"
+                :deliveryInfo="deliveryData"
+              />
             </div>
 
-            
             <!-- Time to Pickup -->
             <div v-if="!shopInfo.isEC">
               <div class="text-xl font-bold text-black text-opacity-30">
@@ -530,8 +606,8 @@
             <template
               v-if="
                 shopInfo &&
-                  shopInfo.orderNotice &&
-                  shopInfo.orderNotice.length > 0
+                shopInfo.orderNotice &&
+                shopInfo.orderNotice.length > 0
               "
             >
               <div class="mt-6">
@@ -544,9 +620,14 @@
                     <div class="mr-2">
                       <i class="material-icons text-2xl text-red-700">error</i>
                     </div>
-                    <div class="flex-1 text-base text-red-700"
-                         :class="shopInfo.enablePreline ? 'whitespace-pre-line' : ''"
-                         >{{ shopInfo.orderNotice }}</div>
+                    <div
+                      class="flex-1 text-base text-red-700"
+                      :class="
+                        shopInfo.enablePreline ? 'whitespace-pre-line' : ''
+                      "
+                    >
+                      {{ shopInfo.orderNotice }}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -587,13 +668,15 @@
                 <div class="mt-6 text-center">
                   <b-button
                     :loading="isPaying"
-                    :disabled="!cardState.complete || notAvailable || notSubmitAddress"
+                    :disabled="
+                      !cardState.complete || notAvailable || notSubmitAddress
+                    "
                     @click="handlePayment"
                     class="b-reset-tw"
                   >
                     <div
                       class="inline-flex justify-center items-center h-16 px-6 rounded-full bg-op-teal shadow"
-                      style="min-width: 288px;"
+                      style="min-width: 288px"
                     >
                       <div class="text-xl font-bold text-white">
                         {{ $t("order.placeOrder") }}
@@ -628,7 +711,7 @@
                   >
                     <div
                       class="inline-flex justify-center items-center h-16 px-6 rounded-full bg-op-teal shadow"
-                      style="min-width: 288px;"
+                      style="min-width: 288px"
                     >
                       <div class="text-xl font-bold text-white">
                         {{ $t("order.placeOrderNoPayment") }}
@@ -643,10 +726,13 @@
               </div>
 
               <!-- Error message for ec and delivery -->
-              <div v-if="requireAddress && hasEcError" class="text-center text-red-700 font-bold mt-2">
+              <div
+                v-if="requireAddress && hasEcError"
+                class="text-center text-red-700 font-bold mt-2"
+              >
                 {{ $t("order.alertReqireAddress") }}
               </div>
-            
+
               <!-- Send SMS Checkbox -->
               <div v-if="!isLineEnabled" class="mt-6">
                 <div class="bg-black bg-opacity-5 rounded-lg p-4">
@@ -666,7 +752,11 @@
             <!-- Restaurant Info -->
             <div>
               <div class="text-xl font-bold text-black text-opacity-30">
-                {{ shopInfo.isEC ? $t("shopInfo.ecShopDetails") : $t("shopInfo.restaurantDetails") }}
+                {{
+                  shopInfo.isEC
+                    ? $t("shopInfo.ecShopDetails")
+                    : $t("shopInfo.restaurantDetails")
+                }}
               </div>
 
               <div class="mt-2">
@@ -718,7 +808,11 @@ import { db, firestore, functions } from "~/plugins/firebase.js";
 import { order_status, order_status_keys } from "~/plugins/constant.js";
 import { nameOfOrder } from "~/plugins/strings.js";
 import { releaseConfig } from "~/plugins/config.js";
-import { stripeCreateIntent, stripeCancelIntent, stripeReceipt } from "~/plugins/stripe.js";
+import {
+  stripeCreateIntent,
+  stripeCancelIntent,
+  stripeReceipt,
+} from "~/plugins/stripe.js";
 import { lineAuthURL } from "~/plugins/line.js";
 
 import { costCal } from "~/plugins/commonUtils";
@@ -730,26 +824,23 @@ import isEmail from "validator/lib/isEmail";
 import {
   parsePhoneNumber,
   formatNational,
-  formatURL
+  formatURL,
 } from "~/plugins/phoneutil.js";
 
 export default {
   name: "Order",
   metaInfo() {
     return {
-      title: this.shopInfo?.restaurantName && this.statusKey ?
-        [
-          this.defaultTitle,
-          this.shopInfo ? this.shopInfo?.restaurantName : "--",
-          "Order Page",
-          this.$t("order.status." + this.statusKey),
-        ].join(" / "):
-      [
-          this.defaultTitle,
-        "Order Page",
-      ].join(" / ")
-
-    }
+      title:
+        this.shopInfo?.restaurantName && this.statusKey
+          ? [
+              this.defaultTitle,
+              this.shopInfo ? this.shopInfo?.restaurantName : "--",
+              "Order Page",
+              this.$t("order.status." + this.statusKey),
+            ].join(" / ")
+          : [this.defaultTitle, "Order Page"].join(" / "),
+    };
   },
   components: {
     ShopHeader,
@@ -762,20 +853,20 @@ export default {
     RequireLogin,
     CustomerInfo,
     OrderPageMap,
-    FavoriteButton
+    FavoriteButton,
   },
   props: {
     shopInfo: {
       type: Object,
-      required: true
+      required: true,
     },
     paymentInfo: {
       type: Object,
-      required: true
+      required: true,
     },
     deliveryData: {
       type: Object,
-      required: true
+      required: true,
     },
     notFound: {
       type: Boolean,
@@ -783,7 +874,7 @@ export default {
     },
     mode: {
       type: String,
-      required: false
+      required: false,
     },
   },
   data() {
@@ -818,7 +909,7 @@ export default {
   },
   destroyed() {
     if (this.detacher) {
-      this.detacher.map(detacher => {
+      this.detacher.map((detacher) => {
         detacher();
       });
     }
@@ -831,8 +922,11 @@ export default {
   },
   computed: {
     isJustCancelPayment() {
-      return (this.hasStripe && this.orderInfo.payment.stripe === "canceled" &&
-              this.orderInfo.status !== order_status.order_canceled);
+      return (
+        this.hasStripe &&
+        this.orderInfo.payment.stripe === "canceled" &&
+        this.orderInfo.status !== order_status.order_canceled
+      );
     },
     statusKey() {
       return this.orderInfo ? order_status_keys[this.orderInfo.status] : null;
@@ -931,44 +1025,52 @@ export default {
       );
     },
     nationalPhoneNumber() {
-      return (this.phoneNumber) ? formatNational(this.phoneNumber): "";
+      return this.phoneNumber ? formatNational(this.phoneNumber) : "";
     },
     nationalPhoneURI() {
       return formatURL(this.phoneNumber);
     },
     // for EC
     fullAddress() {
-      return this.customerInfo ? [this.customerInfo.prefecture, this.customerInfo.address].join("") : "";
+      return this.customerInfo
+        ? [this.customerInfo.prefecture, this.customerInfo.address].join("")
+        : "";
     },
     ecErrors() {
       const err = {};
-      const attrs = [
-        "zip",
-        "address",
-        "name",
-        "prefectureId"
-      ]
+      const attrs = ["zip", "address", "name", "prefectureId"];
       if (this.shopInfo.isEC) {
-        attrs.push("email")
+        attrs.push("email");
       }
-      attrs.forEach(name => {
+      attrs.forEach((name) => {
         err[name] = [];
-        if (this.customerInfo[name] === undefined || this.customerInfo[name] === "") {
+        if (
+          this.customerInfo[name] === undefined ||
+          this.customerInfo[name] === ""
+        ) {
           err[name].push("validationError." + name + ".empty");
         }
       });
-      if (this.customerInfo['zip'] && !this.customerInfo['zip'].match(/^((\d|[０-９]){3}(-|ー)(\d|[０-９]){4})|(\d|[０-９]){7}$/)) {
-        err['zip'].push("validationError.zip.invalidZip");
+      if (
+        this.customerInfo["zip"] &&
+        !this.customerInfo["zip"].match(
+          /^((\d|[０-９]){3}(-|ー)(\d|[０-９]){4})|(\d|[０-９]){7}$/
+        )
+      ) {
+        err["zip"].push("validationError.zip.invalidZip");
       }
       if (this.shopInfo.isEC) {
-        if (this.customerInfo['email'] && !isEmail(this.customerInfo['email'])) {
-          err['email'].push("validationError.email.invalidEmail");
+        if (
+          this.customerInfo["email"] &&
+          !isEmail(this.customerInfo["email"])
+        ) {
+          err["email"].push("validationError.email.invalidEmail");
         }
       }
       if (this.orderInfo.isDelivery) {
-        err['location'] = []
+        err["location"] = [];
         if (!this.customerInfo.location || !this.customerInfo.location.lat) {
-          err['location'].push("validationError.location.noLocation");
+          err["location"].push("validationError.location.noLocation");
         }
       }
       return err;
@@ -979,13 +1081,17 @@ export default {
     },
 
     shippingCost() {
-      return costCal(this.postageInfo, this.customerInfo?.prefectureId, this.orderInfo.total);
+      return costCal(
+        this.postageInfo,
+        this.customerInfo?.prefectureId,
+        this.orderInfo.total
+      );
     },
     requireAddress() {
       return this.shopInfo.isEC || this.orderInfo.isDelivery;
     },
     notSubmitAddress() {
-      return this.requireAddress && this.hasEcError
+      return this.requireAddress && this.hasEcError;
     },
   },
   // end of computed
@@ -993,7 +1099,8 @@ export default {
     shopInfo(newValue) {
       if (this.shopInfo.isEC) {
         db.doc(`restaurants/${this.restaurantId()}/ec/postage`)
-          .get().then((snapshot) => {
+          .get()
+          .then((snapshot) => {
             this.postageInfo = snapshot.data() || {};
           });
       }
@@ -1007,11 +1114,11 @@ export default {
       if (this.isLiffUser) {
         this.loadUserData();
       }
-    }
+    },
   },
   methods: {
     updateHome(pos) {
-      const cust = {...this.customerInfo};
+      const cust = { ...this.customerInfo };
       cust.location = pos;
       this.customerInfo = cust;
     },
@@ -1019,7 +1126,7 @@ export default {
       analyticsUtil.sendPurchase(
         this.orderInfo,
         this.orderId,
-        this.orderItems.map(or => {
+        this.orderItems.map((or) => {
           return { ...or.item, id: or.id, quantity: or.count };
         }),
         this.shopInfo,
@@ -1036,7 +1143,7 @@ export default {
     },
     handleLineAuth() {
       const url = lineAuthURL("/callback/line", {
-        pathname: location.pathname
+        pathname: location.pathname,
       });
       location.href = url;
     },
@@ -1044,7 +1151,7 @@ export default {
       const order_detacher = db
         .doc(`restaurants/${this.restaurantId()}/orders/${this.orderId}`)
         .onSnapshot(
-          async order => {
+          async (order) => {
             const order_data = order.exists ? order.data() : {};
             this.orderInfo = order_data;
             // console.log("*** O", this.orderInfo);
@@ -1066,29 +1173,40 @@ export default {
               analyticsUtil.sendViewCart(
                 this.orderInfo,
                 this.orderId,
-                this.orderItems.map(or => {
+                this.orderItems.map((or) => {
                   return { ...or.item, id: or.id, quantity: or.count };
                 }),
                 this.shopInfo,
                 this.restaurantId()
               );
             }
-            
+
             if (this.orderInfo.isDelivery || this.shopInfo.isEC) {
               if (this.just_validated) {
-                this.customerInfo = {...(await this.loadAddress() || {})};
+                this.customerInfo = { ...((await this.loadAddress()) || {}) };
               }
               if (this.hasCustomerInfo) {
-                this.customer = (await db.doc(`restaurants/${this.restaurantId()}/orders/${this.orderId}/customer/data`).get()).data() || this.orderInfo?.customerInfo || {};
+                this.customer =
+                  (
+                    await db
+                      .doc(
+                        `restaurants/${this.restaurantId()}/orders/${
+                          this.orderId
+                        }/customer/data`
+                      )
+                      .get()
+                  ).data() ||
+                  this.orderInfo?.customerInfo ||
+                  {};
               }
             }
             // console.log(`/users/${uid}/address/data`);
           },
-          error => {
+          (error) => {
             this.notFound = true;
           }
         );
-      this.detacher = [ order_detacher];
+      this.detacher = [order_detacher];
     },
 
     handleOpenMenu() {
@@ -1128,7 +1246,7 @@ export default {
     },
     async handleEditItems() {
       this.$router.push({
-        path: `/r/${this.restaurantId()}`
+        path: `/r/${this.restaurantId()}`,
       });
     },
     async saveLiffCustomer() {
@@ -1137,9 +1255,9 @@ export default {
         uid,
         restaurantId: this.restaurantId(),
         name: this.orderInfo.name || "",
-        orderId: this.orderId,  //  (this is last)
+        orderId: this.orderId, //  (this is last)
         updatedAt: firestore.FieldValue.serverTimestamp(),
-      }
+      };
     },
     async handlePayment() {
       if (this.requireAddres) {
@@ -1151,7 +1269,9 @@ export default {
         }
       }
 
-      const timeToPickup = this.shopInfo.isEC ? firebase.firestore.Timestamp.now() : this.$refs.time.timeToPickup();
+      const timeToPickup = this.shopInfo.isEC
+        ? firebase.firestore.Timestamp.now()
+        : this.$refs.time.timeToPickup();
 
       this.isPaying = true;
       try {
@@ -1188,14 +1308,14 @@ export default {
         }
         this.$store.commit("setErrorMessage", {
           code: error_code,
-          error
+          error,
         });
       } finally {
         this.isPaying = false;
       }
     },
     async handleNoPayment() {
-      console.log(this.requireAddress, this.isSaveAddress)
+      console.log(this.requireAddress, this.isSaveAddress);
       if (this.requireAddress) {
         if (this.hasEcError) {
           return;
@@ -1204,7 +1324,9 @@ export default {
           await this.saveAddress();
         }
       }
-      const timeToPickup = this.shopInfo.isEC ? firebase.firestore.Timestamp.now() : this.$refs.time.timeToPickup();
+      const timeToPickup = this.shopInfo.isEC
+        ? firebase.firestore.Timestamp.now()
+        : this.$refs.time.timeToPickup();
       const orderPlace = functions.httpsCallable("orderPlace");
       try {
         this.isPlacing = true;
@@ -1229,7 +1351,7 @@ export default {
         console.error(error.message, error.details);
         this.$store.commit("setErrorMessage", {
           code: "order.place",
-          error
+          error,
         });
       } finally {
         this.isPlacing = false;
@@ -1243,7 +1365,7 @@ export default {
             this.$store.commit("setLoading", true);
             const { data } = await stripeCancelIntent({
               restaurantId: this.restaurantId() + this.forcedError("cancel"),
-              orderId: this.orderId
+              orderId: this.orderId,
             });
             this.sendRedunded();
             console.log("cancel", data);
@@ -1252,12 +1374,12 @@ export default {
             console.error(error.message, error.details);
             this.$store.commit("setErrorMessage", {
               code: "order.cancel",
-              error
+              error,
             });
           } finally {
             this.$store.commit("setLoading", false);
           }
-        }
+        },
       });
     },
     async receipt() {
@@ -1271,16 +1393,16 @@ export default {
           orderId: this.orderId,
         });
         if (res.data && res.data.receipt_url) {
-          window.open(res.data.receipt_url)
+          window.open(res.data.receipt_url);
         }
       } catch (e) {
         console.log("error");
       }
       this.isLoadingReceipt = false;
-      
     },
     updateAddress(address) {
-      const { address1, address2, address3, prefectureId, prefecture } = address;
+      const { address1, address2, address3, prefectureId, prefecture } =
+        address;
 
       const data = {
         address: [address2, address3].join(""),
@@ -1294,43 +1416,47 @@ export default {
     updatePrefecture() {
       const prefecture = this.getPrefecture();
       if (prefecture) {
-        this.customerInfo = Object.assign({}, this.customerInfo, {prefecture});
+        this.customerInfo = Object.assign({}, this.customerInfo, {
+          prefecture,
+        });
       }
     },
     getPrefecture() {
       if (this.customerInfo?.prefectureId) {
-        return this.regionalSetting.AddressStates[this.customerInfo?.prefectureId - 1];
+        return this.regionalSetting.AddressStates[
+          this.customerInfo?.prefectureId - 1
+        ];
       }
       return null;
     },
     async saveAddress() {
       const uid = this.user.uid;
-      console.log(this.customerInfo) 
-      await db.doc(`/users/${uid}/address/data`).set(this.customerInfo)
+      console.log(this.customerInfo);
+      await db.doc(`/users/${uid}/address/data`).set(this.customerInfo);
     },
     async loadAddress() {
       const uid = this.user.uid;
       return (await db.doc(`/users/${uid}/address/data`).get()).data();
     },
     async getAddress() {
-      const zip = this.customerInfo['zip'];
-      if (this.ecErrors['zip'].length > 0) {
+      const zip = this.customerInfo["zip"];
+      if (this.ecErrors["zip"].length > 0) {
         return;
       }
       const validZip = zip.replace(/-|ー/g, "").replace(/[！-～]/g, (s) => {
-        return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
+        return String.fromCharCode(s.charCodeAt(0) - 0xfee0);
       });
 
       const zipDoc = await db.doc(`/zipcode/${validZip}`).get();
       const data = zipDoc.data();
       // console.log(data);
       if (zipDoc.exists) {
-        this.addressList = data.addresses
+        this.addressList = data.addresses;
       } else {
         this.addressList = [];
       }
       // console.log(zip, data);
-    }
-  }
+    },
+  },
 };
 </script>

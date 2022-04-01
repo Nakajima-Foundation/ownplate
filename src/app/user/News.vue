@@ -16,18 +16,20 @@
             </div>
           </div>
         </router-link>
-
       </div>
 
       <!-- Body -->
-       <div class="text-base mx-auto max-w-screen-md px-6 mt-6">
-         <div class="mt-6"  v-for="(news, key) in newsList" :key="key">
-           <div class="bg-white shadow rounded-lg p-4" >
-             <div class="mt-2">
-               <div class="article-list mt-6" v-html="md.render(news.markdown)" />
-             </div>
-           </div>
-         </div>
+      <div class="text-base mx-auto max-w-screen-md px-6 mt-6">
+        <div class="mt-6" v-for="(news, key) in newsList" :key="key">
+          <div class="bg-white shadow rounded-lg p-4">
+            <div class="mt-2">
+              <div
+                class="article-list mt-6"
+                v-html="md.render(news.markdown)"
+              />
+            </div>
+          </div>
+        </div>
       </div>
     </template>
   </div>
@@ -40,16 +42,16 @@ import newsList from "../admin/News/data";
 export default {
   metaInfo() {
     return {
-      title: ["News", this.defaultTitle].join(" / ")
+      title: ["News", this.defaultTitle].join(" / "),
     };
   },
   data() {
     console.log(newsList);
     return {
       md: new MarkdownIt(),
-      newsList
+      newsList,
     };
-  }
+  },
 };
 </script>
 

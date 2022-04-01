@@ -6,7 +6,7 @@ export const firebaseConfig = {
   storageBucket: "ownplate-dev.appspot.com",
   messagingSenderId: "998434940151",
   appId: "1:998434940151:web:29f63ece15b9e60b3c5ff2",
-  measurementId: "G-JKF4X9WKWT"
+  measurementId: "G-JKF4X9WKWT",
 };
 
 export const ownPlateConfig = {
@@ -18,13 +18,13 @@ export const ownPlateConfig = {
   hostName: "staging.ownplate.today",
   stripe: {
     dashboard: "https://dashboard.stripe.com/test/dashboard",
-    search: "https://dashboard.stripe.com/test/search"
+    search: "https://dashboard.stripe.com/test/search",
   },
   line: {
     LOGIN_CHANNEL_ID: "1656180429",
     TRACK_CHANNEL_ID: "1654259709",
-    FRIEND_LINK: "https://page.line.me/800eidxz"
-  }
+    FRIEND_LINK: "https://page.line.me/800eidxz",
+  },
 };
 
 export const sentryDsn =

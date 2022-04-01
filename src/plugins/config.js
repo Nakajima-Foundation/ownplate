@@ -6,13 +6,12 @@ const releaseConfigs = {
   default: {},
   alpha: {
     hidePayment: true,
-    hideUsersLink: true
+    hideUsersLink: true,
   },
-  beta: {
-  },
+  beta: {},
   "beta-dev": {
-    underConstruction: true
-  }
+    underConstruction: true,
+  },
 };
 
 export const releaseConfig = releaseConfigs[releaseName];

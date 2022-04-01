@@ -39,7 +39,11 @@
       <!-- Logo / Home -->
       <div class="text-center mt-6 mb-4">
         <router-link :to="home_path">
-          <img class="w-48 m-auto" :src="`/${this.logo2}`" @click="handleClose()" />
+          <img
+            class="w-48 m-auto"
+            :src="`/${this.logo2}`"
+            @click="handleClose()"
+          />
         </router-link>
       </div>
 
@@ -83,7 +87,10 @@
       </div>
 
       <!-- Find Restaurants -->
-      <div class="text-center mt-2" v-if="(isCustomer || isAnonymous) && !inLiff">
+      <div
+        class="text-center mt-2"
+        v-if="(isCustomer || isAnonymous) && !inLiff"
+      >
         <router-link to="/r">
           <div
             class="inline-flex justify-center items-center rounded-full h-12 w-56 bg-op-teal text-white font-bold"
@@ -201,7 +208,7 @@
         </div>
 
         <!-- approproate component under pages will be displayed -->
-        <router-view v-if="isReadyToRender"/>
+        <router-view v-if="isReadyToRender" />
         <dialog-box :dialog="dialog" />
       </div>
     </div>
@@ -264,7 +271,7 @@
         <div class="mt-6 text-center">
           <a
             class="inline-flex justify-center items-center rounded-full h-12 bg-black bg-opacity-5"
-            style="min-width: 10rem;"
+            style="min-width: 10rem"
             @click="closeLang()"
             ><span class="font-bold text-black text-opacity-60 px-4"
               >{{ $t("menu.close") }}
@@ -290,9 +297,9 @@ import { defaultHeader } from "../plugins/header";
 export default {
   components: {
     DialogBox,
-    AudioPlay
+    AudioPlay,
   },
-  metaInfo:  defaultHeader,
+  metaInfo: defaultHeader,
   data() {
     return {
       language: "en",
@@ -301,13 +308,13 @@ export default {
         {
           title: "Home",
           icon: "home",
-          to: { name: "index" }
+          to: { name: "index" },
         },
         {
           title: "Inspire",
           icon: "lightbulb",
-          to: { name: "inspire" }
-        }
+          to: { name: "inspire" },
+        },
       ],
       unregisterAuthObserver: null,
       timerId: null,
@@ -322,7 +329,7 @@ export default {
 
       langPopup: false,
       isFlash: false,
-      FlashToggle: false
+      FlashToggle: false,
     };
   },
   mounted() {
@@ -368,16 +375,20 @@ export default {
     },
     top_path() {
       // /liff/hoge or /
-      return this.inLiff ?  this.liff_base_path : '/'
+      return this.inLiff ? this.liff_base_path : "/";
     },
     // Don't use this path as link
     base_path() {
       // /liff/hoge or ''
-      return this.inLiff ?  this.liff_base_path : ''
+      return this.inLiff ? this.liff_base_path : "";
     },
     home_path() {
       // /liff/hoge or /admin/restaurants or /r
-      return this.inLiff ? this.liff_base_path : (this.isAdmin ? "/admin/restaurants/" : "/r");
+      return this.inLiff
+        ? this.liff_base_path
+        : this.isAdmin
+        ? "/admin/restaurants/"
+        : "/r";
     },
     historyPage() {
       return this.base_path + "/u/history";
@@ -471,10 +482,10 @@ export default {
       analytics.logEvent("page_view");
       analytics.logEvent("screen_view", {
         app_name: "web",
-        screen_name: document.title
+        screen_name: document.title,
         // app_version: version
       });
-    }
+    },
   },
   beforeCreate() {
     if (indexedDB) {
@@ -488,8 +499,8 @@ export default {
     } else {
       this.$store.commit("setFirefoxPBM", null);
     }
-    this.$store.commit("setServerConfig", {region: ownPlateConfig.region});
-    this.unregisterAuthObserver = auth.onAuthStateChanged(async user => {
+    this.$store.commit("setServerConfig", { region: ownPlateConfig.region });
+    this.unregisterAuthObserver = auth.onAuthStateChanged(async (user) => {
       if (user) {
         console.log(
           "authStateChanged:",
@@ -499,17 +510,17 @@ export default {
         );
         user
           .getIdTokenResult(true)
-          .then(result => {
+          .then((result) => {
             this.$store.commit("setUser", user);
             this.$store.commit("setCustomClaims", result.claims);
             console.log(!!user.email ? "admin" : "customer");
           })
-          .catch(error => {
+          .catch((error) => {
             console.error("getIdTokenResult", error);
             Sentry.captureException(error);
           });
         analytics.setUserProperties({
-          role: !!user.email ? "admin" : "customer"
+          role: !!user.email ? "admin" : "customer",
         });
         analytics.setUserId(user.uid);
       } else {
@@ -547,16 +558,18 @@ export default {
     },
     async "$store.state.orderEvent"() {
       this.flash();
-    }
+    },
   },
   async created() {
     console.log(process.env.VUE_APP_CIRCLE_SHA1);
     if (!this.isInLIFF) {
       if (this.isInLine) {
         if (/\?/.test(window.location.href)) {
-          window.location.href = window.location.href + "&openExternalBrowser=1";
+          window.location.href =
+            window.location.href + "&openExternalBrowser=1";
         } else {
-          window.location.href = window.location.href + "?openExternalBrowser=1";
+          window.location.href =
+            window.location.href + "?openExternalBrowser=1";
         }
         return;
       }
@@ -602,7 +615,7 @@ export default {
     if (this.timerId) {
       window.clearInterval(this.timerId);
     }
-  }
+  },
 };
 </script>
 <style lang="scss">

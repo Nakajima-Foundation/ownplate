@@ -5,9 +5,9 @@
     <div v-if="partner.length > 0" class="mt-2 mb-1">
       <div v-for="(part, k) in partner" :key="k" class="flex">
         <div class="flex-1 ml-4">
-          <img :src="`/partners/${part.logo}`" class="w-12"/>
+          <img :src="`/partners/${part.logo}`" class="w-12" />
           <span class="font-bold">
-            {{part.name}}
+            {{ part.name }}
           </span>
         </div>
         <div class="text-right font-bold mr-4" v-if="part.ask">
@@ -117,15 +117,22 @@
     </div>
 
     <!-- Messages -->
-    <div class="mt-6 mx-6 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12" v-if="messages.length > 0">
+    <div
+      class="mt-6 mx-6 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12"
+      v-if="messages.length > 0"
+    >
       <div>
         <div class="pb-2">
           <span class="text-xl font-bold text-black text-opacity-40 mb-2">
             {{ $t("admin.messages.title") }}
           </span>
         </div>
-        <div v-for="(message, k) in messages" :key="k" class="border-2 border-solid border-op-teal rounded-lg p-6">
-          <MessageCard :message="message"/>
+        <div
+          v-for="(message, k) in messages"
+          :key="k"
+          class="border-2 border-solid border-op-teal rounded-lg p-6"
+        >
+          <MessageCard :message="message" />
         </div>
       </div>
     </div>
@@ -246,31 +253,30 @@
             {{ $t("admin.subAccounts.title") }}
           </div>
 
-          <div
-            class="bg-white shadow rounded-lg p-4"
-            >
+          <div class="bg-white shadow rounded-lg p-4">
             <div class="text-center mt-2">
               {{ $t("admin.subAccounts.description") }}
             </div>
             <div class="text-center mt-2">
-              <router-link to="/admin/subaccounts"
+              <router-link
+                to="/admin/subaccounts"
                 target="stripe"
                 class="h-12 rounded-full inline-flex items-center px-6 border-2 border-op-teal"
-                           >
+              >
                 <span class="text-op-teal text-base font-bold">{{
                   $t("admin.subAccounts.openDashboard")
-                  }}</span>
-                </router-link>
+                }}</span>
+              </router-link>
             </div>
             <div class="mt-4 text-center">
               <a
                 href="https://docs.omochikaeri.com/manuals/aboutsubaccount.pdf"
                 target="_blank"
                 class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
-                >
+              >
                 <span class="text-sm font-bold text-op-teal">
                   {{ $t("admin.subAccounts.manualLink") }}</span
-                                                           >
+                >
               </a>
             </div>
           </div>
@@ -332,17 +338,16 @@
             {{ $t("admin.thirdPartyService.title") }}
           </div>
 
-          
-          
           <div class="bg-white shadow rounded-lg p-4">
             <div class="text-center mt-2">
-              <router-link to="/admin/smaregi/index"
+              <router-link
+                to="/admin/smaregi/index"
                 class="h-12 rounded-full inline-flex items-center px-6 border-2 border-op-teal"
-                           >
+              >
                 <span class="text-op-teal text-base font-bold">{{
                   $t("admin.thirdPartyService.openSmaregi")
-                  }}</span>
-                </router-link>
+                }}</span>
+              </router-link>
             </div>
 
             <div class="mt-4 text-center">
@@ -350,10 +355,10 @@
                 href="https://docs.omochikaeri.com/manuals/smaregi.pdf"
                 target="_blank"
                 class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
-                >
+              >
                 <span class="text-sm font-bold text-op-teal">
                   {{ $t("admin.thirdPartyService.smaregiManualLink") }}</span
-                                                           >
+                >
               </a>
             </div>
 
@@ -362,20 +367,18 @@
                 href="https://apps.smaregi.jp/apps/762"
                 target="_blank"
                 class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
-                >
+              >
                 <span class="text-sm font-bold text-op-teal">
-                    {{ $t("admin.thirdPartyService.smaregiAppMarket") }}
+                  {{ $t("admin.thirdPartyService.smaregiAppMarket") }}
                 </span>
               </a>
             </div>
-            
           </div>
         </div>
-
       </div>
     </div>
     <b-modal :active.sync="isOpen" :width="488">
-      <PartnersContact :id="(partner[0]||{}).id"/>
+      <PartnersContact :id="(partner[0] || {}).id" />
     </b-modal>
     <div class="bg-op-yellow p-4 mt-6">
       <div class="text-center">
@@ -415,7 +418,7 @@
             </div>
           </a>
         </div>
-        
+
         <!-- Support -->
         <div class="inline-block px-1 pb-2" v-if="isJapan">
           <a
@@ -452,46 +455,34 @@
             </div>
           </a>
         </div>
-        
+
         <!-- Twitter -->
         <div class="inline-block px-1 pb-2" v-if="isJapan">
-          <a
-            href="https://twitter.com/omochikaericom"
-            target="_blank"
-          >
+          <a href="https://twitter.com/omochikaericom" target="_blank">
             <div
               class="inline-flex justify-center items-center rounded-full h-9 bg-white bg-opacity-80 px-4"
             >
               <i class="fab fa-twitter text-lg text-op-teal mr-2"></i>
-              <span class="text-sm font-bold text-op-teal">
-                Twitte
-              </span>
+              <span class="text-sm font-bold text-op-teal"> Twitte </span>
             </div>
           </a>
         </div>
 
         <!-- Twitter -->
         <div class="inline-block px-1 pb-2" v-if="isJapan">
-          <a
-            href="https://note.com/singsoc/m/m19dd935e84e4"
-            target="_blank"
-          >
+          <a href="https://note.com/singsoc/m/m19dd935e84e4" target="_blank">
             <div
               class="inline-flex justify-center items-center rounded-full h-9 bg-white bg-opacity-80 px-4"
-            > 
+            >
               <i class="material-icons text-lg text-op-teal mr-2"
                 >mail_outline</i
               >
-              <span class="text-sm font-bold text-op-teal">
-                Note
-              </span>
+              <span class="text-sm font-bold text-op-teal"> Note </span>
             </div>
           </a>
         </div>
-        
       </div>
     </div>
-
   </div>
 </template>
 
@@ -512,12 +503,12 @@ export default {
     PaymentSection,
     RestaurantEditCard,
     MessageCard,
-    PartnersContact
+    PartnersContact,
   },
   metaInfo() {
     return {
-      title: ["Admin Index", this.defaultTitle].join(" / ")
-    }
+      title: ["Admin Index", this.defaultTitle].join(" / "),
+    };
   },
   data() {
     return {
@@ -546,23 +537,25 @@ export default {
       if (this.isOwner) {
         this.shopOwner = await this.getShopOwner(this.ownerUid);
         const adminConfig = await db
-              .doc(`/adminConfigs/${this.ownerUid}`)
-              .get();
+          .doc(`/adminConfigs/${this.ownerUid}`)
+          .get();
         this.adminConfig = adminConfig.exists ? adminConfig.data() : {};
         this.opt_out = this.adminConfig.opt_out || false;
 
         const restaurantLists = await db
-              .doc(`/admins/${this.$store.getters.uidAdmin}/public/RestaurantLists`)
-              .get();
+          .doc(`/admins/${this.$store.getters.uidAdmin}/public/RestaurantLists`)
+          .get();
         this.restaurantLists =
           (restaurantLists.exists ? restaurantLists.data() : {}).lists || [];
-
       } else {
         const restaurantLists = await db
-              .doc(`/admins/${this.ownerUid}/children/${this.$store.getters.uidAdmin}`)
-              .get();
+          .doc(
+            `/admins/${this.ownerUid}/children/${this.$store.getters.uidAdmin}`
+          )
+          .get();
         this.restaurantLists =
-          (restaurantLists.exists ? restaurantLists.data() : {}).restaurantLists || [];
+          (restaurantLists.exists ? restaurantLists.data() : {})
+            .restaurantLists || [];
         this.shopOwner = {};
       }
 
@@ -571,7 +564,7 @@ export default {
         .where("uid", "==", this.ownerUid)
         .where("deletedFlag", "==", false)
         .orderBy("createdAt", "asc")
-        .onSnapshot(async result => {
+        .onSnapshot(async (result) => {
           try {
             if (result.empty) {
               this.restaurantItems = {}; // so that we present "No restaurant"
@@ -586,13 +579,16 @@ export default {
               tmp[doc.id] = data;
               return tmp;
             }, {});
-            
-            if (this.isOwner && Object.keys(this.restaurantLists).length === 0) {
+
+            if (
+              this.isOwner &&
+              Object.keys(this.restaurantLists).length === 0
+            ) {
               this.restaurantLists = Object.keys(this.restaurantItems);
             }
 
             await Promise.all(
-              Object.keys(this.restaurantItems).map(async restaurantId => {
+              Object.keys(this.restaurantItems).map(async (restaurantId) => {
                 const menus = await db
                   .collection(`restaurants/${restaurantId}/menus`)
                   .where("deletedFlag", "==", false)
@@ -605,17 +601,17 @@ export default {
 
             this.destroy_detacher();
             this.detachers = Object.keys(this.restaurantItems).map(
-              restaurantId => {
+              (restaurantId) => {
                 return (
                   db
                     .collection(`restaurants/${restaurantId}/orders`)
                     .where("timePlaced", ">=", midNight())
                     // IDEALLY: .where("status", "<", order_status.ready_to_pickup)
-                    .onSnapshot(result => {
+                    .onSnapshot((result) => {
                       const obj = { ...this.restaurantItems[restaurantId] };
                       obj.numberOfOrders = result.docs
-                        .map(doc => doc.data())
-                        .filter(data => {
+                        .map((doc) => doc.data())
+                        .filter((data) => {
                           // We need this filter here because Firebase does not allow us to do
                           return data.status < order_status.ready_to_pickup;
                         }).length;
@@ -638,19 +634,22 @@ export default {
     if (this.isOwner) {
       db.collectionGroup("lines")
         .where("uid", "==", this.uid)
-        .onSnapshot(result => {
-          result.docs.map(async res => {
+        .onSnapshot((result) => {
+          result.docs.map(async (res) => {
             const restaurantId = res.data().restaurantId;
             this.lines[restaurantId] = true;
           });
         });
     }
 
-    this.message_detacher = db.collection(`/admins/${this.uid}/messages`)
-          .orderBy("createdAt", "desc")
-          .onSnapshot((messageCollection) => {
-            this.messages = messageCollection.docs.map(this.doc2data("message")).filter(a => a.toDisplay);
-          });
+    this.message_detacher = db
+      .collection(`/admins/${this.uid}/messages`)
+      .orderBy("createdAt", "desc")
+      .onSnapshot((messageCollection) => {
+        this.messages = messageCollection.docs
+          .map(this.doc2data("message"))
+          .filter((a) => a.toDisplay);
+      });
   },
   watch: {
     async opt_out() {
@@ -661,11 +660,11 @@ export default {
           .doc(`/adminConfigs/${this.$store.getters.uidAdmin}`)
           .set(config);
       }
-    }
+    },
   },
   methods: {
     destroy_detacher() {
-      this.detachers.map(detacher => {
+      this.detachers.map((detacher) => {
         detacher();
       });
       this.detachers = [];
@@ -684,7 +683,7 @@ export default {
             uid: this.uid,
             publicFlag: false,
             deletedFlag: false,
-            createdAt: firestore.FieldValue.serverTimestamp()
+            createdAt: firestore.FieldValue.serverTimestamp(),
           });
 
           this.$router.push(`/admin/restaurants/${doc.id}`);
@@ -765,7 +764,9 @@ export default {
       return this.getPartner(this.shopOwner);
     },
     ownerUid() {
-      return this.$store.getters.isSubAccount ? this.$store.getters.parentId : this.uid;
+      return this.$store.getters.isSubAccount
+        ? this.$store.getters.parentId
+        : this.uid;
     },
     isOwner() {
       return !this.$store.getters.isSubAccount;
@@ -784,7 +785,7 @@ export default {
         return true;
       }
       return false;
-    }
-  }
+    },
+  },
 };
 </script>

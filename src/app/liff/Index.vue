@@ -14,11 +14,14 @@
               <img
                 :src="resizedProfileImage(restaurant, '600')"
                 class="w-12 h-12 rounded-full object-cover"
-                />
+              />
             </div>
             <div class="flex-1 text-base font-bold pr-2">
               {{ restaurant.restaurantName }}
-              <i class="material-icons align-middle" v-if="restaurant.enableDelivery">
+              <i
+                class="material-icons align-middle"
+                v-if="restaurant.enableDelivery"
+              >
                 delivery_dining
               </i>
             </div>
@@ -36,7 +39,7 @@ export default {
   props: {
     config: {
       type: Object,
-      required: true
+      required: true,
     },
   },
   data() {
@@ -45,17 +48,19 @@ export default {
     };
   },
   async created() {
-    const collect = await db.collection("restaurants").where(
-      firebase.firestore.FieldPath.documentId(),
-      "in",
-      (this.config.restaurants || [])
-    ).get()
+    const collect = await db
+      .collection("restaurants")
+      .where(
+        firebase.firestore.FieldPath.documentId(),
+        "in",
+        this.config.restaurants || []
+      )
+      .get();
     this.restaurants = collect.docs.map((a) => {
-      const data = a.data()
-      data.id = a.id
+      const data = a.data();
+      data.id = a.id;
       return data;
     });
-    
   },
 };
 </script>

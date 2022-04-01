@@ -74,9 +74,7 @@ export default {
   name: "Reset",
   metaInfo() {
     return {
-      title: [
-        this.defaultTitle, "Reset Password"
-      ].join(" / ")
+      title: [this.defaultTitle, "Reset Password"].join(" / "),
     };
   },
   data() {
@@ -84,7 +82,7 @@ export default {
       email: "",
       badEmail: "---invalid---",
       apiError: null,
-      emailSent: false
+      emailSent: false,
     };
   },
   computed: {
@@ -98,7 +96,7 @@ export default {
         errors.email = ["admin.error.code." + this.apiError];
       }
       return errors;
-    }
+    },
   },
   methods: {
     handleCancel() {
@@ -113,7 +111,7 @@ export default {
           console.log("success");
           this.emailSent = true;
         })
-        .catch(error => {
+        .catch((error) => {
           console.error("reset", error);
           if (error.code === "auth/user-not-found") {
             this.badEmail = this.email;
@@ -122,7 +120,7 @@ export default {
             this.apiError = error.code;
           }
         });
-    }
-  }
+    },
+  },
 };
 </script>

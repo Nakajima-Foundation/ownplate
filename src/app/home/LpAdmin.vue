@@ -50,7 +50,7 @@ export default {
     aboutService,
     news,
     snslink,
-  }
+  },
 };
 
 // <!-- Go to Owner Manual -->

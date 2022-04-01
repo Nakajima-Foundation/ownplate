@@ -87,12 +87,12 @@ export default {
   components: {
     OrderedInfo,
     DownloadCsv,
-    BackButton
+    BackButton,
   },
   metaInfo() {
     return {
-      title: ["Admin All Order", this.defaultTitle].join(" / ")
-    }
+      title: ["Admin All Order", this.defaultTitle].join(" / "),
+    };
   },
   data() {
     return {
@@ -100,7 +100,7 @@ export default {
       orderState: 0,
       isLoading: false,
       last: null,
-      restaurants: {}
+      restaurants: {},
     };
   },
   computed: {
@@ -109,24 +109,24 @@ export default {
     },
     orderStatus() {
       return Object.keys(order_status)
-        .filter(key => {
+        .filter((key) => {
           return [
             "order_placed", // by user and stripe
             "order_accepted", // by restaurant
             "ready_to_pickup", // by restaurant and stripe
             "transaction_complete", // by restaurant (optional)
-            "order_canceled" // by restaurant or user
+            "order_canceled", // by restaurant or user
           ].includes(key);
         })
-        .map(key => {
+        .map((key) => {
           return {
             index: order_status[key],
-            key: key === "error" ? "" : key
+            key: key === "error" ? "" : key,
           };
         });
     },
     filteredOrders() {
-      return this.orders.filter(order => {
+      return this.orders.filter((order) => {
         if (this.orderState === 0) {
           return true;
         }
@@ -144,16 +144,16 @@ export default {
         "total",
         "revenue",
         "name",
-        "payment"
+        "payment",
       ];
     },
     fieldNames() {
-      return this.fields.map(field => {
+      return this.fields.map((field) => {
         return this.$t(`order.${field}`);
       });
     },
     tableData() {
-      return this.filteredOrders.map(order => {
+      return this.filteredOrders.map((order) => {
         const time = order.timeEstimated || order.timePlaced;
         return {
           date: time ? this.moment(time).format("YYYY/MM/DD") : "",
@@ -166,10 +166,10 @@ export default {
             return count + this.arrayOrNumSum(order);
           }, 0),
           name: nameOfOrder(order),
-          payment: order.payment?.stripe ? "stripe" : ""
+          payment: order.payment?.stripe ? "stripe" : "",
         };
       });
-    }
+    },
   },
   async created() {
     await this.loadData();
@@ -223,9 +223,10 @@ export default {
     orderSelected(order) {
       // We are re-using the restaurant owner's view.
       this.$router.push({
-        path: "/admin/restaurants/" + order.restaurantId + "/orders/" + order.id
+        path:
+          "/admin/restaurants/" + order.restaurantId + "/orders/" + order.id,
       });
-    }
-  }
+    },
+  },
 };
 </script>

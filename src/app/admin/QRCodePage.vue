@@ -147,24 +147,29 @@ import NotificationIndex from "./Notifications/Index";
 export default {
   components: {
     BackButton,
-    NotificationIndex
+    NotificationIndex,
   },
   metaInfo() {
     return {
-      title: this.restaurant.restaurantName ?
-        ["Admin QRCode", this.restaurant.restaurantName , this.defaultTitle].join(" / ") : this.defaultTitle
-    }
+      title: this.restaurant.restaurantName
+        ? [
+            "Admin QRCode",
+            this.restaurant.restaurantName,
+            this.defaultTitle,
+          ].join(" / ")
+        : this.defaultTitle,
+    };
   },
   data() {
     return {
       restaurant: {},
       detacher: null,
-      trace: null
+      trace: null,
     };
   },
   created() {
     const refRestaurant = db.doc(`restaurants/${this.restaurantId()}`);
-    this.detacher = refRestaurant.onSnapshot(async snapshot => {
+    this.detacher = refRestaurant.onSnapshot(async (snapshot) => {
       this.restaurant = snapshot.data();
       if (this.restaurant.trace) {
         this.trace = this.restaurant.trace;
@@ -172,7 +177,7 @@ export default {
         const refEnter = refRestaurant.collection("trace").doc();
         const refLeave = refRestaurant.collection("trace").doc();
         console.log("new traceIDs", refEnter.id, refLeave.id);
-        await db.runTransaction(async transaction => {
+        await db.runTransaction(async (transaction) => {
           const data = (await transaction.get(refRestaurant)).data();
           console.log(data);
           if (!data.trace) {
@@ -180,19 +185,19 @@ export default {
               event: "enter",
               uid: this.user.uid,
               traceId: refEnter.id,
-              restaurantId: this.restaurantId()
+              restaurantId: this.restaurantId(),
             });
             transaction.set(refLeave, {
               event: "leave",
               uid: this.user.uid,
               traceId: refLeave.id,
-              restaurantId: this.restaurantId()
+              restaurantId: this.restaurantId(),
             });
             transaction.update(refRestaurant, {
               trace: {
                 enter: refEnter.id,
-                leave: refLeave.id
-              }
+                leave: refLeave.id,
+              },
             });
           }
         });
@@ -211,7 +216,7 @@ export default {
     },
     urlMenu() {
       return this.shareUrl();
-    }
+    },
   },
   methods: {
     download() {
@@ -219,7 +224,7 @@ export default {
       a.href = this.$refs.qrcode.$el.toDataURL("image/png");
       a.download = "qrcode.png";
       a.click();
-    }
-  }
+    },
+  },
 };
 </script>

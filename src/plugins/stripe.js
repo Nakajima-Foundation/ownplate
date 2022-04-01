@@ -4,24 +4,27 @@ export const getStripeInstance = (stripeAccount) => {
   const stripeAPIToken = process.env.VUE_APP_STRIPE_API_KEY;
   if (stripeAccount) {
     return Stripe(stripeAPIToken, {
-      stripeAccount
+      stripeAccount,
     });
   }
   return Stripe(stripeAPIToken);
-}
+};
 
 export const stripeCreateIntent = functions.httpsCallable("stripeCreateIntent");
-export const stripeConfirmIntent
-  = functions.httpsCallable("stripeConfirmIntent");
-export const stripeCancelIntent
-  = functions.httpsCallable("stripeCancelIntent");
-export const stripePaymentCancelIntent
-  = functions.httpsCallable("stripePaymentCancelIntent");
+export const stripeConfirmIntent = functions.httpsCallable(
+  "stripeConfirmIntent"
+);
+export const stripeCancelIntent = functions.httpsCallable("stripeCancelIntent");
+export const stripePaymentCancelIntent = functions.httpsCallable(
+  "stripePaymentCancelIntent"
+);
 export const stripeConnect = functions.httpsCallable("stripeConnect");
 export const stripeDisconnect = functions.httpsCallable("stripeDisconnect");
 export const stripeVerify = functions.httpsCallable("stripeVerify");
-export const stripeUpdateCustomer = functions.httpsCallable("stripeUpdateCustomer");
-export const stripeReceipt  = functions.httpsCallable("stripeReceipt");
+export const stripeUpdateCustomer = functions.httpsCallable(
+  "stripeUpdateCustomer"
+);
+export const stripeReceipt = functions.httpsCallable("stripeReceipt");
 
 export const stripeActions = {
   capability_updated: 1,

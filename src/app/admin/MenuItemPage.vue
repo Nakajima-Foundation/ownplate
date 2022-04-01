@@ -36,7 +36,7 @@
         <b-button @click="submitItem" :disabled="submitting" class="b-reset-tw">
           <div
             class="h-12 rounded-full bg-op-teal inline-flex justify-center items-center px-6 shadow"
-            style="min-width:8rem;"
+            style="min-width: 8rem"
           >
             <span class="text-white text-base font-bold">{{
               $t(
@@ -104,10 +104,10 @@
             <div class="text-sm font-bold pb-2">
               {{ $t("editMenu.itemAliasesName") }}
             </div>
-              <b-input
-                v-model="menuInfo.itemAliasesName"
-                :placeholder="$t('editMenu.enterItemAliasesName')"
-              ></b-input>
+            <b-input
+              v-model="menuInfo.itemAliasesName"
+              :placeholder="$t('editMenu.enterItemAliasesName')"
+            ></b-input>
           </div>
 
           <!-- Item Price -->
@@ -156,7 +156,7 @@
                   >
                     {{
                       restaurantInfo &&
-                        (restaurantInfo[taxItem + "Tax"] || 0) + "%"
+                      (restaurantInfo[taxItem + "Tax"] || 0) + "%"
                     }}
                     - {{ $t("editMenu." + taxRateKeys[taxItem]) }}
                   </option>
@@ -247,7 +247,7 @@
                   <img
                     class="rounded object-cover"
                     :src="itemPhoto"
-                    style="width: 128px; height: 128px;"
+                    style="width: 128px; height: 128px"
                   />
                 </div>
                 <div class="text-center text-xs mt-1">
@@ -413,8 +413,9 @@
                     v-for="category in categories1"
                     :key="category"
                     :value="category"
-                    >{{ category }}</option
                   >
+                    {{ category }}
+                  </option>
                 </b-select>
               </div>
 
@@ -449,8 +450,9 @@
                     v-for="category in categories2"
                     :key="category"
                     :value="category"
-                    >{{ category }}</option
                   >
+                    {{ category }}
+                  </option>
                 </b-select>
               </div>
 
@@ -508,7 +510,7 @@
         <b-button @click="submitItem" :disabled="submitting" class="b-reset-tw">
           <div
             class="h-12 rounded-full bg-op-teal inline-flex justify-center items-center px-6 shadow"
-            style="min-width:8rem;"
+            style="min-width: 8rem"
           >
             <span class="text-white text-base font-bold">{{
               $t(
@@ -530,9 +532,7 @@
             <div
               class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
             >
-              <i class="material-icons text-lg text-op-teal mr-2">
-                queue
-              </i>
+              <i class="material-icons text-lg text-op-teal mr-2"> queue </i>
               <span class="text-sm font-bold text-op-teal">{{
                 $t("editCommon.copyMenu")
               }}</span>
@@ -546,8 +546,9 @@
               v-for="restaurant in restaurants"
               :key="restaurant.id"
               :value="restaurant.id"
-              >{{ restaurant.restaurantName }}</option
             >
+              {{ restaurant.restaurantName }}
+            </option>
           </b-select>
         </div>
       </div>
@@ -568,7 +569,7 @@ import { ownPlateConfig } from "@/config/project";
 import {
   halfCharactors,
   formatOption,
-  optionPrice
+  optionPrice,
 } from "~/plugins/strings.js";
 import EditCategory from "~/app/admin/Menus/EditCategory";
 
@@ -576,9 +577,15 @@ export default {
   name: "Order",
   metaInfo() {
     return {
-      title: this.menuInfo.itemName ?
-        ["Admin Menu Item", this.menuInfo.itemName, this.restaurantInfo.restaurantName , this.defaultTitle].join(" / ") : this.defaultTitle
-    }
+      title: this.menuInfo.itemName
+        ? [
+            "Admin Menu Item",
+            this.menuInfo.itemName,
+            this.restaurantInfo.restaurantName,
+            this.defaultTitle,
+          ].join(" / ")
+        : this.defaultTitle,
+    };
   },
 
   components: {
@@ -586,7 +593,7 @@ export default {
     BackButton,
     NotificationIndex,
     NotFound,
-    EditCategory
+    EditCategory,
   },
 
   data() {
@@ -605,7 +612,7 @@ export default {
         itemOptionCheckbox: [""],
         allergens: {},
         category1: "",
-        category2: ""
+        category2: "",
       },
 
       taxRates: taxRates,
@@ -620,7 +627,7 @@ export default {
       files: {},
       categoryKey: null,
       restaurants: [],
-      copyRestaurantId: null
+      copyRestaurantId: null,
     };
   },
   async created() {
@@ -668,14 +675,14 @@ export default {
       .where("deletedFlag", "==", false)
       .get();
     if (!restaurantsCollection.empty && restaurantsCollection.docs.length > 0) {
-      this.restaurants = restaurantsCollection.docs.map(r =>
+      this.restaurants = restaurantsCollection.docs.map((r) =>
         this.doc2data("r")(r)
       );
     }
   },
   computed: {
     itemOptions() {
-      return this.menuInfo.itemOptionCheckbox.map(v => {
+      return this.menuInfo.itemOptionCheckbox.map((v) => {
         return v.split(",");
       });
     },
@@ -699,7 +706,7 @@ export default {
     },
     errors() {
       const err = {};
-      ["itemName", "price", "tax"].forEach(name => {
+      ["itemName", "price", "tax"].forEach((name) => {
         err[name] = [];
         if (this.menuInfo[name] === "") {
           err[name].push("validationError." + name + ".empty");
@@ -714,7 +721,7 @@ export default {
     hasError() {
       const num = this.countObj(this.errors);
       return num > 0;
-    }
+    },
   },
   /*
   watch: {
@@ -725,7 +732,9 @@ export default {
   */
   methods: {
     displayOptionPrice(str) {
-      const price = this.roundPrice(optionPrice(str) * this.taxRate(this.restaurantInfo, this.menuInfo));
+      const price = this.roundPrice(
+        optionPrice(str) * this.taxRate(this.restaurantInfo, this.menuInfo)
+      );
       if (price === 0) {
         return this.$t("editMenu.noPriceChange");
       } else if (price > 0) {
@@ -735,7 +744,7 @@ export default {
     },
     async handleCategoryUpdated(categories) {
       await db.doc(`restaurants/${this.restaurantId()}`).update({
-        [this.categoryKey]: categories
+        [this.categoryKey]: categories,
       });
       this.restaurantInfo[this.categoryKey] = categories;
     },
@@ -757,7 +766,9 @@ export default {
     },
     async copyItem() {
       if (this.copyRestaurantId !== null) {
-        const shop = this.restaurants.find(r => r.id === this.copyRestaurantId);
+        const shop = this.restaurants.find(
+          (r) => r.id === this.copyRestaurantId
+        );
         this.$store.commit("setAlert", {
           title: shop.restaurantName,
           code: "editCommon.copyMenuAlert",
@@ -778,7 +789,7 @@ export default {
             await db
               .doc(`restaurants/${shop.id}`)
               .update("menuLists", menuLists);
-          }
+          },
         });
       }
     },
@@ -795,14 +806,14 @@ export default {
         itemMemo: this.menuInfo.itemMemo,
         itemPhoto: this.menuInfo.itemPhoto,
         images: {
-          item: this.menuInfo.images.item || {}
+          item: this.menuInfo.images.item || {},
         },
         itemOptionCheckbox: this.menuInfo.itemOptionCheckbox || [],
         publicFlag: this.menuInfo.publicFlag || false,
         allergens: this.menuInfo.allergens,
         validatedFlag: !this.hasError,
         category1: this.menuInfo.category1,
-        category2: this.menuInfo.category2
+        category2: this.menuInfo.category2,
       };
       return itemData;
     },
@@ -820,7 +831,7 @@ export default {
           );
           this.menuInfo.images.item = {
             original: this.menuInfo.itemPhoto,
-            resizedImages: {}
+            resizedImages: {},
           };
         }
         const itemData = this.getNewItemData();
@@ -828,8 +839,8 @@ export default {
         // Convert double-width characters with half-width characters in options
         // We also convert Japanse commas with alphabet commas
         itemData.itemOptionCheckbox = itemData.itemOptionCheckbox.map(
-          option => {
-            return halfCharactors(option.replace(/、/g, s => ","));
+          (option) => {
+            return halfCharactors(option.replace(/、/g, (s) => ","));
           }
         );
 
@@ -838,18 +849,18 @@ export default {
           .update(itemData);
 
         this.$router.push({
-          path: `/admin/restaurants/${this.restaurantId()}/menus`
+          path: `/admin/restaurants/${this.restaurantId()}/menus`,
         });
       } catch (error) {
         this.submitting = false;
         this.$store.commit("setErrorMessage", {
           code: "menu.save",
-          error
+          error,
         });
         console.log(error);
       }
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>

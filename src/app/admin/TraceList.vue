@@ -1,11 +1,11 @@
 <template>
-  <section class="section" style="background-color:#fffafa">
-    <div class="t-h6 c-text-black-disabled m-b-8">{{$t("trace.list")}}</div>
+  <section class="section" style="background-color: #fffafa">
+    <div class="t-h6 c-text-black-disabled m-b-8">{{ $t("trace.list") }}</div>
     <div class="m-t-16">
       <div v-for="record in records" :key="record.id">
-        <span>{{record.timeCreated.toLocaleString()}}</span>
-        <span>{{$t('trace.' + record.event)}}</span>
-        <span>{{record.uid.slice(-4)}}</span>
+        <span>{{ record.timeCreated.toLocaleString() }}</span>
+        <span>{{ $t("trace." + record.event) }}</span>
+        <span>{{ record.uid.slice(-4) }}</span>
       </div>
     </div>
   </section>
@@ -17,7 +17,7 @@ export default {
   data() {
     return {
       detatcher: null,
-      records: []
+      records: [],
     };
   },
   created() {
@@ -27,9 +27,9 @@ export default {
       .where("restaurantId", "==", this.restaurantId())
       .orderBy("timeCreated", "desc")
       .limit(25)
-      .onSnapshot(snapshot => {
+      .onSnapshot((snapshot) => {
         console.log("**** count", snapshot.docs.length);
-        this.records = snapshot.docs.map(doc => {
+        this.records = snapshot.docs.map((doc) => {
           const record = doc.data();
           record.id = doc.id;
           record.timeCreated = record.timeCreated.toDate();
@@ -39,6 +39,6 @@ export default {
   },
   destroyed() {
     this.detatcher && this.detatcher();
-  }
+  },
 };
 </script>

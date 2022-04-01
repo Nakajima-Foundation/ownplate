@@ -13,7 +13,7 @@
             class="w-20 h-20 rounded-full object-cover"
             :src="
               resizedProfileImage(shopInfo, '600') ||
-                '/OwnPlate-Favicon-Default.png'
+              '/OwnPlate-Favicon-Default.png'
             "
           />
         </div>
@@ -59,7 +59,13 @@
 
       <!-- View Orders -->
       <div class="mt-4 text-center">
-        <router-link :to="'/admin/restaurants/' + restaurantid + (shopInfo.isEC ? '/history' :'/orders')">
+        <router-link
+          :to="
+            '/admin/restaurants/' +
+            restaurantid +
+            (shopInfo.isEC ? '/history' : '/orders')
+          "
+        >
           <div
             class="h-16 rounded-full inline-flex justify-center items-center px-8 shadow w-full"
             :class="numberOfOrders > 0 ? 'bg-yellow-500' : 'bg-op-teal'"
@@ -70,7 +76,7 @@
               class="text-sm font-bold text-white bg-white bg-opacity-20 px-3 py-2 rounded-full ml-4"
               >{{
                 $tc("admin.incompleteOrders", numberOfOrders, {
-                  count: numberOfOrders
+                  count: numberOfOrders,
                 })
               }}</span
             >
@@ -122,7 +128,7 @@
       <div
         class="text-center bg-black bg-opacity-5 rounded-lg pt-3 pb-2 mt-4 flex justify-evenly"
         v-if="isOwner"
-        >
+      >
         <router-link
           :to="'/admin/restaurants/' + restaurantid + '#emailNotification'"
         >
@@ -347,35 +353,35 @@ export default {
   props: {
     shopInfo: {
       type: Object,
-      required: true
+      required: true,
     },
     shopOwner: {
       type: Object,
-      required: true
+      required: true,
     },
     restaurantid: {
       type: String,
-      required: true
+      required: true,
     },
     numberOfMenus: {
       type: Number,
-      required: true
+      required: true,
     },
     numberOfOrders: {
       type: Number,
-      required: true
+      required: true,
     },
     lineEnable: {
       type: Boolean,
-      required: true
+      required: true,
     },
     position: {
       type: String,
-      required: true
+      required: true,
     },
     isOwner: {
       type: Boolean,
-      required: true
+      required: true,
     },
   },
   data() {
@@ -384,13 +390,13 @@ export default {
       share_url:
         location.protocol + "//" + location.host + "/r/" + this.restaurantid,
       requestState: 0,
-      detacher: null
+      detacher: null,
     };
   },
   mounted() {
     this.detacher = db
       .doc(`requestList/${this.restaurantid}`)
-      .onSnapshot(async result => {
+      .onSnapshot(async (result) => {
         if (result.exists) {
           this.requestState = result.data().status;
         } else {
@@ -415,7 +421,7 @@ export default {
             "deletedFlag",
             true
           );
-        }
+        },
       });
     },
     deleteFromList() {
@@ -424,14 +430,14 @@ export default {
         callback: () => {
           console.log(this.restaurantid);
           db.doc(`restaurants/${this.restaurantid}`).update("onTheList", false);
-        }
+        },
       });
     },
     requestList() {
       db.doc(`requestList/${this.restaurantid}`).set({
         status: 1,
         uid: this.$store.getters.uidAdmin,
-        created: firebase.firestore.FieldValue.serverTimestamp()
+        created: firebase.firestore.FieldValue.serverTimestamp(),
       });
     },
     requestDelete() {
@@ -442,7 +448,7 @@ export default {
     },
     positionDown() {
       this.$emit("positionDown", this.restaurantid);
-    }
-  }
+    },
+  },
 };
 </script>

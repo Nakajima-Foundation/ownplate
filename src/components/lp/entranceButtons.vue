@@ -15,7 +15,7 @@ import entranceButtonsFoodLovers from "~/components/lp/entranceButtonsFoodLovers
 export default {
   components: {
     entranceButtonsRestaurants,
-    entranceButtonsFoodLovers
-  }
+    entranceButtonsFoodLovers,
+  },
 };
 </script>

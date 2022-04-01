@@ -129,13 +129,18 @@ export default {
   mixins: [PickupMixin],
   components: {
     BackButton,
-    NotificationIndex
+    NotificationIndex,
   },
   metaInfo() {
     return {
-      title: this.shopInfo.restaurantName ?
-        ["Admin Order Suspend", this.shopInfo.restaurantName , this.defaultTitle].join(" / ") : this.defaultTitle
-    }
+      title: this.shopInfo.restaurantName
+        ? [
+            "Admin Order Suspend",
+            this.shopInfo.restaurantName,
+            this.defaultTitle,
+          ].join(" / ")
+        : this.defaultTitle,
+    };
   },
   data() {
     return {
@@ -144,13 +149,13 @@ export default {
       date: null,
       titles: [],
       detacher: [],
-      notFound: null
+      notFound: null,
     };
   },
   created() {
     const restaurant_detacher = db
       .doc(`restaurants/${this.restaurantId()}`)
-      .onSnapshot(restaurant => {
+      .onSnapshot((restaurant) => {
         const restaurant_data = restaurant.data();
         this.shopInfo = restaurant_data;
         if (
@@ -167,10 +172,10 @@ export default {
       .collection(`restaurants/${this.restaurantId()}/menus`)
       .where("deletedFlag", "==", false)
       .where("publicFlag", "==", true)
-      .onSnapshot(menu => {
+      .onSnapshot((menu) => {
         if (!menu.empty) {
           this.menus = menu.docs
-            .filter(a => {
+            .filter((a) => {
               const data = a.data();
               return data.validatedFlag === undefined || data.validatedFlag;
             })
@@ -179,7 +184,7 @@ export default {
       });
     const title_detacher = db
       .collection(`restaurants/${this.restaurantId()}/titles`)
-      .onSnapshot(title => {
+      .onSnapshot((title) => {
         if (!title.empty) {
           this.titles = title.docs.map(this.doc2data("title"));
         }
@@ -188,7 +193,7 @@ export default {
   },
   destroyed() {
     if (this.detacher) {
-      this.detacher.map(detacher => {
+      this.detacher.map((detacher) => {
         detacher();
       });
     }
@@ -223,7 +228,7 @@ export default {
         return this.$d(time, "time");
       }
       return false;
-    }
+    },
   },
   methods: {
     async handleSuspend(time) {
@@ -234,17 +239,17 @@ export default {
       console.log(ts);
       this.$store.commit("setLoading", true);
       await db.doc(`restaurants/${this.restaurantId()}`).update({
-        suspendUntil: ts
+        suspendUntil: ts,
       });
       this.$store.commit("setLoading", false);
     },
     async handleRemove() {
       this.$store.commit("setLoading", true);
       await db.doc(`restaurants/${this.restaurantId()}`).update({
-        suspendUntil: null
+        suspendUntil: null,
       });
       this.$store.commit("setLoading", false);
-    }
-  }
+    },
+  },
 };
 </script>

@@ -68,18 +68,18 @@ import BackButton from "~/components/BackButton";
 export default {
   components: {
     AreaItem,
-    BackButton
+    BackButton,
   },
   data() {
     return {
       likes: null,
-      restaurants: []
+      restaurants: [],
     };
   },
   metaInfo() {
     const title = [
       this.$t("pageTitle.restaurantRoot"),
-      ownPlateConfig.siteName
+      ownPlateConfig.siteName,
     ].join(" / ");
     return Object.assign(RestaurantHeader, { title });
   },
@@ -91,13 +91,13 @@ export default {
         .limit(100)
         .get();
       this.likes = (snapshot.docs || [])
-        .map(doc => {
+        .map((doc) => {
           return doc.data();
         })
-        .filter(doc => {
+        .filter((doc) => {
           return !!doc.likes;
         });
     }
-  }
+  },
 };
 </script>

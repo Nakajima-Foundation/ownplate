@@ -125,7 +125,7 @@
                 <b-button tag="a" :href="friendLink" class="b-reset-tw">
                   <div
                     class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5"
-                    style="background:#18b900"
+                    style="background: #18b900"
                   >
                     <i class="fab fa-line text-white text-2xl mr-2" />
                     <div class="text-sm font-bold text-white">
@@ -137,17 +137,19 @@
             </div>
 
             <!-- LINE Not Connected -->
-            
+
             <div v-if="!inLiff && (!isLineUser || underConstruction)">
               <div v-if="isLineEnabled" class="mt-4 text-center">
-                <div v-if="isLineUser && underConstruction"
-                     class="text-base font-bold mb-2">
+                <div
+                  v-if="isLineUser && underConstruction"
+                  class="text-base font-bold mb-2"
+                >
                   再設定 for Dev
                 </div>
                 <b-button @click="handleLineAuth" class="b-reset-tw">
                   <div
                     class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5"
-                    style="background:#18b900"
+                    style="background: #18b900"
                   >
                     <i class="fab fa-line text-white text-2xl mr-2" />
                     <div class="text-sm font-bold text-white">
@@ -198,7 +200,7 @@
         </div>
       </div>
       <!-- end of Signed in -->
-      
+
       <!-- Loading -->
       <b-loading
         :is-full-page="false"
@@ -211,7 +213,13 @@
 
 <script>
 import { parsePhoneNumber, formatNational } from "~/plugins/phoneutil.js";
-import { db, auth, firestore, functions, functionsJp } from "~/plugins/firebase.js";
+import {
+  db,
+  auth,
+  firestore,
+  functions,
+  functionsJp,
+} from "~/plugins/firebase.js";
 import { ownPlateConfig } from "@/config/project";
 import PhoneLogin from "~/app/auth/PhoneLogin";
 import { lineAuthURL } from "~/plugins/line.js";
@@ -230,8 +238,8 @@ export default {
   },
   metaInfo() {
     return {
-      title: [this.defaultTitle, "Profile"].join(" / ")
-    }
+      title: [this.defaultTitle, "Profile"].join(" / "),
+    };
   },
   data() {
     return {
@@ -280,7 +288,7 @@ export default {
         // on successful login
         this.loginVisible = false;
       }
-    }
+    },
   },
   computed: {
     isWindowActive() {
@@ -340,7 +348,7 @@ export default {
         return this.$t("profile.status.unexpected");
       }
       return this.$t("profile.status.none");
-    }
+    },
   },
   methods: {
     checkStripe() {
@@ -351,7 +359,7 @@ export default {
       if (this.user && (this.user.phoneNumber || this.isLiffUser)) {
         this.detachStripe = db
           .doc(`/users/${this.user.uid}/readonly/stripe`)
-          .onSnapshot(snapshot => {
+          .onSnapshot((snapshot) => {
             const stripeInfo = snapshot.data();
             this.storedCard = stripeInfo?.card;
           });
@@ -359,7 +367,7 @@ export default {
     },
     handleLineAuth() {
       const url = lineAuthURL("/callback/line", {
-        pathname: location.pathname
+        pathname: location.pathname,
       });
       location.href = url;
     },
@@ -369,7 +377,7 @@ export default {
         callback: async () => {
           window.scrollTo(0, 0);
           this.reLoginVisible = true;
-        }
+        },
       });
     },
     handleDeleteCard() {
@@ -379,9 +387,8 @@ export default {
           console.log("handleDeleteCard");
           this.$store.commit("setLoading", true);
           try {
-            const stripeDeleteCard = functions.httpsCallable(
-              "stripeDeleteCard"
-            );
+            const stripeDeleteCard =
+              functions.httpsCallable("stripeDeleteCard");
             const { data } = await stripeDeleteCard();
             console.log("stripeDeleteCard", data);
           } catch (error) {
@@ -389,7 +396,7 @@ export default {
           } finally {
             this.$store.commit("setLoading", false);
           }
-        }
+        },
       });
     },
     async continueDelete(result) {
@@ -433,13 +440,15 @@ export default {
       } else {
         const lineVerifyFriend = functionsJp.httpsCallable("lineVerifyFriend");
         try {
-          const { data } = await lineVerifyFriend(this.isLiffUser ? {liffIndexId: this.liffIndexId} : {});
+          const { data } = await lineVerifyFriend(
+            this.isLiffUser ? { liffIndexId: this.liffIndexId } : {}
+          );
           this.isFriend = data.result;
         } catch (error) {
           console.error(error);
         }
       }
-    }
-  }
+    },
+  },
 };
 </script>

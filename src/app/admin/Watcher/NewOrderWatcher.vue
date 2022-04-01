@@ -7,7 +7,7 @@ import { order_status } from "~/plugins/constant.js";
 
 export default {
   props: {
-    notificationConfig: Object
+    notificationConfig: Object,
   },
   data() {
     // intervalTime was 60
@@ -15,14 +15,16 @@ export default {
       "OQBBSOa3CgEv35smSDVK", // debug
       "GiZEOBRwDGmdpuqKKlyq",
       "KNfeQdS7DM07ObWlZTsn",
-    ].includes(this.restaurantId()) ? 4: 60
+    ].includes(this.restaurantId())
+      ? 4
+      : 60;
     // console.log(intervalTime);
 
     return {
       order_detacher: () => {},
       orders: [],
       intervalTask: {},
-      intervalTime // (seconds)
+      intervalTime, // (seconds)
     };
   },
   async created() {
@@ -52,12 +54,12 @@ export default {
     },
     hasNewOrder() {
       return this.orders.length > 0;
-    }
+    },
   },
   watch: {
     today() {
       this.dateWasUpdated();
-    }
+    },
   },
   methods: {
     dateWasUpdated() {
@@ -68,11 +70,11 @@ export default {
         // .where("timePlaced", "<", this.tommorow)
         .where("status", "==", order_status.order_placed)
         .onSnapshot(
-          result => {
+          (result) => {
             this.orders = result.docs.map(this.doc2data("order"));
             this.$store.commit("setOrders", this.orders);
           },
-          error => {
+          (error) => {
             if (error.code === "permission-denied") {
               // We can ignore this type of error here
               console.warn("Ignoring", error.code);
@@ -81,7 +83,7 @@ export default {
             }
           }
         );
-    }
-  }
+    },
+  },
 };
 </script>

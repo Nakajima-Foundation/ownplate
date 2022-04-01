@@ -5,7 +5,9 @@
       <!-- Back and Preview -->
       <div class="flex space-x-4">
         <div class="flex-shrink-0">
-          <back-button :url="`/admin/restaurants/${restaurantId()}/orders/` + orderId " />
+          <back-button
+            :url="`/admin/restaurants/${restaurantId()}/orders/` + orderId"
+          />
         </div>
         <div class="flex-shrink-0">
           <router-link :to="'/r/' + restaurantId()">
@@ -36,7 +38,6 @@
         </div>
       </div>
 
-
       <!-- Notifications -->
       <div class="mt-4 lg:mt-0 flex-shrink-0">
         <notification-index :shopInfo="shopInfo" />
@@ -51,16 +52,23 @@
         <div>
           <a :href="nationalPhoneURI" class="text-base font-bold">{{
             nationalPhoneNumber
-            }}</a>
+          }}</a>
         </div>
         <div class="text-base">{{ orders[0].name }}</div>
       </div>
       <div>
-        {{ $t("order.orderTimes") }}: {{ $tc("order.orderTimesUnit", userLog.counter || 0) }} /
-        {{ $t("order.cancelTimes") }}: {{ $tc("order.cancelTimesUnit", userLog.cancelCounter || 0) }}
+        {{ $t("order.orderTimes") }}:
+        {{ $tc("order.orderTimesUnit", userLog.counter || 0) }} /
+        {{ $t("order.cancelTimes") }}:
+        {{ $tc("order.cancelTimesUnit", userLog.cancelCounter || 0) }}
       </div>
       <div>
-        {{ $t("order.lastOrder") }}: {{userLog.lastOrder ? moment(userLog.lastOrder.toDate()).format("YYYY/MM/DD HH:mm") : "--"}}
+        {{ $t("order.lastOrder") }}:
+        {{
+          userLog.lastOrder
+            ? moment(userLog.lastOrder.toDate()).format("YYYY/MM/DD HH:mm")
+            : "--"
+        }}
       </div>
     </div>
 
@@ -87,7 +95,6 @@
         </div>
       </b-button>
     </div>
-
   </div>
 </template>
 
@@ -102,7 +109,7 @@ import NotificationIndex from "./Notifications/Index";
 import {
   parsePhoneNumber,
   formatNational,
-  formatURL
+  formatURL,
 } from "~/plugins/phoneutil.js";
 
 export default {
@@ -113,9 +120,14 @@ export default {
   },
   metaInfo() {
     return {
-      title: this.shopInfo.restaurantName ?
-        ["Admin Order History", this.shopInfo.restaurantName , this.defaultTitle].join(" / ") : this.defaultTitle
-    }
+      title: this.shopInfo.restaurantName
+        ? [
+            "Admin Order History",
+            this.shopInfo.restaurantName,
+            this.defaultTitle,
+          ].join(" / ")
+        : this.defaultTitle,
+    };
   },
   data() {
     return {
@@ -156,7 +168,7 @@ export default {
       return (
         this.orders[0] &&
         this.orders[0].phoneNumber &&
-          parsePhoneNumber(this.orders[0].phoneNumber)
+        parsePhoneNumber(this.orders[0].phoneNumber)
       );
     },
     nationalPhoneNumber() {
@@ -168,17 +180,19 @@ export default {
   },
   methods: {
     async getUserLog() {
-      const res = await db.doc(`restaurants/${this.restaurantId()}/userLog/${this.uid}`).get();
+      const res = await db
+        .doc(`restaurants/${this.restaurantId()}/userLog/${this.uid}`)
+        .get();
       if (res.exists) {
         this.userLog = res.data();
       }
     },
     async next() {
       let query = db
-          .collection(`restaurants/${this.restaurantId()}/orders`)
-          .where("uid", "==", this.uid)
-          .orderBy("timePlaced", "desc")
-          .limit(this.limit);
+        .collection(`restaurants/${this.restaurantId()}/orders`)
+        .where("uid", "==", this.uid)
+        .orderBy("timePlaced", "desc")
+        .limit(this.limit);
       if (this.last) {
         query = query.startAfter(this.last);
       }
@@ -186,8 +200,8 @@ export default {
       this.last = docs.length == this.limit ? docs[this.limit - 1] : null;
       const orders = docs
         .map(this.doc2data("order"))
-        .filter(a => a.status !== order_status.transaction_hide);
-      orders.forEach(order => {
+        .filter((a) => a.status !== order_status.transaction_hide);
+      orders.forEach((order) => {
         order.timePlaced = order.timePlaced.toDate();
         if (order.timeEstimated) {
           order.timeEstimated = order.timeEstimated.toDate();
@@ -201,9 +215,9 @@ export default {
     orderSelected(order) {
       this.$router.push({
         path:
-          "/admin/restaurants/" + this.restaurantId() + "/orders/" + order.id
+          "/admin/restaurants/" + this.restaurantId() + "/orders/" + order.id,
       });
-    }
-  }
+    },
+  },
 };
 </script>

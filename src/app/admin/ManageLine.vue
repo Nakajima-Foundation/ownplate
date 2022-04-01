@@ -120,24 +120,24 @@ import NotificationIndex from "./Notifications/Index";
 export default {
   components: {
     BackButton,
-    NotificationIndex
+    NotificationIndex,
   },
   metaInfo() {
     return {
-      title: ["Admin Manage Line", this.defaultTitle].join(" / ")
-    }
+      title: ["Admin Manage Line", this.defaultTitle].join(" / "),
+    };
   },
   data() {
     return {
       shopInfo: {},
       lineUsers: [],
-      detacher: null
+      detacher: null,
     };
   },
   async created() {
     const restaurant_detacher = db
       .doc(`restaurants/${this.restaurantId()}`)
-      .onSnapshot(restaurant => {
+      .onSnapshot((restaurant) => {
         if (restaurant.exists) {
           const restaurant_data = restaurant.data();
           this.shopInfo = restaurant_data;
@@ -153,7 +153,7 @@ export default {
             displayName,
             notify: true,
             uid: this.uid,
-            restaurantId: this.restaurantId()
+            restaurantId: this.restaurantId(),
           },
           { merge: true }
         );
@@ -167,12 +167,12 @@ export default {
   async mounted() {
     this.detacher = db
       .collection(`restaurants/${this.restaurantId()}/lines`)
-      .onSnapshot(snapshot => {
-        this.lineUsers = snapshot.docs.map(doc => {
+      .onSnapshot((snapshot) => {
+        this.lineUsers = snapshot.docs.map((doc) => {
           const data = doc.data();
           return {
             ...data,
-            id: doc.id
+            id: doc.id,
           };
         });
       });
@@ -183,19 +183,19 @@ export default {
   computed: {
     uid() {
       return this.$store.getters.uidAdmin;
-    }
+    },
   },
   methods: {
     async handleToggle(lineUser) {
       await db
         .doc(`restaurants/${this.restaurantId()}/lines/${lineUser.id}`)
         .update({
-          notify: !lineUser.notify
+          notify: !lineUser.notify,
         });
     },
     handleLineAuth() {
       const url = lineAuthURL("/callback/line", {
-        pathname: location.pathname
+        pathname: location.pathname,
       });
       location.href = url;
     },
@@ -207,9 +207,9 @@ export default {
           await db
             .doc(`restaurants/${this.restaurantId()}/lines/${lineId}`)
             .delete();
-        }
+        },
       });
-    }
-  }
+    },
+  },
 };
 </script>

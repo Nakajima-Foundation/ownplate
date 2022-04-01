@@ -80,7 +80,7 @@
               <a
                 @click="closeCVC()"
                 class="inline-flex justify-center items-center h-12 rounded-full px-6 bg-black bg-opacity-5"
-                style="min-width: 8rem;"
+                style="min-width: 8rem"
               >
                 <div class="text-base font-bold text-black text-opacity-60">
                   {{ $t("menu.close") }}
@@ -116,14 +116,14 @@ export default {
       elementStatus: { complete: false },
       cardElement: {},
       CVCPopup: false,
-      reuse: true
+      reuse: true,
     };
   },
   props: {
     stripeJCB: {
       type: Boolean,
-      required: true
-    }
+      required: true,
+    },
   },
   async mounted() {
     this.configureStripe();
@@ -139,7 +139,7 @@ export default {
   watch: {
     useStoredCard(newValue) {
       this.$emit("change", newValue ? { complete: true } : this.elementStatus);
-    }
+    },
   },
   methods: {
     async createToken() {
@@ -149,7 +149,7 @@ export default {
         //console.log("***toke", token, token.card.last4);
         const { data } = await stripeUpdateCustomer({
           tokenId,
-          reuse: this.reuse
+          reuse: this.reuse,
         });
         console.log("stripeUpdateCustomer", data, tokenId);
       }
@@ -166,21 +166,21 @@ export default {
             fontSize: "16px",
             fontSmoothing: "antialiased",
             ":-webkit-autofill": {
-              color: "#333"
+              color: "#333",
             },
             "::placeholder": {
-              color: "#999"
-            }
+              color: "#999",
+            },
           },
           invalid: {
             iconColor: "#FFC7EE",
-            color: "#FFC7EE"
-          }
-        }
+            color: "#FFC7EE",
+          },
+        },
       });
       cardElement.mount("#card-element");
       this.cardElement = cardElement;
-      this.cardElement.addEventListener("change", status => {
+      this.cardElement.addEventListener("change", (status) => {
         this.elementStatus = status;
         this.$emit("change", status);
       });
@@ -190,7 +190,7 @@ export default {
     },
     closeCVC() {
       this.CVCPopup = false;
-    }
-  }
+    },
+  },
 };
 </script>

@@ -1,12 +1,14 @@
 <template>
-  <div style="margin-bottom:1rem">
+  <div style="margin-bottom: 1rem">
     <b-field v-if="countries.length > 1">
       <b-select v-model="countryCode">
         <option
           v-for="country in countries"
           :value="country.code"
           :key="country.code"
-        >{{ $t(country.name) }}</option>
+        >
+          {{ $t(country.name) }}
+        </option>
       </b-select>
     </b-field>
     <b-field
@@ -31,26 +33,26 @@ export default {
   props: {
     notice: {
       type: String,
-      default: ""
+      default: "",
     },
     currentNumber: {
       type: String,
-      default: ""
+      default: "",
     },
     label: {
       type: String,
-      default: ""
+      default: "",
     },
     placeholder: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
       countryCode: "+81",
       errors: [],
-      phoneNumber: this.currentNumber
+      phoneNumber: this.currentNumber,
     };
   },
   mounted() {
@@ -65,7 +67,7 @@ export default {
     },
     hasError() {
       return this.errors.length > 0;
-    }
+    },
   },
   methods: {
     // BUGBUG: This code is fine for US and JP, but not sufficient for EU
@@ -79,10 +81,10 @@ export default {
       this.$emit("change", {
         phoneNumber: this.phoneNumber,
         countryCode: this.countryCode,
-        errors: this.errors
+        errors: this.errors,
         // number,
       });
-    }
-  }
+    },
+  },
 };
 </script>

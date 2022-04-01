@@ -52,26 +52,26 @@ import NotFound from "~/components/NotFound";
 
 export default {
   components: {
-    NotFound
+    NotFound,
   },
   metaInfo() {
     return {
-      title: [(this.news || {}).title, this.defaultTitle].join(" / ")
+      title: [(this.news || {}).title, this.defaultTitle].join(" / "),
     };
   },
   data() {
     const newsId = this.$route.params.newsId;
-    const news = newsList.find(element => element.date === newsId);
+    const news = newsList.find((element) => element.date === newsId);
     return {
       md: new MarkdownIt(),
-      news
+      news,
     };
-  }
+  },
 };
 </script>
 
 <style lang="scss" scoped>
-  /*
+/*
 /deep/ .article-list h2 {
   @apply text-xl font-bold text-black text-opacity-30 mb-8;
 }

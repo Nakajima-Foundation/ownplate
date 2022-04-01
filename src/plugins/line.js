@@ -11,18 +11,21 @@ export const lineAuthURL = (path, options, channelId) => {
     scope: "profile openid email",
     bot_prompt: "aggressive",
     state,
-    nonce
+    nonce,
   };
-  const params = JSON.stringify(Object.assign({}, options || {},
-    { state, nonce }));
+  const params = JSON.stringify(
+    Object.assign({}, options || {}, { state, nonce })
+  );
   const date = new Date();
   date.setTime(date.getTime() + 5 * 60 * 1000); // five minutes
-  const cookie = `line_params=${encodeURIComponent(params)}; expires=${date.toUTCString()}; path=/`;
+  const cookie = `line_params=${encodeURIComponent(
+    params
+  )}; expires=${date.toUTCString()}; path=/`;
   console.log(cookie);
   document.cookie = cookie;
 
   const queryString = Object.keys(query)
-    .map(key => {
+    .map((key) => {
       return key + "=" + encodeURIComponent(query[key]);
     })
     .join("&");
@@ -35,7 +38,7 @@ export const lineGuard = (nonce, state) => {
 
   //console.log("lineGuard", state, params.state);
   if (state !== params.state || nonce !== params.nonce) {
-    console.error("state", state, params.state)
+    console.error("state", state, params.state);
     throw new Error("invalid state");
   }
   return params;
@@ -45,5 +48,5 @@ export const lineVerify = (state) => {
   const cookies = Cookie.parse(document.cookie);
   const params = JSON.parse(cookies.line_params);
   //console.log("lineVerify", state, params.state);
-  return (state === params.state);
-}
+  return state === params.state;
+};

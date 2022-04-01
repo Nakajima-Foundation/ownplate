@@ -12,7 +12,7 @@ export default {
   props: {
     date: String,
     title: String,
-    id: String
-  }
+    id: String,
+  },
 };
 </script>

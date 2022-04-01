@@ -12,26 +12,29 @@ export const order_status = {
   transaction_hide: 1000, // special status
 };
 
-export const order_status_keys = Object.keys(order_status).reduce((tmp, key) => {
-  tmp[order_status[key]] = key;
-  return tmp;
-}, {});
+export const order_status_keys = Object.keys(order_status).reduce(
+  (tmp, key) => {
+    tmp[order_status[key]] = key;
+    return tmp;
+  },
+  {}
+);
 
 export const possible_transitions = {
   [order_status.order_placed]: {
     [order_status.order_accepted]: true,
-    [order_status.order_canceled]: true
+    [order_status.order_canceled]: true,
   },
   [order_status.order_accepted]: {
     [order_status.order_canceled]: true,
-    [order_status.ready_to_pickup]: true // both paid and unpaid
+    [order_status.ready_to_pickup]: true, // both paid and unpaid
   },
   [order_status.ready_to_pickup]: {
     [order_status.order_refunded]: true,
-    [order_status.transaction_complete]: true
+    [order_status.transaction_complete]: true,
   },
   [order_status.transaction_complete]: {
-    [order_status.transaction_hide]: true
+    [order_status.transaction_hide]: true,
   },
 };
 
@@ -47,7 +50,7 @@ export const order_error = {
   order_canceled_by_customer: 200,
   payment_error: 300,
   order_canceled_by_restaurant: 400,
-  unknow_error: 900
+  unknow_error: 900,
 };
 
 export const timeEventMapping = {
@@ -70,7 +73,7 @@ export const stripe_regions = {
     tip: {
       default: 15,
       max: 100,
-      choices: [10, 15, 18, 20]
+      choices: [10, 15, 18, 20],
     },
     countries: [{ code: "+1", name: "sms.country.US" }],
     allergens: [
@@ -82,8 +85,8 @@ export const stripe_regions = {
       "peanuts",
       "soybeans",
       "shellfish",
-      "raw"
-    ]
+      "raw",
+    ],
   },
   EU: {
     langs: ["en", "fr", "es", "it", "de", "nl"],
@@ -93,15 +96,15 @@ export const stripe_regions = {
     tip: {
       default: 15,
       max: 100,
-      choices: [10, 15, 18, 20]
+      choices: [10, 15, 18, 20],
     },
     countries: [
       { code: "+44", name: "sms.country.UK" },
       { code: "+33", name: "sms.country.FR" },
       { code: "+34", name: "sms.country.ES" },
-      { code: "+49", name: "sms.country.DE" }
+      { code: "+49", name: "sms.country.DE" },
     ],
-    allergens: ["gluten", "crustacean", "egg", "milk", "lupin", "mollusc"]
+    allergens: ["gluten", "crustacean", "egg", "milk", "lupin", "mollusc"],
   },
   JP: {
     langs: ["ja"],
@@ -110,12 +113,12 @@ export const stripe_regions = {
     tip: {
       default: 0,
       max: 30,
-      choices: [0, 5, 10, 20]
+      choices: [0, 5, 10, 20],
     },
     countries: [{ code: "+81", name: "sms.country.JP" }],
     hidePostalCode: true,
-    allergens: ["shrimp", "crab", "gluten", "soba", "egg", "milk", "peanuts"]
-  }
+    allergens: ["shrimp", "crab", "gluten", "soba", "egg", "milk", "peanuts"],
+  },
 };
 
 export const daysOfWeek = {
@@ -125,7 +128,7 @@ export const daysOfWeek = {
   4: "thursday",
   5: "friday",
   6: "saturday",
-  7: "sunday"
+  7: "sunday",
 };
 
 export const USStates = [
@@ -178,7 +181,7 @@ export const USStates = [
   "Washington",
   "West Virginia",
   "Wisconsin",
-  "Wyoming"
+  "Wyoming",
 ];
 
 export const JPPrefecture = [
@@ -228,7 +231,7 @@ export const JPPrefecture = [
   "大分県",
   "宮崎県",
   "鹿児島県",
-  "沖縄県"
+  "沖縄県",
 ];
 
 export const taxRates = ["food", "alcohol"];
@@ -243,9 +246,18 @@ export const reservationTheDayBefore = [
   { messageKey: "editRestaurant.reservationTheDaysBefore.six", value: 6 },
   { messageKey: "editRestaurant.reservationTheDaysBefore.seven", value: 7 },
   { messageKey: "editRestaurant.reservationTheDaysBefore.twoWeeks", value: 14 },
-  { messageKey: "editRestaurant.reservationTheDaysBefore.threeWeeks", value: 21 },
-  { messageKey: "editRestaurant.reservationTheDaysBefore.twoMonths", value: 60 },
-  { messageKey: "editRestaurant.reservationTheDaysBefore.threeMonths", value: 90 }
+  {
+    messageKey: "editRestaurant.reservationTheDaysBefore.threeWeeks",
+    value: 21,
+  },
+  {
+    messageKey: "editRestaurant.reservationTheDaysBefore.twoMonths",
+    value: 60,
+  },
+  {
+    messageKey: "editRestaurant.reservationTheDaysBefore.threeMonths",
+    value: 90,
+  },
 ];
 
 export const minimumCookTimeChoices = [
@@ -254,10 +266,13 @@ export const minimumCookTimeChoices = [
   { messageKey: "editRestaurant.minimumCookTime.twoHours", value: 120 },
   { messageKey: "editRestaurant.minimumCookTime.oneDay", value: 60 * 24 },
   { messageKey: "editRestaurant.minimumCookTime.twoDays", value: 60 * 24 * 2 },
-  { messageKey: "editRestaurant.minimumCookTime.threeDays", value: 60 * 24 * 3 },
+  {
+    messageKey: "editRestaurant.minimumCookTime.threeDays",
+    value: 60 * 24 * 3,
+  },
   { messageKey: "editRestaurant.minimumCookTime.fourDays", value: 60 * 24 * 4 },
   { messageKey: "editRestaurant.minimumCookTime.fiveDays", value: 60 * 24 * 5 },
-  { messageKey: "editRestaurant.minimumCookTime.sixDays", value: 60 * 24 * 6 }
+  { messageKey: "editRestaurant.minimumCookTime.sixDays", value: 60 * 24 * 6 },
 ];
 
 export const regionalSettings = {
@@ -269,27 +284,27 @@ export const regionalSettings = {
     Logo2: "OwnPlate-Logo-Stack-YellowBlack.svg",
     FeatureHeroMobile: {
       ja: "Feature-Hero-Mobile-ja.svg",
-      en: "Feature-Hero-Mobile-en.svg"
+      en: "Feature-Hero-Mobile-en.svg",
     },
     FeatureHeroTablet: {
       ja: "Feature-Hero-Tablet-ja.svg",
-      en: "Feature-Hero-Tablet-en.svg"
+      en: "Feature-Hero-Tablet-en.svg",
     },
     FeatureHero: {
       ja: "Feature-Hero-v01-ja.svg",
-      en: "Feature-Hero-v01-en.svg"
+      en: "Feature-Hero-v01-en.svg",
     },
     requireTaxInput: true,
     requireTaxPriceDisplay: false,
     taxRateKeys: {
       food: "food",
-      alcohol: "alcohol"
+      alcohol: "alcohol",
     },
     defaultLanguage: "en",
     languages: {
       en: "English (US)",
       es: "Español",
-      ja: "日本語"
+      ja: "日本語",
     },
     covid19trace: false,
     hashTag: "ownplate",
@@ -302,25 +317,25 @@ export const regionalSettings = {
     Logo2: "Omochikaeri-Logo-Stack-Primary.png",
     FeatureHeroMobile: {
       ja: "Feature-Hero-Mobile-ja.svg",
-      en: "Feature-Hero-Mobile-en.svg"
+      en: "Feature-Hero-Mobile-en.svg",
     },
     FeatureHeroTablet: {
       ja: "Feature-Hero-Tablet-ja.svg",
-      en: "Feature-Hero-Tablet-en.svg"
+      en: "Feature-Hero-Tablet-en.svg",
     },
     FeatureHero: {
       ja: "Feature-Hero-v01-ja.svg",
-      en: "Feature-Hero-v01-en.svg"
+      en: "Feature-Hero-v01-en.svg",
     },
     requireTaxInput: false,
     requireTaxPriceDisplay: true,
     defaultTax: {
       foodTax: 8,
-      alcoholTax: 10
+      alcoholTax: 10,
     },
     taxRateKeys: {
       food: "foodJP",
-      alcohol: "alcoholJP"
+      alcohol: "alcoholJP",
     },
     defaultLanguage: "ja",
     languages: {
@@ -339,21 +354,21 @@ export const regionalSettings = {
     Logo2: "OwnPlate-Logo-Stack-YellowBlack.svg",
     FeatureHeroMobile: {
       ja: "Feature-Hero-Mobile-ja.svg",
-      en: "Feature-Hero-Mobile-en.svg"
+      en: "Feature-Hero-Mobile-en.svg",
     },
     FeatureHeroTablet: {
       ja: "Feature-Hero-Tablet-ja.svg",
-      en: "Feature-Hero-Tablet-en.svg"
+      en: "Feature-Hero-Tablet-en.svg",
     },
     FeatureHero: {
       ja: "Feature-Hero-v01-ja.svg",
-      en: "Feature-Hero-v01-en.svg"
+      en: "Feature-Hero-v01-en.svg",
     },
     requireTaxInput: true,
     requireTaxPriceDisplay: false,
     taxRateKeys: {
       food: "food",
-      alcohol: "alcohol"
+      alcohol: "alcohol",
     },
     defaultLanguage: "en",
     languages: {
@@ -363,54 +378,57 @@ export const regionalSettings = {
       fr: "Le français",
       it: "italiano",
       nl: "Nederlands",
-      ja: "日本語"
+      ja: "日本語",
     },
     covid19trace: false,
     hashTag: "ownplate",
-  }
+  },
 };
 
 export const soundFiles = [
   {
     nameKey: "admin.sound.default",
-    file: "/sound_default.mp3"
+    file: "/sound_default.mp3",
   },
   {
     nameKey: "admin.sound.gong",
-    file: "/sound_gong.mp3"
+    file: "/sound_gong.mp3",
   },
   {
     nameKey: "admin.sound.magic",
-    file: "/sound_magic.mp3"
+    file: "/sound_magic.mp3",
   },
   {
     nameKey: "admin.sound.doorChime",
-    file: "/sound_door_chime.mp3"
+    file: "/sound_door_chime.mp3",
   },
   {
     nameKey: "admin.sound.coin",
-    file: "/sound_coin.mp3"
+    file: "/sound_coin.mp3",
   },
   {
     nameKey: "admin.sound.cheepCheep",
-    file: "/sound_cheep_cheep.mp3"
+    file: "/sound_cheep_cheep.mp3",
   },
   {
     nameKey: "admin.sound.meow",
-    file: "/sound_meow.mp3"
-  }
+    file: "/sound_meow.mp3",
+  },
 ];
 
+export const partners = [
+  {
+    id: "singularitysociety",
+    name: "シンギュラリティ・ソサイエティ",
+    logo: "singularitysociety.png",
+  },
+  {
+    id: "legssystem",
+    name: "【おもちかえり.com × LEGSsystem】",
+    logo: "legssystem.png",
+    ask: true,
+  },
+];
 
-export const partners = [{
-  id: "singularitysociety",
-  name: "シンギュラリティ・ソサイエティ",
-  logo: "singularitysociety.png",
-}, {
-  id: "legssystem",
-  name: "【おもちかえり.com × LEGSsystem】",
-  logo: "legssystem.png",
-  ask: true,
-}];
-
-export const twiml_neworder = '<Response><Say language="ja-jp">こんにちは。わたしは、おもちかえりどっとこむです。あたらしいオーダーが入りました。かくにんをよろしくおねがいいたします。おもちかえりどっとこむでした。</Say></Response>';
+export const twiml_neworder =
+  '<Response><Say language="ja-jp">こんにちは。わたしは、おもちかえりどっとこむです。あたらしいオーダーが入りました。かくにんをよろしくおねがいいたします。おもちかえりどっとこむでした。</Say></Response>';

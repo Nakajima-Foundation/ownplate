@@ -7,11 +7,11 @@ import NotFound from "~/components/NotFound";
 export default {
   metaInfo() {
     return {
-      title: [this.defaultTitle, "404"].join(" / ")
-    }
+      title: [this.defaultTitle, "404"].join(" / "),
+    };
   },
   components: {
-    NotFound
+    NotFound,
   },
 };
 </script>

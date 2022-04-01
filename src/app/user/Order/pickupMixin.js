@@ -19,29 +19,29 @@ export default {
         }
       }
       return Array.from(Array(this.daysInAdvance).keys())
-        .filter(offset => {
+        .filter((offset) => {
           return this.businessDays[(today + offset) % 7];
         })
-        .filter(offset => {
-          const date = (moment(midNight(offset)).format("YYYY-MM-DD"));
+        .filter((offset) => {
+          const date = moment(midNight(offset)).format("YYYY-MM-DD");
           return !this.temporaryClosure.includes(date);
         })
-        .map(offset => {
+        .map((offset) => {
           const date = midNight(offset);
           let times = this.openSlots[(today + offset) % 7];
           const delta = suspendUntil - date;
           if (delta > 0) {
-            times = times.filter(time => {
+            times = times.filter((time) => {
               return time.time >= Math.round(delta / 60000);
             });
           }
 
           return { offset, date, times };
         })
-        .filter(day => {
+        .filter((day) => {
           return day.times.length > 0;
         });
-    }
+    },
   },
   computed: {
     // public
@@ -57,12 +57,12 @@ export default {
       return this.getAvailableDays(this.minimumDeliveryTime);
     },
     businessDays() {
-      return [7, 1, 2, 3, 4, 5, 6].map(day => {
+      return [7, 1, 2, 3, 4, 5, 6].map((day) => {
         return this.shopInfo.businessDay[day];
       });
     },
     openSlots() {
-      return [7, 1, 2, 3, 4, 5, 6].map(day => {
+      return [7, 1, 2, 3, 4, 5, 6].map((day) => {
         return this.shopInfo.openTimes[day].reduce((ret, value) => {
           for (
             let time = value.start;
@@ -89,6 +89,6 @@ export default {
         ? 3
         : this.shopInfo.pickUpDaysInAdvance;
       return tmp + 1;
-    }
-  }
-}
+    },
+  },
+};

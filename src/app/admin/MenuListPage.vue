@@ -76,7 +76,7 @@
                 {{ $t("editMenu.showAllMenu") }}
               </div>
             </div>
-            <div class="inline-flex items-center rounded-full h-9 px-4 ">
+            <div class="inline-flex items-center rounded-full h-9 px-4">
               <div class="text-sm font-bold text-green-600">
                 {{ $t("editMenu.showPublicMenu") }}
               </div>
@@ -171,8 +171,8 @@
           <div
             v-else-if="
               itemsObj[menuList] &&
-                itemsObj[menuList]._dataType === 'menu' &&
-                (!publicFilter || itemsObj[menuList].publicFlag)
+              itemsObj[menuList]._dataType === 'menu' &&
+              (!publicFilter || itemsObj[menuList].publicFlag)
             "
           >
             <item-edit-card
@@ -198,7 +198,7 @@
       <div
         class="mt-6 mx-6 border-2 border-op-teal rounded-lg p-4 pb-2 lg:max-w-2xl lg:mx-auto"
         v-if="isOwner"
-        >
+      >
         <div class="text-center">
           <b-button
             @click="addTitle()"
@@ -273,13 +273,18 @@ export default {
     TitleInput,
     BackButton,
     NotificationIndex,
-    NotFound
+    NotFound,
   },
   metaInfo() {
     return {
-      title: this.restaurantInfo.restaurantName ?
-        ["Admin Menu List", this.restaurantInfo.restaurantName , this.defaultTitle].join(" / ") : this.defaultTitle
-    }
+      title: this.restaurantInfo.restaurantName
+        ? [
+            "Admin Menu List",
+            this.restaurantInfo.restaurantName,
+            this.defaultTitle,
+          ].join(" / ")
+        : this.defaultTitle,
+    };
   },
   data() {
     return {
@@ -293,12 +298,14 @@ export default {
       detachers: [],
       notFound: null,
       menuObj: {},
-      publicFilter: false
+      publicFilter: false,
     };
   },
   computed: {
     ownerUid() {
-      return this.$store.getters.isSubAccount ? this.$store.getters.parentId : this.uid;
+      return this.$store.getters.isSubAccount
+        ? this.$store.getters.parentId
+        : this.uid;
     },
     isOwner() {
       return !this.$store.getters.isSubAccount;
@@ -351,12 +358,12 @@ export default {
         return formatNational(number);
       }
       return this.restaurantInfo.phoneNumber;
-    }
+    },
   },
   async created() {
     this.checkAdminPermission();
     const restaurantRef = db.doc(`restaurants/${this.restaurantId()}`);
-    const restaurant_detacher = restaurantRef.onSnapshot(results => {
+    const restaurant_detacher = restaurantRef.onSnapshot((results) => {
       if (results.exists && results.data().uid === this.ownerUid) {
         this.restaurantInfo = results.data();
         this.readyToDisplay = true;
@@ -371,10 +378,10 @@ export default {
     const menu_detacher = restaurantRef
       .collection("menus")
       .where("deletedFlag", "==", false)
-      .onSnapshot(results => {
+      .onSnapshot((results) => {
         this.menuCollection = results.empty ? {} : results;
         // for debug
-        results.docs.forEach(a => {
+        results.docs.forEach((a) => {
           if (a.data().publicFlag === undefined) {
             a.ref.update({ publicFlag: true });
           }
@@ -383,14 +390,14 @@ export default {
     const title_detacher = restaurantRef
       .collection("titles")
       .where("deletedFlag", "==", false)
-      .onSnapshot(results => {
+      .onSnapshot((results) => {
         this.titleCollection = results.empty ? {} : results;
       });
     this.detacher = [restaurant_detacher, menu_detacher, title_detacher];
   },
   destroyed() {
     if (this.detachers) {
-      this.detachers.map(detacher => {
+      this.detachers.map((detacher) => {
         detacher();
       });
     }
@@ -423,7 +430,7 @@ export default {
           name: "",
           uid: this.$store.getters.uidAdmin,
           createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-          deletedFlag: false
+          deletedFlag: false,
         };
         const newTitle = await db
           .collection(`restaurants/${this.restaurantId()}/titles`)
@@ -454,7 +461,7 @@ export default {
           deletedFlag: false,
           publicFlag: true,
           validatedFlag: false,
-          createdAt: new Date()
+          createdAt: new Date(),
         };
         const newData = await db
           .collection(`restaurants/${this.restaurantId()}/menus`)
@@ -468,7 +475,7 @@ export default {
         }
         await this.saveMenuList(newMenuLists);
         this.$router.push({
-          path: `/admin/restaurants/${this.restaurantId()}/menus/${newData.id}`
+          path: `/admin/restaurants/${this.restaurantId()}/menus/${newData.id}`,
         });
       } catch (e) {
         console.log(e);
@@ -485,7 +492,7 @@ export default {
     finishTitleInput() {
       this.$router.go({
         path: `/admin/restaurants/${this.restaurantId()}/menus`,
-        force: true
+        force: true,
       });
     },
     // edit title
@@ -548,7 +555,7 @@ export default {
         name: item.name,
         uid: this.uid,
         deletedFlag: false,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       };
       const newTitle = await db
         .collection(`restaurants/${this.restaurantId()}/titles`)
@@ -568,7 +575,7 @@ export default {
         uid: this.uid,
         deletedFlag: false,
         publicFlag: false,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       };
       const newData = await db
         .collection(`restaurants/${this.restaurantId()}/menus`)
@@ -600,7 +607,7 @@ export default {
           .update("deletedFlag", true);
       }
       await this.saveMenuList(newMenuLists);
-    }
-  }
+    },
+  },
 };
 </script>

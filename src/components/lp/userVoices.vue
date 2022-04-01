@@ -3,9 +3,9 @@
     <!-- User Voices Title -->
     <div
       class="text-center mt-16 text-2xl font-bold text-black opacity-40 lg:text-3xl"
-      >
+    >
       {{ $t("lp.customerVoice1") }}
-       <br />{{ $t("lp.customerVoice2") }}
+      <br />{{ $t("lp.customerVoice2") }}
     </div>
 
     <!-- User Voices Hero -->
@@ -47,9 +47,9 @@
             <i class="material-icons text-op-teal text-2xl"
               >play_circle_filled</i
             >
-            <span class="ml-1 text-base font-bold text-op-teal"
-              >{{ $t("lp.playVideo") }}</span
-            >
+            <span class="ml-1 text-base font-bold text-op-teal">{{
+              $t("lp.playVideo")
+            }}</span>
           </div>
         </a>
       </div>
@@ -126,9 +126,9 @@
         <div
           class="h-16 rounded-full bg-op-yellow inline-flex items-center px-8 shadow"
         >
-          <span class="text-black opacity-60 text-xl font-bold"
-            >{{ $t("lp.moreDetails") }}</span
-          >
+          <span class="text-black opacity-60 text-xl font-bold">{{
+            $t("lp.moreDetails")
+          }}</span>
         </div>
       </a>
     </div>

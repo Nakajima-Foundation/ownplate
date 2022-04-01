@@ -38,11 +38,11 @@
               </div>
 
               <!-- Restaurant Descriptions -->
-              <div class="mt-2 text-base"
-                   :class="shopInfo.enablePreline ? 'whitespace-pre-line' : ''"
-                   >
-                  {{ this.shopInfo.introduction }}
-
+              <div
+                class="mt-2 text-base"
+                :class="shopInfo.enablePreline ? 'whitespace-pre-line' : ''"
+              >
+                {{ this.shopInfo.introduction }}
               </div>
 
               <!-- Share and Favorite -->
@@ -52,14 +52,21 @@
 
                 <!-- Favorite Button -->
                 <div>
-                  <favorite-button :shopInfo="shopInfo" :keepLike="false"></favorite-button>
+                  <favorite-button
+                    :shopInfo="shopInfo"
+                    :keepLike="false"
+                  ></favorite-button>
                 </div>
               </div>
 
               <!-- Restaurant Info -->
               <div class="mt-4">
                 <div class="text-xl font-bold text-black text-opacity-30">
-                  {{ shopInfo.isEC ? $t("shopInfo.ecShopDetails") : $t("shopInfo.restaurantDetails") }}
+                  {{
+                    shopInfo.isEC
+                      ? $t("shopInfo.ecShopDetails")
+                      : $t("shopInfo.restaurantDetails")
+                  }}
                 </div>
 
                 <div class="mt-2">
@@ -87,52 +94,70 @@
                       name="howtoreceive"
                       v-model="howtoreceive"
                       native-value="takeout"
-                      >
+                    >
                       {{ $t("shopInfo.takeout") }}
                     </b-radio>
                     <b-radio
                       name="howtoreceive"
                       v-model="howtoreceive"
                       native-value="delivery"
-                      >
+                    >
                       {{ $t("shopInfo.delivery") }}
                     </b-radio>
                   </div>
                   <div>
                     <div v-if="deliveryData.enableDeliveryThreshold">
-                      {{ $tc('shopInfo.deliveryThresholdNotice', 0, {price: deliveryData.deliveryThreshold}) }}
+                      {{
+                        $tc("shopInfo.deliveryThresholdNotice", 0, {
+                          price: deliveryData.deliveryThreshold,
+                        })
+                      }}
                     </div>
                     <div v-if="deliveryData.deliveryFee > 0">
-                      {{ $tc('shopInfo.deliveryFeeInfo', 0, {price: deliveryData.deliveryFee}) }}
+                      {{
+                        $tc("shopInfo.deliveryFeeInfo", 0, {
+                          price: deliveryData.deliveryFee,
+                        })
+                      }}
                       <span v-if="deliveryData.enableDeliveryFree">
-                        {{ $tc('shopInfo.deliveryFeeThresholdInfo', 0, {price: deliveryData.deliveryFreeThreshold}) }}
+                        {{
+                          $tc("shopInfo.deliveryFeeThresholdInfo", 0, {
+                            price: deliveryData.deliveryFreeThreshold,
+                          })
+                        }}
                       </span>
                     </div>
                   </div>
-                  <div v-if="howtoreceive === 'delivery'"
-                       class="mt-2 px-4 py-2 rounded-lg bg-blue-500 bg-opacity-10"
-                       >
+                  <div
+                    v-if="howtoreceive === 'delivery'"
+                    class="mt-2 px-4 py-2 rounded-lg bg-blue-500 bg-opacity-10"
+                  >
                     {{ $t("shopInfo.deliveryArea") }}
                     <div v-if="deliveryData.enableAreaMap">
-                      {{ $tc('shopInfo.deliveryAreaRadius', 0, { radius: deliveryData.radius}) }}
+                      {{
+                        $tc("shopInfo.deliveryAreaRadius", 0, {
+                          radius: deliveryData.radius,
+                        })
+                      }}
                     </div>
                     <div v-if="deliveryData.enableAreaText">
-                      <pre class="bg-transparent p-0">{{deliveryData.areaText}}</pre>
+                      <pre class="bg-transparent p-0">{{
+                        deliveryData.areaText
+                      }}</pre>
                     </div>
-                    {{ $t("shopInfo.deliveryAreaInfo") }} 
-
+                    {{ $t("shopInfo.deliveryAreaInfo") }}
                   </div>
-                    
                 </div>
               </div>
             </div>
             <div class="mx-6 mt-2 lg:mx-0">
               <template v-for="(title, key) in titleLists">
-                <a :href="`#${title.id}`"
-                   class="inline-flex justify-center items-center h-9 rounded-full bg-black bg-opacity-5 mx-2 mt-2"
-                   >
+                <a
+                  :href="`#${title.id}`"
+                  class="inline-flex justify-center items-center h-9 rounded-full bg-black bg-opacity-5 mx-2 mt-2"
+                >
                   <div class="text-sm font-bold text-op-teal mx-2">
-                    {{title.name}}
+                    {{ title.name }}
                   </div>
                 </a>
               </template>
@@ -142,16 +167,13 @@
               <!-- Menu Items -->
               <div class="grid grid-col-1 space-y-2">
                 <template v-for="(item, key) in itemLists">
-                  <div
-                    v-if="item._dataType === 'title'"
-                    :key="key"
-                    >
+                  <div v-if="item._dataType === 'title'" :key="key">
                     <div
                       class="text-xl font-bold text-black text-opacity-30 inline-flex justify-center items-center"
                       :class="key === 0 ? '' : 'mt-6'"
                       :id="item.id"
                       @click="openCategory"
-                      >
+                    >
                       <i class="material-icons mr-2">menu_book</i>
                       <span>
                         {{ item.name }}
@@ -159,10 +181,7 @@
                     </div>
                   </div>
 
-                  <div
-                    v-if="item._dataType === 'menu'"
-                    :key="key"
-                    >
+                  <div v-if="item._dataType === 'menu'" :key="key">
                     <item-card
                       :item="item"
                       :quantities="orders[item.id] || [0]"
@@ -173,7 +192,7 @@
                       :prices="prices[item.id] || []"
                       @didQuantitiesChange="didQuantitiesChange($event)"
                       @didOptionValuesChange="didOptionValuesChange($event)"
-                      ></item-card>
+                    ></item-card>
                   </div>
                 </template>
               </div>
@@ -194,15 +213,24 @@
       <b-button
         v-if="0 != totalQuantities"
         :loading="isCheckingOut"
-        :disabled="isCheckingOut || noPaymentMethod || noAvailableTime || cantDelivery"
+        :disabled="
+          isCheckingOut || noPaymentMethod || noAvailableTime || cantDelivery
+        "
         @click="handleCheckOut"
         class="b-reset-tw"
-        style="width: 18rem; position: fixed; z-index: 10; bottom: 2rem; left: 50%; margin-left: -9rem;"
+        style="
+          width: 18rem;
+          position: fixed;
+          z-index: 10;
+          bottom: 2rem;
+          left: 50%;
+          margin-left: -9rem;
+        "
       >
         <div
           class="inline-flex justify-center items-center w-72 rounded-full bg-op-teal shadow-lg"
           :class="shopInfo.enableDelivery ? 'pt-2 pb-2' : 'h-20'"
-          >
+        >
           <template v-if="noPaymentMethod">
             <div class="text-white text-base font-bold">
               {{ $t("shopInfo.noPaymentMethod") }}
@@ -214,62 +242,97 @@
               {{ $t("shopInfo.noAvailableTime") }}
             </div>
           </template>
-          
+
           <template v-else="!noPaymentMethod">
             <div class="inline-flex flex-col justify-center items-center">
               <!-- delivery -->
               <template v-if="isDelivery">
                 <template
-                  v-if="shopInfo.enableDelivery && cantDelivery && deliveryData.enableDeliveryThreshold"
-                  >
+                  v-if="
+                    shopInfo.enableDelivery &&
+                    cantDelivery &&
+                    deliveryData.enableDeliveryThreshold
+                  "
+                >
                   <div
                     class="inline-flex justify-center items-center text-white text-base font-bold"
-                    >
-                    {{ $tc('shopInfo.buttonDeliveryFeeThreshold', 0, {price: $n(deliveryData.deliveryThreshold, "currency") }) }}
+                  >
+                    {{
+                      $tc("shopInfo.buttonDeliveryFeeThreshold", 0, {
+                        price: $n(deliveryData.deliveryThreshold, "currency"),
+                      })
+                    }}
                   </div>
                   <div
                     class="inline-flex justify-center items-center text-white text-base font-bold"
-                    >
-                    {{ $tc('shopInfo.buttonDeliveryFeeDiff', 0, {price: $n(diffDeliveryThreshold, "currency")}) }}
+                  >
+                    {{
+                      $tc("shopInfo.buttonDeliveryFeeDiff", 0, {
+                        price: $n(diffDeliveryThreshold, "currency"),
+                      })
+                    }}
                   </div>
                 </template>
                 <template
-                  v-else-if="deliveryData.enableDeliveryFree && !isDeliveryFree">
+                  v-else-if="deliveryData.enableDeliveryFree && !isDeliveryFree"
+                >
                   <div
                     class="inline-flex justify-center items-center text-white text-base font-bold"
-                    >
-                    {{ $tc('shopInfo.deliveryFeeThresholdInfo', 0, {price: $n(deliveryData.deliveryFreeThreshold, "currency") }) }}
+                  >
+                    {{
+                      $tc("shopInfo.deliveryFeeThresholdInfo", 0, {
+                        price: $n(
+                          deliveryData.deliveryFreeThreshold,
+                          "currency"
+                        ),
+                      })
+                    }}
                   </div>
                   <div
                     class="inline-flex justify-center items-center text-white text-base font-bold"
-                    >
-                    {{ $tc('shopInfo.buttonDeliveryFeeDiff', 0, {price: $n(diffDeliveryFreeThreshold, "currency")}) }}
+                  >
+                    {{
+                      $tc("shopInfo.buttonDeliveryFeeDiff", 0, {
+                        price: $n(diffDeliveryFreeThreshold, "currency"),
+                      })
+                    }}
                   </div>
                 </template>
                 <div
                   class="inline-flex justify-center items-center text-white text-base font-bold"
                   v-if="shopInfo.enableDelivery"
-                  >
+                >
                   <div class="mr-2">
-                    {{ $tc('shopInfo.buttonDeliveryFee', 0, {price: $n(isDeliveryFree ? 0 : deliveryData.deliveryFee, "currency") }) }}
-                    <span class="text-xs" v-if="!isDeliveryFree && deliveryData.deliveryFee > 0">{{ $tc("tax.include") }}</span>
+                    {{
+                      $tc("shopInfo.buttonDeliveryFee", 0, {
+                        price: $n(
+                          isDeliveryFree ? 0 : deliveryData.deliveryFee,
+                          "currency"
+                        ),
+                      })
+                    }}
+                    <span
+                      class="text-xs"
+                      v-if="!isDeliveryFree && deliveryData.deliveryFee > 0"
+                      >{{ $tc("tax.include") }}</span
+                    >
                   </div>
                 </div>
               </template>
               <!-- total and price -->
               <div
                 class="inline-flex justify-center items-center text-white text-base font-bold"
-                >
+              >
                 <div class="mr-2">
                   {{
                     $tc("sitemenu.orderCounter", totalQuantities, {
-                      count: totalQuantities
+                      count: totalQuantities,
                     })
                   }}
                 </div>
                 <div class="">
                   <Price
-                    :shopInfo="{inclusiveTax: true}"
+                    :shopInfo="{ inclusiveTax: true }"
                     :menu="{ price: totalPrice.total }"
                   />
                 </div>
@@ -299,11 +362,12 @@
       <div class="px-2 text-center" @click.stop="closeCategory()">
         <div class="mx-2 my-6 p-6 bg-white shadow-lg rounded-lg">
           <template v-for="(title, key) in titleLists">
-            <a :href="`#${title.id}`"
-               class="inline-flex justify-center items-center h-9 rounded-full bg-black bg-opacity-5 mx-1 mt-2"
-               >
+            <a
+              :href="`#${title.id}`"
+              class="inline-flex justify-center items-center h-9 rounded-full bg-black bg-opacity-5 mx-1 mt-2"
+            >
               <div class="text-sm font-bold text-op-teal mx-2">
-                {{title.name}}
+                {{ title.name }}
               </div>
             </a>
           </template>
@@ -341,20 +405,20 @@ export default {
     FavoriteButton,
     ShopInfo,
     NotFound,
-    Price
+    Price,
   },
   props: {
     shopInfo: {
       type: Object,
-      required: true
+      required: true,
     },
     paymentInfo: {
       type: Object,
-      required: true
+      required: true,
     },
     deliveryData: {
       type: Object,
-      required: true
+      required: true,
     },
     notFound: {
       type: Boolean,
@@ -373,8 +437,8 @@ export default {
           ? document.title
           : [
               this.shopInfo?.restaurantName || "",
-              ownPlateConfig.restaurantPageTitle || this.defaultTitle
-            ].join(" / ")
+              ownPlateConfig.restaurantPageTitle || this.defaultTitle,
+            ].join(" / "),
     };
   },
   data() {
@@ -392,13 +456,13 @@ export default {
       waitForUser: false,
 
       howtoreceive: "takeout",
-      
+
       detacher: [],
 
       imagePopup: false,
       categoryPopup: false,
 
-      noAvailableTime: false
+      noAvailableTime: false,
     };
   },
   mounted() {
@@ -415,19 +479,19 @@ export default {
     // Hot fix for flyer. TODO: remove after end of summer in 2022.
     if (location.hash && location.hash.startsWith("#utm")) {
       const str = location.hash.slice(1);
-      const url = location.pathname + "?" + str
+      const url = location.pathname + "?" + str;
       this.$router.push({
-        path: url
+        path: url,
       });
     }
     const menu_detacher = db
       .collection(`restaurants/${this.restaurantId()}/menus`)
       .where("deletedFlag", "==", false)
       .where("publicFlag", "==", true)
-      .onSnapshot(menu => {
+      .onSnapshot((menu) => {
         if (!menu.empty) {
           this.menus = menu.docs
-            .filter(a => {
+            .filter((a) => {
               const data = a.data();
               return data.validatedFlag === undefined || data.validatedFlag;
             })
@@ -437,17 +501,16 @@ export default {
     const title_detacher = db
       .collection(`restaurants/${this.restaurantId()}/titles`)
       .where("deletedFlag", "==", false)
-      .onSnapshot(title => {
+      .onSnapshot((title) => {
         if (!title.empty) {
           this.titles = title.docs.map(this.doc2data("title"));
         }
       });
     this.detacher = [menu_detacher, title_detacher];
-
   },
   destroyed() {
     if (this.detacher) {
-      this.detacher.map(detacher => {
+      this.detacher.map((detacher) => {
         detacher();
       });
     }
@@ -466,7 +529,7 @@ export default {
         this.shopInfo,
         this.restaurantId()
       );
-    }
+    },
   },
   computed: {
     isPreview() {
@@ -488,7 +551,9 @@ export default {
 
         if (!this.shopInfo.inclusiveTax) {
           if (menu.tax === "alcohol") {
-            return (1 + this.shopInfo.alcoholTax * 0.01) * subTotal[menuId] + tmp;
+            return (
+              (1 + this.shopInfo.alcoholTax * 0.01) * subTotal[menuId] + tmp
+            );
           }
           return (1 + this.shopInfo.foodTax * 0.01) * subTotal[menuId] + tmp;
         } else {
@@ -497,7 +562,7 @@ export default {
       }, 0);
       return {
         subTotal: subTotal,
-        total: total
+        total: total,
       };
       // total:
     },
@@ -505,16 +570,15 @@ export default {
       const ret = {};
 
       const multiple = this.$store.getters.stripeRegion.multiple;
-      Object.keys(this.orders).map(menuId => {
+      Object.keys(this.orders).map((menuId) => {
         const menu = this.itemsObj[menuId] || {};
         ret[menuId] = [];
         this.orders[menuId].map((num, orderKey) => {
-          const selectedOptionsRaw = this.trimmedSelectedOptions[menuId][
-            orderKey
-          ] || [];
+          const selectedOptionsRaw =
+            this.trimmedSelectedOptions[menuId][orderKey] || [];
           const price = selectedOptionsRaw.reduce(
             (tmpPrice, selectedOpt, key) => {
-              const opt = (menu.itemOptionCheckbox[key]||"").split(",");
+              const opt = (menu.itemOptionCheckbox[key] || "").split(",");
               if (opt.length === 1) {
                 if (selectedOpt) {
                   return (
@@ -553,20 +617,24 @@ export default {
       return list;
     },
     itemLists() {
-      return this.menuLists.map((itemId) => {
-        return {...this.itemsObj[itemId]};
-      }).filter((item) => {
-        return item;
-      });
+      return this.menuLists
+        .map((itemId) => {
+          return { ...this.itemsObj[itemId] };
+        })
+        .filter((item) => {
+          return item;
+        });
     },
     titleLists() {
       return this.itemLists.filter((item) => {
-        return item._dataType === "title" && item.name !== '';
+        return item._dataType === "title" && item.name !== "";
       });
     },
     trimmedSelectedOptions() {
       return Object.keys(this.orders).reduce((ret, id) => {
-        const options = this.itemOptionCheckbox2options((this.itemsObj[id] ||{}).itemOptionCheckbox);
+        const options = this.itemOptionCheckbox2options(
+          (this.itemsObj[id] || {}).itemOptionCheckbox
+        );
         const selectedOption = this.selectedOptions[id].map((selected) => {
           if (Array.isArray(selected) && selected.length > options.length) {
             const newopt = [...selected];
@@ -584,7 +652,9 @@ export default {
         ret[id] = (this.trimmedSelectedOptions[id] || []).map((item, k) => {
           return item
             .map((selectedOpt, key) => {
-              const opt = (this.itemsObj[id]||{}).itemOptionCheckbox[key].split(",");
+              const opt = (this.itemsObj[id] || {}).itemOptionCheckbox[
+                key
+              ].split(",");
               if (opt.length === 1) {
                 if (selectedOpt) {
                   return opt[0];
@@ -594,7 +664,7 @@ export default {
               }
               return "";
             })
-            .map(s => s.trim());
+            .map((s) => s.trim());
         });
         return ret;
       }, {});
@@ -612,11 +682,19 @@ export default {
       return this.deliveryData.deliveryThreshold - (this.totalPrice.total || 0);
     },
     diffDeliveryFreeThreshold() {
-      return this.deliveryData.deliveryFreeThreshold - (this.totalPrice.total || 0);
+      return (
+        this.deliveryData.deliveryFreeThreshold - (this.totalPrice.total || 0)
+      );
     },
     isDeliveryFree() {
-      if (this.shopInfo.enableDelivery && this.deliveryData.enableDeliveryFree) {
-        return (this.totalPrice.total || 0) >= this.deliveryData.deliveryFreeThreshold;
+      if (
+        this.shopInfo.enableDelivery &&
+        this.deliveryData.enableDeliveryFree
+      ) {
+        return (
+          (this.totalPrice.total || 0) >=
+          this.deliveryData.deliveryFreeThreshold
+        );
       }
       return false;
     },
@@ -624,9 +702,11 @@ export default {
       if (!this.shopInfo.enableDelivery) {
         return false;
       }
-      
+
       if (this.isDelivery && this.deliveryData.enableDeliveryThreshold) {
-        return (this.totalPrice.total || 0) < this.deliveryData.deliveryThreshold
+        return (
+          (this.totalPrice.total || 0) < this.deliveryData.deliveryThreshold
+        );
       }
       return false;
     },
@@ -636,7 +716,7 @@ export default {
     noPaymentMethod() {
       // MEMO: ignore hidePayment. No longer used
       return !this.paymentInfo.stripe && !this.paymentInfo.inStore;
-    }
+    },
   },
   methods: {
     openImage() {
@@ -654,7 +734,7 @@ export default {
 
     optionPrice(option) {
       const regex = /\(((\+|\-|＋|ー|−)[0-9\.]+)\)/;
-      const match = (option||"").match(regex);
+      const match = (option || "").match(regex);
       if (match) {
         return Number(match[1].replace(/ー|−/g, "-").replace(/＋/g, "+"));
       }
@@ -695,9 +775,9 @@ export default {
       const name = await (async () => {
         if (this.isLiffUser) {
           try {
-            const user = await liff.getProfile() || {};
+            const user = (await liff.getProfile()) || {};
             return user.displayName;
-          } catch(e) {
+          } catch (e) {
             return "";
           }
         }
@@ -711,12 +791,12 @@ export default {
         status: order_status.new_order,
         uid: this.user.uid,
         ownerUid: this.shopInfo.uid,
-        isDelivery: this.shopInfo.enableDelivery && this.isDelivery || false,   // true, // for test
+        isDelivery: (this.shopInfo.enableDelivery && this.isDelivery) || false, // true, // for test
         isLiff: this.isLiffUser,
         phoneNumber: this.user.phoneNumber,
         name: name,
         updatedAt: firestore.FieldValue.serverTimestamp(),
-        timeCreated: firestore.FieldValue.serverTimestamp()
+        timeCreated: firestore.FieldValue.serverTimestamp(),
         // price never set here.
       };
       // console.log(order_data);
@@ -735,19 +815,19 @@ export default {
           id: this.restaurantId(),
           cart: {
             orders: this.orders,
-            options: this.selectedOptions
-          }
+            options: this.selectedOptions,
+          },
         });
         const wasOrderCreated = functions.httpsCallable("wasOrderCreated2");
         await wasOrderCreated({
           restaurantId: this.restaurantId(),
-          orderId: res.id
+          orderId: res.id,
         });
 
         try {
           const menus = [];
           Object.keys(this.orders).forEach((menuId) => {
-            this.orders[menuId].forEach(quantity => {
+            this.orders[menuId].forEach((quantity) => {
               const menu = Object.assign({}, this.itemsObj[menuId]);
               menu.quantity = quantity;
               menus.push(menu);
@@ -762,14 +842,16 @@ export default {
         } catch (e) {
           console.log(e);
         }
-        if (this.mode === 'liff') {
+        if (this.mode === "liff") {
           const liffIndexId = this.$route.params.liffIndexId;
           this.$router.push({
-            path: `/liff/${liffIndexId}/r/${this.restaurantId()}/order/${res.id}`
+            path: `/liff/${liffIndexId}/r/${this.restaurantId()}/order/${
+              res.id
+            }`,
           });
         } else {
           this.$router.push({
-            path: `/r/${this.restaurantId()}/order/${res.id}`
+            path: `/r/${this.restaurantId()}/order/${res.id}`,
           });
         }
       } catch (error) {
@@ -783,7 +865,7 @@ export default {
           console.error(error.message);
           this.$store.commit("setErrorMessage", {
             code: "order.checkout",
-            error
+            error,
           });
         }
       } finally {
@@ -802,10 +884,10 @@ export default {
     },
     didOptionValuesChange(eventArgs) {
       this.selectedOptions = Object.assign({}, this.selectedOptions, {
-        [eventArgs.id]: eventArgs.optionValues
+        [eventArgs.id]: eventArgs.optionValues,
       });
       //console.log(this.selectedOptions);
-    }
-  }
+    },
+  },
 };
 </script>

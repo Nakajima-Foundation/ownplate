@@ -1,6 +1,8 @@
 <template>
   <div>
-    <div class="t-h6 c-text-black-disabled align-center m-t-24">{{ $t('line.authenticating')}}</div>
+    <div class="t-h6 c-text-black-disabled align-center m-t-24">
+      {{ $t("line.authenticating") }}
+    </div>
     <b-loading :is-full-page="false" :active="isValidating"></b-loading>
   </div>
 </template>
@@ -14,7 +16,7 @@ import { lineGuard } from "~/plugins/line.js";
 export default {
   data() {
     return {
-      isValidating: false
+      isValidating: false,
     };
   },
   async mounted() {
@@ -25,7 +27,7 @@ export default {
         const { data } = await lineValidate({
           code: this.code,
           redirect_uri: this.redirect_uri,
-          client_id: ownPlateConfig.line.LOGIN_CHANNEL_ID
+          client_id: ownPlateConfig.line.LOGIN_CHANNEL_ID,
         });
         console.log("lineValidate", data);
 
@@ -33,7 +35,7 @@ export default {
           const state = this.$route.query.state;
           const params = lineGuard(data.nonce, state);
 
-          this.user.getIdTokenResult(true).then(result => {
+          this.user.getIdTokenResult(true).then((result) => {
             this.$store.commit("setCustomClaims", result.claims);
             console.log("isLineuser", this.isLineUser);
             if (this.isLineUser) {
@@ -59,7 +61,7 @@ export default {
         this.$store.commit("setErrorMessage", {
           code: "line.validation",
           message2: "errorPage.message.line",
-          error
+          error,
         });
       } finally {
         this.isValidating = false;
@@ -72,7 +74,7 @@ export default {
     },
     redirect_uri() {
       return location.origin + "/callback/line";
-    }
-  }
+    },
+  },
 };
 </script>

@@ -27,13 +27,13 @@ import { order_status } from "~/plugins/constant.js";
 
 export default {
   components: {
-    DownloadCsv
+    DownloadCsv,
   },
   props: {
     orders: {
       type: Array,
-      required: true
-    }
+      required: true,
+    },
   },
   computed: {
     fields() {
@@ -46,16 +46,16 @@ export default {
         "total",
         "phoneNumber",
         "name",
-        "payment"
+        "payment",
       ];
     },
     fieldNames() {
-      return this.fields.map(field => {
+      return this.fields.map((field) => {
         return this.$t(`order.${field}`);
       });
     },
     tableData() {
-      return this.orders.map(order => {
+      return this.orders.map((order) => {
         const totalCount = Object.keys(order.order).reduce((count, id) => {
           return count + this.arrayOrNumSum(order.order[id]);
         }, 0);
@@ -76,12 +76,14 @@ export default {
           statusName: this.$t(`order.status.${status}`),
           totalCount: totalCount,
           total: order.totalCharge,
-          phoneNumber: order.phoneNumber ? formatNational(parsePhoneNumber(order.phoneNumber)) : "LINE",
+          phoneNumber: order.phoneNumber
+            ? formatNational(parsePhoneNumber(order.phoneNumber))
+            : "LINE",
           name: nameOfOrder(order),
-          payment: order.payment?.stripe ? "stripe" : ""
+          payment: order.payment?.stripe ? "stripe" : "",
         };
       });
-    }
-  }
+    },
+  },
 };
 </script>

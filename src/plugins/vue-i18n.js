@@ -1,12 +1,12 @@
-import Vue from 'vue';
-import VueI18n from 'vue-i18n';
+import Vue from "vue";
+import VueI18n from "vue-i18n";
 
-import i18nEN from '../../lang/en.json';
-import i18nES from '../../lang/es.json';
-import i18nJA from '../../lang/ja.json';
-import i18nFR from '../../lang/fr.json';
+import i18nEN from "../../lang/en.json";
+import i18nES from "../../lang/es.json";
+import i18nJA from "../../lang/ja.json";
+import i18nFR from "../../lang/fr.json";
 
-import * as constant from './constant.js';
+import * as constant from "./constant.js";
 
 import { ownPlateConfig } from "@/config/project";
 
@@ -18,25 +18,35 @@ const region_data = constant.stripe_regions[region];
 
 const numberFormats = {
   currency: {
-    style: 'currency',
+    style: "currency",
     currency: region_data.currency,
-  }
+  },
 };
 
 const dateTimeFormats = {
   short: {
-    year: 'numeric', month: 'short', day: 'numeric', weekday: 'short'
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    weekday: "short",
   },
   time: {
-    hour: 'numeric', minute: 'numeric', hour12: true
+    hour: "numeric",
+    minute: "numeric",
+    hour12: true,
   },
   long: {
-    year: 'numeric', month: 'short', day: 'numeric',
-    weekday: 'short', hour: 'numeric', minute: 'numeric', hour12: true
-  }
-}
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    weekday: "short",
+    hour: "numeric",
+    minute: "numeric",
+    hour12: true,
+  },
+};
 
-const locale = region_data.langs[0] || 'en';
+const locale = region_data.langs[0] || "en";
 
 const i18n = new VueI18n({
   // locales: ['en', 'es', 'ja'],
@@ -50,13 +60,12 @@ const i18n = new VueI18n({
   },
   numberFormats: {
     en: numberFormats,
-    ja: numberFormats
+    ja: numberFormats,
   },
   dateTimeFormats: {
     en: dateTimeFormats,
-    ja: dateTimeFormats
-  }
+    ja: dateTimeFormats,
+  },
 });
 
 export default i18n;
-

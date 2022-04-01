@@ -10,7 +10,7 @@ import { analytics } from "~/plugins/firebase.js";
 
 export const sku_item_data = (menu, shopInfo, restaurantId) => {
   return {
-    item_id: 'SKU_' + menu.id,
+    item_id: "SKU_" + menu.id,
     item_name: menu.itemName,
     item_brand: shopInfo.restaurantName,
     price: menu.price,
@@ -19,7 +19,7 @@ export const sku_item_data = (menu, shopInfo, restaurantId) => {
 };
 export const sku_item_data2 = (menu, shopInfo, restaurantId, quantity) => {
   return {
-    item_id: 'SKU_' + menu.id,
+    item_id: "SKU_" + menu.id,
     item_name: menu.itemName,
     item_brand: shopInfo.restaurantName,
     price: menu.price,
@@ -42,34 +42,46 @@ export const sendMenuListView = (menus, shopInfo, restaurantId) => {
         return sku_item_data(item, shopInfo, restaurantId);
       }),
     };
-    analyticsWrapper(firebase.analytics.EventName.VIEW_ITEM_LIST, analyticsData);
+    analyticsWrapper(
+      firebase.analytics.EventName.VIEW_ITEM_LIST,
+      analyticsData
+    );
   } catch (e) {
     console.log(e);
   }
 };
 
-export const sendBeginCheckoout = (price, menus,  shopInfo, restaurantId) => {
+export const sendBeginCheckoout = (price, menus, shopInfo, restaurantId) => {
   try {
     const analyticsData = {
-      currency: 'JPY',
+      currency: "JPY",
       value: price,
       items: menus.map((item) => {
         return sku_item_data2(item, shopInfo, restaurantId, item.quantity);
       }),
     };
     console.log(analyticsData);
-    analyticsWrapper(firebase.analytics.EventName.BEGIN_CHECKOUT, analyticsData);
+    analyticsWrapper(
+      firebase.analytics.EventName.BEGIN_CHECKOUT,
+      analyticsData
+    );
   } catch (e) {
     console.log(e);
   }
 };
 
-export const sendPurchase = (orderInfo, orderId, menus, shopInfo, restaurantId) => {
+export const sendPurchase = (
+  orderInfo,
+  orderId,
+  menus,
+  shopInfo,
+  restaurantId
+) => {
   try {
     const analyticsData = {
       transaction_id: orderId,
       affiliation: shopInfo.restaurantName,
-      currency: 'JPY',
+      currency: "JPY",
       value: orderInfo.total,
       tax: orderInfo.tax,
       items: menus.map((item) => {
@@ -88,7 +100,7 @@ export const sendRedunded = (orderInfo, orderId, shopInfo, restaurantId) => {
     const analyticsData = {
       transaction_id: orderId,
       affiliation: shopInfo.restaurantName,
-      currency: 'JPY',
+      currency: "JPY",
       value: orderInfo.total,
       // items: [],
     };
@@ -104,7 +116,7 @@ export const sendViewItem = (item, shopInfo, restaurantId) => {
   // is open image
   try {
     const analyticsData = {
-      currency: 'JPY',
+      currency: "JPY",
       value: item.price,
       items: [sku_item_data(item, shopInfo, restaurantId)],
     };
@@ -130,7 +142,7 @@ export const sendSelectItem = (item, shopInfo, restaurantId) => {
 export const sendAddToCart = (item, shopInfo, restaurantId, quantity) => {
   try {
     const analyticsData = {
-      currency: 'JPY',
+      currency: "JPY",
       value: item.price,
       items: [sku_item_data2(item, shopInfo, restaurantId, quantity)],
     };
@@ -144,22 +156,31 @@ export const sendAddToCart = (item, shopInfo, restaurantId, quantity) => {
 export const sendRemoveFromCart = (item, shopInfo, restaurantId, quantity) => {
   try {
     const analyticsData = {
-      currency: 'JPY',
+      currency: "JPY",
       value: item.price,
       items: [sku_item_data2(item, shopInfo, restaurantId, quantity)],
     };
     // console.log(analyticsData);
-    analyticsWrapper(firebase.analytics.EventName.REMOVE_FROM_CART, analyticsData);
+    analyticsWrapper(
+      firebase.analytics.EventName.REMOVE_FROM_CART,
+      analyticsData
+    );
   } catch (e) {
     console.log(e);
   }
 };
 
-export const sendViewCart = (orderInfo, orderId, menus, shopInfo, restaurantId) => {
+export const sendViewCart = (
+  orderInfo,
+  orderId,
+  menus,
+  shopInfo,
+  restaurantId
+) => {
   try {
     console.log(menus);
     const analyticsData = {
-      currency: 'JPY',
+      currency: "JPY",
       value: orderInfo.total,
       items: menus.map((item) => {
         return sku_item_data2(item, shopInfo, restaurantId, item.quantity);

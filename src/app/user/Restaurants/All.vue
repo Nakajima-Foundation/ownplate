@@ -39,7 +39,10 @@
                 </div>
                 <div class="flex-1 text-base font-bold pr-2">
                   {{ restaurant.restaurantName }}
-                  <i class="material-icons align-middle" v-if="restaurant.enableDelivery">
+                  <i
+                    class="material-icons align-middle"
+                    v-if="restaurant.enableDelivery"
+                  >
                     delivery_dining
                   </i>
                 </div>
@@ -62,13 +65,13 @@ export default {
   components: {},
   data() {
     return {
-      restaurantsObj: []
+      restaurantsObj: [],
     };
   },
   computed: {
     allArea() {
       return JPPrefecture.concat(USStates);
-    }
+    },
   },
   metaInfo() {
     return RestaurantHeader;
@@ -84,10 +87,9 @@ export default {
       const restaurants = res.docs || [];
       this.restaurantsObj = restaurant2AreaObj(restaurants);
       sortRestaurantObj(this.restaurantsObj);
-
     } catch (error) {
       console.log(error);
     }
-  }
+  },
 };
 </script>

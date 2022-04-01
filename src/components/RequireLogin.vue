@@ -17,18 +17,18 @@
 import PhoneLogin from "~/app/auth/PhoneLogin";
 export default {
   components: {
-    PhoneLogin
+    PhoneLogin,
   },
   props: {
     loginVisible: {
       type: Boolean,
-      required: true
-    }
+      required: true,
+    },
   },
   methods: {
     handleDismissed(params) {
       this.$emit("dismissed", params);
-    }
-  }
+    },
+  },
 };
 </script>

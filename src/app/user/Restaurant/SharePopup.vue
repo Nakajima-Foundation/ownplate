@@ -13,7 +13,7 @@
       :active.sync="sharePopup"
       :width="488"
       scroll="keep"
-      style="text-align: initial; "
+      style="text-align: initial"
     >
       <div class="mx-2 my-6 p-6 bg-white shadow-lg rounded-lg">
         <!-- Title -->
@@ -54,7 +54,7 @@
           <a
             @click="closeShare()"
             class="inline-flex justify-center items-center h-12 rounded-full px-6 bg-black bg-opacity-5"
-            style="min-width: 8rem;"
+            style="min-width: 8rem"
           >
             <div class="text-base font-bold text-black text-opacity-60">
               {{ $t("menu.close") }}
@@ -72,22 +72,22 @@ import { db, firestore } from "~/plugins/firebase.js";
 
 export default {
   components: {
-    SharingButtons
+    SharingButtons,
   },
   props: {
     shopInfo: {
       type: Object,
-      required: true
+      required: true,
     },
     suffix: {
       type: String,
-      required: false
-    }
+      required: false,
+    },
   },
   data() {
     return {
       url: this.shareUrl() + (this.suffix || ""),
-      sharePopup: false
+      sharePopup: false,
     };
   },
   methods: {
@@ -96,7 +96,7 @@ export default {
     },
     closeShare() {
       this.sharePopup = false;
-    }
-  }
+    },
+  },
 };
 </script>

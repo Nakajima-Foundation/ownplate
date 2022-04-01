@@ -3,9 +3,9 @@
     <div v-if="partner.length > 0" class="mt-3 mx-6 items-center">
       <div v-for="(part, k) in partner" :key="k" class="flex">
         <div class="flex-1">
-          <img :src="`/partners/${part.logo}`" class="w-12"/>
+          <img :src="`/partners/${part.logo}`" class="w-12" />
           <span class="font-bold">
-            {{part.name}}
+            {{ part.name }}
           </span>
         </div>
         <div class="text-right font-bold" v-if="part.ask">
@@ -25,7 +25,7 @@
     <sound-config-watcher :notificationConfig="notificationConfig" />
     <new-order-watcher :notificationConfig="notificationConfig" />
     <b-modal :active.sync="isOpen" :width="488">
-      <PartnersContact :id="(partner[0]||{}).id"/>
+      <PartnersContact :id="(partner[0] || {}).id" />
     </b-modal>
   </div>
 </template>
@@ -44,14 +44,14 @@ export default {
     SoundConfigWatcher,
     NewOrderWatcher,
     NotificationSettings,
-    PartnersContact
+    PartnersContact,
   },
   data() {
     return {
       notificationConfig: {
         soundOn: null,
         infinityNotification: null,
-        nameKey: null
+        nameKey: null,
       },
       justCreated: true,
       NotificationSettingsPopup: false,
@@ -73,10 +73,12 @@ export default {
       );
     },
     partner() {
-        return this.getPartner(this.shopOwner);
+      return this.getPartner(this.shopOwner);
     },
     ownerUid() {
-      return this.$store.getters.isSubAccount ? this.$store.getters.parentId : this.uid;
+      return this.$store.getters.isSubAccount
+        ? this.$store.getters.parentId
+        : this.uid;
     },
     uid() {
       return this.$store.getters.uidAdmin;
@@ -86,7 +88,7 @@ export default {
     this.notification_detacher = db
       .doc(`restaurants/${this.restaurantId()}/private/notifications`)
       .onSnapshot(
-        notification => {
+        (notification) => {
           console.log("onSnapshot");
           if (notification.exists) {
             this.notificationConfig = Object.assign(
@@ -103,7 +105,7 @@ export default {
           */
           this.justCreated = false;
         },
-        error => {
+        (error) => {
           if (error.code === "permission-denied") {
             // We can ignore this type of error here
             console.warn("Ignoring", error.code);
@@ -124,6 +126,6 @@ export default {
     openContact() {
       this.isOpen = true;
     },
-  }
+  },
 };
 </script>

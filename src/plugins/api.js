@@ -12,12 +12,14 @@ export const json_response = async (response) => {
 
 export const google_geocode = async (keyword) => {
   const parameters = {
-    "address": keyword,
-    "key": process.env.VUE_APP_GAPIKey,
+    address: keyword,
+    key: process.env.VUE_APP_GAPIKey,
   };
-  const qs = Object.keys(parameters).map((key) => {
-    return `${key}=${encodeURIComponent(parameters[key])}`;
-  }).join("&");
+  const qs = Object.keys(parameters)
+    .map((key) => {
+      return `${key}=${encodeURIComponent(parameters[key])}`;
+    })
+    .join("&");
 
   const url = "https://maps.googleapis.com/maps/api/geocode/json?" + qs;
   const res = await fetch(url);

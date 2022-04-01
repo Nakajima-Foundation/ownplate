@@ -103,7 +103,7 @@ export default {
     return {
       paymentInfo: {}, // { stripe, inStore, ... }
       stripe_connnect_detacher: null,
-      inStorePayment: false
+      inStorePayment: false,
     };
   },
   async mounted() {
@@ -121,7 +121,7 @@ export default {
           console.error(error);
           this.$store.commit("setErrorMessage", {
             code: "stripe.connect",
-            error
+            error,
           });
         } finally {
           this.$store.commit("setLoading", false);
@@ -131,7 +131,7 @@ export default {
     }
 
     const refPayment = db.doc(`/admins/${this.uid}/public/payment`);
-    this.stripe_connnect_detacher = refPayment.onSnapshot(async snapshot => {
+    this.stripe_connnect_detacher = refPayment.onSnapshot(async (snapshot) => {
       if (snapshot.exists) {
         this.paymentInfo = snapshot.data();
         this.inStorePayment = this.paymentInfo.inStore;
@@ -146,7 +146,7 @@ export default {
         // ---- End of Backward compatibility
         refPayment.set({
           stripe,
-          inStore: false
+          inStore: false,
         });
       }
     });
@@ -162,13 +162,13 @@ export default {
         //console.log("************* inStorePayment change", newValue);
         const refPayment = db.doc(`/admins/${this.uid}/public/payment`);
         refPayment.update({
-          inStore: newValue
+          inStore: newValue,
         });
       }
     },
     unsetWarning(newValue) {
       this.$emit("updateUnsetWarning", newValue);
-    }
+    },
   },
   computed: {
     dashboard() {
@@ -189,7 +189,7 @@ export default {
     // },
     unsetWarning() {
       return !this.inStorePayment && !this.hasStripe;
-    }
+    },
   },
   methods: {
     handleLinkStripe() {
@@ -198,10 +198,10 @@ export default {
         scope: "read_write",
         client_id: process.env.VUE_APP_STRIPE_CLIENT_ID,
         state: "s" + Math.random(),
-        redirect_uri: encodeURI(this.redirectURI)
+        redirect_uri: encodeURI(this.redirectURI),
       };
       const queryString = Object.keys(params)
-        .map(key => `${key}=${params[key]}`)
+        .map((key) => `${key}=${params[key]}`)
         .join("&");
 
       const date = new Date();
@@ -221,7 +221,7 @@ export default {
           try {
             this.$store.commit("setLoading", true);
             const { data } = await stripeDisconnect({
-              STRIPE_CLIENT_ID: process.env.VUE_APP_STRIPE_CLIENT_ID
+              STRIPE_CLIENT_ID: process.env.VUE_APP_STRIPE_CLIENT_ID,
             });
             console.log(data);
             // TODO: show connected view
@@ -229,14 +229,14 @@ export default {
             console.error(error, error.details);
             this.$store.commit("setErrorMessage", {
               code: "stripe.disconnect",
-              error
+              error,
             });
           } finally {
             this.$store.commit("setLoading", false);
           }
-        }
+        },
       });
-    }
-  }
+    },
+  },
 };
 </script>

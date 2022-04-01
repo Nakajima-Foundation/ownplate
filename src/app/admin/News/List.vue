@@ -40,17 +40,17 @@ import newsList from "./data";
 
 export default {
   components: {
-    ListItem
+    ListItem,
   },
   metaInfo() {
     return {
-      title: ["News", this.defaultTitle].join(" / ")
+      title: ["News", this.defaultTitle].join(" / "),
     };
   },
   data() {
     return {
-      newsList: newsList
+      newsList: newsList,
     };
-  }
+  },
 };
 </script>

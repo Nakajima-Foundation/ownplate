@@ -27,12 +27,12 @@ export default {
   props: {
     shopInfo: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   components: {
     NotificationSettings,
-    NotificationSettingButton
+    NotificationSettingButton,
   },
   data() {
     return {
@@ -42,8 +42,8 @@ export default {
         soundOn: null,
         infinityNotification: null,
         uid: this.$store.getters.uidAdmin,
-        createdAt: firestore.FieldValue.serverTimestamp()
-      }
+        createdAt: firestore.FieldValue.serverTimestamp(),
+      },
     };
   },
   async created() {
@@ -69,7 +69,7 @@ export default {
     },
     closeNotificationSettings() {
       this.NotificationSettingsPopup = false;
-    }
-  }
+    },
+  },
 };
 </script>

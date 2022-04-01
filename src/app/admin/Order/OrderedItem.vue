@@ -34,8 +34,8 @@ export default {
   props: {
     item: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   computed: {
     menu() {
@@ -46,8 +46,8 @@ export default {
         (this.item.item.images?.item?.resizedImages || {})["600"] ||
         this.item.item.itemPhoto
       );
-    }
-  }
+    },
+  },
 };
 </script>
 

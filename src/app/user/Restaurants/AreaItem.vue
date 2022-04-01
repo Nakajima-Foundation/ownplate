@@ -14,7 +14,7 @@ export default {
   props: {
     name: String,
     amount: String,
-    id: String
-  }
+    id: String,
+  },
 };
 </script>

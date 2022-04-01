@@ -131,16 +131,14 @@ export default {
   name: "Signin",
   metaInfo() {
     return {
-      title: [
-        this.defaultTitle, "Signin Admin"
-      ].join(" / ")
+      title: [this.defaultTitle, "Signin Admin"].join(" / "),
     };
   },
   data() {
     return {
       email: "",
       password: "",
-      errors: {}
+      errors: {},
     };
   },
   created() {
@@ -154,7 +152,7 @@ export default {
       if (newValue) {
         this.redirectToAdminPage();
       }
-    }
+    },
   },
   methods: {
     handleCancel() {
@@ -165,11 +163,11 @@ export default {
       this.errors = {};
       auth
         .signInWithEmailAndPassword(this.email, this.password)
-        .then(ret => {
+        .then((ret) => {
           console.log("onSignin success");
           this.$store.commit("setLoading", false);
         })
-        .catch(error => {
+        .catch((error) => {
           console.log("onSignin failed", error.code, error.message);
           const errorCode = "admin.error.code." + error.code;
           if (error.code === "auth/wrong-password") {
@@ -179,7 +177,7 @@ export default {
           }
           this.$store.commit("setLoading", false);
         });
-    }
-  }
+    },
+  },
 };
 </script>

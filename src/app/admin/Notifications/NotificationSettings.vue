@@ -114,8 +114,9 @@
                   v-for="(soundFile, index) in soundFiles"
                   :value="index"
                   :key="index"
-                  >{{ $t(soundFile.nameKey) }}</option
                 >
+                  {{ $t(soundFile.nameKey) }}
+                </option>
               </b-select>
 
               <a
@@ -153,7 +154,7 @@
         <a
           @click="closeNotificationSettings()"
           class="inline-flex justify-center items-center h-12 rounded-full px-6 bg-black bg-opacity-5"
-          style="min-width: 8rem;"
+          style="min-width: 8rem"
         >
           <div class="text-base font-bold text-black text-opacity-60">
             {{ $t("menu.close") }}
@@ -172,28 +173,28 @@ import IncompleteOrders from "./IncompleteOrders";
 
 export default {
   components: {
-    IncompleteOrders
+    IncompleteOrders,
   },
   props: {
     notificationData: {
       type: Object,
-      required: true
+      required: true,
     },
     NotificationSettingsPopup: {
       type: Boolean,
-      required: true
+      required: true,
     },
     shopInfo: {
       type: Object,
-      required: false
-    }
+      required: false,
+    },
   },
   data() {
     return {
       soundIndex: undefined,
       soundFiles: soundFiles,
       notificationConfig: {},
-      isActive: false
+      isActive: false,
     };
   },
   created() {
@@ -219,18 +220,19 @@ export default {
     },
     async "notificationConfig.infinityNotification"() {
       await this.saveNotificationData();
-    }
+    },
   },
   methods: {
     infinityNotificationToggle() {
-      this.notificationConfig.infinityNotification = !this.notificationConfig
-        .infinityNotification;
+      this.notificationConfig.infinityNotification =
+        !this.notificationConfig.infinityNotification;
     },
     soundToggle() {
       this.notificationConfig.soundOn = !this.notificationConfig.soundOn;
     },
     async saveNotificationData() {
-      this.notificationConfig.updatedAt = firestore.FieldValue.serverTimestamp();
+      this.notificationConfig.updatedAt =
+        firestore.FieldValue.serverTimestamp();
       await db
         .doc(`restaurants/${this.restaurantId()}/private/notifications`)
         .set(this.notificationConfig);
@@ -243,7 +245,7 @@ export default {
       setTimeout(() => {
         this.soundPlay();
       }, 100);
-    }
-  }
+    },
+  },
 };
 </script>

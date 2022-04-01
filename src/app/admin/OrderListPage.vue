@@ -131,20 +131,25 @@ export default {
   components: {
     OrderedInfo,
     BackButton,
-    NotificationIndex
+    NotificationIndex,
   },
   metaInfo() {
     return {
-      title: this.shopInfo.restaurantName ?
-        ["Admin Order List", this.shopInfo.restaurantName , this.defaultTitle].join(" / ") : this.defaultTitle
-    }
+      title: this.shopInfo.restaurantName
+        ? [
+            "Admin Order List",
+            this.shopInfo.restaurantName,
+            this.defaultTitle,
+          ].join(" / ")
+        : this.defaultTitle,
+    };
   },
   data() {
     return {
       shopInfo: {},
       orders: [],
       dayIndex: 0,
-      order_detacher: () => {}
+      order_detacher: () => {},
     };
   },
   watch: {
@@ -154,7 +159,7 @@ export default {
     },
     "$route.query.day"() {
       this.updateDayIndex();
-    }
+    },
   },
   async created() {
     this.checkAdminPermission();
@@ -194,17 +199,17 @@ export default {
     },
     lastSeveralDays() {
       return Array.from(Array(10 + this.pickUpDaysInAdvance).keys()).map(
-        index => {
+        (index) => {
           const date = midNight(this.pickUpDaysInAdvance - index);
           return { index, date };
         }
       );
-    }
+    },
   },
   methods: {
     updateDayIndex() {
       const dayIndex =
-        this.lastSeveralDays.findIndex(day => {
+        this.lastSeveralDays.findIndex((day) => {
           return (
             moment(day.date).format("YYYY-MM-DD") === this.$route.query.day
           );
@@ -216,7 +221,8 @@ export default {
         "YYYY-MM-DD"
       );
       this.$router.push({
-        path: "/admin/restaurants/" + this.restaurantId() + "/orders?day=" + day
+        path:
+          "/admin/restaurants/" + this.restaurantId() + "/orders?day=" + day,
       });
     },
     dateWasUpdated() {
@@ -231,10 +237,10 @@ export default {
           this.lastSeveralDays[this.dayIndex - 1].date
         );
       }
-      this.order_detacher = query.onSnapshot(result => {
+      this.order_detacher = query.onSnapshot((result) => {
         let orders = result.docs.map(this.doc2data("order"));
         orders = orders
-          .filter(a => a.status !== order_status.transaction_hide)
+          .filter((a) => a.status !== order_status.transaction_hide)
           .sort((order0, order1) => {
             if (order0.status === order1.status) {
               return (order0.timeEstimated || order0.timePlaced) >
@@ -244,7 +250,7 @@ export default {
             }
             return order0.status < order1.status ? -1 : 1;
           });
-        this.orders = orders.map(order => {
+        this.orders = orders.map((order) => {
           order.timePlaced = order.timePlaced.toDate();
           if (order.timeEstimated) {
             order.timeEstimated = order.timeEstimated.toDate();
@@ -256,14 +262,14 @@ export default {
     orderSelected(order) {
       this.$router.push({
         path:
-          "/admin/restaurants/" + this.restaurantId() + "/orders/" + order.id
+          "/admin/restaurants/" + this.restaurantId() + "/orders/" + order.id,
       });
     },
     getPickUpDaysInAdvance() {
       return this.isNull(this.shopInfo.pickUpDaysInAdvance)
         ? 3
         : this.shopInfo.pickUpDaysInAdvance;
-    }
-  }
+    },
+  },
 };
 </script>

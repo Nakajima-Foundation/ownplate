@@ -1,13 +1,15 @@
 <template>
   <div>
-    <div class="t-h6 c-text-black-disabled align-center m-t-24">{{ $t('admin.smaregi.authenticating')}}</div>
+    <div class="t-h6 c-text-black-disabled align-center m-t-24">
+      {{ $t("admin.smaregi.authenticating") }}
+    </div>
     <b-loading :is-full-page="false" :active="isValidating"></b-loading>
     <div v-if="error">
-        <div class="flex space-x-4">
-          <back-button url="/admin/restaurants/" />
-        </div>
+      <div class="flex space-x-4">
+        <back-button url="/admin/restaurants/" />
+      </div>
 
-      {{ $t('admin.smaregi.authenticationError') }}
+      {{ $t("admin.smaregi.authenticationError") }}
     </div>
   </div>
 </template>
@@ -20,13 +22,13 @@ import BackButton from "~/components/BackButton";
 
 export default {
   components: {
-    BackButton
+    BackButton,
   },
   data() {
     return {
-      isValidating:false,
+      isValidating: false,
       error: false,
-    }
+    };
   },
   async mounted() {
     if (this.code) {
@@ -52,7 +54,6 @@ export default {
     code() {
       return this.$route.query.code;
     },
-  }
+  },
 };
-
 </script>

@@ -11,7 +11,7 @@
               @click.stop="openImage()"
               :src="coverImage"
               class="h-48 w-full object-cover lg:rounded-lg"
-              />
+            />
           </div>
         </div>
       </div>
@@ -25,7 +25,7 @@
         </div>
 
         <div class="mt-2 text-base">
-          {{ownerData.description}}
+          {{ ownerData.description }}
         </div>
       </div>
     </div>
@@ -33,12 +33,12 @@
       <div v-if="restaurantsObj[state]">
         <div
           class="text-base font-bold text-black text-opacity-40 mt-6 mx-6 mb-2"
-          >
+        >
           {{ state }}
         </div>
         <div
           class="mt-2 mx-6 grid items-center grid-cols-1 gap-2 lg:grid-cols-3 xl:grid-cols-4"
-          >
+        >
           <div v-for="restaurant in restaurantsObj[state]">
             <router-link :to="`/r/${restaurant.id}`">
               <div class="flex items-center">
@@ -46,7 +46,7 @@
                   <img
                     :src="resizedProfileImage(restaurant, '600')"
                     class="w-12 h-12 rounded-full object-cover"
-                    />
+                  />
                 </div>
                 <div class="flex-1 text-base font-bold pr-2">
                   {{ restaurant.restaurantName }}
@@ -58,7 +58,7 @@
       </div>
     </template>
     <div>
-      <Map :restaurants="restaurants" v-if="restaurants.length > 0"/>
+      <Map :restaurants="restaurants" v-if="restaurants.length > 0" />
     </div>
   </div>
 </template>
@@ -73,8 +73,8 @@ export default {
   name: "RestaurantIndex",
   metaInfo() {
     return {
-      title: [this.defaultTitle, "Restaurant Index"].join(" / ")
-    }
+      title: [this.defaultTitle, "Restaurant Index"].join(" / "),
+    };
   },
   components: {
     Map,
@@ -88,11 +88,13 @@ export default {
   },
   async created() {
     const ownerUid = this.$route.params.ownerUid;
-    const restaurantsCollection = await db.collection("restaurants")
-          .where("publicFlag", "==", true)
-          .where("deletedFlag", "==", false)
-          .where("onTheList", "==", true)
-          .where("uid", "==", ownerUid).get();
+    const restaurantsCollection = await db
+      .collection("restaurants")
+      .where("publicFlag", "==", true)
+      .where("deletedFlag", "==", false)
+      .where("onTheList", "==", true)
+      .where("uid", "==", ownerUid)
+      .get();
     this.restaurantsObj = restaurant2AreaObj(restaurantsCollection.docs);
     this.restaurants = restaurantsCollection.docs.map(this.doc2data(""));
     sortRestaurantObj(this.restaurantsObj);
@@ -111,5 +113,5 @@ export default {
       );
     },
   },
-}
+};
 </script>

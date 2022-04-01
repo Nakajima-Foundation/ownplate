@@ -1,5 +1,5 @@
 <template>
-<div>
+  <div>
     <ownplate-service-image />
     <div class="max-w-screen-xl mx-auto">
       <entrance-buttons />
@@ -50,7 +50,7 @@ export default {
     aboutService,
     news,
     snslink,
-  }
+  },
 };
 
 // <!-- Go to Owner Manual -->

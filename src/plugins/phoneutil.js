@@ -10,7 +10,7 @@ export const intenationalFormat = (parsedNumber) => {
 };
 
 const localPrefix = (number) => {
-  return (number.getCountryCode() == 81) ? "0" : "";
+  return number.getCountryCode() == 81 ? "0" : "";
 };
 
 export const formatNational = (number) => {

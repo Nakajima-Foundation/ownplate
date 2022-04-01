@@ -4,12 +4,8 @@
     <div
       class="text-center mt-16 text-xl font-bold text-black opacity-40 lg:text-3xl"
     >
-      <div v-if="!isLocaleJapan">
-        About
-      </div>
-      <div v-else>
-        このサービスについて
-      </div>
+      <div v-if="!isLocaleJapan">About</div>
+      <div v-else>このサービスについて</div>
     </div>
 
     <!-- About -->

@@ -11,7 +11,7 @@
             <!-- Go to Super Admin Page -->
             <div class="align-center">
               <router-link to="/s">
-                <div class="op-button-small primary" style="min-width: 256px;">
+                <div class="op-button-small primary" style="min-width: 256px">
                   <span class="c-onprimary">Super Admin Page</span>
                 </div>
               </router-link>
@@ -34,7 +34,7 @@
             <!-- Go to Super Admin Page -->
             <div class="align-center">
               <router-link to="/op">
-                <div class="op-button-small primary" style="min-width: 256px;">
+                <div class="op-button-small primary" style="min-width: 256px">
                   <span class="c-onprimary">Operator Page</span>
                 </div>
               </router-link>
@@ -47,10 +47,9 @@
     </div>
 
     <template v-if="isJapan">
-      <lp-customer v-if="isCustomer"/>
-      <lp-admin v-else-if="isAdmin"/>
-      <lp v-else="isAdmin"/>
-
+      <lp-customer v-if="isCustomer" />
+      <lp-admin v-else-if="isAdmin" />
+      <lp v-else="isAdmin" />
     </template>
     <template v-else>
       <home />
@@ -59,7 +58,6 @@
 </template>
 
 <script>
-
 import Lp from "~/app/home/Lp";
 import LpAdmin from "~/app/home/LpAdmin";
 import LpCustomer from "~/app/home/LpCustomer";
@@ -69,9 +67,7 @@ export default {
   name: "HomePage",
   metaInfo() {
     return {
-      title: [
-        this.defaultTitle, "Top"
-      ].join(" / ")
+      title: [this.defaultTitle, "Top"].join(" / "),
     };
   },
 

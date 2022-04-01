@@ -39,7 +39,7 @@
         >
           <div
             class="h-12 rounded-full bg-op-teal inline-flex justify-center items-center px-6 shadow"
-            style="min-width:8rem;"
+            style="min-width: 8rem"
           >
             <span class="text-white text-base font-bold">{{
               $t(
@@ -184,7 +184,7 @@
           <!-- Map -->
           <div>
             <div class="text-center">
-              {{ $t("editRestaurant.setupMap")}}
+              {{ $t("editRestaurant.setupMap") }}
             </div>
             <div class="text-center">
               <a
@@ -202,15 +202,13 @@
                     v-for="(result, key) in searchResults"
                     :value="key"
                     :key="key"
-                    >
-                    {{result.formatted_address}}
+                  >
+                    {{ result.formatted_address }}
                   </option>
                 </b-select>
               </div>
             </div>
-            <div v-else>
-              住所を入力して検索してください
-            </div>
+            <div v-else>住所を入力して検索してください</div>
 
             <div class="text-center text-sm font-bold text-red-700 mt-2">
               {{ $t("editRestaurant.updateMapDescription") }}
@@ -222,7 +220,12 @@
                 :center="{ lat: 44.933076, lng: 15.629058 }"
                 :options="{ fullscreenControl: false }"
                 :zoom="18"
-                style="width: 100%; height: 240px; position: relative; overflow: hidden;"
+                style="
+                  width: 100%;
+                  height: 240px;
+                  position: relative;
+                  overflow: hidden;
+                "
                 @loaded="hello"
                 @click="gmapClick"
               ></GMap>
@@ -257,7 +260,7 @@
               class="flex"
               v-bind:class="{
                 'p-2 rounded border border-red-700':
-                  errors['restProfilePhoto'].length !== 0
+                  errors['restProfilePhoto'].length !== 0,
               }"
             >
               <!-- Current Photo -->
@@ -266,7 +269,7 @@
                   <img
                     class="rounded object-cover"
                     :src="restProfilePhoto"
-                    style="width: 128px; height: 128px;"
+                    style="width: 128px; height: 128px"
                   />
                 </div>
                 <div class="text-center text-xs mt-1">
@@ -318,10 +321,10 @@
                   <img
                     class="rounded object-cover"
                     :src="restCoverPhoto"
-                    style="width: 272px; height: 128px;"
+                    style="width: 272px; height: 128px"
                   />
                 </div>
-                <div class="text-center text-xs mt-1" style="width: 272px;">
+                <div class="text-center text-xs mt-1" style="width: 272px">
                   {{ $t("editCommon.current") }}
                 </div>
               </div>
@@ -346,7 +349,7 @@
                   @file-type-mismatch="handleCoverImageRemove"
                   @image-remove="handleCoverImageRemove"
                 ></croppa>
-                <div class="text-center text-xs mt-1" style="width: 272px;">
+                <div class="text-center text-xs mt-1" style="width: 272px">
                   {{ $t("editCommon.new") }}
                 </div>
               </div>
@@ -392,7 +395,7 @@
               </b-checkbox>
             </div>
           </div>
-          
+
           <!-- Description -->
           <div>
             <text-form
@@ -615,8 +618,9 @@
                       v-for="(day, index) in reservationTheDayBefore"
                       :key="index"
                       :value="day.value"
-                      >{{ $t(day.messageKey) }}</option
                     >
+                      {{ $t(day.messageKey) }}
+                    </option>
                   </b-select>
                 </b-field>
               </div>
@@ -875,7 +879,7 @@
         >
           <div
             class="h-12 rounded-full bg-op-teal inline-flex justify-center items-center px-6 shadow"
-            style="min-width:8rem;"
+            style="min-width: 8rem"
           >
             <span class="text-white text-base font-bold">{{
               $t(
@@ -900,9 +904,7 @@
           <div
             class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
           >
-            <i class="material-icons text-lg text-op-teal mr-2">
-              queue
-            </i>
+            <i class="material-icons text-lg text-op-teal mr-2"> queue </i>
             <span class="text-sm font-bold text-op-teal">{{
               $t(submitting ? "editCommon.saving" : "editCommon.copy")
             }}</span>
@@ -934,7 +936,7 @@ import {
   taxRates,
   daysOfWeek,
   reservationTheDayBefore,
-  minimumCookTimeChoices
+  minimumCookTimeChoices,
 } from "~/plugins/constant.js";
 
 export default {
@@ -947,13 +949,18 @@ export default {
     NotificationIndex,
     NotFound,
     PhoneEntry,
-    Price
+    Price,
   },
   metaInfo() {
     return {
-      title: this.shopInfo.restaurantName ?
-        ["Admin Restaurant", this.shopInfo.restaurantName , this.defaultTitle].join(" / ") : this.defaultTitle
-    }
+      title: this.shopInfo.restaurantName
+        ? [
+            "Admin Restaurant",
+            this.shopInfo.restaurantName,
+            this.defaultTitle,
+          ].join(" / ")
+        : this.defaultTitle,
+    };
   },
 
   data() {
@@ -1005,7 +1012,7 @@ export default {
           4: [],
           5: [],
           6: [],
-          7: []
+          7: [],
         },
         businessDay: {
           1: true, // mon
@@ -1014,13 +1021,13 @@ export default {
           4: true,
           5: true,
           6: true,
-          7: true
+          7: true,
         },
         pickUpMinimumCookTime: 25,
         pickUpDaysInAdvance: 3,
         images: {},
         publicFlag: false,
-        temporaryClosure: []
+        temporaryClosure: [],
       },
       region: ownPlateConfig.region,
       maplocation: {},
@@ -1036,7 +1043,7 @@ export default {
       now,
       updateFirstCall: true,
       searchResults: [],
-      selectedResult: 0
+      selectedResult: 0,
     };
   },
   async created() {
@@ -1065,7 +1072,7 @@ export default {
     }
     if (this.shopInfo.temporaryClosure) {
       this.shopInfo.temporaryClosure = this.shopInfo.temporaryClosure.map(
-        day => {
+        (day) => {
           return day.toDate();
         }
       );
@@ -1112,14 +1119,14 @@ export default {
         "zip",
         "phoneNumber",
         "pickUpMinimumCookTime",
-        "pickUpDaysInAdvance"
-      ].forEach(name => {
+        "pickUpDaysInAdvance",
+      ].forEach((name) => {
         err[name] = [];
         if (this.shopInfo[name] === "") {
           err[name].push("validationError." + name + ".empty");
         }
       });
-      ["introduction", "orderNotice", "orderThanks"].forEach(name => {
+      ["introduction", "orderNotice", "orderThanks"].forEach((name) => {
         err[name] = [];
       });
       // validate pickUpMinimumCookTime
@@ -1141,14 +1148,14 @@ export default {
       }
       if (
         !reservationTheDayBefore.some(
-          day => day.value === this.shopInfo["pickUpDaysInAdvance"]
+          (day) => day.value === this.shopInfo["pickUpDaysInAdvance"]
         )
       ) {
         err["pickUpDaysInAdvance"].push("validationError." + name + ".invalid");
       }
 
       if (this.requireTaxInput) {
-        ["foodTax", "alcoholTax"].forEach(name => {
+        ["foodTax", "alcoholTax"].forEach((name) => {
           err[name] = [];
           if (this.shopInfo[name] === "") {
             err[name].push("validationError." + name + ".empty");
@@ -1176,9 +1183,9 @@ export default {
           : [];
 
       err["time"] = {};
-      Object.keys(daysOfWeek).forEach(key => {
+      Object.keys(daysOfWeek).forEach((key) => {
         err["time"][key] = [];
-        [0, 1].forEach(key2 => {
+        [0, 1].forEach((key2) => {
           err["time"][key].push([]);
           if (this.shopInfo.businessDay[key]) {
             if (
@@ -1223,21 +1230,21 @@ export default {
     },
     isSetLocation() {
       return Object.keys(this.shopInfo.location).length !== 0;
-    }
+    },
   },
   watch: {
-    notFound: function() {
+    notFound: function () {
       if (this.notFound === false) {
         this.hello();
       }
     },
-    hasError: function() {
+    hasError: function () {
       // this.shopInfo.publicFlag = !this.hasError;
     },
-    files: function() {
+    files: function () {
       console.log(this.files);
     },
-    selectedResult: function() {
+    selectedResult: function () {
       const res = this.searchResults[this.selectedResult];
       this.setCurrentLocation(res.geometry.location);
       this.place_id = res.place_id;
@@ -1249,7 +1256,7 @@ export default {
       return new Date().getTime() < day.getTime();
     },
     isNewTemporaryClosure(day) {
-      const func = elem => {
+      const func = (elem) => {
         return elem.getTime() === day.getTime();
       };
       return !this.shopInfo.temporaryClosure.some(func);
@@ -1276,7 +1283,7 @@ export default {
       const prevIndex = index === "1" ? 7 : index - 1;
       this.shopInfo.businessDay[index] = this.shopInfo.businessDay[prevIndex];
       this.shopInfo.openTimes[index] = this.shopInfo.openTimes[prevIndex].map(
-        a => {
+        (a) => {
           return { ...a };
         }
       );
@@ -1313,7 +1320,10 @@ export default {
       }
     },
     gmapClick(arg) {
-      this.setCurrentLocation({lat: arg.event.latLng.lat(), lng: arg.event.latLng.lng()}, false);
+      this.setCurrentLocation(
+        { lat: arg.event.latLng.lat(), lng: arg.event.latLng.lng() },
+        false
+      );
       this.place_id = null;
       this.setLocation();
     },
@@ -1322,7 +1332,7 @@ export default {
         code: "editCommon.copyAlert",
         callback: async () => {
           this.copyRestaurant();
-        }
+        },
       });
     },
     async copyRestaurant() {
@@ -1342,7 +1352,7 @@ export default {
         .get();
 
       await Promise.all(
-        menus.docs.map(async a => {
+        menus.docs.map(async (a) => {
           const newMenu = await db
             .collection(`restaurants/${id}/menus`)
             .add(a.data());
@@ -1357,7 +1367,7 @@ export default {
         .get();
 
       await Promise.all(
-        titles.docs.map(async a => {
+        titles.docs.map(async (a) => {
           const newMenu = await db
             .collection(`restaurants/${id}/titles`)
             .add(a.data());
@@ -1367,7 +1377,7 @@ export default {
       );
 
       const newMenuList = [];
-      this.shopInfo.menuLists.forEach(a => {
+      this.shopInfo.menuLists.forEach((a) => {
         if (menuListIds[a]) {
           newMenuList.push(menuListIds[a]);
         }
@@ -1385,7 +1395,7 @@ export default {
       }
       // end of list
       this.$router.push({
-        path: `/admin/restaurants/${id}`
+        path: `/admin/restaurants/${id}`,
       });
     },
     getEditShopInfo() {
@@ -1397,7 +1407,7 @@ export default {
         streetAddress: this.shopInfo.streetAddress,
         images: {
           cover: this.shopInfo?.images?.cover || {},
-          profile: this.shopInfo?.images?.profile || {}
+          profile: this.shopInfo?.images?.profile || {},
         },
         city: this.shopInfo.city,
         state: this.shopInfo.state,
@@ -1422,7 +1432,7 @@ export default {
         alcoholTax: Number(this.shopInfo.alcoholTax),
         openTimes: Object.keys(this.shopInfo.openTimes).reduce((tmp, key) => {
           tmp[key] = this.shopInfo.openTimes[key]
-            .filter(el => {
+            .filter((el) => {
               return el !== null && el?.end !== null && el?.start !== null;
             })
             .sort((a, b) => {
@@ -1437,7 +1447,7 @@ export default {
         inclusiveTax: this.shopInfo.inclusiveTax,
         updatedAt: firestore.FieldValue.serverTimestamp(),
         createdAt:
-          this.shopInfo.createdAt || firestore.FieldValue.serverTimestamp()
+          this.shopInfo.createdAt || firestore.FieldValue.serverTimestamp(),
       };
       return restaurantData;
     },
@@ -1453,7 +1463,7 @@ export default {
           );
           this.shopInfo.images.profile = {
             original: this.shopInfo.restProfilePhoto,
-            resizedImages: {}
+            resizedImages: {},
           };
         }
 
@@ -1465,20 +1475,20 @@ export default {
           );
           this.shopInfo.images.cover = {
             original: this.shopInfo.restCoverPhoto,
-            resizedImages: {}
+            resizedImages: {},
           };
         }
         const restaurantData = this.getEditShopInfo();
         await this.updateRestaurantData(restaurantData);
 
         this.$router.push({
-          path: `/admin/restaurants/`
+          path: `/admin/restaurants/`,
         });
       } catch (error) {
         this.submitting = false;
         this.$store.commit("setErrorMessage", {
           code: "restaurant.save",
-          error
+          error,
         });
       }
     },
@@ -1493,7 +1503,7 @@ export default {
         this.shopInfo.restaurantName,
         this.shopInfo.streetAddress,
         this.shopInfo.city,
-        this.shopInfo.state
+        this.shopInfo.state,
       ].join(",");
 
       const res = await API.google_geocode(keyword);
@@ -1503,7 +1513,7 @@ export default {
         this.place_id = res[0].place_id;
       }
     },
-    setCurrentLocation(location, move=true) {
+    setCurrentLocation(location, move = true) {
       if (
         this.$refs.gMap &&
         this.$refs.gMap.map &&
@@ -1518,7 +1528,7 @@ export default {
         const marker = new google.maps.Marker({
           position: new google.maps.LatLng(location.lat, location.lng),
           title: "hello",
-          map: this.$refs.gMap.map
+          map: this.$refs.gMap.map,
         });
         this.markers.push(marker);
         this.maplocation = location;
@@ -1532,7 +1542,7 @@ export default {
     },
     removeAllMarker() {
       if (this.markers && this.markers.length > 0) {
-        this.markers.map(marker => {
+        this.markers.map((marker) => {
           marker.setMap(null);
         });
         this.markers = [];
@@ -1541,7 +1551,7 @@ export default {
     async updateRestaurantData(restaurantData) {
       const cleanData = this.cleanObject(restaurantData);
       await db.doc(`restaurants/${this.restaurantId()}`).update(cleanData);
-    }
-  }
+    },
+  },
 };
 </script>

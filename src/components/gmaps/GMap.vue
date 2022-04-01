@@ -114,9 +114,7 @@ export default {
       });
 
       this.map["markers"] = this.markers;
-
     },
-
   },
 };
 </script>

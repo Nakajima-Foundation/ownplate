@@ -1,7 +1,7 @@
 export default {
   computed: {
     isSuperPage() {
-      return location.pathname.startsWith("/s/")
+      return location.pathname.startsWith("/s/");
     },
     backUrl() {
       return this.isSuperPage ? "/s" : "/op";
@@ -14,10 +14,14 @@ export default {
           this.$router.push("/");
         }
       } else {
-        if (!this.$store.state.user || (this.$store.getters.isNotSuperAdmin && this.$store.getters.isNotOperator)) {
+        if (
+          !this.$store.state.user ||
+          (this.$store.getters.isNotSuperAdmin &&
+            this.$store.getters.isNotOperator)
+        ) {
           this.$router.push("/");
         }
       }
     },
-  }
+  },
 };

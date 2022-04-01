@@ -2,7 +2,6 @@
   <div>
     <ownplate-service-image />
     <div class="max-w-screen-xl mx-auto">
-
       <div class="mx-6 mt-6 text-center lg:grid lg:grid-cols-3 lg:gap-4">
         <!-- For Food Lovers -->
         <entrance-buttons-food-lovers />
@@ -66,9 +65,8 @@ export default {
     news,
     snslink,
     HistoryButton,
-    FavoriteButton
-
-  }
+    FavoriteButton,
+  },
 };
 
 // <!-- Go to Owner Manual -->

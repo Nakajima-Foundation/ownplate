@@ -3,17 +3,13 @@
     <section class="section">
       <back-button :url="backUrl" />
     </section>
-    <div v-if="restaurantData === null">
-      loading
-    </div>
+    <div v-if="restaurantData === null">loading</div>
     <div v-else>
       <div>
-      {{restaurantData.restaurantName}}
+        {{ restaurantData.restaurantName }}
       </div>
       <div>
-      <button @click="hello">
-        hello
-      </button>
+        <button @click="hello">hello</button>
       </div>
     </div>
   </div>
@@ -30,27 +26,29 @@ export default {
   mixins: [superMixin],
   metaInfo() {
     return {
-      title: [this.defaultTitle, "Super All Restaurants"].join(" / ")
-    }
+      title: [this.defaultTitle, "Super All Restaurants"].join(" / "),
+    };
   },
   components: {
-    BackButton
+    BackButton,
   },
   data() {
     return {
       restaurantData: null,
-    }
+    };
   },
   async created() {
-    this.restaurantData = (await db.doc(`restaurants/${this.restaurantId()}`).get()).data();
+    this.restaurantData = (
+      await db.doc(`restaurants/${this.restaurantId()}`).get()
+    ).data();
   },
   methods: {
-    hello: async function() {
+    hello: async function () {
       if (confirm("ok")) {
         const superTwilio = functions.httpsCallable("superTwilio");
-        const ret = await superTwilio({restaurantId: this.restaurantId()});
+        const ret = await superTwilio({ restaurantId: this.restaurantId() });
       }
     },
   },
-}
+};
 </script>
