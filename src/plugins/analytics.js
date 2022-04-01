@@ -1,6 +1,5 @@
-import firebase from "firebase/compat/app";
-import { analytics } from "~/plugins/firebase.js";
-
+import { analytics } from "~/plugins/firebase9.js";
+import { logEvent } from "firebase/analytics";
 // see https://firebase.google.com/docs/analytics/measure-ecommerce
 
 // Event List
@@ -28,9 +27,9 @@ export const sku_item_data2 = (menu, shopInfo, restaurantId, quantity) => {
   };
 };
 
-const analyticsWrapper = (event, data) => {
-  console.log(event, data);
-  analytics.logEvent(event, data);
+const analyticsWrapper = (eventName, data) => {
+  console.log(eventName, data);
+  logEvent(analytics, eventName, data);
 };
 
 export const sendMenuListView = (menus, shopInfo, restaurantId) => {
@@ -43,7 +42,7 @@ export const sendMenuListView = (menus, shopInfo, restaurantId) => {
       }),
     };
     analyticsWrapper(
-      firebase.analytics.EventName.VIEW_ITEM_LIST,
+      'view_item_list',
       analyticsData
     );
   } catch (e) {
@@ -61,7 +60,7 @@ export const sendBeginCheckoout = (price, menus, shopInfo, restaurantId) => {
       }),
     };
     analyticsWrapper(
-      firebase.analytics.EventName.BEGIN_CHECKOUT,
+      'begin_checkout',
       analyticsData
     );
   } catch (e) {
@@ -88,7 +87,7 @@ export const sendPurchase = (
       }),
     };
     // console.log(analyticsData);
-    analyticsWrapper(firebase.analytics.EventName.PURCHASE, analyticsData);
+    analyticsWrapper('purchase', analyticsData);
   } catch (e) {
     console.log(e);
   }
@@ -103,7 +102,7 @@ export const sendRedunded = (orderInfo, orderId, shopInfo, restaurantId) => {
       value: orderInfo.total,
       // items: [],
     };
-    analyticsWrapper(firebase.analytics.EventName.REFUND, analyticsData);
+    analyticsWrapper('refund', analyticsData);
   } catch (e) {
     console.log(e);
   }
@@ -119,7 +118,7 @@ export const sendViewItem = (item, shopInfo, restaurantId) => {
       value: item.price,
       items: [sku_item_data(item, shopInfo, restaurantId)],
     };
-    analyticsWrapper(firebase.analytics.EventName.VIEW_ITEM, analyticsData);
+    analyticsWrapper('view_item', analyticsData);
   } catch (e) {
     console.log(e);
   }
@@ -132,7 +131,7 @@ export const sendSelectItem = (item, shopInfo, restaurantId) => {
       items: [sku_item_data(item, shopInfo, restaurantId)],
     };
     // console.log(analyticsData);
-    analyticsWrapper(firebase.analytics.EventName.SELECT_ITEM, analyticsData);
+    analyticsWrapper('select_item', analyticsData);
   } catch (e) {
     console.log(e);
   }
@@ -146,7 +145,7 @@ export const sendAddToCart = (item, shopInfo, restaurantId, quantity) => {
       items: [sku_item_data2(item, shopInfo, restaurantId, quantity)],
     };
     // console.log(analyticsData);
-    analyticsWrapper(firebase.analytics.EventName.ADD_TO_CART, analyticsData);
+    analyticsWrapper('add_to_cart', analyticsData);
   } catch (e) {
     console.log(e);
   }
@@ -161,7 +160,7 @@ export const sendRemoveFromCart = (item, shopInfo, restaurantId, quantity) => {
     };
     // console.log(analyticsData);
     analyticsWrapper(
-      firebase.analytics.EventName.REMOVE_FROM_CART,
+      'remove_from_cart',
       analyticsData
     );
   } catch (e) {
@@ -177,7 +176,6 @@ export const sendViewCart = (
   restaurantId
 ) => {
   try {
-    console.log(menus);
     const analyticsData = {
       currency: "JPY",
       value: orderInfo.total,
@@ -186,7 +184,7 @@ export const sendViewCart = (
       }),
     };
     // console.log(analyticsData);
-    analyticsWrapper(firebase.analytics.EventName.VIEW_CART, analyticsData);
+    analyticsWrapper('view_cart', analyticsData);
   } catch (e) {
     console.log(e);
   }

@@ -5,7 +5,6 @@ import "firebase/compat/firestore";
 import "firebase/compat/storage";
 import "firebase/compat/auth";
 import "firebase/compat/functions";
-import "firebase/compat/analytics";
 
 import { firebaseConfig } from "@/config/project";
 
@@ -21,4 +20,3 @@ export const functions = firebase.functions();
 export const functionsJp = firebase.app().functions("asia-northeast1");
 export const authObject = firebase.auth;
 export const firestore = firebase.firestore;
-export const analytics = firebase.analytics();

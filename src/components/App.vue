@@ -287,7 +287,10 @@
 </template>
 
 <script>
-import { db, auth, functions, analytics } from "@/plugins/firebase.js";
+import { db, auth, functions } from "@/plugins/firebase.js";
+import { analytics } from "~/plugins/firebase9.js";
+import { logEvent, setUserProperties, setUserId, setCurrentScreen } from "firebase/analytics";
+
 import DialogBox from "~/components/DialogBox";
 import AudioPlay from "~/components/AudioPlay";
 import * as Sentry from "@sentry/browser";
@@ -478,12 +481,11 @@ export default {
       }
     },
     pingAnalytics() {
-      analytics.setCurrentScreen(document.title);
-      analytics.logEvent("page_view");
-      analytics.logEvent("screen_view", {
+      setCurrentScreen(analytics, document.title);
+      logEvent(analytics, "page_view");
+      logEvent(analytics, "screen_view", {
         app_name: "web",
         screen_name: document.title,
-        // app_version: version
       });
     },
   },
@@ -519,12 +521,12 @@ export default {
             console.error("getIdTokenResult", error);
             Sentry.captureException(error);
           });
-        analytics.setUserProperties({
+        setUserProperties(analytics, {
           role: !!user.email ? "admin" : "customer",
         });
-        analytics.setUserId(user.uid);
+        setUserId(analytics, user.uid);
       } else {
-        analytics.setUserProperties({ role: "anonymous" });
+        setUserProperties(analytics, { role: "anonymous" });
         console.log("authStateChanged: null");
         this.$store.commit("setUser", null);
       }
