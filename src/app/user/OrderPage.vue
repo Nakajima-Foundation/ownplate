@@ -819,7 +819,7 @@ import { lineAuthURL } from "~/plugins/line.js";
 
 import { costCal } from "~/plugins/commonUtils";
 
-import * as analyticsUtil from "~/plugins/analytics";
+import * as analyticsUtil from "~/lib/firebase/analytics";
 
 import isEmail from "validator/lib/isEmail";
 

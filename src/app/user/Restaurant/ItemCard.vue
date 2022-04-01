@@ -243,7 +243,7 @@
 import { mapGetters, mapMutations } from "vuex";
 import Price from "~/components/Price";
 import SharePopup from "~/app/user/Restaurant/SharePopup";
-import * as analyticsUtil from "~/plugins/analytics";
+import * as analyticsUtil from "~/lib/firebase/analytics";
 
 // menu UI algorithm
 //   init quantities = [0]

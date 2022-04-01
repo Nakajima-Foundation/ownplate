@@ -660,7 +660,7 @@ import CustomerInfo from "~/components/CustomerInfo";
 
 import { costCal } from "~/plugins/commonUtils";
 import { downloadOrderPdf, printOrder, data2UrlSchema } from "~/plugins/pdf2";
-import * as analyticsUtil from "~/plugins/analytics";
+import * as analyticsUtil from "~/lib/firebase/analytics";
 
 const timezone = moment.tz.guess();
 

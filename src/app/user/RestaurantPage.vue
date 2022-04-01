@@ -395,7 +395,7 @@ import { httpsCallable } from "firebase/functions";
 import { order_status } from "~/plugins/constant";
 
 import { ownPlateConfig } from "@/config/project";
-import * as analyticsUtil from "~/plugins/analytics";
+import * as analyticsUtil from "~/lib/firebase/analytics";
 
 export default {
   name: "ShopMenu",
