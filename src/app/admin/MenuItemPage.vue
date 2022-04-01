@@ -570,7 +570,7 @@ import {
   halfCharactors,
   formatOption,
   optionPrice,
-} from "~/plugins/strings.js";
+} from "~/utils/strings";
 import EditCategory from "~/app/admin/Menus/EditCategory";
 
 export default {

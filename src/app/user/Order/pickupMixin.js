@@ -1,4 +1,4 @@
-import { midNight } from "~/plugins/dateUtils.js";
+import { midNight } from "~/utils/dateUtils.js";
 import moment from "moment";
 export default {
   methods: {

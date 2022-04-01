@@ -629,36 +629,39 @@
 </template>
 
 <script>
-import { db, firestore } from "~/plugins/firebase.js";
+import { db, firestore } from "~/plugins/firebase";
 import { functionsJP } from "@/lib/firebase/firebase9";
 import { httpsCallable } from "firebase/functions";
-import BackButton from "~/components/BackButton";
-import OrderedItem from "~/app/admin/Order/OrderedItem";
 import {
   order_status,
   possible_transitions,
   timeEventMapping,
-} from "~/plugins/constant.js";
-import { nameOfOrder } from "~/plugins/strings.js";
+} from "~/plugins/constant";
+import {
+  nameOfOrder, 
+  formatOption
+} from "~/utils/strings";
 import {
   parsePhoneNumber,
   formatNational,
   formatURL,
-} from "~/plugins/phoneutil.js";
+} from "~/utils/phoneutil";
 import {
   stripeConfirmIntent,
   stripeCancelIntent,
   stripePaymentCancelIntent,
-} from "~/lib/stripe/stripe.js";
+} from "~/lib/stripe/stripe";
 import moment from "moment-timezone";
+
+import BackButton from "~/components/BackButton";
 import NotFound from "~/components/NotFound";
 import { ownPlateConfig } from "~/config/project";
 import NotificationIndex from "./Notifications/Index";
-import { formatOption } from "~/plugins/strings.js";
 import OrderInfo from "~/app/user/Order/OrderInfo";
+import OrderedItem from "~/app/admin/Order/OrderedItem";
 import CustomerInfo from "~/components/CustomerInfo";
 
-import { costCal } from "~/plugins/commonUtils";
+import { costCal } from "~/utils/commonUtils";
 import { downloadOrderPdf, printOrder, data2UrlSchema } from "~/lib/pdf/pdf2";
 import * as analyticsUtil from "~/lib/firebase/analytics";
 

@@ -224,7 +224,7 @@ import {
   parsePhoneNumber,
   formatNational,
   formatURL,
-} from "~/plugins/phoneutil.js";
+} from "~/utils/phoneutil.js";
 import { ownPlateConfig } from "@/config/project";
 import TransactionsAct from "~/app/user/TransactionsAct";
 

@@ -804,19 +804,19 @@ import CustomerInfo from "~/components/CustomerInfo";
 
 import OrderPageMap from "./OrderPageMap";
 
-import { db, firestore } from "~/plugins/firebase.js";
+import { db, firestore } from "~/plugins/firebase";
 import { functionsJP } from "@/lib/firebase/firebase9";
 import { httpsCallable } from "firebase/functions";
-import { order_status, order_status_keys } from "~/plugins/constant.js";
-import { nameOfOrder } from "~/plugins/strings.js";
+import { order_status, order_status_keys } from "~/plugins/constant";
+import { nameOfOrder } from "~/utils/strings";
 import {
   stripeCreateIntent,
   stripeCancelIntent,
   stripeReceipt,
-} from "~/lib/stripe/stripe.js";
-import { lineAuthURL } from "~/lib/line/line.js";
+} from "~/lib/stripe/stripe";
+import { lineAuthURL } from "~/lib/line/line";
 
-import { costCal } from "~/plugins/commonUtils";
+import { costCal } from "~/utils/commonUtils";
 
 import * as analyticsUtil from "~/lib/firebase/analytics";
 
@@ -826,7 +826,7 @@ import {
   parsePhoneNumber,
   formatNational,
   formatURL,
-} from "~/plugins/phoneutil.js";
+} from "~/utils/phoneutil";
 
 export default {
   name: "Order",

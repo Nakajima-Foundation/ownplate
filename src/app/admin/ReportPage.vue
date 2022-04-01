@@ -200,9 +200,9 @@
 import { db, firestore } from "~/plugins/firebase.js";
 import BackButton from "~/components/BackButton";
 import DownloadCsv from "~/components/DownloadCSV";
-import { nameOfOrder } from "~/plugins/strings.js";
+import { nameOfOrder } from "~/utils/strings.js";
 import { ownPlateConfig } from "~/config/project";
-import { midNightOfMonth } from "~/plugins/dateUtils.js";
+import { midNightOfMonth } from "~/utils/dateUtils.js";
 import moment from "moment";
 import ReportDetails from "~/app/admin/Order/ReportDetails";
 

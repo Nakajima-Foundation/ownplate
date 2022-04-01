@@ -41,12 +41,12 @@
 </template>
 
 <script>
-import { db } from "~/plugins/firebase.js";
+import { db } from "~/plugins/firebase";
 import DownloadCsv from "~/components/DownloadCSV";
 import moment from "moment";
-import { parsePhoneNumber, formatNational } from "~/plugins/phoneutil.js";
-import { nameOfOrder } from "~/plugins/strings.js";
-import { order_status } from "~/plugins/constant.js";
+import { parsePhoneNumber, formatNational } from "~/utils/phoneutil";
+import { nameOfOrder } from "~/utils/strings";
+import { order_status } from "~/plugins/constant";
 
 export default {
   components: {

@@ -1,7 +1,7 @@
 import pdfMake from "pdfmake/build/pdfmake.js";
 import _ from "lodash";
 
-import { parsePhoneNumber, formatNational } from "~/plugins/phoneutil.js";
+import { parsePhoneNumber, formatNational } from "~/utils/phoneutil.js";
 
 const fontHost = location.protocol + "//" + location.host + "/fonts/";
 

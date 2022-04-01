@@ -158,10 +158,10 @@
 </template>
 
 <script>
-import { nameOfOrder } from "~/plugins/strings.js";
-import { parsePhoneNumber, formatNational } from "~/plugins/phoneutil.js";
-import { db } from "~/plugins/firebase.js";
-import { order_status, order_status_keys } from "~/plugins/constant.js";
+import { nameOfOrder } from "~/utils/strings";
+import { parsePhoneNumber, formatNational } from "~/utils/phoneutil";
+import { db } from "~/plugins/firebase";
+import { order_status, order_status_keys } from "~/plugins/constant";
 
 export default {
   data() {

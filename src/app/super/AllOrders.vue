@@ -98,10 +98,10 @@
 
 <script>
 import BackButton from "~/components/BackButton";
-import { db } from "~/plugins/firebase.js";
+import { db } from "~/plugins/firebase";
 import OrderedInfo from "~/app/admin/Order/OrderedInfo";
-import { order_status, order_status_keys } from "~/plugins/constant.js";
-import { nameOfOrder } from "~/plugins/strings.js";
+import { order_status, order_status_keys } from "~/plugins/constant";
+import { nameOfOrder } from "~/utils/strings";
 import superMixin from "./SuperMixin";
 import DownloadCsv from "~/components/DownloadCSV";
 import moment from "moment";

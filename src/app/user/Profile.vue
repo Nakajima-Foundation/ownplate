@@ -212,7 +212,7 @@
 </template>
 
 <script>
-import { parsePhoneNumber, formatNational } from "~/plugins/phoneutil.js";
+import { parsePhoneNumber, formatNational } from "~/utils/phoneutil.js";
 import {
   db,
   auth,

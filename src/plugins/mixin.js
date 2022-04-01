@@ -1,13 +1,12 @@
 import Vue from "vue";
-import { storage } from "~/plugins/firebase.js";
+import { db, storage } from "~/plugins/firebase.js";
 import { firebaseConfig, ownPlateConfig } from "@/config/project";
-import { soundFiles, regionalSettings } from "~/plugins/constant.js";
+import { soundFiles, regionalSettings } from "~/plugins/constant";
 import moment from "moment";
 import * as Cookie from "cookie";
-import { db } from "~/plugins/firebase.js";
 
 import { defaultHeader } from "./header";
-import { formatOption } from "~/plugins/strings.js";
+import { formatOption } from "~/utils/strings";
 
 import { partners } from "~/plugins/constant";
 

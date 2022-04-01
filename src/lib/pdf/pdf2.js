@@ -1,11 +1,14 @@
-import pdfMake from "pdfmake/build/pdfmake.js";
+import pdfMake from "pdfmake/build/pdfmake";
 import moment from "moment";
-import { nameOfOrder } from "~/plugins/strings.js";
-import { formatOption, optionPrice } from "~/plugins/strings.js";
+import {
+  nameOfOrder,
+  formatOption,
+  optionPrice
+} from "~/utils/strings";
 
 import _ from "lodash";
 
-import { parsePhoneNumber, formatNational } from "~/plugins/phoneutil.js";
+import { parsePhoneNumber, formatNational } from "~/utils/phoneutil";
 
 const fontHost = location.protocol + "//" + location.host + "/fonts/";
 

@@ -100,7 +100,7 @@
 
 <script>
 import { db, firestore } from "~/plugins/firebase.js";
-import { midNight } from "~/plugins/dateUtils.js";
+import { midNight } from "~/utils/dateUtils.js";
 import OrderedInfo from "~/app/admin/Order/OrderedInfo";
 import BackButton from "~/components/BackButton";
 import { order_status } from "~/plugins/constant.js";
@@ -110,7 +110,7 @@ import {
   parsePhoneNumber,
   formatNational,
   formatURL,
-} from "~/plugins/phoneutil.js";
+} from "~/utils/phoneutil.js";
 
 export default {
   components: {

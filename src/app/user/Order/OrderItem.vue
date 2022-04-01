@@ -58,7 +58,7 @@
 <script>
 import store from "~/store/index.js";
 import { mapGetters, mapMutations } from "vuex";
-import { formatOption, optionPrice } from "~/plugins/strings.js";
+import { formatOption, optionPrice } from "~/utils/strings";
 
 export default {
   props: {
