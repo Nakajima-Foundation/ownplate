@@ -21,8 +21,8 @@
 <script>
 import DownloadCsv from "~/components/DownloadCSV";
 import moment from "moment";
-import { nameOfOrder } from "~/utils/strings.js";
-import { parsePhoneNumber, formatNational } from "~/utils/phoneutil.js";
+import { nameOfOrder } from "~/utils/strings";
+import { parsePhoneNumber, formatNational } from "~/utils/phoneutil";
 import { order_status } from "~/config/constant";
 
 export default {
