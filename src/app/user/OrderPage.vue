@@ -700,7 +700,7 @@
 </template>
 
 <script>
-import firebase from "firebase/app";
+import firebase from "firebase/compat/app";
 import ShopHeader from "~/app/user/Restaurant/ShopHeader";
 import OrderInfo from "~/app/user/Order/OrderInfo";
 import ShopInfo from "~/app/user/Restaurant/ShopInfo";

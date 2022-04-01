@@ -9,7 +9,7 @@
 
     <!-- Operators Logo -->
     <div class="align-center">
-      <img src="/Logo-SingularitySociety.svg" class="h-20 mt-8 mx-6" />
+      <img src="/Logo-SingularitySociety.svg" class="h-20 mt-8 m-auto" />
       <!-- <img src="/Logo-Itochu.svg" class="h-20 mt-8 mx-6" /> -->
     </div>
   </div>

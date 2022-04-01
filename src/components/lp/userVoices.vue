@@ -117,7 +117,7 @@
 
     <!-- Screenshots -->
     <div class="mx-6 mt-4 text-center">
-      <img src="/LP-Screenshots.png" class="rounded-2xl max-h-80" />
+      <img src="/LP-Screenshots.png" class="rounded-2xl max-h-80 m-auto" />
     </div>
 
     <!-- More -->

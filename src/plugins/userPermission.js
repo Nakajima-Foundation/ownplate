@@ -36,9 +36,6 @@ const mixin = {
       isUser() {
         return !!this.$store.getters.uidUser;
       },
-      isLiffUser() {
-        return (this.mode === "liff") && this.$store.state.claims.liffId;
-      },
       isNotSuperAdmin() {
         return this.$store.getters.isNotSuperAdmin;
       },

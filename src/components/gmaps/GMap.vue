@@ -7,7 +7,6 @@
 
 <script>
 import { Loader } from "@googlemaps/js-api-loader";
-import { MarkerClusterer } from "@googlemaps/markerclusterer";
 
 export default {
   props: {
@@ -21,12 +20,6 @@ export default {
     zoom: {
       type: Number,
       default: 10,
-    },
-    cluster: {
-      type: Object,
-      default: () => {
-        return {};
-      },
     },
     center: {
       type: Object,
@@ -43,7 +36,6 @@ export default {
     return {
       map: null,
       google: null,
-      markerCluster: null,
       markers: [],
       events: [
         "bounds_changed",
@@ -115,7 +107,6 @@ export default {
     },
 
     initChildren() {
-      if (this.markerCluster !== null) this.markerCluster.clearMarkers();
       if (this.markers.length > 0) this.markers = [];
 
       this.$children.forEach((child) => {
@@ -124,22 +115,8 @@ export default {
 
       this.map["markers"] = this.markers;
 
-      if (Object.keys(this.cluster).length > 0) {
-        this.initCluster()
-      }
     },
 
-    initCluster(){
-      const map = this.map;
-      const markers = this.markers.filter((m) => m.getVisible());
-      const clusterOptions = this.cluster.options;
-      if(this.markerCluster !== null) this.markerCluster.clearMarkers();
-      this.markerCluster = new MarkerClusterer({
-        map,
-        markers,
-        clusterOptions,
-      });
-    }
   },
 };
 </script>

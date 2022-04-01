@@ -121,7 +121,7 @@
 import { db, firestore, functions } from "~/plugins/firebase.js";
 import BackButton from "~/components/BackButton";
 import PickupMixin from "~/app/user/Order/pickupMixin";
-import firebase from "firebase/app";
+import firebase from "firebase/compat/app";
 
 import NotificationIndex from "./Notifications/Index";
 

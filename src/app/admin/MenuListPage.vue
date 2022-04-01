@@ -260,7 +260,7 @@ import TitleInput from "~/app/admin/Menus/TitleInput";
 import NotFound from "~/components/NotFound";
 import BackButton from "~/components/BackButton";
 
-import firebase from "firebase/app";
+import firebase from "firebase/compat/app";
 import * as pdf from "../../plugins/pdf.js";
 
 import NotificationIndex from "./Notifications/Index";
