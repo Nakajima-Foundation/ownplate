@@ -919,7 +919,7 @@
 import Vue from "vue";
 import { db, storage, firestore } from "~/plugins/firebase.js";
 
-import * as API from "~/plugins/api";
+import { google_geocode } from "~/lib/google/api";
 import BackButton from "~/components/BackButton";
 import NotFound from "~/components/NotFound";
 import PhoneEntry from "~/components/PhoneEntry";
@@ -1506,7 +1506,7 @@ export default {
         this.shopInfo.state,
       ].join(",");
 
-      const res = await API.google_geocode(keyword);
+      const res = await google_geocode(keyword);
       if (res && res[0] && res[0].geometry) {
         this.searchResults = res;
         this.setCurrentLocation(res[0].geometry.location);

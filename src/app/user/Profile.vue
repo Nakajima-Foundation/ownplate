@@ -222,7 +222,7 @@ import {
 } from "~/plugins/firebase.js";
 import { ownPlateConfig } from "@/config/project";
 import PhoneLogin from "~/app/auth/PhoneLogin";
-import { lineAuthURL } from "~/plugins/line.js";
+import { lineAuthURL } from "~/lib/line/line.js";
 
 import HistoryButton from "@/components/users/HistoryButton";
 import FavoriteButton from "@/components/users/FavoriteButton";

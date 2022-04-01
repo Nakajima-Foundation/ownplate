@@ -113,7 +113,7 @@
 <script>
 import { db } from "~/plugins/firebase.js";
 import BackButton from "~/components/BackButton";
-import { lineAuthURL, lineVerify } from "~/plugins/line.js";
+import { lineAuthURL, lineVerify } from "~/lib/line/line.js";
 
 import NotificationIndex from "./Notifications/Index";
 

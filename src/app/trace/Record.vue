@@ -25,7 +25,7 @@
 import { ownPlateConfig } from "@/config/project";
 import { db, firestore, functions } from "~/plugins/firebase.js";
 import * as crypto from "crypto";
-import { lineAuthURL } from "~/plugins/line.js";
+import { lineAuthURL } from "~/lib/line/line.js";
 
 export default {
   data() {

@@ -814,7 +814,7 @@ import {
   stripeCancelIntent,
   stripeReceipt,
 } from "~/plugins/stripe.js";
-import { lineAuthURL } from "~/plugins/line.js";
+import { lineAuthURL } from "~/lib/line/line.js";
 
 import { costCal } from "~/plugins/commonUtils";
 
