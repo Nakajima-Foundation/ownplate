@@ -629,7 +629,9 @@
 </template>
 
 <script>
-import { db, functions, firestore } from "~/plugins/firebase.js";
+import { db, firestore } from "~/plugins/firebase.js";
+import { functionsJP } from "@/plugins/firebase9";
+import { httpsCallable } from "firebase/functions";
 import BackButton from "~/components/BackButton";
 import OrderedItem from "~/app/admin/Order/OrderedItem";
 import {
@@ -1099,7 +1101,7 @@ export default {
         this.handleStripe();
         return;
       }
-      const orderUpdate = functions.httpsCallable("orderUpdate");
+      const orderUpdate = httpsCallable(functionsJP, "orderUpdateJp");
       try {
         this.$store.commit("setLoading", true);
         const params = {
@@ -1160,7 +1162,7 @@ export default {
       this.$store.commit("setAlert", {
         title: "admin.order.confirmOrderChange",
         callback: async () => {
-          const orderChange = functions.httpsCallable("orderChange");
+          const orderChange = httpsCallable(functionsJP, "orderChangeJp");
           try {
             this.changing = true;
             this.$store.commit("setLoading", true);

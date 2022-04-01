@@ -60,7 +60,6 @@ export const sendBeginCheckoout = (price, menus, shopInfo, restaurantId) => {
         return sku_item_data2(item, shopInfo, restaurantId, item.quantity);
       }),
     };
-    console.log(analyticsData);
     analyticsWrapper(
       firebase.analytics.EventName.BEGIN_CHECKOUT,
       analyticsData
