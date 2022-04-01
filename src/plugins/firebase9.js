@@ -12,7 +12,8 @@ import { getFirestore } from "firebase/firestore";
 
 export const db = getFirestore();
 export const auth = getAuth();
-export const functions = getFunctions();
+export const functions = getFunctions(firebaseApp, "us-central1");
+export const functionsJP = getFunctions(firebaseApp, "asia-northeast1");
 export const analytics = getAnalytics();
 
 export default firebaseApp;

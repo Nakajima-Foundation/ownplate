@@ -388,8 +388,11 @@ import NotFound from "~/components/NotFound";
 import Price from "~/components/Price";
 
 import liff from "@line/liff";
-import { db, firestore, functions } from "~/plugins/firebase.js";
-import { order_status } from "~/plugins/constant.js";
+import { db, firestore } from "~/plugins/firebase";
+import { functionsJP } from "@/plugins/firebase9";
+import { httpsCallable } from "firebase/functions";
+
+import { order_status } from "~/plugins/constant";
 
 import { ownPlateConfig } from "@/config/project";
 import * as analyticsUtil from "~/plugins/analytics";
@@ -818,7 +821,7 @@ export default {
             options: this.selectedOptions,
           },
         });
-        const wasOrderCreated = functions.httpsCallable("wasOrderCreated2");
+        const wasOrderCreated = httpsCallable(functionsJP, "wasOrderCreatedJp");
         await wasOrderCreated({
           restaurantId: this.restaurantId(),
           orderId: res.id,

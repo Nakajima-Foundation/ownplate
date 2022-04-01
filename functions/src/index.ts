@@ -25,12 +25,14 @@ exportIfNeeded("lineVerifyFriend", "line/lineVerifyFriend", exports);
 exportIfNeeded("lineValidate", "lineValidate", exports);
 exportIfNeeded("lineAuthenticate", "lineAuthenticate", exports);
 exportIfNeeded("lineSetCustomClaim", "line/lineSetCustomClaim", exports);
-exportIfNeeded("liffAuthenticate", "liffAuthenticate", exports);
+exportIfNeeded("liffAuthenticate", "liffAuthenticate", exports); // jp
 exportIfNeeded("traceProcess", "traceProcess", exports);
 
-exportIfNeeded("wasOrderCreated2", "order/wasOrderCreated2", exports);
+exportIfNeeded("wasOrderCreated2", "order/wasOrderCreated2", exports); // TODO REMOVE
+exportIfNeeded("wasOrderCreatedJp", "order/wasOrderCreatedJp", exports); // jp
 exportIfNeeded("orderUpdate", "order/orderUpdate", exports);
-exportIfNeeded("orderPlace", "order/orderPlace", exports);
+exportIfNeeded("orderPlace", "order/orderPlace", exports); // TODO Remove
+exportIfNeeded("orderPlaceJp", "order/orderPlaceJp", exports);
 
 exportIfNeeded("orderChange", "stripe/orderChange", exports);
 

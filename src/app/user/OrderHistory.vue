@@ -32,7 +32,14 @@
 
 <script>
 import { db } from "~/plugins/firebase9.js";
-import { collectionGroup, query, onSnapshot, where, orderBy, limit } from "firebase/firestore";
+import {
+  collectionGroup,
+  query,
+  onSnapshot,
+  where,
+  orderBy,
+  limit,
+} from "firebase/firestore";
 
 import OrderedInfo from "~/app/admin/Order/OrderedInfo";
 import PhoneLogin from "~/app/auth/PhoneLogin";
@@ -80,7 +87,7 @@ export default {
       if (this.uid) {
         this.detacher = onSnapshot(
           query(
-            collectionGroup(db,"orders"),
+            collectionGroup(db, "orders"),
             where("uid", "==", this.uid),
             orderBy("orderPlacedAt", "desc"),
             limit(200)
@@ -98,7 +105,7 @@ export default {
                 order.timeEstimated = order.timeEstimated.toDate();
               }
               return order;
-            })
+            });
           }
         );
       } else {

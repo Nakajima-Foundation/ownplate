@@ -804,7 +804,9 @@ import CustomerInfo from "~/components/CustomerInfo";
 
 import OrderPageMap from "./OrderPageMap";
 
-import { db, firestore, functions } from "~/plugins/firebase.js";
+import { db, firestore } from "~/plugins/firebase.js";
+import { functionsJP } from "@/plugins/firebase9";
+import { httpsCallable } from "firebase/functions";
 import { order_status, order_status_keys } from "~/plugins/constant.js";
 import { nameOfOrder } from "~/plugins/strings.js";
 import { releaseConfig } from "~/plugins/config.js";
@@ -1327,7 +1329,7 @@ export default {
       const timeToPickup = this.shopInfo.isEC
         ? firebase.firestore.Timestamp.now()
         : this.$refs.time.timeToPickup();
-      const orderPlace = functions.httpsCallable("orderPlace");
+      const orderPlace = httpsCallable(functionsJP, "orderPlaceJp");
       try {
         this.isPlacing = true;
         const { data } = await orderPlace({
