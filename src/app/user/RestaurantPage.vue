@@ -392,7 +392,7 @@ import { db, firestore } from "~/plugins/firebase";
 import { functionsJP } from "@/lib/firebase/firebase9";
 import { httpsCallable } from "firebase/functions";
 
-import { order_status } from "~/plugins/constant";
+import { order_status } from "~/config/constant";
 
 import { ownPlateConfig } from "@/config/project";
 import * as analyticsUtil from "~/lib/firebase/analytics";

@@ -169,7 +169,7 @@
   </div>
 </template>
 <script>
-import { daysOfWeek } from "~/plugins/constant.js";
+import { daysOfWeek } from "~/config/constant";
 import { db } from "~/plugins/firebase.js";
 import { parsePhoneNumber, formatNational } from "~/utils/phoneutil.js";
 

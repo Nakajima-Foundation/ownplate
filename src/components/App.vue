@@ -287,15 +287,15 @@
 </template>
 
 <script>
-import { db, auth, functions } from "@/plugins/firebase.js";
+import { db, auth, functions } from "@/plugins/firebase";
 import { analytics } from "@/lib/firebase/firebase9";
 import { logEvent, setUserProperties, setUserId, setCurrentScreen } from "firebase/analytics";
 
-import DialogBox from "~/components/DialogBox";
-import AudioPlay from "~/components/AudioPlay";
+import DialogBox from "@/components/DialogBox";
+import AudioPlay from "@/components/AudioPlay";
 import * as Sentry from "@sentry/browser";
 import { ownPlateConfig } from "@/config/project";
-import { defaultHeader } from "../plugins/header";
+import { defaultHeader } from "@/config/header";
 
 export default {
   components: {

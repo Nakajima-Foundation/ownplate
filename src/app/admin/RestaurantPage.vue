@@ -937,7 +937,7 @@ import {
   daysOfWeek,
   reservationTheDayBefore,
   minimumCookTimeChoices,
-} from "~/plugins/constant.js";
+} from "~/config/constant";
 
 export default {
   name: "Order",

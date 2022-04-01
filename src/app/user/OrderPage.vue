@@ -807,7 +807,7 @@ import OrderPageMap from "./OrderPageMap";
 import { db, firestore } from "~/plugins/firebase";
 import { functionsJP } from "@/lib/firebase/firebase9";
 import { httpsCallable } from "firebase/functions";
-import { order_status, order_status_keys } from "~/plugins/constant";
+import { order_status, order_status_keys } from "~/config/constant";
 import { nameOfOrder } from "~/utils/strings";
 import {
   stripeCreateIntent,

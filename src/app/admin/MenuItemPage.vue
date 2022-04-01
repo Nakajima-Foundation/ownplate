@@ -563,7 +563,7 @@ import firebase from "firebase/compat/app";
 import NotFound from "~/components/NotFound";
 import BackButton from "~/components/BackButton";
 import Price from "~/components/Price";
-import { taxRates } from "~/plugins/constant.js";
+import { taxRates } from "~/config/constant";
 import NotificationIndex from "./Notifications/Index";
 import { ownPlateConfig } from "@/config/project";
 import {

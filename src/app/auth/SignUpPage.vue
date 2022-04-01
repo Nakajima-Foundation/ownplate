@@ -158,7 +158,7 @@
 <script>
 import isEmail from "validator/lib/isEmail";
 import { db, auth, firestore } from "~/plugins/firebase.js";
-import { partners } from "~/plugins/constant";
+import { partners } from "~/config/constant";
 
 export default {
   name: "Signup",

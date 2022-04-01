@@ -60,7 +60,7 @@
 
 <script>
 import { db } from "~/plugins/firebase.js";
-import { RestaurantHeader } from "~/plugins/header.js";
+import { RestaurantHeader } from "~/config/header";
 import AreaItem from "~/app/user/Restaurants/AreaItem";
 import { ownPlateConfig } from "@/config/project";
 import BackButton from "~/components/BackButton";

@@ -190,7 +190,7 @@
 </template>
 
 <script>
-import { defaultHeader } from "../../plugins/header";
+import { defaultHeader } from "../../config/header";
 
 export default {
   metaInfo() {

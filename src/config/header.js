@@ -1,4 +1,4 @@
-import { ownPlateConfig, gtmID } from "../config/project";
+import { ownPlateConfig, gtmID } from "@/config/project";
 
 const hostName = ownPlateConfig.hostName;
 

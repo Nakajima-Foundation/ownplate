@@ -5,7 +5,7 @@ import store from "@/store/index";
 
 // plugins
 import mixin from "@/plugins/mixin";
-import userPermission from "@/plugins/userPermission";
+import userPermission from "@/plugins/userPermissionMixin";
 import i18n from "@/plugins/vue-i18n";
 
 // library

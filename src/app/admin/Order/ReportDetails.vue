@@ -46,7 +46,7 @@ import DownloadCsv from "~/components/DownloadCSV";
 import moment from "moment";
 import { parsePhoneNumber, formatNational } from "~/utils/phoneutil";
 import { nameOfOrder } from "~/utils/strings";
-import { order_status } from "~/plugins/constant";
+import { order_status } from "~/config/constant";
 
 export default {
   components: {

@@ -65,7 +65,7 @@
 
 <script>
 import { db } from "~/plugins/firebase.js";
-import { JPPrefecture, USStates } from "~/plugins/constant";
+import { JPPrefecture, USStates } from "~/config/constant";
 import { restaurant2AreaObj, sortRestaurantObj } from "./RestaurantUtils";
 import Map from "~/components/Map";
 

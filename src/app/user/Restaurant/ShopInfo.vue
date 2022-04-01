@@ -219,7 +219,7 @@
 </template>
 
 <script>
-import { daysOfWeek } from "~/plugins/constant.js";
+import { daysOfWeek } from "~/config/constant";
 import {
   parsePhoneNumber,
   formatNational,

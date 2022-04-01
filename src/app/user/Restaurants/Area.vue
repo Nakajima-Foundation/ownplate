@@ -52,7 +52,7 @@
 
 <script>
 import { db, storage, firestore } from "~/plugins/firebase.js";
-import { defaultHeader } from "../../../plugins/header";
+import { defaultHeader } from "../../../config/header";
 import Map from "~/components/Map";
 
 export default {

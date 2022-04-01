@@ -2,7 +2,7 @@
 
 <script>
 import { db, firestore } from "~/plugins/firebase.js";
-import { soundFiles } from "~/plugins/constant.js";
+import { soundFiles } from "~/config/constant";
 
 export default {
   props: {

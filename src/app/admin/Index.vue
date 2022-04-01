@@ -489,7 +489,7 @@
 <script>
 import { db, firestore, functions } from "~/plugins/firebase.js";
 import RestaurantEditCard from "~/app/admin/Restaurant/RestaurantEditCard";
-import { order_status } from "~/plugins/constant.js";
+import { order_status } from "~/config/constant";
 import { midNight } from "~/utils/dateUtils.js";
 import { ownPlateConfig } from "@/config/project";
 import PaymentSection from "~/app/admin/Payment/PaymentSection";

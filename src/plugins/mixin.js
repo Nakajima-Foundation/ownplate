@@ -1,14 +1,14 @@
 import Vue from "vue";
-import { db, storage } from "~/plugins/firebase.js";
+import { db, storage } from "@/plugins/firebase";
 import { firebaseConfig, ownPlateConfig } from "@/config/project";
-import { soundFiles, regionalSettings } from "~/plugins/constant";
+import { soundFiles, regionalSettings } from "@/config/constant";
 import moment from "moment";
 import * as Cookie from "cookie";
 
-import { defaultHeader } from "./header";
-import { formatOption } from "~/utils/strings";
+import { defaultHeader } from "@/config/header";
+import { formatOption } from "@/utils/strings";
 
-import { partners } from "~/plugins/constant";
+import { partners } from "@/config/constant";
 
 const mixin = {
   methods: {

@@ -122,7 +122,7 @@ import { db, firestore } from "~/plugins/firebase.js";
 import { midNight } from "~/utils/dateUtils.js";
 import OrderedInfo from "~/app/admin/Order/OrderedInfo";
 import BackButton from "~/components/BackButton";
-import { order_status } from "~/plugins/constant.js";
+import { order_status } from "~/config/constant";
 import moment from "moment";
 
 import NotificationIndex from "./Notifications/Index";

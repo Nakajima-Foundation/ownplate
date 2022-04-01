@@ -6,7 +6,7 @@ import i18nES from "../../lang/es.json";
 import i18nJA from "../../lang/ja.json";
 import i18nFR from "../../lang/fr.json";
 
-import * as constant from "./constant.js";
+import * as constant from "@/config/constant.js";
 
 import { ownPlateConfig } from "@/config/project";
 

@@ -636,7 +636,7 @@ import {
   order_status,
   possible_transitions,
   timeEventMapping,
-} from "~/plugins/constant";
+} from "~/config/constant";
 import {
   nameOfOrder, 
   formatOption

@@ -192,7 +192,7 @@
 </template>
 
 <script>
-import { order_status } from "~/plugins/constant.js";
+import { order_status } from "~/config/constant";
 import OrderItem from "~/app/user/Order/OrderItem";
 
 export default {
