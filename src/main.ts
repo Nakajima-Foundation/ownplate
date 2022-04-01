@@ -4,8 +4,8 @@ import router from "@/router";
 import store from "@/store/index";
 
 // plugins
-import mixin from "@/plugins/mixin";
-import userPermission from "@/plugins/userPermissionMixin";
+import mixin from "@/mixins/mixin";
+import userPermission from "@/mixins/userPermissionMixin";
 import i18n from "@/plugins/vue-i18n";
 
 // library

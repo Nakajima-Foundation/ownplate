@@ -18,9 +18,9 @@
 <script>
 // TODO: 通知の状況もわかるようにする
 //
-import BackButton from "~/components/BackButton";
-import superMixin from "./SuperMixin";
-import { db, functions } from "~/plugins/firebase.js";
+import BackButton from "@/components/BackButton";
+import superMixin from "@/mixins/SuperMixin";
+import { db, functions } from "@/plugins/firebase";
 
 export default {
   mixins: [superMixin],

@@ -219,18 +219,18 @@
 </template>
 
 <script>
-import { daysOfWeek } from "~/config/constant";
+import { daysOfWeek } from "@/config/constant";
 import {
   parsePhoneNumber,
   formatNational,
   formatURL,
 } from "~/utils/phoneutil";
 import { ownPlateConfig } from "@/config/project";
-import TransactionsAct from "~/app/user/TransactionsAct";
+import TransactionsAct from "@/app/user/TransactionsAct";
 
 import { db } from "~/plugins/firebase.js";
 
-import PickupMixin from "../Order/pickupMixin";
+import PickupMixin from "@/mixins/pickupMixin";
 
 import moment from "moment";
 
