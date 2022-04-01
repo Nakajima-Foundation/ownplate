@@ -2,7 +2,7 @@
   <div>
     <!-- User Voices Title -->
     <div
-      class="text-center mt-16 text-2xl font-bold text-black opacity-40 lg:text-3xl"
+      class="text-center mt-8 text-2xl font-bold text-black opacity-40 lg:text-3xl"
     >
       {{ $t("lp.customerVoice1") }}
       <br />{{ $t("lp.customerVoice2") }}

@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-6 text-center">
+  <div class="text-center">
     <router-link to="/u/history">
       <div
         class="inline-flex justify-center items-center h-16 rounded-full bg-op-teal shadow"

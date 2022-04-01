@@ -4,14 +4,17 @@
     <div class="max-w-screen-xl mx-auto">
       <div class="mx-6 mt-6 text-center lg:grid lg:grid-cols-3 lg:gap-4">
         <!-- For Food Lovers -->
-        <entrance-buttons-food-lovers />
-
-        <div class="bg-white rounded-lg mt-4 lg:col-span-2">
+        <div class="mb-4 lg:mb-0">
+          <entrance-buttons-food-lovers />
+        </div>
+        <div class="bg-white rounded-lg lg:col-span-2">
           <!-- Order History -->
-          <history-button />
+          <div class="pt-6 pb-6">
+            <history-button />
 
-          <!-- Favorites -->
-          <favorite-button />
+            <!-- Favorites -->
+            <favorite-button />
+          </div>
         </div>
       </div>
 

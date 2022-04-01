@@ -1,13 +1,13 @@
 <template>
   <div>
-    <!-- User Voices Title -->
+    <!-- Demo -->
     <div
-      class="text-center mt-16 text-2xl font-bold text-black opacity-40 lg:text-3xl"
+      class="text-center mt-8 text-2xl font-bold text-black opacity-40 lg:text-3xl"
     >
       {{ $t("lp.demoVideo") }}
     </div>
 
-    <!-- User Voices Hero -->
+    <!-- Demo Videos -->
     <div class="bg-white mt-6 mx-6 rounded-2xl p-6 lg:flex lg:space-x-6">
       <div class="text-center mt-4 lg:mt-0 lg:flex-shrink-0">
         <div>
