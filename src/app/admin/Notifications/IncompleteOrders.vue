@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { midNight } from "~/utils/dateUtils.js";
+import { midNight } from "~/utils/dateUtils";
 import moment from "moment";
 
 export default {

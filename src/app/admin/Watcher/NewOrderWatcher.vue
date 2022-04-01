@@ -2,7 +2,7 @@
 
 <script>
 import { db, firestore } from "~/plugins/firebase.js";
-import { midNight } from "~/utils/dateUtils.js";
+import { midNight } from "~/utils/dateUtils";
 import { order_status } from "~/config/constant";
 
 export default {

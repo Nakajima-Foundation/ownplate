@@ -100,7 +100,7 @@
 
 <script>
 import { db, firestore } from "~/plugins/firebase.js";
-import { midNight } from "~/utils/dateUtils.js";
+import { midNight } from "~/utils/dateUtils";
 import OrderedInfo from "~/app/admin/Order/OrderedInfo";
 import BackButton from "~/components/BackButton";
 import { order_status } from "~/config/constant";
