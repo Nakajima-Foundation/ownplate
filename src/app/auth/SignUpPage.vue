@@ -162,7 +162,7 @@ import { partners } from "~/plugins/constant";
 
 export default {
   name: "Signup",
-  head() {
+  metaInfo() {
     return {
       title: [
         this.defaultTitle, "Signup"

@@ -51,7 +51,7 @@ import { db } from "~/plugins/firebase.js";
 import firebase from "firebase/app";
 
 export default {
-  head() {
+  metaInfo() {
     return {
       title: [this.defaultTitle, "Super All Requests"].join(" / ")
     }

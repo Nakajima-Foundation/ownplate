@@ -12,8 +12,7 @@ import { formatOption } from "~/plugins/strings.js";
 import { partners } from "~/plugins/constant";
 import { releaseConfig } from "~/plugins/config.js";
 
-export default ({ app }) => {
-  Vue.mixin({
+const mixin = {
     methods: {
       isNull(value) {
         return value === null || value === undefined;
@@ -99,11 +98,12 @@ export default ({ app }) => {
         }, {});
       },
       copyClipboard: async function (text) {
+        // TODO: check no-nuxt branch
         try {
           await this.$copyText(text);
-          this.$buefy.toast.open(app.i18n.tc('shopInfo.UrlCopied'));
+          this.$buefy.toast.open(this.i18n.tc('shopInfo.UrlCopied'));
         } catch (e) {
-          this.$buefy.toast.open(app.i18n.tc('shopInfo.UrlCopyFailed'));
+          this.$buefy.toast.open(this.i18n.tc('shopInfo.UrlCopyFailed'));
         }
       },
       forcedError(key) {
@@ -341,8 +341,9 @@ export default ({ app }) => {
         ];
       },
       gmapKey() {
-        return process.env.gapikey;
+        return process.env.VUE_APP_GAPIKey;
       },
     }
-  });
-}
+};
+
+export default  mixin;

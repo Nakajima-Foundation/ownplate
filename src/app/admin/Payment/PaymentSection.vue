@@ -196,7 +196,7 @@ export default {
       const params = {
         response_type: "code",
         scope: "read_write",
-        client_id: process.env.STRIPE_CLIENT_ID,
+        client_id: process.env.VUE_APP_STRIPE_CLIENT_ID,
         state: "s" + Math.random(),
         redirect_uri: encodeURI(this.redirectURI)
       };
@@ -221,7 +221,7 @@ export default {
           try {
             this.$store.commit("setLoading", true);
             const { data } = await stripeDisconnect({
-              STRIPE_CLIENT_ID: process.env.STRIPE_CLIENT_ID
+              STRIPE_CLIENT_ID: process.env.VUE_APP_STRIPE_CLIENT_ID
             });
             console.log(data);
             // TODO: show connected view

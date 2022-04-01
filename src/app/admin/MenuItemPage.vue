@@ -20,7 +20,7 @@
         <!-- Cancel Button -->
         <b-button
           class="b-reset-tw"
-          tag="nuxt-link"
+          tag="router-link"
           :to="`/admin/restaurants/${this.restaurantId()}/menus`"
         >
           <div
@@ -492,7 +492,7 @@
         <!-- Cancel Button -->
         <b-button
           class="b-reset-tw"
-          tag="nuxt-link"
+          tag="router-link"
           :to="`/admin/restaurants/${this.restaurantId()}/menus`"
         >
           <div
@@ -574,7 +574,7 @@ import EditCategory from "~/app/admin/Menus/EditCategory";
 
 export default {
   name: "Order",
-  head() {
+  metaInfo() {
     return {
       title: this.menuInfo.itemName ?
         ["Admin Menu Item", this.menuInfo.itemName, this.restaurantInfo.restaurantName , this.defaultTitle].join(" / ") : this.defaultTitle

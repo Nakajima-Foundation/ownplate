@@ -463,7 +463,7 @@
 import { defaultHeader } from "../../plugins/header";
 
 export default {
-  head() {
+  metaInfo() {
     return {
       title: [this.$t("pageTitle.terms.admin") || "", defaultHeader.title].join(
         " / "

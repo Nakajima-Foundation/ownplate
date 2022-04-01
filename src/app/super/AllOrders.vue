@@ -113,7 +113,7 @@ import DownloadCsv from "~/components/DownloadCSV";
 import moment from "moment";
 
 export default {
-  head() {
+  metaInfo() {
     return {
       title: [this.defaultTitle, "Super All Orders"].join(" / ")
     }

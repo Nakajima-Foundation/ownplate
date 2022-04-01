@@ -1,3 +1,8 @@
+import Vue from 'vue';
+import VueRouter from 'vue-router';
+
+Vue.use(VueRouter);
+
 const getUserPages = (prefix) => {
   return [
     {
@@ -25,6 +30,11 @@ const getUserPages = (prefix) => {
 };
 
 export const customRoutes = [
+  {
+    name: "top",
+    path: "/",
+    component: "top.vue"
+  },
   {
     name: "r",
     path: "/r",
@@ -372,3 +382,34 @@ export const customRoutes = [
     component: "common/404.vue"
   }
 ];
+
+
+const loadComponent = (data) => {
+  const component = () => import("@/app/" + data.component);
+  // 
+  if (data.children) {
+    return {
+      path: data.path,
+      component,
+      children: data.children.map((child) => {
+        return loadComponent(child);
+      }),
+    };
+  }
+
+  return {
+    path: data.path,
+    name: data.name,
+    component,
+  };
+};
+
+const routes = customRoutes.map(loadComponent);
+
+const router = new VueRouter({
+  mode: 'history',
+  base: "/",
+  routes
+});
+
+export default router;

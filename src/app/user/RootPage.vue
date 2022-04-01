@@ -147,7 +147,7 @@ export default {
             ]
     };
   },
-  head() {
+  metaInfo() {
     const title = [
       this.$t("pageTitle.restaurantRoot"),
       ownPlateConfig.siteName

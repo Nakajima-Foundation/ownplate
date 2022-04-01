@@ -44,7 +44,7 @@
     </div>
 
     <div class="mt-6 mx-6">
-      <nuxt-link :to="'/r'">
+      <router-link :to="'/r'">
         <div
           class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
         >
@@ -53,7 +53,7 @@
             $t("find.areaTop")
           }}</span>
         </div>
-      </nuxt-link>
+      </router-link>
     </div>
   </div>
 </template>
@@ -76,7 +76,7 @@ export default {
       restaurants: []
     };
   },
-  head() {
+  metaInfo() {
     const title = [
       this.$t("pageTitle.restaurantRoot"),
       ownPlateConfig.siteName

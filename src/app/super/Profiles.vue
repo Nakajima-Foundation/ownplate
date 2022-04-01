@@ -8,7 +8,7 @@
       <tr v-for="profile in profiles" :key="profile.uid">
         <td>{{profile.email}}</td>
         <td>
-          <nuxt-link :to="`/s/admins/${profile.uid}`">{{profile.uid}}</nuxt-link>
+          <router-link :to="`/s/admins/${profile.uid}`">{{profile.uid}}</router-link>
         </td>
       </tr>
     </table>
@@ -20,7 +20,7 @@ import BackButton from "~/components/BackButton";
 import { db } from "~/plugins/firebase.js";
 
 export default {
-  head() {
+  metaInfo() {
     return {
       title: [this.defaultTitle, "Super All Profiles"].join(" / ")
     }

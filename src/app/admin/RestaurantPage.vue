@@ -19,7 +19,7 @@
         <!-- Cancel Button -->
         <b-button
           class="b-reset-tw"
-          tag="nuxt-link"
+          tag="router-link"
           :to="`/admin/restaurants/`"
         >
           <div
@@ -855,7 +855,7 @@
         <!-- Cancel Button -->
         <b-button
           class="b-reset-tw"
-          tag="nuxt-link"
+          tag="router-link"
           :to="`/admin/restaurants/`"
         >
           <div
@@ -949,7 +949,7 @@ export default {
     PhoneEntry,
     Price
   },
-  head() {
+  metaInfo() {
     return {
       title: this.shopInfo.restaurantName ?
         ["Admin Restaurant", this.shopInfo.restaurantName , this.defaultTitle].join(" / ") : this.defaultTitle

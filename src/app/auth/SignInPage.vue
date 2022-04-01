@@ -129,7 +129,7 @@ import { auth } from "~/plugins/firebase.js";
 
 export default {
   name: "Signin",
-  head() {
+  metaInfo() {
     return {
       title: [
         this.defaultTitle, "Signin Admin"

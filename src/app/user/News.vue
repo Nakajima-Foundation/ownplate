@@ -6,7 +6,7 @@
     <template v-else>
       <!-- Header -->
       <div class="mt-6 mx-6 flex items-center space-x-4">
-        <nuxt-link :to="'/'">
+        <router-link :to="'/'">
           <div
             class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
           >
@@ -15,7 +15,7 @@
               {{ $t("button.back") }}
             </div>
           </div>
-        </nuxt-link>
+        </router-link>
 
       </div>
 
@@ -38,7 +38,7 @@ import MarkdownIt from "markdown-it";
 import newsList from "../admin/News/data";
 
 export default {
-  head() {
+  metaInfo() {
     return {
       title: ["News", this.defaultTitle].join(" / ")
     };
@@ -54,7 +54,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-/deep/ .article-list h2 {
+/*
+  /deep/ .article-list h2 {
   @apply text-xl font-bold text-black text-opacity-30 mb-8;
 }
 
@@ -77,4 +78,5 @@ export default {
 /deep/ .article-list > ul > li ul li {
   @apply text-base font-normal text-black mt-4;
 }
+*/
 </style>

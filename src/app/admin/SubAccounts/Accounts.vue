@@ -15,17 +15,16 @@
       </div>
     </div>
 
-    <!-- Order Status -->
-
+    <!-- Sub Account list -->
     <div class="mx-6 mt-6">
       <div class="mt-2 text-base font-bold">
         {{ $t("admin.subAccounts.subaccountlist") }}
       </div>
       <div v-for="(child, k) in children" :key="k" class="flex items-center">
-        <nuxt-link :to="`/admin/subaccounts/accounts/${child.id}`">
+        <router-link :to="`/admin/subaccounts/accounts/${child.id}`">
           {{child.name}}/{{child.email}}/{{rList(child.restaurantLists)}}
           {{$t("admin.subAccounts.messageResult." + (child.accepted === true ? "accepted" : "waiting"))}}
-        </nuxt-link>
+        </router-link>
         <b-button @click="deleteChild(child.id)">
            {{ $t("admin.subAccounts.deleteSubaccount")}}
         </b-button>
@@ -50,7 +49,7 @@
                                                 :placeholder="$t('admin.subAccounts.enterEmail')"
                                                 ></b-input>
         <div class="text-xs font-bold text-red-700">
-          * 招待されるサブアカウントは、事前にユーザ登録をする必要があります
+          * {{ $t("admin.subAccounts.accountNotice") }}
         </div>
         <div>
           <b-button @click="invite" :disabled="sending">
@@ -85,7 +84,7 @@ import BackButton from "~/components/BackButton";
 import { db, functions } from "~/plugins/firebase.js";
 
 export default {
-  head() {
+  metaInfo() {
     return {
       title: [this.defaultTitle, "Admin Subaccount Accounts"].join(" / ")
     }
@@ -135,23 +134,21 @@ export default {
   },
   methods: {
     deleteChild(childId) {
-      console.log(childId);
       this.$store.commit("setAlert", {
         code: "admin.subAccounts.confirmDeletechild",
         callback: async () => {
           this.$store.commit("setLoading", true);
-          console.log("A");
           const subAccountDeleteChildFunc = functions.httpsCallable("subAccountDeleteChild");
-          console.log("B");
           await subAccountDeleteChildFunc({childUid: childId});
-          console.log("C");
           this.$store.commit("setLoading", false);
         }
       });
     },
     rList(restaurantLists) {
       return (restaurantLists ||[]).map((r) => {
-        return this.restaurantObj[r].restaurantName;
+        return this.restaurantObj[r]?.restaurantName;
+      }).filter((name) => {
+        return !!name;
       }).slice(0,2).join(",");
     },
     async invite() {

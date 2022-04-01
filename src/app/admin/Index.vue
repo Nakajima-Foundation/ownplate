@@ -2,15 +2,15 @@
   <div v-if="$store.getters.uidAdmin">
     <!-- Welcome -->
 
-    <div v-if="partner.length > 0" class="mt-2">
+    <div v-if="partner.length > 0" class="mt-2 mb-1">
       <div v-for="(part, k) in partner" :key="k" class="flex">
-        <div class="flex-1">
+        <div class="flex-1 ml-4">
           <img :src="`/partners/${part.logo}`" class="w-12"/>
           <span class="font-bold">
             {{part.name}}
           </span>
         </div>
-        <div class="text-right font-bold" v-if="part.ask">
+        <div class="text-right font-bold mr-4" v-if="part.ask">
           <a href="#" @click="openContact()">サポート問い合わせ</a>
         </div>
       </div>
@@ -91,18 +91,18 @@
         </div>
 
         <div>
-          <nuxt-link :to="'/admin/news/'">
+          <router-link :to="'/admin/news/'">
             <span class="text-sm font-bold">{{
               $t("admin.news.newsTop")
             }}</span>
-          </nuxt-link>
+          </router-link>
         </div>
       </div>
 
       <div class="mt-2">
-        <nuxt-link :to="'/admin/news/' + news.date">
+        <router-link :to="'/admin/news/' + news.date">
           <span class="text-base font-bold">{{ news.title }}</span>
-        </nuxt-link>
+        </router-link>
       </div>
     </div>
 
@@ -171,7 +171,7 @@
           <!-- Existing Restaurant -->
           <div v-if="existsRestaurant">
             <div v-if="restaurantLists.length > 1" class="mb-2">
-              <nuxt-link :to="'/admin/orders/'">
+              <router-link :to="'/admin/orders/'">
                 <div
                   class="bg-black bg-opacity-5 rounded-lg px-4 py-3 text-center"
                 >
@@ -179,7 +179,7 @@
                     $t("admin.viewAllOrders")
                   }}</span>
                 </div>
-              </nuxt-link>
+              </router-link>
             </div>
 
             <div class="grid grid-cols-1 space-y-2">
@@ -514,7 +514,7 @@ export default {
     MessageCard,
     PartnersContact
   },
-  head() {
+  metaInfo() {
     return {
       title: ["Admin Index", this.defaultTitle].join(" / ")
     }
@@ -586,7 +586,7 @@ export default {
               tmp[doc.id] = data;
               return tmp;
             }, {});
-
+            
             if (this.isOwner && Object.keys(this.restaurantLists).length === 0) {
               this.restaurantLists = Object.keys(this.restaurantItems);
             }
@@ -629,7 +629,6 @@ export default {
           } finally {
             this.readyToDisplay = true;
           }
-          console.log(this.restaurantItems);
         });
     } catch (error) {
       console.log("Error fetch doc,", error);

@@ -89,7 +89,7 @@ export default {
     DownloadCsv,
     BackButton
   },
-  head() {
+  metaInfo() {
     return {
       title: ["Admin All Order", this.defaultTitle].join(" / ")
     }

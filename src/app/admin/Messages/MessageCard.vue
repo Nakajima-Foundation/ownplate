@@ -3,7 +3,7 @@
     <div v-if="message.type==='childInvitation'">
       {{moment(message.createdAt.toDate()).format("YYYY/MM/DD HH:mm")}}<br/>
       {{$t('admin.messages.childInvitationMessage1')}}<br/>
-      <nuxt-link :to="'/o/' + message.fromUid">{{$t('admin.messages.childInvitationMessage2')}}</nuxt-link><br/>
+      <router-link :to="'/o/' + message.fromUid">{{$t('admin.messages.childInvitationMessage2')}}</router-link><br/>
       {{$t('admin.messages.childInvitationMessage3')}}<br/>
       <b-button @click="childInvitationAccept">{{$t('admin.messages.accept')}}</b-button>
       <b-button @click="childInvitationDeny">{{$t('admin.messages.deny')}}</b-button>

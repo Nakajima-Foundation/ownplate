@@ -67,7 +67,7 @@ import home from "~/app/home/home";
 
 export default {
   name: "HomePage",
-  head() {
+  metaInfo() {
     return {
       title: [
         this.defaultTitle, "Top"

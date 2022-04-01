@@ -149,7 +149,7 @@ export default {
     BackButton,
     NotificationIndex
   },
-  head() {
+  metaInfo() {
     return {
       title: this.restaurant.restaurantName ?
         ["Admin QRCode", this.restaurant.restaurantName , this.defaultTitle].join(" / ") : this.defaultTitle

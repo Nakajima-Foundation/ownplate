@@ -735,7 +735,7 @@ import {
 
 export default {
   name: "Order",
-  head() {
+  metaInfo() {
     return {
       title: this.shopInfo?.restaurantName && this.statusKey ?
         [
@@ -783,7 +783,7 @@ export default {
     },
     mode: {
       type: String,
-      required: true
+      required: false
     },
   },
   data() {

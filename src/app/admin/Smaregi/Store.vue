@@ -69,7 +69,7 @@ export default {
     BackButton
   },
   name: "Smaregi-store",
-  head() {
+  metaInfo() {
     return {
       title: [this.defaultTitle, "Admin Smaregi Store"].join(" / ")
     }

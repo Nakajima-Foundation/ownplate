@@ -16,7 +16,7 @@ export default {
   props: {
     mode: {
       type: String,
-      required: true
+      required: false
     },
   },
   data() {

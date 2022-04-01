@@ -30,7 +30,7 @@
 <script>
 import { functions } from "~/plugins/firebase.js";
 export default {
-  head() {
+  metaInfo() {
     return {
       title: [this.defaultTitle, "Super Index"].join(" / ")
     }

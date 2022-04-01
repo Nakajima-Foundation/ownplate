@@ -16,7 +16,7 @@
         </span>
         <b-input
           v-model="name"
-          :placeholder="$t('SubAccounts.enterName')"
+          :placeholder="$t('admin.subAccounts.enterName')"
           ></b-input>
 
         <span class="text-base font-bold">
@@ -50,7 +50,7 @@ export default {
   components: {
     BackButton
   },
-  head() {
+  metaInfo() {
     return {
       title: [this.defaultTitle, "Admin Subaccount Account"].join(" / ")
     }
@@ -78,11 +78,6 @@ export default {
     }
   },
   methods: {
-    rList(restaurantLists) {
-      return (restaurantLists||[]).map((r) => {
-        return this.restaurantObj[r];
-      });
-    },
     async saveList() {
       await db.doc(`admins/${this.uid}/children/${this.subAccountId}`).update({
         restaurantLists: this.newRestaurantList,

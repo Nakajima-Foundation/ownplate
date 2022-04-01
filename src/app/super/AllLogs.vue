@@ -10,7 +10,7 @@
         </td>
         <td class="p-l-8">{{log.success ? "success": log.error}}</td>
         <td class="p-l-8">
-          <nuxt-link :to="`/s/admins/${log.uid}`">{{log.email || log.uid}}</nuxt-link>
+          <router-link :to="`/s/admins/${log.uid}`">{{log.email || log.uid}}</router-link>
         </td>
         <td class="p-l-8">{{log.uidSuper.slice(0,8) + "..."}}</td>
       </tr>
@@ -23,7 +23,7 @@ import BackButton from "~/components/BackButton";
 import { db } from "~/plugins/firebase.js";
 
 export default {
-  head() {
+  metaInfo() {
     return {
       title: [this.defaultTitle, "Super All Log"].join(" / ")
     }

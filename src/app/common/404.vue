@@ -5,7 +5,7 @@
 <script>
 import NotFound from "~/components/NotFound";
 export default {
-  head() {
+  metaInfo() {
     return {
       title: [this.defaultTitle, "404"].join(" / ")
     }

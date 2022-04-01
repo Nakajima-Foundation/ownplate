@@ -3,7 +3,7 @@
     <back-button url="/s" />
 
     <div v-for="(admin, k) in admins">
-      <nuxt-link :to="`/s/admins/${admin.id}`">{{admin.name}}</nuxt-link> {{admin.partners}} {{admin.created.toDate()}}
+      <router-link :to="`/s/admins/${admin.id}`">{{admin.name}}</router-link> {{admin.partners}} {{admin.created.toDate()}}
     </div>
 
   </section>
@@ -21,7 +21,7 @@ export default {
   components: {
     BackButton
   },
-  head() {
+  metaInfo() {
     return {
       title: [this.defaultTitle, "Super Partners"].join(" / ")
     }

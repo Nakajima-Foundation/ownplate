@@ -72,7 +72,7 @@ import { auth } from "~/plugins/firebase.js";
 
 export default {
   name: "Reset",
-  head() {
+  metaInfo() {
     return {
       title: [
         this.defaultTitle, "Reset Password"

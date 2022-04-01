@@ -15,7 +15,7 @@
 
       <tr v-for="admin in admins" :key="admin.id">
         <td style="padding-right:8px">
-          <nuxt-link :to="`/s/admins/${admin.id}`">{{admin.name || "(no name)"}}</nuxt-link>
+          <router-link :to="`/s/admins/${admin.id}`">{{admin.name || "(no name)"}}</router-link>
         </td>
         <td style="padding-right:8px">{{profile(admin).email}}</td>
         <td style="padding-right:8px">{{moment(admin.created.toDate()).format("YYYY/MM/DD HH:mm")}}</td>
@@ -55,7 +55,7 @@ export default {
   components: {
     BackButton
   },
-  head() {
+  metaInfo() {
     return {
       title: [this.defaultTitle, "Super All Admin"].join(" / ")
     }

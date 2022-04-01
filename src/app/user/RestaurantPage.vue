@@ -362,10 +362,10 @@ export default {
     },
     mode: {
       type: String,
-      required: true
+      required: false,
     },
   },
-  head() {
+  metaInfo() {
     // TODO: add area to header
     return {
       title:
