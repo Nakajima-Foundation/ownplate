@@ -19,7 +19,6 @@
   "dependencies": {
     "@chenfengyuan/vue-qrcode": "^1.0.2",
     "@googlemaps/js-api-loader": "^1.13.10",
-    "@johmun/vue-tags-input": "^2.1.0",
     "@line/liff": "^2.18.2",
     "@sentry/browser": "^5.15.5",
     "@sentry/integrations": "^5.15.5",
