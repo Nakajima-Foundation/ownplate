@@ -110,7 +110,7 @@ import {
   parsePhoneNumber,
   formatNational,
   formatURL,
-} from "~/utils/phoneutil.js";
+} from "~/utils/phoneutil";
 
 export default {
   components: {

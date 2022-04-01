@@ -171,7 +171,7 @@
 <script>
 import { daysOfWeek } from "~/config/constant";
 import { db } from "~/plugins/firebase.js";
-import { parsePhoneNumber, formatNational } from "~/utils/phoneutil.js";
+import { parsePhoneNumber, formatNational } from "~/utils/phoneutil";
 
 export default {
   data() {
