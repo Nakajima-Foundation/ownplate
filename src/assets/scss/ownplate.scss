@@ -388,7 +388,12 @@ body,
 
 // Keep this class for Tailwind CSS
 .button.b-reset-tw,
-
+.button.b-reset-tw.nuxt-link-active {
+  padding: 0;
+  background-color: initial;
+  border: 0;
+  height: initial;
+}
 .button.b-reset-tw > span {
   font-weight: bold;
 }
