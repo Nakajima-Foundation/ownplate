@@ -29,12 +29,15 @@ exportIfNeeded("liffAuthenticate", "liffAuthenticate", exports); // jp
 exportIfNeeded("traceProcess", "traceProcess", exports);
 
 exportIfNeeded("wasOrderCreated2", "order/wasOrderCreated2", exports); // TODO REMOVE
-exportIfNeeded("wasOrderCreatedJp", "order/wasOrderCreatedJp", exports); // jp
 exportIfNeeded("orderUpdate", "order/orderUpdate", exports);
 exportIfNeeded("orderPlace", "order/orderPlace", exports); // TODO Remove
-exportIfNeeded("orderPlaceJp", "order/orderPlaceJp", exports);
+
+exportIfNeeded("wasOrderCreatedJp", "order/wasOrderCreatedJp", exports); // jp
+exportIfNeeded("orderUpdateJp", "order/orderUpdateJp", exports);
+exportIfNeeded("orderPlaceJp", "order/orderPlaceJp", exports); // TODO Remove
 
 exportIfNeeded("orderChange", "stripe/orderChange", exports);
+exportIfNeeded("orderChangeJp", "stripe/orderChangeJp", exports);
 
 exportIfNeeded("stripeConnect", "stripe/stripeConnect", exports);
 exportIfNeeded("stripeDisconnect", "stripe/stripeDisconnect", exports);
