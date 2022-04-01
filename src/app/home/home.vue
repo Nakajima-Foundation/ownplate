@@ -35,7 +35,7 @@
             </div>
 
             <!-- Go to User Page -->
-            <div class="align-center" v-if="!hideUsersLink">
+            <div class="align-center">
               <router-link to="/r">
                 <div class="op-button-medium primary" style="min-width: 256px">
                   <span class="c-onprimary">{{ $t("menu.users") }}</span>
@@ -180,12 +180,5 @@
 </template>
 
 <script>
-import { releaseConfig } from "~/plugins/config.js";
-export default {
-  computed: {
-    hideUsersLink() {
-      return releaseConfig.hideUsersLink;
-    },
-  },
-};
+export default {};
 </script>

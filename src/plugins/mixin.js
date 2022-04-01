@@ -10,7 +10,6 @@ import { defaultHeader } from "./header";
 import { formatOption } from "~/plugins/strings.js";
 
 import { partners } from "~/plugins/constant";
-import { releaseConfig } from "~/plugins/config.js";
 
 const mixin = {
   methods: {
@@ -260,7 +259,7 @@ const mixin = {
   },
   computed: {
     underConstruction() {
-      return releaseConfig.underConstruction;
+      return ownPlateConfig.releasName === "beta-dev";
     },
     defaultTitle() {
       return defaultHeader.title;

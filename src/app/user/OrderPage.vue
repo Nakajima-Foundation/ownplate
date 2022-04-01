@@ -809,7 +809,6 @@ import { functionsJP } from "@/lib/firebase/firebase9";
 import { httpsCallable } from "firebase/functions";
 import { order_status, order_status_keys } from "~/plugins/constant.js";
 import { nameOfOrder } from "~/plugins/strings.js";
-import { releaseConfig } from "~/plugins/config.js";
 import {
   stripeCreateIntent,
   stripeCancelIntent,
@@ -963,8 +962,7 @@ export default {
       return undefined; // backward compatibility
     },
     showPayment() {
-      //console.log("payment", releaseConfig.hidePayment, this.stripeAccount);
-      return !releaseConfig.hidePayment && this.stripeAccount;
+      return this.stripeAccount;
     },
     stripeAccount() {
       return this.paymentInfo.stripe;

@@ -229,7 +229,6 @@ import { ownPlateConfig } from "@/config/project";
 import TransactionsAct from "~/app/user/TransactionsAct";
 
 import { db } from "~/plugins/firebase.js";
-import { releaseConfig } from "~/plugins/config.js";
 
 import PickupMixin from "../Order/pickupMixin";
 
@@ -355,7 +354,7 @@ export default {
       return ownPlateConfig.region;
     },
     showPayment() {
-      return !releaseConfig.hidePayment && this.stripeAccount;
+      return this.stripeAccount;
     },
     stripeAccount() {
       return this.paymentInfo.stripe;

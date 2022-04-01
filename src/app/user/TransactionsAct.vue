@@ -172,7 +172,6 @@
 import { daysOfWeek } from "~/plugins/constant.js";
 import { db } from "~/plugins/firebase.js";
 import { parsePhoneNumber, formatNational } from "~/plugins/phoneutil.js";
-import { releaseConfig } from "~/plugins/config.js";
 
 export default {
   data() {
@@ -239,8 +238,7 @@ export default {
       return this.$store.getters.stripeRegion.countries;
     },
     showPayment() {
-      //console.log("payment", releaseConfig.hidePayment, this.stripeAccount);
-      return !releaseConfig.hidePayment && this.stripeAccount;
+      return this.stripeAccount;
     },
     stripeAccount() {
       return this.paymentInfo.stripe;

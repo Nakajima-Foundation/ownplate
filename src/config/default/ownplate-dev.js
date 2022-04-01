@@ -13,7 +13,6 @@ export const ownPlateConfig = {
   siteName: "OwnPlate",
   restaurantPageTitle: "OwnPlate",
   siteDescription: "Zero Comission Take-out Service",
-  releasName: "beta-dev",
   region: "JP",
   hostName: "staging.ownplate.today",
   stripe: {
