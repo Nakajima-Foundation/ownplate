@@ -805,7 +805,7 @@ import CustomerInfo from "~/components/CustomerInfo";
 import OrderPageMap from "./OrderPageMap";
 
 import { db, firestore } from "~/plugins/firebase.js";
-import { functionsJP } from "@/plugins/firebase9";
+import { functionsJP } from "@/lib/firebase/firebase9";
 import { httpsCallable } from "firebase/functions";
 import { order_status, order_status_keys } from "~/plugins/constant.js";
 import { nameOfOrder } from "~/plugins/strings.js";

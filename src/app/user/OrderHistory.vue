@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { db } from "~/plugins/firebase9.js";
+import { db } from "@/lib/firebase/firebase9";
 import {
   collectionGroup,
   query,

@@ -1,4 +1,4 @@
-import { analytics } from "~/plugins/firebase9.js";
+import { analytics } from "~/lib/firebase/firebase9";
 import { logEvent } from "firebase/analytics";
 // see https://firebase.google.com/docs/analytics/measure-ecommerce
 

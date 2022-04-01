@@ -28,7 +28,7 @@
 import liff from "@line/liff";
 import { db, auth } from "~/plugins/firebase.js";
 
-import { functionsJP } from "@/plugins/firebase9";
+import { functionsJP } from "@/lib/firebase/firebase9";
 import { httpsCallable } from "firebase/functions";
 
 import queryString from "query-string";

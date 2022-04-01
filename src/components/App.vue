@@ -288,7 +288,7 @@
 
 <script>
 import { db, auth, functions } from "@/plugins/firebase.js";
-import { analytics } from "~/plugins/firebase9.js";
+import { analytics } from "@/lib/firebase/firebase9";
 import { logEvent, setUserProperties, setUserId, setCurrentScreen } from "firebase/analytics";
 
 import DialogBox from "~/components/DialogBox";

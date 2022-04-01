@@ -389,7 +389,7 @@ import Price from "~/components/Price";
 
 import liff from "@line/liff";
 import { db, firestore } from "~/plugins/firebase";
-import { functionsJP } from "@/plugins/firebase9";
+import { functionsJP } from "@/lib/firebase/firebase9";
 import { httpsCallable } from "firebase/functions";
 
 import { order_status } from "~/plugins/constant";

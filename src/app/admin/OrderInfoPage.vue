@@ -630,7 +630,7 @@
 
 <script>
 import { db, firestore } from "~/plugins/firebase.js";
-import { functionsJP } from "@/plugins/firebase9";
+import { functionsJP } from "@/lib/firebase/firebase9";
 import { httpsCallable } from "firebase/functions";
 import BackButton from "~/components/BackButton";
 import OrderedItem from "~/app/admin/Order/OrderedItem";
