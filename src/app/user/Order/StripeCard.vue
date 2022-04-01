@@ -104,7 +104,7 @@
 </template>
 
 <script>
-import { getStripeInstance, stripeUpdateCustomer } from "~/plugins/stripe.js";
+import { getStripeInstance, stripeUpdateCustomer } from "~/lib/stripe/stripe.js";
 import { functions, db } from "~/plugins/firebase.js";
 
 export default {

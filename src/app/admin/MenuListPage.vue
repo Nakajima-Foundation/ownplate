@@ -261,7 +261,7 @@ import NotFound from "~/components/NotFound";
 import BackButton from "~/components/BackButton";
 
 import firebase from "firebase/compat/app";
-import * as pdf from "../../plugins/pdf.js";
+import * as pdf from "@/lib/pdf/pdf.js";
 
 import NotificationIndex from "./Notifications/Index";
 

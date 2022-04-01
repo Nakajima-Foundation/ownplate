@@ -10,8 +10,8 @@
 <script>
 import { db } from "~/plugins/firebase.js";
 
-import * as pdf from "../../plugins/pdf.js";
-import * as pdf2 from "../../plugins/pdf2.js";
+import * as pdf from "@/lib/pdf/pdf.js";
+import * as pdf2 from "@/lib/pdf/pdf2.js";
 
 export default {
   name: "pdf",

@@ -813,7 +813,7 @@ import {
   stripeCreateIntent,
   stripeCancelIntent,
   stripeReceipt,
-} from "~/plugins/stripe.js";
+} from "~/lib/stripe/stripe.js";
 import { lineAuthURL } from "~/lib/line/line.js";
 
 import { costCal } from "~/plugins/commonUtils";

@@ -52,7 +52,7 @@
 <script>
 import BackButton from "~/components/BackButton";
 import { db } from "~/plugins/firebase.js";
-import { stripeVerify } from "~/plugins/stripe.js";
+import { stripeVerify } from "~/lib/stripe/stripe.js";
 
 import superMixin from "./SuperMixin";
 

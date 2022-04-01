@@ -14,7 +14,7 @@
 <script>
 import BackButton from "~/components/BackButton";
 import { db } from "~/plugins/firebase.js";
-import { stripeActionStrings } from "~/plugins/stripe";
+import { stripeActionStrings } from "~/lib/stripe/stripe";
 export default {
   metaInfo() {
     return {

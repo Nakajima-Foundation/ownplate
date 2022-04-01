@@ -93,7 +93,7 @@
 
 <script>
 import { db, firestore, functions } from "~/plugins/firebase.js";
-import { stripeConnect, stripeDisconnect } from "~/plugins/stripe.js";
+import { stripeConnect, stripeDisconnect } from "~/lib/stripe/stripe.js";
 import { ownPlateConfig } from "~/config/project";
 import * as Cookie from "cookie";
 

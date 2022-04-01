@@ -649,7 +649,7 @@ import {
   stripeConfirmIntent,
   stripeCancelIntent,
   stripePaymentCancelIntent,
-} from "~/plugins/stripe.js";
+} from "~/lib/stripe/stripe.js";
 import moment from "moment-timezone";
 import NotFound from "~/components/NotFound";
 import { ownPlateConfig } from "~/config/project";
@@ -659,7 +659,7 @@ import OrderInfo from "~/app/user/Order/OrderInfo";
 import CustomerInfo from "~/components/CustomerInfo";
 
 import { costCal } from "~/plugins/commonUtils";
-import { downloadOrderPdf, printOrder, data2UrlSchema } from "~/plugins/pdf2";
+import { downloadOrderPdf, printOrder, data2UrlSchema } from "~/lib/pdf/pdf2";
 import * as analyticsUtil from "~/lib/firebase/analytics";
 
 const timezone = moment.tz.guess();
