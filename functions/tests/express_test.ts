@@ -167,7 +167,7 @@ describe("express function", () => {
     const meta_tag = test_helper.parse_meta(restaurant_response.text);
 
     meta_tag["og:title"].should.not.empty;
-    meta_tag["og:title"].should.equal("Good cafe / テイクアウト・お持ち帰り / おもちかえり.com");
+    meta_tag["og:title"].should.equal("Good cafe / OwnPlate");
     meta_tag["og:site_name"].should.not.empty;
     meta_tag["og:type"].should.not.empty;
     meta_tag["og:image"].should.equal("https://example.com/images600");
@@ -199,7 +199,7 @@ describe("express function", () => {
     const meta_tag = test_helper.parse_meta(restaurant_response.text);
 
     meta_tag["og:title"].should.not.empty;
-    meta_tag["og:title"].should.equal(good_cafe_data.restaurantName + " / テイクアウト・お持ち帰り / おもちかえり.com");
+    meta_tag["og:title"].should.equal(good_cafe_data.restaurantName + " / OwnPlate");
     meta_tag["og:site_name"].should.not.empty;
     meta_tag["og:type"].should.not.empty;
     meta_tag["og:image"].should.equal("https://example.com/images600");
