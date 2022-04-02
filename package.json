@@ -52,6 +52,7 @@
     "@babel/plugin-transform-runtime": "^7.7.6",
     "@babel/preset-env": "^7.16.11",
     "@babel/runtime": "^7.17.8",
+    "@types/cookie": "^0.4.1",
     "@types/google-libphonenumber": "^7.4.23",
     "@vue/cli": "^5.0.4",
     "@vue/cli-plugin-typescript": "~5.0.4",

@@ -13,8 +13,8 @@
 
 <script>
 import { ownPlateConfig } from "@/config/project";
-import { db, auth, firestore, functions } from "~/plugins/firebase.js";
-import { lineGuard } from "~/lib/line/line.js";
+import { db, auth, firestore, functions } from "~/plugins/firebase";
+import { lineGuard } from "~/lib/line/line";
 
 export default {
   data() {

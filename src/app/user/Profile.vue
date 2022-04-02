@@ -219,10 +219,10 @@ import {
   firestore,
   functions,
   functionsJp,
-} from "~/plugins/firebase.js";
+} from "~/plugins/firebase";
 import { ownPlateConfig } from "@/config/project";
 import PhoneLogin from "~/app/auth/PhoneLogin";
-import { lineAuthURL } from "~/lib/line/line.js";
+import { lineAuthURL } from "~/lib/line/line";
 
 import HistoryButton from "@/components/users/HistoryButton";
 import FavoriteButton from "@/components/users/FavoriteButton";
