@@ -1,4 +1,4 @@
-interface MenuData {
+export interface MenuData {
   itemDescription: string;
   itemName: string;
   itemPhoto: string;
