@@ -54,6 +54,8 @@
     "@babel/runtime": "^7.17.8",
     "@types/cookie": "^0.4.1",
     "@types/google-libphonenumber": "^7.4.23",
+    "@types/lodash": "^4.14.181",
+    "@types/pdfmake": "^0.1.21",
     "@vue/cli": "^5.0.4",
     "@vue/cli-plugin-typescript": "~5.0.4",
     "@vue/cli-service": "^5.0.4",

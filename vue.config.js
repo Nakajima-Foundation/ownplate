@@ -2,6 +2,9 @@ const path = require("path");
 const vueSrc = "./src";
 module.exports = {
   runtimeCompiler: true,
+  devServer: {
+    port: 3000
+  },
   css: {
     loaderOptions: {
       scss: {

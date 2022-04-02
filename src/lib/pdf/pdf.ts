@@ -1,7 +1,9 @@
-import pdfMake from "pdfmake/build/pdfmake.js";
+import pdfMake from "pdfmake/build/pdfmake";
 import _ from "lodash";
 
-import { parsePhoneNumber, formatNational } from "~/utils/phoneutil";
+import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
+
+import { RestaurantInfoData } from "@/models/RestaurantInfo"
 
 const fontHost = location.protocol + "//" + location.host + "/fonts/";
 
@@ -32,7 +34,7 @@ const tableOrangeElement = {
 
 const menuSize = 60;
 
-const convChar = (val) => {
+const convChar = (val: string) => {
   const regex =
     /[Ａ-Ｚａ-ｚ０-９！＂＃＄％＆＇（）＊＋，－．／：；＜＝＞？＠［＼］＾＿｀｛｜｝]/g;
 
@@ -87,11 +89,24 @@ const styles = {
   },
 };
 
+interface MenuData {
+  itemDescription: string;
+  itemName: string;
+  itemPhoto: string;
+  images: {
+    item: {
+      resizedImages: {
+        [key: string]: string;
+      };
+    };
+  };
+  price: number;
+};
 export const menuDownload = (
-  restaurantInfo,
-  menuObj,
-  nationalPhoneNumber,
-  shareUrl
+  restaurantInfo: RestaurantInfoData,
+  menuObj: {[key: string]: MenuData}, // TODO
+  nationalPhoneNumber: string,
+  shareUrl: string
 ) => {
   pdfMake.fonts = pdfFont;
 
@@ -102,12 +117,12 @@ export const menuDownload = (
           tmp.push(menuObj[itemKey]);
         }
         return tmp;
-      }, [])
+      }, [] as MenuData[])
       .slice(0, 6),
     2
   );
 
-  const images = {
+  const images: {[key: string]: string} = {
     headerLogo:
       location.protocol +
       "//" +
@@ -240,14 +255,15 @@ export const menuDownload = (
       },
       style: "centerMenu",
     },
+    {
+      text: "\n★★★ メニューの例 ★★★\n\n",
+      alignment: "center",
+      margin: [10, 0],
+    }
   ];
-  content.push({
-    text: "\n★★★ メニューの例 ★★★\n\n",
-    alignment: "center",
-    margin: [10, 0],
-  });
+  // content.push();
 
-  const menu2colum = (menu, image, key1, key2) => {
+  const menu2colum = (menu: MenuData, image: string, key1: string | number, key2: number) => {
     return [
       {
         width: "35%",
@@ -286,7 +302,7 @@ export const menuDownload = (
     ];
   };
   menus.forEach((menuPair, key) => {
-    const columns = [];
+    const columns = [] as any[];
     menuPair.forEach((m, key2) => {
       const image1 =
         (m?.images?.item?.resizedImages || {})["600"] ||
@@ -301,11 +317,11 @@ export const menuDownload = (
     });
 
     content.push({
-      columns,
+      columns: columns as any,
       columnGap: 10,
-      width: "50%",
+      width: "50%" as any,
       height: 200,
-    });
+    } as any);
   });
 
   const docDefinition = {
@@ -317,6 +333,6 @@ export const menuDownload = (
       font: "NotoSans",
       fontSize: 14,
     },
-  };
+  } as any;
   return pdfMake.createPdf(docDefinition).download();
 };

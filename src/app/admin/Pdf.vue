@@ -8,10 +8,10 @@
 </template>
 
 <script>
-import { db } from "~/plugins/firebase.js";
+import { db } from "~/plugins/firebase";
 
-import * as pdf from "@/lib/pdf/pdf.js";
-import * as pdf2 from "@/lib/pdf/pdf2.js";
+import * as pdf from "@/lib/pdf/pdf";
+import * as pdf2 from "@/lib/pdf/pdf2";
 
 export default {
   name: "pdf",

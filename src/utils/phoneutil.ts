@@ -2,22 +2,22 @@ import { PhoneNumberUtil, PhoneNumber, PhoneNumberFormat } from 'google-libphone
 
 const phoneUtil = PhoneNumberUtil.getInstance();
 
-export const parsePhoneNumber = (phoneNumber: string) => {
+export const parsePhoneNumber = (phoneNumber: string): PhoneNumber => {
   return phoneUtil.parse(phoneNumber);
 };
-export const intenationalFormat = (parsedNumber: PhoneNumber) => {
+export const intenationalFormat = (parsedNumber: PhoneNumber): string => {
   return phoneUtil.format(parsedNumber, PhoneNumberFormat.INTERNATIONAL);
 };
 
-const localPrefix = (phoneNumber: PhoneNumber) => {
+const localPrefix = (phoneNumber: PhoneNumber): string => {
   return phoneNumber.getCountryCode() == 81 ? "0" : "";
 };
 
-export const formatNational = (phoneNumber: PhoneNumber) => {
+export const formatNational = (phoneNumber: PhoneNumber): string => {
   return phoneUtil.format(phoneNumber, PhoneNumberFormat.NATIONAL);
 };
 
-export const formatURL = (phoneNumber: PhoneNumber) => {
+export const formatURL = (phoneNumber: PhoneNumber): string => {
   const prefix = localPrefix(phoneNumber);
   return "tel:" + prefix + phoneNumber.getNationalNumber();
 };
