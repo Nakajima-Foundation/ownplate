@@ -261,6 +261,7 @@ const ownerPage = async (req: any, res: any) => {
     res.send(template_data);
   }
 };
+// eslint-disable-next-line
 const debugError = async (req: any, res: any) => {
   // eslint-disable-line
   setTimeout(() => {

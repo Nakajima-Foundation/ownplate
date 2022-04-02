@@ -41,6 +41,7 @@ export const verifyFriend = async (db: admin.firestore.Firestore, data: any, con
   }
 };
 
+// eslint-disable-next-line
 export const authenticate = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => {
   // eslint-disable-line
   const { code, redirect_uri, client_id } = data;
