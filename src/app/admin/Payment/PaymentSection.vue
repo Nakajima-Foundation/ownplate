@@ -92,8 +92,8 @@
 </template>
 
 <script>
-import { db, firestore, functions } from "~/plugins/firebase.js";
-import { stripeConnect, stripeDisconnect } from "~/lib/stripe/stripe.js";
+import { db, firestore, functions } from "~/plugins/firebase";
+import { stripeConnect, stripeDisconnect } from "~/lib/stripe/stripe";
 import { ownPlateConfig } from "~/config/project";
 import * as Cookie from "cookie";
 

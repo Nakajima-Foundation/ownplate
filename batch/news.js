@@ -48,4 +48,4 @@ const files = fs.readdirSync(dirpath).filter((file) => {
 });
 fs.closeSync(release_note_fd);
 
-fs.writeFileSync('./src/app/admin/News/data.js', "const data = " + JSON.stringify(write_data) + ";\nexport default data;\n");
+fs.writeFileSync('./src/app/admin/News/data.ts', "const data = " + JSON.stringify(write_data) + ";\nexport default data;\n");

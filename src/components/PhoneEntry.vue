@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import { parsePhoneNumber } from "~/utils/phoneutil.js";
+import { parsePhoneNumber } from "~/utils/phoneutil";
 
 export default {
   props: {

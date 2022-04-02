@@ -111,9 +111,9 @@
 </template>
 
 <script>
-import { db } from "~/plugins/firebase.js";
+import { db } from "~/plugins/firebase";
 import BackButton from "~/components/BackButton";
-import { lineAuthURL, lineVerify } from "~/lib/line/line.js";
+import { lineAuthURL, lineVerify } from "~/lib/line/line";
 
 import NotificationIndex from "./Notifications/Index";
 

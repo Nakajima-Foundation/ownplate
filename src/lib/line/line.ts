@@ -1,7 +1,7 @@
 import { ownPlateConfig } from "@/config/project";
 import * as Cookie from "cookie";
 
-export const lineAuthURL = (path, options, channelId) => {
+export const lineAuthURL = (path: string, options: {[key: string]: string}, channelId: string) => {
   const state = "s" + Math.random();
   const nonce = "n" + Math.random();
   const query = {
@@ -12,7 +12,7 @@ export const lineAuthURL = (path, options, channelId) => {
     bot_prompt: "aggressive",
     state,
     nonce,
-  };
+  } as {[key: string]: string};
   const params = JSON.stringify(
     Object.assign({}, options || {}, { state, nonce })
   );
@@ -32,7 +32,7 @@ export const lineAuthURL = (path, options, channelId) => {
   return `https://access.line.me/oauth2/v2.1/authorize?${queryString}`;
 };
 
-export const lineGuard = (nonce, state) => {
+export const lineGuard = (nonce: string, state: string) => {
   const cookies = Cookie.parse(document.cookie);
   const params = JSON.parse(cookies.line_params);
 
@@ -44,7 +44,7 @@ export const lineGuard = (nonce, state) => {
   return params;
 };
 
-export const lineVerify = (state) => {
+export const lineVerify = (state: string) => {
   const cookies = Cookie.parse(document.cookie);
   const params = JSON.parse(cookies.line_params);
   //console.log("lineVerify", state, params.state);

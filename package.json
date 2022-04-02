@@ -1,20 +1,20 @@
 {
   "name": "OwnPlate",
   "version": "2.0.0",
+  "private": true,
   "description": "OwnPlate - Delicious food",
   "author": "OwnPlate developer team",
-  "private": true,
   "scripts": {
     "build": "vue-cli-service build && cp dist/index.html functions/templates/index.html",
-    "start": "vue-cli-service serve",
-    "format": "prettier --write 'src/**/*.{js,ts,vue}'",
-    "customclaims": "babel-node --presets @babel/env  ./batch/customclaims.js",
-    "makenews": "babel-node --presets @babel/env  ./batch/news.js",
-    "user": "babel-node --presets @babel/env  ./batch/user.js",
     "batch": "babel-node --presets @babel/env",
-    "use_staging": "firebase use staging && cp src/config/default/ownplate-dev.js src/config/project.js",
+    "customclaims": "babel-node --presets @babel/env  ./batch/customclaims.js",
+    "format": "prettier --write 'src/**/*.{js,ts,vue}'",
+    "makenews": "babel-node --presets @babel/env  ./batch/news.js",
+    "start": "vue-cli-service serve",
+    "use_jp": "firebase use jp && cp src/config/default/ownplate-jp.js src/config/project.js",
     "use_production": "firebase use production && cp src/config/default/ownplate.js src/config/project.js",
-    "use_jp": "firebase use jp && cp src/config/default/ownplate-jp.js src/config/project.js"
+    "use_staging": "firebase use staging && cp src/config/default/ownplate-dev.js src/config/project.js",
+    "user": "babel-node --presets @babel/env  ./batch/user.js"
   },
   "dependencies": {
     "@chenfengyuan/vue-qrcode": "^1.0.2",
@@ -22,6 +22,7 @@
     "@line/liff": "^2.18.2",
     "@sentry/browser": "^5.15.5",
     "@sentry/integrations": "^5.15.5",
+    "@vue/composition-api": "^1.4.9",
     "buefy": "^0.9.19",
     "bulma-social": "^1.0.1",
     "cookie": "^0.4.1",
@@ -51,7 +52,12 @@
     "@babel/plugin-transform-runtime": "^7.7.6",
     "@babel/preset-env": "^7.16.11",
     "@babel/runtime": "^7.17.8",
+    "@types/cookie": "^0.4.1",
+    "@types/google-libphonenumber": "^7.4.23",
+    "@types/lodash": "^4.14.181",
+    "@types/pdfmake": "^0.1.21",
     "@vue/cli": "^5.0.4",
+    "@vue/cli-plugin-typescript": "~5.0.4",
     "@vue/cli-service": "^5.0.4",
     "autoprefixer": "^10.4.4",
     "firebase-admin": "^10.0.2",
@@ -59,6 +65,7 @@
     "prettier": "^2.6.1",
     "raw-loader": "^4.0.2",
     "sass-loader": "^12.6.0",
-    "tailwindcss": "^3.0.23"
+    "tailwindcss": "^3.0.23",
+    "typescript": "~4.1.5"
   }
 }

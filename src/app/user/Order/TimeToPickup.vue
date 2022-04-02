@@ -36,7 +36,7 @@
 
 <script>
 import firebase from "firebase/compat/app";
-import PickupMixin from "./pickupMixin";
+import PickupMixin from "@/mixins/pickupMixin";
 
 export default {
   mixins: [PickupMixin],

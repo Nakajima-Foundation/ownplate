@@ -50,11 +50,11 @@
 </template>
 
 <script>
-import BackButton from "~/components/BackButton";
-import { db } from "~/plugins/firebase.js";
-import { stripeVerify } from "~/lib/stripe/stripe.js";
+import BackButton from "@/components/BackButton";
+import { db } from "@/plugins/firebase";
+import { stripeVerify } from "@/lib/stripe/stripe";
 
-import superMixin from "./SuperMixin";
+import superMixin from "@/mixins/SuperMixin";
 
 const QUERY_LIMIT = 50;
 

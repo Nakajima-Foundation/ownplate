@@ -1,9 +1,9 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-
+import { RouteConfig } from "vue-router";
 Vue.use(VueRouter);
 
-const getUserPages = (prefix) => {
+const getUserPages = (prefix: string) => {
   return [
     {
       path: "/",
@@ -28,8 +28,17 @@ const getUserPages = (prefix) => {
     },
   ];
 };
+interface CustomRoute {
+  name?: string;
+  path: string;
+  component: string;
+  children?: CustomRoute[];
+  props?: {
+    mode: string;
+  };
+}
 
-export const customRoutes = [
+export const customRoutes: CustomRoute[] = [
   {
     name: "top",
     path: "/",
@@ -383,14 +392,14 @@ export const customRoutes = [
   },
 ];
 
-const loadComponent = (data) => {
+const loadComponent = (data: CustomRoute): RouteConfig => {
   const component = () => import("@/app/" + data.component);
   //
   if (data.children) {
     return {
       path: data.path,
       component,
-      children: data.children.map((child) => {
+      children: data.children.map((child: CustomRoute) => {
         return loadComponent(child);
       }),
     };

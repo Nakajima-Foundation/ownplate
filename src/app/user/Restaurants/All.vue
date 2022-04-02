@@ -56,10 +56,10 @@
 </template>
 
 <script>
-import { db } from "~/plugins/firebase.js";
-import { RestaurantHeader } from "~/config/header";
-import { JPPrefecture, USStates } from "~/config/constant";
-import { restaurant2AreaObj, sortRestaurantObj } from "../RestaurantUtils";
+import { db } from "@/plugins/firebase";
+import { RestaurantHeader } from "@/config/header";
+import { JPPrefecture, USStates } from "@/config/constant";
+import { restaurant2AreaObj, sortRestaurantObj } from "@/utils/RestaurantUtils";
 
 export default {
   components: {},

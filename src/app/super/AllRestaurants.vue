@@ -88,11 +88,11 @@
 <script>
 // TODO: 通知の状況もわかるようにする
 //
-import BackButton from "~/components/BackButton";
-import { db } from "~/plugins/firebase.js";
+import BackButton from "@/components/BackButton";
+import { db } from "@/plugins/firebase.js";
 
-import superMixin from "./SuperMixin";
-import DownloadCsv from "~/components/DownloadCSV";
+import superMixin from "@/mixins/SuperMixin";
+import DownloadCsv from "@/components/DownloadCSV";
 
 export default {
   mixins: [superMixin],

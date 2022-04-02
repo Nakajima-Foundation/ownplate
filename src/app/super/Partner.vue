@@ -10,10 +10,10 @@
 </template>
 
 <script>
-import BackButton from "~/components/BackButton";
-import { db } from "~/plugins/firebase.js";
+import BackButton from "@/components/BackButton";
+import { db } from "@/plugins/firebase.js";
 
-import superMixin from "./SuperMixin";
+import superMixin from "@/mixins/SuperMixin";
 
 export default {
   mixins: [superMixin],

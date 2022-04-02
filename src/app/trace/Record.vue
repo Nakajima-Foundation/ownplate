@@ -23,9 +23,9 @@
 
 <script>
 import { ownPlateConfig } from "@/config/project";
-import { db, firestore, functions } from "~/plugins/firebase.js";
+import { db, firestore, functions } from "~/plugins/firebase";
 import * as crypto from "crypto";
-import { lineAuthURL } from "~/lib/line/line.js";
+import { lineAuthURL } from "~/lib/line/line";
 
 export default {
   data() {
