@@ -8,7 +8,7 @@
       "cp dist/index.html functions/templates/index.html",
       "cp src/config/constant.js functions/src/common/constant.js",
       "cp src/utils/phoneutil.ts functions/src/common/phoneutil.ts",
-      "cp src/utils/commonUtils.js functions/src/common/commonUtils.js",
+      "cp src/utils/commonUtils.ts functions/src/common/commonUtils.ts",
       "cp src/config/project.js functions/src/common/project.js",
       "npm --prefix \"$RESOURCE_DIR\" run lint",
       "npm --prefix \"$RESOURCE_DIR\" run build"

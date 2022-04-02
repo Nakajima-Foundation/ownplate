@@ -36,7 +36,7 @@ const tableOrangeElement = {
 
 const menuSize = 60;
 
-const convChar = (val: string) => {
+export const convChar = (val: string) => {
   const regex =
     /[Ａ-Ｚａ-ｚ０-９！＂＃＄％＆＇（）＊＋，－．／：；＜＝＞？＠［＼］＾＿｀｛｜｝]/g;
 

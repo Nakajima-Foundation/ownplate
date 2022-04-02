@@ -1,4 +1,4 @@
-import { analytics } from "~/lib/firebase/firebase9";
+import { analytics } from "@/lib/firebase/firebase9";
 import { logEvent } from "firebase/analytics";
 // see https://firebase.google.com/docs/analytics/measure-ecommerce
 
@@ -7,7 +7,18 @@ import { logEvent } from "firebase/analytics";
 // https://developers.google.com/gtagjs/reference/ga4-events#login
 // https://firebase.google.com/docs/reference/js/firebase.analytics.Analytics
 
-export const sku_item_data = (menu, shopInfo, restaurantId) => {
+import { MenuData } from "@/models/menu";
+import { OrderInfoData } from "@/models/orderInfo";
+import { RestaurantInfoData } from "@/models/RestaurantInfo";
+
+interface AnalyticsMenuData extends MenuData {
+  id: string;
+  quantity: number;
+}
+interface AnalyticsData {
+};
+
+export const sku_item_data = (menu: AnalyticsMenuData, shopInfo: RestaurantInfoData, restaurantId: string) => {
   return {
     item_id: "SKU_" + menu.id,
     item_name: menu.itemName,
@@ -16,7 +27,7 @@ export const sku_item_data = (menu, shopInfo, restaurantId) => {
     promotion_id: restaurantId,
   };
 };
-export const sku_item_data2 = (menu, shopInfo, restaurantId, quantity) => {
+export const sku_item_data2 = (menu: AnalyticsMenuData, shopInfo: RestaurantInfoData, restaurantId: string, quantity: number) => {
   return {
     item_id: "SKU_" + menu.id,
     item_name: menu.itemName,
@@ -27,18 +38,18 @@ export const sku_item_data2 = (menu, shopInfo, restaurantId, quantity) => {
   };
 };
 
-const analyticsWrapper = (eventName, data) => {
+const analyticsWrapper = (eventName: string, data: AnalyticsData) => {
   console.log(eventName, data);
   logEvent(analytics, eventName, data);
 };
 
-export const sendMenuListView = (menus, shopInfo, restaurantId) => {
+export const sendMenuListView = (menus: AnalyticsMenuData[], shopInfo: RestaurantInfoData, restaurantId: string) => {
   try {
     const analyticsData = {
       item_list_id: restaurantId,
       item_list_name: shopInfo.restaurantName,
-      items: menus.map((item) => {
-        return sku_item_data(item, shopInfo, restaurantId);
+      items: menus.map((menu) => {
+        return sku_item_data(menu, shopInfo, restaurantId);
       }),
     };
     analyticsWrapper("view_item_list", analyticsData);
@@ -47,13 +58,13 @@ export const sendMenuListView = (menus, shopInfo, restaurantId) => {
   }
 };
 
-export const sendBeginCheckoout = (price, menus, shopInfo, restaurantId) => {
+export const sendBeginCheckoout = (price: number, menus: AnalyticsMenuData[], shopInfo: RestaurantInfoData, restaurantId: string) => {
   try {
     const analyticsData = {
       currency: "JPY",
       value: price,
-      items: menus.map((item) => {
-        return sku_item_data2(item, shopInfo, restaurantId, item.quantity);
+      items: menus.map((menu) => {
+        return sku_item_data2(menu, shopInfo, restaurantId, menu.quantity);
       }),
     };
     analyticsWrapper("begin_checkout", analyticsData);
@@ -63,11 +74,11 @@ export const sendBeginCheckoout = (price, menus, shopInfo, restaurantId) => {
 };
 
 export const sendPurchase = (
-  orderInfo,
-  orderId,
-  menus,
-  shopInfo,
-  restaurantId
+  orderInfo: OrderInfoData,
+  orderId: string,
+  menus: AnalyticsMenuData[],
+  shopInfo: RestaurantInfoData,
+  restaurantId: string
 ) => {
   try {
     const analyticsData = {
@@ -76,8 +87,8 @@ export const sendPurchase = (
       currency: "JPY",
       value: orderInfo.total,
       tax: orderInfo.tax,
-      items: menus.map((item) => {
-        return sku_item_data2(item, shopInfo, restaurantId, item.quantity);
+      items: menus.map((menu) => {
+        return sku_item_data2(menu, shopInfo, restaurantId, menu.quantity);
       }),
     };
     // console.log(analyticsData);
@@ -87,7 +98,7 @@ export const sendPurchase = (
   }
 };
 
-export const sendRedunded = (orderInfo, orderId, shopInfo, restaurantId) => {
+export const sendRedunded = (orderInfo: OrderInfoData, orderId: string, shopInfo: RestaurantInfoData, restaurantId: string) => {
   try {
     const analyticsData = {
       transaction_id: orderId,
@@ -104,7 +115,7 @@ export const sendRedunded = (orderInfo, orderId, shopInfo, restaurantId) => {
 
 // LOGIN
 
-export const sendViewItem = (item, shopInfo, restaurantId) => {
+export const sendViewItem = (item: AnalyticsMenuData, shopInfo: RestaurantInfoData, restaurantId: string) => {
   // is open image
   try {
     const analyticsData = {
@@ -118,7 +129,7 @@ export const sendViewItem = (item, shopInfo, restaurantId) => {
   }
 };
 
-export const sendSelectItem = (item, shopInfo, restaurantId) => {
+export const sendSelectItem = (item: AnalyticsMenuData, shopInfo: RestaurantInfoData, restaurantId: string) => {
   // is open toggle
   try {
     const analyticsData = {
@@ -131,7 +142,7 @@ export const sendSelectItem = (item, shopInfo, restaurantId) => {
   }
 };
 
-export const sendAddToCart = (item, shopInfo, restaurantId, quantity) => {
+export const sendAddToCart = (item: AnalyticsMenuData, shopInfo: RestaurantInfoData, restaurantId: string, quantity: number) => {
   try {
     const analyticsData = {
       currency: "JPY",
@@ -145,7 +156,7 @@ export const sendAddToCart = (item, shopInfo, restaurantId, quantity) => {
   }
 };
 
-export const sendRemoveFromCart = (item, shopInfo, restaurantId, quantity) => {
+export const sendRemoveFromCart = (item: AnalyticsMenuData, shopInfo: RestaurantInfoData, restaurantId: string, quantity: number) => {
   try {
     const analyticsData = {
       currency: "JPY",
@@ -160,18 +171,18 @@ export const sendRemoveFromCart = (item, shopInfo, restaurantId, quantity) => {
 };
 
 export const sendViewCart = (
-  orderInfo,
-  orderId,
-  menus,
-  shopInfo,
-  restaurantId
+  orderInfo: OrderInfoData,
+  orderId: string,
+  menus: AnalyticsMenuData[],
+  shopInfo: RestaurantInfoData,
+  restaurantId: string
 ) => {
   try {
     const analyticsData = {
       currency: "JPY",
       value: orderInfo.total,
-      items: menus.map((item) => {
-        return sku_item_data2(item, shopInfo, restaurantId, item.quantity);
+      items: menus.map((menu) => {
+        return sku_item_data2(menu, shopInfo, restaurantId, menu.quantity);
       }),
     };
     // console.log(analyticsData);

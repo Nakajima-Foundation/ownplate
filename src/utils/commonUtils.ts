@@ -1,4 +1,9 @@
-export const costCal = (postageInfo, prefectureId, total) => {
+interface PostageInfo {
+  freeThreshold: number;
+  postageList: {[key: string]: number[]};
+};
+
+export const costCal = (postageInfo: PostageInfo | any, prefectureId: number, total: number) => {
   const postageList = postageInfo?.postageList?.default || [];
   const freeThreshold = postageInfo?.freeThreshold || null;
   if (freeThreshold !== null) {
