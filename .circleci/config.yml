@@ -20,10 +20,10 @@ jobs:
           command: ./node_modules/.bin/firebase emulators:start --only firestore
           background: true
       - run: cp configs/.firebaserc ./
-      - run: cp src/config/default/ownplate-dev.js src/config/project.js
+      - run: cp src/config/default/ownplate-dev.ts src/config/project.ts
       - run: VUE_APP_STRIPE_CLIENT_ID=$STRIPE_CLIENT_ID VUE_APP_STRIPE_API_KEY=$STRIPE_API_KEY VUE_APP_GAPIKey=$GAPIKey npm run build
       - run: cp dist/index.html functions/templates/index.html
-      - run: cp src/config/default/ownplate-jp.js functions/src/common/project.js
+      - run: cp src/config/default/ownplate-dev.ts functions/src/common/project.ts
       - run: cp src/config/constant.js functions/src/common/constant.js
       - run: cp src/utils/phoneutil.ts functions/src/common/phoneutil.ts
       - run: cp src/utils/commonUtils.ts functions/src/common/commonUtils.ts
