@@ -1,10 +1,12 @@
 import pdfMake from "pdfmake/build/pdfmake";
 import moment from "moment";
-import { nameOfOrder, formatOption, optionPrice } from "~/utils/strings";
-
 import _ from "lodash";
 
-import { parsePhoneNumber, formatNational } from "~/utils/phoneutil";
+import { nameOfOrder, formatOption, optionPrice } from "@/utils/strings";
+import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
+import { convChar } from "@/lib/pdf/pdf";
+
+import { OrderInfoData } from "@/models/orderInfo";
 
 const fontHost = location.protocol + "//" + location.host + "/fonts/";
 
@@ -15,6 +17,14 @@ const pdfFont = {
   },
 };
 pdfMake.fonts = pdfFont;
+
+interface OrderItemData {
+  item: any;
+  count: number;
+  id: string;
+  options: [string];
+  orderIndex: any;
+};
 
 const styles = {
   title: {
@@ -37,23 +47,8 @@ const defaultStyle = {
   fontSize: 8,
 };
 
-const convChar = (val) => {
-  const regex =
-    /[Ａ-Ｚａ-ｚ０-９！＂＃＄％＆＇（）＊＋，－．／：；＜＝＞？＠［＼］＾＿｀｛｜｝]/g;
 
-  const value = (val || "")
-    .replace(regex, function (s) {
-      return String.fromCharCode(s.charCodeAt(0) - 0xfee0);
-    })
-    .replace(/[‐－―]/g, "-")
-    .replace(/[～〜]/g, "~")
-    .replace(/−/g, "-")
-    .replace(/　/g, " ");
-
-  return value.normalize("NFKC");
-};
-
-const convMm2pt = (mm) => {
+const convMm2pt = (mm: number) => {
   return Math.round((mm / 0.35278) * 100) / 100;
 };
 
@@ -106,9 +101,6 @@ export const orderDownloadData = () => {
   ];
   const images = {};
 
-  content.push({
-    text: "hello",
-  });
   const docDefinition = {
     pageSize,
 
@@ -119,7 +111,7 @@ export const orderDownloadData = () => {
     images,
     styles,
     defaultStyle,
-  };
+  } as any;
   const pdfDoc = pdfMake.createPdf(docDefinition);
   return pdfDoc;
 };
@@ -130,7 +122,8 @@ export const orderPdfDownload = () => {
 };
 export const orderPrintData = () => {
   const pdfDoc = orderDownloadData();
-  return pdfDoc.getBase64();
+  // @ts-ignore
+  return pdfDoc.getBase64(); // Promise<string>;
 };
 
 export const testDownload = () => {
@@ -186,9 +179,6 @@ export const testDownload = () => {
       location.protocol + "//" + location.host + "/LP-Cover-Mobile-1-1.jpg",
   };
 
-  content.push({
-    text: "hello",
-  });
   const docDefinition = {
     pageSize,
 
@@ -199,12 +189,13 @@ export const testDownload = () => {
     images,
     styles,
     defaultStyle,
-  };
+  } as any;
+  // @ts-ignore
   const pdfDoc = pdfMake.createPdf(docDefinition).getBase64();
   return pdfDoc;
 };
 
-export const printOrderData = (orderInfo, orderItems) => {
+export const printOrderData = (orderInfo: OrderInfoData, orderItems: OrderItemData[]) => {
   const content = [];
   console.log(orderInfo, orderItems);
   // 番号, 合計金額, 名前
@@ -227,7 +218,7 @@ export const printOrderData = (orderInfo, orderItems) => {
   });
 
   // オーダー内容
-  orderItems.forEach((orderItem) => {
+  orderItems.forEach((orderItem: OrderItemData) => {
     console.log(orderItem);
     content.push({
       text: [orderItem.item.itemName, " x " + String(orderItem.count)].join(""),
@@ -252,20 +243,21 @@ export const printOrderData = (orderInfo, orderItems) => {
     content,
     styles,
     defaultStyle,
-  };
+  } as any;
   const pdfDoc = pdfMake.createPdf(docDefinition);
   return pdfDoc;
 };
-export const printOrder = (orderInfo, orderItems) => {
+export const printOrder = (orderInfo: OrderInfoData, orderItems: OrderItemData[]) => {
   const pdfDoc = printOrderData(orderInfo, orderItems);
+  // @ts-ignore
   return pdfDoc.getBase64();
 };
-export const downloadOrderPdf = (orderInfo, orderItems) => {
+export const downloadOrderPdf = (orderInfo: OrderInfoData, orderItems: OrderItemData[]) => {
   const pdfDoc = printOrderData(orderInfo, orderItems);
   pdfDoc.download();
 };
 
-export const data2UrlSchema = (data, size) => {
+export const data2UrlSchema = (data: string, size: string) => {
   const passprnt_uri =
     "starpassprnt://v1/print/nopreview?" +
     "back=" +
@@ -277,11 +269,11 @@ export const data2UrlSchema = (data, size) => {
   return passprnt_uri;
 };
 
-export const displayOption = (options) => {
+export const displayOption = (options: string[]) => {
   return options
-    .filter((choice) => choice)
-    .map((choice) => {
-      return formatOption(choice, (price) => Number(price).toLocaleString());
+    .filter((choice: string) => choice)
+    .map((choice: string) => {
+      return formatOption(choice, (price: number) => Number(price).toLocaleString());
     })
     .join(", ");
 };
