@@ -5,6 +5,8 @@ import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
 
 import { RestaurantInfoData } from "@/models/RestaurantInfo"
 
+import { MenuData } from "@/models/menu";
+
 const fontHost = location.protocol + "//" + location.host + "/fonts/";
 
 // https://github.com/bpampuch/pdfmake/blob/7b5675d5b9d5d7b815bd721e00504b16560a6382/src/standardPageSizes.js
@@ -89,19 +91,6 @@ const styles = {
   },
 };
 
-interface MenuData {
-  itemDescription: string;
-  itemName: string;
-  itemPhoto: string;
-  images: {
-    item: {
-      resizedImages: {
-        [key: string]: string;
-      };
-    };
-  };
-  price: number;
-};
 export const menuDownload = (
   restaurantInfo: RestaurantInfoData,
   menuObj: {[key: string]: MenuData}, // TODO
