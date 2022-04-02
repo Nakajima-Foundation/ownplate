@@ -1,12 +1,9 @@
+// @ts-ignore
 import { functions } from "~/plugins/firebase";
 
-export const getStripeInstance = (stripeAccount) => {
+export const getStripeInstance = () => {
   const stripeAPIToken = process.env.VUE_APP_STRIPE_API_KEY;
-  if (stripeAccount) {
-    return Stripe(stripeAPIToken, {
-      stripeAccount,
-    });
-  }
+  // @ts-ignore
   return Stripe(stripeAPIToken);
 };
 
