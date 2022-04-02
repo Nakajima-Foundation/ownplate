@@ -2,8 +2,6 @@ import express from "express";
 import * as admin from "firebase-admin";
 import * as functions from "firebase-functions";
 import SmaregiApi from "../smaregi/smaregiapi";
-// import { ownPlateConfig } from '../common/project';
-// import * as Sentry from '@sentry/node';
 import { smaregi } from "../common/project";
 import { response200 } from "./apis";
 import moment from "moment";
@@ -11,6 +9,8 @@ import moment from "moment";
 const clientSecrets = (functions.config() && functions.config().smaregi && functions.config().smaregi.clientsecrets) || {
   [smaregi.clientId]: process.env.SmaregiClientSecret,
 };
+const apiHost = functions.config() && functions.config().smaregi && functions.config().smaregi.host_name; // like api.smaregi.dev
+const authHost = functions.config() && functions.config().smaregi && functions.config().smaregi.auth_host_name; // id.smaregi.dev
 
 export const smaregiRouter = express.Router();
 
@@ -42,7 +42,8 @@ export const processAction = async (data) => {
       contractId: contractId,
       clientId: smaregi.clientId,
       clientSecret: clientSecret,
-      hostName: smaregi.apiHost,
+      hostName: apiHost,
+      authHostName: authHost,
       scopes: ["pos.stock:read", "pos.stock:write", "pos.stores:read", "pos.stores:write", "pos.customers:read", "pos.customers:write", "pos.products:read", "pos.products:write"],
     };
 

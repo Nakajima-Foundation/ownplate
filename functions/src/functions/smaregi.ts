@@ -10,7 +10,6 @@ const host = functions.config() && functions.config().smaregi && functions.confi
 const apiHost = functions.config() && functions.config().smaregi && functions.config().smaregi.host_name; // like api.smaregi.dev
 const authHost = functions.config() && functions.config().smaregi && functions.config().smaregi.auth_host_name; // id.smaregi.dev
 
-console.log(apiHost, authHost);
 export const auth = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const { code, client_id } = data;
 
