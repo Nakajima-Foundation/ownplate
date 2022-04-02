@@ -1,7 +1,7 @@
 import twilio from "twilio";
 import { twiml_neworder } from "../common/constant";
 
-import { parsePhoneNumber, formatNational, intenationalFormat } from "../common/phoneutil.js";
+import { parsePhoneNumber, formatNational, intenationalFormat } from "../common/phoneutil";
 
 import * as functions from "firebase-functions";
 
