@@ -220,11 +220,7 @@
 
 <script>
 import { daysOfWeek } from "@/config/constant";
-import {
-  parsePhoneNumber,
-  formatNational,
-  formatURL,
-} from "~/utils/phoneutil";
+import { parsePhoneNumber, formatNational, formatURL } from "~/utils/phoneutil";
 import { ownPlateConfig } from "@/config/project";
 import TransactionsAct from "@/app/user/TransactionsAct";
 

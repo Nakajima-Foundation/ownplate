@@ -822,11 +822,7 @@ import * as analyticsUtil from "~/lib/firebase/analytics";
 
 import isEmail from "validator/lib/isEmail";
 
-import {
-  parsePhoneNumber,
-  formatNational,
-  formatURL,
-} from "~/utils/phoneutil";
+import { parsePhoneNumber, formatNational, formatURL } from "~/utils/phoneutil";
 
 export default {
   name: "Order",

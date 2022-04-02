@@ -24,21 +24,20 @@ export const receipt = async (db, data: any, context: functions.https.CallableCo
 
   const restaurant = await utils.get_restaurant(db, restaurantId);
   const restaurantOwnerUid = restaurant["uid"];
-  
+
   const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
-  const stripeData = (await db.doc(`restaurants/${restaurantId}/orders/${orderId}/system/stripe`).get()).data(); 
+  const stripeData = (await db.doc(`restaurants/${restaurantId}/orders/${orderId}/system/stripe`).get()).data();
   if (!stripeData || !stripeData.paymentIntent || !stripeData.paymentIntent.id) {
     throw new functions.https.HttpsError("failed-precondition", "This order has no paymentIntendId.");
   }
   const paymentIntentId = stripeData.paymentIntent.id;
 
-  const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId, {stripeAccount});
+  const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId, { stripeAccount });
   if (paymentIntent && paymentIntent.charges && paymentIntent.charges.data && paymentIntent.charges.data[0].receipt_url) {
     return {
       receipt_url: paymentIntent.charges.data[0].receipt_url,
-    }
+    };
   }
 
   return {};
-  
-}
+};

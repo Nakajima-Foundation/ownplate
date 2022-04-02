@@ -41,10 +41,7 @@ export const sendMenuListView = (menus, shopInfo, restaurantId) => {
         return sku_item_data(item, shopInfo, restaurantId);
       }),
     };
-    analyticsWrapper(
-      'view_item_list',
-      analyticsData
-    );
+    analyticsWrapper("view_item_list", analyticsData);
   } catch (e) {
     console.log(e);
   }
@@ -59,10 +56,7 @@ export const sendBeginCheckoout = (price, menus, shopInfo, restaurantId) => {
         return sku_item_data2(item, shopInfo, restaurantId, item.quantity);
       }),
     };
-    analyticsWrapper(
-      'begin_checkout',
-      analyticsData
-    );
+    analyticsWrapper("begin_checkout", analyticsData);
   } catch (e) {
     console.log(e);
   }
@@ -87,7 +81,7 @@ export const sendPurchase = (
       }),
     };
     // console.log(analyticsData);
-    analyticsWrapper('purchase', analyticsData);
+    analyticsWrapper("purchase", analyticsData);
   } catch (e) {
     console.log(e);
   }
@@ -102,7 +96,7 @@ export const sendRedunded = (orderInfo, orderId, shopInfo, restaurantId) => {
       value: orderInfo.total,
       // items: [],
     };
-    analyticsWrapper('refund', analyticsData);
+    analyticsWrapper("refund", analyticsData);
   } catch (e) {
     console.log(e);
   }
@@ -118,7 +112,7 @@ export const sendViewItem = (item, shopInfo, restaurantId) => {
       value: item.price,
       items: [sku_item_data(item, shopInfo, restaurantId)],
     };
-    analyticsWrapper('view_item', analyticsData);
+    analyticsWrapper("view_item", analyticsData);
   } catch (e) {
     console.log(e);
   }
@@ -131,7 +125,7 @@ export const sendSelectItem = (item, shopInfo, restaurantId) => {
       items: [sku_item_data(item, shopInfo, restaurantId)],
     };
     // console.log(analyticsData);
-    analyticsWrapper('select_item', analyticsData);
+    analyticsWrapper("select_item", analyticsData);
   } catch (e) {
     console.log(e);
   }
@@ -145,7 +139,7 @@ export const sendAddToCart = (item, shopInfo, restaurantId, quantity) => {
       items: [sku_item_data2(item, shopInfo, restaurantId, quantity)],
     };
     // console.log(analyticsData);
-    analyticsWrapper('add_to_cart', analyticsData);
+    analyticsWrapper("add_to_cart", analyticsData);
   } catch (e) {
     console.log(e);
   }
@@ -159,10 +153,7 @@ export const sendRemoveFromCart = (item, shopInfo, restaurantId, quantity) => {
       items: [sku_item_data2(item, shopInfo, restaurantId, quantity)],
     };
     // console.log(analyticsData);
-    analyticsWrapper(
-      'remove_from_cart',
-      analyticsData
-    );
+    analyticsWrapper("remove_from_cart", analyticsData);
   } catch (e) {
     console.log(e);
   }
@@ -184,7 +175,7 @@ export const sendViewCart = (
       }),
     };
     // console.log(analyticsData);
-    analyticsWrapper('view_cart', analyticsData);
+    analyticsWrapper("view_cart", analyticsData);
   } catch (e) {
     console.log(e);
   }

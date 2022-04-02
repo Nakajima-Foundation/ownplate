@@ -10,7 +10,6 @@ export interface MenuData {
     };
   };
   price: number;
-};
+}
 
-export class Menu {
-};
+export class Menu {}

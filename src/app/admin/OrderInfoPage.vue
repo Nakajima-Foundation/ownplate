@@ -637,15 +637,8 @@ import {
   possible_transitions,
   timeEventMapping,
 } from "~/config/constant";
-import {
-  nameOfOrder, 
-  formatOption
-} from "~/utils/strings";
-import {
-  parsePhoneNumber,
-  formatNational,
-  formatURL,
-} from "~/utils/phoneutil";
+import { nameOfOrder, formatOption } from "~/utils/strings";
+import { parsePhoneNumber, formatNational, formatURL } from "~/utils/phoneutil";
 import {
   stripeConfirmIntent,
   stripeCancelIntent,

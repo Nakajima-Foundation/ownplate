@@ -1,10 +1,6 @@
 import pdfMake from "pdfmake/build/pdfmake";
 import moment from "moment";
-import {
-  nameOfOrder,
-  formatOption,
-  optionPrice
-} from "~/utils/strings";
+import { nameOfOrder, formatOption, optionPrice } from "~/utils/strings";
 
 import _ from "lodash";
 

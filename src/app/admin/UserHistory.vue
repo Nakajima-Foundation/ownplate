@@ -106,11 +106,7 @@ import BackButton from "~/components/BackButton";
 import { order_status } from "~/config/constant";
 import moment from "moment";
 import NotificationIndex from "./Notifications/Index";
-import {
-  parsePhoneNumber,
-  formatNational,
-  formatURL,
-} from "~/utils/phoneutil";
+import { parsePhoneNumber, formatNational, formatURL } from "~/utils/phoneutil";
 
 export default {
   components: {

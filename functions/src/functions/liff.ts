@@ -14,14 +14,15 @@ const getLiffConfig = async (db: any, liffIndexId: string) => {
   return liffConfig;
 };
 
-export const liffAuthenticate = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => { // eslint-disable-line
+export const liffAuthenticate = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => {
+  // eslint-disable-line
 
   const { liffIndexId, token } = data;
   utils.validate_params({ liffIndexId, token });
-  
+
   try {
     const liffConfig = await getLiffConfig(db, liffIndexId);
-    
+
     // We verify this code.
     const verified = await netutils.postForm("https://api.line.me/oauth2/v2.1/verify", {
       id_token: token,
@@ -39,7 +40,7 @@ export const liffAuthenticate = async (db: admin.firestore.Firestore, data: any,
       await admin.auth().getUser(userId);
     } catch (e) {
       // no user
-      await admin.auth().createUser({uid: userId})
+      await admin.auth().createUser({ uid: userId });
       await admin.auth().setCustomUserClaims(userId, {
         line: lineUid,
         liffId: liffConfig.liffId,
@@ -57,10 +58,8 @@ export const liffAuthenticate = async (db: admin.firestore.Firestore, data: any,
     }
     const customToken = await admin.auth().createCustomToken(userId);
 
-    
     return { nonce: verified.nonce, customToken };
   } catch (error) {
     throw utils.process_error(error);
   }
 };
-

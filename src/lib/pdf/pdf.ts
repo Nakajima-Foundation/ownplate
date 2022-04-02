@@ -3,7 +3,7 @@ import _ from "lodash";
 
 import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
 
-import { RestaurantInfoData } from "@/models/RestaurantInfo"
+import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 import { MenuData } from "@/models/menu";
 
@@ -93,7 +93,7 @@ const styles = {
 
 export const menuDownload = (
   restaurantInfo: RestaurantInfoData,
-  menuObj: {[key: string]: MenuData}, // TODO
+  menuObj: { [key: string]: MenuData }, // TODO
   nationalPhoneNumber: string,
   shareUrl: string
 ) => {
@@ -111,7 +111,7 @@ export const menuDownload = (
     2
   );
 
-  const images: {[key: string]: string} = {
+  const images: { [key: string]: string } = {
     headerLogo:
       location.protocol +
       "//" +
@@ -248,11 +248,16 @@ export const menuDownload = (
       text: "\n★★★ メニューの例 ★★★\n\n",
       alignment: "center",
       margin: [10, 0],
-    }
+    },
   ];
   // content.push();
 
-  const menu2colum = (menu: MenuData, image: string, key1: string | number, key2: number) => {
+  const menu2colum = (
+    menu: MenuData,
+    image: string,
+    key1: string | number,
+    key2: number
+  ) => {
     return [
       {
         width: "35%",

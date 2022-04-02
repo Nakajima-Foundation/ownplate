@@ -41,7 +41,8 @@ export const verifyFriend = async (db: admin.firestore.Firestore, data: any, con
   }
 };
 
-export const authenticate = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => { // eslint-disable-line
+export const authenticate = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => {
+  // eslint-disable-line
   const { code, redirect_uri, client_id } = data;
   utils.validate_params({ code, redirect_uri, client_id });
   const LINE_TRACK_KEY = functions.config().line.track;
@@ -200,7 +201,7 @@ export const getLiffPrivateConfig = async (db: any, liffIndexId: string) => {
   const token = liffPrivateConfig.message_token;
   return {
     token,
-  }
+  };
 };
 export const getLineId = async (db: admin.firestore.Firestore, uid: string | null) => {
   if (uid === null) {
@@ -209,26 +210,22 @@ export const getLineId = async (db: admin.firestore.Firestore, uid: string | nul
   const data = (await db.doc(`/users/${uid}/system/line`).get()).data() || (await db.doc(`/admins/${uid}/system/line`).get()).data();
   // liff case
   if (data && data.liffIndexId) {
-    
     const sub = data?.verified?.sub;
     return {
       lineId: sub,
       liffId: data.liffId,
       liffIndexId: data.liffIndexId,
-    }
+    };
   } else {
     const sub = data && data.profile && data.profile.userId;
     if (!sub) {
       return {};
     }
-    
+
     return {
       lineId: sub,
       liffId: null,
       liffIndexId: null,
-    }
+    };
   }
 };
-
-
-

@@ -1,7 +1,11 @@
 import { ownPlateConfig } from "@/config/project";
 import * as Cookie from "cookie";
 
-export const lineAuthURL = (path: string, options: {[key: string]: string}, channelId: string) => {
+export const lineAuthURL = (
+  path: string,
+  options: { [key: string]: string },
+  channelId: string
+) => {
   const state = "s" + Math.random();
   const nonce = "n" + Math.random();
   const query = {
@@ -12,7 +16,7 @@ export const lineAuthURL = (path: string, options: {[key: string]: string}, chan
     bot_prompt: "aggressive",
     state,
     nonce,
-  } as {[key: string]: string};
+  } as { [key: string]: string };
   const params = JSON.stringify(
     Object.assign({}, options || {}, { state, nonce })
   );

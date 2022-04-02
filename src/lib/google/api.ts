@@ -12,7 +12,7 @@ export const json_response = async (response: Response) => {
 interface GeoCodeParams {
   address: string;
   key: string;
-};
+}
 
 export const google_geocode = async (keyword: string) => {
   const parameters = {
@@ -21,7 +21,9 @@ export const google_geocode = async (keyword: string) => {
   } as GeoCodeParams;
   const qs = Object.keys(parameters)
     .map((key: string) => {
-      return `${key}=${encodeURIComponent(parameters[key as keyof GeoCodeParams])}`;
+      return `${key}=${encodeURIComponent(
+        parameters[key as keyof GeoCodeParams]
+      )}`;
     })
     .join("&");
 

@@ -10,7 +10,6 @@ export interface RestaurantInfoData {
 
   introduction: string;
   menuLists: string[];
-};
+}
 
-export class RestaurantInfo {
-};
+export class RestaurantInfo {}

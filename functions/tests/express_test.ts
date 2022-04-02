@@ -154,7 +154,7 @@ describe("express function", () => {
       tip: 0,
       orderPlacedAt: { seconds: 1611624733, nanoseconds: 407000000 },
     });
-    await adminDB.doc('owners/123').set(ownerData);
+    await adminDB.doc("owners/123").set(ownerData);
   });
 
   it("express simple test", async function () {
@@ -280,7 +280,6 @@ describe("express function", () => {
     response.status.should.equal(200);
     console.log(JSON.stringify(JSON.parse(response.text), undefined, 1));
   });
-
 
   it("owner test", async function () {
     const response = await request.get("/o/123");

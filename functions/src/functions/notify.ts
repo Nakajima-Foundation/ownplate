@@ -41,7 +41,7 @@ export const sendMessageToCustomer = async (
   const message = `${t(msgKey, params)} ${restaurantName} ${orderNumber} ${url}`;
   if (isEnabled) {
     // for JP
-    const { lineId, liffIndexId, liffId } = await line.getLineId(db, orderData.uid) as any;
+    const { lineId, liffIndexId, liffId } = (await line.getLineId(db, orderData.uid)) as any;
 
     if (lineId) {
       if (liffIndexId) {

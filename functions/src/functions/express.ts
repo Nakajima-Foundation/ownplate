@@ -200,7 +200,6 @@ const ogpPage = async (req: any, res: any) => {
   }
 };
 
-
 const ownerPage = async (req: any, res: any) => {
   const { ownerId } = req.params;
   const template_data = fs.readFileSync("./templates/index.html", {
@@ -214,7 +213,7 @@ const ownerPage = async (req: any, res: any) => {
 
     const siteName = ownPlateConfig.siteName;
     const title = [ownerData.name].join(" / ");
-    const image =  (ownerData?.images?.cover?.resizedImages || {})["600"];
+    const image = (ownerData?.images?.cover?.resizedImages || {})["600"];
     const description = ownerData.description;
     const regexTitle = /<title.*title>/;
     const url = `https://${ownPlateConfig.hostName}/o/${ownerId}`;
@@ -262,7 +261,8 @@ const ownerPage = async (req: any, res: any) => {
     res.send(template_data);
   }
 };
-const debugError = async (req: any, res: any) => { // eslint-disable-line
+const debugError = async (req: any, res: any) => {
+  // eslint-disable-line
   setTimeout(() => {
     throw new Error("sample error");
   }, 10);
@@ -329,7 +329,6 @@ app.get("/r/:restaurantName/menus/:menuId", ogpPage);
 app.get("/r/:restaurantName/order/:orderId", ogpPage);
 
 app.get("/o/:ownerId", ownerPage);
-
 
 app.get("/sitemap.xml", sitemap_response);
 

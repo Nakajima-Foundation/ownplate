@@ -566,11 +566,7 @@ import Price from "~/components/Price";
 import { taxRates } from "~/config/constant";
 import NotificationIndex from "./Notifications/Index";
 import { ownPlateConfig } from "@/config/project";
-import {
-  halfCharactors,
-  formatOption,
-  optionPrice,
-} from "~/utils/strings";
+import { halfCharactors, formatOption, optionPrice } from "~/utils/strings";
 import EditCategory from "~/app/admin/Menus/EditCategory";
 
 export default {
