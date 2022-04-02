@@ -25,7 +25,7 @@ jobs:
       - run: cp dist/index.html functions/templates/index.html
       - run: cp src/config/default/ownplate-jp.js functions/src/common/project.js
       - run: cp src/config/constant.js functions/src/common/constant.js
-      - run: cp src/utils/phoneutil.js functions/src/common/phoneutil.js
+      - run: cp src/utils/phoneutil.ts functions/src/common/phoneutil.ts
       - run: cp src/utils/commonUtils.js functions/src/common/commonUtils.js
       - run: cd functions && npm install && npm run coverage
       - run: ./node_modules/.bin/firebase deploy --token=$FIREBASE_TOKEN --project=staging

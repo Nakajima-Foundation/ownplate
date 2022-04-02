@@ -23,7 +23,7 @@ export const intenationalPhoneNumber = (restaurant) => {
   if (phoneNumber) {
     return intenationalFormat(phoneNumber);
   }
-  return phoneNumber.phoneNumber;
+  return restaurant.phoneNumber;
 };
 
 export const nationalPhoneNumber = (restaurant) => {
@@ -31,7 +31,7 @@ export const nationalPhoneNumber = (restaurant) => {
   if (phoneNumber) {
     return formatNational(phoneNumber);
   }
-  return phoneNumber.phoneNumber;
+  return restaurant.phoneNumber;
 };
 
 export const phoneCall = async (restaurant) => {
