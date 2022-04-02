@@ -18,9 +18,10 @@ describe("twilio function", () => {
     };
 
     const num = twilio.parsedNumber(restaurant);
-    num.values_[1].should.equal(81);
-    num.values_[2].should.equal(333333333);
-
+   if (num) {
+      (num.getCountryCode() || "").should.equal(81);
+      (num.getNationalNumber() || "").should.equal(333333333);
+    }
     const num2 = twilio.nationalPhoneNumber(restaurant);
     num2.should.equal("03-3333-3333");
 
