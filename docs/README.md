@@ -1,1 +1,1 @@
-[通知の設定](./NOTIFICATION.md)
+[LINE, メール, 電話通知の挙動](./NOTIFICATION.md)
