@@ -1,3 +1,5 @@
+import { GAPIKey } from "@/config/project";
+
 export const json_response = async (response: Response) => {
   if (response.status >= 200 && response.status < 300) {
     const data = await response.json();
@@ -17,7 +19,7 @@ interface GeoCodeParams {
 export const google_geocode = async (keyword: string) => {
   const parameters = {
     address: keyword,
-    key: process.env.VUE_APP_GAPIKey,
+    key: GAPIKey,
   } as GeoCodeParams;
   const qs = Object.keys(parameters)
     .map((key: string) => {

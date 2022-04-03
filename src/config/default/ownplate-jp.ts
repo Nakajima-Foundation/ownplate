@@ -18,6 +18,8 @@ export const ownPlateConfig = {
   region: "JP",
   hostName: "omochikaeri.com",
   stripe: {
+    clientId: "ca_GyPuwCyTV98R7BGlRNkfd0b71G6Um8nF",
+    apiKey: "pk_live_ONPtLD1zI8qXfoNPgidTahST00VgI88zR0",
     dashboard: "https://dashboard.stripe.com/dashboard",
     search: "https://dashboard.stripe.com/search",
   },
@@ -37,3 +39,4 @@ export const smaregi = {
 };
 
 export const gtmID = "GTM-WF3G3ZG";
+export const GAPIKey = "AIzaSyBopNQwD1RT2k9dLqH6WYPWIkMZF3RWXMQ";

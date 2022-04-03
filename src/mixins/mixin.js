@@ -9,6 +9,7 @@ import { defaultHeader } from "@/config/header";
 import { formatOption } from "@/utils/strings";
 
 import { partners } from "@/config/constant";
+import { GAPIKey } from "@/config/project";
 
 const mixin = {
   methods: {
@@ -357,7 +358,7 @@ const mixin = {
       ];
     },
     gmapKey() {
-      return process.env.VUE_APP_GAPIKey;
+      return GAPIKey;
     },
   },
 };

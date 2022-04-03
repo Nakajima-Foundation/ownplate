@@ -16,6 +16,8 @@ export const ownPlateConfig = {
   region: "JP",
   hostName: "staging.ownplate.today",
   stripe: {
+    clientId: "ca_GyPukeEMH37oDt0ZBNMNC7Ig7tWYNWlM",
+    apiKey: "pk_test_D3jszT5TNpS0uLplY5nNfVTO000zXyS86G",
     dashboard: "https://dashboard.stripe.com/test/dashboard",
     search: "https://dashboard.stripe.com/test/search",
   },
@@ -35,3 +37,4 @@ export const smaregi = {
 };
 
 export const gtmID = "GTM-M8DN5VQ";
+export const GAPIKey = "AIzaSyBopNQwD1RT2k9dLqH6WYPWIkMZF3RWXMQ";

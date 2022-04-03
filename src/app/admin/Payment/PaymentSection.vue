@@ -97,6 +97,8 @@ import { stripeConnect, stripeDisconnect } from "@/lib/stripe/stripe";
 import { ownPlateConfig } from "@/config/project";
 import * as Cookie from "cookie";
 
+const client_id = ownPlateConfig.stripe.clientId;
+
 export default {
   data() {
     return {
@@ -195,7 +197,7 @@ export default {
       const params = {
         response_type: "code",
         scope: "read_write",
-        client_id: process.env.VUE_APP_STRIPE_CLIENT_ID,
+        client_id: client_id,
         state: "s" + Math.random(),
         redirect_uri: encodeURI(this.redirectURI),
       };
@@ -220,7 +222,7 @@ export default {
           try {
             this.$store.commit("setLoading", true);
             const { data } = await stripeDisconnect({
-              STRIPE_CLIENT_ID: process.env.VUE_APP_STRIPE_CLIENT_ID,
+              STRIPE_CLIENT_ID: client_id,
             });
             console.log(data);
             // TODO: show connected view

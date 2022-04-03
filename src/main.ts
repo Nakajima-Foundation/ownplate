@@ -29,6 +29,7 @@ import GMapMarker from "@/components/gmaps/GMapMarker.vue";
 
 // config
 import { sentryDsn } from "@/config/project";
+import { GAPIKey } from "@/config/project";
 
 // css
 // import "buefy/dist/buefy.css";
@@ -40,8 +41,9 @@ Vue.component(VueQrcode.name, VueQrcode);
 Vue.component("GMap", GMap);
 Vue.component("GMapInfoWindow", GMapInfoWindow);
 Vue.component("GMapMarker", GMapMarker);
+
 Vue.prototype.$GMaps = {
-  apiKey: process.env.VUE_APP_GAPIKey,
+  apiKey: GAPIKey,
   loaded: false,
 };
 
