@@ -20,7 +20,10 @@
 
 <script>
 import { db } from "@/plugins/firebase";
-import { subAccountInvitationAccept, subAccountInvitationDeny } from "@/lib/firebase/functions";
+import {
+  subAccountInvitationAccept,
+  subAccountInvitationDeny,
+} from "@/lib/firebase/functions";
 
 export default {
   name: "MessageCard",

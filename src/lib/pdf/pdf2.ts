@@ -24,7 +24,7 @@ interface OrderItemData {
   id: string;
   options: [string];
   orderIndex: any;
-};
+}
 
 const styles = {
   title: {
@@ -46,7 +46,6 @@ const defaultStyle = {
   font: "NotoSans",
   fontSize: 8,
 };
-
 
 const convMm2pt = (mm: number) => {
   return Math.round((mm / 0.35278) * 100) / 100;
@@ -195,7 +194,10 @@ export const testDownload = () => {
   return pdfDoc;
 };
 
-export const printOrderData = (orderInfo: OrderInfoData, orderItems: OrderItemData[]) => {
+export const printOrderData = (
+  orderInfo: OrderInfoData,
+  orderItems: OrderItemData[]
+) => {
   const content = [];
   console.log(orderInfo, orderItems);
   // 番号, 合計金額, 名前
@@ -247,12 +249,18 @@ export const printOrderData = (orderInfo: OrderInfoData, orderItems: OrderItemDa
   const pdfDoc = pdfMake.createPdf(docDefinition);
   return pdfDoc;
 };
-export const printOrder = (orderInfo: OrderInfoData, orderItems: OrderItemData[]) => {
+export const printOrder = (
+  orderInfo: OrderInfoData,
+  orderItems: OrderItemData[]
+) => {
   const pdfDoc = printOrderData(orderInfo, orderItems);
   // @ts-ignore
   return pdfDoc.getBase64();
 };
-export const downloadOrderPdf = (orderInfo: OrderInfoData, orderItems: OrderItemData[]) => {
+export const downloadOrderPdf = (
+  orderInfo: OrderInfoData,
+  orderItems: OrderItemData[]
+) => {
   const pdfDoc = printOrderData(orderInfo, orderItems);
   pdfDoc.download();
 };
@@ -273,7 +281,9 @@ export const displayOption = (options: string[]) => {
   return options
     .filter((choice: string) => choice)
     .map((choice: string) => {
-      return formatOption(choice, (price: number) => Number(price).toLocaleString());
+      return formatOption(choice, (price: number) =>
+        Number(price).toLocaleString()
+      );
     })
     .join(", ");
 };

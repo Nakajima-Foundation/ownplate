@@ -213,11 +213,12 @@
 
 <script>
 import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
+import { db, auth } from "@/plugins/firebase";
 import {
-  db,
-  auth,
-} from "@/plugins/firebase";
-import { stripeDeleteCard, accountDelete, lineVerifyFriend } from "@/lib/firebase/functions";
+  stripeDeleteCard,
+  accountDelete,
+  lineVerifyFriend,
+} from "@/lib/firebase/functions";
 
 import { ownPlateConfig } from "@/config/project";
 import PhoneLogin from "@/app/auth/PhoneLogin";

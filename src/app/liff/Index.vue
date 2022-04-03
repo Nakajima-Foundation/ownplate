@@ -34,11 +34,9 @@
 
 <script lang="ts">
 import firebase from "firebase/compat/app";
-import {
-  DocumentData,
-} from "firebase/firestore";
+import { DocumentData } from "firebase/firestore";
 
-import { defineComponent, ref } from '@vue/composition-api'
+import { defineComponent, ref } from "@vue/composition-api";
 
 import { db } from "@/plugins/firebase";
 
@@ -58,16 +56,17 @@ export default defineComponent({
         "in",
         props.config.restaurants || []
       )
-      .get().then(collect => {
+      .get()
+      .then((collect) => {
         const r = collect.docs.map((a) => {
           const data = a.data();
           data.id = a.id;
           return data;
         });
         restaurants.value = r;
-      })
+      });
     return {
-      restaurants      
+      restaurants,
     };
   },
 });

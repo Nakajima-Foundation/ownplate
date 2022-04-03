@@ -15,10 +15,13 @@ interface AnalyticsMenuData extends MenuData {
   id: string;
   quantity: number;
 }
-interface AnalyticsData {
-};
+interface AnalyticsData {}
 
-export const sku_item_data = (menu: AnalyticsMenuData, shopInfo: RestaurantInfoData, restaurantId: string) => {
+export const sku_item_data = (
+  menu: AnalyticsMenuData,
+  shopInfo: RestaurantInfoData,
+  restaurantId: string
+) => {
   return {
     item_id: "SKU_" + menu.id,
     item_name: menu.itemName,
@@ -27,7 +30,12 @@ export const sku_item_data = (menu: AnalyticsMenuData, shopInfo: RestaurantInfoD
     promotion_id: restaurantId,
   };
 };
-export const sku_item_data2 = (menu: AnalyticsMenuData, shopInfo: RestaurantInfoData, restaurantId: string, quantity: number) => {
+export const sku_item_data2 = (
+  menu: AnalyticsMenuData,
+  shopInfo: RestaurantInfoData,
+  restaurantId: string,
+  quantity: number
+) => {
   return {
     item_id: "SKU_" + menu.id,
     item_name: menu.itemName,
@@ -43,7 +51,11 @@ const analyticsWrapper = (eventName: string, data: AnalyticsData) => {
   logEvent(analytics, eventName, data);
 };
 
-export const sendMenuListView = (menus: AnalyticsMenuData[], shopInfo: RestaurantInfoData, restaurantId: string) => {
+export const sendMenuListView = (
+  menus: AnalyticsMenuData[],
+  shopInfo: RestaurantInfoData,
+  restaurantId: string
+) => {
   try {
     const analyticsData = {
       item_list_id: restaurantId,
@@ -58,7 +70,12 @@ export const sendMenuListView = (menus: AnalyticsMenuData[], shopInfo: Restauran
   }
 };
 
-export const sendBeginCheckoout = (price: number, menus: AnalyticsMenuData[], shopInfo: RestaurantInfoData, restaurantId: string) => {
+export const sendBeginCheckoout = (
+  price: number,
+  menus: AnalyticsMenuData[],
+  shopInfo: RestaurantInfoData,
+  restaurantId: string
+) => {
   try {
     const analyticsData = {
       currency: "JPY",
@@ -98,7 +115,12 @@ export const sendPurchase = (
   }
 };
 
-export const sendRedunded = (orderInfo: OrderInfoData, orderId: string, shopInfo: RestaurantInfoData, restaurantId: string) => {
+export const sendRedunded = (
+  orderInfo: OrderInfoData,
+  orderId: string,
+  shopInfo: RestaurantInfoData,
+  restaurantId: string
+) => {
   try {
     const analyticsData = {
       transaction_id: orderId,
@@ -115,7 +137,11 @@ export const sendRedunded = (orderInfo: OrderInfoData, orderId: string, shopInfo
 
 // LOGIN
 
-export const sendViewItem = (item: AnalyticsMenuData, shopInfo: RestaurantInfoData, restaurantId: string) => {
+export const sendViewItem = (
+  item: AnalyticsMenuData,
+  shopInfo: RestaurantInfoData,
+  restaurantId: string
+) => {
   // is open image
   try {
     const analyticsData = {
@@ -129,7 +155,11 @@ export const sendViewItem = (item: AnalyticsMenuData, shopInfo: RestaurantInfoDa
   }
 };
 
-export const sendSelectItem = (item: AnalyticsMenuData, shopInfo: RestaurantInfoData, restaurantId: string) => {
+export const sendSelectItem = (
+  item: AnalyticsMenuData,
+  shopInfo: RestaurantInfoData,
+  restaurantId: string
+) => {
   // is open toggle
   try {
     const analyticsData = {
@@ -142,7 +172,12 @@ export const sendSelectItem = (item: AnalyticsMenuData, shopInfo: RestaurantInfo
   }
 };
 
-export const sendAddToCart = (item: AnalyticsMenuData, shopInfo: RestaurantInfoData, restaurantId: string, quantity: number) => {
+export const sendAddToCart = (
+  item: AnalyticsMenuData,
+  shopInfo: RestaurantInfoData,
+  restaurantId: string,
+  quantity: number
+) => {
   try {
     const analyticsData = {
       currency: "JPY",
@@ -156,7 +191,12 @@ export const sendAddToCart = (item: AnalyticsMenuData, shopInfo: RestaurantInfoD
   }
 };
 
-export const sendRemoveFromCart = (item: AnalyticsMenuData, shopInfo: RestaurantInfoData, restaurantId: string, quantity: number) => {
+export const sendRemoveFromCart = (
+  item: AnalyticsMenuData,
+  shopInfo: RestaurantInfoData,
+  restaurantId: string,
+  quantity: number
+) => {
   try {
     const analyticsData = {
       currency: "JPY",

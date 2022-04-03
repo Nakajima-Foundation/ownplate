@@ -5,15 +5,14 @@ export interface OrderMenuItemData {
   price: number;
 }
 export interface OrderInfoData {
-  name: string
+  name: string;
   number: string;
   totalCharge: number;
   total: number;
   tax: number;
   // options: {[key: string]: [[key: string]: string]}
   timeEstimated: any; // TODO firestore timestamp
-  menuItems: {[key: string]: OrderMenuItemData};
+  menuItems: { [key: string]: OrderMenuItemData };
 }
-
 
 export class OrderInfo {}

@@ -102,7 +102,10 @@
 <script>
 import BackButton from "@/components/BackButton";
 import { db } from "@/plugins/firebase";
-import { subAccountDeleteChild, subAccountInvite } from "@/lib/firebase/functions";
+import {
+  subAccountDeleteChild,
+  subAccountInvite,
+} from "@/lib/firebase/functions";
 
 export default {
   metaInfo() {
@@ -184,7 +187,10 @@ export default {
     async invite() {
       this.sending = true;
       try {
-        const res = await subAccountInvite({ email: this.email, name: this.name });
+        const res = await subAccountInvite({
+          email: this.email,
+          name: this.name,
+        });
         if (res.data.result) {
           this.$router.push("/admin/subAccounts/accounts/" + res.data.childUid);
           this.email = "";

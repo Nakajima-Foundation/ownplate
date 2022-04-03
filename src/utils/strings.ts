@@ -16,7 +16,10 @@ export const optionPrice = (option: string) => {
   return 0;
 };
 
-export const formatOption = (option: string, localize: (price: number) => string) => {
+export const formatOption = (
+  option: string,
+  localize: (price: number) => string
+) => {
   const match = option.match(regexOptionPrice);
   if (match) {
     const price = convPrice(match[1]);

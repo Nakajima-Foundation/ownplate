@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { smaregiAuth } from "@/lib/firebase/functions"
+import { smaregiAuth } from "@/lib/firebase/functions";
 import { smaregi } from "@/config/project";
 
 import BackButton from "@/components/BackButton";
