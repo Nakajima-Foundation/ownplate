@@ -101,7 +101,8 @@
 
 <script>
 import BackButton from "@/components/BackButton";
-import { db, functions } from "@/plugins/firebase";
+import { db } from "@/plugins/firebase";
+import { subAccountDeleteChild, subAccountInvite } from "@/lib/firebase/functions";
 
 export default {
   metaInfo() {
@@ -164,10 +165,7 @@ export default {
         code: "admin.subAccounts.confirmDeletechild",
         callback: async () => {
           this.$store.commit("setLoading", true);
-          const subAccountDeleteChildFunc = functions.httpsCallable(
-            "subAccountDeleteChild"
-          );
-          await subAccountDeleteChildFunc({ childUid: childId });
+          await subAccountDeleteChild({ childUid: childId });
           this.$store.commit("setLoading", false);
         },
       });
@@ -186,8 +184,7 @@ export default {
     async invite() {
       this.sending = true;
       try {
-        const inviteFunc = functions.httpsCallable("subAccountInvite");
-        const res = await inviteFunc({ email: this.email, name: this.name });
+        const res = await subAccountInvite({ email: this.email, name: this.name });
         if (res.data.result) {
           this.$router.push("/admin/subAccounts/accounts/" + res.data.childUid);
           this.email = "";

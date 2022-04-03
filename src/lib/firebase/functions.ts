@@ -17,3 +17,13 @@ export const smaregiAuth = httpsCallable(
   "smaregiAuth"
 );
 
+export const subAccountDeleteChild = httpsCallable(
+  functions,
+  "subAccountDeleteChild"
+);
+
+
+export const subAccountInvite = httpsCallable(
+  functions,
+  "subAccountInvite"
+);
