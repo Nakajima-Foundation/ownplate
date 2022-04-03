@@ -27,3 +27,23 @@ export const subAccountInvite = httpsCallable(
   functions,
   "subAccountInvite"
 );
+
+export const lineValidate = httpsCallable(
+  functions,
+  "lineValidate"
+);
+
+export const lineAuthenticate = httpsCallable(
+  functions,
+  "lineAuthenticate"
+);
+
+export const lineSetCustomClaim = httpsCallable(
+  functions,
+  "lineSetCustomClaim"
+);
+
+export const traceProcess = httpsCallable(
+  functions,
+  "traceProcess"
+);

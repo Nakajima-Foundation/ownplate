@@ -13,8 +13,9 @@
 
 <script>
 import { ownPlateConfig } from "@/config/project";
-import { db, auth, firestore, functions } from "@/plugins/firebase";
+import { db, auth, firestore } from "@/plugins/firebase";
 import { lineGuard } from "@/lib/line/line";
+import { lineAuthenticate, lineSetCustomClaim } from "@/lib/firebase/functions";
 
 export default {
   data() {
@@ -42,7 +43,6 @@ export default {
   async mounted() {
     console.log(this.$route.query);
     if (this.code) {
-      const lineAuthenticate = functions.httpsCallable("lineAuthenticate");
       try {
         this.isProcessing = true;
         const { data } = await lineAuthenticate({
@@ -57,8 +57,6 @@ export default {
           console.log("validation succeded", params.traceId);
           const user = await auth.signInWithCustomToken(data.customToken);
           //console.log("signInWithCustomToken", user);
-          const lineSetCustomClaim =
-            functions.httpsCallable("lineSetCustomClaim");
           const result = await lineSetCustomClaim();
           console.log("lineSetCustomClaim", result.data);
           if (user) {

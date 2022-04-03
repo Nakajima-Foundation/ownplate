@@ -23,7 +23,8 @@
 
 <script>
 import { ownPlateConfig } from "@/config/project";
-import { db, firestore, functions } from "@/plugins/firebase";
+import { db, firestore } from "@/plugins/firebase";
+import { traceProcess } from "@/lib/firebase/functions";
 import * as crypto from "crypto";
 import { lineAuthURL } from "@/lib/line/line";
 
@@ -52,7 +53,6 @@ export default {
           //console.log("recorded as", doc.id);
           this.success = true;
 
-          const traceProcess = functions.httpsCallable("traceProcess");
           const { data } = await traceProcess({ eventId: doc.id });
           console.log("traceProcess", data);
           this.$router.replace("/t");
