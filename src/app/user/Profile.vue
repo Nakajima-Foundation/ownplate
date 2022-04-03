@@ -216,10 +216,9 @@ import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
 import {
   db,
   auth,
-  firestore,
-  functions,
-  functionsJp,
 } from "@/plugins/firebase";
+import { stripeDeleteCard, accountDelete, lineVerifyFriend } from "@/lib/firebase/functions";
+
 import { ownPlateConfig } from "@/config/project";
 import PhoneLogin from "@/app/auth/PhoneLogin";
 import { lineAuthURL } from "@/lib/line/line";
@@ -387,8 +386,6 @@ export default {
           console.log("handleDeleteCard");
           this.$store.commit("setLoading", true);
           try {
-            const stripeDeleteCard =
-              functions.httpsCallable("stripeDeleteCard");
             const { data } = await stripeDeleteCard();
             console.log("stripeDeleteCard", data);
           } catch (error) {
@@ -404,7 +401,6 @@ export default {
       if (result) {
         this.isDeletingAccount = true;
         try {
-          const accountDelete = functions.httpsCallable("accountDelete");
           const { data } = await accountDelete();
           console.log("deleteAccount", data);
           await this.user.delete();
@@ -438,7 +434,6 @@ export default {
           // alert(JSON.stringify(error));
         }
       } else {
-        const lineVerifyFriend = functionsJp.httpsCallable("lineVerifyFriend");
         try {
           const { data } = await lineVerifyFriend(
             this.isLiffUser ? { liffIndexId: this.liffIndexId } : {}

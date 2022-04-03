@@ -19,7 +19,8 @@
 </template>
 
 <script>
-import { db, functions } from "@/plugins/firebase";
+import { db } from "@/plugins/firebase";
+import { subAccountInvitationAccept, subAccountInvitationDeny } from "@/lib/firebase/functions";
 
 export default {
   name: "MessageCard",
@@ -38,10 +39,7 @@ export default {
         code: "admin.messages.childInvitationAcceptMessage",
         callback: async () => {
           this.$store.commit("setLoading", true);
-          const inviteFunc = functions.httpsCallable(
-            "subAccountInvitationAccept"
-          );
-          await inviteFunc({ messageId: this.message.id });
+          await subAccountInvitationAccept({ messageId: this.message.id });
           this.$store.commit("setLoading", false);
           this.$router.go({
             path: this.$router.currentRoute.path,
@@ -56,10 +54,7 @@ export default {
         code: "admin.messages.childInvitationDeny",
         callback: async () => {
           this.$store.commit("setLoading", true);
-          const inviteFunc = functions.httpsCallable(
-            "subAccountInvitationDeny"
-          );
-          await inviteFunc({ messageId: this.message.id });
+          await subAccountInvitationDeny({ messageId: this.message.id });
           this.$store.commit("setLoading", false);
         },
       });

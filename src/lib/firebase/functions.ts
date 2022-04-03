@@ -17,6 +17,11 @@ export const smaregiAuth = httpsCallable(
   "smaregiAuth"
 );
 
+export const lineVerifyFriend = httpsCallable(
+  functionsJP,
+  "lineVerifyFriend"
+);
+
 export const subAccountDeleteChild = httpsCallable(
   functions,
   "subAccountDeleteChild"
@@ -47,3 +52,34 @@ export const traceProcess = httpsCallable(
   functions,
   "traceProcess"
 );
+
+export const subAccountInvitationAccept = httpsCallable(
+  functions,
+  "subAccountInvitationAccept"
+);
+
+export const subAccountInvitationDeny = httpsCallable(
+  functions,
+  "subAccountInvitationDeny"
+);
+
+export const superDispatch = httpsCallable(
+  functions,
+  "superDispatch"
+);
+
+export const superTwilio = httpsCallable(
+  functions,
+  "superTwilio"
+);
+
+export const stripeDeleteCard = httpsCallable(
+  functions,
+  "stripeDeleteCard"
+);
+
+export const accountDelete = httpsCallable(
+  functions,
+  "accountDelete"
+);
+

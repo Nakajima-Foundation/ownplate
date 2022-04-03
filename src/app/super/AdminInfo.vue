@@ -19,9 +19,12 @@
 </template>
 
 <script>
+import { db } from "@/plugins/firebase";
+import { superDispatch } from "@/lib/firebase/functions";
+
 import BackButton from "@/components/BackButton";
-import { db, functions } from "@/plugins/firebase";
 import Restaurant from "@/app/super/Components/Restaurant";
+
 export default {
   metaInfo() {
     return {
@@ -51,7 +54,7 @@ export default {
       async set(value) {
         this.$store.commit("setLoading", true);
         try {
-          const { data } = await this.superDispatch({
+          const { data } = await superDispatch({
             cmd: "setCustomClaim",
             uid: this.adminId,
             key: "operator",
@@ -69,9 +72,6 @@ export default {
     adminId() {
       return this.$route.params.adminId;
     },
-    superDispatch() {
-      return functions.httpsCallable("superDispatch");
-    },
   },
   watch: {
     "admin.opt_out"() {
@@ -80,7 +80,7 @@ export default {
     },
   },
   async mounted() {
-    const { data } = await this.superDispatch({
+    const { data } = await superDispatch({
       cmd: "getCustomeClaims",
       uid: this.adminId,
     });

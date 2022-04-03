@@ -18,9 +18,11 @@
 <script>
 // TODO: 通知の状況もわかるようにする
 //
+import { db } from "@/plugins/firebase";
+import { superTwilio } from "@/lib/firebase/functions";
+
 import BackButton from "@/components/BackButton";
 import superMixin from "@/mixins/SuperMixin";
-import { db, functions } from "@/plugins/firebase";
 
 export default {
   mixins: [superMixin],
@@ -45,7 +47,6 @@ export default {
   methods: {
     hello: async function () {
       if (confirm("ok")) {
-        const superTwilio = functions.httpsCallable("superTwilio");
         const ret = await superTwilio({ restaurantId: this.restaurantId() });
       }
     },
