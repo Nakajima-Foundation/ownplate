@@ -226,7 +226,7 @@
                   position: relative;
                   overflow: hidden;
                 "
-                @loaded="hello"
+                @loaded="setLocation"
                 @click="gmapClick"
               ></GMap>
             </div>
@@ -932,6 +932,8 @@ import State from "./inputComponents/State";
 
 import NotificationIndex from "./Notifications/Index";
 
+import { getEditShopInfo, defaultShopInfo, shopInfoValidator } from "@/utils/admin/RestaurantPageUtils";
+
 import {
   taxRates,
   daysOfWeek,
@@ -979,56 +981,7 @@ export default {
       requireTaxPriceDisplay: false,
 
       defaultTax: {},
-      disabled: false, // ??
-      filteredItems: [], // ??
-      test: null,
-      shopInfo: {
-        restaurantName: "",
-        ownerName: "",
-        streetAddress: "",
-        city: "",
-        state: "",
-        zip: "",
-        location: {},
-        place_id: null,
-        phoneNumber: "",
-        url: "",
-        lineUrl: "",
-        instagramUrl: "",
-        introduction: "",
-        orderNotice: "",
-        orderThanks: "",
-        phoneCall: false,
-        enablePreline: false,
-        emailNotification: false,
-        acceptUserMessage: false,
-        foodTax: 0,
-        alcoholTax: 0,
-        inclusiveTax: false,
-        openTimes: {
-          1: [], // mon
-          2: [],
-          3: [],
-          4: [],
-          5: [],
-          6: [],
-          7: [],
-        },
-        businessDay: {
-          1: true, // mon
-          2: true,
-          3: true,
-          4: true,
-          5: true,
-          6: true,
-          7: true,
-        },
-        pickUpMinimumCookTime: 25,
-        pickUpDaysInAdvance: 3,
-        images: {},
-        publicFlag: false,
-        temporaryClosure: [],
-      },
+      shopInfo: defaultShopInfo,
       region: ownPlateConfig.region,
       maplocation: {},
       place_id: null,
@@ -1081,7 +1034,7 @@ export default {
     this.notFound = false;
   },
   mounted() {
-    this.hello();
+    this.setLocation();
   },
   updated() {
     if (this.updateFirstCall) {
@@ -1108,121 +1061,7 @@ export default {
       return this.$store.getters.uidAdmin;
     },
     errors() {
-      console.log(this.shopInfo);
-      const err = {};
-      [
-        "restaurantName",
-        "ownerName",
-        "streetAddress",
-        "city",
-        "state",
-        "zip",
-        "phoneNumber",
-        "pickUpMinimumCookTime",
-        "pickUpDaysInAdvance",
-      ].forEach((name) => {
-        err[name] = [];
-        if (this.shopInfo[name] === "") {
-          err[name].push("validationError." + name + ".empty");
-        }
-      });
-      ["introduction", "orderNotice", "orderThanks"].forEach((name) => {
-        err[name] = [];
-      });
-      // validate pickUpMinimumCookTime
-      if (!Number.isInteger(this.shopInfo["pickUpMinimumCookTime"])) {
-        err["pickUpMinimumCookTime"].push(
-          "validationError." + name + ".notNumbery"
-        );
-      } else {
-        if (this.shopInfo["pickUpMinimumCookTime"] > 24 * 60 * 6) {
-          err["pickUpMinimumCookTime"].push(
-            "validationError." + name + ".tooMuch"
-          );
-        }
-        if (this.shopInfo["pickUpMinimumCookTime"] < 0) {
-          err["pickUpMinimumCookTime"].push(
-            "validationError." + name + ".negative"
-          );
-        }
-      }
-      if (
-        !reservationTheDayBefore.some(
-          (day) => day.value === this.shopInfo["pickUpDaysInAdvance"]
-        )
-      ) {
-        err["pickUpDaysInAdvance"].push("validationError." + name + ".invalid");
-      }
-
-      if (this.requireTaxInput) {
-        ["foodTax", "alcoholTax"].forEach((name) => {
-          err[name] = [];
-          if (this.shopInfo[name] === "") {
-            err[name].push("validationError." + name + ".empty");
-          }
-          if (this.shopInfo[name] !== "") {
-            if (isNaN(this.shopInfo[name])) {
-              err[name].push("validationError." + name + ".invalidNumber");
-            }
-          }
-        });
-      }
-
-      const ex = new RegExp("^(https?)://[^\\s]+$");
-      err["url"] =
-        this.shopInfo.url && !ex.test(this.shopInfo.url)
-          ? ["validationError.url.invalidUrl"]
-          : [];
-      err["lineUrl"] =
-        this.shopInfo.lineUrl && !ex.test(this.shopInfo.lineUrl)
-          ? ["validationError.lineUrl.invalidUrl"]
-          : [];
-      err["instagramUrl"] =
-        this.shopInfo.instagramUrl && !ex.test(this.shopInfo.instagramUrl)
-          ? ["validationError.instagramUrl.invalidUrl"]
-          : [];
-
-      err["time"] = {};
-      Object.keys(daysOfWeek).forEach((key) => {
-        err["time"][key] = [];
-        [0, 1].forEach((key2) => {
-          err["time"][key].push([]);
-          if (this.shopInfo.businessDay[key]) {
-            if (
-              this.shopInfo.openTimes[key] &&
-              this.shopInfo.openTimes[key][key2]
-            ) {
-              const data = this.shopInfo.openTimes[key][key2];
-              if (this.isNull(data.start) ^ this.isNull(data.end)) {
-                err["time"][key][key2].push("validationError.oneInEmpty");
-              }
-              if (!this.isNull(data.start) && !this.isNull(data.end)) {
-                if (data.start > data.end) {
-                  err["time"][key][key2].push(
-                    "validationError.validBusinessTime"
-                  );
-                }
-              }
-            } else {
-              if (key2 === 0) {
-                err["time"][key][key2].push("validationError.noSelect");
-              }
-            }
-          }
-        });
-      });
-      err["phoneNumber"] = this.errorsPhone;
-
-      // image
-      err["restProfilePhoto"] = [];
-      if (
-        this.isNull(this.files["profile"]) &&
-        this.isNull(this.shopInfo.restProfilePhoto)
-      ) {
-        err["restProfilePhoto"].push("validationError.restProfilePhoto.empty");
-      }
-      // todo more validate
-      return err;
+      return shopInfoValidator(this.shopInfo, this.requireTaxInput, this.errorsPhone, this.files["profile"]);
     },
     hasError() {
       const num = this.countObj(this.errors);
@@ -1235,7 +1074,7 @@ export default {
   watch: {
     notFound: function () {
       if (this.notFound === false) {
-        this.hello();
+        this.setLocation();
       }
     },
     hasError: function () {
@@ -1314,7 +1153,7 @@ export default {
       this.shopInfo.countryCode = payload.countryCode;
       this.errorsPhone = payload.errors;
     },
-    hello() {
+    setLocation() {
       if (this.shopInfo && this.shopInfo.location) {
         this.setCurrentLocation(this.shopInfo.location);
       }
@@ -1336,7 +1175,7 @@ export default {
       });
     },
     async copyRestaurant() {
-      const restaurantData = this.getEditShopInfo();
+      const restaurantData = getEditShopInfo(this.shopInfo);
       restaurantData.restaurantName = restaurantData.restaurantName + " - COPY";
       restaurantData.publicFlag = false;
       restaurantData.deletedFlag = false;
@@ -1398,59 +1237,6 @@ export default {
         path: `/admin/restaurants/${id}`,
       });
     },
-    getEditShopInfo() {
-      const restaurantData = {
-        restProfilePhoto: this.shopInfo.restProfilePhoto,
-        restCoverPhoto: this.shopInfo.restCoverPhoto,
-        restaurantName: this.shopInfo.restaurantName,
-        ownerName: this.shopInfo.ownerName,
-        streetAddress: this.shopInfo.streetAddress,
-        images: {
-          cover: this.shopInfo?.images?.cover || {},
-          profile: this.shopInfo?.images?.profile || {},
-        },
-        city: this.shopInfo.city,
-        state: this.shopInfo.state,
-        zip: this.shopInfo.zip,
-        location: this.shopInfo.location,
-        place_id: this.shopInfo.place_id,
-        phoneNumber: this.shopInfo.phoneNumber,
-        phoneCall: this.shopInfo.phoneCall,
-        emailNotification: this.shopInfo.emailNotification,
-        acceptUserMessage: this.shopInfo.acceptUserMessage,
-        countryCode: this.shopInfo.countryCode,
-        url: this.shopInfo.url,
-        lineUrl: this.shopInfo.lineUrl,
-        instagramUrl: this.shopInfo.instagramUrl,
-        introduction: this.shopInfo.introduction,
-        enablePreline: this.shopInfo.enablePreline,
-        orderNotice: this.shopInfo.orderNotice,
-        orderThanks: this.shopInfo.orderThanks,
-        pickUpMinimumCookTime: this.shopInfo.pickUpMinimumCookTime,
-        pickUpDaysInAdvance: this.shopInfo.pickUpDaysInAdvance,
-        foodTax: Number(this.shopInfo.foodTax),
-        alcoholTax: Number(this.shopInfo.alcoholTax),
-        openTimes: Object.keys(this.shopInfo.openTimes).reduce((tmp, key) => {
-          tmp[key] = this.shopInfo.openTimes[key]
-            .filter((el) => {
-              return el !== null && el?.end !== null && el?.start !== null;
-            })
-            .sort((a, b) => {
-              return a.start < b.start ? -1 : 1;
-            });
-          return tmp;
-        }, {}),
-        businessDay: this.shopInfo.businessDay,
-        temporaryClosure: this.shopInfo.temporaryClosure,
-        uid: this.shopInfo.uid,
-        publicFlag: this.shopInfo.publicFlag,
-        inclusiveTax: this.shopInfo.inclusiveTax,
-        updatedAt: firestore.FieldValue.serverTimestamp(),
-        createdAt:
-          this.shopInfo.createdAt || firestore.FieldValue.serverTimestamp(),
-      };
-      return restaurantData;
-    },
     async submitRestaurant() {
       this.submitting = true;
       const restaurantId = this.restaurantId();
@@ -1478,7 +1264,7 @@ export default {
             resizedImages: {},
           };
         }
-        const restaurantData = this.getEditShopInfo();
+        const restaurantData = getEditShopInfo(this.shopInfo);
         await this.updateRestaurantData(restaurantData);
 
         this.$router.push({
