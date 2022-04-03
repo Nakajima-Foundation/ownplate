@@ -1,7 +1,7 @@
 // core
 import Vue from "vue";
-import router from "@/router";
-import store from "@/store/index";
+import router from "@/lib/router";
+import store from "@/lib/store/index";
 
 // plugins
 import mixin from "@/mixins/mixin";

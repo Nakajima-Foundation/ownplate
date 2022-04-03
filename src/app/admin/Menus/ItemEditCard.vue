@@ -140,7 +140,6 @@
 
 <script>
 import { db } from "@/plugins/firebase";
-import store from "@/store/index.js";
 import Price from "@/components/Price";
 
 export default {

@@ -56,7 +56,6 @@
 </template>
 
 <script>
-import store from "@/store/index.js";
 import { mapGetters, mapMutations } from "vuex";
 import { formatOption, optionPrice } from "@/utils/strings";
 
