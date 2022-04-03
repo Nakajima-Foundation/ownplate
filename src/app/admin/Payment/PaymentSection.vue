@@ -210,7 +210,6 @@ export default {
       const cookie = `stripe_state=${
         params.state
       }; expires=${date.toUTCString()}; path=/`;
-      console.log(cookie);
       document.cookie = cookie;
 
       location.href = `https://connect.stripe.com/oauth/authorize?${queryString}`;
@@ -221,9 +220,7 @@ export default {
         callback: async () => {
           try {
             this.$store.commit("setLoading", true);
-            const { data } = await stripeDisconnect({
-              STRIPE_CLIENT_ID: client_id,
-            });
+            const { data } = await stripeDisconnect();
             console.log(data);
             // TODO: show connected view
           } catch (error) {
