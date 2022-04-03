@@ -28,8 +28,7 @@
 import liff from "@line/liff";
 import { db, auth } from "@/plugins/firebase";
 
-import { functionsJP } from "@/lib/firebase/firebase9";
-import { httpsCallable } from "firebase/functions";
+import { liffAuthenticate } from "@/lib/firebase/functions";
 
 import queryString from "query-string";
 
@@ -225,10 +224,6 @@ export default {
     userLoad(value) {
       if (this.$store.state.user !== undefined && this.liffIdToken !== "") {
         if (this.$store.state.user === null) {
-          const liffAuthenticate = httpsCallable(
-            functionsJP,
-            "liffAuthenticate"
-          );
           (async () => {
             const { data } = await liffAuthenticate({
               liffIndexId: this.liffIndexId,

@@ -83,3 +83,28 @@ export const accountDelete = httpsCallable(
   "accountDelete"
 );
 
+export const orderUpdate = httpsCallable(
+  functionsJP,
+  "orderUpdateJp"
+);
+
+export const orderChange = httpsCallable(
+  functionsJP,
+  "orderChangeJp"
+);
+
+export const orderPlace = httpsCallable(
+  functionsJP,
+  "orderPlaceJp"
+);
+
+export const wasOrderCreated = httpsCallable(
+  functionsJP,
+  "wasOrderCreatedJp"
+);
+
+export const liffAuthenticate = httpsCallable(
+  functionsJP,
+  "liffAuthenticate"
+);
+

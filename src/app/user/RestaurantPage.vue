@@ -389,8 +389,7 @@ import Price from "@/components/Price";
 
 import liff from "@line/liff";
 import { db, firestore } from "@/plugins/firebase";
-import { functionsJP } from "@/lib/firebase/firebase9";
-import { httpsCallable } from "firebase/functions";
+import { wasOrderCreated } from "@/lib/firebase/functions";
 
 import { order_status } from "@/config/constant";
 
@@ -821,7 +820,6 @@ export default {
             options: this.selectedOptions,
           },
         });
-        const wasOrderCreated = httpsCallable(functionsJP, "wasOrderCreatedJp");
         await wasOrderCreated({
           restaurantId: this.restaurantId(),
           orderId: res.id,

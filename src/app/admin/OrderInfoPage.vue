@@ -630,8 +630,8 @@
 
 <script>
 import { db, firestore } from "@/plugins/firebase";
-import { functionsJP } from "@/lib/firebase/firebase9";
-import { httpsCallable } from "firebase/functions";
+import { orderUpdate, orderChange } from "@/lib/firebase/functions";
+
 import {
   order_status,
   possible_transitions,
@@ -1097,7 +1097,6 @@ export default {
         this.handleStripe();
         return;
       }
-      const orderUpdate = httpsCallable(functionsJP, "orderUpdateJp");
       try {
         this.$store.commit("setLoading", true);
         const params = {
@@ -1158,7 +1157,6 @@ export default {
       this.$store.commit("setAlert", {
         title: "admin.order.confirmOrderChange",
         callback: async () => {
-          const orderChange = httpsCallable(functionsJP, "orderChangeJp");
           try {
             this.changing = true;
             this.$store.commit("setLoading", true);
