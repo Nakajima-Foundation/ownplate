@@ -224,7 +224,7 @@ import { parsePhoneNumber, formatNational, formatURL } from "~/utils/phoneutil";
 import { ownPlateConfig } from "@/config/project";
 import TransactionsAct from "@/app/user/TransactionsAct";
 
-import { db } from "~/plugins/firebase.js";
+import { db } from "~/plugins/firebase";
 
 import PickupMixin from "@/mixins/pickupMixin";
 

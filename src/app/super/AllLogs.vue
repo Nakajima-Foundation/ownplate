@@ -22,7 +22,7 @@
 
 <script>
 import BackButton from "~/components/BackButton";
-import { db } from "~/plugins/firebase.js";
+import { db } from "~/plugins/firebase";
 
 export default {
   metaInfo() {

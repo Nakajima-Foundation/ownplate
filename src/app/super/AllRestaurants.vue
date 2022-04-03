@@ -89,7 +89,7 @@
 // TODO: 通知の状況もわかるようにする
 //
 import BackButton from "@/components/BackButton";
-import { db } from "@/plugins/firebase.js";
+import { db } from "@/plugins/firebase";
 
 import superMixin from "@/mixins/SuperMixin";
 import DownloadCsv from "@/components/DownloadCSV";

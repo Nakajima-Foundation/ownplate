@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import { db } from "~/plugins/firebase.js";
+import { db } from "~/plugins/firebase";
 
 export default {
   async created() {

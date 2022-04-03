@@ -1,7 +1,7 @@
 <template></template>
 
 <script>
-import { db, firestore } from "~/plugins/firebase.js";
+import { db, firestore } from "~/plugins/firebase";
 import { midNight } from "~/utils/dateUtils";
 import { order_status } from "~/config/constant";
 

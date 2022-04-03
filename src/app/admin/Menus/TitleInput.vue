@@ -81,7 +81,7 @@
 
 <script>
 import Vue from "vue";
-import { db, storage } from "~/plugins/firebase.js";
+import { db, storage } from "~/plugins/firebase";
 
 export default {
   name: "TitleInput",

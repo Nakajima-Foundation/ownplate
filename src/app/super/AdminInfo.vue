@@ -20,7 +20,7 @@
 
 <script>
 import BackButton from "~/components/BackButton";
-import { db, functions } from "~/plugins/firebase.js";
+import { db, functions } from "~/plugins/firebase";
 import Restaurant from "~/app/super/Components/Restaurant";
 export default {
   metaInfo() {

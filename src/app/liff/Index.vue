@@ -32,7 +32,7 @@
   </div>
 </template>
 <script>
-import { db } from "~/plugins/firebase.js";
+import { db } from "~/plugins/firebase";
 import firebase from "firebase/compat/app";
 
 export default {

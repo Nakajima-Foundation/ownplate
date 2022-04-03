@@ -77,7 +77,7 @@
 
 <script>
 import BackButton from "~/components/BackButton";
-import { db } from "~/plugins/firebase.js";
+import { db } from "~/plugins/firebase";
 import OrderedInfo from "~/app/admin/Order/OrderedInfo";
 import { order_status, order_status_keys } from "~/config/constant";
 import { nameOfOrder } from "~/utils/strings";

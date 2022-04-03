@@ -558,7 +558,7 @@
 
 <script>
 import Vue from "vue";
-import { db, storage } from "~/plugins/firebase.js";
+import { db, storage } from "~/plugins/firebase";
 import firebase from "firebase/compat/app";
 import NotFound from "~/components/NotFound";
 import BackButton from "~/components/BackButton";

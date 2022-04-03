@@ -99,7 +99,7 @@
 </template>
 
 <script>
-import { db, firestore } from "~/plugins/firebase.js";
+import { db, firestore } from "~/plugins/firebase";
 import { midNight } from "~/utils/dateUtils";
 import OrderedInfo from "~/app/admin/Order/OrderedInfo";
 import BackButton from "~/components/BackButton";

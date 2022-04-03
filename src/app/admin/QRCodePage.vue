@@ -140,7 +140,7 @@
 </template>
 
 <script>
-import { db, firestore } from "~/plugins/firebase.js";
+import { db, firestore } from "~/plugins/firebase";
 import BackButton from "~/components/BackButton";
 import NotificationIndex from "./Notifications/Index";
 

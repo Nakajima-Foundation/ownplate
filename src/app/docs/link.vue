@@ -4,7 +4,7 @@
   </div>
 </template>
 <script>
-import { db } from "~/plugins/firebase.js";
+import { db } from "~/plugins/firebase";
 import NotFound from "~/components/NotFound";
 
 export default {

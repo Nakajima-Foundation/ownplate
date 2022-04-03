@@ -487,7 +487,7 @@
 </template>
 
 <script>
-import { db, firestore, functions } from "~/plugins/firebase.js";
+import { db, firestore, functions } from "~/plugins/firebase";
 import RestaurantEditCard from "~/app/admin/Restaurant/RestaurantEditCard";
 import { order_status } from "~/config/constant";
 import { midNight } from "~/utils/dateUtils";

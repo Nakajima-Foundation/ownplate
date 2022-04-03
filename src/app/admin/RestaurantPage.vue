@@ -917,7 +917,7 @@
 
 <script>
 import Vue from "vue";
-import { db, storage, firestore } from "~/plugins/firebase.js";
+import { db, storage, firestore } from "~/plugins/firebase";
 
 import { google_geocode } from "~/lib/google/api";
 import BackButton from "~/components/BackButton";

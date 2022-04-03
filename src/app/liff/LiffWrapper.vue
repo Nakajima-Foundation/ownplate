@@ -26,7 +26,7 @@
 
 <script>
 import liff from "@line/liff";
-import { db, auth } from "~/plugins/firebase.js";
+import { db, auth } from "~/plugins/firebase";
 
 import { functionsJP } from "@/lib/firebase/firebase9";
 import { httpsCallable } from "firebase/functions";

@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import { db, storage, firestore } from "~/plugins/firebase.js";
+import { db, storage, firestore } from "~/plugins/firebase";
 import { defaultHeader } from "../../../config/header";
 import Map from "~/components/Map";
 

@@ -125,7 +125,7 @@
 </template>
 
 <script>
-import { auth } from "~/plugins/firebase.js";
+import { auth } from "~/plugins/firebase";
 
 export default {
   name: "Signin",

@@ -97,7 +97,7 @@
 
 <script>
 import { smaregi } from "@/config/project";
-import { db, functionsJp } from "~/plugins/firebase.js";
+import { db, functionsJp } from "~/plugins/firebase";
 
 import BackButton from "~/components/BackButton";
 

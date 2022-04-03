@@ -11,7 +11,7 @@
 
 <script>
 import BackButton from "@/components/BackButton";
-import { db } from "@/plugins/firebase.js";
+import { db } from "@/plugins/firebase";
 
 import superMixin from "@/mixins/SuperMixin";
 

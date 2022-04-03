@@ -139,7 +139,7 @@
 </template>
 
 <script>
-import { db } from "~/plugins/firebase.js";
+import { db } from "~/plugins/firebase";
 import store from "~/store/index.js";
 import Price from "~/components/Price";
 

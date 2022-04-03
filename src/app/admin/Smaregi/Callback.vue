@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { functionsJp } from "~/plugins/firebase.js";
+import { functionsJp } from "~/plugins/firebase";
 import { smaregi } from "@/config/project";
 
 import BackButton from "~/components/BackButton";
