@@ -287,7 +287,7 @@
 </template>
 
 <script>
-import { db, auth, functions } from "@/plugins/firebase";
+import { db, auth } from "@/plugins/firebase";
 import { analytics } from "@/lib/firebase/firebase9";
 import {
   logEvent,

@@ -118,7 +118,7 @@
 </template>
 
 <script>
-import { db, firestore, functions } from "@/plugins/firebase";
+import { db, firestore } from "@/plugins/firebase";
 import BackButton from "@/components/BackButton";
 import PickupMixin from "@/mixins/pickupMixin";
 import firebase from "firebase/compat/app";
