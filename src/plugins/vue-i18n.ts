@@ -14,6 +14,7 @@ Vue.use(VueI18n);
 
 const region = ownPlateConfig.region || "US";
 
+// @ts-ignore
 const region_data = constant.stripe_regions[region];
 
 const numberFormats = {
