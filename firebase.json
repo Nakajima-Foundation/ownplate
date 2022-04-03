@@ -6,7 +6,7 @@
   "functions": {
     "predeploy": [
       "cp dist/index.html functions/templates/index.html",
-      "cp src/config/constant.js functions/src/common/constant.js",
+      "cp src/config/constant.ts functions/src/common/constant.ts",
       "cp src/utils/phoneutil.ts functions/src/common/phoneutil.ts",
       "cp src/utils/commonUtils.ts functions/src/common/commonUtils.ts",
       "cp src/config/project.ts functions/src/common/project.ts",

@@ -24,7 +24,7 @@ jobs:
       - run: VUE_APP_STRIPE_CLIENT_ID=$STRIPE_CLIENT_ID VUE_APP_STRIPE_API_KEY=$STRIPE_API_KEY VUE_APP_GAPIKey=$GAPIKey npm run build
       - run: cp dist/index.html functions/templates/index.html
       - run: cp src/config/default/ownplate-dev.ts functions/src/common/project.ts
-      - run: cp src/config/constant.js functions/src/common/constant.js
+      - run: cp src/config/constant.ts functions/src/common/constant.ts
       - run: cp src/utils/phoneutil.ts functions/src/common/phoneutil.ts
       - run: cp src/utils/commonUtils.ts functions/src/common/commonUtils.ts
       - run: cd functions && npm install && npm run coverage

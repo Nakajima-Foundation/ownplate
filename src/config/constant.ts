@@ -1,4 +1,4 @@
-export const order_status = {
+export const order_status: {[key: string]: number} = {
   error: 0,
   new_order: 100, // by user
   validation_ok: 200, // by functions
@@ -13,8 +13,8 @@ export const order_status = {
 };
 
 export const order_status_keys = Object.keys(order_status).reduce(
-  (tmp, key) => {
-    tmp[order_status[key]] = key;
+  (tmp: {[key: string]: string}, key: string) => {
+    tmp[String(order_status[key])] = key;
     return tmp;
   },
   {}
