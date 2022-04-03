@@ -19,6 +19,8 @@ import VueQrcode from "@chenfengyuan/vue-qrcode";
 import * as Sentry from "@sentry/browser";
 import { Vue as VueIntegration } from "@sentry/integrations";
 
+import VueCompositionAPI from '@vue/composition-api'
+
 // components
 import App from "@/components/App.vue";
 import GMap from "@/components/gmaps/GMap.vue";
@@ -47,6 +49,7 @@ Vue.prototype.$GMaps = {
 Vue.mixin(mixin);
 Vue.mixin(userPermission);
 
+Vue.use(VueCompositionAPI)
 Vue.use(SocialSharing);
 Vue.use(Croppa);
 Vue.use(VueClipboard);

@@ -31,36 +31,44 @@
     </div>
   </div>
 </template>
-<script>
-import { db } from "~/plugins/firebase";
-import firebase from "firebase/compat/app";
 
-export default {
+<script lang="ts">
+import firebase from "firebase/compat/app";
+import {
+  DocumentData,
+} from "firebase/firestore";
+
+import { defineComponent, ref } from '@vue/composition-api'
+
+import { db } from "@/plugins/firebase";
+
+export default defineComponent({
   props: {
     config: {
       type: Object,
       required: true,
     },
   },
-  data() {
-    return {
-      restaurants: [],
-    };
-  },
-  async created() {
-    const collect = await db
-      .collection("restaurants")
+  setup(props) {
+    const restaurants = ref<DocumentData[]>([]);
+
+    db.collection("restaurants")
       .where(
         firebase.firestore.FieldPath.documentId(),
         "in",
-        this.config.restaurants || []
+        props.config.restaurants || []
       )
-      .get();
-    this.restaurants = collect.docs.map((a) => {
-      const data = a.data();
-      data.id = a.id;
-      return data;
-    });
+      .get().then(collect => {
+        const r = collect.docs.map((a) => {
+          const data = a.data();
+          data.id = a.id;
+          return data;
+        });
+        restaurants.value = r;
+      })
+    return {
+      restaurants      
+    };
   },
-};
+});
 </script>
