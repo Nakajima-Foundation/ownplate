@@ -166,8 +166,8 @@
 </template>
 
 <script>
-import { db, firestore } from "~/plugins/firebase";
-import { soundFiles } from "~/config/constant";
+import { db, firestore } from "@/plugins/firebase";
+import { soundFiles } from "@/config/constant";
 
 import IncompleteOrders from "./IncompleteOrders";
 

@@ -26,7 +26,7 @@
 
 <script>
 import liff from "@line/liff";
-import { db, auth } from "~/plugins/firebase";
+import { db, auth } from "@/plugins/firebase";
 
 import { functionsJP } from "@/lib/firebase/firebase9";
 import { httpsCallable } from "firebase/functions";
@@ -34,9 +34,9 @@ import { httpsCallable } from "firebase/functions";
 import queryString from "query-string";
 
 import PC from "./PC.vue";
-import NotFound from "~/components/NotFound";
+import NotFound from "@/components/NotFound";
 
-import Modal from "~/components/Modal";
+import Modal from "@/components/Modal";
 
 /*
  liff flow

@@ -791,38 +791,38 @@
 
 <script>
 import firebase from "firebase/compat/app";
-import ShopHeader from "~/app/user/Restaurant/ShopHeader";
-import OrderInfo from "~/app/user/Order/OrderInfo";
-import ShopInfo from "~/app/user/Restaurant/ShopInfo";
-import StripeCard from "~/app/user/Order/StripeCard";
-import TimeToPickup from "~/app/user/Order/TimeToPickup";
-import PhoneLogin from "~/app/auth/PhoneLogin";
-import NotFound from "~/components/NotFound";
-import RequireLogin from "~/components/RequireLogin";
-import FavoriteButton from "~/app/user/Restaurant/FavoriteButton";
-import CustomerInfo from "~/components/CustomerInfo";
+import ShopHeader from "@/app/user/Restaurant/ShopHeader";
+import OrderInfo from "@/app/user/Order/OrderInfo";
+import ShopInfo from "@/app/user/Restaurant/ShopInfo";
+import StripeCard from "@/app/user/Order/StripeCard";
+import TimeToPickup from "@/app/user/Order/TimeToPickup";
+import PhoneLogin from "@/app/auth/PhoneLogin";
+import NotFound from "@/components/NotFound";
+import RequireLogin from "@/components/RequireLogin";
+import FavoriteButton from "@/app/user/Restaurant/FavoriteButton";
+import CustomerInfo from "@/components/CustomerInfo";
 
 import OrderPageMap from "./OrderPageMap";
 
-import { db, firestore } from "~/plugins/firebase";
+import { db, firestore } from "@/plugins/firebase";
 import { functionsJP } from "@/lib/firebase/firebase9";
 import { httpsCallable } from "firebase/functions";
-import { order_status, order_status_keys } from "~/config/constant";
-import { nameOfOrder } from "~/utils/strings";
+import { order_status, order_status_keys } from "@/config/constant";
+import { nameOfOrder } from "@/utils/strings";
 import {
   stripeCreateIntent,
   stripeCancelIntent,
   stripeReceipt,
-} from "~/lib/stripe/stripe";
-import { lineAuthURL } from "~/lib/line/line";
+} from "@/lib/stripe/stripe";
+import { lineAuthURL } from "@/lib/line/line";
 
-import { costCal } from "~/utils/commonUtils";
+import { costCal } from "@/utils/commonUtils";
 
-import * as analyticsUtil from "~/lib/firebase/analytics";
+import * as analyticsUtil from "@/lib/firebase/analytics";
 
 import isEmail from "validator/lib/isEmail";
 
-import { parsePhoneNumber, formatNational, formatURL } from "~/utils/phoneutil";
+import { parsePhoneNumber, formatNational, formatURL } from "@/utils/phoneutil";
 
 export default {
   name: "Order",

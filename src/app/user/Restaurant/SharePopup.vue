@@ -67,8 +67,8 @@
 </template>
 
 <script>
-import SharingButtons from "~/app/user/Common/SharingButtons";
-import { db, firestore } from "~/plugins/firebase";
+import SharingButtons from "@/app/user/Common/SharingButtons";
+import { db, firestore } from "@/plugins/firebase";
 
 export default {
   components: {

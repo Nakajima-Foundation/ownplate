@@ -197,14 +197,14 @@
 </template>
 
 <script>
-import { db, firestore } from "~/plugins/firebase";
-import BackButton from "~/components/BackButton";
-import DownloadCsv from "~/components/DownloadCSV";
-import { nameOfOrder } from "~/utils/strings";
-import { ownPlateConfig } from "~/config/project";
-import { midNightOfMonth } from "~/utils/dateUtils";
+import { db, firestore } from "@/plugins/firebase";
+import BackButton from "@/components/BackButton";
+import DownloadCsv from "@/components/DownloadCSV";
+import { nameOfOrder } from "@/utils/strings";
+import { ownPlateConfig } from "@/config/project";
+import { midNightOfMonth } from "@/utils/dateUtils";
 import moment from "moment";
-import ReportDetails from "~/app/admin/Order/ReportDetails";
+import ReportDetails from "@/app/admin/Order/ReportDetails";
 
 export default {
   components: {

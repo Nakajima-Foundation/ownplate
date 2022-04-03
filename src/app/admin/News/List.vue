@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import ListItem from "~/app/admin/News/ListItem";
+import ListItem from "@/app/admin/News/ListItem";
 import newsList from "./data";
 
 export default {

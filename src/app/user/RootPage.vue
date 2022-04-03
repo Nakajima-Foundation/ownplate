@@ -58,9 +58,9 @@
 </template>
 
 <script>
-import { db } from "~/plugins/firebase";
-import { RestaurantHeader } from "~/config/header";
-import AreaItem from "~/app/user/Restaurants/AreaItem";
+import { db } from "@/plugins/firebase";
+import { RestaurantHeader } from "@/config/header";
+import AreaItem from "@/app/user/Restaurants/AreaItem";
 import { ownPlateConfig } from "@/config/project";
 
 export default {

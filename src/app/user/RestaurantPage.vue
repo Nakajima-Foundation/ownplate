@@ -378,24 +378,24 @@
 </template>
 
 <script>
-import ItemCard from "~/app/user/Restaurant/ItemCard";
-import PhoneLogin from "~/app/auth/PhoneLogin";
-import ShopHeader from "~/app/user/Restaurant/ShopHeader";
-import SharePopup from "~/app/user/Restaurant/SharePopup";
-import FavoriteButton from "~/app/user/Restaurant/FavoriteButton";
-import ShopInfo from "~/app/user/Restaurant/ShopInfo";
-import NotFound from "~/components/NotFound";
-import Price from "~/components/Price";
+import ItemCard from "@/app/user/Restaurant/ItemCard";
+import PhoneLogin from "@/app/auth/PhoneLogin";
+import ShopHeader from "@/app/user/Restaurant/ShopHeader";
+import SharePopup from "@/app/user/Restaurant/SharePopup";
+import FavoriteButton from "@/app/user/Restaurant/FavoriteButton";
+import ShopInfo from "@/app/user/Restaurant/ShopInfo";
+import NotFound from "@/components/NotFound";
+import Price from "@/components/Price";
 
 import liff from "@line/liff";
-import { db, firestore } from "~/plugins/firebase";
+import { db, firestore } from "@/plugins/firebase";
 import { functionsJP } from "@/lib/firebase/firebase9";
 import { httpsCallable } from "firebase/functions";
 
-import { order_status } from "~/config/constant";
+import { order_status } from "@/config/constant";
 
 import { ownPlateConfig } from "@/config/project";
-import * as analyticsUtil from "~/lib/firebase/analytics";
+import * as analyticsUtil from "@/lib/firebase/analytics";
 
 export default {
   name: "ShopMenu",

@@ -35,19 +35,19 @@
   </div>
 </template>
 <script>
-import ownplateServiceImage from "~/components/lp/ownplateServiceImage";
-import entranceButtons from "~/components/lp/entranceButtons";
-import entranceButtonsFoodLovers from "~/components/lp/entranceButtonsFoodLovers";
-import userVoices from "~/components/lp/userVoices";
-import moreButton from "~/components/lp/moreButton";
-import threeSteps from "~/components/lp/threeSteps";
-import askButtons from "~/components/lp/askButtons";
-import communityIcons from "~/components/lp/communityIcons";
-import mediaLink from "~/components/lp/mediaLink";
-import operators from "~/components/lp/operators";
-import aboutService from "~/components/lp/aboutService";
-import news from "~/components/lp/news";
-import snslink from "~/components/lp/link";
+import ownplateServiceImage from "@/components/lp/ownplateServiceImage";
+import entranceButtons from "@/components/lp/entranceButtons";
+import entranceButtonsFoodLovers from "@/components/lp/entranceButtonsFoodLovers";
+import userVoices from "@/components/lp/userVoices";
+import moreButton from "@/components/lp/moreButton";
+import threeSteps from "@/components/lp/threeSteps";
+import askButtons from "@/components/lp/askButtons";
+import communityIcons from "@/components/lp/communityIcons";
+import mediaLink from "@/components/lp/mediaLink";
+import operators from "@/components/lp/operators";
+import aboutService from "@/components/lp/aboutService";
+import news from "@/components/lp/news";
+import snslink from "@/components/lp/link";
 
 import HistoryButton from "@/components/users/HistoryButton";
 import FavoriteButton from "@/components/users/FavoriteButton";

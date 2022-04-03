@@ -487,12 +487,12 @@
 </template>
 
 <script>
-import { db, firestore, functions } from "~/plugins/firebase";
-import RestaurantEditCard from "~/app/admin/Restaurant/RestaurantEditCard";
-import { order_status } from "~/config/constant";
-import { midNight } from "~/utils/dateUtils";
+import { db, firestore, functions } from "@/plugins/firebase";
+import RestaurantEditCard from "@/app/admin/Restaurant/RestaurantEditCard";
+import { order_status } from "@/config/constant";
+import { midNight } from "@/utils/dateUtils";
 import { ownPlateConfig } from "@/config/project";
-import PaymentSection from "~/app/admin/Payment/PaymentSection";
+import PaymentSection from "@/app/admin/Payment/PaymentSection";
 import newsList from "./News/data";
 import MessageCard from "./Messages/MessageCard";
 import PartnersContact from "./Partners/Contact";

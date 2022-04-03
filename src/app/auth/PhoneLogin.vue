@@ -193,7 +193,7 @@
 </template>
 
 <script>
-import { db, firestore, auth, authObject } from "~/plugins/firebase";
+import { db, firestore, auth, authObject } from "@/plugins/firebase";
 import * as Sentry from "@sentry/browser";
 
 export default {

@@ -58,10 +58,10 @@
 </template>
 
 <script>
-import Lp from "~/app/home/Lp";
-import LpAdmin from "~/app/home/LpAdmin";
-import LpCustomer from "~/app/home/LpCustomer";
-import home from "~/app/home/home";
+import Lp from "@/app/home/Lp";
+import LpAdmin from "@/app/home/LpAdmin";
+import LpCustomer from "@/app/home/LpCustomer";
+import home from "@/app/home/home";
 
 export default {
   name: "HomePage",

@@ -253,12 +253,12 @@
 </template>
 
 <script>
-import { db } from "~/plugins/firebase";
-import ItemEditCard from "~/app/admin/Menus/ItemEditCard";
-import TitleCard from "~/app/admin/Menus/TitleCard";
-import TitleInput from "~/app/admin/Menus/TitleInput";
-import NotFound from "~/components/NotFound";
-import BackButton from "~/components/BackButton";
+import { db } from "@/plugins/firebase";
+import ItemEditCard from "@/app/admin/Menus/ItemEditCard";
+import TitleCard from "@/app/admin/Menus/TitleCard";
+import TitleInput from "@/app/admin/Menus/TitleInput";
+import NotFound from "@/components/NotFound";
+import BackButton from "@/components/BackButton";
 
 import firebase from "firebase/compat/app";
 import * as pdf from "@/lib/pdf/pdf";

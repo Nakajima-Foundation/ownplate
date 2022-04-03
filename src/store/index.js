@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import { stripe_regions } from "~/config/constant";
+import { stripe_regions } from "@/config/constant";
 import moment from "moment";
 
 Vue.use(Vuex);

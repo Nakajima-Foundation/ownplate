@@ -16,7 +16,6 @@ module.exports = {
     resolve: {
       alias: {
         "@": path.resolve(__dirname, vueSrc),
-        "~": path.resolve(__dirname, vueSrc)
       },
       extensions: ['.js', '.vue', '.json'],
       fallback: { "crypto": false }

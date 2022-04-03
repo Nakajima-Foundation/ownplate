@@ -629,34 +629,34 @@
 </template>
 
 <script>
-import { db, firestore } from "~/plugins/firebase";
+import { db, firestore } from "@/plugins/firebase";
 import { functionsJP } from "@/lib/firebase/firebase9";
 import { httpsCallable } from "firebase/functions";
 import {
   order_status,
   possible_transitions,
   timeEventMapping,
-} from "~/config/constant";
-import { nameOfOrder, formatOption } from "~/utils/strings";
-import { parsePhoneNumber, formatNational, formatURL } from "~/utils/phoneutil";
+} from "@/config/constant";
+import { nameOfOrder, formatOption } from "@/utils/strings";
+import { parsePhoneNumber, formatNational, formatURL } from "@/utils/phoneutil";
 import {
   stripeConfirmIntent,
   stripeCancelIntent,
   stripePaymentCancelIntent,
-} from "~/lib/stripe/stripe";
+} from "@/lib/stripe/stripe";
 import moment from "moment-timezone";
 
-import BackButton from "~/components/BackButton";
-import NotFound from "~/components/NotFound";
-import { ownPlateConfig } from "~/config/project";
+import BackButton from "@/components/BackButton";
+import NotFound from "@/components/NotFound";
+import { ownPlateConfig } from "@/config/project";
 import NotificationIndex from "./Notifications/Index";
-import OrderInfo from "~/app/user/Order/OrderInfo";
-import OrderedItem from "~/app/admin/Order/OrderedItem";
-import CustomerInfo from "~/components/CustomerInfo";
+import OrderInfo from "@/app/user/Order/OrderInfo";
+import OrderedItem from "@/app/admin/Order/OrderedItem";
+import CustomerInfo from "@/components/CustomerInfo";
 
-import { costCal } from "~/utils/commonUtils";
-import { downloadOrderPdf, printOrder, data2UrlSchema } from "~/lib/pdf/pdf2";
-import * as analyticsUtil from "~/lib/firebase/analytics";
+import { costCal } from "@/utils/commonUtils";
+import { downloadOrderPdf, printOrder, data2UrlSchema } from "@/lib/pdf/pdf2";
+import * as analyticsUtil from "@/lib/firebase/analytics";
 
 const timezone = moment.tz.guess();
 

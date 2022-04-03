@@ -169,9 +169,9 @@
   </div>
 </template>
 <script>
-import { daysOfWeek } from "~/config/constant";
-import { db } from "~/plugins/firebase";
-import { parsePhoneNumber, formatNational } from "~/utils/phoneutil";
+import { daysOfWeek } from "@/config/constant";
+import { db } from "@/plugins/firebase";
+import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
 
 export default {
   data() {

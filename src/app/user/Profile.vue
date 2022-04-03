@@ -212,17 +212,17 @@
 </template>
 
 <script>
-import { parsePhoneNumber, formatNational } from "~/utils/phoneutil";
+import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
 import {
   db,
   auth,
   firestore,
   functions,
   functionsJp,
-} from "~/plugins/firebase";
+} from "@/plugins/firebase";
 import { ownPlateConfig } from "@/config/project";
-import PhoneLogin from "~/app/auth/PhoneLogin";
-import { lineAuthURL } from "~/lib/line/line";
+import PhoneLogin from "@/app/auth/PhoneLogin";
+import { lineAuthURL } from "@/lib/line/line";
 
 import HistoryButton from "@/components/users/HistoryButton";
 import FavoriteButton from "@/components/users/FavoriteButton";

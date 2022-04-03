@@ -558,16 +558,16 @@
 
 <script>
 import Vue from "vue";
-import { db, storage } from "~/plugins/firebase";
+import { db, storage } from "@/plugins/firebase";
 import firebase from "firebase/compat/app";
-import NotFound from "~/components/NotFound";
-import BackButton from "~/components/BackButton";
-import Price from "~/components/Price";
-import { taxRates } from "~/config/constant";
+import NotFound from "@/components/NotFound";
+import BackButton from "@/components/BackButton";
+import Price from "@/components/Price";
+import { taxRates } from "@/config/constant";
 import NotificationIndex from "./Notifications/Index";
 import { ownPlateConfig } from "@/config/project";
-import { halfCharactors, formatOption, optionPrice } from "~/utils/strings";
-import EditCategory from "~/app/admin/Menus/EditCategory";
+import { halfCharactors, formatOption, optionPrice } from "@/utils/strings";
+import EditCategory from "@/app/admin/Menus/EditCategory";
 
 export default {
   name: "Order",

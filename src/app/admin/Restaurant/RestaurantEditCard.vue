@@ -345,7 +345,7 @@
 </template>
 
 <script>
-import { db } from "~/plugins/firebase";
+import { db } from "@/plugins/firebase";
 import firebase from "firebase/compat/app";
 
 export default {

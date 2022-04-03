@@ -19,11 +19,11 @@
 </template>
 
 <script>
-import DownloadCsv from "~/components/DownloadCSV";
+import DownloadCsv from "@/components/DownloadCSV";
 import moment from "moment";
-import { nameOfOrder } from "~/utils/strings";
-import { parsePhoneNumber, formatNational } from "~/utils/phoneutil";
-import { order_status } from "~/config/constant";
+import { nameOfOrder } from "@/utils/strings";
+import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
+import { order_status } from "@/config/constant";
 
 export default {
   components: {

@@ -41,9 +41,9 @@ import {
   limit,
 } from "firebase/firestore";
 
-import OrderedInfo from "~/app/admin/Order/OrderedInfo";
-import PhoneLogin from "~/app/auth/PhoneLogin";
-import BackButton from "~/components/BackButton";
+import OrderedInfo from "@/app/admin/Order/OrderedInfo";
+import PhoneLogin from "@/app/auth/PhoneLogin";
+import BackButton from "@/components/BackButton";
 
 export default {
   metaInfo() {

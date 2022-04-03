@@ -917,13 +917,13 @@
 
 <script>
 import Vue from "vue";
-import { db, storage, firestore } from "~/plugins/firebase";
+import { db, storage, firestore } from "@/plugins/firebase";
 
-import { google_geocode } from "~/lib/google/api";
-import BackButton from "~/components/BackButton";
-import NotFound from "~/components/NotFound";
-import PhoneEntry from "~/components/PhoneEntry";
-import Price from "~/components/Price";
+import { google_geocode } from "@/lib/google/api";
+import BackButton from "@/components/BackButton";
+import NotFound from "@/components/NotFound";
+import PhoneEntry from "@/components/PhoneEntry";
+import Price from "@/components/Price";
 import { ownPlateConfig } from "@/config/project";
 
 import HoursInput from "./inputComponents/HoursInput";
@@ -937,7 +937,7 @@ import {
   daysOfWeek,
   reservationTheDayBefore,
   minimumCookTimeChoices,
-} from "~/config/constant";
+} from "@/config/constant";
 
 export default {
   name: "Order",

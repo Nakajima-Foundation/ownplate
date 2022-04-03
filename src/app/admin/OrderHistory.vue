@@ -132,15 +132,15 @@
 </template>
 
 <script>
-import { db, firestore } from "~/plugins/firebase";
-import { midNight } from "~/utils/dateUtils";
-import OrderedInfo from "~/app/admin/Order/OrderedInfo";
-import BackButton from "~/components/BackButton";
-import { order_status } from "~/config/constant";
+import { db, firestore } from "@/plugins/firebase";
+import { midNight } from "@/utils/dateUtils";
+import OrderedInfo from "@/app/admin/Order/OrderedInfo";
+import BackButton from "@/components/BackButton";
+import { order_status } from "@/config/constant";
 import moment from "moment";
-import DownloadOrders from "~/components/DownloadOrders";
+import DownloadOrders from "@/components/DownloadOrders";
 import NotificationIndex from "./Notifications/Index";
-import ReportDetails from "~/app/admin/Order/ReportDetails";
+import ReportDetails from "@/app/admin/Order/ReportDetails";
 
 export default {
   components: {

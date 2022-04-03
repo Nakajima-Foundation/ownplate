@@ -48,7 +48,7 @@
 <script>
 import MarkdownIt from "markdown-it";
 import newsList from "./data";
-import NotFound from "~/components/NotFound";
+import NotFound from "@/components/NotFound";
 
 export default {
   components: {

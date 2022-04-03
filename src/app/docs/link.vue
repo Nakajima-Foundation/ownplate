@@ -4,8 +4,8 @@
   </div>
 </template>
 <script>
-import { db } from "~/plugins/firebase";
-import NotFound from "~/components/NotFound";
+import { db } from "@/plugins/firebase";
+import NotFound from "@/components/NotFound";
 
 export default {
   name: "Link",

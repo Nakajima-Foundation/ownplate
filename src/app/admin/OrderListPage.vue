@@ -118,11 +118,11 @@
 </template>
 
 <script>
-import { db, firestore } from "~/plugins/firebase";
-import { midNight } from "~/utils/dateUtils";
-import OrderedInfo from "~/app/admin/Order/OrderedInfo";
-import BackButton from "~/components/BackButton";
-import { order_status } from "~/config/constant";
+import { db, firestore } from "@/plugins/firebase";
+import { midNight } from "@/utils/dateUtils";
+import OrderedInfo from "@/app/admin/Order/OrderedInfo";
+import BackButton from "@/components/BackButton";
+import { order_status } from "@/config/constant";
 import moment from "moment";
 
 import NotificationIndex from "./Notifications/Index";

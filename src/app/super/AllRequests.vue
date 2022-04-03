@@ -50,8 +50,8 @@
 </template>
 
 <script>
-import BackButton from "~/components/BackButton";
-import { db } from "~/plugins/firebase";
+import BackButton from "@/components/BackButton";
+import { db } from "@/plugins/firebase";
 import firebase from "firebase/compat/app";
 
 export default {

@@ -1,4 +1,4 @@
-import { midNight } from "~/utils/dateUtils";
+import { midNight } from "@/utils/dateUtils";
 import moment from "moment";
 export default {
   methods: {

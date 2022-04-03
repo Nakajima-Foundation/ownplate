@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { db, firestore } from "~/plugins/firebase";
+import { db, firestore } from "@/plugins/firebase";
 import NotificationWatcher from "./Watcher/NotificationWatcher";
 import SoundConfigWatcher from "./Watcher/SoundConfigWatcher";
 import NewOrderWatcher from "./Watcher/NewOrderWatcher";

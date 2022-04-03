@@ -14,7 +14,7 @@
   </section>
 </template>
 <script>
-import PhoneLogin from "~/app/auth/PhoneLogin";
+import PhoneLogin from "@/app/auth/PhoneLogin";
 export default {
   components: {
     PhoneLogin,

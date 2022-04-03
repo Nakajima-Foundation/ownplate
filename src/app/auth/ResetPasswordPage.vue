@@ -68,7 +68,7 @@
 
 <script>
 import isEmail from "validator/lib/isEmail";
-import { auth } from "~/plugins/firebase";
+import { auth } from "@/plugins/firebase";
 
 export default {
   name: "Reset",

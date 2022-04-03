@@ -100,8 +100,8 @@
 </template>
 
 <script>
-import BackButton from "~/components/BackButton";
-import { db, functions } from "~/plugins/firebase";
+import BackButton from "@/components/BackButton";
+import { db, functions } from "@/plugins/firebase";
 
 export default {
   metaInfo() {

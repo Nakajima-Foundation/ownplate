@@ -76,12 +76,12 @@
 </template>
 
 <script>
-import BackButton from "~/components/BackButton";
-import { db } from "~/plugins/firebase";
-import OrderedInfo from "~/app/admin/Order/OrderedInfo";
-import { order_status, order_status_keys } from "~/config/constant";
-import { nameOfOrder } from "~/utils/strings";
-import DownloadCsv from "~/components/DownloadCSV";
+import BackButton from "@/components/BackButton";
+import { db } from "@/plugins/firebase";
+import OrderedInfo from "@/app/admin/Order/OrderedInfo";
+import { order_status, order_status_keys } from "@/config/constant";
+import { nameOfOrder } from "@/utils/strings";
+import DownloadCsv from "@/components/DownloadCSV";
 
 export default {
   components: {

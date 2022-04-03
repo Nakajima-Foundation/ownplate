@@ -21,8 +21,8 @@
 </template>
 
 <script>
-import BackButton from "~/components/BackButton";
-import { db } from "~/plugins/firebase";
+import BackButton from "@/components/BackButton";
+import { db } from "@/plugins/firebase";
 
 export default {
   metaInfo() {

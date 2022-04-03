@@ -10,8 +10,8 @@
 <script>
 // https://firebase.googleblog.com/2016/11/authenticate-your-firebase-users-with-line-login.html
 import { ownPlateConfig } from "@/config/project";
-import { db, auth, firestore, functions } from "~/plugins/firebase";
-import { lineGuard } from "~/lib/line/line";
+import { db, auth, firestore, functions } from "@/plugins/firebase";
+import { lineGuard } from "@/lib/line/line";
 
 export default {
   data() {

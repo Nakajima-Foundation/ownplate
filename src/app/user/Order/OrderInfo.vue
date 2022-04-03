@@ -192,8 +192,8 @@
 </template>
 
 <script>
-import { order_status } from "~/config/constant";
-import OrderItem from "~/app/user/Order/OrderItem";
+import { order_status } from "@/config/constant";
+import OrderItem from "@/app/user/Order/OrderItem";
 
 export default {
   name: "Order",

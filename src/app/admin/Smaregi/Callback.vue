@@ -15,10 +15,10 @@
 </template>
 
 <script>
-import { functionsJp } from "~/plugins/firebase";
+import { functionsJp } from "@/plugins/firebase";
 import { smaregi } from "@/config/project";
 
-import BackButton from "~/components/BackButton";
+import BackButton from "@/components/BackButton";
 
 export default {
   components: {

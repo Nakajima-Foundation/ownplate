@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { db, functions } from "~/plugins/firebase";
+import { db, functions } from "@/plugins/firebase";
 
 export default {
   name: "MessageCard",

@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import { db, firestore } from "~/plugins/firebase";
+import { db, firestore } from "@/plugins/firebase";
 export default {
   data() {
     return {

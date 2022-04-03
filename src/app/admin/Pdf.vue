@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { db } from "~/plugins/firebase";
+import { db } from "@/plugins/firebase";
 
 import * as pdf from "@/lib/pdf/pdf";
 import * as pdf2 from "@/lib/pdf/pdf2";
