@@ -97,7 +97,8 @@
 
 <script>
 import { smaregi } from "@/config/project";
-import { db, functionsJp } from "@/plugins/firebase";
+import { db } from "@/plugins/firebase";
+import { smaregiStoreList } from "@/lib/firebase/functions";
 
 import BackButton from "@/components/BackButton";
 
@@ -162,13 +163,12 @@ export default {
       this.contractId = smaregiData?.smaregi?.contract?.id;
 
       try {
-        const smaregiAuth = functionsJp.httpsCallable("smaregiStoreList");
         this.isLoading = true;
-        const { data } = await smaregiAuth({
+        const { data } = await smaregiStoreList({
           client_id: smaregi.clientId,
         });
         this.shopList = data.res;
-        // console.log("smaregiAuth", data);
+        // console.log("smaregiStoreList", data);
       } finally {
         this.isLoading = false;
       }

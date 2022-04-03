@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { functionsJp } from "@/plugins/firebase";
+import { smaregiAuth } from "@/lib/firebase/functions"
 import { smaregi } from "@/config/project";
 
 import BackButton from "@/components/BackButton";
@@ -33,7 +33,6 @@ export default {
   async mounted() {
     if (this.code) {
       try {
-        const smaregiAuth = functionsJp.httpsCallable("smaregiAuth");
         this.isValidating = true;
         const { data } = await smaregiAuth({
           code: this.code,

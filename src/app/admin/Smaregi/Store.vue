@@ -77,7 +77,10 @@
 
 <script>
 import { smaregi } from "@/config/project";
-import { db, functionsJp } from "@/plugins/firebase";
+import { db } from "@/plugins/firebase";
+import {
+  smaregiProductList
+} from "@/lib/firebase/functions";
 
 import BackButton from "@/components/BackButton";
 
@@ -142,8 +145,7 @@ export default {
       price: "---",
     });
 
-    const smaregiAuth = functionsJp.httpsCallable("smaregiProductList");
-    const { data } = await smaregiAuth({
+    const { data } = await smaregiProductList({
       client_id: smaregi.clientId,
       store_id: this.storeId,
     });
