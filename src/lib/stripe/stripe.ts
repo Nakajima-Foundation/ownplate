@@ -1,8 +1,11 @@
 import { functions } from "@/lib/firebase/firebase9";
 import { httpsCallable } from "firebase/functions";
+import { ownPlateConfig } from "@/config/project";
+
+const apiKey = ownPlateConfig.stripe.apiKey;
 
 export const getStripeInstance = () => {
-  const stripeAPIToken = process.env.VUE_APP_STRIPE_API_KEY;
+  const stripeAPIToken = apiKey;
   // @ts-ignore
   return Stripe(stripeAPIToken);
 };
