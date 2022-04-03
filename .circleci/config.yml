@@ -21,7 +21,7 @@ jobs:
           background: true
       - run: cp configs/.firebaserc ./
       - run: cp src/config/default/ownplate-dev.ts src/config/project.ts
-      - run: VUE_APP_STRIPE_CLIENT_ID=$STRIPE_CLIENT_ID VUE_APP_STRIPE_API_KEY=$STRIPE_API_KEY VUE_APP_GAPIKey=$GAPIKey npm run build
+      - run: npm run build
       - run: cp dist/index.html functions/templates/index.html
       - run: cp src/config/default/ownplate-dev.ts functions/src/common/project.ts
       - run: cp src/config/constant.ts functions/src/common/constant.ts
