@@ -84,14 +84,18 @@ export const isEmpty = <T, >(value: T) => {
         return this.countObj(obj[key]) + tmp;
       }, 0);
     },
-    cleanObject(obj) {
-      return Object.keys(obj).reduce((tmp, key) => {
-        if (!this.isNull(obj[key])) {
-          tmp[key] = obj[key];
-        }
-        return tmp;
-      }, {});
-    },
+*/
+
+export const cleanObject = (obj: {[key: string]: any}) => {
+  return Object.keys(obj).reduce((tmp: {[key: string]: any}, key) => {
+    if (!isNull(obj[key])) {
+      tmp[key] = obj[key];
+    }
+    return tmp;
+  }, {});
+};
+
+/*
     copyClipboard: async function (text) {
       // TODO: check no-nuxt branch
       try {

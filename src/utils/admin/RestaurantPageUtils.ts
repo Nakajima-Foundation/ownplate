@@ -6,6 +6,16 @@ import {
   daysOfWeek,
 } from "@/config/constant";
 
+import { db } from "@/lib/firebase/firebase9";
+import {
+  doc, collection, query, where, addDoc, updateDoc, setDoc,
+  getDocs, getDoc
+} from "firebase/firestore";
+
+import {
+  cleanObject
+} from "@/utils/utils";
+
 export const getEditShopInfo = (shopInfo: RestaurantInfoData) =>  {
   const restaurantData = {
     restProfilePhoto: shopInfo.restProfilePhoto,
@@ -235,3 +245,65 @@ export const shopInfoValidator = (
   // todo more validate
   return err;
 }
+
+export const copyRestaurant = async (shopInfo: RestaurantInfoData, uid: string, restaurantId: string) => {
+  const restaurantData = getEditShopInfo(shopInfo);
+  restaurantData.restaurantName = restaurantData.restaurantName + " - COPY";
+  const newRestaurantData = Object.assign({}, restaurantData, {
+    publicFlag: false,
+    deletedFlag: false,
+    createdAt: serverTimestamp()
+  });
+
+  const restaurantDoc = await addDoc(collection(db, "restaurants"), cleanObject(newRestaurantData));
+  const id = restaurantDoc.id;
+
+  const menuListIds: {[key: string]: string} = {};
+  const menus = await getDocs(query(
+    collection(db, `restaurants/${restaurantId}/menus`),
+    where("deletedFlag", "==", false)
+  ));
+  
+  await Promise.all(
+    menus.docs.map(async (a) => {
+      const newMenu = await addDoc(collection(db, `restaurants/${id}/menus`), a.data());
+      menuListIds[a.id] = newMenu.id;
+      return;
+    })
+  );
+  // console.log(menus.docs);
+  const titles = await getDocs(query(
+    collection(db, `restaurants/${restaurantId}/titles`),
+    where("deletedFlag", "==", false)
+  ));
+  
+  await Promise.all(
+    titles.docs.map(async (a) => {
+      const newMenu = await addDoc(collection(db, `restaurants/${id}/titles`), a.data());
+      menuListIds[a.id] = newMenu.id;
+      return;
+    })
+  );
+  
+  const newMenuList: string[] = [];
+  (shopInfo.menuLists || []).forEach((a) => {
+    if (menuListIds[a]) {
+      newMenuList.push(menuListIds[a]);
+    }
+  });
+  
+  await updateDoc(doc(db, `restaurants/${id}`), {menuLists: newMenuList});
+  
+  // push list
+  const path = `/admins/${uid}/public/RestaurantLists`;
+  const restaurantListsDoc = await getDoc(doc(db, path));
+  if (restaurantListsDoc.exists()) {
+    const restaurantLists = restaurantListsDoc.data().lists;
+    restaurantLists.push(id);
+    await setDoc(doc(db, path), { lists: restaurantLists }, { merge: true });
+  }
+
+  return id;
+  // end of list
+
+};

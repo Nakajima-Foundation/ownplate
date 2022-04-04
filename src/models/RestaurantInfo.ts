@@ -26,21 +26,22 @@ export interface RestaurantInfoData {
   instagramUrl: string;
   orderNotice: string;
   orderThanks: string;
-  phoneCall: boolean;,
-  enablePreline: boolean;,
-  emailNotification: boolean;,
+  phoneCall: boolean;
+  enablePreline: boolean;
+  emailNotification: boolean;
   countryCode: string;
-  acceptUserMessage: boolean;,
-  foodTax: number,
-  alcoholTax: number,
-  inclusiveTax: boolean;,
+  acceptUserMessage: boolean;
+  foodTax: number;
+  alcoholTax: number;
+  inclusiveTax: boolean;
   openTimes: {[key: string]: any[]};
   businessDay: {[key: string]: any[]};
 
   pickUpMinimumCookTime: number;
   pickUpDaysInAdvance: number;
-  images: any,
-  publicFlag: boolean;,
+  images: any;
+  publicFlag: boolean;
+  deletedFlag: boolean;
   temporaryClosure: any[];
 
   createdAt: Date;

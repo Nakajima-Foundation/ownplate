@@ -932,7 +932,11 @@ import State from "./inputComponents/State";
 
 import NotificationIndex from "./Notifications/Index";
 
-import { getEditShopInfo, defaultShopInfo, shopInfoValidator } from "@/utils/admin/RestaurantPageUtils";
+import { getEditShopInfo, defaultShopInfo, shopInfoValidator, copyRestaurant } from "@/utils/admin/RestaurantPageUtils";
+import {
+  cleanObject
+} from "@/utils/utils";
+
 
 import {
   taxRates,
@@ -1175,67 +1179,18 @@ export default {
       });
     },
     async copyRestaurant() {
-      const restaurantData = getEditShopInfo(this.shopInfo);
-      restaurantData.restaurantName = restaurantData.restaurantName + " - COPY";
-      restaurantData.publicFlag = false;
-      restaurantData.deletedFlag = false;
-      restaurantData.createdAt = firestore.FieldValue.serverTimestamp();
+      try {
+        const id = await copyRestaurant(this.shopInfo, this.uid, this.restaurantId());
+        this.$router.push({
+          path: `/admin/restaurants/${id}`,
+        });
+      } catch (error) {
+        this.$store.commit("setErrorMessage", {
+          code: "restaurant.save",
+          error,
+        });
 
-      const doc = await db.collection("restaurants").add(restaurantData);
-      const id = doc.id;
-
-      const menuListIds = {};
-      const menus = await db
-        .collection(`restaurants/${this.restaurantId()}/menus`)
-        .where("deletedFlag", "==", false)
-        .get();
-
-      await Promise.all(
-        menus.docs.map(async (a) => {
-          const newMenu = await db
-            .collection(`restaurants/${id}/menus`)
-            .add(a.data());
-          menuListIds[a.id] = newMenu.id;
-          return;
-        })
-      );
-      // console.log(menus.docs);
-      const titles = await db
-        .collection(`restaurants/${this.restaurantId()}/titles`)
-        .where("deletedFlag", "==", false)
-        .get();
-
-      await Promise.all(
-        titles.docs.map(async (a) => {
-          const newMenu = await db
-            .collection(`restaurants/${id}/titles`)
-            .add(a.data());
-          menuListIds[a.id] = newMenu.id;
-          return;
-        })
-      );
-
-      const newMenuList = [];
-      this.shopInfo.menuLists.forEach((a) => {
-        if (menuListIds[a]) {
-          newMenuList.push(menuListIds[a]);
-        }
-      });
-
-      await db.doc(`restaurants/${id}`).update("menuLists", newMenuList);
-
-      // push list
-      const path = `/admins/${this.uid}/public/RestaurantLists`;
-      const restaurantListsDoc = await db.doc(path).get();
-      if (restaurantListsDoc.exists) {
-        const restaurantLists = restaurantListsDoc.data().lists;
-        restaurantLists.push(id);
-        await db.doc(path).set({ lists: restaurantLists }, { merge: true });
-      }
-      // end of list
-      this.$router.push({
-        path: `/admin/restaurants/${id}`,
-      });
+      };
     },
     async submitRestaurant() {
       this.submitting = true;
@@ -1335,7 +1290,7 @@ export default {
       }
     },
     async updateRestaurantData(restaurantData) {
-      const cleanData = this.cleanObject(restaurantData);
+      const cleanData = cleanObject(restaurantData);
       await db.doc(`restaurants/${this.restaurantId()}`).update(cleanData);
     },
   },
