@@ -211,14 +211,6 @@ const mixin = {
       const m = this.$store.getters.stripeRegion.multiple;
       return Math.round(price * m) / m;
     },
-    getPartner(shopOwner) {
-      return ((shopOwner || {}).partners || []).map((p) => {
-        const match = partners.find((a) => {
-          return a.id === p;
-        });
-        return match;
-      });
-    },
   },
   computed: {
     underConstruction() {

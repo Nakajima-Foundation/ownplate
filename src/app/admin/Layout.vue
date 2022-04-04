@@ -39,7 +39,8 @@ import NotificationSettings from "./Notifications/NotificationSettings";
 import PartnersContact from "./Partners/Contact";
 
 import {
-  getShopOwner
+  getShopOwner,
+  getPartner,
 } from "@/utils/utils";
 
 export default {
@@ -72,7 +73,7 @@ export default {
       );
     },
     partner() {
-      return this.getPartner(this.shopOwner);
+      return getPartner(this.shopOwner);
     },
     ownerUid() {
       return this.$store.getters.isSubAccount

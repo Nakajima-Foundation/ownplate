@@ -499,7 +499,8 @@ import MessageCard from "./Messages/MessageCard.vue";
 import PartnersContact from "./Partners/Contact.vue";
 
 import {
-  getShopOwner
+  getShopOwner,
+  getPartner,
 } from "@/utils/utils";
 
 export default {
@@ -766,7 +767,7 @@ export default {
   },
   computed: {
     partner() {
-      return this.getPartner(this.shopOwner);
+      return getPartner(this.shopOwner);
     },
     ownerUid() {
       return this.$store.getters.isSubAccount

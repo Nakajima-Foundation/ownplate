@@ -3,6 +3,8 @@ import {
   doc,
   getDoc,
 } from "firebase/firestore";
+import { ShopOwnerData } from "@/models/ShopOwner";
+import { partners } from "@/config/constant";
 
 export const isNull = <T>(value: T) => {
   return value === null || value === undefined;
@@ -133,12 +135,13 @@ export const cleanObject = (obj: { [key: string]: any }) => {
       return 0;
     },
 */
-export const getShopOwner = async (uid: string) => {
-  const admin = await getDoc(doc(db, `/admins/${uid}`));
-  if (admin && admin.exists) {
-    return admin.data();
+export const getShopOwner = async (uid: string): Promise<ShopOwnerData> => {
+  const defaultData = { hidePrivacy: false };
+  const admin = (await getDoc(doc(db, `/admins/${uid}`))).data();
+  if (admin) {
+    return admin as ShopOwnerData;
   }
-  return { hidePrivacy: false };
+  return defaultData;
 };
 /*
     arraySum(arr) {
@@ -230,12 +233,14 @@ export const getShopOwner = async (uid: string) => {
       const m = this.$store.getters.stripeRegion.multiple;
       return Math.round(price * m) / m;
     },
-    getPartner(shopOwner) {
-      return ((shopOwner || {}).partners || []).map((p) => {
-        const match = partners.find((a) => {
-          return a.id === p;
-        });
-        return match;
-      });
-    },
 */
+
+export const getPartner = (shopOwner: ShopOwnerData) => {
+  return ((shopOwner || {}).partners || []).map((p: string) => {
+    const match = partners.find((a: {id: string}) => {
+      return a.id === p;
+    });
+    return match;
+  });
+};
+
