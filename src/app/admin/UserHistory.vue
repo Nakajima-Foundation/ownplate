@@ -131,7 +131,6 @@ export default {
       limit: 30,
       last: undefined,
       orders: [],
-      shopOwner: null,
       userLog: {},
     };
   },
@@ -145,7 +144,6 @@ export default {
       return;
     }
     this.shopInfo = restaurantDoc.data();
-    this.shopOwner = await this.getShopOwner(this.$store.getters.uidAdmin);
     this.next();
 
     this.getUserLog();

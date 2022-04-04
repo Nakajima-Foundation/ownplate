@@ -1,3 +1,9 @@
+import { db } from "@/lib/firebase/firebase9";
+import {
+  doc,
+  getDoc,
+} from "firebase/firestore";
+
 export const isNull = <T>(value: T) => {
   return value === null || value === undefined;
 };
@@ -126,13 +132,15 @@ export const cleanObject = (obj: { [key: string]: any }) => {
       }
       return 0;
     },
-    async getShopOwner(uid) {
-      const admin = await db.doc(`/admins/${uid}`).get();
-      if (admin && admin.exists) {
-        return admin.data();
-      }
-      return { hidePrivacy: false };
-    },
+*/
+export const getShopOwner = async (uid: string) => {
+  const admin = await getDoc(doc(db, `/admins/${uid}`));
+  if (admin && admin.exists) {
+    return admin.data();
+  }
+  return { hidePrivacy: false };
+};
+/*
     arraySum(arr) {
       return Object.values(arr || [0]).reduce(
         (accumulator, currentValue) => accumulator + currentValue

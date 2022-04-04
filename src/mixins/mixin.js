@@ -122,13 +122,6 @@ const mixin = {
       }
       return 0;
     },
-    async getShopOwner(uid) {
-      const admin = await db.doc(`/admins/${uid}`).get();
-      if (admin && admin.exists) {
-        return admin.data();
-      }
-      return { hidePrivacy: false };
-    },
     arraySum(arr) {
       return Object.values(arr || [0]).reduce(
         (accumulator, currentValue) => accumulator + currentValue

@@ -38,6 +38,10 @@ import NewOrderWatcher from "./Watcher/NewOrderWatcher";
 import NotificationSettings from "./Notifications/NotificationSettings";
 import PartnersContact from "./Partners/Contact";
 
+import {
+  getShopOwner
+} from "@/utils/utils";
+
 export default {
   components: {
     NotificationWatcher,
@@ -61,11 +65,6 @@ export default {
   },
   computed: {
     requestTouch() {
-      console.log(
-        this.notificationConfig.soundOn,
-        !this.$store.state.soundEnable,
-        this.isIOS
-      );
       return (
         this.notificationConfig.soundOn &&
         !this.$store.state.soundEnable &&
@@ -114,7 +113,7 @@ export default {
           }
         }
       );
-    this.shopOwner = await this.getShopOwner(this.ownerUid);
+    this.shopOwner = await getShopOwner(this.ownerUid);
   },
   destroyed() {
     this.notification_detacher && this.notification_detacher();

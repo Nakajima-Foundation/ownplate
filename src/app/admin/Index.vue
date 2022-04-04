@@ -488,14 +488,19 @@
 
 <script>
 import { db, firestore } from "@/plugins/firebase";
-import RestaurantEditCard from "@/app/admin/Restaurant/RestaurantEditCard";
 import { order_status } from "@/config/constant";
 import { midNight } from "@/utils/dateUtils";
 import { ownPlateConfig } from "@/config/project";
-import PaymentSection from "@/app/admin/Payment/PaymentSection";
 import newsList from "./News/data";
-import MessageCard from "./Messages/MessageCard";
-import PartnersContact from "./Partners/Contact";
+
+import RestaurantEditCard from "@/app/admin/Restaurant/RestaurantEditCard.vue";
+import PaymentSection from "@/app/admin/Payment/PaymentSection.vue";
+import MessageCard from "./Messages/MessageCard.vue";
+import PartnersContact from "./Partners/Contact.vue";
+
+import {
+  getShopOwner
+} from "@/utils/utils";
 
 export default {
   name: "Restaurant",
@@ -535,7 +540,7 @@ export default {
   async mounted() {
     try {
       if (this.isOwner) {
-        this.shopOwner = await this.getShopOwner(this.ownerUid);
+        this.shopOwner = await getShopOwner(this.ownerUid);
         const adminConfig = await db
           .doc(`/adminConfigs/${this.ownerUid}`)
           .get();

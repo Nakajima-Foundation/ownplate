@@ -658,7 +658,11 @@ import { costCal } from "@/utils/commonUtils";
 import { downloadOrderPdf, printOrder, data2UrlSchema } from "@/lib/pdf/pdf2";
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
-import { isEmpty, isNull } from "@/utils/utils";
+import {
+  isEmpty,
+  isNull,
+  getShopOwner
+} from "@/utils/utils";
 
 const timezone = moment.tz.guess();
 
@@ -774,7 +778,7 @@ export default {
         },
       });
     this.detacher = [restaurant_detacher, menu_detacher, order_detacher];
-    this.shopOwner = await this.getShopOwner(this.$store.getters.uidAdmin);
+    this.shopOwner = await getShopOwner(this.$store.getters.uidAdmin);
   },
   destroyed() {
     this.detacher.map((detacher) => {
@@ -815,9 +819,6 @@ export default {
         return true;
       }
       return false;
-      //(this.orderInterval === 0) {
-      // (this.orderInterval < 0) {
-      // (this.orderInterval >= 6)
     },
     ownerUid() {
       return this.$store.getters.isSubAccount

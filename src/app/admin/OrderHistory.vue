@@ -142,6 +142,10 @@ import DownloadOrders from "@/components/DownloadOrders";
 import NotificationIndex from "./Notifications/Index";
 import ReportDetails from "@/app/admin/Order/ReportDetails";
 
+import {
+  getShopOwner
+} from "@/utils/utils";
+
 export default {
   components: {
     OrderedInfo,
@@ -180,7 +184,7 @@ export default {
       return;
     }
     this.shopInfo = restaurantDoc.data();
-    this.shopOwner = await this.getShopOwner(this.$store.getters.uidAdmin);
+    this.shopOwner = await getShopOwner(this.$store.getters.uidAdmin);
     this.next();
   },
   computed: {
