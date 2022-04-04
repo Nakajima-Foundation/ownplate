@@ -1,21 +1,13 @@
-import Vue from "vue";
-import { db } from "@/plugins/firebase";
-import { firebaseConfig, ownPlateConfig } from "@/config/project";
-import { soundFiles, regionalSettings } from "@/config/constant";
-import moment from "moment";
-import * as Cookie from "cookie";
+export const isNull = <T, >(value: T) => {
+  return value === null || value === undefined;
+};
 
-import { defaultHeader } from "@/config/header";
-import { formatOption } from "@/utils/strings";
+export const isEmpty = <T, >(value: T) => {
+  return value === null || value === undefined || String(value) === "";
+};
 
-import { partners } from "@/config/constant";
-import { GAPIKey } from "@/config/project";
-
-const mixin = {
-  methods: {
-    isNull(value) {
-      return value === null || value === undefined;
-    },
+// from mixin
+/* 
     restaurantId() {
       return this.$route.params.restaurantId;
     },
@@ -91,6 +83,18 @@ const mixin = {
         return this.countObj(obj[key]) + tmp;
       }, 0);
     },
+*/
+
+export const cleanObject = (obj: {[key: string]: any}) => {
+  return Object.keys(obj).reduce((tmp: {[key: string]: any}, key) => {
+    if (!isNull(obj[key])) {
+      tmp[key] = obj[key];
+    }
+    return tmp;
+  }, {});
+};
+
+/*
     copyClipboard: async function (text) {
       // TODO: check no-nuxt branch
       try {
@@ -226,111 +230,4 @@ const mixin = {
         return match;
       });
     },
-  },
-  computed: {
-    underConstruction() {
-      return ownPlateConfig.releasName === "beta-dev";
-    },
-    defaultTitle() {
-      return defaultHeader.title;
-    },
-    regionalSetting() {
-      return regionalSettings[ownPlateConfig.region || "US"];
-    },
-    user() {
-      return this.$store.state.user;
-    },
-    isAdmin() {
-      return !!this.$store.getters.uidAdmin;
-    },
-    isCustomer() {
-      return !!this.$store.getters.uidUser;
-    },
-    isLiffUser() {
-      return !!this.$store.getters.uidLiff;
-    },
-    userLiffId() {
-      return this.$store.getters.liffId;
-    },
-    isAnonymous() {
-      return this.$store.getters.isAnonymous;
-    },
-    isLineUser() {
-      const claims = this.$store.state.claims;
-      return !!claims?.line;
-    },
-    isLineEnabled() {
-      return !!ownPlateConfig.line;
-    },
-    isJapan() {
-      return ownPlateConfig.region === "JP";
-    },
-    isLocaleJapan() {
-      // for hack
-      console.log(this.$i18n.locale);
-      // return this.$i18n.locale === "ja";
-      // TODO: why not ja ?
-      return this.$i18n.locale !== "en" && this.$i18n.locale !== "fr";
-    },
-    serviceKey() {
-      return this.isJapan ? "omochikaeri" : "ownPlate";
-    },
-    regionMultiple() {
-      return this.$store.getters.stripeRegion.multiple;
-    },
-    // for user agent detect
-    isIOS() {
-      return this.isOldIOS || this.isNewIOS;
-    },
-    isOldIOS() {
-      return /iP(hone|(o|a)d)/.test(navigator.userAgent);
-    },
-    isNewIOS() {
-      return this.isSafari && typeof document.ontouchstart !== "undefined";
-    },
-    isSafari() {
-      return /Safari/.test(navigator.userAgent);
-    },
-    isAndroid() {
-      // not implemented
-      return null;
-    },
-    inLiff() {
-      // BY path
-      return !!this.$route.params.liffIndexId;
-    },
-    liffIndexId() {
-      return this.$route.params.liffIndexId;
-    },
-    liff_base_path() {
-      return `/liff/${this.liffIndexId}`;
-    },
-    isInLine() {
-      // By UA
-      return /Line/.test(navigator.userAgent);
-    },
-    isInLIFF() {
-      return /LIFF/.test(navigator.userAgent);
-    },
-    isInFacebook() {},
-    isInTwitter() {},
-    isDev() {
-      return firebaseConfig.projectId === "ownplate-dev";
-    },
-    featureHeroMobile() {
-      return this.regionalSetting.FeatureHeroMobile[
-        this.isLocaleJapan ? "ja" : "en"
-      ];
-    },
-    featureHeroTablet() {
-      return this.regionalSetting.FeatureHeroTablet[
-        this.isLocaleJapan ? "ja" : "en"
-      ];
-    },
-    gmapKey() {
-      return GAPIKey;
-    },
-  },
-};
-
-export default mixin;
+*/

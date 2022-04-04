@@ -265,6 +265,10 @@ import * as pdf from "@/lib/pdf/pdf";
 
 import NotificationIndex from "./Notifications/Index";
 
+import {
+  cleanObject
+} from "@/utils/utils";
+
 export default {
   name: "Menus",
   components: {
@@ -579,7 +583,7 @@ export default {
       };
       const newData = await db
         .collection(`restaurants/${this.restaurantId()}/menus`)
-        .add(this.cleanObject(data));
+        .add(cleanObject(data));
       this.forkItem(itemKey, newData);
     },
     async forkItem(itemKey, newData) {

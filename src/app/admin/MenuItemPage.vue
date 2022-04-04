@@ -558,7 +558,7 @@
 
 <script>
 import Vue from "vue";
-import { db, storage } from "@/plugins/firebase";
+import { db } from "@/plugins/firebase";
 import firebase from "firebase/compat/app";
 import NotFound from "@/components/NotFound";
 import BackButton from "@/components/BackButton";
@@ -568,6 +568,10 @@ import NotificationIndex from "./Notifications/Index";
 import { ownPlateConfig } from "@/config/project";
 import { halfCharactors, formatOption, optionPrice } from "@/utils/strings";
 import EditCategory from "@/app/admin/Menus/EditCategory";
+
+import {
+  uploadFile
+} from "@/lib/firebase/storage";
 
 export default {
   name: "Order",
@@ -664,7 +668,6 @@ export default {
     }
     this.menuInfo = Object.assign({}, this.menuInfo, resMenuInfo.data());
     this.notFound = false;
-
     const restaurantsCollection = await db
       .collection("restaurants")
       .where("uid", "==", this.uid)
@@ -821,7 +824,7 @@ export default {
           const path = `/images/restaurants/${this.restaurantId()}/menus/${
             this.menuId
           }/${this.uid}/item.jpg`;
-          this.menuInfo.itemPhoto = await this.uploadFile(
+          this.menuInfo.itemPhoto = await uploadFile(
             this.files["menu"],
             path
           );

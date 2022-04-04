@@ -2,7 +2,6 @@ import firebase from "firebase/compat/app";
 
 // for v8
 import "firebase/compat/firestore";
-import "firebase/compat/storage";
 import "firebase/compat/auth";
 
 import { firebaseConfig } from "@/config/project";
@@ -13,7 +12,6 @@ if (!firebase.apps.length) {
 }
 
 export const db = firebase.firestore();
-export const storage = firebase.storage();
 export const auth = firebase.auth();
 export const authObject = firebase.auth;
 export const firestore = firebase.firestore;
