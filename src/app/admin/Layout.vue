@@ -20,7 +20,8 @@
       @close="closeNotificationSettings"
       v-if="NotificationSettingsPopup"
       />
-    <router-view :shopInfo="shopInfo" :notFound="notFound" ></router-view>
+    <NotFound v-if="noRestaurant === true" />
+    <router-view :shopInfo="shopInfo" v-else-if="noRestaurant === false" ></router-view>
     <notification-watcher />
     <sound-config-watcher :notificationConfig="notificationConfig" />
     <new-order-watcher :notificationConfig="notificationConfig" />
@@ -44,6 +45,7 @@ import SoundConfigWatcher from "./Watcher/SoundConfigWatcher.vue";
 import NewOrderWatcher from "./Watcher/NewOrderWatcher.vue";
 import NotificationSettings from "./Notifications/NotificationSettings.vue";
 import PartnersContact from "./Partners/Contact.vue";
+import NotFound from "@/components/NotFound";
 
 import { PartnerData } from "@/models/ShopOwner";
 
@@ -59,6 +61,7 @@ import {
 
 export default defineComponent({
   components: {
+    NotFound,
     NotificationWatcher,
     SoundConfigWatcher,
     NewOrderWatcher,
@@ -85,7 +88,7 @@ export default defineComponent({
     const NotificationSettingsPopup = ref(false);
     const isOpen = ref(false);
 
-    const notFound = ref(null);
+    const noRestaurant = ref(null);
     const shopInfo = ref(defaultShopInfo);
     
     const loadShopInfo = async () => {
@@ -95,14 +98,11 @@ export default defineComponent({
       const restaurant = await getDoc(doc(db, `restaurants/${restaurantId.value}`));
       
       if (!restaurant.exists()) {
-        notFound.value = true;
+        noRestaurant.value = true;
         return;
       }
       const restaurant_data = restaurant.data();
-      if (restaurant_data.uid !== uid.value) {
-        notFound.value = true;
-        return;
-      }
+
       const loaedShopInfo = Object.assign({}, defaultShopInfo, restaurant_data, defaultTax);
       if (loaedShopInfo.temporaryClosure) {
         loaedShopInfo.temporaryClosure = loaedShopInfo.temporaryClosure.map(
@@ -112,7 +112,7 @@ export default defineComponent({
         );
       }
       shopInfo.value = loaedShopInfo;
-      notFound.value = false;
+      noRestaurant.value = false;
       
     };
     loadShopInfo();
@@ -167,7 +167,7 @@ export default defineComponent({
       isOpen,
 
       shopInfo,
-      notFound,
+      noRestaurant,
 
     };
   },

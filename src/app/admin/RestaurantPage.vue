@@ -984,10 +984,6 @@ export default {
       type: Object,
       required: true,
     },
-    notFound: {
-      type: Boolean | null,
-      required: true,
-    },
   },
   data() {
     const maxDate = new Date();
@@ -1004,13 +1000,13 @@ export default {
       requireTaxInput: false,
       requireTaxPriceDisplay: false,
 
-      defaultTax: {},
       region: ownPlateConfig.region,
       maplocation: {},
       place_id: null,
       markers: [],
       days: daysOfWeek,
       errorsPhone: [],
+      notFound: null,
       submitting: false,
       files: {},
       newTemporaryClosure: null,
@@ -1025,10 +1021,11 @@ export default {
     this.taxRateKeys = this.regionalSetting["taxRateKeys"];
     this.requireTaxInput = this.regionalSetting.requireTaxInput;
     this.requireTaxPriceDisplay = this.regionalSetting.requireTaxPriceDisplay;
-    this.defaultTax = this.regionalSetting.defaultTax;
 
     this.checkAdminPermission();
 
+    this.notFound = this.shopInfo.uid !== this.uid;
+    
   },
   mounted() {
     this.setLocation();
