@@ -593,6 +593,12 @@ export default {
     NotFound,
     EditCategory,
   },
+  props: {
+    shopInfo: {
+      type: Object,
+      required: true,
+    },
+  },
 
   data() {
     return {
@@ -635,14 +641,7 @@ export default {
 
     this.checkAdminPermission();
 
-    const restaurantRef = db.doc(`restaurants/${this.restaurantId()}`);
-    const resRestInfo = await restaurantRef.get();
-    if (!resRestInfo.exists) {
-      this.notFound = true;
-      console.log("no restaurant");
-      return;
-    }
-    this.restaurantInfo = resRestInfo.data();
+    this.restaurantInfo = this.shopInfo;
     if (!this.restaurantInfo.category1) {
       this.restaurantInfo.category1 = [];
     }
