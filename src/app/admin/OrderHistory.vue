@@ -5,7 +5,7 @@
       <!-- Back and Preview -->
       <div class="flex space-x-4">
         <div class="flex-shrink-0">
-          <back-button :url="`/admin/restaurants/${restaurantId()}/orders`" />
+          <back-button :url="`/admin/restaurants/`" />
         </div>
         <div class="flex-shrink-0">
           <router-link :to="'/r/' + restaurantId()">

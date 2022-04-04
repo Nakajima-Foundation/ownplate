@@ -675,6 +675,12 @@ export default {
     CustomerInfo,
     NotFound,
   },
+  props: {
+    shopInfo: {
+      type: Object,
+      required: true,
+    },
+  },
   metaInfo() {
     return {
       title: this.shopInfo.restaurantName
@@ -691,7 +697,6 @@ export default {
     return {
       updating: "",
       changing: false,
-      shopInfo: {},
       menuObj: {},
       orderInfo: {},
       customer: {},
@@ -717,30 +722,18 @@ export default {
       return;
     }
 
-    const restaurant_detacher = db
-      .doc(`restaurants/${this.restaurantId()}`)
-      .onSnapshot(
-        (restaurant) => {
-          if (restaurant.exists) {
-            const restaurant_data = restaurant.data();
-            if (restaurant_data.uid === this.ownerUid) {
-              this.shopInfo = restaurant_data;
-              if (this.shopInfo.isEC) {
-                db.doc(`restaurants/${this.restaurantId()}/ec/postage`)
-                  .get()
-                  .then((snapshot) => {
-                    this.postageInfo = snapshot.data() || {};
-                  });
-              }
-              return;
-            }
-          }
-          this.notFound = true;
-        },
-        (error) => {
-          this.notFound = true;
-        }
-      );
+    if ( this.shopInfo.uid !== this.ownerUid) {
+      this.notFound = true;
+      return true;
+    }
+    if (this.shopInfo.isEC) {
+      db.doc(`restaurants/${this.restaurantId()}/ec/postage`)
+        .get()
+        .then((snapshot) => {
+          this.postageInfo = snapshot.data() || {};
+        });
+    }
+
     const menu_detacher = db
       .collection(`restaurants/${this.restaurantId()}/menus`)
       .onSnapshot((menu) => {
@@ -777,7 +770,7 @@ export default {
           this.notFound = true;
         },
       });
-    this.detacher = [restaurant_detacher, menu_detacher, order_detacher];
+    this.detacher = [menu_detacher, order_detacher];
     this.shopOwner = await getShopOwner(this.$store.getters.uidAdmin);
   },
   destroyed() {
@@ -1036,13 +1029,6 @@ export default {
     isValidTransition(newStatus) {
       const newStatusValue = order_status[newStatus];
       return this.possibleTransitions[newStatusValue];
-      /*
-      return (
-        this.possibleTransitions[newStatusValue] ||
-        (newStatusValue === this.orderInfo.status &&
-          newStatus !== "order_canceled")
-      );
-      */
     },
     download() {
       downloadOrderPdf(this.orderInfo, this.orderItems);

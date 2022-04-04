@@ -144,9 +144,14 @@ export default {
         : this.defaultTitle,
     };
   },
+  props: {
+    shopInfo: {
+      type: Object,
+      required: true,
+    },
+  },
   data() {
     return {
-      shopInfo: {},
       orders: [],
       dayIndex: 0,
       order_detacher: () => {},
@@ -163,14 +168,6 @@ export default {
   },
   async created() {
     this.checkAdminPermission();
-    const restaurantDoc = await db
-      .doc(`restaurants/${this.restaurantId()}`)
-      .get();
-    if (!restaurantDoc.exists) {
-      // todo not found
-      return;
-    }
-    this.shopInfo = restaurantDoc.data();
     this.dayIndex = this.getPickUpDaysInAdvance();
 
     if (this.$route.query.day) {
@@ -220,10 +217,12 @@ export default {
       const day = moment(this.lastSeveralDays[this.dayIndex].date).format(
         "YYYY-MM-DD"
       );
-      this.$router.push({
-        path:
+      if (this.$route.query.day !== day) {
+        this.$router.push({
+          path:
           "/admin/restaurants/" + this.restaurantId() + "/orders?day=" + day,
-      });
+        });
+      };
     },
     dateWasUpdated() {
       this.order_detacher();

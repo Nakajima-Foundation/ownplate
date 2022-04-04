@@ -101,7 +101,7 @@ service cloud.firestore {
               && isUndefined(request.resource.data, 'operator');
       allow read: if request.auth.uid == userId;
       allow read: if isSuper(request);
-
+      allow read: if isAdmin(request) && request.auth.token.parentUid == userId // for sub
       allow read: if isGroupOwner(userId, request)
 
       allow write: if isSuper(request);

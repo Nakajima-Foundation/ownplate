@@ -578,11 +578,12 @@ export default {
             }
             this.restaurantItems = (result.docs || []).reduce((tmp, doc) => {
               const restaurantId = doc.id;
-
-              const data = doc.data();
-              data.restaurantid = doc.id;
-              data.id = doc.id;
-              tmp[doc.id] = data;
+              if (this.restaurantLists.includes(restaurantId)) {
+                const data = doc.data();
+                data.restaurantid = doc.id;
+                data.id = doc.id;
+                tmp[doc.id] = data;
+              }
               return tmp;
             }, {});
 
