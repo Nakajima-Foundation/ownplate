@@ -45,7 +45,7 @@ import SoundConfigWatcher from "./Watcher/SoundConfigWatcher.vue";
 import NewOrderWatcher from "./Watcher/NewOrderWatcher.vue";
 import NotificationSettings from "./Notifications/NotificationSettings.vue";
 import PartnersContact from "./Partners/Contact.vue";
-import NotFound from "@/components/NotFound";
+import NotFound from "@/components/NotFound.vue";
 
 import { PartnerData } from "@/models/ShopOwner";
 
@@ -88,7 +88,7 @@ export default defineComponent({
     const NotificationSettingsPopup = ref(false);
     const isOpen = ref(false);
 
-    const noRestaurant = ref(null);
+    const noRestaurant = ref<boolean|null>(null);
     const shopInfo = ref(defaultShopInfo);
     
     const loadShopInfo = async () => {
@@ -106,7 +106,8 @@ export default defineComponent({
       const loaedShopInfo = Object.assign({}, defaultShopInfo, restaurant_data, defaultTax);
       if (loaedShopInfo.temporaryClosure) {
         loaedShopInfo.temporaryClosure = loaedShopInfo.temporaryClosure.map(
-          (day) => {
+          (day: any) => {
+            console.log(day);
             return day.toDate();
           }
         );
@@ -122,7 +123,7 @@ export default defineComponent({
       doc(db, `restaurants/${restaurantId.value}/private/notifications`),
       (notification) => {
         console.log("onSnapshot");
-        if (notification.exists) {
+        if (notification.exists()) {
           notificationConfig.value = Object.assign(
             notificationConfig.value,
             notification.data()
