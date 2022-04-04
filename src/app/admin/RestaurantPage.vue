@@ -917,7 +917,13 @@
 
 <script>
 import Vue from "vue";
-import { db, firestore } from "@/plugins/firebase";
+import { db } from "@/lib/firebase/firebase9";
+import {
+  doc,
+  updateDoc,
+  getDoc,
+} from "firebase/firestore";
+
 
 import { google_geocode } from "@/lib/google/api";
 import BackButton from "@/components/BackButton";
@@ -1015,7 +1021,7 @@ export default {
     this.checkAdminPermission();
 
     // never use onSnapshot here.
-    const restaurant = await db.doc(`restaurants/${this.restaurantId()}`).get();
+    const restaurant = await getDoc(doc(db, `restaurants/${this.restaurantId()}`));
 
     if (!restaurant.exists) {
       this.notFound = true;
@@ -1302,7 +1308,7 @@ export default {
     },
     async updateRestaurantData(restaurantData) {
       const cleanData = cleanObject(restaurantData);
-      await db.doc(`restaurants/${this.restaurantId()}`).update(cleanData);
+      await updateDoc(doc(db, `restaurants/${this.restaurantId()}`), cleanData);
     },
   },
 };
