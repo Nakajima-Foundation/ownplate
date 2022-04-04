@@ -9,7 +9,8 @@ import {
   PartnerData
 } from "@/models/ShopOwner";
 
-import { partners } from "@/config/constant";
+import { regionalSettings, partners } from "@/config/constant";
+import { ownPlateConfig } from "@/config/project";
 
 export const isNull = <T>(value: T) => {
   return value === null || value === undefined;
@@ -248,4 +249,8 @@ export const getPartner = (shopOwner: ShopOwnerData) => {
     return match;
   });
 };
+
+
+export const regionalSetting = (regionalSettings as {[key: string]: any})[(ownPlateConfig.region || "US")];
+
 

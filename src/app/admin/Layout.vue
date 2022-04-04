@@ -20,7 +20,7 @@
       @close="closeNotificationSettings"
       v-if="NotificationSettingsPopup"
       />
-    <router-view></router-view>
+    <router-view :shopInfo="shopInfo" :notFound="notFound" ></router-view>
     <notification-watcher />
     <sound-config-watcher :notificationConfig="notificationConfig" />
     <new-order-watcher :notificationConfig="notificationConfig" />
@@ -31,8 +31,13 @@
 </template>
 
 <script lang="ts">
-import { db, firestore } from "@/plugins/firebase";
 import { defineComponent, ref, computed, watch, onUnmounted } from "@vue/composition-api";
+import { db } from "@/lib/firebase/firebase9";
+import {
+  doc,
+  getDoc,
+  onSnapshot
+} from "firebase/firestore";
 
 import NotificationWatcher from "./Watcher/NotificationWatcher.vue";
 import SoundConfigWatcher from "./Watcher/SoundConfigWatcher.vue";
@@ -45,7 +50,12 @@ import { PartnerData } from "@/models/ShopOwner";
 import {
   getShopOwner,
   getPartner,
+  regionalSetting,
 } from "@/utils/utils";
+
+import {
+  defaultShopInfo,
+} from "@/utils/admin/RestaurantPageUtils";
 
 export default defineComponent({
   components: {
@@ -55,17 +65,6 @@ export default defineComponent({
     NotificationSettings,
     PartnersContact,
   },
-  /*
-  computed: {
-    requestTouch() {
-      return (
-        this.notificationConfig.soundOn &&
-        !this.$store.state.soundEnable &&
-        this.isIOS
-      );
-    },
-  },
-  */
   setup(_, ctx) {
     const restaurantId = computed(() => {
       return ctx.root.$route.params.restaurantId;
@@ -86,37 +85,59 @@ export default defineComponent({
     const NotificationSettingsPopup = ref(false);
     const isOpen = ref(false);
 
-    const notification_detacher = ref();
-    notification_detacher.value = db
-      .doc(`restaurants/${restaurantId.value}/private/notifications`)
-      .onSnapshot(
-        (notification) => {
-          console.log("onSnapshot");
+    const notFound = ref(null);
+    const shopInfo = ref(defaultShopInfo);
+    
+    const loadShopInfo = async () => {
+      // never use onSnapshot here.
+      const defaultTax = regionalSetting.defaultTax || {};
 
-          if (notification.exists) {
-            notificationConfig.value = Object.assign(
-              notificationConfig.value,
-              notification.data()
-            );
+      const restaurant = await getDoc(doc(db, `restaurants/${restaurantId.value}`));
+      
+      if (!restaurant.exists()) {
+        notFound.value = true;
+        return;
+      }
+      const restaurant_data = restaurant.data();
+      if (restaurant_data.uid !== uid.value) {
+        notFound.value = true;
+        return;
+      }
+      const loaedShopInfo = Object.assign({}, defaultShopInfo, restaurant_data, defaultTax);
+      if (loaedShopInfo.temporaryClosure) {
+        loaedShopInfo.temporaryClosure = loaedShopInfo.temporaryClosure.map(
+          (day) => {
+            return day.toDate();
           }
-          /*
-          // see PR 674
-          if (this.justCreated && this.requestTouch) {
-            console.log("*** show Sound Test");
-            this.NotificationSettingsPopup = true;
-          }
-          */
-          // this.justCreated = false;
-        },
-        (error) => {
-          if (error.code === "permission-denied") {
-            // We can ignore this type of error here
-            console.warn("Ignoring", error.code);
-          } else {
-            throw error;
-          }
+        );
+      }
+      shopInfo.value = loaedShopInfo;
+      notFound.value = false;
+      
+    };
+    loadShopInfo();
+    
+    const notification_detacher = ref();
+    notification_detacher.value = onSnapshot(
+      doc(db, `restaurants/${restaurantId.value}/private/notifications`),
+      (notification) => {
+        console.log("onSnapshot");
+        if (notification.exists) {
+          notificationConfig.value = Object.assign(
+            notificationConfig.value,
+            notification.data()
+          );
         }
-      );
+      },
+      (error) => {
+        if (error.code === "permission-denied") {
+          // We can ignore this type of error here
+          console.warn("Ignoring", error.code);
+        } else {
+          throw error;
+        }
+      }
+    );
     onUnmounted(() => {
       if (notification_detacher.value) {
         notification_detacher.value();
@@ -144,7 +165,10 @@ export default defineComponent({
 
       openContact,
       isOpen,
-      
+
+      shopInfo,
+      notFound,
+
     };
   },
 });

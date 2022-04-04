@@ -1,6 +1,9 @@
 <template>
   <div>
     <div v-if="notFound == null"></div>
+    <div v-else-if="notFound == true">
+      <NotFound />
+    </div>
 
     <!-- Never show before load restaurant data -->
     <div v-else>
@@ -924,7 +927,6 @@ import {
   getDoc,
 } from "firebase/firestore";
 
-
 import { google_geocode } from "@/lib/google/api";
 import BackButton from "@/components/BackButton";
 import NotFound from "@/components/NotFound";
@@ -977,7 +979,16 @@ export default {
         : this.defaultTitle,
     };
   },
-
+  props: {
+    shopInfo: {
+      type: Object,
+      required: true,
+    },
+    notFound: {
+      type: Boolean | null,
+      required: true,
+    },
+  },
   data() {
     const maxDate = new Date();
     const now = new Date();
@@ -994,14 +1005,12 @@ export default {
       requireTaxPriceDisplay: false,
 
       defaultTax: {},
-      shopInfo: defaultShopInfo,
       region: ownPlateConfig.region,
       maplocation: {},
       place_id: null,
       markers: [],
       days: daysOfWeek,
       errorsPhone: [],
-      notFound: null,
       submitting: false,
       files: {},
       newTemporaryClosure: null,
@@ -1020,31 +1029,6 @@ export default {
 
     this.checkAdminPermission();
 
-    // never use onSnapshot here.
-    const restaurant = await getDoc(doc(db, `restaurants/${this.restaurantId()}`));
-
-    if (!restaurant.exists) {
-      this.notFound = true;
-      return;
-    }
-    const restaurant_data = restaurant.data();
-    if (restaurant_data.uid !== this.uid) {
-      this.notFound = true;
-      return;
-    }
-    this.shopInfo = Object.assign({}, this.shopInfo, restaurant_data);
-    if (this.defaultTax) {
-      this.shopInfo = Object.assign({}, this.shopInfo, this.defaultTax);
-    }
-    if (this.shopInfo.temporaryClosure) {
-      this.shopInfo.temporaryClosure = this.shopInfo.temporaryClosure.map(
-        (day) => {
-          return day.toDate();
-        }
-      );
-    }
-
-    this.notFound = false;
   },
   mounted() {
     this.setLocation();
