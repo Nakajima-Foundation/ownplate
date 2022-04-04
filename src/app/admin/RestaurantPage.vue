@@ -934,7 +934,8 @@ import NotificationIndex from "./Notifications/Index";
 
 import { getEditShopInfo, defaultShopInfo, shopInfoValidator, copyRestaurant } from "@/utils/admin/RestaurantPageUtils";
 import {
-  cleanObject
+  cleanObject,
+  isNull
 } from "@/utils/utils";
 import {
   uploadFile
@@ -1113,7 +1114,7 @@ export default {
     },
     addNewTemporaryClosure() {
       if (
-        !this.isNull(this.newTemporaryClosure) &&
+        !isNull(this.newTemporaryClosure) &&
         this.isNewTemporaryClosure(this.newTemporaryClosure) &&
         this.isFuture(this.newTemporaryClosure)
       ) {

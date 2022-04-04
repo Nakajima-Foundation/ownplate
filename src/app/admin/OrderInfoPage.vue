@@ -659,7 +659,7 @@ import { downloadOrderPdf, printOrder, data2UrlSchema } from "@/lib/pdf/pdf2";
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
 import {
-  isEmpty
+  isEmpty, isNull
 } from "@/utils/utils";
 
 const timezone = moment.tz.guess();
@@ -1010,7 +1010,7 @@ export default {
       return (
         this.orderInfo &&
         this.orderInfo.status === order_status.order_placed &&
-        this.isNull(this.orderInfo.orderUpdatedAt)
+        isNull(this.orderInfo.orderUpdatedAt)
       );
     },
     availableChangeButton() {
