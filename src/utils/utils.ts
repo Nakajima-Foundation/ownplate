@@ -1,8 +1,8 @@
-export const isNull = <T, >(value: T) => {
+export const isNull = <T>(value: T) => {
   return value === null || value === undefined;
 };
 
-export const isEmpty = <T, >(value: T) => {
+export const isEmpty = <T>(value: T) => {
   return value === null || value === undefined || String(value) === "";
 };
 
@@ -85,8 +85,8 @@ export const isEmpty = <T, >(value: T) => {
     },
 */
 
-export const cleanObject = (obj: {[key: string]: any}) => {
-  return Object.keys(obj).reduce((tmp: {[key: string]: any}, key) => {
+export const cleanObject = (obj: { [key: string]: any }) => {
+  return Object.keys(obj).reduce((tmp: { [key: string]: any }, key) => {
     if (!isNull(obj[key])) {
       tmp[key] = obj[key];
     }

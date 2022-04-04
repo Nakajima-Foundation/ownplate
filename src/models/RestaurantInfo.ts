@@ -4,7 +4,7 @@ export interface RestaurantInfoData {
 
   restCoverPhoto: string;
   restProfilePhoto: string;
-  
+
   zip: string;
   state: string;
   city: string;
@@ -13,13 +13,12 @@ export interface RestaurantInfoData {
   introduction: string;
   menuLists: string[];
 
-
   ownerName: string;
   uid: string;
-  
+
   location: any;
   place_id: string;
-  
+
   phoneNumber: string;
 
   lineUrl: string;
@@ -34,8 +33,8 @@ export interface RestaurantInfoData {
   foodTax: number;
   alcoholTax: number;
   inclusiveTax: boolean;
-  openTimes: {[key: string]: any[]};
-  businessDay: {[key: string]: any[]};
+  openTimes: { [key: string]: any[] };
+  businessDay: { [key: string]: any[] };
 
   pickUpMinimumCookTime: number;
   pickUpDaysInAdvance: number;

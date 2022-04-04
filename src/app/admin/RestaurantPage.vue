@@ -932,14 +932,14 @@ import State from "./inputComponents/State";
 
 import NotificationIndex from "./Notifications/Index";
 
-import { getEditShopInfo, defaultShopInfo, shopInfoValidator, copyRestaurant } from "@/utils/admin/RestaurantPageUtils";
 import {
-  cleanObject,
-  isNull
-} from "@/utils/utils";
-import {
-  uploadFile
-} from "@/lib/firebase/storage";
+  getEditShopInfo,
+  defaultShopInfo,
+  shopInfoValidator,
+  copyRestaurant,
+} from "@/utils/admin/RestaurantPageUtils";
+import { cleanObject, isNull } from "@/utils/utils";
+import { uploadFile } from "@/lib/firebase/storage";
 
 import {
   taxRates,
@@ -1068,7 +1068,12 @@ export default {
       return this.$store.getters.uidAdmin;
     },
     errors() {
-      return shopInfoValidator(this.shopInfo, this.requireTaxInput, this.errorsPhone, this.files["profile"]);
+      return shopInfoValidator(
+        this.shopInfo,
+        this.requireTaxInput,
+        this.errorsPhone,
+        this.files["profile"]
+      );
     },
     hasError() {
       const num = this.countObj(this.errors);
@@ -1183,7 +1188,11 @@ export default {
     },
     async copyRestaurant() {
       try {
-        const id = await copyRestaurant(this.shopInfo, this.uid, this.restaurantId());
+        const id = await copyRestaurant(
+          this.shopInfo,
+          this.uid,
+          this.restaurantId()
+        );
         this.$router.push({
           path: `/admin/restaurants/${id}`,
         });
@@ -1192,8 +1201,7 @@ export default {
           code: "restaurant.save",
           error,
         });
-
-      };
+      }
     },
     async submitRestaurant() {
       this.submitting = true;

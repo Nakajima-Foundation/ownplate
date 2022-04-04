@@ -569,9 +569,7 @@ import { ownPlateConfig } from "@/config/project";
 import { halfCharactors, formatOption, optionPrice } from "@/utils/strings";
 import EditCategory from "@/app/admin/Menus/EditCategory";
 
-import {
-  uploadFile
-} from "@/lib/firebase/storage";
+import { uploadFile } from "@/lib/firebase/storage";
 
 export default {
   name: "Order",
@@ -824,10 +822,7 @@ export default {
           const path = `/images/restaurants/${this.restaurantId()}/menus/${
             this.menuId
           }/${this.uid}/item.jpg`;
-          this.menuInfo.itemPhoto = await uploadFile(
-            this.files["menu"],
-            path
-          );
+          this.menuInfo.itemPhoto = await uploadFile(this.files["menu"], path);
           this.menuInfo.images.item = {
             original: this.menuInfo.itemPhoto,
             resizedImages: {},

@@ -265,9 +265,7 @@ import * as pdf from "@/lib/pdf/pdf";
 
 import NotificationIndex from "./Notifications/Index";
 
-import {
-  cleanObject
-} from "@/utils/utils";
+import { cleanObject } from "@/utils/utils";
 
 export default {
   name: "Menus",

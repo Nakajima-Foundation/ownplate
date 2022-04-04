@@ -1,22 +1,24 @@
 import { serverTimestamp } from "firebase/firestore";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { isNull } from "@/utils/utils";
-import {
-  reservationTheDayBefore,
-  daysOfWeek,
-} from "@/config/constant";
+import { reservationTheDayBefore, daysOfWeek } from "@/config/constant";
 
 import { db } from "@/lib/firebase/firebase9";
 import {
-  doc, collection, query, where, addDoc, updateDoc, setDoc,
-  getDocs, getDoc
+  doc,
+  collection,
+  query,
+  where,
+  addDoc,
+  updateDoc,
+  setDoc,
+  getDocs,
+  getDoc,
 } from "firebase/firestore";
 
-import {
-  cleanObject
-} from "@/utils/utils";
+import { cleanObject } from "@/utils/utils";
 
-export const getEditShopInfo = (shopInfo: RestaurantInfoData) =>  {
+export const getEditShopInfo = (shopInfo: RestaurantInfoData) => {
   const restaurantData = {
     restProfilePhoto: shopInfo.restProfilePhoto,
     restCoverPhoto: shopInfo.restCoverPhoto,
@@ -48,28 +50,29 @@ export const getEditShopInfo = (shopInfo: RestaurantInfoData) =>  {
     pickUpDaysInAdvance: shopInfo.pickUpDaysInAdvance,
     foodTax: Number(shopInfo.foodTax),
     alcoholTax: Number(shopInfo.alcoholTax),
-    openTimes: Object.keys(shopInfo.openTimes).reduce((tmp: {[key: string]: any}, key) => {
-      tmp[key] = shopInfo.openTimes[key]
-        .filter((el: any) => {
-          return el !== null && el?.end !== null && el?.start !== null;
-        })
-        .sort((a: any, b: any) => {
-          return a.start < b.start ? -1 : 1;
-            });
-      return tmp;
-    }, {}),
+    openTimes: Object.keys(shopInfo.openTimes).reduce(
+      (tmp: { [key: string]: any }, key) => {
+        tmp[key] = shopInfo.openTimes[key]
+          .filter((el: any) => {
+            return el !== null && el?.end !== null && el?.start !== null;
+          })
+          .sort((a: any, b: any) => {
+            return a.start < b.start ? -1 : 1;
+          });
+        return tmp;
+      },
+      {}
+    ),
     businessDay: shopInfo.businessDay,
     temporaryClosure: shopInfo.temporaryClosure,
     uid: shopInfo.uid,
     publicFlag: shopInfo.publicFlag,
     inclusiveTax: shopInfo.inclusiveTax,
     updatedAt: serverTimestamp(),
-    createdAt:
-    shopInfo.createdAt || serverTimestamp(),
+    createdAt: shopInfo.createdAt || serverTimestamp(),
   };
   return restaurantData;
 };
-
 
 export const defaultShopInfo = {
   restaurantName: "",
@@ -119,8 +122,10 @@ export const defaultShopInfo = {
   temporaryClosure: [],
 };
 
-type ShopInfoBussinessTimeError = {[key: string]: string[][]};
-type shopInfoValidatorError =  {[key: string]: (string[] | ShopInfoBussinessTimeError) };
+type ShopInfoBussinessTimeError = { [key: string]: string[][] };
+type shopInfoValidatorError = {
+  [key: string]: string[] | ShopInfoBussinessTimeError;
+};
 
 export const shopInfoValidator = (
   shopInfo: RestaurantInfoData,
@@ -160,19 +165,22 @@ export const shopInfoValidator = (
       );
     }
     if (shopInfo["pickUpMinimumCookTime"] < 0) {
-      (err["pickUpMinimumCookTime"]  as string[]).push(
+      (err["pickUpMinimumCookTime"] as string[]).push(
         "validationError." + name + ".negative"
       );
     }
   }
   if (
     !reservationTheDayBefore.some(
-      (day: { messageKey: string; value: number; }) => day.value === shopInfo["pickUpDaysInAdvance"]
+      (day: { messageKey: string; value: number }) =>
+        day.value === shopInfo["pickUpDaysInAdvance"]
     )
   ) {
-    (err["pickUpDaysInAdvance"] as string[]).push("validationError." + name + ".invalid");
+    (err["pickUpDaysInAdvance"] as string[]).push(
+      "validationError." + name + ".invalid"
+    );
   }
-  
+
   if (requireTaxInput) {
     ["foodTax", "alcoholTax"].forEach((name) => {
       err[name] = [];
@@ -180,8 +188,10 @@ export const shopInfoValidator = (
         (err[name] as string[]).push("validationError." + name + ".empty");
       }
       if (shopInfo[name as keyof RestaurantInfoData] !== "") {
-        if (isNaN(shopInfo[name  as keyof RestaurantInfoData])) {
-          (err[name] as string[]).push("validationError." + name + ".invalidNumber");
+        if (isNaN(shopInfo[name as keyof RestaurantInfoData])) {
+          (err[name] as string[]).push(
+            "validationError." + name + ".invalidNumber"
+          );
         }
       }
     });
@@ -190,16 +200,16 @@ export const shopInfoValidator = (
   const ex = new RegExp("^(https?)://[^\\s]+$");
   err["url"] =
     shopInfo.url && !ex.test(shopInfo.url)
-    ? ["validationError.url.invalidUrl"]
-    : [];
+      ? ["validationError.url.invalidUrl"]
+      : [];
   err["lineUrl"] =
     shopInfo.lineUrl && !ex.test(shopInfo.lineUrl)
-    ? ["validationError.lineUrl.invalidUrl"]
-    : [];
+      ? ["validationError.lineUrl.invalidUrl"]
+      : [];
   err["instagramUrl"] =
     shopInfo.instagramUrl && !ex.test(shopInfo.instagramUrl)
-    ? ["validationError.instagramUrl.invalidUrl"]
-    : [];
+      ? ["validationError.instagramUrl.invalidUrl"]
+      : [];
 
   const errorTime: ShopInfoBussinessTimeError = {};
   Object.keys(daysOfWeek).map((dayKey: string) => {
@@ -207,10 +217,7 @@ export const shopInfoValidator = (
     [0, 1].forEach((key2) => {
       errorTime[dayKey].push([]);
       if (shopInfo.businessDay[dayKey]) {
-        if (
-          shopInfo.openTimes[dayKey] &&
-            shopInfo.openTimes[dayKey][key2]
-        ) {
+        if (shopInfo.openTimes[dayKey] && shopInfo.openTimes[dayKey][key2]) {
           const data = shopInfo.openTimes[dayKey][key2];
           // xor
           if (isNull(data.start) !== isNull(data.end)) {
@@ -218,9 +225,7 @@ export const shopInfoValidator = (
           }
           if (!isNull(data.start) && !isNull(data.end)) {
             if (data.start > data.end) {
-              errorTime[dayKey][key2].push(
-                "validationError.validBusinessTime"
-              );
+              errorTime[dayKey][key2].push("validationError.validBusinessTime");
             }
           }
         } else {
@@ -236,64 +241,78 @@ export const shopInfoValidator = (
 
   // image
   err["restProfilePhoto"] = [];
-  if (
-    isNull(files_profile) &&
-      isNull(shopInfo.restProfilePhoto)
-  ) {
+  if (isNull(files_profile) && isNull(shopInfo.restProfilePhoto)) {
     err["restProfilePhoto"].push("validationError.restProfilePhoto.empty");
   }
   // todo more validate
   return err;
-}
+};
 
-export const copyRestaurant = async (shopInfo: RestaurantInfoData, uid: string, restaurantId: string) => {
+export const copyRestaurant = async (
+  shopInfo: RestaurantInfoData,
+  uid: string,
+  restaurantId: string
+) => {
   const restaurantData = getEditShopInfo(shopInfo);
   restaurantData.restaurantName = restaurantData.restaurantName + " - COPY";
   const newRestaurantData = Object.assign({}, restaurantData, {
     publicFlag: false,
     deletedFlag: false,
-    createdAt: serverTimestamp()
+    createdAt: serverTimestamp(),
   });
 
-  const restaurantDoc = await addDoc(collection(db, "restaurants"), cleanObject(newRestaurantData));
+  const restaurantDoc = await addDoc(
+    collection(db, "restaurants"),
+    cleanObject(newRestaurantData)
+  );
   const id = restaurantDoc.id;
 
-  const menuListIds: {[key: string]: string} = {};
-  const menus = await getDocs(query(
-    collection(db, `restaurants/${restaurantId}/menus`),
-    where("deletedFlag", "==", false)
-  ));
-  
+  const menuListIds: { [key: string]: string } = {};
+  const menus = await getDocs(
+    query(
+      collection(db, `restaurants/${restaurantId}/menus`),
+      where("deletedFlag", "==", false)
+    )
+  );
+
   await Promise.all(
     menus.docs.map(async (a) => {
-      const newMenu = await addDoc(collection(db, `restaurants/${id}/menus`), a.data());
+      const newMenu = await addDoc(
+        collection(db, `restaurants/${id}/menus`),
+        a.data()
+      );
       menuListIds[a.id] = newMenu.id;
       return;
     })
   );
   // console.log(menus.docs);
-  const titles = await getDocs(query(
-    collection(db, `restaurants/${restaurantId}/titles`),
-    where("deletedFlag", "==", false)
-  ));
-  
+  const titles = await getDocs(
+    query(
+      collection(db, `restaurants/${restaurantId}/titles`),
+      where("deletedFlag", "==", false)
+    )
+  );
+
   await Promise.all(
     titles.docs.map(async (a) => {
-      const newMenu = await addDoc(collection(db, `restaurants/${id}/titles`), a.data());
+      const newMenu = await addDoc(
+        collection(db, `restaurants/${id}/titles`),
+        a.data()
+      );
       menuListIds[a.id] = newMenu.id;
       return;
     })
   );
-  
+
   const newMenuList: string[] = [];
   (shopInfo.menuLists || []).forEach((a) => {
     if (menuListIds[a]) {
       newMenuList.push(menuListIds[a]);
     }
   });
-  
-  await updateDoc(doc(db, `restaurants/${id}`), {menuLists: newMenuList});
-  
+
+  await updateDoc(doc(db, `restaurants/${id}`), { menuLists: newMenuList });
+
   // push list
   const path = `/admins/${uid}/public/RestaurantLists`;
   const restaurantListsDoc = await getDoc(doc(db, path));
@@ -305,5 +324,4 @@ export const copyRestaurant = async (shopInfo: RestaurantInfoData, uid: string, 
 
   return id;
   // end of list
-
 };

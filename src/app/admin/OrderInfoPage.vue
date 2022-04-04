@@ -658,9 +658,7 @@ import { costCal } from "@/utils/commonUtils";
 import { downloadOrderPdf, printOrder, data2UrlSchema } from "@/lib/pdf/pdf2";
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
-import {
-  isEmpty, isNull
-} from "@/utils/utils";
+import { isEmpty, isNull } from "@/utils/utils";
 
 const timezone = moment.tz.guess();
 
