@@ -1,5 +1,5 @@
 import Vue from "vue";
-import { db, storage } from "@/plugins/firebase";
+import { db } from "@/plugins/firebase";
 import { firebaseConfig, ownPlateConfig } from "@/config/project";
 import { soundFiles, regionalSettings } from "@/config/constant";
 import moment from "moment";
