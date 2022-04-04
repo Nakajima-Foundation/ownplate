@@ -823,6 +823,9 @@ import * as analyticsUtil from "@/lib/firebase/analytics";
 import isEmail from "validator/lib/isEmail";
 
 import { parsePhoneNumber, formatNational, formatURL } from "@/utils/phoneutil";
+import {
+  isEmpty
+} from "@/utils/utils";
 
 export default {
   name: "Order",
@@ -1011,7 +1014,7 @@ export default {
       return this.$route.params.orderId;
     },
     hasMemo() {
-      return this.orderInfo && !this.isEmpty(this.orderInfo.memo);
+      return this.orderInfo && !isEmpty(this.orderInfo.memo);
     },
     phoneNumber() {
       return (

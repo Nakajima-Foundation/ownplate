@@ -658,6 +658,10 @@ import { costCal } from "@/utils/commonUtils";
 import { downloadOrderPdf, printOrder, data2UrlSchema } from "@/lib/pdf/pdf2";
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
+import {
+  isEmpty
+} from "@/utils/utils";
+
 const timezone = moment.tz.guess();
 
 export default {
@@ -826,7 +830,7 @@ export default {
       return !this.$store.getters.isSubAccount;
     },
     hasMemo() {
-      return this.orderInfo && !this.isEmpty(this.orderInfo.memo);
+      return this.orderInfo && !isEmpty(this.orderInfo.memo);
     },
     possibleTransitions() {
       return possible_transitions[this.orderInfo.status] || {};
