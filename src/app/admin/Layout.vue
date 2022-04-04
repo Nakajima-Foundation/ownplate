@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="partner.length > 0" class="mt-3 mx-6 items-center">
+    <div v-if="partner && partner.length > 0" class="mt-3 mx-6 items-center">
       <div v-for="(part, k) in partner" :key="k" class="flex">
         <div class="flex-1">
           <img :src="`/partners/${part.logo}`" class="w-12" />
@@ -19,7 +19,7 @@
       :NotificationSettingsPopup="NotificationSettingsPopup"
       @close="closeNotificationSettings"
       v-if="NotificationSettingsPopup"
-    />
+      />
     <router-view></router-view>
     <notification-watcher />
     <sound-config-watcher :notificationConfig="notificationConfig" />
@@ -30,20 +30,24 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { db, firestore } from "@/plugins/firebase";
-import NotificationWatcher from "./Watcher/NotificationWatcher";
-import SoundConfigWatcher from "./Watcher/SoundConfigWatcher";
-import NewOrderWatcher from "./Watcher/NewOrderWatcher";
-import NotificationSettings from "./Notifications/NotificationSettings";
-import PartnersContact from "./Partners/Contact";
+import { defineComponent, ref, computed, watch, onUnmounted } from "@vue/composition-api";
+
+import NotificationWatcher from "./Watcher/NotificationWatcher.vue";
+import SoundConfigWatcher from "./Watcher/SoundConfigWatcher.vue";
+import NewOrderWatcher from "./Watcher/NewOrderWatcher.vue";
+import NotificationSettings from "./Notifications/NotificationSettings.vue";
+import PartnersContact from "./Partners/Contact.vue";
+
+import { PartnerData } from "@/models/ShopOwner";
 
 import {
   getShopOwner,
   getPartner,
 } from "@/utils/utils";
 
-export default {
+export default defineComponent({
   components: {
     NotificationWatcher,
     SoundConfigWatcher,
@@ -51,19 +55,7 @@ export default {
     NotificationSettings,
     PartnersContact,
   },
-  data() {
-    return {
-      notificationConfig: {
-        soundOn: null,
-        infinityNotification: null,
-        nameKey: null,
-      },
-      justCreated: true,
-      NotificationSettingsPopup: false,
-      shopOwner: null,
-      isOpen: false,
-    };
-  },
+  /*
   computed: {
     requestTouch() {
       return (
@@ -72,27 +64,38 @@ export default {
         this.isIOS
       );
     },
-    partner() {
-      return getPartner(this.shopOwner);
-    },
-    ownerUid() {
-      return this.$store.getters.isSubAccount
-        ? this.$store.getters.parentId
-        : this.uid;
-    },
-    uid() {
-      return this.$store.getters.uidAdmin;
-    },
   },
-  async created() {
-    this.notification_detacher = db
-      .doc(`restaurants/${this.restaurantId()}/private/notifications`)
+  */
+  setup(_, ctx) {
+    const restaurantId = computed(() => {
+      return ctx.root.$route.params.restaurantId;
+    });
+    const uid = computed(() => {
+      return ctx.root.$store.getters.uidAdmin;
+    });
+    const ownerUid = computed(() => {
+      return ctx.root.$store.getters.isSubAccount
+        ? ctx.root.$store.getters.parentId
+        : uid.value;
+    });
+    const notificationConfig = ref({
+      soundOn: null,
+      infinityNotification: null,
+      nameKey: null,
+    });
+    const NotificationSettingsPopup = ref(false);
+    const isOpen = ref(false);
+
+    const notification_detacher = ref();
+    notification_detacher.value = db
+      .doc(`restaurants/${restaurantId.value}/private/notifications`)
       .onSnapshot(
         (notification) => {
           console.log("onSnapshot");
+
           if (notification.exists) {
-            this.notificationConfig = Object.assign(
-              this.notificationConfig,
+            notificationConfig.value = Object.assign(
+              notificationConfig.value,
               notification.data()
             );
           }
@@ -103,7 +106,7 @@ export default {
             this.NotificationSettingsPopup = true;
           }
           */
-          this.justCreated = false;
+          // this.justCreated = false;
         },
         (error) => {
           if (error.code === "permission-denied") {
@@ -114,18 +117,35 @@ export default {
           }
         }
       );
-    this.shopOwner = await getShopOwner(this.ownerUid);
+    onUnmounted(() => {
+      if (notification_detacher.value) {
+        notification_detacher.value();
+      }
+    });
+    
+    const partner = ref<(PartnerData|undefined)[]>([]);
+    (async () => {
+      const shopOwner = await getShopOwner(ownerUid.value);
+      partner.value = await getPartner(shopOwner);
+    })()
+    const closeNotificationSettings = () => {
+      NotificationSettingsPopup.value = false;
+    };
+    const openContact = () => {
+      isOpen.value = true;
+    };
+
+    return {
+      partner,
+      notificationConfig,
+
+      closeNotificationSettings,
+      NotificationSettingsPopup,
+
+      openContact,
+      isOpen,
+      
+    };
   },
-  destroyed() {
-    this.notification_detacher && this.notification_detacher();
-  },
-  methods: {
-    closeNotificationSettings() {
-      this.NotificationSettingsPopup = false;
-    },
-    openContact() {
-      this.isOpen = true;
-    },
-  },
-};
+});
 </script>

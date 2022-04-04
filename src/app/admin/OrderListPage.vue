@@ -220,10 +220,12 @@ export default {
       const day = moment(this.lastSeveralDays[this.dayIndex].date).format(
         "YYYY-MM-DD"
       );
-      this.$router.push({
-        path:
+      if (this.$route.query.day !== day) {
+        this.$router.push({
+          path:
           "/admin/restaurants/" + this.restaurantId() + "/orders?day=" + day,
-      });
+        });
+      };
     },
     dateWasUpdated() {
       this.order_detacher();

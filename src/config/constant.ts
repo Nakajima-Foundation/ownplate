@@ -421,6 +421,7 @@ export const partners = [
     id: "singularitysociety",
     name: "シンギュラリティ・ソサイエティ",
     logo: "singularitysociety.png",
+    ask: false,
   },
   {
     id: "legssystem",

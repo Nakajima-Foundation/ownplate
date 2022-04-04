@@ -3,7 +3,12 @@ import {
   doc,
   getDoc,
 } from "firebase/firestore";
-import { ShopOwnerData } from "@/models/ShopOwner";
+
+import {
+  ShopOwnerData,
+  PartnerData
+} from "@/models/ShopOwner";
+
 import { partners } from "@/config/constant";
 
 export const isNull = <T>(value: T) => {
@@ -237,7 +242,7 @@ export const getShopOwner = async (uid: string): Promise<ShopOwnerData> => {
 
 export const getPartner = (shopOwner: ShopOwnerData) => {
   return ((shopOwner || {}).partners || []).map((p: string) => {
-    const match = partners.find((a: {id: string}) => {
+    const match = partners.find((a: PartnerData) => {
       return a.id === p;
     });
     return match;
