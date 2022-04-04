@@ -114,12 +114,21 @@ const getMenuData = async (restaurantName, menuId) => {
     exists: false,
   };
 };
+const isId = (id: string) => {
+  return /^[a-zA-Z0-9]+$/.test(id);
+};
 const ogpPage = async (req: any, res: any) => {
   const { restaurantName, menuId } = req.params;
   const template_data = fs.readFileSync("./templates/index.html", {
     encoding: "utf8",
   });
   try {
+    if (!isId(restaurantName)) {
+      return res.status(404).send(template_data);
+    }
+    if (menuId && !isId(menuId)) {
+      return res.status(404).send(template_data);
+    }
     const restaurant = await db.doc(`restaurants/${restaurantName}`).get();
 
     if (!restaurant || !restaurant.exists) {
@@ -151,6 +160,7 @@ const ogpPage = async (req: any, res: any) => {
       restaurant_data.restProfilePhoto;
     const description = menuData.description || restaurant_data.introduction || ownPlateConfig.siteDescription;
     const regexTitle = /<title.*title>/;
+
     const url = menuData.exists ? `https://${ownPlateConfig.hostName}/r/${restaurantName}/menus/${menuId}` : `https://${ownPlateConfig.hostName}/r/${restaurantName}`;
 
     const metas = [
@@ -206,6 +216,9 @@ const ownerPage = async (req: any, res: any) => {
     encoding: "utf8",
   });
   try {
+    if (!isId(ownerId)) {
+      return res.status(404).send(template_data);
+    }
     const ownerData = await getOwnerData(ownerId);
     if (!ownerData) {
       return res.send(template_data);
@@ -312,7 +325,7 @@ export const stripe_parser = async (req, res) => {
     res.json({});
   } catch (err) {
     Sentry.captureException(err);
-    res.status(400).send(`Webhook Error: ${err.message}`);
+    res.status(400).send(`Webhook Error`);
   }
 };
 
