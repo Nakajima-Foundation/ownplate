@@ -1,4 +1,3 @@
-
 export const isNull = <T, >(value: T) => {
   return value === null || value === undefined;
 };
@@ -108,25 +107,6 @@ export const cleanObject = (obj: {[key: string]: any}) => {
     forcedError(key) {
       const debug = this.$route.query.error;
       return debug === key ? "---forced-error---" : "";
-    },
-    uploadFile(file, path) {
-      return new Promise((resolve, rejected) => {
-        let storageRef = storage.ref();
-        let mountainsRef = storageRef.child(path);
-        let uploadTask = mountainsRef.put(file);
-
-        uploadTask.on(
-          "state_changed",
-          (snapshot) => {},
-          (err) => {
-            rejected(err);
-          },
-          async () => {
-            const downloadURL = await uploadTask.snapshot.ref.getDownloadURL();
-            resolve(downloadURL);
-          }
-        );
-      });
     },
     moment(value) {
       return moment(value);

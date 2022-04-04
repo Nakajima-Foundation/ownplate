@@ -917,7 +917,7 @@
 
 <script>
 import Vue from "vue";
-import { db, storage, firestore } from "@/plugins/firebase";
+import { db, firestore } from "@/plugins/firebase";
 
 import { google_geocode } from "@/lib/google/api";
 import BackButton from "@/components/BackButton";
@@ -936,7 +936,9 @@ import { getEditShopInfo, defaultShopInfo, shopInfoValidator, copyRestaurant } f
 import {
   cleanObject
 } from "@/utils/utils";
-
+import {
+  uploadFile
+} from "@/lib/firebase/storage";
 
 import {
   taxRates,
@@ -1198,7 +1200,7 @@ export default {
       try {
         if (this.files["profile"]) {
           const path = `/images/restaurants/${restaurantId}/${this.uid}/profile.jpg`;
-          this.shopInfo.restProfilePhoto = await this.uploadFile(
+          this.shopInfo.restProfilePhoto = await uploadFile(
             this.files["profile"],
             path
           );
@@ -1210,7 +1212,7 @@ export default {
 
         if (this.files["cover"]) {
           const path = `/images/restaurants/${restaurantId}/${this.uid}/cover.jpg`;
-          this.shopInfo.restCoverPhoto = await this.uploadFile(
+          this.shopInfo.restCoverPhoto = await uploadFile(
             this.files["cover"],
             path
           );
