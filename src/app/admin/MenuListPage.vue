@@ -1,10 +1,10 @@
 <template>
   <div>
     <template v-if="notFound === null"></template>
-    <template v-else-if="notFound">
+    <template v-else-if="notFound === true">
       <not-found />
     </template>
-    <div v-else-if="readyToDisplay">
+    <div v-else-if="notFound === false">
       <!-- Header -->
       <div class="mt-6 mx-6 lg:flex lg:items-center">
         <!-- Back and Preview -->
@@ -277,6 +277,12 @@ export default {
     NotificationIndex,
     NotFound,
   },
+  props: {
+    shopInfo: {
+      type: Object,
+      required: true,
+    },
+  },
   metaInfo() {
     return {
       title: this.restaurantInfo.restaurantName
@@ -292,7 +298,6 @@ export default {
     return {
       submitting: false,
       downloadSubmitting: false,
-      readyToDisplay: false,
       restaurantInfo: {},
       menuCollection: null,
       titleCollection: null,
@@ -364,38 +369,30 @@ export default {
   },
   async created() {
     this.checkAdminPermission();
-    const restaurantRef = db.doc(`restaurants/${this.restaurantId()}`);
-    const restaurant_detacher = restaurantRef.onSnapshot((results) => {
-      if (results.exists && results.data().uid === this.ownerUid) {
-        this.restaurantInfo = results.data();
-        this.readyToDisplay = true;
-        this.notFound = false;
-        // this.updateBrokenMenu();
-      } else {
-        this.notFound = true;
-        // 404
-        console.log("Error fetch restaurantInfo.");
-      }
-    });
-    const menu_detacher = restaurantRef
-      .collection("menus")
-      .where("deletedFlag", "==", false)
-      .onSnapshot((results) => {
-        this.menuCollection = results.empty ? {} : results;
-        // for debug
-        results.docs.forEach((a) => {
-          if (a.data().publicFlag === undefined) {
-            a.ref.update({ publicFlag: true });
-          }
-        });
-      });
-    const title_detacher = restaurantRef
-      .collection("titles")
-      .where("deletedFlag", "==", false)
-      .onSnapshot((results) => {
-        this.titleCollection = results.empty ? {} : results;
-      });
-    this.detacher = [restaurant_detacher, menu_detacher, title_detacher];
+    // allow sub Account
+    if (this.shopInfo.uid !== this.ownerUid) {
+      this.notFound = true;
+      return;
+    }
+    this.restaurantInfo = this.shopInfo;
+    this.notFound = false;
+    const menu_detacher = db.collection(`restaurants/${this.restaurantId()}/menus`)
+          .where("deletedFlag", "==", false)
+          .onSnapshot((results) => {
+            this.menuCollection = results.empty ? {} : results;
+            // for debug
+            results.docs.forEach((a) => {
+              if (a.data().publicFlag === undefined) {
+                a.ref.update({ publicFlag: true });
+              }
+            });
+          });
+    const title_detacher = db.collection(`restaurants/${this.restaurantId()}/titles`)
+          .where("deletedFlag", "==", false)
+          .onSnapshot((results) => {
+            this.titleCollection = results.empty ? {} : results;
+          });
+    this.detacher = [menu_detacher, title_detacher];
   },
   destroyed() {
     if (this.detachers) {
