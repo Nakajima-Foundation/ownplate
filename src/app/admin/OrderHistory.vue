@@ -142,7 +142,10 @@ import DownloadOrders from "@/components/DownloadOrders";
 import NotificationIndex from "./Notifications/Index";
 import ReportDetails from "@/app/admin/Order/ReportDetails";
 
-import { getShopOwner } from "@/utils/utils";
+import {
+  getShopOwner,
+  arrayChunk
+} from "@/utils/utils";
 
 export default {
   components: {
@@ -209,7 +212,7 @@ export default {
       if (this.shopInfo.isEC || this.shopInfo.enableDelivery) {
         const ids = orders.map((order) => order.id);
         await Promise.all(
-          this.arrayChunk(ids, 10).map(async (arr) => {
+          arrayChunk(ids, 10).map(async (arr) => {
             try {
               const cuss = await db
                 .collectionGroup("customer")

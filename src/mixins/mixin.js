@@ -25,14 +25,6 @@ const mixin = {
         restaurant.restProfilePhoto
       );
     },
-    arrayChunk(arr, size = 1) {
-      const array = [...arr];
-      return array.reduce((current, value, index) => {
-        return index % size
-          ? current
-          : [...current, array.slice(index, index + size)];
-      }, []);
-    },
     shareUrl() {
       return (
         location.protocol + "//" + location.host + "/r/" + this.restaurantId()

@@ -54,6 +54,8 @@ import BackButton from "@/components/BackButton";
 import { db } from "@/plugins/firebase";
 import firebase from "firebase/compat/app";
 
+import { arrayChunk } from "@/utils/utils";
+
 export default {
   metaInfo() {
     return {
@@ -83,7 +85,7 @@ export default {
       .onSnapshot(async (snapshot) => {
         this.requests = snapshot.docs.map(this.doc2data("request"));
         const ids = this.requests.map((a) => a.id);
-        this.arrayChunk(ids, 10).map(async (arr) => {
+        arrayChunk(ids, 10).map(async (arr) => {
           const resCols = await db
             .collection("restaurants")
             .where(firebase.firestore.FieldPath.documentId(), "in", arr)

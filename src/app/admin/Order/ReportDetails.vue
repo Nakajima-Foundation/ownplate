@@ -47,7 +47,7 @@ import moment from "moment";
 import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
 import { nameOfOrder } from "@/utils/strings";
 import { order_status } from "@/config/constant";
-
+import { arrayChunk } from "@/utils/utils";
 export default {
   components: {
     DownloadCsv,
@@ -102,7 +102,7 @@ export default {
         (async () => {
           const customers = { ...this.customers };
           await Promise.all(
-            this.arrayChunk(ids, 10).map(async (arr) => {
+            arrayChunk(ids, 10).map(async (arr) => {
               const cuss = await db
                 .collectionGroup("customer")
                 .where("restaurantId", "==", this.restaurantId())
