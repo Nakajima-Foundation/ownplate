@@ -921,11 +921,7 @@
 <script>
 import Vue from "vue";
 import { db } from "@/lib/firebase/firebase9";
-import {
-  doc,
-  updateDoc,
-  getDoc,
-} from "firebase/firestore";
+import { doc, updateDoc, getDoc } from "firebase/firestore";
 
 import { google_geocode } from "@/lib/google/api";
 import BackButton from "@/components/BackButton";
@@ -1025,7 +1021,6 @@ export default {
     this.checkAdminPermission();
 
     this.notFound = this.shopInfo.uid !== this.uid;
-    
   },
   mounted() {
     this.setLocation();

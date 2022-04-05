@@ -19,9 +19,12 @@
       :NotificationSettingsPopup="NotificationSettingsPopup"
       @close="closeNotificationSettings"
       v-if="NotificationSettingsPopup"
-      />
+    />
     <NotFound v-if="noRestaurant === true" />
-    <router-view :shopInfo="shopInfo" v-else-if="noRestaurant === false" ></router-view>
+    <router-view
+      :shopInfo="shopInfo"
+      v-else-if="noRestaurant === false"
+    ></router-view>
     <notification-watcher />
     <sound-config-watcher :notificationConfig="notificationConfig" />
     <new-order-watcher :notificationConfig="notificationConfig" />
@@ -32,13 +35,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, watch, onUnmounted } from "@vue/composition-api";
-import { db } from "@/lib/firebase/firebase9";
 import {
-  doc,
-  getDoc,
-  onSnapshot
-} from "firebase/firestore";
+  defineComponent,
+  ref,
+  computed,
+  watch,
+  onUnmounted,
+} from "@vue/composition-api";
+import { db } from "@/lib/firebase/firebase9";
+import { doc, getDoc, onSnapshot } from "firebase/firestore";
 
 import NotificationWatcher from "./Watcher/NotificationWatcher.vue";
 import SoundConfigWatcher from "./Watcher/SoundConfigWatcher.vue";
@@ -49,15 +54,9 @@ import NotFound from "@/components/NotFound.vue";
 
 import { PartnerData } from "@/models/ShopOwner";
 
-import {
-  getShopOwner,
-  getPartner,
-  regionalSetting,
-} from "@/utils/utils";
+import { getShopOwner, getPartner, regionalSetting } from "@/utils/utils";
 
-import {
-  defaultShopInfo,
-} from "@/utils/admin/RestaurantPageUtils";
+import { defaultShopInfo } from "@/utils/admin/RestaurantPageUtils";
 
 export default defineComponent({
   components: {
@@ -88,22 +87,29 @@ export default defineComponent({
     const NotificationSettingsPopup = ref(false);
     const isOpen = ref(false);
 
-    const noRestaurant = ref<boolean|null>(null);
+    const noRestaurant = ref<boolean | null>(null);
     const shopInfo = ref(defaultShopInfo);
-    
+
     const loadShopInfo = async () => {
       // never use onSnapshot here.
       const defaultTax = regionalSetting.defaultTax || {};
 
-      const restaurant = await getDoc(doc(db, `restaurants/${restaurantId.value}`));
-      
+      const restaurant = await getDoc(
+        doc(db, `restaurants/${restaurantId.value}`)
+      );
+
       if (!restaurant.exists()) {
         noRestaurant.value = true;
         return;
       }
       const restaurant_data = restaurant.data();
 
-      const loaedShopInfo = Object.assign({}, defaultShopInfo, restaurant_data, defaultTax);
+      const loaedShopInfo = Object.assign(
+        {},
+        defaultShopInfo,
+        restaurant_data,
+        defaultTax
+      );
       if (loaedShopInfo.temporaryClosure) {
         loaedShopInfo.temporaryClosure = loaedShopInfo.temporaryClosure.map(
           (day: any) => {
@@ -114,10 +120,9 @@ export default defineComponent({
       }
       shopInfo.value = loaedShopInfo;
       noRestaurant.value = false;
-      
     };
     loadShopInfo();
-    
+
     const notification_detacher = ref();
     notification_detacher.value = onSnapshot(
       doc(db, `restaurants/${restaurantId.value}/private/notifications`),
@@ -144,12 +149,12 @@ export default defineComponent({
         notification_detacher.value();
       }
     });
-    
-    const partner = ref<(PartnerData|undefined)[]>([]);
+
+    const partner = ref<(PartnerData | undefined)[]>([]);
     (async () => {
       const shopOwner = await getShopOwner(ownerUid.value);
       partner.value = await getPartner(shopOwner);
-    })()
+    })();
     const closeNotificationSettings = () => {
       NotificationSettingsPopup.value = false;
     };
@@ -169,7 +174,6 @@ export default defineComponent({
 
       shopInfo,
       noRestaurant,
-
     };
   },
 });

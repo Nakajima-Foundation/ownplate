@@ -289,11 +289,7 @@
 <script>
 import { db, auth, analytics } from "@/lib/firebase/firebase9";
 
-import {
-  doc,
-  getDoc,
-  setDoc,
-} from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 
 import {
   logEvent,
@@ -475,7 +471,7 @@ export default {
     },
     async saveLang(lang) {
       if (this.hasUser || this.isAdmin) {
-        await setDoc(doc(db, this.profile_path),{ lang }, { merge: true });
+        await setDoc(doc(db, this.profile_path), { lang }, { merge: true });
       } else {
         // save into store
         this.$store.commit("setLang", lang);

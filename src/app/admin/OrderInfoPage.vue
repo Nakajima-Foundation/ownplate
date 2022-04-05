@@ -658,11 +658,7 @@ import { costCal } from "@/utils/commonUtils";
 import { downloadOrderPdf, printOrder, data2UrlSchema } from "@/lib/pdf/pdf2";
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
-import {
-  isEmpty,
-  isNull,
-  getShopOwner
-} from "@/utils/utils";
+import { isEmpty, isNull, getShopOwner } from "@/utils/utils";
 
 const timezone = moment.tz.guess();
 
@@ -722,7 +718,7 @@ export default {
       return;
     }
 
-    if ( this.shopInfo.uid !== this.ownerUid) {
+    if (this.shopInfo.uid !== this.ownerUid) {
       this.notFound = true;
       return true;
     }

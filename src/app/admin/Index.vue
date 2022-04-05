@@ -498,10 +498,7 @@ import PaymentSection from "@/app/admin/Payment/PaymentSection.vue";
 import MessageCard from "./Messages/MessageCard.vue";
 import PartnersContact from "./Partners/Contact.vue";
 
-import {
-  getShopOwner,
-  getPartner,
-} from "@/utils/utils";
+import { getShopOwner, getPartner } from "@/utils/utils";
 
 export default {
   name: "Restaurant",

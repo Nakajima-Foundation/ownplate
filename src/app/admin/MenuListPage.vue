@@ -376,22 +376,24 @@ export default {
     }
     this.restaurantInfo = this.shopInfo;
     this.notFound = false;
-    const menu_detacher = db.collection(`restaurants/${this.restaurantId()}/menus`)
-          .where("deletedFlag", "==", false)
-          .onSnapshot((results) => {
-            this.menuCollection = results.empty ? {} : results;
-            // for debug
-            results.docs.forEach((a) => {
-              if (a.data().publicFlag === undefined) {
-                a.ref.update({ publicFlag: true });
-              }
-            });
-          });
-    const title_detacher = db.collection(`restaurants/${this.restaurantId()}/titles`)
-          .where("deletedFlag", "==", false)
-          .onSnapshot((results) => {
-            this.titleCollection = results.empty ? {} : results;
-          });
+    const menu_detacher = db
+      .collection(`restaurants/${this.restaurantId()}/menus`)
+      .where("deletedFlag", "==", false)
+      .onSnapshot((results) => {
+        this.menuCollection = results.empty ? {} : results;
+        // for debug
+        results.docs.forEach((a) => {
+          if (a.data().publicFlag === undefined) {
+            a.ref.update({ publicFlag: true });
+          }
+        });
+      });
+    const title_detacher = db
+      .collection(`restaurants/${this.restaurantId()}/titles`)
+      .where("deletedFlag", "==", false)
+      .onSnapshot((results) => {
+        this.titleCollection = results.empty ? {} : results;
+      });
     this.detacher = [menu_detacher, title_detacher];
   },
   destroyed() {

@@ -1,13 +1,7 @@
 import { db } from "@/lib/firebase/firebase9";
-import {
-  doc,
-  getDoc,
-} from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 
-import {
-  ShopOwnerData,
-  PartnerData
-} from "@/models/ShopOwner";
+import { ShopOwnerData, PartnerData } from "@/models/ShopOwner";
 
 import { regionalSettings, partners } from "@/config/constant";
 import { ownPlateConfig } from "@/config/project";
@@ -250,7 +244,6 @@ export const getPartner = (shopOwner: ShopOwnerData) => {
   });
 };
 
-
-export const regionalSetting = (regionalSettings as {[key: string]: any})[(ownPlateConfig.region || "US")];
-
-
+export const regionalSetting = (regionalSettings as { [key: string]: any })[
+  ownPlateConfig.region || "US"
+];
