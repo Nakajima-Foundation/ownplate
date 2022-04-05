@@ -287,7 +287,14 @@
 </template>
 
 <script>
-import { db, auth } from "@/plugins/firebase";
+import { auth } from "@/plugins/firebase";
+import { db } from "@/lib/firebase/firebase9";
+import {
+  doc,
+  getDoc,
+  setDoc,
+} from "firebase/firestore";
+
 import { analytics } from "@/lib/firebase/firebase9";
 import {
   logEvent,
@@ -442,16 +449,6 @@ export default {
     async enableSound() {
       await this.$refs.audioPlay.enableSound();
     },
-    async signout() {
-      console.log("signing out", auth.currentUser);
-      try {
-        auth.signOut();
-        console.log("sign out succeeded", this.hasUser);
-        this.$router.push("/");
-      } catch (error) {
-        console.log("sign out failed", error);
-      }
-    },
     handleOpen() {
       this.open = true;
     },
@@ -479,7 +476,7 @@ export default {
     },
     async saveLang(lang) {
       if (this.hasUser || this.isAdmin) {
-        await db.doc(this.profile_path).set({ lang }, { merge: true });
+        await setDoc(doc(db, this.profile_path),{ lang }, { merge: true });
       } else {
         // save into store
         this.$store.commit("setLang", lang);
@@ -509,12 +506,6 @@ export default {
     this.$store.commit("setServerConfig", { region: ownPlateConfig.region });
     this.unregisterAuthObserver = auth.onAuthStateChanged(async (user) => {
       if (user) {
-        console.log(
-          "authStateChanged:",
-          user.email || user.phoneNumber,
-          user.uid,
-          user.displayName
-        );
         user
           .getIdTokenResult(true)
           .then((result) => {
@@ -540,7 +531,6 @@ export default {
   watch: {
     // https://support.google.com/analytics/answer/9234069?hl=ja
     $route() {
-      // console.log('route changed', this.$route)
       this.pingAnalytics();
     },
     async "$route.query.lang"() {
@@ -554,8 +544,8 @@ export default {
         if (this.$store.state.lang) {
           this.changeLang(this.$store.state.lang);
         } else {
-          const profileSnapshot = await db.doc(this.profile_path).get();
-          if (profileSnapshot.exists) {
+          const profileSnapshot = await getDoc(doc(db, this.profile_path));
+          if (profileSnapshot.exists()) {
             if (profileSnapshot.data().lang) {
               this.setLang(profileSnapshot.data().lang);
             }
@@ -588,11 +578,8 @@ export default {
       this.$store.commit("updateDate");
     }, 60 * 1000);
 
-    // query
-    // bot
-    // browser
-    // setting (is not here / after user load)
-    console.log("UA:" + navigator.userAgent.toLowerCase());
+    // lang: query, bot, browser
+    // setting (is not here / after user load). TODO: hold on storage
     if (this.$route.query.lang) {
       await this.changeLang(this.$route.query.lang);
     } else if (navigator.userAgent.toLowerCase().indexOf("googlebot") > -1) {
