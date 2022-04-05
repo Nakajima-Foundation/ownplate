@@ -287,21 +287,22 @@
 </template>
 
 <script>
-import { auth } from "@/plugins/firebase";
-import { db } from "@/lib/firebase/firebase9";
+import { db, auth, analytics } from "@/lib/firebase/firebase9";
+
 import {
   doc,
   getDoc,
   setDoc,
 } from "firebase/firestore";
 
-import { analytics } from "@/lib/firebase/firebase9";
 import {
   logEvent,
   setUserProperties,
   setUserId,
   setCurrentScreen,
 } from "firebase/analytics";
+
+import { onAuthStateChanged } from "firebase/auth";
 
 import DialogBox from "@/components/DialogBox";
 import AudioPlay from "@/components/AudioPlay";
@@ -333,8 +334,6 @@ export default {
       ],
       unregisterAuthObserver: null,
       timerId: null,
-      // todo support scrset https://kanoto.info/201912/673/
-      // srcset: regionalSetting.Logo.map((logo) => {}
 
       open: false,
       overlay: true,
@@ -504,7 +503,7 @@ export default {
       this.$store.commit("setFirefoxPBM", null);
     }
     this.$store.commit("setServerConfig", { region: ownPlateConfig.region });
-    this.unregisterAuthObserver = auth.onAuthStateChanged(async (user) => {
+    this.unregisterAuthObserver = onAuthStateChanged(auth, async (user) => {
       if (user) {
         user
           .getIdTokenResult(true)
