@@ -26,7 +26,10 @@
 
 <script>
 import liff from "@line/liff";
-import { db, auth } from "@/plugins/firebase";
+import { db } from "@/plugins/firebase";
+
+import { auth } from "@/lib/firebase/firebase9";
+import { signInWithCustomToken, signOut } from "firebase/auth";
 
 import { liffAuthenticate } from "@/lib/firebase/functions";
 
@@ -190,7 +193,7 @@ export default {
     if (location.hostname == !"localhost") {
       // if not liff user, force sign out
       if (this.user && !this.isLiffUser) {
-        auth.signOut();
+        signOut(auth);
       }
     }
 
@@ -231,14 +234,14 @@ export default {
               token: this.liffIdToken,
             });
             if (data.customToken) {
-              const user = await auth.signInWithCustomToken(data.customToken);
+              const user = await signInWithCustomToken(auth, data.customToken);
             }
             this.loading = false;
           })();
         } else {
           // force sign out if current user is not cuurrent liff user
           if (this.config.liffId !== this.userLiffId) {
-            auth.signOut();
+            signOut(auth);
           }
           this.loading = false;
         }
