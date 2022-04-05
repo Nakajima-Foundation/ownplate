@@ -302,7 +302,7 @@ import { onAuthStateChanged } from "firebase/auth";
 
 import DialogBox from "@/components/DialogBox";
 import AudioPlay from "@/components/AudioPlay";
-import * as Sentry from "@sentry/browser";
+import * as Sentry from "@sentry/vue";
 import { ownPlateConfig } from "@/config/project";
 import { defaultHeader } from "@/config/header";
 

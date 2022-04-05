@@ -16,8 +16,9 @@ import VueClipboard from "vue-clipboard2";
 import VueMeta from "vue-meta";
 import VueQrcode from "@chenfengyuan/vue-qrcode";
 
-import * as Sentry from "@sentry/browser";
-import { Vue as VueIntegration } from "@sentry/integrations";
+// sentry
+import * as Sentry from "@sentry/vue";
+import { BrowserTracing } from "@sentry/tracing";
 
 import VueCompositionAPI from "@vue/composition-api";
 
@@ -61,11 +62,20 @@ Vue.use(Buefy);
 if (process.env.NODE_ENV !== "development") {
   if (sentryDsn) {
     Sentry.init({
+      Vue,
       dsn: sentryDsn,
       integrations: [
-        new VueIntegration({ Vue, attachProps: true, logErrors: true }),
+        new BrowserTracing({
+          routingInstrumentation: Sentry.vueRouterInstrumentation(router),
+          tracingOrigins: ["localhost"],
+        }),
       ],
+      // Set tracesSampleRate to 1.0 to capture 100%
+      // of transactions for performance monitoring.
+      // We recommend adjusting this value in production
+      tracesSampleRate: 1.0,
     });
+    
   }
 }
 

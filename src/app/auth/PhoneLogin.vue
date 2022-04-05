@@ -207,7 +207,7 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 
-import * as Sentry from "@sentry/browser";
+import * as Sentry from "@sentry/vue";
 
 export default {
   props: {
