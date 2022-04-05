@@ -194,8 +194,18 @@
 
 <script>
 import { db, auth } from "@/lib/firebase/firebase9";
-import { signOut, RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
-import { doc, collection, addDoc, setDoc, serverTimestamp } from "firebase/firestore";
+import {
+  signOut,
+  RecaptchaVerifier,
+  signInWithPhoneNumber,
+} from "firebase/auth";
+import {
+  doc,
+  collection,
+  addDoc,
+  setDoc,
+  serverTimestamp,
+} from "firebase/firestore";
 
 import * as Sentry from "@sentry/browser";
 
@@ -221,13 +231,17 @@ export default {
   mounted() {
     this.countryCode = this.countries[0].code;
     // console.log("countryCode:mount", this.countryCode);
-    this.recaptchaVerifier = new RecaptchaVerifier("signInButton", {
-      size: "invisible",
-      callback: (response) => {
-        // reCAPTCHA solved, allow signInWithPhoneNumber.
-        console.log("verified", response);
+    this.recaptchaVerifier = new RecaptchaVerifier(
+      "signInButton",
+      {
+        size: "invisible",
+        callback: (response) => {
+          // reCAPTCHA solved, allow signInWithPhoneNumber.
+          console.log("verified", response);
+        },
       },
-    }, auth);
+      auth
+    );
   },
   watch: {
     countries() {
@@ -316,13 +330,14 @@ export default {
           }
         }
 
-        await setDoc(doc(db, `users/${result.user.uid}/private/profile`),
-                     {
-                       phoneNumber: result.user.phoneNumber,
-                       updated: serverTimestamp(),
-                     },
-                     { merge: true }
-                    );
+        await setDoc(
+          doc(db, `users/${result.user.uid}/private/profile`),
+          {
+            phoneNumber: result.user.phoneNumber,
+            updated: serverTimestamp(),
+          },
+          { merge: true }
+        );
         this.confirmationResult = null; // so that we can re-use this
         this.verificationCode = "";
         this.$emit("dismissed", true);

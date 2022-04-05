@@ -157,8 +157,11 @@
 
 <script>
 import isEmail from "validator/lib/isEmail";
-import { db, auth, firestore } from "@/plugins/firebase";
+import { db, firestore } from "@/plugins/firebase";
 import { partners } from "@/config/constant";
+
+import { auth } from "@/lib/firebase/firebase9";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
 export default {
   name: "Signup",
@@ -220,7 +223,8 @@ export default {
     async onSignup() {
       const email = this.email; //
       try {
-        let result = await auth.createUserWithEmailAndPassword(
+        const result = await createUserWithEmailAndPassword(
+          auth,
           this.email,
           this.password
         );

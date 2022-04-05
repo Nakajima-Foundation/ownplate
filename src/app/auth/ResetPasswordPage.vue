@@ -68,7 +68,8 @@
 
 <script>
 import isEmail from "validator/lib/isEmail";
-import { auth } from "@/plugins/firebase";
+import { auth } from "@/lib/firebase/firebase9";
+import { sendPasswordResetEmail } from "firebase/auth";
 
 export default {
   name: "Reset",
@@ -105,8 +106,7 @@ export default {
     async handleNext() {
       const options = { url: window.location.href.replace(/reset$/, "signin") };
       console.log("handleNext", options.url);
-      auth
-        .sendPasswordResetEmail(this.email, options)
+      sendPasswordResetEmail(auth, this.email, options)
         .then(() => {
           console.log("success");
           this.emailSent = true;

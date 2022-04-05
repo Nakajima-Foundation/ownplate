@@ -125,7 +125,8 @@
 </template>
 
 <script>
-import { auth } from "@/plugins/firebase";
+import { auth } from "@/lib/firebase/firebase9";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 export default {
   name: "Signin",
@@ -148,7 +149,7 @@ export default {
   },
   watch: {
     user(newValue) {
-      console.log("user changed", newValue);
+      console.log("user changed");
       if (newValue) {
         this.redirectToAdminPage();
       }
@@ -161,8 +162,7 @@ export default {
     async onSignin() {
       this.$store.commit("setLoading", true);
       this.errors = {};
-      auth
-        .signInWithEmailAndPassword(this.email, this.password)
+      signInWithEmailAndPassword(auth, this.email, this.password)
         .then((ret) => {
           console.log("onSignin success");
           this.$store.commit("setLoading", false);
