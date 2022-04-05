@@ -193,7 +193,10 @@
 </template>
 
 <script>
-import { db, firestore, auth, authObject } from "@/plugins/firebase";
+import { db, auth } from "@/lib/firebase/firebase9";
+import { signOut, RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
+import { doc, collection, addDoc, setDoc, serverTimestamp } from "firebase/firestore";
+
 import * as Sentry from "@sentry/browser";
 
 export default {
@@ -217,14 +220,14 @@ export default {
   },
   mounted() {
     this.countryCode = this.countries[0].code;
-    console.log("countryCode:mount", this.countryCode);
-    this.recaptchaVerifier = new authObject.RecaptchaVerifier("signInButton", {
+    // console.log("countryCode:mount", this.countryCode);
+    this.recaptchaVerifier = new RecaptchaVerifier("signInButton", {
       size: "invisible",
       callback: (response) => {
         // reCAPTCHA solved, allow signInWithPhoneNumber.
         console.log("verified", response);
       },
-    });
+    }, auth);
   },
   watch: {
     countries() {
@@ -272,18 +275,19 @@ export default {
       console.log("submit");
       try {
         this.isLoading = true;
-        this.confirmationResult = await auth.signInWithPhoneNumber(
+        this.confirmationResult = await signInWithPhoneNumber(
+          auth,
           this.SMSPhoneNumber,
           this.recaptchaVerifier
         );
-        console.log("result", this.confirmationResult);
+        // console.log("result", this.confirmationResult);
 
         const path = this.moment().format("YYYY/MMDD");
-        db.collection(`/phoneLog/${path}`).add({
+        addDoc(collection(db, `/phoneLog/${path}`), {
           date: this.moment().format("YYYY-MM-DD"),
           month: this.moment().format("YYYYMM"),
           phoneNumber: this.SMSPhoneNumber,
-          updated: firestore.FieldValue.serverTimestamp(),
+          updated: serverTimestamp(),
         });
       } catch (error) {
         console.log(JSON.stringify(error));
@@ -302,7 +306,7 @@ export default {
         let result = await this.confirmationResult.confirm(
           this.verificationCode
         );
-        console.log("success!", result);
+        // console.log("success!", result);
         if (this.name) {
           const user = auth.currentUser; // paranoia: instead of this.$store.state.user;
           if (user) {
@@ -312,13 +316,13 @@ export default {
           }
         }
 
-        await db.doc(`users/${result.user.uid}/private/profile`).set(
-          {
-            phoneNumber: result.user.phoneNumber,
-            updated: firestore.FieldValue.serverTimestamp(),
-          },
-          { merge: true }
-        );
+        await setDoc(doc(db, `users/${result.user.uid}/private/profile`),
+                     {
+                       phoneNumber: result.user.phoneNumber,
+                       updated: serverTimestamp(),
+                     },
+                     { merge: true }
+                    );
         this.confirmationResult = null; // so that we can re-use this
         this.verificationCode = "";
         this.$emit("dismissed", true);
