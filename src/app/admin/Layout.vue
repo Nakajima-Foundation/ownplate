@@ -113,7 +113,6 @@ export default defineComponent({
       if (loaedShopInfo.temporaryClosure) {
         loaedShopInfo.temporaryClosure = loaedShopInfo.temporaryClosure.map(
           (day: any) => {
-            console.log(day);
             return day.toDate();
           }
         );

@@ -25,14 +25,16 @@ export const isEmpty = <T>(value: T) => {
         restaurant.restProfilePhoto
       );
     },
-    arrayChunk(arr, size = 1) {
-      const array = [...arr];
-      return array.reduce((current, value, index) => {
-        return index % size
-          ? current
-          : [...current, array.slice(index, index + size)];
-      }, []);
-    },
+*/
+export const arrayChunk = <T>(arr: T[], size = 1) => {
+  const array = [...arr];
+  return array.reduce((current: T[][], value: T, index: number) => {
+    return index % size
+      ? current
+      : [...current, array.slice(index, index + size)];
+  }, []);
+};
+/*
     shareUrl() {
       return (
         location.protocol + "//" + location.host + "/r/" + this.restaurantId()

@@ -1,6 +1,5 @@
 import pdfMake from "pdfmake/build/pdfmake";
 import moment from "moment";
-import _ from "lodash";
 
 import { nameOfOrder, formatOption, optionPrice } from "@/utils/strings";
 import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";

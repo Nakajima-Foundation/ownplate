@@ -1,9 +1,10 @@
 import pdfMake from "pdfmake/build/pdfmake";
-import _ from "lodash";
 
 import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
 
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
+
+import { arrayChunk } from "@/utils/utils";
 
 import { MenuData } from "@/models/menu";
 
@@ -99,7 +100,7 @@ export const menuDownload = (
 ) => {
   pdfMake.fonts = pdfFont;
 
-  const menus = _.chunk(
+  const menus = arrayChunk(
     (restaurantInfo.menuLists || [])
       .reduce((tmp, itemKey) => {
         if (menuObj[itemKey]) {
