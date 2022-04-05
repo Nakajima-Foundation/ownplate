@@ -13,9 +13,12 @@
 
 <script>
 import { ownPlateConfig } from "@/config/project";
-import { db, auth, firestore } from "@/plugins/firebase";
+import { db, firestore } from "@/plugins/firebase";
 import { lineGuard } from "@/lib/line/line";
 import { lineAuthenticate, lineSetCustomClaim } from "@/lib/firebase/functions";
+
+import { auth } from "@/lib/firebase/firebase9";
+import { signInWithCustomToken } from "firebase/auth";
 
 export default {
   data() {
@@ -55,7 +58,7 @@ export default {
           const state = this.$route.query.state;
           const params = lineGuard(data.nonce, state);
           console.log("validation succeded", params.traceId);
-          const user = await auth.signInWithCustomToken(data.customToken);
+          const user = await signInWithCustomToken(auth, data.customToken);
           //console.log("signInWithCustomToken", user);
           const result = await lineSetCustomClaim();
           console.log("lineSetCustomClaim", result.data);

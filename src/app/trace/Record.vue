@@ -25,7 +25,7 @@
 import { ownPlateConfig } from "@/config/project";
 import { db, firestore } from "@/plugins/firebase";
 import { traceProcess } from "@/lib/firebase/functions";
-import * as crypto from "crypto";
+import SHA256 from "crypto-js/sha256";
 import { lineAuthURL } from "@/lib/line/line";
 
 export default {
@@ -38,8 +38,8 @@ export default {
   },
   methods: {
     async record(lineUid) {
-      const hash = crypto.createHash("sha256").update(lineUid).digest("hex");
-      //console.log("*********", hash);
+      const hash = SHA256(lineUid).toString(); //.digest("hex");
+      // console.log("*********", hash);
 
       const refRecords = db.collection(`hash/${hash}/records`);
       if (this.traceId) {
