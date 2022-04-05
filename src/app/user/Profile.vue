@@ -213,7 +213,11 @@
 
 <script>
 import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
-import { db, auth } from "@/plugins/firebase";
+import { db, auth } from "@/lib/firebase/firebase9";
+import { doc, getDoc, query, onSnapshot } from "firebase/firestore";
+
+import { signOut } from "firebase/auth";
+
 import {
   stripeDeleteCard,
   accountDelete,
@@ -258,7 +262,9 @@ export default {
     }
     this.checkStripe();
     if (this.inLiff) {
-      this.liffConfig = (await db.doc(`liff/${this.liffIndexId}`).get()).data();
+      this.liffConfig = (
+        await getDoc(doc(db, `liff/${this.liffIndexId}`))
+      ).data();
     }
   },
   destroyed() {
@@ -357,12 +363,13 @@ export default {
         this.detachStripe = null;
       }
       if (this.user && (this.user.phoneNumber || this.isLiffUser)) {
-        this.detachStripe = db
-          .doc(`/users/${this.user.uid}/readonly/stripe`)
-          .onSnapshot((snapshot) => {
+        this.detachStripe = onSnapshot(
+          query(doc(db, `/users/${this.user.uid}/readonly/stripe`)),
+          (snapshot) => {
             const stripeInfo = snapshot.data();
             this.storedCard = stripeInfo?.card;
-          });
+          }
+        );
       }
     },
     handleLineAuth() {
@@ -419,7 +426,7 @@ export default {
     },
     handleSignOut() {
       console.log("handleSignOut");
-      auth.signOut();
+      signOut(auth);
     },
     handleDismissed() {
       console.log("handleDismissed");
