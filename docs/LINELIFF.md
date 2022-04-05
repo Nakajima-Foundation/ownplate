@@ -24,15 +24,16 @@
   - ログインチャンネルを公開に切り替える
 
 - おもちかえり側で必要な設定
-  -  liff/{liffindexId}
+  - liff/{liffindexId}
     - cliendId 
       - LINE ログインチャンネルのチャンネルID
     - liffId
       - LINE ログインチャンネル -> Liff -> LIFF ID
     - friendUrl
       - メッセージチャンネル -> LINE Official Account Manager -> 友だち追加ガイド -> URLを作成
-    - (restaurant id)
-      - liff内で使うお店。おもちかえりのurlを元に。
-  - liffPrivate/data
+    - restaurants
+      - [restaurant id] 
+        - liff内で使うお店。おもちかえりのurlを元に。
+  - liff/{liffindexId}/liffPrivate/data
     - message_token
       - LINEメッセージチャンネル -> Messaging API設定 -> チャネルアクセストークン（長期）
