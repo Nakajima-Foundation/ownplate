@@ -172,6 +172,7 @@ export default {
     },
   },
   async created() {
+    this.checkAdminPermission();
     await this.loadData();
   },
   methods: {

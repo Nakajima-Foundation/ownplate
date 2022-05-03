@@ -212,6 +212,12 @@ export default {
     DownloadCsv,
     ReportDetails,
   },
+  props: {
+    shopInfo: {
+      type: Object,
+      required: true,
+    },
+  },
   metaInfo() {
     return {
       title: this.shopInfo.restaurantName
@@ -225,7 +231,6 @@ export default {
   },
   data() {
     return {
-      shopInfo: {},
       orders: [],
       total: {
         food: {
@@ -247,8 +252,15 @@ export default {
     };
   },
   async created() {
-    const refRestaurant = db.doc(`restaurants/${this.restaurantId()}`);
-    this.shopInfo = (await refRestaurant.get()).data() || {};
+    if (!this.checkAdminPermission()) {
+      return;
+    }
+
+    if (!this.checkShopAccount(this.shopInfo)) {
+      this.notFound = true;
+      return true;
+    }
+
     this.updateQuery();
   },
   destroyed() {

@@ -15,6 +15,12 @@ import * as pdf2 from "@/lib/pdf/pdf2";
 
 export default {
   name: "pdf",
+  props: {
+    shopInfo: {
+      type: Object,
+      required: true,
+    },
+  },
   data() {
     return {
       restaurantInfo: {},
@@ -24,7 +30,6 @@ export default {
   },
   async created() {
     const restaurantRef = db.doc(`restaurants/${this.restaurantId()}`);
-    this.restaurantInfo = (await restaurantRef.get()).data();
     this.menuObj = this.array2obj(
       (
         await restaurantRef
@@ -36,12 +41,12 @@ export default {
   },
   computed: {
     // TODO: create method and move to utils. merge ShopInfo.vue
-    // TODO: merge restaurantInfo and shopInfo
+    // TODO: merge shopInfo and shopInfo
     parsedNumber() {
       const countryCode =
-        this.restaurantInfo.countryCode || this.countries[0].code;
+        this.shopInfo.countryCode || this.countries[0].code;
       try {
-        return parsePhoneNumber(countryCode + this.restaurantInfo.phoneNumber);
+        return parsePhoneNumber(countryCode + this.shopInfo.phoneNumber);
       } catch (error) {
         return null;
       }
@@ -54,13 +59,13 @@ export default {
       if (number) {
         return formatNational(number);
       }
-      return this.restaurantInfo.phoneNumber;
+      return this.shopInfo.phoneNumber;
     },
   },
   methods: {
     download() {
       pdf.menuDownload(
-        this.restaurantInfo,
+        this.shopInfo,
         this.menuObj,
         this.nationalPhoneNumber,
         this.shareUrl()

@@ -135,16 +135,21 @@ export default {
     return {
       title: this.shopInfo.restaurantName
         ? [
-            "Admin Order Suspend",
-            this.shopInfo.restaurantName,
-            this.defaultTitle,
-          ].join(" / ")
+          "Admin Order Suspend",
+          this.shopInfo.restaurantName,
+          this.defaultTitle,
+        ].join(" / ")
         : this.defaultTitle,
     };
   },
+  props: {
+    shopInfo: {
+      type: Object,
+      required: true,
+    },
+  },
   data() {
     return {
-      shopInfo: {},
       menus: [],
       date: null,
       titles: [],
@@ -153,21 +158,19 @@ export default {
     };
   },
   created() {
-    const restaurant_detacher = db
-      .doc(`restaurants/${this.restaurantId()}`)
-      .onSnapshot((restaurant) => {
-        const restaurant_data = restaurant.data();
-        this.shopInfo = restaurant_data;
-        if (
-          restaurant.exists &&
-          !restaurant.data().deletedFlag &&
-          restaurant.data().publicFlag
-        ) {
-          this.notFound = false;
-        } else {
-          this.notFound = true;
-        }
-      });
+    this.checkAdminPermission();
+    if (!this.checkShopAccount(this.shopInfo)) {
+      this.notFound = true;
+      return true;
+    }
+    if (this.shopInfo &&
+        !this.shopInfo.deletedFlag &&
+        this.shopInfo.publicFlag
+       ) {
+      this.notFound = false;
+    } else {
+      this.notFound = true;
+    }
     const menu_detacher = db
       .collection(`restaurants/${this.restaurantId()}/menus`)
       .where("deletedFlag", "==", false)
