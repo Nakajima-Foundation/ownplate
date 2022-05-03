@@ -142,10 +142,7 @@ import DownloadOrders from "@/components/DownloadOrders";
 import NotificationIndex from "./Notifications/Index";
 import ReportDetails from "@/app/admin/Order/ReportDetails";
 
-import {
-  getShopOwner,
-  arrayChunk
-} from "@/utils/utils";
+import { getShopOwner, arrayChunk } from "@/utils/utils";
 
 export default {
   components: {

@@ -75,7 +75,6 @@ if (process.env.NODE_ENV !== "development") {
       // We recommend adjusting this value in production
       tracesSampleRate: 1.0,
     });
-    
   }
 }
 

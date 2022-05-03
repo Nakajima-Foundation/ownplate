@@ -1,174 +1,181 @@
 <template>
-<div>
-  <template v-if="notFound">
-    <not-found />
-  </template>
-  <div class="mt-4 mx-6" v-else>
-    <div class="bg-black bg-opacity-5 rounded-lg p-4">
-      <div class="text-sm font-bold">
-        <b-checkbox v-model="enableDelivery" />{{
-          $t("delivery.enableDelivery")
-        }}
-      </div>
-    </div>
-
-    <!-- area map -->
-    <div class="bg-black bg-opacity-5 rounded-lg p-4 mt-4">
-      <div class="text-lm font-bold pb-2">
-        {{ $t("delivery.areaSetting") }}
+  <div>
+    <template v-if="notFound">
+      <not-found />
+    </template>
+    <div class="mt-4 mx-6" v-else>
+      <div class="bg-black bg-opacity-5 rounded-lg p-4">
+        <div class="text-sm font-bold">
+          <b-checkbox v-model="enableDelivery" />{{
+            $t("delivery.enableDelivery")
+          }}
+        </div>
       </div>
 
-      <div>
-        <div class="text-sm font-bold pb-2 flex">
-          <b-checkbox v-model="enableAreaMap" :disabled="!enableDelivery" />
-          {{ $t("delivery.setAreaMap") }}
+      <!-- area map -->
+      <div class="bg-black bg-opacity-5 rounded-lg p-4 mt-4">
+        <div class="text-lm font-bold pb-2">
+          {{ $t("delivery.areaSetting") }}
         </div>
+
         <div>
-          <span>{{ $t("delivery.setAreaMapNotice") }}</span>
+          <div class="text-sm font-bold pb-2 flex">
+            <b-checkbox v-model="enableAreaMap" :disabled="!enableDelivery" />
+            {{ $t("delivery.setAreaMap") }}
+          </div>
+          <div>
+            <span>{{ $t("delivery.setAreaMapNotice") }}</span>
+          </div>
+          <div>
+            <GMap
+              ref="gMap"
+              :center="{ lat: 35.6809591, lng: 139.7673068 }"
+              :options="{ fullscreenControl: false }"
+              :zoom="15"
+              @loaded="mapLoaded"
+            ></GMap>
+          </div>
+          <div class="flex mt-2">
+            <span class="flex-item mt-auto mb-auto inline-block mr-2">
+              {{ $t("delivery.deliveryRange") }}:
+            </span>
+            <span class="flex-item mt-auto mb-auto inline-block mr-2">
+              <input
+                v-model="radius"
+                :disabled="!enableAreaMap || !enableDelivery"
+              />
+              m
+            </span>
+            <b-button
+              class="h-12 rounded-full bg-op-teal inline-flex justify-center items-center px-6 shadow"
+              style="min-width: 8rem"
+              :disabled="!enableAreaMap || !enableDelivery"
+              @click="updateCircle"
+            >
+              <span class="text-white text-base font-bold">
+                {{ $t("delivery.updateDeliveryRange") }}
+              </span>
+            </b-button>
+          </div>
         </div>
-        <div>
-          <GMap
-            ref="gMap"
-            :center="{ lat: 35.6809591, lng: 139.7673068 }"
-            :options="{ fullscreenControl: false }"
-            :zoom="15"
-            @loaded="mapLoaded"
-          ></GMap>
+        <!-- area text -->
+        <div class="mt-4">
+          <div class="text-sm font-bold pb-2 flex">
+            <b-checkbox v-model="enableAreaText" :disabled="!enableDelivery" />
+            {{ $t("delivery.setAreaText") }}
+          </div>
+
+          <b-input
+            v-model="areaText"
+            type="textarea"
+            :placeholder="$t('delivery.areaTextExample')"
+            :disabled="!enableAreaText || !enableDelivery"
+          >
+          </b-input>
+        </div>
+      </div>
+
+      <div class="bg-black bg-opacity-5 rounded-lg p-4 mt-4">
+        <div class="text-lm font-bold pb-2">
+          {{ $t("delivery.deliveryThreshold") }}:
         </div>
         <div class="flex mt-2">
+          <b-checkbox
+            v-model="enableDeliveryThreshold"
+            :disabled="!enableDelivery"
+          />
           <span class="flex-item mt-auto mb-auto inline-block mr-2">
-            {{ $t("delivery.deliveryRange") }}:
+            <input
+              v-model="deliveryThreshold"
+              :disabled="!enableDelivery"
+              type="number"
+            />
+            {{ $t("delivery.yen") }}
+          </span>
+        </div>
+        <div class="text-sm">
+          * {{ $t("delivery.deliveryThresholdNotice") }}
+        </div>
+      </div>
+
+      <div class="bg-black bg-opacity-5 rounded-lg p-4 mt-4">
+        <div class="text-lm font-bold pb-2">
+          {{ $t("delivery.deliveryFeeSetting") }}
+        </div>
+        <div class="flex mt-2">
+          <span class="flex-item mt-auto mb-auto inline-block mr-2 font-bold">
+            {{ $t("delivery.deliveryFee") }}:
           </span>
           <span class="flex-item mt-auto mb-auto inline-block mr-2">
             <input
-              v-model="radius"
-              :disabled="!enableAreaMap || !enableDelivery"
+              v-model="deliveryFee"
+              :disabled="!enableDelivery"
+              type="number"
             />
-            m
+            {{ $t("delivery.yen") }}
           </span>
-          <b-button
+        </div>
+        <div class="text-sm">
+          * {{ $t("delivery.deliveryFeeSettingNotice") }}
+        </div>
+
+        <div class="flex mt-2">
+          <b-checkbox
+            v-model="enableDeliveryFree"
+            :disabled="!enableDelivery"
+          />
+          <span class="flex-item mt-auto mb-auto inline-block mr-2 font-bold">
+            {{ $t("delivery.deliveryFreeThreshold") }}:
+          </span>
+          <span class="flex-item mt-auto mb-auto inline-block mr-2">
+            <input
+              v-model="deliveryFreeThreshold"
+              :disabled="!enableDelivery"
+              type="number"
+            />
+            {{ $t("delivery.yen") }}
+          </span>
+        </div>
+        <div class="text-sm">
+          * {{ $t("delivery.deliveryFreeThresholdNotice") }}
+        </div>
+      </div>
+
+      <div class="bg-black bg-opacity-5 rounded-lg p-4 mt-4">
+        <div class="text-lm font-bold pb-2">
+          {{ $t("editRestaurant.deliveryPreparationTime") }}
+        </div>
+        <div>
+          {{ $t("editRestaurant.preparationTime") }}
+          {{ $t("delivery.reference") }} {{ shopInfo.pickUpMinimumCookTime }}
+          {{ $t("editRestaurant.minutes") }}
+        </div>
+        <div>* {{ $t("delivery.preparationTimeNotice") }}</div>
+        <div>
+          {{ $t("editRestaurant.deliveryPreparationTime") }}
+          <input
+            v-model="deliveryMinimumCookTime"
+            :disabled="!enableDelivery"
+            type="number"
+          />
+          {{ $t("editRestaurant.minutes") }}
+        </div>
+      </div>
+      <!-- Save Button -->
+      <div class="mt-4 text-center">
+        <b-button @click="saveDeliveryArea" class="b-reset-tw">
+          <div
             class="h-12 rounded-full bg-op-teal inline-flex justify-center items-center px-6 shadow"
             style="min-width: 8rem"
-            :disabled="!enableAreaMap || !enableDelivery"
-            @click="updateCircle"
           >
-            <span class="text-white text-base font-bold">
-              {{ $t("delivery.updateDeliveryRange") }}
-            </span>
-          </b-button>
-        </div>
+            <span class="text-white text-base font-bold">{{
+              $t("editCommon.save")
+            }}</span>
+          </div>
+        </b-button>
       </div>
-      <!-- area text -->
-      <div class="mt-4">
-        <div class="text-sm font-bold pb-2 flex">
-          <b-checkbox v-model="enableAreaText" :disabled="!enableDelivery" />
-          {{ $t("delivery.setAreaText") }}
-        </div>
-
-        <b-input
-          v-model="areaText"
-          type="textarea"
-          :placeholder="$t('delivery.areaTextExample')"
-          :disabled="!enableAreaText || !enableDelivery"
-        >
-        </b-input>
-      </div>
-    </div>
-
-    <div class="bg-black bg-opacity-5 rounded-lg p-4 mt-4">
-      <div class="text-lm font-bold pb-2">
-        {{ $t("delivery.deliveryThreshold") }}:
-      </div>
-      <div class="flex mt-2">
-        <b-checkbox
-          v-model="enableDeliveryThreshold"
-          :disabled="!enableDelivery"
-        />
-        <span class="flex-item mt-auto mb-auto inline-block mr-2">
-          <input
-            v-model="deliveryThreshold"
-            :disabled="!enableDelivery"
-            type="number"
-          />
-          {{ $t("delivery.yen") }}
-        </span>
-      </div>
-      <div class="text-sm">* {{ $t("delivery.deliveryThresholdNotice") }}</div>
-    </div>
-
-    <div class="bg-black bg-opacity-5 rounded-lg p-4 mt-4">
-      <div class="text-lm font-bold pb-2">
-        {{ $t("delivery.deliveryFeeSetting") }}
-      </div>
-      <div class="flex mt-2">
-        <span class="flex-item mt-auto mb-auto inline-block mr-2 font-bold">
-          {{ $t("delivery.deliveryFee") }}:
-        </span>
-        <span class="flex-item mt-auto mb-auto inline-block mr-2">
-          <input
-            v-model="deliveryFee"
-            :disabled="!enableDelivery"
-            type="number"
-          />
-          {{ $t("delivery.yen") }}
-        </span>
-      </div>
-      <div class="text-sm">* {{ $t("delivery.deliveryFeeSettingNotice") }}</div>
-
-      <div class="flex mt-2">
-        <b-checkbox v-model="enableDeliveryFree" :disabled="!enableDelivery" />
-        <span class="flex-item mt-auto mb-auto inline-block mr-2 font-bold">
-          {{ $t("delivery.deliveryFreeThreshold") }}:
-        </span>
-        <span class="flex-item mt-auto mb-auto inline-block mr-2">
-          <input
-            v-model="deliveryFreeThreshold"
-            :disabled="!enableDelivery"
-            type="number"
-          />
-          {{ $t("delivery.yen") }}
-        </span>
-      </div>
-      <div class="text-sm">
-        * {{ $t("delivery.deliveryFreeThresholdNotice") }}
-      </div>
-    </div>
-
-    <div class="bg-black bg-opacity-5 rounded-lg p-4 mt-4">
-      <div class="text-lm font-bold pb-2">
-        {{ $t("editRestaurant.deliveryPreparationTime") }}
-      </div>
-      <div>
-        {{ $t("editRestaurant.preparationTime") }}
-        {{ $t("delivery.reference") }} {{ shopInfo.pickUpMinimumCookTime }}
-        {{ $t("editRestaurant.minutes") }}
-      </div>
-      <div>* {{ $t("delivery.preparationTimeNotice") }}</div>
-      <div>
-        {{ $t("editRestaurant.deliveryPreparationTime") }}
-        <input
-          v-model="deliveryMinimumCookTime"
-          :disabled="!enableDelivery"
-          type="number"
-        />
-        {{ $t("editRestaurant.minutes") }}
-      </div>
-    </div>
-    <!-- Save Button -->
-    <div class="mt-4 text-center">
-      <b-button @click="saveDeliveryArea" class="b-reset-tw">
-        <div
-          class="h-12 rounded-full bg-op-teal inline-flex justify-center items-center px-6 shadow"
-          style="min-width: 8rem"
-        >
-          <span class="text-white text-base font-bold">{{
-            $t("editCommon.save")
-          }}</span>
-        </div>
-      </b-button>
     </div>
   </div>
-</div>
 </template>
 
 <script>
@@ -226,7 +233,7 @@ export default {
       this.notFound = true;
       return true;
     }
-    
+
     const location = this.shopInfo.location;
     this.enableDelivery = this.shopInfo.enableDelivery || false;
     this.deliveryMinimumCookTime =

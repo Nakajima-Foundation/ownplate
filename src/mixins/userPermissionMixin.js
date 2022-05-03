@@ -33,11 +33,11 @@ const mixin = {
     },
     // subaccount ok.
     checkShopAccount(shopInfo) {
-      return (shopInfo.uid === this.ownerUid);
+      return shopInfo.uid === this.ownerUid;
     },
     // just owner. don't allow subaccount.
     checkShopOwner(shopInfo) {
-      return (shopInfo.uid === this.uid);
+      return shopInfo.uid === this.uid;
     },
   },
   computed: {
