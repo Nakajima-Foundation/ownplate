@@ -54,6 +54,12 @@
 <script>
 import { db, firestore } from "@/plugins/firebase";
 export default {
+  props: {
+    shopInfo: {
+      type: Object,
+      required: true,
+    },
+  },
   data() {
     return {
       postage: Array.from([...Array(47)]).map((k) => 0),
@@ -89,6 +95,14 @@ export default {
     },
   },
   async created() {
+    if (!this.checkAdminPermission()) {
+      return;
+    }
+
+    if (!this.checkShopAccount(this.shopInfo)) {
+      this.notFound = true;
+      return true;
+    }
     const postageDoc = await db
       .doc(`restaurants/${this.restaurantId()}/ec/postage`)
       .get();
