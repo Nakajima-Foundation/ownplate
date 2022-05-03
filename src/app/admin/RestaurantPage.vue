@@ -1020,7 +1020,7 @@ export default {
 
     this.checkAdminPermission();
 
-    this.notFound = this.shopInfo.uid !== this.uid;
+    this.notFound = !this.checkShopOwner(this.shopInfo)
   },
   mounted() {
     this.setLocation();

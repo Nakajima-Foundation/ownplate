@@ -222,7 +222,7 @@ export default {
     //return;
     //}
 
-    if (!this.checkShopOwner(this.shopInfo)) {
+    if (!this.checkShopAccount(this.shopInfo)) {
       this.notFound = true;
       return true;
     }
