@@ -218,9 +218,9 @@ export default {
     },
   },
   async created() {
-    //if (!this.checkAdminPermission()) {
-    //return;
-    //}
+    if (!this.checkAdminPermission()) {
+      return;
+    }
 
     if (!this.checkShopAccount(this.shopInfo)) {
       this.notFound = true;
