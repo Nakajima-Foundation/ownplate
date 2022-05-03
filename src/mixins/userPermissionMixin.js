@@ -37,10 +37,13 @@ const mixin = {
     },
     // just owner. don't allow subaccount.
     checkShopOwner(shopInfo) {
-      return shopInfo.uid === this.uid;
+      return shopInfo.uid === this.uidAdmin;
     },
   },
   computed: {
+    uidAdmin() {
+      return this.$store.getters.uidAdmin;
+    },
     isUser() {
       return !!this.$store.getters.uidUser;
     },
