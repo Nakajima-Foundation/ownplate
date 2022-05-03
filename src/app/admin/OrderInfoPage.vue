@@ -718,7 +718,7 @@ export default {
       return;
     }
 
-    if (this.shopInfo.uid !== this.ownerUid) {
+    if (!this.checkShopOwner(this.shopInfo)) {
       this.notFound = true;
       return true;
     }
@@ -808,11 +808,6 @@ export default {
         return true;
       }
       return false;
-    },
-    ownerUid() {
-      return this.$store.getters.isSubAccount
-        ? this.$store.getters.parentId
-        : this.$store.getters.uidAdmin;
     },
     isOwner() {
       return !this.$store.getters.isSubAccount;

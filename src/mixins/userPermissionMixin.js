@@ -31,6 +31,9 @@ const mixin = {
       }
       return true;
     },
+    checkShopOwner(shopInfo) {
+      return (shopInfo.uid === this.ownerUid);
+    },
   },
   computed: {
     isUser() {
@@ -41,6 +44,11 @@ const mixin = {
     },
     isNotOperator() {
       return this.$store.getters.isNotOperator;
+    },
+    ownerUid() {
+      return this.$store.getters.isSubAccount
+        ? this.$store.getters.parentId
+        : this.$store.getters.uidAdmin;
     },
   },
 };

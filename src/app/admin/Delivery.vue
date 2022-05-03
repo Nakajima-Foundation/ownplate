@@ -1,5 +1,9 @@
 <template>
-  <div class="mt-4 mx-6">
+<div>
+  <template v-if="notFound">
+    <not-found />
+  </template>
+  <div class="mt-4 mx-6" v-else>
     <div class="bg-black bg-opacity-5 rounded-lg p-4">
       <div class="text-sm font-bold">
         <b-checkbox v-model="enableDelivery" />{{
@@ -164,12 +168,23 @@
       </b-button>
     </div>
   </div>
+</div>
 </template>
 
 <script>
 import { db, firestore } from "@/plugins/firebase";
+import NotFound from "@/components/NotFound";
 
 export default {
+  components: {
+    NotFound,
+  },
+  props: {
+    shopInfo: {
+      type: Object,
+      required: true,
+    },
+  },
   data() {
     return {
       enableDelivery: false,
@@ -178,7 +193,6 @@ export default {
       enableAreaMap: true,
       enableAreaText: false,
       notFound: null,
-      shopInfo: {},
       deliveryFee: 0,
       deliveryFreeThreshold: 8000,
       deliveryThreshold: 3000,
@@ -204,9 +218,15 @@ export default {
     },
   },
   async created() {
-    const restaurant = await db.doc(`restaurants/${this.restaurantId()}`).get();
-    const restaurant_data = restaurant.data();
-    this.shopInfo = Object.assign({}, this.shopInfo, restaurant_data);
+    //if (!this.checkAdminPermission()) {
+    //return;
+    //}
+
+    if (!this.checkShopOwner(this.shopInfo)) {
+      this.notFound = true;
+      return true;
+    }
+    
     const location = this.shopInfo.location;
     this.enableDelivery = this.shopInfo.enableDelivery || false;
     this.deliveryMinimumCookTime =
