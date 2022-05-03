@@ -635,11 +635,16 @@ export default {
     };
   },
   async created() {
+    this.checkAdminPermission();
+    // allow sub Account
+    if (!this.checkShopAccount(this.shopInfo)) {
+      this.notFound = true;
+      return true;
+    }
+
     this.taxRateKeys = this.regionalSetting["taxRateKeys"];
     this.requireTaxPriceDisplay = this.regionalSetting.requireTaxPriceDisplay;
     this.currencyKey = this.regionalSetting["CurrencyKey"];
-
-    this.checkAdminPermission();
 
     this.restaurantInfo = this.shopInfo;
     if (!this.restaurantInfo.category1) {
@@ -649,11 +654,6 @@ export default {
       this.restaurantInfo.category2 = [];
     }
 
-    if (this.restaurantInfo.uid !== this.uid) {
-      this.notFound = true;
-      console.log("no owner");
-      return;
-    }
     const menuRes = db.doc(
       `restaurants/${this.restaurantId()}/menus/${this.menuId}`
     );
@@ -856,12 +856,3 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped>
-// .croppa-container {
-//   cursor: pointer;
-// }
-// .croppa-container canvas {
-//   border-radius: 4px !important;
-//   background: #f00 !important;
-// }
-</style>

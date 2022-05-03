@@ -370,7 +370,7 @@ export default {
   async created() {
     this.checkAdminPermission();
     // allow sub Account
-    if (this.shopInfo.uid !== this.ownerUid) {
+    if (!this.checkShopAccount(this.shopInfo)) {
       this.notFound = true;
       return;
     }
