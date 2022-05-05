@@ -229,7 +229,7 @@
                   position: relative;
                   overflow: hidden;
                 "
-                @loaded="setLocation"
+                @loaded="setDefaultLocation"
                 @click="gmapClick"
               ></GMap>
             </div>
@@ -1020,10 +1020,15 @@ export default {
 
     this.checkAdminPermission();
 
+    if (this.shopInfo.location) {
+      this.maplocation = this.shopInfo.location;
+      this.place_id = this.shopInfo.place_id;
+    }
+
     this.notFound = !this.checkShopOwner(this.shopInfo);
   },
   mounted() {
-    this.setLocation();
+    this.setDefaultLocation();
   },
   updated() {
     if (this.updateFirstCall) {
@@ -1147,7 +1152,7 @@ export default {
       this.shopInfo.countryCode = payload.countryCode;
       this.errorsPhone = payload.errors;
     },
-    setLocation() {
+    setDefaultLocation() {
       if (this.shopInfo && this.shopInfo.location) {
         this.setCurrentLocation(this.shopInfo.location);
       }
