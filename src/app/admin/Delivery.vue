@@ -47,14 +47,17 @@
               m
             </span>
             <b-button
-              class="h-12 rounded-full bg-op-teal inline-flex justify-center items-center px-6 shadow"
-              style="min-width: 8rem"
+              class="b-reset-tw"
               :disabled="!enableAreaMap || !enableDelivery"
               @click="updateCircle"
             >
-              <span class="text-white text-base font-bold">
-                {{ $t("delivery.updateDeliveryRange") }}
-              </span>
+              <div
+                class="h-12 rounded-full bg-op-teal inline-flex justify-center items-center px-6 shadow"
+                >
+                <span class="text-white text-base font-bold">
+                  {{ $t("delivery.updateDeliveryRange") }}
+                </span>
+              </div>
             </b-button>
           </div>
         </div>
