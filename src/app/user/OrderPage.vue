@@ -1257,7 +1257,7 @@ export default {
       };
     },
     async handlePayment() {
-      if (this.requireAddres) {
+      if (this.requireAddress) {
         if (this.hasEcError) {
           return;
         }
