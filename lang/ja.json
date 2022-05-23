@@ -562,6 +562,7 @@
     "estimatedDistance": "推定距離",
     "preparationTimeNotice": "お客様が注文後、配達完了までにかかる最短時間を入力してください。",
     "setTheAddressInTheDeliveryLocation": "地図に住所を反映する",
+    "setTheAddressInTheDeliveryLocationDescription": "* お店と配送先の距離を算出します。",
     "availableDeliveryDistance": "配達可能距離",
     "reference": "(参考)",
     "aboutDeliveryArea": "配達可能エリアについて",

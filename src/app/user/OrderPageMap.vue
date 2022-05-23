@@ -11,6 +11,9 @@
         </div>
       </button>
     </div>
+    <div class="text-sm mt-1">
+      {{ $t("delivery.setTheAddressInTheDeliveryLocationDescription") }} 
+    </div>
     <div class="text-xm font-bold text-black text-opacity-30 mt-2">
       {{ $t("delivery.setDeliveryLocation") }}
     </div>

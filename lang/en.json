@@ -554,6 +554,7 @@
     "estimatedDistance": "Estimated distance",
     "preparationTimeNotice": "Please enter the shortest time it will take for the customer to complete the delivery after placing the order.",
     "setTheAddressInTheDeliveryLocation": "Set  the address in the delivery destination",
+    "setTheAddressInTheDeliveryLocationDescription": "* Calculate the distance between the store and the delivery destination.",
     "availableDeliveryDistance": "Available Delivery Distance",
     "reference": "(Reference)",
     "aboutDeliveryArea": "Aboout Delivery Area",
