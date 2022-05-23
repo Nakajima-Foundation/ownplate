@@ -411,20 +411,31 @@
 
               <!-- conv zip to address -->
               <div class="mb-2">
-                <b-button @click="getAddress()">{{
-                  $t("order.ec.searchAddressFromZip")
-                }}</b-button>
+                <button @click="getAddress()" class="">
+                  <div class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-op-teal">
+                    <div class="text-sm font-bold text-white">
+                      {{
+                      $t("order.ec.searchAddressFromZip")
+                      }}
+                    </div>
+                  </div>
+                </button>
               </div>
               <div
                 v-for="(address, key) in addressList"
                 :key="key"
                 class="font-bold flex mb-2"
               >
-                <b-button
+                <button
                   @click="updateAddress(address)"
                   class="flex-item mr-2"
-                  >{{ $t("order.ec.select") }}</b-button
-                >
+                  >
+                  <div class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-op-teal">
+                    <div class="text-sm font-bold text-white">
+                      {{ $t("order.ec.select") }}
+                    </div>
+                  </div>
+                </button>
                 <span class="flex-item mt-auto mb-auto inline-block">
                   {{ address.address1 }}{{ address.address2
                   }}{{ address.address3 }}

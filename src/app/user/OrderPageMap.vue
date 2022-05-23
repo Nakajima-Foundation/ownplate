@@ -1,9 +1,15 @@
 <template>
   <div class="h-2/5">
     <div>
-      <b-button @click="conv">{{
-        $t("delivery.setTheAddressInTheDeliveryLocation")
-      }}</b-button>
+      <button @click="conv">
+        <div class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-op-teal">
+          <div class="text-sm font-bold text-white">
+            {{
+            $t("delivery.setTheAddressInTheDeliveryLocation")
+            }}
+          </div>
+        </div>
+      </button>
     </div>
     <div class="text-xm font-bold text-black text-opacity-30 mt-2">
       {{ $t("delivery.setDeliveryLocation") }}
