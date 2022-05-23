@@ -18,7 +18,7 @@
       <div class="bg-black bg-opacity-5 rounded-lg p-4">
         <div class="text-sm font-bold">
           <b-checkbox v-model="enableDelivery" />{{
-            $t("delivery.enableDelivery")
+            $tc("delivery.enableDelivery", 0, {name: shopInfo.restaurantName})
           }}
         </div>
       </div>
