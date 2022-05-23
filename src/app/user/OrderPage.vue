@@ -572,9 +572,6 @@
 
             <!-- map for delivery -->
             <div class="mt-4" v-if="orderInfo.isDelivery">
-              <div class="text-xl font-bold text-black text-opacity-30">
-                {{ $t("order.ec.formtitle") }}
-              </div>
               <span
                 v-if="ecErrors['location'].length > 0"
                 class="text-red-700 font-bold"
