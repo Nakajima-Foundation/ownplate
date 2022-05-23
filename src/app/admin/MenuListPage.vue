@@ -374,7 +374,21 @@ export default {
       this.notFound = true;
       return;
     }
-    this.restaurantInfo = this.shopInfo;
+
+    // This is duplicate data with shopInfo. But DONT'T REMOVE THIS!!
+    const restaurantRef = db.doc(`restaurants/${this.restaurantId()}`);
+    const restaurant_detacher = restaurantRef.onSnapshot((results) => {
+      if (results.exists && results.data().uid === this.ownerUid) {
+        this.restaurantInfo = results.data();
+        this.readyToDisplay = true;
+        this.notFound = false;
+      } else {
+        this.notFound = true;
+        // 404
+        console.log("Error fetch restaurantInfo.");
+      }
+    });
+
     this.notFound = false;
     const menu_detacher = db
       .collection(`restaurants/${this.restaurantId()}/menus`)
