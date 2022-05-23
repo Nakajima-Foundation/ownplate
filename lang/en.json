@@ -542,7 +542,7 @@
     "deliveryRange": "Delivery range radius",
     "updateDeliveryRange": "Update range",
     "areaTextExample": "港区北青山　１〜３丁目、南青山１〜７丁目",
-    "enableDelivery": "Enable delivery",
+    "enableDelivery": "Enable delivery of {name}",
     "deliveryLocation": "Delivery destination",
     "deliveryFeeSetting": "Delivery Fee Settings",
     "deliveryFee": "Delivery Fee",

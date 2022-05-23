@@ -550,7 +550,7 @@
     "deliveryRange": "配達可能範囲半径",
     "updateDeliveryRange": "範囲を更新",
     "areaTextExample": "港区北青山　１〜３丁目、南青山１〜７丁目",
-    "enableDelivery": "自社デリバリーを有効にする",
+    "enableDelivery": "{name}のデリバリーを有効にする",
     "deliveryLocation": "配送先",
     "deliveryFeeSetting": "配達料金設定",
     "deliveryFee": "配達料金",
