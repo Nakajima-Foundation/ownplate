@@ -207,7 +207,7 @@ const mixin = {
   },
   computed: {
     underConstruction() {
-      return ownPlateConfig.releasName === "beta-dev";
+      return ownPlateConfig.hostName === "staging.ownplate.today";
     },
     defaultTitle() {
       return defaultHeader.title;
