@@ -545,6 +545,7 @@
     "setPostageFreeThreshold": "送料無料になる金額を設定する"
   },
   "delivery": {
+    "alert": "デリバリーを設定するときは、まずは店舗設定でお店の場所を地図上で指定してください。",
     "areaSetting": "配達エリア設定",
     "deliveryRange": "配達可能範囲半径",
     "updateDeliveryRange": "範囲を更新",

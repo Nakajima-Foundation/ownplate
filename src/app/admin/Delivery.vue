@@ -3,6 +3,17 @@
     <template v-if="notFound">
       <not-found />
     </template>
+    <template v-if="existLocation === false">
+      <div class="mt-4 mx-6">
+        <div class="bg-black bg-opacity-5 rounded-lg p-4">
+          <div class="text-xl font-bold text-red-600">
+            <div>
+              {{ $t("delivery.alert")}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </template>
     <div class="mt-4 mx-6" v-else>
       <div class="bg-black bg-opacity-5 rounded-lg p-4">
         <div class="text-sm font-bold">
@@ -212,6 +223,7 @@ export default {
       radius: 500,
       center: null,
       areaText: "",
+      existLocation: null,
     };
   },
   computed: {
@@ -238,6 +250,10 @@ export default {
     }
 
     const location = this.shopInfo.location;
+    this.existLocation = Object.keys(location).length === 2;
+    if (!this.existLocation) {
+      return ;
+    };
     this.enableDelivery = this.shopInfo.enableDelivery || false;
     this.deliveryMinimumCookTime =
       this.shopInfo.deliveryMinimumCookTime || this.deliveryMinimumCookTime;

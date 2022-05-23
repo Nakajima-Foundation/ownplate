@@ -537,6 +537,7 @@
     "setPostageFreeThreshold": "Set the amount of free shipping"
   },
   "delivery": {
+    "alert": "Before setting the delivery, first specify the location of the store on the map in the store settings",
     "areaSetting": "Delivery area setting",
     "deliveryRange": "Delivery range radius",
     "updateDeliveryRange": "Update range",
