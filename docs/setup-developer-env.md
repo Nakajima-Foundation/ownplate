@@ -108,4 +108,4 @@ VUE_APP_CIRCLE_SHA1=123123 \
 VUE_APP_GAPIKey=xxxx yarn run start
 ```
 
-# 10. Access to your server 
+# 10. Access your local-server 
