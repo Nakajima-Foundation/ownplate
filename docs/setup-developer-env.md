@@ -75,7 +75,7 @@ nodebrew install v16.15.1
 nodebrew use v16.15.1
 ```
 
-# 4. yarn をインストール
+# -- (参考) 4. yarn をインストール
 ```
 npm install -g yarn
 ```
@@ -108,4 +108,4 @@ VUE_APP_CIRCLE_SHA1=123123 \
 VUE_APP_GAPIKey=xxxx yarn run start
 ```
 
-# Access to your server 
+# 10. Access to your server 
