@@ -107,3 +107,7 @@ src/config/project.js
 
 # ownplate
 batch/keys/*.json
+
+# Local environment
+# cp src/config/default/ownplate-dev.ts src/config/project.ts
+src/config/project.ts
