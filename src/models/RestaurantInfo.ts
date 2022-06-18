@@ -43,6 +43,10 @@ export interface RestaurantInfoData {
   deletedFlag: boolean;
   temporaryClosure: any[];
 
+  category1: string[];
+  category2: string[]; 
+
+  
   createdAt: Date;
 }
 

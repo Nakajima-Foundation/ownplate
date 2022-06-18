@@ -65,6 +65,8 @@ export const getEditShopInfo = (shopInfo: RestaurantInfoData) => {
     ),
     businessDay: shopInfo.businessDay,
     temporaryClosure: shopInfo.temporaryClosure,
+    category1: shopInfo.category1,
+    category2: shopInfo.category2,
     uid: shopInfo.uid,
     publicFlag: shopInfo.publicFlag,
     inclusiveTax: shopInfo.inclusiveTax,
