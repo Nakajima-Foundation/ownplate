@@ -571,6 +571,8 @@ import EditCategory from "@/app/admin/Menus/EditCategory";
 
 import { uploadFile } from "@/lib/firebase/storage";
 
+import { getNewItemData } from "@/models/menu";
+
 export default {
   name: "Order",
   metaInfo() {
@@ -674,6 +676,7 @@ export default {
       this.restaurants = restaurantsCollection.docs.map((r) =>
         this.doc2data("r")(r)
       );
+      this.copyRestaurantId = this.restaurants[0].id;
     }
   },
   computed: {
@@ -790,27 +793,7 @@ export default {
       }
     },
     getNewItemData() {
-      const itemData = {
-        itemName: this.menuInfo.itemName,
-        itemAliasesName: this.menuInfo.itemAliasesName || "",
-        price:
-          ownPlateConfig.region === "JP"
-            ? Math.round(Number(this.menuInfo.price))
-            : Number(this.menuInfo.price),
-        tax: this.menuInfo.tax,
-        itemDescription: this.menuInfo.itemDescription,
-        itemMemo: this.menuInfo.itemMemo,
-        itemPhoto: this.menuInfo.itemPhoto,
-        images: {
-          item: this.menuInfo.images.item || {},
-        },
-        itemOptionCheckbox: this.menuInfo.itemOptionCheckbox || [],
-        publicFlag: this.menuInfo.publicFlag || false,
-        allergens: this.menuInfo.allergens,
-        validatedFlag: !this.hasError,
-        category1: this.menuInfo.category1,
-        category2: this.menuInfo.category2,
-      };
+      const itemData = getNewItemData(this.menuInfo, ownPlateConfig.region === "JP", !this.hasError);
       return itemData;
     },
     async submitItem() {

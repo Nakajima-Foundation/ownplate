@@ -277,6 +277,12 @@ import BackButton from "@/components/BackButton";
 import firebase from "firebase/compat/app";
 import * as pdf from "@/lib/pdf/pdf";
 
+import { ownPlateConfig } from "@/config/project";
+
+import {
+  copyMenuData
+} from "@/models/menu";
+
 import NotificationIndex from "./Notifications/Index";
 
 import { cleanObject } from "@/utils/utils";
@@ -601,22 +607,12 @@ export default {
     },
     async forkMenuItem(itemKey) {
       const item = this.itemsObj[itemKey];
-      const data = {
-        itemName: item.itemName,
-        price: Number(item.price),
-        tax: item.tax,
-        itemDescription: item.itemDescription,
-        itemPhoto: item.itemPhoto,
-        images: item.images,
-        availability: item.availability,
-        uid: this.uid,
-        deletedFlag: false,
-        publicFlag: false,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-      };
-      const newData = await dbOld
-        .collection(`restaurants/${this.restaurantId()}/menus`)
-        .add(cleanObject(data));
+      
+      const data = copyMenuData(item, ownPlateConfig.region === "JP", this.uid);
+      const newData = await addDoc(
+        collection(db, `restaurants/${this.restaurantId()}/menus`),
+        cleanObject(data)
+      );
       this.forkItem(itemKey, newData);
     },
     async forkItem(itemKey, newData) {
