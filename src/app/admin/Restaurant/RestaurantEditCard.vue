@@ -2,10 +2,12 @@
   <div>
     <div class="bg-white shadow rounded-lg p-4">
       <!-- Restaurant Name -->
-      <div class="text-lg font-bold">
-        {{ shopInfo.restaurantName || $t("editRestaurant.noRestaurant") }}
-      </div>
+      <div class="text-lg font-bold inline-flex justify-center items-center">
+        <span>{{ shopInfo.restaurantName || $t("editRestaurant.noRestaurant") }}</span>
+        <i class="material-icons text-xl text-op-teal" v-if="shopInfo.enableDelivery"> delivery_dining </i>
 
+      </div>
+      
       <!-- Restaurant Photo and Details -->
       <div class="flex justify-center items-center space-x-4 mt-4">
         <div class="flex-shrink-0">

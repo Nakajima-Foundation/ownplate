@@ -438,7 +438,7 @@
           </a>
         </div>
       </div>
-      <div class="text-center">
+      <div class="text-center inline-flex justify-center items-center w-full m-auto">
         <!-- Facebook User Group -->
         <div class="inline-block px-1 pb-2" v-if="isJapan">
           <a
@@ -468,7 +468,7 @@
           </a>
         </div>
 
-        <!-- Twitter -->
+        <!-- Note -->
         <div class="inline-block px-1 pb-2" v-if="isJapan">
           <a href="https://note.com/singsoc/m/m19dd935e84e4" target="_blank">
             <div
