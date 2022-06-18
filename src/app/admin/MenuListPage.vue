@@ -253,7 +253,21 @@
 </template>
 
 <script>
-import { db } from "@/plugins/firebase";
+import { db as dbOld } from "@/plugins/firebase";
+import { db } from "@/lib/firebase/firebase9";
+import {
+  doc,
+  collection,
+  query,
+  where,
+  addDoc,
+  updateDoc,
+  setDoc,
+  getDocs,
+  getDoc,
+  onSnapshot,
+} from "firebase/firestore";
+
 import ItemEditCard from "@/app/admin/Menus/ItemEditCard";
 import TitleCard from "@/app/admin/Menus/TitleCard";
 import TitleInput from "@/app/admin/Menus/TitleInput";
@@ -376,24 +390,28 @@ export default {
     }
 
     // This is duplicate data with shopInfo. But DONT'T REMOVE THIS!!
-    const restaurantRef = db.doc(`restaurants/${this.restaurantId()}`);
-    const restaurant_detacher = restaurantRef.onSnapshot((results) => {
-      if (results.exists && results.data().uid === this.ownerUid) {
-        this.restaurantInfo = results.data();
-        this.readyToDisplay = true;
-        this.notFound = false;
-      } else {
-        this.notFound = true;
-        // 404
-        console.log("Error fetch restaurantInfo.");
-      }
-    });
+    const restaurantRef = doc(db, `restaurants/${this.restaurantId()}`);
+    const restaurant_detacher = onSnapshot(
+      restaurantRef,
+      (results) => {
+        if (results.exists && results.data().uid === this.ownerUid) {
+          this.restaurantInfo = results.data();
+          this.readyToDisplay = true;
+          this.notFound = false;
+        } else {
+          this.notFound = true;
+          // 404
+          console.log("Error fetch restaurantInfo.");
+        }
+      });
 
     this.notFound = false;
-    const menu_detacher = db
-      .collection(`restaurants/${this.restaurantId()}/menus`)
-      .where("deletedFlag", "==", false)
-      .onSnapshot((results) => {
+    const menu_detacher = onSnapshot(
+      query(
+        collection(db, `restaurants/${this.restaurantId()}/menus`),
+        where("deletedFlag", "==", false)
+      ),
+      (results) => {
         this.menuCollection = results.empty ? {} : results;
         // for debug
         results.docs.forEach((a) => {
@@ -401,13 +419,17 @@ export default {
             a.ref.update({ publicFlag: true });
           }
         });
-      });
-    const title_detacher = db
-      .collection(`restaurants/${this.restaurantId()}/titles`)
-      .where("deletedFlag", "==", false)
-      .onSnapshot((results) => {
+      },
+    );
+    const title_detacher = onSnapshot(
+      query(
+        collection(db, `restaurants/${this.restaurantId()}/titles`),
+        where("deletedFlag", "==", false)
+      ),
+      (results) => {
         this.titleCollection = results.empty ? {} : results;
-      });
+      }
+    );
     this.detacher = [menu_detacher, title_detacher];
   },
   destroyed() {
@@ -433,7 +455,7 @@ export default {
       this.downloadSubmitting = false;
     },
     async updateTitle(title) {
-      await db
+      await dbOld
         .doc(`restaurants/${this.restaurantId()}/titles/${title.id}`)
         .update("name", title.name);
       this.changeTitleMode(title.id, false);
@@ -447,7 +469,7 @@ export default {
           createdAt: firebase.firestore.FieldValue.serverTimestamp(),
           deletedFlag: false,
         };
-        const newTitle = await db
+        const newTitle = await dbOld
           .collection(`restaurants/${this.restaurantId()}/titles`)
           .add(data);
         const newMenuLists = this.menuLists;
@@ -478,7 +500,7 @@ export default {
           validatedFlag: false,
           createdAt: new Date(),
         };
-        const newData = await db
+        const newData = await dbOld
           .collection(`restaurants/${this.restaurantId()}/menus`)
           .add(itemData);
 
@@ -500,7 +522,7 @@ export default {
     },
 
     async saveMenuList(menuLists) {
-      await db
+      await dbOld
         .doc(`restaurants/${this.restaurantId()}`)
         .update("menuLists", menuLists);
     },
@@ -572,7 +594,7 @@ export default {
         deletedFlag: false,
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       };
-      const newTitle = await db
+      const newTitle = await dbOld
         .collection(`restaurants/${this.restaurantId()}/titles`)
         .add(data);
       this.forkItem(itemKey, newTitle);
@@ -592,7 +614,7 @@ export default {
         publicFlag: false,
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       };
-      const newData = await db
+      const newData = await dbOld
         .collection(`restaurants/${this.restaurantId()}/menus`)
         .add(cleanObject(data));
       this.forkItem(itemKey, newData);
@@ -612,12 +634,12 @@ export default {
       const item = this.itemsObj[itemKey];
       this.menuLists.splice(pos, 1);
       if (item._dataType === "menu") {
-        await db
+        await dbOld
           .doc(`restaurants/${this.restaurantId()}/menus/${itemKey}`)
           .update("deletedFlag", true);
       }
       if (item._dataType === "title") {
-        await db
+        await dbOld
           .doc(`restaurants/${this.restaurantId()}/titles/${itemKey}`)
           .update("deletedFlag", true);
       }
