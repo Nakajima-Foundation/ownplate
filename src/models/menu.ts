@@ -1,16 +1,18 @@
 import { serverTimestamp } from "firebase/firestore";
 
+export interface MenuImages {
+  item: {
+    resizedImages: {
+      [key: string]: string;
+    };
+  };
+};
+
 export interface MenuData {
   itemDescription: string;
   itemName: string;
   itemPhoto: string;
-  images: {
-    item: {
-      resizedImages: {
-        [key: string]: string;
-      };
-    };
-  };
+  images: MenuImages;
   price: number;
 
   tax: string;

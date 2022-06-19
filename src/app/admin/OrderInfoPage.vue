@@ -543,16 +543,6 @@
               </div>
             </div>
 
-            <!-- Order Items -->
-            <!-- # Not In Use -->
-            <!-- <div class="grid grid-cols-1 space-y-2">
-            <ordered-item
-              v-for="(item, id) in orderItems"
-              :key="id"
-              :item="item"
-            />
-						</div> -->
-
             <!-- Order Details -->
             <order-info
               :shopInfo="shopInfo || {}"
@@ -629,7 +619,11 @@
 </template>
 
 <script>
-import { db, firestore } from "@/plugins/firebase";
+import { db } from "@/lib/firebase/firebase9";
+import { doc, getDoc, onSnapshot, collection } from "firebase/firestore";
+
+import { db as dbOld, firestore } from "@/plugins/firebase";
+
 import { orderUpdate, orderChange } from "@/lib/firebase/functions";
 
 import {
@@ -658,7 +652,7 @@ import { costCal } from "@/utils/commonUtils";
 import { downloadOrderPdf, printOrder, data2UrlSchema } from "@/lib/pdf/pdf2";
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
-import { isEmpty, isNull, getShopOwner } from "@/utils/utils";
+import { isEmpty, isNull, getShopOwner, getOrderItems } from "@/utils/utils";
 
 const timezone = moment.tz.guess();
 
@@ -723,49 +717,45 @@ export default {
       return true;
     }
     if (this.shopInfo.isEC) {
-      db.doc(`restaurants/${this.restaurantId()}/ec/postage`)
+      dbOld.doc(`restaurants/${this.restaurantId()}/ec/postage`)
         .get()
         .then((snapshot) => {
           this.postageInfo = snapshot.data() || {};
         });
     }
 
-    const menu_detacher = db
-      .collection(`restaurants/${this.restaurantId()}/menus`)
-      .onSnapshot((menu) => {
+    const menu_detacher = onSnapshot(
+      collection(db, `restaurants/${this.restaurantId()}/menus`),
+      (menu) => {
         if (!menu.empty) {
           const menuList = menu.docs.map(this.doc2data("menu"));
           this.menuObj = this.array2obj(menuList);
         }
       });
-    const order_detacher = db
-      .doc(`restaurants/${this.restaurantId()}/orders/${this.orderId}`)
-      .onSnapshot({
-        next: (order) => {
-          if (order.exists) {
-            const order_data = order.data();
-            this.orderInfo = order_data;
-            if (this.orderInfo.isDelivery || this.shopInfo.isEC) {
-              db.doc(
-                `restaurants/${this.restaurantId()}/orders/${
+    const order_detacher = onSnapshot(
+      doc(db, `restaurants/${this.restaurantId()}/orders/${this.orderId}`),
+      (order) => {
+        if (order.exists) {
+          const order_data = order.data();
+          this.orderInfo = order_data;
+          if (this.orderInfo.isDelivery || this.shopInfo.isEC) {
+            dbOld.doc(
+              `restaurants/${this.restaurantId()}/orders/${
                   this.orderId
                 }/customer/data`
-              )
-                .get()
-                .then((doc) => {
-                  this.customer =
-                    doc.data() || this.orderInfo?.customerInfo || {};
-                });
-            }
-          } else {
-            this.notFound = true;
+            )
+              .get()
+              .then((doc) => {
+                this.customer =
+                  doc.data() || this.orderInfo?.customerInfo || {};
+              });
           }
-        },
-        error: (error) => {
-          console.error("error", error.message);
+        } else {
           this.notFound = true;
-        },
-      });
+        }
+      }
+    );
+
     this.detacher = [menu_detacher, order_detacher];
     this.shopOwner = await getShopOwner(this.$store.getters.uidAdmin);
   },
@@ -776,8 +766,7 @@ export default {
   },
   watch: {
     orderInfo() {
-      db.doc(`restaurants/${this.restaurantId()}/userLog/${this.orderInfo.uid}`)
-        .get()
+      getDoc(doc(db, `restaurants/${this.restaurantId()}/userLog/${this.orderInfo.uid}`))
         .then((res) => {
           if (res.exists) {
             this.userLog = res.data();
@@ -828,7 +817,7 @@ export default {
       return false;
     },
     orderItems() {
-      return this.getOrderItems(this.orderInfo, this.menuObj);
+      return getOrderItems(this.orderInfo, this.menuObj);
     },
     timeOfEvents() {
       const mapping = Object.keys(timeEventMapping).reduce((tmp, key) => {

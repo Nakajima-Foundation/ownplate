@@ -2,6 +2,8 @@ import { db } from "@/lib/firebase/firebase9";
 import { doc, getDoc } from "firebase/firestore";
 
 import { ShopOwnerData, PartnerData } from "@/models/ShopOwner";
+import { OrderInfoData, OrderItem } from "@/models/orderInfo";
+import { MenuData } from "@/models/menu";
 
 import { regionalSettings, partners } from "@/config/constant";
 import { ownPlateConfig } from "@/config/project";
@@ -167,37 +169,40 @@ export const getShopOwner = async (uid: string): Promise<ShopOwnerData> => {
         }
       }
       return orderState;
-    },
-    getOrderItems(orderInfo, menuObj) {
-      if (orderInfo.order && orderInfo.menuItems) {
-        return Object.keys(orderInfo.order).reduce((tmp, menuId) => {
-          const numArray = Array.isArray(orderInfo.order[menuId])
-            ? orderInfo.order[menuId]
-            : [orderInfo.order[menuId]];
-          const opt =
-            orderInfo.options && orderInfo.options[menuId]
-              ? orderInfo.options[menuId]
-              : null;
-          const optArray = Array.isArray(orderInfo.order[menuId])
-            ? orderInfo.options[menuId] || {}
-            : { 0: orderInfo.options[menuId] };
-          Object.keys(numArray).map((numKey) => {
-            const item = orderInfo.menuItems[menuId] || menuObj[menuId] || {};
-            item.images = (menuObj[menuId] || {}).images;
-            item.itemPhoto = (menuObj[menuId] || {}).itemPhoto;
-            tmp.push({
-              item,
-              count: numArray[numKey],
-              id: menuId,
-              options: optArray[numKey],
-              orderIndex: [menuId, numKey],
-            });
-          });
-          return tmp;
-        }, []);
-      }
-      return [];
-    },
+      },
+*/
+
+export const getOrderItems = (orderInfo: OrderInfoData, menuObj: { [key: string]: MenuData }) => {
+  if (orderInfo.order && orderInfo.menuItems) {
+    return Object.keys(orderInfo.order).reduce((tmp: OrderItem[], menuId) => {
+      const numArray = Array.isArray(orderInfo.order[menuId])
+        ? orderInfo.order[menuId]
+        : [orderInfo.order[menuId]];
+      const opt =
+        orderInfo.options && orderInfo.options[menuId]
+        ? orderInfo.options[menuId]
+        : null;
+      const optArray = Array.isArray(orderInfo.order[menuId])
+        ? orderInfo.options[menuId]
+        : [orderInfo.options[menuId]];
+      Object.keys(numArray).map((numKey: string) => {
+        const item = orderInfo.menuItems[menuId] || menuObj[menuId] || {};
+        item.images = (menuObj[menuId] || {}).images;
+        item.itemPhoto = (menuObj[menuId] || {}).itemPhoto;
+        tmp.push({
+          item,
+          count: numArray[Number(numKey)],
+          id: menuId,
+          options: optArray[Number(numKey)],
+          orderIndex: [menuId, numKey],
+        });
+      });
+      return tmp;
+    }, []);
+  }
+  return [];
+};
+/*
     itemOptionCheckbox2options(itemOptionCheckbox) {
       // HACK: Dealing with a special case (probalby a bug in the menu editor)
       if (
