@@ -279,9 +279,7 @@ import * as pdf from "@/lib/pdf/pdf";
 
 import { ownPlateConfig } from "@/config/project";
 
-import {
-  copyMenuData
-} from "@/models/menu";
+import { copyMenuData } from "@/models/menu";
 
 import NotificationIndex from "./Notifications/Index";
 
@@ -397,19 +395,17 @@ export default {
 
     // This is duplicate data with shopInfo. But DONT'T REMOVE THIS!!
     const restaurantRef = doc(db, `restaurants/${this.restaurantId()}`);
-    const restaurant_detacher = onSnapshot(
-      restaurantRef,
-      (results) => {
-        if (results.exists && results.data().uid === this.ownerUid) {
-          this.restaurantInfo = results.data();
-          this.readyToDisplay = true;
-          this.notFound = false;
-        } else {
-          this.notFound = true;
-          // 404
-          console.log("Error fetch restaurantInfo.");
-        }
-      });
+    const restaurant_detacher = onSnapshot(restaurantRef, (results) => {
+      if (results.exists && results.data().uid === this.ownerUid) {
+        this.restaurantInfo = results.data();
+        this.readyToDisplay = true;
+        this.notFound = false;
+      } else {
+        this.notFound = true;
+        // 404
+        console.log("Error fetch restaurantInfo.");
+      }
+    });
 
     this.notFound = false;
     const menu_detacher = onSnapshot(
@@ -425,7 +421,7 @@ export default {
             a.ref.update({ publicFlag: true });
           }
         });
-      },
+      }
     );
     const title_detacher = onSnapshot(
       query(
@@ -607,7 +603,7 @@ export default {
     },
     async forkMenuItem(itemKey) {
       const item = this.itemsObj[itemKey];
-      
+
       const data = copyMenuData(item, ownPlateConfig.region === "JP", this.uid);
       const newData = await addDoc(
         collection(db, `restaurants/${this.restaurantId()}/menus`),

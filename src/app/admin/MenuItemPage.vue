@@ -793,7 +793,11 @@ export default {
       }
     },
     getNewItemData() {
-      const itemData = getNewItemData(this.menuInfo, ownPlateConfig.region === "JP", !this.hasError);
+      const itemData = getNewItemData(
+        this.menuInfo,
+        ownPlateConfig.region === "JP",
+        !this.hasError
+      );
       return itemData;
     },
     async submitItem() {

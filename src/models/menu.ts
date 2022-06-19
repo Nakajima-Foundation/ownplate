@@ -1,6 +1,4 @@
-import {
-  serverTimestamp,
-} from "firebase/firestore";
+import { serverTimestamp } from "firebase/firestore";
 
 export interface MenuData {
   itemDescription: string;
@@ -31,13 +29,15 @@ export interface MenuData {
 export class Menu {}
 
 // for util function
-export const getNewItemData = (item: MenuData, isJP: boolean, validatedFlag: boolean) => {
+export const getNewItemData = (
+  item: MenuData,
+  isJP: boolean,
+  validatedFlag: boolean
+) => {
   const itemData = {
     itemName: item.itemName,
     itemAliasesName: item.itemAliasesName || "",
-    price: isJP
-      ? Math.round(Number(item.price))
-      : Number(item.price),
+    price: isJP ? Math.round(Number(item.price)) : Number(item.price),
     tax: item.tax,
     itemDescription: item.itemDescription,
     itemMemo: item.itemMemo,
@@ -61,9 +61,7 @@ export const copyMenuData = (item: MenuData, isJP: boolean, uid: string) => {
     uid,
     publicFlag: false,
     deletedFlag: false,
-    createdAt: serverTimestamp()
+    createdAt: serverTimestamp(),
   });
   return data;
 };
-
-

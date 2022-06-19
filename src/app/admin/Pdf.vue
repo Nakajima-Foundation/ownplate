@@ -43,8 +43,7 @@ export default {
     // TODO: create method and move to utils. merge ShopInfo.vue
     // TODO: merge shopInfo and shopInfo
     parsedNumber() {
-      const countryCode =
-        this.shopInfo.countryCode || this.countries[0].code;
+      const countryCode = this.shopInfo.countryCode || this.countries[0].code;
       try {
         return parsePhoneNumber(countryCode + this.shopInfo.phoneNumber);
       } catch (error) {

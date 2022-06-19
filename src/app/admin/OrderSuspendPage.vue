@@ -135,10 +135,10 @@ export default {
     return {
       title: this.shopInfo.restaurantName
         ? [
-          "Admin Order Suspend",
-          this.shopInfo.restaurantName,
-          this.defaultTitle,
-        ].join(" / ")
+            "Admin Order Suspend",
+            this.shopInfo.restaurantName,
+            this.defaultTitle,
+          ].join(" / ")
         : this.defaultTitle,
     };
   },
@@ -163,10 +163,11 @@ export default {
       this.notFound = true;
       return true;
     }
-    if (this.shopInfo &&
-        !this.shopInfo.deletedFlag &&
-        this.shopInfo.publicFlag
-       ) {
+    if (
+      this.shopInfo &&
+      !this.shopInfo.deletedFlag &&
+      this.shopInfo.publicFlag
+    ) {
       this.notFound = false;
     } else {
       this.notFound = true;

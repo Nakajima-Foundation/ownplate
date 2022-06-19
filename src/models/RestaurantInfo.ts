@@ -44,9 +44,8 @@ export interface RestaurantInfoData {
   temporaryClosure: any[];
 
   category1: string[];
-  category2: string[]; 
+  category2: string[];
 
-  
   createdAt: Date;
 }
 

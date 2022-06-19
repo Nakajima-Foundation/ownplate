@@ -412,11 +412,11 @@
               <!-- conv zip to address -->
               <div class="mb-2">
                 <button @click="getAddress()" class="">
-                  <div class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-op-teal">
+                  <div
+                    class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-op-teal"
+                  >
                     <div class="text-sm font-bold text-white">
-                      {{
-                      $t("order.ec.searchAddressFromZip")
-                      }}
+                      {{ $t("order.ec.searchAddressFromZip") }}
                     </div>
                   </div>
                 </button>
@@ -426,11 +426,10 @@
                 :key="key"
                 class="font-bold flex mb-2"
               >
-                <button
-                  @click="updateAddress(address)"
-                  class="flex-item mr-2"
+                <button @click="updateAddress(address)" class="flex-item mr-2">
+                  <div
+                    class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-op-teal"
                   >
-                  <div class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-op-teal">
                     <div class="text-sm font-bold text-white">
                       {{ $t("order.ec.select") }}
                     </div>

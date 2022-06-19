@@ -2,17 +2,17 @@
   <div class="h-2/5">
     <div>
       <button @click="conv">
-        <div class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-op-teal">
+        <div
+          class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-op-teal"
+        >
           <div class="text-sm font-bold text-white">
-            {{
-            $t("delivery.setTheAddressInTheDeliveryLocation")
-            }}
+            {{ $t("delivery.setTheAddressInTheDeliveryLocation") }}
           </div>
         </div>
       </button>
     </div>
     <div class="text-sm mt-1">
-      {{ $t("delivery.setTheAddressInTheDeliveryLocationDescription") }} 
+      {{ $t("delivery.setTheAddressInTheDeliveryLocationDescription") }}
     </div>
     <div class="text-xm font-bold text-black text-opacity-30 mt-2">
       {{ $t("delivery.setDeliveryLocation") }}

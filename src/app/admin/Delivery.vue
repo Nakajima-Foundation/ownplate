@@ -8,7 +8,7 @@
         <div class="bg-black bg-opacity-5 rounded-lg p-4">
           <div class="text-xl font-bold text-red-600">
             <div>
-              {{ $t("delivery.alert")}}
+              {{ $t("delivery.alert") }}
             </div>
           </div>
         </div>
@@ -18,7 +18,7 @@
       <div class="bg-black bg-opacity-5 rounded-lg p-4">
         <div class="text-sm font-bold">
           <b-checkbox v-model="enableDelivery" />{{
-            $tc("delivery.enableDelivery", 0, {name: shopInfo.restaurantName})
+            $tc("delivery.enableDelivery", 0, { name: shopInfo.restaurantName })
           }}
         </div>
       </div>
@@ -64,7 +64,7 @@
             >
               <div
                 class="h-12 rounded-full bg-op-teal inline-flex justify-center items-center px-6 shadow"
-                >
+              >
                 <span class="text-white text-base font-bold">
                   {{ $t("delivery.updateDeliveryRange") }}
                 </span>
@@ -252,8 +252,8 @@ export default {
     const location = this.shopInfo.location;
     this.existLocation = Object.keys(location).length === 2;
     if (!this.existLocation) {
-      return ;
-    };
+      return;
+    }
     this.enableDelivery = this.shopInfo.enableDelivery || false;
     this.deliveryMinimumCookTime =
       this.shopInfo.deliveryMinimumCookTime || this.deliveryMinimumCookTime;
