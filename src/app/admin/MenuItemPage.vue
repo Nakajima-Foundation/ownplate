@@ -778,18 +778,28 @@ export default {
             newItem.deletedFlag = false;
             newItem.uid = this.$store.getters.uidAdmin;
 
+            const category1 = shop.category1 || [];
+            const category2 = shop.category2 || [];
+            if (newItem.category1 && !category1.includes(newItem.category1)) {
+              category1.push(newItem.category1);
+            }
+            if (newItem.category2 && !category2.includes(newItem.category2)) {
+              category2.push(newItem.category2);
+            }
             const newData = await db
               .collection(`restaurants/${shop.id}/menus`)
               .add(newItem);
 
-            // TODO category
-            
             const menuLists = shop.menuLists || [];
             menuLists.push(newData.id);
 
             await db
               .doc(`restaurants/${shop.id}`)
-              .update("menuLists", menuLists);
+              .update({
+                menuLists,
+                category1,
+                category2,
+              });
           },
         });
       }
