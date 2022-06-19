@@ -36,7 +36,7 @@
 
         <!-- Save Button -->
         <b-button
-          @click="submitRestaurant"
+          @click="saveRestaurant"
           :disabled="submitting"
           class="b-reset-tw"
         >
@@ -647,7 +647,7 @@
           </div>
 
           <!-- TODO: Printer Config -->
-          <div v-if="false" class="mt-4">
+          <div v-if="true" class="mt-4">
             <div class="text-sm font-bold pb-2">
               {{ $t("editRestaurant.printerConfigTitle") }}
             </div>
@@ -909,7 +909,7 @@
 
         <!-- Save Button -->
         <b-button
-          @click="submitRestaurant"
+          @click="saveRestaurant"
           :disabled="submitting"
           class="b-reset-tw"
         >
@@ -1223,7 +1223,7 @@ export default {
         });
       }
     },
-    async submitRestaurant() {
+    async saveRestaurant() {
       this.submitting = true;
       const restaurantId = this.restaurantId();
       try {

@@ -782,7 +782,9 @@ export default {
               .collection(`restaurants/${shop.id}/menus`)
               .add(newItem);
 
-            const menuLists = shop.menuLists;
+            // TODO category
+            
+            const menuLists = shop.menuLists || [];
             menuLists.push(newData.id);
 
             await db

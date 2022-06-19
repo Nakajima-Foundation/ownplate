@@ -436,6 +436,7 @@ export default {
 
           doc.set({
             uid: this.uid,
+            menuLists: [],
             publicFlag: false,
             deletedFlag: false,
             createdAt: firestore.FieldValue.serverTimestamp(),
