@@ -195,6 +195,7 @@
 <script>
 import { db, firestore } from "@/plugins/firebase";
 import NotFound from "@/components/NotFound";
+import { RestaurantInfoData } from  "@/models/RestaurantInfo";
 
 export default {
   components: {
@@ -202,7 +203,7 @@ export default {
   },
   props: {
     shopInfo: {
-      type: Object,
+      type: RestaurantInfoData,
       required: true,
     },
   },
@@ -288,7 +289,6 @@ export default {
         enableDelivery: this.enableDelivery,
         deliveryMinimumCookTime: Number(this.deliveryMinimumCookTime || 0),
       });
-
       const data = {
         enableAreaMap: this.enableAreaMap,
         enableAreaText: this.enableAreaText,
@@ -304,7 +304,7 @@ export default {
       await db
         .doc(`restaurants/${this.restaurantId()}/delivery/area`)
         .set(data);
-      this.$router.push("/admin/restaurants/" + this.restaurantId());
+      this.$router.push("/admin/restaurants");
     },
     mapLoaded() {
       if (this.shopInfo && this.shopInfo.location) {

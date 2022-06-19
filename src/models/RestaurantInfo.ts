@@ -28,6 +28,8 @@ export interface RestaurantInfoData {
   phoneCall: boolean;
   enablePreline: boolean;
   emailNotification: boolean;
+  enablePrinter: boolean;
+  enableDeliver: boolean;
   countryCode: string;
   acceptUserMessage: boolean;
   foodTax: number;
