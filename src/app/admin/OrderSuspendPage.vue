@@ -150,9 +150,7 @@ export default {
   },
   data() {
     return {
-      menus: [],
       date: null,
-      titles: [],
       detacher: [],
       notFound: null,
     };
@@ -163,6 +161,7 @@ export default {
       this.notFound = true;
       return true;
     }
+    
     if (
       this.shopInfo &&
       !this.shopInfo.deletedFlag &&
@@ -172,28 +171,7 @@ export default {
     } else {
       this.notFound = true;
     }
-    const menu_detacher = db
-      .collection(`restaurants/${this.restaurantId()}/menus`)
-      .where("deletedFlag", "==", false)
-      .where("publicFlag", "==", true)
-      .onSnapshot((menu) => {
-        if (!menu.empty) {
-          this.menus = menu.docs
-            .filter((a) => {
-              const data = a.data();
-              return data.validatedFlag === undefined || data.validatedFlag;
-            })
-            .map(this.doc2data("menu"));
-        }
-      });
-    const title_detacher = db
-      .collection(`restaurants/${this.restaurantId()}/titles`)
-      .onSnapshot((title) => {
-        if (!title.empty) {
-          this.titles = title.docs.map(this.doc2data("title"));
-        }
-      });
-    this.detacher = [restaurant_detacher, menu_detacher, title_detacher];
+    this.detacher = [restaurant_detacher];
   },
   destroyed() {
     if (this.detacher) {
@@ -215,13 +193,6 @@ export default {
         this.date = null;
       }
       return [];
-    },
-    itemsObj() {
-      return this.array2obj(this.menus.concat(this.titles));
-    },
-    menuLists() {
-      const list = this.shopInfo.menuLists || [];
-      return list;
     },
     suspendUntil() {
       if (this.shopInfo.suspendUntil) {
