@@ -253,7 +253,6 @@
 </template>
 
 <script>
-import { db as dbOld } from "@/plugins/firebase";
 import { db } from "@/lib/firebase/firebase9";
 import {
   doc,
@@ -262,9 +261,6 @@ import {
   where,
   addDoc,
   updateDoc,
-  setDoc,
-  getDocs,
-  getDoc,
   onSnapshot,
 } from "firebase/firestore";
 
@@ -453,13 +449,13 @@ export default {
         this.nationalPhoneNumber,
         this.shareUrl()
       );
-      console.log(dl);
       this.downloadSubmitting = false;
     },
     async updateTitle(title) {
-      await dbOld
-        .doc(`restaurants/${this.restaurantId()}/titles/${title.id}`)
-        .update("name", title.name);
+      await updateDoc(
+        doc(db, `restaurants/${this.restaurantId()}/titles/${title.id}`),
+        { name: title.name }
+      );
       this.changeTitleMode(title.id, false);
     },
     async addTitle(operation) {
@@ -471,9 +467,10 @@ export default {
           createdAt: firebase.firestore.FieldValue.serverTimestamp(),
           deletedFlag: false,
         };
-        const newTitle = await dbOld
-          .collection(`restaurants/${this.restaurantId()}/titles`)
-          .add(data);
+        const newTitle = await addDoc(
+          collection(db, `restaurants/${this.restaurantId()}/titles`),
+          data
+        );
         const newMenuLists = this.menuLists;
         // newMenuLists.unshift(newTitle.id);
         if (operation === "top") {
@@ -502,9 +499,10 @@ export default {
           validatedFlag: false,
           createdAt: new Date(),
         };
-        const newData = await dbOld
-          .collection(`restaurants/${this.restaurantId()}/menus`)
-          .add(itemData);
+        const newData = await addDoc(
+          collection(db, `restaurants/${this.restaurantId()}/menus`),
+          itemData
+        );
 
         const newMenuLists = this.menuLists;
         if (operation === "top") {
@@ -524,9 +522,11 @@ export default {
     },
 
     async saveMenuList(menuLists) {
-      await dbOld
-        .doc(`restaurants/${this.restaurantId()}`)
-        .update("menuLists", menuLists);
+      const numberOfMenus = this.menuCollection.docs.length;
+      await updateDoc(doc(db, `restaurants/${this.restaurantId()}`), {
+        menuLists,
+        numberOfMenus,
+      });
     },
     finishTitleInput() {
       this.$router.go({
@@ -596,9 +596,10 @@ export default {
         deletedFlag: false,
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       };
-      const newTitle = await dbOld
-        .collection(`restaurants/${this.restaurantId()}/titles`)
-        .add(data);
+      const newTitle = await addDoc(
+        collection(db, `restaurants/${this.restaurantId()}/titles`),
+        data
+      );
       this.forkItem(itemKey, newTitle);
     },
     async forkMenuItem(itemKey) {
@@ -626,14 +627,16 @@ export default {
       const item = this.itemsObj[itemKey];
       this.menuLists.splice(pos, 1);
       if (item._dataType === "menu") {
-        await dbOld
-          .doc(`restaurants/${this.restaurantId()}/menus/${itemKey}`)
-          .update("deletedFlag", true);
+        await updateDoc(
+          doc(db, `restaurants/${this.restaurantId()}/menus/${itemKey}`),
+          { deletedFlag: true }
+        );
       }
       if (item._dataType === "title") {
-        await dbOld
-          .doc(`restaurants/${this.restaurantId()}/titles/${itemKey}`)
-          .update("deletedFlag", true);
+        await updateDoc(
+          doc(db, `restaurants/${this.restaurantId()}/titles/${itemKey}`),
+          { deletedFlag: true }
+        );
       }
       await this.saveMenuList(newMenuLists);
     },

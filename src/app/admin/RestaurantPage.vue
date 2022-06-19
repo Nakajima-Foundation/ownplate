@@ -638,7 +638,10 @@
             </div>
             <div class="bg-black bg-opacity-5 rounded-lg p-4">
               <div class="text-xl pt-2">
-                <router-link :to="`/admin/restaurants/${restaurantId()}/delivery`">{{ $t("editRestaurant.deliveryConfigLink") }}</router-link>
+                <router-link
+                  :to="`/admin/restaurants/${restaurantId()}/delivery`"
+                  >{{ $t("editRestaurant.deliveryConfigLink") }}</router-link
+                >
               </div>
               <div class="text-xs pt-2">
                 {{ $t("editRestaurant.deliveryDescription") }}
@@ -662,7 +665,7 @@
               </div>
             </div>
           </div>
-          
+
           <!-- Email Notification -->
           <div v-if="region === 'JP'" class="mt-4">
             <a id="emailNotification" />

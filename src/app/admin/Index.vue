@@ -355,13 +355,17 @@ export default {
 
             await Promise.all(
               Object.keys(this.restaurantItems).map(async (restaurantId) => {
-                const menus = await db
-                  .collection(`restaurants/${restaurantId}/menus`)
-                  .where("deletedFlag", "==", false)
-                  .get();
-                const obj = { ...this.restaurantItems };
-                obj[restaurantId].numberOfMenus = menus.size;
-                this.restaurantItems = obj;
+                if (
+                  this.restaurantItems[restaurantId].numberOfMenus === undefined
+                ) {
+                  const menus = await db
+                    .collection(`restaurants/${restaurantId}/menus`)
+                    .where("deletedFlag", "==", false)
+                    .get();
+                  const obj = { ...this.restaurantItems };
+                  obj[restaurantId].numberOfMenus = menus.size;
+                  this.restaurantItems = obj;
+                }
               })
             );
 

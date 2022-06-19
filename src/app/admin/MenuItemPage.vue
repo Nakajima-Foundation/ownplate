@@ -793,13 +793,11 @@ export default {
             const menuLists = shop.menuLists || [];
             menuLists.push(newData.id);
 
-            await db
-              .doc(`restaurants/${shop.id}`)
-              .update({
-                menuLists,
-                category1,
-                category2,
-              });
+            await db.doc(`restaurants/${shop.id}`).update({
+              menuLists,
+              category1,
+              category2,
+            });
           },
         });
       }

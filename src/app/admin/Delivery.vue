@@ -195,7 +195,7 @@
 <script>
 import { db, firestore } from "@/plugins/firebase";
 import NotFound from "@/components/NotFound";
-import { RestaurantInfoData } from  "@/models/RestaurantInfo";
+import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 export default {
   components: {
