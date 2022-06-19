@@ -20,7 +20,7 @@
         {{ $t("admin.welcomeMessage") }}
       </div>
 
-      <div class="text-center">
+      <div class="text-center inline-flex justify-center items-center w-full m-auto">
         <!-- User Manuals -->
         <div class="inline-block px-1 pb-2" v-if="isJapan">
           <a
