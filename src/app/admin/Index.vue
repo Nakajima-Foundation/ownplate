@@ -282,55 +282,9 @@
           </div>
         </div>
 
-        <!-- Notes -->
-        <div class="mt-6">
-          <div class="text-xl font-bold text-black text-opacity-40 mb-2">
-            {{ $t("admin.notes.title") }}
-          </div>
+        <Note />
 
-          <div
-            class="border-2 border-solid border-black border-opacity-10 rounded-lg p-4"
-          >
-            <div>
-              <div class="text-base font-bold text-black text-opacity-60 pb-2">
-                {{ $t("admin.notes.userRestaurantsTitle") }}
-              </div>
-              <div class="text-base text-black text-opacity-60">
-                {{ $t("admin.notes.userRestaurantsBody") }}
-              </div>
-            </div>
-
-            <div
-              class="border-t-2 border-solid border-black border-opacity-10 mt-4 pt-4"
-            >
-              <div class="text-base font-bold text-black text-opacity-60 pb-2">
-                {{ $t("admin.notes.notificationSoundTitle") }}
-              </div>
-              <div class="text-base text-black text-opacity-60">
-                {{ $t("admin.notes.notificationSoundBody") }}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Mail Magazine -->
-        <div class="mt-6">
-          <div class="text-xl font-bold text-black text-opacity-40 mb-2">
-            {{ $t("admin.mail.magazine.title") }}
-          </div>
-
-          <div class="bg-white shadow rounded-lg p-4">
-            <div class="text-base text-black text-opacity-60">
-              {{ $t("admin.mail.magazine.body") }}
-            </div>
-
-            <div class="text-center mt-4">
-              <b-checkbox v-model="opt_out">
-                {{ $t("admin.mail.magazine.optout") }}
-              </b-checkbox>
-            </div>
-          </div>
-        </div>
+        <MailMagazine />
 
         <Smaregi />
         
@@ -457,6 +411,8 @@ import PaymentSection from "@/app/admin/Payment/PaymentSection.vue";
 import MessageCard from "./Messages/MessageCard.vue";
 import PartnersContact from "./Partners/Contact.vue";
 
+import Note from "@/app/admin/Index/Note.vue";
+import MailMagazine from "@/app/admin/Index/MailMagazine.vue";
 import Smaregi from "@/app/admin/Index/Smaregi.vue";
 
 import { getShopOwner, getPartner } from "@/utils/utils";
@@ -469,6 +425,8 @@ export default {
     MessageCard,
     PartnersContact,
     Smaregi,
+    MailMagazine,
+    Note,
   },
   metaInfo() {
     return {
@@ -488,7 +446,6 @@ export default {
       unsetWarning: true,
       lines: {},
       shopOwner: null,
-      opt_out: null,
       restaurantLists: [],
       messages: [],
       isOpen: false,
@@ -501,11 +458,6 @@ export default {
     try {
       if (this.isOwner) {
         this.shopOwner = await getShopOwner(this.ownerUid);
-        const adminConfig = await db
-          .doc(`/adminConfigs/${this.ownerUid}`)
-          .get();
-        this.adminConfig = adminConfig.exists ? adminConfig.data() : {};
-        this.opt_out = this.adminConfig.opt_out || false;
 
         const restaurantLists = await db
           .doc(`/admins/${this.$store.getters.uidAdmin}/public/RestaurantLists`)
@@ -616,17 +568,6 @@ export default {
           .map(this.doc2data("message"))
           .filter((a) => a.toDisplay);
       });
-  },
-  watch: {
-    async opt_out() {
-      if (this.adminConfig.opt_out !== this.opt_out) {
-        const config = { ...this.adminConfig };
-        config["opt_out"] = this.opt_out;
-        await db
-          .doc(`/adminConfigs/${this.$store.getters.uidAdmin}`)
-          .set(config);
-      }
-    },
   },
   methods: {
     destroy_detacher() {
