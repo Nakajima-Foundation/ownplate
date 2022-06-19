@@ -50,13 +50,15 @@ export const arrayChunk = <T>(arr: T[], size = 1) => {
         data._dataType = dataType;
         return data;
       };
-    },
-    array2obj(array) {
-      return array.reduce((tmp, current) => {
-        tmp[current.id] = current;
-        return tmp;
-      }, {});
-    },
+      },
+*/
+export const array2obj = <T>(array: T[]) => {
+  return array.reduce((tmp: {[key: string]: T}, current: T) => {
+    tmp[(current as any).id] = current;
+    return tmp;
+  }, {});
+};
+/*
     num2time(num) {
       if (num === 0 || num === 60 * 24) {
         return this.$t("shopInfo.midnight");

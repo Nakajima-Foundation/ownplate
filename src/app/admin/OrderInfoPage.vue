@@ -620,7 +620,7 @@
 
 <script>
 import { db } from "@/lib/firebase/firebase9";
-import { doc, getDoc, onSnapshot, collection } from "firebase/firestore";
+import { doc, getDoc, getDocs, onSnapshot, collection, query, where, documentId } from "firebase/firestore";
 
 import { db as dbOld, firestore } from "@/plugins/firebase";
 
@@ -652,7 +652,7 @@ import { costCal } from "@/utils/commonUtils";
 import { downloadOrderPdf, printOrder, data2UrlSchema } from "@/lib/pdf/pdf2";
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
-import { isEmpty, isNull, getShopOwner, getOrderItems } from "@/utils/utils";
+import { isEmpty, isNull, getShopOwner, getOrderItems, arrayChunk, array2obj } from "@/utils/utils";
 
 const timezone = moment.tz.guess();
 
@@ -724,39 +724,29 @@ export default {
         });
     }
 
-    const menu_detacher = onSnapshot(
-      collection(db, `restaurants/${this.restaurantId()}/menus`),
-      (menu) => {
-        if (!menu.empty) {
-          const menuList = menu.docs.map(this.doc2data("menu"));
-          this.menuObj = this.array2obj(menuList);
-        }
-      });
     const order_detacher = onSnapshot(
       doc(db, `restaurants/${this.restaurantId()}/orders/${this.orderId}`),
-      (order) => {
-        if (order.exists) {
-          const order_data = order.data();
-          this.orderInfo = order_data;
-          if (this.orderInfo.isDelivery || this.shopInfo.isEC) {
-            dbOld.doc(
-              `restaurants/${this.restaurantId()}/orders/${
-                  this.orderId
-                }/customer/data`
-            )
-              .get()
-              .then((doc) => {
-                this.customer =
-                  doc.data() || this.orderInfo?.customerInfo || {};
-              });
-          }
-        } else {
+      async (order) => {
+        if (!order.exists) {
           this.notFound = true;
+          return 
+        }
+        const order_data = order.data();
+        this.orderInfo = order_data;
+        if (this.orderInfo.isDelivery || this.shopInfo.isEC) {
+          const customer = await getDoc(
+            doc(db, 
+                `restaurants/${this.restaurantId()}/orders/${
+                  this.orderId
+                 }/customer/data`
+               ));
+          this.customer =
+            customer.data() || this.orderInfo?.customerInfo || {};
         }
       }
     );
 
-    this.detacher = [menu_detacher, order_detacher];
+    this.detacher = [order_detacher];
     this.shopOwner = await getShopOwner(this.$store.getters.uidAdmin);
   },
   destroyed() {
@@ -772,6 +762,21 @@ export default {
             this.userLog = res.data();
           }
         });
+
+      const menuIds = Object.keys(this.orderInfo.menuItems);
+      arrayChunk(menuIds, 10).map(async (arr) => {
+        getDocs(
+          query(
+            collection(db, `restaurants/${this.restaurantId()}/menus`),
+            where(documentId(), "in", arr)
+          )
+        ).then((menu) => {
+          if (!menu.empty) {
+            const menuObj = array2obj(menu.docs.map(this.doc2data("menu")));
+            this.menuObj = Object.assign({}, {...this.menuObj}, menuObj);
+          }
+        })
+      });
     },
     orderItems() {
       Object.keys(this.orderItems).map((key) => {
