@@ -108,7 +108,7 @@
 
         <!-- Note for Safari Private Browsing Mode -->
         <div class="mt-6 bg-black bg-opacity-5 rounded-lg p-4">
-          <span class="t-body2 c-text-black-medium">
+          <span class="text-xs c-text-black-medium">
             {{ $t("admin.order.lineSafariPrivate") }}
           </span>
         </div>
