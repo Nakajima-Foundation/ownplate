@@ -87,35 +87,7 @@ $op-colors: (
 .level-left + .level-right {
   margin-top: 0;
 }
-// Text Styles
-// .t-h1 {
-//   font-weight: 300;
-//   font-size: 96px;
-//   line-height: 112px;
-//   letter-spacing: -1.5px;
-// }
-// .t-h2 {
-//   font-weight: 300;
-//   font-size: 60px;
-//   line-height: 72px;
-//   letter-spacing: -0.5px;
-// }
-// .t-h3 {
-//   font-weight: normal;
-//   font-size: 48px;
-//   line-height: 56px;
-// }
-// .t-h4 {
-//   font-weight: normal;
-//   font-size: 34px;
-//   line-height: 36px;
-// }
-// .t-h5 {
-//   font-weight: normal;
-//   font-size: 24px;
-//   line-height: 24px;
-//   letter-spacing: 0.18px;
-// }
+
 .t-h6 {
   // font-weight: 500;
   font-weight: bold;
@@ -144,39 +116,14 @@ $op-colors: (
   letter-spacing: 0.5px;
 }
 .t-button {
-  // font-weight: 500;
   font-weight: bold;
   font-size: 14px;
   line-height: 16px;
   letter-spacing: 0.1px;
-  // text-transform: uppercase;
 }
-// .t-caption {
-//   font-style: normal;
-//   font-weight: normal;
-//   font-size: 12px;
-//   line-height: 16px;
-//   letter-spacing: 0.2px;
-// }
-// .t-overline {
-//   // font-weight: 500;
-//   font-weight: bold;
-//   font-size: 10px;
-//   line-height: 16px;
-//   // letter-spacing: 1.5px;
-//   letter-spacing: 0.5px;
-//   // text-transform: uppercase;
-// }
-
-// .align-left {
-//   text-align: left;
-// }
 .align-center {
   text-align: center;
 }
-// .align-right {
-//   text-align: right;
-// }
 
 html {
   background-color: map-get($op-colors, background);
@@ -209,15 +156,6 @@ html {
 .d-low {
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
 }
-
-// Border Styles
-// .border-primary {
-//   border: 2px solid map-get($op-colors, primary);
-//   box-sizing: border-box;
-// }
-// .button.border-primary:hover {
-//   border: 2px solid map-get($op-colors, primary);
-// }
 
 // OwnPlate Sizes
 $sizes: (
@@ -256,42 +194,6 @@ $sides: (top, bottom, left, right);
     }
   }
 }
-
-// Width and Height Sizes
-// @each $dimension-size in $sizes {
-//   // Width Sizes
-//   .w-#{$dimension-size} {
-//     width: #{$dimension-size}px;
-//   }
-//   // Height Sizes
-//   .h-#{$dimension-size} {
-//     height: #{$dimension-size}px;
-//   }
-// }
-
-// .w-full {
-//   width: 100%;
-// }
-// .h-full {
-//   height: 100%;
-// }
-
-// Rounded Corners Sizes
-// @each $corner-size in $sizes {
-//   .r-#{$corner-size} {
-//     border-radius: #{$corner-size}px;
-//   }
-// }
-// To make the bottom rounded corners sharp.
-// .r-b-0 {
-//   border-bottom-left-radius: 0;
-//   border-bottom-right-radius: 0;
-// }
-// To make the top rounded corners sharp.
-// .r-t-0 {
-//   border-top-left-radius: 0;
-//   border-top-right-radius: 0;
-// }
 
 // Icon Sizes
 @each $icon-size in $sizes {
@@ -342,19 +244,6 @@ body,
   border-top: 1px solid map-get($op-colors, sattle-black);
 }
 
-// // OwnPlate Status
-// .op-status {
-//   display: inline-block;
-//   @extend .p-t-4;
-//   @extend .p-b-4;
-//   @extend .p-l-16;
-//   @extend .p-r-16;
-//   // @extend .r-32;
-//   border-radius: 9999px;
-//   @extend .t-subtitle2;
-// }
-
-// OwnPlate Buttons
 
 // Reset <b-button> style
 .button.b-reset {
