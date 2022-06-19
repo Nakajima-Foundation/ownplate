@@ -20,32 +20,7 @@
     <WelcomeAndLinks />
 
     <!-- News -->
-    <div
-      v-if="region === 'JP'"
-      class="mx-6 mt-6 border-solid border-black border-opacity-10 border-2 rounded-lg px-4 py-2"
-    >
-      <div class="flex">
-        <div class="flex-1">
-          <span class="text-sm font-bold text-black text-opacity-40">{{
-            news.date.replace(/\-/g, ".")
-          }}</span>
-        </div>
-
-        <div>
-          <router-link :to="'/admin/news/'">
-            <span class="text-sm font-bold">{{
-              $t("admin.news.newsTop")
-            }}</span>
-          </router-link>
-        </div>
-      </div>
-
-      <div class="mt-2">
-        <router-link :to="'/admin/news/' + news.date">
-          <span class="text-base font-bold">{{ news.title }}</span>
-        </router-link>
-      </div>
-    </div>
+    <News />
 
     <!-- Unset Warning -->
     <div
@@ -78,7 +53,7 @@
       </div>
     </div>
 
-    <!-- Restaurants and Payment Setup -->
+    <!-- Restaurants and Right Settin Section -->
     <div class="mt-6 mx-6 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12">
       <!-- Restaurants -->
       <div>
@@ -183,12 +158,12 @@
         </div>
       </div>
 
-      <!-- Payment Setup -->
+      <!-- Right Section -->
       <div class="mt-6 lg:mt-0" v-if="isOwner">
         <!-- Payment -->
         <payment-section @updateUnsetWarning="updateUnsetWarning($event)" />
 
-        <!-- Notes -->
+        <!-- SubAccounts -->
         <div class="mt-6">
           <div class="text-xl font-bold text-black text-opacity-40 mb-2">
             {{ $t("admin.subAccounts.title") }}
@@ -232,6 +207,7 @@
         <!-- Smaregi-->
         <Smaregi />
       </div>
+      <!-- End of Right Section -->
     </div>
     <b-modal :active.sync="isOpen" :width="488">
       <PartnersContact :id="(partner[0] || {}).id" />
@@ -247,15 +223,14 @@
 import { db, firestore } from "@/plugins/firebase";
 import { order_status } from "@/config/constant";
 import { midNight } from "@/utils/dateUtils";
-import { ownPlateConfig } from "@/config/project";
-import newsList from "./News/data";
 
 import RestaurantEditCard from "@/app/admin/Restaurant/RestaurantEditCard.vue";
 import PaymentSection from "@/app/admin/Payment/PaymentSection.vue";
 import MessageCard from "./Messages/MessageCard.vue";
 import PartnersContact from "./Partners/Contact.vue";
 
-import WelcomeAndLinks from "@/app/admin/Index/WelcomeAndLinks";
+import WelcomeAndLinks from "@/app/admin/Index/WelcomeAndLinks.vue";
+import News from "@/app/admin/Index/News.vue";
 import Note from "@/app/admin/Index/Note.vue";
 import MailMagazine from "@/app/admin/Index/MailMagazine.vue";
 import Smaregi from "@/app/admin/Index/Smaregi.vue";
@@ -271,6 +246,7 @@ export default {
     MessageCard,
     PartnersContact,
     WelcomeAndLinks,
+    News,
     Smaregi,
     MailMagazine,
     Note,
@@ -283,14 +259,12 @@ export default {
   },
   data() {
     return {
-      region: ownPlateConfig.region,
       readyToDisplay: false,
       isCreating: false,
       restaurantItems: null,
       detachers: [],
       restaurant_detacher: null,
       message_detacher: null,
-      news: newsList[0],
       unsetWarning: true,
       lines: {},
       shopOwner: null,
