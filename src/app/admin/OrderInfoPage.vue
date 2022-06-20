@@ -620,9 +620,7 @@
 
 <script>
 import { db } from "@/lib/firebase/firebase9";
-import { doc, getDoc, getDocs, onSnapshot, collection, query, where, documentId } from "firebase/firestore";
-
-import { db as dbOld, firestore } from "@/plugins/firebase";
+import { doc, getDoc, getDocs, onSnapshot, collection, query, where, documentId, Timestamp } from "firebase/firestore";
 
 import { orderUpdate, orderChange } from "@/lib/firebase/functions";
 
@@ -717,8 +715,7 @@ export default {
       return true;
     }
     if (this.shopInfo.isEC) {
-      dbOld.doc(`restaurants/${this.restaurantId()}/ec/postage`)
-        .get()
+      getDoc(doc(db, `restaurants/${this.restaurantId()}/ec/postage`))
         .then((snapshot) => {
           this.postageInfo = snapshot.data() || {};
         });
@@ -975,7 +972,6 @@ export default {
         ret.tax = ret.food_tax + ret.alcohol_tax;
         ret.total = ret.sub_total + ret.tax;
       }
-      // const sh
       const shippingCost = costCal(
         this.postageInfo,
         this.orderInfo?.customerInfo?.prefectureId,
@@ -1026,7 +1022,7 @@ export default {
     getEestimateTime() {
       const time = this.orderInfo.timePlaced.toDate().getTime();
       const date = new Date(time + this.timeOffset * 60000);
-      return firestore.Timestamp.fromDate(date);
+      return Timestamp.fromDate(date);
     },
     async handleStripe() {
       //console.log("handleComplete with Stripe", orderId);
