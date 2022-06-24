@@ -620,7 +620,17 @@
 
 <script>
 import { db } from "@/lib/firebase/firebase9";
-import { doc, getDoc, getDocs, onSnapshot, collection, query, where, documentId, Timestamp } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  getDocs,
+  onSnapshot,
+  collection,
+  query,
+  where,
+  documentId,
+  Timestamp,
+} from "firebase/firestore";
 
 import { orderUpdate, orderChange } from "@/lib/firebase/functions";
 
@@ -650,7 +660,14 @@ import { costCal } from "@/utils/commonUtils";
 import { downloadOrderPdf, printOrder, data2UrlSchema } from "@/lib/pdf/pdf2";
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
-import { isEmpty, isNull, getShopOwner, getOrderItems, arrayChunk, array2obj } from "@/utils/utils";
+import {
+  isEmpty,
+  isNull,
+  getShopOwner,
+  getOrderItems,
+  arrayChunk,
+  array2obj,
+} from "@/utils/utils";
 
 const timezone = moment.tz.guess();
 
@@ -715,10 +732,11 @@ export default {
       return true;
     }
     if (this.shopInfo.isEC) {
-      getDoc(doc(db, `restaurants/${this.restaurantId()}/ec/postage`))
-        .then((snapshot) => {
+      getDoc(doc(db, `restaurants/${this.restaurantId()}/ec/postage`)).then(
+        (snapshot) => {
           this.postageInfo = snapshot.data() || {};
-        });
+        }
+      );
     }
 
     const order_detacher = onSnapshot(
@@ -726,19 +744,20 @@ export default {
       async (order) => {
         if (!order.exists) {
           this.notFound = true;
-          return 
+          return;
         }
         const order_data = order.data();
         this.orderInfo = order_data;
         if (this.orderInfo.isDelivery || this.shopInfo.isEC) {
           const customer = await getDoc(
-            doc(db, 
-                `restaurants/${this.restaurantId()}/orders/${
-                  this.orderId
-                 }/customer/data`
-               ));
-          this.customer =
-            customer.data() || this.orderInfo?.customerInfo || {};
+            doc(
+              db,
+              `restaurants/${this.restaurantId()}/orders/${
+                this.orderId
+              }/customer/data`
+            )
+          );
+          this.customer = customer.data() || this.orderInfo?.customerInfo || {};
         }
       }
     );
@@ -753,12 +772,16 @@ export default {
   },
   watch: {
     orderInfo() {
-      getDoc(doc(db, `restaurants/${this.restaurantId()}/userLog/${this.orderInfo.uid}`))
-        .then((res) => {
-          if (res.exists) {
-            this.userLog = res.data();
-          }
-        });
+      getDoc(
+        doc(
+          db,
+          `restaurants/${this.restaurantId()}/userLog/${this.orderInfo.uid}`
+        )
+      ).then((res) => {
+        if (res.exists) {
+          this.userLog = res.data();
+        }
+      });
 
       const menuIds = Object.keys(this.orderInfo.menuItems);
       arrayChunk(menuIds, 10).map(async (arr) => {
@@ -770,9 +793,9 @@ export default {
         ).then((menu) => {
           if (!menu.empty) {
             const menuObj = array2obj(menu.docs.map(this.doc2data("menu")));
-            this.menuObj = Object.assign({}, {...this.menuObj}, menuObj);
+            this.menuObj = Object.assign({}, { ...this.menuObj }, menuObj);
           }
-        })
+        });
       });
     },
     orderItems() {
