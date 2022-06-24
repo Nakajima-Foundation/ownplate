@@ -54,7 +54,7 @@ export const doc2data = (dataType: string) => {
 };
 
 export const array2obj = <T>(array: T[]) => {
-  return array.reduce((tmp: {[key: string]: T}, current: T) => {
+  return array.reduce((tmp: { [key: string]: T }, current: T) => {
     tmp[(current as any).id] = current;
     return tmp;
   }, {});
@@ -176,7 +176,10 @@ export const arrayOrNumSum = (arr: number | number[]) => {
       },
 */
 
-export const getOrderItems = (orderInfo: OrderInfoData, menuObj: { [key: string]: MenuData }) => {
+export const getOrderItems = (
+  orderInfo: OrderInfoData,
+  menuObj: { [key: string]: MenuData }
+) => {
   if (orderInfo.order && orderInfo.menuItems) {
     return Object.keys(orderInfo.order).reduce((tmp: OrderItem[], menuId) => {
       const numArray = Array.isArray(orderInfo.order[menuId])
@@ -184,8 +187,8 @@ export const getOrderItems = (orderInfo: OrderInfoData, menuObj: { [key: string]
         : [orderInfo.order[menuId]];
       const opt =
         orderInfo.options && orderInfo.options[menuId]
-        ? orderInfo.options[menuId]
-        : null;
+          ? orderInfo.options[menuId]
+          : null;
       const optArray = Array.isArray(orderInfo.order[menuId])
         ? orderInfo.options[menuId]
         : [orderInfo.options[menuId]];
@@ -211,8 +214,8 @@ export const itemOptionCheckbox2options = (itemOptionCheckbox: any) => {
   // HACK: Dealing with a special case (probalby a bug in the menu editor)
   if (
     itemOptionCheckbox &&
-      itemOptionCheckbox.length === 1 &&
-      !itemOptionCheckbox[0]
+    itemOptionCheckbox.length === 1 &&
+    !itemOptionCheckbox[0]
   ) {
     console.log("Special case: itemOptionCheckbox===['']");
     return [];

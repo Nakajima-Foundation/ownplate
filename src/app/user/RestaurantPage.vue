@@ -378,7 +378,14 @@
 </template>
 
 <script>
-import { defineComponent, ref, watch, computed, onMounted, onUnmounted } from "@vue/composition-api";
+import {
+  defineComponent,
+  ref,
+  watch,
+  computed,
+  onMounted,
+  onUnmounted,
+} from "@vue/composition-api";
 
 import ItemCard from "@/app/user/Restaurant/ItemCard";
 import PhoneLogin from "@/app/auth/PhoneLogin";
@@ -398,7 +405,12 @@ import { order_status } from "@/config/constant";
 import { ownPlateConfig } from "@/config/project";
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
-import { doc2data, array2obj, arraySum, itemOptionCheckbox2options } from "@/utils/utils";
+import {
+  doc2data,
+  array2obj,
+  arraySum,
+  itemOptionCheckbox2options,
+} from "@/utils/utils";
 
 export default defineComponent({
   name: "ShopMenu",
@@ -458,7 +470,6 @@ export default defineComponent({
       titles: [],
       waitForUser: false,
 
-
       detacher: [],
 
       imagePopup: false,
@@ -476,7 +487,7 @@ export default defineComponent({
     const selectedOptionsPrev = ref({}); // from the store.cart
 
     const howtoreceive = ref("takeout");
-    
+
     onMounted(() => {
       // Check if we came here as the result of "Edit Items"
       if (ctx.root.$store.state.carts[ctx.root.restaurantId()]) {
@@ -500,7 +511,7 @@ export default defineComponent({
     const isPreview = computed(() => {
       return props.notFound && isOwner.value;
     });
-                               
+
     const menuLists = computed(() => {
       const list = props.shopInfo.menuLists || [];
       return list;
@@ -515,14 +526,14 @@ export default defineComponent({
       }, 0);
       return ret;
     });
-    
+
     const coverImage = computed(() => {
       return (
         (props.shopInfo?.images?.cover?.resizedImages || {})["1200"] ||
-          props.shopInfo.restCoverPhoto
+        props.shopInfo.restCoverPhoto
       );
     });
-    
+
     const menuId = computed(() => {
       return ctx.root.$route.params.menuId;
     });
@@ -564,7 +575,7 @@ export default defineComponent({
       // MEMO: ignore hidePayment. No longer used
       return !props.paymentInfo.stripe && !props.paymentInfo.inStore;
     });
-    
+
     watch(menus, (values) => {
       analyticsUtil.sendMenuListView(
         values,
@@ -615,12 +626,13 @@ export default defineComponent({
     });
 
     const itemsObj = computed(() => {
-      return array2obj(menus.value. concat(titles.value));
+      return array2obj(menus.value.concat(titles.value));
     });
     const itemLists = computed(() => {
-      return menuLists.value.map((itemId) => {
-        return { ...itemsObj.value[itemId] };
-      })
+      return menuLists.value
+        .map((itemId) => {
+          return { ...itemsObj.value[itemId] };
+        })
         .filter((item) => {
           return item;
         });
@@ -630,7 +642,7 @@ export default defineComponent({
         return item._dataType === "title" && item.name !== "";
       });
     });
-    
+
     const totalPrice = computed(() => {
       const subTotal = Object.keys(prices.value).reduce((tmp, menuId) => {
         tmp[menuId] = prices.value[menuId].reduce((a, b) => a + b, 0);
@@ -704,7 +716,7 @@ export default defineComponent({
       }
       return 0;
     };
-    
+
     const prices = computed(() => {
       const ret = {};
 
@@ -714,7 +726,7 @@ export default defineComponent({
         ret[menuId] = [];
         orders.value[menuId].map((num, orderKey) => {
           const selectedOptionsRaw =
-                trimmedSelectedOptions.value[menuId][orderKey] || [];
+            trimmedSelectedOptions.value[menuId][orderKey] || [];
           const price = selectedOptionsRaw.reduce(
             (tmpPrice, selectedOpt, key) => {
               const opt = (menu.itemOptionCheckbox[key] || "").split(",");
@@ -742,7 +754,6 @@ export default defineComponent({
       return ret;
     });
 
-    
     const didQuantitiesChange = (eventArgs) => {
       // NOTE: We need to assign a new object to trigger computed properties
       const newObject = { ...orders.value };
@@ -770,19 +781,19 @@ export default defineComponent({
 
       coverImage,
       menuId,
-      
+
       isOwner,
       isDelivery,
       howtoreceive,
 
       orders,
-      
+
       totalQuantities,
       selectedOptionsPrev,
 
       totalPrice,
       prices,
-      
+
       isPreview,
       cantDelivery,
       noPaymentMethod,
