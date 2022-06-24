@@ -263,3 +263,12 @@ export const getPartner = (shopOwner: ShopOwnerData) => {
 export const regionalSetting = (regionalSettings as { [key: string]: any })[
   ownPlateConfig.region || "US"
 ];
+
+export const optionPrice = (option: string) => {
+  const regex = /\(((\+|\-|＋|ー|−)[0-9\.]+)\)/;
+  const match = (option || "").match(regex);
+  if (match) {
+    return Number(match[1].replace(/ー|−/g, "-").replace(/＋/g, "+"));
+  }
+  return 0;
+};

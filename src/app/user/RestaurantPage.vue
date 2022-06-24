@@ -8,14 +8,7 @@
       <!-- Restaurant Page -->
       <div>
         <!-- For Owner Preview Only -->
-        <div v-if="isPreview" class="bg-red-700 bg-opacity-10 text-center p-4">
-          <div class="text-base font-bold text-red-700">
-            {{ $t("shopInfo.thisIsPreview") }}
-          </div>
-          <div class="text-base font-bold text-red-700">
-            {{ $t("shopInfo.notPublic") }}
-          </div>
-        </div>
+        <RestaurantPreview :isPreview="isPreview" />
 
         <!-- Body -->
         <div class="grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12 lg:mx-6">
@@ -42,7 +35,7 @@
                 class="mt-2 text-base"
                 :class="shopInfo.enablePreline ? 'whitespace-pre-line' : ''"
               >
-                {{ this.shopInfo.introduction }}
+                {{ shopInfo.introduction }}
               </div>
 
               <!-- Share and Favorite -->
@@ -396,6 +389,8 @@ import ShopInfo from "@/app/user/Restaurant/ShopInfo";
 import NotFound from "@/components/NotFound";
 import Price from "@/components/Price";
 
+import RestaurantPreview from "@/app/user/Restaurant/Preview";
+
 import liff from "@line/liff";
 import { db, firestore } from "@/plugins/firebase";
 import { wasOrderCreated } from "@/lib/firebase/functions";
@@ -410,10 +405,13 @@ import {
   array2obj,
   arraySum,
   itemOptionCheckbox2options,
+  optionPrice,
 } from "@/utils/utils";
 
+import { imageUtils } from "@/utils/RestaurantUtils";
+
 export default defineComponent({
-  name: "ShopMenu",
+  name: "RestaurantPage",
 
   components: {
     ItemCard,
@@ -424,6 +422,7 @@ export default defineComponent({
     ShopInfo,
     NotFound,
     Price,
+    RestaurantPreview,
   },
   props: {
     shopInfo: {
@@ -449,6 +448,7 @@ export default defineComponent({
   },
   metaInfo() {
     // TODO: add area to header
+    console.log(this.shopInfo);
     return {
       title:
         Object.keys(this.shopInfo).length == 0
@@ -459,28 +459,15 @@ export default defineComponent({
             ].join(" / "),
     };
   },
-  data() {
-    return {
-      retryCount: 0,
-      loginVisible: false,
-      isCheckingOut: false,
-      // orders: {},
-      restaurantsId: this.restaurantId(),
-      // deliveryData: {},
-      titles: [],
-      waitForUser: false,
-
-      detacher: [],
-
-      imagePopup: false,
-      categoryPopup: false,
-
-      noAvailableTime: false,
-    };
-  },
   setup(props, ctx) {
+    const retryCount = ref(0);
     const menus = ref([]);
     const titles = ref([]);
+
+    const loginVisible = ref(false);
+    const isCheckingOut = ref(false);
+    const waitForUser = ref(false);
+    const noAvailableTime = ref(false);
 
     const orders = ref({});
     const selectedOptions = ref({});
@@ -490,8 +477,8 @@ export default defineComponent({
 
     onMounted(() => {
       // Check if we came here as the result of "Edit Items"
-      if (ctx.root.$store.state.carts[ctx.root.restaurantId()]) {
-        const cart = ctx.root.$store.state.carts[ctx.root.restaurantId()] || {};
+      if (ctx.root.$store.state.carts[restaurantId.value]) {
+        const cart = ctx.root.$store.state.carts[restaurantId.value] || {};
         //console.log("cart", cart);
         orders.value = cart.orders || {};
         selectedOptionsPrev.value = cart.options || {};
@@ -499,6 +486,15 @@ export default defineComponent({
       }
     });
 
+    const restaurantId = computed(() => {
+      return ctx.root.$route.params.restaurantId;
+    });
+    const menuId = computed(() => {
+      return ctx.root.$route.params.menuId;
+    });
+    const user = computed(() => {
+      return ctx.root.user;
+    });
     const uid = computed(() => {
       return ctx.root.$store.getters.uid;
     });
@@ -516,7 +512,6 @@ export default defineComponent({
       const list = props.shopInfo.menuLists || [];
       return list;
     });
-    // TODO ???
     const isDelivery = computed(() => {
       return howtoreceive.value === "delivery";
     });
@@ -534,43 +529,6 @@ export default defineComponent({
       );
     });
 
-    const menuId = computed(() => {
-      return ctx.root.$route.params.menuId;
-    });
-    /*
-    diffDeliveryThreshold() {
-      return this.deliveryData.deliveryThreshold - (this.totalPrice.total || 0);
-    },
-    diffDeliveryFreeThreshold() {
-      return (
-        this.deliveryData.deliveryFreeThreshold - (this.totalPrice.total || 0)
-      );
-    },
-    isDeliveryFree() {
-      if (
-        this.shopInfo.enableDelivery &&
-        this.deliveryData.enableDeliveryFree
-      ) {
-        return (
-          (this.totalPrice.total || 0) >=
-          this.deliveryData.deliveryFreeThreshold
-        );
-      }
-      return false;
-    },
-    */
-    const cantDelivery = computed(() => {
-      if (!props.shopInfo.enableDelivery) {
-        return false;
-      }
-
-      if (props.isDelivery && props.deliveryData.enableDeliveryThreshold) {
-        return (
-          (this.totalPrice.total || 0) < props.deliveryData.deliveryThreshold
-        );
-      }
-      return false;
-    });
     const noPaymentMethod = computed(() => {
       // MEMO: ignore hidePayment. No longer used
       return !props.paymentInfo.stripe && !props.paymentInfo.inStore;
@@ -580,21 +538,12 @@ export default defineComponent({
       analyticsUtil.sendMenuListView(
         values,
         props.shopInfo,
-        ctx.root.restaurantId()
+        restaurantId.value
       );
     });
 
-    // TODO
-    watch(ctx.root.user, (newValue) => {
-      console.log("user changed");
-      if (this.waitForUser && newValue) {
-        console.log("handling deferred notification");
-        this.goCheckout();
-      }
-    });
-
     const menu_detacher = db
-      .collection(`restaurants/${ctx.root.restaurantId()}/menus`)
+      .collection(`restaurants/${restaurantId.value}/menus`)
       .where("deletedFlag", "==", false)
       .where("publicFlag", "==", true)
       .onSnapshot((menu) => {
@@ -608,7 +557,7 @@ export default defineComponent({
         }
       });
     const title_detacher = db
-      .collection(`restaurants/${ctx.root.restaurantId()}/titles`)
+      .collection(`restaurants/${restaurantId.value}/titles`)
       .where("deletedFlag", "==", false)
       .onSnapshot((title) => {
         if (!title.empty) {
@@ -681,7 +630,6 @@ export default defineComponent({
           return selected;
         });
         ret[id] = selectedOption;
-        // ret[id] = this.selectedOptions[id];
         return ret;
       }, {});
     });
@@ -707,15 +655,18 @@ export default defineComponent({
         return ret;
       }, {});
     });
-
-    const optionPrice = (option) => {
-      const regex = /\(((\+|\-|＋|ー|−)[0-9\.]+)\)/;
-      const match = (option || "").match(regex);
-      if (match) {
-        return Number(match[1].replace(/ー|−/g, "-").replace(/＋/g, "+"));
+    const cantDelivery = computed(() => {
+      if (!props.shopInfo.enableDelivery) {
+        return false;
       }
-      return 0;
-    };
+
+      if (props.isDelivery && props.deliveryData.enableDeliveryThreshold) {
+        return (
+          (totalPrice.value.total || 0) < props.deliveryData.deliveryThreshold
+        );
+      }
+      return false;
+    });
 
     const prices = computed(() => {
       const ret = {};
@@ -768,8 +719,169 @@ export default defineComponent({
       selectedOptions.value = Object.assign({}, selectedOptions.value, {
         [eventArgs.id]: eventArgs.optionValues,
       });
-      //console.log(this.selectedOptions);
     };
+
+    const convOptionArray2Obj = (obj) => {
+      return Object.keys(obj).reduce((newObj, objKey) => {
+        newObj[objKey] = obj[objKey].reduce((tmp, value, key) => {
+          tmp[key] = value;
+          return tmp;
+        }, {});
+        return newObj;
+      }, {});
+    };
+
+    const goCheckout = async () => {
+      const name = await (async () => {
+        if (ctx.root.isLiffUser) {
+          try {
+            const user = (await liff.getProfile()) || {};
+            return user.displayName;
+          } catch (e) {
+            return "";
+          }
+        }
+        return user.value.displayName;
+      })();
+
+      const order_data = {
+        order: orders.value,
+        options: convOptionArray2Obj(postOptions.value),
+        rawOptions: convOptionArray2Obj(trimmedSelectedOptions.value),
+        status: order_status.new_order,
+        uid: user.value.uid,
+        ownerUid: props.shopInfo.uid,
+        isDelivery:
+          (props.shopInfo.enableDelivery && isDelivery.value) || false, // true, // for test
+        isLiff: ctx.root.isLiffUser,
+        phoneNumber: user.value.phoneNumber,
+        name: name,
+        updatedAt: firestore.FieldValue.serverTimestamp(),
+        timeCreated: firestore.FieldValue.serverTimestamp(),
+        // price never set here.
+      };
+      // console.log(order_data);
+      isCheckingOut.value = true;
+      try {
+        if (ctx.root.forcedError("checkout")) {
+          throw Error("forced Error");
+        }
+        const res = await db
+          .collection(`restaurants/${restaurantId.value}/orders`)
+          .add(order_data);
+        // Store the current order associated with this order id, so that we can re-use it
+        // when the user clicks the "Edit Items" on the next page.
+        // In that case, we will come back here with #id so that we can retrieve it (see mounted).
+        ctx.root.$store.commit("saveCart", {
+          id: restaurantId.value,
+          cart: {
+            orders: orders.value,
+            options: selectedOptions.value,
+          },
+        });
+        await wasOrderCreated({
+          restaurantId: restaurantId.value,
+          orderId: res.id,
+        });
+
+        try {
+          const menus = [];
+          Object.keys(orders.value).forEach((menuId) => {
+            orders.value[menuId].forEach((quantity) => {
+              const menu = Object.assign({}, itemsObj.value[menuId]);
+              menu.quantity = quantity;
+              menus.push(menu);
+            });
+          });
+          analyticsUtil.sendBeginCheckoout(
+            totalPrice.value.total,
+            menus,
+            props.shopInfo,
+            restaurantId.value
+          );
+        } catch (e) {
+          console.log(e);
+        }
+        if (ctx.root.mode === "liff") {
+          const liffIndexId = ctx.root.$route.params.liffIndexId;
+          ctx.root.$router.push({
+            path: `/liff/${liffIndexId}/r/${restaurantId.value}/order/${res.id}`,
+          });
+        } else {
+          ctx.root.$router.push({
+            path: `/mo/r/${restaurantId.value}/order/${res.id}`,
+          });
+        }
+      } catch (error) {
+        if (error.code === "permission-denied" && retryCount.value < 3) {
+          retryCount.value++;
+          console.log("retrying:", retryCount.value);
+          setTimeout(() => {
+            goCheckout();
+          }, 500);
+        } else {
+          console.error(error.message);
+          ctx.root.$store.commit("setErrorMessage", {
+            code: "order.checkout",
+            error,
+          });
+        }
+      } finally {
+        isCheckingOut.value = false;
+      }
+    };
+    const handleCheckOut = () => {
+      // The user has clicked the CheckOut button
+      retryCount.value = 0;
+
+      if (ctx.root.isUser || ctx.root.isLiffUser) {
+        goCheckout();
+      } else {
+        window.scrollTo(0, 0);
+        loginVisible.value = true;
+      }
+    };
+    const handleDismissed = () => {
+      // The user has dismissed the login dialog (including the successful login)
+      loginVisible.value = false;
+      if (ctx.root.isUser || ctx.root.isLiffUser) {
+        goCheckout();
+      } else {
+        console.log("this.user it not ready yet");
+        waitForUser.value = true;
+      }
+    };
+
+    const diffDeliveryThreshold = computed(() => {
+      return (
+        props.deliveryData.deliveryThreshold - (totalPrice.value.total || 0)
+      );
+    });
+    const diffDeliveryFreeThreshold = computed(() => {
+      return (
+        props.deliveryData.deliveryFreeThreshold - (totalPrice.value.total || 0)
+      );
+    });
+    const isDeliveryFree = computed(() => {
+      if (
+        props.shopInfo.enableDelivery &&
+        props.deliveryData.enableDeliveryFree
+      ) {
+        return (
+          (totalPrice.value.total || 0) >=
+          props.deliveryData.deliveryFreeThreshold
+        );
+      }
+      return false;
+    });
+
+    watch(user, (newValue) => {
+      console.log("user changed");
+      if (waitForUser.value && newValue) {
+        console.log("handling deferred notification");
+        goCheckout();
+      }
+    });
 
     return {
       menus,
@@ -800,153 +912,16 @@ export default defineComponent({
 
       didQuantitiesChange,
       didOptionValuesChange,
+
+      handleCheckOut,
+      handleDismissed,
+
+      loginVisible,
+      isCheckingOut,
+      noAvailableTime,
+
+      ...imageUtils(),
     };
-  },
-  methods: {
-    openImage() {
-      this.imagePopup = true;
-    },
-    closeImage() {
-      this.imagePopup = false;
-    },
-    openCategory() {
-      this.categoryPopup = true;
-    },
-    closeCategory() {
-      this.categoryPopup = false;
-    },
-
-    handleCheckOut() {
-      // The user has clicked the CheckOut button
-      this.retryCount = 0;
-
-      if (this.isUser || this.isLiffUser) {
-        this.goCheckout();
-      } else {
-        window.scrollTo(0, 0);
-        this.loginVisible = true;
-      }
-    },
-    handleDismissed() {
-      // The user has dismissed the login dialog (including the successful login)
-      this.loginVisible = false;
-      if (this.isUser || this.isLiffUser) {
-        this.goCheckout();
-      } else {
-        console.log("this.user it not ready yet");
-        this.waitForUser = true;
-        // this.isCheckingOut = false;
-      }
-    },
-    convOptionArray2Obj(obj) {
-      return Object.keys(obj).reduce((newObj, objKey) => {
-        newObj[objKey] = obj[objKey].reduce((tmp, value, key) => {
-          tmp[key] = value;
-          return tmp;
-        }, {});
-        return newObj;
-      }, {});
-    },
-    async goCheckout() {
-      const name = await (async () => {
-        if (this.isLiffUser) {
-          try {
-            const user = (await liff.getProfile()) || {};
-            return user.displayName;
-          } catch (e) {
-            return "";
-          }
-        }
-        return this.user.displayName;
-      })();
-
-      const order_data = {
-        order: this.orders,
-        options: this.convOptionArray2Obj(this.postOptions),
-        rawOptions: this.convOptionArray2Obj(this.trimmedSelectedOptions),
-        status: order_status.new_order,
-        uid: this.user.uid,
-        ownerUid: this.shopInfo.uid,
-        isDelivery: (this.shopInfo.enableDelivery && this.isDelivery) || false, // true, // for test
-        isLiff: this.isLiffUser,
-        phoneNumber: this.user.phoneNumber,
-        name: name,
-        updatedAt: firestore.FieldValue.serverTimestamp(),
-        timeCreated: firestore.FieldValue.serverTimestamp(),
-        // price never set here.
-      };
-      // console.log(order_data);
-      this.isCheckingOut = true;
-      try {
-        if (this.forcedError("checkout")) {
-          throw Error("forced Error");
-        }
-        const res = await db
-          .collection(`restaurants/${this.restaurantId()}/orders`)
-          .add(order_data);
-        // Store the current order associated with this order id, so that we can re-use it
-        // when the user clicks the "Edit Items" on the next page.
-        // In that case, we will come back here with #id so that we can retrieve it (see mounted).
-        this.$store.commit("saveCart", {
-          id: this.restaurantId(),
-          cart: {
-            orders: this.orders,
-            options: this.selectedOptions,
-          },
-        });
-        await wasOrderCreated({
-          restaurantId: this.restaurantId(),
-          orderId: res.id,
-        });
-
-        try {
-          const menus = [];
-          Object.keys(this.orders).forEach((menuId) => {
-            this.orders[menuId].forEach((quantity) => {
-              const menu = Object.assign({}, this.itemsObj[menuId]);
-              menu.quantity = quantity;
-              menus.push(menu);
-            });
-          });
-          analyticsUtil.sendBeginCheckoout(
-            this.totalPrice.total,
-            menus,
-            this.shopInfo,
-            this.restaurantId()
-          );
-        } catch (e) {
-          console.log(e);
-        }
-        if (this.mode === "liff") {
-          const liffIndexId = this.$route.params.liffIndexId;
-          this.$router.push({
-            path: `/liff/${liffIndexId}/r/${this.restaurantId()}/order/${
-              res.id
-            }`,
-          });
-        } else {
-          this.$router.push({
-            path: `/mo/r/${this.restaurantId()}/order/${res.id}`,
-          });
-        }
-      } catch (error) {
-        if (error.code === "permission-denied" && this.retryCount < 3) {
-          this.retryCount++;
-          console.log("retrying:", this.retryCount);
-          setTimeout(() => {
-            this.goCheckout();
-          }, 500);
-        } else {
-          console.error(error.message);
-          this.$store.commit("setErrorMessage", {
-            code: "order.checkout",
-            error,
-          });
-        }
-      } finally {
-        this.isCheckingOut = false;
-      }
-    },
   },
 });
 </script>
