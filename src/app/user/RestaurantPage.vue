@@ -378,6 +378,8 @@
 </template>
 
 <script>
+import { defineComponent, ref, watch, computed, onMounted, onUnmounted } from "@vue/composition-api";
+
 import ItemCard from "@/app/user/Restaurant/ItemCard";
 import PhoneLogin from "@/app/auth/PhoneLogin";
 import ShopHeader from "@/app/user/Restaurant/ShopHeader";
@@ -396,7 +398,9 @@ import { order_status } from "@/config/constant";
 import { ownPlateConfig } from "@/config/project";
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
-export default {
+import { doc2data, array2obj, arraySum, itemOptionCheckbox2options } from "@/utils/utils";
+
+export default defineComponent({
   name: "ShopMenu",
 
   components: {
@@ -448,16 +452,12 @@ export default {
       retryCount: 0,
       loginVisible: false,
       isCheckingOut: false,
-      orders: {},
-      selectedOptions: {},
-      selectedOptionsPrev: {}, // from the store.cart
+      // orders: {},
       restaurantsId: this.restaurantId(),
       // deliveryData: {},
-      menus: [],
       titles: [],
       waitForUser: false,
 
-      howtoreceive: "takeout",
 
       detacher: [],
 
@@ -467,219 +467,66 @@ export default {
       noAvailableTime: false,
     };
   },
-  mounted() {
-    // Check if we came here as the result of "Edit Items"
-    if (this.$store.state.carts[this.restaurantId()]) {
-      const cart = this.$store.state.carts[this.restaurantId()] || {};
-      //console.log("cart", cart);
-      this.orders = cart.orders || {};
-      this.selectedOptionsPrev = cart.options || {};
-      this.selectedOptions = cart.options || {};
-    }
-  },
-  created() {
-    // Hot fix for flyer. TODO: remove after end of summer in 2022.
-    if (location.hash && location.hash.startsWith("#utm")) {
-      const str = location.hash.slice(1);
-      const url = location.pathname + "?" + str;
-      this.$router.push({
-        path: url,
-      });
-    }
-    const menu_detacher = db
-      .collection(`restaurants/${this.restaurantId()}/menus`)
-      .where("deletedFlag", "==", false)
-      .where("publicFlag", "==", true)
-      .onSnapshot((menu) => {
-        if (!menu.empty) {
-          this.menus = menu.docs
-            .filter((a) => {
-              const data = a.data();
-              return data.validatedFlag === undefined || data.validatedFlag;
-            })
-            .map(this.doc2data("menu"));
-        }
-      });
-    const title_detacher = db
-      .collection(`restaurants/${this.restaurantId()}/titles`)
-      .where("deletedFlag", "==", false)
-      .onSnapshot((title) => {
-        if (!title.empty) {
-          this.titles = title.docs.map(this.doc2data("title"));
-        }
-      });
-    this.detacher = [menu_detacher, title_detacher];
-  },
-  destroyed() {
-    if (this.detacher) {
-      this.detacher.map((detacher) => {
-        detacher();
-      });
-    }
-  },
-  watch: {
-    user(newValue) {
-      console.log("user changed");
-      if (this.waitForUser && newValue) {
-        console.log("handling deferred notification");
-        this.goCheckout();
+  setup(props, ctx) {
+    const menus = ref([]);
+    const titles = ref([]);
+
+    const orders = ref({});
+    const selectedOptions = ref({});
+    const selectedOptionsPrev = ref({}); // from the store.cart
+
+    const howtoreceive = ref("takeout");
+    
+    onMounted(() => {
+      // Check if we came here as the result of "Edit Items"
+      if (ctx.root.$store.state.carts[ctx.root.restaurantId()]) {
+        const cart = ctx.root.$store.state.carts[ctx.root.restaurantId()] || {};
+        //console.log("cart", cart);
+        orders.value = cart.orders || {};
+        selectedOptionsPrev.value = cart.options || {};
+        selectedOptions.value = cart.options || {};
       }
-    },
-    menus(values) {
-      analyticsUtil.sendMenuListView(
-        values,
-        this.shopInfo,
-        this.restaurantId()
-      );
-    },
-  },
-  computed: {
-    isPreview() {
-      return this.notFound && this.isOwner;
-    },
-    isOwner() {
-      return this.isAdmin && this.uid === this.shopInfo.uid;
-    },
-    uid() {
-      return this.$store.getters.uid;
-    },
-    totalPrice() {
-      const subTotal = Object.keys(this.prices).reduce((tmp, menuId) => {
-        tmp[menuId] = this.prices[menuId].reduce((a, b) => a + b, 0);
-        return tmp;
-      }, {});
-      const total = Object.keys(subTotal).reduce((tmp, menuId) => {
-        const menu = this.itemsObj[menuId] || {};
+    });
 
-        if (!this.shopInfo.inclusiveTax) {
-          if (menu.tax === "alcohol") {
-            return (
-              (1 + this.shopInfo.alcoholTax * 0.01) * subTotal[menuId] + tmp
-            );
-          }
-          return (1 + this.shopInfo.foodTax * 0.01) * subTotal[menuId] + tmp;
-        } else {
-          return tmp + subTotal[menuId];
-        }
-      }, 0);
-      return {
-        subTotal: subTotal,
-        total: total,
-      };
-      // total:
-    },
-    prices() {
-      const ret = {};
-
-      const multiple = this.$store.getters.stripeRegion.multiple;
-      Object.keys(this.orders).map((menuId) => {
-        const menu = this.itemsObj[menuId] || {};
-        ret[menuId] = [];
-        this.orders[menuId].map((num, orderKey) => {
-          const selectedOptionsRaw =
-            this.trimmedSelectedOptions[menuId][orderKey] || [];
-          const price = selectedOptionsRaw.reduce(
-            (tmpPrice, selectedOpt, key) => {
-              const opt = (menu.itemOptionCheckbox[key] || "").split(",");
-              if (opt.length === 1) {
-                if (selectedOpt) {
-                  return (
-                    tmpPrice +
-                    Math.round(this.optionPrice(opt[0]) * multiple) / multiple
-                  );
-                }
-              } else {
-                return (
-                  tmpPrice +
-                  Math.round(this.optionPrice(opt[selectedOpt]) * multiple) /
-                    multiple
-                );
-              }
-              return tmpPrice;
-            },
-            menu.price
-          );
-          ret[menuId].push(price * num);
-        });
-      });
-      // console.log(ret);
-      return ret;
-    },
-    totalQuantities() {
-      const ret = Object.values(this.orders).reduce((total, order) => {
-        return total + this.arraySum(order);
-      }, 0);
-      return ret;
-    },
-    itemsObj() {
-      return this.array2obj(this.menus.concat(this.titles));
-    },
-    menuLists() {
-      const list = this.shopInfo.menuLists || [];
+    const uid = computed(() => {
+      return ctx.root.$store.getters.uid;
+    });
+    const isAdmin = computed(() => {
+      return !!ctx.root.$store.getters.uidAdmin;
+    });
+    const isOwner = computed(() => {
+      return isAdmin.value && uid.value === props.shopInfo.uid;
+    });
+    const isPreview = computed(() => {
+      return props.notFound && isOwner.value;
+    });
+                               
+    const menuLists = computed(() => {
+      const list = props.shopInfo.menuLists || [];
       return list;
-    },
-    itemLists() {
-      return this.menuLists
-        .map((itemId) => {
-          return { ...this.itemsObj[itemId] };
-        })
-        .filter((item) => {
-          return item;
-        });
-    },
-    titleLists() {
-      return this.itemLists.filter((item) => {
-        return item._dataType === "title" && item.name !== "";
-      });
-    },
-    trimmedSelectedOptions() {
-      return Object.keys(this.orders).reduce((ret, id) => {
-        const options = this.itemOptionCheckbox2options(
-          (this.itemsObj[id] || {}).itemOptionCheckbox
-        );
-        const selectedOption = this.selectedOptions[id].map((selected) => {
-          if (Array.isArray(selected) && selected.length > options.length) {
-            const newopt = [...selected];
-            return newopt.slice(0, options.length);
-          }
-          return selected;
-        });
-        ret[id] = selectedOption;
-        // ret[id] = this.selectedOptions[id];
-        return ret;
-      }, {});
-    },
-    postOptions() {
-      return Object.keys(this.trimmedSelectedOptions).reduce((ret, id) => {
-        ret[id] = (this.trimmedSelectedOptions[id] || []).map((item, k) => {
-          return item
-            .map((selectedOpt, key) => {
-              const opt = (this.itemsObj[id] || {}).itemOptionCheckbox[
-                key
-              ].split(",");
-              if (opt.length === 1) {
-                if (selectedOpt) {
-                  return opt[0];
-                }
-              } else {
-                return opt[selectedOpt];
-              }
-              return "";
-            })
-            .map((s) => s.trim());
-        });
-        return ret;
-      }, {});
-    },
-    coverImage() {
+    });
+    // TODO ???
+    const isDelivery = computed(() => {
+      return howtoreceive.value === "delivery";
+    });
+    const totalQuantities = computed(() => {
+      const ret = Object.values(orders.value).reduce((total, order) => {
+        return total + arraySum(order);
+      }, 0);
+      return ret;
+    });
+    
+    const coverImage = computed(() => {
       return (
-        (this.shopInfo?.images?.cover?.resizedImages || {})["1200"] ||
-        this.shopInfo.restCoverPhoto
+        (props.shopInfo?.images?.cover?.resizedImages || {})["1200"] ||
+          props.shopInfo.restCoverPhoto
       );
-    },
-    menuId() {
-      return this.$route.params.menuId;
-    },
+    });
+    
+    const menuId = computed(() => {
+      return ctx.root.$route.params.menuId;
+    });
+    /*
     diffDeliveryThreshold() {
       return this.deliveryData.deliveryThreshold - (this.totalPrice.total || 0);
     },
@@ -700,25 +547,249 @@ export default {
       }
       return false;
     },
-    cantDelivery() {
-      if (!this.shopInfo.enableDelivery) {
+    */
+    const cantDelivery = computed(() => {
+      if (!props.shopInfo.enableDelivery) {
         return false;
       }
 
-      if (this.isDelivery && this.deliveryData.enableDeliveryThreshold) {
+      if (props.isDelivery && props.deliveryData.enableDeliveryThreshold) {
         return (
-          (this.totalPrice.total || 0) < this.deliveryData.deliveryThreshold
+          (this.totalPrice.total || 0) < props.deliveryData.deliveryThreshold
         );
       }
       return false;
-    },
-    isDelivery() {
-      return this.howtoreceive === "delivery";
-    },
-    noPaymentMethod() {
+    });
+    const noPaymentMethod = computed(() => {
       // MEMO: ignore hidePayment. No longer used
-      return !this.paymentInfo.stripe && !this.paymentInfo.inStore;
-    },
+      return !props.paymentInfo.stripe && !props.paymentInfo.inStore;
+    });
+    
+    watch(menus, (values) => {
+      analyticsUtil.sendMenuListView(
+        values,
+        props.shopInfo,
+        ctx.root.restaurantId()
+      );
+    });
+
+    // TODO
+    watch(ctx.root.user, (newValue) => {
+      console.log("user changed");
+      if (this.waitForUser && newValue) {
+        console.log("handling deferred notification");
+        this.goCheckout();
+      }
+    });
+
+    const menu_detacher = db
+      .collection(`restaurants/${ctx.root.restaurantId()}/menus`)
+      .where("deletedFlag", "==", false)
+      .where("publicFlag", "==", true)
+      .onSnapshot((menu) => {
+        if (!menu.empty) {
+          menus.value = menu.docs
+            .filter((a) => {
+              const data = a.data();
+              return data.validatedFlag === undefined || data.validatedFlag;
+            })
+            .map(doc2data("menu"));
+        }
+      });
+    const title_detacher = db
+      .collection(`restaurants/${ctx.root.restaurantId()}/titles`)
+      .where("deletedFlag", "==", false)
+      .onSnapshot((title) => {
+        if (!title.empty) {
+          titles.value = title.docs.map(doc2data("title"));
+        }
+      });
+    const detacher = [menu_detacher, title_detacher];
+
+    onUnmounted(() => {
+      if (detacher) {
+        detacher.map((detacher) => {
+          detacher();
+        });
+      }
+    });
+
+    const itemsObj = computed(() => {
+      return array2obj(menus.value. concat(titles.value));
+    });
+    const itemLists = computed(() => {
+      return menuLists.value.map((itemId) => {
+        return { ...itemsObj.value[itemId] };
+      })
+        .filter((item) => {
+          return item;
+        });
+    });
+    const titleLists = computed(() => {
+      return itemLists.value.filter((item) => {
+        return item._dataType === "title" && item.name !== "";
+      });
+    });
+    
+    const totalPrice = computed(() => {
+      const subTotal = Object.keys(prices.value).reduce((tmp, menuId) => {
+        tmp[menuId] = prices.value[menuId].reduce((a, b) => a + b, 0);
+        return tmp;
+      }, {});
+      const total = Object.keys(subTotal).reduce((tmp, menuId) => {
+        const menu = itemsObj.value[menuId] || {};
+
+        if (!props.shopInfo.inclusiveTax) {
+          if (menu.tax === "alcohol") {
+            return (
+              (1 + props.shopInfo.alcoholTax * 0.01) * subTotal[menuId] + tmp
+            );
+          }
+          return (1 + props.shopInfo.foodTax * 0.01) * subTotal[menuId] + tmp;
+        } else {
+          return tmp + subTotal[menuId];
+        }
+      }, 0);
+      return {
+        subTotal: subTotal,
+        total: total,
+      };
+      // total:
+    });
+    const trimmedSelectedOptions = computed(() => {
+      return Object.keys(orders.value).reduce((ret, id) => {
+        const options = itemOptionCheckbox2options(
+          (itemsObj.value[id] || {}).itemOptionCheckbox
+        );
+        const selectedOption = selectedOptions.value[id].map((selected) => {
+          if (Array.isArray(selected) && selected.length > options.length) {
+            const newopt = [...selected];
+            return newopt.slice(0, options.length);
+          }
+          return selected;
+        });
+        ret[id] = selectedOption;
+        // ret[id] = this.selectedOptions[id];
+        return ret;
+      }, {});
+    });
+    const postOptions = computed(() => {
+      return Object.keys(trimmedSelectedOptions.value).reduce((ret, id) => {
+        ret[id] = (trimmedSelectedOptions.value[id] || []).map((item, k) => {
+          return item
+            .map((selectedOpt, key) => {
+              const opt = (itemsObj.value[id] || {}).itemOptionCheckbox[
+                key
+              ].split(",");
+              if (opt.length === 1) {
+                if (selectedOpt) {
+                  return opt[0];
+                }
+              } else {
+                return opt[selectedOpt];
+              }
+              return "";
+            })
+            .map((s) => s.trim());
+        });
+        return ret;
+      }, {});
+    });
+
+    const optionPrice = (option) => {
+      const regex = /\(((\+|\-|＋|ー|−)[0-9\.]+)\)/;
+      const match = (option || "").match(regex);
+      if (match) {
+        return Number(match[1].replace(/ー|−/g, "-").replace(/＋/g, "+"));
+      }
+      return 0;
+    };
+    
+    const prices = computed(() => {
+      const ret = {};
+
+      const multiple = ctx.root.$store.getters.stripeRegion.multiple;
+      Object.keys(orders.value).map((menuId) => {
+        const menu = itemsObj.value[menuId] || {};
+        ret[menuId] = [];
+        orders.value[menuId].map((num, orderKey) => {
+          const selectedOptionsRaw =
+                trimmedSelectedOptions.value[menuId][orderKey] || [];
+          const price = selectedOptionsRaw.reduce(
+            (tmpPrice, selectedOpt, key) => {
+              const opt = (menu.itemOptionCheckbox[key] || "").split(",");
+              if (opt.length === 1) {
+                if (selectedOpt) {
+                  return (
+                    tmpPrice +
+                    Math.round(optionPrice(opt[0]) * multiple) / multiple
+                  );
+                }
+              } else {
+                return (
+                  tmpPrice +
+                  Math.round(optionPrice(opt[selectedOpt]) * multiple) /
+                    multiple
+                );
+              }
+              return tmpPrice;
+            },
+            menu.price
+          );
+          ret[menuId].push(price * num);
+        });
+      });
+      return ret;
+    });
+
+    
+    const didQuantitiesChange = (eventArgs) => {
+      // NOTE: We need to assign a new object to trigger computed properties
+      const newObject = { ...orders.value };
+      if (arraySum(eventArgs.quantities) > 0) {
+        newObject[eventArgs.id] = eventArgs.quantities;
+      } else {
+        delete newObject[eventArgs.id];
+      }
+      orders.value = newObject;
+    };
+    const didOptionValuesChange = (eventArgs) => {
+      selectedOptions.value = Object.assign({}, selectedOptions.value, {
+        [eventArgs.id]: eventArgs.optionValues,
+      });
+      //console.log(this.selectedOptions);
+    };
+
+    return {
+      menus,
+      titles,
+      itemsObj,
+
+      itemLists,
+      titleLists,
+
+      coverImage,
+      menuId,
+      
+      isOwner,
+      isDelivery,
+      howtoreceive,
+
+      orders,
+      
+      totalQuantities,
+      selectedOptionsPrev,
+
+      totalPrice,
+      prices,
+      
+      isPreview,
+      cantDelivery,
+      noPaymentMethod,
+
+      didQuantitiesChange,
+      didOptionValuesChange,
+    };
   },
   methods: {
     openImage() {
@@ -734,14 +805,6 @@ export default {
       this.categoryPopup = false;
     },
 
-    optionPrice(option) {
-      const regex = /\(((\+|\-|＋|ー|−)[0-9\.]+)\)/;
-      const match = (option || "").match(regex);
-      if (match) {
-        return Number(match[1].replace(/ー|−/g, "-").replace(/＋/g, "+"));
-      }
-      return 0;
-    },
     handleCheckOut() {
       // The user has clicked the CheckOut button
       this.retryCount = 0;
@@ -873,22 +936,6 @@ export default {
         this.isCheckingOut = false;
       }
     },
-    didQuantitiesChange(eventArgs) {
-      // NOTE: We need to assign a new object to trigger computed properties
-      const newObject = { ...this.orders };
-      if (this.arraySum(eventArgs.quantities) > 0) {
-        newObject[eventArgs.id] = eventArgs.quantities;
-      } else {
-        delete newObject[eventArgs.id];
-      }
-      this.orders = newObject;
-    },
-    didOptionValuesChange(eventArgs) {
-      this.selectedOptions = Object.assign({}, this.selectedOptions, {
-        [eventArgs.id]: eventArgs.optionValues,
-      });
-      //console.log(this.selectedOptions);
-    },
   },
-};
+});
 </script>

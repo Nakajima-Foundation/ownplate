@@ -43,15 +43,16 @@ export const arrayChunk = <T>(arr: T[], size = 1) => {
       );
       // return "https://omochikaeri.com/r/" + this.restaurantId();
     },
-    doc2data(dataType) {
-      return (doc) => {
-        const data = doc.data();
-        data.id = doc.id;
-        data._dataType = dataType;
-        return data;
-      };
-      },
 */
+export const doc2data = (dataType: string) => {
+  return (doc: any) => {
+    const data = doc.data();
+    data.id = doc.id;
+    data._dataType = dataType;
+    return data;
+  };
+};
+
 export const array2obj = <T>(array: T[]) => {
   return array.reduce((tmp: {[key: string]: T}, current: T) => {
     tmp[(current as any).id] = current;
@@ -149,15 +150,16 @@ export const getShopOwner = async (uid: string): Promise<ShopOwnerData> => {
   }
   return defaultData;
 };
+export const arraySum = (arr: number[]) => {
+  return Object.values(arr || [0]).reduce(
+    (accumulator, currentValue) => accumulator + currentValue
+  );
+};
+export const arrayOrNumSum = (arr: number | number[]) => {
+  return Array.isArray(arr) ? arraySum(arr) : arr || 0;
+};
+
 /*
-    arraySum(arr) {
-      return Object.values(arr || [0]).reduce(
-        (accumulator, currentValue) => accumulator + currentValue
-      );
-    },
-    arrayOrNumSum(arr) {
-      return Array.isArray(arr) ? this.arraySum(arr) : arr || 0;
-    },
     forceArray(arr) {
       return Array.isArray(arr) ? arr : [arr];
     },
@@ -204,44 +206,46 @@ export const getOrderItems = (orderInfo: OrderInfoData, menuObj: { [key: string]
   }
   return [];
 };
+
+export const itemOptionCheckbox2options = (itemOptionCheckbox: any) => {
+  // HACK: Dealing with a special case (probalby a bug in the menu editor)
+  if (
+    itemOptionCheckbox &&
+      itemOptionCheckbox.length === 1 &&
+      !itemOptionCheckbox[0]
+  ) {
+    console.log("Special case: itemOptionCheckbox===['']");
+    return [];
+  }
+  return (itemOptionCheckbox || []).map((option: string) => {
+    return option.split(",").map((choice) => {
+      return choice.trim();
+    });
+  });
+};
+export const taxRate = (shopInfo: any, item: any) => {
+  if (shopInfo.inclusiveTax) {
+    return 1;
+  }
+  if (item.tax === "alcohol") {
+    return 1 + shopInfo.alcoholTax * 0.01;
+  }
+  return 1 + shopInfo.foodTax * 0.01;
+};
 /*
-    itemOptionCheckbox2options(itemOptionCheckbox) {
-      // HACK: Dealing with a special case (probalby a bug in the menu editor)
-      if (
-        itemOptionCheckbox &&
-        itemOptionCheckbox.length === 1 &&
-        !itemOptionCheckbox[0]
-      ) {
-        console.log("Special case: itemOptionCheckbox===['']");
-        return [];
-      }
-      return (itemOptionCheckbox || []).map((option) => {
-        return option.split(",").map((choice) => {
-          return choice.trim();
-        });
-      });
-    },
-    taxRate(shopInfo, item) {
-      if (shopInfo.inclusiveTax) {
-        return 1;
-      }
-      if (item.tax === "alcohol") {
-        return 1 + shopInfo.alcoholTax * 0.01;
-      }
-      return 1 + shopInfo.foodTax * 0.01;
-    },
-    displayOption(option, shopInfo, item) {
-      return formatOption(option, (price) => {
-        return this.$n(
-          this.roundPrice(price * this.taxRate(shopInfo, item)),
-          "currency"
-        );
-      });
-    },
-    roundPrice(price) {
-      const m = this.$store.getters.stripeRegion.multiple;
-      return Math.round(price * m) / m;
-    },
+const displayOption = (option, shopInfo, item) => {
+  return formatOption(option, (price) => {
+    return this.$n(
+      this.roundPrice(price * this.taxRate(shopInfo, item)),
+      "currency"
+    );
+  });
+};
+
+const roundPrice = (price) => {
+  const m = this.$store.getters.stripeRegion.multiple;
+  return Math.round(price * m) / m;
+};
 */
 
 export const getPartner = (shopOwner: ShopOwnerData) => {
