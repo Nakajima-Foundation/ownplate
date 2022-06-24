@@ -8,14 +8,7 @@
       <!-- Restaurant Page -->
       <div>
         <!-- For Owner Preview Only -->
-        <div v-if="isPreview" class="bg-red-700 bg-opacity-10 text-center p-4">
-          <div class="text-base font-bold text-red-700">
-            {{ $t("shopInfo.thisIsPreview") }}
-          </div>
-          <div class="text-base font-bold text-red-700">
-            {{ $t("shopInfo.notPublic") }}
-          </div>
-        </div>
+        <RestaurantPreview :isPreview="isPreview" />
 
         <!-- Body -->
         <div class="grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12 lg:mx-6">
@@ -42,7 +35,7 @@
                 class="mt-2 text-base"
                 :class="shopInfo.enablePreline ? 'whitespace-pre-line' : ''"
               >
-                {{ this.shopInfo.introduction }}
+                {{ shopInfo.introduction }}
               </div>
 
               <!-- Share and Favorite -->
@@ -378,6 +371,15 @@
 </template>
 
 <script>
+import {
+  defineComponent,
+  ref,
+  watch,
+  computed,
+  onMounted,
+  onUnmounted,
+} from "@vue/composition-api";
+
 import ItemCard from "@/app/user/Restaurant/ItemCard";
 import PhoneLogin from "@/app/auth/PhoneLogin";
 import ShopHeader from "@/app/user/Restaurant/ShopHeader";
@@ -386,6 +388,8 @@ import FavoriteButton from "@/app/user/Restaurant/FavoriteButton";
 import ShopInfo from "@/app/user/Restaurant/ShopInfo";
 import NotFound from "@/components/NotFound";
 import Price from "@/components/Price";
+
+import RestaurantPreview from "@/app/user/Restaurant/Preview";
 
 import liff from "@line/liff";
 import { db, firestore } from "@/plugins/firebase";
@@ -396,8 +400,18 @@ import { order_status } from "@/config/constant";
 import { ownPlateConfig } from "@/config/project";
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
-export default {
-  name: "ShopMenu",
+import {
+  doc2data,
+  array2obj,
+  arraySum,
+  itemOptionCheckbox2options,
+  optionPrice,
+} from "@/utils/utils";
+
+import { imageUtils } from "@/utils/RestaurantUtils";
+
+export default defineComponent({
+  name: "RestaurantPage",
 
   components: {
     ItemCard,
@@ -408,6 +422,7 @@ export default {
     ShopInfo,
     NotFound,
     Price,
+    RestaurantPreview,
   },
   props: {
     shopInfo: {
@@ -433,6 +448,7 @@ export default {
   },
   metaInfo() {
     // TODO: add area to header
+    console.log(this.shopInfo);
     return {
       title:
         Object.keys(this.shopInfo).length == 0
@@ -443,121 +459,154 @@ export default {
             ].join(" / "),
     };
   },
-  data() {
-    return {
-      retryCount: 0,
-      loginVisible: false,
-      isCheckingOut: false,
-      orders: {},
-      selectedOptions: {},
-      selectedOptionsPrev: {}, // from the store.cart
-      restaurantsId: this.restaurantId(),
-      // deliveryData: {},
-      menus: [],
-      titles: [],
-      waitForUser: false,
+  setup(props, ctx) {
+    const retryCount = ref(0);
+    const menus = ref([]);
+    const titles = ref([]);
 
-      howtoreceive: "takeout",
+    const loginVisible = ref(false);
+    const isCheckingOut = ref(false);
+    const waitForUser = ref(false);
+    const noAvailableTime = ref(false);
 
-      detacher: [],
+    const orders = ref({});
+    const selectedOptions = ref({});
+    const selectedOptionsPrev = ref({}); // from the store.cart
 
-      imagePopup: false,
-      categoryPopup: false,
+    const howtoreceive = ref("takeout");
 
-      noAvailableTime: false,
-    };
-  },
-  mounted() {
-    // Check if we came here as the result of "Edit Items"
-    if (this.$store.state.carts[this.restaurantId()]) {
-      const cart = this.$store.state.carts[this.restaurantId()] || {};
-      //console.log("cart", cart);
-      this.orders = cart.orders || {};
-      this.selectedOptionsPrev = cart.options || {};
-      this.selectedOptions = cart.options || {};
-    }
-  },
-  created() {
-    // Hot fix for flyer. TODO: remove after end of summer in 2022.
-    if (location.hash && location.hash.startsWith("#utm")) {
-      const str = location.hash.slice(1);
-      const url = location.pathname + "?" + str;
-      this.$router.push({
-        path: url,
-      });
-    }
+    onMounted(() => {
+      // Check if we came here as the result of "Edit Items"
+      if (ctx.root.$store.state.carts[restaurantId.value]) {
+        const cart = ctx.root.$store.state.carts[restaurantId.value] || {};
+        //console.log("cart", cart);
+        orders.value = cart.orders || {};
+        selectedOptionsPrev.value = cart.options || {};
+        selectedOptions.value = cart.options || {};
+      }
+    });
+
+    const restaurantId = computed(() => {
+      return ctx.root.$route.params.restaurantId;
+    });
+    const menuId = computed(() => {
+      return ctx.root.$route.params.menuId;
+    });
+    const user = computed(() => {
+      return ctx.root.user;
+    });
+    const uid = computed(() => {
+      return ctx.root.$store.getters.uid;
+    });
+    const isAdmin = computed(() => {
+      return !!ctx.root.$store.getters.uidAdmin;
+    });
+    const isOwner = computed(() => {
+      return isAdmin.value && uid.value === props.shopInfo.uid;
+    });
+    const isPreview = computed(() => {
+      return props.notFound && isOwner.value;
+    });
+
+    const menuLists = computed(() => {
+      const list = props.shopInfo.menuLists || [];
+      return list;
+    });
+    const isDelivery = computed(() => {
+      return howtoreceive.value === "delivery";
+    });
+    const totalQuantities = computed(() => {
+      const ret = Object.values(orders.value).reduce((total, order) => {
+        return total + arraySum(order);
+      }, 0);
+      return ret;
+    });
+
+    const coverImage = computed(() => {
+      return (
+        (props.shopInfo?.images?.cover?.resizedImages || {})["1200"] ||
+        props.shopInfo.restCoverPhoto
+      );
+    });
+
+    const noPaymentMethod = computed(() => {
+      // MEMO: ignore hidePayment. No longer used
+      return !props.paymentInfo.stripe && !props.paymentInfo.inStore;
+    });
+
+    watch(menus, (values) => {
+      analyticsUtil.sendMenuListView(
+        values,
+        props.shopInfo,
+        restaurantId.value
+      );
+    });
+
     const menu_detacher = db
-      .collection(`restaurants/${this.restaurantId()}/menus`)
+      .collection(`restaurants/${restaurantId.value}/menus`)
       .where("deletedFlag", "==", false)
       .where("publicFlag", "==", true)
       .onSnapshot((menu) => {
         if (!menu.empty) {
-          this.menus = menu.docs
+          menus.value = menu.docs
             .filter((a) => {
               const data = a.data();
               return data.validatedFlag === undefined || data.validatedFlag;
             })
-            .map(this.doc2data("menu"));
+            .map(doc2data("menu"));
         }
       });
     const title_detacher = db
-      .collection(`restaurants/${this.restaurantId()}/titles`)
+      .collection(`restaurants/${restaurantId.value}/titles`)
       .where("deletedFlag", "==", false)
       .onSnapshot((title) => {
         if (!title.empty) {
-          this.titles = title.docs.map(this.doc2data("title"));
+          titles.value = title.docs.map(doc2data("title"));
         }
       });
-    this.detacher = [menu_detacher, title_detacher];
-  },
-  destroyed() {
-    if (this.detacher) {
-      this.detacher.map((detacher) => {
-        detacher();
-      });
-    }
-  },
-  watch: {
-    user(newValue) {
-      console.log("user changed");
-      if (this.waitForUser && newValue) {
-        console.log("handling deferred notification");
-        this.goCheckout();
+    const detacher = [menu_detacher, title_detacher];
+
+    onUnmounted(() => {
+      if (detacher) {
+        detacher.map((detacher) => {
+          detacher();
+        });
       }
-    },
-    menus(values) {
-      analyticsUtil.sendMenuListView(
-        values,
-        this.shopInfo,
-        this.restaurantId()
-      );
-    },
-  },
-  computed: {
-    isPreview() {
-      return this.notFound && this.isOwner;
-    },
-    isOwner() {
-      return this.isAdmin && this.uid === this.shopInfo.uid;
-    },
-    uid() {
-      return this.$store.getters.uid;
-    },
-    totalPrice() {
-      const subTotal = Object.keys(this.prices).reduce((tmp, menuId) => {
-        tmp[menuId] = this.prices[menuId].reduce((a, b) => a + b, 0);
+    });
+
+    const itemsObj = computed(() => {
+      return array2obj(menus.value.concat(titles.value));
+    });
+    const itemLists = computed(() => {
+      return menuLists.value
+        .map((itemId) => {
+          return { ...itemsObj.value[itemId] };
+        })
+        .filter((item) => {
+          return item;
+        });
+    });
+    const titleLists = computed(() => {
+      return itemLists.value.filter((item) => {
+        return item._dataType === "title" && item.name !== "";
+      });
+    });
+
+    const totalPrice = computed(() => {
+      const subTotal = Object.keys(prices.value).reduce((tmp, menuId) => {
+        tmp[menuId] = prices.value[menuId].reduce((a, b) => a + b, 0);
         return tmp;
       }, {});
       const total = Object.keys(subTotal).reduce((tmp, menuId) => {
-        const menu = this.itemsObj[menuId] || {};
+        const menu = itemsObj.value[menuId] || {};
 
-        if (!this.shopInfo.inclusiveTax) {
+        if (!props.shopInfo.inclusiveTax) {
           if (menu.tax === "alcohol") {
             return (
-              (1 + this.shopInfo.alcoholTax * 0.01) * subTotal[menuId] + tmp
+              (1 + props.shopInfo.alcoholTax * 0.01) * subTotal[menuId] + tmp
             );
           }
-          return (1 + this.shopInfo.foodTax * 0.01) * subTotal[menuId] + tmp;
+          return (1 + props.shopInfo.foodTax * 0.01) * subTotal[menuId] + tmp;
         } else {
           return tmp + subTotal[menuId];
         }
@@ -567,77 +616,13 @@ export default {
         total: total,
       };
       // total:
-    },
-    prices() {
-      const ret = {};
-
-      const multiple = this.$store.getters.stripeRegion.multiple;
-      Object.keys(this.orders).map((menuId) => {
-        const menu = this.itemsObj[menuId] || {};
-        ret[menuId] = [];
-        this.orders[menuId].map((num, orderKey) => {
-          const selectedOptionsRaw =
-            this.trimmedSelectedOptions[menuId][orderKey] || [];
-          const price = selectedOptionsRaw.reduce(
-            (tmpPrice, selectedOpt, key) => {
-              const opt = (menu.itemOptionCheckbox[key] || "").split(",");
-              if (opt.length === 1) {
-                if (selectedOpt) {
-                  return (
-                    tmpPrice +
-                    Math.round(this.optionPrice(opt[0]) * multiple) / multiple
-                  );
-                }
-              } else {
-                return (
-                  tmpPrice +
-                  Math.round(this.optionPrice(opt[selectedOpt]) * multiple) /
-                    multiple
-                );
-              }
-              return tmpPrice;
-            },
-            menu.price
-          );
-          ret[menuId].push(price * num);
-        });
-      });
-      // console.log(ret);
-      return ret;
-    },
-    totalQuantities() {
-      const ret = Object.values(this.orders).reduce((total, order) => {
-        return total + this.arraySum(order);
-      }, 0);
-      return ret;
-    },
-    itemsObj() {
-      return this.array2obj(this.menus.concat(this.titles));
-    },
-    menuLists() {
-      const list = this.shopInfo.menuLists || [];
-      return list;
-    },
-    itemLists() {
-      return this.menuLists
-        .map((itemId) => {
-          return { ...this.itemsObj[itemId] };
-        })
-        .filter((item) => {
-          return item;
-        });
-    },
-    titleLists() {
-      return this.itemLists.filter((item) => {
-        return item._dataType === "title" && item.name !== "";
-      });
-    },
-    trimmedSelectedOptions() {
-      return Object.keys(this.orders).reduce((ret, id) => {
-        const options = this.itemOptionCheckbox2options(
-          (this.itemsObj[id] || {}).itemOptionCheckbox
+    });
+    const trimmedSelectedOptions = computed(() => {
+      return Object.keys(orders.value).reduce((ret, id) => {
+        const options = itemOptionCheckbox2options(
+          (itemsObj.value[id] || {}).itemOptionCheckbox
         );
-        const selectedOption = this.selectedOptions[id].map((selected) => {
+        const selectedOption = selectedOptions.value[id].map((selected) => {
           if (Array.isArray(selected) && selected.length > options.length) {
             const newopt = [...selected];
             return newopt.slice(0, options.length);
@@ -645,16 +630,15 @@ export default {
           return selected;
         });
         ret[id] = selectedOption;
-        // ret[id] = this.selectedOptions[id];
         return ret;
       }, {});
-    },
-    postOptions() {
-      return Object.keys(this.trimmedSelectedOptions).reduce((ret, id) => {
-        ret[id] = (this.trimmedSelectedOptions[id] || []).map((item, k) => {
+    });
+    const postOptions = computed(() => {
+      return Object.keys(trimmedSelectedOptions.value).reduce((ret, id) => {
+        ret[id] = (trimmedSelectedOptions.value[id] || []).map((item, k) => {
           return item
             .map((selectedOpt, key) => {
-              const opt = (this.itemsObj[id] || {}).itemOptionCheckbox[
+              const opt = (itemsObj.value[id] || {}).itemOptionCheckbox[
                 key
               ].split(",");
               if (opt.length === 1) {
@@ -670,101 +654,74 @@ export default {
         });
         return ret;
       }, {});
-    },
-    coverImage() {
-      return (
-        (this.shopInfo?.images?.cover?.resizedImages || {})["1200"] ||
-        this.shopInfo.restCoverPhoto
-      );
-    },
-    menuId() {
-      return this.$route.params.menuId;
-    },
-    diffDeliveryThreshold() {
-      return this.deliveryData.deliveryThreshold - (this.totalPrice.total || 0);
-    },
-    diffDeliveryFreeThreshold() {
-      return (
-        this.deliveryData.deliveryFreeThreshold - (this.totalPrice.total || 0)
-      );
-    },
-    isDeliveryFree() {
-      if (
-        this.shopInfo.enableDelivery &&
-        this.deliveryData.enableDeliveryFree
-      ) {
-        return (
-          (this.totalPrice.total || 0) >=
-          this.deliveryData.deliveryFreeThreshold
-        );
-      }
-      return false;
-    },
-    cantDelivery() {
-      if (!this.shopInfo.enableDelivery) {
+    });
+    const cantDelivery = computed(() => {
+      if (!props.shopInfo.enableDelivery) {
         return false;
       }
 
-      if (this.isDelivery && this.deliveryData.enableDeliveryThreshold) {
+      if (props.isDelivery && props.deliveryData.enableDeliveryThreshold) {
         return (
-          (this.totalPrice.total || 0) < this.deliveryData.deliveryThreshold
+          (totalPrice.value.total || 0) < props.deliveryData.deliveryThreshold
         );
       }
       return false;
-    },
-    isDelivery() {
-      return this.howtoreceive === "delivery";
-    },
-    noPaymentMethod() {
-      // MEMO: ignore hidePayment. No longer used
-      return !this.paymentInfo.stripe && !this.paymentInfo.inStore;
-    },
-  },
-  methods: {
-    openImage() {
-      this.imagePopup = true;
-    },
-    closeImage() {
-      this.imagePopup = false;
-    },
-    openCategory() {
-      this.categoryPopup = true;
-    },
-    closeCategory() {
-      this.categoryPopup = false;
-    },
+    });
 
-    optionPrice(option) {
-      const regex = /\(((\+|\-|＋|ー|−)[0-9\.]+)\)/;
-      const match = (option || "").match(regex);
-      if (match) {
-        return Number(match[1].replace(/ー|−/g, "-").replace(/＋/g, "+"));
-      }
-      return 0;
-    },
-    handleCheckOut() {
-      // The user has clicked the CheckOut button
-      this.retryCount = 0;
+    const prices = computed(() => {
+      const ret = {};
 
-      if (this.isUser || this.isLiffUser) {
-        this.goCheckout();
+      const multiple = ctx.root.$store.getters.stripeRegion.multiple;
+      Object.keys(orders.value).map((menuId) => {
+        const menu = itemsObj.value[menuId] || {};
+        ret[menuId] = [];
+        orders.value[menuId].map((num, orderKey) => {
+          const selectedOptionsRaw =
+            trimmedSelectedOptions.value[menuId][orderKey] || [];
+          const price = selectedOptionsRaw.reduce(
+            (tmpPrice, selectedOpt, key) => {
+              const opt = (menu.itemOptionCheckbox[key] || "").split(",");
+              if (opt.length === 1) {
+                if (selectedOpt) {
+                  return (
+                    tmpPrice +
+                    Math.round(optionPrice(opt[0]) * multiple) / multiple
+                  );
+                }
+              } else {
+                return (
+                  tmpPrice +
+                  Math.round(optionPrice(opt[selectedOpt]) * multiple) /
+                    multiple
+                );
+              }
+              return tmpPrice;
+            },
+            menu.price
+          );
+          ret[menuId].push(price * num);
+        });
+      });
+      return ret;
+    });
+
+    const didQuantitiesChange = (eventArgs) => {
+      // NOTE: We need to assign a new object to trigger computed properties
+      const newObject = { ...orders.value };
+      if (arraySum(eventArgs.quantities) > 0) {
+        newObject[eventArgs.id] = eventArgs.quantities;
       } else {
-        window.scrollTo(0, 0);
-        this.loginVisible = true;
+        delete newObject[eventArgs.id];
       }
-    },
-    handleDismissed() {
-      // The user has dismissed the login dialog (including the successful login)
-      this.loginVisible = false;
-      if (this.isUser || this.isLiffUser) {
-        this.goCheckout();
-      } else {
-        console.log("this.user it not ready yet");
-        this.waitForUser = true;
-        // this.isCheckingOut = false;
-      }
-    },
-    convOptionArray2Obj(obj) {
+      orders.value = newObject;
+    };
+    const didOptionValuesChange = (eventArgs) => {
+      selectedOptions.value = Object.assign({}, selectedOptions.value, {
+        [eventArgs.id]: eventArgs.optionValues,
+      });
+    };
+
+    const convOptionArray2Obj = (obj) => {
       return Object.keys(obj).reduce((newObj, objKey) => {
         newObj[objKey] = obj[objKey].reduce((tmp, value, key) => {
           tmp[key] = value;
@@ -772,10 +729,11 @@ export default {
         }, {});
         return newObj;
       }, {});
-    },
-    async goCheckout() {
+    };
+
+    const goCheckout = async () => {
       const name = await (async () => {
-        if (this.isLiffUser) {
+        if (ctx.root.isLiffUser) {
           try {
             const user = (await liff.getProfile()) || {};
             return user.displayName;
@@ -783,112 +741,187 @@ export default {
             return "";
           }
         }
-        return this.user.displayName;
+        return user.value.displayName;
       })();
 
       const order_data = {
-        order: this.orders,
-        options: this.convOptionArray2Obj(this.postOptions),
-        rawOptions: this.convOptionArray2Obj(this.trimmedSelectedOptions),
+        order: orders.value,
+        options: convOptionArray2Obj(postOptions.value),
+        rawOptions: convOptionArray2Obj(trimmedSelectedOptions.value),
         status: order_status.new_order,
-        uid: this.user.uid,
-        ownerUid: this.shopInfo.uid,
-        isDelivery: (this.shopInfo.enableDelivery && this.isDelivery) || false, // true, // for test
-        isLiff: this.isLiffUser,
-        phoneNumber: this.user.phoneNumber,
+        uid: user.value.uid,
+        ownerUid: props.shopInfo.uid,
+        isDelivery:
+          (props.shopInfo.enableDelivery && isDelivery.value) || false, // true, // for test
+        isLiff: ctx.root.isLiffUser,
+        phoneNumber: user.value.phoneNumber,
         name: name,
         updatedAt: firestore.FieldValue.serverTimestamp(),
         timeCreated: firestore.FieldValue.serverTimestamp(),
         // price never set here.
       };
       // console.log(order_data);
-      this.isCheckingOut = true;
+      isCheckingOut.value = true;
       try {
-        if (this.forcedError("checkout")) {
+        if (ctx.root.forcedError("checkout")) {
           throw Error("forced Error");
         }
         const res = await db
-          .collection(`restaurants/${this.restaurantId()}/orders`)
+          .collection(`restaurants/${restaurantId.value}/orders`)
           .add(order_data);
         // Store the current order associated with this order id, so that we can re-use it
         // when the user clicks the "Edit Items" on the next page.
         // In that case, we will come back here with #id so that we can retrieve it (see mounted).
-        this.$store.commit("saveCart", {
-          id: this.restaurantId(),
+        ctx.root.$store.commit("saveCart", {
+          id: restaurantId.value,
           cart: {
-            orders: this.orders,
-            options: this.selectedOptions,
+            orders: orders.value,
+            options: selectedOptions.value,
           },
         });
         await wasOrderCreated({
-          restaurantId: this.restaurantId(),
+          restaurantId: restaurantId.value,
           orderId: res.id,
         });
 
         try {
           const menus = [];
-          Object.keys(this.orders).forEach((menuId) => {
-            this.orders[menuId].forEach((quantity) => {
-              const menu = Object.assign({}, this.itemsObj[menuId]);
+          Object.keys(orders.value).forEach((menuId) => {
+            orders.value[menuId].forEach((quantity) => {
+              const menu = Object.assign({}, itemsObj.value[menuId]);
               menu.quantity = quantity;
               menus.push(menu);
             });
           });
           analyticsUtil.sendBeginCheckoout(
-            this.totalPrice.total,
+            totalPrice.value.total,
             menus,
-            this.shopInfo,
-            this.restaurantId()
+            props.shopInfo,
+            restaurantId.value
           );
         } catch (e) {
           console.log(e);
         }
-        if (this.mode === "liff") {
-          const liffIndexId = this.$route.params.liffIndexId;
-          this.$router.push({
-            path: `/liff/${liffIndexId}/r/${this.restaurantId()}/order/${
-              res.id
-            }`,
+        if (ctx.root.mode === "liff") {
+          const liffIndexId = ctx.root.$route.params.liffIndexId;
+          ctx.root.$router.push({
+            path: `/liff/${liffIndexId}/r/${restaurantId.value}/order/${res.id}`,
           });
         } else {
-          this.$router.push({
-            path: `/mo/r/${this.restaurantId()}/order/${res.id}`,
+          ctx.root.$router.push({
+            path: `/mo/r/${restaurantId.value}/order/${res.id}`,
           });
         }
       } catch (error) {
-        if (error.code === "permission-denied" && this.retryCount < 3) {
-          this.retryCount++;
-          console.log("retrying:", this.retryCount);
+        if (error.code === "permission-denied" && retryCount.value < 3) {
+          retryCount.value++;
+          console.log("retrying:", retryCount.value);
           setTimeout(() => {
-            this.goCheckout();
+            goCheckout();
           }, 500);
         } else {
           console.error(error.message);
-          this.$store.commit("setErrorMessage", {
+          ctx.root.$store.commit("setErrorMessage", {
             code: "order.checkout",
             error,
           });
         }
       } finally {
-        this.isCheckingOut = false;
+        isCheckingOut.value = false;
       }
-    },
-    didQuantitiesChange(eventArgs) {
-      // NOTE: We need to assign a new object to trigger computed properties
-      const newObject = { ...this.orders };
-      if (this.arraySum(eventArgs.quantities) > 0) {
-        newObject[eventArgs.id] = eventArgs.quantities;
+    };
+    const handleCheckOut = () => {
+      // The user has clicked the CheckOut button
+      retryCount.value = 0;
+
+      if (ctx.root.isUser || ctx.root.isLiffUser) {
+        goCheckout();
       } else {
-        delete newObject[eventArgs.id];
+        window.scrollTo(0, 0);
+        loginVisible.value = true;
       }
-      this.orders = newObject;
-    },
-    didOptionValuesChange(eventArgs) {
-      this.selectedOptions = Object.assign({}, this.selectedOptions, {
-        [eventArgs.id]: eventArgs.optionValues,
-      });
-      //console.log(this.selectedOptions);
-    },
+    };
+    const handleDismissed = () => {
+      // The user has dismissed the login dialog (including the successful login)
+      loginVisible.value = false;
+      if (ctx.root.isUser || ctx.root.isLiffUser) {
+        goCheckout();
+      } else {
+        console.log("this.user it not ready yet");
+        waitForUser.value = true;
+      }
+    };
+
+    const diffDeliveryThreshold = computed(() => {
+      return (
+        props.deliveryData.deliveryThreshold - (totalPrice.value.total || 0)
+      );
+    });
+    const diffDeliveryFreeThreshold = computed(() => {
+      return (
+        props.deliveryData.deliveryFreeThreshold - (totalPrice.value.total || 0)
+      );
+    });
+    const isDeliveryFree = computed(() => {
+      if (
+        props.shopInfo.enableDelivery &&
+        props.deliveryData.enableDeliveryFree
+      ) {
+        return (
+          (totalPrice.value.total || 0) >=
+          props.deliveryData.deliveryFreeThreshold
+        );
+      }
+      return false;
+    });
+
+    watch(user, (newValue) => {
+      console.log("user changed");
+      if (waitForUser.value && newValue) {
+        console.log("handling deferred notification");
+        goCheckout();
+      }
+    });
+
+    return {
+      menus,
+      titles,
+      itemsObj,
+
+      itemLists,
+      titleLists,
+
+      coverImage,
+      menuId,
+
+      isOwner,
+      isDelivery,
+      howtoreceive,
+
+      orders,
+
+      totalQuantities,
+      selectedOptionsPrev,
+
+      totalPrice,
+      prices,
+
+      isPreview,
+      cantDelivery,
+      noPaymentMethod,
+
+      didQuantitiesChange,
+      didOptionValuesChange,
+
+      handleCheckOut,
+      handleDismissed,
+
+      loginVisible,
+      isCheckingOut,
+      noAvailableTime,
+
+      ...imageUtils(),
+    };
   },
-};
+});
 </script>
