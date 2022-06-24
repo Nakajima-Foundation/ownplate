@@ -6,7 +6,7 @@ export interface MenuImages {
       [key: string]: string;
     };
   };
-};
+}
 
 export interface MenuData {
   itemDescription: string;

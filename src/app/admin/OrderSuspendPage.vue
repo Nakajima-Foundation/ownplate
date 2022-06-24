@@ -161,7 +161,7 @@ export default {
       this.notFound = true;
       return true;
     }
-    
+
     if (
       this.shopInfo &&
       !this.shopInfo.deletedFlag &&
