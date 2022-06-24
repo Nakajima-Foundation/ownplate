@@ -3,6 +3,8 @@ import VueRouter from "vue-router";
 import { RouteConfig } from "vue-router";
 Vue.use(VueRouter);
 
+import { mo_prefix } from "@/config/constant";
+
 const getUserPages = (prefix: string) => {
   return [
     {
@@ -33,9 +35,6 @@ interface CustomRoute {
   path: string;
   component: string;
   children?: CustomRoute[];
-  props?: {
-    mode: string;
-  };
 }
 
 export const customRoutes: CustomRoute[] = [
@@ -119,17 +118,11 @@ export const customRoutes: CustomRoute[] = [
   {
     path: "/r/:restaurantId",
     component: "user/RestaurantWrapper.vue",
-    props: {
-      mode: "normal",
-    },
     children: getUserPages("normal"),
   },
   {
-    path: "/mo/r/:restaurantId",
+    path: "/" + mo_prefix + "/r/:restaurantId",
     component: "user/RestaurantWrapper.vue",
-    props: {
-      mode: "mo",
-    },
     children: getUserPages("mo"),
   },
   {
@@ -147,9 +140,6 @@ export const customRoutes: CustomRoute[] = [
       {
         path: "r/:restaurantId",
         component: "user/RestaurantWrapper.vue",
-        props: {
-          mode: "liff",
-        },
         children: getUserPages("liff"),
       },
       {

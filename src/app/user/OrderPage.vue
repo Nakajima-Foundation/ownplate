@@ -18,7 +18,7 @@
       <div v-if="just_validated" class="mt-6 mx-6">
         <b-button
           :loading="isDeleting"
-          @click="handleEditItems"
+          @click="handleOpenMenu"
           class="b-reset-tw"
         >
           <div
@@ -814,7 +814,7 @@ import OrderPageMap from "./OrderPageMap";
 import { db, firestore } from "@/plugins/firebase";
 import { orderPlace } from "@/lib/firebase/functions";
 
-import { order_status, order_status_keys } from "@/config/constant";
+import { order_status, order_status_keys, mo_prefix } from "@/config/constant";
 import { nameOfOrder } from "@/utils/strings";
 import {
   stripeCreateIntent,
@@ -1216,8 +1216,10 @@ export default {
     handleOpenMenu() {
       if (this.inLiff) {
         this.$router.push(this.liff_base_path + "/r/" + this.restaurantId());
-      } else {
+      } else if (this.mode === "mo") {
         this.$router.push(`/mo/r/${this.restaurantId()}`);
+      } else {
+        this.$router.push(`/r/${this.restaurantId()}`);
       }
     },
     handleNotAvailable(flag) {
@@ -1247,11 +1249,6 @@ export default {
         this.isDeleting = false;
         console.log("failed");
       }
-    },
-    async handleEditItems() {
-      this.$router.push({
-        path: `/mo/r/${this.restaurantId()}`,
-      });
     },
     async saveLiffCustomer() {
       const uid = this.user.uid;

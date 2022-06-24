@@ -5,7 +5,7 @@ import { ShopOwnerData, PartnerData } from "@/models/ShopOwner";
 import { OrderInfoData, OrderItem } from "@/models/orderInfo";
 import { MenuData } from "@/models/menu";
 
-import { regionalSettings, partners } from "@/config/constant";
+import { regionalSettings, partners, mo_prefix } from "@/config/constant";
 import { ownPlateConfig } from "@/config/project";
 
 export const isNull = <T>(value: T) => {
@@ -271,4 +271,20 @@ export const optionPrice = (option: string) => {
     return Number(match[1].replace(/ー|−/g, "-").replace(/＋/g, "+"));
   }
   return 0;
+};
+export const isInMo = (path: string) => {
+  return (path || "").startsWith(`/${mo_prefix}/`);
+};
+export const isInLiff = (path: string) => {
+  return (path || "").startsWith(`/liff/`);
+};
+
+export const routeMode = (path: string) => {
+  if (isInMo(path)) {
+    return "mo";
+  }
+  if (isInLiff(path)) {
+    return "liff";
+  }
+  return "normal";
 };

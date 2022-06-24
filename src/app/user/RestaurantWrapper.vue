@@ -10,22 +10,19 @@
 
 <script>
 import { db } from "@/plugins/firebase";
+import { routeMode } from "@/utils/utils";
 
 export default {
   name: "RestaurantWrapper",
-  props: {
-    mode: {
-      type: String,
-      required: false,
-    },
-  },
   data() {
+    const mode = routeMode(this.$router.currentRoute.path);
     return {
       shopInfo: {},
       paymentInfo: {},
       deliveryData: {},
       detacher: [],
       notFound: null,
+      mode,
     };
   },
   created() {

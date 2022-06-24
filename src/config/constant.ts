@@ -431,5 +431,7 @@ export const partners = [
   },
 ];
 
+export const mo_prefix = "mo";
+
 export const twiml_neworder =
   '<Response><Say language="ja-jp">こんにちは。わたしは、おもちかえりどっとこむです。あたらしいオーダーが入りました。かくにんをよろしくおねがいいたします。おもちかえりどっとこむでした。</Say></Response>';

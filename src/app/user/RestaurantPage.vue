@@ -395,7 +395,7 @@ import liff from "@line/liff";
 import { db, firestore } from "@/plugins/firebase";
 import { wasOrderCreated } from "@/lib/firebase/functions";
 
-import { order_status } from "@/config/constant";
+import { order_status, mo_prefix } from "@/config/constant";
 
 import { ownPlateConfig } from "@/config/project";
 import * as analyticsUtil from "@/lib/firebase/analytics";
@@ -406,6 +406,8 @@ import {
   arraySum,
   itemOptionCheckbox2options,
   optionPrice,
+  isInMo,
+  isInLiff,
 } from "@/utils/utils";
 
 import { imageUtils } from "@/utils/RestaurantUtils";
@@ -448,7 +450,6 @@ export default defineComponent({
   },
   metaInfo() {
     // TODO: add area to header
-    console.log(this.shopInfo);
     return {
       title:
         Object.keys(this.shopInfo).length == 0
@@ -474,6 +475,9 @@ export default defineComponent({
     const selectedOptionsPrev = ref({}); // from the store.cart
 
     const howtoreceive = ref("takeout");
+
+    const inMo = isInMo(ctx.root.$route.path);
+    const isLiff = isInLiff(ctx.root.$route.path);
 
     onMounted(() => {
       // Check if we came here as the result of "Edit Items"
@@ -720,7 +724,6 @@ export default defineComponent({
         [eventArgs.id]: eventArgs.optionValues,
       });
     };
-
     const convOptionArray2Obj = (obj) => {
       return Object.keys(obj).reduce((newObj, objKey) => {
         newObj[objKey] = obj[objKey].reduce((tmp, value, key) => {
@@ -802,14 +805,18 @@ export default defineComponent({
         } catch (e) {
           console.log(e);
         }
-        if (ctx.root.mode === "liff") {
+        if (props.mode === "liff") {
           const liffIndexId = ctx.root.$route.params.liffIndexId;
           ctx.root.$router.push({
             path: `/liff/${liffIndexId}/r/${restaurantId.value}/order/${res.id}`,
           });
+        } else if (props.mode === "mo") {
+          ctx.root.$router.push({
+            path: `/${mo_prefix}/r/${restaurantId.value}/order/${res.id}`,
+          });
         } else {
           ctx.root.$router.push({
-            path: `/mo/r/${restaurantId.value}/order/${res.id}`,
+            path: `/r/${restaurantId.value}/order/${res.id}`,
           });
         }
       } catch (error) {
