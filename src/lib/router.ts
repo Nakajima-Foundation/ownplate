@@ -125,6 +125,14 @@ export const customRoutes: CustomRoute[] = [
     children: getUserPages("normal"),
   },
   {
+    path: "/mo/r/:restaurantId",
+    component: "user/RestaurantWrapper.vue",
+    props: {
+      mode: "mo",
+    },
+    children: getUserPages("mo"),
+  },
+  {
     path: "/liff/:liffIndexId/pc",
     component: "liff/PC.vue",
   },

@@ -852,7 +852,7 @@ export default {
           });
         } else {
           this.$router.push({
-            path: `/r/${this.restaurantId()}/order/${res.id}`,
+            path: `/mo/r/${this.restaurantId()}/order/${res.id}`,
           });
         }
       } catch (error) {

@@ -1217,7 +1217,7 @@ export default {
       if (this.inLiff) {
         this.$router.push(this.liff_base_path + "/r/" + this.restaurantId());
       } else {
-        this.$router.push(`/r/${this.restaurantId()}`);
+        this.$router.push(`/mo/r/${this.restaurantId()}`);
       }
     },
     handleNotAvailable(flag) {
@@ -1250,7 +1250,7 @@ export default {
     },
     async handleEditItems() {
       this.$router.push({
-        path: `/r/${this.restaurantId()}`,
+        path: `/mo/r/${this.restaurantId()}`,
       });
     },
     async saveLiffCustomer() {
