@@ -90,10 +90,9 @@ export default defineComponent({
     const noRestaurant = ref<boolean | null>(null);
     const shopInfo = ref(defaultShopInfo);
 
-
     // never use onSnapshot here.
     const defaultTax = regionalSetting.defaultTax || {};
-    
+
     const restaurantRef = doc(db, `restaurants/${restaurantId.value}`);
     const restaurant_detacher = ref();
     restaurant_detacher.value = onSnapshot(restaurantRef, (restaurant) => {
@@ -145,7 +144,7 @@ export default defineComponent({
       if (notification_detacher.value) {
         notification_detacher.value();
       }
-      if(restaurant_detacher.value) {
+      if (restaurant_detacher.value) {
         restaurant_detacher.value();
       }
     });

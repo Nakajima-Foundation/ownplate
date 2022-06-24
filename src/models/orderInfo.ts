@@ -7,7 +7,6 @@ export interface OrderMenuItemData {
   price: number;
   images: MenuImages;
   itemPhoto: string;
-
 }
 export interface OrderInfoData {
   name: string;
@@ -18,12 +17,10 @@ export interface OrderInfoData {
   // options: {[key: string]: [[key: string]: string]}
   timeEstimated: any; // TODO firestore timestamp
   menuItems: { [key: string]: OrderMenuItemData };
-  order: { [key: string]: [number] }
-  options: { [key: string]: [string] }
+  order: { [key: string]: [number] };
+  options: { [key: string]: [string] };
 }
 
-export interface OrderItem {
-
-}
+export interface OrderItem {}
 
 export class OrderInfo {}
