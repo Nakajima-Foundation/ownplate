@@ -33,10 +33,9 @@ const getUserPages = (prefix: string) => {
 
 const getUserPagesWithCat = (prefix: string) => {
   const pages = getUserPages(prefix);
-  console.log(pages[0].children);
   pages[0]?.children?.push({
     name: "r-restaurant-Menu_" + prefix,
-    path: ":category/:subCategory",
+    path: "cat/:category/:subCategory",
     component: "user/Blank.vue",
   });
   return pages;

@@ -392,7 +392,11 @@ import Price from "@/components/Price";
 import RestaurantPreview from "@/app/user/Restaurant/Preview";
 
 import liff from "@line/liff";
-import { db, firestore } from "@/plugins/firebase";
+import { db as dbOld, firestore } from "@/plugins/firebase";
+
+import { db } from "@/lib/firebase/firebase9";
+import { addDoc, query, onSnapshot, collection, where } from "firebase/firestore";
+
 import { wasOrderCreated } from "@/lib/firebase/functions";
 
 import { order_status, mo_prefix } from "@/config/constant";
@@ -552,11 +556,14 @@ export default defineComponent({
       );
     });
 
-    const menu_detacher = db
-      .collection(`restaurants/${restaurantId.value}/menus`)
-      .where("deletedFlag", "==", false)
-      .where("publicFlag", "==", true)
-      .onSnapshot((menu) => {
+    
+    const menu_detacher = onSnapshot(
+      query(
+        collection(db, `restaurants/${restaurantId.value}/menus`),
+        where("deletedFlag", "==", false),
+        where("publicFlag", "==", true),
+      ),
+      (menu) => {
         if (!menu.empty) {
           menus.value = menu.docs
             .filter((a) => {
@@ -566,10 +573,13 @@ export default defineComponent({
             .map(doc2data("menu"));
         }
       });
-    const title_detacher = db
-      .collection(`restaurants/${restaurantId.value}/titles`)
-      .where("deletedFlag", "==", false)
-      .onSnapshot((title) => {
+    
+    const title_detacher = onSnapshot(
+      query(
+        collection(db, `restaurants/${restaurantId.value}/titles`),
+        where("deletedFlag", "==", false)
+      ),
+      (title) => {
         if (!title.empty) {
           titles.value = title.docs.map(doc2data("title"));
         }
@@ -690,9 +700,10 @@ export default defineComponent({
         if (ctx.root.forcedError("checkout")) {
           throw Error("forced Error");
         }
-        const res = await db
-          .collection(`restaurants/${restaurantId.value}/orders`)
-          .add(order_data);
+        const res = await addDoc(
+          collection(db, `restaurants/${restaurantId.value}/orders`),
+          order_data
+        );
         // Store the current order associated with this order id, so that we can re-use it
         // when the user clicks the "Edit Items" on the next page.
         // In that case, we will come back here with #id so that we can retrieve it (see mounted).
