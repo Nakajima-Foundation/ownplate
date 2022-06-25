@@ -395,7 +395,13 @@ import liff from "@line/liff";
 import { db as dbOld, firestore } from "@/plugins/firebase";
 
 import { db } from "@/lib/firebase/firebase9";
-import { addDoc, query, onSnapshot, collection, where } from "firebase/firestore";
+import {
+  addDoc,
+  query,
+  onSnapshot,
+  collection,
+  where,
+} from "firebase/firestore";
 
 import { wasOrderCreated } from "@/lib/firebase/functions";
 
@@ -576,7 +582,7 @@ export default defineComponent({
         query(
           collection(db, `restaurants/${restaurantId.value}/menus`),
           where("deletedFlag", "==", false),
-          where("publicFlag", "==", true),
+          where("publicFlag", "==", true)
         ),
         (menu) => {
           if (!menu.empty) {
@@ -587,10 +593,11 @@ export default defineComponent({
               })
               .map(doc2data("menu"));
           }
-        });
+        }
+      );
     };
     loadMenu();
-    
+
     const titleDetacher = ref();
     const detacheTitle = () => {
       if (titleDetacher.value) {
@@ -608,10 +615,11 @@ export default defineComponent({
           if (!title.empty) {
             titles.value = title.docs.map(doc2data("title"));
           }
-        });
+        }
+      );
     };
     loadTitle();
-    
+
     onUnmounted(() => {
       detacheMenu();
       detacheTitle();
