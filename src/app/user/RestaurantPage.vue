@@ -506,6 +506,13 @@ export default defineComponent({
     const menuId = computed(() => {
       return route.params.menuId;
     });
+    const category = computed(() => {
+      return route.params.category;
+    });
+    const subCategory = computed(() => {
+      return route.params.subCategory;
+    });
+    console.log(subCategory.value);
     const user = computed(() => {
       return ctx.root.user;
     });
@@ -556,42 +563,58 @@ export default defineComponent({
       );
     });
 
-    
-    const menu_detacher = onSnapshot(
-      query(
-        collection(db, `restaurants/${restaurantId.value}/menus`),
-        where("deletedFlag", "==", false),
-        where("publicFlag", "==", true),
-      ),
-      (menu) => {
-        if (!menu.empty) {
-          menus.value = menu.docs
-            .filter((a) => {
-              const data = a.data();
-              return data.validatedFlag === undefined || data.validatedFlag;
-            })
-            .map(doc2data("menu"));
-        }
-      });
-    
-    const title_detacher = onSnapshot(
-      query(
-        collection(db, `restaurants/${restaurantId.value}/titles`),
-        where("deletedFlag", "==", false)
-      ),
-      (title) => {
-        if (!title.empty) {
-          titles.value = title.docs.map(doc2data("title"));
-        }
-      });
-    const detacher = [menu_detacher, title_detacher];
-
-    onUnmounted(() => {
-      if (detacher) {
-        detacher.map((detacher) => {
-          detacher();
-        });
+    const menuDetacher = ref();
+    const detacheMenu = () => {
+      if (menuDetacher.value) {
+        menuDetacher.value();
       }
+    };
+
+    const loadMenu = () => {
+      detacheMenu();
+      menuDetacher.value = onSnapshot(
+        query(
+          collection(db, `restaurants/${restaurantId.value}/menus`),
+          where("deletedFlag", "==", false),
+          where("publicFlag", "==", true),
+        ),
+        (menu) => {
+          if (!menu.empty) {
+            menus.value = menu.docs
+              .filter((a) => {
+                const data = a.data();
+                return data.validatedFlag === undefined || data.validatedFlag;
+              })
+              .map(doc2data("menu"));
+          }
+        });
+    };
+    loadMenu();
+    
+    const titleDetacher = ref();
+    const detacheTitle = () => {
+      if (titleDetacher.value) {
+        titleDetacher.value();
+      }
+    };
+
+    const loadTitle = () => {
+      titleDetacher.value = onSnapshot(
+        query(
+          collection(db, `restaurants/${restaurantId.value}/titles`),
+          where("deletedFlag", "==", false)
+        ),
+        (title) => {
+          if (!title.empty) {
+            titles.value = title.docs.map(doc2data("title"));
+          }
+        });
+    };
+    loadTitle();
+    
+    onUnmounted(() => {
+      detacheMenu();
+      detacheTitle();
     });
 
     const menuObj = computed(() => {
