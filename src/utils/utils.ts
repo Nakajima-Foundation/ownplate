@@ -4,6 +4,7 @@ import { doc, getDoc } from "firebase/firestore";
 import { ShopOwnerData, PartnerData } from "@/models/ShopOwner";
 import { OrderInfoData, OrderItem } from "@/models/orderInfo";
 import { MenuData } from "@/models/menu";
+import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 import { regionalSettings, partners, mo_prefix } from "@/config/constant";
 import { ownPlateConfig } from "@/config/project";
@@ -226,7 +227,7 @@ export const itemOptionCheckbox2options = (itemOptionCheckbox: any) => {
     });
   });
 };
-export const taxRate = (shopInfo: any, item: any) => {
+export const taxRate = (shopInfo: RestaurantInfoData, item: MenuData) => {
   if (shopInfo.inclusiveTax) {
     return 1;
   }
@@ -289,12 +290,47 @@ export const routeMode = (path: string) => {
   return "normal";
 };
 
-export const convOptionArray2Obj = <T>(obj: {[key: string]: T[] }) => {
-  return Object.keys(obj).reduce((newObj: {[key: string]: {[key: string]: T}}, objKey: string) => {
-    newObj[objKey] = obj[objKey].reduce((tmp: {[key: string]: T}, value: T, key: number) => {
-      tmp[key] = value;
+export const convOptionArray2Obj = <T>(obj: { [key: string]: T[] }) => {
+  return Object.keys(obj).reduce(
+    (newObj: { [key: string]: { [key: string]: T } }, objKey: string) => {
+      newObj[objKey] = obj[objKey].reduce(
+        (tmp: { [key: string]: T }, value: T, key: number) => {
+          tmp[key] = value;
+          return tmp;
+        },
+        {}
+      );
+      return newObj;
+    },
+    {}
+  );
+};
+
+export const prices2subtotal = (prices: { [key: string]: number[] }) => {
+  return Object.keys(prices).reduce(
+    (tmp: { [key: string]: number }, menuId) => {
+      tmp[menuId] = prices[menuId].reduce((a, b) => a + b, 0);
       return tmp;
-    }, {});
-    return newObj;
-  }, {});
+    },
+    {}
+  );
+};
+
+export const subtotal2total = (
+  subTotal: { [key: string]: number },
+  cartItems: { [key: string]: MenuData },
+  shopInfo: RestaurantInfoData
+) => {
+  return Object.keys(subTotal).reduce((tmp, menuId) => {
+    const menu = cartItems[menuId] || {};
+
+    if (!shopInfo.inclusiveTax) {
+      if (menu.tax === "alcohol") {
+        return (1 + shopInfo.alcoholTax * 0.01) * subTotal[menuId] + tmp;
+      }
+      return (1 + shopInfo.foodTax * 0.01) * subTotal[menuId] + tmp;
+    } else {
+      return tmp + subTotal[menuId];
+    }
+  }, 0);
 };

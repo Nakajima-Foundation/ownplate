@@ -408,6 +408,8 @@ import {
   optionPrice,
   isInLiff,
   convOptionArray2Obj,
+  prices2subtotal,
+  subtotal2total,
 } from "@/utils/utils";
 
 import { imageUtils } from "@/utils/RestaurantUtils";
@@ -471,19 +473,21 @@ export default defineComponent({
     const noAvailableTime = ref(false);
 
     const orders = ref({});
+    const cartItems = ref({});
     const selectedOptions = ref({});
     const selectedOptionsPrev = ref({}); // from the store.cart
 
     const howtoreceive = ref("takeout");
     const store = ctx.root.$store;
-    const route = ctx.root.$route
-    
+    const route = ctx.root.$route;
+
     onMounted(() => {
       // Check if we came here as the result of "Edit Items"
       if (store.state.carts[restaurantId.value]) {
         const cart = store.state.carts[restaurantId.value] || {};
         //console.log("cart", cart);
         orders.value = cart.orders || {};
+        cartItems.value = cart.cartItems || {};
         selectedOptionsPrev.value = cart.options || {};
         selectedOptions.value = cart.options || {};
       }
@@ -577,53 +581,32 @@ export default defineComponent({
       }
     });
 
-    const itemsObj = computed(() => {
-      return array2obj(menus.value.concat(titles.value));
+    const menuObj = computed(() => {
+      return array2obj(menus.value);
     });
     const itemLists = computed(() => {
+      const itemsObj = array2obj(menus.value.concat(titles.value));
       return menuLists.value
         .map((itemId) => {
-          return { ...itemsObj.value[itemId] };
+          return { ...itemsObj[itemId] };
         })
         .filter((item) => {
           return item;
         });
     });
     const titleLists = computed(() => {
-      return itemLists.value.filter((item) => {
-        return item._dataType === "title" && item.name !== "";
-      });
+      return titles.value.filter((title) => title.name !== "");
     });
 
     const totalPrice = computed(() => {
-      const subTotal = Object.keys(prices.value).reduce((tmp, menuId) => {
-        tmp[menuId] = prices.value[menuId].reduce((a, b) => a + b, 0);
-        return tmp;
-      }, {});
-      const total = Object.keys(subTotal).reduce((tmp, menuId) => {
-        const menu = itemsObj.value[menuId] || {};
-
-        if (!props.shopInfo.inclusiveTax) {
-          if (menu.tax === "alcohol") {
-            return (
-              (1 + props.shopInfo.alcoholTax * 0.01) * subTotal[menuId] + tmp
-            );
-          }
-          return (1 + props.shopInfo.foodTax * 0.01) * subTotal[menuId] + tmp;
-        } else {
-          return tmp + subTotal[menuId];
-        }
-      }, 0);
-      return {
-        subTotal: subTotal,
-        total: total,
-      };
-      // total:
+      const subTotal = prices2subtotal(prices.value);
+      const total = subtotal2total(subTotal, cartItems.value, props.shopInfo);
+      return { subTotal, total };
     });
     const trimmedSelectedOptions = computed(() => {
       return Object.keys(orders.value).reduce((ret, id) => {
         const options = itemOptionCheckbox2options(
-          (itemsObj.value[id] || {}).itemOptionCheckbox
+          (cartItems.value[id] || {}).itemOptionCheckbox
         );
         const selectedOption = selectedOptions.value[id].map((selected) => {
           if (Array.isArray(selected) && selected.length > options.length) {
@@ -641,7 +624,7 @@ export default defineComponent({
         ret[id] = (trimmedSelectedOptions.value[id] || []).map((item, k) => {
           return item
             .map((selectedOpt, key) => {
-              const opt = (itemsObj.value[id] || {}).itemOptionCheckbox[
+              const opt = (cartItems.value[id] || {}).itemOptionCheckbox[
                 key
               ].split(",");
               if (opt.length === 1) {
@@ -676,7 +659,7 @@ export default defineComponent({
 
       const multiple = store.getters.stripeRegion.multiple;
       Object.keys(orders.value).map((menuId) => {
-        const menu = itemsObj.value[menuId] || {};
+        const menu = cartItems.value[menuId] || {};
         ret[menuId] = [];
         orders.value[menuId].map((num, orderKey) => {
           const selectedOptionsRaw =
@@ -710,11 +693,12 @@ export default defineComponent({
 
     const didQuantitiesChange = (eventArgs) => {
       // NOTE: We need to assign a new object to trigger computed properties
+      cartItems.value[eventArgs.itemId] = menuObj.value[eventArgs.itemId];
       const newObject = { ...orders.value };
       if (arraySum(eventArgs.quantities) > 0) {
-        newObject[eventArgs.id] = eventArgs.quantities;
+        newObject[eventArgs.itemId] = eventArgs.quantities;
       } else {
-        delete newObject[eventArgs.id];
+        delete newObject[eventArgs.itemId];
       }
       orders.value = newObject;
     };
@@ -770,6 +754,7 @@ export default defineComponent({
           cart: {
             orders: orders.value,
             options: selectedOptions.value,
+            cartItems: cartItems.value,
           },
         });
         await wasOrderCreated({
@@ -781,7 +766,7 @@ export default defineComponent({
           const menus = [];
           Object.keys(orders.value).forEach((menuId) => {
             orders.value[menuId].forEach((quantity) => {
-              const menu = Object.assign({}, itemsObj.value[menuId]);
+              const menu = Object.assign({}, cartItems.value[menuId]);
               menu.quantity = quantity;
               menus.push(menu);
             });
@@ -881,10 +866,6 @@ export default defineComponent({
     });
 
     return {
-      menus,
-      titles,
-      itemsObj,
-
       itemLists,
       titleLists,
 

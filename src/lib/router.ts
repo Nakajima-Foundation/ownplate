@@ -39,8 +39,8 @@ const getUserPagesWithCat = (prefix: string) => {
     path: ":category/:subCategory",
     component: "user/Blank.vue",
   });
-  return pages
-}
+  return pages;
+};
 
 interface CustomRoute {
   name?: string;
