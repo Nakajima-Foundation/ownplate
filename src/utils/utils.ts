@@ -396,3 +396,32 @@ export const getTrimmedSelectedOptions = (
     {}
   );
 };
+
+export const getPostOption = (
+  trimmedSelectedOptions: { [key: string]: any[][] },
+  cartItems: { [key: string]: MenuData }
+) => {
+  return Object.keys(trimmedSelectedOptions).reduce(
+    (ret: { [key: string]: any }, id) => {
+      ret[id] = (trimmedSelectedOptions[id] || []).map((item, k) => {
+        return item
+          .map((selectedOpt: any, key) => {
+            const opt = (cartItems[id] || {}).itemOptionCheckbox[key].split(
+              ","
+            );
+            if (opt.length === 1) {
+              if (selectedOpt) {
+                return opt[0];
+              }
+            } else {
+              return opt[selectedOpt];
+            }
+            return "";
+          })
+          .map((s) => s.trim());
+      });
+      return ret;
+    },
+    {}
+  );
+};

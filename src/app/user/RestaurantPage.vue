@@ -410,6 +410,7 @@ import {
   subtotal2total,
   getPrices,
   getTrimmedSelectedOptions,
+  getPostOption,
 } from "@/utils/utils";
 
 import { imageUtils } from "@/utils/RestaurantUtils";
@@ -613,26 +614,7 @@ export default defineComponent({
       );
     });
     const postOptions = computed(() => {
-      return Object.keys(trimmedSelectedOptions.value).reduce((ret, id) => {
-        ret[id] = (trimmedSelectedOptions.value[id] || []).map((item, k) => {
-          return item
-            .map((selectedOpt, key) => {
-              const opt = (cartItems.value[id] || {}).itemOptionCheckbox[
-                key
-              ].split(",");
-              if (opt.length === 1) {
-                if (selectedOpt) {
-                  return opt[0];
-                }
-              } else {
-                return opt[selectedOpt];
-              }
-              return "";
-            })
-            .map((s) => s.trim());
-        });
-        return ret;
-      }, {});
+      return getPostOption(trimmedSelectedOptions.value, cartItems.value);
     });
     const cantDelivery = computed(() => {
       if (!props.shopInfo.enableDelivery) {
