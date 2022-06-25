@@ -288,3 +288,13 @@ export const routeMode = (path: string) => {
   }
   return "normal";
 };
+
+export const convOptionArray2Obj = <T>(obj: {[key: string]: T[] }) => {
+  return Object.keys(obj).reduce((newObj: {[key: string]: {[key: string]: T}}, objKey: string) => {
+    newObj[objKey] = obj[objKey].reduce((tmp: {[key: string]: T}, value: T, key: number) => {
+      tmp[key] = value;
+      return tmp;
+    }, {});
+    return newObj;
+  }, {});
+};

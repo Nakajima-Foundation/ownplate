@@ -406,8 +406,8 @@ import {
   arraySum,
   itemOptionCheckbox2options,
   optionPrice,
-  isInMo,
   isInLiff,
+  convOptionArray2Obj,
 } from "@/utils/utils";
 
 import { imageUtils } from "@/utils/RestaurantUtils";
@@ -475,14 +475,13 @@ export default defineComponent({
     const selectedOptionsPrev = ref({}); // from the store.cart
 
     const howtoreceive = ref("takeout");
-
-    const inMo = isInMo(ctx.root.$route.path);
-    const isLiff = isInLiff(ctx.root.$route.path);
-
+    const store = ctx.root.$store;
+    const route = ctx.root.$route
+    
     onMounted(() => {
       // Check if we came here as the result of "Edit Items"
-      if (ctx.root.$store.state.carts[restaurantId.value]) {
-        const cart = ctx.root.$store.state.carts[restaurantId.value] || {};
+      if (store.state.carts[restaurantId.value]) {
+        const cart = store.state.carts[restaurantId.value] || {};
         //console.log("cart", cart);
         orders.value = cart.orders || {};
         selectedOptionsPrev.value = cart.options || {};
@@ -491,19 +490,19 @@ export default defineComponent({
     });
 
     const restaurantId = computed(() => {
-      return ctx.root.$route.params.restaurantId;
+      return route.params.restaurantId;
     });
     const menuId = computed(() => {
-      return ctx.root.$route.params.menuId;
+      return route.params.menuId;
     });
     const user = computed(() => {
       return ctx.root.user;
     });
     const uid = computed(() => {
-      return ctx.root.$store.getters.uid;
+      return store.getters.uid;
     });
     const isAdmin = computed(() => {
-      return !!ctx.root.$store.getters.uidAdmin;
+      return !!store.getters.uidAdmin;
     });
     const isOwner = computed(() => {
       return isAdmin.value && uid.value === props.shopInfo.uid;
@@ -664,7 +663,7 @@ export default defineComponent({
         return false;
       }
 
-      if (props.isDelivery && props.deliveryData.enableDeliveryThreshold) {
+      if (isDelivery.value && props.deliveryData.enableDeliveryThreshold) {
         return (
           (totalPrice.value.total || 0) < props.deliveryData.deliveryThreshold
         );
@@ -675,7 +674,7 @@ export default defineComponent({
     const prices = computed(() => {
       const ret = {};
 
-      const multiple = ctx.root.$store.getters.stripeRegion.multiple;
+      const multiple = store.getters.stripeRegion.multiple;
       Object.keys(orders.value).map((menuId) => {
         const menu = itemsObj.value[menuId] || {};
         ret[menuId] = [];
@@ -724,15 +723,6 @@ export default defineComponent({
         [eventArgs.id]: eventArgs.optionValues,
       });
     };
-    const convOptionArray2Obj = (obj) => {
-      return Object.keys(obj).reduce((newObj, objKey) => {
-        newObj[objKey] = obj[objKey].reduce((tmp, value, key) => {
-          tmp[key] = value;
-          return tmp;
-        }, {});
-        return newObj;
-      }, {});
-    };
 
     const goCheckout = async () => {
       const name = await (async () => {
@@ -775,7 +765,7 @@ export default defineComponent({
         // Store the current order associated with this order id, so that we can re-use it
         // when the user clicks the "Edit Items" on the next page.
         // In that case, we will come back here with #id so that we can retrieve it (see mounted).
-        ctx.root.$store.commit("saveCart", {
+        store.commit("saveCart", {
           id: restaurantId.value,
           cart: {
             orders: orders.value,
@@ -806,7 +796,7 @@ export default defineComponent({
           console.log(e);
         }
         if (props.mode === "liff") {
-          const liffIndexId = ctx.root.$route.params.liffIndexId;
+          const liffIndexId = route.params.liffIndexId;
           ctx.root.$router.push({
             path: `/liff/${liffIndexId}/r/${restaurantId.value}/order/${res.id}`,
           });
@@ -828,7 +818,7 @@ export default defineComponent({
           }, 500);
         } else {
           console.error(error.message);
-          ctx.root.$store.commit("setErrorMessage", {
+          store.commit("setErrorMessage", {
             code: "order.checkout",
             error,
           });

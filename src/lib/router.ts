@@ -30,6 +30,18 @@ const getUserPages = (prefix: string) => {
     },
   ];
 };
+
+const getUserPagesWithCat = (prefix: string) => {
+  const pages = getUserPages(prefix);
+  console.log(pages[0].children);
+  pages[0]?.children?.push({
+    name: "r-restaurant-Menu_" + prefix,
+    path: ":category/:subCategory",
+    component: "user/Blank.vue",
+  });
+  return pages
+}
+
 interface CustomRoute {
   name?: string;
   path: string;
@@ -123,7 +135,7 @@ export const customRoutes: CustomRoute[] = [
   {
     path: "/" + mo_prefix + "/r/:restaurantId",
     component: "user/RestaurantWrapper.vue",
-    children: getUserPages("mo"),
+    children: getUserPagesWithCat("mo"),
   },
   {
     path: "/liff/:liffIndexId/pc",
