@@ -404,12 +404,12 @@ import {
   doc2data,
   array2obj,
   arraySum,
-  itemOptionCheckbox2options,
   isInLiff,
   convOptionArray2Obj,
   prices2subtotal,
   subtotal2total,
   getPrices,
+  getTrimmedSelectedOptions,
 } from "@/utils/utils";
 
 import { imageUtils } from "@/utils/RestaurantUtils";
@@ -606,20 +606,11 @@ export default defineComponent({
       return { subTotal, total };
     });
     const trimmedSelectedOptions = computed(() => {
-      return Object.keys(orders.value).reduce((ret, id) => {
-        const options = itemOptionCheckbox2options(
-          (cartItems.value[id] || {}).itemOptionCheckbox
-        );
-        const selectedOption = selectedOptions.value[id].map((selected) => {
-          if (Array.isArray(selected) && selected.length > options.length) {
-            const newopt = [...selected];
-            return newopt.slice(0, options.length);
-          }
-          return selected;
-        });
-        ret[id] = selectedOption;
-        return ret;
-      }, {});
+      return getTrimmedSelectedOptions(
+        orders.value,
+        cartItems.value,
+        selectedOptions.value
+      );
     });
     const postOptions = computed(() => {
       return Object.keys(trimmedSelectedOptions.value).reduce((ret, id) => {

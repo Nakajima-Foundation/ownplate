@@ -211,7 +211,7 @@ export const getOrderItems = (
   return [];
 };
 
-export const itemOptionCheckbox2options = (itemOptionCheckbox: any) => {
+const itemOptionCheckbox2options = (itemOptionCheckbox: any) => {
   // HACK: Dealing with a special case (probalby a bug in the menu editor)
   if (
     itemOptionCheckbox &&
@@ -265,7 +265,7 @@ export const regionalSetting = (regionalSettings as { [key: string]: any })[
   ownPlateConfig.region || "US"
 ];
 
-export const optionPrice = (option: string) => {
+const optionPrice = (option: string) => {
   const regex = /\(((\+|\-|＋|ー|−)[0-9\.]+)\)/;
   const match = (option || "").match(regex);
   if (match) {
@@ -371,4 +371,28 @@ export const getPrices = (
     });
   });
   return ret;
+};
+
+export const getTrimmedSelectedOptions = (
+  orders: { [key: string]: number[] },
+  cartItems: { [key: string]: MenuData },
+  selectedOptions: { [key: string]: any }
+) => {
+  return Object.keys(orders).reduce(
+    (ret: { [key: string]: { [key: string]: number[] } }, id) => {
+      const options = itemOptionCheckbox2options(
+        (cartItems[id] || {}).itemOptionCheckbox
+      );
+      const selectedOption = selectedOptions[id].map((selected: any[]) => {
+        if (Array.isArray(selected) && selected.length > options.length) {
+          const newopt = [...selected];
+          return newopt.slice(0, options.length);
+        }
+        return selected;
+      });
+      ret[id] = selectedOption;
+      return ret;
+    },
+    {}
+  );
 };
