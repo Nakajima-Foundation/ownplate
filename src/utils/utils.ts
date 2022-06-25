@@ -334,3 +334,41 @@ export const subtotal2total = (
     }
   }, 0);
 };
+
+export const getPrices = (
+  multiple: number,
+  orders: { [key: string]: number[] },
+  cartItems: { [key: string]: MenuData },
+  trimmedSelectedOptions: { [key: string]: { [key: string]: number[] } }
+) => {
+  const ret: any = {};
+
+  Object.keys(orders).map((menuId) => {
+    const menu = cartItems[menuId] || {};
+    ret[menuId] = [];
+    orders[menuId].map((num, orderKey) => {
+      const selectedOptionsRaw = trimmedSelectedOptions[menuId][orderKey] || [];
+      const price = selectedOptionsRaw.reduce(
+        (tmpPrice: number, selectedOpt, key) => {
+          const opt = (menu.itemOptionCheckbox[key] || "").split(",");
+          if (opt.length === 1) {
+            if (selectedOpt) {
+              return (
+                tmpPrice + Math.round(optionPrice(opt[0]) * multiple) / multiple
+              );
+            }
+          } else {
+            return (
+              tmpPrice +
+              Math.round(optionPrice(opt[selectedOpt]) * multiple) / multiple
+            );
+          }
+          return tmpPrice;
+        },
+        menu.price
+      );
+      ret[menuId].push(price * num);
+    });
+  });
+  return ret;
+};

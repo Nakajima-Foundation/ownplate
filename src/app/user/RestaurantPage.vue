@@ -405,11 +405,11 @@ import {
   array2obj,
   arraySum,
   itemOptionCheckbox2options,
-  optionPrice,
   isInLiff,
   convOptionArray2Obj,
   prices2subtotal,
   subtotal2total,
+  getPrices,
 } from "@/utils/utils";
 
 import { imageUtils } from "@/utils/RestaurantUtils";
@@ -480,6 +480,8 @@ export default defineComponent({
     const howtoreceive = ref("takeout");
     const store = ctx.root.$store;
     const route = ctx.root.$route;
+
+    const multiple = store.getters.stripeRegion.multiple;
 
     onMounted(() => {
       // Check if we came here as the result of "Edit Items"
@@ -655,40 +657,12 @@ export default defineComponent({
     });
 
     const prices = computed(() => {
-      const ret = {};
-
-      const multiple = store.getters.stripeRegion.multiple;
-      Object.keys(orders.value).map((menuId) => {
-        const menu = cartItems.value[menuId] || {};
-        ret[menuId] = [];
-        orders.value[menuId].map((num, orderKey) => {
-          const selectedOptionsRaw =
-            trimmedSelectedOptions.value[menuId][orderKey] || [];
-          const price = selectedOptionsRaw.reduce(
-            (tmpPrice, selectedOpt, key) => {
-              const opt = (menu.itemOptionCheckbox[key] || "").split(",");
-              if (opt.length === 1) {
-                if (selectedOpt) {
-                  return (
-                    tmpPrice +
-                    Math.round(optionPrice(opt[0]) * multiple) / multiple
-                  );
-                }
-              } else {
-                return (
-                  tmpPrice +
-                  Math.round(optionPrice(opt[selectedOpt]) * multiple) /
-                    multiple
-                );
-              }
-              return tmpPrice;
-            },
-            menu.price
-          );
-          ret[menuId].push(price * num);
-        });
-      });
-      return ret;
+      return getPrices(
+        multiple,
+        orders.value,
+        cartItems.value,
+        trimmedSelectedOptions.value
+      );
     });
 
     const didQuantitiesChange = (eventArgs) => {
