@@ -51,7 +51,7 @@ export default defineComponent({
           restaurant.data().publicFlag;
 
         if (exist_and_publig) {
-          if (mode === "liff") {
+          if (mode.value === "liff") {
             notFound.value = !shopInfo.value.supportLiff;
           } else {
             notFound.value = false;

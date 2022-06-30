@@ -414,7 +414,6 @@ import {
   doc2data,
   array2obj,
   arraySum,
-  isInLiff,
   convOptionArray2Obj,
   prices2subtotal,
   subtotal2total,

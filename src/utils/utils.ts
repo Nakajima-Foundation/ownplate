@@ -9,6 +9,8 @@ import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { regionalSettings, partners } from "@/config/constant";
 import { ownPlateConfig, mo_prefixes } from "@/config/project";
 
+import { computed } from "@vue/composition-api";
+
 export const isNull = <T>(value: T) => {
   return value === null || value === undefined;
 };
@@ -273,29 +275,50 @@ const optionPrice = (option: string) => {
   }
   return 0;
 };
-export const isInMo = (path: string) => {
-  return mo_prefixes.some(prefix => {
-    return (path || "").startsWith(`/${prefix}/`);
+export const useIsInMo = (path: string) => {
+  return computed(() => {
+    return mo_prefixes.some(prefix => {
+      return (path || "").startsWith(`/${prefix}/`);
+    });
   });
 };
-export const isInLiff = (path: string) => {
-  return (path || "").startsWith(`/liff/`);
+export const useIsInLiff = (path: string) => {
+  return computed(() => {
+    return (path || "").startsWith(`/liff/`);
+  });
 };
 export const getMoPrefix = (path: string) => {
   return mo_prefixes.find(prefix => {
     return (path || "").startsWith(`/${prefix}/`);
   });
 };
+export const useLiffIndexId = (ctx: any) => {
+  return computed(() => {
+    return ctx.root.$route.params.liffIndexId;
+  });
+};
+
+export const useLiffBasePath = (ctx: any) => {
+  const liffIndexId = useLiffIndexId(ctx);
+  return computed(() => {
+    return `/liff/${liffIndexId.value}`;
+  });
+};
 
 
 export const routeMode = (path: string) => {
-  if (isInMo(path)) {
-    return "mo";
-  }
-  if (isInLiff(path)) {
-    return "liff";
-  }
-  return "normal";
+  const isInLiff = useIsInLiff(path);
+  const isInMo =  useIsInMo(path);
+  
+  return computed(() => {
+    if (isInMo.value) {
+      return "mo";
+    }
+    if (isInLiff.value) {
+      return "liff";
+    }
+    return "normal";
+  });
 };
 
 export const convOptionArray2Obj = <T>(obj: { [key: string]: T[] }) => {
@@ -432,4 +455,10 @@ export const getPostOption = (
     },
     {}
   );
+};
+
+export const useIsAdmin = (ctx: any) => {
+  return computed(() => {
+    return !!ctx.root.$store.getters.uidAdmin;
+  });
 };
