@@ -490,7 +490,6 @@ export default defineComponent({
 
     const howtoreceive = ref("takeout");
     const store = ctx.root.$store;
-    const route = ctx.root.$route;
 
     const multiple = store.getters.stripeRegion.multiple;
 
@@ -507,16 +506,16 @@ export default defineComponent({
     });
 
     const restaurantId = computed(() => {
-      return route.params.restaurantId;
+      return ctx.root.$route.params.restaurantId;
     });
     const menuId = computed(() => {
-      return route.params.menuId;
+      return ctx.root.$route.params.menuId;
     });
     const category = computed(() => {
-      return route.params.category;
+      return ctx.root.$route.params.category;
     });
     const subCategory = computed(() => {
-      return route.params.subCategory;
+      return ctx.root.$route.params.subCategory;
     });
     console.log(subCategory.value);
     const user = computed(() => {
@@ -578,12 +577,23 @@ export default defineComponent({
 
     const loadMenu = () => {
       detacheMenu();
+      
+      const menuQuery = (category.value && subCategory.value) ?
+            query(
+              collection(db, `restaurants/${restaurantId.value}/menus`),
+              where("deletedFlag", "==", false),
+              where("publicFlag", "==", true),
+              where("category", "==", category.value),
+              where("subCategory", "==", subCategory.value)
+            ) :
+            query(
+              collection(db, `restaurants/${restaurantId.value}/menus`),
+              where("deletedFlag", "==", false),
+              where("publicFlag", "==", true)
+            );
+      
       menuDetacher.value = onSnapshot(
-        query(
-          collection(db, `restaurants/${restaurantId.value}/menus`),
-          where("deletedFlag", "==", false),
-          where("publicFlag", "==", true)
-        ),
+        query(menuQuery),
         (menu) => {
           if (!menu.empty) {
             menus.value = menu.docs
@@ -598,6 +608,13 @@ export default defineComponent({
     };
     loadMenu();
 
+    const watchCat = computed(() => {
+      return [category.value, subCategory.value];
+    });
+    watch(watchCat, () => {
+      loadMenu();
+    });
+    
     const titleDetacher = ref();
     const detacheTitle = () => {
       if (titleDetacher.value) {
