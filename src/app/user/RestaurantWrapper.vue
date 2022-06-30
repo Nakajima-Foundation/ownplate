@@ -17,7 +17,12 @@ import {
   onUnmounted,
 } from "@vue/composition-api";
 
-import { db } from "@/plugins/firebase";
+import { db } from "@/lib/firebase/firebase9";
+import {
+  doc,
+  onSnapshot,
+  getDoc,
+} from "firebase/firestore";
 import { routeMode, getMoPrefix } from "@/utils/utils";
 
 export default defineComponent({
@@ -35,9 +40,9 @@ export default defineComponent({
       return ctx.root.$route.params.restaurantId;
     });
     
-    const restaurant_detacher = db
-      .doc(`restaurants/${restaurantId.value}`)
-      .onSnapshot(async (restaurant) => {
+    const restaurant_detacher = onSnapshot(
+      doc(db, `restaurants/${restaurantId.value}`),
+      (async (restaurant) => {
         const restaurant_data = restaurant.data();
         shopInfo.value = restaurant_data || {};
         const exist_and_publig =
@@ -56,24 +61,23 @@ export default defineComponent({
         }
         if (!notFound.value) {
           const uid = restaurant_data.uid;
-          db.doc(`/admins/${uid}/public/payment`)
-            .get()
+          getDoc(doc(db, `/admins/${uid}/public/payment`))
             .then((snapshot) => {
               paymentInfo.value = snapshot.data() || {};
+              console.log(paymentInfo.value);
             });
           if (shopInfo.value.enableDelivery) {
-            db.doc(`restaurants/${restaurantId.value}/delivery/area`)
-              .get()
+            getDoc(doc(db,`restaurants/${restaurantId.value}/delivery/area`))
               .then((snapshot) => {
                 deliveryData.value = snapshot.data() || {};
               });
           }
         }
-      });
+      }));
     const detachers = [restaurant_detacher];
     onUnmounted(() => {
-      if (detacher) {
-        detacher.map((detacher) => {
+      if (detachers) {
+        detachers.map((detacher) => {
           detacher();
         });
       }
