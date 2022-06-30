@@ -405,7 +405,7 @@ import {
 
 import { wasOrderCreated } from "@/lib/firebase/functions";
 
-import { order_status, mo_prefix } from "@/config/constant";
+import { order_status } from "@/config/constant";
 
 import { ownPlateConfig } from "@/config/project";
 import * as analyticsUtil from "@/lib/firebase/analytics";
@@ -457,6 +457,10 @@ export default defineComponent({
       required: false,
     },
     mode: {
+      type: String,
+      required: false,
+    },
+    mo_prefix: {
       type: String,
       required: false,
     },
@@ -793,7 +797,7 @@ export default defineComponent({
         } else if (props.mode === "mo") {
           
           ctx.root.$router.push({
-            path: `/${mo_prefix}/r/${restaurantId.value}/order/${res.id}`,
+            path: `/${props.mo_prefix}/r/${restaurantId.value}/order/${res.id}`,
           });
         } else {
           ctx.root.$router.push({
