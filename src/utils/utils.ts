@@ -6,8 +6,8 @@ import { OrderInfoData, OrderItem } from "@/models/orderInfo";
 import { MenuData } from "@/models/menu";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
-import { regionalSettings, partners, mo_prefix } from "@/config/constant";
-import { ownPlateConfig } from "@/config/project";
+import { regionalSettings, partners } from "@/config/constant";
+import { ownPlateConfig, mo_prefixes } from "@/config/project";
 
 export const isNull = <T>(value: T) => {
   return value === null || value === undefined;
@@ -274,11 +274,19 @@ const optionPrice = (option: string) => {
   return 0;
 };
 export const isInMo = (path: string) => {
-  return (path || "").startsWith(`/${mo_prefix}/`);
+  return mo_prefixes.some(prefix => {
+    return (path || "").startsWith(`/${prefix}/`);
+  });
 };
 export const isInLiff = (path: string) => {
   return (path || "").startsWith(`/liff/`);
 };
+export const getMoPrefix = (path: string) => {
+  return mo_prefixes.find(prefix => {
+    return (path || "").startsWith(`/${prefix}/`);
+  });
+};
+
 
 export const routeMode = (path: string) => {
   if (isInMo(path)) {

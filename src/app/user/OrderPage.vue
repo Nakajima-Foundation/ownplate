@@ -814,7 +814,7 @@ import OrderPageMap from "./OrderPageMap";
 import { db, firestore } from "@/plugins/firebase";
 import { orderPlace } from "@/lib/firebase/functions";
 
-import { order_status, order_status_keys, mo_prefix } from "@/config/constant";
+import { order_status, order_status_keys } from "@/config/constant";
 import { nameOfOrder } from "@/utils/strings";
 import {
   stripeCreateIntent,

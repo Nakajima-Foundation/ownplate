@@ -10,12 +10,14 @@
 
 <script>
 import { db } from "@/plugins/firebase";
-import { routeMode } from "@/utils/utils";
+import { routeMode, getMoPrefix } from "@/utils/utils";
 
 export default {
   name: "RestaurantWrapper",
   data() {
     const mode = routeMode(this.$router.currentRoute.path);
+    const moPrefix = getMoPrefix(this.$router.currentRoute.path);
+    
     return {
       shopInfo: {},
       paymentInfo: {},

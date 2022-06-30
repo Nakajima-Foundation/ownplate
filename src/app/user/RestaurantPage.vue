@@ -517,7 +517,6 @@ export default defineComponent({
     const subCategory = computed(() => {
       return ctx.root.$route.params.subCategory;
     });
-    console.log(subCategory.value);
     const user = computed(() => {
       return ctx.root.user;
     });
@@ -792,6 +791,7 @@ export default defineComponent({
             path: `/liff/${liffIndexId}/r/${restaurantId.value}/order/${res.id}`,
           });
         } else if (props.mode === "mo") {
+          
           ctx.root.$router.push({
             path: `/${mo_prefix}/r/${restaurantId.value}/order/${res.id}`,
           });
