@@ -649,24 +649,25 @@
                 </div>
               </div>
             </div>
-          </template>
-          <!-- TODO: Printer Config -->
-          <div v-if="true" class="mt-4">
-            <div class="text-sm font-bold pb-2">
-              {{ $t("editRestaurant.printerConfigTitle") }}
-            </div>
-            <div class="bg-black bg-opacity-5 rounded-lg p-4">
-              <b-checkbox v-model="shopInfo.enablePrinter">
-                <div class="text-sm font-bold">
-                  {{ $t("editRestaurant.elablePrinter") }}
+
+            <!-- TODO: Printer Config -->
+            <div v-if="true" class="mt-4">
+              <div class="text-sm font-bold pb-2">
+                {{ $t("editRestaurant.printerConfigTitle") }}
+              </div>
+              <div class="bg-black bg-opacity-5 rounded-lg p-4">
+                <b-checkbox v-model="shopInfo.enablePrinter">
+                  <div class="text-sm font-bold">
+                    {{ $t("editRestaurant.elablePrinter") }}
+                  </div>
+                </b-checkbox>
+                <div class="text-xs pt-2">
+                  {{ $t("editRestaurant.printerDescription") }}
                 </div>
-              </b-checkbox>
-              <div class="text-xs pt-2">
-                {{ $t("editRestaurant.printerDescription") }}
               </div>
             </div>
-          </div>
-
+          </template>
+          
           <!-- Email Notification -->
           <div v-if="region === 'JP'" class="mt-4">
             <a id="emailNotification" />
