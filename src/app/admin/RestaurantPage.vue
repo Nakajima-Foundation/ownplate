@@ -631,41 +631,43 @@
           </div>
 
           <!-- Delivery Config -->
-          <div v-if="region === 'JP'" class="mt-4">
-            <a id="deliveryConfig" />
-            <div class="text-sm font-bold pb-2">
-              {{ $t("editRestaurant.deliveryConfigTitle") }}
-            </div>
-            <div class="bg-black bg-opacity-5 rounded-lg p-4">
-              <div class="text-xl pt-2">
-                <router-link
-                  :to="`/admin/restaurants/${restaurantId()}/delivery`"
-                  >{{ $t("editRestaurant.deliveryConfigLink") }}</router-link
-                >
+          <template v-if="false">
+            <div v-if="region === 'JP'" class="mt-4">
+              <a id="deliveryConfig" />
+              <div class="text-sm font-bold pb-2">
+                {{ $t("editRestaurant.deliveryConfigTitle") }}
               </div>
-              <div class="text-xs pt-2">
-                {{ $t("editRestaurant.deliveryDescription") }}
-              </div>
-            </div>
-          </div>
-
-          <!-- TODO: Printer Config -->
-          <div v-if="true" class="mt-4">
-            <div class="text-sm font-bold pb-2">
-              {{ $t("editRestaurant.printerConfigTitle") }}
-            </div>
-            <div class="bg-black bg-opacity-5 rounded-lg p-4">
-              <b-checkbox v-model="shopInfo.enablePrinter">
-                <div class="text-sm font-bold">
-                  {{ $t("editRestaurant.elablePrinter") }}
+              <div class="bg-black bg-opacity-5 rounded-lg p-4">
+                <div class="text-xl pt-2">
+                  <router-link
+                    :to="`/admin/restaurants/${restaurantId()}/delivery`"
+                    >{{ $t("editRestaurant.deliveryConfigLink") }}</router-link
+                                                                    >
                 </div>
-              </b-checkbox>
-              <div class="text-xs pt-2">
-                {{ $t("editRestaurant.printerDescription") }}
+                <div class="text-xs pt-2">
+                  {{ $t("editRestaurant.deliveryDescription") }}
+                </div>
               </div>
             </div>
-          </div>
 
+            <!-- TODO: Printer Config -->
+            <div v-if="true" class="mt-4">
+              <div class="text-sm font-bold pb-2">
+                {{ $t("editRestaurant.printerConfigTitle") }}
+              </div>
+              <div class="bg-black bg-opacity-5 rounded-lg p-4">
+                <b-checkbox v-model="shopInfo.enablePrinter">
+                  <div class="text-sm font-bold">
+                    {{ $t("editRestaurant.elablePrinter") }}
+                  </div>
+                </b-checkbox>
+                <div class="text-xs pt-2">
+                  {{ $t("editRestaurant.printerDescription") }}
+                </div>
+              </div>
+            </div>
+          </template>
+          
           <!-- Email Notification -->
           <div v-if="region === 'JP'" class="mt-4">
             <a id="emailNotification" />
