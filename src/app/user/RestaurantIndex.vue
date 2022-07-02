@@ -64,54 +64,75 @@
 </template>
 
 <script>
+import {
+  defineComponent,
+  ref,
+  computed,
+} from "@vue/composition-api";
+
+import {
+  doc2data,
+} from "@/utils/utils";
+
 import { db } from "@/plugins/firebase";
 import { JPPrefecture, USStates } from "@/config/constant";
 import { restaurant2AreaObj, sortRestaurantObj } from "@/utils/RestaurantUtils";
 import Map from "@/components/Map";
+import { defaultHeader } from "@/config/header";
 
-export default {
+export default defineComponent({
   name: "RestaurantIndex",
   metaInfo() {
     return {
-      title: [this.defaultTitle, "Restaurant Index"].join(" / "),
+      title: [defaultHeader.title, "Restaurant Index"].join(" / "),
     };
   },
   components: {
     Map,
   },
-  data() {
+
+  setup(_, ctx) {
+    const ownerUid = ctx.root.$route.params.ownerUid;
+
+    const restaurantsObj = ref({});
+    const restaurants = ref([]);
+    const ownerData = ref({});
+    
+    (async () => {
+      const restaurantsCollection = await db
+            .collection("restaurants")
+            .where("publicFlag", "==", true)
+            .where("deletedFlag", "==", false)
+            .where("onTheList", "==", true)
+            .where("uid", "==", ownerUid)
+            .get();
+      restaurantsObj.value = restaurant2AreaObj(restaurantsCollection.docs);
+      restaurants.value = restaurantsCollection.docs.map(doc2data(""));
+      sortRestaurantObj(restaurantsObj.value);
+      
+      const ownerDoc = await db.doc(`owners/${ownerUid}`).get();
+      ownerData.value = ownerDoc.data() || {};
+    })()
+
+    const allArea = computed(() => {
+      return JPPrefecture.concat(USStates);
+    });
+    const coverImage = computed(() => {
+      return (
+        (ownerData.value?.images?.cover?.resizedImages || {})["1200"] ||
+        ownerData.value?.restCoverPhoto
+      );
+    });
+
     return {
-      restaurants: [],
-      restaurantsObj: {},
-      ownerData: {},
+      restaurants,
+      restaurantsObj,
+      ownerData,
+
+      allArea,
+      coverImage
+        
     };
   },
-  async created() {
-    const ownerUid = this.$route.params.ownerUid;
-    const restaurantsCollection = await db
-      .collection("restaurants")
-      .where("publicFlag", "==", true)
-      .where("deletedFlag", "==", false)
-      .where("onTheList", "==", true)
-      .where("uid", "==", ownerUid)
-      .get();
-    this.restaurantsObj = restaurant2AreaObj(restaurantsCollection.docs);
-    this.restaurants = restaurantsCollection.docs.map(this.doc2data(""));
-    sortRestaurantObj(this.restaurantsObj);
-
-    const ownerDoc = await db.doc(`owners/${ownerUid}`).get();
-    this.ownerData = ownerDoc.data() || {};
-  },
-  computed: {
-    allArea() {
-      return JPPrefecture.concat(USStates);
-    },
-    coverImage() {
-      return (
-        (this.ownerData?.images?.cover?.resizedImages || {})["1200"] ||
-        this.ownerData.restCoverPhoto
-      );
-    },
-  },
-};
+});
 </script>
