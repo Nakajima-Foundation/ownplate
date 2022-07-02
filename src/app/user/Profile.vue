@@ -144,37 +144,10 @@
 
         <!-- Delete Account and Phone Login -->
         <div v-if="user.phoneNumber">
-          <!-- Delete Account -->
-          <div class="mt-4 text-center">
-            <b-button @click="handleDeleteAccount" class="b-reset-tw">
-              <div class="inline-flex justify-center items-center">
-                <i class="material-icons text-lg text-red-700 mr-2">delete</i>
-                <div class="text-sm font-bold text-red-700">
-                  {{ $t("profile.deleteAccount") }}
-                </div>
-              </div>
-            </b-button>
-          </div>
-
-          <!-- Phone Login-->
-          <b-modal :active.sync="reLoginVisible" :width="488" scroll="keep">
-            <div class="mx-2 my-6 p-6 bg-white shadow-lg rounded-lg">
-              <phone-login
-                v-on:dismissed="continueDelete"
-                :relogin="user.phoneNumber"
-              />
-            </div>
-          </b-modal>
+          <ProfileDeleteAccount />
         </div>
       </div>
       <!-- end of Signed in -->
-
-      <!-- Loading -->
-      <b-loading
-        :is-full-page="false"
-        :active="isDeletingAccount"
-        :can-cancel="true"
-      ></b-loading>
     </div>
   </div>
 </template>
@@ -197,6 +170,7 @@ import { lineAuthURL } from "@/lib/line/line";
 
 import PhoneLogin from "@/app/auth/PhoneLogin";
 import ProfileLogin from "@/app/user/ProfileLogin";
+import ProfileDeleteAccount from "@/app/user/ProfileDeleteAccount";
 
 import HistoryButton from "@/components/users/HistoryButton";
 import FavoriteButton from "@/components/users/FavoriteButton";
@@ -210,6 +184,7 @@ export default {
     FavoriteButton,
     AddressButton,
     ProfileLogin,
+    ProfileDeleteAccount,
   },
   metaInfo() {
     return {
@@ -218,10 +193,7 @@ export default {
   },
   data() {
     return {
-      loginVisible: false,
-      reLoginVisible: false,
       isFriend: undefined,
-      isDeletingAccount: false,
       storedCard: null,
       detachStripe: null,
       liffConfig: null,
@@ -260,11 +232,6 @@ export default {
     },
     user(newValue) {
       this.checkStripe();
-      if (newValue) {
-        // We need to unset this.loginVisible, because handleDismissed will not be called
-        // on successful login
-        this.loginVisible = false;
-      }
     },
   },
   computed: {
@@ -349,15 +316,6 @@ export default {
       });
       location.href = url;
     },
-    handleDeleteAccount() {
-      this.$store.commit("setAlert", {
-        code: "profile.reallyDeleteAccount",
-        callback: async () => {
-          window.scrollTo(0, 0);
-          this.reLoginVisible = true;
-        },
-      });
-    },
     handleDeleteCard() {
       this.$store.commit("setAlert", {
         code: "profile.reallyDeleteCard",
@@ -374,22 +332,6 @@ export default {
           }
         },
       });
-    },
-    async continueDelete(result) {
-      this.reLoginVisible = false;
-      if (result) {
-        this.isDeletingAccount = true;
-        try {
-          const { data } = await accountDelete();
-          console.log("deleteAccount", data);
-          await this.user.delete();
-          console.log("deleted");
-        } catch (error) {
-          console.error(error);
-        } finally {
-          this.isDeletingAccount = false;
-        }
-      }
     },
     handleSignOut() {
       console.log("handleSignOut");
