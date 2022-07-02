@@ -1,19 +1,14 @@
 <template>
-<div>
-  <SideMenuMo ref="sideMenu" v-if="isInMo" />
-  <SideMenu ref="sideMenu" v-else />
-</div>
+  <div>
+    <SideMenuMo ref="sideMenu" v-if="isInMo" />
+    <SideMenu ref="sideMenu" v-else />
+  </div>
 </template>
 
 <script>
-import {
-  defineComponent,
-  ref,
-} from "@vue/composition-api";
+import { defineComponent, ref } from "@vue/composition-api";
 
-import {
-  useIsInMo
-} from "@/utils/utils";
+import { useIsInMo } from "@/utils/utils";
 
 import SideMenu from "@/components/SideMenu";
 import SideMenuMo from "@/components/SideMenuMo";
@@ -21,12 +16,12 @@ import SideMenuMo from "@/components/SideMenuMo";
 export default defineComponent({
   components: {
     SideMenu,
-    SideMenuMo
+    SideMenuMo,
   },
   setup(_, ctx) {
     const sideMenu = ref();
 
-    const isInMo =  useIsInMo(ctx.root);
+    const isInMo = useIsInMo(ctx.root);
 
     const handleOpen = () => {
       sideMenu.value.handleOpen();
@@ -36,9 +31,7 @@ export default defineComponent({
 
       isInMo,
       handleOpen,
-    }
-    
+    };
   },
-})
-
+});
 </script>

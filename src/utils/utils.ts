@@ -280,9 +280,11 @@ const optionPrice = (option: string) => {
 };
 export const useIsInMo = (root: any) => {
   return computed(() => {
-    return mo_prefixes.some(prefix => {
-
-      return (root.$route.fullPath || "").startsWith(`/${prefix}/`) || (root.$route.fullPath || "") === `/${prefix}`;
+    return mo_prefixes.some((prefix) => {
+      return (
+        (root.$route.fullPath || "").startsWith(`/${prefix}/`) ||
+        (root.$route.fullPath || "") === `/${prefix}`
+      );
     });
   });
 };
@@ -292,8 +294,11 @@ export const useIsInLiff = (root: any) => {
   });
 };
 export const getMoPrefix = (root: any) => {
-  return mo_prefixes.find(prefix => {
-    return (root.$router.currentRoute.path || "").startsWith(`/${prefix}/`) || (root.$route.fullPath || "") === `/${prefix}`;
+  return mo_prefixes.find((prefix) => {
+    return (
+      (root.$router.currentRoute.path || "").startsWith(`/${prefix}/`) ||
+      (root.$route.fullPath || "") === `/${prefix}`
+    );
   });
 };
 export const useMoPrefix = (root: any) => {
@@ -316,8 +321,8 @@ export const useLiffBasePath = (root: any) => {
 
 export const routeMode = (root: any) => {
   const isInLiff = useIsInLiff(root);
-  const isInMo =  useIsInMo(root);
-  
+  const isInMo = useIsInMo(root);
+
   return computed(() => {
     if (isInMo.value) {
       return "mo";
@@ -330,11 +335,11 @@ export const routeMode = (root: any) => {
 };
 
 export const useTopPath = (root: any) => {
-  const inLiff  = useIsInLiff(root);
+  const inLiff = useIsInLiff(root);
   const liffBasePath = useLiffBasePath(root);
-  const isInMo =  useIsInMo(root);
+  const isInMo = useIsInMo(root);
   const moPrefix = useMoPrefix(root);
-  
+
   return computed(() => {
     if (isInMo.value) {
       return "/" + moPrefix.value;

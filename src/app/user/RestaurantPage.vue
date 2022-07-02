@@ -579,34 +579,32 @@ export default defineComponent({
 
     const loadMenu = () => {
       detacheMenu();
-      
-      const menuQuery = (category.value && subCategory.value) ?
-            query(
+
+      const menuQuery =
+        category.value && subCategory.value
+          ? query(
               collection(db, `restaurants/${restaurantId.value}/menus`),
               where("deletedFlag", "==", false),
               where("publicFlag", "==", true),
               where("category", "==", category.value),
               where("subCategory", "==", subCategory.value)
-            ) :
-            query(
+            )
+          : query(
               collection(db, `restaurants/${restaurantId.value}/menus`),
               where("deletedFlag", "==", false),
               where("publicFlag", "==", true)
             );
-      
-      menuDetacher.value = onSnapshot(
-        query(menuQuery),
-        (menu) => {
-          if (!menu.empty) {
-            menus.value = menu.docs
-              .filter((a) => {
-                const data = a.data();
-                return data.validatedFlag === undefined || data.validatedFlag;
-              })
-              .map(doc2data("menu"));
-          }
+
+      menuDetacher.value = onSnapshot(query(menuQuery), (menu) => {
+        if (!menu.empty) {
+          menus.value = menu.docs
+            .filter((a) => {
+              const data = a.data();
+              return data.validatedFlag === undefined || data.validatedFlag;
+            })
+            .map(doc2data("menu"));
         }
-      );
+      });
     };
     loadMenu();
 
@@ -616,7 +614,7 @@ export default defineComponent({
     watch(watchCat, () => {
       loadMenu();
     });
-    
+
     const titleDetacher = ref();
     const detacheTitle = () => {
       if (titleDetacher.value) {
@@ -794,7 +792,6 @@ export default defineComponent({
             path: `/liff/${liffIndexId}/r/${restaurantId.value}/order/${res.id}`,
           });
         } else if (props.mode === "mo") {
-          
           ctx.root.$router.push({
             path: `/${props.mo_prefix}/r/${restaurantId.value}/order/${res.id}`,
           });

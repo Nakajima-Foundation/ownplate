@@ -18,11 +18,7 @@ import {
 } from "@vue/composition-api";
 
 import { db } from "@/lib/firebase/firebase9";
-import {
-  doc,
-  onSnapshot,
-  getDoc,
-} from "firebase/firestore";
+import { doc, onSnapshot, getDoc } from "firebase/firestore";
 import { routeMode, getMoPrefix } from "@/utils/utils";
 
 export default defineComponent({
@@ -30,7 +26,7 @@ export default defineComponent({
   setup(props, ctx) {
     const mode = routeMode(ctx.root);
     const mo_prefix = getMoPrefix(ctx.root);
-    
+
     const shopInfo = ref({});
     const paymentInfo = ref({});
     const deliveryData = ref({});
@@ -39,10 +35,10 @@ export default defineComponent({
     const restaurantId = computed(() => {
       return ctx.root.$route.params.restaurantId;
     });
-    
+
     const restaurant_detacher = onSnapshot(
       doc(db, `restaurants/${restaurantId.value}`),
-      (async (restaurant) => {
+      async (restaurant) => {
         const restaurant_data = restaurant.data();
         shopInfo.value = restaurant_data || {};
         const exist_and_publig =
@@ -61,19 +57,20 @@ export default defineComponent({
         }
         if (!notFound.value) {
           const uid = restaurant_data.uid;
-          getDoc(doc(db, `/admins/${uid}/public/payment`))
-            .then((snapshot) => {
-              paymentInfo.value = snapshot.data() || {};
-              console.log(paymentInfo.value);
-            });
+          getDoc(doc(db, `/admins/${uid}/public/payment`)).then((snapshot) => {
+            paymentInfo.value = snapshot.data() || {};
+            console.log(paymentInfo.value);
+          });
           if (shopInfo.value.enableDelivery) {
-            getDoc(doc(db,`restaurants/${restaurantId.value}/delivery/area`))
-              .then((snapshot) => {
-                deliveryData.value = snapshot.data() || {};
-              });
+            getDoc(
+              doc(db, `restaurants/${restaurantId.value}/delivery/area`)
+            ).then((snapshot) => {
+              deliveryData.value = snapshot.data() || {};
+            });
           }
         }
-      }));
+      }
+    );
     const detachers = [restaurant_detacher];
     onUnmounted(() => {
       if (detachers) {
@@ -81,7 +78,7 @@ export default defineComponent({
           detacher();
         });
       }
-    })
+    });
     return {
       mode,
       mo_prefix,
@@ -90,6 +87,6 @@ export default defineComponent({
       deliveryData,
       notFound,
     };
-  }
+  },
 });
 </script>

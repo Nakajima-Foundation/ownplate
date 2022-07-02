@@ -4,7 +4,7 @@
       <a
         @click="handleOpen()"
         class="w-12 h-12 inline-flex justify-center items-center"
-        >
+      >
         <i class="material-icons text-black opacity-50 text-2xl">menu</i>
       </a>
     </div>
@@ -18,11 +18,7 @@
 </template>
 
 <script>
-import {
-  defineComponent,
-  ref,
-  computed,
-} from "@vue/composition-api";
+import { defineComponent, ref, computed } from "@vue/composition-api";
 import { useTopPath, regionalSetting, useRestaurantId } from "@/utils/utils";
 
 export default defineComponent({
@@ -36,7 +32,7 @@ export default defineComponent({
     };
 
     const topPath = useTopPath(ctx.root);
-    
+
     const restaurantId = useRestaurantId(ctx.root);
 
     const logoClass = computed(() => {
@@ -62,6 +58,6 @@ export default defineComponent({
       logoClass,
       handleOpen,
     };
-  }
+  },
 });
 </script>
