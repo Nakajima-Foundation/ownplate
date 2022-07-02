@@ -20,39 +20,7 @@
 
       <!-- Not Signed In -->
       <div v-if="!user">
-        <!-- Sign In as a User -->
-        <div class="mt-6 text-center">
-          <a
-            class="inline-flex justify-center items-center h-16 px-6 rounded-full border-2 border-op-teal"
-            @click.prevent="handleSignIn"
-          >
-            <i class="material-icons text-2xl text-op-teal mr-2">local_mall</i>
-            <div class="text-lg font-bold text-op-teal">
-              {{ $t("profile.signIn") }}
-            </div>
-          </a>
-        </div>
-
-        <!-- Sign In as a Restaurant -->
-        <div class="mt-6 text-center">
-          <router-link to="/admin/user/signin">
-            <div
-              class="inline-flex justify-center items-center h-16 px-6 rounded-full border-2 border-op-teal"
-            >
-              <i class="material-icons text-2xl text-op-teal mr-2">store</i>
-              <div class="text-lg font-bold text-op-teal">
-                {{ $t("profile.signInRestaurant") }}
-              </div>
-            </div>
-          </router-link>
-        </div>
-
-        <!-- Phone Login-->
-        <b-modal :active.sync="loginVisible" :width="488" scroll="keep">
-          <div class="mx-2 my-6 p-6 bg-white shadow-lg rounded-lg">
-            <phone-login v-on:dismissed="handleDismissed" />
-          </div>
-        </b-modal>
+        <ProfileLogin />
       </div>
 
       <!-- Signed In -->
@@ -225,8 +193,10 @@ import {
 } from "@/lib/firebase/functions";
 
 import { ownPlateConfig } from "@/config/project";
-import PhoneLogin from "@/app/auth/PhoneLogin";
 import { lineAuthURL } from "@/lib/line/line";
+
+import PhoneLogin from "@/app/auth/PhoneLogin";
+import ProfileLogin from "@/app/user/ProfileLogin";
 
 import HistoryButton from "@/components/users/HistoryButton";
 import FavoriteButton from "@/components/users/FavoriteButton";
@@ -239,6 +209,7 @@ export default {
     HistoryButton,
     FavoriteButton,
     AddressButton,
+    ProfileLogin,
   },
   metaInfo() {
     return {
@@ -420,17 +391,9 @@ export default {
         }
       }
     },
-    handleSignIn() {
-      window.scrollTo(0, 0);
-      this.loginVisible = true;
-    },
     handleSignOut() {
       console.log("handleSignOut");
       signOut(auth);
-    },
-    handleDismissed() {
-      console.log("handleDismissed");
-      this.loginVisible = false;
     },
     async checkFriend() {
       if (this.isLiffUser) {
