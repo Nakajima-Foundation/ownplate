@@ -20,10 +20,13 @@ export const isEmpty = <T>(value: T) => {
 };
 
 // from mixin
+export const useRestaurantId = (root: any) => {
+  return computed(() => {
+    return root.$route.params.restaurantId;
+  });
+};
+
 /* 
-    restaurantId() {
-      return this.$route.params.restaurantId;
-    },
     resizedProfileImage(restaurant, size) {
       return (
         (restaurant.images?.profile?.resizedImages || {})[size] ||
@@ -298,19 +301,18 @@ export const useMoPrefix = (root: any) => {
     return getMoPrefix(root);
   });
 };
-export const useLiffIndexId = (ctx: any) => {
+export const useLiffIndexId = (root: any) => {
   return computed(() => {
-    return ctx.root.$route.params.liffIndexId;
+    return root.$route.params.liffIndexId;
   });
 };
 
-export const useLiffBasePath = (ctx: any) => {
-  const liffIndexId = useLiffIndexId(ctx);
+export const useLiffBasePath = (root: any) => {
+  const liffIndexId = useLiffIndexId(root);
   return computed(() => {
     return `/liff/${liffIndexId.value}`;
   });
 };
-
 
 export const routeMode = (root: any) => {
   const isInLiff = useIsInLiff(root);
@@ -324,6 +326,23 @@ export const routeMode = (root: any) => {
       return "liff";
     }
     return "normal";
+  });
+};
+
+export const useTopPath = (root: any) => {
+  const inLiff  = useIsInLiff(root);
+  const liffBasePath = useLiffBasePath(root);
+  const isInMo =  useIsInMo(root);
+  const moPrefix = useMoPrefix(root);
+  
+  return computed(() => {
+    if (isInMo.value) {
+      return "/" + moPrefix.value;
+    }
+    if (inLiff.value) {
+      return liffBasePath.value;
+    }
+    return "/";
   });
 };
 

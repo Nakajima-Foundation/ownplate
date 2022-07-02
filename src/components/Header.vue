@@ -9,7 +9,7 @@
       </a>
     </div>
     <div class="flex-1 text-center">
-      <router-link :to="top_path">
+      <router-link :to="topPath">
         <img :class="this.logoClass" class="m-auto" :src="`/${this.logo}`" />
       </router-link>
     </div>
@@ -23,7 +23,7 @@ import {
   ref,
   computed,
 } from "@vue/composition-api";
-import { useIsInLiff, useLiffBasePath, regionalSetting } from "@/utils/utils";
+import { useTopPath, regionalSetting, useRestaurantId } from "@/utils/utils";
 
 export default defineComponent({
   emits: ["handleOpen"],
@@ -35,26 +35,19 @@ export default defineComponent({
       },
     };
 
-    const inLiff  = useIsInLiff(ctx.root);
-    const liff_base_path = useLiffBasePath(ctx);
+    const topPath = useTopPath(ctx.root);
     
-    const top_path = computed(() => {
-      // /liff/hoge or /
-      return inLiff.value ? liff_base_path.value : "/";
-    });
-    const restaurant = computed(() => {
-      return ctx.root.$route.params.restaurantId;
-    });
+    const restaurantId = useRestaurantId(ctx.root);
 
     const logoClass = computed(() => {
-      if (restaurant.value && specialLogo[restaurant.value]) {
-        return specialLogo[restaurant.value].class;
+      if (restaurantId.value && specialLogo[restaurantId.value]) {
+        return specialLogo[restaurantId.value].class;
       }
       return "h-6";
     });
     const logo = computed(() => {
-      if (restaurant.value && specialLogo[restaurant.value]) {
-        return specialLogo[restaurant.value].image;
+      if (restaurantId.value && specialLogo[restaurantId.value]) {
+        return specialLogo[restaurantId.value].image;
       } else {
         return regionalSetting.Logo;
       }
@@ -64,7 +57,7 @@ export default defineComponent({
       ctx.emit("handleOpen");
     };
     return {
-      top_path,
+      topPath,
       logo,
       logoClass,
       handleOpen,
