@@ -74,7 +74,16 @@ import {
   doc2data,
 } from "@/utils/utils";
 
-import { db } from "@/plugins/firebase";
+import { db } from "@/lib/firebase/firebase9";
+import {
+  getDocs,
+  getDoc,
+  query,
+  collection,
+  doc,
+  where,
+} from "firebase/firestore";
+
 import { JPPrefecture, USStates } from "@/config/constant";
 import { restaurant2AreaObj, sortRestaurantObj } from "@/utils/RestaurantUtils";
 import Map from "@/components/Map";
@@ -99,18 +108,20 @@ export default defineComponent({
     const ownerData = ref({});
     
     (async () => {
-      const restaurantsCollection = await db
-            .collection("restaurants")
-            .where("publicFlag", "==", true)
-            .where("deletedFlag", "==", false)
-            .where("onTheList", "==", true)
-            .where("uid", "==", ownerUid)
-            .get();
+      const restaurantsCollection = await getDocs(
+        query(
+            collection(db, "restaurants"),
+            where("publicFlag", "==", true),
+            where("deletedFlag", "==", false),
+            where("onTheList", "==", true),
+            where("uid", "==", ownerUid),
+        )
+      );
       restaurantsObj.value = restaurant2AreaObj(restaurantsCollection.docs);
       restaurants.value = restaurantsCollection.docs.map(doc2data(""));
       sortRestaurantObj(restaurantsObj.value);
       
-      const ownerDoc = await db.doc(`owners/${ownerUid}`).get();
+      const ownerDoc = await getDoc(doc(db, `owners/${ownerUid}`));
       ownerData.value = ownerDoc.data() || {};
     })()
 
