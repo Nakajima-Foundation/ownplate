@@ -10,22 +10,7 @@
     </div>
 
     <!-- Header -->
-    <div class="flex items-center h-12 bg-white">
-      <div class="w-12">
-        <a
-          @click="handleOpen()"
-          class="w-12 h-12 inline-flex justify-center items-center"
-        >
-          <i class="material-icons text-black opacity-50 text-2xl">menu</i>
-        </a>
-      </div>
-      <div class="flex-1 text-center">
-        <router-link :to="top_path">
-          <img :class="this.logoClass" class="m-auto" :src="`/${this.logo}`" />
-        </router-link>
-      </div>
-      <div class="w-12"></div>
-    </div>
+    <Header @handleOpen="handleOpen" />
 
     <!-- Side Bar -->
     <SideMenuWrapper ref="sideMenu" />
@@ -133,7 +118,9 @@ import {
 
 import { onAuthStateChanged } from "firebase/auth";
 
+import Header from "@/components/Header";
 import SideMenuWrapper from "@/components/SideMenuWrapper";
+
 import DialogBox from "@/components/DialogBox";
 import AudioPlay from "@/components/AudioPlay";
 import * as Sentry from "@sentry/vue";
@@ -145,6 +132,7 @@ export default {
     DialogBox,
     AudioPlay,
     SideMenuWrapper,
+    Header,
   },
   metaInfo: defaultHeader,
   data() {
@@ -211,39 +199,6 @@ export default {
     profile_path() {
       const path_prefix = this.isAdmin ? "admins" : "users";
       return `${path_prefix}/${this.uid}/private/profile`;
-    },
-    top_path() {
-      // /liff/hoge or /
-      return this.inLiff ? this.liff_base_path : "/";
-    },
-    // Don't use this path as link
-    base_path() {
-      // /liff/hoge or ''
-      return this.inLiff ? this.liff_base_path : "";
-    },
-    restaurant() {
-      return this.$route.params.restaurantId;
-    },
-    specialLogo() {
-      return {
-        "5OInKqrhlpe7LHYNYXuU": {
-          class: "h-8",
-          image: "kuuya-logo.jpg",
-        },
-      };
-    },
-    logoClass() {
-      if (this.restaurant && this.specialLogo[this.restaurant]) {
-        return this.specialLogo[this.restaurant].class;
-      }
-      return "h-6";
-    },
-    logo() {
-      if (this.restaurant && this.specialLogo[this.restaurant]) {
-        return this.specialLogo[this.restaurant].image;
-      } else {
-        return this.regionalSetting.Logo;
-      }
     },
   },
   methods: {
