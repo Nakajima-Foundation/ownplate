@@ -40,7 +40,7 @@
 
     <!-- Favorites -->
     <div class="text-center mt-2" v-if="isCustomer && !inLiff">
-      <router-link to="/r/favorites">
+      <router-link :to="base_path + '/r/favorites'">
         <div
           class="inline-flex justify-center items-center rounded-full h-12 w-56 bg-op-teal text-white font-bold"
           @click="handleClose()"
@@ -53,7 +53,7 @@
 
     <!-- Find Restaurants -->
     <div class="text-center mt-2" v-if="(isCustomer || isAnonymous) && !inLiff">
-      <router-link to="/r">
+      <router-link :to="base_path">
         <div
           class="inline-flex justify-center items-center rounded-full h-12 w-56 bg-op-teal text-white font-bold"
           @click="handleClose()"
@@ -64,43 +64,12 @@
       </router-link>
     </div>
 
-    <!-- Admin Top -->
-    <div class="text-center mt-2" v-if="isAdmin">
-      <router-link to="/admin/restaurants">
-        <div
-          class="inline-flex justify-center items-center rounded-full h-12 w-56 bg-op-teal text-white font-bold"
-          @click="handleClose()"
-        >
-          <i class="material-icons mr-2">home</i>
-          <span>{{ $t("admin.news.adminTop") }}</span>
-        </div>
-      </router-link>
-    </div>
 
-    <!-- Links for Admin -->
-    <div v-if="!isCustomer && !inLiff">
+    <!-- Links for Terms and Policy -->
+    <div>
       <!-- Terms -->
       <div class="text-center mt-2">
-        <router-link to="/terms/admin">
-          <div
-            class="inline-flex justify-center items-center text-sm font-bold text-op-teal"
-            @click="handleClose()"
-          >
-            {{ $t("menu.termsRestaurant") }}
-          </div>
-        </router-link>
-      </div>
-    </div>
-
-    <!-- Links for Customer -->
-    <div v-if="!isAdmin">
-      <div class="text-center font-bold opacity-70 mt-6 mb-4">
-        {{ $t("menu.forCustomer") }}
-      </div>
-
-      <!-- Terms -->
-      <div class="text-center mt-2">
-        <router-link :to="base_path + '/terms/user'">
+        <router-link :to="base_path + '/terms'">
           <div
             class="inline-flex justify-center items-center text-sm font-bold text-op-teal"
             @click="handleClose()"
@@ -108,13 +77,6 @@
             {{ $t("menu.termsUser") }}
           </div>
         </router-link>
-      </div>
-    </div>
-
-    <!-- Links for All -->
-    <div>
-      <div class="text-center font-bold opacity-70 mt-6 mb-4">
-        {{ $t("menu.forAllUser") }}
       </div>
 
       <!-- Privacy -->
@@ -166,8 +128,7 @@ export default defineComponent({
     const logo2 = regionalSetting.Logo2;
 
     const base_path = computed(() => {
-      // /liff/hoge or ''
-      return inLiff.value ? liff_base_path.value : "";
+      return home_path.value;
     });
     const historyPage = computed(() => {
       return base_path.value + "/u/history";

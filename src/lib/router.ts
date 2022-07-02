@@ -49,18 +49,40 @@ interface CustomRoute {
 }
 
 const mopath = mo_prefixes.map((prefix) => {
-  return {
-    path: "/" + prefix + "/r/:restaurantId",
-    component: "user/RestaurantWrapper.vue",
-    children: getUserPagesWithCat(prefix),
-  };
-});
-const moindexpath = mo_prefixes.map((prefix) => {
-  return {
-    path: "/" + prefix,
-    component: "user/MoIndex.vue",
-  };
-});
+  const prePath =  "/" + prefix;
+  return [
+    {
+      path: prePath,
+      component: "user/MoIndex.vue",
+    },
+    {
+      path: prePath + "/r/:restaurantId",
+      component: "user/RestaurantWrapper.vue",
+      children: getUserPagesWithCat(prefix),
+    },
+    {
+      path: prePath + "/u/history",
+      component: "user/OrderHistory.vue",
+    },
+    {
+      path: prePath + "/u/profile",
+      component: "user/Profile.vue",
+    },
+    {
+      path: prePath + "/terms",
+      component: "common/TermsUser.vue",
+    },
+    {
+      path: prePath + "/privacy",
+      component: "common/Privacy.vue",
+    },
+    {
+      path: prePath + "/r/favorites",
+      component: "user/Restaurants/Favorites.vue",
+    },
+    
+  ];
+}).flat();
 
 export const customRoutes: CustomRoute[] = [
   {
@@ -146,7 +168,6 @@ export const customRoutes: CustomRoute[] = [
     children: getUserPages("normal"),
   },
   ...mopath,
-  ...moindexpath,
   {
     path: "/liff/:liffIndexId/pc",
     component: "liff/PC.vue",
