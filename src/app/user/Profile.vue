@@ -7,16 +7,7 @@
 
     <!-- Card -->
     <div class="bg-white rounded-lg shadow mt-2 p-6">
-      <!-- Login Status -->
-      <div class="text-center">
-        <div class="text-sm font-bold text-black text-opacity-30">
-          {{ $t("profile.loginStatus") }}
-        </div>
-
-        <div class="text-base font-bold mt-2">
-          {{ loginStatus }}
-        </div>
-      </div>
+      <ProfileLoginStatus />
 
       <!-- Not Signed In -->
       <div v-if="!user">
@@ -153,7 +144,6 @@
 </template>
 
 <script>
-import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
 import { db, auth } from "@/lib/firebase/firebase9";
 import { doc, getDoc, query, onSnapshot } from "firebase/firestore";
 
@@ -171,6 +161,7 @@ import { lineAuthURL } from "@/lib/line/line";
 import PhoneLogin from "@/app/auth/PhoneLogin";
 import ProfileLogin from "@/app/user/ProfileLogin";
 import ProfileDeleteAccount from "@/app/user/ProfileDeleteAccount";
+import ProfileLoginStatus from "@/app/user/ProfileLoginStatus";
 
 import HistoryButton from "@/components/users/HistoryButton";
 import FavoriteButton from "@/components/users/FavoriteButton";
@@ -185,6 +176,7 @@ export default {
     AddressButton,
     ProfileLogin,
     ProfileDeleteAccount,
+    ProfileLoginStatus,
   },
   metaInfo() {
     return {
@@ -271,27 +263,6 @@ export default {
     },
     displayName() {
       return this.user?.displayName || this.$t("profile.undefined");
-    },
-    loginStatus() {
-      if (this.user) {
-        if (this.user.email) {
-          const extra = this.$store.getters.isSuperAdmin ? "*admin" : "";
-          return `${this.$t("profile.status.email")}: ${
-            this.user.email
-          } ${extra}`;
-        } else if (this.user.phoneNumber) {
-          const number = parsePhoneNumber(this.user.phoneNumber);
-          return `${this.$t("profile.status.phone")}: ${formatNational(
-            number
-          )}`;
-        } else if (this.user.uid.slice(0, 5) === "line:") {
-          return this.$t("profile.status.line");
-        } else if (this.user.uid.slice(0, 5) === "liff:") {
-          return this.$t("profile.status.liff");
-        }
-        return this.$t("profile.status.unexpected");
-      }
-      return this.$t("profile.status.none");
     },
   },
   methods: {
