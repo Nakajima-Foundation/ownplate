@@ -64,15 +64,9 @@
 </template>
 
 <script>
-import {
-  defineComponent,
-  ref,
-  computed,
-} from "@vue/composition-api";
+import { defineComponent, ref, computed } from "@vue/composition-api";
 
-import {
-  doc2data,
-} from "@/utils/utils";
+import { doc2data } from "@/utils/utils";
 
 import { db } from "@/lib/firebase/firebase9";
 import {
@@ -106,24 +100,24 @@ export default defineComponent({
     const restaurantsObj = ref({});
     const restaurants = ref([]);
     const ownerData = ref({});
-    
+
     (async () => {
       const restaurantsCollection = await getDocs(
         query(
-            collection(db, "restaurants"),
-            where("publicFlag", "==", true),
-            where("deletedFlag", "==", false),
-            where("onTheList", "==", true),
-            where("uid", "==", ownerUid),
+          collection(db, "restaurants"),
+          where("publicFlag", "==", true),
+          where("deletedFlag", "==", false),
+          where("onTheList", "==", true),
+          where("uid", "==", ownerUid)
         )
       );
       restaurantsObj.value = restaurant2AreaObj(restaurantsCollection.docs);
       restaurants.value = restaurantsCollection.docs.map(doc2data(""));
       sortRestaurantObj(restaurantsObj.value);
-      
+
       const ownerDoc = await getDoc(doc(db, `owners/${ownerUid}`));
       ownerData.value = ownerDoc.data() || {};
-    })()
+    })();
 
     const allArea = computed(() => {
       return JPPrefecture.concat(USStates);
@@ -141,8 +135,7 @@ export default defineComponent({
       ownerData,
 
       allArea,
-      coverImage
-        
+      coverImage,
     };
   },
 });

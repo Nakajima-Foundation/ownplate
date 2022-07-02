@@ -64,7 +64,6 @@
       </router-link>
     </div>
 
-
     <!-- Links for Terms and Policy -->
     <div>
       <!-- Terms -->
