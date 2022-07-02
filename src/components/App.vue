@@ -28,7 +28,7 @@
     </div>
 
     <!-- Side Bar -->
-    <SideMenu ref="sideMenu"/>
+    <SideMenuWrapper ref="sideMenu" />
     
     <!-- Main -->
     <div class="main">
@@ -133,7 +133,7 @@ import {
 
 import { onAuthStateChanged } from "firebase/auth";
 
-import SideMenu from "@/components/SideMenu";
+import SideMenuWrapper from "@/components/SideMenuWrapper";
 import DialogBox from "@/components/DialogBox";
 import AudioPlay from "@/components/AudioPlay";
 import * as Sentry from "@sentry/vue";
@@ -144,7 +144,7 @@ export default {
   components: {
     DialogBox,
     AudioPlay,
-    SideMenu,
+    SideMenuWrapper,
   },
   metaInfo: defaultHeader,
   data() {

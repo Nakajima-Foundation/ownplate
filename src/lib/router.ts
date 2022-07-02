@@ -55,6 +55,12 @@ const mopath = mo_prefixes.map((prefix) => {
     children: getUserPagesWithCat(prefix),
   };
 });
+const moindexpath = mo_prefixes.map((prefix) => {
+  return {
+    path: "/" + prefix,
+    component: "user/MoIndex.vue",
+  };
+});
 
 export const customRoutes: CustomRoute[] = [
   {
@@ -140,6 +146,7 @@ export const customRoutes: CustomRoute[] = [
     children: getUserPages("normal"),
   },
   ...mopath,
+  ...moindexpath,
   {
     path: "/liff/:liffIndexId/pc",
     component: "liff/PC.vue",

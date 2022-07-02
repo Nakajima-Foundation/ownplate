@@ -28,8 +28,8 @@ import { routeMode, getMoPrefix } from "@/utils/utils";
 export default defineComponent({
   name: "RestaurantWrapper",
   setup(props, ctx) {
-    const mode = routeMode(ctx.root.$router.currentRoute.path);
-    const mo_prefix = getMoPrefix(ctx.root.$router.currentRoute.path);
+    const mode = routeMode(ctx.root);
+    const mo_prefix = getMoPrefix(ctx.root);
     
     const shopInfo = ref({});
     const paymentInfo = ref({});

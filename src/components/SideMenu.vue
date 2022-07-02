@@ -182,7 +182,7 @@ export default defineComponent({
     const open = ref(false);
     
     const isAdmin = useIsAdmin(ctx);
-    const inLiff  = useIsInLiff(ctx.root.$router.currentRoute.path);
+    const inLiff  = useIsInLiff(ctx.root);
     const liffBasePath = useLiffBasePath(ctx);
 
     const home_path = computed(() => {
