@@ -13,11 +13,12 @@ import * as test_helper from "./test_helper";
 
 import { Context } from "../src/models/TestType";
 
-const adminDB = test_db_helper.adminDB();
 should();
 
 describe("Order function", () => {
   it("Order function, orderCounter test", async function () {
+    const adminDB = await test_db_helper.adminDB();
+
     const uid = "123";
 
     const restaurantId = "testbar1";
