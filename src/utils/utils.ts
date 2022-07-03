@@ -6,7 +6,8 @@ import { OrderInfoData, OrderItem } from "@/models/orderInfo";
 import { MenuData } from "@/models/menu";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
-import { regionalSettings, partners } from "@/config/constant";
+import { regionalSettings, partners, stripe_regions } from "@/config/constant";
+
 import { ownPlateConfig, mo_prefixes } from "@/config/project";
 
 import { computed } from "@vue/composition-api";
@@ -269,6 +270,8 @@ export const getPartner = (shopOwner: ShopOwnerData) => {
 export const regionalSetting = (regionalSettings as { [key: string]: any })[
   ownPlateConfig.region || "US"
 ];
+
+export const stripeRegion = stripe_regions[ownPlateConfig.region || "US"];
 
 const optionPrice = (option: string) => {
   const regex = /\(((\+|\-|＋|ー|−)[0-9\.]+)\)/;
