@@ -27,7 +27,7 @@ jobs:
       - run: cp src/config/constant.ts functions/src/common/constant.ts
       - run: cp src/utils/phoneutil.ts functions/src/common/phoneutil.ts
       - run: cp src/utils/commonUtils.ts functions/src/common/commonUtils.ts
-      - run: cd functions && npm install && npm run coverage
+      - run: cd functions && npm install # && npm run coverage
       - run: ./node_modules/.bin/firebase deploy --token=$FIREBASE_TOKEN --project=staging
       - run: SLACKURL=$SLACKURL sh ./utils/buildbot.sh
 workflows:
