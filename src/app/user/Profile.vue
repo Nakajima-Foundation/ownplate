@@ -67,8 +67,7 @@
 
           <!-- Address -->
           <address-button />
-        </div>
-        <div>
+
           <!-- Credit Card Info -->
           <div class="mt-6 text-center">
             <div class="text-sm font-bold text-black text-opacity-30">
@@ -90,8 +89,7 @@
               </b-button>
             </div>
           </div>
-        </div>
-        <div>
+
           <!-- LINE -->
           <div class="mt-6 p-4 rounded-lg bg-black bg-opacity-5">
             <!-- LINE Status -->
