@@ -296,7 +296,7 @@ export const useIsInLiff = (root: any) => {
 export const getMoPrefix = (root: any) => {
   return mo_prefixes.find((prefix) => {
     return (
-      (root.$router.currentRoute.path || "").startsWith(`/${prefix}/`) ||
+      (root.$route.fullPath || "").startsWith(`/${prefix}/`) ||
       (root.$route.fullPath || "") === `/${prefix}`
     );
   });
@@ -311,7 +311,21 @@ export const useLiffIndexId = (root: any) => {
     return root.$route.params.liffIndexId;
   });
 };
+// "" or "/mo" or "/liff/hoge"
+export const useBasePath = (root: any) => {
+  const isInLiff = useIsInLiff(root);
+  const isInMo = useIsInMo(root);
 
+  return computed(() => {
+    if (isInMo.value) {
+      return "/" + getMoPrefix(root);
+    }
+    if (isInLiff.value) {
+      return "/" + root.$route.params.liffIndexId;
+    }
+    return "";
+  });
+};
 export const useLiffBasePath = (root: any) => {
   const liffIndexId = useLiffIndexId(root);
   return computed(() => {

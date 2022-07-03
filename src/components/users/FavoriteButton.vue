@@ -1,6 +1,6 @@
 <template>
   <div class="mt-6 text-center">
-    <router-link to="/r/favorites">
+    <router-link :to="basePath + '/r/favorites'">
       <div
         class="inline-flex justify-center items-center h-16 rounded-full bg-op-teal shadow"
         style="min-width: 16rem"
@@ -13,3 +13,17 @@
     </router-link>
   </div>
 </template>
+
+<script>
+import { defineComponent } from "@vue/composition-api";
+import { useBasePath } from "@/utils/utils";
+  
+export default defineComponent({
+  setup(_, ctx) {
+    const basePath = useBasePath(ctx.root);
+    return {
+      basePath,
+    };
+  },
+});
+</script>

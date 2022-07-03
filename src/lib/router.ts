@@ -57,6 +57,10 @@ const mopath = mo_prefixes
         component: "user/MoIndex.vue",
       },
       {
+        path: prePath + "/r/favorites",
+        component: "user/Restaurants/Favorites.vue",
+      },
+      {
         path: prePath + "/r/:restaurantId",
         component: "user/RestaurantWrapper.vue",
         children: getUserPagesWithCat(prefix),
@@ -76,10 +80,6 @@ const mopath = mo_prefixes
       {
         path: prePath + "/privacy",
         component: "common/Privacy.vue",
-      },
-      {
-        path: prePath + "/r/favorites",
-        component: "user/Restaurants/Favorites.vue",
       },
     ];
   })
