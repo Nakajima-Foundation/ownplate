@@ -25,7 +25,7 @@
           <favorite-button />
 
           <!-- Address -->
-          <address-button />
+          <address-button v-if="!isInMo" />
 
           <ProfileStripe />
 
@@ -60,21 +60,22 @@ import { defineComponent, computed } from "@vue/composition-api";
 import { auth } from "@/lib/firebase/firebase9";
 import { signOut } from "firebase/auth";
 
-import PhoneLogin from "@/app/auth/PhoneLogin";
-import ProfileLogin from "@/app/user/ProfileLogin";
-import ProfileDeleteAccount from "@/app/user/ProfileDeleteAccount";
-import ProfileLoginStatus from "@/app/user/ProfileLoginStatus";
-import ProfileStripe from "@/app/user/ProfileStripe";
-import ProfileLine from "@/app/user/ProfileLine";
+import ProfileLogin from "@/app/user/Profile/Login";
+import ProfileDeleteAccount from "@/app/user/Profile/DeleteAccount";
+import ProfileLoginStatus from "@/app/user/Profile/LoginStatus";
+import ProfileStripe from "@/app/user/Profile/Stripe";
+import ProfileLine from "@/app/user/Profile/Line";
+
 import HistoryButton from "@/components/users/HistoryButton";
 import FavoriteButton from "@/components/users/FavoriteButton";
 import AddressButton from "@/components/users/AddressButton";
 
 import { defaultHeader } from "@/config/header";
 
+import { useIsInMo } from "@/utils/utils";
+
 export default defineComponent({
   components: {
-    PhoneLogin,
     HistoryButton,
     FavoriteButton,
     AddressButton,
@@ -90,6 +91,8 @@ export default defineComponent({
     };
   },
   setup(_, ctx) {
+    const isInMo = useIsInMo(ctx.root);
+
     const claims = computed(() => {
       return ctx.root.$store.state.claims;
     });
@@ -99,7 +102,8 @@ export default defineComponent({
     };
     return {
       claims,
-      handleSignOut
+      handleSignOut,
+      isInMo,
     };
   },
 });
