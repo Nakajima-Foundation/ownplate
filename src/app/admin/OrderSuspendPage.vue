@@ -8,7 +8,7 @@
           <back-button :url="`/admin/restaurants/${restaurantId()}/orders`" />
         </div>
         <div class="flex-shrink-0">
-          <nuxt-link :to="'/r/' + restaurantId()">
+          <router-link :to="'/r/' + restaurantId()">
             <div
               class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
             >
@@ -17,7 +17,7 @@
                 $t("admin.viewPage")
               }}</span>
             </div>
-          </nuxt-link>
+          </router-link>
         </div>
       </div>
 
@@ -118,10 +118,10 @@
 </template>
 
 <script>
-import { db, firestore, functions } from "~/plugins/firebase.js";
-import BackButton from "~/components/BackButton";
-import PickupMixin from "~/app/user/Order/pickupMixin";
-import firebase from "firebase/app";
+import { db, firestore } from "@/plugins/firebase";
+import BackButton from "@/components/BackButton";
+import PickupMixin from "@/mixins/pickupMixin";
+import firebase from "firebase/compat/app";
 
 import NotificationIndex from "./Notifications/Index";
 
@@ -129,66 +129,53 @@ export default {
   mixins: [PickupMixin],
   components: {
     BackButton,
-    NotificationIndex
+    NotificationIndex,
   },
-  head() {
+  metaInfo() {
     return {
-      title: this.shopInfo.restaurantName ?
-        ["Admin Order Suspend", this.shopInfo.restaurantName , this.defaultTitle].join(" / ") : this.defaultTitle
-    }
+      title: this.shopInfo.restaurantName
+        ? [
+            "Admin Order Suspend",
+            this.shopInfo.restaurantName,
+            this.defaultTitle,
+          ].join(" / ")
+        : this.defaultTitle,
+    };
+  },
+  props: {
+    shopInfo: {
+      type: Object,
+      required: true,
+    },
   },
   data() {
     return {
-      shopInfo: {},
-      menus: [],
       date: null,
-      titles: [],
       detacher: [],
-      notFound: null
+      notFound: null,
     };
   },
   created() {
-    const restaurant_detacher = db
-      .doc(`restaurants/${this.restaurantId()}`)
-      .onSnapshot(restaurant => {
-        const restaurant_data = restaurant.data();
-        this.shopInfo = restaurant_data;
-        if (
-          restaurant.exists &&
-          !restaurant.data().deletedFlag &&
-          restaurant.data().publicFlag
-        ) {
-          this.notFound = false;
-        } else {
-          this.notFound = true;
-        }
-      });
-    const menu_detacher = db
-      .collection(`restaurants/${this.restaurantId()}/menus`)
-      .where("deletedFlag", "==", false)
-      .where("publicFlag", "==", true)
-      .onSnapshot(menu => {
-        if (!menu.empty) {
-          this.menus = menu.docs
-            .filter(a => {
-              const data = a.data();
-              return data.validatedFlag === undefined || data.validatedFlag;
-            })
-            .map(this.doc2data("menu"));
-        }
-      });
-    const title_detacher = db
-      .collection(`restaurants/${this.restaurantId()}/titles`)
-      .onSnapshot(title => {
-        if (!title.empty) {
-          this.titles = title.docs.map(this.doc2data("title"));
-        }
-      });
-    this.detacher = [restaurant_detacher, menu_detacher, title_detacher];
+    this.checkAdminPermission();
+    if (!this.checkShopAccount(this.shopInfo)) {
+      this.notFound = true;
+      return true;
+    }
+
+    if (
+      this.shopInfo &&
+      !this.shopInfo.deletedFlag &&
+      this.shopInfo.publicFlag
+    ) {
+      this.notFound = false;
+    } else {
+      this.notFound = true;
+    }
+    this.detacher = [restaurant_detacher];
   },
   destroyed() {
     if (this.detacher) {
-      this.detacher.map(detacher => {
+      this.detacher.map((detacher) => {
         detacher();
       });
     }
@@ -207,13 +194,6 @@ export default {
       }
       return [];
     },
-    itemsObj() {
-      return this.array2obj(this.menus.concat(this.titles));
-    },
-    menuLists() {
-      const list = this.shopInfo.menuLists || [];
-      return list;
-    },
     suspendUntil() {
       if (this.shopInfo.suspendUntil) {
         const time = this.shopInfo.suspendUntil.toDate();
@@ -223,7 +203,7 @@ export default {
         return this.$d(time, "time");
       }
       return false;
-    }
+    },
   },
   methods: {
     async handleSuspend(time) {
@@ -234,17 +214,17 @@ export default {
       console.log(ts);
       this.$store.commit("setLoading", true);
       await db.doc(`restaurants/${this.restaurantId()}`).update({
-        suspendUntil: ts
+        suspendUntil: ts,
       });
       this.$store.commit("setLoading", false);
     },
     async handleRemove() {
       this.$store.commit("setLoading", true);
       await db.doc(`restaurants/${this.restaurantId()}`).update({
-        suspendUntil: null
+        suspendUntil: null,
       });
       this.$store.commit("setLoading", false);
-    }
-  }
+    },
+  },
 };
 </script>

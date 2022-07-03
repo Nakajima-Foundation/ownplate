@@ -81,19 +81,18 @@
 
 <script>
 import Vue from "vue";
-import { db, storage } from "~/plugins/firebase.js";
 
 export default {
   name: "TitleInput",
   props: {
     title: {
       type: Object,
-      required: true
+      required: true,
     },
     position: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
   created() {
     this.checkAdminPermission();
@@ -114,7 +113,7 @@ export default {
     },
     forkItem() {
       this.$emit("forkItem", this.title.id);
-    }
-  }
+    },
+  },
 };
 </script>

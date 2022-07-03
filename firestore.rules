@@ -101,7 +101,7 @@ service cloud.firestore {
               && isUndefined(request.resource.data, 'operator');
       allow read: if request.auth.uid == userId;
       allow read: if isSuper(request);
-
+      allow read: if isAdmin(request) && request.auth.token.parentUid == userId // for sub
       allow read: if isGroupOwner(userId, request)
 
       allow write: if isSuper(request);
@@ -249,6 +249,10 @@ service cloud.firestore {
         match /lines/{lineId} {
           allow read, write: if isRestaurantOwner(restaurantId, request);
           allow read, write: if isAdmin(request) && isRestaurantSubAccount(restaurantId, request);
+        }
+        match /liffCustomer/{uid} {
+          allow read: if isRestaurantOwner(restaurantId, request);
+          allow write: if uid == request.auth.uid && isNewOwner(resource, request);
         }
         match /trace/{traceId} {
           allow create: if isRestaurantOwner(restaurantId, request)

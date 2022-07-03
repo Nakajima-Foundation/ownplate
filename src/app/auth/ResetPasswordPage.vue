@@ -68,15 +68,14 @@
 
 <script>
 import isEmail from "validator/lib/isEmail";
-import { auth } from "~/plugins/firebase.js";
+import { auth } from "@/lib/firebase/firebase9";
+import { sendPasswordResetEmail } from "firebase/auth";
 
 export default {
   name: "Reset",
-  head() {
+  metaInfo() {
     return {
-      title: [
-        this.defaultTitle, "Reset Password"
-      ].join(" / ")
+      title: [this.defaultTitle, "Reset Password"].join(" / "),
     };
   },
   data() {
@@ -84,7 +83,7 @@ export default {
       email: "",
       badEmail: "---invalid---",
       apiError: null,
-      emailSent: false
+      emailSent: false,
     };
   },
   computed: {
@@ -98,7 +97,7 @@ export default {
         errors.email = ["admin.error.code." + this.apiError];
       }
       return errors;
-    }
+    },
   },
   methods: {
     handleCancel() {
@@ -107,13 +106,12 @@ export default {
     async handleNext() {
       const options = { url: window.location.href.replace(/reset$/, "signin") };
       console.log("handleNext", options.url);
-      auth
-        .sendPasswordResetEmail(this.email, options)
+      sendPasswordResetEmail(auth, this.email, options)
         .then(() => {
           console.log("success");
           this.emailSent = true;
         })
-        .catch(error => {
+        .catch((error) => {
           console.error("reset", error);
           if (error.code === "auth/user-not-found") {
             this.badEmail = this.email;
@@ -122,7 +120,7 @@ export default {
             this.apiError = error.code;
           }
         });
-    }
-  }
+    },
+  },
 };
 </script>

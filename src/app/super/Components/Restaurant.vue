@@ -1,5 +1,7 @@
 <template>
-  <nuxt-link :to="`/r/${restaurant.id}`">{{restaurant.restaurantName}}</nuxt-link>
+  <router-link :to="`/r/${restaurant.id}`">{{
+    restaurant.restaurantName
+  }}</router-link>
 </template>
 
 <script>
@@ -7,8 +9,8 @@ export default {
   props: {
     restaurant: {
       type: Object,
-      required: true
-    }
-  }
+      required: true,
+    },
+  },
 };
 </script>

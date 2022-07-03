@@ -4,9 +4,9 @@
       <form @submit.prevent="onSignup">
         <!-- Title -->
         <div v-if="partner">
-          <img :src="`/partners/${partner.logo}`" class="w-12"/>
+          <img :src="`/partners/${partner.logo}`" class="w-12" />
           <span class="font-bold">
-            {{partner.name}}
+            {{ partner.name }}
           </span>
           <hr />
         </div>
@@ -157,16 +157,17 @@
 
 <script>
 import isEmail from "validator/lib/isEmail";
-import { db, auth, firestore } from "~/plugins/firebase.js";
-import { partners } from "~/plugins/constant";
+import { db, firestore } from "@/plugins/firebase";
+import { partners } from "@/config/constant";
+
+import { auth } from "@/lib/firebase/firebase9";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
 export default {
   name: "Signup",
-  head() {
+  metaInfo() {
     return {
-      title: [
-        this.defaultTitle, "Signup"
-      ].join(" / ")
+      title: [this.defaultTitle, "Signup"].join(" / "),
     };
   },
   data() {
@@ -176,7 +177,7 @@ export default {
       password: "",
       confirmPassword: "",
       deferredPush: false,
-      emailTaken: "---invalid---"
+      emailTaken: "---invalid---",
     };
   },
   computed: {
@@ -205,7 +206,7 @@ export default {
         errors.email = ["admin.error.email.taken"];
       }
       return errors;
-    }
+    },
   },
   watch: {
     user(newValue) {
@@ -213,7 +214,7 @@ export default {
       if (this.deferredPush && newValue) {
         this.$router.push("/admin/restaurants");
       }
-    }
+    },
   },
   methods: {
     handleCancel() {
@@ -222,7 +223,8 @@ export default {
     async onSignup() {
       const email = this.email; //
       try {
-        let result = await auth.createUserWithEmailAndPassword(
+        const result = await createUserWithEmailAndPassword(
+          auth,
           this.email,
           this.password
         );
@@ -231,17 +233,17 @@ export default {
           await db.doc(`admins/${result.user.uid}`).set({
             name: this.name,
             created: firestore.FieldValue.serverTimestamp(),
-            partners: [this.partner.id]
+            partners: [this.partner.id],
           });
         } else {
           await db.doc(`admins/${result.user.uid}`).set({
             name: this.name,
-            created: firestore.FieldValue.serverTimestamp()
+            created: firestore.FieldValue.serverTimestamp(),
           });
         }
         await db.doc(`admins/${result.user.uid}/private/profile`).set({
           email: result.user.email,
-          updated: firestore.FieldValue.serverTimestamp()
+          updated: firestore.FieldValue.serverTimestamp(),
         });
         if (this.user) {
           console.log("signup calling push");
@@ -258,7 +260,7 @@ export default {
           // BUGBUG: Not processing other type of errors
         }
       }
-    }
-  }
+    },
+  },
 };
 </script>

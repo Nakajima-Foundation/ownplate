@@ -1,65 +1,71 @@
 <template>
-
-<div class="mt-4 mx-6">
+  <div class="mt-4 mx-6">
     <div class="mt-4">
-        <div class="text-sm font-bold pb-2">
-            {{ $t("editEC.postageList") }}
-        </div>
+      <div class="text-sm font-bold pb-2">
+        {{ $t("editEC.postageList") }}
+      </div>
 
-        <div class="bg-black bg-opacity-5 rounded-lg p-4">
-            <div v-for="(state, key) in regionalSetting.AddressStates" class="flex">
-                <span class="w-2/12">{{state}}</span> <b-input class="w-4/12" v-model="postage[key]" />
-                <b-button @click="copy(key)" v-if="key !== 0">
-                    {{$t("editEC.copy") }}
-                </b-button>
-            </div>
+      <div class="bg-black bg-opacity-5 rounded-lg p-4">
+        <div v-for="(state, key) in regionalSetting.AddressStates" class="flex">
+          <span class="w-2/12">{{ state }}</span>
+          <b-input class="w-4/12" v-model="postage[key]" />
+          <b-button @click="copy(key)" v-if="key !== 0">
+            {{ $t("editEC.copy") }}
+          </b-button>
         </div>
+      </div>
     </div>
 
     <div class="mt-4">
-        <div class="text-sm font-bold pb-2">
-            {{ $t("editEC.freeThreshold") }}
+      <div class="text-sm font-bold pb-2">
+        {{ $t("editEC.freeThreshold") }}
+      </div>
+      <div class="bg-black bg-opacity-5 rounded-lg p-4">
+        <div class="flex mb-2">
+          <b-checkbox v-model="enableFree" class="flex-item" />
+          <span class="flex-item mt-auto mb-auto inline-block">
+            {{ $t("editEC.setPostageFreeThreshold") }}
+          </span>
         </div>
-        <div class="bg-black bg-opacity-5 rounded-lg p-4">
-            <div class="flex mb-2">
-                <b-checkbox v-model="enableFree" class="flex-item" />
-                <span class="flex-item mt-auto mb-auto inline-block">
-                    {{ $t("editEC.setPostageFreeThreshold") }}
-                </span>
-            </div>
-            <b-input class="w-4/12" v-model="freeThreshold" :disabled="!enableFree" />
-        </div>
+        <b-input
+          class="w-4/12"
+          v-model="freeThreshold"
+          :disabled="!enableFree"
+        />
+      </div>
     </div>
-    
+
     <!-- Save Button -->
     <div class="mt-4 text-center">
-      <b-button
-        @click="savePostage"
-        class="b-reset-tw"
+      <b-button @click="savePostage" class="b-reset-tw">
+        <div
+          class="h-12 rounded-full bg-op-teal inline-flex justify-center items-center px-6 shadow"
+          style="min-width: 8rem"
         >
-          <div
-            class="h-12 rounded-full bg-op-teal inline-flex justify-center items-center px-6 shadow"
-            style="min-width:8rem;"
-          >
-            <span class="text-white text-base font-bold">{{
-              $t("editCommon.save")
-            }}</span>
-          </div>
-        </b-button>
+          <span class="text-white text-base font-bold">{{
+            $t("editCommon.save")
+          }}</span>
+        </div>
+      </b-button>
     </div>
-    
-</div>
+  </div>
 </template>
 
 <script>
-import { db, firestore } from "~/plugins/firebase.js";
+import { db, firestore } from "@/plugins/firebase";
 export default {
+  props: {
+    shopInfo: {
+      type: Object,
+      required: true,
+    },
+  },
   data() {
     return {
       postage: Array.from([...Array(47)]).map((k) => 0),
       enableFree: false,
       freeThreshold: 100000,
-    }
+    };
   },
   computed: {
     uid() {
@@ -84,12 +90,22 @@ export default {
           default: this.postage,
         },
         freeThreshold: this.enableFree ? this.freeThreshold : null,
-      }
+      };
       await db.doc(`restaurants/${this.restaurantId()}/ec/postage`).set(data);
     },
   },
   async created() {
-    const postageDoc = await db.doc(`restaurants/${this.restaurantId()}/ec/postage`).get();
+    if (!this.checkAdminPermission()) {
+      return;
+    }
+
+    if (!this.checkShopAccount(this.shopInfo)) {
+      this.notFound = true;
+      return true;
+    }
+    const postageDoc = await db
+      .doc(`restaurants/${this.restaurantId()}/ec/postage`)
+      .get();
     if (postageDoc.exists) {
       const data = postageDoc.data();
       if (data) {
@@ -103,6 +119,5 @@ export default {
       }
     }
   },
-
-}
+};
 </script>

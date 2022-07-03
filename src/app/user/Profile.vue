@@ -67,7 +67,8 @@
 
           <!-- Address -->
           <address-button />
-            
+        </div>
+        <div>
           <!-- Credit Card Info -->
           <div class="mt-6 text-center">
             <div class="text-sm font-bold text-black text-opacity-30">
@@ -89,7 +90,8 @@
               </b-button>
             </div>
           </div>
-
+        </div>
+        <div>
           <!-- LINE -->
           <div class="mt-6 p-4 rounded-lg bg-black bg-opacity-5">
             <!-- LINE Status -->
@@ -102,9 +104,11 @@
                 {{ lineConnection }}
               </div>
             </div>
+          </div>
 
+          <div>
             <!-- LINE Connected -->
-            <div v-if="isLineUser">
+            <div v-if="isLineUser || isLiffUser">
               <!-- Friend Status -->
               <div class="mt-4 text-center">
                 <div class="text-sm font-bold text-black text-opacity-30">
@@ -121,7 +125,7 @@
                 <b-button tag="a" :href="friendLink" class="b-reset-tw">
                   <div
                     class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5"
-                    style="background:#18b900"
+                    style="background: #18b900"
                   >
                     <i class="fab fa-line text-white text-2xl mr-2" />
                     <div class="text-sm font-bold text-white">
@@ -133,16 +137,19 @@
             </div>
 
             <!-- LINE Not Connected -->
-            <div v-if="!isLineUser || underConstruction">
+
+            <div v-if="!inLiff && (!isLineUser || underConstruction)">
               <div v-if="isLineEnabled" class="mt-4 text-center">
-                <div v-if="isLineUser && underConstruction"
-                     class="text-base font-bold mb-2">
+                <div
+                  v-if="isLineUser && underConstruction"
+                  class="text-base font-bold mb-2"
+                >
                   再設定 for Dev
                 </div>
                 <b-button @click="handleLineAuth" class="b-reset-tw">
                   <div
                     class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5"
-                    style="background:#18b900"
+                    style="background: #18b900"
                   >
                     <i class="fab fa-line text-white text-2xl mr-2" />
                     <div class="text-sm font-bold text-white">
@@ -156,7 +163,7 @@
         </div>
 
         <!-- Sign Out -->
-        <div class="mt-12 text-center">
+        <div class="mt-12 text-center" v-if="!isLiffUser">
           <a
             @click.prevent="handleSignOut"
             class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5"
@@ -192,6 +199,7 @@
           </b-modal>
         </div>
       </div>
+      <!-- end of Signed in -->
 
       <!-- Loading -->
       <b-loading
@@ -204,15 +212,26 @@
 </template>
 
 <script>
-import { parsePhoneNumber, formatNational } from "~/plugins/phoneutil.js";
-import { db, auth, firestore, functions } from "~/plugins/firebase.js";
+import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
+import { db, auth } from "@/lib/firebase/firebase9";
+import { doc, getDoc, query, onSnapshot } from "firebase/firestore";
+
+import { signOut } from "firebase/auth";
+
+import {
+  stripeDeleteCard,
+  accountDelete,
+  lineVerifyFriend,
+} from "@/lib/firebase/functions";
+
 import { ownPlateConfig } from "@/config/project";
-import PhoneLogin from "~/app/auth/PhoneLogin";
-import { lineAuthURL } from "~/plugins/line.js";
+import PhoneLogin from "@/app/auth/PhoneLogin";
+import { lineAuthURL } from "@/lib/line/line";
 
 import HistoryButton from "@/components/users/HistoryButton";
 import FavoriteButton from "@/components/users/FavoriteButton";
 import AddressButton from "@/components/users/AddressButton";
+import liff from "@line/liff";
 
 export default {
   components: {
@@ -221,10 +240,10 @@ export default {
     FavoriteButton,
     AddressButton,
   },
-  head() {
+  metaInfo() {
     return {
-      title: [this.defaultTitle, "Profile"].join(" / ")
-    }
+      title: [this.defaultTitle, "Profile"].join(" / "),
+    };
   },
   data() {
     return {
@@ -233,26 +252,37 @@ export default {
       isFriend: undefined,
       isDeletingAccount: false,
       storedCard: null,
-      detachStripe: null
+      detachStripe: null,
+      liffConfig: null,
     };
   },
   async created() {
-    if (this.isLineUser) {
+    if (this.isLineUser || this.isLiffUser) {
       this.checkFriend();
     }
     this.checkStripe();
+    if (this.inLiff) {
+      this.liffConfig = (
+        await getDoc(doc(db, `liff/${this.liffIndexId}`))
+      ).data();
+    }
   },
   destroyed() {
     this.detachStripe && this.detachStripe();
   },
   watch: {
     isWindowActive(newValue) {
-      if (newValue && this.isLineUser && !this.isFriend) {
+      if (newValue && (this.isLineUser || this.isLiffUser) && !this.isFriend) {
         this.isFriend = undefined;
         this.checkFriend();
       }
     },
     isLineUser(newValue) {
+      if (this.isFriend === undefined) {
+        this.checkFriend();
+      }
+    },
+    isLiffUser(newValue) {
       if (this.isFriend === undefined) {
         this.checkFriend();
       }
@@ -264,14 +294,21 @@ export default {
         // on successful login
         this.loginVisible = false;
       }
-    }
+    },
   },
   computed: {
     isWindowActive() {
       return this.$store.state.isWindowActive;
     },
     friendLink() {
-      return ownPlateConfig.line.FRIEND_LINK;
+      // TODO liff.
+      if (this.isLiffUser) {
+        if (this.liffConfig) {
+          return this.liffConfig.friendUrl;
+        }
+      } else {
+        return ownPlateConfig.line.FRIEND_LINK;
+      }
     },
     claims() {
       return this.$store.state.claims;
@@ -317,7 +354,7 @@ export default {
         return this.$t("profile.status.unexpected");
       }
       return this.$t("profile.status.none");
-    }
+    },
   },
   methods: {
     checkStripe() {
@@ -325,18 +362,19 @@ export default {
         this.detachStripe();
         this.detachStripe = null;
       }
-      if (this.user && this.user.phoneNumber) {
-        this.detachStripe = db
-          .doc(`/users/${this.user.uid}/readonly/stripe`)
-          .onSnapshot(snapshot => {
+      if (this.user && (this.user.phoneNumber || this.isLiffUser)) {
+        this.detachStripe = onSnapshot(
+          query(doc(db, `/users/${this.user.uid}/readonly/stripe`)),
+          (snapshot) => {
             const stripeInfo = snapshot.data();
             this.storedCard = stripeInfo?.card;
-          });
+          }
+        );
       }
     },
     handleLineAuth() {
       const url = lineAuthURL("/callback/line", {
-        pathname: location.pathname
+        pathname: location.pathname,
       });
       location.href = url;
     },
@@ -346,7 +384,7 @@ export default {
         callback: async () => {
           window.scrollTo(0, 0);
           this.reLoginVisible = true;
-        }
+        },
       });
     },
     handleDeleteCard() {
@@ -356,9 +394,6 @@ export default {
           console.log("handleDeleteCard");
           this.$store.commit("setLoading", true);
           try {
-            const stripeDeleteCard = functions.httpsCallable(
-              "stripeDeleteCard"
-            );
             const { data } = await stripeDeleteCard();
             console.log("stripeDeleteCard", data);
           } catch (error) {
@@ -366,16 +401,14 @@ export default {
           } finally {
             this.$store.commit("setLoading", false);
           }
-        }
+        },
       });
     },
     async continueDelete(result) {
-      console.log(result);
       this.reLoginVisible = false;
       if (result) {
         this.isDeletingAccount = true;
         try {
-          const accountDelete = functions.httpsCallable("accountDelete");
           const { data } = await accountDelete();
           console.log("deleteAccount", data);
           await this.user.delete();
@@ -393,21 +426,32 @@ export default {
     },
     handleSignOut() {
       console.log("handleSignOut");
-      auth.signOut();
+      signOut(auth);
     },
     handleDismissed() {
       console.log("handleDismissed");
       this.loginVisible = false;
     },
     async checkFriend() {
-      const lineVerifyFriend = functions.httpsCallable("lineVerifyFriend");
-      try {
-        const { data } = await lineVerifyFriend({});
-        this.isFriend = data.result;
-      } catch (error) {
-        console.error(error);
+      if (this.isLiffUser) {
+        try {
+          const res = await liff.getFriendship();
+          this.isFriend = res.friendFlag;
+        } catch (error) {
+          console.log(error);
+          // alert(JSON.stringify(error));
+        }
+      } else {
+        try {
+          const { data } = await lineVerifyFriend(
+            this.isLiffUser ? { liffIndexId: this.liffIndexId } : {}
+          );
+          this.isFriend = data.result;
+        } catch (error) {
+          console.error(error);
+        }
       }
-    }
-  }
+    },
+  },
 };
 </script>

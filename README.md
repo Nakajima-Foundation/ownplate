@@ -1,4 +1,4 @@
-![OwnPlate-Logo](https://github.com/Nakajima-Foundation/ownplate/blob/master/src/static/OwnPlate-Logo-Horizontal-YellowBlack.svg)
+![OwnPlate-Logo](https://github.com/Nakajima-Foundation/ownplate/blob/master/public/OwnPlate-Logo-Horizontal-YellowBlack.svg)
 
 # OwnPlate
 

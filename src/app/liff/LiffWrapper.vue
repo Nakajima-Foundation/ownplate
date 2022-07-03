@@ -1,21 +1,24 @@
 <template>
   <div>
-    <div v-if="error === 'redirect_liff'">
-      redirecting....
-    </div>
-    <div v-else-if="error === 'no_liff'">
-      no liff
-    </div>
+    <div v-if="error === 'redirect_liff'">redirecting....</div>
+    <div v-else-if="error === 'no_liff'">no liff</div>
     <div v-else-if="error === 'no_restaurant'">
       <not-found />
     </div>
     <div v-else-if="error === 'pc'">
       <PC :liffUrl="liffUrl" />
     </div>
-    <div v-else-if="loading">
-      loading...
-    </div>
+    <div v-else-if="loading">loading...</div>
     <div v-else>
+      <modal v-if="openModal">
+        <div class="w-96 h-48 relative flex items-center">
+          <div class="flex flex-1 w-full justify-center">
+            <a :href="friendUrl">
+              {{ $t("line.registerAsAFriend") }}
+            </a>
+          </div>
+        </div>
+      </modal>
       <router-view :config="config" v-if="user" />
     </div>
   </div>
@@ -23,12 +26,19 @@
 
 <script>
 import liff from "@line/liff";
-import { db, functionsJp, auth } from "~/plugins/firebase.js";
+import { db } from "@/plugins/firebase";
+
+import { auth } from "@/lib/firebase/firebase9";
+import { signInWithCustomToken, signOut } from "firebase/auth";
+
+import { liffAuthenticate } from "@/lib/firebase/functions";
 
 import queryString from "query-string";
 
 import PC from "./PC.vue";
-import NotFound from "~/components/NotFound";
+import NotFound from "@/components/NotFound";
+
+import Modal from "@/components/Modal";
 
 /*
  liff flow
@@ -74,10 +84,10 @@ const parseLiffState = (liffstate) => {
   };
 };
 
-
 export default {
   components: {
     PC,
+    Modal,
     NotFound,
   },
   data() {
@@ -88,6 +98,8 @@ export default {
       config: null,
       liffId: "",
       liffIdToken: "",
+      // openModal: true,
+      openModal: false,
     };
   },
   async created() {
@@ -96,16 +108,20 @@ export default {
       const data = (await db.doc(`/liff/${this.liffIndexId}`).get()).data();
       return data;
     };
-    
+
     // step 2
     const checkInLiff = () => {
-      const { liffStatePath, liffStateQuery } = parseLiffState(this.$route.query["liff.state"]);
-      
-      // https://staging.ownplate.today/liff/test/r/123 -> https://liff.line.me/1656180429-yJ8ZmlBv/r/123 
+      const { liffStatePath, liffStateQuery } = parseLiffState(
+        this.$route.query["liff.state"]
+      );
+
+      // https://staging.ownplate.today/liff/test/r/123 -> https://liff.line.me/1656180429-yJ8ZmlBv/r/123
       const omochikaeriLiffBasePath = "/liff/" + this.liffIndexId; // /liff/test
-      const relativePath = window.location.pathname.slice(omochikaeriLiffBasePath.length); // /r/123
-      this.liffUrl = "https://liff.line.me/" + this.liffId + relativePath // 1656180429-yJ8ZmlBv/r/123
-      
+      const relativePath = window.location.pathname.slice(
+        omochikaeriLiffBasePath.length
+      ); // /r/123
+      this.liffUrl = "https://liff.line.me/" + this.liffId + relativePath; // 1656180429-yJ8ZmlBv/r/123
+
       if (!liff.isInClient()) {
         const { isWeb, isIOS, isAndroid } = getOS();
         if (liffStateQuery && liffStateQuery["redirect"]) {
@@ -115,13 +131,13 @@ export default {
         }
 
         if (isIOS || isAndroid) {
-          const params = { ...this.$route.query};
+          const params = { ...this.$route.query };
           params["redirect"] = "true";
           const qs = Object.keys(params)
-                .map((key) => {
-                  return key + "=" + encodeURIComponent(params[key]);
-                })
-                .join("&");
+            .map((key) => {
+              return key + "=" + encodeURIComponent(params[key]);
+            })
+            .join("&");
 
           location.replace(this.liffUrl + "?" + qs);
           this.error = "redirect_liff";
@@ -150,7 +166,7 @@ export default {
         this.liffIdToken = await liff.getIDToken();
       } catch (e) {
         console.log("liff_login", e);
-      };
+      }
     };
 
     // step 1.
@@ -160,25 +176,27 @@ export default {
       this.error = "no_liff";
       return;
     }
-    
+
     // step 1.1.
     if (this.$route.params.restaurantId) {
-      const hasRestaurant = (this.config.restaurants || []).some((restaurantId) => {
-        return restaurantId === this.$route.params.restaurantId
-      });
+      const hasRestaurant = (this.config.restaurants || []).some(
+        (restaurantId) => {
+          return restaurantId === this.$route.params.restaurantId;
+        }
+      );
       if (!hasRestaurant) {
         this.error = "no_restaurant";
         return;
       }
     }
 
-    if (location.hostname ==! "localhost") {
+    if (location.hostname == !"localhost") {
       // if not liff user, force sign out
       if (this.user && !this.isLiffUser) {
-        auth.signOut();
+        signOut(auth);
       }
     }
-    
+
     this.liffId = this.config.liffId;
     // step 2.
     if (!checkInLiff()) {
@@ -186,7 +204,7 @@ export default {
     }
     // step 3.
     await liffInit(this.config);
-    
+
     if (location.hostname === "localhost") {
       this.loading = false;
     }
@@ -198,32 +216,42 @@ export default {
     user() {
       return this.$store.state.user;
     },
+    friendUrl() {
+      if (this.config) {
+        return this.config.friendUrl;
+      }
+      return null;
+    },
   },
   watch: {
     userLoad(value) {
       if (this.$store.state.user !== undefined && this.liffIdToken !== "") {
         if (this.$store.state.user === null) {
-          const liffAuthenticate = functionsJp.httpsCallable("liffAuthenticate");
           (async () => {
-            const { data } = (await liffAuthenticate({
+            const { data } = await liffAuthenticate({
               liffIndexId: this.liffIndexId,
               liffId: this.liffId,
               token: this.liffIdToken,
-            }));
+            });
             if (data.customToken) {
-              const user = await auth.signInWithCustomToken(data.customToken);
+              const user = await signInWithCustomToken(auth, data.customToken);
             }
             this.loading = false;
           })();
         } else {
           // force sign out if current user is not cuurrent liff user
           if (this.config.liffId !== this.userLiffId) {
-            auth.signOut();
+            signOut(auth);
           }
           this.loading = false;
         }
+        if (location.hostname !== "localhost") {
+          liff.getFriendship().then((friendship) => {
+            this.openModal = !friendship.friendFlag;
+          });
+        }
       }
     },
-  }
+  },
 };
 </script>

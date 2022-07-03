@@ -8,7 +8,7 @@ const db = admin.firestore();
 export default functions
   .runWith({
     memory: "1GB" as "1GB",
-  })    
+  })
   .https.onCall(async (data, context) => {
-  return await StripeIntent.cancel(db, data, context);
-});
+    return await StripeIntent.cancel(db, data, context);
+  });

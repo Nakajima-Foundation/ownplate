@@ -6,35 +6,37 @@
       <tr v-for="log in logs" :key="log.id">
         <td class="p-b-4">
           {{ log.cmd }}
-          <div class="m-l-8">{{log.key}} {{log.value}}</div>
+          <div class="m-l-8">{{ log.key }} {{ log.value }}</div>
         </td>
-        <td class="p-l-8">{{log.success ? "success": log.error}}</td>
+        <td class="p-l-8">{{ log.success ? "success" : log.error }}</td>
         <td class="p-l-8">
-          <nuxt-link :to="`/s/admins/${log.uid}`">{{log.email || log.uid}}</nuxt-link>
+          <router-link :to="`/s/admins/${log.uid}`">{{
+            log.email || log.uid
+          }}</router-link>
         </td>
-        <td class="p-l-8">{{log.uidSuper.slice(0,8) + "..."}}</td>
+        <td class="p-l-8">{{ log.uidSuper.slice(0, 8) + "..." }}</td>
       </tr>
     </table>
   </section>
 </template>
 
 <script>
-import BackButton from "~/components/BackButton";
-import { db } from "~/plugins/firebase.js";
+import BackButton from "@/components/BackButton";
+import { db } from "@/plugins/firebase";
 
 export default {
-  head() {
+  metaInfo() {
     return {
-      title: [this.defaultTitle, "Super All Log"].join(" / ")
-    }
+      title: [this.defaultTitle, "Super All Log"].join(" / "),
+    };
   },
   components: {
-    BackButton
+    BackButton,
   },
   data() {
     return {
       logs: [],
-      detacher: null
+      detacher: null,
     };
   },
   async mounted() {
@@ -47,8 +49,8 @@ export default {
       .collectionGroup("adminlogs")
       .orderBy("createdAt", "desc")
       .limit(100)
-      .onSnapshot(snapshot => {
-        this.logs = snapshot.docs.map(doc => {
+      .onSnapshot((snapshot) => {
+        this.logs = snapshot.docs.map((doc) => {
           const log = doc.data();
           log.id = doc.id;
           log.createdAt = log.createdAt.toDate();
@@ -58,6 +60,6 @@ export default {
   },
   destroyed() {
     this.detatcher && this.detatcher();
-  }
+  },
 };
 </script>

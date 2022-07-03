@@ -1,9 +1,8 @@
-<template>
-</template>
+<template></template>
 
 <script>
-import { db, firestore } from "~/plugins/firebase.js";
-import { soundFiles } from "~/plugins/constant.js";
+import { db, firestore } from "@/plugins/firebase";
+import { soundFiles } from "@/config/constant";
 
 export default {
   props: {
@@ -12,7 +11,7 @@ export default {
   data() {
     return {
       soundIndex: undefined,
-    }
+    };
   },
   watch: {
     async "notificationConfig.soundOn"(newData) {
@@ -23,8 +22,7 @@ export default {
     },
     async soundIndex(newData) {
       this.$store.commit("setSoundFile", soundFiles[newData].file);
-    }
+    },
   },
-}
-
+};
 </script>

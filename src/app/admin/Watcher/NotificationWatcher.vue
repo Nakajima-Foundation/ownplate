@@ -1,7 +1,7 @@
 <template></template>
 
 <script>
-import { db, firestore } from "~/plugins/firebase.js";
+import { db, firestore } from "@/plugins/firebase";
 
 export default {
   data() {
@@ -9,7 +9,7 @@ export default {
       message_detacher: () => {},
       uid: this.$store.getters.uidAdmin,
       notifications: [],
-      watchingMessage: false
+      watchingMessage: false,
     };
   },
   async created() {
@@ -17,7 +17,7 @@ export default {
     this.message_detacher = db
       .doc(`admins/${this.uid}/private/notification`)
       .onSnapshot(
-        notification => {
+        (notification) => {
           if (notification.exists) {
             const notification_data = notification.data();
             this.notifications.push(notification_data);
@@ -31,7 +31,7 @@ export default {
           }
           this.watchingMessage = true;
         },
-        error => {
+        (error) => {
           if (error.code === "permission-denied") {
             // We can ignore this type of error here
             console.warn("Ignoring", error.code);
@@ -43,6 +43,6 @@ export default {
   },
   destroyed() {
     this.message_detacher();
-  }
+  },
 };
 </script>

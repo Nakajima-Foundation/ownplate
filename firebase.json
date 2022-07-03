@@ -6,10 +6,10 @@
   "functions": {
     "predeploy": [
       "cp dist/index.html functions/templates/index.html",
-      "cp src/plugins/constant.js functions/src/common/constant.js",
-      "cp src/plugins/phoneutil.js functions/src/common/phoneutil.js",
-      "cp src/plugins/commonUtils.js functions/src/common/commonUtils.js",
-      "cp src/config/project.js functions/src/common/project.js",
+      "cp src/config/constant.ts functions/src/common/constant.ts",
+      "cp src/utils/phoneutil.ts functions/src/common/phoneutil.ts",
+      "cp src/utils/commonUtils.ts functions/src/common/commonUtils.ts",
+      "cp src/config/project.ts functions/src/common/project.ts",
       "npm --prefix \"$RESOURCE_DIR\" run lint",
       "npm --prefix \"$RESOURCE_DIR\" run build"
     ]

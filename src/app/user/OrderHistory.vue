@@ -31,27 +31,36 @@
 </template>
 
 <script>
-import { db, firestore, functions } from "~/plugins/firebase.js";
-import OrderedInfo from "~/app/admin/Order/OrderedInfo";
-import PhoneLogin from "~/app/auth/PhoneLogin";
-import BackButton from "~/components/BackButton";
+import { db } from "@/lib/firebase/firebase9";
+import {
+  collectionGroup,
+  query,
+  onSnapshot,
+  where,
+  orderBy,
+  limit,
+} from "firebase/firestore";
+
+import OrderedInfo from "@/app/admin/Order/OrderedInfo";
+import PhoneLogin from "@/app/auth/PhoneLogin";
+import BackButton from "@/components/BackButton";
 
 export default {
-  head() {
+  metaInfo() {
     return {
-      title: [this.defaultTitle, "User Order History"].join(" / ")
-    }
+      title: [this.defaultTitle, "User Order History"].join(" / "),
+    };
   },
   components: {
     OrderedInfo,
     PhoneLogin,
-    BackButton
+    BackButton,
   },
   data() {
     return {
       loginVisible: false,
-      detatcher: null,
-      orders: []
+      detacher: null,
+      orders: [],
     };
   },
   async created() {
@@ -60,29 +69,31 @@ export default {
     this.getHistory();
   },
   destroyed() {
-    this.detatcher && this.detatcher();
+    this.detacher && this.detacher();
   },
   watch: {
     uid(newValue) {
       this.getHistory();
-    }
+    },
   },
   computed: {
     uid() {
       return this.$store.getters.uidUser || this.$store.getters.uidLiff;
-    }
+    },
   },
   methods: {
     getHistory() {
-      this.detatcher && this.detatcher();
+      this.detacher && this.detacher();
       if (this.uid) {
-        this.detatcher = db
-          .collectionGroup("orders")
-          .where("uid", "==", this.uid)
-          .orderBy("orderPlacedAt", "desc")
-          .limit(200)
-          .onSnapshot(snapshot => {
-            this.orders = snapshot.docs.map(doc => {
+        this.detacher = onSnapshot(
+          query(
+            collectionGroup(db, "orders"),
+            where("uid", "==", this.uid),
+            orderBy("orderPlacedAt", "desc"),
+            limit(200)
+          ),
+          (snapshot) => {
+            this.orders = snapshot.docs.map((doc) => {
               const order = doc.data();
               order.restaurantId = doc.ref.path.split("/")[1];
               order.id = doc.id;
@@ -95,9 +106,10 @@ export default {
               }
               return order;
             });
-          });
+          }
+        );
       } else {
-        this.detatcher = null;
+        this.detacher = null;
       }
     },
     handleDismissed(success) {
@@ -111,14 +123,19 @@ export default {
     orderSelected(order) {
       if (this.inLiff) {
         this.$router.push({
-          path: this.liff_base_path + "/r/" + order.restaurantId + "/order/" + order.id
+          path:
+            this.liff_base_path +
+            "/r/" +
+            order.restaurantId +
+            "/order/" +
+            order.id,
         });
       } else {
         this.$router.push({
-          path: "/r/" + order.restaurantId + "/order/" + order.id
+          path: "/r/" + order.restaurantId + "/order/" + order.id,
         });
       }
-    }
-  }
+    },
+  },
 };
 </script>

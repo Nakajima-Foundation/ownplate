@@ -20,13 +20,13 @@ jobs:
           command: ./node_modules/.bin/firebase emulators:start --only firestore
           background: true
       - run: cp configs/.firebaserc ./
-      - run: cp src/config/default/ownplate-dev.js src/config/project.js
-      - run: STRIPE_CLIENT_ID=$STRIPE_CLIENT_ID STRIPE_API_KEY=$STRIPE_API_KEY GAPIKey=$GAPIKey npm run build
+      - run: cp src/config/default/ownplate-dev.ts src/config/project.ts
+      - run: npm run build
       - run: cp dist/index.html functions/templates/index.html
-      - run: cp src/config/default/ownplate-jp.js functions/src/common/project.js
-      - run: cp src/plugins/constant.js functions/src/common/constant.js
-      - run: cp src/plugins/phoneutil.js functions/src/common/phoneutil.js
-      - run: cp src/plugins/commonUtils.js functions/src/common/commonUtils.js
+      - run: cp src/config/default/ownplate-dev.ts functions/src/common/project.ts
+      - run: cp src/config/constant.ts functions/src/common/constant.ts
+      - run: cp src/utils/phoneutil.ts functions/src/common/phoneutil.ts
+      - run: cp src/utils/commonUtils.ts functions/src/common/commonUtils.ts
       - run: cd functions && npm install && npm run coverage
       - run: ./node_modules/.bin/firebase deploy --token=$FIREBASE_TOKEN --project=staging
       - run: SLACKURL=$SLACKURL sh ./utils/buildbot.sh

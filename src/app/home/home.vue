@@ -16,10 +16,7 @@
             <!-- Go to Owner Page -->
             <div class="align-center">
               <router-link to="/admin/restaurants">
-                <div
-                  class="op-button-medium primary"
-                  style="min-width: 256px;"
-                  >
+                <div class="op-button-medium primary" style="min-width: 256px">
                   <span class="c-onprimary">{{ $t("menu.admins") }}</span>
                 </div>
               </router-link>
@@ -34,18 +31,13 @@
           <!-- For User -->
           <div class="m-t-24">
             <div class="align-center m-b-8">
-              <i class="material-icons c-text-black-disabled s-64"
-                 >tag_faces</i
-                             >
+              <i class="material-icons c-text-black-disabled s-64">tag_faces</i>
             </div>
 
             <!-- Go to User Page -->
-            <div class="align-center" v-if="!hideUsersLink">
+            <div class="align-center">
               <router-link to="/r">
-                <div
-                  class="op-button-medium primary"
-                  style="min-width: 256px;"
-                  >
+                <div class="op-button-medium primary" style="min-width: 256px">
                   <span class="c-onprimary">{{ $t("menu.users") }}</span>
                 </div>
               </router-link>
@@ -56,7 +48,7 @@
               <a
                 href="https://gluepass.jp/g/ownplatejp/pg/zzDScN7kc1WgNQaA9J7v"
                 target="_blank"
-                >
+              >
                 <div class="op-button-text">
                   <i class="material-icons">help_outline</i>
                   <span>{{ $t("menu.userManual") }}</span>
@@ -84,15 +76,15 @@
               <div class="h-2 bg-ownplate-yellow is-invisible-tablet"></div>
               <div>
                 <img
-                  style="height: 416px;"
+                  style="height: 416px"
                   class="object-cover is-hidden-mobile"
                   :src="`/${this.featureHeroTablet}`"
-                  />
+                />
                 <img
-                  style="height: 752px;"
+                  style="height: 752px"
                   class="object-cover is-hidden-tablet"
                   :src="`/${this.featureHeroMobile}`"
-                  />
+                />
               </div>
               <div class="h-2 bg-ownplate-yellow is-invisible-tablet"></div>
             </div>
@@ -119,8 +111,8 @@
                 <div class="t-body1 c-text-black-high m-t-24">
                   The COVID-19 has not only claimed the lives of many people,
                   but it has also caused significant damage to the economy. In
-                  particular, restaurants and bars that offer "places for
-                  people to gather" have suffered directly from lockdown and
+                  particular, restaurants and bars that offer "places for people
+                  to gather" have suffered directly from lockdown and
                   shelter-in-place measures. At the result, millions of people
                   were layed off, and thousands of restaurant owners have been
                   forced to close their businesses.
@@ -137,11 +129,11 @@
                 </div>
                 <div class="t-body1 c-text-black-high m-t-24">
                   We, Singularity Society, is a non-profit organization,
-                  consists of software engineers, designers and business
-                  people. We are building
+                  consists of software engineers, designers and business people.
+                  We are building
                   {{ $t("serviceName." + this.serviceKey) }} with Firebase
-                  (Google) + Vue (open source), which allows us to develop
-                  this service in a very short period of time.
+                  (Google) + Vue (open source), which allows us to develop this
+                  service in a very short period of time.
                 </div>
                 <div class="t-body1 c-text-black-high m-t-24">Sincerely,</div>
                 <div class="t-body1 c-text-black-high m-t-24">
@@ -161,9 +153,9 @@
                 </div>
                 <div class="t-body1 c-text-black-high m-t-24">
                   私たちは、そんなレストランやバーを支援するために、「{{
-                  $t("serviceName." + this.serviceKey)
+                    $t("serviceName." + this.serviceKey)
                   }}」を作りました。 「{{
-                  $t("serviceName." + this.serviceKey)
+                    $t("serviceName." + this.serviceKey)
                   }}」を使えば、レストランは、余計な手数料なしでテイクアウトサービスを始める事ができます。
                   レストランは、専用のページを作り、そこにメニューを登録します（ウェブ・コンサルタントを雇う必要はありません）。
                   顧客はそのページから注文し、支払いを済ませ、調理時間に合わせて店に取りに行くのです。
@@ -188,13 +180,5 @@
 </template>
 
 <script>
-import { releaseConfig } from "~/plugins/config.js";
-export default {
-
-  computed: {
-    hideUsersLink() {
-      return releaseConfig.hideUsersLink;
-    }
-  }
-};
+export default {};
 </script>

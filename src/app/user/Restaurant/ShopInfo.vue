@@ -4,15 +4,14 @@
     <div v-if="hasLocation">
       <div>
         <a target="_blank" :href="mapQuery">
-          <img :src="`https://maps.googleapis.com/maps/api/staticmap?center=${this.shopInfo.location.lat},${this.shopInfo.location.lng}&zoom=16&size=800x${this.mapWidth}&scale=2&maptype=roadmap&markers=color:red%7Clabel:G%7C${this.shopInfo.location.lat},${this.shopInfo.location.lng}&key=${gmapKey}`"
-                class="w-full object-cover lg:rounded-lg "
-               />
+          <img
+            :src="`https://maps.googleapis.com/maps/api/staticmap?center=${this.shopInfo.location.lat},${this.shopInfo.location.lng}&zoom=16&size=800x${this.mapWidth}&scale=2&maptype=roadmap&markers=color:red%7Clabel:G%7C${this.shopInfo.location.lat},${this.shopInfo.location.lng}&key=${gmapKey}`"
+            class="w-full object-cover lg:rounded-lg"
+          />
         </a>
       </div>
       <div class="mt-4 mx-4 pb-2">
-        <a
-          target="_blank" :href="mapQuery"
-        >
+        <a target="_blank" :href="mapQuery">
           <a class="inline-flex justify-center items-center">
             <i class="material-icons text-lg text-op-teal mr-2">place</i>
             <div class="text-sm font-bold text-op-teal">
@@ -54,9 +53,14 @@
       </div>
 
       <!-- Minimum Available Time -->
-      <div class="mt-2 px-4 py-2 rounded-lg bg-blue-500 bg-opacity-10" v-if="!shopInfo.isEC">
+      <div
+        class="mt-2 px-4 py-2 rounded-lg bg-blue-500 bg-opacity-10"
+        v-if="!shopInfo.isEC"
+      >
         <div class="text-sm font-bold">
-          {{  $t("shopInfo." + (isDelivery ? "delivery" : "takeout")) }}:{{ $t("shopInfo.minimumAvailableTime") }}
+          {{ $t("shopInfo." + (isDelivery ? "delivery" : "takeout")) }}:{{
+            $t("shopInfo.minimumAvailableTime")
+          }}
         </div>
         <div class="text-sm">
           {{ minimumAvailableTime }}
@@ -99,8 +103,8 @@
             :href="this.shopInfo.lineUrl"
             class="inline-flex justify-center items-center"
           >
-            <i class="fab fa-line text-lg mr-2" style="color:#4EC263;"></i>
-            <div class="text-sm font-bold" style="color:#4EC263;">
+            <i class="fab fa-line text-lg mr-2" style="color: #4ec263"></i>
+            <div class="text-sm font-bold" style="color: #4ec263">
               {{ this.shopInfo.lineUrl }}
             </div>
           </a>
@@ -113,8 +117,8 @@
             :href="this.shopInfo.instagramUrl"
             class="inline-flex justify-center items-center"
           >
-            <i class="fab fa-instagram text-lg mr-2" style="color:#DD2A7B;"></i>
-            <div class="text-sm font-bold" style="color:#DD2A7B;">
+            <i class="fab fa-instagram text-lg mr-2" style="color: #dd2a7b"></i>
+            <div class="text-sm font-bold" style="color: #dd2a7b">
               {{ this.shopInfo.instagramUrl }}
             </div>
           </a>
@@ -135,7 +139,13 @@
             <template v-for="(day, key) in days">
               <div
                 class="flex px-2 py-1 rounded text-sm"
-                :class="weekday == key % 7 ? isTodayTemporaryClosure ? 'bg-red-700 bg-opacity-10' : 'bg-green-600 bg-opacity-10' : ''"
+                :class="
+                  weekday == key % 7
+                    ? isTodayTemporaryClosure
+                      ? 'bg-red-700 bg-opacity-10'
+                      : 'bg-green-600 bg-opacity-10'
+                    : ''
+                "
               >
                 <div class="w-16">{{ $t("week.short." + day) }}</div>
                 <div class="flex-1">
@@ -151,8 +161,11 @@
                 </div>
                 <div>
                   <template v-if="isOpen[key]">
-                    <div v-if="isTodayTemporaryClosure"  class="font-bold text-red-700">
-                      {{ $t("shopInfo.temporaryClosure") }} 
+                    <div
+                      v-if="isTodayTemporaryClosure"
+                      class="font-bold text-red-700"
+                    >
+                      {{ $t("shopInfo.temporaryClosure") }}
                     </div>
                     <div v-else class="font-bold text-green-600">Open</div>
                   </template>
@@ -206,35 +219,30 @@
 </template>
 
 <script>
-import { daysOfWeek } from "~/plugins/constant.js";
-import {
-  parsePhoneNumber,
-  formatNational,
-  formatURL
-} from "~/plugins/phoneutil.js";
+import { daysOfWeek } from "@/config/constant";
+import { parsePhoneNumber, formatNational, formatURL } from "@/utils/phoneutil";
 import { ownPlateConfig } from "@/config/project";
-import TransactionsAct from "~/app/user/TransactionsAct";
+import TransactionsAct from "@/app/user/TransactionsAct";
 
-import { db } from "~/plugins/firebase.js";
-import { releaseConfig } from "~/plugins/config.js";
+import { db } from "@/plugins/firebase";
 
-import PickupMixin from "../Order/pickupMixin";
+import PickupMixin from "@/mixins/pickupMixin";
 
 import moment from "moment";
 
 export default {
   mixins: [PickupMixin],
   components: {
-    TransactionsAct
+    TransactionsAct,
   },
   props: {
     shopInfo: {
       type: Object,
-      required: true
+      required: true,
     },
     paymentInfo: {
       type: Object,
-      required: true
+      required: true,
     },
     isDelivery: {
       type: Boolean,
@@ -248,7 +256,7 @@ export default {
       url: this.shareUrl(),
       days: daysOfWeek,
       weekday: d.getDay(),
-      today: d
+      today: d,
     };
   },
   computed: {
@@ -264,13 +272,16 @@ export default {
     },
     dispTemporaryClosure() {
       const now = Date.now();
-      return (this.shopInfo.temporaryClosure || []).filter(day => {
+      return (this.shopInfo.temporaryClosure || []).filter((day) => {
         return day.seconds + 3600 * 24 > now / 1000;
       });
     },
     isTodayTemporaryClosure() {
       const res = this.dispTemporaryClosure.find((day) => {
-        return moment(day.toDate()).format("YYYYMMDD") === moment().format("YYYYMMDD");
+        return (
+          moment(day.toDate()).format("YYYYMMDD") ===
+          moment().format("YYYYMMDD")
+        );
       });
       return !!res;
     },
@@ -339,7 +350,7 @@ export default {
       return ownPlateConfig.region;
     },
     showPayment() {
-      return !releaseConfig.hidePayment && this.stripeAccount;
+      return this.stripeAccount;
     },
     stripeAccount() {
       return this.paymentInfo.stripe;
@@ -349,7 +360,9 @@ export default {
     },
     minimumAvailableTime() {
       // const days = this.availableDays;
-      const days = this.isDelivery ? this.deliveryAvailableDays : this.availableDays;
+      const days = this.isDelivery
+        ? this.deliveryAvailableDays
+        : this.availableDays;
       const time = days[0]?.times[0]?.display;
       const date = days[0]?.date;
       moment.locale(this.$i18n.locale);
@@ -362,12 +375,14 @@ export default {
       }
     },
     mapQuery() {
-      return 'https://www.google.com/maps/search/?api=1&query=' +
+      return (
+        "https://www.google.com/maps/search/?api=1&query=" +
         this.shopInfo.location.lat +
-        ',' +
+        "," +
         this.shopInfo.location.lng +
-        '&query_place_id=' +
+        "&query_place_id=" +
         this.shopInfo.place_id
+      );
     },
   },
   methods: {
@@ -376,7 +391,7 @@ export default {
     },
     validDate(date) {
       return !this.isNull(date.start) && !this.isNull(date.end);
-    }
-  }
+    },
+  },
 };
 </script>

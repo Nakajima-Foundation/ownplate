@@ -9,13 +9,13 @@
 </template>
 
 <script>
-import entranceButtonsRestaurants from "~/components/lp/entranceButtonsRestaurants";
-import entranceButtonsFoodLovers from "~/components/lp/entranceButtonsFoodLovers";
+import entranceButtonsRestaurants from "@/components/lp/entranceButtonsRestaurants";
+import entranceButtonsFoodLovers from "@/components/lp/entranceButtonsFoodLovers";
 
 export default {
   components: {
     entranceButtonsRestaurants,
-    entranceButtonsFoodLovers
-  }
+    entranceButtonsFoodLovers,
+  },
 };
 </script>

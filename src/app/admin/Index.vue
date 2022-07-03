@@ -2,109 +2,25 @@
   <div v-if="$store.getters.uidAdmin">
     <!-- Welcome -->
 
-    <div v-if="partner.length > 0" class="mt-2">
+    <div v-if="partner.length > 0" class="mt-2 mb-1">
       <div v-for="(part, k) in partner" :key="k" class="flex">
-        <div class="flex-1">
-          <img :src="`/partners/${part.logo}`" class="w-12"/>
+        <div class="flex-1 ml-4">
+          <img :src="`/partners/${part.logo}`" class="w-12" />
           <span class="font-bold">
-            {{part.name}}
+            {{ part.name }}
           </span>
         </div>
-        <div class="text-right font-bold" v-if="part.ask">
+        <div class="text-right font-bold mr-4" v-if="part.ask">
           <a href="#" @click="openContact()">サポート問い合わせ</a>
         </div>
       </div>
     </div>
-    <div class="bg-op-yellow p-4">
-      <div class="text-center text-2xl font-bold text-white pb-4">
-        {{ $t("admin.welcomeMessage") }}
-      </div>
 
-      <div class="text-center">
-        <!-- User Manuals -->
-        <div class="inline-block px-1 pb-2" v-if="isJapan">
-          <a
-            href="https://docs.omochikaeri.com/manuals/manual.pdf"
-            target="_blank"
-          >
-            <div
-              class="inline-flex justify-center items-center rounded-full h-9 bg-white bg-opacity-80 px-4"
-            >
-              <i class="material-icons text-lg text-op-teal mr-2"
-                >help_outline</i
-              >
-              <span class="text-sm font-bold text-op-teal">{{
-                $t("admin.userManual")
-              }}</span>
-            </div>
-          </a>
-        </div>
-
-        <!-- Support -->
-        <div class="inline-block px-1 pb-2" v-if="isJapan">
-          <a
-            href="https://docs.google.com/forms/d/e/1FAIpQLSfGR4kk65ynfkCRGJsvJz01HZf7AU1nGLL9Rn9i4G9-qiW6MQ/viewform"
-            target="_blank"
-          >
-            <div
-              class="inline-flex justify-center items-center rounded-full h-9 bg-white bg-opacity-80 px-4"
-            >
-              <i class="material-icons text-lg text-op-teal mr-2"
-                >mail_outline</i
-              >
-              <span class="text-sm font-bold text-op-teal">{{
-                $t("admin.suportPage")
-              }}</span>
-            </div>
-          </a>
-        </div>
-
-        <!-- Facebook User Group -->
-        <div class="inline-block px-1 pb-2" v-if="isJapan">
-          <a
-            href="https://www.facebook.com/groups/278028420106364/"
-            target="_blank"
-          >
-            <div
-              class="inline-flex justify-center items-center rounded-full h-9 bg-white bg-opacity-80 px-4"
-            >
-              <i class="fab fa-facebook text-lg text-op-teal mr-2"></i>
-              <span class="text-sm font-bold text-op-teal">{{
-                $t("admin.facebookUserGroup")
-              }}</span>
-            </div>
-          </a>
-        </div>
-      </div>
-    </div>
+    <!-- Welcome and Link -->
+    <WelcomeAndLinks />
 
     <!-- News -->
-    <div
-      v-if="region === 'JP'"
-      class="mx-6 mt-6 border-solid border-black border-opacity-10 border-2 rounded-lg px-4 py-2"
-    >
-      <div class="flex">
-        <div class="flex-1">
-          <span class="text-sm font-bold text-black text-opacity-40">{{
-            news.date.replace(/\-/g, ".")
-          }}</span>
-        </div>
-
-        <div>
-          <nuxt-link :to="'/admin/news/'">
-            <span class="text-sm font-bold">{{
-              $t("admin.news.newsTop")
-            }}</span>
-          </nuxt-link>
-        </div>
-      </div>
-
-      <div class="mt-2">
-        <nuxt-link :to="'/admin/news/' + news.date">
-          <span class="text-base font-bold">{{ news.title }}</span>
-        </nuxt-link>
-      </div>
-    </div>
+    <News />
 
     <!-- Unset Warning -->
     <div
@@ -117,20 +33,27 @@
     </div>
 
     <!-- Messages -->
-    <div class="mt-6 mx-6 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12" v-if="messages.length > 0">
+    <div
+      class="mt-6 mx-6 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12"
+      v-if="messages.length > 0"
+    >
       <div>
         <div class="pb-2">
           <span class="text-xl font-bold text-black text-opacity-40 mb-2">
             {{ $t("admin.messages.title") }}
           </span>
         </div>
-        <div v-for="(message, k) in messages" :key="k" class="border-2 border-solid border-op-teal rounded-lg p-6">
-          <MessageCard :message="message"/>
+        <div
+          v-for="(message, k) in messages"
+          :key="k"
+          class="border-2 border-solid border-op-teal rounded-lg p-6"
+        >
+          <MessageCard :message="message" />
         </div>
       </div>
     </div>
 
-    <!-- Restaurants and Payment Setup -->
+    <!-- Restaurants and Right Settin Section -->
     <div class="mt-6 mx-6 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12">
       <!-- Restaurants -->
       <div>
@@ -171,7 +94,7 @@
           <!-- Existing Restaurant -->
           <div v-if="existsRestaurant">
             <div v-if="restaurantLists.length > 1" class="mb-2">
-              <nuxt-link :to="'/admin/orders/'">
+              <router-link :to="'/admin/orders/'">
                 <div
                   class="bg-black bg-opacity-5 rounded-lg px-4 py-3 text-center"
                 >
@@ -179,7 +102,7 @@
                     $t("admin.viewAllOrders")
                   }}</span>
                 </div>
-              </nuxt-link>
+              </router-link>
             </div>
 
             <div class="grid grid-cols-1 space-y-2">
@@ -235,276 +158,85 @@
         </div>
       </div>
 
-      <!-- Payment Setup -->
+      <!-- Right Section -->
       <div class="mt-6 lg:mt-0" v-if="isOwner">
         <!-- Payment -->
         <payment-section @updateUnsetWarning="updateUnsetWarning($event)" />
 
-        <!-- Notes -->
+        <!-- SubAccounts -->
         <div class="mt-6">
           <div class="text-xl font-bold text-black text-opacity-40 mb-2">
             {{ $t("admin.subAccounts.title") }}
           </div>
 
-          <div
-            class="bg-white shadow rounded-lg p-4"
-            >
+          <div class="bg-white shadow rounded-lg p-4">
             <div class="text-center mt-2">
               {{ $t("admin.subAccounts.description") }}
             </div>
             <div class="text-center mt-2">
-              <router-link to="/admin/subaccounts"
+              <router-link
+                to="/admin/subaccounts"
                 target="stripe"
                 class="h-12 rounded-full inline-flex items-center px-6 border-2 border-op-teal"
-                           >
+              >
                 <span class="text-op-teal text-base font-bold">{{
                   $t("admin.subAccounts.openDashboard")
-                  }}</span>
-                </router-link>
+                }}</span>
+              </router-link>
             </div>
             <div class="mt-4 text-center">
               <a
                 href="https://docs.omochikaeri.com/manuals/aboutsubaccount.pdf"
                 target="_blank"
                 class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
-                >
+              >
                 <span class="text-sm font-bold text-op-teal">
                   {{ $t("admin.subAccounts.manualLink") }}</span
-                                                           >
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Notes -->
-        <div class="mt-6">
-          <div class="text-xl font-bold text-black text-opacity-40 mb-2">
-            {{ $t("admin.notes.title") }}
-          </div>
-
-          <div
-            class="border-2 border-solid border-black border-opacity-10 rounded-lg p-4"
-          >
-            <div>
-              <div class="text-base font-bold text-black text-opacity-60 pb-2">
-                {{ $t("admin.notes.userRestaurantsTitle") }}
-              </div>
-              <div class="text-base text-black text-opacity-60">
-                {{ $t("admin.notes.userRestaurantsBody") }}
-              </div>
-            </div>
-
-            <div
-              class="border-t-2 border-solid border-black border-opacity-10 mt-4 pt-4"
-            >
-              <div class="text-base font-bold text-black text-opacity-60 pb-2">
-                {{ $t("admin.notes.notificationSoundTitle") }}
-              </div>
-              <div class="text-base text-black text-opacity-60">
-                {{ $t("admin.notes.notificationSoundBody") }}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Mail Magazine -->
-        <div class="mt-6">
-          <div class="text-xl font-bold text-black text-opacity-40 mb-2">
-            {{ $t("admin.mail.magazine.title") }}
-          </div>
-
-          <div class="bg-white shadow rounded-lg p-4">
-            <div class="text-base text-black text-opacity-60">
-              {{ $t("admin.mail.magazine.body") }}
-            </div>
-
-            <div class="text-center mt-4">
-              <b-checkbox v-model="opt_out">
-                {{ $t("admin.mail.magazine.optout") }}
-              </b-checkbox>
-            </div>
-          </div>
-        </div>
-
-        <!-- Mail Magazine -->
-        <div class="mt-6">
-          <div class="text-xl font-bold text-black text-opacity-40 mb-2">
-            {{ $t("admin.thirdPartyService.title") }}
-          </div>
-
-          
-          
-          <div class="bg-white shadow rounded-lg p-4">
-            <div class="text-center mt-2">
-              <router-link to="/admin/smaregi/index"
-                class="h-12 rounded-full inline-flex items-center px-6 border-2 border-op-teal"
-                           >
-                <span class="text-op-teal text-base font-bold">{{
-                  $t("admin.thirdPartyService.openSmaregi")
-                  }}</span>
-                </router-link>
-            </div>
-
-            <div class="mt-4 text-center">
-              <a
-                href="https://docs.omochikaeri.com/manuals/smaregi.pdf"
-                target="_blank"
-                class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
                 >
-                <span class="text-sm font-bold text-op-teal">
-                  {{ $t("admin.thirdPartyService.smaregiManualLink") }}</span
-                                                           >
               </a>
             </div>
-
-            <div class="mt-4 text-center">
-              <a
-                href="https://apps.smaregi.jp/apps/762"
-                target="_blank"
-                class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
-                >
-                <span class="text-sm font-bold text-op-teal">
-                    {{ $t("admin.thirdPartyService.smaregiAppMarket") }}
-                </span>
-              </a>
-            </div>
-            
           </div>
         </div>
 
+        <!-- Note -->
+        <Note />
+
+        <!-- Mail Magazine-->
+        <MailMagazine />
+
+        <!-- Smaregi-->
+        <Smaregi />
       </div>
+      <!-- End of Right Section -->
     </div>
     <b-modal :active.sync="isOpen" :width="488">
-      <PartnersContact :id="(partner[0]||{}).id"/>
+      <PartnersContact :id="(partner[0] || {}).id" />
     </b-modal>
     <div class="bg-op-yellow p-4 mt-6">
-      <div class="text-center">
-        <!-- User Manuals -->
-        <div class="inline-block px-1 pb-2" v-if="isJapan">
-          <a
-            href="https://docs.omochikaeri.com/manuals/manual.pdf"
-            target="_blank"
-          >
-            <div
-              class="inline-flex justify-center items-center rounded-full h-9 bg-white bg-opacity-80 px-4"
-            >
-              <i class="material-icons text-lg text-op-teal mr-2"
-                >help_outline</i
-              >
-              <span class="text-sm font-bold text-op-teal">{{
-                $t("admin.userManual")
-              }}</span>
-            </div>
-          </a>
-        </div>
-
-        <div class="inline-block px-1 pb-2" v-if="isJapan">
-          <a
-            href="https://docs.omochikaeri.com/manuals/tips.pdf"
-            target="_blank"
-          >
-            <div
-              class="inline-flex justify-center items-center rounded-full h-9 bg-white bg-opacity-80 px-4"
-            >
-              <i class="material-icons text-lg text-op-teal mr-2"
-                >help_outline</i
-              >
-              <span class="text-sm font-bold text-op-teal">{{
-                $t("menu.tipsLink")
-              }}</span>
-            </div>
-          </a>
-        </div>
-        
-        <!-- Support -->
-        <div class="inline-block px-1 pb-2" v-if="isJapan">
-          <a
-            href="https://docs.google.com/forms/d/e/1FAIpQLSfGR4kk65ynfkCRGJsvJz01HZf7AU1nGLL9Rn9i4G9-qiW6MQ/viewform"
-            target="_blank"
-          >
-            <div
-              class="inline-flex justify-center items-center rounded-full h-9 bg-white bg-opacity-80 px-4"
-            >
-              <i class="material-icons text-lg text-op-teal mr-2"
-                >mail_outline</i
-              >
-              <span class="text-sm font-bold text-op-teal">{{
-                $t("admin.suportPage")
-              }}</span>
-            </div>
-          </a>
-        </div>
-      </div>
-      <div class="text-center">
-        <!-- Facebook User Group -->
-        <div class="inline-block px-1 pb-2" v-if="isJapan">
-          <a
-            href="https://www.facebook.com/groups/278028420106364/"
-            target="_blank"
-          >
-            <div
-              class="inline-flex justify-center items-center rounded-full h-9 bg-white bg-opacity-80 px-4"
-            >
-              <i class="fab fa-facebook text-lg text-op-teal mr-2"></i>
-              <span class="text-sm font-bold text-op-teal">{{
-                $t("admin.facebookUserGroup")
-              }}</span>
-            </div>
-          </a>
-        </div>
-        
-        <!-- Twitter -->
-        <div class="inline-block px-1 pb-2" v-if="isJapan">
-          <a
-            href="https://twitter.com/omochikaericom"
-            target="_blank"
-          >
-            <div
-              class="inline-flex justify-center items-center rounded-full h-9 bg-white bg-opacity-80 px-4"
-            >
-              <i class="fab fa-twitter text-lg text-op-teal mr-2"></i>
-              <span class="text-sm font-bold text-op-teal">
-                Twitte
-              </span>
-            </div>
-          </a>
-        </div>
-
-        <!-- Twitter -->
-        <div class="inline-block px-1 pb-2" v-if="isJapan">
-          <a
-            href="https://note.com/singsoc/m/m19dd935e84e4"
-            target="_blank"
-          >
-            <div
-              class="inline-flex justify-center items-center rounded-full h-9 bg-white bg-opacity-80 px-4"
-            > 
-              <i class="material-icons text-lg text-op-teal mr-2"
-                >mail_outline</i
-              >
-              <span class="text-sm font-bold text-op-teal">
-                Note
-              </span>
-            </div>
-          </a>
-        </div>
-        
-      </div>
+      <!-- Footer -->
+      <Footer />
     </div>
-
   </div>
 </template>
 
 <script>
-import { db, firestore, functions } from "~/plugins/firebase.js";
-import RestaurantEditCard from "~/app/admin/Restaurant/RestaurantEditCard";
-import { order_status } from "~/plugins/constant.js";
-import { midNight } from "~/plugins/dateUtils.js";
-import { ownPlateConfig } from "@/config/project";
-import PaymentSection from "~/app/admin/Payment/PaymentSection";
-import newsList from "./News/data";
-import MessageCard from "./Messages/MessageCard";
-import PartnersContact from "./Partners/Contact";
+import { db, firestore } from "@/plugins/firebase";
+import { order_status } from "@/config/constant";
+import { midNight } from "@/utils/dateUtils";
+
+import RestaurantEditCard from "@/app/admin/Restaurant/RestaurantEditCard.vue";
+import PaymentSection from "@/app/admin/Payment/PaymentSection.vue";
+import MessageCard from "./Messages/MessageCard.vue";
+import PartnersContact from "./Partners/Contact.vue";
+
+import WelcomeAndLinks from "@/app/admin/Index/WelcomeAndLinks.vue";
+import News from "@/app/admin/Index/News.vue";
+import Note from "@/app/admin/Index/Note.vue";
+import MailMagazine from "@/app/admin/Index/MailMagazine.vue";
+import Smaregi from "@/app/admin/Index/Smaregi.vue";
+import Footer from "@/app/admin/Index/Footer.vue";
+
+import { getShopOwner, getPartner } from "@/utils/utils";
 
 export default {
   name: "Restaurant",
@@ -512,27 +244,30 @@ export default {
     PaymentSection,
     RestaurantEditCard,
     MessageCard,
-    PartnersContact
+    PartnersContact,
+    WelcomeAndLinks,
+    News,
+    Smaregi,
+    MailMagazine,
+    Note,
+    Footer,
   },
-  head() {
+  metaInfo() {
     return {
-      title: ["Admin Index", this.defaultTitle].join(" / ")
-    }
+      title: ["Admin Index", this.defaultTitle].join(" / "),
+    };
   },
   data() {
     return {
-      region: ownPlateConfig.region,
       readyToDisplay: false,
       isCreating: false,
       restaurantItems: null,
       detachers: [],
       restaurant_detacher: null,
       message_detacher: null,
-      news: newsList[0],
       unsetWarning: true,
       lines: {},
       shopOwner: null,
-      opt_out: null,
       restaurantLists: [],
       messages: [],
       isOpen: false,
@@ -544,25 +279,22 @@ export default {
   async mounted() {
     try {
       if (this.isOwner) {
-        this.shopOwner = await this.getShopOwner(this.ownerUid);
-        const adminConfig = await db
-              .doc(`/adminConfigs/${this.ownerUid}`)
-              .get();
-        this.adminConfig = adminConfig.exists ? adminConfig.data() : {};
-        this.opt_out = this.adminConfig.opt_out || false;
+        this.shopOwner = await getShopOwner(this.ownerUid);
 
         const restaurantLists = await db
-              .doc(`/admins/${this.$store.getters.uidAdmin}/public/RestaurantLists`)
-              .get();
+          .doc(`/admins/${this.$store.getters.uidAdmin}/public/RestaurantLists`)
+          .get();
         this.restaurantLists =
           (restaurantLists.exists ? restaurantLists.data() : {}).lists || [];
-
       } else {
         const restaurantLists = await db
-              .doc(`/admins/${this.ownerUid}/children/${this.$store.getters.uidAdmin}`)
-              .get();
+          .doc(
+            `/admins/${this.ownerUid}/children/${this.$store.getters.uidAdmin}`
+          )
+          .get();
         this.restaurantLists =
-          (restaurantLists.exists ? restaurantLists.data() : {}).restaurantLists || [];
+          (restaurantLists.exists ? restaurantLists.data() : {})
+            .restaurantLists || [];
         this.shopOwner = {};
       }
 
@@ -571,7 +303,7 @@ export default {
         .where("uid", "==", this.ownerUid)
         .where("deletedFlag", "==", false)
         .orderBy("createdAt", "asc")
-        .onSnapshot(async result => {
+        .onSnapshot(async (result) => {
           try {
             if (result.empty) {
               this.restaurantItems = {}; // so that we present "No restaurant"
@@ -579,43 +311,51 @@ export default {
             }
             this.restaurantItems = (result.docs || []).reduce((tmp, doc) => {
               const restaurantId = doc.id;
-
-              const data = doc.data();
-              data.restaurantid = doc.id;
-              data.id = doc.id;
-              tmp[doc.id] = data;
+              if (this.restaurantLists.includes(restaurantId)) {
+                const data = doc.data();
+                data.restaurantid = doc.id;
+                data.id = doc.id;
+                tmp[doc.id] = data;
+              }
               return tmp;
             }, {});
 
-            if (this.isOwner && Object.keys(this.restaurantLists).length === 0) {
+            if (
+              this.isOwner &&
+              Object.keys(this.restaurantLists).length === 0
+            ) {
               this.restaurantLists = Object.keys(this.restaurantItems);
             }
 
             await Promise.all(
-              Object.keys(this.restaurantItems).map(async restaurantId => {
-                const menus = await db
-                  .collection(`restaurants/${restaurantId}/menus`)
-                  .where("deletedFlag", "==", false)
-                  .get();
-                const obj = { ...this.restaurantItems };
-                obj[restaurantId].numberOfMenus = menus.size;
-                this.restaurantItems = obj;
+              Object.keys(this.restaurantItems).map(async (restaurantId) => {
+                if (
+                  this.restaurantItems[restaurantId].numberOfMenus === undefined
+                ) {
+                  const menus = await db
+                    .collection(`restaurants/${restaurantId}/menus`)
+                    .where("deletedFlag", "==", false)
+                    .get();
+                  const obj = { ...this.restaurantItems };
+                  obj[restaurantId].numberOfMenus = menus.size;
+                  this.restaurantItems = obj;
+                }
               })
             );
 
             this.destroy_detacher();
             this.detachers = Object.keys(this.restaurantItems).map(
-              restaurantId => {
+              (restaurantId) => {
                 return (
                   db
                     .collection(`restaurants/${restaurantId}/orders`)
                     .where("timePlaced", ">=", midNight())
                     // IDEALLY: .where("status", "<", order_status.ready_to_pickup)
-                    .onSnapshot(result => {
+                    .onSnapshot((result) => {
                       const obj = { ...this.restaurantItems[restaurantId] };
                       obj.numberOfOrders = result.docs
-                        .map(doc => doc.data())
-                        .filter(data => {
+                        .map((doc) => doc.data())
+                        .filter((data) => {
                           // We need this filter here because Firebase does not allow us to do
                           return data.status < order_status.ready_to_pickup;
                         }).length;
@@ -629,7 +369,6 @@ export default {
           } finally {
             this.readyToDisplay = true;
           }
-          console.log(this.restaurantItems);
         });
     } catch (error) {
       console.log("Error fetch doc,", error);
@@ -639,34 +378,26 @@ export default {
     if (this.isOwner) {
       db.collectionGroup("lines")
         .where("uid", "==", this.uid)
-        .onSnapshot(result => {
-          result.docs.map(async res => {
+        .onSnapshot((result) => {
+          result.docs.map(async (res) => {
             const restaurantId = res.data().restaurantId;
             this.lines[restaurantId] = true;
           });
         });
     }
 
-    this.message_detacher = db.collection(`/admins/${this.uid}/messages`)
-          .orderBy("createdAt", "desc")
-          .onSnapshot((messageCollection) => {
-            this.messages = messageCollection.docs.map(this.doc2data("message")).filter(a => a.toDisplay);
-          });
-  },
-  watch: {
-    async opt_out() {
-      if (this.adminConfig.opt_out !== this.opt_out) {
-        const config = { ...this.adminConfig };
-        config["opt_out"] = this.opt_out;
-        await db
-          .doc(`/adminConfigs/${this.$store.getters.uidAdmin}`)
-          .set(config);
-      }
-    }
+    this.message_detacher = db
+      .collection(`/admins/${this.uid}/messages`)
+      .orderBy("createdAt", "desc")
+      .onSnapshot((messageCollection) => {
+        this.messages = messageCollection.docs
+          .map(this.doc2data("message"))
+          .filter((a) => a.toDisplay);
+      });
   },
   methods: {
     destroy_detacher() {
-      this.detachers.map(detacher => {
+      this.detachers.map((detacher) => {
         detacher();
       });
       this.detachers = [];
@@ -683,9 +414,10 @@ export default {
 
           doc.set({
             uid: this.uid,
+            menuLists: [],
             publicFlag: false,
             deletedFlag: false,
-            createdAt: firestore.FieldValue.serverTimestamp()
+            createdAt: firestore.FieldValue.serverTimestamp(),
           });
 
           this.$router.push(`/admin/restaurants/${doc.id}`);
@@ -763,10 +495,12 @@ export default {
   },
   computed: {
     partner() {
-      return this.getPartner(this.shopOwner);
+      return getPartner(this.shopOwner);
     },
     ownerUid() {
-      return this.$store.getters.isSubAccount ? this.$store.getters.parentId : this.uid;
+      return this.$store.getters.isSubAccount
+        ? this.$store.getters.parentId
+        : this.uid;
     },
     isOwner() {
       return !this.$store.getters.isSubAccount;
@@ -785,7 +519,7 @@ export default {
         return true;
       }
       return false;
-    }
-  }
+    },
+  },
 };
 </script>

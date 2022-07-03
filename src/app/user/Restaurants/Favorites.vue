@@ -44,7 +44,7 @@
     </div>
 
     <div class="mt-6 mx-6">
-      <nuxt-link :to="'/r'">
+      <router-link :to="'/r'">
         <div
           class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
         >
@@ -53,33 +53,33 @@
             $t("find.areaTop")
           }}</span>
         </div>
-      </nuxt-link>
+      </router-link>
     </div>
   </div>
 </template>
 
 <script>
-import { db } from "~/plugins/firebase.js";
-import { RestaurantHeader } from "~/plugins/header.js";
-import AreaItem from "~/app/user/Restaurants/AreaItem";
+import { db } from "@/plugins/firebase";
+import { RestaurantHeader } from "@/config/header";
+import AreaItem from "@/app/user/Restaurants/AreaItem";
 import { ownPlateConfig } from "@/config/project";
-import BackButton from "~/components/BackButton";
+import BackButton from "@/components/BackButton";
 
 export default {
   components: {
     AreaItem,
-    BackButton
+    BackButton,
   },
   data() {
     return {
       likes: null,
-      restaurants: []
+      restaurants: [],
     };
   },
-  head() {
+  metaInfo() {
     const title = [
       this.$t("pageTitle.restaurantRoot"),
-      ownPlateConfig.siteName
+      ownPlateConfig.siteName,
     ].join(" / ");
     return Object.assign(RestaurantHeader, { title });
   },
@@ -91,13 +91,13 @@ export default {
         .limit(100)
         .get();
       this.likes = (snapshot.docs || [])
-        .map(doc => {
+        .map((doc) => {
           return doc.data();
         })
-        .filter(doc => {
+        .filter((doc) => {
           return !!doc.likes;
         });
     }
-  }
+  },
 };
 </script>

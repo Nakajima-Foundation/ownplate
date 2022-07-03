@@ -3,15 +3,15 @@
 </template>
 
 <script>
-import NotFound from "~/components/NotFound";
+import NotFound from "@/components/NotFound";
 export default {
-  head() {
+  metaInfo() {
     return {
-      title: [this.defaultTitle, "404"].join(" / ")
-    }
+      title: [this.defaultTitle, "404"].join(" / "),
+    };
   },
   components: {
-    NotFound
+    NotFound,
   },
 };
 </script>

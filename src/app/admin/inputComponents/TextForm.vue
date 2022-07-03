@@ -23,38 +23,38 @@ export default {
     required: {
       type: Boolean,
       required: false,
-      default: () => true
+      default: () => true,
     },
     type: {
       type: String,
       required: false,
-      default: () => "text"
+      default: () => "text",
     },
     titleKey: {
       type: String,
-      required: true
+      required: true,
     },
     placeholder: {
       type: String,
-      required: false
+      required: false,
     },
     maxlength: {
       type: Number,
-      required: true
+      required: true,
     },
     error: {
       type: Array,
-      required: true
+      required: true,
     },
     value: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
   methods: {
     input(e) {
       this.$emit("input", e);
-    }
-  }
+    },
+  },
 };
 </script>

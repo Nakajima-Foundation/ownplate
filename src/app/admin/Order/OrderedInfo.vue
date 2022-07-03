@@ -39,9 +39,12 @@
         </div>
 
         <div class="flex-1 text-right text-base">
-          
           <div v-if="order.name">
-            <i class="fab fa-line text-lg mr-2" style="color:#4EC263;" v-if="order.isLiff" />
+            <i
+              class="fab fa-line text-lg mr-2"
+              style="color: #4ec263"
+              v-if="order.isLiff"
+            />
             {{ order.name }}
           </div>
 
@@ -50,11 +53,13 @@
           </div>
 
           <div v-else>
-            <i class="fab fa-line text-lg mr-2" style="color:#4EC263;" v-if="order.isLiff" />
+            <i
+              class="fab fa-line text-lg mr-2"
+              style="color: #4ec263"
+              v-if="order.isLiff"
+            />
             LINE
           </div>
-
-          
         </div>
       </div>
 
@@ -68,10 +73,8 @@
           {{ $n(order.totalCharge, "currency") }}
         </div>
 
-        <div class="text-sm mr-2"  v-if="order.isDelivery">
-          <i class="material-icons">
-            delivery_dining
-          </i>
+        <div class="text-sm mr-2" v-if="order.isDelivery">
+          <i class="material-icons"> delivery_dining </i>
         </div>
         <div
           v-if="order.tip"
@@ -132,7 +135,7 @@
             <div class="text-sm mr-2">
               {{
                 $tc("sitemenu.orderCounter", totalCount, {
-                  count: totalCount
+                  count: totalCount,
                 })
               }}
             </div>
@@ -140,10 +143,8 @@
             <div class="text-sm mr-2">
               {{ $n(order.totalCharge, "currency") }}
             </div>
-            <div class="text-sm mr-2"  v-if="order.isDelivery">
-              <i class="material-icons">
-                delivery_dining
-              </i>
+            <div class="text-sm mr-2" v-if="order.isDelivery">
+              <i class="material-icons"> delivery_dining </i>
             </div>
 
             <div class="flex-1 text-right text-sm font-bold">
@@ -157,26 +158,26 @@
 </template>
 
 <script>
-import { nameOfOrder } from "~/plugins/strings.js";
-import { parsePhoneNumber, formatNational } from "~/plugins/phoneutil.js";
-import { db } from "~/plugins/firebase.js";
-import { order_status, order_status_keys } from "~/plugins/constant.js";
+import { nameOfOrder } from "@/utils/strings";
+import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
+import { db } from "@/plugins/firebase";
+import { order_status, order_status_keys } from "@/config/constant";
 
 export default {
   data() {
     return {
-      restaurant: null
+      restaurant: null,
     };
   },
   props: {
     order: {
       type: Object,
-      required: true
+      required: true,
     },
     isSuperView: {
       type: Boolean,
-      required: false
-    }
+      required: false,
+    },
   },
   async created() {
     if (this.order.restaurantId) {
@@ -204,7 +205,9 @@ export default {
       }
     },
     phoneNumber() {
-      return this.order.phoneNumber ? parsePhoneNumber(this.order.phoneNumber) : "";
+      return this.order.phoneNumber
+        ? parsePhoneNumber(this.order.phoneNumber)
+        : "";
     },
     nationalPhoneNumber() {
       return this.phoneNumber === "" ? "" : formatNational(this.phoneNumber);
@@ -222,7 +225,7 @@ export default {
     },
     paymentIsNotCompleted() {
       return this.hasStripe && this.order.status < order_status.ready_to_pickup;
-    }
-  }
+    },
+  },
 };
 </script>

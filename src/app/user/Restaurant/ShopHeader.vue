@@ -19,13 +19,13 @@ export default {
   props: {
     shopInfo: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   computed: {
     profileImage() {
       return this.resizedProfileImage(this.shopInfo, "600");
-    }
-  }
+    },
+  },
 };
 </script>

@@ -37,12 +37,12 @@
 <script>
 export default {
   props: {
-    notificationData: Object
+    notificationData: Object,
   },
   methods: {
     openNotificationSettings() {
       this.$emit("openNotificationSettings");
-    }
+    },
   },
   computed: {
     orderCounter() {
@@ -50,7 +50,7 @@ export default {
         const count = (this.$store.state.orderObj[key] || []).length;
         return tmp + count;
       }, 0);
-    }
-  }
+    },
+  },
 };
 </script>

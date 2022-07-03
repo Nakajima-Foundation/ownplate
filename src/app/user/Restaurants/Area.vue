@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="mt-6 mx-6">
-      <nuxt-link :to="'/r'">
+      <router-link :to="'/r'">
         <div
           class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
         >
@@ -10,7 +10,7 @@
             $t("find.areaTop")
           }}</span>
         </div>
-      </nuxt-link>
+      </router-link>
     </div>
 
     <div class="text-xl font-bold text-black text-opacity-40 mt-6 mx-6">
@@ -32,7 +32,10 @@
             </div>
             <div class="flex-1 text-base font-bold pr-2">
               {{ restaurant.restaurantName }}
-              <i class="material-icons align-middle" v-if="restaurant.enableDelivery">
+              <i
+                class="material-icons align-middle"
+                v-if="restaurant.enableDelivery"
+              >
                 delivery_dining
               </i>
             </div>
@@ -42,38 +45,38 @@
     </div>
 
     <div class="mt-2 mx-6 h-3/5">
-      <Map :restaurants="restaurants" v-if="restaurants.length > 0"/>
+      <Map :restaurants="restaurants" v-if="restaurants.length > 0" />
     </div>
   </div>
 </template>
 
 <script>
-import { db, storage, firestore } from "~/plugins/firebase.js";
-import { defaultHeader } from "../../../plugins/header";
-import Map from "~/components/Map";
+import { db } from "@/plugins/firebase";
+import { defaultHeader } from "../../../config/header";
+import Map from "@/components/Map";
 
 export default {
   components: {
     Map,
   },
-  head() {
+  metaInfo() {
     return {
       title: [
         this.$tc("pageTitle.restaurantArea", 0, { area: this.areaName }),
-        defaultHeader.title
-      ].join(" / ")
+        defaultHeader.title,
+      ].join(" / "),
     };
   },
   data() {
     return {
       areaName: "",
-      restaurants: []
+      restaurants: [],
     };
   },
   methods: {
     areaId() {
       return this.$route.params.areaId;
-    }
+    },
   },
   async created() {
     this.areaName = this.regionalSetting.AddressStates[this.areaId()];
@@ -85,14 +88,16 @@ export default {
         .where("onTheList", "==", true)
         .where("state", "==", this.areaName)
         .get();
-      this.restaurants = (res.docs || []).map(doc => {
-        const data = doc.data();
-        data.id = doc.id;
-        return data;
-      }).sort((a, b) => {
-        return a.restaurantName > b.restaurantName ? 1 : -1;
-      });
+      this.restaurants = (res.docs || [])
+        .map((doc) => {
+          const data = doc.data();
+          data.id = doc.id;
+          return data;
+        })
+        .sort((a, b) => {
+          return a.restaurantName > b.restaurantName ? 1 : -1;
+        });
     }
-  }
+  },
 };
 </script>

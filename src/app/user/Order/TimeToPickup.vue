@@ -18,8 +18,9 @@
             v-for="(time, index) in availableDays[dayIndex].times"
             :value="time.time"
             :key="index"
-            >{{ time.display }}</option
           >
+            {{ time.display }}
+          </option>
         </b-select>
       </div>
     </div>
@@ -34,21 +35,21 @@
 </template>
 
 <script>
-import firebase from "firebase/app";
-import PickupMixin from "./pickupMixin";
+import firebase from "firebase/compat/app";
+import PickupMixin from "@/mixins/pickupMixin";
 
 export default {
   mixins: [PickupMixin],
   data() {
     return {
       dayIndex: 0,
-      time: 0
+      time: 0,
     };
   },
   props: {
     shopInfo: {
       type: Object,
-      required: true
+      required: true,
     },
     isDelivery: {
       type: Boolean,
@@ -73,7 +74,7 @@ export default {
     },
     time() {
       console.log("time changed");
-    }
+    },
   },
   methods: {
     timeToPickup() {
@@ -82,7 +83,7 @@ export default {
       date.setMinutes(this.time % 60);
       const ts = firebase.firestore.Timestamp.fromDate(date);
       return new firebase.firestore.Timestamp(ts.seconds, ts.nanoseconds);
-    }
-  }
+    },
+  },
 };
 </script>

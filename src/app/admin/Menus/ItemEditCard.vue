@@ -70,9 +70,10 @@
       </div>
     </div>
 
-    <div class="mt-2 text-right lg:mt-0 lg:ml-4 lg:flex-shrink-0"
-         v-if="isOwner"
-         >
+    <div
+      class="mt-2 text-right lg:mt-0 lg:ml-4 lg:flex-shrink-0"
+      v-if="isOwner"
+    >
       <!-- Card Actions -->
       <div class="inline-flex space-x-2">
         <!-- Up -->
@@ -138,27 +139,26 @@
 </template>
 
 <script>
-import { db } from "~/plugins/firebase.js";
-import store from "~/store/index.js";
-import Price from "~/components/Price";
+import { db } from "@/plugins/firebase";
+import Price from "@/components/Price";
 
 export default {
   components: {
-    Price
+    Price,
   },
   props: {
     menuitem: {
       type: Object,
-      required: true
+      required: true,
     },
     shopInfo: {
       type: Object,
-      required: true
+      required: true,
     },
     position: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
   computed: {
     isOwner() {
@@ -172,11 +172,11 @@ export default {
     },
     soldOut() {
       return !!this.menuitem.soldOut; // = !soldOut;
-    }
+    },
   },
   data() {
     return {
-      counter: 0
+      counter: 0,
     };
   },
   methods: {
@@ -190,8 +190,8 @@ export default {
       if (this.isOwner) {
         this.$router.push({
           path: `/admin/restaurants/${this.restaurantId()}/menus/${
-          this.menuitem.id
-        }`
+            this.menuitem.id
+          }`,
         });
       }
     },
@@ -210,9 +210,9 @@ export default {
         code: "editMenu.reallyDelete",
         callback: () => {
           this.$emit("deleteItem", this.menuitem.id);
-        }
+        },
       });
-    }
-  }
+    },
+  },
 };
 </script>

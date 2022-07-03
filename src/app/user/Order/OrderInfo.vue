@@ -3,7 +3,14 @@
     <!-- Order Items -->
     <div class="grid grid-cols-1 space-y-4">
       <template v-for="(orderItem, key) in orderItems">
-        <order-item :orderItem="orderItem" :key="orderItem.key" :editable="editable" :available="(editedAvailableOrders||{})[key]" @input="updateAvailable" :mkey="key"></order-item>
+        <order-item
+          :orderItem="orderItem"
+          :key="orderItem.key"
+          :editable="editable"
+          :available="(editedAvailableOrders || {})[key]"
+          @input="updateAvailable"
+          :mkey="key"
+        ></order-item>
       </template>
     </div>
 
@@ -45,8 +52,10 @@
       </div>
 
       <!-- Postage for EC -->
-      <div v-if="shopInfo.isEC"
-           class="border-t-2 border-solid border-black border-opacity-10 mt-4 pt-4">
+      <div
+        v-if="shopInfo.isEC"
+        class="border-t-2 border-solid border-black border-opacity-10 mt-4 pt-4"
+      >
         <div class="flex">
           <div class="flex-1">
             <div class="text-base">
@@ -61,10 +70,12 @@
           </div>
         </div>
       </div>
-      
+
       <!-- Postage for delivery -->
-      <div v-if="shopInfo.enableDelivery"
-           class="border-t-2 border-solid border-black border-opacity-10 mt-4 pt-4">
+      <div
+        v-if="shopInfo.enableDelivery"
+        class="border-t-2 border-solid border-black border-opacity-10 mt-4 pt-4"
+      >
         <div class="flex">
           <div class="flex-1">
             <div class="text-base">
@@ -95,7 +106,11 @@
 
       <!-- Tip -->
       <div
-        v-if="regionTip.choices.length > 0 && (isTipEditable || tip > 0) && enableTip"
+        v-if="
+          regionTip.choices.length > 0 &&
+          (isTipEditable || tip > 0) &&
+          enableTip
+        "
         class="border-t-2 border-solid border-black border-opacity-10 mt-4 pt-4"
       >
         <div class="flex">
@@ -161,9 +176,13 @@
             </div>
           </div>
           <div class="text-right">
-
             <div class="text-xl font-bold text-green-600">
-              {{ $n(orderInfo.total + Number(tip) + Number(actualShippingCost), "currency") }}
+              {{
+                $n(
+                  orderInfo.total + Number(tip) + Number(actualShippingCost),
+                  "currency"
+                )
+              }}
             </div>
           </div>
         </div>
@@ -173,8 +192,8 @@
 </template>
 
 <script>
-import { order_status } from "~/plugins/constant.js";
-import OrderItem from "~/app/user/Order/OrderItem";
+import { order_status } from "@/config/constant";
+import OrderItem from "@/app/user/Order/OrderItem";
 
 export default {
   name: "Order",
@@ -182,15 +201,15 @@ export default {
   props: {
     orderItems: {
       type: Array,
-      required: true
+      required: true,
     },
     orderInfo: {
       type: Object,
-      required: true
+      required: true,
     },
     shopInfo: {
       type: Object,
-      required: true
+      required: true,
     },
     editable: {
       type: Boolean,
@@ -198,16 +217,16 @@ export default {
     },
     editedAvailableOrders: {
       type: Array,
-      required: false
+      required: false,
     },
     shippingCost: {
       type: Number,
-      required: false
+      required: false,
     },
   },
   data() {
     return {
-      tip: ""
+      tip: "",
     };
   },
   watch: {
@@ -221,14 +240,16 @@ export default {
       } else {
         this.tip = this.orderInfo.tip;
       }
-    }
+    },
   },
   components: {
-    OrderItem
+    OrderItem,
   },
   computed: {
     actualShippingCost() {
-      return this.orderInfo.shippingCost ? this.orderInfo.shippingCost : (this.shippingCost || 0)
+      return this.orderInfo.shippingCost
+        ? this.orderInfo.shippingCost
+        : this.shippingCost || 0;
     },
     regionTip() {
       return this.$store.getters.stripeRegion.tip;
@@ -247,11 +268,11 @@ export default {
     },
     maxTip() {
       return this.calcTip(this.regionTip.max);
-    }
+    },
   },
   methods: {
     updateAvailable(value) {
-      this.$emit("input", value)
+      this.$emit("input", value);
     },
 
     calcTip(ratio) {
@@ -278,7 +299,7 @@ export default {
         this.tip = this.maxTip;
       }
       this.$emit("change", Number(this.tip));
-    }
-  }
+    },
+  },
 };
 </script>
