@@ -492,3 +492,22 @@ export const useIsAdmin = (ctx: any) => {
     return !!ctx.root.$store.getters.uidAdmin;
   });
 };
+
+export const useIsLiffUser = (ctx: any) => {
+  return computed(() => {
+    return !!ctx.root.$store.getters.uidLiff;
+  });
+};
+export const useIsLineUser = (ctx: any) => {
+  return computed(() => {
+    const claims = ctx.root.$store.state.claims;
+    return !!claims?.line;
+  });
+};
+
+export const useInLiff = (ctx: any) => {
+  return computed(() => {
+    // BY path
+    return !!ctx.root.$route.params.liffIndexId;
+  });
+}

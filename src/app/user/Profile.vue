@@ -28,97 +28,10 @@
           <address-button />
         </div>
         <div>
-          <!-- Credit Card Info -->
-          <div class="mt-6 text-center">
-            <div class="text-sm font-bold text-black text-opacity-30">
-              {{ $t("profile.stripeInfo") }}
-            </div>
-
-            <div class="text-base font-bold mt-2">
-              {{ cardDescription }}
-            </div>
-
-            <div v-if="storedCard" class="mt-2">
-              <b-button @click="handleDeleteCard" class="b-reset-tw">
-                <div class="inline-flex justify-center items-center">
-                  <i class="material-icons text-lg text-red-700 mr-2">delete</i>
-                  <div class="text-sm font-bold text-red-700">
-                    {{ $t("profile.deleteCard") }}
-                  </div>
-                </div>
-              </b-button>
-            </div>
-          </div>
+          <ProfileStripe />
         </div>
         <div>
-          <!-- LINE -->
-          <div class="mt-6 p-4 rounded-lg bg-black bg-opacity-5">
-            <!-- LINE Status -->
-            <div class="text-center">
-              <div class="text-sm font-bold text-black text-opacity-30">
-                {{ $t("profile.lineConnection") }}
-              </div>
-
-              <div class="text-base font-bold mt-2">
-                {{ lineConnection }}
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <!-- LINE Connected -->
-            <div v-if="isLineUser || isLiffUser">
-              <!-- Friend Status -->
-              <div class="mt-4 text-center">
-                <div class="text-sm font-bold text-black text-opacity-30">
-                  {{ $t("profile.lineFriend") }}
-                </div>
-
-                <div class="text-base font-bold mt-2">
-                  {{ lineFriend }}
-                </div>
-              </div>
-
-              <!-- Not Friend -->
-              <div v-if="isFriend === false" class="mt-4 text-center">
-                <b-button tag="a" :href="friendLink" class="b-reset-tw">
-                  <div
-                    class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5"
-                    style="background: #18b900"
-                  >
-                    <i class="fab fa-line text-white text-2xl mr-2" />
-                    <div class="text-sm font-bold text-white">
-                      {{ $t("profile.friendLink") }}
-                    </div>
-                  </div>
-                </b-button>
-              </div>
-            </div>
-
-            <!-- LINE Not Connected -->
-
-            <div v-if="!inLiff && (!isLineUser || underConstruction)">
-              <div v-if="isLineEnabled" class="mt-4 text-center">
-                <div
-                  v-if="isLineUser && underConstruction"
-                  class="text-base font-bold mb-2"
-                >
-                  再設定 for Dev
-                </div>
-                <b-button @click="handleLineAuth" class="b-reset-tw">
-                  <div
-                    class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5"
-                    style="background: #18b900"
-                  >
-                    <i class="fab fa-line text-white text-2xl mr-2" />
-                    <div class="text-sm font-bold text-white">
-                      {{ $t("line.notifyMe") }}
-                    </div>
-                  </div>
-                </b-button>
-              </div>
-            </div>
-          </div>
+          <ProfileLine />
         </div>
 
         <!-- Sign Out -->
@@ -144,31 +57,24 @@
 </template>
 
 <script>
-import { db, auth } from "@/lib/firebase/firebase9";
-import { doc, getDoc, query, onSnapshot } from "firebase/firestore";
+import { defineComponent, computed } from "@vue/composition-api";
 
+import { auth } from "@/lib/firebase/firebase9";
 import { signOut } from "firebase/auth";
-
-import {
-  stripeDeleteCard,
-  accountDelete,
-  lineVerifyFriend,
-} from "@/lib/firebase/functions";
-
-import { ownPlateConfig } from "@/config/project";
-import { lineAuthURL } from "@/lib/line/line";
 
 import PhoneLogin from "@/app/auth/PhoneLogin";
 import ProfileLogin from "@/app/user/ProfileLogin";
 import ProfileDeleteAccount from "@/app/user/ProfileDeleteAccount";
 import ProfileLoginStatus from "@/app/user/ProfileLoginStatus";
-
+import ProfileStripe from "@/app/user/ProfileStripe";
+import ProfileLine from "@/app/user/ProfileLine";
 import HistoryButton from "@/components/users/HistoryButton";
 import FavoriteButton from "@/components/users/FavoriteButton";
 import AddressButton from "@/components/users/AddressButton";
-import liff from "@line/liff";
 
-export default {
+import { defaultHeader } from "@/config/header";
+
+export default defineComponent({
   components: {
     PhoneLogin,
     HistoryButton,
@@ -177,157 +83,26 @@ export default {
     ProfileLogin,
     ProfileDeleteAccount,
     ProfileLoginStatus,
+    ProfileStripe,
+    ProfileLine,
   },
   metaInfo() {
     return {
-      title: [this.defaultTitle, "Profile"].join(" / "),
+      title: [defaultHeader.title, "Profile"].join(" / "),
     };
   },
-  data() {
-    return {
-      isFriend: undefined,
-      storedCard: null,
-      detachStripe: null,
-      liffConfig: null,
-    };
-  },
-  async created() {
-    if (this.isLineUser || this.isLiffUser) {
-      this.checkFriend();
-    }
-    this.checkStripe();
-    if (this.inLiff) {
-      this.liffConfig = (
-        await getDoc(doc(db, `liff/${this.liffIndexId}`))
-      ).data();
-    }
-  },
-  destroyed() {
-    this.detachStripe && this.detachStripe();
-  },
-  watch: {
-    isWindowActive(newValue) {
-      if (newValue && (this.isLineUser || this.isLiffUser) && !this.isFriend) {
-        this.isFriend = undefined;
-        this.checkFriend();
-      }
-    },
-    isLineUser(newValue) {
-      if (this.isFriend === undefined) {
-        this.checkFriend();
-      }
-    },
-    isLiffUser(newValue) {
-      if (this.isFriend === undefined) {
-        this.checkFriend();
-      }
-    },
-    user(newValue) {
-      this.checkStripe();
-    },
-  },
-  computed: {
-    isWindowActive() {
-      return this.$store.state.isWindowActive;
-    },
-    friendLink() {
-      // TODO liff.
-      if (this.isLiffUser) {
-        if (this.liffConfig) {
-          return this.liffConfig.friendUrl;
-        }
-      } else {
-        return ownPlateConfig.line.FRIEND_LINK;
-      }
-    },
-    claims() {
-      return this.$store.state.claims;
-    },
-    cardDescription() {
-      return this.storedCard
-        ? `${this.storedCard.brand} ***${this.storedCard.last4}`
-        : this.$t("profile.noCard");
-    },
-    lineConnection() {
-      return this.isLineUser
-        ? this.$t("profile.status.hasLine")
-        : this.$t("profile.status.noLine");
-    },
-    lineFriend() {
-      if (this.isFriend === undefined) {
-        return this.$t("profile.status.verifying");
-      }
-      return this.isFriend
-        ? this.$t("profile.status.isFriend")
-        : this.$t("profile.status.noFriend");
-    },
-    displayName() {
-      return this.user?.displayName || this.$t("profile.undefined");
-    },
-  },
-  methods: {
-    checkStripe() {
-      if (this.detachStripe) {
-        this.detachStripe();
-        this.detachStripe = null;
-      }
-      if (this.user && (this.user.phoneNumber || this.isLiffUser)) {
-        this.detachStripe = onSnapshot(
-          query(doc(db, `/users/${this.user.uid}/readonly/stripe`)),
-          (snapshot) => {
-            const stripeInfo = snapshot.data();
-            this.storedCard = stripeInfo?.card;
-          }
-        );
-      }
-    },
-    handleLineAuth() {
-      const url = lineAuthURL("/callback/line", {
-        pathname: location.pathname,
-      });
-      location.href = url;
-    },
-    handleDeleteCard() {
-      this.$store.commit("setAlert", {
-        code: "profile.reallyDeleteCard",
-        callback: async () => {
-          console.log("handleDeleteCard");
-          this.$store.commit("setLoading", true);
-          try {
-            const { data } = await stripeDeleteCard();
-            console.log("stripeDeleteCard", data);
-          } catch (error) {
-            console.error(error);
-          } finally {
-            this.$store.commit("setLoading", false);
-          }
-        },
-      });
-    },
-    handleSignOut() {
+  setup(_, ctx) {
+    const claims = computed(() => {
+      return ctx.root.$store.state.claims;
+    });
+    const handleSignOut = () => {
       console.log("handleSignOut");
       signOut(auth);
-    },
-    async checkFriend() {
-      if (this.isLiffUser) {
-        try {
-          const res = await liff.getFriendship();
-          this.isFriend = res.friendFlag;
-        } catch (error) {
-          console.log(error);
-          // alert(JSON.stringify(error));
-        }
-      } else {
-        try {
-          const { data } = await lineVerifyFriend(
-            this.isLiffUser ? { liffIndexId: this.liffIndexId } : {}
-          );
-          this.isFriend = data.result;
-        } catch (error) {
-          console.error(error);
-        }
-      }
-    },
+    };
+    return {
+      claims,
+      handleSignOut
+    };
   },
-};
+});
 </script>
