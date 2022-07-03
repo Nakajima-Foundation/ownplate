@@ -26,11 +26,9 @@
 
           <!-- Address -->
           <address-button />
-        </div>
-        <div>
+
           <ProfileStripe />
-        </div>
-        <div>
+
           <ProfileLine />
         </div>
 
