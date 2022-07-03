@@ -8,7 +8,7 @@
           <back-button url="/admin/restaurants/" />
         </div>
         <div class="flex-shrink-0">
-          <nuxt-link :to="'/r/' + restaurantId()">
+          <router-link :to="'/r/' + restaurantId()">
             <div
               class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
             >
@@ -17,7 +17,7 @@
                 $t("admin.viewPage")
               }}</span>
             </div>
-          </nuxt-link>
+          </router-link>
         </div>
       </div>
 
@@ -44,8 +44,9 @@
           v-for="day in lastSeveralMonths"
           :value="day.index"
           :key="day.index"
-          >{{ moment(day.date).format("YYYY-MM") }}</option
         >
+          {{ moment(day.date).format("YYYY-MM") }}
+        </option>
       </b-select>
     </div>
 
@@ -123,9 +124,9 @@
           </td>
           <td class="p-2">
             <div>
-              <nuxt-link :to="orderUrl(order)">{{
+              <router-link :to="orderUrl(order)">{{
                 orderName(order)
-              }}</nuxt-link>
+              }}</router-link>
               <a v-if="order.payment" :href="searchUrl(order)" target="stripe">
                 <i v-if="order.payment" class="fab fa-cc-stripe" />
               </a>
@@ -189,59 +190,77 @@
       <report-details
         :orders="orders"
         :shopInfo="shopInfo"
-        :fileName="fileName" />
+        :fileName="fileName"
+      />
     </div>
   </div>
 </template>
 
 <script>
-import { db, firestore } from "~/plugins/firebase.js";
-import BackButton from "~/components/BackButton";
-import DownloadCsv from "~/components/DownloadCSV";
-import { nameOfOrder } from "~/plugins/strings.js";
-import { ownPlateConfig } from "~/config/project";
-import { midNightOfMonth } from "~/plugins/dateUtils.js";
+import { db, firestore } from "@/plugins/firebase";
+import BackButton from "@/components/BackButton";
+import DownloadCsv from "@/components/DownloadCSV";
+import { nameOfOrder } from "@/utils/strings";
+import { ownPlateConfig } from "@/config/project";
+import { midNightOfMonth } from "@/utils/dateUtils";
 import moment from "moment";
-import ReportDetails from "~/app/admin/Order/ReportDetails";
+import ReportDetails from "@/app/admin/Order/ReportDetails";
 
 export default {
   components: {
     BackButton,
     DownloadCsv,
-    ReportDetails
+    ReportDetails,
   },
-  head() {
+  props: {
+    shopInfo: {
+      type: Object,
+      required: true,
+    },
+  },
+  metaInfo() {
     return {
-      title: this.shopInfo.restaurantName ?
-        ["Admin Report", this.shopInfo.restaurantName , this.defaultTitle].join(" / ") : this.defaultTitle
-    }
+      title: this.shopInfo.restaurantName
+        ? [
+            "Admin Report",
+            this.shopInfo.restaurantName,
+            this.defaultTitle,
+          ].join(" / ")
+        : this.defaultTitle,
+    };
   },
   data() {
     return {
-      shopInfo: {},
       orders: [],
       total: {
         food: {
           revenue: 0,
-          tax: 0
+          tax: 0,
         },
         alcohol: {
           revenue: 0,
-          tax: 0
+          tax: 0,
         },
         service: {
           revenue: 0,
-          tax: 0
+          tax: 0,
         },
-        totalCharge: 0
+        totalCharge: 0,
       },
       monthIndex: 0,
-      detacher: null
+      detacher: null,
     };
   },
   async created() {
-    const refRestaurant = db.doc(`restaurants/${this.restaurantId()}`);
-    this.shopInfo = (await refRestaurant.get()).data() || {};
+    if (!this.checkAdminPermission()) {
+      return;
+    }
+
+    if (!this.checkShopAccount(this.shopInfo)) {
+      this.notFound = true;
+      return true;
+    }
+
     this.updateQuery();
   },
   destroyed() {
@@ -250,7 +269,7 @@ export default {
   watch: {
     monthIndex() {
       this.updateQuery();
-    }
+    },
   },
   computed: {
     fileName() {
@@ -269,16 +288,16 @@ export default {
         "serviceTax",
         "total",
         "name",
-        "payment"
+        "payment",
       ];
     },
     fieldNames() {
-      return this.fields.map(field => {
+      return this.fields.map((field) => {
         return this.$t(`order.${field}`);
       });
     },
     tableData() {
-      return this.orders.map(order => {
+      return this.orders.map((order) => {
         return {
           date: moment(order.timeConfirmed).format("YYYY/MM/DD"),
           foodRevenue: order.accounting.food.revenue,
@@ -289,16 +308,16 @@ export default {
           serviceTax: order.accounting.service.tax,
           total: order.totalCharge,
           name: this.orderName(order),
-          payment: order.payment?.stripe ? "stripe" : ""
+          payment: order.payment?.stripe ? "stripe" : "",
         };
       });
     },
     lastSeveralMonths() {
-      return Array.from(Array(12).keys()).map(index => {
+      return Array.from(Array(12).keys()).map((index) => {
         const date = midNightOfMonth(-index);
         return { index, date };
       });
-    }
+    },
   },
   methods: {
     updateQuery() {
@@ -318,22 +337,22 @@ export default {
           this.lastSeveralMonths[this.monthIndex - 1].date
         );
       }
-      this.detacher = query.orderBy("timeConfirmed").onSnapshot(snapshot => {
+      this.detacher = query.orderBy("timeConfirmed").onSnapshot((snapshot) => {
         let orders = snapshot.docs.map(this.doc2data("order"));
         const multiple = this.$store.getters.stripeRegion.multiple;
-        this.orders = orders.map(order => {
+        this.orders = orders.map((order) => {
           order.timeConfirmed = order.timeConfirmed.toDate();
           order.timePlaced = order.timePlaced.toDate();
           if (!order.accounting) {
             order.accounting = {
               food: {
                 revenue: order.total - order.tax,
-                tax: order.tax
+                tax: order.tax,
               },
               alcohol: {
                 revenue: 0,
-                tax: 0
-              }
+                tax: 0,
+              },
             };
           }
           if (ownPlateConfig.region === "JP") {
@@ -344,12 +363,12 @@ export default {
               ) / multiple;
             order.accounting.service = {
               revenue: order.tip - serviceTax,
-              tax: serviceTax
+              tax: serviceTax,
             };
           } else {
             order.accounting.service = {
               revenue: order.tip,
-              tax: 0
+              tax: 0,
             };
           }
           return order;
@@ -369,17 +388,17 @@ export default {
           {
             food: {
               revenue: 0,
-              tax: 0
+              tax: 0,
             },
             alcohol: {
               revenue: 0,
-              tax: 0
+              tax: 0,
             },
             service: {
               revenue: 0,
-              tax: 0
+              tax: 0,
             },
-            totalCharge: 0
+            totalCharge: 0,
           }
         );
       });
@@ -395,7 +414,7 @@ export default {
         order.description || this.orderName(order)
       );
       return `${ownPlateConfig.stripe.search}?query=${value}`;
-    }
-  }
+    },
+  },
 };
 </script>

@@ -11,16 +11,18 @@
 </template>
 
 <script>
-import { functions } from "~/plugins/firebase.js";
 export default {
-  head() {
+  metaInfo() {
     return {
-      title: [this.defaultTitle, "operator index"].join(" / ")
-    }
+      title: [this.defaultTitle, "operator index"].join(" / "),
+    };
   },
   async mounted() {
     // console.log(this.$store.state.user, this.$store.getters.isNotSuperAdmin, this.$store.getters.isNotOperator);
-    if (!this.$store.state.user || (this.$store.getters.isNotSuperAdmin && this.$store.getters.isNotOperator)) {
+    if (
+      !this.$store.state.user ||
+      (this.$store.getters.isNotSuperAdmin && this.$store.getters.isNotOperator)
+    ) {
       this.$router.push("/");
     }
   },
@@ -34,8 +36,7 @@ export default {
       if (newValue && isNotSuperAdmin) {
         this.$router.push("/");
       }
-    }
-
-  }
+    },
+  },
 };
 </script>

@@ -92,18 +92,19 @@
 </template>
 
 <script>
-import { db, firestore, functions } from "~/plugins/firebase.js";
-import { releaseConfig } from "~/plugins/config.js";
-import { stripeConnect, stripeDisconnect } from "~/plugins/stripe.js";
-import { ownPlateConfig } from "~/config/project";
+import { db, firestore } from "@/plugins/firebase";
+import { stripeConnect, stripeDisconnect } from "@/lib/stripe/stripe";
+import { ownPlateConfig } from "@/config/project";
 import * as Cookie from "cookie";
+
+const client_id = ownPlateConfig.stripe.clientId;
 
 export default {
   data() {
     return {
       paymentInfo: {}, // { stripe, inStore, ... }
       stripe_connnect_detacher: null,
-      inStorePayment: false
+      inStorePayment: false,
     };
   },
   async mounted() {
@@ -121,7 +122,7 @@ export default {
           console.error(error);
           this.$store.commit("setErrorMessage", {
             code: "stripe.connect",
-            error
+            error,
           });
         } finally {
           this.$store.commit("setLoading", false);
@@ -131,7 +132,7 @@ export default {
     }
 
     const refPayment = db.doc(`/admins/${this.uid}/public/payment`);
-    this.stripe_connnect_detacher = refPayment.onSnapshot(async snapshot => {
+    this.stripe_connnect_detacher = refPayment.onSnapshot(async (snapshot) => {
       if (snapshot.exists) {
         this.paymentInfo = snapshot.data();
         this.inStorePayment = this.paymentInfo.inStore;
@@ -146,7 +147,7 @@ export default {
         // ---- End of Backward compatibility
         refPayment.set({
           stripe,
-          inStore: false
+          inStore: false,
         });
       }
     });
@@ -162,13 +163,13 @@ export default {
         //console.log("************* inStorePayment change", newValue);
         const refPayment = db.doc(`/admins/${this.uid}/public/payment`);
         refPayment.update({
-          inStore: newValue
+          inStore: newValue,
         });
       }
     },
     unsetWarning(newValue) {
       this.$emit("updateUnsetWarning", newValue);
-    }
+    },
   },
   computed: {
     dashboard() {
@@ -189,19 +190,19 @@ export default {
     // },
     unsetWarning() {
       return !this.inStorePayment && !this.hasStripe;
-    }
+    },
   },
   methods: {
     handleLinkStripe() {
       const params = {
         response_type: "code",
         scope: "read_write",
-        client_id: process.env.STRIPE_CLIENT_ID,
+        client_id: client_id,
         state: "s" + Math.random(),
-        redirect_uri: encodeURI(this.redirectURI)
+        redirect_uri: encodeURI(this.redirectURI),
       };
       const queryString = Object.keys(params)
-        .map(key => `${key}=${params[key]}`)
+        .map((key) => `${key}=${params[key]}`)
         .join("&");
 
       const date = new Date();
@@ -209,7 +210,6 @@ export default {
       const cookie = `stripe_state=${
         params.state
       }; expires=${date.toUTCString()}; path=/`;
-      console.log(cookie);
       document.cookie = cookie;
 
       location.href = `https://connect.stripe.com/oauth/authorize?${queryString}`;
@@ -220,23 +220,21 @@ export default {
         callback: async () => {
           try {
             this.$store.commit("setLoading", true);
-            const { data } = await stripeDisconnect({
-              STRIPE_CLIENT_ID: process.env.STRIPE_CLIENT_ID
-            });
+            const { data } = await stripeDisconnect();
             console.log(data);
             // TODO: show connected view
           } catch (error) {
             console.error(error, error.details);
             this.$store.commit("setErrorMessage", {
               code: "stripe.disconnect",
-              error
+              error,
             });
           } finally {
             this.$store.commit("setLoading", false);
           }
-        }
+        },
       });
-    }
-  }
+    },
+  },
 };
 </script>

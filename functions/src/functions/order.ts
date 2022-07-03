@@ -114,7 +114,7 @@ export const place = async (db, data: any, context: functions.https.CallableCont
         throw new functions.https.HttpsError("failed-precondition", "The order has been already placed or canceled");
       }
       const hasCustomer = restaurantData.isEC || order.isDelivery;
-      
+
       const multiple = utils.getStripeRegion().multiple; // 100 for USD, 1 for JPY
       const roundedTip = Math.round(_tip * multiple) / multiple;
 
@@ -125,7 +125,7 @@ export const place = async (db, data: any, context: functions.https.CallableCont
       // transaction for stock orderTotal
       await updateOrderTotalDataAndUserLog(db, transaction, customerUid, order.order, restaurantId, restaurantData.uid, timePlaced, true);
       const shippingCost = restaurantData.isEC ? costCal(postage, customerInfo?.prefectureId, order.total) : 0;
-      
+
       if (hasCustomer) {
         await transaction.set(customerRef, {
           ...customerInfo,
@@ -289,7 +289,7 @@ export const createNewOrderData = async (restaurantRef, orderRef, orderData, mul
     if (menu.soldOut) {
       return;
     }
-    
+
     const prices: number[] = [];
     const newOrder: number[] = [];
 

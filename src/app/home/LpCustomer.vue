@@ -2,17 +2,19 @@
   <div>
     <ownplate-service-image />
     <div class="max-w-screen-xl mx-auto">
-
       <div class="mx-6 mt-6 text-center lg:grid lg:grid-cols-3 lg:gap-4">
         <!-- For Food Lovers -->
-        <entrance-buttons-food-lovers />
-
-        <div class="bg-white rounded-lg mt-4 lg:col-span-2">
+        <div class="mb-4 lg:mb-0">
+          <entrance-buttons-food-lovers />
+        </div>
+        <div class="bg-white rounded-lg lg:col-span-2">
           <!-- Order History -->
-          <history-button />
+          <div class="pt-6 pb-6">
+            <history-button />
 
-          <!-- Favorites -->
-          <favorite-button />
+            <!-- Favorites -->
+            <favorite-button />
+          </div>
         </div>
       </div>
 
@@ -33,19 +35,19 @@
   </div>
 </template>
 <script>
-import ownplateServiceImage from "~/components/lp/ownplateServiceImage";
-import entranceButtons from "~/components/lp/entranceButtons";
-import entranceButtonsFoodLovers from "~/components/lp/entranceButtonsFoodLovers";
-import userVoices from "~/components/lp/userVoices";
-import moreButton from "~/components/lp/moreButton";
-import threeSteps from "~/components/lp/threeSteps";
-import askButtons from "~/components/lp/askButtons";
-import communityIcons from "~/components/lp/communityIcons";
-import mediaLink from "~/components/lp/mediaLink";
-import operators from "~/components/lp/operators";
-import aboutService from "~/components/lp/aboutService";
-import news from "~/components/lp/news";
-import snslink from "~/components/lp/link";
+import ownplateServiceImage from "@/components/lp/ownplateServiceImage";
+import entranceButtons from "@/components/lp/entranceButtons";
+import entranceButtonsFoodLovers from "@/components/lp/entranceButtonsFoodLovers";
+import userVoices from "@/components/lp/userVoices";
+import moreButton from "@/components/lp/moreButton";
+import threeSteps from "@/components/lp/threeSteps";
+import askButtons from "@/components/lp/askButtons";
+import communityIcons from "@/components/lp/communityIcons";
+import mediaLink from "@/components/lp/mediaLink";
+import operators from "@/components/lp/operators";
+import aboutService from "@/components/lp/aboutService";
+import news from "@/components/lp/news";
+import snslink from "@/components/lp/link";
 
 import HistoryButton from "@/components/users/HistoryButton";
 import FavoriteButton from "@/components/users/FavoriteButton";
@@ -66,9 +68,8 @@ export default {
     news,
     snslink,
     HistoryButton,
-    FavoriteButton
-
-  }
+    FavoriteButton,
+  },
 };
 
 // <!-- Go to Owner Manual -->

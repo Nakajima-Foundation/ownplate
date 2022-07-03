@@ -20,7 +20,7 @@
         <!-- Cancel Button -->
         <b-button
           class="b-reset-tw"
-          tag="nuxt-link"
+          tag="router-link"
           :to="`/admin/restaurants/${this.restaurantId()}/menus`"
         >
           <div
@@ -36,7 +36,7 @@
         <b-button @click="submitItem" :disabled="submitting" class="b-reset-tw">
           <div
             class="h-12 rounded-full bg-op-teal inline-flex justify-center items-center px-6 shadow"
-            style="min-width:8rem;"
+            style="min-width: 8rem"
           >
             <span class="text-white text-base font-bold">{{
               $t(
@@ -104,10 +104,10 @@
             <div class="text-sm font-bold pb-2">
               {{ $t("editMenu.itemAliasesName") }}
             </div>
-              <b-input
-                v-model="menuInfo.itemAliasesName"
-                :placeholder="$t('editMenu.enterItemAliasesName')"
-              ></b-input>
+            <b-input
+              v-model="menuInfo.itemAliasesName"
+              :placeholder="$t('editMenu.enterItemAliasesName')"
+            ></b-input>
           </div>
 
           <!-- Item Price -->
@@ -156,7 +156,7 @@
                   >
                     {{
                       restaurantInfo &&
-                        (restaurantInfo[taxItem + "Tax"] || 0) + "%"
+                      (restaurantInfo[taxItem + "Tax"] || 0) + "%"
                     }}
                     - {{ $t("editMenu." + taxRateKeys[taxItem]) }}
                   </option>
@@ -247,7 +247,7 @@
                   <img
                     class="rounded object-cover"
                     :src="itemPhoto"
-                    style="width: 128px; height: 128px;"
+                    style="width: 128px; height: 128px"
                   />
                 </div>
                 <div class="text-center text-xs mt-1">
@@ -413,8 +413,9 @@
                     v-for="category in categories1"
                     :key="category"
                     :value="category"
-                    >{{ category }}</option
                   >
+                    {{ category }}
+                  </option>
                 </b-select>
               </div>
 
@@ -449,8 +450,9 @@
                     v-for="category in categories2"
                     :key="category"
                     :value="category"
-                    >{{ category }}</option
                   >
+                    {{ category }}
+                  </option>
                 </b-select>
               </div>
 
@@ -492,7 +494,7 @@
         <!-- Cancel Button -->
         <b-button
           class="b-reset-tw"
-          tag="nuxt-link"
+          tag="router-link"
           :to="`/admin/restaurants/${this.restaurantId()}/menus`"
         >
           <div
@@ -508,7 +510,7 @@
         <b-button @click="submitItem" :disabled="submitting" class="b-reset-tw">
           <div
             class="h-12 rounded-full bg-op-teal inline-flex justify-center items-center px-6 shadow"
-            style="min-width:8rem;"
+            style="min-width: 8rem"
           >
             <span class="text-white text-base font-bold">{{
               $t(
@@ -530,9 +532,7 @@
             <div
               class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
             >
-              <i class="material-icons text-lg text-op-teal mr-2">
-                queue
-              </i>
+              <i class="material-icons text-lg text-op-teal mr-2"> queue </i>
               <span class="text-sm font-bold text-op-teal">{{
                 $t("editCommon.copyMenu")
               }}</span>
@@ -546,8 +546,9 @@
               v-for="restaurant in restaurants"
               :key="restaurant.id"
               :value="restaurant.id"
-              >{{ restaurant.restaurantName }}</option
             >
+              {{ restaurant.restaurantName }}
+            </option>
           </b-select>
         </div>
       </div>
@@ -557,28 +558,34 @@
 
 <script>
 import Vue from "vue";
-import { db, storage } from "~/plugins/firebase.js";
-import firebase from "firebase/app";
-import NotFound from "~/components/NotFound";
-import BackButton from "~/components/BackButton";
-import Price from "~/components/Price";
-import { taxRates } from "~/plugins/constant.js";
+import { db } from "@/plugins/firebase";
+import firebase from "firebase/compat/app";
+import NotFound from "@/components/NotFound";
+import BackButton from "@/components/BackButton";
+import Price from "@/components/Price";
+import { taxRates } from "@/config/constant";
 import NotificationIndex from "./Notifications/Index";
 import { ownPlateConfig } from "@/config/project";
-import {
-  halfCharactors,
-  formatOption,
-  optionPrice
-} from "~/plugins/strings.js";
-import EditCategory from "~/app/admin/Menus/EditCategory";
+import { halfCharactors, formatOption, optionPrice } from "@/utils/strings";
+import EditCategory from "@/app/admin/Menus/EditCategory";
+
+import { uploadFile } from "@/lib/firebase/storage";
+
+import { getNewItemData } from "@/models/menu";
 
 export default {
   name: "Order",
-  head() {
+  metaInfo() {
     return {
-      title: this.menuInfo.itemName ?
-        ["Admin Menu Item", this.menuInfo.itemName, this.restaurantInfo.restaurantName , this.defaultTitle].join(" / ") : this.defaultTitle
-    }
+      title: this.menuInfo.itemName
+        ? [
+            "Admin Menu Item",
+            this.menuInfo.itemName,
+            this.restaurantInfo.restaurantName,
+            this.defaultTitle,
+          ].join(" / ")
+        : this.defaultTitle,
+    };
   },
 
   components: {
@@ -586,7 +593,13 @@ export default {
     BackButton,
     NotificationIndex,
     NotFound,
-    EditCategory
+    EditCategory,
+  },
+  props: {
+    shopInfo: {
+      type: Object,
+      required: true,
+    },
   },
 
   data() {
@@ -605,7 +618,7 @@ export default {
         itemOptionCheckbox: [""],
         allergens: {},
         category1: "",
-        category2: ""
+        category2: "",
       },
 
       taxRates: taxRates,
@@ -620,24 +633,22 @@ export default {
       files: {},
       categoryKey: null,
       restaurants: [],
-      copyRestaurantId: null
+      copyRestaurantId: null,
     };
   },
   async created() {
+    this.checkAdminPermission();
+    // allow sub Account
+    if (!this.checkShopAccount(this.shopInfo)) {
+      this.notFound = true;
+      return true;
+    }
+
     this.taxRateKeys = this.regionalSetting["taxRateKeys"];
     this.requireTaxPriceDisplay = this.regionalSetting.requireTaxPriceDisplay;
     this.currencyKey = this.regionalSetting["CurrencyKey"];
 
-    this.checkAdminPermission();
-
-    const restaurantRef = db.doc(`restaurants/${this.restaurantId()}`);
-    const resRestInfo = await restaurantRef.get();
-    if (!resRestInfo.exists) {
-      this.notFound = true;
-      console.log("no restaurant");
-      return;
-    }
-    this.restaurantInfo = resRestInfo.data();
+    this.restaurantInfo = this.shopInfo;
     if (!this.restaurantInfo.category1) {
       this.restaurantInfo.category1 = [];
     }
@@ -645,11 +656,6 @@ export default {
       this.restaurantInfo.category2 = [];
     }
 
-    if (this.restaurantInfo.uid !== this.uid) {
-      this.notFound = true;
-      console.log("no owner");
-      return;
-    }
     const menuRes = db.doc(
       `restaurants/${this.restaurantId()}/menus/${this.menuId}`
     );
@@ -661,21 +667,21 @@ export default {
     }
     this.menuInfo = Object.assign({}, this.menuInfo, resMenuInfo.data());
     this.notFound = false;
-
     const restaurantsCollection = await db
       .collection("restaurants")
       .where("uid", "==", this.uid)
       .where("deletedFlag", "==", false)
       .get();
     if (!restaurantsCollection.empty && restaurantsCollection.docs.length > 0) {
-      this.restaurants = restaurantsCollection.docs.map(r =>
+      this.restaurants = restaurantsCollection.docs.map((r) =>
         this.doc2data("r")(r)
       );
+      this.copyRestaurantId = this.restaurants[0].id;
     }
   },
   computed: {
     itemOptions() {
-      return this.menuInfo.itemOptionCheckbox.map(v => {
+      return this.menuInfo.itemOptionCheckbox.map((v) => {
         return v.split(",");
       });
     },
@@ -699,7 +705,7 @@ export default {
     },
     errors() {
       const err = {};
-      ["itemName", "price", "tax"].forEach(name => {
+      ["itemName", "price", "tax"].forEach((name) => {
         err[name] = [];
         if (this.menuInfo[name] === "") {
           err[name].push("validationError." + name + ".empty");
@@ -714,7 +720,7 @@ export default {
     hasError() {
       const num = this.countObj(this.errors);
       return num > 0;
-    }
+    },
   },
   /*
   watch: {
@@ -725,7 +731,9 @@ export default {
   */
   methods: {
     displayOptionPrice(str) {
-      const price = this.roundPrice(optionPrice(str) * this.taxRate(this.restaurantInfo, this.menuInfo));
+      const price = this.roundPrice(
+        optionPrice(str) * this.taxRate(this.restaurantInfo, this.menuInfo)
+      );
       if (price === 0) {
         return this.$t("editMenu.noPriceChange");
       } else if (price > 0) {
@@ -735,7 +743,7 @@ export default {
     },
     async handleCategoryUpdated(categories) {
       await db.doc(`restaurants/${this.restaurantId()}`).update({
-        [this.categoryKey]: categories
+        [this.categoryKey]: categories,
       });
       this.restaurantInfo[this.categoryKey] = categories;
     },
@@ -757,7 +765,9 @@ export default {
     },
     async copyItem() {
       if (this.copyRestaurantId !== null) {
-        const shop = this.restaurants.find(r => r.id === this.copyRestaurantId);
+        const shop = this.restaurants.find(
+          (r) => r.id === this.copyRestaurantId
+        );
         this.$store.commit("setAlert", {
           title: shop.restaurantName,
           code: "editCommon.copyMenuAlert",
@@ -768,42 +778,36 @@ export default {
             newItem.deletedFlag = false;
             newItem.uid = this.$store.getters.uidAdmin;
 
+            const category1 = shop.category1 || [];
+            const category2 = shop.category2 || [];
+            if (newItem.category1 && !category1.includes(newItem.category1)) {
+              category1.push(newItem.category1);
+            }
+            if (newItem.category2 && !category2.includes(newItem.category2)) {
+              category2.push(newItem.category2);
+            }
             const newData = await db
               .collection(`restaurants/${shop.id}/menus`)
               .add(newItem);
 
-            const menuLists = shop.menuLists;
+            const menuLists = shop.menuLists || [];
             menuLists.push(newData.id);
 
-            await db
-              .doc(`restaurants/${shop.id}`)
-              .update("menuLists", menuLists);
-          }
+            await db.doc(`restaurants/${shop.id}`).update({
+              menuLists,
+              category1,
+              category2,
+            });
+          },
         });
       }
     },
     getNewItemData() {
-      const itemData = {
-        itemName: this.menuInfo.itemName,
-        itemAliasesName: this.menuInfo.itemAliasesName || "",
-        price:
-          ownPlateConfig.region === "JP"
-            ? Math.round(Number(this.menuInfo.price))
-            : Number(this.menuInfo.price),
-        tax: this.menuInfo.tax,
-        itemDescription: this.menuInfo.itemDescription,
-        itemMemo: this.menuInfo.itemMemo,
-        itemPhoto: this.menuInfo.itemPhoto,
-        images: {
-          item: this.menuInfo.images.item || {}
-        },
-        itemOptionCheckbox: this.menuInfo.itemOptionCheckbox || [],
-        publicFlag: this.menuInfo.publicFlag || false,
-        allergens: this.menuInfo.allergens,
-        validatedFlag: !this.hasError,
-        category1: this.menuInfo.category1,
-        category2: this.menuInfo.category2
-      };
+      const itemData = getNewItemData(
+        this.menuInfo,
+        ownPlateConfig.region === "JP",
+        !this.hasError
+      );
       return itemData;
     },
     async submitItem() {
@@ -814,13 +818,10 @@ export default {
           const path = `/images/restaurants/${this.restaurantId()}/menus/${
             this.menuId
           }/${this.uid}/item.jpg`;
-          this.menuInfo.itemPhoto = await this.uploadFile(
-            this.files["menu"],
-            path
-          );
+          this.menuInfo.itemPhoto = await uploadFile(this.files["menu"], path);
           this.menuInfo.images.item = {
             original: this.menuInfo.itemPhoto,
-            resizedImages: {}
+            resizedImages: {},
           };
         }
         const itemData = this.getNewItemData();
@@ -828,8 +829,8 @@ export default {
         // Convert double-width characters with half-width characters in options
         // We also convert Japanse commas with alphabet commas
         itemData.itemOptionCheckbox = itemData.itemOptionCheckbox.map(
-          option => {
-            return halfCharactors(option.replace(/、/g, s => ","));
+          (option) => {
+            return halfCharactors(option.replace(/、/g, (s) => ","));
           }
         );
 
@@ -838,26 +839,17 @@ export default {
           .update(itemData);
 
         this.$router.push({
-          path: `/admin/restaurants/${this.restaurantId()}/menus`
+          path: `/admin/restaurants/${this.restaurantId()}/menus`,
         });
       } catch (error) {
         this.submitting = false;
         this.$store.commit("setErrorMessage", {
           code: "menu.save",
-          error
+          error,
         });
         console.log(error);
       }
-    }
-  }
+    },
+  },
 };
 </script>
-<style lang="scss" scoped>
-// .croppa-container {
-//   cursor: pointer;
-// }
-// .croppa-container canvas {
-//   border-radius: 4px !important;
-//   background: #f00 !important;
-// }
-</style>

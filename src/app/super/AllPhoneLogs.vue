@@ -5,7 +5,12 @@
     <table>
       <tr v-for="log in logs" :key="log.id">
         <td class="p-b-4">
-          {{moment(log.updatedAt.toDate()).format("YYYY:MM:DD HH:mm")}}/<nuxt-link :to="`/r/${log.restaurantId}`">{{log.restaurantId}}</nuxt-link>/{{ log.orderId }}
+          {{
+            moment(log.updatedAt.toDate()).format("YYYY:MM:DD HH:mm")
+          }}/<router-link :to="`/r/${log.restaurantId}`">{{
+            log.restaurantId
+          }}</router-link
+          >/{{ log.orderId }}
         </td>
       </tr>
     </table>
@@ -13,22 +18,22 @@
 </template>
 
 <script>
-import BackButton from "~/components/BackButton";
-import { db } from "~/plugins/firebase.js";
+import BackButton from "@/components/BackButton";
+import { db } from "@/plugins/firebase";
 
 export default {
-  head() {
+  metaInfo() {
     return {
-      title: [this.defaultTitle, "Super All Phone Logs"].join(" / ")
-    }
+      title: [this.defaultTitle, "Super All Phone Logs"].join(" / "),
+    };
   },
   components: {
-    BackButton
+    BackButton,
   },
   data() {
     return {
       logs: [],
-      detacher: null
+      detacher: null,
     };
   },
   async mounted() {
@@ -41,8 +46,8 @@ export default {
       .collectionGroup("phoneLog")
       .orderBy("updatedAt", "desc")
       .limit(100)
-      .onSnapshot(snapshot => {
-        this.logs = snapshot.docs.map(doc => {
+      .onSnapshot((snapshot) => {
+        this.logs = snapshot.docs.map((doc) => {
           const log = doc.data();
           log.id = doc.id;
           log.createdAt = log.updatedAt.toDate();
@@ -53,6 +58,6 @@ export default {
   },
   destroyed() {
     this.detatcher && this.detatcher();
-  }
+  },
 };
 </script>

@@ -11,8 +11,9 @@
             v-for="(timeItem, index) of timeList"
             :key="timeItem"
             :value="index === 0 ? null : (index - 1) * 30"
-            >{{ timeItem }}</option
           >
+            {{ timeItem }}
+          </option>
         </b-select>
       </b-field>
     </div>
@@ -24,8 +25,9 @@
             v-for="(timeItem, index) of timeList"
             :key="timeItem"
             :value="index === 0 ? null : (index - 1) * 30"
-            >{{ timeItem }}</option
           >
+            {{ timeItem }}
+          </option>
         </b-select>
       </b-field>
     </div>
@@ -38,22 +40,22 @@ export default {
   props: {
     disabled: {
       type: Boolean,
-      required: true
+      required: true,
     },
     type: {
       type: String,
-      required: true
+      required: true,
     },
     value: {
       type: Object,
       required: true,
-      default: () => ({})
-    }
+      default: () => ({}),
+    },
   },
   methods: {
     updateValue() {
       this.$emit("input", this.value);
-    }
+    },
   },
   data() {
     return {
@@ -107,9 +109,9 @@ export default {
         "10:30 PM",
         "11:00 PM",
         "11:30 PM",
-        "12:00 AM"
-      ]
+        "12:00 AM",
+      ],
     };
-  }
+  },
 };
 </script>

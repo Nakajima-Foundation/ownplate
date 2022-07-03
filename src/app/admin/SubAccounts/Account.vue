@@ -16,25 +16,33 @@
         </span>
         <b-input
           v-model="name"
-          :placeholder="$t('SubAccounts.enterName')"
-          ></b-input>
+          :placeholder="$t('admin.subAccounts.enterName')"
+        ></b-input>
 
         <span class="text-base font-bold">
-          {{ $t("admin.subAccounts.email") }}
-        </span><br/>
-        {{child.email}} / {{$t("admin.subAccounts.messageResult." + (child.accepted === true ? "accepted" : "waiting"))}}<br/>
+          {{ $t("admin.subAccounts.email") }} </span
+        ><br />
+        {{ child.email }} /
+        {{
+          $t(
+            "admin.subAccounts.messageResult." +
+              (child.accepted === true ? "accepted" : "waiting")
+          )
+        }}<br />
       </div>
-      <div
-        class="bg-white shadow rounded-lg p-4 mt-2"
-        >
-        <span class="font-bold">{{$t("admin.subAccounts.selectRestaurant")}}</span>
+      <div class="bg-white shadow rounded-lg p-4 mt-2">
+        <span class="font-bold">{{
+          $t("admin.subAccounts.selectRestaurant")
+        }}</span>
         <div v-for="(restaurant, k) in restaurants" :key="k">
-          <b-checkbox v-model="restaurantListObj[restaurant.id]">{{restaurant.restaurantName}}</b-checkbox>
+          <b-checkbox v-model="restaurantListObj[restaurant.id]">{{
+            restaurant.restaurantName
+          }}</b-checkbox>
         </div>
       </div>
       <div class="mt-2">
         <b-button @click="saveList">
-          {{$t("editCommon.save")}}
+          {{ $t("editCommon.save") }}
         </b-button>
       </div>
     </div>
@@ -42,30 +50,43 @@
 </template>
 
 <script>
-
-import BackButton from "~/components/BackButton";
-import { db } from "~/plugins/firebase.js";
+import BackButton from "@/components/BackButton";
+import { db } from "@/plugins/firebase";
 
 export default {
   components: {
-    BackButton
+    BackButton,
   },
-  head() {
+  metaInfo() {
     return {
-      title: [this.defaultTitle, "Admin Subaccount Account"].join(" / ")
-    }
+      title: [this.defaultTitle, "Admin Subaccount Account"].join(" / "),
+    };
   },
   async created() {
-    const restaurantCollection = await db.collection("restaurants")
-          .where("uid", "==", this.uid)
-          .where("deletedFlag", "==", false)
-          .orderBy("createdAt", "asc").get();
-    this.restaurantObj = this.array2obj(restaurantCollection.docs.map(this.doc2data("restaurant")));
-    this.restaurants = restaurantCollection.docs.map(this.doc2data("restaurant")).filter(r => r.publicFlag);
+    const restaurantCollection = await db
+      .collection("restaurants")
+      .where("uid", "==", this.uid)
+      .where("deletedFlag", "==", false)
+      .orderBy("createdAt", "asc")
+      .get();
+    this.restaurantObj = this.array2obj(
+      restaurantCollection.docs.map(this.doc2data("restaurant"))
+    );
+    this.restaurants = restaurantCollection.docs
+      .map(this.doc2data("restaurant"))
+      .filter((r) => r.publicFlag);
 
-    const childrenDoc = await db.doc(`admins/${this.uid}/children/${this.subAccountId}`).get()
+    const childrenDoc = await db
+      .doc(`admins/${this.uid}/children/${this.subAccountId}`)
+      .get();
     this.child = childrenDoc.data();
-    this.restaurantListObj = (this.child.restaurantLists||[]).reduce((t, c) => {t[c] = true; return t;}, {})
+    this.restaurantListObj = (this.child.restaurantLists || []).reduce(
+      (t, c) => {
+        t[c] = true;
+        return t;
+      },
+      {}
+    );
     this.name = this.child.name;
   },
   data() {
@@ -75,18 +96,13 @@ export default {
       child: {},
       restaurantListObj: {},
       name: "",
-    }
+    };
   },
   methods: {
-    rList(restaurantLists) {
-      return (restaurantLists||[]).map((r) => {
-        return this.restaurantObj[r];
-      });
-    },
     async saveList() {
       await db.doc(`admins/${this.uid}/children/${this.subAccountId}`).update({
         restaurantLists: this.newRestaurantList,
-        name: this.name
+        name: this.name,
       });
       this.$router.push("/admin/subaccounts/");
     },

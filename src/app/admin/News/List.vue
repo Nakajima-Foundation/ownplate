@@ -2,7 +2,7 @@
   <div>
     <!-- Header -->
     <div class="mt-6 mx-6">
-      <nuxt-link :to="'/admin/restaurants'">
+      <router-link :to="'/admin/restaurants'">
         <div
           class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
         >
@@ -11,7 +11,7 @@
             {{ $t("admin.news.adminTop") }}
           </div>
         </div>
-      </nuxt-link>
+      </router-link>
     </div>
 
     <!-- Title -->
@@ -35,22 +35,22 @@
 </template>
 
 <script>
-import ListItem from "~/app/admin/News/ListItem";
+import ListItem from "@/app/admin/News/ListItem";
 import newsList from "./data";
 
 export default {
   components: {
-    ListItem
+    ListItem,
   },
-  head() {
+  metaInfo() {
     return {
-      title: ["News", this.defaultTitle].join(" / ")
+      title: ["News", this.defaultTitle].join(" / "),
     };
   },
   data() {
     return {
-      newsList: newsList
+      newsList: newsList,
     };
-  }
+  },
 };
 </script>

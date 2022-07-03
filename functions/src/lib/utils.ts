@@ -97,7 +97,7 @@ export const get_restaurant_delivery_area = async (db: admin.firestore.Firestore
 
 export const get_delivery_cost = (orderData: any, deliveryData: any, total: number) => {
   if (orderData.isDelivery) {
-    if (deliveryData.enableDeliveryFree && (deliveryData.deliveryFreeThreshold <= total)) {
+    if (deliveryData.enableDeliveryFree && deliveryData.deliveryFreeThreshold <= total) {
       return 0;
     }
     return Number(deliveryData.deliveryFee || 0);

@@ -6,7 +6,7 @@
       <div class="align-center">
         <b-button
           class="b-reset h-9 rounded-full bg-form"
-          tag="nuxt-link"
+          tag="router-link"
           to=""
         >
           <span class="p-l-16 p-r-16">

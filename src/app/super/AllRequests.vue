@@ -9,36 +9,40 @@
         <td>Pub</td>
         <td>Delete</td>
         <td>Status</td>
-      <tr
-      v-for="request in requests"
-      :key="request.id"
-      >
+      </tr>
+
+      <tr v-for="request in requests" :key="request.id">
         <td style="width: 50%">
           <router-link :to="`/r/${request.id}`">
-            {{(restaurantsObj[request.id] || {}).restaurantName}}
+            {{ (restaurantsObj[request.id] || {}).restaurantName }}
           </router-link>
         </td>
         <td>
-          {{(restaurantsObj[request.id] || {}).onTheList ? "o":"-"}}
+          {{ (restaurantsObj[request.id] || {}).onTheList ? "o" : "-" }}
         </td>
         <td>
-          {{(restaurantsObj[request.id] || {}).publicFlag  ? "o":"-"}}
+          {{ (restaurantsObj[request.id] || {}).publicFlag ? "o" : "-" }}
         </td>
         <td>
-          {{(restaurantsObj[request.id] || {}).deletedFlag ? "o":"-"}}
+          {{ (restaurantsObj[request.id] || {}).deletedFlag ? "o" : "-" }}
         </td>
         <td>
           <span>
-            {{request.status == 1 ? "request" : ""}}
+            {{ request.status == 1 ? "request" : "" }}
           </span>
         </td>
         <td>
-          <span v-if="!restaurantsObj[request.id] || !restaurantsObj[request.id].onTheList">
-             <b-button @click="enableList(restaurantsObj[request.id].id)">Enable</b-button>
+          <span
+            v-if="
+              !restaurantsObj[request.id] ||
+              !restaurantsObj[request.id].onTheList
+            "
+          >
+            <b-button @click="enableList(restaurantsObj[request.id].id)"
+              >Enable</b-button
+            >
           </span>
-          <span v-else>
-            On the list
-          </span>
+          <span v-else> On the list </span>
         </td>
       </tr>
     </table>
@@ -46,18 +50,20 @@
 </template>
 
 <script>
-import BackButton from "~/components/BackButton";
-import { db } from "~/plugins/firebase.js";
-import firebase from "firebase/app";
+import BackButton from "@/components/BackButton";
+import { db } from "@/plugins/firebase";
+import firebase from "firebase/compat/app";
+
+import { arrayChunk } from "@/utils/utils";
 
 export default {
-  head() {
+  metaInfo() {
     return {
-      title: [this.defaultTitle, "Super All Requests"].join(" / ")
-    }
+      title: [this.defaultTitle, "Super All Requests"].join(" / "),
+    };
   },
   components: {
-    BackButton
+    BackButton,
   },
   data() {
     return {
@@ -76,18 +82,20 @@ export default {
       .collection("requestList")
       .limit(500)
       .orderBy("created", "desc")
-      .onSnapshot(async snapshot => {
+      .onSnapshot(async (snapshot) => {
         this.requests = snapshot.docs.map(this.doc2data("request"));
-        const ids =  this.requests.map((a) => a.id);
-        this.arrayChunk(ids, 10).map(async (arr) => {
-          const resCols = await db.collection('restaurants')
-                .where(
-                  firebase.firestore.FieldPath.documentId(),
-                  'in',
-                  arr
-                ).get();
+        const ids = this.requests.map((a) => a.id);
+        arrayChunk(ids, 10).map(async (arr) => {
+          const resCols = await db
+            .collection("restaurants")
+            .where(firebase.firestore.FieldPath.documentId(), "in", arr)
+            .get();
           if (!resCols.empty) {
-            this.restaurantsObj = Object.assign({}, this.restaurantsObj, this.array2obj(resCols.docs.map(this.doc2data("restaurant"))));
+            this.restaurantsObj = Object.assign(
+              {},
+              this.restaurantsObj,
+              this.array2obj(resCols.docs.map(this.doc2data("restaurant")))
+            );
           }
         });
       });
@@ -101,7 +109,7 @@ export default {
       const tmp = Object.assign({}, this.restaurantsObj);
       tmp[id].onTheList = true;
       this.restaurantsObj = tmp;
-    }
-  }
+    },
+  },
 };
 </script>

@@ -27,115 +27,9 @@ a:visited {
   color: $primary;
 }
 
-// h1 {
-//   // font-family: "Hiragino Sans CNS";
-//   letter-spacing: 0;
-//   font-size: 2rem !important;
-//   line-height: 1.5rem;
-//   color: #212121;
-// }
-
-// h2 {
-//   // font-family: "Hiragino Sans CNS";
-//   font-size: 1.75rem !important;
-//   line-height: 1.5rem;
-//   color: #212121;
-// }
-
-// h3 {
-//   // font-family: "Hiragino Sans CNS";
-//   font-size: 1.2rem !important;
-//   line-height: 2.2rem;
-//   color: #212121;
-// }
-
-// h4 {
-//   // font-family: "Hiragino Sans CNS";
-//   // color: #363636;
-//   // color: #484848;
-//   font-weight: 600;
-//   line-height: 1.125rem;
-//   font-size: 1rem !important;
-//   color: #212121;
-// }
-
-// @include mq(bluma) {
-//   h1 {
-//     // font-family: "Hiragino Sans CNS" !important;
-//     // color: #222222;
-//     letter-spacing: 0;
-//     font-size: 1.75rem !important;
-//     line-height: 2.2rem;
-//     color: #212121;
-//   }
-
-//   h2 {
-//     // font-family: "Hiragino Sans CNS" !important;
-//     letter-spacing: 0;
-//     // color: #222222;
-//     opacity: 1;
-//     font-size: 1.5rem !important;
-//     line-height: 2.2rem;
-//     color: #212121;
-//   }
-
-//   h3 {
-//     // font-family: "Hiragino Sans CNS" !important;
-//     letter-spacing: 0;
-//     // color: #222222;
-//     opacity: 1;
-//     line-height: 2rem !important;
-//     font-size: 1.25rem !important;
-//     color: #212121;
-//   }
-
-//   h4 {
-//     // font-family: "Hiragino Sans CNS" !important;
-//     letter-spacing: 0;
-//     // color: #484848;
-//     opacity: 1;
-//     font-size: 1rem !important;
-//     color: #212121;
-//   }
-// }
-
-// p {
-//   -webkit-font-smoothing: antialiased !important;
-//   font-size: 1rem;
-//   font-weight: 400;
-//   line-height: 1.5;
-// }
-
-// .p-font {
-//   font-size: 1rem;
-//   // line-height:1.4rem;
-//   line-height: 2em;
-// }
-
-// .p-big {
-//   font-size: 1.2rem;
-//   // line-height:1.4rem;
-//   line-height: 2.4em;
-// }
-
 .p-font-mini {
   font-size: 0.8rem;
 }
-
-// .p-font-middle {
-//   font-size: 0.9rem;
-//   line-height: 1.8em;
-// }
-
-// .p-bold {
-//   font-size: 1rem;
-//   font-weight: bold;
-//   line-height: 2em;
-// }
-
-// .bold {
-//   font-weight: bold;
-// }
 
 .section {
   // width: 1000px;
@@ -145,19 +39,3 @@ a:visited {
   padding-top: 1rem;
 }
 
-// .hr-black {
-//   height: 1px;
-//   border: none;
-//   border-top: 1px #c5c5c5 solid;
-//   margin-bottom: 0.5rem;
-// }
-
-// .card.block {
-//   border-radius: 8px;
-// }
-
-// @media screen and (max-width: 600px) {
-//   .sharetext {
-//     display: none;
-//   }
-// }

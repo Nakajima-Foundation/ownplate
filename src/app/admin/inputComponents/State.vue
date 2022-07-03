@@ -9,9 +9,9 @@
       v-if="Array.isArray(states)"
     >
       <b-select :value="value" placeholder="select" @input="input">
-        <option v-for="stateItem in states" :key="stateItem">{{
-          stateItem
-        }}</option>
+        <option v-for="stateItem in states" :key="stateItem">
+          {{ stateItem }}
+        </option>
       </b-select>
     </b-field>
     <b-field
@@ -34,27 +34,27 @@ export default {
   props: {
     errors: {
       type: Object,
-      required: true
+      required: true,
     },
     value: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
   methods: {
     input(e) {
       this.$emit("input", e);
-    }
+    },
   },
   data() {
     return {
       states: [],
-      state_key: ""
+      state_key: "",
     };
   },
   created() {
     this.states = this.regionalSetting.AddressStates;
     this.state_key = this.regionalSetting.StateKey || "shopInfo.state";
-  }
+  },
 };
 </script>

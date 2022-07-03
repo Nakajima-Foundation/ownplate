@@ -16,9 +16,10 @@
       </div>
     </div>
 
-    <div class="mt-2 text-right lg:mt-0 lg:ml-4 lg:flex-shrink-0"
-         v-if="isOwner"
-         >
+    <div
+      class="mt-2 text-right lg:mt-0 lg:ml-4 lg:flex-shrink-0"
+      v-if="isOwner"
+    >
       <!-- Card Actions -->
       <div class="inline-flex space-x-2">
         <!-- Up -->
@@ -84,18 +85,16 @@
 </template>
 
 <script>
-import store from "~/store/index.js";
-
 export default {
   props: {
     title: {
       type: Object,
-      required: true
+      required: true,
     },
     position: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {};
@@ -124,9 +123,9 @@ export default {
         code: "editMenu.reallyDelete",
         callback: () => {
           this.$emit("deleteItem", this.title.id);
-        }
+        },
       });
-    }
-  }
+    },
+  },
 };
 </script>

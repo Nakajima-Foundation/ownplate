@@ -52,22 +52,22 @@ export default {
   props: {
     restaurantInfo: {
       type: Object,
-      required: true
+      required: true,
     },
     categoryKey: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
-  head() {
+  metaInfo() {
     return {
-      title: [this.defaultTitle, "Admin Edit Category"].join(" / ")
-    }
+      title: [this.defaultTitle, "Admin Edit Category"].join(" / "),
+    };
   },
   data() {
     return {
       isVisible: true,
-      newEntry: ""
+      newEntry: "",
     };
   },
   created() {
@@ -78,18 +78,18 @@ export default {
       if (!newValue) {
         this.$emit("dismissed");
       }
-    }
+    },
   },
   computed: {
     isValidEntry() {
       if (this.newEntry === "") {
         return false;
       }
-      return !this.categories.find(category => category === this.newEntry);
+      return !this.categories.find((category) => category === this.newEntry);
     },
     categories() {
       return this.restaurantInfo[this.categoryKey] || [];
-    }
+    },
   },
   methods: {
     handleAdd() {
@@ -103,7 +103,7 @@ export default {
       const categories = this.categories;
       categories.splice(index, 1);
       this.$emit("updated", categories);
-    }
-  }
+    },
+  },
 };
 </script>

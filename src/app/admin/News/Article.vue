@@ -6,7 +6,7 @@
     <template v-else>
       <!-- Header -->
       <div class="mt-6 mx-6 flex items-center space-x-4">
-        <nuxt-link :to="'/admin/restaurants'">
+        <router-link :to="'/admin/restaurants'">
           <div
             class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
           >
@@ -15,9 +15,9 @@
               {{ $t("admin.news.adminTop") }}
             </div>
           </div>
-        </nuxt-link>
+        </router-link>
 
-        <nuxt-link :to="'/admin/news'">
+        <router-link :to="'/admin/news'">
           <div
             class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
           >
@@ -26,7 +26,7 @@
               {{ $t("admin.news.newsTop") }}
             </div>
           </div>
-        </nuxt-link>
+        </router-link>
       </div>
 
       <!-- Body -->
@@ -48,29 +48,30 @@
 <script>
 import MarkdownIt from "markdown-it";
 import newsList from "./data";
-import NotFound from "~/components/NotFound";
+import NotFound from "@/components/NotFound";
 
 export default {
   components: {
-    NotFound
+    NotFound,
   },
-  head() {
+  metaInfo() {
     return {
-      title: [(this.news || {}).title, this.defaultTitle].join(" / ")
+      title: [(this.news || {}).title, this.defaultTitle].join(" / "),
     };
   },
   data() {
     const newsId = this.$route.params.newsId;
-    const news = newsList.find(element => element.date === newsId);
+    const news = newsList.find((element) => element.date === newsId);
     return {
       md: new MarkdownIt(),
-      news
+      news,
     };
-  }
+  },
 };
 </script>
 
 <style lang="scss" scoped>
+/*
 /deep/ .article-list h2 {
   @apply text-xl font-bold text-black text-opacity-30 mb-8;
 }
@@ -94,4 +95,5 @@ export default {
 /deep/ .article-list > ul > li ul li {
   @apply text-base font-normal text-black mt-4;
 }
+  */
 </style>

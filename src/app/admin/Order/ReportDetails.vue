@@ -41,37 +41,37 @@
 </template>
 
 <script>
-import { db } from "~/plugins/firebase.js";
-import DownloadCsv from "~/components/DownloadCSV";
+import { db } from "@/plugins/firebase";
+import DownloadCsv from "@/components/DownloadCSV";
 import moment from "moment";
-import { parsePhoneNumber, formatNational } from "~/plugins/phoneutil.js";
-import { nameOfOrder } from "~/plugins/strings.js";
-import { order_status } from "~/plugins/constant.js";
-
+import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
+import { nameOfOrder } from "@/utils/strings";
+import { order_status } from "@/config/constant";
+import { arrayChunk } from "@/utils/utils";
 export default {
   components: {
-    DownloadCsv
+    DownloadCsv,
   },
   props: {
     orders: {
       type: Array,
-      required: true
+      required: true,
     },
     shopInfo: {
       type: Object,
-      required: true
+      required: true,
     },
     fileName: {
       type: String,
-      required: true
+      required: true,
     },
     hideTable: {
       type: Boolean,
       required: false,
-      default: false
-    }
+      default: false,
+    },
   },
-  data(){
+  data() {
     return {
       customers: {},
     };
@@ -88,28 +88,32 @@ export default {
         return null;
       }
       if (timeData.seconds) {
-        return moment(timeData.toDate()).format("YYYY/MM/DD HH:mm")
+        return moment(timeData.toDate()).format("YYYY/MM/DD HH:mm");
       }
-      return moment(timeData).format("YYYY/MM/DD HH:mm")
+      return moment(timeData).format("YYYY/MM/DD HH:mm");
     },
   },
   watch: {
-    orders: function() {
+    orders: function () {
       // load customer
-      const ids = this.orders.map(o => o.id);
-      
+      const ids = this.orders.map((o) => o.id);
+
       if (this.shopInfo.isEC || this.shopInfo.enableDelivery) {
         (async () => {
-          const customers = {...this.customers};
-          await Promise.all(this.arrayChunk(ids, 10).map(async (arr) => {
-            const cuss = await db.collectionGroup("customer")
-                  .where("restaurantId", "==", this.restaurantId())
-                  .where("orderId", "in", arr).get();
-            cuss.docs.map((cus) => {
-              const data = cus.data();
-              customers[data.orderId] = data;
-            });
-          }));
+          const customers = { ...this.customers };
+          await Promise.all(
+            arrayChunk(ids, 10).map(async (arr) => {
+              const cuss = await db
+                .collectionGroup("customer")
+                .where("restaurantId", "==", this.restaurantId())
+                .where("orderId", "in", arr)
+                .get();
+              cuss.docs.map((cus) => {
+                const data = cus.data();
+                customers[data.orderId] = data;
+              });
+            })
+          );
           this.customers = customers;
         })();
       }
@@ -119,7 +123,7 @@ export default {
     formulas() {
       return {
         count: "sum",
-        total: "sum"
+        total: "sum",
       };
     },
     fields() {
@@ -134,14 +138,14 @@ export default {
           "ec.prefecture",
           "ec.address",
           "ec.email",
-          
+
           "phoneNumber",
-          
+
           "datePlaced",
           "dateAccepted",
           "dateConfirmed",
           "dateCompleted",
-        
+
           "timeRequested",
           "timeToPickup",
 
@@ -154,10 +158,9 @@ export default {
           "shippingCost",
           "payment",
           "isDelivery",
-          "memo"
-      ];
-
-      } 
+          "memo",
+        ];
+      }
       return [
         "name",
         "statusName",
@@ -168,7 +171,7 @@ export default {
         "dateAccepted",
         "dateConfirmed",
         "dateCompleted",
-        
+
         "timeRequested",
         "timeToPickup",
 
@@ -179,18 +182,18 @@ export default {
         "count",
         "total",
         "payment",
-        "memo"
+        "memo",
       ];
     },
     fieldNames() {
-      return this.fields.map(field => {
+      return this.fields.map((field) => {
         return this.$t(`order.${field}`);
       });
     },
     mergedOrder() {
       return this.orders.map((o) => {
         if (this.customers[o.id]) {
-          o.customerInfo =  o.customerInfo || this.customers[o.id] || {};
+          o.customerInfo = o.customerInfo || this.customers[o.id] || {};
         }
         return o;
       });
@@ -209,8 +212,10 @@ export default {
         ids.forEach((menuId, index) => {
           const orderItems = this.forceArray(order.order[menuId]);
           const options = order.options[menuId] || [];
-          Object.keys(orderItems).forEach(key => {
-            const opt = Array.isArray(options[key] || []) ? options[key] || [] : [options[key]];
+          Object.keys(orderItems).forEach((key) => {
+            const opt = Array.isArray(options[key] || [])
+              ? options[key] || []
+              : [options[key]];
             try {
               const menuItem = (order.menuItems || {})[menuId] || {};
               items.push({
@@ -249,7 +254,9 @@ export default {
                 phoneNumber: this.writeonFirstLine(
                   index,
                   key,
-                  order.phoneNumber ? formatNational(parsePhoneNumber(order.phoneNumber)) : "LINE"
+                  order.phoneNumber
+                    ? formatNational(parsePhoneNumber(order.phoneNumber))
+                    : "LINE"
                 ),
                 userName: this.writeonFirstLine(
                   index,
@@ -259,40 +266,40 @@ export default {
                 "ec.name": this.writeonFirstLine(
                   index,
                   key,
-                  order?.customerInfo?.name,
+                  order?.customerInfo?.name
                 ),
                 "ec.zip": this.writeonFirstLine(
                   index,
                   key,
-                  order?.customerInfo?.zip,
+                  order?.customerInfo?.zip
                 ),
                 "ec.prefecture": this.writeonFirstLine(
                   index,
                   key,
-                  order?.customerInfo?.prefecture,
+                  order?.customerInfo?.prefecture
                 ),
                 "ec.address": this.writeonFirstLine(
                   index,
                   key,
-                  order?.customerInfo?.address,
+                  order?.customerInfo?.address
                 ),
                 "ec.email": this.writeonFirstLine(
                   index,
                   key,
-                  order?.customerInfo?.email,
+                  order?.customerInfo?.email
                 ),
                 shippingCost: this.writeonFirstLine(
                   index,
                   key,
-                  order?.shippingCost,
+                  order?.shippingCost
                 ),
                 isDelivery: this.writeonFirstLine(
                   index,
                   key,
-                  order?.isDelivery ? "1": "",
+                  order?.isDelivery ? "1" : ""
                 ),
                 count: orderItems[key],
-                options: opt.filter(a => String(a) !== "").join("/"),
+                options: opt.filter((a) => String(a) !== "").join("/"),
                 memo: this.writeonFirstLine(index, key, order.memo),
                 itemName: menuItem.itemName,
                 statusName: this.writeonFirstLine(
@@ -318,7 +325,7 @@ export default {
         });
       });
       return items;
-    }
-  }
+    },
+  },
 };
 </script>

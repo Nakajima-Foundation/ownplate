@@ -1,7 +1,7 @@
 import twilio from "twilio";
 import { twiml_neworder } from "../common/constant";
 
-import { parsePhoneNumber, formatNational, intenationalFormat } from "../common/phoneutil.js";
+import { parsePhoneNumber, formatNational, intenationalFormat } from "../common/phoneutil";
 
 import * as functions from "firebase-functions";
 
@@ -23,7 +23,7 @@ export const intenationalPhoneNumber = (restaurant) => {
   if (phoneNumber) {
     return intenationalFormat(phoneNumber);
   }
-  return phoneNumber.phoneNumber;
+  return restaurant.phoneNumber;
 };
 
 export const nationalPhoneNumber = (restaurant) => {
@@ -31,7 +31,7 @@ export const nationalPhoneNumber = (restaurant) => {
   if (phoneNumber) {
     return formatNational(phoneNumber);
   }
-  return phoneNumber.phoneNumber;
+  return restaurant.phoneNumber;
 };
 
 export const phoneCall = async (restaurant) => {

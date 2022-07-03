@@ -72,7 +72,7 @@ const getPaymentMethodData = async (db: any, restaurantOwnerUid: string, custome
 };
 
 const getHash = (message: string) => {
-  return crypto.createHash("sha256").update(message).digest("hex")  
+  return crypto.createHash("sha256").update(message).digest("hex");
 };
 
 // This function is called by user to create a "payment intent" (to start the payment transaction)
@@ -135,7 +135,7 @@ export const create = async (db: admin.firestore.Firestore, data: any, context: 
           createdAt: admin.firestore.Timestamp.now(),
         });
       }
-      
+
       const updateData = {
         status: order_status.order_placed,
         totalCharge: totalChargeWithTipAndMultipled / multiple,
@@ -247,12 +247,15 @@ export const confirm = async (db: admin.firestore.Firestore, data: any, context:
     const orderData = result.order;
 
     const params = {
-      time: moment(orderData.timeEstimated.toDate()).tz(timezone||"Asia/Tokyo").locale("ja").format("LLL")
+      time: moment(orderData.timeEstimated.toDate())
+        .tz(timezone || "Asia/Tokyo")
+        .locale("ja")
+        .format("LLL"),
     };
     console.log("timeEstimated", params["time"]);
     const msgKey = orderData.isEC ? "msg_ec_order_accepted" : "msg_order_accepted";
     await sendMessageToCustomer(db, lng, msgKey, restaurantData.restaurantName, orderData, restaurantId, orderId, params);
-    
+
     return result;
   } catch (error) {
     throw utils.process_error(error);
@@ -277,7 +280,7 @@ export const cancel = async (db: any, data: any, context: functions.https.Callab
   try {
     const result = await db.runTransaction(async (transaction) => {
       const orderDoc = await transaction.get(orderRef);
-      const order = (orderDoc).data();
+      const order = orderDoc.data();
       order.id = orderDoc.id;
       if (!order) {
         throw new functions.https.HttpsError("invalid-argument", "This order does not exist.");
@@ -319,7 +322,7 @@ export const cancel = async (db: any, data: any, context: functions.https.Callab
       const paymentIntentId = stripeRecord.paymentIntent.id;
 
       const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
-      
+
       const idempotencyKey = getHash([order.id, paymentIntentId].join("-"));
       const paymentIntent = await stripe.paymentIntents.cancel(paymentIntentId, {
         idempotencyKey: `${idempotencyKey}-cancel`,

@@ -157,7 +157,7 @@
           <a
             @click="closeTransactionsAct()"
             class="inline-flex justify-center items-center h-12 rounded-full px-6 bg-black bg-opacity-5"
-            style="min-width: 8rem;"
+            style="min-width: 8rem"
           >
             <div class="text-base font-bold text-black text-opacity-60">
               {{ $t("menu.close") }}
@@ -169,10 +169,9 @@
   </div>
 </template>
 <script>
-import { daysOfWeek } from "~/plugins/constant.js";
-import { db } from "~/plugins/firebase.js";
-import { parsePhoneNumber, formatNational } from "~/plugins/phoneutil.js";
-import { releaseConfig } from "~/plugins/config.js";
+import { daysOfWeek } from "@/config/constant";
+import { db } from "@/plugins/firebase";
+import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
 
 export default {
   data() {
@@ -183,13 +182,13 @@ export default {
       detacher: [],
       notFound: null,
       paymentInfo: {},
-      transactionsActPopup: false
+      transactionsActPopup: false,
     };
   },
   created() {
     const restaurant_detacher = db
       .doc(`restaurants/${this.restaurantId()}`)
-      .onSnapshot(async restaurant => {
+      .onSnapshot(async (restaurant) => {
         if (
           restaurant.exists &&
           !restaurant.data().deletedFlag &&
@@ -208,7 +207,7 @@ export default {
   },
   destroyed() {
     if (this.detacher) {
-      this.detacher.map(detacher => {
+      this.detacher.map((detacher) => {
         detacher();
       });
     }
@@ -239,15 +238,14 @@ export default {
       return this.$store.getters.stripeRegion.countries;
     },
     showPayment() {
-      //console.log("payment", releaseConfig.hidePayment, this.stripeAccount);
-      return !releaseConfig.hidePayment && this.stripeAccount;
+      return this.stripeAccount;
     },
     stripeAccount() {
       return this.paymentInfo.stripe;
     },
     inStorePayment() {
       return this.paymentInfo.inStore;
-    }
+    },
   },
   methods: {
     validDate(date) {
@@ -258,7 +256,7 @@ export default {
     },
     closeTransactionsAct() {
       this.transactionsActPopup = false;
-    }
-  }
+    },
+  },
 };
 </script>

@@ -1,37 +1,38 @@
 <template>
   <div>
-    <div class="t-h6 c-text-black-disabled align-center m-t-24">{{ $t('admin.smaregi.authenticating')}}</div>
+    <div class="t-h6 c-text-black-disabled align-center m-t-24">
+      {{ $t("admin.smaregi.authenticating") }}
+    </div>
     <b-loading :is-full-page="false" :active="isValidating"></b-loading>
     <div v-if="error">
-        <div class="flex space-x-4">
-          <back-button url="/admin/restaurants/" />
-        </div>
+      <div class="flex space-x-4">
+        <back-button url="/admin/restaurants/" />
+      </div>
 
-      {{ $t('admin.smaregi.authenticationError') }}
+      {{ $t("admin.smaregi.authenticationError") }}
     </div>
   </div>
 </template>
 
 <script>
-import { functionsJp } from "~/plugins/firebase.js";
+import { smaregiAuth } from "@/lib/firebase/functions";
 import { smaregi } from "@/config/project";
 
-import BackButton from "~/components/BackButton";
+import BackButton from "@/components/BackButton";
 
 export default {
   components: {
-    BackButton
+    BackButton,
   },
   data() {
     return {
-      isValidating:false,
+      isValidating: false,
       error: false,
-    }
+    };
   },
   async mounted() {
     if (this.code) {
       try {
-        const smaregiAuth = functionsJp.httpsCallable("smaregiAuth");
         this.isValidating = true;
         const { data } = await smaregiAuth({
           code: this.code,
@@ -52,7 +53,6 @@ export default {
     code() {
       return this.$route.query.code;
     },
-  }
+  },
 };
-
 </script>

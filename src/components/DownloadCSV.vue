@@ -11,33 +11,33 @@ export default {
   props: {
     fileName: {
       type: String,
-      required: true
+      required: true,
     },
     data: {
       type: Array,
-      required: true
+      required: true,
     },
     fields: {
       type: Array,
-      required: true
+      required: true,
     },
     fieldNames: {
       type: Array,
-      required: false
+      required: false,
     },
     formulas: {
       type: Object,
       required: false,
-      default: null
-    }
+      default: null,
+    },
   },
   computed: {
     content() {
       const header = (this.fieldNames || this.fields).join(",");
       const rows = this.data
-        .map(item => {
+        .map((item) => {
           return this.fields
-            .map(field => this.escapeCVS(item[field]))
+            .map((field) => this.escapeCVS(item[field]))
             .join(",");
         })
         .join("\n");
@@ -56,7 +56,7 @@ export default {
         footers = `\n${formulas.join(",")}`;
       }
       return `\ufeff${header}\n${rows}${footers}`;
-    }
+    },
   },
   methods: {
     escapeCVS(value) {
@@ -67,14 +67,14 @@ export default {
     },
     handleDownload() {
       const blob = new Blob([this.content], {
-        type: `application/csv`
+        type: `application/csv`,
       });
       const link = document.createElement("a");
       link.href = window.URL.createObjectURL(blob);
       link.download = `${this.fileName}.csv`;
       link.click();
       this.$emit("success");
-    }
-  }
+    },
+  },
 };
 </script>

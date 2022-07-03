@@ -1,22 +1,22 @@
 <template>
-<router-view
-  :shopInfo="shopInfo"
-  :paymentInfo="paymentInfo"
-  :deliveryData="deliveryData"
-  :mode="mode"
-  :notFound="notFound"
+  <router-view
+    :shopInfo="shopInfo"
+    :paymentInfo="paymentInfo"
+    :deliveryData="deliveryData"
+    :mode="mode"
+    :notFound="notFound"
   />
 </template>
 
 <script>
-import { db } from "~/plugins/firebase.js";
+import { db } from "@/plugins/firebase";
 
 export default {
   name: "RestaurantWrapper",
   props: {
     mode: {
       type: String,
-      required: true
+      required: false,
     },
   },
   data() {
@@ -26,22 +26,22 @@ export default {
       deliveryData: {},
       detacher: [],
       notFound: null,
-    }
+    };
   },
   created() {
     const restaurant_detacher = db
       .doc(`restaurants/${this.restaurantId()}`)
-      .onSnapshot(async restaurant => {
+      .onSnapshot(async (restaurant) => {
         const restaurant_data = restaurant.data();
         this.shopInfo = restaurant_data || {};
         const exist_and_publig =
-              restaurant.exists &&
-              !restaurant.data().deletedFlag &&
+          restaurant.exists &&
+          !restaurant.data().deletedFlag &&
           restaurant.data().publicFlag;
-        
+
         if (exist_and_publig) {
-          if (this.mode === 'liff') {
-           this.notFound = !this.shopInfo.supportLiff;
+          if (this.mode === "liff") {
+            this.notFound = !this.shopInfo.supportLiff;
           } else {
             this.notFound = false;
           }
@@ -51,12 +51,14 @@ export default {
         if (!this.notFound) {
           const uid = restaurant_data.uid;
           db.doc(`/admins/${uid}/public/payment`)
-            .get().then((snapshot) => {
+            .get()
+            .then((snapshot) => {
               this.paymentInfo = snapshot.data() || {};
             });
           if (this.shopInfo.enableDelivery) {
             db.doc(`restaurants/${this.restaurantId()}/delivery/area`)
-              .get().then((snapshot) => {
+              .get()
+              .then((snapshot) => {
                 this.deliveryData = snapshot.data() || {};
               });
           }
@@ -66,13 +68,10 @@ export default {
   },
   destroyed() {
     if (this.detacher) {
-      this.detacher.map(detacher => {
+      this.detacher.map((detacher) => {
         detacher();
       });
     }
   },
-
-                  
 };
-
 </script>

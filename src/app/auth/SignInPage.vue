@@ -125,22 +125,21 @@
 </template>
 
 <script>
-import { auth } from "~/plugins/firebase.js";
+import { auth } from "@/lib/firebase/firebase9";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 export default {
   name: "Signin",
-  head() {
+  metaInfo() {
     return {
-      title: [
-        this.defaultTitle, "Signin Admin"
-      ].join(" / ")
+      title: [this.defaultTitle, "Signin Admin"].join(" / "),
     };
   },
   data() {
     return {
       email: "",
       password: "",
-      errors: {}
+      errors: {},
     };
   },
   created() {
@@ -150,11 +149,11 @@ export default {
   },
   watch: {
     user(newValue) {
-      console.log("user changed", newValue);
+      console.log("user changed");
       if (newValue) {
         this.redirectToAdminPage();
       }
-    }
+    },
   },
   methods: {
     handleCancel() {
@@ -163,13 +162,12 @@ export default {
     async onSignin() {
       this.$store.commit("setLoading", true);
       this.errors = {};
-      auth
-        .signInWithEmailAndPassword(this.email, this.password)
-        .then(ret => {
+      signInWithEmailAndPassword(auth, this.email, this.password)
+        .then((ret) => {
           console.log("onSignin success");
           this.$store.commit("setLoading", false);
         })
-        .catch(error => {
+        .catch((error) => {
           console.log("onSignin failed", error.code, error.message);
           const errorCode = "admin.error.code." + error.code;
           if (error.code === "auth/wrong-password") {
@@ -179,7 +177,7 @@ export default {
           }
           this.$store.commit("setLoading", false);
         });
-    }
-  }
+    },
+  },
 };
 </script>

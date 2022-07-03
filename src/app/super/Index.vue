@@ -28,12 +28,11 @@
 </template>
 
 <script>
-import { functions } from "~/plugins/firebase.js";
 export default {
-  head() {
+  metaInfo() {
     return {
-      title: [this.defaultTitle, "Super Index"].join(" / ")
-    }
+      title: [this.defaultTitle, "Super Index"].join(" / "),
+    };
   },
   async mounted() {
     if (!this.$store.state.user || this.$store.getters.isNotSuperAdmin) {
@@ -45,7 +44,7 @@ export default {
       if (newValue) {
         this.$router.push("/");
       }
-    }
-  }
+    },
+  },
 };
 </script>

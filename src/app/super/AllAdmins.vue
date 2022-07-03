@@ -14,21 +14,29 @@
       </tr>
 
       <tr v-for="admin in admins" :key="admin.id">
-        <td style="padding-right:8px">
-          <nuxt-link :to="`/s/admins/${admin.id}`">{{admin.name || "(no name)"}}</nuxt-link>
+        <td style="padding-right: 8px">
+          <router-link :to="`/s/admins/${admin.id}`">{{
+            admin.name || "(no name)"
+          }}</router-link>
         </td>
-        <td style="padding-right:8px">{{profile(admin).email}}</td>
-        <td style="padding-right:8px">{{moment(admin.created.toDate()).format("YYYY/MM/DD HH:mm")}}</td>
-        <td style="padding-right:8px">{{admin.admin ? "A" : ""}}</td>
-        <td style="padding-right:8px">{{admin.operator ? "O" : ""}}</td>
+        <td style="padding-right: 8px">{{ profile(admin).email }}</td>
+        <td style="padding-right: 8px">
+          {{ moment(admin.created.toDate()).format("YYYY/MM/DD HH:mm") }}
+        </td>
+        <td style="padding-right: 8px">{{ admin.admin ? "A" : "" }}</td>
+        <td style="padding-right: 8px">{{ admin.operator ? "O" : "" }}</td>
         <td
           v-if="payment(admin).verified === false"
-          style="color:red;padding-right:8px"
-        >{{payment(admin).stripe}}</td>
-        <td style="padding-right:8px" v-else>{{payment(admin).stripe}}</td>
-        <td style="padding-right:8px">
-          {{capabilities(admin).jcb_payments}}
-          <b-button v-if="showActivate(admin)" @click="activate(admin)">Activate</b-button>
+          style="color: red; padding-right: 8px"
+        >
+          {{ payment(admin).stripe }}
+        </td>
+        <td style="padding-right: 8px" v-else>{{ payment(admin).stripe }}</td>
+        <td style="padding-right: 8px">
+          {{ capabilities(admin).jcb_payments }}
+          <b-button v-if="showActivate(admin)" @click="activate(admin)"
+            >Activate</b-button
+          >
         </td>
       </tr>
     </table>
@@ -42,30 +50,30 @@
 </template>
 
 <script>
-import BackButton from "~/components/BackButton";
-import { db } from "~/plugins/firebase.js";
-import { stripeVerify } from "~/plugins/stripe.js";
+import BackButton from "@/components/BackButton";
+import { db } from "@/plugins/firebase";
+import { stripeVerify } from "@/lib/stripe/stripe";
 
-import superMixin from "./SuperMixin";
+import superMixin from "@/mixins/SuperMixin";
 
 const QUERY_LIMIT = 50;
 
 export default {
   mixins: [superMixin],
   components: {
-    BackButton
+    BackButton,
   },
-  head() {
+  metaInfo() {
     return {
-      title: [this.defaultTitle, "Super All Admin"].join(" / ")
-    }
+      title: [this.defaultTitle, "Super All Admin"].join(" / "),
+    };
   },
   data() {
     return {
       admins: [],
       infos: {},
       last: null,
-      detacher: null
+      detacher: null,
     };
   },
   async mounted() {
@@ -84,14 +92,14 @@ export default {
       if (this.last) {
         query = query.startAfter(this.last);
       }
-      this.detacher = query.limit(QUERY_LIMIT).onSnapshot(snapshot => {
+      this.detacher = query.limit(QUERY_LIMIT).onSnapshot((snapshot) => {
         if (snapshot.docs.length === QUERY_LIMIT) {
           this.last = snapshot.docs[QUERY_LIMIT - 1];
         } else {
           this.last = null;
         }
         const admins = snapshot.docs.map(this.doc2data("admin"));
-        admins.forEach(async admin => {
+        admins.forEach(async (admin) => {
           this.admins.push(admin);
           // NOTE: We are getting extra data only once for each admin
           if (!this.infos[admin.id]) {
@@ -108,7 +116,7 @@ export default {
       if (payment?.stripe) {
         try {
           const { data } = await stripeVerify({
-            account_id: payment?.stripe
+            account_id: payment?.stripe,
           });
           console.log("data", payment?.stripe, data);
           payment.verified = data.result;
@@ -148,10 +156,10 @@ export default {
     },
     async activate(admin) {
       await db.doc(`admins/${admin.id}/public/payment`).update({
-        stripeJCB: true
+        stripeJCB: true,
       });
       this.updateInfo(admin);
-    }
-  }
+    },
+  },
 };
 </script>

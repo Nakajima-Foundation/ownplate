@@ -1,6 +1,12 @@
 # Release notes
 
 
+## v2.0.20 (2022/07/04)
+
+- 全般
+  - 内部を変更しました
+
+
 ## v2.0.19 (2022/03/28)
 
 - 管理系
@@ -23,7 +29,7 @@
 
 - 管理系
   - 飲食店の説明文やメニューに、改行を反映させる機能の追加
-    - [くわしくはこちら](https://note.com/singsoc/n/n349f60e3dc7d?magazine_key=m19dd935e84e4){:target="_blank"}
+    - [くわしくはこちら](https://note.com/singsoc/n/n349f60e3dc7d?magazine_key=m19dd935e84e4)
 
 ## v2.0.15 (2021/12/17)
 

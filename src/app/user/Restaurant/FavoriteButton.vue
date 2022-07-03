@@ -19,14 +19,14 @@
 </template>
 
 <script>
-import { db, firestore } from "~/plugins/firebase.js";
+import { db, firestore } from "@/plugins/firebase";
 
 export default {
   components: {},
   props: {
     shopInfo: {
       type: Object,
-      required: true
+      required: true,
     },
     keepLike: {
       type: Boolean,
@@ -36,14 +36,14 @@ export default {
   data() {
     return {
       review: {},
-      detacher: null
+      detacher: null,
     };
   },
   mounted() {
     if (this.isUser) {
       this.detacher = db
         .doc(`users/${this.user.uid}/reviews/${this.restaurantId()}`)
-        .onSnapshot(snapshot => {
+        .onSnapshot((snapshot) => {
           this.review = snapshot.data() || {};
           if (this.review.restaurantName) {
             // Check if the cached info is out of date, update them.
@@ -56,7 +56,7 @@ export default {
               ).set(
                 {
                   restaurantName: this.shopInfo.restaurantName, // duplicated for quick display
-                  restProfilePhoto: this.shopInfo.restProfilePhoto // duplicated for quick display
+                  restProfilePhoto: this.shopInfo.restProfilePhoto, // duplicated for quick display
                 },
                 { merge: true }
               );
@@ -71,7 +71,7 @@ export default {
   computed: {
     likes() {
       return !!this.review.likes;
-    }
+    },
   },
   methods: {
     handleLike() {
@@ -84,12 +84,12 @@ export default {
             restaurantName: this.shopInfo.restaurantName, // duplicated for quick display
             restProfilePhoto: this.shopInfo.restProfilePhoto, // duplicated for quick display
             timeLiked: firestore.FieldValue.serverTimestamp(),
-            restaurantId: this.restaurantId() // Making it possible to collection query (later)
+            restaurantId: this.restaurantId(), // Making it possible to collection query (later)
           },
           { merge: true }
         );
       }
-    }
-  }
+    },
+  },
 };
 </script>

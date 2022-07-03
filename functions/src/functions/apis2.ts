@@ -1,6 +1,5 @@
 import express from "express";
 import * as admin from "firebase-admin";
-// import { ownPlateConfig } from '../common/project';
 
 import moment from "moment";
 
@@ -23,7 +22,6 @@ export const response200 = (res, payload) => {
   });
 };
 
-//const hostname = "https://" + ownPlateConfig.hostName;
 
 const getRestaurantData = async (restaurantId) => {
   const restaurant = await db.doc(`restaurants/${restaurantId}`).get();

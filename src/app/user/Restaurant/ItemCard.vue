@@ -55,13 +55,10 @@
               {{ description }}
             </template>
             <template v-else>
-              <div v-if="openMenuFlag"
-                   class="whitespace-pre-line"
-                   >{{ description }}
+              <div v-if="openMenuFlag" class="whitespace-pre-line">
+                {{ description }}
               </div>
-              <template v-else>
-                {{descriptionOneLine}}...
-              </template>
+              <template v-else> {{ descriptionOneLine }}... </template>
             </template>
           </div>
 
@@ -120,9 +117,7 @@
 
           <!-- Special instructions -->
           <div v-if="false" class="mt-4">
-            <div class="text-xs">
-              Special instructions
-            </div>
+            <div class="text-xs">Special instructions</div>
 
             <div class="mt-2">
               <b-input
@@ -246,9 +241,9 @@
 
 <script>
 import { mapGetters, mapMutations } from "vuex";
-import Price from "~/components/Price";
-import SharePopup from "~/app/user/Restaurant/SharePopup";
-import * as analyticsUtil from "~/plugins/analytics";
+import Price from "@/components/Price";
+import SharePopup from "@/app/user/Restaurant/SharePopup";
+import * as analyticsUtil from "@/lib/firebase/analytics";
 
 // menu UI algorithm
 //   init quantities = [0]
@@ -259,37 +254,37 @@ import * as analyticsUtil from "~/plugins/analytics";
 export default {
   components: {
     Price,
-    SharePopup
+    SharePopup,
   },
   props: {
     item: {
       type: Object,
-      required: true
+      required: true,
     },
     shopInfo: {
       type: Object,
-      required: true
+      required: true,
     },
     quantities: {
       type: Array,
-      required: true
+      required: true,
     },
     initialOpenMenuFlag: {
       type: Boolean,
-      required: true
+      required: true,
     },
     optionPrev: {
       type: Array,
-      required: false
+      required: false,
     },
     isOpen: {
       type: Boolean,
-      required: true
+      required: true,
     },
     prices: {
       type: Array,
-      required: true
-    }
+      required: true,
+    },
   },
   mounted() {
     if (this.isOpen) {
@@ -301,12 +296,12 @@ export default {
       openMenuFlag: this.initialOpenMenuFlag,
       optionValues: [],
       imagePopup: false,
-      urlSuffix: "/menus/" + this.item.id
+      urlSuffix: "/menus/" + this.item.id,
     };
   },
   created() {
     //console.log("created", this.optionPrev);
-    Object.keys(this.quantities).forEach(key => {
+    Object.keys(this.quantities).forEach((key) => {
       const v = this.options.map((option, index) => {
         if (
           this.optionPrev &&
@@ -323,14 +318,14 @@ export default {
   },
   watch: {
     optionValues: {
-      handler: function(val) {
+      handler: function (val) {
         // console.log("opt: " + JSON.stringify(val));
         this.$emit("didOptionValuesChange", {
           id: this.item.id,
-          optionValues: this.optionValues
+          optionValues: this.optionValues,
         });
       },
-      deep: true
+      deep: true,
     },
     openMenuFlag() {
       if (this.openMenuFlag) {
@@ -340,7 +335,7 @@ export default {
           this.restaurantId()
         );
       }
-    }
+    },
   },
   computed: {
     isSoldOut() {
@@ -354,7 +349,7 @@ export default {
         this.$t("allergens.title") +
         ": " +
         this.allergens
-          .map(allergen => {
+          .map((allergen) => {
             return this.$t(`allergens.${allergen}`);
           })
           .join(this.$t("comma"))
@@ -362,7 +357,7 @@ export default {
     },
     allergens() {
       if (this.item.allergens) {
-        return this.$store.getters.stripeRegion.allergens.filter(allergen => {
+        return this.$store.getters.stripeRegion.allergens.filter((allergen) => {
           return this.item.allergens[allergen];
         });
       }
@@ -400,8 +395,8 @@ export default {
       return this.item.itemDescription;
     },
     descriptionOneLine() {
-      return (this.item.itemDescription || "" ).split(/\r?\n/)[0];
-    }
+      return (this.item.itemDescription || "").split(/\r?\n/)[0];
+    },
   },
   methods: {
     openImage() {
@@ -432,7 +427,7 @@ export default {
         this.shopInfo,
         this.restaurantId(),
         1
-      )
+      );
     },
     pushQuantities(key) {
       this.setQuantities(key, this.quantities[key] + 1);
@@ -444,7 +439,7 @@ export default {
         this.shopInfo,
         this.restaurantId(),
         1
-      )
+      );
     },
     toggleMenuFlag() {
       this.openMenuFlag = !this.openMenuFlag;
@@ -468,7 +463,7 @@ export default {
       }
       this.$emit("didQuantitiesChange", {
         id: this.item.id,
-        quantities: newQuantities
+        quantities: newQuantities,
       });
     },
     pushItem() {
@@ -482,9 +477,9 @@ export default {
       newQuantities.push(1);
       this.$emit("didQuantitiesChange", {
         id: this.item.id,
-        quantities: newQuantities
+        quantities: newQuantities,
       });
-    }
-  }
+    },
+  },
 };
 </script>

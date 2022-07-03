@@ -2,18 +2,18 @@
   <section class="section">
     <div v-if="traceId">
       <div v-if="success">
-        <h1>{{$t('trace.thankyou')}}</h1>
+        <h1>{{ $t("trace.thankyou") }}</h1>
       </div>
     </div>
     <div v-else>
       <div v-if="user">
-        <h1>{{$t('trace.thankyou')}}</h1>
+        <h1>{{ $t("trace.thankyou") }}</h1>
         <div class="m-t-16">
           <div v-for="record in records" :key="record.id">
-            <span>{{record.timeCreated.toLocaleString()}}</span>
-            <span>{{$t('trace.' + record.event)}}</span>
-            <span>{{record.processed ? "*" : " "}}</span>
-            <span>{{record.restaurantName}}</span>
+            <span>{{ record.timeCreated.toLocaleString() }}</span>
+            <span>{{ $t("trace." + record.event) }}</span>
+            <span>{{ record.processed ? "*" : " " }}</span>
+            <span>{{ record.restaurantName }}</span>
           </div>
         </div>
       </div>
@@ -23,25 +23,23 @@
 
 <script>
 import { ownPlateConfig } from "@/config/project";
-import { db, firestore, functions } from "~/plugins/firebase.js";
-import * as crypto from "crypto";
-import { lineAuthURL } from "~/plugins/line.js";
+import { db, firestore } from "@/plugins/firebase";
+import { traceProcess } from "@/lib/firebase/functions";
+import SHA256 from "crypto-js/sha256";
+import { lineAuthURL } from "@/lib/line/line";
 
 export default {
   data() {
     return {
       success: false,
       records: [],
-      detatcher: null
+      detatcher: null,
     };
   },
   methods: {
     async record(lineUid) {
-      const hash = crypto
-        .createHash("sha256")
-        .update(lineUid)
-        .digest("hex");
-      //console.log("*********", hash);
+      const hash = SHA256(lineUid).toString(); //.digest("hex");
+      // console.log("*********", hash);
 
       const refRecords = db.collection(`hash/${hash}/records`);
       if (this.traceId) {
@@ -50,12 +48,11 @@ export default {
             traceId: this.traceId,
             uid: hash,
             timeCreated: firestore.FieldValue.serverTimestamp(),
-            processed: false
+            processed: false,
           });
           //console.log("recorded as", doc.id);
           this.success = true;
 
-          const traceProcess = functions.httpsCallable("traceProcess");
           const { data } = await traceProcess({ eventId: doc.id });
           console.log("traceProcess", data);
           this.$router.replace("/t");
@@ -66,8 +63,8 @@ export default {
         this.detatcher = refRecords
           .orderBy("timeCreated", "desc")
           .limit(25)
-          .onSnapshot(snapshot => {
-            this.records = snapshot.docs.map(doc => {
+          .onSnapshot((snapshot) => {
+            this.records = snapshot.docs.map((doc) => {
               const record = doc.data();
               record.timeCreated = record.timeCreated.toDate();
               return record;
@@ -75,7 +72,7 @@ export default {
             //console.log("snapshot", this.records);
           });
       }
-    }
+    },
   },
   mounted() {
     if (this.user) {
@@ -90,7 +87,7 @@ export default {
       const url = lineAuthURL(
         "/callback/track",
         {
-          traceId: this.traceId
+          traceId: this.traceId,
         },
         ownPlateConfig.line.TRACK_CHANNEL_ID
       );
@@ -106,8 +103,7 @@ export default {
     },
     traceId() {
       return this.$route.params.traceId;
-    }
-  }
+    },
+  },
 };
 </script>
-

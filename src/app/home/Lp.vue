@@ -1,5 +1,5 @@
 <template>
-<div>
+  <div>
     <ownplate-service-image />
     <div class="max-w-screen-xl mx-auto">
       <entrance-buttons />
@@ -21,19 +21,19 @@
   </div>
 </template>
 <script>
-import ownplateServiceImage from "~/components/lp/ownplateServiceImage";
-import entranceButtons from "~/components/lp/entranceButtons";
-import userVoices from "~/components/lp/userVoices";
-import demo from "~/components/lp/demo";
-import moreButton from "~/components/lp/moreButton";
-import threeSteps from "~/components/lp/threeSteps";
-import askButtons from "~/components/lp/askButtons";
-import communityIcons from "~/components/lp/communityIcons";
-import mediaLink from "~/components/lp/mediaLink";
-import operators from "~/components/lp/operators";
-import aboutService from "~/components/lp/aboutService";
-import news from "~/components/lp/news";
-import snslink from "~/components/lp/link";
+import ownplateServiceImage from "@/components/lp/ownplateServiceImage";
+import entranceButtons from "@/components/lp/entranceButtons";
+import userVoices from "@/components/lp/userVoices";
+import demo from "@/components/lp/demo";
+import moreButton from "@/components/lp/moreButton";
+import threeSteps from "@/components/lp/threeSteps";
+import askButtons from "@/components/lp/askButtons";
+import communityIcons from "@/components/lp/communityIcons";
+import mediaLink from "@/components/lp/mediaLink";
+import operators from "@/components/lp/operators";
+import aboutService from "@/components/lp/aboutService";
+import news from "@/components/lp/news";
+import snslink from "@/components/lp/link";
 
 export default {
   components: {
@@ -50,7 +50,7 @@ export default {
     aboutService,
     news,
     snslink,
-  }
+  },
 };
 
 // <!-- Go to Owner Manual -->

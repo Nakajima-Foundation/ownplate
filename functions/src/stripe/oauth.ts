@@ -1,6 +1,7 @@
 import * as admin from "firebase-admin";
 import * as functions from "firebase-functions";
 import * as utils from "../lib/utils";
+import { ownPlateConfig } from "../common/project";
 
 export const connect = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
@@ -39,9 +40,11 @@ export const disconnect = async (db: admin.firestore.Firestore, data: any, conte
   const uid = utils.validate_auth(context);
   const stripe = utils.get_stripe();
 
-  const { STRIPE_CLIENT_ID } = data;
-  utils.validate_params({ STRIPE_CLIENT_ID });
-
+  const client_id = ownPlateConfig.stripe.clientId;
+  if (!client_id) {
+    throw new functions.https.HttpsError("invalid-argument", "No Stripe client.");
+  }
+  
   try {
     const refPayment = db.doc(`/admins/${uid}/public/payment`);
     const payment = (await refPayment.get()).data();
@@ -59,8 +62,7 @@ export const disconnect = async (db: admin.firestore.Firestore, data: any, conte
     await db.doc(`/admins/${uid}/system/stripe`).delete();
 
     const response = await stripe.oauth.deauthorize({
-      client_id: STRIPE_CLIENT_ID,
-      stripe_user_id: stripe_user_id,
+      client_id, stripe_user_id
     });
 
     return { result: response };

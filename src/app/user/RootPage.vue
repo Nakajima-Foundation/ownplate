@@ -58,14 +58,14 @@
 </template>
 
 <script>
-import { db } from "~/plugins/firebase.js";
-import { RestaurantHeader } from "~/plugins/header.js";
-import AreaItem from "~/app/user/Restaurants/AreaItem";
+import { db } from "@/plugins/firebase";
+import { RestaurantHeader } from "@/config/header";
+import AreaItem from "@/app/user/Restaurants/AreaItem";
 import { ownPlateConfig } from "@/config/project";
 
 export default {
   components: {
-    AreaItem
+    AreaItem,
   },
   data() {
     return {
@@ -78,7 +78,7 @@ export default {
           ? [
               {
                 name: "hokkaido",
-                items: [{ name: "北海道", id: 0 }]
+                items: [{ name: "北海道", id: 0 }],
               },
               {
                 name: "kanto",
@@ -89,16 +89,16 @@ export default {
                   { name: "群馬県", id: 9 },
                   { name: "埼玉県", id: 10 },
                   { name: "栃木県", id: 8 },
-                  { name: "茨城県", id: 7 }
-                ]
+                  { name: "茨城県", id: 7 },
+                ],
               },
               {
                 name: "chubu",
                 items: [
                   { name: "愛知県", id: 22 },
                   { name: "静岡県", id: 21 },
-                  { name: "山梨県", id: 18 }
-                ]
+                  { name: "山梨県", id: 18 },
+                ],
               },
               {
                 name: "hokuriku",
@@ -106,8 +106,8 @@ export default {
                   { name: "新潟県", id: 14 },
                   { name: "富山県", id: 15 },
                   { name: "石川県", id: 16 },
-                  { name: "福井県", id: 17 }
-                ]
+                  { name: "福井県", id: 17 },
+                ],
               },
               {
                 name: "kansai",
@@ -118,15 +118,15 @@ export default {
                   { name: "滋賀県", id: 24 },
                   { name: "和歌山県", id: 29 },
                   // { name: "奈良県", id: 28 },
-                ]
+                ],
               },
               {
                 name: "chugoku",
                 items: [
                   { name: "広島県", id: 33 },
                   { name: "徳島県", id: 35 },
-                  { name: "愛媛県", id: 37 }
-                ]
+                  { name: "愛媛県", id: 37 },
+                ],
               },
               {
                 name: "kyusyu",
@@ -135,22 +135,22 @@ export default {
                   { name: "長崎県", id: 41 },
                   { name: "大分県", id: 43 },
                   { name: "鹿児島県", id: 45 },
-                  { name: "沖縄県", id: 46 }
-                ]
-              }
+                  { name: "沖縄県", id: 46 },
+                ],
+              },
             ]
           : [
               {
                 name: "USA",
-                items: [{ name: "Washington", id: 46 }]
-              }
-            ]
+                items: [{ name: "Washington", id: 46 }],
+              },
+            ],
     };
   },
-  head() {
+  metaInfo() {
     const title = [
       this.$t("pageTitle.restaurantRoot"),
-      ownPlateConfig.siteName
+      ownPlateConfig.siteName,
     ].join(" / ");
     return Object.assign(RestaurantHeader, { title });
   },
@@ -162,14 +162,14 @@ export default {
         .limit(100)
         .get();
       this.likes = (snapshot.docs || [])
-        .map(doc => {
+        .map((doc) => {
           return doc.data();
         })
-        .filter(doc => {
+        .filter((doc) => {
           return !!doc.likes;
         });
     }
-  }
+  },
   // # Need to rewrite for Areas instead of Restaurants.
   /*
   async created() {

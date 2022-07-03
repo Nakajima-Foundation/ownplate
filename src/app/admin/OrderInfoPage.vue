@@ -12,7 +12,7 @@
             <back-button :url="parentUrl" />
           </div>
           <div class="flex-shrink-0">
-            <nuxt-link :to="'/r/' + restaurantId()">
+            <router-link :to="'/r/' + restaurantId()">
               <div
                 class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
               >
@@ -21,7 +21,7 @@
                   $t("admin.viewPage")
                 }}</span>
               </div>
-            </nuxt-link>
+            </router-link>
           </div>
         </div>
 
@@ -43,7 +43,7 @@
         <!-- Suspend Button -->
         <div class="mt-4 lg:mt-0 lg:mr-4 flex-shrink-0">
           <b-button
-            tag="nuxt-link"
+            tag="router-link"
             :to="`/admin/restaurants/${restaurantId()}/suspend`"
             class="b-reset-tw"
           >
@@ -141,11 +141,12 @@
             <!-- Notice Delivery -->
             <div v-if="orderInfo.isDelivery" class="text-center mt-2">
               <div
-                class="text-base font-bold text-red-700 bg-red-700 bg-opacity-10 rounded-lg p-4  inline-flex">
+                class="text-base font-bold text-red-700 bg-red-700 bg-opacity-10 rounded-lg p-4 inline-flex"
+              >
                 {{ $t("admin.order.deliveryOrder") }}
               </div>
             </div>
-            
+
             <!-- Note for Payment Completion -->
             <div
               v-if="paymentIsNotCompleted"
@@ -158,7 +159,10 @@
             <div class="mt-6 text-center">
               <b-button
                 class="b-reset-tw"
-                v-if="isValidTransition('order_canceled') && (paymentIsNotCompleted || !hasStripe)"
+                v-if="
+                  isValidTransition('order_canceled') &&
+                  (paymentIsNotCompleted || !hasStripe)
+                "
                 @click="openCancel()"
               >
                 <div
@@ -242,7 +246,7 @@
                   <a
                     @click="closeCancel()"
                     class="inline-flex justify-center items-center h-12 rounded-full px-6 bg-black bg-opacity-5"
-                    style="min-width: 8rem;"
+                    style="min-width: 8rem"
                   >
                     <div class="text-base font-bold text-black text-opacity-60">
                       {{ $t("menu.close") }}
@@ -280,8 +284,9 @@
                   v-for="time in estimatedTimes"
                   :value="time.offset"
                   :key="time.offset"
-                  >{{ time.display }}</option
                 >
+                  {{ time.display }}
+                </option>
               </b-select>
             </div>
           </div>
@@ -292,8 +297,13 @@
               <div class="text-xs font-bold" v-if="orderInfo.phoneNumber">
                 {{ $t("sms.phonenumber") }}
               </div>
+              <!--Line icon -->
               <div class="text-xs font-bold" v-if="orderInfo.isLiff">
-                <i class="fab fa-line text-lg mr-2" style="color:#4EC263;" v-if="orderInfo.isLiff" />LINE
+                <i
+                  class="fab fa-line text-lg mr-2"
+                  style="color: #4ec263"
+                  v-if="orderInfo.isLiff"
+                />LINE ({{ orderInfo.uid.slice(5, 15) }})
               </div>
               <div class="text-base mt-1">
                 <div v-if="orderInfo.phoneNumber">
@@ -304,53 +314,89 @@
                 <div class="text-base">{{ orderInfo.name }}</div>
               </div>
               <div>
-                {{ $t("order.orderTimes") }}: {{ $tc("order.orderTimesUnit", userLog.counter || 0) }} /
-                {{ $t("order.cancelTimes") }}: {{ $tc("order.cancelTimesUnit", userLog.cancelCounter || 0) }}
+                {{ $t("order.orderTimes") }}:
+                {{ $tc("order.orderTimesUnit", userLog.counter || 0) }} /
+                {{ $t("order.cancelTimes") }}:
+                {{ $tc("order.cancelTimesUnit", userLog.cancelCounter || 0) }}
               </div>
               <div>
-                <div v-if="isWarningOrder" class="bg-red-700 bg-opacity-10 rounded-lg p-4 text-center  inline-flex ">
+                <div
+                  v-if="isWarningOrder"
+                  class="bg-red-700 bg-opacity-10 rounded-lg p-4 text-center inline-flex"
+                >
                   <div class="text-base font-bold text-red-700">
-                    {{ $t("order.continuousOrder") }}<br/>
-                    {{ $t("order.lastOrder") }}: {{userLog.lastOrder ? moment(userLog.lastOrder.toDate()).format("YYYY/MM/DD HH:mm") : "--"}}<br />
-                    {{ $t("order.thisOrder") }}: {{orderInfo.timePlaced ? moment(orderInfo.timePlaced.toDate()).format("YYYY/MM/DD HH:mm") : "--"}}
+                    {{ $t("order.continuousOrder") }}<br />
+                    {{ $t("order.lastOrder") }}:
+                    {{
+                      userLog.lastOrder
+                        ? moment(userLog.lastOrder.toDate()).format(
+                            "YYYY/MM/DD HH:mm"
+                          )
+                        : "--"
+                    }}<br />
+                    {{ $t("order.thisOrder") }}:
+                    {{
+                      orderInfo.timePlaced
+                        ? moment(orderInfo.timePlaced.toDate()).format(
+                            "YYYY/MM/DD HH:mm"
+                          )
+                        : "--"
+                    }}
                   </div>
                 </div>
                 <div v-else>
-                  {{ $t("order.lastOrder") }}: {{userLog.lastOrder ? moment(userLog.lastOrder.toDate()).format("YYYY/MM/DD HH:mm") : "--"}}
+                  {{ $t("order.lastOrder") }}:
+                  {{
+                    userLog.lastOrder
+                      ? moment(userLog.lastOrder.toDate()).format(
+                          "YYYY/MM/DD HH:mm"
+                        )
+                      : "--"
+                  }}
                 </div>
               </div>
             </div>
             <div class="mt-6 text-center">
-              <nuxt-link :to="'/admin/restaurants/' + restaurantId() + '/userhistory/' + orderInfo.uid + '?orderId=' + orderId">
+              <router-link
+                :to="
+                  '/admin/restaurants/' +
+                  restaurantId() +
+                  '/userhistory/' +
+                  orderInfo.uid +
+                  '?orderId=' +
+                  orderId
+                "
+              >
                 <div
                   class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
-                  >
+                >
                   <i class="material-icons text-lg text-op-teal mr-2">face</i>
                   <span class="text-sm font-bold text-op-teal">{{
                     $t("order.customerOrderHistory")
-                    }}</span>
+                  }}</span>
                 </div>
-              </nuxt-link>
+              </router-link>
             </div>
           </div>
           <!-- Print -->
-          <div class="bg-white shadow rounded-lg p-4 mt-2 text-center" v-if="isDev">
+          <div
+            class="bg-white shadow rounded-lg p-4 mt-2 text-center"
+            v-if="isDev"
+          >
             <div>
-              <b-button
-                @click="print()"
-                class="b-reset-tw">
+              <b-button @click="print()" class="b-reset-tw">
                 <div
-                  class="inline-flex justify-center items-center rounded-full h-16 w-64 light">
+                  class="inline-flex justify-center items-center rounded-full h-16 w-64 light"
+                >
                   Print
                 </div>
               </b-button>
             </div>
             <div class="mt-2">
-              <b-button
-                @click="download()"
-                class="b-reset-tw">
+              <b-button @click="download()" class="b-reset-tw">
                 <div
-                  class="inline-flex justify-center items-center rounded-full h-16 w-64 light">
+                  class="inline-flex justify-center items-center rounded-full h-16 w-64 light"
+                >
                   Download
                 </div>
               </b-button>
@@ -364,7 +410,7 @@
                 v-for="orderState in orderStates"
                 :key="orderState"
                 class="mt-4 text-center"
-                >
+              >
                 <b-button
                   :loading="updating === orderState"
                   :disabled="!isValidTransition(orderState)"
@@ -377,7 +423,12 @@
                   >
                     <div>
                       <div class="text-base font-extrabold">
-                        {{ $t("order.status." + convOrderStateForText(orderState, orderInfo)) }}
+                        {{
+                          $t(
+                            "order.status." +
+                              convOrderStateForText(orderState, orderInfo)
+                          )
+                        }}
                       </div>
                       <div class="text-xs">
                         {{ timeOfEvents[orderState] }}
@@ -394,11 +445,13 @@
                 v-if="paymentIsNotCompleted"
                 @click="openPaymentCancel"
                 class="b-reset-tw"
-                >
+              >
                 <div
                   class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5"
                 >
-                  <i class="material-icons text-lg mr-2 text-red-700">credit_card</i>
+                  <i class="material-icons text-lg mr-2 text-red-700"
+                    >credit_card</i
+                  >
                   <div class="text-sm font-bold text-red-700">
                     {{ $t("admin.order.paymentCancelButton") }}
                   </div>
@@ -407,7 +460,11 @@
             </div>
 
             <!-- Payment Cancel Popup-->
-            <b-modal :active.sync="paymentCancelPopup" :width="488" scroll="keep">
+            <b-modal
+              :active.sync="paymentCancelPopup"
+              :width="488"
+              scroll="keep"
+            >
               <div class="mx-2 my-6 p-6 bg-white shadow-lg rounded-lg">
                 <!-- Title -->
                 <div class="text-xl font-bold text-black text-opacity-40">
@@ -461,7 +518,7 @@
                   <a
                     @click="closePaymentCancel()"
                     class="inline-flex justify-center items-center h-12 rounded-full px-6 bg-black bg-opacity-5"
-                    style="min-width: 8rem;"
+                    style="min-width: 8rem"
                   >
                     <div class="text-base font-bold text-black text-opacity-60">
                       {{ $t("menu.close") }}
@@ -470,8 +527,6 @@
                 </div>
               </div>
             </b-modal>
-
-
           </div>
         </div>
 
@@ -488,43 +543,43 @@
               </div>
             </div>
 
-            <!-- Order Items -->
-            <!-- # Not In Use -->
-            <!-- <div class="grid grid-cols-1 space-y-2">
-            <ordered-item
-              v-for="(item, id) in orderItems"
-              :key="id"
-              :item="item"
-            />
-						</div> -->
-
             <!-- Order Details -->
             <order-info
-              :shopInfo="shopInfo ||{}"
+              :shopInfo="shopInfo || {}"
               :orderItems="this.orderItems"
-              :orderInfo="isOrderChange ? editable_order_info : this.orderInfo || {}"
+              :orderInfo="
+                isOrderChange ? editable_order_info : this.orderInfo || {}
+              "
               :editable="isOrderChange"
               :editedAvailableOrders="editedAvailableOrders"
               @input="updateEnable"
-              ></order-info>
+            ></order-info>
             <div v-if="editedAvailableOrders.length > 1">
-              <div class="bg-white rounded-lg shadow p-4 text-center" v-if="orderInfo.orderUpdatedAt">
+              <div
+                class="bg-white rounded-lg shadow p-4 text-center"
+                v-if="orderInfo.orderUpdatedAt"
+              >
                 <div>{{ $t("admin.order.changeOrderDetail") }}</div>
-                {{timeStampToText(orderInfo.orderUpdatedAt)}} {{ $t("admin.order.alreadyChanged") }}
+                {{ timeStampToText(orderInfo.orderUpdatedAt) }}
+                {{ $t("admin.order.alreadyChanged") }}
               </div>
 
-              <div class="bg-white rounded-lg shadow p-4 text-center" v-if="availableOrderChange">
+              <div
+                class="bg-white rounded-lg shadow p-4 text-center"
+                v-if="availableOrderChange"
+              >
                 <div>{{ $t("admin.order.changeOrderDetail") }}</div>
                 <div class="mt-4">
-                  <b-button
-                    @click="toggleIsOrderChange"
-                    class="b-reset-tw"
-                    >
+                  <b-button @click="toggleIsOrderChange" class="b-reset-tw">
                     <div
                       class="inline-flex justify-center items-center h-12 px-6 rounded-full bg-red-700"
-                      >
+                    >
                       <div class="text-base font-bold text-white">
-                        {{ isOrderChange ? $t("admin.order.cancelOrderChange") : $t("admin.order.willOrderChange") }}
+                        {{
+                          isOrderChange
+                            ? $t("admin.order.cancelOrderChange")
+                            : $t("admin.order.willOrderChange")
+                        }}
                       </div>
                     </div>
                   </b-button>
@@ -532,16 +587,14 @@
                 <div class="mt-4">
                   <b-button
                     @click="handleOrderChange"
-
                     :loading="changing"
                     :disabled="!availableChangeButton"
-
                     class="b-reset-tw"
                     v-if="isOrderChange"
-                    >
+                  >
                     <div
                       class="inline-flex justify-center items-center h-12 px-6 rounded-full bg-red-700"
-                      >
+                    >
                       <div class="text-base font-bold text-white">
                         {{ $t("admin.order.confirmOrderChange") }}
                       </div>
@@ -557,7 +610,7 @@
               :customer="customer"
               :phoneNumber="nationalPhoneNumber"
               v-if="shopInfo && (shopInfo.isEC || orderInfo.isDelivery)"
-              />
+            />
           </div>
         </div>
       </div>
@@ -566,32 +619,55 @@
 </template>
 
 <script>
-import { db, functions, firestore } from "~/plugins/firebase.js";
-import BackButton from "~/components/BackButton";
-import OrderedItem from "~/app/admin/Order/OrderedItem";
+import { db } from "@/lib/firebase/firebase9";
+import {
+  doc,
+  getDoc,
+  getDocs,
+  onSnapshot,
+  collection,
+  query,
+  where,
+  documentId,
+  Timestamp,
+} from "firebase/firestore";
+
+import { orderUpdate, orderChange } from "@/lib/firebase/functions";
+
 import {
   order_status,
   possible_transitions,
-  timeEventMapping
-} from "~/plugins/constant.js";
-import { nameOfOrder } from "~/plugins/strings.js";
+  timeEventMapping,
+} from "@/config/constant";
+import { nameOfOrder, formatOption } from "@/utils/strings";
+import { parsePhoneNumber, formatNational, formatURL } from "@/utils/phoneutil";
 import {
-  parsePhoneNumber,
-  formatNational,
-  formatURL
-} from "~/plugins/phoneutil.js";
-import { stripeConfirmIntent, stripeCancelIntent, stripePaymentCancelIntent } from "~/plugins/stripe.js";
+  stripeConfirmIntent,
+  stripeCancelIntent,
+  stripePaymentCancelIntent,
+} from "@/lib/stripe/stripe";
 import moment from "moment-timezone";
-import NotFound from "~/components/NotFound";
-import { ownPlateConfig } from "~/config/project";
-import NotificationIndex from "./Notifications/Index";
-import { formatOption } from "~/plugins/strings.js";
-import OrderInfo from "~/app/user/Order/OrderInfo";
-import CustomerInfo from "~/components/CustomerInfo";
 
-import { costCal } from "~/plugins/commonUtils";
-import { downloadOrderPdf, printOrder, data2UrlSchema } from "~/plugins/pdf2";
-import * as analyticsUtil from "~/plugins/analytics";
+import BackButton from "@/components/BackButton";
+import NotFound from "@/components/NotFound";
+import { ownPlateConfig } from "@/config/project";
+import NotificationIndex from "./Notifications/Index";
+import OrderInfo from "@/app/user/Order/OrderInfo";
+import OrderedItem from "@/app/admin/Order/OrderedItem";
+import CustomerInfo from "@/components/CustomerInfo";
+
+import { costCal } from "@/utils/commonUtils";
+import { downloadOrderPdf, printOrder, data2UrlSchema } from "@/lib/pdf/pdf2";
+import * as analyticsUtil from "@/lib/firebase/analytics";
+
+import {
+  isEmpty,
+  isNull,
+  getShopOwner,
+  getOrderItems,
+  arrayChunk,
+  array2obj,
+} from "@/utils/utils";
 
 const timezone = moment.tz.guess();
 
@@ -602,20 +678,30 @@ export default {
     NotificationIndex,
     OrderInfo,
     CustomerInfo,
-    NotFound
+    NotFound,
   },
-  head() {
+  props: {
+    shopInfo: {
+      type: Object,
+      required: true,
+    },
+  },
+  metaInfo() {
     return {
-      title: this.shopInfo.restaurantName ?
-        ["Admin Order Info", this.shopInfo.restaurantName , this.defaultTitle].join(" / ") : this.defaultTitle
-    }
+      title: this.shopInfo.restaurantName
+        ? [
+            "Admin Order Info",
+            this.shopInfo.restaurantName,
+            this.defaultTitle,
+          ].join(" / ")
+        : this.defaultTitle,
+    };
   },
 
   data() {
     return {
       updating: "",
       changing: false,
-      shopInfo: {},
       menuObj: {},
       orderInfo: {},
       customer: {},
@@ -641,76 +727,79 @@ export default {
       return;
     }
 
-    const restaurant_detacher = db
-      .doc(`restaurants/${this.restaurantId()}`)
-      .onSnapshot(
-        restaurant => {
-          if (restaurant.exists) {
-            const restaurant_data = restaurant.data();
-            if (restaurant_data.uid === this.ownerUid) {
-              this.shopInfo = restaurant_data;
-              if (this.shopInfo.isEC) {
-                db.doc(`restaurants/${this.restaurantId()}/ec/postage`)
-                  .get().then((snapshot) => {
-                    this.postageInfo = snapshot.data() || {};
-                  });
-              }
-              return;
-            }
-          }
-          this.notFound = true;
-        },
-        error => {
-          this.notFound = true;
+    if (!this.checkShopOwner(this.shopInfo)) {
+      this.notFound = true;
+      return true;
+    }
+    if (this.shopInfo.isEC) {
+      getDoc(doc(db, `restaurants/${this.restaurantId()}/ec/postage`)).then(
+        (snapshot) => {
+          this.postageInfo = snapshot.data() || {};
         }
       );
-    const menu_detacher = db
-      .collection(`restaurants/${this.restaurantId()}/menus`)
-      .onSnapshot(menu => {
-        if (!menu.empty) {
-          const menuList = menu.docs.map(this.doc2data("menu"));
-          this.menuObj = this.array2obj(menuList);
-        }
-      });
-    const order_detacher = db
-      .doc(`restaurants/${this.restaurantId()}/orders/${this.orderId}`)
-      .onSnapshot({
-        next: order => {
-          if (order.exists) {
-            const order_data = order.data();
-            this.orderInfo = order_data;
-            if ((this.orderInfo.isDelivery || this.shopInfo.isEC)) {
-              db.doc(`restaurants/${this.restaurantId()}/orders/${this.orderId}/customer/data`).get().then(doc => {
-                this.customer = doc.data() || this.orderInfo?.customerInfo || {};
-              });
-            }
-          } else {
-            this.notFound = true;
-          }
-        },
-        error: error => {
-          console.error("error", error.message);
+    }
+
+    const order_detacher = onSnapshot(
+      doc(db, `restaurants/${this.restaurantId()}/orders/${this.orderId}`),
+      async (order) => {
+        if (!order.exists) {
           this.notFound = true;
+          return;
         }
-      });
-    this.detacher = [restaurant_detacher, menu_detacher, order_detacher];
-    this.shopOwner = await this.getShopOwner(this.$store.getters.uidAdmin);
+        const order_data = order.data();
+        this.orderInfo = order_data;
+        if (this.orderInfo.isDelivery || this.shopInfo.isEC) {
+          const customer = await getDoc(
+            doc(
+              db,
+              `restaurants/${this.restaurantId()}/orders/${
+                this.orderId
+              }/customer/data`
+            )
+          );
+          this.customer = customer.data() || this.orderInfo?.customerInfo || {};
+        }
+      }
+    );
+
+    this.detacher = [order_detacher];
+    this.shopOwner = await getShopOwner(this.$store.getters.uidAdmin);
   },
   destroyed() {
-    this.detacher.map(detacher => {
+    this.detacher.map((detacher) => {
       detacher();
     });
   },
   watch: {
     orderInfo() {
-      db.doc(`restaurants/${this.restaurantId()}/userLog/${this.orderInfo.uid}`).get().then((res) => {
+      getDoc(
+        doc(
+          db,
+          `restaurants/${this.restaurantId()}/userLog/${this.orderInfo.uid}`
+        )
+      ).then((res) => {
         if (res.exists) {
           this.userLog = res.data();
         }
       });
+
+      const menuIds = Object.keys(this.orderInfo.menuItems);
+      arrayChunk(menuIds, 10).map(async (arr) => {
+        getDocs(
+          query(
+            collection(db, `restaurants/${this.restaurantId()}/menus`),
+            where(documentId(), "in", arr)
+          )
+        ).then((menu) => {
+          if (!menu.empty) {
+            const menuObj = array2obj(menu.docs.map(this.doc2data("menu")));
+            this.menuObj = Object.assign({}, { ...this.menuObj }, menuObj);
+          }
+        });
+      });
     },
     orderItems() {
-      Object.keys(this.orderItems).map(key => {
+      Object.keys(this.orderItems).map((key) => {
         this.editedAvailableOrders[key] = true;
       });
     },
@@ -719,7 +808,8 @@ export default {
     orderInterval() {
       if (this.orderInfo.timePlaced && this.userLog.lastOrder) {
         // console.log(this.orderInfo.timePlaced.toDate(),   this.userLog.lastOrder.toDate());
-        const intervalHour = (this.orderInfo.timePlaced -  this.userLog.lastOrder) / 3600
+        const intervalHour =
+          (this.orderInfo.timePlaced - this.userLog.lastOrder) / 3600;
         return intervalHour;
       }
       return -1000000;
@@ -732,18 +822,12 @@ export default {
         return true;
       }
       return false;
-      //(this.orderInterval === 0) {
-      // (this.orderInterval < 0) {
-      // (this.orderInterval >= 6)
-    },
-    ownerUid() {
-      return this.$store.getters.isSubAccount ? this.$store.getters.parentId : this.$store.getters.uidAdmin;
     },
     isOwner() {
       return !this.$store.getters.isSubAccount;
     },
     hasMemo() {
-      return this.orderInfo && !this.isEmpty(this.orderInfo.memo);
+      return this.orderInfo && !isEmpty(this.orderInfo.memo);
     },
     possibleTransitions() {
       return possible_transitions[this.orderInfo.status] || {};
@@ -758,7 +842,7 @@ export default {
       return false;
     },
     orderItems() {
-      return this.getOrderItems(this.orderInfo, this.menuObj);
+      return getOrderItems(this.orderInfo, this.menuObj);
     },
     timeOfEvents() {
       const mapping = Object.keys(timeEventMapping).reduce((tmp, key) => {
@@ -781,11 +865,11 @@ export default {
         return [];
       }
       const time = this.orderInfo.timePlaced.toDate().getTime();
-      return [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 120].map(offset => {
+      return [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 120].map((offset) => {
         const date = new Date(time + offset * 60000);
         return {
           offset,
-          display: `${this.$d(date, "time")}`
+          display: `${this.$d(date, "time")}`,
         };
       });
     },
@@ -820,7 +904,7 @@ export default {
       );
     },
     nationalPhoneNumber() {
-      return (this.phoneNumber) ? formatNational(this.phoneNumber): "";
+      return this.phoneNumber ? formatNational(this.phoneNumber) : "";
     },
     nationalPhoneURI() {
       return formatURL(this.phoneNumber);
@@ -844,13 +928,13 @@ export default {
             "order_accepted",
             "ready_to_pickup",
             "transaction_complete",
-            "transaction_hide"
+            "transaction_hide",
           ]
         : [
             "order_placed",
             "order_accepted",
             "ready_to_pickup",
-            "transaction_complete"
+            "transaction_complete",
           ]; // no longer "cooking_completed"
     },
     order_status() {
@@ -858,12 +942,12 @@ export default {
     },
     // for editable order
     edited_available_order_info() {
-      const ret = []
+      const ret = [];
       Object.keys(this.editedAvailableOrders).forEach((key) => {
         if (this.editedAvailableOrders[key]) {
-          const indexes  = this.orderItems[key]?.orderIndex;
+          const indexes = this.orderItems[key]?.orderIndex;
           if (indexes) {
-            ret.push({menuId: indexes[0], index: Number(indexes[1])});
+            ret.push({ menuId: indexes[0], index: Number(indexes[1]) });
           }
         }
       });
@@ -872,45 +956,70 @@ export default {
     editable_order_info() {
       const menuObj = this.orderInfo.menuItems;
       const multiple = this.regionMultiple;
-      const ret = this.edited_available_order_info.reduce((tmp, info) => {
-        const { menuId, index } = info;
-        const menu = menuObj[menuId];
-        if (menu.tax === "alcohol") {
-          tmp.alcohol_sub_total = tmp.alcohol_sub_total + this.orderInfo.prices[menuId][index];
-        } else {
-          tmp.food_sub_total = tmp.food_sub_total + this.orderInfo.prices[menuId][index];
-        };
-        return tmp;
-      }, {sub_total: 0, tax: 0, food_sub_total: 0, alcohol_sub_total: 0});
+      const ret = this.edited_available_order_info.reduce(
+        (tmp, info) => {
+          const { menuId, index } = info;
+          const menu = menuObj[menuId];
+          if (menu.tax === "alcohol") {
+            tmp.alcohol_sub_total =
+              tmp.alcohol_sub_total + this.orderInfo.prices[menuId][index];
+          } else {
+            tmp.food_sub_total =
+              tmp.food_sub_total + this.orderInfo.prices[menuId][index];
+          }
+          return tmp;
+        },
+        { sub_total: 0, tax: 0, food_sub_total: 0, alcohol_sub_total: 0 }
+      );
       ret.sub_total = ret.food_sub_total + ret.alcohol_sub_total;
 
       const { alcoholTax, foodTax, inclusiveTax } = this.shopInfo;
       if (inclusiveTax) {
-        ret.food_tax = Math.round((ret.food_sub_total * (1 - 1 / (1 + foodTax / 100))) * multiple) / multiple;
-        ret.alcohol_tax = Math.round((ret.alcohol_sub_total * (1 - 1 / (1 + alcoholTax / 100))) * multiple) / multiple;
+        ret.food_tax =
+          Math.round(
+            ret.food_sub_total * (1 - 1 / (1 + foodTax / 100)) * multiple
+          ) / multiple;
+        ret.alcohol_tax =
+          Math.round(
+            ret.alcohol_sub_total * (1 - 1 / (1 + alcoholTax / 100)) * multiple
+          ) / multiple;
         ret.tax = ret.food_tax + ret.alcohol_tax;
         ret.total = ret.sub_total;
       } else {
-        ret.food_tax = Math.round(ret.food_sub_total * foodTax / 100 * multiple) / multiple;
-        ret.alcohol_tax = Math.round(ret.alcohol_sub_total * alcoholTax / 100 * multiple) / multiple;
+        ret.food_tax =
+          Math.round(((ret.food_sub_total * foodTax) / 100) * multiple) /
+          multiple;
+        ret.alcohol_tax =
+          Math.round(((ret.alcohol_sub_total * alcoholTax) / 100) * multiple) /
+          multiple;
         ret.tax = ret.food_tax + ret.alcohol_tax;
         ret.total = ret.sub_total + ret.tax;
       }
-      // const sh
-      const shippingCost = costCal(this.postageInfo, this.orderInfo?.customerInfo?.prefectureId, ret.total);
-      return Object.assign({}, this.orderInfo, ret, {shippingCost});
+      const shippingCost = costCal(
+        this.postageInfo,
+        this.orderInfo?.customerInfo?.prefectureId,
+        ret.total
+      );
+      return Object.assign({}, this.orderInfo, ret, { shippingCost });
     },
     availableOrderChange() {
-      return this.orderInfo && this.orderInfo.status === order_status.order_placed &&
-        this.isNull(this.orderInfo.orderUpdatedAt);
+      return (
+        this.orderInfo &&
+        this.orderInfo.status === order_status.order_placed &&
+        isNull(this.orderInfo.orderUpdatedAt)
+      );
     },
     availableChangeButton() {
-      return (this.edited_available_order_info.length !== this.editedAvailableOrders.length) && (this.edited_available_order_info.length > 0)
+      return (
+        this.edited_available_order_info.length !==
+          this.editedAvailableOrders.length &&
+        this.edited_available_order_info.length > 0
+      );
     },
   },
   methods: {
     updateEnable(value) {
-      this.$set(this.editedAvailableOrders, value[0],  value[1]);
+      this.$set(this.editedAvailableOrders, value[0], value[1]);
     },
     toggleIsOrderChange() {
       this.isOrderChange = !this.isOrderChange;
@@ -924,13 +1033,6 @@ export default {
     isValidTransition(newStatus) {
       const newStatusValue = order_status[newStatus];
       return this.possibleTransitions[newStatusValue];
-      /*
-      return (
-        this.possibleTransitions[newStatusValue] ||
-        (newStatusValue === this.orderInfo.status &&
-          newStatus !== "order_canceled")
-      );
-      */
     },
     download() {
       downloadOrderPdf(this.orderInfo, this.orderItems);
@@ -939,12 +1041,11 @@ export default {
       const data = await printOrder(this.orderInfo, this.orderItems);
       const passprnt_uri = data2UrlSchema(data, "2");
       location.href = passprnt_uri;
-      
     },
     getEestimateTime() {
       const time = this.orderInfo.timePlaced.toDate().getTime();
       const date = new Date(time + this.timeOffset * 60000);
-      return firestore.Timestamp.fromDate(date);
+      return Timestamp.fromDate(date);
     },
     async handleStripe() {
       //console.log("handleComplete with Stripe", orderId);
@@ -954,7 +1055,7 @@ export default {
         const params = {
           timezone,
           restaurantId: this.restaurantId() + this.forcedError("confirm"),
-          orderId: this.orderId
+          orderId: this.orderId,
         };
         if (this.timeOffset > 0) {
           params.timeEstimated = this.getEestimateTime();
@@ -981,18 +1082,21 @@ export default {
         return;
       }
       this.updating = statusKey;
-      if ((newStatus === order_status.ready_to_pickup || newStatus === order_status.order_accepted) && this.paymentIsNotCompleted) {
+      if (
+        (newStatus === order_status.ready_to_pickup ||
+          newStatus === order_status.order_accepted) &&
+        this.paymentIsNotCompleted
+      ) {
         this.handleStripe();
         return;
       }
-      const orderUpdate = functions.httpsCallable("orderUpdate");
       try {
         this.$store.commit("setLoading", true);
         const params = {
           restaurantId: this.restaurantId() + this.forcedError("update"),
           orderId: this.orderId,
           status: newStatus,
-          timezone
+          timezone,
         };
         if (this.timeOffset > 0) {
           params.timeEstimated = this.getEestimateTime();
@@ -1004,7 +1108,7 @@ export default {
         console.error(error.message, error.details);
         this.$store.commit("setErrorMessage", {
           code: "order.update",
-          error
+          error,
         });
       } finally {
         this.$store.commit("setLoading", false);
@@ -1027,7 +1131,7 @@ export default {
         this.updating = "order_canceled";
         const { data } = await stripeCancelIntent({
           restaurantId: this.restaurantId() + this.forcedError("cancel"),
-          orderId: this.orderId
+          orderId: this.orderId,
         });
         this.sendRedunded();
         // console.log("cancel", data);
@@ -1036,7 +1140,7 @@ export default {
         console.error(error.message, error.details);
         this.$store.commit("setErrorMessage", {
           code: "order.cancel",
-          error
+          error,
         });
       } finally {
         this.updating = "";
@@ -1046,7 +1150,6 @@ export default {
       this.$store.commit("setAlert", {
         title: "admin.order.confirmOrderChange",
         callback: async () => {
-          const orderChange = functions.httpsCallable("orderChange");
           try {
             this.changing = true;
             this.$store.commit("setLoading", true);
@@ -1065,13 +1168,13 @@ export default {
             console.error(error.message, error.details);
             this.$store.commit("setErrorMessage", {
               code: "order.update",
-              error
+              error,
             });
           } finally {
             this.$store.commit("setLoading", false);
             this.changing = false;
           }
-        }
+        },
       });
     },
     async handlePaymentCancel() {
@@ -1081,7 +1184,7 @@ export default {
         this.updating = "payment_canceled";
         const { data } = await stripePaymentCancelIntent({
           restaurantId: this.restaurantId() + this.forcedError("cancel"),
-          orderId: this.orderId
+          orderId: this.orderId,
         });
         // this.sendRedunded();
         console.log("paymentCancel", data);
@@ -1090,7 +1193,7 @@ export default {
         console.error(error.message, error.details);
         this.$store.commit("setErrorMessage", {
           code: "stripe.cancel",
-          error
+          error,
         });
       } finally {
         this.updating = "";
@@ -1115,14 +1218,7 @@ export default {
     closePaymentCancel() {
       console.log("closePaymentCancel");
       this.paymentCancelPopup = false;
-    }
-  }
+    },
+  },
 };
 </script>
-
-<style lang="scss">
-.light {
-  @extend .bg-form;
-  border: none;
-}
-</style>

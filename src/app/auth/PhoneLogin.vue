@@ -21,8 +21,9 @@
                   v-for="country in countries"
                   :value="country.code"
                   :key="country.code"
-                  >{{ $t(country.name) }}</option
                 >
+                  {{ $t(country.name) }}
+                </option>
               </b-select>
             </b-field>
           </div>
@@ -41,7 +42,7 @@
             >
               <b-input
                 type="tel"
-                autocomplete="tel" 
+                autocomplete="tel"
                 v-model="phoneNumber"
                 v-on:input="validatePhoneNumber"
                 maxlength="20"
@@ -51,8 +52,10 @@
           </div>
           <div v-if="!isLocaleJapan">
             <div class="text-xs mt-2">
-              For foreign customers:<br/>
-              For mobile phones contracted in countries other than Japan, please add the country code to the phone number like +1(555)555-111. You need to be able to receive SMS while roaming. <br/>
+              For foreign customers:<br />
+              For mobile phones contracted in countries other than Japan, please
+              add the country code to the phone number like +1(555)555-111. You
+              need to be able to receive SMS while roaming. <br />
             </div>
           </div>
         </div>
@@ -190,14 +193,27 @@
 </template>
 
 <script>
-import { db, firestore, auth, authObject } from "~/plugins/firebase.js";
-import * as Sentry from "@sentry/browser";
+import { db, auth } from "@/lib/firebase/firebase9";
+import {
+  signOut,
+  RecaptchaVerifier,
+  signInWithPhoneNumber,
+} from "firebase/auth";
+import {
+  doc,
+  collection,
+  addDoc,
+  setDoc,
+  serverTimestamp,
+} from "firebase/firestore";
+
+import * as Sentry from "@sentry/vue";
 
 export default {
   props: {
     relogin: {
-      type: String
-    }
+      type: String,
+    },
   },
   data() {
     return {
@@ -209,30 +225,34 @@ export default {
       confirmationResult: null,
       verificationCode: "",
       name: "",
-      result: {}
+      result: {},
     };
   },
   mounted() {
     this.countryCode = this.countries[0].code;
-    console.log("countryCode:mount", this.countryCode);
-    this.recaptchaVerifier = new authObject.RecaptchaVerifier("signInButton", {
-      size: "invisible",
-      callback: response => {
-        // reCAPTCHA solved, allow signInWithPhoneNumber.
-        console.log("verified", response);
-      }
-    });
+    // console.log("countryCode:mount", this.countryCode);
+    this.recaptchaVerifier = new RecaptchaVerifier(
+      "signInButton",
+      {
+        size: "invisible",
+        callback: (response) => {
+          // reCAPTCHA solved, allow signInWithPhoneNumber.
+          console.log("verified", response);
+        },
+      },
+      auth
+    );
   },
   watch: {
     countries() {
       // to handle delayed initialization
       this.countryCode = this.countries[0].code;
       console.log("countryCode:watch", this.countryCode);
-    }
+    },
   },
   computed: {
     SMSPhoneNumber() {
-      if ((this.phoneNumber ||"").startsWith("+")) {
+      if ((this.phoneNumber || "").startsWith("+")) {
         return this.phoneNumber;
       }
       return this.relogin || this.countryCode + this.phoneNumber;
@@ -248,7 +268,7 @@ export default {
     },
     hasError() {
       return this.errors.length > 0;
-    }
+    },
   },
   methods: {
     validatePhoneNumber() {
@@ -269,20 +289,20 @@ export default {
       console.log("submit");
       try {
         this.isLoading = true;
-        this.confirmationResult = await auth.signInWithPhoneNumber(
+        this.confirmationResult = await signInWithPhoneNumber(
+          auth,
           this.SMSPhoneNumber,
           this.recaptchaVerifier
         );
-        console.log("result", this.confirmationResult);
+        // console.log("result", this.confirmationResult);
 
         const path = this.moment().format("YYYY/MMDD");
-        db.collection(`/phoneLog/${path}`).add({
+        addDoc(collection(db, `/phoneLog/${path}`), {
           date: this.moment().format("YYYY-MM-DD"),
           month: this.moment().format("YYYYMM"),
           phoneNumber: this.SMSPhoneNumber,
-          updated: firestore.FieldValue.serverTimestamp()
+          updated: serverTimestamp(),
         });
-        
       } catch (error) {
         console.log(JSON.stringify(error));
         console.log("error", error.code);
@@ -300,20 +320,21 @@ export default {
         let result = await this.confirmationResult.confirm(
           this.verificationCode
         );
-        console.log("success!", result);
+        // console.log("success!", result);
         if (this.name) {
           const user = auth.currentUser; // paranoia: instead of this.$store.state.user;
           if (user) {
             await user.updateProfile({
-              displayName: this.name
+              displayName: this.name,
             });
           }
         }
 
-        await db.doc(`users/${result.user.uid}/private/profile`).set(
+        await setDoc(
+          doc(db, `users/${result.user.uid}/private/profile`),
           {
             phoneNumber: result.user.phoneNumber,
-            updated: firestore.FieldValue.serverTimestamp()
+            updated: serverTimestamp(),
           },
           { merge: true }
         );
@@ -328,7 +349,7 @@ export default {
       } finally {
         this.isLoading = false;
       }
-    }
-  }
+    },
+  },
 };
 </script>

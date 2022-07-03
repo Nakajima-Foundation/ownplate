@@ -42,43 +42,37 @@
             <div class="inline-flex m-t-24">
               <div class="flex">
                 <b-select v-model="monthValue">
-                  <option
-                    v-for="(month, k) in months"
-                    :value="month"
-                    :key="k"
-                  >
-                  {{ month }}
-                </option>
-              </b-select>
-            </div>
-            <div class="flex">
-              <b-button @click="LoadTillMonth">Load</b-button>
-              {{isLoading ? "Loading..." : ""}}
-            </div>
+                  <option v-for="(month, k) in months" :value="month" :key="k">
+                    {{ month }}
+                  </option>
+                </b-select>
+              </div>
+              <div class="flex">
+                <b-button @click="LoadTillMonth">Load</b-button>
+                {{ isLoading ? "Loading..." : "" }}
+              </div>
             </div>
           </div>
 
           <!-- Orders -->
-          <div class="mx-6 mt-6 grid grid-cols-1 gap-2 lg:grid-cols-3 xl:grid-cols-4">
-            <div
-              v-for="order in filteredOrders"
-              :key="order.id"
-              >
+          <div
+            class="mx-6 mt-6 grid grid-cols-1 gap-2 lg:grid-cols-3 xl:grid-cols-4"
+          >
+            <div v-for="order in filteredOrders" :key="order.id">
               <ordered-info
                 :isSuperView="true"
                 @selected="orderSelected($event)"
                 :order="order"
-                />
-              <router-link :to="`/s/restaurants/${order.restaurantId}`" >
-                {{order.restaurant.restaurantName}}
+              />
+              <router-link :to="`/s/restaurants/${order.restaurantId}`">
+                {{ order.restaurant.restaurantName }}
               </router-link>
             </div>
           </div>
           <div>
             <b-button @click="nextLoad">more</b-button>
           </div>
-          
-            
+
           <download-csv
             :data="tableData"
             :fields="fields"
@@ -103,30 +97,30 @@
 </template>
 
 <script>
-import BackButton from "~/components/BackButton";
-import { db } from "~/plugins/firebase.js";
-import OrderedInfo from "~/app/admin/Order/OrderedInfo";
-import { order_status, order_status_keys } from "~/plugins/constant.js";
-import { nameOfOrder } from "~/plugins/strings.js";
-import superMixin from "./SuperMixin";
-import DownloadCsv from "~/components/DownloadCSV";
+import BackButton from "@/components/BackButton";
+import { db } from "@/plugins/firebase";
+import OrderedInfo from "@/app/admin/Order/OrderedInfo";
+import { order_status, order_status_keys } from "@/config/constant";
+import { nameOfOrder } from "@/utils/strings";
+import superMixin from "@/mixins/SuperMixin";
+import DownloadCsv from "@/components/DownloadCSV";
 import moment from "moment";
 
 export default {
-  head() {
+  metaInfo() {
     return {
-      title: [this.defaultTitle, "Super All Orders"].join(" / ")
-    }
+      title: [this.defaultTitle, "Super All Orders"].join(" / "),
+    };
   },
   mixins: [superMixin],
   components: {
     OrderedInfo,
     DownloadCsv,
-    BackButton
+    BackButton,
   },
   data() {
     const months = [0, 1, 2, 3, 4, 5].map((a) => {
-      return moment().subtract(a, 'month').format("YYYY-MM");
+      return moment().subtract(a, "month").format("YYYY-MM");
     });
     return {
       orders: [],
@@ -143,15 +137,15 @@ export default {
   },
   computed: {
     orderStatus() {
-      return Object.keys(order_status).map(key => {
+      return Object.keys(order_status).map((key) => {
         return {
           index: order_status[key],
-          key: key === "error" ? "" : key
+          key: key === "error" ? "" : key,
         };
       });
     },
     filteredOrders() {
-      return this.orders.filter(order => {
+      return this.orders.filter((order) => {
         if (this.orderState === 0) {
           return true;
         }
@@ -159,7 +153,7 @@ export default {
       });
     },
     fileName() {
-      return "hello"
+      return "hello";
     },
     fields() {
       return [
@@ -169,27 +163,29 @@ export default {
         "total",
         "revenue",
         "name",
-        "payment"
+        "payment",
       ];
     },
     fieldNames() {
-      return this.fields.map(field => {
+      return this.fields.map((field) => {
         return this.$t(`order.${field}`);
       });
     },
     tableData() {
-      return this.filteredOrders.map(order => {
+      return this.filteredOrders.map((order) => {
         const time = order.timeEstimated || order.timePlaced;
         return {
           date: time ? this.moment(time).format("YYYY/MM/DD") : "",
           restaurantName: order.restaurant.restaurantName,
-          orderStatus: this.$t("order.status." + order_status_keys[order.status]),
+          orderStatus: this.$t(
+            "order.status." + order_status_keys[order.status]
+          ),
           revenue: order.totalCharge,
           total: Object.values(order.order).reduce((count, order) => {
             return count + this.arrayOrNumSum(order);
           }, 0),
           name: nameOfOrder(order),
-          payment: order.payment?.stripe ? "stripe" : ""
+          payment: order.payment?.stripe ? "stripe" : "",
         };
       });
     },
@@ -213,7 +209,7 @@ export default {
         if (!snapshot.empty) {
           this.last = snapshot.docs[snapshot.docs.length - 1];
           let i = 0;
-          for(; i < snapshot.docs.length; i ++) {
+          for (; i < snapshot.docs.length; i++) {
             const doc = snapshot.docs[i];
             const order = doc.data();
             order.restaurantId = doc.ref.path.split("/")[1];
@@ -221,8 +217,8 @@ export default {
             order.timePlaced = order.timePlaced.toDate();
             if (!this.restaurants[order.restaurantId]) {
               const snapshot = await db
-                    .doc(`restaurants/${order.restaurantId}`)
-                    .get();
+                .doc(`restaurants/${order.restaurantId}`)
+                .get();
               this.restaurants[order.restaurantId] = snapshot.data();
             }
             order.restaurant = this.restaurants[order.restaurantId];
@@ -244,16 +240,19 @@ export default {
     },
     async LoadTillMonth() {
       const limit = moment(this.monthValue + "-01 00:00:00+09:00");
-      while(moment(this.orders[this.orders.length - 1].timeCreated.toDate()) > limit) { 
+      while (
+        moment(this.orders[this.orders.length - 1].timeCreated.toDate()) > limit
+      ) {
         await this.loadData();
-     }
+      }
     },
     orderSelected(order) {
       // We are re-using the restaurant owner's view.
       this.$router.push({
-        path: "/admin/restaurants/" + order.restaurantId + "/orders/" + order.id
+        path:
+          "/admin/restaurants/" + order.restaurantId + "/orders/" + order.id,
       });
-    }
-  }
+    },
+  },
 };
 </script>
