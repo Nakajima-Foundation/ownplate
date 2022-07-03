@@ -20,6 +20,8 @@ const uid2 = "aaabbbccc2";
 
 describe("stripe tests", async () => {
   before(async () => {
+    const adminDB = await test_db_helper.adminDB();
+
     await adminDB.doc(`admins/${uid}/public/payment`).set({
       stripe: "acct_xxxxxxxx",
       isConnected: true,

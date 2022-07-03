@@ -5,12 +5,12 @@ import * as test_db_helper from "./test_db_helper";
 import * as test_helper from "./test_helper";
 import * as order from "./../src/functions/order";
 import * as notify from "./../src/functions/notify";
-const adminDB = test_db_helper.adminDB();
 
 should();
 
 describe("Order function", () => {
   it("Order function, orderCounter test", async () => {
+    const adminDB = await test_db_helper.adminDB();
     const a = 1;
     a.should.equal(1);
 
