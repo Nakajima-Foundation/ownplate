@@ -47,7 +47,7 @@ export default {
     // public
     temporaryClosure() {
       return (this.shopInfo.temporaryClosure || []).map((day) => {
-        return moment(day.toDate()).format("YYYY-MM-DD");
+        return moment(day).format("YYYY-MM-DD");
       });
     },
     availableDays() {
