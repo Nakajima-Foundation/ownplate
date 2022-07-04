@@ -158,17 +158,20 @@
 </template>
 
 <script>
+
+import {
+  defineComponent,
+  ref,
+  computed,
+} from "@vue/composition-api";
+  
 import { nameOfOrder } from "@/utils/strings";
 import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
 import { db } from "@/plugins/firebase";
 import { order_status, order_status_keys } from "@/config/constant";
+import { arrayOrNumSum } from "@/utils/utils";
 
-export default {
-  data() {
-    return {
-      restaurant: null,
-    };
-  },
+export default defineComponent({
   props: {
     order: {
       type: Object,
@@ -179,53 +182,65 @@ export default {
       required: false,
     },
   },
-  async created() {
-    if (this.order.restaurantId) {
-      const snapshot = await db
-        .doc(`restaurants/${this.order.restaurantId}`)
-        .get();
-      this.restaurant = snapshot.data();
+  setup(props, ctx) {
+    const restaurant = ref(null)
+    if (props.order.restaurantId) {
+      db.doc(`restaurants/${props.order.restaurantId}`)
+        .get().then(snapshot => {
+          restaurant.value = snapshot.data();
+        });
     }
-  },
-  computed: {
-    statusKey() {
-      return order_status_keys[this.order.status];
-    },
-    hasStripe() {
-      return this.order.payment && this.order.payment.stripe;
-    },
-    timestamp() {
-      const time = this.order.timeEstimated || this.order.timePlaced;
+
+    const statusKey = computed(() => {
+      return order_status_keys[props.order.status];
+    })
+    const hasStripe = computed(() => {
+      return props.order.payment && props.order.payment.stripe;
+    })
+    const timestamp = computed(() => { 
+      const time = props.order.timeEstimated || props.order.timePlaced;
       //const date = `${time.getMonth() + 1}/${time.getDate()} `;
       //return date + this.num2time(time.getHours() * 60 + time.getMinutes());
-      if (this.isSuperView) {
-        return this.$d(time, "long");
+      if (props.isSuperView) {
+        return ctx.root.$d(time, "long");
       } else {
-        return this.$d(time, "time");
+        return ctx.root.$d(time, "time");
       }
-    },
-    phoneNumber() {
-      return this.order.phoneNumber
-        ? parsePhoneNumber(this.order.phoneNumber)
+    });
+    const phoneNumber = computed(() => { 
+      return props.order.phoneNumber
+        ? parsePhoneNumber(props.order.phoneNumber)
         : "";
-    },
-    nationalPhoneNumber() {
-      return this.phoneNumber === "" ? "" : formatNational(this.phoneNumber);
-    },
-    orderName() {
-      return nameOfOrder(this.order);
-    },
-    totalCount() {
-      if (this.order.order) {
-        return Object.values(this.order.order).reduce((count, order) => {
-          return count + this.arrayOrNumSum(order);
+    });
+    const nationalPhoneNumber = computed(() => {
+      return phoneNumber.value === "" ? "" : formatNational(phoneNumber.value);
+    });
+    const orderName = computed(() => {
+      return nameOfOrder(props.order);
+    })
+    const totalCount = computed(() => { 
+      if (props.order.order) {
+        return Object.values(props.order.order).reduce((count, order) => {
+          return count + arrayOrNumSum(order);
         }, 0);
       }
       return 0;
-    },
-    paymentIsNotCompleted() {
-      return this.hasStripe && this.order.status < order_status.ready_to_pickup;
-    },
+    });
+    const paymentIsNotCompleted = computed(() => {
+      return hasStripe.value && props.order.status < order_status.ready_to_pickup;
+    });
+
+    return {
+      restaurant,
+      statusKey,
+      hasStripe,
+      timestamp,
+      phoneNumber,
+      nationalPhoneNumber,
+      orderName,
+      totalCount,
+      paymentIsNotCompleted,
+    }
   },
-};
+});
 </script>
