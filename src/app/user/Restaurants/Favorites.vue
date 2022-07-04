@@ -59,45 +59,49 @@
 </template>
 
 <script>
+import {
+  defineComponent,
+  ref,
+} from "@vue/composition-api";
 import { db } from "@/plugins/firebase";
 import { RestaurantHeader } from "@/config/header";
 import AreaItem from "@/app/user/Restaurants/AreaItem";
 import { ownPlateConfig } from "@/config/project";
 import BackButton from "@/components/BackButton";
 
-export default {
+export default defineComponent({
   components: {
     AreaItem,
     BackButton,
   },
-  data() {
-    return {
-      likes: null,
-      restaurants: [],
-    };
-  },
-  metaInfo() {
+  metaInfo(root) {
     const title = [
-      this.$t("pageTitle.restaurantRoot"),
+      root.$t("pageTitle.restaurantRoot"),
       ownPlateConfig.siteName,
     ].join(" / ");
     return Object.assign(RestaurantHeader, { title });
   },
-  async mounted() {
-    if (this.isUser) {
-      const snapshot = await db
-        .collection(`users/${this.user.uid}/reviews`)
-        .orderBy("timeLiked", "desc")
-        .limit(100)
-        .get();
-      this.likes = (snapshot.docs || [])
-        .map((doc) => {
-          return doc.data();
-        })
-        .filter((doc) => {
-          return !!doc.likes;
-        });
+  setup(props, ctx) {
+    const likes = ref(null);
+    if (ctx.root.isUser) {
+      (async () => {
+        const snapshot = await db
+              .collection(`users/${ctx.root.user.uid}/reviews`)
+              .orderBy("timeLiked", "desc")
+              .limit(100)
+              .get();
+        likes.value = (snapshot.docs || [])
+          .map((doc) => {
+            return doc.data();
+          })
+          .filter((doc) => {
+            return !!doc.likes;
+          });
+      })();
     }
+    return {
+      likes,
+    };
   },
-};
+});
 </script>
