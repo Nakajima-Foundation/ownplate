@@ -93,29 +93,7 @@
 
       <!-- Terms of Use & Privacy Policy -->
       <div class="mt-6 text-xs">
-        <div v-if="!isLocaleJapan">
-          <span>By submitting this form, you agree to the</span>
-          <router-link to="/terms/user" target="_blank">
-            <span class="text-op-teal">Terms of Service</span>
-          </router-link>
-          <span>and</span>
-          <router-link to="/privacy" target="_blank">
-            <span class="text-op-teal">Privacy Policy</span>
-          </router-link>
-          <span>.</span>
-        </div>
-
-        <div v-else>
-          <span>送信することで、</span>
-          <router-link to="/terms/user" target="_blank">
-            <span class="text-op-teal">利用規約</span>
-          </router-link>
-          <span>と</span>
-          <router-link to="/privacy" target="_blank">
-            <span class="text-op-teal">プライバシーポリシー</span>
-          </router-link>
-          <span>に同意したものとみなされます。</span>
-        </div>
+        <TermsAndPolicy />
       </div>
     </form>
 
@@ -207,6 +185,7 @@ import {
   RecaptchaVerifier,
   signInWithPhoneNumber,
 } from "firebase/auth";
+
 import {
   doc,
   collection,
@@ -219,7 +198,12 @@ import { stripeRegion } from "@/utils/utils";
 import moment from "moment";
 import * as Sentry from "@sentry/vue";
 
+import TermsAndPolicy from "@/app/auth/TermsAndPolicy.vue";
+
 export default defineComponent({
+  components: {
+    TermsAndPolicy
+  },
   props: {
     relogin: {
       type: String,
