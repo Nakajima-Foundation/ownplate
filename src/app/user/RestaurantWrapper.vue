@@ -42,9 +42,9 @@ export default defineComponent({
         const restaurant_data = restaurant.data();
         shopInfo.value = restaurant_data || {};
         const exist_and_publig =
-          restaurant.exists &&
-          !restaurant.data().deletedFlag &&
-          restaurant.data().publicFlag;
+          restaurant.exists() &&
+          !shopInfo.value.deletedFlag &&
+          shopInfo.value.publicFlag;
 
         if (exist_and_publig) {
           if (mode.value === "liff") {
