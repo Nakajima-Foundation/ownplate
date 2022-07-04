@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="mt-6 mx-6">
-      <back-button url="/u/profile/" />
+      <back-button :url="basePath + '/u/profile/'" />
     </div>
 
     <div class="text-xl font-bold text-black text-opacity-40 mt-6 mx-6">
@@ -68,6 +68,7 @@ import { RestaurantHeader } from "@/config/header";
 import AreaItem from "@/app/user/Restaurants/AreaItem";
 import { ownPlateConfig } from "@/config/project";
 import BackButton from "@/components/BackButton";
+import { useBasePath } from "@/utils/utils";
 
 export default defineComponent({
   components: {
@@ -82,7 +83,9 @@ export default defineComponent({
     return Object.assign(RestaurantHeader, { title });
   },
   setup(props, ctx) {
+    const basePath = useBasePath(ctx.root);
     const likes = ref(null);
+
     if (ctx.root.isUser) {
       (async () => {
         const snapshot = await db
@@ -101,6 +104,7 @@ export default defineComponent({
     }
     return {
       likes,
+      basePath,
     };
   },
 });
