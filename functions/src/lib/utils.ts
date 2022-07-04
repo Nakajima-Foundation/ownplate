@@ -141,17 +141,25 @@ const chunk = (arr: string[], chunkSize: number) => {
 
 export const getMenuObj = async (refRestaurant, menuIds) => {
   const menuObj = {};
-
-  await Promise.all(
-    chunk(menuIds, 10).map(async (menuIdsChunk) => {
-      const menusCollections = await refRestaurant.collection("menus").where(admin.firestore.FieldPath.documentId(), "in", menuIdsChunk).get();
-      menusCollections.forEach((m) => {
-        menuObj[m.id] = m.data();
-      });
-      return;
-    })
-  );
-  return menuObj;
+  if (process.env.NODE_ENV !== "test") {
+    await Promise.all(
+      chunk(menuIds, 10).map(async (menuIdsChunk) => {
+        const menusCollections = await refRestaurant.collection("menus").where(admin.firestore.FieldPath.documentId(), "in", menuIdsChunk).get();
+        menusCollections.forEach((m) => {
+          menuObj[m.id] = m.data();
+        });
+        return;
+      })
+    );
+    return menuObj;
+  } else {
+    // for test
+    await Promise.all(menuIds.map(async (id) => {
+      const m = await refRestaurant.collection("menus").doc(id).get();
+      menuObj[m.id] = m.data();
+    }));
+    return menuObj;
+  }
 };
 
 export const nameOfOrder = (orderNumber: number) => {
