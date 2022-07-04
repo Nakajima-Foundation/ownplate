@@ -310,10 +310,6 @@ export default {
               return;
             }
 
-            // workaround
-            if (this.ownerUid) {
-              this.restaurantLists = [];
-            }
             this.restaurantItems = (result.docs || []).reduce((tmp, doc) => {
               const restaurantId = doc.id;
               // workaround (this.ownerUid)
@@ -322,6 +318,9 @@ export default {
                 data.restaurantid = doc.id;
                 data.id = doc.id;
                 tmp[doc.id] = data;
+                if (!this.restaurantLists.includes(restaurantId) && this.ownerUid) {
+                  this.restaurantLists.push(restaurantId);
+                }
               }
               return tmp;
             }, {});
