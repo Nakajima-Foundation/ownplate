@@ -184,6 +184,7 @@ import {
   signOut,
   RecaptchaVerifier,
   signInWithPhoneNumber,
+  updateProfile,
 } from "firebase/auth";
 
 import {
@@ -307,7 +308,8 @@ export default defineComponent({
         if (name.value) {
           const user = auth.currentUser; // paranoia: instead of this.$store.state.user;
           if (user) {
-            await user.updateProfile({
+            console.log(user);
+            updateProfile(user, {
               displayName: name.value,
             });
           }

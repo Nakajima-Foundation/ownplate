@@ -151,7 +151,6 @@ export default {
   data() {
     return {
       date: null,
-      detacher: [],
       notFound: null,
     };
   },
@@ -170,14 +169,6 @@ export default {
       this.notFound = false;
     } else {
       this.notFound = true;
-    }
-    this.detacher = [restaurant_detacher];
-  },
-  destroyed() {
-    if (this.detacher) {
-      this.detacher.map((detacher) => {
-        detacher();
-      });
     }
   },
   computed: {

@@ -11,8 +11,6 @@ import * as accountupdated from "./data/accountupdated/data";
 import * as authorized from "./data/accounts/application.authorized";
 import * as deauthorized from "./data/accounts/application.deauthorized";
 
-const adminDB = test_db_helper.adminDB();
-
 should();
 
 const uid = "aaabbbccc1";
@@ -33,6 +31,7 @@ describe("stripe tests", async () => {
   });
 
   it("capability_updated stripe test", async function () {
+    const adminDB = await test_db_helper.adminDB();
     const res = await stripeLog.capability_updated(adminDB, {
       data: test_jcb_data.jcb_one,
     });
@@ -40,6 +39,7 @@ describe("stripe tests", async () => {
   });
 
   it("account_updated stripe test", async function () {
+    const adminDB = await test_db_helper.adminDB();
     const res = await stripeLog.account_updated(adminDB, {
       data: accountupdated.data,
     });
@@ -47,10 +47,12 @@ describe("stripe tests", async () => {
   });
 
   it("authorized stripe test", async function () {
+    const adminDB = await test_db_helper.adminDB();
     const res = await stripeLog.account_authorized(adminDB, authorized.authorized);
     (res[0] as any)["uid"].should.equal(uid);
   });
   it("deauthorized stripe test", async function () {
+    const adminDB = await test_db_helper.adminDB();
     const res = await stripeLog.account_deauthorized(adminDB, deauthorized.deauthorized);
     (res[0] as any)["uid"].should.equal(uid);
   });
