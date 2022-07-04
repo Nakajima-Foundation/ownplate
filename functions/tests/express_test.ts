@@ -8,9 +8,6 @@ import * as test_db_helper from "./test_db_helper";
 
 should();
 
-const adminDB = test_db_helper.adminDB();
-
-express.updateDb(adminDB);
 const app = express.app;
 const request = supertest(app);
 
@@ -55,6 +52,10 @@ const ownerData = {
 
 describe("express function", () => {
   before(async () => {
+    const adminDB = await test_db_helper.adminDB();
+
+    express.updateDb(adminDB);
+
     await adminDB.doc(`restaurants/testbar`).set(good_cafe_data);
     await adminDB.doc(`restaurants/testbar/menus/hoge`).set({
       images: { item: { resizedImages: { "600": "123.jpg" } } },
@@ -189,7 +190,6 @@ describe("express function", () => {
   });
 
   it("express simple test", async function () {
-    // const db_data = await adminDB.doc(`restaurants/testbar`).get();
     const response = await request.get("/users");
     response.status.should.equal(404);
 
