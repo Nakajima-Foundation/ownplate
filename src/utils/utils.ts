@@ -314,21 +314,6 @@ export const useLiffIndexId = (root: any) => {
     return root.$route.params.liffIndexId;
   });
 };
-// "" or "/mo" or "/liff/hoge"
-export const useBasePath = (root: any) => {
-  const isInLiff = useIsInLiff(root);
-  const isInMo = useIsInMo(root);
-
-  return computed(() => {
-    if (isInMo.value) {
-      return "/" + getMoPrefix(root);
-    }
-    if (isInLiff.value) {
-      return "/" + root.$route.params.liffIndexId;
-    }
-    return "";
-  });
-};
 export const useLiffBasePath = (root: any) => {
   const liffIndexId = useLiffIndexId(root);
   return computed(() => {
@@ -351,6 +336,24 @@ export const routeMode = (root: any) => {
   });
 };
 
+// "" or "/mo" or "/liff/hoge"
+export const useBasePath = (root: any) => {
+  const isInLiff = useIsInLiff(root);
+  const liffBasePath = useLiffBasePath(root);
+  const isInMo = useIsInMo(root);
+  const moPrefix = useMoPrefix(root);
+
+  return computed(() => {
+    if (isInMo.value) {
+      return "/" + moPrefix.value;
+    }
+    if (isInLiff.value) {
+      return liffBasePath.value;
+    }
+    return "";
+  });
+};
+// "/" or "/mo", or "/liff/hoge"
 export const useTopPath = (root: any) => {
   const inLiff = useIsInLiff(root);
   const liffBasePath = useLiffBasePath(root);
