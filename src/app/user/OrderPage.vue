@@ -181,7 +181,6 @@
           <div>
             <favorite-button
               :shopInfo="shopInfo"
-              :keepLike="false"
             ></favorite-button>
           </div>
         </div>

@@ -19,44 +19,48 @@
 </template>
 
 <script>
+import {
+  defineComponent,
+  ref,
+  computed,
+  onUnmounted,
+} from "@vue/composition-api";
+
 import { db, firestore } from "@/plugins/firebase";
 
-export default {
+export default defineComponent({
   components: {},
   props: {
     shopInfo: {
       type: Object,
       required: true,
     },
-    keepLike: {
-      type: Boolean,
-      required: false,
-    },
   },
-  data() {
-    return {
-      review: {},
-      detacher: null,
-    };
-  },
-  mounted() {
-    if (this.isUser) {
-      this.detacher = db
-        .doc(`users/${this.user.uid}/reviews/${this.restaurantId()}`)
+  setup(props, ctx) {
+    const review = ref({});
+    let detacher = null;
+    const restaurantId = computed(() => {
+      return ctx.root.$route.params.restaurantId;
+    });
+    const path = computed(() => {
+      return `users/${ctx.root.user.uid}/reviews/${restaurantId.value}`;
+    });
+
+    if (ctx.root.isUser) {
+      detacher = db
+        .doc(path.value)
         .onSnapshot((snapshot) => {
-          this.review = snapshot.data() || {};
-          if (this.review.restaurantName) {
+          review.value = snapshot.data() || {};
+          if (review.value.restaurantName) {
             // Check if the cached info is out of date, update them.
             if (
-              this.review.restaurantName !== this.shopInfo.restaurantName ||
-              this.review.restProfilePhoto != this.shopInfo.restProfilePhoto
+              review.value.restaurantName !== props.shopInfo.restaurantName ||
+              review.value.restProfilePhoto != props.shopInfo.restProfilePhoto
             ) {
-              db.doc(
-                `users/${this.user.uid}/reviews/${this.restaurantId()}`
-              ).set(
+              db.doc(path.value).set(
                 {
-                  restaurantName: this.shopInfo.restaurantName, // duplicated for quick display
-                  restProfilePhoto: this.shopInfo.restProfilePhoto, // duplicated for quick display
+                  restaurantName: props.shopInfo.restaurantName, // duplicated for quick display
+                  restProfilePhoto: props.shopInfo.restProfilePhoto, // duplicated for quick display
                 },
                 { merge: true }
               );
@@ -64,32 +68,34 @@ export default {
           }
         });
     }
-  },
-  destroyed() {
-    this.detacher && this.detacher();
-  },
-  computed: {
-    likes() {
-      return !!this.review.likes;
-    },
-  },
-  methods: {
-    handleLike() {
+
+    onUnmounted(() => {
+      detacher && detacher();
+    });
+
+    const likes = computed(() => {
+      return !!review.value.likes;
+    });
+
+    const handleLike = () => {
       // Notice that mounted() will automatically update duplicated restaurant info.
-      const nextState = !this.likes;
-      if (nextState || !this.keepLike) {
-        db.doc(`users/${this.user.uid}/reviews/${this.restaurantId()}`).set(
-          {
-            likes: nextState,
-            restaurantName: this.shopInfo.restaurantName, // duplicated for quick display
-            restProfilePhoto: this.shopInfo.restProfilePhoto, // duplicated for quick display
-            timeLiked: firestore.FieldValue.serverTimestamp(),
-            restaurantId: this.restaurantId(), // Making it possible to collection query (later)
-          },
-          { merge: true }
-        );
-      }
-    },
+      const nextState = !likes.value;
+      db.doc(path.value).set(
+        {
+          likes: nextState,
+          restaurantName: props.shopInfo.restaurantName, // duplicated for quick display
+          restProfilePhoto: props.shopInfo.restProfilePhoto, // duplicated for quick display
+          timeLiked: firestore.FieldValue.serverTimestamp(),
+          restaurantId: restaurantId.value, // Making it possible to collection query (later)
+        },
+        { merge: true }
+      );
+    };
+
+    return {
+      likes,
+      handleLike,
+    };
   },
-};
+});
 </script>
