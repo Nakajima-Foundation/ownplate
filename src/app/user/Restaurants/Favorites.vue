@@ -25,7 +25,7 @@
           class="mt-2 mx-6 grid items-center grid-cols-1 gap-2 lg:grid-cols-3 xl:grid-cols-4"
         >
           <div v-for="like in likes" :key="like.restaurantId">
-            <router-link :to="`/r/${like.restaurantId}`">
+            <router-link :to="basePath + `/r/${like.restaurantId}`">
               <div class="flex items-center">
                 <div class="w-12 h-12 rounded-full bg-black bg-opacity-10 mr-4">
                   <img
