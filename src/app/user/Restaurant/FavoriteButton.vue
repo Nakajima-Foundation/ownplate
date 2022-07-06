@@ -27,6 +27,7 @@ import {
 } from "@vue/composition-api";
 
 import { db, firestore } from "@/plugins/firebase";
+import { useIsInMo, useMoPrefix } from "@/utils/utils";
 
 export default defineComponent({
   components: {},
@@ -42,8 +43,15 @@ export default defineComponent({
     const restaurantId = computed(() => {
       return ctx.root.$route.params.restaurantId;
     });
+    const isInMo = useIsInMo(ctx.root);
+    const moPrefix = useMoPrefix(ctx.root);
+    
     const path = computed(() => {
-      return `users/${ctx.root.user.uid}/reviews/${restaurantId.value}`;
+      if (isInMo.value) {
+        return `users/${ctx.root.user.uid}/groups/${moPrefix.value}/reviews/${restaurantId.value}`;
+      } else {
+        return `users/${ctx.root.user.uid}/reviews/${restaurantId.value}`;
+      }
     });
 
     if (ctx.root.isUser) {

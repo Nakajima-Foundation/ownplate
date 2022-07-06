@@ -86,6 +86,10 @@ service cloud.firestore {
         allow read: if request.auth.uid == userId;
         allow write: if request.auth.uid == userId && request.resource.data.restaurantId == restaurantId;
       }
+      match /groups/{groupId}/reviews/{restaurantId} {
+        allow read: if request.auth.uid == userId;
+        allow write: if request.auth.uid == userId && request.resource.data.restaurantId == restaurantId;
+      }
     }
 
     match /adminConfigs/{userId} {

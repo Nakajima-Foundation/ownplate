@@ -62,6 +62,7 @@
 import {
   defineComponent,
   ref,
+  computed,
 } from "@vue/composition-api";
 import { db } from "@/plugins/firebase";
 import { RestaurantHeader } from "@/config/header";
@@ -69,6 +70,9 @@ import AreaItem from "@/app/user/Restaurants/AreaItem";
 import { ownPlateConfig } from "@/config/project";
 import BackButton from "@/components/BackButton";
 import { useBasePath } from "@/utils/utils";
+
+import { useIsInMo, useMoPrefix } from "@/utils/utils";
+
 
 export default defineComponent({
   components: {
@@ -86,10 +90,21 @@ export default defineComponent({
     const basePath = useBasePath(ctx.root);
     const likes = ref(null);
 
+    const isInMo = useIsInMo(ctx.root);
+    const moPrefix = useMoPrefix(ctx.root);
+    
+    const path = computed(() => {
+      if (isInMo.value) {
+        return `users/${ctx.root.user.uid}/groups/${moPrefix.value}/reviews`;
+      } else {
+        return `users/${ctx.root.user.uid}/reviews`;
+      }
+    });
+    
     if (ctx.root.isUser) {
       (async () => {
         const snapshot = await db
-              .collection(`users/${ctx.root.user.uid}/reviews`)
+              .collection(path.value)
               .orderBy("timeLiked", "desc")
               .limit(100)
               .get();
