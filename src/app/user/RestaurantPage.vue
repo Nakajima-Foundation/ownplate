@@ -76,73 +76,14 @@
             <div class="mx-6 mt-2 lg:mx-0" v-if="shopInfo.enableDelivery">
               <div class="bg-white rounded-lg shadow">
                 <!-- delivery -->
-                <div class="p-4">
-                  <div class="text-ms font-bold">
-                    {{ $t("shopInfo.howToReceive") }}
-                  </div>
-                  <div>
-                    <b-radio
-                      name="howtoreceive"
-                      v-model="howtoreceive"
-                      native-value="takeout"
-                    >
-                      {{ $t("shopInfo.takeout") }}
-                    </b-radio>
-                    <b-radio
-                      name="howtoreceive"
-                      v-model="howtoreceive"
-                      native-value="delivery"
-                    >
-                      {{ $t("shopInfo.delivery") }}
-                    </b-radio>
-                  </div>
-                  <div>
-                    <div v-if="deliveryData.enableDeliveryThreshold">
-                      {{
-                        $tc("shopInfo.deliveryThresholdNotice", 0, {
-                          price: deliveryData.deliveryThreshold,
-                        })
-                      }}
-                    </div>
-                    <div v-if="deliveryData.deliveryFee > 0">
-                      {{
-                        $tc("shopInfo.deliveryFeeInfo", 0, {
-                          price: deliveryData.deliveryFee,
-                        })
-                      }}
-                      <span v-if="deliveryData.enableDeliveryFree">
-                        {{
-                          $tc("shopInfo.deliveryFeeThresholdInfo", 0, {
-                            price: deliveryData.deliveryFreeThreshold,
-                          })
-                        }}
-                      </span>
-                    </div>
-                  </div>
-                  <div
-                    v-if="howtoreceive === 'delivery'"
-                    class="mt-2 px-4 py-2 rounded-lg bg-blue-500 bg-opacity-10"
-                  >
-                    {{ $t("shopInfo.deliveryArea") }}
-                    <div v-if="deliveryData.enableAreaMap">
-                      {{
-                        $tc("shopInfo.deliveryAreaRadius", 0, {
-                          radius: deliveryData.radius,
-                        })
-                      }}
-                    </div>
-                    <div v-if="deliveryData.enableAreaText">
-                      <pre class="bg-transparent p-0">{{
-                        deliveryData.areaText
-                      }}</pre>
-                    </div>
-                    {{ $t("shopInfo.deliveryAreaInfo") }}
-                  </div>
-                </div>
+                <Delivery
+                  :shopInfo="shopInfo"
+                  :deliveryData="deliveryData"
+                  v-model="howtoreceive"
+                  />
+                <!-- delivery -->
               </div>
             </div>
-            <!-- delivery -->
-            
             <div class="mx-6 mt-2 lg:mx-0">
               <template v-for="(title, key) in titleLists">
                 <a
@@ -261,6 +202,7 @@ import NotFound from "@/components/NotFound";
 
 import RestaurantPreview from "@/app/user/Restaurant/Preview";
 import CartButton from "@/app/user/Restaurant/CartButton";
+import Delivery from "@/app/user/Restaurant/Delivery";
 
 import liff from "@line/liff";
 import { db as dbOld, firestore } from "@/plugins/firebase";
@@ -309,6 +251,7 @@ export default defineComponent({
     NotFound,
     RestaurantPreview,
     CartButton,
+    Delivery,
   },
   props: {
     shopInfo: {
