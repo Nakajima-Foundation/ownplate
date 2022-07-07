@@ -313,12 +313,12 @@ export default {
             this.restaurantItems = (result.docs || []).reduce((tmp, doc) => {
               const restaurantId = doc.id;
               // workaround (this.ownerUid)
-              if (this.restaurantLists.includes(restaurantId) || this.ownerUid) {
+              if (this.restaurantLists.includes(restaurantId) || this.isOwner) {
                 const data = doc.data();
                 data.restaurantid = doc.id;
                 data.id = doc.id;
                 tmp[doc.id] = data;
-                if (!this.restaurantLists.includes(restaurantId) && this.ownerUid) {
+                if (!this.restaurantLists.includes(restaurantId) && this.isOwner) {
                   this.restaurantLists.push(restaurantId);
                 }
               }
