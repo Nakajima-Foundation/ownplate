@@ -179,9 +179,7 @@
         <!-- Favorite Button -->
         <div class="mt-4 mx-6 bg-black bg-opacity-5 rounded-lg p-4 text-center">
           <div>
-            <favorite-button
-              :shopInfo="shopInfo"
-            ></favorite-button>
+            <favorite-button :shopInfo="shopInfo"></favorite-button>
           </div>
         </div>
 

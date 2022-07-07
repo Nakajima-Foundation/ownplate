@@ -89,8 +89,8 @@ export default defineComponent({
   setup(_, ctx) {
     const isLineUser = useIsLineUser(ctx);
     const isLiffUser = useIsLiffUser(ctx);
-    const liffIndexId =  useLiffIndexId(ctx.root);
-    
+    const liffIndexId = useLiffIndexId(ctx.root);
+
     const inLiff = useInLiff(ctx);
     const isFriend = ref(undefined);
     const liffConfig = ref(null);
@@ -135,7 +135,7 @@ export default defineComponent({
         }
       }
     };
-    
+
     const lineConnection = computed(() => {
       return isLineUser.value
         ? ctx.root.$t("profile.status.hasLine")
@@ -152,7 +152,11 @@ export default defineComponent({
     });
 
     watch(isWindowActive, (newValue) => {
-      if (newValue && (isLineUser.value || isLiffUser.value) && !isFriend.value) {
+      if (
+        newValue &&
+        (isLineUser.value || isLiffUser.value) &&
+        !isFriend.value
+      ) {
         isFriend.value = undefined;
         checkFriend();
       }
@@ -161,13 +165,12 @@ export default defineComponent({
       if (isFriend.value === undefined) {
         checkFriend();
       }
-    })
+    });
     watch(isLiffUser, (newValue) => {
       if (isFriend.value === undefined) {
         checkFriend();
       }
-    })
-
+    });
 
     const init = async () => {
       if (isLineUser.value || isLiffUser.value) {
@@ -180,7 +183,7 @@ export default defineComponent({
       }
     };
     init();
-    
+
     return {
       lineConnection,
       lineFriend,

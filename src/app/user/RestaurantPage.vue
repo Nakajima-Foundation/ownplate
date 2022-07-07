@@ -45,9 +45,7 @@
 
                 <!-- Favorite Button -->
                 <div>
-                  <favorite-button
-                    :shopInfo="shopInfo"
-                  ></favorite-button>
+                  <favorite-button :shopInfo="shopInfo"></favorite-button>
                 </div>
               </div>
 
@@ -212,7 +210,7 @@
         :noAvailableTime="noAvailableTime"
         :isDelivery="isDelivery"
         :totalPrice="totalPrice"
-        />
+      />
     </template>
     <!-- Image Popup-->
     <b-modal :active.sync="imagePopup" :width="488" scroll="keep">
@@ -420,7 +418,6 @@ export default defineComponent({
         props.shopInfo.restCoverPhoto
       );
     });
-
 
     watch(menus, (values) => {
       analyticsUtil.sendMenuListView(
@@ -686,7 +683,6 @@ export default defineComponent({
         waitForUser.value = true;
       }
     };
-
 
     watch(user, (newValue) => {
       console.log("user changed");

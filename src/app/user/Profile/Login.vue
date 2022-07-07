@@ -55,7 +55,7 @@ export default defineComponent({
     const isInMo = useIsInMo(ctx.root);
 
     const loginVisible = ref(isInMo.value);
-    
+
     const user = computed(() => {
       return ctx.root.$store.state.user;
     });

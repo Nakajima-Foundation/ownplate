@@ -11,7 +11,7 @@
       </router-link>
       <span>.</span>
     </div>
-    
+
     <div v-else>
       <span>送信することで、</span>
       <router-link :to="termsPath" target="_blank">
@@ -27,15 +27,9 @@
 </template>
 
 <script>
-import {
-  defineComponent,
-  computed,
-} from "@vue/composition-api";
+import { defineComponent, computed } from "@vue/composition-api";
 
-import {
-  useIsInMo,
-  getMoPrefix
-} from "@/utils/utils";
+import { useIsInMo, getMoPrefix } from "@/utils/utils";
 
 export default defineComponent({
   setup(_, ctx) {
@@ -60,5 +54,5 @@ export default defineComponent({
       policyPath,
     };
   },
-})
+});
 </script>

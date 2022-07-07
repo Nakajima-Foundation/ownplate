@@ -68,10 +68,10 @@ export default defineComponent({
   },
   setup(props, ctx) {
     const orders = ref([]);
-    
+
     const basePath = useBasePath(ctx.root);
     const topPath = useTopPath(ctx.root);
-    
+
     const uid = computed(() => {
       return ctx.root.$store.getters.uidUser || ctx.root.$store.getters.uidLiff;
     });
@@ -82,7 +82,7 @@ export default defineComponent({
 
     let detacher = null;
 
-    const getHistory = () =>  {
+    const getHistory = () => {
       detacher && detacher();
       if (uid.value) {
         detacher = onSnapshot(
@@ -123,22 +123,23 @@ export default defineComponent({
     };
 
     const orderSelected = (order) => {
-      const path  = basePath.value + "/r/" + order.restaurantId + "/order/" + order.id;
+      const path =
+        basePath.value + "/r/" + order.restaurantId + "/order/" + order.id;
       ctx.root.$router.push({
         path,
       });
     };
 
     getHistory();
-    
+
     watch(uid, () => {
       getHistory();
     });
-    
+
     onUnmounted(() => {
       detacher && detacher();
     });
-    
+
     return {
       loginVisible,
       handleDismissed,
@@ -147,7 +148,6 @@ export default defineComponent({
       orderSelected,
       basePath,
     };
-
   },
 });
 </script>

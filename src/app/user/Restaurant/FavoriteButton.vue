@@ -45,7 +45,7 @@ export default defineComponent({
     });
     const isInMo = useIsInMo(ctx.root);
     const moPrefix = useMoPrefix(ctx.root);
-    
+
     const path = computed(() => {
       if (isInMo.value) {
         return `users/${ctx.root.user.uid}/groups/${moPrefix.value}/reviews/${restaurantId.value}`;
@@ -55,26 +55,24 @@ export default defineComponent({
     });
 
     if (ctx.root.isUser) {
-      detacher = db
-        .doc(path.value)
-        .onSnapshot((snapshot) => {
-          review.value = snapshot.data() || {};
-          if (review.value.restaurantName) {
-            // Check if the cached info is out of date, update them.
-            if (
-              review.value.restaurantName !== props.shopInfo.restaurantName ||
-              review.value.restProfilePhoto != props.shopInfo.restProfilePhoto
-            ) {
-              db.doc(path.value).set(
-                {
-                  restaurantName: props.shopInfo.restaurantName, // duplicated for quick display
-                  restProfilePhoto: props.shopInfo.restProfilePhoto, // duplicated for quick display
-                },
-                { merge: true }
-              );
-            }
+      detacher = db.doc(path.value).onSnapshot((snapshot) => {
+        review.value = snapshot.data() || {};
+        if (review.value.restaurantName) {
+          // Check if the cached info is out of date, update them.
+          if (
+            review.value.restaurantName !== props.shopInfo.restaurantName ||
+            review.value.restProfilePhoto != props.shopInfo.restProfilePhoto
+          ) {
+            db.doc(path.value).set(
+              {
+                restaurantName: props.shopInfo.restaurantName, // duplicated for quick display
+                restProfilePhoto: props.shopInfo.restProfilePhoto, // duplicated for quick display
+              },
+              { merge: true }
+            );
           }
-        });
+        }
+      });
     }
 
     onUnmounted(() => {

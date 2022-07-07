@@ -158,13 +158,8 @@
 </template>
 
 <script>
+import { defineComponent, ref, computed } from "@vue/composition-api";
 
-import {
-  defineComponent,
-  ref,
-  computed,
-} from "@vue/composition-api";
-  
 import { nameOfOrder } from "@/utils/strings";
 import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
 import { db } from "@/plugins/firebase";
@@ -183,21 +178,22 @@ export default defineComponent({
     },
   },
   setup(props, ctx) {
-    const restaurant = ref(null)
+    const restaurant = ref(null);
     if (props.order.restaurantId) {
       db.doc(`restaurants/${props.order.restaurantId}`)
-        .get().then(snapshot => {
+        .get()
+        .then((snapshot) => {
           restaurant.value = snapshot.data();
         });
     }
 
     const statusKey = computed(() => {
       return order_status_keys[props.order.status];
-    })
+    });
     const hasStripe = computed(() => {
       return props.order.payment && props.order.payment.stripe;
-    })
-    const timestamp = computed(() => { 
+    });
+    const timestamp = computed(() => {
       const time = props.order.timeEstimated || props.order.timePlaced;
       //const date = `${time.getMonth() + 1}/${time.getDate()} `;
       //return date + this.num2time(time.getHours() * 60 + time.getMinutes());
@@ -207,7 +203,7 @@ export default defineComponent({
         return ctx.root.$d(time, "time");
       }
     });
-    const phoneNumber = computed(() => { 
+    const phoneNumber = computed(() => {
       return props.order.phoneNumber
         ? parsePhoneNumber(props.order.phoneNumber)
         : "";
@@ -217,8 +213,8 @@ export default defineComponent({
     });
     const orderName = computed(() => {
       return nameOfOrder(props.order);
-    })
-    const totalCount = computed(() => { 
+    });
+    const totalCount = computed(() => {
       if (props.order.order) {
         return Object.values(props.order.order).reduce((count, order) => {
           return count + arrayOrNumSum(order);
@@ -227,7 +223,9 @@ export default defineComponent({
       return 0;
     });
     const paymentIsNotCompleted = computed(() => {
-      return hasStripe.value && props.order.status < order_status.ready_to_pickup;
+      return (
+        hasStripe.value && props.order.status < order_status.ready_to_pickup
+      );
     });
 
     return {
@@ -240,7 +238,7 @@ export default defineComponent({
       orderName,
       totalCount,
       paymentIsNotCompleted,
-    }
+    };
   },
 });
 </script>

@@ -176,7 +176,7 @@ import {
   ref,
   watch,
   computed,
-  onMounted
+  onMounted,
 } from "@vue/composition-api";
 
 import { db, auth } from "@/lib/firebase/firebase9";
@@ -203,7 +203,7 @@ import TermsAndPolicy from "@/app/auth/TermsAndPolicy.vue";
 
 export default defineComponent({
   components: {
-    TermsAndPolicy
+    TermsAndPolicy,
   },
   props: {
     relogin: {
@@ -237,7 +237,7 @@ export default defineComponent({
         auth
       );
     });
-    
+
     const hasError = computed(() => {
       return errors.value.length > 0;
     });
@@ -250,7 +250,7 @@ export default defineComponent({
     const readyToSendSMS = computed(() => {
       return !hasError.value || props.relogin;
     });
-    const readyToSendVerificationCode = computed(() => { 
+    const readyToSendVerificationCode = computed(() => {
       return !hasError.value;
     });
 
@@ -261,7 +261,7 @@ export default defineComponent({
         errors.value = ["sms.invalidPhoneNumber"];
       }
     };
-  
+
     const validateVerificationCode = () => {
       errors.value = [];
       const regex = /^[0-9]*$/;
@@ -269,7 +269,7 @@ export default defineComponent({
         errors.value = ["sms.invalidValidationCode"];
       }
     };
-    
+
     const handleSubmit = async () => {
       console.log("submit");
       try {
@@ -277,7 +277,7 @@ export default defineComponent({
         confirmationResult.value = await signInWithPhoneNumber(
           auth,
           SMSPhoneNumber.value,
-          recaptchaVerifier,
+          recaptchaVerifier
         );
 
         const path = moment().format("YYYY/MMDD");
