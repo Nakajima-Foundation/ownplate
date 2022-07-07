@@ -202,146 +202,17 @@
 
       <!-- Cart Button -->
       <div v-if="isCheckingOut" class="fixed top-0 left-0 w-full h-full"></div>
-      <b-button
-        v-if="0 != totalQuantities"
-        :loading="isCheckingOut"
-        :disabled="
-          isCheckingOut || noPaymentMethod || noAvailableTime || cantDelivery
-        "
-        @click="handleCheckOut"
-        class="b-reset-tw"
-        style="
-          width: 18rem;
-          position: fixed;
-          z-index: 10;
-          bottom: 2rem;
-          left: 50%;
-          margin-left: -9rem;
-        "
-      >
-        <div
-          class="inline-flex justify-center items-center w-72 rounded-full bg-op-teal shadow-lg"
-          :class="shopInfo.enableDelivery ? 'pt-2 pb-2' : 'h-20'"
-        >
-          <template v-if="noPaymentMethod">
-            <div class="text-white text-base font-bold">
-              {{ $t("shopInfo.noPaymentMethod") }}
-            </div>
-          </template>
-
-          <template v-else-if="noAvailableTime">
-            <div class="text-white text-base font-bold">
-              {{ $t("shopInfo.noAvailableTime") }}
-            </div>
-          </template>
-
-          <template v-else="!noPaymentMethod">
-            <div class="inline-flex flex-col justify-center items-center">
-              <!-- delivery -->
-              <template v-if="isDelivery">
-                <template
-                  v-if="
-                    shopInfo.enableDelivery &&
-                    cantDelivery &&
-                    deliveryData.enableDeliveryThreshold
-                  "
-                >
-                  <div
-                    class="inline-flex justify-center items-center text-white text-base font-bold"
-                  >
-                    {{
-                      $tc("shopInfo.buttonDeliveryFeeThreshold", 0, {
-                        price: $n(deliveryData.deliveryThreshold, "currency"),
-                      })
-                    }}
-                  </div>
-                  <div
-                    class="inline-flex justify-center items-center text-white text-base font-bold"
-                  >
-                    {{
-                      $tc("shopInfo.buttonDeliveryFeeDiff", 0, {
-                        price: $n(diffDeliveryThreshold, "currency"),
-                      })
-                    }}
-                  </div>
-                </template>
-                <template
-                  v-else-if="deliveryData.enableDeliveryFree && !isDeliveryFree"
-                >
-                  <div
-                    class="inline-flex justify-center items-center text-white text-base font-bold"
-                  >
-                    {{
-                      $tc("shopInfo.deliveryFeeThresholdInfo", 0, {
-                        price: $n(
-                          deliveryData.deliveryFreeThreshold,
-                          "currency"
-                        ),
-                      })
-                    }}
-                  </div>
-                  <div
-                    class="inline-flex justify-center items-center text-white text-base font-bold"
-                  >
-                    {{
-                      $tc("shopInfo.buttonDeliveryFeeDiff", 0, {
-                        price: $n(diffDeliveryFreeThreshold, "currency"),
-                      })
-                    }}
-                  </div>
-                </template>
-                <div
-                  class="inline-flex justify-center items-center text-white text-base font-bold"
-                  v-if="shopInfo.enableDelivery"
-                >
-                  <div class="mr-2">
-                    {{
-                      $tc("shopInfo.buttonDeliveryFee", 0, {
-                        price: $n(
-                          isDeliveryFree ? 0 : deliveryData.deliveryFee,
-                          "currency"
-                        ),
-                      })
-                    }}
-                    <span
-                      class="text-xs"
-                      v-if="!isDeliveryFree && deliveryData.deliveryFee > 0"
-                      >{{ $tc("tax.include") }}</span
-                    >
-                  </div>
-                </div>
-              </template>
-              <!-- total and price -->
-              <div
-                class="inline-flex justify-center items-center text-white text-base font-bold"
-              >
-                <div class="mr-2">
-                  {{
-                    $tc("sitemenu.orderCounter", totalQuantities, {
-                      count: totalQuantities,
-                    })
-                  }}
-                </div>
-                <div class="">
-                  <Price
-                    :shopInfo="{ inclusiveTax: true }"
-                    :menu="{ price: totalPrice.total }"
-                  />
-                </div>
-              </div>
-
-              <div
-                class="is-inline-flex flex-center justify-center items-center text-white"
-              >
-                <div class="text-xl font-bold mr-2">
-                  {{ $t("sitemenu.checkout") }}
-                </div>
-                <i class="material-icons text-2xl">shopping_cart</i>
-              </div>
-            </div>
-          </template>
-        </div>
-      </b-button>
+      <CartButton
+        @handleCheckOut="handleCheckOut"
+        :shopInfo="shopInfo"
+        :orders="orders"
+        :paymentInfo="paymentInfo"
+        :deliveryData="deliveryData"
+        :isCheckingOut="isCheckingOut"
+        :noAvailableTime="noAvailableTime"
+        :isDelivery="isDelivery"
+        :totalPrice="totalPrice"
+        />
     </template>
     <!-- Image Popup-->
     <b-modal :active.sync="imagePopup" :width="488" scroll="keep">
@@ -386,9 +257,9 @@ import SharePopup from "@/app/user/Restaurant/SharePopup";
 import FavoriteButton from "@/app/user/Restaurant/FavoriteButton";
 import ShopInfo from "@/app/user/Restaurant/ShopInfo";
 import NotFound from "@/components/NotFound";
-import Price from "@/components/Price";
 
 import RestaurantPreview from "@/app/user/Restaurant/Preview";
+import CartButton from "@/app/user/Restaurant/CartButton";
 
 import liff from "@line/liff";
 import { db as dbOld, firestore } from "@/plugins/firebase";
@@ -434,8 +305,8 @@ export default defineComponent({
     FavoriteButton,
     ShopInfo,
     NotFound,
-    Price,
     RestaurantPreview,
+    CartButton,
   },
   props: {
     shopInfo: {
@@ -542,12 +413,6 @@ export default defineComponent({
     const isDelivery = computed(() => {
       return howtoreceive.value === "delivery";
     });
-    const totalQuantities = computed(() => {
-      const ret = Object.values(orders.value).reduce((total, order) => {
-        return total + arraySum(order);
-      }, 0);
-      return ret;
-    });
 
     const coverImage = computed(() => {
       return (
@@ -556,10 +421,6 @@ export default defineComponent({
       );
     });
 
-    const noPaymentMethod = computed(() => {
-      // MEMO: ignore hidePayment. No longer used
-      return !props.paymentInfo.stripe && !props.paymentInfo.inStore;
-    });
 
     watch(menus, (values) => {
       analyticsUtil.sendMenuListView(
@@ -673,19 +534,6 @@ export default defineComponent({
     const postOptions = computed(() => {
       return getPostOption(trimmedSelectedOptions.value, cartItems.value);
     });
-    const cantDelivery = computed(() => {
-      if (!props.shopInfo.enableDelivery) {
-        return false;
-      }
-
-      if (isDelivery.value && props.deliveryData.enableDeliveryThreshold) {
-        return (
-          (totalPrice.value.total || 0) < props.deliveryData.deliveryThreshold
-        );
-      }
-      return false;
-    });
-
     const prices = computed(() => {
       return getPrices(
         multiple,
@@ -839,28 +687,6 @@ export default defineComponent({
       }
     };
 
-    const diffDeliveryThreshold = computed(() => {
-      return (
-        props.deliveryData.deliveryThreshold - (totalPrice.value.total || 0)
-      );
-    });
-    const diffDeliveryFreeThreshold = computed(() => {
-      return (
-        props.deliveryData.deliveryFreeThreshold - (totalPrice.value.total || 0)
-      );
-    });
-    const isDeliveryFree = computed(() => {
-      if (
-        props.shopInfo.enableDelivery &&
-        props.deliveryData.enableDeliveryFree
-      ) {
-        return (
-          (totalPrice.value.total || 0) >=
-          props.deliveryData.deliveryFreeThreshold
-        );
-      }
-      return false;
-    });
 
     watch(user, (newValue) => {
       console.log("user changed");
@@ -883,15 +709,12 @@ export default defineComponent({
 
       orders,
 
-      totalQuantities,
       selectedOptionsPrev,
 
       totalPrice,
       prices,
 
       isPreview,
-      cantDelivery,
-      noPaymentMethod,
 
       didQuantitiesChange,
       didOptionValuesChange,
