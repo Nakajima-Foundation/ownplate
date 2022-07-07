@@ -530,4 +530,4 @@ export const useInLiff = (ctx: any) => {
     // BY path
     return !!ctx.root.$route.params.liffIndexId;
   });
-}
+};

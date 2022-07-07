@@ -17,7 +17,7 @@
 <script>
 import { defineComponent } from "@vue/composition-api";
 import { useBasePath } from "@/utils/utils";
-  
+
 export default defineComponent({
   setup(_, ctx) {
     const basePath = useBasePath(ctx.root);

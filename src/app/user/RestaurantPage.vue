@@ -75,6 +75,7 @@
           <div>
             <div class="mx-6 mt-2 lg:mx-0" v-if="shopInfo.enableDelivery">
               <div class="bg-white rounded-lg shadow">
+                <!-- delivery -->
                 <div class="p-4">
                   <div class="text-ms font-bold">
                     {{ $t("shopInfo.howToReceive") }}
@@ -140,6 +141,8 @@
                 </div>
               </div>
             </div>
+            <!-- delivery -->
+            
             <div class="mx-6 mt-2 lg:mx-0">
               <template v-for="(title, key) in titleLists">
                 <a
@@ -288,6 +291,7 @@ import {
   getPrices,
   getTrimmedSelectedOptions,
   getPostOption,
+  useIsInMo,
 } from "@/utils/utils";
 
 import { imageUtils } from "@/utils/RestaurantUtils";
@@ -364,6 +368,8 @@ export default defineComponent({
 
     const multiple = store.getters.stripeRegion.multiple;
 
+    const isInMo = useIsInMo(ctx.root);
+
     onMounted(() => {
       // Check if we came here as the result of "Edit Items"
       if (store.state.carts[restaurantId.value]) {
@@ -436,7 +442,9 @@ export default defineComponent({
 
     const loadMenu = () => {
       detacheMenu();
-
+      if (isInMo.value && !category.value && !subCategory.value) {
+        return ;
+      }
       const menuQuery =
         category.value && subCategory.value
           ? query(
@@ -468,6 +476,9 @@ export default defineComponent({
     const watchCat = computed(() => {
       return [category.value, subCategory.value];
     });
+    const hasCategory = computed(() => {
+      return category.value && subCategory.value;
+    });
     watch(watchCat, () => {
       loadMenu();
     });
@@ -492,8 +503,9 @@ export default defineComponent({
         }
       );
     };
-    loadTitle();
-
+    if (!isInMo.value) {
+      loadTitle();
+    }
     onUnmounted(() => {
       detacheMenu();
       detacheTitle();
@@ -558,7 +570,7 @@ export default defineComponent({
     };
 
     const goCheckout = async () => {
-      const name = await (async () => {
+      const name = awat (async () => {
         if (ctx.root.isLiffUser) {
           try {
             const user = (await liff.getProfile()) || {};
@@ -712,6 +724,8 @@ export default defineComponent({
 
       isPreview,
 
+      hasCategory,
+      
       didQuantitiesChange,
       didOptionValuesChange,
 
