@@ -51,37 +51,41 @@ interface CustomRoute {
 const mopath = mo_prefixes
   .map((prefix) => {
     const prePath = "/" + prefix;
-    return [
-      {
-        path: prePath,
-        component: "user/MoIndex.vue",
-      },
-      {
-        path: prePath + "/r/favorites",
-        component: "user/Restaurants/Favorites.vue",
-      },
-      {
-        path: prePath + "/r/:restaurantId",
-        component: "user/RestaurantWrapper.vue",
-        children: getUserPagesWithCat(prefix),
-      },
-      {
-        path: prePath + "/u/history",
-        component: "user/OrderHistory.vue",
-      },
-      {
-        path: prePath + "/u/profile",
-        component: "user/Profile.vue",
-      },
-      {
-        path: prePath + "/terms",
-        component: "common/TermsUser.vue",
-      },
-      {
-        path: prePath + "/privacy",
-        component: "common/Privacy.vue",
-      },
-    ];
+    return   [{
+      path: prePath,
+      component: "user/MoWrapper.vue",
+      children: [
+        {
+          path: prePath,
+          component: "user/MoIndex.vue",
+        },
+        {
+          path: prePath + "/r/favorites",
+          component: "user/Restaurants/Favorites.vue",
+        },
+        {
+          path: prePath + "/r/:restaurantId",
+          component: "user/RestaurantWrapper.vue",
+          children: getUserPagesWithCat(prefix),
+        },
+        {
+          path: prePath + "/u/history",
+          component: "user/OrderHistory.vue",
+        },
+        {
+          path: prePath + "/u/profile",
+          component: "user/Profile.vue",
+        },
+        {
+          path: prePath + "/terms",
+          component: "common/TermsUser.vue",
+        },
+        {
+          path: prePath + "/privacy",
+          component: "common/Privacy.vue",
+        },
+      ]
+    }];
   })
   .flat();
 
