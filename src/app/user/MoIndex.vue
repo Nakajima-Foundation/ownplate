@@ -70,9 +70,6 @@ export default defineComponent({
     },
   },
   setup(props, ctx) {
-    // TODO for test
-    const ownerUid = "d6diTRZ1kUYopoAy8o521ujjqwA3";
-
     const restaurantsObj = ref({});
     const restaurants = ref([]);
 
@@ -82,10 +79,11 @@ export default defineComponent({
           collection(db, "restaurants"),
           where("publicFlag", "==", true),
           where("deletedFlag", "==", false),
-          where("onTheList", "==", true),
-          where("uid", "==", ownerUid),
-          // where("groupId", "==", props.moPrefix)
-        )
+          where("groupId", "==", props.moPrefix)
+        ),
+        (error) => {
+          console.log(error);
+        },
       );
       restaurantsObj.value = restaurant2AreaObj(restaurantsCollection.docs);
       restaurants.value = restaurantsCollection.docs.map(doc2data(""));
