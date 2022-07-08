@@ -147,6 +147,16 @@ service cloud.firestore {
       allow read: if true
     }
 
+    match /groups/{groupId} {
+      allow read: if true;
+      match /category/{category} {
+        allow read: if true;
+        match /subcategory/{subcategory} {
+          allow read: if true;
+        }      
+      }      
+    }
+
     // Rules for collection group
     match /{path=**}/orders/{orderId} {
       allow read: if isSuper(request);
