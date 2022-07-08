@@ -325,7 +325,7 @@ export default defineComponent({
         );
         confirmationResult.value = null; // so that we can re-use this
         verificationCode.value = "";
-        ctx.$emit("dismissed", true);
+        ctx.emit("dismissed", true);
       } catch (error) {
         console.log(JSON.stringify(error));
         console.log("error", error.code);
