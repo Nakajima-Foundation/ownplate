@@ -1,6 +1,7 @@
 import {
   ref,
   onUnmounted,
+  computed,
   Ref,
 } from "@vue/composition-api";
 
@@ -15,6 +16,7 @@ import {
 
 import {
   doc2data,
+  array2obj,
 } from "@/utils/utils";
 
 export const useTitles = (restaurantId: Ref) => {
@@ -90,3 +92,68 @@ export const useCategory = (moPrefix: string) => {
     categoryData
   }
 };
+
+export const useMenu = (
+  restaurantId: Ref<string>,
+  isInMo: Ref<string>,
+  category: Ref<string>,
+  subCategory: Ref<string>
+) => {
+  const menus = ref<DocumentData[]>([]);
+
+  const menuDetacher = ref();
+  const detacheMenu = () => {
+    if (menuDetacher.value) {
+      menuDetacher.value();
+    }
+  };
+  const menuPath = computed(() => {
+    return `restaurants/${restaurantId.value}/menus`;
+  });
+  
+  const loadMenu = () => {
+    // TODO Cache for mo
+    detacheMenu();
+    if (isInMo.value && !category.value && !subCategory.value) {
+      return ;
+    }
+    const menuQuery =
+      category.value && subCategory.value
+      ? query(
+        collection(db, menuPath.value),
+        where("deletedFlag", "==", false),
+        where("publicFlag", "==", true),
+        where("category", "==", category.value),
+        where("subCategory", "==", subCategory.value)
+      )
+      : query(
+        collection(db, menuPath.value),
+        where("deletedFlag", "==", false),
+        where("publicFlag", "==", true)
+      );
+    
+    menuDetacher.value = onSnapshot(query(menuQuery), (menu) => {
+      if (!menu.empty) {
+        menus.value = menu.docs
+          .filter((a) => {
+            const data = a.data();
+            return data.validatedFlag === undefined || data.validatedFlag;
+          })
+          .map(doc2data("menu"));
+      }
+    });
+  };
+
+  const menuObj = computed(() => {
+    return array2obj(menus.value);
+  });
+
+  return {
+    loadMenu,
+    menus,
+    menuObj,
+  };
+};
+
+//export const useCategoryParams = () => {
+// };

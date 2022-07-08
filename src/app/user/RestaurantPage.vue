@@ -232,7 +232,6 @@ import { ownPlateConfig } from "@/config/project";
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
 import {
-  doc2data,
   array2obj,
   arraySum,
   convOptionArray2Obj,
@@ -249,6 +248,7 @@ import { imageUtils } from "@/utils/RestaurantUtils";
 import {
   useTitles,
   useCategory,
+  useMenu,
 } from "./Restaurant/Utils";
 
 export default defineComponent({
@@ -307,7 +307,6 @@ export default defineComponent({
   },
   setup(props, ctx) {
     const retryCount = ref(0);
-    const menus = ref([]);
 
     const loginVisible = ref(false);
     const isCheckingOut = ref(false);
@@ -381,6 +380,14 @@ export default defineComponent({
       );
     });
 
+    const {
+      loadMenu,
+      menus,
+      menuObj,
+    } = useMenu(restaurantId, isInMo, category, subCategory);
+
+    loadMenu();
+
     watch(menus, (values) => {
       analyticsUtil.sendMenuListView(
         values,
@@ -388,50 +395,6 @@ export default defineComponent({
         restaurantId.value
       );
     });
-
-    const menuDetacher = ref();
-    const detacheMenu = () => {
-      if (menuDetacher.value) {
-        menuDetacher.value();
-      }
-    };
-    const menuPath = computed(() => {
-      return `restaurants/${restaurantId.value}/menus`;
-    });
-    
-    const loadMenu = () => {
-      // TODO Cache
-      detacheMenu();
-      if (isInMo.value && !category.value && !subCategory.value) {
-        return ;
-      }
-      const menuQuery =
-        category.value && subCategory.value
-          ? query(
-              collection(db, menuPath.value),
-              where("deletedFlag", "==", false),
-              where("publicFlag", "==", true),
-              where("category", "==", category.value),
-              where("subCategory", "==", subCategory.value)
-            )
-          : query(
-            collection(db, menuPath.value),
-              where("deletedFlag", "==", false),
-              where("publicFlag", "==", true)
-            );
-
-      menuDetacher.value = onSnapshot(query(menuQuery), (menu) => {
-        if (!menu.empty) {
-          menus.value = menu.docs
-            .filter((a) => {
-              const data = a.data();
-              return data.validatedFlag === undefined || data.validatedFlag;
-            })
-            .map(doc2data("menu"));
-        }
-      });
-    };
-    loadMenu();
 
     const watchCat = computed(() => {
       return [category.value, subCategory.value];
@@ -465,13 +428,7 @@ export default defineComponent({
       return isInMo.value && !subCategory.value;
     });
     
-    onUnmounted(() => {
-      detacheMenu();
-    });
 
-    const menuObj = computed(() => {
-      return array2obj(menus.value);
-    });
     const itemLists = computed(() => {
       const itemsObj = array2obj(menus.value.concat(titles.value));
       return menuLists.value
