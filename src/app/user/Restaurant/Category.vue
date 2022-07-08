@@ -2,7 +2,10 @@
 <div>
   <div>CATEGORY</div>
   <div v-for="(cat, k) in categoryData" :key="k">
-    {{cat.name}} <img src="/android-chrome-192x192.png" class="w-12" />
+    <div>
+      <span>{{cat.name}}</span>
+      <img src="/android-chrome-192x192.png" class="w-12" />
+    </div>
   </div>
 </div>
 </template>
