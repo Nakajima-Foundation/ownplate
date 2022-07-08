@@ -1,5 +1,5 @@
 import { db } from "@/lib/firebase/firebase9";
-import { doc, getDoc } from "firebase/firestore";
+import { DocumentData, DocumentSnapshot, doc, getDoc } from "firebase/firestore";
 
 import { ShopOwnerData, PartnerData } from "@/models/ShopOwner";
 import { OrderInfoData, OrderItem } from "@/models/orderInfo";
@@ -11,6 +11,8 @@ import { regionalSettings, partners, stripe_regions } from "@/config/constant";
 import { ownPlateConfig, mo_prefixes } from "@/config/project";
 
 import { computed } from "@vue/composition-api";
+
+import firebase from "firebase/app";
 
 export const isNull = <T>(value: T) => {
   return value === null || value === undefined;
@@ -52,8 +54,8 @@ export const arrayChunk = <T>(arr: T[], size = 1) => {
     },
 */
 export const doc2data = (dataType: string) => {
-  return (doc: any) => {
-    const data = doc.data();
+  return (doc: DocumentSnapshot<DocumentData>): DocumentData => {
+    const data = doc.data() || {} as DocumentData;
     data.id = doc.id;
     data._dataType = dataType;
     return data;

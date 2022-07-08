@@ -242,10 +242,14 @@ import {
   getTrimmedSelectedOptions,
   getPostOption,
   useIsInMo,
-  getMoPrefix,
 } from "@/utils/utils";
 
 import { imageUtils } from "@/utils/RestaurantUtils";
+
+import {
+  useTitles,
+  useCategory,
+} from "./Restaurant/Utils";
 
 export default defineComponent({
   name: "RestaurantPage",
@@ -284,7 +288,7 @@ export default defineComponent({
       type: String,
       required: false,
     },
-    mo_prefix: {
+    moPrefix: {
       type: String,
       required: false,
     },
@@ -304,7 +308,6 @@ export default defineComponent({
   setup(props, ctx) {
     const retryCount = ref(0);
     const menus = ref([]);
-    const titles = ref([]);
 
     const loginVisible = ref(false);
     const isCheckingOut = ref(false);
@@ -392,7 +395,10 @@ export default defineComponent({
         menuDetacher.value();
       }
     };
-
+    const menuPath = computed(() => {
+      return `restaurants/${restaurantId.value}/menus`;
+    });
+    
     const loadMenu = () => {
       detacheMenu();
       if (isInMo.value && !category.value && !subCategory.value) {
@@ -401,14 +407,14 @@ export default defineComponent({
       const menuQuery =
         category.value && subCategory.value
           ? query(
-              collection(db, `restaurants/${restaurantId.value}/menus`),
+              collection(db, menuPath.value),
               where("deletedFlag", "==", false),
               where("publicFlag", "==", true),
               where("category", "==", category.value),
               where("subCategory", "==", subCategory.value)
             )
           : query(
-              collection(db, `restaurants/${restaurantId.value}/menus`),
+            collection(db, menuPath.value),
               where("deletedFlag", "==", false),
               where("publicFlag", "==", true)
             );
@@ -436,67 +442,32 @@ export default defineComponent({
       loadMenu();
     });
 
-    const titleDetacher = ref();
-    const detacheTitle = () => {
-      if (titleDetacher.value) {
-        titleDetacher.value();
-      }
-    };
 
-    const loadTitle = () => {
-      titleDetacher.value = onSnapshot(
-        query(
-          collection(db, `restaurants/${restaurantId.value}/titles`),
-          where("deletedFlag", "==", false)
-        ),
-        (title) => {
-          if (!title.empty) {
-            titles.value = title.docs.map(doc2data("title"));
-          }
-        }
-      );
-    };
+    const {
+      loadTitle,
+      titles,
+    } = useTitles(restaurantId);
 
-    const categoryDetacher = ref();
-    const detacheCategory = () => {
-      if (categoryDetacher.value) {
-        categoryDetacher.value();
-      }
-    };
-    const categoryData = ref([]);
-    const loadCategory = () => {
-      const mo = getMoPrefix(ctx.root);
-      console.log(`groups/${mo}/category`);
-      categoryDetacher.value = onSnapshot(
-        query(
-          collection(db, `groups/${mo}/category`),
-        ),
-        (category) => {
-          if (!category.empty) {
-            categoryData.value = category.docs.map(doc2data("category"));
-            console.log(categoryData.value);
-          }
-        },
-        (error) => {
-          console.log("load category error");
-        }
-      );
-      
-    };
+    const {
+      loadCategory,
+      categoryData
+    } = useCategory(props.moPrefix);
+
     if (isInMo.value) {
       loadCategory();
     }
     if (!isInMo.value) {
       loadTitle();
     }
+
+
+    
     const showCategory = computed(() => {
       return isInMo.value && !subCategory.value;
     });
     
     onUnmounted(() => {
       detacheMenu();
-      detacheTitle();
-      detacheCategory();
     });
 
     const menuObj = computed(() => {
@@ -637,7 +608,7 @@ export default defineComponent({
           });
         } else if (props.mode === "mo") {
           ctx.root.$router.push({
-            path: `/${props.mo_prefix}/r/${restaurantId.value}/order/${res.id}`,
+            path: `/${props.moPrefix}/r/${restaurantId.value}/order/${res.id}`,
           });
         } else {
           ctx.root.$router.push({

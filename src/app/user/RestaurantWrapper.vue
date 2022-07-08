@@ -4,7 +4,7 @@
     :paymentInfo="paymentInfo"
     :deliveryData="deliveryData"
     :mode="mode"
-    :mo_prefix="mo_prefix"
+    :moPrefix="moPrefix"
     :notFound="notFound"
   />
 </template>
@@ -25,7 +25,7 @@ export default defineComponent({
   name: "RestaurantWrapper",
   setup(props, ctx) {
     const mode = routeMode(ctx.root);
-    const mo_prefix = getMoPrefix(ctx.root);
+    const moPrefix = getMoPrefix(ctx.root);
 
     const shopInfo = ref({});
     const paymentInfo = ref({});
@@ -81,7 +81,7 @@ export default defineComponent({
     });
     return {
       mode,
-      mo_prefix,
+      moPrefix,
       shopInfo,
       paymentInfo,
       deliveryData,
