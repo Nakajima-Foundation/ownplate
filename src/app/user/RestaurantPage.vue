@@ -249,6 +249,7 @@ import {
   useTitles,
   useCategory,
   useMenu,
+  useCategoryParams,
 } from "./Restaurant/Utils";
 
 export default defineComponent({
@@ -337,17 +338,18 @@ export default defineComponent({
       }
     });
 
+    const {
+      category,
+      subCategory,
+      watchCat,
+      hasCategory
+    } = useCategoryParams(ctx);
+    
     const restaurantId = computed(() => {
       return ctx.root.$route.params.restaurantId;
     });
     const menuId = computed(() => {
       return ctx.root.$route.params.menuId;
-    });
-    const category = computed(() => {
-      return ctx.root.$route.params.category;
-    });
-    const subCategory = computed(() => {
-      return ctx.root.$route.params.subCategory;
     });
     const user = computed(() => {
       return ctx.root.user;
@@ -366,6 +368,7 @@ export default defineComponent({
     });
 
     const menuLists = computed(() => {
+      // TODO for mo
       const list = props.shopInfo.menuLists || [];
       return list;
     });
@@ -396,12 +399,6 @@ export default defineComponent({
       );
     });
 
-    const watchCat = computed(() => {
-      return [category.value, subCategory.value];
-    });
-    const hasCategory = computed(() => {
-      return category.value && subCategory.value;
-    });
     watch(watchCat, () => {
       loadMenu();
     });
@@ -427,8 +424,8 @@ export default defineComponent({
     const showCategory = computed(() => {
       return isInMo.value && !subCategory.value;
     });
-    
 
+    // menu, title, menuList
     const itemLists = computed(() => {
       const itemsObj = array2obj(menus.value.concat(titles.value));
       return menuLists.value

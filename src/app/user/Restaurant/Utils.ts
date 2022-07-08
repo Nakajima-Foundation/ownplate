@@ -155,5 +155,24 @@ export const useMenu = (
   };
 };
 
-//export const useCategoryParams = () => {
-// };
+export const useCategoryParams = (ctx: any) => {
+  const category = computed(() => {
+    return ctx.root.$route.params.category;
+  });
+  const subCategory = computed(() => {
+    return ctx.root.$route.params.subCategory;
+  });
+  const watchCat = computed(() => {
+    return [category.value, subCategory.value];
+  });
+  const hasCategory = computed(() => {
+    return category.value && subCategory.value;
+  });
+  return {
+    category,
+    subCategory,
+    watchCat,
+    hasCategory
+  };
+  
+};
