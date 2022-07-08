@@ -1,5 +1,6 @@
 // core
 import Vue from "vue";
+import "@babel/polyfill";
 import router from "@/lib/router";
 import store from "@/lib/store/index";
 

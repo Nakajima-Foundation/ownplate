@@ -6,7 +6,13 @@ module.exports = {
         targets: { ie: 11, uglify: true },
         useBuiltIns: "usage"
       }
-    ]
+    ],
+    ['@vue/app', {
+      polyfills: [
+        'es.promise',
+        'es.symbol'
+      ]
+    }]
   ],
   plugins: [
     "@babel/transform-runtime",
