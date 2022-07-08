@@ -560,7 +560,7 @@ export default defineComponent({
     };
 
     const goCheckout = async () => {
-      const name = awat (async () => {
+      const name = await (async () => {
         if (ctx.root.isLiffUser) {
           try {
             const user = (await liff.getProfile()) || {};
