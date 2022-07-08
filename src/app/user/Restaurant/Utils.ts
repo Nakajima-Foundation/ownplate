@@ -44,9 +44,14 @@ export const useTitles = (restaurantId: Ref) => {
       }
     );
   };
+  const titleLists = computed(() => {
+    return titles.value.filter((title) => title.name !== "");
+  });
+  
   return {
     loadTitle,
     titles,
+    titleLists,
   };
 };
 

@@ -400,6 +400,7 @@ export default defineComponent({
     });
     
     const loadMenu = () => {
+      // TODO Cache
       detacheMenu();
       if (isInMo.value && !category.value && !subCategory.value) {
         return ;
@@ -442,10 +443,10 @@ export default defineComponent({
       loadMenu();
     });
 
-
     const {
       loadTitle,
       titles,
+      titleLists,
     } = useTitles(restaurantId);
 
     const {
@@ -459,8 +460,6 @@ export default defineComponent({
     if (!isInMo.value) {
       loadTitle();
     }
-
-
     
     const showCategory = computed(() => {
       return isInMo.value && !subCategory.value;
@@ -482,9 +481,6 @@ export default defineComponent({
         .filter((item) => {
           return item;
         });
-    });
-    const titleLists = computed(() => {
-      return titles.value.filter((title) => title.name !== "");
     });
 
     const totalPrice = computed(() => {
