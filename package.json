@@ -17,10 +17,10 @@
     "user": "babel-node --presets @babel/env  ./batch/user.js"
   },
   "dependencies": {
+    "@babel/polyfill": "^7.12.1",
     "@chenfengyuan/vue-qrcode": "^1.0.2",
     "@googlemaps/js-api-loader": "^1.13.11",
     "@line/liff": "^2.18.2",
-    "babel-polyfill": "^6.26.0",
     "@sentry/tracing": "^6.19.4",
     "@sentry/vue": "^6.19.4",
     "@vue/composition-api": "^1.4.9",
