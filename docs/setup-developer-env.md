@@ -104,8 +104,7 @@ cp src/config/default/ownplate-dev.ts src/config/project.ts
 # 9. start local server
 
 ```
-VUE_APP_CIRCLE_SHA1=123123 \
-VUE_APP_GAPIKey=xxxx yarn run start
+VUE_APP_CIRCLE_SHA1=123123 yarn run start
 ```
 
-# 10. Access your local-server 
+# 10. Access your local-server
