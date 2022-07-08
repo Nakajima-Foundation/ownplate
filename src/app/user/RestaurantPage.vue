@@ -99,36 +99,43 @@
             <!-- For Responsible -->
             <div class="mx-6 mt-3 lg:mx-0">
               <!-- Menu Items -->
-              <div class="grid grid-col-1 space-y-2">
-                <template v-for="(item, key) in itemLists">
-                  <div v-if="item._dataType === 'title'" :key="key">
-                    <div
-                      class="text-xl font-bold text-black text-opacity-30 inline-flex justify-center items-center"
-                      :class="key === 0 ? '' : 'mt-6'"
-                      :id="item.id"
-                      @click="openCategory"
-                    >
-                      <i class="material-icons mr-2">menu_book</i>
-                      <span>
-                        {{ item.name }}
-                      </span>
+              <div v-if="showCategory">
+                <div class="grid grid-col-1 space-y-2">
+                  <Category :categoryData="categoryData"/>
+                </div> 
+              </div>
+              <div v-else>
+                <div class="grid grid-col-1 space-y-2">
+                  <template v-for="(item, key) in itemLists">
+                    <div v-if="item._dataType === 'title'" :key="key">
+                      <div
+                        class="text-xl font-bold text-black text-opacity-30 inline-flex justify-center items-center"
+                        :class="key === 0 ? '' : 'mt-6'"
+                        :id="item.id"
+                        @click="openCategory"
+                        >
+                        <i class="material-icons mr-2">menu_book</i>
+                        <span>
+                          {{ item.name }}
+                        </span>
+                      </div>
                     </div>
-                  </div>
-
-                  <div v-if="item._dataType === 'menu'" :key="key">
-                    <item-card
-                      :item="item"
-                      :quantities="orders[item.id] || [0]"
-                      :optionPrev="selectedOptionsPrev[item.id]"
-                      :initialOpenMenuFlag="(orders[item.id] || []).length > 0"
-                      :shopInfo="shopInfo"
-                      :isOpen="menuId === item.id"
-                      :prices="prices[item.id] || []"
-                      @didQuantitiesChange="didQuantitiesChange($event)"
-                      @didOptionValuesChange="didOptionValuesChange($event)"
-                    ></item-card>
-                  </div>
-                </template>
+                    
+                    <div v-if="item._dataType === 'menu'" :key="key">
+                      <item-card
+                        :item="item"
+                        :quantities="orders[item.id] || [0]"
+                        :optionPrev="selectedOptionsPrev[item.id]"
+                        :initialOpenMenuFlag="(orders[item.id] || []).length > 0"
+                        :shopInfo="shopInfo"
+                        :isOpen="menuId === item.id"
+                        :prices="prices[item.id] || []"
+                        @didQuantitiesChange="didQuantitiesChange($event)"
+                        @didOptionValuesChange="didOptionValuesChange($event)"
+                        ></item-card>
+                    </div>
+                  </template>
+                </div>
               </div>
             </div>
           </div>
@@ -200,9 +207,10 @@ import FavoriteButton from "@/app/user/Restaurant/FavoriteButton";
 import ShopInfo from "@/app/user/Restaurant/ShopInfo";
 import NotFound from "@/components/NotFound";
 
-import RestaurantPreview from "@/app/user/Restaurant/Preview";
-import CartButton from "@/app/user/Restaurant/CartButton";
-import Delivery from "@/app/user/Restaurant/Delivery";
+import RestaurantPreview from "@/app/user/Restaurant/Preview.vue";
+import CartButton from "@/app/user/Restaurant/CartButton.vue";
+import Delivery from "@/app/user/Restaurant/Delivery.vue";
+import Category from "@/app/user/Restaurant/Category.vue";
 
 import liff from "@line/liff";
 import { db as dbOld, firestore } from "@/plugins/firebase";
@@ -234,6 +242,7 @@ import {
   getTrimmedSelectedOptions,
   getPostOption,
   useIsInMo,
+  getMoPrefix,
 } from "@/utils/utils";
 
 import { imageUtils } from "@/utils/RestaurantUtils";
@@ -252,6 +261,7 @@ export default defineComponent({
     RestaurantPreview,
     CartButton,
     Delivery,
+    Category,
   },
   props: {
     shopInfo: {
@@ -446,12 +456,49 @@ export default defineComponent({
         }
       );
     };
+
+    const categoryDetacher = ref();
+    const detacheCategory = () => {
+      if (categoryDetacher.value) {
+        categoryDetacher.value();
+      }
+    };
+    const categoryData = ref([]);
+    const loadCategory = () => {
+      const mo = getMoPrefix(ctx.root);
+      console.log(`groups/${mo}/category`);
+      categoryDetacher.value = onSnapshot(
+        query(
+          collection(db, `groups/${mo}/category`),
+        ),
+        (category) => {
+          if (!category.empty) {
+            categoryData.value = category.docs.map(doc2data("category"));
+            console.log(categoryData.value);
+          }
+        },
+        (error) => {
+          console.log("load category error");
+        }
+      );
+      
+    };
+    if (isInMo.value) {
+      loadCategory();
+    }
     if (!isInMo.value) {
       loadTitle();
     }
+    const showCategory = computed(() => {
+      return isInMo.value && !subCategory.value;
+    });
+    
+
+    
     onUnmounted(() => {
       detacheMenu();
       detacheTitle();
+      detacheCategory();
     });
 
     const menuObj = computed(() => {
@@ -678,6 +725,9 @@ export default defineComponent({
       loginVisible,
       isCheckingOut,
       noAvailableTime,
+
+      showCategory,
+      categoryData,
 
       ...imageUtils(),
     };
