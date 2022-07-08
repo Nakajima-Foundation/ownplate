@@ -42,7 +42,6 @@ export default defineComponent({
       } else {
         groupData.value = false;
       }
-      
     });
     return {
       moPrefix,

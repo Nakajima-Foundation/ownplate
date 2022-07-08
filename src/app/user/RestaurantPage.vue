@@ -367,11 +367,6 @@ export default defineComponent({
       return props.notFound && isOwner.value;
     });
 
-    const menuLists = computed(() => {
-      // TODO for mo
-      const list = props.shopInfo.menuLists || [];
-      return list;
-    });
     const isDelivery = computed(() => {
       return howtoreceive.value === "delivery";
     });
@@ -425,16 +420,20 @@ export default defineComponent({
       return isInMo.value && !subCategory.value;
     });
 
-    // menu, title, menuList
     const itemLists = computed(() => {
-      const itemsObj = array2obj(menus.value.concat(titles.value));
-      return menuLists.value
-        .map((itemId) => {
-          return { ...itemsObj[itemId] };
-        })
-        .filter((item) => {
-          return item;
-        });
+      if (isInMo.value) {
+        return menus.value;
+      } else {
+        const menuLists = props.shopInfo.menuLists || [];
+        const itemsObj = array2obj(menus.value.concat(titles.value));
+        return menuLists
+          .map((itemId) => {
+            return { ...itemsObj[itemId] };
+          })
+          .filter((item) => {
+            return item;
+          });
+      }
     });
 
     const totalPrice = computed(() => {

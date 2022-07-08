@@ -3,7 +3,7 @@
   <div>CATEGORY</div>
   <div v-for="(cat, k) in categoryData" :key="k">
     <div>
-      <router-link :to="basePath + '/r/' + restaurantId() + '/cat/' + cat.id + '/aaaa'">
+      <router-link :to="basePath + '/r/' + restaurantId() + '/cat/' + cat.id + '/' + cat.subcategory">
         <span>{{cat.name}}</span>
         <img src="/android-chrome-192x192.png" class="w-12" />
       </router-link>
