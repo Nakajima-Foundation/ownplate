@@ -84,18 +84,16 @@
                 <!-- delivery -->
               </div>
             </div>
-            <div class="mx-6 mt-2 lg:mx-0">
-              <template v-for="(title, key) in titleLists">
-                <a
-                  :href="`#${title.id}`"
-                  class="inline-flex justify-center items-center h-9 rounded-full bg-black bg-opacity-5 mx-2 mt-2"
-                >
-                  <div class="text-sm font-bold text-op-teal mx-2">
-                    {{ title.name }}
-                  </div>
-                </a>
-              </template>
+            <!-- titles for omochikaeri -->
+            <Titles :titleLists="titleLists" />
+
+            <!-- category for mo -->
+            <div v-if="showSubCategory">
+              <SubCategoryList
+                :subCategoryData="subCategoryData"
+                :categoryBathPath="categoryBathPath" />
             </div>
+            
             <!-- For Responsible -->
             <div class="mx-6 mt-3 lg:mx-0">
               <!-- Menu Items -->
@@ -105,6 +103,7 @@
                 </div> 
               </div>
               <div v-else>
+                
                 <div class="grid grid-col-1 space-y-2">
                   <template v-for="(item, key) in itemLists">
                     <div v-if="item._dataType === 'title'" :key="key">
@@ -211,6 +210,8 @@ import RestaurantPreview from "@/app/user/Restaurant/Preview.vue";
 import CartButton from "@/app/user/Restaurant/CartButton.vue";
 import Delivery from "@/app/user/Restaurant/Delivery.vue";
 import Category from "@/app/user/Restaurant/Category.vue";
+import Titles from "@/app/user/Restaurant/Titles.vue";
+import SubCategoryList from "@/app/user/Restaurant/SubCategoryList.vue";
 
 import liff from "@line/liff";
 import { db as dbOld, firestore } from "@/plugins/firebase";
@@ -248,6 +249,7 @@ import { imageUtils } from "@/utils/RestaurantUtils";
 import {
   useTitles,
   useCategory,
+  useSubcategory,
   useMenu,
   useCategoryParams,
 } from "./Restaurant/Utils";
@@ -267,6 +269,8 @@ export default defineComponent({
     CartButton,
     Delivery,
     Category,
+    Titles,
+    SubCategoryList,
   },
   props: {
     shopInfo: {
@@ -397,7 +401,12 @@ export default defineComponent({
     watch(watchCat, () => {
       loadMenu();
     });
-
+    watch(category, () => {
+      if (category.value) {
+        loadSubcategory();
+      }
+    })
+      
     const {
       loadTitle,
       titles,
@@ -409,8 +418,16 @@ export default defineComponent({
       categoryData
     } = useCategory(props.moPrefix);
 
+    const {
+      subCategoryData,
+      loadSubcategory,
+    } = useSubcategory(props.moPrefix, category);
+    
     if (isInMo.value) {
       loadCategory();
+      if (category.value) {
+        loadSubcategory();
+      }
     }
     if (!isInMo.value) {
       loadTitle();
@@ -418,6 +435,9 @@ export default defineComponent({
     
     const showCategory = computed(() => {
       return isInMo.value && !subCategory.value;
+    });
+    const showSubCategory = computed(() => {
+      return isInMo.value && subCategory.value;
     });
 
     const itemLists = computed(() => {
@@ -611,6 +631,9 @@ export default defineComponent({
         goCheckout();
       }
     });
+    const categoryBathPath = computed(() => {
+      return `/${props.moPrefix}/r/${restaurantId.value}/cat/${category.value}`
+    });
 
     return {
       itemLists,
@@ -645,8 +668,12 @@ export default defineComponent({
       noAvailableTime,
 
       showCategory,
+      showSubCategory,
+      
       categoryData,
-
+      subCategoryData,
+      categoryBathPath,
+      
       ...imageUtils(),
     };
   },

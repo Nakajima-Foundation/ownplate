@@ -87,10 +87,47 @@ export const useCategory = (moPrefix: string) => {
       }
     );
   };
+
   return {
     loadCategory,
     categoryData
   }
+};
+
+export const useSubcategory = (moPrefix: string, category: Ref<string>) => {
+  const subCategoryDetacher = ref();
+  const detacheSubCategory = () => {
+    if (subCategoryDetacher.value) {
+      subCategoryDetacher.value();
+    }
+  };
+
+  onUnmounted(() => {
+    detacheSubCategory();
+  });
+  const subCategoryData =  ref<DocumentData[]>([]);
+  const loadSubcategory = () => {
+    detacheSubCategory();
+    console.log( `groups/${moPrefix}/category/${category.value}/subCategory`);
+    subCategoryDetacher.value = onSnapshot(
+      query(
+        collection(db, `groups/${moPrefix}/category/${category.value}/subCategory`),
+      ),
+      (category) => {
+        if (!category.empty) {
+          subCategoryData.value = category.docs.map(doc2data("subCategory"));
+          console.log(subCategoryData.value);
+        }
+      },
+      (error) => {
+        console.log("load subCategory error");
+      }
+    );
+  };
+  return {
+    subCategoryData,
+    loadSubcategory,
+  };
 };
 
 export const useMenu = (
@@ -114,6 +151,7 @@ export const useMenu = (
   const loadMenu = () => {
     // TODO Cache for mo
     detacheMenu();
+    console.log(category.value, subCategory.value)
     if (isInMo.value && !category.value && !subCategory.value) {
       return ;
     }
