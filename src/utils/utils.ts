@@ -1,3 +1,5 @@
+import { ref } from "@vue/composition-api";
+
 import { db } from "@/lib/firebase/firebase9";
 import { DocumentData, DocumentSnapshot, doc, getDoc } from "firebase/firestore";
 
@@ -532,4 +534,24 @@ export const useInLiff = (ctx: any) => {
     // BY path
     return !!ctx.root.$route.params.liffIndexId;
   });
+};
+
+
+export const useToggle = (defaultValue = false) => {
+  const value = ref(defaultValue);
+  const toggleOn = () => {
+    value.value = true;
+  };
+  const toggleOff = () => {
+    value.value = false;
+  };
+  const toggle = () => {
+    value.value = !value.value;
+  };
+  return {
+    value,
+    toggleOn,
+    toggleOff,
+    toggle,
+  };
 };

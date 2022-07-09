@@ -5,6 +5,13 @@
       <not-found />
     </template>
     <template v-else>
+      <!-- category modal -->
+      <div v-if="isOpenGroupCategory"
+           class="fixed top-0 bg-white w-full"
+           >
+        <Category :categoryData="categoryData"/>
+      </div>
+      
       <!-- Restaurant Page -->
       <div>
         <!-- For Owner Preview Only -->
@@ -97,6 +104,9 @@
             <!-- For Responsible -->
             <div class="mx-6 mt-3 lg:mx-0">
               <!-- Menu Items -->
+              <div v-if="showSubCategory">
+                <div @click="openGroupCategory">CATEGORY!!</div>
+              </div>
               <div v-if="showCategory">
                 <div class="grid grid-col-1 space-y-2">
                   <Category :categoryData="categoryData"/>
@@ -243,6 +253,7 @@ import {
   getTrimmedSelectedOptions,
   getPostOption,
   useIsInMo,
+  useToggle,
 } from "@/utils/utils";
 
 import { imageUtils } from "@/utils/RestaurantUtils";
@@ -642,6 +653,12 @@ export default defineComponent({
     const subCategoryKey = computed(() => {
       return showSubCategory.value ? [category.value, subCategory.value].join("_") : "";
     });
+
+    const {
+      value: isOpenGroupCategory,
+      toggleOn: openGroupCategory,
+      toggleOff: closeGroupCategory,
+    } = useToggle(false);
     
     return {
       itemLists,
@@ -683,6 +700,9 @@ export default defineComponent({
       categoryData,
       subCategoryData,
       categoryBathPath,
+
+      openGroupCategory,
+      isOpenGroupCategory,
       
       ...imageUtils(),
     };
