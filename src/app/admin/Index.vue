@@ -109,7 +109,7 @@
               <div
                 v-for="(restaurantId, index) in restaurantLists"
                 :key="restaurantId"
-                >
+              >
                 <restaurant-edit-card
                   v-if="restaurantItems[restaurantId]"
                   :shopInfo="restaurantItems[restaurantId]"
@@ -318,7 +318,10 @@ export default {
                 data.restaurantid = doc.id;
                 data.id = doc.id;
                 tmp[doc.id] = data;
-                if (!this.restaurantLists.includes(restaurantId) && this.isOwner) {
+                if (
+                  !this.restaurantLists.includes(restaurantId) &&
+                  this.isOwner
+                ) {
                   this.restaurantLists.push(restaurantId);
                 }
               }

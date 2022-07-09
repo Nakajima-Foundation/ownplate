@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="mt-6 mx-6">
-      <back-button url="/u/profile/" />
+      <back-button :url="basePath + '/u/profile/'" />
     </div>
 
     <div class="text-xl font-bold text-black text-opacity-40 mt-6 mx-6">
@@ -25,7 +25,7 @@
           class="mt-2 mx-6 grid items-center grid-cols-1 gap-2 lg:grid-cols-3 xl:grid-cols-4"
         >
           <div v-for="like in likes" :key="like.restaurantId">
-            <router-link :to="`/r/${like.restaurantId}`">
+            <router-link :to="basePath + `/r/${like.restaurantId}`">
               <div class="flex items-center">
                 <div class="w-12 h-12 rounded-full bg-black bg-opacity-10 mr-4">
                   <img
@@ -59,45 +59,63 @@
 </template>
 
 <script>
+import { defineComponent, ref, computed } from "@vue/composition-api";
 import { db } from "@/plugins/firebase";
 import { RestaurantHeader } from "@/config/header";
 import AreaItem from "@/app/user/Restaurants/AreaItem";
 import { ownPlateConfig } from "@/config/project";
 import BackButton from "@/components/BackButton";
+import { useBasePath } from "@/utils/utils";
 
-export default {
+import { useIsInMo, useMoPrefix } from "@/utils/utils";
+
+export default defineComponent({
   components: {
     AreaItem,
     BackButton,
   },
-  data() {
-    return {
-      likes: null,
-      restaurants: [],
-    };
-  },
-  metaInfo() {
+  metaInfo(root) {
     const title = [
-      this.$t("pageTitle.restaurantRoot"),
+      root.$t("pageTitle.restaurantRoot"),
       ownPlateConfig.siteName,
     ].join(" / ");
     return Object.assign(RestaurantHeader, { title });
   },
-  async mounted() {
-    if (this.isUser) {
-      const snapshot = await db
-        .collection(`users/${this.user.uid}/reviews`)
-        .orderBy("timeLiked", "desc")
-        .limit(100)
-        .get();
-      this.likes = (snapshot.docs || [])
-        .map((doc) => {
-          return doc.data();
-        })
-        .filter((doc) => {
-          return !!doc.likes;
-        });
+  setup(props, ctx) {
+    const basePath = useBasePath(ctx.root);
+    const likes = ref(null);
+
+    const isInMo = useIsInMo(ctx.root);
+    const moPrefix = useMoPrefix(ctx.root);
+
+    const path = computed(() => {
+      if (isInMo.value) {
+        return `users/${ctx.root.user.uid}/groups/${moPrefix.value}/reviews`;
+      } else {
+        return `users/${ctx.root.user.uid}/reviews`;
+      }
+    });
+
+    if (ctx.root.isUser) {
+      (async () => {
+        const snapshot = await db
+          .collection(path.value)
+          .orderBy("timeLiked", "desc")
+          .limit(100)
+          .get();
+        likes.value = (snapshot.docs || [])
+          .map((doc) => {
+            return doc.data();
+          })
+          .filter((doc) => {
+            return !!doc.likes;
+          });
+      })();
     }
+    return {
+      likes,
+      basePath,
+    };
   },
-};
+});
 </script>

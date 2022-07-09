@@ -1,12 +1,23 @@
 import { db } from "@/lib/firebase/firebase9";
-import { doc, getDoc } from "firebase/firestore";
+import {
+  DocumentData,
+  DocumentSnapshot,
+  doc,
+  getDoc,
+} from "firebase/firestore";
 
 import { ShopOwnerData, PartnerData } from "@/models/ShopOwner";
 import { OrderInfoData, OrderItem } from "@/models/orderInfo";
 import { MenuData } from "@/models/menu";
+import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
-import { regionalSettings, partners } from "@/config/constant";
-import { ownPlateConfig } from "@/config/project";
+import { regionalSettings, partners, stripe_regions } from "@/config/constant";
+
+import { ownPlateConfig, mo_prefixes } from "@/config/project";
+
+import { computed } from "@vue/composition-api";
+
+import firebase from "firebase/app";
 
 export const isNull = <T>(value: T) => {
   return value === null || value === undefined;
@@ -17,10 +28,13 @@ export const isEmpty = <T>(value: T) => {
 };
 
 // from mixin
+export const useRestaurantId = (root: any) => {
+  return computed(() => {
+    return root.$route.params.restaurantId;
+  });
+};
+
 /* 
-    restaurantId() {
-      return this.$route.params.restaurantId;
-    },
     resizedProfileImage(restaurant, size) {
       return (
         (restaurant.images?.profile?.resizedImages || {})[size] ||
@@ -43,17 +57,18 @@ export const arrayChunk = <T>(arr: T[], size = 1) => {
       );
       // return "https://omochikaeri.com/r/" + this.restaurantId();
     },
-    doc2data(dataType) {
-      return (doc) => {
-        const data = doc.data();
-        data.id = doc.id;
-        data._dataType = dataType;
-        return data;
-      };
-      },
 */
+export const doc2data = (dataType: string) => {
+  return (doc: DocumentSnapshot<DocumentData>): DocumentData => {
+    const data = doc.data() || ({} as DocumentData);
+    data.id = doc.id;
+    data._dataType = dataType;
+    return data;
+  };
+};
+
 export const array2obj = <T>(array: T[]) => {
-  return array.reduce((tmp: {[key: string]: T}, current: T) => {
+  return array.reduce((tmp: { [key: string]: T }, current: T) => {
     tmp[(current as any).id] = current;
     return tmp;
   }, {});
@@ -149,15 +164,16 @@ export const getShopOwner = async (uid: string): Promise<ShopOwnerData> => {
   }
   return defaultData;
 };
+export const arraySum = (arr: number[]) => {
+  return Object.values(arr || [0]).reduce(
+    (accumulator, currentValue) => accumulator + currentValue
+  );
+};
+export const arrayOrNumSum = (arr: number | number[]) => {
+  return Array.isArray(arr) ? arraySum(arr) : arr || 0;
+};
+
 /*
-    arraySum(arr) {
-      return Object.values(arr || [0]).reduce(
-        (accumulator, currentValue) => accumulator + currentValue
-      );
-    },
-    arrayOrNumSum(arr) {
-      return Array.isArray(arr) ? this.arraySum(arr) : arr || 0;
-    },
     forceArray(arr) {
       return Array.isArray(arr) ? arr : [arr];
     },
@@ -174,7 +190,10 @@ export const getShopOwner = async (uid: string): Promise<ShopOwnerData> => {
       },
 */
 
-export const getOrderItems = (orderInfo: OrderInfoData, menuObj: { [key: string]: MenuData }) => {
+export const getOrderItems = (
+  orderInfo: OrderInfoData,
+  menuObj: { [key: string]: MenuData }
+) => {
   if (orderInfo.order && orderInfo.menuItems) {
     return Object.keys(orderInfo.order).reduce((tmp: OrderItem[], menuId) => {
       const numArray = Array.isArray(orderInfo.order[menuId])
@@ -182,8 +201,8 @@ export const getOrderItems = (orderInfo: OrderInfoData, menuObj: { [key: string]
         : [orderInfo.order[menuId]];
       const opt =
         orderInfo.options && orderInfo.options[menuId]
-        ? orderInfo.options[menuId]
-        : null;
+          ? orderInfo.options[menuId]
+          : null;
       const optArray = Array.isArray(orderInfo.order[menuId])
         ? orderInfo.options[menuId]
         : [orderInfo.options[menuId]];
@@ -204,44 +223,46 @@ export const getOrderItems = (orderInfo: OrderInfoData, menuObj: { [key: string]
   }
   return [];
 };
+
+const itemOptionCheckbox2options = (itemOptionCheckbox: any) => {
+  // HACK: Dealing with a special case (probalby a bug in the menu editor)
+  if (
+    itemOptionCheckbox &&
+    itemOptionCheckbox.length === 1 &&
+    !itemOptionCheckbox[0]
+  ) {
+    console.log("Special case: itemOptionCheckbox===['']");
+    return [];
+  }
+  return (itemOptionCheckbox || []).map((option: string) => {
+    return option.split(",").map((choice) => {
+      return choice.trim();
+    });
+  });
+};
+export const taxRate = (shopInfo: RestaurantInfoData, item: MenuData) => {
+  if (shopInfo.inclusiveTax) {
+    return 1;
+  }
+  if (item.tax === "alcohol") {
+    return 1 + shopInfo.alcoholTax * 0.01;
+  }
+  return 1 + shopInfo.foodTax * 0.01;
+};
 /*
-    itemOptionCheckbox2options(itemOptionCheckbox) {
-      // HACK: Dealing with a special case (probalby a bug in the menu editor)
-      if (
-        itemOptionCheckbox &&
-        itemOptionCheckbox.length === 1 &&
-        !itemOptionCheckbox[0]
-      ) {
-        console.log("Special case: itemOptionCheckbox===['']");
-        return [];
-      }
-      return (itemOptionCheckbox || []).map((option) => {
-        return option.split(",").map((choice) => {
-          return choice.trim();
-        });
-      });
-    },
-    taxRate(shopInfo, item) {
-      if (shopInfo.inclusiveTax) {
-        return 1;
-      }
-      if (item.tax === "alcohol") {
-        return 1 + shopInfo.alcoholTax * 0.01;
-      }
-      return 1 + shopInfo.foodTax * 0.01;
-    },
-    displayOption(option, shopInfo, item) {
-      return formatOption(option, (price) => {
-        return this.$n(
-          this.roundPrice(price * this.taxRate(shopInfo, item)),
-          "currency"
-        );
-      });
-    },
-    roundPrice(price) {
-      const m = this.$store.getters.stripeRegion.multiple;
-      return Math.round(price * m) / m;
-    },
+const displayOption = (option, shopInfo, item) => {
+  return formatOption(option, (price) => {
+    return this.$n(
+      this.roundPrice(price * this.taxRate(shopInfo, item)),
+      "currency"
+    );
+  });
+};
+
+const roundPrice = (price) => {
+  const m = this.$store.getters.stripeRegion.multiple;
+  return Math.round(price * m) / m;
+};
 */
 
 export const getPartner = (shopOwner: ShopOwnerData) => {
@@ -256,3 +277,264 @@ export const getPartner = (shopOwner: ShopOwnerData) => {
 export const regionalSetting = (regionalSettings as { [key: string]: any })[
   ownPlateConfig.region || "US"
 ];
+
+export const stripeRegion = stripe_regions[ownPlateConfig.region || "US"];
+
+const optionPrice = (option: string) => {
+  const regex = /\(((\+|\-|＋|ー|−)[0-9\.]+)\)/;
+  const match = (option || "").match(regex);
+  if (match) {
+    return Number(match[1].replace(/ー|−/g, "-").replace(/＋/g, "+"));
+  }
+  return 0;
+};
+export const useIsInMo = (root: any) => {
+  return computed(() => {
+    return mo_prefixes.some((prefix) => {
+      return (
+        (root.$route.fullPath || "").startsWith(`/${prefix}/`) ||
+        (root.$route.fullPath || "") === `/${prefix}`
+      );
+    });
+  });
+};
+export const useIsInLiff = (root: any) => {
+  return computed(() => {
+    return (root.$route.fullPath || "").startsWith(`/liff/`);
+  });
+};
+export const getMoPrefix = (root: any) => {
+  return mo_prefixes.find((prefix) => {
+    return (
+      (root.$route.fullPath || "").startsWith(`/${prefix}/`) ||
+      (root.$route.fullPath || "") === `/${prefix}`
+    );
+  });
+};
+export const useMoPrefix = (root: any) => {
+  return computed(() => {
+    return getMoPrefix(root);
+  });
+};
+export const useLiffIndexId = (root: any) => {
+  return computed(() => {
+    return root.$route.params.liffIndexId;
+  });
+};
+export const useLiffBasePath = (root: any) => {
+  const liffIndexId = useLiffIndexId(root);
+  return computed(() => {
+    return `/liff/${liffIndexId.value}`;
+  });
+};
+
+export const routeMode = (root: any) => {
+  const isInLiff = useIsInLiff(root);
+  const isInMo = useIsInMo(root);
+
+  return computed(() => {
+    if (isInMo.value) {
+      return "mo";
+    }
+    if (isInLiff.value) {
+      return "liff";
+    }
+    return "normal";
+  });
+};
+
+// "" or "/mo" or "/liff/hoge"
+export const useBasePath = (root: any) => {
+  const isInLiff = useIsInLiff(root);
+  const liffBasePath = useLiffBasePath(root);
+  const isInMo = useIsInMo(root);
+  const moPrefix = useMoPrefix(root);
+
+  return computed(() => {
+    if (isInMo.value) {
+      return "/" + moPrefix.value;
+    }
+    if (isInLiff.value) {
+      return liffBasePath.value;
+    }
+    return "";
+  });
+};
+// "/" or "/mo", or "/liff/hoge"
+export const useTopPath = (root: any) => {
+  const inLiff = useIsInLiff(root);
+  const liffBasePath = useLiffBasePath(root);
+  const isInMo = useIsInMo(root);
+  const moPrefix = useMoPrefix(root);
+
+  return computed(() => {
+    if (isInMo.value) {
+      return "/" + moPrefix.value;
+    }
+    if (inLiff.value) {
+      return liffBasePath.value;
+    }
+    return "/";
+  });
+};
+
+export const convOptionArray2Obj = <T>(obj: { [key: string]: T[] }) => {
+  return Object.keys(obj).reduce(
+    (newObj: { [key: string]: { [key: string]: T } }, objKey: string) => {
+      newObj[objKey] = obj[objKey].reduce(
+        (tmp: { [key: string]: T }, value: T, key: number) => {
+          tmp[key] = value;
+          return tmp;
+        },
+        {}
+      );
+      return newObj;
+    },
+    {}
+  );
+};
+
+export const prices2subtotal = (prices: { [key: string]: number[] }) => {
+  return Object.keys(prices).reduce(
+    (tmp: { [key: string]: number }, menuId) => {
+      tmp[menuId] = prices[menuId].reduce((a, b) => a + b, 0);
+      return tmp;
+    },
+    {}
+  );
+};
+
+export const subtotal2total = (
+  subTotal: { [key: string]: number },
+  cartItems: { [key: string]: MenuData },
+  shopInfo: RestaurantInfoData
+) => {
+  return Object.keys(subTotal).reduce((tmp, menuId) => {
+    const menu = cartItems[menuId] || {};
+
+    if (!shopInfo.inclusiveTax) {
+      if (menu.tax === "alcohol") {
+        return (1 + shopInfo.alcoholTax * 0.01) * subTotal[menuId] + tmp;
+      }
+      return (1 + shopInfo.foodTax * 0.01) * subTotal[menuId] + tmp;
+    } else {
+      return tmp + subTotal[menuId];
+    }
+  }, 0);
+};
+
+export const getPrices = (
+  multiple: number,
+  orders: { [key: string]: number[] },
+  cartItems: { [key: string]: MenuData },
+  trimmedSelectedOptions: { [key: string]: { [key: string]: number[] } }
+) => {
+  const ret: any = {};
+
+  Object.keys(orders).map((menuId) => {
+    const menu = cartItems[menuId] || {};
+    ret[menuId] = [];
+    orders[menuId].map((num, orderKey) => {
+      const selectedOptionsRaw = trimmedSelectedOptions[menuId][orderKey] || [];
+      const price = selectedOptionsRaw.reduce(
+        (tmpPrice: number, selectedOpt, key) => {
+          const opt = (menu.itemOptionCheckbox[key] || "").split(",");
+          if (opt.length === 1) {
+            if (selectedOpt) {
+              return (
+                tmpPrice + Math.round(optionPrice(opt[0]) * multiple) / multiple
+              );
+            }
+          } else {
+            return (
+              tmpPrice +
+              Math.round(optionPrice(opt[selectedOpt]) * multiple) / multiple
+            );
+          }
+          return tmpPrice;
+        },
+        menu.price
+      );
+      ret[menuId].push(price * num);
+    });
+  });
+  return ret;
+};
+
+export const getTrimmedSelectedOptions = (
+  orders: { [key: string]: number[] },
+  cartItems: { [key: string]: MenuData },
+  selectedOptions: { [key: string]: any }
+) => {
+  return Object.keys(orders).reduce(
+    (ret: { [key: string]: { [key: string]: number[] } }, id) => {
+      const options = itemOptionCheckbox2options(
+        (cartItems[id] || {}).itemOptionCheckbox
+      );
+      const selectedOption = selectedOptions[id].map((selected: any[]) => {
+        if (Array.isArray(selected) && selected.length > options.length) {
+          const newopt = [...selected];
+          return newopt.slice(0, options.length);
+        }
+        return selected;
+      });
+      ret[id] = selectedOption;
+      return ret;
+    },
+    {}
+  );
+};
+
+export const getPostOption = (
+  trimmedSelectedOptions: { [key: string]: any[][] },
+  cartItems: { [key: string]: MenuData }
+) => {
+  return Object.keys(trimmedSelectedOptions).reduce(
+    (ret: { [key: string]: any }, id) => {
+      ret[id] = (trimmedSelectedOptions[id] || []).map((item, k) => {
+        return item
+          .map((selectedOpt: any, key) => {
+            const opt = (cartItems[id] || {}).itemOptionCheckbox[key].split(
+              ","
+            );
+            if (opt.length === 1) {
+              if (selectedOpt) {
+                return opt[0];
+              }
+            } else {
+              return opt[selectedOpt];
+            }
+            return "";
+          })
+          .map((s) => s.trim());
+      });
+      return ret;
+    },
+    {}
+  );
+};
+
+export const useIsAdmin = (ctx: any) => {
+  return computed(() => {
+    return !!ctx.root.$store.getters.uidAdmin;
+  });
+};
+
+export const useIsLiffUser = (ctx: any) => {
+  return computed(() => {
+    return !!ctx.root.$store.getters.uidLiff;
+  });
+};
+export const useIsLineUser = (ctx: any) => {
+  return computed(() => {
+    const claims = ctx.root.$store.state.claims;
+    return !!claims?.line;
+  });
+};
+
+export const useInLiff = (ctx: any) => {
+  return computed(() => {
+    // BY path
+    return !!ctx.root.$route.params.liffIndexId;
+  });
+};

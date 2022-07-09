@@ -262,6 +262,7 @@ import {
   addDoc,
   updateDoc,
   onSnapshot,
+  serverTimestamp,
 } from "firebase/firestore";
 
 import ItemEditCard from "@/app/admin/Menus/ItemEditCard";
@@ -464,7 +465,7 @@ export default {
         const data = {
           name: "",
           uid: this.$store.getters.uidAdmin,
-          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+          createdAt: serverTimestamp(),
           deletedFlag: false,
         };
         const newTitle = await addDoc(
@@ -594,7 +595,7 @@ export default {
         name: item.name,
         uid: this.uid,
         deletedFlag: false,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        createdAt: serverTimestamp(),
       };
       const newTitle = await addDoc(
         collection(db, `restaurants/${this.restaurantId()}/titles`),

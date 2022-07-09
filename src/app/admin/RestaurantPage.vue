@@ -642,7 +642,7 @@
                   <router-link
                     :to="`/admin/restaurants/${restaurantId()}/delivery`"
                     >{{ $t("editRestaurant.deliveryConfigLink") }}</router-link
-                                                                    >
+                  >
                 </div>
                 <div class="text-xs pt-2">
                   {{ $t("editRestaurant.deliveryDescription") }}
@@ -667,7 +667,7 @@
               </div>
             </div>
           </template>
-          
+
           <!-- Email Notification -->
           <div v-if="region === 'JP'" class="mt-4">
             <a id="emailNotification" />

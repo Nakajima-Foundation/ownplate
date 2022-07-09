@@ -93,29 +93,7 @@
 
       <!-- Terms of Use & Privacy Policy -->
       <div class="mt-6 text-xs">
-        <div v-if="!isLocaleJapan">
-          <span>By submitting this form, you agree to the</span>
-          <router-link to="/terms/user" target="_blank">
-            <span class="text-op-teal">Terms of Service</span>
-          </router-link>
-          <span>and</span>
-          <router-link to="/privacy" target="_blank">
-            <span class="text-op-teal">Privacy Policy</span>
-          </router-link>
-          <span>.</span>
-        </div>
-
-        <div v-else>
-          <span>送信することで、</span>
-          <router-link to="/terms/user" target="_blank">
-            <span class="text-op-teal">利用規約</span>
-          </router-link>
-          <span>と</span>
-          <router-link to="/privacy" target="_blank">
-            <span class="text-op-teal">プライバシーポリシー</span>
-          </router-link>
-          <span>に同意したものとみなされます。</span>
-        </div>
+        <TermsAndPolicy />
       </div>
     </form>
 
@@ -145,7 +123,7 @@
         </div>
 
         <!-- Enter Name -->
-        <div v-if="!this.relogin">
+        <div v-if="!relogin">
           <div class="text-sm font-bold">
             {{ $t("sms.userName") }}
           </div>
@@ -193,6 +171,14 @@
 </template>
 
 <script>
+import {
+  defineComponent,
+  ref,
+  watch,
+  computed,
+  onMounted,
+} from "@vue/composition-api";
+
 import { db, auth } from "@/lib/firebase/firebase9";
 import {
   signOut,
@@ -200,6 +186,7 @@ import {
   signInWithPhoneNumber,
   updateProfile,
 } from "firebase/auth";
+
 import {
   doc,
   collection,
@@ -208,126 +195,122 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 
+import { stripeRegion } from "@/utils/utils";
+import moment from "moment";
 import * as Sentry from "@sentry/vue";
 
-export default {
+import TermsAndPolicy from "@/app/auth/TermsAndPolicy.vue";
+
+export default defineComponent({
+  components: {
+    TermsAndPolicy,
+  },
   props: {
     relogin: {
       type: String,
     },
   },
-  data() {
-    return {
-      isLoading: false,
-      countryCode: "+1",
-      phoneNumber: "",
-      errors: [],
-      recaptchaVerifier: () => {},
-      confirmationResult: null,
-      verificationCode: "",
-      name: "",
-      result: {},
-    };
-  },
-  mounted() {
-    this.countryCode = this.countries[0].code;
-    // console.log("countryCode:mount", this.countryCode);
-    this.recaptchaVerifier = new RecaptchaVerifier(
-      "signInButton",
-      {
-        size: "invisible",
-        callback: (response) => {
-          // reCAPTCHA solved, allow signInWithPhoneNumber.
-          console.log("verified", response);
+  emits: ["dismissed"],
+  setup(props, ctx) {
+    const countries = stripeRegion.countries;
+
+    const isLoading = ref(false);
+    const countryCode = countries[0].code || "+1";
+    const phoneNumber = ref("");
+    const errors = ref([]);
+    const confirmationResult = ref(null);
+    const verificationCode = ref("");
+    const name = ref("");
+
+    let recaptchaVerifier = null;
+
+    onMounted(() => {
+      recaptchaVerifier = new RecaptchaVerifier(
+        "signInButton",
+        {
+          size: "invisible",
+          callback: (response) => {
+            // reCAPTCHA solved, allow signInWithPhoneNumber.
+            console.log("verified", response);
+          },
         },
-      },
-      auth
-    );
-  },
-  watch: {
-    countries() {
-      // to handle delayed initialization
-      this.countryCode = this.countries[0].code;
-      console.log("countryCode:watch", this.countryCode);
-    },
-  },
-  computed: {
-    SMSPhoneNumber() {
-      if ((this.phoneNumber || "").startsWith("+")) {
-        return this.phoneNumber;
+        auth
+      );
+    });
+
+    const hasError = computed(() => {
+      return errors.value.length > 0;
+    });
+    const SMSPhoneNumber = computed(() => {
+      if ((phoneNumber.value || "").startsWith("+")) {
+        return phoneNumber.value;
       }
-      return this.relogin || this.countryCode + this.phoneNumber;
-    },
-    countries() {
-      return this.$store.getters.stripeRegion.countries;
-    },
-    readyToSendSMS() {
-      return !this.hasError || this.relogin;
-    },
-    readyToSendVerificationCode() {
-      return !this.hasError;
-    },
-    hasError() {
-      return this.errors.length > 0;
-    },
-  },
-  methods: {
-    validatePhoneNumber() {
-      this.errors = [];
+      return props.relogin || countryCode + phoneNumber.value;
+    });
+    const readyToSendSMS = computed(() => {
+      return !hasError.value || props.relogin;
+    });
+    const readyToSendVerificationCode = computed(() => {
+      return !hasError.value;
+    });
+
+    const validatePhoneNumber = () => {
+      errors.value = [];
       const regex = /^\+?[0-9()\-]{8,20}$/;
-      if (!regex.test(this.phoneNumber)) {
-        this.errors.push("sms.invalidPhoneNumber");
+      if (!regex.test(phoneNumber.value)) {
+        errors.value = ["sms.invalidPhoneNumber"];
       }
-    },
-    validateVerificationCode() {
-      this.errors = [];
+    };
+
+    const validateVerificationCode = () => {
+      errors.value = [];
       const regex = /^[0-9]*$/;
-      if (!regex.test(this.verificationCode)) {
-        this.errors.push("sms.invalidValidationCode");
+      if (!regex.test(verificationCode.value)) {
+        errors.value = ["sms.invalidValidationCode"];
       }
-    },
-    async handleSubmit() {
+    };
+
+    const handleSubmit = async () => {
       console.log("submit");
       try {
-        this.isLoading = true;
-        this.confirmationResult = await signInWithPhoneNumber(
+        isLoading.value = true;
+        confirmationResult.value = await signInWithPhoneNumber(
           auth,
-          this.SMSPhoneNumber,
-          this.recaptchaVerifier
+          SMSPhoneNumber.value,
+          recaptchaVerifier
         );
-        // console.log("result", this.confirmationResult);
 
-        const path = this.moment().format("YYYY/MMDD");
+        const path = moment().format("YYYY/MMDD");
         addDoc(collection(db, `/phoneLog/${path}`), {
-          date: this.moment().format("YYYY-MM-DD"),
-          month: this.moment().format("YYYYMM"),
-          phoneNumber: this.SMSPhoneNumber,
+          date: moment().format("YYYY-MM-DD"),
+          month: moment().format("YYYYMM"),
+          phoneNumber: SMSPhoneNumber.value,
           updated: serverTimestamp(),
         });
       } catch (error) {
         console.log(JSON.stringify(error));
         console.log("error", error.code);
         Sentry.captureException(error);
-        this.errors = ["sms." + error.code];
+        errors.value = ["sms." + error.code];
       } finally {
-        this.isLoading = false;
+        isLoading.value = false;
       }
-    },
-    async handleCode() {
+    };
+    const handleCode = async () => {
       console.log("handleCode");
-      this.errors = [];
+      errors.value = [];
       try {
-        this.isLoading = true;
-        let result = await this.confirmationResult.confirm(
-          this.verificationCode
+        isLoading.value = true;
+        let result = await confirmationResult.value.confirm(
+          verificationCode.value
         );
         // console.log("success!", result);
-        if (this.name) {
+        if (name.value) {
           const user = auth.currentUser; // paranoia: instead of this.$store.state.user;
           if (user) {
             console.log(user);
             updateProfile(user, {
-              displayName: this.name,
+              displayName: name.value,
             });
           }
         }
@@ -340,18 +323,39 @@ export default {
           },
           { merge: true }
         );
-        this.confirmationResult = null; // so that we can re-use this
-        this.verificationCode = "";
-        this.$emit("dismissed", true);
+        confirmationResult.value = null; // so that we can re-use this
+        verificationCode.value = "";
+        ctx.emit("dismissed", true);
       } catch (error) {
         console.log(JSON.stringify(error));
         console.log("error", error.code);
         Sentry.captureException(error);
-        this.errors = ["sms." + error.code];
+        errors.value = ["sms." + error.code];
       } finally {
-        this.isLoading = false;
+        isLoading.value = false;
       }
-    },
+    };
+    return {
+      countries,
+      isLoading,
+
+      countryCode,
+      phoneNumber,
+      errors,
+      confirmationResult,
+      verificationCode,
+      name,
+
+      hasError,
+      readyToSendSMS,
+      readyToSendVerificationCode,
+
+      validatePhoneNumber,
+      validateVerificationCode,
+
+      handleSubmit,
+      handleCode,
+    };
   },
-};
+});
 </script>

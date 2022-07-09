@@ -64,7 +64,7 @@ export const timeEventMapping = {
   transaction_hide: "transactionHideAt", // special condition
 };
 
-export const stripe_regions = {
+export const stripe_regions: { [key: string]: any } = {
   US: {
     langs: ["en", "es"], // first one is default
     currency: "USD",

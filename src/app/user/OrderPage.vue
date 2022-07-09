@@ -18,7 +18,7 @@
       <div v-if="just_validated" class="mt-6 mx-6">
         <b-button
           :loading="isDeleting"
-          @click="handleEditItems"
+          @click="handleOpenMenu"
           class="b-reset-tw"
         >
           <div
@@ -179,10 +179,7 @@
         <!-- Favorite Button -->
         <div class="mt-4 mx-6 bg-black bg-opacity-5 rounded-lg p-4 text-center">
           <div>
-            <favorite-button
-              :shopInfo="shopInfo"
-              :keepLike="false"
-            ></favorite-button>
+            <favorite-button :shopInfo="shopInfo"></favorite-button>
           </div>
         </div>
 
@@ -1216,6 +1213,8 @@ export default {
     handleOpenMenu() {
       if (this.inLiff) {
         this.$router.push(this.liff_base_path + "/r/" + this.restaurantId());
+      } else if (this.mode === "mo") {
+        this.$router.push(`/mo/r/${this.restaurantId()}`);
       } else {
         this.$router.push(`/r/${this.restaurantId()}`);
       }
@@ -1247,11 +1246,6 @@ export default {
         this.isDeleting = false;
         console.log("failed");
       }
-    },
-    async handleEditItems() {
-      this.$router.push({
-        path: `/r/${this.restaurantId()}`,
-      });
     },
     async saveLiffCustomer() {
       const uid = this.user.uid;

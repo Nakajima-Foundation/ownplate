@@ -29,6 +29,7 @@
     "friendLink": "友だち設定する",
     "signIn": "テイクアウトのお客様",
     "signInRestaurant": "飲食店の管理者様",
+    "signInMO": "ログイン",
     "deleteAccount": "アカウント削除",
     "reallyDeleteAccount": "過去の履歴は消えてしまいます。本当にアカウントを削除しますか？",
     "stripeInfo": "クレジットカード情報",
