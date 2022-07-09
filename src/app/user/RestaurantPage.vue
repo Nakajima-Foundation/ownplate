@@ -6,12 +6,10 @@
     </template>
     <template v-else>
       <!-- category modal -->
-      <div v-if="isOpenGroupCategory"
-           class="fixed top-0 bg-white w-full"
-           >
-        <Category :categoryData="categoryData"/>
+      <div v-if="isOpenGroupCategory" class="fixed top-0 bg-white w-full">
+        <Category :categoryData="categoryData" />
       </div>
-      
+
       <!-- Restaurant Page -->
       <div>
         <!-- For Owner Preview Only -->
@@ -660,7 +658,7 @@ export default defineComponent({
       toggleOn: openGroupCategory,
       toggleOff: closeGroupCategory,
     } = useToggle(false);
-    
+
     return {
       itemLists,
       titleLists,
@@ -704,7 +702,7 @@ export default defineComponent({
 
       openGroupCategory,
       isOpenGroupCategory,
-      
+
       ...imageUtils(),
     };
   },
