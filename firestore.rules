@@ -151,7 +151,7 @@ service cloud.firestore {
       allow read: if true;
       match /category/{category} {
         allow read: if true;
-        match /subcategory/{subcategory} {
+        match /subCategory/{subcategory} {
           allow read: if true;
         }      
       }      
