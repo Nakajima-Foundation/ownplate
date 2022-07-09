@@ -631,7 +631,7 @@
           </div>
 
           <!-- Delivery Config -->
-          <template v-if="false">
+          <template v-if="true">
             <div v-if="region === 'JP'" class="mt-4">
               <a id="deliveryConfig" />
               <div class="text-sm font-bold pb-2">
@@ -651,7 +651,7 @@
             </div>
 
             <!-- TODO: Printer Config -->
-            <div v-if="true" class="mt-4">
+            <div v-if="false" class="mt-4">
               <div class="text-sm font-bold pb-2">
                 {{ $t("editRestaurant.printerConfigTitle") }}
               </div>
