@@ -1,17 +1,16 @@
 <template>
-<div>
-  <div v-if="groupData === null">
-  </div>
-  <div v-else-if="groupData === false">
-    <NotFound />
-  </div>
-  <router-view
-    v-else
-    :moPrefix="moPrefix"
-    :moBasePath="moBasePath"
-    :groupData="groupData"
+  <div>
+    <div v-if="groupData === null"></div>
+    <div v-else-if="groupData === false">
+      <NotFound />
+    </div>
+    <router-view
+      v-else
+      :moPrefix="moPrefix"
+      :moBasePath="moBasePath"
+      :groupData="groupData"
     />
-</div>
+  </div>
 </template>
 
 <script>
@@ -21,14 +20,11 @@ import NotFound from "@/components/NotFound";
 
 import { useMoPrefix } from "@/utils/utils";
 import { db } from "@/lib/firebase/firebase9";
-import {
-  doc,
-  getDoc,
-} from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 
 export default defineComponent({
   components: {
-    NotFound
+    NotFound,
   },
   setup(_, ctx) {
     const moPrefix = useMoPrefix(ctx.root);
@@ -49,6 +45,6 @@ export default defineComponent({
       moBasePath,
       groupData,
     };
-  }
+  },
 });
 </script>

@@ -741,7 +741,7 @@ export default {
     }
 
     const order_detacher = onSnapshot(
-      doc(db, `restaurants/${this.restaurantId()}/orders/${this.orderId}`), 
+      doc(db, `restaurants/${this.restaurantId()}/orders/${this.orderId}`),
       async (order) => {
         if (!order.exists) {
           this.notFound = true;
@@ -762,8 +762,8 @@ export default {
         }
       },
       (e) => {
-        return this.notFound =true;
-      },
+        return (this.notFound = true);
+      }
     );
 
     this.detacher = [order_detacher];

@@ -1,9 +1,4 @@
-import {
-  ref,
-  onUnmounted,
-  computed,
-  Ref,
-} from "@vue/composition-api";
+import { ref, onUnmounted, computed, Ref } from "@vue/composition-api";
 
 import { db } from "@/lib/firebase/firebase9";
 import {
@@ -14,10 +9,7 @@ import {
   DocumentData,
 } from "firebase/firestore";
 
-import {
-  doc2data,
-  array2obj,
-} from "@/utils/utils";
+import { doc2data, array2obj } from "@/utils/utils";
 
 export const useTitles = (restaurantId: Ref) => {
   const titles = ref<DocumentData[]>([]);
@@ -31,7 +23,7 @@ export const useTitles = (restaurantId: Ref) => {
   onUnmounted(() => {
     detacheTitle();
   });
-  
+
   const loadTitle = () => {
     detacheTitle();
     titleDetacher.value = onSnapshot(
@@ -49,14 +41,13 @@ export const useTitles = (restaurantId: Ref) => {
   const titleLists = computed(() => {
     return titles.value.filter((title) => title.name !== "");
   });
-  
+
   return {
     loadTitle,
     titles,
     titleLists,
   };
 };
-
 
 export const useCategory = (moPrefix: string) => {
   const categoryDetacher = ref();
@@ -68,14 +59,12 @@ export const useCategory = (moPrefix: string) => {
   onUnmounted(() => {
     detacheCategory();
   });
-  
-  const categoryData =  ref<DocumentData[]>([]);
+
+  const categoryData = ref<DocumentData[]>([]);
   const loadCategory = () => {
     detacheCategory();
     categoryDetacher.value = onSnapshot(
-      query(
-        collection(db, `groups/${moPrefix}/category`),
-      ),
+      query(collection(db, `groups/${moPrefix}/category`)),
       (category) => {
         if (!category.empty) {
           categoryData.value = category.docs.map(doc2data("category"));
@@ -90,8 +79,8 @@ export const useCategory = (moPrefix: string) => {
 
   return {
     loadCategory,
-    categoryData
-  }
+    categoryData,
+  };
 };
 
 export const useSubcategory = (moPrefix: string, category: Ref<string>) => {
@@ -105,13 +94,16 @@ export const useSubcategory = (moPrefix: string, category: Ref<string>) => {
   onUnmounted(() => {
     detacheSubCategory();
   });
-  const subCategoryData =  ref<DocumentData[]>([]);
+  const subCategoryData = ref<DocumentData[]>([]);
   const loadSubcategory = () => {
     detacheSubCategory();
-    console.log( `groups/${moPrefix}/category/${category.value}/subCategory`);
+    console.log(`groups/${moPrefix}/category/${category.value}/subCategory`);
     subCategoryDetacher.value = onSnapshot(
       query(
-        collection(db, `groups/${moPrefix}/category/${category.value}/subCategory`),
+        collection(
+          db,
+          `groups/${moPrefix}/category/${category.value}/subCategory`
+        )
       ),
       (category) => {
         if (!category.empty) {
@@ -135,10 +127,10 @@ export const useMenu = (
   isInMo: Ref<string>,
   category: Ref<string>,
   subCategory: Ref<string>,
-  groupData: any,
+  groupData: any
 ) => {
   const menus = ref<DocumentData[]>([]);
-  const cache: {[key: string]: any} = {};
+  const cache: { [key: string]: any } = {};
   const menuDetacher = ref();
   const detacheMenu = () => {
     if (menuDetacher.value) {
@@ -151,34 +143,37 @@ export const useMenu = (
     }
     return `restaurants/${restaurantId.value}/menus`;
   });
-  
+
   const loadMenu = () => {
     // TODO Cache for mo
     detacheMenu();
     if (isInMo.value && !category.value && !subCategory.value) {
-      return ;
+      return;
     }
-    const cacheKey = (category.value && subCategory.value) ? [category.value, subCategory.value].join("_") : ""; 
+    const cacheKey =
+      category.value && subCategory.value
+        ? [category.value, subCategory.value].join("_")
+        : "";
     if (cache[cacheKey]) {
       menus.value = cache[cacheKey];
-      return ;
+      return;
     }
 
     const menuQuery =
       category.value && subCategory.value
-      ? query(
-        collection(db, menuPath.value),
-        where("deletedFlag", "==", false),
-        where("publicFlag", "==", true),
-        where("category", "==", category.value),
-        where("subCategory", "==", subCategory.value)
-      )
-      : query(
-        collection(db, menuPath.value),
-        where("deletedFlag", "==", false),
-        where("publicFlag", "==", true)
-      );
-    
+        ? query(
+            collection(db, menuPath.value),
+            where("deletedFlag", "==", false),
+            where("publicFlag", "==", true),
+            where("category", "==", category.value),
+            where("subCategory", "==", subCategory.value)
+          )
+        : query(
+            collection(db, menuPath.value),
+            where("deletedFlag", "==", false),
+            where("publicFlag", "==", true)
+          );
+
     menuDetacher.value = onSnapshot(query(menuQuery), (menu) => {
       if (!menu.empty) {
         menus.value = menu.docs
@@ -222,7 +217,6 @@ export const useCategoryParams = (ctx: any) => {
     category,
     subCategory,
     watchCat,
-    hasCategory
+    hasCategory,
   };
-  
 };
