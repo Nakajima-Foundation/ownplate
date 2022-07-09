@@ -80,42 +80,6 @@
     "appAssociation": "AUTO",
     "rewrites": [
       {
-        "source": "/r/*",
-        "function": "api"
-      },
-      {
-        "source": "/r/*/menus/*",
-        "function": "api"
-      },
-      {
-        "source": "/r/*/order/*",
-        "function": "api"
-      },
-      {
-        "source": "/o/*",
-        "function": "api"
-      },
-      {
-        "source": "/1.0/**",
-        "function": "api"
-      },
-      {
-        "source": "/api/1.0/**",
-        "function": "api"
-      },
-      {
-        "source": "/api/2.0/**",
-        "function": "api"
-      },
-      {
-        "source": "/smaregi/1.0/**",
-        "function": "api"
-      },
-      {
-        "source": "/sitemap.xml",
-        "function": "api"
-      },
-      {
         "source": "/m/**",
         "dynamicLinks": true
       },

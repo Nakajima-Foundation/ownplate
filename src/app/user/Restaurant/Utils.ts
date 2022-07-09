@@ -137,7 +137,7 @@ export const useMenu = (
   subCategory: Ref<string>
 ) => {
   const menus = ref<DocumentData[]>([]);
-
+  const cache: {[key: string]: any} = {};
   const menuDetacher = ref();
   const detacheMenu = () => {
     if (menuDetacher.value) {
@@ -151,10 +151,15 @@ export const useMenu = (
   const loadMenu = () => {
     // TODO Cache for mo
     detacheMenu();
-    console.log(category.value, subCategory.value)
     if (isInMo.value && !category.value && !subCategory.value) {
       return ;
     }
+    const cacheKey = (category.value && subCategory.value) ? [category.value, subCategory.value].join("_") : ""; 
+    if (cache[cacheKey]) {
+      menus.value = cache[cacheKey];
+      return ;
+    }
+
     const menuQuery =
       category.value && subCategory.value
       ? query(
@@ -178,6 +183,9 @@ export const useMenu = (
             return data.validatedFlag === undefined || data.validatedFlag;
           })
           .map(doc2data("menu"));
+        if (cacheKey) {
+          cache[cacheKey] = menus.value;
+        }
       }
     });
   };

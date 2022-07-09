@@ -119,10 +119,10 @@
                         </span>
                       </div>
                     </div>
-                    
-                    <div v-if="item._dataType === 'menu'" :key="[subCategoryKey, key].join('_')">
+
+                    <div v-if="item._dataType === 'menu'" :key="[subCategoryKey, item.id].join('_')">
                       <item-card
-                        :key="[subCategoryKey, 'item', key].join('_')"
+                        :key="[subCategoryKey, 'item', item.id].join('_')"
                         :item="item"
                         :quantities="orders[item.id] || [0]"
                         :optionPrev="selectedOptionsPrev[item.id]"
