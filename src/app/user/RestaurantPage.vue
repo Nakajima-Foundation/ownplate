@@ -125,7 +125,7 @@
                         :key="[subCategoryKey, 'item', item.id].join('_')"
                         :item="item"
                         :quantities="orders[item.id] || [0]"
-                        :optionPrev="selectedOptionsPrev[item.id]"
+                        :optionPrev="selectedOptionsPrev[item.id] || selectedOptions[item.id]"
                         :initialOpenMenuFlag="(orders[item.id] || []).length > 0"
                         :shopInfo="shopInfo"
                         :isOpen="menuId === item.id"
@@ -652,8 +652,9 @@ export default defineComponent({
 
       orders,
 
-      selectedOptionsPrev,
-
+      selectedOptionsPrev, // for initial cart status when returning from payment
+      selectedOptions, // for initial cart status when switch tab
+      
       totalPrice,
       prices,
 
