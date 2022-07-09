@@ -87,7 +87,7 @@
                   :shopInfo="shopInfo"
                   :deliveryData="deliveryData"
                   v-model="howtoreceive"
-                  />
+                />
                 <!-- delivery -->
               </div>
             </div>
@@ -98,9 +98,10 @@
             <div v-if="showSubCategory">
               <SubCategoryList
                 :subCategoryData="subCategoryData"
-                :categoryBathPath="categoryBathPath" />
+                :categoryBathPath="categoryBathPath"
+              />
             </div>
-            
+
             <!-- For Responsible -->
             <div class="mx-6 mt-3 lg:mx-0">
               <!-- Menu Items -->
@@ -109,11 +110,10 @@
               </div>
               <div v-if="showCategory">
                 <div class="grid grid-col-1 space-y-2">
-                  <Category :categoryData="categoryData"/>
-                </div> 
+                  <Category :categoryData="categoryData" />
+                </div>
               </div>
               <div v-else>
-                
                 <div class="grid grid-col-1 space-y-2">
                   <template v-for="(item, key) in itemLists">
                     <div v-if="item._dataType === 'title'" :key="key">
@@ -122,7 +122,7 @@
                         :class="key === 0 ? '' : 'mt-6'"
                         :id="item.id"
                         @click="openCategory"
-                        >
+                      >
                         <i class="material-icons mr-2">menu_book</i>
                         <span>
                           {{ item.name }}
@@ -130,19 +130,27 @@
                       </div>
                     </div>
 
-                    <div v-if="item._dataType === 'menu'" :key="[subCategoryKey, item.id].join('_')">
+                    <div
+                      v-if="item._dataType === 'menu'"
+                      :key="[subCategoryKey, item.id].join('_')"
+                    >
                       <item-card
                         :key="[subCategoryKey, 'item', item.id].join('_')"
                         :item="item"
                         :quantities="orders[item.id] || [0]"
-                        :optionPrev="selectedOptionsPrev[item.id] || selectedOptions[item.id]"
-                        :initialOpenMenuFlag="(orders[item.id] || []).length > 0"
+                        :optionPrev="
+                          selectedOptionsPrev[item.id] ||
+                          selectedOptions[item.id]
+                        "
+                        :initialOpenMenuFlag="
+                          (orders[item.id] || []).length > 0
+                        "
                         :shopInfo="shopInfo"
                         :isOpen="menuId === item.id"
                         :prices="prices[item.id] || []"
                         @didQuantitiesChange="didQuantitiesChange($event)"
                         @didOptionValuesChange="didOptionValuesChange($event)"
-                        ></item-card>
+                      ></item-card>
                     </div>
                   </template>
                 </div>
@@ -358,13 +366,9 @@ export default defineComponent({
       }
     });
 
-    const {
-      category,
-      subCategory,
-      watchCat,
-      hasCategory
-    } = useCategoryParams(ctx);
-    
+    const { category, subCategory, watchCat, hasCategory } =
+      useCategoryParams(ctx);
+
     const restaurantId = computed(() => {
       return ctx.root.$route.params.restaurantId;
     });
@@ -398,11 +402,13 @@ export default defineComponent({
       );
     });
 
-    const {
-      loadMenu,
-      menus,
-      menuObj,
-    } = useMenu(restaurantId, isInMo, category, subCategory, props.groupData);
+    const { loadMenu, menus, menuObj } = useMenu(
+      restaurantId,
+      isInMo,
+      category,
+      subCategory,
+      props.groupData
+    );
 
     loadMenu();
 
@@ -421,24 +427,17 @@ export default defineComponent({
       if (category.value) {
         loadSubcategory();
       }
-    })
-      
-    const {
-      loadTitle,
-      titles,
-      titleLists,
-    } = useTitles(restaurantId);
+    });
 
-    const {
-      loadCategory,
-      categoryData
-    } = useCategory(props.moPrefix);
+    const { loadTitle, titles, titleLists } = useTitles(restaurantId);
 
-    const {
-      subCategoryData,
-      loadSubcategory,
-    } = useSubcategory(props.moPrefix, category);
-    
+    const { loadCategory, categoryData } = useCategory(props.moPrefix);
+
+    const { subCategoryData, loadSubcategory } = useSubcategory(
+      props.moPrefix,
+      category
+    );
+
     if (isInMo.value) {
       loadCategory();
       if (category.value) {
@@ -448,7 +447,7 @@ export default defineComponent({
     if (!isInMo.value) {
       loadTitle();
     }
-    
+
     const showCategory = computed(() => {
       return isInMo.value && !subCategory.value;
     });
@@ -648,10 +647,12 @@ export default defineComponent({
       }
     });
     const categoryBathPath = computed(() => {
-      return `/${props.moPrefix}/r/${restaurantId.value}/cat/${category.value}`
+      return `/${props.moPrefix}/r/${restaurantId.value}/cat/${category.value}`;
     });
     const subCategoryKey = computed(() => {
-      return showSubCategory.value ? [category.value, subCategory.value].join("_") : "";
+      return showSubCategory.value
+        ? [category.value, subCategory.value].join("_")
+        : "";
     });
 
     const {
@@ -675,14 +676,14 @@ export default defineComponent({
 
       selectedOptionsPrev, // for initial cart status when returning from payment
       selectedOptions, // for initial cart status when switch tab
-      
+
       totalPrice,
       prices,
 
       isPreview,
 
       hasCategory,
-      
+
       didQuantitiesChange,
       didOptionValuesChange,
 
@@ -696,7 +697,7 @@ export default defineComponent({
       showCategory,
       showSubCategory,
       subCategoryKey,
-      
+
       categoryData,
       subCategoryData,
       categoryBathPath,

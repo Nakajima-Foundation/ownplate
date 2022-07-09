@@ -47,7 +47,6 @@ import {
   where,
 } from "firebase/firestore";
 
-
 import { JPPrefecture, USStates } from "@/config/constant";
 import { restaurant2AreaObj, sortRestaurantObj } from "@/utils/RestaurantUtils";
 import { defaultHeader } from "@/config/header";
@@ -83,7 +82,7 @@ export default defineComponent({
         ),
         (error) => {
           console.log(error);
-        },
+        }
       );
       restaurantsObj.value = restaurant2AreaObj(restaurantsCollection.docs);
       restaurants.value = restaurantsCollection.docs.map(doc2data(""));
@@ -99,7 +98,6 @@ export default defineComponent({
       restaurantsObj,
 
       allArea,
-
     };
   },
 });
