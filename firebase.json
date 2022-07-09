@@ -69,25 +69,6 @@
         "destination": "/index.html"
       }
     ]
-  }, {
-    "target": "mo",
-    "public": "dist",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ],
-    "appAssociation": "AUTO",
-    "rewrites": [
-      {
-        "source": "/m/**",
-        "dynamicLinks": true
-      },
-      {
-        "source": "**",
-        "destination": "/index.html"
-      }
-    ]
   }],
   "storage": {
     "rules": "storage.rules"
