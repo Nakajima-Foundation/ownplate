@@ -6,6 +6,7 @@
     :mode="mode"
     :moPrefix="moPrefix"
     :notFound="notFound"
+    :groupData="groupData"
   />
 </template>
 
@@ -23,6 +24,12 @@ import { routeMode, getMoPrefix } from "@/utils/utils";
 
 export default defineComponent({
   name: "RestaurantWrapper",
+  props: {
+    groupData: {
+      type: Object,
+      required: false,
+    },
+  },
   setup(props, ctx) {
     const mode = routeMode(ctx.root);
     const moPrefix = getMoPrefix(ctx.root);

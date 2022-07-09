@@ -298,6 +298,10 @@ export default defineComponent({
       type: String,
       required: false,
     },
+    groupData: {
+      type: Object,
+      required: false,
+    },
   },
   metaInfo() {
     // TODO: add area to header
@@ -387,7 +391,7 @@ export default defineComponent({
       loadMenu,
       menus,
       menuObj,
-    } = useMenu(restaurantId, isInMo, category, subCategory);
+    } = useMenu(restaurantId, isInMo, category, subCategory, props.groupData);
 
     loadMenu();
 

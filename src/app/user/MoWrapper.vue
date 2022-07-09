@@ -9,6 +9,7 @@
     v-else
     :moPrefix="moPrefix"
     :moBasePath="moBasePath"
+    :groupData="groupData"
     />
 </div>
 </template>
