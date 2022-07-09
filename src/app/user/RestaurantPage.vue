@@ -120,8 +120,9 @@
                       </div>
                     </div>
                     
-                    <div v-if="item._dataType === 'menu'" :key="key">
+                    <div v-if="item._dataType === 'menu'" :key="[subCategoryKey, key].join('_')">
                       <item-card
+                        :key="[subCategoryKey, 'item', key].join('_')"
                         :item="item"
                         :quantities="orders[item.id] || [0]"
                         :optionPrev="selectedOptionsPrev[item.id]"
@@ -634,7 +635,10 @@ export default defineComponent({
     const categoryBathPath = computed(() => {
       return `/${props.moPrefix}/r/${restaurantId.value}/cat/${category.value}`
     });
-
+    const subCategoryKey = computed(() => {
+      return showSubCategory.value ? [category.value, subCategory.value].join("_") : "";
+    });
+    
     return {
       itemLists,
       titleLists,
@@ -669,6 +673,7 @@ export default defineComponent({
 
       showCategory,
       showSubCategory,
+      subCategoryKey,
       
       categoryData,
       subCategoryData,
