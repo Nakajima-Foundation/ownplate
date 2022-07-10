@@ -6,15 +6,7 @@
       isCheckingOut || noPaymentMethod || noAvailableTime || cantDelivery
     "
     @click="handleCheckOut"
-    class="b-reset-tw"
-    style="
-      width: 18rem;
-      position: fixed;
-      z-index: 10;
-      bottom: 2rem;
-      left: 50%;
-      margin-left: -9rem;
-    "
+    class="b-reset-tw fixed z-10 left-1/2 bottom-8 w-[18rem] ml-[-9rem]"
   >
     <div
       class="inline-flex justify-center items-center w-72 rounded-full bg-op-teal shadow-lg"
