@@ -109,13 +109,7 @@
             <div class="mx-6 mt-3 lg:mx-0">
               <!-- Category Icon -->
               <div v-if="showSubCategory && !isOpenGroupCategory">
-                <div
-                  class="fixed left-10 bottom-28 z-10 mb-2 inline-flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-op-teal bg-opacity-10 shadow ring-4 ring-op-teal"
-                  @click="openGroupCategory">
-                  <span class="material-icons text-2xl text-black">
-                    category
-                  </span>
-                </div>
+                <CategoryIcon @openGroupCategory="openGroupCategory" />
               </div>
               <div v-if="showCategory">
                 <!-- Category view -->
@@ -179,12 +173,13 @@
         </div>
       </b-modal>
 
-      <Cart v-if="showCart" />
+      <Cart v-if="isShowCart" @closeCart="closeCart" />
 
       <!-- for disable all UI -->
       <div v-if="isCheckingOut" class="fixed top-0 left-0 w-full h-full"></div>
       <!-- Cart Button -->
       <CartButton
+        ref="cartButton"
         @handleCheckOut="handleCheckOut"
         :shopInfo="shopInfo"
         :orders="orders"
@@ -245,6 +240,7 @@ import CartButton from "@/app/user/Restaurant/CartButton.vue";
 import Cart from "@/app/user/Restaurant/Cart.vue";
 import Delivery from "@/app/user/Restaurant/Delivery.vue";
 import Category from "@/app/user/Restaurant/Category.vue";
+import CategoryIcon from "@/app/user/Restaurant/CategoryIcon.vue";
 import Titles from "@/app/user/Restaurant/Titles.vue";
 import SubCategoryList from "@/app/user/Restaurant/SubCategoryList.vue";
 
@@ -306,6 +302,7 @@ export default defineComponent({
     Cart,
     Delivery,
     Category,
+    CategoryIcon,
     Titles,
     SubCategoryList,
   },
@@ -678,7 +675,13 @@ export default defineComponent({
       toggleOff: closeGroupCategory,
     } = useToggle(false);
 
-    const showCart = false;
+    const cartButton = ref();
+    const isShowCart = computed(() => {
+      return cartButton.value?.isShowCart;
+    });
+    const closeCart = () => {
+      cartButton.value?.closeCart();
+    };
     
     return {
       itemLists,
@@ -727,7 +730,9 @@ export default defineComponent({
 
       ...imageUtils(),
 
-      showCart,
+      isShowCart,
+      cartButton,
+      closeCart,
     };
   },
 });

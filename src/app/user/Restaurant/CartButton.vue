@@ -130,9 +130,9 @@
   </b-button>
 </template>
 <script>
-import { defineComponent, computed } from "@vue/composition-api";
+import { defineComponent, computed, ref } from "@vue/composition-api";
 
-import { arraySum } from "@/utils/utils";
+import { arraySum, useIsInMo } from "@/utils/utils";
 
 import Price from "@/components/Price";
 
@@ -174,9 +174,12 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: ["handleCheckOut"],
+  emits: ["handleCheckOut", "showCart"],
 
   setup(props, ctx) {
+    const isInMo = useIsInMo(ctx.root);
+    const isShowCart = ref(false);
+    
     const totalQuantities = computed(() => {
       const ret = Object.values(props.orders).reduce((total, order) => {
         return total + arraySum(order);
@@ -225,7 +228,14 @@ export default defineComponent({
     });
 
     const handleCheckOut = () => {
-      ctx.emit("handleCheckOut");
+      if (isInMo.value && !isShowCart.value) {
+        isShowCart.value = true;
+      } else {
+        ctx.emit("handleCheckOut");
+      }
+    };
+    const closeCart = () => {
+      isShowCart.value = false;
     };
     return {
       totalQuantities,
@@ -238,6 +248,9 @@ export default defineComponent({
       isDeliveryFree,
       diffDeliveryThreshold,
       diffDeliveryFreeThreshold,
+
+      isShowCart,
+      closeCart,
     };
   },
 });
