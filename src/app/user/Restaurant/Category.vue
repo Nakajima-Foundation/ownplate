@@ -13,8 +13,10 @@
                cat.subcategory
                "
           >
-          <span>{{ cat.name }}</span>
-          <img src="/android-chrome-192x192.png" class="w-12 m-auto" />
+          <div @click="closeCategory">
+            <span>{{ cat.name }}</span>
+            <img src="/android-chrome-192x192.png" class="w-12 m-auto" />
+          </div>
         </router-link>
       </div>
     </div>
@@ -32,11 +34,16 @@ export default defineComponent({
       required: true,
     },
   },
+  emits: ["closeGroupCategory"],
   setup(props, ctx) {
     const basePath = useBasePath(ctx.root);
 
+    const closeCategory = () => {
+      ctx.emit("closeGroupCategory")
+    };
     return {
       basePath,
+      closeCategory,
     };
   },
 });

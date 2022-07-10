@@ -11,7 +11,7 @@
           Category header
         </div>
         <div class="h-screen overflow-x-scroll">
-          <Category :categoryData="categoryData" />
+          <Category :categoryData="categoryData" @closeGroupCategory="closeGroupCategory" />
         </div>
       </div>
 
