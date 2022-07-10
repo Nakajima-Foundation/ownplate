@@ -108,8 +108,14 @@
             <!-- For Responsible -->
             <div class="mx-6 mt-3 lg:mx-0">
               <!-- Menu Items -->
-              <div v-if="showSubCategory">
-                <div @click="openGroupCategory">CATEGORY!!</div>
+              <div v-if="showSubCategory && !isOpenGroupCategory">
+                <div
+                  class="fixed left-10 bottom-28 z-10 mb-2 inline-flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-op-teal bg-opacity-10 shadow ring-4 ring-op-teal"
+                  @click="openGroupCategory">
+                  <span class="material-icons text-2xl text-black">
+                    category
+                  </span>
+                </div>
               </div>
               <div v-if="showCategory">
                 <div class="grid grid-col-1 space-y-2">
