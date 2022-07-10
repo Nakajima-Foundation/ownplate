@@ -6,12 +6,16 @@
     </template>
     <template v-else>
       <!-- category modal -->
-      <div v-if="isOpenGroupCategory" class="fixed top-0 bg-white w-full h-full">
-        <div @click="closeGroupCategory" class="h-8">
-          Category header
-        </div>
+      <div
+        v-if="isOpenGroupCategory"
+        class="fixed top-0 bg-white w-full h-full"
+      >
+        <div @click="closeGroupCategory" class="h-8">Category header</div>
         <div class="h-screen overflow-x-scroll">
-          <Category :categoryData="categoryData" @closeGroupCategory="closeGroupCategory" />
+          <Category
+            :categoryData="categoryData"
+            @closeGroupCategory="closeGroupCategory"
+          />
         </div>
       </div>
 
@@ -682,7 +686,7 @@ export default defineComponent({
     const closeCart = () => {
       cartButton.value?.closeCart();
     };
-    
+
     return {
       itemLists,
       titleLists,

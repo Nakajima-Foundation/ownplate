@@ -4,15 +4,15 @@
       <div class="m-auto w-full text-center">
         <router-link
           :to="
-               basePath +
-               '/r/' +
-               restaurantId() +
-               '/cat/' +
-               cat.id +
-               '/' +
-               cat.subcategory
-               "
-          >
+            basePath +
+            '/r/' +
+            restaurantId() +
+            '/cat/' +
+            cat.id +
+            '/' +
+            cat.subcategory
+          "
+        >
           <div @click="closeCategory">
             <span>{{ cat.name }}</span>
             <img src="/android-chrome-192x192.png" class="w-12 m-auto" />
@@ -39,7 +39,7 @@ export default defineComponent({
     const basePath = useBasePath(ctx.root);
 
     const closeCategory = () => {
-      ctx.emit("closeGroupCategory")
+      ctx.emit("closeGroupCategory");
     };
     return {
       basePath,

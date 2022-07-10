@@ -179,7 +179,7 @@ export default defineComponent({
   setup(props, ctx) {
     const isInMo = useIsInMo(ctx.root);
     const isShowCart = ref(false);
-    
+
     const totalQuantities = computed(() => {
       const ret = Object.values(props.orders).reduce((total, order) => {
         return total + arraySum(order);

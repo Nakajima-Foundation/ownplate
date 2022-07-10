@@ -104,7 +104,7 @@
           target="_blank"
           class="inline-flex justify-center items-center text-sm font-bold text-op-teal"
           @click="handleClose()"
-          >
+        >
           {{ $t("menu.deliveryManualLink") }}
         </a>
       </div>

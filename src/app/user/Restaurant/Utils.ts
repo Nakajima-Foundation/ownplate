@@ -68,20 +68,22 @@ export const useCategory = (moPrefix: string) => {
       (category) => {
         if (!category.empty) {
           // categoryData.value = category.docs.map(doc2data("category"))
-          categoryData.value = category.docs.map((doc) => {
-            return [
-              doc2data("category")(doc),
-              doc2data("category")(doc),
-              doc2data("category")(doc),
-              doc2data("category")(doc),
-              doc2data("category")(doc),
-              doc2data("category")(doc),
-              doc2data("category")(doc),
-              doc2data("category")(doc),
-              doc2data("category")(doc),
-              doc2data("category")(doc),
-            ];
-          }).flat();
+          categoryData.value = category.docs
+            .map((doc) => {
+              return [
+                doc2data("category")(doc),
+                doc2data("category")(doc),
+                doc2data("category")(doc),
+                doc2data("category")(doc),
+                doc2data("category")(doc),
+                doc2data("category")(doc),
+                doc2data("category")(doc),
+                doc2data("category")(doc),
+                doc2data("category")(doc),
+                doc2data("category")(doc),
+              ];
+            })
+            .flat();
         }
       },
       (error) => {
