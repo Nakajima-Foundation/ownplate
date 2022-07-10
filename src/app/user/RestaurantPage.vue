@@ -107,7 +107,7 @@
 
             <!-- For Responsible -->
             <div class="mx-6 mt-3 lg:mx-0">
-              <!-- Menu Items -->
+              <!-- Category Icon -->
               <div v-if="showSubCategory && !isOpenGroupCategory">
                 <div
                   class="fixed left-10 bottom-28 z-10 mb-2 inline-flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-op-teal bg-opacity-10 shadow ring-4 ring-op-teal"
@@ -118,12 +118,14 @@
                 </div>
               </div>
               <div v-if="showCategory">
+                <!-- Category view -->
                 <div class="grid grid-col-1 space-y-2">
                   <div>カテゴリー</div>
                   <Category :categoryData="categoryData" />
                 </div>
               </div>
               <div v-else>
+                <!-- Menu Items -->
                 <div class="grid grid-col-1 space-y-2">
                   <template v-for="(item, key) in itemLists">
                     <div v-if="item._dataType === 'title'" :key="key">
@@ -177,8 +179,11 @@
         </div>
       </b-modal>
 
-      <!-- Cart Button -->
+      <Cart v-if="showCart" />
+
+      <!-- for disable all UI -->
       <div v-if="isCheckingOut" class="fixed top-0 left-0 w-full h-full"></div>
+      <!-- Cart Button -->
       <CartButton
         @handleCheckOut="handleCheckOut"
         :shopInfo="shopInfo"
@@ -237,6 +242,7 @@ import NotFound from "@/components/NotFound";
 
 import RestaurantPreview from "@/app/user/Restaurant/Preview.vue";
 import CartButton from "@/app/user/Restaurant/CartButton.vue";
+import Cart from "@/app/user/Restaurant/Cart.vue";
 import Delivery from "@/app/user/Restaurant/Delivery.vue";
 import Category from "@/app/user/Restaurant/Category.vue";
 import Titles from "@/app/user/Restaurant/Titles.vue";
@@ -297,6 +303,7 @@ export default defineComponent({
     NotFound,
     RestaurantPreview,
     CartButton,
+    Cart,
     Delivery,
     Category,
     Titles,
@@ -671,6 +678,8 @@ export default defineComponent({
       toggleOff: closeGroupCategory,
     } = useToggle(false);
 
+    const showCart = false;
+    
     return {
       itemLists,
       titleLists,
@@ -717,6 +726,8 @@ export default defineComponent({
       isOpenGroupCategory,
 
       ...imageUtils(),
+
+      showCart,
     };
   },
 });
