@@ -1,21 +1,20 @@
 <template>
-  <div>
-    <div>CATEGORY</div>
+  <div class="grid grid-cols-3">
     <div v-for="(cat, k) in categoryData" :key="k">
-      <div>
+      <div class="m-auto w-full text-center">
         <router-link
           :to="
-            basePath +
-            '/r/' +
-            restaurantId() +
-            '/cat/' +
-            cat.id +
-            '/' +
-            cat.subcategory
-          "
-        >
+               basePath +
+               '/r/' +
+               restaurantId() +
+               '/cat/' +
+               cat.id +
+               '/' +
+               cat.subcategory
+               "
+          >
           <span>{{ cat.name }}</span>
-          <img src="/android-chrome-192x192.png" class="w-12" />
+          <img src="/android-chrome-192x192.png" class="w-12 m-auto" />
         </router-link>
       </div>
     </div>

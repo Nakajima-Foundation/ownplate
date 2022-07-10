@@ -67,8 +67,21 @@ export const useCategory = (moPrefix: string) => {
       query(collection(db, `groups/${moPrefix}/category`)),
       (category) => {
         if (!category.empty) {
-          categoryData.value = category.docs.map(doc2data("category"));
-          console.log(categoryData.value);
+          // categoryData.value = category.docs.map(doc2data("category"))
+          categoryData.value = category.docs.map((doc) => {
+            return [
+              doc2data("category")(doc),
+              doc2data("category")(doc),
+              doc2data("category")(doc),
+              doc2data("category")(doc),
+              doc2data("category")(doc),
+              doc2data("category")(doc),
+              doc2data("category")(doc),
+              doc2data("category")(doc),
+              doc2data("category")(doc),
+              doc2data("category")(doc),
+            ];
+          }).flat();
         }
       },
       (error) => {

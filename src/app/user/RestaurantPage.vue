@@ -6,8 +6,13 @@
     </template>
     <template v-else>
       <!-- category modal -->
-      <div v-if="isOpenGroupCategory" class="fixed top-0 bg-white w-full">
-        <Category :categoryData="categoryData" />
+      <div v-if="isOpenGroupCategory" class="fixed top-0 bg-white w-full h-full">
+        <div @click="closeGroupCategory" class="h-8">
+          Category header
+        </div>
+        <div class="h-screen overflow-x-scroll">
+          <Category :categoryData="categoryData" />
+        </div>
       </div>
 
       <!-- Restaurant Page -->
@@ -108,6 +113,7 @@
               </div>
               <div v-if="showCategory">
                 <div class="grid grid-col-1 space-y-2">
+                  <div>カテゴリー</div>
                   <Category :categoryData="categoryData" />
                 </div>
               </div>
@@ -701,6 +707,7 @@ export default defineComponent({
       categoryBathPath,
 
       openGroupCategory,
+      closeGroupCategory,
       isOpenGroupCategory,
 
       ...imageUtils(),
