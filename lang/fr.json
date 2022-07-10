@@ -357,6 +357,7 @@
   "sitemenu": {
     "menu": "Menu",
     "about": "A Propos",
+    "confirmCart": "Confirm Cart",
     "checkout": "Payement",
     "orderCounter": "{count} article | {count} artciles",
     "add": "Ajouter",

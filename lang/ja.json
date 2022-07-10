@@ -366,6 +366,7 @@
   "sitemenu": {
     "menu": "メニュー",
     "about": "飲食店情報",
+    "confirmCart": "カートを見る",
     "checkout": "お会計",
     "orderCounter": "{count} 個",
     "add": "追加",

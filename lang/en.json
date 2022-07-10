@@ -363,6 +363,7 @@
   "sitemenu": {
     "menu": "Menu",
     "about": "About",
+    "confirmCart": "Confirm Cart",
     "checkout": "Checkout",
     "orderCounter": "{count} item | {count} items",
     "add": "Add",

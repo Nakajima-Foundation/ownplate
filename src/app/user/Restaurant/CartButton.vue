@@ -120,7 +120,7 @@
             class="is-inline-flex flex-center justify-center items-center text-white"
           >
             <div class="text-xl font-bold mr-2">
-              {{ $t("sitemenu.checkout") }}
+              {{ $t(buttonText) }}
             </div>
             <i class="material-icons text-2xl">shopping_cart</i>
           </div>
@@ -237,6 +237,13 @@ export default defineComponent({
     const closeCart = () => {
       isShowCart.value = false;
     };
+    const buttonText = computed(() => {
+      if (isInMo.value && !isShowCart.value) {
+        return "sitemenu.confirmCart";
+      } else {
+        return "sitemenu.checkout";
+      }
+    });
     return {
       totalQuantities,
 
@@ -251,6 +258,8 @@ export default defineComponent({
 
       isShowCart,
       closeCart,
+
+      buttonText,
     };
   },
 });
