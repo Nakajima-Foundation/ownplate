@@ -177,11 +177,13 @@
         </div>
       </b-modal>
 
-      <Cart v-if="isShowCart" @closeCart="closeCart"
-            :orders="orders"
-            :menuObj="menuObj"
-            :shopInfo="shopInfo"
-            />
+      <Cart
+        v-if="isShowCart"
+        @closeCart="closeCart"
+        :orders="orders"
+        :menuObj="menuObj"
+        :shopInfo="shopInfo"
+      />
 
       <!-- for disable all UI -->
       <div v-if="isCheckingOut" class="fixed top-0 left-0 w-full h-full"></div>

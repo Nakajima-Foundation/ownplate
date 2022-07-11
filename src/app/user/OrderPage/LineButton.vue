@@ -4,7 +4,7 @@
       <div
         class="inline-flex justify-center items-center h-12 px-6 rounded-full"
         style="background: #18b900"
-        >
+      >
         <i class="fab fa-line text-2xl text-white mr-2" />
         <div class="text-base font-bold text-white">
           {{ $t("line.notifyMe") }}
@@ -35,6 +35,6 @@ export default defineComponent({
       handleLineAuth,
       showAddLine,
     };
-  }
+  },
 });
 </script>

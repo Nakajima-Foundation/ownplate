@@ -41,7 +41,7 @@
       <div v-if="paid">
         <!-- Thank you Message -->
         <ThankYou />
-        
+
         <!-- Line Button -->
         <LineButton />
 
@@ -119,7 +119,7 @@
         </div>
 
         <!-- Special Thank you Message from the Restaurant -->
-        <ThankYouFromRestaurant v-if="!canceled" :shopInfo="shopInfo"/>
+        <ThankYouFromRestaurant v-if="!canceled" :shopInfo="shopInfo" />
 
         <!-- Favorite Button -->
         <div class="mt-4 mx-6 bg-black bg-opacity-5 rounded-lg p-4 text-center">
@@ -129,7 +129,7 @@
         </div>
 
         <!-- Restaurant LINE -->
-        <RestaurantLine v-if="hasLineUrl" :shopInfo="shopInfo"/>
+        <RestaurantLine v-if="hasLineUrl" :shopInfo="shopInfo" />
       </div>
       <!-- end of Thanks -->
 
