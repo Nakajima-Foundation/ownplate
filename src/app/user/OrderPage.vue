@@ -46,37 +46,8 @@
         <LineButton />
 
         <!-- Order Status -->
-        <div class="mt-6 text-center">
-          <div class="inline-flex space-x-4">
-            <div>
-              <div class="text-sm font-bold text-black text-opacity-60">
-                {{ $t("order.orderStatus") }}
-              </div>
-              <div
-                class="inline-block px-4 py-1 rounded-full mt-2"
-                :class="orderStatusKey"
-              >
-                <div class="text-sm font-bold">
-                  {{
-                    $t(
-                      "order.status." +
-                        convOrderStateForText(orderStatusKey, orderInfo)
-                    )
-                  }}
-                </div>
-              </div>
-            </div>
-            <div>
-              <div class="text-sm font-bold text-black text-opacity-60">
-                {{ $t("order.orderId") }}
-              </div>
-              <div class="mt-1">
-                <div class="text-2xl">{{ orderName }}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
+        <OrderStatus :orderInfo="orderInfo" :orderName="orderName" />
+        
         <!-- Time to Pickup -->
         <div v-if="waiting && !shopInfo.isEC" class="mt-4 text-sm text-center">
           <div>
@@ -739,6 +710,7 @@ import ThankYouFromRestaurant from "./OrderPage/ThankYouFromRestaurant.vue";
 import LineButton from "./OrderPage/LineButton.vue";
 import RestaurantLine from "./OrderPage/RestaurantLine.vue";
 import StripeStatus from "./OrderPage/StripeStatus.vue";
+import OrderStatus from "./OrderPage/OrderStatus.vue";
 
 import { db, firestore } from "@/plugins/firebase";
 import { orderPlace } from "@/lib/firebase/functions";
@@ -787,11 +759,13 @@ export default {
     CustomerInfo,
     OrderPageMap,
     FavoriteButton,
+    // after paid components
     ThankYou,
     ThankYouFromRestaurant,
     LineButton,
     RestaurantLine,
     StripeStatus,
+    OrderStatus,
   },
   props: {
     shopInfo: {
@@ -898,11 +872,6 @@ export default {
     },
     orderName() {
       return nameOfOrder(this.orderInfo);
-    },
-    orderStatusKey() {
-      return Object.keys(order_status).reduce((result, key) => {
-        return order_status[key] === this.orderInfo.status ? key : result;
-      }, "unexpected");
     },
     orderError() {
       return this.orderInfo.status === order_status.error;

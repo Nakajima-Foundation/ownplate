@@ -178,19 +178,19 @@ export const arrayOrNumSum = (arr: number | number[]) => {
 /*
     forceArray(arr) {
       return Array.isArray(arr) ? arr : [arr];
-    },
-    convOrderStateForText(orderState, orderInfo) {
-      if (orderInfo?.isEC) {
-        if (orderState === "ready_to_pickup") {
-          return "ready_to_shipping";
-        }
-        if (orderState === "transaction_complete") {
-          return "shipping_complete";
-        }
-      }
-      return orderState;
       },
 */
+export const convOrderStateForText = (orderState: string, orderInfo: any) => {
+  if (orderInfo?.isEC) {
+    if (orderState === "ready_to_pickup") {
+      return "ready_to_shipping";
+    }
+    if (orderState === "transaction_complete") {
+      return "shipping_complete";
+    }
+  }
+  return orderState;
+};
 
 export const getOrderItems = (
   orderInfo: OrderInfoData,
