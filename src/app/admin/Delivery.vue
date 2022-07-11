@@ -195,7 +195,6 @@
 <script>
 import { db, firestore } from "@/plugins/firebase";
 import NotFound from "@/components/NotFound";
-import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
 export default {
   components: {
@@ -203,7 +202,7 @@ export default {
   },
   props: {
     shopInfo: {
-      type: RestaurantInfoData,
+      type: Object,
       required: true,
     },
   },

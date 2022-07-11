@@ -18,8 +18,8 @@ export const ownPlateConfig = {
   region: "JP",
   hostName: "omochikaeri.com",
   stripe: {
-    clientId: "ca_GyPuwCyTV98R7BGlRNkfd0b71G6Um8nF",
-    apiKey: "pk_live_ONPtLD1zI8qXfoNPgidTahST00VgI88zR0",
+    clientId: "ca_HAiZ4FX4JuoHdN8tcGjlEypJZFHErPRo",
+    apiKey: "pk_live_XEjVg6hx6kgu5WSiGOnEiEHd0077C0E2e4",
     dashboard: "https://dashboard.stripe.com/dashboard",
     search: "https://dashboard.stripe.com/search",
   },

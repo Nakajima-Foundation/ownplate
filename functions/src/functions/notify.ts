@@ -176,7 +176,7 @@ export const notifyRestaurant = async (db: any, messageId: string, restaurantId:
       orderId,
       messageId,
       results,
-      updatedAt: firebase.firestore.Timestamp.now(),
+      updatedAt: process.env.NODE_ENV !== "test" ? firebase.firestore.Timestamp.now() : Date.now(),
     });
   }
 
@@ -193,7 +193,7 @@ export const notifyRestaurant = async (db: any, messageId: string, restaurantId:
     lineMessage,
     sound: true,
     path: `/admin/restaurants/${restaurantId}`,
-    updatedAt: firebase.firestore.Timestamp.now(),
+    updatedAt: process.env.NODE_ENV !== "test" ? firebase.firestore.Timestamp.now() : Date.now(),
     url,
   });
 
@@ -206,7 +206,7 @@ export const notifyRestaurant = async (db: any, messageId: string, restaurantId:
         date: datestr,
         orderId,
         phoneNumber: restaurant.phoneNumber,
-        updatedAt: firebase.firestore.Timestamp.now(),
+        updatedAt: process.env.NODE_ENV !== "test" ? firebase.firestore.Timestamp.now() : Date.now(),
       });
     }
   }

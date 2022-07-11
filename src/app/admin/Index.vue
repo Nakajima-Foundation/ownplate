@@ -109,7 +109,7 @@
               <div
                 v-for="(restaurantId, index) in restaurantLists"
                 :key="restaurantId"
-              >
+                >
                 <restaurant-edit-card
                   v-if="restaurantItems[restaurantId]"
                   :shopInfo="restaurantItems[restaurantId]"
@@ -309,17 +309,21 @@ export default {
               this.restaurantItems = {}; // so that we present "No restaurant"
               return;
             }
+
             this.restaurantItems = (result.docs || []).reduce((tmp, doc) => {
               const restaurantId = doc.id;
-              if (this.restaurantLists.includes(restaurantId)) {
+              // workaround (this.ownerUid)
+              if (this.restaurantLists.includes(restaurantId) || this.isOwner) {
                 const data = doc.data();
                 data.restaurantid = doc.id;
                 data.id = doc.id;
                 tmp[doc.id] = data;
+                if (!this.restaurantLists.includes(restaurantId) && this.isOwner) {
+                  this.restaurantLists.push(restaurantId);
+                }
               }
               return tmp;
             }, {});
-
             if (
               this.isOwner &&
               Object.keys(this.restaurantLists).length === 0
