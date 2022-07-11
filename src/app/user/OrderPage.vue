@@ -705,12 +705,12 @@ import CustomerInfo from "@/components/CustomerInfo";
 
 import OrderPageMap from "./OrderPageMap.vue";
 
-import ThankYou from "./OrderPage/ThankYou.vue";
-import ThankYouFromRestaurant from "./OrderPage/ThankYouFromRestaurant.vue";
-import LineButton from "./OrderPage/LineButton.vue";
-import RestaurantLine from "./OrderPage/RestaurantLine.vue";
-import StripeStatus from "./OrderPage/StripeStatus.vue";
-import OrderStatus from "./OrderPage/OrderStatus.vue";
+import ThankYou from "./OrderPage/AfterPaid/ThankYou.vue";
+import ThankYouFromRestaurant from "./OrderPage/AfterPaid/ThankYouFromRestaurant.vue";
+import LineButton from "./OrderPage/AfterPaid/LineButton.vue";
+import RestaurantLine from "./OrderPage/AfterPaid/RestaurantLine.vue";
+import StripeStatus from "./OrderPage/AfterPaid/StripeStatus.vue";
+import OrderStatus from "./OrderPage/AfterPaid/OrderStatus.vue";
 
 import { db, firestore } from "@/plugins/firebase";
 import { orderPlace } from "@/lib/firebase/functions";
