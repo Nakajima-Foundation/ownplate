@@ -726,11 +726,12 @@ export default {
     if (!this.checkAdminPermission()) {
       return;
     }
-
+    /*
     if (!this.checkShopOwner(this.shopInfo)) {
       this.notFound = true;
       return true;
-    }
+      }
+    */
     if (this.shopInfo.isEC) {
       getDoc(doc(db, `restaurants/${this.restaurantId()}/ec/postage`)).then(
         (snapshot) => {
@@ -740,7 +741,7 @@ export default {
     }
 
     const order_detacher = onSnapshot(
-      doc(db, `restaurants/${this.restaurantId()}/orders/${this.orderId}`),
+      doc(db, `restaurants/${this.restaurantId()}/orders/${this.orderId}`), 
       async (order) => {
         if (!order.exists) {
           this.notFound = true;
@@ -759,7 +760,10 @@ export default {
           );
           this.customer = customer.data() || this.orderInfo?.customerInfo || {};
         }
-      }
+      },
+      (e) => {
+        return this.notFound =true;
+      },
     );
 
     this.detacher = [order_detacher];

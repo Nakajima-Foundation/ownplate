@@ -13,11 +13,11 @@ import moment from "moment-timezone";
 
 import { Context } from "../src/models/TestType";
 
-const adminDB = test_db_helper.adminDB();
 should();
 
 describe("Order function", () => {
   it("Order function, orderCounter test", async function () {
+    const adminDB = await test_db_helper.adminDB();
     const restaurantId = "testbar1";
     await test_helper.createRestaurantData(adminDB, restaurantId);
 
@@ -64,6 +64,7 @@ describe("Order function", () => {
   });
 
   it("Order function, error test", async function () {
+    const adminDB = await test_db_helper.adminDB();
     // create restaurant
     const restaurantId = "testbar3";
     await test_helper.createRestaurantData(adminDB, restaurantId);
@@ -152,6 +153,8 @@ describe("Order function", () => {
   });
 
   it("Order function, counter test", async function () {
+    const adminDB = await test_db_helper.adminDB();
+
     const restaurantId = "testbar4";
     const uid = "123";
     await test_helper.createRestaurantData(adminDB, restaurantId);
