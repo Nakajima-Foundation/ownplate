@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { defineComponent, computed, ref } from "@vue/composition-api";
+import { defineComponent, computed } from "@vue/composition-api";
 import { lineAuthURL } from "@/lib/line/line";
 import { ownPlateConfig } from "@/config/project";
 

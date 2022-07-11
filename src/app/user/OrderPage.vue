@@ -137,25 +137,7 @@
         </div>
 
         <!-- Special Thank you Message from the Restaurant -->
-        <div
-          class="mt-4 mx-6 bg-white rounded-lg p-4 shadow"
-          v-if="
-            shopInfo &&
-            shopInfo.orderThanks &&
-            shopInfo.orderThanks.length > 0 &&
-            !canceled
-          "
-        >
-          <div class="text-xs font-bold text-black text-opacity-60">
-            {{ $t("order.thanksMessage") }}
-          </div>
-          <div
-            class="mt-2 text-base"
-            :class="shopInfo.enablePreline ? 'whitespace-pre-line' : ''"
-          >
-            {{ shopInfo.orderThanks }}
-          </div>
-        </div>
+        <ThankYouFromRestaurant v-if="!canceled" :shopInfo="shopInfo"/>
 
         <!-- Favorite Button -->
         <div class="mt-4 mx-6 bg-black bg-opacity-5 rounded-lg p-4 text-center">
@@ -790,6 +772,7 @@ import CustomerInfo from "@/components/CustomerInfo";
 import OrderPageMap from "./OrderPageMap.vue";
 
 import ThankYou from "./OrderPage/ThankYou.vue";
+import ThankYouFromRestaurant from "./OrderPage/ThankYouFromRestaurant.vue";
 import LineButton from "./OrderPage/LineButton.vue";
 
 import { db, firestore } from "@/plugins/firebase";
@@ -840,6 +823,7 @@ export default {
     OrderPageMap,
     FavoriteButton,
     ThankYou,
+    ThankYouFromRestaurant,
     LineButton,
   },
   props: {
