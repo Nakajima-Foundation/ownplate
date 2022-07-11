@@ -878,6 +878,10 @@ export default {
       type: String,
       required: false,
     },
+    moPrefix: {
+      type: String,
+      required: false,
+    },
   },
   data() {
     return {
@@ -1214,7 +1218,7 @@ export default {
       if (this.inLiff) {
         this.$router.push(this.liff_base_path + "/r/" + this.restaurantId());
       } else if (this.mode === "mo") {
-        this.$router.push(`/mo/r/${this.restaurantId()}`);
+        this.$router.push(`/${this.moPrefix}/r/${this.restaurantId()}`);
       } else {
         this.$router.push(`/r/${this.restaurantId()}`);
       }
