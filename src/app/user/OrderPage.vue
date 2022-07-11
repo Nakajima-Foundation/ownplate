@@ -40,15 +40,8 @@
       <!-- After Paid -->
       <div v-if="paid">
         <!-- Thank you Message -->
-        <div class="mt-4 mx-6">
-          <div class="text-xl font-bold text-op-teal text-center">
-            {{ $t("order.thankyou") }}
-          </div>
-          <div class="text-xl font-bold text-op-teal text-center mt-2">
-            {{ $t("order.pleaseStay") }}
-          </div>
-        </div>
-
+        <ThankYou />
+        
         <!-- Line Button -->
         <div v-if="showAddLine" class="mt-6 text-center">
           <b-button @click="handleLineAuth" class="b-reset-tw">
@@ -806,7 +799,9 @@ import RequireLogin from "@/components/RequireLogin";
 import FavoriteButton from "@/app/user/Restaurant/FavoriteButton";
 import CustomerInfo from "@/components/CustomerInfo";
 
-import OrderPageMap from "./OrderPageMap";
+import OrderPageMap from "./OrderPageMap.vue";
+
+import ThankYou from "./OrderPage/ThankYou.vue";
 
 import { db, firestore } from "@/plugins/firebase";
 import { orderPlace } from "@/lib/firebase/functions";
@@ -856,6 +851,7 @@ export default {
     CustomerInfo,
     OrderPageMap,
     FavoriteButton,
+    ThankYou,
   },
   props: {
     shopInfo: {
