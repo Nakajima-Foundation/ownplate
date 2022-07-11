@@ -8,13 +8,13 @@
         <div
           class="inline-block px-4 py-1 rounded-full mt-2"
           :class="orderStatusKey"
-          >
+        >
           <div class="text-sm font-bold">
             {{
-            $t(
-            "order.status." +
-            convOrderStateForTextFunc(orderStatusKey, orderInfo)
-            )
+              $t(
+                "order.status." +
+                  convOrderStateForTextFunc(orderStatusKey, orderInfo)
+              )
             }}
           </div>
         </div>
@@ -57,7 +57,6 @@ export default defineComponent({
       orderStatusKey,
       convOrderStateForTextFunc: convOrderStateForText,
     };
-  }
-
+  },
 });
 </script>
