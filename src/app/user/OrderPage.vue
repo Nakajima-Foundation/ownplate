@@ -43,19 +43,7 @@
         <ThankYou />
         
         <!-- Line Button -->
-        <div v-if="showAddLine" class="mt-6 text-center">
-          <b-button @click="handleLineAuth" class="b-reset-tw">
-            <div
-              class="inline-flex justify-center items-center h-12 px-6 rounded-full"
-              style="background: #18b900"
-            >
-              <i class="fab fa-line text-2xl text-white mr-2" />
-              <div class="text-base font-bold text-white">
-                {{ $t("line.notifyMe") }}
-              </div>
-            </div>
-          </b-button>
-        </div>
+        <LineButton />
 
         <!-- Order Status -->
         <div class="mt-6 text-center">
@@ -802,6 +790,7 @@ import CustomerInfo from "@/components/CustomerInfo";
 import OrderPageMap from "./OrderPageMap.vue";
 
 import ThankYou from "./OrderPage/ThankYou.vue";
+import LineButton from "./OrderPage/LineButton.vue";
 
 import { db, firestore } from "@/plugins/firebase";
 import { orderPlace } from "@/lib/firebase/functions";
@@ -813,7 +802,6 @@ import {
   stripeCancelIntent,
   stripeReceipt,
 } from "@/lib/stripe/stripe";
-import { lineAuthURL } from "@/lib/line/line";
 
 import { costCal } from "@/utils/commonUtils";
 
@@ -852,6 +840,7 @@ export default {
     OrderPageMap,
     FavoriteButton,
     ThankYou,
+    LineButton,
   },
   props: {
     shopInfo: {
@@ -939,13 +928,6 @@ export default {
       return `${
         location.origin
       }/admin/restaurants/${this.restaurantId()}/orders/${this.orderId}`;
-    },
-    showAddLine() {
-      return (
-        this.isLineEnabled &&
-        this.$store.state.claims &&
-        !this.$store.state.claims.line
-      );
     },
     timeRequested() {
       const date = this.orderInfo.timePlaced.toDate();
@@ -1137,12 +1119,6 @@ export default {
         this.shopInfo,
         this.restaurantId()
       );
-    },
-    handleLineAuth() {
-      const url = lineAuthURL("/callback/line", {
-        pathname: location.pathname,
-      });
-      location.href = url;
     },
     loadUserData() {
       const order_detacher = db
