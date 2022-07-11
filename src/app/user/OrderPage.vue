@@ -47,7 +47,7 @@
 
         <!-- Order Status -->
         <OrderStatus :orderInfo="orderInfo" :orderName="orderName" />
-        
+
         <!-- Time to Pickup -->
         <div v-if="waiting && !shopInfo.isEC" class="mt-4 text-sm text-center">
           <div>
@@ -102,7 +102,7 @@
         <!-- Restaurant LINE -->
         <RestaurantLine v-if="hasLineUrl" :shopInfo="shopInfo" />
       </div>
-      <!-- end of Thanks -->
+      <!-- end Of After Paid -->
 
       <!-- Before Paid -->
       <div v-else class="mt-4 mx-6">
