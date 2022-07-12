@@ -47,7 +47,7 @@
 
         <!-- Order Status -->
         <OrderStatus :orderInfo="orderInfo" :orderName="orderName" />
-        
+
         <!-- Time to Pickup -->
         <div v-if="waiting && !shopInfo.isEC" class="mt-4 text-sm text-center">
           <div>
@@ -102,7 +102,7 @@
         <!-- Restaurant LINE -->
         <RestaurantLine v-if="hasLineUrl" :shopInfo="shopInfo" />
       </div>
-      <!-- end of Thanks -->
+      <!-- end Of After Paid -->
 
       <!-- Before Paid -->
       <div v-else class="mt-4 mx-6">
@@ -125,7 +125,9 @@
           </div>
         </div>
       </div>
+      <!-- end of Before Paid -->
 
+      <!-- customer info -->
       <div
         v-if="orderInfo.phoneNumber && !shopInfo.isEC"
         class="mt-4 text-center"
@@ -788,6 +790,10 @@ export default {
       type: String,
       required: false,
     },
+    moPrefix: {
+      type: String,
+      required: false,
+    },
   },
   data() {
     return {
@@ -1099,7 +1105,7 @@ export default {
       if (this.inLiff) {
         this.$router.push(this.liff_base_path + "/r/" + this.restaurantId());
       } else if (this.mode === "mo") {
-        this.$router.push(`/mo/r/${this.restaurantId()}`);
+        this.$router.push(`/${this.moPrefix}/r/${this.restaurantId()}`);
       } else {
         this.$router.push(`/r/${this.restaurantId()}`);
       }
