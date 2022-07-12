@@ -112,7 +112,7 @@
             <!-- For Responsible -->
             <div class="mx-6 mt-3 lg:mx-0">
               <!-- Category Icon -->
-              <div v-if="showSubCategory && !isOpenGroupCategory">
+              <div v-if="isShowCategoryIcon">
                 <CategoryIcon @openGroupCategory="openGroupCategory" />
               </div>
               <div v-if="showCategory">
@@ -693,6 +693,10 @@ export default defineComponent({
       cartButton.value?.closeCart();
     };
 
+    const isShowCategoryIcon = computed(() => {
+      return showSubCategory.value && !isOpenGroupCategory.value && !isShowCart.value;
+    });
+    
     return {
       itemLists,
       titleLists,
@@ -729,6 +733,7 @@ export default defineComponent({
       showCategory,
       showSubCategory,
       subCategoryKey,
+      isShowCategoryIcon,
 
       categoryData,
       subCategoryData,
