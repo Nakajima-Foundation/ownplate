@@ -190,6 +190,9 @@ export const useMenu = (
   };
 
   const menuObj = computed(() => {
+    if (isInMo.value) {
+      return array2obj(Object.values(cache).flat());
+    }
     return array2obj(menus.value);
   });
 
