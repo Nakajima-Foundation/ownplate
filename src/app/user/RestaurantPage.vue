@@ -188,6 +188,7 @@
         v-if="isShowCart"
         @closeCart="closeCart"
         :orders="orders"
+        :selectedOptions="selectedOptions"
         :menuObj="menuObj"
         :shopInfo="shopInfo"
       />
@@ -263,8 +264,6 @@ import Titles from "@/app/user/Restaurant/Titles.vue";
 import SubCategoryList from "@/app/user/Restaurant/SubCategoryList.vue";
 
 import liff from "@line/liff";
-import { db as dbOld, firestore } from "@/plugins/firebase";
-
 import { db } from "@/lib/firebase/firebase9";
 import {
   addDoc,
