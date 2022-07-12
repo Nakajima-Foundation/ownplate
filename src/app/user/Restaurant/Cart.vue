@@ -12,7 +12,9 @@
               :item="menuObj[itemId]"
               :quantity="counter"
               :selectedOptions="selectedOptions[itemId][key]"
-            />
+              @increase="increase(itemId, key)"
+              @decrease="decrease(itemId, key)"
+              />
             <hr />
           </div>
         </div>
@@ -27,7 +29,7 @@ import { defineComponent } from "@vue/composition-api";
 import CartItem from "./CartItem.vue";
 
 export default defineComponent({
-  emits: ["closeCart"],
+  emits: ["closeCart", "didQuantitiesChange"],
   components: {
     CartItem,
   },
@@ -50,15 +52,35 @@ export default defineComponent({
     },
   },
   setup(props, ctx) {
-    const image = (item) => {
-      return (item?.images?.item?.resizedImages || {})["600"] || item.itemPhoto;
-    };
 
+    const setQuantities = (itemId, key, diff) => {
+      const newQuantities = [...props.orders[itemId]];
+      newQuantities[key] = newQuantities[key] + diff;
+      if (newQuantities[key] === 0 && newQuantities.length > 1) {
+        newQuantities.splice(key, 1);
+
+        // const newOP = [...this.optionValues];
+        // newOP.splice(key, 1);
+        // this.optionValues = newOP;
+      }
+      console.log(itemId, newQuantities);
+      ctx.emit("didQuantitiesChange", {
+        itemId: itemId,
+        quantities: newQuantities,
+      });
+    };
+    const increase = (itemId, key) => {
+      setQuantities(itemId, key, 1);
+    };
+    const decrease = (itemId, key) => {
+      setQuantities(itemId, key, -1);
+    };
     return {
       closeCart: () => {
         ctx.emit("closeCart");
       },
-      image,
+      increase,
+      decrease,
     };
   },
 });

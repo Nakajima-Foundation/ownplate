@@ -3,6 +3,8 @@
     {{ item.itemName }}
     <img :src="image" class="w-12" />
     num:{{ quantity }}
+    <span @click="increase()">+</span>/<span @click="decrease()">-</span>
+    
     <div v-for="(option, k) in options" :key="k">
       <div v-if="option.length === 1">
         <div v-if="selectedOptions[k]">Option:{{ option[0] }}</div>
@@ -35,6 +37,7 @@ export default defineComponent({
       required: true,
     },
   },
+  emits: ["increase", "decrease"],
   setup(props, ctx) {
     const image = computed(() => {
       return (
@@ -45,10 +48,19 @@ export default defineComponent({
     const options = computed(() => {
       return itemOptionCheckbox2options(props.item.itemOptionCheckbox);
     });
-
+    const increase = () => {
+      console.log("i");
+      ctx.emit("increase");
+    };
+    const decrease = () => {
+      ctx.emit("decrease");
+      console.log("d");
+    };
     return {
       image,
       options,
+      increase,
+      decrease
     };
   },
 });

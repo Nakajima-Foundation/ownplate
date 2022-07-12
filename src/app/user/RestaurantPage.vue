@@ -191,6 +191,7 @@
         :selectedOptions="selectedOptions"
         :menuObj="menuObj"
         :shopInfo="shopInfo"
+        @didQuantitiesChange="didQuantitiesChange"
       />
 
       <!-- for disable all UI -->
@@ -531,6 +532,7 @@ export default defineComponent({
 
     const didQuantitiesChange = (eventArgs) => {
       // NOTE: We need to assign a new object to trigger computed properties
+      console.log(eventArgs);
       cartItems.value[eventArgs.itemId] = menuObj.value[eventArgs.itemId];
       const newObject = { ...orders.value };
       if (arraySum(eventArgs.quantities) > 0) {
