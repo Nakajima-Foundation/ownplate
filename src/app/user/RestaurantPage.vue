@@ -17,7 +17,7 @@
           商品カテゴリー
         </div>
         <div class="mx-4 h-screen overflow-x-scroll">
-          <Category
+          <CategoryModal
             :categoryData="categoryData"
             @closeGroupCategory="closeGroupCategory"
           />
@@ -126,7 +126,7 @@
                   <div class="text-xl font-bold text-black text-opacity-30">
                     商品カテゴリー
                   </div>
-                  <Category :categoryData="categoryData" />
+                  <CategoryTop :categoryData="categoryData" />
                 </div>
               </div>
               <div v-else>
@@ -256,7 +256,8 @@ import RestaurantPreview from "@/app/user/Restaurant/Preview.vue";
 import CartButton from "@/app/user/Restaurant/CartButton.vue";
 import Cart from "@/app/user/Restaurant/Cart.vue";
 import Delivery from "@/app/user/Restaurant/Delivery.vue";
-import Category from "@/app/user/Restaurant/Category.vue";
+import CategoryModal from "@/app/user/Restaurant/CategoryModal.vue";
+import CategoryTop from "@/app/user/Restaurant/CategoryTop.vue";
 import CategoryIcon from "@/app/user/Restaurant/CategoryIcon.vue";
 import Titles from "@/app/user/Restaurant/Titles.vue";
 import SubCategoryList from "@/app/user/Restaurant/SubCategoryList.vue";
@@ -318,7 +319,8 @@ export default defineComponent({
     CartButton,
     Cart,
     Delivery,
-    Category,
+    CategoryModal,
+    CategoryTop,
     CategoryIcon,
     Titles,
     SubCategoryList,
