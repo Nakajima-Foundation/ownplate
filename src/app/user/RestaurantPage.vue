@@ -10,8 +10,13 @@
         v-if="isOpenGroupCategory"
         class="fixed top-0 bg-white w-full h-full"
       >
-        <div @click="closeGroupCategory" class="h-8">Category header</div>
-        <div class="h-screen overflow-x-scroll">
+        <div
+          @click="closeGroupCategory"
+          class="mt-4 mx-4 text-xl font-bold text-black text-opacity-30 h-8"
+        >
+          商品カテゴリー
+        </div>
+        <div class="mx-4 h-screen overflow-x-scroll">
           <Category
             :categoryData="categoryData"
             @closeGroupCategory="closeGroupCategory"
@@ -117,8 +122,10 @@
               </div>
               <div v-if="showCategory">
                 <!-- Category view -->
-                <div class="grid grid-col-1 space-y-2">
-                  <div>カテゴリー</div>
+                <div class="mt-6 grid grid-col-1 space-y-2">
+                  <div class="text-xl font-bold text-black text-opacity-30">
+                    商品カテゴリー
+                  </div>
                   <Category :categoryData="categoryData" />
                 </div>
               </div>
