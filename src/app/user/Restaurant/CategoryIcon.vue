@@ -1,9 +1,10 @@
 <template>
   <div
-    class="fixed left-10 bottom-28 z-10 mb-2 inline-flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-op-teal bg-opacity-10 shadow ring-4 ring-op-teal"
+    class="fixed left-6 bottom-28 pb-1 inline-flex flex-col items-center justify-center h-16 w-16 cursor-pointer rounded-full bg-white shadow-lg"
     @click="openGroupCategory"
   >
-    <span class="material-icons text-2xl text-black"> category </span>
+    <i class="material-icons text-2xl text-op-teal">tune</i>
+    <div class="text-xs font-bold text-op-teal">カテゴリ</div>
   </div>
 </template>
 
