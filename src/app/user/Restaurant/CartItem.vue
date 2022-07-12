@@ -1,20 +1,18 @@
 <template>
   <div>
-    {{item.itemName }}
+    {{ item.itemName }}
     <img :src="image" class="w-12" />
-    num:{{quantity}}
+    num:{{ quantity }}
     <div v-for="(option, k) in options" :key="k">
       <div v-if="option.length === 1">
-        <div v-if="selectedOptions[k]">
-          Option:{{option[0]}}
-        </div>
+        <div v-if="selectedOptions[k]">Option:{{ option[0] }}</div>
       </div>
       <div v-else-if="option.length > 1">
-        Option:{{option[selectedOptions[k]]}}
+        Option:{{ option[selectedOptions[k]] }}
       </div>
     </div>
-    <hr/>
-  <br/>
+    <hr />
+    <br />
   </div>
 </template>
 
@@ -39,16 +37,19 @@ export default defineComponent({
   },
   setup(props, ctx) {
     const image = computed(() => {
-      return (props.item?.images?.item?.resizedImages || {})["600"] || props.item.itemPhoto;
+      return (
+        (props.item?.images?.item?.resizedImages || {})["600"] ||
+        props.item.itemPhoto
+      );
     });
     const options = computed(() => {
       return itemOptionCheckbox2options(props.item.itemOptionCheckbox);
     });
-    
+
     return {
       image,
       options,
     };
   },
-})
+});
 </script>

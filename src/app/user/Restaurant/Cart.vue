@@ -12,7 +12,7 @@
               :item="menuObj[itemId]"
               :quantity="counter"
               :selectedOptions="selectedOptions[itemId][key]"
-              />
+            />
             <hr />
           </div>
         </div>
@@ -29,7 +29,7 @@ import CartItem from "./CartItem.vue";
 export default defineComponent({
   emits: ["closeCart"],
   components: {
-    CartItem
+    CartItem,
   },
   props: {
     shopInfo: {

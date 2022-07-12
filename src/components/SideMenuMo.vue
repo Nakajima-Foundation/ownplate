@@ -10,7 +10,11 @@
     <!-- Logo / Home -->
     <div class="text-center mt-6 mb-4">
       <router-link :to="home_path">
-        <img class="w-48 m-auto" src="/logo_vertical.png" @click="handleClose()" />
+        <img
+          class="w-48 m-auto"
+          src="/logo_vertical.png"
+          @click="handleClose()"
+        />
       </router-link>
     </div>
 

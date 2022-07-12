@@ -19,7 +19,12 @@
 
 <script>
 import { defineComponent, ref, computed } from "@vue/composition-api";
-import { useTopPath, regionalSetting, useRestaurantId, useIsInMo } from "@/utils/utils";
+import {
+  useTopPath,
+  regionalSetting,
+  useRestaurantId,
+  useIsInMo,
+} from "@/utils/utils";
 
 export default defineComponent({
   emits: ["handleOpen"],
@@ -45,7 +50,7 @@ export default defineComponent({
     });
     const logo = computed(() => {
       if (isInMo.value) {
-        return "samplelogo.png"
+        return "samplelogo.png";
       } else if (restaurantId.value && specialLogo[restaurantId.value]) {
         return specialLogo[restaurantId.value].image;
       } else {

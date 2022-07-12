@@ -439,7 +439,7 @@ export default defineComponent({
         cartItems.value = cart.cartItems || {};
         selectedOptionsPrev.value = cart.options || {};
         selectedOptions.value = cart.options || {};
-        
+
         setCache(cart.menuCache);
       }
     });
@@ -705,9 +705,11 @@ export default defineComponent({
     };
 
     const isShowCategoryIcon = computed(() => {
-      return showSubCategory.value && !isOpenGroupCategory.value && !isShowCart.value;
+      return (
+        showSubCategory.value && !isOpenGroupCategory.value && !isShowCart.value
+      );
     });
-    
+
     return {
       itemLists,
       titleLists,

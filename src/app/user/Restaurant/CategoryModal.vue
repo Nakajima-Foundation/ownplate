@@ -29,5 +29,4 @@
 <script>
 import category from "./category";
 export default category;
-
 </script>
