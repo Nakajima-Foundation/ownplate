@@ -385,18 +385,6 @@ export default defineComponent({
 
     const isInMo = useIsInMo(ctx.root);
 
-    onMounted(() => {
-      // Check if we came here as the result of "Edit Items"
-      if (store.state.carts[restaurantId.value]) {
-        const cart = store.state.carts[restaurantId.value] || {};
-        //console.log("cart", cart);
-        orders.value = cart.orders || {};
-        cartItems.value = cart.cartItems || {};
-        selectedOptionsPrev.value = cart.options || {};
-        selectedOptions.value = cart.options || {};
-      }
-    });
-
     const { category, subCategory, watchCat, hasCategory } =
       useCategoryParams(ctx);
 
@@ -433,13 +421,27 @@ export default defineComponent({
       );
     });
 
-    const { loadMenu, menus, menuObj } = useMenu(
+    const { loadMenu, setCache, menus, menuObj, menuCache } = useMenu(
       restaurantId,
       isInMo,
       category,
       subCategory,
       props.groupData
     );
+
+    onMounted(() => {
+      // Check if we came here as the result of "Edit Items"
+      if (store.state.carts[restaurantId.value]) {
+        const cart = store.state.carts[restaurantId.value] || {};
+        //console.log("cart", cart);
+        orders.value = cart.orders || {};
+        cartItems.value = cart.cartItems || {};
+        selectedOptionsPrev.value = cart.options || {};
+        selectedOptions.value = cart.options || {};
+        
+        setCache(cart.menuCache);
+      }
+    });
 
     loadMenu();
 
@@ -591,6 +593,7 @@ export default defineComponent({
             orders: orders.value,
             options: selectedOptions.value,
             cartItems: cartItems.value,
+            menuCache: menuCache.value,
           },
         });
         await wasOrderCreated({
