@@ -372,13 +372,6 @@ export default {
     showMoreOption() {
       return this.totalQuantity > 0 && this.hasOptions;
     },
-    // # Not In Use
-    // cardStyle() {
-    //   return this.totalQuantity > 0 ? { border: "solid 2px #0097a7" } : {};
-    // },
-    loopNumber() {
-      return this.quantities;
-    },
     price() {
       return Number(this.item.price || 0);
     },
