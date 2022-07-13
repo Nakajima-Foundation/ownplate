@@ -65,9 +65,7 @@ import { RestaurantHeader } from "@/config/header";
 import AreaItem from "@/app/user/Restaurants/AreaItem";
 import { ownPlateConfig } from "@/config/project";
 import BackButton from "@/components/BackButton";
-import { useBasePath } from "@/utils/utils";
-
-import { useIsInMo, useMoPrefix, routeMode } from "@/utils/utils";
+import { useIsInMo, useMoPrefix, routeMode, useBasePath} from "@/utils/utils";
 
 export default defineComponent({
   components: {
@@ -113,6 +111,8 @@ export default defineComponent({
             return !!doc.likes;
           });
       })();
+    } else {
+       ctx.root.$router.push(basePath.value + "/u/profile")
     }
     return {
       likes,
