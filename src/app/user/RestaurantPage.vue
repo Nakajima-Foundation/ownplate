@@ -165,9 +165,8 @@
                         :shopInfo="shopInfo"
                         :isOpen="menuId === item.id"
                         :prices="prices[item.id] || []"
-                        @didQuantitiesChange="didQuantitiesChange($event)"
-                        @didOptionValuesChange="didOptionValuesChange($event)"
-                      ></item-card>
+                        @didOrderdChange="didOrderdChange($event)"
+                        ></item-card>
                     </div>
                   </template>
                 </div>
@@ -191,7 +190,7 @@
         :selectedOptions="selectedOptions"
         :menuObj="menuObj"
         :shopInfo="shopInfo"
-        @didQuantitiesChange="didQuantitiesChange"
+        @didOrderdChange="didOrderdChange"
       />
 
       <!-- for disable all UI -->
@@ -441,7 +440,6 @@ export default defineComponent({
         cartItems.value = cart.cartItems || {};
         selectedOptionsPrev.value = cart.options || {};
         selectedOptions.value = cart.options || {};
-
         setCache(cart.menuCache);
       }
     });
@@ -531,27 +529,25 @@ export default defineComponent({
       );
     });
 
-    const didQuantitiesChange = (eventArgs) => {
+    const didOrderdChange = (eventArgs) => {
       // NOTE: We need to assign a new object to trigger computed properties
-      cartItems.value[eventArgs.itemId] = menuObj.value[eventArgs.itemId];
-      const newObject = { ...orders.value };
-      if (arraySum(eventArgs.quantities) > 0) {
-        newObject[eventArgs.itemId] = eventArgs.quantities;
-      } else {
-        delete newObject[eventArgs.itemId];
+      if (eventArgs.quantities) {
+        cartItems.value[eventArgs.itemId] = menuObj.value[eventArgs.itemId];
+        const newObject = { ...orders.value };
+        if (arraySum(eventArgs.quantities) > 0) {
+          newObject[eventArgs.itemId] = eventArgs.quantities;
+        } else {
+          delete newObject[eventArgs.itemId];
+        }
+        orders.value = newObject;
       }
-      orders.value = newObject;
       // for cart
       if (eventArgs.optionValues) {
-        didOptionValuesChange(eventArgs);
+        selectedOptions.value = Object.assign({}, selectedOptions.value, {
+          [eventArgs.itemId]: eventArgs.optionValues,
+        });
       }
     };
-    const didOptionValuesChange = (eventArgs) => {
-      selectedOptions.value = Object.assign({}, selectedOptions.value, {
-        [eventArgs.itemId]: eventArgs.optionValues,
-      });
-    };
-
     const goCheckout = async () => {
       const name = await (async () => {
         if (ctx.root.isLiffUser) {
@@ -739,8 +735,7 @@ export default defineComponent({
 
       hasCategory,
 
-      didQuantitiesChange,
-      didOptionValuesChange,
+      didOrderdChange,
 
       handleCheckOut,
       handleDismissed,
