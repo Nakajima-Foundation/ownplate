@@ -272,6 +272,7 @@ import {
   onSnapshot,
   collection,
   where,
+  serverTimestamp,
 } from "firebase/firestore";
 
 import { wasOrderCreated } from "@/lib/firebase/functions";
@@ -540,6 +541,7 @@ export default defineComponent({
         delete newObject[eventArgs.itemId];
       }
       orders.value = newObject;
+      // for cart
       if (eventArgs.optionValues) {
         didOptionValuesChange(eventArgs);
       }
@@ -575,8 +577,8 @@ export default defineComponent({
         isLiff: ctx.root.isLiffUser,
         phoneNumber: user.value.phoneNumber,
         name: name,
-        updatedAt: firestore.FieldValue.serverTimestamp(),
-        timeCreated: firestore.FieldValue.serverTimestamp(),
+        updatedAt: serverTimestamp(),
+        timeCreated: serverTimestamp(),
         // price never set here.
       };
       // console.log(order_data);
