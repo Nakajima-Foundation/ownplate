@@ -23,9 +23,14 @@
 <script>
 import { defineComponent, computed } from "@vue/composition-api";
 import { itemOptionCheckbox2options } from "@/utils/utils";
+import * as analyticsUtil from "@/lib/firebase/analytics";
 
 export default defineComponent({
   props: {
+    shopInfo: {
+      type: Object,
+      required: true,
+    },
     item: {
       type: Object,
       required: true,
@@ -41,6 +46,7 @@ export default defineComponent({
   },
   emits: ["increase", "decrease"],
   setup(props, ctx) {
+    const restaurantId = ctx.root.$route.params.restaurantId;
     const image = computed(() => {
       return (
         (props.item?.images?.item?.resizedImages || {})["600"] ||
@@ -51,12 +57,17 @@ export default defineComponent({
       return itemOptionCheckbox2options(props.item.itemOptionCheckbox);
     });
     const increase = () => {
-      console.log("i");
       ctx.emit("increase");
+      analyticsUtil.sendAddToCart(props.item, props.shopInfo, restaurantId, 1);
     };
     const decrease = () => {
       ctx.emit("decrease");
-      console.log("d");
+      analyticsUtil.sendRemoveFromCart(
+        props.item,
+        props.shopInfo,
+        restaurantId,
+        1
+      );
     };
     return {
       image,

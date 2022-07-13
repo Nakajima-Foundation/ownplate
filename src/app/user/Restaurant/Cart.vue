@@ -10,6 +10,7 @@
           <div v-for="(counter, key) in counters" :key="`${itemId}-${key}`">
             <CartItem
               :item="menuObj[itemId]"
+              :shopInfo="shopInfo"
               :quantity="counter"
               :selectedOptions="selectedOptions[itemId][key]"
               @increase="increase(itemId, key)"
@@ -60,7 +61,6 @@ export default defineComponent({
         newQuantities.splice(key, 1);
         newOP.splice(key, 1);
       }
-      console.log(itemId, newQuantities);
       ctx.emit("didOrderdChange", {
         itemId: itemId,
         quantities: newQuantities,

@@ -368,6 +368,7 @@ export default defineComponent({
     const openImage = () => {
       imagePopup.value = true;
       const current = ctx.root.$router.history.current.path;
+      // TODO: mo
       const to = "/r/" + restaurantId + (urlSuffix || "");
       if (current !== to) {
         ctx.root.$router.replace(to);
@@ -377,12 +378,12 @@ export default defineComponent({
     };
     onMounted(() => {
       if (props.isOpen) {
-        alert("AA")
         openImage();
       }
     });
     const closeImage = () => {
       imagePopup.value = false;
+      // TODO: mo
       ctx.root.$router.replace("/r/" + restaurantId);
     };
     const setQuantities = (key, newValue) => {
