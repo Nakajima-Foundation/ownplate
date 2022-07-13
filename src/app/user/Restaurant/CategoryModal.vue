@@ -28,5 +28,5 @@
 
 <script>
 import category from "./category";
-export default category;
+export default category("CategoryModal");
 </script>
