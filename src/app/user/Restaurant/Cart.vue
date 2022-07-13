@@ -55,18 +55,17 @@ export default defineComponent({
 
     const setQuantities = (itemId, key, diff) => {
       const newQuantities = [...props.orders[itemId]];
+      const newOP = [...props.selectedOptions[itemId]];
       newQuantities[key] = newQuantities[key] + diff;
       if (newQuantities[key] === 0 && newQuantities.length > 1) {
         newQuantities.splice(key, 1);
-
-        // const newOP = [...this.optionValues];
-        // newOP.splice(key, 1);
-        // this.optionValues = newOP;
+        newOP.splice(key, 1);
       }
       console.log(itemId, newQuantities);
       ctx.emit("didQuantitiesChange", {
         itemId: itemId,
         quantities: newQuantities,
+        optionValues: newOP,
       });
     };
     const increase = (itemId, key) => {

@@ -321,7 +321,7 @@ export default {
       handler: function (val) {
         // console.log("opt: " + JSON.stringify(val));
         this.$emit("didOptionValuesChange", {
-          id: this.item.id,
+          itemId: this.item.id,
           optionValues: this.optionValues,
         });
       },

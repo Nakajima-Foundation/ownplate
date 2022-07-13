@@ -532,7 +532,6 @@ export default defineComponent({
 
     const didQuantitiesChange = (eventArgs) => {
       // NOTE: We need to assign a new object to trigger computed properties
-      console.log(eventArgs);
       cartItems.value[eventArgs.itemId] = menuObj.value[eventArgs.itemId];
       const newObject = { ...orders.value };
       if (arraySum(eventArgs.quantities) > 0) {
@@ -541,10 +540,13 @@ export default defineComponent({
         delete newObject[eventArgs.itemId];
       }
       orders.value = newObject;
+      if (eventArgs.optionValues) {
+        didOptionValuesChange(eventArgs);
+      }
     };
     const didOptionValuesChange = (eventArgs) => {
       selectedOptions.value = Object.assign({}, selectedOptions.value, {
-        [eventArgs.id]: eventArgs.optionValues,
+        [eventArgs.itemId]: eventArgs.optionValues,
       });
     };
 
