@@ -10,11 +10,15 @@
         v-if="isOpenGroupCategory"
         class="fixed top-0 bg-white w-full h-full"
       >
-        <div
-          @click="closeGroupCategory"
-          class="mt-4 mx-4 text-xl font-bold text-black text-opacity-30 h-8"
-        >
-          {{ $t("shopInfo.productCategory") }}
+        <div class="flex justify-between h-12 py-2 pl-6 pr-4">
+          <span class="text-xl font-bold text-black text-opacity-30">
+            {{ $t("shopInfo.productCategory") }}
+          </span>
+          <a @click="closeGroupCategory">
+            <i class="material-icons mt-1 text-black opacity-30 text-2xl"
+              >close</i
+            >
+          </a>
         </div>
         <div class="mx-4 h-screen overflow-x-scroll">
           <CategoryModal
