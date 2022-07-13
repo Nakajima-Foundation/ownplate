@@ -14,7 +14,7 @@
               :selectedOptions="selectedOptions[itemId][key]"
               @increase="increase(itemId, key)"
               @decrease="decrease(itemId, key)"
-              />
+            />
             <hr />
           </div>
         </div>
@@ -52,7 +52,6 @@ export default defineComponent({
     },
   },
   setup(props, ctx) {
-
     const setQuantities = (itemId, key, diff) => {
       const newQuantities = [...props.orders[itemId]];
       const newOP = [...props.selectedOptions[itemId]];
