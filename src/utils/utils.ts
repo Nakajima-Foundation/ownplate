@@ -538,3 +538,4 @@ export const useInLiff = (ctx: any) => {
     return !!ctx.root.$route.params.liffIndexId;
   });
 };
+

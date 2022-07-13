@@ -248,7 +248,7 @@ export default defineComponent({
       return props.relogin || countryCode + phoneNumber.value;
     });
     const readyToSendSMS = computed(() => {
-      return !hasError.value || props.relogin;
+      return (!hasError.value && phoneNumber.value.length > 5) || props.relogin;
     });
     const readyToSendVerificationCode = computed(() => {
       return !hasError.value;
