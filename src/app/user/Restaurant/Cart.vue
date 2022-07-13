@@ -29,7 +29,7 @@ import { defineComponent } from "@vue/composition-api";
 import CartItem from "./CartItem.vue";
 
 export default defineComponent({
-  emits: ["closeCart", "didQuantitiesChange"],
+  emits: ["closeCart", "didOrderdChange"],
   components: {
     CartItem,
   },
@@ -61,7 +61,7 @@ export default defineComponent({
         newOP.splice(key, 1);
       }
       console.log(itemId, newQuantities);
-      ctx.emit("didQuantitiesChange", {
+      ctx.emit("didOrderdChange", {
         itemId: itemId,
         quantities: newQuantities,
         optionValues: newOP,

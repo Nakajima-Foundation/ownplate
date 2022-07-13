@@ -223,7 +223,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, watch, computed } from "@vue/composition-api";
+import { defineComponent, ref, watch, computed, onMounted } from "@vue/composition-api";
 
 import Price from "@/components/Price";
 import SharePopup from "@/app/user/Restaurant/SharePopup";
@@ -272,12 +272,7 @@ export default defineComponent({
       required: true,
     },
   },
-  mounted() {
-    if (this.isOpen) {
-      this.openImage();
-    }
-  },
-  emits: ["didQuantitiesChange", "didOptionValuesChange"],
+  emits: ["didOrderdChange"],
   setup(props, ctx) {
     const openMenuFlag = ref(props.initialOpenMenuFlag);
     const optionValues = ref([]);
@@ -342,7 +337,7 @@ export default defineComponent({
       optionValues,
       (val) => {
         console.log("opt: " + JSON.stringify(val));
-        ctx.emit("didOptionValuesChange", {
+        ctx.emit("didOrderdChange", {
           itemId: props.item.id,
           optionValues: optionValues.value,
         });
@@ -380,6 +375,12 @@ export default defineComponent({
         analyticsUtil.sendViewItem(props.item, props.shopInfo, restaurantId);
       }
     };
+    onMounted(() => {
+      if (props.isOpen) {
+        alert("AA")
+        openImage();
+      }
+    });
     const closeImage = () => {
       imagePopup.value = false;
       ctx.root.$router.replace("/r/" + restaurantId);
@@ -394,7 +395,7 @@ export default defineComponent({
         newOP.splice(key, 1);
         optionValues.value = newOP;
       }
-      ctx.emit("didQuantitiesChange", {
+      ctx.emit("didOrderdChange", {
         itemId: props.item.id,
         quantities: newQuantities,
         optionValues: optionValues.value,
@@ -434,7 +435,7 @@ export default defineComponent({
 
       const newQuantities = [...props.quantities];
       newQuantities.push(1);
-      ctx.emit("didQuantitiesChange", {
+      ctx.emit("didOrderdChange", {
         itemId: props.item.id,
         quantities: newQuantities,
       });
