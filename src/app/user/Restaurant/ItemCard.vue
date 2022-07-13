@@ -85,7 +85,6 @@
             <div class="text-xs">
               {{ $t("sitemenu.options") }}
             </div>
-
             <div class="grid grid-cols-1 space-y-2 mt-2">
               <div
                 v-for="(option, index) in options"
@@ -93,7 +92,7 @@
                 class="bg-black bg-opacity-5 rounded-lg p-4"
               >
                 <div v-if="option.length === 1" class="field">
-                  <b-checkbox v-model="optionValues[quantityKey][index]"
+                  <b-checkbox v-model="selectedOptions[quantityKey][index]"
                     ><div class="text-sm font-bold">
                       {{ displayOption(option[0], shopInfo, item) }}
                     </div></b-checkbox
@@ -102,7 +101,7 @@
                 <div v-else class="field">
                   <b-radio
                     v-for="(choice, index2) in option"
-                    v-model="optionValues[quantityKey][index]"
+                    v-model="selectedOptions[quantityKey][index]"
                     :name="`${item.id}_${quantityKey}_${index}`"
                     :native-value="index2"
                     :key="`${quantityKey}_${index2}`"
@@ -229,7 +228,7 @@ import Price from "@/components/Price";
 import SharePopup from "@/app/user/Restaurant/SharePopup";
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
-import { arraySum, itemOptionCheckbox2options } from "@/utils/utils";
+import { useBasePath, arraySum, itemOptionCheckbox2options } from "@/utils/utils";
 
 // menu UI algorithm
 //   init quantities = [0]
@@ -255,13 +254,13 @@ export default defineComponent({
       type: Array,
       required: true,
     },
+    selectedOptions: {
+      type: Array,
+      required: false
+    },
     initialOpenMenuFlag: {
       type: Boolean,
       required: true,
-    },
-    optionPrev: {
-      type: Array,
-      required: false,
     },
     isOpen: {
       type: Boolean,
@@ -275,11 +274,12 @@ export default defineComponent({
   emits: ["didOrderdChange"],
   setup(props, ctx) {
     const openMenuFlag = ref(props.initialOpenMenuFlag);
-    const optionValues = ref([]);
     const imagePopup = ref(false);
     const urlSuffix = "/menus/" + props.item.id;
     const restaurantId = ctx.root.$route.params.restaurantId;
 
+    const basePath = useBasePath(ctx.root);
+    
     const isSoldOut = computed(() => {
       return !!props.item.soldOut;
     });
@@ -317,6 +317,11 @@ export default defineComponent({
     const showMoreOption = computed(() => {
       return totalQuantity.value > 0 && hasOptions.value;
     });
+    const defaultOpions = computed(() => {
+      return options.value.map((option, index) => {
+        return option.length === 1 ? false : 0;
+      })
+    });
     const image = computed(() => {
       return (
         (props.item?.images?.item?.resizedImages || {})["600"] ||
@@ -333,46 +338,26 @@ export default defineComponent({
       return (props.item.itemDescription || "").split(/\r?\n/)[0];
     });
 
-    watch(
-      optionValues,
-      (val) => {
-        console.log("opt: " + JSON.stringify(val));
-        ctx.emit("didOrderdChange", {
-          itemId: props.item.id,
-          optionValues: optionValues.value,
-        });
-      },
-      { deep: true }
-    );
     watch(openMenuFlag, () => {
       if (openMenuFlag.value) {
         analyticsUtil.sendViewItem(props.item, props.shopInfo, restaurantId);
       }
     });
-    // initialized option. call after watch optionValues.
-    Object.keys(props.quantities).forEach((key) => {
-      const v = options.value.map((option, index) => {
-        if (
-          props.optionPrev &&
-          props.optionPrev[key] &&
-          props.optionPrev[key].length > index &&
-          props.optionPrev[key][index]
-        ) {
-          return props.optionPrev[key][index];
-        }
-        return option.length === 1 ? false : 0;
+    // TODO: improve to set default value.
+    if (props.selectedOptions === undefined) {
+      const newOpt = [...defaultOpions.value];
+      ctx.emit("didOrderdChange", {
+        itemId: props.item.id,
+        optionValues: [newOpt],
       });
-      optionValues.value.push(v);
-    });
+    }
 
     const openImage = () => {
       imagePopup.value = true;
       const current = ctx.root.$router.history.current.path;
-      // TODO: mo
-      const to = "/r/" + restaurantId + (urlSuffix || "");
+      const to = basePath + "/r/" + restaurantId + (urlSuffix || "");
       if (current !== to) {
         ctx.root.$router.replace(to);
-
         analyticsUtil.sendViewItem(props.item, props.shopInfo, restaurantId);
       }
     };
@@ -383,23 +368,20 @@ export default defineComponent({
     });
     const closeImage = () => {
       imagePopup.value = false;
-      // TODO: mo
-      ctx.root.$router.replace("/r/" + restaurantId);
+      ctx.root.$router.replace(basePath + "/r/" + restaurantId);
     };
     const setQuantities = (key, newValue) => {
       const newQuantities = [...props.quantities];
       newQuantities[key] = newValue;
+      const newSelectedOptions = [...props.selectedOptions];
       if (newQuantities[key] === 0 && newQuantities.length > 1) {
         newQuantities.splice(key, 1);
-
-        const newOP = [...optionValues.value];
-        newOP.splice(key, 1);
-        optionValues.value = newOP;
+        newSelectedOptions.splice(key, 1);
       }
       ctx.emit("didOrderdChange", {
         itemId: props.item.id,
         quantities: newQuantities,
-        optionValues: optionValues.value,
+        optionValues: newSelectedOptions,
       });
     };
     const toggleMenuFlag = () => {
@@ -428,22 +410,19 @@ export default defineComponent({
       analyticsUtil.sendAddToCart(props.item, props.shopInfo, restaurantId, 1);
     };
     const pushItem = () => {
-      optionValues.value.push(
-        options.value.map((option, index) => {
-          return option.length === 1 ? false : 0;
-        })
-      );
+      const newSelectedOptions = [...props.selectedOptions];
+      newSelectedOptions.push(defaultOpions.value);
 
       const newQuantities = [...props.quantities];
       newQuantities.push(1);
       ctx.emit("didOrderdChange", {
         itemId: props.item.id,
         quantities: newQuantities,
+        optionValues: newSelectedOptions,
       });
     };
     return {
       openMenuFlag,
-      optionValues,
       imagePopup,
       urlSuffix,
 
@@ -459,6 +438,7 @@ export default defineComponent({
       title,
       description,
       descriptionOneLine,
+
       // methods
       openImage,
       closeImage,

@@ -155,10 +155,7 @@
                         :key="[subCategoryKey, 'item', item.id].join('_')"
                         :item="item"
                         :quantities="orders[item.id] || [0]"
-                        :optionPrev="
-                          selectedOptionsPrev[item.id] ||
-                          selectedOptions[item.id]
-                        "
+                        :selectedOptions="selectedOptions[item.id]"
                         :initialOpenMenuFlag="
                           (orders[item.id] || []).length > 0
                         "
@@ -378,7 +375,6 @@ export default defineComponent({
     const orders = ref({});
     const cartItems = ref({});
     const selectedOptions = ref({});
-    const selectedOptionsPrev = ref({}); // from the store.cart
 
     const howtoreceive = ref("takeout");
     const store = ctx.root.$store;
@@ -435,10 +431,8 @@ export default defineComponent({
       // Check if we came here as the result of "Edit Items"
       if (store.state.carts[restaurantId.value]) {
         const cart = store.state.carts[restaurantId.value] || {};
-        //console.log("cart", cart);
         orders.value = cart.orders || {};
         cartItems.value = cart.cartItems || {};
-        selectedOptionsPrev.value = cart.options || {};
         selectedOptions.value = cart.options || {};
         setCache(cart.menuCache);
       }
@@ -541,7 +535,6 @@ export default defineComponent({
         }
         orders.value = newObject;
       }
-      // for cart
       if (eventArgs.optionValues) {
         selectedOptions.value = Object.assign({}, selectedOptions.value, {
           [eventArgs.itemId]: eventArgs.optionValues,
@@ -725,7 +718,6 @@ export default defineComponent({
 
       orders,
 
-      selectedOptionsPrev, // for initial cart status when returning from payment
       selectedOptions, // for initial cart status when switch tab
 
       totalPrice,
