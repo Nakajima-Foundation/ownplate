@@ -14,7 +14,7 @@
           @click="closeGroupCategory"
           class="mt-4 mx-4 text-xl font-bold text-black text-opacity-30 h-8"
         >
-          商品カテゴリー
+          {{ $t("shopInfo.productCategory") }}
         </div>
         <div class="mx-4 h-screen overflow-x-scroll">
           <Category
@@ -124,7 +124,7 @@
                 <!-- Category view -->
                 <div class="mt-6 grid grid-col-1 space-y-2">
                   <div class="text-xl font-bold text-black text-opacity-30">
-                    商品カテゴリー
+                    {{ $t("shopInfo.productCategory") }}
                   </div>
                   <Category :categoryData="categoryData" />
                 </div>
@@ -701,9 +701,11 @@ export default defineComponent({
     };
 
     const isShowCategoryIcon = computed(() => {
-      return showSubCategory.value && !isOpenGroupCategory.value && !isShowCart.value;
+      return (
+        showSubCategory.value && !isOpenGroupCategory.value && !isShowCart.value
+      );
     });
-    
+
     return {
       itemLists,
       titleLists,

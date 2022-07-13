@@ -341,7 +341,8 @@
     "delivery": "デリバリー",
     "category": "カテゴリー",
     "viewMore": "もっと見る",
-    "viewLess": "閉じる"
+    "viewLess": "閉じる",
+    "productCategory": "商品カテゴリ一覧"
   },
   "transactionsAct": {
     "title": "特定商取引法に基づく表記",
@@ -447,7 +448,6 @@
     "thankyou": "ご注文、ありがとうございます",
     "orderStatus": "ご注文状況",
     "orderId": "ご注文番号",
-    
     "cancelOrder": "ご注文のキャンセルはこちら",
     "cancelOrderConfirm": "本当にご注文をキャンセルしてもよろしいですか？",
     "cancelOrderComplete": "この注文はキャンセルされました",
@@ -587,7 +587,8 @@
     "addItem": "商品を追加",
     "downloadMenu": "チラシをダウンロード",
     "cancel": "キャンセル",
-    "next": "次へ"
+    "next": "次へ",
+    "category": "カテゴリ"
   },
   "sms": {
     "signin": "本人確認",
