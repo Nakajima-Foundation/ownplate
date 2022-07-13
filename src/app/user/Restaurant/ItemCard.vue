@@ -240,7 +240,6 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from "vuex";
 import Price from "@/components/Price";
 import SharePopup from "@/app/user/Restaurant/SharePopup";
 import * as analyticsUtil from "@/lib/firebase/analytics";
@@ -321,7 +320,7 @@ export default {
       handler: function (val) {
         // console.log("opt: " + JSON.stringify(val));
         this.$emit("didOptionValuesChange", {
-          id: this.item.id,
+          itemId: this.item.id,
           optionValues: this.optionValues,
         });
       },
@@ -371,13 +370,6 @@ export default {
     },
     showMoreOption() {
       return this.totalQuantity > 0 && this.hasOptions;
-    },
-    // # Not In Use
-    // cardStyle() {
-    //   return this.totalQuantity > 0 ? { border: "solid 2px #0097a7" } : {};
-    // },
-    loopNumber() {
-      return this.quantities;
     },
     price() {
       return Number(this.item.price || 0);

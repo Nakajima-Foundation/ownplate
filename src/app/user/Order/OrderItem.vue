@@ -56,7 +56,6 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from "vuex";
 import { formatOption, optionPrice } from "@/utils/strings";
 
 export default {

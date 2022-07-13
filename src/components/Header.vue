@@ -10,7 +10,7 @@
     </div>
     <div class="flex-1 text-center">
       <router-link :to="topPath">
-        <img :class="this.logoClass" class="m-auto" :src="`/${this.logo}`" />
+        <img :class="logoClass" class="m-auto" :src="`/${logo}`" />
       </router-link>
     </div>
     <div class="w-12"></div>
@@ -19,7 +19,12 @@
 
 <script>
 import { defineComponent, ref, computed } from "@vue/composition-api";
-import { useTopPath, regionalSetting, useRestaurantId } from "@/utils/utils";
+import {
+  useTopPath,
+  regionalSetting,
+  useRestaurantId,
+  useIsInMo,
+} from "@/utils/utils";
 
 export default defineComponent({
   emits: ["handleOpen"],
@@ -30,6 +35,8 @@ export default defineComponent({
         image: "kuuya-logo.jpg",
       },
     };
+
+    const isInMo = useIsInMo(ctx.root);
 
     const topPath = useTopPath(ctx.root);
 
@@ -42,7 +49,9 @@ export default defineComponent({
       return "h-6";
     });
     const logo = computed(() => {
-      if (restaurantId.value && specialLogo[restaurantId.value]) {
+      if (isInMo.value) {
+        return "samplelogo.png";
+      } else if (restaurantId.value && specialLogo[restaurantId.value]) {
         return specialLogo[restaurantId.value].image;
       } else {
         return regionalSetting.Logo;

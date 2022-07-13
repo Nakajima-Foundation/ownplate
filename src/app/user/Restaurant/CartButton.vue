@@ -130,7 +130,7 @@
   </b-button>
 </template>
 <script>
-import { defineComponent, computed, ref } from "@vue/composition-api";
+import { defineComponent, computed, ref, watch } from "@vue/composition-api";
 
 import { arraySum, useIsInMo } from "@/utils/utils";
 
@@ -242,6 +242,11 @@ export default defineComponent({
         return "sitemenu.confirmCart";
       } else {
         return "sitemenu.checkout";
+      }
+    });
+    watch(totalQuantities, (value) => {
+      if (value === 0) {
+        closeCart();
       }
     });
     return {

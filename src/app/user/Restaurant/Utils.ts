@@ -145,7 +145,7 @@ export const useMenu = (
   groupData: any
 ) => {
   const menus = ref<DocumentData[]>([]);
-  const cache: { [key: string]: any } = {};
+  const menuCache: { [key: string]: any } = ref({});
   const menuDetacher = ref();
   const detacheMenu = () => {
     if (menuDetacher.value) {
@@ -158,7 +158,9 @@ export const useMenu = (
     }
     return `restaurants/${restaurantId.value}/menus`;
   });
-
+  const setCache = (cache: any) => {
+    menuCache.value = cache;
+  };
   const loadMenu = () => {
     // TODO Cache for mo
     detacheMenu();
@@ -169,8 +171,8 @@ export const useMenu = (
       category.value && subCategory.value
         ? [category.value, subCategory.value].join("_")
         : "";
-    if (cache[cacheKey]) {
-      menus.value = cache[cacheKey];
+    if (menuCache.value[cacheKey]) {
+      menus.value = menuCache.value[cacheKey];
       return;
     }
 
@@ -198,20 +200,25 @@ export const useMenu = (
           })
           .map(doc2data("menu"));
         if (cacheKey) {
-          cache[cacheKey] = menus.value;
+          menuCache.value[cacheKey] = menus.value;
         }
       }
     });
   };
 
   const menuObj = computed(() => {
+    if (isInMo.value) {
+      return array2obj(Object.values(menuCache.value).flat());
+    }
     return array2obj(menus.value);
   });
 
   return {
     loadMenu,
+    setCache,
     menus,
     menuObj,
+    menuCache,
   };
 };
 

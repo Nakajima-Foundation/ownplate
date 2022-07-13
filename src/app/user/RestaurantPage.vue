@@ -17,7 +17,7 @@
           {{ $t("shopInfo.productCategory") }}
         </div>
         <div class="mx-4 h-screen overflow-x-scroll">
-          <Category
+          <CategoryModal
             :categoryData="categoryData"
             @closeGroupCategory="closeGroupCategory"
           />
@@ -126,7 +126,7 @@
                   <div class="text-xl font-bold text-black text-opacity-30">
                     {{ $t("shopInfo.productCategory") }}
                   </div>
-                  <Category :categoryData="categoryData" />
+                  <CategoryTop :categoryData="categoryData" />
                 </div>
               </div>
               <div v-else>
@@ -188,8 +188,10 @@
         v-if="isShowCart"
         @closeCart="closeCart"
         :orders="orders"
+        :selectedOptions="selectedOptions"
         :menuObj="menuObj"
         :shopInfo="shopInfo"
+        @didQuantitiesChange="didQuantitiesChange"
       />
 
       <!-- for disable all UI -->
@@ -256,14 +258,13 @@ import RestaurantPreview from "@/app/user/Restaurant/Preview.vue";
 import CartButton from "@/app/user/Restaurant/CartButton.vue";
 import Cart from "@/app/user/Restaurant/Cart.vue";
 import Delivery from "@/app/user/Restaurant/Delivery.vue";
-import Category from "@/app/user/Restaurant/Category.vue";
+import CategoryModal from "@/app/user/Restaurant/CategoryModal.vue";
+import CategoryTop from "@/app/user/Restaurant/CategoryTop.vue";
 import CategoryIcon from "@/app/user/Restaurant/CategoryIcon.vue";
 import Titles from "@/app/user/Restaurant/Titles.vue";
 import SubCategoryList from "@/app/user/Restaurant/SubCategoryList.vue";
 
 import liff from "@line/liff";
-import { db as dbOld, firestore } from "@/plugins/firebase";
-
 import { db } from "@/lib/firebase/firebase9";
 import {
   addDoc,
@@ -318,7 +319,8 @@ export default defineComponent({
     CartButton,
     Cart,
     Delivery,
-    Category,
+    CategoryModal,
+    CategoryTop,
     CategoryIcon,
     Titles,
     SubCategoryList,
@@ -385,18 +387,6 @@ export default defineComponent({
 
     const isInMo = useIsInMo(ctx.root);
 
-    onMounted(() => {
-      // Check if we came here as the result of "Edit Items"
-      if (store.state.carts[restaurantId.value]) {
-        const cart = store.state.carts[restaurantId.value] || {};
-        //console.log("cart", cart);
-        orders.value = cart.orders || {};
-        cartItems.value = cart.cartItems || {};
-        selectedOptionsPrev.value = cart.options || {};
-        selectedOptions.value = cart.options || {};
-      }
-    });
-
     const { category, subCategory, watchCat, hasCategory } =
       useCategoryParams(ctx);
 
@@ -433,13 +423,27 @@ export default defineComponent({
       );
     });
 
-    const { loadMenu, menus, menuObj } = useMenu(
+    const { loadMenu, setCache, menus, menuObj, menuCache } = useMenu(
       restaurantId,
       isInMo,
       category,
       subCategory,
       props.groupData
     );
+
+    onMounted(() => {
+      // Check if we came here as the result of "Edit Items"
+      if (store.state.carts[restaurantId.value]) {
+        const cart = store.state.carts[restaurantId.value] || {};
+        //console.log("cart", cart);
+        orders.value = cart.orders || {};
+        cartItems.value = cart.cartItems || {};
+        selectedOptionsPrev.value = cart.options || {};
+        selectedOptions.value = cart.options || {};
+
+        setCache(cart.menuCache);
+      }
+    });
 
     loadMenu();
 
@@ -536,10 +540,13 @@ export default defineComponent({
         delete newObject[eventArgs.itemId];
       }
       orders.value = newObject;
+      if (eventArgs.optionValues) {
+        didOptionValuesChange(eventArgs);
+      }
     };
     const didOptionValuesChange = (eventArgs) => {
       selectedOptions.value = Object.assign({}, selectedOptions.value, {
-        [eventArgs.id]: eventArgs.optionValues,
+        [eventArgs.itemId]: eventArgs.optionValues,
       });
     };
 
@@ -591,6 +598,7 @@ export default defineComponent({
             orders: orders.value,
             options: selectedOptions.value,
             cartItems: cartItems.value,
+            menuCache: menuCache.value,
           },
         });
         await wasOrderCreated({
