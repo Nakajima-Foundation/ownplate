@@ -397,6 +397,7 @@ export default defineComponent({
       ctx.emit("didQuantitiesChange", {
         itemId: props.item.id,
         quantities: newQuantities,
+        optionValues: optionValues.value,
       });
     };
     const toggleMenuFlag = () => {
