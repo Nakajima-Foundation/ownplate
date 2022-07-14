@@ -159,19 +159,15 @@
                         :key="[subCategoryKey, 'item', item.id].join('_')"
                         :item="item"
                         :quantities="orders[item.id] || [0]"
-                        :optionPrev="
-                          selectedOptionsPrev[item.id] ||
-                          selectedOptions[item.id]
-                        "
+                        :selectedOptions="selectedOptions[item.id]"
                         :initialOpenMenuFlag="
                           (orders[item.id] || []).length > 0
                         "
                         :shopInfo="shopInfo"
                         :isOpen="menuId === item.id"
                         :prices="prices[item.id] || []"
-                        @didQuantitiesChange="didQuantitiesChange($event)"
-                        @didOptionValuesChange="didOptionValuesChange($event)"
-                      ></item-card>
+                        @didOrderdChange="didOrderdChange($event)"
+                        ></item-card>
                     </div>
                   </template>
                 </div>
@@ -195,7 +191,7 @@
         :selectedOptions="selectedOptions"
         :menuObj="menuObj"
         :shopInfo="shopInfo"
-        @didQuantitiesChange="didQuantitiesChange"
+        @didOrderdChange="didOrderdChange"
       />
 
       <!-- for disable all UI -->
@@ -276,6 +272,7 @@ import {
   onSnapshot,
   collection,
   where,
+  serverTimestamp,
 } from "firebase/firestore";
 
 import { wasOrderCreated } from "@/lib/firebase/functions";
@@ -382,7 +379,6 @@ export default defineComponent({
     const orders = ref({});
     const cartItems = ref({});
     const selectedOptions = ref({});
-    const selectedOptionsPrev = ref({}); // from the store.cart
 
     const howtoreceive = ref("takeout");
     const store = ctx.root.$store;
@@ -439,12 +435,9 @@ export default defineComponent({
       // Check if we came here as the result of "Edit Items"
       if (store.state.carts[restaurantId.value]) {
         const cart = store.state.carts[restaurantId.value] || {};
-        //console.log("cart", cart);
         orders.value = cart.orders || {};
         cartItems.value = cart.cartItems || {};
-        selectedOptionsPrev.value = cart.options || {};
         selectedOptions.value = cart.options || {};
-
         setCache(cart.menuCache);
       }
     });
@@ -534,26 +527,24 @@ export default defineComponent({
       );
     });
 
-    const didQuantitiesChange = (eventArgs) => {
+    const didOrderdChange = (eventArgs) => {
       // NOTE: We need to assign a new object to trigger computed properties
-      cartItems.value[eventArgs.itemId] = menuObj.value[eventArgs.itemId];
-      const newObject = { ...orders.value };
-      if (arraySum(eventArgs.quantities) > 0) {
-        newObject[eventArgs.itemId] = eventArgs.quantities;
-      } else {
-        delete newObject[eventArgs.itemId];
+      if (eventArgs.quantities) {
+        cartItems.value[eventArgs.itemId] = menuObj.value[eventArgs.itemId];
+        const newObject = { ...orders.value };
+        if (arraySum(eventArgs.quantities) > 0) {
+          newObject[eventArgs.itemId] = eventArgs.quantities;
+        } else {
+          delete newObject[eventArgs.itemId];
+        }
+        orders.value = newObject;
       }
-      orders.value = newObject;
       if (eventArgs.optionValues) {
-        didOptionValuesChange(eventArgs);
+        selectedOptions.value = Object.assign({}, selectedOptions.value, {
+          [eventArgs.itemId]: eventArgs.optionValues,
+        });
       }
     };
-    const didOptionValuesChange = (eventArgs) => {
-      selectedOptions.value = Object.assign({}, selectedOptions.value, {
-        [eventArgs.itemId]: eventArgs.optionValues,
-      });
-    };
-
     const goCheckout = async () => {
       const name = await (async () => {
         if (ctx.root.isLiffUser) {
@@ -579,8 +570,8 @@ export default defineComponent({
         isLiff: ctx.root.isLiffUser,
         phoneNumber: user.value.phoneNumber,
         name: name,
-        updatedAt: firestore.FieldValue.serverTimestamp(),
-        timeCreated: firestore.FieldValue.serverTimestamp(),
+        updatedAt: serverTimestamp(),
+        timeCreated: serverTimestamp(),
         // price never set here.
       };
       // console.log(order_data);
@@ -731,7 +722,6 @@ export default defineComponent({
 
       orders,
 
-      selectedOptionsPrev, // for initial cart status when returning from payment
       selectedOptions, // for initial cart status when switch tab
 
       totalPrice,
@@ -741,8 +731,7 @@ export default defineComponent({
 
       hasCategory,
 
-      didQuantitiesChange,
-      didOptionValuesChange,
+      didOrderdChange,
 
       handleCheckOut,
       handleDismissed,

@@ -3,7 +3,7 @@
     <!-- Item Card -->
     <div
       class="bg-white rounded-lg shadow"
-      :class="this.totalQuantity > 0 ? 'border-2 border-op-teal' : ''"
+      :class="totalQuantity > 0 ? 'border-2 border-op-teal' : ''"
     >
       <div @click="toggleMenuFlag()" class="flow-root cursor-pointer">
         <div class="p-4 float-right">
@@ -85,7 +85,6 @@
             <div class="text-xs">
               {{ $t("sitemenu.options") }}
             </div>
-
             <div class="grid grid-cols-1 space-y-2 mt-2">
               <div
                 v-for="(option, index) in options"
@@ -93,7 +92,7 @@
                 class="bg-black bg-opacity-5 rounded-lg p-4"
               >
                 <div v-if="option.length === 1" class="field">
-                  <b-checkbox v-model="optionValues[quantityKey][index]"
+                  <b-checkbox v-model="selectedOptions[quantityKey][index]"
                     ><div class="text-sm font-bold">
                       {{ displayOption(option[0], shopInfo, item) }}
                     </div></b-checkbox
@@ -102,7 +101,7 @@
                 <div v-else class="field">
                   <b-radio
                     v-for="(choice, index2) in option"
-                    v-model="optionValues[quantityKey][index]"
+                    v-model="selectedOptions[quantityKey][index]"
                     :name="`${item.id}_${quantityKey}_${index}`"
                     :native-value="index2"
                     :key="`${quantityKey}_${index2}`"
@@ -112,23 +111,6 @@
                   >
                 </div>
               </div>
-            </div>
-          </div>
-
-          <!-- Special instructions -->
-          <div v-if="false" class="mt-4">
-            <div class="text-xs">Special instructions</div>
-
-            <div class="mt-2">
-              <b-input
-                type="textarea"
-                placeholder="Enter special instructions here."
-              ></b-input>
-            </div>
-
-            <div class="mt-2 text-xs">
-              Please note that special requests may result in price adjustment
-              after your order is processed.
             </div>
           </div>
 
@@ -240,9 +222,13 @@
 </template>
 
 <script>
+import { defineComponent, ref, watch, computed, onMounted } from "@vue/composition-api";
+
 import Price from "@/components/Price";
 import SharePopup from "@/app/user/Restaurant/SharePopup";
 import * as analyticsUtil from "@/lib/firebase/analytics";
+
+import { useBasePath, arraySum, itemOptionCheckbox2options } from "@/utils/utils";
 
 // menu UI algorithm
 //   init quantities = [0]
@@ -250,7 +236,7 @@ import * as analyticsUtil from "@/lib/firebase/analytics";
 //   if button push, quantities.push(1)
 //   when update quantities, if there is 0 element in quantities and quantities.size > 0, filter 0 element in quantities.
 
-export default {
+export default defineComponent({
   components: {
     Price,
     SharePopup,
@@ -268,13 +254,13 @@ export default {
       type: Array,
       required: true,
     },
+    selectedOptions: {
+      type: Array,
+      required: false
+    },
     initialOpenMenuFlag: {
       type: Boolean,
       required: true,
-    },
-    optionPrev: {
-      type: Array,
-      required: false,
     },
     isOpen: {
       type: Boolean,
@@ -285,193 +271,184 @@ export default {
       required: true,
     },
   },
-  mounted() {
-    if (this.isOpen) {
-      this.openImage();
-    }
-  },
-  data() {
-    return {
-      openMenuFlag: this.initialOpenMenuFlag,
-      optionValues: [],
-      imagePopup: false,
-      urlSuffix: "/menus/" + this.item.id,
-    };
-  },
-  created() {
-    //console.log("created", this.optionPrev);
-    Object.keys(this.quantities).forEach((key) => {
-      const v = this.options.map((option, index) => {
-        if (
-          this.optionPrev &&
-          this.optionPrev[key] &&
-          this.optionPrev[key].length > index &&
-          this.optionPrev[key][index]
-        ) {
-          return this.optionPrev[key][index];
-        }
-        return option.length === 1 ? false : 0;
-      });
-      this.optionValues.push(v);
+  emits: ["didOrderdChange"],
+  setup(props, ctx) {
+    const openMenuFlag = ref(props.initialOpenMenuFlag);
+    const imagePopup = ref(false);
+    const urlSuffix = "/menus/" + props.item.id;
+    const restaurantId = ctx.root.$route.params.restaurantId;
+
+    const basePath = useBasePath(ctx.root);
+    
+    const isSoldOut = computed(() => {
+      return !!props.item.soldOut;
     });
-  },
-  watch: {
-    optionValues: {
-      handler: function (val) {
-        // console.log("opt: " + JSON.stringify(val));
-        this.$emit("didOptionValuesChange", {
-          itemId: this.item.id,
-          optionValues: this.optionValues,
-        });
-      },
-      deep: true,
-    },
-    openMenuFlag() {
-      if (this.openMenuFlag) {
-        analyticsUtil.sendViewItem(
-          this.item,
-          this.shopInfo,
-          this.restaurantId()
+    const totalQuantity = computed(() => {
+      return arraySum(props.quantities);
+    });
+    const allergens = computed(() => {
+      if (props.item.allergens) {
+        return ctx.root.$store.getters.stripeRegion.allergens.filter(
+          (allergen) => {
+            return props.item.allergens[allergen];
+          }
         );
-      }
-    },
-  },
-  computed: {
-    isSoldOut() {
-      return !!this.item.soldOut;
-    },
-    totalQuantity() {
-      return this.arraySum(this.quantities);
-    },
-    allergensDescription() {
-      return (
-        this.$t("allergens.title") +
-        ": " +
-        this.allergens
-          .map((allergen) => {
-            return this.$t(`allergens.${allergen}`);
-          })
-          .join(this.$t("comma"))
-      );
-    },
-    allergens() {
-      if (this.item.allergens) {
-        return this.$store.getters.stripeRegion.allergens.filter((allergen) => {
-          return this.item.allergens[allergen];
-        });
       }
       return [];
-    },
-    options() {
-      return this.itemOptionCheckbox2options(this.item.itemOptionCheckbox);
-    },
-    hasOptions() {
-      return this.options.length;
-    },
-    showMoreOption() {
-      return this.totalQuantity > 0 && this.hasOptions;
-    },
-    price() {
-      return Number(this.item.price || 0);
-    },
-    image() {
-      return (
-        (this.item?.images?.item?.resizedImages || {})["600"] ||
-        this.item.itemPhoto
-      );
-    },
-    title() {
-      return this.item.itemName;
-    },
-    description() {
-      return this.item.itemDescription;
-    },
-    descriptionOneLine() {
-      return (this.item.itemDescription || "").split(/\r?\n/)[0];
-    },
-  },
-  methods: {
-    openImage() {
-      this.imagePopup = true;
-      const current = this.$router.history.current.path;
-      const to = "/r/" + this.restaurantId() + (this.urlSuffix || "");
-      if (current !== to) {
-        this.$router.replace(to);
+    });
 
-        analyticsUtil.sendViewItem(
-          this.item,
-          this.shopInfo,
-          this.restaurantId()
-        );
-      }
-    },
-    closeImage() {
-      this.imagePopup = false;
-      this.$router.replace("/r/" + this.restaurantId());
-    },
-    pullQuantities(key) {
-      if (this.quantities[key] <= 0) {
-        return;
-      }
-      this.setQuantities(key, this.quantities[key] - 1);
-      analyticsUtil.sendRemoveFromCart(
-        this.item,
-        this.shopInfo,
-        this.restaurantId(),
-        1
+    const allergensDescription = computed(() => {
+      return (
+        ctx.root.$t("allergens.title") +
+        ": " +
+        allergens.value
+          .map((allergen) => {
+            return ctx.root.$t(`allergens.${allergen}`);
+          })
+          .join(ctx.root.$t("comma"))
       );
-    },
-    pushQuantities(key) {
-      this.setQuantities(key, this.quantities[key] + 1);
-      if (!this.openMenuFlag) {
-        this.toggleMenuFlag();
-      }
-      analyticsUtil.sendAddToCart(
-        this.item,
-        this.shopInfo,
-        this.restaurantId(),
-        1
+    });
+    const options = computed(() => {
+      return itemOptionCheckbox2options(props.item.itemOptionCheckbox);
+    });
+    const hasOptions = computed(() => {
+      return options.value.length;
+    });
+    const showMoreOption = computed(() => {
+      return totalQuantity.value > 0 && hasOptions.value;
+    });
+    const defaultOpions = computed(() => {
+      return options.value.map((option, index) => {
+        return option.length === 1 ? false : 0;
+      })
+    });
+    const image = computed(() => {
+      return (
+        (props.item?.images?.item?.resizedImages || {})["600"] ||
+        props.item.itemPhoto
       );
-    },
-    toggleMenuFlag() {
-      this.openMenuFlag = !this.openMenuFlag;
-      if (this.openMenuFlag) {
-        analyticsUtil.sendSelectItem(
-          this.item,
-          this.shopInfo,
-          this.restaurantId()
-        );
+    });
+    const title = computed(() => {
+      return props.item.itemName;
+    });
+    const description = computed(() => {
+      return props.item.itemDescription;
+    });
+    const descriptionOneLine = computed(() => {
+      return (props.item.itemDescription || "").split(/\r?\n/)[0];
+    });
+
+    watch(openMenuFlag, () => {
+      if (openMenuFlag.value) {
+        analyticsUtil.sendViewItem(props.item, props.shopInfo, restaurantId);
       }
-    },
-    setQuantities(key, newValue) {
-      const newQuantities = [...this.quantities];
+    });
+    // TODO: improve to set default value.
+    if (props.selectedOptions === undefined) {
+      const newOpt = [...defaultOpions.value];
+      ctx.emit("didOrderdChange", {
+        itemId: props.item.id,
+        optionValues: [newOpt],
+      });
+    }
+
+    const openImage = () => {
+      imagePopup.value = true;
+      const current = ctx.root.$router.history.current.path;
+      const to = basePath + "/r/" + restaurantId + (urlSuffix || "");
+      if (current !== to) {
+        ctx.root.$router.replace(to);
+        analyticsUtil.sendViewItem(props.item, props.shopInfo, restaurantId);
+      }
+    };
+    onMounted(() => {
+      if (props.isOpen) {
+        openImage();
+      }
+    });
+    const closeImage = () => {
+      imagePopup.value = false;
+      ctx.root.$router.replace(basePath + "/r/" + restaurantId);
+    };
+    const setQuantities = (key, newValue) => {
+      const newQuantities = [...props.quantities];
       newQuantities[key] = newValue;
+      const newSelectedOptions = [...props.selectedOptions];
       if (newQuantities[key] === 0 && newQuantities.length > 1) {
         newQuantities.splice(key, 1);
-
-        const newOP = [...this.optionValues];
-        newOP.splice(key, 1);
-        this.optionValues = newOP;
+        newSelectedOptions.splice(key, 1);
       }
-      this.$emit("didQuantitiesChange", {
-        itemId: this.item.id,
+      ctx.emit("didOrderdChange", {
+        itemId: props.item.id,
         quantities: newQuantities,
+        optionValues: newSelectedOptions,
       });
-    },
-    pushItem() {
-      this.optionValues.push(
-        this.options.map((option, index) => {
-          return option.length === 1 ? false : 0;
-        })
+    };
+    const toggleMenuFlag = () => {
+      openMenuFlag.value = !openMenuFlag.value;
+      if (openMenuFlag.value) {
+        analyticsUtil.sendSelectItem(props.item, props.shopInfo, restaurantId);
+      }
+    };
+    const pullQuantities = (key) => {
+      if (props.quantities[key] <= 0) {
+        return;
+      }
+      setQuantities(key, props.quantities[key] - 1);
+      analyticsUtil.sendRemoveFromCart(
+        props.item,
+        props.shopInfo,
+        restaurantId,
+        1
       );
+    };
+    const pushQuantities = (key) => {
+      setQuantities(key, props.quantities[key] + 1);
+      if (!openMenuFlag.value) {
+        toggleMenuFlag();
+      }
+      analyticsUtil.sendAddToCart(props.item, props.shopInfo, restaurantId, 1);
+    };
+    const pushItem = () => {
+      const newSelectedOptions = [...props.selectedOptions];
+      newSelectedOptions.push(defaultOpions.value);
 
-      const newQuantities = [...this.quantities];
+      const newQuantities = [...props.quantities];
       newQuantities.push(1);
-      this.$emit("didQuantitiesChange", {
-        itemId: this.item.id,
+      ctx.emit("didOrderdChange", {
+        itemId: props.item.id,
         quantities: newQuantities,
+        optionValues: newSelectedOptions,
       });
-    },
+    };
+    return {
+      openMenuFlag,
+      imagePopup,
+      urlSuffix,
+
+      // computed
+      isSoldOut,
+      totalQuantity,
+      allergens,
+      allergensDescription,
+      options,
+      hasOptions,
+      showMoreOption,
+      image,
+      title,
+      description,
+      descriptionOneLine,
+
+      // methods
+      openImage,
+      closeImage,
+      setQuantities,
+
+      toggleMenuFlag,
+      pullQuantities,
+      pushQuantities,
+      pushItem,
+    };
   },
-};
+});
 </script>

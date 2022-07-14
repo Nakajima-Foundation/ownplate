@@ -10,6 +10,7 @@
           <div v-for="(counter, key) in counters" :key="`${itemId}-${key}`">
             <CartItem
               :item="menuObj[itemId]"
+              :shopInfo="shopInfo"
               :quantity="counter"
               :selectedOptions="selectedOptions[itemId][key]"
               @increase="increase(itemId, key)"
@@ -29,7 +30,7 @@ import { defineComponent } from "@vue/composition-api";
 import CartItem from "./CartItem.vue";
 
 export default defineComponent({
-  emits: ["closeCart", "didQuantitiesChange"],
+  emits: ["closeCart", "didOrderdChange"],
   components: {
     CartItem,
   },
@@ -60,8 +61,7 @@ export default defineComponent({
         newQuantities.splice(key, 1);
         newOP.splice(key, 1);
       }
-      console.log(itemId, newQuantities);
-      ctx.emit("didQuantitiesChange", {
+      ctx.emit("didOrderdChange", {
         itemId: itemId,
         quantities: newQuantities,
         optionValues: newOP,
