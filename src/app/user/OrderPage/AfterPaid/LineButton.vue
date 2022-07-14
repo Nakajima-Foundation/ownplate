@@ -1,5 +1,5 @@
 <template>
-  <div v-if="showAddLine" class="mt-6 text-center">
+  <div v-if="showAddLine && enableLine" class="mt-6 text-center">
     <b-button @click="handleLineAuth" class="b-reset-tw">
       <div
         class="inline-flex justify-center items-center h-12 px-6 rounded-full"
@@ -20,6 +20,12 @@ import { lineAuthURL } from "@/lib/line/line";
 import { ownPlateConfig } from "@/config/project";
 
 export default defineComponent({
+  props: {
+    groupData: {
+      type: Object,
+      required: false,
+    },
+  },
   setup(props, ctx) {
     const handleLineAuth = () => {
       const url = lineAuthURL("/callback/line", {
@@ -31,9 +37,16 @@ export default defineComponent({
       // return true;
       return !!ownPlateConfig.line, !ctx.root.$store.state.claims?.line;
     });
+    const enableLine = computed(() => {
+      if (props.groupData?.enableLine === undefined) {
+        return true;
+      }
+      return props.groupData?.enableLine;
+    });
     return {
       handleLineAuth,
       showAddLine,
+      enableLine,
     };
   },
 });

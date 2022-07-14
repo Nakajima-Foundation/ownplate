@@ -43,7 +43,7 @@
         <ThankYou />
 
         <!-- Line Button -->
-        <LineButton />
+        <LineButton :groupData="groupData" />
 
         <!-- Order Status -->
         <OrderStatus :orderInfo="orderInfo" :orderName="orderName" />
@@ -792,6 +792,10 @@ export default {
     },
     moPrefix: {
       type: String,
+      required: false,
+    },
+    groupData: {
+      type: Object,
       required: false,
     },
   },
