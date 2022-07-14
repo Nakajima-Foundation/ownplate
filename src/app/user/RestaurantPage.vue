@@ -115,6 +115,7 @@
               <SubCategoryList
                 :subCategoryData="subCategoryData"
                 :categoryBathPath="categoryBathPath"
+                :subCategoryId="subCategory"
               />
             </div>
 
@@ -749,6 +750,8 @@ export default defineComponent({
       subCategoryData,
       categoryBathPath,
 
+      subCategory,
+      
       openGroupCategory,
       closeGroupCategory,
       isOpenGroupCategory,
