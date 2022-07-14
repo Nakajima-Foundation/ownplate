@@ -382,6 +382,13 @@ export const orderAccounting = (restaurantData, food_sub_total, alcohol_sub_tota
   }
 };
 
+const getGroupRestautantRef = async (db, groupId: string) => {
+  const groupData = (await db.doc(`groups/${groupId}`).get()).data();
+  if (!groupData) {
+    throw new functions.https.HttpsError("invalid-argument", "This group does not exist.");
+  }
+  return db.doc(`restaurants/${groupData.restaurantId}`);
+};
 // export const wasOrderCreated = async (db, snapshot, context) => {
 export const wasOrderCreated = async (db, data: any, context) => {
   const customerUid = utils.validate_auth(context);
@@ -402,7 +409,9 @@ export const wasOrderCreated = async (db, data: any, context) => {
     if (restaurantData.deletedFlag || !restaurantData.publicFlag) {
       return orderRef.update("status", order_status.error);
     }
-
+    // check mo
+    const menuRestaurantRef = restaurantData.groupId ? await getGroupRestautantRef(db, restaurantData.groupId) : restaurantRef;
+    
     const order = await orderRef.get();
 
     if (!order) {
@@ -416,7 +425,7 @@ export const wasOrderCreated = async (db, data: any, context) => {
     }
     const multiple = utils.getStripeRegion().multiple; //100 for USD, 1 for JPY
 
-    const { newOrderData, newItems, newPrices, food_sub_total, alcohol_sub_total } = await createNewOrderData(restaurantRef, orderRef, orderData, multiple);
+    const { newOrderData, newItems, newPrices, food_sub_total, alcohol_sub_total } = await createNewOrderData(menuRestaurantRef, orderRef, orderData, multiple);
 
     // Atomically increment the orderCount of the restaurant
     let orderCount = 0;

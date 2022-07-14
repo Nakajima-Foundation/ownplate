@@ -28,7 +28,6 @@ exportIfNeeded("lineSetCustomClaim", "line/lineSetCustomClaim", exports);
 exportIfNeeded("liffAuthenticate", "liffAuthenticate", exports); // jp
 exportIfNeeded("traceProcess", "traceProcess", exports);
 
-exportIfNeeded("wasOrderCreated2", "order/wasOrderCreated2", exports); // TODO REMOVE
 exportIfNeeded("orderUpdate", "order/orderUpdate", exports);
 exportIfNeeded("orderPlace", "order/orderPlace", exports); // TODO Remove
 
