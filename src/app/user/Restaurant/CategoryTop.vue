@@ -1,27 +1,34 @@
 <template>
-<div class="mt-3 grid grid-cols-3 gap-2 md:grid-cols-5 lg:grid-cols-6">
+  <div
+    class="mt-4 grid items-center grid-cols-2 gap-3 lg:grid-cols-3 xl:grid-cols-4"
+  >
     <div v-for="(cat, k) in categoryData" :key="k">
-      <div class="mb-3 w-full text-sm font-bold text-op-teal">
-        <router-link
-          :to="
-            basePath +
-            '/r/' +
-            restaurantId() +
-            '/cat/' +
-            cat.id +
-            '/' +
-            cat.subcategory
-          "
-        >
-          <div @click="closeCategory">
-            <img
-              src="/apple-touch-icon.png"
-              class="bg-white mb-1 w-full rounded-lg shadow"
-            />
-            <span>{{ cat.name }}</span>
+      <router-link
+        :to="
+          basePath +
+          '/r/' +
+          restaurantId() +
+          '/cat/' +
+          cat.id +
+          '/' +
+          cat.subcategory
+        "
+      >
+        <div @click="closeCategory">
+          <div class="flex items-center">
+            <div
+              class="mt-2 w-10 h-10 mr-2 bg-white border-gray-100 rounded-lg shadow-none"
+            >
+              <img src="/apple-touch-icon.png" />
+            </div>
+            <div
+              class="flex-1 mt-2 text-xs leading-tight font-bold text-op-teal"
+            >
+              {{ cat.name }}
+            </div>
           </div>
-        </router-link>
-      </div>
+        </div>
+      </router-link>
     </div>
   </div>
 </template>

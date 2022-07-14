@@ -340,7 +340,8 @@
     "delivery": "Delivery",
     "category": "category",
     "viewMore": "View More",
-    "viewLess": "Close"
+    "viewLess": "Close",
+    "productCategory": "Product Category"
   },
   "transactionsAct": {
     "title": "Specified Commercial Transaction Act",
@@ -580,7 +581,8 @@
     "addItem": "Add Item",
     "downloadMenu": "Download menu",
     "cancel": "Cancel",
-    "next": "Next"
+    "next": "Next",
+    "category": "Category"
   },
   "sms": {
     "signin": "Phone Number Sign In",

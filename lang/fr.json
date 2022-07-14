@@ -334,7 +334,8 @@
     "delivery": "Delivery",
     "category": "category",
     "viewMore": "Voir plus",
-    "viewLess": "Proche"
+    "viewLess": "Proche",
+    "productCategory": "Catégories de produits"
   },
   "transactionsAct": {
     "title": "Loi sur les transactions commerciales spécifiées",
@@ -570,7 +571,8 @@
     "addItem": "Ajouter un article",
     "downloadMenu": "Télécharger le menu",
     "cancel": "Annuler",
-    "next": "Suivant"
+    "next": "Suivant",
+    "category": "Catégorie"
   },
   "sms": {
     "signin": "Se connecter avec un numéro de téléphone",
