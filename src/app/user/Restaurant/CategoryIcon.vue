@@ -4,7 +4,9 @@
     @click="openGroupCategory"
   >
     <i class="material-icons text-2xl text-op-teal">tune</i>
-    <div class="text-xs font-bold text-op-teal">カテゴリ</div>
+    <div class="text-xs font-bold text-op-teal">
+      {{ $t("button.category") }}
+    </div>
   </div>
 </template>
 
