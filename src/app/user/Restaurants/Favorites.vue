@@ -43,7 +43,7 @@
       </div>
     </div>
 
-    <div class="mt-6 mx-6">
+    <div class="mt-6 mx-6" v-if="mode==='normal'">
       <router-link :to="'/r'">
         <div
           class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
@@ -65,9 +65,7 @@ import { RestaurantHeader } from "@/config/header";
 import AreaItem from "@/app/user/Restaurants/AreaItem";
 import { ownPlateConfig } from "@/config/project";
 import BackButton from "@/components/BackButton";
-import { useBasePath } from "@/utils/utils";
-
-import { useIsInMo, useMoPrefix } from "@/utils/utils";
+import { useIsInMo, useMoPrefix, routeMode, useBasePath} from "@/utils/utils";
 
 export default defineComponent({
   components: {
@@ -88,6 +86,8 @@ export default defineComponent({
     const isInMo = useIsInMo(ctx.root);
     const moPrefix = useMoPrefix(ctx.root);
 
+    const mode = routeMode(ctx.root);
+    
     const path = computed(() => {
       if (isInMo.value) {
         return `users/${ctx.root.user.uid}/groups/${moPrefix.value}/reviews`;
@@ -111,10 +111,14 @@ export default defineComponent({
             return !!doc.likes;
           });
       })();
+    } else {
+       ctx.root.$router.push(basePath.value + "/u/profile")
     }
     return {
       likes,
       basePath,
+
+      mode,
     };
   },
 });
