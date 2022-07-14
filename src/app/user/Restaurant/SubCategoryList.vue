@@ -1,5 +1,5 @@
 <template>
-  <div class="mx-6 mt-2 lg:mx-0">
+  <div class="mx-6 mt-2 lg:mx-0 inline-flex">
     <template v-for="(subcategory, key) in subCategoryData">
       <router-link
         :to="`${categoryBathPath}/${subcategory.id}`"
