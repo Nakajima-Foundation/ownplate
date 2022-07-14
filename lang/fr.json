@@ -264,9 +264,11 @@
     "area": "Région",
     "areaAll": "Tous les restaurants",
     "areaTop": "Top régions",
-    "likes": "Likes",
+    "likes": "Aime",
+    "favoriteShop": "Favoris",
     "noLikes": "Pas de restaurants préférés",
-    "allRestaurants": "Find Restaurants",
+    "allRestaurants": "Trouver des restaurants",
+    "shopList": "Liste des magasins",
     "areas": {
       "hokkaido": "Hokkaido Area",
       "kanto": "Kanto Area",

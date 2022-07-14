@@ -52,7 +52,7 @@
           @click="handleClose()"
         >
           <i class="material-icons mr-2">favorite</i>
-          <span>{{ $t("find.likes") }}</span>
+          <span>{{ $t("find.favoriteShop") }}</span>
         </div>
       </router-link>
     </div>
@@ -65,7 +65,7 @@
           @click="handleClose()"
         >
           <i class="material-icons mr-2">restaurant</i>
-          <span>{{ $t("find.allRestaurants") }}</span>
+          <span>{{ $t("find.shopList") }}</span>
         </div>
       </router-link>
     </div>

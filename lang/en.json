@@ -271,8 +271,10 @@
     "areaAll": "All Restaurants",
     "areaTop": "Areas Top",
     "likes": "Likes",
+    "favoriteShop": "Favorites",
     "noLikes": "No Favorite Restaurants",
     "allRestaurants": "Find Restaurants",
+    "shopList": "Store list",
     "areas": {
       "hokkaido": "Hokkaido Area",
       "kanto": "Kanto Area",

@@ -29,7 +29,7 @@
 
           <ProfileStripe />
 
-          <ProfileLine />
+          <ProfileLine v-if="enableLine" />
         </div>
 
         <!-- Sign Out -->
@@ -75,6 +75,12 @@ import { defaultHeader } from "@/config/header";
 import { useIsInMo } from "@/utils/utils";
 
 export default defineComponent({
+  props: {
+    groupData: {
+      type: Object,
+      required: false,
+    },
+  },
   components: {
     HistoryButton,
     FavoriteButton,
@@ -90,7 +96,7 @@ export default defineComponent({
       title: [defaultHeader.title, "Profile"].join(" / "),
     };
   },
-  setup(_, ctx) {
+  setup(props, ctx) {
     const isInMo = useIsInMo(ctx.root);
 
     const claims = computed(() => {
@@ -100,10 +106,19 @@ export default defineComponent({
       console.log("handleSignOut");
       signOut(auth);
     };
+
+    const enableLine = computed(() => {
+      if (props.groupData?.enableLine === undefined) {
+        return true;
+      }
+      return props.groupData?.enableLine;
+    });
     return {
       claims,
       handleSignOut,
       isInMo,
+
+      enableLine,
     };
   },
 });

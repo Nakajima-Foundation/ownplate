@@ -273,8 +273,10 @@
     "areaAll": "全ての飲食店",
     "areaTop": "エリア一覧",
     "likes": "お気に入り",
+    "favoriteShop": "お気に入り店舗",
     "noLikes": "お気に入りはありません",
     "allRestaurants": "お店を探す",
+    "shopList": "店舗一覧",
     "areas": {
       "hokkaido": "北海道",
       "kanto": "関東地方",
