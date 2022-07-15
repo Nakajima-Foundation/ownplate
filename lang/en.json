@@ -716,6 +716,7 @@
       "suspend": "Suspend",
       "suspendSettings": "Suspension Settings",
       "suspendUntil": "Suspend until {display}",
+      "suspendDayUntil": "Suspend until the end of {display} days",
       "suspendNewOrders": "Suspend New Orders",
       "suspendForAllDay": "For All Day",
       "suspending": "Suspendinding",

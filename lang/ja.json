@@ -724,6 +724,7 @@
       "suspend": "受付休止",
       "suspendSettings": "受付休止設定",
       "suspendUntil": "{display} まで休止",
+      "suspendDayUntil": "{display} 日後の終わりまで休止",
       "suspendNewOrders": "新規注文受付",
       "suspendForAllDay": "終日休止",
       "suspending": "受付休止中",
