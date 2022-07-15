@@ -447,7 +447,7 @@ export const wasOrderCreated = async (db, data: any, context) => {
 
     await createCustomer(db, customerUid, context.auth.token.phone_number);
 
-    return orderRef.update({
+    return orderRef.update(utils.filterData({
       order: newOrderData,
       menuItems: newItems, // Clone of ordered menu items (simplified)
       prices: newPrices,
@@ -468,7 +468,8 @@ export const wasOrderCreated = async (db, data: any, context) => {
           tax: accountingResult.alcohol_tax,
         },
       },
-    });
+      groupId: restaurantData.groupId,
+    }));
   } catch (e) {
     console.log(e);
     return orderRef.update("status", order_status.error);
