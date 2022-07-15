@@ -59,7 +59,7 @@
         <b-button
           v-for="time in availableTimes"
           :key="time.time"
-          @click="handleSuspend(time.time)"
+          @click="handleSuspend(0, time.time)"
           class="b-reset-tw mr-4 mb-4"
         >
           <div
@@ -73,20 +73,23 @@
         </b-button>
 
         <div class="mt-4">
-          <b-button
-            v-if="availableTimes.length > 0"
-            class="b-reset-tw"
-            @click="handleSuspend(24 * 60)"
-          >
-            <div
-              class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5"
-            >
-              <i class="material-icons text-lg text-op-teal mr-2">alarm_off</i>
-              <div class="text-sm font-bold text-op-teal">
-                {{ $t("admin.order.suspendForAllDay") }}
+          <div v-for="(day, k) in [0, 1, 2, 7]" :key="k" class="inline-flex">
+            <b-button
+              v-if="availableTimes.length > 0"
+              class="b-reset-tw"
+              @click="handleSuspend(day, 24 * 60)"
+              >
+              <div
+                class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5 mr-4 mb-4"
+                >
+                <i class="material-icons text-lg text-op-teal mr-2">alarm_off</i>
+                <div class="text-sm font-bold text-op-teal">
+                  <span v-if="day>0">{{  $t("admin.order.suspendDayUntil", { display: day }) }}</span>
+                  <span v-else>{{ $t("admin.order.suspendForAllDay") }}</span>
+                </div>
               </div>
-            </div>
-          </b-button>
+            </b-button>
+          </div>
         </div>
       </div>
 
@@ -191,18 +194,22 @@ export default {
         if (time < new Date()) {
           return false;
         }
-        return this.$d(time, "time");
+        console.log(time);
+        return this.$d(time, "long");
       }
       return false;
     },
   },
   methods: {
-    async handleSuspend(time) {
+    async handleSuspend(day, time) {
       const date = new Date(this.date.date);
       date.setHours(time / 60);
       date.setMinutes(time % 60);
+      if (day && day > 0) {
+        date.setDate(date.getDate() + day);
+      }
       const ts = firebase.firestore.Timestamp.fromDate(date);
-      console.log(ts);
+      console.log(ts, date);
       this.$store.commit("setLoading", true);
       await db.doc(`restaurants/${this.restaurantId()}`).update({
         suspendUntil: ts,
