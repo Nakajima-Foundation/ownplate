@@ -53,15 +53,19 @@ export default defineComponent({
           !shopInfo.value.deletedFlag &&
           shopInfo.value.publicFlag;
 
-        if (exist_and_publig) {
-          if (mode.value === "liff") {
-            notFound.value = !shopInfo.value.supportLiff;
-          } else {
-            notFound.value = false;
+        notFound.value = (() => {
+          if (!exist_and_publig) {
+            return true;
           }
-        } else {
-          notFound.value = true;
-        }
+          if (mode.value === "liff") {
+            return !shopInfo.value.supportLiff;
+          }
+          if (mode.value === "mo") {
+            return !shopInfo.value.groupId
+          }
+          return !!shopInfo.value.groupId || !!shopInfo.value.supportLiff
+        })();
+        
         if (!notFound.value) {
           const uid = restaurant_data.uid;
           getDoc(doc(db, `/admins/${uid}/public/payment`)).then((snapshot) => {
