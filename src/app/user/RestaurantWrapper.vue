@@ -61,11 +61,11 @@ export default defineComponent({
             return !shopInfo.value.supportLiff;
           }
           if (mode.value === "mo") {
-            return !shopInfo.value.groupId
+            return !shopInfo.value.groupId;
           }
-          return !!shopInfo.value.groupId || !!shopInfo.value.supportLiff
+          return !!shopInfo.value.groupId || !!shopInfo.value.supportLiff;
         })();
-        
+
         if (!notFound.value) {
           const uid = restaurant_data.uid;
           getDoc(doc(db, `/admins/${uid}/public/payment`)).then((snapshot) => {

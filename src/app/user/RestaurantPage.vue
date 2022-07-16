@@ -168,7 +168,7 @@
                         :isOpen="menuId === item.id"
                         :prices="prices[item.id] || []"
                         @didOrderdChange="didOrderdChange($event)"
-                        ></item-card>
+                      ></item-card>
                     </div>
                   </template>
                 </div>
@@ -751,7 +751,7 @@ export default defineComponent({
       categoryBathPath,
 
       subCategory,
-      
+
       openGroupCategory,
       closeGroupCategory,
       isOpenGroupCategory,

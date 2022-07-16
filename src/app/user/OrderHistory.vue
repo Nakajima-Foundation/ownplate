@@ -74,7 +74,7 @@ export default defineComponent({
 
     const isInMo = useIsInMo(ctx.root);
     const moPrefix = getMoPrefix(ctx.root);
-    
+
     const uid = computed(() => {
       return ctx.root.$store.getters.uidUser || ctx.root.$store.getters.uidLiff;
     });
@@ -86,31 +86,30 @@ export default defineComponent({
     let detacher = null;
     const detach = () => {
       detacher && detacher();
-      detacher = null; 
+      detacher = null;
     };
-    
+
     const getHistory = () => {
       detach();
       if (uid.value) {
-        const orderQuery = isInMo.value ?
-              query(
-                collectionGroup(db, "orders"),
-                where("uid", "==", uid.value),
-                where("groupId", "==", moPrefix),
-                orderBy("orderPlacedAt", "desc"),
-                limit(200)
-              ) :
-              query(
-                collectionGroup(db, "orders"),
-                where("uid", "==", uid.value),
-                orderBy("orderPlacedAt", "desc"),
-                limit(200)
-              );
-        
-        detacher = onSnapshot(
-          orderQuery,
-          (snapshot) => {
-            orders.value = snapshot.docs.map((doc) => {
+        const orderQuery = isInMo.value
+          ? query(
+              collectionGroup(db, "orders"),
+              where("uid", "==", uid.value),
+              where("groupId", "==", moPrefix),
+              orderBy("orderPlacedAt", "desc"),
+              limit(200)
+            )
+          : query(
+              collectionGroup(db, "orders"),
+              where("uid", "==", uid.value),
+              orderBy("orderPlacedAt", "desc"),
+              limit(200)
+            );
+
+        detacher = onSnapshot(orderQuery, (snapshot) => {
+          orders.value = snapshot.docs
+            .map((doc) => {
               const order = doc.data();
               order.restaurantId = doc.ref.path.split("/")[1];
               order.id = doc.id;
@@ -121,14 +120,14 @@ export default defineComponent({
                 order.timeEstimated = order.timeEstimated.toDate();
               }
               return order;
-            }).filter(data => {
+            })
+            .filter((data) => {
               if (isInMo.value) {
                 return true;
               }
               return data.groupId === undefined;
             });
-          }
-        );
+        });
       }
     };
 

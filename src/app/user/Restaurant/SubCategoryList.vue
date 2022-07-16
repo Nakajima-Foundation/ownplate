@@ -4,8 +4,12 @@
       <router-link
         :to="`${categoryBathPath}/${subcategory.id}`"
         class="inline-flex justify-center items-center h-9 rounded-full bg-white mr-4 mt-2 px-1"
+      >
+        <i
+          class="material-icons ml-2 text-op-teal"
+          v-if="subCategoryId === subcategory.id"
+          >check</i
         >
-        <i class="material-icons ml-2 text-op-teal" v-if="subCategoryId === subcategory.id">check</i>
         <span class="ml-2" v-else></span>
         <div class="text-sm font-bold text-op-teal mr-2">
           {{ subcategory.name }}
@@ -28,7 +32,7 @@ export default defineComponent({
       type: String,
       required: true,
     },
-    subCategoryId: { 
+    subCategoryId: {
       type: String,
       required: true,
     },

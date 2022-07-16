@@ -78,13 +78,17 @@
               v-if="availableTimes.length > 0"
               class="b-reset-tw"
               @click="handleSuspend(day, 24 * 60)"
-              >
+            >
               <div
                 class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5 mr-4 mb-4"
+              >
+                <i class="material-icons text-lg text-op-teal mr-2"
+                  >alarm_off</i
                 >
-                <i class="material-icons text-lg text-op-teal mr-2">alarm_off</i>
                 <div class="text-sm font-bold text-op-teal">
-                  <span v-if="day>0">{{  $t("admin.order.suspendDayUntil", { display: day }) }}</span>
+                  <span v-if="day > 0">{{
+                    $t("admin.order.suspendDayUntil", { display: day })
+                  }}</span>
                   <span v-else>{{ $t("admin.order.suspendForAllDay") }}</span>
                 </div>
               </div>

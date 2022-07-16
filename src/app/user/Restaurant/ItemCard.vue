@@ -222,13 +222,23 @@
 </template>
 
 <script>
-import { defineComponent, ref, watch, computed, onMounted } from "@vue/composition-api";
+import {
+  defineComponent,
+  ref,
+  watch,
+  computed,
+  onMounted,
+} from "@vue/composition-api";
 
 import Price from "@/components/Price";
 import SharePopup from "@/app/user/Restaurant/SharePopup";
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
-import { useBasePath, arraySum, itemOptionCheckbox2options } from "@/utils/utils";
+import {
+  useBasePath,
+  arraySum,
+  itemOptionCheckbox2options,
+} from "@/utils/utils";
 
 // menu UI algorithm
 //   init quantities = [0]
@@ -256,7 +266,7 @@ export default defineComponent({
     },
     selectedOptions: {
       type: Array,
-      required: false
+      required: false,
     },
     initialOpenMenuFlag: {
       type: Boolean,
@@ -279,7 +289,7 @@ export default defineComponent({
     const restaurantId = ctx.root.$route.params.restaurantId;
 
     const basePath = useBasePath(ctx.root);
-    
+
     const isSoldOut = computed(() => {
       return !!props.item.soldOut;
     });
@@ -320,7 +330,7 @@ export default defineComponent({
     const defaultOpions = computed(() => {
       return options.value.map((option, index) => {
         return option.length === 1 ? false : 0;
-      })
+      });
     });
     const image = computed(() => {
       return (

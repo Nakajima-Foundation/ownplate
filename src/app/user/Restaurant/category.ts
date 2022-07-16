@@ -13,7 +13,7 @@ export default (name: string) => {
     emits: ["closeGroupCategory"],
     setup(props, ctx) {
       const basePath = useBasePath(ctx.root);
-      
+
       const closeCategory = () => {
         ctx.emit("closeGroupCategory");
       };
