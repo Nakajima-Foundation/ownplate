@@ -53,7 +53,7 @@ import PhoneLogin from "@/app/auth/PhoneLogin";
 import BackButton from "@/components/BackButton";
 
 import { defaultHeader } from "@/config/header";
-import { useBasePath, useTopPath } from "@/utils/utils";
+import { useBasePath, useTopPath, useIsInMo, getMoPrefix } from "@/utils/utils";
 
 export default defineComponent({
   metaInfo() {
@@ -72,6 +72,9 @@ export default defineComponent({
     const basePath = useBasePath(ctx.root);
     const topPath = useTopPath(ctx.root);
 
+    const isInMo = useIsInMo(ctx.root);
+    const moPrefix = getMoPrefix(ctx.root);
+    
     const uid = computed(() => {
       return ctx.root.$store.getters.uidUser || ctx.root.$store.getters.uidLiff;
     });
@@ -81,17 +84,31 @@ export default defineComponent({
     });
 
     let detacher = null;
-
-    const getHistory = () => {
+    const detach = () => {
       detacher && detacher();
+      detacher = null; 
+    };
+    
+    const getHistory = () => {
+      detach();
       if (uid.value) {
+        const orderQuery = isInMo.value ?
+              query(
+                collectionGroup(db, "orders"),
+                where("uid", "==", uid.value),
+                where("groupId", "==", moPrefix),
+                orderBy("orderPlacedAt", "desc"),
+                limit(200)
+              ) :
+              query(
+                collectionGroup(db, "orders"),
+                where("uid", "==", uid.value),
+                orderBy("orderPlacedAt", "desc"),
+                limit(200)
+              );
+        
         detacher = onSnapshot(
-          query(
-            collectionGroup(db, "orders"),
-            where("uid", "==", uid.value),
-            orderBy("orderPlacedAt", "desc"),
-            limit(200)
-          ),
+          orderQuery,
           (snapshot) => {
             orders.value = snapshot.docs.map((doc) => {
               const order = doc.data();
@@ -100,16 +117,18 @@ export default defineComponent({
               // HACK: Remove it later
               order.timePlaced =
                 (order.timePlaced && order.timePlaced.toDate()) || new Date();
-              new Date();
               if (order.timeEstimated) {
                 order.timeEstimated = order.timeEstimated.toDate();
               }
               return order;
+            }).filter(data => {
+              if (isInMo.value) {
+                return true;
+              }
+              return data.groupId === undefined;
             });
           }
         );
-      } else {
-        detacher = null;
       }
     };
 
@@ -137,7 +156,7 @@ export default defineComponent({
     });
 
     onUnmounted(() => {
-      detacher && detacher();
+      detach();
     });
 
     return {
