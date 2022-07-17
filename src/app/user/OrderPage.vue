@@ -106,24 +106,7 @@
 
       <!-- Before Paid -->
       <div v-else class="mt-4 mx-6">
-        <div class="bg-red-700 bg-opacity-10 rounded-lg p-4 text-center">
-          <div class="text-base font-bold text-red-700">
-            {{ $t("order.orderNotPlacedYet") }}
-          </div>
-        </div>
-        <div
-          class="bg-red-700 bg-opacity-10 rounded-lg p-4 text-center mt-4"
-          v-if="shopInfo.enableDelivery"
-        >
-          <div class="text-base font-bold text-red-700">
-            <span v-if="orderInfo.isDelivery">
-              {{ $t("order.thisIsDeliveryOrder") }}
-            </span>
-            <span v-else>
-              {{ $t("order.thisIsTakeoutOrder") }}
-            </span>
-          </div>
-        </div>
+        <BeforePaidAlert :orderInfo="orderInfo" :shopInfo="shopInfo" />
       </div>
       <!-- end of Before Paid -->
 
@@ -316,35 +299,7 @@
             </div>
 
             <!-- Order Notice -->
-            <template
-              v-if="
-                shopInfo &&
-                shopInfo.orderNotice &&
-                shopInfo.orderNotice.length > 0
-              "
-            >
-              <div class="mt-6">
-                <div class="text-xl font-bold text-black text-opacity-30">
-                  {{ $t("order.orderNotice") }}
-                </div>
-
-                <div class="bg-white rounded-lg shadow p-4 mt-2">
-                  <div class="flex">
-                    <div class="mr-2">
-                      <i class="material-icons text-2xl text-red-700">error</i>
-                    </div>
-                    <div
-                      class="flex-1 text-base text-red-700"
-                      :class="
-                        shopInfo.enablePreline ? 'whitespace-pre-line' : ''
-                      "
-                    >
-                      {{ shopInfo.orderNotice }}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </template>
+            <OrderNotice :shopInfo="shopInfo" />
 
             <!-- Message -->
             <template v-if="shopInfo && shopInfo.acceptUserMessage">
@@ -527,8 +482,12 @@ import LineButton from "./OrderPage/AfterPaid/LineButton.vue";
 import RestaurantLine from "./OrderPage/AfterPaid/RestaurantLine.vue";
 import StripeStatus from "./OrderPage/AfterPaid/StripeStatus.vue";
 import OrderStatus from "./OrderPage/AfterPaid/OrderStatus.vue";
-import ECCustomer from "./OrderPage/ECCustomer.vue";
 import Receipt from "./OrderPage/AfterPaid/Receipt.vue";
+
+import ECCustomer from "./OrderPage/ECCustomer.vue";
+import OrderNotice from "./OrderPage/OrderNotice.vue";
+
+import BeforePaidAlert from "./OrderPage/BeforePaid/BeforePaidAlert.vue";
 
 import { db, firestore } from "@/plugins/firebase";
 import { orderPlace } from "@/lib/firebase/functions";
@@ -586,7 +545,10 @@ export default {
     OrderStatus,
     Receipt,
 
+    BeforePaidAlert,
+
     ECCustomer,
+    OrderNotice,
   },
   props: {
     shopInfo: {
