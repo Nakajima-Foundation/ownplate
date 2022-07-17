@@ -152,6 +152,7 @@
               :orderItems="this.orderItems"
               :orderInfo="this.orderInfo || {}"
               :shippingCost="shippingCost"
+              :groupData="groupData"
               @change="handleTipChange"
             ></order-info>
           </div>

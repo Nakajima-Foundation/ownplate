@@ -211,6 +211,10 @@ export default {
       type: Object,
       required: true,
     },
+    groupData: {
+      type: Object,
+      required: true,
+    },
     editable: {
       type: Boolean,
       required: false,
@@ -264,7 +268,14 @@ export default {
       return this.orderInfo.status === order_status.validation_ok;
     },
     enableTip() {
-      return !this.shopInfo.isEC;
+      if (this.shopInfo.isEC) {
+        return false;
+      }
+      if (this.groupData) {
+        return this.groupData.enableTip
+      }
+      return true;
+      // return !this.shopInfo.isEC;
     },
     maxTip() {
       return this.calcTip(this.regionTip.max);
