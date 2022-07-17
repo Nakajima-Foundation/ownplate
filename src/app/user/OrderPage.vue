@@ -181,7 +181,7 @@
               (shopInfo.isEC || orderInfo.isDelivery) &&
               hasCustomerInfo
             "
-            >
+          >
             <CustomerInfo
               :shopInfo="shopInfo"
               :orderId="orderId"
@@ -255,18 +255,30 @@
               v-if="shopInfo.isEC || orderInfo.isDelivery"
               class="bg-white rounded-lg shadow p-4 mb-4 mt-2"
             >
-              <ECCustomer ref="ecCustomerRef" :user="user" :shopInfo="shopInfo" :orderInfo="orderInfo"
-                          @updateLocation="updateLocation" />
+              <ECCustomer
+                ref="ecCustomerRef"
+                :user="user"
+                :shopInfo="shopInfo"
+                :orderInfo="orderInfo"
+                @updateLocation="updateLocation"
+              />
             </div>
             <!-- End of EC and Delivery -->
 
             <!-- map for delivery -->
             <div class="mt-4" v-if="orderInfo.isDelivery">
               <span
-                v-if="$refs.ecCustomerRef && $refs.ecCustomerRef.ecErrors['location'].length > 0"
+                v-if="
+                  $refs.ecCustomerRef &&
+                  $refs.ecCustomerRef.ecErrors['location'].length > 0
+                "
                 class="text-red-700 font-bold"
               >
-                <div v-for="(error, key) in $refs.ecCustomerRef.ecErrors['location']">
+                <div
+                  v-for="(error, key) in $refs.ecCustomerRef.ecErrors[
+                    'location'
+                  ]"
+                >
                   {{ $t(error) }}
                 </div>
               </span>
@@ -274,7 +286,9 @@
                 ref="orderPageMapRef"
                 @updateHome="updateHome"
                 :shopInfo="shopInfo"
-                :fullAddress="$refs.ecCustomerRef && $refs.ecCustomerRef.fullAddress"
+                :fullAddress="
+                  $refs.ecCustomerRef && $refs.ecCustomerRef.fullAddress
+                "
                 :deliveryInfo="deliveryData"
               />
             </div>
@@ -426,7 +440,11 @@
 
               <!-- Error message for ec and delivery -->
               <div
-                v-if="requireAddress && $refs.ecCustomerRef && $refs.ecCustomerRef.hasEcError"
+                v-if="
+                  requireAddress &&
+                  $refs.ecCustomerRef &&
+                  $refs.ecCustomerRef.hasEcError
+                "
                 class="text-center text-red-700 font-bold mt-2"
               >
                 {{ $t("order.alertReqireAddress") }}
@@ -567,7 +585,7 @@ export default {
     StripeStatus,
     OrderStatus,
     Receipt,
-    
+
     ECCustomer,
   },
   props: {
