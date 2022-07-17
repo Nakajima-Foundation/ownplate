@@ -211,27 +211,7 @@
 
           <!-- Receipt -->
           <template v-if="order_accepted && hasStripe">
-            <div class="bg-white rounded-lg shadow p-4 mt-4">
-              <!-- Details -->
-              <div class="mt-2 text-xl font-bold text-black">
-                {{ $t("order.receipt.receipt") }}
-              </div>
-              <div class="mt-2">
-                <span @click="receipt()" class="cursor-pointer">{{
-                  $t(
-                    isLoadingReceipt
-                      ? "order.receipt.loading"
-                      : "order.receipt.getReceipt"
-                  )
-                }}</span>
-              </div>
-              <div class="mt-2 text-xs font-bold">
-                {{ $t("order.receipt.explain1") }}
-              </div>
-              <div class="text-xs font-bold">
-                {{ $t("order.receipt.explain2") }}
-              </div>
-            </div>
+            <Receipt />
           </template>
 
           <!-- View Menu Page Button -->
@@ -530,6 +510,7 @@ import RestaurantLine from "./OrderPage/AfterPaid/RestaurantLine.vue";
 import StripeStatus from "./OrderPage/AfterPaid/StripeStatus.vue";
 import OrderStatus from "./OrderPage/AfterPaid/OrderStatus.vue";
 import ECCustomer from "./OrderPage/ECCustomer.vue";
+import Receipt from "./OrderPage/AfterPaid/Receipt.vue";
 
 import { db, firestore } from "@/plugins/firebase";
 import { orderPlace } from "@/lib/firebase/functions";
@@ -585,7 +566,8 @@ export default {
     RestaurantLine,
     StripeStatus,
     OrderStatus,
-
+    Receipt,
+    
     ECCustomer,
   },
   props: {
@@ -634,7 +616,6 @@ export default {
       isPlacing: false,
       tip: 0,
       sendSMS: true,
-      isLoadingReceipt: false,
       postageInfo: {},
       memo: "",
     };
@@ -1020,24 +1001,6 @@ export default {
           }
         },
       });
-    },
-    async receipt() {
-      if (this.isLoadingReceipt) {
-        return;
-      }
-      this.isLoadingReceipt = true;
-      try {
-        const res = await stripeReceipt({
-          restaurantId: this.restaurantId(),
-          orderId: this.orderId,
-        });
-        if (res.data && res.data.receipt_url) {
-          window.open(res.data.receipt_url);
-        }
-      } catch (e) {
-        console.log("error");
-      }
-      this.isLoadingReceipt = false;
     },
   },
 };
