@@ -208,7 +208,8 @@ export default defineComponent({
       type: Object,
       required: true,
     },
-  },  
+  },
+  emits: ["updateLocation"],
   setup(props, ctx) {
     const isSaveAddress = ref(true);
     const customerInfo = ref({});
@@ -306,17 +307,14 @@ export default defineComponent({
       
       const zipDoc = await db.doc(`/zipcode/${validZip}`).get();
       const data = zipDoc.data();
-      // console.log(data);
       if (zipDoc.exists) {
         addressList.value = data.addresses;
       } else {
         addressList.value = [];
       }
-      // console.log(zip, data);
     };
 
     const fullAddress = computed(() => {
-      console.log("FFFF", customerInfo.value);
       return customerInfo.value
         ? [customerInfo.value.prefecture, customerInfo.value.address].join("")
         : "";
@@ -324,9 +322,17 @@ export default defineComponent({
 
     (async () => {
       customerInfo.value = await loadAddress();
+      if ( customerInfo.value &&  customerInfo.value.location) {
+        ctx.emit("updateLocation", customerInfo.value.location);
+      }
     })();
     
-    // <!-- ecError, shopInfo,  customerInfo, isSaveAddress | getAddress, addressList, updateAddress, updatePrefecture | regionalSetting -->
+
+    const updateHome = (pos) => {
+      const customer = { ...customerInfo.value };
+      customer.location = pos;
+      customerInfo.value = customer;
+    };
     return {
       customerInfo,
       addressList,
@@ -340,6 +346,8 @@ export default defineComponent({
       loadAddress,
       updateAddress,
       updatePrefecture,
+
+      updateHome,
     };
   }
 });

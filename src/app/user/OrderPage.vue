@@ -181,10 +181,10 @@
               (shopInfo.isEC || orderInfo.isDelivery) &&
               hasCustomerInfo
             "
-          >
+            >
             <CustomerInfo
               :shopInfo="shopInfo"
-              :customer="customer"
+              :orderId="orderId"
               :phoneNumber="nationalPhoneNumber"
             />
           </div>
@@ -275,21 +275,23 @@
               v-if="shopInfo.isEC || orderInfo.isDelivery"
               class="bg-white rounded-lg shadow p-4 mb-4 mt-2"
             >
-              <ECCustomer ref="ecCustomerRef" :user="user" :shopInfo="shopInfo" :orderInfo="orderInfo" />
+              <ECCustomer ref="ecCustomerRef" :user="user" :shopInfo="shopInfo" :orderInfo="orderInfo"
+                          @updateLocation="updateLocation" />
             </div>
             <!-- End of EC and Delivery -->
 
             <!-- map for delivery -->
             <div class="mt-4" v-if="orderInfo.isDelivery">
               <span
-                v-if="ecCustomerRef && ecCustomerRef.ecErrors['location'].length > 0"
+                v-if="$refs.ecCustomerRef && $refs.ecCustomerRef.ecErrors['location'].length > 0"
                 class="text-red-700 font-bold"
               >
-                <div v-for="(error, key) in ecCustomerRef.ecErrors['location']">
+                <div v-for="(error, key) in $refs.ecCustomerRef.ecErrors['location']">
                   {{ $t(error) }}
                 </div>
               </span>
               <OrderPageMap
+                ref="orderPageMapRef"
                 @updateHome="updateHome"
                 :shopInfo="shopInfo"
                 :fullAddress="$refs.ecCustomerRef && $refs.ecCustomerRef.fullAddress"
@@ -444,7 +446,7 @@
 
               <!-- Error message for ec and delivery -->
               <div
-                v-if="requireAddress && ecCustomerRef && ecCustomerRef.hasEcError"
+                v-if="requireAddress && $refs.ecCustomerRef && $refs.ecCustomerRef.hasEcError"
                 class="text-center text-red-700 font-bold mt-2"
               >
                 {{ $t("order.alertReqireAddress") }}
@@ -658,9 +660,6 @@ export default {
     next();
   },
   computed: {
-    ecCustomerRef() {
-      return this.$refs.ecCustomerRef;
-    },
     statusKey() {
       return this.orderInfo ? order_status_keys[this.orderInfo.status] : null;
     },
@@ -753,7 +752,7 @@ export default {
     shippingCost() {
       return costCal(
         this.postageInfo,
-        this.customerInfo?.prefectureId,
+        this.$refs?.ecCustomerRef?.customerInfo?.prefectureId,
         this.orderInfo.total
       );
     },
@@ -761,7 +760,7 @@ export default {
       return this.shopInfo.isEC || this.orderInfo.isDelivery;
     },
     notSubmitAddress() {
-      return this.requireAddress && this.$refs.ecCustomerRef.hasEcError;
+      return this.requireAddress && this.$refs?.ecCustomerRef.hasEcError;
     },
   },
   // end of computed
@@ -788,9 +787,10 @@ export default {
   },
   methods: {
     updateHome(pos) {
-      const cust = { ...this.customerInfo };
-      cust.location = pos;
-      this.customerInfo = cust;
+      this.$refs.ecCustomerRef.updateHome(pos);
+    },
+    updateLocation(pos) {
+      this.$refs.orderPageMapRef.updateLocation(pos);
     },
     sendPurchase() {
       analyticsUtil.sendPurchase(
@@ -924,7 +924,7 @@ export default {
           sendSMS: this.sendSMS,
           tip: this.tip || 0,
           memo: this.memo || "",
-          customerInfo: this.customerInfo || {},
+          customerInfo: this.$refs.ecCustomerRef.customerInfo || {},
         });
         if (this.isLiffUser) {
           await this.saveLiffCustomer();
@@ -976,7 +976,7 @@ export default {
           sendSMS: this.sendSMS,
           tip: this.tip || 0,
           memo: this.memo || "",
-          customerInfo: this.customerInfo || {},
+          customerInfo: this.$refs.ecCustomerRef.customerInfo || {},
         });
         if (this.isLiffUser) {
           await this.saveLiffCustomer();
