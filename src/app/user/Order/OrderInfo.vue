@@ -213,7 +213,7 @@ export default {
     },
     groupData: {
       type: Object,
-      required: true,
+      required: false,
     },
     editable: {
       type: Boolean,

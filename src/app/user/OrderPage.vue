@@ -886,7 +886,7 @@ export default {
           sendSMS: this.sendSMS,
           tip: this.tip || 0,
           memo: this.memo || "",
-          customerInfo: this.$refs.ecCustomerRef.customerInfo || {},
+          customerInfo: this.$refs.ecCustomerRef ? this.$refs.ecCustomerRef.customerInfo || {} : {},
         });
         if (this.isLiffUser) {
           await this.saveLiffCustomer();
@@ -919,7 +919,7 @@ export default {
     async handleNoPayment() {
       console.log(this.requireAddress, this.isSaveAddress);
       if (this.requireAddress) {
-        if (this.$refs.ecCustomerRef.hasEcError) {
+        if (this.$refs.ecCustomerRef && this.$refs.ecCustomerRef.hasEcError) {
           return;
         }
         if (this.isSaveAddress) {
@@ -938,7 +938,7 @@ export default {
           sendSMS: this.sendSMS,
           tip: this.tip || 0,
           memo: this.memo || "",
-          customerInfo: this.$refs.ecCustomerRef.customerInfo || {},
+          customerInfo: this.$refs.ecCustomerRef ? this.$refs.ecCustomerRef.customerInfo || {} : {},
         });
         if (this.isLiffUser) {
           await this.saveLiffCustomer();
