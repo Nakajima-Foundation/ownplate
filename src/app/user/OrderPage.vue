@@ -181,10 +181,10 @@
               (shopInfo.isEC || orderInfo.isDelivery) &&
               hasCustomerInfo
             "
-          >
+            >
             <CustomerInfo
               :shopInfo="shopInfo"
-              :customer="customer"
+              :orderId="orderId"
               :phoneNumber="nationalPhoneNumber"
             />
           </div>
@@ -275,210 +275,26 @@
               v-if="shopInfo.isEC || orderInfo.isDelivery"
               class="bg-white rounded-lg shadow p-4 mb-4 mt-2"
             >
-              <!-- zip -->
-              <div class="text-sm font-bold pb-2">
-                {{ $t("order.ec.zip") }}
-                <span class="text-red-700">*</span>
-              </div>
-              <div>
-                <b-field
-                  :type="
-                    ecErrors['zip'].length > 0 ? 'is-danger' : 'is-success'
-                  "
-                >
-                  <b-input
-                    class="w-full"
-                    type="text"
-                    :placeholder="$t('order.ec.zip')"
-                    v-model="customerInfo.zip"
-                    :error="ecErrors['zip']"
-                    maxlength="10"
-                  />
-                </b-field>
-              </div>
-              <div
-                v-if="ecErrors['zip'].length > 0"
-                class="mb-2 text-red-700 font-bold"
-              >
-                <div v-for="(error, key) in ecErrors['zip']">
-                  {{ $t(error) }}
-                </div>
-              </div>
-
-              <!-- conv zip to address -->
-              <div class="mb-2">
-                <button @click="getAddress()" class="">
-                  <div
-                    class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-op-teal"
-                  >
-                    <div class="text-sm font-bold text-white">
-                      {{ $t("order.ec.searchAddressFromZip") }}
-                    </div>
-                  </div>
-                </button>
-              </div>
-              <div
-                v-for="(address, key) in addressList"
-                :key="key"
-                class="font-bold flex mb-2"
-              >
-                <button @click="updateAddress(address)" class="flex-item mr-2">
-                  <div
-                    class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-op-teal"
-                  >
-                    <div class="text-sm font-bold text-white">
-                      {{ $t("order.ec.select") }}
-                    </div>
-                  </div>
-                </button>
-                <span class="flex-item mt-auto mb-auto inline-block">
-                  {{ address.address1 }}{{ address.address2
-                  }}{{ address.address3 }}
-                </span>
-              </div>
-
-              <!-- prefecture -->
-              <div class="text-sm font-bold pb-2">
-                {{ $t("shopInfo.prefecture") }}
-                <span class="text-red-700">*</span>
-              </div>
-              <b-field
-                :type="
-                  ecErrors['prefectureId'].length > 0
-                    ? 'is-danger'
-                    : 'is-success'
-                "
-              >
-                <b-select
-                  v-model="customerInfo.prefectureId"
-                  placeholder="select"
-                  @input="updatePrefecture"
-                >
-                  <option
-                    v-for="(stateItem, key) in regionalSetting.AddressStates"
-                    :value="key + 1"
-                    :key="stateItem"
-                  >
-                    {{ stateItem }}
-                  </option>
-                </b-select>
-              </b-field>
-
-              <!-- address -->
-              <div class="text-sm font-bold pb-2">
-                {{ $t("order.ec.address") }}
-                <span class="text-red-700"
-                  >*{{ $t("order.ec.addressNotice") }}</span
-                >
-              </div>
-              <div>
-                <b-field
-                  :type="
-                    ecErrors['address'].length > 0 ? 'is-danger' : 'is-success'
-                  "
-                >
-                  <b-input
-                    class="w-full"
-                    type="text"
-                    :placeholder="$t('order.ec.address')"
-                    v-model="customerInfo.address"
-                    maxlength="100"
-                  />
-                </b-field>
-              </div>
-              <div
-                v-if="ecErrors['address'].length > 0"
-                class="mb-2 text-red-700 font-bold"
-              >
-                <div v-for="(error, key) in ecErrors['address']">
-                  {{ $t(error) }}
-                </div>
-              </div>
-
-              <!-- name -->
-              <div class="text-sm font-bold pb-2">
-                {{ $t("order.ec.name") }}
-                <span class="text-red-700">*</span>
-              </div>
-              <div>
-                <b-field
-                  :type="
-                    ecErrors['name'].length > 0 ? 'is-danger' : 'is-success'
-                  "
-                >
-                  <b-input
-                    class="w-full"
-                    type="text"
-                    :placeholder="$t('order.ec.name')"
-                    v-model="customerInfo.name"
-                    maxlength="30"
-                  />
-                </b-field>
-              </div>
-              <div
-                v-if="ecErrors['name'].length > 0"
-                class="mb-2 text-red-700 font-bold"
-              >
-                <div v-for="(error, key) in ecErrors['name']">
-                  {{ $t(error) }}
-                </div>
-              </div>
-
-              <!-- email -->
-              <template v-if="shopInfo.isEC">
-                <div class="text-sm font-bold pb-2">
-                  {{ $t("order.ec.email") }}
-                  <span class="text-red-700">*</span>
-                </div>
-                <div>
-                  <b-field
-                    :type="
-                      ecErrors['email'].length > 0 ? 'is-danger' : 'is-success'
-                    "
-                  >
-                    <b-input
-                      class="w-full"
-                      type="text"
-                      :placeholder="$t('order.ec.email')"
-                      v-model="customerInfo.email"
-                      maxlength="30"
-                    />
-                  </b-field>
-                </div>
-                <div
-                  v-if="ecErrors['email'].length > 0"
-                  class="mb-2 text-red-700 font-bold"
-                >
-                  <div v-for="(error, key) in ecErrors['email']">
-                    {{ $t(error) }}
-                  </div>
-                </div>
-              </template>
-
-              <div>
-                <b-checkbox v-model="isSaveAddress">
-                  <div class="text-sm font-bold">
-                    {{ $t("order.saveAddress") }}
-                  </div>
-                </b-checkbox>
-              </div>
+              <ECCustomer ref="ecCustomerRef" :user="user" :shopInfo="shopInfo" :orderInfo="orderInfo"
+                          @updateLocation="updateLocation" />
             </div>
             <!-- End of EC and Delivery -->
 
             <!-- map for delivery -->
             <div class="mt-4" v-if="orderInfo.isDelivery">
               <span
-                v-if="ecErrors['location'].length > 0"
+                v-if="$refs.ecCustomerRef && $refs.ecCustomerRef.ecErrors['location'].length > 0"
                 class="text-red-700 font-bold"
               >
-                <div v-for="(error, key) in ecErrors['location']">
+                <div v-for="(error, key) in $refs.ecCustomerRef.ecErrors['location']">
                   {{ $t(error) }}
                 </div>
               </span>
               <OrderPageMap
+                ref="orderPageMapRef"
                 @updateHome="updateHome"
                 :shopInfo="shopInfo"
-                :fullAddress="fullAddress"
+                :fullAddress="$refs.ecCustomerRef && $refs.ecCustomerRef.fullAddress"
                 :deliveryInfo="deliveryData"
               />
             </div>
@@ -630,7 +446,7 @@
 
               <!-- Error message for ec and delivery -->
               <div
-                v-if="requireAddress && hasEcError"
+                v-if="requireAddress && $refs.ecCustomerRef && $refs.ecCustomerRef.hasEcError"
                 class="text-center text-red-700 font-bold mt-2"
               >
                 {{ $t("order.alertReqireAddress") }}
@@ -713,6 +529,7 @@ import LineButton from "./OrderPage/AfterPaid/LineButton.vue";
 import RestaurantLine from "./OrderPage/AfterPaid/RestaurantLine.vue";
 import StripeStatus from "./OrderPage/AfterPaid/StripeStatus.vue";
 import OrderStatus from "./OrderPage/AfterPaid/OrderStatus.vue";
+import ECCustomer from "./OrderPage/ECCustomer.vue";
 
 import { db, firestore } from "@/plugins/firebase";
 import { orderPlace } from "@/lib/firebase/functions";
@@ -768,6 +585,8 @@ export default {
     RestaurantLine,
     StripeStatus,
     OrderStatus,
+
+    ECCustomer,
   },
   props: {
     shopInfo: {
@@ -815,11 +634,9 @@ export default {
       isPlacing: false,
       tip: 0,
       sendSMS: true,
-      isSaveAddress: true,
       isLoadingReceipt: false,
       postageInfo: {},
       memo: "",
-      customerInfo: {},
     };
   },
   created() {
@@ -932,60 +749,10 @@ export default {
     nationalPhoneURI() {
       return formatURL(this.phoneNumber);
     },
-    // for EC
-    fullAddress() {
-      return this.customerInfo
-        ? [this.customerInfo.prefecture, this.customerInfo.address].join("")
-        : "";
-    },
-    ecErrors() {
-      const err = {};
-      const attrs = ["zip", "address", "name", "prefectureId"];
-      if (this.shopInfo.isEC) {
-        attrs.push("email");
-      }
-      attrs.forEach((name) => {
-        err[name] = [];
-        if (
-          this.customerInfo[name] === undefined ||
-          this.customerInfo[name] === ""
-        ) {
-          err[name].push("validationError." + name + ".empty");
-        }
-      });
-      if (
-        this.customerInfo["zip"] &&
-        !this.customerInfo["zip"].match(
-          /^((\d|[０-９]){3}(-|ー)(\d|[０-９]){4})|(\d|[０-９]){7}$/
-        )
-      ) {
-        err["zip"].push("validationError.zip.invalidZip");
-      }
-      if (this.shopInfo.isEC) {
-        if (
-          this.customerInfo["email"] &&
-          !isEmail(this.customerInfo["email"])
-        ) {
-          err["email"].push("validationError.email.invalidEmail");
-        }
-      }
-      if (this.orderInfo.isDelivery) {
-        err["location"] = [];
-        if (!this.customerInfo.location || !this.customerInfo.location.lat) {
-          err["location"].push("validationError.location.noLocation");
-        }
-      }
-      return err;
-    },
-    hasEcError() {
-      const num = this.countObj(this.ecErrors);
-      return num > 0;
-    },
-
     shippingCost() {
       return costCal(
         this.postageInfo,
-        this.customerInfo?.prefectureId,
+        this.$refs?.ecCustomerRef?.customerInfo?.prefectureId,
         this.orderInfo.total
       );
     },
@@ -993,7 +760,7 @@ export default {
       return this.shopInfo.isEC || this.orderInfo.isDelivery;
     },
     notSubmitAddress() {
-      return this.requireAddress && this.hasEcError;
+      return this.requireAddress && this.$refs?.ecCustomerRef.hasEcError;
     },
   },
   // end of computed
@@ -1020,9 +787,10 @@ export default {
   },
   methods: {
     updateHome(pos) {
-      const cust = { ...this.customerInfo };
-      cust.location = pos;
-      this.customerInfo = cust;
+      this.$refs.ecCustomerRef.updateHome(pos);
+    },
+    updateLocation(pos) {
+      this.$refs.orderPageMapRef.updateLocation(pos);
     },
     sendPurchase() {
       analyticsUtil.sendPurchase(
@@ -1076,27 +844,6 @@ export default {
                 this.restaurantId()
               );
             }
-
-            if (this.orderInfo.isDelivery || this.shopInfo.isEC) {
-              if (this.just_validated) {
-                this.customerInfo = { ...((await this.loadAddress()) || {}) };
-              }
-              if (this.hasCustomerInfo) {
-                this.customer =
-                  (
-                    await db
-                      .doc(
-                        `restaurants/${this.restaurantId()}/orders/${
-                          this.orderId
-                        }/customer/data`
-                      )
-                      .get()
-                  ).data() ||
-                  this.orderInfo?.customerInfo ||
-                  {};
-              }
-            }
-            // console.log(`/users/${uid}/address/data`);
           },
           (error) => {
             this.notFound = true;
@@ -1154,7 +901,7 @@ export default {
     },
     async handlePayment() {
       if (this.requireAddress) {
-        if (this.hasEcError) {
+        if (this.$refs.ecCustomerRef.hasEcError) {
           return;
         }
         if (this.isSaveAddress) {
@@ -1177,7 +924,7 @@ export default {
           sendSMS: this.sendSMS,
           tip: this.tip || 0,
           memo: this.memo || "",
-          customerInfo: this.customerInfo || {},
+          customerInfo: this.$refs.ecCustomerRef.customerInfo || {},
         });
         if (this.isLiffUser) {
           await this.saveLiffCustomer();
@@ -1210,7 +957,7 @@ export default {
     async handleNoPayment() {
       console.log(this.requireAddress, this.isSaveAddress);
       if (this.requireAddress) {
-        if (this.hasEcError) {
+        if (this.$refs.ecCustomerRef.hasEcError) {
           return;
         }
         if (this.isSaveAddress) {
@@ -1229,7 +976,7 @@ export default {
           sendSMS: this.sendSMS,
           tip: this.tip || 0,
           memo: this.memo || "",
-          customerInfo: this.customerInfo || {},
+          customerInfo: this.$refs.ecCustomerRef.customerInfo || {},
         });
         if (this.isLiffUser) {
           await this.saveLiffCustomer();
@@ -1291,63 +1038,6 @@ export default {
         console.log("error");
       }
       this.isLoadingReceipt = false;
-    },
-    updateAddress(address) {
-      const { address1, address2, address3, prefectureId, prefecture } =
-        address;
-
-      const data = {
-        address: [address2, address3].join(""),
-        prefectureId,
-        prefecture,
-      };
-
-      this.customerInfo = Object.assign({}, this.customerInfo, data);
-      this.addressList = [];
-    },
-    updatePrefecture() {
-      const prefecture = this.getPrefecture();
-      if (prefecture) {
-        this.customerInfo = Object.assign({}, this.customerInfo, {
-          prefecture,
-        });
-      }
-    },
-    getPrefecture() {
-      if (this.customerInfo?.prefectureId) {
-        return this.regionalSetting.AddressStates[
-          this.customerInfo?.prefectureId - 1
-        ];
-      }
-      return null;
-    },
-    async saveAddress() {
-      const uid = this.user.uid;
-      console.log(this.customerInfo);
-      await db.doc(`/users/${uid}/address/data`).set(this.customerInfo);
-    },
-    async loadAddress() {
-      const uid = this.user.uid;
-      return (await db.doc(`/users/${uid}/address/data`).get()).data();
-    },
-    async getAddress() {
-      const zip = this.customerInfo["zip"];
-      if (this.ecErrors["zip"].length > 0) {
-        return;
-      }
-      const validZip = zip.replace(/-|ー/g, "").replace(/[！-～]/g, (s) => {
-        return String.fromCharCode(s.charCodeAt(0) - 0xfee0);
-      });
-
-      const zipDoc = await db.doc(`/zipcode/${validZip}`).get();
-      const data = zipDoc.data();
-      // console.log(data);
-      if (zipDoc.exists) {
-        this.addressList = data.addresses;
-      } else {
-        this.addressList = [];
-      }
-      // console.log(zip, data);
     },
   },
 };

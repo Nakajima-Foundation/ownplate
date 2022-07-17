@@ -100,21 +100,21 @@ export const array2obj = <T>(array: T[]) => {
       }
       return this.$tc("shopInfo.am", 0, { formatedTime });
     },
-    countObj(obj) {
-      if (Array.isArray(obj)) {
-        return obj.reduce((tmp, value) => {
-          // nested array
-          if (Array.isArray(value)) {
-            return tmp + this.countObj(value);
-          }
-          return tmp + 1;
-        }, 0);
-      }
-      return Object.keys(obj).reduce((tmp, key) => {
-        return this.countObj(obj[key]) + tmp;
-      }, 0);
-    },
 */
+export const countObj = (obj: any): number => {
+  if (Array.isArray(obj)) {
+    return obj.reduce((tmp, value) => {
+      // nested array
+      if (Array.isArray(value)) {
+        return tmp + countObj(value);
+      }
+      return tmp + 1;
+    }, 0);
+  }
+  return Object.keys(obj).reduce((tmp, key) => {
+    return countObj(obj[key]) + tmp;
+  }, 0);
+};
 
 export const cleanObject = (obj: { [key: string]: any }) => {
   return Object.keys(obj).reduce((tmp: { [key: string]: any }, key) => {
