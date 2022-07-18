@@ -44,7 +44,7 @@ import {
   onUnmounted,
 } from "@vue/composition-api";
 import { db } from "@/lib/firebase/firebase9";
-import { doc, onSnapshot, getDoc } from "firebase/firestore";
+import { doc, onSnapshot, getDoc, DocumentData } from "firebase/firestore";
 
 import NotificationWatcher from "./Watcher/NotificationWatcher.vue";
 import SoundConfigWatcher from "./Watcher/SoundConfigWatcher.vue";
@@ -90,7 +90,7 @@ export default defineComponent({
 
     const noRestaurant = ref<boolean | null>(null);
     const shopInfo = ref(defaultShopInfo);
-    const groupData = ref(null);
+    const groupData = ref<null | DocumentData>(null);
     
     // never use onSnapshot here.
     const defaultTax = regionalSetting.defaultTax || {};
