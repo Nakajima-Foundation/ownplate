@@ -102,20 +102,20 @@ export default defineComponent({
       }
       const restaurant_data = restaurant.data();
 
-      const loaedShopInfo = Object.assign(
+      const loadShopInfo = Object.assign(
         {},
         defaultShopInfo,
         restaurant_data,
         defaultTax
       );
-      if (loaedShopInfo.temporaryClosure) {
-        loaedShopInfo.temporaryClosure = loaedShopInfo.temporaryClosure.map(
+      if (loadShopInfo.temporaryClosure) {
+        loadShopInfo.temporaryClosure = loadShopInfo.temporaryClosure.map(
           (day: any) => {
             return day.toDate();
           }
         );
       }
-      shopInfo.value = loaedShopInfo;
+      shopInfo.value = loadShopInfo;
       noRestaurant.value = false;
     });
 
