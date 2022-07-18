@@ -334,23 +334,6 @@ export default {
               this.restaurantLists = Object.keys(this.restaurantItems);
             }
 
-            await Promise.all(
-              Object.keys(this.restaurantItems).map(async (restaurantId) => {
-                // TODO: for backforwar compatibility. remove this block if update all numberOfMenus
-                if (
-                  this.restaurantItems[restaurantId].numberOfMenus === undefined
-                ) {
-                  const menus = await db
-                    .collection(`restaurants/${restaurantId}/menus`)
-                    .where("deletedFlag", "==", false)
-                    .get();
-                  const obj = { ...this.restaurantItems };
-                  obj[restaurantId].numberOfMenus = menus.size;
-                  this.restaurantItems = obj;
-                }
-              })
-            );
-
             this.destroy_detacher();
             this.detachers = Object.keys(this.restaurantItems).map(
               (restaurantId) => {
