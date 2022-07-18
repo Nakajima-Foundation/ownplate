@@ -685,6 +685,10 @@ export default {
       type: Object,
       required: true,
     },
+    groupData: {
+      type: Object,
+      required: false,
+    },
   },
   metaInfo() {
     return {
@@ -786,12 +790,12 @@ export default {
           this.userLog = res.data();
         }
       });
-
+      const menuRestaurantId = this.groupData ? this.groupData.restaurantId : this.restaurantId();
       const menuIds = Object.keys(this.orderInfo.menuItems);
       arrayChunk(menuIds, 10).map(async (arr) => {
         getDocs(
           query(
-            collection(db, `restaurants/${this.restaurantId()}/menus`),
+            collection(db, `restaurants/${menuRestaurantId}/menus`),
             where(documentId(), "in", arr)
           )
         ).then((menu) => {

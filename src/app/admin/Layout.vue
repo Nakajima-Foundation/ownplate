@@ -23,6 +23,7 @@
     <NotFound v-if="noRestaurant === true" />
     <router-view
       :shopInfo="shopInfo"
+      :groupData="groupData"
       v-else-if="noRestaurant === false"
     ></router-view>
     <notification-watcher />
@@ -43,7 +44,7 @@ import {
   onUnmounted,
 } from "@vue/composition-api";
 import { db } from "@/lib/firebase/firebase9";
-import { doc, onSnapshot } from "firebase/firestore";
+import { doc, onSnapshot, getDoc } from "firebase/firestore";
 
 import NotificationWatcher from "./Watcher/NotificationWatcher.vue";
 import SoundConfigWatcher from "./Watcher/SoundConfigWatcher.vue";
@@ -89,19 +90,26 @@ export default defineComponent({
 
     const noRestaurant = ref<boolean | null>(null);
     const shopInfo = ref(defaultShopInfo);
-
+    const groupData = ref(null);
+    
     // never use onSnapshot here.
     const defaultTax = regionalSetting.defaultTax || {};
 
     const restaurantRef = doc(db, `restaurants/${restaurantId.value}`);
     const restaurant_detacher = ref();
-    restaurant_detacher.value = onSnapshot(restaurantRef, (restaurant) => {
+    restaurant_detacher.value = onSnapshot(restaurantRef, async (restaurant) => {
       if (!restaurant.exists()) {
         noRestaurant.value = true;
         return;
       }
       const restaurant_data = restaurant.data();
-
+      if (restaurant_data.groupId) {
+        const groupDoc = await getDoc(doc(db, (`groups/${restaurant_data.groupId}`)))
+        if (groupDoc.exists()) {
+          groupData.value = groupDoc.data();
+        }
+      }
+      
       const loadShopInfo = Object.assign(
         {},
         defaultShopInfo,
@@ -172,6 +180,7 @@ export default defineComponent({
       isOpen,
 
       shopInfo,
+      groupData,
       noRestaurant,
     };
   },
