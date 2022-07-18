@@ -336,6 +336,7 @@ export default {
 
             await Promise.all(
               Object.keys(this.restaurantItems).map(async (restaurantId) => {
+                // TODO: for backforwar compatibility. remove this block if update all numberOfMenus
                 if (
                   this.restaurantItems[restaurantId].numberOfMenus === undefined
                 ) {
@@ -511,9 +512,6 @@ export default {
     },
     isOwner() {
       return !this.$store.getters.isSubAccount;
-    },
-    restaurantLength() {
-      return this.menuLists.length;
     },
     uid() {
       return this.$store.getters.uidAdmin;
