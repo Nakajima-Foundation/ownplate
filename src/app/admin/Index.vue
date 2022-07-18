@@ -423,6 +423,7 @@ export default {
             uid: this.uid,
             menuLists: [],
             publicFlag: false,
+            numberOfMenus: 0,
             deletedFlag: false,
             createdAt: firestore.FieldValue.serverTimestamp(),
           });
