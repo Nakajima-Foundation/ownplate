@@ -1,22 +1,64 @@
 <template>
   <div>
-    {{ item.itemName }}
-    <img :src="image" class="w-12" />
-    num:{{ quantity }} <span @click="increase()">+</span>/<span
-      @click="decrease()"
-      >-</span
-    >
-
-    <div v-for="(option, k) in options" :key="k">
-      <div v-if="option.length === 1">
-        <div v-if="selectedOptions[k]">Option:{{ option[0] }}</div>
+    <div class="flex justify-between gap-3 mt-6 mx-6">
+      <div>
+        <div class="font-bold text-black">
+          {{ item.itemName }}
+        </div>
+        <div class="mt-1" v-for="(option, k) in options" :key="k">
+          <div v-if="option.length === 1">
+            <div v-if="selectedOptions[k]">
+              <span class="text-sm text-brack"
+                >{{ $t("sitemenu.options") }}:
+              </span>
+              <span class="text-sm font-bold text-gray-500">
+                {{ option[0] }}</span
+              >
+            </div>
+          </div>
+          <div v-else-if="option.length > 1">
+            <span class="text-sm text-brack">
+              {{ $t("sitemenu.options") }}:</span
+            >
+            <span class="text-sm font-bold text-gray-500">
+              {{ option[selectedOptions[k]] }}</span
+            >
+          </div>
+        </div>
       </div>
-      <div v-else-if="option.length > 1">
-        Option:{{ option[selectedOptions[k]] }}
+      <div
+        class="w-12 h-12 lg:w-24 lg:h-24 bg-white border-gray-100 rounded-lg shadow-none"
+      >
+        <img
+          :src="image"
+          class="w-12 h-12 lg:w-24 lg:h-24 rounded object-cover"
+        />
       </div>
     </div>
-    <hr />
-    <br />
+    <div class="flex justify-between mt-2 mx-6">
+      <!-- ToDo: Price-->
+      <div class="mt-2 text-sm text-black">¥160(税込)</div>
+      <div class="flex justify-end">
+        <span
+          @click="decrease()"
+          class="inline-flex justify-center items-center h-9 w-16 rounded-full bg-red-700 bg-opacity-10"
+        >
+          <i class="material-icons text-lg text-red-700">remove</i>
+        </span>
+        <div
+          class="mx-5 mt-0.5 flex-1 text-center font-bold text-xl text-op-teal"
+        >
+          {{ quantity }}
+        </div>
+        <span
+          @click="increase()"
+          class="inline-flex justify-center items-center h-9 w-16 rounded-full bg-op-teal bg-opacity-10"
+        >
+          <i class="material-icons text-lg text-op-teal">add</i>
+        </span>
+      </div>
+    </div>
+    <hr class="border border-solid border-black border-opacity-5 mx-6 mt-4" />
   </div>
 </template>
 
