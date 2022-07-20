@@ -184,13 +184,13 @@
           <phone-login v-on:dismissed="handleDismissed" />
         </div>
       </b-modal>
-
       <Cart
         v-if="isShowCart"
         @closeCart="closeCart"
         :orders="orders"
         :selectedOptions="selectedOptions"
         :menuObj="menuObj"
+        :prices="prices"
         :shopInfo="shopInfo"
         @didOrderdChange="didOrderdChange"
       />

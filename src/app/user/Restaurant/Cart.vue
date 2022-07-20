@@ -13,6 +13,7 @@
               :shopInfo="shopInfo"
               :quantity="counter"
               :selectedOptions="selectedOptions[itemId][key]"
+              :price="prices[itemId][key]"
               @increase="increase(itemId, key)"
               @decrease="decrease(itemId, key)"
             />
@@ -44,6 +45,10 @@ export default defineComponent({
       required: true,
     },
     menuObj: {
+      type: Object,
+      required: true,
+    },
+    prices: {
       type: Object,
       required: true,
     },

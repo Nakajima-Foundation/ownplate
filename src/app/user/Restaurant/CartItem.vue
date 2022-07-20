@@ -37,7 +37,12 @@
     </div>
     <div class="flex justify-between mt-2 mx-6">
       <!-- ToDo: Price-->
-      <div class="mt-2 text-sm text-black">¥160(税込)</div>
+      <div class="mt-2 text-sm text-black">
+        <Price
+          :shopInfo="{ inclusiveTax: true }"
+          :menu="{ price: subTotalWithTax }"
+          />
+      </div>
       <div class="flex justify-end">
         <span
           @click="decrease()"
@@ -64,8 +69,10 @@
 
 <script>
 import { defineComponent, computed } from "@vue/composition-api";
-import { itemOptionCheckbox2options } from "@/utils/utils";
+import { itemOptionCheckbox2options, getPriceWithTax } from "@/utils/utils";
 import * as analyticsUtil from "@/lib/firebase/analytics";
+
+import Price from "@/components/Price";
 
 export default defineComponent({
   props: {
@@ -81,10 +88,17 @@ export default defineComponent({
       type: Number,
       required: true,
     },
+    price: {
+      type: Object,
+      required: true,
+    },
     selectedOptions: {
       type: Array,
       required: true,
     },
+  },
+  components: {
+    Price,
   },
   emits: ["increase", "decrease"],
   setup(props, ctx) {
@@ -97,6 +111,9 @@ export default defineComponent({
     });
     const options = computed(() => {
       return itemOptionCheckbox2options(props.item.itemOptionCheckbox);
+    });
+    const subTotalWithTax = computed(() => {
+      return getPriceWithTax(props.price, props.item, props.shopInfo);
     });
     const increase = () => {
       ctx.emit("increase");
@@ -114,6 +131,7 @@ export default defineComponent({
     return {
       image,
       options,
+      subTotalWithTax,
       increase,
       decrease,
     };
