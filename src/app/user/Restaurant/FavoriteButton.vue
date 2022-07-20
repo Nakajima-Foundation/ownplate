@@ -4,14 +4,14 @@
       <div v-if="likes" class="inline-flex justify-center items-center">
         <i class="material-icons text-lg text-red-700 mr-2">favorite</i>
         <div class="text-sm font-bold text-red-700">
-          {{ $t("shopInfo.liked") }}
+          {{ $t(isInMo ? "shopInfo.mo.liked" : "shopInfo.liked") }}
         </div>
       </div>
 
       <div v-else class="inline-flex justify-center items-center">
         <i class="material-icons text-lg text-op-teal">favorite_border</i>
         <div class="text-sm font-bold text-op-teal">
-          {{ $t("shopInfo.like") }}
+          {{ $t(isInMo ? "shopInfo.mo.like" : "shopInfo.like") }}
         </div>
       </div>
     </a>
@@ -101,6 +101,7 @@ export default defineComponent({
     return {
       likes,
       handleLike,
+      isInMo,
     };
   },
 });
