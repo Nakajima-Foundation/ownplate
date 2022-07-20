@@ -4,12 +4,15 @@ import * as functions from "firebase-functions";
 const aws_key = (functions.config() && functions.config().aws && functions.config().aws.id) || process.env.AWS_ID;
 const aws_secret = (functions.config() && functions.config().aws && functions.config().aws.secret) || process.env.AWS_SECRET;
 
+/*
 if (aws_key) {
   AWS.config.update({
     region: "us-east-1",
     credentials: new AWS.Credentials(aws_key, aws_secret),
   });
-}
+  }
+*/
+
 export const pushSMS = async (subject, message, phone_number) => {
   // send sms
   const params = {
@@ -29,12 +32,17 @@ export const pushSMS = async (subject, message, phone_number) => {
     PhoneNumber: phone_number,
   };
   if (aws_key) {
-    const aws = new AWS.SNS({ apiVersion: "2010-03-31" });
+    const aws = new AWS.SNS({
+      apiVersion: "2010-03-31",
+      region: "us-east-1",
+      credentials: new AWS.Credentials(aws_key, aws_secret),
+    });
     // @ts-ignore
     const publishTextPromise = await aws.publish(params).promise();
     if (!publishTextPromise) {
       console.log("ERROR");
     }
+    console.log(publishTextPromise);
   } else {
     console.log("SMS not push");
   }

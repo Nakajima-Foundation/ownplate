@@ -22,7 +22,7 @@
     "t2_tests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/twilio2_test.ts  --timeout 30000",
     "s_tests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/subaccount_test.ts",
     "m_tests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/mail_template_test.ts",
-    "mailtests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/ses_test.ts",
+    "mailtests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/sms_test.ts",
     "smaregitests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/smaregi_test.ts",
     "d_tests": "NODE_ENV=test mocha -r ts-node/register  --recursive tests/dl_test.ts"
   },
