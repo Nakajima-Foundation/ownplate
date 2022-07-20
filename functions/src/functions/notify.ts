@@ -37,32 +37,40 @@ export const sendMessageToCustomer = async (
     lng: lng || utils.getStripeRegion().langs[0],
     resources,
   });
+  const getMessage = (_url: string) => {
+    const message = `${t(msgKey, params)} ${restaurantName} ${orderNumber} ${_url}`;
+    return message;
+  };
   const url = `https://${ownPlateConfig.hostName}/r/${restaurantId}/order/${orderId}?openExternalBrowser=1`;
-  const message = `${t(msgKey, params)} ${restaurantName} ${orderNumber} ${url}`;
-  if (isEnabled) {
-    // for JP
-    const { lineId, liffIndexId, liffId } = (await line.getLineId(db, orderData.uid)) as any;
-
-    if (lineId) {
-      if (liffIndexId) {
-        // liff
-        const { token } = await line.getLiffPrivateConfig(db, liffIndexId);
-        if (token) {
-          const liffUrl = `https://liff.line.me/${liffId}/r/${restaurantId}/order/${orderId}`;
-          const liffMessage = `${t(msgKey, params)} ${restaurantName} ${orderNumber} ${liffUrl}`;
-          await line.sendMessageDirect(lineId, liffMessage, token);
-        }
-      } else {
-        await line.sendMessageDirect(lineId, message, LINE_MESSAGE_TOKEN);
+  
+  // Not JP
+  if (!isEnabled) {
+    return await sms.pushSMS("OwnPlate", getMessage(url), orderData.phoneNumber);
+  }
+  // for JP Mobile Order
+  if (orderData.groupId && !/11111111$/.test(orderData.phoneNumber)) {
+    const groupUrl = `https://${ownPlateConfig.hostName}/${orderData.groupId}/r/${restaurantId}/order/${orderId}?openExternalBrowser=1`;
+    // const groupMessage = getMessage(groupUrl);
+    return await sms.pushSMS("Mobile Order",  getMessage(groupUrl), orderData.phoneNumber);
+  }
+  // for JP
+  const { lineId, liffIndexId, liffId } = (await line.getLineId(db, orderData.uid)) as any;
+  
+  if (lineId) {
+    if (liffIndexId) {
+      // liff
+      const { token } = await line.getLiffPrivateConfig(db, liffIndexId);
+      if (token) {
+        const liffUrl = `https://liff.line.me/${liffId}/r/${restaurantId}/order/${orderId}`;
+        await line.sendMessageDirect(lineId, getMessage(liffUrl), token);
       }
+    } else {
+      await line.sendMessageDirect(lineId, getMessage(url), LINE_MESSAGE_TOKEN);
     }
-    if (forceSMS && orderData.phoneNumber) {
-      await sms.pushSMS("omochikaeri", message, orderData.phoneNumber);
-    }
-    // await line.sendMessage(db, uidUser, message);
-  } else {
-    // for others
-    await sms.pushSMS("OwnPlate", message, orderData.phoneNumber);
+  }
+  // force SMS ( for cancel and change order)
+  if (forceSMS && orderData.phoneNumber) {
+    await sms.pushSMS("omochikaeri", getMessage(url), orderData.phoneNumber);
   }
 };
 
