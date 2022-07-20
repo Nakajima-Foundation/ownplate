@@ -89,7 +89,7 @@ export default defineComponent({
       required: true,
     },
     price: {
-      type: Object,
+      type: Number,
       required: true,
     },
     selectedOptions: {
