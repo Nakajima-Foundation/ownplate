@@ -356,6 +356,7 @@ export const cancel = async (db: any, data: any, context: functions.https.Callab
         order,
       };
     });
+    // sendSMS is always true
     if (isAdmin && result.order.sendSMS) {
       await sendMessageToCustomer(db, lng, "msg_order_canceled", restaurant.restaurantName, result.order, restaurantId, orderId, {}, true);
     }
@@ -420,6 +421,7 @@ export const cancelStripePayment = async (db: admin.firestore.Firestore, data: a
       Object.assign(order, updateData);
       return { success: true, payment: "stripe", order };
     });
+    // sendSMS is always true
     if (result.order.sendSMS) {
       await sendMessageToCustomer(db, lng, "msg_stripe_payment_canceled", restaurant.restaurantName, result.order, restaurantId, orderId, {}, true);
     }

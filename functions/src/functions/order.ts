@@ -235,6 +235,7 @@ export const update = async (db: admin.firestore.Firestore, data: any, context: 
     });
 
     const orderData = result.order;
+    // sendSMS is always true
     if (orderData.sendSMS && msgKey) {
       const params = {};
       if (status === order_status.order_accepted) {
