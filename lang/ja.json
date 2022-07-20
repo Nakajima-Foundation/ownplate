@@ -294,6 +294,10 @@
     "share": "シェア",
     "like": "お気に入りに登録",
     "liked": "お気に入り済み",
+    "mo": {
+      "like": "お気に入り店舗に登録",
+      "liked": "お気に入り店舗登録済み"
+    },
     "qrcode": "飲食店QRコード",
     "copyUrl": "このお店のアドレスをコピー",
     "UrlCopied": "コピーしました",
@@ -341,7 +345,6 @@
     "buttonDeliveryFee": "配達料:{price}円",
     "takeout": "テイクアウト",
     "delivery": "デリバリー",
-    "category": "カテゴリー",
     "viewMore": "もっと見る",
     "viewLess": "閉じる",
     "productCategory": "商品カテゴリ一覧"

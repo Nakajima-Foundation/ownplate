@@ -286,6 +286,10 @@
     "share": "Partager",
     "like": "Aimer",
     "liked": "Aimée",
+    "mo": {
+      "like": "Aimer",
+      "liked": "Aimée"
+    },
     "qrcode": "Code QR",
     "copyUrl": "Copier le Lien",
     "UrlCopied": "Lien Copié",
@@ -332,7 +336,6 @@
     "buttonDeliveryFee": "Delivery fee: {price} Yen",
     "takeout": "Takeaway",
     "delivery": "Delivery",
-    "category": "category",
     "viewMore": "Voir plus",
     "viewLess": "Proche",
     "productCategory": "Catégories de produits"
