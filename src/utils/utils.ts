@@ -406,6 +406,20 @@ export const prices2subtotal = (prices: { [key: string]: number[] }) => {
   );
 };
 
+export const getPriceWithTax = (
+  subTotal: number,
+  menu: MenuData,
+  shopInfo: RestaurantInfoData
+) => {
+  if (!shopInfo.inclusiveTax) {
+    if (menu.tax === "alcohol") {
+      return (1 + shopInfo.alcoholTax * 0.01) * subTotal;
+    }
+    return (1 + shopInfo.foodTax * 0.01) * subTotal;
+  }
+  return subTotal;
+};
+
 export const subtotal2total = (
   subTotal: { [key: string]: number },
   cartItems: { [key: string]: MenuData },
@@ -413,15 +427,7 @@ export const subtotal2total = (
 ) => {
   return Object.keys(subTotal).reduce((tmp, menuId) => {
     const menu = cartItems[menuId] || {};
-
-    if (!shopInfo.inclusiveTax) {
-      if (menu.tax === "alcohol") {
-        return (1 + shopInfo.alcoholTax * 0.01) * subTotal[menuId] + tmp;
-      }
-      return (1 + shopInfo.foodTax * 0.01) * subTotal[menuId] + tmp;
-    } else {
-      return tmp + subTotal[menuId];
-    }
+    return tmp + getPriceWithTax(subTotal[menuId], menu, shopInfo);
   }, 0);
 };
 
