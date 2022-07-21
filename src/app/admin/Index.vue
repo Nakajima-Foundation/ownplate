@@ -1,21 +1,8 @@
 <template>
   <div v-if="$store.getters.uidAdmin">
-    <!-- Welcome -->
-
-    <div v-if="partner.length > 0" class="mt-2 mb-1">
-      <div v-for="(part, k) in partner" :key="k" class="flex">
-        <div class="flex-1 ml-4">
-          <img :src="`/partners/${part.logo}`" class="w-12" />
-          <span class="font-bold">
-            {{ part.name }}
-          </span>
-        </div>
-        <div class="text-right font-bold mr-4" v-if="part.ask">
-          <a href="#" @click="openContact()">サポート問い合わせ</a>
-        </div>
-      </div>
-    </div>
-
+    <!-- Partnets -->
+    <Partners :shopOwner="shopOwner" v-if="shopOwner" />
+    
     <!-- Welcome and Link -->
     <WelcomeAndLinks />
 
@@ -210,9 +197,6 @@
       </div>
       <!-- End of Right Section -->
     </div>
-    <b-modal :active.sync="isOpen" :width="488">
-      <PartnersContact :id="(partner[0] || {}).id" />
-    </b-modal>
     <div class="bg-op-yellow p-4 mt-6">
       <!-- Footer -->
       <Footer />
@@ -228,7 +212,6 @@ import { midNight } from "@/utils/dateUtils";
 import RestaurantEditCard from "@/app/admin/Restaurant/RestaurantEditCard.vue";
 import PaymentSection from "@/app/admin/Payment/PaymentSection.vue";
 import MessageCard from "./Messages/MessageCard.vue";
-import PartnersContact from "./Partners/Contact.vue";
 
 import WelcomeAndLinks from "@/app/admin/Index/WelcomeAndLinks.vue";
 import News from "@/app/admin/Index/News.vue";
@@ -236,8 +219,9 @@ import Note from "@/app/admin/Index/Note.vue";
 import MailMagazine from "@/app/admin/Index/MailMagazine.vue";
 import Smaregi from "@/app/admin/Index/Smaregi.vue";
 import Footer from "@/app/admin/Index/Footer.vue";
+import Partners from "@/app/admin/Index/Partners.vue";
 
-import { getShopOwner, getPartner } from "@/utils/utils";
+import { getShopOwner } from "@/utils/utils";
 
 export default {
   name: "Restaurant",
@@ -245,9 +229,9 @@ export default {
     PaymentSection,
     RestaurantEditCard,
     MessageCard,
-    PartnersContact,
     WelcomeAndLinks,
     News,
+    Partners,
     Smaregi,
     MailMagazine,
     Note,
@@ -271,7 +255,6 @@ export default {
       shopOwner: null,
       restaurantLists: [],
       messages: [],
-      isOpen: false,
     };
   },
   created() {
@@ -473,9 +456,6 @@ export default {
           .set({ lists: this.restaurantLists }, { merge: true });
       }
     },
-    openContact() {
-      this.isOpen = true;
-    },
   },
   destroyed() {
     this.destroy_detacher();
@@ -487,9 +467,6 @@ export default {
     }
   },
   computed: {
-    partner() {
-      return getPartner(this.shopOwner);
-    },
     ownerUid() {
       return this.$store.getters.isSubAccount
         ? this.$store.getters.parentId
