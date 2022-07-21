@@ -5,7 +5,7 @@
     </div>
 
     <div class="text-xl font-bold text-black text-opacity-40 mt-6 mx-6">
-      {{ $t("find.likes") }}
+      {{ $t( isInMo ? "find.favoriteShop" :"find.likes") }}
     </div>
 
     <!-- Likes -->
@@ -16,7 +16,7 @@
           class="mt-2 mx-6 border-2 border-dashed border-black border-opacity-10 p-4 text-center rounded-xl"
         >
           <span class="text-base text-black text-opacity-40">
-            {{ $t("find.noLikes") }}</span
+            {{ $t( isInMo ? "find.nofavoriteShop" : "find.noLikes") }}</span
           >
         </div>
       </div>
@@ -118,6 +118,7 @@ export default defineComponent({
       likes,
       basePath,
 
+      isInMo,
       mode,
     };
   },
