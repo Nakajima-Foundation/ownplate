@@ -26,6 +26,7 @@ import {
 } from "@vue/composition-api";
 import PartnersContact from "../Partners/Contact.vue";
 import { getPartner } from "@/utils/utils";
+import { ShopOwnerData } from "@/models/ShopOwner";
 
 export default defineComponent({
   components: {
@@ -40,7 +41,7 @@ export default defineComponent({
   setup(props, ctx) {
     const isOpen = ref(false);
     const partners = computed(() => {
-      return getPartner(props.shopOwner);
+      return getPartner(props.shopOwner as ShopOwnerData);
     });
 
     const openContact = () => {
