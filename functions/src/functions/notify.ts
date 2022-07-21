@@ -50,7 +50,7 @@ export const sendMessageToCustomer = async (
   // for JP Mobile Order
   if (orderData.groupId && !/11111111$/.test(orderData.phoneNumber)) {
     const groupUrl = `https://${ownPlateConfig.hostName}/${orderData.groupId}/r/${restaurantId}/order/${orderId}?openExternalBrowser=1`;
-    // const groupMessage = getMessage(groupUrl);
+
     return await sms.pushSMS("Mobile Order",  getMessage(groupUrl), orderData.phoneNumber);
   }
   // for JP
