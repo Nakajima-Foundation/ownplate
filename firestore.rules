@@ -25,6 +25,9 @@ service cloud.firestore {
     function isOwner(resource, request) {
       return resource.data.uid == request.auth.uid;
     }
+    function isOwnersSubAccount(resource, request) {
+      return resource.data.uid == request.auth.token.parentUid;
+    }
     function isNewOwner(request) {
       return request.resource.data.uid == request.auth.uid;
     }
@@ -189,7 +192,8 @@ service cloud.firestore {
     match /restaurants/{restaurantId} {
         allow read: if resource.data.publicFlag && !resource.data.deletedFlag; // everyone
         allow read: if isAdmin(request) && isOwner(resource, request);
-        allow read: if isAdmin(request) && isRestaurantSubAccount(restaurantId, request);
+        // allow read: if isAdmin(request) && isRestaurantSubAccount(restaurantId, request); TODO
+        allow read: if isAdmin(request) && isOwnersSubAccount(resource, request);
         allow read: if isSuper(request);
         
         allow create: if isAdmin(request)
