@@ -1,6 +1,6 @@
 <template>
   <div class="bg-op-yellow p-4 mt-6">
-    <div class="text-center">
+    <div class="text-center inline-flex justify-center items-center w-full m-auto">
       <!-- Facebook User Group -->
       <div class="inline-block px-1 pb-2">
         <a
