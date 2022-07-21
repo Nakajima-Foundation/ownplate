@@ -64,27 +64,32 @@ export const useCategory = (moPrefix: string) => {
   const loadCategory = () => {
     detacheCategory();
     categoryDetacher.value = onSnapshot(
-      query(collection(db, `groups/${moPrefix}/category`)),
+      query(
+        collection(db, `groups/${moPrefix}/category`),
+        where("publicFlag", "==", true),
+      ),
       (category) => {
-        if (!category.empty) {
-          // categoryData.value = category.docs.map(doc2data("category"))
-          categoryData.value = category.docs
-            .map((doc) => {
-              return [
-                doc2data("category")(doc),
-                doc2data("category")(doc),
-                doc2data("category")(doc),
-                doc2data("category")(doc),
-                doc2data("category")(doc),
-                doc2data("category")(doc),
-                doc2data("category")(doc),
-                doc2data("category")(doc),
-                doc2data("category")(doc),
-                doc2data("category")(doc),
-              ];
-            })
-            .flat();
+        if (category.empty) {
+          console.log("Empty");
+          return;
         }
+        // categoryData.value = category.docs.map(doc2data("category"))
+        categoryData.value = category.docs
+          .map((doc) => {
+            return [
+              doc2data("category")(doc),
+              doc2data("category")(doc),
+              doc2data("category")(doc),
+              doc2data("category")(doc),
+              doc2data("category")(doc),
+              doc2data("category")(doc),
+              doc2data("category")(doc),
+              doc2data("category")(doc),
+              doc2data("category")(doc),
+              doc2data("category")(doc),
+            ];
+          })
+          .flat();
       },
       (error) => {
         console.log("load category error");
@@ -118,13 +123,15 @@ export const useSubcategory = (moPrefix: string, category: Ref<string>) => {
         collection(
           db,
           `groups/${moPrefix}/category/${category.value}/subCategory`
-        )
+        ),
+        where("publicFlag", "==", true),
       ),
       (category) => {
-        if (!category.empty) {
-          subCategoryData.value = category.docs.map(doc2data("subCategory"));
-          console.log(subCategoryData.value);
+        if (category.empty) {
+          console.log("empty");
+          return ;
         }
+        subCategoryData.value = category.docs.map(doc2data("subCategory"));
       },
       (error) => {
         console.log("load subCategory error");
