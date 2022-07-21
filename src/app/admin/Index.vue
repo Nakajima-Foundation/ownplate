@@ -292,6 +292,33 @@ export default defineComponent({
         ? ctx.root.$store.getters.parentId
         : ctx.root.$store.getters.uidAdmin;
     });
+
+    const watchOrder = () => {
+      detachOrders();
+      orderDetachers.value = Object.keys(restaurantItems.value).map(
+        (restaurantId) => {
+          return (
+            onSnapshot(
+              query(
+                collection(db, `restaurants/${restaurantId}/orders`),
+                where("timePlaced", ">=", midNight())
+              ),
+              // IDEALLY: .where("status", "<", order_status.ready_to_pickup)
+              (result) => {
+                const obj = { ...restaurantItems.value[restaurantId] };
+                obj.numberOfOrders = result.docs
+                  .map((doc) => doc.data())
+                  .filter((data) => {
+                    // We need this filter here because Firebase does not allow us to do
+                    return data.status < order_status.ready_to_pickup;
+                  }).length;
+                restaurantItems.value[restaurantId] = obj;
+              },
+            )
+          );
+        }
+      );
+    };
     onMounted(async () => {
       try {
         if (isOwner.value) {
@@ -350,31 +377,7 @@ export default defineComponent({
               ) {
                 restaurantLists.value = Object.keys(restaurantItems.value);
               }
-              
-              detachOrders();
-              orderDetachers.value = Object.keys(restaurantItems.value).map(
-                (restaurantId) => {
-                  return (
-                    onSnapshot(
-                      query(
-                        collection(db, `restaurants/${restaurantId}/orders`),
-                        where("timePlaced", ">=", midNight())
-                      ),
-                      // IDEALLY: .where("status", "<", order_status.ready_to_pickup)
-                      (result) => {
-                        const obj = { ...restaurantItems.value[restaurantId] };
-                        obj.numberOfOrders = result.docs
-                          .map((doc) => doc.data())
-                          .filter((data) => {
-                            // We need this filter here because Firebase does not allow us to do
-                            return data.status < order_status.ready_to_pickup;
-                          }).length;
-                        restaurantItems.value[restaurantId] = obj;
-                      },
-                    )
-                  );
-                }
-              );
+              watchOrder();
             } catch (error) {
               console.log("Error fetch doc,", error);
             } finally {
