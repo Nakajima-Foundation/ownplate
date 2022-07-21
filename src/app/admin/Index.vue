@@ -205,7 +205,18 @@
 </template>
 
 <script>
-import { db, firestore } from "@/plugins/firebase";
+import {
+  defineComponent,
+  ref,
+  computed,
+  watch,
+  onUnmounted,
+  onMounted,
+} from "@vue/composition-api";
+
+import { db } from "@/lib/firebase/firebase9";
+import { db as dbOld, firestore } from "@/plugins/firebase";
+
 import { order_status } from "@/config/constant";
 import { midNight } from "@/utils/dateUtils";
 
@@ -222,8 +233,10 @@ import Footer from "@/app/admin/Index/Footer.vue";
 import Partners from "@/app/admin/Index/Partners.vue";
 
 import { getShopOwner } from "@/utils/utils";
+import { doc2data } from "@/utils/utils";
+import { checkAdminPermission } from "@/utils/userPermission/";
 
-export default {
+export default defineComponent({
   name: "Restaurant",
   components: {
     PaymentSection,
@@ -242,153 +255,169 @@ export default {
       title: ["Admin Index", this.defaultTitle].join(" / "),
     };
   },
-  data() {
-    return {
-      readyToDisplay: false,
-      isCreating: false,
-      restaurantItems: null,
-      detachers: [],
-      restaurant_detacher: null,
-      message_detacher: null,
-      unsetWarning: true,
-      lines: {},
-      shopOwner: null,
-      restaurantLists: [],
-      messages: [],
-    };
-  },
-  created() {
-    this.checkAdminPermission();
-  },
-  async mounted() {
-    try {
-      if (this.isOwner) {
-        this.shopOwner = await getShopOwner(this.ownerUid);
-
-        const restaurantLists = await db
-          .doc(`/admins/${this.$store.getters.uidAdmin}/public/RestaurantLists`)
-          .get();
-        this.restaurantLists =
-          (restaurantLists.exists ? restaurantLists.data() : {}).lists || [];
-      } else {
-        const restaurantLists = await db
-          .doc(
-            `/admins/${this.ownerUid}/children/${this.$store.getters.uidAdmin}`
-          )
-          .get();
-        this.restaurantLists =
-          (restaurantLists.exists ? restaurantLists.data() : {})
-            .restaurantLists || [];
-        this.shopOwner = {};
-      }
-
-      this.restaurant_detacher = db
-        .collection("restaurants")
-        .where("uid", "==", this.ownerUid)
-        .where("deletedFlag", "==", false)
-        .orderBy("createdAt", "asc")
-        .onSnapshot(async (result) => {
-          try {
-            if (result.empty) {
-              this.restaurantItems = {}; // so that we present "No restaurant"
-              return;
-            }
-
-            this.restaurantItems = (result.docs || []).reduce((tmp, doc) => {
-              const restaurantId = doc.id;
-              // workaround (this.ownerUid)
-              if (this.restaurantLists.includes(restaurantId) || this.isOwner) {
-                const data = doc.data();
-                data.restaurantid = doc.id;
-                data.id = doc.id;
-                tmp[doc.id] = data;
-                if (
-                  !this.restaurantLists.includes(restaurantId) &&
-                  this.isOwner
-                ) {
-                  this.restaurantLists.push(restaurantId);
-                }
-              }
-              return tmp;
-            }, {});
-            if (
-              this.isOwner &&
-              Object.keys(this.restaurantLists).length === 0
-            ) {
-              this.restaurantLists = Object.keys(this.restaurantItems);
-            }
-
-            this.destroy_detacher();
-            this.detachers = Object.keys(this.restaurantItems).map(
-              (restaurantId) => {
-                return (
-                  db
-                    .collection(`restaurants/${restaurantId}/orders`)
-                    .where("timePlaced", ">=", midNight())
-                    // IDEALLY: .where("status", "<", order_status.ready_to_pickup)
-                    .onSnapshot((result) => {
-                      const obj = { ...this.restaurantItems[restaurantId] };
-                      obj.numberOfOrders = result.docs
-                        .map((doc) => doc.data())
-                        .filter((data) => {
-                          // We need this filter here because Firebase does not allow us to do
-                          return data.status < order_status.ready_to_pickup;
-                        }).length;
-                      this.restaurantItems[restaurantId] = obj;
-                    })
-                );
-              }
-            );
-          } catch (error) {
-            console.log("Error fetch doc,", error);
-          } finally {
-            this.readyToDisplay = true;
-          }
-        });
-    } catch (error) {
-      console.log("Error fetch doc,", error);
-    } finally {
-      this.readyToDisplay = true;
-    }
-    if (this.isOwner) {
-      db.collectionGroup("lines")
-        .where("uid", "==", this.uid)
-        .onSnapshot((result) => {
-          result.docs.map(async (res) => {
-            const restaurantId = res.data().restaurantId;
-            this.lines[restaurantId] = true;
-          });
-        });
+  setup(_, ctx) {
+    const readyToDisplay = ref(false);
+    const isCreating = ref(false);
+    const restaurantItems = ref(null);
+    const orderDetachers = ref([]);
+    const restaurant_detacher = ref(null);
+    const message_detacher = ref(null);
+    const unsetWarning = ref(true);
+    const lines = ref({});
+    const shopOwner = ref(null);
+    const restaurantLists = ref([]);
+    const messages = ref([]);
+    if (!checkAdminPermission(ctx)) {
+      return;
     }
 
-    this.message_detacher = db
-      .collection(`/admins/${this.uid}/messages`)
-      .orderBy("createdAt", "desc")
-      .onSnapshot((messageCollection) => {
-        this.messages = messageCollection.docs
-          .map(this.doc2data("message"))
-          .filter((a) => a.toDisplay);
-      });
-  },
-  methods: {
-    destroy_detacher() {
-      this.detachers.map((detacher) => {
+    const detachOrders = () => {
+      orderDetachers.value.map((detacher) => {
         detacher();
       });
-      this.detachers = [];
-    },
-    async handleNew() {
+      orderDetachers.value = [];
+    };
+    
+    const isOwner = computed(() => {
+      return !ctx.root.$store.getters.isSubAccount;
+    });
+    const uid = computed (() => {
+      return ctx.root.$store.getters.uidAdmin;
+    });
+    const ownerUid = computed(() => {
+      return ctx.root.$store.getters.isSubAccount
+        ? ctx.root.$store.getters.parentId
+        : ctx.root.$store.getters.uidAdmin;
+    });
+    onMounted(async () => {
+      try {
+        if (isOwner.value) {
+          shopOwner.value = await getShopOwner(ownerUid.value);
+          const restaurantListsCol = await dbOld
+                .doc(`/admins/${uid.value}/public/RestaurantLists`)
+                .get();
+          restaurantLists.value =
+            (restaurantListsCol.exists ? restaurantListsCol.data() : {}).lists || [];
+        } else {
+          const restaurantListsCol = await dbOld
+                .doc(
+                  `/admins/${ownerUid.value}/children/${uid.value}`
+                )
+                .get();
+          restaurantLists.value =
+            (restaurantListsCol.exists ? restaurantListsCol.data() : {})
+            .restaurantLists || [];
+          shopOwner.value = {};
+        }
+        
+        restaurant_detacher.value = dbOld
+          .collection("restaurants")
+          .where("uid", "==", ownerUid.value)
+          .where("deletedFlag", "==", false)
+          .orderBy("createdAt", "asc")
+          .onSnapshot(async (result) => {
+            try {
+              if (result.empty) {
+                restaurantItems.value = {}; // so that we present "No restaurant"
+                return;
+              }
+              
+              restaurantItems.value = (result.docs || []).reduce((tmp, doc) => {
+                const restaurantId = doc.id;
+                // workaround (ownerUid.value)
+                if (restaurantLists.value.includes(restaurantId) || isOwner.value) {
+                  const data = doc.data();
+                  data.restaurantid = doc.id;
+                  data.id = doc.id;
+                  tmp[doc.id] = data;
+                  if (
+                    !restaurantLists.value.includes(restaurantId) &&
+                      isOwner.value
+                  ) {
+                    restaurantLists.value.push(restaurantId);
+                  }
+                }
+                return tmp;
+              }, {});
+              if (
+                isOwner.value &&
+                  Object.keys(restaurantLists.value).length === 0
+              ) {
+                restaurantLists.value = Object.keys(restaurantItems.value);
+              }
+              
+              detachOrders();
+              orderDetachers.value = Object.keys(restaurantItems.value).map(
+                (restaurantId) => {
+                  return (
+                    dbOld
+                      .collection(`restaurants/${restaurantId}/orders`)
+                      .where("timePlaced", ">=", midNight())
+                    // IDEALLY: .where("status", "<", order_status.ready_to_pickup)
+                      .onSnapshot((result) => {
+                        const obj = { ...restaurantItems.value[restaurantId] };
+                        obj.numberOfOrders = result.docs
+                          .map((doc) => doc.data())
+                          .filter((data) => {
+                            // We need this filter here because Firebase does not allow us to do
+                            return data.status < order_status.ready_to_pickup;
+                          }).length;
+                        restaurantItems.value[restaurantId] = obj;
+                      })
+                  );
+                }
+              );
+            } catch (error) {
+              console.log("Error fetch doc,", error);
+            } finally {
+              readyToDisplay.value = true;
+            }
+          });
+      } catch (error) {
+        console.log("Error fetch doc,", error);
+      } finally {
+        readyToDisplay.value = true;
+      }
+      if (isOwner.value) {
+        dbOld.collectionGroup("lines")
+          .where("uid", "==", uid.value)
+          .onSnapshot((result) => {
+            result.docs.map(async (res) => {
+              const restaurantId = res.data().restaurantId;
+              lines.value[restaurantId] = true;
+            });
+          });
+      }
+      
+      message_detacher.value = dbOld
+        .collection(`/admins/${uid.value}/messages`)
+        .orderBy("createdAt", "desc")
+        .onSnapshot((messageCollection) => {
+          messages.value = messageCollection.docs
+            .map(doc2data("message"))
+            .filter((a) => a.toDisplay);
+        });
+    });
+
+    const saveRestaurantLists = async () => {
+      if (isOwner.value) {
+        await dbOld
+          .doc(`/admins/${uid.value}/public/RestaurantLists`)
+          .set({ lists: restaurantLists.value }, { merge: true });
+      }
+    };
+    const handleNew = async () => {
       console.log("handleNew");
-      if (this.isOwner) {
+      if (isOwner.value) {
         try {
-          this.isCreating = true;
-          const doc = await db.collection("restaurants").doc();
+          isCreating.value = true;
+          const doc = await dbOld.collection("restaurants").doc();
           // update Lists
-          this.restaurantLists.push(doc.id);
-          this.saveRestaurantLists();
+          restaurantLists.value.push(doc.id);
+          saveRestaurantLists();
 
           doc.set({
-            uid: this.uid,
+            uid: uid.value,
             restaurantId: doc.id,
             menuLists: [],
             publicFlag: false,
@@ -397,97 +426,103 @@ export default {
             createdAt: firestore.FieldValue.serverTimestamp(),
           });
 
-          this.$router.push(`/admin/restaurants/${doc.id}`);
+          ctx.root.$router.push(`/admin/restaurants/${doc.id}`);
         } catch (error) {
           console.log(error);
         } finally {
-          this.isCreating = false;
+          isCreating.value = false;
         }
       }
-    },
-    updateUnsetWarning(value) {
-      this.unsetWarning = value;
-    },
-    async positionUp(itemKey) {
-      if (this.isOwner) {
-        const pos = this.restaurantLists.indexOf(itemKey);
+    };
+    const updateUnsetWarning = (value) => {
+      unsetWarning.value = value;
+    };
+    const positionUp = async (itemKey) => {
+      if (isOwner.value) {
+        const pos = restaurantLists.value.indexOf(itemKey);
         if (pos !== 0 && pos !== -1) {
-          const newRestaurantLists = [...this.restaurantLists];
+          const newRestaurantLists = [...restaurantLists.value];
           const tmp = newRestaurantLists[pos - 1];
           newRestaurantLists[pos - 1] = newRestaurantLists[pos];
           newRestaurantLists[pos] = tmp;
 
-          this.restaurantLists = newRestaurantLists;
-          await this.saveRestaurantLists();
+          restaurantLists.value = newRestaurantLists;
+          await saveRestaurantLists();
         }
       }
-    },
-    async positionDown(itemKey) {
-      if (this.isOwner) {
-        const pos = this.restaurantLists.indexOf(itemKey);
-        if (pos < this.restaurantLists.length - 1 && pos !== -1) {
-          const newRestaurantLists = [...this.restaurantLists];
+    };
+    const positionDown = async (itemKey) => {
+      if (isOwner.value) {
+        const pos = restaurantLists.value.indexOf(itemKey);
+        if (pos < restaurantLists.value.length - 1 && pos !== -1) {
+          const newRestaurantLists = [...restaurantLists.value];
           const tmp = newRestaurantLists[pos + 1];
           newRestaurantLists[pos + 1] = newRestaurantLists[pos];
           newRestaurantLists[pos] = tmp;
 
-          this.restaurantLists = newRestaurantLists;
+          restaurantLists.value = newRestaurantLists;
 
-          await this.saveRestaurantLists();
+          await saveRestaurantLists();
         }
       }
-    },
-    async deleteFromRestaurantLists(restaurantId) {
-      if (this.isOwner) {
+    }
+    const deleteFromRestaurantLists = async (restaurantId) => {
+      if (isOwner.value) {
         // push list
-        const newRestaurantLists = [...this.restaurantLists];
+        const newRestaurantLists = [...restaurantLists.value];
         const pos = newRestaurantLists.indexOf(restaurantId);
         newRestaurantLists.splice(pos, 1);
-        this.restaurantLists = newRestaurantLists;
+        restaurantLists.value = newRestaurantLists;
 
-        const path = `/admins/${this.$store.getters.uidAdmin}/public/RestaurantLists`;
-        await db.doc(path).set({ lists: newRestaurantLists }, { merge: true });
+        const path = `/admins/${uid.value}/public/RestaurantLists`;
+        await dbOld.doc(path).set({ lists: newRestaurantLists }, { merge: true });
         // end of list
       }
-    },
-    async saveRestaurantLists() {
-      if (this.isOwner) {
-        await db
-          .doc(`/admins/${this.$store.getters.uidAdmin}/public/RestaurantLists`)
-          .set({ lists: this.restaurantLists }, { merge: true });
+    };
+    onUnmounted(() => {
+      detachOrders();
+      if (restaurant_detacher.value) {
+        restaurant_detacher.value();
       }
-    },
-  },
-  destroyed() {
-    this.destroy_detacher();
-    if (this.restaurant_detacher) {
-      this.restaurant_detacher();
-    }
-    if (this.message_detacher) {
-      this.message_detacher();
-    }
-  },
-  computed: {
-    ownerUid() {
-      return this.$store.getters.isSubAccount
-        ? this.$store.getters.parentId
-        : this.uid;
-    },
-    isOwner() {
-      return !this.$store.getters.isSubAccount;
-    },
-    uid() {
-      return this.$store.getters.uidAdmin;
-    },
-    existsRestaurant() {
-      if (this.restaurantItems === null) {
+      if (message_detacher.value) {
+        message_detacher.value();
+      }
+    });
+
+    const existsRestaurant = computed(() => {
+      if (restaurantItems.value === null) {
         return null;
       }
-      if (Object.keys(this.restaurantItems).length > 0) {
+      if (Object.keys(restaurantItems.value).length > 0) {
         return true;
       }
       return false;
-    },
+    });
+    return {
+      // ref
+      readyToDisplay,
+      isCreating,
+      restaurantItems,
+      unsetWarning,
+      lines,
+      shopOwner,
+      restaurantLists,
+      messages,
+
+      // computed
+      isOwner,
+      existsRestaurant,
+
+      // methods
+      handleNew,
+      updateUnsetWarning,
+      positionUp,
+      positionDown,
+      deleteFromRestaurantLists,
+      saveRestaurantLists,
+
+      
+    };
   },
-};
+});
 </script>

@@ -97,7 +97,7 @@ export default {
   },
   methods: {
     handleYes() {
-      console.log("handleYes", this.alert.callback);
+      console.log("handleYes");
       this.alert.callback();
       this.isVisible = false;
     },
