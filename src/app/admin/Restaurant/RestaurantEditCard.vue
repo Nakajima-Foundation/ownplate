@@ -402,15 +402,17 @@ export default {
     };
   },
   mounted() {
-    this.detacher = db
-      .doc(`requestList/${this.restaurantid}`)
-      .onSnapshot(async (result) => {
-        if (result.exists) {
-          this.requestState = result.data().status;
-        } else {
-          this.requestState = 0;
-        }
-      });
+    if (this.isOwner) {
+      this.detacher = db
+        .doc(`requestList/${this.restaurantid}`)
+        .onSnapshot(async (result) => {
+          if (result.exists) {
+            this.requestState = result.data().status;
+          } else {
+            this.requestState = 0;
+          }
+        });
+    }
   },
   destroyed() {
     this.detacher && this.detacher();
