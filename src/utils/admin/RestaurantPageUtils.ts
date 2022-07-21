@@ -315,7 +315,7 @@ export const copyRestaurant = async (
     }
   });
 
-  await updateDoc(doc(db, `restaurants/${id}`), { menuLists: newMenuList });
+  await updateDoc(doc(db, `restaurants/${id}`), { menuLists: newMenuList, restaurantId: id });
 
   // push list
   const path = `/admins/${uid}/public/RestaurantLists`;
