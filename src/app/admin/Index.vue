@@ -215,6 +215,9 @@ import {
 } from "@vue/composition-api";
 
 import { db } from "@/lib/firebase/firebase9";
+import { doc, collection, where, query, orderBy, onSnapshot } from "firebase/firestore";
+
+
 import { db as dbOld, firestore } from "@/plugins/firebase";
 
 import { order_status } from "@/config/constant";
@@ -310,12 +313,14 @@ export default defineComponent({
           shopOwner.value = {};
         }
         
-        restaurant_detacher.value = dbOld
-          .collection("restaurants")
-          .where("uid", "==", ownerUid.value)
-          .where("deletedFlag", "==", false)
-          .orderBy("createdAt", "asc")
-          .onSnapshot(async (result) => {
+        restaurant_detacher.value = onSnapshot(
+          query(
+            collection(db, "restaurants"),
+            where("uid", "==", ownerUid.value),
+            where("deletedFlag", "==", false),
+            orderBy("createdAt", "asc")
+          ),
+          async (result) => {
             try {
               if (result.empty) {
                 restaurantItems.value = {}; // so that we present "No restaurant"
@@ -350,11 +355,13 @@ export default defineComponent({
               orderDetachers.value = Object.keys(restaurantItems.value).map(
                 (restaurantId) => {
                   return (
-                    dbOld
-                      .collection(`restaurants/${restaurantId}/orders`)
-                      .where("timePlaced", ">=", midNight())
-                    // IDEALLY: .where("status", "<", order_status.ready_to_pickup)
-                      .onSnapshot((result) => {
+                    onSnapshot(
+                      query(
+                        collection(db, `restaurants/${restaurantId}/orders`),
+                        where("timePlaced", ">=", midNight())
+                      ),
+                      // IDEALLY: .where("status", "<", order_status.ready_to_pickup)
+                      (result) => {
                         const obj = { ...restaurantItems.value[restaurantId] };
                         obj.numberOfOrders = result.docs
                           .map((doc) => doc.data())
@@ -363,7 +370,8 @@ export default defineComponent({
                             return data.status < order_status.ready_to_pickup;
                           }).length;
                         restaurantItems.value[restaurantId] = obj;
-                      })
+                      },
+                    )
                   );
                 }
               );
@@ -372,7 +380,8 @@ export default defineComponent({
             } finally {
               readyToDisplay.value = true;
             }
-          });
+          }
+        );
       } catch (error) {
         console.log("Error fetch doc,", error);
       } finally {
