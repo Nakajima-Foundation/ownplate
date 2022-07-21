@@ -422,6 +422,7 @@ export default {
 
           doc.set({
             uid: this.uid,
+            restaurantId: doc.id,
             menuLists: [],
             publicFlag: false,
             numberOfMenus: 0,
