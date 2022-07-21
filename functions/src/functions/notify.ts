@@ -17,6 +17,11 @@ import * as ses from "./ses";
 
 const LINE_MESSAGE_TOKEN = (functions.config() && functions.config().line && functions.config().line.message_token) || process.env.LINE_MESSAGE_TOKEN;
 
+const aws_key = (functions.config() && functions.config().aws && functions.config().aws.id) || process.env.AWS_ID;
+const aws_secret = (functions.config() && functions.config().aws && functions.config().aws.secret) || process.env.AWS_SECRET;
+
+
+
 export const isEnabled = !!ownPlateConfig.line;
 
 // for customer
@@ -45,13 +50,32 @@ export const sendMessageToCustomer = async (
   
   // Not JP
   if (!isEnabled) {
-    return await sms.pushSMS("OwnPlate", getMessage(url), orderData.phoneNumber);
+    return await sms.pushSMS(aws_key, aws_secret, "OwnPlate", getMessage(url), orderData.phoneNumber);
   }
   // for JP Mobile Order
   if (orderData.groupId && !/11111111$/.test(orderData.phoneNumber)) {
-    const groupUrl = `https://${ownPlateConfig.hostName}/${orderData.groupId}/r/${restaurantId}/order/${orderId}?openExternalBrowser=1`;
+    const { groupId } = orderData;
+    const groupUrl = `https://${ownPlateConfig.hostName}/${groupId}/r/${restaurantId}/order/${orderId}?openExternalBrowser=1`;
 
-    return await sms.pushSMS("Mobile Order",  getMessage(groupUrl), orderData.phoneNumber);
+    const yearstr = moment().format("YYYY");
+    const monthstr = moment().format("YYYY-MM");
+    const datestr = moment().format("YYYY-MM-DD");
+    try {
+      db.collection(`log/smsLog/sms${yearstr}/sms${datestr}/${groupId}SmsLogData`).add({
+        restaurantId,
+        orderId,
+        groupId,
+        date: datestr,
+        uid: orderData.uid,
+        month: monthstr,       
+        last4: orderData.phoneNumber.slice(-4),
+        createdAt: process.env.NODE_ENV !== "test" ? firebase.firestore.Timestamp.now() : Date.now(),
+      });
+    } catch (e) {
+      console.log(e);
+    }
+    
+    return await sms.pushSMS(aws_key, aws_secret, "Mobile Order",  getMessage(groupUrl), orderData.phoneNumber);
   }
   // for JP
   const { lineId, liffIndexId, liffId } = (await line.getLineId(db, orderData.uid)) as any;
@@ -70,7 +94,7 @@ export const sendMessageToCustomer = async (
   }
   // force SMS ( for cancel and change order)
   if (forceSMS && orderData.phoneNumber) {
-    await sms.pushSMS("omochikaeri", getMessage(url), orderData.phoneNumber);
+    await sms.pushSMS(aws_key, aws_secret, "omochikaeri", getMessage(url), orderData.phoneNumber);
   }
 };
 
