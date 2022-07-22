@@ -215,7 +215,7 @@ import {
 } from "@vue/composition-api";
 
 import { db } from "@/lib/firebase/firebase9";
-import { doc, collection, where, query, orderBy, onSnapshot } from "firebase/firestore";
+import { doc, getDoc, collection, where, query, orderBy, onSnapshot } from "firebase/firestore";
 
 
 import { db as dbOld, firestore } from "@/plugins/firebase";
@@ -235,8 +235,7 @@ import Smaregi from "@/app/admin/Index/Smaregi.vue";
 import Footer from "@/app/admin/Index/Footer.vue";
 import Partners from "@/app/admin/Index/Partners.vue";
 
-import { getShopOwner } from "@/utils/utils";
-import { doc2data } from "@/utils/utils";
+import { getShopOwner, doc2data, arrayChunk } from "@/utils/utils";
 import { checkAdminPermission } from "@/utils/userPermission/";
 
 export default defineComponent({
@@ -323,68 +322,84 @@ export default defineComponent({
       try {
         if (isOwner.value) {
           shopOwner.value = await getShopOwner(ownerUid.value);
-          const restaurantListsCol = await dbOld
-                .doc(`/admins/${uid.value}/public/RestaurantLists`)
-                .get();
-          restaurantLists.value =
-            (restaurantListsCol.exists ? restaurantListsCol.data() : {}).lists || [];
+          const restaurantListsDoc = await getDoc(
+            doc(db, `/admins/${uid.value}/public/RestaurantLists`)
+          );
+          restaurantLists.value = 
+            (restaurantListsDoc.exists() ? restaurantListsDoc.data() : {}).lists || [];
         } else {
-          const restaurantListsCol = await dbOld
-                .doc(
-                  `/admins/${ownerUid.value}/children/${uid.value}`
-                )
-                .get();
+          const restaurantListsDoc = await getDoc(
+            doc(db, `/admins/${ownerUid.value}/children/${uid.value}`)
+          );
           restaurantLists.value =
-            (restaurantListsCol.exists ? restaurantListsCol.data() : {})
+            (restaurantListsDoc.exists() ? restaurantListsDoc.data() : {})
             .restaurantLists || [];
           shopOwner.value = {};
         }
         
-        restaurant_detacher.value = onSnapshot(
-          query(
-            collection(db, "restaurants"),
-            where("uid", "==", ownerUid.value),
-            where("deletedFlag", "==", false),
-            orderBy("createdAt", "asc")
-          ),
-          async (result) => {
-            try {
-              if (result.empty) {
-                restaurantItems.value = {}; // so that we present "No restaurant"
-                return;
-              }
-              
-              restaurantItems.value = (result.docs || []).reduce((tmp, doc) => {
-                const restaurantId = doc.id;
-                // workaround (ownerUid.value)
-                if (restaurantLists.value.includes(restaurantId) || isOwner.value) {
-                  const data = doc.data();
-                  data.restaurantid = doc.id;
-                  data.id = doc.id;
-                  tmp[doc.id] = data;
-                  if (
-                    !restaurantLists.value.includes(restaurantId) &&
-                      isOwner.value
-                  ) {
-                    restaurantLists.value.push(restaurantId);
-                  }
+        if (isOwner.value) {
+          restaurant_detacher.value = onSnapshot(
+            query(
+              collection(db, "restaurants"),
+              where("uid", "==", ownerUid.value),
+              where("deletedFlag", "==", false),
+              orderBy("createdAt", "asc")
+            ),
+            async (result) => {
+              try {
+                if (result.empty) {
+                  restaurantItems.value = {}; // so that we present "No restaurant"
+                  return;
                 }
-                return tmp;
-              }, {});
-              if (
-                isOwner.value &&
-                  Object.keys(restaurantLists.value).length === 0
-              ) {
-                restaurantLists.value = Object.keys(restaurantItems.value);
+                restaurantItems.value = (result.docs || []).reduce((tmp, doc) => {
+                  tmp[doc.id] = doc2data("restaurant")(doc);
+                  if (!restaurantLists.value.includes(doc.id)) {
+                    restaurantLists.value.push(doc.id);
+                  }
+                  return tmp;
+                }, {});
+                watchOrder();
+              } catch (error) {
+                console.log("Error fetch doc,", error);
+              } finally {
+                readyToDisplay.value = true;
               }
-              watchOrder();
-            } catch (error) {
-              console.log("Error fetch doc,", error);
-            } finally {
-              readyToDisplay.value = true;
             }
-          }
-        );
+          );
+        }
+        if (!isOwner.value && restaurantLists.value.length > 0) {
+          // sub account
+          arrayChunk(restaurantLists.value, 10).map((restaurantIds) => {
+            restaurant_detacher.value = onSnapshot(
+              query(
+                collection(db, "restaurants"),
+                where("uid", "==", ownerUid.value),
+                where("restaurantId", "in", restaurantIds),
+                where("deletedFlag", "==", false),
+                orderBy("createdAt", "asc")
+              ),
+              async (result) => {
+                try {
+                  if (result.empty &&  restaurantItems.value === null) {
+                    restaurantItems.value = {}; // so that we present "No restaurant"
+                    return;
+                  }
+                  
+                  restaurantItems.value = (result.docs || []).reduce((tmp, doc) => {
+                    tmp[doc.id] = doc2data("restaurant")(doc);
+                    return tmp;
+                  }, {});
+                  // if subAccounts has more than 11 restaurant, this will call multiple. TODO: optimize.
+                  watchOrder();
+                } catch (error) {
+                  console.log("Error fetch doc,", error);
+                } finally {
+                  readyToDisplay.value = true;
+                }
+              }
+            );
+          });
+        }
       } catch (error) {
         console.log("Error fetch doc,", error);
       } finally {
