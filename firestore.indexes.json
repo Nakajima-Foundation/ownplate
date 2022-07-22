@@ -143,6 +143,28 @@
           "order": "ASCENDING"
         },
         {
+          "fieldPath": "restaurantId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "uid",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "createdAt",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "restaurants",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "deletedFlag",
+          "order": "ASCENDING"
+        },
+        {
           "fieldPath": "uid",
           "order": "ASCENDING"
         },
