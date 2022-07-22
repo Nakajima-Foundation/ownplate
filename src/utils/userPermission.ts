@@ -10,3 +10,7 @@ export const checkAdminPermission = (ctx: any) => {
   }
   return true;
 };
+
+export const checkShopAccount = (shopInfo: any, ownerUid: string) => {
+  return shopInfo.uid === ownerUid;
+};

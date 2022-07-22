@@ -52,14 +52,14 @@ export const arrayChunk = <T>(arr: T[], size = 1) => {
       : [...current, array.slice(index, index + size)];
   }, []);
 };
-/*
-    shareUrl() {
-      return (
-        location.protocol + "//" + location.host + "/r/" + this.restaurantId()
-      );
-      // return "https://omochikaeri.com/r/" + this.restaurantId();
-    },
-*/
+
+export const shareUrl = (root: any) => {
+  const restaurantId = root.$route.params.restaurantId;
+  return (
+    location.protocol + "//" + location.host + "/r/" + restaurantId
+  );
+};
+
 export const doc2data = (dataType: string) => {
   return (doc: DocumentSnapshot<DocumentData>): DocumentData => {
     const data = doc.data() || ({} as DocumentData);
@@ -563,5 +563,24 @@ export const useToggle = (defaultValue = false) => {
     toggleOn,
     toggleOff,
     toggle,
+  };
+};
+
+export const useAdminUids = (ctx: any) => {
+  const isOwner = computed(() => {
+    return !ctx.root.$store.getters.isSubAccount;
+  });
+  const uid = computed (() => {
+    return ctx.root.$store.getters.uidAdmin;
+  });
+  const ownerUid = computed(() => {
+    return ctx.root.$store.getters.isSubAccount
+      ? ctx.root.$store.getters.parentId
+      : ctx.root.$store.getters.uidAdmin;
+  });
+  return {
+    isOwner,
+    uid,
+    ownerUid,
   };
 };

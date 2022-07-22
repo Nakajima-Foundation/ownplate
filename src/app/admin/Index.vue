@@ -235,8 +235,8 @@ import Smaregi from "@/app/admin/Index/Smaregi.vue";
 import Footer from "@/app/admin/Index/Footer.vue";
 import Partners from "@/app/admin/Index/Partners.vue";
 
-import { getShopOwner, doc2data, arrayChunk } from "@/utils/utils";
-import { checkAdminPermission } from "@/utils/userPermission/";
+import { getShopOwner, doc2data, arrayChunk, useAdminUids } from "@/utils/utils";
+import { checkAdminPermission } from "@/utils/userPermission";
 
 export default defineComponent({
   name: "Restaurant",
@@ -286,18 +286,11 @@ export default defineComponent({
       });
       orderDetachers.value = [];
     };
-    
-    const isOwner = computed(() => {
-      return !ctx.root.$store.getters.isSubAccount;
-    });
-    const uid = computed (() => {
-      return ctx.root.$store.getters.uidAdmin;
-    });
-    const ownerUid = computed(() => {
-      return ctx.root.$store.getters.isSubAccount
-        ? ctx.root.$store.getters.parentId
-        : ctx.root.$store.getters.uidAdmin;
-    });
+    const {
+      isOwner,
+      uid,
+      ownerUid,
+    } = useAdminUids(ctx);
 
     const watchOrder = () => {
       detachOrders();

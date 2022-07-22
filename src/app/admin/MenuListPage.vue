@@ -253,6 +253,12 @@
 </template>
 
 <script>
+import {
+  defineComponent,
+  ref,
+  computed,
+  onUnmounted,
+} from "@vue/composition-api";
 import { db } from "@/lib/firebase/firebase9";
 import {
   doc,
@@ -280,9 +286,10 @@ import { copyMenuData } from "@/models/menu";
 
 import NotificationIndex from "./Notifications/Index";
 
-import { cleanObject } from "@/utils/utils";
+import { doc2data, useAdminUids, cleanObject, array2obj, shareUrl } from "@/utils/utils";
+import { checkAdminPermission, checkShopAccount } from "@/utils/userPermission/";
 
-export default {
+export default defineComponent({
   name: "Menus",
   components: {
     ItemEditCard,
@@ -313,110 +320,105 @@ export default {
         : this.defaultTitle,
     };
   },
-  data() {
-    return {
-      submitting: false,
-      downloadSubmitting: false,
-      restaurantInfo: {},
-      menuCollection: null,
-      titleCollection: null,
-      editings: {},
-      detachers: [],
-      notFound: null,
-      menuObj: {},
-      publicFilter: false,
-    };
-  },
-  computed: {
-    ownerUid() {
-      return this.$store.getters.isSubAccount
-        ? this.$store.getters.parentId
-        : this.uid;
-    },
-    isOwner() {
-      return !this.$store.getters.isSubAccount;
-    },
-    menuCounter() {
-      return Object.keys(this.menuObj).length;
-    },
-    uid() {
-      return this.$store.getters.uidAdmin;
-    },
-    existsMenu() {
-      return this.menuLength > 0;
-    },
-    menuLength() {
-      return this.menuLists.length;
-    },
-    itemsObj() {
-      if (this.menuCollection && this.titleCollection) {
-        const menus = (this.menuCollection.docs || []).map(
-          this.doc2data("menu")
+  setup(props, ctx) {
+    const submitting = ref(false);
+    const downloadSubmitting = ref(false);
+    const restaurantInfo = ref({});
+    const menuCollection = ref(null);
+    const titleCollection = ref(null);
+    const editings = ref({});
+    const detachers = ref([]);
+    const notFound = ref(null);
+    const menuObj = ref({});
+    const publicFilter = ref(false);
+    if (!checkAdminPermission(ctx)) {
+      return;
+    }
+    
+    const {
+      isOwner,
+      uid,
+      ownerUid,
+    } = useAdminUids(ctx);
+
+    const restaurantId = computed(() => {
+      return ctx.root.$route.params.restaurantId;
+    });
+    const menuCounter = computed(() => {
+      return Object.keys(menuObj.value).length;
+    });
+    const menuLists = computed(() => {
+      return restaurantInfo.value.menuLists || [];
+    });
+    const menuLength = computed(() => {
+      return menuLists.value.length;
+    });
+    const existsMenu = computed(() => {
+      return menuLength.value > 0;
+    });
+    const itemsObj = computed(() => {
+      if (menuCollection.value && titleCollection.value) {
+        const menus = (menuCollection.value.docs || []).map(
+          doc2data("menu")
         );
-        this.menuObj = this.array2obj(menus);
-        const titles = (this.titleCollection.docs || []).map(
-          this.doc2data("title")
+        menuObj.value = array2obj(menus);
+        const titles = (titleCollection.value.docs || []).map(
+          doc2data("title")
         );
-        return this.array2obj(menus.concat(titles));
+        return array2obj(menus.concat(titles));
       }
       return {};
-    },
-    menuLists() {
-      return this.restaurantInfo.menuLists || [];
-    },
+    });
+    const countries = computed(() => { 
+      return ctx.root.$store.getters.stripeRegion.countries;
+    });
     // TODO: create method and move to utils. merge ShopInfo.vue
     // TODO: merge restaurantInfo and shopInfo
-    parsedNumber() {
+    const parsedNumber = computed(() => {
       const countryCode =
-        this.restaurantInfo.countryCode || this.countries[0].code;
+            restaurantInfo.value.countryCode || countries.value[0].code;
       try {
-        return parsePhoneNumber(countryCode + this.restaurantInfo.phoneNumber);
+        return parsePhoneNumber(countryCode + restaurantInfo.value.phoneNumber);
       } catch (error) {
         return null;
       }
-    },
-    countries() {
-      return this.$store.getters.stripeRegion.countries;
-    },
-    nationalPhoneNumber() {
-      const number = this.parsedNumber;
+    });
+    const nationalPhoneNumber = computed(() => {
+      const number = parsedNumber.value;
       if (number) {
         return formatNational(number);
       }
-      return this.restaurantInfo.phoneNumber;
-    },
-  },
-  async created() {
-    this.checkAdminPermission();
+      return restaurantInfo.value.phoneNumber;
+    });
+
     // allow sub Account
-    if (!this.checkShopAccount(this.shopInfo)) {
-      this.notFound = true;
+    if (!checkShopAccount(props.shopInfo, ownerUid.value)) {
+      notFound.value = true;
       return;
     }
 
     // This is duplicate data with shopInfo. But DONT'T REMOVE THIS!!
-    const restaurantRef = doc(db, `restaurants/${this.restaurantId()}`);
+    const restaurantRef = doc(db, `restaurants/${restaurantId.value}`);
     const restaurant_detacher = onSnapshot(restaurantRef, (results) => {
-      if (results.exists && results.data().uid === this.ownerUid) {
-        this.restaurantInfo = results.data();
-        this.readyToDisplay = true;
-        this.notFound = false;
+      if (results.exists && results.data().uid === ownerUid.value) {
+        restaurantInfo.value = results.data();
+        notFound.value = false;
       } else {
-        this.notFound = true;
+        notFound.value = true;
         // 404
         console.log("Error fetch restaurantInfo.");
       }
     });
 
-    this.notFound = false;
+    notFound.value = false;
 
     const menu_detacher = onSnapshot(
       query(
-        collection(db, `restaurants/${this.restaurantId()}/menus`),
+        collection(db, `restaurants/${restaurantId.value}/menus`),
         where("deletedFlag", "==", false)
       ),
       (results) => {
-        this.menuCollection = results.empty ? {} : results;
+        menuCollection.value = results.empty ? {} : results;
         // for debug
         results.docs.forEach((a) => {
           if (a.data().publicFlag === undefined) {
@@ -427,135 +429,128 @@ export default {
     );
     const title_detacher = onSnapshot(
       query(
-        collection(db, `restaurants/${this.restaurantId()}/titles`),
+        collection(db, `restaurants/${restaurantId.value}/titles`),
         where("deletedFlag", "==", false)
       ),
       (results) => {
-        this.titleCollection = results.empty ? {} : results;
+        titleCollection.value = results.empty ? {} : results;
       }
     );
-    this.detacher = [menu_detacher, title_detacher];
-  },
-  destroyed() {
-    if (this.detachers) {
-      this.detachers.map((detacher) => {
-        detacher();
-      });
-    }
-  },
-  methods: {
-    publicFilterToggle() {
-      this.publicFilter = !this.publicFilter;
-    },
-    async downloadMenu() {
-      this.downloadSubmitting = true;
+    detachers.value = [restaurant_detacher, menu_detacher, title_detacher];
+
+    onUnmounted(() => {
+      if (detachers.value) {
+        detachers.value.map((detacher) => {
+          detacher();
+        });
+        detachers.value = [];
+      }
+    });
+
+    const publicFilterToggle = () => {
+      publicFilter.value = !publicFilter.value;
+    };
+    const downloadMenu = async () => {
+      downloadSubmitting.value = true;
       const dl = await pdf.menuDownload(
-        this.restaurantInfo,
-        this.menuObj,
-        this.nationalPhoneNumber,
-        this.shareUrl()
+        restaurantInfo.value,
+        menuObj.value,
+        nationalPhoneNumber.value,
+        shareUrl(ctx.root)
       );
-      this.downloadSubmitting = false;
-    },
-    async updateTitle(title) {
+      downloadSubmitting.value = false;
+    };
+    const changeTitleMode = (titleId, value) => {
+      const newEditings = { ...editings.value };
+      newEditings[titleId] = value;
+      editings.value = newEditings;
+    };
+    const updateTitle = async (title) => {
       await updateDoc(
-        doc(db, `restaurants/${this.restaurantId()}/titles/${title.id}`),
+        doc(db, `restaurants/${restaurantId.value}/titles/${title.id}`),
         { name: title.name }
       );
-      this.changeTitleMode(title.id, false);
-    },
-    async addTitle(operation) {
-      this.submitting = true;
+      changeTitleMode(title.id, false);
+    };
+    // edit title
+    const toEditMode = (titleId) => {
+      changeTitleMode(titleId, true);
+    };
+    // end of edit title
+    const saveMenuList = async (menuLists) => {
+      const numberOfMenus = menuCollection.value.docs.length;
+      await updateDoc(doc(db, `restaurants/${restaurantId.value}`), {
+        menuLists,
+        numberOfMenus,
+      });
+    };
+    const addTitle = async (operation) => {
+      submitting.value = true;
       try {
         const data = {
           name: "",
-          uid: this.$store.getters.uidAdmin,
+          uid: uid.value,
           createdAt: serverTimestamp(),
           deletedFlag: false,
         };
         const newTitle = await addDoc(
-          collection(db, `restaurants/${this.restaurantId()}/titles`),
+          collection(db, `restaurants/${restaurantId.value}/titles`),
           data
         );
-        const newMenuLists = this.menuLists;
+        const newMenuLists = menuLists.value;
         // newMenuLists.unshift(newTitle.id);
         if (operation === "top") {
           newMenuLists.unshift(newTitle.id);
         } else {
           newMenuLists.push(newTitle.id);
         }
-        await this.saveMenuList(newMenuLists);
+        await saveMenuList(newMenuLists);
       } catch (e) {
         console.log(e);
       } finally {
-        this.submitting = false;
+        submitting.value = false;
       }
-    },
-    async addMenu(operation) {
-      this.submitting = true;
+    };
+    const addMenu = async (operation) => {
+      submitting.value = true;
       try {
         const itemData = {
           itemName: "",
           price: 0,
           tax: "food",
           itemDescription: "",
-          uid: this.$store.getters.uidAdmin,
+          uid: uid.value,
           deletedFlag: false,
           publicFlag: true,
           validatedFlag: false,
           createdAt: new Date(),
         };
         const newData = await addDoc(
-          collection(db, `restaurants/${this.restaurantId()}/menus`),
+          collection(db, `restaurants/${restaurantId.value}/menus`),
           itemData
         );
 
-        const newMenuLists = this.menuLists;
+        const newMenuLists = menuLists.value;
         if (operation === "top") {
           newMenuLists.unshift(newData.id);
         } else {
           newMenuLists.push(newData.id);
         }
-        await this.saveMenuList(newMenuLists);
-        this.$router.push({
-          path: `/admin/restaurants/${this.restaurantId()}/menus/${newData.id}`,
+        await saveMenuList(newMenuLists);
+        ctx.root.$router.push({
+          path: `/admin/restaurants/${restaurantId.value}/menus/${newData.id}`,
         });
       } catch (e) {
         console.log(e);
       } finally {
-        this.submitting = false;
+        submitting.value = false;
       }
-    },
-
-    async saveMenuList(menuLists) {
-      const numberOfMenus = this.menuCollection.docs.length;
-      await updateDoc(doc(db, `restaurants/${this.restaurantId()}`), {
-        menuLists,
-        numberOfMenus,
-      });
-    },
-    finishTitleInput() {
-      this.$router.go({
-        path: `/admin/restaurants/${this.restaurantId()}/menus`,
-        force: true,
-      });
-    },
-    // edit title
-    toEditMode(titleId) {
-      this.changeTitleMode(titleId, true);
-    },
-    changeTitleMode(titleId, value) {
-      const newEditings = { ...this.editings };
-      newEditings[titleId] = value;
-      this.editings = newEditings;
-    },
-    // end of edit title
-
+    };
     //
-    async positionUp(itemKey) {
-      let pos = this.menuLists.indexOf(itemKey);
+    const positionUp = async (itemKey) => {
+      let pos = menuLists.value.indexOf(itemKey);
       if (pos !== 0 && pos !== -1) {
-        const newMenuLists = [...this.menuLists];
+        const newMenuLists = [...menuLists.value];
         let tmp = null;
         do {
           tmp = newMenuLists[pos - 1];
@@ -565,18 +560,18 @@ export default {
           // if public filter case,
           //  loop swap while tmp obj is public or title. pos == 0 means you are top.
         } while (
-          this.publicFilter &&
-          this.menuObj[tmp] &&
-          !this.menuObj[tmp].publicFlag &&
+          publicFilter.value &&
+          menuObj.value[tmp] &&
+          !menuObj.value[tmp].publicFlag &&
           pos !== 0
         );
-        await this.saveMenuList(newMenuLists);
+        await saveMenuList(newMenuLists);
       }
-    },
-    async positionDown(itemKey) {
-      let pos = this.menuLists.indexOf(itemKey);
-      if (pos < this.menuLength - 1 && pos !== -1) {
-        const newMenuLists = [...this.menuLists];
+    };
+    const positionDown = async (itemKey) => {
+      let pos = menuLists.value.indexOf(itemKey);
+      if (pos < menuLength.value - 1 && pos !== -1) {
+        const newMenuLists = [...menuLists.value];
         let tmp = null;
         do {
           tmp = newMenuLists[pos + 1];
@@ -584,68 +579,102 @@ export default {
           newMenuLists[pos] = tmp;
           pos = pos + 1;
           // if public filter case,
-          //  loop swap while tmp obj is public or title. pos == this.menuLength means you are bottom.
+          //  loop swap while tmp obj is public or title. pos == menuLength.value means you are bottom.
         } while (
-          this.publicFilter &&
-          this.menuObj[tmp] &&
-          !this.menuObj[tmp].publicFlag &&
-          pos < this.menuLength - 1
+          publicFilter.value &&
+          menuObj.value[tmp] &&
+          !menuObj.value[tmp].publicFlag &&
+          pos < menuLength.value - 1
         );
-        await this.saveMenuList(newMenuLists);
+        await saveMenuList(newMenuLists);
       }
-    },
-    async forkTitleItem(itemKey) {
-      const item = this.itemsObj[itemKey];
+    };
+
+    const forkItem = async (itemKey, newData) => {
+      const pos = menuLists.value.indexOf(itemKey);
+      const item = itemsObj.value[itemKey];
+
+      const newMenuLists = menuLists.value;
+      newMenuLists.splice(pos, 0, newData.id);
+      await saveMenuList(newMenuLists);
+    };
+
+    const forkTitleItem = async (itemKey) => {
+      const item = itemsObj.value[itemKey];
       const data = {
         name: item.name,
-        uid: this.uid,
+        uid: uid.value,
         deletedFlag: false,
         createdAt: serverTimestamp(),
       };
       const newTitle = await addDoc(
-        collection(db, `restaurants/${this.restaurantId()}/titles`),
+        collection(db, `restaurants/${restaurantId.value}/titles`),
         data
       );
-      this.forkItem(itemKey, newTitle);
-    },
-    async forkMenuItem(itemKey) {
-      const item = this.itemsObj[itemKey];
+      await forkItem(itemKey, newTitle);
+    };
 
-      const data = copyMenuData(item, ownPlateConfig.region === "JP", this.uid);
+    const forkMenuItem = async (itemKey) => {
+      const item = itemsObj.value[itemKey];
+
+      const data = copyMenuData(item, ownPlateConfig.region === "JP", uid.value);
       const newData = await addDoc(
-        collection(db, `restaurants/${this.restaurantId()}/menus`),
+        collection(db, `restaurants/${restaurantId.value}/menus`),
         cleanObject(data)
       );
-      this.forkItem(itemKey, newData);
-    },
-    async forkItem(itemKey, newData) {
-      const pos = this.menuLists.indexOf(itemKey);
-      const item = this.itemsObj[itemKey];
+      await forkItem(itemKey, newData);
+    };
 
-      const newMenuLists = this.menuLists;
-      newMenuLists.splice(pos, 0, newData.id);
-      await this.saveMenuList(newMenuLists);
-    },
-    async deleteItem(itemKey) {
+    const deleteItem = async (itemKey) => {
       // delete from list
-      const newMenuLists = this.menuLists;
+      const newMenuLists = menuLists.value;
       const pos = newMenuLists.indexOf(itemKey);
-      const item = this.itemsObj[itemKey];
-      this.menuLists.splice(pos, 1);
+      const item = itemsObj.value[itemKey];
+      menuLists.value.splice(pos, 1);
       if (item._dataType === "menu") {
         await updateDoc(
-          doc(db, `restaurants/${this.restaurantId()}/menus/${itemKey}`),
+          doc(db, `restaurants/${restaurantId.value}/menus/${itemKey}`),
           { deletedFlag: true }
         );
       }
       if (item._dataType === "title") {
         await updateDoc(
-          doc(db, `restaurants/${this.restaurantId()}/titles/${itemKey}`),
+          doc(db, `restaurants/${restaurantId.value}/titles/${itemKey}`),
           { deletedFlag: true }
         );
       }
-      await this.saveMenuList(newMenuLists);
-    },
+      await saveMenuList(newMenuLists);
+    };
+    return {
+      //ref
+      submitting,
+      downloadSubmitting,
+      restaurantInfo,
+      editings,
+      notFound,
+      publicFilter,
+
+      // computed
+      isOwner,
+      menuCounter,
+      menuLists,
+      menuLength,
+      existsMenu,
+      itemsObj,
+      
+      // methods
+      publicFilterToggle,
+      downloadMenu,
+      updateTitle,
+      toEditMode,
+      addTitle,
+      addMenu,
+      positionUp,
+      positionDown,
+      forkTitleItem,
+      forkMenuItem,
+      deleteItem,
+    };
   },
-};
+});
 </script>
