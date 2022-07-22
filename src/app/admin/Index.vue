@@ -103,7 +103,7 @@
                   :shopInfo="restaurantItems[restaurantId]"
                   :restaurantid="restaurantId"
                   :numberOfMenus="
-                    restaurantItems[restaurantId].numberOfMenus || 0
+                                  (groupMasterRestaurant ?  groupMasterRestaurant : restaurantItems[restaurantId]).numberOfMenus || 0
                   "
                   :numberOfOrders="
                                    numberOfOrderObj[restaurantId] || 0
@@ -253,7 +253,7 @@ export default defineComponent({
     Footer,
   },
   props: {
-    groupData: {
+    groupMasterRestaurant: {
       type: Object,
       required: false,
     },
@@ -316,7 +316,6 @@ export default defineComponent({
                       .map((doc) => doc.data())
                       .filter((data) => {
                         // We need this filter here because Firebase does not allow us to do
-                        console.log(data);
                         return data.status < order_status.ready_to_pickup;
                       }).length;
                 numberOfOrderObj.value = newObj;

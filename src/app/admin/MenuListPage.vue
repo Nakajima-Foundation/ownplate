@@ -297,6 +297,10 @@ export default {
       type: Object,
       required: true,
     },
+    groupMasterRestaurant: {
+      type: Object,
+      required: false,
+    },
   },
   metaInfo() {
     return {
@@ -405,6 +409,7 @@ export default {
     });
 
     this.notFound = false;
+
     const menu_detacher = onSnapshot(
       query(
         collection(db, `restaurants/${this.restaurantId()}/menus`),
