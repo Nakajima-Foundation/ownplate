@@ -215,118 +215,117 @@ export const customRoutes: CustomRoute[] = [
     ],
   },
   {
-    name: "adminOwner",
-    path: "/admin/owner",
-    component: "admin/Owner.vue",
-  },
-  {
-    name: "admin",
-    path: "/admin/restaurants",
-    component: "admin/Index.vue",
-  },
-  {
-    path: "/admin/restaurants/:restaurantId",
-    component: "admin/Layout.vue",
+    component: "admin/Wrapper.vue",
+    path: "/admin",
     children: [
       {
-        name: "admin-about",
-        path: "/",
-        component: "admin/RestaurantPage.vue",
+        path: "restaurants",
+        component: "admin/Index.vue",
       },
       {
-        name: "admin-pdf",
-        path: "pdf",
-        component: "admin/Pdf.vue",
+        path: "restaurants/:restaurantId",
+        component: "admin/Layout.vue",
+        children: [
+          {
+            path: "/",
+            component: "admin/RestaurantPage.vue",
+          },
+          {
+            name: "admin-pdf",
+            path: "pdf",
+            component: "admin/Pdf.vue",
+          },
+          {
+            name: "admin-menus",
+            path: "menus",
+            component: "admin/MenuListPage.vue",
+          },
+          {
+            name: "admin-menus-item",
+            path: "menus/:menuId",
+            component: "admin/MenuItemPage.vue",
+          },
+          {
+            name: "admin-orders",
+            path: "orders",
+            component: "admin/OrderListPage.vue",
+          },
+          {
+            path: "history",
+            component: "admin/OrderHistory.vue",
+          },
+          {
+            name: "user-histories",
+            path: "userhistory/:userId",
+            component: "admin/UserHistory.vue",
+          },
+          {
+            name: "admin-suspend",
+            path: "suspend",
+            component: "admin/OrderSuspendPage.vue",
+          },
+          {
+            path: "postage",
+            component: "admin/Postage.vue",
+          },
+          {
+            path: "delivery",
+            component: "admin/Delivery.vue",
+          },
+          {
+            path: "line",
+            component: "admin/ManageLine.vue",
+          },
+          {
+            path: "traces",
+            component: "admin/TraceList.vue",
+          },
+          {
+            path: "qrcode",
+            component: "admin/QRCodePage.vue",
+          },
+          {
+            path: "report",
+            component: "admin/ReportPage.vue",
+          },
+          {
+            name: "admin-order-info",
+            path: "orders/:orderId",
+            component: "admin/OrderInfoPage.vue",
+          },
+        ],
       },
       {
-        name: "admin-menus",
-        path: "menus",
-        component: "admin/MenuListPage.vue",
-      },
-      {
-        name: "admin-menus-item",
-        path: "menus/:menuId",
-        component: "admin/MenuItemPage.vue",
-      },
-      {
-        name: "admin-orders",
+        name: "admin-orders-allorders",
         path: "orders",
-        component: "admin/OrderListPage.vue",
+        component: "admin/AllOrders.vue",
       },
       {
-        path: "history",
-        component: "admin/OrderHistory.vue",
+        name: "admin-subaccounts-accounts",
+        path: "subaccounts",
+        component: "admin/SubAccounts/Accounts.vue",
       },
       {
-        name: "user-histories",
-        path: "userhistory/:userId",
-        component: "admin/UserHistory.vue",
+        name: "admin-subaccounts-account",
+        path: "subaccounts/accounts/:subAccountId",
+        component: "admin/SubAccounts/Account.vue",
       },
       {
-        name: "admin-suspend",
-        path: "suspend",
-        component: "admin/OrderSuspendPage.vue",
+        name: "admin-smaregi-index",
+        path: "smaregi/index",
+        component: "admin/Smaregi/Index.vue",
       },
       {
-        path: "postage",
-        component: "admin/Postage.vue",
+        name: "admin-smaregi-callback",
+        path: "smaregi/callback",
+        component: "admin/Smaregi/Callback.vue",
       },
       {
-        path: "delivery",
-        component: "admin/Delivery.vue",
+        name: "admin-smaregi-store",
+        path: "smaregi/store/:storeId",
+        component: "admin/Smaregi/Store.vue",
       },
-      {
-        path: "line",
-        component: "admin/ManageLine.vue",
-      },
-      {
-        path: "traces",
-        component: "admin/TraceList.vue",
-      },
-      {
-        path: "qrcode",
-        component: "admin/QRCodePage.vue",
-      },
-      {
-        path: "report",
-        component: "admin/ReportPage.vue",
-      },
-      {
-        name: "admin-order-info",
-        path: "orders/:orderId",
-        component: "admin/OrderInfoPage.vue",
-      },
-    ],
-  },
-  {
-    name: "admin-orders-allorders",
-    path: "/admin/orders",
-    component: "admin/AllOrders.vue",
-  },
-  {
-    name: "admin-subaccounts-accounts",
-    path: "/admin/subaccounts",
-    component: "admin/SubAccounts/Accounts.vue",
-  },
-  {
-    name: "admin-subaccounts-account",
-    path: "/admin/subaccounts/accounts/:subAccountId",
-    component: "admin/SubAccounts/Account.vue",
-  },
-  {
-    name: "admin-smaregi-index",
-    path: "/admin/smaregi/index",
-    component: "admin/Smaregi/Index.vue",
-  },
-  {
-    name: "admin-smaregi-callback",
-    path: "/admin/smaregi/callback",
-    component: "admin/Smaregi/Callback.vue",
-  },
-  {
-    name: "admin-smaregi-store",
-    path: "/admin/smaregi/store/:storeId",
-    component: "admin/Smaregi/Store.vue",
+    ]
   },
   {
     name: "admin-news-list",
