@@ -106,7 +106,7 @@
                     restaurantItems[restaurantId].numberOfMenus || 0
                   "
                   :numberOfOrders="
-                    restaurantItems[restaurantId].numberOfOrders || 0
+                                   numberOfOrderObj[restaurantId] || 0
                   "
                   :lineEnable="lines[restaurantId] || false"
                   :shopOwner="shopOwner"
@@ -252,12 +252,18 @@ export default defineComponent({
     Note,
     Footer,
   },
+  props: {
+    groupData: {
+      type: Object,
+      required: false,
+    },
+  },
   metaInfo() {
     return {
       title: ["Admin Index", this.defaultTitle].join(" / "),
     };
   },
-  setup(_, ctx) {
+  setup(props, ctx) {
     const readyToDisplay = ref(false);
     const isCreating = ref(false);
     const restaurantItems = ref(null);
@@ -268,11 +274,12 @@ export default defineComponent({
     const lines = ref({});
     const shopOwner = ref(null);
     const restaurantLists = ref([]);
+    const numberOfOrderObj = ref({});
     const messages = ref([]);
     if (!checkAdminPermission(ctx)) {
       return;
     }
-
+    
     const detachOrders = () => {
       orderDetachers.value.map((detacher) => {
         detacher();
@@ -304,14 +311,15 @@ export default defineComponent({
               ),
               // IDEALLY: .where("status", "<", order_status.ready_to_pickup)
               (result) => {
-                const obj = { ...restaurantItems.value[restaurantId] };
-                obj.numberOfOrders = result.docs
-                  .map((doc) => doc.data())
-                  .filter((data) => {
-                    // We need this filter here because Firebase does not allow us to do
-                    return data.status < order_status.ready_to_pickup;
-                  }).length;
-                restaurantItems.value[restaurantId] = obj;
+                const newObj = {...numberOfOrderObj.value};
+                newObj[restaurantId] = result.docs
+                      .map((doc) => doc.data())
+                      .filter((data) => {
+                        // We need this filter here because Firebase does not allow us to do
+                        console.log(data);
+                        return data.status < order_status.ready_to_pickup;
+                      }).length;
+                numberOfOrderObj.value = newObj;
               },
             )
           );
@@ -320,22 +328,21 @@ export default defineComponent({
     };
     onMounted(async () => {
       try {
-        if (isOwner.value) {
-          shopOwner.value = await getShopOwner(ownerUid.value);
-          const restaurantListsDoc = await getDoc(
-            doc(db, `/admins/${uid.value}/public/RestaurantLists`)
-          );
-          restaurantLists.value = 
-            (restaurantListsDoc.exists() ? restaurantListsDoc.data() : {}).lists || [];
-        } else {
-          const restaurantListsDoc = await getDoc(
-            doc(db, `/admins/${ownerUid.value}/children/${uid.value}`)
-          );
-          restaurantLists.value =
-            (restaurantListsDoc.exists() ? restaurantListsDoc.data() : {})
-            .restaurantLists || [];
-          shopOwner.value = {};
-        }
+        shopOwner.value = isOwner.value ? await getShopOwner(ownerUid.value) : {};
+
+        restaurantLists.value = await (async () => {
+          if (isOwner.value) {
+            const restaurantListsDoc = await getDoc(
+              doc(db, `/admins/${uid.value}/public/RestaurantLists`)
+            );
+            return restaurantListsDoc.exists() ? restaurantListsDoc.data().lists || [] : [];
+          } else {
+            const restaurantListsDoc = await getDoc(
+              doc(db, `/admins/${ownerUid.value}/children/${uid.value}`)
+            );
+            return restaurantListsDoc.exists() ? restaurantListsDoc.data().restaurantLists || [] : [];
+          }
+        })();
         
         if (isOwner.value) {
           restaurant_detacher.value = onSnapshot(
@@ -535,7 +542,8 @@ export default defineComponent({
       shopOwner,
       restaurantLists,
       messages,
-
+      numberOfOrderObj,
+      
       // computed
       isOwner,
       existsRestaurant,
