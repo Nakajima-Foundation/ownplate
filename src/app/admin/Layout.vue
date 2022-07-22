@@ -24,6 +24,7 @@
     <router-view
       :shopInfo="shopInfo"
       :groupData="groupData"
+      :groupMasterRestaurant="groupMasterRestaurant"
       v-else-if="noRestaurant === false"
     ></router-view>
     <notification-watcher />
@@ -67,6 +68,12 @@ export default defineComponent({
     NewOrderWatcher,
     NotificationSettings,
     PartnersContact,
+  },
+  props: {
+    groupMasterRestaurant: {
+      type: Object,
+      required: false,
+    },
   },
   setup(_, ctx) {
     const restaurantId = computed(() => {

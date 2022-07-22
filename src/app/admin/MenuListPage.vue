@@ -31,19 +31,19 @@
           <div class="flex items-center">
             <div class="flex-shrink-0 rounded-full bg-black bg-opacity-10 mr-4">
               <img
-                :src="resizedProfileImage(restaurantInfo, '600')"
+                :src="resizedProfileImage(shopInfo, '600')"
                 class="w-9 h-9 rounded-full object-cover"
               />
             </div>
             <div class="text-base font-bold">
-              {{ restaurantInfo.restaurantName }}
+              {{ shopInfo.restaurantName }}
             </div>
           </div>
         </div>
 
         <!-- Notifications -->
         <div class="mt-4 lg:mt-0 flex-shrink-0">
-          <notification-index :shopInfo="restaurantInfo" />
+          <notification-index :shopInfo="shopInfo" />
         </div>
       </div>
 
@@ -341,6 +341,12 @@ export default defineComponent({
       ownerUid,
     } = useAdminUids(ctx);
 
+    const menuRestaurantId = computed(() => {
+      console.log(props.groupMasterRestaurant);
+      return props.groupMasterRestaurant ?
+        props.groupMasterRestaurant.restaurantId :
+        ctx.root.$route.params.restaurantId;
+    });
     const restaurantId = computed(() => {
       return ctx.root.$route.params.restaurantId;
     });
@@ -398,6 +404,7 @@ export default defineComponent({
     }
 
     // This is duplicate data with shopInfo. But DONT'T REMOVE THIS!!
+    // Menus and titles are saved restaurant info. This is reactive.
     const restaurantRef = doc(db, `restaurants/${restaurantId.value}`);
     const restaurant_detacher = onSnapshot(restaurantRef, (results) => {
       if (results.exists && results.data().uid === ownerUid.value) {
@@ -414,7 +421,7 @@ export default defineComponent({
 
     const menu_detacher = onSnapshot(
       query(
-        collection(db, `restaurants/${restaurantId.value}/menus`),
+        collection(db, `restaurants/${menuRestaurantId.value}/menus`),
         where("deletedFlag", "==", false)
       ),
       (results) => {
@@ -429,7 +436,7 @@ export default defineComponent({
     );
     const title_detacher = onSnapshot(
       query(
-        collection(db, `restaurants/${restaurantId.value}/titles`),
+        collection(db, `restaurants/${menuRestaurantId.value}/titles`),
         where("deletedFlag", "==", false)
       ),
       (results) => {
@@ -467,7 +474,7 @@ export default defineComponent({
     };
     const updateTitle = async (title) => {
       await updateDoc(
-        doc(db, `restaurants/${restaurantId.value}/titles/${title.id}`),
+        doc(db, `restaurants/${menuRestaurantId.value}/titles/${title.id}`),
         { name: title.name }
       );
       changeTitleMode(title.id, false);
@@ -494,7 +501,7 @@ export default defineComponent({
           deletedFlag: false,
         };
         const newTitle = await addDoc(
-          collection(db, `restaurants/${restaurantId.value}/titles`),
+          collection(db, `restaurants/${menuRestaurantId.value}/titles`),
           data
         );
         const newMenuLists = menuLists.value;
@@ -526,7 +533,7 @@ export default defineComponent({
           createdAt: new Date(),
         };
         const newData = await addDoc(
-          collection(db, `restaurants/${restaurantId.value}/menus`),
+          collection(db, `restaurants/${menuRestaurantId.value}/menus`),
           itemData
         );
 
@@ -538,7 +545,7 @@ export default defineComponent({
         }
         await saveMenuList(newMenuLists);
         ctx.root.$router.push({
-          path: `/admin/restaurants/${restaurantId.value}/menus/${newData.id}`,
+          path: `/admin/restaurants/${menuRestaurantId.value}/menus/${newData.id}`,
         });
       } catch (e) {
         console.log(e);
@@ -608,7 +615,7 @@ export default defineComponent({
         createdAt: serverTimestamp(),
       };
       const newTitle = await addDoc(
-        collection(db, `restaurants/${restaurantId.value}/titles`),
+        collection(db, `restaurants/${menuRestaurantId.value}/titles`),
         data
       );
       await forkItem(itemKey, newTitle);
@@ -619,7 +626,7 @@ export default defineComponent({
 
       const data = copyMenuData(item, ownPlateConfig.region === "JP", uid.value);
       const newData = await addDoc(
-        collection(db, `restaurants/${restaurantId.value}/menus`),
+        collection(db, `restaurants/${menuRestaurantId.value}/menus`),
         cleanObject(data)
       );
       await forkItem(itemKey, newData);
@@ -633,13 +640,13 @@ export default defineComponent({
       menuLists.value.splice(pos, 1);
       if (item._dataType === "menu") {
         await updateDoc(
-          doc(db, `restaurants/${restaurantId.value}/menus/${itemKey}`),
+          doc(db, `restaurants/${menuRestaurantId.value}/menus/${itemKey}`),
           { deletedFlag: true }
         );
       }
       if (item._dataType === "title") {
         await updateDoc(
-          doc(db, `restaurants/${restaurantId.value}/titles/${itemKey}`),
+          doc(db, `restaurants/${menuRestaurantId.value}/titles/${itemKey}`),
           { deletedFlag: true }
         );
       }
