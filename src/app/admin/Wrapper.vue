@@ -26,11 +26,9 @@ export default defineComponent({
         groupData.value = a.exists() ? a.data() : null;
         if (groupData.value) {
           onSnapshot(
-            query(
-              doc(db, `restaurants/${groupData.value.restaurantId}`)
-            ),
+            doc(db, `restaurants/${groupData.value.restaurantId}`),
             (result) => {
-              groupMasterRestaurant.value = result.data();
+              groupMasterRestaurant.value = result.data() as any;
             },
           )
         }
