@@ -2,7 +2,7 @@
   <div class="bg-op-yellow p-4 mt-6">
     <div class="text-center inline-flex justify-center items-center w-full m-auto">
       <!-- Facebook User Group -->
-      <div class="inline-block px-1 pb-2">
+      <div class="inline-block px-1 pb-2" v-if="false">
         <a
           href="https://www.facebook.com/groups/278028420106364/"
           target="_blank"
