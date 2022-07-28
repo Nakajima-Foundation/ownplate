@@ -39,44 +39,61 @@
 
       <!-- After Paid -->
       <div v-if="paid">
+        <!--ToDo MOは以下のThank you Messageは不要-->
         <!-- Thank you Message -->
         <ThankYou />
 
         <!-- Line Button -->
         <LineButton :groupData="groupData" />
 
-        <!-- Order Status -->
-        <OrderStatus :orderInfo="orderInfo" :orderName="orderName" />
+        <!-- Order Summary -->
+        <div class="mt-6 mx-6 pt-6 pb-1 px-2 bg-white rounded-lg shadow">
+          <!-- Order Status -->
+          <OrderStatus :orderInfo="orderInfo" :orderName="orderName" />
 
-        <!-- Time to Pickup -->
-        <div v-if="waiting && !shopInfo.isEC" class="mt-4 text-sm text-center">
-          <div>
-            {{ $t("order.timeRequested") + ": " + timeRequested }}
-          </div>
-          <div v-if="timeEstimated">
-            {{ $t("order.timeToPickup") + ": " + timeEstimated }}
-          </div>
-        </div>
-
-        <!-- Stripe status -->
-        <StripeStatus v-if="hasStripe" :orderInfo="orderInfo" />
-
-        <!-- Cancel Button -->
-        <div class="mt-6 text-center">
-          <b-button
-            v-if="just_paid"
-            @click="handleCancelPayment"
-            class="b-reset-tw"
-          >
-            <div class="inline-flex justify-center items-center">
-              <i class="material-icons text-lg mr-2 text-red-700"
-                >highlight_off</i
-              >
-              <div class="text-base font-bold text-red-700">
-                {{ $t("order.cancelOrder") }}
-              </div>
+          <!-- Time to Pickup -->
+          <div v-if="waiting && !shopInfo.isEC">
+            <div
+              class="mt-6 text-sm text-center font-bold text-black text-opacity-50"
+            >
+              {{ $t("order.timeRequested") }}
             </div>
-          </b-button>
+            <div class="mt-1 text-lg text-center text-black tracking-tight">
+              {{ timeRequested }}
+            </div>
+          </div>
+          <!--ToDo ご注文状況「受付済み」の場合は上の「受け渡し希望時刻」は表示せず、下の「受け渡し予定時刻」のみ表示する-->
+          <div v-if="timeEstimated">
+            <div
+              class="mt-6 text-sm text-center font-bold text-black text-opacity-50"
+            >
+              {{ $t("order.timeToPickup") }}
+            </div>
+            <div class="mt-1 text-lg text-center text-black tracking-tight">
+              {{ timeEstimated }}
+            </div>
+          </div>
+
+          <!-- Stripe status -->
+          <StripeStatus v-if="hasStripe" :orderInfo="orderInfo" />
+
+          <!-- Cancel Button -->
+          <div class="mt-8 mb-5 text-center">
+            <b-button
+              v-if="just_paid"
+              @click="handleCancelPayment"
+              class="b-reset-tw"
+            >
+              <div class="inline-flex justify-center items-center">
+                <i class="material-icons text-lg mr-2 text-red-700"
+                  >highlight_off</i
+                >
+                <div class="text-base font-bold text-red-700">
+                  {{ $t("order.cancelOrder") }}
+                </div>
+              </div>
+            </b-button>
+          </div>
         </div>
 
         <!-- Canceled Message -->
@@ -88,12 +105,12 @@
             $t("order.cancelOrderComplete")
           }}</span>
         </div>
-
+        <!--ToDo MOは以下のSpecial Thank you Messageは不要-->
         <!-- Special Thank you Message from the Restaurant -->
         <ThankYouFromRestaurant v-if="!canceled" :shopInfo="shopInfo" />
 
         <!-- Favorite Button -->
-        <div class="mt-4 mx-6 bg-black bg-opacity-5 rounded-lg p-4 text-center">
+        <div class="mt-6 text-center">
           <div>
             <favorite-button :shopInfo="shopInfo"></favorite-button>
           </div>
@@ -115,10 +132,10 @@
         v-if="orderInfo.phoneNumber && !shopInfo.isEC"
         class="mt-4 text-center"
       >
-        <div class="text-base font-bold">
+        <div class="mb-2 text-base font-bold">
           {{ $t("order.customerInfo") }}
         </div>
-        <div class="text-xs font-bold">
+        <div class="text-xs font-bold text-black text-opacity-40">
           {{ $t("sms.phonenumber") }}
         </div>
         <div class="text-base mt-1">
@@ -886,7 +903,9 @@ export default {
           sendSMS: this.sendSMS,
           tip: this.tip || 0,
           memo: this.memo || "",
-          customerInfo: this.$refs.ecCustomerRef ? this.$refs.ecCustomerRef.customerInfo || {} : {},
+          customerInfo: this.$refs.ecCustomerRef
+            ? this.$refs.ecCustomerRef.customerInfo || {}
+            : {},
         });
         if (this.isLiffUser) {
           await this.saveLiffCustomer();
@@ -938,7 +957,9 @@ export default {
           sendSMS: this.sendSMS,
           tip: this.tip || 0,
           memo: this.memo || "",
-          customerInfo: this.$refs.ecCustomerRef ? this.$refs.ecCustomerRef.customerInfo || {} : {},
+          customerInfo: this.$refs.ecCustomerRef
+            ? this.$refs.ecCustomerRef.customerInfo || {}
+            : {},
         });
         if (this.isLiffUser) {
           await this.saveLiffCustomer();
