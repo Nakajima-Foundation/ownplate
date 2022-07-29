@@ -342,8 +342,7 @@ export default defineComponent({
     } = useAdminUids(ctx);
 
     const menuRestaurantId = computed(() => {
-      console.log(props.groupMasterRestaurant);
-      return props.groupMasterRestaurant ?
+      return !props.groupMasterRestaurant.empty ?
         props.groupMasterRestaurant.restaurantId :
         ctx.root.$route.params.restaurantId;
     });

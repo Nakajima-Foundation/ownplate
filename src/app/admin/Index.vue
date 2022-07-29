@@ -103,7 +103,7 @@
                   :shopInfo="restaurantItems[restaurantId]"
                   :restaurantid="restaurantId"
                   :numberOfMenus="
-                                  (groupMasterRestaurant ?  groupMasterRestaurant : restaurantItems[restaurantId]).numberOfMenus || 0
+                                  (!groupMasterRestaurant.empty ?  groupMasterRestaurant : restaurantItems[restaurantId]).numberOfMenus || 0
                   "
                   :numberOfOrders="
                                    numberOfOrderObj[restaurantId] || 0

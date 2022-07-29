@@ -34,6 +34,8 @@ export default defineComponent({
         }
       });
                                         
+    } else {
+       groupMasterRestaurant.value = {empty: true};
     }
     return {
       groupData,
