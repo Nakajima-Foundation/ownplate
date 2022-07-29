@@ -39,9 +39,8 @@
 
       <!-- After Paid -->
       <div v-if="paid">
-        <!--ToDo MOは以下のThank you Messageは不要-->
         <!-- Thank you Message -->
-        <ThankYou />
+        <ThankYou v-if="mode !== 'mo'"/>
 
         <!-- Line Button -->
         <LineButton :groupData="groupData" />
@@ -52,28 +51,15 @@
           <OrderStatus :orderInfo="orderInfo" :orderName="orderName" />
 
           <!-- Time to Pickup -->
-          <div v-if="waiting && !shopInfo.isEC">
-            <div
-              class="mt-6 text-sm text-center font-bold text-black text-opacity-50"
-            >
-              {{ $t("order.timeRequested") }}
-            </div>
-            <div class="mt-1 text-lg text-center text-black tracking-tight">
-              {{ timeRequested }}
-            </div>
-          </div>
-          <!--ToDo ご注文状況「受付済み」の場合は上の「受け渡し希望時刻」は表示せず、下の「受け渡し予定時刻」のみ表示する-->
-          <div v-if="timeEstimated">
-            <div
-              class="mt-6 text-sm text-center font-bold text-black text-opacity-50"
-            >
-              {{ $t("order.timeToPickup") }}
-            </div>
-            <div class="mt-1 text-lg text-center text-black tracking-tight">
-              {{ timeEstimated }}
-            </div>
-          </div>
-
+          <Pickup
+            :orderInfo="orderInfo"
+            :shopInfo="shopInfo"
+            :timeEstimated="timeEstimated"
+            :timeRequested="timeRequested"
+            :paid="paid"
+            :mode="mode"
+            />
+          
           <!-- Stripe status -->
           <StripeStatus v-if="hasStripe" :orderInfo="orderInfo" />
 
@@ -105,9 +91,8 @@
             $t("order.cancelOrderComplete")
           }}</span>
         </div>
-        <!--ToDo MOは以下のSpecial Thank you Messageは不要-->
         <!-- Special Thank you Message from the Restaurant -->
-        <ThankYouFromRestaurant v-if="!canceled" :shopInfo="shopInfo" />
+        <ThankYouFromRestaurant v-if="!canceled && mode !== 'mo'" :shopInfo="shopInfo" />
 
         <!-- Favorite Button -->
         <div class="mt-6 text-center">
@@ -505,6 +490,8 @@ import Receipt from "./OrderPage/AfterPaid/Receipt.vue";
 import ECCustomer from "./OrderPage/ECCustomer.vue";
 import OrderNotice from "./OrderPage/OrderNotice.vue";
 
+import Pickup from "./OrderPage/Pickup.vue";
+
 import BeforePaidAlert from "./OrderPage/BeforePaid/BeforePaidAlert.vue";
 
 import { db, firestore } from "@/plugins/firebase";
@@ -563,6 +550,8 @@ export default {
     OrderStatus,
     Receipt,
 
+    Pickup,
+    
     BeforePaidAlert,
 
     ECCustomer,
@@ -699,9 +688,6 @@ export default {
     },
     order_accepted() {
       return this.orderInfo.status >= order_status.order_accepted;
-    },
-    waiting() {
-      return this.orderInfo.status < order_status.cooking_completed;
     },
     hasCustomerInfo() {
       return this.orderInfo.status > order_status.validation_ok;
