@@ -295,7 +295,8 @@
     "liked": "Liked",
     "mo": {
       "like": "Like",
-      "liked": "Liked"
+      "liked": "Liked",
+      "minimumAvailableTime": "Minimum available time"
     },
     "qrcode": "QR Code",
     "copyUrl": "Copy URL",

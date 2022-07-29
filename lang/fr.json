@@ -289,7 +289,8 @@
     "liked": "Aimée",
     "mo": {
       "like": "Aimer",
-      "liked": "Aimée"
+      "liked": "Aimée",
+      "minimumAvailableTime": "Temps disponible minimum"
     },
     "qrcode": "Code QR",
     "copyUrl": "Copier le Lien",
