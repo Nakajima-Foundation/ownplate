@@ -61,7 +61,7 @@
             />
           
           <!-- Stripe status -->
-          <StripeStatus v-if="hasStripe" :orderInfo="orderInfo" />
+          <StripeStatus v-if="hasStripe" :orderInfo="orderInfo" :mode="mode" />
 
           <!-- Cancel Button -->
           <div class="mt-8 mb-5 text-center">

@@ -7,11 +7,11 @@
     </div>
     <div :class="'stripe_' + orderInfo.payment.stripe">
       <div class="text-xl">
-        {{ $t("order.status.stripe_user_" + orderInfo.payment.stripe) }}<br />
+        {{ $t("order.status.stripe_user_" + orderInfo.payment.stripe) }}
       </div>
-      <!--ToDo MOは以下の文言不要、上の文言も指定の文言に変更-->
-      {{ $t("order.status.stripe_user_message_" + orderInfo.payment.stripe)
-      }}<br />
+      <div v-if="mode !== 'mo'">
+        {{ $t("order.status.stripe_user_message_" + orderInfo.payment.stripe) }}
+      </div>
     </div>
     <div v-if="isJustCancelPayment">
       {{ $t("order.status.stripe_user_message_just_payment_canceled") }}
@@ -27,6 +27,10 @@ export default defineComponent({
   props: {
     orderInfo: {
       type: Object,
+      required: true,
+    },
+    mode: {
+      type: String,
       required: true,
     },
   },
