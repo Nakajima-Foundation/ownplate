@@ -36,12 +36,11 @@
       </div>
     </div>
     <div class="flex justify-between mt-2 mx-6">
-      <!-- ToDo: Price-->
-      <div class="mt-2 text-sm text-black">
+      <div class="mt-2 text-black">
         <Price
           :shopInfo="{ inclusiveTax: true }"
           :menu="{ price: subTotalWithTax }"
-          />
+        />
       </div>
       <div class="flex justify-end">
         <span

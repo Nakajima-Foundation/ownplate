@@ -1,10 +1,15 @@
 <template>
-  <div class="mt-6 mx-6 bg-black bg-opacity-5 rounded-lg p-4 text-center">
-    <div class="font-bold">
+  <div
+    class="mt-6 mx-2 bg-black bg-opacity-5 rounded-lg pt-4 pb-4 px-1 text-center font-bold"
+  >
+    <div class="mb-1 text-sm text-center font-bold text-black text-opacity-50">
       {{ $t("order.onlinePaymentStatus") }}
     </div>
     <div :class="'stripe_' + orderInfo.payment.stripe">
-      {{ $t("order.status.stripe_user_" + orderInfo.payment.stripe) }}<br />
+      <div class="text-xl">
+        {{ $t("order.status.stripe_user_" + orderInfo.payment.stripe) }}<br />
+      </div>
+      <!--ToDo MOは以下の文言不要、上の文言も指定の文言に変更-->
       {{ $t("order.status.stripe_user_message_" + orderInfo.payment.stripe)
       }}<br />
     </div>

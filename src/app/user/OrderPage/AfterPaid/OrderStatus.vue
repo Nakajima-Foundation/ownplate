@@ -1,31 +1,27 @@
 <template>
-  <div class="mt-6 text-center">
-    <div class="inline-flex space-x-4">
-      <div>
-        <div class="text-sm font-bold text-black text-opacity-60">
-          {{ $t("order.orderStatus") }}
-        </div>
-        <div
-          class="inline-block px-4 py-1 rounded-full mt-2"
-          :class="orderStatusKey"
-        >
-          <div class="text-sm font-bold">
-            {{
-              $t(
-                "order.status." +
-                  convOrderStateForTextFunc(orderStatusKey, orderInfo)
-              )
-            }}
-          </div>
-        </div>
+  <div class="text-center">
+    <div>
+      <div class="text-sm font-bold text-black text-opacity-50">
+        {{ $t("order.orderStatus") }}
       </div>
-      <div>
-        <div class="text-sm font-bold text-black text-opacity-60">
-          {{ $t("order.orderId") }}
-        </div>
-        <div class="mt-1">
-          <div class="text-2xl">{{ orderName }}</div>
-        </div>
+      <div
+        class="rounded-lg p-4 mt-2 mb-6 mx-2 text-2xl font-bold"
+        :class="orderStatusKey"
+      >
+        {{
+          $t(
+            "order.status." +
+              convOrderStateForTextFunc(orderStatusKey, orderInfo)
+          )
+        }}
+      </div>
+    </div>
+    <div>
+      <div class="text-sm font-bold text-black text-opacity-50">
+        {{ $t("order.orderId") }}
+      </div>
+      <div class="mt-1">
+        <div class="text-lg text-black">{{ orderName }}</div>
       </div>
     </div>
   </div>
