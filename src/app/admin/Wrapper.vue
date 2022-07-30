@@ -31,6 +31,7 @@ export default defineComponent({
       return !groupMasterRestaurant.value.empty;
     });
     const moPrefix = computed(() => {
+      // return "";
       return "ss";
     });
     if (moPrefix.value) {

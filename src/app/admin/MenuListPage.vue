@@ -53,46 +53,20 @@
         />
       </div>
 
-      <!-- No Menu or Too Many Menu-->
+       <!-- No Menu or Too Many Menu-->
       <div
-        v-if="(!existsMenu || menuCounter > 5) && isOwner"
+        v-if="(!existsMenu || menuCounter > 5) && isOwner && !isInMo"
         class="mt-6 mx-6 border-2 border-op-teal rounded-lg p-4 pb-2 lg:max-w-2xl lg:mx-auto"
       >
         <div class="text-center text-sm font-bold text-op-teal">
           {{ $t("editMenu.pleaseAddItem") }}
         </div>
 
-        <div class="mt-4 text-center">
-          <b-button
-            @click="addTitle('top')"
-            :disabled="submitting"
-            class="b-reset-tw mx-2 mb-2"
-          >
-            <div
-              class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
-            >
-              <i class="material-icons text-lg text-op-teal mr-2">add</i>
-              <span class="text-sm font-bold text-op-teal">{{
-                $t("button.addTitle")
-              }}</span>
-            </div>
-          </b-button>
-
-          <b-button
-            @click="addMenu('top')"
-            :disabled="submitting"
-            class="b-reset-tw mx-2 mb-2"
-          >
-            <div
-              class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
-            >
-              <i class="material-icons text-lg text-op-teal mr-2">add</i>
-              <span class="text-sm font-bold text-op-teal">
-                {{ $t("button.addItem") }}</span
-              >
-            </div>
-          </b-button>
-        </div>
+        <AddButton
+          :submitting="submitting"
+          @addTitle="addTitle('top')"
+          @addMenu="addMenu('top')"
+          />
       </div>
 
       <!-- Category Titles / Menu Items -->
@@ -168,37 +142,12 @@
         class="mt-6 mx-6 border-2 border-op-teal rounded-lg p-4 pb-2 lg:max-w-2xl lg:mx-auto"
         v-if="isOwner"
       >
-        <div class="text-center">
-          <b-button
-            @click="addTitle()"
-            :disabled="submitting"
-            class="b-reset-tw mx-2 mb-2"
-          >
-            <div
-              class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
-            >
-              <i class="material-icons text-lg text-op-teal mr-2">add</i>
-              <span class="text-sm font-bold text-op-teal">{{
-                $t("button.addTitle")
-              }}</span>
-            </div>
-          </b-button>
-
-          <b-button
-            @click="addMenu()"
-            :disabled="submitting"
-            class="b-reset-tw mx-2 mb-2"
-          >
-            <div
-              class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
-            >
-              <i class="material-icons text-lg text-op-teal mr-2">add</i>
-              <span class="text-sm font-bold text-op-teal">
-                {{ $t("button.addItem") }}</span
-              >
-            </div>
-          </b-button>
-        </div>
+        <AddButton
+          :submitting="submitting"
+          @addTitle="addTitle()"
+          @addMenu="addMenu()"
+          v-if="!isInMo"
+          />
 
         <div class="text-center mt-2" v-if="menuCounter > 0">
           <b-button
@@ -249,6 +198,7 @@ import BackButton from "@/components/BackButton";
 
 import PreviewLink from "./MenuListPage/PreviewLink.vue";
 import PublicFilterToggle from "./MenuListPage/PublicFilterToggle.vue";
+import AddButton from "./MenuListPage/AddButton.vue";
 
 import SubCategoryList from "@/app/user/Restaurant/SubCategoryList.vue";
 
@@ -291,7 +241,8 @@ export default defineComponent({
 
     PreviewLink,
     PublicFilterToggle,
-
+    AddButton,
+    
     SubCategoryList,
   },
   props: {
