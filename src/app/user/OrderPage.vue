@@ -872,8 +872,8 @@ export default {
         if (this.$refs.ecCustomerRef.hasEcError) {
           return;
         }
-        if (this.isSaveAddress) {
-          await this.saveAddress();
+        if (this.$refs.ecCustomerRef.isSaveAddress) {
+          await  this.$refs.ecCustomerRef.saveAddress();
         }
       }
 
@@ -925,13 +925,12 @@ export default {
       }
     },
     async handleNoPayment() {
-      console.log(this.requireAddress, this.isSaveAddress);
       if (this.requireAddress) {
         if (this.$refs.ecCustomerRef && this.$refs.ecCustomerRef.hasEcError) {
           return;
         }
-        if (this.isSaveAddress) {
-          await this.saveAddress();
+        if (this.$refs.ecCustomerRef.isSaveAddress) {
+          await  this.$refs.ecCustomerRef.saveAddress();
         }
       }
       const timeToPickup = this.shopInfo.isEC

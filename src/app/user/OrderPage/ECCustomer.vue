@@ -218,7 +218,6 @@ export default defineComponent({
     };
     const saveAddress = async () => {
       const uid = ctx.root.user.uid;
-      console.log(customerInfo.value);
       await db.doc(`/users/${uid}/address/data`).set(customerInfo.value);
     };
     const loadAddress = async () => {
@@ -308,7 +307,8 @@ export default defineComponent({
       customerInfo,
       addressList,
       isSaveAddress,
-
+      saveAddress,
+      
       ecErrors,
       hasEcError,
       fullAddress,

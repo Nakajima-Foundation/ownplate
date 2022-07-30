@@ -18,7 +18,7 @@
   "profile": {
     "title": "マイページ",
     "address": "アドレス",
-    "resetAddress": "リセット",
+    "resetAddress": "アドレス削除",
     "resetAddressMessage": "個人情報を消去します",
     "resetAddressModify": "変更はデリバリー注文時に行えます",
     "loginStatus": "サインイン状況",
