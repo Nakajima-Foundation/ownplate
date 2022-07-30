@@ -190,11 +190,11 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 
-import MenuCard from "@/app/admin/Menus/MenuCard";
-import TitleCard from "@/app/admin/Menus/TitleCard";
-import TitleInput from "@/app/admin/Menus/TitleInput";
-import NotFound from "@/components/NotFound";
-import BackButton from "@/components/BackButton";
+import MenuCard from "@/app/admin/Menus/MenuCard.vue";
+import TitleCard from "@/app/admin/Menus/TitleCard.vue";
+import TitleInput from "@/app/admin/Menus/TitleInput.vue";
+import NotFound from "@/components/NotFound.vue";
+import BackButton from "@/components/BackButton.vue";
 
 import PreviewLink from "./MenuListPage/PreviewLink.vue";
 import PublicFilterToggle from "./MenuListPage/PublicFilterToggle.vue";
@@ -317,7 +317,6 @@ export default defineComponent({
     });
     if (props.isInMo) {
       loadCategory();
-      console.log(category.value);
       if (category.value) {
         loadSubcategory();
       }
