@@ -4,6 +4,11 @@ import {
   PhoneNumberFormat,
 } from "google-libphonenumber";
 
+import { stripeRegion } from "@/utils/utils";
+import {
+  computed,
+} from "@vue/composition-api";
+
 const phoneUtil = PhoneNumberUtil.getInstance();
 
 export const parsePhoneNumber = (phoneNumber: string): PhoneNumber => {
@@ -24,4 +29,32 @@ export const formatNational = (phoneNumber: PhoneNumber): string => {
 export const formatURL = (phoneNumber: PhoneNumber): string => {
   const prefix = localPrefix(phoneNumber);
   return "tel:" + prefix + phoneNumber.getNationalNumber();
+};
+
+
+export const usePhoneNumber = (restaurantInfo: any) => {
+  const countries = stripeRegion.countries;
+
+  const parsedNumber = computed(() => {
+    const countryCode =
+      restaurantInfo.value.countryCode || countries.value[0].code;
+    try {
+      return parsePhoneNumber(countryCode + restaurantInfo.value.phoneNumber);
+    } catch (error) {
+      return null;
+    }
+  });
+
+  const nationalPhoneNumber = computed(() => {
+    const pnumber = parsedNumber.value;
+    if (pnumber) {
+      return formatNational(pnumber);
+    }
+    return restaurantInfo.value.phoneNumber;
+  });
+
+  return {
+    parsedNumber,
+    nationalPhoneNumber,
+  };
 };

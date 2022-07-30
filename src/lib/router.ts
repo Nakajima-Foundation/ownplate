@@ -241,6 +241,11 @@ export const customRoutes: CustomRoute[] = [
             component: "admin/MenuListPage.vue",
           },
           {
+            name: "admin-menus-cat",
+            path: "menus/cat/:category/:subCategory",
+            component: "admin/MenuListPage.vue",
+          },
+          {
             name: "admin-menus-item",
             path: "menus/:menuId",
             component: "admin/MenuItemPage.vue",

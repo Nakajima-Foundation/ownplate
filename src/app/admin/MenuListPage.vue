@@ -279,6 +279,7 @@ import BackButton from "@/components/BackButton";
 
 import firebase from "firebase/compat/app";
 import * as pdf from "@/lib/pdf/pdf";
+import { usePhoneNumber } from "@/utils/phoneutil";
 
 import { ownPlateConfig } from "@/config/project";
 
@@ -357,27 +358,8 @@ export default defineComponent({
     const menuCounter = computed(() => {
       return Object.keys(menuObj.value).length;
     });
-    const countries = computed(() => {
-      return ctx.root.$store.getters.stripeRegion.countries;
-    });
-    // TODO: create method and move to utils. merge ShopInfo.vue
-    // TODO: merge restaurantInfo and shopInfo
-    const parsedNumber = computed(() => {
-      const countryCode =
-        restaurantInfo.value.countryCode || countries.value[0].code;
-      try {
-        return parsePhoneNumber(countryCode + restaurantInfo.value.phoneNumber);
-      } catch (error) {
-        return null;
-      }
-    });
-    const nationalPhoneNumber = computed(() => {
-      const number = parsedNumber.value;
-      if (number) {
-        return formatNational(number);
-      }
-      return restaurantInfo.value.phoneNumber;
-    });
+    
+    const { nationalPhoneNumber } = usePhoneNumber(restaurantInfo);
 
     // allow sub Account
     if (!checkShopAccount(props.shopInfo, ownerUid.value)) {

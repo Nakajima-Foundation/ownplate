@@ -441,6 +441,7 @@ export default defineComponent({
         cartItems.value = cart.cartItems || {};
         selectedOptions.value = cart.options || {};
         setCache(cart.menuCache);
+        // TODO: howtoreceive
       }
     });
 
