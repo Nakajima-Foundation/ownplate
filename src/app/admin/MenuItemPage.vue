@@ -638,8 +638,9 @@ export default defineComponent({
 
     const maxPrice = 1000000.0 / stripeRegion.multiple;
     const allergens = stripeRegion.allergens;
-    const priceStep = 10.0 / stripeRegion.multiple;
-
+    const priceStep = 1.0 / stripeRegion.multiple;
+    console.log(priceStep, stripeRegion);
+    
     const notFound = ref(null);
     const menuId = ctx.root.$route.params.menuId;
     const submitting = ref(false);
@@ -709,10 +710,10 @@ export default defineComponent({
     });
 
     const categories1 = computed(() => {
-      return props.shopInfo.category1;
+      return props.shopInfo.category1 || [];
     });
     const categories2 = computed(() => {
-      return props.shopInfo.category2;
+      return props.shopInfo.category2 || [];
     });
     const itemPhoto = computed(() => {
       return (
@@ -770,7 +771,7 @@ export default defineComponent({
     const addOption = () => {
       menuInfo.itemOptionCheckbox.push("");
     };
-    const getNewItemData = () => {
+    const newItemData = () => {
       const itemData = getNewItemData(
         menuInfo,
         ownPlateConfig.region === "JP",
@@ -787,7 +788,7 @@ export default defineComponent({
           title: shop.restaurantName,
           code: "editCommon.copyMenuAlert",
           callback: async () => {
-            const newItem = getNewItemData();
+            const newItem = newItemData();
             newItem.publicFlag = false;
             newItem.createdAt = firebase.firestore.FieldValue.serverTimestamp();
             newItem.deletedFlag = false;
@@ -829,7 +830,7 @@ export default defineComponent({
             resizedImages: {},
           };
         }
-        const itemData = getNewItemData();
+        const itemData = newItemData();
 
         // Convert double-width characters with half-width characters in options
         // We also convert Japanse commas with alphabet commas
@@ -892,7 +893,6 @@ export default defineComponent({
       deleteOption,
       addOption,
       copyItem,
-      getNewItemData,
       submitItem,
     };
   },

@@ -25,7 +25,7 @@ export default defineComponent({
     const groupData = ref();
     const groupMasterRestaurant = ref();
 
-    if (true) {
+    if (false) {
       getDoc(doc(db, "/groups/ss")).then((a) => {
         groupData.value = a.exists() ? a.data() : null;
         if (groupData.value) {
