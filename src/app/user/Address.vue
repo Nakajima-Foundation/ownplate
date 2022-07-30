@@ -50,30 +50,40 @@
 </template>
 
 <script>
+import { defineComponent, computed, ref } from "@vue/composition-api";
 import { db } from "@/plugins/firebase";
+import { useBasePath } from "@/utils/utils";
 
-export default {
-  async created() {
-    const uid = this.user.uid;
-    const data = (await db.doc(this.docPath).get()).data();
-    this.customerInfo = data;
-  },
-  data() {
+export default defineComponent({
+  setup(_, ctx) {
+    const basePath = useBasePath(ctx.root);
+    const customerInfo = ref({})
+
+    const docPath = computed(() => {
+      if (ctx.root.isUser) {
+        return `/users/${ctx.root.user.uid}/address/data`;
+      }
+      return null;
+    })
+
+    if (!ctx.root.isUser) {
+      ctx.root.$router.push(basePath.value + "/u/profile");
+    }
+
+    if (docPath.value) {
+      db.doc(docPath.value).get().then(doc=> {
+        customerInfo.value = doc.data();
+      });
+    }
+    const resetAddress = async () =>  {
+      await db.doc(docPath.value).set({});
+      customerInfo.value = {};
+    };
+
     return {
-      customerInfo: {},
+      customerInfo,
+      resetAddress,
     };
   },
-  computed: {
-    docPath() {
-      const uid = this.user.uid;
-      return `/users/${uid}/address/data`;
-    },
-  },
-  methods: {
-    async resetAddress() {
-      await db.doc(this.docPath).set({});
-      this.customerInfo = {};
-    },
-  },
-};
+});
 </script>
