@@ -1159,6 +1159,7 @@ export default {
     async handleOrderChange() {
       this.$store.commit("setAlert", {
         title: "admin.order.confirmOrderChange",
+        code: "admin.order.updateOrderMessage",
         callback: async () => {
           try {
             this.changing = true;

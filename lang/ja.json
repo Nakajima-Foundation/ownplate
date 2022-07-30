@@ -750,6 +750,7 @@
       "cancelButton": "注文をキャンセル",
       "cancelTitle": "注文のキャンセル",
       "cancelMessage": "お客様にご連絡の上、ご注文がキャンセルされることをお伝え下さい。",
+      "updateOrderMessage": "お客様にご連絡の上、ご注文を変更することを確定してください。",
       "paymentCancelButton": "カード決済のみをキャンセル",
       "delete": "この注文をキャンセルする",
       "deleteConfirm": "（キャンセルの取り消しは出来ません）",
