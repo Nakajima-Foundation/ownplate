@@ -171,7 +171,7 @@
               hasCustomerInfo
             "
           >
-            <CustomerInfo
+            <UserCustomerInfo
               :shopInfo="shopInfo"
               :orderId="orderId"
               :phoneNumber="nationalPhoneNumber"
@@ -469,16 +469,18 @@
 
 <script>
 import firebase from "firebase/compat/app";
-import ShopHeader from "@/app/user/Restaurant/ShopHeader";
-import OrderInfo from "@/app/user/Order/OrderInfo";
-import ShopInfo from "@/app/user/Restaurant/ShopInfo";
-import StripeCard from "@/app/user/Order/StripeCard";
-import TimeToPickup from "@/app/user/Order/TimeToPickup";
-import PhoneLogin from "@/app/auth/PhoneLogin";
-import NotFound from "@/components/NotFound";
-import RequireLogin from "@/components/RequireLogin";
-import FavoriteButton from "@/app/user/Restaurant/FavoriteButton";
-import CustomerInfo from "@/components/CustomerInfo";
+
+import ShopHeader from "@/app/user/Restaurant/ShopHeader.vue";
+import OrderInfo from "@/app/user/Order/OrderInfo.vue";
+import ShopInfo from "@/app/user/Restaurant/ShopInfo.vue";
+import StripeCard from "@/app/user/Order/StripeCard.vue";
+import TimeToPickup from "@/app/user/Order/TimeToPickup.vue";
+import PhoneLogin from "@/app/auth/PhoneLogin.vue";
+import NotFound from "@/components/NotFound.vue";
+import RequireLogin from "@/components/RequireLogin.vue";
+import FavoriteButton from "@/app/user/Restaurant/FavoriteButton.vue";
+
+import UserCustomerInfo from "./OrderPage/AfterPaid/UserCustomerInfo.vue";
 
 import OrderPageMap from "./OrderPageMap.vue";
 
@@ -539,7 +541,7 @@ export default {
     TimeToPickup,
     NotFound,
     RequireLogin,
-    CustomerInfo,
+    UserCustomerInfo,
     OrderPageMap,
     FavoriteButton,
     // after paid components

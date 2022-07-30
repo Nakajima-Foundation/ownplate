@@ -61,37 +61,20 @@
 <script>
 import { defineComponent, ref } from "@vue/composition-api";
 
-import { db } from "@/lib/firebase/firebase9";
-import { doc, getDoc } from "firebase/firestore";
-
 export default defineComponent({
   props: {
     shopInfo: {
       type: Object,
       required: true,
     },
-    orderId: {
-      type: String,
+    customer: {
+      type: Object,
       required: true,
     },
     phoneNumber: {
       type: String,
       required: false,
     },
-  },
-  setup(props, ctx) {
-    const customer = ref({});
-    getDoc(
-      doc(
-        db,
-        `restaurants/${ctx.root.$route.params.restaurantId}/orders/${props.orderId}/customer/data`
-      )
-    ).then((doc) => {
-      customer.value = doc.data();
-    });
-    return {
-      customer,
-    };
   },
 });
 </script>
