@@ -17,17 +17,7 @@
 
         <!-- Photo and Name -->
         <div class="mt-4 lg:mt-0 lg:flex-1 lg:flex lg:items-center lg:mx-4">
-          <div class="flex items-center">
-            <div class="flex-shrink-0 rounded-full bg-black bg-opacity-10 mr-4">
-              <img
-                :src="resizedProfileImage(shopInfo, '600')"
-                class="w-9 h-9 rounded-full object-cover"
-              />
-            </div>
-            <div class="text-base font-bold">
-              {{ shopInfo.restaurantName }}
-            </div>
-          </div>
+          <PhotoName :shopInfo="shopInfo" />
         </div>
 
         <!-- Notifications -->
@@ -199,6 +189,7 @@ import BackButton from "@/components/BackButton.vue";
 import PreviewLink from "./MenuListPage/PreviewLink.vue";
 import PublicFilterToggle from "./MenuListPage/PublicFilterToggle.vue";
 import AddButton from "./MenuListPage/AddButton.vue";
+import PhotoName from "./MenuListPage/PhotoName.vue";
 
 import SubCategoryList from "@/app/user/Restaurant/SubCategoryList.vue";
 
@@ -242,6 +233,7 @@ export default defineComponent({
     PreviewLink,
     PublicFilterToggle,
     AddButton,
+    PhotoName,
 
     SubCategoryList,
   },
