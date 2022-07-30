@@ -38,40 +38,10 @@
 
       <!-- Toggle to View All or Public Only -->
       <div class="mt-6 mx-6 lg:text-center">
-        <a
-          @click="publicFilterToggle()"
-          class="inline-flex items-center rounded-full p-1 bg-green-600 bg-opacity-10"
-        >
-          <div v-if="publicFilter">
-            <div class="inline-flex items-center rounded-full h-9 px-4">
-              <div class="text-sm font-bold text-green-600">
-                {{ $t("editMenu.showAllMenu") }}
-              </div>
-            </div>
-            <div
-              class="inline-flex items-center rounded-full h-9 px-4 bg-green-600"
-            >
-              <div class="text-sm font-bold text-white">
-                {{ $t("editMenu.showPublicMenu") }}
-              </div>
-            </div>
-          </div>
-
-          <div v-else>
-            <div
-              class="inline-flex items-center rounded-full h-9 px-4 bg-green-600"
-            >
-              <div class="text-sm font-bold text-white">
-                {{ $t("editMenu.showAllMenu") }}
-              </div>
-            </div>
-            <div class="inline-flex items-center rounded-full h-9 px-4">
-              <div class="text-sm font-bold text-green-600">
-                {{ $t("editMenu.showPublicMenu") }}
-              </div>
-            </div>
-          </div>
-        </a>
+        <PublicFilterToggle
+          :publicFilter="publicFilter"
+          @publicFilterToggle="publicFilterToggle()"
+        />
       </div>
 
       <!-- category for mo -->
@@ -80,9 +50,9 @@
           :subCategoryData="subCategoryData"
           :categoryBathPath="categoryBathPath"
           :subCategoryId="subCategory"
-          />
+        />
       </div>
-      
+
       <!-- No Menu or Too Many Menu-->
       <div
         v-if="(!existsMenu || menuCounter > 5) && isOwner"
@@ -257,7 +227,7 @@ import {
   ref,
   computed,
   onUnmounted,
-  watch
+  watch,
 } from "@vue/composition-api";
 import { db } from "@/lib/firebase/firebase9";
 import {
@@ -278,6 +248,7 @@ import NotFound from "@/components/NotFound";
 import BackButton from "@/components/BackButton";
 
 import PreviewLink from "./MenuListPage/PreviewLink.vue";
+import PublicFilterToggle from "./MenuListPage/PublicFilterToggle.vue";
 
 import SubCategoryList from "@/app/user/Restaurant/SubCategoryList.vue";
 
@@ -319,7 +290,8 @@ export default defineComponent({
     NotFound,
 
     PreviewLink,
-    
+    PublicFilterToggle,
+
     SubCategoryList,
   },
   props: {
@@ -368,8 +340,14 @@ export default defineComponent({
 
     const { isOwner, uid, ownerUid } = useAdminUids(ctx);
 
-    const { category, subCategory, watchCat, hasCategory, showCategory, showSubCategory } =
-      useCategoryParams(ctx, props.isInMo);
+    const {
+      category,
+      subCategory,
+      watchCat,
+      hasCategory,
+      showCategory,
+      showSubCategory,
+    } = useCategoryParams(ctx, props.isInMo);
     const { loadCategory, categoryData } = useCategory(props.moPrefix);
 
     const { subCategoryData, loadSubcategory } = useSubcategory(
@@ -397,7 +375,7 @@ export default defineComponent({
       return `/admin/restaurants/${restaurantId.value}/menus/cat/${category.value}`;
     });
     // end of category
-    
+
     const menuRestaurantId = computed(() => {
       return props.isInMo
         ? props.groupMasterRestaurant.restaurantId

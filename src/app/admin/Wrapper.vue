@@ -36,7 +36,7 @@ export default defineComponent({
     if (moPrefix.value) {
       getDoc(doc(db, `/groups/${moPrefix.value}`)).then((a) => {
         if (a.exists()) {
-          groupData.value =  a.data();
+          groupData.value = a.data();
           if (groupData.value) {
             onSnapshot(
               doc(db, `restaurants/${groupData.value.restaurantId}`),
