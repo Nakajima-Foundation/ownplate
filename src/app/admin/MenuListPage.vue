@@ -53,7 +53,7 @@
         />
       </div>
 
-       <!-- No Menu or Too Many Menu-->
+      <!-- No Menu or Too Many Menu-->
       <div
         v-if="(!existsMenu || menuCounter > 5) && isOwner && !isInMo"
         class="mt-6 mx-6 border-2 border-op-teal rounded-lg p-4 pb-2 lg:max-w-2xl lg:mx-auto"
@@ -66,7 +66,7 @@
           :submitting="submitting"
           @addTitle="addTitle('top')"
           @addMenu="addMenu('top')"
-          />
+        />
       </div>
 
       <!-- Category Titles / Menu Items -->
@@ -147,7 +147,7 @@
           @addTitle="addTitle()"
           @addMenu="addMenu()"
           v-if="!isInMo"
-          />
+        />
 
         <div class="text-center mt-2" v-if="menuCounter > 0">
           <b-button
@@ -242,7 +242,7 @@ export default defineComponent({
     PreviewLink,
     PublicFilterToggle,
     AddButton,
-    
+
     SubCategoryList,
   },
   props: {
