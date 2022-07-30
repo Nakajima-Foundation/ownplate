@@ -57,25 +57,27 @@ import { useBasePath } from "@/utils/utils";
 export default defineComponent({
   setup(_, ctx) {
     const basePath = useBasePath(ctx.root);
-    const customerInfo = ref({})
+    const customerInfo = ref({});
 
     const docPath = computed(() => {
       if (ctx.root.isUser) {
         return `/users/${ctx.root.user.uid}/address/data`;
       }
       return null;
-    })
+    });
 
     if (!ctx.root.isUser) {
       ctx.root.$router.push(basePath.value + "/u/profile");
     }
 
     if (docPath.value) {
-      db.doc(docPath.value).get().then(doc=> {
-        customerInfo.value = doc.data();
-      });
+      db.doc(docPath.value)
+        .get()
+        .then((doc) => {
+          customerInfo.value = doc.data();
+        });
     }
-    const resetAddress = async () =>  {
+    const resetAddress = async () => {
       await db.doc(docPath.value).set({});
       customerInfo.value = {};
     };

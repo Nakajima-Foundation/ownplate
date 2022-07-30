@@ -5,9 +5,7 @@ import {
 } from "google-libphonenumber";
 
 import { stripeRegion } from "@/utils/utils";
-import {
-  computed,
-} from "@vue/composition-api";
+import { computed } from "@vue/composition-api";
 
 const phoneUtil = PhoneNumberUtil.getInstance();
 
@@ -30,7 +28,6 @@ export const formatURL = (phoneNumber: PhoneNumber): string => {
   const prefix = localPrefix(phoneNumber);
   return "tel:" + prefix + phoneNumber.getNationalNumber();
 };
-
 
 export const usePhoneNumber = (restaurantInfo: any) => {
   const countries = stripeRegion.countries;

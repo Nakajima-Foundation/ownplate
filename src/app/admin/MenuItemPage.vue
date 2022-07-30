@@ -639,8 +639,7 @@ export default defineComponent({
     const maxPrice = 1000000.0 / stripeRegion.multiple;
     const allergens = stripeRegion.allergens;
     const priceStep = 1.0 / stripeRegion.multiple;
-    console.log(priceStep, stripeRegion);
-    
+
     const notFound = ref(null);
     const menuId = ctx.root.$route.params.menuId;
     const submitting = ref(false);

@@ -873,7 +873,7 @@ export default {
           return;
         }
         if (this.$refs.ecCustomerRef.isSaveAddress) {
-          await  this.$refs.ecCustomerRef.saveAddress();
+          await this.$refs.ecCustomerRef.saveAddress();
         }
       }
 
@@ -930,7 +930,7 @@ export default {
           return;
         }
         if (this.$refs.ecCustomerRef.isSaveAddress) {
-          await  this.$refs.ecCustomerRef.saveAddress();
+          await this.$refs.ecCustomerRef.saveAddress();
         }
       }
       const timeToPickup = this.shopInfo.isEC

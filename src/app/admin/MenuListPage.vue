@@ -131,7 +131,7 @@
       <div
         v-if="existsMenu"
         class="mt-6 mx-6 grid-col-1 space-y-4 lg:max-w-2xl lg:mx-auto"
-        >
+      >
         <div v-for="(menuList, index) in menuLists" :key="menuList">
           <!-- Category Title -->
           <div
@@ -289,6 +289,14 @@ import { copyMenuData } from "@/models/menu";
 import NotificationIndex from "./Notifications/Index";
 
 import {
+  useTitles,
+  useCategory,
+  useSubcategory,
+  useMenu,
+  useCategoryParams,
+} from "../user/Restaurant/Utils";
+
+import {
   doc2data,
   useAdminUids,
   cleanObject,
@@ -349,8 +357,18 @@ export default defineComponent({
 
     const { isOwner, uid, ownerUid } = useAdminUids(ctx);
 
+    const { category, subCategory, watchCat, hasCategory } =
+      useCategoryParams(ctx);
+    const { loadCategory, categoryData } = useCategory(props.moPrefix);
+
+    const { subCategoryData, loadSubcategory } = useSubcategory(
+      props.moPrefix,
+      category
+    );
+
     const menuRestaurantId = computed(() => {
-      return props.isInMo ? props.groupMasterRestaurant.restaurantId
+      return props.isInMo
+        ? props.groupMasterRestaurant.restaurantId
         : ctx.root.$route.params.restaurantId;
     });
     const restaurantId = computed(() => {
@@ -359,7 +377,7 @@ export default defineComponent({
     const menuCounter = computed(() => {
       return Object.keys(menuObj.value).length;
     });
-    
+
     const { nationalPhoneNumber } = usePhoneNumber(restaurantInfo);
 
     // allow sub Account

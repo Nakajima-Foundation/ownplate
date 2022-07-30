@@ -6,7 +6,7 @@
       :groupData="groupData"
       :groupMasterRestaurant="groupMasterRestaurant"
       :isInMo="isInMo"
-      />
+    />
   </div>
 </template>
 
