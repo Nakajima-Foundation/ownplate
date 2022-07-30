@@ -34,6 +34,7 @@
 <script>
 import { defineComponent, ref, computed, watch } from "@vue/composition-api";
 import PhoneLogin from "@/app/auth/PhoneLogin";
+import { getAuth, deleteUser } from "firebase/auth";
 
 import { accountDelete } from "@/lib/firebase/functions";
 
@@ -61,7 +62,10 @@ export default defineComponent({
         try {
           const { data } = await accountDelete();
           console.log("deleteAccount", data);
-          await user.delete();
+
+          const auth = getAuth();
+          const user = auth.currentUser;
+          await deleteUser(user);
           console.log("deleted");
         } catch (error) {
           console.error(error);
