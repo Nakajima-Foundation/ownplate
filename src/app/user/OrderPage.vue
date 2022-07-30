@@ -512,8 +512,6 @@ import { costCal } from "@/utils/commonUtils";
 
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
-import isEmail from "validator/lib/isEmail";
-
 import { parsePhoneNumber, formatNational, formatURL } from "@/utils/phoneutil";
 import { isEmpty, getOrderItems } from "@/utils/utils";
 
