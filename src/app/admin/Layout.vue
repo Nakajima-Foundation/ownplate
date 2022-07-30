@@ -25,6 +25,7 @@
       :shopInfo="shopInfo"
       :groupData="groupData"
       :groupMasterRestaurant="groupMasterRestaurant"
+      :isInMo="isInMo"
       v-else-if="noRestaurant === false"
     ></router-view>
     <notification-watcher />
@@ -73,6 +74,10 @@ export default defineComponent({
     groupMasterRestaurant: {
       type: Object,
       required: false,
+    },
+    isInMo: {
+      type: Boolean,
+      required: true,
     },
   },
   setup(_, ctx) {

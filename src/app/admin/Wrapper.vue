@@ -5,12 +5,13 @@
       v-else
       :groupData="groupData"
       :groupMasterRestaurant="groupMasterRestaurant"
-    />
+      :isInMo="isInMo"
+      />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "@vue/composition-api";
+import { defineComponent, ref, computed } from "@vue/composition-api";
 import { db } from "@/lib/firebase/firebase9";
 import {
   doc,
@@ -25,7 +26,10 @@ export default defineComponent({
     const groupData = ref();
     const groupMasterRestaurant = ref();
 
-    if (false) {
+    const isInMo = computed(() => {
+      return !groupMasterRestaurant.value.empty;
+    });
+    if (true) {
       getDoc(doc(db, "/groups/ss")).then((a) => {
         groupData.value = a.exists() ? a.data() : null;
         if (groupData.value) {
@@ -41,6 +45,7 @@ export default defineComponent({
       groupMasterRestaurant.value = { empty: true };
     }
     return {
+      isInMo,
       groupData,
       groupMasterRestaurant,
     };

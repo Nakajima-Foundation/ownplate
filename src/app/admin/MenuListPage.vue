@@ -131,7 +131,7 @@
       <div
         v-if="existsMenu"
         class="mt-6 mx-6 grid-col-1 space-y-4 lg:max-w-2xl lg:mx-auto"
-      >
+        >
         <div v-for="(menuList, index) in menuLists" :key="menuList">
           <!-- Category Title -->
           <div
@@ -296,7 +296,7 @@ import {
 import { checkAdminPermission, checkShopAccount } from "@/utils/userPermission";
 
 export default defineComponent({
-  name: "Menus",
+  name: "MenuList",
   components: {
     ItemEditCard,
     TitleCard,
@@ -313,6 +313,10 @@ export default defineComponent({
     groupMasterRestaurant: {
       type: Object,
       required: false,
+    },
+    isInMo: {
+      type: Boolean,
+      required: true,
     },
   },
   metaInfo() {
@@ -344,8 +348,7 @@ export default defineComponent({
     const { isOwner, uid, ownerUid } = useAdminUids(ctx);
 
     const menuRestaurantId = computed(() => {
-      return !props.groupMasterRestaurant.empty
-        ? props.groupMasterRestaurant.restaurantId
+      return props.isInMo ? props.groupMasterRestaurant.restaurantId
         : ctx.root.$route.params.restaurantId;
     });
     const restaurantId = computed(() => {
@@ -353,26 +356,6 @@ export default defineComponent({
     });
     const menuCounter = computed(() => {
       return Object.keys(menuObj.value).length;
-    });
-    const menuLists = computed(() => {
-      return restaurantInfo.value.menuLists || [];
-    });
-    const menuLength = computed(() => {
-      return menuLists.value.length;
-    });
-    const existsMenu = computed(() => {
-      return menuLength.value > 0;
-    });
-    const itemsObj = computed(() => {
-      if (menuCollection.value && titleCollection.value) {
-        const menus = (menuCollection.value.docs || []).map(doc2data("menu"));
-        menuObj.value = array2obj(menus);
-        const titles = (titleCollection.value.docs || []).map(
-          doc2data("title")
-        );
-        return array2obj(menus.concat(titles));
-      }
-      return {};
     });
     const countries = computed(() => {
       return ctx.root.$store.getters.stripeRegion.countries;
@@ -443,6 +426,31 @@ export default defineComponent({
       }
     );
     detachers.value = [restaurant_detacher, menu_detacher, title_detacher];
+
+    const itemsObj = computed(() => {
+      if (menuCollection.value && titleCollection.value) {
+        const menus = (menuCollection.value.docs || []).map(doc2data("menu"));
+        menuObj.value = array2obj(menus);
+        const titles = (titleCollection.value.docs || []).map(
+          doc2data("title")
+        );
+        return array2obj(menus.concat(titles));
+      }
+      return {};
+    });
+
+    const menuLists = computed(() => {
+      if (props.isInMo) {
+        return Object.keys(itemsObj.value);
+      }
+      return restaurantInfo.value.menuLists || [];
+    });
+    const menuLength = computed(() => {
+      return menuLists.value.length;
+    });
+    const existsMenu = computed(() => {
+      return menuLength.value > 0;
+    });
 
     onUnmounted(() => {
       if (detachers.value) {
