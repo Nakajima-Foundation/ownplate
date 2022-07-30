@@ -170,6 +170,8 @@ import { defineComponent, ref, computed } from "@vue/composition-api";
 import { db } from "@/plugins/firebase";
 import { regionalSetting, countObj } from "@/utils/utils";
 
+import isEmail from "validator/lib/isEmail";
+
 export default defineComponent({
   props: {
     shopInfo: {
