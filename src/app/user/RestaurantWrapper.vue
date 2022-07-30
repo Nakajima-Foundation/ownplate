@@ -48,13 +48,13 @@ export default defineComponent({
       async (restaurant) => {
         const restaurant_data = restaurant.data();
         shopInfo.value = restaurant_data || {};
-        const exist_and_publig =
+        const exist_and_public =
           restaurant.exists() &&
           !shopInfo.value.deletedFlag &&
           shopInfo.value.publicFlag;
 
         notFound.value = (() => {
-          if (!exist_and_publig) {
+          if (!exist_and_public) {
             return true;
           }
           if (mode.value === "liff") {
