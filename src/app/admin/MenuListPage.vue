@@ -140,20 +140,10 @@
         />
 
         <div class="text-center mt-2" v-if="menuCounter > 0">
-          <b-button
-            @click="downloadMenu()"
-            :disabled="downloadSubmitting"
-            class="b-reset-tw mx-2 mb-2"
-          >
-            <div
-              class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
-            >
-              <i class="material-icons text-lg text-op-teal mr-2">menu_book</i>
-              <span class="text-sm font-bold text-op-teal">
-                {{ $t("button.downloadMenu") }}</span
-              >
-            </div>
-          </b-button>
+          <DownloadButton
+            :restaurantInfo="restaurantInfo"
+            :menuObj="menuObj"
+            />
         </div>
       </div>
     </div>
@@ -190,12 +180,11 @@ import PreviewLink from "./MenuListPage/PreviewLink.vue";
 import PublicFilterToggle from "./MenuListPage/PublicFilterToggle.vue";
 import AddButton from "./MenuListPage/AddButton.vue";
 import PhotoName from "./MenuListPage/PhotoName.vue";
+import DownloadButton from "./MenuListPage/DownloadButton.vue";
 
 import SubCategoryList from "@/app/user/Restaurant/SubCategoryList.vue";
 
 import firebase from "firebase/compat/app";
-import * as pdf from "@/lib/pdf/pdf";
-import { usePhoneNumber } from "@/utils/phoneutil";
 
 import { ownPlateConfig } from "@/config/project";
 
@@ -216,7 +205,6 @@ import {
   useAdminUids,
   cleanObject,
   array2obj,
-  shareUrl,
 } from "@/utils/utils";
 import { checkAdminPermission, checkShopAccount } from "@/utils/userPermission";
 
@@ -234,7 +222,8 @@ export default defineComponent({
     PublicFilterToggle,
     AddButton,
     PhotoName,
-
+    DownloadButton,
+    
     SubCategoryList,
   },
   props: {
@@ -268,7 +257,6 @@ export default defineComponent({
   },
   setup(props, ctx) {
     const submitting = ref(false);
-    const downloadSubmitting = ref(false);
     const restaurantInfo = ref({});
     const menuCollection = ref(null);
     const titleCollection = ref(null);
@@ -330,7 +318,6 @@ export default defineComponent({
       return Object.keys(menuObj.value).length;
     });
 
-    const { nationalPhoneNumber } = usePhoneNumber(restaurantInfo);
 
     // allow sub Account
     if (!checkShopAccount(props.shopInfo, ownerUid.value)) {
@@ -416,16 +403,6 @@ export default defineComponent({
 
     const publicFilterToggle = () => {
       publicFilter.value = !publicFilter.value;
-    };
-    const downloadMenu = async () => {
-      downloadSubmitting.value = true;
-      const dl = await pdf.menuDownload(
-        restaurantInfo.value,
-        menuObj.value,
-        nationalPhoneNumber.value,
-        shareUrl(ctx.root)
-      );
-      downloadSubmitting.value = false;
     };
     const changeTitleMode = (titleId, value) => {
       const newEditings = { ...editings.value };
@@ -618,7 +595,6 @@ export default defineComponent({
     return {
       //ref
       submitting,
-      downloadSubmitting,
       restaurantInfo,
       editings,
       notFound,
@@ -631,10 +607,10 @@ export default defineComponent({
       menuLength,
       existsMenu,
       itemsObj,
+      menuObj,
 
       // methods
       publicFilterToggle,
-      downloadMenu,
       updateTitle,
       toEditMode,
       addTitle,
