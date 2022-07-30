@@ -175,7 +175,7 @@
               (!publicFilter || itemsObj[menuList].publicFlag)
             "
           >
-            <item-edit-card
+            <menu-card
               :menuitem="itemsObj[menuList]"
               :position="
                 index == 0
@@ -189,7 +189,7 @@
               @positionDown="positionDown($event)"
               @forkItem="forkMenuItem($event)"
               @deleteItem="deleteItem($event)"
-            ></item-edit-card>
+            ></menu-card>
           </div>
         </div>
       </div>
@@ -271,7 +271,7 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 
-import ItemEditCard from "@/app/admin/Menus/ItemEditCard";
+import MenuCard from "@/app/admin/Menus/MenuCard";
 import TitleCard from "@/app/admin/Menus/TitleCard";
 import TitleInput from "@/app/admin/Menus/TitleInput";
 import NotFound from "@/components/NotFound";
@@ -299,7 +299,7 @@ import { checkAdminPermission, checkShopAccount } from "@/utils/userPermission";
 export default defineComponent({
   name: "MenuList",
   components: {
-    ItemEditCard,
+    MenuCard,
     TitleCard,
     TitleInput,
     BackButton,
@@ -494,7 +494,6 @@ export default defineComponent({
           data
         );
         const newMenuLists = menuLists.value;
-        // newMenuLists.unshift(newTitle.id);
         if (operation === "top") {
           newMenuLists.unshift(newTitle.id);
         } else {
