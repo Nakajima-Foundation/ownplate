@@ -85,6 +85,15 @@
         </a>
       </div>
 
+      <!-- category for mo -->
+      <div v-if="showSubCategory">
+        <SubCategoryList
+          :subCategoryData="subCategoryData"
+          :categoryBathPath="categoryBathPath"
+          :subCategoryId="subCategory"
+          />
+      </div>
+      
       <!-- No Menu or Too Many Menu-->
       <div
         v-if="(!existsMenu || menuCounter > 5) && isOwner"
@@ -259,6 +268,7 @@ import {
   ref,
   computed,
   onUnmounted,
+  watch
 } from "@vue/composition-api";
 import { db } from "@/lib/firebase/firebase9";
 import {
@@ -277,6 +287,8 @@ import TitleCard from "@/app/admin/Menus/TitleCard";
 import TitleInput from "@/app/admin/Menus/TitleInput";
 import NotFound from "@/components/NotFound";
 import BackButton from "@/components/BackButton";
+
+import SubCategoryList from "@/app/user/Restaurant/SubCategoryList.vue";
 
 import firebase from "firebase/compat/app";
 import * as pdf from "@/lib/pdf/pdf";
@@ -314,6 +326,7 @@ export default defineComponent({
     BackButton,
     NotificationIndex,
     NotFound,
+    SubCategoryList,
   },
   props: {
     shopInfo: {
@@ -327,6 +340,10 @@ export default defineComponent({
     isInMo: {
       type: Boolean,
       required: true,
+    },
+    moPrefix: {
+      type: String,
+      required: false,
     },
   },
   metaInfo() {
@@ -357,15 +374,36 @@ export default defineComponent({
 
     const { isOwner, uid, ownerUid } = useAdminUids(ctx);
 
-    const { category, subCategory, watchCat, hasCategory } =
-      useCategoryParams(ctx);
+    const { category, subCategory, watchCat, hasCategory, showCategory, showSubCategory } =
+      useCategoryParams(ctx, props.isInMo);
     const { loadCategory, categoryData } = useCategory(props.moPrefix);
 
     const { subCategoryData, loadSubcategory } = useSubcategory(
       props.moPrefix,
       category
     );
-
+    /*
+    watch(watchCat, () => {
+      loadMenu();
+      });
+    */
+    watch(category, () => {
+      if (category.value) {
+        loadSubcategory();
+      }
+    });
+    if (props.isInMo) {
+      loadCategory();
+      console.log(category.value);
+      if (category.value) {
+        loadSubcategory();
+      }
+    }
+    const categoryBathPath = computed(() => {
+      return `/admin/restaurants/${restaurantId.value}/menus/cat/${category.value}`;
+    });
+    // end of category
+    
     const menuRestaurantId = computed(() => {
       return props.isInMo
         ? props.groupMasterRestaurant.restaurantId
@@ -692,6 +730,15 @@ export default defineComponent({
       forkTitleItem,
       forkMenuItem,
       deleteItem,
+
+      // category,
+      categoryData,
+      subCategoryData,
+
+      showCategory,
+      showSubCategory,
+      categoryBathPath,
+      subCategory,
     };
   },
 });

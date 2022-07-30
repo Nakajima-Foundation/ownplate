@@ -1,4 +1,4 @@
-import { ref, onUnmounted, computed, Ref } from "@vue/composition-api";
+import { ref, onUnmounted, computed, Ref, ComputedRef } from "@vue/composition-api";
 
 import { db } from "@/lib/firebase/firebase9";
 import {
@@ -146,7 +146,7 @@ export const useSubcategory = (moPrefix: string, category: Ref<string>) => {
 
 export const useMenu = (
   restaurantId: Ref<string>,
-  isInMo: Ref<string>,
+  isInMo: ComputedRef<string>,
   category: Ref<string>,
   subCategory: Ref<string>,
   groupData: any
@@ -229,7 +229,7 @@ export const useMenu = (
   };
 };
 
-export const useCategoryParams = (ctx: any) => {
+export const useCategoryParams = (ctx: any, isInMo: string) => {
   const category = computed(() => {
     return ctx.root.$route.params.category;
   });
@@ -242,10 +242,19 @@ export const useCategoryParams = (ctx: any) => {
   const hasCategory = computed(() => {
     return category.value && subCategory.value;
   });
+  const showCategory = computed(() => {
+    return isInMo && !subCategory.value;
+  });
+  const showSubCategory = computed(() => {
+    return isInMo && subCategory.value;
+  });
+
   return {
     category,
     subCategory,
     watchCat,
     hasCategory,
+    showCategory,
+    showSubCategory,
   };
 };

@@ -6,6 +6,7 @@
       :groupData="groupData"
       :groupMasterRestaurant="groupMasterRestaurant"
       :isInMo="isInMo"
+      :moPrefix="moPrefix"
     />
   </div>
 </template>
@@ -29,16 +30,23 @@ export default defineComponent({
     const isInMo = computed(() => {
       return !groupMasterRestaurant.value.empty;
     });
-    if (true) {
-      getDoc(doc(db, "/groups/ss")).then((a) => {
-        groupData.value = a.exists() ? a.data() : null;
-        if (groupData.value) {
-          onSnapshot(
-            doc(db, `restaurants/${groupData.value.restaurantId}`),
-            (result) => {
-              groupMasterRestaurant.value = result.data() as any;
-            }
-          );
+    const moPrefix = computed(() => {
+      return "ss";
+    });
+    if (moPrefix.value) {
+      getDoc(doc(db, `/groups/${moPrefix.value}`)).then((a) => {
+        if (a.exists()) {
+          groupData.value =  a.data();
+          if (groupData.value) {
+            onSnapshot(
+              doc(db, `restaurants/${groupData.value.restaurantId}`),
+              (result) => {
+                groupMasterRestaurant.value = result.data() as any;
+              }
+            );
+          }
+        } else {
+          groupMasterRestaurant.value = { empty: true };
         }
       });
     } else {
@@ -46,6 +54,7 @@ export default defineComponent({
     }
     return {
       isInMo,
+      moPrefix,
       groupData,
       groupMasterRestaurant,
     };

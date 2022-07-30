@@ -389,8 +389,8 @@ export default defineComponent({
 
     const isInMo = useIsInMo(ctx.root);
 
-    const { category, subCategory, watchCat, hasCategory } =
-      useCategoryParams(ctx);
+    const { category, subCategory, watchCat, hasCategory, showCategory, showSubCategory } =
+      useCategoryParams(ctx, isInMo.value);
 
     const restaurantId = computed(() => {
       return ctx.root.$route.params.restaurantId;
@@ -482,13 +482,6 @@ export default defineComponent({
     if (!isInMo.value) {
       loadTitle();
     }
-
-    const showCategory = computed(() => {
-      return isInMo.value && !subCategory.value;
-    });
-    const showSubCategory = computed(() => {
-      return isInMo.value && subCategory.value;
-    });
 
     const itemLists = computed(() => {
       if (isInMo.value) {
