@@ -40,7 +40,7 @@
       <!-- After Paid -->
       <div v-if="paid">
         <!-- Thank you Message -->
-        <ThankYou v-if="mode !== 'mo'"/>
+        <ThankYou v-if="mode !== 'mo'" />
 
         <!-- Line Button -->
         <LineButton :groupData="groupData" />
@@ -58,8 +58,8 @@
             :timeRequested="timeRequested"
             :paid="paid"
             :mode="mode"
-            />
-          
+          />
+
           <!-- Stripe status -->
           <StripeStatus v-if="hasStripe" :orderInfo="orderInfo" :mode="mode" />
 
@@ -92,7 +92,10 @@
           }}</span>
         </div>
         <!-- Special Thank you Message from the Restaurant -->
-        <ThankYouFromRestaurant v-if="!canceled && mode !== 'mo'" :shopInfo="shopInfo" />
+        <ThankYouFromRestaurant
+          v-if="!canceled && mode !== 'mo'"
+          :shopInfo="shopInfo"
+        />
 
         <!-- Favorite Button -->
         <div class="mt-6 text-center">
@@ -551,7 +554,7 @@ export default {
     Receipt,
 
     Pickup,
-    
+
     BeforePaidAlert,
 
     ECCustomer,

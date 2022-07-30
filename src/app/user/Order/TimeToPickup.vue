@@ -70,7 +70,11 @@ export default {
   },
   watch: {
     days() {
-      if (!(this.days[this.dayIndex]?.times||[]).some((t) => { return this.time == t.time})) {
+      if (
+        !(this.days[this.dayIndex]?.times || []).some((t) => {
+          return this.time == t.time;
+        })
+      ) {
         this.time = this.days[this.dayIndex].times[0].time;
       }
     },

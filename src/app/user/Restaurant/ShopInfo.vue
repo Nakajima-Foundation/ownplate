@@ -63,7 +63,7 @@
           </template>
           <template v-else>
             {{ $t("shopInfo." + (isDelivery ? "delivery" : "takeout")) }}:{{
-            $t("shopInfo.minimumAvailableTime")
+              $t("shopInfo.minimumAvailableTime")
             }}
           </template>
         </div>

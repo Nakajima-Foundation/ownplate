@@ -2,7 +2,7 @@
   <div v-if="$store.getters.uidAdmin">
     <!-- Partnets -->
     <Partners :shopOwner="shopOwner" v-if="shopOwner" />
-    
+
     <!-- Welcome and Link -->
     <WelcomeAndLinks />
 
@@ -103,11 +103,12 @@
                   :shopInfo="restaurantItems[restaurantId]"
                   :restaurantid="restaurantId"
                   :numberOfMenus="
-                                  (!groupMasterRestaurant.empty ?  groupMasterRestaurant : restaurantItems[restaurantId]).numberOfMenus || 0
+                    (!groupMasterRestaurant.empty
+                      ? groupMasterRestaurant
+                      : restaurantItems[restaurantId]
+                    ).numberOfMenus || 0
                   "
-                  :numberOfOrders="
-                                   numberOfOrderObj[restaurantId] || 0
-                  "
+                  :numberOfOrders="numberOfOrderObj[restaurantId] || 0"
                   :lineEnable="lines[restaurantId] || false"
                   :shopOwner="shopOwner"
                   :position="
@@ -215,8 +216,15 @@ import {
 } from "@vue/composition-api";
 
 import { db } from "@/lib/firebase/firebase9";
-import { doc, getDoc, collection, where, query, orderBy, onSnapshot } from "firebase/firestore";
-
+import {
+  doc,
+  getDoc,
+  collection,
+  where,
+  query,
+  orderBy,
+  onSnapshot,
+} from "firebase/firestore";
 
 import { db as dbOld, firestore } from "@/plugins/firebase";
 
@@ -235,7 +243,12 @@ import Smaregi from "@/app/admin/Index/Smaregi.vue";
 import Footer from "@/app/admin/Index/Footer.vue";
 import Partners from "@/app/admin/Index/Partners.vue";
 
-import { getShopOwner, doc2data, arrayChunk, useAdminUids } from "@/utils/utils";
+import {
+  getShopOwner,
+  doc2data,
+  arrayChunk,
+  useAdminUids,
+} from "@/utils/utils";
 import { checkAdminPermission } from "@/utils/userPermission";
 
 export default defineComponent({
@@ -279,63 +292,63 @@ export default defineComponent({
     if (!checkAdminPermission(ctx)) {
       return;
     }
-    
+
     const detachOrders = () => {
       orderDetachers.value.map((detacher) => {
         detacher();
       });
       orderDetachers.value = [];
     };
-    const {
-      isOwner,
-      uid,
-      ownerUid,
-    } = useAdminUids(ctx);
+    const { isOwner, uid, ownerUid } = useAdminUids(ctx);
 
     const watchOrder = () => {
       detachOrders();
       orderDetachers.value = Object.keys(restaurantItems.value).map(
         (restaurantId) => {
-          return (
-            onSnapshot(
-              query(
-                collection(db, `restaurants/${restaurantId}/orders`),
-                where("timePlaced", ">=", midNight())
-              ),
-              // IDEALLY: .where("status", "<", order_status.ready_to_pickup)
-              (result) => {
-                const newObj = {...numberOfOrderObj.value};
-                newObj[restaurantId] = result.docs
-                      .map((doc) => doc.data())
-                      .filter((data) => {
-                        // We need this filter here because Firebase does not allow us to do
-                        return data.status < order_status.ready_to_pickup;
-                      }).length;
-                numberOfOrderObj.value = newObj;
-              },
-            )
+          return onSnapshot(
+            query(
+              collection(db, `restaurants/${restaurantId}/orders`),
+              where("timePlaced", ">=", midNight())
+            ),
+            // IDEALLY: .where("status", "<", order_status.ready_to_pickup)
+            (result) => {
+              const newObj = { ...numberOfOrderObj.value };
+              newObj[restaurantId] = result.docs
+                .map((doc) => doc.data())
+                .filter((data) => {
+                  // We need this filter here because Firebase does not allow us to do
+                  return data.status < order_status.ready_to_pickup;
+                }).length;
+              numberOfOrderObj.value = newObj;
+            }
           );
         }
       );
     };
     onMounted(async () => {
       try {
-        shopOwner.value = isOwner.value ? await getShopOwner(ownerUid.value) : {};
+        shopOwner.value = isOwner.value
+          ? await getShopOwner(ownerUid.value)
+          : {};
 
         restaurantLists.value = await (async () => {
           if (isOwner.value) {
             const restaurantListsDoc = await getDoc(
               doc(db, `/admins/${uid.value}/public/RestaurantLists`)
             );
-            return restaurantListsDoc.exists() ? restaurantListsDoc.data().lists || [] : [];
+            return restaurantListsDoc.exists()
+              ? restaurantListsDoc.data().lists || []
+              : [];
           } else {
             const restaurantListsDoc = await getDoc(
               doc(db, `/admins/${ownerUid.value}/children/${uid.value}`)
             );
-            return restaurantListsDoc.exists() ? restaurantListsDoc.data().restaurantLists || [] : [];
+            return restaurantListsDoc.exists()
+              ? restaurantListsDoc.data().restaurantLists || []
+              : [];
           }
         })();
-        
+
         if (isOwner.value) {
           restaurant_detacher.value = onSnapshot(
             query(
@@ -350,13 +363,16 @@ export default defineComponent({
                   restaurantItems.value = {}; // so that we present "No restaurant"
                   return;
                 }
-                restaurantItems.value = (result.docs || []).reduce((tmp, doc) => {
-                  tmp[doc.id] = doc2data("restaurant")(doc);
-                  if (!restaurantLists.value.includes(doc.id)) {
-                    restaurantLists.value.push(doc.id);
-                  }
-                  return tmp;
-                }, {});
+                restaurantItems.value = (result.docs || []).reduce(
+                  (tmp, doc) => {
+                    tmp[doc.id] = doc2data("restaurant")(doc);
+                    if (!restaurantLists.value.includes(doc.id)) {
+                      restaurantLists.value.push(doc.id);
+                    }
+                    return tmp;
+                  },
+                  {}
+                );
                 watchOrder();
               } catch (error) {
                 console.log("Error fetch doc,", error);
@@ -379,15 +395,18 @@ export default defineComponent({
               ),
               async (result) => {
                 try {
-                  if (result.empty &&  restaurantItems.value === null) {
+                  if (result.empty && restaurantItems.value === null) {
                     restaurantItems.value = {}; // so that we present "No restaurant"
                     return;
                   }
-                  
-                  restaurantItems.value = (result.docs || []).reduce((tmp, doc) => {
-                    tmp[doc.id] = doc2data("restaurant")(doc);
-                    return tmp;
-                  }, {});
+
+                  restaurantItems.value = (result.docs || []).reduce(
+                    (tmp, doc) => {
+                      tmp[doc.id] = doc2data("restaurant")(doc);
+                      return tmp;
+                    },
+                    {}
+                  );
                   // if subAccounts has more than 11 restaurant, this will call multiple. TODO: optimize.
                   watchOrder();
                 } catch (error) {
@@ -405,7 +424,8 @@ export default defineComponent({
         readyToDisplay.value = true;
       }
       if (isOwner.value) {
-        dbOld.collectionGroup("lines")
+        dbOld
+          .collectionGroup("lines")
           .where("uid", "==", uid.value)
           .onSnapshot((result) => {
             result.docs.map(async (res) => {
@@ -414,7 +434,7 @@ export default defineComponent({
             });
           });
       }
-      
+
       message_detacher.value = dbOld
         .collection(`/admins/${uid.value}/messages`)
         .orderBy("createdAt", "desc")
@@ -491,7 +511,7 @@ export default defineComponent({
           await saveRestaurantLists();
         }
       }
-    }
+    };
     const deleteFromRestaurantLists = async (restaurantId) => {
       if (isOwner.value) {
         // push list
@@ -501,7 +521,9 @@ export default defineComponent({
         restaurantLists.value = newRestaurantLists;
 
         const path = `/admins/${uid.value}/public/RestaurantLists`;
-        await dbOld.doc(path).set({ lists: newRestaurantLists }, { merge: true });
+        await dbOld
+          .doc(path)
+          .set({ lists: newRestaurantLists }, { merge: true });
         // end of list
       }
     };
@@ -535,7 +557,7 @@ export default defineComponent({
       restaurantLists,
       messages,
       numberOfOrderObj,
-      
+
       // computed
       isOwner,
       existsRestaurant,
@@ -547,8 +569,6 @@ export default defineComponent({
       positionDown,
       deleteFromRestaurantLists,
       saveRestaurantLists,
-
-      
     };
   },
 });

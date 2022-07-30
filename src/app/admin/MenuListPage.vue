@@ -286,7 +286,13 @@ import { copyMenuData } from "@/models/menu";
 
 import NotificationIndex from "./Notifications/Index";
 
-import { doc2data, useAdminUids, cleanObject, array2obj, shareUrl } from "@/utils/utils";
+import {
+  doc2data,
+  useAdminUids,
+  cleanObject,
+  array2obj,
+  shareUrl,
+} from "@/utils/utils";
 import { checkAdminPermission, checkShopAccount } from "@/utils/userPermission";
 
 export default defineComponent({
@@ -334,17 +340,13 @@ export default defineComponent({
     if (!checkAdminPermission(ctx)) {
       return;
     }
-    
-    const {
-      isOwner,
-      uid,
-      ownerUid,
-    } = useAdminUids(ctx);
+
+    const { isOwner, uid, ownerUid } = useAdminUids(ctx);
 
     const menuRestaurantId = computed(() => {
-      return !props.groupMasterRestaurant.empty ?
-        props.groupMasterRestaurant.restaurantId :
-        ctx.root.$route.params.restaurantId;
+      return !props.groupMasterRestaurant.empty
+        ? props.groupMasterRestaurant.restaurantId
+        : ctx.root.$route.params.restaurantId;
     });
     const restaurantId = computed(() => {
       return ctx.root.$route.params.restaurantId;
@@ -363,9 +365,7 @@ export default defineComponent({
     });
     const itemsObj = computed(() => {
       if (menuCollection.value && titleCollection.value) {
-        const menus = (menuCollection.value.docs || []).map(
-          doc2data("menu")
-        );
+        const menus = (menuCollection.value.docs || []).map(doc2data("menu"));
         menuObj.value = array2obj(menus);
         const titles = (titleCollection.value.docs || []).map(
           doc2data("title")
@@ -374,14 +374,14 @@ export default defineComponent({
       }
       return {};
     });
-    const countries = computed(() => { 
+    const countries = computed(() => {
       return ctx.root.$store.getters.stripeRegion.countries;
     });
     // TODO: create method and move to utils. merge ShopInfo.vue
     // TODO: merge restaurantInfo and shopInfo
     const parsedNumber = computed(() => {
       const countryCode =
-            restaurantInfo.value.countryCode || countries.value[0].code;
+        restaurantInfo.value.countryCode || countries.value[0].code;
       try {
         return parsePhoneNumber(countryCode + restaurantInfo.value.phoneNumber);
       } catch (error) {
@@ -623,7 +623,11 @@ export default defineComponent({
     const forkMenuItem = async (itemKey) => {
       const item = itemsObj.value[itemKey];
 
-      const data = copyMenuData(item, ownPlateConfig.region === "JP", uid.value);
+      const data = copyMenuData(
+        item,
+        ownPlateConfig.region === "JP",
+        uid.value
+      );
       const newData = await addDoc(
         collection(db, `restaurants/${menuRestaurantId.value}/menus`),
         cleanObject(data)
@@ -667,7 +671,7 @@ export default defineComponent({
       menuLength,
       existsMenu,
       itemsObj,
-      
+
       // methods
       publicFilterToggle,
       downloadMenu,

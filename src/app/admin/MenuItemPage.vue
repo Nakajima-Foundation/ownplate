@@ -154,10 +154,7 @@
                     :value="taxItem"
                     :key="taxItem"
                   >
-                    {{
-                      shopInfo &&
-                      (shopInfo[taxItem + "Tax"] || 0) + "%"
-                    }}
+                    {{ shopInfo && (shopInfo[taxItem + "Tax"] || 0) + "%" }}
                     - {{ $t("editMenu." + taxRateKeys[taxItem]) }}
                   </option>
                 </b-select>
@@ -575,7 +572,15 @@ import NotificationIndex from "./Notifications/Index";
 import { ownPlateConfig } from "@/config/project";
 import { halfCharactors, formatOption, optionPrice } from "@/utils/strings";
 import EditCategory from "@/app/admin/Menus/EditCategory";
-import { doc2data, useAdminUids, regionalSetting, stripeRegion, countObj, roundPrice, taxRate } from "@/utils/utils";
+import {
+  doc2data,
+  useAdminUids,
+  regionalSetting,
+  stripeRegion,
+  countObj,
+  roundPrice,
+  taxRate,
+} from "@/utils/utils";
 
 import { uploadFile } from "@/lib/firebase/storage";
 
@@ -586,14 +591,15 @@ export default defineComponent({
   name: "MenuItemPage",
   metaInfo() {
     return {
-      title: this.menuInfo && this.menuInfo.itemName
-        ? [
-            "Admin Menu Item",
-            this.menuInfo.itemName,
-            this.shopInfo.restaurantName,
-            this.defaultTitle,
-          ].join(" / ")
-        : this.defaultTitle,
+      title:
+        this.menuInfo && this.menuInfo.itemName
+          ? [
+              "Admin Menu Item",
+              this.menuInfo.itemName,
+              this.shopInfo.restaurantName,
+              this.defaultTitle,
+            ].join(" / ")
+          : this.defaultTitle,
     };
   },
 
@@ -634,21 +640,16 @@ export default defineComponent({
     const allergens = stripeRegion.allergens;
     const priceStep = 10.0 / stripeRegion.multiple;
 
-
     const notFound = ref(null);
-    const menuId =  ctx.root.$route.params.menuId;
+    const menuId = ctx.root.$route.params.menuId;
     const submitting = ref(false);
 
     const files = {};
     const categoryKey = ref(null);
     const restaurants = ref([]);
     const copyRestaurantId = ref(null);
-    
-    const {
-      isOwner,
-      uid,
-      ownerUid,
-    } = useAdminUids(ctx);
+
+    const { isOwner, uid, ownerUid } = useAdminUids(ctx);
 
     if (!checkAdminPermission(ctx)) {
       console.log("no permission");
@@ -675,10 +676,8 @@ export default defineComponent({
       props.shopInfo.category2 = [];
     }
     const { restaurantId } = props.shopInfo;
-    const menuRes = db.doc(
-      `restaurants/${restaurantId}/menus/${menuId}`
-    );
-    menuRes.get().then(resMenuInfo => {
+    const menuRes = db.doc(`restaurants/${restaurantId}/menus/${menuId}`);
+    menuRes.get().then((resMenuInfo) => {
       if (resMenuInfo.exists) {
         Object.assign(menuInfo, resMenuInfo.data());
         notFound.value = false;
@@ -687,12 +686,15 @@ export default defineComponent({
       }
     });
 
-    db
-      .collection("restaurants")
+    db.collection("restaurants")
       .where("uid", "==", uid.value)
       .where("deletedFlag", "==", false)
-      .get().then(restaurantsCollection => {
-        if (!restaurantsCollection.empty && restaurantsCollection.docs.length > 0) {
+      .get()
+      .then((restaurantsCollection) => {
+        if (
+          !restaurantsCollection.empty &&
+          restaurantsCollection.docs.length > 0
+        ) {
           restaurants.value = restaurantsCollection.docs.map((r) =>
             doc2data("r")(r)
           );
@@ -729,7 +731,7 @@ export default defineComponent({
       });
       err["itemDescription"] = [];
       return err;
-    })
+    });
     const hasError = computed(() => {
       const num = countObj(errors.value);
       return num > 0;
@@ -767,12 +769,12 @@ export default defineComponent({
     };
     const addOption = () => {
       menuInfo.itemOptionCheckbox.push("");
-    }
+    };
     const getNewItemData = () => {
       const itemData = getNewItemData(
         menuInfo,
         ownPlateConfig.region === "JP",
-        !hasError.value,
+        !hasError.value
       );
       return itemData;
     };
@@ -820,9 +822,7 @@ export default defineComponent({
       //upload image
       try {
         if (files["menu"]) {
-          const path = `/images/restaurants/${restaurantId}/menus/${
-            menuId
-          }/${uid.value}/item.jpg`;
+          const path = `/images/restaurants/${restaurantId}/menus/${menuId}/${uid.value}/item.jpg`;
           menuInfo.itemPhoto = await uploadFile(files["menu"], path);
           menuInfo.images.item = {
             original: menuInfo.itemPhoto,
@@ -872,7 +872,6 @@ export default defineComponent({
       restaurants,
       copyRestaurantId,
 
-
       allergens,
       priceStep,
 
@@ -881,10 +880,10 @@ export default defineComponent({
       categories1,
       categories2,
       itemPhoto,
-    
+
       errors,
       hasError,
-      
+
       displayOptionPrice,
       handleCategoryUpdated,
       handleDismissed,
@@ -894,10 +893,8 @@ export default defineComponent({
       addOption,
       copyItem,
       getNewItemData,
-      submitItem
-
+      submitItem,
     };
-
   },
 });
 </script>

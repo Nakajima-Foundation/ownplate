@@ -790,7 +790,9 @@ export default {
           this.userLog = res.data();
         }
       });
-      const menuRestaurantId = this.groupData ? this.groupData.restaurantId : this.restaurantId();
+      const menuRestaurantId = this.groupData
+        ? this.groupData.restaurantId
+        : this.restaurantId();
       const menuIds = Object.keys(this.orderInfo.menuItems);
       arrayChunk(menuIds, 10).map(async (arr) => {
         getDocs(

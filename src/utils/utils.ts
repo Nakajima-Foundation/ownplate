@@ -55,9 +55,7 @@ export const arrayChunk = <T>(arr: T[], size = 1) => {
 
 export const shareUrl = (root: any) => {
   const restaurantId = root.$route.params.restaurantId;
-  return (
-    location.protocol + "//" + location.host + "/r/" + restaurantId
-  );
+  return location.protocol + "//" + location.host + "/r/" + restaurantId;
 };
 
 export const doc2data = (dataType: string) => {
@@ -282,7 +280,6 @@ export const roundPrice = (price: number) => {
   const m = stripeRegion.multiple;
   return Math.round(price * m) / m;
 };
-
 
 const optionPrice = (option: string) => {
   const regex = /\(((\+|\-|＋|ー|−)[0-9\.]+)\)/;
@@ -572,7 +569,7 @@ export const useAdminUids = (ctx: any) => {
   const isOwner = computed(() => {
     return !ctx.root.$store.getters.isSubAccount;
   });
-  const uid = computed (() => {
+  const uid = computed(() => {
     return ctx.root.$store.getters.uidAdmin;
   });
   const ownerUid = computed(() => {

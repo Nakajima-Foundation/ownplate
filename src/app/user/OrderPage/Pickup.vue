@@ -1,9 +1,9 @@
 <template>
-<div>
-  <div v-if="showRequest">
+  <div>
+    <div v-if="showRequest">
       <div
         class="mt-6 text-sm text-center font-bold text-black text-opacity-50"
-        >
+      >
         {{ $t("order.timeRequested") }}
       </div>
       <div class="mt-1 text-lg text-center text-black tracking-tight">
@@ -13,7 +13,7 @@
     <div v-if="showEstimated">
       <div
         class="mt-6 text-sm text-center font-bold text-black text-opacity-50"
-        >
+      >
         {{ $t("order.timeToPickup") }}
       </div>
       <div class="mt-1 text-lg text-center text-black tracking-tight">
@@ -73,7 +73,7 @@ export default defineComponent({
     return {
       showRequest,
       showEstimated,
-    }
-  }
+    };
+  },
 });
 </script>

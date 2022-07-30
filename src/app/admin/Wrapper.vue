@@ -1,20 +1,24 @@
 <template>
-<div>
-  <div v-if="groupMasterRestaurant===undefined"/>
-  <router-view v-else
-               :groupData="groupData"
-               :groupMasterRestaurant="groupMasterRestaurant"
-               />
-</div>
+  <div>
+    <div v-if="groupMasterRestaurant === undefined" />
+    <router-view
+      v-else
+      :groupData="groupData"
+      :groupMasterRestaurant="groupMasterRestaurant"
+    />
+  </div>
 </template>
-  
+
 <script lang="ts">
-import {
-  defineComponent,
-  ref,
-} from "@vue/composition-api";
+import { defineComponent, ref } from "@vue/composition-api";
 import { db } from "@/lib/firebase/firebase9";
-import { doc, getDoc, onSnapshot, query, DocumentData } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  onSnapshot,
+  query,
+  DocumentData,
+} from "firebase/firestore";
 
 export default defineComponent({
   setup(_, ctx) {
@@ -29,18 +33,17 @@ export default defineComponent({
             doc(db, `restaurants/${groupData.value.restaurantId}`),
             (result) => {
               groupMasterRestaurant.value = result.data() as any;
-            },
-          )
+            }
+          );
         }
       });
-                                        
     } else {
-       groupMasterRestaurant.value = {empty: true};
+      groupMasterRestaurant.value = { empty: true };
     }
     return {
       groupData,
       groupMasterRestaurant,
     };
-  }
+  },
 });
 </script>

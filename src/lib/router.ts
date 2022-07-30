@@ -325,7 +325,7 @@ export const customRoutes: CustomRoute[] = [
         path: "smaregi/store/:storeId",
         component: "admin/Smaregi/Store.vue",
       },
-    ]
+    ],
   },
   {
     name: "admin-news-list",
