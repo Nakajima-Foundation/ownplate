@@ -185,6 +185,7 @@
                   : ''
               "
               :shopInfo="restaurantInfo"
+              :isInMo="isInMo"
               @positionUp="positionUp($event)"
               @positionDown="positionDown($event)"
               @forkItem="forkMenuItem($event)"
