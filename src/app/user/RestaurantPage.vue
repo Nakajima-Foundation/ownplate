@@ -389,8 +389,14 @@ export default defineComponent({
 
     const isInMo = useIsInMo(ctx.root);
 
-    const { category, subCategory, watchCat, hasCategory, showCategory, showSubCategory } =
-      useCategoryParams(ctx, isInMo.value);
+    const {
+      category,
+      subCategory,
+      watchCat,
+      hasCategory,
+      showCategory,
+      showSubCategory,
+    } = useCategoryParams(ctx, isInMo.value);
 
     const restaurantId = computed(() => {
       return ctx.root.$route.params.restaurantId;

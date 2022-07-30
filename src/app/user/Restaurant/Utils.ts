@@ -1,4 +1,10 @@
-import { ref, onUnmounted, computed, Ref, ComputedRef } from "@vue/composition-api";
+import {
+  ref,
+  onUnmounted,
+  computed,
+  Ref,
+  ComputedRef,
+} from "@vue/composition-api";
 
 import { db } from "@/lib/firebase/firebase9";
 import {
