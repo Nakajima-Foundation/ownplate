@@ -261,10 +261,6 @@ const displayOption = (option, shopInfo, item) => {
   });
 };
 
-const roundPrice = (price) => {
-  const m = this.$store.getters.stripeRegion.multiple;
-  return Math.round(price * m) / m;
-};
 */
 
 export const getPartner = (shopOwner: ShopOwnerData) => {
@@ -281,6 +277,12 @@ export const regionalSetting = (regionalSettings as { [key: string]: any })[
 ];
 
 export const stripeRegion = stripe_regions[ownPlateConfig.region || "US"];
+
+export const roundPrice = (price: number) => {
+  const m = stripeRegion.multiple;
+  return Math.round(price * m) / m;
+};
+
 
 const optionPrice = (option: string) => {
   const regex = /\(((\+|\-|＋|ー|−)[0-9\.]+)\)/;

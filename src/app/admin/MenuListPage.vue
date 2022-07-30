@@ -287,7 +287,7 @@ import { copyMenuData } from "@/models/menu";
 import NotificationIndex from "./Notifications/Index";
 
 import { doc2data, useAdminUids, cleanObject, array2obj, shareUrl } from "@/utils/utils";
-import { checkAdminPermission, checkShopAccount } from "@/utils/userPermission/";
+import { checkAdminPermission, checkShopAccount } from "@/utils/userPermission";
 
 export default defineComponent({
   name: "Menus",
