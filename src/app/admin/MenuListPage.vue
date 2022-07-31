@@ -298,11 +298,6 @@ export default defineComponent({
       props.moPrefix,
       category
     );
-    /*
-    watch(watchCat, () => {
-      loadMenu();
-      });
-    */
     watch(category, () => {
       if (category.value) {
         loadSubcategory();
@@ -358,9 +353,11 @@ export default defineComponent({
 
     notFound.value = false;
 
-    const { menuObj, itemsObj, numberOfMenus } = useMenuAndTitle(
+    const { menuObj, itemsObj, numberOfMenus, loadMenu } = useMenuAndTitle(
       menuRestaurantId,
-      props.isInMo
+      props.isInMo,
+      category,
+      subCategory,
     );
 
     const menuLists = computed(() => {
@@ -374,6 +371,11 @@ export default defineComponent({
     const existsMenu = computed(() => {
       return menuLength.value > 0;
     });
+
+    watch(watchCat, () => {
+      loadMenu();
+    });
+    loadMenu();
 
     const publicFilterToggle = () => {
       publicFilter.value = !publicFilter.value;
