@@ -12,15 +12,21 @@
 
     <!-- Orders -->
     <div class="mx-6 mt-6 grid grid-cols-1 gap-2 lg:grid-cols-3 xl:grid-cols-4">
-      <ordered-info
-        v-for="order in orders"
-        :key="order.id"
-        @selected="orderSelected($event)"
-        :order="order"
-        :isSuperView="true"
-      />
+      <template v-if="orders.length > 0">
+        <ordered-info
+          v-for="order in orders"
+          :key="order.id"
+          @selected="orderSelected($event)"
+          :order="order"
+          :isSuperView="true"
+          />
+      </template>
+      <div v-else>
+        <span class="text-base text-black text-opacity-40">
+          {{ $t("order.noHistory") }}
+        </span>
+      </div>
     </div>
-
     <!-- Phone Login-->
     <b-modal :active.sync="loginVisible" :width="488" scroll="keep">
       <div class="mx-2 my-6 p-6 bg-white shadow-lg rounded-lg">
