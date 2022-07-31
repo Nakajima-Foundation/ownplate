@@ -2,7 +2,7 @@
   <div>
     <!-- Back -->
     <div class="mt-6 mx-6">
-      <back-button :url="inLiff ? liff_base_path : '/u/profile/'" />
+      <back-button :url="basePath + '/u/profile/'" />
     </div>
 
     <!-- Title -->
@@ -31,6 +31,13 @@
 </template>
 
 <script>
+import {
+  defineComponent,
+  ref,
+  computed,
+  onUnmounted,
+  watch,
+} from "@vue/composition-api";
 import { db } from "@/lib/firebase/firebase9";
 import {
   collectionGroup,
@@ -45,10 +52,13 @@ import OrderedInfo from "@/app/admin/Order/OrderedInfo";
 import PhoneLogin from "@/app/auth/PhoneLogin";
 import BackButton from "@/components/BackButton";
 
-export default {
+import { defaultHeader } from "@/config/header";
+import { useBasePath, useTopPath } from "@/utils/utils";
+
+export default defineComponent({
   metaInfo() {
     return {
-      title: [this.defaultTitle, "User Order History"].join(" / "),
+      title: [defaultHeader.title, "User Order History"].join(" / "),
     };
   },
   components: {
@@ -56,44 +66,34 @@ export default {
     PhoneLogin,
     BackButton,
   },
-  data() {
-    return {
-      loginVisible: false,
-      detacher: null,
-      orders: [],
-    };
-  },
-  async created() {
-    //console.log("created", this.uid);
-    this.loginVisible = !this.uid;
-    this.getHistory();
-  },
-  destroyed() {
-    this.detacher && this.detacher();
-  },
-  watch: {
-    uid(newValue) {
-      this.getHistory();
-    },
-  },
-  computed: {
-    uid() {
-      return this.$store.getters.uidUser || this.$store.getters.uidLiff;
-    },
-  },
-  methods: {
-    getHistory() {
-      this.detacher && this.detacher();
-      if (this.uid) {
-        this.detacher = onSnapshot(
+  setup(props, ctx) {
+    const orders = ref([]);
+
+    const basePath = useBasePath(ctx.root);
+    const topPath = useTopPath(ctx.root);
+
+    const uid = computed(() => {
+      return ctx.root.$store.getters.uidUser || ctx.root.$store.getters.uidLiff;
+    });
+
+    const loginVisible = computed(() => {
+      return !uid.value;
+    });
+
+    let detacher = null;
+
+    const getHistory = () => {
+      detacher && detacher();
+      if (uid.value) {
+        detacher = onSnapshot(
           query(
             collectionGroup(db, "orders"),
-            where("uid", "==", this.uid),
+            where("uid", "==", uid.value),
             orderBy("orderPlacedAt", "desc"),
             limit(200)
           ),
           (snapshot) => {
-            this.orders = snapshot.docs.map((doc) => {
+            orders.value = snapshot.docs.map((doc) => {
               const order = doc.data();
               order.restaurantId = doc.ref.path.split("/")[1];
               order.id = doc.id;
@@ -109,33 +109,45 @@ export default {
           }
         );
       } else {
-        this.detacher = null;
+        detacher = null;
       }
-    },
-    handleDismissed(success) {
+    };
+
+    const handleDismissed = (success) => {
       console.log("handleDismissed", success);
       if (success) {
-        this.loginVisible = false;
+        loginVisible.value = false;
       } else {
-        this.$router.push("/");
+        ctx.root.$router.push(topPath.value);
       }
-    },
-    orderSelected(order) {
-      if (this.inLiff) {
-        this.$router.push({
-          path:
-            this.liff_base_path +
-            "/r/" +
-            order.restaurantId +
-            "/order/" +
-            order.id,
-        });
-      } else {
-        this.$router.push({
-          path: "/r/" + order.restaurantId + "/order/" + order.id,
-        });
-      }
-    },
+    };
+
+    const orderSelected = (order) => {
+      const path =
+        basePath.value + "/r/" + order.restaurantId + "/order/" + order.id;
+      ctx.root.$router.push({
+        path,
+      });
+    };
+
+    getHistory();
+
+    watch(uid, () => {
+      getHistory();
+    });
+
+    onUnmounted(() => {
+      detacher && detacher();
+    });
+
+    return {
+      loginVisible,
+      handleDismissed,
+
+      orders,
+      orderSelected,
+      basePath,
+    };
   },
-};
+});
 </script>

@@ -262,7 +262,7 @@ export const confirm = async (db: admin.firestore.Firestore, data: any, context:
   }
 };
 
-// This function is called by user or admin to cencel an exsting order (before accepted by admin)
+// This function is called by user or admin to cancel an exsting order (before accepted by admin)
 export const cancel = async (db: any, data: any, context: functions.https.CallableContext | Context) => {
   const isAdmin = utils.is_admin_auth(context);
   console.log("is_admin:" + String(isAdmin));
@@ -297,8 +297,9 @@ export const cancel = async (db: any, data: any, context: functions.https.Callab
         }
       }
       const cancelTimeKey = uid === order.uid ? "orderCustomerCanceledAt" : "orderRestaurantCanceledAt";
-
-      if (!order.payment || !order.payment.stripe) {
+      // user can cancel if restaurant cancel just only payment and status is placed.
+      if (!order.payment || !order.payment.stripe || (!isAdmin && order.payment.stripe === "canceled")) {
+        
         // No payment transaction
         await updateOrderTotalDataAndUserLog(db, transaction, order.uid, order.order, restaurantId, uid, order.timePlaced, false);
         transaction.set(
@@ -367,7 +368,7 @@ export const cancel = async (db: any, data: any, context: functions.https.Callab
   }
 };
 
-// This function is called by admin to cencel an exsting order
+// This function is called by admin to cancel an exsting order
 export const cancelStripePayment = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext | Context) => {
   const uid = utils.validate_admin_auth(context);
 

@@ -43,7 +43,7 @@ import {
   onUnmounted,
 } from "@vue/composition-api";
 import { db } from "@/lib/firebase/firebase9";
-import { doc, getDoc, onSnapshot } from "firebase/firestore";
+import { doc, onSnapshot } from "firebase/firestore";
 
 import NotificationWatcher from "./Watcher/NotificationWatcher.vue";
 import SoundConfigWatcher from "./Watcher/SoundConfigWatcher.vue";

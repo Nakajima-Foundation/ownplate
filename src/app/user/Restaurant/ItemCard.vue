@@ -462,7 +462,7 @@ export default {
         this.optionValues = newOP;
       }
       this.$emit("didQuantitiesChange", {
-        id: this.item.id,
+        itemId: this.item.id,
         quantities: newQuantities,
       });
     },
@@ -476,7 +476,7 @@ export default {
       const newQuantities = [...this.quantities];
       newQuantities.push(1);
       this.$emit("didQuantitiesChange", {
-        id: this.item.id,
+        itemId: this.item.id,
         quantities: newQuantities,
       });
     },

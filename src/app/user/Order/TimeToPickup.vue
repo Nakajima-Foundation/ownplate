@@ -69,6 +69,11 @@ export default {
     }
   },
   watch: {
+    days() {
+      if (!(this.days[this.dayIndex]?.times||[]).some((t) => { return this.time == t.time})) {
+        this.time = this.days[this.dayIndex].times[0].time;
+      }
+    },
     dayIndex(newValue) {
       this.time = this.days[newValue].times[0].time;
     },

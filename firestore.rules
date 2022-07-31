@@ -86,6 +86,10 @@ service cloud.firestore {
         allow read: if request.auth.uid == userId;
         allow write: if request.auth.uid == userId && request.resource.data.restaurantId == restaurantId;
       }
+      match /groups/{groupId}/reviews/{restaurantId} {
+        allow read: if request.auth.uid == userId;
+        allow write: if request.auth.uid == userId && request.resource.data.restaurantId == restaurantId;
+      }
     }
 
     match /adminConfigs/{userId} {
@@ -141,6 +145,16 @@ service cloud.firestore {
       allow write: if request.auth.uid == ownerId && isUndefined(request.resource.data, 'admin')
               && isUndefined(request.resource.data, 'operator');
       allow read: if true
+    }
+
+    match /groups/{groupId} {
+      allow read: if true;
+      match /category/{category} {
+        allow read: if true;
+        match /subCategory/{subcategory} {
+          allow read: if true;
+        }      
+      }      
     }
 
     // Rules for collection group
