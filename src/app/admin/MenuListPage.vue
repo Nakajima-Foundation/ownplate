@@ -46,7 +46,7 @@
 
         <!-- category for mo -->
         <div v-if="showSubCategory">
-          <div class="mx-6 mt-2 lg:mx-0">
+          <div class="mx-6 mt-2 lg:max-w-2xl lg:mx-auto">
             <SubCategoryList
               :subCategoryData="subCategoryData"
               :categoryBathPath="categoryBathPath"
