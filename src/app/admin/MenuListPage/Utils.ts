@@ -18,7 +18,7 @@ import {
   array2obj,
 } from "@/utils/utils";
   
-export const useMenuAndTitle = (menuRestaurantId: Ref<string>) => {
+export const useMenuAndTitle = (menuRestaurantId: Ref<string>, isInMo: boolean) => {
   const menus = ref<DocumentData[] | null >(null);
   const titles = ref<DocumentData[] | null >(null);
   const menuObj = ref({});
@@ -39,7 +39,7 @@ export const useMenuAndTitle = (menuRestaurantId: Ref<string>) => {
       where("deletedFlag", "==", false)
     ),
     (results) => {
-      titles.value = (results.empty ? [] : results.docs).map(doc2data("title"));
+      titles.value = (results.empty || isInMo ? [] : results.docs).map(doc2data("title"));
     }
   );
   detachers.value = [menu_detacher, title_detacher];

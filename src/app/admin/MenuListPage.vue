@@ -112,7 +112,7 @@
               :position="
                 index == 0
                   ? 'first'
-                  : menuLists.length - 1 === index
+                  : menuLength - 1 === index
                   ? 'last'
                   : ''
               "
@@ -324,18 +324,19 @@ export default defineComponent({
     }
 
     // This is duplicate data with shopInfo. But DONT'T REMOVE THIS!!
-    // Menus and titles are saved restaurant info. This is reactive.
-    const restaurantRef = doc(db, `restaurants/${restaurantId.value}`);
-    const restaurant_detacher = onSnapshot(restaurantRef, (results) => {
-      if (results.exists && results.data().uid === ownerUid.value) {
-        restaurantInfo.value = results.data();
-        notFound.value = false;
-      } else {
-        notFound.value = true;
-        // 404
-        console.log("Error fetch restaurantInfo.");
-      }
-    });
+    // Menu list is saved in restaurant info. This data needs reactive.
+    const restaurant_detacher = onSnapshot(
+      doc(db, `restaurants/${restaurantId.value}`),
+      (results) => {
+        if (results.exists && results.data().uid === ownerUid.value) {
+          restaurantInfo.value = results.data();
+          notFound.value = false;
+        } else {
+          notFound.value = true;
+          // 404
+          console.log("Error fetch restaurantInfo.");
+        }
+      });
     onUnmounted(() => {
       restaurant_detacher();
     });
@@ -346,13 +347,10 @@ export default defineComponent({
       menuObj,
       itemsObj,
       numberOfMenus,
-    } = useMenuAndTitle(menuRestaurantId)
+    } = useMenuAndTitle(menuRestaurantId, props.isInMo)
 
     const menuLists = computed(() => {
-      if (props.isInMo) {
-        return Object.keys(itemsObj.value);
-      }
-      return restaurantInfo.value.menuLists || [];
+      return props.isInMo ? Object.keys(itemsObj.value) : restaurantInfo.value.menuLists || [];
     });
     const menuLength = computed(() => {
       return menuLists.value.length;
