@@ -26,126 +26,132 @@
         </div>
       </div>
 
-      <!-- Toggle to View All or Public Only -->
-      <div class="mt-6 mx-6 lg:text-center">
-        <PublicFilterToggle
-          :publicFilter="publicFilter"
-          @publicFilterToggle="publicFilterToggle()"
-        />
-      </div>
-
-      <!-- category for mo -->
-      <div v-if="showSubCategory">
-        <SubCategoryList
-          :subCategoryData="subCategoryData"
-          :categoryBathPath="categoryBathPath"
-          :subCategoryId="subCategory"
-        />
-      </div>
-
-      <!-- No Menu or Too Many Menu-->
-      <div
-        v-if="(!existsMenu || menuCounter > 5) && isOwner && !isInMo"
-        class="mt-6 mx-6 border-2 border-op-teal rounded-lg p-4 pb-2 lg:max-w-2xl lg:mx-auto"
-      >
-        <div class="text-center text-sm font-bold text-op-teal">
-          {{ $t("editMenu.pleaseAddItem") }}
+      <template>
+        <!-- Toggle to View All or Public Only -->
+        <div class="mt-6 mx-6 lg:text-center">
+          <PublicFilterToggle
+            :publicFilter="publicFilter"
+            @publicFilterToggle="publicFilterToggle()"
+          />
         </div>
 
-        <AddButton
-          :submitting="submitting"
-          @addTitle="addTitle('top')"
-          @addMenu="addMenu('top')"
-        />
-      </div>
+        <!-- category for mo -->
+        <div v-if="showSubCategory">
+          <SubCategoryList
+            :subCategoryData="subCategoryData"
+            :categoryBathPath="categoryBathPath"
+            :subCategoryId="subCategory"
+          />
+        </div>
 
-      <!-- Category Titles / Menu Items -->
-      <div
-        v-if="existsMenu"
-        class="mt-6 mx-6 grid-col-1 space-y-4 lg:max-w-2xl lg:mx-auto"
-      >
-        <div v-for="(menuList, index) in menuLists" :key="menuList">
-          <!-- Category Title -->
-          <div
-            v-if="
-              itemsObj[menuList] && itemsObj[menuList]._dataType === 'title'
-            "
-          >
-            <div v-if="editings[menuList] === true">
-              <title-input
-                :title="itemsObj[menuList]"
-                :position="
-                  index == 0 ? 'first' : menuLength - 1 === index ? 'last' : ''
-                "
-                @toEditMode="toEditMode($event)"
-                @positionUp="positionUp($event)"
-                @positionDown="positionDown($event)"
-                @forkItem="forkTitleItem($event)"
-                @updateTitle="updateTitle($event)"
-              ></title-input>
-            </div>
-            <div v-else>
-              <title-card
-                :title="itemsObj[menuList]"
-                :position="
-                  index == 0 ? 'first' : menuLength - 1 === index ? 'last' : ''
-                "
-                @toEditMode="toEditMode($event)"
-                @positionUp="positionUp($event)"
-                @positionDown="positionDown($event)"
-                @forkItem="forkTitleItem($event)"
-                @deleteItem="deleteItem($event)"
-              ></title-card>
-            </div>
+        <!-- No Menu or Too Many Menu-->
+        <div
+          v-if="(!existsMenu || menuCounter > 5) && isOwner && !isInMo"
+          class="mt-6 mx-6 border-2 border-op-teal rounded-lg p-4 pb-2 lg:max-w-2xl lg:mx-auto"
+        >
+          <div class="text-center text-sm font-bold text-op-teal">
+            {{ $t("editMenu.pleaseAddItem") }}
           </div>
 
-          <!-- Menu Item -->
-          <div
-            v-else-if="
-              itemsObj[menuList] &&
-              itemsObj[menuList]._dataType === 'menu' &&
-              (!publicFilter || itemsObj[menuList].publicFlag)
-            "
-          >
-            <menu-card
-              :menuitem="itemsObj[menuList]"
-              :position="
-                index == 0
-                  ? 'first'
-                  : menuLength - 1 === index
-                  ? 'last'
-                  : ''
+          <AddButton
+            :submitting="submitting"
+            @addTitle="addTitle('top')"
+            @addMenu="addMenu('top')"
+          />
+        </div>
+
+        <!-- Category Titles / Menu Items -->
+        <div
+          v-if="existsMenu"
+          class="mt-6 mx-6 grid-col-1 space-y-4 lg:max-w-2xl lg:mx-auto"
+        >
+          <div v-for="(menuList, index) in menuLists" :key="menuList">
+            <!-- Category Title -->
+            <div
+              v-if="
+                itemsObj[menuList] && itemsObj[menuList]._dataType === 'title'
               "
-              :shopInfo="restaurantInfo"
-              :isInMo="isInMo"
-              @positionUp="positionUp($event)"
-              @positionDown="positionDown($event)"
-              @forkItem="forkMenuItem($event)"
-              @deleteItem="deleteItem($event)"
-            ></menu-card>
+            >
+              <div v-if="editings[menuList] === true">
+                <title-input
+                  :title="itemsObj[menuList]"
+                  :position="
+                    index == 0
+                      ? 'first'
+                      : menuLength - 1 === index
+                      ? 'last'
+                      : ''
+                  "
+                  @toEditMode="toEditMode($event)"
+                  @positionUp="positionUp($event)"
+                  @positionDown="positionDown($event)"
+                  @forkItem="forkTitleItem($event)"
+                  @updateTitle="updateTitle($event)"
+                ></title-input>
+              </div>
+              <div v-else>
+                <title-card
+                  :title="itemsObj[menuList]"
+                  :position="
+                    index == 0
+                      ? 'first'
+                      : menuLength - 1 === index
+                      ? 'last'
+                      : ''
+                  "
+                  @toEditMode="toEditMode($event)"
+                  @positionUp="positionUp($event)"
+                  @positionDown="positionDown($event)"
+                  @forkItem="forkTitleItem($event)"
+                  @deleteItem="deleteItem($event)"
+                ></title-card>
+              </div>
+            </div>
+
+            <!-- Menu Item -->
+            <div
+              v-else-if="
+                itemsObj[menuList] &&
+                itemsObj[menuList]._dataType === 'menu' &&
+                (!publicFilter || itemsObj[menuList].publicFlag)
+              "
+            >
+              <menu-card
+                :menuitem="itemsObj[menuList]"
+                :position="
+                  index == 0 ? 'first' : menuLength - 1 === index ? 'last' : ''
+                "
+                :shopInfo="restaurantInfo"
+                :isInMo="isInMo"
+                @positionUp="positionUp($event)"
+                @positionDown="positionDown($event)"
+                @forkItem="forkMenuItem($event)"
+                @deleteItem="deleteItem($event)"
+              ></menu-card>
+            </div>
           </div>
         </div>
-      </div>
 
-      <!-- Add Group Title, Menu Item, and Download Menu -->
-      <div
-        class="mt-6 mx-6 border-2 border-op-teal rounded-lg p-4 pb-2 lg:max-w-2xl lg:mx-auto"
-        v-if="isOwner"
-      >
-        <AddButton
-          :submitting="submitting"
-          @addTitle="addTitle()"
-          @addMenu="addMenu()"
-          v-if="!isInMo"
-        />
+        <!-- Add Group Title, Menu Item, and Download Menu -->
+        <div
+          class="mt-6 mx-6 border-2 border-op-teal rounded-lg p-4 pb-2 lg:max-w-2xl lg:mx-auto"
+          v-if="isOwner"
+        >
+          <AddButton
+            :submitting="submitting"
+            @addTitle="addTitle()"
+            @addMenu="addMenu()"
+            v-if="!isInMo"
+          />
 
-        <div class="text-center mt-2" v-if="menuCounter > 0">
-          <DownloadButton
-            :restaurantInfo="restaurantInfo"
-            :menuObj="menuObj"
+          <div class="text-center mt-2" v-if="menuCounter > 0">
+            <DownloadButton
+              :restaurantInfo="restaurantInfo"
+              :menuObj="menuObj"
             />
+          </div>
         </div>
-      </div>
+      </template>
     </div>
   </div>
 </template>
@@ -192,7 +198,6 @@ import { ownPlateConfig } from "@/config/project";
 
 import { copyMenuData } from "@/models/menu";
 
-
 import {
   useTitles,
   useCategory,
@@ -201,10 +206,7 @@ import {
   useCategoryParams,
 } from "../user/Restaurant/Utils";
 
-import {
-  useAdminUids,
-  cleanObject,
-} from "@/utils/utils";
+import { useAdminUids, cleanObject } from "@/utils/utils";
 import { checkAdminPermission, checkShopAccount } from "@/utils/userPermission";
 
 export default defineComponent({
@@ -222,7 +224,7 @@ export default defineComponent({
     AddButton,
     PhotoName,
     DownloadButton,
-    
+
     SubCategoryList,
   },
   props: {
@@ -316,7 +318,6 @@ export default defineComponent({
       return Object.keys(menuObj.value).length;
     });
 
-
     // allow sub Account
     if (!checkShopAccount(props.shopInfo, ownerUid.value)) {
       notFound.value = true;
@@ -336,21 +337,23 @@ export default defineComponent({
           // 404
           console.log("Error fetch restaurantInfo.");
         }
-      });
+      }
+    );
     onUnmounted(() => {
       restaurant_detacher();
     });
-    
+
     notFound.value = false;
 
-    const {
-      menuObj,
-      itemsObj,
-      numberOfMenus,
-    } = useMenuAndTitle(menuRestaurantId, props.isInMo)
+    const { menuObj, itemsObj, numberOfMenus } = useMenuAndTitle(
+      menuRestaurantId,
+      props.isInMo
+    );
 
     const menuLists = computed(() => {
-      return props.isInMo ? Object.keys(itemsObj.value) : restaurantInfo.value.menuLists || [];
+      return props.isInMo
+        ? Object.keys(itemsObj.value)
+        : restaurantInfo.value.menuLists || [];
     });
     const menuLength = computed(() => {
       return menuLists.value.length;

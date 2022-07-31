@@ -1,9 +1,4 @@
-import {
-  ref,
-  computed,
-  onUnmounted,
-  Ref,
-} from "@vue/composition-api";
+import { ref, computed, onUnmounted, Ref } from "@vue/composition-api";
 import { db } from "@/lib/firebase/firebase9";
 import {
   collection,
@@ -13,17 +8,17 @@ import {
   DocumentData,
   Unsubscribe,
 } from "firebase/firestore";
-import {
-  doc2data,
-  array2obj,
-} from "@/utils/utils";
-  
-export const useMenuAndTitle = (menuRestaurantId: Ref<string>, isInMo: boolean) => {
-  const menus = ref<DocumentData[] | null >(null);
-  const titles = ref<DocumentData[] | null >(null);
+import { doc2data, array2obj } from "@/utils/utils";
+
+export const useMenuAndTitle = (
+  menuRestaurantId: Ref<string>,
+  isInMo: boolean
+) => {
+  const menus = ref<DocumentData[] | null>(null);
+  const titles = ref<DocumentData[] | null>(null);
   const menuObj = ref({});
   const detachers = ref<Unsubscribe[]>([]);
-  
+
   const menu_detacher = onSnapshot(
     query(
       collection(db, `restaurants/${menuRestaurantId.value}/menus`),
@@ -39,7 +34,9 @@ export const useMenuAndTitle = (menuRestaurantId: Ref<string>, isInMo: boolean) 
       where("deletedFlag", "==", false)
     ),
     (results) => {
-      titles.value = (results.empty || isInMo ? [] : results.docs).map(doc2data("title"));
+      titles.value = (results.empty || isInMo ? [] : results.docs).map(
+        doc2data("title")
+      );
     }
   );
   detachers.value = [menu_detacher, title_detacher];
@@ -68,6 +65,4 @@ export const useMenuAndTitle = (menuRestaurantId: Ref<string>, isInMo: boolean) 
     itemsObj,
     numberOfMenus,
   };
-  
-  
-}
+};

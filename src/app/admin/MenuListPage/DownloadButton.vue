@@ -3,14 +3,14 @@
     @click="downloadMenu()"
     :disabled="downloadSubmitting"
     class="b-reset-tw mx-2 mb-2"
-    >
+  >
     <div
       class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
-      >
+    >
       <i class="material-icons text-lg text-op-teal mr-2">menu_book</i>
       <span class="text-sm font-bold text-op-teal">
         {{ $t("button.downloadMenu") }}</span
-                                         >
+      >
     </div>
   </b-button>
 </template>
@@ -20,9 +20,7 @@ import { defineComponent, ref, computed } from "@vue/composition-api";
 
 import * as pdf from "@/lib/pdf/pdf";
 import { usePhoneNumber } from "@/utils/phoneutil";
-import {
-  shareUrl,
-} from "@/utils/utils";
+import { shareUrl } from "@/utils/utils";
 
 export default defineComponent({
   props: {
@@ -55,8 +53,8 @@ export default defineComponent({
     };
     return {
       downloadSubmitting,
-      downloadMenu      
+      downloadMenu,
     };
-  }
+  },
 });
 </script>
