@@ -31,6 +31,7 @@
     "signInRestaurant": "Sign In as a Restaurant",
     "deleteAccount": "Delete Account",
     "reallyDeleteAccount": "Do you really want to delete this account? All the data will be deleted.",
+    "reSendSMSforDeleteAccount": "Send an SMS verification code to your registered phone number for final confirmation.",
     "stripeInfo": "Associated Credit Card",
     "noCard": "Not saved",
     "deleteCard": "Delete Card Info",

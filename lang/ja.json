@@ -32,6 +32,7 @@
     "signInMO": "ログイン",
     "deleteAccount": "アカウント削除",
     "reallyDeleteAccount": "過去の履歴は消えてしまいます。本当にアカウントを削除しますか？",
+    "reSendSMSforDeleteAccount": "最終確認のため登録されている電話番号にSMS確認コードを送ります。",
     "stripeInfo": "クレジットカード情報",
     "noCard": "ありません",
     "deleteCard": "カード情報削除",

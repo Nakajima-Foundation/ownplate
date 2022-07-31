@@ -31,6 +31,7 @@
     "signInRestaurant": "Se connecter comme Restaurant",
     "deleteAccount": "Supprimer le compte",
     "reallyDeleteAccount": "Voullez vous vraiment supprimer cet compte? Tous vos données seront supprimés.",
+    "reSendSMSforDeleteAccount": "Send an SMS verification code to your registered phone number for final confirmation.",
     "stripeInfo": "Carte de crédit associée",
     "noCard": "Non enregistré",
     "deleteCard": "Supprimer les informations de la carte",

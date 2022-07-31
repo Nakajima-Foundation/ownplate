@@ -60,7 +60,9 @@
           </div>
         </div>
       </div>
-
+      <div v-if="relogin" class="mt-4 text-xl font-bold text-center">
+        {{ $t("profile.reSendSMSforDeleteAccount") }}
+      </div>
       <!-- Submit Buttons -->
       <div class="mt-4 text-center">
         <b-button
@@ -92,7 +94,7 @@
       </div>
 
       <!-- Terms of Use & Privacy Policy -->
-      <div class="mt-6 text-xs">
+      <div class="mt-6 text-xs" v-if="!relogin">
         <TermsAndPolicy />
       </div>
     </form>
