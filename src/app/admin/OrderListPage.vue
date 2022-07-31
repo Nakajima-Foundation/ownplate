@@ -48,7 +48,7 @@
             class="b-reset-tw"
           >
             <div
-              v-if="this.shopInfo.suspendUntil"
+              v-if="shopInfo.suspendUntil"
               class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-red-700 bg-opacity-5"
             >
               <i class="material-icons text-lg text-red-700 mr-2"
@@ -100,17 +100,22 @@
       <div
         class="mx-6 mt-6 grid grid-cols-1 gap-2 lg:grid-cols-3 xl:grid-cols-4"
       >
-        <ordered-info
+        <template
           v-for="order in orders"
-          :key="order.id"
-          @selected="orderSelected($event)"
-          :order="order"
-        />
+          >
+          <router-link :to="'/admin/restaurants/' + restaurantId() + '/orders/' + order.id"
+                       :key="order.id">
+            <ordered-info
+              :key="order.id"
+              :order="order"
+              />
+          </router-link>
+        </template>
       </div>
 
       <!-- Go to History -->
       <div class="mx-6 mt-6">
-        <router-link :to="`/admin/restaurants/${this.restaurantId()}/history`"
+        <router-link :to="`/admin/restaurants/${restaurantId()}/history`"
           ><div
             class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5"
           >
@@ -127,13 +132,13 @@
 <script>
 import { db, firestore } from "@/plugins/firebase";
 import { midNight } from "@/utils/dateUtils";
-import OrderedInfo from "@/app/admin/Order/OrderedInfo";
-import BackButton from "@/components/BackButton";
 import { order_status } from "@/config/constant";
 import moment from "moment";
 
-import NotificationIndex from "./Notifications/Index";
-import NotFound from "@/components/NotFound";
+import OrderedInfo from "@/app/admin/Order/OrderedInfo.vue";
+import BackButton from "@/components/BackButton.vue";
+import NotificationIndex from "./Notifications/Index.vue";
+import NotFound from "@/components/NotFound.vue";
 
 export default {
   components: {
@@ -270,12 +275,6 @@ export default {
           }
           return order;
         });
-      });
-    },
-    orderSelected(order) {
-      this.$router.push({
-        path:
-          "/admin/restaurants/" + this.restaurantId() + "/orders/" + order.id,
       });
     },
     getPickUpDaysInAdvance() {
