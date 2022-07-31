@@ -456,6 +456,7 @@
     "pleasePayAtRestaurant": "Le paiement en ligne n'a pas encore été activé. Veuillez payer au moment du ramassage.",
     "sendSMS": "Recevoir des notifications SMS",
     "history": "Historique de Commande",
+    "noHistory": "No Order History",
     "timeRequested": "Heure de ramassage demandée",
     "timeToPickup": "Temps de ramassage estimé",
     "deliveryTimeRequested": "Requested Delivery Time",

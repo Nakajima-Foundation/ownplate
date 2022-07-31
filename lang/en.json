@@ -463,6 +463,7 @@
     "pleasePayAtRestaurant": "Online payment was not enabled yet. Please pay at the time of pickup.",
     "sendSMS": "Receive Text Messages (standard telco fee may apply)",
     "history": "Order History",
+    "noHistory": "No Order History",
     "timeRequested": "Requested Pickup Time",
     "timeToPickup": "Estimated Pickup Time",
     "deliveryTimeRequested": "Requested Delivery Time",

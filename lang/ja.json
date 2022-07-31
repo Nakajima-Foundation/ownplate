@@ -466,6 +466,7 @@
     "pleasePayAtRestaurant": "オンラインでの支払いは現時点では出来ません。",
     "sendSMS": "SMSメッセージを受け取る（SMSの受信には料金がかかる場合があります）",
     "history": "注文履歴",
+    "noHistory": "注文履歴はありません",
     "timeRequested": "受け渡し希望時刻",
     "timeToPickup": "受け渡し予定時刻",
     "deliveryTimeRequested": "配達希望時刻",
