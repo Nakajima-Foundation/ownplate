@@ -98,7 +98,7 @@
                 v-for="(restaurantId, index) in restaurantLists"
                 :key="restaurantId"
               >
-                <restaurant-edit-card
+                <restaurant
                   v-if="restaurantItems[restaurantId]"
                   :shopInfo="restaurantItems[restaurantId]"
                   :restaurantid="restaurantId"
@@ -122,7 +122,7 @@
                   @positionDown="positionDown($event)"
                   @deleteFromRestaurantLists="deleteFromRestaurantLists($event)"
                   :isOwner="isOwner"
-                ></restaurant-edit-card>
+                 />
               </div>
             </div>
 
@@ -201,7 +201,7 @@ import { db as dbOld, firestore } from "@/plugins/firebase";
 import { order_status } from "@/config/constant";
 import { midNight } from "@/utils/dateUtils";
 
-import RestaurantEditCard from "@/app/admin/Restaurant/RestaurantEditCard.vue";
+import Restaurant from "@/app/admin/Index/Restaurant.vue";
 import PaymentSection from "@/app/admin/Payment/PaymentSection.vue";
 import MessageCard from "./Messages/MessageCard.vue";
 
@@ -223,10 +223,10 @@ import {
 import { checkAdminPermission } from "@/utils/userPermission";
 
 export default defineComponent({
-  name: "Restaurant",
+  name: "RestaurantIndex",
   components: {
     PaymentSection,
-    RestaurantEditCard,
+    Restaurant,
     MessageCard,
     WelcomeAndLinks,
     News,
