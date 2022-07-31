@@ -48,7 +48,7 @@
             class="b-reset-tw"
           >
             <div
-              v-if="this.shopInfo.suspendUntil"
+              v-if="shopInfo.suspendUntil"
               class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-red-700 bg-opacity-5"
             >
               <i class="material-icons text-lg text-red-700 mr-2"
@@ -82,14 +82,18 @@
       <!-- Orders -->
       <div
         class="mx-6 mt-6 grid grid-cols-1 gap-2 lg:grid-cols-3 xl:grid-cols-4"
-      >
-        <ordered-info
+        >
+        <template
           v-for="order in orders"
-          :key="order.id"
-          @selected="orderSelected($event)"
-          :order="order"
-          :isSuperView="true"
-        />
+          >
+          <router-link :to="'/admin/restaurants/' + restaurantId() + '/orders/' + order.id"
+                       :key="order.id">
+            <ordered-info
+              :order="order"
+              :isSuperView="true"
+              />
+          </router-link>
+        </template>
       </div>
 
       <!-- More -->
@@ -118,42 +122,47 @@
         </b-button>
       </div>
 
-      <!-- Download Orders -->
-      <div class="mx-6 mt-6 text-center">
-        <download-orders :orders="orders" v-if="shopOwner" />
-      </div>
-
-      <!-- Download Report -->
-      <div class="mx-6 mt-6 text-center">
-        <report-details
-          :orders="orders"
-          :fileName="fileName"
-          :hideTable="true"
-          :withStatus="true"
-          :shopInfo="shopInfo"
-          v-if="shopOwner"
-        />
+      <div v-if="isOwner">
+        <!-- Download Orders -->
+        <div class="mx-6 mt-6 text-center">
+          <download-orders :orders="orders" />
+        </div>
+        
+        <!-- Download Report -->
+        <div class="mx-6 mt-6 text-center">
+          <report-details
+            :orders="orders"
+            :fileName="fileName"
+            :hideTable="true"
+            :withStatus="true"
+            :shopInfo="shopInfo"
+            />
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { db, firestore } from "@/plugins/firebase";
-import { midNight } from "@/utils/dateUtils";
-import OrderedInfo from "@/app/admin/Order/OrderedInfo";
-import BackButton from "@/components/BackButton";
+import {
+  defineComponent,
+  ref,
+} from "@vue/composition-api";
+
+import { db } from "@/plugins/firebase";
 import { order_status } from "@/config/constant";
-import moment from "moment";
-import DownloadOrders from "@/components/DownloadOrders";
-import NotificationIndex from "./Notifications/Index";
-import ReportDetails from "@/app/admin/Order/ReportDetails";
 
-import NotFound from "@/components/NotFound";
+import NotFound from "@/components/NotFound.vue";
+import OrderedInfo from "@/app/admin/Order/OrderedInfo.vue";
+import BackButton from "@/components/BackButton.vue";
+import NotificationIndex from "./Notifications/Index.vue";
+import DownloadOrders from "@/components/DownloadOrders.vue";
+import ReportDetails from "@/app/admin/Order/ReportDetails.vue";
 
-import { getShopOwner, arrayChunk } from "@/utils/utils";
+import { arrayChunk, useAdminUids, doc2data } from "@/utils/utils";
+import { checkAdminPermission, checkShopAccount } from "@/utils/userPermission";
 
-export default {
+export default defineComponent({
   components: {
     NotFound,
     OrderedInfo,
@@ -179,54 +188,45 @@ export default {
         : this.defaultTitle,
     };
   },
-  data() {
-    return {
-      limit: 60,
-      last: undefined,
-      orders: [],
-      shopOwner: null,
-      notFound: null,
-    };
-  },
-  async created() {
-    this.checkAdminPermission();
-    if (!this.checkShopAccount(this.shopInfo)) {
-      this.notFound = true;
-      return true;
+  setup(props, ctx) {
+    const limit = 60;
+    const last = ref(undefined);
+    const orders = ref([]);
+    const notFound = ref(null);
+
+    const { isOwner, uid, ownerUid } = useAdminUids(ctx);
+    
+    if (!checkAdminPermission(ctx) || !checkShopAccount(props.shopInfo, ownerUid.value)) {
+      return {
+        notFound: true
+      };
     }
 
-    this.shopOwner = await getShopOwner(this.$store.getters.uidAdmin);
-    this.next();
-  },
-  computed: {
-    fileName() {
-      return this.$t("order.history");
-    },
-  },
-  methods: {
-    async next() {
+    const fileName = ctx.root.$t("order.history");
+
+    const next = async () => {
       let query = db
-        .collection(`restaurants/${this.restaurantId()}/orders`)
+        .collection(`restaurants/${ctx.root.restaurantId()}/orders`)
         .orderBy("timePlaced", "desc")
-        .limit(this.limit);
-      if (this.last) {
-        query = query.startAfter(this.last);
+        .limit(limit);
+      if (last.value) {
+        query = query.startAfter(last.value);
       }
       const docs = (await query.get()).docs;
-      this.last = docs.length == this.limit ? docs[this.limit - 1] : null;
-      const orders = docs
-        .map(this.doc2data("order"))
+      last.value = docs.length == limit ? docs[limit - 1] : null;
+      const tmpOrders = docs
+        .map(doc2data("order"))
         .filter((a) => a.status !== order_status.transaction_hide);
 
       const customers = {};
-      if (this.shopInfo.isEC || this.shopInfo.enableDelivery) {
-        const ids = orders.map((order) => order.id);
+      if (props.shopInfo.isEC || props.shopInfo.enableDelivery) {
+        const ids = tmpOrders.map((order) => order.id);
         await Promise.all(
           arrayChunk(ids, 10).map(async (arr) => {
             try {
               const cuss = await db
                 .collectionGroup("customer")
-                .where("restaurantId", "==", this.restaurantId())
+                .where("restaurantId", "==", ctx.root.restaurantId())
                 .where("orderId", "in", arr)
                 .get();
               cuss.docs.map((cus) => {
@@ -240,7 +240,7 @@ export default {
         );
       }
 
-      orders.forEach((order) => {
+      tmpOrders.forEach((order) => {
         order.customerInfo = order.customerInfo || customers[order.id] || {};
         order.timePlaced = order.timePlaced.toDate();
         if (order.timeEstimated) {
@@ -249,20 +249,27 @@ export default {
         if (order.timeConfirmed) {
           order.timeConfirmed = order.timeConfirmed.toDate();
         }
-        this.orders.push(order);
+        orders.value.push(order);
       });
-    },
-    async all() {
-      while (this.last) {
-        await this.next();
+    };
+    const all = async () => {
+      while (last.value) {
+        await next();
       }
-    },
-    orderSelected(order) {
-      this.$router.push({
-        path:
-          "/admin/restaurants/" + this.restaurantId() + "/orders/" + order.id,
-      });
-    },
+    }
+    next();
+
+    return {
+      last,
+      orders,
+      notFound,
+      isOwner,
+      fileName,
+      // methods
+      next,
+      all,
+    };
+
   },
-};
+});
 </script>

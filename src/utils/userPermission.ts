@@ -14,3 +14,7 @@ export const checkAdminPermission = (ctx: any) => {
 export const checkShopAccount = (shopInfo: any, ownerUid: string) => {
   return shopInfo.uid === ownerUid;
 };
+
+export const checkShopOwner = (shopInfo: any, uidAdmin: string) => {
+  return shopInfo.uid === uidAdmin;
+};
