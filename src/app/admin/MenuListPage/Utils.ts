@@ -1,4 +1,10 @@
-import { ref, computed, onUnmounted, Ref, ComputedRef } from "@vue/composition-api";
+import {
+  ref,
+  computed,
+  onUnmounted,
+  Ref,
+  ComputedRef,
+} from "@vue/composition-api";
 import { db } from "@/lib/firebase/firebase9";
 import {
   collection,
@@ -14,11 +20,11 @@ export const useMenuAndTitle = (
   menuRestaurantId: Ref<string>,
   isInMo: boolean,
   category: ComputedRef<string>,
-  subCategory: ComputedRef<string>,
+  subCategory: ComputedRef<string>
 ) => {
   const menus = ref<DocumentData[] | null>(null);
   const menuCache: { [key: string]: any } = ref({});
-  const menuDetacher = ref<Unsubscribe|null>(null);
+  const menuDetacher = ref<Unsubscribe | null>(null);
   const detacheMenu = () => {
     if (menuDetacher.value) {
       menuDetacher.value();
@@ -37,7 +43,7 @@ export const useMenuAndTitle = (
     if (isInMo && !category.value && !subCategory.value) {
       return;
     }
-    
+
     const cacheKey =
       category.value && subCategory.value
         ? [category.value, subCategory.value].join("_")
@@ -56,17 +62,12 @@ export const useMenuAndTitle = (
           )
         : query(
             collection(db, `restaurants/${menuRestaurantId.value}/menus`),
-            where("deletedFlag", "==", false),
+            where("deletedFlag", "==", false)
           );
-    menuDetacher.value = onSnapshot(
-      query(menuQuery),
-      (results) => {
-        menus.value = (results.empty ? [] : results.docs).map(doc2data("menu"));
-      }
-    );
+    menuDetacher.value = onSnapshot(query(menuQuery), (results) => {
+      menus.value = (results.empty ? [] : results.docs).map(doc2data("menu"));
+    });
   };
-
-
 
   const titleDetacher = onSnapshot(
     query(

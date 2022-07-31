@@ -113,11 +113,13 @@
 
             <!-- category for mo -->
             <div v-if="showSubCategory">
-              <SubCategoryList
-                :subCategoryData="subCategoryData"
-                :categoryBathPath="categoryBathPath"
-                :subCategoryId="subCategory"
-              />
+              <div class="mx-6 mt-2 lg:mx-0 inline-flex">
+                <SubCategoryList
+                  :subCategoryData="subCategoryData"
+                  :categoryBathPath="categoryBathPath"
+                  :subCategoryId="subCategory"
+                />
+              </div>
             </div>
 
             <!-- For Responsible -->
