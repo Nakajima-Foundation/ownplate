@@ -155,8 +155,8 @@ import {
   defineComponent,
   ref,
   computed,
-  onUnmounted,
   watch,
+  onUnmounted,
 } from "@vue/composition-api";
 import { db } from "@/lib/firebase/firebase9";
 import {
@@ -169,6 +169,7 @@ import {
   onSnapshot,
   serverTimestamp,
 } from "firebase/firestore";
+import firebase from "firebase/compat/app";
 
 import MenuCard from "@/app/admin/Menus/MenuCard.vue";
 import TitleCard from "@/app/admin/Menus/TitleCard.vue";
@@ -176,21 +177,21 @@ import TitleInput from "@/app/admin/Menus/TitleInput.vue";
 import NotFound from "@/components/NotFound.vue";
 import BackButton from "@/components/BackButton.vue";
 
+import SubCategoryList from "@/app/user/Restaurant/SubCategoryList.vue";
+
 import PreviewLink from "./MenuListPage/PreviewLink.vue";
 import PublicFilterToggle from "./MenuListPage/PublicFilterToggle.vue";
 import AddButton from "./MenuListPage/AddButton.vue";
 import PhotoName from "./MenuListPage/PhotoName.vue";
 import DownloadButton from "./MenuListPage/DownloadButton.vue";
+import NotificationIndex from "./Notifications/Index.vue";
 
-import SubCategoryList from "@/app/user/Restaurant/SubCategoryList.vue";
-
-import firebase from "firebase/compat/app";
+import { useMenuAndTitle } from "./MenuListPage/Utils";
 
 import { ownPlateConfig } from "@/config/project";
 
 import { copyMenuData } from "@/models/menu";
 
-import NotificationIndex from "./Notifications/Index";
 
 import {
   useTitles,
@@ -201,10 +202,8 @@ import {
 } from "../user/Restaurant/Utils";
 
 import {
-  doc2data,
   useAdminUids,
   cleanObject,
-  array2obj,
 } from "@/utils/utils";
 import { checkAdminPermission, checkShopAccount } from "@/utils/userPermission";
 
@@ -258,12 +257,11 @@ export default defineComponent({
   setup(props, ctx) {
     const submitting = ref(false);
     const restaurantInfo = ref({});
-    const menuCollection = ref(null);
-    const titleCollection = ref(null);
+
     const editings = ref({});
     const detachers = ref([]);
     const notFound = ref(null);
-    const menuObj = ref({});
+
     const publicFilter = ref(false);
     if (!checkAdminPermission(ctx)) {
       return;
@@ -338,46 +336,17 @@ export default defineComponent({
         console.log("Error fetch restaurantInfo.");
       }
     });
-
+    onUnmounted(() => {
+      restaurant_detacher();
+    });
+    
     notFound.value = false;
 
-    const menu_detacher = onSnapshot(
-      query(
-        collection(db, `restaurants/${menuRestaurantId.value}/menus`),
-        where("deletedFlag", "==", false)
-      ),
-      (results) => {
-        menuCollection.value = results.empty ? {} : results;
-        // for debug
-        results.docs.forEach((a) => {
-          if (a.data().publicFlag === undefined) {
-            a.ref.update({ publicFlag: true });
-          }
-        });
-      }
-    );
-    const title_detacher = onSnapshot(
-      query(
-        collection(db, `restaurants/${menuRestaurantId.value}/titles`),
-        where("deletedFlag", "==", false)
-      ),
-      (results) => {
-        titleCollection.value = results.empty ? {} : results;
-      }
-    );
-    detachers.value = [restaurant_detacher, menu_detacher, title_detacher];
-
-    const itemsObj = computed(() => {
-      if (menuCollection.value && titleCollection.value) {
-        const menus = (menuCollection.value.docs || []).map(doc2data("menu"));
-        menuObj.value = array2obj(menus);
-        const titles = (titleCollection.value.docs || []).map(
-          doc2data("title")
-        );
-        return array2obj(menus.concat(titles));
-      }
-      return {};
-    });
+    const {
+      menuObj,
+      itemsObj,
+      numberOfMenus,
+    } = useMenuAndTitle(menuRestaurantId)
 
     const menuLists = computed(() => {
       if (props.isInMo) {
@@ -390,15 +359,6 @@ export default defineComponent({
     });
     const existsMenu = computed(() => {
       return menuLength.value > 0;
-    });
-
-    onUnmounted(() => {
-      if (detachers.value) {
-        detachers.value.map((detacher) => {
-          detacher();
-        });
-        detachers.value = [];
-      }
     });
 
     const publicFilterToggle = () => {
@@ -421,11 +381,10 @@ export default defineComponent({
       changeTitleMode(titleId, true);
     };
     // end of edit title
-    const saveMenuList = async (menuLists) => {
-      const numberOfMenus = menuCollection.value.docs.length;
+    const saveMenuList = async (newMenuLists) => {
       await updateDoc(doc(db, `restaurants/${restaurantId.value}`), {
-        menuLists,
-        numberOfMenus,
+        menuLists: newMenuLists,
+        numberOfMenus: numberOfMenus.value,
       });
     };
     const addTitle = async (operation) => {
