@@ -175,7 +175,6 @@ export const useMenu = (
     menuCache.value = cache;
   };
   const loadMenu = () => {
-    // TODO Cache for mo
     detacheMenu();
     if (isInMo.value && !category.value && !subCategory.value) {
       return;

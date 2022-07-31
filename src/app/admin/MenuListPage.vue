@@ -26,7 +26,17 @@
         </div>
       </div>
 
-      <template>
+      <template v-if="showCategory">
+        <!-- Category view -->
+        <div class="mt-6 mx-6 grid grid-col-1 space-y-2">
+          <div class="text-xl font-bold text-black text-opacity-30">
+            {{ $t("shopInfo.productCategory") }}
+          </div>
+          <CategoryList :categoryData="categoryData" />
+        </div>
+
+      </template>
+      <template v-else>
         <!-- Toggle to View All or Public Only -->
         <div class="mt-6 mx-6 lg:text-center">
           <PublicFilterToggle
@@ -190,6 +200,8 @@ import PublicFilterToggle from "./MenuListPage/PublicFilterToggle.vue";
 import AddButton from "./MenuListPage/AddButton.vue";
 import PhotoName from "./MenuListPage/PhotoName.vue";
 import DownloadButton from "./MenuListPage/DownloadButton.vue";
+import CategoryList from "./MenuListPage/CategoryList.vue";
+
 import NotificationIndex from "./Notifications/Index.vue";
 
 import { useMenuAndTitle } from "./MenuListPage/Utils";
@@ -226,6 +238,7 @@ export default defineComponent({
     DownloadButton,
 
     SubCategoryList,
+    CategoryList,
   },
   props: {
     shopInfo: {
