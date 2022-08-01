@@ -325,6 +325,49 @@
               </div>
             </template>
 
+            <!--Act on Specified Commercial Transactions-->
+            <div class="mt-6">
+              <div class="text-xl font-bold text-black text-opacity-30">
+                {{ $t("order.paymentAndCancellation") }}
+              </div>
+              <div class="bg-white rounded-lg shadow p-4 mt-2">
+                <div>
+                  <div class="text-sm font-bold text-black text-opacity-30">
+                    {{ $t("transactionsAct.phone") }}
+                  </div>
+
+                  <div class="text-sm mt-1">
+                    {{ nationalPhoneNumber }}
+                  </div>
+                </div>
+                <div class="mt-4">
+                  <div class="text-sm font-bold text-black text-opacity-30">
+                    {{ $t("transactionsAct.cancellation") }}
+                  </div>
+
+                  <div class="text-sm mt-1">
+                    ・{{ $t("transactionsAct.cancellationDescription") }}<br />
+                    ・{{ $t("transactionsAct.cancellationDescription4") }}<br />
+                    ・{{ $t("transactionsAct.cancellationDescription5") }}
+                    <a
+                      @click="openTransactionsAct()"
+                      class="text-sm font-bold text-op-teal underline"
+                      >{{ $t("transactionsAct.link") }}</a
+                    >
+                    {{ $t("transactionsAct.cancellationDescription6") }}
+                  </div>
+                </div>
+                <div class="mt-4">
+                  <div class="text-sm font-bold text-black text-opacity-30">
+                    {{ $t("transactionsAct.payment") }}
+                  </div>
+                  <div class="text-sm mt-1">
+                    ・{{ $t("transactionsAct.paymentDescriptionCardNote") }}
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <!-- Payment -->
             <div class="mt-6">
               <div class="text-xl font-bold text-black text-opacity-30">
@@ -353,11 +396,18 @@
                       style="min-width: 288px"
                     >
                       <div class="text-xl font-bold text-white">
-                        {{ $t("order.placeOrder") }}
+                        {{ mode === 'mo' ? $t("order.placeOrderMo") : $t("order.placeOrder")}}
                         <!-- {{ $n(orderInfo.total + tip, "currency") }} -->
                       </div>
                     </div>
                   </b-button>
+                </div>
+                <div v-if="mode === 'mo'">
+                  <div
+                    class="mt-2 text-center text-xs text-black text-opacity-50"
+                  >
+                    {{ $t("order.placeOrderMoNote") }}
+                  </div>
                 </div>
               </div>
 
@@ -388,14 +438,17 @@
                       style="min-width: 288px"
                     >
                       <div class="text-xl font-bold text-white">
-                        {{ $t("order.placeOrderNoPayment") }}
+                        {{ mode === 'mo' ? $t("order.placeOrderNoPaymentMo") : $t("order.placeOrderNoPayment") }}
                       </div>
                     </div>
                   </b-button>
                 </div>
-
-                <div class="mt-2 text-sm font-bold text-black text-opacity-60">
-                  {{ $t("order.placeOrderNoPaymentNote") }}
+                <div v-if="mode !== 'mo'">
+                  <div
+                    class="mt-2 text-sm font-bold text-black text-opacity-60"
+                  >
+                    {{ $t("order.placeOrderNoPaymentNote") }}
+                  </div>
                 </div>
               </div>
 
@@ -464,6 +517,9 @@
         </div>
       </div>
     </template>
+    <TransactionsActContents
+      :isDelivery="orderInfo.isDelivery || false"
+      :shopInfo="shopInfo" ref="contents" />
   </div>
 </template>
 
@@ -481,6 +537,7 @@ import RequireLogin from "@/components/RequireLogin.vue";
 import FavoriteButton from "@/app/user/Restaurant/FavoriteButton.vue";
 
 import UserCustomerInfo from "./OrderPage/AfterPaid/UserCustomerInfo.vue";
+import TransactionsActContents from "./TransactionsAct/Contents.vue";
 
 import OrderPageMap from "./OrderPageMap.vue";
 
@@ -559,6 +616,8 @@ export default {
 
     ECCustomer,
     OrderNotice,
+
+    TransactionsActContents,
   },
   props: {
     shopInfo: {
@@ -758,7 +817,9 @@ export default {
       this.$refs.ecCustomerRef.updateHome(pos);
     },
     updateLocation(pos) {
-      this.$refs.orderPageMapRef.updateLocation(pos);
+      if (this.$refs.orderPageMapRef) {
+        this.$refs.orderPageMapRef.updateLocation(pos);
+      }
     },
     sendPurchase() {
       analyticsUtil.sendPurchase(
@@ -991,6 +1052,9 @@ export default {
           }
         },
       });
+    },
+    openTransactionsAct() {
+      this.$refs.contents.openTransactionsAct();
     },
   },
 };

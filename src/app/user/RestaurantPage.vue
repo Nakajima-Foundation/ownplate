@@ -8,7 +8,7 @@
       <!-- category modal -->
       <div
         v-if="isOpenGroupCategory"
-        class="fixed top-0 bg-white w-full h-full"
+        class="fixed z-10 top-0 bg-white w-full h-full"
       >
         <div class="flex justify-between h-12 py-2 pl-6 pr-4">
           <span class="text-xl font-bold text-black text-opacity-30">

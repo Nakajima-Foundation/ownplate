@@ -189,7 +189,9 @@ export default {
       this.$emit("updateHome", { lat, lng });
     },
     setHomeLocation(lat, lng) {
-      this.home = new google.maps.LatLng(lat, lng);
+      if (google) {
+        this.home = new google.maps.LatLng(lat, lng);
+      }
       this.updateMarker();
       this.estimatedDistance = this.haversine_distance(
         lat,

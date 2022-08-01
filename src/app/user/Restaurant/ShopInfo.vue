@@ -131,7 +131,7 @@
 
         <!-- Transactions Act -->
         <div class="mt-2">
-          <transactions-act></transactions-act>
+          <transactions-act :shopInfo="shopInfo" :isDelivery="isDelivery"></transactions-act>
         </div>
 
         <!-- Restaurant Hours -->
