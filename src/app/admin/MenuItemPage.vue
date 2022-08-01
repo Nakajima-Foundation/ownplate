@@ -561,17 +561,18 @@ import {
   onUnmounted,
   reactive,
 } from "@vue/composition-api";
-import Vue from "vue";
 import { db } from "@/plugins/firebase";
 import firebase from "firebase/compat/app";
-import NotFound from "@/components/NotFound";
-import BackButton from "@/components/BackButton";
-import Price from "@/components/Price";
+
+import NotFound from "@/components/NotFound.vue";
+import BackButton from "@/components/BackButton.vue";
+import Price from "@/components/Price.vue";
+import EditCategory from "@/app/admin/Menus/EditCategory.vue";
+import NotificationIndex from "./Notifications/Index.vue";
+
 import { taxRates } from "@/config/constant";
-import NotificationIndex from "./Notifications/Index";
 import { ownPlateConfig } from "@/config/project";
 import { halfCharactors, formatOption, optionPrice } from "@/utils/strings";
-import EditCategory from "@/app/admin/Menus/EditCategory";
 import {
   doc2data,
   useAdminUids,
@@ -613,6 +614,14 @@ export default defineComponent({
   props: {
     shopInfo: {
       type: Object,
+      required: true,
+    },
+    groupMasterRestaurant: {
+      type: Object,
+      required: false,
+    },
+    isInMo: {
+      type: Boolean,
       required: true,
     },
   },
@@ -664,6 +673,11 @@ export default defineComponent({
         notFound: true,
       };
     }
+    const menuRestaurantId = computed(() => {
+      return props.isInMo
+        ? props.groupMasterRestaurant.restaurantId
+        : ctx.root.$route.params.restaurantId;
+    });
 
     const taxRateKeys = regionalSetting["taxRateKeys"];
     const requireTaxPriceDisplay = regionalSetting.requireTaxPriceDisplay;
@@ -676,7 +690,7 @@ export default defineComponent({
       props.shopInfo.category2 = [];
     }
     const { restaurantId } = props.shopInfo;
-    const menuRes = db.doc(`restaurants/${restaurantId}/menus/${menuId}`);
+    const menuRes = db.doc(`restaurants/${menuRestaurantId.value}/menus/${menuId}`);
     menuRes.get().then((resMenuInfo) => {
       if (resMenuInfo.exists) {
         Object.assign(menuInfo, resMenuInfo.data());
@@ -749,7 +763,7 @@ export default defineComponent({
       return ctx.root.$n(price, "currency");
     };
     const handleCategoryUpdated = async (categories) => {
-      await db.doc(`restaurants/${restaurantId}`).update({
+      await db.doc(`restaurants/${menuRestaurantId.value}`).update({
         [categoryKey.value]: categories,
       });
       props.shopInfo[categoryKey.value] = categories;
@@ -822,7 +836,7 @@ export default defineComponent({
       //upload image
       try {
         if (files["menu"]) {
-          const path = `/images/restaurants/${restaurantId}/menus/${menuId}/${uid.value}/item.jpg`;
+          const path = `/images/restaurants/${menuRestaurantId.value}/menus/${menuId}/${uid.value}/item.jpg`;
           menuInfo.itemPhoto = await uploadFile(files["menu"], path);
           menuInfo.images.item = {
             original: menuInfo.itemPhoto,
@@ -840,7 +854,7 @@ export default defineComponent({
         );
 
         const newData = await db
-          .doc(`restaurants/${restaurantId}/menus/${menuId}`)
+          .doc(`restaurants/${menuRestaurantId.value}/menus/${menuId}`)
           .update(itemData);
 
         ctx.root.$router.push({
