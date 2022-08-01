@@ -528,6 +528,7 @@
         </div>
       </div>
     </template>
+    <TransactionsActContents :shopInfo="shopInfo" ref="contents" />
   </div>
 </template>
 
@@ -545,6 +546,7 @@ import RequireLogin from "@/components/RequireLogin.vue";
 import FavoriteButton from "@/app/user/Restaurant/FavoriteButton.vue";
 
 import UserCustomerInfo from "./OrderPage/AfterPaid/UserCustomerInfo.vue";
+import TransactionsActContents from "./TransactionsAct/Contents.vue";
 
 import OrderPageMap from "./OrderPageMap.vue";
 
@@ -623,6 +625,8 @@ export default {
 
     ECCustomer,
     OrderNotice,
+
+    TransactionsActContents,
   },
   props: {
     shopInfo: {
@@ -1055,6 +1059,9 @@ export default {
           }
         },
       });
+    },
+    openTransactionsAct() {
+      this.$refs.contents.openTransactionsAct();
     },
   },
 };
