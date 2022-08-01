@@ -122,7 +122,7 @@
                   @positionDown="positionDown($event)"
                   @deleteFromRestaurantLists="deleteFromRestaurantLists($event)"
                   :isOwner="isOwner"
-                 />
+                />
               </div>
             </div>
 

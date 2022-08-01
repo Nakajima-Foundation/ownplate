@@ -100,15 +100,12 @@
       <div
         class="mx-6 mt-6 grid grid-cols-1 gap-2 lg:grid-cols-3 xl:grid-cols-4"
       >
-        <template
-          v-for="order in orders"
+        <template v-for="order in orders">
+          <router-link
+            :to="'/admin/restaurants/' + restaurantId() + '/orders/' + order.id"
+            :key="order.id"
           >
-          <router-link :to="'/admin/restaurants/' + restaurantId() + '/orders/' + order.id"
-                       :key="order.id">
-            <ordered-info
-              :key="order.id"
-              :order="order"
-              />
+            <ordered-info :key="order.id" :order="order" />
           </router-link>
         </template>
       </div>

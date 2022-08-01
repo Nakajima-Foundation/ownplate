@@ -82,16 +82,13 @@
       <!-- Orders -->
       <div
         class="mx-6 mt-6 grid grid-cols-1 gap-2 lg:grid-cols-3 xl:grid-cols-4"
-        >
-        <template
-          v-for="order in orders"
+      >
+        <template v-for="order in orders">
+          <router-link
+            :to="'/admin/restaurants/' + restaurantId() + '/orders/' + order.id"
+            :key="order.id"
           >
-          <router-link :to="'/admin/restaurants/' + restaurantId() + '/orders/' + order.id"
-                       :key="order.id">
-            <ordered-info
-              :order="order"
-              :isSuperView="true"
-              />
+            <ordered-info :order="order" :isSuperView="true" />
           </router-link>
         </template>
       </div>
@@ -127,7 +124,7 @@
         <div class="mx-6 mt-6 text-center">
           <download-orders :orders="orders" />
         </div>
-        
+
         <!-- Download Report -->
         <div class="mx-6 mt-6 text-center">
           <report-details
@@ -136,7 +133,7 @@
             :hideTable="true"
             :withStatus="true"
             :shopInfo="shopInfo"
-            />
+          />
         </div>
       </div>
     </div>
@@ -144,10 +141,7 @@
 </template>
 
 <script>
-import {
-  defineComponent,
-  ref,
-} from "@vue/composition-api";
+import { defineComponent, ref } from "@vue/composition-api";
 
 import { db } from "@/plugins/firebase";
 import { order_status } from "@/config/constant";
@@ -195,10 +189,13 @@ export default defineComponent({
     const notFound = ref(null);
 
     const { isOwner, uid, ownerUid } = useAdminUids(ctx);
-    
-    if (!checkAdminPermission(ctx) || !checkShopAccount(props.shopInfo, ownerUid.value)) {
+
+    if (
+      !checkAdminPermission(ctx) ||
+      !checkShopAccount(props.shopInfo, ownerUid.value)
+    ) {
       return {
-        notFound: true
+        notFound: true,
       };
     }
 
@@ -256,7 +253,7 @@ export default defineComponent({
       while (last.value) {
         await next();
       }
-    }
+    };
     next();
 
     return {
@@ -269,7 +266,6 @@ export default defineComponent({
       next,
       all,
     };
-
   },
 });
 </script>
