@@ -690,15 +690,15 @@ export default defineComponent({
       props.shopInfo.category2 = [];
     }
     const { restaurantId } = props.shopInfo;
-    const menuRes = db.doc(`restaurants/${menuRestaurantId.value}/menus/${menuId}`);
-    menuRes.get().then((resMenuInfo) => {
-      if (resMenuInfo.exists) {
-        Object.assign(menuInfo, resMenuInfo.data());
-        notFound.value = false;
-      } else {
-        notFound.value = true;
-      }
-    });
+    db.doc(`restaurants/${menuRestaurantId.value}/menus/${menuId}`).get()
+      .then((menuInfoDoc) => {
+        if (menuInfoDoc.exists) {
+          Object.assign(menuInfo, menuInfoDoc.data());
+          notFound.value = false;
+        } else {
+          notFound.value = true;
+        }
+      });
 
     db.collection("restaurants")
       .where("uid", "==", uid.value)
@@ -747,8 +747,7 @@ export default defineComponent({
       return err;
     });
     const hasError = computed(() => {
-      const num = countObj(errors.value);
-      return num > 0;
+      return countObj(errors.value) > 0;
     });
 
     const displayOptionPrice = (str) => {
