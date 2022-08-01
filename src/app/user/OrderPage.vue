@@ -325,7 +325,6 @@
               </div>
             </template>
 
-            <!--ToDo $t(transactionsAct.link)を押すと特商法のポップアップがオープン-->
             <!--Act on Specified Commercial Transactions-->
             <div class="mt-6">
               <div class="text-xl font-bold text-black text-opacity-30">
@@ -397,13 +396,8 @@
                       style="min-width: 288px"
                     >
                       <div class="text-xl font-bold text-white">
-                        <div v-if="mode === 'mo'">
-                          {{ $t("order.placeOrderMo") }}
-                        </div>
-                        <div v-else>
-                          {{ $t("order.placeOrder") }}
-                          <!-- {{ $n(orderInfo.total + tip, "currency") }} -->
-                        </div>
+                        {{ mode === 'mo' ? $t("order.placeOrderMo") : $t("order.placeOrder")}}
+                        <!-- {{ $n(orderInfo.total + tip, "currency") }} -->
                       </div>
                     </div>
                   </b-button>
@@ -444,12 +438,7 @@
                       style="min-width: 288px"
                     >
                       <div class="text-xl font-bold text-white">
-                        <div v-if="mode === 'mo'">
-                          {{ $t("order.placeOrderNoPaymentMo") }}
-                        </div>
-                        <div v-else>
-                          {{ $t("order.placeOrderNoPayment") }}
-                        </div>
+                        {{ mode === 'mo' ? $t("order.placeOrderNoPaymentMo") : $t("order.placeOrderNoPayment") }}
                       </div>
                     </div>
                   </b-button>
