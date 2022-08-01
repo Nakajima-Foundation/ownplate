@@ -76,7 +76,7 @@
       >
         <!-- Share Button -->
         <div class="text-center mt-2">
-          <share-popup :shopInfo="shopInfo" :suffix="urlSuffix"></share-popup>
+          <share-popup :shopInfo="shopInfo" :mode="mode" :suffix="urlSuffix"></share-popup>
         </div>
 
         <!-- Item Options -->
@@ -278,6 +278,10 @@ export default defineComponent({
     },
     prices: {
       type: Array,
+      required: true,
+    },
+    mode: {
+      type: String,
       required: true,
     },
   },

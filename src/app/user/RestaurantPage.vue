@@ -167,6 +167,7 @@
                         :shopInfo="shopInfo"
                         :isOpen="menuId === item.id"
                         :prices="prices[item.id] || []"
+                        :mode="mode"
                         @didOrderdChange="didOrderdChange($event)"
                       ></item-card>
                     </div>
