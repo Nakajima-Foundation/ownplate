@@ -12,7 +12,10 @@
         </div>
       </a>
     </div>
-    <TransactionsActContents :shopInfo="shopInfo" ref="contents" />
+    <TransactionsActContents
+      :shopInfo="shopInfo"
+      :isDelivery="isDelivery"
+      ref="contents" />
   </div>
 </template>
 
@@ -23,6 +26,10 @@ export default {
   props: {
     shopInfo: {
       type: Object,
+      required: true,
+    },
+    isDelivery: {
+      type: Boolean,
       required: true,
     },
   },

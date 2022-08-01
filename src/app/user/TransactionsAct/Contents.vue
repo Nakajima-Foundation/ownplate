@@ -182,6 +182,10 @@ export default {
       type: Object,
       required: true,
     },
+    isDelivery: {
+      type: Boolean,
+      required: true,
+    },
   },
   created() {
     const uid = this.shopInfo.uid;

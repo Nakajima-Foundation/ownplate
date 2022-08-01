@@ -517,7 +517,9 @@
         </div>
       </div>
     </template>
-    <TransactionsActContents :shopInfo="shopInfo" ref="contents" />
+    <TransactionsActContents
+      :isDelivery="isDelivery"
+      :shopInfo="shopInfo" ref="contents" />
   </div>
 </template>
 
