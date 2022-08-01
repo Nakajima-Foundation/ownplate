@@ -87,7 +87,6 @@ const mixin = {
       // TODO: check no-nuxt branch
       try {
         await this.$copyText(text);
-        console.log(this.$i18n);
         this.$buefy.toast.open(this.$i18n.tc("shopInfo.UrlCopied"));
       } catch (e) {
         this.$buefy.toast.open(this.$i18n.tc("shopInfo.UrlCopyFailed"));
