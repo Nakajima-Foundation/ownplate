@@ -817,7 +817,9 @@ export default {
       this.$refs.ecCustomerRef.updateHome(pos);
     },
     updateLocation(pos) {
-      this.$refs.orderPageMapRef.updateLocation(pos);
+      if (this.$refs.orderPageMapRef) {
+        this.$refs.orderPageMapRef.updateLocation(pos);
+      }
     },
     sendPurchase() {
       analyticsUtil.sendPurchase(
