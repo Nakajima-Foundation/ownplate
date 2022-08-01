@@ -63,7 +63,7 @@
           </template>
           <template v-else>
             {{ $t("shopInfo." + (isDelivery ? "delivery" : "takeout")) }}:{{
-            $t("shopInfo.minimumAvailableTime")
+              $t("shopInfo.minimumAvailableTime")
             }}
           </template>
         </div>
@@ -131,7 +131,7 @@
 
         <!-- Transactions Act -->
         <div class="mt-2">
-          <transactions-act></transactions-act>
+          <transactions-act :shopInfo="shopInfo"></transactions-act>
         </div>
 
         <!-- Restaurant Hours -->
