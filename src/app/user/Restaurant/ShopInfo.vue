@@ -367,8 +367,9 @@ export default defineComponent({
 
     const minimumAvailableTime = computed(() => {
       const days = props.isDelivery
-        ? deliveryAvailableDays
-        : availableDays;
+        ? deliveryAvailableDays.value
+        : availableDays.value;
+      console.log(availableDays);
       const time = days[0]?.times[0]?.display;
       const date = days[0]?.date;
       moment.locale(ctx.root.$i18n.locale);
