@@ -120,12 +120,14 @@
             </div>
 
             <div class="text-base mt-1">
-              <template v-if="showPayment">{{
-                $t("transactionsAct.paymentDescriptionCard")
-              }}</template>
+              <template v-if="showPayment"
+                >・{{ $t("transactionsAct.paymentDescriptionCard") }}</template
+              >
               <template v-if="inStorePayment">{{
                 $t("transactionsAct.paymentDescriptionStore")
               }}</template>
+              <br />
+              ・{{ $t("transactionsAct.paymentDescriptionCardNote") }}
             </div>
           </div>
 
@@ -140,6 +142,7 @@
             </div>
           </div>
 
+          <!--デリバリー対応店舗のみに表示させる内容の反映がまだ未対応-->
           <!-- Cancellation -->
           <div class="mt-4">
             <div class="text-sm font-bold text-black text-opacity-30">
@@ -147,7 +150,9 @@
             </div>
 
             <div class="text-base mt-1">
-              {{ $t("transactionsAct.cancellationDescription") }}
+              ・{{ $t("transactionsAct.cancellationDescription") }}<br />
+              ・{{ $t("transactionsAct.cancellationDescription2") }}<br />
+              ・{{ $t("transactionsAct.cancellationDescription3") }}
             </div>
           </div>
         </div>

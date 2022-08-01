@@ -40,7 +40,7 @@
       <!-- After Paid -->
       <div v-if="paid">
         <!-- Thank you Message -->
-        <ThankYou v-if="mode !== 'mo'"/>
+        <ThankYou v-if="mode !== 'mo'" />
 
         <!-- Line Button -->
         <LineButton :groupData="groupData" />
@@ -58,8 +58,8 @@
             :timeRequested="timeRequested"
             :paid="paid"
             :mode="mode"
-            />
-          
+          />
+
           <!-- Stripe status -->
           <StripeStatus v-if="hasStripe" :orderInfo="orderInfo" :mode="mode" />
 
@@ -92,7 +92,10 @@
           }}</span>
         </div>
         <!-- Special Thank you Message from the Restaurant -->
-        <ThankYouFromRestaurant v-if="!canceled && mode !== 'mo'" :shopInfo="shopInfo" />
+        <ThankYouFromRestaurant
+          v-if="!canceled && mode !== 'mo'"
+          :shopInfo="shopInfo"
+        />
 
         <!-- Favorite Button -->
         <div class="mt-6 text-center">
@@ -322,6 +325,50 @@
               </div>
             </template>
 
+            <!--ToDo $t(transactionsAct.link)を押すと特商法のポップアップがオープン-->
+            <!--Act on Specified Commercial Transactions-->
+            <div class="mt-6">
+              <div class="text-xl font-bold text-black text-opacity-30">
+                {{ $t("order.paymentAndCancellation") }}
+              </div>
+              <div class="bg-white rounded-lg shadow p-4 mt-2">
+                <div>
+                  <div class="text-sm font-bold text-black text-opacity-30">
+                    {{ $t("transactionsAct.phone") }}
+                  </div>
+
+                  <div class="text-sm mt-1">
+                    {{ nationalPhoneNumber }}
+                  </div>
+                </div>
+                <div class="mt-4">
+                  <div class="text-sm font-bold text-black text-opacity-30">
+                    {{ $t("transactionsAct.cancellation") }}
+                  </div>
+
+                  <div class="text-sm mt-1">
+                    ・{{ $t("transactionsAct.cancellationDescription") }}<br />
+                    ・{{ $t("transactionsAct.cancellationDescription4") }}<br />
+                    ・{{ $t("transactionsAct.cancellationDescription5") }}
+                    <a
+                      @click="openTransactionsAct()"
+                      class="text-sm font-bold text-op-teal underline"
+                      >{{ $t("transactionsAct.link") }}</a
+                    >
+                    {{ $t("transactionsAct.cancellationDescription6") }}
+                  </div>
+                </div>
+                <div class="mt-4">
+                  <div class="text-sm font-bold text-black text-opacity-30">
+                    {{ $t("transactionsAct.payment") }}
+                  </div>
+                  <div class="text-sm mt-1">
+                    ・{{ $t("transactionsAct.paymentDescriptionCardNote") }}
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <!-- Payment -->
             <div class="mt-6">
               <div class="text-xl font-bold text-black text-opacity-30">
@@ -350,11 +397,23 @@
                       style="min-width: 288px"
                     >
                       <div class="text-xl font-bold text-white">
-                        {{ $t("order.placeOrder") }}
-                        <!-- {{ $n(orderInfo.total + tip, "currency") }} -->
+                        <div v-if="mode === 'mo'">
+                          {{ $t("order.placeOrderMo") }}
+                        </div>
+                        <div v-else>
+                          {{ $t("order.placeOrder") }}
+                          <!-- {{ $n(orderInfo.total + tip, "currency") }} -->
+                        </div>
                       </div>
                     </div>
                   </b-button>
+                </div>
+                <div v-if="mode === 'mo'">
+                  <div
+                    class="mt-2 text-center text-xs text-black text-opacity-50"
+                  >
+                    {{ $t("order.placeOrderMoNote") }}
+                  </div>
                 </div>
               </div>
 
@@ -385,14 +444,22 @@
                       style="min-width: 288px"
                     >
                       <div class="text-xl font-bold text-white">
-                        {{ $t("order.placeOrderNoPayment") }}
+                        <div v-if="mode === 'mo'">
+                          {{ $t("order.placeOrderNoPaymentMo") }}
+                        </div>
+                        <div v-else>
+                          {{ $t("order.placeOrderNoPayment") }}
+                        </div>
                       </div>
                     </div>
                   </b-button>
                 </div>
-
-                <div class="mt-2 text-sm font-bold text-black text-opacity-60">
-                  {{ $t("order.placeOrderNoPaymentNote") }}
+                <div v-if="mode !== 'mo'">
+                  <div
+                    class="mt-2 text-sm font-bold text-black text-opacity-60"
+                  >
+                    {{ $t("order.placeOrderNoPaymentNote") }}
+                  </div>
                 </div>
               </div>
 
@@ -551,7 +618,7 @@ export default {
     Receipt,
 
     Pickup,
-    
+
     BeforePaidAlert,
 
     ECCustomer,
@@ -870,7 +937,7 @@ export default {
           return;
         }
         if (this.$refs.ecCustomerRef.isSaveAddress) {
-          await  this.$refs.ecCustomerRef.saveAddress();
+          await this.$refs.ecCustomerRef.saveAddress();
         }
       }
 
@@ -927,7 +994,7 @@ export default {
           return;
         }
         if (this.$refs.ecCustomerRef.isSaveAddress) {
-          await  this.$refs.ecCustomerRef.saveAddress();
+          await this.$refs.ecCustomerRef.saveAddress();
         }
       }
       const timeToPickup = this.shopInfo.isEC
