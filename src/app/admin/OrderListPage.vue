@@ -137,6 +137,8 @@ import BackButton from "@/components/BackButton.vue";
 import NotificationIndex from "./Notifications/Index.vue";
 import NotFound from "@/components/NotFound.vue";
 
+import { doc2data, isNull } from "@/utils/utils";
+
 export default {
   components: {
     OrderedInfo,
@@ -253,29 +255,27 @@ export default {
         );
       }
       this.order_detacher = query.onSnapshot((result) => {
-        let orders = result.docs.map(this.doc2data("order"));
-        orders = orders
-          .filter((a) => a.status !== order_status.transaction_hide)
-          .sort((order0, order1) => {
-            if (order0.status === order1.status) {
-              return (order0.timeEstimated || order0.timePlaced) >
-                (order1.timeEstimated || order1.timePlaced)
-                ? -1
-                : 1;
-            }
-            return order0.status < order1.status ? -1 : 1;
-          });
-        this.orders = orders.map((order) => {
-          order.timePlaced = order.timePlaced.toDate();
-          if (order.timeEstimated) {
-            order.timeEstimated = order.timeEstimated.toDate();
-          }
-          return order;
-        });
+        this.orders = result.docs.map(doc2data("order"))
+            .filter((a) => a.status !== order_status.transaction_hide)
+            .sort((order0, order1) => {
+              if (order0.status === order1.status) {
+                return (order0.timeEstimated || order0.timePlaced) >
+                  (order1.timeEstimated || order1.timePlaced)
+                  ? -1
+                  : 1;
+              }
+              return order0.status < order1.status ? -1 : 1;
+            }).map((order) => {
+              order.timePlaced = order.timePlaced.toDate();
+              if (order.timeEstimated) {
+                order.timeEstimated = order.timeEstimated.toDate();
+              }
+              return order;
+            });
       });
     },
     getPickUpDaysInAdvance() {
-      return this.isNull(this.shopInfo.pickUpDaysInAdvance)
+      return isNull(this.shopInfo.pickUpDaysInAdvance)
         ? 3
         : this.shopInfo.pickUpDaysInAdvance;
     },
