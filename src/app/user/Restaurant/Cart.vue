@@ -6,7 +6,7 @@
         {{ shopInfo.restaurantName }}
       </div>
       <div class="grid justify-items-auto grid-cols-1 lg:grid-cols-2">
-        <div v-for="(counters, itemId) in orders" :key="itemId">
+        <template v-for="(counters, itemId) in orders">
           <div v-for="(counter, key) in counters" :key="`${itemId}-${key}`">
             <CartItem
               :item="menuObj[itemId]"
@@ -19,7 +19,7 @@
             />
             <hr />
           </div>
-        </div>
+        </template>
       </div>
       <div class="w-full h-32 bottom-0 bg-white fixed z-20"></div>
     </div>
