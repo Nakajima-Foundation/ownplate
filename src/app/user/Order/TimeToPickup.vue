@@ -35,17 +35,20 @@
 </template>
 
 <script>
-import firebase from "firebase/compat/app";
-import PickupMixin from "@/mixins/pickupMixin";
+import {
+  defineComponent,
+  computed,
+  ref,
+  onMounted,
+  watch,
+} from "@vue/composition-api";
 
-export default {
-  mixins: [PickupMixin],
-  data() {
-    return {
-      dayIndex: 0,
-      time: 0,
-    };
-  },
+import firebase from "firebase/compat/app";
+// import PickupMixin from "@/mixins/pickupMixin";
+import { usePickupTime } from "@/utils/pickup";
+
+export default defineComponent({
+  // mixins: [PickupMixin],
   props: {
     shopInfo: {
       type: Object,
@@ -56,39 +59,56 @@ export default {
       required: false,
     },
   },
-  computed: {
-    days() {
-      return this.isDelivery ? this.deliveryAvailableDays : this.availableDays;
-    },
-  },
-  mounted() {
-    if (this.days.length > 0) {
-      this.time = this.days[0].times[0].time;
-    } else {
-      this.$emit("notAvailable", true);
-    }
-  },
-  watch: {
-    days() {
-      if (!(this.days[this.dayIndex]?.times||[]).some((t) => { return this.time == t.time})) {
-        this.time = this.days[this.dayIndex].times[0].time;
+  emits: ["notAvailable"],
+  setup(props, ctx) {
+    const dayIndex = ref(0);
+    const time = ref(0);
+
+    const { deliveryAvailableDays, availableDays } = usePickupTime(props.shopInfo, ctx);
+
+    const days = computed(() => {
+      return props.isDelivery
+        ? deliveryAvailableDays.value
+        : availableDays.value;
+    });
+
+    onMounted(() => {
+      if (days.value.length > 0) {
+        time.value = days.value[0].times[0].time;
+      } else {
+        ctx.emit("notAvailable", true);
       }
-    },
-    dayIndex(newValue) {
-      this.time = this.days[newValue].times[0].time;
-    },
-    time() {
+    });
+
+    watch(days, () => {
+      if (!(days.value[dayIndex.value]?.times||[]).some((t) => { return time.value == t.time})) {
+        time.value = days.value[dayIndex.value].times[0].time;
+      }
+    });
+    watch(dayIndex, (newValue) => {
+      time.value = days.value[newValue].times[0].time;
+    })
+    watch(time, () => {
       console.log("time changed");
-    },
-  },
-  methods: {
-    timeToPickup() {
-      const date = this.days[this.dayIndex].date;
-      date.setHours(this.time / 60);
-      date.setMinutes(this.time % 60);
+    });
+
+    // TODO: change emit
+    const timeToPickup = () => {
+      const date = days.value[dayIndex.value].date;
+      date.setHours(time.value / 60);
+      date.setMinutes(time.value % 60);
       const ts = firebase.firestore.Timestamp.fromDate(date);
       return new firebase.firestore.Timestamp(ts.seconds, ts.nanoseconds);
-    },
+    };
+    return {
+      // called by parent
+      timeToPickup,
+
+      availableDays: days,
+
+      dayIndex,
+      time,
+    };
   },
-};
+});
 </script>

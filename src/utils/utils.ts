@@ -78,7 +78,6 @@ export const array2obj = <T>(array: T[]) => {
 };
 
 export const num2time = (num: number, root: any) => {
-  console.log(root);
   if (num === 0 || num === 60 * 24) {
     return root.$t("shopInfo.midnight");
   }
