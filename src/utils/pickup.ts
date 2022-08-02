@@ -50,7 +50,7 @@ export const usePickupTime = (shopInfo: RestaurantInfoData, ctx: any) => {
     if (!shopInfo.businessDay) {
       return []; // it means shopInfo is empty (not yet loaded)
     }
-    
+
     const now = ctx.root.$store.state.date;
     console.log(ctx.root.$store.state.date); // never delete this line;
     const today = now.getDay();
@@ -75,11 +75,11 @@ export const usePickupTime = (shopInfo: RestaurantInfoData, ctx: any) => {
         let times = openSlots.value[(today + offset) % 7];
         const delta = suspendUntil.getTime() - date.getTime();
         if (delta > 0) {
-          times = times.filter((time: {time: number}) => {
+          times = times.filter((time: { time: number }) => {
             return time.time >= Math.round(delta / 60000);
           });
         }
-        
+
         return { offset, date, times };
       })
       .filter((day) => {

@@ -272,7 +272,7 @@ export default {
         return false;
       }
       if (this.groupData) {
-        return this.groupData.enableTip
+        return this.groupData.enableTip;
       }
       return true;
       // return !this.shopInfo.isEC;

@@ -5,12 +5,11 @@
     </div>
 
     <div class="mx-6 mt-6 lg:max-w-2xl lg:mx-auto">
-      
       <!-- Title -->
       <div class="text-xl font-bold text-black text-opacity-30">
         {{ $t("profile.address") }}
       </div>
-      
+
       <!-- Card -->
       <div class="bg-white rounded-lg shadow mt-2 p-6">
         <div class="text-sm font-bold">
@@ -29,7 +28,7 @@
         </div>
         <div class="text-sm font-bold">
           {{ $t("order.ec.name") }}
-      </div>
+        </div>
         <div class="mt-1 mb-2">
           {{ customerInfo.name || "----" }}
         </div>
@@ -38,7 +37,7 @@
             <div
               class="inline-flex justify-center items-center h-16 px-6 rounded-full bg-op-teal shadow"
               style="min-width: 288px"
-              >
+            >
               <div class="text-xl font-bold text-white">
                 {{ $t("profile.resetAddress") }}
               </div>
@@ -53,7 +52,7 @@
         </div>
       </div>
     </div>
-</div>
+  </div>
 </template>
 
 <script>
@@ -69,25 +68,27 @@ export default defineComponent({
   },
   setup(_, ctx) {
     const basePath = useBasePath(ctx.root);
-    const customerInfo = ref({})
+    const customerInfo = ref({});
 
     const docPath = computed(() => {
       if (ctx.root.isUser) {
         return `/users/${ctx.root.user.uid}/address/data`;
       }
       return null;
-    })
+    });
 
     if (!ctx.root.isUser) {
       ctx.root.$router.push(basePath.value + "/u/profile");
     }
 
     if (docPath.value) {
-      db.doc(docPath.value).get().then(doc=> {
-        customerInfo.value = doc.data();
-      });
+      db.doc(docPath.value)
+        .get()
+        .then((doc) => {
+          customerInfo.value = doc.data();
+        });
     }
-    const resetAddress = async () =>  {
+    const resetAddress = async () => {
       await db.doc(docPath.value).set({});
       customerInfo.value = {};
     };
@@ -95,7 +96,7 @@ export default defineComponent({
     return {
       customerInfo,
       resetAddress,
-      basePath
+      basePath,
     };
   },
 });

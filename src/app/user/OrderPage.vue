@@ -330,7 +330,7 @@
               <SpecifiedCommercialTransactions
                 :shopInfo="shopInfo"
                 @openTransactionsAct="openTransactionsAct()"
-                />
+              />
             </div>
 
             <!-- Payment -->
@@ -361,7 +361,11 @@
                       style="min-width: 288px"
                     >
                       <div class="text-xl font-bold text-white">
-                        {{ mode === 'mo' ? $t("order.placeOrderMo") : $t("order.placeOrder")}}
+                        {{
+                          mode === "mo"
+                            ? $t("order.placeOrderMo")
+                            : $t("order.placeOrder")
+                        }}
                         <!-- {{ $n(orderInfo.total + tip, "currency") }} -->
                       </div>
                     </div>
@@ -403,7 +407,11 @@
                       style="min-width: 288px"
                     >
                       <div class="text-xl font-bold text-white">
-                        {{ mode === 'mo' ? $t("order.placeOrderNoPaymentMo") : $t("order.placeOrderNoPayment") }}
+                        {{
+                          mode === "mo"
+                            ? $t("order.placeOrderNoPaymentMo")
+                            : $t("order.placeOrderNoPayment")
+                        }}
                       </div>
                     </div>
                   </b-button>
@@ -484,7 +492,9 @@
     </template>
     <TransactionsActContents
       :isDelivery="orderInfo.isDelivery || false"
-      :shopInfo="shopInfo" ref="contents" />
+      :shopInfo="shopInfo"
+      ref="contents"
+    />
   </div>
 </template>
 

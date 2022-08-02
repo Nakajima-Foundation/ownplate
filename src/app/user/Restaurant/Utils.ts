@@ -66,7 +66,7 @@ export const useCategory = (moPrefix: string) => {
     categoryDetacher.value = onSnapshot(
       query(
         collection(db, `groups/${moPrefix}/category`),
-        where("publicFlag", "==", true),
+        where("publicFlag", "==", true)
       ),
       (category) => {
         if (category.empty) {
@@ -124,12 +124,12 @@ export const useSubcategory = (moPrefix: string, category: Ref<string>) => {
           db,
           `groups/${moPrefix}/category/${category.value}/subCategory`
         ),
-        where("publicFlag", "==", true),
+        where("publicFlag", "==", true)
       ),
       (category) => {
         if (category.empty) {
           console.log("empty");
-          return ;
+          return;
         }
         subCategoryData.value = category.docs.map(doc2data("subCategory"));
       },

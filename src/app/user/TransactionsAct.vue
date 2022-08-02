@@ -15,7 +15,8 @@
     <TransactionsActContents
       :shopInfo="shopInfo"
       :isDelivery="isDelivery"
-      ref="contents" />
+      ref="contents"
+    />
   </div>
 </template>
 

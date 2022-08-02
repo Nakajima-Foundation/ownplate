@@ -91,41 +91,46 @@ export default defineComponent({
     const noRestaurant = ref<boolean | null>(null);
     const shopInfo = ref(defaultShopInfo);
     const groupData = ref<null | DocumentData>(null);
-    
+
     // never use onSnapshot here.
     const defaultTax = regionalSetting.defaultTax || {};
 
     const restaurantRef = doc(db, `restaurants/${restaurantId.value}`);
     const restaurant_detacher = ref();
-    restaurant_detacher.value = onSnapshot(restaurantRef, async (restaurant) => {
-      if (!restaurant.exists()) {
-        noRestaurant.value = true;
-        return;
-      }
-      const restaurant_data = restaurant.data();
-      if (restaurant_data.groupId) {
-        const groupDoc = await getDoc(doc(db, (`groups/${restaurant_data.groupId}`)))
-        if (groupDoc.exists()) {
-          groupData.value = groupDoc.data();
+    restaurant_detacher.value = onSnapshot(
+      restaurantRef,
+      async (restaurant) => {
+        if (!restaurant.exists()) {
+          noRestaurant.value = true;
+          return;
         }
-      }
-      
-      const loadShopInfo = Object.assign(
-        {},
-        defaultShopInfo,
-        restaurant_data,
-        defaultTax
-      );
-      if (loadShopInfo.temporaryClosure) {
-        loadShopInfo.temporaryClosure = loadShopInfo.temporaryClosure.map(
-          (day: any) => {
-            return day.toDate();
+        const restaurant_data = restaurant.data();
+        if (restaurant_data.groupId) {
+          const groupDoc = await getDoc(
+            doc(db, `groups/${restaurant_data.groupId}`)
+          );
+          if (groupDoc.exists()) {
+            groupData.value = groupDoc.data();
           }
+        }
+
+        const loadShopInfo = Object.assign(
+          {},
+          defaultShopInfo,
+          restaurant_data,
+          defaultTax
         );
+        if (loadShopInfo.temporaryClosure) {
+          loadShopInfo.temporaryClosure = loadShopInfo.temporaryClosure.map(
+            (day: any) => {
+              return day.toDate();
+            }
+          );
+        }
+        shopInfo.value = loadShopInfo;
+        noRestaurant.value = false;
       }
-      shopInfo.value = loadShopInfo;
-      noRestaurant.value = false;
-    });
+    );
 
     const notification_detacher = ref();
     notification_detacher.value = onSnapshot(

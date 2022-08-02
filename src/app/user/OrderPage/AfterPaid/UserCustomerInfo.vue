@@ -3,7 +3,7 @@
     :shopInfo="shopInfo"
     :customer="customer"
     :phoneNumber="phoneNumber"
-    />
+  />
 </template>
 
 <script>
@@ -26,10 +26,9 @@ export default defineComponent({
       type: String,
       required: false,
     },
-    
   },
   components: {
-    CustomerInfo
+    CustomerInfo,
   },
   setup(props, ctx) {
     const customer = ref({});

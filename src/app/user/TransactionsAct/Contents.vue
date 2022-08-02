@@ -141,9 +141,7 @@
             <div class="text-base mt-1">
               ・{{ $t("transactionsAct.cancellationDescription") }}
             </div>
-            <div>
-              ・{{ $t("transactionsAct.cancellationDescription2") }}
-            </div>
+            <div>・{{ $t("transactionsAct.cancellationDescription2") }}</div>
             <div v-if="!isDelivery">
               ・{{ $t("transactionsAct.cancellationDescription3") }}
             </div>
