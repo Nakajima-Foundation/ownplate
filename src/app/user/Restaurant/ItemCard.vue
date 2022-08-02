@@ -425,7 +425,7 @@ export default defineComponent({
     };
     const pushItem = () => {
       const newSelectedOptions = [...props.selectedOptions];
-      newSelectedOptions.push(defaultOpions.value);
+      newSelectedOptions.push([...defaultOpions.value]);
 
       const newQuantities = [...props.quantities];
       newQuantities.push(1);
