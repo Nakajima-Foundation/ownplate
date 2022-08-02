@@ -5,3 +5,8 @@ export const resources = {
   en: en.resource,
   ja: ja.resource,
 };
+
+export const resources_mo = {
+  en: en.resource,
+  ja: ja.resource_mo
+};

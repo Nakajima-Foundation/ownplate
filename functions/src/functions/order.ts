@@ -238,7 +238,7 @@ export const update = async (db: admin.firestore.Firestore, data: any, context: 
     // sendSMS is always true
     if (orderData.sendSMS && msgKey) {
       const params = {};
-      if (status === order_status.order_accepted) {
+      if (status === order_status.order_accepted || status === order_status.ready_to_pickup) {
         params["time"] = moment(orderData.timeEstimated.toDate()).tz(timezone).locale("ja").format("LLL");
         console.log("timeEstimated", params["time"]);
       }

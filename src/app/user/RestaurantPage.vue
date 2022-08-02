@@ -715,6 +715,18 @@ export default defineComponent({
       );
     });
 
+    watch(isShowCart, (value) => {
+      if (value) {
+        document.body.style.position = "fixed";
+      } else {
+        document.body.style.position = "";
+      }
+    });
+    onUnmounted(() => {
+      if (isShowCart.value) {
+        document.body.style.position = "";
+      }
+    });
     return {
       itemLists,
       titleLists,

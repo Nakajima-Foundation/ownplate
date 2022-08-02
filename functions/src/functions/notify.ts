@@ -6,7 +6,7 @@ import moment from "moment-timezone";
 import * as fs from "fs";
 
 import i18next from "i18next";
-import { resources } from "./resources";
+import { resources, resources_mo } from "./resources";
 
 import { ownPlateConfig } from "../common/project";
 
@@ -40,7 +40,7 @@ export const sendMessageToCustomer = async (
 
   const t = await i18next.init({
     lng: lng || utils.getStripeRegion().langs[0],
-    resources,
+    resources: orderData.groupId ? resources_mo : resources,
   });
   const getMessage = (_url: string) => {
     const message = `${t(msgKey, params)} ${restaurantName} ${orderNumber} ${_url}`;
