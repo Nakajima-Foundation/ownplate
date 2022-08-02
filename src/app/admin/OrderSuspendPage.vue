@@ -125,15 +125,22 @@
 </template>
 
 <script>
+import {
+  defineComponent,
+  ref,
+  computed,
+} from "@vue/composition-api";
 import { db, firestore } from "@/plugins/firebase";
-import BackButton from "@/components/BackButton";
-import PickupMixin from "@/mixins/pickupMixin";
 import firebase from "firebase/compat/app";
 
-import NotificationIndex from "./Notifications/Index";
+import NotificationIndex from "./Notifications/Index.vue";
+import BackButton from "@/components/BackButton.vue";
 
-export default {
-  mixins: [PickupMixin],
+import { checkAdminPermission, checkShopAccount } from "@/utils/userPermission";
+import { useAdminUids } from "@/utils/utils";
+import { usePickupTime } from "@/utils/pickup";
+
+export default defineComponent({
   components: {
     BackButton,
     NotificationIndex,
@@ -155,78 +162,84 @@ export default {
       required: true,
     },
   },
-  data() {
-    return {
-      date: null,
-      notFound: null,
-    };
-  },
-  created() {
-    this.checkAdminPermission();
-    if (!this.checkShopAccount(this.shopInfo)) {
-      this.notFound = true;
-      return true;
+  setup(props, ctx) {
+    const date = ref(null);
+
+    if (!checkAdminPermission(ctx)) {
+      return {
+        notFound: true
+      };
+    }
+    const { ownerUid } = useAdminUids(ctx);
+    if (!checkShopAccount(props.shopInfo, ownerUid.value)) {
+      return {
+        notFound: true
+      };
     }
 
     if (
-      this.shopInfo &&
-      !this.shopInfo.deletedFlag &&
-      this.shopInfo.publicFlag
+      !props.shopInfo || props.shopInfo.deletedFlag || !props.shopInfo.publicFlag
     ) {
-      this.notFound = false;
-    } else {
-      this.notFound = true;
+      return {
+        notFound: true
+      };
     }
-  },
-  computed: {
-    availableTimes() {
+    const { availableDays } = usePickupTime(props.shopInfo, ctx);
+
+    const availableTimes = computed(() => {
       // Note: availableDays will change if we change shopInfo.suspendUntil.
       // This logic works because we use availableDays when suspendUntil is not set or too old.
-      if (this.availableDays.length > 0) {
-        this.date = this.availableDays[0];
-        console.log(this.date.date);
-        const times = this.date.times;
+      if (availableDays.value.length > 0) {
+        date.value = availableDays.value[0];
+        console.log(date.value.date);
+        const times = date.value.times;
         return times.slice(1, 13); // first twelve time slots (except first) regardless of the time
       } else {
-        this.date = null;
+        date.value = null;
       }
       return [];
-    },
-    suspendUntil() {
-      if (this.shopInfo.suspendUntil) {
-        const time = this.shopInfo.suspendUntil.toDate();
+    });
+    const suspendUntil = computed(() => {
+      if (props.shopInfo.suspendUntil) {
+        const time = props.shopInfo.suspendUntil.toDate();
         if (time < new Date()) {
           return false;
         }
         console.log(time);
-        return this.$d(time, "long");
+        return ctx.root.$d(time, "long");
       }
       return false;
-    },
-  },
-  methods: {
-    async handleSuspend(day, time) {
-      const date = new Date(this.date.date);
-      date.setHours(time / 60);
-      date.setMinutes(time % 60);
+    });
+
+    const handleSuspend = async (day, time) => {
+      const tmpDate = new Date(date.value.date);
+      tmpDate.setHours(time / 60);
+      tmpDate.setMinutes(time % 60);
       if (day && day > 0) {
-        date.setDate(date.getDate() + day);
+        tmpDate.setDate(tmpDate.getDate() + day);
       }
-      const ts = firebase.firestore.Timestamp.fromDate(date);
-      console.log(ts, date);
-      this.$store.commit("setLoading", true);
-      await db.doc(`restaurants/${this.restaurantId()}`).update({
+      const ts = firebase.firestore.Timestamp.fromDate(tmpDate);
+      console.log(ts, tmpDate);
+      ctx.root.$store.commit("setLoading", true);
+      await db.doc(`restaurants/${ctx.root.restaurantId()}`).update({
         suspendUntil: ts,
       });
-      this.$store.commit("setLoading", false);
-    },
-    async handleRemove() {
-      this.$store.commit("setLoading", true);
-      await db.doc(`restaurants/${this.restaurantId()}`).update({
+      ctx.root.$store.commit("setLoading", false);
+    };
+    const handleRemove = async () => {
+      ctx.root.$store.commit("setLoading", true);
+      await db.doc(`restaurants/${ctx.root.restaurantId()}`).update({
         suspendUntil: null,
       });
-      this.$store.commit("setLoading", false);
-    },
+      ctx.root.$store.commit("setLoading", false);
+    };
+    return {
+      date,
+      availableTimes,
+      suspendUntil,
+      handleSuspend,
+      handleRemove
+    };
   },
-};
+});
 </script>
