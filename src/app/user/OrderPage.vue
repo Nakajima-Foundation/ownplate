@@ -16,7 +16,7 @@
     <template v-else>
       <!-- Back Button (Edit Order) -->
       <div v-if="just_validated" class="mt-6 mx-6">
-        <b-button
+        <o-button
           :loading="isDeleting"
           @click="handleOpenMenu"
           class="b-reset-tw"
@@ -29,7 +29,7 @@
               {{ $t("button.back") }}
             </div>
           </div>
-        </b-button>
+        </o-button>
       </div>
 
       <!-- Restaurant Profile Photo and Name -->
@@ -65,7 +65,7 @@
 
           <!-- Cancel Button -->
           <div class="mt-8 mb-5 text-center">
-            <b-button
+            <o-button
               v-if="just_paid"
               @click="handleCancelPayment"
               class="b-reset-tw"
@@ -78,7 +78,7 @@
                   {{ $t("order.cancelOrder") }}
                 </div>
               </div>
-            </b-button>
+            </o-button>
           </div>
         </div>
 
@@ -205,7 +205,7 @@
 
           <!-- View Menu Page Button -->
           <div v-if="paid" class="mt-6 text-center">
-            <b-button class="b-reset-tw" @click="handleOpenMenu">
+            <o-button class="b-reset-tw" @click="handleOpenMenu">
               <div
                 class="inline-flex justify-center items-center h-12 px-6 rounded-full border-2 border-op-teal"
               >
@@ -213,18 +213,18 @@
                   {{ $t("order.menu") }}
                 </div>
               </div>
-            </b-button>
+            </o-button>
           </div>
 
           <!-- Validating -->
-          <b-notification :closable="false" v-if="newOrder">
+          <o-notification :closable="false" v-if="newOrder">
             {{ $t("order.validating") }}
-            <b-loading
+            <o-loading
               :is-full-page="false"
               :active.sync="newOrder"
               :can-cancel="true"
-            ></b-loading>
-          </b-notification>
+            ></o-loading>
+          </o-notification>
         </div>
 
         <!-- Right -->
@@ -315,12 +315,12 @@
                 </div>
 
                 <div class="bg-white rounded-lg shadow p-4 mt-2">
-                  <b-input
+                  <o-input
                     v-model="memo"
                     type="textarea"
                     :placeholder="$t('order.enterMessage')"
                     class="w-full"
-                  ></b-input>
+                  ></o-input>
                 </div>
               </div>
             </template>
@@ -348,7 +348,7 @@
                 ></stripe-card>
 
                 <div class="mt-6 text-center">
-                  <b-button
+                  <o-button
                     :loading="isPaying"
                     :disabled="
                       !cardState.complete || notAvailable || notSubmitAddress
@@ -369,7 +369,7 @@
                         <!-- {{ $n(orderInfo.total + tip, "currency") }} -->
                       </div>
                     </div>
-                  </b-button>
+                  </o-button>
                 </div>
                 <div v-if="mode === 'mo'">
                   <div
@@ -396,7 +396,7 @@
                 </div>
 
                 <div class="mt-4">
-                  <b-button
+                  <o-button
                     :loading="isPlacing"
                     :disabled="notAvailable || notSubmitAddress"
                     @click="handleNoPayment"
@@ -414,7 +414,7 @@
                         }}
                       </div>
                     </div>
-                  </b-button>
+                  </o-button>
                 </div>
                 <div v-if="mode !== 'mo'">
                   <div
@@ -440,11 +440,11 @@
               <!-- Send SMS Checkbox -->
               <div v-if="!isLineEnabled" class="mt-6">
                 <div class="bg-black bg-opacity-5 rounded-lg p-4">
-                  <b-checkbox v-model="sendSMS">
+                  <o-checkbox v-model="sendSMS">
                     <div class="text-sm font-bold">
                       {{ $t("order.sendSMS") }}
                     </div>
-                  </b-checkbox>
+                  </o-checkbox>
                 </div>
               </div>
             </div>

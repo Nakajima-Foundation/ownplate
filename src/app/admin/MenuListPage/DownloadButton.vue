@@ -1,5 +1,5 @@
 <template>
-  <b-button
+  <o-button
     @click="downloadMenu()"
     :disabled="downloadSubmitting"
     class="b-reset-tw mx-2 mb-2"
@@ -12,7 +12,7 @@
         {{ $t("button.downloadMenu") }}</span
       >
     </div>
-  </b-button>
+  </o-button>
 </template>
 
 <script>

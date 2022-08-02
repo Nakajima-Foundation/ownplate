@@ -56,7 +56,7 @@
     <!-- Suspend and Unsuspend  -->
     <div class="mt-6 mx-6">
       <div v-if="!suspendUntil">
-        <b-button
+        <o-button
           v-for="time in availableTimes"
           :key="time.time"
           @click="handleSuspend(0, time.time)"
@@ -70,11 +70,11 @@
               {{ $t("admin.order.suspendUntil", { display: time.display }) }}
             </div>
           </div>
-        </b-button>
+        </o-button>
 
         <div class="mt-4">
           <div v-for="(day, k) in [0, 1, 2, 7]" :key="k" class="inline-flex">
-            <b-button
+            <o-button
               v-if="availableTimes.length > 0"
               class="b-reset-tw"
               @click="handleSuspend(day, 24 * 60)"
@@ -92,7 +92,7 @@
                   <span v-else>{{ $t("admin.order.suspendForAllDay") }}</span>
                 </div>
               </div>
-            </b-button>
+            </o-button>
           </div>
         </div>
       </div>
@@ -108,7 +108,7 @@
         </div>
 
         <div class="mt-4">
-          <b-button class="b-reset-tw" @click="handleRemove">
+          <o-button class="b-reset-tw" @click="handleRemove">
             <div
               class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5"
             >
@@ -117,7 +117,7 @@
                 {{ $t("admin.order.unsuspend") }}
               </div>
             </div>
-          </b-button>
+          </o-button>
         </div>
       </div>
     </div>

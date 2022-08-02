@@ -42,7 +42,7 @@
 
         <!-- Suspend Button -->
         <div class="mt-4 lg:mt-0 lg:mr-4 flex-shrink-0">
-          <b-button
+          <o-button
             tag="router-link"
             :to="`/admin/restaurants/${restaurantId()}/suspend`"
             class="b-reset-tw"
@@ -70,7 +70,7 @@
                 {{ $t("admin.order.suspendSettings") }}
               </div>
             </div>
-          </b-button>
+          </o-button>
         </div>
 
         <!-- Notifications -->
@@ -81,7 +81,7 @@
 
       <!-- Date -->
       <div class="mx-6 mt-6">
-        <b-select v-model="dayIndex">
+        <o-select v-model="dayIndex">
           <option
             v-for="day in lastSeveralDays"
             :value="day.index"
@@ -93,7 +93,7 @@
               $t("date.today")
             }}</span>
           </option>
-        </b-select>
+        </o-select>
       </div>
 
       <!-- Orders -->

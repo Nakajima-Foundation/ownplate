@@ -15,7 +15,9 @@ $twitter: #4099ff;
 $twitter-invert: findColorInvert($twitter);
 $input-placeholder-color: #8d8d8d;
 
+
 // Setup $colors to use as bulma classes (e.g. 'is-twitter')
+/*
 $colors: (
   "white": (
     $white,
@@ -58,6 +60,7 @@ $colors: (
     $twitter-invert
   )
 );
+*/
 
 // Links
 $link: $primary;

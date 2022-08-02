@@ -3,7 +3,7 @@
     <div class="t-h6 c-text-black-disabled align-center m-t-24">
       {{ $t("admin.smaregi.authenticating") }}
     </div>
-    <b-loading :is-full-page="false" :active="isValidating"></b-loading>
+    <o-loading :is-full-page="false" :active="isValidating"></o-loading>
     <div v-if="error">
       <div class="flex space-x-4">
         <back-button url="/admin/restaurants/" />

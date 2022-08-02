@@ -32,12 +32,12 @@
     </div>
 
     <!-- Loading -->
-    <b-loading
+    <o-loading
       v-if="isLoading"
       :is-full-page="true"
       :active="true"
       :can-cancel="false"
-    ></b-loading>
+    ></o-loading>
 
     <!-- Footer -->
     <div class="bg-op-gray h-52 mt-12">
@@ -66,7 +66,7 @@
     </div>
 
     <!-- Language Popup-->
-    <b-modal :active.sync="langPopup" :width="488" scroll="keep">
+    <o-modal :active.sync="langPopup" :width="488" scroll="keep">
       <div class="bg-white rounded-lg my-6 mx-2 shadow-lg p-6">
         <div class="text-xl font-bold text-black text-opacity-40">
           {{ $t("menu.selectLanguage") }}
@@ -97,7 +97,7 @@
           >
         </div>
       </div>
-    </b-modal>
+    </o-modal>
 
     <!-- Audio Play -->
     <audio-play ref="audioPlay" />

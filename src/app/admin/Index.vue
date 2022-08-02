@@ -60,7 +60,7 @@
               </div>
 
               <div class="text-center mt-4">
-                <b-button
+                <o-button
                   @click="handleNew"
                   :loading="isCreating"
                   class="b-reset-tw"
@@ -73,7 +73,7 @@
                       $t("admin.addNewRestaurant")
                     }}</span>
                   </div>
-                </b-button>
+                </o-button>
               </div>
             </div>
           </div>
@@ -128,7 +128,7 @@
 
             <!-- Add Restaurant -->
             <div v-if="existsRestaurant && isOwner" class="text-center mt-4">
-              <b-button
+              <o-button
                 @click="handleNew"
                 :loading="isCreating"
                 class="b-reset-tw"
@@ -141,7 +141,7 @@
                     $t("admin.addNewRestaurant")
                   }}</span>
                 </div>
-              </b-button>
+              </o-button>
             </div>
           </div>
         </div>

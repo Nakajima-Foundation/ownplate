@@ -1,5 +1,5 @@
 <template>
-  <b-sidebar
+  <o-sidebar
     type="is-light"
     :fullheight="fullheight"
     :fullwidth="fullwidth"
@@ -171,7 +171,7 @@
         </router-link>
       </div>
     </div>
-  </b-sidebar>
+  </o-sidebar>
 </template>
 
 <script>

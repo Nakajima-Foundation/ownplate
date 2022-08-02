@@ -18,7 +18,7 @@
       <!-- Save and Cancel -->
       <div class="flex justify-center space-x-4 mt-6">
         <!-- Cancel Button -->
-        <b-button
+        <o-button
           class="b-reset-tw"
           tag="router-link"
           :to="`/admin/restaurants/${this.restaurantId()}/menus`"
@@ -30,10 +30,10 @@
               $t("button.cancel")
             }}</span>
           </div>
-        </b-button>
+        </o-button>
 
         <!-- Save Button -->
-        <b-button @click="submitItem" :disabled="submitting" class="b-reset-tw">
+        <o-button @click="submitItem" :disabled="submitting" class="b-reset-tw">
           <div
             class="h-12 rounded-full bg-op-teal inline-flex justify-center items-center px-6 shadow"
             style="min-width: 8rem"
@@ -48,18 +48,18 @@
               )
             }}</span>
           </div>
-        </b-button>
+        </o-button>
       </div>
 
       <!-- Publish Status -->
       <div class="bg-black bg-opacity-5 mx-6 rounded-lg p-4 mt-6 text-center">
-        <b-checkbox
+        <o-checkbox
           v-model="menuInfo.publicFlag"
           :disabled="hasError"
           :type="!menuInfo.publicFlag ? 'is-danger' : ''"
         >
           <div class="font-bold">{{ $t("shopInfo.public") }}</div>
-        </b-checkbox>
+        </o-checkbox>
 
         <div class="text-sm font-bold">
           <div v-if="hasError" class="text-red-700 mt-1">
@@ -89,14 +89,14 @@
               {{ $t("editMenu.itemName") }}
               <span class="text-red-700">*</span>
             </div>
-            <b-field
+            <o-field
               :type="errors['itemName'].length > 0 ? 'is-danger' : 'is-success'"
             >
-              <b-input
+              <o-input
                 v-model="menuInfo.itemName"
                 :placeholder="$t('editMenu.enterItemName')"
-              ></b-input>
-            </b-field>
+              ></o-input>
+            </o-field>
           </div>
 
           <!-- Item Name -->
@@ -104,10 +104,10 @@
             <div class="text-sm font-bold pb-2">
               {{ $t("editMenu.itemAliasesName") }}
             </div>
-            <b-input
+            <o-input
               v-model="menuInfo.itemAliasesName"
               :placeholder="$t('editMenu.enterItemAliasesName')"
-            ></b-input>
+            ></o-input>
           </div>
 
           <!-- Item Price -->
@@ -117,10 +117,10 @@
               <span class="text-red-700">*</span>
             </div>
             <div>
-              <b-field
+              <o-field
                 :type="errors['price'].length > 0 ? 'is-danger' : 'is-success'"
               >
-                <b-input
+                <o-input
                   v-model="menuInfo.price"
                   type="number"
                   :step="priceStep"
@@ -128,13 +128,13 @@
                   :max="maxPrice"
                   min="0.00"
                   expanded
-                ></b-input>
+                ></o-input>
                 <div>
                   <span class="button is-static">
                     {{ $t("currency." + currencyKey) }}
                   </span>
                 </div>
-              </b-field>
+              </o-field>
             </div>
           </div>
 
@@ -145,10 +145,10 @@
               <span class="text-red-700">*</span>
             </div>
             <div>
-              <b-field
+              <o-field
                 :type="errors['tax'].length > 0 ? 'is-danger' : 'is-success'"
               >
-                <b-select v-model="menuInfo.tax" placeholder="select">
+                <o-select v-model="menuInfo.tax" placeholder="select">
                   <option
                     v-for="taxItem in taxRates"
                     :value="taxItem"
@@ -157,8 +157,8 @@
                     {{ shopInfo && (shopInfo[taxItem + "Tax"] || 0) + "%" }}
                     - {{ $t("editMenu." + taxRateKeys[taxItem]) }}
                   </option>
-                </b-select>
-              </b-field>
+                </o-select>
+              </o-field>
             </div>
           </div>
 
@@ -181,12 +181,12 @@
               {{ $t("allergens.title") }}
             </div>
             <div>
-              <b-checkbox
+              <o-checkbox
                 v-for="allergen in allergens"
                 v-model="menuInfo.allergens[allergen]"
                 :key="allergen"
                 class="mb-2"
-                >{{ $t(`allergens.${allergen}`) }}</b-checkbox
+                >{{ $t(`allergens.${allergen}`) }}</o-checkbox
               >
             </div>
           </div>
@@ -197,19 +197,19 @@
               {{ $t("editMenu.itemDescription") }}
             </div>
             <div>
-              <b-field
+              <o-field
                 :type="
                   errors['itemDescription'].length > 0
                     ? 'is-danger'
                     : 'is-success'
                 "
               >
-                <b-input
+                <o-input
                   v-model="menuInfo.itemDescription"
                   type="textarea"
                   :placeholder="$t('editMenu.enterItemDescription')"
-                ></b-input>
-              </b-field>
+                ></o-input>
+              </o-field>
             </div>
           </div>
 
@@ -219,13 +219,13 @@
               {{ $t("editMenu.itemMemo") }}
             </div>
             <div>
-              <b-field type="is-success">
-                <b-input
+              <o-field type="is-success">
+                <o-input
                   v-model="menuInfo.itemMemo"
                   type="textarea"
                   :placeholder="$t('editMenu.enterItemMemo')"
-                ></b-input>
-              </b-field>
+                ></o-input>
+              </o-field>
             </div>
           </div>
         </div>
@@ -296,18 +296,18 @@
             <div class="grid-col-1 space-y-4">
               <div v-for="(option, key) in menuInfo.itemOptionCheckbox">
                 <div :key="key" class="flex mb-2">
-                  <b-input
+                  <o-input
                     v-model="menuInfo.itemOptionCheckbox[key]"
                     :placeholder="$t('editMenu.enterItemOption')"
                     class="flex-1 mr-2"
                   />
-                  <b-button class="b-reset-tw" @click="deleteOption(key)">
+                  <o-button class="b-reset-tw" @click="deleteOption(key)">
                     <div
                       class="inline-flex justify-center items-center rounded-full h-9 px-4 bg-red-700 bg-opacity-10"
                     >
                       <i class="material-icons text-lg text-red-700">delete</i>
                     </div>
-                  </b-button>
+                  </o-button>
                 </div>
 
                 <!-- Option Preview -->
@@ -323,14 +323,14 @@
 
                   <div v-for="(opt, k) in itemOptions[key]" class="flex">
                     <div class="flex-1">
-                      <b-checkbox v-if="itemOptions[key].length == 1" disabled>
+                      <o-checkbox v-if="itemOptions[key].length == 1" disabled>
                         <div
                           class="text-sm font-bold text-black text-opacity-60"
                         >
                           {{ displayOption(opt, shopInfo, menuInfo) }}
                         </div>
-                      </b-checkbox>
-                      <b-radio
+                      </o-checkbox>
+                      <o-radio
                         v-else
                         v-model="dummyCheckbox[key]"
                         :native-value="k"
@@ -341,7 +341,7 @@
                         >
                           {{ displayOption(opt, shopInfo, menuInfo) }}
                         </div>
-                      </b-radio>
+                      </o-radio>
                     </div>
                     <div class="text-sm font-bold text-black text-opacity-60">
                       {{ displayOptionPrice(opt) }}
@@ -353,7 +353,7 @@
 
             <!-- Add Option -->
             <div class="mt-4">
-              <b-button class="b-reset-tw" @click="addOption">
+              <o-button class="b-reset-tw" @click="addOption">
                 <div
                   class="inline-flex justify-center items-center rounded-full h-9 px-4 bg-black bg-opacity-5"
                 >
@@ -362,7 +362,7 @@
                     {{ $t("editMenu.itemAddOption") }}
                   </div>
                 </div>
-              </b-button>
+              </o-button>
             </div>
           </div>
 
@@ -388,7 +388,7 @@
                     {{ $t("editMenu.category1") }}
                   </div>
                   <div>
-                    <b-button
+                    <o-button
                       class="b-reset-tw"
                       @click="editCategory('category1')"
                     >
@@ -397,11 +397,11 @@
                           {{ $t("editMenu.editCategory1") }}
                         </div>
                       </div>
-                    </b-button>
+                    </o-button>
                   </div>
                 </div>
 
-                <b-select
+                <o-select
                   v-if="categories1.length > 0"
                   v-model="menuInfo.category1"
                   expanded
@@ -413,7 +413,7 @@
                   >
                     {{ category }}
                   </option>
-                </b-select>
+                </o-select>
               </div>
 
               <!-- Category 2 -->
@@ -425,7 +425,7 @@
                     {{ $t("editMenu.category2") }}
                   </div>
                   <div>
-                    <b-button
+                    <o-button
                       class="b-reset-tw"
                       @click="editCategory('category2')"
                     >
@@ -434,11 +434,11 @@
                           {{ $t("editMenu.editCategory2") }}
                         </div>
                       </div>
-                    </b-button>
+                    </o-button>
                   </div>
                 </div>
 
-                <b-select
+                <o-select
                   v-if="categories2.length > 0"
                   v-model="menuInfo.category2"
                   expanded
@@ -450,7 +450,7 @@
                   >
                     {{ category }}
                   </option>
-                </b-select>
+                </o-select>
               </div>
 
               <!-- Category Edit Popup -->
@@ -468,13 +468,13 @@
 
       <!-- Publish Status -->
       <div class="bg-black bg-opacity-5 mx-6 rounded-lg p-4 mt-6 text-center">
-        <b-checkbox
+        <o-checkbox
           v-model="menuInfo.publicFlag"
           :disabled="hasError"
           :type="!menuInfo.publicFlag ? 'is-danger' : ''"
         >
           <div class="font-bold">{{ $t("shopInfo.public") }}</div>
-        </b-checkbox>
+        </o-checkbox>
 
         <div class="mt-1 text-sm font-bold">
           <div v-if="hasError" class="text-red-700">
@@ -489,7 +489,7 @@
       <!-- Save and Cancel -->
       <div class="flex justify-center space-x-4 mt-6">
         <!-- Cancel Button -->
-        <b-button
+        <o-button
           class="b-reset-tw"
           tag="router-link"
           :to="`/admin/restaurants/${this.restaurantId()}/menus`"
@@ -501,10 +501,10 @@
               $t("button.cancel")
             }}</span>
           </div>
-        </b-button>
+        </o-button>
 
         <!-- Save Button -->
-        <b-button @click="submitItem" :disabled="submitting" class="b-reset-tw">
+        <o-button @click="submitItem" :disabled="submitting" class="b-reset-tw">
           <div
             class="h-12 rounded-full bg-op-teal inline-flex justify-center items-center px-6 shadow"
             style="min-width: 8rem"
@@ -519,13 +519,13 @@
               )
             }}</span>
           </div>
-        </b-button>
+        </o-button>
       </div>
 
       <!-- Copy -->
       <div class="text-center mt-6 mx-6 lg:max-w-sm lg:mx-auto">
         <div>
-          <b-button @click="copyItem" :disabled="submitting" class="b-reset-tw">
+          <o-button @click="copyItem" :disabled="submitting" class="b-reset-tw">
             <div
               class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
             >
@@ -534,11 +534,11 @@
                 $t("editCommon.copyMenu")
               }}</span>
             </div>
-          </b-button>
+          </o-button>
         </div>
 
         <div class="mt-4">
-          <b-select v-model="copyRestaurantId" expanded>
+          <o-select v-model="copyRestaurantId" expanded>
             <option
               v-for="restaurant in restaurants"
               :key="restaurant.id"
@@ -546,7 +546,7 @@
             >
               {{ restaurant.restaurantName }}
             </option>
-          </b-select>
+          </o-select>
         </div>
       </div>
     </template>

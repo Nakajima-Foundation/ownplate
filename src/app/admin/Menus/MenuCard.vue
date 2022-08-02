@@ -22,14 +22,14 @@
           </div>
 
           <div class="mr-4 pt-4">
-            <b-checkbox :value="soldOut" @input="soldOutToggle">
+            <o-checkbox :value="soldOut" @input="soldOutToggle">
               <div v-if="soldOut" class="text-sm font-bold text-red-700">
                 {{ $t("admin.itemSoldOut") }}
               </div>
               <div v-else class="text-sm font-bold text-black text-opacity-30">
                 {{ $t("admin.itemSoldOut") }}
               </div>
-            </b-checkbox>
+            </o-checkbox>
           </div>
         </div>
 
@@ -77,7 +77,7 @@
       <!-- Card Actions -->
       <div class="inline-flex space-x-2">
         <!-- Up -->
-        <b-button
+        <o-button
           v-if="position !== 'first'"
           @click="positionUp"
           class="b-reset-tw"
@@ -87,17 +87,17 @@
           >
             <i class="material-icons text-lg text-op-teal">arrow_upward</i>
           </div>
-        </b-button>
-        <b-button v-else disabled class="b-reset-tw">
+        </o-button>
+        <o-button v-else disabled class="b-reset-tw">
           <div
             class="inline-flex justify-center items-center px-4 h-9 rounded-full bg-black bg-opacity-5"
           >
             <i class="material-icons text-lg text-op-teal">arrow_upward</i>
           </div>
-        </b-button>
+        </o-button>
 
         <!-- Down -->
-        <b-button
+        <o-button
           v-if="position !== 'last'"
           @click="positionDown"
           class="b-reset-tw"
@@ -107,32 +107,32 @@
           >
             <i class="material-icons text-lg text-op-teal">arrow_downward</i>
           </div>
-        </b-button>
-        <b-button v-else disabled class="b-reset-tw">
+        </o-button>
+        <o-button v-else disabled class="b-reset-tw">
           <div
             class="inline-flex justify-center items-center px-4 h-9 rounded-full bg-black bg-opacity-5"
           >
             <i class="material-icons text-lg text-op-teal">arrow_downward</i>
           </div>
-        </b-button>
+        </o-button>
 
         <!-- Duplicate -->
-        <b-button @click="forkItem" class="b-reset-tw">
+        <o-button @click="forkItem" class="b-reset-tw">
           <div
             class="inline-flex justify-center items-center px-4 h-9 rounded-full bg-black bg-opacity-5"
           >
             <i class="material-icons text-lg text-op-teal">queue</i>
           </div>
-        </b-button>
+        </o-button>
 
         <!-- Delete -->
-        <b-button @click="deleteItem" class="b-reset-tw">
+        <o-button @click="deleteItem" class="b-reset-tw">
           <div
             class="inline-flex justify-center items-center px-4 h-9 rounded-full bg-black bg-opacity-5"
           >
             <i class="material-icons text-lg text-red-700">delete</i>
           </div>
-        </b-button>
+        </o-button>
       </div>
     </div>
   </div>

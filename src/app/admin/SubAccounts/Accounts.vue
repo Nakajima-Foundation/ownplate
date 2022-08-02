@@ -30,9 +30,9 @@
             )
           }}
         </router-link>
-        <b-button @click="deleteChild(child.id)">
+        <o-button @click="deleteChild(child.id)">
           {{ $t("admin.subAccounts.deleteSubaccount") }}
-        </b-button>
+        </o-button>
       </div>
     </div>
 
@@ -45,26 +45,26 @@
         <span class="text-base font-bold">
           {{ $t("admin.subAccounts.name") }}
         </span>
-        <b-input
+        <o-input
           v-model="name"
           :placeholder="$t('admin.subAccounts.enterName')"
-        ></b-input>
+        ></o-input>
         {{ $t("admin.subAccounts.email") }} :
-        <b-input
+        <o-input
           v-model="email"
           :placeholder="$t('admin.subAccounts.enterEmail')"
-        ></b-input>
+        ></o-input>
         <div class="text-xs font-bold text-red-700">
           * {{ $t("admin.subAccounts.accountNotice") }}
         </div>
         <div>
-          <b-button @click="invite" :disabled="sending">
+          <o-button @click="invite" :disabled="sending">
             {{
               $t(
                 sending ? "admin.subAccounts.sending" : "admin.subAccounts.send"
               )
             }}
-          </b-button>
+          </o-button>
         </div>
       </div>
       <div v-if="errors.length > 0">

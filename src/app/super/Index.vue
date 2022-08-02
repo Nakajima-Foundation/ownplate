@@ -23,7 +23,7 @@
       <router-link to="/s/partners">All Partners</router-link>
       <br />
     </div>
-    <b-loading v-else active />
+    <o-loading v-else active />
   </section>
 </template>
 

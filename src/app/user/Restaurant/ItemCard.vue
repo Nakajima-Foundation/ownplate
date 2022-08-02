@@ -96,14 +96,14 @@
                 class="bg-black bg-opacity-5 rounded-lg p-4"
               >
                 <div v-if="option.length === 1" class="field">
-                  <b-checkbox v-model="selectedOptions[quantityKey][index]"
+                  <o-checkbox v-model="selectedOptions[quantityKey][index]"
                     ><div class="text-sm font-bold">
                       {{ displayOption(option[0], shopInfo, item) }}
-                    </div></b-checkbox
+                    </div></o-checkbox
                   >
                 </div>
                 <div v-else class="field">
-                  <b-radio
+                  <o-radio
                     v-for="(choice, index2) in option"
                     v-model="selectedOptions[quantityKey][index]"
                     :name="`${item.id}_${quantityKey}_${index}`"
@@ -111,7 +111,7 @@
                     :key="`${quantityKey}_${index2}`"
                     ><div class="text-sm font-bold">
                       {{ displayOption(choice, shopInfo, item) }}
-                    </div></b-radio
+                    </div></o-radio
                   >
                 </div>
               </div>
@@ -206,7 +206,7 @@
     </div>
 
     <!-- Image Popup-->
-    <b-modal
+    <o-modal
       :active.sync="imagePopup"
       :width="488"
       scroll="keep"
@@ -221,7 +221,7 @@
           <Price :shopInfo="shopInfo" :menu="item" />
         </div>
       </div>
-    </b-modal>
+    </o-modal>
   </div>
 </template>
 

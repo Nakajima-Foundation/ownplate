@@ -93,7 +93,7 @@
 
         <!-- Add LINE User -->
         <div class="mt-6 text-center">
-          <b-button @click="handleLineAuth" class="b-reset-tw">
+          <o-button @click="handleLineAuth" class="b-reset-tw">
             <div
               class="inline-flex justify-center items-center h-12 px-6 rounded-full"
               style="background: #18b900"
@@ -103,7 +103,7 @@
                 {{ $t("admin.order.lineAdd") }}
               </div>
             </div>
-          </b-button>
+          </o-button>
         </div>
 
         <!-- Note for Safari Private Browsing Mode -->

@@ -31,7 +31,7 @@
           {{ product.price }}円 / 在庫数
           {{ (stockObj[product.productId] || {}).amount || 0 }} <br />
           おもちかえり:
-          <b-select
+          <o-select
             v-model="selectedMenu[key]"
             :class="
               selectedMenu[key] && duplicateElement[selectedMenu[key]]
@@ -42,13 +42,13 @@
             <option v-for="menu in menus" :value="menu.id" :key="menu.id">
               {{ menu.itemName }} / {{ menu.price }} 円
             </option>
-          </b-select>
+          </o-select>
         </div>
         <div v-if="isDuplicateError" class="text-red-700">
           * メニューの指定が重複しています
         </div>
-        <b-button @click="saveMenus" :disabled="isDuplicateError"
-          >保存</b-button
+        <o-button @click="saveMenus" :disabled="isDuplicateError"
+          >保存</o-button
         >
       </div>
       <div v-else>
@@ -68,7 +68,7 @@
               {{ menuObj[selectedMenu[key]].price }}円</span
             >
           </div>
-          <b-button @click="isEdit = true">編集</b-button>
+          <o-button @click="isEdit = true">編集</o-button>
         </div>
       </div>
     </div>

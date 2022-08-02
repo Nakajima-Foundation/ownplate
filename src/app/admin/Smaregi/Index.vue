@@ -28,7 +28,7 @@
         <div v-if="isEdit">
           <div v-for="(shop, k) in shopList" :key="k" class="border-2">
             {{ shop.storeName }}
-            <b-select
+            <o-select
               v-model="selectedRestaurant[k]"
               :class="
                 selectedRestaurant[k] && duplicateElement[selectedRestaurant[k]]
@@ -43,10 +43,10 @@
               >
                 {{ restaurant.restaurantName }}
               </option>
-            </b-select>
+            </o-select>
 
             在庫切れしきい値:
-            <b-select v-model="outOfStockData[k]">
+            <o-select v-model="outOfStockData[k]">
               <option
                 v-for="threshold in outOfStockThresholds"
                 :value="threshold.value"
@@ -54,10 +54,10 @@
               >
                 {{ threshold.name }}
               </option>
-            </b-select>
+            </o-select>
 
             在庫復活しきい値:
-            <b-select v-model="inStockData[k]">
+            <o-select v-model="inStockData[k]">
               <option
                 v-for="threshold in inStockThresholds"
                 :value="threshold.value"
@@ -65,11 +65,11 @@
               >
                 {{ threshold.name }}
               </option>
-            </b-select>
+            </o-select>
           </div>
           <div v-if="isDuplicateError">*お店の指定が重複しています</div>
-          <b-button @click="saveShops" :disabled="isDuplicateError"
-            >保存</b-button
+          <o-button @click="saveShops" :disabled="isDuplicateError"
+            >保存</o-button
           >
         </div>
 
@@ -87,7 +87,7 @@
             在庫復活しきい値: {{ showStockThreshold((inStockData || {})[k]) }}
           </div>
           <div class="mt-4">
-            <b-button @click="isEdit = true">編集</b-button>
+            <o-button @click="isEdit = true">編集</o-button>
           </div>
         </div>
       </div>

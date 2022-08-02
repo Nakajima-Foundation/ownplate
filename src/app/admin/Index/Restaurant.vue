@@ -295,46 +295,46 @@
       <!-- Up -->
       <div>
         <template v-if="position !== 'first'">
-          <b-button @click="positionUp" class="b-reset-tw">
+          <o-button @click="positionUp" class="b-reset-tw">
             <div
               class="inline-flex justify-center items-center px-4 h-9 rounded-full bg-black bg-opacity-5"
             >
               <i class="material-icons text-lg text-op-teal">arrow_upward</i>
             </div>
-          </b-button>
+          </o-button>
         </template>
 
         <template v-else>
-          <b-button disabled class="b-reset-tw">
+          <o-button disabled class="b-reset-tw">
             <div
               class="inline-flex justify-center items-center px-4 h-9 rounded-full bg-black bg-opacity-5"
             >
               <i class="material-icons text-lg text-op-teal">arrow_upward</i>
             </div>
-          </b-button>
+          </o-button>
         </template>
       </div>
 
       <!-- Down -->
       <div>
         <template v-if="position !== 'last'">
-          <b-button @click="positionDown" class="b-reset-tw">
+          <o-button @click="positionDown" class="b-reset-tw">
             <div
               class="inline-flex justify-center items-center px-4 h-9 rounded-full bg-black bg-opacity-5"
             >
               <i class="material-icons text-lg text-op-teal">arrow_downward</i>
             </div>
-          </b-button>
+          </o-button>
         </template>
 
         <template v-else>
-          <b-button disabled class="b-reset-tw">
+          <o-button disabled class="b-reset-tw">
             <div
               class="inline-flex justify-center items-center px-4 h-9 rounded-full bg-black bg-opacity-5"
             >
               <i class="material-icons text-lg text-op-teal">arrow_downward</i>
             </div>
-          </b-button>
+          </o-button>
         </template>
       </div>
 

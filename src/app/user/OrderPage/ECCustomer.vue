@@ -6,8 +6,8 @@
       <span class="text-red-700">*</span>
     </div>
     <div>
-      <b-field :type="ecErrors['zip'].length > 0 ? 'is-danger' : 'is-success'">
-        <b-input
+      <o-field :type="ecErrors['zip'].length > 0 ? 'is-danger' : 'is-success'">
+        <o-input
           class="w-full"
           type="text"
           :placeholder="$t('order.ec.zip')"
@@ -15,7 +15,7 @@
           :error="ecErrors['zip']"
           maxlength="10"
         />
-      </b-field>
+      </o-field>
     </div>
     <div v-if="ecErrors['zip'].length > 0" class="mb-2 text-red-700 font-bold">
       <div v-for="(error, key) in ecErrors['zip']">
@@ -59,10 +59,10 @@
       {{ $t("shopInfo.prefecture") }}
       <span class="text-red-700">*</span>
     </div>
-    <b-field
+    <o-field
       :type="ecErrors['prefectureId'].length > 0 ? 'is-danger' : 'is-success'"
     >
-      <b-select
+      <o-select
         v-model="customerInfo.prefectureId"
         placeholder="select"
         @input="updatePrefecture"
@@ -74,8 +74,8 @@
         >
           {{ stateItem }}
         </option>
-      </b-select>
-    </b-field>
+      </o-select>
+    </o-field>
 
     <!-- address -->
     <div class="text-sm font-bold pb-2">
@@ -83,17 +83,17 @@
       <span class="text-red-700">*{{ $t("order.ec.addressNotice") }}</span>
     </div>
     <div>
-      <b-field
+      <o-field
         :type="ecErrors['address'].length > 0 ? 'is-danger' : 'is-success'"
       >
-        <b-input
+        <o-input
           class="w-full"
           type="text"
           :placeholder="$t('order.ec.address')"
           v-model="customerInfo.address"
           maxlength="100"
         />
-      </b-field>
+      </o-field>
     </div>
     <div
       v-if="ecErrors['address'].length > 0"
@@ -110,15 +110,15 @@
       <span class="text-red-700">*</span>
     </div>
     <div>
-      <b-field :type="ecErrors['name'].length > 0 ? 'is-danger' : 'is-success'">
-        <b-input
+      <o-field :type="ecErrors['name'].length > 0 ? 'is-danger' : 'is-success'">
+        <o-input
           class="w-full"
           type="text"
           :placeholder="$t('order.ec.name')"
           v-model="customerInfo.name"
           maxlength="30"
         />
-      </b-field>
+      </o-field>
     </div>
     <div v-if="ecErrors['name'].length > 0" class="mb-2 text-red-700 font-bold">
       <div v-for="(error, key) in ecErrors['name']">
@@ -132,17 +132,17 @@
         <span class="text-red-700">*</span>
       </div>
       <div>
-        <b-field
+        <o-field
           :type="ecErrors['email'].length > 0 ? 'is-danger' : 'is-success'"
         >
-          <b-input
+          <o-input
             class="w-full"
             type="text"
             :placeholder="$t('order.ec.email')"
             v-model="customerInfo.email"
             maxlength="30"
           />
-        </b-field>
+        </o-field>
       </div>
       <div
         v-if="ecErrors['email'].length > 0"
@@ -155,11 +155,11 @@
     </template>
 
     <div>
-      <b-checkbox v-model="isSaveAddress">
+      <o-checkbox v-model="isSaveAddress">
         <div class="text-sm font-bold">
           {{ $t("order.saveAddress") }}
         </div>
-      </b-checkbox>
+      </o-checkbox>
     </div>
   </div>
 </template>

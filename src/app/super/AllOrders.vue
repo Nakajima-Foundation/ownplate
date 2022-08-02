@@ -28,7 +28,7 @@
         <div class="m-l-24 m-r-16 m-t-24">
           <back-button :url="backUrl" />
           <h2>All Orders</h2>
-          <b-select v-model="orderState" class="m-t-24">
+          <o-select v-model="orderState" class="m-t-24">
             <option
               v-for="status in orderStatus"
               :value="status.index"
@@ -36,19 +36,19 @@
             >
               {{ status.key ? $t("order.status." + status.key) : "----" }}
             </option>
-          </b-select>
+          </o-select>
           <!-- button -->
           <div>
             <div class="inline-flex m-t-24">
               <div class="flex">
-                <b-select v-model="monthValue">
+                <o-select v-model="monthValue">
                   <option v-for="(month, k) in months" :value="month" :key="k">
                     {{ month }}
                   </option>
-                </b-select>
+                </o-select>
               </div>
               <div class="flex">
-                <b-button @click="LoadTillMonth">Load</b-button>
+                <o-button @click="LoadTillMonth">Load</o-button>
                 {{ isLoading ? "Loading..." : "" }}
               </div>
             </div>
@@ -70,7 +70,7 @@
             </div>
           </div>
           <div>
-            <b-button @click="nextLoad">more</b-button>
+            <o-button @click="nextLoad">more</o-button>
           </div>
 
           <download-csv
@@ -79,7 +79,7 @@
             :fieldNames="fieldNames"
             :fileName="fileName"
           >
-            <b-button
+            <o-button
               class="b-reset op-button-pill h-9 rounded-full bg-form m-t-16"
             >
               <span class="p-l-16 p-r-16">
@@ -88,7 +88,7 @@
                   $t("admin.report.download-csv")
                 }}</span>
               </span>
-            </b-button>
+            </o-button>
           </download-csv>
         </div>
       </div>

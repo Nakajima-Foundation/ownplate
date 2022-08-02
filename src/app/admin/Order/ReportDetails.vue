@@ -26,7 +26,7 @@
       :fileName="fileName"
       :formulas="formulas"
     >
-      <b-button class="b-reset-tw">
+      <o-button class="b-reset-tw">
         <div
           class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
         >
@@ -35,7 +35,7 @@
             {{ $t("admin.report.download-csv-details") }}
           </div>
         </div>
-      </b-button>
+      </o-button>
     </download-csv>
   </div>
 </template>

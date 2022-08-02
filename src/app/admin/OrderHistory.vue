@@ -42,7 +42,7 @@
 
         <!-- Suspend Button -->
         <div class="mt-4 lg:mt-0 lg:mr-4 flex-shrink-0">
-          <b-button
+          <o-button
             tag="router-link"
             :to="`/admin/restaurants/${restaurantId()}/suspend`"
             class="b-reset-tw"
@@ -70,7 +70,7 @@
                 {{ $t("admin.order.suspendSettings") }}
               </div>
             </div>
-          </b-button>
+          </o-button>
         </div>
 
         <!-- Notifications -->
@@ -95,7 +95,7 @@
 
       <!-- More -->
       <div class="mx-6 mt-6 text-center" v-if="last !== undefined">
-        <b-button :disabled="last === null" @click="next" class="b-reset-tw">
+        <o-button :disabled="last === null" @click="next" class="b-reset-tw">
           <div
             class="inline-flex justify-center items-center w-48 h-9 px-4 rounded-full bg-black bg-opacity-5"
           >
@@ -103,12 +103,12 @@
               {{ $t("admin.order.more") }}
             </div>
           </div>
-        </b-button>
+        </o-button>
       </div>
 
       <!-- More -->
       <div class="mx-6 mt-6 text-center" v-if="last !== undefined">
-        <b-button :disabled="last === null" @click="all" class="b-reset-tw">
+        <o-button :disabled="last === null" @click="all" class="b-reset-tw">
           <div
             class="inline-flex justify-center items-center w-48 h-9 px-4 rounded-full bg-black bg-opacity-5"
           >
@@ -116,7 +116,7 @@
               {{ $t("admin.order.all") }}
             </div>
           </div>
-        </b-button>
+        </o-button>
       </div>
 
       <div v-if="isOwner">

@@ -14,10 +14,10 @@
         <span class="text-base font-bold">
           {{ $t("admin.subAccounts.name") }}
         </span>
-        <b-input
+        <o-input
           v-model="name"
           :placeholder="$t('admin.subAccounts.enterName')"
-        ></b-input>
+        ></o-input>
 
         <span class="text-base font-bold">
           {{ $t("admin.subAccounts.email") }} </span
@@ -35,15 +35,15 @@
           $t("admin.subAccounts.selectRestaurant")
         }}</span>
         <div v-for="(restaurant, k) in restaurants" :key="k">
-          <b-checkbox v-model="restaurantListObj[restaurant.id]">{{
+          <o-checkbox v-model="restaurantListObj[restaurant.id]">{{
             restaurant.restaurantName
-          }}</b-checkbox>
+          }}</o-checkbox>
         </div>
       </div>
       <div class="mt-2">
-        <b-button @click="saveList">
+        <o-button @click="saveList">
           {{ $t("editCommon.save") }}
-        </b-button>
+        </o-button>
       </div>
     </div>
   </div>

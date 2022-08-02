@@ -39,7 +39,7 @@
 
     <!-- Date -->
     <div class="mx-6 mt-6">
-      <b-select v-model="monthIndex">
+      <o-select v-model="monthIndex">
         <option
           v-for="day in lastSeveralMonths"
           :value="day.index"
@@ -47,7 +47,7 @@
         >
           {{ moment(day.date).format("YYYY-MM") }}
         </option>
-      </b-select>
+      </o-select>
     </div>
 
     <!-- Table -->
@@ -172,7 +172,7 @@
         :fieldNames="fieldNames"
         :fileName="fileName"
       >
-        <b-button class="b-reset-tw">
+        <o-button class="b-reset-tw">
           <div
             class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
           >
@@ -181,7 +181,7 @@
               {{ $t("admin.report.download-csv") }}
             </div>
           </div>
-        </b-button>
+        </o-button>
       </download-csv>
     </div>
 

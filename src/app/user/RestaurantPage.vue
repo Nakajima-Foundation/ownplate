@@ -184,11 +184,11 @@
       </div>
 
       <!-- Phone Login-->
-      <b-modal :active.sync="loginVisible" :width="488" scroll="keep">
+      <o-modal :active.sync="loginVisible" :width="488" scroll="keep">
         <div class="mx-2 my-6 p-6 bg-white shadow-lg rounded-lg">
           <phone-login v-on:dismissed="handleDismissed" />
         </div>
-      </b-modal>
+      </o-modal>
       <Cart
         v-if="isShowCart"
         @closeCart="closeCart"
@@ -217,13 +217,13 @@
       />
     </template>
     <!-- Image Popup-->
-    <b-modal :active.sync="imagePopup" :width="488" scroll="keep">
+    <o-modal :active.sync="imagePopup" :width="488" scroll="keep">
       <div class="px-2 text-center" @click.stop="closeImage()">
         <img :src="coverImage" class="rounded-lg shadow-lg" />
       </div>
-    </b-modal>
+    </o-modal>
     <!-- Image Popup-->
-    <b-modal :active.sync="categoryPopup" :width="488" scroll="keep">
+    <o-modal :active.sync="categoryPopup" :width="488" scroll="keep">
       <div class="px-2 text-center" @click.stop="closeCategory()">
         <div class="mx-2 my-6 p-6 bg-white shadow-lg rounded-lg">
           <template v-for="(title, key) in titleLists">
@@ -238,7 +238,7 @@
           </template>
         </div>
       </div>
-    </b-modal>
+    </o-modal>
   </div>
 </template>
 

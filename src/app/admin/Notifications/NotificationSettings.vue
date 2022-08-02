@@ -1,5 +1,5 @@
 <template>
-  <b-modal
+  <o-modal
     :active.sync="isActive"
     :width="488"
     scroll="keep"
@@ -109,7 +109,7 @@
 
             <!-- Sound Type and Test -->
             <div class="flex items-center mt-2">
-              <b-select v-model="soundIndex" class="mr-2">
+              <o-select v-model="soundIndex" class="mr-2">
                 <option
                   v-for="(soundFile, index) in soundFiles"
                   :value="index"
@@ -117,7 +117,7 @@
                 >
                   {{ $t(soundFile.nameKey) }}
                 </option>
-              </b-select>
+              </o-select>
 
               <a
                 class="inline-flex justify-center items-center px-4 h-9 rounded-full bg-black bg-opacity-5"
@@ -162,7 +162,7 @@
         </a>
       </div>
     </div>
-  </b-modal>
+  </o-modal>
 </template>
 
 <script>
