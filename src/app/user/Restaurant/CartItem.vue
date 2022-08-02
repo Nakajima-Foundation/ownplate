@@ -8,7 +8,7 @@
         <div class="mt-1" v-for="(option, k) in options" :key="k">
           <div v-if="option.length === 1">
             <div v-if="selectedOptions[k]">
-              <span class="text-sm text-brack"
+              <span class="text-sm text-black"
                 >{{ $t("sitemenu.options") }}:
               </span>
               <span class="text-sm font-bold text-gray-500">
@@ -17,7 +17,7 @@
             </div>
           </div>
           <div v-else-if="option.length > 1">
-            <span class="text-sm text-brack">
+            <span class="text-sm text-black">
               {{ $t("sitemenu.options") }}:</span
             >
             <span class="text-sm font-bold text-gray-500">
