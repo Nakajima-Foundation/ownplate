@@ -720,7 +720,11 @@ export default defineComponent({
         document.body.style.position = "";
       }
     });
-
+    onUnmounted(() => {
+      if (isShowCart.value) {
+        document.body.style.position = "";
+      }
+    });
     return {
       itemLists,
       titleLists,
