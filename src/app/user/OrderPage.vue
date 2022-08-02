@@ -325,47 +325,12 @@
               </div>
             </template>
 
-            <!--Act on Specified Commercial Transactions-->
+            <!--Act on Specified Commercial Transactions -->
             <div class="mt-6">
-              <div class="text-xl font-bold text-black text-opacity-30">
-                {{ $t("order.paymentAndCancellation") }}
-              </div>
-              <div class="bg-white rounded-lg shadow p-4 mt-2">
-                <div>
-                  <div class="text-sm font-bold text-black text-opacity-30">
-                    {{ $t("transactionsAct.phone") }}
-                  </div>
-
-                  <div class="text-sm mt-1">
-                    {{ nationalPhoneNumber }}
-                  </div>
-                </div>
-                <div class="mt-4">
-                  <div class="text-sm font-bold text-black text-opacity-30">
-                    {{ $t("transactionsAct.cancellation") }}
-                  </div>
-
-                  <div class="text-sm mt-1">
-                    ・{{ $t("transactionsAct.cancellationDescription") }}<br />
-                    ・{{ $t("transactionsAct.cancellationDescription4") }}<br />
-                    ・{{ $t("transactionsAct.cancellationDescription5") }}
-                    <a
-                      @click="openTransactionsAct()"
-                      class="text-sm font-bold text-op-teal underline"
-                      >{{ $t("transactionsAct.link") }}</a
-                    >
-                    {{ $t("transactionsAct.cancellationDescription6") }}
-                  </div>
-                </div>
-                <div class="mt-4">
-                  <div class="text-sm font-bold text-black text-opacity-30">
-                    {{ $t("transactionsAct.payment") }}
-                  </div>
-                  <div class="text-sm mt-1">
-                    ・{{ $t("transactionsAct.paymentDescriptionCardNote") }}
-                  </div>
-                </div>
-              </div>
+              <SpecifiedCommercialTransactions
+                :shopInfo="shopInfo"
+                @openTransactionsAct="openTransactionsAct()"
+                />
             </div>
 
             <!-- Payment -->
@@ -555,6 +520,7 @@ import OrderNotice from "./OrderPage/OrderNotice.vue";
 import Pickup from "./OrderPage/Pickup.vue";
 
 import BeforePaidAlert from "./OrderPage/BeforePaid/BeforePaidAlert.vue";
+import SpecifiedCommercialTransactions from "./OrderPage/BeforePaid/SpecifiedCommercialTransactions.vue";
 
 import { db, firestore } from "@/plugins/firebase";
 import { orderPlace } from "@/lib/firebase/functions";
@@ -618,6 +584,7 @@ export default {
     OrderNotice,
 
     TransactionsActContents,
+    SpecifiedCommercialTransactions,
   },
   props: {
     shopInfo: {

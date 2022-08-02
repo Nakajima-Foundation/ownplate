@@ -28,7 +28,7 @@
           </div>
 
           <div class="flex-1">
-            <router-link to="#" @click.native="copyClipboard(url)" event>
+            <span @click="copyClipboard(url)" class="cursor-pointer">
               <div class="inline-flex justify-center items-center">
                 <i class="material-icons text-lg text-op-teal mr-2"
                   >file_copy</i
@@ -37,12 +37,13 @@
                   {{ $t("shopInfo.copyUrl") }}
                 </div>
               </div>
-            </router-link>
+            </span>
 
             <div class="text-sm text-black text-opacity-30">
-              {{ this.url }}
+              {{ url }}
             </div>
 
+            <!-- SNS Link -->
             <div class="mt-6">
               <sharing-buttons :title="shopInfo.restaurantName" :url="url" />
             </div>
@@ -67,10 +68,13 @@
 </template>
 
 <script>
-import SharingButtons from "@/app/user/Common/SharingButtons";
-import { db, firestore } from "@/plugins/firebase";
+import { defineComponent, ref } from "@vue/composition-api";
 
-export default {
+import SharingButtons from "@/app/user/Common/SharingButtons.vue";
+import { shareUrl } from "@/utils/utils";
+import { useBasePath } from "@/utils/utils";
+
+export default defineComponent({
   components: {
     SharingButtons,
   },
@@ -83,20 +87,29 @@ export default {
       type: String,
       required: false,
     },
+    mode: {
+      type: String,
+      required: true,
+    },
   },
-  data() {
+  setup(props, ctx) {
+    const sharePopup = ref(false);
+
+    const basePath = useBasePath(ctx.root);
+    const url = shareUrl(ctx.root, basePath.value) + (props.suffix || "");
+
+    const openShare = () => {
+      sharePopup.value = true;
+    };
+    const closeShare = () => {
+      sharePopup.value = false;
+    };
     return {
-      url: this.shareUrl() + (this.suffix || ""),
-      sharePopup: false,
+      openShare,
+      closeShare,
+      sharePopup,
+      url,
     };
   },
-  methods: {
-    openShare() {
-      this.sharePopup = true;
-    },
-    closeShare() {
-      this.sharePopup = false;
-    },
-  },
-};
+});
 </script>

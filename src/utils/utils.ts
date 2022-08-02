@@ -53,9 +53,12 @@ export const arrayChunk = <T>(arr: T[], size = 1) => {
   }, []);
 };
 
-export const shareUrl = (root: any) => {
+export const shareUrl = (root: any, prefix: string) => {
   const restaurantId = root.$route.params.restaurantId;
-  return location.protocol + "//" + location.host + "/r/" + restaurantId;
+
+  return (
+    location.protocol + "//" + location.host + prefix + "/r/" + restaurantId
+  );
 };
 
 export const doc2data = (dataType: string) => {
@@ -73,32 +76,32 @@ export const array2obj = <T>(array: T[]) => {
     return tmp;
   }, {});
 };
-/*
-    num2time(num) {
-      if (num === 0 || num === 60 * 24) {
-        return this.$t("shopInfo.midnight");
-      }
-      if (num === 60 * 12) {
-        return this.$t("shopInfo.noon");
-      }
-      const offsetTime = this.$i18n.locale == "ja" ? 12 : 13;
-      const isPm = num >= 60 * 12;
-      if (num >= 60 * offsetTime) {
-        num = num - 60 * 12;
-      }
-      const formatedTime = [
-        String(Math.floor(num / 60)).padStart(2, "0"),
-        ":",
-        String(num % 60).padStart(2, "0"),
-        " ",
-      ].join("");
 
-      if (isPm) {
-        return this.$tc("shopInfo.pm", 1, { formatedTime });
-      }
-      return this.$tc("shopInfo.am", 0, { formatedTime });
-    },
-*/
+export const num2time = (num: number, root: any) => {
+  if (num === 0 || num === 60 * 24) {
+    return root.$t("shopInfo.midnight");
+  }
+  if (num === 60 * 12) {
+    return root.$t("shopInfo.noon");
+  }
+  const offsetTime = root.$i18n.locale == "ja" ? 12 : 13;
+  const isPm = num >= 60 * 12;
+  if (num >= 60 * offsetTime) {
+    num = num - 60 * 12;
+  }
+  const formatedTime = [
+    String(Math.floor(num / 60)).padStart(2, "0"),
+    ":",
+    String(num % 60).padStart(2, "0"),
+    " ",
+  ].join("");
+  
+  if (isPm) {
+    return root.$tc("shopInfo.pm", 1, { formatedTime });
+  }
+  return root.$tc("shopInfo.am", 0, { formatedTime });
+};
+
 export const countObj = (obj: any): number => {
   if (Array.isArray(obj)) {
     return obj.reduce((tmp, value) => {
