@@ -64,7 +64,9 @@
               <!-- Share and Favorite -->
               <div class="mt-4 flex justify-center items-center space-x-4">
                 <!-- Share Popup -->
-                <div><share-popup :shopInfo="shopInfo" :mode="mode"></share-popup></div>
+                <div>
+                  <share-popup :shopInfo="shopInfo" :mode="mode"></share-popup>
+                </div>
 
                 <!-- Favorite Button -->
                 <div>

@@ -43,7 +43,7 @@ export interface RestaurantInfoData {
 
   deliveryMinimumCookTime: number;
   suspendUntil: any;
-  
+
   images: any;
   publicFlag: boolean;
   deletedFlag: boolean;

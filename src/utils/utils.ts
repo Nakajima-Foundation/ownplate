@@ -95,7 +95,7 @@ export const num2time = (num: number, root: any) => {
     String(num % 60).padStart(2, "0"),
     " ",
   ].join("");
-  
+
   if (isPm) {
     return root.$tc("shopInfo.pm", 1, { formatedTime });
   }

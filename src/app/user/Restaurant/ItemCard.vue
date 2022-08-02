@@ -76,7 +76,11 @@
       >
         <!-- Share Button -->
         <div class="text-center mt-2">
-          <share-popup :shopInfo="shopInfo" :mode="mode" :suffix="urlSuffix"></share-popup>
+          <share-popup
+            :shopInfo="shopInfo"
+            :mode="mode"
+            :suffix="urlSuffix"
+          ></share-popup>
         </div>
 
         <!-- Item Options -->

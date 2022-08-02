@@ -131,7 +131,10 @@
 
         <!-- Transactions Act -->
         <div class="mt-2">
-          <transactions-act :shopInfo="shopInfo" :isDelivery="isDelivery"></transactions-act>
+          <transactions-act
+            :shopInfo="shopInfo"
+            :isDelivery="isDelivery"
+          ></transactions-act>
         </div>
 
         <!-- Restaurant Hours -->
@@ -293,7 +296,8 @@ export default defineComponent({
     });
 
     const parsedNumber = computed(() => {
-      const countryCode = props.shopInfo.countryCode || stripeRegion.countries[0].code;
+      const countryCode =
+        props.shopInfo.countryCode || stripeRegion.countries[0].code;
       try {
         return parsePhoneNumber(countryCode + props.shopInfo.phoneNumber);
       } catch (error) {
@@ -316,9 +320,8 @@ export default defineComponent({
       console.log("parsing failed, return as-is");
       return props.shopInfo.phoneNumber;
     });
-    
 
-    const isOpen = computed(() => { 
+    const isOpen = computed(() => {
       return Object.keys(daysOfWeek).reduce((tmp, day) => {
         if (weekday === Number(day) && props.shopInfo.businessDay[day]) {
           // get now and compaire
@@ -345,7 +348,7 @@ export default defineComponent({
     const hasUrl = computed(() => {
       return props.shopInfo.url;
     });
-    const hasLineUrl = computed(() => { 
+    const hasLineUrl = computed(() => {
       return props.shopInfo.lineUrl;
     });
     const hasInstagramUrl = computed(() => {
@@ -363,7 +366,8 @@ export default defineComponent({
       return props.paymentInfo.inStore;
     });
 
-    const { deliveryAvailableDays, availableDays, temporaryClosure } = usePickupTime(props.shopInfo, ctx);
+    const { deliveryAvailableDays, availableDays, temporaryClosure } =
+      usePickupTime(props.shopInfo, ctx);
 
     const minimumAvailableTime = computed(() => {
       const days = props.isDelivery
@@ -420,7 +424,7 @@ export default defineComponent({
       showPayment,
       stripeAccount,
       inStorePayment,
-      minimumAvailableTime,      
+      minimumAvailableTime,
       mapQuery,
       // methods
       toggleMoreInfo,
@@ -428,8 +432,7 @@ export default defineComponent({
 
       //
       temporaryClosure,
-
     };
-  }
+  },
 });
 </script>

@@ -64,7 +64,10 @@ export default defineComponent({
     const dayIndex = ref(0);
     const time = ref(0);
 
-    const { deliveryAvailableDays, availableDays } = usePickupTime(props.shopInfo, ctx);
+    const { deliveryAvailableDays, availableDays } = usePickupTime(
+      props.shopInfo,
+      ctx
+    );
 
     const days = computed(() => {
       return props.isDelivery
@@ -81,13 +84,17 @@ export default defineComponent({
     });
 
     watch(days, () => {
-      if (!(days.value[dayIndex.value]?.times||[]).some((t) => { return time.value == t.time})) {
+      if (
+        !(days.value[dayIndex.value]?.times || []).some((t) => {
+          return time.value == t.time;
+        })
+      ) {
         time.value = days.value[dayIndex.value].times[0].time;
       }
     });
     watch(dayIndex, (newValue) => {
       time.value = days.value[newValue].times[0].time;
-    })
+    });
     watch(time, () => {
       console.log("time changed");
     });

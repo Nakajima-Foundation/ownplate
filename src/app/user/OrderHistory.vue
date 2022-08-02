@@ -19,7 +19,7 @@
           @selected="orderSelected($event)"
           :order="order"
           :isSuperView="true"
-          />
+        />
       </template>
       <div v-else>
         <span class="text-base text-black text-opacity-40">
