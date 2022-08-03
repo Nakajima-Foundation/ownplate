@@ -10,7 +10,7 @@
     </div>
     <div class="flex-1 text-center">
       <router-link :to="topPath">
-        <img :class="logoClass" class="m-auto" :src="`/${logo}`" />
+        <img :class="logoClass" class="m-auto" :src="`/${logo}`" v-if="logo !== null"/>
       </router-link>
     </div>
     <div class="w-12"></div>
@@ -49,7 +49,9 @@ export default defineComponent({
       return "h-6";
     });
     const logo = computed(() => {
-      if (isInMo.value) {
+      if (isInMo.value === null) {
+        return null;
+      } else if (isInMo.value) {
         return "samplelogo.png";
       } else if (restaurantId.value && specialLogo[restaurantId.value]) {
         return specialLogo[restaurantId.value].image;

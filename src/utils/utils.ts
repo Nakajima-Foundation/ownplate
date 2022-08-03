@@ -294,6 +294,9 @@ const optionPrice = (option: string) => {
 };
 export const useIsInMo = (root: any) => {
   return computed(() => {
+    if (location.pathname !== root.$route.path) {
+      return null;
+    }
     return mo_prefixes.some((prefix) => {
       return (
         (root.$route.fullPath || "").startsWith(`/${prefix}/`) ||
