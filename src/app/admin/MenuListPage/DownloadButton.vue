@@ -28,7 +28,7 @@ export default defineComponent({
       type: Object,
       required: true,
     },
-    restaurantInfo: {
+    shopInfo: {
       type: Object,
       required: true,
     },
@@ -36,15 +36,15 @@ export default defineComponent({
 
   setup(props, ctx) {
     const downloadSubmitting = ref(false);
-    const restaurantInfo = computed(() => {
-      return props.restaurantInfo;
+    const shopInfo = computed(() => {
+      return props.shopInfo;
     });
-    const { nationalPhoneNumber } = usePhoneNumber(restaurantInfo);
+    const { nationalPhoneNumber } = usePhoneNumber(shopInfo);
 
     const downloadMenu = async () => {
       downloadSubmitting.value = true;
       const dl = await pdf.menuDownload(
-        props.restaurantInfo,
+        props.shopInfo,
         props.menuObj,
         nationalPhoneNumber.value,
         shareUrl(ctx.root)

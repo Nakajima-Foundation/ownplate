@@ -164,7 +164,7 @@
           />
 
           <div class="text-center mt-2" v-if="menuCounter > 0">
-            <DownloadButton :restaurantInfo="shopInfo" :menuObj="menuObj" />
+            <DownloadButton :shopInfo="shopInfo" :menuObj="menuObj" />
           </div>
         </div>
       </template>
@@ -268,10 +268,10 @@ export default defineComponent({
   },
   metaInfo() {
     return {
-      title: this.restaurantInfo.restaurantName
+      title: this.shopInfo.restaurantName
         ? [
             "Admin Menu List",
-            this.restaurantInfo.restaurantName,
+            this.shopInfo.restaurantName,
             this.defaultTitle,
           ].join(" / ")
         : this.defaultTitle,
@@ -279,7 +279,7 @@ export default defineComponent({
   },
   setup(props, ctx) {
     const submitting = ref(false);
-    const restaurantInfo = ref({});
+    const shopInfoSnapshot = ref({});
 
     const editings = ref({});
     const detachers = ref([]);
@@ -352,12 +352,12 @@ export default defineComponent({
       doc(db, `restaurants/${restaurantId.value}`),
       (results) => {
         if (results.exists && results.data().uid === ownerUid.value) {
-          restaurantInfo.value = results.data();
+          shopInfoSnapshot.value = results.data();
           notFound.value = false;
         } else {
           notFound.value = true;
           // 404
-          console.log("Error fetch restaurantInfo.");
+          console.log("Error fetch shopInfoSnapshot.");
         }
       }
     );
@@ -377,7 +377,7 @@ export default defineComponent({
     const menuLists = computed(() => {
       return props.isInMo
         ? Object.keys(itemsObj.value)
-        : restaurantInfo.value.menuLists || [];
+        : shopInfoSnapshot.value.menuLists || [];
     });
     const menuLength = computed(() => {
       return menuLists.value.length;
@@ -584,7 +584,6 @@ export default defineComponent({
     return {
       //ref
       submitting,
-      restaurantInfo,
       editings,
       notFound,
       publicFilter,
