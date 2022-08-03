@@ -68,20 +68,6 @@ const mixin = {
       }
       return this.$tc("shopInfo.am", 0, { formatedTime });
     },
-    countObj(obj) {
-      if (Array.isArray(obj)) {
-        return obj.reduce((tmp, value) => {
-          // nested array
-          if (Array.isArray(value)) {
-            return tmp + this.countObj(value);
-          }
-          return tmp + 1;
-        }, 0);
-      }
-      return Object.keys(obj).reduce((tmp, key) => {
-        return this.countObj(obj[key]) + tmp;
-      }, 0);
-    },
     copyClipboard: async function (text) {
       // TODO: check no-nuxt branch
       try {
