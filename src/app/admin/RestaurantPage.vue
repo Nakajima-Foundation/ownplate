@@ -980,7 +980,7 @@ import {
   shopInfoValidator,
   copyRestaurant,
 } from "@/utils/admin/RestaurantPageUtils";
-import { cleanObject, isNull } from "@/utils/utils";
+import { cleanObject, isNull, countObj } from "@/utils/utils";
 import { uploadFile } from "@/lib/firebase/storage";
 
 import {
@@ -1101,7 +1101,7 @@ export default {
       );
     },
     hasError() {
-      const num = this.countObj(this.errors);
+      const num = countObj(this.errors);
       return num > 0;
     },
     isSetLocation() {
