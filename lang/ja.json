@@ -263,7 +263,8 @@
     "category2": "カテゴリー2",
     "editCategory2": "カテゴリー2を編集",
     "showAllMenu": "全ての商品",
-    "showPublicMenu": "公開中のみ"
+    "showPublicMenu": "公開中のみ",
+    "selectCategory": "選択"
   },
   "editTitle": {
     "enterCategory": "商品グループ名を入力してください",

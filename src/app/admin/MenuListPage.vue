@@ -44,6 +44,25 @@
           />
         </div>
 
+        <!--ToDoサブカテゴリからカテゴリ一覧に戻るボタン-->
+        <div v-if="false">
+          <div
+            class="flex justify-between items-center space-x-2 lg:max-w-2xl lg:mx-auto h-14 mx-6 mt-6 py-4 pl-4 pr-6 bg-black bg-opacity-5 rounded-full"
+          >
+            <div class="flex items-center space-x-2">
+              <i class="material-icons text-2xl text-black text-opacity-50"
+                >tune</i
+              >
+              <div class="text-black font-bold text-sm text-opacity-50">
+                キャラクターくじ・キャラクター雑貨・カードゲーム
+              </div>
+            </div>
+            <div class="min-w-fit text-sm font-bold text-op-teal">
+              {{ $t("editMenu.selectCategory") }}
+            </div>
+          </div>
+        </div>
+
         <!-- category for mo -->
         <div v-if="showSubCategory">
           <div class="mx-6 mt-2 lg:max-w-2xl lg:mx-auto">

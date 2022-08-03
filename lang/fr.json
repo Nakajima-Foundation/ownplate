@@ -255,7 +255,8 @@
     "category2": "Catégorie 2",
     "editCategory2": "Modifier Catégorie 2",
     "showAllMenu": "Tous les points",
-    "showPublicMenu": "Produits publiés"
+    "showPublicMenu": "Produits publiés",
+    "selectCategory": "Sélectionner"
   },
   "editTitle": {
     "enterCategory": "Entrez le nom de le groupe",
