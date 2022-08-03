@@ -50,7 +50,7 @@
 <script>
 export default {
   props: {
-    restaurantInfo: {
+    shopInfo: {
       type: Object,
       required: true,
     },
@@ -71,7 +71,7 @@ export default {
     };
   },
   created() {
-    console.log("***", this.restaurantInfo);
+    console.log("***", this.shopInfo);
   },
   watch: {
     isVisible(newValue) {
@@ -88,7 +88,7 @@ export default {
       return !this.categories.find((category) => category === this.newEntry);
     },
     categories() {
-      return this.restaurantInfo[this.categoryKey] || [];
+      return this.shopInfo[this.categoryKey] || [];
     },
   },
   methods: {

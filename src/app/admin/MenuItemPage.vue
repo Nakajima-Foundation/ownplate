@@ -457,7 +457,7 @@
               <edit-category
                 v-if="categoryKey"
                 :categoryKey="categoryKey"
-                :restaurantInfo="shopInfo"
+                :shopInfo="shopInfo"
                 @dismissed="handleDismissed"
                 @updated="handleCategoryUpdated"
               />
