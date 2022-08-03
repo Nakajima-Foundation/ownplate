@@ -372,12 +372,14 @@ export default defineComponent({
 
     const openImage = () => {
       imagePopup.value = true;
-      const current = ctx.root.$router.history.current.path;
-      const to = basePath + "/r/" + restaurantId + (urlSuffix || "");
-      if (current !== to) {
-        ctx.root.$router.replace(to);
-        analyticsUtil.sendViewItem(props.item, props.shopInfo, restaurantId);
+      if (props.mode !== "mo") {
+        const current = ctx.root.$router.history.current.path;
+        const to = basePath.value + "/r/" + restaurantId + (urlSuffix || "");
+        if (current !== to) {
+          ctx.root.$router.replace(to);
+        }
       }
+      analyticsUtil.sendViewItem(props.item, props.shopInfo, restaurantId);
     };
     onMounted(() => {
       if (props.isOpen) {
@@ -386,7 +388,9 @@ export default defineComponent({
     });
     const closeImage = () => {
       imagePopup.value = false;
-      ctx.root.$router.replace(basePath + "/r/" + restaurantId);
+      if (props.mode !== "mo") {
+        ctx.root.$router.replace(basePath.value + "/r/" + restaurantId);
+      }
     };
     const setQuantities = (key, newValue) => {
       const newQuantities = [...props.quantities];
