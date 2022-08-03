@@ -690,7 +690,8 @@ export default defineComponent({
       props.shopInfo.category2 = [];
     }
     const { restaurantId } = props.shopInfo;
-    db.doc(`restaurants/${menuRestaurantId.value}/menus/${menuId}`).get()
+    db.doc(`restaurants/${menuRestaurantId.value}/menus/${menuId}`)
+      .get()
       .then((menuInfoDoc) => {
         if (menuInfoDoc.exists) {
           Object.assign(menuInfo, menuInfoDoc.data());

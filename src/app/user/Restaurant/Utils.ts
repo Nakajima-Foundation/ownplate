@@ -102,10 +102,16 @@ export const useCategory = (moPrefix: string) => {
       }
     );
   };
-
+  const categoryDataObj = computed(() => {
+    return categoryData.value.reduce((tmp, current) => {
+      tmp[current.id] = current;
+      return tmp;
+    }, {});
+  });
   return {
     loadCategory,
     categoryData,
+    categoryDataObj,
   };
 };
 

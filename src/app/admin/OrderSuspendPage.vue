@@ -125,11 +125,7 @@
 </template>
 
 <script>
-import {
-  defineComponent,
-  ref,
-  computed,
-} from "@vue/composition-api";
+import { defineComponent, ref, computed } from "@vue/composition-api";
 import { db, firestore } from "@/plugins/firebase";
 import firebase from "firebase/compat/app";
 
@@ -167,21 +163,23 @@ export default defineComponent({
 
     if (!checkAdminPermission(ctx)) {
       return {
-        notFound: true
+        notFound: true,
       };
     }
     const { ownerUid } = useAdminUids(ctx);
     if (!checkShopAccount(props.shopInfo, ownerUid.value)) {
       return {
-        notFound: true
+        notFound: true,
       };
     }
 
     if (
-      !props.shopInfo || props.shopInfo.deletedFlag || !props.shopInfo.publicFlag
+      !props.shopInfo ||
+      props.shopInfo.deletedFlag ||
+      !props.shopInfo.publicFlag
     ) {
       return {
-        notFound: true
+        notFound: true,
       };
     }
     const { availableDays } = usePickupTime(props.shopInfo, ctx);
@@ -238,7 +236,7 @@ export default defineComponent({
       availableTimes,
       suspendUntil,
       handleSuspend,
-      handleRemove
+      handleRemove,
     };
   },
 });

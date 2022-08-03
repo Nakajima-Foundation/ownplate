@@ -44,23 +44,12 @@
           />
         </div>
 
-        <!--ToDoサブカテゴリからカテゴリ一覧に戻るボタン-->
-        <div v-if="false">
-          <div
-            class="flex justify-between items-center space-x-2 lg:max-w-2xl lg:mx-auto h-14 mx-6 mt-6 py-4 pl-4 pr-6 bg-black bg-opacity-5 rounded-full"
-          >
-            <div class="flex items-center space-x-2">
-              <i class="material-icons text-2xl text-black text-opacity-50"
-                >tune</i
-              >
-              <div class="text-black font-bold text-sm text-opacity-50">
-                キャラクターくじ・キャラクター雑貨・カードゲーム
-              </div>
-            </div>
-            <div class="min-w-fit text-sm font-bold text-op-teal">
-              {{ $t("editMenu.selectCategory") }}
-            </div>
-          </div>
+        <!-- category for mo -->
+        <div v-if="showSubCategory">
+          <CategoryButton
+            :shopInfo="shopInfo"
+            :selectedCategory="selectedCategory"
+          />
         </div>
 
         <!-- category for mo -->
@@ -151,7 +140,7 @@
                 :position="
                   index == 0 ? 'first' : menuLength - 1 === index ? 'last' : ''
                 "
-                :shopInfo="restaurantInfo"
+                :shopInfo="shopInfo"
                 :isInMo="isInMo"
                 @positionUp="positionUp($event)"
                 @positionDown="positionDown($event)"
@@ -175,10 +164,7 @@
           />
 
           <div class="text-center mt-2" v-if="menuCounter > 0">
-            <DownloadButton
-              :restaurantInfo="restaurantInfo"
-              :menuObj="menuObj"
-            />
+            <DownloadButton :restaurantInfo="shopInfo" :menuObj="menuObj" />
           </div>
         </div>
       </template>
@@ -221,6 +207,7 @@ import AddButton from "./MenuListPage/AddButton.vue";
 import PhotoName from "./MenuListPage/PhotoName.vue";
 import DownloadButton from "./MenuListPage/DownloadButton.vue";
 import CategoryList from "./MenuListPage/CategoryList.vue";
+import CategoryButton from "./MenuListPage/CategoryButton.vue";
 
 import NotificationIndex from "./Notifications/Index.vue";
 
@@ -259,6 +246,7 @@ export default defineComponent({
 
     SubCategoryList,
     CategoryList,
+    CategoryButton,
   },
   props: {
     shopInfo: {
@@ -312,12 +300,18 @@ export default defineComponent({
       showCategory,
       showSubCategory,
     } = useCategoryParams(ctx, props.isInMo);
-    const { loadCategory, categoryData } = useCategory(props.moPrefix);
+    const { loadCategory, categoryData, categoryDataObj } = useCategory(
+      props.moPrefix
+    );
 
     const { subCategoryData, loadSubcategory } = useSubcategory(
       props.moPrefix,
       category
     );
+    const selectedCategory = computed(() => {
+      console.log(category.value, categoryDataObj);
+      return categoryDataObj.value[category.value] || {};
+    });
     watch(category, () => {
       if (category.value) {
         loadSubcategory();
@@ -619,6 +613,7 @@ export default defineComponent({
       // category,
       categoryData,
       subCategoryData,
+      selectedCategory,
 
       showCategory,
       showSubCategory,

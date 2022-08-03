@@ -255,23 +255,25 @@ export default {
         );
       }
       this.order_detacher = query.onSnapshot((result) => {
-        this.orders = result.docs.map(doc2data("order"))
-            .filter((a) => a.status !== order_status.transaction_hide)
-            .sort((order0, order1) => {
-              if (order0.status === order1.status) {
-                return (order0.timeEstimated || order0.timePlaced) >
-                  (order1.timeEstimated || order1.timePlaced)
-                  ? -1
-                  : 1;
-              }
-              return order0.status < order1.status ? -1 : 1;
-            }).map((order) => {
-              order.timePlaced = order.timePlaced.toDate();
-              if (order.timeEstimated) {
-                order.timeEstimated = order.timeEstimated.toDate();
-              }
-              return order;
-            });
+        this.orders = result.docs
+          .map(doc2data("order"))
+          .filter((a) => a.status !== order_status.transaction_hide)
+          .sort((order0, order1) => {
+            if (order0.status === order1.status) {
+              return (order0.timeEstimated || order0.timePlaced) >
+                (order1.timeEstimated || order1.timePlaced)
+                ? -1
+                : 1;
+            }
+            return order0.status < order1.status ? -1 : 1;
+          })
+          .map((order) => {
+            order.timePlaced = order.timePlaced.toDate();
+            if (order.timeEstimated) {
+              order.timeEstimated = order.timeEstimated.toDate();
+            }
+            return order;
+          });
       });
     },
     getPickUpDaysInAdvance() {
