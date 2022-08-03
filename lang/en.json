@@ -261,7 +261,8 @@
     "category2": "Category 2",
     "editCategory2": "Edit Category 2",
     "showAllMenu": "All Items",
-    "showPublicMenu": "Published Items"
+    "showPublicMenu": "Published Items",
+    "selectCategory": "Select"
   },
   "editTitle": {
     "enterCategory": "Enter group name",
