@@ -29,14 +29,14 @@ export const formatURL = (phoneNumber: PhoneNumber): string => {
   return "tel:" + prefix + phoneNumber.getNationalNumber();
 };
 
-export const usePhoneNumber = (restaurantInfo: any) => {
+export const usePhoneNumber = (shopInfo: any) => {
   const countries = stripeRegion.countries;
 
   const parsedNumber = computed(() => {
     const countryCode =
-      restaurantInfo.value.countryCode || countries.value[0].code;
+      shopInfo.value.countryCode || countries.value[0].code;
     try {
-      return parsePhoneNumber(countryCode + restaurantInfo.value.phoneNumber);
+      return parsePhoneNumber(countryCode + shopInfo.value.phoneNumber);
     } catch (error) {
       return null;
     }
@@ -47,7 +47,7 @@ export const usePhoneNumber = (restaurantInfo: any) => {
     if (pnumber) {
       return formatNational(pnumber);
     }
-    return restaurantInfo.value.phoneNumber;
+    return shopInfo.value.phoneNumber;
   });
 
   return {
