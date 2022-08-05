@@ -27,7 +27,7 @@ export default defineComponent({
     const specialLogo = {
       "5OInKqrhlpe7LHYNYXuU": {
         class: "h-8",
-        image: "kuuya-logo.jpg",
+        image: "TBP_logo.jpg",
       },
     };
 
