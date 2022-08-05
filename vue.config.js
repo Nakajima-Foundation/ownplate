@@ -2,6 +2,18 @@ const path = require("path");
 const vueSrc = "./src";
 module.exports = {
   runtimeCompiler: true,
+  pages: {
+    index: {
+      entry: 'src/main.ts',
+      template: 'public/index.html',
+      filename: 'index.html',
+    },
+    test: {
+      entry: 'src/main.ts',
+      template: 'public/test.html',
+      filename: 'test.html',
+    },
+  },
   devServer: {
     port: 3000
   },

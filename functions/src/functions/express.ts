@@ -161,7 +161,9 @@ const ogpPage = async (req: any, res: any) => {
     const description = menuData.description || restaurant_data.introduction || ownPlateConfig.siteDescription;
     const regexTitle = /<title.*title>/;
 
-    const url = menuData.exists ? `https://${ownPlateConfig.hostName}/r/${restaurantName}/menus/${escapeHtml(menuId)}` : `https://${ownPlateConfig.hostName}/r/${escapeHtml(restaurantName)}`;
+    const url = menuData.exists
+      ? `https://${ownPlateConfig.hostName}/r/${restaurantName}/menus/${escapeHtml(menuId)}`
+      : `https://${ownPlateConfig.hostName}/r/${escapeHtml(restaurantName)}`;
 
     const metas = [
       `<title>${escapeHtml(title)}</title>`,

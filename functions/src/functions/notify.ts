@@ -20,8 +20,6 @@ const LINE_MESSAGE_TOKEN = (functions.config() && functions.config().line && fun
 const aws_key = (functions.config() && functions.config().aws && functions.config().aws.id) || process.env.AWS_ID;
 const aws_secret = (functions.config() && functions.config().aws && functions.config().aws.secret) || process.env.AWS_SECRET;
 
-
-
 export const isEnabled = !!ownPlateConfig.line;
 
 // for customer
@@ -47,7 +45,7 @@ export const sendMessageToCustomer = async (
     return message;
   };
   const url = `https://${ownPlateConfig.hostName}/r/${restaurantId}/order/${orderId}?openExternalBrowser=1`;
-  
+
   // Not JP
   if (!isEnabled) {
     return await sms.pushSMS(aws_key, aws_secret, "OwnPlate", getMessage(url), orderData.phoneNumber);
@@ -67,19 +65,19 @@ export const sendMessageToCustomer = async (
         groupId,
         date: datestr,
         uid: orderData.uid,
-        month: monthstr,       
+        month: monthstr,
         last4: orderData.phoneNumber.slice(-4),
         createdAt: process.env.NODE_ENV !== "test" ? firebase.firestore.Timestamp.now() : Date.now(),
       });
     } catch (e) {
       console.log(e);
     }
-    
-    return await sms.pushSMS(aws_key, aws_secret, "Mobile Order",  getMessage(groupUrl), orderData.phoneNumber);
+
+    return await sms.pushSMS(aws_key, aws_secret, "Mobile Order", getMessage(groupUrl), orderData.phoneNumber);
   }
   // for JP
   const { lineId, liffIndexId, liffId } = (await line.getLineId(db, orderData.uid)) as any;
-  
+
   if (lineId) {
     if (liffIndexId) {
       // liff
