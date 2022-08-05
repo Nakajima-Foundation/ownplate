@@ -4,7 +4,7 @@ import * as functions from "firebase-functions";
 
 import { order_status, next_transitions, order_status_keys, timeEventMapping } from "../common/constant";
 import * as utils from "../lib/utils";
-import { orderAccounting, createNewOrderData, updateOrderTotalDataAndUserLog } from "../functions/order";
+import { orderAccounting, createNewOrderData, getGroupRestautantRef, updateOrderTotalDataAndUserLog } from "../functions/order";
 import { sendMessageToCustomer, notifyNewOrderToRestaurant, notifyCanceledOrderToRestaurant } from "../functions/notify";
 import { costCal } from "../common/commonUtils";
 import { Context } from "../models/TestType";
@@ -470,6 +470,8 @@ export const orderChange = async (db: any, data: any, context: functions.https.C
   if (newOrder.length === 0) {
     throw new functions.https.HttpsError("permission-denied", "Cannot be changed to an empty order.");
   }
+  // check mo
+  const menuRestaurantRef = restaurantData.groupId ? await getGroupRestautantRef(db, restaurantData.groupId) : restaurantRef;
 
   try {
     const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`);
@@ -491,7 +493,7 @@ export const orderChange = async (db: any, data: any, context: functions.https.C
       order: updateOrderData,
       rawOptions: updateRawOptions,
     };
-    const { newOrderData, newItems, newPrices, food_sub_total, alcohol_sub_total } = await createNewOrderData(restaurantRef, orderRef, baseData, multiple);
+    const { newOrderData, newItems, newPrices, food_sub_total, alcohol_sub_total } = await createNewOrderData(menuRestaurantRef, orderRef, baseData, multiple);
 
     const accountingResult = orderAccounting(restaurantData, food_sub_total, alcohol_sub_total, multiple);
     // was created new order data
@@ -551,7 +553,6 @@ export const orderChange = async (db: any, data: any, context: functions.https.C
           metadata: { uid: customerUid, restaurantId, orderId },
           payment_method_data,
         } as Stripe.PaymentIntentCreateParams;
-
         const hash = getHash(JSON.stringify(newOrderData));
 
         const paymentIntent = await stripe.paymentIntents.create(request, {

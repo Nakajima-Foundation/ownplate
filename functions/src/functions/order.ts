@@ -384,7 +384,7 @@ export const orderAccounting = (restaurantData, food_sub_total, alcohol_sub_tota
   }
 };
 
-const getGroupRestautantRef = async (db, groupId: string) => {
+export const getGroupRestautantRef = async (db, groupId: string) => {
   const groupData = (await db.doc(`groups/${groupId}`).get()).data();
   if (!groupData) {
     throw new functions.https.HttpsError("invalid-argument", "This group does not exist.");
