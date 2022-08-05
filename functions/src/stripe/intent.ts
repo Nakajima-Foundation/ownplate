@@ -525,6 +525,7 @@ export const orderChange = async (db: any, data: any, context: functions.https.C
     };
 
     if (!order.payment) {
+      console.error("[orderChange] no payment", orderUpdateData);
       orderRef.update(orderUpdateData);
     } else {
       // update stripe

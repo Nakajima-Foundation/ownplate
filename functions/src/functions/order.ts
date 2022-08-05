@@ -283,6 +283,7 @@ export const createNewOrderData = async (restaurantRef, orderRef, orderData, mul
       return menuObj[menuId] === undefined;
     })
   ) {
+    console.error("[createNewOrderData] menuError");
     return orderRef.update("status", order_status.error);
   }
   menuIds.map((menuId) => {
@@ -403,11 +404,13 @@ export const wasOrderCreated = async (db, data: any, context) => {
   try {
     const restaurantDoc = await restaurantRef.get();
     if (!restaurantDoc.exists) {
+      console.error("[wasOrderCreated] noRestaurant");
       return orderRef.update("status", order_status.error);
     }
     const restaurantData = restaurantDoc.data();
 
     if (restaurantData.deletedFlag || !restaurantData.publicFlag) {
+      console.error("[wasOrderCreated] not exists");
       return orderRef.update("status", order_status.error);
     }
     // check mo
@@ -472,7 +475,7 @@ export const wasOrderCreated = async (db, data: any, context) => {
       groupId: restaurantData.groupId,
     }));
   } catch (e) {
-    console.log(e);
+    console.error("[wasOrderCreated] unknown ", e);
     return orderRef.update("status", order_status.error);
   }
 };
