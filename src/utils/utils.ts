@@ -16,7 +16,7 @@ import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { regionalSettings, partners, stripe_regions } from "@/config/constant";
 
 import { ownPlateConfig, mo_prefixes } from "@/config/project";
-
+import { parsePhoneNumber, formatNational } from "./phoneutil";
 import { computed } from "@vue/composition-api";
 
 import firebase from "firebase/app";
@@ -587,5 +587,32 @@ export const useAdminUids = (ctx: any) => {
     isOwner,
     uid,
     ownerUid,
+  };
+};
+
+export const usePhoneNumber = (shopInfo: any) => {
+  const countries = stripeRegion.countries;
+
+  const parsedNumber = computed(() => {
+    const countryCode =
+      shopInfo.value.countryCode || countries.value[0].code;
+    try {
+      return parsePhoneNumber(countryCode + shopInfo.value.phoneNumber);
+    } catch (error) {
+      return null;
+    }
+  });
+
+  const nationalPhoneNumber = computed(() => {
+    const pnumber = parsedNumber.value;
+    if (pnumber) {
+      return formatNational(pnumber);
+    }
+    return shopInfo.value.phoneNumber;
+  });
+
+  return {
+    parsedNumber,
+    nationalPhoneNumber,
   };
 };

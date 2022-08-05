@@ -19,8 +19,7 @@
 import { defineComponent, ref, computed } from "@vue/composition-api";
 
 import * as pdf from "@/lib/pdf/pdf";
-import { usePhoneNumber } from "@/utils/phoneutil";
-import { shareUrl } from "@/utils/utils";
+import { usePhoneNumber, shareUrl } from "@/utils/utils";
 
 export default defineComponent({
   props: {
