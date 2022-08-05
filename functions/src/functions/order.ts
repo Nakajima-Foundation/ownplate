@@ -415,7 +415,7 @@ export const wasOrderCreated = async (db, data: any, context) => {
     }
     // check mo
     const menuRestaurantRef = restaurantData.groupId ? await getGroupRestautantRef(db, restaurantData.groupId) : restaurantRef;
-    
+
     const order = await orderRef.get();
 
     if (!order) {
@@ -451,29 +451,31 @@ export const wasOrderCreated = async (db, data: any, context) => {
 
     await createCustomer(db, customerUid, context.auth.token.phone_number);
 
-    return orderRef.update(utils.filterData({
-      order: newOrderData,
-      menuItems: newItems, // Clone of ordered menu items (simplified)
-      prices: newPrices,
-      status: order_status.validation_ok,
-      number: orderCount,
-      sub_total: accountingResult.sub_total,
-      tax: accountingResult.tax,
-      inclusiveTax: accountingResult.inclusiveTax,
-      deliveryFee,
-      total: accountingResult.total + deliveryFee,
-      accounting: {
-        food: {
-          revenue: accountingResult.food_sub_total,
-          tax: accountingResult.food_tax,
+    return orderRef.update(
+      utils.filterData({
+        order: newOrderData,
+        menuItems: newItems, // Clone of ordered menu items (simplified)
+        prices: newPrices,
+        status: order_status.validation_ok,
+        number: orderCount,
+        sub_total: accountingResult.sub_total,
+        tax: accountingResult.tax,
+        inclusiveTax: accountingResult.inclusiveTax,
+        deliveryFee,
+        total: accountingResult.total + deliveryFee,
+        accounting: {
+          food: {
+            revenue: accountingResult.food_sub_total,
+            tax: accountingResult.food_tax,
+          },
+          alcohol: {
+            revenue: accountingResult.alcohol_sub_total,
+            tax: accountingResult.alcohol_tax,
+          },
         },
-        alcohol: {
-          revenue: accountingResult.alcohol_sub_total,
-          tax: accountingResult.alcohol_tax,
-        },
-      },
-      groupId: restaurantData.groupId,
-    }));
+        groupId: restaurantData.groupId,
+      })
+    );
   } catch (e) {
     console.error("[wasOrderCreated] unknown ", e);
     return orderRef.update("status", order_status.error);

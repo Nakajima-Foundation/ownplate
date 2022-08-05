@@ -8,5 +8,5 @@ export const resources = {
 
 export const resources_mo = {
   en: en.resource,
-  ja: ja.resource_mo
+  ja: ja.resource_mo,
 };

@@ -299,7 +299,6 @@ export const cancel = async (db: any, data: any, context: functions.https.Callab
       const cancelTimeKey = uid === order.uid ? "orderCustomerCanceledAt" : "orderRestaurantCanceledAt";
       // user can cancel if restaurant cancel just only payment and status is placed.
       if (!order.payment || !order.payment.stripe || (!isAdmin && order.payment.stripe === "canceled")) {
-        
         // No payment transaction
         await updateOrderTotalDataAndUserLog(db, transaction, order.uid, order.order, restaurantId, uid, order.timePlaced, false);
         transaction.set(

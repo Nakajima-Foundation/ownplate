@@ -22,7 +22,6 @@ export const response200 = (res, payload) => {
   });
 };
 
-
 const getRestaurantData = async (restaurantId) => {
   const restaurant = await db.doc(`restaurants/${restaurantId}`).get();
   if (!restaurant || !restaurant.exists) {
