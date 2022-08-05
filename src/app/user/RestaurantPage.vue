@@ -725,9 +725,22 @@ export default defineComponent({
         document.body.style.position = "";
       }
     });
+    const filteredTitleLists = computed(() => {
+      const menuLists = props.shopInfo.menuLists || [];
+      const itemsObj = array2obj(titles.value);
+      return menuLists
+        .map((itemId) => {
+          return { ...itemsObj[itemId] };
+        })
+        .filter((item) => {
+          return item && item.id;
+        }) || [];
+      return ret;
+    });
+    
     return {
       itemLists,
-      titleLists,
+      titleLists: filteredTitleLists,
 
       coverImage,
       menuId,
