@@ -42,8 +42,9 @@
 
         <div class="p-4">
           <!-- Item Name -->
-          <div class="text-xl font-bold">{{ title }}</div>
-
+          <a :id="`${item.id}`">
+            <div class="text-xl font-bold">{{ title }}</div>
+          </a>
           <!-- Price -->
           <div class="mt-2 text-base">
             <Price :shopInfo="shopInfo" :menu="item" />

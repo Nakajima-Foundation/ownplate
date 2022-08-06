@@ -539,3 +539,10 @@ export const useInLiff = (ctx: any) => {
   });
 };
 
+export const scrollToElementById = (id: string) => {
+  const elem = document.getElementById(id);
+  if (elem) {
+    scrollTo(0, elem.getBoundingClientRect().y + window.pageYOffset);
+  }
+};
+
