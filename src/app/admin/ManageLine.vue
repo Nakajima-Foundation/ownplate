@@ -6,35 +6,13 @@
     </div>
     <div v-else>
       <!-- Header -->
-      <div class="mt-6 mx-6 lg:flex lg:items-center">
-        <!-- Back -->
-        <div class="flex space-x-4">
-          <div class="flex-shrink-0">
-            <back-button :url="`/admin/restaurants/${restaurantId()}/orders`" />
-          </div>
-        </div>
-
-        <!-- Photo and Name -->
-        <div class="mt-4 lg:mt-0 lg:flex-1 lg:flex lg:items-center lg:mx-4">
-          <div class="flex items-center">
-            <div class="flex-shrink-0 rounded-full bg-black bg-opacity-10 mr-4">
-              <img
-                :src="resizedProfileImage(shopInfo, '600')"
-                class="w-9 h-9 rounded-full object-cover"
-              />
-            </div>
-            <div class="text-base font-bold">
-              {{ shopInfo.restaurantName }}
-            </div>
-          </div>
-        </div>
-
-        <!-- Notifications -->
-        <div class="mt-4 lg:mt-0 flex-shrink-0">
-          <notification-index :shopInfo="shopInfo" />
-        </div>
-      </div>
-
+      <AdminHeader
+        class="mt-6 mx-6 lg:flex lg:items-center"
+        :shopInfo="shopInfo"
+        :backLink="`/admin/restaurants/${shopInfo.id}/orders`"
+        :showSuspend="false"
+        />
+      
       <!-- Body -->
       <div class="mt-6 mx-6 grid-col-1 space-y-4 lg:max-w-2xl lg:mx-auto">
         <!-- Title -->
@@ -119,16 +97,14 @@
 
 <script>
 import { db } from "@/plugins/firebase";
-import BackButton from "@/components/BackButton";
 import { lineAuthURL, lineVerify } from "@/lib/line/line";
 
-import NotificationIndex from "./Notifications/Index";
 import NotFound from "@/components/NotFound";
+import AdminHeader from "@/app/admin/AdminHeader.vue";
 
 export default {
   components: {
-    BackButton,
-    NotificationIndex,
+    AdminHeader,
     NotFound,
   },
   metaInfo() {
