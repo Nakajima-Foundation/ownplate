@@ -6,16 +6,15 @@
       <div class="column is-narrow w-6"></div>
       <!-- Center Column -->
       <div class="column">
-        <div class="m-l-24 m-r-24">
-          <!-- Nav Bar -->
-          <div class="level">
-            <!-- Back Button and Restaurant Profile -->
-            <AdminHeader
-              :shopInfo="shopInfo"
-              backLink="/admin/restaurants/"
+        <!-- Nav Bar -->
+        <div class="level">
+          <!-- Back Button and Restaurant Profile -->
+          <AdminHeader
+            class="mt-6 mx-6 lg:flex lg:items-center"
+            :shopInfo="shopInfo"
+            backLink="/admin/restaurants/"
               :showSuspend="false"
-              />
-          </div>
+            />
         </div>
       </div>
       <!-- Right Gap -->

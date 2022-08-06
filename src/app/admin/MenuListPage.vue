@@ -6,14 +6,12 @@
     </template>
     <div v-else-if="notFound === false">
       <!-- Header -->
-      <div class="mt-6 mx-6 lg:flex lg:items-center">
-        <!-- Back and Preview -->
-        <AdminHeader
-          :shopInfo="shopInfo"
-          backLink="/admin/restaurants/"
-          :showSuspend="false"
+      <AdminHeader
+        class="mt-6 mx-6 lg:flex lg:items-center"
+        :shopInfo="shopInfo"
+        backLink="/admin/restaurants/"
+        :showSuspend="false"
         />
-      </div>
 
       <template v-if="showCategory">
         <!-- Category view -->

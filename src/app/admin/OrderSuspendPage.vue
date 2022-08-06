@@ -1,14 +1,12 @@
 <template>
   <div>
     <!-- Header -->
-    <div class="mt-6 mx-6 lg:flex lg:items-center">
-      <!-- Back and Preview -->
-      <AdminHeader
-        :shopInfo="shopInfo"
-        :backLink="`/admin/restaurants/${shopInfo.restaurantId}/orders`"
-        :showSuspend="false"
-        />
-    </div>
+    <AdminHeader
+      class="mt-6 mx-6 lg:flex lg:items-center"
+      :shopInfo="shopInfo"
+      :backLink="`/admin/restaurants/${shopInfo.restaurantId}/orders`"
+      :showSuspend="false"
+      />
 
     <!-- Title -->
     <div class="mt-6 mx-6 text-xl font-bold text-black text-opacity-30">
