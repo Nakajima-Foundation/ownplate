@@ -234,7 +234,7 @@ export const itemOptionCheckbox2options = (itemOptionCheckbox: any) => {
     itemOptionCheckbox.length === 1 &&
     !itemOptionCheckbox[0]
   ) {
-    console.log("Special case: itemOptionCheckbox===['']");
+    // console.log("Special case: itemOptionCheckbox===['']");
     return [];
   }
   return (itemOptionCheckbox || []).map((option: string) => {

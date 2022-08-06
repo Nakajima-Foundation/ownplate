@@ -373,9 +373,9 @@ export default defineComponent({
     }
 
     const openImage = () => {
+      scrollToElementById(props.item.id)
       imagePopup.value = true;
       if (props.mode !== "mo") {
-        scrollToElementById(props.item.id)
         const current = ctx.root.$router.history.current.path;
         const to = basePath.value + "/r/" + restaurantId + (urlSuffix || "");
         if (current !== to) {
@@ -391,6 +391,9 @@ export default defineComponent({
     });
     const closeImage = () => {
       imagePopup.value = false;
+      setTimeout(() => {
+        scrollToElementById(props.item.id)
+      }, 30);
       if (props.mode !== "mo") {
         ctx.root.$router.replace(basePath.value + "/r/" + restaurantId);
       }
