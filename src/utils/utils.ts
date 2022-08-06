@@ -234,7 +234,7 @@ export const itemOptionCheckbox2options = (itemOptionCheckbox: any) => {
     itemOptionCheckbox.length === 1 &&
     !itemOptionCheckbox[0]
   ) {
-    console.log("Special case: itemOptionCheckbox===['']");
+    // console.log("Special case: itemOptionCheckbox===['']");
     return [];
   }
   return (itemOptionCheckbox || []).map((option: string) => {
@@ -615,4 +615,10 @@ export const usePhoneNumber = (shopInfo: any) => {
     parsedNumber,
     nationalPhoneNumber,
   };
+};
+export const scrollToElementById = (id: string) => {
+  const elem = document.getElementById(id);
+  if (elem) {
+    scrollTo(0, elem.getBoundingClientRect().y + window.pageYOffset);
+  }
 };
