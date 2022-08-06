@@ -569,3 +569,10 @@ export const useToggle = (defaultValue = false) => {
     toggle,
   };
 };
+
+export const scrollToElementById = (id: string) => {
+  const elem = document.getElementById(id);
+  if (elem) {
+    scrollTo(0, elem.getBoundingClientRect().y + window.pageYOffset);
+  }
+};

@@ -42,8 +42,9 @@
 
         <div class="p-4">
           <!-- Item Name -->
-          <div class="text-xl font-bold">{{ title }}</div>
-
+          <a :id="`${item.id}`">
+            <div class="text-xl font-bold">{{ title }}</div>
+          </a>
           <!-- Price -->
           <div class="mt-2 text-base">
             <Price :shopInfo="shopInfo" :menu="item" />
@@ -242,6 +243,7 @@ import {
   useBasePath,
   arraySum,
   itemOptionCheckbox2options,
+  scrollToElementById,
 } from "@/utils/utils";
 
 // menu UI algorithm
@@ -373,6 +375,7 @@ export default defineComponent({
     const openImage = () => {
       imagePopup.value = true;
       if (props.mode !== "mo") {
+        scrollToElementById(props.item.id)
         const current = ctx.root.$router.history.current.path;
         const to = basePath.value + "/r/" + restaurantId + (urlSuffix || "");
         if (current !== to) {
