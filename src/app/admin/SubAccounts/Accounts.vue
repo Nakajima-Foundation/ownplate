@@ -20,20 +20,33 @@
       <div class="mt-2 text-base font-bold">
         {{ $t("admin.subAccounts.subaccountlist") }}
       </div>
-      <div v-for="(child, k) in children" :key="k" class="flex items-center">
-        <router-link :to="`/admin/subaccounts/accounts/${child.id}`">
-          {{ child.name }}/{{ child.email }}/{{ rList(child.restaurantLists) }}
-          {{
+      <table class="w-full bg-white rounded-lg shadow">
+        <tr v-for="(child, k) in children" :key="k" class="items-center">
+          <td class="p-2">
+            <router-link :to="`/admin/subaccounts/accounts/${child.id}`">
+              {{ child.name }}({{ child.email }})
+            </router-link>
+          </td>
+          <td class="p-2">
+            <div v-for="(rname, k2) in rList(child.restaurantLists)" :key="`${k}_${k2}`">
+              {{rname}}
+            </div>
+          </td>
+          <td class="p-2">
+            {{
             $t(
-              "admin.subAccounts.messageResult." +
-                (child.accepted === true ? "accepted" : "waiting")
+            "admin.subAccounts.messageResult." +
+            (child.accepted === true ? "accepted" : "waiting")
             )
-          }}
-        </router-link>
-        <b-button @click="deleteChild(child.id)">
-          {{ $t("admin.subAccounts.deleteSubaccount") }}
-        </b-button>
-      </div>
+            }}
+          </td>
+          <td class="p-2">
+            <b-button @click="deleteChild(child.id)">
+              {{ $t("admin.subAccounts.deleteSubaccount") }}
+            </b-button>
+          </td>
+        </tr>
+      </table>
     </div>
 
     <div class="mx-6 mt-6">
@@ -181,8 +194,7 @@ export default {
         .filter((name) => {
           return !!name;
         })
-        .slice(0, 2)
-        .join(",");
+        .slice(0, 2);
     },
     async invite() {
       this.sending = true;
