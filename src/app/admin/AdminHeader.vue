@@ -34,7 +34,7 @@
     </div>
     
     <!-- Suspend Button -->
-    <div class="mt-4 lg:mt-0 lg:mr-4 flex-shrink-0">
+    <div class="mt-4 lg:mt-0 lg:mr-4 flex-shrink-0" v-if="showSuspend">
       <b-button
         tag="router-link"
         :to="`/admin/restaurants/${restaurantId()}/suspend`"
@@ -92,6 +92,10 @@ export default defineComponent({
     },
     backLink: {
       type: String,
+      required: true,
+    },
+    showSuspend: {
+      type: Boolean,
       required: true,
     },
   },

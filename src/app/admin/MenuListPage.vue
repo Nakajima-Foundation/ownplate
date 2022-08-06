@@ -8,22 +8,9 @@
       <!-- Header -->
       <div class="mt-6 mx-6 lg:flex lg:items-center">
         <!-- Back and Preview -->
-        <div class="flex space-x-4">
-          <div class="flex-shrink-0">
-            <back-button url="/admin/restaurants/" />
-          </div>
-          <PreviewLink />
-        </div>
-
-        <!-- Photo and Name -->
-        <div class="mt-4 lg:mt-0 lg:flex-1 lg:flex lg:items-center lg:mx-4">
-          <PhotoName :shopInfo="shopInfo" />
-        </div>
-
-        <!-- Notifications -->
-        <div class="mt-4 lg:mt-0 flex-shrink-0">
-          <notification-index :shopInfo="shopInfo" />
-        </div>
+        <AdminHeader :shopInfo="shopInfo" :backLink="'/admin/restaurants/'"
+                     :showSuspend="false"
+                     />
       </div>
 
       <template v-if="showCategory">
@@ -197,7 +184,6 @@ import MenuCard from "@/app/admin/Menus/MenuCard.vue";
 import TitleCard from "@/app/admin/Menus/TitleCard.vue";
 import TitleInput from "@/app/admin/Menus/TitleInput.vue";
 import NotFound from "@/components/NotFound.vue";
-import BackButton from "@/components/BackButton.vue";
 
 import SubCategoryList from "@/app/user/Restaurant/SubCategoryList.vue";
 
@@ -209,7 +195,7 @@ import DownloadButton from "./MenuListPage/DownloadButton.vue";
 import CategoryList from "./MenuListPage/CategoryList.vue";
 import CategoryButton from "./MenuListPage/CategoryButton.vue";
 
-import NotificationIndex from "./Notifications/Index.vue";
+import AdminHeader from "@/app/admin/AdminHeader.vue";
 
 import { useMenuAndTitle } from "./MenuListPage/Utils";
 
@@ -234,10 +220,10 @@ export default defineComponent({
     MenuCard,
     TitleCard,
     TitleInput,
-    BackButton,
-    NotificationIndex,
     NotFound,
 
+    AdminHeader,
+    
     PreviewLink,
     PublicFilterToggle,
     AddButton,

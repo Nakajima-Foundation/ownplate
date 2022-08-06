@@ -7,7 +7,9 @@
       <!-- Header -->
       <div class="mt-6 mx-6 lg:flex lg:items-center">
         <!-- Back and Preview -->
-        <AdminHeader :shopInfo="shopInfo" :backLink="'/admin/restaurants/'"/>
+        <AdminHeader :shopInfo="shopInfo" :backLink="'/admin/restaurants/'"
+                     :showSuspend="true"
+                     />
       </div>
 
       <!-- Date -->
