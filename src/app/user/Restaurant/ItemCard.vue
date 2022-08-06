@@ -245,7 +245,9 @@ import { mapGetters, mapMutations } from "vuex";
 import Price from "@/components/Price";
 import SharePopup from "@/app/user/Restaurant/SharePopup";
 import * as analyticsUtil from "@/lib/firebase/analytics";
-
+import {
+  scrollToElementById,
+} from "@/utils/utils";
 // menu UI algorithm
 //   init quantities = [0]
 //   if sum(quantities) > 0, show button
@@ -404,6 +406,7 @@ export default {
       this.imagePopup = true;
       const current = this.$router.history.current.path;
       const to = "/r/" + this.restaurantId() + (this.urlSuffix || "");
+      scrollToElementById(this.item.id);
       if (current !== to) {
         this.$router.replace(to);
 
