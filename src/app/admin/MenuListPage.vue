@@ -309,7 +309,6 @@ export default defineComponent({
       category
     );
     const selectedCategory = computed(() => {
-      console.log(category.value, categoryDataObj);
       return categoryDataObj.value[category.value] || {};
     });
     watch(category, () => {
