@@ -403,10 +403,10 @@ export default {
   },
   methods: {
     openImage() {
+      scrollToElementById(this.item.id);
       this.imagePopup = true;
       const current = this.$router.history.current.path;
       const to = "/r/" + this.restaurantId() + (this.urlSuffix || "");
-      scrollToElementById(this.item.id);
       if (current !== to) {
         this.$router.replace(to);
 
@@ -419,6 +419,9 @@ export default {
     },
     closeImage() {
       this.imagePopup = false;
+      setTimeout(() => {
+        scrollToElementById(this.item.id);
+      }, 50);
       this.$router.replace("/r/" + this.restaurantId());
     },
     pullQuantities(key) {
