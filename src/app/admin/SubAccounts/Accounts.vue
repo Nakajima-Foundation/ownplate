@@ -28,16 +28,19 @@
             </router-link>
           </td>
           <td class="p-2">
-            <div v-for="(rname, k2) in rList(child.restaurantLists)" :key="`${k}_${k2}`">
-              {{rname}}
+            <div
+              v-for="(rname, k2) in rList(child.restaurantLists)"
+              :key="`${k}_${k2}`"
+            >
+              {{ rname }}
             </div>
           </td>
           <td class="p-2">
             {{
-            $t(
-            "admin.subAccounts.messageResult." +
-            (child.accepted === true ? "accepted" : "waiting")
-            )
+              $t(
+                "admin.subAccounts.messageResult." +
+                  (child.accepted === true ? "accepted" : "waiting")
+              )
             }}
           </td>
           <td class="p-2">

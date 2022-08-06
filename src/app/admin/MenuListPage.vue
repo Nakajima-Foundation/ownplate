@@ -8,9 +8,11 @@
       <!-- Header -->
       <div class="mt-6 mx-6 lg:flex lg:items-center">
         <!-- Back and Preview -->
-        <AdminHeader :shopInfo="shopInfo" :backLink="'/admin/restaurants/'"
-                     :showSuspend="false"
-                     />
+        <AdminHeader
+          :shopInfo="shopInfo"
+          :backLink="'/admin/restaurants/'"
+          :showSuspend="false"
+        />
       </div>
 
       <template v-if="showCategory">
@@ -223,7 +225,7 @@ export default defineComponent({
     NotFound,
 
     AdminHeader,
-    
+
     PreviewLink,
     PublicFilterToggle,
     AddButton,
