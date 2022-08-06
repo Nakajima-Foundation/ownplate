@@ -8,6 +8,7 @@ import * as Cookie from "cookie";
 import { defaultHeader } from "@/config/header";
 import { formatOption } from "@/utils/strings";
 
+import { arraySum } from "@/utils/utils";
 import { GAPIKey } from "@/config/project";
 
 const mixin = {
@@ -100,7 +101,7 @@ const mixin = {
       return 0;
     },
     arrayOrNumSum(arr) {
-      return Array.isArray(arr) ? this.arraySum(arr) : arr || 0;
+      return Array.isArray(arr) ? arraySum(arr) : arr || 0;
     },
     forceArray(arr) {
       return Array.isArray(arr) ? arr : [arr];
