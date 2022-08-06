@@ -25,4 +25,3 @@ export const formatURL = (phoneNumber: PhoneNumber): string => {
   const prefix = localPrefix(phoneNumber);
   return "tel:" + prefix + phoneNumber.getNationalNumber();
 };
-

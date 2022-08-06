@@ -373,7 +373,7 @@ export default defineComponent({
     }
 
     const openImage = () => {
-      scrollToElementById(props.item.id)
+      scrollToElementById(props.item.id);
       imagePopup.value = true;
       if (props.mode !== "mo") {
         const current = ctx.root.$router.history.current.path;
@@ -392,7 +392,7 @@ export default defineComponent({
     const closeImage = () => {
       imagePopup.value = false;
       setTimeout(() => {
-        scrollToElementById(props.item.id)
+        scrollToElementById(props.item.id);
       }, 30);
       if (props.mode !== "mo") {
         ctx.root.$router.replace(basePath.value + "/r/" + restaurantId);

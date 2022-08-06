@@ -594,8 +594,7 @@ export const usePhoneNumber = (shopInfo: any) => {
   const countries = stripeRegion.countries;
 
   const parsedNumber = computed(() => {
-    const countryCode =
-      shopInfo.value.countryCode || countries.value[0].code;
+    const countryCode = shopInfo.value.countryCode || countries.value[0].code;
     try {
       return parsePhoneNumber(countryCode + shopInfo.value.phoneNumber);
     } catch (error) {

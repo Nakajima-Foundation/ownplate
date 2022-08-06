@@ -10,7 +10,7 @@
         <!-- Back and Preview -->
         <AdminHeader
           :shopInfo="shopInfo"
-          :backLink="'/admin/restaurants/'"
+          backLink="/admin/restaurants/"
           :showSuspend="false"
         />
       </div>

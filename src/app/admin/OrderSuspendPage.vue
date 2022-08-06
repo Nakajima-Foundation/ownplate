@@ -3,43 +3,11 @@
     <!-- Header -->
     <div class="mt-6 mx-6 lg:flex lg:items-center">
       <!-- Back and Preview -->
-      <div class="flex space-x-4">
-        <div class="flex-shrink-0">
-          <back-button :url="`/admin/restaurants/${restaurantId()}/orders`" />
-        </div>
-        <div class="flex-shrink-0">
-          <router-link :to="'/r/' + restaurantId()">
-            <div
-              class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
-            >
-              <i class="material-icons text-lg text-op-teal mr-2">launch</i>
-              <span class="text-sm font-bold text-op-teal">{{
-                $t("admin.viewPage")
-              }}</span>
-            </div>
-          </router-link>
-        </div>
-      </div>
-
-      <!-- Photo and Name -->
-      <div class="mt-4 lg:mt-0 lg:flex-1 lg:flex lg:items-center lg:mx-4">
-        <div class="flex items-center">
-          <div class="flex-shrink-0 rounded-full bg-black bg-opacity-10 mr-4">
-            <img
-              :src="resizedProfileImage(shopInfo, '600')"
-              class="w-9 h-9 rounded-full object-cover"
-            />
-          </div>
-          <div class="text-base font-bold">
-            {{ shopInfo.restaurantName }}
-          </div>
-        </div>
-      </div>
-
-      <!-- Notifications -->
-      <div class="mt-4 lg:mt-0 flex-shrink-0">
-        <notification-index :shopInfo="shopInfo" />
-      </div>
+      <AdminHeader
+        :shopInfo="shopInfo"
+        :backLink="`/admin/restaurants/${shopInfo.restaurantId}/orders`"
+        :showSuspend="false"
+        />
     </div>
 
     <!-- Title -->
@@ -129,8 +97,7 @@ import { defineComponent, ref, computed } from "@vue/composition-api";
 import { db, firestore } from "@/plugins/firebase";
 import firebase from "firebase/compat/app";
 
-import NotificationIndex from "./Notifications/Index.vue";
-import BackButton from "@/components/BackButton.vue";
+import AdminHeader from "@/app/admin/AdminHeader.vue";
 
 import { checkAdminPermission, checkShopAccount } from "@/utils/userPermission";
 import { useAdminUids } from "@/utils/utils";
@@ -138,8 +105,7 @@ import { usePickupTime } from "@/utils/pickup";
 
 export default defineComponent({
   components: {
-    BackButton,
-    NotificationIndex,
+    AdminHeader,
   },
   metaInfo() {
     return {

@@ -10,26 +10,11 @@
           <!-- Nav Bar -->
           <div class="level">
             <!-- Back Button and Restaurant Profile -->
-            <div class="level-left flex-1">
-              <!-- Back Button -->
-              <back-button url="/admin/restaurants/" class="m-t-24 m-r-16" />
-              <!-- Restaurant Profile -->
-              <div class="is-inline-flex flex-center m-t-24">
-                <div>
-                  <img
-                    :src="resizedProfileImage(restaurant, '600')"
-                    class="w-9 h-9 rounded-full object-cover"
-                  />
-                </div>
-                <div class="t-h6 c-text-black-high m-l-8 flex-1">
-                  {{ restaurant.restaurantName }}
-                </div>
-              </div>
-            </div>
-            <!-- Notification Settings -->
-            <div class="level-right">
-              <notification-index :shopInfo="restaurant" />
-            </div>
+            <AdminHeader
+              :shopInfo="shopInfo"
+              backLink="/admin/restaurants/"
+              :showSuspend="false"
+              />
           </div>
         </div>
       </div>
@@ -62,7 +47,7 @@
             <div class="align-center">
               <a :href="urlMenu" target="_blank">
                 <div class="op-button-text t-button">
-                  {{ restaurant.restaurantName }}
+                  {{ shopInfo.restaurantName }}
                 </div>
               </a>
             </div>
@@ -141,44 +126,46 @@
 
 <script>
 import { db, firestore } from "@/plugins/firebase";
-import BackButton from "@/components/BackButton";
-import NotificationIndex from "./Notifications/Index";
+import AdminHeader from "@/app/admin/AdminHeader.vue";
+
 
 export default {
   components: {
-    BackButton,
-    NotificationIndex,
+    AdminHeader,
   },
   metaInfo() {
     return {
-      title: this.restaurant.restaurantName
+      title: this.shopInfo.restaurantName
         ? [
             "Admin QRCode",
-            this.restaurant.restaurantName,
+            this.shopInfo.restaurantName,
             this.defaultTitle,
           ].join(" / ")
         : this.defaultTitle,
     };
   },
+  props: {
+    shopInfo: {
+      type: Object,
+      required: true,
+    },
+  },
   data() {
     return {
-      restaurant: {},
       detacher: null,
       trace: null,
     };
   },
   created() {
-    const refRestaurant = db.doc(`restaurants/${this.restaurantId()}`);
-    this.detacher = refRestaurant.onSnapshot(async (snapshot) => {
-      this.restaurant = snapshot.data();
-      if (this.restaurant.trace) {
-        this.trace = this.restaurant.trace;
+    (async () => {
+      if (this.shopInfo.trace) {
+        this.trace = this.shopInfo.trace;
       } else {
+        const refRestaurant = db.doc(`restaurants/${this.restaurantId()}`);
         const refEnter = refRestaurant.collection("trace").doc();
         const refLeave = refRestaurant.collection("trace").doc();
         console.log("new traceIDs", refEnter.id, refLeave.id);
         await db.runTransaction(async (transaction) => {
-          const data = (await transaction.get(refRestaurant)).data();
           console.log(data);
           if (!data.trace) {
             transaction.set(refEnter, {
@@ -202,7 +189,7 @@ export default {
           }
         });
       }
-    });
+    })();
   },
   destroyed() {
     this.detacher && this.detacher();
