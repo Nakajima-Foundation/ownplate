@@ -31,8 +31,7 @@ export default defineComponent({
       return !groupMasterRestaurant.value.empty;
     });
     const moPrefix = computed(() => {
-      // return "";
-      return "ss";
+      return ctx.root.$store.getters.grpupId;
     });
     if (moPrefix.value) {
       getDoc(doc(db, `/groups/${moPrefix.value}`)).then((a) => {
