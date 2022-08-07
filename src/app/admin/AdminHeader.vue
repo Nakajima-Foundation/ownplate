@@ -17,7 +17,7 @@
         </router-link>
       </div>
     </div>
-    
+
     <!-- Photo and Name -->
     <div class="mt-4 lg:mt-0 lg:flex-1 lg:flex lg:items-center lg:mx-4">
       <div class="flex items-center">

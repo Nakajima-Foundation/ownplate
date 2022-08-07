@@ -10,7 +10,7 @@
         :shopInfo="shopInfo"
         :backLink="parentUrl"
         :showSuspend="true"
-        />
+      />
 
       <!-- Body -->
       <div

@@ -10,7 +10,7 @@
         :shopInfo="shopInfo"
         :backLink="'/admin/restaurants/'"
         :showSuspend="true"
-        />
+      />
 
       <!-- Date -->
       <div class="mx-6 mt-6">

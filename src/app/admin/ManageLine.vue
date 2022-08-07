@@ -11,8 +11,8 @@
         :shopInfo="shopInfo"
         :backLink="`/admin/restaurants/${shopInfo.id}/orders`"
         :showSuspend="false"
-        />
-      
+      />
+
       <!-- Body -->
       <div class="mt-6 mx-6 grid-col-1 space-y-4 lg:max-w-2xl lg:mx-auto">
         <!-- Title -->
@@ -34,24 +34,18 @@
             <div
               class="flex-1 bg-white rounded-lg shadow p-4 cursor-pointer"
               @click="handleToggle(lineUser)"
+              :class="
+                lineUser.notify
+                  ? 'text-green-600'
+                  : 'text-black text-opacity-30'
+              "
             >
-              <!-- Enabled -->
-              <div v-if="lineUser.notify" class="flex items-center">
-                <i class="material-icons text-2xl text-green-600 mr-2"
-                  >check_box</i
-                >
+              <!-- Checkbox UI -->
+              <div class="flex items-center">
+                <i class="material-icons text-2xl mr-2">{{
+                  lineUser.notify ? "check_box" : "check_box_outline_blank"
+                }}</i>
                 <div class="text-base font-bold">
-                  {{ lineUser.displayName }}
-                </div>
-              </div>
-
-              <!-- Disabled -->
-              <div v-else class="flex items-center">
-                <i
-                  class="material-icons text-2xl text-black text-opacity-30 mr-2"
-                  >check_box_outline_blank</i
-                >
-                <div class="text-base font-bold text-black text-opacity-30">
                   {{ lineUser.displayName }}
                 </div>
               </div>
@@ -96,13 +90,17 @@
 </template>
 
 <script>
+import { defineComponent, ref, onUnmounted } from "@vue/composition-api";
 import { db } from "@/plugins/firebase";
-import { lineAuthURL, lineVerify } from "@/lib/line/line";
 
-import NotFound from "@/components/NotFound";
+import { lineAuthURL, lineVerify } from "@/lib/line/line";
+import { checkAdminPermission, checkShopAccount } from "@/utils/userPermission";
+import { useAdminUids, getRestaurantId } from "@/utils/utils";
+
+import NotFound from "@/components/NotFound.vue";
 import AdminHeader from "@/app/admin/AdminHeader.vue";
 
-export default {
+export default defineComponent({
   components: {
     AdminHeader,
     NotFound,
@@ -118,44 +116,50 @@ export default {
       required: true,
     },
   },
-  data() {
-    return {
-      lineUsers: [],
-      detacher: null,
-      notFound: null,
-    };
-  },
-  async created() {
-    this.checkAdminPermission();
+  setup(props, ctx) {
+    const lineUsers = ref([]);
 
-    this.notFound = !this.checkShopOwner(this.shopInfo);
+    if (!checkAdminPermission(ctx)) {
+      return {
+        notFound: true,
+      };
+    }
 
-    const lineId = this.$route.query.userId;
-    const displayName = this.$route.query.displayName;
-    const state = this.$route.query.state;
+    const { ownerUid, uid } = useAdminUids(ctx);
+    if (!checkShopAccount(props.shopInfo, ownerUid.value)) {
+      return {
+        notFound: true,
+      };
+    }
+    const restaurantId = getRestaurantId(ctx.root);
+
+    const lineId = ctx.root.$route.query.userId;
+    const displayName = ctx.root.$route.query.displayName;
+    const state = ctx.root.$route.query.state;
     if (lineId && displayName && state) {
       if (lineVerify(state)) {
-        await db.doc(`restaurants/${this.restaurantId()}/lines/${lineId}`).set(
-          {
-            displayName,
-            notify: true,
-            uid: this.uid,
-            restaurantId: this.restaurantId(),
-          },
-          { merge: true }
-        );
-        console.log("registered lineId", lineId);
+        db.doc(`restaurants/${restaurantId}/lines/${lineId}`)
+          .set(
+            {
+              displayName,
+              notify: true,
+              uid: uid.value,
+              restaurantId: restaurantId,
+            },
+            { merge: true }
+          )
+          .then(() => {
+            console.log("registered lineId", lineId);
+          });
       } else {
         console.error("invalid state", state);
       }
-      this.$router.replace(location.pathname);
+      ctx.root.$router.replace(location.pathname);
     }
-  },
-  async mounted() {
-    this.detacher = db
-      .collection(`restaurants/${this.restaurantId()}/lines`)
+    const detacher = db
+      .collection(`restaurants/${restaurantId}/lines`)
       .onSnapshot((snapshot) => {
-        this.lineUsers = snapshot.docs.map((doc) => {
+        lineUsers.value = snapshot.docs.map((doc) => {
           const data = doc.data();
           return {
             ...data,
@@ -163,40 +167,37 @@ export default {
           };
         });
       });
-  },
-  destroyed() {
-    this.detacher && this.detacher();
-  },
-  computed: {
-    uid() {
-      return this.$store.getters.uidAdmin;
-    },
-  },
-  methods: {
-    async handleToggle(lineUser) {
-      await db
-        .doc(`restaurants/${this.restaurantId()}/lines/${lineUser.id}`)
-        .update({
-          notify: !lineUser.notify,
-        });
-    },
-    handleLineAuth() {
+    onUnmounted(() => {
+      detacher();
+    });
+
+    const handleToggle = async (lineUser) => {
+      await db.doc(`restaurants/${restaurantId}/lines/${lineUser.id}`).update({
+        notify: !lineUser.notify,
+      });
+    };
+    const handleLineAuth = () => {
       const url = lineAuthURL("/callback/line", {
         pathname: location.pathname,
       });
       location.href = url;
-    },
-    handleDelete(lineId) {
-      this.$store.commit("setAlert", {
+    };
+    const handleDelete = (lineId) => {
+      ctx.root.$store.commit("setAlert", {
         code: "admin.order.lineDelete",
         callback: async () => {
           console.log("handleDelete", lineId);
-          await db
-            .doc(`restaurants/${this.restaurantId()}/lines/${lineId}`)
-            .delete();
+          await db.doc(`restaurants/${restaurantId}/lines/${lineId}`).delete();
         },
       });
-    },
+    };
+    return {
+      notFound: false,
+      lineUsers,
+      handleToggle,
+      handleLineAuth,
+      handleDelete,
+    };
   },
-};
+});
 </script>

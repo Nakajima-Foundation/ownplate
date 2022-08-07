@@ -13,8 +13,8 @@
             class="mt-6 mx-6 lg:flex lg:items-center"
             :shopInfo="shopInfo"
             backLink="/admin/restaurants/"
-              :showSuspend="false"
-            />
+            :showSuspend="false"
+          />
         </div>
       </div>
       <!-- Right Gap -->
@@ -126,7 +126,6 @@
 <script>
 import { db, firestore } from "@/plugins/firebase";
 import AdminHeader from "@/app/admin/AdminHeader.vue";
-
 
 export default {
   components: {

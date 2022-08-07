@@ -36,6 +36,10 @@ export const useRestaurantId = (root: any) => {
   });
 };
 
+export const getRestaurantId = (root: any) => {
+  return root.$route.params.restaurantId;
+};
+
 /* 
     resizedProfileImage(restaurant, size) {
       return (

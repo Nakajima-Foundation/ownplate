@@ -149,10 +149,11 @@ export const validate = async (db: admin.firestore.Firestore, data: any, context
         },
         { merge: true }
       );
-    } else {
-      // Remove unnecessary claims from previous version.
-      await admin.auth().setCustomUserClaims(uid, { line: null });
     }
+    // else {
+    // Remove unnecessary claims from previous version.
+    // await admin.auth().setCustomUserClaims(uid, { line: null });
+    // }
 
     return { profile, nonce: verified.nonce };
   } catch (error) {

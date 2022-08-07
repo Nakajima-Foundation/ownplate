@@ -11,7 +11,7 @@
         :shopInfo="shopInfo"
         backLink="/admin/restaurants/"
         :showSuspend="false"
-        />
+      />
 
       <template v-if="showCategory">
         <!-- Category view -->

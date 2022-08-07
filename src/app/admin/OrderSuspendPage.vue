@@ -6,7 +6,7 @@
       :shopInfo="shopInfo"
       :backLink="`/admin/restaurants/${shopInfo.restaurantId}/orders`"
       :showSuspend="false"
-      />
+    />
 
     <!-- Title -->
     <div class="mt-6 mx-6 text-xl font-bold text-black text-opacity-30">
