@@ -114,6 +114,7 @@
             <Titles :titleLists="titleLists" />
 
             <!-- category for mo -->
+            <a id="subCategoryTop" />
             <div v-if="showSubCategory">
               <SubCategoryList
                 :subCategoryData="subCategoryData"
@@ -298,6 +299,7 @@ import {
   getPostOption,
   useIsInMo,
   useToggle,
+  scrollToElementById,
 } from "@/utils/utils";
 
 import { imageUtils } from "@/utils/RestaurantUtils";
@@ -723,6 +725,19 @@ export default defineComponent({
     });
     onUnmounted(() => {
       if (isShowCart.value) {
+        document.body.style.position = "";
+      }
+    });
+    watch(isOpenGroupCategory, (value) => {
+      if (value) {
+        document.body.style.position = "fixed";
+      } else {
+        document.body.style.position = "";
+        scrollToElementById("subCategoryTop")
+      }
+    });
+    onUnmounted(() => {
+      if (isOpenGroupCategory.value) {
         document.body.style.position = "";
       }
     });
