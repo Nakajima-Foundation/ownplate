@@ -20,8 +20,9 @@
             >
           </a>
         </div>
-        <div class="mx-4 h-screen overflow-x-scroll">
+        <div class="mx-4 h-[calc(100%-3rem)] overflow-x-scroll">
           <CategoryModal
+            class="mb-20"
             :categoryData="categoryData"
             @closeGroupCategory="closeGroupCategory"
           />
