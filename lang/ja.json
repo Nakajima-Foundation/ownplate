@@ -430,12 +430,13 @@
     "yourOrder": "あなたの注文",
     "confirmOrder": "ご注文の確認",
     "editItems": "注文を変更する",
+    "productSubTotal": "商品合計",
     "revenue": "売上",
     "foodRevenue": "売上（食）",
     "alcoholRevenue": "売上（酒）",
     "date": "日付",
     "tipShort": "心づけ",
-    "serviceTax": "消費税",
+    "serviceTax": "消費税(心づけ)",
     "name": "オーダー名",
     "restaurantName": "飲食店名",
     "payment": "支払い",
@@ -569,7 +570,12 @@
       "select": "選択",
       "email": "メールアドレス",
       "phone": "電話番号"
-    }
+    },
+    "productId": "商品番号",
+    "category": "カテゴリ",
+    "categoryId": "カテゴリID",
+    "subCategory": "サブカテゴリ",
+    "subCategoryId": "サブカテゴリID"
   },
   "editEC": {
     "postageList": "送料リスト",
