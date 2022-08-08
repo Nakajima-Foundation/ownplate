@@ -83,6 +83,9 @@ import { order_status, order_status_keys } from "@/config/constant";
 import { nameOfOrder } from "@/utils/strings";
 import DownloadCsv from "@/components/DownloadCSV";
 
+import { revenueHeader } from "@/utils/reportUtils";
+import { order2ReportData } from "@/models/orderInfo";
+
 export default {
   components: {
     OrderedInfo,
@@ -137,6 +140,9 @@ export default {
       return "all_orders_of_all_restaurants";
     },
     fields() {
+      return revenueHeader;
+      
+      /*
       return [
         "date",
         "restaurantName",
@@ -145,7 +151,8 @@ export default {
         "revenue",
         "name",
         "payment",
-      ];
+        ];
+      */
     },
     fieldNames() {
       return this.fields.map((field) => {
@@ -161,6 +168,12 @@ export default {
           orderStatus: this.$t(
             "order.status." + order_status_keys[order.status]
           ),
+          foodRevenue: order.accounting.food.revenue,
+          foodTax: order.accounting.food.tax,
+          alcoholRevenue: order.accounting.alcohol.revenue,
+          salesTax: order.accounting.alcohol.tax,
+          tipShort: order.accounting.service.revenue,
+          serviceTax: order.accounting.service.tax,
           revenue: order.totalCharge,
           total: Object.values(order.order).reduce((count, order) => {
             return count + this.arrayOrNumSum(order);
@@ -188,16 +201,15 @@ export default {
           query = query.startAfter(this.last);
         }
         const snapshot = await query.get();
-
+        const serviceTaxRate = 0.10;
         if (!snapshot.empty) {
           this.last = snapshot.docs[snapshot.docs.length - 1];
           let i = 0;
           for (; i < snapshot.docs.length; i++) {
             const doc = snapshot.docs[i];
-            const order = doc.data();
+            const order = order2ReportData(doc.data(), serviceTaxRate);
             order.restaurantId = doc.ref.path.split("/")[1];
             order.id = doc.id;
-            order.timePlaced = order.timePlaced.toDate();
             if (!this.restaurants[order.restaurantId]) {
               const snapshot = await db
                 .doc(`restaurants/${order.restaurantId}`)
@@ -205,9 +217,6 @@ export default {
               this.restaurants[order.restaurantId] = snapshot.data();
             }
             order.restaurant = this.restaurants[order.restaurantId];
-            if (order.timeEstimated) {
-              order.timeEstimated = order.timeEstimated.toDate();
-            }
             this.orders.push(order);
           }
         } else {

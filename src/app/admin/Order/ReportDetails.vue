@@ -49,7 +49,7 @@ import { nameOfOrder } from "@/utils/strings";
 import { order_status } from "@/config/constant";
 import { arrayChunk } from "@/utils/utils";
 
-import { headers, headersWithAddress, headersForMo } from "@/utils/reportUtils";
+import { reportHeaders, reportHeadersWithAddress, reportHeadersForMo } from "@/utils/reportUtils";
 
 export default {
   components: {
@@ -131,9 +131,9 @@ export default {
     },
     fields() {
       if (this.shopInfo?.isEC || this.shopInfo?.enableDelivery) {
-        return headersWithAddress;
+        return reportHeadersWithAddress;
       }
-      return headers;
+      return reportHeaders;
     },
     fieldNames() {
       return this.fields.map((field) => {

@@ -198,13 +198,18 @@
 
 <script>
 import { db, firestore } from "@/plugins/firebase";
-import BackButton from "@/components/BackButton";
-import DownloadCsv from "@/components/DownloadCSV";
-import { nameOfOrder } from "@/utils/strings";
-import { ownPlateConfig } from "@/config/project";
-import { midNightOfMonth } from "@/utils/dateUtils";
 import moment from "moment";
-import ReportDetails from "@/app/admin/Order/ReportDetails";
+
+import BackButton from "@/components/BackButton.vue";
+import DownloadCsv from "@/components/DownloadCSV.vue";
+import ReportDetails from "@/app/admin/Order/ReportDetails.vue";
+
+import { ownPlateConfig } from "@/config/project";
+import { nameOfOrder } from "@/utils/strings";
+import { midNightOfMonth } from "@/utils/dateUtils";
+import { revenueHeader } from "@/utils/reportUtils";
+
+import { order2ReportData } from "@/models/orderInfo";
 
 export default {
   components: {
@@ -282,19 +287,7 @@ export default {
       ].join("-");
     },
     fields() {
-      return [
-        "date",
-        "restaurantName",
-        "foodRevenue",
-        "foodTax",
-        "alcoholRevenue",
-        "salesTax",
-        "tipShort",
-        "serviceTax",
-        "total",
-        "name",
-        "payment",
-      ];
+      return revenueHeader;
     },
     fieldNames() {
       return this.fields.map((field) => {
@@ -345,40 +338,8 @@ export default {
       }
       this.detacher = query.orderBy("timeConfirmed").onSnapshot((snapshot) => {
         let orders = snapshot.docs.map(this.doc2data("order"));
-        const multiple = this.$store.getters.stripeRegion.multiple;
-        this.orders = orders.map((order) => {
-          order.timeConfirmed = order.timeConfirmed.toDate();
-          order.timePlaced = order.timePlaced.toDate();
-          if (!order.accounting) {
-            order.accounting = {
-              food: {
-                revenue: order.total - order.tax,
-                tax: order.tax,
-              },
-              alcohol: {
-                revenue: 0,
-                tax: 0,
-              },
-            };
-          }
-          if (ownPlateConfig.region === "JP") {
-            const serviceTaxRate = this.shopInfo.alcoholTax / 100;
-            const serviceTax =
-              Math.round(
-                order.tip * (1 - 1 / (1 + serviceTaxRate)) * multiple
-              ) / multiple;
-            order.accounting.service = {
-              revenue: order.tip - serviceTax,
-              tax: serviceTax,
-            };
-          } else {
-            order.accounting.service = {
-              revenue: order.tip,
-              tax: 0,
-            };
-          }
-          return order;
-        });
+        const serviceTaxRate = this.shopInfo.alcoholTax / 100;
+        this.orders = orders.map(order => order2ReportData(order, serviceTaxRate));
         this.total = this.orders.reduce(
           (total, order) => {
             const accounting = order.accounting;

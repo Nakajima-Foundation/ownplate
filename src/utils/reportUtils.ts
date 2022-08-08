@@ -1,10 +1,10 @@
-const headersTop = [
+const reportHeadersTop = [
   "name",
   "restaurantName",
   "statusName",
   "userName",
 ];
-const headersTime = [
+const reportHeadersTime = [
   "datePlaced",
   "dateAccepted",
   "dateConfirmed",
@@ -13,27 +13,27 @@ const headersTime = [
   "timeToPickup",
 ];
 
-const headersItem = [
+const reportHeadersItem = [
   "itemName",
   "options",
   "category1",
   "category2",
 ];
 
-export const headers = [
-  ...headersTop,
+export const reportHeaders = [
+  ...reportHeadersTop,
   "phoneNumber",
-  ...headersTime,
+  ...reportHeadersTime,
   
-  ...headersItem,
+  ...reportHeadersItem,
   "count",
   "total",
   "payment",
   "memo",
 ];
-export const headersForMo = [];
-export const headersWithAddress = [
-  ...headersTop,
+export const reportHeadersForMo = [];
+export const reportHeadersWithAddress = [
+  ...reportHeadersTop,
   
   "ec.name",
   "ec.zip",
@@ -43,13 +43,29 @@ export const headersWithAddress = [
   
   "phoneNumber",
   
-  ...headersTime,
+  ...reportHeadersTime,
   
-  ...headersItem,
+  ...reportHeadersItem,
   "count",
   "total",
   "shippingCost",
   "payment",
   "isDelivery",
   "memo",
-]
+];
+
+export const revenueHeader = [
+  "date",
+  "restaurantName",
+  "orderStatus",
+  "foodRevenue",
+  "foodTax",
+  "alcoholRevenue",
+  "salesTax",
+  "tipShort",
+  "serviceTax",
+  "total",
+  "revenue",
+  "name",
+  "payment",
+];
