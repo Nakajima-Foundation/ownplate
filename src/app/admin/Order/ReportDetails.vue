@@ -12,7 +12,7 @@
           </th>
         </tr>
         <tr v-for="row in tableData" :key="row.id">
-          <td v-for="field in fields" :key="field" class="p-2 text-xs">
+          <td v-for="field in fields" :key="`${row.id}_${field}`" class="p-2 text-xs">
             {{ row[field] }}
           </td>
         </tr>
@@ -49,7 +49,8 @@ import { nameOfOrder } from "@/utils/strings";
 import { order_status } from "@/config/constant";
 import { arrayChunk } from "@/utils/utils";
 
-import { headers, headersWithAddress, headersForMo } from "./ReportDetailsData";
+import { headers, headersWithAddress, headersForMo } from "@/utils/reportUtils";
+
 export default {
   components: {
     DownloadCsv,

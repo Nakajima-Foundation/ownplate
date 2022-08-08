@@ -273,9 +273,13 @@ export default {
   },
   computed: {
     fileName() {
-      return moment(this.lastSeveralMonths[this.monthIndex].date).format(
-        "YYYY-MM"
-      );
+      return [
+        moment(this.lastSeveralMonths[this.monthIndex].date).format(
+          "YYYY-MM"
+        ),
+        "revenue",
+        this.shopInfo.restaurantId
+      ].join("-");
     },
     fields() {
       return [
