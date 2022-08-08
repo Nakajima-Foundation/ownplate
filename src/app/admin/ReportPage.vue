@@ -191,6 +191,7 @@
         :orders="orders"
         :shopInfo="shopInfo"
         :fileName="fileName"
+        :isInMo="isInMo"
       />
     </div>
   </div>
@@ -221,6 +222,14 @@ export default {
   props: {
     shopInfo: {
       type: Object,
+      required: true,
+    },
+    groupMasterRestaurant: {
+      type: Object,
+      required: false,
+    },
+    isInMo: {
+      type: Boolean,
       required: true,
     },
   },

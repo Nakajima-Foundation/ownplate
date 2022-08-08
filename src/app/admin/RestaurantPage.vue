@@ -1018,6 +1018,14 @@ export default {
       type: Object,
       required: true,
     },
+    groupMasterRestaurant: {
+      type: Object,
+      required: false,
+    },
+    isInMo: {
+      type: Boolean,
+      required: true,
+    },
   },
   data() {
     const maxDate = new Date();

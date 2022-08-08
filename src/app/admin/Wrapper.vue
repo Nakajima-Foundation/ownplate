@@ -27,11 +27,11 @@ export default defineComponent({
     const groupData = ref();
     const groupMasterRestaurant = ref();
 
-    const isInMo = computed(() => {
-      return !groupMasterRestaurant.value.empty;
-    });
     const moPrefix = computed(() => {
       return ctx.root.$store.getters.grpupId;
+    });
+    const isInMo = computed(() => {
+      return !!moPrefix.value;
     });
     if (moPrefix.value) {
       getDoc(doc(db, `/groups/${moPrefix.value}`)).then((a) => {

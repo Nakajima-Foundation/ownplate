@@ -73,6 +73,10 @@ export default {
       required: false,
       default: false,
     },
+    isInMo: {
+      type: Boolean,
+      required: true,
+    },
   },
   data() {
     return {
@@ -84,7 +88,7 @@ export default {
   },
   methods: {
     writeonFirstLine(index, key, text) {
-      return index === 0 && Number(key) === 0 ? text : "-";
+      return (index === 0 && Number(key) === 0) || this.isInMo ? text : "-";
     },
     timeConvert(timeData) {
       if (!timeData) {
@@ -260,8 +264,7 @@ export default {
                 ),
                 category1: menuItem.category1 || "",
                 category2: menuItem.category2 || "",
-                total:
-                  index === 0 && Number(key) === 0 ? order.totalCharge : "",
+                total: this.writeonFirstLine(index, key, order.totalCharge || ""),
                 payment: this.writeonFirstLine(
                   index,
                   key,
