@@ -208,6 +208,7 @@ import { ownPlateConfig } from "@/config/project";
 import { nameOfOrder } from "@/utils/strings";
 import { midNightOfMonth } from "@/utils/dateUtils";
 import { revenueHeader } from "@/utils/reportUtils";
+import { order_status_keys } from "@/config/constant";
 
 import { order2ReportData } from "@/models/orderInfo";
 
@@ -299,12 +300,16 @@ export default {
         return {
           date: moment(order.timeConfirmed).format("YYYY/MM/DD"),
           restaurantName: this.shopInfo.restaurantName,
+          orderStatus: this.$t(
+            "order.status." + order_status_keys[order.status]
+          ),
           foodRevenue: order.accounting.food.revenue,
           foodTax: order.accounting.food.tax,
           alcoholRevenue: order.accounting.alcohol.revenue,
           salesTax: order.accounting.alcohol.tax,
           tipShort: order.accounting.service.revenue,
           serviceTax: order.accounting.service.tax,
+          revenue: order.totalCharge,
           total: order.totalCharge,
           name: this.orderName(order),
           payment: order.payment?.stripe ? "stripe" : "",

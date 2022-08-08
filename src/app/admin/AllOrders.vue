@@ -141,18 +141,6 @@ export default {
     },
     fields() {
       return revenueHeader;
-      
-      /*
-      return [
-        "date",
-        "restaurantName",
-        "orderStatus",
-        "total",
-        "revenue",
-        "name",
-        "payment",
-        ];
-      */
     },
     fieldNames() {
       return this.fields.map((field) => {
