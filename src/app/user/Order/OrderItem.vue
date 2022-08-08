@@ -57,7 +57,8 @@
 
 <script>
 import { formatOption, optionPrice } from "@/utils/strings";
-
+import { roundPrice } from "@/utils/utils";
+         
 export default {
   props: {
     orderItem: {
@@ -102,7 +103,7 @@ export default {
     totalPrice() {
       let price = this.item.price;
       this.orderItem.options.forEach((option) => {
-        const p = this.roundPrice(optionPrice(option));
+        const p = roundPrice(optionPrice(option));
         price += p;
       });
       return price * this.count;

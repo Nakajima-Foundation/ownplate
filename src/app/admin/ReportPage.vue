@@ -306,6 +306,7 @@ export default {
     },
     tableData() {
       return this.orders.map((order) => {
+        console.log(order);
         return {
           date: moment(order.timeConfirmed).format("YYYY/MM/DD"),
           restaurantName: this.shopInfo.restaurantName,
