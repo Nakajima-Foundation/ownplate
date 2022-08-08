@@ -318,7 +318,6 @@ export default {
           salesTax: order.accounting.alcohol.tax,
           tipShort: order.accounting.service.revenue,
           serviceTax: order.accounting.service.tax,
-          revenue: order.totalCharge,
           total: order.totalCharge,
           name: this.orderName(order),
           payment: order.payment?.stripe ? "stripe" : "",

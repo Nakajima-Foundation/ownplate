@@ -11,7 +11,7 @@
             {{ fieldNames[index] }}
           </th>
         </tr>
-        <tr v-for="row in tableData" :key="row.id">
+        <tr v-for="(row, k) in tableData" :key="k">
           <td v-for="field in fields" :key="`${row.id}_${field}`" class="p-2 text-xs">
             {{ row[field] }}
           </td>
@@ -134,7 +134,9 @@ export default {
       };
     },
     fields() {
-      if (this.shopInfo?.isEC || this.shopInfo?.enableDelivery) {
+      if (this.isInMo) {
+        return reportHeadersForMo;
+      } else if (this.shopInfo?.isEC || this.shopInfo?.enableDelivery) {
         return reportHeadersWithAddress;
       }
       return reportHeaders;
@@ -162,7 +164,6 @@ export default {
           }
           return result;
         }, "unexpected");
-
         ids.forEach((menuId, index) => {
           const orderItems = this.forceArray(order.order[menuId]);
           const options = order.options[menuId] || [];
@@ -264,6 +265,13 @@ export default {
                 ),
                 category1: menuItem.category1 || "",
                 category2: menuItem.category2 || "",
+
+                // for mo
+                foodRevenue: order.accounting.food.revenue,
+                foodTax: order.accounting.food.tax,
+                alcoholRevenue: order.accounting.alcohol.revenue,
+                salesTax: order.accounting.alcohol.tax,
+                // end of for mo
                 total: this.writeonFirstLine(index, key, order.totalCharge || ""),
                 payment: this.writeonFirstLine(
                   index,

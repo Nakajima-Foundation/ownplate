@@ -31,7 +31,34 @@ export const reportHeaders = [
   "payment",
   "memo",
 ];
-export const reportHeadersForMo = [];
+export const reportHeadersForMo = [
+  ...reportHeadersTop,
+  "phoneNumber",
+  ...reportHeadersTime,
+  
+  "itemName",
+  // ...reportHeadersItem,
+
+  "productId",
+  "category",
+  "categoryId",
+  "subCategory",
+  "subCategoryId",
+  
+  // for mo
+  "foodRevenue",
+  "foodTax",
+  "alcoholRevenue",
+  "salesTax",
+  // for mo
+  
+  "count",
+  "productSubTotal",
+  "total",
+  "payment",
+  "memo",
+
+];
 export const reportHeadersWithAddress = [
   ...reportHeadersTop,
   
@@ -54,6 +81,8 @@ export const reportHeadersWithAddress = [
   "memo",
 ];
 
+/* ---- */
+
 export const revenueHeader = [
   "date",
   "restaurantName",
@@ -65,7 +94,6 @@ export const revenueHeader = [
   "tipShort",
   "serviceTax",
   "total",
-  "revenue",
   "name",
   "payment",
 ];
