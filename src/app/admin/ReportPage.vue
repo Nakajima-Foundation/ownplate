@@ -280,6 +280,7 @@ export default {
     fields() {
       return [
         "date",
+        "restaurantName",
         "foodRevenue",
         "foodTax",
         "alcoholRevenue",
@@ -300,6 +301,7 @@ export default {
       return this.orders.map((order) => {
         return {
           date: moment(order.timeConfirmed).format("YYYY/MM/DD"),
+          restaurantName: this.shopInfo.restaurantName,
           foodRevenue: order.accounting.food.revenue,
           foodTax: order.accounting.food.tax,
           alcoholRevenue: order.accounting.alcohol.revenue,
