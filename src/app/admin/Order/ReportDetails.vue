@@ -48,6 +48,8 @@ import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
 import { nameOfOrder } from "@/utils/strings";
 import { order_status } from "@/config/constant";
 import { arrayChunk } from "@/utils/utils";
+
+import { headers, headersWithAddress, headersForMo } from "./ReportDetailsData";
 export default {
   components: {
     DownloadCsv,
@@ -128,62 +130,9 @@ export default {
     },
     fields() {
       if (this.shopInfo?.isEC || this.shopInfo?.enableDelivery) {
-        return [
-          "name",
-          "statusName",
-          "userName",
-
-          "ec.name",
-          "ec.zip",
-          "ec.prefecture",
-          "ec.address",
-          "ec.email",
-
-          "phoneNumber",
-
-          "datePlaced",
-          "dateAccepted",
-          "dateConfirmed",
-          "dateCompleted",
-
-          "timeRequested",
-          "timeToPickup",
-
-          "itemName",
-          "options",
-          "category1",
-          "category2",
-          "count",
-          "total",
-          "shippingCost",
-          "payment",
-          "isDelivery",
-          "memo",
-        ];
+        return headersWithAddress;
       }
-      return [
-        "name",
-        "statusName",
-        "userName",
-        "phoneNumber",
-
-        "datePlaced",
-        "dateAccepted",
-        "dateConfirmed",
-        "dateCompleted",
-
-        "timeRequested",
-        "timeToPickup",
-
-        "itemName",
-        "options",
-        "category1",
-        "category2",
-        "count",
-        "total",
-        "payment",
-        "memo",
-      ];
+      return headers;
     },
     fieldNames() {
       return this.fields.map((field) => {
@@ -221,6 +170,7 @@ export default {
               items.push({
                 id: `${order.id}/${menuId}`,
                 name: nameOfOrder(order),
+                restaurantName: this.shopInfo.restaurantName,
                 timeRequested: this.writeonFirstLine(
                   index,
                   key,
