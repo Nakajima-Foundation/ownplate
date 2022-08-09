@@ -14,28 +14,66 @@
         </div>
       </div>
       <div class="mt-4">
+        <!--ToDo 以下、おもちかえりorMOで表示の出し分け-->
+        <!--for omochikaeri-->
         <div class="text-sm font-bold text-black text-opacity-30">
           {{ $t("transactionsAct.cancellation") }}
         </div>
 
-        <div class="text-sm mt-1">
-          ・{{ $t("transactionsAct.cancellationDescription") }}<br />
-          ・{{ $t("transactionsAct.cancellationDescription4") }}<br />
-          ・{{ $t("transactionsAct.cancellationDescription5") }}
-          <a
-            @click="openTransactionsAct()"
-            class="text-sm font-bold text-op-teal underline"
-            >{{ $t("transactionsAct.link") }}</a
-          >
-          {{ $t("transactionsAct.cancellationDescription6") }}
+        <ul class="list-disc list-outside ml-5 text-sm mt-1">
+          <li>{{ $t("transactionsAct.cancellationDescription1") }}</li>
+          <li>{{ $t("transactionsAct.cancellationDescription4") }}</li>
+          <li>
+            {{ $t("transactionsAct.cancellationDescription5") }}
+            <a
+              @click="openTransactionsAct()"
+              class="text-sm font-bold text-op-teal underline"
+              >{{ $t("transactionsAct.link") }}</a
+            >
+            {{ $t("transactionsAct.cancellationDescription6") }}
+          </li>
+        </ul>
+
+        <!--for MobileOrder-->
+        <div v-if="false">
+          <div class="text-sm font-bold text-black text-opacity-30">
+            {{ $t("transactionsAct.cancellationMo") }}
+          </div>
+
+          <ul class="list-disc list-outside ml-5 text-sm mt-1">
+            <li>{{ $t("transactionsAct.cancellationDescription1Mo") }}</li>
+            <li>{{ $t("transactionsAct.cancellationDescription2Mo") }}</li>
+            <li>{{ $t("transactionsAct.cancellationDescription4Mo") }}</li>
+          </ul>
         </div>
       </div>
+
       <div class="mt-4">
+        <!--ToDo 以下、おもちかえりorMOで表示の出し分け-->
+        <!--for omochikaeri-->
         <div class="text-sm font-bold text-black text-opacity-30">
           {{ $t("transactionsAct.payment") }}
         </div>
-        <div class="text-sm mt-1">
-          ・{{ $t("transactionsAct.paymentDescriptionCardNote") }}
+        <ul class="list-disc list-outside ml-5 text-sm mt-1">
+          <li>{{ $t("transactionsAct.paymentDescriptionCardNote") }}</li>
+        </ul>
+
+        <!--for MobileOrder-->
+        <div v-if="false">
+          <div class="text-sm font-bold text-black text-opacity-30">
+            {{ $t("transactionsAct.paymentNoteMo") }}
+          </div>
+          <ul class="list-disc list-outside ml-5 text-sm mt-1">
+            <li>
+              {{ $t("transactionsAct.cancellationDescription5Mo") }}
+              <a
+                @click="openTransactionsAct()"
+                class="text-sm font-bold text-op-teal underline"
+                >{{ $t("transactionsAct.link") }}</a
+              >
+              {{ $t("transactionsAct.cancellationDescription6Mo") }}
+            </li>
+          </ul>
         </div>
       </div>
     </div>
