@@ -103,9 +103,6 @@ const mixin = {
     arrayOrNumSum(arr) {
       return Array.isArray(arr) ? arraySum(arr) : arr || 0;
     },
-    forceArray(arr) {
-      return Array.isArray(arr) ? arr : [arr];
-    },
     convOrderStateForText(orderState, orderInfo) {
       if (orderInfo?.isEC) {
         if (orderState === "ready_to_pickup") {

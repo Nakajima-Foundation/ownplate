@@ -47,7 +47,7 @@ import moment from "moment";
 import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
 import { nameOfOrder } from "@/utils/strings";
 import { order_status } from "@/config/constant";
-import { arrayChunk } from "@/utils/utils";
+import { arrayChunk, forceArray } from "@/utils/utils";
 
 import { reportHeaders, reportHeadersWithAddress, reportHeadersForMo } from "@/utils/reportUtils";
 
@@ -165,14 +165,17 @@ export default {
           return result;
         }, "unexpected");
         ids.forEach((menuId, index) => {
-          const orderItems = this.forceArray(order.order[menuId]);
+          const orderItems = forceArray(order.order[menuId]);
           const options = order.options[menuId] || [];
+          const prices = order.prices[menuId] || [];
+          const menuItem = (order.menuItems || {})[menuId] || {};
+          console.log(menuItem, prices, options);
+          const taxRate = menuItem.tax === "feed" ? 8 : 10;
           Object.keys(orderItems).forEach((key) => {
+            console.log(prices[key]);
             const opt = Array.isArray(options[key] || [])
-              ? options[key] || []
-              : [options[key]];
+                ? options[key] : [options[key]];
             try {
-              const menuItem = (order.menuItems || {})[menuId] || {};
               items.push({
                 id: `${order.id}/${menuId}`,
                 name: nameOfOrder(order),
@@ -267,10 +270,11 @@ export default {
                 category2: menuItem.category2 || "",
 
                 // for mo
-                foodRevenue: order.accounting.food.revenue,
-                foodTax: order.accounting.food.tax,
-                alcoholRevenue: order.accounting.alcohol.revenue,
-                salesTax: order.accounting.alcohol.tax,
+                menuPrice: menuItem.price,
+                taxRate,
+                tax: Math.round(menuItem.price * taxRate / (100  + taxRate)) ,
+                productSubTotal: prices[key],
+                
                 // end of for mo
                 total: this.writeonFirstLine(index, key, order.totalCharge || ""),
                 payment: this.writeonFirstLine(

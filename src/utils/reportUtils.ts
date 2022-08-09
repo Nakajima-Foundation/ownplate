@@ -45,14 +45,14 @@ export const reportHeadersForMo = [
   "subCategory",
   "subCategoryId",
   
-  // for mo
-  "foodRevenue",
-  "foodTax",
-  "alcoholRevenue",
-  "salesTax",
-  // for mo
+  // for mo 
+  "menuPrice",
+  "taxRate",
+  "tax",
+  // end for mo 
   
   "count",
+
   "productSubTotal",
   "total",
   "payment",

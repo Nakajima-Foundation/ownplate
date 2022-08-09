@@ -180,11 +180,11 @@ export const arrayOrNumSum = (arr: number | number[]) => {
   return Array.isArray(arr) ? arraySum(arr) : arr || 0;
 };
 
-/*
-    forceArray(arr) {
-      return Array.isArray(arr) ? arr : [arr];
-      },
-*/
+
+export const forceArray = <T>(arr: T) => {
+  return Array.isArray(arr) ? arr : [arr];
+};
+
 export const convOrderStateForText = (orderState: string, orderInfo: any) => {
   if (orderInfo?.isEC) {
     if (orderState === "ready_to_pickup") {
