@@ -103,12 +103,13 @@
             </div>
           </div>
           <!-- Payment Period and Method -->
-          <div class="mt-4 mb-1">
+          <div class="mt-4">
+            <!--ToDo 以下、おもちかえりorMOで表示の出し分け-->
+            <!--for omochikaeri-->
             <div class="text-sm font-bold text-black text-opacity-30">
               {{ $t("transactionsAct.payment") }}
             </div>
-
-            <ul class="list-disc list-outside ml-5">
+            <ul class="list-disc list-outside ml-5 mt-1">
               <li v-if="showPayment">
                 {{ $t("transactionsAct.paymentDescriptionCard") }}
               </li>
@@ -117,10 +118,27 @@
               </li>
               <li>{{ $t("transactionsAct.paymentDescriptionCardNote") }}</li>
             </ul>
+
+            <!--for MobileOrder-->
+            <div v-if="false">
+              <div class="text-sm font-bold text-black text-opacity-30">
+                {{ $t("transactionsAct.paymentMo") }}
+              </div>
+              <ul class="list-disc list-outside ml-5 mt-1">
+                <li v-if="showPayment">
+                  {{ $t("transactionsAct.paymentDescriptionCardMo") }}
+                </li>
+                <li>
+                  {{ $t("transactionsAct.paymentDescriptionCardNoteMo") }}
+                </li>
+              </ul>
+            </div>
           </div>
 
           <!-- Delivery Time -->
           <div class="mt-4">
+            <!--ToDo 以下、おもちかえりorMOで表示の出し分け-->
+            <!--for omochikaeri-->
             <div class="text-sm font-bold text-black text-opacity-30">
               {{ $t("transactionsAct.delivery") }}
             </div>
@@ -128,15 +146,27 @@
             <div class="text-base mt-1">
               {{ $t("transactionsAct.deliveryDescription") }}
             </div>
+
+            <!--for MobileOrder-->
+            <div v-if="false">
+              <div class="text-sm font-bold text-black text-opacity-30">
+                {{ $t("transactionsAct.deliveryMo") }}
+              </div>
+
+              <div class="text-base mt-1">
+                {{ $t("transactionsAct.deliveryDescriptionMo") }}
+              </div>
+            </div>
           </div>
 
-          <!--デリバリー対応店舗のみに表示させる内容の反映がまだ未対応-->
           <!-- Cancellation -->
-          <div class="mt-4 mb-1">
+          <div class="mt-4">
+            <!--ToDo 以下、おもちかえりorMOで表示の出し分け-->
+            <!--for omochikaeri-->
             <div class="text-sm font-bold text-black text-opacity-30">
               {{ $t("transactionsAct.cancellation") }}
             </div>
-            <ul class="list-disc list-outside ml-5">
+            <ul class="list-disc list-outside ml-5 mt-1">
               <li>{{ $t("transactionsAct.cancellationDescription1") }}</li>
               <li>
                 {{ $t("transactionsAct.cancellationDescription2") }}
@@ -171,6 +201,23 @@
               </li>
               <li>{{ $t("transactionsAct.cancellationDescription3") }}</li>
             </ul>
+
+            <!--for MobileOrder-->
+            <div v-if="false">
+              <div class="text-sm font-bold text-black text-opacity-30">
+                {{ $t("transactionsAct.cancellationMo") }}
+              </div>
+              <ul class="list-disc list-outside ml-5 mt-1">
+                <li>{{ $t("transactionsAct.cancellationDescription1Mo") }}</li>
+                <li>
+                  {{ $t("transactionsAct.cancellationDescription2Mo") }}
+                </li>
+                <li>
+                  {{ $t("transactionsAct.cancellationTakeoutDescriptionMo") }}
+                </li>
+                <li>{{ $t("transactionsAct.cancellationDescription3Mo") }}</li>
+              </ul>
+            </div>
           </div>
         </div>
 
