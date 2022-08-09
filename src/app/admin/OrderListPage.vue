@@ -60,6 +60,13 @@
 </template>
 
 <script>
+import {
+  defineComponent,
+  ref,
+  computed,
+  onUnmounted,
+  watch,
+} from "@vue/composition-api";
 import { db, firestore } from "@/plugins/firebase";
 import { midNight } from "@/utils/dateUtils";
 import { order_status } from "@/config/constant";
@@ -69,9 +76,10 @@ import OrderedInfo from "@/app/admin/Order/OrderedInfo.vue";
 import NotFound from "@/components/NotFound.vue";
 import AdminHeader from "@/app/admin/AdminHeader.vue";
 
-import { doc2data, isNull } from "@/utils/utils";
+import { doc2data, isNull, useAdminUids } from "@/utils/utils";
+import { checkAdminPermission, checkShopAccount } from "@/utils/userPermission";
 
-export default {
+export default defineComponent({
   components: {
     OrderedInfo,
     NotFound,
@@ -94,99 +102,79 @@ export default {
       required: true,
     },
   },
-  data() {
-    return {
-      orders: [],
-      dayIndex: 0,
-      order_detacher: () => {},
-      notFound: null,
-    };
-  },
-  watch: {
-    dayIndex() {
-      this.updateQueryDay();
-      this.dateWasUpdated();
-    },
-    "$route.query.day"() {
-      this.updateDayIndex();
-    },
-  },
-  async created() {
-    this.checkAdminPermission();
-    if (!this.checkShopAccount(this.shopInfo)) {
-      this.notFound = true;
-      return true;
-    }
-    this.dayIndex = this.getPickUpDaysInAdvance();
+  setup(props, ctx) {
+    const orders = ref([]);
+    const dayIndex = ref(0);
+    let order_detacher = () => {};
 
-    if (this.$route.query.day) {
-      this.updateDayIndex();
+    if (!checkAdminPermission(ctx)) {
+      return {
+        notFound: true,
+      };
     }
-    this.dateWasUpdated();
-  },
-  destroyed() {
-    this.order_detacher();
-  },
-  computed: {
-    orderCounter() {
-      return this.lastSeveralDays.reduce((tmp, day) => {
-        const count = (
-          this.$store.state.orderObj[moment(day.date).format("YYYY-MM-DD")] ||
-          []
-        ).length;
-        if (count > 0) {
-          tmp[moment(day.date).format("YYYY-MM-DD")] = "(" + count + ")";
-        }
-        return tmp;
-      }, {});
-    },
-    pickUpDaysInAdvance() {
-      return this.getPickUpDaysInAdvance();
-    },
-    lastSeveralDays() {
-      return Array.from(Array(10 + this.pickUpDaysInAdvance).keys()).map(
+
+    const { ownerUid, uid } = useAdminUids(ctx);
+    if (!checkShopAccount(props.shopInfo, ownerUid.value)) {
+      return {
+        notFound: true
+      }
+    }
+    const getPickUpDaysInAdvance = () => {
+      return isNull(props.shopInfo.pickUpDaysInAdvance)
+        ? 3
+        : props.shopInfo.pickUpDaysInAdvance;
+    };
+    const pickUpDaysInAdvance = computed(() => {
+      return getPickUpDaysInAdvance();
+    });
+    const lastSeveralDays = computed(() => {
+      return Array.from(Array(10 + pickUpDaysInAdvance.value).keys()).map(
         (index) => {
-          const date = midNight(this.pickUpDaysInAdvance - index);
+          const date = midNight(pickUpDaysInAdvance.value - index);
           return { index, date };
         }
       );
-    },
-  },
-  methods: {
-    updateDayIndex() {
-      const dayIndex =
-        this.lastSeveralDays.findIndex((day) => {
-          return (
-            moment(day.date).format("YYYY-MM-DD") === this.$route.query.day
-          );
-        }) || 0;
-      this.dayIndex = dayIndex > 0 ? dayIndex : 0;
-    },
-    updateQueryDay() {
-      const day = moment(this.lastSeveralDays[this.dayIndex].date).format(
+    });
+    dayIndex.value = getPickUpDaysInAdvance();
+
+    const updateDayIndex = () => {
+      const newDayIndex = lastSeveralDays.value.findIndex((day) => {
+        return (
+          moment(day.date).format("YYYY-MM-DD") === ctx.root.$route.query.day
+        );
+      }) || 0;
+      dayIndex.value = newDayIndex > 0 ? newDayIndex : 0;
+    };
+    const updateQueryDay = () => {
+      const day = moment(lastSeveralDays.value[dayIndex.value].date).format(
         "YYYY-MM-DD"
       );
-      if (this.$route.query.day !== day) {
-        this.$router.push({
+      if (ctx.root.$route.query.day !== day) {
+        ctx.root.$router.push({
           path:
-            "/admin/restaurants/" + this.restaurantId() + "/orders?day=" + day,
+            "/admin/restaurants/" + ctx.root.restaurantId() + "/orders?day=" + day,
         });
       }
-    },
-    dateWasUpdated() {
-      this.order_detacher();
+    };
+    const dateWasUpdated = () => {
+      order_detacher();
+
       let query = db
-        .collection(`restaurants/${this.restaurantId()}/orders`)
-        .where("timePlaced", ">=", this.lastSeveralDays[this.dayIndex].date);
-      if (this.dayIndex > 0) {
+        .collection(`restaurants/${ctx.root.restaurantId()}/orders`)
+        .where("timePlaced", ">=", lastSeveralDays.value[dayIndex.value].date);
+      if (dayIndex.value > 0) {
+        console.log("HOGE");
         query = query.where(
           "timePlaced",
           "<",
-          this.lastSeveralDays[this.dayIndex - 1].date
+          lastSeveralDays.value[dayIndex.value - 1].date,
         );
       }
-      this.order_detacher = query.onSnapshot((result) => {
-        this.orders = result.docs
+      console.log(new Date(lastSeveralDays.value[dayIndex.value].date.getTime() - 1000))
+      console.log(new Date(lastSeveralDays.value[dayIndex.value - 1].date.getTime() + 1000));
+      order_detacher = query.onSnapshot((result) => {
+        console.log(result.docs.length);
+        orders.value = result.docs
           .map(doc2data("order"))
           .filter((a) => a.status !== order_status.transaction_hide)
           .sort((order0, order1) => {
@@ -199,6 +187,7 @@ export default {
             return order0.status < order1.status ? -1 : 1;
           })
           .map((order) => {
+            console.log(order);
             order.timePlaced = order.timePlaced.toDate();
             if (order.timeEstimated) {
               order.timeEstimated = order.timeEstimated.toDate();
@@ -206,12 +195,53 @@ export default {
             return order;
           });
       });
-    },
-    getPickUpDaysInAdvance() {
-      return isNull(this.shopInfo.pickUpDaysInAdvance)
-        ? 3
-        : this.shopInfo.pickUpDaysInAdvance;
-    },
+    };
+
+    if (ctx.root.$route.query.day) {
+      updateDayIndex();
+    }
+    dateWasUpdated();
+
+    onUnmounted(() => {
+      order_detacher();
+    });
+
+    const orderCounter = computed(() => {
+      return lastSeveralDays.value.reduce((tmp, day) => {
+        const count = (
+          ctx.root.$store.state.orderObj[moment(day.date).format("YYYY-MM-DD")] ||
+          []
+        ).length;
+        if (count > 0) {
+          tmp[moment(day.date).format("YYYY-MM-DD")] = "(" + count + ")";
+        }
+        return tmp;
+      }, {});
+    });
+
+    watch(dayIndex, () => {
+      console.log("AAA2");
+      updateQueryDay();
+      dateWasUpdated();
+    });
+    const dayQuery = computed(() => {
+      return ctx.root.$route.query.day;
+    });
+    watch(dayQuery, () => {
+      console.log("AAA");
+      updateDayIndex();
+    });
+
+    return {
+      orders,
+      dayIndex,
+      notFound: false,
+
+      lastSeveralDays,
+      pickUpDaysInAdvance,
+      dayIndex,
+      orderCounter,
+    };
   },
-};
+});
 </script>
