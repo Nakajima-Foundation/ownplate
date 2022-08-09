@@ -18,25 +18,27 @@
           {{ $t("transactionsAct.cancellation") }}
         </div>
 
-        <div class="text-sm mt-1">
-          ・{{ $t("transactionsAct.cancellationDescription") }}<br />
-          ・{{ $t("transactionsAct.cancellationDescription4") }}<br />
-          ・{{ $t("transactionsAct.cancellationDescription5") }}
-          <a
-            @click="openTransactionsAct()"
-            class="text-sm font-bold text-op-teal underline"
-            >{{ $t("transactionsAct.link") }}</a
-          >
-          {{ $t("transactionsAct.cancellationDescription6") }}
-        </div>
+        <ul class="list-disc list-outside ml-5 text-sm mt-1">
+          <li>{{ $t("transactionsAct.cancellationDescription1") }}</li>
+          <li>{{ $t("transactionsAct.cancellationDescription4") }}</li>
+          <li>
+            {{ $t("transactionsAct.cancellationDescription5") }}
+            <a
+              @click="openTransactionsAct()"
+              class="text-sm font-bold text-op-teal underline"
+              >{{ $t("transactionsAct.link") }}</a
+            >
+            {{ $t("transactionsAct.cancellationDescription6") }}
+          </li>
+        </ul>
       </div>
       <div class="mt-4">
         <div class="text-sm font-bold text-black text-opacity-30">
           {{ $t("transactionsAct.payment") }}
         </div>
-        <div class="text-sm mt-1">
-          ・{{ $t("transactionsAct.paymentDescriptionCardNote") }}
-        </div>
+        <ul class="list-disc list-outside ml-5 text-sm mt-1">
+          <li>{{ $t("transactionsAct.paymentDescriptionCardNote") }}</li>
+        </ul>
       </div>
     </div>
   </div>
