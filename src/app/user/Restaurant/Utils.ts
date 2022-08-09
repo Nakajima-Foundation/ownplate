@@ -190,7 +190,7 @@ export const useMenu = (
         : "";
     if (menuCache.value[cacheKey]) {
       menus.value = menuCache.value[cacheKey];
-      return;
+      // return; //cache is for faster display, and get data again.
     }
 
     const menuQuery =
