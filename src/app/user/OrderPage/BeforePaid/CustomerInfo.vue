@@ -1,0 +1,40 @@
+<template>
+  <div>
+    <div class="mb-2 text-base font-bold">
+      {{ $t("order.customerInfo") }}
+    </div>
+    <div class="text-xs font-bold text-black text-opacity-40">
+      {{ $t("sms.phonenumber") }}
+    </div>
+    <div class="text-base mt-1">
+      <div>
+        <a :href="nationalPhoneURI" class="text-base font-bold">{{
+          nationalPhoneNumber
+          }}</a>
+      </div>
+      <div class="text-base">{{ orderInfo.name }}</div>
+    </div>
+  </div>
+</template>
+<script>
+import { defineComponent } from "@vue/composition-api";
+import { parsePhoneNumber, formatNational, formatURL } from "@/utils/phoneutil";
+
+export default defineComponent({
+  props: {
+    orderInfo: {
+      type: Object,
+      required: true,
+    },
+  },
+  setup(props) {
+    const phoneNumber = parsePhoneNumber(props.orderInfo?.phoneNumber || "")
+    const nationalPhoneNumber = phoneNumber ? formatNational(phoneNumber) : "";
+    const nationalPhoneURI =  formatURL(phoneNumber);
+    return {
+      nationalPhoneNumber,
+      nationalPhoneURI,
+    };
+  },
+});
+</script>

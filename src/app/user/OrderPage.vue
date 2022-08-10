@@ -119,21 +119,10 @@
       <div
         v-if="orderInfo.phoneNumber && !shopInfo.isEC"
         class="mt-4 text-center"
-      >
-        <div class="mb-2 text-base font-bold">
-          {{ $t("order.customerInfo") }}
-        </div>
-        <div class="text-xs font-bold text-black text-opacity-40">
-          {{ $t("sms.phonenumber") }}
-        </div>
-        <div class="text-base mt-1">
-          <div>
-            <a :href="nationalPhoneURI" class="text-base font-bold">{{
-              nationalPhoneNumber
-            }}</a>
-          </div>
-          <div class="text-base">{{ orderInfo.name }}</div>
-        </div>
+        >
+        <CustomerInfo
+          :orderInfo="orderInfo"
+          />
       </div>
 
       <!-- Order Body -->
@@ -529,6 +518,7 @@ import OrderNotice from "@/app/user/OrderPage/OrderNotice.vue";
 
 import Pickup from "@/app/user/OrderPage/Pickup.vue";
 
+import CustomerInfo from "@/app/user/OrderPage/BeforePaid/CustomerInfo.vue";
 import BeforePaidAlert from "@/app/user/OrderPage/BeforePaid/BeforePaidAlert.vue";
 import SpecifiedCommercialTransactions from "@/app/user/OrderPage/BeforePaid/SpecifiedCommercialTransactions.vue";
 
@@ -589,12 +579,13 @@ export default {
     Pickup,
 
     BeforePaidAlert,
+    CustomerInfo,
+    SpecifiedCommercialTransactions,
 
     ECCustomer,
     OrderNotice,
 
     TransactionsActContents,
-    SpecifiedCommercialTransactions,
   },
   props: {
     shopInfo: {
@@ -749,9 +740,6 @@ export default {
     },
     nationalPhoneNumber() {
       return this.phoneNumber ? formatNational(this.phoneNumber) : "";
-    },
-    nationalPhoneURI() {
-      return formatURL(this.phoneNumber);
     },
     shippingCost() {
       return costCal(
