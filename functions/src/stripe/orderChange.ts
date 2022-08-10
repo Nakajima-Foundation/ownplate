@@ -4,7 +4,7 @@ import * as functions from "firebase-functions";
 
 import { order_status } from "../common/constant";
 import * as utils from "../lib/utils";
-import { orderAccounting, createNewOrderData, getGroupRestautantRef } from "../functions/order";
+import { orderAccounting, getGroupRestautantRef, createNewOrderData } from "../functions/order/orderCreated";
 import { sendMessageToCustomer } from "../functions/notify";
 import { costCal } from "../common/commonUtils";
 import { Context } from "../models/TestType";
