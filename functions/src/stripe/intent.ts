@@ -81,6 +81,7 @@ export const create = async (db: admin.firestore.Firestore, data: any, context: 
 
   const { orderId, restaurantId, description, tip, sendSMS, timeToPickup, lng, memo, customerInfo } = data;
   const _tip = Number(tip) || 0;
+  const roundedTip = Math.round(_tip * multiple) / multiple;
   utils.validate_params({ orderId, restaurantId }); // lng, tip and sendSMS are optional
   const restaurantData = await utils.get_restaurant(db, restaurantId);
   const restaurantOwnerUid = restaurantData["uid"];
@@ -104,7 +105,8 @@ export const create = async (db: admin.firestore.Firestore, data: any, context: 
         await transaction.get(customerRef);
       }
 
-      const totalChargeWithTipAndMultipled = Math.round((order.total + Math.max(0, _tip) + (shippingCost || 0)) * multiple);
+      const totalCharge = order.total + roundedTip + (shippingCost || 0) + (order.deliveryFee || 0);
+      const totalChargeWithTipAndMultipled = totalCharge * multiple; // for US stripe price 
 
       // We expect that there is a customer Id associated with a token
       const payment_method_data = await getPaymentMethodData(db, restaurantOwnerUid, customerUid);
@@ -138,8 +140,8 @@ export const create = async (db: admin.firestore.Firestore, data: any, context: 
 
       const updateData = {
         status: order_status.order_placed,
-        totalCharge: totalChargeWithTipAndMultipled / multiple,
-        tip: Math.round(_tip * multiple) / multiple,
+        totalCharge,
+        tip: roundedTip,
         shippingCost,
         sendSMS: sendSMS || false,
         updatedAt: admin.firestore.Timestamp.now(),

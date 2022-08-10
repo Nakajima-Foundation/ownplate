@@ -126,6 +126,8 @@ export const place = async (db, data: any, context: functions.https.CallableCont
       await updateOrderTotalDataAndUserLog(db, transaction, customerUid, order.order, restaurantId, restaurantData.uid, timePlaced, true);
       const shippingCost = restaurantData.isEC ? costCal(postage, customerInfo?.prefectureId, order.total) : 0;
 
+      const totalCharge = order.total + roundedTip + (shippingCost || 0) + (order.deliveryFee || 0);
+
       if (hasCustomer) {
         await transaction.set(customerRef, {
           ...customerInfo,
@@ -138,7 +140,7 @@ export const place = async (db, data: any, context: functions.https.CallableCont
       // customerUid
       await transaction.update(orderRef, {
         status: order_status.order_placed,
-        totalCharge: order.total + _tip + (shippingCost || 0),
+        totalCharge,
         tip: roundedTip,
         shippingCost,
         sendSMS: sendSMS || false,
@@ -149,7 +151,7 @@ export const place = async (db, data: any, context: functions.https.CallableCont
         isEC: restaurantData.isEC || false,
         // customerInfo: customerInfo || {},
       });
-      Object.assign(order, { totalCharge: order.total + _tip + (shippingCost || 0), tip, shippingCost });
+      Object.assign(order, { totalCharge, tip, shippingCost });
       return { success: true, order };
     });
 
@@ -462,7 +464,7 @@ export const wasOrderCreated = async (db, data: any, context) => {
         tax: accountingResult.tax,
         inclusiveTax: accountingResult.inclusiveTax,
         deliveryFee,
-        total: accountingResult.total + deliveryFee,
+        total: accountingResult.total,
         accounting: {
           food: {
             revenue: accountingResult.food_sub_total,
