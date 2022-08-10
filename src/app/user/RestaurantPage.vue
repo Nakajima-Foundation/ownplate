@@ -20,8 +20,9 @@
             >
           </a>
         </div>
-        <div class="mx-4 h-screen overflow-x-scroll">
+        <div class="mx-4 h-[calc(100%-3rem)] overflow-x-scroll">
           <CategoryModal
+            class="mb-20"
             :categoryData="categoryData"
             @closeGroupCategory="closeGroupCategory"
           />
@@ -113,6 +114,7 @@
             <Titles :titleLists="titleLists" />
 
             <!-- category for mo -->
+            <a id="subCategoryTop" />
             <div v-if="showSubCategory">
               <div class="mx-6 mt-2 lg:mx-0 inline-flex">
                 <SubCategoryList
@@ -299,6 +301,7 @@ import {
   getPostOption,
   useIsInMo,
   useToggle,
+  scrollToElementById,
 } from "@/utils/utils";
 
 import { imageUtils } from "@/utils/RestaurantUtils";
@@ -724,6 +727,19 @@ export default defineComponent({
     });
     onUnmounted(() => {
       if (isShowCart.value) {
+        document.body.style.position = "";
+      }
+    });
+    watch(isOpenGroupCategory, (value) => {
+      if (value) {
+        document.body.style.position = "fixed";
+      } else {
+        document.body.style.position = "";
+        scrollToElementById("subCategoryTop");
+      }
+    });
+    onUnmounted(() => {
+      if (isOpenGroupCategory.value) {
         document.body.style.position = "";
       }
     });

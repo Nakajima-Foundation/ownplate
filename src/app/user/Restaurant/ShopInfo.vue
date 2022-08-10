@@ -235,7 +235,7 @@ import { daysOfWeek } from "@/config/constant";
 import { parsePhoneNumber, formatNational, formatURL } from "@/utils/phoneutil";
 import { ownPlateConfig } from "@/config/project";
 import { usePickupTime } from "@/utils/pickup";
-import { stripeRegion, isNull } from "@/utils/utils";
+import { stripeRegion, isNull, useNationalPhoneNumber } from "@/utils/utils";
 
 import TransactionsAct from "@/app/user/TransactionsAct.vue";
 
@@ -295,30 +295,16 @@ export default defineComponent({
       return !!res;
     });
 
-    const parsedNumber = computed(() => {
-      const countryCode =
-        props.shopInfo.countryCode || stripeRegion.countries[0].code;
-      try {
-        return parsePhoneNumber(countryCode + props.shopInfo.phoneNumber);
-      } catch (error) {
-        return null;
-      }
-    });
+    const { parsedNumber, nationalPhoneNumber } = useNationalPhoneNumber(
+      props.shopInfo
+    );
+
     const phoneUrl = computed(() => {
       const number = parsedNumber.value;
       if (number) {
         return formatURL(number);
       }
       return "";
-    });
-    // BUGBUG: We need to determine what we want to diplay for EU
-    const nationalPhoneNumber = computed(() => {
-      const number = parsedNumber.value;
-      if (number) {
-        return formatNational(number);
-      }
-      console.log("parsing failed, return as-is");
-      return props.shopInfo.phoneNumber;
     });
 
     const isOpen = computed(() => {

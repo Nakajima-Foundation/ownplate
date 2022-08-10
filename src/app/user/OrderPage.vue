@@ -511,26 +511,26 @@ import NotFound from "@/components/NotFound.vue";
 import RequireLogin from "@/components/RequireLogin.vue";
 import FavoriteButton from "@/app/user/Restaurant/FavoriteButton.vue";
 
-import UserCustomerInfo from "./OrderPage/AfterPaid/UserCustomerInfo.vue";
-import TransactionsActContents from "./TransactionsAct/Contents.vue";
+import UserCustomerInfo from "@/app/user/OrderPage/AfterPaid/UserCustomerInfo.vue";
+import TransactionsActContents from "@/app/user/TransactionsAct/Contents.vue";
 
-import OrderPageMap from "./OrderPageMap.vue";
+import OrderPageMap from "@/app/user/OrderPageMap.vue";
 
-import ThankYou from "./OrderPage/AfterPaid/ThankYou.vue";
-import ThankYouFromRestaurant from "./OrderPage/AfterPaid/ThankYouFromRestaurant.vue";
-import LineButton from "./OrderPage/AfterPaid/LineButton.vue";
-import RestaurantLine from "./OrderPage/AfterPaid/RestaurantLine.vue";
-import StripeStatus from "./OrderPage/AfterPaid/StripeStatus.vue";
-import OrderStatus from "./OrderPage/AfterPaid/OrderStatus.vue";
-import Receipt from "./OrderPage/AfterPaid/Receipt.vue";
+import ThankYou from "@/app/user/OrderPage/AfterPaid/ThankYou.vue";
+import ThankYouFromRestaurant from "@/app/user/OrderPage/AfterPaid/ThankYouFromRestaurant.vue";
+import LineButton from "@/app/user/OrderPage/AfterPaid/LineButton.vue";
+import RestaurantLine from "@/app/user/OrderPage/AfterPaid/RestaurantLine.vue";
+import StripeStatus from "@/app/user/OrderPage/AfterPaid/StripeStatus.vue";
+import OrderStatus from "@/app/user/OrderPage/AfterPaid/OrderStatus.vue";
+import Receipt from "@/app/user/OrderPage/AfterPaid/Receipt.vue";
 
-import ECCustomer from "./OrderPage/ECCustomer.vue";
-import OrderNotice from "./OrderPage/OrderNotice.vue";
+import ECCustomer from "@/app/user/OrderPage/ECCustomer.vue";
+import OrderNotice from "@/app/user/OrderPage/OrderNotice.vue";
 
-import Pickup from "./OrderPage/Pickup.vue";
+import Pickup from "@/app/user/OrderPage/Pickup.vue";
 
-import BeforePaidAlert from "./OrderPage/BeforePaid/BeforePaidAlert.vue";
-import SpecifiedCommercialTransactions from "./OrderPage/BeforePaid/SpecifiedCommercialTransactions.vue";
+import BeforePaidAlert from "@/app/user/OrderPage/BeforePaid/BeforePaidAlert.vue";
+import SpecifiedCommercialTransactions from "@/app/user/OrderPage/BeforePaid/SpecifiedCommercialTransactions.vue";
 
 import { db, firestore } from "@/plugins/firebase";
 import { orderPlace } from "@/lib/firebase/functions";
