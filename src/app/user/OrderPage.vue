@@ -642,6 +642,7 @@ export default {
     } else if (!this.isUser) {
       this.loginVisible = true;
     }
+    this.setPostage();
   },
   destroyed() {
     if (this.detacher) {
@@ -741,19 +742,13 @@ export default {
       return this.shopInfo.isEC || this.orderInfo.isDelivery;
     },
     notSubmitAddress() {
-      return this.requireAddress && this.$refs?.ecCustomerRef.hasEcError;
+      return this.requireAddress && this.$refs?.ecCustomerRef?.hasEcError;
     },
   },
   // end of computed
   watch: {
     shopInfo(newValue) {
-      if (this.shopInfo.isEC) {
-        db.doc(`restaurants/${this.restaurantId()}/ec/postage`)
-          .get()
-          .then((snapshot) => {
-            this.postageInfo = snapshot.data() || {};
-          });
-      }
+      this.setPostage();
     },
     isUser() {
       if (this.isUser) {
@@ -767,6 +762,15 @@ export default {
     },
   },
   methods: {
+    setPostage() {
+      if (this.shopInfo.isEC) {
+        db.doc(`restaurants/${this.restaurantId()}/ec/postage`)
+          .get()
+          .then((snapshot) => {
+            this.postageInfo = snapshot.data() || {};
+          });
+      }
+    },
     updateHome(pos) {
       this.$refs.ecCustomerRef.updateHome(pos);
     },
