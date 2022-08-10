@@ -1,5 +1,5 @@
-import { ref } from "@vue/composition-api";
-
+import { ref, computed } from "@vue/composition-api";
+import firebase from "firebase/app";
 import { db } from "@/lib/firebase/firebase9";
 import {
   DocumentData,
@@ -10,16 +10,13 @@ import {
 
 import { ShopOwnerData, PartnerData } from "@/models/ShopOwner";
 import { OrderInfoData, OrderItem } from "@/models/orderInfo";
-import { MenuData } from "@/models/menu";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
+import { MenuData } from "@/models/menu";
 
 import { regionalSettings, partners, stripe_regions } from "@/config/constant";
-
 import { ownPlateConfig, mo_prefixes } from "@/config/project";
 
-import { computed } from "@vue/composition-api";
-
-import firebase from "firebase/app";
+import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
 
 export const isNull = <T>(value: T) => {
   return value === null || value === undefined;
@@ -575,4 +572,30 @@ export const scrollToElementById = (id: string) => {
   if (elem) {
     scrollTo(0, elem.getBoundingClientRect().y + window.pageYOffset);
   }
+};
+
+export const useNationalPhoneNumber = (shopInfo: RestaurantInfoData) => {
+  // BUGBUG: We need to determine what we want to diplay for EU
+  const parsedNumber = computed(() => {
+    const countryCode = shopInfo.countryCode || stripeRegion.countries[0].code;
+    try {
+      return parsePhoneNumber(countryCode + shopInfo.phoneNumber);
+    } catch (error) {
+      return null;
+    }
+  });
+  const nationalPhoneNumber = computed(() => {
+    if (!shopInfo.phoneNumber) {
+      return "";
+    }
+    if (parsedNumber.value) {
+      return formatNational(parsedNumber.value);
+    }
+    console.log("parsing failed, return as-is");
+    return shopInfo.phoneNumber;
+  });
+  return {
+    parsedNumber,
+    nationalPhoneNumber,
+  };
 };

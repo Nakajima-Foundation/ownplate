@@ -733,7 +733,7 @@ export default defineComponent({
         document.body.style.position = "fixed";
       } else {
         document.body.style.position = "";
-        scrollToElementById("subCategoryTop")
+        scrollToElementById("subCategoryTop");
       }
     });
     onUnmounted(() => {
@@ -744,16 +744,18 @@ export default defineComponent({
     const filteredTitleLists = computed(() => {
       const menuLists = props.shopInfo.menuLists || [];
       const itemsObj = array2obj(titles.value);
-      return menuLists
-        .map((itemId) => {
-          return { ...itemsObj[itemId] };
-        })
-        .filter((item) => {
-          return item && item.id;
-        }) || [];
+      return (
+        menuLists
+          .map((itemId) => {
+            return { ...itemsObj[itemId] };
+          })
+          .filter((item) => {
+            return item && item.id;
+          }) || []
+      );
       return ret;
     });
-    
+
     return {
       itemLists,
       titleLists: filteredTitleLists,

@@ -10,7 +10,12 @@
     </div>
     <div class="flex-1 text-center">
       <router-link :to="topPath">
-        <img :class="logoClass" class="m-auto" :src="`/${logo}`" v-if="logo !== null"/>
+        <img
+          :class="logoClass"
+          class="m-auto"
+          :src="`/${logo}`"
+          v-if="logo !== null"
+        />
       </router-link>
     </div>
     <div class="w-12"></div>

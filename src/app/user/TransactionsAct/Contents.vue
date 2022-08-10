@@ -104,23 +104,23 @@
           </div>
           <!-- Payment Period and Method -->
           <div class="mt-4">
-            <!--ToDo 以下、おもちかえりorMOで表示の出し分け-->
             <!--for omochikaeri-->
-            <div class="text-sm font-bold text-black text-opacity-30">
-              {{ $t("transactionsAct.payment") }}
+            <div v-if="!isInMo">
+              <div class="text-sm font-bold text-black text-opacity-30">
+                {{ $t("transactionsAct.payment") }}
+              </div>
+              <ul class="list-disc list-outside ml-5 mt-1">
+                <li v-if="showPayment">
+                  {{ $t("transactionsAct.paymentDescriptionCard") }}
+                </li>
+                <li v-if="inStorePayment">
+                  {{ $t("transactionsAct.paymentDescriptionStore") }}
+                </li>
+                <li>{{ $t("transactionsAct.paymentDescriptionCardNote") }}</li>
+              </ul>
             </div>
-            <ul class="list-disc list-outside ml-5 mt-1">
-              <li v-if="showPayment">
-                {{ $t("transactionsAct.paymentDescriptionCard") }}
-              </li>
-              <li v-if="inStorePayment">
-                {{ $t("transactionsAct.paymentDescriptionStore") }}
-              </li>
-              <li>{{ $t("transactionsAct.paymentDescriptionCardNote") }}</li>
-            </ul>
-
             <!--for MobileOrder-->
-            <div v-if="false">
+            <div v-if="isInMo">
               <div class="text-sm font-bold text-black text-opacity-30">
                 {{ $t("transactionsAct.paymentMo") }}
               </div>
@@ -137,18 +137,19 @@
 
           <!-- Delivery Time -->
           <div class="mt-4">
-            <!--ToDo 以下、おもちかえりorMOで表示の出し分け-->
             <!--for omochikaeri-->
-            <div class="text-sm font-bold text-black text-opacity-30">
-              {{ $t("transactionsAct.delivery") }}
-            </div>
+            <div v-if="!isInMo">
+              <div class="text-sm font-bold text-black text-opacity-30">
+                {{ $t("transactionsAct.delivery") }}
+              </div>
 
-            <div class="text-base mt-1">
-              {{ $t("transactionsAct.deliveryDescription") }}
+              <div class="text-base mt-1">
+                {{ $t("transactionsAct.deliveryDescription") }}
+              </div>
             </div>
 
             <!--for MobileOrder-->
-            <div v-if="false">
+            <div v-if="!isInMo">
               <div class="text-sm font-bold text-black text-opacity-30">
                 {{ $t("transactionsAct.deliveryMo") }}
               </div>
@@ -161,49 +162,62 @@
 
           <!-- Cancellation -->
           <div class="mt-4">
-            <!--ToDo 以下、おもちかえりorMOで表示の出し分け-->
             <!--for omochikaeri-->
-            <div class="text-sm font-bold text-black text-opacity-30">
-              {{ $t("transactionsAct.cancellation") }}
+            <div v-if="!isInMo">
+              <div class="text-sm font-bold text-black text-opacity-30">
+                {{ $t("transactionsAct.cancellation") }}
+              </div>
+              <ul class="list-disc list-outside ml-5 mt-1">
+                <li>{{ $t("transactionsAct.cancellationDescription1") }}</li>
+                <li>
+                  {{ $t("transactionsAct.cancellationDescription2") }}
+                  <ul class="list-none list-outside mb-2">
+                    <div
+                      class="text-sm font-bold text-black text-opacity-30 mt-2"
+                    >
+                      {{
+                        $t("transactionsAct.cancellationTakeoutDescription1")
+                      }}
+                    </div>
+                    <li>
+                      {{
+                        $t("transactionsAct.cancellationTakeoutDescription2")
+                      }}
+                    </li>
+                    <div
+                      v-if="isDelivery"
+                      class="text-sm font-bold text-black text-opacity-30 mt-2"
+                    >
+                      {{
+                        $t("transactionsAct.cancellationDeliveryDescription1")
+                      }}
+                    </div>
+                    <li v-if="isDelivery">
+                      -
+                      {{
+                        $t("transactionsAct.cancellationDeliveryDescription2")
+                      }}
+                    </li>
+                    <li v-if="isDelivery">
+                      -
+                      {{
+                        $t("transactionsAct.cancellationDeliveryDescription3")
+                      }}
+                    </li>
+                    <li v-if="isDelivery">
+                      -
+                      {{
+                        $t("transactionsAct.cancellationDeliveryDescription4")
+                      }}
+                    </li>
+                  </ul>
+                </li>
+                <li>{{ $t("transactionsAct.cancellationDescription3") }}</li>
+              </ul>
             </div>
-            <ul class="list-disc list-outside ml-5 mt-1">
-              <li>{{ $t("transactionsAct.cancellationDescription1") }}</li>
-              <li>
-                {{ $t("transactionsAct.cancellationDescription2") }}
-                <ul class="list-none list-outside mb-2">
-                  <div
-                    class="text-sm font-bold text-black text-opacity-30 mt-2"
-                  >
-                    {{ $t("transactionsAct.cancellationTakeoutDescription1") }}
-                  </div>
-                  <li>
-                    {{ $t("transactionsAct.cancellationTakeoutDescription2") }}
-                  </li>
-                  <div
-                    v-if="isDelivery"
-                    class="text-sm font-bold text-black text-opacity-30 mt-2"
-                  >
-                    {{ $t("transactionsAct.cancellationDeliveryDescription1") }}
-                  </div>
-                  <li v-if="isDelivery">
-                    -
-                    {{ $t("transactionsAct.cancellationDeliveryDescription2") }}
-                  </li>
-                  <li v-if="isDelivery">
-                    -
-                    {{ $t("transactionsAct.cancellationDeliveryDescription3") }}
-                  </li>
-                  <li v-if="isDelivery">
-                    -
-                    {{ $t("transactionsAct.cancellationDeliveryDescription4") }}
-                  </li>
-                </ul>
-              </li>
-              <li>{{ $t("transactionsAct.cancellationDescription3") }}</li>
-            </ul>
 
             <!--for MobileOrder-->
-            <div v-if="false">
+            <div v-if="isInMo">
               <div class="text-sm font-bold text-black text-opacity-30">
                 {{ $t("transactionsAct.cancellationMo") }}
               </div>
@@ -238,20 +252,14 @@
   </div>
 </template>
 <script>
-import { daysOfWeek } from "@/config/constant";
-import { db } from "@/plugins/firebase";
-import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
+import { defineComponent, ref, computed } from "@vue/composition-api";
 
-export default {
-  data() {
-    return {
-      restaurantsId: this.restaurantId(),
-      days: daysOfWeek,
-      notFound: null,
-      paymentInfo: {},
-      transactionsActPopup: false,
-    };
-  },
+import { daysOfWeek } from "@/config/constant";
+import { db } from "@/lib/firebase/firebase9";
+import { doc, onSnapshot, getDoc } from "firebase/firestore";
+import { isNull, useNationalPhoneNumber, useIsInMo } from "@/utils/utils";
+
+export default defineComponent({
   props: {
     shopInfo: {
       type: Object,
@@ -262,59 +270,55 @@ export default {
       required: true,
     },
   },
-  created() {
-    const uid = this.shopInfo.uid;
-    db.doc(`/admins/${uid}/public/payment`)
-      .get()
-      .then((snapshot) => {
-        this.paymentInfo = snapshot.data() || {};
-      });
+  setup(props) {
+    const isInMo = useIsInMo(ctx.root);
+
+    const restaurantsId = props.shopInfo.restaurantId;
+    const days = daysOfWeek;
+    const paymentInfo = ref({});
+    const transactionsActPopup = ref(false);
+
+    const uid = props.shopInfo.uid;
+
+    onSnapshot(doc(db, `/admins/${uid}/public/payment`), (snapshot) => {
+      paymentInfo.value = snapshot.data() || {};
+    });
+
+    const { nationalPhoneNumber } = useNationalPhoneNumber(props.shopInfo);
+
+    const inStorePayment = computed(() => {
+      return paymentInfo.value.inStore;
+    });
+    const showPayment = computed(() => {
+      return paymentInfo.value.stripe;
+    });
+    const validDate = (date) => {
+      return !isNull(date.start) && !isNull(date.end);
+    };
+    const openTransactionsAct = () => {
+      transactionsActPopup.value = true;
+    };
+    const closeTransactionsAct = () => {
+      transactionsActPopup.value = false;
+    };
+
+    return {
+      restaurantsId,
+      days,
+      paymentInfo,
+      transactionsActPopup,
+
+      showPayment,
+      inStorePayment,
+      validDate,
+
+      isInMo,
+
+      openTransactionsAct,
+      closeTransactionsAct, // call by parent
+
+      nationalPhoneNumber,
+    };
   },
-  computed: {
-    // BUGBUG: We need to determine what we want to diplay for EU
-    nationalPhoneNumber() {
-      if (!this.shopInfo.phoneNumber) {
-        return "";
-      }
-      const number = this.parsedNumber;
-      if (number) {
-        return formatNational(number);
-      }
-      console.log("parsing failed, return as-is");
-      return this.shopInfo.phoneNumber;
-    },
-    parsedNumber() {
-      const countryCode = this.shopInfo.countryCode || this.countries[0].code;
-      try {
-        return parsePhoneNumber(countryCode + this.shopInfo.phoneNumber);
-      } catch (error) {
-        console.error(error);
-        return null;
-      }
-    },
-    countries() {
-      return this.$store.getters.stripeRegion.countries;
-    },
-    showPayment() {
-      return this.stripeAccount;
-    },
-    stripeAccount() {
-      return this.paymentInfo.stripe;
-    },
-    inStorePayment() {
-      return this.paymentInfo.inStore;
-    },
-  },
-  methods: {
-    validDate(date) {
-      return !this.isNull(date.start) && !this.isNull(date.end);
-    },
-    openTransactionsAct() {
-      this.transactionsActPopup = true;
-    },
-    closeTransactionsAct() {
-      this.transactionsActPopup = false;
-    },
-  },
-};
+});
 </script>
