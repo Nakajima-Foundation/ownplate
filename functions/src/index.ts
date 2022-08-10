@@ -30,7 +30,7 @@ exportIfNeeded("traceProcess", "traceProcess", exports);
 
 exportIfNeeded("wasOrderCreatedJp", "order/wasOrderCreatedJp", exports); // jp
 exportIfNeeded("orderUpdateJp", "order/orderUpdateJp", exports);
-exportIfNeeded("orderPlaceJp", "order/orderPlaceJp", exports); // TODO Remove
+exportIfNeeded("orderPlaceJp", "order/orderPlaceJp", exports);
 
 exportIfNeeded("orderChangeJp", "stripe/orderChangeJp", exports);
 
