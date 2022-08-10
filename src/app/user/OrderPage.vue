@@ -162,8 +162,8 @@
           >
             <UserCustomerInfo
               :shopInfo="shopInfo"
+              :orderInfo="orderInfo"
               :orderId="orderId"
-              :phoneNumber="nationalPhoneNumber"
             />
           </div>
 
@@ -537,7 +537,6 @@ import { costCal } from "@/utils/commonUtils";
 
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
-import { parsePhoneNumber, formatNational, formatURL } from "@/utils/phoneutil";
 import { isEmpty, getOrderItems } from "@/utils/utils";
 
 export default {
@@ -730,16 +729,6 @@ export default {
     },
     hasMemo() {
       return this.orderInfo && !isEmpty(this.orderInfo.memo);
-    },
-    phoneNumber() {
-      return (
-        this.orderInfo &&
-        this.orderInfo.phoneNumber &&
-        parsePhoneNumber(this.orderInfo.phoneNumber)
-      );
-    },
-    nationalPhoneNumber() {
-      return this.phoneNumber ? formatNational(this.phoneNumber) : "";
     },
     shippingCost() {
       return costCal(

@@ -2,7 +2,7 @@
   <CustomerInfo
     :shopInfo="shopInfo"
     :customer="customer"
-    :phoneNumber="phoneNumber"
+    :phoneNumber="nationalPhoneNumber"
   />
 </template>
 
@@ -12,19 +12,21 @@ import CustomerInfo from "@/components/CustomerInfo.vue";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase/firebase9";
 
+import { parsePhoneNumber, formatNational, formatURL } from "@/utils/phoneutil";
+
 export default defineComponent({
   props: {
     shopInfo: {
       type: Object,
       required: true,
     },
+    orderInfo: {
+      type: Object,
+      required: true,
+    },
     orderId: {
       type: String,
       required: true,
-    },
-    phoneNumber: {
-      type: String,
-      required: false,
     },
   },
   components: {
@@ -40,8 +42,11 @@ export default defineComponent({
     ).then((doc) => {
       customer.value = doc.data();
     });
+    const phoneNumber = parsePhoneNumber(props.orderInfo?.phoneNumber || "")
+    const nationalPhoneNumber = phoneNumber ? formatNational(phoneNumber) : "";
     return {
       customer,
+      nationalPhoneNumber,
     };
   },
 });
