@@ -2,9 +2,9 @@ import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 import moment from "moment-timezone";
 
-import * as utils from "../lib/utils";
-import { order_status, possible_transitions, order_status_keys, timeEventMapping } from "../common/constant";
-import { sendMessageToCustomer } from "./notify";
+import * as utils from "../../lib/utils";
+import { order_status, possible_transitions, order_status_keys, timeEventMapping } from "../../common/constant";
+import { sendMessageToCustomer } from "../notify";
 
 // This function is called by admins (restaurant operators) to update the status of order
 export const update = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => {
