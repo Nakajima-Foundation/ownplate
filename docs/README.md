@@ -11,5 +11,5 @@
 - [更新履歴(ChangeLog)の仕様](./NEWS.md)
 - [Order Stateの仕様メモ](./ORDER_STATE.md)
 - [Orderの時間についての仕様メモ](./STATE_TIME.md)
-
+- [Order時に呼ばれるFunctionsの関数](../functions/README.md)
 
