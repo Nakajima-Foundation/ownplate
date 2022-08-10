@@ -4,7 +4,7 @@ import * as functions from "firebase-functions";
 
 import { order_status, next_transitions, order_status_keys, timeEventMapping } from "../common/constant";
 import * as utils from "../lib/utils";
-import { updateOrderTotalDataAndUserLog } from "../functions/order";
+import { updateOrderTotalDataAndUserLog } from "../functions/order/orderPlace";
 import { sendMessageToCustomer, notifyNewOrderToRestaurant, notifyCanceledOrderToRestaurant } from "../functions/notify";
 import { costCal } from "../common/commonUtils";
 import { Context } from "../models/TestType";

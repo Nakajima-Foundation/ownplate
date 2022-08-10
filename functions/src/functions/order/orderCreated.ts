@@ -1,7 +1,7 @@
 import * as functions from "firebase-functions";
-import * as utils from "../lib/utils";
-import { order_status } from "../common/constant";
-import { createCustomer } from "../stripe/customer";
+import * as utils from "../../lib/utils";
+import { order_status } from "../../common/constant";
+import { createCustomer } from "../../stripe/customer";
 
 // export const wasOrderCreated = async (db, snapshot, context) => {
 export const getGroupRestautantRef = async (db, groupId: string) => {
