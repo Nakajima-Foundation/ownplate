@@ -81,6 +81,9 @@ export const orderChange = async (db: any, data: any, context: functions.https.C
     const accountingResult = orderAccounting(restaurantData, food_sub_total, alcohol_sub_total, multiple);
     // was created new order data
 
+    const deliveryData = order.isDelivery ? await utils.get_restaurant_delivery_area(db, restaurantId) : {};
+    const deliveryFee = utils.get_delivery_cost(order, deliveryData, accountingResult.total);
+
     const postage = restaurantData.isEC ? await utils.get_restaurant_postage(db, restaurantId) : {};
     const shippingCost = restaurantData.isEC ? costCal(postage, order?.customerInfo?.prefectureId, accountingResult.total) : 0;
 
@@ -94,8 +97,9 @@ export const orderChange = async (db: any, data: any, context: functions.https.C
       tax: accountingResult.tax,
       inclusiveTax: accountingResult.inclusiveTax,
       total: accountingResult.total,
-      totalCharge: accountingResult.total + (Number(order.tip) || 0) + (shippingCost || 0),
+      totalCharge: accountingResult.total + (Number(order.tip) || 0) + (shippingCost || 0) + (deliveryFee || 0),
       shippingCost,
+      deliveryFee,
       accounting: {
         food: {
           revenue: accountingResult.food_sub_total,
