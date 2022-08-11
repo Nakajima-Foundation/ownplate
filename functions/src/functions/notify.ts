@@ -139,8 +139,11 @@ export const createNotifyRestaurantMailMessage = async (messageId: string, resta
           messages.push(`★ ${name} × ${count}`);
 
           try {
-            if (order.options && order.options[menuId] && order.options[menuId][key] && order.options[menuId][key].length > 0) {
-              messages.push(t("option") + ": " + order.options[menuId][key].join("/"));
+            if (order.options && order.options[menuId] && order.options[menuId][key]) {
+              const opts = order.options[menuId][key].filter(o => o);
+              if (opts.length > 0) {
+                messages.push(t("option") + ": " + opts.join("/"));
+              }
             }
           } catch (e) {
             console.log(e);
