@@ -714,6 +714,7 @@ export default {
       cancelPopup: false,
       paymentCancelPopup: false,
       postageInfo: {},
+      deliveryData: {},
       notFound: false,
       timeOffset: 0,
       shopOwner: null,
@@ -743,7 +744,14 @@ export default {
         }
       );
     }
-
+    if (this.shopInfo.enableDelivery) {
+      getDoc(doc(db, `restaurants/${this.restaurantId()}/delivery/area`)).then(
+        (snapshot) => {
+          this.deliveryData = snapshot.data() || {};
+        }
+      );
+    }
+    
     const order_detacher = onSnapshot(
       doc(db, `restaurants/${this.restaurantId()}/orders/${this.orderId}`),
       async (order) => {
@@ -1010,7 +1018,18 @@ export default {
         this.orderInfo?.customerInfo?.prefectureId,
         ret.total
       );
-      return Object.assign({}, this.orderInfo, ret, { shippingCost });
+
+      const deliveryFee = (() => {
+        // console.log(this.deliveryData.enableDeliveryFree, ret.total , this.deliveryData.deliveryThreshold);
+        if (!this.shopInfo.enableDelivery) {
+          return 0;
+        }
+        if (this.deliveryData.enableDeliveryFree && ((ret.total || 0) >= this.deliveryData.deliveryFreeThreshold)) {
+          return 0;
+        }
+        return this.deliveryData.deliveryFee;
+      })();
+      return Object.assign({}, this.orderInfo, ret, { shippingCost, deliveryFee });
     },
     availableOrderChange() {
       return (
