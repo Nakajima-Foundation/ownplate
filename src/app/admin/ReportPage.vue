@@ -203,7 +203,7 @@ import ReportDetails from "@/app/admin/Order/ReportDetails.vue";
 import { ownPlateConfig } from "@/config/project";
 import { nameOfOrder } from "@/utils/strings";
 import { midNightOfMonth } from "@/utils/dateUtils";
-import { revenueHeader } from "@/utils/reportUtils";
+import { revenueCSVHeader, revenueMoCSVHeader } from "@/utils/reportUtils";
 import { order_status_keys } from "@/config/constant";
 import { useAdminUids, doc2data } from "@/utils/utils";
 
@@ -279,7 +279,7 @@ export default defineComponent({
       return nameOfOrder(order);
     };
     const fields = computed(() => {
-      return revenueHeader;
+      return props.isInMo ? revenueMoCSVHeader : revenueCSVHeader;
     });
 
     const fieldNames = computed(() => {
@@ -313,8 +313,10 @@ export default defineComponent({
           foodTax: order.accounting.food.tax,
           alcoholRevenue: order.accounting.alcohol.revenue,
           salesTax: order.accounting.alcohol.tax,
+          productSubTotal: order.total,
           tipShort: order.accounting.service.revenue,
           serviceTax: order.accounting.service.tax,
+          shippingCost: order.shippingCost || order.deliveryFee || 0,
           total: order.totalCharge,
           name: orderName(order),
           payment: order.payment?.stripe ? "stripe" : "",

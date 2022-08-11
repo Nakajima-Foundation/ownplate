@@ -142,6 +142,8 @@ export default {
       };
     },
     fields() {
+
+
       if (this.isInMo) {
         return reportHeadersForMo;
       } else if (this.shopInfo?.isEC || this.shopInfo?.enableDelivery) {
