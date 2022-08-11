@@ -85,6 +85,7 @@ export const revenueCSVHeader = [
   "serviceTax",
   "shippingCost",
   "total",
+  "totalCount",
   "name",
   "payment",
 ];

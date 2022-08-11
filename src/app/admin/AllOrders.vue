@@ -83,7 +83,7 @@ import { order_status, order_status_keys } from "@/config/constant";
 import { nameOfOrder } from "@/utils/strings";
 import DownloadCsv from "@/components/DownloadCSV";
 
-import { revenueHeader } from "@/utils/reportUtils";
+import { revenueCSVHeader } from "@/utils/reportUtils";
 import { order2ReportData } from "@/models/orderInfo";
 
 export default {
@@ -140,7 +140,7 @@ export default {
       return "all_orders_of_all_restaurants";
     },
     fields() {
-      return revenueHeader;
+      return revenueCSVHeader;
     },
     fieldNames() {
       return this.fields.map((field) => {
@@ -160,10 +160,12 @@ export default {
           foodTax: order.accounting.food.tax,
           alcoholRevenue: order.accounting.alcohol.revenue,
           salesTax: order.accounting.alcohol.tax,
+          productSubTotal: order.total,
           tipShort: order.accounting.service.revenue,
           serviceTax: order.accounting.service.tax,
-          revenue: order.totalCharge,
-          total: Object.values(order.order).reduce((count, order) => {
+          shippingCost: order.shippingCost || order.deliveryFee || 0,
+          total: order.totalCharge,
+          totalCount: Object.values(order.order).reduce((count, order) => {
             return count + this.arrayOrNumSum(order);
           }, 0),
           name: nameOfOrder(order),
