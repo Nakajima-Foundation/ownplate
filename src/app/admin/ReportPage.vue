@@ -55,10 +55,10 @@
       <table class="w-full bg-white rounded-lg shadow">
         <!-- Table Header -->
         <tr>
-          <th class="p-2 text-xs font-bold"
-              v-for="(field, k) in revenueTableHeader"
-              
-              >
+          <th
+            class="p-2 text-xs font-bold"
+            v-for="(field, k) in revenueTableHeader"
+          >
             <div class="text-right">{{ $t(field) }}</div>
           </th>
         </tr>
@@ -91,7 +91,7 @@
               {{ order.total }}
             </div>
           </td>
-          
+
           <td class="p-2">
             <div class="text-right">
               {{ order.accounting.service.revenue }}
@@ -103,7 +103,9 @@
             </div>
           </td>
           <td class="p-2">
-            <div class="text-right">{{ order.shippingCost || order.deliveryFee || 0 }}</div>
+            <div class="text-right">
+              {{ order.shippingCost || order.deliveryFee || 0 }}
+            </div>
           </td>
           <td class="p-2">
             <div class="text-right">{{ order.totalCharge }}</div>
@@ -258,21 +260,21 @@ export default defineComponent({
       totalCharge: 0,
     });
     const monthIndex = ref(0);
-    let detacher =  null;
-        
+    let detacher = null;
+
     if (!checkAdminPermission(ctx)) {
       return {
         notFound: true,
       };
     }
-  
+
     const { ownerUid, uid } = useAdminUids(ctx);
     if (!checkShopAccount(props.shopInfo, ownerUid.value)) {
       return {
         notFound: true,
       };
     }
-    
+
     const orderName = (order) => {
       return nameOfOrder(order);
     };
@@ -284,20 +286,20 @@ export default defineComponent({
       return fields.value.map((field) => {
         return ctx.root.$t(`order.${field}`);
       });
-    })
+    });
 
     const revenueTableHeader = [
-      'order.date',
-      'order.foodRevenue',
-      'order.foodTax',
-      'order.alcoholRevenue',
-      'order.salesTax',
-      'order.productSubTotal',
-      'order.tipShort',
-      'order.serviceTax',
-      'order.shippingCost',
-      'order.total',
-      'order.name',
+      "order.date",
+      "order.foodRevenue",
+      "order.foodTax",
+      "order.alcoholRevenue",
+      "order.salesTax",
+      "order.productSubTotal",
+      "order.tipShort",
+      "order.serviceTax",
+      "order.shippingCost",
+      "order.total",
+      "order.name",
     ];
     const tableData = computed(() => {
       return orders.value.map((order) => {
@@ -318,20 +320,20 @@ export default defineComponent({
           payment: order.payment?.stripe ? "stripe" : "",
         };
       });
-    })
+    });
     const lastSeveralMonths = computed(() => {
       return Array.from(Array(12).keys()).map((index) => {
         const date = midNightOfMonth(-index);
         return { index, date };
       });
-    })
+    });
     const fileName = computed(() => {
       return [
         moment(lastSeveralMonths.value[monthIndex.value].date).format(
           "YYYY-MM"
         ),
         "revenue",
-        props.shopInfo.restaurantId
+        props.shopInfo.restaurantId,
       ].join("-");
     });
 
@@ -353,8 +355,9 @@ export default defineComponent({
       }
       detacher = query.orderBy("timeConfirmed").onSnapshot((snapshot) => {
         const serviceTaxRate = props.shopInfo.alcoholTax / 100;
-        orders.value = snapshot.docs.map(doc2data("order"))
-          .map(order => order2ReportData(order, serviceTaxRate));
+        orders.value = snapshot.docs
+          .map(doc2data("order"))
+          .map((order) => order2ReportData(order, serviceTaxRate));
         total.value = orders.value.reduce(
           (total, order) => {
             const accounting = order.accounting;
@@ -389,9 +392,7 @@ export default defineComponent({
       return `/admin/restaurants/${props.shopInfo.restaurantId}/orders/${order.id}`;
     };
     const searchUrl = (order) => {
-      const value = encodeURIComponent(
-        order.description || orderName(order)
-      );
+      const value = encodeURIComponent(order.description || orderName(order));
       return `${ownPlateConfig.stripe.search}?query=${value}`;
     };
 
@@ -400,7 +401,7 @@ export default defineComponent({
     onUnmounted(() => {
       detacher && detacher();
     });
-    
+
     watch(monthIndex, () => {
       updateQuery();
     });
@@ -417,11 +418,10 @@ export default defineComponent({
       fieldNames,
       fileName,
 
-
       orderUrl,
       orderName,
       searchUrl,
-    }
+    };
   },
 });
 </script>

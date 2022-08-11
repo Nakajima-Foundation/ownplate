@@ -177,7 +177,6 @@ export const arrayOrNumSum = (arr: number | number[]) => {
   return Array.isArray(arr) ? arraySum(arr) : arr || 0;
 };
 
-
 export const forceArray = <T>(arr: T) => {
   return Array.isArray(arr) ? arr : [arr];
 };

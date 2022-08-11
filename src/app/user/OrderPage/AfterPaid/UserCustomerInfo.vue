@@ -42,7 +42,7 @@ export default defineComponent({
     ).then((doc) => {
       customer.value = doc.data();
     });
-    const phoneNumber = parsePhoneNumber(props.orderInfo?.phoneNumber || "")
+    const phoneNumber = parsePhoneNumber(props.orderInfo?.phoneNumber || "");
     const nationalPhoneNumber = phoneNumber ? formatNational(phoneNumber) : "";
     return {
       customer,

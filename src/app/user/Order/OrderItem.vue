@@ -58,7 +58,7 @@
 <script>
 import { formatOption, optionPrice } from "@/utils/strings";
 import { roundPrice } from "@/utils/utils";
-         
+
 export default {
   props: {
     orderItem: {

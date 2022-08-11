@@ -116,8 +116,8 @@ export default defineComponent({
     const { ownerUid, uid } = useAdminUids(ctx);
     if (!checkShopAccount(props.shopInfo, ownerUid.value)) {
       return {
-        notFound: true
-      }
+        notFound: true,
+      };
     }
     const getPickUpDaysInAdvance = () => {
       return isNull(props.shopInfo.pickUpDaysInAdvance)
@@ -138,11 +138,12 @@ export default defineComponent({
     dayIndex.value = getPickUpDaysInAdvance();
 
     const updateDayIndex = () => {
-      const newDayIndex = lastSeveralDays.value.findIndex((day) => {
-        return (
-          moment(day.date).format("YYYY-MM-DD") === ctx.root.$route.query.day
-        );
-      }) || 0;
+      const newDayIndex =
+        lastSeveralDays.value.findIndex((day) => {
+          return (
+            moment(day.date).format("YYYY-MM-DD") === ctx.root.$route.query.day
+          );
+        }) || 0;
       dayIndex.value = newDayIndex > 0 ? newDayIndex : 0;
     };
     const updateQueryDay = () => {
@@ -152,7 +153,10 @@ export default defineComponent({
       if (ctx.root.$route.query.day !== day) {
         ctx.root.$router.push({
           path:
-            "/admin/restaurants/" + ctx.root.restaurantId() + "/orders?day=" + day,
+            "/admin/restaurants/" +
+            ctx.root.restaurantId() +
+            "/orders?day=" +
+            day,
         });
       }
     };
@@ -167,11 +171,17 @@ export default defineComponent({
         query = query.where(
           "timePlaced",
           "<",
-          lastSeveralDays.value[dayIndex.value - 1].date,
+          lastSeveralDays.value[dayIndex.value - 1].date
         );
       }
-      console.log(new Date(lastSeveralDays.value[dayIndex.value].date.getTime() - 1000))
-      console.log(new Date(lastSeveralDays.value[dayIndex.value - 1].date.getTime() + 1000));
+      console.log(
+        new Date(lastSeveralDays.value[dayIndex.value].date.getTime() - 1000)
+      );
+      console.log(
+        new Date(
+          lastSeveralDays.value[dayIndex.value - 1].date.getTime() + 1000
+        )
+      );
       order_detacher = query.onSnapshot((result) => {
         console.log(result.docs.length);
         orders.value = result.docs
@@ -209,8 +219,9 @@ export default defineComponent({
     const orderCounter = computed(() => {
       return lastSeveralDays.value.reduce((tmp, day) => {
         const count = (
-          ctx.root.$store.state.orderObj[moment(day.date).format("YYYY-MM-DD")] ||
-          []
+          ctx.root.$store.state.orderObj[
+            moment(day.date).format("YYYY-MM-DD")
+          ] || []
         ).length;
         if (count > 0) {
           tmp[moment(day.date).format("YYYY-MM-DD")] = "(" + count + ")";

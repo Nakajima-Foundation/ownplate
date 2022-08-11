@@ -189,7 +189,7 @@ export default {
           query = query.startAfter(this.last);
         }
         const snapshot = await query.get();
-        const serviceTaxRate = 0.10;
+        const serviceTaxRate = 0.1;
         if (!snapshot.empty) {
           this.last = snapshot.docs[snapshot.docs.length - 1];
           let i = 0;

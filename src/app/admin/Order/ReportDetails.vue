@@ -12,7 +12,11 @@
           </th>
         </tr>
         <tr v-for="(row, k) in tableData" :key="k">
-          <td v-for="field in fields" :key="`${row.id}_${field}`" class="p-2 text-xs">
+          <td
+            v-for="field in fields"
+            :key="`${row.id}_${field}`"
+            class="p-2 text-xs"
+          >
             {{ row[field] }}
           </td>
         </tr>
@@ -49,7 +53,11 @@ import { nameOfOrder } from "@/utils/strings";
 import { order_status } from "@/config/constant";
 import { arrayChunk, forceArray } from "@/utils/utils";
 
-import { reportHeaders, reportHeadersWithAddress, reportHeadersForMo } from "@/utils/reportUtils";
+import {
+  reportHeaders,
+  reportHeadersWithAddress,
+  reportHeadersForMo,
+} from "@/utils/reportUtils";
 
 export default {
   components: {
@@ -172,7 +180,8 @@ export default {
           const taxRate = menuItem.tax === "feed" ? 8 : 10;
           Object.keys(orderItems).forEach((key) => {
             const opt = Array.isArray(options[key] || [])
-                ? options[key] : [options[key]];
+              ? options[key]
+              : [options[key]];
             try {
               items.push({
                 id: `${order.id}/${menuId}`,
@@ -270,11 +279,15 @@ export default {
                 // for mo
                 menuPrice: menuItem.price,
                 taxRate,
-                tax: Math.round(menuItem.price * taxRate / (100  + taxRate)) ,
+                tax: Math.round((menuItem.price * taxRate) / (100 + taxRate)),
                 productSubTotal: prices[key],
-                
+
                 // end of for mo
-                total: this.writeonFirstLine(index, key, order.totalCharge || ""),
+                total: this.writeonFirstLine(
+                  index,
+                  key,
+                  order.totalCharge || ""
+                ),
                 payment: this.writeonFirstLine(
                   index,
                   key,

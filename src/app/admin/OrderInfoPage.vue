@@ -683,7 +683,7 @@ export default {
         }
       );
     }
-    
+
     const order_detacher = onSnapshot(
       doc(db, `restaurants/${this.restaurantId()}/orders/${this.orderId}`),
       async (order) => {
@@ -959,18 +959,26 @@ export default {
         if (!this.shopInfo.enableDelivery) {
           return 0;
         }
-        if (this.deliveryData.enableDeliveryFree && ((ret.total || 0) >= this.deliveryData.deliveryFreeThreshold)) {
+        if (
+          this.deliveryData.enableDeliveryFree &&
+          (ret.total || 0) >= this.deliveryData.deliveryFreeThreshold
+        ) {
           return 0;
         }
         return this.deliveryData.deliveryFee;
       })();
-      return Object.assign({}, this.orderInfo, ret, { shippingCost, deliveryFee });
+      return Object.assign({}, this.orderInfo, ret, {
+        shippingCost,
+        deliveryFee,
+      });
     },
     notDeliveryOrTotalCanDelivery() {
       if (!this.shopInfo.enableDelivery) {
         true;
       }
-      return (this.editable_order_info.total >= this.deliveryData.deliveryThreshold);
+      return (
+        this.editable_order_info.total >= this.deliveryData.deliveryThreshold
+      );
     },
     availableOrderChange() {
       return (
@@ -983,8 +991,9 @@ export default {
       return (
         this.edited_available_order_info.length !==
           this.editedAvailableOrders.length &&
-        this.edited_available_order_info.length > 0
-      ) && this.notDeliveryOrTotalCanDelivery;
+        this.edited_available_order_info.length > 0 &&
+        this.notDeliveryOrTotalCanDelivery
+      );
     },
   },
   methods: {

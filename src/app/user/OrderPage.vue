@@ -119,10 +119,8 @@
       <div
         v-if="orderInfo.phoneNumber && !shopInfo.isEC"
         class="mt-4 text-center"
-        >
-        <CustomerInfo
-          :orderInfo="orderInfo"
-          />
+      >
+        <CustomerInfo :orderInfo="orderInfo" />
       </div>
 
       <!-- Order Body -->

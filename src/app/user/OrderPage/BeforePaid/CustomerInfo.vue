@@ -10,7 +10,7 @@
       <div>
         <a :href="nationalPhoneURI" class="text-base font-bold">{{
           nationalPhoneNumber
-          }}</a>
+        }}</a>
       </div>
       <div class="text-base">{{ orderInfo.name }}</div>
     </div>
@@ -28,9 +28,9 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const phoneNumber = parsePhoneNumber(props.orderInfo?.phoneNumber || "")
+    const phoneNumber = parsePhoneNumber(props.orderInfo?.phoneNumber || "");
     const nationalPhoneNumber = phoneNumber ? formatNational(phoneNumber) : "";
-    const nationalPhoneURI =  formatURL(phoneNumber);
+    const nationalPhoneURI = formatURL(phoneNumber);
     return {
       nationalPhoneNumber,
       nationalPhoneURI,

@@ -24,15 +24,15 @@ export interface OrderInfoData {
     food: {
       revenue: number;
       tax: number;
-    }
+    };
     alcohol: {
       revenue: number;
       tax: number;
-    }
+    };
     service?: {
       revenue: number;
       tax: number;
-    }
+    };
   };
   tip: number;
   menuItems: { [key: string]: OrderMenuItemData };
@@ -44,11 +44,14 @@ export interface OrderItem {}
 
 export class OrderInfo {}
 
-export const order2ReportData = (order: OrderInfoData, serviceTaxRate: number) => {
+export const order2ReportData = (
+  order: OrderInfoData,
+  serviceTaxRate: number
+) => {
   const multiple = stripeRegion.multiple;
   order.timeConfirmed = order?.timeConfirmed?.toDate();
   order.timePlaced = order?.timePlaced?.toDate();
-  order.timeEstimated = order?.timeEstimated?.toDate(); 
+  order.timeEstimated = order?.timeEstimated?.toDate();
   if (!order.accounting) {
     order.accounting = {
       food: {
@@ -63,9 +66,8 @@ export const order2ReportData = (order: OrderInfoData, serviceTaxRate: number) =
   }
   if (ownPlateConfig.region === "JP") {
     const serviceTax =
-      Math.round(
-        order.tip * (1 - 1 / (1 + serviceTaxRate)) * multiple
-      ) / multiple;
+      Math.round(order.tip * (1 - 1 / (1 + serviceTaxRate)) * multiple) /
+      multiple;
     order.accounting.service = {
       revenue: order.tip - serviceTax,
       tax: serviceTax,
