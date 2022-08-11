@@ -1,6 +1,20 @@
 {
   "indexes": [
     {
+      "collectionGroup": "category",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "publicFlag",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "sortKey",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
       "collectionGroup": "customer",
       "queryScope": "COLLECTION_GROUP",
       "fields": [
@@ -188,6 +202,20 @@
         },
         {
           "fieldPath": "restaurantName",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "subCategory",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "publicFlag",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "sortKey",
           "order": "ASCENDING"
         }
       ]

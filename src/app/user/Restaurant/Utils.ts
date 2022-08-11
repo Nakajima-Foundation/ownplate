@@ -6,6 +6,7 @@ import {
   onSnapshot,
   collection,
   where,
+  orderBy,
   DocumentData,
 } from "firebase/firestore";
 
@@ -66,7 +67,8 @@ export const useCategory = (moPrefix: string) => {
     categoryDetacher.value = onSnapshot(
       query(
         collection(db, `groups/${moPrefix}/category`),
-        where("publicFlag", "==", true)
+        where("publicFlag", "==", true),
+        orderBy("sortKey", "asc"),
       ),
       (category) => {
         if (category.empty) {
@@ -77,15 +79,6 @@ export const useCategory = (moPrefix: string) => {
         categoryData.value = category.docs
           .map((doc) => {
             return [
-              doc2data("category")(doc),
-              doc2data("category")(doc),
-              doc2data("category")(doc),
-              doc2data("category")(doc),
-              doc2data("category")(doc),
-              doc2data("category")(doc),
-              doc2data("category")(doc),
-              doc2data("category")(doc),
-              doc2data("category")(doc),
               doc2data("category")(doc),
             ];
           })
@@ -117,14 +110,14 @@ export const useSubcategory = (moPrefix: string, category: Ref<string>) => {
   const subCategoryData = ref<DocumentData[]>([]);
   const loadSubcategory = () => {
     detacheSubCategory();
-    console.log(`groups/${moPrefix}/category/${category.value}/subCategory`);
     subCategoryDetacher.value = onSnapshot(
       query(
         collection(
           db,
           `groups/${moPrefix}/category/${category.value}/subCategory`
         ),
-        where("publicFlag", "==", true)
+        where("publicFlag", "==", true),
+        orderBy("sortKey", "asc"),
       ),
       (category) => {
         if (category.empty) {
