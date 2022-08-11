@@ -65,10 +65,6 @@
         "dynamicLinks": true
       },
       {
-        "source": "/ss/**",
-        "destination": "/test.html"
-      },
-      {
         "source": "**",
         "destination": "/index.html"
       }
