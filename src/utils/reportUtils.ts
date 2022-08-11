@@ -72,7 +72,7 @@ export const reportHeadersWithAddress = [
 
 /* ---- */
 
-export const revenueHeader = [
+export const revenueCSVHeader = [
   "date",
   "restaurantName",
   "orderStatus",
@@ -80,8 +80,23 @@ export const revenueHeader = [
   "foodTax",
   "alcoholRevenue",
   "salesTax",
+  "productSubTotal",
   "tipShort",
   "serviceTax",
+  "shippingCost",
+  "total",
+  "name",
+  "payment",
+];
+
+export const revenueMoCSVHeader = [
+  "date",
+  "restaurantName",
+  "orderStatus",
+  "foodRevenue",
+  "foodTax",
+  "alcoholRevenue",
+  "salesTax",
   "total",
   "name",
   "payment",
