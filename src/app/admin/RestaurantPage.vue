@@ -980,7 +980,7 @@ import {
   shopInfoValidator,
   copyRestaurant,
 } from "@/utils/admin/RestaurantPageUtils";
-import { cleanObject, isNull, countObj } from "@/utils/utils";
+import { cleanObject, isNull, countObj, regionalSetting } from "@/utils/utils";
 import { uploadFile } from "@/lib/firebase/storage";
 
 import {
@@ -1060,9 +1060,9 @@ export default {
     };
   },
   async created() {
-    this.taxRateKeys = this.regionalSetting["taxRateKeys"];
-    this.requireTaxInput = this.regionalSetting.requireTaxInput;
-    this.requireTaxPriceDisplay = this.regionalSetting.requireTaxPriceDisplay;
+    this.taxRateKeys = regionalSetting["taxRateKeys"];
+    this.requireTaxInput = regionalSetting.requireTaxInput;
+    this.requireTaxPriceDisplay = regionalSetting.requireTaxPriceDisplay;
 
     this.checkAdminPermission();
 

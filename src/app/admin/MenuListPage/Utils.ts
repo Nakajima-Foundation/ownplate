@@ -66,7 +66,13 @@ export const useMenuAndTitle = (
           );
     menuDetacher.value = onSnapshot(query(menuQuery), (results) => {
       menus.value = (results.empty ? [] : results.docs).map(doc2data("menu"));
-    });
+    },
+
+                                    (e) => {
+                                      console.log(`restaurants/${menuRestaurantId.value}/menus`)
+                                      console.log(category.value, subCategory.value);
+                                      console.log(e);
+                                    });
   };
 
   const titleDetacher = onSnapshot(
