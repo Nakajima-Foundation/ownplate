@@ -11,7 +11,7 @@
           '/cat/' +
           cat.id +
           '/' +
-          cat.subcategory
+          cat.subCategory
         "
       >
         <div @click="closeCategory">

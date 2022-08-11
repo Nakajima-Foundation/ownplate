@@ -973,8 +973,8 @@ export default {
       });
     },
     notDeliveryOrTotalCanDelivery() {
-      if (!this.shopInfo.enableDelivery) {
-        true;
+      if (!this.orderInfo.isDelivery) {
+        return true;
       }
       return (
         this.editable_order_info.total >= this.deliveryData.deliveryThreshold
