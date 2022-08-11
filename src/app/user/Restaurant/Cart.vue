@@ -1,13 +1,11 @@
 <template>
   <div class="w-full fixed h-screen top-0 bg-black bg-opacity-50">
     <div class="w-full h-1/3" @click="closeCart"
-         @dragenter.prevent
-         @dragover.prevent
+         @touchstart.prevent
+         @touchenter.prevent
+         @touchchancel.prevent
          ></div>
-    <div class="w-full h-2/3 bg-white fixed z-10 overflow-x-scroll pb-36 z-20"
-         @dragenter.prevent
-         @dragover.prevent
-         >
+    <div class="w-full h-2/3 bg-white fixed z-10 overflow-x-scroll pb-36 z-20">
       <div class="flex justify-center mt-6 font-bold text-black">
         {{ shopInfo.restaurantName }}
       </div>
@@ -27,7 +25,11 @@
           </div>
         </template>
       </div>
-      <div class="w-full h-32 bottom-0 bg-white fixed z-20"></div>
+      <div class="w-full h-32 bottom-0 bg-white fixed z-20"
+           @touchstart.prevent
+           @touchenter.prevent
+           @touchchancel.prevent
+           ></div>
     </div>
   </div>
 </template>

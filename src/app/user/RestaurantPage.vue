@@ -201,7 +201,11 @@
       />
 
       <!-- for disable all UI -->
-      <div v-if="isCheckingOut" class="fixed top-0 left-0 w-full h-full"></div>
+      <div v-if="isCheckingOut" class="fixed top-0 left-0 w-full h-full"
+           @touchstart.prevent
+           @touchenter.prevent
+           @touchchancel.prevent
+           ></div>
       <!-- Cart Button -->
       <CartButton
         ref="cartButton"
@@ -214,6 +218,9 @@
         :noAvailableTime="noAvailableTime"
         :isDelivery="isDelivery"
         :totalPrice="totalPrice"
+        @touchstart.prevent
+        @touchenter.prevent
+        @touchchancel.prevent
       />
     </template>
     <!-- Image Popup-->
