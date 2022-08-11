@@ -69,7 +69,7 @@ export const order2ReportData = (
       Math.round(order.tip * (1 - 1 / (1 + serviceTaxRate)) * multiple) /
       multiple;
     order.accounting.service = {
-      revenue: order.tip - serviceTax,
+      revenue: order.tip,
       tax: serviceTax,
     };
   } else {

@@ -205,7 +205,7 @@ import { nameOfOrder } from "@/utils/strings";
 import { midNightOfMonth } from "@/utils/dateUtils";
 import { revenueCSVHeader, revenueMoCSVHeader } from "@/utils/reportUtils";
 import { order_status_keys } from "@/config/constant";
-import { useAdminUids, doc2data } from "@/utils/utils";
+import { useAdminUids, doc2data, arrayOrNumSum } from "@/utils/utils";
 
 import { order2ReportData } from "@/models/orderInfo";
 
@@ -318,6 +318,9 @@ export default defineComponent({
           serviceTax: order.accounting.service.tax,
           shippingCost: order.shippingCost || order.deliveryFee || 0,
           total: order.totalCharge,
+          totalCount: Object.values(order.order).reduce((count, order) => {
+            return count + arrayOrNumSum(order);
+          }, 0),
           name: orderName(order),
           payment: order.payment?.stripe ? "stripe" : "",
         };
