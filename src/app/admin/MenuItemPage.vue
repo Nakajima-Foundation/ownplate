@@ -586,7 +586,7 @@ import {
 import { uploadFile } from "@/lib/firebase/storage";
 
 import { getNewItemData } from "@/models/menu";
-import { checkAdminPermission, checkShopAccount } from "@/utils/userPermission";
+import { checkAdminPermission, checkShopOwner } from "@/utils/userPermission";
 
 export default defineComponent({
   name: "MenuItemPage",
@@ -667,7 +667,7 @@ export default defineComponent({
       };
     }
     // allow sub Account
-    if (!checkShopAccount(props.shopInfo, ownerUid.value)) {
+    if (!checkShopOwner(props.shopInfo, uid.value)) {
       console.log("no permission2");
       return {
         notFound: true,
