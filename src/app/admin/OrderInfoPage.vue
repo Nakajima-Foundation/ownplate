@@ -1031,6 +1031,12 @@ export default {
       })();
       return Object.assign({}, this.orderInfo, ret, { shippingCost, deliveryFee });
     },
+    notDeliveryOrTotalCanDelivery() {
+      if (!this.shopInfo.enableDelivery) {
+        true;
+      }
+      return (this.editable_order_info.total >= this.deliveryData.deliveryThreshold);
+    },
     availableOrderChange() {
       return (
         this.orderInfo &&
@@ -1043,7 +1049,7 @@ export default {
         this.edited_available_order_info.length !==
           this.editedAvailableOrders.length &&
         this.edited_available_order_info.length > 0
-      );
+      ) && this.notDeliveryOrTotalCanDelivery;
     },
   },
   methods: {
