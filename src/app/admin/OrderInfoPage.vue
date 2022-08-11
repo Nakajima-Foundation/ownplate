@@ -1032,7 +1032,7 @@ export default {
       return Object.assign({}, this.orderInfo, ret, { shippingCost, deliveryFee });
     },
     notDeliveryOrTotalCanDelivery() {
-      if (!this.shopInfo.enableDelivery) {
+      if (!this.orderInfo.isDelivery) {
         true;
       }
       return (this.editable_order_info.total >= this.deliveryData.deliveryThreshold);
