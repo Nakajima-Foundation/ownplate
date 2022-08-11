@@ -866,6 +866,9 @@ export default {
       return this.$route.params.orderId;
     },
     parentUrl() {
+      if (this.shopInfo.isEC) {
+        return `/admin/restaurants/${this.restaurantId()}/history`;
+      }
       const day = this.orderInfo.timePlaced
         ? moment(this.orderInfo.timePlaced.toDate()).format("YYYY-MM-DD")
         : null;

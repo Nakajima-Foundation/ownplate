@@ -169,10 +169,8 @@ export default {
           const options = order.options[menuId] || [];
           const prices = order.prices[menuId] || [];
           const menuItem = (order.menuItems || {})[menuId] || {};
-          console.log(menuItem, prices, options);
           const taxRate = menuItem.tax === "feed" ? 8 : 10;
           Object.keys(orderItems).forEach((key) => {
-            console.log(prices[key]);
             const opt = Array.isArray(options[key] || [])
                 ? options[key] : [options[key]];
             try {

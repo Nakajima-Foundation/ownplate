@@ -65,6 +65,7 @@
             :hideTable="true"
             :withStatus="true"
             :shopInfo="shopInfo"
+            :isInMo="isInMo"
           />
         </div>
       </div>
@@ -99,6 +100,10 @@ export default defineComponent({
   props: {
     shopInfo: {
       type: Object,
+      required: true,
+    },
+    isInMo: {
+      type: Boolean,
       required: true,
     },
   },

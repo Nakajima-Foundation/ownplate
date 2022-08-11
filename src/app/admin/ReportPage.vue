@@ -55,34 +55,11 @@
       <table class="w-full bg-white rounded-lg shadow">
         <!-- Table Header -->
         <tr>
-          <th class="p-2 text-xs font-bold">
-            <div class="text-right">{{ $t("order.date") }}</div>
-          </th>
-          <th class="p-2 text-xs font-bold">
-            <div class="text-right">{{ $t("order.foodRevenue") }}</div>
-          </th>
-          <th class="p-2 text-xs font-bold">
-            <div class="text-right">{{ $t("order.foodTax") }}</div>
-          </th>
-          <th class="p-2 text-xs font-bold">
-            <div class="text-right">
-              {{ $t("order.alcoholRevenue") }}
-            </div>
-          </th>
-          <th class="p-2 text-xs font-bold">
-            <div class="text-right">{{ $t("order.salesTax") }}</div>
-          </th>
-          <th class="p-2 text-xs font-bold">
-            <div class="text-right">{{ $t("order.tipShort") }}</div>
-          </th>
-          <th class="p-2 text-xs font-bold">
-            <div class="text-right">{{ $t("order.salesTax") }}</div>
-          </th>
-          <th class="p-2 text-xs font-bold">
-            <div class="text-right">{{ $t("order.total") }}</div>
-          </th>
-          <th class="p-2 text-xs font-bold">
-            <div class="text-right">{{ $t("order.name") }}</div>
+          <th class="p-2 text-xs font-bold"
+              v-for="(field, k) in revenueTableHeader"
+              
+              >
+            <div class="text-right">{{ $t(field) }}</div>
           </th>
         </tr>
 
@@ -111,6 +88,12 @@
           </td>
           <td class="p-2">
             <div class="text-right">
+              {{ order.total }}
+            </div>
+          </td>
+          
+          <td class="p-2">
+            <div class="text-right">
               {{ order.accounting.service.revenue }}
             </div>
           </td>
@@ -118,6 +101,9 @@
             <div class="text-right">
               {{ order.accounting.service.tax }}
             </div>
+          </td>
+          <td class="p-2">
+            <div class="text-right">{{ order.shippingCost || order.deliveryFee || 0 }}</div>
           </td>
           <td class="p-2">
             <div class="text-right">{{ order.totalCharge }}</div>
@@ -199,6 +185,13 @@
 
 <script>
 import { db, firestore } from "@/plugins/firebase";
+import {
+  defineComponent,
+  ref,
+  computed,
+  watch,
+  onUnmounted,
+} from "@vue/composition-api";
 import moment from "moment";
 
 import BackButton from "@/components/BackButton.vue";
@@ -210,10 +203,13 @@ import { nameOfOrder } from "@/utils/strings";
 import { midNightOfMonth } from "@/utils/dateUtils";
 import { revenueHeader } from "@/utils/reportUtils";
 import { order_status_keys } from "@/config/constant";
+import { useAdminUids, doc2data } from "@/utils/utils";
 
 import { order2ReportData } from "@/models/orderInfo";
 
-export default {
+import { checkAdminPermission, checkShopAccount } from "@/utils/userPermission";
+
+export default defineComponent({
   components: {
     BackButton,
     DownloadCsv,
@@ -244,73 +240,71 @@ export default {
         : this.defaultTitle,
     };
   },
-  data() {
-    return {
-      orders: [],
-      total: {
-        food: {
-          revenue: 0,
-          tax: 0,
-        },
-        alcohol: {
-          revenue: 0,
-          tax: 0,
-        },
-        service: {
-          revenue: 0,
-          tax: 0,
-        },
-        totalCharge: 0,
+  setup(props, ctx) {
+    const orders = ref([]);
+    const total = ref({
+      food: {
+        revenue: 0,
+        tax: 0,
       },
-      monthIndex: 0,
-      detacher: null,
+      alcohol: {
+        revenue: 0,
+        tax: 0,
+      },
+      service: {
+        revenue: 0,
+        tax: 0,
+      },
+      totalCharge: 0,
+    });
+    const monthIndex = ref(0);
+    let detacher =  null;
+        
+    if (!checkAdminPermission(ctx)) {
+      return {
+        notFound: true,
+      };
+    }
+  
+    const { ownerUid, uid } = useAdminUids(ctx);
+    if (!checkShopAccount(props.shopInfo, ownerUid.value)) {
+      return {
+        notFound: true,
+      };
+    }
+    
+    const orderName = (order) => {
+      return nameOfOrder(order);
     };
-  },
-  async created() {
-    if (!this.checkAdminPermission()) {
-      return;
-    }
-
-    if (!this.checkShopAccount(this.shopInfo)) {
-      this.notFound = true;
-      return true;
-    }
-
-    this.updateQuery();
-  },
-  destroyed() {
-    this.detacher && this.detacher();
-  },
-  watch: {
-    monthIndex() {
-      this.updateQuery();
-    },
-  },
-  computed: {
-    fileName() {
-      return [
-        moment(this.lastSeveralMonths[this.monthIndex].date).format(
-          "YYYY-MM"
-        ),
-        "revenue",
-        this.shopInfo.restaurantId
-      ].join("-");
-    },
-    fields() {
+    const fields = computed(() => {
       return revenueHeader;
-    },
-    fieldNames() {
-      return this.fields.map((field) => {
-        return this.$t(`order.${field}`);
+    });
+
+    const fieldNames = computed(() => {
+      return fields.value.map((field) => {
+        return ctx.root.$t(`order.${field}`);
       });
-    },
-    tableData() {
-      return this.orders.map((order) => {
-        console.log(order);
+    })
+
+    const revenueTableHeader = [
+      'order.date',
+      'order.foodRevenue',
+      'order.foodTax',
+      'order.alcoholRevenue',
+      'order.salesTax',
+      'order.productSubTotal',
+      'order.tipShort',
+      'order.serviceTax',
+      'order.shippingCost',
+      'order.total',
+      'order.name',
+    ];
+    const tableData = computed(() => {
+      return orders.value.map((order) => {
         return {
           date: moment(order.timeConfirmed).format("YYYY/MM/DD"),
-          restaurantName: this.shopInfo.restaurantName,
-          orderStatus: this.$t(
+          restaurantName: props.shopInfo.restaurantName,
+          orderStatus: ctx.root.$t(
             "order.status." + order_status_keys[order.status]
           ),
           foodRevenue: order.accounting.food.revenue,
@@ -320,41 +314,48 @@ export default {
           tipShort: order.accounting.service.revenue,
           serviceTax: order.accounting.service.tax,
           total: order.totalCharge,
-          name: this.orderName(order),
+          name: orderName(order),
           payment: order.payment?.stripe ? "stripe" : "",
         };
       });
-    },
-    lastSeveralMonths() {
+    })
+    const lastSeveralMonths = computed(() => {
       return Array.from(Array(12).keys()).map((index) => {
         const date = midNightOfMonth(-index);
         return { index, date };
       });
-    },
-  },
-  methods: {
-    updateQuery() {
-      console.log("updateQuery", this.monthIndex);
-      this.detacher && this.detacher();
+    })
+    const fileName = computed(() => {
+      return [
+        moment(lastSeveralMonths.value[monthIndex.value].date).format(
+          "YYYY-MM"
+        ),
+        "revenue",
+        props.shopInfo.restaurantId
+      ].join("-");
+    });
+
+    const updateQuery = () => {
+      detacher && detacher();
       let query = db
-        .collection(`restaurants/${this.restaurantId()}/orders`)
+        .collection(`restaurants/${props.shopInfo.restaurantId}/orders`)
         .where(
           "timeConfirmed",
           ">=",
-          this.lastSeveralMonths[this.monthIndex].date
+          lastSeveralMonths.value[monthIndex.value].date
         );
-      if (this.monthIndex > 0) {
+      if (monthIndex.value > 0) {
         query = query.where(
           "timeConfirmed",
           "<",
-          this.lastSeveralMonths[this.monthIndex - 1].date
+          lastSeveralMonths.value[monthIndex.value - 1].date
         );
       }
-      this.detacher = query.orderBy("timeConfirmed").onSnapshot((snapshot) => {
-        let orders = snapshot.docs.map(this.doc2data("order"));
-        const serviceTaxRate = this.shopInfo.alcoholTax / 100;
-        this.orders = orders.map(order => order2ReportData(order, serviceTaxRate));
-        this.total = this.orders.reduce(
+      detacher = query.orderBy("timeConfirmed").onSnapshot((snapshot) => {
+        const serviceTaxRate = props.shopInfo.alcoholTax / 100;
+        orders.value = snapshot.docs.map(doc2data("order"))
+          .map(order => order2ReportData(order, serviceTaxRate));
+        total.value = orders.value.reduce(
           (total, order) => {
             const accounting = order.accounting;
             total.food.revenue += accounting.food.revenue;
@@ -383,19 +384,44 @@ export default {
           }
         );
       });
-    },
-    orderName(order) {
-      return nameOfOrder(order);
-    },
-    orderUrl(order) {
-      return `/admin/restaurants/${this.restaurantId()}/orders/${order.id}`;
-    },
-    searchUrl(order) {
+    };
+    const orderUrl = (order) => {
+      return `/admin/restaurants/${props.shopInfo.restaurantId}/orders/${order.id}`;
+    };
+    const searchUrl = (order) => {
       const value = encodeURIComponent(
-        order.description || this.orderName(order)
+        order.description || orderName(order)
       );
       return `${ownPlateConfig.stripe.search}?query=${value}`;
-    },
+    };
+
+    updateQuery();
+
+    onUnmounted(() => {
+      detacher && detacher();
+    });
+    
+    watch(monthIndex, () => {
+      updateQuery();
+    });
+    return {
+      orders,
+      total,
+      monthIndex,
+
+      revenueTableHeader,
+
+      lastSeveralMonths,
+      tableData,
+      fields,
+      fieldNames,
+      fileName,
+
+
+      orderUrl,
+      orderName,
+      searchUrl,
+    }
   },
-};
+});
 </script>
