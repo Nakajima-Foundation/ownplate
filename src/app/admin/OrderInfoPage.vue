@@ -1033,7 +1033,7 @@ export default {
     },
     notDeliveryOrTotalCanDelivery() {
       if (!this.orderInfo.isDelivery) {
-        true;
+        return true;
       }
       return (this.editable_order_info.total >= this.deliveryData.deliveryThreshold);
     },
