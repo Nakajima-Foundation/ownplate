@@ -74,7 +74,7 @@ export const useCategory = (moPrefix: string) => {
       query(
         collection(db, `groups/${moPrefix}/category`),
         where("publicFlag", "==", true),
-        orderBy("sortKey", "asc"),
+        orderBy("sortKey", "asc")
       ),
       (category) => {
         if (category.empty) {
@@ -84,9 +84,7 @@ export const useCategory = (moPrefix: string) => {
         // categoryData.value = category.docs.map(doc2data("category"))
         categoryData.value = category.docs
           .map((doc) => {
-            return [
-              doc2data("category")(doc),
-            ];
+            return [doc2data("category")(doc)];
           })
           .flat();
       },
@@ -129,7 +127,7 @@ export const useSubcategory = (moPrefix: string, category: Ref<string>) => {
           `groups/${moPrefix}/category/${category.value}/subCategory`
         ),
         where("publicFlag", "==", true),
-        orderBy("sortKey", "asc"),
+        orderBy("sortKey", "asc")
       ),
       (category) => {
         if (category.empty) {

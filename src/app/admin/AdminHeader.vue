@@ -108,14 +108,14 @@ export default defineComponent({
   setup(props) {
     const previewLink = computed(() => {
       if (props.isInMo) {
-        return '/' + props.moPrefix + '/r/' + props.shopInfo.restaurantId;
+        return "/" + props.moPrefix + "/r/" + props.shopInfo.restaurantId;
       } else {
-        return '/r/' + props.restaurantid;
+        return "/r/" + props.restaurantid;
       }
     });
     return {
       previewLink,
-    }
+    };
   },
 });
 </script>

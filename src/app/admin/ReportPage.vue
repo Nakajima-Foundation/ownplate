@@ -211,9 +211,7 @@ import { useAdminUids, doc2data, arrayOrNumSum } from "@/utils/utils";
 import { order2ReportData } from "@/models/orderInfo";
 
 import { checkAdminPermission, checkShopAccount } from "@/utils/userPermission";
-import {
-  useCategory,
-} from "../user/Restaurant/Utils";
+import { useCategory } from "../user/Restaurant/Utils";
 
 export default defineComponent({
   components: {
@@ -293,13 +291,11 @@ export default defineComponent({
       });
     });
 
-    const { loadCategory, categoryDataObj } = useCategory(
-      props.moPrefix
-    );
+    const { loadCategory, categoryDataObj } = useCategory(props.moPrefix);
     if (props.isInMo) {
       loadCategory();
     }
-    
+
     const revenueTableHeader = [
       "order.date",
       "order.foodRevenue",

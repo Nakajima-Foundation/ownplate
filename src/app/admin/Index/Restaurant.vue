@@ -431,7 +431,8 @@ export default defineComponent({
             } else {
               requestState.value = 0;
             }
-          });
+          }
+        );
       }
     });
     onUnmounted(() => {
@@ -444,11 +445,10 @@ export default defineComponent({
         code: "editRestaurant.reallyDelete",
         callback: async () => {
           ctx.emit("deleteFromRestaurantLists", props.restaurantid);
-          
-          updateDoc(
-            doc(db, `restaurants/${props.restaurantid}`),
-            {deletedFlag: true}
-          );
+
+          updateDoc(doc(db, `restaurants/${props.restaurantid}`), {
+            deletedFlag: true,
+          });
         },
       });
     };
@@ -456,26 +456,21 @@ export default defineComponent({
       ctx.root.$store.commit("setAlert", {
         code: "editRestaurant.reallyOnListDelete",
         callback: () => {
-          updateDoc(
-            doc(db, `restaurants/${props.restaurantid}`),
-            {onTheList: false}
-          );
+          updateDoc(doc(db, `restaurants/${props.restaurantid}`), {
+            onTheList: false,
+          });
         },
       });
     };
     const requestList = () => {
-      setDoc(
-        doc(db, `requestList/${props.restaurantid}`),
-        {
-          status: 1,
-          uid: ctx.root.$store.getters.uidAdmin,
-          created: firebase.firestore.FieldValue.serverTimestamp(),
-        });
+      setDoc(doc(db, `requestList/${props.restaurantid}`), {
+        status: 1,
+        uid: ctx.root.$store.getters.uidAdmin,
+        created: firebase.firestore.FieldValue.serverTimestamp(),
+      });
     };
     const requestDelete = () => {
-      deleteDoc(
-        doc(db, `requestList/${props.restaurantid}`)
-      );
+      deleteDoc(doc(db, `requestList/${props.restaurantid}`));
     };
     const positionUp = () => {
       ctx.emit("positionUp", props.restaurantid);
@@ -485,16 +480,16 @@ export default defineComponent({
     };
     const previewLink = computed(() => {
       if (props.isInMo) {
-        return '/' + props.moPrefix + '/r/' + props.restaurantid;
+        return "/" + props.moPrefix + "/r/" + props.restaurantid;
       } else {
-        return '/r/' + props.restaurantid;
+        return "/r/" + props.restaurantid;
       }
     });
     return {
       requestState,
 
       previewLink,
-      
+
       deleteRestaurant,
       deleteFromList,
       requestList,

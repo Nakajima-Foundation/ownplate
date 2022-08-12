@@ -111,8 +111,8 @@ export default defineComponent({
       }
       return moment(timeData).format("YYYY/MM/DD HH:mm");
     };
-    
-    watch(props.orders, () =>  {
+
+    watch(props.orders, () => {
       // load customer
       const ids = props.orders.map((o) => o.id);
 
@@ -256,11 +256,7 @@ export default defineComponent({
                   key,
                   order?.customerInfo?.email
                 ),
-                shippingCost: writeonFirstLine(
-                  index,
-                  key,
-                  order?.shippingCost
-                ),
+                shippingCost: writeonFirstLine(index, key, order?.shippingCost),
                 isDelivery: writeonFirstLine(
                   index,
                   key,
@@ -279,7 +275,9 @@ export default defineComponent({
                 category2: menuItem.category2 || "",
 
                 categoryId: menuItem.category || "",
-                category: menuItem.category ? (props.categoryDataObj ||{})[menuItem.category]?.name || "" : "",
+                category: menuItem.category
+                  ? (props.categoryDataObj || {})[menuItem.category]?.name || ""
+                  : "",
                 subCategoryId: menuItem.subCategory || "",
                 productId: menuItem.productId || "",
 
@@ -290,11 +288,7 @@ export default defineComponent({
                 productSubTotal: prices[key],
 
                 // end of for mo
-                total: writeonFirstLine(
-                  index,
-                  key,
-                  order.totalCharge || ""
-                ),
+                total: writeonFirstLine(index, key, order.totalCharge || ""),
                 payment: writeonFirstLine(
                   index,
                   key,
@@ -316,7 +310,7 @@ export default defineComponent({
       fields,
       fieldNames,
       formulas,
-    }
+    };
   },
 });
 </script>

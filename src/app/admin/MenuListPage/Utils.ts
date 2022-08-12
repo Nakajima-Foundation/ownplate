@@ -64,15 +64,18 @@ export const useMenuAndTitle = (
             collection(db, `restaurants/${menuRestaurantId.value}/menus`),
             where("deletedFlag", "==", false)
           );
-    menuDetacher.value = onSnapshot(query(menuQuery), (results) => {
-      menus.value = (results.empty ? [] : results.docs).map(doc2data("menu"));
-    },
+    menuDetacher.value = onSnapshot(
+      query(menuQuery),
+      (results) => {
+        menus.value = (results.empty ? [] : results.docs).map(doc2data("menu"));
+      },
 
-                                    (e) => {
-                                      console.log(`restaurants/${menuRestaurantId.value}/menus`)
-                                      console.log(category.value, subCategory.value);
-                                      console.log(e);
-                                    });
+      (e) => {
+        console.log(`restaurants/${menuRestaurantId.value}/menus`);
+        console.log(category.value, subCategory.value);
+        console.log(e);
+      }
+    );
   };
 
   const titleDetacher = onSnapshot(
