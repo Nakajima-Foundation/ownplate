@@ -46,6 +46,7 @@ export const reportHeadersForMo = [
   "productSubTotal",
   "total",
   "payment",
+  "orderId",
   "memo",
 ];
 export const reportHeadersWithAddress = [
