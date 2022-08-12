@@ -293,12 +293,14 @@ export default defineComponent({
     });
 
     const { loadCategory, categoryDataObj } = useCategory(props.moPrefix);
-    const { allSubCategoryDataObj, loadAllSubcategory } = useAllSubcategory(props.moPrefix);
+    const { allSubCategoryDataObj, loadAllSubcategory } = useAllSubcategory(
+      props.moPrefix
+    );
     if (props.isInMo) {
       loadCategory();
       loadAllSubcategory();
     }
-   
+
     const revenueTableHeader = [
       "order.date",
       "order.foodRevenue",

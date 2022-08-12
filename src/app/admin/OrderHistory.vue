@@ -147,10 +147,10 @@ export default defineComponent({
 
     const fileName = ctx.root.$t("order.history");
 
-    const { loadCategory, categoryDataObj } = useCategory(
+    const { loadCategory, categoryDataObj } = useCategory(props.moPrefix);
+    const { allSubCategoryDataObj, loadAllSubcategory } = useAllSubcategory(
       props.moPrefix
     );
-    const { allSubCategoryDataObj, loadAllSubcategory } = useAllSubcategory(props.moPrefix);
     if (props.isInMo) {
       loadCategory();
       loadAllSubcategory();

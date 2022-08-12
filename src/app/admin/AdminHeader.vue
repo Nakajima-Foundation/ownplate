@@ -69,7 +69,7 @@
       </b-button>
 
       <!-- Notifications -->
-      <div class="">
+      <div>
         <notification-index :shopInfo="shopInfo" />
       </div>
     </div>

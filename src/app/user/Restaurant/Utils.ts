@@ -164,10 +164,7 @@ export const useAllSubcategory = (moPrefix: string) => {
     detacheSubCategory();
     subCategoryDetacher.value = onSnapshot(
       query(
-        collectionGroup(
-          db,
-          `subCategory`
-        ),
+        collectionGroup(db, `subCategory`),
         where("groupId", "==", moPrefix),
         orderBy("sortKey", "asc")
       ),
