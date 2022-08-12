@@ -122,6 +122,8 @@
                   @positionDown="positionDown($event)"
                   @deleteFromRestaurantLists="deleteFromRestaurantLists($event)"
                   :isOwner="isOwner"
+                  :moPrefix="moPrefix"
+                  :isInMo="isInMo"
                 />
               </div>
             </div>
@@ -241,6 +243,14 @@ export default defineComponent({
     groupMasterRestaurant: {
       type: Object,
       required: false,
+    },
+    isInMo: {
+      type: Boolean,
+      required: true,
+    },
+    moPrefix: {
+      type: String,
+      required: true,
     },
   },
   metaInfo() {

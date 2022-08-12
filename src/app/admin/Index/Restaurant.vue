@@ -28,7 +28,7 @@
 
         <div>
           <div>
-            <router-link :to="'/r/' + restaurantid">
+            <router-link :to="previewLink">
               <div
                 class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
               >
@@ -353,10 +353,26 @@
 </template>
 
 <script>
-import { db } from "@/plugins/firebase";
+import {
+  defineComponent,
+  ref,
+  onMounted,
+  onUnmounted,
+  computed,
+} from "@vue/composition-api";
+import { db } from "@/lib/firebase/firebase9";
+import {
+  doc,
+  getDoc,
+  updateDoc,
+  setDoc,
+  deleteDoc,
+  onSnapshot,
+} from "firebase/firestore";
+
 import firebase from "firebase/compat/app";
 
-export default {
+export default defineComponent({
   name: "RestaurantEditCard",
   props: {
     shopInfo: {
@@ -391,74 +407,101 @@ export default {
       type: Boolean,
       required: true,
     },
+    isInMo: {
+      type: Boolean,
+      required: true,
+    },
+    moPrefix: {
+      type: String,
+      required: true,
+    },
   },
-  data() {
-    return {
-      host: location.protocol + "//" + location.host,
-      share_url:
-        location.protocol + "//" + location.host + "/r/" + this.restaurantid,
-      requestState: 0,
-      detacher: null,
-    };
-  },
-  mounted() {
-    if (this.isOwner) {
-      this.detacher = db
-        .doc(`requestList/${this.restaurantid}`)
-        .onSnapshot(async (result) => {
-          if (result.exists) {
-            this.requestState = result.data().status;
-          } else {
-            this.requestState = 0;
-          }
-        });
-    }
-  },
-  destroyed() {
-    this.detacher && this.detacher();
-  },
-  methods: {
-    deleteRestaurant() {
-      console.log("deleteRestaurant");
-      this.$store.commit("setAlert", {
-        title: this.shopInfo.restaurantName,
+  emits: ["positionUp", "positionDown", "deleteFromRestaurantLists"],
+  setup(props, ctx) {
+    const requestState = ref(0);
+    let detacher = null;
+
+    onMounted(async () => {
+      if (props.isOwner) {
+        detacher = onSnapshot(
+          doc(db, `requestList/${props.restaurantid}`),
+          async (result) => {
+            if (result.exists()) {
+              requestState.value = result.data().status;
+            } else {
+              requestState.value = 0;
+            }
+          });
+      }
+    });
+    onUnmounted(() => {
+      detacher && detacher();
+    });
+
+    const deleteRestaurant = () => {
+      ctx.root.$store.commit("setAlert", {
+        title: props.shopInfo.restaurantName,
         code: "editRestaurant.reallyDelete",
         callback: async () => {
-          console.log(this.restaurantid);
-          this.$emit("deleteFromRestaurantLists", this.restaurantid);
-
-          db.doc(`restaurants/${this.restaurantid}`).update(
-            "deletedFlag",
-            true
+          ctx.emit("deleteFromRestaurantLists", props.restaurantid);
+          
+          updateDoc(
+            doc(db, `restaurants/${props.restaurantid}`),
+            {deletedFlag: true}
           );
         },
       });
-    },
-    deleteFromList() {
-      this.$store.commit("setAlert", {
+    };
+    const deleteFromList = () => {
+      ctx.root.$store.commit("setAlert", {
         code: "editRestaurant.reallyOnListDelete",
         callback: () => {
-          console.log(this.restaurantid);
-          db.doc(`restaurants/${this.restaurantid}`).update("onTheList", false);
+          updateDoc(
+            doc(db, `restaurants/${props.restaurantid}`),
+            {onTheList: false}
+          );
         },
       });
-    },
-    requestList() {
-      db.doc(`requestList/${this.restaurantid}`).set({
-        status: 1,
-        uid: this.$store.getters.uidAdmin,
-        created: firebase.firestore.FieldValue.serverTimestamp(),
-      });
-    },
-    requestDelete() {
-      db.doc(`requestList/${this.restaurantid}`).delete();
-    },
-    positionUp() {
-      this.$emit("positionUp", this.restaurantid);
-    },
-    positionDown() {
-      this.$emit("positionDown", this.restaurantid);
-    },
+    };
+    const requestList = () => {
+      setDoc(
+        doc(db, `requestList/${props.restaurantid}`),
+        {
+          status: 1,
+          uid: ctx.root.$store.getters.uidAdmin,
+          created: firebase.firestore.FieldValue.serverTimestamp(),
+        });
+    };
+    const requestDelete = () => {
+      deleteDoc(
+        doc(db, `requestList/${props.restaurantid}`)
+      );
+    };
+    const positionUp = () => {
+      ctx.emit("positionUp", props.restaurantid);
+    };
+    const positionDown = () => {
+      ctx.emit("positionDown", props.restaurantid);
+    };
+    const previewLink = computed(() => {
+      if (props.isInMo) {
+        return '/' + props.moPrefix + '/r/' + props.restaurantid;
+      } else {
+        return '/r/' + props.restaurantid;
+      }
+    });
+    return {
+      requestState,
+
+      previewLink,
+      
+      deleteRestaurant,
+      deleteFromList,
+      requestList,
+      requestDelete,
+      positionUp,
+      positionDown,
+    };
   },
-};
+});
 </script>
