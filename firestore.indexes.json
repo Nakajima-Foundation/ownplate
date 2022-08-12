@@ -208,6 +208,20 @@
     },
     {
       "collectionGroup": "subCategory",
+      "queryScope": "COLLECTION_GROUP",
+      "fields": [
+        {
+          "fieldPath": "groupId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "sortKey",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "subCategory",
       "queryScope": "COLLECTION",
       "fields": [
         {
