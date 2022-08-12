@@ -4,8 +4,10 @@
       class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
       @click="openNotificationSettings()"
     >
-      <i class="material-icons text-lg text-op-teal mr-2">notifications</i>
-      <div class="text-sm font-bold text-op-teal mr-2">
+      <i class="material-icons text-lg text-op-teal xs:mr-2">notifications</i>
+      <div
+        class="invisible xs:visible text-sm font-bold text-op-teal -mr-2 xs:mr-2"
+      >
         {{ $t("admin.order.notification") }}
       </div>
 
@@ -13,7 +15,7 @@
 
       <div
         v-if="notificationData.soundOn"
-        class="inline-flex justify-center items-center space-x-2"
+        class="inline-flex justify-center items-center mt-1 space-x-1"
       >
         <div>
           <i class="material-icons text-lg text-green-600">volume_up</i>
