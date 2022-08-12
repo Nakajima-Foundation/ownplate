@@ -45,6 +45,13 @@
 </template>
 
 <script>
+import {
+  defineComponent,
+  ref,
+  computed,
+  watch,
+  onUnmounted,
+} from "@vue/composition-api";
 import { db } from "@/plugins/firebase";
 import DownloadCsv from "@/components/DownloadCSV";
 import moment from "moment";
@@ -59,7 +66,7 @@ import {
   reportHeadersForMo,
 } from "@/utils/reportUtils";
 
-export default {
+export default defineComponent({
   components: {
     DownloadCsv,
   },
@@ -90,19 +97,12 @@ export default {
       required: true,
     },
   },
-  data() {
-    return {
-      customers: {},
+  setup(props, ctx) {
+    const customers = ref({});
+    const writeonFirstLine = (index, key, text) => {
+      return (index === 0 && Number(key) === 0) || props.isInMo ? text : "-";
     };
-  },
-  mounted() {
-    //console.log("***", this.orders);
-  },
-  methods: {
-    writeonFirstLine(index, key, text) {
-      return (index === 0 && Number(key) === 0) || this.isInMo ? text : "-";
-    },
-    timeConvert(timeData) {
+    const timeConvert = (timeData) => {
       if (!timeData) {
         return null;
       }
@@ -110,21 +110,20 @@ export default {
         return moment(timeData.toDate()).format("YYYY/MM/DD HH:mm");
       }
       return moment(timeData).format("YYYY/MM/DD HH:mm");
-    },
-  },
-  watch: {
-    orders: function () {
+    };
+    
+    watch(props.orders, () =>  {
       // load customer
-      const ids = this.orders.map((o) => o.id);
+      const ids = props.orders.map((o) => o.id);
 
-      if (this.shopInfo.isEC || this.shopInfo.enableDelivery) {
+      if (props.shopInfo.isEC || props.shopInfo.enableDelivery) {
         (async () => {
-          const customers = { ...this.customers };
+          const customers = { ...customers.value };
           await Promise.all(
             arrayChunk(ids, 10).map(async (arr) => {
               const cuss = await db
                 .collectionGroup("customer")
-                .where("restaurantId", "==", this.restaurantId())
+                .where("restaurantId", "==", props.shopInfo.restaurantId)
                 .where("orderId", "in", arr)
                 .get();
               cuss.docs.map((cus) => {
@@ -133,42 +132,40 @@ export default {
               });
             })
           );
-          this.customers = customers;
+          customers.value = customers;
         })();
       }
-    },
-  },
-  computed: {
-    formulas() {
-      return {
-        count: "sum",
-        total: "sum",
-      };
-    },
-    fields() {
-      if (this.isInMo) {
+    });
+
+    const formulas = {
+      count: "sum",
+      total: "sum",
+    };
+
+    const fields = computed(() => {
+      if (props.isInMo) {
         return reportHeadersForMo;
-      } else if (this.shopInfo?.isEC || this.shopInfo?.enableDelivery) {
+      } else if (props.shopInfo?.isEC || props.shopInfo?.enableDelivery) {
         return reportHeadersWithAddress;
       }
       return reportHeaders;
-    },
-    fieldNames() {
-      return this.fields.map((field) => {
-        return this.$t(`order.${field}`);
+    });
+    const fieldNames = computed(() => {
+      return fields.value.map((field) => {
+        return ctx.root.$t(`order.${field}`);
       });
-    },
-    mergedOrder() {
-      return this.orders.map((o) => {
-        if (this.customers[o.id]) {
-          o.customerInfo = o.customerInfo || this.customers[o.id] || {};
+    });
+    const mergedOrder = computed(() => {
+      return props.orders.map((o) => {
+        if (customers.value[o.id]) {
+          o.customerInfo = o.customerInfo || customers.value[o.id] || {};
         }
         return o;
       });
-    },
-    tableData() {
+    });
+    const tableData = computed(() => {
       const items = [];
-      this.mergedOrder.forEach((order) => {
+      mergedOrder.value.forEach((order) => {
         const ids = Object.keys(order.order);
         const status = Object.keys(order_status).reduce((result, key) => {
           if (order_status[key] == order.status) {
@@ -191,98 +188,98 @@ export default {
                 id: `${order.id}/${menuId}`,
                 orderId: order.id,
                 name: nameOfOrder(order),
-                restaurantName: this.shopInfo.restaurantName,
-                timeRequested: this.writeonFirstLine(
+                restaurantName: props.shopInfo.restaurantName,
+                timeRequested: writeonFirstLine(
                   index,
                   key,
-                  this.timeConvert(order.timePlaced)
+                  timeConvert(order.timePlaced)
                 ),
-                timeToPickup: this.writeonFirstLine(
+                timeToPickup: writeonFirstLine(
                   index,
                   key,
-                  this.timeConvert(order.timeEstimated)
+                  timeConvert(order.timeEstimated)
                 ),
-                datePlaced: this.writeonFirstLine(
+                datePlaced: writeonFirstLine(
                   index,
                   key,
-                  this.timeConvert(order.orderPlacedAt)
+                  timeConvert(order.orderPlacedAt)
                 ),
-                dateAccepted: this.writeonFirstLine(
+                dateAccepted: writeonFirstLine(
                   index,
                   key,
-                  this.timeConvert(order.orderAcceptedAt)
+                  timeConvert(order.orderAcceptedAt)
                 ),
-                dateConfirmed: this.writeonFirstLine(
+                dateConfirmed: writeonFirstLine(
                   index,
                   key,
-                  this.timeConvert(order.timeConfirmed)
+                  timeConvert(order.timeConfirmed)
                 ),
-                dateCompleted: this.writeonFirstLine(
+                dateCompleted: writeonFirstLine(
                   index,
                   key,
-                  this.timeConvert(order.transactionCompletedAt)
+                  timeConvert(order.transactionCompletedAt)
                 ),
-                phoneNumber: this.writeonFirstLine(
+                phoneNumber: writeonFirstLine(
                   index,
                   key,
                   order.phoneNumber
                     ? formatNational(parsePhoneNumber(order.phoneNumber))
                     : "LINE"
                 ),
-                userName: this.writeonFirstLine(
+                userName: writeonFirstLine(
                   index,
                   key,
-                  order.name || this.$t("order.unspecified")
+                  order.name || ctx.root.$t("order.unspecified")
                 ),
-                "ec.name": this.writeonFirstLine(
+                "ec.name": writeonFirstLine(
                   index,
                   key,
                   order?.customerInfo?.name
                 ),
-                "ec.zip": this.writeonFirstLine(
+                "ec.zip": writeonFirstLine(
                   index,
                   key,
                   order?.customerInfo?.zip
                 ),
-                "ec.prefecture": this.writeonFirstLine(
+                "ec.prefecture": writeonFirstLine(
                   index,
                   key,
                   order?.customerInfo?.prefecture
                 ),
-                "ec.address": this.writeonFirstLine(
+                "ec.address": writeonFirstLine(
                   index,
                   key,
                   order?.customerInfo?.address
                 ),
-                "ec.email": this.writeonFirstLine(
+                "ec.email": writeonFirstLine(
                   index,
                   key,
                   order?.customerInfo?.email
                 ),
-                shippingCost: this.writeonFirstLine(
+                shippingCost: writeonFirstLine(
                   index,
                   key,
                   order?.shippingCost
                 ),
-                isDelivery: this.writeonFirstLine(
+                isDelivery: writeonFirstLine(
                   index,
                   key,
                   order?.isDelivery ? "1" : ""
                 ),
                 count: orderItems[key],
                 options: opt.filter((a) => String(a) !== "").join("/"),
-                memo: this.writeonFirstLine(index, key, order.memo),
+                memo: writeonFirstLine(index, key, order.memo),
                 itemName: menuItem.itemName,
-                statusName: this.writeonFirstLine(
+                statusName: writeonFirstLine(
                   index,
                   key,
-                  this.$t(`order.status.${status}`)
+                  ctx.root.$t(`order.status.${status}`)
                 ),
                 category1: menuItem.category1 || "",
                 category2: menuItem.category2 || "",
 
                 categoryId: menuItem.category || "",
-                category: menuItem.category ? (this.categoryDataObj ||{})[menuItem.category]?.name || "" : "",
+                category: menuItem.category ? (props.categoryDataObj ||{})[menuItem.category]?.name || "" : "",
                 subCategoryId: menuItem.subCategory || "",
                 productId: menuItem.productId || "",
 
@@ -293,12 +290,12 @@ export default {
                 productSubTotal: prices[key],
 
                 // end of for mo
-                total: this.writeonFirstLine(
+                total: writeonFirstLine(
                   index,
                   key,
                   order.totalCharge || ""
                 ),
-                payment: this.writeonFirstLine(
+                payment: writeonFirstLine(
                   index,
                   key,
                   order.payment?.stripe ? "stripe" : ""
@@ -312,7 +309,14 @@ export default {
         });
       });
       return items;
-    },
+    });
+
+    return {
+      tableData,
+      fields,
+      fieldNames,
+      formulas,
+    }
   },
-};
+});
 </script>
