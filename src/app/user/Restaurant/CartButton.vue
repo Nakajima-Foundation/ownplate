@@ -7,9 +7,6 @@
     "
     @click="handleCheckOut"
     class="b-reset-tw fixed z-10 left-1/2 bottom-8 w-[18rem] ml-[-9rem]"
-    @touchstart.prevent
-    @touchenter.prevent
-    @touchchancel.prevent
   >
     <div
       class="inline-flex justify-center items-center w-72 rounded-full bg-op-teal shadow-lg"
