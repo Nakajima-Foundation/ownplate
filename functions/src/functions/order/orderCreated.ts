@@ -133,6 +133,9 @@ export const createNewOrderData = async (restaurantRef, orderRef, orderData, mul
       itemAliasesName: menu.itemAliasesName,
       category1: menu.category1,
       category2: menu.category2,
+      category: menu.category,
+      subCategory: menu.subCategory,
+      productId: menu.productId,
       tax: menu.tax,
     };
 
