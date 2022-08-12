@@ -34,7 +34,10 @@
     </div>
 
     <!-- Suspend Button -->
-    <div class="mt-4 lg:mt-0 lg:mr-4 flex-shrink-0" v-if="showSuspend">
+    <div
+      class="flex justify-start space-x-4 mt-4 lg:mt-0 lg:mr-4"
+      v-if="showSuspend"
+    >
       <b-button
         tag="router-link"
         :to="`/admin/restaurants/${restaurantId()}/suspend`"
@@ -64,11 +67,11 @@
           </div>
         </div>
       </b-button>
-    </div>
 
-    <!-- Notifications -->
-    <div class="mt-4 lg:mt-0 flex-shrink-0">
-      <notification-index :shopInfo="shopInfo" />
+      <!-- Notifications -->
+      <div class="">
+        <notification-index :shopInfo="shopInfo" />
+      </div>
     </div>
   </div>
 </template>
@@ -108,14 +111,14 @@ export default defineComponent({
   setup(props) {
     const previewLink = computed(() => {
       if (props.isInMo) {
-        return '/' + props.moPrefix + '/r/' + props.shopInfo.restaurantId;
+        return "/" + props.moPrefix + "/r/" + props.shopInfo.restaurantId;
       } else {
-        return '/r/' + props.restaurantid;
+        return "/r/" + props.restaurantid;
       }
     });
     return {
       previewLink,
-    }
+    };
   },
 });
 </script>
