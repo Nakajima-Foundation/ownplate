@@ -177,23 +177,13 @@ export default defineComponent({
         .collection(`restaurants/${ctx.root.restaurantId()}/orders`)
         .where("timePlaced", ">=", lastSeveralDays.value[dayIndex.value].date);
       if (dayIndex.value > 0) {
-        console.log("HOGE");
         query = query.where(
           "timePlaced",
           "<",
           lastSeveralDays.value[dayIndex.value - 1].date
         );
       }
-      console.log(
-        new Date(lastSeveralDays.value[dayIndex.value].date.getTime() - 1000)
-      );
-      console.log(
-        new Date(
-          lastSeveralDays.value[dayIndex.value - 1].date.getTime() + 1000
-        )
-      );
       order_detacher = query.onSnapshot((result) => {
-        console.log(result.docs.length);
         orders.value = result.docs
           .map(doc2data("order"))
           .filter((a) => a.status !== order_status.transaction_hide)
@@ -207,7 +197,6 @@ export default defineComponent({
             return order0.status < order1.status ? -1 : 1;
           })
           .map((order) => {
-            console.log(order);
             order.timePlaced = order.timePlaced.toDate();
             if (order.timeEstimated) {
               order.timeEstimated = order.timeEstimated.toDate();
@@ -241,7 +230,6 @@ export default defineComponent({
     });
 
     watch(dayIndex, () => {
-      console.log("AAA2");
       updateQueryDay();
       dateWasUpdated();
     });
@@ -249,7 +237,6 @@ export default defineComponent({
       return ctx.root.$route.query.day;
     });
     watch(dayQuery, () => {
-      console.log("AAA");
       updateDayIndex();
     });
 

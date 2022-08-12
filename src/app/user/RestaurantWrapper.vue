@@ -70,7 +70,6 @@ export default defineComponent({
           const uid = restaurant_data.uid;
           getDoc(doc(db, `/admins/${uid}/public/payment`)).then((snapshot) => {
             paymentInfo.value = snapshot.data() || {};
-            console.log(paymentInfo.value);
           });
           if (shopInfo.value.enableDelivery) {
             getDoc(
