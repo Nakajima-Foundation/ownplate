@@ -11,6 +11,7 @@ import {
   query,
   onSnapshot,
   collection,
+  collectionGroup,
   where,
   orderBy,
   DocumentData,
@@ -144,6 +145,55 @@ export const useSubcategory = (moPrefix: string, category: Ref<string>) => {
   return {
     subCategoryData,
     loadSubcategory,
+  };
+};
+
+export const useAllSubcategory = (moPrefix: string) => {
+  const subCategoryDetacher = ref();
+  const detacheSubCategory = () => {
+    if (subCategoryDetacher.value) {
+      subCategoryDetacher.value();
+    }
+  };
+
+  onUnmounted(() => {
+    detacheSubCategory();
+  });
+  const allSubCategoryData = ref<DocumentData[]>([]);
+  const loadAllSubcategory = () => {
+    detacheSubCategory();
+    subCategoryDetacher.value = onSnapshot(
+      query(
+        collectionGroup(
+          db,
+          `subCategory`
+        ),
+        where("groupId", "==", moPrefix),
+        orderBy("sortKey", "asc")
+      ),
+      (category) => {
+        console.log(category);
+        if (category.empty) {
+          console.log("empty");
+          return;
+        }
+        allSubCategoryData.value = category.docs.map(doc2data("subCategory"));
+      },
+      (error) => {
+        console.log("load subCategory error");
+      }
+    );
+  };
+  const allSubCategoryDataObj = computed(() => {
+    return allSubCategoryData.value.reduce((tmp, current) => {
+      tmp[current.id] = current;
+      return tmp;
+    }, {});
+  });
+  return {
+    allSubCategoryData,
+    allSubCategoryDataObj,
+    loadAllSubcategory,
   };
 };
 

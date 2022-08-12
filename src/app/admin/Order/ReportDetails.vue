@@ -96,6 +96,10 @@ export default defineComponent({
       type: Object,
       required: true,
     },
+    allSubCategoryDataObj: {
+      type: Object,
+      required: true,
+    },
   },
   setup(props, ctx) {
     const customers = ref({});
@@ -279,6 +283,9 @@ export default defineComponent({
                   ? (props.categoryDataObj || {})[menuItem.category]?.name || ""
                   : "",
                 subCategoryId: menuItem.subCategory || "",
+                subCategory: menuItem.subCategory ?
+                  (props.allSubCategoryDataObj ||{})[menuItem.subCategory]?.name || ""
+                  : "",
                 productId: menuItem.productId || "",
 
                 // for mo

@@ -68,6 +68,8 @@
             :withStatus="true"
             :shopInfo="shopInfo"
             :isInMo="isInMo"
+            :categoryDataObj="categoryDataObj"
+            :allSubCategoryDataObj="allSubCategoryDataObj"
           />
         </div>
       </div>
@@ -90,6 +92,8 @@ import AdminHeader from "@/app/admin/AdminHeader.vue";
 
 import { arrayChunk, useAdminUids, doc2data } from "@/utils/utils";
 import { checkAdminPermission, checkShopAccount } from "@/utils/userPermission";
+
+import { useCategory, useAllSubcategory } from "../user/Restaurant/Utils";
 
 export default defineComponent({
   components: {
@@ -143,6 +147,15 @@ export default defineComponent({
 
     const fileName = ctx.root.$t("order.history");
 
+    const { loadCategory, categoryDataObj } = useCategory(
+      props.moPrefix
+    );
+    const { allSubCategoryDataObj, loadAllSubcategory } = useAllSubcategory(props.moPrefix);
+    if (props.isInMo) {
+      loadCategory();
+      loadAllSubcategory();
+    }
+    console.log(allSubCategoryDataObj);
     const next = async () => {
       let query = db
         .collection(`restaurants/${ctx.root.restaurantId()}/orders`)
@@ -207,6 +220,9 @@ export default defineComponent({
       // methods
       next,
       all,
+
+      categoryDataObj,
+      allSubCategoryDataObj,
     };
   },
 });

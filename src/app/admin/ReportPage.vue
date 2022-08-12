@@ -181,6 +181,7 @@
         :fileName="fileName"
         :isInMo="isInMo"
         :categoryDataObj="categoryDataObj"
+        :allSubCategoryDataObj="allSubCategoryDataObj"
       />
     </div>
   </div>
@@ -211,7 +212,7 @@ import { useAdminUids, doc2data, arrayOrNumSum } from "@/utils/utils";
 import { order2ReportData } from "@/models/orderInfo";
 
 import { checkAdminPermission, checkShopAccount } from "@/utils/userPermission";
-import { useCategory } from "../user/Restaurant/Utils";
+import { useCategory, useAllSubcategory } from "../user/Restaurant/Utils";
 
 export default defineComponent({
   components: {
@@ -292,10 +293,12 @@ export default defineComponent({
     });
 
     const { loadCategory, categoryDataObj } = useCategory(props.moPrefix);
+    const { allSubCategoryDataObj, loadAllSubcategory } = useAllSubcategory(props.moPrefix);
     if (props.isInMo) {
       loadCategory();
+      loadAllSubcategory();
     }
-
+   
     const revenueTableHeader = [
       "order.date",
       "order.foodRevenue",
@@ -436,6 +439,7 @@ export default defineComponent({
       searchUrl,
 
       categoryDataObj,
+      allSubCategoryDataObj,
     };
   },
 });
