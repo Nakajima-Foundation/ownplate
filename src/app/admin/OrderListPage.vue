@@ -10,6 +10,8 @@
         :shopInfo="shopInfo"
         :backLink="'/admin/restaurants/'"
         :showSuspend="true"
+        :isInMo="isInMo"
+        :moPrefix="moPrefix"
       />
 
       <!-- Date -->
@@ -99,6 +101,14 @@ export default defineComponent({
   props: {
     shopInfo: {
       type: Object,
+      required: true,
+    },
+    isInMo: {
+      type: Boolean,
+      required: true,
+    },
+    moPrefix: {
+      type: String,
       required: true,
     },
   },

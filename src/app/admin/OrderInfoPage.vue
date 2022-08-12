@@ -10,6 +10,8 @@
         :shopInfo="shopInfo"
         :backLink="parentUrl"
         :showSuspend="true"
+        :isInMo="isInMo"
+        :moPrefix="moPrefix"
       />
 
       <!-- Body -->
@@ -620,6 +622,14 @@ export default {
     groupData: {
       type: Object,
       required: false,
+    },
+    isInMo: {
+      type: Boolean,
+      required: true,
+    },
+    moPrefix: {
+      type: String,
+      required: true,
     },
   },
   metaInfo() {

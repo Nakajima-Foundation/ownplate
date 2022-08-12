@@ -11,6 +11,8 @@
         :shopInfo="shopInfo"
         :backLink="`/admin/restaurants/${shopInfo.id}/orders`"
         :showSuspend="false"
+        :isInMo="isInMo"
+        :moPrefix="moPrefix"
       />
 
       <!-- Body -->
@@ -113,6 +115,14 @@ export default defineComponent({
   props: {
     shopInfo: {
       type: Object,
+      required: true,
+    },
+    isInMo: {
+      type: Boolean,
+      required: true,
+    },
+    moPrefix: {
+      type: String,
       required: true,
     },
   },

@@ -10,7 +10,9 @@
         :shopInfo="shopInfo"
         :backLink="'/admin/restaurants/'"
         :showSuspend="true"
-      />
+        :isInMo="isInMo"
+        :moPrefix="moPrefix"
+        />
       <!-- Orders -->
       <div
         class="mx-6 mt-6 grid grid-cols-1 gap-2 lg:grid-cols-3 xl:grid-cols-4"
@@ -104,6 +106,10 @@ export default defineComponent({
     },
     isInMo: {
       type: Boolean,
+      required: true,
+    },
+    moPrefix: {
+      type: String,
       required: true,
     },
   },

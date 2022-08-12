@@ -5,7 +5,7 @@
         <back-button :url="backLink" />
       </div>
       <div class="flex-shrink-0">
-        <router-link :to="'/r/' + restaurantId()">
+        <router-link :to="previewLink">
           <div
             class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
           >
@@ -74,7 +74,7 @@
 </template>
 
 <script>
-import { defineComponent, ref } from "@vue/composition-api";
+import { defineComponent, computed } from "@vue/composition-api";
 import BackButton from "@/components/BackButton.vue";
 import NotificationIndex from "./Notifications/Index.vue";
 
@@ -96,6 +96,26 @@ export default defineComponent({
       type: Boolean,
       required: true,
     },
+    isInMo: {
+      type: Boolean,
+      required: true,
+    },
+    moPrefix: {
+      type: String,
+      required: true,
+    },
+  },
+  setup(props) {
+    const previewLink = computed(() => {
+      if (props.isInMo) {
+        return '/' + props.moPrefix + '/r/' + props.shopInfo.restaurantId;
+      } else {
+        return '/r/' + props.restaurantid;
+      }
+    });
+    return {
+      previewLink,
+    }
   },
 });
 </script>
