@@ -187,6 +187,11 @@ service cloud.firestore {
     match /{path=**}/messages/{messageId} {
       allow read: if isFromUser(resource, request);
     }
+
+    match /{path=**}/subCategory/{subcategory} {
+      allow read: if true;
+    }      
+
     // End of Rules for collection group
 
     match /restaurants/{restaurantId} {
