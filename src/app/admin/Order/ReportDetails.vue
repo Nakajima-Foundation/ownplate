@@ -85,6 +85,10 @@ export default {
       type: Boolean,
       required: true,
     },
+    categoryDataObj: {
+      type: Object,
+      required: true,
+    },
   },
   data() {
     return {
@@ -142,8 +146,6 @@ export default {
       };
     },
     fields() {
-
-
       if (this.isInMo) {
         return reportHeadersForMo;
       } else if (this.shopInfo?.isEC || this.shopInfo?.enableDelivery) {
@@ -187,6 +189,7 @@ export default {
             try {
               items.push({
                 id: `${order.id}/${menuId}`,
+                orderId: order.id,
                 name: nameOfOrder(order),
                 restaurantName: this.shopInfo.restaurantName,
                 timeRequested: this.writeonFirstLine(
@@ -277,6 +280,11 @@ export default {
                 ),
                 category1: menuItem.category1 || "",
                 category2: menuItem.category2 || "",
+
+                categoryId: menuItem.category || "",
+                category: menuItem.category ? (this.categoryDataObj ||{})[menuItem.category]?.name || "" : "",
+                subCategoryId: menuItem.subCategory || "",
+                productId: menuItem.productId || "",
 
                 // for mo
                 menuPrice: menuItem.price,

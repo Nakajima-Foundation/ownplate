@@ -113,7 +113,7 @@
           <td class="p-2">
             <div>
               <router-link :to="orderUrl(order)">{{
-                orderName(order)
+                nameOfOrder(order)
               }}</router-link>
               <a v-if="order.payment" :href="searchUrl(order)" target="stripe">
                 <i v-if="order.payment" class="fab fa-cc-stripe" />
@@ -180,6 +180,7 @@
         :shopInfo="shopInfo"
         :fileName="fileName"
         :isInMo="isInMo"
+        :categoryDataObj="categoryDataObj"
       />
     </div>
   </div>
@@ -210,6 +211,9 @@ import { useAdminUids, doc2data, arrayOrNumSum } from "@/utils/utils";
 import { order2ReportData } from "@/models/orderInfo";
 
 import { checkAdminPermission, checkShopAccount } from "@/utils/userPermission";
+import {
+  useCategory,
+} from "../user/Restaurant/Utils";
 
 export default defineComponent({
   components: {
@@ -224,6 +228,10 @@ export default defineComponent({
     },
     groupMasterRestaurant: {
       type: Object,
+      required: false,
+    },
+    moPrefix: {
+      type: String,
       required: false,
     },
     isInMo: {
@@ -275,9 +283,6 @@ export default defineComponent({
       };
     }
 
-    const orderName = (order) => {
-      return nameOfOrder(order);
-    };
     const fields = computed(() => {
       return props.isInMo ? revenueMoCSVHeader : revenueCSVHeader;
     });
@@ -288,6 +293,13 @@ export default defineComponent({
       });
     });
 
+    const { loadCategory, categoryDataObj } = useCategory(
+      props.moPrefix
+    );
+    if (props.isInMo) {
+      loadCategory();
+    }
+    
     const revenueTableHeader = [
       "order.date",
       "order.foodRevenue",
@@ -321,7 +333,7 @@ export default defineComponent({
           totalCount: Object.values(order.order).reduce((count, order) => {
             return count + arrayOrNumSum(order);
           }, 0),
-          name: orderName(order),
+          name: nameOfOrder(order),
           payment: order.payment?.stripe ? "stripe" : "",
         };
       });
@@ -397,7 +409,7 @@ export default defineComponent({
       return `/admin/restaurants/${props.shopInfo.restaurantId}/orders/${order.id}`;
     };
     const searchUrl = (order) => {
-      const value = encodeURIComponent(order.description || orderName(order));
+      const value = encodeURIComponent(order.description || nameOfOrder(order));
       return `${ownPlateConfig.stripe.search}?query=${value}`;
     };
 
@@ -424,8 +436,10 @@ export default defineComponent({
       fileName,
 
       orderUrl,
-      orderName,
+      nameOfOrder,
       searchUrl,
+
+      categoryDataObj,
     };
   },
 });
