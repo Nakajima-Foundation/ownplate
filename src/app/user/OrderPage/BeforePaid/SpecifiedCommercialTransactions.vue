@@ -49,17 +49,18 @@
       </div>
 
       <div class="mt-4">
-        <!--ToDo 以下、おもちかえりorMOで表示の出し分け-->
         <!--for omochikaeri-->
-        <div class="text-sm font-bold text-black text-opacity-30">
-          {{ $t("transactionsAct.payment") }}
+        <div  v-if="!isInMo">
+          <div class="text-sm font-bold text-black text-opacity-30">
+            {{ $t("transactionsAct.payment") }}
+          </div>
+          <ul class="list-disc list-outside ml-5 text-sm mt-1">
+            <li>{{ $t("transactionsAct.paymentDescriptionCardNote") }}</li>
+          </ul>
         </div>
-        <ul class="list-disc list-outside ml-5 text-sm mt-1">
-          <li>{{ $t("transactionsAct.paymentDescriptionCardNote") }}</li>
-        </ul>
 
         <!--for MobileOrder-->
-        <div v-if="false">
+        <div  v-if="isInMo">
           <div class="text-sm font-bold text-black text-opacity-30">
             {{ $t("transactionsAct.paymentNoteMo") }}
           </div>
