@@ -13,7 +13,8 @@
         :isInMo="isInMo"
         :moPrefix="moPrefix"
       />
-
+      toggle
+      
       <!-- Date -->
       <div class="mx-6 mt-6">
         <b-select v-model="dayIndex">
@@ -109,7 +110,7 @@ export default defineComponent({
     },
     moPrefix: {
       type: String,
-      required: true,
+      required: false,
     },
   },
   setup(props, ctx) {

@@ -28,8 +28,8 @@
         <!-- Toggle to View All or Public Only -->
         <div class="mt-6 mx-6 lg:text-center">
           <PublicFilterToggle
-            :publicFilter="publicFilter"
-            @publicFilterToggle="publicFilterToggle()"
+            :toggleState="publicFilter"
+            @toggleFunction="publicFilterToggle()"
           />
         </div>
 
@@ -182,24 +182,24 @@ import {
 } from "firebase/firestore";
 import firebase from "firebase/compat/app";
 
+import NotFound from "@/components/NotFound.vue";
+import SubCategoryList from "@/app/user/Restaurant/SubCategoryList.vue";
+
 import MenuCard from "@/app/admin/Menus/MenuCard.vue";
 import TitleCard from "@/app/admin/Menus/TitleCard.vue";
 import TitleInput from "@/app/admin/Menus/TitleInput.vue";
-import NotFound from "@/components/NotFound.vue";
 
-import SubCategoryList from "@/app/user/Restaurant/SubCategoryList.vue";
-
-import PreviewLink from "./MenuListPage/PreviewLink.vue";
-import PublicFilterToggle from "./MenuListPage/PublicFilterToggle.vue";
-import AddButton from "./MenuListPage/AddButton.vue";
-import PhotoName from "./MenuListPage/PhotoName.vue";
-import DownloadButton from "./MenuListPage/DownloadButton.vue";
-import CategoryList from "./MenuListPage/CategoryList.vue";
-import CategoryButton from "./MenuListPage/CategoryButton.vue";
+import PreviewLink from "@/app/admin/MenuListPage/PreviewLink.vue";
+import PublicFilterToggle from "@/app/admin/MenuListPage/PublicFilterToggle.vue";
+import AddButton from "@/app/admin/MenuListPage/AddButton.vue";
+import PhotoName from "@/app/admin/MenuListPage/PhotoName.vue";
+import DownloadButton from "@/app/admin/MenuListPage/DownloadButton.vue";
+import CategoryList from "@/app/admin/MenuListPage/CategoryList.vue";
+import CategoryButton from "@/app/admin/MenuListPage/CategoryButton.vue";
 
 import AdminHeader from "@/app/admin/AdminHeader.vue";
 
-import { useMenuAndTitle } from "./MenuListPage/Utils";
+import { useMenuAndTitle } from "@/app/admin/MenuListPage/Utils";
 
 import { ownPlateConfig } from "@/config/project";
 

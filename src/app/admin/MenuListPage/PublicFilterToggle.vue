@@ -1,26 +1,26 @@
 <template>
   <a
-    @click="publicFilterToggle()"
+    @click="toggleFunction()"
     class="inline-flex items-center rounded-full p-1 bg-green-600 bg-opacity-10"
   >
     <div
       class="inline-flex items-center rounded-full h-9 px-4"
-      :class="publicFilter ? '' : 'bg-green-600'"
+      :class="toggleState ? '' : 'bg-green-600'"
     >
       <div
         class="text-sm font-bold"
-        :class="publicFilter ? 'text-green-600' : 'text-white'"
+        :class="toggleState ? 'text-green-600' : 'text-white'"
       >
         {{ $t("editMenu.showAllMenu") }}
       </div>
     </div>
     <div
       class="inline-flex items-center rounded-full h-9 px-4"
-      :class="publicFilter ? 'bg-green-600' : ''"
+      :class="toggleState ? 'bg-green-600' : ''"
     >
       <div
         class="text-sm font-bold"
-        :class="publicFilter ? 'text-white' : 'text-green-600'"
+        :class="toggleState ? 'text-white' : 'text-green-600'"
       >
         {{ $t("editMenu.showPublicMenu") }}
       </div>
@@ -32,19 +32,19 @@
 import { defineComponent } from "@vue/composition-api";
 
 export default defineComponent({
-  emits: ["publicFilterToggle"],
+  emits: ["toggleFunction"],
   props: {
-    publicFilter: {
+    toggleState: {
       type: Boolean,
       required: true,
     },
   },
   setup(props, ctx) {
-    const publicFilterToggle = () => {
-      ctx.emit("publicFilterToggle");
+    const toggleFunction = () => {
+      ctx.emit("toggleFunction");
     };
     return {
-      publicFilterToggle,
+      toggleFunction,
     };
   },
 });

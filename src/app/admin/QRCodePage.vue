@@ -155,7 +155,7 @@ export default {
     },
     moPrefix: {
       type: String,
-      required: true,
+      required: false,
     },
   },
   data() {

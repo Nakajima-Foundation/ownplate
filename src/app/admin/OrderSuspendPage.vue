@@ -129,7 +129,7 @@ export default defineComponent({
     },
     moPrefix: {
       type: String,
-      required: true,
+      required: false,
     },
   },
   setup(props, ctx) {
