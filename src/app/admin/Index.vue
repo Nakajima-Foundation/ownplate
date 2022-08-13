@@ -196,9 +196,10 @@ import {
   query,
   orderBy,
   onSnapshot,
+  setDoc,
+  collectionGroup,
+  serverTimestamp,
 } from "firebase/firestore";
-
-import { db as dbOld, firestore } from "@/plugins/firebase";
 
 import { order_status } from "@/config/constant";
 import { midNight } from "@/utils/dateUtils";
@@ -250,7 +251,7 @@ export default defineComponent({
     },
     moPrefix: {
       type: String,
-      required: true,
+      required: false,
     },
   },
   metaInfo() {
@@ -406,32 +407,38 @@ export default defineComponent({
         readyToDisplay.value = true;
       }
       if (isOwner.value) {
-        dbOld
-          .collectionGroup("lines")
-          .where("uid", "==", uid.value)
-          .onSnapshot((result) => {
+        onSnapshot(
+          query(
+            collectionGroup(db, "lines"),
+            where("uid", "==", uid.value)
+          ),
+          (result) => {
             result.docs.map(async (res) => {
               const restaurantId = res.data().restaurantId;
               lines.value[restaurantId] = true;
             });
-          });
+          }
+        );
       }
 
-      message_detacher.value = dbOld
-        .collection(`/admins/${uid.value}/messages`)
-        .orderBy("createdAt", "desc")
-        .onSnapshot((messageCollection) => {
+      message_detacher.value = onSnapshot(
+        collection(db, `/admins/${uid.value}/messages`),
+        query(orderBy("createdAt", "desc")),
+        (messageCollection) => {
           messages.value = messageCollection.docs
             .map(doc2data("message"))
             .filter((a) => a.toDisplay);
-        });
+        }
+      );
     });
 
     const saveRestaurantLists = async () => {
       if (isOwner.value) {
-        await dbOld
-          .doc(`/admins/${uid.value}/public/RestaurantLists`)
-          .set({ lists: restaurantLists.value }, { merge: true });
+        await setDoc(
+          doc(db, `/admins/${uid.value}/public/RestaurantLists`),
+          { lists: restaurantLists.value },
+          { merge: true }
+        );
       }
     };
     const handleNew = async () => {
@@ -439,22 +446,23 @@ export default defineComponent({
       if (isOwner.value) {
         try {
           isCreating.value = true;
-          const doc = await dbOld.collection("restaurants").doc();
+          const newDoc = doc(collection(db, "restaurants"))
           // update Lists
-          restaurantLists.value.push(doc.id);
+          restaurantLists.value.push(newDoc.id);
           saveRestaurantLists();
 
-          doc.set({
-            uid: uid.value,
-            restaurantId: doc.id,
-            menuLists: [],
-            publicFlag: false,
-            numberOfMenus: 0,
-            deletedFlag: false,
-            createdAt: firestore.FieldValue.serverTimestamp(),
-          });
-
-          ctx.root.$router.push(`/admin/restaurants/${doc.id}`);
+          setDoc(newDoc,
+                 {
+                   uid: uid.value,
+                   restaurantId: newDoc.id,
+                   menuLists: [],
+                   publicFlag: false,
+                   numberOfMenus: 0,
+                   deletedFlag: false,
+                   createdAt: serverTimestamp(),
+                 });
+          
+          ctx.root.$router.push(`/admin/restaurants/${newDoc.id}`);
         } catch (error) {
           console.log(error);
         } finally {
@@ -503,9 +511,11 @@ export default defineComponent({
         restaurantLists.value = newRestaurantLists;
 
         const path = `/admins/${uid.value}/public/RestaurantLists`;
-        await dbOld
-          .doc(path)
-          .set({ lists: newRestaurantLists }, { merge: true });
+        await setDoc(
+          doc(db, path),
+          { lists: newRestaurantLists },
+          { merge: true }
+        );
         // end of list
       }
     };
