@@ -98,9 +98,31 @@
               {{ $t("transactionsAct.otherFees") }}
             </div>
 
+            <div
+              class="text-sm font-bold text-black text-opacity-30 mt-2"
+              >
+              {{
+              $t("transactionsAct.takeoutTitle")
+              }}
+            </div>
+            
             <div class="text-base mt-1">
               {{ $t("transactionsAct.otherFeesDescription") }}
             </div>
+
+            <template v-if="shopInfo.enableDelivery">
+              <div
+                class="text-sm font-bold text-black text-opacity-30 mt-2"
+                >
+                {{
+                $t("transactionsAct.deliveryTitle")
+              }}
+              </div>
+              
+              <div class="text-base mt-1" >
+                {{ $t("transactionsAct.otherFeesDescriptionDelivery") }}
+              </div>
+            </template>
           </div>
           <!-- Payment Period and Method -->
           <div class="mt-4">
@@ -149,7 +171,7 @@
             </div>
 
             <!--for MobileOrder-->
-            <div v-if="!isInMo">
+            <div v-if="isInMo">
               <div class="text-sm font-bold text-black text-opacity-30">
                 {{ $t("transactionsAct.deliveryMo") }}
               </div>
@@ -169,6 +191,7 @@
               </div>
               <ul class="list-disc list-outside ml-5 mt-1">
                 <li>{{ $t("transactionsAct.cancellationDescription1") }}</li>
+                <li v-if="!isInMo">{{ $t("transactionsAct.cancellationDescription4") }}</li>
                 <li>
                   {{ $t("transactionsAct.cancellationDescription2") }}
                   <ul class="list-none list-outside mb-2">
@@ -176,38 +199,38 @@
                       class="text-sm font-bold text-black text-opacity-30 mt-2"
                     >
                       {{
-                        $t("transactionsAct.cancellationTakeoutDescription1")
+                        $t("transactionsAct.takeoutTitle")
                       }}
                     </div>
                     <li>
                       {{
-                        $t("transactionsAct.cancellationTakeoutDescription2")
+                        $t("transactionsAct.cancellationTakeoutDescription1")
                       }}
                     </li>
                     <div
-                      v-if="isDelivery"
+                      v-if="shopInfo.enableDelivery"
                       class="text-sm font-bold text-black text-opacity-30 mt-2"
                     >
                       {{
-                        $t("transactionsAct.cancellationDeliveryDescription1")
+                        $t("transactionsAct.deliveryTitle")
                       }}
                     </div>
-                    <li v-if="isDelivery">
+                    <li v-if="shopInfo.enableDelivery">
+                      -
+                      {{
+                        $t("transactionsAct.cancellationDeliveryDescription1")
+                      }}
+                    </li>
+                    <li v-if="shopInfo.enableDelivery">
                       -
                       {{
                         $t("transactionsAct.cancellationDeliveryDescription2")
                       }}
                     </li>
-                    <li v-if="isDelivery">
+                    <li v-if="shopInfo.enableDelivery">
                       -
                       {{
                         $t("transactionsAct.cancellationDeliveryDescription3")
-                      }}
-                    </li>
-                    <li v-if="isDelivery">
-                      -
-                      {{
-                        $t("transactionsAct.cancellationDeliveryDescription4")
                       }}
                     </li>
                   </ul>

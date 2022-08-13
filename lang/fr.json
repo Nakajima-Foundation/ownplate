@@ -369,12 +369,12 @@
     "cancellationDescription4": "The order cannot be canceled after the Accepted message is displayed.",
     "cancellationDescription5": "We may cancel the transaction related to your order.",
     "cancellationDescription6": "for details.",
-    "cancellationTakeoutDescription1": "Takeaway",
-    "cancellationTakeoutDescription2": "When 2 hours have elapsed after the Ready to Pickup message is displayed.",
-    "cancellationDeliveryDescription1": "Delivery",
-    "cancellationDeliveryDescription2": "If more than 5 minutes have passed since you arrived at the designated delivery location and you are unable to contact us.",
-    "cancellationDeliveryDescription3": "If more than 15 minutes have passed since arriving at the designated delivery location",
-    "cancellationDeliveryDescription4": "When a place that violates the provisions of these Terms is specified as a delivery place",
+    "takeoutTitle": "Takeaway",
+    "cancellationTakeoutDescription1": "When 2 hours have elapsed after the Ready to Pickup message is displayed.",
+    "deliveryTitle": "Delivery",
+    "cancellationDeliveryDescription1": "If more than 5 minutes have passed since you arrived at the designated delivery location and you are unable to contact us.",
+    "cancellationDeliveryDescription2": "If more than 15 minutes have passed since arriving at the designated delivery location",
+    "cancellationDeliveryDescription3": "When a place that violates the provisions of these Terms is specified as a delivery place",
     "link": "Please click here"
   },
   "sitemenu": {
