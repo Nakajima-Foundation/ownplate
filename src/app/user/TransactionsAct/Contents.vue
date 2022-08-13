@@ -149,7 +149,7 @@
             </div>
 
             <!--for MobileOrder-->
-            <div v-if="!isInMo">
+            <div v-if="isInMo">
               <div class="text-sm font-bold text-black text-opacity-30">
                 {{ $t("transactionsAct.deliveryMo") }}
               </div>
