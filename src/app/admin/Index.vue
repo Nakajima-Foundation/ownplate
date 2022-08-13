@@ -40,8 +40,18 @@
       </div>
     </div>
 
+
+    <div class="mt-2 mx-6 lg:text-center">
+      <ToggleSwitch
+        :toggleState="simpleMode"
+        @toggleFunction="switchSimpleMode()"
+        onName="admin.index.showSimple"
+        offName="admin.index.showAll"
+        />
+    </div>
+
     <!-- Restaurants and Right Settin Section -->
-    <div class="mt-6 mx-6 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12">
+    <div class="mt-2 mx-6 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12">
       <!-- Restaurants -->
       <div>
         <div class="pb-2">
@@ -100,6 +110,7 @@
               >
                 <restaurant
                   v-if="restaurantItems[restaurantId]"
+                  :simpleMode="simpleMode"
                   :shopInfo="restaurantItems[restaurantId]"
                   :restaurantid="restaurantId"
                   :numberOfMenus="
@@ -204,6 +215,8 @@ import {
 import { order_status } from "@/config/constant";
 import { midNight } from "@/utils/dateUtils";
 
+import ToggleSwitch from "@/components/ToggleSwitch.vue";
+
 import Restaurant from "@/app/admin/Index/Restaurant.vue";
 import PaymentSection from "@/app/admin/Payment/PaymentSection.vue";
 import MessageCard from "./Messages/MessageCard.vue";
@@ -239,6 +252,7 @@ export default defineComponent({
     MailMagazine,
     Note,
     Footer,
+    ToggleSwitch,
   },
   props: {
     groupMasterRestaurant: {
@@ -284,6 +298,23 @@ export default defineComponent({
     };
     const { isOwner, uid, ownerUid } = useAdminUids(ctx);
 
+    const simpleMode = ref(false);
+    const switchSimpleMode = () => {
+      setDoc(
+        doc(db, `adminConfigs/${uid.value}`),
+        {simpleMode: !simpleMode.value},
+        { merge: true }
+      );
+    };
+    onSnapshot(
+      doc(db, `adminConfigs/${uid.value}`),
+      (res) => {
+        const config = res.data()||{};
+        simpleMode.value = config.simpleMode === undefined ? false : config.simpleMode;
+      }
+    );
+
+    
     const watchOrder = () => {
       detachOrders();
       orderDetachers.value = Object.keys(restaurantItems.value).map(
@@ -554,6 +585,10 @@ export default defineComponent({
       isOwner,
       existsRestaurant,
 
+
+      simpleMode,
+      switchSimpleMode,
+      
       // methods
       handleNew,
       updateUnsetWarning,

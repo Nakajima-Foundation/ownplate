@@ -155,7 +155,6 @@ export default defineComponent({
       loadCategory();
       loadAllSubcategory();
     }
-    console.log(allSubCategoryDataObj);
     const next = async () => {
       let query = db
         .collection(`restaurants/${ctx.root.restaurantId()}/orders`)

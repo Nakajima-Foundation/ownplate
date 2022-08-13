@@ -858,6 +858,10 @@
         "auth/unauthorized-continue-uri": "ドメインがホワイトリストに登録されていません。"
       }
     },
+    "index": {
+      "showSimple": "シンプル",
+      "showAll": "全て"
+    },
     "messages": {
       "title": "メッセージ",
       "childInvitationAccept": "招待を受け入れてサブアカウントになる",

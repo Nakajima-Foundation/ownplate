@@ -135,7 +135,7 @@
       <!-- Notifications Settings -->
       <div
         class="text-center bg-black bg-opacity-5 rounded-lg pt-3 pb-2 mt-4 flex justify-evenly"
-        v-if="isOwner"
+        v-if="isOwner && !simpleMode"
       >
         <router-link
           :to="'/admin/restaurants/' + restaurantid + '#emailNotification'"
@@ -190,7 +190,7 @@
       </div>
 
       <!-- QR Code and Monthly Report -->
-      <div class="flex justify-center items-center space-x-4 mt-4">
+      <div class="flex justify-center items-center space-x-4 mt-4" v-if="!simpleMode">
         <div>
           <router-link :to="`/admin/restaurants/${restaurantid}/qrcode`">
             <div
@@ -221,7 +221,7 @@
       </div>
 
       <!-- Directory Request -->
-      <div v-if="isOwner">
+      <div v-if="isOwner && !simpleMode">
         <!-- On Directory -->
         <div v-if="shopInfo.onTheList" class="text-center mt-4">
           <div>
@@ -291,7 +291,7 @@
     </div>
 
     <!-- Sort and Delete -->
-    <div class="flex justify-end space-x-2 mt-2 pb-2" v-if="isOwner">
+    <div class="flex justify-end space-x-2 mt-2 pb-2" v-if="isOwner && !simpleMode">
       <!-- Up -->
       <div>
         <template v-if="position !== 'first'">
@@ -414,6 +414,10 @@ export default defineComponent({
     moPrefix: {
       type: String,
       required: false,
+    },
+    simpleMode: {
+      type: Boolean,
+      required: true,
     },
   },
   emits: ["positionUp", "positionDown", "deleteFromRestaurantLists"],

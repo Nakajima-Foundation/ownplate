@@ -122,7 +122,7 @@ export default defineComponent({
 
       if (props.shopInfo.isEC || props.shopInfo.enableDelivery) {
         (async () => {
-          const customers = { ...customers.value };
+          const tmpCustomers = { ...customers.value };
           await Promise.all(
             arrayChunk(ids, 10).map(async (arr) => {
               const cuss = await db
@@ -132,11 +132,11 @@ export default defineComponent({
                 .get();
               cuss.docs.map((cus) => {
                 const data = cus.data();
-                customers[data.orderId] = data;
+                tmpCustomers[data.orderId] = data;
               });
             })
           );
-          customers.value = customers;
+          customers.value = tmpCustomers;
         })();
       }
     });
