@@ -147,6 +147,7 @@ export const place = async (db, data: any, context: functions.https.CallableCont
         updatedAt: admin.firestore.Timestamp.now(),
         orderPlacedAt: admin.firestore.Timestamp.now(),
         timePlaced,
+        timePickupForQuery: timePlaced,
         memo: memo || "",
         isEC: restaurantData.isEC || false,
         // customerInfo: customerInfo || {},
