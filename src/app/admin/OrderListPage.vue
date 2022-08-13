@@ -78,7 +78,17 @@ import {
   onUnmounted,
   watch,
 } from "@vue/composition-api";
-import { db, firestore } from "@/plugins/firebase";
+import { db } from "@/lib/firebase/firebase9";
+import {
+  doc,
+  collection,
+  where,
+  query,
+  onSnapshot,
+  setDoc,
+} from "firebase/firestore";
+
+
 import { midNight } from "@/utils/dateUtils";
 import { order_status } from "@/config/constant";
 import moment from "moment";
@@ -126,12 +136,8 @@ export default defineComponent({
   setup(props, ctx) {
     const orders = ref([]);
     const dayIndex = ref(0);
-    const queryIsPlacedDate = ref(true);
-    const switchOrderQuery = () => {
-      queryIsPlacedDate.value = !queryIsPlacedDate.value;
-    };
-    let order_detacher = () => {};
 
+    let order_detacher = () => {};
     if (!checkAdminPermission(ctx)) {
       return {
         notFound: true,
@@ -144,6 +150,25 @@ export default defineComponent({
         notFound: true,
       };
     }
+    const queryIsPlacedDate = ref(true);
+    const switchOrderQuery = () => {
+      setDoc(
+        doc(db, `adminConfigs/${uid.value}`),
+        {queryIsPlacedDate: !queryIsPlacedDate.value},
+        { merge: true }
+      );
+    };
+
+
+    onSnapshot(
+      doc(db, `adminConfigs/${uid.value}`),
+      (res) => {
+        const config = res.data()||{};
+        console.log(config);
+        queryIsPlacedDate.value = config.queryIsPlacedDate || false;
+      }
+    );
+    
     const getPickUpDaysInAdvance = () => {
       return isNull(props.shopInfo.pickUpDaysInAdvance)
         ? 3
@@ -187,41 +212,46 @@ export default defineComponent({
     };
     const dateWasUpdated = () => {
       order_detacher();
-
-      // omochikaeri was timePlaced
-      const queryKey = (queryIsPlacedDate.value ? "orderPlacedAt" :  "timeEstimated");
       orders.value = [];
-      let query = db
-        .collection(`restaurants/${ctx.root.restaurantId()}/orders`)
-        .where(queryKey, ">=", lastSeveralDays.value[dayIndex.value].date);
+
+      // const queryKey = (queryIsPlacedDate.value ? "orderPlacedAt" :  "timePickupForQuery"); 
+      const queryKey = (queryIsPlacedDate.value ? "orderPlacedAt" :  "timePlaced");
+      const queryConditions = [
+        where(queryKey, ">=", lastSeveralDays.value[dayIndex.value].date)
+      ];
       if (dayIndex.value > 0) {
-        query = query.where(
-          queryKey,
-          "<",
-          lastSeveralDays.value[dayIndex.value - 1].date
+        queryConditions.push(
+          where(queryKey, "<", lastSeveralDays.value[dayIndex.value - 1].date)
         );
       }
-      order_detacher = query.onSnapshot((result) => {
-        orders.value = result.docs
-          .map(doc2data("order"))
-          .filter((a) => a.status !== order_status.transaction_hide)
-          .sort((order0, order1) => {
-            if (order0.status === order1.status) {
-              return (order0.timeEstimated || order0.timePlaced) >
-                (order1.timeEstimated || order1.timePlaced)
-                ? -1
-                : 1;
-            }
-            return order0.status < order1.status ? -1 : 1;
-          })
-          .map((order) => {
-            order.timePlaced = order.timePlaced.toDate();
-            if (order.timeEstimated) {
-              order.timeEstimated = order.timeEstimated.toDate();
-            }
-            return order;
-          });
-      });
+      order_detacher = onSnapshot(
+        query(
+          collection(db, `restaurants/${ctx.root.restaurantId()}/orders`),
+          ...queryConditions
+        ),
+        (result) => {
+          orders.value = result.docs
+            .map(doc2data("order"))
+            .filter((a) => a.status !== order_status.transaction_hide)
+            .sort((order0, order1) => {
+              if (order0.status === order1.status) {
+                return (order0.timeEstimated || order0.timePlaced) >
+                  (order1.timeEstimated || order1.timePlaced)
+                  ? -1
+                  : 1;
+              }
+              return order0.status < order1.status ? -1 : 1;
+            })
+            .map((order) => {
+              order.timePlaced = order.timePlaced.toDate();
+              if (order.timeEstimated) {
+                order.timeEstimated = order.timeEstimated.toDate();
+              }
+              return order;
+            });
+          
+        }
+      )
     };
 
     if (ctx.root.$route.query.day) {
@@ -257,9 +287,9 @@ export default defineComponent({
     watch(dayQuery, () => {
       updateDayIndex();
     });
+
     watch(queryIsPlacedDate, () => {
       dateWasUpdated();
-      console.log("AAA")
     });
 
     return {

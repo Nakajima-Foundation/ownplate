@@ -413,7 +413,7 @@ export default defineComponent({
     },
     moPrefix: {
       type: String,
-      required: true,
+      required: false,
     },
   },
   emits: ["positionUp", "positionDown", "deleteFromRestaurantLists"],
