@@ -158,10 +158,12 @@ export default defineComponent({
         { merge: true }
       );
     };
+
     onSnapshot(
       doc(db, `adminConfigs/${uid.value}`),
       (res) => {
         const config = res.data()||{};
+        console.log(config);
         queryIsPlacedDate.value = config.queryIsPlacedDate || false;
       }
     );
