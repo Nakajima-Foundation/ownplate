@@ -73,6 +73,7 @@ export const update = async (db: admin.firestore.Firestore, data: any, context: 
       };
       if (status === order_status.order_accepted) {
         updateData.timeEstimated = timeEstimated ? new admin.firestore.Timestamp(timeEstimated.seconds, timeEstimated.nanoseconds) : order.timePlaced;
+        updateData.timePickupForQuery = updateData.timeEstimated;
         order.timeEstimated = updateData.timeEstimated;
       }
       await transaction.update(orderRef, updateData);

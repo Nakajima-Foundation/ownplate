@@ -147,6 +147,7 @@ export const create = async (db: admin.firestore.Firestore, data: any, context: 
         updatedAt: admin.firestore.Timestamp.now(),
         orderPlacedAt: admin.firestore.Timestamp.now(),
         timePlaced,
+        timePickupForQuery: timePlaced,
         description: request.description,
         memo: memo || "",
         isEC: restaurantData.isEC || false,
@@ -231,6 +232,7 @@ export const confirm = async (db: admin.firestore.Firestore, data: any, context:
       } as any;
       if (nextStatus === order_status.order_accepted) {
         updateData.timeEstimated = timeEstimated ? new admin.firestore.Timestamp(timeEstimated.seconds, timeEstimated.nanoseconds) : order.timePlaced;
+        updateData.timePickupForQuery = updateData.timeEstimated;
         order.timeEstimated = updateData.timeEstimated;
       }
       transaction.set(orderRef, updateData, { merge: true });
