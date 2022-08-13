@@ -769,6 +769,8 @@
       "paymentCancelMessage": "It will be changed to payment in the restaurant. Please contact the customer and let them know that you will be paying in the restaurant. The order will not be cancelled.",
       "paymentCancel": "Cancel only card payment",
       "paymentCancelConfirm": "(This action is undoable)",
+      "placedDate": "Date of order",
+      "pickupDate": "Date of Pickup",
       "line": "LINE Notification",
       "lineAdd": "Add a LINE account",
       "lineUsers": "Connected LINE Accounts",
@@ -822,6 +824,10 @@
         "auth/invalid-email": "The email address is badly formatted.",
         "auth/unauthorized-continue-uri": "Domain not whitelisted by project"
       }
+    },
+    "index": {
+      "showSimple": "Simple",
+      "showAll": "All"
     },
     "messages": {
       "title": "Message",
