@@ -5,24 +5,24 @@
   >
     <div
       class="inline-flex items-center rounded-full h-9 px-4"
-      :class="toggleState ? '' : 'bg-green-600'"
-    >
-      <div
-        class="text-sm font-bold"
-        :class="toggleState ? 'text-green-600' : 'text-white'"
-      >
-        {{ $t("editMenu.showAllMenu") }}
-      </div>
-    </div>
-    <div
-      class="inline-flex items-center rounded-full h-9 px-4"
       :class="toggleState ? 'bg-green-600' : ''"
     >
       <div
         class="text-sm font-bold"
         :class="toggleState ? 'text-white' : 'text-green-600'"
       >
-        {{ $t("editMenu.showPublicMenu") }}
+        {{ $t(onName) }}
+      </div>
+    </div>
+    <div
+      class="inline-flex items-center rounded-full h-9 px-4"
+      :class="toggleState ? '' : 'bg-green-600'"
+    >
+      <div
+        class="text-sm font-bold"
+        :class="toggleState ? 'text-green-600' : 'text-white'"
+      >
+        {{ $t(offName) }}
       </div>
     </div>
   </a>
@@ -36,6 +36,14 @@ export default defineComponent({
   props: {
     toggleState: {
       type: Boolean,
+      required: true,
+    },
+    onName: {
+      type: String,
+      required: true,
+    },
+    offName: {
+      type: String,
       required: true,
     },
   },

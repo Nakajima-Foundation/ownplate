@@ -13,7 +13,15 @@
         :isInMo="isInMo"
         :moPrefix="moPrefix"
       />
-      toggle
+
+      <div class="mt-6 mx-6 lg:text-center">
+        <ToggleSwitch
+          :toggleState="queryIsPlacedDate"
+          @toggleFunction="switchOrderQuery()"
+          onName="admin.order.placedDate"
+          offName="admin.order.pickupDate"
+          />
+      </div>
       
       <!-- Date -->
       <div class="mx-6 mt-6">
@@ -78,6 +86,7 @@ import moment from "moment";
 import OrderedInfo from "@/app/admin/Order/OrderedInfo.vue";
 import NotFound from "@/components/NotFound.vue";
 import AdminHeader from "@/app/admin/AdminHeader.vue";
+import ToggleSwitch from "@/components/ToggleSwitch.vue";
 
 import { doc2data, isNull, useAdminUids } from "@/utils/utils";
 import { checkAdminPermission, checkShopAccount } from "@/utils/userPermission";
@@ -85,6 +94,7 @@ import { checkAdminPermission, checkShopAccount } from "@/utils/userPermission";
 export default defineComponent({
   components: {
     OrderedInfo,
+    ToggleSwitch,
     NotFound,
     AdminHeader,
   },
@@ -116,6 +126,10 @@ export default defineComponent({
   setup(props, ctx) {
     const orders = ref([]);
     const dayIndex = ref(0);
+    const queryIsPlacedDate = ref(true);
+    const switchOrderQuery = () => {
+      queryIsPlacedDate.value = !queryIsPlacedDate.value;
+    };
     let order_detacher = () => {};
 
     if (!checkAdminPermission(ctx)) {
@@ -174,12 +188,15 @@ export default defineComponent({
     const dateWasUpdated = () => {
       order_detacher();
 
+      // omochikaeri was timePlaced
+      const queryKey = (queryIsPlacedDate.value ? "orderPlacedAt" :  "timeEstimated");
+      orders.value = [];
       let query = db
         .collection(`restaurants/${ctx.root.restaurantId()}/orders`)
-        .where("timePlaced", ">=", lastSeveralDays.value[dayIndex.value].date);
+        .where(queryKey, ">=", lastSeveralDays.value[dayIndex.value].date);
       if (dayIndex.value > 0) {
         query = query.where(
-          "timePlaced",
+          queryKey,
           "<",
           lastSeveralDays.value[dayIndex.value - 1].date
         );
@@ -240,6 +257,10 @@ export default defineComponent({
     watch(dayQuery, () => {
       updateDayIndex();
     });
+    watch(queryIsPlacedDate, () => {
+      dateWasUpdated();
+      console.log("AAA")
+    });
 
     return {
       orders,
@@ -250,6 +271,10 @@ export default defineComponent({
       pickUpDaysInAdvance,
       dayIndex,
       orderCounter,
+
+      queryIsPlacedDate,
+      switchOrderQuery,
+
     };
   },
 });

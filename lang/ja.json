@@ -802,6 +802,8 @@
       "paymentCancelMessage": "現地払いに変更となります。お客様にご連絡の上、現地払いになることをお伝え下さい。注文はキャンセルされません。",
       "paymentCancel": "カード決済のみキャンセル",
       "paymentCancelConfirm": "（キャンセルの取り消しは出来ません）",
+      "placedDate": "注文日",
+      "pickupDate": "受け渡し日",
       "line": "LINE通知設定",
       "lineAdd": "LINEアカウントの追加",
       "lineUsers": "登録済みLINEアカウント",

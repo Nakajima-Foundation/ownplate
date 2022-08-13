@@ -28,9 +28,11 @@
         <!-- Toggle to View All or Public Only -->
         <div class="mt-6 mx-6 lg:text-center">
           <ToggleSwitch
-            :toggleState="publicFilter"
+            :toggleState="!publicFilter"
             @toggleFunction="publicFilterToggle()"
-          />
+            onName="editMenu.showAllMenu"
+            offName="editMenu.showPublicMenu"
+            />
         </div>
 
         <!-- category for mo -->
