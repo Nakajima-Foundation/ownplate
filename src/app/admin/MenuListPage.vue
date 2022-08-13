@@ -27,7 +27,7 @@
       <template v-else>
         <!-- Toggle to View All or Public Only -->
         <div class="mt-6 mx-6 lg:text-center">
-          <PublicFilterToggle
+          <ToggleSwitch
             :toggleState="publicFilter"
             @toggleFunction="publicFilterToggle()"
           />
@@ -190,7 +190,7 @@ import TitleCard from "@/app/admin/Menus/TitleCard.vue";
 import TitleInput from "@/app/admin/Menus/TitleInput.vue";
 
 import PreviewLink from "@/app/admin/MenuListPage/PreviewLink.vue";
-import PublicFilterToggle from "@/app/admin/MenuListPage/PublicFilterToggle.vue";
+import ToggleSwitch from "@/components/ToggleSwitch.vue";
 import AddButton from "@/app/admin/MenuListPage/AddButton.vue";
 import PhotoName from "@/app/admin/MenuListPage/PhotoName.vue";
 import DownloadButton from "@/app/admin/MenuListPage/DownloadButton.vue";
@@ -227,7 +227,7 @@ export default defineComponent({
     AdminHeader,
 
     PreviewLink,
-    PublicFilterToggle,
+    ToggleSwitch,
     AddButton,
     PhotoName,
     DownloadButton,
