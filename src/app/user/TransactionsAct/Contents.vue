@@ -176,38 +176,38 @@
                       class="text-sm font-bold text-black text-opacity-30 mt-2"
                     >
                       {{
-                        $t("transactionsAct.cancellationTakeoutDescription1")
+                        $t("transactionsAct.takeoutTitle")
                       }}
                     </div>
                     <li>
                       {{
-                        $t("transactionsAct.cancellationTakeoutDescription2")
+                        $t("transactionsAct.cancellationTakeoutDescription1")
                       }}
                     </li>
                     <div
-                      v-if="isDelivery"
+                      v-if="shopInfo.enableDelivery"
                       class="text-sm font-bold text-black text-opacity-30 mt-2"
                     >
                       {{
-                        $t("transactionsAct.cancellationDeliveryDescription1")
+                        $t("transactionsAct.deliveryTitle")
                       }}
                     </div>
-                    <li v-if="isDelivery">
+                    <li v-if="shopInfo.enableDelivery">
+                      -
+                      {{
+                        $t("transactionsAct.cancellationDeliveryDescription1")
+                      }}
+                    </li>
+                    <li v-if="shopInfo.enableDelivery">
                       -
                       {{
                         $t("transactionsAct.cancellationDeliveryDescription2")
                       }}
                     </li>
-                    <li v-if="isDelivery">
+                    <li v-if="shopInfo.enableDelivery">
                       -
                       {{
                         $t("transactionsAct.cancellationDeliveryDescription3")
-                      }}
-                    </li>
-                    <li v-if="isDelivery">
-                      -
-                      {{
-                        $t("transactionsAct.cancellationDeliveryDescription4")
                       }}
                     </li>
                   </ul>
