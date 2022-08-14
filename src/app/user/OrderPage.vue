@@ -284,6 +284,7 @@
                 <time-to-pickup
                   v-if="shopInfo.businessDay"
                   :shopInfo="shopInfo"
+                  :orderInfo="orderInfo"
                   :isDelivery="orderInfo.isDelivery || false"
                   ref="time"
                   @notAvailable="handleNotAvailable"

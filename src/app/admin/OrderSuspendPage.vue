@@ -156,7 +156,7 @@ export default defineComponent({
         notFound: true,
       };
     }
-    const { availableDays } = usePickupTime(props.shopInfo, ctx);
+    const { availableDays } = usePickupTime(props.shopInfo, {}, ctx);
 
     const availableTimes = computed(() => {
       // Note: availableDays will change if we change shopInfo.suspendUntil.

@@ -135,6 +135,8 @@ export const createNewOrderData = async (restaurantRef, orderRef, orderData, mul
       category2: menu.category2,
       category: menu.category,
       subCategory: menu.subCategory,
+      exceptDay: menu.exceptDay || {},
+      exceptHour: menu.exceptHour || {},
       productId: menu.productId,
       tax: menu.tax,
     };
