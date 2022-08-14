@@ -366,6 +366,34 @@
             </div>
           </div>
 
+          <div class="mt-6">
+            <div class="text-sm font-bold pb-2">
+              {{ $t("editMenu.exclusionDate") }}
+            </div>
+            <span
+              v-for="(day, index) in daysOfWeek"
+              :key="index"
+              >
+              <b-checkbox v-model="menuInfo.exceptDay[index]">
+                <span class="text-base font-bold">
+                  {{ $t("week.short." + day) }}
+                  <span v-if="index !== '7'">/</span>
+                </span>
+              </b-checkbox>
+            </span>
+            <div class="mt-2 text-sm font-bold">
+              {{ $t("editMenu.exclusionTime") }}
+            </div>
+            <div class="mt-2">
+              <hours-input
+                v-model="menuInfo.exceptHour"
+                :type="'is-success'"
+                :disabled="false"
+                ></hours-input>
+            </div>
+
+          </div>
+          
           <!-- CSV Categories -->
           <div class="mt-6">
             <div class="text-sm font-bold pb-2">
@@ -569,8 +597,9 @@ import BackButton from "@/components/BackButton.vue";
 import Price from "@/components/Price.vue";
 import EditCategory from "@/app/admin/Menus/EditCategory.vue";
 import NotificationIndex from "./Notifications/Index.vue";
+import HoursInput from "@/app/admin/inputComponents/HoursInput.vue";
 
-import { taxRates } from "@/config/constant";
+import { taxRates, daysOfWeek } from "@/config/constant";
 import { ownPlateConfig } from "@/config/project";
 import { halfCharactors, formatOption, optionPrice } from "@/utils/strings";
 import {
@@ -610,6 +639,7 @@ export default defineComponent({
     NotificationIndex,
     NotFound,
     EditCategory,
+    HoursInput,
   },
   props: {
     shopInfo: {
@@ -641,6 +671,8 @@ export default defineComponent({
       publicFlag: false,
       itemOptionCheckbox: [""],
       allergens: {},
+      exceptDay: {},
+      exceptHour: {},
       category1: "",
       category2: "",
     });
@@ -907,6 +939,8 @@ export default defineComponent({
       addOption,
       copyItem,
       submitItem,
+
+      daysOfWeek,
     };
   },
 });

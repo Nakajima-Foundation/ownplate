@@ -262,6 +262,8 @@
     "editCategory1": "カテゴリー1を編集",
     "category2": "カテゴリー2",
     "editCategory2": "カテゴリー2を編集",
+    "exclusionDate": "除外日",
+    "exclusionTime": "除外時間",
     "showAllMenu": "全ての商品",
     "showPublicMenu": "公開中のみ",
     "selectCategory": "選択"

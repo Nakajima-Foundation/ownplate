@@ -962,17 +962,17 @@ import { db } from "@/lib/firebase/firebase9";
 import { doc, updateDoc, getDoc } from "firebase/firestore";
 
 import { google_geocode } from "@/lib/google/api";
-import BackButton from "@/components/BackButton";
-import NotFound from "@/components/NotFound";
-import PhoneEntry from "@/components/PhoneEntry";
-import Price from "@/components/Price";
 import { ownPlateConfig } from "@/config/project";
 
-import HoursInput from "./inputComponents/HoursInput";
-import TextForm from "./inputComponents/TextForm";
-import State from "./inputComponents/State";
+import BackButton from "@/components/BackButton.vue";
+import NotFound from "@/components/NotFound.vue";
+import PhoneEntry from "@/components/PhoneEntry.vue";
+import Price from "@/components/Price.vue";
 
-import NotificationIndex from "./Notifications/Index";
+import HoursInput from "@/app/admin/inputComponents/HoursInput.vue";
+import TextForm from "@/app/admin/inputComponents/TextForm.vue";
+import State from "@/app/admin/inputComponents/State.vue";
+import NotificationIndex from "@/app/admin/Notifications/Index.vue";
 
 import {
   getEditShopInfo,
