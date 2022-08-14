@@ -30,8 +30,8 @@ export interface MenuData {
   allergens: any;
   category1: string;
   category2: string;
-  exceptDay: {[key: string]: boolean};
-  exceptHour: ExceptHour,
+  exceptDay: { [key: string]: boolean };
+  exceptHour: ExceptHour;
   validatedFlag: boolean;
 }
 
@@ -42,18 +42,18 @@ export class Menu {}
 const newExceptHour = (exceptHour: ExceptHour) => {
   const { start, end } = exceptHour;
   if (isNull(start) || isNull(end)) {
-    return {}
+    return {};
   }
   if ((start || 0) > (end || 0)) {
     return {
       start: end,
       end: start,
-    }
+    };
   }
   return {
     start,
     end,
-  }
+  };
 };
 export const getNewItemData = (
   item: MenuData,

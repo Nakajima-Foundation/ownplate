@@ -4,7 +4,11 @@ import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { num2time, isNull } from "@/utils/utils";
 import moment from "moment";
 
-export const usePickupTime = (shopInfo: RestaurantInfoData, exceptData: any, ctx: any) => {
+export const usePickupTime = (
+  shopInfo: RestaurantInfoData,
+  exceptData: any,
+  ctx: any
+) => {
   // public
   const temporaryClosure = computed(() => {
     return (shopInfo.temporaryClosure || []).map((day) => {
@@ -13,16 +17,20 @@ export const usePickupTime = (shopInfo: RestaurantInfoData, exceptData: any, ctx
   });
   const businessDays = computed(() => {
     return [7, 1, 2, 3, 4, 5, 6].map((day) => {
-      return shopInfo.businessDay[day] && !(exceptData.value.exceptDay||{})[day];
+      return (
+        shopInfo.businessDay[day] && !(exceptData.value.exceptDay || {})[day]
+      );
     });
   });
   const timeInterval = computed(() => {
     return 10; // LATER: Make it customizable
   });
   const withinExceptTime = (time: number) => {
-    return exceptData.value.exceptHours.some((hour: {start: number, end: number}) => {
-      return (hour.start <= time && time <= hour.end);
-    });
+    return exceptData.value.exceptHours.some(
+      (hour: { start: number; end: number }) => {
+        return hour.start <= time && time <= hour.end;
+      }
+    );
   };
   const openSlots = computed(() => {
     return [7, 1, 2, 3, 4, 5, 6].map((day) => {
@@ -32,7 +40,7 @@ export const usePickupTime = (shopInfo: RestaurantInfoData, exceptData: any, ctx
           time < value.end;
           time += timeInterval.value
         ) {
-          if (!withinExceptTime(time)){
+          if (!withinExceptTime(time)) {
             ret.push({ time, display: num2time(time, ctx.root) });
           }
         }

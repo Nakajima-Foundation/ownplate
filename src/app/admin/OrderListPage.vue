@@ -14,35 +14,37 @@
         :moPrefix="moPrefix"
       />
 
-      <div class="mt-6 mx-6 lg:text-center">
-        <ToggleSwitch
-          :toggleState="queryIsPlacedDate"
-          @toggleFunction="switchOrderQuery()"
-          onName="admin.order.placedDate"
-          offName="admin.order.pickupDate"
-        />
-      </div>
+      <div class="sm:flex">
+        <div class="mt-6 ml-6 sm:flex">
+          <ToggleSwitch
+            :toggleState="queryIsPlacedDate"
+            @toggleFunction="switchOrderQuery()"
+            onName="admin.order.placedDate"
+            offName="admin.order.pickupDate"
+          />
+        </div>
 
-      <!-- Date -->
-      <div class="mx-6 mt-6">
-        <b-select v-model="dayIndex">
-          <option
-            v-for="day in lastSeveralDays"
-            :value="day.index"
-            :key="day.index"
-          >
-            {{ $d(day.date, "short") }}
-            {{ orderCounter[moment(day.date).format("YYYY-MM-DD")] }}
-            <span v-if="day.index === pickUpDaysInAdvance">{{
-              $t("date.today")
-            }}</span>
-          </option>
-        </b-select>
+        <!-- Date -->
+        <div class="ml-6 mt-6 sm:ml-4">
+          <b-select v-model="dayIndex">
+            <option
+              v-for="day in lastSeveralDays"
+              :value="day.index"
+              :key="day.index"
+            >
+              {{ $d(day.date, "short") }}
+              {{ orderCounter[moment(day.date).format("YYYY-MM-DD")] }}
+              <span v-if="day.index === pickUpDaysInAdvance">{{
+                $t("date.today")
+              }}</span>
+            </option>
+          </b-select>
+        </div>
       </div>
 
       <!-- Orders -->
       <div
-        class="mx-6 mt-6 grid grid-cols-1 gap-2 lg:grid-cols-3 xl:grid-cols-4"
+        class="mx-6 mt-6 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
       >
         <template v-for="order in orders">
           <router-link

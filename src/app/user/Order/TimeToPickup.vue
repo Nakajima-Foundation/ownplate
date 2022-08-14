@@ -70,20 +70,27 @@ export default defineComponent({
     const time = ref(0);
 
     const exceptData = computed(() => {
-      return (Object.values(props.orderInfo.menuItems) ||[]).reduce((tmp, menu) => {
-        const { exceptDay, exceptHour } = menu;
-        Object.keys(exceptDay).map(key => {
-          if (exceptDay[key]) {
-            tmp.exceptDay[key] = true;
+      return (Object.values(props.orderInfo.menuItems) || []).reduce(
+        (tmp, menu) => {
+          const { exceptDay, exceptHour } = menu;
+          Object.keys(exceptDay).map((key) => {
+            if (exceptDay[key]) {
+              tmp.exceptDay[key] = true;
+            }
+          });
+          if (
+            !isNull(exceptHour) &&
+            !isNull(exceptHour.start) &&
+            !isNull(exceptHour.end)
+          ) {
+            tmp.exceptHours.push(exceptHour);
           }
-        });
-        if (!isNull(exceptHour) && !isNull(exceptHour.start) && !isNull(exceptHour.end)) {
-          tmp.exceptHours.push(exceptHour);
-        }
-        return tmp;
-      }, {exceptDay: {}, exceptHours: []});
+          return tmp;
+        },
+        { exceptDay: {}, exceptHours: [] }
+      );
     });
-    
+
     const { deliveryAvailableDays, availableDays } = usePickupTime(
       props.shopInfo,
       exceptData,

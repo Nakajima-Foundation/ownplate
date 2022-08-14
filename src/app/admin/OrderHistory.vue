@@ -14,9 +14,7 @@
         :moPrefix="moPrefix"
       />
 
-      <div
-        class="mx-6 mt-6 grid grid-cols-1 gap-2 lg:grid-cols-3 xl:grid-cols-4"
-      >
+      <div class="mx-6 mt-6 grid grid-cols-1 gap-2">
         <div class="text-sm font-bold text-black text-opacity-30">
           {{ $t("order.statusTitle") }}
         </div>
@@ -34,9 +32,7 @@
           </option>
         </b-select>
       </div>
-      <div
-        class="mx-6 mt-2 grid grid-cols-1 gap-2 lg:grid-cols-3 xl:grid-cols-4"
-      >
+      <div class="mx-6 mt-2 grid grid-cols-1 gap-2">
         <div class="text-sm font-bold text-black text-opacity-30">
           {{ $t("order.sortOrder") }}
         </div>
@@ -52,7 +48,7 @@
       </div>
       <!-- Orders -->
       <div
-        class="mx-6 mt-6 grid grid-cols-1 gap-2 lg:grid-cols-3 xl:grid-cols-4"
+        class="mx-6 mt-6 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
       >
         <template v-for="order in filteredOrders">
           <router-link

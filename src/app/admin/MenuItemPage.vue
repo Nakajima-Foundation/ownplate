@@ -370,10 +370,7 @@
             <div class="text-sm font-bold pb-2">
               {{ $t("editMenu.exclusionDate") }}
             </div>
-            <span
-              v-for="(day, index) in daysOfWeek"
-              :key="index"
-              >
+            <span v-for="(day, index) in daysOfWeek" :key="index">
               <b-checkbox v-model="menuInfo.exceptDay[index]">
                 <span class="text-base font-bold">
                   {{ $t("week.short." + day) }}
@@ -389,11 +386,10 @@
                 v-model="menuInfo.exceptHour"
                 :type="'is-success'"
                 :disabled="false"
-                ></hours-input>
+              ></hours-input>
             </div>
-
           </div>
-          
+
           <!-- CSV Categories -->
           <div class="mt-6">
             <div class="text-sm font-bold pb-2">
