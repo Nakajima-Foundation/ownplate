@@ -238,6 +238,8 @@ import {
 } from "@/utils/utils";
 import { checkAdminPermission } from "@/utils/userPermission";
 
+import { useAdminConfigToggle } from "@/utils/admin/Toggle";
+
 export default defineComponent({
   name: "RestaurantIndex",
   components: {
@@ -298,21 +300,10 @@ export default defineComponent({
     };
     const { isOwner, uid, ownerUid } = useAdminUids(ctx);
 
-    const simpleMode = ref(false);
-    const switchSimpleMode = () => {
-      setDoc(
-        doc(db, `adminConfigs/${uid.value}`),
-        {simpleMode: !simpleMode.value},
-        { merge: true }
-      );
-    };
-    onSnapshot(
-      doc(db, `adminConfigs/${uid.value}`),
-      (res) => {
-        const config = res.data()||{};
-        simpleMode.value = config.simpleMode === undefined ? false : config.simpleMode;
-      }
-    );
+    const {
+      toggle: simpleMode,
+      switchToggle: switchSimpleMode,
+    } = useAdminConfigToggle("simpleMode", uid.value, false)
 
     
     const watchOrder = () => {

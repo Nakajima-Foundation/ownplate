@@ -100,6 +100,7 @@ import ToggleSwitch from "@/components/ToggleSwitch.vue";
 
 import { doc2data, isNull, useAdminUids } from "@/utils/utils";
 import { checkAdminPermission, checkShopAccount } from "@/utils/userPermission";
+import { useAdminConfigToggle } from "@/utils/admin/Toggle";
 
 export default defineComponent({
   components: {
@@ -150,23 +151,10 @@ export default defineComponent({
         notFound: true,
       };
     }
-    const queryIsPlacedDate = ref(true);
-    const switchOrderQuery = () => {
-      setDoc(
-        doc(db, `adminConfigs/${uid.value}`),
-        {queryIsPlacedDate: !queryIsPlacedDate.value},
-        { merge: true }
-      );
-    };
-
-    onSnapshot(
-      doc(db, `adminConfigs/${uid.value}`),
-      (res) => {
-        const config = res.data()||{};
-        console.log(config);
-        queryIsPlacedDate.value = config.queryIsPlacedDate || false;
-      }
-    );
+    const {
+      toggle: queryIsPlacedDate,
+      switchToggle: switchOrderQuery,
+    } = useAdminConfigToggle("queryIsPlacedDate", uid.value, false);
     
     const getPickUpDaysInAdvance = () => {
       return isNull(props.shopInfo.pickUpDaysInAdvance)
