@@ -32,7 +32,7 @@
             @toggleFunction="publicFilterToggle()"
             onName="editMenu.showAllMenu"
             offName="editMenu.showPublicMenu"
-            />
+          />
         </div>
 
         <!-- category for mo -->
@@ -380,10 +380,8 @@ export default defineComponent({
     });
     loadMenu();
 
-    const {
-      toggle: publicFilter,
-      switchToggle: publicFilterToggle,
-    } = useAdminConfigToggle("menuPublicFilter", uid.value, false)
+    const { toggle: publicFilter, switchToggle: publicFilterToggle } =
+      useAdminConfigToggle("menuPublicFilter", uid.value, false);
 
     const changeTitleMode = (titleId, value) => {
       const newEditings = { ...editings.value };

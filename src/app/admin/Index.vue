@@ -40,14 +40,13 @@
       </div>
     </div>
 
-
     <div class="mt-2 mx-6 lg:text-center">
       <ToggleSwitch
         :toggleState="simpleMode"
         @toggleFunction="switchSimpleMode()"
         onName="admin.index.showSimple"
         offName="admin.index.showAll"
-        />
+      />
     </div>
 
     <!-- Restaurants and Right Settin Section -->
@@ -300,12 +299,9 @@ export default defineComponent({
     };
     const { isOwner, uid, ownerUid } = useAdminUids(ctx);
 
-    const {
-      toggle: simpleMode,
-      switchToggle: switchSimpleMode,
-    } = useAdminConfigToggle("simpleMode", uid.value, false)
+    const { toggle: simpleMode, switchToggle: switchSimpleMode } =
+      useAdminConfigToggle("simpleMode", uid.value, false);
 
-    
     const watchOrder = () => {
       detachOrders();
       orderDetachers.value = Object.keys(restaurantItems.value).map(
@@ -430,10 +426,7 @@ export default defineComponent({
       }
       if (isOwner.value) {
         onSnapshot(
-          query(
-            collectionGroup(db, "lines"),
-            where("uid", "==", uid.value)
-          ),
+          query(collectionGroup(db, "lines"), where("uid", "==", uid.value)),
           (result) => {
             result.docs.map(async (res) => {
               const restaurantId = res.data().restaurantId;
@@ -468,22 +461,21 @@ export default defineComponent({
       if (isOwner.value) {
         try {
           isCreating.value = true;
-          const newDoc = doc(collection(db, "restaurants"))
+          const newDoc = doc(collection(db, "restaurants"));
           // update Lists
           restaurantLists.value.push(newDoc.id);
           saveRestaurantLists();
 
-          setDoc(newDoc,
-                 {
-                   uid: uid.value,
-                   restaurantId: newDoc.id,
-                   menuLists: [],
-                   publicFlag: false,
-                   numberOfMenus: 0,
-                   deletedFlag: false,
-                   createdAt: serverTimestamp(),
-                 });
-          
+          setDoc(newDoc, {
+            uid: uid.value,
+            restaurantId: newDoc.id,
+            menuLists: [],
+            publicFlag: false,
+            numberOfMenus: 0,
+            deletedFlag: false,
+            createdAt: serverTimestamp(),
+          });
+
           ctx.root.$router.push(`/admin/restaurants/${newDoc.id}`);
         } catch (error) {
           console.log(error);
@@ -576,10 +568,9 @@ export default defineComponent({
       isOwner,
       existsRestaurant,
 
-
       simpleMode,
       switchSimpleMode,
-      
+
       // methods
       handleNew,
       updateUnsetWarning,

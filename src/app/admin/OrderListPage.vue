@@ -20,9 +20,9 @@
           @toggleFunction="switchOrderQuery()"
           onName="admin.order.placedDate"
           offName="admin.order.pickupDate"
-          />
+        />
       </div>
-      
+
       <!-- Date -->
       <div class="mx-6 mt-6">
         <b-select v-model="dayIndex">
@@ -88,7 +88,6 @@ import {
   setDoc,
 } from "firebase/firestore";
 
-
 import { midNight } from "@/utils/dateUtils";
 import { order_status } from "@/config/constant";
 import moment from "moment";
@@ -151,11 +150,9 @@ export default defineComponent({
         notFound: true,
       };
     }
-    const {
-      toggle: queryIsPlacedDate,
-      switchToggle: switchOrderQuery,
-    } = useAdminConfigToggle("queryIsPlacedDate", uid.value, false);
-    
+    const { toggle: queryIsPlacedDate, switchToggle: switchOrderQuery } =
+      useAdminConfigToggle("queryIsPlacedDate", uid.value, false);
+
     const getPickUpDaysInAdvance = () => {
       return isNull(props.shopInfo.pickUpDaysInAdvance)
         ? 3
@@ -201,10 +198,10 @@ export default defineComponent({
       order_detacher();
       orders.value = [];
 
-      // const queryKey = (queryIsPlacedDate.value ? "orderPlacedAt" :  "timePickupForQuery"); 
-      const queryKey = (queryIsPlacedDate.value ? "orderPlacedAt" :  "timePlaced");
+      // const queryKey = (queryIsPlacedDate.value ? "orderPlacedAt" :  "timePickupForQuery");
+      const queryKey = queryIsPlacedDate.value ? "orderPlacedAt" : "timePlaced";
       const queryConditions = [
-        where(queryKey, ">=", lastSeveralDays.value[dayIndex.value].date)
+        where(queryKey, ">=", lastSeveralDays.value[dayIndex.value].date),
       ];
       if (dayIndex.value > 0) {
         queryConditions.push(
@@ -236,9 +233,8 @@ export default defineComponent({
               }
               return order;
             });
-          
         }
-      )
+      );
     };
 
     if (ctx.root.$route.query.day) {
@@ -291,7 +287,6 @@ export default defineComponent({
 
       queryIsPlacedDate,
       switchOrderQuery,
-
     };
   },
 });

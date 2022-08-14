@@ -190,7 +190,10 @@
       </div>
 
       <!-- QR Code and Monthly Report -->
-      <div class="flex justify-center items-center space-x-4 mt-4" v-if="!simpleMode">
+      <div
+        class="flex justify-center items-center space-x-4 mt-4"
+        v-if="!simpleMode"
+      >
         <div>
           <router-link :to="`/admin/restaurants/${restaurantid}/qrcode`">
             <div
@@ -291,7 +294,10 @@
     </div>
 
     <!-- Sort and Delete -->
-    <div class="flex justify-end space-x-2 mt-2 pb-2" v-if="isOwner && !simpleMode">
+    <div
+      class="flex justify-end space-x-2 mt-2 pb-2"
+      v-if="isOwner && !simpleMode"
+    >
       <!-- Up -->
       <div>
         <template v-if="position !== 'first'">

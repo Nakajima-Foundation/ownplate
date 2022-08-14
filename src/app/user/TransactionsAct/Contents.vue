@@ -98,28 +98,20 @@
               {{ $t("transactionsAct.otherFees") }}
             </div>
 
-            <div
-              class="text-sm font-bold text-black text-opacity-30 mt-2"
-              >
-              {{
-              $t("transactionsAct.takeoutTitle")
-              }}
+            <div class="text-sm font-bold text-black text-opacity-30 mt-2">
+              {{ $t("transactionsAct.takeoutTitle") }}
             </div>
-            
+
             <div class="text-base mt-1">
               {{ $t("transactionsAct.otherFeesDescription") }}
             </div>
 
             <template v-if="shopInfo.enableDelivery">
-              <div
-                class="text-sm font-bold text-black text-opacity-30 mt-2"
-                >
-                {{
-                $t("transactionsAct.deliveryTitle")
-              }}
+              <div class="text-sm font-bold text-black text-opacity-30 mt-2">
+                {{ $t("transactionsAct.deliveryTitle") }}
               </div>
-              
-              <div class="text-base mt-1" >
+
+              <div class="text-base mt-1">
                 {{ $t("transactionsAct.otherFeesDescriptionDelivery") }}
               </div>
             </template>
@@ -191,16 +183,16 @@
               </div>
               <ul class="list-disc list-outside ml-5 mt-1">
                 <li>{{ $t("transactionsAct.cancellationDescription1") }}</li>
-                <li v-if="!isInMo">{{ $t("transactionsAct.cancellationDescription4") }}</li>
+                <li v-if="!isInMo">
+                  {{ $t("transactionsAct.cancellationDescription4") }}
+                </li>
                 <li>
                   {{ $t("transactionsAct.cancellationDescription2") }}
                   <ul class="list-none list-outside mb-2">
                     <div
                       class="text-sm font-bold text-black text-opacity-30 mt-2"
                     >
-                      {{
-                        $t("transactionsAct.takeoutTitle")
-                      }}
+                      {{ $t("transactionsAct.takeoutTitle") }}
                     </div>
                     <li>
                       {{
@@ -211,9 +203,7 @@
                       v-if="shopInfo.enableDelivery"
                       class="text-sm font-bold text-black text-opacity-30 mt-2"
                     >
-                      {{
-                        $t("transactionsAct.deliveryTitle")
-                      }}
+                      {{ $t("transactionsAct.deliveryTitle") }}
                     </div>
                     <li v-if="shopInfo.enableDelivery">
                       -
