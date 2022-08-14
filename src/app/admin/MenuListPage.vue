@@ -217,6 +217,7 @@ import {
 
 import { useAdminUids, cleanObject } from "@/utils/utils";
 import { checkAdminPermission, checkShopAccount } from "@/utils/userPermission";
+import { useAdminConfigToggle } from "@/utils/admin/Toggle";
 
 export default defineComponent({
   name: "MenuList",
@@ -275,7 +276,6 @@ export default defineComponent({
     const detachers = ref([]);
     const notFound = ref(null);
 
-    const publicFilter = ref(false);
     if (!checkAdminPermission(ctx)) {
       return;
     }
@@ -380,9 +380,11 @@ export default defineComponent({
     });
     loadMenu();
 
-    const publicFilterToggle = () => {
-      publicFilter.value = !publicFilter.value;
-    };
+    const {
+      toggle: publicFilter,
+      switchToggle: publicFilterToggle,
+    } = useAdminConfigToggle("menuPublicFilter", uid.value, false)
+
     const changeTitleMode = (titleId, value) => {
       const newEditings = { ...editings.value };
       newEditings[titleId] = value;
