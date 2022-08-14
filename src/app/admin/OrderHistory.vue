@@ -14,38 +14,43 @@
         :moPrefix="moPrefix"
       />
 
-      <div class="mx-6 mt-6 grid grid-cols-1 gap-2">
-        <div class="text-sm font-bold text-black text-opacity-30">
-          {{ $t("order.statusTitle") }}
+      <div class="sm:flex">
+        <!-- filter -->
+        <div class="mx-6 mt-6 grid grid-cols-1 gap-2">
+          <div class="text-sm font-bold text-black text-opacity-30">
+            {{ $t("order.statusTitle") }}
+          </div>
+          <b-select v-model="orderState">
+            <option
+              v-for="status in orderStatus"
+              :value="status.index"
+              :key="status.index"
+            >
+              {{
+                status.key
+                  ? $t("order.status." + status.key)
+                  : $t("order.status.all")
+              }}
+            </option>
+          </b-select>
         </div>
-        <b-select v-model="orderState">
-          <option
-            v-for="status in orderStatus"
-            :value="status.index"
-            :key="status.index"
-          >
-            {{
-              status.key
-                ? $t("order.status." + status.key)
-                : $t("order.status.all")
-            }}
-          </option>
-        </b-select>
-      </div>
-      <div class="mx-6 mt-2 grid grid-cols-1 gap-2">
-        <div class="text-sm font-bold text-black text-opacity-30">
-          {{ $t("order.sortOrder") }}
+        <!-- sort -->
+        <div class="mx-6 mt-2 grid grid-cols-1 gap-2 sm:mt-6">
+          <div class="text-sm font-bold text-black text-opacity-30">
+            {{ $t("order.sortOrder") }}
+          </div>
+          <b-select v-model="sortOrder">
+            <option
+              v-for="status in orderSorts"
+              :value="status.index"
+              :key="status.index"
+            >
+              {{ $t("order.sort." + status.key) }}
+            </option>
+          </b-select>
         </div>
-        <b-select v-model="sortOrder">
-          <option
-            v-for="status in orderSorts"
-            :value="status.index"
-            :key="status.index"
-          >
-            {{ $t("order.sort." + status.key) }}
-          </option>
-        </b-select>
       </div>
+
       <!-- Orders -->
       <div
         class="mx-6 mt-6 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
