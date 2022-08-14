@@ -509,8 +509,15 @@
     "unspecified": "(unspecified)",
     "adminQRCode": "Confirmation QR Code",
     "paymentAndCancellation": "Payment and Cancellation",
+    "statusTitle": "Order Status",
+    "sortOrder": "Sort Order",
+    "sort": {
+      "newest": "Sort by newst order",
+      "oldest": "Sort by oldest order"
+    },
     "status": {
       "unexpected": "Unexpected",
+      "all": "All",
       "error": "Error",
       "new_order": "New Order",
       "validation_ok": "Validated",

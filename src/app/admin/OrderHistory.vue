@@ -13,11 +13,48 @@
         :isInMo="isInMo"
         :moPrefix="moPrefix"
       />
+
+      <div
+        class="mx-6 mt-6 grid grid-cols-1 gap-2 lg:grid-cols-3 xl:grid-cols-4"
+      >
+        <div class="text-sm font-bold text-black text-opacity-30">
+          {{ $t("order.statusTitle") }}
+        </div>
+        <b-select v-model="orderState">
+          <option
+            v-for="status in orderStatus"
+            :value="status.index"
+            :key="status.index"
+          >
+            {{
+              status.key
+                ? $t("order.status." + status.key)
+                : $t("order.status.all")
+            }}
+          </option>
+        </b-select>
+      </div>
+      <div
+        class="mx-6 mt-2 grid grid-cols-1 gap-2 lg:grid-cols-3 xl:grid-cols-4"
+      >
+        <div class="text-sm font-bold text-black text-opacity-30">
+          {{ $t("order.sortOrder") }}
+        </div>
+        <b-select v-model="sortOrder">
+          <option
+            v-for="status in orderSorts"
+            :value="status.index"
+            :key="status.index"
+          >
+            {{ $t("order.sort." + status.key) }}
+          </option>
+        </b-select>
+      </div>
       <!-- Orders -->
       <div
         class="mx-6 mt-6 grid grid-cols-1 gap-2 lg:grid-cols-3 xl:grid-cols-4"
       >
-        <template v-for="order in orders">
+        <template v-for="order in filteredOrders">
           <router-link
             :to="'/admin/restaurants/' + restaurantId() + '/orders/' + order.id"
             :key="order.id"
@@ -56,13 +93,13 @@
       <div v-if="isOwner">
         <!-- Download Orders -->
         <div class="mx-6 mt-6 text-center">
-          <download-orders :orders="orders" />
+          <download-orders :orders="filteredOrders" />
         </div>
 
         <!-- Download Report -->
         <div class="mx-6 mt-6 text-center">
           <report-details
-            :orders="orders"
+            :orders="filteredOrders"
             :fileName="fileName"
             :hideTable="true"
             :withStatus="true"
@@ -78,10 +115,10 @@
 </template>
 
 <script>
-import { defineComponent, ref } from "@vue/composition-api";
+import { defineComponent, ref, computed } from "@vue/composition-api";
 
 import { db } from "@/plugins/firebase";
-import { order_status } from "@/config/constant";
+import { order_status, order_status_for_form } from "@/config/constant";
 
 import NotFound from "@/components/NotFound.vue";
 import OrderedInfo from "@/app/admin/Order/OrderedInfo.vue";
@@ -134,6 +171,25 @@ export default defineComponent({
     const orders = ref([]);
     const notFound = ref(null);
 
+    const orderState = ref(0);
+    const orderStatus = Object.keys(order_status_for_form).map((key) => {
+      return {
+        index: order_status[key],
+        key: key === "error" ? "" : key,
+      };
+    });
+    const sortOrder = ref(0);
+    const orderSorts = [
+      {
+        index: 0,
+        key: "newest",
+      },
+      {
+        index: 1,
+        key: "oldest",
+      },
+    ];
+
     const { isOwner, uid, ownerUid } = useAdminUids(ctx);
 
     if (
@@ -168,7 +224,6 @@ export default defineComponent({
       const tmpOrders = docs
         .map(doc2data("order"))
         .filter((a) => a.status !== order_status.transaction_hide);
-
       const customers = {};
       if (props.shopInfo.isEC || props.shopInfo.enableDelivery) {
         const ids = tmpOrders.map((order) => order.id);
@@ -210,9 +265,26 @@ export default defineComponent({
     };
     next();
 
+    const filteredOrders = computed(() => {
+      return orders.value
+        .filter((order) => {
+          if (orderState.value === 0) {
+            return true;
+          }
+          return order.status === orderState.value;
+        })
+        .sort(
+          (a, b) =>
+            (a.timePlaced > b.timePlaced ? -1 : 1) *
+            (sortOrder.value === 0 ? 1 : -1)
+        );
+    });
+
     return {
       last,
       orders,
+      filteredOrders,
+
       notFound,
       isOwner,
       fileName,
@@ -222,6 +294,12 @@ export default defineComponent({
 
       categoryDataObj,
       allSubCategoryDataObj,
+
+      orderStatus,
+      orderState,
+
+      sortOrder,
+      orderSorts,
     };
   },
 });

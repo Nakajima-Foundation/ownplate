@@ -531,8 +531,15 @@
     "unspecified": "(未記入)",
     "adminQRCode": "飲食店確認用QRCode",
     "paymentAndCancellation": "キャンセル・お支払いについて",
+    "statusTitle": "注文状況",
+    "sortOrder": "表示順",
+    "sort": {
+      "newest": "注文が新しい順",
+      "oldest": "注文が古い順"
+    },
     "status": {
       "unexpected": "(Unexpected)",
+      "all": "全て",
       "error": "エラー",
       "new_order": "新規注文",
       "validation_ok": "確認済み",
