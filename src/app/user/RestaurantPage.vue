@@ -162,7 +162,7 @@
                       v-if="item._dataType === 'menu'"
                       :key="[subCategoryKey, item.id].join('_')"
                     >
-                      <menu
+                      <Menu
                         :key="[subCategoryKey, 'item', item.id].join('_')"
                         :item="item"
                         :quantities="orders[item.id] || [0]"
@@ -175,7 +175,7 @@
                         :prices="prices[item.id] || []"
                         :mode="mode"
                         @didOrderdChange="didOrderdChange($event)"
-                      ></menu>
+                      ></Menu>
                     </div>
                   </template>
                 </div>
