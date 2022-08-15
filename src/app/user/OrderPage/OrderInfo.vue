@@ -196,7 +196,7 @@
 
 <script>
 import { order_status } from "@/config/constant";
-import OrderItem from "@/app/user/Order/OrderItem";
+import OrderItem from "@/app/user/OrderPage/OrderItem.vue";
 
 export default {
   name: "Order",

@@ -586,7 +586,7 @@ import moment from "moment-timezone";
 import { ownPlateConfig } from "@/config/project";
 
 import NotFound from "@/components/NotFound.vue";
-import OrderInfo from "@/app/user/Order/OrderInfo.vue";
+import OrderInfo from "@/app/user/OrderPage/OrderInfo.vue";
 import OrderedItem from "@/app/admin/Order/OrderedItem.vue";
 import CustomerInfo from "@/components/CustomerInfo.vue";
 import AdminHeader from "@/app/admin/AdminHeader.vue";

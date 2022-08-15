@@ -44,12 +44,10 @@ import {
 } from "@vue/composition-api";
 
 import firebase from "firebase/compat/app";
-// import PickupMixin from "@/mixins/pickupMixin";
 import { isNull } from "@/utils/utils";
 import { usePickupTime } from "@/utils/pickup";
 
 export default defineComponent({
-  // mixins: [PickupMixin],
   props: {
     shopInfo: {
       type: Object,

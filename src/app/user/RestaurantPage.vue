@@ -162,7 +162,7 @@
                       v-if="item._dataType === 'menu'"
                       :key="[subCategoryKey, item.id].join('_')"
                     >
-                      <item-card
+                      <menu
                         :key="[subCategoryKey, 'item', item.id].join('_')"
                         :item="item"
                         :quantities="orders[item.id] || [0]"
@@ -175,7 +175,7 @@
                         :prices="prices[item.id] || []"
                         :mode="mode"
                         @didOrderdChange="didOrderdChange($event)"
-                      ></item-card>
+                      ></menu>
                     </div>
                   </template>
                 </div>
@@ -254,13 +254,13 @@ import {
   onUnmounted,
 } from "@vue/composition-api";
 
-import ItemCard from "@/app/user/Restaurant/ItemCard";
-import PhoneLogin from "@/app/auth/PhoneLogin";
-import ShopHeader from "@/app/user/Restaurant/ShopHeader";
-import SharePopup from "@/app/user/Restaurant/SharePopup";
-import FavoriteButton from "@/app/user/Restaurant/FavoriteButton";
-import ShopInfo from "@/app/user/Restaurant/ShopInfo";
-import NotFound from "@/components/NotFound";
+import Menu from "@/app/user/Restaurant/Menu.vue";
+import PhoneLogin from "@/app/auth/PhoneLogin.vue";
+import ShopHeader from "@/app/user/Restaurant/ShopHeader.vue";
+import SharePopup from "@/app/user/Restaurant/SharePopup.vue";
+import FavoriteButton from "@/app/user/Restaurant/FavoriteButton.vue";
+import ShopInfo from "@/app/user/Restaurant/ShopInfo.vue";
+import NotFound from "@/components/NotFound.vue";
 
 import RestaurantPreview from "@/app/user/Restaurant/Preview.vue";
 import CartButton from "@/app/user/Restaurant/CartButton.vue";
@@ -318,7 +318,7 @@ export default defineComponent({
   name: "RestaurantPage",
 
   components: {
-    ItemCard,
+    Menu,
     PhoneLogin,
     ShopHeader,
     SharePopup,

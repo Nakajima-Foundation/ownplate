@@ -490,10 +490,10 @@
 import firebase from "firebase/compat/app";
 
 import ShopHeader from "@/app/user/Restaurant/ShopHeader.vue";
-import OrderInfo from "@/app/user/Order/OrderInfo.vue";
+import OrderInfo from "@/app/user/OrderPage/OrderInfo.vue";
 import ShopInfo from "@/app/user/Restaurant/ShopInfo.vue";
-import StripeCard from "@/app/user/Order/StripeCard.vue";
-import TimeToPickup from "@/app/user/Order/TimeToPickup.vue";
+import StripeCard from "@/app/user/OrderPage/StripeCard.vue";
+import TimeToPickup from "@/app/user/OrderPage/TimeToPickup.vue";
 import PhoneLogin from "@/app/auth/PhoneLogin.vue";
 import NotFound from "@/components/NotFound.vue";
 import RequireLogin from "@/components/RequireLogin.vue";
