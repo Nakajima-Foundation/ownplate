@@ -12,6 +12,7 @@
         </div>
       </a>
     </div>
+
     <TransactionsActContents
       :shopInfo="shopInfo"
       :isDelivery="isDelivery"
@@ -21,9 +22,13 @@
 </template>
 
 <script>
-import TransactionsActContents from "./TransactionsAct/Contents.vue";
+import {
+  defineComponent,
+} from "@vue/composition-api";
 
-export default {
+import TransactionsActContents from "@/app/user/TransactionsAct/Contents.vue";
+
+export default defineComponent({
   props: {
     shopInfo: {
       type: Object,
@@ -37,10 +42,13 @@ export default {
   components: {
     TransactionsActContents,
   },
-  methods: {
-    openTransactionsAct() {
-      this.$refs.contents.openTransactionsAct();
-    },
+  setup(props, ctx) {
+    const openTransactionsAct = () => {
+      ctx.refs.contents.openTransactionsAct();
+    };
+    return {
+      openTransactionsAct
+    };
   },
-};
+});
 </script>
