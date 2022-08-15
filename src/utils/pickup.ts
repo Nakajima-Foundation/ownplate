@@ -18,7 +18,7 @@ export const usePickupTime = (
   const businessDays = computed(() => {
     return [7, 1, 2, 3, 4, 5, 6].map((day) => {
       return (
-        shopInfo.businessDay[day] && !(exceptData.value.exceptDay || {})[day]
+        shopInfo.businessDay[day] && !((exceptData.value||{}).exceptDay || {})[day]
       );
     });
   });
@@ -26,7 +26,7 @@ export const usePickupTime = (
     return 10; // LATER: Make it customizable
   });
   const withinExceptTime = (time: number) => {
-    return exceptData.value.exceptHours.some(
+    return ((exceptData.value||{}).exceptHours||[]).some(
       (hour: { start: number; end: number }) => {
         return hour.start <= time && time <= hour.end;
       }
