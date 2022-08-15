@@ -131,6 +131,10 @@ export default defineComponent({
       type: String,
       required: false,
     },
+    groupMasterRestaurant: {
+      type: Object,
+      required: false,
+    },
   },
   setup(props, ctx) {
     const date = ref(null);
