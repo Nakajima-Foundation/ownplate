@@ -69,6 +69,29 @@
           </div>
         </div>
       </div>
+      <div class="p-4" v-if="menuPickupData.hasExceptData">
+        <div class="bg-black bg-opacity-5 rounded-lg p-4">
+          <div v-if="menuPickupData.hasExceptDay">
+            &#8251; {{ $t("sitemenu.limitedSale") }}:
+            <span
+              v-for="(day, k) in menuPickupData.menuAvailableDays"
+              :key="k"
+              class="font-bold"
+              >{{ $t("week.short." + daysOfWeek[day])
+              }}<span v-if="k !== menuPickupData.menuAvailableDays.length - 1"
+                >・</span
+              >
+            </span>
+          </div>
+          <div v-if="menuPickupData.hasExceptHour">
+            &#8251; {{ $t("sitemenu.unavailableTime") }}:
+            <span class="font-bold"
+              >{{ num2time(menuPickupData.exceptHour.start) }} ~
+              {{ num2time(menuPickupData.exceptHour.end) }}</span
+            >
+          </div>
+        </div>
+      </div>
 
       <!-- Item Order Details -->
       <div
@@ -238,6 +261,7 @@ import {
 import Price from "@/components/Price";
 import SharePopup from "@/app/user/Restaurant/SharePopup";
 import * as analyticsUtil from "@/lib/firebase/analytics";
+import { daysOfWeek } from "@/config/constant";
 
 import {
   useBasePath,
@@ -263,6 +287,10 @@ export default defineComponent({
       required: true,
     },
     shopInfo: {
+      type: Object,
+      required: true,
+    },
+    menuPickupData: {
       type: Object,
       required: true,
     },
@@ -453,6 +481,8 @@ export default defineComponent({
       openMenuFlag,
       imagePopup,
       urlSuffix,
+
+      daysOfWeek,
 
       // computed
       isSoldOut,

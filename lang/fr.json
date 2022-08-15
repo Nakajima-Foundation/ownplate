@@ -382,6 +382,8 @@
   "sitemenu": {
     "menu": "Menu",
     "about": "A Propos",
+    "limitedSale": "Limited sale on the day of the week",
+    "unavailableTime": "Unavailable Time",
     "confirmCart": "Confirm Cart",
     "checkout": "Payement",
     "orderCounter": "{count} article | {count} artciles",

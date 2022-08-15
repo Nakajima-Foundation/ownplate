@@ -406,6 +406,8 @@
   "sitemenu": {
     "menu": "メニュー",
     "about": "飲食店情報",
+    "limitedSale": "曜日限定販売",
+    "unavailableTime": "受け渡しできない時間",
     "confirmCart": "カートを見る",
     "checkout": "お会計",
     "orderCounter": "{count} 個",

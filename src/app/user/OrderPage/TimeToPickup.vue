@@ -71,7 +71,7 @@ export default defineComponent({
       return (Object.values(props.orderInfo.menuItems) || []).reduce(
         (tmp, menu) => {
           const { exceptDay, exceptHour } = menu;
-          Object.keys(exceptDay).map((key) => {
+          Object.keys(exceptDay || {}).map((key) => {
             if (exceptDay[key]) {
               tmp.exceptDay[key] = true;
             }
@@ -92,6 +92,7 @@ export default defineComponent({
     const { deliveryAvailableDays, availableDays } = usePickupTime(
       props.shopInfo,
       exceptData,
+      {},
       ctx
     );
 

@@ -1,5 +1,6 @@
 <template>
   <router-view
+    v-if="shopInfo.restaurantId"
     :shopInfo="shopInfo"
     :paymentInfo="paymentInfo"
     :deliveryData="deliveryData"

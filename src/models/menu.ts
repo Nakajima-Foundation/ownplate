@@ -15,6 +15,7 @@ export interface ExceptHour {
 }
 
 export interface MenuData {
+  id: string;
   itemDescription: string;
   itemName: string;
   itemPhoto: string;

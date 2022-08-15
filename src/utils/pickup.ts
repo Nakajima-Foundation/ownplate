@@ -1,12 +1,14 @@
-import { computed } from "@vue/composition-api";
+import { computed, Ref } from "@vue/composition-api";
 import { midNight } from "@/utils/dateUtils";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { num2time, isNull } from "@/utils/utils";
 import moment from "moment";
+import { MenuData } from "@/models/menu";
 
 export const usePickupTime = (
   shopInfo: RestaurantInfoData,
   exceptData: any,
+  menuObj: Ref<{ [key: string]: MenuData }>,
   ctx: any
 ) => {
   // public
@@ -18,15 +20,27 @@ export const usePickupTime = (
   const businessDays = computed(() => {
     return [7, 1, 2, 3, 4, 5, 6].map((day) => {
       return (
-        shopInfo.businessDay[day] && !((exceptData.value||{}).exceptDay || {})[day]
+        shopInfo.businessDay[day] &&
+        !((exceptData.value || {}).exceptDay || {})[day]
       );
     });
+  });
+  const availableBusinessDays = computed(() => {
+    return [7, 1, 2, 3, 4, 5, 6].reduce(
+      (tmp: { [key: number]: boolean }, day) => {
+        tmp[day] =
+          shopInfo.businessDay[day] &&
+          !((exceptData.value || {}).exceptDay || {})[day];
+        return tmp;
+      },
+      {}
+    );
   });
   const timeInterval = computed(() => {
     return 10; // LATER: Make it customizable
   });
   const withinExceptTime = (time: number) => {
-    return ((exceptData.value||{}).exceptHours||[]).some(
+    return ((exceptData.value || {}).exceptHours || []).some(
       (hour: { start: number; end: number }) => {
         return hour.start <= time && time <= hour.end;
       }
@@ -109,9 +123,42 @@ export const usePickupTime = (
     return getAvailableDays(minimumDeliveryTime.value);
   });
 
+  const menuPickupData = computed(() => {
+    return Object.keys(menuObj.value || {}).reduce(
+      (tmp: { [key: string]: any }, key) => {
+        const menu = menuObj.value[key];
+        const { exceptDay, exceptHour } = menu;
+        const hasExceptHour =
+          !isNull(exceptHour) &&
+          !isNull(exceptHour.start) &&
+          !isNull(exceptHour.end);
+        const hasExceptDay = Object.keys(exceptDay || {}).length > 0;
+        const menuAvailableDays = Object.keys(
+          availableBusinessDays.value || {}
+        ).reduce((arr: string[], day) => {
+          if (!(exceptDay || {})[day]) {
+            arr.push(day);
+          }
+          return arr;
+        }, []);
+
+        tmp[menu.id] = {
+          hasExceptData: hasExceptDay || hasExceptHour,
+          hasExceptDay,
+          hasExceptHour,
+          menuAvailableDays,
+          exceptHour,
+        };
+        return tmp;
+      },
+      {}
+    );
+  });
+
   return {
     deliveryAvailableDays,
     availableDays,
     temporaryClosure,
+    menuPickupData,
   };
 };

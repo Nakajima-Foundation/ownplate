@@ -388,6 +388,8 @@
   "sitemenu": {
     "menu": "Menu",
     "about": "About",
+    "limitedSale": "Limited sale on the day of the week",
+    "unavailableTime": "Unavailable Time",
     "confirmCart": "Confirm Cart",
     "checkout": "Checkout",
     "orderCounter": "{count} item | {count} items",

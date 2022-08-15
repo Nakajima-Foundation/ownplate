@@ -165,6 +165,7 @@
                       <Menu
                         :key="[subCategoryKey, 'item', item.id].join('_')"
                         :item="item"
+                        :menuPickupData="menuPickupData[item.id]"
                         :quantities="orders[item.id] || [0]"
                         :selectedOptions="selectedOptions[item.id]"
                         :initialOpenMenuFlag="
@@ -232,7 +233,7 @@
             <a
               :href="`#${title.id}`"
               class="inline-flex justify-center items-center h-9 rounded-full bg-black bg-opacity-5 mx-1 mt-2"
-              >
+            >
               <div class="text-sm font-bold text-op-teal mx-2">
                 {{ title.name }}
               </div>
@@ -271,6 +272,8 @@ import CategoryTop from "@/app/user/Restaurant/CategoryTop.vue";
 import CategoryIcon from "@/app/user/Restaurant/CategoryIcon.vue";
 import Titles from "@/app/user/Restaurant/Titles.vue";
 import SubCategoryList from "@/app/user/Restaurant/SubCategoryList.vue";
+
+import { usePickupTime } from "@/utils/pickup";
 
 import liff from "@line/liff";
 import { db } from "@/lib/firebase/firebase9";
@@ -446,6 +449,14 @@ export default defineComponent({
       props.groupData
     );
 
+    const { menuPickupData, availableDays } = usePickupTime(
+      props.shopInfo,
+      {},
+      menuObj,
+      ctx
+    );
+    console.log(menuPickupData, availableDays);
+
     onMounted(() => {
       // Check if we came here as the result of "Edit Items"
       if (store.state.carts[restaurantId.value]) {
@@ -508,8 +519,9 @@ export default defineComponent({
           })
           .filter((item) => {
             return item;
-          }).filter((item) => {
-            return !(item._dataType === 'title' && item.name === "");
+          })
+          .filter((item) => {
+            return !(item._dataType === "title" && item.name === "");
           });
       }
     });
@@ -812,6 +824,7 @@ export default defineComponent({
       cartButton,
       closeCart,
       menuObj,
+      menuPickupData,
     };
   },
 });
