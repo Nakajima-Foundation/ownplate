@@ -506,6 +506,8 @@ export default defineComponent({
           })
           .filter((item) => {
             return item;
+          }).filter((item) => {
+            return !(item._dataType === 'title' && item.name === "");
           });
       }
     });
@@ -752,7 +754,7 @@ export default defineComponent({
           .filter((item) => {
             return item && item.id;
           }) || []
-      );
+      ).filter((title) => title.name !== "");
       return ret;
     });
 
