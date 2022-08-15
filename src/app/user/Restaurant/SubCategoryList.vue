@@ -1,19 +1,22 @@
 <template>
-  <div class="mx-6 mt-2 lg:mx-0 inline-flex">
+  <div class="mx-6 mt-2 lg:mx-0">
     <template v-for="(subcategory, key) in subCategoryData">
       <router-link
         :to="`${categoryBathPath}/${subcategory.id}`"
-        class="inline-flex justify-center items-center h-9 rounded-full bg-white mr-4 mt-2 px-1"
+        class="inline-flex justify-center items-center h-9 rounded-full bg-black bg-opacity-5 mx-1 mt-2"
       >
-        <i
-          class="material-icons ml-2 text-op-teal"
-          v-if="subCategoryId === subcategory.id"
-          >check</i
-        >
-        <span class="ml-2" v-else></span>
-        <div class="text-sm font-bold text-op-teal mr-2">
-          {{ subcategory.name }}
-        </div>
+          <div class="text-sm font-bold text-op-teal mr-2">
+            <i
+              style="font-size: 1rem;"
+              class="material-icons ml-2 text-op-teal text-sm inline-flex text-center"
+              v-if="subCategoryId === subcategory.id"
+              >check</i
+                      >
+            <span class="ml-2" v-else></span>
+            <span
+              class="inline-flex text-center"
+              >{{ subcategory.name }}</span>
+          </div>
       </router-link>
     </template>
   </div>
