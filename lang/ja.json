@@ -386,7 +386,7 @@
     "deliveryTitle": "デリバリー",
     "cancellationDeliveryDescription1": "指定のデリバリー場所に到着してから5分以上経過し、かつ連絡が取れない場合",
     "cancellationDeliveryDescription2": "指定のデリバリー場所に到着してから15分以上経過した場合",
-    "cancellationDeliveryDescription": "本規約の規定に違反した場所をデリバリー場所として指定した場合",
+    "cancellationDeliveryDescription3": "本規約の規定に違反した場所をデリバリー場所として指定した場合",
     "link": "こちら",
     "paymentMo": "お支払い方法",
     "paymentNoteMo": "お支払い等に関するご注意",
