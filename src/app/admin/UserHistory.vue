@@ -78,7 +78,7 @@
 
       <!-- Orders -->
       <div
-        class="mx-6 mt-6 grid grid-cols-1 gap-2 lg:grid-cols-3 xl:grid-cols-4"
+        class="mx-6 mt-6 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
       >
         <ordered-info
           v-for="order in orders"
@@ -106,18 +106,26 @@
 </template>
 
 <script>
+import {
+  defineComponent,
+  ref,
+  computed,
+} from "@vue/composition-api";
 import { db, firestore } from "@/plugins/firebase";
 import { midNight } from "@/utils/dateUtils";
-import OrderedInfo from "@/app/admin/Order/OrderedInfo";
-import BackButton from "@/components/BackButton";
 import { order_status } from "@/config/constant";
 import moment from "moment";
-import NotificationIndex from "./Notifications/Index";
 import { parsePhoneNumber, formatNational, formatURL } from "@/utils/phoneutil";
 
-import NotFound from "@/components/NotFound";
+import { checkAdminPermission, checkShopAccount } from "@/utils/userPermission";
+import { doc2data, useAdminUids } from "@/utils/utils";
 
-export default {
+import BackButton from "@/components/BackButton.vue";
+import OrderedInfo from "@/app/admin/Order/OrderedInfo.vue";
+import NotFound from "@/components/NotFound.vue";
+import NotificationIndex from "./Notifications/Index.vue";
+
+export default defineComponent({
   components: {
     NotFound,
     OrderedInfo,
@@ -141,89 +149,101 @@ export default {
         : this.defaultTitle,
     };
   },
-  data() {
-    return {
-      limit: 30,
-      last: undefined,
-      orders: [],
-      userLog: {},
-      notFound: null,
-    };
-  },
-  async created() {
-    this.checkAdminPermission();
-    if (!this.checkShopAccount(this.shopInfo)) {
-      this.notFound = true;
-      return true;
-    }
-    this.next();
+  setup(props, ctx) {
+    const orders = ref([]);
+    const userLog = ref({});
+    const limit = 30;
+    const last = ref();
 
-    this.getUserLog();
-  },
-  computed: {
-    fileName() {
-      return this.$t("order.history");
-    },
-    uid() {
-      return this.$route.params.userId;
-    },
-    orderId() {
-      return this.$route.query.orderId;
-    },
-    phoneNumber() {
-      return (
-        this.orders[0] &&
-        this.orders[0].phoneNumber &&
-        parsePhoneNumber(this.orders[0].phoneNumber)
-      );
-    },
-    nationalPhoneNumber() {
-      return formatNational(this.phoneNumber);
-    },
-    nationalPhoneURI() {
-      return formatURL(this.phoneNumber);
-    },
-  },
-  methods: {
-    async getUserLog() {
+    const fileName = ctx.root.$t("order.history");
+
+    if (!checkAdminPermission(ctx)) {
+      return {
+        notFound: true,
+      };
+    }
+    const uid = computed(() => {
+      return ctx.root.$route.params.userId;
+    });
+    const { ownerUid } = useAdminUids(ctx);
+    if (!checkShopAccount(props.shopInfo, ownerUid.value)) {
+      return {
+        notFound: true,
+      };
+    }
+
+    const orderId = ctx.root.$route.query.orderId;
+
+    const phoneNumber = computed(() => {
+      if (orders.value[0] && orders.value[0].phoneNumber) {
+        return parsePhoneNumber(orders.value[0].phoneNumber);
+      }
+      return "";
+    });
+    const nationalPhoneNumber = computed(() => {
+      return phoneNumber.value ? formatNational(phoneNumber.value) : "";
+    });
+    const nationalPhoneURI = computed(() => {
+      return phoneNumber.value ? formatURL(phoneNumber.value) : "";
+    })
+
+    // ctx.root.restaurantId() +
+    const getUserLog = async () => {
       const res = await db
-        .doc(`restaurants/${this.restaurantId()}/userLog/${this.uid}`)
+        .doc(`restaurants/${ctx.root.restaurantId()}/userLog/${uid.value}`)
         .get();
       if (res.exists) {
-        this.userLog = res.data();
+        userLog.value = res.data();
       }
-    },
-    async next() {
+    };
+    const next = async () => {
       let query = db
-        .collection(`restaurants/${this.restaurantId()}/orders`)
-        .where("uid", "==", this.uid)
+        .collection(`restaurants/${ctx.root.restaurantId()}/orders`)
+        .where("uid", "==", uid.value)
         .orderBy("timePlaced", "desc")
-        .limit(this.limit);
-      if (this.last) {
-        query = query.startAfter(this.last);
+        .limit(limit);
+      if (last.value) {
+        query = query.startAfter(last.value);
       }
       const docs = (await query.get()).docs;
-      this.last = docs.length == this.limit ? docs[this.limit - 1] : null;
-      const orders = docs
-        .map(this.doc2data("order"))
-        .filter((a) => a.status !== order_status.transaction_hide);
-      orders.forEach((order) => {
-        order.timePlaced = order.timePlaced.toDate();
-        if (order.timeEstimated) {
-          order.timeEstimated = order.timeEstimated.toDate();
-        }
-        if (order.timeConfirmed) {
-          order.timeConfirmed = order.timeConfirmed.toDate();
-        }
-        this.orders.push(order);
-      });
-    },
-    orderSelected(order) {
-      this.$router.push({
+      last.value = docs.length == limit ? docs[limit - 1] : null;
+      orders.value = docs.map(doc2data("order"))
+        .filter((a) => a.status !== order_status.transaction_hide)
+        .map((order) => {
+          order.timePlaced = order.timePlaced.toDate();
+          if (order.timeEstimated) {
+            order.timeEstimated = order.timeEstimated.toDate();
+          }
+          if (order.timeConfirmed) {
+            order.timeConfirmed = order.timeConfirmed.toDate();
+          }
+          return order;
+        });
+    };
+    const orderSelected = (order) => {
+      ctx.root.$router.push({
         path:
-          "/admin/restaurants/" + this.restaurantId() + "/orders/" + order.id,
+          "/admin/restaurants/" + ctx.root.restaurantId() + "/orders/" + order.id,
       });
-    },
+    };
+    next();
+
+    getUserLog();
+
+    return {
+      orders,
+      orderId,
+      last,
+
+      userLog,
+      nationalPhoneURI,
+      nationalPhoneNumber,
+      
+      notFound: false,
+
+      next,
+      orderSelected,
+    }
   },
-};
+});
 </script>
