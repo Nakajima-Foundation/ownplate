@@ -66,15 +66,15 @@
       },
       {
         "source": "/ss/**",
-        "destination": "/top/ss.html"
+        "destination": "/ss.html"
       },
       {
         "source": "/mo/**",
-        "destination": "/top/mo.html"
+        "destination": "/mo.html"
       },
       {
         "source": "/motest/**",
-        "destination": "/top/motest.html"
+        "destination": "/motest.html"
       },
       {
         "source": "**",
