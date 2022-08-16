@@ -126,6 +126,7 @@ import AudioPlay from "@/components/AudioPlay";
 import * as Sentry from "@sentry/vue";
 import { ownPlateConfig } from "@/config/project";
 import { defaultHeader } from "@/config/header";
+import { MoHeader } from "@/config/moHeader";
 
 export default {
   components: {
@@ -134,7 +135,7 @@ export default {
     SideMenuWrapper,
     Header,
   },
-  metaInfo: defaultHeader,
+  metaInfo: location.pathname.startsWith("/ss") ? MoHeader : defaultHeader,
   data() {
     return {
       language: "en",
