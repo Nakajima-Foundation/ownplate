@@ -106,15 +106,21 @@
 </template>
 
 <script>
+import { defineComponent, ref, computed } from "@vue/composition-api";
+import { db } from "@/lib/firebase/firebase9";
 import {
-  defineComponent,
-  ref,
-  computed,
-} from "@vue/composition-api";
-import { db, firestore } from "@/plugins/firebase";
-import { midNight } from "@/utils/dateUtils";
+  doc,
+  getDoc,
+  getDocs,
+  collection,
+  where,
+  orderBy,
+  startAfter,
+  limit,
+  query,
+} from "firebase/firestore";
+
 import { order_status } from "@/config/constant";
-import moment from "moment";
 import { parsePhoneNumber, formatNational, formatURL } from "@/utils/phoneutil";
 
 import { checkAdminPermission, checkShopAccount } from "@/utils/userPermission";
@@ -152,7 +158,7 @@ export default defineComponent({
   setup(props, ctx) {
     const orders = ref([]);
     const userLog = ref({});
-    const limit = 30;
+    const limitNum = 30;
     const last = ref();
 
     const fileName = ctx.root.$t("order.history");
@@ -185,29 +191,36 @@ export default defineComponent({
     });
     const nationalPhoneURI = computed(() => {
       return phoneNumber.value ? formatURL(phoneNumber.value) : "";
-    })
+    });
 
-    // ctx.root.restaurantId() +
     const getUserLog = async () => {
-      const res = await db
-        .doc(`restaurants/${ctx.root.restaurantId()}/userLog/${uid.value}`)
-        .get();
+      const res = await getDoc(
+        doc(db, `restaurants/${ctx.root.restaurantId()}/userLog/${uid.value}`)
+      );
       if (res.exists) {
         userLog.value = res.data();
       }
     };
     const next = async () => {
-      let query = db
-        .collection(`restaurants/${ctx.root.restaurantId()}/orders`)
-        .where("uid", "==", uid.value)
-        .orderBy("timePlaced", "desc")
-        .limit(limit);
+      const queryConditions = [
+        where("uid", "==", uid.value),
+        orderBy("timePlaced", "desc"),
+        limit(limitNum),
+      ];
       if (last.value) {
-        query = query.startAfter(last.value);
+        queryConditions.push(startAfter(last.value));
       }
-      const docs = (await query.get()).docs;
-      last.value = docs.length == limit ? docs[limit - 1] : null;
-      orders.value = docs.map(doc2data("order"))
+      const docs = (
+        await getDocs(
+          query(
+            collection(db, `restaurants/${ctx.root.restaurantId()}/orders`),
+            ...queryConditions
+          )
+        )
+      ).docs;
+      last.value = docs.length == limitNum ? docs[limitNum - 1] : null;
+      orders.value = docs
+        .map(doc2data("order"))
         .filter((a) => a.status !== order_status.transaction_hide)
         .map((order) => {
           order.timePlaced = order.timePlaced.toDate();
@@ -223,11 +236,14 @@ export default defineComponent({
     const orderSelected = (order) => {
       ctx.root.$router.push({
         path:
-          "/admin/restaurants/" + ctx.root.restaurantId() + "/orders/" + order.id,
+          "/admin/restaurants/" +
+          ctx.root.restaurantId() +
+          "/orders/" +
+          order.id,
       });
     };
-    next();
 
+    next();
     getUserLog();
 
     return {
@@ -238,12 +254,12 @@ export default defineComponent({
       userLog,
       nationalPhoneURI,
       nationalPhoneNumber,
-      
+
       notFound: false,
 
       next,
       orderSelected,
-    }
+    };
   },
 });
 </script>
