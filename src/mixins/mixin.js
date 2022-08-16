@@ -196,9 +196,6 @@ const mixin = {
     serviceKey() {
       return this.isJapan ? "omochikaeri" : "ownPlate";
     },
-    regionMultiple() {
-      return this.$store.getters.stripeRegion.multiple;
-    },
     // for user agent detect
     isIOS() {
       return this.isOldIOS || this.isNewIOS;

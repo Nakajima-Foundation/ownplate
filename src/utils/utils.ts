@@ -127,6 +127,11 @@ export const cleanObject = (obj: { [key: string]: any }) => {
   }, {});
 };
 
+export const forcedError = (key: string, ctx: any) => {
+  const debug = ctx.root.$route.query.error;
+  return debug === key ? "---forced-error---" : "";
+};
+
 /*
     copyClipboard: async function (text) {
       // TODO: check no-nuxt branch
@@ -136,10 +141,6 @@ export const cleanObject = (obj: { [key: string]: any }) => {
       } catch (e) {
         this.$buefy.toast.open(this.i18n.tc("shopInfo.UrlCopyFailed"));
       }
-    },
-    forcedError(key) {
-      const debug = this.$route.query.error;
-      return debug === key ? "---forced-error---" : "";
     },
     moment(value) {
       return moment(value);

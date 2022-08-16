@@ -481,10 +481,8 @@
             <!-- Order Details -->
             <order-info
               :shopInfo="shopInfo || {}"
-              :orderItems="this.orderItems"
-              :orderInfo="
-                isOrderChange ? editable_order_info : this.orderInfo || {}
-              "
+              :orderItems="orderItems"
+              :orderInfo="isOrderChange ? editable_order_info : orderInfo || {}"
               :editable="isOrderChange"
               :editedAvailableOrders="editedAvailableOrders"
               @input="updateEnable"
@@ -554,6 +552,14 @@
 </template>
 
 <script>
+import {
+  defineComponent,
+  ref,
+  computed,
+  onUnmounted,
+  watch,
+} from "@vue/composition-api";
+
 import { db } from "@/lib/firebase/firebase9";
 import {
   doc,
@@ -594,6 +600,15 @@ import { costCal } from "@/utils/commonUtils";
 import { downloadOrderPdf, printOrder, data2UrlSchema } from "@/lib/pdf/pdf2";
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
+import { checkAdminPermission, checkShopAccount } from "@/utils/userPermission";
+import {
+  doc2data,
+  useAdminUids,
+  useRestaurantId,
+  forcedError,
+} from "@/utils/utils";
+import { stripeRegion } from "@/utils/utils";
+
 import {
   isEmpty,
   isNull,
@@ -605,7 +620,7 @@ import {
 
 const timezone = moment.tz.guess();
 
-export default {
+export default defineComponent({
   components: {
     OrderInfo,
     AdminHeader,
@@ -645,107 +660,105 @@ export default {
         : this.defaultTitle,
     };
   },
-
-  data() {
-    return {
-      updating: "",
-      changing: false,
-      menuObj: {},
-      orderInfo: {},
-      customer: {},
-      canceling: false,
-      detacher: [],
-      cancelPopup: false,
-      paymentCancelPopup: false,
-      postageInfo: {},
-      deliveryData: {},
-      notFound: false,
-      timeOffset: 0,
-      shopOwner: null,
-      userLog: {},
-      isOrderChange: false,
-      editedAvailableOrders: [],
-    };
-  },
   // if user is not signined, render login
   // if user is not owner, render 404
   // if restaurant don't have order, render 404.
 
-  async created() {
-    if (!this.checkAdminPermission()) {
-      return;
+  setup(props, ctx) {
+    const menuObj = ref({});
+    const orderInfo = ref({});
+    const customer = ref({});
+    const postageInfo = ref({});
+    const deliveryData = ref({});
+    const shopOwner = ref(null);
+    const userLog = ref({});
+
+    const updating = ref("");
+    const changing = ref(false);
+
+    const cancelPopup = ref(false);
+    const paymentCancelPopup = ref(false);
+    const isOrderChange = ref(false);
+
+    const notFound = ref(false);
+    const timeOffset = ref(0);
+    const editedAvailableOrders = ref([]);
+
+    if (!checkAdminPermission(ctx)) {
+      return {
+        notFound: true,
+      };
     }
-    /*
-    if (!this.checkShopOwner(this.shopInfo)) {
-      this.notFound = true;
-      return true;
-      }
-    */
-    if (this.shopInfo.isEC) {
-      getDoc(doc(db, `restaurants/${this.restaurantId()}/ec/postage`)).then(
+    if (props.shopInfo.isEC) {
+      getDoc(doc(db, `restaurants/${ctx.root.restaurantId()}/ec/postage`)).then(
         (snapshot) => {
-          this.postageInfo = snapshot.data() || {};
+          postageInfo.value = snapshot.data() || {};
         }
       );
     }
-    if (this.shopInfo.enableDelivery) {
-      getDoc(doc(db, `restaurants/${this.restaurantId()}/delivery/area`)).then(
-        (snapshot) => {
-          this.deliveryData = snapshot.data() || {};
-        }
-      );
+    if (props.shopInfo.enableDelivery) {
+      getDoc(
+        doc(db, `restaurants/${ctx.root.restaurantId()}/delivery/area`)
+      ).then((snapshot) => {
+        deliveryData.value = snapshot.data() || {};
+      });
     }
+    const restaurantId = useRestaurantId(ctx.root);
+    const orderId = computed(() => {
+      return ctx.root.$route.params.orderId;
+    });
 
     const order_detacher = onSnapshot(
-      doc(db, `restaurants/${this.restaurantId()}/orders/${this.orderId}`),
+      doc(db, `restaurants/${ctx.root.restaurantId()}/orders/${orderId.value}`),
       async (order) => {
         if (!order.exists) {
-          this.notFound = true;
+          notFound.value = true;
           return;
         }
         const order_data = order.data();
-        this.orderInfo = order_data;
-        if (this.orderInfo.isDelivery || this.shopInfo.isEC) {
-          const customer = await getDoc(
+        orderInfo.value = order_data;
+        if (orderInfo.value.isDelivery || props.shopInfo.isEC) {
+          const tmpCustomer = await getDoc(
             doc(
               db,
-              `restaurants/${this.restaurantId()}/orders/${
-                this.orderId
+              `restaurants/${ctx.root.restaurantId()}/orders/${
+                orderId.value
               }/customer/data`
             )
           );
-          this.customer = customer.data() || this.orderInfo?.customerInfo || {};
+          customer.value =
+            tmpCustomer.data() || orderInfo.value?.customerInfo || {};
         }
       },
       (e) => {
-        return (this.notFound = true);
+        return (notFound.value = true);
       }
     );
 
-    this.detacher = [order_detacher];
-    this.shopOwner = await getShopOwner(this.$store.getters.uidAdmin);
-  },
-  destroyed() {
-    this.detacher.map((detacher) => {
-      detacher();
+    getShopOwner(ctx.root.$store.getters.uidAdmin).then((data) => {
+      shopOwner.value = data;
     });
-  },
-  watch: {
-    orderInfo() {
+    onUnmounted(() => {
+      order_detacher();
+    });
+
+    watch(orderInfo, () => {
       getDoc(
         doc(
           db,
-          `restaurants/${this.restaurantId()}/userLog/${this.orderInfo.uid}`
+          `restaurants/${ctx.root.restaurantId()}/userLog/${
+            orderInfo.value.uid
+          }`
         )
       ).then((res) => {
         if (res.exists) {
-          this.userLog = res.data();
+          userLog.value = res.data();
         }
       });
-      const menuRestaurantId = this.groupData
-        ? this.groupData.restaurantId
-        : this.restaurantId();
-      const menuIds = Object.keys(this.orderInfo.menuItems);
+      const menuRestaurantId = props.groupData
+        ? props.groupData.restaurantId
+        : ctx.root.restaurantId();
+      const menuIds = Object.keys(orderInfo.value.menuItems);
       arrayChunk(menuIds, 10).map(async (arr) => {
         getDocs(
           query(
@@ -754,140 +767,139 @@ export default {
           )
         ).then((menu) => {
           if (!menu.empty) {
-            const menuObj = array2obj(menu.docs.map(this.doc2data("menu")));
-            this.menuObj = Object.assign({}, { ...this.menuObj }, menuObj);
+            const tmpMenuObj = array2obj(menu.docs.map(doc2data("menu")));
+            menuObj.value = Object.assign({}, { ...menuObj.value }, tmpMenuObj);
           }
         });
       });
-    },
-    orderItems() {
-      Object.keys(this.orderItems).map((key) => {
-        this.editedAvailableOrders[key] = true;
-      });
-    },
-  },
-  computed: {
-    orderInterval() {
-      if (this.orderInfo.timePlaced && this.userLog.lastOrder) {
-        // console.log(this.orderInfo.timePlaced.toDate(),   this.userLog.lastOrder.toDate());
+    });
+
+    const orderInterval = computed(() => {
+      if (orderInfo.value.timePlaced && userLog.value.lastOrder) {
         const intervalHour =
-          (this.orderInfo.timePlaced - this.userLog.lastOrder) / 3600;
+          (orderInfo.value.timePlaced - userLog.value.lastOrder) / 3600;
         return intervalHour;
       }
       return -1000000;
-    },
-    isWarningOrder() {
-      if (this.orderInterval === 0) {
+    });
+    const isWarningOrder = computed(() => {
+      if (orderInterval.value === 0) {
         return false;
       }
-      if (this.orderInterval < 4 && this.orderInterval > -4) {
+      if (orderInterval.value < 4 && orderInterval.value > -4) {
         return true;
       }
       return false;
-    },
-    isOwner() {
-      return !this.$store.getters.isSubAccount;
-    },
-    hasMemo() {
-      return this.orderInfo && !isEmpty(this.orderInfo.memo);
-    },
-    possibleTransitions() {
-      return possible_transitions[this.orderInfo.status] || {};
-    },
-    cancelStatus() {
-      if (this.orderInfo.status === order_status.order_canceled) {
-        if (this.orderInfo.orderCustomerCanceledAt) {
+    });
+
+    const hasMemo = computed(() => {
+      return orderInfo.value && !isEmpty(orderInfo.value.memo);
+    });
+    const possibleTransitions = computed(() => {
+      return possible_transitions[orderInfo.value.status] || {};
+    });
+    const cancelStatus = computed(() => {
+      if (orderInfo.value.status === order_status.order_canceled) {
+        if (orderInfo.value.orderCustomerCanceledAt) {
           return "order_canceled_by_customer";
         }
         return "order_canceled_by_restaurant";
       }
       return false;
-    },
-    orderItems() {
-      return getOrderItems(this.orderInfo, this.menuObj);
-    },
-    timeOfEvents() {
+    });
+    const orderItems = computed(() => {
+      return getOrderItems(orderInfo.value, menuObj.value);
+    });
+    watch(orderItems, () => {
+      Object.keys(orderItems.value).map((key) => {
+        editedAvailableOrders.value[key] = true;
+      });
+    });
+    const timeStampToText = (timestamp) => {
+      if (timestamp) {
+        return ctx.root.$d(timestamp.toDate(), "long");
+      }
+      return "";
+    };
+    const timeOfEvents = computed(() => {
       const mapping = Object.keys(timeEventMapping).reduce((tmp, key) => {
-        tmp[key] = this.timeStampToText(this.orderInfo[timeEventMapping[key]]);
+        tmp[key] = timeStampToText(orderInfo.value[timeEventMapping[key]]);
         return tmp;
       }, {});
       return mapping;
-    },
-    search() {
+    });
+    const orderName = computed(() => {
+      return nameOfOrder(orderInfo.value);
+    });
+    const search = computed(() => {
       const value = encodeURIComponent(
-        this.orderInfo.description || this.orderName
+        orderInfo.value.description || orderName.value
       );
       return `${ownPlateConfig.stripe.search}?query=${value}`;
-    },
-    showTimePicker() {
-      return this.orderInfo.status === order_status.order_placed;
-    },
-    estimatedTimes() {
-      if (!this.orderInfo.timePlaced) {
+    });
+
+    const showTimePicker = computed(() => {
+      return orderInfo.value.status === order_status.order_placed;
+    });
+    const estimatedTimes = computed(() => {
+      if (!orderInfo.value.timePlaced) {
         return [];
       }
-      const time = this.orderInfo.timePlaced.toDate().getTime();
+      const time = orderInfo.value.timePlaced.toDate().getTime();
       return [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 120].map((offset) => {
         const date = new Date(time + offset * 60000);
         return {
           offset,
-          display: `${this.$d(date, "time")}`,
+          display: `${ctx.root.$d(date, "time")}`,
         };
       });
-    },
-    timeRequested() {
-      if (!this.orderInfo.timePlaced) {
+    });
+    const timeRequested = computed(() => {
+      if (!orderInfo.value.timePlaced) {
         return "";
       }
-      const date = this.orderInfo.timePlaced.toDate();
-      return this.$d(date, "long");
-    },
-    timeEstimated() {
-      if (this.orderInfo.timeEstimated) {
-        const date = this.orderInfo.timeEstimated.toDate();
-        return this.$d(date, "long");
+      const date = orderInfo.value.timePlaced.toDate();
+      return ctx.root.$d(date, "long");
+    });
+    const timeEstimated = computed(() => {
+      if (orderInfo.value.timeEstimated) {
+        const date = orderInfo.value.timeEstimated.toDate();
+        return ctx.root.$d(date, "long");
       }
       return undefined; // backward compatibility
-    },
-    hasStripe() {
-      return this.orderInfo.payment && this.orderInfo.payment.stripe;
-    },
-    paymentIsNotCompleted() {
+    });
+    const hasStripe = computed(() => {
+      return orderInfo.value.payment && orderInfo.value.payment.stripe;
+    });
+    const paymentIsNotCompleted = computed(() => {
       return (
-        // this.hasStripe && this.orderInfo.status < order_status.ready_to_pickup
-        this.hasStripe && this.orderInfo.payment.stripe === "pending"
+        // hasStripe.value && orderInfo.value.status < order_status.ready_to_pickup
+        hasStripe.value && orderInfo.value.payment.stripe === "pending"
       );
-    },
-    phoneNumber() {
-      return (
-        this.orderInfo &&
-        this.orderInfo.phoneNumber &&
-        parsePhoneNumber(this.orderInfo.phoneNumber)
-      );
-    },
-    nationalPhoneNumber() {
-      return this.phoneNumber ? formatNational(this.phoneNumber) : "";
-    },
-    nationalPhoneURI() {
-      return formatURL(this.phoneNumber);
-    },
-    orderName() {
-      return nameOfOrder(this.orderInfo);
-    },
-    orderId() {
-      return this.$route.params.orderId;
-    },
-    parentUrl() {
-      if (this.shopInfo.isEC) {
-        return `/admin/restaurants/${this.restaurantId()}/history`;
+    });
+    const phoneNumber = computed(() => {
+      if (orderInfo.value && orderInfo.value.phoneNumber) {
+        return parsePhoneNumber(orderInfo.value.phoneNumber);
       }
-      const day = this.orderInfo.timePlaced
-        ? moment(this.orderInfo.timePlaced.toDate()).format("YYYY-MM-DD")
+      return "";
+    });
+    const nationalPhoneNumber = computed(() => {
+      return phoneNumber.value ? formatNational(phoneNumber.value) : "";
+    });
+    const nationalPhoneURI = computed(() => {
+      return phoneNumber.value ? formatURL(phoneNumber.value) : "";
+    });
+    const parentUrl = computed(() => {
+      if (props.shopInfo.isEC) {
+        return `/admin/restaurants/${restaurantId.value}/history`;
+      }
+      const day = orderInfo.value.timePlaced
+        ? moment(orderInfo.value.timePlaced.toDate()).format("YYYY-MM-DD")
         : null;
-      return `/admin/restaurants/${this.restaurantId()}/orders?day=${day}`;
-    },
-    orderStates() {
-      return this.shopOwner && !!this.shopOwner.hidePrivacy
+      return `/admin/restaurants/${restaurantId.value}/orders?day=${day}`;
+    });
+    const orderStates = computed(() => {
+      return shopOwner.value && !!shopOwner.value.hidePrivacy
         ? [
             "order_placed",
             "order_accepted",
@@ -901,36 +913,34 @@ export default {
             "ready_to_pickup",
             "transaction_complete",
           ]; // no longer "cooking_completed"
-    },
-    order_status() {
-      return order_status;
-    },
+    });
     // for editable order
-    edited_available_order_info() {
+    const edited_available_order_info = computed(() => {
       const ret = [];
-      Object.keys(this.editedAvailableOrders).forEach((key) => {
-        if (this.editedAvailableOrders[key]) {
-          const indexes = this.orderItems[key]?.orderIndex;
+      Object.keys(editedAvailableOrders.value).forEach((key) => {
+        if (editedAvailableOrders.value[key]) {
+          const indexes = orderItems.value[key]?.orderIndex;
           if (indexes) {
             ret.push({ menuId: indexes[0], index: Number(indexes[1]) });
           }
         }
       });
       return ret;
-    },
-    editable_order_info() {
-      const menuObj = this.orderInfo.menuItems;
-      const multiple = this.regionMultiple;
-      const ret = this.edited_available_order_info.reduce(
+    });
+
+    const editable_order_info = computed(() => {
+      const tmpMenuObj = orderInfo.value.menuItems;
+      const multiple = stripeRegion.multiple;
+      const ret = edited_available_order_info.value.reduce(
         (tmp, info) => {
           const { menuId, index } = info;
-          const menu = menuObj[menuId];
+          const menu = tmpMenuObj[menuId];
           if (menu.tax === "alcohol") {
             tmp.alcohol_sub_total =
-              tmp.alcohol_sub_total + this.orderInfo.prices[menuId][index];
+              tmp.alcohol_sub_total + orderInfo.value.prices[menuId][index];
           } else {
             tmp.food_sub_total =
-              tmp.food_sub_total + this.orderInfo.prices[menuId][index];
+              tmp.food_sub_total + orderInfo.value.prices[menuId][index];
           }
           return tmp;
         },
@@ -938,7 +948,7 @@ export default {
       );
       ret.sub_total = ret.food_sub_total + ret.alcohol_sub_total;
 
-      const { alcoholTax, foodTax, inclusiveTax } = this.shopInfo;
+      const { alcoholTax, foodTax, inclusiveTax } = props.shopInfo;
       if (inclusiveTax) {
         ret.food_tax =
           Math.round(
@@ -961,256 +971,313 @@ export default {
         ret.total = ret.sub_total + ret.tax;
       }
       const shippingCost = costCal(
-        this.postageInfo,
-        this.orderInfo?.customerInfo?.prefectureId,
+        postageInfo.value,
+        orderInfo.value?.customerInfo?.prefectureId,
         ret.total
       );
 
       const deliveryFee = (() => {
-        // console.log(this.deliveryData.enableDeliveryFree, ret.total , this.deliveryData.deliveryThreshold);
-        if (!this.shopInfo.enableDelivery) {
+        // console.log(deliveryData.value.enableDeliveryFree, ret.total , deliveryData.value.deliveryThreshold);
+        if (!props.shopInfo.enableDelivery) {
           return 0;
         }
         if (
-          this.deliveryData.enableDeliveryFree &&
-          (ret.total || 0) >= this.deliveryData.deliveryFreeThreshold
+          deliveryData.value.enableDeliveryFree &&
+          (ret.total || 0) >= deliveryData.value.deliveryFreeThreshold
         ) {
           return 0;
         }
-        return this.deliveryData.deliveryFee;
+        return deliveryData.value.deliveryFee;
       })();
-      return Object.assign({}, this.orderInfo, ret, {
+      return Object.assign({}, orderInfo.value, ret, {
         shippingCost,
         deliveryFee,
       });
-    },
-    notDeliveryOrTotalCanDelivery() {
-      if (!this.orderInfo.isDelivery) {
+    });
+    const notDeliveryOrTotalCanDelivery = computed(() => {
+      if (!orderInfo.value.isDelivery) {
         return true;
       }
       return (
-        this.editable_order_info.total >= this.deliveryData.deliveryThreshold
+        editable_order_info.value.total >= deliveryData.value.deliveryThreshold
       );
-    },
-    availableOrderChange() {
+    });
+    const availableOrderChange = computed(() => {
       return (
-        this.orderInfo &&
-        this.orderInfo.status === order_status.order_placed &&
-        isNull(this.orderInfo.orderUpdatedAt)
+        orderInfo.value &&
+        orderInfo.value.status === order_status.order_placed &&
+        isNull(orderInfo.value.orderUpdatedAt)
       );
-    },
-    availableChangeButton() {
+    });
+    const availableChangeButton = computed(() => {
       return (
-        this.edited_available_order_info.length !==
-          this.editedAvailableOrders.length &&
-        this.edited_available_order_info.length > 0 &&
-        this.notDeliveryOrTotalCanDelivery
+        edited_available_order_info.value.length !==
+          editedAvailableOrders.value.length &&
+        edited_available_order_info.value.length > 0 &&
+        notDeliveryOrTotalCanDelivery.value
       );
-    },
-  },
-  methods: {
-    updateEnable(value) {
-      this.$set(this.editedAvailableOrders, value[0], value[1]);
-    },
-    toggleIsOrderChange() {
-      this.isOrderChange = !this.isOrderChange;
-    },
-    timeStampToText(timestamp) {
-      if (timestamp) {
-        return this.$d(timestamp.toDate(), "long");
-      }
-      return "";
-    },
-    isValidTransition(newStatus) {
+    });
+
+    const updateEnable = (value) => {
+      ctx.root.$set(editedAvailableOrders.value, value[0], value[1]);
+    };
+    const toggleIsOrderChange = () => {
+      isOrderChange.value = !isOrderChange.value;
+    };
+    const isValidTransition = (newStatus) => {
       const newStatusValue = order_status[newStatus];
-      return this.possibleTransitions[newStatusValue];
-    },
-    download() {
-      downloadOrderPdf(this.orderInfo, this.orderItems);
-    },
-    async print() {
-      const data = await printOrder(this.orderInfo, this.orderItems);
+      return possibleTransitions.value[newStatusValue];
+    };
+    const download = () => {
+      downloadOrderPdf(orderInfo.value, orderItems.value);
+    };
+    const print = async () => {
+      const data = await printOrder(orderInfo.value, orderItems.value);
       const passprnt_uri = data2UrlSchema(data, "2");
       location.href = passprnt_uri;
-    },
-    getEestimateTime() {
-      const time = this.orderInfo.timePlaced.toDate().getTime();
-      const date = new Date(time + this.timeOffset * 60000);
+    };
+    const getEestimateTime = () => {
+      const time = orderInfo.value.timePlaced.toDate().getTime();
+      const date = new Date(time + timeOffset.value * 60000);
       return Timestamp.fromDate(date);
-    },
-    async handleStripe() {
+    };
+    const handleStripe = async () => {
       //console.log("handleComplete with Stripe", orderId);
       try {
-        // this.updating = "ready_to_pickup";
-        this.$store.commit("setLoading", true);
+        ctx.root.$store.commit("setLoading", true);
         const params = {
           timezone,
-          restaurantId: this.restaurantId() + this.forcedError("confirm"),
-          orderId: this.orderId,
+          restaurantId: restaurantId.value + forcedError("confirm", ctx),
+          orderId: orderId.value,
         };
-        if (this.timeOffset > 0) {
-          params.timeEstimated = this.getEestimateTime();
+        if (timeOffset.value > 0) {
+          params.timeEstimated = getEestimateTime();
         }
         const { data } = await stripeConfirmIntent(params);
-        // console.log("confirm", data);
-        this.$router.push(this.parentUrl);
+        ctx.root.$router.push(parentUrl.value);
       } catch (error) {
         console.error(error.message, error.details);
-        this.$store.commit("setErrorMessage", {
+        ctx.root.$store.commit("setErrorMessage", {
           code: "stripe.confirm",
           error,
           message2: "errorPage.code.stripe.confirm2",
         });
       } finally {
-        this.$store.commit("setLoading", false);
-        this.updating = "";
+        ctx.root.$store.commit("setLoading", false);
+        updating.value = "";
       }
-    },
-    async handleChangeStatus(statusKey) {
+    };
+    const handleChangeStatus = async (statusKey) => {
       const newStatus = order_status[statusKey];
-      if (newStatus === this.orderInfo.status) {
+      if (newStatus === orderInfo.value.status) {
         console.log("same status - no need to process");
         return;
       }
-      this.updating = statusKey;
+      updating.value = statusKey;
       if (
         (newStatus === order_status.ready_to_pickup ||
           newStatus === order_status.order_accepted) &&
-        this.paymentIsNotCompleted
+        paymentIsNotCompleted.value
       ) {
-        this.handleStripe();
+        handleStripe();
         return;
       }
       try {
-        this.$store.commit("setLoading", true);
+        ctx.root.$store.commit("setLoading", true);
         const params = {
-          restaurantId: this.restaurantId() + this.forcedError("update"),
-          orderId: this.orderId,
+          restaurantId: restaurantId.value + forcedError("update", ctx),
+          orderId: orderId.value,
           status: newStatus,
           timezone,
         };
-        if (this.timeOffset > 0) {
-          params.timeEstimated = this.getEestimateTime();
+        if (timeOffset.value > 0) {
+          params.timeEstimated = getEestimateTime();
         }
         const { data } = await orderUpdate(params);
         // console.log("update", data);
-        this.$router.push(this.parentUrl);
+        ctx.root.$router.push(parentUrl.value);
       } catch (error) {
         console.error(error.message, error.details);
-        this.$store.commit("setErrorMessage", {
+        ctx.root.$store.commit("setErrorMessage", {
           code: "order.update",
           error,
         });
       } finally {
-        this.$store.commit("setLoading", false);
-        this.updating = "";
+        ctx.root.$store.commit("setLoading", false);
+        updating.value = "";
       }
-    },
-    sendRedunded() {
+    };
+    const sendRedunded = () => {
       analyticsUtil.sendRedunded(
-        this.orderInfo,
-        this.orderId,
-        this.shopInfo,
-        this.restaurantId()
+        orderInfo.value,
+        orderId.value,
+        props.shopInfo,
+        restaurantId.value
       );
-      // console.log(this.orderItems);
-    },
-    async handleCancel() {
+      // console.log(orderItems.value);
+    };
+    const handleCancel = async () => {
       console.log("handleCancel");
 
       try {
-        this.updating = "order_canceled";
+        updating.value = "order_canceled";
         const { data } = await stripeCancelIntent({
-          restaurantId: this.restaurantId() + this.forcedError("cancel"),
-          orderId: this.orderId,
+          restaurantId: restaurantId.value + forcedError("cancel", ctx),
+          orderId: orderId.value,
         });
-        this.sendRedunded();
+        sendRedunded();
         // console.log("cancel", data);
-        this.$router.push(this.parentUrl);
+        ctx.root.$router.push(parentUrl.value);
       } catch (error) {
         console.error(error.message, error.details);
-        this.$store.commit("setErrorMessage", {
+        ctx.root.$store.commit("setErrorMessage", {
           code: "order.cancel",
           error,
         });
       } finally {
-        this.updating = "";
+        updating.value = "";
       }
-    },
-    async handleOrderChange() {
-      this.$store.commit("setAlert", {
+    };
+    const handleOrderChange = async () => {
+      ctx.root.$store.commit("setAlert", {
         title: "admin.order.confirmOrderChange",
         code: "admin.order.updateOrderMessage",
         callback: async () => {
           try {
-            this.changing = true;
-            this.$store.commit("setLoading", true);
+            changing.value = true;
+            ctx.root.$store.commit("setLoading", true);
             const params = {
-              restaurantId: this.restaurantId() + this.forcedError("update"),
-              orderId: this.orderId,
-              newOrder: this.edited_available_order_info,
+              restaurantId: restaurantId.value + forcedError("update", ctx),
+              orderId: orderId.value,
+              newOrder: edited_available_order_info.value,
               timezone,
             };
 
             const { data } = await orderChange(params);
-            this.isOrderChange = false;
+            isOrderChange.value = false;
 
             // console.log("update", data);
           } catch (error) {
             console.error(error.message, error.details);
-            this.$store.commit("setErrorMessage", {
+            ctx.root.$store.commit("setErrorMessage", {
               code: "order.update",
               error,
             });
           } finally {
-            this.$store.commit("setLoading", false);
-            this.changing = false;
+            ctx.root.$store.commit("setLoading", false);
+            changing.value = false;
           }
         },
       });
-    },
-    async handlePaymentCancel() {
+    };
+    const handlePaymentCancel = async () => {
       console.log("handlePaymentCancel");
 
       try {
-        this.updating = "payment_canceled";
+        updating.value = "payment_canceled";
         const { data } = await stripePaymentCancelIntent({
-          restaurantId: this.restaurantId() + this.forcedError("cancel"),
-          orderId: this.orderId,
+          restaurantId: restaurantId.value + forcedError("cancel", ctx),
+          orderId: orderId.value,
         });
-        // this.sendRedunded();
         console.log("paymentCancel", data);
-        this.$router.push(this.parentUrl);
+        ctx.root.$router.push(parentUrl.value);
       } catch (error) {
         console.error(error.message, error.details);
-        this.$store.commit("setErrorMessage", {
+        ctx.root.$store.commit("setErrorMessage", {
           code: "stripe.cancel",
           error,
         });
       } finally {
-        this.updating = "";
+        updating.value = "";
       }
-    },
-    classOf(statusKey) {
-      if (order_status[statusKey] == this.orderInfo.status) {
+    };
+    const classOf = (statusKey) => {
+      if (order_status[statusKey] == orderInfo.value.status) {
         return statusKey;
       }
       return "light";
-    },
-    openCancel() {
-      this.cancelPopup = true;
-    },
-    closeCancel() {
-      this.cancelPopup = false;
-    },
-    openPaymentCancel() {
+    };
+    const openCancel = () => {
+      cancelPopup.value = true;
+    };
+    const closeCancel = () => {
+      cancelPopup.value = false;
+    };
+    const openPaymentCancel = () => {
       console.log("openPaymentCancel");
-      this.paymentCancelPopup = true;
-    },
-    closePaymentCancel() {
+      paymentCancelPopup.value = true;
+    };
+    const closePaymentCancel = () => {
       console.log("closePaymentCancel");
-      this.paymentCancelPopup = false;
-    },
+      paymentCancelPopup.value = false;
+    };
+    return {
+      order_status,
+      orderId,
+
+      menuObj,
+      orderInfo,
+      customer,
+      postageInfo,
+      deliveryData,
+      shopOwner,
+      userLog,
+
+      updating,
+      changing,
+
+      cancelPopup,
+      paymentCancelPopup,
+      isOrderChange,
+
+      notFound,
+      timeOffset,
+      editedAvailableOrders,
+
+      timeOfEvents,
+      timeStampToText,
+
+      orderName,
+      search,
+      showTimePicker,
+      estimatedTimes,
+      timeRequested,
+      timeEstimated,
+      hasStripe,
+      paymentIsNotCompleted,
+
+      nationalPhoneNumber,
+      nationalPhoneURI,
+      parentUrl,
+
+      orderStates,
+      editable_order_info,
+      availableOrderChange,
+      availableChangeButton,
+
+      orderItems,
+      isWarningOrder,
+      hasMemo,
+      cancelStatus,
+
+      // methods
+      updateEnable,
+      toggleIsOrderChange,
+      isValidTransition,
+      download,
+      print,
+      handleStripe,
+      handleChangeStatus,
+      handleCancel,
+      handleOrderChange,
+      handlePaymentCancel,
+      classOf,
+
+      openCancel,
+      closeCancel,
+      openPaymentCancel,
+      closePaymentCancel,
+    };
   },
-};
+});
 </script>
