@@ -85,6 +85,7 @@ import DownloadCsv from "@/components/DownloadCSV";
 
 import { revenueCSVHeader } from "@/utils/reportUtils";
 import { order2ReportData } from "@/models/orderInfo";
+import { arrayOrNumSum } from "@/utils/utils";
 
 export default {
   components: {
@@ -166,7 +167,7 @@ export default {
           shippingCost: order.shippingCost || order.deliveryFee || 0,
           total: order.totalCharge,
           totalCount: Object.values(order.order).reduce((count, order) => {
-            return count + this.arrayOrNumSum(order);
+            return count + arrayOrNumSum(order);
           }, 0),
           name: nameOfOrder(order),
           payment: order.payment?.stripe ? "stripe" : "",

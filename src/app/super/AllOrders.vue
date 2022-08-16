@@ -97,14 +97,18 @@
 </template>
 
 <script>
-import BackButton from "@/components/BackButton";
 import { db } from "@/plugins/firebase";
-import OrderedInfo from "@/app/admin/Order/OrderedInfo";
+
+import superMixin from "@/mixins/SuperMixin";
+import moment from "moment";
+
+import OrderedInfo from "@/app/admin/Order/OrderedInfo.vue";
+import BackButton from "@/components/BackButton.vue";
+import DownloadCsv from "@/components/DownloadCSV.vue";
+
 import { order_status, order_status_keys } from "@/config/constant";
 import { nameOfOrder } from "@/utils/strings";
-import superMixin from "@/mixins/SuperMixin";
-import DownloadCsv from "@/components/DownloadCSV";
-import moment from "moment";
+import { arrayOrNumSum } from "@/utils/utils";
 
 export default {
   metaInfo() {
@@ -182,7 +186,7 @@ export default {
           ),
           revenue: order.totalCharge,
           total: Object.values(order.order).reduce((count, order) => {
-            return count + this.arrayOrNumSum(order);
+            return count + arrayOrNumSum(order);
           }, 0),
           name: nameOfOrder(order),
           payment: order.payment?.stripe ? "stripe" : "",

@@ -19,11 +19,12 @@
 </template>
 
 <script>
-import DownloadCsv from "@/components/DownloadCSV";
+import DownloadCsv from "@/components/DownloadCSV.vue";
 import moment from "moment";
 import { nameOfOrder } from "@/utils/strings";
 import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
 import { order_status } from "@/config/constant";
+import { arrayOrNumSum } from "@/utils/utils";
 
 export default {
   components: {
@@ -57,7 +58,7 @@ export default {
     tableData() {
       return this.orders.map((order) => {
         const totalCount = Object.keys(order.order).reduce((count, id) => {
-          return count + this.arrayOrNumSum(order.order[id]);
+          return count + arrayOrNumSum(order.order[id]);
         }, 0);
         const status = Object.keys(order_status).reduce((result, key) => {
           if (order_status[key] == order.status) {
