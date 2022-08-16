@@ -65,6 +65,18 @@
         "dynamicLinks": true
       },
       {
+        "source": "/ss/**",
+        "destination": "/top/ss.html"
+      },
+      {
+        "source": "/mo/**",
+        "destination": "/top/mo.html"
+      },
+      {
+        "source": "/motest/**",
+        "destination": "/top/motest.html"
+      },
+      {
         "source": "**",
         "destination": "/index.html"
       }
