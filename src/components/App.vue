@@ -124,7 +124,7 @@ import SideMenuWrapper from "@/components/SideMenuWrapper";
 import DialogBox from "@/components/DialogBox";
 import AudioPlay from "@/components/AudioPlay";
 import * as Sentry from "@sentry/vue";
-import { ownPlateConfig } from "@/config/project";
+import { ownPlateConfig, mo_prefixes } from "@/config/project";
 import { defaultHeader } from "@/config/header";
 import { MoHeader } from "@/config/moHeader";
 
@@ -203,6 +203,14 @@ export default {
     profile_path() {
       const path_prefix = this.isAdmin ? "admins" : "users";
       return `${path_prefix}/${this.uid}/private/profile`;
+    },
+    isInMo() {
+      return mo_prefixes.some((prefix) => {
+        return (
+          (this.$route.fullPath || "").startsWith(`/${prefix}/`) ||
+            (this.$route.fullPath || "") === `/${prefix}`
+        );
+      });
     },
   },
   methods: {
@@ -287,10 +295,21 @@ export default {
           role: !!user.email ? "admin" : "customer",
         });
         setUserId(analytics, user.uid);
+        
+        if (this.isInMo) {
+          window.dataLayer.push({
+            uid: user.uid,
+          });
+        }
       } else {
         setUserProperties(analytics, { role: "anonymous" });
         console.log("authStateChanged: null");
         this.$store.commit("setUser", null);
+        if (this.isInMo) {
+          window.dataLayer.push({
+            uid: null,
+          });
+        }
       }
     });
   },
