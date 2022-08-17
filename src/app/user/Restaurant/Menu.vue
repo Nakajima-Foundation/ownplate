@@ -72,7 +72,7 @@
       <div class="p-4" v-if="menuPickupData.hasExceptData">
         <div class="bg-black bg-opacity-5 rounded-lg p-4">
           <div v-if="menuPickupData.hasExceptDay">
-            &#8251; {{ $t("sitemenu.limitedSale") }}:
+            &#8251;
             <span
               v-for="(day, k) in menuPickupData.menuAvailableDays"
               :key="k"
@@ -82,6 +82,7 @@
                 >・</span
               >
             </span>
+            {{ $t("sitemenu.limitedSale") }}
           </div>
           <div v-if="menuPickupData.hasExceptHour">
             &#8251; {{ $t("sitemenu.unavailableTime") }}:
