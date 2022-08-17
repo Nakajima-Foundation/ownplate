@@ -214,10 +214,18 @@ export default defineComponent({
           // console.log(timeConv(lastSeveralDays.value[dayIndex.value].date, -15))
           // console.log(timeConv(lastSeveralDays.value[dayIndex.value].date, 9))
           return [
-            where(queryKey, ">=", timeConv(lastSeveralDays.value[dayIndex.value].date, -15)),
-            where(queryKey, "<", timeConv(lastSeveralDays.value[dayIndex.value].date, 9))
-          ]
-        } 
+            where(
+              queryKey,
+              ">=",
+              timeConv(lastSeveralDays.value[dayIndex.value].date, -15)
+            ),
+            where(
+              queryKey,
+              "<",
+              timeConv(lastSeveralDays.value[dayIndex.value].date, 9)
+            ),
+          ];
+        }
         const q = [
           where(queryKey, ">=", lastSeveralDays.value[dayIndex.value].date),
         ];
