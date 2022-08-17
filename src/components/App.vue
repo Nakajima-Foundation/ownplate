@@ -128,6 +128,9 @@ import { ownPlateConfig } from "@/config/project";
 import { defaultHeader } from "@/config/header";
 import { MoHeader } from "@/config/moHeader";
 
+import { isNull } from "@/utils/utils";
+import { regionalSetting } from "@/utils/utils";
+
 export default {
   components: {
     DialogBox,
@@ -189,7 +192,7 @@ export default {
       return false;
     },
     hasUser() {
-      return !this.isNull(this.$store.state.user);
+      return !isNull(this.$store.state.user);
     },
     isUser() {
       return !!this.$store.getters.uidUser;
@@ -334,8 +337,8 @@ export default {
         return;
       }
     }
-    this.language = this.regionalSetting.defaultLanguage;
-    this.languages = this.regionalSetting.languages;
+    this.language = regionalSetting.defaultLanguage;
+    this.languages = regionalSetting.languages;
 
     this.timerId = window.setInterval(() => {
       this.$store.commit("updateDate");
