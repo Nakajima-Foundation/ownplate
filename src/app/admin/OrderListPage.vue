@@ -206,14 +206,28 @@ export default defineComponent({
 
       // const queryKey = (queryIsPlacedDate.value ? "orderPlacedAt" :  "timePickupForQuery");
       const queryKey = queryIsPlacedDate.value ? "orderPlacedAt" : "timePlaced";
-      const queryConditions = [
-        where(queryKey, ">=", lastSeveralDays.value[dayIndex.value].date),
-      ];
-      if (dayIndex.value > 0) {
-        queryConditions.push(
-          where(queryKey, "<", lastSeveralDays.value[dayIndex.value - 1].date)
-        );
-      }
+      const timeConv = (t, offset) => {
+        return new Date(t.getTime() + offset * 3600 * 1000);
+      };
+      const queryConditions = (() => {
+        if (queryIsPlacedDate.value && props.isInMo) {
+          // console.log(timeConv(lastSeveralDays.value[dayIndex.value].date, -15))
+          // console.log(timeConv(lastSeveralDays.value[dayIndex.value].date, 9))
+          return [
+            where(queryKey, ">=", timeConv(lastSeveralDays.value[dayIndex.value].date, -15)),
+            where(queryKey, "<", timeConv(lastSeveralDays.value[dayIndex.value].date, 9))
+          ]
+        } 
+        const q = [
+          where(queryKey, ">=", lastSeveralDays.value[dayIndex.value].date),
+        ];
+        if (dayIndex.value > 0) {
+          q.push(
+            where(queryKey, "<", lastSeveralDays.value[dayIndex.value - 1].date)
+          );
+        }
+        return q;
+      })();
       order_detacher = onSnapshot(
         query(
           collection(db, `restaurants/${ctx.root.restaurantId()}/orders`),
