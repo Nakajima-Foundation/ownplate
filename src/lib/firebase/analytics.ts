@@ -11,11 +11,22 @@ import { MenuData } from "@/models/menu";
 import { OrderInfoData } from "@/models/orderInfo";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
+import { mo_prefixes } from "@/config/project";
+
 interface AnalyticsMenuData extends MenuData {
   id: string;
   quantity: number;
 }
 interface AnalyticsData {}
+
+const isInMo = () => {
+  return mo_prefixes.some((prefix) => {
+    return (
+      (location.pathname  || "").startsWith(`/${prefix}/`) ||
+        (location.pathname  || "") === `/${prefix}`
+    );
+  });
+};
 
 export const sku_item_data = (
   menu: AnalyticsMenuData,
@@ -47,8 +58,10 @@ export const sku_item_data2 = (
 };
 
 const analyticsWrapper = (eventName: string, data: AnalyticsData) => {
-  console.log(eventName, data);
   logEvent(analytics, eventName, data);
+  if (isInMo()) {
+    gtag('event', eventName, data)
+  }
 };
 
 export const sendMenuListView = (
