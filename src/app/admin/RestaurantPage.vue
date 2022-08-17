@@ -551,8 +551,11 @@
                     {{ $t("editRestaurant.taxPriceDisplayJp") }}
                   </div>
                   <div>
-                    {{ $tc("tax.taxExample", examplePriceI18n)
-                    }}<Price :shopInfo="shopInfo" :menu="sampleMenu" />
+                    {{ $tc("tax.taxExample", $n(1000, "currency"))
+                    }}<Price
+                      :shopInfo="shopInfo"
+                      :menu="{ price: 1000, tax: 'food' }"
+                    />
                   </div>
                 </div>
               </div>
@@ -957,7 +960,16 @@
 </template>
 
 <script>
-import Vue from "vue";
+import {
+  defineComponent,
+  ref,
+  computed,
+  watch,
+  onUnmounted,
+  onMounted,
+  onUpdated,
+} from "@vue/composition-api";
+
 import { db } from "@/lib/firebase/firebase9";
 import { doc, updateDoc, getDoc } from "firebase/firestore";
 
@@ -974,13 +986,21 @@ import TextForm from "@/app/admin/inputComponents/TextForm.vue";
 import State from "@/app/admin/inputComponents/State.vue";
 import NotificationIndex from "@/app/admin/Notifications/Index.vue";
 
+import { checkAdminPermission, checkShopOwner } from "@/utils/userPermission";
+
 import {
   getEditShopInfo,
   defaultShopInfo,
   shopInfoValidator,
   copyRestaurant,
 } from "@/utils/admin/RestaurantPageUtils";
-import { cleanObject, isNull, countObj, regionalSetting } from "@/utils/utils";
+import {
+  cleanObject,
+  isNull,
+  countObj,
+  regionalSetting,
+  useAdminUids,
+} from "@/utils/utils";
 import { uploadFile } from "@/lib/firebase/storage";
 
 import {
@@ -990,8 +1010,8 @@ import {
   minimumCookTimeChoices,
 } from "@/config/constant";
 
-export default {
-  name: "Order",
+export default defineComponent({
+  name: "RestaurantPage",
   components: {
     HoursInput,
     TextForm,
@@ -1027,316 +1047,352 @@ export default {
       required: true,
     },
   },
-  data() {
+  setup(props, ctx) {
     const maxDate = new Date();
     const now = new Date();
     maxDate.setMonth(maxDate.getMonth() + 6);
-    return {
-      reservationTheDayBefore,
-      minimumCookTimeChoices,
-      taxRates: taxRates,
-      taxRateKeys: [],
+    const taxRateKeys = regionalSetting["taxRateKeys"];
+    const region = ownPlateConfig.region;
 
-      examplePriceI18n: this.$n(1000, "currency"),
-      sampleMenu: { price: 1000, tax: "food" },
-      requireTaxInput: false,
-      requireTaxPriceDisplay: false,
+    const requireTaxInput = regionalSetting.requireTaxInput;
+    const requireTaxPriceDisplay = regionalSetting.requireTaxPriceDisplay;
 
-      region: ownPlateConfig.region,
-      maplocation: {},
-      place_id: null,
-      markers: [],
-      days: daysOfWeek,
-      errorsPhone: [],
-      notFound: null,
-      submitting: false,
-      files: {},
-      newTemporaryClosure: null,
-      maxDate,
-      now,
-      updateFirstCall: true,
-      searchResults: [],
-      selectedResult: 0,
-    };
-  },
-  async created() {
-    this.taxRateKeys = regionalSetting["taxRateKeys"];
-    this.requireTaxInput = regionalSetting.requireTaxInput;
-    this.requireTaxPriceDisplay = regionalSetting.requireTaxPriceDisplay;
+    const notFound = ref(null);
 
-    this.checkAdminPermission();
+    // internal ref;
+    const maplocation = ref({});
+    const place_id = ref(null);
+    const markers = ref([]);
+    const errorsPhone = ref([]);
+    const files = ref({});
+    const updateFirstCall = ref(true);
 
-    if (this.shopInfo.location) {
-      this.maplocation = this.shopInfo.location;
-      this.place_id = this.shopInfo.place_id;
-    }
+    // external ref
+    const submitting = ref(false);
+    const newTemporaryClosure = ref(null);
+    const searchResults = ref([]);
+    const selectedResult = ref(0);
 
-    this.notFound = !this.checkShopOwner(this.shopInfo);
-  },
-  mounted() {
-    this.setDefaultLocation();
-  },
-  updated() {
-    if (this.updateFirstCall) {
-      if (window.location.hash) {
-        document.getElementById(window.location.hash.slice(1)).scrollIntoView();
-      }
-      this.updateFirstCall = false;
-    }
-  },
-  computed: {
-    restProfilePhoto() {
-      return (
-        (this.shopInfo?.images?.profile?.resizedImages || {})["600"] ||
-        this.shopInfo.restProfilePhoto
-      );
-    },
-    restCoverPhoto() {
-      return (
-        (this.shopInfo?.images?.cover?.resizedImages || {})["600"] ||
-        this.shopInfo.restCoverPhoto
-      );
-    },
-    uid() {
-      return this.$store.getters.uidAdmin;
-    },
-    errors() {
-      return shopInfoValidator(
-        this.shopInfo,
-        this.requireTaxInput,
-        this.errorsPhone,
-        this.files["profile"]
-      );
-    },
-    hasError() {
-      const num = countObj(this.errors);
-      return num > 0;
-    },
-    isSetLocation() {
-      return Object.keys(this.shopInfo.location).length !== 0;
-    },
-  },
-  watch: {
-    notFound: function () {
-      if (this.notFound === false) {
-        this.setLocation();
-      }
-    },
-    hasError: function () {
-      // this.shopInfo.publicFlag = !this.hasError;
-    },
-    files: function () {
-      console.log(this.files);
-    },
-    selectedResult: function () {
-      const res = this.searchResults[this.selectedResult];
-      this.setCurrentLocation(res.geometry.location);
-      this.place_id = res.place_id;
-      this.setLocation();
-    },
-  },
-  methods: {
-    isFuture(day) {
-      return new Date().getTime() < day.getTime();
-    },
-    isNewTemporaryClosure(day) {
-      const func = (elem) => {
-        return elem.getTime() === day.getTime();
+    if (!checkAdminPermission(ctx)) {
+      return {
+        notFound: true,
       };
-      return !this.shopInfo.temporaryClosure.some(func);
-    },
-    deleteTemporaryClosure(key) {
-      this.shopInfo.temporaryClosure = this.shopInfo.temporaryClosure.filter(
-        (v, n) => n !== key
+    }
+
+    // allow sub Account
+    const { uid } = useAdminUids(ctx);
+    if (!checkShopOwner(props.shopInfo, uid.value)) {
+      return {
+        notFound: true,
+      };
+    }
+    notFound.value = false;
+
+    if (props.shopInfo.location) {
+      maplocation.value = props.shopInfo.location;
+      place_id.value = props.shopInfo.place_id;
+    }
+
+    onUpdated(() => {
+      if (updateFirstCall.value) {
+        if (window.location.hash) {
+          document
+            .getElementById(window.location.hash.slice(1))
+            .scrollIntoView();
+        }
+        updateFirstCall.value = false;
+      }
+    });
+
+    const restProfilePhoto = computed(() => {
+      return (
+        (props.shopInfo?.images?.profile?.resizedImages || {})["600"] ||
+        props.shopInfo.restProfilePhoto
       );
-    },
-    addNewTemporaryClosure() {
+    });
+    const restCoverPhoto = computed(() => {
+      return (
+        (props.shopInfo?.images?.cover?.resizedImages || {})["600"] ||
+        props.shopInfo.restCoverPhoto
+      );
+    });
+    const errors = computed(() => {
+      return shopInfoValidator(
+        props.shopInfo,
+        requireTaxInput,
+        errorsPhone.value,
+        files.value["profile"]
+      );
+    });
+    const hasError = computed(() => {
+      const num = countObj(errors.value);
+      return num > 0;
+    });
+
+    const setLocation = () => {
+      if (maplocation.value) {
+        props.shopInfo.location = maplocation.value;
+        props.shopInfo.place_id = place_id.value;
+      }
+    };
+    watch(notFound, () => {
+      if (notFound.value === false) {
+        setLocation();
+      }
+    });
+    const removeAllMarker = () => {
+      if (markers.value && markers.value.length > 0) {
+        markers.value.map((marker) => {
+          marker.setMap(null);
+        });
+        markers.value = [];
+      }
+    };
+    const setCurrentLocation = (location, move = true) => {
       if (
-        !isNull(this.newTemporaryClosure) &&
-        this.isNewTemporaryClosure(this.newTemporaryClosure) &&
-        this.isFuture(this.newTemporaryClosure)
-      ) {
-        this.shopInfo.temporaryClosure.push(this.newTemporaryClosure);
-        this.shopInfo.temporaryClosure.sort((a, b) => {
-          return a.getTime() > b.getTime() ? 1 : -1;
-        });
-      }
-      this.newTemporaryClosure = null;
-    },
-    copyPreviousDay(index) {
-      const prevIndex = index === "1" ? 7 : index - 1;
-      this.shopInfo.businessDay[index] = this.shopInfo.businessDay[prevIndex];
-      this.shopInfo.openTimes[index] = this.shopInfo.openTimes[prevIndex].map(
-        (a) => {
-          return { ...a };
-        }
-      );
-    },
-    handleProfileImage(e) {
-      const newFile = Object.assign({}, this.files);
-      newFile["profile"] = e;
-      this.files = newFile;
-    },
-    handleCoverImage(e) {
-      const newFile = Object.assign({}, this.files);
-      newFile["cover"] = e;
-      this.files = newFile;
-    },
-    handleProfileImageRemove(e) {
-      const newFile = Object.assign({}, this.files);
-      newFile["profile"] = null;
-      this.files = newFile;
-    },
-    handleCoverImageRemove(e) {
-      const newFile = Object.assign({}, this.files);
-      newFile["cover"] = null;
-      this.files = newFile;
-    },
-    handlePhoneChange(payload) {
-      //console.log(payload)
-      this.shopInfo.phoneNumber = payload.phoneNumber;
-      this.shopInfo.countryCode = payload.countryCode;
-      this.errorsPhone = payload.errors;
-    },
-    setDefaultLocation() {
-      if (this.shopInfo && this.shopInfo.location) {
-        this.setCurrentLocation(this.shopInfo.location);
-      }
-    },
-    gmapClick(arg) {
-      this.setCurrentLocation(
-        { lat: arg.event.latLng.lat(), lng: arg.event.latLng.lng() },
-        false
-      );
-      this.place_id = null;
-      this.setLocation();
-    },
-    async confirmCopy() {
-      this.$store.commit("setAlert", {
-        code: "editCommon.copyAlert",
-        callback: async () => {
-          this.copyRestaurant();
-        },
-      });
-    },
-    async copyRestaurant() {
-      try {
-        const id = await copyRestaurant(
-          this.shopInfo,
-          this.uid,
-          this.restaurantId()
-        );
-        this.$router.push({
-          path: `/admin/restaurants/${id}`,
-        });
-      } catch (error) {
-        this.$store.commit("setErrorMessage", {
-          code: "restaurant.save",
-          error,
-        });
-      }
-    },
-    async saveRestaurant() {
-      this.submitting = true;
-      const restaurantId = this.restaurantId();
-      try {
-        if (this.files["profile"]) {
-          const path = `/images/restaurants/${restaurantId}/${this.uid}/profile.jpg`;
-          this.shopInfo.restProfilePhoto = await uploadFile(
-            this.files["profile"],
-            path
-          );
-          this.shopInfo.images.profile = {
-            original: this.shopInfo.restProfilePhoto,
-            resizedImages: {},
-          };
-        }
-
-        if (this.files["cover"]) {
-          const path = `/images/restaurants/${restaurantId}/${this.uid}/cover.jpg`;
-          this.shopInfo.restCoverPhoto = await uploadFile(
-            this.files["cover"],
-            path
-          );
-          this.shopInfo.images.cover = {
-            original: this.shopInfo.restCoverPhoto,
-            resizedImages: {},
-          };
-        }
-        const restaurantData = getEditShopInfo(this.shopInfo);
-        await this.updateRestaurantData(restaurantData);
-
-        this.$router.push({
-          path: `/admin/restaurants/`,
-        });
-      } catch (error) {
-        this.submitting = false;
-        this.$store.commit("setErrorMessage", {
-          code: "restaurant.save",
-          error,
-        });
-      }
-    },
-    async updateAndUpdateMap() {
-      await this.updateMap();
-      this.setLocation();
-    },
-    async updateMap() {
-      // https://gitlab.com/broj42/nuxt-gmaps#readme
-      // https://codesandbox.io/s/6j6zw48l83
-      const keyword = [
-        this.shopInfo.restaurantName,
-        this.shopInfo.streetAddress,
-        this.shopInfo.city,
-        this.shopInfo.state,
-      ].join(",");
-
-      const res = await google_geocode(keyword);
-      if (res && res[0] && res[0].geometry) {
-        this.searchResults = res;
-        this.setCurrentLocation(res[0].geometry.location);
-        this.place_id = res[0].place_id;
-      }
-    },
-    setCurrentLocation(location, move = true) {
-      if (
-        this.$refs.gMap &&
-        this.$refs.gMap.map &&
+        ctx.refs.gMap &&
+        ctx.refs.gMap.map &&
         location &&
         location.lat &&
         location.lng
       ) {
         if (move) {
-          this.$refs.gMap.map.setCenter(location);
+          ctx.refs.gMap.map.setCenter(location);
         }
-        this.removeAllMarker();
+        removeAllMarker();
         const marker = new google.maps.Marker({
           position: new google.maps.LatLng(location.lat, location.lng),
           title: "hello",
-          map: this.$refs.gMap.map,
+          map: ctx.refs.gMap.map,
         });
-        this.markers.push(marker);
-        this.maplocation = location;
+        markers.value.push(marker);
+        maplocation.value = location;
       }
-    },
-    setLocation() {
-      if (this.maplocation) {
-        this.shopInfo.location = this.maplocation;
-        this.shopInfo.place_id = this.place_id;
-      }
-    },
-    removeAllMarker() {
-      if (this.markers && this.markers.length > 0) {
-        this.markers.map((marker) => {
-          marker.setMap(null);
+    };
+
+    watch(selectedResult, () => {
+      const res = searchResults.value[selectedResult.value];
+      setCurrentLocation(res.geometry.location);
+      place_id.value = res.place_id;
+      setLocation();
+    });
+
+    const isFuture = (day) => {
+      return new Date().getTime() < day.getTime();
+    };
+    const isNewTemporaryClosure = (day) => {
+      const func = (elem) => {
+        return elem.getTime() === day.getTime();
+      };
+      return !props.shopInfo.temporaryClosure.some(func);
+    };
+    const deleteTemporaryClosure = (key) => {
+      props.shopInfo.temporaryClosure = props.shopInfo.temporaryClosure.filter(
+        (v, n) => n !== key
+      );
+    };
+    const addNewTemporaryClosure = () => {
+      if (
+        !isNull(newTemporaryClosure.value) &&
+        isNewTemporaryClosure(newTemporaryClosure.value) &&
+        isFuture(newTemporaryClosure.value)
+      ) {
+        props.shopInfo.temporaryClosure.push(newTemporaryClosure.value);
+        props.shopInfo.temporaryClosure.sort((a, b) => {
+          return a.getTime() > b.getTime() ? 1 : -1;
         });
-        this.markers = [];
       }
-    },
-    async updateRestaurantData(restaurantData) {
+      newTemporaryClosure.value = null;
+    };
+    const copyPreviousDay = (index) => {
+      const prevIndex = index === "1" ? 7 : index - 1;
+      props.shopInfo.businessDay[index] = props.shopInfo.businessDay[prevIndex];
+      props.shopInfo.openTimes[index] = props.shopInfo.openTimes[prevIndex].map(
+        (a) => {
+          return { ...a };
+        }
+      );
+    };
+    const handleProfileImage = (e) => {
+      const newFile = Object.assign({}, files.value);
+      newFile["profile"] = e;
+      files.value = newFile;
+    };
+    const handleCoverImage = (e) => {
+      const newFile = Object.assign({}, files.value);
+      newFile["cover"] = e;
+      files.value = newFile;
+    };
+    const handleProfileImageRemove = (e) => {
+      const newFile = Object.assign({}, files.value);
+      newFile["profile"] = null;
+      files.value = newFile;
+    };
+    const handleCoverImageRemove = (e) => {
+      const newFile = Object.assign({}, files.value);
+      newFile["cover"] = null;
+      files.value = newFile;
+    };
+    const handlePhoneChange = (payload) => {
+      //console.log(payload)
+      props.shopInfo.phoneNumber = payload.phoneNumber;
+      props.shopInfo.countryCode = payload.countryCode;
+      errorsPhone.value = payload.errors;
+    };
+    const setDefaultLocation = () => {
+      if (props.shopInfo && props.shopInfo.location) {
+        setCurrentLocation(props.shopInfo.location);
+      }
+    };
+    onMounted(() => {
+      setDefaultLocation();
+    });
+    const gmapClick = (arg) => {
+      setCurrentLocation(
+        { lat: arg.event.latLng.lat(), lng: arg.event.latLng.lng() },
+        false
+      );
+      place_id.value = null;
+      setLocation();
+    };
+    const copyRestaurantFunc = async () => {
+      try {
+        const id = await copyRestaurant(
+          props.shopInfo,
+          uid.value,
+          ctx.root.restaurantId()
+        );
+        ctx.root.$router.push({
+          path: `/admin/restaurants/${id}`,
+        });
+      } catch (error) {
+        ctx.root.$store.commit("setErrorMessage", {
+          code: "restaurant.save",
+          error,
+        });
+      }
+    };
+    const confirmCopy = async () => {
+      ctx.root.$store.commit("setAlert", {
+        code: "editCommon.copyAlert",
+        callback: async () => {
+          copyRestaurantFunc();
+        },
+      });
+    };
+    const updateRestaurantData = async (restaurantData) => {
       const cleanData = cleanObject(restaurantData);
-      await updateDoc(doc(db, `restaurants/${this.restaurantId()}`), cleanData);
-    },
+      await updateDoc(
+        doc(db, `restaurants/${ctx.root.restaurantId()}`),
+        cleanData
+      );
+    };
+    const saveRestaurant = async () => {
+      submitting.value = true;
+      const restaurantId = ctx.root.restaurantId();
+      try {
+        if (files.value["profile"]) {
+          const path = `/images/restaurants/${restaurantId}/${uid.value}/profile.jpg`;
+          props.shopInfo.restProfilePhoto = await uploadFile(
+            files.value["profile"],
+            path
+          );
+          props.shopInfo.images.profile = {
+            original: props.shopInfo.restProfilePhoto,
+            resizedImages: {},
+          };
+        }
+
+        if (files.value["cover"]) {
+          const path = `/images/restaurants/${restaurantId}/${uid.value}/cover.jpg`;
+          props.shopInfo.restCoverPhoto = await uploadFile(
+            files.value["cover"],
+            path
+          );
+          props.shopInfo.images.cover = {
+            original: props.shopInfo.restCoverPhoto,
+            resizedImages: {},
+          };
+        }
+        const restaurantData = getEditShopInfo(props.shopInfo);
+        await updateRestaurantData(restaurantData);
+
+        ctx.root.$router.push({
+          path: `/admin/restaurants/`,
+        });
+      } catch (error) {
+        submitting.value = false;
+        ctx.root.$store.commit("setErrorMessage", {
+          code: "restaurant.save",
+          error,
+        });
+      }
+    };
+    const updateMap = async () => {
+      // https://gitlab.com/broj42/nuxt-gmaps#readme
+      // https://codesandbox.io/s/6j6zw48l83
+      const keyword = [
+        props.shopInfo.restaurantName,
+        props.shopInfo.streetAddress,
+        props.shopInfo.city,
+        props.shopInfo.state,
+      ].join(",");
+
+      const res = await google_geocode(keyword);
+      if (res && res[0] && res[0].geometry) {
+        searchResults.value = res;
+        setCurrentLocation(res[0].geometry.location);
+        place_id.value = res[0].place_id;
+      }
+    };
+    const updateAndUpdateMap = async () => {
+      await updateMap();
+      setLocation();
+    };
+    return {
+      maxDate,
+      now,
+      reservationTheDayBefore,
+      minimumCookTimeChoices,
+      taxRates,
+      taxRateKeys,
+      region,
+
+      requireTaxInput,
+      requireTaxPriceDisplay,
+
+      days: daysOfWeek,
+
+      // ref
+      notFound,
+      submitting,
+      newTemporaryClosure,
+      searchResults,
+      selectedResult,
+
+      restProfilePhoto,
+      restCoverPhoto,
+      errors,
+      hasError,
+
+      deleteTemporaryClosure,
+      addNewTemporaryClosure,
+
+      copyPreviousDay,
+
+      handleProfileImage,
+      handleCoverImage,
+      handleProfileImageRemove,
+      handleCoverImageRemove,
+      handlePhoneChange,
+
+      setDefaultLocation,
+      gmapClick,
+
+      confirmCopy,
+      saveRestaurant,
+      updateAndUpdateMap,
+    };
   },
-};
+});
 </script>
