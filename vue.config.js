@@ -8,10 +8,20 @@ module.exports = {
       template: 'public/index.html',
       filename: 'index.html',
     },
-    test: {
+    ss: {
       entry: 'src/main.ts',
-      template: 'public/test.html',
-      filename: 'test.html',
+      template: 'public/top/ss.html',
+      filename: 'ss.html',
+    },
+    mo: {
+      entry: 'src/main.ts',
+      template: 'public/top/mo.html',
+      filename: 'mo.html',
+    },
+    motest: {
+      entry: 'src/main.ts',
+      template: 'public/top/motest.html',
+      filename: 'motest.html',
     },
   },
   devServer: {
