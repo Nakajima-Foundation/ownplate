@@ -20,9 +20,7 @@
         </a>
       </div>
       <div class="mt-2 mx-6 text-right">
-        <span class="text-xs text-white text-opacity-50">
-          Operated by Singularity Society
-        </span>
+        <FooterPoweredBy />
       </div>
     </div>
     <!-- Language Popup-->
@@ -65,7 +63,6 @@
 import { defineComponent, ref, computed, watch } from "@vue/composition-api";
 
 import {
-  useIsInMo,
   useUser,
   useUid,
   useIsAdmin,
@@ -77,7 +74,12 @@ import {
 import { db, auth } from "@/lib/firebase/firebase9";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 
+import FooterPoweredBy from "@/components/App/FooterPoweredBy.vue";
+
 export default defineComponent({
+  components: {
+    FooterPoweredBy
+  },
   setup(_, ctx) {
     const language = ref(regionalSetting.defaultLanguage);
     const languages = regionalSetting.languages;
