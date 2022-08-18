@@ -15,6 +15,9 @@
   "greeting": "こんにちは、世界",
   "underConstruction": "注意：これはテスト用のサーバーです。",
   "comma": "、",
+  "mobileOrder": {
+    "name": "ネット注文サービス"
+  },
   "profile": {
     "title": "マイページ",
     "address": "アドレス",
