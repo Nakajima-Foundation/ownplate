@@ -3,7 +3,6 @@ import { db } from "@/plugins/firebase";
 import { firebaseConfig, ownPlateConfig } from "@/config/project";
 import { soundFiles, regionalSettings } from "@/config/constant";
 import moment from "moment";
-import * as Cookie from "cookie";
 
 import { defaultHeader } from "@/config/header";
 import { formatOption } from "@/utils/strings";

@@ -533,6 +533,13 @@ export const useIsAdmin = (ctx: any) => {
     return !!ctx.root.$store.getters.uidAdmin;
   });
 };
+export const useUid = (ctx: any) => {
+  const uid = computed(() => {
+    return ctx.root.$store.getters.uid;
+  });
+  return uid;
+}
+
 
 export const useIsLiffUser = (ctx: any) => {
   return computed(() => {
@@ -571,6 +578,15 @@ export const useToggle = (defaultValue = false) => {
     toggle,
   };
 };
+
+export const useUser = (ctx: any) => {
+  const user = computed(() => {
+    return ctx.root.$store.state.user;
+  });
+  return user;
+};
+
+export const isJapan = ownPlateConfig.region === "JP";
 
 export const useAdminUids = (ctx: any) => {
   const isOwner = computed(() => {

@@ -22,8 +22,8 @@ interface AnalyticsData {}
 const isInMo = () => {
   return mo_prefixes.some((prefix) => {
     return (
-      (location.pathname  || "").startsWith(`/${prefix}/`) ||
-        (location.pathname  || "") === `/${prefix}`
+      (location.pathname || "").startsWith(`/${prefix}/`) ||
+      (location.pathname || "") === `/${prefix}`
     );
   });
 };
@@ -60,7 +60,7 @@ export const sku_item_data2 = (
 const analyticsWrapper = (eventName: string, data: AnalyticsData) => {
   logEvent(analytics, eventName, data);
   if (isInMo()) {
-    gtag('event', eventName, data)
+    gtag("event", eventName, data);
   }
 };
 
