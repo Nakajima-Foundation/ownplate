@@ -1,14 +1,8 @@
 <template>
   <div class="wrapper" @click="enableSound()">
     <!-- Notification Banner -->
-    <div
-      v-if="isFlash"
-      @click="dismissBanner()"
-      class="bg-blue-500 fixed z-50 w-full h-16 flex justify-center items-center animate-pulse"
-    >
-      <i class="material-icons text-white text-2xl">notifications_active</i>
-    </div>
-
+    <NotificationBanner />
+    
     <!-- Header -->
     <Header @handleOpen="handleOpen" />
 
@@ -62,6 +56,7 @@ import { onAuthStateChanged } from "firebase/auth";
 
 import Header from "@/components/App/Header.vue";
 import Footer from "@/components/App/Footer.vue";
+import NotificationBanner from "@/components/App/NotificationBanner.vue";
 import SideMenuWrapper from "@/components/App/SideMenuWrapper.vue";
 import DialogBox from "@/components/DialogBox.vue";
 import AudioPlay from "@/components/AudioPlay.vue";
@@ -78,27 +73,14 @@ export default {
     SideMenuWrapper,
     Header,
     Footer,
+    NotificationBanner,
   },
   metaInfo: location.pathname.startsWith("/ss") ? MoHeader : defaultHeader,
   data() {
     return {
-      items: [
-        {
-          title: "Home",
-          icon: "home",
-          to: { name: "index" },
-        },
-        {
-          title: "Inspire",
-          icon: "lightbulb",
-          to: { name: "inspire" },
-        },
-      ],
       unregisterAuthObserver: null,
       timerId: null,
 
-      isFlash: false,
-      FlashToggle: false,
     };
   },
   mounted() {
@@ -129,9 +111,6 @@ export default {
       }
       return false;
     },
-    isUser() {
-      return !!this.$store.getters.uidUser;
-    },
     uid() {
       return this.$store.getters.uid;
     },
@@ -145,15 +124,6 @@ export default {
     },
   },
   methods: {
-    flash() {
-      this.isFlash = true;
-      setTimeout(() => {
-        this.isFlash = false;
-      }, 5000);
-    },
-    dismissBanner() {
-      this.isFlash = false;
-    },
     async enableSound() {
       await this.$refs.audioPlay.enableSound();
     },
@@ -221,9 +191,6 @@ export default {
     // https://support.google.com/analytics/answer/9234069?hl=ja
     $route() {
       this.pingAnalytics();
-    },
-    async "$store.state.orderEvent"() {
-      this.flash();
     },
   },
   async created() {
