@@ -10,8 +10,8 @@ import { defineComponent, ref } from "@vue/composition-api";
 
 import { useIsInMo } from "@/utils/utils";
 
-import SideMenu from "@/components/SideMenu";
-import SideMenuMo from "@/components/SideMenuMo";
+import SideMenu from "@/components/App/SideMenu.vue";
+import SideMenuMo from "@/components/App/SideMenuMo.vue";
 
 export default defineComponent({
   components: {

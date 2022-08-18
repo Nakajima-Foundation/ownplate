@@ -118,18 +118,17 @@ import {
 
 import { onAuthStateChanged } from "firebase/auth";
 
-import Header from "@/components/Header";
-import SideMenuWrapper from "@/components/SideMenuWrapper";
+import Header from "@/components/App/Header.vue";
+import SideMenuWrapper from "@/components/App/SideMenuWrapper.vue";
+import DialogBox from "@/components/DialogBox.vue";
+import AudioPlay from "@/components/AudioPlay.vue";
 
-import DialogBox from "@/components/DialogBox";
-import AudioPlay from "@/components/AudioPlay";
 import * as Sentry from "@sentry/vue";
 import { ownPlateConfig, mo_prefixes } from "@/config/project";
 import { defaultHeader } from "@/config/header";
 import { MoHeader } from "@/config/moHeader";
 
-import { isNull } from "@/utils/utils";
-import { regionalSetting } from "@/utils/utils";
+import { isNull, regionalSetting } from "@/utils/utils";
 
 export default {
   components: {
