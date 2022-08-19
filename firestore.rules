@@ -370,5 +370,10 @@ service cloud.firestore {
     match /{document=**} {
       allow read, write: if false;
     }
+    
+    // for map
+    match /mobileMap/data/products/{id} {
+      allow read: if true;
+    }
   }
 }
