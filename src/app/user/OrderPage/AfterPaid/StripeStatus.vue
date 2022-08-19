@@ -7,7 +7,7 @@
     </div>
     <div :class="'stripe_' + orderInfo.payment.stripe">
       <div class="text-xl">
-        {{ $t("order.status.stripe_user_" + orderInfo.payment.stripe) }}
+        {{ $t("order.status" + (mode === 'mo' ? '.mo' : '') + ".stripe_user_" + orderInfo.payment.stripe) }}
       </div>
       <div v-if="mode !== 'mo'">
         {{ $t("order.status.stripe_user_message_" + orderInfo.payment.stripe) }}

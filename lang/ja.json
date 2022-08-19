@@ -564,13 +564,18 @@
       "stripe_confirmed": "カード決済完了",
       "stripe_canceled": "決済キャンセル",
       "onsitePayment": "受け取り払い",
+      "mo": {
+        "stripe_user_pending": "決済処理中",
+        "stripe_user_confirmed": "決済完了",
+        "stripe_user_canceled": "決済キャンセル"
+      },
       "stripe_user_pending": "カード決済未完了",
       "stripe_user_message_pending": "(お店側で決済処理が終わっていません)",
       "stripe_user_confirmed": "カード決済完了",
       "stripe_user_message_confirmed": "クレジットカードでお支払済みです。",
       "stripe_user_canceled": "決済キャンセル",
       "stripe_user_message_canceled": "カード決済はキャンセルされました",
-      "stripe_user_message_just_payment_canceled": "現地払いをお願いします"
+      "stripe_user_message_just_payment_canceled": "受取時に店舗でお支払いをお願いします"
     },
     "receipt": {
       "receipt": "領収書",
