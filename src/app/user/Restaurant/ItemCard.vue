@@ -245,6 +245,7 @@ import {
   arraySum,
   itemOptionCheckbox2options,
   scrollToElementById,
+  useIsInMo,
 } from "@/utils/utils";
 
 // menu UI algorithm
@@ -283,6 +284,10 @@ export default defineComponent({
       type: Boolean,
       required: true,
     },
+    menuLinkBathPath: {
+      type: String,
+      required: true,
+    },
     prices: {
       type: Array,
       required: true,
@@ -296,7 +301,8 @@ export default defineComponent({
   setup(props, ctx) {
     const openMenuFlag = ref(props.initialOpenMenuFlag);
     const imagePopup = ref(false);
-    const urlSuffix = "/menus/" + props.item.id;
+    const isInMo = useIsInMo(ctx.root);
+    const urlSuffix = (isInMo.value ? props.menuLinkBathPath : "/" ) + "/menus/" + props.item.id;
     const restaurantId = ctx.root.$route.params.restaurantId;
 
     const basePath = useBasePath(ctx.root);

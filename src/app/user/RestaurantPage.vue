@@ -169,6 +169,7 @@
                           (orders[item.id] || []).length > 0
                         "
                         :shopInfo="shopInfo"
+                        :menuLinkBathPath="menuLinkBathPath"
                         :isOpen="menuId === item.id"
                         :prices="prices[item.id] || []"
                         :mode="mode"
@@ -692,6 +693,9 @@ export default defineComponent({
     const categoryBathPath = computed(() => {
       return `/${props.moPrefix}/r/${restaurantId.value}/cat/${category.value}`;
     });
+    const menuLinkBathPath = computed(() => {
+      return `/cat/${category.value}/${subCategory.value}`;
+    });
     const subCategoryKey = computed(() => {
       return showSubCategory.value
         ? [category.value, subCategory.value].join("_")
@@ -798,6 +802,8 @@ export default defineComponent({
       subCategoryData,
       categoryBathPath,
 
+      menuLinkBathPath,
+      
       subCategory,
 
       openGroupCategory,
