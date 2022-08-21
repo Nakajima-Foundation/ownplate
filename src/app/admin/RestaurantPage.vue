@@ -261,7 +261,7 @@
             </div>
             <div
               class="flex"
-              v-bind:class="{
+              :class="{
                 'p-2 rounded border border-red-700':
                   errors['restProfilePhoto'].length !== 0,
               }"
@@ -317,7 +317,13 @@
             <div class="text-sm font-bold pb-2">
               {{ $t("editRestaurant.coverPhoto") }}
             </div>
-            <div>
+            <div
+              class="flex"
+              :class="{
+                'p-2 rounded border border-red-700':
+                  errors['restCoverPhoto'].length !== 0,
+              }"
+            >
               <!-- Current Photo -->
               <div v-if="restCoverPhoto" class="pb-2">
                 <div>
@@ -357,10 +363,10 @@
                 </div>
               </div>
 
-              <!-- Description -->
-              <div class="text-sm text-black text-opacity-60 pt-2">
-                {{ $t("editCommon.clickAndUploadDetail") }}
-              </div>
+            </div>
+            <!-- Description -->
+            <div class="text-sm text-black text-opacity-60 pt-2">
+              {{ $t("editCommon.clickAndUploadDetail") }}
             </div>
           </div>
         </div>
@@ -1121,7 +1127,8 @@ export default defineComponent({
         props.shopInfo,
         requireTaxInput,
         errorsPhone.value,
-        files.value["profile"]
+        files.value["profile"],
+        files.value["cover"]
       );
     });
     const hasError = computed(() => {
