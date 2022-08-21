@@ -224,7 +224,7 @@ export default defineComponent({
     };
     const loadAddress = async () => {
       const uid = ctx.root.user.uid;
-      return (await db.doc(`/users/${uid}/address/data`).get()).data();
+      return (await db.doc(`/users/${uid}/address/data`).get()).data() || {};
     };
     const ecErrors = computed(() => {
       const err = {};
@@ -294,7 +294,7 @@ export default defineComponent({
     });
 
     (async () => {
-      customerInfo.value = await loadAddress();
+      customerInfo.value = await loadAddress() || {};
       if (customerInfo.value && customerInfo.value.location) {
         ctx.emit("updateLocation", customerInfo.value.location);
       }

@@ -68,14 +68,6 @@ const mixin = {
       }
       return this.$tc("shopInfo.am", 0, { formatedTime });
     },
-    copyClipboard: async function (text) {
-      // TODO: check no-nuxt branch
-      try {
-        await this.$copyText(text);
-        this.$buefy.toast.open(this.$i18n.tc("shopInfo.UrlCopied"));
-      } catch (e) {
-        this.$buefy.toast.open(this.$i18n.tc("shopInfo.UrlCopyFailed"));
-      }
     },
     forcedError(key) {
       const debug = this.$route.query.error;

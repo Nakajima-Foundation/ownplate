@@ -108,11 +108,24 @@ export default defineComponent({
     const closeShare = () => {
       sharePopup.value = false;
     };
+
+    const copyClipboard = async (text) => {
+      // TODO: check no-nuxt branch
+      try {
+        await ctx.root.$copyText(text);
+        ctx.root.$buefy.toast.open(ctx.root.$i18n.tc("shopInfo.UrlCopied"));
+      } catch (e) {
+        ctx.root.$buefy.toast.open(ctx.root.$i18n.tc("shopInfo.UrlCopyFailed"));
+      }
+    };
+
     return {
       openShare,
       closeShare,
       sharePopup,
       url,
+
+      copyClipboard,
     };
   },
 });

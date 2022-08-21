@@ -133,14 +133,6 @@ export const forcedError = (key: string, ctx: any) => {
 };
 
 /*
-    copyClipboard: async function (text) {
-      // TODO: check no-nuxt branch
-      try {
-        await this.$copyText(text);
-        this.$buefy.toast.open(this.i18n.tc("shopInfo.UrlCopied"));
-      } catch (e) {
-        this.$buefy.toast.open(this.i18n.tc("shopInfo.UrlCopyFailed"));
-      }
     },
     moment(value) {
       return moment(value);
