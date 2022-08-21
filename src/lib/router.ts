@@ -32,13 +32,34 @@ const getUserPages = (prefix: string) => {
 };
 
 const getUserPagesWithCat = (prefix: string) => {
-  const pages = getUserPages(prefix);
-  pages[0]?.children?.push({
-    name: "r-restaurant-Cat_" + prefix,
-    path: "cat/:category/:subCategory",
-    component: "user/Blank.vue",
-  });
-  return pages;
+  return [
+    {
+      path: "/",
+      component: "user/RestaurantPage.vue",
+      children: [
+        {
+          name: "r-restaurant-Page_" + prefix,
+          path: "/",
+          component: "user/Blank.vue",
+        },
+        {
+          name: "r-restaurant-Cat_" + prefix,
+          path: "cat/:category/:subCategory",
+          component: "user/Blank.vue",
+        },
+        {
+          name: "r-restaurant-Menu_" + prefix,
+          path: "cat/:category/:subCategory/menus/:menuId",
+          component: "user/Blank.vue",
+        },
+      ],
+    },
+    {
+      name: "r-restaurantId-order_" + prefix,
+      path: "order/:orderId",
+      component: "user/OrderPage.vue",
+    },
+  ];
 };
 
 interface CustomRoute {
