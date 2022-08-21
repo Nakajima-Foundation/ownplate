@@ -81,6 +81,7 @@
             :shopInfo="shopInfo"
             :mode="mode"
             :suffix="urlSuffix"
+            :isMenu="true"
           ></share-popup>
         </div>
 

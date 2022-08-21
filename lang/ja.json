@@ -302,7 +302,8 @@
       "minimumAvailableTime": "最短受け渡し可能時間"
     },
     "qrcode": "飲食店QRコード",
-    "copyUrl": "このお店のアドレスをコピー",
+    "copyUrl": "このお店のURLをコピー",
+    "copyMenuUrl": "この商品のURLをコピー",
     "UrlCopied": "コピーしました",
     "UrlCopyFailed": "コピー失敗",
     "name": "飲食店名",

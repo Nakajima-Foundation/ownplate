@@ -301,6 +301,7 @@
     },
     "qrcode": "QR Code",
     "copyUrl": "Copy URL",
+    "copyMenuUrl": "Copy URL",
     "UrlCopied": "URL Copied",
     "UrlCopyFailed": "URL Copy failed",
     "name": "Restaurant name",
