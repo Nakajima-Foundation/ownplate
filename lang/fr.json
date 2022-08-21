@@ -298,6 +298,7 @@
     },
     "qrcode": "Code QR",
     "copyUrl": "Copier le Lien",
+    "copyMenuUrl": "Copier le Lien",
     "UrlCopied": "Lien Copié",
     "UrlCopyFailed": "Copie du Lien a échoué",
     "name": "Nom du Restaurant",

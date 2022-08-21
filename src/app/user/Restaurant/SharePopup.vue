@@ -34,7 +34,7 @@
                   >file_copy</i
                 >
                 <div class="text-sm font-bold text-op-teal">
-                  {{ $t("shopInfo.copyUrl") }}
+                  {{ $t(isMenu ? "shopInfo.copyMenuUrl" : "shopInfo.copyUrl") }}
                 </div>
               </div>
             </span>
@@ -85,6 +85,10 @@ export default defineComponent({
     },
     suffix: {
       type: String,
+      required: false,
+    },
+    isMenu: {
+      type: Boolean,
       required: false,
     },
     mode: {
