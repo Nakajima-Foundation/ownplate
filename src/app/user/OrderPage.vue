@@ -494,21 +494,21 @@
 <script>
 import firebase from "firebase/compat/app";
 
-import ShopHeader from "@/app/user/Restaurant/ShopHeader.vue";
-import OrderInfo from "@/app/user/OrderPage/OrderInfo.vue";
-import ShopInfo from "@/app/user/Restaurant/ShopInfo.vue";
-import StripeCard from "@/app/user/OrderPage/StripeCard.vue";
-import TimeToPickup from "@/app/user/OrderPage/TimeToPickup.vue";
-import PhoneLogin from "@/app/auth/PhoneLogin.vue";
 import NotFound from "@/components/NotFound.vue";
 import RequireLogin from "@/components/RequireLogin.vue";
+
+import ShopHeader from "@/app/user/Restaurant/ShopHeader.vue";
+import ShopInfo from "@/app/user/Restaurant/ShopInfo.vue";
 import FavoriteButton from "@/app/user/Restaurant/FavoriteButton.vue";
 
-import UserCustomerInfo from "@/app/user/OrderPage/AfterPaid/UserCustomerInfo.vue";
 import TransactionsActContents from "@/app/user/TransactionsAct/Contents.vue";
-
 import OrderPageMap from "@/app/user/OrderPageMap.vue";
 
+import PhoneLogin from "@/app/auth/PhoneLogin.vue";
+
+import OrderInfo from "@/app/user/OrderPage/OrderInfo.vue";
+
+import UserCustomerInfo from "@/app/user/OrderPage/AfterPaid/UserCustomerInfo.vue";
 import ThankYou from "@/app/user/OrderPage/AfterPaid/ThankYou.vue";
 import ThankYouFromRestaurant from "@/app/user/OrderPage/AfterPaid/ThankYouFromRestaurant.vue";
 import LineButton from "@/app/user/OrderPage/AfterPaid/LineButton.vue";
@@ -516,12 +516,12 @@ import RestaurantLine from "@/app/user/OrderPage/AfterPaid/RestaurantLine.vue";
 import StripeStatus from "@/app/user/OrderPage/AfterPaid/StripeStatus.vue";
 import OrderStatus from "@/app/user/OrderPage/AfterPaid/OrderStatus.vue";
 import Receipt from "@/app/user/OrderPage/AfterPaid/Receipt.vue";
+import Pickup from "@/app/user/OrderPage/AfterPaid/Pickup.vue";
 
-import ECCustomer from "@/app/user/OrderPage/ECCustomer.vue";
-import OrderNotice from "@/app/user/OrderPage/OrderNotice.vue";
-
-import Pickup from "@/app/user/OrderPage/Pickup.vue";
-
+import StripeCard from "@/app/user/OrderPage/BeforePaid/StripeCard.vue";
+import TimeToPickup from "@/app/user/OrderPage/BeforePaid/TimeToPickup.vue";
+import ECCustomer from "@/app/user/OrderPage/BeforePaid/ECCustomer.vue";
+import OrderNotice from "@/app/user/OrderPage/BeforePaid/OrderNotice.vue";
 import CustomerInfo from "@/app/user/OrderPage/BeforePaid/CustomerInfo.vue";
 import BeforePaidAlert from "@/app/user/OrderPage/BeforePaid/BeforePaidAlert.vue";
 import SpecifiedCommercialTransactions from "@/app/user/OrderPage/BeforePaid/SpecifiedCommercialTransactions.vue";
