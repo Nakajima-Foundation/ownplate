@@ -73,7 +73,7 @@
 
       <!-- Postage for delivery -->
       <div
-        v-if="shopInfo.enableDelivery"
+        v-if="shopInfo.enableDelivery && orderInfo.isDelivery"
         class="border-t-2 border-solid border-black border-opacity-10 mt-4 pt-4"
       >
         <div class="flex">
