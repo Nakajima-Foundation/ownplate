@@ -60,13 +60,15 @@ export default defineComponent({
     });
     const showRequest = computed(() => {
       if (props.mode === "mo") {
-        return props.paid;
+        return props.orderInfo.status === order_status.order_placed;
+        // return props.paid;
       }
       return waiting.value && !props.shopInfo.isEC;
     });
     const showEstimated = computed(() => {
       if (props.mode === "mo") {
-        return !props.paid;
+        return props.orderInfo.status > order_status.order_placed;
+        // return !props.paid;
       }
       return props.timeEstimated;
     });
