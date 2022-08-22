@@ -821,6 +821,7 @@
       "download-csv-details": "Download Excel File (Details)"
     },
     "error": {
+      "memoLength": "Please enter your message within 500 characters.",
       "email": {
         "invalid": "Invalid Email Address",
         "taken": "The email address is already in use by another account."

@@ -809,6 +809,7 @@
       "download-csv-details": "Télécharger le fichier Excel (Détails)"
     },
     "error": {
+      "memoLength": "Please enter your message within 500 characters.",
       "email": {
         "invalid": "Adresse e-mail invalide",
         "taken": "L'adresse e-mail est déjà utilisée par un autre compte."

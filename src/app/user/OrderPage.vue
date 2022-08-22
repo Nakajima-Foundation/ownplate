@@ -297,7 +297,9 @@
 
             <!-- Message -->
             <template v-if="shopInfo && shopInfo.acceptUserMessage">
-              <div class="mt-6">
+              <div class="mt-6"
+                :class="userMessageError ? 'p-2 rounded border-4 border-red-700' : ''"
+                   >
                 <div class="text-xl font-bold text-black text-opacity-30">
                   {{ $t("order.orderMessage") }}
                 </div>
@@ -309,6 +311,9 @@
                     :placeholder="$t('order.enterMessage')"
                     class="w-full"
                   ></b-input>
+                  <div :class="userMessageError ? 'text-red-700 font-bold':''">
+                    メッセージは500文字以内で入力してください。
+                  </div>
                 </div>
               </div>
             </template>
@@ -743,6 +748,9 @@ export default {
     notSubmitAddress() {
       return this.requireAddress && this.$refs?.ecCustomerRef?.hasEcError;
     },
+    userMessageError() {
+      return this.shopInfo.acceptUserMessage && this.memo.length > 500;
+    }
   },
   // end of computed
   watch: {
@@ -886,6 +894,9 @@ export default {
       };
     },
     async handlePayment() {
+      if (this.userMessageError) {
+        return ;
+      }
       if (this.requireAddress) {
         if (this.$refs.ecCustomerRef.hasEcError) {
           return;
@@ -894,7 +905,6 @@ export default {
           await this.$refs.ecCustomerRef.saveAddress();
         }
       }
-
       const timeToPickup = this.shopInfo.isEC
         ? firebase.firestore.Timestamp.now()
         : this.$refs.time.timeToPickup();
@@ -943,6 +953,9 @@ export default {
       }
     },
     async handleNoPayment() {
+      if (this.userMessageError) {
+        return ;
+      }
       if (this.requireAddress) {
         if (this.$refs.ecCustomerRef && this.$refs.ecCustomerRef.hasEcError) {
           return;
@@ -951,6 +964,7 @@ export default {
           await this.$refs.ecCustomerRef.saveAddress();
         }
       }
+      
       const timeToPickup = this.shopInfo.isEC
         ? firebase.firestore.Timestamp.now()
         : this.$refs.time.timeToPickup();
