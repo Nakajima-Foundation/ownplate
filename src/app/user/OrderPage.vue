@@ -502,7 +502,6 @@ import ShopInfo from "@/app/user/Restaurant/ShopInfo.vue";
 import FavoriteButton from "@/app/user/Restaurant/FavoriteButton.vue";
 
 import TransactionsActContents from "@/app/user/TransactionsAct/Contents.vue";
-import OrderPageMap from "@/app/user/OrderPageMap.vue";
 
 import PhoneLogin from "@/app/auth/PhoneLogin.vue";
 
@@ -525,6 +524,7 @@ import OrderNotice from "@/app/user/OrderPage/BeforePaid/OrderNotice.vue";
 import CustomerInfo from "@/app/user/OrderPage/BeforePaid/CustomerInfo.vue";
 import BeforePaidAlert from "@/app/user/OrderPage/BeforePaid/BeforePaidAlert.vue";
 import SpecifiedCommercialTransactions from "@/app/user/OrderPage/BeforePaid/SpecifiedCommercialTransactions.vue";
+import OrderPageMap from "@/app/user/OrderPage/BeforePaid/Map.vue";
 
 import { db, firestore } from "@/plugins/firebase";
 import { orderPlace } from "@/lib/firebase/functions";
