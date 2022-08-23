@@ -93,17 +93,6 @@ const mixin = {
         });
       });
     },
-    /*
-    taxRate(shopInfo, item) {
-      if (shopInfo.inclusiveTax) {
-        return 1;
-      }
-      if (item.tax === "alcohol") {
-        return 1 + shopInfo.alcoholTax * 0.01;
-      }
-      return 1 + shopInfo.foodTax * 0.01;
-      },
-*/
     displayOption(option, shopInfo, item) {
       return formatOption(option, (price) => {
         return this.$n(
@@ -114,9 +103,6 @@ const mixin = {
     },
   },
   computed: {
-    underConstruction() {
-      return ownPlateConfig.hostName === "staging.ownplate.today";
-    },
     defaultTitle() {
       return defaultHeader.title;
     },

@@ -79,6 +79,7 @@ import {
   useIsLiffUser,
   useInLiff,
   useLiffIndexId,
+  underConstruction,
 } from "@/utils/utils";
 
 import { lineVerifyFriend } from "@/lib/firebase/functions";
@@ -191,6 +192,8 @@ export default defineComponent({
       isFriend,
       handleLineAuth,
       friendLink,
+
+      underConstruction,
     };
   },
 });

@@ -583,6 +583,8 @@ export const useUser = (ctx: any) => {
 export const isJapan = ownPlateConfig.region === "JP";
 export const serviceKey = isJapan ? "omochikaeri" : "ownPlate";
 
+export const underConstruction = ownPlateConfig.hostName === "staging.ownplate.today";
+
 export const defaultTitle = defaultHeader.title;
 
 export const useAdminUids = (ctx: any) => {

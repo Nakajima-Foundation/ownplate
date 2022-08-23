@@ -61,6 +61,8 @@ import SideMenuWrapper from "@/components/App/SideMenuWrapper.vue";
 import DialogBox from "@/components/DialogBox.vue";
 import AudioPlay from "@/components/AudioPlay.vue";
 
+import { underConstruction } from "@/utils/utils";
+
 import * as Sentry from "@sentry/vue";
 import { ownPlateConfig, mo_prefixes } from "@/config/project";
 import { defaultHeader } from "@/config/header";
@@ -80,6 +82,7 @@ export default {
     return {
       unregisterAuthObserver: null,
       timerId: null,
+      underConstruction,
     };
   },
   mounted() {
