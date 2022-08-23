@@ -162,9 +162,6 @@ const mixin = {
       // TODO: why not ja ?
       return this.$i18n.locale !== "en" && this.$i18n.locale !== "fr";
     },
-    serviceKey() {
-      return this.isJapan ? "omochikaeri" : "ownPlate";
-    },
     // for user agent detect
     isIOS() {
       return this.isOldIOS || this.isNewIOS;

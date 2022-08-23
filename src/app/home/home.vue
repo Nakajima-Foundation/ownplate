@@ -118,9 +118,9 @@
                   forced to close their businesses.
                 </div>
                 <div class="t-body1 c-text-black-high m-t-24">
-                  We've created {{ $t("serviceName." + this.serviceKey) }} to
+                  We've created {{ $t("serviceName." + serviceKey) }} to
                   help those restaurants and bars. With
-                  {{ $t("serviceName." + this.serviceKey) }}, restaurants can
+                  {{ $t("serviceName." + serviceKey) }}, restaurants can
                   start take-out service with no extra fees (only credit card
                   charges are required). The restaurant owners can create
                   dedicated pages and register menu items there (no special
@@ -131,7 +131,7 @@
                   We, Singularity Society, is a non-profit organization,
                   consists of software engineers, designers and business people.
                   We are building
-                  {{ $t("serviceName." + this.serviceKey) }} with Firebase
+                  {{ $t("serviceName." + serviceKey) }} with Firebase
                   (Google) + Vue (open source), which allows us to develop this
                   service in a very short period of time.
                 </div>
@@ -153,9 +153,9 @@
                 </div>
                 <div class="t-body1 c-text-black-high m-t-24">
                   私たちは、そんなレストランやバーを支援するために、「{{
-                    $t("serviceName." + this.serviceKey)
+                    $t("serviceName." + serviceKey)
                   }}」を作りました。 「{{
-                    $t("serviceName." + this.serviceKey)
+                    $t("serviceName." + serviceKey)
                   }}」を使えば、レストランは、余計な手数料なしでテイクアウトサービスを始める事ができます。
                   レストランは、専用のページを作り、そこにメニューを登録します（ウェブ・コンサルタントを雇う必要はありません）。
                   顧客はそのページから注文し、支払いを済ませ、調理時間に合わせて店に取りに行くのです。
@@ -180,5 +180,14 @@
 </template>
 
 <script>
-export default {};
+import { defineComponent } from "@vue/composition-api";
+import { serviceKey } from "@/utils/utils";
+
+export default defineComponent({
+  setup() {
+    return { serviceKey };
+  },
+
+});
 </script>
+

@@ -68,7 +68,6 @@ import home from "@/app/home/home.vue";
 import { defaultTitle, isJapan } from "@/utils/utils";
 
 export default defineComponent({
-  name: "HomePage",
   metaInfo() {
     return {
       title: [defaultTitle, "Top"].join(" / "),

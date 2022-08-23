@@ -21,8 +21,8 @@
           owners have been forced to close their businesses.
         </div>
         <div class="mt-6">
-          We've created {{ $t("serviceName." + this.serviceKey) }} to help those
-          restaurants and bars. With {{ $t("serviceName." + this.serviceKey) }},
+          We've created {{ $t("serviceName." + serviceKey) }} to help those
+          restaurants and bars. With {{ $t("serviceName." + serviceKey) }},
           restaurants can start take-out service with no extra fees (only credit
           card charges are required). The restaurant owners can create dedicated
           pages and register menu items there (no special skill is required),
@@ -44,9 +44,9 @@
         </div>
         <div class="mt-6">
           私たちは、そんなレストランやバーを支援するために、「{{
-            $t("serviceName." + this.serviceKey)
+            $t("serviceName." + serviceKey)
           }}」を作りました。 「{{
-            $t("serviceName." + this.serviceKey)
+            $t("serviceName." + serviceKey)
           }}」を使えば、レストランは、余計な手数料なしでテイクアウトサービスを始める事ができます。
           レストランは、専用のページを作り、そこにメニューを登録します（ウェブ・コンサルタントを雇う必要はありません）。
           顧客はそのページから注文し、支払いを済ませ、調理時間に合わせて店に取りに行くのです。
@@ -71,5 +71,13 @@
 </template>
 
 <script>
-export default {};
+import { defineComponent } from "@vue/composition-api";
+import { serviceKey } from "@/utils/utils";
+
+export default defineComponent({
+  setup() {
+    return { serviceKey };
+  },
+
+});
 </script>
