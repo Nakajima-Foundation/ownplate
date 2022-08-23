@@ -5,6 +5,8 @@ import { db, firestore } from "@/plugins/firebase";
 import { midNight } from "@/utils/dateUtils";
 import { order_status } from "@/config/constant";
 
+import { doc2data } from "@/utils/utils";
+
 export default {
   props: {
     notificationConfig: Object,
@@ -71,7 +73,7 @@ export default {
         .where("status", "==", order_status.order_placed)
         .onSnapshot(
           (result) => {
-            this.orders = result.docs.map(this.doc2data("order"));
+            this.orders = result.docs.map(doc2data("order"));
             this.$store.commit("setOrders", this.orders);
           },
           (error) => {

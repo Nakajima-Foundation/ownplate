@@ -22,8 +22,10 @@
 import { db } from "@/plugins/firebase";
 import { superDispatch } from "@/lib/firebase/functions";
 
-import BackButton from "@/components/BackButton";
-import Restaurant from "@/app/super/Components/Restaurant";
+import { doc2data } from "@/utils/utils";
+
+import BackButton from "@/components/BackButton.vue";
+import Restaurant from "@/app/super/Components/Restaurant.vue";
 
 export default {
   metaInfo() {
@@ -89,7 +91,7 @@ export default {
       .collection("/restaurants/")
       .where("uid", "==", this.adminId)
       .get();
-    this.restaurants = snapshot.docs.map(this.doc2data("admin"));
+    this.restaurants = snapshot.docs.map(doc2data("admin"));
 
     const adminPrivateSnapshot = await db
       .doc("/admins/" + this.adminId + "/private/profile")

@@ -88,11 +88,14 @@
 <script>
 // TODO: 通知の状況もわかるようにする
 //
-import BackButton from "@/components/BackButton";
 import { db } from "@/plugins/firebase";
 
 import superMixin from "@/mixins/SuperMixin";
-import DownloadCsv from "@/components/DownloadCSV";
+
+import { doc2data } from "@/utils/utils";
+
+import DownloadCsv from "@/components/DownloadCSV.vue";
+import BackButton from "@/components/BackButton.vue";
 
 export default {
   mixins: [superMixin],
@@ -168,7 +171,7 @@ export default {
         const snapshot = await query.get();
         if (!snapshot.empty) {
           this.last = snapshot.docs[snapshot.docs.length - 1];
-          snapshot.docs.map(this.doc2data("resuatraut")).forEach((data) => {
+          snapshot.docs.map(doc2data("resuatraut")).forEach((data) => {
             this.restaurants.push(data);
           });
         } else {

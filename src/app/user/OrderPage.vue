@@ -64,7 +64,7 @@ import { nameOfOrder } from "@/utils/strings";
 
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
-import { getOrderItems } from "@/utils/utils";
+import { getOrderItems, doc2data, array2obj } from "@/utils/utils";
 
 export default {
   name: "Order",
@@ -203,8 +203,8 @@ export default {
                   .collection(`restaurants/${this.restaurantId()}/menus`)
                   .get();
                 if (!menu.empty) {
-                  const menus = menu.docs.map(this.doc2data("menu"));
-                  this.menuObj = this.array2obj(menus);
+                  const menus = menu.docs.map(doc2data("menu"));
+                  this.menuObj = array2obj(menus);
                 }
               }
             }

@@ -116,12 +116,15 @@
 </template>
 
 <script>
-import BackButton from "@/components/BackButton";
 import { db } from "@/plugins/firebase";
 import {
   subAccountDeleteChild,
   subAccountInvite,
 } from "@/lib/firebase/functions";
+
+import { doc2data, array2obj } from "@/utils/utils";
+
+import BackButton from "@/components/BackButton.vue";
 
 export default {
   metaInfo() {
@@ -139,14 +142,14 @@ export default {
       .where("deletedFlag", "==", false)
       .orderBy("createdAt", "asc")
       .get();
-    this.restaurantObj = this.array2obj(
-      restaurantCollection.docs.map(this.doc2data("restaurant"))
+    this.restaurantObj = array2obj(
+      restaurantCollection.docs.map(doc2data("restaurant"))
     );
 
     const childDetacher = await db
       .collection(`admins/${this.uid}/children`)
       .onSnapshot((childrenCollection) => {
-        this.children = childrenCollection.docs.map(this.doc2data("admin"));
+        this.children = childrenCollection.docs.map(doc2data("admin"));
       });
     this.detachers.push(childDetacher);
 
@@ -155,7 +158,7 @@ export default {
       .where("fromUid", "==", this.uid)
       .orderBy("createdAt", "desc")
       .onSnapshot((messageCollection) => {
-        this.messages = messageCollection.docs.map(this.doc2data("message"));
+        this.messages = messageCollection.docs.map(doc2data("message"));
       });
     this.detachers.push(messageDetacher);
   },

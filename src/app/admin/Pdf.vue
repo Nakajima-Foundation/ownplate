@@ -9,7 +9,7 @@
 
 <script>
 import { db } from "@/plugins/firebase";
-import { stripeRegion } from "@/utils/utils";
+import { stripeRegion, doc2data, array2obj } from "@/utils/utils";
 import * as pdf from "@/lib/pdf/pdf";
 import * as pdf2 from "@/lib/pdf/pdf2";
 
@@ -28,13 +28,13 @@ export default {
   },
   async created() {
     const restaurantRef = db.doc(`restaurants/${this.restaurantId()}`);
-    this.menuObj = this.array2obj(
+    this.menuObj = array2obj(
       (
         await restaurantRef
           .collection("menus")
           .where("deletedFlag", "==", false)
           .get()
-      ).docs.map(this.doc2data(""))
+      ).docs.map(doc2data(""))
     );
   },
   computed: {

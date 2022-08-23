@@ -12,9 +12,6 @@ import { GAPIKey } from "@/config/project";
 
 const mixin = {
   methods: {
-    isNull(value) {
-      return value === null || value === undefined;
-    },
     restaurantId() {
       return this.$route.params.restaurantId;
     },
@@ -29,20 +26,6 @@ const mixin = {
         location.protocol + "//" + location.host + "/r/" + this.restaurantId()
       );
       // return "https://omochikaeri.com/r/" + this.restaurantId();
-    },
-    doc2data(dataType) {
-      return (doc) => {
-        const data = doc.data();
-        data.id = doc.id;
-        data._dataType = dataType;
-        return data;
-      };
-    },
-    array2obj(array) {
-      return array.reduce((tmp, current) => {
-        tmp[current.id] = current;
-        return tmp;
-      }, {});
     },
     num2time(num) {
       if (num === 0 || num === 60 * 24) {

@@ -30,6 +30,7 @@
 </template>
 
 <script>
+import { isNull } from "@/utils/utils";
 import { midNight } from "@/utils/dateUtils";
 import moment from "moment";
 
@@ -60,7 +61,7 @@ export default {
   },
   methods: {
     getPickUpDaysInAdvance() {
-      return this.isNull(this.shopInfo.pickUpDaysInAdvance)
+      return isNull(this.shopInfo.pickUpDaysInAdvance)
         ? 3
         : this.shopInfo.pickUpDaysInAdvance;
     },

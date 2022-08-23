@@ -53,6 +53,8 @@
 import BackButton from "@/components/BackButton.vue";
 import { db } from "@/plugins/firebase";
 
+import { doc2data, array2obj } from "@/utils/utils";
+
 export default {
   components: {
     BackButton,
@@ -69,11 +71,11 @@ export default {
       .where("deletedFlag", "==", false)
       .orderBy("createdAt", "asc")
       .get();
-    this.restaurantObj = this.array2obj(
-      restaurantCollection.docs.map(this.doc2data("restaurant"))
+    this.restaurantObj = array2obj(
+      restaurantCollection.docs.map(doc2data("restaurant"))
     );
     this.restaurants = restaurantCollection.docs
-      .map(this.doc2data("restaurant"))
+      .map(doc2data("restaurant"))
       .filter((r) => r.publicFlag);
 
     const childrenDoc = await db
