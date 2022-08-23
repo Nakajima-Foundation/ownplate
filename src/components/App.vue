@@ -2,7 +2,7 @@
   <div class="wrapper" @click="enableSound()">
     <!-- Notification Banner -->
     <NotificationBanner />
-    
+
     <!-- Header -->
     <Header @handleOpen="handleOpen" />
 
@@ -80,7 +80,6 @@ export default {
     return {
       unregisterAuthObserver: null,
       timerId: null,
-
     };
   },
   mounted() {

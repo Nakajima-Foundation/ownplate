@@ -362,7 +362,6 @@
                   {{ $t("editCommon.new") }}
                 </div>
               </div>
-
             </div>
             <!-- Description -->
             <div class="text-sm text-black text-opacity-60 pt-2">

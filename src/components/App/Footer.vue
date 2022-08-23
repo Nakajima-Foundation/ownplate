@@ -78,7 +78,7 @@ import FooterPoweredBy from "@/components/App/FooterPoweredBy.vue";
 
 export default defineComponent({
   components: {
-    FooterPoweredBy
+    FooterPoweredBy,
   },
   setup(_, ctx) {
     const language = ref(regionalSetting.defaultLanguage);
