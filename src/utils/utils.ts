@@ -16,6 +16,8 @@ import { MenuData } from "@/models/menu";
 import { regionalSettings, partners, stripe_regions } from "@/config/constant";
 import { ownPlateConfig, mo_prefixes } from "@/config/project";
 
+import { defaultHeader } from "@/config/header";
+
 import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
 
 export const isNull = <T>(value: T) => {
@@ -578,6 +580,8 @@ export const useUser = (ctx: any) => {
 };
 
 export const isJapan = ownPlateConfig.region === "JP";
+
+export const defaultTitle = defaultHeader.title;
 
 export const useAdminUids = (ctx: any) => {
   const isOwner = computed(() => {

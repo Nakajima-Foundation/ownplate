@@ -28,11 +28,13 @@
 <script>
 import { defineComponent } from "@vue/composition-api";
 import newsList from "../News/data";
+import { isJapan } from "@/utils/utils";
 
 export default defineComponent({
   setup() {
     return {
       news: newsList[0],
+      isJapan,
     };
   },
 });

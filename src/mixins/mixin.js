@@ -100,7 +100,7 @@ const mixin = {
         });
       });
     },
-/*
+    /*
     taxRate(shopInfo, item) {
       if (shopInfo.inclusiveTax) {
         return 1;
@@ -110,7 +110,7 @@ const mixin = {
       }
       return 1 + shopInfo.foodTax * 0.01;
       },
-*/      
+*/
     displayOption(option, shopInfo, item) {
       return formatOption(option, (price) => {
         return this.$n(
@@ -154,9 +154,6 @@ const mixin = {
     },
     isLineEnabled() {
       return !!ownPlateConfig.line;
-    },
-    isJapan() {
-      return ownPlateConfig.region === "JP";
     },
     isLocaleJapan() {
       // for hack

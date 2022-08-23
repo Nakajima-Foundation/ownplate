@@ -71,5 +71,4 @@ export default {
     FavoriteButton,
   },
 };
-
 </script>

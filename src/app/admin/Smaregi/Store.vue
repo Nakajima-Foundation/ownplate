@@ -169,9 +169,7 @@ export default {
         `smaregiData/${this.contractId}/stores/${this.storeId}/smaregiProducts`
       )
       .get();
-    this.stockObj = array2obj(
-      stockCollection.docs.map(doc2data("stock"))
-    );
+    this.stockObj = array2obj(stockCollection.docs.map(doc2data("stock")));
 
     const selectedMenu = {};
     (this.productList || []).map((product, key) => {
