@@ -955,6 +955,7 @@
         "intent": "Failed to process the payment.",
         "NoJCB": "This restaurant does not accept JCB card."
       },
+      "smallPayment": "Card payments under 50 yen cannot be accepted.",
       "menu": {
         "save": "Failed to update the menu."
       },

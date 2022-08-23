@@ -943,6 +943,7 @@
         "intent": "Échec du traitement du paiement.",
         "NoJCB": "Ce restaurant n'accepte pas la carte JCB."
       },
+      "smallPayment": "Card payments under 50 yen cannot be accepted.",
       "menu": {
         "save": "Échec de la mise à jour du menu."
       },

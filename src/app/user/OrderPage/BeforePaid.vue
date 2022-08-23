@@ -207,7 +207,7 @@
                 <b-button
                   :loading="isPaying"
                   :disabled="
-                    !cardState.complete || notAvailable || notSubmitAddress
+                    !cardState.complete || notAvailable || notSubmitAddress || stripeSmallPayment
                   "
                   @click="handlePayment"
                   class="b-reset-tw"
@@ -226,6 +226,9 @@
                     </div>
                   </div>
                 </b-button>
+                <div v-if="mode !== 'mo' && stripeSmallPayment" class="text-sm font-bold  text-red-700 mt-2 text-opacity-60">
+                  {{  $t("errorPage.code.smallPayment") }}
+                </div>
               </div>
               <div v-if="mode === 'mo'">
                 <div
@@ -430,6 +433,9 @@ export default {
     },
     orderId() {
       return this.$route.params.orderId;
+    },
+    stripeSmallPayment() {
+      return this.orderInfo.total <= 50
     },
     shippingCost() {
       return costCal(
