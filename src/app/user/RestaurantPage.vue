@@ -818,7 +818,7 @@ export default defineComponent({
       categoryBathPath,
 
       menuLinkBathPath,
-      
+
       subCategory,
 
       openGroupCategory,

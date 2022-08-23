@@ -294,7 +294,7 @@ export default defineComponent({
     });
 
     (async () => {
-      customerInfo.value = await loadAddress() || {};
+      customerInfo.value = (await loadAddress()) || {};
       if (customerInfo.value && customerInfo.value.location) {
         ctx.emit("updateLocation", customerInfo.value.location);
       }

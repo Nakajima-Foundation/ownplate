@@ -8,9 +8,8 @@
     :moPrefix="moPrefix"
     :notFound="notFound"
     :groupData="groupData"
-    />
+  />
   <NotFound v-else-if="notFound" />
-
 </template>
 
 <script>
@@ -73,7 +72,7 @@ export default defineComponent({
           }
           return !!shopInfo.value.groupId || !!shopInfo.value.supportLiff;
         })();
-        
+
         if (!notFound.value) {
           const uid = restaurant_data.uid;
           getDoc(doc(db, `/admins/${uid}/public/payment`)).then((snapshot) => {
@@ -91,7 +90,7 @@ export default defineComponent({
       (e) => {
         notFound.value = true;
         console.log("no restaurant");
-      },
+      }
     );
     const detachers = [restaurant_detacher];
     onUnmounted(() => {

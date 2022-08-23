@@ -1,208 +1,205 @@
 <template>
   <div>
+    <!-- Restaurant Profile Photo and Name -->
+    <div class="mt-4">
+      <shop-header :shopInfo="shopInfo"></shop-header>
+    </div>
 
-      <!-- Restaurant Profile Photo and Name -->
-      <div class="mt-4">
-        <shop-header :shopInfo="shopInfo"></shop-header>
-      </div>
+    <!-- After Paid -->
+    <!-- Thank you Message -->
+    <ThankYou v-if="mode !== 'mo'" />
 
-      <!-- After Paid -->
-        <!-- Thank you Message -->
-        <ThankYou v-if="mode !== 'mo'" />
+    <!-- Line Button -->
+    <LineButton :groupData="groupData" />
 
-        <!-- Line Button -->
-        <LineButton :groupData="groupData" />
+    <!-- Order Summary -->
+    <div class="mt-6 mx-6 pt-6 pb-1 px-2 bg-white rounded-lg shadow">
+      <!-- Order Status -->
+      <OrderStatus :orderInfo="orderInfo" :orderName="orderName" />
 
-        <!-- Order Summary -->
-        <div class="mt-6 mx-6 pt-6 pb-1 px-2 bg-white rounded-lg shadow">
-          <!-- Order Status -->
-          <OrderStatus :orderInfo="orderInfo" :orderName="orderName" />
+      <!-- Time to Pickup -->
+      <Pickup
+        :orderInfo="orderInfo"
+        :shopInfo="shopInfo"
+        :timeEstimated="timeEstimated"
+        :timeRequested="timeRequested"
+        :paid="paid"
+        :mode="mode"
+      />
 
-          <!-- Time to Pickup -->
-          <Pickup
-            :orderInfo="orderInfo"
-            :shopInfo="shopInfo"
-            :timeEstimated="timeEstimated"
-            :timeRequested="timeRequested"
-            :paid="paid"
-            :mode="mode"
-          />
+      <!-- Stripe status -->
+      <StripeStatus v-if="hasStripe" :orderInfo="orderInfo" :mode="mode" />
 
-          <!-- Stripe status -->
-          <StripeStatus v-if="hasStripe" :orderInfo="orderInfo" :mode="mode" />
-
-          <!-- Cancel Button -->
-          <div class="mt-8 mb-5 text-center">
-            <b-button
-              v-if="just_paid"
-              @click="handleCancelPayment"
-              class="b-reset-tw"
+      <!-- Cancel Button -->
+      <div class="mt-8 mb-5 text-center">
+        <b-button
+          v-if="just_paid"
+          @click="handleCancelPayment"
+          class="b-reset-tw"
+        >
+          <div class="inline-flex justify-center items-center">
+            <i class="material-icons text-lg mr-2 text-red-700"
+              >highlight_off</i
             >
-              <div class="inline-flex justify-center items-center">
-                <i class="material-icons text-lg mr-2 text-red-700"
-                  >highlight_off</i
-                >
-                <div class="text-base font-bold text-red-700">
-                  {{ $t("order.cancelOrder") }}
-                </div>
-              </div>
-            </b-button>
+            <div class="text-base font-bold text-red-700">
+              {{ $t("order.cancelOrder") }}
+            </div>
+          </div>
+        </b-button>
+      </div>
+    </div>
+
+    <!-- Canceled Message -->
+    <div
+      v-if="canceled"
+      class="mt-6 mx-6 bg-red-700 bg-opacity-10 rounded-lg p-4 text-center"
+    >
+      <span class="text-base font-bold text-red-700">{{
+        $t("order.cancelOrderComplete")
+      }}</span>
+    </div>
+    <!-- Special Thank you Message from the Restaurant -->
+    <ThankYouFromRestaurant
+      v-if="!canceled && mode !== 'mo'"
+      :shopInfo="shopInfo"
+    />
+
+    <!-- Favorite Button -->
+    <div class="mt-6 text-center">
+      <div>
+        <favorite-button :shopInfo="shopInfo"></favorite-button>
+      </div>
+    </div>
+
+    <!-- Restaurant LINE -->
+    <RestaurantLine v-if="hasLineUrl" :shopInfo="shopInfo" />
+
+    <!-- end Of After Paid -->
+
+    <!-- customer info -->
+    <div
+      v-if="orderInfo.phoneNumber && !shopInfo.isEC"
+      class="mt-4 text-center"
+    >
+      <CustomerInfo :orderInfo="orderInfo" />
+    </div>
+
+    <!-- Order Body -->
+    <div class="mt-6 mx-6 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12">
+      <!-- Left -->
+      <div>
+        <!-- Title -->
+        <div class="text-xl font-bold text-black text-opacity-30">
+          <div v-if="paid">
+            {{ $t("order.yourOrder") + ": " + orderName }}
           </div>
         </div>
+
+        <!-- Details -->
+        <div class="mt-2">
+          <order-info
+            :shopInfo="shopInfo || {}"
+            :orderItems="this.orderItems"
+            :orderInfo="this.orderInfo || {}"
+            :groupData="groupData"
+          ></order-info>
+        </div>
+
+        <!-- Customer info -->
+        <div
+          class="mt-2"
+          v-if="
+            shopInfo &&
+            (shopInfo.isEC || orderInfo.isDelivery) &&
+            hasCustomerInfo
+          "
+        >
+          <UserCustomerInfo
+            :shopInfo="shopInfo"
+            :orderInfo="orderInfo"
+            :orderId="orderId"
+          />
+        </div>
+
+        <!-- Your Message to the Restaurant -->
+        <template v-if="paid && hasMemo">
+          <div class="bg-white rounded-lg p-4 shadow mt-4">
+            <div class="text-xs font-bold text-black text-opacity-60">
+              {{ $t("order.orderMessage") }}
+            </div>
+            <div class="mt-1 text-base">{{ orderInfo.memo }}</div>
+          </div>
+        </template>
 
         <!-- Canceled Message -->
         <div
           v-if="canceled"
-          class="mt-6 mx-6 bg-red-700 bg-opacity-10 rounded-lg p-4 text-center"
+          class="mt-6 bg-red-700 bg-opacity-10 rounded-lg p-4 text-center"
         >
           <span class="text-base font-bold text-red-700">{{
             $t("order.cancelOrderComplete")
           }}</span>
         </div>
-        <!-- Special Thank you Message from the Restaurant -->
-        <ThankYouFromRestaurant
-          v-if="!canceled && mode !== 'mo'"
-          :shopInfo="shopInfo"
-        />
 
-        <!-- Favorite Button -->
-        <div class="mt-6 text-center">
+        <!-- Receipt -->
+        <template v-if="order_accepted && hasStripe">
+          <Receipt />
+        </template>
+
+        <!-- View Menu Page Button -->
+        <div v-if="paid" class="mt-6 text-center">
+          <b-button class="b-reset-tw" @click="handleOpenMenu">
+            <div
+              class="inline-flex justify-center items-center h-12 px-6 rounded-full border-2 border-op-teal"
+            >
+              <div class="text-base font-bold text-op-teal">
+                {{ $t("order.menu") }}
+              </div>
+            </div>
+          </b-button>
+        </div>
+      </div>
+
+      <!-- Right -->
+      <div class="mt-4 lg:mt-0">
+        <!-- (After Paid) Restaurant Details -->
+        <div v-if="paid">
+          <!-- Restaurant Info -->
           <div>
-            <favorite-button :shopInfo="shopInfo"></favorite-button>
-          </div>
-        </div>
+            <div class="text-xl font-bold text-black text-opacity-30">
+              {{
+                shopInfo.isEC
+                  ? $t("shopInfo.ecShopDetails")
+                  : $t("shopInfo.restaurantDetails")
+              }}
+            </div>
 
-        <!-- Restaurant LINE -->
-        <RestaurantLine v-if="hasLineUrl" :shopInfo="shopInfo" />
-
-      <!-- end Of After Paid -->
-
-      <!-- customer info -->
-      <div
-        v-if="orderInfo.phoneNumber && !shopInfo.isEC"
-        class="mt-4 text-center"
-      >
-        <CustomerInfo :orderInfo="orderInfo" />
-      </div>
-
-      <!-- Order Body -->
-      <div class="mt-6 mx-6 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12">
-        <!-- Left -->
-        <div>
-          <!-- Title -->
-          <div class="text-xl font-bold text-black text-opacity-30">
-            <div v-if="paid">
-              {{ $t("order.yourOrder") + ": " + orderName }}
+            <div class="mt-2">
+              <shop-info
+                :compact="true"
+                :shopInfo="shopInfo"
+                :isDelivery="orderInfo.isDelivery"
+                :paymentInfo="paymentInfo"
+              />
             </div>
           </div>
 
-          <!-- Details -->
-          <div class="mt-2">
-            <order-info
-              :shopInfo="shopInfo || {}"
-              :orderItems="this.orderItems"
-              :orderInfo="this.orderInfo || {}"
-              :groupData="groupData"
-            ></order-info>
-          </div>
-
-          <!-- Customer info -->
-          <div
-            class="mt-2"
-            v-if="
-              shopInfo &&
-              (shopInfo.isEC || orderInfo.isDelivery) &&
-              hasCustomerInfo
-            "
-          >
-            <UserCustomerInfo
-              :shopInfo="shopInfo"
-              :orderInfo="orderInfo"
-              :orderId="orderId"
-            />
-          </div>
-
-          <!-- Your Message to the Restaurant -->
-          <template v-if="paid && hasMemo">
-            <div class="bg-white rounded-lg p-4 shadow mt-4">
-              <div class="text-xs font-bold text-black text-opacity-60">
-                {{ $t("order.orderMessage") }}
-              </div>
-              <div class="mt-1 text-base">{{ orderInfo.memo }}</div>
-            </div>
-          </template>
-
-          <!-- Canceled Message -->
-          <div
-            v-if="canceled"
-            class="mt-6 bg-red-700 bg-opacity-10 rounded-lg p-4 text-center"
-          >
-            <span class="text-base font-bold text-red-700">{{
-              $t("order.cancelOrderComplete")
-            }}</span>
-          </div>
-
-          <!-- Receipt -->
-          <template v-if="order_accepted && hasStripe">
-            <Receipt />
-          </template>
-
-          <!-- View Menu Page Button -->
-          <div v-if="paid" class="mt-6 text-center">
-            <b-button class="b-reset-tw" @click="handleOpenMenu">
-              <div
-                class="inline-flex justify-center items-center h-12 px-6 rounded-full border-2 border-op-teal"
-              >
-                <div class="text-base font-bold text-op-teal">
-                  {{ $t("order.menu") }}
-                </div>
-              </div>
-            </b-button>
-          </div>
-
-        </div>
-
-        <!-- Right -->
-        <div class="mt-4 lg:mt-0">
-
-          <!-- (After Paid) Restaurant Details -->
-          <div v-if="paid">
-            <!-- Restaurant Info -->
-            <div>
-              <div class="text-xl font-bold text-black text-opacity-30">
-                {{
-                  shopInfo.isEC
-                    ? $t("shopInfo.ecShopDetails")
-                    : $t("shopInfo.restaurantDetails")
-                }}
-              </div>
-
-              <div class="mt-2">
-                <shop-info
-                  :compact="true"
-                  :shopInfo="shopInfo"
-                  :isDelivery="orderInfo.isDelivery"
-                  :paymentInfo="paymentInfo"
-                />
-              </div>
+          <!-- QR Code -->
+          <div class="mt-6" v-if="!shopInfo.isEC">
+            <div class="text-xl font-bold text-black text-opacity-30">
+              {{ $t("order.adminQRCode") }}
             </div>
 
-            <!-- QR Code -->
-            <div class="mt-6" v-if="!shopInfo.isEC">
-              <div class="text-xl font-bold text-black text-opacity-30">
-                {{ $t("order.adminQRCode") }}
-              </div>
-
-              <div class="bg-white rounded-lg shadow p-4 mt-2 text-center">
-                <qrcode
-                  :value="urlAdminOrderPage"
-                  :options="{ width: 160 }"
-                ></qrcode>
-              </div>
+            <div class="bg-white rounded-lg shadow p-4 mt-2 text-center">
+              <qrcode
+                :value="urlAdminOrderPage"
+                :options="{ width: 160 }"
+              ></qrcode>
             </div>
           </div>
         </div>
       </div>
+    </div>
   </div>
 </template>
 
@@ -232,9 +229,7 @@ import { orderPlace } from "@/lib/firebase/functions";
 
 import { order_status } from "@/config/constant";
 import { nameOfOrder } from "@/utils/strings";
-import {
-  stripeCancelIntent,
-} from "@/lib/stripe/stripe";
+import { stripeCancelIntent } from "@/lib/stripe/stripe";
 
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
@@ -249,7 +244,7 @@ export default {
     OrderInfo,
 
     CustomerInfo,
-    
+
     UserCustomerInfo,
 
     // after paid components
@@ -261,18 +256,17 @@ export default {
     OrderStatus,
     Receipt,
     Pickup,
-
   },
   props: {
     shopInfo: {
       type: Object,
       required: true,
     },
-    orderInfo:{
+    orderInfo: {
       type: Object,
       required: true,
     },
-    orderItems:{
+    orderItems: {
       type: Array,
       required: true,
     },
@@ -349,7 +343,7 @@ export default {
     },
 
     handleOpenMenu() {
-      this.$emit("handleOpenMenu")
+      this.$emit("handleOpenMenu");
     },
     async handleCancelPayment() {
       this.$store.commit("setAlert", {

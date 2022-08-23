@@ -26,7 +26,7 @@
         :groupData="groupData"
         @handleOpenMenu="handleOpenMenu"
         @openTransactionsAct="openTransactionsAct"
-        />
+      />
       <OrderPageAfter
         v-else-if="paid"
         :shopInfo="shopInfo"
@@ -36,7 +36,7 @@
         :mode="mode"
         :groupData="groupData"
         @handleOpenMenu="handleOpenMenu"
-        />
+      />
     </template>
     <TransactionsActContents
       :isDelivery="orderInfo.isDelivery || false"
@@ -249,7 +249,7 @@ export default {
         console.log("suceeded");
       } catch (error) {
         console.log("failed");
-       }
+      }
     },
     openTransactionsAct() {
       this.$refs.contents.openTransactionsAct();

@@ -1,313 +1,310 @@
 <template>
   <div>
-      <!-- Back Button (Edit Order) -->
-      <div class="mt-6 mx-6">
-        <b-button
-          :loading="isDeleting"
-          @click="handleOpenMenu"
-          class="b-reset-tw"
-        >
-          <div
-            class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5"
-          >
-            <i class="material-icons text-lg text-op-teal mr-2">arrow_back</i>
-            <div class="text-sm font-bold text-op-teal">
-              {{ $t("button.back") }}
-            </div>
-          </div>
-        </b-button>
-      </div>
-
-      <!-- Restaurant Profile Photo and Name -->
-      <div class="mt-4">
-        <shop-header :shopInfo="shopInfo"></shop-header>
-      </div>
-
-      <!-- Before Paid -->
-      <div class="mt-4 mx-6">
-        <BeforePaidAlert :orderInfo="orderInfo" :shopInfo="shopInfo" />
-      </div>
-      <!-- end of Before Paid -->
-
-      <!-- customer info -->
-      <div
-        v-if="orderInfo.phoneNumber && !shopInfo.isEC"
-        class="mt-4 text-center"
+    <!-- Back Button (Edit Order) -->
+    <div class="mt-6 mx-6">
+      <b-button
+        :loading="isDeleting"
+        @click="handleOpenMenu"
+        class="b-reset-tw"
       >
-        <CustomerInfo :orderInfo="orderInfo" />
+        <div
+          class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5"
+        >
+          <i class="material-icons text-lg text-op-teal mr-2">arrow_back</i>
+          <div class="text-sm font-bold text-op-teal">
+            {{ $t("button.back") }}
+          </div>
+        </div>
+      </b-button>
+    </div>
+
+    <!-- Restaurant Profile Photo and Name -->
+    <div class="mt-4">
+      <shop-header :shopInfo="shopInfo"></shop-header>
+    </div>
+
+    <!-- Before Paid -->
+    <div class="mt-4 mx-6">
+      <BeforePaidAlert :orderInfo="orderInfo" :shopInfo="shopInfo" />
+    </div>
+    <!-- end of Before Paid -->
+
+    <!-- customer info -->
+    <div
+      v-if="orderInfo.phoneNumber && !shopInfo.isEC"
+      class="mt-4 text-center"
+    >
+      <CustomerInfo :orderInfo="orderInfo" />
+    </div>
+
+    <!-- Order Body -->
+    <div class="mt-6 mx-6 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12">
+      <!-- Left -->
+      <div>
+        <!-- Title -->
+        <div class="text-xl font-bold text-black text-opacity-30">
+          <div>
+            {{ $t("order.confirmOrder") }}
+          </div>
+        </div>
+
+        <!-- Details -->
+        <div class="mt-2">
+          <order-info
+            :shopInfo="shopInfo || {}"
+            :orderItems="this.orderItems"
+            :orderInfo="this.orderInfo || {}"
+            :shippingCost="shippingCost"
+            :groupData="groupData"
+            @change="handleTipChange"
+          ></order-info>
+        </div>
+
+        <!-- Customer info -->
+        <div
+          class="mt-2"
+          v-if="
+            shopInfo &&
+            (shopInfo.isEC || orderInfo.isDelivery) &&
+            hasCustomerInfo
+          "
+        >
+          <UserCustomerInfo
+            :shopInfo="shopInfo"
+            :orderInfo="orderInfo"
+            :orderId="orderId"
+          />
+        </div>
       </div>
 
-      <!-- Order Body -->
-      <div class="mt-6 mx-6 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12">
-        <!-- Left -->
+      <!-- Right -->
+      <div class="mt-4 lg:mt-0">
         <div>
-          <!-- Title -->
-          <div class="text-xl font-bold text-black text-opacity-30">
-            <div>
-              {{ $t("order.confirmOrder") }}
-            </div>
-          </div>
-
-          <!-- Details -->
-          <div class="mt-2">
-            <order-info
-              :shopInfo="shopInfo || {}"
-              :orderItems="this.orderItems"
-              :orderInfo="this.orderInfo || {}"
-              :shippingCost="shippingCost"
-              :groupData="groupData"
-              @change="handleTipChange"
-            ></order-info>
-          </div>
-
-          <!-- Customer info -->
+          <!-- For EC and Delivery -->
           <div
-            class="mt-2"
-            v-if="
-              shopInfo &&
-              (shopInfo.isEC || orderInfo.isDelivery) &&
-              hasCustomerInfo
-            "
+            v-if="shopInfo.isEC || orderInfo.isDelivery"
+            class="text-xl font-bold text-black text-opacity-30"
           >
-            <UserCustomerInfo
+            {{ $t("order.ec.formtitle") }}
+          </div>
+
+          <!-- For EC and Delivery -->
+          <div
+            v-if="shopInfo.isEC || orderInfo.isDelivery"
+            class="bg-white rounded-lg shadow p-4 mb-4 mt-2"
+          >
+            <ECCustomer
+              ref="ecCustomerRef"
+              :user="user"
               :shopInfo="shopInfo"
               :orderInfo="orderInfo"
-              :orderId="orderId"
+              @updateLocation="updateLocation"
+            />
+          </div>
+          <!-- End of EC and Delivery -->
+
+          <!-- map for delivery -->
+          <div class="mt-4" v-if="orderInfo.isDelivery">
+            <span
+              v-if="
+                $refs.ecCustomerRef &&
+                $refs.ecCustomerRef.ecErrors['location'].length > 0
+              "
+              class="text-red-700 font-bold"
+            >
+              <div
+                v-for="(error, key) in $refs.ecCustomerRef.ecErrors['location']"
+              >
+                {{ $t(error) }}
+              </div>
+            </span>
+            <OrderPageMap
+              ref="orderPageMapRef"
+              @updateHome="updateHome"
+              :shopInfo="shopInfo"
+              :fullAddress="
+                $refs.ecCustomerRef && $refs.ecCustomerRef.fullAddress
+              "
+              :deliveryInfo="deliveryData"
             />
           </div>
 
-        </div>
-
-        <!-- Right -->
-        <div class="mt-4 lg:mt-0">
-          <div>
-            <!-- For EC and Delivery -->
-            <div
-              v-if="shopInfo.isEC || orderInfo.isDelivery"
-              class="text-xl font-bold text-black text-opacity-30"
-            >
-              {{ $t("order.ec.formtitle") }}
+          <!-- Time to Pickup -->
+          <div v-if="!shopInfo.isEC">
+            <div class="text-xl font-bold text-black text-opacity-30">
+              <span v-if="orderInfo.isDelivery">
+                {{ $t("order.deliveryTimeRequested") }}
+              </span>
+              <span v-else>
+                {{ $t("order.timeRequested") }}
+              </span>
             </div>
-            
-            <!-- For EC and Delivery -->
-            <div
-              v-if="shopInfo.isEC || orderInfo.isDelivery"
-              class="bg-white rounded-lg shadow p-4 mb-4 mt-2"
-            >
-              <ECCustomer
-                ref="ecCustomerRef"
-                :user="user"
+
+            <div class="mt-2">
+              <time-to-pickup
+                v-if="shopInfo.businessDay"
                 :shopInfo="shopInfo"
                 :orderInfo="orderInfo"
-                @updateLocation="updateLocation"
+                :isDelivery="orderInfo.isDelivery || false"
+                ref="time"
+                @notAvailable="handleNotAvailable"
               />
-            </div>
-            <!-- End of EC and Delivery -->
-
-            <!-- map for delivery -->
-            <div class="mt-4" v-if="orderInfo.isDelivery">
-              <span
-                v-if="
-                  $refs.ecCustomerRef &&
-                  $refs.ecCustomerRef.ecErrors['location'].length > 0
-                "
-                class="text-red-700 font-bold"
-              >
-                <div
-                  v-for="(error, key) in $refs.ecCustomerRef.ecErrors[
-                    'location'
-                  ]"
-                >
-                  {{ $t(error) }}
-                </div>
-              </span>
-              <OrderPageMap
-                ref="orderPageMapRef"
-                @updateHome="updateHome"
-                :shopInfo="shopInfo"
-                :fullAddress="
-                  $refs.ecCustomerRef && $refs.ecCustomerRef.fullAddress
-                "
-                :deliveryInfo="deliveryData"
-              />
-            </div>
-
-            <!-- Time to Pickup -->
-            <div v-if="!shopInfo.isEC">
-              <div class="text-xl font-bold text-black text-opacity-30">
-                <span v-if="orderInfo.isDelivery">
-                  {{ $t("order.deliveryTimeRequested") }}
-                </span>
-                <span v-else>
-                  {{ $t("order.timeRequested") }}
-                </span>
-              </div>
-
-              <div class="mt-2">
-                <time-to-pickup
-                  v-if="shopInfo.businessDay"
-                  :shopInfo="shopInfo"
-                  :orderInfo="orderInfo"
-                  :isDelivery="orderInfo.isDelivery || false"
-                  ref="time"
-                  @notAvailable="handleNotAvailable"
-                />
-              </div>
-            </div>
-
-            <!-- Order Notice -->
-            <OrderNotice :shopInfo="shopInfo" />
-
-            <!-- Message -->
-            <template v-if="shopInfo && shopInfo.acceptUserMessage">
-              <div class="mt-6"
-                :class="userMessageError ? 'p-2 rounded border-4 border-red-700' : ''"
-                   >
-                <div class="text-xl font-bold text-black text-opacity-30">
-                  {{ $t("order.orderMessage") }}
-                </div>
-
-                <div class="bg-white rounded-lg shadow p-4 mt-2">
-                  <b-input
-                    v-model="memo"
-                    type="textarea"
-                    :placeholder="$t('order.enterMessage')"
-                    class="w-full"
-                  ></b-input>
-                  <div :class="userMessageError ? 'text-red-700 font-bold':''">
-                    メッセージは500文字以内で入力してください。
-                  </div>
-                </div>
-              </div>
-            </template>
-
-            <!--Act on Specified Commercial Transactions -->
-            <div class="mt-6">
-              <SpecifiedCommercialTransactions
-                :shopInfo="shopInfo"
-                @openTransactionsAct="openTransactionsAct()"
-              />
-            </div>
-
-            <!-- Payment -->
-            <div class="mt-6">
-              <div class="text-xl font-bold text-black text-opacity-30">
-                {{ $t("order.yourPayment") }}
-              </div>
-
-              <!-- Pay Online -->
-              <div v-if="showPayment" class="mt-2">
-                <stripe-card
-                  @change="handleCardStateChange"
-                  ref="stripe"
-                  :stripeJCB="stripeJCB"
-                ></stripe-card>
-
-                <div class="mt-6 text-center">
-                  <b-button
-                    :loading="isPaying"
-                    :disabled="
-                      !cardState.complete || notAvailable || notSubmitAddress
-                    "
-                    @click="handlePayment"
-                    class="b-reset-tw"
-                  >
-                    <div
-                      class="inline-flex justify-center items-center h-16 px-6 rounded-full bg-op-teal shadow"
-                      style="min-width: 288px"
-                    >
-                      <div class="text-xl font-bold text-white">
-                        {{
-                          mode === "mo"
-                            ? $t("order.placeOrderMo")
-                            : $t("order.placeOrder")
-                        }}
-                        <!-- {{ $n(orderInfo.total + tip, "currency") }} -->
-                      </div>
-                    </div>
-                  </b-button>
-                </div>
-                <div v-if="mode === 'mo'">
-                  <div
-                    class="mt-2 text-center text-xs text-black text-opacity-50"
-                  >
-                    {{ $t("order.placeOrderMoNote") }}
-                  </div>
-                </div>
-              </div>
-
-              <!-- Pay at Restaurant -->
-              <div v-else class="mt-2">
-                <div class="bg-black bg-opacity-5 rounded-lg p-4">
-                  <div class="text-sm">
-                    {{ $t("order.pleasePayAtRestaurant") }}
-                  </div>
-                </div>
-              </div>
-
-              <!-- Pay Button -->
-              <div v-if="inStorePayment" class="mt-4 text-center">
-                <div class="text-sm font-bold text-black text-opacity-60">
-                  {{ $t("order.or") }}
-                </div>
-
-                <div class="mt-4">
-                  <b-button
-                    :loading="isPlacing"
-                    :disabled="notAvailable || notSubmitAddress"
-                    @click="handleNoPayment"
-                    class="b-reset-tw"
-                  >
-                    <div
-                      class="inline-flex justify-center items-center h-16 px-6 rounded-full bg-op-teal shadow"
-                      style="min-width: 288px"
-                    >
-                      <div class="text-xl font-bold text-white">
-                        {{
-                          mode === "mo"
-                            ? $t("order.placeOrderNoPaymentMo")
-                            : $t("order.placeOrderNoPayment")
-                        }}
-                      </div>
-                    </div>
-                  </b-button>
-                </div>
-                <div v-if="mode !== 'mo'">
-                  <div
-                    class="mt-2 text-sm font-bold text-black text-opacity-60"
-                  >
-                    {{ $t("order.placeOrderNoPaymentNote") }}
-                  </div>
-                </div>
-              </div>
-
-              <!-- Error message for ec and delivery -->
-              <div
-                v-if="
-                  requireAddress &&
-                  $refs.ecCustomerRef &&
-                  $refs.ecCustomerRef.hasEcError
-                "
-                class="text-center text-red-700 font-bold mt-2"
-              >
-                {{ $t("order.alertReqireAddress") }}
-              </div>
-
-              <!-- Send SMS Checkbox -->
-              <div v-if="!isLineEnabled" class="mt-6">
-                <div class="bg-black bg-opacity-5 rounded-lg p-4">
-                  <b-checkbox v-model="sendSMS">
-                    <div class="text-sm font-bold">
-                      {{ $t("order.sendSMS") }}
-                    </div>
-                  </b-checkbox>
-                </div>
-              </div>
             </div>
           </div>
 
+          <!-- Order Notice -->
+          <OrderNotice :shopInfo="shopInfo" />
+
+          <!-- Message -->
+          <template v-if="shopInfo && shopInfo.acceptUserMessage">
+            <div
+              class="mt-6"
+              :class="
+                userMessageError ? 'p-2 rounded border-4 border-red-700' : ''
+              "
+            >
+              <div class="text-xl font-bold text-black text-opacity-30">
+                {{ $t("order.orderMessage") }}
+              </div>
+
+              <div class="bg-white rounded-lg shadow p-4 mt-2">
+                <b-input
+                  v-model="memo"
+                  type="textarea"
+                  :placeholder="$t('order.enterMessage')"
+                  class="w-full"
+                ></b-input>
+                <div :class="userMessageError ? 'text-red-700 font-bold' : ''">
+                  メッセージは500文字以内で入力してください。
+                </div>
+              </div>
+            </div>
+          </template>
+
+          <!--Act on Specified Commercial Transactions -->
+          <div class="mt-6">
+            <SpecifiedCommercialTransactions
+              :shopInfo="shopInfo"
+              @openTransactionsAct="openTransactionsAct()"
+            />
+          </div>
+
+          <!-- Payment -->
+          <div class="mt-6">
+            <div class="text-xl font-bold text-black text-opacity-30">
+              {{ $t("order.yourPayment") }}
+            </div>
+
+            <!-- Pay Online -->
+            <div v-if="showPayment" class="mt-2">
+              <stripe-card
+                @change="handleCardStateChange"
+                ref="stripe"
+                :stripeJCB="stripeJCB"
+              ></stripe-card>
+
+              <div class="mt-6 text-center">
+                <b-button
+                  :loading="isPaying"
+                  :disabled="
+                    !cardState.complete || notAvailable || notSubmitAddress
+                  "
+                  @click="handlePayment"
+                  class="b-reset-tw"
+                >
+                  <div
+                    class="inline-flex justify-center items-center h-16 px-6 rounded-full bg-op-teal shadow"
+                    style="min-width: 288px"
+                  >
+                    <div class="text-xl font-bold text-white">
+                      {{
+                        mode === "mo"
+                          ? $t("order.placeOrderMo")
+                          : $t("order.placeOrder")
+                      }}
+                      <!-- {{ $n(orderInfo.total + tip, "currency") }} -->
+                    </div>
+                  </div>
+                </b-button>
+              </div>
+              <div v-if="mode === 'mo'">
+                <div
+                  class="mt-2 text-center text-xs text-black text-opacity-50"
+                >
+                  {{ $t("order.placeOrderMoNote") }}
+                </div>
+              </div>
+            </div>
+
+            <!-- Pay at Restaurant -->
+            <div v-else class="mt-2">
+              <div class="bg-black bg-opacity-5 rounded-lg p-4">
+                <div class="text-sm">
+                  {{ $t("order.pleasePayAtRestaurant") }}
+                </div>
+              </div>
+            </div>
+
+            <!-- Pay Button -->
+            <div v-if="inStorePayment" class="mt-4 text-center">
+              <div class="text-sm font-bold text-black text-opacity-60">
+                {{ $t("order.or") }}
+              </div>
+
+              <div class="mt-4">
+                <b-button
+                  :loading="isPlacing"
+                  :disabled="notAvailable || notSubmitAddress"
+                  @click="handleNoPayment"
+                  class="b-reset-tw"
+                >
+                  <div
+                    class="inline-flex justify-center items-center h-16 px-6 rounded-full bg-op-teal shadow"
+                    style="min-width: 288px"
+                  >
+                    <div class="text-xl font-bold text-white">
+                      {{
+                        mode === "mo"
+                          ? $t("order.placeOrderNoPaymentMo")
+                          : $t("order.placeOrderNoPayment")
+                      }}
+                    </div>
+                  </div>
+                </b-button>
+              </div>
+              <div v-if="mode !== 'mo'">
+                <div class="mt-2 text-sm font-bold text-black text-opacity-60">
+                  {{ $t("order.placeOrderNoPaymentNote") }}
+                </div>
+              </div>
+            </div>
+
+            <!-- Error message for ec and delivery -->
+            <div
+              v-if="
+                requireAddress &&
+                $refs.ecCustomerRef &&
+                $refs.ecCustomerRef.hasEcError
+              "
+              class="text-center text-red-700 font-bold mt-2"
+            >
+              {{ $t("order.alertReqireAddress") }}
+            </div>
+
+            <!-- Send SMS Checkbox -->
+            <div v-if="!isLineEnabled" class="mt-6">
+              <div class="bg-black bg-opacity-5 rounded-lg p-4">
+                <b-checkbox v-model="sendSMS">
+                  <div class="text-sm font-bold">
+                    {{ $t("order.sendSMS") }}
+                  </div>
+                </b-checkbox>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
+    </div>
   </div>
 </template>
 
@@ -335,10 +332,7 @@ import { orderPlace } from "@/lib/firebase/functions";
 
 import { order_status } from "@/config/constant";
 import { nameOfOrder } from "@/utils/strings";
-import {
-  stripeCreateIntent,
-  stripeReceipt,
-} from "@/lib/stripe/stripe";
+import { stripeCreateIntent, stripeReceipt } from "@/lib/stripe/stripe";
 
 import { costCal } from "@/utils/commonUtils";
 
@@ -362,20 +356,17 @@ export default {
     BeforePaidAlert,
     SpecifiedCommercialTransactions,
     OrderPageMap,
-
-
-
   },
   props: {
     shopInfo: {
       type: Object,
       required: true,
     },
-    orderInfo:{
+    orderInfo: {
       type: Object,
       required: true,
     },
-    orderItems:{
+    orderItems: {
       type: Array,
       required: true,
     },
@@ -456,7 +447,7 @@ export default {
     },
     userMessageError() {
       return this.shopInfo.acceptUserMessage && this.memo.length > 500;
-    }
+    },
   },
   // end of computed
   watch: {
@@ -495,7 +486,7 @@ export default {
     },
 
     handleOpenMenu() {
-      this.$emit("handleOpenMenu")
+      this.$emit("handleOpenMenu");
     },
     handleNotAvailable(flag) {
       console.log("handleNotAvailable", flag);
@@ -518,7 +509,7 @@ export default {
       } catch (error) {
         this.isDeleting = false;
         console.log("failed");
-       }
+      }
     },
     async saveLiffCustomer() {
       const uid = this.user.uid;
@@ -532,7 +523,7 @@ export default {
     },
     async handlePayment() {
       if (this.userMessageError) {
-        return ;
+        return;
       }
       if (this.requireAddress) {
         if (this.$refs.ecCustomerRef.hasEcError) {
@@ -591,7 +582,7 @@ export default {
     },
     async handleNoPayment() {
       if (this.userMessageError) {
-        return ;
+        return;
       }
       if (this.requireAddress) {
         if (this.$refs.ecCustomerRef && this.$refs.ecCustomerRef.hasEcError) {
@@ -601,7 +592,7 @@ export default {
           await this.$refs.ecCustomerRef.saveAddress();
         }
       }
-      
+
       const timeToPickup = this.shopInfo.isEC
         ? firebase.firestore.Timestamp.now()
         : this.$refs.time.timeToPickup();
@@ -637,7 +628,7 @@ export default {
       }
     },
     openTransactionsAct() {
-      this.$emit("openTransactionsAct")
+      this.$emit("openTransactionsAct");
     },
   },
 };
