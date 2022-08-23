@@ -13,7 +13,7 @@ import { OrderInfoData, OrderItem } from "@/models/orderInfo";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { MenuData } from "@/models/menu";
 
-import { regionalSettings, partners, stripe_regions } from "@/config/constant";
+import { regionalSettings, partners, stripe_regions, soundFiles } from "@/config/constant";
 import { ownPlateConfig, mo_prefixes } from "@/config/project";
 
 import { defaultHeader } from "@/config/header";
@@ -147,14 +147,15 @@ export const forcedError = (key: string, ctx: any) => {
         console.log("order: call play");
       }
     },
-    getSoundIndex(nameKey) {
-      if (nameKey) {
-        const index = soundFiles.findIndex((data) => data.nameKey === nameKey);
-        return index >= 0 ? index : 0;
-      }
-      return 0;
-    },
 */
+export const getSoundIndex = (nameKey: string) => {
+  if (nameKey) {
+    const index = soundFiles.findIndex((data) => data.nameKey === nameKey);
+    return index >= 0 ? index : 0;
+  }
+  return 0;
+};
+
 export const getShopOwner = async (uid: string): Promise<ShopOwnerData> => {
   const defaultData = { hidePrivacy: false };
   const admin = (await getDoc(doc(db, `/admins/${uid}`))).data();

@@ -167,9 +167,11 @@
 
 <script>
 import { db, firestore } from "@/plugins/firebase";
-import { soundFiles } from "@/config/constant";
 
-import IncompleteOrders from "./IncompleteOrders";
+import { soundFiles } from "@/config/constant";
+import { getSoundIndex } from "@/utils/utils";
+
+import IncompleteOrders from "@/app/admin/Notifications/IncompleteOrders.vue";
 
 export default {
   components: {
@@ -199,7 +201,7 @@ export default {
   },
   created() {
     this.notificationConfig = this.notificationData;
-    this.soundIndex = this.getSoundIndex(this.notificationData.nameKey);
+    this.soundIndex = getSoundIndex(this.notificationData.nameKey);
   },
   mounted() {
     this.isActive = this.NotificationSettingsPopup;

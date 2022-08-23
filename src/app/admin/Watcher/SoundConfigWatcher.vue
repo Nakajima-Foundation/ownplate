@@ -3,6 +3,7 @@
 <script>
 import { db, firestore } from "@/plugins/firebase";
 import { soundFiles } from "@/config/constant";
+import { getSoundIndex } from "@/utils/utils";
 
 export default {
   props: {
@@ -18,7 +19,7 @@ export default {
       this.$store.commit("setSoundOn", newData);
     },
     async "notificationConfig.nameKey"(newData) {
-      this.soundIndex = this.getSoundIndex(newData);
+      this.soundIndex = getSoundIndex(newData);
     },
     async soundIndex(newData) {
       this.$store.commit("setSoundFile", soundFiles[newData].file);

@@ -66,13 +66,6 @@ const mixin = {
         console.log("order: call play");
       }
     },
-    getSoundIndex(nameKey) {
-      if (nameKey) {
-        const index = soundFiles.findIndex((data) => data.nameKey === nameKey);
-        return index >= 0 ? index : 0;
-      }
-      return 0;
-    },
     convOrderStateForText(orderState, orderInfo) {
       if (orderInfo?.isEC) {
         if (orderState === "ready_to_pickup") {
