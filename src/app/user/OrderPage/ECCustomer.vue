@@ -91,7 +91,7 @@
           type="text"
           :placeholder="$t('order.ec.address')"
           v-model="customerInfo.address"
-          maxlength="100"
+          maxlength="150"
         />
       </b-field>
     </div>
@@ -116,7 +116,7 @@
           type="text"
           :placeholder="$t('order.ec.name')"
           v-model="customerInfo.name"
-          maxlength="30"
+          maxlength="50"
         />
       </b-field>
     </div>
@@ -140,7 +140,7 @@
             type="text"
             :placeholder="$t('order.ec.email')"
             v-model="customerInfo.email"
-            maxlength="30"
+            maxlength="100"
           />
         </b-field>
       </div>
