@@ -213,11 +213,9 @@ import ShopHeader from "@/app/user/Restaurant/ShopHeader.vue";
 import ShopInfo from "@/app/user/Restaurant/ShopInfo.vue";
 import FavoriteButton from "@/app/user/Restaurant/FavoriteButton.vue";
 
-import TransactionsActContents from "@/app/user/TransactionsAct/Contents.vue";
-
-import PhoneLogin from "@/app/auth/PhoneLogin.vue";
-
 import OrderInfo from "@/app/user/OrderPage/OrderInfo.vue";
+
+import CustomerInfo from "@/app/user/OrderPage/BeforePaid/CustomerInfo.vue";
 
 import UserCustomerInfo from "@/app/user/OrderPage/AfterPaid/UserCustomerInfo.vue";
 import ThankYou from "@/app/user/OrderPage/AfterPaid/ThankYou.vue";
@@ -229,45 +227,31 @@ import OrderStatus from "@/app/user/OrderPage/AfterPaid/OrderStatus.vue";
 import Receipt from "@/app/user/OrderPage/AfterPaid/Receipt.vue";
 import Pickup from "@/app/user/OrderPage/AfterPaid/Pickup.vue";
 
-import StripeCard from "@/app/user/OrderPage/BeforePaid/StripeCard.vue";
-import TimeToPickup from "@/app/user/OrderPage/BeforePaid/TimeToPickup.vue";
-import ECCustomer from "@/app/user/OrderPage/BeforePaid/ECCustomer.vue";
-import OrderNotice from "@/app/user/OrderPage/BeforePaid/OrderNotice.vue";
-import CustomerInfo from "@/app/user/OrderPage/BeforePaid/CustomerInfo.vue";
-import BeforePaidAlert from "@/app/user/OrderPage/BeforePaid/BeforePaidAlert.vue";
-import SpecifiedCommercialTransactions from "@/app/user/OrderPage/BeforePaid/SpecifiedCommercialTransactions.vue";
-import OrderPageMap from "@/app/user/OrderPage/BeforePaid/Map.vue";
-
-import { db, firestore } from "@/plugins/firebase";
+import { db } from "@/plugins/firebase";
 import { orderPlace } from "@/lib/firebase/functions";
 
-import { order_status, order_status_keys } from "@/config/constant";
+import { order_status } from "@/config/constant";
 import { nameOfOrder } from "@/utils/strings";
 import {
-  stripeCreateIntent,
   stripeCancelIntent,
-  stripeReceipt,
 } from "@/lib/stripe/stripe";
-
-import { costCal } from "@/utils/commonUtils";
 
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
-import { isEmpty, getOrderItems } from "@/utils/utils";
+import { isEmpty } from "@/utils/utils";
 
 export default {
   name: "Order",
   components: {
     ShopHeader,
-    OrderInfo,
-    PhoneLogin,
     ShopInfo,
-    StripeCard,
-    TimeToPickup,
-
-    UserCustomerInfo,
-    OrderPageMap,
     FavoriteButton,
+    OrderInfo,
+
+    CustomerInfo,
+    
+    UserCustomerInfo,
+
     // after paid components
     ThankYou,
     ThankYouFromRestaurant,
@@ -276,17 +260,8 @@ export default {
     StripeStatus,
     OrderStatus,
     Receipt,
-
     Pickup,
 
-    BeforePaidAlert,
-    CustomerInfo,
-    SpecifiedCommercialTransactions,
-
-    ECCustomer,
-    OrderNotice,
-
-    TransactionsActContents,
   },
   props: {
     shopInfo: {
@@ -305,19 +280,7 @@ export default {
       type: Object,
       required: true,
     },
-    deliveryData: {
-      type: Object,
-      required: true,
-    },
-    notFound: {
-      type: Boolean,
-      required: false,
-    },
     mode: {
-      type: String,
-      required: false,
-    },
-    moPrefix: {
       type: String,
       required: false,
     },
@@ -386,13 +349,7 @@ export default {
     },
 
     handleOpenMenu() {
-      if (this.inLiff) {
-        this.$router.push(this.liff_base_path + "/r/" + this.restaurantId());
-      } else if (this.mode === "mo") {
-        this.$router.push(`/${this.moPrefix}/r/${this.restaurantId()}`);
-      } else {
-        this.$router.push(`/r/${this.restaurantId()}`);
-      }
+      this.$emit("handleOpenMenu")
     },
     async handleCancelPayment() {
       this.$store.commit("setAlert", {

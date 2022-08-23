@@ -1,7 +1,7 @@
 <template>
   <div>
       <!-- Back Button (Edit Order) -->
-      <div v-if="just_validated" class="mt-6 mx-6">
+      <div class="mt-6 mx-6">
         <b-button
           :loading="isDeleting"
           @click="handleOpenMenu"
@@ -22,7 +22,6 @@
       <div class="mt-4">
         <shop-header :shopInfo="shopInfo"></shop-header>
       </div>
-
 
       <!-- Before Paid -->
       <div class="mt-4 mx-6">
@@ -81,8 +80,7 @@
 
         <!-- Right -->
         <div class="mt-4 lg:mt-0">
-          <!-- (Before Paid) Order Details -->
-          <div v-if="just_validated">
+          <div>
             <!-- For EC and Delivery -->
             <div
               v-if="shopInfo.isEC || orderInfo.isDelivery"
@@ -90,7 +88,7 @@
             >
               {{ $t("order.ec.formtitle") }}
             </div>
-
+            
             <!-- For EC and Delivery -->
             <div
               v-if="shopInfo.isEC || orderInfo.isDelivery"
@@ -307,7 +305,6 @@
               </div>
             </div>
           </div>
-          <!-- end of just_validated -->
 
         </div>
       </div>
@@ -318,24 +315,11 @@
 import firebase from "firebase/compat/app";
 
 import ShopHeader from "@/app/user/Restaurant/ShopHeader.vue";
-import ShopInfo from "@/app/user/Restaurant/ShopInfo.vue";
 import FavoriteButton from "@/app/user/Restaurant/FavoriteButton.vue";
-
-import TransactionsActContents from "@/app/user/TransactionsAct/Contents.vue";
-
-import PhoneLogin from "@/app/auth/PhoneLogin.vue";
 
 import OrderInfo from "@/app/user/OrderPage/OrderInfo.vue";
 
 import UserCustomerInfo from "@/app/user/OrderPage/AfterPaid/UserCustomerInfo.vue";
-import ThankYou from "@/app/user/OrderPage/AfterPaid/ThankYou.vue";
-import ThankYouFromRestaurant from "@/app/user/OrderPage/AfterPaid/ThankYouFromRestaurant.vue";
-import LineButton from "@/app/user/OrderPage/AfterPaid/LineButton.vue";
-import RestaurantLine from "@/app/user/OrderPage/AfterPaid/RestaurantLine.vue";
-import StripeStatus from "@/app/user/OrderPage/AfterPaid/StripeStatus.vue";
-import OrderStatus from "@/app/user/OrderPage/AfterPaid/OrderStatus.vue";
-import Receipt from "@/app/user/OrderPage/AfterPaid/Receipt.vue";
-import Pickup from "@/app/user/OrderPage/AfterPaid/Pickup.vue";
 
 import StripeCard from "@/app/user/OrderPage/BeforePaid/StripeCard.vue";
 import TimeToPickup from "@/app/user/OrderPage/BeforePaid/TimeToPickup.vue";
@@ -349,11 +333,10 @@ import OrderPageMap from "@/app/user/OrderPage/BeforePaid/Map.vue";
 import { db, firestore } from "@/plugins/firebase";
 import { orderPlace } from "@/lib/firebase/functions";
 
-import { order_status, order_status_keys } from "@/config/constant";
+import { order_status } from "@/config/constant";
 import { nameOfOrder } from "@/utils/strings";
 import {
   stripeCreateIntent,
-  stripeCancelIntent,
   stripeReceipt,
 } from "@/lib/stripe/stripe";
 
@@ -361,40 +344,27 @@ import { costCal } from "@/utils/commonUtils";
 
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
-import { isEmpty, getOrderItems } from "@/utils/utils";
-
 export default {
   name: "Order",
   components: {
     ShopHeader,
+    FavoriteButton,
+
     OrderInfo,
-    PhoneLogin,
-    ShopInfo,
-    StripeCard,
-    TimeToPickup,
 
     UserCustomerInfo,
-    OrderPageMap,
-    FavoriteButton,
-    // after paid components
-    ThankYou,
-    ThankYouFromRestaurant,
-    LineButton,
-    RestaurantLine,
-    StripeStatus,
-    OrderStatus,
-    Receipt,
-
-    Pickup,
-
-    BeforePaidAlert,
-    CustomerInfo,
-    SpecifiedCommercialTransactions,
-
+    // before paid
+    StripeCard,
+    TimeToPickup,
     ECCustomer,
     OrderNotice,
+    CustomerInfo,
+    BeforePaidAlert,
+    SpecifiedCommercialTransactions,
+    OrderPageMap,
 
-    TransactionsActContents,
+
+
   },
   props: {
     shopInfo: {
@@ -417,15 +387,7 @@ export default {
       type: Object,
       required: true,
     },
-    notFound: {
-      type: Boolean,
-      required: false,
-    },
     mode: {
-      type: String,
-      required: false,
-    },
-    moPrefix: {
       type: String,
       required: false,
     },
@@ -473,9 +435,6 @@ export default {
     orderName() {
       return nameOfOrder(this.orderInfo);
     },
-    just_validated() {
-      return this.orderInfo.status === order_status.validation_ok;
-    },
     hasCustomerInfo() {
       return this.orderInfo.status > order_status.validation_ok;
     },
@@ -503,16 +462,6 @@ export default {
   watch: {
     shopInfo(newValue) {
       this.setPostage();
-    },
-    isUser() {
-      if (this.isUser) {
-        this.loadUserData();
-      }
-    },
-    isLiffUser() {
-      if (this.isLiffUser) {
-        this.loadUserData();
-      }
     },
   },
   methods: {
@@ -546,13 +495,7 @@ export default {
     },
 
     handleOpenMenu() {
-      if (this.inLiff) {
-        this.$router.push(this.liff_base_path + "/r/" + this.restaurantId());
-      } else if (this.mode === "mo") {
-        this.$router.push(`/${this.moPrefix}/r/${this.restaurantId()}`);
-      } else {
-        this.$router.push(`/r/${this.restaurantId()}`);
-      }
+      this.$emit("handleOpenMenu")
     },
     handleNotAvailable(flag) {
       console.log("handleNotAvailable", flag);
@@ -694,7 +637,7 @@ export default {
       }
     },
     openTransactionsAct() {
-      this.$refs.contents.openTransactionsAct();
+      this.$emit("openTransactionsAct")
     },
   },
 };

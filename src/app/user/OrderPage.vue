@@ -3,7 +3,7 @@
     <template v-if="!isUser && !isLiffUser">
       <RequireLogin :loginVisible="loginVisible" @dismissed="handleDismissed" />
     </template>
-    <template v-else-if="notFound">
+    <template v-else-if="notFound || menuNotFound">
       <not-found />
     </template>
     <template v-else-if="orderError">
@@ -22,10 +22,10 @@
         :orderItems="orderItems"
         :paymentInfo="paymentInfo"
         :deliveryData="deliveryData"
-        :notFound="notFound"
         :mode="mode"
-        :moPrefix="moPrefix"
         :groupData="groupData"
+        @handleOpenMenu="handleOpenMenu"
+        @openTransactionsAct="openTransactionsAct"
         />
       <OrderPageAfter
         v-else-if="paid"
@@ -33,11 +33,9 @@
         :orderInfo="orderInfo"
         :orderItems="orderItems"
         :paymentInfo="paymentInfo"
-        :deliveryData="deliveryData"
-        :notFound="notFound"
         :mode="mode"
-        :moPrefix="moPrefix"
         :groupData="groupData"
+        @handleOpenMenu="handleOpenMenu"
         />
     </template>
     <TransactionsActContents
@@ -59,7 +57,7 @@ import TransactionsActContents from "@/app/user/TransactionsAct/Contents.vue";
 import OrderPageBefore from "@/app/user/OrderPageBefore.vue";
 import OrderPageAfter from "@/app/user/OrderPageAfter.vue";
 
-import { db, firestore } from "@/plugins/firebase";
+import { db } from "@/plugins/firebase";
 
 import { order_status, order_status_keys } from "@/config/constant";
 import { nameOfOrder } from "@/utils/strings";
@@ -126,6 +124,7 @@ export default {
     return {
       loginVisible: false,
       orderInfo: {},
+      menuNotFound: null,
       menuObj: null,
       detacher: [],
     };
@@ -222,7 +221,7 @@ export default {
             }
           },
           (error) => {
-            this.notFound = true;
+            this.menuNotFound = true;
           }
         );
       this.detacher = [order_detacher];
