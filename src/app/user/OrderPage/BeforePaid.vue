@@ -175,7 +175,7 @@
                   class="w-full"
                 ></b-input>
                 <div :class="userMessageError ? 'text-red-700 font-bold' : ''">
-                  メッセージは500文字以内で入力してください。
+                  {{ $t("validationError.memo.length") }}
                 </div>
               </div>
             </div>

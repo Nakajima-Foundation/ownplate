@@ -981,6 +981,9 @@
     "name": {
       "empty": "Please enter your full name"
     },
+    "memo": {
+      "length": "Please enter your message within 500 characters."
+    },
     "location": {
       "noLocation": "After entering the address, please update the delivery distination on the map. You can also update by tapping "
     },
