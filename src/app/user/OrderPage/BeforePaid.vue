@@ -315,14 +315,13 @@ import ShopHeader from "@/app/user/Restaurant/ShopHeader.vue";
 import FavoriteButton from "@/app/user/Restaurant/FavoriteButton.vue";
 
 import OrderInfo from "@/app/user/OrderPage/OrderInfo.vue";
-
-import UserCustomerInfo from "@/app/user/OrderPage/AfterPaid/UserCustomerInfo.vue";
+import UserCustomerInfo from "@/app/user/OrderPage/UserCustomerInfo.vue";
+import CustomerInfo from "@/app/user/OrderPage/CustomerInfo.vue";
 
 import StripeCard from "@/app/user/OrderPage/BeforePaid/StripeCard.vue";
 import TimeToPickup from "@/app/user/OrderPage/BeforePaid/TimeToPickup.vue";
 import ECCustomer from "@/app/user/OrderPage/BeforePaid/ECCustomer.vue";
 import OrderNotice from "@/app/user/OrderPage/BeforePaid/OrderNotice.vue";
-import CustomerInfo from "@/app/user/OrderPage/BeforePaid/CustomerInfo.vue";
 import BeforePaidAlert from "@/app/user/OrderPage/BeforePaid/BeforePaidAlert.vue";
 import SpecifiedCommercialTransactions from "@/app/user/OrderPage/BeforePaid/SpecifiedCommercialTransactions.vue";
 import OrderPageMap from "@/app/user/OrderPage/BeforePaid/Map.vue";
@@ -345,14 +344,14 @@ export default {
     FavoriteButton,
 
     OrderInfo,
-
     UserCustomerInfo,
+    CustomerInfo,
+
     // before paid
     StripeCard,
     TimeToPickup,
     ECCustomer,
     OrderNotice,
-    CustomerInfo,
     BeforePaidAlert,
     SpecifiedCommercialTransactions,
     OrderPageMap,

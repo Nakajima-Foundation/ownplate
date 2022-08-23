@@ -54,8 +54,8 @@ import RequireLogin from "@/components/RequireLogin.vue";
 
 import TransactionsActContents from "@/app/user/TransactionsAct/Contents.vue";
 
-import OrderPageBefore from "@/app/user/OrderPageBefore.vue";
-import OrderPageAfter from "@/app/user/OrderPageAfter.vue";
+import OrderPageBefore from "@/app/user/OrderPage/BeforePaid.vue";
+import OrderPageAfter from "@/app/user/OrderPage/AfterPaid.vue";
 
 import { db } from "@/plugins/firebase";
 

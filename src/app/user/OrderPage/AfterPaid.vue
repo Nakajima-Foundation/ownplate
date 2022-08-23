@@ -211,10 +211,9 @@ import ShopInfo from "@/app/user/Restaurant/ShopInfo.vue";
 import FavoriteButton from "@/app/user/Restaurant/FavoriteButton.vue";
 
 import OrderInfo from "@/app/user/OrderPage/OrderInfo.vue";
+import CustomerInfo from "@/app/user/OrderPage/CustomerInfo.vue";
+import UserCustomerInfo from "@/app/user/OrderPage/UserCustomerInfo.vue";
 
-import CustomerInfo from "@/app/user/OrderPage/BeforePaid/CustomerInfo.vue";
-
-import UserCustomerInfo from "@/app/user/OrderPage/AfterPaid/UserCustomerInfo.vue";
 import ThankYou from "@/app/user/OrderPage/AfterPaid/ThankYou.vue";
 import ThankYouFromRestaurant from "@/app/user/OrderPage/AfterPaid/ThankYouFromRestaurant.vue";
 import LineButton from "@/app/user/OrderPage/AfterPaid/LineButton.vue";
@@ -241,10 +240,9 @@ export default {
     ShopHeader,
     ShopInfo,
     FavoriteButton,
+
     OrderInfo,
-
     CustomerInfo,
-
     UserCustomerInfo,
 
     // after paid components
