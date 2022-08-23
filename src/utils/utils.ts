@@ -530,8 +530,7 @@ export const useUid = (ctx: any) => {
     return ctx.root.$store.getters.uid;
   });
   return uid;
-}
-
+};
 
 export const useIsLiffUser = (ctx: any) => {
   return computed(() => {

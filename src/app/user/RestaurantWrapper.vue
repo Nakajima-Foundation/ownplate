@@ -9,6 +9,7 @@
     :notFound="notFound"
     :groupData="groupData"
   />
+  <NotFound v-else-if="notFound" />
 </template>
 
 <script>
@@ -23,6 +24,8 @@ import { db } from "@/lib/firebase/firebase9";
 import { doc, onSnapshot, getDoc } from "firebase/firestore";
 import { routeMode, getMoPrefix } from "@/utils/utils";
 
+import NotFound from "@/components/NotFound.vue";
+
 export default defineComponent({
   name: "RestaurantWrapper",
   props: {
@@ -30,6 +33,9 @@ export default defineComponent({
       type: Object,
       required: false,
     },
+  },
+  components: {
+    NotFound,
   },
   setup(props, ctx) {
     const mode = routeMode(ctx.root);
@@ -80,6 +86,10 @@ export default defineComponent({
             });
           }
         }
+      },
+      (e) => {
+        notFound.value = true;
+        console.log("no restaurant");
       }
     );
     const detachers = [restaurant_detacher];
