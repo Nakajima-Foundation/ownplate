@@ -917,6 +917,7 @@
         "accepted": "登録済み",
         "denied": "拒否されました"
       },
+      "numberOfShops": "件",
       "selectRestaurant": "このアカウントが操作できるお店を選択してください。",
       "confirmDeletechild": "サブアカウントを解除します"
     },

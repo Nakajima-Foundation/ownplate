@@ -876,6 +876,7 @@
         "accepted": "Accepted",
         "denied": "Denied"
       },
+      "numberOfShops": "shops",
       "selectRestaurant": "Please select a restaurant that can operate this account.",
       "confirmDeletechild": "Cancel the sub-account"
     },
