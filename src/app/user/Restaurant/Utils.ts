@@ -10,11 +10,15 @@ import { db } from "@/lib/firebase/firebase9";
 import {
   query,
   onSnapshot,
+  getDocs,
   collection,
   collectionGroup,
   where,
+  limit,
+  startAfter,
   orderBy,
   DocumentData,
+  QueryDocumentSnapshot,
 } from "firebase/firestore";
 
 import { doc2data, array2obj } from "@/utils/utils";
@@ -218,51 +222,88 @@ export const useMenu = (
   const setCache = (cache: any) => {
     menuCache.value = cache;
   };
-  const loadMenu = () => {
+  const loadMenu = async () => {
     detacheMenu();
     if (isInMo.value && !category.value && !subCategory.value) {
       return;
     }
-    const cacheKey =
-      category.value && subCategory.value
-        ? [category.value, subCategory.value].join("_")
-        : "";
+    const hasSubCategory = category.value && subCategory.value;
+    const cacheKey = hasSubCategory
+      ? [category.value, subCategory.value].join("_")
+      : "mono";
     if (menuCache.value[cacheKey]) {
       menus.value = menuCache.value[cacheKey];
       // return; //cache is for faster display, and get data again.
     }
 
-    const menuQuery =
-      category.value && subCategory.value
-        ? query(
-            collection(db, menuPath.value),
-            where("deletedFlag", "==", false),
-            where("publicFlag", "==", true),
-            where("category", "==", category.value),
-            where("subCategory", "==", subCategory.value)
-          )
-        : query(
-            collection(db, menuPath.value),
-            where("deletedFlag", "==", false),
-            where("publicFlag", "==", true)
-          );
+    if (hasSubCategory) {
+      menus.value = [];
+      const cacheBase: DocumentData[] = [];
 
-    menuDetacher.value = onSnapshot(query(menuQuery), (menu) => {
-      if (!menu.empty) {
-        menus.value = menu.docs
-          .filter((a) => {
-            const data = a.data();
-            return data.validatedFlag === undefined || data.validatedFlag;
-          })
-          .map(doc2data("menu"));
-        if (cacheKey) {
-          menuCache.value[cacheKey] = menus.value;
+      const limitVal = 20;
+      let last: null | QueryDocumentSnapshot<DocumentData> = null;
+      const loop = async () => {
+        const tmpQuery = query(
+          collection(db, menuPath.value),
+          where("deletedFlag", "==", false),
+          where("publicFlag", "==", true),
+          where("category", "==", category.value),
+          where("subCategory", "==", subCategory.value),
+          orderBy("createdAt"),
+          limit(limitVal)
+        );
+        const menuQuery = last ? query(tmpQuery, startAfter(last)) : tmpQuery;
+
+        const menu = await getDocs(query(menuQuery));
+        last = menu.docs.length == limitVal ? menu.docs[limitVal - 1] : null;
+        if (!menu.empty) {
+          menu.docs
+            .filter((a) => {
+              const data = a.data();
+              return data.validatedFlag === undefined || data.validatedFlag;
+            })
+            .map((a) => {
+              const m = doc2data("menu")(a);
+              cacheBase.push(m);
+              menus.value.push(m);
+              return m;
+            });
+
+          if (cacheKey) {
+            menuCache.value[cacheKey] = menus.value;
+          }
         }
-      } else {
-        menus.value = [];
-        menuCache.value[cacheKey] = [];
-      }
-    });
+      };
+
+      do {
+        await loop();
+      } while (last);
+
+      menuCache.value[cacheKey] = cacheBase;
+    } else {
+      const menuQuery = query(
+        collection(db, menuPath.value),
+        where("deletedFlag", "==", false),
+        where("publicFlag", "==", true)
+      );
+
+      menuDetacher.value = onSnapshot(query(menuQuery), (menu) => {
+        if (!menu.empty) {
+          menus.value = menu.docs
+            .filter((a) => {
+              const data = a.data();
+              return data.validatedFlag === undefined || data.validatedFlag;
+            })
+            .map(doc2data("menu"));
+          if (cacheKey) {
+            menuCache.value[cacheKey] = menus.value;
+          }
+        } else {
+          menus.value = [];
+          menuCache.value[cacheKey] = [];
+        }
+      });
+    }
   };
 
   const menuObj = computed(() => {
