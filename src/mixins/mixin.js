@@ -7,7 +7,7 @@ import moment from "moment";
 import { defaultHeader } from "@/config/header";
 import { formatOption } from "@/utils/strings";
 
-import { arraySum, roundPrice } from "@/utils/utils";
+import { arraySum, roundPrice, taxRate } from "@/utils/utils";
 import { GAPIKey } from "@/config/project";
 
 const mixin = {
@@ -96,7 +96,7 @@ const mixin = {
     displayOption(option, shopInfo, item) {
       return formatOption(option, (price) => {
         return this.$n(
-          roundPrice(price * this.taxRate(shopInfo, item)),
+          roundPrice(price * taxRate(shopInfo, item)),
           "currency"
         );
       });
