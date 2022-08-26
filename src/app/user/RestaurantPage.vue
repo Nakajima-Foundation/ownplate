@@ -165,7 +165,7 @@
                       <Menu
                         :key="[subCategoryKey, 'item', item.id].join('_')"
                         :item="item"
-                        :menuPickupData="menuPickupData[item.id]"
+                        :menuPickupData="menuPickupData[item.id]||{}"
                         :quantities="orders[item.id] || [0]"
                         :selectedOptions="selectedOptions[item.id]"
                         :initialOpenMenuFlag="
