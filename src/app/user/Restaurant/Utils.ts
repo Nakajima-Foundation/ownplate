@@ -260,6 +260,7 @@ export const useMenu = (
         }
       } else {
         menus.value = [];
+        menuCache.value[cacheKey] = [];
       }
     });
   };
