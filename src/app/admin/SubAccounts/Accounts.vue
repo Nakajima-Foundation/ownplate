@@ -34,10 +34,10 @@
             >
               {{ rname }}
             </div>
-            
           </td>
-          <td　class="p-2">
-            {{child.restaurantLists.length}}{{ $t("admin.subAccounts.numberOfShops") }}
+          <td class="p-2">
+            {{ child.restaurantLists.length
+            }}{{ $t("admin.subAccounts.numberOfShops") }}
           </td>
           <td class="p-2">
             {{
