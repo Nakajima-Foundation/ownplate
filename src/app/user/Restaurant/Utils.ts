@@ -202,6 +202,8 @@ export const useMenu = (
         if (cacheKey) {
           menuCache.value[cacheKey] = menus.value;
         }
+      } else {
+        menus.value = [];
       }
     });
   };
