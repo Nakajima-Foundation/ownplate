@@ -13,7 +13,12 @@ import { OrderInfoData, OrderItem } from "@/models/orderInfo";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { MenuData } from "@/models/menu";
 
-import { regionalSettings, partners, stripe_regions, soundFiles } from "@/config/constant";
+import {
+  regionalSettings,
+  partners,
+  stripe_regions,
+  soundFiles,
+} from "@/config/constant";
 import { ownPlateConfig, mo_prefixes } from "@/config/project";
 
 import { defaultHeader } from "@/config/header";
@@ -583,7 +588,8 @@ export const useUser = (ctx: any) => {
 export const isJapan = ownPlateConfig.region === "JP";
 export const serviceKey = isJapan ? "omochikaeri" : "ownPlate";
 
-export const underConstruction = ownPlateConfig.hostName === "staging.ownplate.today";
+export const underConstruction =
+  ownPlateConfig.hostName === "staging.ownplate.today";
 
 export const defaultTitle = defaultHeader.title;
 

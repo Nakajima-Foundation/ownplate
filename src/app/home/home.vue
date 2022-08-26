@@ -118,22 +118,22 @@
                   forced to close their businesses.
                 </div>
                 <div class="t-body1 c-text-black-high m-t-24">
-                  We've created {{ $t("serviceName." + serviceKey) }} to
-                  help those restaurants and bars. With
-                  {{ $t("serviceName." + serviceKey) }}, restaurants can
-                  start take-out service with no extra fees (only credit card
-                  charges are required). The restaurant owners can create
-                  dedicated pages and register menu items there (no special
-                  skill is required), where customers can order and pay, then
-                  pick them up at restaurants.
+                  We've created {{ $t("serviceName." + serviceKey) }} to help
+                  those restaurants and bars. With
+                  {{ $t("serviceName." + serviceKey) }}, restaurants can start
+                  take-out service with no extra fees (only credit card charges
+                  are required). The restaurant owners can create dedicated
+                  pages and register menu items there (no special skill is
+                  required), where customers can order and pay, then pick them
+                  up at restaurants.
                 </div>
                 <div class="t-body1 c-text-black-high m-t-24">
                   We, Singularity Society, is a non-profit organization,
                   consists of software engineers, designers and business people.
                   We are building
-                  {{ $t("serviceName." + serviceKey) }} with Firebase
-                  (Google) + Vue (open source), which allows us to develop this
-                  service in a very short period of time.
+                  {{ $t("serviceName." + serviceKey) }} with Firebase (Google) +
+                  Vue (open source), which allows us to develop this service in
+                  a very short period of time.
                 </div>
                 <div class="t-body1 c-text-black-high m-t-24">Sincerely,</div>
                 <div class="t-body1 c-text-black-high m-t-24">
@@ -187,7 +187,5 @@ export default defineComponent({
   setup() {
     return { serviceKey };
   },
-
 });
 </script>
-

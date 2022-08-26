@@ -78,6 +78,5 @@ export default defineComponent({
   setup() {
     return { serviceKey };
   },
-
 });
 </script>
