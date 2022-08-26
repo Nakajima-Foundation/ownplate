@@ -10,7 +10,7 @@
           '/menus/cat/' +
           cat.id +
           '/' +
-          cat.subcategory
+          cat.subCategory
         "
       >
         <div class="flex items-center">
