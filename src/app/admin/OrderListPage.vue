@@ -8,7 +8,7 @@
       <AdminHeader
         class="mt-6 mx-6 lg:flex lg:items-center"
         :shopInfo="shopInfo"
-        :backLink="'/admin/restaurants/'"
+        backLink="/admin/restaurants/"
         :showSuspend="true"
         :isInMo="isInMo"
         :moPrefix="moPrefix"

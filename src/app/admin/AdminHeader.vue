@@ -36,12 +36,12 @@
     <!-- Suspend Button -->
     <div
       class="flex justify-start space-x-4 mt-4 lg:mt-0 lg:mr-4"
-      v-if="showSuspend"
     >
       <b-button
         tag="router-link"
         :to="`/admin/restaurants/${restaurantId()}/suspend`"
         class="b-reset-tw"
+        v-if="showSuspend"
       >
         <div
           v-if="shopInfo.suspendUntil"
