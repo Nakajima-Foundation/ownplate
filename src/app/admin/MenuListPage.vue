@@ -213,9 +213,9 @@ import {
   useSubcategory,
   useMenu,
   useCategoryParams,
-} from "../user/Restaurant/Utils";
+} from "@/app/user/Restaurant/Utils";
 
-import { useAdminUids, cleanObject } from "@/utils/utils";
+import { useAdminUids, cleanObject, notFoundResponse } from "@/utils/utils";
 import { checkAdminPermission, checkShopAccount } from "@/utils/userPermission";
 import { useAdminConfigToggle } from "@/utils/admin/Toggle";
 
@@ -277,7 +277,7 @@ export default defineComponent({
     const notFound = ref(null);
 
     if (!checkAdminPermission(ctx)) {
-      return;
+      return notFoundResponse;
     }
 
     const { isOwner, uid, ownerUid } = useAdminUids(ctx);
@@ -331,12 +331,12 @@ export default defineComponent({
 
     // allow sub Account
     if (!checkShopAccount(props.shopInfo, ownerUid.value)) {
-      notFound.value = true;
-      return;
+      return notFoundResponse;
     }
 
     // This is duplicate data with shopInfo. But DONT'T REMOVE THIS!!
     // Menu list is saved in restaurant info. This data needs reactive.
+    notFound.value = false;
     const restaurant_detacher = onSnapshot(
       doc(db, `restaurants/${restaurantId.value}`),
       (results) => {
@@ -353,8 +353,6 @@ export default defineComponent({
     onUnmounted(() => {
       restaurant_detacher();
     });
-
-    notFound.value = false;
 
     const { menuObj, itemsObj, numberOfMenus, loadMenu } = useMenuAndTitle(
       menuRestaurantId,

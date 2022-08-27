@@ -606,6 +606,7 @@ import {
   countObj,
   roundPrice,
   taxRate,
+  notFoundResponse,
 } from "@/utils/utils";
 
 import { uploadFile } from "@/lib/firebase/storage";
@@ -689,17 +690,11 @@ export default defineComponent({
     const { isOwner, uid, ownerUid } = useAdminUids(ctx);
 
     if (!checkAdminPermission(ctx)) {
-      console.log("no permission");
-      return {
-        notFound: true,
-      };
+      return notFoundResponse;
     }
     // allow sub Account
     if (!checkShopOwner(props.shopInfo, uid.value)) {
-      console.log("no permission2");
-      return {
-        notFound: true,
-      };
+      return notFoundResponse;
     }
     const menuRestaurantId = computed(() => {
       return props.isInMo

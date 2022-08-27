@@ -669,3 +669,7 @@ export const useNationalPhoneNumber = (shopInfo: RestaurantInfoData) => {
     nationalPhoneNumber,
   };
 };
+
+export const notFoundResponse = {
+  notFound: true,
+};
