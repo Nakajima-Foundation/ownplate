@@ -41,14 +41,19 @@ export default defineComponent({
     const { nationalPhoneNumber } = usePhoneNumber(shopInfo);
 
     const downloadMenu = async () => {
-      downloadSubmitting.value = true;
-      const dl = await pdf.menuDownload(
-        props.shopInfo,
-        props.menuObj,
-        nationalPhoneNumber.value,
-        shareUrl(ctx.root)
-      );
-      downloadSubmitting.value = false;
+      try {
+        downloadSubmitting.value = true;
+        const dl = await pdf.menuDownload(
+          props.shopInfo,
+          props.menuObj,
+          nationalPhoneNumber.value,
+          shareUrl(ctx.root)
+        );
+      } catch (e) {
+        alert("sorry error. ask omochikaeri administrator.");
+      } finally {
+        downloadSubmitting.value = false;
+      }
     };
     return {
       downloadSubmitting,
