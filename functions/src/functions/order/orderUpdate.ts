@@ -6,13 +6,13 @@ import * as utils from "../../lib/utils";
 import { order_status, possible_transitions, order_status_keys, timeEventMapping } from "../../common/constant";
 import { sendMessageToCustomer } from "../notify";
 
-import { orderUpdateData } from "../../lib/types";
+import { orderUpdateData, updateDataOnorderUpdate } from "../../lib/types";
 
 // This function is called by admins (restaurant operators) to update the status of order
 export const update = async (db: admin.firestore.Firestore, data: orderUpdateData, context: functions.https.CallableContext) => {
   const ownerUid = utils.validate_admin_auth(context);
   const { restaurantId, orderId, status, lng, timezone, timeEstimated } = data;
-  utils.validate_params({ restaurantId, orderId, status, timezone }); // lng, timeEstimated is optional
+  utils.required_params({ restaurantId, orderId, status, timezone }); // lng, timeEstimated is optional
 
   try {
     const restaurantDoc = await db.doc(`restaurants/${restaurantId}`).get();
@@ -68,7 +68,7 @@ export const update = async (db: admin.firestore.Firestore, data: orderUpdateDat
 
       // everything are ok
       const updateTimeKey = timeEventMapping[order_status_keys[status]];
-      const updateData: any = {
+      const updateData: updateDataOnorderUpdate = {
         status,
         updatedAt: admin.firestore.Timestamp.now(),
         [updateTimeKey]: admin.firestore.Timestamp.now(),

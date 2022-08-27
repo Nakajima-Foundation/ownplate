@@ -156,7 +156,7 @@ export const wasOrderCreated = async (db, data: any, context) => {
   const customerUid = utils.validate_auth(context);
 
   const { restaurantId, orderId } = data;
-  utils.validate_params({ restaurantId, orderId });
+  utils.required_params({ restaurantId, orderId });
 
   const restaurantRef = db.doc(`restaurants/${restaurantId}`);
   const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`);

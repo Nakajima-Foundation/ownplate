@@ -19,7 +19,7 @@ export const liffAuthenticate = async (db: admin.firestore.Firestore, data: any,
   // eslint-disable-line
 
   const { liffIndexId, token } = data;
-  utils.validate_params({ liffIndexId, token });
+  utils.required_params({ liffIndexId, token });
 
   try {
     const liffConfig = await getLiffConfig(db, liffIndexId);

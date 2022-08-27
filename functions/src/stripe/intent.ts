@@ -82,7 +82,7 @@ export const create = async (db: admin.firestore.Firestore, data: any, context: 
   const { orderId, restaurantId, description, tip, sendSMS, timeToPickup, lng, memo, customerInfo } = data;
   const _tip = Number(tip) || 0;
   const roundedTip = Math.round(_tip * multiple) / multiple;
-  utils.validate_params({ orderId, restaurantId }); // lng, tip and sendSMS are optional
+  utils.required_params({ orderId, restaurantId }); // lng, tip and sendSMS are optional
   const restaurantData = await utils.get_restaurant(db, restaurantId);
   const restaurantOwnerUid = restaurantData["uid"];
   const postage = restaurantData.isEC ? await utils.get_restaurant_postage(db, restaurantId) : {};
@@ -182,7 +182,7 @@ export const confirm = async (db: admin.firestore.Firestore, data: any, context:
   const ownerUid = utils.validate_admin_auth(context);
 
   const { restaurantId, orderId, lng, timezone, timeEstimated } = data;
-  utils.validate_params({ restaurantId, orderId });
+  utils.required_params({ restaurantId, orderId });
 
   const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`);
   const stripeRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}/system/stripe`);
@@ -274,7 +274,7 @@ export const cancel = async (db: any, data: any, context: functions.https.Callab
   const uid = isAdmin ? utils.validate_admin_auth(context) : utils.validate_auth(context);
 
   const { restaurantId, orderId, lng } = data;
-  utils.validate_params({ restaurantId, orderId }); // lng is optional
+  utils.required_params({ restaurantId, orderId }); // lng is optional
 
   const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`);
   const stripeRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}/system/stripe`);
@@ -377,7 +377,7 @@ export const cancelStripePayment = async (db: admin.firestore.Firestore, data: a
   const uid = utils.validate_admin_auth(context);
 
   const { restaurantId, orderId, lng } = data;
-  utils.validate_params({ restaurantId, orderId }); // lng is optional
+  utils.required_params({ restaurantId, orderId }); // lng is optional
 
   const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`);
   const stripeRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}/system/stripe`);

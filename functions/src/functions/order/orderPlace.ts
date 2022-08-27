@@ -91,7 +91,7 @@ export const place = async (db, data: any, context: functions.https.CallableCont
   const customerUid = utils.validate_auth(context);
   const { restaurantId, orderId, tip, sendSMS, timeToPickup, lng, memo, customerInfo } = data;
   const _tip = Number(tip) || 0;
-  utils.validate_params({ restaurantId, orderId }); // tip, sendSMS and lng are optinoal
+  utils.required_params({ restaurantId, orderId }); // tip, sendSMS and lng are optinoal
 
   const timePlaced = (timeToPickup && new admin.firestore.Timestamp(timeToPickup.seconds, timeToPickup.nanoseconds)) || admin.firestore.FieldValue.serverTimestamp();
   try {
