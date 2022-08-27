@@ -5,7 +5,7 @@
     scroll="keep"
     @close="closeNotificationSettings"
   >
-    <div class="mx-2 my-6 p-6 bg-white shadow-lg rounded-lg">
+    <div class="mx-2 my-6 p-6 bg-white shadow-lg rounded-lg text-left">
       <!-- Title -->
       <div class="text-xl font-bold text-black text-opacity-40">
         {{ $t("admin.order.notification") }}
