@@ -231,7 +231,7 @@
             <a
               :href="`#${title.id}`"
               class="inline-flex justify-center items-center h-9 rounded-full bg-black bg-opacity-5 mx-1 mt-2"
-              >
+            >
               <div class="text-sm font-bold text-op-teal mx-2">
                 {{ title.name }}
               </div>
@@ -507,8 +507,9 @@ export default defineComponent({
           })
           .filter((item) => {
             return item;
-          }).filter((item) => {
-            return !(item._dataType === 'title' && item.name === "");
+          })
+          .filter((item) => {
+            return !(item._dataType === "title" && item.name === "");
           });
       }
     });
@@ -612,17 +613,17 @@ export default defineComponent({
         });
 
         try {
-          const menus = [];
+          const checkoutMenus = [];
           Object.keys(orders.value).forEach((menuId) => {
             orders.value[menuId].forEach((quantity) => {
               const menu = Object.assign({}, cartItems.value[menuId]);
               menu.quantity = quantity;
-              menus.push(menu);
+              checkoutMenus.push(menu);
             });
           });
           analyticsUtil.sendBeginCheckoout(
             totalPrice.value.total,
-            menus,
+            checkoutMenus,
             props.shopInfo,
             restaurantId.value
           );
@@ -803,7 +804,7 @@ export default defineComponent({
       categoryBathPath,
 
       menuLinkBathPath,
-      
+
       subCategory,
 
       openGroupCategory,
