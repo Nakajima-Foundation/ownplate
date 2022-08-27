@@ -121,6 +121,18 @@
         </a>
       </div>
 
+      <!-- Smaregi -->
+      <div class="text-center mt-2">
+        <a
+          href="https://docs.omochikaeri.com/manuals/smaregi.pdf"
+          target="_blank"
+          class="inline-flex justify-center items-center text-sm font-bold text-op-teal"
+          @click="handleClose()"
+        >
+          {{ $t("admin.thirdPartyService.smaregiManual") }}
+        </a>
+      </div>
+      
       <!-- Terms -->
       <div class="text-center mt-2">
         <router-link to="/terms/admin">

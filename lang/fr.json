@@ -709,7 +709,9 @@
     "thirdPartyService": {
       "title": "Third Party Service",
       "openSmaregi": "Open Smaregi",
-      "smaregiManualLink": "How to use smaregi"
+      "smaregiManual": "Smaregi Manual",
+      "smaregiAppMarket": "Go to Smaregi App Market",
+      "smaregiManualLink": "How to use Smaregi"
     },
     "viewAllOrders": "Voir toutes les commandes de tous les restaurants",
     "viewPage": "Voir page",

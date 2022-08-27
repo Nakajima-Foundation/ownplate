@@ -719,6 +719,7 @@
     "thirdPartyService": {
       "title": "Third Party Service",
       "openSmaregi": "Open Smaregi",
+      "smaregiManual": "Smaregi Manual",
       "smaregiAppMarket": "Go to Smaregi App Market",
       "smaregiManualLink": "How to use Smaregi"
     },

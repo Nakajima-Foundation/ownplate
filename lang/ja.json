@@ -759,6 +759,7 @@
     "thirdPartyService": {
       "title": "システム連携",
       "openSmaregi": "スマレジ連携設定",
+      "smaregiManual": "スマレジマニュアル",
       "smaregiAppMarket": "スマレジアプリマーケットへ",
       "smaregiManualLink": "スマレジ連携の使い方"
     },
