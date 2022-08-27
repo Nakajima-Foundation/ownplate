@@ -72,7 +72,7 @@ export const useCategory = (moPrefix: string) => {
       query(
         collection(db, `groups/${moPrefix}/category`),
         where("publicFlag", "==", true),
-        orderBy("sortKey", "asc"),
+        orderBy("sortKey", "asc")
       ),
       (category) => {
         if (category.empty) {
@@ -82,9 +82,7 @@ export const useCategory = (moPrefix: string) => {
         // categoryData.value = category.docs.map(doc2data("category"))
         categoryData.value = category.docs
           .map((doc) => {
-            return [
-              doc2data("category")(doc),
-            ];
+            return [doc2data("category")(doc)];
           })
           .flat();
       },
@@ -121,7 +119,7 @@ export const useSubcategory = (moPrefix: string, category: Ref<string>) => {
           `groups/${moPrefix}/category/${category.value}/subCategory`
         ),
         where("publicFlag", "==", true),
-        orderBy("sortKey", "asc"),
+        orderBy("sortKey", "asc")
       ),
       (category) => {
         if (category.empty) {
@@ -148,9 +146,21 @@ export const useMenu = (
   subCategory: Ref<string>,
   groupData: any
 ) => {
-  const menus = ref<DocumentData[]>([]);
-  const menuCache: { [key: string]: any } = ref({});
+  const allMenuObj = ref<{ [key: string]: DocumentData[] }>({});
+  const menuCache = ref<{ [key: string]: any }>({});
   const menuDetacher = ref();
+  const loading: { [key: string]: boolean } = {};
+
+  const allMenuObjKey = computed(() => {
+    if (isInMo.value) {
+      return subCategory.value;
+    }
+    return "mono";
+  });
+  const menus = computed(() => {
+    return allMenuObj.value[allMenuObjKey.value] || [];
+  });
+
   const detacheMenu = () => {
     if (menuDetacher.value) {
       menuDetacher.value();
@@ -173,32 +183,40 @@ export const useMenu = (
     const hasSubCategory = category.value && subCategory.value;
     const cacheKey = hasSubCategory
       ? [category.value, subCategory.value].join("_")
-      : "mono";
+      : "";
     if (menuCache.value[cacheKey]) {
-      menus.value = menuCache.value[cacheKey];
+      allMenuObj.value[allMenuObjKey.value] = menuCache.value[cacheKey];
       return;
     }
 
     if (hasSubCategory) {
-      menus.value = [];
+      allMenuObj.value[subCategory.value] = [];
       const cacheBase: DocumentData[] = [];
 
+      if (loading[cacheKey]) {
+        return;
+      }
+      loading[cacheKey] = true;
+
       const limitVal = 20;
-      let last: null | QueryDocumentSnapshot<DocumentData> = null;
-      const loop = async () => {
+      const loop = async (
+        category: string,
+        subCategory: string,
+        last: null | QueryDocumentSnapshot<DocumentData>
+      ) => {
+        // console.log("loop: ", subCategory);
         const tmpQuery = query(
           collection(db, menuPath.value),
           where("deletedFlag", "==", false),
           where("publicFlag", "==", true),
-          where("category", "==", category.value),
-          where("subCategory", "==", subCategory.value),
+          where("category", "==", category),
+          where("subCategory", "==", subCategory),
           orderBy("createdAt"),
           limit(limitVal)
         );
         const menuQuery = last ? query(tmpQuery, startAfter(last)) : tmpQuery;
 
         const menu = await getDocs(query(menuQuery));
-        last = menu.docs.length == limitVal ? menu.docs[limitVal - 1] : null;
         if (!menu.empty) {
           menu.docs
             .filter((a) => {
@@ -208,21 +226,23 @@ export const useMenu = (
             .map((a) => {
               const m = doc2data("menu")(a);
               cacheBase.push(m);
-              menus.value.push(m);
               return m;
             });
-
-          if (cacheKey) {
-            menuCache.value[cacheKey] = menus.value;
-          }
+          const newVal = { ...allMenuObj.value };
+          newVal[subCategory] = cacheBase;
+          allMenuObj.value = newVal;
+          menuCache.value[cacheKey] = cacheBase;
         }
+        return menu.docs.length == limitVal ? menu.docs[limitVal - 1] : null;
       };
 
-      do {
-        await loop();
-      } while (last);
-
-      menuCache.value[cacheKey] = cacheBase;
+      const doLoop = async (category: string, subCategory: string) => {
+        let last: null | QueryDocumentSnapshot<DocumentData> = null;
+        do {
+          last = await loop(category, subCategory, last);
+        } while (last);
+      };
+      doLoop(category.value, subCategory.value);
     } else {
       const menuQuery = query(
         collection(db, menuPath.value),
@@ -232,18 +252,15 @@ export const useMenu = (
 
       menuDetacher.value = onSnapshot(query(menuQuery), (menu) => {
         if (!menu.empty) {
-          menus.value = menu.docs
+          const ret = menu.docs
             .filter((a) => {
               const data = a.data();
               return data.validatedFlag === undefined || data.validatedFlag;
             })
             .map(doc2data("menu"));
-          if (cacheKey) {
-            menuCache.value[cacheKey] = menus.value;
-          }
+          allMenuObj.value = { [allMenuObjKey.value]: ret };
         } else {
-          menus.value = [];
-          menuCache.value[cacheKey] = [];
+          allMenuObj.value[allMenuObjKey.value] = [];
         }
       });
     }
