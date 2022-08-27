@@ -58,9 +58,13 @@ export const sku_item_data2 = (
 };
 
 const analyticsWrapper = (eventName: string, data: AnalyticsData) => {
-  logEvent(analytics, eventName, data);
-  if (isInMo()) {
-    gtag("event", eventName, data);
+  if (location.hostname !== "localhost") {
+    logEvent(analytics, eventName, data);
+    if (isInMo()) {
+      gtag("event", eventName, data);
+    }
+  } else {
+    console.log("log: ", eventName, data);
   }
 };
 
@@ -73,7 +77,7 @@ export const sendMenuListView = (
     const analyticsData = {
       item_list_id: restaurantId,
       item_list_name: shopInfo.restaurantName,
-      items: menus.map((menu) => {
+      items: (menus || []).map((menu) => {
         return sku_item_data(menu, shopInfo, restaurantId);
       }),
     };

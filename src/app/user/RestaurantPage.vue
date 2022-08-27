@@ -142,7 +142,7 @@
               </div>
               <div v-else>
                 <!-- Menu Items -->
-                <div class="grid grid-col-1 space-y-2">
+                <div class="grid grid-col-1 space-y-2" :key="subCategoryKey">
                   <template v-for="(item, key) in itemLists">
                     <div v-if="item._dataType === 'title'" :key="key">
                       <div
@@ -627,17 +627,17 @@ export default defineComponent({
         });
 
         try {
-          const menus = [];
+          const checkoutMenus = [];
           Object.keys(orders.value).forEach((menuId) => {
             orders.value[menuId].forEach((quantity) => {
               const menu = Object.assign({}, cartItems.value[menuId]);
               menu.quantity = quantity;
-              menus.push(menu);
+              checkoutMenus.push(menu);
             });
           });
           analyticsUtil.sendBeginCheckoout(
             totalPrice.value.total,
-            menus,
+            checkoutMenus,
             props.shopInfo,
             restaurantId.value
           );
