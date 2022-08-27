@@ -95,10 +95,7 @@ const mixin = {
     },
     displayOption(option, shopInfo, item) {
       return formatOption(option, (price) => {
-        return this.$n(
-          roundPrice(price * taxRate(shopInfo, item)),
-          "currency"
-        );
+        return this.$n(roundPrice(price * taxRate(shopInfo, item)), "currency");
       });
     },
   },

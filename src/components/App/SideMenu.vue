@@ -132,7 +132,7 @@
           {{ $t("admin.thirdPartyService.smaregiManual") }}
         </a>
       </div>
-      
+
       <!-- Terms -->
       <div class="text-center mt-2">
         <router-link to="/terms/admin">
