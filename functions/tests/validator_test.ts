@@ -10,12 +10,11 @@ describe("validator function", () => {
       restaurantId: "123123",
       orderId: "aaabb",
       status: 256,
-      timezone: "tokyo",
+      timezone: "Asia/Tokyo",
       // lng?: string;
       //timeEstimated?: admin.firestore.Timestamp;
     }
     const res = validator.validateOrderUpadte(data);
-    console.log(res);
     res.result.should.equal(true);
   });
 });
