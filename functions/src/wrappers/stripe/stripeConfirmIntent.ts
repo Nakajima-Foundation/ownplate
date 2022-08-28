@@ -1,7 +1,7 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 
-import * as StripeIntent from "../../stripe/intent";
+import { confirm } from "../../stripe/confirmIntent";
 
 const db = admin.firestore();
 
@@ -10,5 +10,5 @@ export default functions
     memory: "1GB" as "1GB",
   })
   .https.onCall(async (data, context) => {
-    return await StripeIntent.confirm(db, data, context);
+    return await confirm(db, data, context);
   });
