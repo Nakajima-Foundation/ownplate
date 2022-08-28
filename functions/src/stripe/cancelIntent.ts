@@ -7,30 +7,13 @@ import { updateOrderTotalDataAndUserLog } from "../functions/order/orderPlace";
 import { sendMessageToCustomer, notifyCanceledOrderToRestaurant } from "../functions/notify";
 import { Context } from "../models/TestType";
 
-import * as crypto from "crypto";
+import {
+  getStripeAccount,
+  getStripeOrderRecord,
+  getHash,
+} from "./intent";
 
 const stripe = utils.get_stripe();
-
-export const getStripeOrderRecord = async (transaction: any, stripeRef: any) => {
-  const stripeRecord = (await transaction.get(stripeRef)).data();
-  if (!stripeRecord || !stripeRecord.paymentIntent || !stripeRecord.paymentIntent.id) {
-    throw new functions.https.HttpsError("failed-precondition", "This order has no paymentIntendId.");
-  }
-  return stripeRecord;
-};
-
-export const getStripeAccount = async (db: any, restaurantOwnerUid: string) => {
-  const paymentSnapshot = await db.doc(`/admins/${restaurantOwnerUid}/public/payment`).get();
-  const stripeAccount = paymentSnapshot.data()?.stripe;
-  if (!stripeAccount) {
-    throw new functions.https.HttpsError("invalid-argument", "This restaurant does not support payment.");
-  }
-  return stripeAccount;
-};
-
-export const getHash = (message: string) => {
-  return crypto.createHash("sha256").update(message).digest("hex");
-};
 
 // This function is called by user or admin to cancel an exsting order (before accepted by admin)
 export const cancel = async (db: any, data: any, context: functions.https.CallableContext | Context) => {
