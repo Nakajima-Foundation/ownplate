@@ -1295,32 +1295,35 @@ export default defineComponent({
     };
     const saveRestaurant = async () => {
       submitting.value = true;
+      const newData = { ...props.shopInfo };
       const restaurantId = ctx.root.restaurantId();
       try {
         if (files.value["profile"]) {
           const path = `/images/restaurants/${restaurantId}/${uid.value}/profile.jpg`;
-          props.shopInfo.restProfilePhoto = await uploadFile(
+          const profImage = await uploadFile(
             files.value["profile"],
             path
           );
-          props.shopInfo.images.profile = {
-            original: props.shopInfo.restProfilePhoto,
+          newData.restProfilePhoto = profImage;
+          newData.images.profile = {
+            original: profImage,
             resizedImages: {},
           };
         }
 
         if (files.value["cover"]) {
           const path = `/images/restaurants/${restaurantId}/${uid.value}/cover.jpg`;
-          props.shopInfo.restCoverPhoto = await uploadFile(
+          const coverImage = await uploadFile(
             files.value["cover"],
             path
           );
-          props.shopInfo.images.cover = {
-            original: props.shopInfo.restCoverPhoto,
+          newData.restCoverPhoto = coverImage;
+          newData.images.cover = {
+            original: coverImage,
             resizedImages: {},
           };
         }
-        const restaurantData = getEditShopInfo(props.shopInfo);
+        const restaurantData = getEditShopInfo(newData);
         await updateRestaurantData(restaurantData);
 
         ctx.root.$router.push({
