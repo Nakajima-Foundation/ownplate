@@ -1,7 +1,7 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 
-import { wasOrderCreated } from "../../functions/order/orderCreated";
+import { orderCreated } from "../../functions/order/orderCreated";
 
 const db = admin.firestore();
 
@@ -11,5 +11,5 @@ export default functions
     memory: "1GB" as "1GB",
   })
   .https.onCall(async (data, context) => {
-    await wasOrderCreated(db, data, context);
+    await orderCreated(db, data, context);
   });

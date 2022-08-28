@@ -3,7 +3,7 @@ import * as utils from "../../lib/utils";
 import { order_status } from "../../common/constant";
 import { createCustomer } from "../../stripe/customer";
 
-// export const wasOrderCreated = async (db, snapshot, context) => {
+// export const orderCreated = async (db, snapshot, context) => {
 export const getGroupRestautantRef = async (db, groupId: string) => {
   const groupData = (await db.doc(`groups/${groupId}`).get()).data();
   if (!groupData) {
@@ -12,7 +12,7 @@ export const getGroupRestautantRef = async (db, groupId: string) => {
   return db.doc(`restaurants/${groupData.restaurantId}`);
 };
 
-// for wasOrderCreated
+// for orderCreated
 const getOptionPrice = (selectedOptionsRaw, menu, multiple) => {
   return selectedOptionsRaw.reduce((tmpPrice, selectedOpt, key) => {
     const opt = menu.itemOptionCheckbox[key].split(",");
@@ -152,7 +152,7 @@ export const createNewOrderData = async (restaurantRef, orderRef, orderData, mul
   };
 };
 
-export const wasOrderCreated = async (db, data: any, context) => {
+export const orderCreated = async (db, data: any, context) => {
   const customerUid = utils.validate_auth(context);
 
   const { restaurantId, orderId } = data;
@@ -164,13 +164,13 @@ export const wasOrderCreated = async (db, data: any, context) => {
   try {
     const restaurantDoc = await restaurantRef.get();
     if (!restaurantDoc.exists) {
-      console.error("[wasOrderCreated] noRestaurant");
+      console.error("[orderCreated] noRestaurant");
       return orderRef.update("status", order_status.error);
     }
     const restaurantData = restaurantDoc.data();
 
     if (restaurantData.deletedFlag || !restaurantData.publicFlag) {
-      console.error("[wasOrderCreated] not exists");
+      console.error("[orderCreated] not exists");
       return orderRef.update("status", order_status.error);
     }
     // check mo
@@ -237,7 +237,7 @@ export const wasOrderCreated = async (db, data: any, context) => {
       })
     );
   } catch (e) {
-    console.error("[wasOrderCreated] unknown ", e);
+    console.error("[orderCreated] unknown ", e);
     return orderRef.update("status", order_status.error);
   }
 };

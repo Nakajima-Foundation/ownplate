@@ -7,6 +7,7 @@ import { order_status, possible_transitions, order_status_keys, timeEventMapping
 import { sendMessageToCustomer } from "../notify";
 
 import { orderUpdateData, updateDataOnorderUpdate } from "../../lib/types";
+import { validateOrderUpadte } from "../../lib/validator";
 
 // This function is called by admins (restaurant operators) to update the status of order
 export const update = async (db: admin.firestore.Firestore, data: orderUpdateData, context: functions.https.CallableContext) => {
@@ -14,6 +15,12 @@ export const update = async (db: admin.firestore.Firestore, data: orderUpdateDat
   const { restaurantId, orderId, status, lng, timezone, timeEstimated } = data;
   utils.required_params({ restaurantId, orderId, status, timezone }); // lng, timeEstimated is optional
 
+  const validateResult = validateOrderUpadte(data);
+  if (!validateResult.result) {
+    console.error("update", validateResult.errors);
+    throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
+  }
+  
   try {
     const restaurantDoc = await db.doc(`restaurants/${restaurantId}`).get();
     const restaurant = restaurantDoc.data() || {};
