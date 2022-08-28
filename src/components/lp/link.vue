@@ -1,8 +1,10 @@
 <template>
   <div class="bg-op-yellow p-4 mt-6">
-    <div class="text-center">
+    <div
+      class="text-center inline-flex justify-center items-center w-full m-auto"
+    >
       <!-- Facebook User Group -->
-      <div class="inline-block px-1 pb-2">
+      <div class="inline-block px-1 pb-2" v-if="false">
         <a
           href="https://www.facebook.com/groups/278028420106364/"
           target="_blank"
@@ -25,7 +27,7 @@
             class="inline-flex justify-center items-center rounded-full h-9 bg-white bg-opacity-80 px-4"
           >
             <i class="fab fa-twitter text-lg text-op-teal mr-2"></i>
-            <span class="text-sm font-bold text-op-teal"> Twitte </span>
+            <span class="text-sm font-bold text-op-teal"> Twitter </span>
           </div>
         </a>
       </div>

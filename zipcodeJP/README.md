@@ -6,7 +6,7 @@ https://www.post.japanpost.jp/zipcode/dl/oogaki/zip/ken_all.zip
 
 nkf -u KEN_ALL.CSV > conv.csv
 
-yarn run batch zipcodeJP/parse.ts
+yarn run batch zipcodeJP/parse.js
 
 
 ---

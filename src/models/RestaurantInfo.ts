@@ -40,6 +40,10 @@ export interface RestaurantInfoData {
 
   pickUpMinimumCookTime: number;
   pickUpDaysInAdvance: number;
+
+  deliveryMinimumCookTime: number;
+  suspendUntil: any;
+
   images: any;
   publicFlag: boolean;
   deletedFlag: boolean;

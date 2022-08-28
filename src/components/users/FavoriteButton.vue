@@ -1,15 +1,32 @@
 <template>
   <div class="mt-6 text-center">
-    <router-link to="/r/favorites">
+    <router-link :to="basePath + '/r/favorites'">
       <div
         class="inline-flex justify-center items-center h-16 rounded-full bg-op-teal shadow"
         style="min-width: 16rem"
       >
         <i class="material-icons text-2xl text-white mr-2">favorite</i>
         <div class="text-xl font-bold text-white">
-          {{ $t("find.likes") }}
+          {{ $t(isInMo ? "find.favoriteShop" : "find.likes") }}
         </div>
       </div>
     </router-link>
   </div>
 </template>
+
+<script>
+import { defineComponent } from "@vue/composition-api";
+import { useBasePath } from "@/utils/utils";
+import { useIsInMo } from "@/utils/utils";
+
+export default defineComponent({
+  setup(_, ctx) {
+    const basePath = useBasePath(ctx.root);
+    const isInMo = useIsInMo(ctx.root);
+    return {
+      basePath,
+      isInMo,
+    };
+  },
+});
+</script>

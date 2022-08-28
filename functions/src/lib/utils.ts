@@ -154,10 +154,12 @@ export const getMenuObj = async (refRestaurant, menuIds) => {
     return menuObj;
   } else {
     // for test
-    await Promise.all(menuIds.map(async (id) => {
-      const m = await refRestaurant.collection("menus").doc(id).get();
-      menuObj[m.id] = m.data();
-    }));
+    await Promise.all(
+      menuIds.map(async (id) => {
+        const m = await refRestaurant.collection("menus").doc(id).get();
+        menuObj[m.id] = m.data();
+      })
+    );
     return menuObj;
   }
 };

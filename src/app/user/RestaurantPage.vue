@@ -5,17 +5,34 @@
       <not-found />
     </template>
     <template v-else>
+      <!-- category modal -->
+      <div
+        v-if="isOpenGroupCategory"
+        class="fixed z-10 top-0 bg-white w-full h-full"
+      >
+        <div class="flex justify-between h-12 py-2 pl-6 pr-4">
+          <span class="text-xl font-bold text-black text-opacity-30">
+            {{ $t("shopInfo.productCategory") }}
+          </span>
+          <a @click="closeGroupCategory">
+            <i class="material-icons mt-1 text-black opacity-30 text-2xl"
+              >close</i
+            >
+          </a>
+        </div>
+        <div class="mx-4 h-[calc(100%-3rem)] overflow-x-scroll">
+          <CategoryModal
+            class="mb-20"
+            :categoryData="categoryData"
+            @closeGroupCategory="closeGroupCategory"
+          />
+        </div>
+      </div>
+
       <!-- Restaurant Page -->
       <div>
         <!-- For Owner Preview Only -->
-        <div v-if="isPreview" class="bg-red-700 bg-opacity-10 text-center p-4">
-          <div class="text-base font-bold text-red-700">
-            {{ $t("shopInfo.thisIsPreview") }}
-          </div>
-          <div class="text-base font-bold text-red-700">
-            {{ $t("shopInfo.notPublic") }}
-          </div>
-        </div>
+        <RestaurantPreview :isPreview="isPreview" />
 
         <!-- Body -->
         <div class="grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12 lg:mx-6">
@@ -42,20 +59,19 @@
                 class="mt-2 text-base"
                 :class="shopInfo.enablePreline ? 'whitespace-pre-line' : ''"
               >
-                {{ this.shopInfo.introduction }}
+                {{ shopInfo.introduction }}
               </div>
 
               <!-- Share and Favorite -->
               <div class="mt-4 flex justify-center items-center space-x-4">
                 <!-- Share Popup -->
-                <div><share-popup :shopInfo="shopInfo"></share-popup></div>
+                <div>
+                  <share-popup :shopInfo="shopInfo" :mode="mode"></share-popup>
+                </div>
 
                 <!-- Favorite Button -->
                 <div>
-                  <favorite-button
-                    :shopInfo="shopInfo"
-                    :keepLike="false"
-                  ></favorite-button>
+                  <favorite-button :shopInfo="shopInfo"></favorite-button>
                 </div>
               </div>
 
@@ -85,116 +101,83 @@
           <div>
             <div class="mx-6 mt-2 lg:mx-0" v-if="shopInfo.enableDelivery">
               <div class="bg-white rounded-lg shadow">
-                <div class="p-4">
-                  <div class="text-ms font-bold">
-                    {{ $t("shopInfo.howToReceive") }}
-                  </div>
-                  <div>
-                    <b-radio
-                      name="howtoreceive"
-                      v-model="howtoreceive"
-                      native-value="takeout"
-                    >
-                      {{ $t("shopInfo.takeout") }}
-                    </b-radio>
-                    <b-radio
-                      name="howtoreceive"
-                      v-model="howtoreceive"
-                      native-value="delivery"
-                    >
-                      {{ $t("shopInfo.delivery") }}
-                    </b-radio>
-                  </div>
-                  <div>
-                    <div v-if="deliveryData.enableDeliveryThreshold">
-                      {{
-                        $tc("shopInfo.deliveryThresholdNotice", 0, {
-                          price: deliveryData.deliveryThreshold,
-                        })
-                      }}
-                    </div>
-                    <div v-if="deliveryData.deliveryFee > 0">
-                      {{
-                        $tc("shopInfo.deliveryFeeInfo", 0, {
-                          price: deliveryData.deliveryFee,
-                        })
-                      }}
-                      <span v-if="deliveryData.enableDeliveryFree">
-                        {{
-                          $tc("shopInfo.deliveryFeeThresholdInfo", 0, {
-                            price: deliveryData.deliveryFreeThreshold,
-                          })
-                        }}
-                      </span>
-                    </div>
-                  </div>
-                  <div
-                    v-if="howtoreceive === 'delivery'"
-                    class="mt-2 px-4 py-2 rounded-lg bg-blue-500 bg-opacity-10"
-                  >
-                    {{ $t("shopInfo.deliveryArea") }}
-                    <div v-if="deliveryData.enableAreaMap">
-                      {{
-                        $tc("shopInfo.deliveryAreaRadius", 0, {
-                          radius: deliveryData.radius,
-                        })
-                      }}
-                    </div>
-                    <div v-if="deliveryData.enableAreaText">
-                      <pre class="bg-transparent p-0">{{
-                        deliveryData.areaText
-                      }}</pre>
-                    </div>
-                    {{ $t("shopInfo.deliveryAreaInfo") }}
-                  </div>
-                </div>
+                <!-- delivery -->
+                <Delivery
+                  :shopInfo="shopInfo"
+                  :deliveryData="deliveryData"
+                  v-model="howtoreceive"
+                />
+                <!-- delivery -->
               </div>
             </div>
-            <div class="mx-6 mt-2 lg:mx-0">
-              <template v-for="(title, key) in titleLists">
-                <a
-                  :href="`#${title.id}`"
-                  class="inline-flex justify-center items-center h-9 rounded-full bg-black bg-opacity-5 mx-2 mt-2"
-                >
-                  <div class="text-sm font-bold text-op-teal mx-2">
-                    {{ title.name }}
-                  </div>
-                </a>
-              </template>
+            <!-- titles for omochikaeri -->
+            <Titles :titleLists="titleLists" />
+
+            <!-- category for mo -->
+            <a id="subCategoryTop" />
+            <div v-if="showSubCategory">
+              <SubCategoryList
+                :subCategoryData="subCategoryData"
+                :categoryBathPath="categoryBathPath"
+                :subCategoryId="subCategory"
+              />
             </div>
+
             <!-- For Responsible -->
             <div class="mx-6 mt-3 lg:mx-0">
-              <!-- Menu Items -->
-              <div class="grid grid-col-1 space-y-2">
-                <template v-for="(item, key) in itemLists">
-                  <div v-if="item._dataType === 'title'" :key="key">
-                    <div
-                      class="text-xl font-bold text-black text-opacity-30 inline-flex justify-center items-center"
-                      :class="key === 0 ? '' : 'mt-6'"
-                      :id="item.id"
-                      @click="openCategory"
-                    >
-                      <i class="material-icons mr-2">menu_book</i>
-                      <span>
-                        {{ item.name }}
-                      </span>
+              <!-- Category Icon -->
+              <div v-if="isShowCategoryIcon">
+                <CategoryIcon @openGroupCategory="openGroupCategory" />
+              </div>
+              <div v-if="showCategory">
+                <!-- Category view -->
+                <div class="mt-6 grid grid-col-1 space-y-2">
+                  <div class="text-xl font-bold text-black text-opacity-30">
+                    {{ $t("shopInfo.productCategory") }}
+                  </div>
+                  <CategoryTop :categoryData="categoryData" />
+                </div>
+              </div>
+              <div v-else>
+                <!-- Menu Items -->
+                <div class="grid grid-col-1 space-y-2" :key="subCategoryKey">
+                  <template v-for="(item, key) in itemLists">
+                    <div v-if="item._dataType === 'title'" :key="key">
+                      <div
+                        class="text-xl font-bold text-black text-opacity-30 inline-flex justify-center items-center"
+                        :class="key === 0 ? '' : 'mt-6'"
+                        :id="item.id"
+                        @click="openCategory"
+                      >
+                        <i class="material-icons mr-2">menu_book</i>
+                        <span>
+                          {{ item.name }}
+                        </span>
+                      </div>
                     </div>
-                  </div>
 
-                  <div v-if="item._dataType === 'menu'" :key="key">
-                    <item-card
-                      :item="item"
-                      :quantities="orders[item.id] || [0]"
-                      :optionPrev="selectedOptionsPrev[item.id]"
-                      :initialOpenMenuFlag="(orders[item.id] || []).length > 0"
-                      :shopInfo="shopInfo"
-                      :isOpen="menuId === item.id"
-                      :prices="prices[item.id] || []"
-                      @didQuantitiesChange="didQuantitiesChange($event)"
-                      @didOptionValuesChange="didOptionValuesChange($event)"
-                    ></item-card>
-                  </div>
-                </template>
+                    <div
+                      v-if="item._dataType === 'menu'"
+                      :key="[subCategoryKey, item.id].join('_')"
+                    >
+                      <item-card
+                        :key="[subCategoryKey, 'item', item.id].join('_')"
+                        :item="item"
+                        :quantities="orders[item.id] || [0]"
+                        :selectedOptions="selectedOptions[item.id]"
+                        :initialOpenMenuFlag="
+                          (orders[item.id] || []).length > 0
+                        "
+                        :shopInfo="shopInfo"
+                        :menuLinkBathPath="menuLinkBathPath"
+                        :isOpen="menuId === item.id"
+                        :prices="prices[item.id] || []"
+                        :mode="mode"
+                        @didOrderdChange="didOrderdChange($event)"
+                      ></item-card>
+                    </div>
+                  </template>
+                </div>
               </div>
             </div>
           </div>
@@ -207,149 +190,32 @@
           <phone-login v-on:dismissed="handleDismissed" />
         </div>
       </b-modal>
+      <Cart
+        v-if="isShowCart"
+        @closeCart="closeCart"
+        :orders="orders"
+        :selectedOptions="selectedOptions"
+        :menuObj="menuObj"
+        :prices="prices"
+        :shopInfo="shopInfo"
+        @didOrderdChange="didOrderdChange"
+      />
 
-      <!-- Cart Button -->
+      <!-- for disable all UI -->
       <div v-if="isCheckingOut" class="fixed top-0 left-0 w-full h-full"></div>
-      <b-button
-        v-if="0 != totalQuantities"
-        :loading="isCheckingOut"
-        :disabled="
-          isCheckingOut || noPaymentMethod || noAvailableTime || cantDelivery
-        "
-        @click="handleCheckOut"
-        class="b-reset-tw"
-        style="
-          width: 18rem;
-          position: fixed;
-          z-index: 10;
-          bottom: 2rem;
-          left: 50%;
-          margin-left: -9rem;
-        "
-      >
-        <div
-          class="inline-flex justify-center items-center w-72 rounded-full bg-op-teal shadow-lg"
-          :class="shopInfo.enableDelivery ? 'pt-2 pb-2' : 'h-20'"
-        >
-          <template v-if="noPaymentMethod">
-            <div class="text-white text-base font-bold">
-              {{ $t("shopInfo.noPaymentMethod") }}
-            </div>
-          </template>
-
-          <template v-else-if="noAvailableTime">
-            <div class="text-white text-base font-bold">
-              {{ $t("shopInfo.noAvailableTime") }}
-            </div>
-          </template>
-
-          <template v-else="!noPaymentMethod">
-            <div class="inline-flex flex-col justify-center items-center">
-              <!-- delivery -->
-              <template v-if="isDelivery">
-                <template
-                  v-if="
-                    shopInfo.enableDelivery &&
-                    cantDelivery &&
-                    deliveryData.enableDeliveryThreshold
-                  "
-                >
-                  <div
-                    class="inline-flex justify-center items-center text-white text-base font-bold"
-                  >
-                    {{
-                      $tc("shopInfo.buttonDeliveryFeeThreshold", 0, {
-                        price: $n(deliveryData.deliveryThreshold, "currency"),
-                      })
-                    }}
-                  </div>
-                  <div
-                    class="inline-flex justify-center items-center text-white text-base font-bold"
-                  >
-                    {{
-                      $tc("shopInfo.buttonDeliveryFeeDiff", 0, {
-                        price: $n(diffDeliveryThreshold, "currency"),
-                      })
-                    }}
-                  </div>
-                </template>
-                <template
-                  v-else-if="deliveryData.enableDeliveryFree && !isDeliveryFree"
-                >
-                  <div
-                    class="inline-flex justify-center items-center text-white text-base font-bold"
-                  >
-                    {{
-                      $tc("shopInfo.deliveryFeeThresholdInfo", 0, {
-                        price: $n(
-                          deliveryData.deliveryFreeThreshold,
-                          "currency"
-                        ),
-                      })
-                    }}
-                  </div>
-                  <div
-                    class="inline-flex justify-center items-center text-white text-base font-bold"
-                  >
-                    {{
-                      $tc("shopInfo.buttonDeliveryFeeDiff", 0, {
-                        price: $n(diffDeliveryFreeThreshold, "currency"),
-                      })
-                    }}
-                  </div>
-                </template>
-                <div
-                  class="inline-flex justify-center items-center text-white text-base font-bold"
-                  v-if="shopInfo.enableDelivery"
-                >
-                  <div class="mr-2">
-                    {{
-                      $tc("shopInfo.buttonDeliveryFee", 0, {
-                        price: $n(
-                          isDeliveryFree ? 0 : deliveryData.deliveryFee,
-                          "currency"
-                        ),
-                      })
-                    }}
-                    <span
-                      class="text-xs"
-                      v-if="!isDeliveryFree && deliveryData.deliveryFee > 0"
-                      >{{ $tc("tax.include") }}</span
-                    >
-                  </div>
-                </div>
-              </template>
-              <!-- total and price -->
-              <div
-                class="inline-flex justify-center items-center text-white text-base font-bold"
-              >
-                <div class="mr-2">
-                  {{
-                    $tc("sitemenu.orderCounter", totalQuantities, {
-                      count: totalQuantities,
-                    })
-                  }}
-                </div>
-                <div class="">
-                  <Price
-                    :shopInfo="{ inclusiveTax: true }"
-                    :menu="{ price: totalPrice.total }"
-                  />
-                </div>
-              </div>
-
-              <div
-                class="is-inline-flex flex-center justify-center items-center text-white"
-              >
-                <div class="text-xl font-bold mr-2">
-                  {{ $t("sitemenu.checkout") }}
-                </div>
-                <i class="material-icons text-2xl">shopping_cart</i>
-              </div>
-            </div>
-          </template>
-        </div>
-      </b-button>
+      <!-- Cart Button -->
+      <CartButton
+        ref="cartButton"
+        @handleCheckOut="handleCheckOut"
+        :shopInfo="shopInfo"
+        :orders="orders"
+        :paymentInfo="paymentInfo"
+        :deliveryData="deliveryData"
+        :isCheckingOut="isCheckingOut"
+        :noAvailableTime="noAvailableTime"
+        :isDelivery="isDelivery"
+        :totalPrice="totalPrice"
+      />
     </template>
     <!-- Image Popup-->
     <b-modal :active.sync="imagePopup" :width="488" scroll="keep">
@@ -378,6 +244,15 @@
 </template>
 
 <script>
+import {
+  defineComponent,
+  ref,
+  watch,
+  computed,
+  onMounted,
+  onUnmounted,
+} from "@vue/composition-api";
+
 import ItemCard from "@/app/user/Restaurant/ItemCard";
 import PhoneLogin from "@/app/auth/PhoneLogin";
 import ShopHeader from "@/app/user/Restaurant/ShopHeader";
@@ -385,10 +260,28 @@ import SharePopup from "@/app/user/Restaurant/SharePopup";
 import FavoriteButton from "@/app/user/Restaurant/FavoriteButton";
 import ShopInfo from "@/app/user/Restaurant/ShopInfo";
 import NotFound from "@/components/NotFound";
-import Price from "@/components/Price";
+
+import RestaurantPreview from "@/app/user/Restaurant/Preview.vue";
+import CartButton from "@/app/user/Restaurant/CartButton.vue";
+import Cart from "@/app/user/Restaurant/Cart.vue";
+import Delivery from "@/app/user/Restaurant/Delivery.vue";
+import CategoryModal from "@/app/user/Restaurant/CategoryModal.vue";
+import CategoryTop from "@/app/user/Restaurant/CategoryTop.vue";
+import CategoryIcon from "@/app/user/Restaurant/CategoryIcon.vue";
+import Titles from "@/app/user/Restaurant/Titles.vue";
+import SubCategoryList from "@/app/user/Restaurant/SubCategoryList.vue";
 
 import liff from "@line/liff";
-import { db, firestore } from "@/plugins/firebase";
+import { db } from "@/lib/firebase/firebase9";
+import {
+  addDoc,
+  query,
+  onSnapshot,
+  collection,
+  where,
+  serverTimestamp,
+} from "firebase/firestore";
+
 import { wasOrderCreated } from "@/lib/firebase/functions";
 
 import { order_status } from "@/config/constant";
@@ -396,8 +289,32 @@ import { order_status } from "@/config/constant";
 import { ownPlateConfig } from "@/config/project";
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
-export default {
-  name: "ShopMenu",
+import {
+  array2obj,
+  arraySum,
+  convOptionArray2Obj,
+  prices2subtotal,
+  subtotal2total,
+  getPrices,
+  getTrimmedSelectedOptions,
+  getPostOption,
+  useIsInMo,
+  useToggle,
+  scrollToElementById,
+} from "@/utils/utils";
+
+import { imageUtils } from "@/utils/RestaurantUtils";
+
+import {
+  useTitles,
+  useCategory,
+  useSubcategory,
+  useMenu,
+  useCategoryParams,
+} from "./Restaurant/Utils";
+
+export default defineComponent({
+  name: "RestaurantPage",
 
   components: {
     ItemCard,
@@ -407,7 +324,15 @@ export default {
     FavoriteButton,
     ShopInfo,
     NotFound,
-    Price,
+    RestaurantPreview,
+    CartButton,
+    Cart,
+    Delivery,
+    CategoryModal,
+    CategoryTop,
+    CategoryIcon,
+    Titles,
+    SubCategoryList,
   },
   props: {
     shopInfo: {
@@ -430,6 +355,14 @@ export default {
       type: String,
       required: false,
     },
+    moPrefix: {
+      type: String,
+      required: false,
+    },
+    groupData: {
+      type: Object,
+      required: false,
+    },
   },
   metaInfo() {
     // TODO: add area to header
@@ -443,339 +376,189 @@ export default {
             ].join(" / "),
     };
   },
-  data() {
-    return {
-      retryCount: 0,
-      loginVisible: false,
-      isCheckingOut: false,
-      orders: {},
-      selectedOptions: {},
-      selectedOptionsPrev: {}, // from the store.cart
-      restaurantsId: this.restaurantId(),
-      // deliveryData: {},
-      menus: [],
-      titles: [],
-      waitForUser: false,
+  setup(props, ctx) {
+    const retryCount = ref(0);
 
-      howtoreceive: "takeout",
+    const loginVisible = ref(false);
+    const isCheckingOut = ref(false);
+    const waitForUser = ref(false);
+    const noAvailableTime = ref(false);
 
-      detacher: [],
+    const orders = ref({});
+    const cartItems = ref({});
+    const selectedOptions = ref({});
 
-      imagePopup: false,
-      categoryPopup: false,
+    const howtoreceive = ref("takeout");
+    const store = ctx.root.$store;
 
-      noAvailableTime: false,
-    };
-  },
-  mounted() {
-    // Check if we came here as the result of "Edit Items"
-    if (this.$store.state.carts[this.restaurantId()]) {
-      const cart = this.$store.state.carts[this.restaurantId()] || {};
-      //console.log("cart", cart);
-      this.orders = cart.orders || {};
-      this.selectedOptionsPrev = cart.options || {};
-      this.selectedOptions = cart.options || {};
-    }
-  },
-  created() {
-    // Hot fix for flyer. TODO: remove after end of summer in 2022.
-    if (location.hash && location.hash.startsWith("#utm")) {
-      const str = location.hash.slice(1);
-      const url = location.pathname + "?" + str;
-      this.$router.push({
-        path: url,
-      });
-    }
-    const menu_detacher = db
-      .collection(`restaurants/${this.restaurantId()}/menus`)
-      .where("deletedFlag", "==", false)
-      .where("publicFlag", "==", true)
-      .onSnapshot((menu) => {
-        if (!menu.empty) {
-          this.menus = menu.docs
-            .filter((a) => {
-              const data = a.data();
-              return data.validatedFlag === undefined || data.validatedFlag;
-            })
-            .map(this.doc2data("menu"));
-        }
-      });
-    const title_detacher = db
-      .collection(`restaurants/${this.restaurantId()}/titles`)
-      .where("deletedFlag", "==", false)
-      .onSnapshot((title) => {
-        if (!title.empty) {
-          this.titles = title.docs.map(this.doc2data("title"));
-        }
-      });
-    this.detacher = [menu_detacher, title_detacher];
-  },
-  destroyed() {
-    if (this.detacher) {
-      this.detacher.map((detacher) => {
-        detacher();
-      });
-    }
-  },
-  watch: {
-    user(newValue) {
-      console.log("user changed");
-      if (this.waitForUser && newValue) {
-        console.log("handling deferred notification");
-        this.goCheckout();
+    const multiple = store.getters.stripeRegion.multiple;
+
+    const isInMo = useIsInMo(ctx.root);
+
+    const { category, subCategory, watchCat, hasCategory } =
+      useCategoryParams(ctx);
+
+    const restaurantId = computed(() => {
+      return ctx.root.$route.params.restaurantId;
+    });
+    const menuId = computed(() => {
+      return ctx.root.$route.params.menuId;
+    });
+    const user = computed(() => {
+      return ctx.root.user;
+    });
+    const uid = computed(() => {
+      return store.getters.uid;
+    });
+    const isAdmin = computed(() => {
+      return !!store.getters.uidAdmin;
+    });
+    const isOwner = computed(() => {
+      return isAdmin.value && uid.value === props.shopInfo.uid;
+    });
+    const isPreview = computed(() => {
+      return props.notFound && isOwner.value;
+    });
+
+    const isDelivery = computed(() => {
+      return howtoreceive.value === "delivery";
+    });
+
+    const coverImage = computed(() => {
+      return (
+        (props.shopInfo?.images?.cover?.resizedImages || {})["1200"] ||
+        props.shopInfo.restCoverPhoto
+      );
+    });
+
+    const { loadMenu, setCache, menus, menuObj, menuCache } = useMenu(
+      restaurantId,
+      isInMo,
+      category,
+      subCategory,
+      props.groupData
+    );
+
+    onMounted(() => {
+      // Check if we came here as the result of "Edit Items"
+      if (store.state.carts[restaurantId.value]) {
+        const cart = store.state.carts[restaurantId.value] || {};
+        orders.value = cart.orders || {};
+        cartItems.value = cart.cartItems || {};
+        selectedOptions.value = cart.options || {};
+        setCache(cart.menuCache);
       }
-    },
-    menus(values) {
+    });
+
+    loadMenu();
+
+    watch(menus, (values) => {
       analyticsUtil.sendMenuListView(
         values,
-        this.shopInfo,
-        this.restaurantId()
+        props.shopInfo,
+        restaurantId.value
       );
-    },
-  },
-  computed: {
-    isPreview() {
-      return this.notFound && this.isOwner;
-    },
-    isOwner() {
-      return this.isAdmin && this.uid === this.shopInfo.uid;
-    },
-    uid() {
-      return this.$store.getters.uid;
-    },
-    totalPrice() {
-      const subTotal = Object.keys(this.prices).reduce((tmp, menuId) => {
-        tmp[menuId] = this.prices[menuId].reduce((a, b) => a + b, 0);
-        return tmp;
-      }, {});
-      const total = Object.keys(subTotal).reduce((tmp, menuId) => {
-        const menu = this.itemsObj[menuId] || {};
+    });
 
-        if (!this.shopInfo.inclusiveTax) {
-          if (menu.tax === "alcohol") {
-            return (
-              (1 + this.shopInfo.alcoholTax * 0.01) * subTotal[menuId] + tmp
-            );
-          }
-          return (1 + this.shopInfo.foodTax * 0.01) * subTotal[menuId] + tmp;
+    watch(watchCat, () => {
+      loadMenu();
+    });
+    watch(category, () => {
+      if (category.value) {
+        loadSubcategory();
+      }
+    });
+
+    const { loadTitle, titles, titleLists } = useTitles(restaurantId);
+
+    const { loadCategory, categoryData } = useCategory(props.moPrefix);
+
+    const { subCategoryData, loadSubcategory } = useSubcategory(
+      props.moPrefix,
+      category
+    );
+
+    if (isInMo.value) {
+      loadCategory();
+      if (category.value) {
+        loadSubcategory();
+      }
+    }
+    if (!isInMo.value) {
+      loadTitle();
+    }
+
+    const showCategory = computed(() => {
+      return isInMo.value && !subCategory.value;
+    });
+    const showSubCategory = computed(() => {
+      return isInMo.value && subCategory.value;
+    });
+
+    const itemLists = computed(() => {
+      if (isInMo.value) {
+        return menus.value;
+      } else {
+        const menuLists = props.shopInfo.menuLists || [];
+        const itemsObj = array2obj(menus.value.concat(titles.value));
+        return menuLists
+          .map((itemId) => {
+            return { ...itemsObj[itemId] };
+          })
+          .filter((item) => {
+            return item;
+          })
+          .filter((item) => {
+            return !(item._dataType === "title" && item.name === "");
+          });
+      }
+    });
+
+    const totalPrice = computed(() => {
+      const subTotal = prices2subtotal(prices.value);
+      const total = subtotal2total(subTotal, cartItems.value, props.shopInfo);
+      return { subTotal, total };
+    });
+    const trimmedSelectedOptions = computed(() => {
+      return getTrimmedSelectedOptions(
+        orders.value,
+        cartItems.value,
+        selectedOptions.value
+      );
+    });
+    const postOptions = computed(() => {
+      return getPostOption(trimmedSelectedOptions.value, cartItems.value);
+    });
+    const prices = computed(() => {
+      return getPrices(
+        multiple,
+        orders.value,
+        cartItems.value,
+        trimmedSelectedOptions.value
+      );
+    });
+
+    const didOrderdChange = (eventArgs) => {
+      // NOTE: We need to assign a new object to trigger computed properties
+      if (eventArgs.quantities) {
+        cartItems.value[eventArgs.itemId] = menuObj.value[eventArgs.itemId];
+        const newObject = { ...orders.value };
+        if (arraySum(eventArgs.quantities) > 0) {
+          newObject[eventArgs.itemId] = eventArgs.quantities;
         } else {
-          return tmp + subTotal[menuId];
+          delete newObject[eventArgs.itemId];
         }
-      }, 0);
-      return {
-        subTotal: subTotal,
-        total: total,
-      };
-      // total:
-    },
-    prices() {
-      const ret = {};
-
-      const multiple = this.$store.getters.stripeRegion.multiple;
-      Object.keys(this.orders).map((menuId) => {
-        const menu = this.itemsObj[menuId] || {};
-        ret[menuId] = [];
-        this.orders[menuId].map((num, orderKey) => {
-          const selectedOptionsRaw =
-            this.trimmedSelectedOptions[menuId][orderKey] || [];
-          const price = selectedOptionsRaw.reduce(
-            (tmpPrice, selectedOpt, key) => {
-              const opt = (menu.itemOptionCheckbox[key] || "").split(",");
-              if (opt.length === 1) {
-                if (selectedOpt) {
-                  return (
-                    tmpPrice +
-                    Math.round(this.optionPrice(opt[0]) * multiple) / multiple
-                  );
-                }
-              } else {
-                return (
-                  tmpPrice +
-                  Math.round(this.optionPrice(opt[selectedOpt]) * multiple) /
-                    multiple
-                );
-              }
-              return tmpPrice;
-            },
-            menu.price
-          );
-          ret[menuId].push(price * num);
+        orders.value = newObject;
+      }
+      if (eventArgs.optionValues) {
+        selectedOptions.value = Object.assign({}, selectedOptions.value, {
+          [eventArgs.itemId]: eventArgs.optionValues,
         });
-      });
-      // console.log(ret);
-      return ret;
-    },
-    totalQuantities() {
-      const ret = Object.values(this.orders).reduce((total, order) => {
-        return total + this.arraySum(order);
-      }, 0);
-      return ret;
-    },
-    itemsObj() {
-      return this.array2obj(this.menus.concat(this.titles));
-    },
-    menuLists() {
-      const list = this.shopInfo.menuLists || [];
-      return list;
-    },
-    itemLists() {
-      return this.menuLists
-        .map((itemId) => {
-          return { ...this.itemsObj[itemId] };
-        })
-        .filter((item) => {
-          return item;
-        });
-    },
-    titleLists() {
-      return this.itemLists.filter((item) => {
-        return item._dataType === "title" && item.name !== "";
-      });
-    },
-    trimmedSelectedOptions() {
-      return Object.keys(this.orders).reduce((ret, id) => {
-        const options = this.itemOptionCheckbox2options(
-          (this.itemsObj[id] || {}).itemOptionCheckbox
-        );
-        const selectedOption = this.selectedOptions[id].map((selected) => {
-          if (Array.isArray(selected) && selected.length > options.length) {
-            const newopt = [...selected];
-            return newopt.slice(0, options.length);
-          }
-          return selected;
-        });
-        ret[id] = selectedOption;
-        // ret[id] = this.selectedOptions[id];
-        return ret;
-      }, {});
-    },
-    postOptions() {
-      return Object.keys(this.trimmedSelectedOptions).reduce((ret, id) => {
-        ret[id] = (this.trimmedSelectedOptions[id] || []).map((item, k) => {
-          return item
-            .map((selectedOpt, key) => {
-              const opt = (this.itemsObj[id] || {}).itemOptionCheckbox[
-                key
-              ].split(",");
-              if (opt.length === 1) {
-                if (selectedOpt) {
-                  return opt[0];
-                }
-              } else {
-                return opt[selectedOpt];
-              }
-              return "";
-            })
-            .map((s) => s.trim());
-        });
-        return ret;
-      }, {});
-    },
-    coverImage() {
-      return (
-        (this.shopInfo?.images?.cover?.resizedImages || {})["1200"] ||
-        this.shopInfo.restCoverPhoto
-      );
-    },
-    menuId() {
-      return this.$route.params.menuId;
-    },
-    diffDeliveryThreshold() {
-      return this.deliveryData.deliveryThreshold - (this.totalPrice.total || 0);
-    },
-    diffDeliveryFreeThreshold() {
-      return (
-        this.deliveryData.deliveryFreeThreshold - (this.totalPrice.total || 0)
-      );
-    },
-    isDeliveryFree() {
-      if (
-        this.shopInfo.enableDelivery &&
-        this.deliveryData.enableDeliveryFree
-      ) {
-        return (
-          (this.totalPrice.total || 0) >=
-          this.deliveryData.deliveryFreeThreshold
-        );
       }
-      return false;
-    },
-    cantDelivery() {
-      if (!this.shopInfo.enableDelivery) {
-        return false;
-      }
-
-      if (this.isDelivery && this.deliveryData.enableDeliveryThreshold) {
-        return (
-          (this.totalPrice.total || 0) < this.deliveryData.deliveryThreshold
-        );
-      }
-      return false;
-    },
-    isDelivery() {
-      return this.howtoreceive === "delivery";
-    },
-    noPaymentMethod() {
-      // MEMO: ignore hidePayment. No longer used
-      return !this.paymentInfo.stripe && !this.paymentInfo.inStore;
-    },
-  },
-  methods: {
-    openImage() {
-      this.imagePopup = true;
-    },
-    closeImage() {
-      this.imagePopup = false;
-    },
-    openCategory() {
-      this.categoryPopup = true;
-    },
-    closeCategory() {
-      this.categoryPopup = false;
-    },
-
-    optionPrice(option) {
-      const regex = /\(((\+|\-|＋|ー|−)[0-9\.]+)\)/;
-      const match = (option || "").match(regex);
-      if (match) {
-        return Number(match[1].replace(/ー|−/g, "-").replace(/＋/g, "+"));
-      }
-      return 0;
-    },
-    handleCheckOut() {
-      // The user has clicked the CheckOut button
-      this.retryCount = 0;
-
-      if (this.isUser || this.isLiffUser) {
-        this.goCheckout();
-      } else {
-        window.scrollTo(0, 0);
-        this.loginVisible = true;
-      }
-    },
-    handleDismissed() {
-      // The user has dismissed the login dialog (including the successful login)
-      this.loginVisible = false;
-      if (this.isUser || this.isLiffUser) {
-        this.goCheckout();
-      } else {
-        console.log("this.user it not ready yet");
-        this.waitForUser = true;
-        // this.isCheckingOut = false;
-      }
-    },
-    convOptionArray2Obj(obj) {
-      return Object.keys(obj).reduce((newObj, objKey) => {
-        newObj[objKey] = obj[objKey].reduce((tmp, value, key) => {
-          tmp[key] = value;
-          return tmp;
-        }, {});
-        return newObj;
-      }, {});
-    },
-    async goCheckout() {
+    };
+    const goCheckout = async () => {
       const name = await (async () => {
-        if (this.isLiffUser) {
+        if (ctx.root.isLiffUser) {
           try {
             const user = (await liff.getProfile()) || {};
             return user.displayName;
@@ -783,112 +566,258 @@ export default {
             return "";
           }
         }
-        return this.user.displayName;
+        return user.value.displayName;
       })();
 
       const order_data = {
-        order: this.orders,
-        options: this.convOptionArray2Obj(this.postOptions),
-        rawOptions: this.convOptionArray2Obj(this.trimmedSelectedOptions),
+        order: orders.value,
+        options: convOptionArray2Obj(postOptions.value),
+        rawOptions: convOptionArray2Obj(trimmedSelectedOptions.value),
         status: order_status.new_order,
-        uid: this.user.uid,
-        ownerUid: this.shopInfo.uid,
-        isDelivery: (this.shopInfo.enableDelivery && this.isDelivery) || false, // true, // for test
-        isLiff: this.isLiffUser,
-        phoneNumber: this.user.phoneNumber,
+        uid: user.value.uid,
+        ownerUid: props.shopInfo.uid,
+        isDelivery:
+          (props.shopInfo.enableDelivery && isDelivery.value) || false, // true, // for test
+        isLiff: ctx.root.isLiffUser,
+        phoneNumber: user.value.phoneNumber,
         name: name,
-        updatedAt: firestore.FieldValue.serverTimestamp(),
-        timeCreated: firestore.FieldValue.serverTimestamp(),
+        updatedAt: serverTimestamp(),
+        timeCreated: serverTimestamp(),
         // price never set here.
       };
       // console.log(order_data);
-      this.isCheckingOut = true;
+      isCheckingOut.value = true;
       try {
-        if (this.forcedError("checkout")) {
+        if (ctx.root.forcedError("checkout")) {
           throw Error("forced Error");
         }
-        const res = await db
-          .collection(`restaurants/${this.restaurantId()}/orders`)
-          .add(order_data);
+        const res = await addDoc(
+          collection(db, `restaurants/${restaurantId.value}/orders`),
+          order_data
+        );
         // Store the current order associated with this order id, so that we can re-use it
         // when the user clicks the "Edit Items" on the next page.
         // In that case, we will come back here with #id so that we can retrieve it (see mounted).
-        this.$store.commit("saveCart", {
-          id: this.restaurantId(),
+        store.commit("saveCart", {
+          id: restaurantId.value,
           cart: {
-            orders: this.orders,
-            options: this.selectedOptions,
+            orders: orders.value,
+            options: selectedOptions.value,
+            cartItems: cartItems.value,
+            menuCache: menuCache.value,
           },
         });
         await wasOrderCreated({
-          restaurantId: this.restaurantId(),
+          restaurantId: restaurantId.value,
           orderId: res.id,
         });
 
         try {
-          const menus = [];
-          Object.keys(this.orders).forEach((menuId) => {
-            this.orders[menuId].forEach((quantity) => {
-              const menu = Object.assign({}, this.itemsObj[menuId]);
+          const checkoutMenus = [];
+          Object.keys(orders.value).forEach((menuId) => {
+            orders.value[menuId].forEach((quantity) => {
+              const menu = Object.assign({}, cartItems.value[menuId]);
               menu.quantity = quantity;
-              menus.push(menu);
+              checkoutMenus.push(menu);
             });
           });
           analyticsUtil.sendBeginCheckoout(
-            this.totalPrice.total,
-            menus,
-            this.shopInfo,
-            this.restaurantId()
+            totalPrice.value.total,
+            checkoutMenus,
+            props.shopInfo,
+            restaurantId.value
           );
         } catch (e) {
           console.log(e);
         }
-        if (this.mode === "liff") {
-          const liffIndexId = this.$route.params.liffIndexId;
-          this.$router.push({
-            path: `/liff/${liffIndexId}/r/${this.restaurantId()}/order/${
-              res.id
-            }`,
+        if (props.mode === "liff") {
+          const liffIndexId = route.params.liffIndexId;
+          ctx.root.$router.push({
+            path: `/liff/${liffIndexId}/r/${restaurantId.value}/order/${res.id}`,
+          });
+        } else if (props.mode === "mo") {
+          ctx.root.$router.push({
+            path: `/${props.moPrefix}/r/${restaurantId.value}/order/${res.id}`,
           });
         } else {
-          this.$router.push({
-            path: `/r/${this.restaurantId()}/order/${res.id}`,
+          ctx.root.$router.push({
+            path: `/r/${restaurantId.value}/order/${res.id}`,
           });
         }
       } catch (error) {
-        if (error.code === "permission-denied" && this.retryCount < 3) {
-          this.retryCount++;
-          console.log("retrying:", this.retryCount);
+        if (error.code === "permission-denied" && retryCount.value < 3) {
+          retryCount.value++;
+          console.log("retrying:", retryCount.value);
           setTimeout(() => {
-            this.goCheckout();
+            goCheckout();
           }, 500);
         } else {
           console.error(error.message);
-          this.$store.commit("setErrorMessage", {
+          store.commit("setErrorMessage", {
             code: "order.checkout",
             error,
           });
         }
       } finally {
-        this.isCheckingOut = false;
+        isCheckingOut.value = false;
       }
-    },
-    didQuantitiesChange(eventArgs) {
-      // NOTE: We need to assign a new object to trigger computed properties
-      const newObject = { ...this.orders };
-      if (this.arraySum(eventArgs.quantities) > 0) {
-        newObject[eventArgs.id] = eventArgs.quantities;
+    };
+    const handleCheckOut = () => {
+      // The user has clicked the CheckOut button
+      retryCount.value = 0;
+
+      if (ctx.root.isUser || ctx.root.isLiffUser) {
+        goCheckout();
       } else {
-        delete newObject[eventArgs.id];
+        window.scrollTo(0, 0);
+        loginVisible.value = true;
       }
-      this.orders = newObject;
-    },
-    didOptionValuesChange(eventArgs) {
-      this.selectedOptions = Object.assign({}, this.selectedOptions, {
-        [eventArgs.id]: eventArgs.optionValues,
-      });
-      //console.log(this.selectedOptions);
-    },
+    };
+    const handleDismissed = () => {
+      // The user has dismissed the login dialog (including the successful login)
+      loginVisible.value = false;
+      if (ctx.root.isUser || ctx.root.isLiffUser) {
+        goCheckout();
+      } else {
+        console.log("this.user it not ready yet");
+        waitForUser.value = true;
+      }
+    };
+
+    watch(user, (newValue) => {
+      console.log("user changed");
+      if (waitForUser.value && newValue) {
+        console.log("handling deferred notification");
+        goCheckout();
+      }
+    });
+    const categoryBathPath = computed(() => {
+      return `/${props.moPrefix}/r/${restaurantId.value}/cat/${category.value}`;
+    });
+    const menuLinkBathPath = computed(() => {
+      return `/cat/${category.value}/${subCategory.value}`;
+    });
+    const subCategoryKey = computed(() => {
+      return showSubCategory.value
+        ? [category.value, subCategory.value].join("_")
+        : "";
+    });
+
+    const {
+      value: isOpenGroupCategory,
+      toggleOn: openGroupCategory,
+      toggleOff: closeGroupCategory,
+    } = useToggle(false);
+
+    const cartButton = ref();
+    const isShowCart = computed(() => {
+      return cartButton.value?.isShowCart;
+    });
+    const closeCart = () => {
+      cartButton.value?.closeCart();
+    };
+
+    const isShowCategoryIcon = computed(() => {
+      return (
+        showSubCategory.value && !isOpenGroupCategory.value && !isShowCart.value
+      );
+    });
+
+    watch(isShowCart, (value) => {
+      if (value) {
+        document.body.style.position = "fixed";
+      } else {
+        document.body.style.position = "";
+      }
+    });
+    onUnmounted(() => {
+      if (isShowCart.value) {
+        document.body.style.position = "";
+      }
+    });
+    watch(isOpenGroupCategory, (value) => {
+      if (value) {
+        document.body.style.position = "fixed";
+      } else {
+        document.body.style.position = "";
+        scrollToElementById("subCategoryTop");
+      }
+    });
+    onUnmounted(() => {
+      if (isOpenGroupCategory.value) {
+        document.body.style.position = "";
+      }
+    });
+    const filteredTitleLists = computed(() => {
+      const menuLists = props.shopInfo.menuLists || [];
+      const itemsObj = array2obj(titles.value);
+      return (
+        menuLists
+          .map((itemId) => {
+            return { ...itemsObj[itemId] };
+          })
+          .filter((item) => {
+            return item && item.id;
+          }) || []
+      ).filter((title) => title.name !== "");
+      return ret;
+    });
+
+    return {
+      itemLists,
+      titleLists: filteredTitleLists,
+
+      coverImage,
+      menuId,
+
+      isOwner,
+      isDelivery,
+      howtoreceive,
+
+      orders,
+
+      selectedOptions, // for initial cart status when switch tab
+
+      totalPrice,
+      prices,
+
+      isPreview,
+
+      hasCategory,
+
+      didOrderdChange,
+
+      handleCheckOut,
+      handleDismissed,
+
+      loginVisible,
+      isCheckingOut,
+      noAvailableTime,
+
+      showCategory,
+      showSubCategory,
+      subCategoryKey,
+      isShowCategoryIcon,
+
+      categoryData,
+      subCategoryData,
+      categoryBathPath,
+
+      menuLinkBathPath,
+
+      subCategory,
+
+      openGroupCategory,
+      closeGroupCategory,
+      isOpenGroupCategory,
+
+      ...imageUtils(),
+
+      isShowCart,
+      cartButton,
+      closeCart,
+      menuObj,
+    };
   },
-};
+});
 </script>

@@ -6,7 +6,7 @@ import moment from "moment-timezone";
 import * as fs from "fs";
 
 import i18next from "i18next";
-import { resources } from "./resources";
+import { resources, resources_mo } from "./resources";
 
 import { ownPlateConfig } from "../common/project";
 
@@ -16,6 +16,9 @@ import * as twilio from "./twilio";
 import * as ses from "./ses";
 
 const LINE_MESSAGE_TOKEN = (functions.config() && functions.config().line && functions.config().line.message_token) || process.env.LINE_MESSAGE_TOKEN;
+
+const aws_key = (functions.config() && functions.config().aws && functions.config().aws.id) || process.env.AWS_ID;
+const aws_secret = (functions.config() && functions.config().aws && functions.config().aws.secret) || process.env.AWS_SECRET;
 
 export const isEnabled = !!ownPlateConfig.line;
 
@@ -35,34 +38,61 @@ export const sendMessageToCustomer = async (
 
   const t = await i18next.init({
     lng: lng || utils.getStripeRegion().langs[0],
-    resources,
+    resources: orderData.groupId ? resources_mo : resources,
   });
+  const getMessage = (_url: string) => {
+    const message = `${t(msgKey, params)} ${restaurantName} ${orderNumber} ${_url}`;
+    return message;
+  };
   const url = `https://${ownPlateConfig.hostName}/r/${restaurantId}/order/${orderId}?openExternalBrowser=1`;
-  const message = `${t(msgKey, params)} ${restaurantName} ${orderNumber} ${url}`;
-  if (isEnabled) {
-    // for JP
-    const { lineId, liffIndexId, liffId } = (await line.getLineId(db, orderData.uid)) as any;
 
-    if (lineId) {
-      if (liffIndexId) {
-        // liff
-        const { token } = await line.getLiffPrivateConfig(db, liffIndexId);
-        if (token) {
-          const liffUrl = `https://liff.line.me/${liffId}/r/${restaurantId}/order/${orderId}`;
-          const liffMessage = `${t(msgKey, params)} ${restaurantName} ${orderNumber} ${liffUrl}`;
-          await line.sendMessageDirect(lineId, liffMessage, token);
-        }
-      } else {
-        await line.sendMessageDirect(lineId, message, LINE_MESSAGE_TOKEN);
+  // Not JP
+  if (!isEnabled) {
+    return await sms.pushSMS(aws_key, aws_secret, "OwnPlate", getMessage(url), orderData.phoneNumber);
+  }
+  // for JP Mobile Order
+  if (orderData.groupId && !/11111111$/.test(orderData.phoneNumber)) {
+    const { groupId } = orderData;
+    const groupUrl = `https://${ownPlateConfig.hostName}/${groupId}/r/${restaurantId}/order/${orderId}?openExternalBrowser=1`;
+
+    const yearstr = moment().format("YYYY");
+    const monthstr = moment().format("YYYY-MM");
+    const datestr = moment().format("YYYY-MM-DD");
+    try {
+      db.collection(`log/smsLog/sms${yearstr}/sms${datestr}/${groupId}SmsLogData`).add({
+        restaurantId,
+        orderId,
+        groupId,
+        date: datestr,
+        uid: orderData.uid,
+        month: monthstr,
+        last4: orderData.phoneNumber.slice(-4),
+        createdAt: process.env.NODE_ENV !== "test" ? firebase.firestore.Timestamp.now() : Date.now(),
+      });
+    } catch (e) {
+      console.log(e);
+    }
+
+    return await sms.pushSMS(aws_key, aws_secret, "Mobile Order", getMessage(groupUrl), orderData.phoneNumber);
+  }
+  // for JP
+  const { lineId, liffIndexId, liffId } = (await line.getLineId(db, orderData.uid)) as any;
+
+  if (lineId) {
+    if (liffIndexId) {
+      // liff
+      const { token } = await line.getLiffPrivateConfig(db, liffIndexId);
+      if (token) {
+        const liffUrl = `https://liff.line.me/${liffId}/r/${restaurantId}/order/${orderId}`;
+        await line.sendMessageDirect(lineId, getMessage(liffUrl), token);
       }
+    } else {
+      await line.sendMessageDirect(lineId, getMessage(url), LINE_MESSAGE_TOKEN);
     }
-    if (forceSMS && orderData.phoneNumber) {
-      await sms.pushSMS("omochikaeri", message, orderData.phoneNumber);
-    }
-    // await line.sendMessage(db, uidUser, message);
-  } else {
-    // for others
-    await sms.pushSMS("OwnPlate", message, orderData.phoneNumber);
+  }
+  // force SMS ( for cancel and change order)
+  if (forceSMS && orderData.phoneNumber) {
+    await sms.pushSMS(aws_key, aws_secret, "omochikaeri", getMessage(url), orderData.phoneNumber);
   }
 };
 
@@ -109,8 +139,11 @@ export const createNotifyRestaurantMailMessage = async (messageId: string, resta
           messages.push(`★ ${name} × ${count}`);
 
           try {
-            if (order.options && order.options[menuId] && order.options[menuId][key] && order.options[menuId][key].length > 0) {
-              messages.push(t("option") + ": " + order.options[menuId][key].join("/"));
+            if (order.options && order.options[menuId] && order.options[menuId][key]) {
+              const opts = order.options[menuId][key].filter(o => o);
+              if (opts.length > 0) {
+                messages.push(t("option") + ": " + opts.join("/"));
+              }
             }
           } catch (e) {
             console.log(e);

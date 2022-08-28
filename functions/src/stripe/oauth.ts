@@ -44,7 +44,7 @@ export const disconnect = async (db: admin.firestore.Firestore, data: any, conte
   if (!client_id) {
     throw new functions.https.HttpsError("invalid-argument", "No Stripe client.");
   }
-  
+
   try {
     const refPayment = db.doc(`/admins/${uid}/public/payment`);
     const payment = (await refPayment.get()).data();
@@ -62,7 +62,8 @@ export const disconnect = async (db: admin.firestore.Firestore, data: any, conte
     await db.doc(`/admins/${uid}/system/stripe`).delete();
 
     const response = await stripe.oauth.deauthorize({
-      client_id, stripe_user_id
+      client_id,
+      stripe_user_id,
     });
 
     return { result: response };

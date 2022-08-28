@@ -48,7 +48,7 @@ export const getNewItemData = (
       item: item.images.item || {},
     },
     itemOptionCheckbox: item.itemOptionCheckbox || [],
-    publicFlag: item.publicFlag || false,
+    publicFlag: validatedFlag ? item.publicFlag || false : false,
     allergens: item.allergens,
     validatedFlag,
     category1: item.category1,

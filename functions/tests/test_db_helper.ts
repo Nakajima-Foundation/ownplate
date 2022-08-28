@@ -18,10 +18,10 @@ export const adminDB = async () => {
       host: "localhost",
       port: 8080,
       // rules: readFileSync('../firestore.rules', 'utf8')
-    }
-  })
-  const authenticatedContext = testEnv.authenticatedContext('uid string')
-  const clientDB = authenticatedContext.firestore()
+    },
+  });
+  const authenticatedContext = testEnv.authenticatedContext("uid string");
+  const clientDB = authenticatedContext.firestore();
   return clientDB;
   /*
   return firebase
@@ -39,9 +39,9 @@ export const clearData = async () => {
       host: "localhost",
       port: 8080,
       // rules: readFileSync('../firestore.rules', 'utf8')
-    }
-  })
-  await testEnv.clearFirestore()
+    },
+  });
+  await testEnv.clearFirestore();
 
   // await firebase.clearFirestoreData({ projectId });
 };

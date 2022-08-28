@@ -4,7 +4,7 @@ import * as functions from "firebase-functions";
 
 import { order_status, next_transitions, order_status_keys, timeEventMapping } from "../common/constant";
 import * as utils from "../lib/utils";
-import { orderAccounting, createNewOrderData, updateOrderTotalDataAndUserLog } from "../functions/order";
+import { updateOrderTotalDataAndUserLog } from "../functions/order/orderPlace";
 import { sendMessageToCustomer, notifyNewOrderToRestaurant, notifyCanceledOrderToRestaurant } from "../functions/notify";
 import { costCal } from "../common/commonUtils";
 import { Context } from "../models/TestType";
@@ -34,7 +34,7 @@ const getOrderData = async (transaction: any, orderRef: any) => {
   return order;
 };
 
-const getStripeOrderRecord = async (transaction: any, stripeRef: any) => {
+export const getStripeOrderRecord = async (transaction: any, stripeRef: any) => {
   const stripeRecord = (await transaction.get(stripeRef)).data();
   if (!stripeRecord || !stripeRecord.paymentIntent || !stripeRecord.paymentIntent.id) {
     throw new functions.https.HttpsError("failed-precondition", "This order has no paymentIntendId.");
@@ -50,7 +50,7 @@ export const getStripeAccount = async (db: any, restaurantOwnerUid: string) => {
   }
   return stripeAccount;
 };
-const getPaymentMethodData = async (db: any, restaurantOwnerUid: string, customerUid: string) => {
+export const getPaymentMethodData = async (db: any, restaurantOwnerUid: string, customerUid: string) => {
   const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
 
   const stripeInfo = await getCustomerStripeInfo(db, customerUid);
@@ -71,7 +71,7 @@ const getPaymentMethodData = async (db: any, restaurantOwnerUid: string, custome
   return paymentMethodData;
 };
 
-const getHash = (message: string) => {
+export const getHash = (message: string) => {
   return crypto.createHash("sha256").update(message).digest("hex");
 };
 
@@ -81,6 +81,7 @@ export const create = async (db: admin.firestore.Firestore, data: any, context: 
 
   const { orderId, restaurantId, description, tip, sendSMS, timeToPickup, lng, memo, customerInfo } = data;
   const _tip = Number(tip) || 0;
+  const roundedTip = Math.round(_tip * multiple) / multiple;
   utils.validate_params({ orderId, restaurantId }); // lng, tip and sendSMS are optional
   const restaurantData = await utils.get_restaurant(db, restaurantId);
   const restaurantOwnerUid = restaurantData["uid"];
@@ -104,7 +105,8 @@ export const create = async (db: admin.firestore.Firestore, data: any, context: 
         await transaction.get(customerRef);
       }
 
-      const totalChargeWithTipAndMultipled = Math.round((order.total + Math.max(0, _tip) + (shippingCost || 0)) * multiple);
+      const totalCharge = order.total + roundedTip + (shippingCost || 0) + (order.deliveryFee || 0);
+      const totalChargeWithTipAndMultipled = totalCharge * multiple; // for US stripe price 
 
       // We expect that there is a customer Id associated with a token
       const payment_method_data = await getPaymentMethodData(db, restaurantOwnerUid, customerUid);
@@ -138,13 +140,14 @@ export const create = async (db: admin.firestore.Firestore, data: any, context: 
 
       const updateData = {
         status: order_status.order_placed,
-        totalCharge: totalChargeWithTipAndMultipled / multiple,
-        tip: Math.round(_tip * multiple) / multiple,
+        totalCharge,
+        tip: roundedTip,
         shippingCost,
         sendSMS: sendSMS || false,
         updatedAt: admin.firestore.Timestamp.now(),
         orderPlacedAt: admin.firestore.Timestamp.now(),
         timePlaced,
+        timePickupForQuery: timePlaced,
         description: request.description,
         memo: memo || "",
         isEC: restaurantData.isEC || false,
@@ -229,6 +232,7 @@ export const confirm = async (db: admin.firestore.Firestore, data: any, context:
       } as any;
       if (nextStatus === order_status.order_accepted) {
         updateData.timeEstimated = timeEstimated ? new admin.firestore.Timestamp(timeEstimated.seconds, timeEstimated.nanoseconds) : order.timePlaced;
+        updateData.timePickupForQuery = updateData.timeEstimated;
         order.timeEstimated = updateData.timeEstimated;
       }
       transaction.set(orderRef, updateData, { merge: true });
@@ -262,7 +266,7 @@ export const confirm = async (db: admin.firestore.Firestore, data: any, context:
   }
 };
 
-// This function is called by user or admin to cencel an exsting order (before accepted by admin)
+// This function is called by user or admin to cancel an exsting order (before accepted by admin)
 export const cancel = async (db: any, data: any, context: functions.https.CallableContext | Context) => {
   const isAdmin = utils.is_admin_auth(context);
   console.log("is_admin:" + String(isAdmin));
@@ -297,8 +301,8 @@ export const cancel = async (db: any, data: any, context: functions.https.Callab
         }
       }
       const cancelTimeKey = uid === order.uid ? "orderCustomerCanceledAt" : "orderRestaurantCanceledAt";
-
-      if (!order.payment || !order.payment.stripe) {
+      // user can cancel if restaurant cancel just only payment and status is placed.
+      if (!order.payment || !order.payment.stripe || (!isAdmin && order.payment.stripe === "canceled")) {
         // No payment transaction
         await updateOrderTotalDataAndUserLog(db, transaction, order.uid, order.order, restaurantId, uid, order.timePlaced, false);
         transaction.set(
@@ -355,6 +359,7 @@ export const cancel = async (db: any, data: any, context: functions.https.Callab
         order,
       };
     });
+    // sendSMS is always true
     if (isAdmin && result.order.sendSMS) {
       await sendMessageToCustomer(db, lng, "msg_order_canceled", restaurant.restaurantName, result.order, restaurantId, orderId, {}, true);
     }
@@ -367,7 +372,7 @@ export const cancel = async (db: any, data: any, context: functions.https.Callab
   }
 };
 
-// This function is called by admin to cencel an exsting order
+// This function is called by admin to cancel an exsting order
 export const cancelStripePayment = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext | Context) => {
   const uid = utils.validate_admin_auth(context);
 
@@ -419,6 +424,7 @@ export const cancelStripePayment = async (db: admin.firestore.Firestore, data: a
       Object.assign(order, updateData);
       return { success: true, payment: "stripe", order };
     });
+    // sendSMS is always true
     if (result.order.sendSMS) {
       await sendMessageToCustomer(db, lng, "msg_stripe_payment_canceled", restaurant.restaurantName, result.order, restaurantId, orderId, {}, true);
     }
@@ -428,150 +434,4 @@ export const cancelStripePayment = async (db: admin.firestore.Firestore, data: a
   }
 };
 
-const getUpdateOrder = (newOrder, order, options, rawOptions) => {
-  const updateOrderData = {};
-  const updateOptions = {};
-  const updateRawOptions = {};
 
-  newOrder.forEach((data) => {
-    const { menuId, index } = data;
-    if (!utils.isEmpty(order[menuId]) && !utils.isEmpty(order[menuId][index])) {
-      if (utils.isEmpty(updateOrderData[menuId])) {
-        updateOrderData[menuId] = [];
-        updateOptions[menuId] = {};
-        updateRawOptions[menuId] = {};
-      }
-      updateOrderData[menuId].push(order[menuId][index]);
-      const optionIndex = updateOrderData[menuId].length - 1;
-      updateOptions[menuId][optionIndex] = options[menuId][optionIndex];
-      updateRawOptions[menuId][optionIndex] = rawOptions[menuId][optionIndex];
-    }
-  });
-
-  return {
-    updateOrderData,
-    updateOptions,
-    updateRawOptions,
-  };
-};
-export const orderChange = async (db: any, data: any, context: functions.https.CallableContext | Context) => {
-  const ownerUid = utils.validate_admin_auth(context);
-  const { restaurantId, orderId, newOrder, timezone, lng } = data;
-  utils.validate_params({ restaurantId, orderId, newOrder, timezone }); // lng, timeEstimated is optional
-
-  const restaurantRef = db.doc(`restaurants/${restaurantId}`);
-  const restaurantData = (await restaurantRef.get()).data() || {};
-  if (restaurantData.uid !== ownerUid) {
-    throw new functions.https.HttpsError("permission-denied", "The user does not have an authority to perform this operation.");
-  }
-  if (newOrder.length === 0) {
-    throw new functions.https.HttpsError("permission-denied", "Cannot be changed to an empty order.");
-  }
-
-  try {
-    const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`);
-    const order = (await orderRef.get()).data();
-    if (!order) {
-      throw new functions.https.HttpsError("invalid-argument", "This order does not exist.");
-    }
-
-    if (!utils.isEmpty(order.orderUpdatedAt) || order.status !== order_status.order_placed) {
-      throw new functions.https.HttpsError("failed-precondition", "It is not possible to change the order.");
-    }
-
-    // generate new order
-    order.id = orderId;
-    const { updateOrderData, updateOptions, updateRawOptions } = getUpdateOrder(newOrder, order.order, order.options, order.rawOptions);
-
-    // update price
-    const baseData = {
-      order: updateOrderData,
-      rawOptions: updateRawOptions,
-    };
-    const { newOrderData, newItems, newPrices, food_sub_total, alcohol_sub_total } = await createNewOrderData(restaurantRef, orderRef, baseData, multiple);
-
-    const accountingResult = orderAccounting(restaurantData, food_sub_total, alcohol_sub_total, multiple);
-    // was created new order data
-
-    const postage = restaurantData.isEC ? await utils.get_restaurant_postage(db, restaurantId) : {};
-    const shippingCost = restaurantData.isEC ? costCal(postage, order?.customerInfo?.prefectureId, accountingResult.total) : 0;
-
-    const orderUpdateData = {
-      order: newOrderData,
-      menuItems: newItems,
-      prices: newPrices,
-      options: updateOptions,
-      rawOptions: updateRawOptions,
-      sub_total: accountingResult.sub_total,
-      tax: accountingResult.tax,
-      inclusiveTax: accountingResult.inclusiveTax,
-      total: accountingResult.total,
-      totalCharge: accountingResult.total + (Number(order.tip) || 0) + (shippingCost || 0),
-      shippingCost,
-      accounting: {
-        food: {
-          revenue: accountingResult.food_sub_total,
-          tax: accountingResult.food_tax,
-        },
-        alcohol: {
-          revenue: accountingResult.alcohol_sub_total,
-          tax: accountingResult.alcohol_tax,
-        },
-      },
-      orderUpdatedAt: admin.firestore.Timestamp.now(),
-    };
-
-    if (!order.payment) {
-      orderRef.update(orderUpdateData);
-    } else {
-      // update stripe
-      await db.runTransaction(async (transaction) => {
-        const customerUid = order.uid;
-        const restaurantOwnerUid = restaurantData["uid"];
-        const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
-
-        const stripeRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}/system/stripe`);
-        await getStripeOrderRecord(transaction, stripeRef);
-
-        (await transaction.get(orderRef)).data();
-
-        // get System Stripe
-        const payment_method_data = await getPaymentMethodData(db, restaurantOwnerUid, customerUid);
-
-        const description = `#${order.number} ${restaurantData.restaurantName} ${order.phoneNumber}`;
-        const request = {
-          setup_future_usage: "off_session",
-          amount: orderUpdateData.totalCharge * multiple,
-          description: `${description} ${orderId} orderChange`,
-          currency: utils.getStripeRegion().currency,
-          metadata: { uid: customerUid, restaurantId, orderId },
-          payment_method_data,
-        } as Stripe.PaymentIntentCreateParams;
-
-        const hash = getHash(JSON.stringify(newOrderData));
-
-        const paymentIntent = await stripe.paymentIntents.create(request, {
-          idempotencyKey: orderRef.path + hash,
-          stripeAccount,
-        });
-
-        await transaction.update(orderRef, orderUpdateData);
-
-        await transaction.set(
-          stripeRef,
-          {
-            paymentIntent,
-          },
-          { merge: true }
-        );
-        return {};
-      });
-    }
-    if (order.sendSMS) {
-      await sendMessageToCustomer(db, lng, "msg_order_updated", restaurantData.restaurantName, order, restaurantId, orderId, {}, true);
-    }
-    return {};
-  } catch (error) {
-    throw utils.process_error(error);
-  }
-};
