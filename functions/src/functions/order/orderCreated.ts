@@ -3,6 +3,8 @@ import * as utils from "../../lib/utils";
 import { order_status } from "../../common/constant";
 import { createCustomer } from "../../stripe/customer";
 
+import { orderCreatedData, menuItem } from "../../lib/types";
+
 // export const orderCreated = async (db, snapshot, context) => {
 export const getGroupRestautantRef = async (db, groupId: string) => {
   const groupData = (await db.doc(`groups/${groupId}`).get()).data();
@@ -125,7 +127,7 @@ export const createNewOrderData = async (restaurantRef, orderRef, orderData, mul
     } else {
       food_sub_total += total;
     }
-    const menuItem: any = {
+    const menuItem: menuItem = {
       price: menu.price,
       itemName: menu.itemName,
       itemPhoto: menu.itemPhoto,
@@ -152,7 +154,7 @@ export const createNewOrderData = async (restaurantRef, orderRef, orderData, mul
   };
 };
 
-export const orderCreated = async (db, data: any, context) => {
+export const orderCreated = async (db, data: orderCreatedData, context) => {
   const customerUid = utils.validate_auth(context);
 
   const { restaurantId, orderId } = data;

@@ -8,6 +8,7 @@ import { notifyNewOrderToRestaurant } from "../notify";
 import { costCal } from "../../common/commonUtils";
 import { Context } from "../../models/TestType";
 
+import { orderPlacedData } from "../../lib/types";
 
 export const updateOrderTotalDataAndUserLog = async (db, transaction, customerUid, order, restaurantId, ownerUid, timePlaced, positive) => {
   const timezone = (functions.config() && functions.config().order && functions.config().order.timezone) || "Asia/Tokyo";
@@ -87,7 +88,7 @@ export const updateOrderTotalDataAndUserLog = async (db, transaction, customerUi
 
 // This function is called by users to place orders without paying
 // export const place = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => {
-export const place = async (db, data: any, context: functions.https.CallableContext | Context) => {
+export const place = async (db, data: orderPlacedData, context: functions.https.CallableContext | Context) => {
   const customerUid = utils.validate_auth(context);
   const { restaurantId, orderId, tip, sendSMS, timeToPickup, lng, memo, customerInfo } = data;
   const _tip = Number(tip) || 0;
