@@ -59,7 +59,9 @@
 </template>
 
 <script>
-export default {
+import { defineComponent, ref } from "@vue/composition-api";
+
+export default defineComponent({
   props: {
     shopInfo: {
       type: Object,
@@ -67,13 +69,12 @@ export default {
     },
     customer: {
       type: Object,
-      required: false,
-      default: {},
+      required: true,
     },
     phoneNumber: {
       type: String,
       required: false,
     },
   },
-};
+});
 </script>

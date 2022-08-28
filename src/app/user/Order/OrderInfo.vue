@@ -73,7 +73,7 @@
 
       <!-- Postage for delivery -->
       <div
-        v-if="shopInfo.enableDelivery"
+        v-if="orderInfo.isDelivery"
         class="border-t-2 border-solid border-black border-opacity-10 mt-4 pt-4"
       >
         <div class="flex">
@@ -179,7 +179,7 @@
             <div class="text-xl font-bold text-green-600">
               {{
                 $n(
-                  orderInfo.total + Number(tip) + Number(actualShippingCost),
+                  orderInfo.total + Number(tip) + Number(actualShippingCost) + Number(orderInfo.deliveryFee||0),
                   "currency"
                 )
               }}
@@ -210,6 +210,10 @@ export default {
     shopInfo: {
       type: Object,
       required: true,
+    },
+    groupData: {
+      type: Object,
+      required: false,
     },
     editable: {
       type: Boolean,
@@ -264,7 +268,14 @@ export default {
       return this.orderInfo.status === order_status.validation_ok;
     },
     enableTip() {
-      return !this.shopInfo.isEC;
+      if (this.shopInfo.isEC) {
+        return false;
+      }
+      if (this.groupData) {
+        return this.groupData.enableTip;
+      }
+      return true;
+      // return !this.shopInfo.isEC;
     },
     maxTip() {
       return this.calcTip(this.regionTip.max);

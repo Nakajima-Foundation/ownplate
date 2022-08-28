@@ -25,6 +25,9 @@ service cloud.firestore {
     function isOwner(resource, request) {
       return resource.data.uid == request.auth.uid;
     }
+    function isOwnersSubAccount(resource, request) {
+      return resource.data.uid == request.auth.token.parentUid;
+    }
     function isNewOwner(request) {
       return request.resource.data.uid == request.auth.uid;
     }
@@ -86,6 +89,10 @@ service cloud.firestore {
         allow read: if request.auth.uid == userId;
         allow write: if request.auth.uid == userId && request.resource.data.restaurantId == restaurantId;
       }
+      match /groups/{groupId}/reviews/{restaurantId} {
+        allow read: if request.auth.uid == userId;
+        allow write: if request.auth.uid == userId && request.resource.data.restaurantId == restaurantId;
+      }
     }
 
     match /adminConfigs/{userId} {
@@ -143,6 +150,16 @@ service cloud.firestore {
       allow read: if true
     }
 
+    match /groups/{groupId} {
+      allow read: if true;
+      match /category/{category} {
+        allow read: if true;
+        match /subCategory/{subcategory} {
+          allow read: if true;
+        }      
+      }      
+    }
+
     // Rules for collection group
     match /{path=**}/orders/{orderId} {
       allow read: if isSuper(request);
@@ -170,10 +187,20 @@ service cloud.firestore {
     match /{path=**}/messages/{messageId} {
       allow read: if isFromUser(resource, request);
     }
+
+    match /{path=**}/subCategory/{subcategory} {
+      allow read: if true;
+    }      
+
     // End of Rules for collection group
 
     match /restaurants/{restaurantId} {
-        allow read: if true
+        allow read: if resource.data.publicFlag && !resource.data.deletedFlag; // everyone
+        allow read: if isAdmin(request) && isOwner(resource, request);
+        // allow read: if isAdmin(request) && isRestaurantSubAccount(restaurantId, request); TODO
+        allow read: if isAdmin(request) && isOwnersSubAccount(resource, request);
+        allow read: if isSuper(request);
+        
         allow create: if isAdmin(request)
                         && request.resource.data.uid == request.auth.uid;
         allow update: if isAdmin(request) && isOwner(resource, request);
@@ -208,7 +235,11 @@ service cloud.firestore {
           allow write: if false // only server side of function can write here (see functions/order.ts)
         }
         match /menus/{menuId} {
-          allow read: if true
+          allow read: if resource.data.publicFlag && !resource.data.deletedFlag; // everyone
+          allow read: if isAdmin(request) && isRestaurantOwner(restaurantId, request);
+          allow read: if isAdmin(request) && isRestaurantSubAccount(restaurantId, request);
+          allow read: if isSuper(request);
+
           allow write: if isAdmin(request) && isRestaurantOwner(restaurantId, request);
           allow write: if isAdmin(request) && isRestaurantSubAccount(restaurantId, request);
         }
@@ -338,6 +369,11 @@ service cloud.firestore {
     }
     match /{document=**} {
       allow read, write: if false;
+    }
+    
+    // for map
+    match /mobileMap/data/products/{id} {
+      allow read: if true;
     }
   }
 }

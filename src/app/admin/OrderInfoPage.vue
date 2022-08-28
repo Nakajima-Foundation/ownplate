@@ -685,6 +685,10 @@ export default {
       type: Object,
       required: true,
     },
+    groupData: {
+      type: Object,
+      required: false,
+    },
   },
   metaInfo() {
     return {
@@ -710,6 +714,7 @@ export default {
       cancelPopup: false,
       paymentCancelPopup: false,
       postageInfo: {},
+      deliveryData: {},
       notFound: false,
       timeOffset: 0,
       shopOwner: null,
@@ -739,9 +744,16 @@ export default {
         }
       );
     }
-
+    if (this.shopInfo.enableDelivery) {
+      getDoc(doc(db, `restaurants/${this.restaurantId()}/delivery/area`)).then(
+        (snapshot) => {
+          this.deliveryData = snapshot.data() || {};
+        }
+      );
+    }
+    
     const order_detacher = onSnapshot(
-      doc(db, `restaurants/${this.restaurantId()}/orders/${this.orderId}`), 
+      doc(db, `restaurants/${this.restaurantId()}/orders/${this.orderId}`),
       async (order) => {
         if (!order.exists) {
           this.notFound = true;
@@ -762,8 +774,8 @@ export default {
         }
       },
       (e) => {
-        return this.notFound =true;
-      },
+        return (this.notFound = true);
+      }
     );
 
     this.detacher = [order_detacher];
@@ -786,12 +798,14 @@ export default {
           this.userLog = res.data();
         }
       });
-
+      const menuRestaurantId = this.groupData
+        ? this.groupData.restaurantId
+        : this.restaurantId();
       const menuIds = Object.keys(this.orderInfo.menuItems);
       arrayChunk(menuIds, 10).map(async (arr) => {
         getDocs(
           query(
-            collection(db, `restaurants/${this.restaurantId()}/menus`),
+            collection(db, `restaurants/${menuRestaurantId}/menus`),
             where(documentId(), "in", arr)
           )
         ).then((menu) => {
@@ -1004,7 +1018,24 @@ export default {
         this.orderInfo?.customerInfo?.prefectureId,
         ret.total
       );
-      return Object.assign({}, this.orderInfo, ret, { shippingCost });
+
+      const deliveryFee = (() => {
+        // console.log(this.deliveryData.enableDeliveryFree, ret.total , this.deliveryData.deliveryThreshold);
+        if (!this.shopInfo.enableDelivery) {
+          return 0;
+        }
+        if (this.deliveryData.enableDeliveryFree && ((ret.total || 0) >= this.deliveryData.deliveryFreeThreshold)) {
+          return 0;
+        }
+        return this.deliveryData.deliveryFee;
+      })();
+      return Object.assign({}, this.orderInfo, ret, { shippingCost, deliveryFee });
+    },
+    notDeliveryOrTotalCanDelivery() {
+      if (!this.orderInfo.isDelivery) {
+        return true;
+      }
+      return (this.editable_order_info.total >= this.deliveryData.deliveryThreshold);
     },
     availableOrderChange() {
       return (
@@ -1018,7 +1049,7 @@ export default {
         this.edited_available_order_info.length !==
           this.editedAvailableOrders.length &&
         this.edited_available_order_info.length > 0
-      );
+      ) && this.notDeliveryOrTotalCanDelivery;
     },
   },
   methods: {

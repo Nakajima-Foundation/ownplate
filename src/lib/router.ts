@@ -3,6 +3,8 @@ import VueRouter from "vue-router";
 import { RouteConfig } from "vue-router";
 Vue.use(VueRouter);
 
+import { mo_prefixes } from "@/config/project";
+
 const getUserPages = (prefix: string) => {
   return [
     {
@@ -28,15 +30,87 @@ const getUserPages = (prefix: string) => {
     },
   ];
 };
+
+const getUserPagesWithCat = (prefix: string) => {
+  return [
+    {
+      path: "/",
+      component: "user/RestaurantPage.vue",
+      children: [
+        {
+          name: "r-restaurant-Page_" + prefix,
+          path: "/",
+          component: "user/Blank.vue",
+        },
+        {
+          name: "r-restaurant-Cat_" + prefix,
+          path: "cat/:category/:subCategory",
+          component: "user/Blank.vue",
+        },
+        {
+          name: "r-restaurant-Menu_" + prefix,
+          path: "cat/:category/:subCategory/menus/:menuId",
+          component: "user/Blank.vue",
+        },
+      ],
+    },
+    {
+      name: "r-restaurantId-order_" + prefix,
+      path: "order/:orderId",
+      component: "user/OrderPage.vue",
+    },
+  ];
+};
+
 interface CustomRoute {
   name?: string;
   path: string;
   component: string;
   children?: CustomRoute[];
-  props?: {
-    mode: string;
-  };
 }
+
+const mopath = mo_prefixes
+  .map((prefix) => {
+    const prePath = "/" + prefix;
+    return [
+      {
+        path: prePath,
+        component: "user/MoWrapper.vue",
+        children: [
+          {
+            path: prePath,
+            component: "user/MoIndex.vue",
+          },
+          {
+            path: prePath + "/r/favorites",
+            component: "user/Restaurants/Favorites.vue",
+          },
+          {
+            path: prePath + "/r/:restaurantId",
+            component: "user/RestaurantWrapper.vue",
+            children: getUserPagesWithCat(prefix),
+          },
+          {
+            path: prePath + "/u/history",
+            component: "user/OrderHistory.vue",
+          },
+          {
+            path: prePath + "/u/profile",
+            component: "user/Profile.vue",
+          },
+          {
+            path: prePath + "/terms",
+            component: "common/TermsUser.vue",
+          },
+          {
+            path: prePath + "/privacy",
+            component: "common/Privacy.vue",
+          },
+        ],
+      },
+    ];
+  })
+  .flat();
 
 export const customRoutes: CustomRoute[] = [
   {
@@ -119,11 +193,9 @@ export const customRoutes: CustomRoute[] = [
   {
     path: "/r/:restaurantId",
     component: "user/RestaurantWrapper.vue",
-    props: {
-      mode: "normal",
-    },
     children: getUserPages("normal"),
   },
+  ...mopath,
   {
     path: "/liff/:liffIndexId/pc",
     component: "liff/PC.vue",
@@ -139,9 +211,6 @@ export const customRoutes: CustomRoute[] = [
       {
         path: "r/:restaurantId",
         component: "user/RestaurantWrapper.vue",
-        props: {
-          mode: "liff",
-        },
         children: getUserPages("liff"),
       },
       {

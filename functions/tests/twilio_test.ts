@@ -18,7 +18,7 @@ describe("twilio function", () => {
     };
 
     const num = twilio.parsedNumber(restaurant);
-   if (num) {
+    if (num) {
       (num.getCountryCode() || "").should.equal(81);
       (num.getNationalNumber() || "").should.equal(333333333);
     }

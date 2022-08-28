@@ -14,7 +14,7 @@
       "npm --prefix \"$RESOURCE_DIR\" run build"
     ]
   },
-  "hosting": {
+  "hosting": [{
     "target": "app",
     "public": "dist",
     "ignore": [
@@ -65,11 +65,23 @@
         "dynamicLinks": true
       },
       {
+        "source": "/ss/**",
+        "destination": "/ss.html"
+      },
+      {
+        "source": "/mo/**",
+        "destination": "/mo.html"
+      },
+      {
+        "source": "/motest/**",
+        "destination": "/motest.html"
+      },
+      {
         "source": "**",
         "destination": "/index.html"
       }
     ]
-  },
+  }],
   "storage": {
     "rules": "storage.rules"
   }

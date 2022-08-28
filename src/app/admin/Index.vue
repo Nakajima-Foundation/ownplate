@@ -93,7 +93,8 @@
 
           <!-- Existing Restaurant -->
           <div v-if="existsRestaurant">
-            <div v-if="restaurantLists.length > 1" class="mb-2">
+            <!-- All Orders -->
+            <div v-if="isOwner && restaurantLists.length > 1" class="mb-2">
               <router-link :to="'/admin/orders/'">
                 <div
                   class="bg-black bg-opacity-5 rounded-lg px-4 py-3 text-center"
@@ -109,7 +110,7 @@
               <div
                 v-for="(restaurantId, index) in restaurantLists"
                 :key="restaurantId"
-                >
+              >
                 <restaurant-edit-card
                   v-if="restaurantItems[restaurantId]"
                   :shopInfo="restaurantItems[restaurantId]"
@@ -318,7 +319,10 @@ export default {
                 data.restaurantid = doc.id;
                 data.id = doc.id;
                 tmp[doc.id] = data;
-                if (!this.restaurantLists.includes(restaurantId) && this.isOwner) {
+                if (
+                  !this.restaurantLists.includes(restaurantId) &&
+                  this.isOwner
+                ) {
                   this.restaurantLists.push(restaurantId);
                 }
               }
@@ -330,22 +334,6 @@ export default {
             ) {
               this.restaurantLists = Object.keys(this.restaurantItems);
             }
-
-            await Promise.all(
-              Object.keys(this.restaurantItems).map(async (restaurantId) => {
-                if (
-                  this.restaurantItems[restaurantId].numberOfMenus === undefined
-                ) {
-                  const menus = await db
-                    .collection(`restaurants/${restaurantId}/menus`)
-                    .where("deletedFlag", "==", false)
-                    .get();
-                  const obj = { ...this.restaurantItems };
-                  obj[restaurantId].numberOfMenus = menus.size;
-                  this.restaurantItems = obj;
-                }
-              })
-            );
 
             this.destroy_detacher();
             this.detachers = Object.keys(this.restaurantItems).map(
@@ -418,8 +406,10 @@ export default {
 
           doc.set({
             uid: this.uid,
+            restaurantId: doc.id,
             menuLists: [],
             publicFlag: false,
+            numberOfMenus: 0,
             deletedFlag: false,
             createdAt: firestore.FieldValue.serverTimestamp(),
           });
@@ -508,9 +498,6 @@ export default {
     },
     isOwner() {
       return !this.$store.getters.isSubAccount;
-    },
-    restaurantLength() {
-      return this.menuLists.length;
     },
     uid() {
       return this.$store.getters.uidAdmin;

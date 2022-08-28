@@ -701,7 +701,7 @@ export default {
       return this.$store.getters.stripeRegion.allergens;
     },
     priceStep() {
-      return 10.0 / this.$store.getters.stripeRegion.multiple;
+      return 1.0 / this.$store.getters.stripeRegion.multiple;
     },
     errors() {
       const err = {};

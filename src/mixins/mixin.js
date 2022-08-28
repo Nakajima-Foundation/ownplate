@@ -8,7 +8,7 @@ import * as Cookie from "cookie";
 import { defaultHeader } from "@/config/header";
 import { formatOption } from "@/utils/strings";
 
-import { partners } from "@/config/constant";
+import { arraySum } from "@/utils/utils";
 import { GAPIKey } from "@/config/project";
 
 const mixin = {
@@ -83,16 +83,6 @@ const mixin = {
         return this.countObj(obj[key]) + tmp;
       }, 0);
     },
-    copyClipboard: async function (text) {
-      // TODO: check no-nuxt branch
-      try {
-        await this.$copyText(text);
-        console.log(this.$i18n);
-        this.$buefy.toast.open(this.$i18n.tc("shopInfo.UrlCopied"));
-      } catch (e) {
-        this.$buefy.toast.open(this.$i18n.tc("shopInfo.UrlCopyFailed"));
-      }
-    },
     forcedError(key) {
       const debug = this.$route.query.error;
       return debug === key ? "---forced-error---" : "";
@@ -115,13 +105,8 @@ const mixin = {
       }
       return 0;
     },
-    arraySum(arr) {
-      return Object.values(arr || [0]).reduce(
-        (accumulator, currentValue) => accumulator + currentValue
-      );
-    },
     arrayOrNumSum(arr) {
-      return Array.isArray(arr) ? this.arraySum(arr) : arr || 0;
+      return Array.isArray(arr) ? arraySum(arr) : arr || 0;
     },
     forceArray(arr) {
       return Array.isArray(arr) ? arr : [arr];

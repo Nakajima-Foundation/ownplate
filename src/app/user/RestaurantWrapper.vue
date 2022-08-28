@@ -4,74 +4,100 @@
     :paymentInfo="paymentInfo"
     :deliveryData="deliveryData"
     :mode="mode"
+    :moPrefix="moPrefix"
     :notFound="notFound"
+    :groupData="groupData"
   />
 </template>
 
 <script>
-import { db } from "@/plugins/firebase";
+import {
+  defineComponent,
+  ref,
+  computed,
+  onUnmounted,
+} from "@vue/composition-api";
 
-export default {
+import { db } from "@/lib/firebase/firebase9";
+import { doc, onSnapshot, getDoc } from "firebase/firestore";
+import { routeMode, getMoPrefix } from "@/utils/utils";
+
+export default defineComponent({
   name: "RestaurantWrapper",
   props: {
-    mode: {
-      type: String,
+    groupData: {
+      type: Object,
       required: false,
     },
   },
-  data() {
+  setup(props, ctx) {
+    const mode = routeMode(ctx.root);
+    const moPrefix = getMoPrefix(ctx.root);
+
+    const shopInfo = ref({});
+    const paymentInfo = ref({});
+    const deliveryData = ref({});
+    const notFound = ref(null);
+
+    const restaurantId = computed(() => {
+      return ctx.root.$route.params.restaurantId;
+    });
+
+    const restaurant_detacher = onSnapshot(
+      doc(db, `restaurants/${restaurantId.value}`),
+      async (restaurant) => {
+        const restaurant_data = restaurant.data();
+        shopInfo.value = restaurant_data || {};
+        const exist_and_publig =
+          restaurant.exists() &&
+          !shopInfo.value.deletedFlag &&
+          shopInfo.value.publicFlag;
+
+        notFound.value = (() => {
+          if (!exist_and_publig) {
+            return true;
+          }
+          if (mode.value === "liff") {
+            return !shopInfo.value.supportLiff;
+          }
+          if (mode.value === "mo") {
+            return !shopInfo.value.groupId;
+          }
+          return !!shopInfo.value.groupId || !!shopInfo.value.supportLiff;
+        })();
+
+        if (!notFound.value) {
+          const uid = restaurant_data.uid;
+          getDoc(doc(db, `/admins/${uid}/public/payment`)).then((snapshot) => {
+            paymentInfo.value = snapshot.data() || {};
+            console.log(paymentInfo.value);
+          });
+          if (shopInfo.value.enableDelivery) {
+            getDoc(
+              doc(db, `restaurants/${restaurantId.value}/delivery/area`)
+            ).then((snapshot) => {
+              deliveryData.value = snapshot.data() || {};
+            });
+          }
+        }
+      }
+    );
+    const detachers = [restaurant_detacher];
+    onUnmounted(() => {
+      if (detachers) {
+        detachers.map((detacher) => {
+          detacher();
+        });
+      }
+    });
     return {
-      shopInfo: {},
-      paymentInfo: {},
-      deliveryData: {},
-      detacher: [],
-      notFound: null,
+      mode,
+      moPrefix,
+      shopInfo,
+      paymentInfo,
+      deliveryData,
+      notFound,
     };
   },
-  created() {
-    const restaurant_detacher = db
-      .doc(`restaurants/${this.restaurantId()}`)
-      .onSnapshot(async (restaurant) => {
-        const restaurant_data = restaurant.data();
-        this.shopInfo = restaurant_data || {};
-        const exist_and_publig =
-          restaurant.exists &&
-          !restaurant.data().deletedFlag &&
-          restaurant.data().publicFlag;
-
-        if (exist_and_publig) {
-          if (this.mode === "liff") {
-            this.notFound = !this.shopInfo.supportLiff;
-          } else {
-            this.notFound = false;
-          }
-        } else {
-          this.notFound = true;
-        }
-        if (!this.notFound) {
-          const uid = restaurant_data.uid;
-          db.doc(`/admins/${uid}/public/payment`)
-            .get()
-            .then((snapshot) => {
-              this.paymentInfo = snapshot.data() || {};
-            });
-          if (this.shopInfo.enableDelivery) {
-            db.doc(`restaurants/${this.restaurantId()}/delivery/area`)
-              .get()
-              .then((snapshot) => {
-                this.deliveryData = snapshot.data() || {};
-              });
-          }
-        }
-      });
-    this.detacher = [restaurant_detacher];
-  },
-  destroyed() {
-    if (this.detacher) {
-      this.detacher.map((detacher) => {
-        detacher();
-      });
-    }
-  },
-};
+});
 </script>

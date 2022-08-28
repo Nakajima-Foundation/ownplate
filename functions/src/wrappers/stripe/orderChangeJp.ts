@@ -1,7 +1,7 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 
-import * as StripeIntent from "../../stripe/intent";
+import { orderChange } from "../../stripe/orderChange";
 
 const db = admin.firestore();
 
@@ -11,5 +11,5 @@ export default functions
     memory: "1GB" as "1GB",
   })
   .https.onCall(async (data, context) => {
-    return await StripeIntent.orderChange(db, data, context);
+    return await orderChange(db, data, context);
   });

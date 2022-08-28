@@ -15,3 +15,21 @@ export const resource = {
     msg_order_canceled_by_user: "注文がキャンセルされました",
   },
 };
+
+export const resource_mo = {
+  translation: {
+    hello: "今日は、世界。",
+    option: "オプション",
+    card_payment: "カード払い",
+    payment_in_store: "現地払い",
+    msg_order_accepted: "ご注文の受付が完了しました。受け渡し予定時刻は{{time}}です。", // mo
+    msg_ec_order_accepted: "ありがとうございます。ご注文は受理されました。",
+    msg_cooking_completed: "ご注文商品の準備ができました。受け渡し予定時刻は{{time}}です。", // mo
+    msg_ec_cooking_completed: "商品の発送準備ができました。",
+    msg_order_canceled: "ご注文がキャンセルされました。", // mo
+    msg_stripe_payment_canceled: "決済処理が正しく完了できなかったため、カード決済を取り消しました。代金は受け取り時に店舗でお支払いください。", // mo
+    msg_order_placed: "注文が入りました",
+    msg_order_updated: "注文内容が変更されました",
+    msg_order_canceled_by_user: "注文がキャンセルされました",
+  },
+};

@@ -185,8 +185,13 @@ export default {
       this.setHome(latLng.lat(), latLng.lng());
     },
     setHome(lat, lng) {
-      this.home = new google.maps.LatLng(lat, lng);
+      this.setHomeLocation(lat, lng);
       this.$emit("updateHome", { lat, lng });
+    },
+    setHomeLocation(lat, lng) {
+      if (google) {
+        this.home = new google.maps.LatLng(lat, lng);
+      }
       this.updateMarker();
       this.estimatedDistance = this.haversine_distance(
         lat,
@@ -194,6 +199,9 @@ export default {
         this.shopInfo.location.lat,
         this.shopInfo.location.lng
       );
+    },
+    updateLocation(pos) {
+      this.setHomeLocation(pos.lat, pos.lng);
     },
     conv() {
       const geocoder = new google.maps.Geocoder();
