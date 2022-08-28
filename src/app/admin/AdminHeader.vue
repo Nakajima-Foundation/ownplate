@@ -34,9 +34,7 @@
     </div>
 
     <!-- Suspend Button -->
-    <div
-      class="flex justify-start space-x-4 mt-4 lg:mt-0 lg:mr-4"
-    >
+    <div class="flex justify-start space-x-4 mt-4 lg:mt-0 lg:mr-4">
       <b-button
         tag="router-link"
         :to="`/admin/restaurants/${restaurantId()}/suspend`"

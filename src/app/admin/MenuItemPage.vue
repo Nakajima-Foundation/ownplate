@@ -860,9 +860,10 @@ export default defineComponent({
       try {
         if (files["menu"]) {
           const path = `/images/restaurants/${menuRestaurantId.value}/menus/${menuId}/${uid.value}/item.jpg`;
-          menuInfo.itemPhoto = await uploadFile(files["menu"], path);
+          const photo = await uploadFile(files["menu"], path);
+          menuInfo.itemPhoto = photo;
           menuInfo.images.item = {
-            original: menuInfo.itemPhoto,
+            original: photo,
             resizedImages: {},
           };
         }

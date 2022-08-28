@@ -1300,10 +1300,7 @@ export default defineComponent({
       try {
         if (files.value["profile"]) {
           const path = `/images/restaurants/${restaurantId}/${uid.value}/profile.jpg`;
-          const profImage = await uploadFile(
-            files.value["profile"],
-            path
-          );
+          const profImage = await uploadFile(files.value["profile"], path);
           newData.restProfilePhoto = profImage;
           newData.images.profile = {
             original: profImage,
@@ -1313,10 +1310,7 @@ export default defineComponent({
 
         if (files.value["cover"]) {
           const path = `/images/restaurants/${restaurantId}/${uid.value}/cover.jpg`;
-          const coverImage = await uploadFile(
-            files.value["cover"],
-            path
-          );
+          const coverImage = await uploadFile(files.value["cover"], path);
           newData.restCoverPhoto = coverImage;
           newData.images.cover = {
             original: coverImage,
