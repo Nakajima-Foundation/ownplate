@@ -1,7 +1,7 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 
-import * as StripeIntent from "../../stripe/intent";
+import { cancelStripePayment } from "../../stripe/cancelStripePayment";
 
 const db = admin.firestore();
 
@@ -10,5 +10,5 @@ export default functions
     memory: "1GB" as "1GB",
   })
   .https.onCall(async (data, context) => {
-    return await StripeIntent.cancelStripePayment(db, data, context);
+    return await cancelStripePayment(db, data, context);
   });
