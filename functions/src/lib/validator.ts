@@ -74,23 +74,24 @@ export const validateBase64Ext = (id: string) => {
 };
 
 const validateNumber = (text: number) => {
-  return typeof text ==== 'number';
+  return typeof text === 'number';
 };
 const validateNumberString = (text: string) => {
-  // TODO
-  return true;
+  console.log("not implemented yet");
+  return typeof text === 'string';
 };
-const validateInteger = (number: string) => {
-  // TODO
-  return typeof text ==== 'number';
+const validateInteger = (text: string) => {
+  console.log("not implemented yet");
+  return typeof text === 'number';
 };
 const validateIntegerString = (text: string) => {
-  // TODO
-  return typeof text ==== 'number';
+  console.log("not implemented yet");
+  return typeof text === 'string';
 };
 
 const validateString = (text: string) => {
-  
+  console.log("not implemented yet");
+  return typeof text === 'string';
 };
 const validateAlphabet = (text: string) => {
   return /^[a-zA-Z]+$/.test(text);
@@ -103,6 +104,9 @@ const validateTimestamp = (timestamp: admin.firestore.Timestamp) => {
 const validateArray = {
   firebaseId: validateFirebaseId,
   number: validateNumber,
+  numberStrong: validateNumberString,
+  integer: validateInteger,
+  integerString: validateIntegerString,
   string: validateString,
   alphabet: validateAlphabet,
   timestamp: validateTimestamp,
@@ -125,7 +129,15 @@ const validateData = (data, validator) => {
           error: "invalid",
         });
       }
-     }
+    }
+    if (rule.regex) {
+      if (!rule.regex.test(data[key])) {
+        tmp.push({
+          key,
+          error: "regexError",
+        });
+      }
+    }
     return tmp
   }, []);
   return {
@@ -150,6 +162,7 @@ export const validateOrderUpadte = (data: orderUpdateData) => {
     },
     timezone: {
       type: "string",
+      regex: /^([a-zA-Z]+)\/([a-zA-Z]+)$/,
       required: true,
     },
     lng: {
