@@ -77,7 +77,9 @@ export default {
     Footer,
     NotificationBanner,
   },
-  metaInfo: location.pathname.startsWith("/motest") ? MoHeader : defaultHeader,
+  metaInfo: mo_prefixes.some((prefix) => {
+    location.pathname.startsWith("/" + prefix)
+  })  ? MoHeader : defaultHeader,
   data() {
     return {
       unregisterAuthObserver: null,
