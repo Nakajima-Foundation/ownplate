@@ -258,7 +258,7 @@ export default defineComponent({
     },
     mode: {
       type: String,
-      required: false,
+      required: true,
     },
   },
   emits: ["noAvailableTime"],
