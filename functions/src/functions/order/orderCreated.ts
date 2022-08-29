@@ -4,8 +4,8 @@ import { order_status } from "../../common/constant";
 import { createCustomer } from "../../stripe/customer";
 
 import { orderCreatedData, menuItem } from "../../lib/types";
+import { validateOrderCreated } from "../../lib/validator";
 
-// export const orderCreated = async (db, snapshot, context) => {
 export const getGroupRestautantRef = async (db, groupId: string) => {
   const groupData = (await db.doc(`groups/${groupId}`).get()).data();
   if (!groupData) {
@@ -14,7 +14,6 @@ export const getGroupRestautantRef = async (db, groupId: string) => {
   return db.doc(`restaurants/${groupData.restaurantId}`);
 };
 
-// for orderCreated
 const getOptionPrice = (selectedOptionsRaw, menu, multiple) => {
   return selectedOptionsRaw.reduce((tmpPrice, selectedOpt, key) => {
     const opt = menu.itemOptionCheckbox[key].split(",");
@@ -58,6 +57,7 @@ export const orderAccounting = (restaurantData, food_sub_total, alcohol_sub_tota
     const food_tax = Math.round(((food_sub_total * foodTax) / 100) * multiple) / multiple;
     const alcohol_tax = Math.round(((alcohol_sub_total * alcoholTax) / 100) * multiple) / multiple;
     const tax = food_tax + alcohol_tax;
+
     const total = sub_total + tax;
     return {
       tax,
@@ -160,6 +160,12 @@ export const orderCreated = async (db, data: orderCreatedData, context) => {
   const { restaurantId, orderId } = data;
   utils.required_params({ restaurantId, orderId });
 
+  const validateResult = validateOrderCreated(data);
+  if (!validateResult.result) {
+    console.error("orderCreated", validateResult.errors);
+    throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
+  }
+  
   const restaurantRef = db.doc(`restaurants/${restaurantId}`);
   const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`);
 

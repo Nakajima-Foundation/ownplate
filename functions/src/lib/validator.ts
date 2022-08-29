@@ -1,5 +1,5 @@
 import * as admin from "firebase-admin";
-import { orderUpdateData } from "./types";
+import { orderCreatedData, orderUpdateData } from "./types";
 import { isEmpty } from "./utils";
 
 export const isNumber = (value: string, option: any = {}) => {
@@ -144,6 +144,20 @@ const validateData = (data, validator) => {
     result: errors.length === 0,
     errors
   };
+};
+
+export const validateOrderCreated = (data: orderCreatedData) => {
+  const validator = {
+    restaurantId: {
+      type: "firebaseId",
+      required: true,
+    },
+    orderId: {
+      type: "firebaseId",
+      required: true,
+    },
+  };
+  return validateData(data, validator);
 };
 
 export const validateOrderUpadte = (data: orderUpdateData) => {

@@ -17,7 +17,7 @@ export const update = async (db: admin.firestore.Firestore, data: orderUpdateDat
 
   const validateResult = validateOrderUpadte(data);
   if (!validateResult.result) {
-    console.error("update", validateResult.errors);
+    console.error("orderUpdate", validateResult.errors);
     throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
   }
   
