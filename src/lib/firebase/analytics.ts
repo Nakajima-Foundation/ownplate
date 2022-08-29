@@ -61,7 +61,7 @@ const analyticsWrapper = (eventName: string, data: AnalyticsData) => {
   if (location.hostname !== "localhost") {
     logEvent(analytics, eventName, data);
     if (isInMo()) {
-      gtag_mo('config', moGtmID);
+      gtag_mo("config", moGtmID);
       gtag_mo("event", eventName, data);
     }
   } else {

@@ -211,7 +211,7 @@ export const useMenu = (
 
   const allMenuObjKey = computed(() => {
     if (isInMo.value) {
-      return [category.value, subCategory.value].join("_")
+      return [category.value, subCategory.value].join("_");
     }
     return "mono";
   });
@@ -241,7 +241,8 @@ export const useMenu = (
     }
     const hasSubCategory = category.value && subCategory.value;
     if (menuCache.value[allMenuObjKey.value]) {
-      allMenuObj.value[allMenuObjKey.value] = menuCache.value[allMenuObjKey.value];
+      allMenuObj.value[allMenuObjKey.value] =
+        menuCache.value[allMenuObjKey.value];
       return;
     }
 

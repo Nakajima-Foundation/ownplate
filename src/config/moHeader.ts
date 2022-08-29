@@ -56,21 +56,21 @@ const link = [
 
 const gtmBodyTag = [
   `<script async src="https://www.googletagmanager.com/gtag/js?id=${moGtmID}"></script>`,
-  '<script>',
-  '  window.dataLayer = window.dataLayer || [];',
-  '  function gtag(){dataLayer.push(arguments);}',
-  '  function gtag_mo(){dataLayer.push(arguments);}',
+  "<script>",
+  "  window.dataLayer = window.dataLayer || [];",
+  "  function gtag(){dataLayer.push(arguments);}",
+  "  function gtag_mo(){dataLayer.push(arguments);}",
   "  gtag_mo('js', new Date());",
   `  gtag_mo('config', '${moGtmID}');`,
-  '</script>',
+  "</script>",
 ].join("\n");
 
 const script = [
   { src: "https://js.stripe.com/v3/" },
-//  {
-//    hid: "gtmHead",
-//    innerHTML: gtmHeadTag,
-//  },
+  //  {
+  //    hid: "gtmHead",
+  //    innerHTML: gtmHeadTag,
+  //  },
 ];
 
 //const gtmBodyTag = "";

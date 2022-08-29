@@ -78,8 +78,10 @@ export default {
     NotificationBanner,
   },
   metaInfo: mo_prefixes.some((prefix) => {
-    location.pathname.startsWith("/" + prefix)
-  })  ? MoHeader : defaultHeader,
+    location.pathname.startsWith("/" + prefix);
+  })
+    ? MoHeader
+    : defaultHeader,
   data() {
     return {
       unregisterAuthObserver: null,
