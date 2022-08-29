@@ -54,25 +54,26 @@ const link = [
 
 //  const gtmBodyTag = `<iframe src="https://www.googletagmanager.com/ns.html?id=${moGtmID}" height="0" width="0" style="display:none;visibility:hidden"></iframe>`;
 
-const gtmHeadTag = [
+const gtmBodyTag = [
   `<script async src="https://www.googletagmanager.com/gtag/js?id=${moGtmID}"></script>`,
   '<script>',
   '  window.dataLayer = window.dataLayer || [];',
   '  function gtag(){dataLayer.push(arguments);}',
-  "  gtag('js', new Date());",
-  `  gtag('config', '${moGtmID}');`,
+  '  function gtag_mo(){dataLayer.push(arguments);}',
+  "  gtag_mo('js', new Date());",
+  `  gtag_mo('config', '${moGtmID}');`,
   '</script>',
-].join("");
+].join("\n");
 
 const script = [
   { src: "https://js.stripe.com/v3/" },
-  {
-    hid: "gtmHead",
-    innerHTML: gtmHeadTag,
-  },
+//  {
+//    hid: "gtmHead",
+//    innerHTML: gtmHeadTag,
+//  },
 ];
 
-const gtmBodyTag = "";
+//const gtmBodyTag = "";
 const noscript = [
   {
     hid: "gtmBody",

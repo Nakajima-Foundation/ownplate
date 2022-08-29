@@ -61,7 +61,8 @@ const analyticsWrapper = (eventName: string, data: AnalyticsData) => {
   if (location.hostname !== "localhost") {
     logEvent(analytics, eventName, data);
     if (isInMo()) {
-      gtag("event", eventName, data);
+      gtag_mo('config', 'GTM-PLFRX7K');
+      gtag_mo("event", eventName, data);
     }
   } else {
     console.log("log: ", eventName, data);

@@ -77,7 +77,7 @@ export default {
     Footer,
     NotificationBanner,
   },
-  metaInfo: location.pathname.startsWith("/ss") ? MoHeader : defaultHeader,
+  metaInfo: location.pathname.startsWith("/motest") ? MoHeader : defaultHeader,
   data() {
     return {
       unregisterAuthObserver: null,
