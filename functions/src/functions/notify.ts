@@ -140,7 +140,7 @@ export const createNotifyRestaurantMailMessage = async (messageId: string, resta
 
           try {
             if (order.options && order.options[menuId] && order.options[menuId][key]) {
-              const opts = order.options[menuId][key].filter(o => o);
+              const opts = order.options[menuId][key].filter((o) => o);
               if (opts.length > 0) {
                 messages.push(t("option") + ": " + opts.join("/"));
               }

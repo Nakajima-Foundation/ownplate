@@ -74,32 +74,31 @@ export const validateBase64Ext = (id: string) => {
 };
 
 const validateNumber = (text: number) => {
-  return typeof text === 'number';
+  return typeof text === "number";
 };
 const validateNumberString = (text: string) => {
   console.log("not implemented yet");
-  return typeof text === 'string';
+  return typeof text === "string";
 };
 const validateInteger = (text: string) => {
   console.log("not implemented yet");
-  return typeof text === 'number';
+  return typeof text === "number";
 };
 const validateIntegerString = (text: string) => {
   console.log("not implemented yet");
-  return typeof text === 'string';
+  return typeof text === "string";
 };
 
 const validateString = (text: string) => {
   console.log("not implemented yet");
-  return typeof text === 'string';
+  return typeof text === "string";
 };
 const validateAlphabet = (text: string) => {
   return /^[a-zA-Z]+$/.test(text);
 };
 const validateTimestamp = (timestamp: admin.firestore.Timestamp) => {
-  return (timestamp.seconds && timestamp.nanoseconds);
+  return timestamp.seconds && timestamp.nanoseconds;
 };
-
 
 const validateArray = {
   firebaseId: validateFirebaseId,
@@ -138,11 +137,11 @@ const validateData = (data, validator) => {
         });
       }
     }
-    return tmp
+    return tmp;
   }, []);
   return {
     result: errors.length === 0,
-    errors
+    errors,
   };
 };
 
@@ -187,6 +186,6 @@ export const validateOrderUpadte = (data: orderUpdateData) => {
       type: "timestamp",
       required: false,
     },
-  }
+  };
   return validateData(data, validator);
 };

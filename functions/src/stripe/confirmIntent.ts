@@ -5,12 +5,7 @@ import { order_status, next_transitions, order_status_keys, timeEventMapping } f
 import * as utils from "../lib/utils";
 import { sendMessageToCustomer } from "../functions/notify";
 
-import {
-  stripe,
-  getStripeAccount,
-  getStripeOrderRecord,
-  getHash,
-} from "./intent";
+import { stripe, getStripeAccount, getStripeOrderRecord, getHash } from "./intent";
 
 import moment from "moment-timezone";
 
@@ -103,5 +98,3 @@ export const confirm = async (db: admin.firestore.Firestore, data: any, context:
     throw utils.process_error(error);
   }
 };
-
-

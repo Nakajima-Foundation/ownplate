@@ -11,7 +11,7 @@ export interface CustomerInfoData {
   address: string;
   name: string;
   email: string;
-};
+}
 export interface orderPlacedData {
   restaurantId: string;
   orderId: string;
@@ -32,7 +32,6 @@ export interface orderUpdateData {
   timeEstimated?: admin.firestore.Timestamp;
 }
 
-
 export interface updateDataOnorderUpdate {
   status: number;
   updatedAt: admin.firestore.Timestamp;
@@ -40,10 +39,9 @@ export interface updateDataOnorderUpdate {
 
   timeConfirmed?: admin.firestore.Timestamp;
   transactionCompletedAt?: admin.firestore.Timestamp;
-  
+
   timeEstimated?: admin.firestore.Timestamp;
   timePickupForQuery?: admin.firestore.Timestamp;
-
 }
 
 export interface menuItem {

@@ -7,11 +7,7 @@ import { updateOrderTotalDataAndUserLog } from "../functions/order/orderPlace";
 import { sendMessageToCustomer, notifyCanceledOrderToRestaurant } from "../functions/notify";
 import { Context } from "../models/TestType";
 
-import {
-  getStripeAccount,
-  getStripeOrderRecord,
-  getHash,
-} from "./intent";
+import { getStripeAccount, getStripeOrderRecord, getHash } from "./intent";
 
 const stripe = utils.get_stripe();
 
@@ -182,5 +178,3 @@ export const cancelStripePayment = async (db: admin.firestore.Firestore, data: a
     throw utils.process_error(error);
   }
 };
-
-

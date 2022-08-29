@@ -72,7 +72,6 @@ export const orderAccounting = (restaurantData, food_sub_total, alcohol_sub_tota
   }
 };
 
-
 export const createNewOrderData = async (restaurantRef, orderRef, orderData, multiple) => {
   const menuIds = Object.keys(orderData.order);
   const menuObj = await utils.getMenuObj(restaurantRef, menuIds);
@@ -165,7 +164,7 @@ export const orderCreated = async (db, data: orderCreatedData, context) => {
     console.error("orderCreated", validateResult.errors);
     throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
   }
-  
+
   const restaurantRef = db.doc(`restaurants/${restaurantId}`);
   const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`);
 

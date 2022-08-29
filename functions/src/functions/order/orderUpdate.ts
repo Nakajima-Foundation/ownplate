@@ -20,7 +20,7 @@ export const update = async (db: admin.firestore.Firestore, data: orderUpdateDat
     console.error("orderUpdate", validateResult.errors);
     throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
   }
-  
+
   try {
     const restaurantDoc = await db.doc(`restaurants/${restaurantId}`).get();
     const restaurant = restaurantDoc.data() || {};

@@ -8,11 +8,7 @@ import { updateOrderTotalDataAndUserLog } from "../functions/order/orderPlace";
 import { notifyNewOrderToRestaurant } from "../functions/notify";
 import { costCal } from "../common/commonUtils";
 
-import {
-  getStripeAccount,
-  getPaymentMethodData,
-  getHash,
-} from "./intent";
+import { getStripeAccount, getPaymentMethodData, getHash } from "./intent";
 
 const multiple = utils.getStripeRegion().multiple; // 100 for USD, 1 for JPY
 const stripe = utils.get_stripe();
@@ -58,7 +54,7 @@ export const create = async (db: admin.firestore.Firestore, data: any, context: 
       }
 
       const totalCharge = order.total + roundedTip + (shippingCost || 0) + (order.deliveryFee || 0);
-      const totalChargeWithTipAndMultipled = totalCharge * multiple; // for US stripe price 
+      const totalChargeWithTipAndMultipled = totalCharge * multiple; // for US stripe price
 
       // We expect that there is a customer Id associated with a token
       const payment_method_data = await getPaymentMethodData(db, restaurantOwnerUid, customerUid);
@@ -127,5 +123,3 @@ export const create = async (db: admin.firestore.Firestore, data: any, context: 
     throw utils.process_error(error);
   }
 };
-
-
