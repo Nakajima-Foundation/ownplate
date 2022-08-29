@@ -173,7 +173,6 @@ export const useAllSubcategory = (moPrefix: string) => {
         orderBy("sortKey", "asc")
       ),
       (category) => {
-        console.log(category);
         if (category.empty) {
           console.log("empty");
           return;
@@ -212,7 +211,7 @@ export const useMenu = (
 
   const allMenuObjKey = computed(() => {
     if (isInMo.value) {
-      return subCategory.value;
+      return [category.value, subCategory.value].join("_")
     }
     return "mono";
   });
@@ -232,6 +231,7 @@ export const useMenu = (
     return `restaurants/${restaurantId.value}/menus`;
   });
   const setCache = (cache: any) => {
+    allMenuObj.value = cache;
     menuCache.value = cache;
   };
   const loadMenu = async () => {
@@ -240,22 +240,19 @@ export const useMenu = (
       return;
     }
     const hasSubCategory = category.value && subCategory.value;
-    const cacheKey = hasSubCategory
-      ? [category.value, subCategory.value].join("_")
-      : "";
-    if (menuCache.value[cacheKey]) {
-      allMenuObj.value[allMenuObjKey.value] = menuCache.value[cacheKey];
+    if (menuCache.value[allMenuObjKey.value]) {
+      allMenuObj.value[allMenuObjKey.value] = menuCache.value[allMenuObjKey.value];
       return;
     }
 
     if (hasSubCategory) {
-      allMenuObj.value[subCategory.value] = [];
+      allMenuObj.value[allMenuObjKey.value] = [];
       const cacheBase: DocumentData[] = [];
 
-      if (loading[cacheKey]) {
+      if (loading[allMenuObjKey.value]) {
         return;
       }
-      loading[cacheKey] = true;
+      loading[allMenuObjKey.value] = true;
 
       const limitVal = 20;
       const loop = async (
@@ -288,9 +285,9 @@ export const useMenu = (
               return m;
             });
           const newVal = { ...allMenuObj.value };
-          newVal[subCategory] = cacheBase;
+          newVal[allMenuObjKey.value] = cacheBase;
           allMenuObj.value = newVal;
-          menuCache.value[cacheKey] = cacheBase;
+          menuCache.value[allMenuObjKey.value] = cacheBase;
         }
         return menu.docs.length == limitVal ? menu.docs[limitVal - 1] : null;
       };
