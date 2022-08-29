@@ -111,7 +111,7 @@ export default defineComponent({
       if (props.isInMo) {
         return "/" + props.moPrefix + "/r/" + props.shopInfo.restaurantId;
       } else {
-        return "/r/" + props.restaurantid;
+        return "/r/" + props.shopInfo.restaurantId;
       }
     });
     return {
