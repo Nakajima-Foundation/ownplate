@@ -234,7 +234,7 @@ export const useMenu = (
     allMenuObj.value = cache;
     menuCache.value = cache;
   };
-  const loadMenu = async () => {
+  const loadMenu = async (callback?: () => void) => {
     detacheMenu();
     if (isInMo.value && !category.value && !subCategory.value) {
       return;
@@ -316,6 +316,9 @@ export const useMenu = (
             })
             .map(doc2data("menu"));
           allMenuObj.value = { [allMenuObjKey.value]: ret };
+          if (callback) {
+            callback()
+          };
         } else {
           allMenuObj.value[allMenuObjKey.value] = [];
         }

@@ -472,7 +472,14 @@ export default defineComponent({
       }
     });
 
-    loadMenu();
+    loadMenu(() => {
+      if (location.hash && location.hash[0] === "#") {
+        const id = location.hash.slice(1);
+        setTimeout(() => {
+          scrollToElementById(id)
+        }, 400);
+      }
+    });
 
     watch(menus, (values) => {
       analyticsUtil.sendMenuListView(
