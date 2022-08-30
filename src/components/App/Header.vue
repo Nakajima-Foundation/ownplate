@@ -13,7 +13,7 @@
         <img
           :class="logoClass"
           class="m-auto"
-          :src="`/${logo}`"
+          :src="`${logo}`"
           v-if="logo !== null"
         />
       </router-link>
@@ -30,6 +30,7 @@ import {
   useRestaurantId,
   useIsInMo,
 } from "@/utils/utils";
+import { moBaseUrl } from "@/config/project";
 
 export default defineComponent({
   emits: ["handleOpen"],
@@ -57,11 +58,11 @@ export default defineComponent({
       if (isInMo.value === null) {
         return null;
       } else if (isInMo.value) {
-        return "samplelogo.png";
+        return moBaseUrl + "/images/logo_vertical.png";
       } else if (restaurantId.value && specialLogo[restaurantId.value]) {
-        return specialLogo[restaurantId.value].image;
+        return "/" + specialLogo[restaurantId.value].image;
       } else {
-        return regionalSetting.Logo;
+        return "/" + regionalSetting.Logo;
       }
     });
 

@@ -12,7 +12,7 @@
       <router-link :to="home_path">
         <img
           class="w-48 m-auto"
-          src="/logo_vertical.png"
+          :src="moBaseUrl + '/images/logo_horizontal.png'"
           @click="handleClose()"
         />
       </router-link>
@@ -101,6 +101,8 @@
 
 <script>
 import { defineComponent, ref, computed } from "@vue/composition-api";
+import { moBaseUrl } from "@/config/project";
+
 import {
   useMoPrefix,
   useIsAdmin,
@@ -130,8 +132,6 @@ export default defineComponent({
       open.value = true;
     };
 
-    const logo2 = regionalSetting.Logo2;
-
     const base_path = computed(() => {
       return home_path.value;
     });
@@ -146,10 +146,10 @@ export default defineComponent({
       right: false,
       home_path,
 
-      logo2,
       base_path,
       historyPage,
-
+      moBaseUrl,
+      
       open,
       handleClose,
       handleOpen,
