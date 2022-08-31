@@ -210,6 +210,7 @@
                     !cardState.complete ||
                     notAvailable ||
                     notSubmitAddress ||
+                    userMessageError ||
                     stripeSmallPayment
                   "
                   @click="handlePayment"
@@ -263,7 +264,7 @@
               <div class="mt-4">
                 <b-button
                   :loading="isPlacing"
-                  :disabled="notAvailable || notSubmitAddress"
+                  :disabled="notAvailable || notSubmitAddress || userMessageError"
                   @click="handleNoPayment"
                   class="b-reset-tw"
                 >
