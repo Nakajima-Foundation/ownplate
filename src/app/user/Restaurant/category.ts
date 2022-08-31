@@ -1,5 +1,6 @@
 import { defineComponent, computed } from "@vue/composition-api";
 import { useBasePath } from "@/utils/utils";
+import { moBaseUrl } from "@/config/project";
 
 export default (name: string) => {
   return defineComponent({
@@ -19,6 +20,7 @@ export default (name: string) => {
       };
       return {
         basePath,
+        moBaseUrl,
         closeCategory,
       };
     },
