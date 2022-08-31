@@ -37,7 +37,7 @@
         <!-- Save Button -->
         <b-button
           @click="saveRestaurant"
-          :disabled="submitting"
+          :disabled="submitting || disableSave"
           class="b-reset-tw"
         >
           <div
@@ -923,7 +923,7 @@
         <!-- Save Button -->
         <b-button
           @click="saveRestaurant"
-          :disabled="submitting"
+          :disabled="submitting || disableSave"
           class="b-reset-tw"
         >
           <div
@@ -1352,6 +1352,10 @@ export default defineComponent({
       await updateMap();
       setLocation();
     };
+
+    const disableSave = computed(() => {
+      return hasError.value && props.shopInfo.publicFlag;
+    });
     return {
       maxDate,
       now,
@@ -1395,6 +1399,8 @@ export default defineComponent({
       confirmCopy,
       saveRestaurant,
       updateAndUpdateMap,
+
+      disableSave,
     };
   },
 });
