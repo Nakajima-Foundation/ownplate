@@ -468,7 +468,9 @@ export default defineComponent({
         cartItems.value = cart.cartItems || {};
         selectedOptions.value = cart.options || {};
         setCache(cart.menuCache);
-        // TODO: howtoreceive
+        if (cart.howtoreceive) {
+          howtoreceive.value = cart.howtoreceive;
+        }
       }
     });
 
@@ -627,6 +629,7 @@ export default defineComponent({
             options: selectedOptions.value,
             cartItems: cartItems.value,
             menuCache: menuCache.value,
+            howtoreceive: howtoreceive.value,
           },
         });
         await wasOrderCreated({
