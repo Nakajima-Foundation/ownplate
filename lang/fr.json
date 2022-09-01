@@ -825,7 +825,8 @@
         "auth/wrong-password": "Le mot de passe est invalide",
         "auth/too-many-requests": "Trop de tentatives de connexion infructueuses. Veuillez réessayer plus tard.",
         "auth/invalid-email": "L'adresse e-mail est mal formatée.",
-        "auth/unauthorized-continue-uri": "Domaine non ajouté à la liste blanche du projet"
+        "auth/unauthorized-continue-uri": "Domaine non ajouté à la liste blanche du projet",
+        "auth/internal-error": "Password is invalid."
       }
     },
     "index": {
