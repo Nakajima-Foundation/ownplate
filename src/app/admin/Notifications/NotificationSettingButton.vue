@@ -1,10 +1,10 @@
 <template>
   <div>
     <a
-      class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
+      class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-3"
       @click="openNotificationSettings()"
     >
-      <i class="material-icons text-lg text-op-teal xs:mr-2">notifications</i>
+      <i class="material-icons text-lg text-op-teal xs:mr-1">notifications</i>
       <div
         class="invisible xs:visible text-sm font-bold text-op-teal -mr-2 xs:mr-2"
       >
