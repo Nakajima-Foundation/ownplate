@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="flex justify-between gap-3 mt-6 mx-6">
+    <div class="flex justify-between gap-3 mt-4 mx-6">
       <div>
         <div class="font-bold text-black">
           {{ item.itemName }}
@@ -62,7 +62,7 @@
         </span>
       </div>
     </div>
-    <hr class="border border-solid border-black border-opacity-5 mx-6 mt-4" />
+    <hr class="border border-solid border-black border-opacity-5 mx-6 mt-3" />
   </div>
 </template>
 
