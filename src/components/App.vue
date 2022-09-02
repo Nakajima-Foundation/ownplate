@@ -78,7 +78,7 @@ export default {
     NotificationBanner,
   },
   metaInfo: mo_prefixes.some((prefix) => {
-    location.pathname.startsWith("/" + prefix);
+    return location.pathname.startsWith("/" + prefix);
   })
     ? MoHeader
     : defaultHeader,
