@@ -4,18 +4,11 @@
       <div class="flex-shrink-0">
         <back-button :url="backLink" />
       </div>
-      <div class="flex-shrink-0">
-        <router-link :to="previewLink">
-          <div
-            class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
-          >
-            <i class="material-icons text-lg text-op-teal mr-2">launch</i>
-            <span class="text-sm font-bold text-op-teal">{{
-              $t("admin.viewPage")
-            }}</span>
-          </div>
-        </router-link>
-      </div>
+      <PreviewLink
+        :shopInfo="shopInfo"
+        :isInMo="isInMo"
+        :moPrefix="moPrefix"
+        />
     </div>
 
     <!-- Photo and Name -->
@@ -78,11 +71,13 @@
 import { defineComponent, computed } from "@vue/composition-api";
 import BackButton from "@/components/BackButton.vue";
 import NotificationIndex from "./Notifications/Index.vue";
+import PreviewLink from "@/app/admin/common/PreviewLink.vue";
 
 export default defineComponent({
   components: {
     BackButton,
     NotificationIndex,
+    PreviewLink,
   },
   props: {
     shopInfo: {
@@ -105,18 +100,6 @@ export default defineComponent({
       type: String,
       required: false,
     },
-  },
-  setup(props) {
-    const previewLink = computed(() => {
-      if (props.isInMo) {
-        return "/" + props.moPrefix + "/r/" + props.shopInfo.restaurantId;
-      } else {
-        return "/r/" + props.shopInfo.restaurantId;
-      }
-    });
-    return {
-      previewLink,
-    };
   },
 });
 </script>

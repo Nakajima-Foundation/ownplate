@@ -191,7 +191,6 @@ import MenuCard from "@/app/admin/Menus/MenuCard.vue";
 import TitleCard from "@/app/admin/Menus/TitleCard.vue";
 import TitleInput from "@/app/admin/Menus/TitleInput.vue";
 
-import PreviewLink from "@/app/admin/MenuListPage/PreviewLink.vue";
 import ToggleSwitch from "@/components/ToggleSwitch.vue";
 import AddButton from "@/app/admin/MenuListPage/AddButton.vue";
 import PhotoName from "@/app/admin/MenuListPage/PhotoName.vue";
@@ -229,7 +228,6 @@ export default defineComponent({
 
     AdminHeader,
 
-    PreviewLink,
     ToggleSwitch,
     AddButton,
     PhotoName,

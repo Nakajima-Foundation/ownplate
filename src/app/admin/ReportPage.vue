@@ -7,18 +7,11 @@
         <div class="flex-shrink-0">
           <back-button url="/admin/restaurants/" />
         </div>
-        <div class="flex-shrink-0">
-          <router-link :to="'/r/' + restaurantId()">
-            <div
-              class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
-            >
-              <i class="material-icons text-lg text-op-teal mr-2">launch</i>
-              <span class="text-sm font-bold text-op-teal">{{
-                $t("admin.viewPage")
-              }}</span>
-            </div>
-          </router-link>
-        </div>
+        <PreviewLink
+          :shopInfo="shopInfo"
+          :isInMo="isInMo"
+          :moPrefix="moPrefix"
+          />
       </div>
 
       <!-- Photo and Name -->
@@ -201,6 +194,7 @@ import moment from "moment";
 import BackButton from "@/components/BackButton.vue";
 import DownloadCsv from "@/components/DownloadCSV.vue";
 import ReportDetails from "@/app/admin/Order/ReportDetails.vue";
+import PreviewLink from "@/app/admin/common/PreviewLink.vue";
 
 import { ownPlateConfig } from "@/config/project";
 import { nameOfOrder } from "@/utils/strings";
@@ -219,6 +213,7 @@ export default defineComponent({
     BackButton,
     DownloadCsv,
     ReportDetails,
+    PreviewLink,
   },
   props: {
     shopInfo: {
