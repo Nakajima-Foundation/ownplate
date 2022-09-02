@@ -276,9 +276,9 @@
     "empty": "（商品グループ名未入力）"
   },
   "find": {
-    "area": "飲食店エリア",
-    "areaAll": "全ての飲食店",
-    "areaTop": "エリア一覧",
+    "area": "お店を探す",
+    "areaAll": "全国の飲食店",
+    "areaTop": "お店を探す",
     "likes": "お気に入り",
     "favoriteShop": "お気に入り店舗",
     "noLikes": "お気に入りはありません",
