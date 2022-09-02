@@ -1,4 +1,4 @@
-import { ownPlateConfig, moGtmID } from "@/config/project";
+import { ownPlateConfig, moGtmID, moBaseUrl } from "@/config/project";
 
 const hostName = ownPlateConfig.hostName;
 
@@ -6,35 +6,35 @@ const link = [
   {
     rel: "icon",
     type: "image/x-icon",
-    href: "/ss/favicon.ico",
+    href: moBaseUrl + "/images/favicon/favicon.ico",
   },
   {
     rel: "icon",
     sizes: "16x16",
     type: "image/x-icon",
-    href: "/ss/favicon-16x16.png",
+    href: moBaseUrl + "/images/favicon-16x16.png",
   },
   {
     rel: "icon",
     sizes: "32x32",
     type: "image/x-icon",
-    href: "/ss/favicon-32x32.png",
+    href: moBaseUrl + "/images/favicon-32x32.png",
   },
   {
     rel: "apple-touch-icon",
-    href: "/ss/apple-touch-icon.png",
+    href: moBaseUrl + "/images/apple-touch-icon.png",
   },
   {
     rel: "icon",
     sizes: "192x192",
     type: "image/png",
-    href: "/ss/android-chrome-192x192.png",
+    href: moBaseUrl + "/images/android-chrome-192x192.png",
   },
   {
     rel: "icon",
     sizes: "512x512",
     type: "image/png",
-    href: "/ss/android-chrome-512x512.png",
+    href: moBaseUrl + "/images/android-chrome-512x512.png",
   },
   {
     rel: "stylesheet",
