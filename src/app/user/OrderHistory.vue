@@ -12,7 +12,8 @@
 
     <!-- Orders -->
     <div class="mx-6 mt-6 grid grid-cols-1 gap-2 lg:grid-cols-3 xl:grid-cols-4">
-      <template v-if="orders.length > 0">
+      <div v-if="loading" />
+      <template v-else-if="orders.length > 0">
         <ordered-info
           v-for="order in orders"
           :key="order.id"
@@ -95,7 +96,9 @@ export default defineComponent({
       detacher = null;
     };
 
+    const loading = ref(true);
     const getHistory = () => {
+      loading.value = true;
       detach();
       if (uid.value) {
         const orderQuery = isInMo.value
@@ -133,6 +136,7 @@ export default defineComponent({
               }
               return data.groupId === undefined;
             });
+          loading.value = false;
         });
       }
     };
@@ -171,6 +175,8 @@ export default defineComponent({
       orders,
       orderSelected,
       basePath,
+
+      loading,
     };
   },
 });
