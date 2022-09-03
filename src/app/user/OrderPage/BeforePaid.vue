@@ -264,7 +264,9 @@
               <div class="mt-4">
                 <b-button
                   :loading="isPlacing"
-                  :disabled="notAvailable || notSubmitAddress || userMessageError"
+                  :disabled="
+                    notAvailable || notSubmitAddress || userMessageError
+                  "
                   @click="handleNoPayment"
                   class="b-reset-tw"
                 >

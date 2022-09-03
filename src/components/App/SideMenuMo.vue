@@ -149,7 +149,7 @@ export default defineComponent({
       base_path,
       historyPage,
       moBaseUrl,
-      
+
       open,
       handleClose,
       handleOpen,

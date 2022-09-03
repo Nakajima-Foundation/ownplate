@@ -15,6 +15,7 @@
 
 <script>
 import { defineComponent, computed } from "@vue/composition-api";
+import { shareUrlAdmin } from "@/utils/utils";
 
 export default defineComponent({
   props: {
@@ -32,13 +33,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const previewLink = computed(() => {
-      if (props.isInMo) {
-        return "/" + props.moPrefix + "/r/" + props.shopInfo.restaurantId;
-      } else {
-        return "/r/" + props.shopInfo.restaurantId;
-      }
-    });
+    const previewLink = shareUrlAdmin(props);
     return {
       previewLink,
     };

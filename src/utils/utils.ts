@@ -61,6 +61,16 @@ export const arrayChunk = <T>(arr: T[], size = 1) => {
   }, []);
 };
 
+export const shareUrlAdmin = (props: any) => {
+  return computed(() => {
+    if (props.isInMo) {
+      return "/" + props.moPrefix + "/r/" + props.shopInfo.restaurantId;
+    } else {
+      return "/r/" + props.shopInfo.restaurantId;
+    }
+  });
+};
+
 export const shareUrl = (root: any, prefix: string) => {
   const restaurantId = root.$route.params.restaurantId;
 

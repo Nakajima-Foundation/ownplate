@@ -41,7 +41,7 @@
               <qrcode
                 :value="urlMenu"
                 :options="{ width: 160 }"
-                ref="qrcode"
+                ref="qrcodeRef"
               ></qrcode>
             </div>
             <!-- Link -->
@@ -126,10 +126,12 @@
 </template>
 
 <script>
+import { defineComponent, ref, computed } from "@vue/composition-api";
 import { db, firestore } from "@/plugins/firebase";
 import AdminHeader from "@/app/admin/AdminHeader.vue";
+import { shareUrlAdmin } from "@/utils/utils";
 
-export default {
+export default defineComponent({
   components: {
     AdminHeader,
   },
@@ -160,66 +162,67 @@ export default {
   },
   data() {
     return {
-      detacher: null,
       trace: null,
     };
   },
-  created() {
+  setup(props, ctx) {
+    const trace = props.shopInfo.trace;
+    /*
     (async () => {
-      if (this.shopInfo.trace) {
-        this.trace = this.shopInfo.trace;
+      if (props.shopInfo.trace) {
+      const trace = props.shopInfo.trace;
       } else {
         const refRestaurant = db.doc(`restaurants/${this.restaurantId()}`);
         const refEnter = refRestaurant.collection("trace").doc();
         const refLeave = refRestaurant.collection("trace").doc();
         console.log("new traceIDs", refEnter.id, refLeave.id);
         await db.runTransaction(async (transaction) => {
-          console.log(data);
-          if (!data.trace) {
-            transaction.set(refEnter, {
-              event: "enter",
-              uid: this.user.uid,
-              traceId: refEnter.id,
-              restaurantId: this.restaurantId(),
+          transaction.set(refEnter, {
+            event: "enter",
+            uid: this.user.uid,
+            traceId: refEnter.id,
+            restaurantId: this.restaurantId(),
             });
-            transaction.set(refLeave, {
-              event: "leave",
-              uid: this.user.uid,
-              traceId: refLeave.id,
-              restaurantId: this.restaurantId(),
-            });
-            transaction.update(refRestaurant, {
-              trace: {
-                enter: refEnter.id,
+          transaction.set(refLeave, {
+            event: "leave",
+            uid: this.user.uid,
+            traceId: refLeave.id,
+            restaurantId: this.restaurantId(),
+          });
+          transaction.update(refRestaurant, {
+            trace: {
+              enter: refEnter.id,
                 leave: refLeave.id,
-              },
-            });
-          }
-        });
+            },
+          });
+          });
       }
     })();
-  },
-  destroyed() {
-    this.detacher && this.detacher();
-  },
-  computed: {
-    urlEnter() {
-      return `${location.origin}/t/${this.trace.enter}`;
-    },
-    urlLeave() {
-      return `${location.origin}/t/${this.trace.leave}`;
-    },
-    urlMenu() {
-      return this.shareUrl();
-    },
-  },
-  methods: {
-    download() {
+    */
+
+    const urlEnter = trace ? `${location.origin}/t/${trace.enter}` : "";
+    const urlLeave = trace ? `${location.origin}/t/${trace.leave}` : "";
+    const urlMenu = shareUrlAdmin(props);
+
+    const qrcodeRef = ref();
+
+    const download = () => {
       const a = document.createElement("a");
-      a.href = this.$refs.qrcode.$el.toDataURL("image/png");
+      console.log(qrcodeRef);
+      a.href = qrcodeRef.value.$el.toDataURL("image/png");
       a.download = "qrcode.png";
       a.click();
-    },
+    };
+
+    return {
+      trace,
+      urlEnter,
+      urlLeave,
+      urlMenu,
+      download,
+
+      qrcodeRef,
+    };
   },
-};
+});
 </script>

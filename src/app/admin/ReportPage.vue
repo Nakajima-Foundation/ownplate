@@ -11,7 +11,7 @@
           :shopInfo="shopInfo"
           :isInMo="isInMo"
           :moPrefix="moPrefix"
-          />
+        />
       </div>
 
       <!-- Photo and Name -->

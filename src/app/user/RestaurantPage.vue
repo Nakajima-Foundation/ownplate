@@ -478,7 +478,7 @@ export default defineComponent({
       if (location.hash && location.hash[0] === "#") {
         const id = location.hash.slice(1);
         setTimeout(() => {
-          scrollToElementById(id)
+          scrollToElementById(id);
         }, 400);
       }
     });

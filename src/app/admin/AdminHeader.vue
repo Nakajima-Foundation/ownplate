@@ -4,11 +4,7 @@
       <div class="flex-shrink-0">
         <back-button :url="backLink" />
       </div>
-      <PreviewLink
-        :shopInfo="shopInfo"
-        :isInMo="isInMo"
-        :moPrefix="moPrefix"
-        />
+      <PreviewLink :shopInfo="shopInfo" :isInMo="isInMo" :moPrefix="moPrefix" />
     </div>
 
     <!-- Photo and Name -->

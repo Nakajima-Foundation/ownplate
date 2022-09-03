@@ -317,8 +317,8 @@ export const useMenu = (
             .map(doc2data("menu"));
           allMenuObj.value = { [allMenuObjKey.value]: ret };
           if (callback) {
-            callback()
-          };
+            callback();
+          }
         } else {
           allMenuObj.value[allMenuObjKey.value] = [];
         }
