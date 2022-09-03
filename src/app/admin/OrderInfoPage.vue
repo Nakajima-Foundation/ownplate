@@ -1,7 +1,6 @@
 <template>
   <div>
-    <template v-if="notFound === null">
-    </template>
+    <template v-if="notFound === null"> </template>
     <template v-else-if="notFound">
       <not-found />
     </template>

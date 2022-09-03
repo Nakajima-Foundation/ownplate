@@ -22,7 +22,11 @@
           </div>
 
           <div class="mr-4 pt-4">
-            <b-checkbox :value="soldOut" @input="soldOutToggle" :disabled="disabledSoldOut">
+            <b-checkbox
+              :value="soldOut"
+              @input="soldOutToggle"
+              :disabled="disabledSoldOut"
+            >
               <div v-if="soldOut" class="text-sm font-bold text-red-700">
                 {{ $t("admin.itemSoldOut") }}
               </div>
@@ -186,8 +190,10 @@ export default defineComponent({
       db.doc(path).update("soldOut", e);
     };
     const disabledSoldOut = computed(() => {
-
-      return props.isInMo && (props.groupData?.restaurantId !== ctx.root.restaurantId());
+      return (
+        props.isInMo &&
+        props.groupData?.restaurantId !== ctx.root.restaurantId()
+      );
     });
     const linkEdit = () => {
       if (isOwner.value) {

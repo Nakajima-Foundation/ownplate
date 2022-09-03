@@ -151,7 +151,7 @@ export default defineComponent({
         console.log(e);
         noRestaurant.value = true;
         return;
-      },
+      }
     );
 
     const notification_detacher = ref();
