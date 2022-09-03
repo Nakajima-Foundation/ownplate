@@ -146,7 +146,12 @@ export default defineComponent({
         }
         shopInfo.value = loadShopInfo;
         noRestaurant.value = false;
-      }
+      },
+      (e) => {
+        console.log(e);
+        noRestaurant.value = true;
+        return;
+      },
     );
 
     const notification_detacher = ref();

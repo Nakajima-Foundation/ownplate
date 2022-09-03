@@ -1,6 +1,8 @@
 <template>
   <div>
-    <template v-if="notFound">
+    <template v-if="notFound === null">
+    </template>
+    <template v-else-if="notFound">
       <not-found />
     </template>
     <template v-else>
@@ -680,7 +682,7 @@ export default defineComponent({
     const paymentCancelPopup = ref(false);
     const isOrderChange = ref(false);
 
-    const notFound = ref(false);
+    const notFound = ref(null);
     const timeOffset = ref(0);
     const editedAvailableOrders = ref([]);
 
@@ -711,7 +713,7 @@ export default defineComponent({
     const order_detacher = onSnapshot(
       doc(db, `restaurants/${ctx.root.restaurantId()}/orders/${orderId.value}`),
       async (order) => {
-        if (!order.exists) {
+        if (!order.exists()) {
           notFound.value = true;
           return;
         }
@@ -729,9 +731,11 @@ export default defineComponent({
           customer.value =
             tmpCustomer.data() || orderInfo.value?.customerInfo || {};
         }
+        notFound.value = false;
       },
       (e) => {
-        return (notFound.value = true);
+        notFound.value = true;
+        return;
       }
     );
 
