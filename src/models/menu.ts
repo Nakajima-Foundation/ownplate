@@ -79,7 +79,7 @@ export const getNewItemData = (
     category1: item.category1,
     category2: item.category2,
     exceptDay: item.exceptDay || {},
-    exceptHour: newExceptHour(item.exceptHour),
+    exceptHour: newExceptHour(item.exceptHour || {}),
   };
   return itemData;
 };

@@ -139,10 +139,12 @@
 </template>
 
 <script>
+import { defineComponent, computed } from "@vue/composition-api";
 import { db } from "@/plugins/firebase";
 import Price from "@/components/Price";
+import { useAdminUids } from "@/utils/utils";
 
-export default {
+export default defineComponent({
   components: {
     Price,
   },
@@ -164,59 +166,61 @@ export default {
       required: true,
     },
   },
-  computed: {
-    isOwner() {
-      return !this.$store.getters.isSubAccount;
-    },
-    image() {
-      return (
-        (this.menuitem?.images?.item?.resizedImages || {})["600"] ||
-        this.menuitem.itemPhoto
-      );
-    },
-    soldOut() {
-      return !!this.menuitem.soldOut; // = !soldOut;
-    },
-  },
-  data() {
-    return {
-      counter: 0,
-    };
-  },
-  methods: {
-    soldOutToggle(e) {
-      const path = `restaurants/${this.restaurantId()}/menus/${
-        this.menuitem.id
+  emit: ["toEditMode", "positionUp", "positionDown", "forkItem", "deleteItem"],
+  setup(props, ctx) {
+    const { isOwner } = useAdminUids(ctx);
+    const image =
+      (props.menuitem?.images?.item?.resizedImages || {})["600"] ||
+      props.menuitem.itemPhoto;
+    const soldOut = computed(() => {
+      return !!props.menuitem.soldOut; // = !soldOut;
+    });
+    const soldOutToggle = (e) => {
+      const path = `restaurants/${ctx.root.restaurantId()}/menus/${
+        props.menuitem.id
       }`;
       db.doc(path).update("soldOut", e);
-    },
-    linkEdit() {
-      if (this.isOwner) {
-        this.$router.push({
-          path: `/admin/restaurants/${this.restaurantId()}/menus/${
-            this.menuitem.id
+    };
+    const linkEdit = () => {
+      if (isOwner.value) {
+        ctx.root.$router.push({
+          path: `/admin/restaurants/${ctx.root.restaurantId()}/menus/${
+            props.menuitem.id
           }`,
         });
       }
-    },
-    positionUp() {
-      this.$emit("positionUp", this.menuitem.id);
-    },
-    positionDown() {
-      this.$emit("positionDown", this.menuitem.id);
-    },
-    forkItem() {
-      this.$emit("forkItem", this.menuitem.id);
-    },
-    deleteItem() {
-      // this.$emit("deleteItem", this.menuitem.id);
-      this.$store.commit("setAlert", {
+    };
+
+    const positionUp = () => {
+      ctx.emit("positionUp", props.menuitem.id);
+    };
+    const positionDown = () => {
+      ctx.emit("positionDown", props.menuitem.id);
+    };
+    const forkItem = () => {
+      ctx.emit("forkItem", props.menuitem.id);
+    };
+    const deleteItem = () => {
+      ctx.root.$store.commit("setAlert", {
         code: "editMenu.reallyDelete",
         callback: () => {
-          this.$emit("deleteItem", this.menuitem.id);
+          ctx.emit("deleteItem", props.menuitem.id);
         },
       });
-    },
+    };
+    return {
+      isOwner,
+
+      image,
+      soldOut,
+      soldOutToggle,
+      linkEdit,
+
+      positionUp,
+      positionDown,
+      forkItem,
+      deleteItem,
+    };
   },
-};
+});
 </script>
