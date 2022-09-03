@@ -102,7 +102,7 @@
           <div>
             <div class="mx-6 mt-2 lg:mx-0" v-if="shopInfo.enableDelivery">
               <div class="bg-white rounded-lg shadow">
-                <!-- delivery -->
+                <!-- delivery toggle-->
                 <Delivery
                   :shopInfo="shopInfo"
                   :deliveryData="deliveryData"
@@ -111,13 +111,14 @@
                 <!-- delivery -->
               </div>
             </div>
+
             <!-- titles for omochikaeri -->
-            <Titles :titleLists="titleLists" />
+            <Titles :titleLists="titleLists" v-if="titleLists.length > 0"/>
 
             <!-- category for mo -->
             <a id="subCategoryTop" />
             <div v-if="showSubCategory">
-              <div class="mx-6 mt-2 lg:mx-0 inline-flex">
+              <div class="mx-6 lg:mx-0 inline-flex">
                 <SubCategoryList
                   :subCategoryData="subCategoryData"
                   :categoryBathPath="categoryBathPath"
