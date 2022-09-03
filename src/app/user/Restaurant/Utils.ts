@@ -125,6 +125,7 @@ export const useSubcategory = (moPrefix: string, category: Ref<string>) => {
   const subCategoryData = ref<DocumentData[]>([]);
   const loadSubcategory = () => {
     detacheSubCategory();
+    subCategoryData.value = [];
     subCategoryDetacher.value = onSnapshot(
       query(
         collection(
