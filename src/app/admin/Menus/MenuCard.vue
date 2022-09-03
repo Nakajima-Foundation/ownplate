@@ -22,7 +22,7 @@
           </div>
 
           <div class="mr-4 pt-4">
-            <b-checkbox :value="soldOut" @input="soldOutToggle">
+            <b-checkbox :value="soldOut" @input="soldOutToggle" :disabled="disabledSoldOut">
               <div v-if="soldOut" class="text-sm font-bold text-red-700">
                 {{ $t("admin.itemSoldOut") }}
               </div>
@@ -165,6 +165,10 @@ export default defineComponent({
       type: Boolean,
       required: true,
     },
+    groupData: {
+      type: Object,
+      required: false,
+    },
   },
   emit: ["toEditMode", "positionUp", "positionDown", "forkItem", "deleteItem"],
   setup(props, ctx) {
@@ -181,6 +185,10 @@ export default defineComponent({
       }`;
       db.doc(path).update("soldOut", e);
     };
+    const disabledSoldOut = computed(() => {
+
+      return props.isInMo && (props.groupData?.restaurantId !== ctx.root.restaurantId());
+    });
     const linkEdit = () => {
       if (isOwner.value) {
         ctx.root.$router.push({
@@ -214,6 +222,7 @@ export default defineComponent({
       image,
       soldOut,
       soldOutToggle,
+      disabledSoldOut,
       linkEdit,
 
       positionUp,

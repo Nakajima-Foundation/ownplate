@@ -133,6 +133,7 @@
                 "
                 :shopInfo="shopInfo"
                 :isInMo="isInMo"
+                :groupData="groupData"
                 @positionUp="positionUp($event)"
                 @positionDown="positionDown($event)"
                 @forkItem="forkMenuItem($event)"
@@ -243,6 +244,10 @@ export default defineComponent({
       required: true,
     },
     groupMasterRestaurant: {
+      type: Object,
+      required: false,
+    },
+    groupData: {
       type: Object,
       required: false,
     },
