@@ -85,7 +85,13 @@
 </template>
 
 <script>
-export default {
+import {
+  defineComponent,
+  computed,
+} from "@vue/composition-api";
+import { useAdminUids } from "@/utils/utils";
+  
+export default defineComponent({
   props: {
     title: {
       type: Object,
@@ -96,36 +102,38 @@ export default {
       required: true,
     },
   },
-  data() {
-    return {};
-  },
-  computed: {
-    isOwner() {
-      return !this.$store.getters.isSubAccount;
-    },
-  },
-  methods: {
-    toEdit() {
-      this.$emit("toEditMode", this.title.id);
-    },
-    positionUp() {
-      this.$emit("positionUp", this.title.id);
-    },
-    positionDown() {
-      this.$emit("positionDown", this.title.id);
-    },
-    forkItem() {
-      this.$emit("forkItem", this.title.id);
-    },
-    deleteItem() {
-      // this.$emit("deleteItem", this.title.id);
-      this.$store.commit("setAlert", {
+  emit: ["toEditMode", "positionUp", "positionDown", "forkItem", "deleteItem"],
+  setup(props, ctx) {
+    const { isOwner } = useAdminUids(ctx);
+    const toEdit = () => {
+      ctx.emit("toEditMode", props.title.id);
+    };
+    const positionUp = () => {
+      ctx.emit("positionUp", props.title.id);
+    };
+    const positionDown = () => {
+      ctx.emit("positionDown", props.title.id);
+    };
+    const forkItem = () => {
+      ctx.emit("forkItem", props.title.id);
+    };
+    const deleteItem = () => {
+      // ctx.emit("deleteItem", props.title.id);
+      ctx.root.$store.commit("setAlert", {
         code: "editMenu.reallyDelete",
         callback: () => {
-          this.$emit("deleteItem", this.title.id);
+          ctx.emit("deleteItem", props.title.id);
         },
       });
-    },
+    };
+    return {
+      isOwner,
+      toEdit,
+      positionUp,
+      positionDown,
+      forkItem,
+      deleteItem,
+    };
   },
-};
+});
 </script>
