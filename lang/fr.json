@@ -265,9 +265,9 @@
     "empty": "(Nom du groupe vide)"
   },
   "find": {
-    "area": "Région",
-    "areaAll": "Tous les restaurants",
-    "areaTop": "Top régions",
+    "area": "Allons rechercher",
+    "areaAll": "Restaurants nationaux",
+    "areaTop": "Allons rechercher",
     "likes": "Aime",
     "favoriteShop": "Favoris",
     "noLikes": "Pas de restaurants préférés",

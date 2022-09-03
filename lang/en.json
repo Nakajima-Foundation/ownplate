@@ -271,9 +271,9 @@
     "empty": "(Empty group name)"
   },
   "find": {
-    "area": "Areas",
-    "areaAll": "All Restaurants",
-    "areaTop": "Areas Top",
+    "area": "Let's search",
+    "areaAll": "Restaurants nationwide",
+    "areaTop": "Let's search",
     "likes": "Likes",
     "favoriteShop": "Favorites",
     "noLikes": "No Favorite Restaurants",
