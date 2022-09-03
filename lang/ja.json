@@ -16,7 +16,11 @@
   "underConstruction": "注意：これはテスト用のサーバーです。",
   "comma": "、",
   "mobileOrder": {
-    "name": "ネット注文サービス"
+    "name": "ネット注文サービス",
+    "shopInfo": {
+      "takeout": "予約注文",
+      "pickup": "ピックアップ"
+    }
   },
   "profile": {
     "title": "マイページ",
