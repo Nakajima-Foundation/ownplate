@@ -80,9 +80,10 @@
 </template>
 
 <script>
-import Vue from "vue";
+import { defineComponent, ref, onMounted } from "@vue/composition-api";
+import { checkAdminPermission } from "@/utils/userPermission";
 
-export default {
+export default defineComponent({
   name: "TitleInput",
   props: {
     title: {
@@ -94,26 +95,34 @@ export default {
       required: true,
     },
   },
-  created() {
-    this.checkAdminPermission();
-  },
-  mounted() {
-    this.$refs.textInput.focus();
-  },
-  methods: {
-    blur() {
+  setup(props, ctx) {
+    const textInput = ref();
+    if (!checkAdminPermission(ctx)) {
+      return;
+    }
+    onMounted(() => {
+      textInput.value.focus();
+    });
+    const blur = () => {
       // save and update this.
-      this.$emit("updateTitle", this.title);
-    },
-    positionUp() {
-      this.$emit("positionUp", this.title.id);
-    },
-    positionDown() {
-      this.$emit("positionDown", this.title.id);
-    },
-    forkItem() {
-      this.$emit("forkItem", this.title.id);
-    },
+      ctx.emit("updateTitle", props.title);
+    };
+    const positionUp = () => {
+      ctx.emit("positionUp", props.title.id);
+    };
+    const positionDown = () => {
+      ctx.emit("positionDown", props.title.id);
+    };
+    const forkItem = () => {
+      ctx.emit("forkItem", props.title.id);
+    };
+    return {
+      textInput,
+      blur,
+      positionUp,
+      positionDown,
+      forkItem,
+    };
   },
-};
+});
 </script>
