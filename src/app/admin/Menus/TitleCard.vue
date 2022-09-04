@@ -115,7 +115,6 @@ export default defineComponent({
       ctx.emit("forkItem", props.title.id);
     };
     const deleteItem = () => {
-      // ctx.emit("deleteItem", props.title.id);
       ctx.root.$store.commit("setAlert", {
         code: "editMenu.reallyDelete",
         callback: () => {

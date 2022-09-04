@@ -113,7 +113,7 @@
             </div>
 
             <!-- titles for omochikaeri -->
-            <Titles :titleLists="titleLists" v-if="titleLists.length > 0"/>
+            <Titles :titleLists="titleLists" v-if="titleLists.length > 0" />
 
             <!-- category for mo -->
             <a id="subCategoryTop" />

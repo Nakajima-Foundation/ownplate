@@ -64,7 +64,7 @@ export const arrayChunk = <T>(arr: T[], size = 1) => {
 export const shareUrlAdmin = (props: any) => {
   const link = previewLink(props);
   return computed(() => {
-    return location.protocol + "//" + location.host + link.value
+    return location.protocol + "//" + location.host + link.value;
   });
 };
 export const previewLink = (props: any) => {

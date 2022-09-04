@@ -991,7 +991,7 @@ import TextForm from "@/app/admin/inputComponents/TextForm.vue";
 import State from "@/app/admin/inputComponents/State.vue";
 import NotificationIndex from "@/app/admin/Notifications/Index.vue";
 
-import { checkAdminPermission, checkShopOwner } from "@/utils/userPermission";
+import { checkShopOwner } from "@/utils/userPermission";
 
 import {
   getEditShopInfo,
@@ -1077,12 +1077,6 @@ export default defineComponent({
     const newTemporaryClosure = ref(null);
     const searchResults = ref([]);
     const selectedResult = ref(0);
-
-    if (!checkAdminPermission(ctx)) {
-      return {
-        notFound: true,
-      };
-    }
 
     // allow sub Account
     const { uid } = useAdminUids(ctx);

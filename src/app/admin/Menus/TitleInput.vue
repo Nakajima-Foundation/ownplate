@@ -81,7 +81,6 @@
 
 <script>
 import { defineComponent, ref, onMounted } from "@vue/composition-api";
-import { checkAdminPermission } from "@/utils/userPermission";
 
 export default defineComponent({
   name: "TitleInput",
@@ -97,9 +96,6 @@ export default defineComponent({
   },
   setup(props, ctx) {
     const textInput = ref();
-    if (!checkAdminPermission(ctx)) {
-      return;
-    }
     onMounted(() => {
       textInput.value.focus();
     });
