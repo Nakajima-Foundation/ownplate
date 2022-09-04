@@ -15,7 +15,7 @@
 
 <script>
 import { defineComponent, computed } from "@vue/composition-api";
-import { shareUrlAdmin } from "@/utils/utils";
+import { previewLink } from "@/utils/utils";
 
 export default defineComponent({
   props: {
@@ -33,7 +33,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const previewLink = shareUrlAdmin(props);
+    const previewLink = previewLink(props);
     return {
       previewLink,
     };
