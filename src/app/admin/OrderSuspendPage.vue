@@ -1,91 +1,98 @@
 <template>
   <div>
-    <!-- Header -->
-    <AdminHeader
-      class="mt-6 mx-6 lg:flex lg:items-center"
-      :shopInfo="shopInfo"
-      :backLink="`/admin/restaurants/${shopInfo.restaurantId}/orders`"
-      :showSuspend="false"
-      :isInMo="isInMo"
-      :moPrefix="moPrefix"
-    />
+    <template v-if="notFound == null"></template>
+    <template v-else-if="notFound">
+      <not-found />
+    </template>
 
-    <!-- Title -->
-    <div class="mt-6 mx-6 text-xl font-bold text-black text-opacity-30">
-      {{ $t("admin.order.suspendSettings") }}
-    </div>
+    <div v-else>
+      <!-- Header -->
+      <AdminHeader
+        class="mt-6 mx-6 lg:flex lg:items-center"
+        :shopInfo="shopInfo"
+        :backLink="`/admin/restaurants/${shopInfo.restaurantId}/orders`"
+        :showSuspend="false"
+        :isInMo="isInMo"
+        :moPrefix="moPrefix"
+      />
 
-    <!-- Date -->
-    <div class="mt-4 mx-6 text-sm font-bold text-black text-opacity-60">
-      {{ $t("admin.order.suspendNewOrders") }}
-      <span v-if="date">: {{ $d(date.date, "short") }}</span>
-    </div>
+      <!-- Title -->
+      <div class="mt-6 mx-6 text-xl font-bold text-black text-opacity-30">
+        {{ $t("admin.order.suspendSettings") }}
+      </div>
 
-    <!-- Suspend and Unsuspend  -->
-    <div class="mt-6 mx-6">
-      <div v-if="!suspendUntil">
-        <b-button
-          v-for="time in availableTimes"
-          :key="time.time"
-          @click="handleSuspend(0, time.time)"
-          class="b-reset-tw mr-4 mb-4"
-        >
-          <div
-            class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5"
+      <!-- Date -->
+      <div class="mt-4 mx-6 text-sm font-bold text-black text-opacity-60">
+        {{ $t("admin.order.suspendNewOrders") }}
+        <span v-if="date">: {{ $d(date.date, "short") }}</span>
+      </div>
+
+      <!-- Suspend and Unsuspend  -->
+      <div class="mt-6 mx-6">
+        <div v-if="!suspendUntil">
+          <b-button
+            v-for="time in availableTimes"
+            :key="time.time"
+            @click="handleSuspend(0, time.time)"
+            class="b-reset-tw mr-4 mb-4"
           >
-            <i class="material-icons text-lg text-op-teal mr-2">alarm_off</i>
-            <div class="text-sm font-bold text-op-teal">
-              {{ $t("admin.order.suspendUntil", { display: time.display }) }}
+            <div
+              class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5"
+            >
+              <i class="material-icons text-lg text-op-teal mr-2">alarm_off</i>
+              <div class="text-sm font-bold text-op-teal">
+                {{ $t("admin.order.suspendUntil", { display: time.display }) }}
+              </div>
+            </div>
+          </b-button>
+
+          <div class="mt-4">
+            <div v-for="(day, k) in [0, 1, 2, 7]" :key="k" class="inline-flex">
+              <b-button
+                v-if="availableTimes.length > 0"
+                class="b-reset-tw"
+                @click="handleSuspend(day, 24 * 60)"
+              >
+                <div
+                  class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5 mr-4 mb-4"
+                >
+                  <i class="material-icons text-lg text-op-teal mr-2"
+                    >alarm_off</i
+                  >
+                  <div class="text-sm font-bold text-op-teal">
+                    <span v-if="day > 0">{{
+                      $t("admin.order.suspendDayUntil", { display: day })
+                    }}</span>
+                    <span v-else>{{ $t("admin.order.suspendForAllDay") }}</span>
+                  </div>
+                </div>
+              </b-button>
             </div>
           </div>
-        </b-button>
+        </div>
 
-        <div class="mt-4">
-          <div v-for="(day, k) in [0, 1, 2, 7]" :key="k" class="inline-flex">
-            <b-button
-              v-if="availableTimes.length > 0"
-              class="b-reset-tw"
-              @click="handleSuspend(day, 24 * 60)"
-            >
+        <div v-else>
+          <div class="mt-4 p-4 bg-red-700 bg-opacity-10 rounded-lg text-center">
+            <div class="text-base font-bold text-red-700">
+              {{ $t("admin.order.suspending") }}
+            </div>
+            <div class="text-sm font-bold text-red-700 mt-2">
+              {{ $t("admin.order.unsuspendAt") }} {{ suspendUntil }}
+            </div>
+          </div>
+
+          <div class="mt-4">
+            <b-button class="b-reset-tw" @click="handleRemove">
               <div
-                class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5 mr-4 mb-4"
+                class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5"
               >
-                <i class="material-icons text-lg text-op-teal mr-2"
-                  >alarm_off</i
-                >
+                <i class="material-icons text-lg text-op-teal mr-2">alarm_on</i>
                 <div class="text-sm font-bold text-op-teal">
-                  <span v-if="day > 0">{{
-                    $t("admin.order.suspendDayUntil", { display: day })
-                  }}</span>
-                  <span v-else>{{ $t("admin.order.suspendForAllDay") }}</span>
+                  {{ $t("admin.order.unsuspend") }}
                 </div>
               </div>
             </b-button>
           </div>
-        </div>
-      </div>
-
-      <div v-else>
-        <div class="mt-4 p-4 bg-red-700 bg-opacity-10 rounded-lg text-center">
-          <div class="text-base font-bold text-red-700">
-            {{ $t("admin.order.suspending") }}
-          </div>
-          <div class="text-sm font-bold text-red-700 mt-2">
-            {{ $t("admin.order.unsuspendAt") }} {{ suspendUntil }}
-          </div>
-        </div>
-
-        <div class="mt-4">
-          <b-button class="b-reset-tw" @click="handleRemove">
-            <div
-              class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5"
-            >
-              <i class="material-icons text-lg text-op-teal mr-2">alarm_on</i>
-              <div class="text-sm font-bold text-op-teal">
-                {{ $t("admin.order.unsuspend") }}
-              </div>
-            </div>
-          </b-button>
         </div>
       </div>
     </div>
@@ -98,14 +105,16 @@ import { db, firestore } from "@/plugins/firebase";
 import firebase from "firebase/compat/app";
 
 import AdminHeader from "@/app/admin/AdminHeader.vue";
+import NotFound from "@/components/NotFound.vue";
 
-import { checkAdminPermission, checkShopAccount } from "@/utils/userPermission";
-import { useAdminUids } from "@/utils/utils";
+import { checkShopAccount } from "@/utils/userPermission";
+import { useAdminUids, notFoundResponse } from "@/utils/utils";
 import { usePickupTime } from "@/utils/pickup";
 
 export default defineComponent({
   components: {
     AdminHeader,
+    NotFound,
   },
   metaInfo() {
     return {
@@ -139,16 +148,9 @@ export default defineComponent({
   setup(props, ctx) {
     const date = ref(null);
 
-    if (!checkAdminPermission(ctx)) {
-      return {
-        notFound: true,
-      };
-    }
     const { ownerUid } = useAdminUids(ctx);
     if (!checkShopAccount(props.shopInfo, ownerUid.value)) {
-      return {
-        notFound: true,
-      };
+      return notFoundResponse;
     }
 
     if (
@@ -156,9 +158,7 @@ export default defineComponent({
       props.shopInfo.deletedFlag ||
       !props.shopInfo.publicFlag
     ) {
-      return {
-        notFound: true,
-      };
+      return notFoundResponse;
     }
     const { availableDays } = usePickupTime(props.shopInfo, {}, {}, ctx);
 
@@ -215,6 +215,7 @@ export default defineComponent({
       suspendUntil,
       handleSuspend,
       handleRemove,
+      notFound: false,
     };
   },
 });

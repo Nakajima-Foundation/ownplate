@@ -96,8 +96,8 @@ import { defineComponent, ref, onUnmounted } from "@vue/composition-api";
 import { db } from "@/plugins/firebase";
 
 import { lineAuthURL, lineVerify } from "@/lib/line/line";
-import { checkAdminPermission, checkShopAccount } from "@/utils/userPermission";
-import { useAdminUids, getRestaurantId } from "@/utils/utils";
+import { checkShopAccount } from "@/utils/userPermission";
+import { useAdminUids, getRestaurantId, notFoundResponse } from "@/utils/utils";
 
 import NotFound from "@/components/NotFound.vue";
 import AdminHeader from "@/app/admin/AdminHeader.vue";
@@ -129,17 +129,9 @@ export default defineComponent({
   setup(props, ctx) {
     const lineUsers = ref([]);
 
-    if (!checkAdminPermission(ctx)) {
-      return {
-        notFound: true,
-      };
-    }
-
     const { ownerUid, uid } = useAdminUids(ctx);
     if (!checkShopAccount(props.shopInfo, ownerUid.value)) {
-      return {
-        notFound: true,
-      };
+      return notFoundResponse;
     }
     const restaurantId = getRestaurantId(ctx.root);
 

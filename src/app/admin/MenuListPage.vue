@@ -216,7 +216,7 @@ import {
 } from "@/app/user/Restaurant/Utils";
 
 import { useAdminUids, cleanObject, notFoundResponse } from "@/utils/utils";
-import { checkAdminPermission, checkShopAccount } from "@/utils/userPermission";
+import { checkShopAccount } from "@/utils/userPermission";
 import { useAdminConfigToggle } from "@/utils/admin/Toggle";
 
 export default defineComponent({
@@ -278,10 +278,6 @@ export default defineComponent({
     const editings = ref({});
     const detachers = ref([]);
     const notFound = ref(null);
-
-    if (!checkAdminPermission(ctx)) {
-      return notFoundResponse;
-    }
 
     const { isOwner, uid, ownerUid } = useAdminUids(ctx);
 

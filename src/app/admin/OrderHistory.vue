@@ -128,8 +128,13 @@ import ReportDetails from "@/app/admin/Order/ReportDetails.vue";
 
 import AdminHeader from "@/app/admin/AdminHeader.vue";
 
-import { arrayChunk, useAdminUids, doc2data } from "@/utils/utils";
-import { checkAdminPermission, checkShopAccount } from "@/utils/userPermission";
+import {
+  arrayChunk,
+  useAdminUids,
+  doc2data,
+  notFoundResponse,
+} from "@/utils/utils";
+import { checkShopAccount } from "@/utils/userPermission";
 
 import { useCategory, useAllSubcategory } from "../user/Restaurant/Utils";
 
@@ -197,13 +202,8 @@ export default defineComponent({
 
     const { isOwner, uid, ownerUid } = useAdminUids(ctx);
 
-    if (
-      !checkAdminPermission(ctx) ||
-      !checkShopAccount(props.shopInfo, ownerUid.value)
-    ) {
-      return {
-        notFound: true,
-      };
+    if (!checkShopAccount(props.shopInfo, ownerUid.value)) {
+      return notFoundResponse;
     }
 
     const fileName = ctx.root.$t("order.history");

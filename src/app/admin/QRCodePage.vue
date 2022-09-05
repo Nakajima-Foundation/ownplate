@@ -131,6 +131,9 @@ import { db, firestore } from "@/plugins/firebase";
 import AdminHeader from "@/app/admin/AdminHeader.vue";
 import { shareUrlAdmin } from "@/utils/utils";
 
+import { useAdminUids, notFoundResponse } from "@/utils/utils";
+import { checkShopAccount } from "@/utils/userPermission";
+
 export default defineComponent({
   components: {
     AdminHeader,
@@ -166,6 +169,11 @@ export default defineComponent({
     };
   },
   setup(props, ctx) {
+    const { ownerUid } = useAdminUids(ctx);
+    if (!checkShopAccount(props.shopInfo, ownerUid.value)) {
+      return notFoundResponse;
+    }
+
     const trace = props.shopInfo.trace;
     /*
     (async () => {

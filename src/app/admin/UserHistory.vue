@@ -116,7 +116,7 @@ import {
 import { order_status } from "@/config/constant";
 import { parsePhoneNumber, formatNational, formatURL } from "@/utils/phoneutil";
 
-import { checkAdminPermission, checkShopAccount } from "@/utils/userPermission";
+import { checkShopAccount } from "@/utils/userPermission";
 import { doc2data, useAdminUids } from "@/utils/utils";
 
 import BackButton from "@/components/BackButton.vue";
@@ -158,12 +158,7 @@ export default defineComponent({
 
     const fileName = ctx.root.$t("order.history");
 
-    if (!checkAdminPermission(ctx)) {
-      return {
-        notFound: true,
-      };
-    }
-    const uid = computed(() => {
+    const customerUid = computed(() => {
       return ctx.root.$route.params.userId;
     });
     const { ownerUid } = useAdminUids(ctx);
@@ -190,7 +185,10 @@ export default defineComponent({
 
     const getUserLog = async () => {
       const res = await getDoc(
-        doc(db, `restaurants/${ctx.root.restaurantId()}/userLog/${uid.value}`)
+        doc(
+          db,
+          `restaurants/${ctx.root.restaurantId()}/userLog/${customerUid.value}`
+        )
       );
       if (res.exists) {
         userLog.value = res.data();
@@ -198,7 +196,7 @@ export default defineComponent({
     };
     const next = async () => {
       const queryConditions = [
-        where("uid", "==", uid.value),
+        where("uid", "==", customerUid.value),
         orderBy("timePlaced", "desc"),
         limit(limitNum),
       ];

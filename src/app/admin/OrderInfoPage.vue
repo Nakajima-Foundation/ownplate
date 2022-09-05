@@ -601,14 +601,15 @@ import { costCal } from "@/utils/commonUtils";
 import { downloadOrderPdf, printOrder, data2UrlSchema } from "@/lib/pdf/pdf2";
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
-import { checkAdminPermission, checkShopAccount } from "@/utils/userPermission";
+import { checkShopAccount } from "@/utils/userPermission";
 import {
   doc2data,
   useAdminUids,
   useRestaurantId,
   forcedError,
+  notFoundResponse,
+  stripeRegion,
 } from "@/utils/utils";
-import { stripeRegion } from "@/utils/utils";
 
 import {
   isEmpty,
@@ -685,10 +686,12 @@ export default defineComponent({
     const timeOffset = ref(0);
     const editedAvailableOrders = ref([]);
 
-    if (!checkAdminPermission(ctx)) {
-      return {
-        notFound: true,
-      };
+    const { ownerUid, uid } = useAdminUids(ctx);
+    if (
+      !checkShopAccount(props.shopInfo, ownerUid.value) &&
+      !ctx.root.$store.getters.isSuperAdmin
+    ) {
+      return notFoundResponse;
     }
     if (props.shopInfo.isEC) {
       getDoc(doc(db, `restaurants/${ctx.root.restaurantId()}/ec/postage`)).then(
@@ -738,7 +741,7 @@ export default defineComponent({
       }
     );
 
-    getShopOwner(ctx.root.$store.getters.uidAdmin).then((data) => {
+    getShopOwner(uid.value).then((data) => {
       shopOwner.value = data;
     });
     onUnmounted(() => {
