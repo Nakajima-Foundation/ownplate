@@ -1005,6 +1005,7 @@ import {
   countObj,
   regionalSetting,
   useAdminUids,
+  notFoundResponse,
 } from "@/utils/utils";
 import { uploadFile } from "@/lib/firebase/storage";
 
@@ -1078,12 +1079,10 @@ export default defineComponent({
     const searchResults = ref([]);
     const selectedResult = ref(0);
 
-    // allow sub Account
+    // only owner
     const { uid } = useAdminUids(ctx);
     if (!checkShopOwner(props.shopInfo, uid.value)) {
-      return {
-        notFound: true,
-      };
+      return notFoundResponse;
     }
     notFound.value = false;
 
