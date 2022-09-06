@@ -55,6 +55,7 @@
     "@types/gtag.js": "^0.0.10",
     "@types/lodash": "^4.14.181",
     "@types/pdfmake": "^0.1.21",
+    "@types/validator": "^13.7.6",
     "@vue/cli": "^5.0.4",
     "@vue/cli-plugin-typescript": "~5.0.4",
     "@vue/cli-service": "^5.0.4",

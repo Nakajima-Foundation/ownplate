@@ -235,7 +235,12 @@ import { daysOfWeek } from "@/config/constant";
 import { parsePhoneNumber, formatNational, formatURL } from "@/utils/phoneutil";
 import { ownPlateConfig } from "@/config/project";
 import { usePickupTime } from "@/utils/pickup";
-import { stripeRegion, isNull, useNationalPhoneNumber } from "@/utils/utils";
+import {
+  stripeRegion,
+  isNull,
+  useNationalPhoneNumber,
+  validUrl,
+} from "@/utils/utils";
 
 import TransactionsAct from "@/app/user/TransactionsAct.vue";
 
@@ -332,13 +337,15 @@ export default defineComponent({
       );
     });
     const hasUrl = computed(() => {
-      return props.shopInfo.url;
+      return props.shopInfo.url && validUrl(props.shopInfo.url);
     });
     const hasLineUrl = computed(() => {
-      return props.shopInfo.lineUrl;
+      return props.shopInfo.lineUrl && validUrl(props.shopInfo.lineUrl);
     });
     const hasInstagramUrl = computed(() => {
-      return props.shopInfo.instagramUrl;
+      return (
+        props.shopInfo.instagramUrl && validUrl(props.shopInfo.instagramUrl)
+      );
     });
     const region = ownPlateConfig.region;
 
