@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Restaurant Profile Photo and Name -->
-    <div class="mt-4">
+    <div class="mt-4 afterPaid">
       <shop-header :shopInfo="shopInfo"></shop-header>
     </div>
 
