@@ -711,7 +711,6 @@ export default defineComponent({
     };
 
     watch(user, (newValue) => {
-      console.log("user changed");
       if (waitForUser.value && newValue) {
         console.log("handling deferred notification");
         goCheckout();

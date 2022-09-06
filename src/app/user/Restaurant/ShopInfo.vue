@@ -240,6 +240,8 @@ import {
   isNull,
   useNationalPhoneNumber,
   validUrl,
+  validLocation,
+  validPlaceId,
 } from "@/utils/utils";
 
 import TransactionsAct from "@/app/user/TransactionsAct.vue";
@@ -334,7 +336,8 @@ export default defineComponent({
         props.shopInfo.location &&
         props.shopInfo.location.lat &&
         props.shopInfo.location.lng
-      );
+      ) && validLocation(props.shopInfo.location || {})
+        && validPlaceId(props.shopInfo.place_id);
     });
     const hasUrl = computed(() => {
       return props.shopInfo.url && validUrl(props.shopInfo.url);
