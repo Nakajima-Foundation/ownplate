@@ -2,16 +2,6 @@ import Vue from "vue";
 
 const mixin = {
   methods: {
-    redirectToAdminPage() {
-      const redirect = this.$route.query["to"];
-      const pathRegex = /^\/[a-zA-Z0-9-\_\/]+$/;
-
-      if (redirect && pathRegex.test(redirect)) {
-        this.$router.push(redirect);
-      } else {
-        this.$router.push("/admin/restaurants");
-      }
-    },
     checkAdminPermission() {
       if (!this.$store.getters.uidAdmin) {
         const redirectUrl = encodeURIComponent(this.$route.path);
@@ -34,10 +24,6 @@ const mixin = {
     // subaccount ok.
     checkShopAccount(shopInfo) {
       return shopInfo.uid === this.ownerUid;
-    },
-    // just owner. don't allow subaccount.
-    checkShopOwner(shopInfo) {
-      return shopInfo.uid === this.uidAdmin;
     },
   },
   computed: {
