@@ -14,22 +14,12 @@ const mixin = {
       }
       return true;
     },
-    checkUserPermission() {
-      if (!this.$store.getters.uidUser) {
-        this.$router.replace("/admin/user/signin");
-        return false;
-      }
-      return true;
-    },
     // subaccount ok.
     checkShopAccount(shopInfo) {
       return shopInfo.uid === this.ownerUid;
     },
   },
   computed: {
-    uidAdmin() {
-      return this.$store.getters.uidAdmin;
-    },
     isUser() {
       return !!this.$store.getters.uidUser;
     },
