@@ -100,7 +100,7 @@
                 ></title-input>
               </div>
               <div v-else>
-                <title
+                <Title
                   :title="itemsObj[menuList]"
                   :position="
                     index == 0
@@ -126,7 +126,7 @@
                 (!publicFilter || itemsObj[menuList].publicFlag)
               "
             >
-              <menu
+              <Menu
                 :menuitem="itemsObj[menuList]"
                 :position="
                   index == 0 ? 'first' : menuLength - 1 === index ? 'last' : ''

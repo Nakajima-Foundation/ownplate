@@ -33,7 +33,7 @@
               @click.stop="pushQuantities(0)"
               class="inline-flex justify-center items-center h-9 rounded-full w-24 bg-op-teal bg-opacity-10 cardAdd"
               :data-cart-product="item.id"
-              >
+            >
               <div class="text-sm font-bold text-op-teal">
                 {{ $t("sitemenu.add") }}
               </div>

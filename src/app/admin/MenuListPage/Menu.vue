@@ -25,7 +25,7 @@
             <b-checkbox
               :value="soldOut"
               @input="soldOutToggle"
-              :disabled="disabledSoldOut"
+              :disabled="disabledEdit"
             >
               <div v-if="soldOut" class="text-sm font-bold text-red-700">
                 {{ $t("admin.itemSoldOut") }}
@@ -189,14 +189,14 @@ export default defineComponent({
       }`;
       db.doc(path).update("soldOut", e);
     };
-    const disabledSoldOut = computed(() => {
+    const disabledEdit = computed(() => {
       return (
         props.isInMo &&
         props.groupData?.restaurantId !== ctx.root.restaurantId()
       );
     });
     const linkEdit = () => {
-      if (isOwner.value) {
+      if (isOwner.value && !disabledEdit.value) {
         ctx.root.$router.push({
           path: `/admin/restaurants/${ctx.root.restaurantId()}/menus/${
             props.menuitem.id
@@ -228,7 +228,7 @@ export default defineComponent({
       image,
       soldOut,
       soldOutToggle,
-      disabledSoldOut,
+      disabledEdit,
       linkEdit,
 
       positionUp,
