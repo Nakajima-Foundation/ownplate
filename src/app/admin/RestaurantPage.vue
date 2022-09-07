@@ -316,6 +316,7 @@
           <div class="mt-4">
             <div class="text-sm font-bold pb-2">
               {{ $t("editRestaurant.coverPhoto") }}
+              <span class="text-red-700">*</span>
             </div>
             <div
               class="flex"
@@ -991,7 +992,7 @@ import TextForm from "@/app/admin/inputComponents/TextForm.vue";
 import State from "@/app/admin/inputComponents/State.vue";
 import NotificationIndex from "@/app/admin/Notifications/Index.vue";
 
-import { checkAdminPermission, checkShopOwner } from "@/utils/userPermission";
+import { checkShopOwner } from "@/utils/userPermission";
 
 import {
   getEditShopInfo,
@@ -1005,6 +1006,7 @@ import {
   countObj,
   regionalSetting,
   useAdminUids,
+  notFoundResponse,
 } from "@/utils/utils";
 import { uploadFile } from "@/lib/firebase/storage";
 
@@ -1078,18 +1080,10 @@ export default defineComponent({
     const searchResults = ref([]);
     const selectedResult = ref(0);
 
-    if (!checkAdminPermission(ctx)) {
-      return {
-        notFound: true,
-      };
-    }
-
-    // allow sub Account
+    // only owner
     const { uid } = useAdminUids(ctx);
     if (!checkShopOwner(props.shopInfo, uid.value)) {
-      return {
-        notFound: true,
-      };
+      return notFoundResponse;
     }
     notFound.value = false;
 

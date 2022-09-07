@@ -26,7 +26,7 @@
                     e.target.src = '/apple-touch-icon.png';
                   }
                 "
-                class="inline-block align-middle"
+                class="inline-block align-middle rounded-lg"
               />
             </div>
             <div

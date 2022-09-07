@@ -1,40 +1,45 @@
 <template>
   <div>
-    <div v-if="partner && partner.length > 0" class="mt-3 mx-6 items-center">
-      <div v-for="(part, k) in partner" :key="k" class="flex">
-        <div class="flex-1">
-          <img :src="`/partners/${part.logo}`" class="w-12" />
-          <span class="font-bold">
-            {{ part.name }}
-          </span>
-        </div>
-        <div class="text-right font-bold" v-if="part.ask">
-          <a href="#" @click="openContact()">サポート問い合わせ</a>
+    <div v-if="noRestaurant === null"></div>
+    <div v-else-if="noRestaurant === true">
+      <NotFound />
+    </div>
+    <div v-else>
+      <div v-if="partner && partner.length > 0" class="mt-3 mx-6 items-center">
+        <div v-for="(part, k) in partner" :key="k" class="flex">
+          <div class="flex-1">
+            <img :src="`/partners/${part.logo}`" class="w-12" />
+            <span class="font-bold">
+              {{ part.name }}
+            </span>
+          </div>
+          <div class="text-right font-bold" v-if="part.ask">
+            <a href="#" @click="openContact()">サポート問い合わせ</a>
+          </div>
         </div>
       </div>
+      <!-- Notification Settings Popup-->
+      <notification-settings
+        :notificationData="notificationConfig"
+        :NotificationSettingsPopup="NotificationSettingsPopup"
+        @close="closeNotificationSettings"
+        v-if="NotificationSettingsPopup"
+      />
+      <router-view
+        :shopInfo="shopInfo"
+        :groupData="groupData"
+        :groupMasterRestaurant="groupMasterRestaurant"
+        :isInMo="isInMo"
+        :moPrefix="moPrefix"
+        v-if="noRestaurant === false"
+      ></router-view>
+      <notification-watcher />
+      <sound-config-watcher :notificationConfig="notificationConfig" />
+      <new-order-watcher :notificationConfig="notificationConfig" />
+      <b-modal :active.sync="isOpen" :width="488">
+        <PartnersContact :id="(partner[0] || {}).id" />
+      </b-modal>
     </div>
-    <!-- Notification Settings Popup-->
-    <notification-settings
-      :notificationData="notificationConfig"
-      :NotificationSettingsPopup="NotificationSettingsPopup"
-      @close="closeNotificationSettings"
-      v-if="NotificationSettingsPopup"
-    />
-    <NotFound v-if="noRestaurant === true" />
-    <router-view
-      :shopInfo="shopInfo"
-      :groupData="groupData"
-      :groupMasterRestaurant="groupMasterRestaurant"
-      :isInMo="isInMo"
-      :moPrefix="moPrefix"
-      v-else-if="noRestaurant === false"
-    ></router-view>
-    <notification-watcher />
-    <sound-config-watcher :notificationConfig="notificationConfig" />
-    <new-order-watcher :notificationConfig="notificationConfig" />
-    <b-modal :active.sync="isOpen" :width="488">
-      <PartnersContact :id="(partner[0] || {}).id" />
-    </b-modal>
   </div>
 </template>
 
@@ -58,9 +63,16 @@ import NotFound from "@/components/NotFound.vue";
 
 import { PartnerData } from "@/models/ShopOwner";
 
-import { getShopOwner, getPartner, regionalSetting } from "@/utils/utils";
+import {
+  getShopOwner,
+  getPartner,
+  regionalSetting,
+  useRestaurantId,
+  useAdminUids,
+} from "@/utils/utils";
 
 import { defaultShopInfo } from "@/utils/admin/RestaurantPageUtils";
+import { checkAdminPermission } from "@/utils/userPermission";
 
 export default defineComponent({
   components: {
@@ -86,17 +98,9 @@ export default defineComponent({
     },
   },
   setup(_, ctx) {
-    const restaurantId = computed(() => {
-      return ctx.root.$route.params.restaurantId;
-    });
-    const uid = computed(() => {
-      return ctx.root.$store.getters.uidAdmin;
-    });
-    const ownerUid = computed(() => {
-      return ctx.root.$store.getters.isSubAccount
-        ? ctx.root.$store.getters.parentId
-        : uid.value;
-    });
+    const restaurantId = useRestaurantId(ctx.root);
+    const { uid, ownerUid } = useAdminUids(ctx);
+
     const notificationConfig = ref({
       soundOn: null,
       infinityNotification: null,
@@ -108,6 +112,12 @@ export default defineComponent({
     const noRestaurant = ref<boolean | null>(null);
     const shopInfo = ref(defaultShopInfo);
     const groupData = ref<null | DocumentData>(null);
+
+    if (!checkAdminPermission(ctx)) {
+      return {
+        noRestaurant: true,
+      };
+    }
 
     // never use onSnapshot here.
     const defaultTax = regionalSetting.defaultTax || {};

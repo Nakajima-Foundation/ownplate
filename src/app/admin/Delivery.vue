@@ -1,6 +1,7 @@
 <template>
   <div>
-    <template v-if="notFound">
+    <template v-if="notFound === null"></template>
+    <template v-else-if="notFound === true">
       <not-found />
     </template>
     <template v-if="existLocation === false">
@@ -194,6 +195,7 @@
 
 <script>
 import { db, firestore } from "@/plugins/firebase";
+import { notFoundResponse } from "@/utils/utils";
 import NotFound from "@/components/NotFound";
 
 export default {
@@ -241,12 +243,13 @@ export default {
   },
   async created() {
     if (!this.checkAdminPermission()) {
-      return;
+      this.notFound = true;
+      return notFoundResponse;
     }
 
     if (!this.checkShopAccount(this.shopInfo)) {
       this.notFound = true;
-      return true;
+      return notFoundResponse;
     }
 
     const location = this.shopInfo.location;
@@ -278,6 +281,7 @@ export default {
     }
     this.center = new google.maps.LatLng(location.lat, location.lng);
     this.mapLoaded();
+    this.notFound = false;
   },
   mounted() {
     this.mapLoaded();

@@ -11,10 +11,12 @@ export const checkAdminPermission = (ctx: any) => {
   return true;
 };
 
+// allow subAccounts
 export const checkShopAccount = (shopInfo: any, ownerUid: string) => {
   return shopInfo.uid === ownerUid;
 };
 
+// only owner
 export const checkShopOwner = (shopInfo: any, uidAdmin: string) => {
   return shopInfo.uid === uidAdmin;
 };

@@ -113,7 +113,7 @@
             </div>
 
             <!-- titles for omochikaeri -->
-            <Titles :titleLists="titleLists" v-if="titleLists.length > 0"/>
+            <Titles :titleLists="titleLists" v-if="titleLists.length > 0" />
 
             <div v-if="showSubCategory">
               <!-- Mo Pickup Toggle -->
@@ -729,7 +729,6 @@ export default defineComponent({
     };
 
     watch(user, (newValue) => {
-      console.log("user changed");
       if (waitForUser.value && newValue) {
         console.log("handling deferred notification");
         goCheckout();

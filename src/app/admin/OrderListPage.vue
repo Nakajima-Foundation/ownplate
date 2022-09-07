@@ -99,8 +99,13 @@ import NotFound from "@/components/NotFound.vue";
 import AdminHeader from "@/app/admin/AdminHeader.vue";
 import ToggleSwitch from "@/components/ToggleSwitch.vue";
 
-import { doc2data, isNull, useAdminUids } from "@/utils/utils";
-import { checkAdminPermission, checkShopAccount } from "@/utils/userPermission";
+import {
+  doc2data,
+  isNull,
+  useAdminUids,
+  notFoundResponse,
+} from "@/utils/utils";
+import { checkShopAccount } from "@/utils/userPermission";
 import { useAdminConfigToggle } from "@/utils/admin/Toggle";
 
 export default defineComponent({
@@ -144,17 +149,10 @@ export default defineComponent({
     const dayIndex = ref(0);
 
     let order_detacher = () => {};
-    if (!checkAdminPermission(ctx)) {
-      return {
-        notFound: true,
-      };
-    }
 
     const { ownerUid, uid } = useAdminUids(ctx);
     if (!checkShopAccount(props.shopInfo, ownerUid.value)) {
-      return {
-        notFound: true,
-      };
+      return notFoundResponse;
     }
     const { toggle: queryIsPlacedDate, switchToggle: switchOrderQuery } =
       useAdminConfigToggle("queryIsPlacedDate", uid.value, false);

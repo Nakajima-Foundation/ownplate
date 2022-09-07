@@ -24,6 +24,9 @@ import { ownPlateConfig, mo_prefixes } from "@/config/project";
 import { defaultHeader } from "@/config/header";
 
 import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
+import isURL from "validator/lib/isURL";
+import isLatLong from "validator/lib/isLatLong";
+import isAlphanumeric from "validator/lib/isAlphanumeric";
 
 export const isNull = <T>(value: T) => {
   return value === null || value === undefined;
@@ -62,6 +65,12 @@ export const arrayChunk = <T>(arr: T[], size = 1) => {
 };
 
 export const shareUrlAdmin = (props: any) => {
+  const link = previewLink(props);
+  return computed(() => {
+    return location.protocol + "//" + location.host + link.value;
+  });
+};
+export const previewLink = (props: any) => {
   return computed(() => {
     if (props.isInMo) {
       return "/" + props.moPrefix + "/r/" + props.shopInfo.restaurantId;
@@ -396,6 +405,21 @@ export const useTopPath = (root: any) => {
   });
 };
 
+export const validUrl = (url: string) => {
+  return isURL(url, {
+    protocols: ["http", "https"],
+    require_protocol: true,
+    allow_fragments: false,
+  });
+};
+
+export const validLocation = (location: {lat: string, lng: string}) => {
+  return isLatLong([location.lat || "", location.lng || ""].join(","));
+};
+export const validPlaceId = (placeId: string) => {
+  return isAlphanumeric(placeId) || placeId === "";
+};
+
 export const convOptionArray2Obj = <T>(obj: { [key: string]: T[] }) => {
   return Object.keys(obj).reduce(
     (newObj: { [key: string]: { [key: string]: T } }, objKey: string) => {
@@ -672,7 +696,8 @@ export const useNationalPhoneNumber = (shopInfo: RestaurantInfoData) => {
       return formatNational(parsedNumber.value);
     }
     console.log("parsing failed, return as-is");
-    return shopInfo.phoneNumber;
+    // return shopInfo.phoneNumber;
+    return "";
   });
   return {
     parsedNumber,

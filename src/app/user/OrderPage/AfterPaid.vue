@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Restaurant Profile Photo and Name -->
-    <div class="mt-4">
+    <div class="mt-4 afterPaid">
       <shop-header :shopInfo="shopInfo"></shop-header>
     </div>
 
@@ -233,7 +233,7 @@ import { stripeCancelIntent } from "@/lib/stripe/stripe";
 
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
-import { isEmpty } from "@/utils/utils";
+import { isEmpty, validUrl } from "@/utils/utils";
 
 export default {
   name: "Order",
@@ -287,7 +287,7 @@ export default {
       return this.orderInfo.payment && this.orderInfo.payment.stripe;
     },
     hasLineUrl() {
-      return this.shopInfo.lineUrl;
+      return this.shopInfo.lineUrl && validUrl(this.shopInfo.lineUrl);
     },
     urlAdminOrderPage() {
       return `${

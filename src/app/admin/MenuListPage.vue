@@ -100,7 +100,7 @@
                 ></title-input>
               </div>
               <div v-else>
-                <title-card
+                <Title
                   :title="itemsObj[menuList]"
                   :position="
                     index == 0
@@ -114,7 +114,7 @@
                   @positionDown="positionDown($event)"
                   @forkItem="forkTitleItem($event)"
                   @deleteItem="deleteItem($event)"
-                ></title-card>
+                />
               </div>
             </div>
 
@@ -126,7 +126,7 @@
                 (!publicFilter || itemsObj[menuList].publicFlag)
               "
             >
-              <menu-card
+              <Menu
                 :menuitem="itemsObj[menuList]"
                 :position="
                   index == 0 ? 'first' : menuLength - 1 === index ? 'last' : ''
@@ -138,7 +138,7 @@
                 @positionDown="positionDown($event)"
                 @forkItem="forkMenuItem($event)"
                 @deleteItem="deleteItem($event)"
-              ></menu-card>
+              />
             </div>
           </div>
         </div>
@@ -188,9 +188,9 @@ import firebase from "firebase/compat/app";
 import NotFound from "@/components/NotFound.vue";
 import SubCategoryList from "@/app/user/Restaurant/SubCategoryList.vue";
 
-import MenuCard from "@/app/admin/Menus/MenuCard.vue";
-import TitleCard from "@/app/admin/Menus/TitleCard.vue";
-import TitleInput from "@/app/admin/Menus/TitleInput.vue";
+import Menu from "@/app/admin/MenuListPage/Menu.vue";
+import Title from "@/app/admin/MenuListPage/Title.vue";
+import TitleInput from "@/app/admin/MenuListPage/TitleInput.vue";
 
 import ToggleSwitch from "@/components/ToggleSwitch.vue";
 import AddButton from "@/app/admin/MenuListPage/AddButton.vue";
@@ -216,14 +216,14 @@ import {
 } from "@/app/user/Restaurant/Utils";
 
 import { useAdminUids, cleanObject, notFoundResponse } from "@/utils/utils";
-import { checkAdminPermission, checkShopAccount } from "@/utils/userPermission";
+import { checkShopAccount } from "@/utils/userPermission";
 import { useAdminConfigToggle } from "@/utils/admin/Toggle";
 
 export default defineComponent({
   name: "MenuList",
   components: {
-    MenuCard,
-    TitleCard,
+    Menu,
+    Title,
     TitleInput,
     NotFound,
 
@@ -278,10 +278,6 @@ export default defineComponent({
     const editings = ref({});
     const detachers = ref([]);
     const notFound = ref(null);
-
-    if (!checkAdminPermission(ctx)) {
-      return notFoundResponse;
-    }
 
     const { isOwner, uid, ownerUid } = useAdminUids(ctx);
 

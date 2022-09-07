@@ -1,181 +1,190 @@
 <template>
   <div>
-    <!-- Header -->
-    <div class="mt-6 mx-6 lg:flex lg:items-center">
-      <!-- Back and Preview -->
-      <div class="flex space-x-4">
-        <div class="flex-shrink-0">
-          <back-button url="/admin/restaurants/" />
+    <div v-if="notFound">
+      <NotFound />
+    </div>
+    <div v-else>
+      <!-- Header -->
+      <div class="mt-6 mx-6 lg:flex lg:items-center">
+        <!-- Back and Preview -->
+        <div class="flex space-x-4">
+          <div class="flex-shrink-0">
+            <back-button url="/admin/restaurants/" />
+          </div>
+          <PreviewLink
+            :shopInfo="shopInfo"
+            :isInMo="isInMo"
+            :moPrefix="moPrefix"
+          />
         </div>
-        <PreviewLink
+
+        <!-- Photo and Name -->
+        <div class="mt-4 lg:mt-0 lg:flex-1 lg:flex lg:items-center lg:mx-4">
+          <div class="flex items-center">
+            <div class="flex-shrink-0 rounded-full bg-black bg-opacity-10 mr-4">
+              <img
+                :src="resizedProfileImage(shopInfo, '600')"
+                class="w-9 h-9 rounded-full object-cover"
+              />
+            </div>
+            <div class="text-base font-bold">
+              {{ shopInfo.restaurantName }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Date -->
+      <div class="mx-6 mt-6">
+        <b-select v-model="monthIndex">
+          <option
+            v-for="day in lastSeveralMonths"
+            :value="day.index"
+            :key="day.index"
+          >
+            {{ moment(day.date).format("YYYY-MM") }}
+          </option>
+        </b-select>
+      </div>
+
+      <!-- Table -->
+      <div class="mx-6 mt-6">
+        <table class="w-full bg-white rounded-lg shadow">
+          <!-- Table Header -->
+          <tr>
+            <th
+              class="p-2 text-xs font-bold"
+              v-for="(field, k) in revenueTableHeader"
+            >
+              <div class="text-right">{{ $t(field) }}</div>
+            </th>
+          </tr>
+
+          <!-- Table Body -->
+          <tr v-for="order in orders" :key="order.id" class="text-sm">
+            <td class="p-2">
+              <div class="text-right">{{ $d(order.timeConfirmed) }}</div>
+            </td>
+            <td class="p-2">
+              <div class="text-right">
+                {{ order.accounting.food.revenue }}
+              </div>
+            </td>
+            <td class="p-2">
+              <div class="text-right">{{ order.accounting.food.tax }}</div>
+            </td>
+            <td class="p-2">
+              <div class="text-right">
+                {{ order.accounting.alcohol.revenue }}
+              </div>
+            </td>
+            <td class="p-2">
+              <div class="text-right">
+                {{ order.accounting.alcohol.tax }}
+              </div>
+            </td>
+            <td class="p-2">
+              <div class="text-right">
+                {{ order.total }}
+              </div>
+            </td>
+
+            <td class="p-2">
+              <div class="text-right">
+                {{ order.accounting.service.revenue }}
+              </div>
+            </td>
+            <td class="p-2">
+              <div class="text-right">
+                {{ order.accounting.service.tax }}
+              </div>
+            </td>
+            <td class="p-2">
+              <div class="text-right">
+                {{ order.shippingCost || order.deliveryFee || 0 }}
+              </div>
+            </td>
+            <td class="p-2">
+              <div class="text-right">{{ order.totalCharge }}</div>
+            </td>
+            <td class="p-2">
+              <div>
+                <router-link :to="orderUrl(order)">{{
+                  nameOfOrder(order)
+                }}</router-link>
+                <a
+                  v-if="order.payment"
+                  :href="searchUrl(order)"
+                  target="stripe"
+                >
+                  <i v-if="order.payment" class="fab fa-cc-stripe" />
+                </a>
+              </div>
+            </td>
+          </tr>
+
+          <!-- Table Footer -->
+          <tr class="text-sm font-bold">
+            <td class="p-2">
+              <div class="text-right">{{ $t("order.total") }}</div>
+            </td>
+            <td class="p-2">
+              <div class="text-right">{{ total.food.revenue }}</div>
+            </td>
+            <td class="p-2">
+              <div class="text-right">{{ total.food.tax }}</div>
+            </td>
+            <td class="p-2">
+              <div class="text-right">{{ total.alcohol.revenue }}</div>
+            </td>
+            <td class="p-2">
+              <div class="text-right">{{ total.alcohol.tax }}</div>
+            </td>
+            <td class="p-2">
+              <div class="text-right">{{ total.service.revenue }}</div>
+            </td>
+            <td class="p-2">
+              <div class="text-right">{{ total.service.tax }}</div>
+            </td>
+            <td class="p-2">
+              <div class="text-right">{{ total.totalCharge }}</div>
+            </td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- Download -->
+      <div class="mx-6 mt-6 text-center">
+        <download-csv
+          :data="tableData"
+          :fields="fields"
+          :fieldNames="fieldNames"
+          :fileName="fileName"
+        >
+          <b-button class="b-reset-tw">
+            <div
+              class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
+            >
+              <i class="material-icons text-lg text-op-teal mr-2">save_alt</i>
+              <div class="text-sm font-bold text-op-teal">
+                {{ $t("admin.report.download-csv") }}
+              </div>
+            </div>
+          </b-button>
+        </download-csv>
+      </div>
+
+      <!-- Report Details -->
+      <div class="mx-6 mt-6 text-center">
+        <report-details
+          :orders="orders"
           :shopInfo="shopInfo"
+          :fileName="fileName"
           :isInMo="isInMo"
-          :moPrefix="moPrefix"
+          :categoryDataObj="categoryDataObj"
+          :allSubCategoryDataObj="allSubCategoryDataObj"
         />
       </div>
-
-      <!-- Photo and Name -->
-      <div class="mt-4 lg:mt-0 lg:flex-1 lg:flex lg:items-center lg:mx-4">
-        <div class="flex items-center">
-          <div class="flex-shrink-0 rounded-full bg-black bg-opacity-10 mr-4">
-            <img
-              :src="resizedProfileImage(shopInfo, '600')"
-              class="w-9 h-9 rounded-full object-cover"
-            />
-          </div>
-          <div class="text-base font-bold">
-            {{ shopInfo.restaurantName }}
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Date -->
-    <div class="mx-6 mt-6">
-      <b-select v-model="monthIndex">
-        <option
-          v-for="day in lastSeveralMonths"
-          :value="day.index"
-          :key="day.index"
-        >
-          {{ moment(day.date).format("YYYY-MM") }}
-        </option>
-      </b-select>
-    </div>
-
-    <!-- Table -->
-    <div class="mx-6 mt-6">
-      <table class="w-full bg-white rounded-lg shadow">
-        <!-- Table Header -->
-        <tr>
-          <th
-            class="p-2 text-xs font-bold"
-            v-for="(field, k) in revenueTableHeader"
-          >
-            <div class="text-right">{{ $t(field) }}</div>
-          </th>
-        </tr>
-
-        <!-- Table Body -->
-        <tr v-for="order in orders" :key="order.id" class="text-sm">
-          <td class="p-2">
-            <div class="text-right">{{ $d(order.timeConfirmed) }}</div>
-          </td>
-          <td class="p-2">
-            <div class="text-right">
-              {{ order.accounting.food.revenue }}
-            </div>
-          </td>
-          <td class="p-2">
-            <div class="text-right">{{ order.accounting.food.tax }}</div>
-          </td>
-          <td class="p-2">
-            <div class="text-right">
-              {{ order.accounting.alcohol.revenue }}
-            </div>
-          </td>
-          <td class="p-2">
-            <div class="text-right">
-              {{ order.accounting.alcohol.tax }}
-            </div>
-          </td>
-          <td class="p-2">
-            <div class="text-right">
-              {{ order.total }}
-            </div>
-          </td>
-
-          <td class="p-2">
-            <div class="text-right">
-              {{ order.accounting.service.revenue }}
-            </div>
-          </td>
-          <td class="p-2">
-            <div class="text-right">
-              {{ order.accounting.service.tax }}
-            </div>
-          </td>
-          <td class="p-2">
-            <div class="text-right">
-              {{ order.shippingCost || order.deliveryFee || 0 }}
-            </div>
-          </td>
-          <td class="p-2">
-            <div class="text-right">{{ order.totalCharge }}</div>
-          </td>
-          <td class="p-2">
-            <div>
-              <router-link :to="orderUrl(order)">{{
-                nameOfOrder(order)
-              }}</router-link>
-              <a v-if="order.payment" :href="searchUrl(order)" target="stripe">
-                <i v-if="order.payment" class="fab fa-cc-stripe" />
-              </a>
-            </div>
-          </td>
-        </tr>
-
-        <!-- Table Footer -->
-        <tr class="text-sm font-bold">
-          <td class="p-2">
-            <div class="text-right">{{ $t("order.total") }}</div>
-          </td>
-          <td class="p-2">
-            <div class="text-right">{{ total.food.revenue }}</div>
-          </td>
-          <td class="p-2">
-            <div class="text-right">{{ total.food.tax }}</div>
-          </td>
-          <td class="p-2">
-            <div class="text-right">{{ total.alcohol.revenue }}</div>
-          </td>
-          <td class="p-2">
-            <div class="text-right">{{ total.alcohol.tax }}</div>
-          </td>
-          <td class="p-2">
-            <div class="text-right">{{ total.service.revenue }}</div>
-          </td>
-          <td class="p-2">
-            <div class="text-right">{{ total.service.tax }}</div>
-          </td>
-          <td class="p-2">
-            <div class="text-right">{{ total.totalCharge }}</div>
-          </td>
-        </tr>
-      </table>
-    </div>
-
-    <!-- Download -->
-    <div class="mx-6 mt-6 text-center">
-      <download-csv
-        :data="tableData"
-        :fields="fields"
-        :fieldNames="fieldNames"
-        :fileName="fileName"
-      >
-        <b-button class="b-reset-tw">
-          <div
-            class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
-          >
-            <i class="material-icons text-lg text-op-teal mr-2">save_alt</i>
-            <div class="text-sm font-bold text-op-teal">
-              {{ $t("admin.report.download-csv") }}
-            </div>
-          </div>
-        </b-button>
-      </download-csv>
-    </div>
-
-    <!-- Report Details -->
-    <div class="mx-6 mt-6 text-center">
-      <report-details
-        :orders="orders"
-        :shopInfo="shopInfo"
-        :fileName="fileName"
-        :isInMo="isInMo"
-        :categoryDataObj="categoryDataObj"
-        :allSubCategoryDataObj="allSubCategoryDataObj"
-      />
     </div>
   </div>
 </template>
@@ -195,17 +204,23 @@ import BackButton from "@/components/BackButton.vue";
 import DownloadCsv from "@/components/DownloadCSV.vue";
 import ReportDetails from "@/app/admin/Order/ReportDetails.vue";
 import PreviewLink from "@/app/admin/common/PreviewLink.vue";
+import NotFound from "@/components/NotFound.vue";
 
 import { ownPlateConfig } from "@/config/project";
 import { nameOfOrder } from "@/utils/strings";
 import { midNightOfMonth } from "@/utils/dateUtils";
 import { revenueCSVHeader, revenueMoCSVHeader } from "@/utils/reportUtils";
 import { order_status_keys } from "@/config/constant";
-import { useAdminUids, doc2data, arrayOrNumSum } from "@/utils/utils";
+import {
+  useAdminUids,
+  doc2data,
+  arrayOrNumSum,
+  notFoundResponse,
+} from "@/utils/utils";
 
 import { order2ReportData } from "@/models/orderInfo";
 
-import { checkAdminPermission, checkShopAccount } from "@/utils/userPermission";
+import { checkShopAccount } from "@/utils/userPermission";
 import { useCategory, useAllSubcategory } from "../user/Restaurant/Utils";
 
 export default defineComponent({
@@ -214,6 +229,7 @@ export default defineComponent({
     DownloadCsv,
     ReportDetails,
     PreviewLink,
+    NotFound,
   },
   props: {
     shopInfo: {
@@ -264,17 +280,9 @@ export default defineComponent({
     const monthIndex = ref(0);
     let detacher = null;
 
-    if (!checkAdminPermission(ctx)) {
-      return {
-        notFound: true,
-      };
-    }
-
     const { ownerUid, uid } = useAdminUids(ctx);
     if (!checkShopAccount(props.shopInfo, ownerUid.value)) {
-      return {
-        notFound: true,
-      };
+      return notFoundResponse;
     }
 
     const fields = computed(() => {
@@ -437,6 +445,8 @@ export default defineComponent({
 
       categoryDataObj,
       allSubCategoryDataObj,
+
+      notFound: false,
     };
   },
 });

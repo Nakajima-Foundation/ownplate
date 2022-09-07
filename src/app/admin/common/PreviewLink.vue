@@ -1,6 +1,6 @@
 <template>
   <div class="flex-shrink-0">
-    <router-link :to="previewLink">
+    <router-link :to="link">
       <div
         class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
       >
@@ -15,7 +15,7 @@
 
 <script>
 import { defineComponent, computed } from "@vue/composition-api";
-import { shareUrlAdmin } from "@/utils/utils";
+import { previewLink } from "@/utils/utils";
 
 export default defineComponent({
   props: {
@@ -33,9 +33,9 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const previewLink = shareUrlAdmin(props);
+    const link = previewLink(props);
     return {
-      previewLink,
+      link,
     };
   },
 });

@@ -591,7 +591,6 @@ import firebase from "firebase/compat/app";
 import NotFound from "@/components/NotFound.vue";
 import BackButton from "@/components/BackButton.vue";
 import Price from "@/components/Price.vue";
-import EditCategory from "@/app/admin/Menus/EditCategory.vue";
 import NotificationIndex from "./Notifications/Index.vue";
 import HoursInput from "@/app/admin/inputComponents/HoursInput.vue";
 
@@ -612,7 +611,7 @@ import {
 import { uploadFile } from "@/lib/firebase/storage";
 
 import { getNewItemData } from "@/models/menu";
-import { checkAdminPermission, checkShopOwner } from "@/utils/userPermission";
+import { checkShopOwner } from "@/utils/userPermission";
 
 export default defineComponent({
   name: "MenuItemPage",
@@ -635,7 +634,6 @@ export default defineComponent({
     BackButton,
     NotificationIndex,
     NotFound,
-    EditCategory,
     HoursInput,
   },
   props: {
@@ -689,9 +687,6 @@ export default defineComponent({
 
     const { isOwner, uid, ownerUid } = useAdminUids(ctx);
 
-    if (!checkAdminPermission(ctx)) {
-      return notFoundResponse;
-    }
     // allow sub Account
     if (!checkShopOwner(props.shopInfo, uid.value)) {
       return notFoundResponse;

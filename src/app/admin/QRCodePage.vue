@@ -1,126 +1,140 @@
 <template>
   <div>
-    <!-- QR Header Area -->
-    <div class="columns is-gapless">
-      <!-- Left Gap -->
-      <div class="column is-narrow w-6"></div>
-      <!-- Center Column -->
-      <div class="column">
-        <!-- Nav Bar -->
-        <div class="level">
-          <!-- Back Button and Restaurant Profile -->
-          <AdminHeader
-            class="mt-6 mx-6 lg:flex lg:items-center"
-            :shopInfo="shopInfo"
-            backLink="/admin/restaurants/"
-            :showSuspend="false"
-            :isInMo="isInMo"
-            :moPrefix="moPrefix"
-          />
-        </div>
-      </div>
-      <!-- Right Gap -->
-      <div class="column is-narrow w-6"></div>
-    </div>
-
-    <!-- QR Codes -->
-    <div class="columns is-gapless">
-      <!-- Left Gap -->
-      <div class="column is-narrow w-6"></div>
-
-      <!-- Left Column -->
-      <div class="column">
-        <div class="m-l-24 m-r-24">
-          <!-- Menu Page -->
-          <div class="t-h6 c-text-black-disabled m-t-24 p-b-8">
-            {{ $t("admin.qrcode.restaurant") }}
-          </div>
-          <div class="bg-surface rounded-lg d-low p-l-24 p-r-24 p-t-24 p-b-24">
-            <!-- QR Code -->
-            <div class="align-center" @click="download">
-              <qrcode
-                :value="urlMenu"
-                :options="{ width: 160 }"
-                ref="qrcodeRef"
-              ></qrcode>
-            </div>
-            <!-- Link -->
-            <div class="align-center">
-              <a :href="urlMenu" target="_blank">
-                <div class="op-button-text t-button">
-                  {{ shopInfo.restaurantName }}
-                </div>
-              </a>
-            </div>
-            <!-- Download -->
-            <div class="align-center" @click="download">
-              <div class="op-button-text t-button">
-                {{ $t("admin.qrcode.download") }}
-              </div>
-            </div>
+    <template v-if="notFound === null"></template>
+    <template v-else-if="notFound === true">
+      <not-found />
+    </template>
+    <div v-else-if="notFound === false">
+      <!-- QR Header Area -->
+      <div class="columns is-gapless">
+        <!-- Left Gap -->
+        <div class="column is-narrow w-6"></div>
+        <!-- Center Column -->
+        <div class="column">
+          <!-- Nav Bar -->
+          <div class="level">
+            <!-- Back Button and Restaurant Profile -->
+            <AdminHeader
+              class="mt-6 mx-6 lg:flex lg:items-center"
+              :shopInfo="shopInfo"
+              backLink="/admin/restaurants/"
+              :showSuspend="false"
+              :isInMo="isInMo"
+              :moPrefix="moPrefix"
+            />
           </div>
         </div>
+        <!-- Right Gap -->
+        <div class="column is-narrow w-6"></div>
       </div>
 
-      <!-- Right Column -->
-      <div class="column">
-        <div class="m-l-24 m-r-24">
-          <!-- Trace -->
-          <div v-if="trace && regionalSetting.covid19trace">
+      <!-- QR Codes -->
+      <div class="columns is-gapless">
+        <!-- Left Gap -->
+        <div class="column is-narrow w-6"></div>
+
+        <!-- Left Column -->
+        <div class="column">
+          <div class="m-l-24 m-r-24">
+            <!-- Menu Page -->
             <div class="t-h6 c-text-black-disabled m-t-24 p-b-8">
-              {{ $t("trace.list") }}
+              {{ $t("admin.qrcode.restaurant") }}
             </div>
             <div
               class="bg-surface rounded-lg d-low p-l-24 p-r-24 p-t-24 p-b-24"
             >
-              <!-- Enter -->
-              <div>
-                <!-- QR Code -->
-                <div class="align-center">
-                  <qrcode :value="urlEnter" :options="{ width: 160 }"></qrcode>
-                </div>
-                <!-- Link -->
-                <div class="align-center">
-                  <a :href="urlEnter">
-                    <div class="op-button-text t-button">
-                      {{ $t("admin.qrcode.enter") }}
-                    </div>
-                  </a>
-                </div>
+              <!-- QR Code -->
+              <div class="align-center" @click="download">
+                <qrcode
+                  :value="urlMenu"
+                  :options="{ width: 160 }"
+                  ref="qrcodeRef"
+                ></qrcode>
               </div>
-
-              <!-- Leave -->
-              <div class="m-t-48">
-                <!-- QR Code -->
-                <div class="align-center">
-                  <qrcode :value="urlLeave" :options="{ width: 160 }"></qrcode>
-                </div>
-                <!-- Link -->
-                <div class="align-center">
-                  <a :href="urlLeave">
-                    <div class="op-button-text t-button">
-                      {{ $t("admin.qrcode.leave") }}
-                    </div>
-                  </a>
-                </div>
-              </div>
-
-              <!-- Trace List -->
-              <div class="align-center m-t-24">
-                <router-link
-                  :to="`/admin/restaurants/${restaurantId()}/traces`"
-                >
-                  <div class="op-button-small tertiary">
-                    {{ $t("trace.viewList") }}
+              <!-- Link -->
+              <div class="align-center">
+                <a :href="urlMenu" target="_blank">
+                  <div class="op-button-text t-button">
+                    {{ shopInfo.restaurantName }}
                   </div>
-                </router-link>
+                </a>
+              </div>
+              <!-- Download -->
+              <div class="align-center" @click="download">
+                <div class="op-button-text t-button">
+                  {{ $t("admin.qrcode.download") }}
+                </div>
               </div>
             </div>
           </div>
         </div>
+
+        <!-- Right Column -->
+        <div class="column">
+          <div class="m-l-24 m-r-24">
+            <!-- Trace -->
+            <div v-if="trace && regionalSetting.covid19trace">
+              <div class="t-h6 c-text-black-disabled m-t-24 p-b-8">
+                {{ $t("trace.list") }}
+              </div>
+              <div
+                class="bg-surface rounded-lg d-low p-l-24 p-r-24 p-t-24 p-b-24"
+              >
+                <!-- Enter -->
+                <div>
+                  <!-- QR Code -->
+                  <div class="align-center">
+                    <qrcode
+                      :value="urlEnter"
+                      :options="{ width: 160 }"
+                    ></qrcode>
+                  </div>
+                  <!-- Link -->
+                  <div class="align-center">
+                    <a :href="urlEnter">
+                      <div class="op-button-text t-button">
+                        {{ $t("admin.qrcode.enter") }}
+                      </div>
+                    </a>
+                  </div>
+                </div>
+
+                <!-- Leave -->
+                <div class="m-t-48">
+                  <!-- QR Code -->
+                  <div class="align-center">
+                    <qrcode
+                      :value="urlLeave"
+                      :options="{ width: 160 }"
+                    ></qrcode>
+                  </div>
+                  <!-- Link -->
+                  <div class="align-center">
+                    <a :href="urlLeave">
+                      <div class="op-button-text t-button">
+                        {{ $t("admin.qrcode.leave") }}
+                      </div>
+                    </a>
+                  </div>
+                </div>
+
+                <!-- Trace List -->
+                <div class="align-center m-t-24">
+                  <router-link
+                    :to="`/admin/restaurants/${restaurantId()}/traces`"
+                  >
+                    <div class="op-button-small tertiary">
+                      {{ $t("trace.viewList") }}
+                    </div>
+                  </router-link>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Right Gap -->
+        <div class="column is-narrow w-6"></div>
       </div>
-      <!-- Right Gap -->
-      <div class="column is-narrow w-6"></div>
     </div>
   </div>
 </template>
@@ -131,9 +145,15 @@ import { db, firestore } from "@/plugins/firebase";
 import AdminHeader from "@/app/admin/AdminHeader.vue";
 import { shareUrlAdmin } from "@/utils/utils";
 
+import { useAdminUids, notFoundResponse } from "@/utils/utils";
+import { checkShopAccount } from "@/utils/userPermission";
+
+import NotFound from "@/components/NotFound.vue";
+
 export default defineComponent({
   components: {
     AdminHeader,
+    NotFound,
   },
   metaInfo() {
     return {
@@ -166,6 +186,12 @@ export default defineComponent({
     };
   },
   setup(props, ctx) {
+    const { ownerUid } = useAdminUids(ctx);
+    console.log(checkShopAccount(props.shopInfo, ownerUid.value));
+    if (!checkShopAccount(props.shopInfo, ownerUid.value)) {
+      return notFoundResponse;
+    }
+
     const trace = props.shopInfo.trace;
     /*
     (async () => {
