@@ -115,18 +115,17 @@
             <!-- titles for omochikaeri -->
             <Titles :titleLists="titleLists" v-if="titleLists.length > 0" />
 
-            <div v-if="showSubCategory">
-              <!-- Mo Pickup Toggle -->
-              <div class="mx-6 mt-2 lg:mx-0" v-if="shopInfo.enableMoPickup">
-                <div class="bg-white rounded-lg shadow">
-                  <MoPickUp
-                    :shopInfo="shopInfo"
-                      v-model="howtoreceive"
-                    />
+            <div v-if="false">
+              <div v-if="showSubCategory">
+                <!-- Mo Pickup Toggle -->
+                <div class="mx-6 mt-2 lg:mx-0" v-if="shopInfo.enableMoPickup">
+                  <div class="bg-white rounded-lg shadow">
+                    <MoPickUp :shopInfo="shopInfo" v-model="howtoreceive" />
+                  </div>
                 </div>
               </div>
             </div>
-            
+
             <!-- category for mo -->
             <a id="subCategoryTop" />
             <div v-if="showSubCategory">
@@ -192,8 +191,7 @@
                         :mode="mode"
                         :moSoldOut="false"
                         @didOrderdChange="didOrderdChange($event)"
-                        ></Menu>
-                      {{howtoreceive}}
+                      ></Menu>
                     </div>
                   </template>
                 </div>

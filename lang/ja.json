@@ -16,7 +16,9 @@
   "underConstruction": "注意：これはテスト用のサーバーです。",
   "comma": "、",
   "mobileOrder": {
-    "smallPayment": "50円以下はオンライン支払いできません",
+    "smallPayment1": "ご注文金額が50円以下の場合は、",
+    "smallPayment2": "「事前にカードでお支払い」をご利用できません。",
+    "smallPayment3": "「受取時に店舗でお支払い」をご利用ください。",
     "name": "ネット注文サービス",
     "shopInfo": {
       "takeout": "予約注文",

@@ -38,7 +38,7 @@ export const smaregi = {
   clientId: "17c5242c812b553976c4749e5808abb7",
 };
 
-export const appCheckKey = '';
+export const appCheckKey = "";
 
 export const gtmID = "GTM-WF3G3ZG";
 export const GAPIKey = "AIzaSyBopNQwD1RT2k9dLqH6WYPWIkMZF3RWXMQ";

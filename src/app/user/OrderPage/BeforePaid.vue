@@ -232,13 +232,28 @@
                 </b-button>
                 <div
                   v-if="mode !== 'mo' && stripeSmallPayment"
-                  class="text-sm font-bold text-red-700 mt-2 text-opacity-60"
+                  class="text-sm font-bold text-red-700 mt-2"
                 >
                   {{ $t("errorPage.code.smallPayment") }}
                 </div>
               </div>
-              <div v-if="mode === 'mo'">
+              <div v-if="mode === 'mo'" class="text-center">
                 <div
+                  v-if="stripeSmallPayment"
+                  class="text-sm font-bold text-red-700 mt-2"
+                >
+                  <div>
+                    {{ $t("mobileOrder.smallPayment1") }}
+                  </div>
+                  <div>
+                    {{ $t("mobileOrder.smallPayment2") }}
+                  </div>
+                  <div>
+                    {{ $t("mobileOrder.smallPayment3") }}
+                  </div>
+                </div>
+                <div
+                  v-else
                   class="mt-2 text-center text-xs text-black text-opacity-50"
                 >
                   {{ $t("order.placeOrderMoNote") }}
@@ -444,7 +459,7 @@ export default {
       return this.$route.params.orderId;
     },
     stripeSmallPayment() {
-      return this.orderInfo.total <= 50;
+      return this.orderInfo.total <= 50 || true;
     },
     shippingCost() {
       return costCal(

@@ -413,7 +413,7 @@ export const validUrl = (url: string) => {
   });
 };
 
-export const validLocation = (location: {lat: string, lng: string}) => {
+export const validLocation = (location: { lat: string; lng: string }) => {
   return isLatLong([location.lat || "", location.lng || ""].join(","));
 };
 export const validPlaceId = (placeId: string) => {

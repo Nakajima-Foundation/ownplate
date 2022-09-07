@@ -1,13 +1,15 @@
 import { initializeApp } from "firebase/app";
-const { initializeAppCheck, ReCaptchaV3Provider } = require("firebase/app-check");
-
+const {
+  initializeAppCheck,
+  ReCaptchaV3Provider,
+} = require("firebase/app-check");
 
 import { firebaseConfig, appCheckKey } from "@/config/project";
 const firebaseApp = initializeApp(firebaseConfig);
 
 const appCheck = initializeAppCheck(firebaseApp, {
   provider: new ReCaptchaV3Provider(appCheckKey),
-  isTokenAutoRefreshEnabled: true
+  isTokenAutoRefreshEnabled: true,
 });
 
 // for V9

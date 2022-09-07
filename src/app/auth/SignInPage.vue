@@ -125,7 +125,7 @@
 </template>
 
 <script>
-import { defineComponent, ref,  watch } from "@vue/composition-api";
+import { defineComponent, ref, watch } from "@vue/composition-api";
 import { auth } from "@/lib/firebase/firebase9";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useUser } from "@/utils/utils";
@@ -143,7 +143,7 @@ export default defineComponent({
     const errors = ref({});
 
     const user = useUser(ctx);
-    
+
     const redirectToAdminPage = () => {
       const redirect = ctx.root.$route.query["to"];
       const pathRegex = /^\/[a-zA-Z0-9-\_\/]+$/;
@@ -166,7 +166,7 @@ export default defineComponent({
       }
     });
 
-    const handleCancel = () =>{
+    const handleCancel = () => {
       ctx.root.$router.push("/");
     };
     const onSignin = () => {
