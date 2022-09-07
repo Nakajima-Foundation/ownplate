@@ -15,6 +15,13 @@
   "greeting": "Hello World2",
   "underConstruction": "WARNING: This is a staging server for development.",
   "comma": ", ",
+  "mobileOrder": {
+    "name": "Online ordering service",
+    "shopInfo": {
+      "takeout": "Online order",
+      "pickup": "Takeaway now"
+    }
+  },
   "profile": {
     "title": "My Page",
     "address": "Personal Info",

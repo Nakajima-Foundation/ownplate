@@ -328,6 +328,10 @@ export default defineComponent({
       type: String,
       required: true,
     },
+    moSoldOut: {
+      type: Boolean,
+      required: false,
+    },
   },
   emits: ["didOrderdChange"],
   setup(props, ctx) {
@@ -341,7 +345,7 @@ export default defineComponent({
     const basePath = useBasePath(ctx.root);
 
     const isSoldOut = computed(() => {
-      return !!props.item.soldOut;
+      return !!props.item.soldOut || !!props.moSoldOut;
     });
     const totalQuantity = computed(() => {
       return arraySum(props.quantities);

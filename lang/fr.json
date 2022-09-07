@@ -15,6 +15,13 @@
   "greeting": "Salut le toutle  Monde",
   "underConstruction": "ATTENTION: Ceci est un serveur de préproduction pour le dévelopement.",
   "comma": ", ",
+  "mobileOrder": {
+    "name": "Online ordering service",
+    "shopInfo": {
+      "takeout": "Online order",
+      "pickup": "Takeaway now"
+    }
+  },
   "profile": {
     "title": "Profile",
     "address": "Personal Info",

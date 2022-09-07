@@ -115,6 +115,18 @@
             <!-- titles for omochikaeri -->
             <Titles :titleLists="titleLists" v-if="titleLists.length > 0" />
 
+            <div v-if="showSubCategory">
+              <!-- Mo Pickup Toggle -->
+              <div class="mx-6 mt-2 lg:mx-0" v-if="shopInfo.enableMoPickup">
+                <div class="bg-white rounded-lg shadow">
+                  <MoPickUp
+                    :shopInfo="shopInfo"
+                      v-model="howtoreceive"
+                    />
+                </div>
+              </div>
+            </div>
+            
             <!-- category for mo -->
             <a id="subCategoryTop" />
             <div v-if="showSubCategory">
@@ -178,8 +190,10 @@
                         :isOpen="menuId === item.id"
                         :prices="prices[item.id] || []"
                         :mode="mode"
+                        :moSoldOut="false"
                         @didOrderdChange="didOrderdChange($event)"
-                      ></Menu>
+                        ></Menu>
+                      {{howtoreceive}}
                     </div>
                   </template>
                 </div>
@@ -276,6 +290,8 @@ import CategoryIcon from "@/app/user/Restaurant/CategoryIcon.vue";
 import Titles from "@/app/user/Restaurant/Titles.vue";
 import SubCategoryList from "@/app/user/Restaurant/SubCategoryList.vue";
 
+import MoPickUp from "@/app/user/Restaurant/MoPickUp.vue";
+
 import { usePickupTime } from "@/utils/pickup";
 
 import liff from "@line/liff";
@@ -341,6 +357,8 @@ export default defineComponent({
     CategoryIcon,
     Titles,
     SubCategoryList,
+
+    MoPickUp,
   },
   props: {
     shopInfo: {
