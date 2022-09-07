@@ -16,6 +16,7 @@
   "underConstruction": "注意：これはテスト用のサーバーです。",
   "comma": "、",
   "mobileOrder": {
+    "smallPayment": "50円以下はオンライン支払いできません",
     "name": "ネット注文サービス"
   },
   "profile": {
