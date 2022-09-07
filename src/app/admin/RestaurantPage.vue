@@ -316,6 +316,7 @@
           <div class="mt-4">
             <div class="text-sm font-bold pb-2">
               {{ $t("editRestaurant.coverPhoto") }}
+              <span class="text-red-700">*</span>
             </div>
             <div
               class="flex"
