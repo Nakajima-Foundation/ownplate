@@ -190,7 +190,7 @@
                         :isOpen="menuId === item.id"
                         :prices="prices[item.id] || []"
                         :mode="mode"
-                        :moSoldOut="howtoreceive === 'pickup'"
+                        :moSoldOut="false"
                         @didOrderdChange="didOrderdChange($event)"
                         ></Menu>
                       {{howtoreceive}}
