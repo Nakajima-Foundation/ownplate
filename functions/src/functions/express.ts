@@ -199,6 +199,12 @@ const ogpPage = async (req: any, res: any) => {
       "</span>",
     ].join("\n");
 
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("X-Frame-Options", "deny");
+    res.setHeader("X-Content-Type-Options", "nosniff");
+    res.setHeader("X-XSS-Protection", "1; mode=block");
+    res.setHeader("X-Permitted-Cross-Domain-Policies", "none");
+    res.setHeader("Referrer-Policy", "no-referrer");
     res.send(
       template_data
         .replace(/<meta[^>]*>/g, "")
