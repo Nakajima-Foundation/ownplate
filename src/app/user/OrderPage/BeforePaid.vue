@@ -459,7 +459,7 @@ export default {
       return this.$route.params.orderId;
     },
     stripeSmallPayment() {
-      return this.orderInfo.total <= 50 || true;
+      return this.orderInfo.total <= 50;
     },
     shippingCost() {
       return costCal(
