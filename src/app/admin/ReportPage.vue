@@ -220,7 +220,7 @@ import {
 
 import { order2ReportData } from "@/models/orderInfo";
 
-import { checkShopAccount } from "@/utils/userPermission";
+import { checkShopOwner } from "@/utils/userPermission";
 import { useCategory, useAllSubcategory } from "../user/Restaurant/Utils";
 
 export default defineComponent({
@@ -281,7 +281,7 @@ export default defineComponent({
     let detacher = null;
 
     const { ownerUid, uid } = useAdminUids(ctx);
-    if (!checkShopAccount(props.shopInfo, ownerUid.value)) {
+    if (!checkShopOwner(props.shopInfo, uid.value)) {
       return notFoundResponse;
     }
 
