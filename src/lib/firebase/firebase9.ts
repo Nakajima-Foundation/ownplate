@@ -1,11 +1,17 @@
 import { initializeApp } from "firebase/app";
-const {
+import {
   initializeAppCheck,
   ReCaptchaV3Provider,
-} = require("firebase/app-check");
+} from "firebase/app-check";
 
 import { firebaseConfig, appCheckKey } from "@/config/project";
+
+
 const firebaseApp = initializeApp(firebaseConfig);
+
+if (location.hostname === 'localhost') {
+  self.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
+}
 
 const appCheck = initializeAppCheck(firebaseApp, {
   provider: new ReCaptchaV3Provider(appCheckKey),
