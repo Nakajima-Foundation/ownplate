@@ -248,6 +248,8 @@ export default defineComponent({
       download,
 
       qrcodeRef,
+
+      notFound: false,
     };
   },
 });
