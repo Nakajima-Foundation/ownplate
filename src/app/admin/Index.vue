@@ -466,7 +466,7 @@ export default defineComponent({
           restaurantLists.value.push(newDoc.id);
           saveRestaurantLists();
 
-          setDoc(newDoc, {
+          await setDoc(newDoc, {
             uid: uid.value,
             restaurantId: newDoc.id,
             menuLists: [],
