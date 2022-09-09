@@ -1,1 +1,1 @@
-export const allowInvalidAppCheckToken = true;
+export const allowInvalidAppCheckToken = false;
