@@ -8,10 +8,10 @@
       <div @click="toggleMenuFlag()" class="flow-root cursor-pointer">
         <div class="p-4 float-right">
           <!-- Image -->
-          <div v-if="image" class="pb-2">
+          <div v-if="smallimage" class="pb-2">
             <img
               @click.stop="openImage()"
-              :src="image"
+              :src="smallimage"
               width="96"
               height="96"
               class="w-24 h-24 rounded object-cover"
@@ -392,6 +392,13 @@ export default defineComponent({
         props.item.itemPhoto
       );
     });
+    const smallimage = computed(() => {
+      return (
+        (props.item?.images?.item?.resizedImages || {})["100"] ||
+        (props.item?.images?.item?.resizedImages || {})["600"] ||
+        props.item.itemPhoto
+      );
+    });
     const title = computed(() => {
       return props.item.itemName;
     });
@@ -509,6 +516,7 @@ export default defineComponent({
       hasOptions,
       showMoreOption,
       image,
+      smallimage,
       title,
       description,
       descriptionOneLine,
