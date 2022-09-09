@@ -2,6 +2,7 @@ import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 
 import { update } from "../../functions/order/orderUpdate";
+import { allowInvalidAppCheckToken } from "../firebase";
 
 const db = admin.firestore();
 
@@ -9,7 +10,7 @@ export default functions
   .region("asia-northeast1")
   .runWith({
     memory: "1GB" as "1GB",
-    allowInvalidAppCheckToken: true,
+    allowInvalidAppCheckToken,
   })
   .https.onCall(async (data, context) => {
     if (context.app == undefined) {
