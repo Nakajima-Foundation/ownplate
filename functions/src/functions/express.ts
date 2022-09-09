@@ -122,6 +122,12 @@ const ogpPage = async (req: any, res: any) => {
   const template_data = fs.readFileSync("./templates/index.html", {
     encoding: "utf8",
   });
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("X-Frame-Options", "deny");
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  res.setHeader("X-XSS-Protection", "1; mode=block");
+  res.setHeader("X-Permitted-Cross-Domain-Policies", "none");
+  res.setHeader("Referrer-Policy", "no-referrer");
   try {
     if (!isId(restaurantName)) {
       return res.status(404).send(template_data);
@@ -187,10 +193,10 @@ const ogpPage = async (req: any, res: any) => {
     }
     res.set("Cache-Control", "public, max-age=300, s-maxage=600");
 
-    const regexBody = /<div id="__nuxt">/;
+    const regexBody = /<div id="app">/;
 
     const bodyString = [
-      '<div id="__nuxt">',
+      '<div id="app">',
       '<h1 style="font-size: 50px;">',
       escapeHtml(title),
       "</h1>",
@@ -199,12 +205,6 @@ const ogpPage = async (req: any, res: any) => {
       "</span>",
     ].join("\n");
 
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("X-Frame-Options", "deny");
-    res.setHeader("X-Content-Type-Options", "nosniff");
-    res.setHeader("X-XSS-Protection", "1; mode=block");
-    res.setHeader("X-Permitted-Cross-Domain-Policies", "none");
-    res.setHeader("Referrer-Policy", "no-referrer");
     res.send(
       template_data
         .replace(/<meta[^>]*>/g, "")
@@ -223,6 +223,12 @@ const ownerPage = async (req: any, res: any) => {
   const template_data = fs.readFileSync("./templates/index.html", {
     encoding: "utf8",
   });
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("X-Frame-Options", "deny");
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  res.setHeader("X-XSS-Protection", "1; mode=block");
+  res.setHeader("X-Permitted-Cross-Domain-Policies", "none");
+  res.setHeader("Referrer-Policy", "no-referrer");
   try {
     if (!isId(ownerId)) {
       return res.status(404).send(template_data);
@@ -258,10 +264,10 @@ const ownerPage = async (req: any, res: any) => {
     ];
     res.set("Cache-Control", "public, max-age=300, s-maxage=600");
 
-    const regexBody = /<div id="__nuxt">/;
+    const regexBody = /<div id="app">/;
 
     const bodyString = [
-      '<div id="__nuxt">',
+      '<div id="app">',
       '<h1 style="font-size: 50px;">',
       escapeHtml(title),
       "</h1>",
@@ -282,14 +288,6 @@ const ownerPage = async (req: any, res: any) => {
     res.send(template_data);
   }
 };
-// eslint-disable-next-line
-const debugError = async (req: any, res: any) => {
-  // eslint-disable-line
-  setTimeout(() => {
-    throw new Error("sample error");
-  }, 10);
-};
-
 const getShopOwner = async (uid) => {
   const owner = await db.doc(`/admins/${uid}`).get();
   if (owner && owner.exists) {
@@ -353,5 +351,3 @@ app.get("/r/:restaurantName/order/:orderId", ogpPage);
 app.get("/o/:ownerId", ownerPage);
 
 app.get("/sitemap.xml", sitemap_response);
-
-app.get("/debug/error", debugError);
