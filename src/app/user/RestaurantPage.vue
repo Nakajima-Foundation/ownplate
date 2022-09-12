@@ -207,23 +207,27 @@
           <phone-login v-on:dismissed="handleDismissed" />
         </div>
       </b-modal>
-      <Cart
-        v-if="isShowCart"
-        @closeCart="closeCart"
-        :orders="orders"
-        :selectedOptions="selectedOptions"
-        :menuObj="menuObj"
-        :prices="prices"
-        :shopInfo="shopInfo"
-        @didOrderdChange="didOrderdChange"
-      />
 
+      <b-modal :active.sync="isShowCart" width="100%" scroll="keep">
+        <Cart
+          v-if="isShowCart"
+          @closeCart="closeCart"
+          :orders="orders"
+          :selectedOptions="selectedOptions"
+          :menuObj="menuObj"
+          :prices="prices"
+          :shopInfo="shopInfo"
+          @didOrderdChange="didOrderdChange"
+        />
+      </b-modal>
       <!-- for disable all UI -->
       <div v-if="isCheckingOut" class="fixed top-0 left-0 w-full h-full"></div>
       <!-- Cart Button -->
       <CartButton
         ref="cartButton"
         @handleCheckOut="handleCheckOut"
+        @updateShowCart="updateShowCart"
+        :isShowCart="isShowCart"
         :shopInfo="shopInfo"
         :orders="orders"
         :paymentInfo="paymentInfo"
@@ -751,11 +755,18 @@ export default defineComponent({
     } = useToggle(false);
 
     const cartButton = ref();
+    /*
     const isShowCart = computed(() => {
       return cartButton.value?.isShowCart;
     });
+    */
+    const isShowCart = ref(false);
+    const updateShowCart = (value) => {
+      isShowCart.value = value;
+    };
     const closeCart = () => {
-      cartButton.value?.closeCart();
+      isShowCart.value = false;
+      // cartButton.value?.closeCart();
     };
 
     const isShowCategoryIcon = computed(() => {
@@ -855,6 +866,7 @@ export default defineComponent({
       ...imageUtils(),
 
       isShowCart,
+      updateShowCart,
       cartButton,
       closeCart,
       menuObj,

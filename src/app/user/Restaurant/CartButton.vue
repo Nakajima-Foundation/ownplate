@@ -173,12 +173,16 @@ export default defineComponent({
       type: Object,
       required: true,
     },
+    isShowCart: {
+      type: Boolean,
+      required: true,
+    },
   },
-  emits: ["handleCheckOut", "showCart"],
+  emits: ["handleCheckOut", "updateShowCart"],
 
   setup(props, ctx) {
     const isInMo = useIsInMo(ctx.root);
-    const isShowCart = ref(false);
+    // const isShowCart = ref(false);
 
     const totalQuantities = computed(() => {
       const ret = Object.values(props.orders).reduce((total, order) => {
@@ -228,17 +232,19 @@ export default defineComponent({
     });
 
     const handleCheckOut = () => {
-      if (isInMo.value && !isShowCart.value) {
-        isShowCart.value = true;
+      if (isInMo.value && !props.isShowCart) {
+        // isShowCart.value = true;
+        ctx.emit("updateShowCart", true);
       } else {
         ctx.emit("handleCheckOut");
       }
     };
     const closeCart = () => {
-      isShowCart.value = false;
+      ctx.emit("updateShowCart", false);
+      // isShowCart.value = false;
     };
     const buttonText = computed(() => {
-      if (isInMo.value && !isShowCart.value) {
+      if (isInMo.value && !props.isShowCart) {
         return "sitemenu.confirmCart";
       } else {
         return "sitemenu.checkout";
@@ -261,7 +267,6 @@ export default defineComponent({
       diffDeliveryThreshold,
       diffDeliveryFreeThreshold,
 
-      isShowCart,
       closeCart,
 
       buttonText,

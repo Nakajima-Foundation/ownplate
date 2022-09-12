@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full fixed h-screen top-0 bg-black bg-opacity-50">
+  <div class="w-full fixed h-screen top-0">
     <div class="w-full h-1/3" @click="closeCart"></div>
     <div class="w-full h-2/3 bg-white fixed z-10 overflow-x-scroll pb-32">
       <div class="flex justify-center mt-6 mb-4 font-bold text-black">
