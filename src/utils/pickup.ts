@@ -14,7 +14,7 @@ export const usePickupTime = (
   // public
   const temporaryClosure = computed(() => {
     return (shopInfo.temporaryClosure || []).map((day) => {
-      return moment(day.seconds ? day.toDate(): day).format("YYYY-MM-DD");
+      return moment(day.seconds ? day.toDate() : day).format("YYYY-MM-DD");
     });
   });
   const businessDays = computed(() => {

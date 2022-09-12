@@ -1,29 +1,27 @@
 <template></template>
 
-<script>
-import { db, firestore } from "@/plugins/firebase";
+<script lang="ts">
+import { defineComponent, watch } from "@vue/composition-api";
+
 import { soundFiles } from "@/config/constant";
 import { getSoundIndex } from "@/utils/utils";
 
-export default {
+export default defineComponent({
   props: {
     notificationConfig: Object,
   },
-  data() {
-    return {
-      soundIndex: undefined,
+  setup(props, ctx) {
+    const update = (newData) => {
+      const soundIndex = getSoundIndex(newData.nameKey);
+      ctx.root.$store.commit("setSoundOn", newData.soundOn);
+      ctx.root.$store.commit("setSoundFile", soundFiles[soundIndex].file);
     };
+    watch(props.notificationConfig, (newData) => {
+      update(newData);
+    });
+    if (props.notificationConfig) {
+      update(props.notificationConfig);
+    }
   },
-  watch: {
-    async "notificationConfig.soundOn"(newData) {
-      this.$store.commit("setSoundOn", newData);
-    },
-    async "notificationConfig.nameKey"(newData) {
-      this.soundIndex = getSoundIndex(newData);
-    },
-    async soundIndex(newData) {
-      this.$store.commit("setSoundFile", soundFiles[newData].file);
-    },
-  },
-};
+});
 </script>
