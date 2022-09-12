@@ -282,6 +282,30 @@ export default {
       required: false,
     },
   },
+  created() {
+    if (this.mode == "mo") {
+      const menus = Object.keys(this.orderInfo.menuItems).map((menuId) => {
+        return {
+          ...this.orderInfo.menuItems[menuId],
+          id: menuId,
+        };
+      });
+
+      const data = analyticsUtil.getDataForLayer(
+        this.orderInfo,
+        this.orderId,
+        menus,
+        this.shopInfo,
+        this.restaurantId()
+      );
+      console.log(data);
+      dataLayer.push({ ecommerce: null }); // Clear the previous ecommerce object.
+      dataLayer.push({
+        event: "purchase",
+        ecommerce: data,
+      });
+    }
+  },
   computed: {
     hasStripe() {
       return this.orderInfo.payment && this.orderInfo.payment.stripe;
@@ -340,7 +364,6 @@ export default {
         this.restaurantId()
       );
     },
-
     handleOpenMenu() {
       this.$emit("handleOpenMenu");
     },

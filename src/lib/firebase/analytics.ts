@@ -246,6 +246,44 @@ export const sendViewCart = (
   }
 };
 
+export const sku_item_data_for_datalayer = (
+  menu: AnalyticsMenuData,
+  shopInfo: RestaurantInfoData,
+  restaurantId: string,
+  quantity: number
+) => {
+  return {
+    item_name: menu.itemName,
+    item_id: "SKU_" + menu.id,
+    price: menu.price,
+    item_brand: shopInfo.restaurantName,
+    item_category: [menu.category1, menu.category2].join("/"),
+    quantity,
+  };
+};
+
+export const getDataForLayer = (
+  orderInfo: OrderInfoData,
+  orderId: string,
+  menus: AnalyticsMenuData[],
+  shopInfo: RestaurantInfoData,
+  restaurantId: string
+) => {
+  const analyticsData = {
+    transaction_id: orderId,
+    affiliation: shopInfo.restaurantName,
+    value: orderInfo.total,
+    tax: orderInfo.tax,
+    currency: "JPY",
+
+    items: menus.map((menu) => {
+      const q = orderInfo.order[menu.id].reduce((t, c) => t + c, 0);
+      return sku_item_data_for_datalayer(menu, shopInfo, restaurantId, q);
+    }),
+  };
+  return analyticsData;
+};
+
 /*
 VIEW_CART
 ADD_PAYMENT_INFO // input card
