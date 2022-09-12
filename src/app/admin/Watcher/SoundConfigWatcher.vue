@@ -8,10 +8,13 @@ import { getSoundIndex } from "@/utils/utils";
 
 export default defineComponent({
   props: {
-    notificationConfig: Object,
+    notificationConfig: {
+      type: Object,
+      required: true,
+    },
   },
   setup(props, ctx) {
-    const update = (newData) => {
+    const update = (newData: any) => {
       const soundIndex = getSoundIndex(newData.nameKey);
       ctx.root.$store.commit("setSoundOn", newData.soundOn);
       ctx.root.$store.commit("setSoundFile", soundFiles[soundIndex].file);
