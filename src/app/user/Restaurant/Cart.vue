@@ -21,7 +21,7 @@
           </div>
         </template>
       </div>
-      <div class="w-full h-32 bottom-0 bg-white fixed z-20"></div>
+      <div class="w-full h-28 sm:h-32 bottom-0 bg-white fixed z-20"></div>
     </div>
   </div>
 </template>

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="fixed z-10 left-4 bottom-28 pb-1.5 inline-flex flex-col items-center justify-center h-20 w-20 cursor-pointer rounded-full bg-teal-50 border-2 border-op-teal shadow-lg"
+    class="fixed z-10 left-4 bottom-24 sm:bottom-28 pb-1.5 inline-flex flex-col items-center justify-center h-20 w-20 cursor-pointer rounded-full bg-teal-50 border-2 border-op-teal shadow-lg"
     @click="openGroupCategory"
   >
     <i class="material-icons text-2xl text-op-teal mb-0.5">tune</i>
