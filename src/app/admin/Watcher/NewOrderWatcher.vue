@@ -1,80 +1,61 @@
 <template></template>
 
 <script>
+import {
+  defineComponent,
+  watch,
+  computed,
+  ref,
+  onUnmounted,
+} from "@vue/composition-api";
+
 import { db, firestore } from "@/plugins/firebase";
 import { midNight } from "@/utils/dateUtils";
 import { order_status } from "@/config/constant";
 
 import { doc2data } from "@/utils/utils";
 
-export default {
+export default defineComponent({
   props: {
     notificationConfig: Object,
   },
-  data() {
+  setup(props, ctx) {
     // intervalTime was 60
+    const restaurantId = ctx.root.restaurantId();
     const intervalTime = [
       "OQBBSOa3CgEv35smSDVK", // debug
       "GiZEOBRwDGmdpuqKKlyq",
       "KNfeQdS7DM07ObWlZTsn",
-    ].includes(this.restaurantId())
+    ].includes(restaurantId)
       ? 4
       : 60;
-    // console.log(intervalTime);
 
-    return {
-      order_detacher: () => {},
-      orders: [],
-      intervalTask: {},
-      intervalTime, // (seconds)
-    };
-  },
-  async created() {
-    this.dateWasUpdated();
-    this.intervalTask = setInterval(() => {
-      console.log(
-        "newOrderWatcher: conf=" +
-          this.notificationConfig.infinityNotification +
-          " order=" +
-          this.hasNewOrder
-      );
-      if (this.notificationConfig.infinityNotification && this.hasNewOrder) {
-        this.soundPlay("NewOrderWatcher: play");
-      }
-    }, 1000 * this.intervalTime);
-  },
-  destroyed() {
-    this.order_detacher();
-    clearInterval(this.intervalTask);
-  },
-  computed: {
-    today() {
+    const orders = ref([]);
+
+    const today = computed(() => {
       return midNight(0);
-    },
-    tommorow() {
+    });
+    const tommorow = computed(() => {
       return midNight(1);
-    },
-    hasNewOrder() {
-      return this.orders.length > 0;
-    },
-  },
-  watch: {
-    today() {
-      this.dateWasUpdated();
-    },
-  },
-  methods: {
-    dateWasUpdated() {
-      this.order_detacher();
-      this.order_detacher = db
-        .collection(`restaurants/${this.restaurantId()}/orders`)
-        .where("timePlaced", ">=", this.today)
+    });
+    const hasNewOrder = computed(() => {
+      return orders.value.length > 0;
+    });
+
+    let order_detacher = null;
+    const dateWasUpdated = () => {
+      if (order_detacher) {
+        order_detacher();
+      }
+      order_detacher = db
+        .collection(`restaurants/${restaurantId}/orders`)
+        .where("timePlaced", ">=", today.value)
         // .where("timePlaced", "<", this.tommorow)
         .where("status", "==", order_status.order_placed)
         .onSnapshot(
           (result) => {
-            this.orders = result.docs.map(doc2data("order"));
-            this.$store.commit("setOrders", this.orders);
+            orders.value = result.docs.map(doc2data("order"));
+            ctx.root.$store.commit("setOrders", orders.value);
           },
           (error) => {
             if (error.code === "permission-denied") {
@@ -85,7 +66,33 @@ export default {
             }
           }
         );
-    },
+    };
+
+    dateWasUpdated();
+
+    const itSound = () => {
+      console.log(
+        "newOrderWatcher: conf=" +
+          props.notificationConfig.infinityNotification +
+          " order=" +
+          hasNewOrder.value
+      );
+      if (props.notificationConfig.infinityNotification && hasNewOrder.value) {
+        ctx.root.soundPlay("NewOrderWatcher: play");
+      }
+    };
+    const intervalTask = setInterval(() => {
+      itSound();
+      // }, 1000 * 3); // debug
+    }, 1000 * intervalTime);
+
+    onUnmounted(() => {
+      order_detacher();
+      clearInterval(intervalTask);
+    });
+    watch(today, () => {
+      dateWasUpdated();
+    });
   },
-};
+});
 </script>

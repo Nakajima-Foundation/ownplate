@@ -46,7 +46,7 @@ export default defineComponent({
     watch(event, async () => {
       await play();
       console.log(
-        `soundEnable = ${ctx.root.store.state.soundEnable}, soundOn=${ctx.root.store.state.soundOn}, soundFile=${ctx.root.store.state.soundFile}`
+        `soundEnable = ${ctx.root.$store.state.soundEnable}, soundOn=${ctx.root.$store.state.soundOn}, soundFile=${ctx.root.$store.state.soundFile}`
       );
     });
     return {
