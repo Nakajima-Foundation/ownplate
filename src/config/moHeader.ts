@@ -55,7 +55,8 @@ const link = [
 //  const gtmBodyTag = `<iframe src="https://www.googletagmanager.com/ns.html?id=${moGtmID}" height="0" width="0" style="display:none;visibility:hidden"></iframe>`;
 
 const gtmBodyTag = [
-  `<script async src="https://www.googletagmanager.com/gtag/js?id=${moGtmID}"></script>`,
+  /*
+    `<script async src="https://www.googletagmanager.com/gtag/js?id=${moGtmID}"></script>`,
   "<script>",
   "  window.dataLayer = window.dataLayer || [];",
   "  function gtag(){dataLayer.push(arguments);}",
@@ -63,6 +64,7 @@ const gtmBodyTag = [
   "  gtag_mo('js', new Date());",
   `  gtag_mo('config', '${moGtmID}');`,
   "</script>",
+  */
 ].join("\n");
 
 const script = [
