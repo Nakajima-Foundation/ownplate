@@ -987,6 +987,9 @@ export default defineComponent({
         if (!props.shopInfo.enableDelivery) {
           return 0;
         }
+        if (!orderInfo.value.isDelivery) {
+          return 0;
+        }
         if (
           deliveryData.value.enableDeliveryFree &&
           (ret.total || 0) >= deliveryData.value.deliveryFreeThreshold

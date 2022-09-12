@@ -179,10 +179,12 @@
             <div class="text-xl font-bold text-green-600">
               {{
                 $n(
-                  orderInfo.total +
-                    Number(tip) +
-                    Number(actualShippingCost) +
-                    Number(orderInfo.deliveryFee || 0),
+                  editable
+                    ? orderInfo.total +
+                        Number(tip) +
+                        Number(actualShippingCost) +
+                        Number(orderInfo.deliveryFee || 0)
+                    : orderInfo.total,
                   "currency"
                 )
               }}
