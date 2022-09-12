@@ -31,7 +31,7 @@
         v-if="showSuspend"
       >
         <div
-          v-if="shopInfo.suspendUntil"
+          v-if="suspendUntil"
           class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-red-700 bg-opacity-5"
         >
           <i class="material-icons text-lg text-red-700 mr-2"
@@ -96,6 +96,21 @@ export default defineComponent({
       type: String,
       required: false,
     },
+  },
+  setup(props, ctx) {
+    const suspendUntil = computed(() => {
+      if (props.shopInfo.suspendUntil) {
+        const time = props.shopInfo.suspendUntil.toDate();
+        if (time < new Date()) {
+          return false;
+        }
+        return true;
+      }
+      return false;
+    });
+    return {
+      suspendUntil,
+    };
   },
 });
 </script>
