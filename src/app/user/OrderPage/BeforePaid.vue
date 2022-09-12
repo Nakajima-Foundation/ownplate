@@ -641,7 +641,7 @@ export default {
         if (this.isLiffUser) {
           await this.saveLiffCustomer();
         }
-        console.log("place", data);
+        // console.log("place", data);
         this.sendPurchase();
         this.$store.commit("resetCart", this.restaurantId());
         window.scrollTo(0, 0);
