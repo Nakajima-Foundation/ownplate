@@ -44,14 +44,14 @@ export const sendMessageToCustomer = async (
     const message = `${t(msgKey, params)} ${restaurantName} ${orderNumber} ${_url}`;
     return message;
   };
-  const getMoMessage = (_url: string) => {
-    const newParam = {
+  const getMoMessage = () => {
+    const newParams = {
       ...params,
       restaurantName,
       orderNumber,
-      price: 100,
+      price: orderData.total,
     };
-    const message = `${t(msgKey, params)}`;
+    const message = `${t(msgKey, newParams)}`;
     return message;
   };
   const url = `https://${ownPlateConfig.hostName}/r/${restaurantId}/order/${orderId}?openExternalBrowser=1`;
@@ -63,7 +63,7 @@ export const sendMessageToCustomer = async (
   // for JP Mobile Order
   if (orderData.groupId && !/11111111$/.test(orderData.phoneNumber)) {
     const { groupId } = orderData;
-    const groupUrl = `https://${ownPlateConfig.hostName}/${groupId}/r/${restaurantId}/order/${orderId}?openExternalBrowser=1`;
+    // const groupUrl = `https://${ownPlateConfig.hostName}/${groupId}/r/${restaurantId}/order/${orderId}?openExternalBrowser=1`;
 
     const yearstr = moment().format("YYYY");
     const monthstr = moment().format("YYYY-MM");
@@ -83,7 +83,7 @@ export const sendMessageToCustomer = async (
       console.log(e);
     }
 
-    return await sms.pushSMS(aws_key, aws_secret, "Mobile Order", getMoMessage(groupUrl), orderData.phoneNumber);
+    return await sms.pushSMS(aws_key, aws_secret, "Mobile Order", getMoMessage(), orderData.phoneNumber);
   }
   // for JP
   const { lineId, liffIndexId, liffId } = (await line.getLineId(db, orderData.uid)) as any;
