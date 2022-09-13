@@ -84,7 +84,13 @@ export default defineComponent({
           console.log(error);
         }
       );
-      restaurantsObj.value = restaurant2AreaObj(restaurantsCollection.docs);
+      const tmp = restaurant2AreaObj(restaurantsCollection.docs);
+      restaurantsObj.value = Object.keys(tmp).reduce((ret, key) => {
+        ret[key] = tmp[key].sort((a, b) => {
+          return (Number(a.zip.replace(/\-/g, "")) || 0) > (Number(b.zip.replace(/\-/g, "")) || 0) ? -1 : 1;
+        });
+        return ret;
+      }, {});
       restaurants.value = restaurantsCollection.docs.map(doc2data(""));
       sortRestaurantObj(restaurantsObj.value);
     })();
