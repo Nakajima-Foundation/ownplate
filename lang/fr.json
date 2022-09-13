@@ -970,7 +970,11 @@
     },
     "notFound": {
       "message1": "La page que vous recherchez est introuvable.",
-      "message2": "Essayez de contacter le restaurant d'une autre manière."
+      "message2": "Essayez de contacter le restaurant d'une autre manière.",
+      "moMessageTop": "ただいまサービス休止中です。",
+      "moMessage1": "一時的にサービスを休止しております。",
+      "moMessage2": "ご迷惑をお掛けし誠に申し訳ございません。",
+      "moMessage3": "サービス再開までしばらくお待ちください。"
     },
     "requireLogin": {
       "message1": "Vous devez être connecté pour voir votre commande"

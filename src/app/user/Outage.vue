@@ -1,5 +1,21 @@
 <template>
   <div>
-    休止
+    <div
+      class="sm:text-xl font-bold text-center text-black text-opacity-50 my-14 mx-auto"
+    >
+      {{ $t("errorPage.notFound.moMessageTop") }}
+    </div>
+    <div class="w-40 h-40 bg-black bg-opacity-5 rounded-full mx-auto">
+      <div>
+        <!--ToDo mo-icon-outage.svgがここに入ります-->
+      </div>
+    </div>
+    <div
+      class="font-bold text-center text-black text-opacity-50 mt-8 mx-auto space-y-1"
+    >
+      <div>{{ $t("errorPage.notFound.moMessage1") }}</div>
+      <div>{{ $t("errorPage.notFound.moMessage2") }}</div>
+      <div>{{ $t("errorPage.notFound.moMessage3") }}</div>
+    </div>
   </div>
 </template>

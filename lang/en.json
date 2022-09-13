@@ -981,7 +981,11 @@
     },
     "notFound": {
       "message1": "The page you're looking for can't be found.",
-      "message2": "Try contacting the restaurant in other way."
+      "message2": "Try contacting the restaurant in other way.",
+      "moMessageTop": "ただいまサービス休止中です。",
+      "moMessage1": "一時的にサービスを休止しております。",
+      "moMessage2": "ご迷惑をお掛けし誠に申し訳ございません。",
+      "moMessage3": "サービス再開までしばらくお待ちください。"
     },
     "requireLogin": {
       "message1": "You must be signed in to see your order"
