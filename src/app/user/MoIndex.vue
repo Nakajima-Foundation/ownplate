@@ -1,8 +1,6 @@
 <template>
   <div>
-    <div
-      class="w-full h-72 sm:max-w-7xl sm:h-52 bg-black bg-opacity-5 mt-6 sm:mx-auto"
-    >
+    <div class="flex justify-center sm:max-w-7xl mt-6 mx-0 sm:mx-6 xl:mx-auto">
       <img
         :src="moBaseUrl + '/images/assets/mo_hero_mobile.png'"
         class="sm:hidden"
@@ -14,7 +12,9 @@
       <!--ToDo mo-hero-mobileとmo-hero-tablet(breakpoint:smで切り替わる)がここに入ります-->
     </div>
 
-    <div class="sm:text-xl font-bold text-center text-black mt-6 mx-6">
+    <div
+      class="sm:max-w-7xl sm:text-xl font-bold text-center text-black mt-6 mx-10 xl:mx-auto"
+    >
       {{ $t("lp.moTagline") }}
     </div>
 
@@ -22,7 +22,7 @@
       class="flex justify-center sm:max-w-7xl mt-6 mb-10 mx-6 xl:mx-auto space-x-4"
     >
       <div class="w-full bg-white rounded-lg shadow-none px-4 pb-4 text-center">
-        <div class="w-32 h-20 bg-black bg-opacity-5 mx-auto mb-3">
+        <div class="w-32 h-20 mx-auto mb-4">
           <img :src="moBaseUrl + '/images/assets/mo_icon_shipping.png'" />
         </div>
         <div class="text-sm sm:text-base text-black">
@@ -30,7 +30,7 @@
         </div>
       </div>
       <div class="w-full bg-white rounded-lg shadow-none px-4 pb-4 text-center">
-        <div class="w-32 h-20 bg-black bg-opacity-5 mx-auto mb-3">
+        <div class="w-32 h-20 mx-auto mb-4">
           <img :src="moBaseUrl + '/images/assets/mo_icon_store.png'" />
         </div>
         <div class="text-sm sm:text-base text-black">
