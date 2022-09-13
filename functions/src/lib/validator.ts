@@ -80,13 +80,11 @@ const validateNumberString = (text: string) => {
   console.log("not implemented yet");
   return typeof text === "string";
 };
-const validateInteger = (text: string) => {
-  console.log("not implemented yet");
-  return typeof text === "number";
+const validateInteger = (text: number) => {
+  return typeof text === "number" && Number.isInteger(text);
 };
 const validateIntegerString = (text: string) => {
-  console.log("not implemented yet");
-  return typeof text === "string";
+  return typeof text === "string" &&  /^[0-9]+$/.test(text);
 };
 
 const validateString = (text: string) => {
@@ -97,7 +95,7 @@ const validateAlphabet = (text: string) => {
   return /^[a-zA-Z]+$/.test(text);
 };
 const validateTimestamp = (timestamp: admin.firestore.Timestamp) => {
-  return timestamp.seconds && timestamp.nanoseconds;
+  return validateInteger(timestamp.seconds) && validateInteger(timestamp.nanoseconds);
 };
 
 const validateArray = {
