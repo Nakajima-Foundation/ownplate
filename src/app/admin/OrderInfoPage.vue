@@ -780,7 +780,7 @@ export default defineComponent({
       });
     });
 
-    const orderInterval = computed(() => {
+    const orderPickupInterval = computed(() => {
       if (orderInfo.value.timePlaced && userLog.value.lastOrder) {
         const intervalHour =
           (orderInfo.value.timePlaced - userLog.value.lastOrder) / 3600;
@@ -789,10 +789,10 @@ export default defineComponent({
       return -1000000;
     });
     const isWarningOrder = computed(() => {
-      if (orderInterval.value === 0) {
+      if (orderPickupInterval.value === 0) {
         return true;
       }
-      if (orderInterval.value < 4 && orderInterval.value > -4) {
+      if (orderPickupInterval.value < 4 && orderPickupInterval.value > -4) {
         return true;
       }
       return false;

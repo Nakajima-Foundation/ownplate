@@ -71,6 +71,7 @@ export const updateOrderTotalDataAndUserLog = async (db, transaction, customerUi
       // lastOrder: timePlaced,
       restaurantId,
       ownerUid,
+      updateAt: admin.firestore.Timestamp.now(),
     };
     await transaction.set(userLogRef, data);
   } else {
@@ -81,6 +82,8 @@ export const updateOrderTotalDataAndUserLog = async (db, transaction, customerUi
       cancelCounter,
       currentOrder: timePlaced,
       lastOrder: userLog.currentOrder || timePlaced,
+      updateAt: admin.firestore.Timestamp.now(),
+      lastUpdatedAt: userLog.updateAt || new admin.firestore.Timestamp(1577804400, 0),
     };
     await transaction.update(userLogRef, updateData);
   }

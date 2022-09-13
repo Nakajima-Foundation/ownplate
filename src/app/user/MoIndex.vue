@@ -9,7 +9,6 @@
         :src="moBaseUrl + '/images/assets/mo_hero_tablet.png'"
         class="hidden sm:block"
       />
-      <!--ToDo mo-hero-mobileとmo-hero-tablet(breakpoint:smで切り替わる)がここに入ります-->
     </div>
 
     <div
