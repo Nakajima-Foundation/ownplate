@@ -1,17 +1,20 @@
 <template>
   <div>
     <div
-      class="sm:text-xl font-bold text-center text-black text-opacity-50 my-14 mx-auto"
+      class="text-xl font-bold text-center text-black text-opacity-50 my-14 mx-6 sm:mx-auto"
     >
       {{ $t("errorPage.notFound.moMessageTop") }}
     </div>
     <div class="w-40 h-40 bg-black bg-opacity-5 rounded-full mx-auto">
       <div>
-        <img :src="moBaseUrl + '/images/outage/mo_icon_outage.svg'" />
+        <img
+          :src="moBaseUrl + '/images/outage/mo_icon_outage.svg'"
+          class="opacity-50"
+        />
       </div>
     </div>
     <div
-      class="font-bold text-center text-black text-opacity-50 mt-8 mx-auto space-y-1"
+      class="font-bold text-center text-black text-opacity-50 mt-8 mx-6 sm:mx-auto space-y-1"
     >
       <div>{{ $t("errorPage.notFound.moMessage1") }}</div>
       <div>{{ $t("errorPage.notFound.moMessage2") }}</div>
