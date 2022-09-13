@@ -1,5 +1,39 @@
 <template>
   <div>
+    <div
+      class="w-full h-72 sm:max-w-7xl sm:h-52 bg-black bg-opacity-5 mt-6 sm:mx-auto"
+    >
+      <!--ToDo mo-hero-mobileとmo-hero-tablet(breakpoint:smで切り替わる)がここに入ります-->
+    </div>
+
+    <div class="sm:text-xl font-bold text-center text-black mt-6 mx-6">
+      {{ $t("lp.moTagline") }}
+    </div>
+
+    <div
+      class="flex justify-center sm:max-w-7xl mt-6 mb-10 mx-6 xl:mx-auto space-x-4"
+    >
+      <div class="w-full bg-white rounded-lg shadow-none px-4 pb-4 text-center">
+        <div class="w-32 h-20 bg-black bg-opacity-5 mx-auto mb-3">
+          <!--ToDo mo-icon-shippingがここに入ります-->
+        </div>
+        <div class="text-sm sm:text-base text-black">
+          {{ $t("lp.moDescription1") }}
+        </div>
+      </div>
+      <div class="w-full bg-white rounded-lg shadow-none px-4 pb-4 text-center">
+        <div class="w-32 h-20 bg-black bg-opacity-5 mx-auto mb-3">
+          <!--ToDo mo-icon-storeがここに入ります-->
+        </div>
+        <div class="text-sm sm:text-base text-black">
+          {{ $t("lp.moDescription2") }}
+        </div>
+      </div>
+    </div>
+
+    <div class="text-xl font-bold text-black text-opacity-40 mt-6 mx-6">
+      {{ $t("find.shopList") }}
+    </div>
     <!-- Restaurants -->
     <template v-for="state in allArea">
       <div v-if="restaurantsObj[state]">
@@ -87,7 +121,10 @@ export default defineComponent({
       const tmp = restaurant2AreaObj(restaurantsCollection.docs);
       restaurantsObj.value = Object.keys(tmp).reduce((ret, key) => {
         const sorted = tmp[key].sort((a, b) => {
-          return (Number(a.zip.replace(/\-/g, "")) || 0) > (Number(b.zip.replace(/\-/g, "")) || 0 ) ? 1 : -1;
+          return (Number(a.zip.replace(/\-/g, "")) || 0) >
+            (Number(b.zip.replace(/\-/g, "")) || 0)
+            ? 1
+            : -1;
         });
         // console.log(sorted.map(a => a.zip));
         ret[key] = sorted;

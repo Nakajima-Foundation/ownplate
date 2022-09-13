@@ -430,7 +430,10 @@
     "osaka": "Osaka",
     "izakaya": "Izakaya",
     "patisserie": "Pâtisserie",
-    "searchRestaurant": "Rechercher un restaurant"
+    "searchRestaurant": "Rechercher un restaurant",
+    "moTagline": "ネット注文サービスは、PC・スマホから簡単に購入が可能な、ファミリーマート公式のお取り置きサービスです。",
+    "moDescription1": "通常は取り扱いのない商品もお取り寄せいたします。",
+    "moDescription2": "ご注文日から最短4日後の店頭受取が可能です。​"
   },
   "order": {
     "allOrders": "Toutes les commandes",
@@ -967,7 +970,11 @@
     },
     "notFound": {
       "message1": "La page que vous recherchez est introuvable.",
-      "message2": "Essayez de contacter le restaurant d'une autre manière."
+      "message2": "Essayez de contacter le restaurant d'une autre manière.",
+      "moMessageTop": "ただいまサービス休止中です。",
+      "moMessage1": "一時的にサービスを休止しております。",
+      "moMessage2": "ご迷惑をお掛けし誠に申し訳ございません。",
+      "moMessage3": "サービス再開までしばらくお待ちください。"
     },
     "requireLogin": {
       "message1": "Vous devez être connecté pour voir votre commande"
