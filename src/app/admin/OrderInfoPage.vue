@@ -790,7 +790,7 @@ export default defineComponent({
     });
     const isWarningOrder = computed(() => {
       if (orderInterval.value === 0) {
-        return false;
+        return true;
       }
       if (orderInterval.value < 4 && orderInterval.value > -4) {
         return true;
