@@ -45,7 +45,13 @@ export const sendMessageToCustomer = async (
     return message;
   };
   const getMoMessage = (_url: string) => {
-    const message = `${t(msgKey, params)} ${restaurantName} ${orderNumber} ${_url}`;
+    const newParam = {
+      ...params,
+      restaurantName,
+      orderNumber,
+      price: 100,
+    };
+    const message = `${t(msgKey, params)}`;
     return message;
   };
   const url = `https://${ownPlateConfig.hostName}/r/${restaurantId}/order/${orderId}?openExternalBrowser=1`;
