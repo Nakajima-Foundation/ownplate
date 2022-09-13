@@ -245,10 +245,12 @@ export default defineComponent({
             .filter((a) => a.status !== order_status.transaction_hide)
             .sort((order0, order1) => {
               if (order0.status === order1.status) {
-                return (order0.timeEstimated || order0.timePlaced) >
-                  (order1.timeEstimated || order1.timePlaced)
-                  ? -1
-                  : 1;
+                const aTime = order0.timeEstimated || order0.timePlaced;
+                const bTime = order1.timeEstimated || order1.timePlaced
+                if (aTime.seconds === bTime.seconds) {
+                  return order0.number > order1.number ? -1 : 1;
+                }
+                return (aTime) > (bTime) ? -1 : 1;
               }
               return order0.status < order1.status ? -1 : 1;
             })

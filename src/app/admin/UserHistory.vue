@@ -138,6 +138,14 @@ export default defineComponent({
       type: Object,
       required: true,
     },
+    isInMo: {
+      type: Boolean,
+      required: true,
+    },
+    moPrefix: {
+      type: String,
+      required: false,
+    },
   },
   metaInfo() {
     return {
@@ -224,7 +232,15 @@ export default defineComponent({
             order.timeConfirmed = order.timeConfirmed.toDate();
           }
           return order;
-        });
+        }).sort(
+          (a, b) => {
+            if (a.timePlaced.getTime() === b.timePlaced.getTime()) {
+              return a.number > b.number ? -1 : 1;
+            }
+            return (a.timePlaced > b.timePlaced ? -1 : 1)
+          }
+        );
+;
     };
     const orderSelected = (order) => {
       ctx.root.$router.push({
