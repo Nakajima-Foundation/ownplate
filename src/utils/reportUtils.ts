@@ -27,7 +27,7 @@ export const reportHeadersForMo = [
   "restaurantId",
   "shopId",
   "uid",
-  
+
   ...reportHeadersTime,
 
   "itemName",

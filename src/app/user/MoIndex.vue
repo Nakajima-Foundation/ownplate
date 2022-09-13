@@ -3,12 +3,14 @@
     <div
       class="w-full h-72 sm:max-w-7xl sm:h-52 bg-black bg-opacity-5 mt-6 sm:mx-auto"
     >
-      <img :src="moBaseUrl + '/images/assets/mo_hero_mobile.png'"
-           class="sm:hidden"
-           >
-      <img :src="moBaseUrl + '/images/assets/mo_hero_tablet.png'"
-           class="hidden sm:block"
-           >
+      <img
+        :src="moBaseUrl + '/images/assets/mo_hero_mobile.png'"
+        class="sm:hidden"
+      />
+      <img
+        :src="moBaseUrl + '/images/assets/mo_hero_tablet.png'"
+        class="hidden sm:block"
+      />
       <!--ToDo mo-hero-mobileとmo-hero-tablet(breakpoint:smで切り替わる)がここに入ります-->
     </div>
 
@@ -21,7 +23,7 @@
     >
       <div class="w-full bg-white rounded-lg shadow-none px-4 pb-4 text-center">
         <div class="w-32 h-20 bg-black bg-opacity-5 mx-auto mb-3">
-          <img :src="moBaseUrl + '/images/assets/mo_icon_shipping.png'">
+          <img :src="moBaseUrl + '/images/assets/mo_icon_shipping.png'" />
         </div>
         <div class="text-sm sm:text-base text-black">
           {{ $t("lp.moDescription1") }}
@@ -29,7 +31,7 @@
       </div>
       <div class="w-full bg-white rounded-lg shadow-none px-4 pb-4 text-center">
         <div class="w-32 h-20 bg-black bg-opacity-5 mx-auto mb-3">
-          <img :src="moBaseUrl + '/images/assets/mo_icon_store.png'">
+          <img :src="moBaseUrl + '/images/assets/mo_icon_store.png'" />
         </div>
         <div class="text-sm sm:text-base text-black">
           {{ $t("lp.moDescription2") }}

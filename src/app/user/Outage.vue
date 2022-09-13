@@ -7,7 +7,7 @@
     </div>
     <div class="w-40 h-40 bg-black bg-opacity-5 rounded-full mx-auto">
       <div>
-        <img :src="moBaseUrl + '/images/outage/mo_icon_outage.svg'">
+        <img :src="moBaseUrl + '/images/outage/mo_icon_outage.svg'" />
       </div>
     </div>
     <div
@@ -19,3 +19,12 @@
     </div>
   </div>
 </template>
+<script>
+import { defineComponent } from "@vue/composition-api";
+import { moBaseUrl } from "@/config/project";
+export default defineComponent({
+  setup() {
+    return { moBaseUrl };
+  },
+});
+</script>

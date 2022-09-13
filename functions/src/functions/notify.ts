@@ -44,6 +44,10 @@ export const sendMessageToCustomer = async (
     const message = `${t(msgKey, params)} ${restaurantName} ${orderNumber} ${_url}`;
     return message;
   };
+  const getMoMessage = (_url: string) => {
+    const message = `${t(msgKey, params)} ${restaurantName} ${orderNumber} ${_url}`;
+    return message;
+  };
   const url = `https://${ownPlateConfig.hostName}/r/${restaurantId}/order/${orderId}?openExternalBrowser=1`;
 
   // Not JP
@@ -73,7 +77,7 @@ export const sendMessageToCustomer = async (
       console.log(e);
     }
 
-    return await sms.pushSMS(aws_key, aws_secret, "Mobile Order", getMessage(groupUrl), orderData.phoneNumber);
+    return await sms.pushSMS(aws_key, aws_secret, "Mobile Order", getMoMessage(groupUrl), orderData.phoneNumber);
   }
   // for JP
   const { lineId, liffIndexId, liffId } = (await line.getLineId(db, orderData.uid)) as any;

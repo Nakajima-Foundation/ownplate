@@ -165,10 +165,9 @@ export default defineComponent({
     });
     const fileName = "all_orders_of_all_restaurants";
     const fields = computed(() => {
-      console.log( props.isInMo)
+      console.log(props.isInMo);
       return props.isInMo ? revenueMoCSVHeader : revenueCSVHeader;
     });
-
 
     const fieldNames = fields.value.map((field) => {
       return ctx.root.$t(`order.${field}`);
