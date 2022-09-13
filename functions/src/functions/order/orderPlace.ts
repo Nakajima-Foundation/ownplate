@@ -9,6 +9,7 @@ import { costCal } from "../../common/commonUtils";
 import { Context } from "../../models/TestType";
 
 import { orderPlacedData } from "../../lib/types";
+import { validateOrderPlaced, validateCustomer } from "../../lib/validator";
 
 export const updateOrderTotalDataAndUserLog = async (db, transaction, customerUid, order, restaurantId, ownerUid, timePlaced, positive) => {
   const timezone = (functions.config() && functions.config().order && functions.config().order.timezone) || "Asia/Tokyo";
@@ -90,8 +91,16 @@ export const updateOrderTotalDataAndUserLog = async (db, transaction, customerUi
 export const place = async (db, data: orderPlacedData, context: functions.https.CallableContext | Context) => {
   const customerUid = utils.validate_auth(context);
   const { restaurantId, orderId, tip, sendSMS, timeToPickup, lng, memo, customerInfo } = data;
-  const _tip = Number(tip) || 0;
   utils.required_params({ restaurantId, orderId }); // tip, sendSMS and lng are optinoal
+
+  const validateResult = validateOrderPlaced(data);
+  if (!validateResult.result) {
+    console.error("orderPlace", validateResult.errors);
+    throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
+  }
+
+
+  const _tip = Number(tip) || 0;
 
   const timePlaced = (timeToPickup && new admin.firestore.Timestamp(timeToPickup.seconds, timeToPickup.nanoseconds)) || admin.firestore.FieldValue.serverTimestamp();
   try {
@@ -114,11 +123,16 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
         throw new functions.https.HttpsError("failed-precondition", "The order has been already placed or canceled");
       }
       const hasCustomer = restaurantData.isEC || order.isDelivery;
-
+      
       const multiple = utils.getStripeRegion().multiple; // 100 for USD, 1 for JPY
       const roundedTip = Math.round(_tip * multiple) / multiple;
 
       if (hasCustomer) {
+        const validateResult = validateCustomer(customerInfo || {})
+        if (!validateResult.result) {
+          console.error("orderPlace", validateResult.errors);
+          throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
+        }
         // for transaction lock
         await transaction.get(customerRef);
       }
@@ -129,8 +143,19 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
       const totalCharge = order.total + roundedTip + (shippingCost || 0) + (order.deliveryFee || 0);
 
       if (hasCustomer) {
+        const {
+          zip,
+          prefectureId,
+          address,
+          name,
+          email,
+        } = customerInfo;
         await transaction.set(customerRef, {
-          ...customerInfo,
+          zip,
+          prefectureId,
+          address,
+          name,
+          email,
           uid: customerUid,
           orderId,
           restaurantId,
@@ -150,7 +175,6 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
         timePickupForQuery: timePlaced,
         memo: memo || "",
         isEC: restaurantData.isEC || false,
-        // customerInfo: customerInfo || {},
       });
       Object.assign(order, { totalCharge, tip, shippingCost });
       return { success: true, order };

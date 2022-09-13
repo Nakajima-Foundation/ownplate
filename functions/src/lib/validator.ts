@@ -1,6 +1,8 @@
 import * as admin from "firebase-admin";
-import { orderCreatedData, orderUpdateData } from "./types";
+import { orderCreatedData, orderUpdateData, orderPlacedData, CustomerInfoData } from "./types";
 import { isEmpty } from "./utils";
+
+import isNumeric from 'validator/lib/isNumeric';
 
 export const isNumber = (value: string, option: any = {}) => {
   if (!/^-?[0-9]+$/.test(value)) {
@@ -77,8 +79,7 @@ const validateNumber = (text: number) => {
   return typeof text === "number";
 };
 const validateNumberString = (text: string) => {
-  console.log("not implemented yet");
-  return typeof text === "string";
+  return typeof text === "string" && isNumeric(text);
 };
 const validateInteger = (text: number) => {
   return typeof text === "number" && Number.isInteger(text);
@@ -97,7 +98,9 @@ const validateAlphabet = (text: string) => {
 const validateTimestamp = (timestamp: admin.firestore.Timestamp) => {
   return validateInteger(timestamp.seconds) && validateInteger(timestamp.nanoseconds);
 };
-
+const validateBoolean = (value: boolean) => {
+  return (value === true || value === false);
+};
 const validateArray = {
   firebaseId: validateFirebaseId,
   number: validateNumber,
@@ -107,6 +110,7 @@ const validateArray = {
   string: validateString,
   alphabet: validateAlphabet,
   timestamp: validateTimestamp,
+  boolean: validateBoolean,
 };
 
 const validateData = (data, validator) => {
@@ -185,5 +189,37 @@ export const validateOrderUpadte = (data: orderUpdateData) => {
       required: false,
     },
   };
+  return validateData(data, validator);
+};
+export const validateOrderPlaced = (data: orderPlacedData) => {
+  const validator = {
+    restaurantId: {
+      type: "firebaseId",
+      required: true,
+    },
+    orderId: {
+      type: "firebaseId",
+      required: true,
+    },
+    tip: {
+      type: "integer",
+      require: false,
+    },
+    sendSMS: {
+      type: "boolean",
+      require: false,
+    },
+    timeToPickup: {
+      type: "timestamp",
+      required: false,
+    },
+    // memo: {
+  };
+  return validateData(data, validator);
+};
+
+
+export const validateCustomer = (data: CustomerInfoData) => {
+  const validator = {};
   return validateData(data, validator);
 };
