@@ -82,6 +82,10 @@ const mopath = mo_prefixes
             component: "user/MoIndex.vue",
           },
           {
+            path: prePath + "/outage",
+            component: "user/Outage.vue",
+          },
+          {
             path: prePath + "/r/favorites",
             component: "user/Restaurants/Favorites.vue",
           },
