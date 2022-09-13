@@ -35,6 +35,8 @@ export const create = async (db: admin.firestore.Firestore, data: any, context: 
   const restaurantOwnerUid = restaurantData["uid"];
   const postage = restaurantData.isEC ? await utils.get_restaurant_postage(db, restaurantId) : {};
 
+  const now = admin.firestore.Timestamp.now();
+
   try {
     const result = await db.runTransaction(async (transaction) => {
       const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
@@ -75,14 +77,14 @@ export const create = async (db: admin.firestore.Firestore, data: any, context: 
       const timePlaced = (timeToPickup && new admin.firestore.Timestamp(timeToPickup.seconds, timeToPickup.nanoseconds)) || admin.firestore.FieldValue.serverTimestamp();
 
       // start write transaction
-      await updateOrderTotalDataAndUserLog(db, transaction, customerUid, order.order, restaurantId, customerUid, timePlaced, true);
+      await updateOrderTotalDataAndUserLog(db, transaction, customerUid, order.order, restaurantId, customerUid, timePlaced, now, true);
       if (hasCustomer) {
         await transaction.set(customerRef, {
           ...customerInfo,
           uid: customerUid,
           orderId,
           restaurantId,
-          createdAt: admin.firestore.Timestamp.now(),
+          createdAt: now,
         });
       }
 
@@ -92,8 +94,8 @@ export const create = async (db: admin.firestore.Firestore, data: any, context: 
         tip: roundedTip,
         shippingCost,
         sendSMS: sendSMS || false,
-        updatedAt: admin.firestore.Timestamp.now(),
-        orderPlacedAt: admin.firestore.Timestamp.now(),
+        updatedAt: now,
+        orderPlacedAt: now,
         timePlaced,
         timePickupForQuery: timePlaced,
         description: request.description,

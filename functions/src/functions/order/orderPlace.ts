@@ -11,7 +11,7 @@ import { Context } from "../../models/TestType";
 import { orderPlacedData } from "../../lib/types";
 import { validateOrderPlaced, validateCustomer } from "../../lib/validator";
 
-export const updateOrderTotalDataAndUserLog = async (db, transaction, customerUid, order, restaurantId, ownerUid, timePlaced, positive) => {
+export const updateOrderTotalDataAndUserLog = async (db, transaction, customerUid, order, restaurantId, ownerUid, timePlaced, now, positive) => {
   const timezone = (functions.config() && functions.config().order && functions.config().order.timezone) || "Asia/Tokyo";
 
   const menuIds = Object.keys(order);
@@ -71,7 +71,7 @@ export const updateOrderTotalDataAndUserLog = async (db, transaction, customerUi
       // lastOrder: timePlaced,
       restaurantId,
       ownerUid,
-      updateAt: admin.firestore.Timestamp.now(),
+      updateAt: now,
     };
     await transaction.set(userLogRef, data);
   } else {
@@ -82,7 +82,7 @@ export const updateOrderTotalDataAndUserLog = async (db, transaction, customerUi
       cancelCounter,
       currentOrder: timePlaced,
       lastOrder: userLog.currentOrder || timePlaced,
-      updateAt: admin.firestore.Timestamp.now(),
+      updateAt: now,
       lastUpdatedAt: userLog.updateAt || new admin.firestore.Timestamp(1577804400, 0),
     };
     await transaction.update(userLogRef, updateData);
@@ -102,7 +102,7 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
     throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
   }
 
-
+  const now = admin.firestore.Timestamp.now();
   const _tip = Number(tip) || 0;
 
   const timePlaced = (timeToPickup && new admin.firestore.Timestamp(timeToPickup.seconds, timeToPickup.nanoseconds)) || admin.firestore.FieldValue.serverTimestamp();
@@ -140,7 +140,7 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
         await transaction.get(customerRef);
       }
       // transaction for stock orderTotal
-      await updateOrderTotalDataAndUserLog(db, transaction, customerUid, order.order, restaurantId, restaurantData.uid, timePlaced, true);
+      await updateOrderTotalDataAndUserLog(db, transaction, customerUid, order.order, restaurantId, restaurantData.uid, timePlaced, now, true);
       const shippingCost = restaurantData.isEC ? costCal(postage, customerInfo?.prefectureId, order.total) : 0;
 
       const totalCharge = order.total + roundedTip + (shippingCost || 0) + (order.deliveryFee || 0);
@@ -162,7 +162,7 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
           uid: customerUid,
           orderId,
           restaurantId,
-          createdAt: admin.firestore.Timestamp.now(),
+          createdAt: now,
         });
       }
       // customerUid
@@ -172,8 +172,8 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
         tip: roundedTip,
         shippingCost,
         sendSMS: sendSMS || false,
-        updatedAt: admin.firestore.Timestamp.now(),
-        orderPlacedAt: admin.firestore.Timestamp.now(),
+        updatedAt: now,
+        orderPlacedAt: now,
         timePlaced,
         timePickupForQuery: timePlaced,
         memo: memo || "",

@@ -780,17 +780,31 @@ export default defineComponent({
       });
     });
 
-    const orderPickupInterval = computed(() => {
-      if (orderInfo.value.timePlaced && userLog.value.lastOrder) {
+    const orderUpdateInterval = computed(() => {
+      if (orderInfo.value.orderPlacedAt && userLog.value.lastUpdatedAt) {
         const intervalHour =
-          (orderInfo.value.timePlaced - userLog.value.lastOrder) / 3600;
+          (orderInfo.value.orderPlacedAt - userLog.value.lastUpdatedAt) / 3600;
+        return intervalHour;
+      }
+      return -1000000;
+    });
+    const orderPickupInterval = computed(() => {
+      if (orderInfo.value.timeCreated && userLog.value.lastUpdatedAt) {
+        const intervalHour =
+          (orderInfo.value.timeCreated - userLog.value.lastUpdatedAt) / 3600;
         return intervalHour;
       }
       return -1000000;
     });
     const isWarningOrder = computed(() => {
+      if (orderUpdateInterval.value < 4 && orderUpdateInterval.value > -4) {
+        if (orderUpdateInterval.value !== orderUpdateInterval.value) {
+          return true;
+        }
+      }
+
       if (orderPickupInterval.value === 0) {
-        return true;
+        return false;
       }
       if (orderPickupInterval.value < 4 && orderPickupInterval.value > -4) {
         return true;

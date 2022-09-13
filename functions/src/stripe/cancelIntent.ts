@@ -26,6 +26,8 @@ export const cancel = async (db: any, data: any, context: functions.https.Callab
   const restaurant = await utils.get_restaurant(db, restaurantId);
   const restaurantOwnerUid = restaurant["uid"];
 
+  const now = admin.firestore.Timestamp.now();
+
   try {
     const result = await db.runTransaction(async (transaction) => {
       const orderDoc = await transaction.get(orderRef);
@@ -49,13 +51,13 @@ export const cancel = async (db: any, data: any, context: functions.https.Callab
       // user can cancel if restaurant cancel just only payment and status is placed.
       if (!order.payment || !order.payment.stripe || (!isAdmin && order.payment.stripe === "canceled")) {
         // No payment transaction
-        await updateOrderTotalDataAndUserLog(db, transaction, order.uid, order.order, restaurantId, uid, order.timePlaced, false);
+        await updateOrderTotalDataAndUserLog(db, transaction, order.uid, order.order, restaurantId, uid, order.timePlaced, now, false);
         transaction.set(
           orderRef,
           {
             timeCanceled: admin.firestore.FieldValue.serverTimestamp(),
             [cancelTimeKey]: admin.firestore.FieldValue.serverTimestamp(),
-            updatedAt: admin.firestore.Timestamp.now(),
+            updatedAt: now,
             status: order_status.order_canceled,
             uidCanceledBy: uid,
           },
@@ -77,12 +79,12 @@ export const cancel = async (db: any, data: any, context: functions.https.Callab
         idempotencyKey: `${idempotencyKey}-cancel`,
         stripeAccount,
       });
-      await updateOrderTotalDataAndUserLog(db, transaction, order.uid, order.order, restaurantId, restaurant.uid, order.timePlaced, false);
+      await updateOrderTotalDataAndUserLog(db, transaction, order.uid, order.order, restaurantId, restaurant.uid, order.timePlaced, now, false);
       const updateData = {
         timeCanceled: admin.firestore.FieldValue.serverTimestamp(),
         [cancelTimeKey]: admin.firestore.FieldValue.serverTimestamp(),
         status: order_status.order_canceled,
-        updatedAt: admin.firestore.Timestamp.now(),
+        updatedAt: now,
         uidCanceledBy: uid,
         payment: {
           stripe: "canceled",
