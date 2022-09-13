@@ -23,7 +23,11 @@ export const reportHeaders = [
 ];
 export const reportHeadersForMo = [
   ...reportHeadersTop,
-  "phoneNumber",
+  // "phoneNumber",
+  "restaurantId",
+  "shopId",
+  "uid",
+  
   ...reportHeadersTime,
 
   "itemName",
@@ -93,6 +97,8 @@ export const revenueCSVHeader = [
 
 export const revenueMoCSVHeader = [
   "date",
+  "restaurantId",
+  "shopId",
   "restaurantName",
   "orderStatus",
   "foodRevenue",

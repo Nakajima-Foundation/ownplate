@@ -90,7 +90,7 @@ import moment from "moment-timezone";
 import { db } from "@/plugins/firebase";
 import { order_status, order_status_keys } from "@/config/constant";
 import { nameOfOrder } from "@/utils/strings";
-import { revenueCSVHeader } from "@/utils/reportUtils";
+import { revenueCSVHeader, revenueMoCSVHeader } from "@/utils/reportUtils";
 import { order2ReportData } from "@/models/orderInfo";
 import { arrayOrNumSum, useAdminUids, notFoundResponse } from "@/utils/utils";
 
@@ -105,6 +105,12 @@ export default defineComponent({
     DownloadCsv,
     BackButton,
     NotFound,
+  },
+  props: {
+    isInMo: {
+      type: Boolean,
+      required: true,
+    },
   },
   metaInfo() {
     return {
@@ -158,9 +164,13 @@ export default defineComponent({
       });
     });
     const fileName = "all_orders_of_all_restaurants";
-    const fields = revenueCSVHeader;
+    const fields = computed(() => {
+      console.log( props.isInMo)
+      return props.isInMo ? revenueMoCSVHeader : revenueCSVHeader;
+    });
 
-    const fieldNames = fields.map((field) => {
+
+    const fieldNames = fields.value.map((field) => {
       return ctx.root.$t(`order.${field}`);
     });
     const tableData = computed(() => {
@@ -168,6 +178,8 @@ export default defineComponent({
         const time = order.timeEstimated || order.timePlaced;
         return {
           date: time ? moment(time).format("YYYY/MM/DD") : "",
+          restaurantId: order.restaurant.restaurantId, // mo
+          shopId: order.restaurant.shopId, // mo
           restaurantName: order.restaurant.restaurantName,
           orderStatus: ctx.root.$t(
             "order.status." + order_status_keys[order.status]

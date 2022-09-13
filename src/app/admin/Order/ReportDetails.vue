@@ -193,6 +193,9 @@ export default defineComponent({
                 orderId: order.id,
                 name: nameOfOrder(order),
                 restaurantName: props.shopInfo.restaurantName,
+                uid: order.uid, // mo
+                restaurantId: props.shopInfo.restaurantId, // mo
+                shopId: props.shopInfo.shopId, // mo
                 timeRequested: writeonFirstLine(
                   index,
                   key,

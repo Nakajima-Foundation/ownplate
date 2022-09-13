@@ -321,6 +321,8 @@ export default defineComponent({
       return orders.value.map((order) => {
         return {
           date: moment(order.timeConfirmed).format("YYYY/MM/DD"),
+          restaurantId: props.shopInfo.restaurantId, // mo
+          shopId: props.shopInfo.shopId, // mo
           restaurantName: props.shopInfo.restaurantName,
           orderStatus: ctx.root.$t(
             "order.status." + order_status_keys[order.status]
