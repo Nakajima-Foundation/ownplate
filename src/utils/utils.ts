@@ -26,7 +26,6 @@ import { defaultHeader } from "@/config/header";
 import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
 import isURL from "validator/lib/isURL";
 import isLatLong from "validator/lib/isLatLong";
-import isAlphanumeric from "validator/lib/isAlphanumeric";
 
 export const isNull = <T>(value: T) => {
   return value === null || value === undefined;
@@ -417,7 +416,7 @@ export const validLocation = (location: { lat: string; lng: string }) => {
   return isLatLong([location.lat || "", location.lng || ""].join(","));
 };
 export const validPlaceId = (placeId: string) => {
-  return isAlphanumeric(placeId) || placeId === "";
+  return /^[a-zA-Z0-9-_]+$/.test(placeId) || placeId === "";
 };
 
 export const convOptionArray2Obj = <T>(obj: { [key: string]: T[] }) => {

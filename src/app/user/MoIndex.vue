@@ -86,13 +86,14 @@ export default defineComponent({
       );
       const tmp = restaurant2AreaObj(restaurantsCollection.docs);
       restaurantsObj.value = Object.keys(tmp).reduce((ret, key) => {
-        ret[key] = tmp[key].sort((a, b) => {
-          return (Number(a.zip.replace(/\-/g, "")) || 0) > (Number(b.zip.replace(/\-/g, "")) || 0) ? -1 : 1;
+        const sorted = tmp[key].sort((a, b) => {
+          return (Number(a.zip.replace(/\-/g, "")) || 0) > (Number(b.zip.replace(/\-/g, "")) || 0 ) ? 1 : -1;
         });
+        // console.log(sorted.map(a => a.zip));
+        ret[key] = sorted;
         return ret;
       }, {});
       restaurants.value = restaurantsCollection.docs.map(doc2data(""));
-      sortRestaurantObj(restaurantsObj.value);
     })();
 
     const allArea = computed(() => {
