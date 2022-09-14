@@ -58,7 +58,7 @@ export default defineComponent({
       if (isInMo.value === null) {
         return null;
       } else if (isInMo.value) {
-        return moBaseUrl + "/images/logo_vertical.png";
+        return moBaseUrl + "/images/assets/logo_vertical.png";
       } else if (restaurantId.value && specialLogo[restaurantId.value]) {
         return "/" + specialLogo[restaurantId.value].image;
       } else {
