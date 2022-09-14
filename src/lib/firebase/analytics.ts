@@ -16,6 +16,8 @@ import { mo_prefixes, moGtmID } from "@/config/project";
 interface AnalyticsMenuData extends MenuData {
   id: string;
   quantity: number;
+  category: string;
+  subCategory: string;
 }
 interface AnalyticsData {}
 
@@ -257,7 +259,7 @@ export const sku_item_data_for_datalayer = (
     item_id: "SKU_" + menu.id,
     price: menu.price,
     item_brand: shopInfo.restaurantName,
-    item_category: [menu.category1, menu.category2].join("/"),
+    item_category: menu.subCategory,
     quantity,
   };
 };
