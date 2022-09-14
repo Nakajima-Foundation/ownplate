@@ -244,6 +244,7 @@ service cloud.firestore {
         }
         match /userLog/{userId} {
           allow read: if isAdmin(request) && isRestaurantOwner(restaurantId, request);
+          allow read: if isAdmin(request) && isRestaurantSubAccount(restaurantId, request);
           allow read: if isSuper(request);
           allow write: if false // only server side of function can write here (see functions/order.ts)
         }
