@@ -19,7 +19,7 @@
 import { defineComponent, ref, computed } from "@vue/composition-api";
 
 import * as pdf from "@/lib/pdf/pdf";
-import { usePhoneNumber, shareUrl } from "@/utils/utils";
+import { usePhoneNumber, shareUrl, useBasePath } from "@/utils/utils";
 
 export default defineComponent({
   props: {
@@ -43,11 +43,12 @@ export default defineComponent({
     const downloadMenu = async () => {
       try {
         downloadSubmitting.value = true;
+        const basePath = useBasePath(ctx.root);
         const dl = await pdf.menuDownload(
           props.shopInfo,
           props.menuObj,
           nationalPhoneNumber.value,
-          shareUrl(ctx.root)
+          shareUrl(ctx.root, basePath.value)
         );
       } catch (e) {
         alert("sorry error. ask omochikaeri administrator.");
