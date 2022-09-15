@@ -58,16 +58,19 @@
 </template>
 
 <script>
-import Lp from "@/app/home/Lp";
-import LpAdmin from "@/app/home/LpAdmin";
-import LpCustomer from "@/app/home/LpCustomer";
-import home from "@/app/home/home";
+import { defineComponent } from "@vue/composition-api";
 
-export default {
-  name: "HomePage",
+import Lp from "@/app/home/Lp.vue";
+import LpAdmin from "@/app/home/LpAdmin.vue";
+import LpCustomer from "@/app/home/LpCustomer.vue";
+import home from "@/app/home/home.vue";
+
+import { defaultTitle, isJapan } from "@/utils/utils";
+
+export default defineComponent({
   metaInfo() {
     return {
-      title: [this.defaultTitle, "Top"].join(" / "),
+      title: [defaultTitle, "Top"].join(" / "),
     };
   },
 
@@ -77,5 +80,8 @@ export default {
     LpCustomer,
     home,
   },
-};
+  setup() {
+    return { isJapan };
+  },
+});
 </script>

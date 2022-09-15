@@ -100,7 +100,9 @@ import { smaregi } from "@/config/project";
 import { db } from "@/plugins/firebase";
 import { smaregiStoreList } from "@/lib/firebase/functions";
 
-import BackButton from "@/components/BackButton";
+import { doc2data } from "@/utils/utils";
+
+import BackButton from "@/components/BackButton.vue";
 
 const outOfStockThresholds = [
   { value: 999999, name: "なし" },
@@ -179,7 +181,7 @@ export default {
         .where("uid", "==", this.uid)
         .get();
       this.restaurants = restaurantColleciton.docs
-        .map(this.doc2data("message"))
+        .map(doc2data("message"))
         .sort((a, b) => {
           return a.restaurantName > b.restaurantName ? 1 : -1;
         });
@@ -197,7 +199,7 @@ export default {
         .collection(`/smaregi/${this.contractId}/stores`)
         .where("uid", "==", this.uid)
         .get();
-      const stores = storeCollection.docs.map(this.doc2data("stores"));
+      const stores = storeCollection.docs.map(doc2data("stores"));
 
       const storeObj = stores.reduce((tmp, current) => {
         tmp[current.storeId] = current;

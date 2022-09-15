@@ -77,7 +77,7 @@ export const deleteCustomer = async (db: admin.firestore.Firestore, uid: string)
 export const update = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
   const { tokenId, reuse } = data;
-  utils.validate_params({ tokenId });
+  utils.required_params({ tokenId });
   const stripe = utils.get_stripe();
 
   const refStripeSystem = db.doc(`/users/${uid}/system/stripe`);

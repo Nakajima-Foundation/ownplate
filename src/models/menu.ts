@@ -1,4 +1,5 @@
 import { serverTimestamp } from "firebase/firestore";
+import { isNull } from "../utils/utils";
 
 export interface MenuImages {
   item: {
@@ -8,7 +9,13 @@ export interface MenuImages {
   };
 }
 
+export interface ExceptHour {
+  start?: number;
+  end?: number;
+}
+
 export interface MenuData {
+  id: string;
   itemDescription: string;
   itemName: string;
   itemPhoto: string;
@@ -24,13 +31,31 @@ export interface MenuData {
   allergens: any;
   category1: string;
   category2: string;
-
+  exceptDay: { [key: string]: boolean };
+  exceptHour: ExceptHour;
   validatedFlag: boolean;
 }
 
 export class Menu {}
 
 // for util function
+
+const newExceptHour = (exceptHour: ExceptHour) => {
+  const { start, end } = exceptHour;
+  if (isNull(start) || isNull(end)) {
+    return {};
+  }
+  if ((start || 0) > (end || 0)) {
+    return {
+      start: end,
+      end: start,
+    };
+  }
+  return {
+    start,
+    end,
+  };
+};
 export const getNewItemData = (
   item: MenuData,
   isJP: boolean,
@@ -53,6 +78,8 @@ export const getNewItemData = (
     validatedFlag,
     category1: item.category1,
     category2: item.category2,
+    exceptDay: item.exceptDay || {},
+    exceptHour: newExceptHour(item.exceptHour || {}),
   };
   return itemData;
 };

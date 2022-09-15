@@ -6,11 +6,20 @@ import * as utils from "../../lib/utils";
 import { order_status, possible_transitions, order_status_keys, timeEventMapping } from "../../common/constant";
 import { sendMessageToCustomer } from "../notify";
 
+import { orderUpdateData, updateDataOnorderUpdate } from "../../lib/types";
+import { validateOrderUpadte } from "../../lib/validator";
+
 // This function is called by admins (restaurant operators) to update the status of order
-export const update = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => {
+export const update = async (db: admin.firestore.Firestore, data: orderUpdateData, context: functions.https.CallableContext) => {
   const ownerUid = utils.validate_admin_auth(context);
   const { restaurantId, orderId, status, lng, timezone, timeEstimated } = data;
-  utils.validate_params({ restaurantId, orderId, status, timezone }); // lng, timeEstimated is optional
+  utils.required_params({ restaurantId, orderId, status, timezone }); // lng, timeEstimated is optional
+
+  const validateResult = validateOrderUpadte(data);
+  if (!validateResult.result) {
+    console.error("orderUpdate", validateResult.errors);
+    throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
+  }
 
   try {
     const restaurantDoc = await db.doc(`restaurants/${restaurantId}`).get();
@@ -66,7 +75,7 @@ export const update = async (db: admin.firestore.Firestore, data: any, context: 
 
       // everything are ok
       const updateTimeKey = timeEventMapping[order_status_keys[status]];
-      const updateData: any = {
+      const updateData: updateDataOnorderUpdate = {
         status,
         updatedAt: admin.firestore.Timestamp.now(),
         [updateTimeKey]: admin.firestore.Timestamp.now(),
@@ -88,7 +97,7 @@ export const update = async (db: admin.firestore.Firestore, data: any, context: 
         params["time"] = moment(orderData.timeEstimated.toDate()).tz(timezone).locale("ja").format("LLL");
         console.log("timeEstimated", params["time"]);
       }
-      await sendMessageToCustomer(db, lng, msgKey, restaurant.restaurantName, orderData, restaurantId, orderId, params);
+      await sendMessageToCustomer(db, lng || utils.getStripeRegion().langs[0], msgKey, restaurant.restaurantName, orderData, restaurantId, orderId, params);
     }
     return result;
   } catch (error) {

@@ -93,7 +93,7 @@ const styles = {
 };
 
 export const menuDownload = (
-  restaurantInfo: RestaurantInfoData,
+  shopInfo: RestaurantInfoData,
   menuObj: { [key: string]: MenuData }, // TODO
   nationalPhoneNumber: string,
   shareUrl: string
@@ -101,7 +101,7 @@ export const menuDownload = (
   pdfMake.fonts = pdfFont;
 
   const menus = arrayChunk(
-    (restaurantInfo.menuLists || [])
+    (shopInfo.menuLists || [])
       .reduce((tmp, itemKey) => {
         if (menuObj[itemKey]) {
           tmp.push(menuObj[itemKey]);
@@ -119,7 +119,7 @@ export const menuDownload = (
       location.host +
       "/Omochikaeri-Logo-Horizontal-Primary.png",
     coverImage:
-      restaurantInfo.restCoverPhoto ||
+      shopInfo.restCoverPhoto ||
       location.protocol +
         "//" +
         location.host +
@@ -133,8 +133,8 @@ export const menuDownload = (
   };
 
   const linkbodys = ["注文: " + shareUrl];
-  if (restaurantInfo.url) {
-    linkbodys.push("ホームページ:" + restaurantInfo.url);
+  if (shopInfo.url) {
+    linkbodys.push("ホームページ:" + shopInfo.url);
   }
   const qrCodeBody = [
     [tableOrangeElement, tableOrangeElement, tableOrangeElement],
@@ -188,7 +188,7 @@ export const menuDownload = (
       cover: { width: A4ContentWidth, height: menuSize },
     },
     {
-      text: restaurantInfo.restaurantName,
+      text: shopInfo.restaurantName,
       bold: true,
       style: "title",
     },
@@ -205,7 +205,7 @@ export const menuDownload = (
             },
             {
               border: [false, false, false, false],
-              text: " \n" + convChar(restaurantInfo.introduction) + "\n \n",
+              text: " \n" + convChar(shopInfo.introduction) + "\n \n",
               fillColor: "#eeeeee",
               lineHeight: 1.5,
             },
@@ -224,11 +224,11 @@ export const menuDownload = (
         [
           [
             "〒",
-            restaurantInfo.zip,
+            shopInfo.zip,
             " ",
-            restaurantInfo.state,
-            restaurantInfo.city,
-            restaurantInfo.streetAddress,
+            shopInfo.state,
+            shopInfo.city,
+            shopInfo.streetAddress,
           ].join(""),
           "電話 " + nationalPhoneNumber,
         ].join("\n")

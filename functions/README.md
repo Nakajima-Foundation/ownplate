@@ -1,6 +1,6 @@
 # by user
 - cart 
-  - wasOrderCreatedJp
+  - wasOrderCreatedJp (orderCreated)
 - order
   - stripeCreateIntent  (pay)
   - orderPlaceJp (not pay)

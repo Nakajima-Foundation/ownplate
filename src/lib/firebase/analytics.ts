@@ -11,11 +11,13 @@ import { MenuData } from "@/models/menu";
 import { OrderInfoData } from "@/models/orderInfo";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 
-import { mo_prefixes } from "@/config/project";
+import { mo_prefixes, moGtmID } from "@/config/project";
 
 interface AnalyticsMenuData extends MenuData {
   id: string;
   quantity: number;
+  category: string;
+  subCategory: string;
 }
 interface AnalyticsData {}
 
@@ -60,9 +62,6 @@ export const sku_item_data2 = (
 const analyticsWrapper = (eventName: string, data: AnalyticsData) => {
   if (location.hostname !== "localhost") {
     logEvent(analytics, eventName, data);
-    if (isInMo()) {
-      gtag("event", eventName, data);
-    }
   } else {
     console.log("log: ", eventName, data);
   }
@@ -247,6 +246,44 @@ export const sendViewCart = (
   } catch (e) {
     console.log(e);
   }
+};
+
+export const sku_item_data_for_datalayer = (
+  menu: AnalyticsMenuData,
+  shopInfo: RestaurantInfoData,
+  restaurantId: string,
+  quantity: number
+) => {
+  return {
+    item_name: menu.itemName,
+    item_id: "SKU_" + menu.id,
+    price: menu.price,
+    item_brand: shopInfo.restaurantName,
+    item_category: menu.subCategory,
+    quantity,
+  };
+};
+
+export const getDataForLayer = (
+  orderInfo: OrderInfoData,
+  orderId: string,
+  menus: AnalyticsMenuData[],
+  shopInfo: RestaurantInfoData,
+  restaurantId: string
+) => {
+  const analyticsData = {
+    transaction_id: orderId,
+    affiliation: shopInfo.restaurantName,
+    value: orderInfo.total,
+    tax: orderInfo.tax,
+    currency: "JPY",
+
+    items: menus.map((menu) => {
+      const q = orderInfo.order[menu.id].reduce((t, c) => t + c, 0);
+      return sku_item_data_for_datalayer(menu, shopInfo, restaurantId, q);
+    }),
+  };
+  return analyticsData;
 };
 
 /*

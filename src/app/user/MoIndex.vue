@@ -1,5 +1,46 @@
 <template>
   <div>
+    <div class="flex justify-center sm:max-w-7xl mt-6 mx-0 sm:mx-6 xl:mx-auto">
+      <img
+        :src="moBaseUrl + '/images/assets/mo_hero_mobile.png'"
+        class="sm:hidden"
+      />
+      <img
+        :src="moBaseUrl + '/images/assets/mo_hero_tablet.png'"
+        class="hidden sm:block"
+      />
+    </div>
+
+    <div
+      class="sm:max-w-7xl sm:text-xl font-bold text-center text-black mt-6 mx-10 xl:mx-auto"
+    >
+      {{ $t("lp.moTagline") }}
+    </div>
+
+    <div
+      class="flex justify-center sm:max-w-7xl mt-6 mb-10 mx-6 xl:mx-auto space-x-4"
+    >
+      <div class="w-full bg-white rounded-lg shadow-none px-4 pb-4 text-center">
+        <div class="w-32 h-20 mx-auto mb-4">
+          <img :src="moBaseUrl + '/images/assets/mo_icon_shipping.png'" />
+        </div>
+        <div class="text-sm sm:text-base text-black">
+          {{ $t("lp.moDescription1") }}
+        </div>
+      </div>
+      <div class="w-full bg-white rounded-lg shadow-none px-4 pb-4 text-center">
+        <div class="w-32 h-20 mx-auto mb-4">
+          <img :src="moBaseUrl + '/images/assets/mo_icon_store.png'" />
+        </div>
+        <div class="text-sm sm:text-base text-black">
+          {{ $t("lp.moDescription2") }}
+        </div>
+      </div>
+    </div>
+
+    <div class="text-xl font-bold text-black text-opacity-40 mt-6 mx-6">
+      {{ $t("find.shopList") }}
+    </div>
     <!-- Restaurants -->
     <template v-for="state in allArea">
       <div v-if="restaurantsObj[state]">
@@ -50,6 +91,7 @@ import {
 import { JPPrefecture, USStates } from "@/config/constant";
 import { restaurant2AreaObj, sortRestaurantObj } from "@/utils/RestaurantUtils";
 import { defaultHeader } from "@/config/header";
+import { moBaseUrl } from "@/config/project";
 
 export default defineComponent({
   name: "RestaurantIndex",
@@ -84,9 +126,19 @@ export default defineComponent({
           console.log(error);
         }
       );
-      restaurantsObj.value = restaurant2AreaObj(restaurantsCollection.docs);
+      const tmp = restaurant2AreaObj(restaurantsCollection.docs);
+      restaurantsObj.value = Object.keys(tmp).reduce((ret, key) => {
+        const sorted = tmp[key].sort((a, b) => {
+          return (Number(a.zip.replace(/\-/g, "")) || 0) >
+            (Number(b.zip.replace(/\-/g, "")) || 0)
+            ? 1
+            : -1;
+        });
+        // console.log(sorted.map(a => a.zip));
+        ret[key] = sorted;
+        return ret;
+      }, {});
       restaurants.value = restaurantsCollection.docs.map(doc2data(""));
-      sortRestaurantObj(restaurantsObj.value);
     })();
 
     const allArea = computed(() => {
@@ -98,6 +150,7 @@ export default defineComponent({
       restaurantsObj,
 
       allArea,
+      moBaseUrl,
     };
   },
 });

@@ -11,7 +11,7 @@
 
         <!-- Notifications -->
         <div class="mt-4 lg:mt-0 flex-shrink-0 text-right">
-          <notification-index :shopInfo="restaurantInfo" />
+          <notification-index :shopInfo="shopInfo" />
         </div>
       </div>
 
@@ -131,7 +131,7 @@
                 ></b-input>
                 <div>
                   <span class="button is-static">
-                    {{ $t("currency." + this.currencyKey) }}
+                    {{ $t("currency." + currencyKey) }}
                   </span>
                 </div>
               </b-field>
@@ -154,10 +154,7 @@
                     :value="taxItem"
                     :key="taxItem"
                   >
-                    {{
-                      restaurantInfo &&
-                      (restaurantInfo[taxItem + "Tax"] || 0) + "%"
-                    }}
+                    {{ shopInfo && (shopInfo[taxItem + "Tax"] || 0) + "%" }}
                     - {{ $t("editMenu." + taxRateKeys[taxItem]) }}
                   </option>
                 </b-select>
@@ -174,7 +171,7 @@
               {{ $t("editMenu.displayPrice") }}:
             </div>
             <div class="inline">
-              <Price :shopInfo="restaurantInfo" :menu="menuInfo" />
+              <Price :shopInfo="shopInfo" :menu="menuInfo" />
             </div>
           </div>
 
@@ -330,7 +327,7 @@
                         <div
                           class="text-sm font-bold text-black text-opacity-60"
                         >
-                          {{ displayOption(opt, restaurantInfo, menuInfo) }}
+                          {{ displayOption(opt, shopInfo, menuInfo) }}
                         </div>
                       </b-checkbox>
                       <b-radio
@@ -342,7 +339,7 @@
                         <div
                           class="text-sm font-bold text-black text-opacity-60"
                         >
-                          {{ displayOption(opt, restaurantInfo, menuInfo) }}
+                          {{ displayOption(opt, shopInfo, menuInfo) }}
                         </div>
                       </b-radio>
                     </div>
@@ -366,6 +363,30 @@
                   </div>
                 </div>
               </b-button>
+            </div>
+          </div>
+
+          <div class="mt-6">
+            <div class="text-sm font-bold pb-2">
+              {{ $t("editMenu.exclusionDate") }}
+            </div>
+            <span v-for="(day, index) in daysOfWeek" :key="index">
+              <b-checkbox v-model="menuInfo.exceptDay[index]">
+                <span class="text-base font-bold">
+                  {{ $t("week.short." + day) }}
+                  <span v-if="index !== '7'">/</span>
+                </span>
+              </b-checkbox>
+            </span>
+            <div class="mt-2 text-sm font-bold">
+              {{ $t("editMenu.exclusionTime") }}
+            </div>
+            <div class="mt-2">
+              <hours-input
+                v-model="menuInfo.exceptHour"
+                :type="'is-success'"
+                :disabled="false"
+              ></hours-input>
             </div>
           </div>
 
@@ -460,7 +481,7 @@
               <edit-category
                 v-if="categoryKey"
                 :categoryKey="categoryKey"
-                :restaurantInfo="restaurantInfo"
+                :shopInfo="shopInfo"
                 @dismissed="handleDismissed"
                 @updated="handleCategoryUpdated"
               />
@@ -557,226 +578,254 @@
 </template>
 
 <script>
-import Vue from "vue";
+import {
+  defineComponent,
+  ref,
+  computed,
+  onUnmounted,
+  reactive,
+} from "@vue/composition-api";
 import { db } from "@/plugins/firebase";
 import firebase from "firebase/compat/app";
-import NotFound from "@/components/NotFound";
-import BackButton from "@/components/BackButton";
-import Price from "@/components/Price";
-import { taxRates } from "@/config/constant";
-import NotificationIndex from "./Notifications/Index";
+
+import NotFound from "@/components/NotFound.vue";
+import BackButton from "@/components/BackButton.vue";
+import Price from "@/components/Price.vue";
+import EditCategory from "@/app/admin/MenuItemPage/EditCategory.vue";
+import NotificationIndex from "./Notifications/Index.vue";
+import HoursInput from "@/app/admin/inputComponents/HoursInput.vue";
+
+import { taxRates, daysOfWeek } from "@/config/constant";
 import { ownPlateConfig } from "@/config/project";
 import { halfCharactors, formatOption, optionPrice } from "@/utils/strings";
-import EditCategory from "@/app/admin/Menus/EditCategory";
+import {
+  doc2data,
+  useAdminUids,
+  regionalSetting,
+  stripeRegion,
+  countObj,
+  roundPrice,
+  taxRate,
+  notFoundResponse,
+} from "@/utils/utils";
 
 import { uploadFile } from "@/lib/firebase/storage";
 
 import { getNewItemData } from "@/models/menu";
+import { checkShopOwner } from "@/utils/userPermission";
 
-export default {
-  name: "Order",
+export default defineComponent({
+  name: "MenuItemPage",
   metaInfo() {
     return {
-      title: this.menuInfo.itemName
-        ? [
-            "Admin Menu Item",
-            this.menuInfo.itemName,
-            this.restaurantInfo.restaurantName,
-            this.defaultTitle,
-          ].join(" / ")
-        : this.defaultTitle,
+      title:
+        this.menuInfo && this.menuInfo.itemName
+          ? [
+              "Admin Menu Item",
+              this.menuInfo.itemName,
+              this.shopInfo.restaurantName,
+              this.defaultTitle,
+            ].join(" / ")
+          : this.defaultTitle,
     };
   },
 
   components: {
     Price,
+    EditCategory,
     BackButton,
     NotificationIndex,
     NotFound,
-    EditCategory,
+    HoursInput,
   },
   props: {
     shopInfo: {
       type: Object,
       required: true,
     },
+    groupMasterRestaurant: {
+      type: Object,
+      required: false,
+    },
+    isInMo: {
+      type: Boolean,
+      required: true,
+    },
   },
 
-  data() {
-    return {
-      dummyCheckbox: [],
-      menuInfo: {
-        itemName: "",
-        itemAliasesName: "",
-        price: 0,
-        tax: "food",
-        itemDescription: "",
-        itemMemo: "",
-        itemPhoto: "",
-        images: {},
-        publicFlag: false,
-        itemOptionCheckbox: [""],
-        allergens: {},
-        category1: "",
-        category2: "",
-      },
+  setup(props, ctx) {
+    const dummyCheckbox = ref([]);
 
-      taxRates: taxRates,
-      taxRateKeys: [],
-      requireTaxPriceDisplay: false,
-      currencyKey: "US",
-      maxPrice: 1000000.0 / this.$store.getters.stripeRegion.multiple,
-      restaurantInfo: {},
-      notFound: null,
-      menuId: this.$route.params.menuId,
-      submitting: false,
-      files: {},
-      categoryKey: null,
-      restaurants: [],
-      copyRestaurantId: null,
-    };
-  },
-  async created() {
-    this.checkAdminPermission();
+    const menuInfo = reactive({
+      itemName: "",
+      itemAliasesName: "",
+      price: 0,
+      tax: "food",
+      itemDescription: "",
+      itemMemo: "",
+      itemPhoto: "",
+      images: {},
+      publicFlag: false,
+      itemOptionCheckbox: [""],
+      allergens: {},
+      exceptDay: {},
+      exceptHour: {},
+      category1: "",
+      category2: "",
+    });
+
+    const maxPrice = 1000000.0 / stripeRegion.multiple;
+    const allergens = stripeRegion.allergens;
+    const priceStep = 1.0 / stripeRegion.multiple;
+
+    const notFound = ref(null);
+    const menuId = ctx.root.$route.params.menuId;
+    const submitting = ref(false);
+
+    const files = {};
+    const categoryKey = ref(null);
+    const restaurants = ref([]);
+    const copyRestaurantId = ref(null);
+
+    const { isOwner, uid, ownerUid } = useAdminUids(ctx);
+
     // allow sub Account
-    if (!this.checkShopAccount(this.shopInfo)) {
-      this.notFound = true;
-      return true;
+    if (!checkShopOwner(props.shopInfo, uid.value)) {
+      return notFoundResponse;
     }
+    const menuRestaurantId = computed(() => {
+      return props.isInMo
+        ? props.groupMasterRestaurant.restaurantId
+        : ctx.root.$route.params.restaurantId;
+    });
 
-    this.taxRateKeys = this.regionalSetting["taxRateKeys"];
-    this.requireTaxPriceDisplay = this.regionalSetting.requireTaxPriceDisplay;
-    this.currencyKey = this.regionalSetting["CurrencyKey"];
+    const taxRateKeys = regionalSetting["taxRateKeys"];
+    const requireTaxPriceDisplay = regionalSetting.requireTaxPriceDisplay;
+    const currencyKey = regionalSetting["CurrencyKey"];
 
-    this.restaurantInfo = this.shopInfo;
-    if (!this.restaurantInfo.category1) {
-      this.restaurantInfo.category1 = [];
+    if (!props.shopInfo.category1) {
+      props.shopInfo.category1 = [];
     }
-    if (!this.restaurantInfo.category2) {
-      this.restaurantInfo.category2 = [];
+    if (!props.shopInfo.category2) {
+      props.shopInfo.category2 = [];
     }
+    const { restaurantId } = props.shopInfo;
+    db.doc(`restaurants/${menuRestaurantId.value}/menus/${menuId}`)
+      .get()
+      .then((menuInfoDoc) => {
+        if (menuInfoDoc.exists) {
+          Object.assign(menuInfo, menuInfoDoc.data());
+          notFound.value = false;
+        } else {
+          notFound.value = true;
+        }
+      });
 
-    const menuRes = db.doc(
-      `restaurants/${this.restaurantId()}/menus/${this.menuId}`
-    );
-    const resMenuInfo = await menuRes.get();
-    if (!resMenuInfo.exists) {
-      this.notFound = true;
-      console.log("no menu");
-      return;
-    }
-    this.menuInfo = Object.assign({}, this.menuInfo, resMenuInfo.data());
-    this.notFound = false;
-    const restaurantsCollection = await db
-      .collection("restaurants")
-      .where("uid", "==", this.uid)
+    db.collection("restaurants")
+      .where("uid", "==", uid.value)
       .where("deletedFlag", "==", false)
-      .get();
-    if (!restaurantsCollection.empty && restaurantsCollection.docs.length > 0) {
-      this.restaurants = restaurantsCollection.docs.map((r) =>
-        this.doc2data("r")(r)
-      );
-      this.copyRestaurantId = this.restaurants[0].id;
-    }
-  },
-  computed: {
-    itemOptions() {
-      return this.menuInfo.itemOptionCheckbox.map((v) => {
+      .get()
+      .then((restaurantsCollection) => {
+        if (
+          !restaurantsCollection.empty &&
+          restaurantsCollection.docs.length > 0
+        ) {
+          restaurants.value = restaurantsCollection.docs.map((r) =>
+            doc2data("r")(r)
+          );
+          copyRestaurantId.value = restaurants.value[0].id;
+        }
+      });
+
+    const itemOptions = computed(() => {
+      return menuInfo.itemOptionCheckbox.map((v) => {
         return v.split(",");
       });
-    },
-    categories1() {
-      return this.restaurantInfo.category1;
-    },
-    categories2() {
-      return this.restaurantInfo.category2;
-    },
-    itemPhoto() {
+    });
+
+    const categories1 = computed(() => {
+      return props.shopInfo.category1 || [];
+    });
+    const categories2 = computed(() => {
+      return props.shopInfo.category2 || [];
+    });
+    const itemPhoto = computed(() => {
       return (
-        (this.menuInfo?.images?.item?.resizedImages || {})["600"] ||
-        this.menuInfo.itemPhoto
+        (menuInfo?.images?.item?.resizedImages || {})["600"] ||
+        menuInfo.itemPhoto
       );
-    },
-    allergens() {
-      return this.$store.getters.stripeRegion.allergens;
-    },
-    priceStep() {
-      return 1.0 / this.$store.getters.stripeRegion.multiple;
-    },
-    errors() {
+    });
+
+    const errors = computed(() => {
       const err = {};
       ["itemName", "price", "tax"].forEach((name) => {
         err[name] = [];
-        if (this.menuInfo[name] === "") {
+        if (menuInfo[name] === "") {
           err[name].push("validationError." + name + ".empty");
         }
       });
       err["itemDescription"] = [];
       return err;
-    },
-    uid() {
-      return this.$store.getters.uidAdmin;
-    },
-    hasError() {
-      const num = this.countObj(this.errors);
-      return num > 0;
-    },
-  },
-  /*
-  watch: {
-    hasError: function() {
-      this.menuInfo.publicFlag = !this.hasError;
-    }
-  },
-  */
-  methods: {
-    displayOptionPrice(str) {
-      const price = this.roundPrice(
-        optionPrice(str) * this.taxRate(this.restaurantInfo, this.menuInfo)
+    });
+    const hasError = computed(() => {
+      return countObj(errors.value) > 0;
+    });
+
+    const displayOptionPrice = (str) => {
+      const price = roundPrice(
+        optionPrice(str) * taxRate(props.shopInfo, menuInfo)
       );
       if (price === 0) {
-        return this.$t("editMenu.noPriceChange");
+        return ctx.root.$t("editMenu.noPriceChange");
       } else if (price > 0) {
-        return "+" + this.$n(price, "currency");
+        return "+" + ctx.root.$n(price, "currency");
       }
-      return this.$n(price, "currency");
-    },
-    async handleCategoryUpdated(categories) {
-      await db.doc(`restaurants/${this.restaurantId()}`).update({
-        [this.categoryKey]: categories,
+      return ctx.root.$n(price, "currency");
+    };
+    const handleCategoryUpdated = async (categories) => {
+      await db.doc(`restaurants/${menuRestaurantId.value}`).update({
+        [categoryKey.value]: categories,
       });
-      this.restaurantInfo[this.categoryKey] = categories;
-    },
-    handleDismissed() {
-      this.categoryKey = null;
-    },
-    editCategory(key) {
-      this.categoryKey = key;
-    },
-    handleMenuImage(e) {
-      this.files["menu"] = e;
-    },
-    deleteOption(pos) {
-      this.menuInfo.itemOptionCheckbox.splice(pos, 1);
+      props.shopInfo[categoryKey.value] = categories;
+    };
+    const handleDismissed = () => {
+      categoryKey.value = null;
+    };
+    const editCategory = (key) => {
+      categoryKey.value = key;
+    };
+    const handleMenuImage = (e) => {
+      files["menu"] = e;
+    };
+    const deleteOption = (pos) => {
+      menuInfo.itemOptionCheckbox.splice(pos, 1);
       // console.log(e);
-    },
-    addOption() {
-      this.menuInfo.itemOptionCheckbox.push("");
-    },
-    async copyItem() {
-      if (this.copyRestaurantId !== null) {
-        const shop = this.restaurants.find(
-          (r) => r.id === this.copyRestaurantId
+    };
+    const addOption = () => {
+      menuInfo.itemOptionCheckbox.push("");
+    };
+    const newItemData = () => {
+      const itemData = getNewItemData(
+        menuInfo,
+        ownPlateConfig.region === "JP",
+        !hasError.value
+      );
+      return itemData;
+    };
+    const copyItem = () => {
+      if (copyRestaurantId.value !== null) {
+        const shop = restaurants.value.find(
+          (r) => r.id === copyRestaurantId.value
         );
-        this.$store.commit("setAlert", {
+        ctx.root.$store.commit("setAlert", {
           title: shop.restaurantName,
           code: "editCommon.copyMenuAlert",
           callback: async () => {
-            const newItem = this.getNewItemData();
+            const newItem = newItemData();
             newItem.publicFlag = false;
             newItem.createdAt = firebase.firestore.FieldValue.serverTimestamp();
             newItem.deletedFlag = false;
-            newItem.uid = this.$store.getters.uidAdmin;
+            newItem.uid = ctx.root.$store.getters.uidAdmin;
 
             const category1 = shop.category1 || [];
             const category2 = shop.category2 || [];
@@ -801,30 +850,21 @@ export default {
           },
         });
       }
-    },
-    getNewItemData() {
-      const itemData = getNewItemData(
-        this.menuInfo,
-        ownPlateConfig.region === "JP",
-        !this.hasError
-      );
-      return itemData;
-    },
-    async submitItem() {
-      this.submitting = true;
+    };
+    const submitItem = async () => {
+      submitting.value = true;
       //upload image
       try {
-        if (this.files["menu"]) {
-          const path = `/images/restaurants/${this.restaurantId()}/menus/${
-            this.menuId
-          }/${this.uid}/item.jpg`;
-          this.menuInfo.itemPhoto = await uploadFile(this.files["menu"], path);
-          this.menuInfo.images.item = {
-            original: this.menuInfo.itemPhoto,
+        if (files["menu"]) {
+          const path = `/images/restaurants/${menuRestaurantId.value}/menus/${menuId}/${uid.value}/item.jpg`;
+          const photo = await uploadFile(files["menu"], path);
+          menuInfo.itemPhoto = photo;
+          menuInfo.images.item = {
+            original: photo,
             resizedImages: {},
           };
         }
-        const itemData = this.getNewItemData();
+        const itemData = newItemData();
 
         // Convert double-width characters with half-width characters in options
         // We also convert Japanse commas with alphabet commas
@@ -835,21 +875,62 @@ export default {
         );
 
         const newData = await db
-          .doc(`restaurants/${this.restaurantId()}/menus/${this.menuId}`)
+          .doc(`restaurants/${menuRestaurantId.value}/menus/${menuId}`)
           .update(itemData);
 
-        this.$router.push({
-          path: `/admin/restaurants/${this.restaurantId()}/menus`,
+        ctx.root.$router.push({
+          path: `/admin/restaurants/${restaurantId}/menus`,
         });
       } catch (error) {
-        this.submitting = false;
-        this.$store.commit("setErrorMessage", {
+        submitting.value = false;
+        ctx.root.$store.commit("setErrorMessage", {
           code: "menu.save",
           error,
         });
         console.log(error);
       }
-    },
+    };
+
+    return {
+      dummyCheckbox: [],
+      menuInfo,
+
+      taxRates,
+      taxRateKeys,
+      requireTaxPriceDisplay,
+      currencyKey,
+      maxPrice,
+      notFound,
+      menuId,
+      submitting,
+      categoryKey,
+      restaurants,
+      copyRestaurantId,
+
+      allergens,
+      priceStep,
+
+      // computed
+      itemOptions,
+      categories1,
+      categories2,
+      itemPhoto,
+
+      errors,
+      hasError,
+
+      displayOptionPrice,
+      handleCategoryUpdated,
+      handleDismissed,
+      editCategory,
+      handleMenuImage,
+      deleteOption,
+      addOption,
+      copyItem,
+      submitItem,
+
+      daysOfWeek,
+    };
   },
-};
+});
 </script>

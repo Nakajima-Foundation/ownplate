@@ -1,6 +1,6 @@
 {
   "name": "OwnPlate",
-  "version": "2.0.0",
+  "version": "2.0.23",
   "private": true,
   "description": "OwnPlate - Delicious food",
   "author": "OwnPlate developer team",
@@ -24,6 +24,7 @@
     "@sentry/vue": "^6.19.4",
     "@vue/composition-api": "^1.4.9",
     "buefy": "^0.9.19",
+    "caniuse-lite": "^1.0.30001393",
     "cookie": "^0.4.2",
     "firebase": "^9.6.10",
     "google-libphonenumber": "^3.2.10",
@@ -55,6 +56,7 @@
     "@types/gtag.js": "^0.0.10",
     "@types/lodash": "^4.14.181",
     "@types/pdfmake": "^0.1.21",
+    "@types/validator": "^13.7.6",
     "@vue/cli": "^5.0.4",
     "@vue/cli-plugin-typescript": "~5.0.4",
     "@vue/cli-service": "^5.0.4",

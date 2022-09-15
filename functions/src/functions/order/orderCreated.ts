@@ -3,7 +3,9 @@ import * as utils from "../../lib/utils";
 import { order_status } from "../../common/constant";
 import { createCustomer } from "../../stripe/customer";
 
-// export const wasOrderCreated = async (db, snapshot, context) => {
+import { orderCreatedData, menuItem } from "../../lib/types";
+import { validateOrderCreated } from "../../lib/validator";
+
 export const getGroupRestautantRef = async (db, groupId: string) => {
   const groupData = (await db.doc(`groups/${groupId}`).get()).data();
   if (!groupData) {
@@ -12,7 +14,6 @@ export const getGroupRestautantRef = async (db, groupId: string) => {
   return db.doc(`restaurants/${groupData.restaurantId}`);
 };
 
-// for wasOrderCreated
 const getOptionPrice = (selectedOptionsRaw, menu, multiple) => {
   return selectedOptionsRaw.reduce((tmpPrice, selectedOpt, key) => {
     const opt = menu.itemOptionCheckbox[key].split(",");
@@ -56,6 +57,7 @@ export const orderAccounting = (restaurantData, food_sub_total, alcohol_sub_tota
     const food_tax = Math.round(((food_sub_total * foodTax) / 100) * multiple) / multiple;
     const alcohol_tax = Math.round(((alcohol_sub_total * alcoholTax) / 100) * multiple) / multiple;
     const tax = food_tax + alcohol_tax;
+
     const total = sub_total + tax;
     return {
       tax,
@@ -69,7 +71,6 @@ export const orderAccounting = (restaurantData, food_sub_total, alcohol_sub_tota
     };
   }
 };
-
 
 export const createNewOrderData = async (restaurantRef, orderRef, orderData, multiple) => {
   const menuIds = Object.keys(orderData.order);
@@ -125,7 +126,7 @@ export const createNewOrderData = async (restaurantRef, orderRef, orderData, mul
     } else {
       food_sub_total += total;
     }
-    const menuItem: any = {
+    const menuItem: menuItem = {
       price: menu.price,
       itemName: menu.itemName,
       itemPhoto: menu.itemPhoto,
@@ -133,6 +134,11 @@ export const createNewOrderData = async (restaurantRef, orderRef, orderData, mul
       itemAliasesName: menu.itemAliasesName,
       category1: menu.category1,
       category2: menu.category2,
+      category: menu.category,
+      subCategory: menu.subCategory,
+      exceptDay: menu.exceptDay || {},
+      exceptHour: menu.exceptHour || {},
+      productId: menu.productId,
       tax: menu.tax,
     };
 
@@ -147,11 +153,17 @@ export const createNewOrderData = async (restaurantRef, orderRef, orderData, mul
   };
 };
 
-export const wasOrderCreated = async (db, data: any, context) => {
+export const orderCreated = async (db, data: orderCreatedData, context) => {
   const customerUid = utils.validate_auth(context);
 
   const { restaurantId, orderId } = data;
-  utils.validate_params({ restaurantId, orderId });
+  utils.required_params({ restaurantId, orderId });
+
+  const validateResult = validateOrderCreated(data);
+  if (!validateResult.result) {
+    console.error("orderCreated", validateResult.errors);
+    throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
+  }
 
   const restaurantRef = db.doc(`restaurants/${restaurantId}`);
   const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`);
@@ -159,13 +171,13 @@ export const wasOrderCreated = async (db, data: any, context) => {
   try {
     const restaurantDoc = await restaurantRef.get();
     if (!restaurantDoc.exists) {
-      console.error("[wasOrderCreated] noRestaurant");
+      console.error("[orderCreated] noRestaurant");
       return orderRef.update("status", order_status.error);
     }
     const restaurantData = restaurantDoc.data();
 
     if (restaurantData.deletedFlag || !restaurantData.publicFlag) {
-      console.error("[wasOrderCreated] not exists");
+      console.error("[orderCreated] not exists");
       return orderRef.update("status", order_status.error);
     }
     // check mo
@@ -232,7 +244,7 @@ export const wasOrderCreated = async (db, data: any, context) => {
       })
     );
   } catch (e) {
-    console.error("[wasOrderCreated] unknown ", e);
+    console.error("[orderCreated] unknown ", e);
     return orderRef.update("status", order_status.error);
   }
 };

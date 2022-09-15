@@ -233,7 +233,8 @@ export default defineComponent({
           size: "invisible",
           callback: (response) => {
             // reCAPTCHA solved, allow signInWithPhoneNumber.
-            console.log("verified", response);
+            // console.log("verified", response);
+            console.log("verified");
           },
         },
         auth

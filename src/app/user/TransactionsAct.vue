@@ -22,9 +22,7 @@
 </template>
 
 <script>
-import {
-  defineComponent,
-} from "@vue/composition-api";
+import { defineComponent } from "@vue/composition-api";
 
 import TransactionsActContents from "@/app/user/TransactionsAct/Contents.vue";
 
@@ -47,7 +45,7 @@ export default defineComponent({
       ctx.refs.contents.openTransactionsAct();
     };
     return {
-      openTransactionsAct
+      openTransactionsAct,
     };
   },
 });

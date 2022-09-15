@@ -22,6 +22,17 @@
       "**/.*",
       "**/node_modules/**"
     ],
+    "headers": [{
+        "source": "**",
+        "headers": [
+          { "key" : "Access-Control-Allow-Origin", "value" : "*" },
+          { "key" : "X-Frame-Options", "value" : "deny" },
+          { "key" : "X-Content-Type-Options", "value" : "nosniff" },
+          { "key" : "X-XSS-Protection", "value" : "1; mode=block" },
+          { "key" : "X-Permitted-Cross-Domain-Policies", "value" : "none" },
+          { "key" : "Referrer-Policy", "value": "no-referrer" }
+        ]
+    }],    
     "appAssociation": "AUTO",
     "rewrites": [
       {
@@ -65,12 +76,24 @@
         "dynamicLinks": true
       },
       {
+        "source": "/ss",
+        "destination": "/ss.html"
+      },
+      {
         "source": "/ss/**",
         "destination": "/ss.html"
       },
       {
+        "source": "/mo",
+        "destination": "/mo.html"
+      },
+      {
         "source": "/mo/**",
         "destination": "/mo.html"
+      },
+      {
+        "source": "/motest",
+        "destination": "/motest.html"
       },
       {
         "source": "/motest/**",

@@ -50,11 +50,12 @@
 </template>
 
 <script>
-import BackButton from "@/components/BackButton";
 import { db } from "@/plugins/firebase";
 import { stripeVerify } from "@/lib/stripe/stripe";
-
 import superMixin from "@/mixins/SuperMixin";
+import { doc2data } from "@/utils/utils";
+
+import BackButton from "@/components/BackButton.vue";
 
 const QUERY_LIMIT = 50;
 
@@ -98,7 +99,7 @@ export default {
         } else {
           this.last = null;
         }
-        const admins = snapshot.docs.map(this.doc2data("admin"));
+        const admins = snapshot.docs.map(doc2data("admin"));
         admins.forEach(async (admin) => {
           this.admins.push(admin);
           // NOTE: We are getting extra data only once for each admin

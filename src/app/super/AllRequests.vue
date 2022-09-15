@@ -50,11 +50,12 @@
 </template>
 
 <script>
-import BackButton from "@/components/BackButton";
 import { db } from "@/plugins/firebase";
 import firebase from "firebase/compat/app";
 
-import { arrayChunk } from "@/utils/utils";
+import { doc2data, array2obj, arrayChunk } from "@/utils/utils";
+
+import BackButton from "@/components/BackButton.vue";
 
 export default {
   metaInfo() {
@@ -83,7 +84,7 @@ export default {
       .limit(500)
       .orderBy("created", "desc")
       .onSnapshot(async (snapshot) => {
-        this.requests = snapshot.docs.map(this.doc2data("request"));
+        this.requests = snapshot.docs.map(doc2data("request"));
         const ids = this.requests.map((a) => a.id);
         arrayChunk(ids, 10).map(async (arr) => {
           const resCols = await db
@@ -94,7 +95,7 @@ export default {
             this.restaurantsObj = Object.assign(
               {},
               this.restaurantsObj,
-              this.array2obj(resCols.docs.map(this.doc2data("restaurant")))
+              array2obj(resCols.docs.map(doc2data("restaurant")))
             );
           }
         });

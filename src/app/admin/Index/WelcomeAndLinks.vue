@@ -60,3 +60,12 @@
     </div>
   </div>
 </template>
+<script>
+import { defineComponent } from "@vue/composition-api";
+import { isJapan } from "@/utils/utils";
+export default defineComponent({
+  setup() {
+    return { isJapan };
+  },
+});
+</script>

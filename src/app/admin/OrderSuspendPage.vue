@@ -1,123 +1,98 @@
 <template>
   <div>
-    <!-- Header -->
-    <div class="mt-6 mx-6 lg:flex lg:items-center">
-      <!-- Back and Preview -->
-      <div class="flex space-x-4">
-        <div class="flex-shrink-0">
-          <back-button :url="`/admin/restaurants/${restaurantId()}/orders`" />
-        </div>
-        <div class="flex-shrink-0">
-          <router-link :to="'/r/' + restaurantId()">
-            <div
-              class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
-            >
-              <i class="material-icons text-lg text-op-teal mr-2">launch</i>
-              <span class="text-sm font-bold text-op-teal">{{
-                $t("admin.viewPage")
-              }}</span>
-            </div>
-          </router-link>
-        </div>
+    <template v-if="notFound == null"></template>
+    <template v-else-if="notFound">
+      <not-found />
+    </template>
+
+    <div v-else>
+      <!-- Header -->
+      <AdminHeader
+        class="mt-6 mx-6 lg:flex lg:items-center"
+        :shopInfo="shopInfo"
+        :backLink="`/admin/restaurants/${shopInfo.restaurantId}/orders`"
+        :showSuspend="false"
+        :isInMo="isInMo"
+        :moPrefix="moPrefix"
+      />
+
+      <!-- Title -->
+      <div class="mt-6 mx-6 text-xl font-bold text-black text-opacity-30">
+        {{ $t("admin.order.suspendSettings") }}
       </div>
 
-      <!-- Photo and Name -->
-      <div class="mt-4 lg:mt-0 lg:flex-1 lg:flex lg:items-center lg:mx-4">
-        <div class="flex items-center">
-          <div class="flex-shrink-0 rounded-full bg-black bg-opacity-10 mr-4">
-            <img
-              :src="resizedProfileImage(shopInfo, '600')"
-              class="w-9 h-9 rounded-full object-cover"
-            />
-          </div>
-          <div class="text-base font-bold">
-            {{ shopInfo.restaurantName }}
-          </div>
-        </div>
+      <!-- Date -->
+      <div class="mt-4 mx-6 text-sm font-bold text-black text-opacity-60">
+        {{ $t("admin.order.suspendNewOrders") }}
+        <span v-if="date">: {{ $d(date.date, "short") }}</span>
       </div>
 
-      <!-- Notifications -->
-      <div class="mt-4 lg:mt-0 flex-shrink-0">
-        <notification-index :shopInfo="shopInfo" />
-      </div>
-    </div>
-
-    <!-- Title -->
-    <div class="mt-6 mx-6 text-xl font-bold text-black text-opacity-30">
-      {{ $t("admin.order.suspendSettings") }}
-    </div>
-
-    <!-- Date -->
-    <div class="mt-4 mx-6 text-sm font-bold text-black text-opacity-60">
-      {{ $t("admin.order.suspendNewOrders") }}
-      <span v-if="date">: {{ $d(date.date, "short") }}</span>
-    </div>
-
-    <!-- Suspend and Unsuspend  -->
-    <div class="mt-6 mx-6">
-      <div v-if="!suspendUntil">
-        <b-button
-          v-for="time in availableTimes"
-          :key="time.time"
-          @click="handleSuspend(0, time.time)"
-          class="b-reset-tw mr-4 mb-4"
-        >
-          <div
-            class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5"
+      <!-- Suspend and Unsuspend  -->
+      <div class="mt-6 mx-6">
+        <div v-if="!suspendUntil">
+          <b-button
+            v-for="time in availableTimes"
+            :key="time.time"
+            @click="handleSuspend(0, time.time)"
+            class="b-reset-tw mr-4 mb-4"
           >
-            <i class="material-icons text-lg text-op-teal mr-2">alarm_off</i>
-            <div class="text-sm font-bold text-op-teal">
-              {{ $t("admin.order.suspendUntil", { display: time.display }) }}
+            <div
+              class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5"
+            >
+              <i class="material-icons text-lg text-op-teal mr-2">alarm_off</i>
+              <div class="text-sm font-bold text-op-teal">
+                {{ $t("admin.order.suspendUntil", { display: time.display }) }}
+              </div>
+            </div>
+          </b-button>
+
+          <div class="mt-4">
+            <div v-for="(day, k) in [0, 1, 2, 7]" :key="k" class="inline-flex">
+              <b-button
+                v-if="availableTimes.length > 0"
+                class="b-reset-tw"
+                @click="handleSuspend(day, 24 * 60)"
+              >
+                <div
+                  class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5 mr-4 mb-4"
+                >
+                  <i class="material-icons text-lg text-op-teal mr-2"
+                    >alarm_off</i
+                  >
+                  <div class="text-sm font-bold text-op-teal">
+                    <span v-if="day > 0">{{
+                      $t("admin.order.suspendDayUntil", { display: day })
+                    }}</span>
+                    <span v-else>{{ $t("admin.order.suspendForAllDay") }}</span>
+                  </div>
+                </div>
+              </b-button>
             </div>
           </div>
-        </b-button>
+        </div>
 
-        <div class="mt-4">
-          <div v-for="(day, k) in [0, 1, 2, 7]" :key="k" class="inline-flex">
-            <b-button
-              v-if="availableTimes.length > 0"
-              class="b-reset-tw"
-              @click="handleSuspend(day, 24 * 60)"
-            >
+        <div v-else>
+          <div class="mt-4 p-4 bg-red-700 bg-opacity-10 rounded-lg text-center">
+            <div class="text-base font-bold text-red-700">
+              {{ $t("admin.order.suspending") }}
+            </div>
+            <div class="text-sm font-bold text-red-700 mt-2">
+              {{ $t("admin.order.unsuspendAt") }} {{ suspendUntil }}
+            </div>
+          </div>
+
+          <div class="mt-4">
+            <b-button class="b-reset-tw" @click="handleRemove">
               <div
-                class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5 mr-4 mb-4"
+                class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5"
               >
-                <i class="material-icons text-lg text-op-teal mr-2"
-                  >alarm_off</i
-                >
+                <i class="material-icons text-lg text-op-teal mr-2">alarm_on</i>
                 <div class="text-sm font-bold text-op-teal">
-                  <span v-if="day > 0">{{
-                    $t("admin.order.suspendDayUntil", { display: day })
-                  }}</span>
-                  <span v-else>{{ $t("admin.order.suspendForAllDay") }}</span>
+                  {{ $t("admin.order.unsuspend") }}
                 </div>
               </div>
             </b-button>
           </div>
-        </div>
-      </div>
-
-      <div v-else>
-        <div class="mt-4 p-4 bg-red-700 bg-opacity-10 rounded-lg text-center">
-          <div class="text-base font-bold text-red-700">
-            {{ $t("admin.order.suspending") }}
-          </div>
-          <div class="text-sm font-bold text-red-700 mt-2">
-            {{ $t("admin.order.unsuspendAt") }} {{ suspendUntil }}
-          </div>
-        </div>
-
-        <div class="mt-4">
-          <b-button class="b-reset-tw" @click="handleRemove">
-            <div
-              class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5"
-            >
-              <i class="material-icons text-lg text-op-teal mr-2">alarm_on</i>
-              <div class="text-sm font-bold text-op-teal">
-                {{ $t("admin.order.unsuspend") }}
-              </div>
-            </div>
-          </b-button>
         </div>
       </div>
     </div>
@@ -125,18 +100,21 @@
 </template>
 
 <script>
+import { defineComponent, ref, computed } from "@vue/composition-api";
 import { db, firestore } from "@/plugins/firebase";
-import BackButton from "@/components/BackButton";
-import PickupMixin from "@/mixins/pickupMixin";
 import firebase from "firebase/compat/app";
 
-import NotificationIndex from "./Notifications/Index";
+import AdminHeader from "@/app/admin/AdminHeader.vue";
+import NotFound from "@/components/NotFound.vue";
 
-export default {
-  mixins: [PickupMixin],
+import { checkShopAccount } from "@/utils/userPermission";
+import { useAdminUids, notFoundResponse } from "@/utils/utils";
+import { usePickupTime } from "@/utils/pickup";
+
+export default defineComponent({
   components: {
-    BackButton,
-    NotificationIndex,
+    AdminHeader,
+    NotFound,
   },
   metaInfo() {
     return {
@@ -154,79 +132,91 @@ export default {
       type: Object,
       required: true,
     },
+    isInMo: {
+      type: Boolean,
+      required: true,
+    },
+    moPrefix: {
+      type: String,
+      required: false,
+    },
+    groupMasterRestaurant: {
+      type: Object,
+      required: false,
+    },
   },
-  data() {
-    return {
-      date: null,
-      notFound: null,
-    };
-  },
-  created() {
-    this.checkAdminPermission();
-    if (!this.checkShopAccount(this.shopInfo)) {
-      this.notFound = true;
-      return true;
+  setup(props, ctx) {
+    const date = ref(null);
+
+    const { ownerUid } = useAdminUids(ctx);
+    if (!checkShopAccount(props.shopInfo, ownerUid.value)) {
+      return notFoundResponse;
     }
 
     if (
-      this.shopInfo &&
-      !this.shopInfo.deletedFlag &&
-      this.shopInfo.publicFlag
+      !props.shopInfo ||
+      props.shopInfo.deletedFlag ||
+      !props.shopInfo.publicFlag
     ) {
-      this.notFound = false;
-    } else {
-      this.notFound = true;
+      return notFoundResponse;
     }
-  },
-  computed: {
-    availableTimes() {
+    const { availableDays } = usePickupTime(props.shopInfo, {}, {}, ctx);
+
+    const availableTimes = computed(() => {
       // Note: availableDays will change if we change shopInfo.suspendUntil.
       // This logic works because we use availableDays when suspendUntil is not set or too old.
-      if (this.availableDays.length > 0) {
-        this.date = this.availableDays[0];
-        console.log(this.date.date);
-        const times = this.date.times;
+      if (availableDays.value.length > 0) {
+        date.value = availableDays.value[0];
+        console.log(date.value.date);
+        const times = date.value.times;
         return times.slice(1, 13); // first twelve time slots (except first) regardless of the time
       } else {
-        this.date = null;
+        date.value = null;
       }
       return [];
-    },
-    suspendUntil() {
-      if (this.shopInfo.suspendUntil) {
-        const time = this.shopInfo.suspendUntil.toDate();
+    });
+    const suspendUntil = computed(() => {
+      if (props.shopInfo.suspendUntil) {
+        const time = props.shopInfo.suspendUntil.toDate();
         if (time < new Date()) {
           return false;
         }
         console.log(time);
-        return this.$d(time, "long");
+        return ctx.root.$d(time, "long");
       }
       return false;
-    },
-  },
-  methods: {
-    async handleSuspend(day, time) {
-      const date = new Date(this.date.date);
-      date.setHours(time / 60);
-      date.setMinutes(time % 60);
+    });
+
+    const handleSuspend = async (day, time) => {
+      const tmpDate = new Date(date.value.date);
+      tmpDate.setHours(time / 60);
+      tmpDate.setMinutes(time % 60);
       if (day && day > 0) {
-        date.setDate(date.getDate() + day);
+        tmpDate.setDate(tmpDate.getDate() + day);
       }
-      const ts = firebase.firestore.Timestamp.fromDate(date);
-      console.log(ts, date);
-      this.$store.commit("setLoading", true);
-      await db.doc(`restaurants/${this.restaurantId()}`).update({
+      const ts = firebase.firestore.Timestamp.fromDate(tmpDate);
+      console.log(ts, tmpDate);
+      ctx.root.$store.commit("setLoading", true);
+      await db.doc(`restaurants/${ctx.root.restaurantId()}`).update({
         suspendUntil: ts,
       });
-      this.$store.commit("setLoading", false);
-    },
-    async handleRemove() {
-      this.$store.commit("setLoading", true);
-      await db.doc(`restaurants/${this.restaurantId()}`).update({
+      ctx.root.$store.commit("setLoading", false);
+    };
+    const handleRemove = async () => {
+      ctx.root.$store.commit("setLoading", true);
+      await db.doc(`restaurants/${ctx.root.restaurantId()}`).update({
         suspendUntil: null,
       });
-      this.$store.commit("setLoading", false);
-    },
+      ctx.root.$store.commit("setLoading", false);
+    };
+    return {
+      date,
+      availableTimes,
+      suspendUntil,
+      handleSuspend,
+      handleRemove,
+      notFound: false,
+    };
   },
-};
+});
 </script>

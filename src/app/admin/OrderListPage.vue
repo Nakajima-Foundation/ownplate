@@ -5,112 +5,60 @@
     </template>
     <div v-else>
       <!-- Header -->
-      <div class="mt-6 mx-6 lg:flex lg:items-center">
-        <!-- Back and Preview -->
-        <div class="flex space-x-4">
-          <div class="flex-shrink-0">
-            <back-button url="/admin/restaurants/" />
-          </div>
-          <div class="flex-shrink-0">
-            <router-link :to="'/r/' + restaurantId()">
-              <div
-                class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
-              >
-                <i class="material-icons text-lg text-op-teal mr-2">launch</i>
-                <span class="text-sm font-bold text-op-teal">{{
-                  $t("admin.viewPage")
-                }}</span>
-              </div>
-            </router-link>
-          </div>
+      <AdminHeader
+        class="mt-6 mx-6 lg:flex lg:items-center"
+        :shopInfo="shopInfo"
+        backLink="/admin/restaurants/"
+        :showSuspend="true"
+        :isInMo="isInMo"
+        :moPrefix="moPrefix"
+      />
+
+      <div class="sm:flex">
+        <div class="mt-6 ml-6 sm:flex">
+          <ToggleSwitch
+            :toggleState="queryIsPlacedDate"
+            @toggleFunction="switchOrderQuery()"
+            onName="admin.order.placedDate"
+            offName="admin.order.pickupDate"
+          />
         </div>
 
-        <!-- Photo and Name -->
-        <div class="mt-4 lg:mt-0 lg:flex-1 lg:flex lg:items-center lg:mx-4">
-          <div class="flex items-center">
-            <div class="flex-shrink-0 rounded-full bg-black bg-opacity-10 mr-4">
-              <img
-                :src="resizedProfileImage(shopInfo, '600')"
-                class="w-9 h-9 rounded-full object-cover"
-              />
-            </div>
-            <div class="text-base font-bold">
-              {{ shopInfo.restaurantName }}
-            </div>
-          </div>
-        </div>
-
-        <!-- Suspend Button -->
-        <div class="mt-4 lg:mt-0 lg:mr-4 flex-shrink-0">
-          <b-button
-            tag="router-link"
-            :to="`/admin/restaurants/${restaurantId()}/suspend`"
-            class="b-reset-tw"
-          >
-            <div
-              v-if="this.shopInfo.suspendUntil"
-              class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-red-700 bg-opacity-5"
+        <!-- Date -->
+        <div class="ml-6 mt-6 sm:ml-4">
+          <b-select v-model="dayIndex">
+            <option
+              v-for="day in lastSeveralDays"
+              :value="day.index"
+              :key="day.index"
             >
-              <i class="material-icons text-lg text-red-700 mr-2"
-                >remove_shopping_cart</i
-              >
-              <div class="text-sm font-bold text-red-700">
-                {{ $t("admin.order.suspending") }}
-              </div>
-            </div>
-
-            <div
-              v-else
-              class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5"
-            >
-              <i class="material-icons text-lg text-op-teal mr-2"
-                >remove_shopping_cart</i
-              >
-              <div class="text-sm font-bold text-op-teal">
-                {{ $t("admin.order.suspendSettings") }}
-              </div>
-            </div>
-          </b-button>
+              {{ $d(day.date, "short") }}
+              {{ orderCounter[moment(day.date).format("YYYY-MM-DD")] }}
+              <span v-if="day.index === pickUpDaysInAdvance">{{
+                $t("date.today")
+              }}</span>
+            </option>
+          </b-select>
         </div>
-
-        <!-- Notifications -->
-        <div class="mt-4 lg:mt-0 flex-shrink-0">
-          <notification-index :shopInfo="shopInfo" />
-        </div>
-      </div>
-
-      <!-- Date -->
-      <div class="mx-6 mt-6">
-        <b-select v-model="dayIndex">
-          <option
-            v-for="day in lastSeveralDays"
-            :value="day.index"
-            :key="day.index"
-          >
-            {{ $d(day.date, "short") }}
-            {{ orderCounter[moment(day.date).format("YYYY-MM-DD")] }}
-            <span v-if="day.index === pickUpDaysInAdvance">{{
-              $t("date.today")
-            }}</span>
-          </option>
-        </b-select>
       </div>
 
       <!-- Orders -->
       <div
-        class="mx-6 mt-6 grid grid-cols-1 gap-2 lg:grid-cols-3 xl:grid-cols-4"
+        class="mx-6 mt-6 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
       >
-        <ordered-info
-          v-for="order in orders"
-          :key="order.id"
-          @selected="orderSelected($event)"
-          :order="order"
-        />
+        <template v-for="order in orders">
+          <router-link
+            :to="'/admin/restaurants/' + restaurantId() + '/orders/' + order.id"
+            :key="order.id"
+          >
+            <ordered-info :key="order.id" :order="order" />
+          </router-link>
+        </template>
       </div>
 
       <!-- Go to History -->
       <div class="mx-6 mt-6">
-        <router-link :to="`/admin/restaurants/${this.restaurantId()}/history`"
+        <router-link :to="`/admin/restaurants/${restaurantId()}/history`"
           ><div
             class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5"
           >
@@ -125,22 +73,47 @@
 </template>
 
 <script>
-import { db, firestore } from "@/plugins/firebase";
+import {
+  defineComponent,
+  ref,
+  computed,
+  onUnmounted,
+  watch,
+} from "@vue/composition-api";
+import { db } from "@/lib/firebase/firebase9";
+import {
+  doc,
+  collection,
+  where,
+  query,
+  onSnapshot,
+  setDoc,
+} from "firebase/firestore";
+
 import { midNight } from "@/utils/dateUtils";
-import OrderedInfo from "@/app/admin/Order/OrderedInfo";
-import BackButton from "@/components/BackButton";
 import { order_status } from "@/config/constant";
 import moment from "moment";
 
-import NotificationIndex from "./Notifications/Index";
-import NotFound from "@/components/NotFound";
+import OrderedInfo from "@/app/admin/Order/OrderedInfo.vue";
+import NotFound from "@/components/NotFound.vue";
+import AdminHeader from "@/app/admin/AdminHeader.vue";
+import ToggleSwitch from "@/components/ToggleSwitch.vue";
 
-export default {
+import {
+  doc2data,
+  isNull,
+  useAdminUids,
+  notFoundResponse,
+} from "@/utils/utils";
+import { checkShopAccount } from "@/utils/userPermission";
+import { useAdminConfigToggle } from "@/utils/admin/Toggle";
+
+export default defineComponent({
   components: {
     OrderedInfo,
-    BackButton,
-    NotificationIndex,
+    ToggleSwitch,
     NotFound,
+    AdminHeader,
   },
   metaInfo() {
     return {
@@ -158,131 +131,191 @@ export default {
       type: Object,
       required: true,
     },
-  },
-  data() {
-    return {
-      orders: [],
-      dayIndex: 0,
-      order_detacher: () => {},
-      notFound: null,
-    };
-  },
-  watch: {
-    dayIndex() {
-      this.updateQueryDay();
-      this.dateWasUpdated();
+    isInMo: {
+      type: Boolean,
+      required: true,
     },
-    "$route.query.day"() {
-      this.updateDayIndex();
+    moPrefix: {
+      type: String,
+      required: false,
+    },
+    groupMasterRestaurant: {
+      type: Object,
+      required: false,
     },
   },
-  async created() {
-    this.checkAdminPermission();
-    if (!this.checkShopAccount(this.shopInfo)) {
-      this.notFound = true;
-      return true;
-    }
-    this.dayIndex = this.getPickUpDaysInAdvance();
+  setup(props, ctx) {
+    const orders = ref([]);
+    const dayIndex = ref(0);
 
-    if (this.$route.query.day) {
-      this.updateDayIndex();
+    let order_detacher = () => {};
+
+    const { ownerUid, uid } = useAdminUids(ctx);
+    if (!checkShopAccount(props.shopInfo, ownerUid.value)) {
+      return notFoundResponse;
     }
-    this.dateWasUpdated();
-  },
-  destroyed() {
-    this.order_detacher();
-  },
-  computed: {
-    orderCounter() {
-      return this.lastSeveralDays.reduce((tmp, day) => {
+    const { toggle: queryIsPlacedDate, switchToggle: switchOrderQuery } =
+      useAdminConfigToggle("queryIsPlacedDate", uid.value, false);
+
+    const getPickUpDaysInAdvance = () => {
+      return isNull(props.shopInfo.pickUpDaysInAdvance)
+        ? 3
+        : props.shopInfo.pickUpDaysInAdvance;
+    };
+    const pickUpDaysInAdvance = computed(() => {
+      return getPickUpDaysInAdvance();
+    });
+    const lastSeveralDays = computed(() => {
+      return Array.from(Array(10 + pickUpDaysInAdvance.value).keys()).map(
+        (index) => {
+          const date = midNight(pickUpDaysInAdvance.value - index);
+          return { index, date };
+        }
+      );
+    });
+    dayIndex.value = getPickUpDaysInAdvance();
+
+    const updateDayIndex = () => {
+      const newDayIndex =
+        lastSeveralDays.value.findIndex((day) => {
+          return (
+            moment(day.date).format("YYYY-MM-DD") === ctx.root.$route.query.day
+          );
+        }) || 0;
+      dayIndex.value = newDayIndex > 0 ? newDayIndex : 0;
+    };
+    const updateQueryDay = () => {
+      const day = moment(lastSeveralDays.value[dayIndex.value].date).format(
+        "YYYY-MM-DD"
+      );
+      if (ctx.root.$route.query.day !== day) {
+        ctx.root.$router.push({
+          path:
+            "/admin/restaurants/" +
+            ctx.root.restaurantId() +
+            "/orders?day=" +
+            day,
+        });
+      }
+    };
+    const dateWasUpdated = () => {
+      order_detacher();
+      orders.value = [];
+
+      // const queryKey = (queryIsPlacedDate.value ? "orderPlacedAt" :  "timePickupForQuery");
+      const queryKey = queryIsPlacedDate.value ? "orderPlacedAt" : "timePlaced";
+      const timeConv = (t, offset) => {
+        return new Date(t.getTime() + offset * 3600 * 1000);
+      };
+      const queryConditions = (() => {
+        if (queryIsPlacedDate.value && props.isInMo) {
+          // console.log(timeConv(lastSeveralDays.value[dayIndex.value].date, -15))
+          // console.log(timeConv(lastSeveralDays.value[dayIndex.value].date, 9))
+          return [
+            where(
+              queryKey,
+              ">=",
+              timeConv(lastSeveralDays.value[dayIndex.value].date, -15)
+            ),
+            where(
+              queryKey,
+              "<",
+              timeConv(lastSeveralDays.value[dayIndex.value].date, 9)
+            ),
+          ];
+        }
+        const q = [
+          where(queryKey, ">=", lastSeveralDays.value[dayIndex.value].date),
+        ];
+        if (dayIndex.value > 0) {
+          q.push(
+            where(queryKey, "<", lastSeveralDays.value[dayIndex.value - 1].date)
+          );
+        }
+        return q;
+      })();
+      order_detacher = onSnapshot(
+        query(
+          collection(db, `restaurants/${ctx.root.restaurantId()}/orders`),
+          ...queryConditions
+        ),
+        (result) => {
+          orders.value = result.docs
+            .map(doc2data("order"))
+            .filter((a) => a.status !== order_status.transaction_hide)
+            .sort((order0, order1) => {
+              if (order0.status === order1.status) {
+                const aTime = order0.timeEstimated || order0.timePlaced;
+                const bTime = order1.timeEstimated || order1.timePlaced;
+                if (aTime.seconds === bTime.seconds) {
+                  return order0.number > order1.number ? -1 : 1;
+                }
+                return aTime > bTime ? -1 : 1;
+              }
+              return order0.status < order1.status ? -1 : 1;
+            })
+            .map((order) => {
+              order.timePlaced = order.timePlaced.toDate();
+              if (order.timeEstimated) {
+                order.timeEstimated = order.timeEstimated.toDate();
+              }
+              return order;
+            });
+        }
+      );
+    };
+
+    if (ctx.root.$route.query.day) {
+      updateDayIndex();
+    }
+    dateWasUpdated();
+
+    onUnmounted(() => {
+      order_detacher();
+    });
+
+    const orderCounter = computed(() => {
+      return lastSeveralDays.value.reduce((tmp, day) => {
         const count = (
-          this.$store.state.orderObj[moment(day.date).format("YYYY-MM-DD")] ||
-          []
+          ctx.root.$store.state.orderObj[
+            moment(day.date).format("YYYY-MM-DD")
+          ] || []
         ).length;
         if (count > 0) {
           tmp[moment(day.date).format("YYYY-MM-DD")] = "(" + count + ")";
         }
         return tmp;
       }, {});
-    },
-    pickUpDaysInAdvance() {
-      return this.getPickUpDaysInAdvance();
-    },
-    lastSeveralDays() {
-      return Array.from(Array(10 + this.pickUpDaysInAdvance).keys()).map(
-        (index) => {
-          const date = midNight(this.pickUpDaysInAdvance - index);
-          return { index, date };
-        }
-      );
-    },
+    });
+
+    watch(dayIndex, () => {
+      updateQueryDay();
+      dateWasUpdated();
+    });
+    const dayQuery = computed(() => {
+      return ctx.root.$route.query.day;
+    });
+    watch(dayQuery, () => {
+      updateDayIndex();
+    });
+
+    watch(queryIsPlacedDate, () => {
+      dateWasUpdated();
+    });
+
+    return {
+      orders,
+      dayIndex,
+      notFound: false,
+
+      lastSeveralDays,
+      pickUpDaysInAdvance,
+      dayIndex,
+      orderCounter,
+
+      queryIsPlacedDate,
+      switchOrderQuery,
+    };
   },
-  methods: {
-    updateDayIndex() {
-      const dayIndex =
-        this.lastSeveralDays.findIndex((day) => {
-          return (
-            moment(day.date).format("YYYY-MM-DD") === this.$route.query.day
-          );
-        }) || 0;
-      this.dayIndex = dayIndex > 0 ? dayIndex : 0;
-    },
-    updateQueryDay() {
-      const day = moment(this.lastSeveralDays[this.dayIndex].date).format(
-        "YYYY-MM-DD"
-      );
-      if (this.$route.query.day !== day) {
-        this.$router.push({
-          path:
-            "/admin/restaurants/" + this.restaurantId() + "/orders?day=" + day,
-        });
-      }
-    },
-    dateWasUpdated() {
-      this.order_detacher();
-      let query = db
-        .collection(`restaurants/${this.restaurantId()}/orders`)
-        .where("timePlaced", ">=", this.lastSeveralDays[this.dayIndex].date);
-      if (this.dayIndex > 0) {
-        query = query.where(
-          "timePlaced",
-          "<",
-          this.lastSeveralDays[this.dayIndex - 1].date
-        );
-      }
-      this.order_detacher = query.onSnapshot((result) => {
-        let orders = result.docs.map(this.doc2data("order"));
-        orders = orders
-          .filter((a) => a.status !== order_status.transaction_hide)
-          .sort((order0, order1) => {
-            if (order0.status === order1.status) {
-              return (order0.timeEstimated || order0.timePlaced) >
-                (order1.timeEstimated || order1.timePlaced)
-                ? -1
-                : 1;
-            }
-            return order0.status < order1.status ? -1 : 1;
-          });
-        this.orders = orders.map((order) => {
-          order.timePlaced = order.timePlaced.toDate();
-          if (order.timeEstimated) {
-            order.timeEstimated = order.timeEstimated.toDate();
-          }
-          return order;
-        });
-      });
-    },
-    orderSelected(order) {
-      this.$router.push({
-        path:
-          "/admin/restaurants/" + this.restaurantId() + "/orders/" + order.id,
-      });
-    },
-    getPickUpDaysInAdvance() {
-      return this.isNull(this.shopInfo.pickUpDaysInAdvance)
-        ? 3
-        : this.shopInfo.pickUpDaysInAdvance;
-    },
-  },
-};
+});
 </script>
