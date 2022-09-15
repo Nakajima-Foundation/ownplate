@@ -289,7 +289,10 @@ export const useMenu = (
           const newVal = { ...allMenuObj.value };
           newVal[allMenuObjKey.value] = cacheBase;
           allMenuObj.value = newVal;
-          menuCache.value[allMenuObjKey.value] = cacheBase;
+
+          const newMenuCache = { ...menuCache.value};
+          newMenuCache[allMenuObjKey.value] = cacheBase;
+          menuCache.value = newMenuCache;
         }
         return menu.docs.length == limitVal ? menu.docs[limitVal - 1] : null;
       };
@@ -300,7 +303,7 @@ export const useMenu = (
           last = await loop(category, subCategory, last);
         } while (last);
       };
-      doLoop(category.value, subCategory.value);
+      await doLoop(category.value, subCategory.value);
     } else {
       const menuQuery = query(
         collection(db, menuPath.value),
