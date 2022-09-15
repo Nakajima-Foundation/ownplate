@@ -1,24 +1,51 @@
-import { computed } from "@vue/composition-api";
+import { computed, Ref } from "@vue/composition-api";
 import { midNight } from "@/utils/dateUtils";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { num2time, isNull } from "@/utils/utils";
 import moment from "moment";
+import { MenuData } from "@/models/menu";
 
-export const usePickupTime = (shopInfo: RestaurantInfoData, ctx: any) => {
+export const usePickupTime = (
+  shopInfo: RestaurantInfoData,
+  exceptData: any,
+  menuObj: Ref<{ [key: string]: MenuData }>,
+  ctx: any
+) => {
   // public
   const temporaryClosure = computed(() => {
     return (shopInfo.temporaryClosure || []).map((day) => {
-      return moment(day).format("YYYY-MM-DD");
+      return moment(day.seconds ? day.toDate() : day).format("YYYY-MM-DD");
     });
   });
   const businessDays = computed(() => {
     return [7, 1, 2, 3, 4, 5, 6].map((day) => {
-      return shopInfo.businessDay[day];
+      return (
+        shopInfo.businessDay[day] &&
+        !((exceptData.value || {}).exceptDay || {})[day]
+      );
     });
+  });
+  const availableBusinessDays = computed(() => {
+    return [7, 1, 2, 3, 4, 5, 6].reduce(
+      (tmp: { [key: number]: boolean }, day) => {
+        tmp[day] =
+          shopInfo.businessDay[day] &&
+          !((exceptData.value || {}).exceptDay || {})[day];
+        return tmp;
+      },
+      {}
+    );
   });
   const timeInterval = computed(() => {
     return 10; // LATER: Make it customizable
   });
+  const withinExceptTime = (time: number) => {
+    return ((exceptData.value || {}).exceptHours || []).some(
+      (hour: { start: number; end: number }) => {
+        return hour.start <= time && time <= hour.end;
+      }
+    );
+  };
   const openSlots = computed(() => {
     return [7, 1, 2, 3, 4, 5, 6].map((day) => {
       return shopInfo.openTimes[day].reduce((ret, value) => {
@@ -27,7 +54,9 @@ export const usePickupTime = (shopInfo: RestaurantInfoData, ctx: any) => {
           time < value.end;
           time += timeInterval.value
         ) {
-          ret.push({ time, display: num2time(time, ctx.root) });
+          if (!withinExceptTime(time)) {
+            ret.push({ time, display: num2time(time, ctx.root) });
+          }
         }
         return ret;
       }, []);
@@ -94,9 +123,42 @@ export const usePickupTime = (shopInfo: RestaurantInfoData, ctx: any) => {
     return getAvailableDays(minimumDeliveryTime.value);
   });
 
+  const menuPickupData = computed(() => {
+    return Object.keys(menuObj.value || {}).reduce(
+      (tmp: { [key: string]: any }, key) => {
+        const menu = menuObj.value[key];
+        const { exceptDay, exceptHour } = menu;
+        const hasExceptHour =
+          !isNull(exceptHour) &&
+          !isNull(exceptHour.start) &&
+          !isNull(exceptHour.end);
+        const hasExceptDay = Object.keys(exceptDay || {}).length > 0;
+        const menuAvailableDays = Object.keys(
+          availableBusinessDays.value || {}
+        ).reduce((arr: string[], day) => {
+          if (!(exceptDay || {})[day]) {
+            arr.push(day);
+          }
+          return arr;
+        }, []);
+
+        tmp[menu.id] = {
+          hasExceptData: hasExceptDay || hasExceptHour,
+          hasExceptDay,
+          hasExceptHour,
+          menuAvailableDays,
+          exceptHour,
+        };
+        return tmp;
+      },
+      {}
+    );
+  });
+
   return {
     deliveryAvailableDays,
     availableDays,
     temporaryClosure,
+    menuPickupData,
   };
 };

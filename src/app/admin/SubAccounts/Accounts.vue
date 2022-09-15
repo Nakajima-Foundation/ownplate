@@ -20,20 +20,40 @@
       <div class="mt-2 text-base font-bold">
         {{ $t("admin.subAccounts.subaccountlist") }}
       </div>
-      <div v-for="(child, k) in children" :key="k" class="flex items-center">
-        <router-link :to="`/admin/subaccounts/accounts/${child.id}`">
-          {{ child.name }}/{{ child.email }}/{{ rList(child.restaurantLists) }}
-          {{
-            $t(
-              "admin.subAccounts.messageResult." +
-                (child.accepted === true ? "accepted" : "waiting")
-            )
-          }}
-        </router-link>
-        <b-button @click="deleteChild(child.id)">
-          {{ $t("admin.subAccounts.deleteSubaccount") }}
-        </b-button>
-      </div>
+      <table class="w-full bg-white rounded-lg shadow">
+        <tr v-for="(child, k) in children" :key="k" class="items-center">
+          <td class="p-2">
+            <router-link :to="`/admin/subaccounts/accounts/${child.id}`">
+              {{ child.name }}({{ child.email }})
+            </router-link>
+          </td>
+          <td class="p-2">
+            <div
+              v-for="(rname, k2) in rList(child.restaurantLists)"
+              :key="`${k}_${k2}`"
+            >
+              {{ rname }}
+            </div>
+          </td>
+          <td class="p-2">
+            {{ child.restaurantLists.length
+            }}{{ $t("admin.subAccounts.numberOfShops") }}
+          </td>
+          <td class="p-2">
+            {{
+              $t(
+                "admin.subAccounts.messageResult." +
+                  (child.accepted === true ? "accepted" : "waiting")
+              )
+            }}
+          </td>
+          <td class="p-2">
+            <b-button @click="deleteChild(child.id)">
+              {{ $t("admin.subAccounts.deleteSubaccount") }}
+            </b-button>
+          </td>
+        </tr>
+      </table>
     </div>
 
     <div class="mx-6 mt-6">
@@ -100,14 +120,19 @@
 </template>
 
 <script>
-import BackButton from "@/components/BackButton";
+import { defineComponent, ref, onUnmounted, watch } from "@vue/composition-api";
+
 import { db } from "@/plugins/firebase";
 import {
   subAccountDeleteChild,
   subAccountInvite,
 } from "@/lib/firebase/functions";
 
-export default {
+import { doc2data, array2obj, useAdminUids } from "@/utils/utils";
+
+import BackButton from "@/components/BackButton.vue";
+
+export default defineComponent({
   metaInfo() {
     return {
       title: [this.defaultTitle, "Admin Subaccount Accounts"].join(" / "),
@@ -116,109 +141,114 @@ export default {
   components: {
     BackButton,
   },
-  async created() {
-    const restaurantCollection = await db
-      .collection("restaurants")
-      .where("uid", "==", this.uid)
+  setup(props, ctx) {
+    const restaurantObj = ref({});
+    const children = ref([]);
+    const detachers = [];
+    const messages = ref([]);
+    const errors = ref([]);
+    const email = ref("");
+    const name = ref("");
+    const sending = ref(false);
+
+    const { isOwner, uid } = useAdminUids(ctx);
+
+    db.collection("restaurants")
+      .where("uid", "==", uid.value)
       .where("deletedFlag", "==", false)
       .orderBy("createdAt", "asc")
-      .get();
-    this.restaurantObj = this.array2obj(
-      restaurantCollection.docs.map(this.doc2data("restaurant"))
-    );
-
-    const childDetacher = await db
-      .collection(`admins/${this.uid}/children`)
-      .onSnapshot((childrenCollection) => {
-        this.children = childrenCollection.docs.map(this.doc2data("admin"));
+      .get()
+      .then((restaurantCollection) => {
+        restaurantObj.value = array2obj(
+          restaurantCollection.docs.map(doc2data("restaurant"))
+        );
       });
-    this.detachers.push(childDetacher);
+    const childDetacher = db
+      .collection(`admins/${uid.value}/children`)
+      .onSnapshot((childrenCollection) => {
+        children.value = childrenCollection.docs.map(doc2data("admin"));
+      });
+    detachers.push(childDetacher);
 
-    const messageDetacher = await db
+    const messageDetacher = db
       .collectionGroup(`messages`)
-      .where("fromUid", "==", this.uid)
+      .where("fromUid", "==", uid.value)
       .orderBy("createdAt", "desc")
       .onSnapshot((messageCollection) => {
-        this.messages = messageCollection.docs.map(this.doc2data("message"));
+        messages.value = messageCollection.docs.map(doc2data("message"));
       });
-    this.detachers.push(messageDetacher);
-  },
-  destroyed() {
-    if (this.detachers.length > 0) {
-      this.detachers.map((d) => {
-        d();
-      });
-    }
-  },
-  data() {
-    return {
-      detachers: [],
-      children: [],
-      messages: [],
-      errors: [],
-      restaurantObj: {},
-      email: "",
-      name: "",
-      sending: false,
-    };
-  },
-  methods: {
-    deleteChild(childId) {
-      this.$store.commit("setAlert", {
+    detachers.push(messageDetacher);
+
+    onUnmounted(() => {
+      if (detachers.length > 0) {
+        detachers.map((d) => {
+          d();
+        });
+      }
+    });
+
+    const deleteChild = (childId) => {
+      ctx.root.$store.commit("setAlert", {
         code: "admin.subAccounts.confirmDeletechild",
         callback: async () => {
-          this.$store.commit("setLoading", true);
+          ctx.root.$store.commit("setLoading", true);
           await subAccountDeleteChild({ childUid: childId });
-          this.$store.commit("setLoading", false);
+          ctx.root.$store.commit("setLoading", false);
         },
       });
-    },
-    rList(restaurantLists) {
+    };
+    const rList = (restaurantLists) => {
       return (restaurantLists || [])
         .map((r) => {
-          return this.restaurantObj[r]?.restaurantName;
+          return restaurantObj.value[r]?.restaurantName;
         })
         .filter((name) => {
           return !!name;
         })
-        .slice(0, 2)
-        .join(",");
-    },
-    async invite() {
-      this.sending = true;
+        .slice(0, 2);
+    };
+    const invite = async () => {
+      sending.value = true;
       try {
         const res = await subAccountInvite({
-          email: this.email,
-          name: this.name,
+          email: email.value,
+          name: name.value,
         });
         if (res.data.result) {
-          this.$router.push("/admin/subAccounts/accounts/" + res.data.childUid);
-          this.email = "";
-          this.name = "";
+          ctx.root.$router.push(
+            "/admin/subAccounts/accounts/" + res.data.childUid
+          );
+          email.value = "";
+          name.value = "";
         } else {
-          this.errors = ["admin.subAccounts.inviteInputError"];
+          errors.value = ["admin.subAccounts.inviteInputError"];
         }
       } catch (e) {
-        this.errors = ["admin.subAccounts.inviteInputError"];
+        errors.value = ["admin.subAccounts.inviteInputError"];
       }
-      this.sending = false;
-    },
+      sending.value = false;
+    };
+
+    watch(email, () => {
+      errors.value = [];
+    });
+    watch(name, () => {
+      errors.value = [];
+    });
+
+    return {
+      restaurantObj,
+      children,
+      messages,
+      errors,
+      email,
+      name,
+      sending,
+
+      deleteChild,
+      rList,
+      invite,
+    };
   },
-  watch: {
-    email() {
-      this.errors = [];
-    },
-    name() {
-      this.errors = [];
-    },
-  },
-  computed: {
-    isOwner() {
-      return !this.$store.getters.isSubAccount;
-    },
-    uid() {
-      return this.$store.getters.uidAdmin;
-    },
-  },
-};
+});
 </script>

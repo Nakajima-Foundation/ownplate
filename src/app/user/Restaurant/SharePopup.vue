@@ -71,8 +71,7 @@
 import { defineComponent, ref } from "@vue/composition-api";
 
 import SharingButtons from "@/app/user/Common/SharingButtons.vue";
-import { shareUrl } from "@/utils/utils";
-import { useBasePath } from "@/utils/utils";
+import { shareUrl, useBasePath } from "@/utils/utils";
 
 export default defineComponent({
   components: {

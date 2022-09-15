@@ -125,59 +125,77 @@
 </template>
 
 <script>
+import { defineComponent, ref, watch } from "@vue/composition-api";
 import { auth } from "@/lib/firebase/firebase9";
 import { signInWithEmailAndPassword } from "firebase/auth";
+import { useUser } from "@/utils/utils";
 
-export default {
+export default defineComponent({
   name: "Signin",
   metaInfo() {
     return {
       title: [this.defaultTitle, "Signin Admin"].join(" / "),
     };
   },
-  data() {
-    return {
-      email: "",
-      password: "",
-      errors: {},
+  setup(props, ctx) {
+    const email = ref("");
+    const password = ref("");
+    const errors = ref({});
+
+    const user = useUser(ctx);
+
+    const redirectToAdminPage = () => {
+      const redirect = ctx.root.$route.query["to"];
+      const pathRegex = /^\/[a-zA-Z0-9-\_\/]+$/;
+
+      if (redirect && pathRegex.test(redirect)) {
+        ctx.root.$router.push(redirect);
+      } else {
+        ctx.root.$router.push("/admin/restaurants");
+      }
     };
-  },
-  created() {
-    if (this.isAdmin) {
-      this.redirectToAdminPage();
+
+    if (ctx.root.isAdmin) {
+      redirectToAdminPage();
     }
-  },
-  watch: {
-    user(newValue) {
+
+    watch(user, (newValue) => {
       console.log("user changed");
       if (newValue) {
-        this.redirectToAdminPage();
+        redirectToAdminPage();
       }
-    },
-  },
-  methods: {
-    handleCancel() {
-      this.$router.push("/");
-    },
-    async onSignin() {
-      this.$store.commit("setLoading", true);
-      this.errors = {};
-      signInWithEmailAndPassword(auth, this.email, this.password)
+    });
+
+    const handleCancel = () => {
+      ctx.root.$router.push("/");
+    };
+    const onSignin = () => {
+      ctx.root.$store.commit("setLoading", true);
+      errors.value = {};
+      signInWithEmailAndPassword(auth, email.value, password.value)
         .then((ret) => {
           console.log("onSignin success");
-          this.$store.commit("setLoading", false);
+          ctx.root.$store.commit("setLoading", false);
         })
         .catch((error) => {
           console.log("onSignin failed", error.code, error.message);
           const errorCode = "admin.error.code." + error.code;
           if (error.code === "auth/wrong-password") {
-            this.errors = { password: [errorCode] };
+            errors.value = { password: [errorCode] };
           } else {
-            this.errors = { email: [errorCode] };
+            errors.value = { email: [errorCode] };
           }
-          this.$store.commit("setLoading", false);
+          ctx.root.$store.commit("setLoading", false);
         });
-    },
+    };
+    return {
+      email,
+      password,
+      errors,
+
+      handleCancel,
+      onSignin,
+    };
   },
-};
+});
 </script>

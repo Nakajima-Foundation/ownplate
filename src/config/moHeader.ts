@@ -1,4 +1,4 @@
-import { ownPlateConfig, moGtmID } from "@/config/project";
+import { ownPlateConfig, moGtmID, moBaseUrl } from "@/config/project";
 
 const hostName = ownPlateConfig.hostName;
 
@@ -6,35 +6,35 @@ const link = [
   {
     rel: "icon",
     type: "image/x-icon",
-    href: "/ss/favicon.ico",
+    href: moBaseUrl + "/images/favicon/favicon.ico",
   },
   {
     rel: "icon",
     sizes: "16x16",
     type: "image/x-icon",
-    href: "/ss/favicon-16x16.png",
+    href: moBaseUrl + "/images/favicon-16x16.png",
   },
   {
     rel: "icon",
     sizes: "32x32",
     type: "image/x-icon",
-    href: "/ss/favicon-32x32.png",
+    href: moBaseUrl + "/images/favicon-32x32.png",
   },
   {
     rel: "apple-touch-icon",
-    href: "/ss/apple-touch-icon.png",
+    href: moBaseUrl + "/images/apple-touch-icon.png",
   },
   {
     rel: "icon",
     sizes: "192x192",
     type: "image/png",
-    href: "/ss/android-chrome-192x192.png",
+    href: moBaseUrl + "/images/android-chrome-192x192.png",
   },
   {
     rel: "icon",
     sizes: "512x512",
     type: "image/png",
-    href: "/ss/android-chrome-512x512.png",
+    href: moBaseUrl + "/images/android-chrome-512x512.png",
   },
   {
     rel: "stylesheet",
@@ -50,18 +50,32 @@ const link = [
   },
 ];
 
-const gtmHeadTag = `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${moGtmID}');`;
+//const gtmHeadTag = `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${moGtmID}');`;
 
-const gtmBodyTag = `<iframe src="https://www.googletagmanager.com/ns.html?id=${moGtmID}" height="0" width="0" style="display:none;visibility:hidden"></iframe>`;
+//  const gtmBodyTag = `<iframe src="https://www.googletagmanager.com/ns.html?id=${moGtmID}" height="0" width="0" style="display:none;visibility:hidden"></iframe>`;
+
+const gtmBodyTag = [
+  /*
+    `<script async src="https://www.googletagmanager.com/gtag/js?id=${moGtmID}"></script>`,
+  "<script>",
+  "  window.dataLayer = window.dataLayer || [];",
+  "  function gtag(){dataLayer.push(arguments);}",
+  "  function gtag_mo(){dataLayer.push(arguments);}",
+  "  gtag_mo('js', new Date());",
+  `  gtag_mo('config', '${moGtmID}');`,
+  "</script>",
+  */
+].join("\n");
 
 const script = [
   { src: "https://js.stripe.com/v3/" },
-  {
-    hid: "gtmHead",
-    innerHTML: gtmHeadTag,
-  },
+  //  {
+  //    hid: "gtmHead",
+  //    innerHTML: gtmHeadTag,
+  //  },
 ];
 
+//const gtmBodyTag = "";
 const noscript = [
   {
     hid: "gtmBody",

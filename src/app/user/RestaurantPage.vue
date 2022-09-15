@@ -8,7 +8,7 @@
       <!-- category modal -->
       <div
         v-if="isOpenGroupCategory"
-        class="fixed z-10 top-0 bg-white w-full h-full"
+        class="fixed z-20 top-0 bg-white w-full h-full"
       >
         <div class="flex justify-between h-12 py-2 pl-6 pr-4">
           <span class="text-xl font-bold text-black text-opacity-30">
@@ -90,6 +90,7 @@
                     :shopInfo="shopInfo"
                     :paymentInfo="paymentInfo"
                     :isDelivery="isDelivery"
+                    :mode="mode"
                     @noAvailableTime="noAvailableTime = $event"
                   ></shop-info>
                 </div>
@@ -101,7 +102,7 @@
           <div>
             <div class="mx-6 mt-2 lg:mx-0" v-if="shopInfo.enableDelivery">
               <div class="bg-white rounded-lg shadow">
-                <!-- delivery -->
+                <!-- delivery toggle-->
                 <Delivery
                   :shopInfo="shopInfo"
                   :deliveryData="deliveryData"
@@ -110,17 +111,31 @@
                 <!-- delivery -->
               </div>
             </div>
+
             <!-- titles for omochikaeri -->
-            <Titles :titleLists="titleLists" />
+            <Titles :titleLists="titleLists" v-if="titleLists.length > 0" />
+
+            <div v-if="false">
+              <div v-if="showSubCategory">
+                <!-- Mo Pickup Toggle -->
+                <div class="mx-6 mt-2 lg:mx-0" v-if="shopInfo.enableMoPickup">
+                  <div class="bg-white rounded-lg shadow">
+                    <MoPickUp :shopInfo="shopInfo" v-model="howtoreceive" />
+                  </div>
+                </div>
+              </div>
+            </div>
 
             <!-- category for mo -->
             <a id="subCategoryTop" />
             <div v-if="showSubCategory">
-              <SubCategoryList
-                :subCategoryData="subCategoryData"
-                :categoryBathPath="categoryBathPath"
-                :subCategoryId="subCategory"
-              />
+              <div class="mx-6 lg:mx-0 inline-flex">
+                <SubCategoryList
+                  :subCategoryData="subCategoryData"
+                  :categoryBathPath="categoryBathPath"
+                  :subCategoryId="subCategory"
+                />
+              </div>
             </div>
 
             <!-- For Responsible -->
@@ -160,9 +175,10 @@
                       v-if="item._dataType === 'menu'"
                       :key="[subCategoryKey, item.id].join('_')"
                     >
-                      <item-card
+                      <Menu
                         :key="[subCategoryKey, 'item', item.id].join('_')"
                         :item="item"
+                        :menuPickupData="menuPickupData[item.id] || {}"
                         :quantities="orders[item.id] || [0]"
                         :selectedOptions="selectedOptions[item.id]"
                         :initialOpenMenuFlag="
@@ -173,8 +189,9 @@
                         :isOpen="menuId === item.id"
                         :prices="prices[item.id] || []"
                         :mode="mode"
+                        :moSoldOut="false"
                         @didOrderdChange="didOrderdChange($event)"
-                      ></item-card>
+                      ></Menu>
                     </div>
                   </template>
                 </div>
@@ -253,13 +270,13 @@ import {
   onUnmounted,
 } from "@vue/composition-api";
 
-import ItemCard from "@/app/user/Restaurant/ItemCard";
-import PhoneLogin from "@/app/auth/PhoneLogin";
-import ShopHeader from "@/app/user/Restaurant/ShopHeader";
-import SharePopup from "@/app/user/Restaurant/SharePopup";
-import FavoriteButton from "@/app/user/Restaurant/FavoriteButton";
-import ShopInfo from "@/app/user/Restaurant/ShopInfo";
-import NotFound from "@/components/NotFound";
+import Menu from "@/app/user/Restaurant/Menu.vue";
+import PhoneLogin from "@/app/auth/PhoneLogin.vue";
+import ShopHeader from "@/app/user/Restaurant/ShopHeader.vue";
+import SharePopup from "@/app/user/Restaurant/SharePopup.vue";
+import FavoriteButton from "@/app/user/Restaurant/FavoriteButton.vue";
+import ShopInfo from "@/app/user/Restaurant/ShopInfo.vue";
+import NotFound from "@/components/NotFound.vue";
 
 import RestaurantPreview from "@/app/user/Restaurant/Preview.vue";
 import CartButton from "@/app/user/Restaurant/CartButton.vue";
@@ -270,6 +287,10 @@ import CategoryTop from "@/app/user/Restaurant/CategoryTop.vue";
 import CategoryIcon from "@/app/user/Restaurant/CategoryIcon.vue";
 import Titles from "@/app/user/Restaurant/Titles.vue";
 import SubCategoryList from "@/app/user/Restaurant/SubCategoryList.vue";
+
+import MoPickUp from "@/app/user/Restaurant/MoPickUp.vue";
+
+import { usePickupTime } from "@/utils/pickup";
 
 import liff from "@line/liff";
 import { db } from "@/lib/firebase/firebase9";
@@ -301,6 +322,7 @@ import {
   useIsInMo,
   useToggle,
   scrollToElementById,
+  forcedError,
 } from "@/utils/utils";
 
 import { imageUtils } from "@/utils/RestaurantUtils";
@@ -317,7 +339,7 @@ export default defineComponent({
   name: "RestaurantPage",
 
   components: {
-    ItemCard,
+    Menu,
     PhoneLogin,
     ShopHeader,
     SharePopup,
@@ -333,6 +355,8 @@ export default defineComponent({
     CategoryIcon,
     Titles,
     SubCategoryList,
+
+    MoPickUp,
   },
   props: {
     shopInfo: {
@@ -395,8 +419,14 @@ export default defineComponent({
 
     const isInMo = useIsInMo(ctx.root);
 
-    const { category, subCategory, watchCat, hasCategory } =
-      useCategoryParams(ctx);
+    const {
+      category,
+      subCategory,
+      watchCat,
+      hasCategory,
+      showCategory,
+      showSubCategory,
+    } = useCategoryParams(ctx, isInMo.value);
 
     const restaurantId = computed(() => {
       return ctx.root.$route.params.restaurantId;
@@ -439,6 +469,14 @@ export default defineComponent({
       props.groupData
     );
 
+    const { menuPickupData, availableDays } = usePickupTime(
+      props.shopInfo,
+      {},
+      menuObj,
+      ctx
+    );
+    console.log(menuPickupData, availableDays);
+
     onMounted(() => {
       // Check if we came here as the result of "Edit Items"
       if (store.state.carts[restaurantId.value]) {
@@ -447,10 +485,20 @@ export default defineComponent({
         cartItems.value = cart.cartItems || {};
         selectedOptions.value = cart.options || {};
         setCache(cart.menuCache);
+        if (cart.howtoreceive) {
+          howtoreceive.value = cart.howtoreceive;
+        }
       }
     });
 
-    loadMenu();
+    loadMenu(() => {
+      if (location.hash && location.hash[0] === "#") {
+        const id = location.hash.slice(1);
+        setTimeout(() => {
+          scrollToElementById(id);
+        }, 400);
+      }
+    });
 
     watch(menus, (values) => {
       analyticsUtil.sendMenuListView(
@@ -487,13 +535,6 @@ export default defineComponent({
     if (!isInMo.value) {
       loadTitle();
     }
-
-    const showCategory = computed(() => {
-      return isInMo.value && !subCategory.value;
-    });
-    const showSubCategory = computed(() => {
-      return isInMo.value && subCategory.value;
-    });
 
     const itemLists = computed(() => {
       if (isInMo.value) {
@@ -588,7 +629,7 @@ export default defineComponent({
       // console.log(order_data);
       isCheckingOut.value = true;
       try {
-        if (ctx.root.forcedError("checkout")) {
+        if (forcedError("checkout", ctx)) {
           throw Error("forced Error");
         }
         const res = await addDoc(
@@ -605,6 +646,7 @@ export default defineComponent({
             options: selectedOptions.value,
             cartItems: cartItems.value,
             menuCache: menuCache.value,
+            howtoreceive: howtoreceive.value,
           },
         });
         await wasOrderCreated({
@@ -685,7 +727,6 @@ export default defineComponent({
     };
 
     watch(user, (newValue) => {
-      console.log("user changed");
       if (waitForUser.value && newValue) {
         console.log("handling deferred notification");
         goCheckout();
@@ -817,6 +858,7 @@ export default defineComponent({
       cartButton,
       closeCart,
       menuObj,
+      menuPickupData,
     };
   },
 });

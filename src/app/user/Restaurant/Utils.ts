@@ -1,4 +1,10 @@
-import { ref, onUnmounted, computed, Ref } from "@vue/composition-api";
+import {
+  ref,
+  onUnmounted,
+  computed,
+  Ref,
+  ComputedRef,
+} from "@vue/composition-api";
 
 import { db } from "@/lib/firebase/firebase9";
 import {
@@ -6,6 +12,7 @@ import {
   onSnapshot,
   getDocs,
   collection,
+  collectionGroup,
   where,
   limit,
   startAfter,
@@ -91,10 +98,16 @@ export const useCategory = (moPrefix: string) => {
       }
     );
   };
-
+  const categoryDataObj = computed(() => {
+    return categoryData.value.reduce((tmp, current) => {
+      tmp[current.id] = current;
+      return tmp;
+    }, {});
+  });
   return {
     loadCategory,
     categoryData,
+    categoryDataObj,
   };
 };
 
@@ -112,6 +125,7 @@ export const useSubcategory = (moPrefix: string, category: Ref<string>) => {
   const subCategoryData = ref<DocumentData[]>([]);
   const loadSubcategory = () => {
     detacheSubCategory();
+    subCategoryData.value = [];
     subCategoryDetacher.value = onSnapshot(
       query(
         collection(
@@ -139,9 +153,54 @@ export const useSubcategory = (moPrefix: string, category: Ref<string>) => {
   };
 };
 
+export const useAllSubcategory = (moPrefix: string) => {
+  const subCategoryDetacher = ref();
+  const detacheSubCategory = () => {
+    if (subCategoryDetacher.value) {
+      subCategoryDetacher.value();
+    }
+  };
+
+  onUnmounted(() => {
+    detacheSubCategory();
+  });
+  const allSubCategoryData = ref<DocumentData[]>([]);
+  const loadAllSubcategory = () => {
+    detacheSubCategory();
+    subCategoryDetacher.value = onSnapshot(
+      query(
+        collectionGroup(db, `subCategory`),
+        where("groupId", "==", moPrefix),
+        orderBy("sortKey", "asc")
+      ),
+      (category) => {
+        if (category.empty) {
+          console.log("empty");
+          return;
+        }
+        allSubCategoryData.value = category.docs.map(doc2data("subCategory"));
+      },
+      (error) => {
+        console.log("load subCategory error");
+      }
+    );
+  };
+  const allSubCategoryDataObj = computed(() => {
+    return allSubCategoryData.value.reduce((tmp, current) => {
+      tmp[current.id] = current;
+      return tmp;
+    }, {});
+  });
+  return {
+    allSubCategoryData,
+    allSubCategoryDataObj,
+    loadAllSubcategory,
+  };
+};
+
 export const useMenu = (
   restaurantId: Ref<string>,
-  isInMo: Ref<string>,
+  isInMo: ComputedRef<string>,
   category: Ref<string>,
   subCategory: Ref<string>,
   groupData: any
@@ -153,7 +212,7 @@ export const useMenu = (
 
   const allMenuObjKey = computed(() => {
     if (isInMo.value) {
-      return subCategory.value;
+      return [category.value, subCategory.value].join("_");
     }
     return "mono";
   });
@@ -173,30 +232,29 @@ export const useMenu = (
     return `restaurants/${restaurantId.value}/menus`;
   });
   const setCache = (cache: any) => {
+    allMenuObj.value = cache;
     menuCache.value = cache;
   };
-  const loadMenu = async () => {
+  const loadMenu = async (callback?: () => void) => {
     detacheMenu();
     if (isInMo.value && !category.value && !subCategory.value) {
       return;
     }
     const hasSubCategory = category.value && subCategory.value;
-    const cacheKey = hasSubCategory
-      ? [category.value, subCategory.value].join("_")
-      : "";
-    if (menuCache.value[cacheKey]) {
-      allMenuObj.value[allMenuObjKey.value] = menuCache.value[cacheKey];
+    if (menuCache.value[allMenuObjKey.value]) {
+      allMenuObj.value[allMenuObjKey.value] =
+        menuCache.value[allMenuObjKey.value];
       return;
     }
 
     if (hasSubCategory) {
-      allMenuObj.value[subCategory.value] = [];
+      allMenuObj.value[allMenuObjKey.value] = [];
       const cacheBase: DocumentData[] = [];
 
-      if (loading[cacheKey]) {
+      if (loading[allMenuObjKey.value]) {
         return;
       }
-      loading[cacheKey] = true;
+      loading[allMenuObjKey.value] = true;
 
       const limitVal = 20;
       const loop = async (
@@ -229,9 +287,12 @@ export const useMenu = (
               return m;
             });
           const newVal = { ...allMenuObj.value };
-          newVal[subCategory] = cacheBase;
+          newVal[allMenuObjKey.value] = cacheBase;
           allMenuObj.value = newVal;
-          menuCache.value[cacheKey] = cacheBase;
+
+          const newMenuCache = { ...menuCache.value };
+          newMenuCache[allMenuObjKey.value] = cacheBase;
+          menuCache.value = newMenuCache;
         }
         return menu.docs.length == limitVal ? menu.docs[limitVal - 1] : null;
       };
@@ -242,7 +303,7 @@ export const useMenu = (
           last = await loop(category, subCategory, last);
         } while (last);
       };
-      doLoop(category.value, subCategory.value);
+      await doLoop(category.value, subCategory.value);
     } else {
       const menuQuery = query(
         collection(db, menuPath.value),
@@ -259,6 +320,9 @@ export const useMenu = (
             })
             .map(doc2data("menu"));
           allMenuObj.value = { [allMenuObjKey.value]: ret };
+          if (callback) {
+            callback();
+          }
         } else {
           allMenuObj.value[allMenuObjKey.value] = [];
         }
@@ -282,7 +346,7 @@ export const useMenu = (
   };
 };
 
-export const useCategoryParams = (ctx: any) => {
+export const useCategoryParams = (ctx: any, isInMo: string) => {
   const category = computed(() => {
     return ctx.root.$route.params.category;
   });
@@ -295,10 +359,19 @@ export const useCategoryParams = (ctx: any) => {
   const hasCategory = computed(() => {
     return category.value && subCategory.value;
   });
+  const showCategory = computed(() => {
+    return isInMo && !subCategory.value;
+  });
+  const showSubCategory = computed(() => {
+    return isInMo && subCategory.value;
+  });
+
   return {
     category,
     subCategory,
     watchCat,
     hasCategory,
+    showCategory,
+    showSubCategory,
   };
 };

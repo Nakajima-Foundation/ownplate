@@ -1,5 +1,5 @@
 <template>
-  <div class="mx-6 mt-2 lg:mx-0">
+  <div class="mx-6 lg:mx-0">
     <template v-for="(title, key) in titleLists">
       <a
         :href="`#${title.id}`"

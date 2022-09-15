@@ -9,7 +9,7 @@
 
 <script>
 import { db } from "@/plugins/firebase";
-
+import { stripeRegion, doc2data, array2obj } from "@/utils/utils";
 import * as pdf from "@/lib/pdf/pdf";
 import * as pdf2 from "@/lib/pdf/pdf2";
 
@@ -23,35 +23,31 @@ export default {
   },
   data() {
     return {
-      restaurantInfo: {},
-      menus: null,
       menuObj: null,
     };
   },
   async created() {
     const restaurantRef = db.doc(`restaurants/${this.restaurantId()}`);
-    this.menuObj = this.array2obj(
+    this.menuObj = array2obj(
       (
         await restaurantRef
           .collection("menus")
           .where("deletedFlag", "==", false)
           .get()
-      ).docs.map(this.doc2data(""))
+      ).docs.map(doc2data(""))
     );
   },
   computed: {
     // TODO: create method and move to utils. merge ShopInfo.vue
     // TODO: merge shopInfo and shopInfo
     parsedNumber() {
-      const countryCode = this.shopInfo.countryCode || this.countries[0].code;
+      const countryCode =
+        this.shopInfo.countryCode || stripeRegion.countries[0].code;
       try {
         return parsePhoneNumber(countryCode + this.shopInfo.phoneNumber);
       } catch (error) {
         return null;
       }
-    },
-    countries() {
-      return this.$store.getters.stripeRegion.countries;
     },
     nationalPhoneNumber() {
       const number = this.parsedNumber;

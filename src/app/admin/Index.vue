@@ -1,20 +1,7 @@
 <template>
   <div v-if="$store.getters.uidAdmin">
-    <!-- Welcome -->
-
-    <div v-if="partner.length > 0" class="mt-2 mb-1">
-      <div v-for="(part, k) in partner" :key="k" class="flex">
-        <div class="flex-1 ml-4">
-          <img :src="`/partners/${part.logo}`" class="w-12" />
-          <span class="font-bold">
-            {{ part.name }}
-          </span>
-        </div>
-        <div class="text-right font-bold mr-4" v-if="part.ask">
-          <a href="#" @click="openContact()">サポート問い合わせ</a>
-        </div>
-      </div>
-    </div>
+    <!-- Partnets -->
+    <Partners :shopOwner="shopOwner" v-if="shopOwner" />
 
     <!-- Welcome and Link -->
     <WelcomeAndLinks />
@@ -53,8 +40,17 @@
       </div>
     </div>
 
+    <div class="mt-2 mx-6 lg:text-center">
+      <ToggleSwitch
+        :toggleState="simpleMode"
+        @toggleFunction="switchSimpleMode()"
+        onName="admin.index.showSimple"
+        offName="admin.index.showAll"
+      />
+    </div>
+
     <!-- Restaurants and Right Settin Section -->
-    <div class="mt-6 mx-6 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12">
+    <div class="mt-2 mx-6 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12">
       <!-- Restaurants -->
       <div>
         <div class="pb-2">
@@ -111,16 +107,18 @@
                 v-for="(restaurantId, index) in restaurantLists"
                 :key="restaurantId"
               >
-                <restaurant-edit-card
+                <restaurant
                   v-if="restaurantItems[restaurantId]"
+                  :simpleMode="simpleMode"
                   :shopInfo="restaurantItems[restaurantId]"
                   :restaurantid="restaurantId"
                   :numberOfMenus="
-                    restaurantItems[restaurantId].numberOfMenus || 0
+                    (!groupMasterRestaurant.empty
+                      ? groupMasterRestaurant
+                      : restaurantItems[restaurantId]
+                    ).numberOfMenus || 0
                   "
-                  :numberOfOrders="
-                    restaurantItems[restaurantId].numberOfOrders || 0
-                  "
+                  :numberOfOrders="numberOfOrderObj[restaurantId] || 0"
                   :lineEnable="lines[restaurantId] || false"
                   :shopOwner="shopOwner"
                   :position="
@@ -134,7 +132,9 @@
                   @positionDown="positionDown($event)"
                   @deleteFromRestaurantLists="deleteFromRestaurantLists($event)"
                   :isOwner="isOwner"
-                ></restaurant-edit-card>
+                  :moPrefix="moPrefix"
+                  :isInMo="isInMo"
+                />
               </div>
             </div>
 
@@ -166,37 +166,7 @@
 
         <!-- SubAccounts -->
         <div class="mt-6">
-          <div class="text-xl font-bold text-black text-opacity-40 mb-2">
-            {{ $t("admin.subAccounts.title") }}
-          </div>
-
-          <div class="bg-white shadow rounded-lg p-4">
-            <div class="text-center mt-2">
-              {{ $t("admin.subAccounts.description") }}
-            </div>
-            <div class="text-center mt-2">
-              <router-link
-                to="/admin/subaccounts"
-                target="stripe"
-                class="h-12 rounded-full inline-flex items-center px-6 border-2 border-op-teal"
-              >
-                <span class="text-op-teal text-base font-bold">{{
-                  $t("admin.subAccounts.openDashboard")
-                }}</span>
-              </router-link>
-            </div>
-            <div class="mt-4 text-center">
-              <a
-                href="https://docs.omochikaeri.com/manuals/aboutsubaccount.pdf"
-                target="_blank"
-                class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
-              >
-                <span class="text-sm font-bold text-op-teal">
-                  {{ $t("admin.subAccounts.manualLink") }}</span
-                >
-              </a>
-            </div>
-          </div>
+          <SubAccount />
         </div>
 
         <!-- Note -->
@@ -210,9 +180,6 @@
       </div>
       <!-- End of Right Section -->
     </div>
-    <b-modal :active.sync="isOpen" :width="488">
-      <PartnersContact :id="(partner[0] || {}).id" />
-    </b-modal>
     <div class="bg-op-yellow p-4 mt-6">
       <!-- Footer -->
       <Footer />
@@ -221,14 +188,37 @@
 </template>
 
 <script>
-import { db, firestore } from "@/plugins/firebase";
+import {
+  defineComponent,
+  ref,
+  computed,
+  watch,
+  onUnmounted,
+  onMounted,
+} from "@vue/composition-api";
+
+import { db } from "@/lib/firebase/firebase9";
+import {
+  doc,
+  getDoc,
+  collection,
+  where,
+  query,
+  orderBy,
+  onSnapshot,
+  setDoc,
+  collectionGroup,
+  serverTimestamp,
+} from "firebase/firestore";
+
 import { order_status } from "@/config/constant";
 import { midNight } from "@/utils/dateUtils";
 
-import RestaurantEditCard from "@/app/admin/Restaurant/RestaurantEditCard.vue";
+import ToggleSwitch from "@/components/ToggleSwitch.vue";
+
+import Restaurant from "@/app/admin/Index/Restaurant.vue";
 import PaymentSection from "@/app/admin/Payment/PaymentSection.vue";
 import MessageCard from "./Messages/MessageCard.vue";
-import PartnersContact from "./Partners/Contact.vue";
 
 import WelcomeAndLinks from "@/app/admin/Index/WelcomeAndLinks.vue";
 import News from "@/app/admin/Index/News.vue";
@@ -236,281 +226,359 @@ import Note from "@/app/admin/Index/Note.vue";
 import MailMagazine from "@/app/admin/Index/MailMagazine.vue";
 import Smaregi from "@/app/admin/Index/Smaregi.vue";
 import Footer from "@/app/admin/Index/Footer.vue";
+import Partners from "@/app/admin/Index/Partners.vue";
+import SubAccount from "@/app/admin/Index/SubAccount.vue";
 
-import { getShopOwner, getPartner } from "@/utils/utils";
+import {
+  getShopOwner,
+  doc2data,
+  arrayChunk,
+  useAdminUids,
+} from "@/utils/utils";
+import { checkAdminPermission } from "@/utils/userPermission";
 
-export default {
-  name: "Restaurant",
+import { useAdminConfigToggle } from "@/utils/admin/Toggle";
+
+export default defineComponent({
+  name: "RestaurantIndex",
   components: {
     PaymentSection,
-    RestaurantEditCard,
+    Restaurant,
     MessageCard,
-    PartnersContact,
     WelcomeAndLinks,
     News,
+    Partners,
     Smaregi,
+    SubAccount,
     MailMagazine,
     Note,
     Footer,
+    ToggleSwitch,
+  },
+  props: {
+    groupMasterRestaurant: {
+      type: Object,
+      required: false,
+    },
+    isInMo: {
+      type: Boolean,
+      required: true,
+    },
+    moPrefix: {
+      type: String,
+      required: false,
+    },
   },
   metaInfo() {
     return {
       title: ["Admin Index", this.defaultTitle].join(" / "),
     };
   },
-  data() {
-    return {
-      readyToDisplay: false,
-      isCreating: false,
-      restaurantItems: null,
-      detachers: [],
-      restaurant_detacher: null,
-      message_detacher: null,
-      unsetWarning: true,
-      lines: {},
-      shopOwner: null,
-      restaurantLists: [],
-      messages: [],
-      isOpen: false,
-    };
-  },
-  created() {
-    this.checkAdminPermission();
-  },
-  async mounted() {
-    try {
-      if (this.isOwner) {
-        this.shopOwner = await getShopOwner(this.ownerUid);
-
-        const restaurantLists = await db
-          .doc(`/admins/${this.$store.getters.uidAdmin}/public/RestaurantLists`)
-          .get();
-        this.restaurantLists =
-          (restaurantLists.exists ? restaurantLists.data() : {}).lists || [];
-      } else {
-        const restaurantLists = await db
-          .doc(
-            `/admins/${this.ownerUid}/children/${this.$store.getters.uidAdmin}`
-          )
-          .get();
-        this.restaurantLists =
-          (restaurantLists.exists ? restaurantLists.data() : {})
-            .restaurantLists || [];
-        this.shopOwner = {};
-      }
-
-      this.restaurant_detacher = db
-        .collection("restaurants")
-        .where("uid", "==", this.ownerUid)
-        .where("deletedFlag", "==", false)
-        .orderBy("createdAt", "asc")
-        .onSnapshot(async (result) => {
-          try {
-            if (result.empty) {
-              this.restaurantItems = {}; // so that we present "No restaurant"
-              return;
-            }
-
-            this.restaurantItems = (result.docs || []).reduce((tmp, doc) => {
-              const restaurantId = doc.id;
-              // workaround (this.ownerUid)
-              if (this.restaurantLists.includes(restaurantId) || this.isOwner) {
-                const data = doc.data();
-                data.restaurantid = doc.id;
-                data.id = doc.id;
-                tmp[doc.id] = data;
-                if (
-                  !this.restaurantLists.includes(restaurantId) &&
-                  this.isOwner
-                ) {
-                  this.restaurantLists.push(restaurantId);
-                }
-              }
-              return tmp;
-            }, {});
-            if (
-              this.isOwner &&
-              Object.keys(this.restaurantLists).length === 0
-            ) {
-              this.restaurantLists = Object.keys(this.restaurantItems);
-            }
-
-            this.destroy_detacher();
-            this.detachers = Object.keys(this.restaurantItems).map(
-              (restaurantId) => {
-                return (
-                  db
-                    .collection(`restaurants/${restaurantId}/orders`)
-                    .where("timePlaced", ">=", midNight())
-                    // IDEALLY: .where("status", "<", order_status.ready_to_pickup)
-                    .onSnapshot((result) => {
-                      const obj = { ...this.restaurantItems[restaurantId] };
-                      obj.numberOfOrders = result.docs
-                        .map((doc) => doc.data())
-                        .filter((data) => {
-                          // We need this filter here because Firebase does not allow us to do
-                          return data.status < order_status.ready_to_pickup;
-                        }).length;
-                      this.restaurantItems[restaurantId] = obj;
-                    })
-                );
-              }
-            );
-          } catch (error) {
-            console.log("Error fetch doc,", error);
-          } finally {
-            this.readyToDisplay = true;
-          }
-        });
-    } catch (error) {
-      console.log("Error fetch doc,", error);
-    } finally {
-      this.readyToDisplay = true;
-    }
-    if (this.isOwner) {
-      db.collectionGroup("lines")
-        .where("uid", "==", this.uid)
-        .onSnapshot((result) => {
-          result.docs.map(async (res) => {
-            const restaurantId = res.data().restaurantId;
-            this.lines[restaurantId] = true;
-          });
-        });
+  setup(props, ctx) {
+    const readyToDisplay = ref(false);
+    const isCreating = ref(false);
+    const restaurantItems = ref(null);
+    const orderDetachers = ref([]);
+    const restaurant_detacher = ref(null);
+    const message_detacher = ref(null);
+    const unsetWarning = ref(true);
+    const lines = ref({});
+    const shopOwner = ref(null);
+    const restaurantLists = ref([]);
+    const numberOfOrderObj = ref({});
+    const messages = ref([]);
+    if (!checkAdminPermission(ctx)) {
+      return;
     }
 
-    this.message_detacher = db
-      .collection(`/admins/${this.uid}/messages`)
-      .orderBy("createdAt", "desc")
-      .onSnapshot((messageCollection) => {
-        this.messages = messageCollection.docs
-          .map(this.doc2data("message"))
-          .filter((a) => a.toDisplay);
-      });
-  },
-  methods: {
-    destroy_detacher() {
-      this.detachers.map((detacher) => {
+    const detachOrders = () => {
+      orderDetachers.value.map((detacher) => {
         detacher();
       });
-      this.detachers = [];
-    },
-    async handleNew() {
-      console.log("handleNew");
-      if (this.isOwner) {
-        try {
-          this.isCreating = true;
-          const doc = await db.collection("restaurants").doc();
-          // update Lists
-          this.restaurantLists.push(doc.id);
-          this.saveRestaurantLists();
+      orderDetachers.value = [];
+    };
+    const { isOwner, uid, ownerUid } = useAdminUids(ctx);
 
-          doc.set({
-            uid: this.uid,
-            restaurantId: doc.id,
+    const { toggle: simpleMode, switchToggle: switchSimpleMode } =
+      useAdminConfigToggle("simpleMode", uid.value, false);
+
+    const watchOrder = () => {
+      detachOrders();
+      orderDetachers.value = Object.keys(restaurantItems.value).map(
+        (restaurantId) => {
+          return onSnapshot(
+            query(
+              collection(db, `restaurants/${restaurantId}/orders`),
+              where("timePlaced", ">=", midNight())
+            ),
+            // IDEALLY: .where("status", "<", order_status.ready_to_pickup)
+            (result) => {
+              const newObj = { ...numberOfOrderObj.value };
+              newObj[restaurantId] = result.docs
+                .map((doc) => doc.data())
+                .filter((data) => {
+                  // We need this filter here because Firebase does not allow us to do
+                  return data.status < order_status.ready_to_pickup;
+                }).length;
+              numberOfOrderObj.value = newObj;
+            }
+          );
+        }
+      );
+    };
+    onMounted(async () => {
+      try {
+        shopOwner.value = isOwner.value
+          ? await getShopOwner(ownerUid.value)
+          : {};
+
+        restaurantLists.value = await (async () => {
+          if (isOwner.value) {
+            const restaurantListsDoc = await getDoc(
+              doc(db, `/admins/${uid.value}/public/RestaurantLists`)
+            );
+            return restaurantListsDoc.exists()
+              ? restaurantListsDoc.data().lists || []
+              : [];
+          } else {
+            const restaurantListsDoc = await getDoc(
+              doc(db, `/admins/${ownerUid.value}/children/${uid.value}`)
+            );
+            return restaurantListsDoc.exists()
+              ? restaurantListsDoc.data().restaurantLists || []
+              : [];
+          }
+        })();
+
+        if (isOwner.value) {
+          restaurant_detacher.value = onSnapshot(
+            query(
+              collection(db, "restaurants"),
+              where("uid", "==", ownerUid.value),
+              where("deletedFlag", "==", false),
+              orderBy("createdAt", "asc")
+            ),
+            async (result) => {
+              try {
+                if (result.empty) {
+                  restaurantItems.value = {}; // so that we present "No restaurant"
+                  return;
+                }
+                restaurantItems.value = (result.docs || []).reduce(
+                  (tmp, doc) => {
+                    tmp[doc.id] = doc2data("restaurant")(doc);
+                    if (!restaurantLists.value.includes(doc.id)) {
+                      restaurantLists.value.push(doc.id);
+                    }
+                    return tmp;
+                  },
+                  {}
+                );
+                watchOrder();
+              } catch (error) {
+                console.log("Error fetch doc,", error);
+              } finally {
+                readyToDisplay.value = true;
+              }
+            }
+          );
+        }
+        if (!isOwner.value && restaurantLists.value.length > 0) {
+          // sub account
+          arrayChunk(restaurantLists.value, 10).map((restaurantIds) => {
+            restaurant_detacher.value = onSnapshot(
+              query(
+                collection(db, "restaurants"),
+                where("uid", "==", ownerUid.value),
+                where("restaurantId", "in", restaurantIds),
+                where("deletedFlag", "==", false),
+                orderBy("createdAt", "asc")
+              ),
+              async (result) => {
+                try {
+                  if (result.empty && restaurantItems.value === null) {
+                    restaurantItems.value = {}; // so that we present "No restaurant"
+                    return;
+                  }
+
+                  restaurantItems.value = (result.docs || []).reduce(
+                    (tmp, doc) => {
+                      tmp[doc.id] = doc2data("restaurant")(doc);
+                      return tmp;
+                    },
+                    {}
+                  );
+                  // if subAccounts has more than 11 restaurant, this will call multiple. TODO: optimize.
+                  watchOrder();
+                } catch (error) {
+                  console.log("Error fetch doc,", error);
+                } finally {
+                  readyToDisplay.value = true;
+                }
+              }
+            );
+          });
+        }
+      } catch (error) {
+        console.log("Error fetch doc,", error);
+      } finally {
+        readyToDisplay.value = true;
+      }
+      if (isOwner.value) {
+        onSnapshot(
+          query(collectionGroup(db, "lines"), where("uid", "==", uid.value)),
+          (result) => {
+            result.docs.map(async (res) => {
+              const restaurantId = res.data().restaurantId;
+              lines.value[restaurantId] = true;
+            });
+          }
+        );
+      }
+
+      message_detacher.value = onSnapshot(
+        collection(db, `/admins/${uid.value}/messages`),
+        query(orderBy("createdAt", "desc")),
+        (messageCollection) => {
+          messages.value = messageCollection.docs
+            .map(doc2data("message"))
+            .filter((a) => a.toDisplay);
+        }
+      );
+    });
+
+    const saveRestaurantLists = async () => {
+      if (isOwner.value) {
+        await setDoc(
+          doc(db, `/admins/${uid.value}/public/RestaurantLists`),
+          { lists: restaurantLists.value },
+          { merge: true }
+        );
+      }
+    };
+    const handleNew = async () => {
+      console.log("handleNew");
+      if (isOwner.value) {
+        try {
+          isCreating.value = true;
+          const newDoc = doc(collection(db, "restaurants"));
+          // update Lists
+          restaurantLists.value.push(newDoc.id);
+          saveRestaurantLists();
+
+          await setDoc(newDoc, {
+            uid: uid.value,
+            restaurantId: newDoc.id,
             menuLists: [],
             publicFlag: false,
             numberOfMenus: 0,
             deletedFlag: false,
-            createdAt: firestore.FieldValue.serverTimestamp(),
+            createdAt: serverTimestamp(),
           });
 
-          this.$router.push(`/admin/restaurants/${doc.id}`);
+          ctx.root.$router.push(`/admin/restaurants/${newDoc.id}`);
         } catch (error) {
           console.log(error);
         } finally {
-          this.isCreating = false;
+          isCreating.value = false;
         }
       }
-    },
-    updateUnsetWarning(value) {
-      this.unsetWarning = value;
-    },
-    async positionUp(itemKey) {
-      if (this.isOwner) {
-        const pos = this.restaurantLists.indexOf(itemKey);
+    };
+    const updateUnsetWarning = (value) => {
+      unsetWarning.value = value;
+    };
+    const positionUp = async (itemKey) => {
+      if (isOwner.value) {
+        const pos = restaurantLists.value.indexOf(itemKey);
         if (pos !== 0 && pos !== -1) {
-          const newRestaurantLists = [...this.restaurantLists];
+          const newRestaurantLists = [...restaurantLists.value];
           const tmp = newRestaurantLists[pos - 1];
           newRestaurantLists[pos - 1] = newRestaurantLists[pos];
           newRestaurantLists[pos] = tmp;
 
-          this.restaurantLists = newRestaurantLists;
-          await this.saveRestaurantLists();
+          restaurantLists.value = newRestaurantLists;
+          await saveRestaurantLists();
         }
       }
-    },
-    async positionDown(itemKey) {
-      if (this.isOwner) {
-        const pos = this.restaurantLists.indexOf(itemKey);
-        if (pos < this.restaurantLists.length - 1 && pos !== -1) {
-          const newRestaurantLists = [...this.restaurantLists];
+    };
+    const positionDown = async (itemKey) => {
+      if (isOwner.value) {
+        const pos = restaurantLists.value.indexOf(itemKey);
+        if (pos < restaurantLists.value.length - 1 && pos !== -1) {
+          const newRestaurantLists = [...restaurantLists.value];
           const tmp = newRestaurantLists[pos + 1];
           newRestaurantLists[pos + 1] = newRestaurantLists[pos];
           newRestaurantLists[pos] = tmp;
 
-          this.restaurantLists = newRestaurantLists;
+          restaurantLists.value = newRestaurantLists;
 
-          await this.saveRestaurantLists();
+          await saveRestaurantLists();
         }
       }
-    },
-    async deleteFromRestaurantLists(restaurantId) {
-      if (this.isOwner) {
+    };
+    const deleteFromRestaurantLists = async (restaurantId) => {
+      if (isOwner.value) {
         // push list
-        const newRestaurantLists = [...this.restaurantLists];
+        const newRestaurantLists = [...restaurantLists.value];
         const pos = newRestaurantLists.indexOf(restaurantId);
         newRestaurantLists.splice(pos, 1);
-        this.restaurantLists = newRestaurantLists;
+        restaurantLists.value = newRestaurantLists;
 
-        const path = `/admins/${this.$store.getters.uidAdmin}/public/RestaurantLists`;
-        await db.doc(path).set({ lists: newRestaurantLists }, { merge: true });
+        const path = `/admins/${uid.value}/public/RestaurantLists`;
+        await setDoc(
+          doc(db, path),
+          { lists: newRestaurantLists },
+          { merge: true }
+        );
         // end of list
       }
-    },
-    async saveRestaurantLists() {
-      if (this.isOwner) {
-        await db
-          .doc(`/admins/${this.$store.getters.uidAdmin}/public/RestaurantLists`)
-          .set({ lists: this.restaurantLists }, { merge: true });
+    };
+    onUnmounted(() => {
+      detachOrders();
+      if (restaurant_detacher.value) {
+        restaurant_detacher.value();
       }
-    },
-    openContact() {
-      this.isOpen = true;
-    },
-  },
-  destroyed() {
-    this.destroy_detacher();
-    if (this.restaurant_detacher) {
-      this.restaurant_detacher();
-    }
-    if (this.message_detacher) {
-      this.message_detacher();
-    }
-  },
-  computed: {
-    partner() {
-      return getPartner(this.shopOwner);
-    },
-    ownerUid() {
-      return this.$store.getters.isSubAccount
-        ? this.$store.getters.parentId
-        : this.uid;
-    },
-    isOwner() {
-      return !this.$store.getters.isSubAccount;
-    },
-    uid() {
-      return this.$store.getters.uidAdmin;
-    },
-    existsRestaurant() {
-      if (this.restaurantItems === null) {
+      if (message_detacher.value) {
+        message_detacher.value();
+      }
+    });
+
+    const existsRestaurant = computed(() => {
+      if (restaurantItems.value === null) {
         return null;
       }
-      if (Object.keys(this.restaurantItems).length > 0) {
+      if (Object.keys(restaurantItems.value).length > 0) {
         return true;
       }
       return false;
-    },
+    });
+    return {
+      // ref
+      readyToDisplay,
+      isCreating,
+      restaurantItems,
+      unsetWarning,
+      lines,
+      shopOwner,
+      restaurantLists,
+      messages,
+      numberOfOrderObj,
+
+      // computed
+      isOwner,
+      existsRestaurant,
+
+      simpleMode,
+      switchSimpleMode,
+
+      // methods
+      handleNew,
+      updateUnsetWarning,
+      positionUp,
+      positionDown,
+      deleteFromRestaurantLists,
+      saveRestaurantLists,
+    };
   },
-};
+});
 </script>

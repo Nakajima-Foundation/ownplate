@@ -50,10 +50,20 @@
 </template>
 
 <script>
-import BackButton from "@/components/BackButton";
+import {
+  defineComponent,
+  ref,
+  onUnmounted,
+  watch,
+  computed,
+} from "@vue/composition-api";
+
+import BackButton from "@/components/BackButton.vue";
 import { db } from "@/plugins/firebase";
 
-export default {
+import { doc2data, array2obj, useAdminUids } from "@/utils/utils";
+
+export default defineComponent({
   components: {
     BackButton,
   },
@@ -62,70 +72,75 @@ export default {
       title: [this.defaultTitle, "Admin Subaccount Account"].join(" / "),
     };
   },
-  async created() {
-    const restaurantCollection = await db
-      .collection("restaurants")
-      .where("uid", "==", this.uid)
+  setup(props, ctx) {
+    const subAccountId = computed(() => {
+      return ctx.root.$route.params.subAccountId;
+    });
+
+    const restaurantObj = ref({});
+    const restaurants = ref([]);
+
+    const { uid } = useAdminUids(ctx);
+
+    db.collection("restaurants")
+      .where("uid", "==", uid.value)
       .where("deletedFlag", "==", false)
       .orderBy("createdAt", "asc")
-      .get();
-    this.restaurantObj = this.array2obj(
-      restaurantCollection.docs.map(this.doc2data("restaurant"))
-    );
-    this.restaurants = restaurantCollection.docs
-      .map(this.doc2data("restaurant"))
-      .filter((r) => r.publicFlag);
+      .get()
+      .then((restaurantCollection) => {
+        restaurantObj.value = array2obj(
+          restaurantCollection.docs.map(doc2data("restaurant"))
+        );
+        restaurants.value = restaurantCollection.docs
+          .map(doc2data("restaurant"))
+          .filter((r) => r.publicFlag);
+      });
+    const name = ref("");
 
-    const childrenDoc = await db
-      .doc(`admins/${this.uid}/children/${this.subAccountId}`)
-      .get();
-    this.child = childrenDoc.data();
-    this.restaurantListObj = (this.child.restaurantLists || []).reduce(
-      (t, c) => {
+    const child = ref({});
+    db.doc(`admins/${uid.value}/children/${subAccountId.value}`)
+      .get()
+      .then((childrenDoc) => {
+        child.value = childrenDoc.data();
+        name.value = child.value.name;
+      });
+
+    const restaurantListObj = computed(() => {
+      return (child.value.restaurantLists || []).reduce((t, c) => {
         t[c] = true;
         return t;
-      },
-      {}
-    );
-    this.name = this.child.name;
-  },
-  data() {
-    return {
-      restaurantObj: {},
-      restaurants: [],
-      child: {},
-      restaurantListObj: {},
-      name: "",
-    };
-  },
-  methods: {
-    async saveList() {
-      await db.doc(`admins/${this.uid}/children/${this.subAccountId}`).update({
-        restaurantLists: this.newRestaurantList,
-        name: this.name,
-      });
-      this.$router.push("/admin/subaccounts/");
-    },
-  },
-  computed: {
-    isOwner() {
-      return !this.$store.getters.isSubAccount;
-    },
-    uid() {
-      return this.$store.getters.uidAdmin;
-    },
-    subAccountId() {
-      return this.$route.params.subAccountId;
-    },
-    newRestaurantList() {
-      return Object.keys(this.restaurantListObj).reduce((tmp, k) => {
-        const c = this.restaurantListObj[k];
+      }, {});
+    });
+
+    const newRestaurantList = computed(() => {
+      return Object.keys(restaurantListObj.value).reduce((tmp, k) => {
+        const c = restaurantListObj.value[k];
         if (c) {
           tmp.push(k);
         }
         return tmp;
       }, []);
-    },
+    });
+
+    const saveList = async () => {
+      await db
+        .doc(`admins/${uid.value}/children/${subAccountId.value}`)
+        .update({
+          restaurantLists: newRestaurantList.value,
+          name: name.value,
+        });
+      ctx.root.$router.push("/admin/subaccounts/");
+    };
+
+    return {
+      restaurantObj,
+      restaurants,
+      child,
+      restaurantListObj,
+      name,
+
+      saveList,
+    };
   },
-};
+});
 </script>

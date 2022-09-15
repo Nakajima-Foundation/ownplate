@@ -135,7 +135,8 @@ export const shopInfoValidator = (
   shopInfo: RestaurantInfoData,
   requireTaxInput: boolean,
   errorsPhone: string[],
-  files_profile?: File
+  files_profile?: File,
+  files_cover?: File
 ) => {
   const err: shopInfoValidatorError = {};
   [
@@ -248,6 +249,12 @@ export const shopInfoValidator = (
   if (isNull(files_profile) && isNull(shopInfo.restProfilePhoto)) {
     err["restProfilePhoto"].push("validationError.restProfilePhoto.empty");
   }
+
+  err["restCoverPhoto"] = [];
+  if (isNull(files_cover) && isNull(shopInfo.restCoverPhoto)) {
+    err["restCoverPhoto"].push("validationError.restCoverPhoto.empty");
+  }
+
   // todo more validate
   return err;
 };

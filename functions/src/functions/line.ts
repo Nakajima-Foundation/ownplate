@@ -45,7 +45,7 @@ export const verifyFriend = async (db: admin.firestore.Firestore, data: any, con
 export const authenticate = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => {
   // eslint-disable-line
   const { code, redirect_uri, client_id } = data;
-  utils.validate_params({ code, redirect_uri, client_id });
+  utils.required_params({ code, redirect_uri, client_id });
   const LINE_TRACK_KEY = functions.config().line.track;
 
   try {
@@ -99,7 +99,7 @@ export const validate = async (db: admin.firestore.Firestore, data: any, context
   const uid = utils.validate_auth(context);
 
   const { code, redirect_uri, client_id } = data;
-  utils.validate_params({ code, redirect_uri, client_id });
+  utils.required_params({ code, redirect_uri, client_id });
 
   const LINE_SECRET_KEY = functions.config().line.secret;
 
@@ -149,10 +149,11 @@ export const validate = async (db: admin.firestore.Firestore, data: any, context
         },
         { merge: true }
       );
-    } else {
-      // Remove unnecessary claims from previous version.
-      await admin.auth().setCustomUserClaims(uid, { line: null });
     }
+    // else {
+    // Remove unnecessary claims from previous version.
+    // await admin.auth().setCustomUserClaims(uid, { line: null });
+    // }
 
     return { profile, nonce: verified.nonce };
   } catch (error) {

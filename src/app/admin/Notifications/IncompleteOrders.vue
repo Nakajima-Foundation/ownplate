@@ -30,40 +30,49 @@
 </template>
 
 <script>
+import { defineComponent, computed } from "@vue/composition-api";
+
+import { isNull } from "@/utils/utils";
 import { midNight } from "@/utils/dateUtils";
 import moment from "moment";
 
-export default {
+export default defineComponent({
   props: {
     shopInfo: Object,
   },
-  computed: {
-    orderCounter() {
-      return this.lastSeveralDays.reduce((tmp, day) => {
+  setup(props, ctx) {
+    const pickUpDaysInAdvance = computed(() => {
+      return (
+        (isNull(props.shopInfo.pickUpDaysInAdvance)
+          ? 3
+          : props.shopInfo.pickUpDaysInAdvance) + 1
+      );
+    });
+
+    const orderCounter = computed(() => {
+      return lastSeveralDays.value.reduce((tmp, day) => {
         const count = (
-          this.$store.state.orderObj[moment(day.date).format("YYYY-MM-DD")] ||
-          []
+          ctx.root.$store.state.orderObj[
+            moment(day.date).format("YYYY-MM-DD")
+          ] || []
         ).length;
         tmp[moment(day.date).format("YYYY-MM-DD")] = count || 0;
         return tmp;
       }, {});
-    },
-    pickUpDaysInAdvance() {
-      return this.getPickUpDaysInAdvance();
-    },
-    lastSeveralDays() {
-      return Array.from(Array(this.pickUpDaysInAdvance).keys()).map((index) => {
-        const date = midNight(index);
-        return { index, date };
-      });
-    },
+    });
+    const lastSeveralDays = computed(() => {
+      return Array.from(Array(pickUpDaysInAdvance.value).keys()).map(
+        (index) => {
+          const date = midNight(index);
+          return { index, date };
+        }
+      );
+    });
+
+    return {
+      lastSeveralDays,
+      orderCounter,
+    };
   },
-  methods: {
-    getPickUpDaysInAdvance() {
-      return this.isNull(this.shopInfo.pickUpDaysInAdvance)
-        ? 3
-        : this.shopInfo.pickUpDaysInAdvance;
-    },
-  },
-};
+});
 </script>

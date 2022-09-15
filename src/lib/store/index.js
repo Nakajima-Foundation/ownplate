@@ -41,13 +41,13 @@ export const getters = {
   liffId: (state) => {
     return state.user && state.claims.liffId;
   },
+  grpupId: (state) => {
+    return state.user && state.claims.groupId;
+  },
   isAnonymous: (state) => {
     return state.user === undefined || state.user === null;
   },
-  userWasInitialized: (state) => {
-    // Check if state.user has been initialized (as the result of notication from Firebase)
-    return state.user !== undefined;
-  },
+  // TODO: remove
   stripeRegion: (state) => {
     return stripe_regions[state.server.region || "US"];
   },

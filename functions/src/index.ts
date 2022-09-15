@@ -14,8 +14,6 @@ if (!admin.apps.length) {
 
 exportIfNeeded("api", "api", exports);
 
-// exportIfNeeded("systemGetConfig", "systemGetConfig", exports);
-
 exportIfNeeded("superDispatch", "superDispatch", exports);
 exportIfNeeded("superTwilio", "superTwilio", exports);
 
@@ -28,8 +26,8 @@ exportIfNeeded("lineSetCustomClaim", "line/lineSetCustomClaim", exports);
 exportIfNeeded("liffAuthenticate", "liffAuthenticate", exports); // jp
 exportIfNeeded("traceProcess", "traceProcess", exports);
 
-exportIfNeeded("wasOrderCreatedJp", "order/wasOrderCreatedJp", exports); // jp
-exportIfNeeded("orderCreatedJp", "order/wasOrderCreatedJp", exports); // jp
+exportIfNeeded("wasOrderCreatedJp", "order/orderCreatedJp", exports); // jp
+exportIfNeeded("orderCreatedJp", "order/orderCreatedJp", exports); // jp
 exportIfNeeded("orderUpdateJp", "order/orderUpdateJp", exports);
 exportIfNeeded("orderPlaceJp", "order/orderPlaceJp", exports);
 

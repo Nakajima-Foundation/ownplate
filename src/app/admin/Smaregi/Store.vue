@@ -80,7 +80,9 @@ import { smaregi } from "@/config/project";
 import { db } from "@/plugins/firebase";
 import { smaregiProductList } from "@/lib/firebase/functions";
 
-import BackButton from "@/components/BackButton";
+import { doc2data, array2obj } from "@/utils/utils";
+
+import BackButton from "@/components/BackButton.vue";
 
 export default {
   components: {
@@ -130,7 +132,7 @@ export default {
       .where("publicFlag", "==", true)
       .get();
 
-    this.menus = menus.docs.map(this.doc2data("message")).sort((a, b) => {
+    this.menus = menus.docs.map(doc2data("message")).sort((a, b) => {
       return a.itemName > b.itemName ? 1 : -1;
     });
     this.menuObj = this.menus.reduce((tmp, current) => {
@@ -155,7 +157,7 @@ export default {
       .collection(`/smaregi/${this.contractId}/stores/${this.storeId}/products`)
       .where("uid", "==", this.uid)
       .get();
-    const products = productCollection.docs.map(this.doc2data("stores"));
+    const products = productCollection.docs.map(doc2data("stores"));
 
     const productObj = products.reduce((tmp, current) => {
       tmp[current.productId] = current;
@@ -167,9 +169,7 @@ export default {
         `smaregiData/${this.contractId}/stores/${this.storeId}/smaregiProducts`
       )
       .get();
-    this.stockObj = this.array2obj(
-      stockCollection.docs.map(this.doc2data("stock"))
-    );
+    this.stockObj = array2obj(stockCollection.docs.map(doc2data("stock")));
 
     const selectedMenu = {};
     (this.productList || []).map((product, key) => {

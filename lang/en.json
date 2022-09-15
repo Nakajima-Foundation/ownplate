@@ -15,6 +15,16 @@
   "greeting": "Hello World2",
   "underConstruction": "WARNING: This is a staging server for development.",
   "comma": ", ",
+  "mobileOrder": {
+    "smallPayment1": "If the order amount is 50 yen or less,",
+    "smallPayment2": "you cannot use \"Pay Now\".",
+    "smallPayment3": "Please use \"Pay Layter\"",
+    "name": "Online ordering service",
+    "shopInfo": {
+      "takeout": "Online order",
+      "pickup": "Takeaway now"
+    }
+  },
   "profile": {
     "title": "My Page",
     "address": "Personal Info",
@@ -260,17 +270,20 @@
     "editCategory1": "Edit Category 1",
     "category2": "Category 2",
     "editCategory2": "Edit Category 2",
+    "exclusionDate": "Exclusion Date",
+    "exclusionTime": "Exclusion Time",
     "showAllMenu": "All Items",
-    "showPublicMenu": "Published Items"
+    "showPublicMenu": "Published Items",
+    "selectCategory": "Select"
   },
   "editTitle": {
     "enterCategory": "Enter group name",
     "empty": "(Empty group name)"
   },
   "find": {
-    "area": "Areas",
-    "areaAll": "All Restaurants",
-    "areaTop": "Areas Top",
+    "area": "Let's search",
+    "areaAll": "Restaurants nationwide",
+    "areaTop": "Let's search",
     "likes": "Likes",
     "favoriteShop": "Favorites",
     "noLikes": "No Favorite Restaurants",
@@ -386,6 +399,8 @@
   "sitemenu": {
     "menu": "Menu",
     "about": "About",
+    "limitedSale": "Limited sale on the day of the week",
+    "unavailableTime": "Unavailable Time",
     "confirmCart": "Confirm Cart",
     "checkout": "Checkout",
     "orderCounter": "{count} item | {count} items",
@@ -421,7 +436,10 @@
     "osaka": "Osaka",
     "izakaya": "Izakaya",
     "patisserie": "pastry shop",
-    "searchRestaurant": "Search for restaurant"
+    "searchRestaurant": "Search for restaurant",
+    "moTagline": "FamilyMart's official layaway service that allows you to easily make purchases from your PC or smartphone.",
+    "moDescription1": "You can order products that we do not normally carry.",
+    "moDescription2": "In-store pickup is available as soon as 4 days after the order date.​"
   },
   "order": {
     "allOrders": "All Orders",
@@ -509,8 +527,15 @@
     "unspecified": "(unspecified)",
     "adminQRCode": "Confirmation QR Code",
     "paymentAndCancellation": "Payment and Cancellation",
+    "statusTitle": "Order Status",
+    "sortOrder": "Sort Order",
+    "sort": {
+      "newest": "Sort by newst order",
+      "oldest": "Sort by oldest order"
+    },
     "status": {
       "unexpected": "Unexpected",
+      "all": "All",
       "error": "Error",
       "new_order": "New Order",
       "validation_ok": "Validated",
@@ -707,6 +732,7 @@
     "thirdPartyService": {
       "title": "Third Party Service",
       "openSmaregi": "Open Smaregi",
+      "smaregiManual": "Smaregi Manual",
       "smaregiAppMarket": "Go to Smaregi App Market",
       "smaregiManualLink": "How to use Smaregi"
     },
@@ -769,6 +795,8 @@
       "paymentCancelMessage": "It will be changed to payment in the restaurant. Please contact the customer and let them know that you will be paying in the restaurant. The order will not be cancelled.",
       "paymentCancel": "Cancel only card payment",
       "paymentCancelConfirm": "(This action is undoable)",
+      "placedDate": "Date of order",
+      "pickupDate": "Date of Pickup",
       "line": "LINE Notification",
       "lineAdd": "Add a LINE account",
       "lineUsers": "Connected LINE Accounts",
@@ -807,6 +835,7 @@
       "download-csv-details": "Download Excel File (Details)"
     },
     "error": {
+      "memoLength": "Please enter your message within 500 characters.",
       "email": {
         "invalid": "Invalid Email Address",
         "taken": "The email address is already in use by another account."
@@ -820,8 +849,13 @@
         "auth/wrong-password": "The password is invalid",
         "auth/too-many-requests": "Too many unsuccessful login attempts. Please try again later.",
         "auth/invalid-email": "The email address is badly formatted.",
-        "auth/unauthorized-continue-uri": "Domain not whitelisted by project"
+        "auth/unauthorized-continue-uri": "Domain not whitelisted by project",
+        "auth/internal-error": "Password is invalid."
       }
+    },
+    "index": {
+      "showSimple": "Simple",
+      "showAll": "All"
     },
     "messages": {
       "title": "Message",
@@ -857,6 +891,7 @@
         "accepted": "Accepted",
         "denied": "Denied"
       },
+      "numberOfShops": "shops",
       "selectRestaurant": "Please select a restaurant that can operate this account.",
       "confirmDeletechild": "Cancel the sub-account"
     },
@@ -936,6 +971,7 @@
         "intent": "Failed to process the payment.",
         "NoJCB": "This restaurant does not accept JCB card."
       },
+      "smallPayment": "Card payments under 50 yen cannot be accepted.",
       "menu": {
         "save": "Failed to update the menu."
       },
@@ -945,7 +981,11 @@
     },
     "notFound": {
       "message1": "The page you're looking for can't be found.",
-      "message2": "Try contacting the restaurant in other way."
+      "message2": "Try contacting the restaurant in other way.",
+      "moMessageTop": "The service is currently suspended.",
+      "moMessage1": "The service is temporarily suspended.",
+      "moMessage2": "We sincerely apologize for any inconvenience caused.",
+      "moMessage3": "Please wait for a while until service resumes."
     },
     "requireLogin": {
       "message1": "You must be signed in to see your order"
@@ -961,6 +1001,9 @@
     },
     "name": {
       "empty": "Please enter your full name"
+    },
+    "memo": {
+      "length": "Please enter your message within 500 characters."
     },
     "location": {
       "noLocation": "After entering the address, please update the delivery distination on the map. You can also update by tapping "

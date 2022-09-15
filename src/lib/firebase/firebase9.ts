@@ -1,8 +1,18 @@
 import { initializeApp } from "firebase/app";
+import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check";
 
-import { firebaseConfig } from "@/config/project";
+import { firebaseConfig, appCheckKey } from "@/config/project";
 
 const firebaseApp = initializeApp(firebaseConfig);
+
+if (location.hostname === "localhost") {
+  self.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
+}
+
+const appCheck = initializeAppCheck(firebaseApp, {
+  provider: new ReCaptchaV3Provider(appCheckKey),
+  isTokenAutoRefreshEnabled: true,
+});
 
 // for V9
 import { getAuth } from "firebase/auth";

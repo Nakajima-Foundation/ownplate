@@ -8,7 +8,7 @@ export const connect = async (db: admin.firestore.Firestore, data: any, context:
   const stripe = utils.get_stripe();
 
   const { code } = data;
-  utils.validate_params({ code });
+  utils.required_params({ code });
 
   try {
     const refStripe = db.doc(`/admins/${uid}/system/stripe`);
@@ -79,7 +79,7 @@ export const verify = async (db: admin.firestore.Firestore, data: any, context: 
   const stripe = utils.get_stripe();
 
   const { account_id } = data;
-  utils.validate_params({ account_id });
+  utils.required_params({ account_id });
   try {
     const account = await stripe.accounts.retrieve(account_id);
     return { result: true, account };

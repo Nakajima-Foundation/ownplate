@@ -1,13 +1,7 @@
 <template>
   <div class="wrapper" @click="enableSound()">
     <!-- Notification Banner -->
-    <div
-      v-if="isFlash"
-      @click="dismissBanner()"
-      class="bg-blue-500 fixed z-50 w-full h-16 flex justify-center items-center animate-pulse"
-    >
-      <i class="material-icons text-white text-2xl">notifications_active</i>
-    </div>
+    <NotificationBanner />
 
     <!-- Header -->
     <Header @handleOpen="handleOpen" />
@@ -39,65 +33,7 @@
       :can-cancel="false"
     ></b-loading>
 
-    <!-- Footer -->
-    <div class="bg-op-gray h-52 mt-12">
-      <div class="mt-4 mx-4 text-right">
-        <a
-          class="inline-flex justify-center items-center rounded-full h-10 bg-white bg-opacity-10 pl-4 pr-2"
-          @click="openLang()"
-        >
-          <i class="material-icons text-lg text-white text-opacity-50 mr-2"
-            >language</i
-          >
-          <span class="text-white text-sm font-bold text-opacity-80 mr-2">{{
-            languages[language]
-          }}</span>
-
-          <i class="material-icons text-lg text-white text-opacity-50"
-            >arrow_drop_down</i
-          >
-        </a>
-      </div>
-      <div class="mt-2 mx-6 text-right">
-        <span class="text-xs text-white text-opacity-50">
-          Operated by Singularity Society
-        </span>
-      </div>
-    </div>
-
-    <!-- Language Popup-->
-    <b-modal :active.sync="langPopup" :width="488" scroll="keep">
-      <div class="bg-white rounded-lg my-6 mx-2 shadow-lg p-6">
-        <div class="text-xl font-bold text-black text-opacity-40">
-          {{ $t("menu.selectLanguage") }}
-        </div>
-
-        <!-- Languages -->
-        <div class="mt-4" v-for="(lang, lang_key) in languages" :key="lang_key">
-          <a
-            class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
-            @click="changeLangAndClose(lang_key)"
-            ><i
-              class="material-icons text-lg text-black text-opacity-60 mr-2"
-              v-if="lang_key == language"
-              >check</i
-            ><span class="text-sm font-bold text-op-teal">{{ lang }}</span></a
-          >
-        </div>
-
-        <!-- Close -->
-        <div class="mt-6 text-center">
-          <a
-            class="inline-flex justify-center items-center rounded-full h-12 bg-black bg-opacity-5"
-            style="min-width: 10rem"
-            @click="closeLang()"
-            ><span class="font-bold text-black text-opacity-60 px-4"
-              >{{ $t("menu.close") }}
-            </span></a
-          >
-        </div>
-      </div>
-    </b-modal>
+    <Footer />
 
     <!-- Audio Play -->
     <audio-play ref="audioPlay" />
@@ -118,18 +54,19 @@ import {
 
 import { onAuthStateChanged } from "firebase/auth";
 
-import Header from "@/components/Header";
-import SideMenuWrapper from "@/components/SideMenuWrapper";
+import Header from "@/components/App/Header.vue";
+import Footer from "@/components/App/Footer.vue";
+import NotificationBanner from "@/components/App/NotificationBanner.vue";
+import SideMenuWrapper from "@/components/App/SideMenuWrapper.vue";
+import DialogBox from "@/components/DialogBox.vue";
+import AudioPlay from "@/components/AudioPlay.vue";
 
-import DialogBox from "@/components/DialogBox";
-import AudioPlay from "@/components/AudioPlay";
+import { underConstruction } from "@/utils/utils";
+
 import * as Sentry from "@sentry/vue";
 import { ownPlateConfig, mo_prefixes } from "@/config/project";
 import { defaultHeader } from "@/config/header";
 import { MoHeader } from "@/config/moHeader";
-
-import { isNull } from "@/utils/utils";
-import { regionalSetting } from "@/utils/utils";
 
 export default {
   components: {
@@ -137,30 +74,19 @@ export default {
     AudioPlay,
     SideMenuWrapper,
     Header,
+    Footer,
+    NotificationBanner,
   },
-  metaInfo: location.pathname.startsWith("/ss") ? MoHeader : defaultHeader,
+  metaInfo: mo_prefixes.some((prefix) => {
+    return location.pathname.startsWith("/" + prefix);
+  })
+    ? MoHeader
+    : defaultHeader,
   data() {
     return {
-      language: "en",
-      languages: [],
-      items: [
-        {
-          title: "Home",
-          icon: "home",
-          to: { name: "index" },
-        },
-        {
-          title: "Inspire",
-          icon: "lightbulb",
-          to: { name: "inspire" },
-        },
-      ],
       unregisterAuthObserver: null,
       timerId: null,
-
-      langPopup: false,
-      isFlash: false,
-      FlashToggle: false,
+      underConstruction,
     };
   },
   mounted() {
@@ -191,70 +117,24 @@ export default {
       }
       return false;
     },
-    hasUser() {
-      return !isNull(this.$store.state.user);
-    },
-    isUser() {
-      return !!this.$store.getters.uidUser;
-    },
     uid() {
       return this.$store.getters.uid;
-    },
-    profile_path() {
-      const path_prefix = this.isAdmin ? "admins" : "users";
-      return `${path_prefix}/${this.uid}/private/profile`;
     },
     isInMo() {
       return mo_prefixes.some((prefix) => {
         return (
           (this.$route.fullPath || "").startsWith(`/${prefix}/`) ||
-            (this.$route.fullPath || "") === `/${prefix}`
+          (this.$route.fullPath || "") === `/${prefix}`
         );
       });
     },
   },
   methods: {
-    flash() {
-      this.isFlash = true;
-      setTimeout(() => {
-        this.isFlash = false;
-      }, 5000);
-    },
-    dismissBanner() {
-      this.isFlash = false;
-    },
     async enableSound() {
       await this.$refs.audioPlay.enableSound();
     },
     handleOpen() {
       this.$refs.sideMenu.handleOpen();
-    },
-    openLang() {
-      this.langPopup = true;
-    },
-    closeLang() {
-      this.langPopup = false;
-    },
-    changeLangAndClose(lang) {
-      this.changeLang(lang);
-      this.closeLang();
-    },
-    setLang(lang) {
-      this.language = lang;
-      this.$i18n.locale = lang;
-      auth.languageCode = lang;
-    },
-    async changeLang(lang) {
-      this.setLang(lang);
-      await this.saveLang(lang);
-    },
-    async saveLang(lang) {
-      if (this.hasUser || this.isAdmin) {
-        await setDoc(doc(db, this.profile_path), { lang }, { merge: true });
-      } else {
-        // save into store
-        this.$store.commit("setLang", lang);
-      }
     },
     pingAnalytics() {
       setCurrentScreen(analytics, document.title);
@@ -295,7 +175,7 @@ export default {
           role: !!user.email ? "admin" : "customer",
         });
         setUserId(analytics, user.uid);
-        
+
         if (this.isInMo) {
           window.dataLayer.push({
             uid: user.uid,
@@ -318,29 +198,6 @@ export default {
     $route() {
       this.pingAnalytics();
     },
-    async "$route.query.lang"() {
-      if (this.$route.query.lang) {
-        await this.changeLang(this.$route.query.lang);
-      }
-    },
-    async user() {
-      if (this.user) {
-        // lang
-        if (this.$store.state.lang) {
-          this.changeLang(this.$store.state.lang);
-        } else {
-          const profileSnapshot = await getDoc(doc(db, this.profile_path));
-          if (profileSnapshot.exists()) {
-            if (profileSnapshot.data().lang) {
-              this.setLang(profileSnapshot.data().lang);
-            }
-          }
-        }
-      }
-    },
-    async "$store.state.orderEvent"() {
-      this.flash();
-    },
   },
   async created() {
     console.log(process.env.VUE_APP_CIRCLE_SHA1);
@@ -356,35 +213,11 @@ export default {
         return;
       }
     }
-    this.language = regionalSetting.defaultLanguage;
-    this.languages = regionalSetting.languages;
 
     this.timerId = window.setInterval(() => {
       this.$store.commit("updateDate");
     }, 60 * 1000);
 
-    // lang: query, bot, browser
-    // setting (is not here / after user load). TODO: hold on storage
-    if (this.$route.query.lang) {
-      await this.changeLang(this.$route.query.lang);
-    } else if (navigator.userAgent.toLowerCase().indexOf("googlebot") > -1) {
-      if (this.isJapan) {
-        await this.changeLang("ja");
-      } else {
-        await this.changeLang("en");
-      }
-    } else {
-      const language =
-        (window.navigator.languages && window.navigator.languages[0]) ||
-        window.navigator.language ||
-        window.navigator.userLanguage ||
-        window.navigator.browserLanguage;
-      console.log("browserlang:" + language);
-      const lang = (language || "").substr(0, 2);
-      if (lang.length === 2) {
-        await this.setLang(lang);
-      }
-    }
     this.pingAnalytics();
   },
   destroyed() {

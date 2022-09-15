@@ -1,6 +1,9 @@
 import * as admin from "firebase-admin";
 
 // PROJECT=123 npm run customclaims
+
+// uid: "d6diTRZ1kUYopoAy8o521ujjqwA3"
+
 const project = process.env.PROJECT || "ownplate-dev";
 
 console.log(`project: ${project}`);

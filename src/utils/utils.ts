@@ -13,10 +13,19 @@ import { OrderInfoData, OrderItem } from "@/models/orderInfo";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { MenuData } from "@/models/menu";
 
-import { regionalSettings, partners, stripe_regions } from "@/config/constant";
+import {
+  regionalSettings,
+  partners,
+  stripe_regions,
+  soundFiles,
+} from "@/config/constant";
 import { ownPlateConfig, mo_prefixes } from "@/config/project";
 
+import { defaultHeader } from "@/config/header";
+
 import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
+import isURL from "validator/lib/isURL";
+import isLatLong from "validator/lib/isLatLong";
 
 export const isNull = <T>(value: T) => {
   return value === null || value === undefined;
@@ -31,6 +40,10 @@ export const useRestaurantId = (root: any) => {
   return computed(() => {
     return root.$route.params.restaurantId;
   });
+};
+
+export const getRestaurantId = (root: any) => {
+  return root.$route.params.restaurantId;
 };
 
 /* 
@@ -48,6 +61,22 @@ export const arrayChunk = <T>(arr: T[], size = 1) => {
       ? current
       : [...current, array.slice(index, index + size)];
   }, []);
+};
+
+export const shareUrlAdmin = (props: any) => {
+  const link = previewLink(props);
+  return computed(() => {
+    return location.protocol + "//" + location.host + link.value;
+  });
+};
+export const previewLink = (props: any) => {
+  return computed(() => {
+    if (props.isInMo) {
+      return "/" + props.moPrefix + "/r/" + props.shopInfo.restaurantId;
+    } else {
+      return "/r/" + props.shopInfo.restaurantId;
+    }
+  });
 };
 
 export const shareUrl = (root: any, prefix: string) => {
@@ -123,10 +152,12 @@ export const cleanObject = (obj: { [key: string]: any }) => {
   }, {});
 };
 
+export const forcedError = (key: string, ctx: any) => {
+  const debug = ctx.root.$route.query.error;
+  return debug === key ? "---forced-error---" : "";
+};
+
 /*
-    forcedError(key) {
-      const debug = this.$route.query.error;
-      return debug === key ? "---forced-error---" : "";
     },
     moment(value) {
       return moment(value);
@@ -139,14 +170,15 @@ export const cleanObject = (obj: { [key: string]: any }) => {
         console.log("order: call play");
       }
     },
-    getSoundIndex(nameKey) {
-      if (nameKey) {
-        const index = soundFiles.findIndex((data) => data.nameKey === nameKey);
-        return index >= 0 ? index : 0;
-      }
-      return 0;
-    },
 */
+export const getSoundIndex = (nameKey: string) => {
+  if (nameKey) {
+    const index = soundFiles.findIndex((data) => data.nameKey === nameKey);
+    return index >= 0 ? index : 0;
+  }
+  return 0;
+};
+
 export const getShopOwner = async (uid: string): Promise<ShopOwnerData> => {
   const defaultData = { hidePrivacy: false };
   const admin = (await getDoc(doc(db, `/admins/${uid}`))).data();
@@ -164,11 +196,10 @@ export const arrayOrNumSum = (arr: number | number[]) => {
   return Array.isArray(arr) ? arraySum(arr) : arr || 0;
 };
 
-/*
-    forceArray(arr) {
-      return Array.isArray(arr) ? arr : [arr];
-      },
-*/
+export const forceArray = <T>(arr: T) => {
+  return Array.isArray(arr) ? arr : [arr];
+};
+
 export const convOrderStateForText = (orderState: string, orderInfo: any) => {
   if (orderInfo?.isEC) {
     if (orderState === "ready_to_pickup") {
@@ -250,10 +281,6 @@ const displayOption = (option, shopInfo, item) => {
   });
 };
 
-const roundPrice = (price) => {
-  const m = this.$store.getters.stripeRegion.multiple;
-  return Math.round(price * m) / m;
-};
 */
 
 export const getPartner = (shopOwner: ShopOwnerData) => {
@@ -270,6 +297,11 @@ export const regionalSetting = (regionalSettings as { [key: string]: any })[
 ];
 
 export const stripeRegion = stripe_regions[ownPlateConfig.region || "US"];
+
+export const roundPrice = (price: number) => {
+  const m = stripeRegion.multiple;
+  return Math.round(price * m) / m;
+};
 
 const optionPrice = (option: string) => {
   const regex = /\(((\+|\-|＋|ー|−)[0-9\.]+)\)/;
@@ -370,6 +402,21 @@ export const useTopPath = (root: any) => {
     }
     return "/";
   });
+};
+
+export const validUrl = (url: string) => {
+  return isURL(url, {
+    protocols: ["http", "https"],
+    require_protocol: true,
+    allow_fragments: false,
+  });
+};
+
+export const validLocation = (location: { lat: string; lng: string }) => {
+  return isLatLong([location.lat || "", location.lng || ""].join(","));
+};
+export const validPlaceId = (placeId: string) => {
+  return /^[a-zA-Z0-9-_]+$/.test(placeId) || placeId === "";
 };
 
 export const convOptionArray2Obj = <T>(obj: { [key: string]: T[] }) => {
@@ -519,6 +566,12 @@ export const useIsAdmin = (ctx: any) => {
     return !!ctx.root.$store.getters.uidAdmin;
   });
 };
+export const useUid = (ctx: any) => {
+  const uid = computed(() => {
+    return ctx.root.$store.getters.uid;
+  });
+  return uid;
+};
 
 export const useIsLiffUser = (ctx: any) => {
   return computed(() => {
@@ -558,6 +611,65 @@ export const useToggle = (defaultValue = false) => {
   };
 };
 
+export const useUser = (ctx: any) => {
+  const user = computed(() => {
+    return ctx.root.$store.state.user;
+  });
+  return user;
+};
+
+export const isJapan = ownPlateConfig.region === "JP";
+export const serviceKey = isJapan ? "omochikaeri" : "ownPlate";
+
+export const underConstruction =
+  ownPlateConfig.hostName === "staging.ownplate.today";
+
+export const defaultTitle = defaultHeader.title;
+
+export const useAdminUids = (ctx: any) => {
+  const isOwner = computed(() => {
+    return !ctx.root.$store.getters.isSubAccount;
+  });
+  const uid = computed(() => {
+    return ctx.root.$store.getters.uidAdmin;
+  });
+  const ownerUid = computed(() => {
+    return ctx.root.$store.getters.isSubAccount
+      ? ctx.root.$store.getters.parentId
+      : ctx.root.$store.getters.uidAdmin;
+  });
+  return {
+    isOwner,
+    uid,
+    ownerUid,
+  };
+};
+
+export const usePhoneNumber = (shopInfo: any) => {
+  const countries = stripeRegion.countries;
+
+  const parsedNumber = computed(() => {
+    const countryCode = shopInfo.value.countryCode || countries.value[0].code;
+    try {
+      return parsePhoneNumber(countryCode + shopInfo.value.phoneNumber);
+    } catch (error) {
+      return null;
+    }
+  });
+
+  const nationalPhoneNumber = computed(() => {
+    const pnumber = parsedNumber.value;
+    if (pnumber) {
+      return formatNational(pnumber);
+    }
+    return shopInfo.value.phoneNumber;
+  });
+
+  return {
+    parsedNumber,
+    nationalPhoneNumber,
+  };
+};
 export const scrollToElementById = (id: string) => {
   const elem = document.getElementById(id);
   if (elem) {
@@ -583,10 +695,15 @@ export const useNationalPhoneNumber = (shopInfo: RestaurantInfoData) => {
       return formatNational(parsedNumber.value);
     }
     console.log("parsing failed, return as-is");
-    return shopInfo.phoneNumber;
+    // return shopInfo.phoneNumber;
+    return "";
   });
   return {
     parsedNumber,
     nationalPhoneNumber,
   };
+};
+
+export const notFoundResponse = {
+  notFound: true,
 };

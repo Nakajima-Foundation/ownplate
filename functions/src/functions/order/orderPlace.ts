@@ -8,8 +8,10 @@ import { notifyNewOrderToRestaurant } from "../notify";
 import { costCal } from "../../common/commonUtils";
 import { Context } from "../../models/TestType";
 
+import { orderPlacedData } from "../../lib/types";
+import { validateOrderPlaced, validateCustomer } from "../../lib/validator";
 
-export const updateOrderTotalDataAndUserLog = async (db, transaction, customerUid, order, restaurantId, ownerUid, timePlaced, positive) => {
+export const updateOrderTotalDataAndUserLog = async (db, transaction, customerUid, order, restaurantId, ownerUid, timePlaced, now, positive) => {
   const timezone = (functions.config() && functions.config().order && functions.config().order.timezone) || "Asia/Tokyo";
 
   const menuIds = Object.keys(order);
@@ -69,6 +71,7 @@ export const updateOrderTotalDataAndUserLog = async (db, transaction, customerUi
       // lastOrder: timePlaced,
       restaurantId,
       ownerUid,
+      updateAt: now,
     };
     await transaction.set(userLogRef, data);
   } else {
@@ -79,19 +82,28 @@ export const updateOrderTotalDataAndUserLog = async (db, transaction, customerUi
       cancelCounter,
       currentOrder: timePlaced,
       lastOrder: userLog.currentOrder || timePlaced,
+      updateAt: now,
+      lastUpdatedAt: userLog.updateAt || new admin.firestore.Timestamp(1577804400, 0),
     };
     await transaction.update(userLogRef, updateData);
   }
 };
 
-
 // This function is called by users to place orders without paying
 // export const place = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => {
-export const place = async (db, data: any, context: functions.https.CallableContext | Context) => {
+export const place = async (db, data: orderPlacedData, context: functions.https.CallableContext | Context) => {
   const customerUid = utils.validate_auth(context);
   const { restaurantId, orderId, tip, sendSMS, timeToPickup, lng, memo, customerInfo } = data;
+  utils.required_params({ restaurantId, orderId }); // tip, sendSMS and lng are optinoal
+
+  const validateResult = validateOrderPlaced(data);
+  if (!validateResult.result) {
+    console.error("orderPlace", validateResult.errors);
+    throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
+  }
+
+  const now = admin.firestore.Timestamp.now();
   const _tip = Number(tip) || 0;
-  utils.validate_params({ restaurantId, orderId }); // tip, sendSMS and lng are optinoal
 
   const timePlaced = (timeToPickup && new admin.firestore.Timestamp(timeToPickup.seconds, timeToPickup.nanoseconds)) || admin.firestore.FieldValue.serverTimestamp();
   try {
@@ -114,27 +126,43 @@ export const place = async (db, data: any, context: functions.https.CallableCont
         throw new functions.https.HttpsError("failed-precondition", "The order has been already placed or canceled");
       }
       const hasCustomer = restaurantData.isEC || order.isDelivery;
-
+      
       const multiple = utils.getStripeRegion().multiple; // 100 for USD, 1 for JPY
       const roundedTip = Math.round(_tip * multiple) / multiple;
 
       if (hasCustomer) {
+        const validateResult = validateCustomer(customerInfo || {})
+        if (!validateResult.result) {
+          console.error("orderPlace", validateResult.errors);
+          throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
+        }
         // for transaction lock
         await transaction.get(customerRef);
       }
       // transaction for stock orderTotal
-      await updateOrderTotalDataAndUserLog(db, transaction, customerUid, order.order, restaurantId, restaurantData.uid, timePlaced, true);
+      await updateOrderTotalDataAndUserLog(db, transaction, customerUid, order.order, restaurantId, restaurantData.uid, timePlaced, now, true);
       const shippingCost = restaurantData.isEC ? costCal(postage, customerInfo?.prefectureId, order.total) : 0;
 
       const totalCharge = order.total + roundedTip + (shippingCost || 0) + (order.deliveryFee || 0);
 
       if (hasCustomer) {
+        const {
+          zip,
+          prefectureId,
+          address,
+          name,
+          email,
+        } = customerInfo;
         await transaction.set(customerRef, {
-          ...customerInfo,
+          zip,
+          prefectureId,
+          address,
+          name,
+          email,
           uid: customerUid,
           orderId,
           restaurantId,
-          createdAt: admin.firestore.Timestamp.now(),
+          createdAt: now,
         });
       }
       // customerUid
@@ -144,13 +172,12 @@ export const place = async (db, data: any, context: functions.https.CallableCont
         tip: roundedTip,
         shippingCost,
         sendSMS: sendSMS || false,
-        updatedAt: admin.firestore.Timestamp.now(),
-        orderPlacedAt: admin.firestore.Timestamp.now(),
+        updatedAt: now,
+        orderPlacedAt: now,
         timePlaced,
         timePickupForQuery: timePlaced,
         memo: memo || "",
         isEC: restaurantData.isEC || false,
-        // customerInfo: customerInfo || {},
       });
       Object.assign(order, { totalCharge, tip, shippingCost });
       return { success: true, order };

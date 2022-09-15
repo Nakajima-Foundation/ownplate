@@ -48,9 +48,21 @@ service cloud.firestore {
       let parantUid = get(/databases/$(database)/documents/restaurants/$(restaurantId)).data.uid;
       return (restaurantId in get(/databases/$(database)/documents/admins/$(parantUid)/children/$(request.auth.uid)).data.restaurantLists) && parantUid == request.auth.token.parentUid;
     }
-    function isGroupOwnerForRestaurant(resource, request) {
-      return isGroupOwner(resource.data.uid, request);
+    // for mo
+    function hasGroupIdInAuth (request) {
+      return (request.auth.token.keys().hasAll(['groupId', 'parentUid']))
     }
+    function hasGroup (groupId, restaurantId) {
+      let parantRestaurantId = get(/databases/$(database)/documents/groups/$(groupId)).data.restaurantId;
+      return parantRestaurantId == restaurantId;
+    }
+    function isRestaurantGroupSubAccount(restaurantId, request) {
+      return hasGroupIdInAuth(request) && hasGroup(request.auth.token.groupId, restaurantId);
+    }
+    // for old group
+//    function isGroupOwnerForRestaurant(resource, request) {
+//      return isGroupOwner(resource.data.uid, request);
+//    }
     function isGroupOwnerForOrder(resource, request) {
       return isGroupOwner(resource.data.ownerUid, request);
     }
@@ -232,12 +244,15 @@ service cloud.firestore {
         }
         match /userLog/{userId} {
           allow read: if isAdmin(request) && isRestaurantOwner(restaurantId, request);
+          allow read: if isAdmin(request) && isRestaurantSubAccount(restaurantId, request);
+          allow read: if isSuper(request);
           allow write: if false // only server side of function can write here (see functions/order.ts)
         }
         match /menus/{menuId} {
           allow read: if resource.data.publicFlag && !resource.data.deletedFlag; // everyone
           allow read: if isAdmin(request) && isRestaurantOwner(restaurantId, request);
           allow read: if isAdmin(request) && isRestaurantSubAccount(restaurantId, request);
+          allow read: if isAdmin(request) && isRestaurantGroupSubAccount(restaurantId, request);
           allow read: if isSuper(request);
 
           allow write: if isAdmin(request) && isRestaurantOwner(restaurantId, request);
@@ -283,7 +298,7 @@ service cloud.firestore {
         }
         match /liffCustomer/{uid} {
           allow read: if isRestaurantOwner(restaurantId, request);
-          allow write: if uid == request.auth.uid && isNewOwner(resource, request);
+          allow write: if uid == request.auth.uid && isNewOwner(request);
         }
         match /trace/{traceId} {
           allow create: if isRestaurantOwner(restaurantId, request)

@@ -50,7 +50,7 @@
 
       <div class="mt-4">
         <!--for omochikaeri-->
-        <div  v-if="!isInMo">
+        <div v-if="!isInMo">
           <div class="text-sm font-bold text-black text-opacity-30">
             {{ $t("transactionsAct.payment") }}
           </div>
@@ -60,7 +60,7 @@
         </div>
 
         <!--for MobileOrder-->
-        <div  v-if="isInMo">
+        <div v-if="isInMo">
           <div class="text-sm font-bold text-black text-opacity-30">
             {{ $t("transactionsAct.paymentNoteMo") }}
           </div>

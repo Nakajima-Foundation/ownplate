@@ -15,6 +15,16 @@
   "greeting": "こんにちは、世界",
   "underConstruction": "注意：これはテスト用のサーバーです。",
   "comma": "、",
+  "mobileOrder": {
+    "smallPayment1": "ご注文金額が50円以下の場合は、",
+    "smallPayment2": "「事前にカードでお支払い」をご利用できません。",
+    "smallPayment3": "「受取時に店舗でお支払い」をご利用ください。",
+    "name": "ネット注文サービス",
+    "shopInfo": {
+      "takeout": "予約注文",
+      "pickup": "ピックアップ"
+    }
+  },
   "profile": {
     "title": "マイページ",
     "address": "アドレス",
@@ -106,7 +116,7 @@
     "copyMenuAlert": "上記飲食店にこの商品を非公開で複製します。",
     "current": "変更前",
     "clickAndUpload": "ここをクリック",
-    "clickAndUploadDetail": "グレー部分をクリックもしくは画像をドラッグ＆ドロップしてアップロード（JPEG形式）"
+    "clickAndUploadDetail": "グレー部分をクリックもしくは画像をドラッグ＆ドロップしてアップロード(JPEG形式)"
   },
   "currency": {
     "USD": "ドル",
@@ -115,8 +125,8 @@
   },
   "tax": {
     "price": "{count}",
-    "include": "（税込）",
-    "exclude": "（+ 税）",
+    "include": "(税込)",
+    "exclude": "(+ 税)",
     "taxExample": "商品設定で{count}とした場合のメニュー表示例: "
   },
   "editRestaurant": {
@@ -139,8 +149,8 @@
     "orderThanks": "注文後のありがとうメッセージ",
     "website": "ホームページ",
     "tax": "消費税",
-    "foodTax": "消費税率（食品）",
-    "alcoholTax": "消費税率（酒類）",
+    "foodTax": "消費税率(食品)",
+    "alcoholTax": "消費税率(酒類)",
     "taxPriceDisplay": "税額計算方法",
     "taxPriceDisplayJp": "日本では義務化により税込で表示されます。",
     "taxIncluded": "内税",
@@ -187,10 +197,10 @@
     "searchMap": "住所から地図を検索",
     "updateMap": "場所をセット",
     "businessHourDescription": "営業する曜日にチェックをいれ、時間を設定してください。休憩など営業時間を分ける必要がある場合は別時間帯フォームに後半の時間を設定してください。",
-    "businessHourOption": "別時間帯（オプション）",
+    "businessHourOption": "別時間帯(オプション)",
     "copyPreviousDay": "前日をコピー",
     "copySunDay": "日曜をコピー",
-    "draftDescription": "下書きとして保存されます（お客様からお店のページは見えません）",
+    "draftDescription": "下書きとして保存されます(お客様からお店のページは見えません)",
     "publishDescription": "保存して公開",
     "draftWarning": "赤枠のエラーを修正すると公開可能になります",
     "updateMapDescription": "飲食店名や住所を元に地図を更新",
@@ -224,16 +234,16 @@
   "editMenu": {
     "menu": "メニュー",
     "enterItemName": "商品名を入力してください",
-    "enterItemAliasesName": "商品の別名（外国語等）を入力してください",
+    "enterItemAliasesName": "商品の別名(外国語等)を入力してください",
     "enterItemDescription": "説明文を入力してください",
-    "enterItemMemo": "メモ（お客様の画面には表示されません。1行目のみ、メニュー一覧上に表示されます。秘密情報は書かないようにしてください）",
+    "enterItemMemo": "メモ(お客様の画面には表示されません。1行目のみ、メニュー一覧上に表示されます。秘密情報は書かないようにしてください)",
     "enterItemOption": "オプションを入力してください",
     "item": "商品",
     "noItem": "何も登録されていません",
     "pleaseAddItem": "下のボタンを押して商品を追加して下さい。",
     "required": "必須",
     "itemName": "商品名",
-    "itemAliasesName": "商品別名（管理画面のみ表示される情報です）",
+    "itemAliasesName": "商品別名(管理画面のみ表示される情報です)",
     "price": "値段",
     "free": "無料",
     "optionsPreview": "オプションプレビュー",
@@ -243,18 +253,18 @@
     "food": "食品",
     "alcohol": "酒類",
     "foodJP": "軽減税率が適用される飲食料品",
-    "alcoholJP": "それ以外（酒、グッズなど）",
+    "alcoholJP": "それ以外(酒、グッズなど)",
     "displayPrice": "表示金額",
     "itemDescription": "説明文",
-    "itemMemo": "メモ（管理画面のみ表示される情報です）",
+    "itemMemo": "メモ(管理画面のみ表示される情報です)",
     "itemPhoto": "写真",
     "itemOptions": "オプション",
-    "itemOptionsNote": "二択や三択の場合、半角カンマで区切ってください（例:「チキン, ポーク, 豆腐」）。有料オプションの場合には、最後に(+100)のように値段を指定してください（例：「大盛り (+150)」）",
+    "itemOptionsNote": "二択や三択の場合、半角カンマで区切ってください(例:「チキン, ポーク, 豆腐」)。有料オプションの場合には、最後に(+100)のように値段を指定してください(例：「大盛り (+150)」)",
     "itemAddOption": "オプション追加",
     "itemInvalidMessage": "データが正しく入力されていないため、公開されません",
-    "saveAsDraft": "下書きとして保存されます（メニューに表示されません）",
+    "saveAsDraft": "下書きとして保存されます(メニューに表示されません)",
     "reallyDelete": "本当に削除しますか？",
-    "csvCategories": "エクセルデータ用カテゴリー設定（任意）",
+    "csvCategories": "エクセルデータ用カテゴリー設定(任意)",
     "csvCategoriesNote": "注文履歴からダウンロードできるエクセルデータ内で利用するためのカテゴリー設定です",
     "newCategory": "新しい項目",
     "newCategoryAdd": "追加",
@@ -262,17 +272,20 @@
     "editCategory1": "カテゴリー1を編集",
     "category2": "カテゴリー2",
     "editCategory2": "カテゴリー2を編集",
+    "exclusionDate": "除外日",
+    "exclusionTime": "除外時間",
     "showAllMenu": "全ての商品",
-    "showPublicMenu": "公開中のみ"
+    "showPublicMenu": "公開中のみ",
+    "selectCategory": "選択"
   },
   "editTitle": {
     "enterCategory": "商品グループ名を入力してください",
-    "empty": "（商品グループ名未入力）"
+    "empty": "(商品グループ名未入力)"
   },
   "find": {
-    "area": "飲食店エリア",
-    "areaAll": "全ての飲食店",
-    "areaTop": "エリア一覧",
+    "area": "お店を探す",
+    "areaAll": "全国の飲食店",
+    "areaTop": "お店を探す",
     "likes": "お気に入り",
     "favoriteShop": "お気に入り店舗",
     "noLikes": "お気に入りはありません",
@@ -404,6 +417,8 @@
   "sitemenu": {
     "menu": "メニュー",
     "about": "飲食店情報",
+    "limitedSale": "のみ販売",
+    "unavailableTime": "受け渡しできない時間",
     "confirmCart": "カートを見る",
     "checkout": "お会計",
     "orderCounter": "{count} 個",
@@ -439,7 +454,10 @@
     "osaka": "大阪",
     "izakaya": "居酒屋",
     "patisserie": "パティスリー",
-    "searchRestaurant": "テイクアウトのお店を探す"
+    "searchRestaurant": "テイクアウトのお店を探す",
+    "moTagline": "ネット注文サービスは、PC・スマホから簡単に購入が可能な、ファミリーマート公式のお取り置きサービスです。",
+    "moDescription1": "通常は取り扱いのない商品もお取り寄せいたします。",
+    "moDescription2": "ご注文日から最短4日後の店頭受取が可能です。​"
   },
   "order": {
     "allOrders": "全ての注文",
@@ -448,21 +466,28 @@
     "yourOrder": "あなたの注文",
     "confirmOrder": "ご注文の確認",
     "editItems": "注文を変更する",
+    "productSubTotal": "商品合計",
     "revenue": "売上",
-    "foodRevenue": "売上（食）",
-    "alcoholRevenue": "売上（酒）",
+    "foodRevenue": "売上(食)",
+    "alcoholRevenue": "売上(酒)",
     "date": "日付",
     "tipShort": "心づけ",
-    "serviceTax": "消費税",
+    "serviceTax": "消費税(心づけ)",
     "name": "オーダー名",
+    "restaurantId": "restaurantId",
+    "shopId": "shopId",
+    "uid": "uid",
     "restaurantName": "飲食店名",
     "payment": "支払い",
     "includingTip": "心づけ有り",
     "subtotal": "小計",
     "salesTax": "消費税",
     "foodTax": "軽減税",
-    "inclusiveTax": "消費税（内税）",
+    "inclusiveTax": "消費税(内税)",
     "total": "合計",
+    "menuPrice": "売価",
+    "taxRate": "税率",
+    "tax": "税額",
     "yourPayment": "お支払い",
     "details": "明細",
     "thisIsDeliveryOrder": "これはデリバリーの注文です",
@@ -493,11 +518,11 @@
     "cancelOrderComplete": "この注文はキャンセルされました",
     "pleaseStay": "このページを表示させたままにしておくと、ご注文から受け渡しまでの状況を知ることができます。",
     "thanksMessage": "お店からのメッセージ",
-    "tip": "心づけ（サービス料・消費税含む）",
-    "maxTip": "{max}%までの金額（任意）",
+    "tip": "心づけ(サービス料・消費税含む)",
+    "maxTip": "{max}%までの金額(任意)",
     "totalCharge": "合計金額",
     "pleasePayAtRestaurant": "オンラインでの支払いは現時点では出来ません。",
-    "sendSMS": "SMSメッセージを受け取る（SMSの受信には料金がかかる場合があります）",
+    "sendSMS": "SMSメッセージを受け取る(SMSの受信には料金がかかる場合があります)",
     "history": "注文履歴",
     "noHistory": "注文履歴はありません",
     "timeRequested": "受け渡し希望時刻",
@@ -516,7 +541,7 @@
     "statusName": "ステータス",
     "phoneNumber": "お客様の電話番号",
     "totalCount": "注文総数",
-    "userName": "注文者（任意）",
+    "userName": "注文者(任意)",
     "customerInfo": "お客様の情報",
     "itemName": "メニュー",
     "options": "オプション",
@@ -527,8 +552,15 @@
     "unspecified": "(未記入)",
     "adminQRCode": "飲食店確認用QRCode",
     "paymentAndCancellation": "キャンセル・お支払いについて",
+    "statusTitle": "注文状況",
+    "sortOrder": "表示順",
+    "sort": {
+      "newest": "注文が新しい順",
+      "oldest": "注文が古い順"
+    },
     "status": {
       "unexpected": "(Unexpected)",
+      "all": "全て",
       "error": "エラー",
       "new_order": "新規注文",
       "validation_ok": "確認済み",
@@ -592,7 +624,12 @@
       "select": "選択",
       "email": "メールアドレス",
       "phone": "電話番号"
-    }
+    },
+    "productId": "商品番号",
+    "category": "カテゴリ",
+    "categoryId": "カテゴリID",
+    "subCategory": "サブカテゴリ",
+    "subCategoryId": "サブカテゴリID"
   },
   "editEC": {
     "postageList": "送料リスト",
@@ -646,7 +683,7 @@
     "resend": "再送信",
     "verificationCode": "SMS確認コード",
     "typeVerificationCode": "SMSで送られてきたコードを入力してください",
-    "userName": "お名前（オプション）",
+    "userName": "お名前(オプション)",
     "typeUserName": "山田太郎",
     "sendVerificationCode": "送信",
     "countryCode": "国",
@@ -685,7 +722,7 @@
       "userRestaurantsTitle": "お客様向け飲食店一覧について",
       "userRestaurantsBody": "登録した飲食店は自動でお客様向け飲食店一覧には表示されません。「掲載を申請する」ボタンより申請後、運営の審査を経てお客様向け飲食店一覧に掲載されます。",
       "notificationSoundTitle": "通知音について",
-      "notificationSoundBody": "注文に関する通知音は注文一覧ページを表示中に再生されます（このページでは再生されません）。複数の店舗の通知音を同時に再生したい場合はそれぞれの注文一覧ページを表示できる環境を用意してください。パソコンでは別ウィンドウ、タブレットでは別端末が必要になります。"
+      "notificationSoundBody": "注文に関する通知音は注文一覧ページを表示中に再生されます(このページでは再生されません)。複数の店舗の通知音を同時に再生したい場合はそれぞれの注文一覧ページを表示できる環境を用意してください。パソコンでは別ウィンドウ、タブレットでは別端末が必要になります。"
     },
     "hidePayment": "課金の仕組みはまもなく提供される予定です。少々お待ちください。",
     "encourageToReadManual": {
@@ -693,11 +730,11 @@
       "manualName": "「ご利用の手引き」",
       "after": "に目を通して、ご登録を進めてください。"
     },
-    "pleaseSignIn": "ログインしてください（飲食店向け）",
-    "registration": "登録してください（飲食店向け）",
+    "pleaseSignIn": "ログインしてください(飲食店向け)",
+    "registration": "登録してください(飲食店向け)",
     "email": "メールアドレス",
     "password": "パスワード",
-    "confirmPassword": "パスワード（再入力）",
+    "confirmPassword": "パスワード(再入力)",
     "name": "氏名",
     "emailPlaceHolder": "メールアドレスを入力して下さい",
     "passwordPlaceHolder": "パスワードを入力して下さい",
@@ -735,6 +772,7 @@
     "thirdPartyService": {
       "title": "システム連携",
       "openSmaregi": "スマレジ連携設定",
+      "smaregiManual": "スマレジマニュアル",
       "smaregiAppMarket": "スマレジアプリマーケットへ",
       "smaregiManualLink": "スマレジ連携の使い方"
     },
@@ -790,13 +828,16 @@
       "cancelButton": "注文をキャンセル",
       "cancelTitle": "注文のキャンセル",
       "cancelMessage": "お客様にご連絡の上、ご注文がキャンセルされることをお伝え下さい。",
+      "updateOrderMessage": "お客様にご連絡の上、ご注文を変更することを確定してください。",
       "paymentCancelButton": "カード決済のみをキャンセル",
       "delete": "この注文をキャンセルする",
-      "deleteConfirm": "（キャンセルの取り消しは出来ません）",
+      "deleteConfirm": "(キャンセルの取り消しは出来ません)",
       "paymentCancelTitle": "カード決済のみキャンセル",
       "paymentCancelMessage": "現地払いに変更となります。お客様にご連絡の上、現地払いになることをお伝え下さい。注文はキャンセルされません。",
       "paymentCancel": "カード決済のみキャンセル",
-      "paymentCancelConfirm": "（キャンセルの取り消しは出来ません）",
+      "paymentCancelConfirm": "(キャンセルの取り消しは出来ません)",
+      "placedDate": "注文日",
+      "pickupDate": "受け渡し日",
       "line": "LINE通知設定",
       "lineAdd": "LINEアカウントの追加",
       "lineUsers": "登録済みLINEアカウント",
@@ -835,6 +876,7 @@
       "download-csv-details": "エクセルデータダウンロード (詳細)"
     },
     "error": {
+      "memoLength": "メッセージは500文字以内で入力してください。",
       "email": {
         "invalid": "無効なメールアドレスです。",
         "taken": "このメールアドレスは別のアカウントですでに使用されています。"
@@ -848,8 +890,13 @@
         "auth/wrong-password": "パスワードが無効です。",
         "auth/too-many-requests": "ログインに失敗した回数が多すぎます。時間がたってから再度ログインしてください。",
         "auth/invalid-email": "無効なメールアドレスです。",
-        "auth/unauthorized-continue-uri": "ドメインがホワイトリストに登録されていません。"
+        "auth/unauthorized-continue-uri": "ドメインがホワイトリストに登録されていません。",
+        "auth/internal-error": "パスワードが無効です。"
       }
+    },
+    "index": {
+      "showSimple": "シンプル",
+      "showAll": "全て"
     },
     "messages": {
       "title": "メッセージ",
@@ -885,6 +932,7 @@
         "accepted": "登録済み",
         "denied": "拒否されました"
       },
+      "numberOfShops": "件",
       "selectRestaurant": "このアカウントが操作できるお店を選択してください。",
       "confirmDeletechild": "サブアカウントを解除します"
     },
@@ -964,6 +1012,7 @@
         "intent": "ストライプによるカード決済に失敗しました。",
         "NoJCB": "このお店では、JCBカードは使えません。"
       },
+      "smallPayment": "50円以下はオンライン支払いできません",
       "menu": {
         "save": "メニューの保存に失敗しました。"
       },
@@ -973,7 +1022,11 @@
     },
     "notFound": {
       "message1": "ページがみつかりません。",
-      "message2": "もう一度確認してアクセスしてください。"
+      "message2": "もう一度確認してアクセスしてください。",
+      "moMessageTop": "ただいまサービス休止中です。",
+      "moMessage1": "一時的にサービスを休止しております。",
+      "moMessage2": "ご迷惑をお掛けし誠に申し訳ございません。",
+      "moMessage3": "サービス再開までしばらくお待ちください。"
     },
     "requireLogin": {
       "message1": "オーダーを確認するにはログインが必要です"
@@ -989,6 +1042,9 @@
     },
     "name": {
       "empty": "お名前(氏名)を入力してください"
+    },
+    "memo": {
+      "length": "メッセージは500文字以内で入力してください。"
     },
     "location": {
       "noLocation": "住所入力後、配達位置を地図に反映してください。タップで入力も可能です"

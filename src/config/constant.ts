@@ -12,6 +12,15 @@ export const order_status: { [key: string]: number } = {
   transaction_hide: 1000, // special status
 };
 
+export const order_status_for_form: { [key: string]: number } = {
+  error: 0,
+  order_placed: 300, // by user and stripe
+  order_accepted: 400, // by restaurant
+  ready_to_pickup: 600, // by restaurant and stripe
+  transaction_complete: 650, // by restaurant (optional)
+  order_canceled: 700, // by restaurant or user
+};
+
 export const order_status_keys = Object.keys(order_status).reduce(
   (tmp: { [key: string]: string }, key: string) => {
     tmp[String(order_status[key])] = key;

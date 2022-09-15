@@ -38,8 +38,11 @@ export const smaregi = {
   clientId: "17c5242c812b553976c4749e5808abb7",
 };
 
+export const appCheckKey = "6LdsEOEhAAAAADBDU9ynD4TiDjf-RNOyOrjDNctg";
+
 export const gtmID = "GTM-WF3G3ZG";
 export const GAPIKey = "AIzaSyBopNQwD1RT2k9dLqH6WYPWIkMZF3RWXMQ";
 
 export const mo_prefixes = ["mo", "ss"];
 export const moGtmID = "GTM-PLFRX7K";
+export const moBaseUrl = "https://mo-data.omochikaeri.com";
