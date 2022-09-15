@@ -866,13 +866,15 @@ export default defineComponent({
         return [];
       }
       const time = orderInfo.value.timePlaced.toDate().getTime();
-      return [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120].map((offset) => {
-        const date = new Date(time + offset * 60000);
-        return {
-          offset,
-          display: `${ctx.root.$d(date, "time")}`,
-        };
-      });
+      return [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120].map(
+        (offset) => {
+          const date = new Date(time + offset * 60000);
+          return {
+            offset,
+            display: `${ctx.root.$d(date, "time")}`,
+          };
+        }
+      );
     });
     const timeRequested = computed(() => {
       if (!orderInfo.value.timePlaced) {

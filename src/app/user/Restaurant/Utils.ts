@@ -290,7 +290,7 @@ export const useMenu = (
           newVal[allMenuObjKey.value] = cacheBase;
           allMenuObj.value = newVal;
 
-          const newMenuCache = { ...menuCache.value};
+          const newMenuCache = { ...menuCache.value };
           newMenuCache[allMenuObjKey.value] = cacheBase;
           menuCache.value = newMenuCache;
         }
