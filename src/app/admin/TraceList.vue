@@ -1,6 +1,6 @@
 <template>
   <section class="section" style="background-color: #fffafa">
-    <div class="t-h6 c-text-black-disabled m-b-8">{{ $t("trace.list") }}</div>
+    <div class="t-h6 text-black text-opacity-40 m-b-8">{{ $t("trace.list") }}</div>
     <div class="m-t-16">
       <div v-for="record in records" :key="record.id">
         <span>{{ record.timeCreated.toLocaleString() }}</span>
