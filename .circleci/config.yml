@@ -8,7 +8,7 @@ jobs:
     steps:
       - checkout
       - node/install:
-          node-version: 16.13.2
+          node-version: 16.15.0
       - node/install-packages:
           check-cache: always
       - run: apt-cache search openjdk
@@ -16,9 +16,6 @@ jobs:
       - run: sudo apt-get install openjdk-11-jdk
       - run: npm rebuild node-sass
       - run: npm install --save-dev firebase-tools
-      - run:
-          command: ./node_modules/.bin/firebase emulators:start --only firestore
-          background: true
       - run: cp configs/.firebaserc ./
       - run: cp src/config/default/ownplate-dev.ts src/config/project.ts
       - run: npm run build
