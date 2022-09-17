@@ -30,8 +30,6 @@ span {
 $op-colors: (
   ownplate-yellow: #fbc02d,
   op-yellow: #fbc02d,
-  ownplate-gray: #616161,
-  op-gray: #616161,
   ownplate-white: #ffffff,
   ownplate-black: #000000,
   background: #f4f4f5,
@@ -41,15 +39,11 @@ $op-colors: (
   dialog-overlay: rgba(0, 0, 0, 0.5),
   primary: #0097a7,
   op-teal: #0097a7,
-  primary-bg: rgba(0, 151, 167, 0.1),
   onprimary: #ffffff,
   text-black-high: rgba(0, 0, 0, 0.87),
   text-black-medium: rgba(0, 0, 0, 0.6),
   text-black-disabled: rgba(0, 0, 0, 0.38),
-  text-white-full: #ffffff,
   form: rgba(0, 0, 0, 0.05),
-  status-red: #b00020,
-  status-red-bg: rgba(176, 0, 32, 0.1),
 );
 
 // Reset Buefy and Bulma

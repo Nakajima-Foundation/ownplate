@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-op-gray h-52 mt-12">
+  <div class="bg-[#616161] h-52 mt-12">
     <!-- Footer -->
     <div>
       <div class="mt-4 mx-4 text-right">

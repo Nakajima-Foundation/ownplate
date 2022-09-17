@@ -3,7 +3,7 @@
     <b-modal :active.sync="isVisible" :width="488">
       <div class="op-dialog p-t-24 p-l-24 p-r-24 p-b-24">
         <div class="align-center">
-          <i class="material-icons s-48 c-status-red">warning</i>
+          <i class="material-icons s-48 text-red-700">warning</i>
         </div>
 
         <!-- Error Message -->
@@ -39,7 +39,7 @@
               {{ $t("menu.no") }}
             </div>
             <div
-              class="op-button-small bg-status-red c-text-white-full"
+              class="op-button-small bg-red-700 text-white"
               @click="handleYes"
             >
               {{ $t("menu.yes") }}
