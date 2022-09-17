@@ -13,7 +13,7 @@
 
 <script>
 import { ownPlateConfig } from "@/config/project";
-import { db, firestore } from "@/plugins/firebase";
+import { db } from "@/plugins/firebase";
 import { lineGuard } from "@/lib/line/line";
 import { lineAuthenticate, lineSetCustomClaim } from "@/lib/firebase/functions";
 

@@ -62,6 +62,7 @@ import PartnersContact from "./Partners/Contact.vue";
 import NotFound from "@/components/NotFound.vue";
 
 import { PartnerData } from "@/models/ShopOwner";
+import { ping } from "@/lib/firebase/functions";
 
 import {
   getShopOwner,
@@ -118,6 +119,11 @@ export default defineComponent({
         noRestaurant: true,
       };
     }
+    ping({
+      operationType: "layout",
+      restaurantId: restaurantId.value,
+      pathName: location.pathname
+    });
 
     // never use onSnapshot here.
     const defaultTax = regionalSetting.defaultTax || {};
