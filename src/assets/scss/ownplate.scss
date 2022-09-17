@@ -34,8 +34,6 @@ $op-colors: (
   ownplate-black: #000000,
   background: #f4f4f5,
   surface: #ffffff,
-  sattle-white: rgba(255, 255, 255, 0.1),
-  sattle-black: rgba(0, 0, 0, 0.1),
   dialog-overlay: rgba(0, 0, 0, 0.5),
   primary: #0097a7,
   op-teal: #0097a7,
@@ -223,9 +221,6 @@ body,
 
 .touchable {
   cursor: pointer;
-}
-.devider {
-  border-top: 1px solid map-get($op-colors, sattle-black);
 }
 
 
