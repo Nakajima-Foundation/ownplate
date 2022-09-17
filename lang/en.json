@@ -844,7 +844,8 @@
         "taken": "The email address is already in use by another account."
       },
       "password": {
-        "tooshort": "Password should be at least 6 characters",
+        "tooshort": "Password should be at least 8 characters",
+        "invalid": "Please enter alphabets and numbers for the password.",
         "mismatch": "Password mismatch"
       },
       "code": {

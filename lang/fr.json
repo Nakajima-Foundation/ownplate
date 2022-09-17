@@ -833,7 +833,8 @@
         "taken": "L'adresse e-mail est déjà utilisée par un autre compte."
       },
       "password": {
-        "tooshort": "Le mot de passe doit contenir au moins 6 caractères",
+        "tooshort": "Le mot de passe doit contenir au moins 8 caractères",
+        "invalid": "Please enter alphabets and numbers for the password.",
         "mismatch": "Les mots de passe ne corespondent pas"
       },
       "code": {
