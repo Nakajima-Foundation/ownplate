@@ -54,7 +54,6 @@
     <template v-else>
       <home />
     </template>
-      <home />
   </div>
 </template>
 
