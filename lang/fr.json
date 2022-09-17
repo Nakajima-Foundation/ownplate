@@ -684,6 +684,10 @@
       "after": "et vous inscrire d'abord avant de poursuivre."
     },
     "pleaseSignIn": "Se Connecter (pour les restaurants)",
+    "goToSignIn": "Go Sign In",
+    "mailIsExpired": "Email is expired",
+    "passwordUpdated": "Password was updated",
+    "reSend": "Reset passwpord",
     "registration": "S'Enregistrer (pour les restaurants)",
     "email": "Email",
     "password": "Mot de passe",

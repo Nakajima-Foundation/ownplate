@@ -694,6 +694,10 @@
       "after": "and register first before proceeding."
     },
     "pleaseSignIn": "Sign In (for Restaurant)",
+    "goToSignIn": "Go Sign In",
+    "mailIsExpired": "Email is expired",
+    "passwordUpdated": "Password was updated",
+    "reSend": "Reset passwpord",
     "registration": "Registration (for Restaurant)",
     "email": "Email",
     "password": "Password",

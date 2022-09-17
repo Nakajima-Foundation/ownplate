@@ -734,6 +734,10 @@
       "after": "に目を通して、ご登録を進めてください。"
     },
     "pleaseSignIn": "ログインしてください(飲食店向け)",
+    "goToSignIn": "ログインへ",
+    "mailIsExpired": "メールの有効期限が切れています。",
+    "passwordUpdated": "パスワードの変更完了しました。",
+    "reSend": "パスワード再設定へ",
     "registration": "登録してください(飲食店向け)",
     "email": "メールアドレス",
     "password": "パスワード",
