@@ -13,7 +13,10 @@
 
       <tr v-for="request in requests" :key="request.id">
         <td style="width: 50%">
-          <router-link :to="`/r/${request.id}`">
+          <router-link
+            :to="`/r/${request.id}`"
+            class="text-sm font-bold text-op-teal"
+          >
             {{ (restaurantsObj[request.id] || {}).restaurantName }}
           </router-link>
         </td>

@@ -1,8 +1,7 @@
 <template>
   <div class="mx-6 mt-6 lg:max-w-2xl lg:mx-auto">
     <div class="bg-white rounded-lg shadow mt-6 p-6">
-      <template v-if="isExpired === null">
-      </template>
+      <template v-if="isExpired === null"> </template>
       <template v-else-if="isExpired">
         <div class="mt-6 text-center">
           <div>
@@ -11,7 +10,7 @@
           <router-link to="/admin/user/reset">
             <div
               class="inline-flex justify-center items-center h-16 px-6 rounded-full border-2 border-op-teal"
-              >
+            >
               <i class="material-icons text-2xl text-op-teal mr-2">store</i>
               <div class="text-lg font-bold text-op-teal">
                 {{ $t("admin.reSend") }}
@@ -26,7 +25,7 @@
           <router-link to="/admin/user/signin">
             <div
               class="inline-flex justify-center items-center h-16 px-6 rounded-full border-2 border-op-teal"
-              >
+            >
               <i class="material-icons text-2xl text-op-teal mr-2">store</i>
               <div class="text-lg font-bold text-op-teal">
                 {{ $t("admin.goToSignIn") }}
@@ -41,7 +40,7 @@
           <div class="text-sm font-bold">
             {{ $t("admin.password") }}
           </div>
-        
+
           <div class="mt-1">
             <b-field
               :type="errors.password ? 'is-danger' : 'is-success'"
@@ -56,46 +55,45 @@
               />
             </b-field>
           </div>
-          
+
           <!-- Confirm Password -->
           <div>
             <div class="text-sm font-bold">
               {{ $t("admin.confirmPassword") }}
             </div>
-            
+
             <div class="mt-1">
               <b-field
                 :type="errors.confirm ? 'is-danger' : 'is-success'"
                 :message="errors.confirm && $t(errors.confirm[0])"
-                >
+              >
                 <b-input
                   v-model="confirmPassword"
                   type="password"
                   :placeholder="$t('admin.confirmPasswordPlaceHolder')"
                   maxlength="30"
                   password-reveal
-                  />
+                />
               </b-field>
             </div>
           </div>
-          
+
           <!-- Submit Button -->
           <div class="mt-2 text-center">
             <b-button
               :disabled="Object.keys(errors).length > 0 || submitting"
               @click="resetPassword"
               class="b-reset-tw"
-              >
+            >
               <div
                 class="inline-flex justify-center items-center h-12 w-32 rounded-full bg-op-teal shadow"
-                >
+              >
                 <div class="text-base font-bold text-white">
                   {{ $t("button.next") }}
                 </div>
               </div>
             </b-button>
           </div>
-          
         </div>
       </template>
     </div>
@@ -117,8 +115,8 @@ export default defineComponent({
     const isSuccess = ref(false);
     const error = ref("");
 
-    const isExpired = ref<null|boolean>(null);
-    
+    const isExpired = ref<null | boolean>(null);
+
     const errors = computed(() => {
       const _errors: { [key: string]: string[] } = {};
       if (password.value !== confirmPassword.value) {

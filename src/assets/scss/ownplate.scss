@@ -293,22 +293,6 @@ body,
   @extend .c-primary;
 }
 
-.op-button-pill {
-  @extend .op-button;
-  // @extend .r-36;
-  border-radius: 9999px;
-  @extend .p-l-16;
-  @extend .p-r-16;
-  @extend .c-primary;
-  .material-icons {
-    @extend .s-18;
-  }
-  span {
-    @extend .m-l-8;
-    @extend .m-r-8;
-  }
-}
-
 .op-button-small {
   @extend .op-button;
   // @extend .r-48;
@@ -338,61 +322,6 @@ body,
     @extend .bg-form;
     @extend .c-text-black-medium;
   }
-}
-
-.op-button-medium {
-  @extend .op-button;
-  // @extend .r-64;
-  border-radius: 9999px;
-  @extend .p-l-16;
-  @extend .p-r-16;
-  min-width: 128px;
-  // @extend .h-64;
-  height: 64px;
-  @extend .t-h6;
-  &.primary {
-    @extend .bg-primary;
-    @extend .c-onprimary;
-    @extend .d-medium;
-  }
-  &.secondary {
-    border: 2px solid map-get($op-colors, primary);
-    @extend .c-primary;
-  }
-  &.tertiary {
-    @extend .bg-form;
-    @extend .c-text-black-medium;
-  }
-}
-
-.op-button-large {
-  @extend .op-button;
-  min-width: 128px;
-  // @extend .h-80;
-  height: 80px;
-  // @extend .r-80;
-  border-radius: 9999px;
-  @extend .p-l-16;
-  @extend .p-r-16;
-  @extend .t-h6;
-  &.primary {
-    @extend .bg-primary;
-    @extend .c-onprimary;
-    @extend .d-medium;
-  }
-  &.secondary {
-    border: 2px solid map-get($op-colors, primary);
-    @extend .c-primary;
-  }
-  &.tertiary {
-    @extend .bg-form;
-    @extend .c-text-black-medium;
-  }
-}
-
-.control-label {
-  @extend .t-body1;
-  @extend .c-text-black-medium;
 }
 
 // OwnPlate Dialog

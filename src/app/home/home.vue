@@ -16,8 +16,12 @@
             <!-- Go to Owner Page -->
             <div class="align-center">
               <router-link to="/admin/restaurants">
-                <div class="op-button-medium primary" style="min-width: 256px">
-                  <span class="c-onprimary">{{ $t("menu.admins") }}</span>
+                <div
+                  class="h-16 rounded-full bg-op-teal inline-flex items-center px-12 shadow"
+                >
+                  <span class="text-white text-xl font-bold">
+                    {{ $t("menu.admins") }}</span
+                  >
                 </div>
               </router-link>
             </div>
@@ -37,14 +41,18 @@
             <!-- Go to User Page -->
             <div class="align-center">
               <router-link to="/r">
-                <div class="op-button-medium primary" style="min-width: 256px">
-                  <span class="c-onprimary">{{ $t("menu.users") }}</span>
+                <div
+                  class="h-16 rounded-full bg-op-teal inline-flex items-center px-12 shadow"
+                >
+                  <span class="text-white text-xl font-bold">{{
+                    $t("menu.users")
+                  }}</span>
                 </div>
               </router-link>
             </div>
 
             <!-- Go to User Manual -->
-            <div class="align-center m-t-16">
+            <div class="align-center mt-4">
               <a
                 href="https://gluepass.jp/g/ownplatejp/pg/zzDScN7kc1WgNQaA9J7v"
                 target="_blank"

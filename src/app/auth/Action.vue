@@ -3,10 +3,7 @@
     <div v-if="mode == 'resetPassword'">
       <reset-password />
     </div>
-    <div v-else>
-      not found
-    </div>
-      
+    <div v-else>not found</div>
   </div>
 </template>
 
