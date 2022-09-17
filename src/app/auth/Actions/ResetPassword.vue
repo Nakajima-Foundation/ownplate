@@ -117,7 +117,7 @@ export default defineComponent({
     const isSuccess = ref(false);
     const error = ref("");
 
-    const isExpired = ref(null);
+    const isExpired = ref<null|boolean>(null);
     
     const errors = computed(() => {
       const _errors: { [key: string]: string[] } = {};
