@@ -297,7 +297,7 @@ export default defineComponent({
       operationType: "index",
       pathName: location.pathname,
     });
-    
+
     const detachOrders = () => {
       orderDetachers.value.map((detacher) => {
         detacher();

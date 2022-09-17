@@ -19,6 +19,7 @@
     "smallPayment1": "ご注文金額が50円以下の場合は、",
     "smallPayment2": "「事前にカードでお支払い」をご利用できません。",
     "smallPayment3": "「受取時に店舗でお支払い」をご利用ください。",
+    "orderPlacedAlert": "※「受付済み」になるまで、ご注文は確定していません",
     "name": "ネット注文サービス",
     "shopInfo": {
       "takeout": "予約注文",

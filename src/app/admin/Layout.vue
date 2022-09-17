@@ -122,7 +122,7 @@ export default defineComponent({
     ping({
       operationType: "layout",
       restaurantId: restaurantId.value,
-      pathName: location.pathname
+      pathName: location.pathname,
     });
 
     // never use onSnapshot here.

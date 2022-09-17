@@ -19,6 +19,7 @@
     "smallPayment1": "If the order amount is 50 yen or less,",
     "smallPayment2": "you cannot use \"Pay Now\".",
     "smallPayment3": "Please use \"Pay Layter\"",
+    "orderPlacedAlert": "Your order is not confirmed until it is Accepted",
     "name": "Online ordering service",
     "shopInfo": {
       "takeout": "Online order",
