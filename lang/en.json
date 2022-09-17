@@ -442,7 +442,7 @@
     "searchRestaurant": "Search for restaurant",
     "moTagline": "FamilyMart's official layaway service that allows you to easily make purchases from your PC or smartphone.",
     "moDescription1": "You can order products that we do not normally carry.",
-    "moDescription2": "In-store pickup is available as soon as 4 days after the order date.​"
+    "moDescription2": "In-store pickup is available as soon as 3 days after the order date."
   },
   "order": {
     "allOrders": "All Orders",

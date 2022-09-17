@@ -436,7 +436,7 @@
     "searchRestaurant": "Rechercher un restaurant",
     "moTagline": "Le service officiel de mise de côté de FamilyMart qui vous permet d'effectuer facilement des achats depuis votre PC ou votre smartphone.",
     "moDescription1": "Vous pouvez commander des produits que nous ne vendons pas normalement.",
-    "moDescription2": "L'enlèvement en magasin est possible dès 4 jours après la date de la commande.​"
+    "moDescription2": "L'enlèvement en magasin est possible dès 3 jours après la date de la commande."
   },
   "order": {
     "allOrders": "Toutes les commandes",
