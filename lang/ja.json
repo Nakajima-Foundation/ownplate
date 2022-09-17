@@ -20,6 +20,8 @@
     "smallPayment2": "「事前にカードでお支払い」をご利用できません。",
     "smallPayment3": "「受取時に店舗でお支払い」をご利用ください。",
     "orderPlacedAlert": "※「受付済み」になるまで、ご注文は確定していません",
+    "storeDetails": "店舗情報",
+    "adminQRCode": "店舗確認用QRCode",
     "name": "ネット注文サービス",
     "shopInfo": {
       "takeout": "予約注文",

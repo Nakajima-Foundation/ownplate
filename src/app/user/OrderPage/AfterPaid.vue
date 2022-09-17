@@ -170,7 +170,7 @@
               {{
                 shopInfo.isEC
                   ? $t("shopInfo.ecShopDetails")
-                  : $t("shopInfo.restaurantDetails")
+                  : $t(mode === 'mo' ? "mobileOrder.storeDetails" : "shopInfo.restaurantDetails")
               }}
             </div>
 
@@ -188,7 +188,7 @@
           <!-- QR Code -->
           <div class="mt-6" v-if="!shopInfo.isEC">
             <div class="text-xl font-bold text-black text-opacity-30">
-              {{ $t("order.adminQRCode") }}
+              {{ $t(mode === 'mo' ? "mobileOrder.adminQRCode" : "order.adminQRCode") }}
             </div>
 
             <div class="bg-white rounded-lg shadow p-4 mt-2 text-center">

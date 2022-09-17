@@ -20,6 +20,8 @@
     "smallPayment2": "you cannot use \"Pay Now\".",
     "smallPayment3": "Please use \"Pay Layter\"",
     "orderPlacedAlert": "Your order is not confirmed until it is Accepted",
+    "storeDetails": "Store Details",
+    "adminQRCode": "Confirmation QR Code",
     "name": "Online ordering service",
     "shopInfo": {
       "takeout": "Online order",
