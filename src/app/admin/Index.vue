@@ -180,7 +180,7 @@
       </div>
       <!-- End of Right Section -->
     </div>
-    <div class="bg-op-yellow p-4 mt-6">
+    <div class="bg-ownplate-yellow p-4 mt-6">
       <!-- Footer -->
       <Footer />
     </div>

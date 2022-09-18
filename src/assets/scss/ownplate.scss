@@ -25,7 +25,6 @@ span {
 // OwnPlate Colors
 $op-colors: (
   ownplate-yellow: #fbc02d,
-  op-yellow: #fbc02d,
   primary: #0097a7,
   op-teal: #0097a7,
   onprimary: #ffffff,
@@ -108,11 +107,6 @@ html {
   .border-#{$name} {
     border-color: $value;
   }
-}
-
-// Drop Shadow Styles
-.d-low {
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 // OwnPlate Sizes

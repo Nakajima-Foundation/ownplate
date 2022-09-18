@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-op-yellow p-4 mt-6">
+  <div class="bg-ownplate-yellow p-4 mt-6">
     <div
       class="text-center inline-flex justify-center items-center w-full m-auto"
     >
