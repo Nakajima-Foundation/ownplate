@@ -237,7 +237,7 @@ body,
   span {
     @extend .t-button;
   }
-  @extend .c-primary;
+  color: #0097a7;
 }
 
 .op-button-small {
@@ -249,14 +249,14 @@ body,
   height: 48px;
   @extend .t-subtitle1;
   &.primary {
-    @extend .bg-primary;
-    @extend .c-onprimary;
+    background: #0097a7;      
+    color: #ffffff;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
   }
   &.secondary {
     border: 2px solid #0097a7;
     background: none;
-    @extend .c-primary;
+    color: #0097a7;
     &:hover,
     &:active,
     &:focus {
@@ -275,16 +275,6 @@ body,
 }
 .modal .animation-content {
   margin: 0;
-}
-.op-dialog {
-  // @extend .r-8;
-  border-radius: 0.5rem;
-  @extend .m-t-24;
-  @extend .m-b-24;
-  @extend .m-l-8;
-  @extend .m-r-8;
-  background: #ffffff;
-  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1);
 }
 // OwnPlate Side Bar
 .b-sidebar .sidebar-background {
