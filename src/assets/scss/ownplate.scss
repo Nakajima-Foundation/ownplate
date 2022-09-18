@@ -14,15 +14,11 @@ div,
 span {
   word-break: break-word;
 }
-.light {
-  @extend .bg-form;
-  border: none;
-}
 .button[disabled] {
   background: #ddd;
   opacity: 0.5;
   > span {
-    @extend .c-text-black-disabled;
+    color: rgba(0, 0, 0, 0.38);
   }
 }
 
@@ -30,17 +26,9 @@ span {
 $op-colors: (
   ownplate-yellow: #fbc02d,
   op-yellow: #fbc02d,
-  ownplate-white: #ffffff,
-  ownplate-black: #000000,
-  background: #f4f4f5,
-  surface: #ffffff,
-  dialog-overlay: rgba(0, 0, 0, 0.5),
   primary: #0097a7,
   op-teal: #0097a7,
   onprimary: #ffffff,
-  text-black-medium: rgba(0, 0, 0, 0.6),
-  text-black-disabled: rgba(0, 0, 0, 0.38),
-  form: rgba(0, 0, 0, 0.05),
 );
 
 // Reset Buefy and Bulma
@@ -77,14 +65,12 @@ $op-colors: (
 }
 
 .t-h6 {
-  // font-weight: 500;
   font-weight: bold;
   font-size: 20px;
   line-height: 24px;
   letter-spacing: 0.15px;
 }
 .t-subtitle1 {
-  // font-weight: normal;
   font-weight: bold;
   font-size: 16px;
   line-height: 24px;
@@ -101,7 +87,7 @@ $op-colors: (
 }
 
 html {
-  background-color: map-get($op-colors, background);
+  background-color: #f4f4f5;
 }
 
 // Text and Background Colors
@@ -125,9 +111,6 @@ html {
 }
 
 // Drop Shadow Styles
-.d-medium {
-  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1);
-}
 .d-low {
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -146,13 +129,6 @@ $sizes: (
   64,
   80,
   96,
-  128,
-  160,
-  192,
-  224,
-  256,
-  288,
-  440
 );
 
 // Margin and Padding Sizes
@@ -176,9 +152,6 @@ $sides: (top, bottom, left, right);
     font-size: #{$icon-size}px;
   }
 }
-// s-18
-// s-48
-// s-64
 
 // Push footer down to the bottom
 body,
@@ -195,11 +168,6 @@ body,
   max-width: 1080px;
   margin: auto;
 }
-
-// Cover Photo
-// .cover {
-//   object-fit: cover;
-// }
 
 // Flex Box
 .cols {
@@ -274,38 +242,36 @@ body,
 
 .op-button-small {
   @extend .op-button;
-  // @extend .r-48;
   border-radius: 9999px;
   @extend .p-l-24;
   @extend .p-r-24;
   min-width: 128px;
-  // @extend .h-48;
   height: 48px;
   @extend .t-subtitle1;
   &.primary {
     @extend .bg-primary;
     @extend .c-onprimary;
-    @extend .d-low;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
   }
   &.secondary {
-    border: 2px solid map-get($op-colors, primary);
+    border: 2px solid #0097a7;
     background: none;
     @extend .c-primary;
     &:hover,
     &:active,
     &:focus {
-      border: 2px solid map-get($op-colors, primary);
+      border: 2px solid #0097a7;
     }
   }
   &.tertiary {
-    @extend .bg-form;
-    @extend .c-text-black-medium;
+    background: rgba(0, 0, 0, 0.05);
+    color: rgba(0, 0, 0, 0.6);
   }
 }
 
-// OwnPlate Dialog
+// OwnPlate Dialog for b-model
 .modal-background {
-  background-color: map-get($op-colors, dialog-overlay);
+  background-color: rgba(0, 0, 0, 0.5);
 }
 .modal .animation-content {
   margin: 0;
@@ -317,28 +283,18 @@ body,
   @extend .m-b-24;
   @extend .m-l-8;
   @extend .m-r-8;
-  @extend .bg-surface;
-  @extend .d-medium;
+  background: #ffffff;
+  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1);
 }
-.modal-content {
-  max-height: calc(100vh - 48px);
-}
-// @media screen and (max-width: 768px) {
-//   .modal-content {
-//     max-height: calc(100vh - 64px);
-//   }
-// }
-
 // OwnPlate Side Bar
 .b-sidebar .sidebar-background {
-  background-color: map-get($op-colors, dialog-overlay);
+  background-color: rgba(0, 0, 0, 0.5);
 }
 .b-sidebar .sidebar-content.is-light {
-  @extend .bg-surface;
+  background: #ffffff;
 }
 .b-sidebar .sidebar-content {
-  @extend .d-medium;
-  // @extend .w-288;
+  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1);
   width: 288px;
 }
 
@@ -360,9 +316,6 @@ body,
   .p-r-16 {
     padding-right: 8px;
   }
-  // .modal-content {
-  //   max-height: calc(100vh - 128px);
-  // }
   #signInButton {
     transform: scale(0.9);
   }

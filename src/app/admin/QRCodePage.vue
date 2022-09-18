@@ -37,11 +37,11 @@
         <div class="column">
           <div class="m-l-24 m-r-24">
             <!-- Menu Page -->
-            <div class="t-h6 text-black text-opacity-40 m-t-24 p-b-8">
+            <div class="t-h6 text-black text-opacity-40 mt-6 pb-2">
               {{ $t("admin.qrcode.restaurant") }}
             </div>
             <div
-              class="bg-surface rounded-lg d-low p-l-24 p-r-24 p-t-24 p-b-24"
+              class="bg-white rounded-lg shadow-md pl-6 pr-6 pt-6 pb-6"
             >
               <!-- QR Code -->
               <div class="align-center" @click="download">
@@ -74,11 +74,11 @@
           <div class="m-l-24 m-r-24">
             <!-- Trace -->
             <div v-if="trace && regionalSetting.covid19trace">
-              <div class="t-h6 text-black text-opacity-40 m-t-24 p-b-8">
+              <div class="t-h6 text-black text-opacity-40 mt-6 pb-2">
                 {{ $t("trace.list") }}
               </div>
               <div
-                class="bg-surface rounded-lg d-low p-l-24 p-r-24 p-t-24 p-b-24"
+                class="bg-white rounded-lg shadow-md pl-6 pr-6 pt-6 pb-6"
               >
                 <!-- Enter -->
                 <div>
@@ -100,7 +100,7 @@
                 </div>
 
                 <!-- Leave -->
-                <div class="m-t-48">
+                <div class="mt-12">
                   <!-- QR Code -->
                   <div class="align-center">
                     <qrcode
@@ -119,7 +119,7 @@
                 </div>
 
                 <!-- Trace List -->
-                <div class="align-center m-t-24">
+                <div class="align-center mt-6">
                   <router-link
                     :to="`/admin/restaurants/${restaurantId()}/traces`"
                   >

@@ -322,7 +322,7 @@
             <div>
               <b-button @click="print()" class="b-reset-tw">
                 <div
-                  class="inline-flex justify-center items-center rounded-full h-16 w-64 light"
+                  class="inline-flex justify-center items-center rounded-full h-16 w-64 bg-black bg-opacity-5"
                 >
                   Print
                 </div>
@@ -331,7 +331,7 @@
             <div class="mt-2">
               <b-button @click="download()" class="b-reset-tw">
                 <div
-                  class="inline-flex justify-center items-center rounded-full h-16 w-64 light"
+                  class="inline-flex justify-center items-center rounded-full h-16 w-64 bg-black bg-opacity-5"
                 >
                   Download
                 </div>
@@ -1220,7 +1220,7 @@ export default defineComponent({
       if (order_status[statusKey] == orderInfo.value.status) {
         return statusKey;
       }
-      return "light";
+      return "bg-black bg-opacity-5";
     };
     const openCancel = () => {
       cancelPopup.value = true;

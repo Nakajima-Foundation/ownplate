@@ -6,8 +6,8 @@
       <div class="column is-narrow w-6"></div>
       <!-- Center Column -->
       <div class="column">
-        <div class="m-l-24 m-r-24 m-t-24">
-          <div class="bg-form rounded-lg p-l-24 p-r-24 p-t-24 p-b-24">
+        <div class="ml-6 mr-6 mt-6">
+          <div class="bg-black bg-opacity-5 rounded-lg pl-6 pr-6 pt-6 pb-6">
             <!-- Go to Super Admin Page -->
             <div class="align-center">
               <router-link to="/s">
@@ -29,8 +29,8 @@
       <div class="column is-narrow w-6"></div>
       <!-- Center Column -->
       <div class="column">
-        <div class="m-l-24 m-r-24 m-t-24">
-          <div class="bg-form rounded-lg p-l-24 p-r-24 p-t-24 p-b-24">
+        <div class="ml-6 mr-6 mt-6">
+          <div class="bg-black bg-opacity-5 rounded-lg pl-6 pr-6 pt-6 pb-6">
             <!-- Go to Super Admin Page -->
             <div class="align-center">
               <router-link to="/op">

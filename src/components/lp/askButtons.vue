@@ -4,20 +4,20 @@
     <div class="column">
       <div class="align-center">
         <b-button
-          class="b-reset h-9 rounded-full bg-form"
+          class="b-reset h-9 rounded-full bg-black bg-opacity-5"
           tag="router-link"
           to=""
         >
-          <span class="p-l-16 p-r-16">
+          <span class="pl-4 pr-4">
             <span class="c-primary t-button">お申し込み </span>
           </span>
         </b-button>
         <b-button
-          class="b-reset h-9 rounded-full bg-form"
+          class="b-reset h-9 rounded-full bg-black bg-opacity-5"
           tag="router-link"
           to=""
         >
-          <span class="p-l-16 p-r-16">
+          <span class="pl-4 pr-4">
             <span class="c-primary t-button">お問い合わせ </span>
           </span>
         </b-button>
