@@ -6,10 +6,10 @@
       <div class="column is-narrow w-6"></div>
       <!-- Left Column -->
       <div class="column">
-        <div class="m-l-24 m-r-24">
+        <div class="ml-6 mr-6">
           <!-- For Owner -->
           <div class="mt-6">
-            <div class="align-center m-b-8">
+            <div class="align-center mb-2">
               <i class="material-icons text-black text-opacity-40 s-64">store</i>
             </div>
 
@@ -31,10 +31,10 @@
 
       <!-- Right Column -->
       <div class="column">
-        <div class="m-l-24 m-r-24">
+        <div class="ml-6 mr-6">
           <!-- For User -->
           <div class="mt-6">
-            <div class="align-center m-b-8">
+            <div class="align-center mb-2">
               <i class="material-icons text-black text-opacity-40 s-64">tag_faces</i>
             </div>
 
@@ -112,7 +112,7 @@
       <div class="column">
         <div class="columns is-gaplress">
           <div class="column is-three-fifths is-offset-one-fifth">
-            <div class="m-l-24 m-r-24">
+            <div class="ml-6 mr-6">
               <!-- English -->
               <div v-if="!isLocaleJapan">
                 <div class="t-h6 text-black text-opacity-40 mt-8">About</div>

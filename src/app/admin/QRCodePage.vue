@@ -35,7 +35,7 @@
 
         <!-- Left Column -->
         <div class="column">
-          <div class="m-l-24 m-r-24">
+          <div class="ml-6 mr-6">
             <!-- Menu Page -->
             <div class="t-h6 text-black text-opacity-40 mt-6 pb-2">
               {{ $t("admin.qrcode.restaurant") }}
@@ -71,7 +71,7 @@
 
         <!-- Right Column -->
         <div class="column">
-          <div class="m-l-24 m-r-24">
+          <div class="ml-6 mr-6">
             <!-- Trace -->
             <div v-if="trace && regionalSetting.covid19trace">
               <div class="t-h6 text-black text-opacity-40 mt-6 pb-2">

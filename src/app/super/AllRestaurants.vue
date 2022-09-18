@@ -55,13 +55,13 @@
     </table>
     <hr />
     <b-button class="h-9 rounded-full mt-2" @click="nextLoad">
-      <span class="p-l-16 p-r-16">
+      <span class="pl-4 pr-4">
         <span class="c-primary t-button"> Next </span>
       </span>
     </b-button>
 
     <b-button class="h-9 rounded-full mt-2 ml-4" @click="allLoad">
-      <span class="p-l-16 p-r-16">
+      <span class="pl-4 pr-4">
         <span class="c-primary t-button"> All </span>
       </span>
     </b-button>
@@ -73,8 +73,8 @@
       :fileName="fileName"
     >
       <b-button class="h-9 rounded-full mt-2 ml-4">
-        <span class="p-l-16 p-r-16">
-          <i class="material-icons c-primary s-18 m-r-8">save_alt</i>
+        <span class="pl-4 pr-4">
+          <i class="material-icons c-primary s-18 mr-2">save_alt</i>
           <span class="c-primary t-button"> Download </span>
         </span>
       </b-button>

@@ -4,17 +4,17 @@
     <h2>All Logs</h2>
     <table>
       <tr v-for="log in logs" :key="log.id">
-        <td class="p-b-4">
+        <td class="pb-2">
           {{ log.cmd }}
-          <div class="m-l-8">{{ log.key }} {{ log.value }}</div>
+          <div class="ml-2">{{ log.key }} {{ log.value }}</div>
         </td>
-        <td class="p-l-8">{{ log.success ? "success" : log.error }}</td>
-        <td class="p-l-8">
+        <td class="pl-2">{{ log.success ? "success" : log.error }}</td>
+        <td class="pl-2">
           <router-link :to="`/s/admins/${log.uid}`">{{
             log.email || log.uid
           }}</router-link>
         </td>
-        <td class="p-l-8">{{ log.uidSuper.slice(0, 8) + "..." }}</td>
+        <td class="pl-2">{{ log.uidSuper.slice(0, 8) + "..." }}</td>
       </tr>
     </table>
   </section>

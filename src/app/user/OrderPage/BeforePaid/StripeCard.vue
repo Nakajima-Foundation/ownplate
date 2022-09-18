@@ -41,7 +41,7 @@
 
             <!-- 3 Digits -->
             <div
-              class="bg-black bg-opacity-5 rounded-lg m-t-24 p-4 mt-6 text-center"
+              class="bg-black bg-opacity-5 rounded-lg mt-6 p-4 mt-6 text-center"
             >
               <div class="text-xl font-bold">
                 Visa, MasterCard, JCB, Diners Club, DISCOVER
@@ -62,7 +62,7 @@
 
             <!-- 4 Digits -->
             <div
-              class="bg-black bg-opacity-5 rounded-lg m-t-24 p-4 mt-6 text-center"
+              class="bg-black bg-opacity-5 rounded-lg mt-6 p-4 mt-6 text-center"
             >
               <div class="text-xl font-bold">American Express</div>
 
