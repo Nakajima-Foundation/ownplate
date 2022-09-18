@@ -23,12 +23,21 @@ span {
 }
 
 // OwnPlate Colors
-$op-colors: (
-  ownplate-yellow: #fbc02d,
-  primary: #0097a7,
-  op-teal: #0097a7,
-  onprimary: #ffffff,
-);
+.bg-ownplate-yellow {
+  background: #fbc02d;
+}
+.c-primary {
+  color: #0097a7;
+}
+.bg-op-teal {
+  background-color: #0097a7;
+}
+.text-op-teal {
+  color: #0097a7;
+}
+.border-op-teal {
+  border-color: #0097a7;
+}
 
 // Reset Buefy and Bulma
 .columns.is-gapless:not(:last-child) {
@@ -87,26 +96,6 @@ $op-colors: (
 
 html {
   background-color: #f4f4f5;
-}
-
-// Text and Background Colors
-@each $name, $value in $op-colors {
-  // Text Colors
-  .c-#{$name} {
-    color: $value;
-  }
-  .text-#{$name} {
-    color: $value;
-  }
-  // Background Colors
-  .bg-#{$name} {
-    background-color: $value;
-  }
-
-  // Border Colors
-  .border-#{$name} {
-    border-color: $value;
-  }
 }
 
 // OwnPlate Sizes
@@ -242,21 +231,6 @@ body,
   min-width: 128px;
   height: 48px;
   @extend .t-subtitle1;
-  &.primary {
-    background: #0097a7;      
-    color: #ffffff;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  &.secondary {
-    border: 2px solid #0097a7;
-    background: none;
-    color: #0097a7;
-    &:hover,
-    &:active,
-    &:focus {
-      border: 2px solid #0097a7;
-    }
-  }
   &.tertiary {
     background: rgba(0, 0, 0, 0.05);
     color: rgba(0, 0, 0, 0.6);
