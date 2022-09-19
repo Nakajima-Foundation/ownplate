@@ -108,21 +108,6 @@ $sizes: (
   96,
 );
 
-// Margin and Padding Sizes
-$sides: (top, bottom, left, right);
-@each $space-size in $sizes {
-  @each $side in $sides {
-    // Margin Sizes
-    .m-#{str-slice($side, 0, 1)}-#{$space-size} {
-      margin-#{$side}: #{$space-size}px;
-    }
-    // Padding Sizes
-    .p-#{str-slice($side, 0, 1)}-#{$space-size} {
-      padding-#{$side}: #{$space-size}px;
-    }
-  }
-}
-
 // Icon Sizes
 @each $icon-size in $sizes {
   .material-icons.s-#{$icon-size} {
