@@ -184,7 +184,7 @@
                         Number(tip) +
                         Number(actualShippingCost) +
                         Number(orderInfo.deliveryFee || 0)
-                    : orderInfo.total,
+                    : orderInfo.totalCharge,
                   "currency"
                 )
               }}
