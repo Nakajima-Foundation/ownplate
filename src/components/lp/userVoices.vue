@@ -40,7 +40,7 @@
           <div>
             <img
               src="/LP-UserVoice-Video-1.jpg"
-              class="rounded-lg w-64 touchable"
+              class="rounded-lg w-64 cursor-pointer"
             />
           </div>
           <div class="inline-flex items-center mt-2">
