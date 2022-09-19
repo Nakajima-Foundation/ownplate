@@ -51,7 +51,7 @@
             :to="'/admin/restaurants/' + restaurantId() + '/orders/' + order.id"
             :key="order.id"
           >
-            <ordered-info :key="order.id" :order="order" isInMo="isInMo" />
+            <ordered-info :key="order.id" :order="order" :isInMo="isInMo" />
           </router-link>
         </template>
       </div>
