@@ -44,7 +44,7 @@
               class="bg-white rounded-lg shadow-md pl-6 pr-6 pt-6 pb-6"
             >
               <!-- QR Code -->
-              <div class="align-center" @click="download">
+              <div class="text-center" @click="download">
                 <qrcode
                   :value="urlMenu"
                   :options="{ width: 160 }"
@@ -52,7 +52,7 @@
                 ></qrcode>
               </div>
               <!-- Link -->
-              <div class="align-center">
+              <div class="text-center">
                 <a :href="urlMenu" target="_blank">
                   <div class="op-button-text t-button">
                     {{ shopInfo.restaurantName }}
@@ -60,7 +60,7 @@
                 </a>
               </div>
               <!-- Download -->
-              <div class="align-center" @click="download">
+              <div class="text-center" @click="download">
                 <div class="op-button-text t-button">
                   {{ $t("admin.qrcode.download") }}
                 </div>
@@ -83,14 +83,14 @@
                 <!-- Enter -->
                 <div>
                   <!-- QR Code -->
-                  <div class="align-center">
+                  <div class="text-center">
                     <qrcode
                       :value="urlEnter"
                       :options="{ width: 160 }"
                     ></qrcode>
                   </div>
                   <!-- Link -->
-                  <div class="align-center">
+                  <div class="text-center">
                     <a :href="urlEnter">
                       <div class="op-button-text t-button">
                         {{ $t("admin.qrcode.enter") }}
@@ -102,14 +102,14 @@
                 <!-- Leave -->
                 <div class="mt-12">
                   <!-- QR Code -->
-                  <div class="align-center">
+                  <div class="text-center">
                     <qrcode
                       :value="urlLeave"
                       :options="{ width: 160 }"
                     ></qrcode>
                   </div>
                   <!-- Link -->
-                  <div class="align-center">
+                  <div class="text-center">
                     <a :href="urlLeave">
                       <div class="op-button-text t-button">
                         {{ $t("admin.qrcode.leave") }}
@@ -119,7 +119,7 @@
                 </div>
 
                 <!-- Trace List -->
-                <div class="align-center mt-6">
+                <div class="text-center mt-6">
                   <router-link
                     :to="`/admin/restaurants/${restaurantId()}/traces`"
                   >

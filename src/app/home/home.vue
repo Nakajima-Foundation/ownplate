@@ -9,12 +9,12 @@
         <div class="ml-6 mr-6">
           <!-- For Owner -->
           <div class="mt-6">
-            <div class="align-center mb-2">
+            <div class="text-center mb-2">
               <i class="material-icons text-black text-opacity-40 s-64">store</i>
             </div>
 
             <!-- Go to Owner Page -->
-            <div class="align-center">
+            <div class="text-center">
               <router-link to="/admin/restaurants">
                 <div
                   class="h-16 rounded-full bg-op-teal inline-flex items-center px-12 shadow"
@@ -34,12 +34,12 @@
         <div class="ml-6 mr-6">
           <!-- For User -->
           <div class="mt-6">
-            <div class="align-center mb-2">
+            <div class="text-center mb-2">
               <i class="material-icons text-black text-opacity-40 s-64">tag_faces</i>
             </div>
 
             <!-- Go to User Page -->
-            <div class="align-center">
+            <div class="text-center">
               <router-link to="/r">
                 <div
                   class="h-16 rounded-full bg-op-teal inline-flex items-center px-12 shadow"
@@ -52,7 +52,7 @@
             </div>
 
             <!-- Go to User Manual -->
-            <div class="align-center mt-4">
+            <div class="text-center mt-4">
               <a
                 href="https://gluepass.jp/g/ownplatejp/pg/zzDScN7kc1WgNQaA9J7v"
                 target="_blank"
@@ -80,7 +80,7 @@
           <div class="column is-narrow w-6"></div>
           <div class="column">
             <!-- Feature Hero -->
-            <div class="bg-ownplate-yellow rounded-lg align-center mt-6">
+            <div class="bg-ownplate-yellow rounded-lg text-center mt-6">
               <div class="h-2 bg-ownplate-yellow is-invisible-tablet"></div>
               <div>
                 <img

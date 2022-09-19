@@ -2,14 +2,14 @@
   <div v-if="dialog">
     <b-modal :active.sync="isVisible" :width="488">
       <div class="op-dialog pt-6 pl-6 pr-6 pb-6 mt-6 mb-6 ml-2 mr-2 bg-white rounded-lg shadow-lg">
-        <div class="align-center">
+        <div class="text-center">
           <i class="material-icons s-48 text-red-700">warning</i>
         </div>
 
         <!-- Error Message -->
         <div v-if="error">
           <!-- Message -->
-          <div class="align-center mt-4">
+          <div class="text-center mt-4">
             <div class="t-h6 text-black opacity-60">
               {{ $t("errorPage.popup.title") }}
             </div>
@@ -17,7 +17,7 @@
             <div class="mt-2">{{ $t(errorMessage2) }}</div>
           </div>
           <!-- Buttons -->
-          <div class="mt-6 align-center">
+          <div class="mt-6 text-center">
             <div class="op-button-small tertiary" @click="close">
               {{ $t("menu.close") }}
             </div>
@@ -27,14 +27,14 @@
         <!-- Alert Message -->
         <div v-if="alert">
           <!-- Message -->
-          <div class="align-center mt-4" v-if="alert.title">
+          <div class="text-center mt-4" v-if="alert.title">
             <div class="t-h6 text-black opacity-60">{{ $t(alert.title) }}</div>
           </div>
-          <div class="align-center mt-4">
+          <div class="text-center mt-4">
             <div class="t-h6 text-black opacity-60">{{ $t(alert.code) }}</div>
           </div>
           <!-- Buttons -->
-          <div class="mt-6 align-center">
+          <div class="mt-6 text-center">
             <div class="op-button-small tertiary mr-4" @click="close">
               {{ $t("menu.no") }}
             </div>

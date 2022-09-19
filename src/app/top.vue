@@ -9,7 +9,7 @@
         <div class="ml-6 mr-6 mt-6">
           <div class="bg-black bg-opacity-5 rounded-lg pl-6 pr-6 pt-6 pb-6">
             <!-- Go to Super Admin Page -->
-            <div class="align-center">
+            <div class="text-center">
               <router-link to="/s">
                 <div class="op-button-small bg-op-teal shadow-lg" style="min-width: 256px">
                   <span class="text-white">Super Admin Page</span>
@@ -32,7 +32,7 @@
         <div class="ml-6 mr-6 mt-6">
           <div class="bg-black bg-opacity-5 rounded-lg pl-6 pr-6 pt-6 pb-6">
             <!-- Go to Super Admin Page -->
-            <div class="align-center">
+            <div class="text-center">
               <router-link to="/op">
                 <div class="op-button-small bg-op-teal shadow-lg" style="min-width: 256px">
                   <span class="text-white">Operator Page</span>

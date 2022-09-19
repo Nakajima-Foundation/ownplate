@@ -2,7 +2,7 @@
   <div class="columns is-gapless">
     <div class="column is-narrow w-6"></div>
     <div class="column">
-      <div class="align-center">
+      <div class="text-center">
         <b-button
           class="b-reset h-9 rounded-full bg-black bg-opacity-5"
           tag="router-link"
