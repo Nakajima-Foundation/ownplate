@@ -89,27 +89,11 @@ html {
   background-color: #f4f4f5;
 }
 
-// OwnPlate Sizes
-$sizes: (
-  0,
-  4,
-  8,
-  16,
-  18,
-  24,
-  32,
-  36,
-  48,
-  64,
-  80,
-  96,
-);
-
-// Icon Sizes
-@each $icon-size in $sizes {
-  .material-icons.s-#{$icon-size} {
-    font-size: #{$icon-size}px;
-  }
+.material-icons.s-48 {
+  font-size: 48px;
+}
+.material-icons.s-18 {
+  font-size: 18px;
 }
 
 // Push footer down to the bottom
