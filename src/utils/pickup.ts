@@ -132,7 +132,7 @@ export const usePickupTime = (
           !isNull(exceptHour) &&
           !isNull(exceptHour.start) &&
           !isNull(exceptHour.end);
-        const hasExceptDay = Object.keys(exceptDay || {}).length > 0;
+        const hasExceptDay = (Object.values(exceptDay || {})||[]).filter(a => a).length > 0;
         const menuAvailableDays = Object.keys(
           availableBusinessDays.value || {}
         ).reduce((arr: string[], day: any) => {
