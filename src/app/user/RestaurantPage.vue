@@ -607,6 +607,9 @@ export default defineComponent({
             return "";
           }
         }
+        if (isInMo.value) {
+          return "";
+        }
         return user.value.displayName;
       })();
 
