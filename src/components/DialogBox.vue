@@ -18,7 +18,7 @@
           </div>
           <!-- Buttons -->
           <div class="mt-6 text-center">
-            <div class="op-button-small op-button tertiary" @click="close">
+            <div class="op-button-small op-button bg-black bg-opacity-5 text-black opacity-60" @click="close">
               {{ $t("menu.close") }}
             </div>
           </div>
@@ -35,7 +35,7 @@
           </div>
           <!-- Buttons -->
           <div class="mt-6 text-center">
-            <div class="op-button-small op-button tertiary mr-4" @click="close">
+            <div class="op-button-small op-button bg-black bg-opacity-5 text-black opacity-60  mr-4" @click="close">
               {{ $t("menu.no") }}
             </div>
             <div

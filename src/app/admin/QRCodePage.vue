@@ -123,7 +123,7 @@
                   <router-link
                     :to="`/admin/restaurants/${restaurantId()}/traces`"
                   >
-                    <div class="op-button-small op-button tertiary">
+                    <div class="op-button-small op-button bg-black bg-opacity-5 text-black opacity-60">
                       {{ $t("trace.viewList") }}
                     </div>
                   </router-link>

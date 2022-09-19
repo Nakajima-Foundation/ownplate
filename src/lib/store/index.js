@@ -20,8 +20,8 @@ export const state = () => ({
   soundOn: false, // for restaurant admin config
   soundFile: "",
   isWindowActive: false, // active status of browser window
-//  dialog: null, // for DialogBox
-  dialog: {alert: {}, error: {}}, // for DialogBox 
+  dialog: null, // for DialogBox
+//  dialog: {alert: {}, error: {}}, // for DialogBox 
   isLoading: false, // for full-page loading animation
   isFirefoxPBM: undefined, // true, false, null
 });
