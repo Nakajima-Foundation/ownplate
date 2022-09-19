@@ -54,14 +54,14 @@
               <!-- Link -->
               <div class="text-center">
                 <a :href="urlMenu" target="_blank">
-                  <div class="op-button-text t-button">
+                  <div class="op-button-text op-button t-button">
                     {{ shopInfo.restaurantName }}
                   </div>
                 </a>
               </div>
               <!-- Download -->
               <div class="text-center" @click="download">
-                <div class="op-button-text t-button">
+                <div class="op-button-text op-button t-button">
                   {{ $t("admin.qrcode.download") }}
                 </div>
               </div>
@@ -92,7 +92,7 @@
                   <!-- Link -->
                   <div class="text-center">
                     <a :href="urlEnter">
-                      <div class="op-button-text t-button">
+                      <div class="op-button-text op-button t-button">
                         {{ $t("admin.qrcode.enter") }}
                       </div>
                     </a>
@@ -111,7 +111,7 @@
                   <!-- Link -->
                   <div class="text-center">
                     <a :href="urlLeave">
-                      <div class="op-button-text t-button">
+                      <div class="op-button-text op-button t-button">
                         {{ $t("admin.qrcode.leave") }}
                       </div>
                     </a>
@@ -123,7 +123,7 @@
                   <router-link
                     :to="`/admin/restaurants/${restaurantId()}/traces`"
                   >
-                    <div class="op-button-small tertiary">
+                    <div class="op-button-small op-button tertiary">
                       {{ $t("trace.viewList") }}
                     </div>
                   </router-link>

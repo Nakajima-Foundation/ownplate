@@ -46,14 +46,9 @@
       <div class="column is-narrow w-6"></div>
     </div>
 
-    <template v-if="isJapan">
-      <lp-customer v-if="isCustomer" />
-      <lp-admin v-else-if="isAdmin" />
-      <lp v-else="isAdmin" />
-    </template>
-    <template v-else>
-      <home />
-    </template>
+    <lp-customer v-if="isCustomer" />
+    <lp-admin v-else-if="isAdmin" />
+    <lp v-else="isAdmin" />
   </div>
 </template>
 
@@ -63,7 +58,6 @@ import { defineComponent } from "@vue/composition-api";
 import Lp from "@/app/home/Lp.vue";
 import LpAdmin from "@/app/home/LpAdmin.vue";
 import LpCustomer from "@/app/home/LpCustomer.vue";
-import home from "@/app/home/home.vue";
 
 import { defaultTitle, isJapan } from "@/utils/utils";
 
@@ -78,7 +72,6 @@ export default defineComponent({
     Lp,
     LpAdmin,
     LpCustomer,
-    home,
   },
   setup() {
     return { isJapan };
