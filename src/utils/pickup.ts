@@ -135,8 +135,8 @@ export const usePickupTime = (
         const hasExceptDay = Object.keys(exceptDay || {}).length > 0;
         const menuAvailableDays = Object.keys(
           availableBusinessDays.value || {}
-        ).reduce((arr: string[], day) => {
-          if (!(exceptDay || {})[day]) {
+        ).reduce((arr: string[], day: any) => {
+          if (availableBusinessDays.value[day] && !(exceptDay || {})[day]) {
             arr.push(day);
           }
           return arr;
