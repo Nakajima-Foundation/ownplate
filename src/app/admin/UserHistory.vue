@@ -51,7 +51,7 @@
               nationalPhoneNumber
             }}</a>
           </div>
-          <div class="text-base">{{ orders[0].name }}</div>
+          <div class="text-base" v-if="!isInMo">{{ orders[0].name }}</div>
         </div>
         <div>
           {{ $t("order.orderTimes") }}:
@@ -78,6 +78,7 @@
           :key="order.id"
           @selected="orderSelected($event)"
           :order="order"
+           isInMo="isInMo"
           :isSuperView="true"
         />
       </div>

@@ -39,7 +39,7 @@
         </div>
 
         <div class="flex-1 text-right text-base">
-          <div v-if="order.name">
+          <div v-if="order.name && !isInMo">
             <i
               class="fab fa-line text-lg mr-2"
               style="color: #4ec263"
@@ -175,6 +175,10 @@ export default defineComponent({
     isSuperView: {
       type: Boolean,
       required: false,
+    },
+    isInMo: {
+      type: Boolean,
+      required: true,
     },
   },
   setup(props, ctx) {
