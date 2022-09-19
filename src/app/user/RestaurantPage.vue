@@ -307,7 +307,7 @@ import { wasOrderCreated } from "@/lib/firebase/functions";
 
 import { order_status } from "@/config/constant";
 
-import { ownPlateConfig } from "@/config/project";
+import { ownPlateConfig, moTitle } from "@/config/project";
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
 import {
@@ -396,7 +396,7 @@ export default defineComponent({
           ? document.title
           : [
               this.shopInfo?.restaurantName || "",
-              ownPlateConfig.restaurantPageTitle || this.defaultTitle,
+              (this.isInMo ? moTitle : ownPlateConfig.restaurantPageTitle || this.defaultTitle),
             ].join(" / "),
     };
   },
@@ -862,6 +862,9 @@ export default defineComponent({
       closeCart,
       menuObj,
       menuPickupData,
+
+      isInMo,
+
     };
   },
 });
