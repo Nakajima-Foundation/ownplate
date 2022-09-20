@@ -1,32 +1,12 @@
 <template>
   <div>
-    <!-- Order Header Area -->
-    <div class="columns is-gapless">
-      <!-- Left Gap -->
-      <div class="column is-narrow w-6"></div>
-      <!-- Center Column -->
-      <div class="column">
-        <div class="ml-6 mr-6">
-          <!-- Nav Bar -->
-          <div class="level">
-            <!-- Back Button and Restaurant Profile -->
-            <div class="level-left flex-1">
-              <!-- Back Button -->
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Right Gap -->
-      <div class="column is-narrow w-6"></div>
-    </div>
     <!-- Order Body Area -->
     <div class="columns is-gapless">
-      <!-- Left Gap -->
-      <div class="column is-narrow w-6"></div>
       <!-- Center Column -->
       <div class="column">
         <div class="ml-6 mr-4 mt-6">
           <back-button :url="backUrl" />
+
           <h2>All Orders</h2>
           <b-select v-model="orderState" class="mt-6">
             <option

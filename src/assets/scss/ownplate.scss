@@ -6,38 +6,6 @@
   }
 }
 
-// Reset Buefy and Bulma
-.columns.is-gapless:not(:last-child) {
-  margin-bottom: 0;
-}
-
-.columns,
-.column {
-  margin: 0;
-  padding: 0;
-}
-
-.box:not(:last-child),
-.content:not(:last-child),
-.notification:not(:last-child),
-.progress:not(:last-child),
-.table:not(:last-child),
-.table-container:not(:last-child),
-.title:not(:last-child),
-.subtitle:not(:last-child),
-.block:not(:last-child),
-.highlight:not(:last-child),
-.breadcrumb:not(:last-child),
-.level:not(:last-child),
-.list:not(:last-child),
-.message:not(:last-child),
-.tabs:not(:last-child) {
-  margin-bottom: 0;
-}
-
-.level-left + .level-right {
-  margin-top: 0;
-}
 
 .t-h6 {
   font-weight: bold;
@@ -50,10 +18,6 @@
   font-size: 14px;
   line-height: 16px;
   letter-spacing: 0.1px;
-}
-
-html {
-  background-color: #f4f4f5;
 }
 
 .material-icons.s-48 {
