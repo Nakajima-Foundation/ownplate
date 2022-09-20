@@ -43,9 +43,8 @@
             <div v-if="image">
               <img
                 :src="image"
-                width="96"
-                height="96"
                 class="w-24 h-24 rounded object-cover"
+                @error="smallImageErrorHandler"
               />
             </div>
           </div>
@@ -146,7 +145,7 @@
 import { defineComponent, computed } from "@vue/composition-api";
 import { db } from "@/plugins/firebase";
 import Price from "@/components/Price";
-import { useAdminUids } from "@/utils/utils";
+import { useAdminUids, smallImageErrorHandler } from "@/utils/utils";
 
 export default defineComponent({
   components: {
@@ -235,6 +234,8 @@ export default defineComponent({
       positionDown,
       forkItem,
       deleteItem,
+
+      smallImageErrorHandler,
     };
   },
 });

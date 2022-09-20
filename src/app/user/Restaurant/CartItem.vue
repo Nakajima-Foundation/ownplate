@@ -32,6 +32,7 @@
         <img
           :src="image"
           class="w-12 h-12 lg:w-24 lg:h-24 rounded object-cover"
+          @error="smallImageErrorHandler"
         />
       </div>
     </div>
@@ -68,7 +69,7 @@
 
 <script>
 import { defineComponent, computed } from "@vue/composition-api";
-import { itemOptionCheckbox2options, getPriceWithTax } from "@/utils/utils";
+import { itemOptionCheckbox2options, getPriceWithTax, smallImageErrorHandler } from "@/utils/utils";
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
 import Price from "@/components/Price";
@@ -133,6 +134,7 @@ export default defineComponent({
       subTotalWithTax,
       increase,
       decrease,
+      smallImageErrorHandler,
     };
   },
 });
