@@ -115,13 +115,11 @@
             <!-- titles for omochikaeri -->
             <Titles :titleLists="titleLists" v-if="titleLists.length > 0" />
 
-            <div v-if="false">
-              <div v-if="showSubCategory">
-                <!-- Mo Pickup Toggle -->
-                <div class="mx-6 mt-2 lg:mx-0" v-if="shopInfo.enableMoPickup">
-                  <div class="bg-white rounded-lg shadow">
-                    <MoPickUp :shopInfo="shopInfo" v-model="howtoreceive" />
-                  </div>
+            <div v-if="showSubCategory">
+              <!-- Mo Pickup Toggle -->
+              <div class="mx-6 mt-2 lg:mx-0" v-if="shopInfo.enableMoPickup">
+                <div class="bg-white rounded-lg shadow">
+                  <MoPickUp :shopInfo="shopInfo" v-model="howtoreceive" />
                 </div>
               </div>
             </div>
@@ -486,6 +484,9 @@ export default defineComponent({
     const isDelivery = computed(() => {
       return howtoreceive.value === "delivery";
     });
+    const isPickup = computed(() => {
+      return howtoreceive.value === "pickup";
+    });
 
     const coverImage = computed(() => {
       return (
@@ -654,7 +655,8 @@ export default defineComponent({
         uid: user.value.uid,
         ownerUid: props.shopInfo.uid,
         isDelivery:
-          (props.shopInfo.enableDelivery && isDelivery.value) || false, // true, // for test
+        (props.shopInfo.enableDelivery && isDelivery.value) || false, // true, // for test
+        isPickup: (props.shopInfo.enableMoPickup && isPickup.value) || false, 
         isLiff: ctx.root.isLiffUser,
         phoneNumber: user.value.phoneNumber,
         name: name,
