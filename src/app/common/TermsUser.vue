@@ -389,15 +389,16 @@
         </p>
       </section>
 
-      <div class="text-right t-body1 c-text-black-medium m-t-24">以上</div>
+      <div class="text-right text-black text-opacity-40 mt-6">以上</div>
 
-      <div class="t-body1 c-text-black-medium m-t-24">
+      <div class="text-black text-opacity-40 mt-6">
         一般社団法人シンギュラリティ・ソサエティ
       </div>
-      <div class="t-body1 c-text-black-medium m-t-4">2022年7月12日</div>
-      <div class="t-body1 c-text-black-medium m-t-4">最終改定</div>
+      <div class="text-black text-opacity-40 mt-1">2022年7月12日</div>
+      <div class="text-black text-opacity-40 mt-1">最終改定</div>
 
-      <div class="t-body1 c-text-black-medium m-t-24">SS：有本/武藤</div>
+      <div class="text-black text-opacity-40 mt-6">SS：有本/武藤</div>
+
     </div>
   </div>
 </template>

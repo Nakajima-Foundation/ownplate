@@ -229,6 +229,8 @@ import Footer from "@/app/admin/Index/Footer.vue";
 import Partners from "@/app/admin/Index/Partners.vue";
 import SubAccount from "@/app/admin/Index/SubAccount.vue";
 
+import { ping } from "@/lib/firebase/functions";
+
 import {
   getShopOwner,
   doc2data,
@@ -290,6 +292,11 @@ export default defineComponent({
     if (!checkAdminPermission(ctx)) {
       return;
     }
+    ping({
+      restaurantId: "index",
+      operationType: "index",
+      pathName: location.pathname,
+    });
 
     const detachOrders = () => {
       orderDetachers.value.map((detacher) => {
@@ -298,7 +305,7 @@ export default defineComponent({
       orderDetachers.value = [];
     };
     const { isOwner, uid, ownerUid } = useAdminUids(ctx);
-
+    console.log(uid);
     const { toggle: simpleMode, switchToggle: switchSimpleMode } =
       useAdminConfigToggle("simpleMode", uid.value, false);
 

@@ -178,15 +178,7 @@
           <div class="text-right">
             <div class="text-xl font-bold text-green-600">
               {{
-                $n(
-                  editable
-                    ? orderInfo.total +
-                        Number(tip) +
-                        Number(actualShippingCost) +
-                        Number(orderInfo.deliveryFee || 0)
-                    : orderInfo.total,
-                  "currency"
-                )
+                $n(previewTotal, "currency")
               }}
             </div>
           </div>
@@ -271,6 +263,14 @@ export default {
     },
     isTipEditable() {
       return this.orderInfo.status === order_status.validation_ok;
+    },
+    previewTotal() {
+      return (this.editable || this.isTipEditable) ?
+        this.orderInfo.total +
+        Number(this.tip) +
+        Number(this.actualShippingCost) +
+        Number(this.orderInfo.deliveryFee || 0)
+        : this.orderInfo.totalCharge;
     },
     enableTip() {
       if (this.shopInfo.isEC) {

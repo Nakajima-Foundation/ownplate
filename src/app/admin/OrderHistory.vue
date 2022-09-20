@@ -60,7 +60,7 @@
             :to="'/admin/restaurants/' + restaurantId() + '/orders/' + order.id"
             :key="order.id"
           >
-            <ordered-info :order="order" :isSuperView="true" />
+            <ordered-info :order="order" :isSuperView="true" :isInMo="isInMo" />
           </router-link>
         </template>
       </div>

@@ -19,14 +19,19 @@
 </template>
 
 <script>
+import {
+  defineComponent,
+  computed,
+} from "@vue/composition-api";
 import DownloadCsv from "@/components/DownloadCSV.vue";
 import moment from "moment";
 import { nameOfOrder } from "@/utils/strings";
 import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
 import { order_status } from "@/config/constant";
 import { arrayOrNumSum } from "@/utils/utils";
+import { revenueCSVHeader, revenueMoCSVHeader } from "@/utils/reportUtils";
 
-export default {
+export default defineComponent({
   components: {
     DownloadCsv,
   },
@@ -36,27 +41,24 @@ export default {
       required: true,
     },
   },
-  computed: {
-    fields() {
-      return [
-        "datePlaced",
-        "dateEstimated",
-        "dateConfirmed",
-        "statusName",
-        "totalCount",
-        "total",
-        "phoneNumber",
-        "name",
-        "payment",
-      ];
-    },
-    fieldNames() {
-      return this.fields.map((field) => {
-        return this.$t(`order.${field}`);
-      });
-    },
-    tableData() {
-      return this.orders.map((order) => {
+  setup(props, ctx) {
+    const fields = [
+      "datePlaced",
+      "dateEstimated",
+      "dateConfirmed",
+      "statusName",
+      "totalCount",
+      "total",
+      "phoneNumber",
+      "name",
+      "payment",
+    ];
+    const fieldNames = fields.map((field) => {
+      return ctx.root.$t(`order.${field}`);
+    });
+
+    const tableData = computed(() => {
+      return props.orders.map((order) => {
         const totalCount = Object.keys(order.order).reduce((count, id) => {
           return count + arrayOrNumSum(order.order[id]);
         }, 0);
@@ -74,7 +76,7 @@ export default {
           dateConfirmed:
             order.timeConfirmed &&
             moment(order.timeConfirmed).format("YYYY/MM/DD HH:mm"),
-          statusName: this.$t(`order.status.${status}`),
+          statusName: ctx.root.$t(`order.status.${status}`),
           totalCount: totalCount,
           total: order.totalCharge,
           phoneNumber: order.phoneNumber
@@ -84,7 +86,12 @@ export default {
           payment: order.payment?.stripe ? "stripe" : "",
         };
       });
-    },
+    });
+    return {
+      fields,
+      fieldNames,
+      tableData,
+    };
   },
-};
+});
 </script>

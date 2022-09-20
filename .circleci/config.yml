@@ -8,25 +8,14 @@ jobs:
     steps:
       - checkout
       - node/install:
-          node-version: 16.13.2
+          node-version: 16.15.0
       - node/install-packages:
           check-cache: always
-      - run: apt-cache search openjdk
-      - run: sudo apt-get update
-      - run: sudo apt-get install openjdk-11-jdk
       - run: npm rebuild node-sass
       - run: npm install --save-dev firebase-tools
-      - run:
-          command: ./node_modules/.bin/firebase emulators:start --only firestore
-          background: true
       - run: cp configs/.firebaserc ./
       - run: cp src/config/default/ownplate-dev.ts src/config/project.ts
       - run: npm run build
-      - run: cp dist/index.html functions/templates/index.html
-      - run: cp src/config/default/ownplate-dev.ts functions/src/common/project.ts
-      - run: cp src/config/constant.ts functions/src/common/constant.ts
-      - run: cp src/utils/phoneutil.ts functions/src/common/phoneutil.ts
-      - run: cp src/utils/commonUtils.ts functions/src/common/commonUtils.ts
       - run: cd functions && npm install # && npm run coverage
       - run: ./node_modules/.bin/firebase deploy --token=$FIREBASE_TOKEN --project=staging
       - run: SLACKURL=$SLACKURL sh ./utils/buildbot.sh

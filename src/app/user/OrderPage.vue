@@ -73,7 +73,7 @@ export default {
       title:
         this.shopInfo?.restaurantName && this.statusKey
           ? [
-              this.defaultTitle,
+              // this.defaultTitle, for mo
               this.shopInfo ? this.shopInfo?.restaurantName : "--",
               "Order Page",
               this.$t("order.status." + this.statusKey),

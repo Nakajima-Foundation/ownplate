@@ -44,3 +44,4 @@ export const GAPIKey = "AIzaSyBopNQwD1RT2k9dLqH6WYPWIkMZF3RWXMQ";
 export const mo_prefixes = ["mo", "motest", "ss"];
 export const moGtmID = "GTM-PLFRX7K";
 export const moBaseUrl = "https://mo-data-dev.omochikaeri.com";
+export const moTitle = "Mobile Order";

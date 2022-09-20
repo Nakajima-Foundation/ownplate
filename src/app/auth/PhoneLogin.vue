@@ -125,7 +125,7 @@
         </div>
 
         <!-- Enter Name -->
-        <div v-if="!relogin">
+        <div v-if="!relogin && !isInMo">
           <div class="text-sm font-bold">
             {{ $t("sms.userName") }}
           </div>
@@ -197,7 +197,7 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 
-import { stripeRegion } from "@/utils/utils";
+import { stripeRegion, useIsInMo } from "@/utils/utils";
 import moment from "moment";
 import * as Sentry from "@sentry/vue";
 
@@ -225,6 +225,8 @@ export default defineComponent({
     const name = ref("");
 
     let recaptchaVerifier = null;
+
+    const isInMo = useIsInMo(ctx.root);
 
     onMounted(() => {
       recaptchaVerifier = new RecaptchaVerifier(
@@ -358,6 +360,8 @@ export default defineComponent({
 
       handleSubmit,
       handleCode,
+
+      isInMo,
     };
   },
 });

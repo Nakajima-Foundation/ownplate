@@ -19,6 +19,9 @@
     "smallPayment1": "ご注文金額が50円以下の場合は、",
     "smallPayment2": "「事前にカードでお支払い」をご利用できません。",
     "smallPayment3": "「受取時に店舗でお支払い」をご利用ください。",
+    "orderPlacedAlert": "※「受付済み」になるまで、ご注文は確定していません",
+    "storeDetails": "店舗情報",
+    "adminQRCode": "店舗確認用QRCode",
     "name": "ネット注文サービス",
     "shopInfo": {
       "takeout": "予約注文",
@@ -457,7 +460,7 @@
     "searchRestaurant": "テイクアウトのお店を探す",
     "moTagline": "ネット注文サービスは、PC・スマホから簡単に購入が可能な、ファミリーマート公式のお取り置きサービスです。",
     "moDescription1": "通常は取り扱いのない商品もお取り寄せいたします。",
-    "moDescription2": "ご注文日から最短4日後の店頭受取が可能です。​"
+    "moDescription2": "ご注文日から最短3日後の店頭受取が可能です。"
   },
   "order": {
     "allOrders": "全ての注文",
@@ -731,6 +734,10 @@
       "after": "に目を通して、ご登録を進めてください。"
     },
     "pleaseSignIn": "ログインしてください(飲食店向け)",
+    "goToSignIn": "ログインへ",
+    "mailIsExpired": "メールの有効期限が切れています。",
+    "passwordUpdated": "パスワードの変更完了しました。",
+    "reSend": "パスワード再設定へ",
     "registration": "登録してください(飲食店向け)",
     "email": "メールアドレス",
     "password": "パスワード",
@@ -882,7 +889,8 @@
         "taken": "このメールアドレスは別のアカウントですでに使用されています。"
       },
       "password": {
-        "tooshort": "パスワードは6文字以上にしてください。",
+        "tooshort": "パスワードは8文字以上にしてください。",
+        "invalid": "パスワードはアルファベットと数字を含めてください。",
         "mismatch": "パスワードが違います。"
       },
       "code": {

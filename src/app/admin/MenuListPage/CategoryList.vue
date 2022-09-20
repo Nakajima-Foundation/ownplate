@@ -17,7 +17,11 @@
           <div
             class="mt-2 w-10 h-10 mr-2 bg-white border-gray-100 rounded-lg shadow-none"
           >
-            <img src="/apple-touch-icon.png" />
+            <img
+              :src="moBaseUrl + '/images/category/' + cat.id + '.jpg'"
+              @error="smallImageErrorHandler"
+              class="inline-block align-middle rounded-lg"
+            />
           </div>
           <div class="flex-1 mt-2 text-xs leading-tight font-bold text-op-teal">
             {{ cat.name }}
@@ -30,6 +34,8 @@
 
 <script>
 import { defineComponent } from "@vue/composition-api";
+import { smallImageErrorHandler } from "@/utils/utils";
+import { moBaseUrl } from "@/config/project";
 
 export default defineComponent({
   props: {
@@ -38,5 +44,11 @@ export default defineComponent({
       required: true,
     },
   },
+  setup(props, ctx) {
+    return {
+      smallImageErrorHandler,
+      moBaseUrl,
+    }
+  }
 });
 </script>

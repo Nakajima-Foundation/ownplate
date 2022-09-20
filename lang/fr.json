@@ -19,6 +19,9 @@
     "smallPayment1": "If the order amount is 50 yen or less,",
     "smallPayment2": "you cannot use \"Pay Now\".",
     "smallPayment3": "Please use \"Pay Layter\"",
+    "orderPlacedAlert": "Votre commande n'est pas confirmée tant qu'elle n'est pas Accepter",
+    "storeDetails": "Store Details",
+    "adminQRCode": "Confirmation QR Code",
     "name": "Online ordering service",
     "shopInfo": {
       "takeout": "Online order",
@@ -433,7 +436,7 @@
     "searchRestaurant": "Rechercher un restaurant",
     "moTagline": "Le service officiel de mise de côté de FamilyMart qui vous permet d'effectuer facilement des achats depuis votre PC ou votre smartphone.",
     "moDescription1": "Vous pouvez commander des produits que nous ne vendons pas normalement.",
-    "moDescription2": "L'enlèvement en magasin est possible dès 4 jours après la date de la commande.​"
+    "moDescription2": "L'enlèvement en magasin est possible dès 3 jours après la date de la commande."
   },
   "order": {
     "allOrders": "Toutes les commandes",
@@ -681,6 +684,10 @@
       "after": "et vous inscrire d'abord avant de poursuivre."
     },
     "pleaseSignIn": "Se Connecter (pour les restaurants)",
+    "goToSignIn": "Go Sign In",
+    "mailIsExpired": "Email is expired",
+    "passwordUpdated": "Password was updated",
+    "reSend": "Reset passwpord",
     "registration": "S'Enregistrer (pour les restaurants)",
     "email": "Email",
     "password": "Mot de passe",
@@ -830,7 +837,8 @@
         "taken": "L'adresse e-mail est déjà utilisée par un autre compte."
       },
       "password": {
-        "tooshort": "Le mot de passe doit contenir au moins 6 caractères",
+        "tooshort": "Le mot de passe doit contenir au moins 8 caractères",
+        "invalid": "Please enter alphabets and numbers for the password.",
         "mismatch": "Les mots de passe ne corespondent pas"
       },
       "code": {

@@ -16,6 +16,7 @@
       <tr v-for="restaurant in restaurants" :key="restaurant.id">
         <td style="width: 50%">
           <router-link
+            class="text-sm font-bold text-op-teal"
             :to="`/r/${restaurant.id}`"
             v-if="restaurant.publicFlag && !restaurant.deletedFlag"
           >
@@ -26,7 +27,11 @@
           </span>
         </td>
         <td>
-          <router-link :to="`/s/admins/${restaurant.uid}`">管理人</router-link>
+          <router-link
+            :to="`/s/admins/${restaurant.uid}`"
+            class="text-sm font-bold text-op-teal"
+            >管理人</router-link
+          >
         </td>
         <td>
           {{ restaurant.onTheList ? "o" : "-" }}
@@ -49,25 +54,17 @@
       </tr>
     </table>
     <hr />
-    <b-button
-      class="b-reset op-button-pill h-9 rounded-full bg-form m-t-16"
-      @click="nextLoad"
-    >
+    <b-button class="h-9 rounded-full mt-2" @click="nextLoad">
       <span class="p-l-16 p-r-16">
         <span class="c-primary t-button"> Next </span>
       </span>
     </b-button>
-    <br />
 
-    <b-button
-      class="b-reset op-button-pill h-9 rounded-full bg-form m-t-16"
-      @click="allLoad"
-    >
+    <b-button class="h-9 rounded-full mt-2 ml-4" @click="allLoad">
       <span class="p-l-16 p-r-16">
         <span class="c-primary t-button"> All </span>
       </span>
     </b-button>
-    <br />
 
     <download-csv
       :data="tableData"
@@ -75,7 +72,7 @@
       :fieldNames="fieldNames"
       :fileName="fileName"
     >
-      <b-button class="b-reset op-button-pill h-9 rounded-full bg-form m-t-16">
+      <b-button class="h-9 rounded-full mt-2 ml-4">
         <span class="p-l-16 p-r-16">
           <i class="material-icons c-primary s-18 m-r-8">save_alt</i>
           <span class="c-primary t-button"> Download </span>

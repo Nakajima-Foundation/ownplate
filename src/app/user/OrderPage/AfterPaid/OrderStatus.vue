@@ -1,11 +1,11 @@
 <template>
   <div class="text-center">
-    <div>
+    <div class="mb-6">
       <div class="text-sm font-bold text-black text-opacity-50">
         {{ $t("order.orderStatus") }}
       </div>
       <div
-        class="rounded-lg p-4 mt-2 mb-6 mx-2 text-2xl font-bold"
+        class="rounded-lg p-4 mt-2 mx-2 text-2xl font-bold"
         :class="orderStatusKey"
       >
         {{
@@ -14,6 +14,12 @@
               convOrderStateForTextFunc(orderStatusKey, orderInfo)
           )
         }}
+      </div>
+      <div
+        v-if="isInMo && orderIsPlaced"
+        class="text-sm font-bold text-red-700 mt-2"
+      >
+        {{ $t("mobileOrder.orderPlacedAlert") }}
       </div>
     </div>
     <div>
@@ -31,6 +37,7 @@
 import { defineComponent, computed } from "@vue/composition-api";
 import { order_status } from "@/config/constant";
 import { convOrderStateForText } from "@/utils/utils";
+import { useIsInMo } from "@/utils/utils";
 
 export default defineComponent({
   props: {
@@ -43,15 +50,21 @@ export default defineComponent({
       required: true,
     },
   },
-  setup(props) {
+  setup(props, ctx) {
+    const isInMo = useIsInMo(ctx.root);
     const orderStatusKey = computed(() => {
       return Object.keys(order_status).reduce((result, key) => {
         return order_status[key] === props.orderInfo.status ? key : result;
       }, "unexpected");
     });
+    const orderIsPlaced = computed(() => {
+      return props.orderInfo.status === order_status.order_placed;
+    });
     return {
+      isInMo,
       orderStatusKey,
       convOrderStateForTextFunc: convOrderStateForText,
+      orderIsPlaced,
     };
   },
 });

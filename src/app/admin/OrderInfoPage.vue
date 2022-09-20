@@ -152,7 +152,7 @@
                       </div>
                     </a>
                   </div>
-                  <div class="font-bold mt-2">
+                  <div class="font-bold mt-2" v-if="!isInMo">
                     {{ orderInfo.name }}
                   </div>
                 </div>
@@ -247,7 +247,7 @@
                     nationalPhoneNumber
                   }}</a>
                 </div>
-                <div class="text-base">{{ orderInfo.name }}</div>
+                <div class="text-base" v-if="!isInMo">{{ orderInfo.name }}</div>
               </div>
               <div>
                 {{ $t("order.orderTimes") }}:
