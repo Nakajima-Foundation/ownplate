@@ -1,0 +1,32 @@
+body {
+  font-family: sans-serif !important;
+  background: #f7f8fb;
+}
+
+.section {
+  max-width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+  padding-top: 1rem;
+}
+
+div,
+span {
+  word-break: break-word;
+}
+
+.bg-ownplate-yellow {
+  background: #fbc02d;
+}
+.c-primary {
+  color: #0097a7;
+}
+.bg-op-teal {
+  background-color: #0097a7;
+}
+.text-op-teal {
+  color: #0097a7;
+}
+.border-op-teal {
+  border-color: #0097a7;
+}
