@@ -154,47 +154,78 @@
                 </div>
               </div>
               <div v-else>
-                <!-- Menu Items -->
-                <div class="grid grid-col-1 space-y-2" :key="subCategoryKey">
-                  <template v-for="(item, key) in itemLists">
-                    <div v-if="item._dataType === 'title'" :key="key">
-                      <div
-                        class="text-xl font-bold text-black text-opacity-30 inline-flex justify-center items-center"
-                        :class="key === 0 ? '' : 'mt-6'"
-                        :id="item.id"
-                        @click="openCategory"
-                      >
-                        <i class="material-icons mr-2">menu_book</i>
-                        <span>
-                          {{ item.name }}
-                        </span>
+                <template v-if="!isInMo">
+                  <!-- Menu Items for omochikaeri -->
+                  <div class="grid grid-col-1 space-y-2" :key="subCategoryKey">
+                    <template v-for="(item, key) in itemLists">
+                      <div v-if="item._dataType === 'title'" :key="key">
+                        <div
+                          class="text-xl font-bold text-black text-opacity-30 inline-flex justify-center items-center"
+                          :class="key === 0 ? '' : 'mt-6'"
+                          :id="item.id"
+                          @click="openCategory"
+                          >
+                          <i class="material-icons mr-2">menu_book</i>
+                          <span>
+                            {{ item.name }}
+                          </span>
+                        </div>
                       </div>
-                    </div>
-
-                    <div
-                      v-if="item._dataType === 'menu'"
-                      :key="[subCategoryKey, item.id].join('_')"
-                    >
-                      <Menu
-                        :key="[subCategoryKey, 'item', item.id].join('_')"
-                        :item="item"
-                        :menuPickupData="menuPickupData[item.id] || {}"
-                        :quantities="orders[item.id] || [0]"
-                        :selectedOptions="selectedOptions[item.id]"
-                        :initialOpenMenuFlag="
-                          (orders[item.id] || []).length > 0
-                        "
-                        :shopInfo="shopInfo"
-                        :menuLinkBathPath="menuLinkBathPath"
-                        :isOpen="menuId === item.id"
-                        :prices="prices[item.id] || []"
-                        :mode="mode"
-                        :moSoldOut="false"
-                        @didOrderdChange="didOrderdChange($event)"
-                      ></Menu>
-                    </div>
-                  </template>
-                </div>
+                      
+                      <div
+                        v-if="item._dataType === 'menu'"
+                        :key="[subCategoryKey, item.id].join('_')"
+                        >
+                        <Menu
+                          :key="[subCategoryKey, 'item', item.id].join('_')"
+                          :item="item"
+                          :menuPickupData="menuPickupData[item.id] || {}"
+                          :quantities="orders[item.id] || [0]"
+                          :selectedOptions="selectedOptions[item.id]"
+                          :initialOpenMenuFlag="
+                                                (orders[item.id] || []).length > 0
+                                                "
+                          :shopInfo="shopInfo"
+                          :menuLinkBathPath="menuLinkBathPath"
+                          :isOpen="menuId === item.id"
+                          :prices="prices[item.id] || []"
+                          :mode="mode"
+                          :moSoldOut="false"
+                          @didOrderdChange="didOrderdChange($event)"
+                          ></Menu>
+                      </div>
+                    </template>
+                  </div>
+                </template>
+                <template v-else>
+                  <!-- Menu Items for Mo -->
+                  <div class="grid grid-cols-3 space-y-2" :key="subCategoryKey">
+                    <template v-for="(item, key) in itemLists">
+                      <div
+                        v-if="item._dataType === 'menu'"
+                        :key="[subCategoryKey, item.id].join('_')"
+                        >
+                        <Menu
+                          :key="[subCategoryKey, 'item', item.id].join('_')"
+                          :item="item"
+                          :menuPickupData="menuPickupData[item.id] || {}"
+                          :quantities="orders[item.id] || [0]"
+                          :selectedOptions="selectedOptions[item.id]"
+                          :initialOpenMenuFlag="
+                                                (orders[item.id] || []).length > 0
+                                                "
+                          :shopInfo="shopInfo"
+                          :menuLinkBathPath="menuLinkBathPath"
+                          :isOpen="menuId === item.id"
+                          :prices="prices[item.id] || []"
+                          :mode="mode"
+                          :moSoldOut="false"
+                          @didOrderdChange="didOrderdChange($event)"
+                          ></Menu>
+                      </div>
+                    </template>
+                  </div>
+                </template>
               </div>
             </div>
           </div>
