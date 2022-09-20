@@ -170,25 +170,5 @@ export default {
         });
     }
   },
-  // # Need to rewrite for Areas instead of Restaurants.
-  /*
-  async created() {
-    try {
-      const res = await db
-        .collection("restaurants")
-        .where("publicFlag", "==", true)
-        .where("deletedFlag", "==", false)
-        .get();
-      this.restaurants = (res.docs || []).map(doc => {
-        const data = doc.data();
-        data.id = doc.id;
-        return data;
-      });
-      console.log(this.restaurants.length, this.restaurants);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-*/
 };
 </script>

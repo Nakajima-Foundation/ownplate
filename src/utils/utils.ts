@@ -46,14 +46,13 @@ export const getRestaurantId = (root: any) => {
   return root.$route.params.restaurantId;
 };
 
-/* 
-    resizedProfileImage(restaurant, size) {
-      return (
-        (restaurant.images?.profile?.resizedImages || {})[size] ||
-        restaurant.restProfilePhoto
-      );
-    },
-*/
+export const resizedProfileImage = (restaurant: RestaurantInfoData, size: string) => {
+  return (
+    (restaurant.images?.profile?.resizedImages || {})[size] ||
+      restaurant.restProfilePhoto
+  );
+};
+
 export const arrayChunk = <T>(arr: T[], size = 1) => {
   const array = [...arr];
   return array.reduce((current: T[][], value: T, index: number) => {

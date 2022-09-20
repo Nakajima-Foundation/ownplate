@@ -51,7 +51,7 @@
             <div class="mx-6 lg:mx-0">
               <!-- Restaurant Profile Photo and Name -->
               <div class="mt-4">
-                <shop-header :shopInfo="shopInfo"></shop-header>
+                <ShopHeader :shopInfo="shopInfo"></ShopHeader>
               </div>
 
               <!-- Restaurant Descriptions -->
@@ -508,7 +508,6 @@ export default defineComponent({
       menuObj,
       ctx
     );
-    console.log(menuPickupData, availableDays);
 
     onMounted(() => {
       // Check if we came here as the result of "Edit Items"
