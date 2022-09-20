@@ -28,43 +28,19 @@ span {
 
 // OwnPlate Colors
 $op-colors: (
-  test: #ff0000,
-  transparent: rgba(0, 0, 0, 0),
   ownplate-yellow: #fbc02d,
   op-yellow: #fbc02d,
-  ownplate-gray: #616161,
-  op-gray: #616161,
   ownplate-white: #ffffff,
   ownplate-black: #000000,
   background: #f4f4f5,
   surface: #ffffff,
-  sattle-white: rgba(255, 255, 255, 0.1),
-  sattle-black: rgba(0, 0, 0, 0.1),
   dialog-overlay: rgba(0, 0, 0, 0.5),
   primary: #0097a7,
   op-teal: #0097a7,
-  primary-bg: rgba(0, 151, 167, 0.1),
   onprimary: #ffffff,
-  text-black-full: #000000,
-  text-black-high: rgba(0, 0, 0, 0.87),
   text-black-medium: rgba(0, 0, 0, 0.6),
   text-black-disabled: rgba(0, 0, 0, 0.38),
-  text-white-full: #ffffff,
-  text-white-high: rgba(255, 255, 255, 0.87),
-  text-white-medium: rgba(255, 255, 255, 0.6),
-  text-white-disabled: rgba(255, 255, 255, 0.38),
   form: rgba(0, 0, 0, 0.05),
-  status-red: #b00020,
-  status-red-bg: rgba(176, 0, 32, 0.1),
-  status-amber: #f57c00,
-  status-amber-bg: rgba(245, 124, 0, 0.1),
-  status-green: #689f38,
-  status-green-bg: rgba(104, 159, 56, 0.1),
-  status-blue: #0288d1,
-  status-blue-bg: rgba(2, 136, 209, 0.1),
-  status-purple: #4a148c,
-  status-purple-bg: rgba(74, 20, 140, 0.1),
-  button-inquiries: #f72d60
 );
 
 // Reset Buefy and Bulma
@@ -113,19 +89,6 @@ $op-colors: (
   font-size: 16px;
   line-height: 24px;
   letter-spacing: 0.15px;
-}
-.t-subtitle2 {
-  // font-weight: 500;
-  font-weight: bold;
-  font-size: 14px;
-  line-height: 24px;
-  letter-spacing: 0.1px;
-}
-.t-body1 {
-  font-weight: normal;
-  font-size: 16px;
-  line-height: 24px;
-  letter-spacing: 0.5px;
 }
 .t-button {
   font-weight: bold;
@@ -245,15 +208,9 @@ body,
 .flex-1 {
   flex: 1;
 }
-.flex-center {
-  align-items: center;
-}
 
 .touchable {
   cursor: pointer;
-}
-.devider {
-  border-top: 1px solid map-get($op-colors, sattle-black);
 }
 
 
@@ -315,22 +272,6 @@ body,
   @extend .c-primary;
 }
 
-.op-button-pill {
-  @extend .op-button;
-  // @extend .r-36;
-  border-radius: 9999px;
-  @extend .p-l-16;
-  @extend .p-r-16;
-  @extend .c-primary;
-  .material-icons {
-    @extend .s-18;
-  }
-  span {
-    @extend .m-l-8;
-    @extend .m-r-8;
-  }
-}
-
 .op-button-small {
   @extend .op-button;
   // @extend .r-48;
@@ -360,61 +301,6 @@ body,
     @extend .bg-form;
     @extend .c-text-black-medium;
   }
-}
-
-.op-button-medium {
-  @extend .op-button;
-  // @extend .r-64;
-  border-radius: 9999px;
-  @extend .p-l-16;
-  @extend .p-r-16;
-  min-width: 128px;
-  // @extend .h-64;
-  height: 64px;
-  @extend .t-h6;
-  &.primary {
-    @extend .bg-primary;
-    @extend .c-onprimary;
-    @extend .d-medium;
-  }
-  &.secondary {
-    border: 2px solid map-get($op-colors, primary);
-    @extend .c-primary;
-  }
-  &.tertiary {
-    @extend .bg-form;
-    @extend .c-text-black-medium;
-  }
-}
-
-.op-button-large {
-  @extend .op-button;
-  min-width: 128px;
-  // @extend .h-80;
-  height: 80px;
-  // @extend .r-80;
-  border-radius: 9999px;
-  @extend .p-l-16;
-  @extend .p-r-16;
-  @extend .t-h6;
-  &.primary {
-    @extend .bg-primary;
-    @extend .c-onprimary;
-    @extend .d-medium;
-  }
-  &.secondary {
-    border: 2px solid map-get($op-colors, primary);
-    @extend .c-primary;
-  }
-  &.tertiary {
-    @extend .bg-form;
-    @extend .c-text-black-medium;
-  }
-}
-
-.control-label {
-  @extend .t-body1;
-  @extend .c-text-black-medium;
 }
 
 // OwnPlate Dialog

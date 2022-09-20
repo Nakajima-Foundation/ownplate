@@ -1,5 +1,5 @@
 import { defineComponent, computed } from "@vue/composition-api";
-import { useBasePath } from "@/utils/utils";
+import { useBasePath, smallImageErrorHandler } from "@/utils/utils";
 import { moBaseUrl } from "@/config/project";
 
 export default (name: string) => {
@@ -22,6 +22,7 @@ export default (name: string) => {
         basePath,
         moBaseUrl,
         closeCategory,
+        smallImageErrorHandler,
       };
     },
   });

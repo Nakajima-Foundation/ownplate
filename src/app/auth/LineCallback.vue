@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="t-h6 c-text-black-disabled align-center m-t-24">
+    <div class="t-h6 text-black text-opacity-40 align-center m-t-24">
       {{ $t("line.authenticating") }}
     </div>
     <b-loading :is-full-page="false" :active="isValidating"></b-loading>
@@ -10,7 +10,7 @@
 <script>
 // https://firebase.googleblog.com/2016/11/authenticate-your-firebase-users-with-line-login.html
 import { ownPlateConfig } from "@/config/project";
-import { db, firestore } from "@/plugins/firebase";
+import { db } from "@/plugins/firebase";
 import { lineGuard } from "@/lib/line/line";
 import { lineValidate } from "@/lib/firebase/functions";
 

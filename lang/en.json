@@ -19,6 +19,9 @@
     "smallPayment1": "If the order amount is 50 yen or less,",
     "smallPayment2": "you cannot use \"Pay Now\".",
     "smallPayment3": "Please use \"Pay Layter\"",
+    "orderPlacedAlert": "Your order is not confirmed until it is Accepted",
+    "storeDetails": "Store Details",
+    "adminQRCode": "Confirmation QR Code",
     "name": "Online ordering service",
     "shopInfo": {
       "takeout": "Online order",
@@ -439,7 +442,7 @@
     "searchRestaurant": "Search for restaurant",
     "moTagline": "FamilyMart's official layaway service that allows you to easily make purchases from your PC or smartphone.",
     "moDescription1": "You can order products that we do not normally carry.",
-    "moDescription2": "In-store pickup is available as soon as 4 days after the order date.​"
+    "moDescription2": "In-store pickup is available as soon as 3 days after the order date."
   },
   "order": {
     "allOrders": "All Orders",
@@ -691,6 +694,10 @@
       "after": "and register first before proceeding."
     },
     "pleaseSignIn": "Sign In (for Restaurant)",
+    "goToSignIn": "Go Sign In",
+    "mailIsExpired": "Email is expired",
+    "passwordUpdated": "Password was updated",
+    "reSend": "Reset passwpord",
     "registration": "Registration (for Restaurant)",
     "email": "Email",
     "password": "Password",
@@ -841,7 +848,8 @@
         "taken": "The email address is already in use by another account."
       },
       "password": {
-        "tooshort": "Password should be at least 6 characters",
+        "tooshort": "Password should be at least 8 characters",
+        "invalid": "Please enter alphabets and numbers for the password.",
         "mismatch": "Password mismatch"
       },
       "code": {

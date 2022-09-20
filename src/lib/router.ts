@@ -388,6 +388,11 @@ export const customRoutes: CustomRoute[] = [
     component: "auth/ResetPasswordPage.vue",
   },
   {
+    name: "admin-email-action",
+    path: "/admin/user/action",
+    component: "auth/Action.vue",
+  },
+  {
     path: "/s",
     component: "super/Index.vue",
   },

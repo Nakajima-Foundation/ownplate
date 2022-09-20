@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="t-h6 c-text-black-disabled align-center m-t-24">
+    <div class="t-h6 text-black text-opacity-40 align-center m-t-24">
       {{ $t("admin.smaregi.authenticating") }}
     </div>
     <b-loading :is-full-page="false" :active="isValidating"></b-loading>

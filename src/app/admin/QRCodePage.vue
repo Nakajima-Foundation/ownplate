@@ -37,7 +37,7 @@
         <div class="column">
           <div class="m-l-24 m-r-24">
             <!-- Menu Page -->
-            <div class="t-h6 c-text-black-disabled m-t-24 p-b-8">
+            <div class="t-h6 text-black text-opacity-40 m-t-24 p-b-8">
               {{ $t("admin.qrcode.restaurant") }}
             </div>
             <div
@@ -74,7 +74,7 @@
           <div class="m-l-24 m-r-24">
             <!-- Trace -->
             <div v-if="trace && regionalSetting.covid19trace">
-              <div class="t-h6 c-text-black-disabled m-t-24 p-b-8">
+              <div class="t-h6 text-black text-opacity-40 m-t-24 p-b-8">
                 {{ $t("trace.list") }}
               </div>
               <div

@@ -707,3 +707,10 @@ export const useNationalPhoneNumber = (shopInfo: RestaurantInfoData) => {
 export const notFoundResponse = {
   notFound: true,
 };
+
+export const smallImageErrorHandler = (e: any) => {
+  e.target.src = '/images/noimage_small.png';
+};
+export const imageErrorHandler = (e: any) => {
+  e.target.src = '/images/noimage.png';
+};

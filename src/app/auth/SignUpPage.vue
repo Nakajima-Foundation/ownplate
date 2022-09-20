@@ -197,8 +197,11 @@ export default {
       if (this.password !== this.confirmPassword) {
         errors.confirm = ["admin.error.password.mismatch"];
       }
-      if (this.password.length < 6) {
+      if (this.password.length < 8) {
         errors.password = ["admin.error.password.tooshort"];
+      }
+      if (!/[0-9]/.test(this.password) || !/[a-zA-Z]/.test(this.password)) {
+        errors.password = ["admin.error.password.invalid"];
       }
       if (!isEmail(this.email)) {
         errors.email = ["admin.error.email.invalid"];

@@ -158,7 +158,7 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
           prefectureId,
           address,
           name,
-          email,
+          email: email || "",
           uid: customerUid,
           orderId,
           restaurantId,

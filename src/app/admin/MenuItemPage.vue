@@ -245,7 +245,8 @@
                     class="rounded object-cover"
                     :src="itemPhoto"
                     style="width: 128px; height: 128px"
-                  />
+                    @error="smallImageErrorHandler"
+                    />
                 </div>
                 <div class="text-center text-xs mt-1">
                   {{ $t("editCommon.current") }}
@@ -607,6 +608,7 @@ import {
   roundPrice,
   taxRate,
   notFoundResponse,
+  smallImageErrorHandler,
 } from "@/utils/utils";
 
 import { uploadFile } from "@/lib/firebase/storage";
@@ -930,6 +932,8 @@ export default defineComponent({
       submitItem,
 
       daysOfWeek,
+
+      smallImageErrorHandler,
     };
   },
 });

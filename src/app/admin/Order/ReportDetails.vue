@@ -236,7 +236,7 @@ export default defineComponent({
                 userName: writeonFirstLine(
                   index,
                   key,
-                  order.name || ctx.root.$t("order.unspecified")
+                  props.isInMo ? "-" : (order.name || ctx.root.$t("order.unspecified"))
                 ),
                 "ec.name": writeonFirstLine(
                   index,
