@@ -12,8 +12,7 @@
       <div v-if="image" class="flex-shrink-0 mt-1">
         <img
           :src="image"
-          width="48"
-          height="48"
+          @error="_smallImageErrorHandler"
           class="w-12 h-12 rounded object-cover"
         />
       </div>
@@ -57,7 +56,7 @@
 
 <script>
 import { formatOption, optionPrice } from "@/utils/strings";
-import { roundPrice } from "@/utils/utils";
+import { roundPrice, smallImageErrorHandler } from "@/utils/utils";
 
 export default {
   props: {
@@ -115,6 +114,9 @@ export default {
     },
     displayOption(option) {
       return formatOption(option, (price) => this.$n(price, "currency"));
+    },
+    _smallImageErrorHandler(e) {
+      smallImageErrorHandler(e)
     },
   },
 };

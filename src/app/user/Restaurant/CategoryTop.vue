@@ -18,11 +18,7 @@
           >
             <img
               :src="moBaseUrl + '/images/category/' + cat.id + '.jpg'"
-              @error="
-                (e) => {
-                  e.target.src = '/apple-touch-icon.png';
-                }
-              "
+              @error="smallImageErrorHandler"
               class="inline-block align-middle rounded-lg"
             />
           </div>

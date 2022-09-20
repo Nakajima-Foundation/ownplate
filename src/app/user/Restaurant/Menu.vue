@@ -12,9 +12,8 @@
             <img
               @click.stop="openImage()"
               :src="smallimage"
-              width="96"
-              height="96"
               class="w-24 h-24 rounded object-cover"
+              @error="smallImageErrorHandler"
             />
           </div>
 
@@ -242,7 +241,9 @@
       :on-cancel="closeImage"
     >
       <div class="px-2 text-center" @click.stop="closeImage()">
-        <img :src="image" class="rounded-lg shadow-lg" />
+        <img :src="image" class="rounded-lg shadow-lg"
+             @error="imageErrorHandler"
+             />
         <div class="text-left text-white text-base font-bold mt-4">
           {{ title }}
         </div>
@@ -274,6 +275,8 @@ import {
   itemOptionCheckbox2options,
   scrollToElementById,
   useIsInMo,
+  smallImageErrorHandler,
+  imageErrorHandler,
 } from "@/utils/utils";
 
 // menu UI algorithm
@@ -530,6 +533,9 @@ export default defineComponent({
       pullQuantities,
       pushQuantities,
       pushItem,
+
+      smallImageErrorHandler,
+      imageErrorHandler,
     };
   },
 });
