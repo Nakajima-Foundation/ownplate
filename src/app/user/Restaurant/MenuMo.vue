@@ -5,7 +5,7 @@
       class="bg-white rounded-lg shadow"
       :class="totalQuantity > 0 ? 'border-2 border-op-teal' : ''"
     >
-      <div @click="toggleMenuFlag()" class="flow-root cursor-pointer">
+      <div class="flow-root cursor-pointer">
         <div class="p-4 float-right">
           <!-- Image -->
           <div v-if="smallimage" class="pb-2">
@@ -43,7 +43,9 @@
 
         <div class="p-4">
           <!-- Item Name -->
-          <a :id="`${item.id}`">
+          <a :id="`${item.id}`"
+             @click.stop="openImage()"
+             >
             <div class="text-xl font-bold">{{ title }}</div>
           </a>
           <!-- Price -->
@@ -63,172 +65,13 @@
               <template v-else> {{ descriptionOneLine }}... </template>
             </template>
           </div>
+          <div class="flex-1 text-center text-3xl text-op-teal" v-if="quantities[0] > 0">
+            {{ quantities[0] }}
+          </div>
 
           <!-- Allergens -->
           <div v-if="allergens.length > 0" class="mt-2 text-xs font-bold">
             {{ allergensDescription }}
-          </div>
-        </div>
-      </div>
-      <div class="p-4" v-if="menuPickupData.hasExceptData">
-        <div class="bg-black bg-opacity-5 rounded-lg p-4">
-          <div v-if="menuPickupData.hasExceptDay">
-            &#8251;
-            <span
-              v-for="(day, k) in menuPickupData.menuAvailableDays"
-              :key="k"
-              class="font-bold"
-              >{{ $t("week.short." + daysOfWeek[day])
-              }}<span v-if="k !== menuPickupData.menuAvailableDays.length - 1"
-                >・</span
-              >
-            </span>
-            {{ $t("sitemenu.limitedSale") }}
-          </div>
-          <div v-if="menuPickupData.hasExceptHour">
-            &#8251; {{ $t("sitemenu.unavailableTime") }}:
-            <span class="font-bold"
-              >{{ num2time(menuPickupData.exceptHour.start) }} ~
-              {{ num2time(menuPickupData.exceptHour.end) }}</span
-            >
-          </div>
-        </div>
-      </div>
-
-      <!-- Item Order Details -->
-      <div
-        v-if="openMenuFlag"
-        class="border-t-2 border-solid border-black border-opacity-10 mt-0 mx-4 pb-4"
-      >
-        <!-- Share Button -->
-        <div class="text-center mt-2">
-          <share-popup
-            :shopInfo="shopInfo"
-            :mode="mode"
-            :suffix="urlSuffix"
-            :isMenu="true"
-          ></share-popup>
-        </div>
-
-        <!-- Item Options -->
-        <template v-for="(value, quantityKey) in quantities">
-          <div v-if="hasOptions">
-            <div class="text-xs">
-              {{ $t("sitemenu.options") }}
-            </div>
-            <div class="grid grid-cols-1 space-y-2 mt-2">
-              <div
-                v-for="(option, index) in options"
-                :key="index"
-                class="bg-black bg-opacity-5 rounded-lg p-4"
-              >
-                <div v-if="option.length === 1" class="field">
-                  <b-checkbox v-model="selectedOptions[quantityKey][index]"
-                    ><div class="text-sm font-bold">
-                      {{ displayOption(option[0], shopInfo, item) }}
-                    </div></b-checkbox
-                  >
-                </div>
-                <div v-else class="field">
-                  <b-radio
-                    v-for="(choice, index2) in option"
-                    v-model="selectedOptions[quantityKey][index]"
-                    :name="`${item.id}_${quantityKey}_${index}`"
-                    :native-value="index2"
-                    :key="`${quantityKey}_${index2}`"
-                    ><div class="text-sm font-bold">
-                      {{ displayOption(choice, shopInfo, item) }}
-                    </div></b-radio
-                  >
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Item Quantity / Sold Out -->
-          <div class="mt-4">
-            <div v-if="isSoldOut">
-              <div
-                class="flex justify-center items-center h-9 rounded-full bg-red-700 bg-opacity-10"
-              >
-                <div class="text-sm font-bold text-red-700">
-                  {{ $t("sitemenu.soldOut") }}
-                </div>
-              </div>
-            </div>
-
-            <div v-else>
-              <div>
-                <div class="flex">
-                  <div class="text-xs">
-                    {{ $t("sitemenu.quantity") }}
-                  </div>
-                  <div
-                    v-if="prices[quantityKey] > 0"
-                    class="flex-1 text-right text-xs"
-                  >
-                    {{ $t("sitemenu.subTotal")
-                    }}<Price
-                      :shopInfo="shopInfo"
-                      :menu="{ price: prices[quantityKey], tax: item.tax }"
-                    />
-                  </div>
-                </div>
-                <div></div>
-              </div>
-
-              <div class="mt-2 flex items-center">
-                <div>
-                  <a
-                    @click="pullQuantities(quantityKey)"
-                    class="inline-flex justify-center items-center h-9 w-24 rounded-full bg-red-700 bg-opacity-10 removeCart"
-                    :disabled="quantities[quantityKey] === 0"
-                    :data-cart-product="item.id"
-                  >
-                    <i class="material-icons text-lg text-red-700">remove</i>
-                  </a>
-                </div>
-                <div class="flex-1 text-center text-3xl text-op-teal">
-                  {{ quantities[quantityKey] }}
-                </div>
-                <div>
-                  <a
-                    @click="pushQuantities(quantityKey)"
-                    class="inline-flex justify-center items-center h-9 w-24 rounded-full bg-op-teal bg-opacity-10 cardAdd"
-                    :data-cart-product="item.id"
-                  >
-                    <i class="material-icons text-lg text-op-teal">add</i>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div
-            class="border-t-2 border-solid border-black border-opacity-10 mt-4 pb-4"
-            v-if="showMoreOption"
-          ></div>
-        </template>
-
-        <!-- Another Order with Different Options -->
-        <div>
-          <!-- # Enable this section If "hasOptions" and more than one order in the default section above. -->
-          <!-- # Show only "Add Another Order Button" first, then add "Another Order" section with the item quantities +1 when the button tapped.  -->
-          <!-- # Once user removed the item to quantities 0, the "Another Order" section will be removed. -->
-
-          <!-- Add Another Order Button -->
-          <div v-if="showMoreOption">
-            <div class="text-center">
-              <a
-                @click="pushItem"
-                class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5"
-              >
-                <i class="material-icons text-lg text-op-teal mr-2">add</i>
-                <span class="text-sm font-bold text-op-teal">{{
-                  $t("sitemenu.addDifferentOptionsItem")
-                }}</span>
-              </a>
-            </div>
           </div>
         </div>
       </div>
@@ -241,7 +84,7 @@
       scroll="keep"
       :on-cancel="closeImage"
     >
-      <div class="px-2 text-center" @click.stop="closeImage()">
+      <div class="px-2 text-center bg-white">
         <img :src="image" class="rounded-lg shadow-lg" />
         <div class="text-left text-white text-base font-bold mt-4">
           {{ title }}
@@ -249,6 +92,51 @@
         <div class="text-left text-white text-sm font-bold">
           <Price :shopInfo="shopInfo" :menu="item" />
         </div>
+
+              <div>
+                <div class="flex">
+                  <div class="text-xs">
+                    {{ $t("sitemenu.quantity") }}
+                  </div>
+                  <div
+                    v-if="prices[0] > 0"
+                    class="flex-1 text-right text-xs"
+                  >
+                    {{ $t("sitemenu.subTotal")
+                    }}<Price
+                      :shopInfo="shopInfo"
+                      :menu="{ price: prices[0], tax: item.tax }"
+                    />
+                  </div>
+                </div>
+                <div></div>
+              </div>
+
+              <div class="mt-2 flex items-center">
+                <div>
+                  <a
+                    @click="pullQuantities(0)"
+                    class="inline-flex justify-center items-center h-9 w-24 rounded-full bg-red-700 bg-opacity-10 removeCart"
+                    :disabled="quantities[0] === 0"
+                    :data-cart-product="item.id"
+                  >
+                    <i class="material-icons text-lg text-red-700">remove</i>
+                  </a>
+                </div>
+                <div class="flex-1 text-center text-3xl text-op-teal">
+                  {{ quantities[0] }}
+                </div>
+                <div>
+                  <a
+                    @click="pushQuantities(0)"
+                    class="inline-flex justify-center items-center h-9 w-24 rounded-full bg-op-teal bg-opacity-10 cardAdd"
+                    :data-cart-product="item.id"
+                  >
+                    <i class="material-icons text-lg text-op-teal">add</i>
+                  </a>
+                </div>
+              </div>
+
       </div>
     </b-modal>
   </div>
