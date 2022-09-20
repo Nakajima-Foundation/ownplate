@@ -205,7 +205,7 @@
                         v-if="item._dataType === 'menu'"
                         :key="[subCategoryKey, item.id].join('_')"
                         >
-                        <Menu
+                        <MenuMo
                           :key="[subCategoryKey, 'item', item.id].join('_')"
                           :item="item"
                           :menuPickupData="menuPickupData[item.id] || {}"
@@ -221,7 +221,7 @@
                           :mode="mode"
                           :moSoldOut="false"
                           @didOrderdChange="didOrderdChange($event)"
-                          ></Menu>
+                          ></MenuMo>
                       </div>
                     </template>
                   </div>
@@ -302,6 +302,7 @@ import {
 } from "@vue/composition-api";
 
 import Menu from "@/app/user/Restaurant/Menu.vue";
+import MenuMo from "@/app/user/Restaurant/MenuMo.vue";
 import PhoneLogin from "@/app/auth/PhoneLogin.vue";
 import ShopHeader from "@/app/user/Restaurant/ShopHeader.vue";
 import SharePopup from "@/app/user/Restaurant/SharePopup.vue";
@@ -371,6 +372,7 @@ export default defineComponent({
 
   components: {
     Menu,
+    MenuMo,
     PhoneLogin,
     ShopHeader,
     SharePopup,
