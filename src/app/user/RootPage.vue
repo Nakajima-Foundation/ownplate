@@ -58,28 +58,54 @@
 </template>
 
 <script>
+import {
+  defineComponent,
+  onMounted,
+  ref,
+} from "@vue/composition-api";
+
 import { db } from "@/plugins/firebase";
 import { RestaurantHeader } from "@/config/header";
 import AreaItem from "@/app/user/Restaurants/AreaItem";
 import { ownPlateConfig } from "@/config/project";
 
-export default {
+export default defineComponent({
   components: {
     AreaItem,
   },
-  data() {
+  metaInfo() {
+    const title = [
+      this.$t("pageTitle.restaurantRoot"),
+      ownPlateConfig.siteName,
+    ].join(" / ");
+    return Object.assign(RestaurantHeader, { title });
+  },
+  setup(_, ctx) {
+    const likes = ref([]);
+    onMounted(async () => {
+      if (ctx.root.isUser) {
+        const snapshot = await db
+              .collection(`users/${ctx.root.user.uid}/reviews`)
+              .orderBy("timeLiked", "desc")
+              .limit(100)
+              .get();
+        likes.value = (snapshot.docs || [])
+          .map((doc) => {
+            return doc.data();
+          })
+          .filter((doc) => {
+            return !!doc.likes;
+          });
+      }
+    });
+    
     return {
-      // # Need to rewrite for Areas instead of Restaurants.
-      region: ownPlateConfig.region,
-      likes: [],
-      restaurants: [],
-      areas:
-        ownPlateConfig.region == "JP"
-          ? [
-              {
-                name: "hokkaido",
-                items: [{ name: "北海道", id: 0 }],
-              },
+      likes,
+      areas:  [
+        {
+          name: "hokkaido",
+          items: [{ name: "北海道", id: 0 }],
+        },
               {
                 name: "kanto",
                 items: [
@@ -138,37 +164,8 @@ export default {
                   { name: "沖縄県", id: 46 },
                 ],
               },
-            ]
-          : [
-              {
-                name: "USA",
-                items: [{ name: "Washington", id: 46 }],
-              },
-            ],
+      ],
     };
   },
-  metaInfo() {
-    const title = [
-      this.$t("pageTitle.restaurantRoot"),
-      ownPlateConfig.siteName,
-    ].join(" / ");
-    return Object.assign(RestaurantHeader, { title });
-  },
-  async mounted() {
-    if (this.isUser) {
-      const snapshot = await db
-        .collection(`users/${this.user.uid}/reviews`)
-        .orderBy("timeLiked", "desc")
-        .limit(100)
-        .get();
-      this.likes = (snapshot.docs || [])
-        .map((doc) => {
-          return doc.data();
-        })
-        .filter((doc) => {
-          return !!doc.likes;
-        });
-    }
-  },
-};
+});
 </script>
