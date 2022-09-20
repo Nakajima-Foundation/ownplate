@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-op-yellow p-4">
+  <div class="bg-ownplate-yellow p-4">
     <div class="text-center text-2xl font-bold text-white pb-4">
       {{ $t("admin.welcomeMessage") }}
     </div>

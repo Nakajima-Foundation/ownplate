@@ -14,34 +14,30 @@ div,
 span {
   word-break: break-word;
 }
-.light {
-  @extend .bg-form;
-  border: none;
-}
 .button[disabled] {
   background: #ddd;
   opacity: 0.5;
   > span {
-    @extend .c-text-black-disabled;
+    color: rgba(0, 0, 0, 0.38);
   }
 }
 
 // OwnPlate Colors
-$op-colors: (
-  ownplate-yellow: #fbc02d,
-  op-yellow: #fbc02d,
-  ownplate-white: #ffffff,
-  ownplate-black: #000000,
-  background: #f4f4f5,
-  surface: #ffffff,
-  dialog-overlay: rgba(0, 0, 0, 0.5),
-  primary: #0097a7,
-  op-teal: #0097a7,
-  onprimary: #ffffff,
-  text-black-medium: rgba(0, 0, 0, 0.6),
-  text-black-disabled: rgba(0, 0, 0, 0.38),
-  form: rgba(0, 0, 0, 0.05),
-);
+.bg-ownplate-yellow {
+  background: #fbc02d;
+}
+.c-primary {
+  color: #0097a7;
+}
+.bg-op-teal {
+  background-color: #0097a7;
+}
+.text-op-teal {
+  color: #0097a7;
+}
+.border-op-teal {
+  border-color: #0097a7;
+}
 
 // Reset Buefy and Bulma
 .columns.is-gapless:not(:last-child) {
@@ -77,16 +73,8 @@ $op-colors: (
 }
 
 .t-h6 {
-  // font-weight: 500;
   font-weight: bold;
   font-size: 20px;
-  line-height: 24px;
-  letter-spacing: 0.15px;
-}
-.t-subtitle1 {
-  // font-weight: normal;
-  font-weight: bold;
-  font-size: 16px;
   line-height: 24px;
   letter-spacing: 0.15px;
 }
@@ -96,89 +84,17 @@ $op-colors: (
   line-height: 16px;
   letter-spacing: 0.1px;
 }
-.align-center {
-  text-align: center;
-}
 
 html {
-  background-color: map-get($op-colors, background);
+  background-color: #f4f4f5;
 }
 
-// Text and Background Colors
-@each $name, $value in $op-colors {
-  // Text Colors
-  .c-#{$name} {
-    color: $value;
-  }
-  .text-#{$name} {
-    color: $value;
-  }
-  // Background Colors
-  .bg-#{$name} {
-    background-color: $value;
-  }
-
-  // Border Colors
-  .border-#{$name} {
-    border-color: $value;
-  }
+.material-icons.s-48 {
+  font-size: 48px;
 }
-
-// Drop Shadow Styles
-.d-medium {
-  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1);
+.material-icons.s-18 {
+  font-size: 18px;
 }
-.d-low {
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-// OwnPlate Sizes
-$sizes: (
-  0,
-  4,
-  8,
-  16,
-  18,
-  24,
-  32,
-  36,
-  48,
-  64,
-  80,
-  96,
-  128,
-  160,
-  192,
-  224,
-  256,
-  288,
-  440
-);
-
-// Margin and Padding Sizes
-$sides: (top, bottom, left, right);
-@each $space-size in $sizes {
-  @each $side in $sides {
-    // Margin Sizes
-    .m-#{str-slice($side, 0, 1)}-#{$space-size} {
-      margin-#{$side}: #{$space-size}px;
-    }
-    // Padding Sizes
-    .p-#{str-slice($side, 0, 1)}-#{$space-size} {
-      padding-#{$side}: #{$space-size}px;
-    }
-  }
-}
-
-// Icon Sizes
-@each $icon-size in $sizes {
-  .material-icons.s-#{$icon-size} {
-    font-size: #{$icon-size}px;
-  }
-}
-// s-18
-// s-48
-// s-64
 
 // Push footer down to the bottom
 body,
@@ -191,16 +107,6 @@ body,
 .main {
   flex: 1;
 }
-.contents {
-  max-width: 1080px;
-  margin: auto;
-}
-
-// Cover Photo
-// .cover {
-//   object-fit: cover;
-// }
-
 // Flex Box
 .cols {
   display: flex;
@@ -208,11 +114,6 @@ body,
 .flex-1 {
   flex: 1;
 }
-
-.touchable {
-  cursor: pointer;
-}
-
 
 // Reset <b-button> style
 .button.b-reset {
@@ -259,113 +160,50 @@ body,
 }
 
 .op-button-text {
-  @extend .op-button;
-  @extend .p-l-8;
-  @extend .p-r-8;
+  padding-right: 8px;
+  padding-left: 8px;
   .material-icons {
-    @extend .s-18;
-    @extend .m-r-8;
+    font-size: 18px;
+    margin-right: 8px;
   }
   span {
-    @extend .t-button;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 16px;
+    letter-spacing: 0.1px;
   }
-  @extend .c-primary;
+  color: #0097a7;
 }
 
 .op-button-small {
-  @extend .op-button;
-  // @extend .r-48;
   border-radius: 9999px;
-  @extend .p-l-24;
-  @extend .p-r-24;
+  padding-right: 24px;
+  padding-left: 24px;
   min-width: 128px;
-  // @extend .h-48;
   height: 48px;
-  @extend .t-subtitle1;
-  &.primary {
-    @extend .bg-primary;
-    @extend .c-onprimary;
-    @extend .d-low;
-  }
-  &.secondary {
-    border: 2px solid map-get($op-colors, primary);
-    background: none;
-    @extend .c-primary;
-    &:hover,
-    &:active,
-    &:focus {
-      border: 2px solid map-get($op-colors, primary);
-    }
-  }
-  &.tertiary {
-    @extend .bg-form;
-    @extend .c-text-black-medium;
-  }
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.15px;
 }
 
-// OwnPlate Dialog
+// OwnPlate Dialog for b-model
 .modal-background {
-  background-color: map-get($op-colors, dialog-overlay);
+  background-color: rgba(0, 0, 0, 0.5);
 }
 .modal .animation-content {
   margin: 0;
 }
-.op-dialog {
-  // @extend .r-8;
-  border-radius: 0.5rem;
-  @extend .m-t-24;
-  @extend .m-b-24;
-  @extend .m-l-8;
-  @extend .m-r-8;
-  @extend .bg-surface;
-  @extend .d-medium;
-}
-.modal-content {
-  max-height: calc(100vh - 48px);
-}
-// @media screen and (max-width: 768px) {
-//   .modal-content {
-//     max-height: calc(100vh - 64px);
-//   }
-// }
-
 // OwnPlate Side Bar
 .b-sidebar .sidebar-background {
-  background-color: map-get($op-colors, dialog-overlay);
+  background-color: rgba(0, 0, 0, 0.5);
 }
 .b-sidebar .sidebar-content.is-light {
-  @extend .bg-surface;
+  background: #ffffff;
 }
 .b-sidebar .sidebar-content {
-  @extend .d-medium;
-  // @extend .w-288;
+  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1);
   width: 288px;
-}
-
-// For Small Screen like iPhone SE
-@media only screen and (max-device-width: 320px) {
-  .m-l-24,
-  .m-l-16 {
-    margin-left: 8px;
-  }
-  .m-r-24,
-  .m-r-16 {
-    margin-right: 8px;
-  }
-  .p-l-24,
-  .p-l-16 {
-    padding-left: 8px;
-  }
-  .p-r-24,
-  .p-r-16 {
-    padding-right: 8px;
-  }
-  // .modal-content {
-  //   max-height: calc(100vh - 128px);
-  // }
-  #signInButton {
-    transform: scale(0.9);
-  }
 }
 
 // Overwrites for Tailwind CSS

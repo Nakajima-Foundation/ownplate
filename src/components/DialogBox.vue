@@ -1,24 +1,24 @@
 <template>
   <div v-if="dialog">
     <b-modal :active.sync="isVisible" :width="488">
-      <div class="op-dialog p-t-24 p-l-24 p-r-24 p-b-24">
-        <div class="align-center">
+      <div class="op-dialog pt-6 pl-6 pr-6 pb-6 mt-6 mb-6 ml-2 mr-2 bg-white rounded-lg shadow-lg">
+        <div class="text-center">
           <i class="material-icons s-48 text-red-700">warning</i>
         </div>
 
         <!-- Error Message -->
         <div v-if="error">
           <!-- Message -->
-          <div class="align-center m-t-16">
-            <div class="t-h6 c-text-black-medium">
+          <div class="text-center mt-4">
+            <div class="t-h6 text-black opacity-60">
               {{ $t("errorPage.popup.title") }}
             </div>
-            <div class="m-t-8">{{ errorMessage }}</div>
-            <div class="m-t-8">{{ $t(errorMessage2) }}</div>
+            <div class="mt-2">{{ errorMessage }}</div>
+            <div class="mt-2">{{ $t(errorMessage2) }}</div>
           </div>
           <!-- Buttons -->
-          <div class="m-t-24 align-center">
-            <div class="op-button-small tertiary" @click="close">
+          <div class="mt-6 text-center">
+            <div class="op-button-small op-button bg-black bg-opacity-5 text-black opacity-60" @click="close">
               {{ $t("menu.close") }}
             </div>
           </div>
@@ -27,19 +27,19 @@
         <!-- Alert Message -->
         <div v-if="alert">
           <!-- Message -->
-          <div class="align-center m-t-16" v-if="alert.title">
-            <div class="t-h6 c-text-black-medium">{{ $t(alert.title) }}</div>
+          <div class="text-center mt-4" v-if="alert.title">
+            <div class="t-h6 text-black opacity-60">{{ $t(alert.title) }}</div>
           </div>
-          <div class="align-center m-t-16">
-            <div class="t-h6 c-text-black-medium">{{ $t(alert.code) }}</div>
+          <div class="text-center mt-4">
+            <div class="t-h6 text-black opacity-60">{{ $t(alert.code) }}</div>
           </div>
           <!-- Buttons -->
-          <div class="m-t-24 align-center">
-            <div class="op-button-small tertiary m-r-16" @click="close">
+          <div class="mt-6 text-center">
+            <div class="op-button-small op-button bg-black bg-opacity-5 text-black opacity-60  mr-4" @click="close">
               {{ $t("menu.no") }}
             </div>
             <div
-              class="op-button-small bg-red-700 text-white"
+              class="op-button-small op-button bg-red-700 text-white"
               @click="handleYes"
             >
               {{ $t("menu.yes") }}

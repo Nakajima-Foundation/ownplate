@@ -35,16 +35,16 @@
 
         <!-- Left Column -->
         <div class="column">
-          <div class="m-l-24 m-r-24">
+          <div class="ml-6 mr-6">
             <!-- Menu Page -->
-            <div class="t-h6 text-black text-opacity-40 m-t-24 p-b-8">
+            <div class="t-h6 text-black text-opacity-40 mt-6 pb-2">
               {{ $t("admin.qrcode.restaurant") }}
             </div>
             <div
-              class="bg-surface rounded-lg d-low p-l-24 p-r-24 p-t-24 p-b-24"
+              class="bg-white rounded-lg shadow-md pl-6 pr-6 pt-6 pb-6"
             >
               <!-- QR Code -->
-              <div class="align-center" @click="download">
+              <div class="text-center" @click="download">
                 <qrcode
                   :value="urlMenu"
                   :options="{ width: 160 }"
@@ -52,16 +52,16 @@
                 ></qrcode>
               </div>
               <!-- Link -->
-              <div class="align-center">
+              <div class="text-center">
                 <a :href="urlMenu" target="_blank">
-                  <div class="op-button-text t-button">
+                  <div class="op-button-text op-button t-button">
                     {{ shopInfo.restaurantName }}
                   </div>
                 </a>
               </div>
               <!-- Download -->
-              <div class="align-center" @click="download">
-                <div class="op-button-text t-button">
+              <div class="text-center" @click="download">
+                <div class="op-button-text op-button t-button">
                   {{ $t("admin.qrcode.download") }}
                 </div>
               </div>
@@ -71,28 +71,28 @@
 
         <!-- Right Column -->
         <div class="column">
-          <div class="m-l-24 m-r-24">
+          <div class="ml-6 mr-6">
             <!-- Trace -->
             <div v-if="trace && regionalSetting.covid19trace">
-              <div class="t-h6 text-black text-opacity-40 m-t-24 p-b-8">
+              <div class="t-h6 text-black text-opacity-40 mt-6 pb-2">
                 {{ $t("trace.list") }}
               </div>
               <div
-                class="bg-surface rounded-lg d-low p-l-24 p-r-24 p-t-24 p-b-24"
+                class="bg-white rounded-lg shadow-md pl-6 pr-6 pt-6 pb-6"
               >
                 <!-- Enter -->
                 <div>
                   <!-- QR Code -->
-                  <div class="align-center">
+                  <div class="text-center">
                     <qrcode
                       :value="urlEnter"
                       :options="{ width: 160 }"
                     ></qrcode>
                   </div>
                   <!-- Link -->
-                  <div class="align-center">
+                  <div class="text-center">
                     <a :href="urlEnter">
-                      <div class="op-button-text t-button">
+                      <div class="op-button-text op-button t-button">
                         {{ $t("admin.qrcode.enter") }}
                       </div>
                     </a>
@@ -100,18 +100,18 @@
                 </div>
 
                 <!-- Leave -->
-                <div class="m-t-48">
+                <div class="mt-12">
                   <!-- QR Code -->
-                  <div class="align-center">
+                  <div class="text-center">
                     <qrcode
                       :value="urlLeave"
                       :options="{ width: 160 }"
                     ></qrcode>
                   </div>
                   <!-- Link -->
-                  <div class="align-center">
+                  <div class="text-center">
                     <a :href="urlLeave">
-                      <div class="op-button-text t-button">
+                      <div class="op-button-text op-button t-button">
                         {{ $t("admin.qrcode.leave") }}
                       </div>
                     </a>
@@ -119,11 +119,11 @@
                 </div>
 
                 <!-- Trace List -->
-                <div class="align-center m-t-24">
+                <div class="text-center mt-6">
                   <router-link
                     :to="`/admin/restaurants/${restaurantId()}/traces`"
                   >
-                    <div class="op-button-small tertiary">
+                    <div class="op-button-small op-button bg-black bg-opacity-5 text-black opacity-60">
                       {{ $t("trace.viewList") }}
                     </div>
                   </router-link>

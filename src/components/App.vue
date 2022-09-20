@@ -11,7 +11,7 @@
 
     <!-- Main -->
     <div class="main">
-      <div class="contents">
+      <div>
         <div
           v-if="underConstruction"
           class="bg-yellow-200 text-center p-2 font-bold text-red-500"

@@ -8,7 +8,7 @@
     <div v-else>
       <div v-if="user">
         <h1>{{ $t("trace.thankyou") }}</h1>
-        <div class="m-t-16">
+        <div class="mt-4">
           <div v-for="record in records" :key="record.id">
             <span>{{ record.timeCreated.toLocaleString() }}</span>
             <span>{{ $t("trace." + record.event) }}</span>

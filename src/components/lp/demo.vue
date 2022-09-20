@@ -18,7 +18,7 @@
             frameborder="0"
             allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
             allowfullscreen
-            class="rounded-lg w-64 touchable inline-block"
+            class="rounded-lg w-64 cursor-pointer inline-block"
           ></iframe>
         </div>
         <div class="inline-flex items-center mt-2">
@@ -36,7 +36,7 @@
             frameborder="0"
             allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
             allowfullscreen
-            class="rounded-lg w-64 touchable inline-block"
+            class="rounded-lg w-64 cursor-pointer inline-block"
           ></iframe>
         </div>
         <div class="inline-flex items-center mt-2">
@@ -54,7 +54,7 @@
             frameborder="0"
             allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
             allowfullscreen
-            class="rounded-lg w-64 touchable inline-block"
+            class="rounded-lg w-64 cursor-pointer inline-block"
           ></iframe>
         </div>
         <div class="inline-flex items-center mt-2">

@@ -3,13 +3,13 @@
     <div class="column is-narrow w-6"></div>
     <!-- Center Column -->
     <div class="column">
-      <div class="align-center">
+      <div class="text-center">
         <b-button
-          class="b-reset h-9 rounded-full bg-form"
+          class="b-reset h-9 rounded-full bg-black bg-opacity-5"
           tag="router-link"
           to=""
         >
-          <span class="p-l-16 p-r-16">
+          <span class="pl-4 pr-4">
             <span class="c-primary t-button">{{ $t("lp.moreDetails") }}</span>
           </span>
         </b-button>

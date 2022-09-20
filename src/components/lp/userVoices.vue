@@ -40,7 +40,7 @@
           <div>
             <img
               src="/LP-UserVoice-Video-1.jpg"
-              class="rounded-lg w-64 touchable"
+              class="rounded-lg w-64 cursor-pointer"
             />
           </div>
           <div class="inline-flex items-center mt-2">
@@ -124,7 +124,7 @@
     <div class="text-center mt-4">
       <a href="/l/tips" target="_blank">
         <div
-          class="h-16 rounded-full bg-op-yellow inline-flex items-center px-8 shadow"
+          class="h-16 rounded-full bg-ownplate-yellow inline-flex items-center px-8 shadow"
         >
           <span class="text-black opacity-60 text-xl font-bold">{{
             $t("lp.moreDetails")

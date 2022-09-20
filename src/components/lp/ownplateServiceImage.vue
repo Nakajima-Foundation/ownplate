@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="bg-op-yellow">
+    <div class="bg-ownplate-yellow">
       <!-- Faces and Foods -->
       <div>
         <img :src="coverMobile" class="w-full lg:hidden" />

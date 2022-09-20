@@ -6,7 +6,7 @@
       <div class="column is-narrow w-6"></div>
       <!-- Center Column -->
       <div class="column">
-        <div class="m-l-24 m-r-24">
+        <div class="ml-6 mr-6">
           <!-- Nav Bar -->
           <div class="level">
             <!-- Back Button and Restaurant Profile -->
@@ -25,10 +25,10 @@
       <div class="column is-narrow w-6"></div>
       <!-- Center Column -->
       <div class="column">
-        <div class="m-l-24 m-r-16 m-t-24">
+        <div class="ml-6 mr-4 mt-6">
           <back-button :url="backUrl" />
           <h2>All Orders</h2>
-          <b-select v-model="orderState" class="m-t-24">
+          <b-select v-model="orderState" class="mt-6">
             <option
               v-for="status in orderStatus"
               :value="status.index"
@@ -39,7 +39,7 @@
           </b-select>
           <!-- button -->
           <div>
-            <div class="inline-flex m-t-24">
+            <div class="inline-flex mt-6">
               <div class="flex">
                 <b-select v-model="monthValue">
                   <option v-for="(month, k) in months" :value="month" :key="k">
@@ -70,7 +70,7 @@
             </div>
           </div>
           <div>
-            <b-button @click="nextLoad" class="rounded-full m-t-16"
+            <b-button @click="nextLoad" class="rounded-full mt-4"
               >more</b-button
             >
           </div>
@@ -81,9 +81,9 @@
             :fieldNames="fieldNames"
             :fileName="fileName"
           >
-            <b-button class="h-9 rounded-full m-t-16">
-              <span class="p-l-16 p-r-16">
-                <i class="material-icons c-primary s-18 m-r-8">save_alt</i>
+            <b-button class="h-9 rounded-full mt-4">
+              <span class="pl-4 pr-4">
+                <i class="material-icons c-primary s-18 mr-2">save_alt</i>
                 <span class="c-primary t-button">{{
                   $t("admin.report.download-csv")
                 }}</span>
