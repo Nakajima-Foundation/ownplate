@@ -20,6 +20,7 @@
           @selected="orderSelected($event)"
           :order="order"
           :isSuperView="true"
+          :isInMo="isInMo"
         />
       </template>
       <div v-else>
@@ -177,6 +178,8 @@ export default defineComponent({
       basePath,
 
       loading,
+
+      isInMo,
     };
   },
 });
