@@ -51,6 +51,7 @@
     "@babel/preset-env": "^7.16.11",
     "@babel/runtime": "^7.17.8",
     "@google-cloud/firestore": "^5.0.2",
+    "@tailwindcss/line-clamp": "^0.4.2",
     "@types/cookie": "^0.4.1",
     "@types/google-libphonenumber": "^7.4.23",
     "@types/gtag.js": "^0.0.10",

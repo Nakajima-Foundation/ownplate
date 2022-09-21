@@ -5,8 +5,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'op-teal': '#0097a7',
-        'ownplate-yellow': '#fbc02d',
+        "op-teal": "#0097a7",
+        "ownplate-yellow": "#fbc02d",
       },
     },
     screens: {
@@ -15,5 +15,5 @@ module.exports = {
     },
   },
   variants: {},
-  plugins: [],
+  plugins: [require("@tailwindcss/line-clamp")],
 };
