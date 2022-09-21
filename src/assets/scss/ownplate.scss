@@ -20,32 +20,6 @@
   letter-spacing: 0.1px;
 }
 
-.material-icons.s-48 {
-  font-size: 48px;
-}
-.material-icons.s-18 {
-  font-size: 18px;
-}
-
-// Push footer down to the bottom
-body,
-#app,
-.wrapper {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-.main {
-  flex: 1;
-}
-// Flex Box
-.cols {
-  display: flex;
-}
-.flex-1 {
-  flex: 1;
-}
-
 // Reset <b-button> style
 .button.b-reset {
   padding: 0;
