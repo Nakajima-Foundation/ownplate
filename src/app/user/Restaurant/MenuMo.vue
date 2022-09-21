@@ -24,8 +24,7 @@
           </a>
           <!-- Price -->
           <div class="mt-1 text-sm sm:text-base text-black font-bold">
-            <!--ToDo 価格のみ表示するコンポーネントに変更-->
-            <Price :shopInfo="shopInfo" :menu="item" />
+            {{ $tc("tax.price", $n(price, "currency")) }}
           </div>
           <div class="text-xs sm:text-sm text-black">
             {{ $t("tax.include") }}
@@ -161,6 +160,7 @@ import {
   useIsInMo,
   smallImageErrorHandler,
   imageErrorHandler,
+  priceWithTax,
 } from "@/utils/utils";
 
 // menu UI algorithm
@@ -295,7 +295,10 @@ export default defineComponent({
     const descriptionOneLine = computed(() => {
       return (props.item.itemDescription || "").split(/\r?\n/)[0];
     });
-
+    const price = computed(() => {
+      return priceWithTax(props.shopInfo, props.item);
+    });
+      
     watch(openMenuFlag, () => {
       if (openMenuFlag.value) {
         analyticsUtil.sendViewItem(props.item, props.shopInfo, restaurantId);
@@ -420,6 +423,8 @@ export default defineComponent({
 
       smallImageErrorHandler,
       imageErrorHandler,
+
+      price,
     };
   },
 });

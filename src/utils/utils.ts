@@ -282,6 +282,21 @@ const displayOption = (option, shopInfo, item) => {
 
 */
 
+export const priceWithTax = (shopInfo: RestaurantInfoData, menu: MenuData) => {
+  return Math.round(
+    (() => {
+      if (shopInfo.inclusiveTax) {
+        return menu.price;
+      }
+      if (menu.tax === "alcohol") {
+        return (1 + shopInfo.alcoholTax * 0.01) * menu.price;
+      }
+      return (1 + shopInfo.foodTax * 0.01) * menu.price;
+    })()
+  );
+};
+
+
 export const getPartner = (shopOwner: ShopOwnerData) => {
   return ((shopOwner || {}).partners || []).map((p: string) => {
     const match = partners.find((a: PartnerData) => {

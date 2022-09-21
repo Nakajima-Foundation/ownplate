@@ -14,6 +14,10 @@ import {
   computed,
 } from "@vue/composition-api";
 
+import {
+  priceWithTax,
+} from "@/utils/utils";
+
 export default defineComponent({
   name: "Price",
   props: {
@@ -28,18 +32,7 @@ export default defineComponent({
   },
   setup(props, ctx) {
     const price = computed(() => {
-      return Math.round(
-        ((menu, shopInfo) => {
-          if (!shopInfo.inclusiveTax) {
-            if (props.menu.tax === "alcohol") {
-              return (1 + shopInfo.alcoholTax * 0.01) * menu.price;
-            }
-              return (1 + shopInfo.foodTax * 0.01) * menu.price;
-          } else {
-            return menu.price;
-          }
-        })(props.menu, props.shopInfo)
-      );
+      return priceWithTax(props.shopInfo, props.menu);
     });
     
     return {
