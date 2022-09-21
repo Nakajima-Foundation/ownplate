@@ -4,7 +4,7 @@
     <div class="column">
       <div class="text-center">
         <b-button
-          class="b-reset h-9 rounded-full bg-black bg-opacity-5"
+          class="b-reset-tw h-9 rounded-full bg-black bg-opacity-5"
           tag="router-link"
           to=""
         >
@@ -13,7 +13,7 @@
           </span>
         </b-button>
         <b-button
-          class="b-reset h-9 rounded-full bg-black bg-opacity-5"
+          class="b-reset-tw h-9 rounded-full bg-black bg-opacity-5"
           tag="router-link"
           to=""
         >
