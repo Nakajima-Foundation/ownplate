@@ -16,8 +16,8 @@
       <!-- <askButtons /> -->
       <!-- <news /> -->
       <news />
-      <snslink />
     </div>
+    <snslink />
   </div>
 </template>
 <script>
