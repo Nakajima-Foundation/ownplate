@@ -3,27 +3,28 @@
     <!-- Item Card -->
     <div class="bg-white rounded-lg shadow">
       <div class="flow-root cursor-pointer">
-        <div class="float-right">
-          <!-- Image -->
-          <div v-if="smallimage" class="pb-2">
-            <img
-              @click.stop="openImage()"
-              :src="smallimage"
-              class="bg-white w-full object-cover rounded-t-lg"
-              @error="smallImageErrorHandler"
-            />
-          </div>
+        <!-- Image -->
+        <div v-if="smallimage" class="pb-2">
+          <img
+            @click.stop="openImage()"
+            :src="smallimage"
+            class="bg-white w-full object-cover rounded-t-lg"
+            @error="smallImageErrorHandler"
+          />
         </div>
 
-        <div class="p-2 sm:p-4">
+        <div class="px-2 sm:p-4">
           <!-- Item Name -->
           <a :id="`${item.id}`" @click.stop="openImage()">
-            <div class="text-sm sm:text-base text-black tracking-tight">
+            <div
+              class="h-10 text-sm sm:text-base text-black tracking-tight line-clamp-2"
+            >
               {{ title }}
             </div>
           </a>
           <!-- Price -->
           <div class="mt-1 text-sm sm:text-base text-black font-bold">
+            <!--ToDo 価格のみ表示するコンポーネントに変更-->
             <Price :shopInfo="shopInfo" :menu="item" />
           </div>
           <div class="text-xs sm:text-sm text-black">
@@ -32,7 +33,7 @@
         </div>
 
         <!-- Add / Sold Out Button -->
-        <div class="flex justify-end items-center mx-1 mb-2 -mt-2">
+        <div class="flex justify-end items-center mx-1 mb-2">
           <div
             class="text-center sm:text-xl font-bold text-op-teal mx-auto mt-0.5"
             v-if="quantities[0] > 0"
