@@ -403,6 +403,7 @@
     "orderCounter": "{count} article | {count} artciles",
     "add": "Ajouter",
     "soldOut": "Complet",
+    "sold": "Complet",
     "options": "Options",
     "subTotal": "Sous-total: ",
     "quantity": "Quantité",

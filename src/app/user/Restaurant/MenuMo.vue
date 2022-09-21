@@ -1,76 +1,59 @@
 <template>
   <div>
     <!-- Item Card -->
-    <div
-      class="bg-white rounded-lg shadow"
-      :class="totalQuantity > 0 ? 'border-2 border-op-teal' : ''"
-    >
+    <div class="bg-white rounded-lg shadow">
       <div class="flow-root cursor-pointer">
-        <div class="p-4 float-right">
+        <div class="float-right">
           <!-- Image -->
           <div v-if="smallimage" class="pb-2">
             <img
               @click.stop="openImage()"
               :src="smallimage"
-              class="w-24 h-24 rounded object-cover"
+              class="bg-white w-full object-cover rounded-t-lg"
               @error="smallImageErrorHandler"
             />
           </div>
+        </div>
 
-          <!-- Add / Sold Out Button -->
-          <div>
-            <div
-              v-if="isSoldOut"
-              class="inline-flex justify-center items-center h-9 rounded-full w-24 bg-red-700 bg-opacity-10"
-            >
-              <div class="text-sm font-bold text-red-700">
-                {{ $t("sitemenu.soldOut") }}
-              </div>
+        <div class="p-2 sm:p-4">
+          <!-- Item Name -->
+          <a :id="`${item.id}`" @click.stop="openImage()">
+            <div class="text-sm sm:text-base text-black tracking-tight">
+              {{ title }}
             </div>
-            <div
-              v-else
-              @click.stop="pushQuantities(0)"
-              class="inline-flex justify-center items-center h-9 rounded-full w-24 bg-op-teal bg-opacity-10 cardAdd"
-              :data-cart-product="item.id"
-            >
-              <div class="text-sm font-bold text-op-teal">
-                {{ $t("sitemenu.add") }}
-              </div>
-            </div>
+          </a>
+          <!-- Price -->
+          <div class="mt-1 text-sm sm:text-base text-black font-bold">
+            <Price :shopInfo="shopInfo" :menu="item" />
+          </div>
+          <div class="text-xs sm:text-sm text-black">
+            {{ $t("tax.include") }}
           </div>
         </div>
 
-        <div class="p-4">
-          <!-- Item Name -->
-          <a :id="`${item.id}`"
-             @click.stop="openImage()"
-             >
-            <div class="text-xl font-bold">{{ title }}</div>
-          </a>
-          <!-- Price -->
-          <div class="mt-2 text-base">
-            <Price :shopInfo="shopInfo" :menu="item" />
-          </div>
-
-          <!-- Description -->
-          <div v-if="description !== null" class="mt-2 text-sm">
-            <template v-if="!shopInfo.enablePreline">
-              {{ description }}
-            </template>
-            <template v-else>
-              <div v-if="openMenuFlag" class="whitespace-pre-line">
-                {{ description }}
-              </div>
-              <template v-else> {{ descriptionOneLine }}... </template>
-            </template>
-          </div>
-          <div class="flex-1 text-center text-3xl text-op-teal" v-if="quantities[0] > 0">
+        <!-- Add / Sold Out Button -->
+        <div class="flex justify-end items-center mx-1 mb-2 -mt-2">
+          <div
+            class="text-center sm:text-xl font-bold text-op-teal mx-auto mt-0.5"
+            v-if="quantities[0] > 0"
+          >
             {{ quantities[0] }}
           </div>
-
-          <!-- Allergens -->
-          <div v-if="allergens.length > 0" class="mt-2 text-xs font-bold">
-            {{ allergensDescription }}
+          <div
+            v-if="isSoldOut"
+            class="inline-flex justify-center items-center h-9 rounded-full w-14 bg-black bg-opacity-10"
+          >
+            <div class="text-xs font-bold text-black text-opacity-50">
+              {{ $t("sitemenu.sold") }}
+            </div>
+          </div>
+          <div
+            v-else
+            @click.stop="pushQuantities(0)"
+            class="inline-flex justify-center items-center h-9 rounded-full w-14 bg-op-teal bg-opacity-10"
+            :data-cart-product="item.id"
+          >
+            <i class="material-icons text-lg text-op-teal">add</i>
           </div>
         </div>
       </div>
@@ -83,61 +66,73 @@
       scroll="keep"
       :on-cancel="closeImage"
     >
-      <div class="px-2 text-center bg-white">
-        <img :src="image" class="rounded-lg shadow-lg"
-             @error="imageErrorHandler"
-             />
-        <div class="text-left text-white text-base font-bold mt-4">
+      <div class="mx-6 p-5 bg-white rounded-lg">
+        <img
+          :src="image"
+          class="mx-auto w-40 h-40 sm:w-72 sm:h-72 object-cover rounded-lg"
+          @error="imageErrorHandler"
+        />
+        <div class="text-left text-black text-xl font-bold mt-6">
           {{ title }}
         </div>
-        <div class="text-left text-white text-sm font-bold">
+
+        <!-- Description -->
+        <div v-if="description !== null" class="mt-3 text-sm">
+          <template v-if="!shopInfo.enablePreline">
+            {{ description }}
+          </template>
+          <template v-else>
+            <div v-if="openMenuFlag" class="whitespace-pre-line">
+              {{ description }}
+            </div>
+            <template v-else> {{ descriptionOneLine }}... </template>
+          </template>
+        </div>
+
+        <div class="mt-3 text-left text-black font-bold">
           <Price :shopInfo="shopInfo" :menu="item" />
         </div>
 
-              <div>
-                <div class="flex">
-                  <div class="text-xs">
-                    {{ $t("sitemenu.quantity") }}
-                  </div>
-                  <div
-                    v-if="prices[0] > 0"
-                    class="flex-1 text-right text-xs"
-                  >
-                    {{ $t("sitemenu.subTotal")
-                    }}<Price
-                      :shopInfo="shopInfo"
-                      :menu="{ price: prices[0], tax: item.tax }"
-                    />
-                  </div>
-                </div>
-                <div></div>
-              </div>
+        <div>
+          <div class="flex mt-3">
+            <div
+              v-if="prices[0] > 0"
+              class="flex-1 text-right text-xs text-black"
+            >
+              {{ $t("sitemenu.subTotal")
+              }}<Price
+                :shopInfo="shopInfo"
+                :menu="{ price: prices[0], tax: item.tax }"
+              />
+            </div>
+          </div>
+          <div></div>
+        </div>
 
-              <div class="mt-2 flex items-center">
-                <div>
-                  <a
-                    @click="pullQuantities(0)"
-                    class="inline-flex justify-center items-center h-9 w-24 rounded-full bg-red-700 bg-opacity-10 removeCart"
-                    :disabled="quantities[0] === 0"
-                    :data-cart-product="item.id"
-                  >
-                    <i class="material-icons text-lg text-red-700">remove</i>
-                  </a>
-                </div>
-                <div class="flex-1 text-center text-3xl text-op-teal">
-                  {{ quantities[0] }}
-                </div>
-                <div>
-                  <a
-                    @click="pushQuantities(0)"
-                    class="inline-flex justify-center items-center h-9 w-24 rounded-full bg-op-teal bg-opacity-10 cardAdd"
-                    :data-cart-product="item.id"
-                  >
-                    <i class="material-icons text-lg text-op-teal">add</i>
-                  </a>
-                </div>
-              </div>
-
+        <div class="mt-2 flex items-center">
+          <div>
+            <a
+              @click="pullQuantities(0)"
+              class="inline-flex justify-center items-center h-9 w-24 rounded-full bg-red-700 bg-opacity-10 removeCart"
+              :disabled="quantities[0] === 0"
+              :data-cart-product="item.id"
+            >
+              <i class="material-icons text-lg text-red-700">remove</i>
+            </a>
+          </div>
+          <div class="flex-1 text-center text-3xl text-op-teal">
+            {{ quantities[0] }}
+          </div>
+          <div>
+            <a
+              @click="pushQuantities(0)"
+              class="inline-flex justify-center items-center h-9 w-24 rounded-full bg-op-teal bg-opacity-10 cardAdd"
+              :data-cart-product="item.id"
+            >
+              <i class="material-icons text-lg text-op-teal">add</i>
+            </a>
+          </div>
+        </div>
       </div>
     </b-modal>
   </div>
