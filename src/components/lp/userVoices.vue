@@ -124,7 +124,7 @@
     <div class="text-center mt-4">
       <a href="/l/tips" target="_blank">
         <div
-          class="h-16 rounded-full bg-ownplate-yellow inline-flex items-center px-8 shadow"
+          class="h-16 rounded-full bg-ownplate-yellow inline-flex items-center px-8 shadow hover:bg-opacity-30"
         >
           <span class="text-black opacity-60 text-xl font-bold">{{
             $t("lp.moreDetails")
