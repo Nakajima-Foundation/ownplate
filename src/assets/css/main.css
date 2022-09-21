@@ -26,7 +26,6 @@ span {
   border-color: #0097a7;
 }
 
-
 .columns.is-gapless:not(:last-child) {
   margin-bottom: 0;
 }
@@ -55,11 +54,84 @@ span {
   margin-bottom: 0;
 }
 
+.t-h6 {
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 24px;
+  letter-spacing: 0.15px;
+}
+
+.t-button {
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 16px;
+  letter-spacing: 0.1px;
+}
+
+.op-button {
+  cursor: pointer;
+  display: inline-flex;
+  min-height: 36px;
+  align-items: center;
+  justify-content: center;
+}
+
+.op-button-small {
+  border-radius: 9999px;
+  padding-right: 24px;
+  padding-left: 24px;
+  min-width: 128px;
+  height: 48px;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.15px;
+}
+
+
 .material-icons.s-48 {
   font-size: 48px;
 }
 .material-icons.s-18 {
   font-size: 18px;
+}
+
+/* Overwrites for Tailwind CSS */
+img,
+svg,
+canvas {
+  display: inline-block;
+}
+
+/* Keep this class for Tailwind CSS */
+.button.b-reset-tw {
+  padding: 0;
+  background-color: initial;
+  border: 0;
+  height: initial;
+}
+.button.b-reset-tw > span {
+  font-weight: bold;
+}
+
+/* OwnPlate Dialog for b-model */
+.modal-background {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.modal .animation-content {
+  margin: 0;
+}
+
+/* OwnPlate Side Bar */
+.b-sidebar .sidebar-background {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.b-sidebar .sidebar-content.is-light {
+  background: #ffffff;
+}
+.b-sidebar .sidebar-content {
+  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1);
+  width: 288px;
 }
 
 
