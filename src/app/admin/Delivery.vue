@@ -18,7 +18,7 @@
     <div class="mt-4 mx-6" v-else>
       <div class="bg-black bg-opacity-5 rounded-lg p-4">
         <div class="text-sm font-bold">
-          <b-checkbox v-model="enableDelivery" />{{
+          <o-checkbox v-model="enableDelivery" />{{
             $tc("delivery.enableDelivery", 0, { name: shopInfo.restaurantName })
           }}
         </div>
@@ -32,7 +32,7 @@
 
         <div>
           <div class="text-sm font-bold pb-2 flex">
-            <b-checkbox v-model="enableAreaMap" :disabled="!enableDelivery" />
+            <o-checkbox v-model="enableAreaMap" :disabled="!enableDelivery" />
             {{ $t("delivery.setAreaMap") }}
           </div>
           <div>
@@ -58,7 +58,7 @@
               />
               m
             </span>
-            <b-button
+            <o-button
               class="b-reset-tw"
               :disabled="!enableAreaMap || !enableDelivery"
               @click="updateCircle"
@@ -70,23 +70,23 @@
                   {{ $t("delivery.updateDeliveryRange") }}
                 </span>
               </div>
-            </b-button>
+            </o-button>
           </div>
         </div>
         <!-- area text -->
         <div class="mt-4">
           <div class="text-sm font-bold pb-2 flex">
-            <b-checkbox v-model="enableAreaText" :disabled="!enableDelivery" />
+            <o-checkbox v-model="enableAreaText" :disabled="!enableDelivery" />
             {{ $t("delivery.setAreaText") }}
           </div>
 
-          <b-input
+          <o-input
             v-model="areaText"
             type="textarea"
             :placeholder="$t('delivery.areaTextExample')"
             :disabled="!enableAreaText || !enableDelivery"
           >
-          </b-input>
+          </o-input>
         </div>
       </div>
 
@@ -95,7 +95,7 @@
           {{ $t("delivery.deliveryThreshold") }}:
         </div>
         <div class="flex mt-2">
-          <b-checkbox
+          <o-checkbox
             v-model="enableDeliveryThreshold"
             :disabled="!enableDelivery"
           />
@@ -135,7 +135,7 @@
         </div>
 
         <div class="flex mt-2">
-          <b-checkbox
+          <o-checkbox
             v-model="enableDeliveryFree"
             :disabled="!enableDelivery"
           />
@@ -178,7 +178,7 @@
       </div>
       <!-- Save Button -->
       <div class="mt-4 text-center">
-        <b-button @click="saveDeliveryArea" class="b-reset-tw">
+        <o-button @click="saveDeliveryArea" class="b-reset-tw">
           <div
             class="h-12 rounded-full bg-op-teal inline-flex justify-center items-center px-6 shadow"
             style="min-width: 8rem"
@@ -187,7 +187,7 @@
               $t("editCommon.save")
             }}</span>
           </div>
-        </b-button>
+        </o-button>
       </div>
     </div>
   </div>

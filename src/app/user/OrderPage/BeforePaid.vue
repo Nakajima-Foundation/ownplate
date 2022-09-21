@@ -2,7 +2,7 @@
   <div>
     <!-- Back Button (Edit Order) -->
     <div class="mt-6 mx-6">
-      <b-button
+      <o-button
         :loading="isDeleting"
         @click="handleOpenMenu"
         class="b-reset-tw"
@@ -15,7 +15,7 @@
             {{ $t("button.back") }}
           </div>
         </div>
-      </b-button>
+      </o-button>
     </div>
 
     <!-- Restaurant Profile Photo and Name -->
@@ -168,12 +168,12 @@
               </div>
 
               <div class="bg-white rounded-lg shadow p-4 mt-2">
-                <b-input
+                <o-input
                   v-model="memo"
                   type="textarea"
                   :placeholder="$t('order.enterMessage')"
                   class="w-full"
-                ></b-input>
+                ></o-input>
                 <div :class="userMessageError ? 'text-red-700 font-bold' : ''">
                   {{ $t("validationError.memo.length") }}
                 </div>
@@ -204,7 +204,7 @@
               ></stripe-card>
 
               <div class="mt-6 text-center">
-                <b-button
+                <o-button
                   :loading="isPaying"
                   :disabled="
                     !cardState.complete ||
@@ -229,7 +229,7 @@
                       <!-- {{ $n(orderInfo.total + tip, "currency") }} -->
                     </div>
                   </div>
-                </b-button>
+                </o-button>
                 <div
                   v-if="mode !== 'mo' && stripeSmallPayment"
                   class="text-sm font-bold text-red-700 mt-2"
@@ -277,7 +277,7 @@
               </div>
 
               <div class="mt-4">
-                <b-button
+                <o-button
                   :loading="isPlacing"
                   :disabled="
                     notAvailable || notSubmitAddress || userMessageError
@@ -297,7 +297,7 @@
                       }}
                     </div>
                   </div>
-                </b-button>
+                </o-button>
               </div>
               <div v-if="mode !== 'mo'">
                 <div class="mt-2 text-sm font-bold text-black text-opacity-60">
@@ -321,11 +321,11 @@
             <!-- Send SMS Checkbox -->
             <div v-if="!isLineEnabled" class="mt-6">
               <div class="bg-black bg-opacity-5 rounded-lg p-4">
-                <b-checkbox v-model="sendSMS">
+                <o-checkbox v-model="sendSMS">
                   <div class="text-sm font-bold">
                     {{ $t("order.sendSMS") }}
                   </div>
-                </b-checkbox>
+                </o-checkbox>
               </div>
             </div>
           </div>

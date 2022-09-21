@@ -129,7 +129,7 @@
       <div v-if="regionTip.choices.length > 0 && enableTip" class="mt-2">
         <div v-if="isTipEditable">
           <div>
-            <b-input
+            <o-input
               class="w-full"
               type="number"
               :placeholder="$t('order.maxTip', { max: regionTip.max })"
@@ -142,7 +142,7 @@
           </div>
 
           <div class="mt-2">
-            <b-button
+            <o-button
               v-for="ratio in regionTip.choices"
               class="b-reset-tw mr-2 mb-2"
               @click="updateTip(ratio)"
@@ -159,7 +159,7 @@
                 >
                   {{ ratio + "%" }}
                 </div>
-              </div></b-button
+              </div></o-button
             >
           </div>
         </div>

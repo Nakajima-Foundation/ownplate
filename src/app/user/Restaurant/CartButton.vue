@@ -1,5 +1,5 @@
 <template>
-  <b-button
+  <o-button
     v-if="0 != totalQuantities"
     :loading="isCheckingOut"
     :disabled="
@@ -127,7 +127,7 @@
         </div>
       </template>
     </div>
-  </b-button>
+  </o-button>
 </template>
 <script>
 import { defineComponent, computed, ref, watch } from "@vue/composition-api";

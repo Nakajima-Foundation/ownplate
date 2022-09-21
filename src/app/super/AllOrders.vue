@@ -8,7 +8,7 @@
           <back-button :url="backUrl" />
 
           <h2>All Orders</h2>
-          <b-select v-model="orderState" class="mt-6">
+          <o-select v-model="orderState" class="mt-6">
             <option
               v-for="status in orderStatus"
               :value="status.index"
@@ -16,19 +16,19 @@
             >
               {{ status.key ? $t("order.status." + status.key) : "----" }}
             </option>
-          </b-select>
+          </o-select>
           <!-- button -->
           <div>
             <div class="inline-flex mt-6">
               <div class="flex">
-                <b-select v-model="monthValue">
+                <o-select v-model="monthValue">
                   <option v-for="(month, k) in months" :value="month" :key="k">
                     {{ month }}
                   </option>
-                </b-select>
+                </o-select>
               </div>
               <div class="flex">
-                <b-button @click="LoadTillMonth">Load</b-button>
+                <o-button @click="LoadTillMonth">Load</o-button>
                 {{ isLoading ? "Loading..." : "" }}
               </div>
             </div>
@@ -51,8 +51,8 @@
             </div>
           </div>
           <div>
-            <b-button @click="nextLoad" class="rounded-full mt-4"
-              >more</b-button
+            <o-button @click="nextLoad" class="rounded-full mt-4"
+              >more</o-button
             >
           </div>
 
@@ -62,14 +62,14 @@
             :fieldNames="fieldNames"
             :fileName="fileName"
           >
-            <b-button class="h-9 rounded-full mt-4">
+            <o-button class="h-9 rounded-full mt-4">
               <span class="pl-4 pr-4">
                 <i class="material-icons c-primary s-18 mr-2">save_alt</i>
                 <span class="c-primary t-button">{{
                   $t("admin.report.download-csv")
                 }}</span>
               </span>
-            </b-button>
+            </o-button>
           </download-csv>
         </div>
       </div>

@@ -4,22 +4,22 @@
       {{ $t("shopInfo.howToReceive") }}
     </div>
     <div>
-      <b-radio
+      <o-radio
         name="howtoreceive"
         :value="value === 'takeout' ? 'takeout' : ''"
         :native-value="value"
         @input="$emit('input', 'takeout')"
       >
         {{ $t("mobileOrder.shopInfo.takeout") }}
-      </b-radio>
-      <b-radio
+      </o-radio>
+      <o-radio
         name="howtoreceive"
         :value="value === 'pickup' ? 'pickup' : ''"
         :native-value="value"
         @input="$emit('input', 'pickup')"
       >
         {{ $t("mobileOrder.shopInfo.pickup") }}
-      </b-radio>
+      </o-radio>
     </div>
   </div>
 </template>

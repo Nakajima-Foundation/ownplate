@@ -33,7 +33,7 @@
           {{ customerInfo.name || "----" }}
         </div>
         <div class="text-center">
-          <b-button @click="resetAddress" class="b-reset-tw">
+          <o-button @click="resetAddress" class="b-reset-tw">
             <div
               class="inline-flex justify-center items-center h-16 px-6 rounded-full bg-op-teal shadow"
               style="min-width: 288px"
@@ -42,7 +42,7 @@
                 {{ $t("profile.resetAddress") }}
               </div>
             </div>
-          </b-button>
+          </o-button>
         </div>
         <div class="text-center mt-2 font-bold">
           * {{ $t("profile.resetAddressMessage") }}

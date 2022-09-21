@@ -82,9 +82,9 @@
         </div>
 
         <div class="text-center mt-4">
-          <b-checkbox v-model="inStorePayment">
+          <o-checkbox v-model="inStorePayment">
             {{ $t("admin.payments.enableOnsitePayment") }}
-          </b-checkbox>
+          </o-checkbox>
         </div>
       </div>
     </div>

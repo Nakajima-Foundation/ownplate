@@ -3,7 +3,7 @@
     <div class="t-h6 text-black text-opacity-40 text-center mt-6">
       {{ $t("line.authenticating") }}
     </div>
-    <b-loading :is-full-page="false" :active="isValidating"></b-loading>
+    <o-loading :is-full-page="false" :active="isValidating"></o-loading>
   </div>
 </template>
 

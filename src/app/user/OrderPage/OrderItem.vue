@@ -1,6 +1,6 @@
 <template>
   <div class="flex space-x-2">
-    <b-checkbox v-if="editable" :value="available" @input="input" />
+    <o-checkbox v-if="editable" :value="available" @input="input" />
     <div>
       <div
         class="inline-flex justify-center items-center h-9 w-12 bg-blue-500 bg-opacity-10 rounded flex-shrink-0"

@@ -42,18 +42,18 @@
           </div>
 
           <div class="mt-1">
-            <b-field
+            <o-field
               :type="errors.password ? 'is-danger' : 'is-success'"
               :message="errors.password && $t(errors.password[0])"
             >
-              <b-input
+              <o-input
                 v-model="password"
                 type="password"
                 :placeholder="$t('admin.passwordPlaceHolder')"
                 maxlength="30"
                 password-reveal
               />
-            </b-field>
+            </o-field>
           </div>
 
           <!-- Confirm Password -->
@@ -63,24 +63,24 @@
             </div>
 
             <div class="mt-1">
-              <b-field
+              <o-field
                 :type="errors.confirm ? 'is-danger' : 'is-success'"
                 :message="errors.confirm && $t(errors.confirm[0])"
               >
-                <b-input
+                <o-input
                   v-model="confirmPassword"
                   type="password"
                   :placeholder="$t('admin.confirmPasswordPlaceHolder')"
                   maxlength="30"
                   password-reveal
                 />
-              </b-field>
+              </o-field>
             </div>
           </div>
 
           <!-- Submit Button -->
           <div class="mt-2 text-center">
-            <b-button
+            <o-button
               :disabled="Object.keys(errors).length > 0 || submitting"
               @click="resetPassword"
               class="b-reset-tw"
@@ -92,7 +92,7 @@
                   {{ $t("button.next") }}
                 </div>
               </div>
-            </b-button>
+            </o-button>
           </div>
         </div>
       </template>

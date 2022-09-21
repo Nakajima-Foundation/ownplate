@@ -43,7 +43,7 @@
       >
       <br />
     </div>
-    <b-loading v-else active />
+    <o-loading v-else active />
   </section>
 </template>
 

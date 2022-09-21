@@ -36,9 +36,9 @@
       <notification-watcher />
       <sound-config-watcher :notificationConfig="notificationConfig" />
       <new-order-watcher :notificationConfig="notificationConfig" />
-      <b-modal :active.sync="isOpen" :width="488">
+      <o-modal :active.sync="isOpen" :width="488">
         <PartnersContact :id="(partner[0] || {}).id" />
-      </b-modal>
+      </o-modal>
     </div>
   </div>
 </template>

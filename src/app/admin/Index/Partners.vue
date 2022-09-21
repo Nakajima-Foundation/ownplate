@@ -13,9 +13,9 @@
         </div>
       </div>
     </div>
-    <b-modal :active.sync="isOpen" :width="488">
+    <o-modal :active.sync="isOpen" :width="488">
       <PartnersContact :id="(partners[0] || {}).id" />
-    </b-modal>
+    </o-modal>
   </div>
 </template>
 <script lang="ts">

@@ -20,7 +20,7 @@
       <!-- Save and Cancel -->
       <div class="flex justify-center space-x-4 mt-6">
         <!-- Cancel Button -->
-        <b-button
+        <o-button
           class="b-reset-tw"
           tag="router-link"
           :to="`/admin/restaurants/`"
@@ -32,10 +32,10 @@
               $t("button.cancel")
             }}</span>
           </div>
-        </b-button>
+        </o-button>
 
         <!-- Save Button -->
-        <b-button
+        <o-button
           @click="saveRestaurant"
           :disabled="submitting || disableSave"
           class="b-reset-tw"
@@ -54,18 +54,18 @@
               )
             }}</span>
           </div>
-        </b-button>
+        </o-button>
       </div>
 
       <!-- Publish Status -->
       <div class="bg-black bg-opacity-5 mx-6 rounded-lg p-4 mt-6 text-center">
-        <b-checkbox
+        <o-checkbox
           v-model="shopInfo.publicFlag"
           :disabled="hasError"
           :type="!shopInfo.publicFlag ? 'is-danger' : ''"
         >
           <div class="font-bold">{{ $t("shopInfo.public") }}</div>
-        </b-checkbox>
+        </o-checkbox>
 
         <div class="mt-1 text-sm font-bold">
           <div v-if="shopInfo.publicFlag">
@@ -200,7 +200,7 @@
             </div>
             <div v-if="searchResults.length > 0">
               <div class="mt-4">
-                <b-select v-model="selectedResult">
+                <o-select v-model="selectedResult">
                   <option
                     v-for="(result, key) in searchResults"
                     :value="key"
@@ -208,7 +208,7 @@
                   >
                     {{ result.formatted_address }}
                   </option>
-                </b-select>
+                </o-select>
               </div>
             </div>
             <div v-else>住所を入力して検索してください</div>
@@ -397,11 +397,11 @@
               {{ $t("editRestaurant.enablePrelineTitle") }}
             </div>
             <div class="bg-black bg-opacity-5 rounded-lg p-4">
-              <b-checkbox v-model="shopInfo.enablePreline">
+              <o-checkbox v-model="shopInfo.enablePreline">
                 <div class="text-sm font-bold">
                   {{ $t("editRestaurant.enablePrelineDescription") }}
                 </div>
-              </b-checkbox>
+              </o-checkbox>
             </div>
           </div>
 
@@ -477,13 +477,13 @@
                   <div class="text-sm font-bold pb-2">
                     {{ $t("editRestaurant.foodTax") }}
                   </div>
-                  <b-field
+                  <o-field
                     class="inline-flex items-center"
                     :type="
                       errors['foodTax'].length > 0 ? 'is-danger' : 'is-success'
                     "
                   >
-                    <b-input
+                    <o-input
                       v-model="shopInfo.foodTax"
                       placeholder="8.2"
                       type="text"
@@ -491,14 +491,14 @@
                       class="w-24"
                     />
                     <div class="ml-2">%</div>
-                  </b-field>
+                  </o-field>
                 </div>
 
                 <div class="ml-4">
                   <div class="text-sm font-bold pb-2">
                     {{ $t("editRestaurant.alcoholTax") }}
                   </div>
-                  <b-field
+                  <o-field
                     class="inline-flex items-center"
                     :type="
                       errors['alcoholTax'].length > 0
@@ -506,7 +506,7 @@
                         : 'is-success'
                     "
                   >
-                    <b-input
+                    <o-input
                       v-model="shopInfo.alcoholTax"
                       placeholder="10.2"
                       type="text"
@@ -514,7 +514,7 @@
                       class="w-24"
                     />
                     <div class="ml-2">%</div>
-                  </b-field>
+                  </o-field>
                 </div>
               </div>
             </div>
@@ -543,11 +543,11 @@
               </div>
               <div class="bg-black bg-opacity-5 rounded-lg p-4">
                 <div>
-                  <b-checkbox v-model="shopInfo.inclusiveTax">
+                  <o-checkbox v-model="shopInfo.inclusiveTax">
                     <div class="font-bold">
                       {{ $t("editRestaurant.taxIncluded") }}
                     </div>
-                  </b-checkbox>
+                  </o-checkbox>
                 </div>
                 <div class="mt-2">
                   <div
@@ -581,7 +581,7 @@
                   {{ $t("editRestaurant.preparationTime") }}
                 </div>
 
-                <b-field
+                <o-field
                   class="flex items-center"
                   :type="
                     errors['pickUpMinimumCookTime'].length > 0
@@ -589,7 +589,7 @@
                       : 'is-success'
                   "
                 >
-                  <b-input
+                  <o-input
                     v-model.number="shopInfo.pickUpMinimumCookTime"
                     placeholder="10"
                     type="text"
@@ -599,15 +599,15 @@
                     {{ $t("editRestaurant.minutes") }} -
                     {{ $t("editRestaurant.withinFiveDays") }}
                   </div>
-                </b-field>
+                </o-field>
 
                 <div class="mt-2">
-                  <b-radio
+                  <o-radio
                     v-for="choice in minimumCookTimeChoices"
                     v-model="shopInfo.pickUpMinimumCookTime"
                     :native-value="choice.value"
                     :key="choice.value"
-                    >{{ $t(choice.messageKey) }}</b-radio
+                    >{{ $t(choice.messageKey) }}</o-radio
                   >
                 </div>
               </div>
@@ -617,7 +617,7 @@
                 <div class="mb-1">
                   {{ $t("editRestaurant.reservationTheDayBefore") }}
                 </div>
-                <b-field
+                <o-field
                   class="flex items-center"
                   :type="
                     errors['pickUpDaysInAdvance'].length > 0
@@ -625,7 +625,7 @@
                       : 'is-success'
                   "
                 >
-                  <b-select v-model.number="shopInfo.pickUpDaysInAdvance">
+                  <o-select v-model.number="shopInfo.pickUpDaysInAdvance">
                     <option
                       v-for="(day, index) in reservationTheDayBefore"
                       :key="index"
@@ -633,8 +633,8 @@
                     >
                       {{ $t(day.messageKey) }}
                     </option>
-                  </b-select>
-                </b-field>
+                  </o-select>
+                </o-field>
               </div>
             </div>
           </div>
@@ -665,11 +665,11 @@
                 {{ $t("editRestaurant.printerConfigTitle") }}
               </div>
               <div class="bg-black bg-opacity-5 rounded-lg p-4">
-                <b-checkbox v-model="shopInfo.enablePrinter">
+                <o-checkbox v-model="shopInfo.enablePrinter">
                   <div class="text-sm font-bold">
                     {{ $t("editRestaurant.elablePrinter") }}
                   </div>
-                </b-checkbox>
+                </o-checkbox>
                 <div class="text-xs pt-2">
                   {{ $t("editRestaurant.printerDescription") }}
                 </div>
@@ -684,11 +684,11 @@
               {{ $t("editRestaurant.emailNotificationTitle") }}
             </div>
             <div class="bg-black bg-opacity-5 rounded-lg p-4">
-              <b-checkbox v-model="shopInfo.emailNotification">
+              <o-checkbox v-model="shopInfo.emailNotification">
                 <div class="text-sm font-bold">
                   {{ $t("editRestaurant.emailNotificationDescription") }}
                 </div>
-              </b-checkbox>
+              </o-checkbox>
               <div class="text-xs pt-2">
                 {{ $t("editRestaurant.emailNotificationNotice") }}
               </div>
@@ -702,11 +702,11 @@
               {{ $t("editRestaurant.phoneCall") }}
             </div>
             <div class="bg-black bg-opacity-5 rounded-lg p-4">
-              <b-checkbox v-model="shopInfo.phoneCall">
+              <o-checkbox v-model="shopInfo.phoneCall">
                 <div class="text-sm font-bold">
                   {{ $t("editRestaurant.phoneCallDescription") }}
                 </div>
-              </b-checkbox>
+              </o-checkbox>
               <div class="text-xs pt-2">
                 {{ $t("editRestaurant.phoneCallNotice") }}
               </div>
@@ -719,11 +719,11 @@
               {{ $t("editRestaurant.acceptUserMessage") }}
             </div>
             <div class="bg-black bg-opacity-5 rounded-lg p-4">
-              <b-checkbox v-model="shopInfo.acceptUserMessage">
+              <o-checkbox v-model="shopInfo.acceptUserMessage">
                 <div class="text-sm font-bold">
                   {{ $t("editRestaurant.acceptUserMessageDescription") }}
                 </div>
-              </b-checkbox>
+              </o-checkbox>
               <div class="text-xs pt-2">
                 {{ $t("editRestaurant.acceptUserMessageNotice") }}
               </div>
@@ -751,11 +751,11 @@
                 <!-- Enable/Disable Day and Copy Previous Day -->
                 <div class="flex items-center">
                   <div class="flex-1">
-                    <b-checkbox v-model="shopInfo.businessDay[index]">
+                    <o-checkbox v-model="shopInfo.businessDay[index]">
                       <div class="text-base font-bold">
                         {{ $t("week.short." + day) }}
                       </div>
-                    </b-checkbox>
+                    </o-checkbox>
                   </div>
 
                   <div>
@@ -823,8 +823,8 @@
               </div>
 
               <!-- Date Picker -->
-              <b-field>
-                <b-datepicker
+              <o-field>
+                <o-datepicker
                   icon="calendar-today"
                   v-model="newTemporaryClosure"
                   ref="datepicker"
@@ -833,9 +833,9 @@
                   expanded
                   :placeholder="$t('shopInfo.temporaryClosureSelect')"
                 >
-                </b-datepicker>
+                </o-datepicker>
 
-                <b-button @click="addNewTemporaryClosure" class="b-reset-tw">
+                <o-button @click="addNewTemporaryClosure" class="b-reset-tw">
                   <div
                     class="inline-flex justify-center items-center h-9 bg-black bg-opacity-5 px-4 rounded-r"
                   >
@@ -844,8 +844,8 @@
                       {{ $t("shopInfo.temporaryClosureAdd") }}
                     </div>
                   </div>
-                </b-button>
-              </b-field>
+                </o-button>
+              </o-field>
 
               <!-- Saved Closure Days -->
               <div class="grid grid-cols-1 space-y-2 mb-2">
@@ -883,13 +883,13 @@
 
       <!-- Publish Status -->
       <div class="bg-black bg-opacity-5 mx-6 rounded-lg p-4 mt-6 text-center">
-        <b-checkbox
+        <o-checkbox
           v-model="shopInfo.publicFlag"
           :disabled="hasError"
           :type="!shopInfo.publicFlag ? 'is-danger' : ''"
         >
           <div class="font-bold">{{ $t("shopInfo.public") }}</div>
-        </b-checkbox>
+        </o-checkbox>
 
         <div class="mt-1 text-sm font-bold">
           <div v-if="shopInfo.publicFlag">
@@ -907,7 +907,7 @@
       <!-- Save and Cancel -->
       <div class="flex justify-center space-x-4 mt-6">
         <!-- Cancel Button -->
-        <b-button
+        <o-button
           class="b-reset-tw"
           tag="router-link"
           :to="`/admin/restaurants/`"
@@ -919,10 +919,10 @@
               $t("button.cancel")
             }}</span>
           </div>
-        </b-button>
+        </o-button>
 
         <!-- Save Button -->
-        <b-button
+        <o-button
           @click="saveRestaurant"
           :disabled="submitting || disableSave"
           class="b-reset-tw"
@@ -941,12 +941,12 @@
               )
             }}</span>
           </div>
-        </b-button>
+        </o-button>
       </div>
 
       <!-- Copy -->
       <div class="text-center mt-6">
-        <b-button
+        <o-button
           @click="confirmCopy"
           :disabled="submitting"
           class="b-reset-tw"
@@ -959,7 +959,7 @@
               $t(submitting ? "editCommon.saving" : "editCommon.copy")
             }}</span>
           </div>
-        </b-button>
+        </o-button>
       </div>
     </div>
   </div>

@@ -24,7 +24,7 @@
 
     <!-- Suspend Button -->
     <div class="flex space-x-4 mt-4 lg:mt-0">
-      <b-button
+      <o-button
         tag="router-link"
         :to="`/admin/restaurants/${restaurantId()}/suspend`"
         class="b-reset-tw"
@@ -53,7 +53,7 @@
             {{ $t("admin.order.suspendSettings") }}
           </div>
         </div>
-      </b-button>
+      </o-button>
 
       <!-- Notifications -->
       <div>

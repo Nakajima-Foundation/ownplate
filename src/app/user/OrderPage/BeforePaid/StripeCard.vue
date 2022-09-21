@@ -5,12 +5,12 @@
     </div>
 
     <div v-if="storedCard" class="bg-white rounded-lg shadow p-4 mt-2">
-      <b-checkbox v-model="useStoredCard">
+      <o-checkbox v-model="useStoredCard">
         <div class="text-base">
           <span>{{ storedCard.brand }}</span>
           <span>**** **** **** {{ storedCard.last4 }}</span>
         </div>
-      </b-checkbox>
+      </o-checkbox>
     </div>
 
     <div v-show="!useStoredCard">
@@ -32,7 +32,7 @@
         </div>
 
         <!-- CVC Popup-->
-        <b-modal :active.sync="CVCPopup" :width="488" scroll="keep">
+        <o-modal :active.sync="CVCPopup" :width="488" scroll="keep">
           <div class="mx-2 my-6 p-6 bg-white shadow-lg rounded-lg">
             <!-- Title -->
             <div class="text-xl font-bold text-black text-opacity-40">
@@ -88,15 +88,15 @@
               </a>
             </div>
           </div>
-        </b-modal>
+        </o-modal>
       </div>
 
       <!-- Save Card Info for Reuse -->
       <div class="mt-2 text-center">
-        <b-checkbox v-model="reuse"
+        <o-checkbox v-model="reuse"
           ><div class="text-sm font-bold">
             {{ $t("order.reuseCard") }}
-          </div></b-checkbox
+          </div></o-checkbox
         >
       </div>
     </div>

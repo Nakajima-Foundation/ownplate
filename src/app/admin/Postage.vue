@@ -17,10 +17,10 @@
               class="flex"
             >
               <span class="w-2/12">{{ state }}</span>
-              <b-input class="w-4/12" v-model="postage[key]" />
-              <b-button @click="copy(key)" v-if="key !== 0">
+              <o-input class="w-4/12" v-model="postage[key]" />
+              <o-button @click="copy(key)" v-if="key !== 0">
                 {{ $t("editEC.copy") }}
-              </b-button>
+              </o-button>
             </div>
           </div>
         </div>
@@ -31,12 +31,12 @@
           </div>
           <div class="bg-black bg-opacity-5 rounded-lg p-4">
             <div class="flex mb-2">
-              <b-checkbox v-model="enableFree" class="flex-item" />
+              <o-checkbox v-model="enableFree" class="flex-item" />
               <span class="flex-item mt-auto mb-auto inline-block">
                 {{ $t("editEC.setPostageFreeThreshold") }}
               </span>
             </div>
-            <b-input
+            <o-input
               class="w-4/12"
               v-model="freeThreshold"
               :disabled="!enableFree"
@@ -46,7 +46,7 @@
 
         <!-- Save Button -->
         <div class="mt-4 text-center">
-          <b-button @click="savePostage" class="b-reset-tw">
+          <o-button @click="savePostage" class="b-reset-tw">
             <div
               class="h-12 rounded-full bg-op-teal inline-flex justify-center items-center px-6 shadow"
               style="min-width: 8rem"
@@ -55,7 +55,7 @@
                 $t("editCommon.save")
               }}</span>
             </div>
-          </b-button>
+          </o-button>
         </div>
       </div>
     </div>

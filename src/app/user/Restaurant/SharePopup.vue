@@ -9,7 +9,7 @@
     </a>
 
     <!-- Share Popup-->
-    <b-modal
+    <o-modal
       :active.sync="sharePopup"
       :width="488"
       scroll="keep"
@@ -63,7 +63,7 @@
           </a>
         </div>
       </div>
-    </b-modal>
+    </o-modal>
   </div>
 </template>
 
