@@ -1,20 +1,20 @@
 <template>
   <span>
-    <span v-if="true">
-      {{ $tc("tax.price", taxObj.price_i18n) }}
+    <span>
+      {{ $tc("tax.price", $n(price, "currency")) }}
       <span class="text-xs">{{ $tc("tax.include") }}</span>
-      <br />
-    </span>
-    <span v-else>
-      {{ $tc("tax.price", taxObj.price_i18n) }}
-      <span class="text-xs">{{ $tc("tax.exclude") }}</span>
       <br />
     </span>
   </span>
 </template>
 
 <script>
-export default {
+import {
+  defineComponent,
+  computed,
+} from "@vue/composition-api";
+
+export default defineComponent({
   name: "Price",
   props: {
     shopInfo: {
@@ -26,25 +26,25 @@ export default {
       required: true,
     },
   },
-  computed: {
-    taxObj() {
-      const price = Math.round(
+  setup(props, ctx) {
+    const price = computed(() => {
+      return Math.round(
         ((menu, shopInfo) => {
           if (!shopInfo.inclusiveTax) {
-            if (this.menu.tax === "alcohol") {
+            if (props.menu.tax === "alcohol") {
               return (1 + shopInfo.alcoholTax * 0.01) * menu.price;
             }
-            return (1 + shopInfo.foodTax * 0.01) * menu.price;
+              return (1 + shopInfo.foodTax * 0.01) * menu.price;
           } else {
             return menu.price;
           }
-        })(this.menu, this.shopInfo)
+        })(props.menu, props.shopInfo)
       );
-
-      return {
-        price_i18n: this.$n(price, "currency"),
-      };
-    },
+    });
+    
+    return {
+      price,
+    };
   },
-};
+});
 </script>
