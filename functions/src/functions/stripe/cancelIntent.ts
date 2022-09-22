@@ -115,10 +115,10 @@ export const cancel = async (db: any, data: orderCancelData, context: functions.
     });
     // sendSMS is always true
     if (isAdmin && result.order.sendSMS) {
-      await sendMessageToCustomer(db, lng||"", "msg_order_canceled", restaurant.restaurantName, result.order, restaurantId, orderId, {}, true);
+      await sendMessageToCustomer(db, lng || "", "msg_order_canceled", restaurant.restaurantName, result.order, restaurantId, orderId, {}, true);
     }
     if (!isAdmin) {
-      await notifyCanceledOrderToRestaurant(db, restaurantId, result.order, restaurant.restaurantName, lng||"");
+      await notifyCanceledOrderToRestaurant(db, restaurantId, result.order, restaurant.restaurantName, lng || "");
     }
     return result;
   } catch (error) {
