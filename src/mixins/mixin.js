@@ -51,10 +51,6 @@ const mixin = {
       }
       return this.$tc("shopInfo.am", 0, { formatedTime });
     },
-    forcedError(key) {
-      const debug = this.$route.query.error;
-      return debug === key ? "---forced-error---" : "";
-    },
     moment(value) {
       return moment(value);
     },

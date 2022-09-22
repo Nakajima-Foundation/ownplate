@@ -308,7 +308,7 @@ export default {
         this.shopInfo,
         this.restaurantId()
       );
-      console.log(data);
+      // console.log(data);
       dataLayer.push({ ecommerce: null }); // Clear the previous ecommerce object.
       dataLayer.push({
         event: "purchase",
@@ -384,14 +384,14 @@ export default {
           try {
             this.$store.commit("setLoading", true);
             const { data } = await stripeCancelIntent({
-              restaurantId: this.restaurantId() + this.forcedError("cancel"),
+              restaurantId: this.restaurantId(),
               orderId: this.orderId,
             });
             this.sendRedunded();
-            console.log("cancel", data);
+            // console.log("cancel", data);
           } catch (error) {
             // BUGBUG: Implement the error handling code here
-            console.error(error.message, error.details);
+            // console.error(error.message, error.details);
             this.$store.commit("setErrorMessage", {
               code: "order.cancel",
               error,

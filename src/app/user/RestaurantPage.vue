@@ -357,7 +357,6 @@ import {
   useIsInMo,
   useToggle,
   scrollToElementById,
-  forcedError,
 } from "@/utils/utils";
 
 import { imageUtils } from "@/utils/RestaurantUtils";
@@ -669,9 +668,6 @@ export default defineComponent({
       // console.log(order_data);
       isCheckingOut.value = true;
       try {
-        if (forcedError("checkout", ctx)) {
-          throw Error("forced Error");
-        }
         const res = await addDoc(
           collection(db, `restaurants/${restaurantId.value}/orders`),
           order_data
