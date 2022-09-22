@@ -77,7 +77,7 @@ export interface orderCancelData {
 export interface newOrderData {
   menuId: string;
   index: string;
-};
+}
 
 export interface orderChangeData {
   restaurantId: string;

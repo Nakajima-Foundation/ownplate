@@ -62,7 +62,7 @@ export const create = async (db: admin.firestore.Firestore, data: orderPlacedDat
       const shippingCost = restaurantData.isEC ? costCal(postage, customerInfo?.prefectureId, order.total) : 0;
       const hasCustomer = restaurantData.isEC || order.isDelivery;
       if (hasCustomer) {
-        const validateResult = validateCustomer(customerInfo || {})
+        const validateResult = validateCustomer(customerInfo || {});
         if (!validateResult.result) {
           console.error("orderPlace", validateResult.errors);
           throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
@@ -95,13 +95,7 @@ export const create = async (db: admin.firestore.Firestore, data: orderPlacedDat
       // start write transaction
       await updateOrderTotalDataAndUserLog(db, transaction, customerUid, order.order, restaurantId, customerUid, timePlaced, now, true);
       if (hasCustomer) {
-        const {
-          zip,
-          prefectureId,
-          address,
-          name,
-          email,
-        } = customerInfo;
+        const { zip, prefectureId, address, name, email } = customerInfo;
         await transaction.set(customerRef, {
           zip,
           prefectureId,
@@ -114,7 +108,7 @@ export const create = async (db: admin.firestore.Firestore, data: orderPlacedDat
           createdAt: now,
         });
       }
-      
+
       const updateData = {
         status: order_status.order_placed,
         totalCharge,

@@ -2,7 +2,7 @@ import * as admin from "firebase-admin";
 import { orderCreatedData, orderUpdateData, orderPlacedData, customerInfoData, confirmIntentData, orderCancelData } from "./types";
 import { isEmpty } from "./utils";
 
-import isNumeric from 'validator/lib/isNumeric';
+import isNumeric from "validator/lib/isNumeric";
 
 export const isNumber = (value: string, option: any = {}) => {
   if (!/^-?[0-9]+$/.test(value)) {
@@ -85,7 +85,7 @@ const validateInteger = (text: number) => {
   return typeof text === "number" && Number.isInteger(text);
 };
 const validateIntegerString = (text: string) => {
-  return typeof text === "string" &&  /^[0-9]+$/.test(text);
+  return typeof text === "string" && /^[0-9]+$/.test(text);
 };
 
 const validateString = (text: string) => {
@@ -99,7 +99,7 @@ const validateTimestamp = (timestamp: admin.firestore.Timestamp) => {
   return validateInteger(timestamp.seconds) && validateInteger(timestamp.nanoseconds);
 };
 const validateBoolean = (value: boolean) => {
-  return (value === true || value === false);
+  return value === true || value === false;
 };
 const validateArray = {
   firebaseId: validateFirebaseId,
@@ -217,7 +217,6 @@ export const validateOrderPlaced = (data: orderPlacedData) => {
   };
   return validateData(data, validator);
 };
-
 
 export const validateCustomer = (data: customerInfoData) => {
   const validator = {};

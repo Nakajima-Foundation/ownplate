@@ -24,7 +24,7 @@ export const confirm = async (db: admin.firestore.Firestore, data: confirmIntent
     console.error("confirmIntent", validateResult.errors);
     throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
   }
-  
+
   const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`);
   const stripeRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}/system/stripe`);
   const restaurantData = await utils.get_restaurant(db, restaurantId);
@@ -99,7 +99,7 @@ export const confirm = async (db: admin.firestore.Firestore, data: confirmIntent
     };
 
     const msgKey = orderData.isEC ? "msg_ec_order_accepted" : "msg_order_accepted";
-    await sendMessageToCustomer(db, lng||"", msgKey, restaurantData.restaurantName, orderData, restaurantId, orderId, params);
+    await sendMessageToCustomer(db, lng || "", msgKey, restaurantData.restaurantName, orderData, restaurantId, orderId, params);
 
     return result;
   } catch (error) {
