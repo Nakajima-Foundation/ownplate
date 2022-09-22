@@ -2,11 +2,11 @@ import Stripe from "stripe";
 import * as admin from "firebase-admin";
 import * as functions from "firebase-functions";
 
-import { order_status } from "../common/constant";
-import * as utils from "../lib/utils";
-import { updateOrderTotalDataAndUserLog } from "../functions/order/orderPlace";
-import { notifyNewOrderToRestaurant } from "../functions/notify";
-import { costCal } from "../common/commonUtils";
+import { order_status } from "../../common/constant";
+import * as utils from "../../lib/utils";
+import { updateOrderTotalDataAndUserLog } from "../order/orderPlace";
+import { notifyNewOrderToRestaurant } from "../notify";
+import { costCal } from "../../common/commonUtils";
 
 import { getStripeAccount, getPaymentMethodData, getHash } from "./intent";
 

@@ -2,10 +2,10 @@ import * as functions from "firebase-functions";
 
 import { getStripeAccount } from "./intent";
 
-import { order_status } from "../common/constant";
+import { order_status } from "../../common/constant";
 
-import * as utils from "../lib/utils";
-import { Context } from "../models/TestType";
+import * as utils from "../../lib/utils";
+import { Context } from "../../models/TestType";
 
 const stripe = utils.get_stripe();
 

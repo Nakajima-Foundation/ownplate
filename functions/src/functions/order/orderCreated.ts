@@ -1,7 +1,7 @@
 import * as functions from "firebase-functions";
 import * as utils from "../../lib/utils";
 import { order_status } from "../../common/constant";
-import { createCustomer } from "../../stripe/customer";
+import { createCustomer } from "../stripe/customer";
 
 import { orderCreatedData, menuItem } from "../../lib/types";
 import { validateOrderCreated } from "../../lib/validator";

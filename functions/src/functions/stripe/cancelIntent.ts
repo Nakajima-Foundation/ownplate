@@ -1,11 +1,11 @@
 import * as admin from "firebase-admin";
 import * as functions from "firebase-functions";
 
-import { order_status } from "../common/constant";
-import * as utils from "../lib/utils";
-import { updateOrderTotalDataAndUserLog } from "../functions/order/orderPlace";
-import { sendMessageToCustomer, notifyCanceledOrderToRestaurant } from "../functions/notify";
-import { Context } from "../models/TestType";
+import { order_status } from "../../common/constant";
+import * as utils from "../../lib/utils";
+import { updateOrderTotalDataAndUserLog } from "../order/orderPlace";
+import { sendMessageToCustomer, notifyCanceledOrderToRestaurant } from "../notify";
+import { Context } from "../../models/TestType";
 
 import { getStripeAccount, getStripeOrderRecord, getHash } from "./intent";
 

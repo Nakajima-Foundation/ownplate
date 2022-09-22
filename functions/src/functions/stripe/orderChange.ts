@@ -2,12 +2,12 @@ import Stripe from "stripe";
 import * as admin from "firebase-admin";
 import * as functions from "firebase-functions";
 
-import { order_status } from "../common/constant";
-import * as utils from "../lib/utils";
-import { orderAccounting, getGroupRestautantRef, createNewOrderData } from "../functions/order/orderCreated";
-import { sendMessageToCustomer } from "../functions/notify";
-import { costCal } from "../common/commonUtils";
-import { Context } from "../models/TestType";
+import { order_status } from "../../common/constant";
+import * as utils from "../../lib/utils";
+import { orderAccounting, getGroupRestautantRef, createNewOrderData } from "../order/orderCreated";
+import { sendMessageToCustomer } from "../notify";
+import { costCal } from "../../common/commonUtils";
+import { Context } from "../../models/TestType";
 import { getStripeAccount, getStripeOrderRecord, getPaymentMethodData, getHash } from "./intent";
 
 const multiple = utils.getStripeRegion().multiple; // 100 for USD, 1 for JPY
