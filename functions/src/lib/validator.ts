@@ -1,5 +1,5 @@
 import * as admin from "firebase-admin";
-import { orderCreatedData, orderUpdateData, orderPlacedData, customerInfoData, confirmIntentData, orderCancelData } from "./types";
+import { orderCreatedData, orderUpdateData, orderPlacedData, customerInfoData, confirmIntentData, orderCancelData, orderCancelPaymentData, orderChangeData, newOrderData } from "./types";
 import { isEmpty } from "./utils";
 
 import isNumeric from "validator/lib/isNumeric";
@@ -101,6 +101,11 @@ const validateTimestamp = (timestamp: admin.firestore.Timestamp) => {
 const validateBoolean = (value: boolean) => {
   return value === true || value === false;
 };
+const validateNewOrder = (values: newOrderData[]) => {
+  return values.every((data) => {
+    return validateFirebaseId(data.menuId) && validateInteger(data.index)
+  });
+}
 const validateArray = {
   firebaseId: validateFirebaseId,
   number: validateNumber,
@@ -111,6 +116,7 @@ const validateArray = {
   alphabet: validateAlphabet,
   timestamp: validateTimestamp,
   boolean: validateBoolean,
+  newOrder: validateNewOrder,
 };
 
 const validateData = (data, validator) => {
@@ -260,6 +266,49 @@ export const validateCancel = (data: orderCancelData) => {
     orderId: {
       type: "firebaseId",
       required: true,
+    },
+  };
+  return validateData(data, validator);
+};
+
+export const validateCancelPayment = (data: orderCancelPaymentData) => {
+  const validator = {
+    restaurantId: {
+      type: "firebaseId",
+      required: true,
+    },
+    orderId: {
+      type: "firebaseId",
+      required: true,
+    },
+  };
+  return validateData(data, validator);
+};
+
+
+export const validateOrderChange = (data: orderChangeData) => {
+  //const { restaurantId, orderId, newOrder, timezone, lng } = data;
+  const validator = {
+    restaurantId: {
+      type: "firebaseId",
+      required: true,
+    },
+    orderId: {
+      type: "firebaseId",
+      required: true,
+    },
+    newOrder: {
+      type: "newOrder",
+      required: true,
+    },
+    timezone: {
+      type: "string",
+      regex: /^([a-zA-Z]+)\/([a-zA-Z]+)$/,
+      required: true,
+    },
+    lng: {
+      type: "alphabet",
+      required: false,
     },
   };
   return validateData(data, validator);

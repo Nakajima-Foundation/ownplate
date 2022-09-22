@@ -6,7 +6,7 @@ import { sendMessageToCustomer } from "../notify";
 import { Context } from "../../models/TestType";
 
 import { getStripeAccount, getStripeOrderRecord, getHash } from "./intent";
-
+import { validateCancelPayment } from "../../lib/validator";
 import { orderCancelPaymentData } from "../../lib/types";
 
 const stripe = utils.get_stripe();
@@ -18,6 +18,11 @@ export const cancelStripePayment = async (db: admin.firestore.Firestore, data: o
   const { restaurantId, orderId, lng } = data;
   utils.required_params({ restaurantId, orderId }); // lng is optional
 
+  const validateResult = validateCancelPayment(data);
+  if (!validateResult.result) {
+    console.error("cancelStripePayment", validateResult.errors);
+    throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
+  }
   const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`);
   const stripeRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}/system/stripe`);
   const restaurant = await utils.get_restaurant(db, restaurantId);

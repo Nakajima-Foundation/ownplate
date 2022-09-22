@@ -13,7 +13,7 @@ describe("validator function", () => {
       timezone: "Asia/Tokyo",
       // lng?: string;
       //timeEstimated?: admin.firestore.Timestamp;
-    }
+    };
     const res = validator.validateOrderUpadte(data);
     res.result.should.equal(true);
   });
