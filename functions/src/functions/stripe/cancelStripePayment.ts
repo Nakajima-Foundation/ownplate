@@ -7,10 +7,12 @@ import { Context } from "../../models/TestType";
 
 import { getStripeAccount, getStripeOrderRecord, getHash } from "./intent";
 
+import { orderCancelPaymentData } from "../../lib/types";
+
 const stripe = utils.get_stripe();
 
 // This function is called by admin to cancel an exsting order
-export const cancelStripePayment = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext | Context) => {
+export const cancelStripePayment = async (db: admin.firestore.Firestore, data: orderCancelPaymentData, context: functions.https.CallableContext | Context) => {
   const uid = utils.validate_admin_auth(context);
 
   const { restaurantId, orderId, lng } = data;
@@ -63,7 +65,7 @@ export const cancelStripePayment = async (db: admin.firestore.Firestore, data: a
     });
     // sendSMS is always true
     if (result.order.sendSMS) {
-      await sendMessageToCustomer(db, lng, "msg_stripe_payment_canceled", restaurant.restaurantName, result.order, restaurantId, orderId, {}, true);
+      await sendMessageToCustomer(db, lng || "", "msg_stripe_payment_canceled", restaurant.restaurantName, result.order, restaurantId, orderId, {}, true);
     }
     return { success: true, payment: "stripe" };
   } catch (error) {

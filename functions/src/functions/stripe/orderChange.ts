@@ -10,15 +10,17 @@ import { costCal } from "../../common/commonUtils";
 import { Context } from "../../models/TestType";
 import { getStripeAccount, getStripeOrderRecord, getPaymentMethodData, getHash } from "./intent";
 
+import { orderChangeData, newOrderData } from "../../lib/types";
+
 const multiple = utils.getStripeRegion().multiple; // 100 for USD, 1 for JPY
 const stripe = utils.get_stripe();
 
-const getUpdateOrder = (newOrder, order, options, rawOptions) => {
+const getUpdateOrder = (newOrders: newOrderData[], order, options, rawOptions) => {
   const updateOrderData = {};
   const updateOptions = {};
   const updateRawOptions = {};
 
-  newOrder.forEach((data) => {
+  newOrders.forEach((data) => {
     const { menuId, index } = data;
     if (!utils.isEmpty(order[menuId]) && !utils.isEmpty(order[menuId][index])) {
       if (utils.isEmpty(updateOrderData[menuId])) {
@@ -40,7 +42,7 @@ const getUpdateOrder = (newOrder, order, options, rawOptions) => {
   };
 };
 
-export const orderChange = async (db: any, data: any, context: functions.https.CallableContext | Context) => {
+export const orderChange = async (db: any, data: orderChangeData, context: functions.https.CallableContext | Context) => {
   const ownerUid = utils.validate_admin_auth(context);
   const { restaurantId, orderId, newOrder, timezone, lng } = data;
   utils.required_params({ restaurantId, orderId, newOrder, timezone }); // lng is optional
@@ -160,7 +162,7 @@ export const orderChange = async (db: any, data: any, context: functions.https.C
       });
     }
     if (order.sendSMS) {
-      await sendMessageToCustomer(db, lng, "msg_order_updated", restaurantData.restaurantName, order, restaurantId, orderId, {}, true);
+      await sendMessageToCustomer(db, lng || "", "msg_order_updated", restaurantData.restaurantName, order, restaurantId, orderId, {}, true);
     }
     return {};
   } catch (error) {

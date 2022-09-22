@@ -73,3 +73,22 @@ export interface orderCancelData {
   orderId: string;
   lng?: string;
 }
+
+export interface newOrderData {
+  menuId: string;
+  index: string;
+};
+
+export interface orderChangeData {
+  restaurantId: string;
+  orderId: string;
+  newOrder: newOrderData[];
+  timezone: string;
+  lng?: string;
+}
+
+export interface orderCancelPaymentData {
+  restaurantId: string;
+  orderId: string;
+  lng?: string;
+}
