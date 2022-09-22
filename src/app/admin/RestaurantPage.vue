@@ -468,6 +468,18 @@
             />
           </div>
 
+          <!-- UberEats URL -->
+          <div>
+            <text-form
+              v-model="shopInfo.uberEatsUrl"
+              :error="errors['uberEatsUrl']"
+              titleKey="shopInfo.uberEatsUrl"
+              placeholder="editRestaurant.enterUberEatsUrl"
+              :maxlength="100"
+              :required="false"
+            />
+          </div>
+          
           <!-- Tax -->
           <div>
             <!-- Tax Input Required -->
