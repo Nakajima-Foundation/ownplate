@@ -270,6 +270,7 @@ export default defineComponent({
       nextLoad,
       tableData,
 
+      orderSelected,
       notFound: false,
     };
   },
