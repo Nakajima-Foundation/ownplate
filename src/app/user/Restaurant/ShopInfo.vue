@@ -129,6 +129,20 @@
           </a>
         </div>
 
+        <!-- Restaurant Uber Eats -->
+        <div v-if="hasUberEatsUrl" class="mt-2">
+          <a
+            target="_blank"
+            :href="shopInfo.uberEatsUrl"
+            class="inline-flex justify-center items-center"
+          >
+            <i class="fab fa-uber text-lg mr-2" style="color: #06C167"></i>
+            <div class="text-sm font-bold" style="color: #06C167">
+              {{ shopInfo.uberEatsUrl }}
+            </div>
+          </a>
+        </div>
+
         <!-- Transactions Act -->
         <div class="mt-2">
           <transactions-act
@@ -351,6 +365,11 @@ export default defineComponent({
         props.shopInfo.instagramUrl && validUrl(props.shopInfo.instagramUrl)
       );
     });
+    const hasUberEatsUrl = computed(() => {
+      return (
+        props.shopInfo.uberEatsUrl && validUrl(props.shopInfo.uberEatsUrl)
+      );
+    });
     const region = ownPlateConfig.region;
 
     const stripeAccount = computed(() => {
@@ -416,6 +435,7 @@ export default defineComponent({
       hasUrl,
       hasLineUrl,
       hasInstagramUrl,
+      hasUberEatsUrl,
       region,
       showPayment,
       stripeAccount,
