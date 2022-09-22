@@ -43,7 +43,7 @@ const getUpdateOrder = (newOrder, order, options, rawOptions) => {
 export const orderChange = async (db: any, data: any, context: functions.https.CallableContext | Context) => {
   const ownerUid = utils.validate_admin_auth(context);
   const { restaurantId, orderId, newOrder, timezone, lng } = data;
-  utils.required_params({ restaurantId, orderId, newOrder, timezone }); // lng, timeEstimated is optional
+  utils.required_params({ restaurantId, orderId, newOrder, timezone }); // lng is optional
 
   const restaurantRef = db.doc(`restaurants/${restaurantId}`);
   const restaurantData = (await restaurantRef.get()).data() || {};

@@ -10,6 +10,7 @@ import { costCal } from "../../common/commonUtils";
 
 import { getStripeAccount, getPaymentMethodData, getHash } from "./intent";
 import { validateOrderPlaced, validateCustomer } from "../../lib/validator";
+import { orderPlacedData } from "../../lib/types";
 
 const multiple = utils.getStripeRegion().multiple; // 100 for USD, 1 for JPY
 const stripe = utils.get_stripe();
@@ -25,7 +26,7 @@ const getOrderData = async (transaction: any, orderRef: any) => {
 };
 
 // This function is called by user to create a "payment intent" (to start the payment transaction)
-export const create = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => {
+export const create = async (db: admin.firestore.Firestore, data: orderPlacedData, context: functions.https.CallableContext) => {
   const customerUid = utils.validate_auth(context);
 
   const { restaurantId, orderId, tip, sendSMS, timeToPickup, lng, memo, customerInfo } = data; // orderPlace
