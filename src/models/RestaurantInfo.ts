@@ -23,6 +23,7 @@ export interface RestaurantInfoData {
 
   lineUrl: string;
   instagramUrl: string;
+  uberEatsUrl: string;
   orderNotice: string;
   orderThanks: string;
   phoneCall: boolean;

@@ -1029,6 +1029,7 @@ export default defineComponent({
     });
     const availableOrderChange = computed(() => {
       return (
+        !props.isInMo &&
         orderInfo.value &&
         orderInfo.value.status === order_status.order_placed &&
         isNull(orderInfo.value.orderUpdatedAt)

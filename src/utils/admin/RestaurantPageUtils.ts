@@ -43,6 +43,7 @@ export const getEditShopInfo = (shopInfo: RestaurantInfoData) => {
     url: shopInfo.url,
     lineUrl: shopInfo.lineUrl,
     instagramUrl: shopInfo.instagramUrl,
+    uberEatsUrl: shopInfo.uberEatsUrl,
     introduction: shopInfo.introduction,
     enablePreline: shopInfo.enablePreline,
     orderNotice: shopInfo.orderNotice,
@@ -90,6 +91,7 @@ export const defaultShopInfo = {
   url: "",
   lineUrl: "",
   instagramUrl: "",
+  uberEatsUrl: "",
   introduction: "",
   orderNotice: "",
   orderThanks: "",
@@ -214,6 +216,10 @@ export const shopInfoValidator = (
   err["instagramUrl"] =
     shopInfo.instagramUrl && !ex.test(shopInfo.instagramUrl)
       ? ["validationError.instagramUrl.invalidUrl"]
+      : [];
+  err["uberEatsUrl"] =
+    shopInfo.uberEatsUrl && !ex.test(shopInfo.uberEatsUrl)
+      ? ["validationError.uberEatsUrl.invalidUrl"]
       : [];
 
   const errorTime: ShopInfoBussinessTimeError = {};
