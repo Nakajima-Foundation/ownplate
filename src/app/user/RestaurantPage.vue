@@ -51,7 +51,7 @@
             <div class="mx-6 lg:mx-0">
               <!-- Restaurant Profile Photo and Name -->
               <div class="mt-4">
-                <shop-header :shopInfo="shopInfo"></shop-header>
+                <ShopHeader :shopInfo="shopInfo"></ShopHeader>
               </div>
 
               <!-- Restaurant Descriptions -->
@@ -81,7 +81,7 @@
                   {{
                     shopInfo.isEC
                       ? $t("shopInfo.ecShopDetails")
-                      : $t("shopInfo.restaurantDetails")
+                      : (isInMo ? $t("mobileOrder.storeDetails") : $t("shopInfo.restaurantDetails"))
                   }}
                 </div>
 
@@ -162,18 +162,18 @@
                           :class="key === 0 ? '' : 'mt-6'"
                           :id="item.id"
                           @click="openCategory"
-                          >
+                        >
                           <i class="material-icons mr-2">menu_book</i>
                           <span>
                             {{ item.name }}
                           </span>
                         </div>
                       </div>
-                      
+
                       <div
                         v-if="item._dataType === 'menu'"
                         :key="[subCategoryKey, item.id].join('_')"
-                        >
+                      >
                         <Menu
                           :key="[subCategoryKey, 'item', item.id].join('_')"
                           :item="item"
@@ -181,8 +181,8 @@
                           :quantities="orders[item.id] || [0]"
                           :selectedOptions="selectedOptions[item.id]"
                           :initialOpenMenuFlag="
-                                                (orders[item.id] || []).length > 0
-                                                "
+                            (orders[item.id] || []).length > 0
+                          "
                           :shopInfo="shopInfo"
                           :menuLinkBathPath="menuLinkBathPath"
                           :isOpen="menuId === item.id"
@@ -190,19 +190,22 @@
                           :mode="mode"
                           :moSoldOut="false"
                           @didOrderdChange="didOrderdChange($event)"
-                          ></Menu>
+                        ></Menu>
                       </div>
                     </template>
                   </div>
                 </template>
                 <template v-else>
                   <!-- Menu Items for Mo -->
-                  <div class="grid grid-cols-3 space-y-2" :key="subCategoryKey">
+                  <div
+                    class="mt-3 grid grid-cols-3 gap-2"
+                    :key="subCategoryKey"
+                  >
                     <template v-for="(item, key) in itemLists">
                       <div
                         v-if="item._dataType === 'menu'"
                         :key="[subCategoryKey, item.id].join('_')"
-                        >
+                      >
                         <MenuMo
                           :key="[subCategoryKey, 'item', item.id].join('_')"
                           :item="item"
@@ -210,8 +213,8 @@
                           :quantities="orders[item.id] || [0]"
                           :selectedOptions="selectedOptions[item.id]"
                           :initialOpenMenuFlag="
-                                                (orders[item.id] || []).length > 0
-                                                "
+                            (orders[item.id] || []).length > 0
+                          "
                           :shopInfo="shopInfo"
                           :menuLinkBathPath="menuLinkBathPath"
                           :isOpen="menuId === item.id"
@@ -219,7 +222,7 @@
                           :mode="mode"
                           :moSoldOut="false"
                           @didOrderdChange="didOrderdChange($event)"
-                          ></MenuMo>
+                        ></MenuMo>
                       </div>
                     </template>
                   </div>
@@ -427,7 +430,9 @@ export default defineComponent({
           ? document.title
           : [
               this.shopInfo?.restaurantName || "",
-              (this.isInMo ? moTitle : ownPlateConfig.restaurantPageTitle || this.defaultTitle),
+              this.isInMo
+                ? moTitle
+                : ownPlateConfig.restaurantPageTitle || this.defaultTitle,
             ].join(" / "),
     };
   },
@@ -509,7 +514,6 @@ export default defineComponent({
       menuObj,
       ctx
     );
-    console.log(menuPickupData, availableDays);
 
     onMounted(() => {
       // Check if we came here as the result of "Edit Items"
@@ -899,7 +903,6 @@ export default defineComponent({
       menuPickupData,
 
       isInMo,
-
     };
   },
 });

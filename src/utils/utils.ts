@@ -46,14 +46,13 @@ export const getRestaurantId = (root: any) => {
   return root.$route.params.restaurantId;
 };
 
-/* 
-    resizedProfileImage(restaurant, size) {
-      return (
-        (restaurant.images?.profile?.resizedImages || {})[size] ||
-        restaurant.restProfilePhoto
-      );
-    },
-*/
+export const resizedProfileImage = (restaurant: RestaurantInfoData, size: string) => {
+  return (
+    (restaurant.images?.profile?.resizedImages || {})[size] ||
+      restaurant.restProfilePhoto
+  );
+};
+
 export const arrayChunk = <T>(arr: T[], size = 1) => {
   const array = [...arr];
   return array.reduce((current: T[][], value: T, index: number) => {
@@ -282,6 +281,21 @@ const displayOption = (option, shopInfo, item) => {
 };
 
 */
+
+export const priceWithTax = (shopInfo: RestaurantInfoData, menu: MenuData) => {
+  return Math.round(
+    (() => {
+      if (shopInfo.inclusiveTax) {
+        return menu.price;
+      }
+      if (menu.tax === "alcohol") {
+        return (1 + shopInfo.alcoholTax * 0.01) * menu.price;
+      }
+      return (1 + shopInfo.foodTax * 0.01) * menu.price;
+    })()
+  );
+};
+
 
 export const getPartner = (shopOwner: ShopOwnerData) => {
   return ((shopOwner || {}).partners || []).map((p: string) => {
@@ -706,4 +720,11 @@ export const useNationalPhoneNumber = (shopInfo: RestaurantInfoData) => {
 
 export const notFoundResponse = {
   notFound: true,
+};
+
+export const smallImageErrorHandler = (e: any) => {
+  e.target.src = '/images/noimage_small.png';
+};
+export const imageErrorHandler = (e: any) => {
+  e.target.src = '/images/noimage.png';
 };

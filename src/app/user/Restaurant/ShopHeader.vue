@@ -15,17 +15,29 @@
 </template>
 
 <script>
-export default {
+import {
+  defineComponent,
+  computed,
+} from "@vue/composition-api";
+
+import {
+  resizedProfileImage
+} from "@/utils/utils";
+
+export default defineComponent({
   props: {
     shopInfo: {
       type: Object,
       required: true,
     },
   },
-  computed: {
-    profileImage() {
-      return this.resizedProfileImage(this.shopInfo, "600");
-    },
+  setup(props) {
+    const profileImage = computed(() => {
+      return resizedProfileImage(props.shopInfo, "600");
+    });
+    return {
+      profileImage
+    };
   },
-};
+});
 </script>

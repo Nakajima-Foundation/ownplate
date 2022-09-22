@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper" @click="enableSound()">
+  <div class="flex-col flex min-h-screen" @click="enableSound()">
     <!-- Notification Banner -->
     <NotificationBanner />
 
@@ -10,7 +10,7 @@
     <SideMenuWrapper ref="sideMenu" />
 
     <!-- Main -->
-    <div class="main">
+    <div class="flex-1">
       <div>
         <div
           v-if="underConstruction"
