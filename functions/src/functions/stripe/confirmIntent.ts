@@ -1,9 +1,9 @@
 import * as admin from "firebase-admin";
 import * as functions from "firebase-functions";
 
-import { order_status, next_transitions, order_status_keys, timeEventMapping } from "../common/constant";
-import * as utils from "../lib/utils";
-import { sendMessageToCustomer } from "../functions/notify";
+import { order_status, next_transitions, order_status_keys, timeEventMapping } from "../../common/constant";
+import * as utils from "../../lib/utils";
+import { sendMessageToCustomer } from "../notify";
 
 import { stripe, getStripeAccount, getStripeOrderRecord, getHash } from "./intent";
 

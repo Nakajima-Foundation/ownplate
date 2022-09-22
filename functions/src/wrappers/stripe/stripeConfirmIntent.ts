@@ -1,7 +1,7 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 
-import { confirm } from "../../stripe/confirmIntent";
+import { confirm } from "../../functions/stripe/confirmIntent";
 import { allowInvalidAppCheckToken } from "../firebase";
 
 const db = admin.firestore();

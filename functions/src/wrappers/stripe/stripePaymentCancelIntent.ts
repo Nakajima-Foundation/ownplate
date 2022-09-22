@@ -1,7 +1,7 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 
-import { cancelStripePayment } from "../../stripe/cancelStripePayment";
+import { cancelStripePayment } from "../../functions/stripe/cancelStripePayment";
 import { allowInvalidAppCheckToken } from "../firebase";
 
 const db = admin.firestore();

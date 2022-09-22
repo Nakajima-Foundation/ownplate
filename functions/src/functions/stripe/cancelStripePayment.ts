@@ -1,9 +1,9 @@
 import * as admin from "firebase-admin";
 import * as functions from "firebase-functions";
 
-import * as utils from "../lib/utils";
-import { sendMessageToCustomer } from "../functions/notify";
-import { Context } from "../models/TestType";
+import * as utils from "../../lib/utils";
+import { sendMessageToCustomer } from "../notify";
+import { Context } from "../../models/TestType";
 
 import { getStripeAccount, getStripeOrderRecord, getHash } from "./intent";
 

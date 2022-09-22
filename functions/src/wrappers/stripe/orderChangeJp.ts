@@ -1,7 +1,7 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 
-import { orderChange } from "../../stripe/orderChange";
+import { orderChange } from "../../functions/stripe/orderChange";
 import { allowInvalidAppCheckToken } from "../firebase";
 
 const db = admin.firestore();

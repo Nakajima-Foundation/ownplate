@@ -151,10 +151,6 @@ export const cleanObject = (obj: { [key: string]: any }) => {
   }, {});
 };
 
-export const forcedError = (key: string, ctx: any) => {
-  const debug = ctx.root.$route.query.error;
-  return debug === key ? "---forced-error---" : "";
-};
 
 /*
     },

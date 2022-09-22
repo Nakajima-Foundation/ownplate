@@ -1,7 +1,7 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 
-import * as StripeReceipt from "../../stripe/receipt";
+import * as StripeReceipt from "../../functions/stripe/receipt";
 import { allowInvalidAppCheckToken } from "../firebase";
 
 const db = admin.firestore();

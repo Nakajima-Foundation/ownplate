@@ -145,13 +145,12 @@ export default {
     async createToken() {
       if (!this.useStoredCard) {
         const { token } = await this.stripe.createToken(this.cardElement);
-        const tokenId = token.id + this.forcedError("token");
-        //console.log("***toke", token, token.card.last4);
+        const tokenId = token.id;
         const { data } = await stripeUpdateCustomer({
           tokenId,
           reuse: this.reuse,
         });
-        console.log("stripeUpdateCustomer", data, tokenId);
+        // console.log("stripeUpdateCustomer", data, tokenId);
       }
     },
     configureStripe() {

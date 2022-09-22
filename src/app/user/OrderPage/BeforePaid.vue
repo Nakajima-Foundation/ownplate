@@ -571,9 +571,9 @@ export default {
         await this.$refs.stripe.createToken();
         const { data } = await stripeCreateIntent({
           timeToPickup,
-          restaurantId: this.restaurantId() + this.forcedError("intent"),
+          restaurantId: this.restaurantId(),
           orderId: this.orderId,
-          description: `${this.orderName} ${this.shopInfo.restaurantName} ${this.shopInfo.phoneNumber}`,
+          description: '', // no longer used TOTO DELETE
           sendSMS: this.sendSMS,
           tip: this.tip || 0,
           memo: this.memo || "",
@@ -628,7 +628,7 @@ export default {
       try {
         this.isPlacing = true;
         const { data } = await orderPlace({
-          restaurantId: this.restaurantId() + this.forcedError("place"),
+          restaurantId: this.restaurantId(),
           timeToPickup,
           orderId: this.orderId,
           sendSMS: this.sendSMS,
