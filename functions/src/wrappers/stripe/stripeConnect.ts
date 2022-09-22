@@ -1,7 +1,7 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 
-import * as StripeOAuth from "../../stripe/oauth";
+import * as StripeOAuth from "../../functions/stripe/oauth";
 import { allowInvalidAppCheckToken } from "../firebase";
 
 const db = admin.firestore();

@@ -1,5 +1,5 @@
 import * as admin from "firebase-admin";
-import { orderCreatedData, orderUpdateData, orderPlacedData, CustomerInfoData } from "./types";
+import { orderCreatedData, orderUpdateData, orderPlacedData, customerInfoData, confirmIntentData, orderCancelData } from "./types";
 import { isEmpty } from "./utils";
 
 import isNumeric from 'validator/lib/isNumeric';
@@ -219,7 +219,49 @@ export const validateOrderPlaced = (data: orderPlacedData) => {
 };
 
 
-export const validateCustomer = (data: CustomerInfoData) => {
+export const validateCustomer = (data: customerInfoData) => {
   const validator = {};
+  return validateData(data, validator);
+};
+
+// stripe
+export const validateConfirmIntent = (data: confirmIntentData) => {
+  const validator = {
+    restaurantId: {
+      type: "firebaseId",
+      required: true,
+    },
+    orderId: {
+      type: "firebaseId",
+      required: true,
+    },
+    timezone: {
+      type: "string",
+      regex: /^([a-zA-Z]+)\/([a-zA-Z]+)$/,
+      required: true,
+    },
+    lng: {
+      type: "alphabet",
+      required: false,
+    },
+    timeEstimated: {
+      type: "timestamp",
+      required: false,
+    },
+  };
+  return validateData(data, validator);
+};
+
+export const validateCancel = (data: orderCancelData) => {
+  const validator = {
+    restaurantId: {
+      type: "firebaseId",
+      required: true,
+    },
+    orderId: {
+      type: "firebaseId",
+      required: true,
+    },
+  };
   return validateData(data, validator);
 };

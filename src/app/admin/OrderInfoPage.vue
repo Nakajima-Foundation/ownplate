@@ -606,7 +606,6 @@ import {
   doc2data,
   useAdminUids,
   useRestaurantId,
-  forcedError,
   notFoundResponse,
   stripeRegion,
 } from "@/utils/utils";
@@ -1073,7 +1072,7 @@ export default defineComponent({
         ctx.root.$store.commit("setLoading", true);
         const params = {
           timezone,
-          restaurantId: restaurantId.value + forcedError("confirm", ctx),
+          restaurantId: restaurantId.value,
           orderId: orderId.value,
         };
         if (timeOffset.value > 0) {
@@ -1111,7 +1110,7 @@ export default defineComponent({
       try {
         ctx.root.$store.commit("setLoading", true);
         const params = {
-          restaurantId: restaurantId.value + forcedError("update", ctx),
+          restaurantId: restaurantId.value,
           orderId: orderId.value,
           status: newStatus,
           timezone,
@@ -1148,7 +1147,7 @@ export default defineComponent({
       try {
         updating.value = "order_canceled";
         const { data } = await stripeCancelIntent({
-          restaurantId: restaurantId.value + forcedError("cancel", ctx),
+          restaurantId: restaurantId.value,
           orderId: orderId.value,
         });
         sendRedunded();
@@ -1173,7 +1172,7 @@ export default defineComponent({
             changing.value = true;
             ctx.root.$store.commit("setLoading", true);
             const params = {
-              restaurantId: restaurantId.value + forcedError("update", ctx),
+              restaurantId: restaurantId.value,
               orderId: orderId.value,
               newOrder: edited_available_order_info.value,
               timezone,
@@ -1202,7 +1201,7 @@ export default defineComponent({
       try {
         updating.value = "payment_canceled";
         const { data } = await stripePaymentCancelIntent({
-          restaurantId: restaurantId.value + forcedError("cancel", ctx),
+          restaurantId: restaurantId.value,
           orderId: orderId.value,
         });
         console.log("paymentCancel", data);
