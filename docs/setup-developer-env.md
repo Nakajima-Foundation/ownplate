@@ -109,7 +109,7 @@ VUE_APP_CIRCLE_SHA1=123123 yarn run start
 
 # 10. Access your local-server
 
-# App Check debug token の登録
+# 11. App Check debug token の登録
 
 Open developer console.
 
