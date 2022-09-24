@@ -40,15 +40,6 @@ span {
   margin-bottom: 0;
 }
 
-.op-button {
-  cursor: pointer;
-  display: inline-flex;
-  min-height: 36px;
-  align-items: center;
-  justify-content: center;
-}
-
-
 /* Overwrites for Tailwind CSS */
 img,
 svg,
