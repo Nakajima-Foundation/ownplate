@@ -241,9 +241,11 @@
       :on-cancel="closeImage"
     >
       <div class="px-2 text-center" @click.stop="closeImage()">
-        <img :src="image" class="rounded-lg shadow-lg"
-             @error="imageErrorHandler"
-             />
+        <img
+          :src="image"
+          class="rounded-lg shadow-lg"
+          @error="imageErrorHandler"
+        />
         <div class="text-left text-white text-base font-bold mt-4">
           {{ title }}
         </div>

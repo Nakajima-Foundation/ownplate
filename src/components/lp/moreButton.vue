@@ -10,7 +10,9 @@
           to=""
         >
           <span class="pl-4 pr-4">
-            <span class="text-op-teal font-bold">{{ $t("lp.moreDetails") }}</span>
+            <span class="text-op-teal font-bold">{{
+              $t("lp.moreDetails")
+            }}</span>
           </span>
         </b-button>
       </div>

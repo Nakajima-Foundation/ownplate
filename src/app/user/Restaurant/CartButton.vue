@@ -116,9 +116,7 @@
             </div>
           </div>
 
-          <div
-            class="is-inline-flex justify-center items-center text-white"
-          >
+          <div class="is-inline-flex justify-center items-center text-white">
             <div class="text-xl font-bold mr-2">
               {{ $t(buttonText) }}
             </div>

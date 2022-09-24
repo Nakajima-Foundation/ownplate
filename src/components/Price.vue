@@ -9,14 +9,9 @@
 </template>
 
 <script>
-import {
-  defineComponent,
-  computed,
-} from "@vue/composition-api";
+import { defineComponent, computed } from "@vue/composition-api";
 
-import {
-  priceWithTax,
-} from "@/utils/utils";
+import { priceWithTax } from "@/utils/utils";
 
 export default defineComponent({
   name: "Price",
@@ -34,7 +29,7 @@ export default defineComponent({
     const price = computed(() => {
       return priceWithTax(props.shopInfo, props.menu);
     });
-    
+
     return {
       price,
     };

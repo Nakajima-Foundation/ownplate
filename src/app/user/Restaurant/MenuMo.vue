@@ -298,7 +298,7 @@ export default defineComponent({
     const price = computed(() => {
       return priceWithTax(props.shopInfo, props.item);
     });
-      
+
     watch(openMenuFlag, () => {
       if (openMenuFlag.value) {
         analyticsUtil.sendViewItem(props.item, props.shopInfo, restaurantId);

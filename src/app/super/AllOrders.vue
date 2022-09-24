@@ -64,7 +64,9 @@
           >
             <b-button class="h-9 rounded-full mt-4">
               <span class="pl-4 pr-4">
-                <i class="material-icons text-op-teal !text-2xl mr-2">save_alt</i>
+                <i class="material-icons text-op-teal !text-2xl mr-2"
+                  >save_alt</i
+                >
                 <span class="text-op-teal font-bold">{{
                   $t("admin.report.download-csv")
                 }}</span>

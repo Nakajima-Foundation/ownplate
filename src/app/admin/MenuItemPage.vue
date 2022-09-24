@@ -246,7 +246,7 @@
                     :src="itemPhoto"
                     style="width: 128px; height: 128px"
                     @error="smallImageErrorHandler"
-                    />
+                  />
                 </div>
                 <div class="text-center text-xs mt-1">
                   {{ $t("editCommon.current") }}
