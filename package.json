@@ -22,6 +22,7 @@
     "@line/liff": "^2.18.2",
     "@sentry/tracing": "^6.19.4",
     "@sentry/vue": "^6.19.4",
+    "@tailwindcss/line-clamp": "^0.4.2",
     "@vue/composition-api": "^1.4.9",
     "buefy": "^0.9.19",
     "caniuse-lite": "^1.0.30001393",
