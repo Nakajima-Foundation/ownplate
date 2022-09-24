@@ -6,16 +6,16 @@
         <img :src="coverMobile" class="w-full lg:hidden" />
         <img
           src="/LP-Cover-Tablet-1.jpg"
-          class="hidden lg:inline-block w-full"
+          class="hidden w-full lg:inline-block"
         />
       </div>
 
       <!-- Tagline -->
-      <div class="text-white text-center text-2xl font-bold py-8 lg:text-4xl">
+      <div class="py-8 text-center text-2xl font-bold text-white lg:text-4xl">
         {{ $t("lp.enjoyOmochilaeri") }}
       </div>
 
-      <div class="block h-1 w-72 bg-white m-auto"></div>
+      <div class="m-auto block h-1 w-72 bg-white"></div>
 
       <!-- Features -->
       <div>
@@ -26,7 +26,7 @@
         />
         <img
           style="height: 416px"
-          class="hidden lg:inline-block object-cover"
+          class="hidden object-cover lg:inline-block"
           :src="`/${this.featureHeroTablet}`"
         />
       </div>

@@ -12,35 +12,35 @@
     <!-- Unset Warning -->
     <div
       v-if="unsetWarning && isOwner"
-      class="mx-6 mt-6 bg-red-700 bg-opacity-10 rounded-lg p-4"
+      class="mx-6 mt-6 rounded-lg bg-red-700 bg-opacity-10 p-4"
     >
-      <span class="text-red-700 text-sm">{{
+      <span class="text-sm text-red-700">{{
         $t("admin.payments.unsetWarning")
       }}</span>
     </div>
 
     <!-- Messages -->
     <div
-      class="mt-6 mx-6 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12"
+      class="mx-6 mt-6 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12"
       v-if="messages.length > 0"
     >
       <div>
         <div class="pb-2">
-          <span class="text-xl font-bold text-black text-opacity-40 mb-2">
+          <span class="mb-2 text-xl font-bold text-black text-opacity-40">
             {{ $t("admin.messages.title") }}
           </span>
         </div>
         <div
           v-for="(message, k) in messages"
           :key="k"
-          class="border-2 border-solid border-op-teal rounded-lg p-6"
+          class="rounded-lg border-2 border-solid border-op-teal p-6"
         >
           <MessageCard :message="message" />
         </div>
       </div>
     </div>
 
-    <div class="mt-2 mx-6 lg:text-center">
+    <div class="mx-6 mt-2 lg:text-center">
       <ToggleSwitch
         :toggleState="simpleMode"
         @toggleFunction="switchSimpleMode()"
@@ -50,11 +50,11 @@
     </div>
 
     <!-- Restaurants and Right Settin Section -->
-    <div class="mt-2 mx-6 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12">
+    <div class="mx-6 mt-2 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12">
       <!-- Restaurants -->
       <div>
         <div class="pb-2">
-          <span class="text-xl font-bold text-black text-opacity-40 mb-2">
+          <span class="mb-2 text-xl font-bold text-black text-opacity-40">
             {{ $t("admin.restaurant") }}
           </span>
         </div>
@@ -63,21 +63,21 @@
           <!-- No Restaurant -->
           <div v-if="existsRestaurant === null"></div>
           <div v-else-if="!existsRestaurant">
-            <div class="border-2 border-solid border-op-teal rounded-lg p-6">
+            <div class="rounded-lg border-2 border-solid border-op-teal p-6">
               <div class="text-center text-base font-bold text-op-teal">
                 {{ $t("admin.addYourRestaurant") }}
               </div>
 
-              <div class="text-center mt-4">
+              <div class="mt-4 text-center">
                 <b-button
                   @click="handleNew"
                   :loading="isCreating"
                   class="b-reset-tw"
                 >
                   <div
-                    class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
+                    class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
                   >
-                    <i class="material-icons text-lg text-op-teal mr-2">add</i>
+                    <i class="material-icons mr-2 text-lg text-op-teal">add</i>
                     <span class="text-sm font-bold text-op-teal">{{
                       $t("admin.addNewRestaurant")
                     }}</span>
@@ -93,7 +93,7 @@
             <div v-if="isOwner && restaurantLists.length > 1" class="mb-2">
               <router-link :to="'/admin/orders/'">
                 <div
-                  class="bg-black bg-opacity-5 rounded-lg px-4 py-3 text-center"
+                  class="rounded-lg bg-black bg-opacity-5 px-4 py-3 text-center"
                 >
                   <span class="text-sm font-bold">{{
                     $t("admin.viewAllOrders")
@@ -139,16 +139,16 @@
             </div>
 
             <!-- Add Restaurant -->
-            <div v-if="existsRestaurant && isOwner" class="text-center mt-4">
+            <div v-if="existsRestaurant && isOwner" class="mt-4 text-center">
               <b-button
                 @click="handleNew"
                 :loading="isCreating"
                 class="b-reset-tw"
               >
                 <div
-                  class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
+                  class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
                 >
-                  <i class="material-icons text-lg text-op-teal mr-2">add</i>
+                  <i class="material-icons mr-2 text-lg text-op-teal">add</i>
                   <span class="text-sm font-bold text-op-teal">{{
                     $t("admin.addNewRestaurant")
                   }}</span>
@@ -180,7 +180,7 @@
       </div>
       <!-- End of Right Section -->
     </div>
-    <div class="bg-ownplate-yellow p-4 mt-6">
+    <div class="mt-6 bg-ownplate-yellow p-4">
       <!-- Footer -->
       <Footer />
     </div>

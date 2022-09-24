@@ -5,7 +5,7 @@
     scroll="keep"
     @close="closeNotificationSettings"
   >
-    <div class="mx-2 my-6 p-6 bg-white shadow-lg rounded-lg text-left">
+    <div class="mx-2 my-6 rounded-lg bg-white p-6 text-left shadow-lg">
       <!-- Title -->
       <div class="text-xl font-bold text-black text-opacity-40">
         {{ $t("admin.order.notification") }}
@@ -20,7 +20,7 @@
 
         <!-- Settings -->
         <div class="mt-6">
-          <div class="text-sm font-bold text-black text-opacity-60 mb-2">
+          <div class="mb-2 text-sm font-bold text-black text-opacity-60">
             {{ $t("admin.order.notificationSettings") }}
           </div>
 
@@ -28,9 +28,9 @@
           <a @click="soundToggle()">
             <div
               v-if="notificationConfig.soundOn"
-              class="inline-flex justify-center items-center px-4 h-9 rounded-full bg-green-600 bg-opacity-10"
+              class="inline-flex h-9 items-center justify-center rounded-full bg-green-600 bg-opacity-10 px-4"
             >
-              <i class="material-icons text-lg text-green-600 mr-2"
+              <i class="material-icons mr-2 text-lg text-green-600"
                 >volume_up</i
               >
               <div class="text-sm font-bold text-green-600">
@@ -40,9 +40,9 @@
 
             <div
               v-else
-              class="inline-flex justify-center items-center px-4 h-9 rounded-full bg-red-700 bg-opacity-10"
+              class="inline-flex h-9 items-center justify-center rounded-full bg-red-700 bg-opacity-10 px-4"
             >
-              <i class="material-icons text-lg text-red-700 mr-2">volume_off</i>
+              <i class="material-icons mr-2 text-lg text-red-700">volume_off</i>
               <div class="text-sm font-bold text-red-700">
                 {{ $t("admin.order.soundOff") }}
               </div>
@@ -52,15 +52,15 @@
           <!-- Sound ON Settings -->
           <div
             v-if="notificationConfig.soundOn"
-            class="border-2 border-black border-opacity-10 rounded-lg mt-2 ml-4 p-4"
+            class="mt-2 ml-4 rounded-lg border-2 border-black border-opacity-10 p-4"
           >
             <!-- Infinity Notification ON/OFF -->
             <a @click="infinityNotificationToggle()" class="inline-block">
               <div v-if="notificationConfig.infinityNotification">
                 <div
-                  class="inline-flex justify-center items-center px-4 h-9 rounded-full bg-green-600 bg-opacity-10 mr-2 mb-2"
+                  class="mr-2 mb-2 inline-flex h-9 items-center justify-center rounded-full bg-green-600 bg-opacity-10 px-4"
                 >
-                  <i class="material-icons text-lg text-green-600 mr-2"
+                  <i class="material-icons mr-2 text-lg text-green-600"
                     >repeat</i
                   >
                   <span class="text-sm font-bold text-green-600">
@@ -69,10 +69,10 @@
                 </div>
 
                 <div
-                  class="inline-flex justify-center items-center px-4 h-9 rounded-full bg-black bg-opacity-5 mr-2 mb-2"
+                  class="mr-2 mb-2 inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
                 >
                   <i
-                    class="material-icons text-lg text-black text-opacity-30 mr-2"
+                    class="material-icons mr-2 text-lg text-black text-opacity-30"
                     >looks_one</i
                   >
                   <span class="text-sm font-bold text-black text-opacity-30">
@@ -83,10 +83,10 @@
 
               <div v-else>
                 <div
-                  class="inline-flex justify-center items-center px-4 h-9 rounded-full bg-black bg-opacity-5 mr-2 mb-2"
+                  class="mr-2 mb-2 inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
                 >
                   <i
-                    class="material-icons text-lg text-black text-opacity-30 mr-2"
+                    class="material-icons mr-2 text-lg text-black text-opacity-30"
                     >repeat</i
                   >
                   <span class="text-sm font-bold text-black text-opacity-30">
@@ -95,9 +95,9 @@
                 </div>
 
                 <div
-                  class="inline-flex justify-center items-center px-4 h-9 rounded-full bg-green-600 bg-opacity-10 mr-2 mb-2"
+                  class="mr-2 mb-2 inline-flex h-9 items-center justify-center rounded-full bg-green-600 bg-opacity-10 px-4"
                 >
-                  <i class="material-icons text-lg text-green-600 mr-2"
+                  <i class="material-icons mr-2 text-lg text-green-600"
                     >looks_one</i
                   >
                   <span class="text-sm font-bold text-green-600">
@@ -108,7 +108,7 @@
             </a>
 
             <!-- Sound Type and Test -->
-            <div class="flex items-center mt-2">
+            <div class="mt-2 flex items-center">
               <b-select v-model="soundIndex" class="mr-2">
                 <option
                   v-for="(soundFile, index) in soundFiles"
@@ -120,10 +120,10 @@
               </b-select>
 
               <a
-                class="inline-flex justify-center items-center px-4 h-9 rounded-full bg-black bg-opacity-5"
+                class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
                 @click="delayedSoundPlay"
               >
-                <i class="material-icons text-lg text-op-teal mr-2"
+                <i class="material-icons mr-2 text-lg text-op-teal"
                   >play_arrow</i
                 >
                 <span class="text-sm font-bold text-op-teal">
@@ -137,10 +137,10 @@
           <div class="mt-4">
             <router-link
               v-if="isLineEnabled"
-              class="inline-flex justify-center items-center px-4 h-9 rounded-full bg-black bg-opacity-5"
+              class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
               :to="`/admin/restaurants/${restaurantId()}/line`"
             >
-              <i class="fab fa-line text-2xl text-op-teal mr-2" />
+              <i class="fab fa-line mr-2 text-2xl text-op-teal" />
               <span class="text-sm font-bold text-op-teal">
                 {{ $t("admin.order.line") }}
               </span>
@@ -153,7 +153,7 @@
       <div class="mt-6 text-center">
         <a
           @click="closeNotificationSettings()"
-          class="inline-flex justify-center items-center h-12 rounded-full px-6 bg-black bg-opacity-5"
+          class="inline-flex h-12 items-center justify-center rounded-full bg-black bg-opacity-5 px-6"
           style="min-width: 8rem"
         >
           <div class="text-base font-bold text-black text-opacity-60">

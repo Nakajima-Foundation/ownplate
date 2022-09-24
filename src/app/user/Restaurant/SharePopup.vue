@@ -1,8 +1,8 @@
 <template>
   <div class="is-inline-block">
     <!-- Share  Buttons -->
-    <a @click="openShare()" class="inline-flex justify-center items-center">
-      <i class="material-icons text-lg text-op-teal mr-2">launch</i>
+    <a @click="openShare()" class="inline-flex items-center justify-center">
+      <i class="material-icons mr-2 text-lg text-op-teal">launch</i>
       <div class="text-sm font-bold text-op-teal">
         {{ $t("shopInfo.share") }}
       </div>
@@ -15,7 +15,7 @@
       scroll="keep"
       style="text-align: initial"
     >
-      <div class="mx-2 my-6 p-6 bg-white shadow-lg rounded-lg">
+      <div class="mx-2 my-6 rounded-lg bg-white p-6 shadow-lg">
         <!-- Title -->
         <div class="text-xl font-bold text-black text-opacity-40">
           {{ $t("shopInfo.share") }}
@@ -23,14 +23,14 @@
 
         <!-- Body -->
         <div class="flex">
-          <div class="flex-shrink-0 mr-2">
+          <div class="mr-2 flex-shrink-0">
             <qrcode :value="url" :options="{ width: 160 }"></qrcode>
           </div>
 
           <div class="flex-1">
             <span @click="copyClipboard(url)" class="cursor-pointer">
-              <div class="inline-flex justify-center items-center">
-                <i class="material-icons text-lg text-op-teal mr-2"
+              <div class="inline-flex items-center justify-center">
+                <i class="material-icons mr-2 text-lg text-op-teal"
                   >file_copy</i
                 >
                 <div class="text-sm font-bold text-op-teal">
@@ -54,7 +54,7 @@
         <div class="mt-6 text-center">
           <a
             @click="closeShare()"
-            class="inline-flex justify-center items-center h-12 rounded-full px-6 bg-black bg-opacity-5"
+            class="inline-flex h-12 items-center justify-center rounded-full bg-black bg-opacity-5 px-6"
             style="min-width: 8rem"
           >
             <div class="text-base font-bold text-black text-opacity-60">

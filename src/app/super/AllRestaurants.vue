@@ -1,5 +1,5 @@
 <template>
-  <section class="px-6 pb-12 pt-4 mx-auto max-w-full">
+  <section class="mx-auto max-w-full px-6 pb-12 pt-4">
     <back-button :url="backUrl" />
     <h2>All Restaurants</h2>
     <table>
@@ -54,15 +54,15 @@
       </tr>
     </table>
     <hr />
-    <b-button class="h-9 rounded-full mt-2" @click="nextLoad">
+    <b-button class="mt-2 h-9 rounded-full" @click="nextLoad">
       <span class="pl-4 pr-4">
-        <span class="text-op-teal font-bold"> Next </span>
+        <span class="font-bold text-op-teal"> Next </span>
       </span>
     </b-button>
 
-    <b-button class="h-9 rounded-full mt-2 ml-4" @click="allLoad">
+    <b-button class="mt-2 ml-4 h-9 rounded-full" @click="allLoad">
       <span class="pl-4 pr-4">
-        <span class="text-op-teal font-bold"> All </span>
+        <span class="font-bold text-op-teal"> All </span>
       </span>
     </b-button>
 
@@ -72,10 +72,10 @@
       :fieldNames="fieldNames"
       :fileName="fileName"
     >
-      <b-button class="h-9 rounded-full mt-2 ml-4">
+      <b-button class="mt-2 ml-4 h-9 rounded-full">
         <span class="pl-4 pr-4">
-          <i class="material-icons text-op-teal !text-2xl mr-2">save_alt</i>
-          <span class="text-op-teal font-bold"> Download </span>
+          <i class="material-icons mr-2 !text-2xl text-op-teal">save_alt</i>
+          <span class="font-bold text-op-teal"> Download </span>
         </span>
       </b-button>
     </download-csv>

@@ -2,7 +2,7 @@
   <div v-if="dialog">
     <b-modal :active.sync="isVisible" :width="488">
       <div
-        class="op-dialog pt-6 pl-6 pr-6 pb-6 mt-6 mb-6 ml-2 mr-2 bg-white rounded-lg shadow-lg"
+        class="op-dialog mt-6 mb-6 ml-2 mr-2 rounded-lg bg-white pt-6 pl-6 pr-6 pb-6 shadow-lg"
       >
         <div class="text-center">
           <i class="material-icons !text-5xl text-red-700">warning</i>
@@ -11,8 +11,8 @@
         <!-- Error Message -->
         <div v-if="error">
           <!-- Message -->
-          <div class="text-center mt-4">
-            <div class="font-bold text-xl text-black opacity-60">
+          <div class="mt-4 text-center">
+            <div class="text-xl font-bold text-black opacity-60">
               {{ $t("errorPage.popup.title") }}
             </div>
             <div class="mt-2">{{ errorMessage }}</div>
@@ -21,7 +21,7 @@
           <!-- Buttons -->
           <div class="mt-6 text-center">
             <div
-              class="px-6 rounded-full h-12 font-bold text-base min-w-[128px] cursor-pointer inline-flex min-h-[36px] items-center justify-center bg-black bg-opacity-5 text-black opacity-60"
+              class="inline-flex h-12 min-h-[36px] min-w-[128px] cursor-pointer items-center justify-center rounded-full bg-black bg-opacity-5 px-6 text-base font-bold text-black opacity-60"
               @click="close"
             >
               {{ $t("menu.close") }}
@@ -32,26 +32,26 @@
         <!-- Alert Message -->
         <div v-if="alert">
           <!-- Message -->
-          <div class="text-center mt-4" v-if="alert.title">
-            <div class="font-bold text-xl text-black opacity-60">
+          <div class="mt-4 text-center" v-if="alert.title">
+            <div class="text-xl font-bold text-black opacity-60">
               {{ $t(alert.title) }}
             </div>
           </div>
-          <div class="text-center mt-4">
-            <div class="font-bold text-xl text-black opacity-60">
+          <div class="mt-4 text-center">
+            <div class="text-xl font-bold text-black opacity-60">
               {{ $t(alert.code) }}
             </div>
           </div>
           <!-- Buttons -->
           <div class="mt-6 text-center">
             <div
-              class="px-6 rounded-full h-12 font-bold text-base min-w-[128px] cursor-pointer inline-flex min-h-[36px] items-center justify-center bg-black bg-opacity-5 text-black opacity-60 mr-4"
+              class="mr-4 inline-flex h-12 min-h-[36px] min-w-[128px] cursor-pointer items-center justify-center rounded-full bg-black bg-opacity-5 px-6 text-base font-bold text-black opacity-60"
               @click="close"
             >
               {{ $t("menu.no") }}
             </div>
             <div
-              class="px-6 rounded-full h-12 font-bold text-base min-w-[128px] cursor-pointer inline-flex min-h-[36px] items-center justify-center bg-red-700 text-white"
+              class="inline-flex h-12 min-h-[36px] min-w-[128px] cursor-pointer items-center justify-center rounded-full bg-red-700 px-6 text-base font-bold text-white"
               @click="handleYes"
             >
               {{ $t("menu.yes") }}

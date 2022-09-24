@@ -5,8 +5,8 @@
       <not-found />
     </template>
     <template v-if="existLocation === false">
-      <div class="mt-4 mx-6">
-        <div class="bg-black bg-opacity-5 rounded-lg p-4">
+      <div class="mx-6 mt-4">
+        <div class="rounded-lg bg-black bg-opacity-5 p-4">
           <div class="text-xl font-bold text-red-600">
             <div>
               {{ $t("delivery.alert") }}
@@ -15,8 +15,8 @@
         </div>
       </div>
     </template>
-    <div class="mt-4 mx-6" v-else>
-      <div class="bg-black bg-opacity-5 rounded-lg p-4">
+    <div class="mx-6 mt-4" v-else>
+      <div class="rounded-lg bg-black bg-opacity-5 p-4">
         <div class="text-sm font-bold">
           <b-checkbox v-model="enableDelivery" />{{
             $tc("delivery.enableDelivery", 0, { name: shopInfo.restaurantName })
@@ -25,13 +25,13 @@
       </div>
 
       <!-- area map -->
-      <div class="bg-black bg-opacity-5 rounded-lg p-4 mt-4">
-        <div class="text-lm font-bold pb-2">
+      <div class="mt-4 rounded-lg bg-black bg-opacity-5 p-4">
+        <div class="text-lm pb-2 font-bold">
           {{ $t("delivery.areaSetting") }}
         </div>
 
         <div>
-          <div class="text-sm font-bold pb-2 flex">
+          <div class="flex pb-2 text-sm font-bold">
             <b-checkbox v-model="enableAreaMap" :disabled="!enableDelivery" />
             {{ $t("delivery.setAreaMap") }}
           </div>
@@ -47,11 +47,11 @@
               @loaded="mapLoaded"
             ></GMap>
           </div>
-          <div class="flex mt-2">
-            <span class="flex-item mt-auto mb-auto inline-block mr-2">
+          <div class="mt-2 flex">
+            <span class="flex-item mt-auto mb-auto mr-2 inline-block">
               {{ $t("delivery.deliveryRange") }}:
             </span>
-            <span class="flex-item mt-auto mb-auto inline-block mr-2">
+            <span class="flex-item mt-auto mb-auto mr-2 inline-block">
               <input
                 v-model="radius"
                 :disabled="!enableAreaMap || !enableDelivery"
@@ -64,9 +64,9 @@
               @click="updateCircle"
             >
               <div
-                class="h-12 rounded-full bg-op-teal inline-flex justify-center items-center px-6 shadow"
+                class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow"
               >
-                <span class="text-white text-base font-bold">
+                <span class="text-base font-bold text-white">
                   {{ $t("delivery.updateDeliveryRange") }}
                 </span>
               </div>
@@ -75,7 +75,7 @@
         </div>
         <!-- area text -->
         <div class="mt-4">
-          <div class="text-sm font-bold pb-2 flex">
+          <div class="flex pb-2 text-sm font-bold">
             <b-checkbox v-model="enableAreaText" :disabled="!enableDelivery" />
             {{ $t("delivery.setAreaText") }}
           </div>
@@ -90,16 +90,16 @@
         </div>
       </div>
 
-      <div class="bg-black bg-opacity-5 rounded-lg p-4 mt-4">
-        <div class="text-lm font-bold pb-2">
+      <div class="mt-4 rounded-lg bg-black bg-opacity-5 p-4">
+        <div class="text-lm pb-2 font-bold">
           {{ $t("delivery.deliveryThreshold") }}:
         </div>
-        <div class="flex mt-2">
+        <div class="mt-2 flex">
           <b-checkbox
             v-model="enableDeliveryThreshold"
             :disabled="!enableDelivery"
           />
-          <span class="flex-item mt-auto mb-auto inline-block mr-2">
+          <span class="flex-item mt-auto mb-auto mr-2 inline-block">
             <input
               v-model="deliveryThreshold"
               :disabled="!enableDelivery"
@@ -113,15 +113,15 @@
         </div>
       </div>
 
-      <div class="bg-black bg-opacity-5 rounded-lg p-4 mt-4">
-        <div class="text-lm font-bold pb-2">
+      <div class="mt-4 rounded-lg bg-black bg-opacity-5 p-4">
+        <div class="text-lm pb-2 font-bold">
           {{ $t("delivery.deliveryFeeSetting") }}
         </div>
-        <div class="flex mt-2">
-          <span class="flex-item mt-auto mb-auto inline-block mr-2 font-bold">
+        <div class="mt-2 flex">
+          <span class="flex-item mt-auto mb-auto mr-2 inline-block font-bold">
             {{ $t("delivery.deliveryFee") }}:
           </span>
-          <span class="flex-item mt-auto mb-auto inline-block mr-2">
+          <span class="flex-item mt-auto mb-auto mr-2 inline-block">
             <input
               v-model="deliveryFee"
               :disabled="!enableDelivery"
@@ -134,15 +134,15 @@
           * {{ $t("delivery.deliveryFeeSettingNotice") }}
         </div>
 
-        <div class="flex mt-2">
+        <div class="mt-2 flex">
           <b-checkbox
             v-model="enableDeliveryFree"
             :disabled="!enableDelivery"
           />
-          <span class="flex-item mt-auto mb-auto inline-block mr-2 font-bold">
+          <span class="flex-item mt-auto mb-auto mr-2 inline-block font-bold">
             {{ $t("delivery.deliveryFreeThreshold") }}:
           </span>
-          <span class="flex-item mt-auto mb-auto inline-block mr-2">
+          <span class="flex-item mt-auto mb-auto mr-2 inline-block">
             <input
               v-model="deliveryFreeThreshold"
               :disabled="!enableDelivery"
@@ -156,8 +156,8 @@
         </div>
       </div>
 
-      <div class="bg-black bg-opacity-5 rounded-lg p-4 mt-4">
-        <div class="text-lm font-bold pb-2">
+      <div class="mt-4 rounded-lg bg-black bg-opacity-5 p-4">
+        <div class="text-lm pb-2 font-bold">
           {{ $t("editRestaurant.deliveryPreparationTime") }}
         </div>
         <div>
@@ -180,10 +180,10 @@
       <div class="mt-4 text-center">
         <b-button @click="saveDeliveryArea" class="b-reset-tw">
           <div
-            class="h-12 rounded-full bg-op-teal inline-flex justify-center items-center px-6 shadow"
+            class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow"
             style="min-width: 8rem"
           >
-            <span class="text-white text-base font-bold">{{
+            <span class="text-base font-bold text-white">{{
               $t("editCommon.save")
             }}</span>
           </div>

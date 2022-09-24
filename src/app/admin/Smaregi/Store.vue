@@ -3,22 +3,22 @@
 
   <div v-else>
     <!-- Header -->
-    <div class="mt-6 mx-6 lg:flex lg:items-center">
+    <div class="mx-6 mt-6 lg:flex lg:items-center">
       <!-- Back and Preview -->
       <div class="flex space-x-4">
         <back-button url="/admin/smaregi/index" />
       </div>
 
       <!-- Title -->
-      <div class="mt-4 lg:mt-0 lg:flex-1 lg:flex lg:items-center lg:mx-4">
-        <span class="text-base font-bold text-xl">
+      <div class="mt-4 lg:mx-4 lg:mt-0 lg:flex lg:flex-1 lg:items-center">
+        <span class="text-base text-xl font-bold">
           {{ $t("admin.smaregi.index") }}
         </span>
       </div>
     </div>
 
     <div class="mx-6 mt-6">
-      <span class="text-base font-bold text-xl">
+      <span class="text-base text-xl font-bold">
         {{ storeData.storeName }}
       </span>
       <div v-if="isEdit">
@@ -35,7 +35,7 @@
             v-model="selectedMenu[key]"
             :class="
               selectedMenu[key] && duplicateElement[selectedMenu[key]]
-                ? 'border-red-700 border-2 border-solid'
+                ? 'border-2 border-solid border-red-700'
                 : ''
             "
           >

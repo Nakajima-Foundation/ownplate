@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Header -->
-    <div class="mt-6 mx-6 lg:flex lg:items-center">
+    <div class="mx-6 mt-6 lg:flex lg:items-center">
       <!-- Back and Preview -->
       <div class="flex space-x-4">
         <back-button url="/admin/subaccounts/" />
@@ -30,7 +30,7 @@
           )
         }}<br />
       </div>
-      <div class="bg-white shadow rounded-lg p-4 mt-2">
+      <div class="mt-2 rounded-lg bg-white p-4 shadow">
         <span class="font-bold">{{
           $t("admin.subAccounts.selectRestaurant")
         }}</span>

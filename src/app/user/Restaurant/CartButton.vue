@@ -6,26 +6,26 @@
       isCheckingOut || noPaymentMethod || noAvailableTime || cantDelivery
     "
     @click="handleCheckOut"
-    class="b-reset-tw fixed z-10 left-1/2 bottom-3 sm:bottom-8 w-[18rem] ml-[-9rem]"
+    class="b-reset-tw fixed left-1/2 bottom-3 z-10 ml-[-9rem] w-[18rem] sm:bottom-8"
   >
     <div
-      class="inline-flex justify-center items-center w-72 rounded-full bg-op-teal shadow-lg"
+      class="inline-flex w-72 items-center justify-center rounded-full bg-op-teal shadow-lg"
       :class="shopInfo.enableDelivery ? 'pt-2 pb-2' : 'h-20'"
     >
       <template v-if="noPaymentMethod">
-        <div class="text-white text-base font-bold">
+        <div class="text-base font-bold text-white">
           {{ $t("shopInfo.noPaymentMethod") }}
         </div>
       </template>
 
       <template v-else-if="noAvailableTime">
-        <div class="text-white text-base font-bold">
+        <div class="text-base font-bold text-white">
           {{ $t("shopInfo.noAvailableTime") }}
         </div>
       </template>
 
       <template v-else="!noPaymentMethod">
-        <div class="inline-flex flex-col justify-center items-center">
+        <div class="inline-flex flex-col items-center justify-center">
           <!-- delivery -->
           <template v-if="isDelivery">
             <template
@@ -36,7 +36,7 @@
               "
             >
               <div
-                class="inline-flex justify-center items-center text-white text-base font-bold"
+                class="inline-flex items-center justify-center text-base font-bold text-white"
               >
                 {{
                   $tc("shopInfo.buttonDeliveryFeeThreshold", 0, {
@@ -45,7 +45,7 @@
                 }}
               </div>
               <div
-                class="inline-flex justify-center items-center text-white text-base font-bold"
+                class="inline-flex items-center justify-center text-base font-bold text-white"
               >
                 {{
                   $tc("shopInfo.buttonDeliveryFeeDiff", 0, {
@@ -58,7 +58,7 @@
               v-else-if="deliveryData.enableDeliveryFree && !isDeliveryFree"
             >
               <div
-                class="inline-flex justify-center items-center text-white text-base font-bold"
+                class="inline-flex items-center justify-center text-base font-bold text-white"
               >
                 {{
                   $tc("shopInfo.deliveryFeeThresholdInfo", 0, {
@@ -67,7 +67,7 @@
                 }}
               </div>
               <div
-                class="inline-flex justify-center items-center text-white text-base font-bold"
+                class="inline-flex items-center justify-center text-base font-bold text-white"
               >
                 {{
                   $tc("shopInfo.buttonDeliveryFeeDiff", 0, {
@@ -77,7 +77,7 @@
               </div>
             </template>
             <div
-              class="inline-flex justify-center items-center text-white text-base font-bold"
+              class="inline-flex items-center justify-center text-base font-bold text-white"
               v-if="shopInfo.enableDelivery"
             >
               <div class="mr-2">
@@ -99,7 +99,7 @@
           </template>
           <!-- total and price -->
           <div
-            class="inline-flex justify-center items-center text-white text-base font-bold"
+            class="inline-flex items-center justify-center text-base font-bold text-white"
           >
             <div class="mr-2">
               {{
@@ -116,8 +116,8 @@
             </div>
           </div>
 
-          <div class="is-inline-flex justify-center items-center text-white">
-            <div class="text-xl font-bold mr-2">
+          <div class="is-inline-flex items-center justify-center text-white">
+            <div class="mr-2 text-xl font-bold">
               {{ $t(buttonText) }}
             </div>
             <i class="material-icons text-2xl">shopping_cart</i>

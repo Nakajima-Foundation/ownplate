@@ -2,7 +2,7 @@
   <div>
     <!-- Date Picker -->
     <div v-if="availableDays.length > 0">
-      <div class="bg-white rounded-lg shadow p-4">
+      <div class="rounded-lg bg-white p-4 shadow">
         <b-select v-model="dayIndex">
           <option
             v-for="(day, index) in availableDays"
@@ -26,7 +26,7 @@
     </div>
 
     <!-- Not Available -->
-    <div v-else class="bg-red-700 bg-opacity-10 p-4 rounded-lg">
+    <div v-else class="rounded-lg bg-red-700 bg-opacity-10 p-4">
       <div class="text-base font-bold text-red-700">
         {{ $t("order.notAvailable") }}
       </div>

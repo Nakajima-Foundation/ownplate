@@ -6,7 +6,7 @@
         {{ $t("profile.loginStatus") }}
       </div>
 
-      <div class="text-base font-bold mt-2 mb-2">
+      <div class="mt-2 mb-2 text-base font-bold">
         {{ loginStatus }}
       </div>
     </div>

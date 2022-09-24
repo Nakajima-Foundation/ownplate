@@ -1,16 +1,16 @@
 <template>
   <!-- Mail Magazine -->
   <div class="mt-6">
-    <div class="text-xl font-bold text-black text-opacity-40 mb-2">
+    <div class="mb-2 text-xl font-bold text-black text-opacity-40">
       {{ $t("admin.mail.magazine.title") }}
     </div>
 
-    <div class="bg-white shadow rounded-lg p-4">
+    <div class="rounded-lg bg-white p-4 shadow">
       <div class="text-base text-black text-opacity-60">
         {{ $t("admin.mail.magazine.body") }}
       </div>
 
-      <div class="text-center mt-4">
+      <div class="mt-4 text-center">
         <b-checkbox v-model="opt_out">
           {{ $t("admin.mail.magazine.optout") }}
         </b-checkbox>

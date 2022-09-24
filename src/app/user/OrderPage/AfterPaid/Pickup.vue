@@ -2,21 +2,21 @@
   <div>
     <div v-if="showRequest">
       <div
-        class="mt-6 text-sm text-center font-bold text-black text-opacity-50"
+        class="mt-6 text-center text-sm font-bold text-black text-opacity-50"
       >
         {{ $t("order.timeRequested") }}
       </div>
-      <div class="mt-1 text-lg text-center text-black tracking-tight">
+      <div class="mt-1 text-center text-lg tracking-tight text-black">
         {{ timeRequested }}
       </div>
     </div>
     <div v-if="showEstimated">
       <div
-        class="mt-6 text-sm text-center font-bold text-black text-opacity-50"
+        class="mt-6 text-center text-sm font-bold text-black text-opacity-50"
       >
         {{ $t("order.timeToPickup") }}
       </div>
-      <div class="mt-1 text-lg text-center text-black tracking-tight">
+      <div class="mt-1 text-center text-lg tracking-tight text-black">
         {{ timeEstimated }}
       </div>
     </div>

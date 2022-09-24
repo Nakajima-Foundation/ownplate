@@ -5,12 +5,12 @@
     </template>
     <template v-else>
       <!-- Header -->
-      <div class="mt-6 mx-6 flex items-center space-x-4">
+      <div class="mx-6 mt-6 flex items-center space-x-4">
         <router-link :to="'/admin/restaurants'">
           <div
-            class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
+            class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
           >
-            <i class="material-icons text-lg text-op-teal mr-2">home</i>
+            <i class="material-icons mr-2 text-lg text-op-teal">home</i>
             <div class="text-sm font-bold text-op-teal">
               {{ $t("admin.news.adminTop") }}
             </div>
@@ -19,9 +19,9 @@
 
         <router-link :to="'/admin/news'">
           <div
-            class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
+            class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
           >
-            <i class="material-icons text-lg text-op-teal mr-2">list</i>
+            <i class="material-icons mr-2 text-lg text-op-teal">list</i>
             <div class="text-sm font-bold text-op-teal">
               {{ $t("admin.news.newsTop") }}
             </div>
@@ -30,12 +30,12 @@
       </div>
 
       <!-- Body -->
-      <div class="text-base mx-auto max-w-screen-md px-6 mt-6">
+      <div class="mx-auto mt-6 max-w-screen-md px-6 text-base">
         <div class="text-xl font-bold text-black text-opacity-30">
           {{ news.title }}
         </div>
 
-        <div class="text-base font-bold text-black text-opacity-30 mt-2">
+        <div class="mt-2 text-base font-bold text-black text-opacity-30">
           {{ news.date.replace(/\-/g, ".") }}
         </div>
 

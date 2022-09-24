@@ -5,7 +5,7 @@
     </div>
     <div v-else>
       <!-- Header -->
-      <div class="mt-6 mx-6 lg:flex lg:items-center">
+      <div class="mx-6 mt-6 lg:flex lg:items-center">
         <!-- Back and Preview -->
         <div class="flex space-x-4">
           <div class="flex-shrink-0">
@@ -19,12 +19,12 @@
         </div>
 
         <!-- Photo and Name -->
-        <div class="mt-4 lg:mt-0 lg:flex-1 lg:flex lg:items-center lg:mx-4">
+        <div class="mt-4 lg:mx-4 lg:mt-0 lg:flex lg:flex-1 lg:items-center">
           <div class="flex items-center">
-            <div class="flex-shrink-0 rounded-full bg-black bg-opacity-10 mr-4">
+            <div class="mr-4 flex-shrink-0 rounded-full bg-black bg-opacity-10">
               <img
                 :src="resizedProfileImage(shopInfo, '600')"
-                class="w-9 h-9 rounded-full object-cover"
+                class="h-9 w-9 rounded-full object-cover"
               />
             </div>
             <div class="text-base font-bold">
@@ -49,7 +49,7 @@
 
       <!-- Table -->
       <div class="mx-6 mt-6">
-        <table class="w-full bg-white rounded-lg shadow">
+        <table class="w-full rounded-lg bg-white shadow">
           <!-- Table Header -->
           <tr>
             <th
@@ -163,9 +163,9 @@
         >
           <b-button class="b-reset-tw">
             <div
-              class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
+              class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
             >
-              <i class="material-icons text-lg text-op-teal mr-2">save_alt</i>
+              <i class="material-icons mr-2 text-lg text-op-teal">save_alt</i>
               <div class="text-sm font-bold text-op-teal">
                 {{ $t("admin.report.download-csv") }}
               </div>

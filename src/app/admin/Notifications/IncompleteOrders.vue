@@ -1,13 +1,13 @@
 <template>
   <div>
-    <div class="text-sm font-bold text-black text-opacity-60 mb-2">
+    <div class="mb-2 text-sm font-bold text-black text-opacity-60">
       {{ $t("admin.order.incompleteOrders") }}
     </div>
 
     <!-- Links for Incomplete Orders Date -->
     <div>
       <router-link
-        :class="`inline-flex justify-center items-center px-4 h-9 rounded-full mb-2 mr-2 ${
+        :class="`mb-2 mr-2 inline-flex h-9 items-center justify-center rounded-full px-4 ${
           index === 0 ? 'bg-red-700 bg-opacity-10' : 'bg-black bg-opacity-5'
         }`"
         :to="`/admin/restaurants/${restaurantId()}/orders?day=${moment(

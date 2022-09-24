@@ -1,5 +1,5 @@
 <template>
-  <section class="px-6 pb-12 pt-4 mx-auto max-w-full">
+  <section class="mx-auto max-w-full px-6 pb-12 pt-4">
     <back-button url="/s" />
     <h2>All Requests</h2>
     <table>

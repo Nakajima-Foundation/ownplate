@@ -6,17 +6,17 @@
     </template>
     <template v-else>
       <!-- Header -->
-      <div class="mt-6 mx-6 lg:flex lg:items-center">
+      <div class="mx-6 mt-6 lg:flex lg:items-center">
         <div class="flex-1"></div>
 
         <!-- Notifications -->
-        <div class="mt-4 lg:mt-0 flex-shrink-0 text-right">
+        <div class="mt-4 flex-shrink-0 text-right lg:mt-0">
           <notification-index :shopInfo="shopInfo" />
         </div>
       </div>
 
       <!-- Save and Cancel -->
-      <div class="flex justify-center space-x-4 mt-6">
+      <div class="mt-6 flex justify-center space-x-4">
         <!-- Cancel Button -->
         <b-button
           class="b-reset-tw"
@@ -24,9 +24,9 @@
           :to="`/admin/restaurants/${this.restaurantId()}/menus`"
         >
           <div
-            class="h-12 rounded-full bg-black bg-opacity-5 inline-flex items-center px-6"
+            class="inline-flex h-12 items-center rounded-full bg-black bg-opacity-5 px-6"
           >
-            <span class="text-black text-opacity-60 text-base font-bold">{{
+            <span class="text-base font-bold text-black text-opacity-60">{{
               $t("button.cancel")
             }}</span>
           </div>
@@ -35,10 +35,10 @@
         <!-- Save Button -->
         <b-button @click="submitItem" :disabled="submitting" class="b-reset-tw">
           <div
-            class="h-12 rounded-full bg-op-teal inline-flex justify-center items-center px-6 shadow"
+            class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow"
             style="min-width: 8rem"
           >
-            <span class="text-white text-base font-bold">{{
+            <span class="text-base font-bold text-white">{{
               $t(
                 submitting
                   ? "editCommon.saving"
@@ -52,7 +52,7 @@
       </div>
 
       <!-- Publish Status -->
-      <div class="bg-black bg-opacity-5 mx-6 rounded-lg p-4 mt-6 text-center">
+      <div class="mx-6 mt-6 rounded-lg bg-black bg-opacity-5 p-4 text-center">
         <b-checkbox
           v-model="menuInfo.publicFlag"
           :disabled="hasError"
@@ -62,11 +62,11 @@
         </b-checkbox>
 
         <div class="text-sm font-bold">
-          <div v-if="hasError" class="text-red-700 mt-1">
+          <div v-if="hasError" class="mt-1 text-red-700">
             {{ $t("editRestaurant.draftWarning") }}
           </div>
           <div
-            class="text-red-700 mt-1"
+            class="mt-1 text-red-700"
             v-if="!menuInfo.publicFlag && !hasError"
           >
             {{ $t("editMenu.saveAsDraft") }}
@@ -80,12 +80,12 @@
       </div>
 
       <!-- Settings -->
-      <div class="mt-6 mx-6 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12">
+      <div class="mx-6 mt-6 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12">
         <!-- Left -->
         <div>
           <!-- Item Name -->
           <div>
-            <div class="text-sm font-bold pb-2">
+            <div class="pb-2 text-sm font-bold">
               {{ $t("editMenu.itemName") }}
               <span class="text-red-700">*</span>
             </div>
@@ -101,7 +101,7 @@
 
           <!-- Item Name -->
           <div class="mt-6">
-            <div class="text-sm font-bold pb-2">
+            <div class="pb-2 text-sm font-bold">
               {{ $t("editMenu.itemAliasesName") }}
             </div>
             <b-input
@@ -112,7 +112,7 @@
 
           <!-- Item Price -->
           <div class="mt-6">
-            <div class="text-sm font-bold pb-2">
+            <div class="pb-2 text-sm font-bold">
               {{ $t("editMenu.price") }}
               <span class="text-red-700">*</span>
             </div>
@@ -140,7 +140,7 @@
 
           <!-- Item Tax -->
           <div class="mt-6">
-            <div class="text-sm font-bold pb-2">
+            <div class="pb-2 text-sm font-bold">
               {{ $t("editMenu.tax") }}
               <span class="text-red-700">*</span>
             </div>
@@ -165,7 +165,7 @@
           <!-- Price Example -->
           <div
             v-if="requireTaxPriceDisplay"
-            class="mt-6 bg-black bg-opacity-5 rounded-lg p-4"
+            class="mt-6 rounded-lg bg-black bg-opacity-5 p-4"
           >
             <div class="inline text-sm font-bold">
               {{ $t("editMenu.displayPrice") }}:
@@ -177,7 +177,7 @@
 
           <!-- Allergens -->
           <div class="mt-6">
-            <div class="text-sm font-bold pb-2">
+            <div class="pb-2 text-sm font-bold">
               {{ $t("allergens.title") }}
             </div>
             <div>
@@ -193,7 +193,7 @@
 
           <!-- Item Description -->
           <div class="mt-6">
-            <div class="text-sm font-bold pb-2">
+            <div class="pb-2 text-sm font-bold">
               {{ $t("editMenu.itemDescription") }}
             </div>
             <div>
@@ -215,7 +215,7 @@
 
           <!-- Item Memo -->
           <div class="mt-6">
-            <div class="text-sm font-bold pb-2">
+            <div class="pb-2 text-sm font-bold">
               {{ $t("editMenu.itemMemo") }}
             </div>
             <div>
@@ -234,7 +234,7 @@
         <div class="mt-6 lg:mt-0">
           <!-- Item Photo -->
           <div>
-            <div class="text-sm font-bold pb-2">
+            <div class="pb-2 text-sm font-bold">
               {{ $t("editMenu.itemPhoto") }}
             </div>
             <div class="flex">
@@ -248,7 +248,7 @@
                     @error="smallImageErrorHandler"
                   />
                 </div>
-                <div class="text-center text-xs mt-1">
+                <div class="mt-1 text-center text-xs">
                   {{ $t("editCommon.current") }}
                 </div>
               </div>
@@ -271,40 +271,40 @@
                   :show-remove-button="true"
                   @file-choose="handleMenuImage"
                 ></croppa>
-                <div class="text-center text-xs mt-1 w-32">
+                <div class="mt-1 w-32 text-center text-xs">
                   {{ $t("editCommon.new") }}
                 </div>
               </div>
             </div>
 
             <!-- Description -->
-            <div class="text-sm text-black text-opacity-60 pt-2">
+            <div class="pt-2 text-sm text-black text-opacity-60">
               {{ $t("editCommon.clickAndUploadDetail") }}
             </div>
           </div>
 
           <!-- Item Options -->
           <div class="mt-6">
-            <div class="text-sm font-bold pb-2">
+            <div class="pb-2 text-sm font-bold">
               {{ $t("editMenu.itemOptions") }}
             </div>
 
-            <div class="text-sm pb-2">
+            <div class="pb-2 text-sm">
               {{ $t("editMenu.itemOptionsNote") }}
             </div>
 
             <!-- Option Settings -->
             <div class="grid-col-1 space-y-4">
               <div v-for="(option, key) in menuInfo.itemOptionCheckbox">
-                <div :key="key" class="flex mb-2">
+                <div :key="key" class="mb-2 flex">
                   <b-input
                     v-model="menuInfo.itemOptionCheckbox[key]"
                     :placeholder="$t('editMenu.enterItemOption')"
-                    class="flex-1 mr-2"
+                    class="mr-2 flex-1"
                   />
                   <b-button class="b-reset-tw" @click="deleteOption(key)">
                     <div
-                      class="inline-flex justify-center items-center rounded-full h-9 px-4 bg-red-700 bg-opacity-10"
+                      class="inline-flex h-9 items-center justify-center rounded-full bg-red-700 bg-opacity-10 px-4"
                     >
                       <i class="material-icons text-lg text-red-700">delete</i>
                     </div>
@@ -312,9 +312,9 @@
                 </div>
 
                 <!-- Option Preview -->
-                <div class="bg-black bg-opacity-5 rounded-lg p-4">
+                <div class="rounded-lg bg-black bg-opacity-5 p-4">
                   <div
-                    class="flex mb-2 text-xs font-bold text-black text-opacity-30"
+                    class="mb-2 flex text-xs font-bold text-black text-opacity-30"
                   >
                     <div class="flex-1">
                       {{ $t("editMenu.optionsPreview") }}
@@ -356,9 +356,9 @@
             <div class="mt-4">
               <b-button class="b-reset-tw" @click="addOption">
                 <div
-                  class="inline-flex justify-center items-center rounded-full h-9 px-4 bg-black bg-opacity-5"
+                  class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
                 >
-                  <i class="material-icons text-lg text-op-teal mr-2">add</i>
+                  <i class="material-icons mr-2 text-lg text-op-teal">add</i>
                   <div class="text-sm font-bold text-op-teal">
                     {{ $t("editMenu.itemAddOption") }}
                   </div>
@@ -368,7 +368,7 @@
           </div>
 
           <div class="mt-6">
-            <div class="text-sm font-bold pb-2">
+            <div class="pb-2 text-sm font-bold">
               {{ $t("editMenu.exclusionDate") }}
             </div>
             <span v-for="(day, index) in daysOfWeek" :key="index">
@@ -393,20 +393,20 @@
 
           <!-- CSV Categories -->
           <div class="mt-6">
-            <div class="text-sm font-bold pb-2">
+            <div class="pb-2 text-sm font-bold">
               {{ $t("editMenu.csvCategories") }}
             </div>
 
-            <div class="text-sm pb-2">
+            <div class="pb-2 text-sm">
               {{ $t("editMenu.csvCategoriesNote") }}
             </div>
 
             <div
-              class="bg-black bg-opacity-5 rounded-lg p-4 grid-cols-1 space-y-4"
+              class="grid-cols-1 space-y-4 rounded-lg bg-black bg-opacity-5 p-4"
             >
               <!-- Category 1 -->
               <div>
-                <div class="flex items-center mb-2">
+                <div class="mb-2 flex items-center">
                   <div
                     class="flex-1 text-sm font-bold text-black text-opacity-60"
                   >
@@ -417,7 +417,7 @@
                       class="b-reset-tw"
                       @click="editCategory('category1')"
                     >
-                      <div class="inline-flex justify-center items-center">
+                      <div class="inline-flex items-center justify-center">
                         <div class="text-sm font-bold text-op-teal">
                           {{ $t("editMenu.editCategory1") }}
                         </div>
@@ -443,7 +443,7 @@
 
               <!-- Category 2 -->
               <div>
-                <div class="flex items-center mb-2">
+                <div class="mb-2 flex items-center">
                   <div
                     class="flex-1 text-sm font-bold text-black text-opacity-60"
                   >
@@ -454,7 +454,7 @@
                       class="b-reset-tw"
                       @click="editCategory('category2')"
                     >
-                      <div class="inline-flex justify-center items-center">
+                      <div class="inline-flex items-center justify-center">
                         <div class="text-sm font-bold text-op-teal">
                           {{ $t("editMenu.editCategory2") }}
                         </div>
@@ -492,7 +492,7 @@
       </div>
 
       <!-- Publish Status -->
-      <div class="bg-black bg-opacity-5 mx-6 rounded-lg p-4 mt-6 text-center">
+      <div class="mx-6 mt-6 rounded-lg bg-black bg-opacity-5 p-4 text-center">
         <b-checkbox
           v-model="menuInfo.publicFlag"
           :disabled="hasError"
@@ -512,7 +512,7 @@
       </div>
 
       <!-- Save and Cancel -->
-      <div class="flex justify-center space-x-4 mt-6">
+      <div class="mt-6 flex justify-center space-x-4">
         <!-- Cancel Button -->
         <b-button
           class="b-reset-tw"
@@ -520,9 +520,9 @@
           :to="`/admin/restaurants/${this.restaurantId()}/menus`"
         >
           <div
-            class="h-12 rounded-full bg-black bg-opacity-5 inline-flex items-center px-6"
+            class="inline-flex h-12 items-center rounded-full bg-black bg-opacity-5 px-6"
           >
-            <span class="text-black text-opacity-60 text-base font-bold">{{
+            <span class="text-base font-bold text-black text-opacity-60">{{
               $t("button.cancel")
             }}</span>
           </div>
@@ -531,10 +531,10 @@
         <!-- Save Button -->
         <b-button @click="submitItem" :disabled="submitting" class="b-reset-tw">
           <div
-            class="h-12 rounded-full bg-op-teal inline-flex justify-center items-center px-6 shadow"
+            class="inline-flex h-12 items-center justify-center rounded-full bg-op-teal px-6 shadow"
             style="min-width: 8rem"
           >
-            <span class="text-white text-base font-bold">{{
+            <span class="text-base font-bold text-white">{{
               $t(
                 submitting
                   ? "editCommon.saving"
@@ -548,13 +548,13 @@
       </div>
 
       <!-- Copy -->
-      <div class="text-center mt-6 mx-6 lg:max-w-sm lg:mx-auto">
+      <div class="mx-6 mt-6 text-center lg:mx-auto lg:max-w-sm">
         <div>
           <b-button @click="copyItem" :disabled="submitting" class="b-reset-tw">
             <div
-              class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
+              class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
             >
-              <i class="material-icons text-lg text-op-teal mr-2"> queue </i>
+              <i class="material-icons mr-2 text-lg text-op-teal"> queue </i>
               <span class="text-sm font-bold text-op-teal">{{
                 $t("editCommon.copyMenu")
               }}</span>

@@ -15,7 +15,7 @@
           <div class="level">
             <!-- Back Button and Restaurant Profile -->
             <AdminHeader
-              class="mt-6 mx-6 lg:flex lg:items-center"
+              class="mx-6 mt-6 lg:flex lg:items-center"
               :shopInfo="shopInfo"
               backLink="/admin/restaurants/"
               :showSuspend="false"
@@ -37,10 +37,10 @@
         <div class="column">
           <div class="ml-6 mr-6">
             <!-- Menu Page -->
-            <div class="font-bold text-xl text-black text-opacity-40 mt-6 pb-2">
+            <div class="mt-6 pb-2 text-xl font-bold text-black text-opacity-40">
               {{ $t("admin.qrcode.restaurant") }}
             </div>
-            <div class="bg-white rounded-lg shadow-md pl-6 pr-6 pt-6 pb-6">
+            <div class="rounded-lg bg-white pl-6 pr-6 pt-6 pb-6 shadow-md">
               <!-- QR Code -->
               <div class="text-center" @click="download">
                 <qrcode
@@ -53,7 +53,7 @@
               <div class="text-center">
                 <a :href="urlMenu" target="_blank">
                   <div
-                    class="text-op-teal cursor-pointer inline-flex min-h-[36px] items-center justify-center font-bold px-2"
+                    class="inline-flex min-h-[36px] cursor-pointer items-center justify-center px-2 font-bold text-op-teal"
                   >
                     {{ shopInfo.restaurantName }}
                   </div>
@@ -62,7 +62,7 @@
               <!-- Download -->
               <div class="text-center" @click="download">
                 <div
-                  class="text-op-teal cursor-pointer inline-flex min-h-[36px] items-center justify-center font-bold px-2"
+                  class="inline-flex min-h-[36px] cursor-pointer items-center justify-center px-2 font-bold text-op-teal"
                 >
                   {{ $t("admin.qrcode.download") }}
                 </div>
@@ -77,11 +77,11 @@
             <!-- Trace -->
             <div v-if="trace && regionalSetting.covid19trace">
               <div
-                class="font-bold text-xl text-black text-opacity-40 mt-6 pb-2"
+                class="mt-6 pb-2 text-xl font-bold text-black text-opacity-40"
               >
                 {{ $t("trace.list") }}
               </div>
-              <div class="bg-white rounded-lg shadow-md pl-6 pr-6 pt-6 pb-6">
+              <div class="rounded-lg bg-white pl-6 pr-6 pt-6 pb-6 shadow-md">
                 <!-- Enter -->
                 <div>
                   <!-- QR Code -->
@@ -95,7 +95,7 @@
                   <div class="text-center">
                     <a :href="urlEnter">
                       <div
-                        class="text-op-teal cursor-pointer inline-flex min-h-[36px] items-center justify-center font-bold px-2"
+                        class="inline-flex min-h-[36px] cursor-pointer items-center justify-center px-2 font-bold text-op-teal"
                       >
                         {{ $t("admin.qrcode.enter") }}
                       </div>
@@ -116,7 +116,7 @@
                   <div class="text-center">
                     <a :href="urlLeave">
                       <div
-                        class="text-op-teal cursor-pointer inline-flex min-h-[36px] items-center justify-center font-bold px-2"
+                        class="inline-flex min-h-[36px] cursor-pointer items-center justify-center px-2 font-bold text-op-teal"
                       >
                         {{ $t("admin.qrcode.leave") }}
                       </div>
@@ -125,12 +125,12 @@
                 </div>
 
                 <!-- Trace List -->
-                <div class="text-center mt-6">
+                <div class="mt-6 text-center">
                   <router-link
                     :to="`/admin/restaurants/${restaurantId()}/traces`"
                   >
                     <div
-                      class="px-6 rounded-full h-12 font-bold text-base min-w-[128px] cursor-pointer inline-flex min-h-[36px] items-center justify-center bg-black bg-opacity-5 text-black opacity-60"
+                      class="inline-flex h-12 min-h-[36px] min-w-[128px] cursor-pointer items-center justify-center rounded-full bg-black bg-opacity-5 px-6 text-base font-bold text-black opacity-60"
                     >
                       {{ $t("trace.viewList") }}
                     </div>

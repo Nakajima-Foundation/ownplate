@@ -9,7 +9,7 @@
           to=""
         >
           <span class="pl-4 pr-4">
-            <span class="text-op-teal font-bold">お申し込み </span>
+            <span class="font-bold text-op-teal">お申し込み </span>
           </span>
         </b-button>
         <b-button
@@ -18,7 +18,7 @@
           to=""
         >
           <span class="pl-4 pr-4">
-            <span class="text-op-teal font-bold">お問い合わせ </span>
+            <span class="font-bold text-op-teal">お問い合わせ </span>
           </span>
         </b-button>
       </div>

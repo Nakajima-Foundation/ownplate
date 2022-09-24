@@ -1,6 +1,6 @@
 <template>
-  <div class="mx-6 mt-6 lg:max-w-2xl lg:mx-auto">
-    <div class="bg-white rounded-lg shadow mt-6 p-6">
+  <div class="mx-6 mt-6 lg:mx-auto lg:max-w-2xl">
+    <div class="mt-6 rounded-lg bg-white p-6 shadow">
       <template v-if="isExpired === null"> </template>
       <template v-else-if="isExpired">
         <div class="mt-6 text-center">
@@ -9,9 +9,9 @@
           </div>
           <router-link to="/admin/user/reset">
             <div
-              class="inline-flex justify-center items-center h-16 px-6 rounded-full border-2 border-op-teal"
+              class="inline-flex h-16 items-center justify-center rounded-full border-2 border-op-teal px-6"
             >
-              <i class="material-icons text-2xl text-op-teal mr-2">store</i>
+              <i class="material-icons mr-2 text-2xl text-op-teal">store</i>
               <div class="text-lg font-bold text-op-teal">
                 {{ $t("admin.reSend") }}
               </div>
@@ -24,9 +24,9 @@
         <div class="mt-6 text-center">
           <router-link to="/admin/user/signin">
             <div
-              class="inline-flex justify-center items-center h-16 px-6 rounded-full border-2 border-op-teal"
+              class="inline-flex h-16 items-center justify-center rounded-full border-2 border-op-teal px-6"
             >
-              <i class="material-icons text-2xl text-op-teal mr-2">store</i>
+              <i class="material-icons mr-2 text-2xl text-op-teal">store</i>
               <div class="text-lg font-bold text-op-teal">
                 {{ $t("admin.goToSignIn") }}
               </div>
@@ -86,7 +86,7 @@
               class="b-reset-tw"
             >
               <div
-                class="inline-flex justify-center items-center h-12 w-32 rounded-full bg-op-teal shadow"
+                class="inline-flex h-12 w-32 items-center justify-center rounded-full bg-op-teal shadow"
               >
                 <div class="text-base font-bold text-white">
                   {{ $t("button.next") }}

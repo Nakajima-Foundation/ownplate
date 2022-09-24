@@ -2,14 +2,14 @@
   <div>
     <!-- About Service -->
     <div
-      class="text-center mt-8 text-xl font-bold text-black opacity-40 lg:text-3xl"
+      class="mt-8 text-center text-xl font-bold text-black opacity-40 lg:text-3xl"
     >
       <div v-if="!isLocaleJapan">About</div>
       <div v-else>このサービスについて</div>
     </div>
 
     <!-- About -->
-    <div class="text-base mx-auto max-w-screen-md px-6">
+    <div class="mx-auto max-w-screen-md px-6 text-base">
       <!-- English -->
       <div v-if="!isLocaleJapan">
         <div class="mt-6">
@@ -57,7 +57,7 @@
       </div>
 
       <!-- Profile -->
-      <div class="inline-flex items-center mt-4">
+      <div class="mt-4 inline-flex items-center">
         <img src="/Profile-SNakajima.jpg" class="w-16 rounded-full" />
         <div class="ml-4">
           <div v-if="!isLocaleJapan">

@@ -1,9 +1,9 @@
 <template>
   <div>
-    <div class="text-xl font-bold text-green-600 text-center">
+    <div class="text-center text-xl font-bold text-green-600">
       {{ $t("order.ec.customerInfo") }}
     </div>
-    <div class="bg-white rounded-lg shadow p-4 mt-2">
+    <div class="mt-2 rounded-lg bg-white p-4 shadow">
       <div class="text-base font-bold">{{ $t("order.ec.zip") }}</div>
       <div class="mb-2">
         {{ customer.zip }}

@@ -1,9 +1,9 @@
 <template>
   <section
-    class="px-6 pb-12 pt-4 mx-auto max-w-full"
+    class="mx-auto max-w-full px-6 pb-12 pt-4"
     style="background-color: #fffafa"
   >
-    <div class="font-bold text-xl text-black text-opacity-40 mb-2">
+    <div class="mb-2 text-xl font-bold text-black text-opacity-40">
       {{ $t("trace.list") }}
     </div>
     <div class="mt-4">
