@@ -131,9 +131,9 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
         throw new functions.https.HttpsError("failed-precondition", "The order has been already placed or canceled");
       }
       const hasCustomer = restaurantData.isEC || order.isDelivery;
-      
+
       if (hasCustomer) {
-        const validateResult = validateCustomer(customerInfo || {})
+        const validateResult = validateCustomer(customerInfo || {});
         if (!validateResult.result) {
           console.error("orderPlace", validateResult.errors);
           throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
@@ -148,13 +148,7 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
       const totalCharge = order.total + roundedTip + (shippingCost || 0) + (order.deliveryFee || 0);
 
       if (hasCustomer) {
-        const {
-          zip,
-          prefectureId,
-          address,
-          name,
-          email,
-        } = customerInfo;
+        const { zip, prefectureId, address, name, email } = customerInfo;
         await transaction.set(customerRef, {
           zip,
           prefectureId,

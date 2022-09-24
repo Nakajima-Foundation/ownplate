@@ -10,6 +10,7 @@ import { costCal } from "../../common/commonUtils";
 
 import { getStripeAccount, getPaymentMethodData, getHash } from "./intent";
 import { validateOrderPlaced, validateCustomer } from "../../lib/validator";
+import { orderPlacedData } from "../../lib/types";
 
 const multiple = utils.getStripeRegion().multiple; // 100 for USD, 1 for JPY
 const stripe = utils.get_stripe();
@@ -25,7 +26,7 @@ const getOrderData = async (transaction: any, orderRef: any) => {
 };
 
 // This function is called by user to create a "payment intent" (to start the payment transaction)
-export const create = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => {
+export const create = async (db: admin.firestore.Firestore, data: orderPlacedData, context: functions.https.CallableContext) => {
   const customerUid = utils.validate_auth(context);
 
   const { restaurantId, orderId, tip, sendSMS, timeToPickup, lng, memo, customerInfo } = data; // orderPlace
@@ -61,7 +62,7 @@ export const create = async (db: admin.firestore.Firestore, data: any, context: 
       const shippingCost = restaurantData.isEC ? costCal(postage, customerInfo?.prefectureId, order.total) : 0;
       const hasCustomer = restaurantData.isEC || order.isDelivery;
       if (hasCustomer) {
-        const validateResult = validateCustomer(customerInfo || {})
+        const validateResult = validateCustomer(customerInfo || {});
         if (!validateResult.result) {
           console.error("orderPlace", validateResult.errors);
           throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
@@ -94,13 +95,7 @@ export const create = async (db: admin.firestore.Firestore, data: any, context: 
       // start write transaction
       await updateOrderTotalDataAndUserLog(db, transaction, customerUid, order.order, restaurantId, customerUid, timePlaced, now, true);
       if (hasCustomer) {
-        const {
-          zip,
-          prefectureId,
-          address,
-          name,
-          email,
-        } = customerInfo;
+        const { zip, prefectureId, address, name, email } = customerInfo;
         await transaction.set(customerRef, {
           zip,
           prefectureId,
@@ -113,7 +108,7 @@ export const create = async (db: admin.firestore.Firestore, data: any, context: 
           createdAt: now,
         });
       }
-      
+
       const updateData = {
         status: order_status.order_placed,
         totalCharge,

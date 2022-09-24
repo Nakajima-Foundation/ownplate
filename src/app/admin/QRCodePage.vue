@@ -37,7 +37,7 @@
         <div class="column">
           <div class="ml-6 mr-6">
             <!-- Menu Page -->
-            <div class="t-h6 text-black text-opacity-40 mt-6 pb-2">
+            <div class="font-bold text-xl text-black text-opacity-40 mt-6 pb-2">
               {{ $t("admin.qrcode.restaurant") }}
             </div>
             <div
@@ -54,14 +54,14 @@
               <!-- Link -->
               <div class="text-center">
                 <a :href="urlMenu" target="_blank">
-                  <div class="op-button-text text-op-teal op-button t-button px-2 ">
+                  <div class="text-op-teal op-button font-bold px-2 ">
                     {{ shopInfo.restaurantName }}
                   </div>
                 </a>
               </div>
               <!-- Download -->
               <div class="text-center" @click="download">
-                <div class="op-button-text text-op-teal op-button t-button px-2">
+                <div class="text-op-teal op-button font-bold px-2">
                   {{ $t("admin.qrcode.download") }}
                 </div>
               </div>
@@ -74,7 +74,7 @@
           <div class="ml-6 mr-6">
             <!-- Trace -->
             <div v-if="trace && regionalSetting.covid19trace">
-              <div class="t-h6 text-black text-opacity-40 mt-6 pb-2">
+              <div class="font-bold text-xl text-black text-opacity-40 mt-6 pb-2">
                 {{ $t("trace.list") }}
               </div>
               <div
@@ -92,7 +92,7 @@
                   <!-- Link -->
                   <div class="text-center">
                     <a :href="urlEnter">
-                      <div class="op-button-text text-op-teal op-button t-button px-2">
+                      <div class="text-op-teal op-button font-bold px-2">
                         {{ $t("admin.qrcode.enter") }}
                       </div>
                     </a>
@@ -111,7 +111,7 @@
                   <!-- Link -->
                   <div class="text-center">
                     <a :href="urlLeave">
-                      <div class="op-button-text text-op-teal op-button t-button px-2">
+                      <div class="text-op-teal op-button font-bold px-2">
                         {{ $t("admin.qrcode.leave") }}
                       </div>
                     </a>
@@ -123,7 +123,7 @@
                   <router-link
                     :to="`/admin/restaurants/${restaurantId()}/traces`"
                   >
-                    <div class="op-button-small op-button bg-black bg-opacity-5 text-black opacity-60">
+                    <div class="px-6 rounded-full h-12 font-bold text-base min-w-[128px] op-button bg-black bg-opacity-5 text-black opacity-60">
                       {{ $t("trace.viewList") }}
                     </div>
                   </router-link>

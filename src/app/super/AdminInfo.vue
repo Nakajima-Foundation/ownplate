@@ -1,5 +1,5 @@
 <template>
-  <section class="section">
+  <section class="px-6 pb-12 pt-4 mx-auto max-w-full">
     <back-button url="/s/admins" />
     <h1>Admin</h1>
     <div>

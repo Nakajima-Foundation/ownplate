@@ -1,8 +1,8 @@
 import * as admin from "firebase-admin";
-import { orderCreatedData, orderUpdateData, orderPlacedData, CustomerInfoData } from "./types";
+import { orderCreatedData, orderUpdateData, orderPlacedData, customerInfoData, confirmIntentData, orderCancelData, orderCancelPaymentData, orderChangeData, newOrderData } from "./types";
 import { isEmpty } from "./utils";
 
-import isNumeric from 'validator/lib/isNumeric';
+import isNumeric from "validator/lib/isNumeric";
 
 export const isNumber = (value: string, option: any = {}) => {
   if (!/^-?[0-9]+$/.test(value)) {
@@ -85,7 +85,7 @@ const validateInteger = (text: number) => {
   return typeof text === "number" && Number.isInteger(text);
 };
 const validateIntegerString = (text: string) => {
-  return typeof text === "string" &&  /^[0-9]+$/.test(text);
+  return typeof text === "string" && /^[0-9]+$/.test(text);
 };
 
 const validateString = (text: string) => {
@@ -99,8 +99,13 @@ const validateTimestamp = (timestamp: admin.firestore.Timestamp) => {
   return validateInteger(timestamp.seconds) && validateInteger(timestamp.nanoseconds);
 };
 const validateBoolean = (value: boolean) => {
-  return (value === true || value === false);
+  return value === true || value === false;
 };
+const validateNewOrder = (values: newOrderData[]) => {
+  return values.every((data) => {
+    return validateFirebaseId(data.menuId) && validateInteger(data.index)
+  });
+}
 const validateArray = {
   firebaseId: validateFirebaseId,
   number: validateNumber,
@@ -111,6 +116,7 @@ const validateArray = {
   alphabet: validateAlphabet,
   timestamp: validateTimestamp,
   boolean: validateBoolean,
+  newOrder: validateNewOrder,
 };
 
 const validateData = (data, validator) => {
@@ -218,8 +224,92 @@ export const validateOrderPlaced = (data: orderPlacedData) => {
   return validateData(data, validator);
 };
 
-
-export const validateCustomer = (data: CustomerInfoData) => {
+export const validateCustomer = (data: customerInfoData) => {
   const validator = {};
+  return validateData(data, validator);
+};
+
+// stripe
+export const validateConfirmIntent = (data: confirmIntentData) => {
+  const validator = {
+    restaurantId: {
+      type: "firebaseId",
+      required: true,
+    },
+    orderId: {
+      type: "firebaseId",
+      required: true,
+    },
+    timezone: {
+      type: "string",
+      regex: /^([a-zA-Z]+)\/([a-zA-Z]+)$/,
+      required: true,
+    },
+    lng: {
+      type: "alphabet",
+      required: false,
+    },
+    timeEstimated: {
+      type: "timestamp",
+      required: false,
+    },
+  };
+  return validateData(data, validator);
+};
+
+export const validateCancel = (data: orderCancelData) => {
+  const validator = {
+    restaurantId: {
+      type: "firebaseId",
+      required: true,
+    },
+    orderId: {
+      type: "firebaseId",
+      required: true,
+    },
+  };
+  return validateData(data, validator);
+};
+
+export const validateCancelPayment = (data: orderCancelPaymentData) => {
+  const validator = {
+    restaurantId: {
+      type: "firebaseId",
+      required: true,
+    },
+    orderId: {
+      type: "firebaseId",
+      required: true,
+    },
+  };
+  return validateData(data, validator);
+};
+
+
+export const validateOrderChange = (data: orderChangeData) => {
+  //const { restaurantId, orderId, newOrder, timezone, lng } = data;
+  const validator = {
+    restaurantId: {
+      type: "firebaseId",
+      required: true,
+    },
+    orderId: {
+      type: "firebaseId",
+      required: true,
+    },
+    newOrder: {
+      type: "newOrder",
+      required: true,
+    },
+    timezone: {
+      type: "string",
+      regex: /^([a-zA-Z]+)\/([a-zA-Z]+)$/,
+      required: true,
+    },
+    lng: {
+      type: "alphabet",
+      required: false,
+    },
+  };
   return validateData(data, validator);
 };

@@ -5,7 +5,7 @@ export interface orderCreatedData {
   orderId: string;
 }
 
-export interface CustomerInfoData {
+export interface customerInfoData {
   zip: string;
   prefectureId: number;
   address: string;
@@ -20,7 +20,7 @@ export interface orderPlacedData {
   timeToPickup: admin.firestore.Timestamp;
   lng: string;
   memo: string;
-  customerInfo: CustomerInfoData;
+  customerInfo: customerInfoData;
 }
 
 export interface orderUpdateData {
@@ -58,4 +58,37 @@ export interface menuItem {
   exceptHour: object;
   productId: string;
   tax: number;
+}
+
+export interface confirmIntentData {
+  restaurantId: string;
+  orderId: string;
+  timezone: string;
+  lng?: string;
+  timeEstimated?: admin.firestore.Timestamp;
+}
+
+export interface orderCancelData {
+  restaurantId: string;
+  orderId: string;
+  lng?: string;
+}
+
+export interface newOrderData {
+  menuId: string;
+  index: number;
+}
+
+export interface orderChangeData {
+  restaurantId: string;
+  orderId: string;
+  newOrder: newOrderData[];
+  timezone: string;
+  lng?: string;
+}
+
+export interface orderCancelPaymentData {
+  restaurantId: string;
+  orderId: string;
+  lng?: string;
 }

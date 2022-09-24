@@ -11,7 +11,7 @@
         {{ $t("admin.order.notification") }}
       </div>
 
-      <div class="t-button text-red-700 mr-2">{{ orderCounter }}</div>
+      <div class="font-bold text-red-700 mr-2">{{ orderCounter }}</div>
 
       <div
         v-if="notificationData.soundOn"

@@ -1,5 +1,5 @@
 <template>
-  <section class="section">
+  <section class="px-6 pb-12 pt-4 mx-auto max-w-full">
     <back-button url="/s" />
     <h2>Profiles</h2>
     <b-input v-model="prefix" placeholder="email prefix"></b-input>

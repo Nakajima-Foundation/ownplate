@@ -8,18 +8,25 @@ import { sendMessageToCustomer, notifyCanceledOrderToRestaurant } from "../notif
 import { Context } from "../../models/TestType";
 
 import { getStripeAccount, getStripeOrderRecord, getHash } from "./intent";
+import { validateCancel } from "../../lib/validator";
+import { orderCancelData } from "../../lib/types";
 
 const stripe = utils.get_stripe();
 
 // This function is called by user or admin to cancel an exsting order (before accepted by admin)
-export const cancel = async (db: any, data: any, context: functions.https.CallableContext | Context) => {
+export const cancel = async (db: any, data: orderCancelData, context: functions.https.CallableContext | Context) => {
   const isAdmin = utils.is_admin_auth(context);
-  console.log("is_admin:" + String(isAdmin));
 
   const uid = isAdmin ? utils.validate_admin_auth(context) : utils.validate_auth(context);
 
   const { restaurantId, orderId, lng } = data;
   utils.required_params({ restaurantId, orderId }); // lng is optional
+
+  const validateResult = validateCancel(data);
+  if (!validateResult.result) {
+    console.error("cancel", validateResult.errors);
+    throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
+  }
 
   const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`);
   const stripeRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}/system/stripe`);
@@ -108,10 +115,10 @@ export const cancel = async (db: any, data: any, context: functions.https.Callab
     });
     // sendSMS is always true
     if (isAdmin && result.order.sendSMS) {
-      await sendMessageToCustomer(db, lng, "msg_order_canceled", restaurant.restaurantName, result.order, restaurantId, orderId, {}, true);
+      await sendMessageToCustomer(db, lng || "", "msg_order_canceled", restaurant.restaurantName, result.order, restaurantId, orderId, {}, true);
     }
     if (!isAdmin) {
-      await notifyCanceledOrderToRestaurant(db, restaurantId, result.order, restaurant.restaurantName, lng);
+      await notifyCanceledOrderToRestaurant(db, restaurantId, result.order, restaurant.restaurantName, lng || "");
     }
     return result;
   } catch (error) {
