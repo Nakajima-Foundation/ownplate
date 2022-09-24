@@ -1,8 +1,8 @@
 <template>
   <!-- For Restaurants -->
-  <div class="bg-op-teal rounded-lg pt-6 lg:col-span-2">
+  <div class="rounded-lg bg-op-teal pt-6 lg:col-span-2">
     <i class="material-icons text-7xl opacity-60">store</i>
-    <div class="text-white text-sm font-bold">
+    <div class="text-sm font-bold text-white">
       {{ $t("lp.forOwner") }}
     </div>
     <div class="pb-4 lg:inline-flex lg:space-x-8">
@@ -10,9 +10,9 @@
       <div class="mt-4">
         <router-link to="/admin/restaurants">
           <div
-            class="h-16 rounded-full bg-white inline-flex items-center px-8 shadow"
+            class="inline-flex h-16 items-center rounded-full bg-white px-8 shadow"
           >
-            <span class="text-black opacity-60 text-xl font-bold">{{
+            <span class="text-xl font-bold text-black opacity-60">{{
               $t("lp.tryService")
             }}</span>
           </div>
@@ -25,9 +25,9 @@
           target="_blank"
         >
           <div
-            class="h-16 rounded-full bg-ownplate-yellow inline-flex items-center px-8 shadow hover:bg-opacity-30"
+            class="inline-flex h-16 items-center rounded-full bg-ownplate-yellow px-8 shadow hover:bg-opacity-30"
           >
-            <span class="text-black opacity-60 text-xl font-bold">{{
+            <span class="text-xl font-bold text-black opacity-60">{{
               $t("lp.ask")
             }}</span>
           </div>
@@ -35,25 +35,25 @@
       </div>
     </div>
     <!-- Go to Samples -->
-    <div class="bg-black bg-opacity-10 rounded-b-lg py-4">
+    <div class="rounded-b-lg bg-black bg-opacity-10 py-4">
       <div class="lg:inline-flex lg:items-center lg:space-x-4">
-        <div class="text-white text-sm font-bold mb-2 lg:mb-0">
+        <div class="mb-2 text-sm font-bold text-white lg:mb-0">
           {{ $t("lp.goToSampleRestaurant") }}
         </div>
         <div class="inline-flex items-center space-x-4">
           <a
             href="https://omochikaeri.com/r/bYArBMUJBe4KdVzZijLH"
-            class="inline-flex items-center h-10 rounded-full bg-white bg-opacity-20 px-4 hover:bg-opacity-30"
+            class="inline-flex h-10 items-center rounded-full bg-white bg-opacity-20 px-4 hover:bg-opacity-30"
           >
-            <span class="text-white text-sm font-bold">{{
+            <span class="text-sm font-bold text-white">{{
               $t("lp.izakaya")
             }}</span>
           </a>
           <a
             href="https://omochikaeri.com/r/wwCgtIEZQo6QnXRyxYYS"
-            class="inline-flex items-center h-10 rounded-full bg-white bg-opacity-20 px-4 hover:bg-opacity-30"
+            class="inline-flex h-10 items-center rounded-full bg-white bg-opacity-20 px-4 hover:bg-opacity-30"
           >
-            <span class="text-white text-sm font-bold">{{
+            <span class="text-sm font-bold text-white">{{
               $t("lp.patisserie")
             }}</span>
           </a>

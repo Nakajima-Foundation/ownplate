@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="text-sm font-bold pb-2">
+    <div class="pb-2 text-sm font-bold">
       {{ $t(titleKey) }}
       <span class="text-red-700" v-if="required === true">*</span>
     </div>

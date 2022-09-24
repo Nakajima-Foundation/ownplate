@@ -5,7 +5,7 @@
         {{ $t("order.orderStatus") }}
       </div>
       <div
-        class="rounded-lg p-4 mt-2 mx-2 text-2xl font-bold"
+        class="mx-2 mt-2 rounded-lg p-4 text-2xl font-bold"
         :class="orderStatusKey"
       >
         {{
@@ -17,7 +17,7 @@
       </div>
       <div
         v-if="isInMo && orderIsPlaced"
-        class="text-sm font-bold text-red-700 mt-2"
+        class="mt-2 text-sm font-bold text-red-700"
       >
         {{ $t("mobileOrder.orderPlacedAlert") }}
       </div>

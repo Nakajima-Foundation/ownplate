@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white rounded-lg shadow p-4">
+  <div class="rounded-lg bg-white p-4 shadow">
     <!-- Order Items -->
     <div class="grid grid-cols-1 space-y-4">
       <template v-for="(orderItem, key) in orderItems">
@@ -17,7 +17,7 @@
     <!-- Totals -->
     <div
       v-if="verified"
-      class="border-t-2 border-solid border-black border-opacity-10 mt-4 pt-4"
+      class="mt-4 border-t-2 border-solid border-black border-opacity-10 pt-4"
     >
       <!-- Sub Total -->
       <div class="flex">
@@ -34,7 +34,7 @@
       </div>
 
       <!-- Tax -->
-      <div class="flex mt-2">
+      <div class="mt-2 flex">
         <div class="flex-1">
           <div class="text-base">
             {{
@@ -54,7 +54,7 @@
       <!-- Postage for EC -->
       <div
         v-if="shopInfo.isEC"
-        class="border-t-2 border-solid border-black border-opacity-10 mt-4 pt-4"
+        class="mt-4 border-t-2 border-solid border-black border-opacity-10 pt-4"
       >
         <div class="flex">
           <div class="flex-1">
@@ -74,7 +74,7 @@
       <!-- Postage for delivery -->
       <div
         v-if="orderInfo.isDelivery"
-        class="border-t-2 border-solid border-black border-opacity-10 mt-4 pt-4"
+        class="mt-4 border-t-2 border-solid border-black border-opacity-10 pt-4"
       >
         <div class="flex">
           <div class="flex-1">
@@ -91,7 +91,7 @@
       </div>
 
       <!-- Total -->
-      <div v-if="false && regionTip.choices.length > 0" class="flex mt-2">
+      <div v-if="false && regionTip.choices.length > 0" class="mt-2 flex">
         <div class="flex-1">
           <div class="text-base">
             {{ $t("order.total") }}
@@ -111,7 +111,7 @@
           (isTipEditable || tip > 0) &&
           enableTip
         "
-        class="border-t-2 border-solid border-black border-opacity-10 mt-4 pt-4"
+        class="mt-4 border-t-2 border-solid border-black border-opacity-10 pt-4"
       >
         <div class="flex">
           <div class="flex-1">
@@ -148,7 +148,7 @@
               @click="updateTip(ratio)"
               :key="ratio"
               ><div
-                class="inline-flex justify-center items-center h-9 rounded-full w-16"
+                class="inline-flex h-9 w-16 items-center justify-center rounded-full"
                 :class="
                   isSameAmount(ratio) ? 'bg-op-teal' : 'bg-black bg-opacity-5'
                 "
@@ -167,7 +167,7 @@
 
       <!-- Total Charge -->
       <div
-        class="border-t-2 border-solid border-black border-opacity-10 mt-4 pt-4"
+        class="mt-4 border-t-2 border-solid border-black border-opacity-10 pt-4"
       >
         <div class="flex">
           <div class="flex-1">

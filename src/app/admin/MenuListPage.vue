@@ -7,7 +7,7 @@
     <div v-else-if="notFound === false">
       <!-- Header -->
       <AdminHeader
-        class="mt-6 mx-6 lg:flex lg:items-center"
+        class="mx-6 mt-6 lg:flex lg:items-center"
         :shopInfo="shopInfo"
         backLink="/admin/restaurants/"
         :showSuspend="false"
@@ -17,7 +17,7 @@
 
       <template v-if="showCategory">
         <!-- Category view -->
-        <div class="mt-6 mx-6 grid grid-col-1 space-y-2">
+        <div class="grid-col-1 mx-6 mt-6 grid space-y-2">
           <div class="text-xl font-bold text-black text-opacity-30">
             {{ $t("shopInfo.productCategory") }}
           </div>
@@ -26,7 +26,7 @@
       </template>
       <template v-else>
         <!-- Toggle to View All or Public Only -->
-        <div class="mt-6 mx-6 lg:text-center">
+        <div class="mx-6 mt-6 lg:text-center">
           <ToggleSwitch
             :toggleState="!publicFilter"
             @toggleFunction="publicFilterToggle()"
@@ -45,7 +45,7 @@
 
         <!-- category for mo -->
         <div v-if="showSubCategory">
-          <div class="mx-6 mt-2 lg:max-w-2xl lg:mx-auto">
+          <div class="mx-6 mt-2 lg:mx-auto lg:max-w-2xl">
             <SubCategoryList
               :subCategoryData="subCategoryData"
               :categoryBathPath="categoryBathPath"
@@ -57,7 +57,7 @@
         <!-- No Menu or Too Many Menu-->
         <div
           v-if="(!existsMenu || menuCounter > 5) && isOwner && !isInMo"
-          class="mt-6 mx-6 border-2 border-op-teal rounded-lg p-4 pb-2 lg:max-w-2xl lg:mx-auto"
+          class="mx-6 mt-6 rounded-lg border-2 border-op-teal p-4 pb-2 lg:mx-auto lg:max-w-2xl"
         >
           <div class="text-center text-sm font-bold text-op-teal">
             {{ $t("editMenu.pleaseAddItem") }}
@@ -73,7 +73,7 @@
         <!-- Category Titles / Menu Items -->
         <div
           v-if="existsMenu"
-          class="mt-6 mx-6 grid-col-1 space-y-4 lg:max-w-2xl lg:mx-auto"
+          class="grid-col-1 mx-6 mt-6 space-y-4 lg:mx-auto lg:max-w-2xl"
         >
           <div v-for="(menuList, index) in menuLists" :key="menuList">
             <!-- Category Title -->
@@ -145,7 +145,7 @@
 
         <!-- Add Group Title, Menu Item, and Download Menu -->
         <div
-          class="mt-6 mx-6 border-2 border-op-teal rounded-lg p-4 pb-2 lg:max-w-2xl lg:mx-auto"
+          class="mx-6 mt-6 rounded-lg border-2 border-op-teal p-4 pb-2 lg:mx-auto lg:max-w-2xl"
           v-if="isOwner"
         >
           <AddButton
@@ -155,7 +155,7 @@
             v-if="!isInMo"
           />
 
-          <div class="text-center mt-2" v-if="menuCounter > 0">
+          <div class="mt-2 text-center" v-if="menuCounter > 0">
             <DownloadButton :shopInfo="shopInfo" :menuObj="menuObj" />
           </div>
         </div>

@@ -1,9 +1,9 @@
 <template>
-  <div class="mt-4 mx-6">
-    <div class="text-xl font-bold text-op-teal text-center">
+  <div class="mx-6 mt-4">
+    <div class="text-center text-xl font-bold text-op-teal">
       {{ $t("order.thankyou") }}
     </div>
-    <div class="text-xl font-bold text-op-teal text-center mt-2">
+    <div class="mt-2 text-center text-xl font-bold text-op-teal">
       {{ $t("order.pleaseStay") }}
     </div>
   </div>

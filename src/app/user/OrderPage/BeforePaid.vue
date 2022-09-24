@@ -1,16 +1,16 @@
 <template>
   <div>
     <!-- Back Button (Edit Order) -->
-    <div class="mt-6 mx-6">
+    <div class="mx-6 mt-6">
       <b-button
         :loading="isDeleting"
         @click="handleOpenMenu"
         class="b-reset-tw"
       >
         <div
-          class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5"
+          class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
         >
-          <i class="material-icons text-lg text-op-teal mr-2">arrow_back</i>
+          <i class="material-icons mr-2 text-lg text-op-teal">arrow_back</i>
           <div class="text-sm font-bold text-op-teal">
             {{ $t("button.back") }}
           </div>
@@ -19,12 +19,12 @@
     </div>
 
     <!-- Restaurant Profile Photo and Name -->
-    <div class="mt-4 beforePaid">
+    <div class="beforePaid mt-4">
       <shop-header :shopInfo="shopInfo"></shop-header>
     </div>
 
     <!-- Before Paid -->
-    <div class="mt-4 mx-6">
+    <div class="mx-6 mt-4">
       <BeforePaidAlert :orderInfo="orderInfo" :shopInfo="shopInfo" />
     </div>
     <!-- end of Before Paid -->
@@ -38,7 +38,7 @@
     </div>
 
     <!-- Order Body -->
-    <div class="mt-6 mx-6 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12">
+    <div class="mx-6 mt-6 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12">
       <!-- Left -->
       <div>
         <!-- Title -->
@@ -91,7 +91,7 @@
           <!-- For EC and Delivery -->
           <div
             v-if="shopInfo.isEC || orderInfo.isDelivery"
-            class="bg-white rounded-lg shadow p-4 mb-4 mt-2"
+            class="mb-4 mt-2 rounded-lg bg-white p-4 shadow"
           >
             <ECCustomer
               ref="ecCustomerRef"
@@ -110,7 +110,7 @@
                 $refs.ecCustomerRef &&
                 $refs.ecCustomerRef.ecErrors['location'].length > 0
               "
-              class="text-red-700 font-bold"
+              class="font-bold text-red-700"
             >
               <div
                 v-for="(error, key) in $refs.ecCustomerRef.ecErrors['location']"
@@ -160,21 +160,21 @@
             <div
               class="mt-6"
               :class="
-                userMessageError ? 'p-2 rounded border-4 border-red-700' : ''
+                userMessageError ? 'rounded border-4 border-red-700 p-2' : ''
               "
             >
               <div class="text-xl font-bold text-black text-opacity-30">
                 {{ $t("order.orderMessage") }}
               </div>
 
-              <div class="bg-white rounded-lg shadow p-4 mt-2">
+              <div class="mt-2 rounded-lg bg-white p-4 shadow">
                 <b-input
                   v-model="memo"
                   type="textarea"
                   :placeholder="$t('order.enterMessage')"
                   class="w-full"
                 ></b-input>
-                <div :class="userMessageError ? 'text-red-700 font-bold' : ''">
+                <div :class="userMessageError ? 'font-bold text-red-700' : ''">
                   {{ $t("validationError.memo.length") }}
                 </div>
               </div>
@@ -217,7 +217,7 @@
                   class="b-reset-tw"
                 >
                   <div
-                    class="inline-flex justify-center items-center h-16 px-6 rounded-full bg-op-teal shadow"
+                    class="inline-flex h-16 items-center justify-center rounded-full bg-op-teal px-6 shadow"
                     style="min-width: 288px"
                   >
                     <div class="text-xl font-bold text-white">
@@ -232,7 +232,7 @@
                 </b-button>
                 <div
                   v-if="mode !== 'mo' && stripeSmallPayment"
-                  class="text-sm font-bold text-red-700 mt-2"
+                  class="mt-2 text-sm font-bold text-red-700"
                 >
                   {{ $t("errorPage.code.smallPayment") }}
                 </div>
@@ -240,7 +240,7 @@
               <div v-if="mode === 'mo'" class="text-center">
                 <div
                   v-if="stripeSmallPayment"
-                  class="text-sm font-bold text-red-700 mt-2"
+                  class="mt-2 text-sm font-bold text-red-700"
                 >
                   <div>
                     {{ $t("mobileOrder.smallPayment1") }}
@@ -263,7 +263,7 @@
 
             <!-- Pay at Restaurant -->
             <div v-else class="mt-2">
-              <div class="bg-black bg-opacity-5 rounded-lg p-4">
+              <div class="rounded-lg bg-black bg-opacity-5 p-4">
                 <div class="text-sm">
                   {{ $t("order.pleasePayAtRestaurant") }}
                 </div>
@@ -286,7 +286,7 @@
                   class="b-reset-tw"
                 >
                   <div
-                    class="inline-flex justify-center items-center h-16 px-6 rounded-full bg-op-teal shadow"
+                    class="inline-flex h-16 items-center justify-center rounded-full bg-op-teal px-6 shadow"
                     style="min-width: 288px"
                   >
                     <div class="text-xl font-bold text-white">
@@ -313,14 +313,14 @@
                 $refs.ecCustomerRef &&
                 $refs.ecCustomerRef.hasEcError
               "
-              class="text-center text-red-700 font-bold mt-2"
+              class="mt-2 text-center font-bold text-red-700"
             >
               {{ $t("order.alertReqireAddress") }}
             </div>
 
             <!-- Send SMS Checkbox -->
             <div v-if="!isLineEnabled" class="mt-6">
-              <div class="bg-black bg-opacity-5 rounded-lg p-4">
+              <div class="rounded-lg bg-black bg-opacity-5 p-4">
                 <b-checkbox v-model="sendSMS">
                   <div class="text-sm font-bold">
                     {{ $t("order.sendSMS") }}

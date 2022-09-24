@@ -1,6 +1,6 @@
 <template>
   <div
-    class="mt-4 grid items-center grid-cols-2 gap-3 lg:grid-cols-3 xl:grid-cols-4"
+    class="mt-4 grid grid-cols-2 items-center gap-3 lg:grid-cols-3 xl:grid-cols-4"
   >
     <div v-for="(cat, k) in categoryData" :key="k">
       <router-link
@@ -15,15 +15,15 @@
       >
         <div class="flex items-center">
           <div
-            class="mt-2 w-10 h-10 mr-2 bg-white border-gray-100 rounded-lg shadow-none"
+            class="mt-2 mr-2 h-10 w-10 rounded-lg border-gray-100 bg-white shadow-none"
           >
             <img
               :src="moBaseUrl + '/images/category/' + cat.id + '.jpg'"
               @error="smallImageErrorHandler"
-              class="inline-block align-middle rounded-lg"
+              class="inline-block rounded-lg align-middle"
             />
           </div>
-          <div class="flex-1 mt-2 text-xs leading-tight font-bold text-op-teal">
+          <div class="mt-2 flex-1 text-xs font-bold leading-tight text-op-teal">
             {{ cat.name }}
           </div>
         </div>

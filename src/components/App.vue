@@ -1,5 +1,5 @@
 <template>
-  <div class="flex-col flex min-h-screen" @click="enableSound()">
+  <div class="flex min-h-screen flex-col" @click="enableSound()">
     <!-- Notification Banner -->
     <NotificationBanner />
 
@@ -14,7 +14,7 @@
       <div>
         <div
           v-if="underConstruction"
-          class="bg-yellow-200 text-center p-2 font-bold text-red-500"
+          class="bg-yellow-200 p-2 text-center font-bold text-red-500"
         >
           {{ $t("underConstruction") }}
         </div>

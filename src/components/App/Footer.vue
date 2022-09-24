@@ -1,16 +1,16 @@
 <template>
-  <div class="bg-[#616161] h-52 mt-12">
+  <div class="mt-12 h-52 bg-[#616161]">
     <!-- Footer -->
     <div>
-      <div class="mt-4 mx-4 text-right">
+      <div class="mx-4 mt-4 text-right">
         <a
-          class="inline-flex justify-center items-center rounded-full h-10 bg-white bg-opacity-10 pl-4 pr-2"
+          class="inline-flex h-10 items-center justify-center rounded-full bg-white bg-opacity-10 pl-4 pr-2"
           @click="openLang()"
         >
-          <i class="material-icons text-lg text-white text-opacity-50 mr-2"
+          <i class="material-icons mr-2 text-lg text-white text-opacity-50"
             >language</i
           >
-          <span class="text-white text-sm font-bold text-opacity-80 mr-2">{{
+          <span class="mr-2 text-sm font-bold text-white text-opacity-80">{{
             languages[language]
           }}</span>
 
@@ -19,13 +19,13 @@
           >
         </a>
       </div>
-      <div class="mt-2 mx-6 text-right">
+      <div class="mx-6 mt-2 text-right">
         <FooterPoweredBy />
       </div>
     </div>
     <!-- Language Popup-->
     <b-modal :active.sync="langPopup" :width="488" scroll="keep">
-      <div class="bg-white rounded-lg my-6 mx-2 shadow-lg p-6">
+      <div class="my-6 mx-2 rounded-lg bg-white p-6 shadow-lg">
         <div class="text-xl font-bold text-black text-opacity-40">
           {{ $t("menu.selectLanguage") }}
         </div>
@@ -33,10 +33,10 @@
         <!-- Languages -->
         <div class="mt-4" v-for="(lang, lang_key) in languages" :key="lang_key">
           <a
-            class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
+            class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
             @click="changeLangAndClose(lang_key)"
             ><i
-              class="material-icons text-lg text-black text-opacity-60 mr-2"
+              class="material-icons mr-2 text-lg text-black text-opacity-60"
               v-if="lang_key == language"
               >check</i
             ><span class="text-sm font-bold text-op-teal">{{ lang }}</span></a
@@ -46,10 +46,10 @@
         <!-- Close -->
         <div class="mt-6 text-center">
           <a
-            class="inline-flex justify-center items-center rounded-full h-12 bg-black bg-opacity-5"
+            class="inline-flex h-12 items-center justify-center rounded-full bg-black bg-opacity-5"
             style="min-width: 10rem"
             @click="closeLang()"
-            ><span class="font-bold text-black text-opacity-60 px-4"
+            ><span class="px-4 font-bold text-black text-opacity-60"
               >{{ $t("menu.close") }}
             </span></a
           >

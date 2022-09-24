@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="!hideTable" class="pb-6">
-      <table class="w-full bg-white rounded-lg shadow">
+      <table class="w-full rounded-lg bg-white shadow">
         <tr>
           <th
             v-for="(field, index) in fields"
@@ -32,9 +32,9 @@
     >
       <b-button class="b-reset-tw">
         <div
-          class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
+          class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
         >
-          <i class="material-icons text-lg text-op-teal mr-2">save_alt</i>
+          <i class="material-icons mr-2 text-lg text-op-teal">save_alt</i>
           <div class="text-sm font-bold text-op-teal">
             {{ $t("admin.report.download-csv-details") }}
           </div>

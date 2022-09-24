@@ -3,17 +3,17 @@
     <b-checkbox v-if="editable" :value="available" @input="input" />
     <div>
       <div
-        class="inline-flex justify-center items-center h-9 w-12 bg-blue-500 bg-opacity-10 rounded flex-shrink-0"
+        class="inline-flex h-9 w-12 flex-shrink-0 items-center justify-center rounded bg-blue-500 bg-opacity-10"
       >
         <div class="text-lg font-bold text-blue-500">
           {{ "x " + String(count) }}
         </div>
       </div>
-      <div v-if="image" class="flex-shrink-0 mt-1">
+      <div v-if="image" class="mt-1 flex-shrink-0">
         <img
           :src="image"
           @error="_smallImageErrorHandler"
-          class="w-12 h-12 rounded object-cover"
+          class="h-12 w-12 rounded object-cover"
         />
       </div>
     </div>
@@ -31,7 +31,7 @@
           <span v-else> / {{ item.itemAliasesName }} </span>
         </span>
       </div>
-      <div v-if="specialRequest" class="text-xs font-bold mt-1">
+      <div v-if="specialRequest" class="mt-1 text-xs font-bold">
         <s v-if="editable && !available">
           {{ specialRequest }}
         </s>
@@ -41,7 +41,7 @@
       </div>
     </div>
 
-    <div class="text-right flex-shrink-0">
+    <div class="flex-shrink-0 text-right">
       <span class="text-base font-bold text-black text-opacity-30">
         <s v-if="editable && !available">
           {{ $n(totalPrice, "currency") }}

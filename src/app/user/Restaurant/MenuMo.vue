@@ -1,14 +1,14 @@
 <template>
   <div>
     <!-- Item Card -->
-    <div class="bg-white rounded-lg shadow">
+    <div class="rounded-lg bg-white shadow">
       <div class="flow-root cursor-pointer">
         <!-- Image -->
         <div v-if="smallimage" class="pb-2">
           <img
             @click.stop="openImage()"
             :src="smallimage"
-            class="bg-white w-full object-cover rounded-t-lg"
+            class="w-full rounded-t-lg bg-white object-cover"
             @error="smallImageErrorHandler"
           />
         </div>
@@ -17,31 +17,31 @@
           <!-- Item Name -->
           <a :id="`${item.id}`" @click.stop="openImage()">
             <div
-              class="h-10 text-sm sm:text-base text-black tracking-tight line-clamp-2"
+              class="h-10 text-sm tracking-tight text-black line-clamp-2 sm:text-base"
             >
               {{ title }}
             </div>
           </a>
           <!-- Price -->
-          <div class="mt-1 text-sm sm:text-base text-black font-bold">
+          <div class="mt-1 text-sm font-bold text-black sm:text-base">
             {{ $tc("tax.price", $n(price, "currency")) }}
           </div>
-          <div class="text-xs sm:text-sm text-black">
+          <div class="text-xs text-black sm:text-sm">
             {{ $t("tax.include") }}
           </div>
         </div>
 
         <!-- Add / Sold Out Button -->
-        <div class="flex justify-end items-center mx-1 mb-2">
+        <div class="mx-1 mb-2 flex items-center justify-end">
           <div
-            class="text-center sm:text-xl font-bold text-op-teal mx-auto mt-0.5"
+            class="mx-auto mt-0.5 text-center font-bold text-op-teal sm:text-xl"
             v-if="quantities[0] > 0"
           >
             {{ quantities[0] }}
           </div>
           <div
             v-if="isSoldOut"
-            class="inline-flex justify-center items-center h-9 rounded-full w-14 bg-black bg-opacity-10"
+            class="inline-flex h-9 w-14 items-center justify-center rounded-full bg-black bg-opacity-10"
           >
             <div class="text-xs font-bold text-black text-opacity-50">
               {{ $t("sitemenu.sold") }}
@@ -50,7 +50,7 @@
           <div
             v-else
             @click.stop="pushQuantities(0)"
-            class="inline-flex justify-center items-center h-9 rounded-full w-14 bg-op-teal bg-opacity-10"
+            class="inline-flex h-9 w-14 items-center justify-center rounded-full bg-op-teal bg-opacity-10"
             :data-cart-product="item.id"
           >
             <i class="material-icons text-lg text-op-teal">add</i>
@@ -66,13 +66,13 @@
       scroll="keep"
       :on-cancel="closeImage"
     >
-      <div class="mx-6 p-5 bg-white rounded-lg">
+      <div class="mx-6 rounded-lg bg-white p-5">
         <img
           :src="image"
-          class="mx-auto w-40 h-40 sm:w-72 sm:h-72 object-cover rounded-lg"
+          class="mx-auto h-40 w-40 rounded-lg object-cover sm:h-72 sm:w-72"
           @error="imageErrorHandler"
         />
-        <div class="text-left text-black text-xl font-bold mt-6">
+        <div class="mt-6 text-left text-xl font-bold text-black">
           {{ title }}
         </div>
 
@@ -89,12 +89,12 @@
           </template>
         </div>
 
-        <div class="mt-3 text-left text-black font-bold">
+        <div class="mt-3 text-left font-bold text-black">
           <Price :shopInfo="shopInfo" :menu="item" />
         </div>
 
         <div>
-          <div class="flex mt-3">
+          <div class="mt-3 flex">
             <div
               v-if="prices[0] > 0"
               class="flex-1 text-right text-xs text-black"
@@ -113,7 +113,7 @@
           <div>
             <a
               @click="pullQuantities(0)"
-              class="inline-flex justify-center items-center h-9 w-24 rounded-full bg-red-700 bg-opacity-10 removeCart"
+              class="removeCart inline-flex h-9 w-24 items-center justify-center rounded-full bg-red-700 bg-opacity-10"
               :disabled="quantities[0] === 0"
               :data-cart-product="item.id"
             >
@@ -126,7 +126,7 @@
           <div>
             <a
               @click="pushQuantities(0)"
-              class="inline-flex justify-center items-center h-9 w-24 rounded-full bg-op-teal bg-opacity-10 cardAdd"
+              class="cardAdd inline-flex h-9 w-24 items-center justify-center rounded-full bg-op-teal bg-opacity-10"
               :data-cart-product="item.id"
             >
               <i class="material-icons text-lg text-op-teal">add</i>

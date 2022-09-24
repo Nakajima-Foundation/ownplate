@@ -1,21 +1,21 @@
 <template>
   <div>
     <a
-      class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-3"
+      class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-3"
       @click="openNotificationSettings()"
     >
       <i class="material-icons text-lg text-op-teal xs:mr-1">notifications</i>
       <div
-        class="invisible xs:visible text-sm font-bold text-op-teal -mr-2 xs:mr-2"
+        class="invisible -mr-2 text-sm font-bold text-op-teal xs:visible xs:mr-2"
       >
         {{ $t("admin.order.notification") }}
       </div>
 
-      <div class="font-bold text-red-700 mr-2">{{ orderCounter }}</div>
+      <div class="mr-2 font-bold text-red-700">{{ orderCounter }}</div>
 
       <div
         v-if="notificationData.soundOn"
-        class="inline-flex justify-center items-center mt-1 space-x-1"
+        class="mt-1 inline-flex items-center justify-center space-x-1"
       >
         <div>
           <i class="material-icons text-lg text-green-600">volume_up</i>

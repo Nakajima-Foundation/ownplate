@@ -1,12 +1,12 @@
 <template>
   <div>
     <!-- Header -->
-    <div class="mt-6 mx-6">
+    <div class="mx-6 mt-6">
       <router-link :to="'/admin/restaurants'">
         <div
-          class="inline-flex justify-center items-center rounded-full h-9 bg-black bg-opacity-5 px-4"
+          class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
         >
-          <i class="material-icons text-lg text-op-teal mr-2">home</i>
+          <i class="material-icons mr-2 text-lg text-op-teal">home</i>
           <div class="text-sm font-bold text-op-teal">
             {{ $t("admin.news.adminTop") }}
           </div>
@@ -15,13 +15,13 @@
     </div>
 
     <!-- Title -->
-    <div class="text-xl font-bold text-black text-opacity-40 mt-6 mx-6">
+    <div class="mx-6 mt-6 text-xl font-bold text-black text-opacity-40">
       {{ $t("admin.news.title") }}
     </div>
 
     <!-- Articles -->
     <div
-      class="mt-2 mx-6 grid items-center grid-cols-1 gap-2 lg:grid-cols-3 xl:grid-cols-4"
+      class="mx-6 mt-2 grid grid-cols-1 items-center gap-2 lg:grid-cols-3 xl:grid-cols-4"
     >
       <list-item
         v-for="news in newsList"

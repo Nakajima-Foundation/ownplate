@@ -1,12 +1,12 @@
 <template>
-  <div class="mx-6 mt-6 lg:max-w-2xl lg:mx-auto">
+  <div class="mx-6 mt-6 lg:mx-auto lg:max-w-2xl">
     <!-- Title -->
     <div class="text-xl font-bold text-black text-opacity-30">
       {{ $t("profile.title") }}
     </div>
 
     <!-- Card -->
-    <div class="bg-white rounded-lg shadow mt-2 p-6">
+    <div class="mt-2 rounded-lg bg-white p-6 shadow">
       <ProfileLoginStatus />
 
       <!-- Not Signed In -->
@@ -36,7 +36,7 @@
         <div class="mt-12 text-center" v-if="!isLiffUser">
           <a
             @click.prevent="handleSignOut"
-            class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5"
+            class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
           >
             <div class="text-sm font-bold text-op-teal">
               {{ $t("menu.signOut") }}

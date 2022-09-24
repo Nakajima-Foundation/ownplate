@@ -1,7 +1,7 @@
 <template>
   <div>
     <ownplate-service-image />
-    <div class="max-w-screen-xl mx-auto">
+    <div class="mx-auto max-w-screen-xl">
       <entrance-buttons />
       <userVoices />
       <demo />

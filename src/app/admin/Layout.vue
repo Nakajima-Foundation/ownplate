@@ -5,7 +5,7 @@
       <NotFound />
     </div>
     <div v-else>
-      <div v-if="partner && partner.length > 0" class="mt-3 mx-6 items-center">
+      <div v-if="partner && partner.length > 0" class="mx-6 mt-3 items-center">
         <div v-for="(part, k) in partner" :key="k" class="flex">
           <div class="flex-1">
             <img :src="`/partners/${part.logo}`" class="w-12" />

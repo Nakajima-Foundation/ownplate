@@ -8,10 +8,10 @@
     :open.sync="open"
   >
     <!-- Logo / Home -->
-    <div class="text-center mt-6 mb-4">
+    <div class="mt-6 mb-4 text-center">
       <router-link :to="home_path">
         <img
-          class="w-48 m-auto"
+          class="m-auto w-48"
           :src="moBaseUrl + '/images/assets/logo_horizontal.png'"
           @click="handleClose()"
         />
@@ -19,10 +19,10 @@
     </div>
 
     <!-- Profile -->
-    <div class="text-center mt-2">
+    <div class="mt-2 text-center">
       <router-link :to="base_path + '/u/profile'">
         <div
-          class="inline-flex justify-center items-center rounded-full h-12 w-56 bg-op-teal text-white font-bold"
+          class="inline-flex h-12 w-56 items-center justify-center rounded-full bg-op-teal font-bold text-white"
           @click="handleClose()"
         >
           <i class="material-icons mr-2">person</i>
@@ -32,10 +32,10 @@
     </div>
 
     <!-- Order History -->
-    <div class="text-center mt-2" v-if="isCustomer || inLiff">
+    <div class="mt-2 text-center" v-if="isCustomer || inLiff">
       <router-link :to="historyPage">
         <div
-          class="inline-flex justify-center items-center rounded-full h-12 w-56 bg-op-teal text-white font-bold"
+          class="inline-flex h-12 w-56 items-center justify-center rounded-full bg-op-teal font-bold text-white"
           @click="handleClose()"
         >
           <i class="material-icons mr-2">history</i>
@@ -45,10 +45,10 @@
     </div>
 
     <!-- Favorites -->
-    <div class="text-center mt-2" v-if="isCustomer && !inLiff">
+    <div class="mt-2 text-center" v-if="isCustomer && !inLiff">
       <router-link :to="base_path + '/r/favorites'">
         <div
-          class="inline-flex justify-center items-center rounded-full h-12 w-56 bg-op-teal text-white font-bold"
+          class="inline-flex h-12 w-56 items-center justify-center rounded-full bg-op-teal font-bold text-white"
           @click="handleClose()"
         >
           <i class="material-icons mr-2">favorite</i>
@@ -58,10 +58,10 @@
     </div>
 
     <!-- Find Restaurants -->
-    <div class="text-center mt-2" v-if="(isCustomer || isAnonymous) && !inLiff">
+    <div class="mt-2 text-center" v-if="(isCustomer || isAnonymous) && !inLiff">
       <router-link :to="base_path">
         <div
-          class="inline-flex justify-center items-center rounded-full h-12 w-56 bg-op-teal text-white font-bold"
+          class="inline-flex h-12 w-56 items-center justify-center rounded-full bg-op-teal font-bold text-white"
           @click="handleClose()"
         >
           <i class="material-icons mr-2">restaurant</i>
@@ -73,10 +73,10 @@
     <!-- Links for Terms and Policy -->
     <div>
       <!-- Terms -->
-      <div class="text-center mt-2">
+      <div class="mt-2 text-center">
         <router-link :to="base_path + '/terms'">
           <div
-            class="inline-flex justify-center items-center text-sm font-bold text-op-teal"
+            class="inline-flex items-center justify-center text-sm font-bold text-op-teal"
             @click="handleClose()"
           >
             {{ $t("menu.termsUser") }}
@@ -85,10 +85,10 @@
       </div>
 
       <!-- Privacy -->
-      <div class="text-center mt-2">
+      <div class="mt-2 text-center">
         <router-link :to="base_path + '/privacy'">
           <div
-            class="inline-flex justify-center items-center text-sm font-bold text-op-teal"
+            class="inline-flex items-center justify-center text-sm font-bold text-op-teal"
             @click="handleClose()"
           >
             {{ $t("menu.privacy") }}

@@ -19,7 +19,7 @@
           </b-select>
           <!-- button -->
           <div>
-            <div class="inline-flex mt-6">
+            <div class="mt-6 inline-flex">
               <div class="flex">
                 <b-select v-model="monthValue">
                   <option v-for="(month, k) in months" :value="month" :key="k">
@@ -51,7 +51,7 @@
             </div>
           </div>
           <div>
-            <b-button @click="nextLoad" class="rounded-full mt-4"
+            <b-button @click="nextLoad" class="mt-4 rounded-full"
               >more</b-button
             >
           </div>
@@ -62,12 +62,12 @@
             :fieldNames="fieldNames"
             :fileName="fileName"
           >
-            <b-button class="h-9 rounded-full mt-4">
+            <b-button class="mt-4 h-9 rounded-full">
               <span class="pl-4 pr-4">
-                <i class="material-icons text-op-teal !text-2xl mr-2"
+                <i class="material-icons mr-2 !text-2xl text-op-teal"
                   >save_alt</i
                 >
-                <span class="text-op-teal font-bold">{{
+                <span class="font-bold text-op-teal">{{
                   $t("admin.report.download-csv")
                 }}</span>
               </span>

@@ -7,12 +7,12 @@
       <!-- Center Column -->
       <div class="column">
         <div class="ml-6 mr-6 mt-6">
-          <div class="bg-black bg-opacity-5 rounded-lg pl-6 pr-6 pt-6 pb-6">
+          <div class="rounded-lg bg-black bg-opacity-5 pl-6 pr-6 pt-6 pb-6">
             <!-- Go to Super Admin Page -->
             <div class="text-center">
               <router-link to="/s">
                 <div
-                  class="px-6 rounded-full h-12 font-bold text-base min-w-[256px] cursor-pointer inline-flex min-h-[36px] items-center justify-center bg-op-teal shadow-lg"
+                  class="inline-flex h-12 min-h-[36px] min-w-[256px] cursor-pointer items-center justify-center rounded-full bg-op-teal px-6 text-base font-bold shadow-lg"
                 >
                   <span class="text-white">Super Admin Page</span>
                 </div>
@@ -32,12 +32,12 @@
       <!-- Center Column -->
       <div class="column">
         <div class="ml-6 mr-6 mt-6">
-          <div class="bg-black bg-opacity-5 rounded-lg pl-6 pr-6 pt-6 pb-6">
+          <div class="rounded-lg bg-black bg-opacity-5 pl-6 pr-6 pt-6 pb-6">
             <!-- Go to Super Admin Page -->
             <div class="text-center">
               <router-link to="/op">
                 <div
-                  class="px-6 rounded-full h-12 font-bold text-base min-w-[256px] cursor-pointer inline-flex min-h-[36px] items-center justify-center bg-op-teal shadow-lg"
+                  class="inline-flex h-12 min-h-[36px] min-w-[256px] cursor-pointer items-center justify-center rounded-full bg-op-teal px-6 text-base font-bold shadow-lg"
                 >
                   <span class="text-white">Operator Page</span>
                 </div>

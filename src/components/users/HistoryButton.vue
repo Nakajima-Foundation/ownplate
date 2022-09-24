@@ -2,10 +2,10 @@
   <div class="text-center">
     <router-link :to="basePath + '/u/history'">
       <div
-        class="inline-flex justify-center items-center h-16 rounded-full bg-op-teal shadow"
+        class="inline-flex h-16 items-center justify-center rounded-full bg-op-teal shadow"
         style="min-width: 16rem"
       >
-        <i class="material-icons text-2xl text-white mr-2">history</i>
+        <i class="material-icons mr-2 text-2xl text-white">history</i>
         <div class="text-xl font-bold text-white">
           {{ $t("order.history") }}
         </div>

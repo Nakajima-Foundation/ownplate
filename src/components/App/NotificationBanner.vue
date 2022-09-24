@@ -2,9 +2,9 @@
   <div
     v-if="isFlash"
     @click="dismissBanner()"
-    class="bg-blue-500 fixed z-50 w-full h-16 flex justify-center items-center animate-pulse"
+    class="fixed z-50 flex h-16 w-full animate-pulse items-center justify-center bg-blue-500"
   >
-    <i class="material-icons text-white text-2xl">notifications_active</i>
+    <i class="material-icons text-2xl text-white">notifications_active</i>
   </div>
 </template>
 

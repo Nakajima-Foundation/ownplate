@@ -8,12 +8,12 @@
     </div>
 
     <!-- Photo and Name -->
-    <div class="mt-4 lg:mt-0 lg:flex-1 lg:flex lg:items-center lg:mx-4">
+    <div class="mt-4 lg:mx-4 lg:mt-0 lg:flex lg:flex-1 lg:items-center">
       <div class="flex items-center">
-        <div class="flex-shrink-0 rounded-full bg-black bg-opacity-10 mr-4">
+        <div class="mr-4 flex-shrink-0 rounded-full bg-black bg-opacity-10">
           <img
             :src="resizedProfileImage(shopInfo, '600')"
-            class="w-9 h-9 rounded-full object-cover"
+            class="h-9 w-9 rounded-full object-cover"
           />
         </div>
         <div class="text-base font-bold">
@@ -23,7 +23,7 @@
     </div>
 
     <!-- Suspend Button -->
-    <div class="flex space-x-4 mt-4 lg:mt-0">
+    <div class="mt-4 flex space-x-4 lg:mt-0">
       <b-button
         tag="router-link"
         :to="`/admin/restaurants/${restaurantId()}/suspend`"
@@ -32,9 +32,9 @@
       >
         <div
           v-if="suspendUntil"
-          class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-red-700 bg-opacity-5"
+          class="inline-flex h-9 items-center justify-center rounded-full bg-red-700 bg-opacity-5 px-4"
         >
-          <i class="material-icons text-lg text-red-700 mr-2"
+          <i class="material-icons mr-2 text-lg text-red-700"
             >remove_shopping_cart</i
           >
           <div class="text-sm font-bold text-red-700">
@@ -44,9 +44,9 @@
 
         <div
           v-else
-          class="inline-flex justify-center items-center h-9 px-4 rounded-full bg-black bg-opacity-5"
+          class="inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5 px-4"
         >
-          <i class="material-icons text-lg text-op-teal mr-2"
+          <i class="material-icons mr-2 text-lg text-op-teal"
             >remove_shopping_cart</i
           >
           <div class="text-sm font-bold text-op-teal">

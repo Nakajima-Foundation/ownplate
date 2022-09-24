@@ -1,6 +1,6 @@
 <template>
   <div
-    class="mt-4 mx-6 bg-white rounded-lg p-4 shadow"
+    class="mx-6 mt-4 rounded-lg bg-white p-4 shadow"
     v-if="shopInfo && shopInfo.orderThanks && shopInfo.orderThanks.length > 0"
   >
     <div class="text-xs font-bold text-black text-opacity-60">

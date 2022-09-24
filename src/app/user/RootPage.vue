@@ -2,11 +2,11 @@
   <div>
     <!-- View All -->
     <div>
-      <div class="text-xl font-bold text-black text-opacity-40 mt-6 mx-6">
+      <div class="mx-6 mt-6 text-xl font-bold text-black text-opacity-40">
         {{ $t("find.area") }}
       </div>
       <div
-        class="mt-2 mx-6 grid grid-cols-1 gap-2 lg:grid-cols-3 xl:grid-cols-4"
+        class="mx-6 mt-2 grid grid-cols-1 gap-2 lg:grid-cols-3 xl:grid-cols-4"
       >
         <area-item :name="$t('find.areaAll')" :id="'all'" />
       </div>
@@ -14,11 +14,11 @@
 
     <!-- Areas -->
     <div v-for="area in areas">
-      <div class="text-base font-bold text-black text-opacity-40 mt-6 mx-6">
+      <div class="mx-6 mt-6 text-base font-bold text-black text-opacity-40">
         {{ $t("find.areas." + area.name) }}
       </div>
       <div
-        class="mt-2 mx-6 grid grid-cols-1 gap-2 lg:grid-cols-3 xl:grid-cols-4"
+        class="mx-6 mt-2 grid grid-cols-1 gap-2 lg:grid-cols-3 xl:grid-cols-4"
       >
         <area-item
           v-for="item in area.items"
@@ -31,22 +31,22 @@
 
     <!-- Likes -->
     <div v-if="likes.length > 0">
-      <div class="text-xl font-bold text-black text-opacity-40 mt-6 mx-6">
+      <div class="mx-6 mt-6 text-xl font-bold text-black text-opacity-40">
         {{ $t("find.likes") }}
       </div>
       <div
-        class="mt-2 mx-6 grid items-center grid-cols-1 gap-2 lg:grid-cols-3 xl:grid-cols-4"
+        class="mx-6 mt-2 grid grid-cols-1 items-center gap-2 lg:grid-cols-3 xl:grid-cols-4"
       >
         <div v-for="like in likes" :key="like.restaurantId">
           <router-link :to="`/r/${like.restaurantId}`">
             <div class="flex items-center">
-              <div class="w-12 h-12 rounded-full bg-black bg-opacity-10 mr-4">
+              <div class="mr-4 h-12 w-12 rounded-full bg-black bg-opacity-10">
                 <img
                   :src="resizedProfileImage(like, '600')"
-                  class="w-12 h-12 rounded-full object-cover"
+                  class="h-12 w-12 rounded-full object-cover"
                 />
               </div>
-              <div class="flex-1 text-base font-bold pr-2">
+              <div class="flex-1 pr-2 text-base font-bold">
                 {{ like.restaurantName }}
               </div>
             </div>

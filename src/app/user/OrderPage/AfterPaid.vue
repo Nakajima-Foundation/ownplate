@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Restaurant Profile Photo and Name -->
-    <div class="mt-4 afterPaid">
+    <div class="afterPaid mt-4">
       <shop-header :shopInfo="shopInfo"></shop-header>
     </div>
 
@@ -13,7 +13,7 @@
     <LineButton :groupData="groupData" />
 
     <!-- Order Summary -->
-    <div class="mt-6 mx-6 pt-6 pb-1 px-2 bg-white rounded-lg shadow">
+    <div class="mx-6 mt-6 rounded-lg bg-white px-2 pt-6 pb-1 shadow">
       <!-- Order Status -->
       <OrderStatus :orderInfo="orderInfo" :orderName="orderName" />
 
@@ -37,8 +37,8 @@
           @click="handleCancelPayment"
           class="b-reset-tw"
         >
-          <div class="inline-flex justify-center items-center">
-            <i class="material-icons text-lg mr-2 text-red-700"
+          <div class="inline-flex items-center justify-center">
+            <i class="material-icons mr-2 text-lg text-red-700"
               >highlight_off</i
             >
             <div class="text-base font-bold text-red-700">
@@ -52,7 +52,7 @@
     <!-- Canceled Message -->
     <div
       v-if="canceled"
-      class="mt-6 mx-6 bg-red-700 bg-opacity-10 rounded-lg p-4 text-center"
+      class="mx-6 mt-6 rounded-lg bg-red-700 bg-opacity-10 p-4 text-center"
     >
       <span class="text-base font-bold text-red-700">{{
         $t("order.cancelOrderComplete")
@@ -85,7 +85,7 @@
     </div>
 
     <!-- Order Body -->
-    <div class="mt-6 mx-6 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12">
+    <div class="mx-6 mt-6 grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12">
       <!-- Left -->
       <div>
         <!-- Title -->
@@ -123,7 +123,7 @@
 
         <!-- Your Message to the Restaurant -->
         <template v-if="paid && hasMemo">
-          <div class="bg-white rounded-lg p-4 shadow mt-4">
+          <div class="mt-4 rounded-lg bg-white p-4 shadow">
             <div class="text-xs font-bold text-black text-opacity-60">
               {{ $t("order.orderMessage") }}
             </div>
@@ -134,7 +134,7 @@
         <!-- Canceled Message -->
         <div
           v-if="canceled"
-          class="mt-6 bg-red-700 bg-opacity-10 rounded-lg p-4 text-center"
+          class="mt-6 rounded-lg bg-red-700 bg-opacity-10 p-4 text-center"
         >
           <span class="text-base font-bold text-red-700">{{
             $t("order.cancelOrderComplete")
@@ -150,7 +150,7 @@
         <div v-if="paid" class="mt-6 text-center">
           <b-button class="b-reset-tw" @click="handleOpenMenu">
             <div
-              class="inline-flex justify-center items-center h-12 px-6 rounded-full border-2 border-op-teal"
+              class="inline-flex h-12 items-center justify-center rounded-full border-2 border-op-teal px-6"
             >
               <div class="text-base font-bold text-op-teal">
                 {{ $t("order.menu") }}
@@ -201,7 +201,7 @@
               }}
             </div>
 
-            <div class="bg-white rounded-lg shadow p-4 mt-2 text-center">
+            <div class="mt-2 rounded-lg bg-white p-4 text-center shadow">
               <qrcode
                 :value="urlAdminOrderPage"
                 :options="{ width: 160 }"

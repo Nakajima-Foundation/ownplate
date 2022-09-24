@@ -8,14 +8,14 @@
       <!-- category modal -->
       <div
         v-if="isOpenGroupCategory"
-        class="fixed z-20 top-0 bg-white w-full h-full"
+        class="fixed top-0 z-20 h-full w-full bg-white"
       >
-        <div class="flex justify-between h-12 py-2 pl-6 pr-4">
+        <div class="flex h-12 justify-between py-2 pl-6 pr-4">
           <span class="text-xl font-bold text-black text-opacity-30">
             {{ $t("shopInfo.productCategory") }}
           </span>
           <a @click="closeGroupCategory">
-            <i class="material-icons mt-1 text-black opacity-30 text-2xl"
+            <i class="material-icons mt-1 text-2xl text-black opacity-30"
               >close</i
             >
           </a>
@@ -35,7 +35,7 @@
         <RestaurantPreview :isPreview="isPreview" />
 
         <!-- Body -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 lg:gap-x-12 lg:mx-6">
+        <div class="grid grid-cols-1 lg:mx-6 lg:grid-cols-2 lg:gap-x-12">
           <!-- Left -->
           <div>
             <!-- Cover Image -->
@@ -63,7 +63,7 @@
               </div>
 
               <!-- Share and Favorite -->
-              <div class="mt-4 flex justify-center items-center space-x-4">
+              <div class="mt-4 flex items-center justify-center space-x-4">
                 <!-- Share Popup -->
                 <div>
                   <share-popup :shopInfo="shopInfo" :mode="mode"></share-popup>
@@ -103,7 +103,7 @@
           <!-- Right -->
           <div>
             <div class="mx-6 mt-2 lg:mx-0" v-if="shopInfo.enableDelivery">
-              <div class="bg-white rounded-lg shadow">
+              <div class="rounded-lg bg-white shadow">
                 <!-- delivery toggle-->
                 <Delivery
                   :shopInfo="shopInfo"
@@ -121,7 +121,7 @@
               <div v-if="showSubCategory">
                 <!-- Mo Pickup Toggle -->
                 <div class="mx-6 mt-2 lg:mx-0" v-if="shopInfo.enableMoPickup">
-                  <div class="bg-white rounded-lg shadow">
+                  <div class="rounded-lg bg-white shadow">
                     <MoPickUp :shopInfo="shopInfo" v-model="howtoreceive" />
                   </div>
                 </div>
@@ -131,7 +131,7 @@
             <!-- category for mo -->
             <a id="subCategoryTop" />
             <div v-if="showSubCategory">
-              <div class="mx-6 lg:mx-0 inline-flex">
+              <div class="mx-6 inline-flex lg:mx-0">
                 <SubCategoryList
                   :subCategoryData="subCategoryData"
                   :categoryBathPath="categoryBathPath"
@@ -148,7 +148,7 @@
               </div>
               <div v-if="showCategory">
                 <!-- Category view -->
-                <div class="mt-6 grid grid-col-1 space-y-2">
+                <div class="grid-col-1 mt-6 grid space-y-2">
                   <div class="text-xl font-bold text-black text-opacity-30">
                     {{ $t("shopInfo.productCategory") }}
                   </div>
@@ -158,11 +158,11 @@
               <div v-else>
                 <template v-if="!isInMo">
                   <!-- Menu Items for omochikaeri -->
-                  <div class="grid grid-col-1 space-y-2" :key="subCategoryKey">
+                  <div class="grid-col-1 grid space-y-2" :key="subCategoryKey">
                     <template v-for="(item, key) in itemLists">
                       <div v-if="item._dataType === 'title'" :key="key">
                         <div
-                          class="text-xl font-bold text-black text-opacity-30 inline-flex justify-center items-center"
+                          class="inline-flex items-center justify-center text-xl font-bold text-black text-opacity-30"
                           :class="key === 0 ? '' : 'mt-6'"
                           :id="item.id"
                           @click="openCategory"
@@ -239,7 +239,7 @@
 
       <!-- Phone Login-->
       <b-modal :active.sync="loginVisible" :width="488" scroll="keep">
-        <div class="mx-2 my-6 p-6 bg-white shadow-lg rounded-lg">
+        <div class="mx-2 my-6 rounded-lg bg-white p-6 shadow-lg">
           <phone-login v-on:dismissed="handleDismissed" />
         </div>
       </b-modal>
@@ -255,7 +255,7 @@
       />
 
       <!-- for disable all UI -->
-      <div v-if="isCheckingOut" class="fixed top-0 left-0 w-full h-full"></div>
+      <div v-if="isCheckingOut" class="fixed top-0 left-0 h-full w-full"></div>
       <!-- Cart Button -->
       <CartButton
         ref="cartButton"
@@ -279,13 +279,13 @@
     <!-- Image Popup-->
     <b-modal :active.sync="categoryPopup" :width="488" scroll="keep">
       <div class="px-2 text-center" @click.stop="closeCategory()">
-        <div class="mx-2 my-6 p-6 bg-white shadow-lg rounded-lg">
+        <div class="mx-2 my-6 rounded-lg bg-white p-6 shadow-lg">
           <template v-for="(title, key) in titleLists">
             <a
               :href="`#${title.id}`"
-              class="inline-flex justify-center items-center h-9 rounded-full bg-black bg-opacity-5 mx-1 mt-2"
+              class="mx-1 mt-2 inline-flex h-9 items-center justify-center rounded-full bg-black bg-opacity-5"
             >
-              <div class="text-sm font-bold text-op-teal mx-2">
+              <div class="mx-2 text-sm font-bold text-op-teal">
                 {{ title.name }}
               </div>
             </a>

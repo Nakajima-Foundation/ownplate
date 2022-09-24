@@ -46,7 +46,7 @@
     </div>
     <div
       v-if="value === 'delivery'"
-      class="mt-2 px-4 py-2 rounded-lg bg-blue-500 bg-opacity-10"
+      class="mt-2 rounded-lg bg-blue-500 bg-opacity-10 px-4 py-2"
     >
       {{ $t("shopInfo.deliveryArea") }}
       <div v-if="deliveryData.enableAreaMap">

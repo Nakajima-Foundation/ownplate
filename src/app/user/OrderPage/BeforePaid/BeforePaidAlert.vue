@@ -1,12 +1,12 @@
 <template>
   <div>
-    <div class="bg-red-700 bg-opacity-10 rounded-lg p-4 text-center">
+    <div class="rounded-lg bg-red-700 bg-opacity-10 p-4 text-center">
       <div class="text-base font-bold text-red-700">
         {{ $t("order.orderNotPlacedYet") }}
       </div>
     </div>
     <div
-      class="bg-red-700 bg-opacity-10 rounded-lg p-4 text-center mt-4"
+      class="mt-4 rounded-lg bg-red-700 bg-opacity-10 p-4 text-center"
       v-if="shopInfo.enableDelivery"
     >
       <div class="text-base font-bold text-red-700">

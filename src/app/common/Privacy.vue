@@ -1,7 +1,7 @@
 <template>
-  <div class="text-base mx-auto max-w-screen-md px-6">
+  <div class="mx-auto max-w-screen-md px-6 text-base">
     <!-- Title -->
-    <div class="text-xl font-bold text-black text-opacity-40 mt-12">
+    <div class="mt-12 text-xl font-bold text-black text-opacity-40">
       おもちかえり.com プライバシーポリシー
     </div>
 
@@ -185,7 +185,7 @@
           <li>第三者から当社が個人データの提供を受けた際の記録の開示</li>
           <li>保有個人データの安全管理のために当社が講じた措置</li>
         </ol>
-        <div class="bg-black bg-opacity-5 rounded-lg mt-6 p-4">
+        <div class="mt-6 rounded-lg bg-black bg-opacity-5 p-4">
           <div>【窓口】</div>
           <div class="mt-1">一般社団法人シンギュラリティ・ソサエティ</div>
           <div class="mt-1">個人情報取扱担当窓口</div>
@@ -226,13 +226,13 @@ section {
   @apply text-sm text-black text-opacity-60;
 }
 h6 {
-  @apply text-base font-bold text-black text-opacity-40 mt-6;
+  @apply mt-6 text-base font-bold text-black text-opacity-40;
 }
 p {
   @apply mt-4;
 }
 ol {
-  @apply mt-4 list-decimal list-outside pl-6;
+  @apply mt-4 list-outside list-decimal pl-6;
 }
 li {
   @apply mt-2;

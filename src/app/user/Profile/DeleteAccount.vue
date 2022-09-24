@@ -3,8 +3,8 @@
     <!-- Delete Account -->
     <div class="mt-4 text-center">
       <b-button @click="handleDeleteAccount" class="b-reset-tw">
-        <div class="inline-flex justify-center items-center">
-          <i class="material-icons text-lg text-red-700 mr-2">delete</i>
+        <div class="inline-flex items-center justify-center">
+          <i class="material-icons mr-2 text-lg text-red-700">delete</i>
           <div class="text-sm font-bold text-red-700">
             {{ $t("profile.deleteAccount") }}
           </div>
@@ -14,7 +14,7 @@
 
     <!-- Phone Login-->
     <b-modal :active.sync="reLoginVisible" :width="488" scroll="keep">
-      <div class="mx-2 my-6 p-6 bg-white shadow-lg rounded-lg">
+      <div class="mx-2 my-6 rounded-lg bg-white p-6 shadow-lg">
         <phone-login
           v-on:dismissed="continueDelete"
           :relogin="user.phoneNumber"

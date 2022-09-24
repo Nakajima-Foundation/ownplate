@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="text-sm font-bold pb-2">
+    <div class="pb-2 text-sm font-bold">
       {{ $t(this.state_key) }}
       <span class="text-red-700">*</span>
     </div>

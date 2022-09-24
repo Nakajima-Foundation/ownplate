@@ -1,18 +1,18 @@
 <template>
-  <div class="mt-6 mx-6 bg-black bg-opacity-5 rounded-lg p-4 text-center">
+  <div class="mx-6 mt-6 rounded-lg bg-black bg-opacity-5 p-4 text-center">
     <a target="_blank" :href="shopInfo.lineUrl">
       <div
-        class="inline-flex justify-center items-center h-12 px-6 rounded-full"
+        class="inline-flex h-12 items-center justify-center rounded-full px-6"
         style="background: #18b900"
       >
-        <i class="fab fa-line text-2xl text-white mr-2" />
+        <i class="fab fa-line mr-2 text-2xl text-white" />
         <div class="text-base font-bold text-white">
           {{ $t("order.lineLink") }}
         </div>
       </div>
     </a>
 
-    <div class="text-sm mt-2">
+    <div class="mt-2 text-sm">
       {{ $t("order.lineMessage") }}
     </div>
   </div>
