@@ -12,7 +12,7 @@
             <div class="text-center">
               <router-link to="/s">
                 <div
-                  class="px-6 rounded-full h-12 font-bold text-base min-w-[256px] op-button bg-op-teal shadow-lg"
+                  class="px-6 rounded-full h-12 font-bold text-base min-w-[256px] cursor-pointer inline-flex min-h-[36px] items-center justify-center bg-op-teal shadow-lg"
                 >
                   <span class="text-white">Super Admin Page</span>
                 </div>
@@ -37,7 +37,7 @@
             <div class="text-center">
               <router-link to="/op">
                 <div
-                  class="px-6 rounded-full h-12 font-bold text-base min-w-[256px] op-button bg-op-teal shadow-lg"
+                  class="px-6 rounded-full h-12 font-bold text-base min-w-[256px] cursor-pointer inline-flex min-h-[36px] items-center justify-center bg-op-teal shadow-lg"
                 >
                   <span class="text-white">Operator Page</span>
                 </div>

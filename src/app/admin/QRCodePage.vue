@@ -52,14 +52,18 @@
               <!-- Link -->
               <div class="text-center">
                 <a :href="urlMenu" target="_blank">
-                  <div class="text-op-teal op-button font-bold px-2">
+                  <div
+                    class="text-op-teal cursor-pointer inline-flex min-h-[36px] items-center justify-center font-bold px-2"
+                  >
                     {{ shopInfo.restaurantName }}
                   </div>
                 </a>
               </div>
               <!-- Download -->
               <div class="text-center" @click="download">
-                <div class="text-op-teal op-button font-bold px-2">
+                <div
+                  class="text-op-teal cursor-pointer inline-flex min-h-[36px] items-center justify-center font-bold px-2"
+                >
                   {{ $t("admin.qrcode.download") }}
                 </div>
               </div>
@@ -90,7 +94,9 @@
                   <!-- Link -->
                   <div class="text-center">
                     <a :href="urlEnter">
-                      <div class="text-op-teal op-button font-bold px-2">
+                      <div
+                        class="text-op-teal cursor-pointer inline-flex min-h-[36px] items-center justify-center font-bold px-2"
+                      >
                         {{ $t("admin.qrcode.enter") }}
                       </div>
                     </a>
@@ -109,7 +115,9 @@
                   <!-- Link -->
                   <div class="text-center">
                     <a :href="urlLeave">
-                      <div class="text-op-teal op-button font-bold px-2">
+                      <div
+                        class="text-op-teal cursor-pointer inline-flex min-h-[36px] items-center justify-center font-bold px-2"
+                      >
                         {{ $t("admin.qrcode.leave") }}
                       </div>
                     </a>
@@ -122,7 +130,7 @@
                     :to="`/admin/restaurants/${restaurantId()}/traces`"
                   >
                     <div
-                      class="px-6 rounded-full h-12 font-bold text-base min-w-[128px] op-button bg-black bg-opacity-5 text-black opacity-60"
+                      class="px-6 rounded-full h-12 font-bold text-base min-w-[128px] cursor-pointer inline-flex min-h-[36px] items-center justify-center bg-black bg-opacity-5 text-black opacity-60"
                     >
                       {{ $t("trace.viewList") }}
                     </div>
