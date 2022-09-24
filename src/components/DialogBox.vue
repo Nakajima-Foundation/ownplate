@@ -18,7 +18,7 @@
           </div>
           <!-- Buttons -->
           <div class="mt-6 text-center">
-            <div class="op-button-small op-button bg-black bg-opacity-5 text-black opacity-60" @click="close">
+            <div class="px-6 rounded-full h-12 font-bold text-base min-w-[128px] op-button bg-black bg-opacity-5 text-black opacity-60" @click="close">
               {{ $t("menu.close") }}
             </div>
           </div>
@@ -35,11 +35,11 @@
           </div>
           <!-- Buttons -->
           <div class="mt-6 text-center">
-            <div class="op-button-small op-button bg-black bg-opacity-5 text-black opacity-60  mr-4" @click="close">
+            <div class="px-6 rounded-full h-12 font-bold text-base min-w-[128px] op-button bg-black bg-opacity-5 text-black opacity-60  mr-4" @click="close">
               {{ $t("menu.no") }}
             </div>
             <div
-              class="op-button-small op-button bg-red-700 text-white"
+              class="px-6 rounded-full h-12 font-bold text-base min-w-[128px] op-button bg-red-700 text-white"
               @click="handleYes"
             >
               {{ $t("menu.yes") }}
