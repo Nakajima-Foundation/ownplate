@@ -1,5 +1,5 @@
 <template>
-  <section class="section">
+  <section class="px-6 pb-12 pt-4 mx-auto max-w-full">
     <back-button :url="backUrl" />
     <h2>All Restaurants</h2>
     <table>
