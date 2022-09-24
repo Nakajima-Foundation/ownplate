@@ -54,14 +54,14 @@
               <!-- Link -->
               <div class="text-center">
                 <a :href="urlMenu" target="_blank">
-                  <div class="op-button-text text-op-teal op-button t-button px-2 ">
+                  <div class="op-button-text text-op-teal op-button font-bold px-2 ">
                     {{ shopInfo.restaurantName }}
                   </div>
                 </a>
               </div>
               <!-- Download -->
               <div class="text-center" @click="download">
-                <div class="op-button-text text-op-teal op-button t-button px-2">
+                <div class="op-button-text text-op-teal op-button font-bold px-2">
                   {{ $t("admin.qrcode.download") }}
                 </div>
               </div>
@@ -92,7 +92,7 @@
                   <!-- Link -->
                   <div class="text-center">
                     <a :href="urlEnter">
-                      <div class="op-button-text text-op-teal op-button t-button px-2">
+                      <div class="op-button-text text-op-teal op-button font-bold px-2">
                         {{ $t("admin.qrcode.enter") }}
                       </div>
                     </a>
@@ -111,7 +111,7 @@
                   <!-- Link -->
                   <div class="text-center">
                     <a :href="urlLeave">
-                      <div class="op-button-text text-op-teal op-button t-button px-2">
+                      <div class="op-button-text text-op-teal op-button font-bold px-2">
                         {{ $t("admin.qrcode.leave") }}
                       </div>
                     </a>

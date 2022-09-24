@@ -56,13 +56,13 @@
     <hr />
     <b-button class="h-9 rounded-full mt-2" @click="nextLoad">
       <span class="pl-4 pr-4">
-        <span class="c-primary t-button"> Next </span>
+        <span class="text-op-teal font-bold"> Next </span>
       </span>
     </b-button>
 
     <b-button class="h-9 rounded-full mt-2 ml-4" @click="allLoad">
       <span class="pl-4 pr-4">
-        <span class="c-primary t-button"> All </span>
+        <span class="text-op-teal font-bold"> All </span>
       </span>
     </b-button>
 
@@ -74,8 +74,8 @@
     >
       <b-button class="h-9 rounded-full mt-2 ml-4">
         <span class="pl-4 pr-4">
-          <i class="material-icons c-primary s-18 mr-2">save_alt</i>
-          <span class="c-primary t-button"> Download </span>
+          <i class="material-icons text-op-teal s-18 mr-2">save_alt</i>
+          <span class="text-op-teal font-bold"> Download </span>
         </span>
       </b-button>
     </download-csv>
