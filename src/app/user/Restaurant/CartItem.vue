@@ -69,7 +69,11 @@
 
 <script>
 import { defineComponent, computed } from "@vue/composition-api";
-import { itemOptionCheckbox2options, getPriceWithTax, smallImageErrorHandler } from "@/utils/utils";
+import {
+  itemOptionCheckbox2options,
+  getPriceWithTax,
+  smallImageErrorHandler,
+} from "@/utils/utils";
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
 import Price from "@/components/Price";

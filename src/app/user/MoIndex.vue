@@ -93,16 +93,17 @@ import { restaurant2AreaObj, sortRestaurantObj } from "@/utils/RestaurantUtils";
 import { defaultHeader } from "@/config/header";
 import { moBaseUrl, moTitle } from "@/config/project";
 
-import {
-  useIsInMo,
-} from "@/utils/utils";
+import { useIsInMo } from "@/utils/utils";
 
 export default defineComponent({
   name: "RestaurantIndex",
   metaInfo() {
     console.log(this.$t("find.shopList"), this.isInMo);
     return {
-      title: (this.isInMo ? [moTitle, this.$t("find.shopList")] : [defaultHeader.title, "Restaurant Index"]).join(" / "),
+      title: (this.isInMo
+        ? [moTitle, this.$t("find.shopList")]
+        : [defaultHeader.title, "Restaurant Index"]
+      ).join(" / "),
     };
   },
   props: {

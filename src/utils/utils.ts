@@ -46,10 +46,13 @@ export const getRestaurantId = (root: any) => {
   return root.$route.params.restaurantId;
 };
 
-export const resizedProfileImage = (restaurant: RestaurantInfoData, size: string) => {
+export const resizedProfileImage = (
+  restaurant: RestaurantInfoData,
+  size: string
+) => {
   return (
     (restaurant.images?.profile?.resizedImages || {})[size] ||
-      restaurant.restProfilePhoto
+    restaurant.restProfilePhoto
   );
 };
 
@@ -150,7 +153,6 @@ export const cleanObject = (obj: { [key: string]: any }) => {
     return tmp;
   }, {});
 };
-
 
 /*
     },
@@ -291,7 +293,6 @@ export const priceWithTax = (shopInfo: RestaurantInfoData, menu: MenuData) => {
     })()
   );
 };
-
 
 export const getPartner = (shopOwner: ShopOwnerData) => {
   return ((shopOwner || {}).partners || []).map((p: string) => {
@@ -719,8 +720,8 @@ export const notFoundResponse = {
 };
 
 export const smallImageErrorHandler = (e: any) => {
-  e.target.src = '/images/noimage_small.png';
+  e.target.src = "/images/noimage_small.png";
 };
 export const imageErrorHandler = (e: any) => {
-  e.target.src = '/images/noimage.png';
+  e.target.src = "/images/noimage.png";
 };

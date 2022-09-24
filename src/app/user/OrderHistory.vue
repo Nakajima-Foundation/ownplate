@@ -13,7 +13,7 @@
     <!-- Orders -->
     <div
       class="mx-6 mt-6 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
-      >
+    >
       <div v-if="loading" />
       <template v-else-if="orders.length > 0">
         <ordered-info

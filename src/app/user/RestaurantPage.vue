@@ -81,7 +81,9 @@
                   {{
                     shopInfo.isEC
                       ? $t("shopInfo.ecShopDetails")
-                      : (isInMo ? $t("mobileOrder.storeDetails") : $t("shopInfo.restaurantDetails"))
+                      : isInMo
+                      ? $t("mobileOrder.storeDetails")
+                      : $t("shopInfo.restaurantDetails")
                   }}
                 </div>
 

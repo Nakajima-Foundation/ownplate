@@ -116,7 +116,7 @@ export default {
       return formatOption(option, (price) => this.$n(price, "currency"));
     },
     _smallImageErrorHandler(e) {
-      smallImageErrorHandler(e)
+      smallImageErrorHandler(e);
     },
   },
 };

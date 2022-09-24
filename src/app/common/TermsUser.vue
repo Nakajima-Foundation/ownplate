@@ -398,7 +398,6 @@
       <div class="text-black text-opacity-40 mt-1">最終改定</div>
 
       <div class="text-black text-opacity-40 mt-6">SS：有本/武藤</div>
-
     </div>
   </div>
 </template>
