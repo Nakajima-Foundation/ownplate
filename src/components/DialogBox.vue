@@ -10,7 +10,7 @@
         <div v-if="error">
           <!-- Message -->
           <div class="text-center mt-4">
-            <div class="t-h6 text-black opacity-60">
+            <div class="font-bold text-xl text-black opacity-60">
               {{ $t("errorPage.popup.title") }}
             </div>
             <div class="mt-2">{{ errorMessage }}</div>
@@ -28,10 +28,10 @@
         <div v-if="alert">
           <!-- Message -->
           <div class="text-center mt-4" v-if="alert.title">
-            <div class="t-h6 text-black opacity-60">{{ $t(alert.title) }}</div>
+            <div class="font-bold text-xl text-black opacity-60">{{ $t(alert.title) }}</div>
           </div>
           <div class="text-center mt-4">
-            <div class="t-h6 text-black opacity-60">{{ $t(alert.code) }}</div>
+            <div class="font-bold text-xl text-black opacity-60">{{ $t(alert.code) }}</div>
           </div>
           <!-- Buttons -->
           <div class="mt-6 text-center">
