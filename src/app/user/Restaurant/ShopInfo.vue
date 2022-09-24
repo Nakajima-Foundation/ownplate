@@ -136,8 +136,8 @@
             :href="shopInfo.uberEatsUrl"
             class="inline-flex justify-center items-center"
           >
-            <i class="fab fa-uber text-lg mr-2" style="color: #06C167"></i>
-            <div class="text-sm font-bold" style="color: #06C167">
+            <i class="fab fa-uber text-lg mr-2" style="color: #06c167"></i>
+            <div class="text-sm font-bold" style="color: #06c167">
               {{ shopInfo.uberEatsUrl }}
             </div>
           </a>
@@ -366,9 +366,7 @@ export default defineComponent({
       );
     });
     const hasUberEatsUrl = computed(() => {
-      return (
-        props.shopInfo.uberEatsUrl && validUrl(props.shopInfo.uberEatsUrl)
-      );
+      return props.shopInfo.uberEatsUrl && validUrl(props.shopInfo.uberEatsUrl);
     });
     const region = ownPlateConfig.region;
 

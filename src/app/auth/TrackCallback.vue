@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="t-h6 text-black text-opacity-40 text-center mt-6">
+    <div class="font-bold text-xl text-black text-opacity-40 text-center mt-6">
       {{ $t("line.authenticating") }}
     </div>
     <b-loading

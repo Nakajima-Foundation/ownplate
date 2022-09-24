@@ -11,7 +11,9 @@
             <!-- Go to Super Admin Page -->
             <div class="text-center">
               <router-link to="/s">
-                <div class="op-button-small op-button bg-op-teal shadow-lg" style="min-width: 256px">
+                <div
+                  class="px-6 rounded-full h-12 font-bold text-base min-w-[256px] op-button bg-op-teal shadow-lg"
+                >
                   <span class="text-white">Super Admin Page</span>
                 </div>
               </router-link>
@@ -34,7 +36,9 @@
             <!-- Go to Super Admin Page -->
             <div class="text-center">
               <router-link to="/op">
-                <div class="op-button-small op-button bg-op-teal shadow-lg" style="min-width: 256px">
+                <div
+                  class="px-6 rounded-full h-12 font-bold text-base min-w-[256px] op-button bg-op-teal shadow-lg"
+                >
                   <span class="text-white">Operator Page</span>
                 </div>
               </router-link>

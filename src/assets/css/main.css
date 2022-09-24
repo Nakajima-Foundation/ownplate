@@ -7,23 +7,9 @@ body {
   background: #f7f8fb;
 }
 
-.section {
-  max-width: 100%;
-  margin-right: auto;
-  margin-left: auto;
-  padding-top: 1rem;
-}
-
 div,
 span {
   word-break: break-word;
-}
-
-.c-primary {
-  color: #0097a7;
-}
-.border-op-teal {
-  border-color: #0097a7;
 }
 
 .columns.is-gapless:not(:last-child) {
@@ -54,20 +40,6 @@ span {
   margin-bottom: 0;
 }
 
-.t-h6 {
-  font-weight: bold;
-  font-size: 20px;
-  line-height: 24px;
-  letter-spacing: 0.15px;
-}
-
-.t-button {
-  font-weight: bold;
-  font-size: 14px;
-  line-height: 16px;
-  letter-spacing: 0.1px;
-}
-
 .op-button {
   cursor: pointer;
   display: inline-flex;
@@ -76,25 +48,6 @@ span {
   justify-content: center;
 }
 
-.op-button-small {
-  border-radius: 9999px;
-  padding-right: 24px;
-  padding-left: 24px;
-  min-width: 128px;
-  height: 48px;
-  font-weight: bold;
-  font-size: 16px;
-  line-height: 24px;
-  letter-spacing: 0.15px;
-}
-
-
-.material-icons.s-48 {
-  font-size: 48px;
-}
-.material-icons.s-18 {
-  font-size: 18px;
-}
 
 /* Overwrites for Tailwind CSS */
 img,

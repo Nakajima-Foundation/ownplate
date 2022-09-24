@@ -58,11 +58,7 @@
 </template>
 
 <script>
-import {
-  defineComponent,
-  onMounted,
-  ref,
-} from "@vue/composition-api";
+import { defineComponent, onMounted, ref } from "@vue/composition-api";
 
 import { db } from "@/plugins/firebase";
 import { RestaurantHeader } from "@/config/header";
@@ -85,10 +81,10 @@ export default defineComponent({
     onMounted(async () => {
       if (ctx.root.isUser) {
         const snapshot = await db
-              .collection(`users/${ctx.root.user.uid}/reviews`)
-              .orderBy("timeLiked", "desc")
-              .limit(100)
-              .get();
+          .collection(`users/${ctx.root.user.uid}/reviews`)
+          .orderBy("timeLiked", "desc")
+          .limit(100)
+          .get();
         likes.value = (snapshot.docs || [])
           .map((doc) => {
             return doc.data();
@@ -98,72 +94,72 @@ export default defineComponent({
           });
       }
     });
-    
+
     return {
       likes,
-      areas:  [
+      areas: [
         {
           name: "hokkaido",
           items: [{ name: "北海道", id: 0 }],
         },
-              {
-                name: "kanto",
-                items: [
-                  { name: "東京都", id: 12 },
-                  { name: "神奈川県", id: 13 },
-                  { name: "千葉県", id: 11 },
-                  { name: "群馬県", id: 9 },
-                  { name: "埼玉県", id: 10 },
-                  { name: "栃木県", id: 8 },
-                  { name: "茨城県", id: 7 },
-                ],
-              },
-              {
-                name: "chubu",
-                items: [
-                  { name: "愛知県", id: 22 },
-                  { name: "静岡県", id: 21 },
-                  { name: "山梨県", id: 18 },
-                ],
-              },
-              {
-                name: "hokuriku",
-                items: [
-                  { name: "新潟県", id: 14 },
-                  { name: "富山県", id: 15 },
-                  { name: "石川県", id: 16 },
-                  { name: "福井県", id: 17 },
-                ],
-              },
-              {
-                name: "kansai",
-                items: [
-                  { name: "京都府", id: 25 },
-                  { name: "大阪府", id: 26 },
-                  { name: "兵庫県", id: 27 },
-                  { name: "滋賀県", id: 24 },
-                  { name: "和歌山県", id: 29 },
-                  // { name: "奈良県", id: 28 },
-                ],
-              },
-              {
-                name: "chugoku",
-                items: [
-                  { name: "広島県", id: 33 },
-                  { name: "徳島県", id: 35 },
-                  { name: "愛媛県", id: 37 },
-                ],
-              },
-              {
-                name: "kyusyu",
-                items: [
-                  { name: "福岡県", id: 39 },
-                  { name: "長崎県", id: 41 },
-                  { name: "大分県", id: 43 },
-                  { name: "鹿児島県", id: 45 },
-                  { name: "沖縄県", id: 46 },
-                ],
-              },
+        {
+          name: "kanto",
+          items: [
+            { name: "東京都", id: 12 },
+            { name: "神奈川県", id: 13 },
+            { name: "千葉県", id: 11 },
+            { name: "群馬県", id: 9 },
+            { name: "埼玉県", id: 10 },
+            { name: "栃木県", id: 8 },
+            { name: "茨城県", id: 7 },
+          ],
+        },
+        {
+          name: "chubu",
+          items: [
+            { name: "愛知県", id: 22 },
+            { name: "静岡県", id: 21 },
+            { name: "山梨県", id: 18 },
+          ],
+        },
+        {
+          name: "hokuriku",
+          items: [
+            { name: "新潟県", id: 14 },
+            { name: "富山県", id: 15 },
+            { name: "石川県", id: 16 },
+            { name: "福井県", id: 17 },
+          ],
+        },
+        {
+          name: "kansai",
+          items: [
+            { name: "京都府", id: 25 },
+            { name: "大阪府", id: 26 },
+            { name: "兵庫県", id: 27 },
+            { name: "滋賀県", id: 24 },
+            { name: "和歌山県", id: 29 },
+            // { name: "奈良県", id: 28 },
+          ],
+        },
+        {
+          name: "chugoku",
+          items: [
+            { name: "広島県", id: 33 },
+            { name: "徳島県", id: 35 },
+            { name: "愛媛県", id: 37 },
+          ],
+        },
+        {
+          name: "kyusyu",
+          items: [
+            { name: "福岡県", id: 39 },
+            { name: "長崎県", id: 41 },
+            { name: "大分県", id: 43 },
+            { name: "鹿児島県", id: 45 },
+            { name: "沖縄県", id: 46 },
+          ],
+        },
       ],
     };
   },

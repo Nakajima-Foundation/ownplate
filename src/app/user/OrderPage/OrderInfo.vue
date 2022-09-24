@@ -177,9 +177,7 @@
           </div>
           <div class="text-right">
             <div class="text-xl font-bold text-green-600">
-              {{
-                $n(previewTotal, "currency")
-              }}
+              {{ $n(previewTotal, "currency") }}
             </div>
           </div>
         </div>
@@ -265,11 +263,11 @@ export default {
       return this.orderInfo.status === order_status.validation_ok;
     },
     previewTotal() {
-      return (this.editable || this.isTipEditable) ?
-        this.orderInfo.total +
-        Number(this.tip) +
-        Number(this.actualShippingCost) +
-        Number(this.orderInfo.deliveryFee || 0)
+      return this.editable || this.isTipEditable
+        ? this.orderInfo.total +
+            Number(this.tip) +
+            Number(this.actualShippingCost) +
+            Number(this.orderInfo.deliveryFee || 0)
         : this.orderInfo.totalCharge;
     },
     enableTip() {

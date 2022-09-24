@@ -15,14 +15,9 @@
 </template>
 
 <script>
-import {
-  defineComponent,
-  computed,
-} from "@vue/composition-api";
+import { defineComponent, computed } from "@vue/composition-api";
 
-import {
-  resizedProfileImage
-} from "@/utils/utils";
+import { resizedProfileImage } from "@/utils/utils";
 
 export default defineComponent({
   props: {
@@ -36,7 +31,7 @@ export default defineComponent({
       return resizedProfileImage(props.shopInfo, "600");
     });
     return {
-      profileImage
+      profileImage,
     };
   },
 });

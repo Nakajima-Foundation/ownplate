@@ -1,5 +1,5 @@
 <template>
-  <section class="section">
+  <section class="px-6 pb-12 pt-4 mx-auto max-w-full">
     <div v-if="traceId">
       <div v-if="success">
         <h1>{{ $t("trace.thankyou") }}</h1>

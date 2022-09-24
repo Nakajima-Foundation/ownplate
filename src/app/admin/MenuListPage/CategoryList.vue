@@ -48,7 +48,7 @@ export default defineComponent({
     return {
       smallImageErrorHandler,
       moBaseUrl,
-    }
-  }
+    };
+  },
 });
 </script>
