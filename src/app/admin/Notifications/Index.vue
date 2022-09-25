@@ -2,7 +2,7 @@
   <div>
     <!-- Notification Settings Button -->
     <notification-setting-button
-      :notificationData="notificationData || defaultNotificationData"
+      :notificationData="notificationData"
       @openNotificationSettings="openNotificationSettings"
     />
 
@@ -19,7 +19,8 @@
 
 <script>
 import { defineComponent, ref } from "@vue/composition-api";
-import { db, firestore } from "@/plugins/firebase";
+import { db } from "@/lib/firebase/firebase9";
+import { doc, getDoc, serverTimestamp } from "firebase/firestore";
 
 import NotificationSettings from "./NotificationSettings";
 import NotificationSettingButton from "./NotificationSettingButton";
@@ -37,20 +38,22 @@ export default defineComponent({
   },
   setup(_, ctx) {
     const notificationSettingsPopup = ref(false);
-    const notificationData = ref(null);
-
     const defaultNotificationData = {
       soundOn: null,
       infinityNotification: null,
       uid: ctx.root.$store.getters.uidAdmin,
-      createdAt: firestore.FieldValue.serverTimestamp(),
+      createdAt: serverTimestamp(),
     };
+    const notificationData = ref(defaultNotificationData);
 
     (async () => {
       try {
-        const notification = await db
-          .doc(`restaurants/${ctx.root.restaurantId()}/private/notifications`)
-          .get();
+        const notification = await getDoc(
+          doc(
+            db,
+            `restaurants/${ctx.root.restaurantId()}/private/notifications`
+          )
+        );
         notificationData.value = notification.exists
           ? Object.assign(defaultNotificationData, notification.data())
           : defaultNotificationData;
@@ -70,7 +73,6 @@ export default defineComponent({
       notificationSettingsPopup.value = false;
     };
     return {
-      defaultNotificationData,
       notificationData,
       notificationSettingsPopup,
 
