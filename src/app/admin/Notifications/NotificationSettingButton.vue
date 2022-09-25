@@ -37,22 +37,26 @@
 </template>
 
 <script>
-export default {
+import { defineComponent, computed } from "@vue/composition-api";
+
+export default defineComponent({
   props: {
     notificationData: Object,
   },
-  methods: {
-    openNotificationSettings() {
-      this.$emit("openNotificationSettings");
-    },
-  },
-  computed: {
-    orderCounter() {
-      return Object.keys(this.$store.state.orderObj).reduce((tmp, key) => {
-        const count = (this.$store.state.orderObj[key] || []).length;
+  setup(_, ctx) {
+    const openNotificationSettings = () => {
+      ctx.emit("openNotificationSettings");
+    };
+    const orderCounter = computed(() => {
+      return Object.keys(ctx.root.$store.state.orderObj).reduce((tmp, key) => {
+        const count = (ctx.root.$store.state.orderObj[key] || []).length;
         return tmp + count;
       }, 0);
-    },
+    });
+    return {
+      openNotificationSettings,
+      orderCounter,
+    };
   },
-};
+});
 </script>
