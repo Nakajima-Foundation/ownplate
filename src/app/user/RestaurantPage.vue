@@ -120,7 +120,7 @@
             <div v-if="showSubCategory">
               <!-- Mo Pickup Toggle -->
               <div class="mx-6 mt-2 lg:mx-0" v-if="shopInfo.enableMoPickup">
-                <div class="bg-white rounded-lg shadow">
+                <div class="rounded-lg bg-white shadow">
                   <MoPickUp :shopInfo="shopInfo" v-model="howtoreceive" />
                 </div>
               </div>
@@ -205,7 +205,10 @@
                   >
                     <template v-for="(item, key) in itemLists">
                       <div
-                        v-if="item._dataType === 'menu'"
+                        v-if="
+                          item._dataType === 'menu' &&
+                          (isPublucDataSet[item.id] || {}).isPublic
+                        "
                         :key="[subCategoryKey, item.id].join('_')"
                       >
                         <MenuMo
@@ -222,7 +225,9 @@
                           :isOpen="menuId === item.id"
                           :prices="prices[item.id] || []"
                           :mode="mode"
-                          :moSoldOut="false"
+                          :moSoldOut="
+                            (moSoldOutDataSet[item.id] || {}).isStock === false
+                          "
                           @didOrderdChange="didOrderdChange($event)"
                         ></MenuMo>
                       </div>
@@ -367,6 +372,7 @@ import {
   useSubcategory,
   useMenu,
   useCategoryParams,
+  loadStockData,
 } from "./Restaurant/Utils";
 
 export default defineComponent({
@@ -516,6 +522,28 @@ export default defineComponent({
       ctx
     );
 
+    // for Mo
+    const { orderPublics, pickupPublics, pickupStocks } = loadStockData(
+      db,
+      props.shopInfo
+    );
+
+    const isPublucDataSet = computed(() => {
+      if (isPickup.value) {
+        return pickupPublics.value[subCategory.value] || {};
+      } else {
+        return orderPublics.value[subCategory.value] || {};
+      }
+    });
+    const moSoldOutDataSet = computed(() => {
+      if (isPickup.value) {
+        console.log(pickupStocks.value[subCategory.value]);
+        return pickupStocks.value[subCategory.value] || {};
+      }
+      return {};
+    });
+    // end of for Mo
+
     onMounted(() => {
       // Check if we came here as the result of "Edit Items"
       if (store.state.carts[restaurantId.value]) {
@@ -660,8 +688,8 @@ export default defineComponent({
         uid: user.value.uid,
         ownerUid: props.shopInfo.uid,
         isDelivery:
-        (props.shopInfo.enableDelivery && isDelivery.value) || false, // true, // for test
-        isPickup: (props.shopInfo.enableMoPickup && isPickup.value) || false, 
+          (props.shopInfo.enableDelivery && isDelivery.value) || false, // true, // for test
+        isPickup: (props.shopInfo.enableMoPickup && isPickup.value) || false,
         isLiff: ctx.root.isLiffUser,
         phoneNumber: user.value.phoneNumber,
         name: name,
@@ -901,6 +929,9 @@ export default defineComponent({
       menuPickupData,
 
       isInMo,
+
+      isPublucDataSet,
+      moSoldOutDataSet,
     };
   },
 });
