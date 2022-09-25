@@ -1,48 +1,54 @@
 <template></template>
 
 <script>
-import { db, firestore } from "@/plugins/firebase";
+import {
+  defineComponent,
+  ref,
+  onUnmounted,
+} from "@vue/composition-api";
+import { db } from "@/lib/firebase/firebase9";
+import {
+  doc,
+  onSnapshot,
+} from "firebase/firestore";
 
-export default {
-  data() {
-    return {
-      message_detacher: () => {},
-      uid: this.$store.getters.uidAdmin,
-      notifications: [],
-      watchingMessage: false,
-    };
+export default defineComponent({
+  props: {
+    notificationConfig: Object,
   },
-  async created() {
-    this.watchingMessage = false;
-    this.message_detacher = db
-      .doc(`admins/${this.uid}/private/notification`)
-      .onSnapshot(
-        (notification) => {
-          if (notification.exists) {
-            const notification_data = notification.data();
-            this.notifications.push(notification_data);
-            if (
-              this.$route.path.indexOf(notification_data.path) > -1 &&
+  setup(props, ctx) {
+    const watchingMessage = ref(false);
+    const uid =  ctx.root.$store.getters.uidAdmin;
+          
+    const message_detacher = onSnapshot(
+      doc(db, `admins/${uid}/private/notification`),
+      (notification) => {
+        if (notification.exists) {
+          const notification_data = notification.data();
+          if (
+            ctx.root.$route.path.indexOf(notification_data.path) > -1 &&
               notification_data.sound &&
-              this.watchingMessage
-            ) {
-              this.soundPlay("NotificationWatcher: newMessage");
-            }
-          }
-          this.watchingMessage = true;
-        },
-        (error) => {
-          if (error.code === "permission-denied") {
-            // We can ignore this type of error here
-            console.warn("Ignoring", error.code);
-          } else {
-            throw error;
+              props.notificationConfig.soundOn &&
+              watchingMessage.value
+          ) {
+            ctx.root.soundPlay("NotificationWatcher: newMessage");
           }
         }
-      );
+        watchingMessage.value = true;
+      },
+      (error) => {
+        if (error.code === "permission-denied") {
+          // We can ignore this type of error here
+          console.warn("Ignoring", error.code);
+        } else {
+          throw error;
+        }
+      }
+    );
+    onUnmounted(() => {
+      message_detacher();
+    });
+
   },
-  destroyed() {
-    this.message_detacher();
-  },
-};
+});
 </script>
