@@ -139,7 +139,7 @@ export default defineComponent({
       try {
         const res = await confirmPasswordReset(auth, code, password.value);
         isSuccess.value = true;
-      } catch (e) {
+      } catch (e: any) {
         error.value = e.code;
       }
       submitting.value = true;

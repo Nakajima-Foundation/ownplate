@@ -54,9 +54,6 @@ canvas {
   border: 0;
   height: initial;
 }
-.button.b-reset-tw > span {
-  font-weight: bold;
-}
 
 /* OwnPlate Dialog for b-model */
 .modal-background {
