@@ -182,7 +182,7 @@ export default {
       type: Object,
       required: true,
     },
-    NotificationSettingsPopup: {
+    notificationSettingsPopup: {
       type: Boolean,
       required: true,
     },
@@ -204,11 +204,11 @@ export default {
     this.soundIndex = getSoundIndex(this.notificationData.nameKey);
   },
   mounted() {
-    this.isActive = this.NotificationSettingsPopup;
+    this.isActive = this.notificationSettingsPopup;
   },
   watch: {
-    NotificationSettingsPopup() {
-      this.isActive = this.NotificationSettingsPopup;
+    notificationSettingsPopup() {
+      this.isActive = this.notificationSettingsPopup;
     },
     async soundIndex(newData, oldData) {
       this.notificationConfig.nameKey = soundFiles[this.soundIndex].nameKey;

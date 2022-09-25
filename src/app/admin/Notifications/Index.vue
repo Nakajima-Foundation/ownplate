@@ -10,7 +10,7 @@
     <notification-settings
       :shopInfo="shopInfo"
       :notificationData="notificationData"
-      :NotificationSettingsPopup="NotificationSettingsPopup"
+      :notificationSettingsPopup="notificationSettingsPopup"
       @close="closeNotificationSettings"
       v-if="notificationData"
     />
@@ -36,7 +36,7 @@ export default defineComponent({
     NotificationSettingButton,
   },
   setup(_, ctx) {
-    const NotificationSettingsPopup = ref(false);
+    const notificationSettingsPopup = ref(false);
     const notificationData = ref(null);
 
     const defaultNotificationData = {
@@ -64,15 +64,15 @@ export default defineComponent({
       }
     })();
     const openNotificationSettings = () => {
-      NotificationSettingsPopup.value = true;
+      notificationSettingsPopup.value = true;
     };
     const closeNotificationSettings = () => {
-      NotificationSettingsPopup.value = false;
+      notificationSettingsPopup.value = false;
     };
     return {
       defaultNotificationData,
       notificationData,
-      NotificationSettingsPopup,
+      notificationSettingsPopup,
 
       openNotificationSettings,
       closeNotificationSettings,
