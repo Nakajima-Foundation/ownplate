@@ -1,16 +1,9 @@
 <template></template>
 
 <script>
-import {
-  defineComponent,
-  ref,
-  onUnmounted,
-} from "@vue/composition-api";
+import { defineComponent, ref, onUnmounted } from "@vue/composition-api";
 import { db } from "@/lib/firebase/firebase9";
-import {
-  doc,
-  onSnapshot,
-} from "firebase/firestore";
+import { doc, onSnapshot } from "firebase/firestore";
 
 export default defineComponent({
   props: {
@@ -18,8 +11,8 @@ export default defineComponent({
   },
   setup(props, ctx) {
     const watchingMessage = ref(false);
-    const uid =  ctx.root.$store.getters.uidAdmin;
-          
+    const uid = ctx.root.$store.getters.uidAdmin;
+
     const message_detacher = onSnapshot(
       doc(db, `admins/${uid}/private/notification`),
       (notification) => {
@@ -27,9 +20,9 @@ export default defineComponent({
           const notification_data = notification.data();
           if (
             ctx.root.$route.path.indexOf(notification_data.path) > -1 &&
-              notification_data.sound &&
-              props.notificationConfig.soundOn &&
-              watchingMessage.value
+            notification_data.sound &&
+            props.notificationConfig.soundOn &&
+            watchingMessage.value
           ) {
             ctx.root.soundPlay("NotificationWatcher: newMessage");
           }
@@ -48,7 +41,6 @@ export default defineComponent({
     onUnmounted(() => {
       message_detacher();
     });
-
   },
 });
 </script>

@@ -77,7 +77,11 @@ export default defineComponent({
           " order=" +
           hasNewOrder.value
       );
-      if (props.notificationConfig.soundOn && props.notificationConfig.infinityNotification && hasNewOrder.value) {
+      if (
+        props.notificationConfig.soundOn &&
+        props.notificationConfig.infinityNotification &&
+        hasNewOrder.value
+      ) {
         ctx.root.soundPlay("NewOrderWatcher: play");
       }
     };

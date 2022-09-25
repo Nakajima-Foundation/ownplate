@@ -18,10 +18,7 @@
 </template>
 
 <script>
-import {
-  defineComponent,
-  ref,
-} from "@vue/composition-api";
+import { defineComponent, ref } from "@vue/composition-api";
 import { db, firestore } from "@/plugins/firebase";
 
 import NotificationSettings from "./NotificationSettings";
@@ -41,19 +38,19 @@ export default defineComponent({
   setup(_, ctx) {
     const NotificationSettingsPopup = ref(false);
     const notificationData = ref(null);
-    
+
     const defaultNotificationData = {
       soundOn: null,
       infinityNotification: null,
       uid: ctx.root.$store.getters.uidAdmin,
       createdAt: firestore.FieldValue.serverTimestamp(),
     };
-    
+
     (async () => {
       try {
         const notification = await db
-              .doc(`restaurants/${ctx.root.restaurantId()}/private/notifications`)
-              .get();
+          .doc(`restaurants/${ctx.root.restaurantId()}/private/notifications`)
+          .get();
         notificationData.value = notification.exists
           ? Object.assign(defaultNotificationData, notification.data())
           : defaultNotificationData;
@@ -76,7 +73,7 @@ export default defineComponent({
       defaultNotificationData,
       notificationData,
       NotificationSettingsPopup,
-      
+
       openNotificationSettings,
       closeNotificationSettings,
     };
