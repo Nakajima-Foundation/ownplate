@@ -1,6 +1,6 @@
 <template>
   <b-modal
-    :active.sync="isActive"
+    :active="notificationSettingsPopup"
     :width="488"
     scroll="keep"
     @close="closeNotificationSettings"
@@ -196,20 +196,13 @@ export default {
       soundIndex: undefined,
       soundFiles: soundFiles,
       notificationConfig: {},
-      isActive: false,
     };
   },
   created() {
     this.notificationConfig = this.notificationData;
     this.soundIndex = getSoundIndex(this.notificationData.nameKey);
   },
-  mounted() {
-    this.isActive = this.notificationSettingsPopup;
-  },
   watch: {
-    notificationSettingsPopup() {
-      this.isActive = this.notificationSettingsPopup;
-    },
     async soundIndex(newData, oldData) {
       this.notificationConfig.nameKey = soundFiles[this.soundIndex].nameKey;
       // Ignore the very first change
