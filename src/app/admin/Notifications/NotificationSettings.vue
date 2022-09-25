@@ -235,6 +235,7 @@ export default {
     async saveNotificationData() {
       this.notificationConfig.updatedAt =
         firestore.FieldValue.serverTimestamp();
+      console.log(this.notificationConfig);
       await db
         .doc(`restaurants/${this.restaurantId()}/private/notifications`)
         .set(this.notificationConfig);
