@@ -176,14 +176,11 @@ import { db } from "@/lib/firebase/firebase9";
 import {
   doc,
   collection,
-  query,
-  where,
   addDoc,
   updateDoc,
   onSnapshot,
   serverTimestamp,
 } from "firebase/firestore";
-import firebase from "firebase/compat/app";
 
 import NotFound from "@/components/NotFound.vue";
 import SubCategoryList from "@/app/user/Restaurant/SubCategoryList.vue";

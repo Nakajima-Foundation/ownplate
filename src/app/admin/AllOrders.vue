@@ -34,7 +34,7 @@
 
       <!-- Orders -->
       <div
-        class="mx-6 mt-6 grid grid-cols-1 gap-2 lg:grid-cols-3 xl:grid-cols-4"
+        class="mx-6 mt-6 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
       >
         <ordered-info
           v-for="order in filteredOrders"
@@ -88,7 +88,19 @@ import { defineComponent, ref, computed } from "@vue/composition-api";
 
 import moment from "moment-timezone";
 
-import { db } from "@/plugins/firebase";
+import { db } from "@/lib/firebase/firebase9";
+import {
+  doc,
+  getDoc,
+  getDocs,
+  collectionGroup,
+  query,
+  where,
+  limit,
+  startAfter,
+  orderBy,
+} from "firebase/firestore";
+
 import { order_status, order_status_keys } from "@/config/constant";
 import { nameOfOrder } from "@/utils/strings";
 import { revenueCSVHeader, revenueMoCSVHeader } from "@/utils/reportUtils";
@@ -166,7 +178,6 @@ export default defineComponent({
     });
     const fileName = "all_orders_of_all_restaurants";
     const fields = computed(() => {
-      console.log(props.isInMo);
       return props.isInMo ? revenueMoCSVHeader : revenueCSVHeader;
     });
 
@@ -205,28 +216,33 @@ export default defineComponent({
     const loadData = async () => {
       if (!isLoading) {
         isLoading = true;
-        let query = db
-          .collectionGroup("orders")
-          .where("ownerUid", "==", uid.value)
-          .orderBy("timePlaced", "desc")
-          .limit(100);
+        const queryConditions = [
+          where("ownerUid", "==", uid.value),
+          orderBy("timePlaced", "desc"),
+          limit(100)
+        ];
         if (last) {
-          query = query.startAfter(last);
+          queryConditions.push(startAfter(last));
         }
-        const snapshot = await query.get();
+        const snapshot = await getDocs(
+          query(
+            collectionGroup(db, "orders"),
+            ...queryConditions,
+          )
+        );
         const serviceTaxRate = 0.1;
         if (!snapshot.empty) {
           last = snapshot.docs[snapshot.docs.length - 1];
           let i = 0;
           for (; i < snapshot.docs.length; i++) {
-            const doc = snapshot.docs[i];
-            const order = order2ReportData(doc.data(), serviceTaxRate);
-            order.restaurantId = doc.ref.path.split("/")[1];
-            order.id = doc.id;
+            const orderDoc = snapshot.docs[i];
+            const order = order2ReportData(orderDoc.data(), serviceTaxRate);
+            order.restaurantId = orderDoc.ref.path.split("/")[1];
+            order.id = orderDoc.id;
             if (!restaurants[order.restaurantId]) {
-              const snapshot = await db
-                .doc(`restaurants/${order.restaurantId}`)
-                .get();
+              const snapshot = await getDoc(
+                doc(db, `restaurants/${order.restaurantId}`)
+              );
               restaurants[order.restaurantId] = snapshot.data();
             }
             order.restaurant = restaurants[order.restaurantId];
