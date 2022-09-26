@@ -305,7 +305,6 @@ export default defineComponent({
       orderDetachers.value = [];
     };
     const { isOwner, uid, ownerUid } = useAdminUids(ctx);
-    console.log(uid);
     const { toggle: simpleMode, switchToggle: switchSimpleMode } =
       useAdminConfigToggle("simpleMode", uid.value, false);
 
