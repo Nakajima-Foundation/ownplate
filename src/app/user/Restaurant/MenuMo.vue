@@ -17,7 +17,7 @@
           <!-- Item Name -->
           <a :id="`${item.id}`" @click.stop="openImage()">
             <div
-              class="h-10 text-sm sm:h-12 sm:text-base tracking-tight text-black line-clamp-2"
+              class="h-10 text-sm tracking-tight text-black line-clamp-2 sm:h-12 sm:text-base"
             >
               {{ title }}
             </div>
@@ -32,7 +32,7 @@
         </div>
 
         <!-- Add / Sold Out Button -->
-        <div class="mx-1 sm:mx-2 mb-2 flex items-center justify-end">
+        <div class="mx-1 mb-2 flex items-center justify-end sm:mx-2">
           <div
             class="mx-auto mt-0.5 text-center font-bold text-op-teal sm:text-xl"
             v-if="quantities[0] > 0"
@@ -41,10 +41,12 @@
           </div>
           <div
             v-if="isSoldOut"
-            class="inline-flex h-9 w-14 items-center justify-center rounded-full bg-black bg-opacity-10"
+            class="mx-1 mt-2 inline-flex h-7 w-full items-center justify-center rounded-sm bg-black bg-opacity-5"
           >
-            <div class="text-xs font-bold text-black text-opacity-50">
-              {{ $t("sitemenu.sold") }}
+            <div
+              class="text-xs font-bold tracking-tight text-black text-opacity-50"
+            >
+              {{ $t("sitemenu.soldOut") }}
             </div>
           </div>
           <div
@@ -69,7 +71,7 @@
       <div class="mx-6 rounded-lg bg-white p-5">
         <img
           :src="image"
-          class="flex justify-center mx-auto h-40 w-40 rounded-lg object-cover sm:h-72 sm:w-72"
+          class="mx-auto flex h-40 w-40 justify-center rounded-lg object-cover sm:h-72 sm:w-72"
           @error="imageErrorHandler"
         />
         <div class="mt-6 text-left text-xl font-bold text-black">
@@ -110,7 +112,7 @@
 
         <div
           v-if="isSoldOut"
-          class="inline-flex h-9 w-full items-center justify-center rounded-full bg-black bg-opacity-10"
+          class="inline-flex h-9 w-full items-center justify-center rounded-sm bg-black bg-opacity-5"
         >
           <div class="text-sm font-bold text-black text-opacity-50">
             {{ $t("sitemenu.soldOut") }}
