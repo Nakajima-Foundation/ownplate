@@ -56,40 +56,43 @@
 </template>
 
 <script>
-import { db } from "@/plugins/firebase";
+import { defineComponent, ref } from "@vue/composition-api";
+
+import { db } from "@/lib/firebase/firebase9";
+import { getDocs, collection, where, limit, query } from "firebase/firestore";
+
 import { RestaurantHeader } from "@/config/header";
 import { JPPrefecture, USStates } from "@/config/constant";
 import { restaurant2AreaObj, sortRestaurantObj } from "@/utils/RestaurantUtils";
 
-export default {
-  components: {},
-  data() {
-    return {
-      restaurantsObj: [],
-    };
-  },
-  computed: {
-    allArea() {
-      return JPPrefecture.concat(USStates);
-    },
-  },
+export default defineComponent({
   metaInfo() {
     return RestaurantHeader;
   },
-  async created() {
-    try {
-      const res = await db
-        .collection("restaurants")
-        .where("publicFlag", "==", true)
-        .where("deletedFlag", "==", false)
-        .where("onTheList", "==", true)
-        .get();
-      const restaurants = res.docs || [];
-      this.restaurantsObj = restaurant2AreaObj(restaurants);
-      sortRestaurantObj(this.restaurantsObj);
-    } catch (error) {
-      console.log(error);
-    }
+  setup() {
+    const allArea = JPPrefecture;
+
+    const restaurantsObj = ref([]);
+    getDocs(
+      query(
+        collection(db, "restaurants"),
+        where("publicFlag", "==", true),
+        where("deletedFlag", "==", false),
+        where("onTheList", "==", true)
+      )
+    )
+      .then((res) => {
+        const restaurants = res.docs || [];
+        restaurantsObj.value = restaurant2AreaObj(restaurants);
+        sortRestaurantObj(restaurantsObj.value);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    return {
+      restaurantsObj,
+      allArea,
+    };
   },
-};
+});
 </script>

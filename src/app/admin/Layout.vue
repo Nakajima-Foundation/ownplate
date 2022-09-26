@@ -19,12 +19,6 @@
         </div>
       </div>
       <!-- Notification Settings Popup-->
-      <notification-settings
-        :notificationData="notificationConfig"
-        :NotificationSettingsPopup="NotificationSettingsPopup"
-        @close="closeNotificationSettings"
-        v-if="NotificationSettingsPopup"
-      />
       <router-view
         :shopInfo="shopInfo"
         :groupData="groupData"
@@ -33,9 +27,9 @@
         :moPrefix="moPrefix"
         v-if="noRestaurant === false"
       ></router-view>
-      <notification-watcher />
-      <sound-config-watcher :notificationConfig="notificationConfig" />
-      <new-order-watcher :notificationConfig="notificationConfig" />
+      <NotificationWatcher :notificationConfig="notificationConfig" />
+      <SoundConfigWatcher :notificationConfig="notificationConfig" />
+      <NewOrderWatcher :notificationConfig="notificationConfig" />
       <b-modal :active.sync="isOpen" :width="488">
         <PartnersContact :id="(partner[0] || {}).id" />
       </b-modal>
@@ -57,7 +51,6 @@ import { doc, onSnapshot, getDoc, DocumentData } from "firebase/firestore";
 import NotificationWatcher from "./Watcher/NotificationWatcher.vue";
 import SoundConfigWatcher from "./Watcher/SoundConfigWatcher.vue";
 import NewOrderWatcher from "./Watcher/NewOrderWatcher.vue";
-import NotificationSettings from "./Notifications/NotificationSettings.vue";
 import PartnersContact from "./Partners/Contact.vue";
 import NotFound from "@/components/NotFound.vue";
 
@@ -81,7 +74,6 @@ export default defineComponent({
     NotificationWatcher,
     SoundConfigWatcher,
     NewOrderWatcher,
-    NotificationSettings,
     PartnersContact,
   },
   props: {
@@ -107,7 +99,6 @@ export default defineComponent({
       infinityNotification: null,
       nameKey: null,
     });
-    const NotificationSettingsPopup = ref(false);
     const isOpen = ref(false);
 
     const noRestaurant = ref<boolean | null>(null);
@@ -205,20 +196,14 @@ export default defineComponent({
       const shopOwner = await getShopOwner(ownerUid.value);
       partner.value = await getPartner(shopOwner);
     })();
-    const closeNotificationSettings = () => {
-      NotificationSettingsPopup.value = false;
-    };
     const openContact = () => {
       isOpen.value = true;
     };
 
     return {
-      partner,
       notificationConfig,
 
-      closeNotificationSettings,
-      NotificationSettingsPopup,
-
+      partner,
       openContact,
       isOpen,
 

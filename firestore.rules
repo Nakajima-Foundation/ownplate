@@ -308,6 +308,16 @@ service cloud.firestore {
         match /log/{datestr}/phoneLog/{orderId} {
           allow read: if isSuper(request);
         }
+
+        match /pickup/stock/subCategory/{subCategory} {
+          allow read: if true;
+        }
+        match /pickup/data/subCategory/{subCategory} {
+          allow read: if true;
+        }
+        match /order/data/subCategory/{subCategory} {
+          allow read: if true;
+        }
     }
 
     match /smaregi/{contractId} {

@@ -1,6 +1,6 @@
 <template>
   <b-modal
-    :active.sync="isActive"
+    :active="notificationSettingsPopup"
     :width="488"
     scroll="keep"
     @close="closeNotificationSettings"
@@ -166,14 +166,22 @@
 </template>
 
 <script>
-import { db, firestore } from "@/plugins/firebase";
+import {
+  defineComponent,
+  ref,
+  computed,
+  onMounted,
+  watch,
+} from "@vue/composition-api";
+import { db } from "@/lib/firebase/firebase9";
+import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 
 import { soundFiles } from "@/config/constant";
 import { getSoundIndex } from "@/utils/utils";
 
 import IncompleteOrders from "@/app/admin/Notifications/IncompleteOrders.vue";
 
-export default {
+export default defineComponent({
   components: {
     IncompleteOrders,
   },
@@ -182,7 +190,7 @@ export default {
       type: Object,
       required: true,
     },
-    NotificationSettingsPopup: {
+    notificationSettingsPopup: {
       type: Boolean,
       required: true,
     },
@@ -191,63 +199,52 @@ export default {
       required: false,
     },
   },
-  data() {
-    return {
-      soundIndex: undefined,
-      soundFiles: soundFiles,
-      notificationConfig: {},
-      isActive: false,
+  setup(props, ctx) {
+    const notificationConfig = ref(props.notificationData);
+    const soundIndex = ref(getSoundIndex(props.notificationData.nameKey));
+
+    const saveNotificationData = () => {
+      notificationConfig.value.updatedAt = serverTimestamp();
+      setDoc(
+        doc(db, `restaurants/${ctx.root.restaurantId()}/private/notifications`),
+        notificationConfig.value
+      );
     };
-  },
-  created() {
-    this.notificationConfig = this.notificationData;
-    this.soundIndex = getSoundIndex(this.notificationData.nameKey);
-  },
-  mounted() {
-    this.isActive = this.NotificationSettingsPopup;
-  },
-  watch: {
-    NotificationSettingsPopup() {
-      this.isActive = this.NotificationSettingsPopup;
-    },
-    async soundIndex(newData, oldData) {
-      this.notificationConfig.nameKey = soundFiles[this.soundIndex].nameKey;
+    watch(soundIndex, (newData, oldData) => {
+      notificationConfig.value.nameKey = soundFiles[soundIndex.value].nameKey;
       // Ignore the very first change
       if (oldData !== undefined) {
-        await this.saveNotificationData();
+        saveNotificationData();
       }
-    },
-    async "notificationConfig.soundOn"() {
-      await this.saveNotificationData();
-    },
-    async "notificationConfig.infinityNotification"() {
-      await this.saveNotificationData();
-    },
-  },
-  methods: {
-    infinityNotificationToggle() {
-      this.notificationConfig.infinityNotification =
-        !this.notificationConfig.infinityNotification;
-    },
-    soundToggle() {
-      this.notificationConfig.soundOn = !this.notificationConfig.soundOn;
-    },
-    async saveNotificationData() {
-      this.notificationConfig.updatedAt =
-        firestore.FieldValue.serverTimestamp();
-      await db
-        .doc(`restaurants/${this.restaurantId()}/private/notifications`)
-        .set(this.notificationConfig);
-    },
-    closeNotificationSettings() {
-      this.$emit("close");
-    },
-    delayedSoundPlay() {
+    });
+    const infinityNotificationToggle = () => {
+      notificationConfig.value.infinityNotification =
+        !notificationConfig.value.infinityNotification;
+      saveNotificationData();
+    };
+    const soundToggle = () => {
+      notificationConfig.value.soundOn = !notificationConfig.value.soundOn;
+      saveNotificationData();
+    };
+    const closeNotificationSettings = () => {
+      ctx.emit("close");
+    };
+    const delayedSoundPlay = () => {
       // We need to add a delay so that it won't interrupt the very first silent sound.
       setTimeout(() => {
-        this.soundPlay();
+        ctx.root.soundPlay();
       }, 100);
-    },
+    };
+    return {
+      soundIndex,
+      soundFiles,
+      notificationConfig,
+
+      infinityNotificationToggle,
+      soundToggle,
+      closeNotificationSettings,
+      delayedSoundPlay,
+    };
   },
-};
+});
 </script>

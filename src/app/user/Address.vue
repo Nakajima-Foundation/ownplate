@@ -57,7 +57,8 @@
 
 <script>
 import { defineComponent, computed, ref } from "@vue/composition-api";
-import { db } from "@/plugins/firebase";
+import { db } from "@/lib/firebase/firebase9";
+import { getDoc, doc, setDoc } from "firebase/firestore";
 import { useBasePath } from "@/utils/utils";
 
 import BackButton from "@/components/BackButton.vue";
@@ -82,14 +83,13 @@ export default defineComponent({
     }
 
     if (docPath.value) {
-      db.doc(docPath.value)
-        .get()
+      getDoc(doc(db, docPath.value))
         .then((doc) => {
           customerInfo.value = doc.data();
         });
     }
     const resetAddress = async () => {
-      await db.doc(docPath.value).set({});
+      await setDoc(doc(db, docPath.value), {});
       customerInfo.value = {};
     };
 
