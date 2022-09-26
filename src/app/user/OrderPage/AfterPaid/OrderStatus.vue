@@ -17,7 +17,7 @@
       </div>
       <div
         v-if="isInMo && orderIsPlaced"
-        class="mt-2 text-sm font-bold text-red-700"
+        class="mt-2 text-xs font-bold tracking-tight text-red-700"
       >
         {{ $t("mobileOrder.orderPlacedAlert") }}
       </div>
