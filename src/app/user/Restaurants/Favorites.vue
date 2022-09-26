@@ -60,7 +60,16 @@
 
 <script>
 import { defineComponent, ref, computed } from "@vue/composition-api";
-import { db } from "@/plugins/firebase";
+import { db } from "@/lib/firebase/firebase9";
+import {
+  getDocs,
+  collection,
+  where,
+  orderBy,
+  limit,
+  query,
+} from "firebase/firestore";
+
 import { RestaurantHeader } from "@/config/header";
 import { ownPlateConfig } from "@/config/project";
 import { useIsInMo, useMoPrefix, routeMode, useBasePath } from "@/utils/utils";
@@ -99,11 +108,13 @@ export default defineComponent({
 
     if (ctx.root.isUser) {
       (async () => {
-        const snapshot = await db
-          .collection(path.value)
-          .orderBy("timeLiked", "desc")
-          .limit(100)
-          .get();
+        const snapshot = await getDocs(
+          query(
+            collection(db, path.value),
+            orderBy("timeLiked", "desc"),
+            limit(100)
+          )
+        );
         likes.value = (snapshot.docs || [])
           .map((doc) => {
             return doc.data();
