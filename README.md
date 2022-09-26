@@ -23,6 +23,8 @@ It is built with Firebase + Vue + Stripe, for productivity and scalability.
    - Enable Storage.
  - Functions
    - Enable functions.
+ - AppCheck
+   - Enable App Check
    
 ## Setup Stripe
 TBD.
@@ -48,11 +50,8 @@ $ npm install
 # copy and edit project.js file
 $ cp src/config/default/ownplate-dev.js src/config/project.js
 
-$ STRIPE_CLIENT_ID=xxx STRIPE_API_KEY=xxx GAPIKey=xxx npm run start
+$ npm run start
 ```
-GAPIKey is google API key for Google Map
-STRIPE_CLIENT_ID and STRIPE_API_KEY are Stripe's id.
-
 
 ## Build Vue.js.
 
@@ -66,12 +65,6 @@ This file contains the latest and valid information for the build.
 ```
 $ npm run build
 ```
-
-# Generate static project
-```
-$ npm run generate
-```
-
 
 ## Function
 
