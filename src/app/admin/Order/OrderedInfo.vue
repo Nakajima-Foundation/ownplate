@@ -162,7 +162,10 @@ import { defineComponent, ref, computed } from "@vue/composition-api";
 
 import { nameOfOrder } from "@/utils/strings";
 import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
-import { db } from "@/plugins/firebase";
+
+import { db } from "@/lib/firebase/firebase9";
+import { doc, getDoc } from "firebase/firestore";
+
 import { order_status, order_status_keys } from "@/config/constant";
 import { arrayOrNumSum } from "@/utils/utils";
 
@@ -184,11 +187,11 @@ export default defineComponent({
   setup(props, ctx) {
     const restaurant = ref(null);
     if (props.order.restaurantId) {
-      db.doc(`restaurants/${props.order.restaurantId}`)
-        .get()
-        .then((snapshot) => {
-          restaurant.value = snapshot.data();
-        });
+      getDoc(
+        doc(db, `restaurants/${props.order.restaurantId}`)
+      ).then((snapshot) => {
+        restaurant.value = snapshot.data();
+      });
     }
 
     const statusKey = computed(() => {
