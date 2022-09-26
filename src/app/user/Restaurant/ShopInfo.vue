@@ -242,7 +242,6 @@
 
 <script>
 import { defineComponent, computed, ref } from "@vue/composition-api";
-import { db } from "@/plugins/firebase";
 import moment from "moment";
 
 import { daysOfWeek } from "@/config/constant";
