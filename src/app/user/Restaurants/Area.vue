@@ -51,11 +51,16 @@
 </template>
 
 <script>
-import { db } from "@/plugins/firebase";
+import { defineComponent, ref } from "@vue/composition-api";
+import { db } from "@/lib/firebase/firebase9";
+import { getDocs, collection, where, limit, query } from "firebase/firestore";
+
 import { defaultHeader } from "../../../config/header";
 import Map from "@/components/Map";
 
-export default {
+import { regionalSetting } from "@/utils/utils";
+
+export default defineComponent({
   components: {
     Map,
   },
@@ -67,37 +72,35 @@ export default {
       ].join(" / "),
     };
   },
-  data() {
+  setup(_, ctx) {
+    const areaId = ctx.root.$route.params.areaId;
+    const areaName = regionalSetting.AddressStates[areaId];
+    const restaurants = ref([]);
+    if (areaName) {
+      getDocs(
+        query(
+          collection(db, "restaurants"),
+          where("publicFlag", "==", true),
+          where("deletedFlag", "==", false),
+          where("onTheList", "==", true),
+          where("state", "==", areaName)
+        )
+      ).then((res) => {
+        restaurants.value = (res.docs || [])
+          .map((doc) => {
+            const data = doc.data();
+            data.id = doc.id;
+            return data;
+          })
+          .sort((a, b) => {
+            return a.restaurantName > b.restaurantName ? 1 : -1;
+          });
+      });
+    }
     return {
-      areaName: "",
-      restaurants: [],
+      areaName,
+      restaurants,
     };
   },
-  methods: {
-    areaId() {
-      return this.$route.params.areaId;
-    },
-  },
-  async created() {
-    this.areaName = this.regionalSetting.AddressStates[this.areaId()];
-    if (this.areaName) {
-      const res = await db
-        .collection("restaurants")
-        .where("publicFlag", "==", true)
-        .where("deletedFlag", "==", false)
-        .where("onTheList", "==", true)
-        .where("state", "==", this.areaName)
-        .get();
-      this.restaurants = (res.docs || [])
-        .map((doc) => {
-          const data = doc.data();
-          data.id = doc.id;
-          return data;
-        })
-        .sort((a, b) => {
-          return a.restaurantName > b.restaurantName ? 1 : -1;
-        });
-    }
-  },
-};
+});
 </script>
