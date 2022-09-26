@@ -32,9 +32,6 @@ TBD.
 ### Environment variable
 TBD.
 
-### nuxt.config.js
-TBD.
-
 ### src/config/project.js 
 TBD.
 
@@ -51,7 +48,7 @@ $ npm install
 # copy and edit project.js file
 $ cp src/config/default/ownplate-dev.js src/config/project.js
 
-$ STRIPE_CLIENT_ID=xxx STRIPE_API_KEY=xxx GAPIKey=xxx npm run dev
+$ STRIPE_CLIENT_ID=xxx STRIPE_API_KEY=xxx GAPIKey=xxx npm run start
 ```
 GAPIKey is google API key for Google Map
 STRIPE_CLIENT_ID and STRIPE_API_KEY are Stripe's id.
@@ -65,27 +62,15 @@ This file
 
 This file contains the latest and valid information for the build.
 
-# Build for production and launch server
+# Build for production
 ```
 $ npm run build
-$ npm run start
 ```
 
 # Generate static project
 ```
 $ npm run generate
 ```
-
-#  Test with a smartphone on your local network
-"devsync": "HOST=192.168.100.20 PORT=3333 nuxt",
-
-If you want to check the local environment with your smartphone, you can also check from your smartphone to specify HOST = {IP address} on local network.
-
-```
-$ npm run devsync
-```
-
-For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
 
 
 ## Function
@@ -97,7 +82,7 @@ cd functions && npm install
 firebase deploy --only functions
 ```
 
-## icon lists
+## Icon lists
 
 https://materializecss.com/icons.html
 https://iconify.design/icon-sets/mdi/
