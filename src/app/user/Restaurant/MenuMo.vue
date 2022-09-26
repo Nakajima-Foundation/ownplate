@@ -13,11 +13,11 @@
           />
         </div>
 
-        <div class="px-2 sm:p-4">
+        <div class="px-2 sm:px-3 sm:pt-1">
           <!-- Item Name -->
           <a :id="`${item.id}`" @click.stop="openImage()">
             <div
-              class="h-10 text-sm tracking-tight text-black line-clamp-2 sm:text-base"
+              class="h-10 text-sm sm:h-12 sm:text-base tracking-tight text-black line-clamp-2"
             >
               {{ title }}
             </div>
@@ -32,7 +32,7 @@
         </div>
 
         <!-- Add / Sold Out Button -->
-        <div class="mx-1 mb-2 flex items-center justify-end">
+        <div class="mx-1 sm:mx-2 mb-2 flex items-center justify-end">
           <div
             class="mx-auto mt-0.5 text-center font-bold text-op-teal sm:text-xl"
             v-if="quantities[0] > 0"
@@ -69,7 +69,7 @@
       <div class="mx-6 rounded-lg bg-white p-5">
         <img
           :src="image"
-          class="mx-auto h-40 w-40 rounded-lg object-cover sm:h-72 sm:w-72"
+          class="flex justify-center mx-auto h-40 w-40 rounded-lg object-cover sm:h-72 sm:w-72"
           @error="imageErrorHandler"
         />
         <div class="mt-6 text-left text-xl font-bold text-black">
@@ -106,10 +106,18 @@
               />
             </div>
           </div>
-          <div></div>
         </div>
 
-        <div class="mt-2 flex items-center">
+        <div
+          v-if="isSoldOut"
+          class="inline-flex h-9 w-full items-center justify-center rounded-full bg-black bg-opacity-10"
+        >
+          <div class="text-sm font-bold text-black text-opacity-50">
+            {{ $t("sitemenu.soldOut") }}
+          </div>
+        </div>
+
+        <div v-else class="mt-2 flex items-center">
           <div>
             <a
               @click="pullQuantities(0)"
