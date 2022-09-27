@@ -44,7 +44,7 @@ import {
 } from "@vue/composition-api";
 
 import firebase from "firebase/compat/app";
-import { isNull } from "@/utils/utils";
+import { isNull, useIsInMo } from "@/utils/utils";
 import { usePickupTime } from "@/utils/pickup";
 
 export default defineComponent({
@@ -67,6 +67,10 @@ export default defineComponent({
     const dayIndex = ref(0);
     const time = ref(0);
 
+    const isInMo = useIsInMo(ctx.root);
+    const isPickup = computed(() => {
+      return props.orderInfo.isPickup;
+    });
     const exceptData = computed(() => {
       return (Object.values(props.orderInfo.menuItems) || []).reduce(
         (tmp, menu) => {
@@ -93,7 +97,9 @@ export default defineComponent({
       props.shopInfo,
       exceptData,
       {},
-      ctx
+      ctx,
+      isInMo.value,
+      isPickup,
     );
 
     const days = computed(() => {

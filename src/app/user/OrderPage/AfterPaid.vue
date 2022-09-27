@@ -184,6 +184,7 @@
                 :shopInfo="shopInfo"
                 :isDelivery="orderInfo.isDelivery"
                 :mode="mode"
+                :isPickup="isPickup"
                 :paymentInfo="paymentInfo"
               />
             </div>
@@ -362,6 +363,9 @@ export default {
     },
     hasMemo() {
       return this.orderInfo && !isEmpty(this.orderInfo.memo);
+    },
+    isPickup() {
+      return this.orderInfo && this.orderInfo.isPickup;
     },
   },
   // end of computed

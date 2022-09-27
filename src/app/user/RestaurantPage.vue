@@ -93,6 +93,7 @@
                     :paymentInfo="paymentInfo"
                     :isDelivery="isDelivery"
                     :mode="mode"
+                    :isPickup="isPickup"
                     @noAvailableTime="noAvailableTime = $event"
                   ></shop-info>
                 </div>
@@ -519,7 +520,9 @@ export default defineComponent({
       props.shopInfo,
       {},
       menuObj,
-      ctx
+      ctx,
+      isInMo.value,
+      isPickup,
     );
 
     // for Mo
@@ -929,7 +932,8 @@ export default defineComponent({
       menuPickupData,
 
       isInMo,
-
+      isPickup,
+        
       isPublucDataSet,
       moSoldOutDataSet,
     };

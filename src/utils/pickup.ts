@@ -1,15 +1,19 @@
-import { computed, Ref } from "@vue/composition-api";
+import { computed, Ref, ComputedRef } from "@vue/composition-api";
 import { midNight } from "@/utils/dateUtils";
 import { RestaurantInfoData } from "@/models/RestaurantInfo";
 import { num2time, isNull } from "@/utils/utils";
 import moment from "moment";
 import { MenuData } from "@/models/menu";
 
+// inMo
+// isMoPickup
 export const usePickupTime = (
   shopInfo: RestaurantInfoData,
   exceptData: any,
   menuObj: Ref<{ [key: string]: MenuData }>,
-  ctx: any
+  ctx: any,
+  isInMo: boolean,
+  isMoPickup: null | ComputedRef<boolean>,
 ) => {
   // public
   const temporaryClosure = computed(() => {
@@ -63,15 +67,17 @@ export const usePickupTime = (
     });
   });
   const minimumCookTime = computed(() => {
-    return shopInfo.pickUpMinimumCookTime || 25;
+    return isMoPickup && isMoPickup.value ?
+      shopInfo.moPickUpMinimumCookTime : shopInfo.pickUpMinimumCookTime || 25;
   });
   const minimumDeliveryTime = computed(() => {
     return shopInfo.deliveryMinimumCookTime || 25;
   });
   const daysInAdvance = computed(() => {
-    const tmp = isNull(shopInfo.pickUpDaysInAdvance)
-      ? 3
-      : shopInfo.pickUpDaysInAdvance;
+    const tmp = isMoPickup && isMoPickup.value ?
+      shopInfo.moPickUpDaysInAdvance :
+      (isNull(shopInfo.pickUpDaysInAdvance)
+        ? 3 : shopInfo.pickUpDaysInAdvance);
     return tmp + 1;
   });
 
