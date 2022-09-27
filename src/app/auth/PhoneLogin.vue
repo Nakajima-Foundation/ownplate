@@ -78,6 +78,7 @@
         </b-button>
 
         <b-button
+          id="button-send-tel"
           :loading="isLoading"
           @click="handleSubmit"
           :disabled="!readyToSendSMS"
@@ -154,6 +155,7 @@
         </b-button>
 
         <b-button
+          id="button-send-code"
           :loading="isLoading"
           @click="handleCode"
           :disabled="!readyToSendVerificationCode"
