@@ -41,7 +41,7 @@ export const usePickupTime = (
     );
   });
   const timeInterval = computed(() => {
-    return 10; // LATER: Make it customizable
+    return isInMo ? 30 : 10; // LATER: Make it customizable
   });
   const withinExceptTime = (time: number) => {
     return ((exceptData.value || {}).exceptHours || []).some(
