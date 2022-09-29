@@ -491,6 +491,7 @@
     "shopId": "shopId",
     "uid": "uid",
     "restaurantName": "飲食店名",
+    "storeName": "店舗名",
     "payment": "支払い",
     "includingTip": "心づけ有り",
     "subtotal": "小計",
