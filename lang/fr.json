@@ -657,6 +657,7 @@
     },
     "invalidPhoneNumber": "Numéro de téléphone invalide",
     "invalidValidationCode": "Code de verification invalide",
+    "auth/too-many-requests": "Too many requests",
     "auth/invalid-phone-number": "Numéro de téléphone invalide",
     "auth/invalid-verification-code": "Le code de vérification par SMS utilisé pour créer les informations d'identification d'authentification du téléphone n'est pas valide. Veuillez renvoyer le code de vérification par SMS et assurez-vous d'utiliser le code de vérification fourni par l'utilisateur.",
     "auth/missing-verification-code": "SMS確認コードが入力されていません",

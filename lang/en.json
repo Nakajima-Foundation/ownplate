@@ -667,6 +667,7 @@
     },
     "invalidPhoneNumber": "Invalid Phone Number",
     "invalidValidationCode": "Invalid Validation Code",
+    "auth/too-many-requests": "Too many requests",
     "auth/invalid-phone-number": "Invalid Phone Number",
     "auth/invalid-verification-code": "The SMS verification code used to create the phone auth credential is invalid. Please resend the verification code sms and be sure use the verification code provided by the user.",
     "auth/missing-verification-code": "SMS verification code is missing.",

@@ -707,6 +707,7 @@
     },
     "invalidPhoneNumber": "電話番号を入力してください",
     "invalidValidationCode": "正しくない文字が含まれています",
+    "auth/too-many-requests": "連続して認証に失敗しています。しばらくしてから再度認証をしてください",
     "auth/invalid-phone-number": "正しい電話番号を入力してください",
     "auth/invalid-verification-code": "SMS確認コードが無効です。SMS確認コードを再送信して再度入力してください",
     "auth/missing-verification-code": "SMS確認コードが入力されていません",
