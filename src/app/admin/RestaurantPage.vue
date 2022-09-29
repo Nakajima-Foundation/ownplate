@@ -652,35 +652,37 @@
           </div>
 
           <!-- Time to Mo Pickup -->
-          <div class="mt-4" v-if="isInMo">
-            <div class="pb-2 text-sm font-bold">
-              {{ $t("mobileOrder.timeToMoPickup") }}
-            </div>
-
-            <div class="rounded-lg bg-black bg-opacity-5 p-4">
-              <!-- Preparation Time -->
-              <div>
-                <div class="mb-1">
-                  {{ $t("editRestaurant.preparationTime") }}
-                </div>
-
-                <div class="ml-2">
-                  {{shopInfo.moPickUpMinimumCookTime}}
-                  {{ $t("editRestaurant.minutes") }}
+          <template v-if="false">
+            <div class="mt-4" v-if="isInMo">
+              <div class="pb-2 text-sm font-bold">
+                {{ $t("mobileOrder.timeToMoPickup") }}
+              </div>
+              
+              <div class="rounded-lg bg-black bg-opacity-5 p-4">
+                <!-- Preparation Time -->
+                <div>
+                  <div class="mb-1">
+                    {{ $t("editRestaurant.preparationTime") }}
+                  </div>
+                  
+                  <div class="ml-2">
+                    {{shopInfo.moPickUpMinimumCookTime}}
+                    {{ $t("editRestaurant.minutes") }}
+                  </div>
+              </div>
+                
+                <!-- The Day Before -->
+                <div class="mt-2">
+                  <div class="mb-1">
+                    {{ $t("editRestaurant.reservationTheDayBefore") }}
+                  </div>
+                  {{shopInfo.moPickUpDaysInAdvance}}
+                  {{ $t("mobileOrder.reservationTheDaysBefore") }}
                 </div>
               </div>
-
-              <!-- The Day Before -->
-              <div class="mt-2">
-                <div class="mb-1">
-                  {{ $t("editRestaurant.reservationTheDayBefore") }}
-                </div>
-                {{shopInfo.moPickUpDaysInAdvance}}
-                {{ $t("mobileOrder.reservationTheDaysBefore") }}
-              </div>
             </div>
-          </div>
-          
+          </template>
+
           <!-- Delivery Config -->
           <template v-if="true">
             <div v-if="region === 'JP'" class="mt-4">
