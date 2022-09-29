@@ -229,7 +229,7 @@
         <div v-if="shopInfo.onTheList" class="mt-4 text-center">
           <div>
             <span class="text-sm font-bold text-black text-opacity-40"
-              >{{ $t("admin.directory.status") }}:</span
+              >{{ $t(isInMo ? "mobileOrder.directoryStatus" : "admin.directory.status") }}:</span
             >
             <span class="text-sm font-bold text-green-600">{{
               $t("admin.directory.listed")

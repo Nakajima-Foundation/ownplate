@@ -55,7 +55,7 @@
       <div>
         <div class="pb-2">
           <span class="mb-2 text-xl font-bold text-black text-opacity-40">
-            {{ $t("admin.restaurant") }}
+            {{ $t(isInMo ? "mobileOrder.restaurantLists" : "admin.restaurant") }}
           </span>
         </div>
 
@@ -96,7 +96,7 @@
                   class="rounded-lg bg-black bg-opacity-5 px-4 py-3 text-center"
                 >
                   <span class="text-sm font-bold">{{
-                    $t("admin.viewAllOrders")
+                    $t(isInMo ? "mobileOrder.viewAllOrders" : "admin.viewAllOrders")
                   }}</span>
                 </div>
               </router-link>
@@ -170,7 +170,7 @@
         </div>
 
         <!-- Note -->
-        <Note />
+        <Note :isInMo="isInMo" />
 
         <!-- Mail Magazine-->
         <MailMagazine />

@@ -93,7 +93,7 @@
           <div>
             <text-form
               v-model="shopInfo.restaurantName"
-              titleKey="shopInfo.name"
+              :titleKey="isInMo ? 'mobileOrder.shopInfoName' : 'shopInfo.name'"
               placeholder="editRestaurant.enterRestaurantName"
               :error="errors['restaurantName']"
               :maxlength="50"
@@ -214,7 +214,7 @@
             <div v-else>住所を入力して検索してください</div>
 
             <div class="mt-2 text-center text-sm font-bold text-red-700">
-              {{ $t("editRestaurant.updateMapDescription") }}
+              {{ $t(isInMo ? "mobileOrder.updateMapDescription" : "editRestaurant.updateMapDescription") }}
             </div>
 
             <div class="mt-4">
@@ -968,7 +968,7 @@
           >
             <i class="material-icons mr-2 text-lg text-op-teal"> queue </i>
             <span class="text-sm font-bold text-op-teal">{{
-              $t(submitting ? "editCommon.saving" : "editCommon.copy")
+              $t(submitting ? "editCommon.saving" : (isInMo ? "mobileOrder.copy" : "editCommon.copy"))
             }}</span>
           </div>
         </b-button>
