@@ -25,6 +25,7 @@
     "viewAllOrders": "店舗の注文をまとめて確認",
     "restaurantLists": "店舗一覧",
     "addNewRestaurant": "店舗を追加",
+    "pickupHours": "ピックアップ営業時間",
     "copy": "この店舗を複製",
     "copyAlert": "この店舗を複製して、新しい店舗を非公開として作成します。",
     "copyMenu": "この商品を以下の店舗に複製",

@@ -683,6 +683,35 @@
             </div>
           </template>
 
+          <!-- mo Hours -->
+          <div class="mt-4 lg:mt-0" v-if="isInMo">
+            <div class="pb-2 text-sm font-bold">
+              {{ $t("mobileOrder.pickupHours") }} <span class="text-red-700">*</span>
+            </div>
+
+            <div class="mt-2 grid grid-cols-1 space-y-2 rounded-lg bg-black bg-opacity-5 p-4">
+              <div
+                v-for="(day, index) in days"
+                :key="index"
+              >
+                <!-- Enable/Disable Day and Copy Previous Day -->
+                <div class="flex items-center">
+                  <div class="flex-1">
+                    <div class="text-base font-bold">
+                      {{ $t("week.short." + day) }} {{shopInfo.moBusinessDay[index] ? "営業" : "休業"}}
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Main Hours -->
+                <div class="mt-2">
+                  {{ num2time(shopInfo.moOpenTimes[index][0].start) }} - {{ num2time(shopInfo.moOpenTimes[index][0].end) }}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          
           <!-- Delivery Config -->
           <template v-if="true">
             <div v-if="region === 'JP'" class="mt-4">
