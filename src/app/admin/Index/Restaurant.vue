@@ -452,7 +452,7 @@ export default defineComponent({
     const deleteRestaurant = () => {
       ctx.root.$store.commit("setAlert", {
         title: props.shopInfo.restaurantName,
-        code: "editRestaurant.reallyDelete",
+        code: props.isInMo ? "mobileOrder.reallyDelete" : "editRestaurant.reallyDelete",
         callback: async () => {
           ctx.emit("deleteFromRestaurantLists", props.restaurantid);
 

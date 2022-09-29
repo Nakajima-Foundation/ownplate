@@ -79,7 +79,7 @@
                   >
                     <i class="material-icons mr-2 text-lg text-op-teal">add</i>
                     <span class="text-sm font-bold text-op-teal">{{
-                      $t("admin.addNewRestaurant")
+                      $t(isInMo ? "mobileOrder.addNewRestaurant" : "admin.addNewRestaurant")
                     }}</span>
                   </div>
                 </b-button>

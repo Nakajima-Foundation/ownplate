@@ -1286,7 +1286,7 @@ export default defineComponent({
     };
     const confirmCopy = async () => {
       ctx.root.$store.commit("setAlert", {
-        code: "editCommon.copyAlert",
+        code: props.isInMo ? "mobileOrder.copyAlert" : "editCommon.copyAlert",
         callback: async () => {
           copyRestaurantFunc();
         },

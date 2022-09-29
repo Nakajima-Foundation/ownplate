@@ -556,7 +556,7 @@
             >
               <i class="material-icons mr-2 text-lg text-op-teal"> queue </i>
               <span class="text-sm font-bold text-op-teal">{{
-                $t("editCommon.copyMenu")
+                $t(isInMo ? "mobileOrder.copyMenu" : "editCommon.copyMenu")
               }}</span>
             </div>
           </b-button>
@@ -821,7 +821,7 @@ export default defineComponent({
         );
         ctx.root.$store.commit("setAlert", {
           title: shop.restaurantName,
-          code: "editCommon.copyMenuAlert",
+          code:  props.isInMo ? "mobileOrder.copyMenuAlert" : "editCommon.copyMenuAlert",
           callback: async () => {
             const newItem = newItemData();
             newItem.publicFlag = false;
