@@ -1,4 +1,5 @@
 const reportHeadersTop = ["name", "restaurantName", "statusName", "userName"];
+const reportHeadersTopMo = ["name", "storeName", "statusName", "userName"];
 const reportHeadersTime = [
   "datePlaced",
   "dateAccepted",
@@ -22,7 +23,7 @@ export const reportHeaders = [
   "memo",
 ];
 export const reportHeadersForMo = [
-  ...reportHeadersTop,
+  ...reportHeadersTopMo,
   // "phoneNumber",
   "restaurantId",
   "shopId",

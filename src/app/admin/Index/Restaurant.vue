@@ -229,7 +229,7 @@
         <div v-if="shopInfo.onTheList" class="mt-4 text-center">
           <div>
             <span class="text-sm font-bold text-black text-opacity-40"
-              >{{ $t("admin.directory.status") }}:</span
+              >{{ $t(isInMo ? "mobileOrder.directoryStatus" : "admin.directory.status") }}:</span
             >
             <span class="text-sm font-bold text-green-600">{{
               $t("admin.directory.listed")
@@ -452,7 +452,7 @@ export default defineComponent({
     const deleteRestaurant = () => {
       ctx.root.$store.commit("setAlert", {
         title: props.shopInfo.restaurantName,
-        code: "editRestaurant.reallyDelete",
+        code: props.isInMo ? "mobileOrder.reallyDelete" : "editRestaurant.reallyDelete",
         callback: async () => {
           ctx.emit("deleteFromRestaurantLists", props.restaurantid);
 

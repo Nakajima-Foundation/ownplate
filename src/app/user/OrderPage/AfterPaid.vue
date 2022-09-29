@@ -235,7 +235,6 @@ import OrderStatus from "@/app/user/OrderPage/AfterPaid/OrderStatus.vue";
 import Receipt from "@/app/user/OrderPage/AfterPaid/Receipt.vue";
 import Pickup from "@/app/user/OrderPage/AfterPaid/Pickup.vue";
 
-import { db } from "@/plugins/firebase";
 import { orderPlace } from "@/lib/firebase/functions";
 
 import { order_status } from "@/config/constant";

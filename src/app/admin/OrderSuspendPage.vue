@@ -167,7 +167,6 @@ export default defineComponent({
       // This logic works because we use availableDays when suspendUntil is not set or too old.
       if (availableDays.value.length > 0) {
         date.value = availableDays.value[0];
-        console.log(date.value.date);
         const times = date.value.times;
         return times.slice(1, 13); // first twelve time slots (except first) regardless of the time
       } else {
@@ -181,7 +180,6 @@ export default defineComponent({
         if (time < new Date()) {
           return false;
         }
-        console.log(time);
         return ctx.root.$d(time, "long");
       }
       return false;
@@ -195,7 +193,6 @@ export default defineComponent({
         tmpDate.setDate(tmpDate.getDate() + day);
       }
       const ts = firebase.firestore.Timestamp.fromDate(tmpDate);
-      console.log(ts, tmpDate);
       ctx.root.$store.commit("setLoading", true);
       await db.doc(`restaurants/${ctx.root.restaurantId()}`).update({
         suspendUntil: ts,

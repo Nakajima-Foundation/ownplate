@@ -149,7 +149,7 @@
 
 <script>
 import { defineComponent, ref, computed } from "@vue/composition-api";
-import { db, firestore } from "@/plugins/firebase";
+import { db } from "@/plugins/firebase";
 import AdminHeader from "@/app/admin/AdminHeader.vue";
 import { shareUrlAdmin } from "@/utils/utils";
 

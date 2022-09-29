@@ -93,7 +93,7 @@
           <div>
             <text-form
               v-model="shopInfo.restaurantName"
-              titleKey="shopInfo.name"
+              :titleKey="isInMo ? 'mobileOrder.shopInfoName' : 'shopInfo.name'"
               placeholder="editRestaurant.enterRestaurantName"
               :error="errors['restaurantName']"
               :maxlength="50"
@@ -214,7 +214,7 @@
             <div v-else>住所を入力して検索してください</div>
 
             <div class="mt-2 text-center text-sm font-bold text-red-700">
-              {{ $t("editRestaurant.updateMapDescription") }}
+              {{ $t(isInMo ? "mobileOrder.updateMapDescription" : "editRestaurant.updateMapDescription") }}
             </div>
 
             <div class="mt-4">
@@ -583,7 +583,7 @@
           <!-- Time to Pickup -->
           <div class="mt-4">
             <div class="pb-2 text-sm font-bold">
-              {{ $t("editRestaurant.timeToPickup") }}
+              {{ $t(isInMo ? "mobileOrder.timeToPickup" : "editRestaurant.timeToPickup") }}
             </div>
 
             <div class="rounded-lg bg-black bg-opacity-5 p-4">
@@ -650,6 +650,38 @@
               </div>
             </div>
           </div>
+
+          <!-- Time to Mo Pickup -->
+          <template v-if="false">
+            <div class="mt-4" v-if="isInMo">
+              <div class="pb-2 text-sm font-bold">
+                {{ $t("mobileOrder.timeToMoPickup") }}
+              </div>
+              
+              <div class="rounded-lg bg-black bg-opacity-5 p-4">
+                <!-- Preparation Time -->
+                <div>
+                  <div class="mb-1">
+                    {{ $t("editRestaurant.preparationTime") }}
+                  </div>
+                  
+                  <div class="ml-2">
+                    {{shopInfo.moPickUpMinimumCookTime}}
+                    {{ $t("editRestaurant.minutes") }}
+                  </div>
+              </div>
+                
+                <!-- The Day Before -->
+                <div class="mt-2">
+                  <div class="mb-1">
+                    {{ $t("editRestaurant.reservationTheDayBefore") }}
+                  </div>
+                  {{shopInfo.moPickUpDaysInAdvance}}
+                  {{ $t("mobileOrder.reservationTheDaysBefore") }}
+                </div>
+              </div>
+            </div>
+          </template>
 
           <!-- Delivery Config -->
           <template v-if="true">
@@ -968,7 +1000,7 @@
           >
             <i class="material-icons mr-2 text-lg text-op-teal"> queue </i>
             <span class="text-sm font-bold text-op-teal">{{
-              $t(submitting ? "editCommon.saving" : "editCommon.copy")
+              $t(submitting ? "editCommon.saving" : (isInMo ? "mobileOrder.copy" : "editCommon.copy"))
             }}</span>
           </div>
         </b-button>
@@ -1286,7 +1318,7 @@ export default defineComponent({
     };
     const confirmCopy = async () => {
       ctx.root.$store.commit("setAlert", {
-        code: "editCommon.copyAlert",
+        code: props.isInMo ? "mobileOrder.copyAlert" : "editCommon.copyAlert",
         callback: async () => {
           copyRestaurantFunc();
         },

@@ -112,7 +112,7 @@ export default {
     if (code) {
       const state = this.$route.query.state;
       const cookies = Cookie.parse(document.cookie);
-      console.log("mounted", code, state, cookies.stripe_state);
+      //console.log("mounted", code, state, cookies.stripe_state);
       if (state === cookies?.stripe_state) {
         this.$store.commit("setLoading", true);
         try {

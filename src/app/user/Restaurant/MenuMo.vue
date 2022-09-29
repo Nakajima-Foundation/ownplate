@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Item Card -->
-    <div class="rounded-lg bg-white shadow">
+    <div class="rounded-lg bg-white shadow" :id="`${item.id}`" >
       <div class="flow-root cursor-pointer">
         <!-- Image -->
         <div v-if="smallimage" class="pb-2">
@@ -15,7 +15,7 @@
 
         <div class="px-2 sm:px-3 sm:pt-1">
           <!-- Item Name -->
-          <a :id="`${item.id}`" @click.stop="openImage()">
+          <a @click.stop="openImage()">
             <div
               class="h-10 text-sm tracking-tight text-black line-clamp-2 sm:h-12 sm:text-base"
             >
