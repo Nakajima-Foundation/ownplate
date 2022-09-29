@@ -652,7 +652,7 @@
           </div>
 
           <!-- Time to Mo Pickup -->
-          <template v-if="false">
+          <template v-if="true">
             <div class="mt-4" v-if="isInMo">
               <div class="pb-2 text-sm font-bold">
                 {{ $t("mobileOrder.timeToMoPickup") }}
