@@ -6,6 +6,8 @@
     <!-- Welcome and Link -->
     <WelcomeAndLinks />
 
+    <EmailVerify v-if="!emailVerified && !isInMo" />
+
     <!-- News -->
     <News />
 
@@ -220,6 +222,7 @@ import Restaurant from "@/app/admin/Index/Restaurant.vue";
 import PaymentSection from "@/app/admin/Payment/PaymentSection.vue";
 import MessageCard from "./Messages/MessageCard.vue";
 
+import EmailVerify from "@/app/admin/Index/EmailVerify.vue";
 import WelcomeAndLinks from "@/app/admin/Index/WelcomeAndLinks.vue";
 import News from "@/app/admin/Index/News.vue";
 import Note from "@/app/admin/Index/Note.vue";
@@ -250,6 +253,7 @@ export default defineComponent({
     WelcomeAndLinks,
     News,
     Partners,
+    EmailVerify,
     Smaregi,
     SubAccount,
     MailMagazine,
@@ -304,7 +308,7 @@ export default defineComponent({
       });
       orderDetachers.value = [];
     };
-    const { isOwner, uid, ownerUid } = useAdminUids(ctx);
+    const { isOwner, uid, ownerUid, emailVerified } = useAdminUids(ctx);
     const { toggle: simpleMode, switchToggle: switchSimpleMode } =
       useAdminConfigToggle("simpleMode", uid.value, false);
 
@@ -584,6 +588,8 @@ export default defineComponent({
       positionDown,
       deleteFromRestaurantLists,
       saveRestaurantLists,
+
+      emailVerified,
     };
   },
 });
