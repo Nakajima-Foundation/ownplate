@@ -6,13 +6,13 @@
 <script lang="ts">
 import { defineComponent } from "@vue/composition-api";
 import { auth } from "@/lib/firebase/firebase9";
-import { verifyPasswordResetCode, confirmPasswordReset } from "firebase/auth";
+import { applyActionCode } from "firebase/auth";
 
 export default defineComponent({
   setup(_, ctx) {
     (async () => {
       try {
-        const res = await auth.applyActionCode(ctx.root.$route.query.oobCode as string);
+        const res = await applyActionCode(auth, ctx.root.$route.query.oobCode as string);
         console.log(res);
       } catch (e) {
         console.log(e);
