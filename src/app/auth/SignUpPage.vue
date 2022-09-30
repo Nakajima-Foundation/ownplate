@@ -161,7 +161,7 @@ import { db, firestore } from "@/plugins/firebase";
 import { partners } from "@/config/constant";
 
 import { auth } from "@/lib/firebase/firebase9";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 
 export default {
   name: "Signup",
@@ -231,6 +231,7 @@ export default {
           this.email,
           this.password
         );
+        await sendEmailVerification(result.user);
         console.log("signup success", result.user.uid, this.name);
         if (this.partner) {
           await db.doc(`admins/${result.user.uid}`).set({

@@ -18,7 +18,7 @@ export default defineComponent({
         console.log(e);
         console.log("error");
       }
-      ctx.root.$router.push("/admin/restaurants");
+      location.replace("/admin/restaurants");
     })();
   },
 });
