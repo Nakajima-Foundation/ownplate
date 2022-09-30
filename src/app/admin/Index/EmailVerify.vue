@@ -1,9 +1,9 @@
 <template>
   <div
-    class="mx-6 mt-6 rounded-lg border-2 border-solid border-red-600 border-opacity-60 px-4 py-2"
+    class="mx-6 mt-6 rounded-lg bg-red-700 bg-opacity-10 p-4"
     
     >
-    <div class="text-center mb-2">
+    <div class="text-center mb-2 text-red-700">
       {{ $t("admin.needEmailVerification") }}
     </div>
     <div class="text-center mb-2">
@@ -15,7 +15,7 @@
         </div>
       </b-button>
     </div>
-    <div class="text-center" v-if="sent">
+    <div class="text-center text-red-700" v-if="sent">
       {{ $t("admin.verificationCodeSent") }}
     </div>
   </div>
