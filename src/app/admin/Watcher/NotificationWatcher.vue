@@ -16,7 +16,7 @@ export default defineComponent({
     const message_detacher = onSnapshot(
       doc(db, `admins/${uid}/private/notification`),
       (notification) => {
-        if (notification.exists) {
+        if (notification.exists()) {
           const notification_data = notification.data();
           if (
             ctx.root.$route.path.indexOf(notification_data.path) > -1 &&
