@@ -287,7 +287,7 @@ export default defineComponent({
     const orderDetachers = ref([]);
     const restaurant_detacher = ref(null);
     const message_detacher = ref(null);
-    const unsetWarning = ref(true);
+    const unsetWarning = ref(false);
     const lines = ref({});
     const shopOwner = ref(null);
     const restaurantLists = ref([]);
