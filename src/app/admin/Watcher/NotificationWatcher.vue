@@ -5,16 +5,21 @@ import { defineComponent, ref, onUnmounted } from "@vue/composition-api";
 import { db } from "@/lib/firebase/firebase9";
 import { doc, onSnapshot } from "firebase/firestore";
 
+import {
+  useAdminUids,
+} from "@/utils/utils";
+
 export default defineComponent({
   props: {
     notificationConfig: Object,
   },
   setup(props, ctx) {
     const watchingMessage = ref(false);
-    const uid = ctx.root.$store.getters.uidAdmin;
+
+    const { ownerUid } = useAdminUids(ctx);
 
     const message_detacher = onSnapshot(
-      doc(db, `admins/${uid}/private/notification`),
+      doc(db, `admins/${ownerUid.value}/private/notification`),
       (notification) => {
         if (notification.exists()) {
           const notification_data = notification.data();
