@@ -108,6 +108,7 @@
             :isInMo="isInMo"
             :categoryDataObj="categoryDataObj"
             :allSubCategoryDataObj="allSubCategoryDataObj"
+            buttonTitle="admin.report.download-csv-history-details"
           />
         </div>
       </div>
@@ -206,7 +207,7 @@ export default defineComponent({
       return notFoundResponse;
     }
 
-    const fileName = ctx.root.$t("order.history");
+    const fileName = props.shopInfo.restaurantId + "_orderhistory_summary.csv";
 
     const { loadCategory, categoryDataObj } = useCategory(props.moPrefix);
     const { allSubCategoryDataObj, loadAllSubcategory } = useAllSubcategory(

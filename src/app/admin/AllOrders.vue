@@ -73,7 +73,7 @@
             >
               <i class="material-icons mr-2 text-lg text-op-teal">save_alt</i>
               <div class="text-sm font-bold text-op-teal">
-                {{ $t("admin.report.download-csv") }}
+                {{ $t("admin.report.download-csv-all") }}
               </div>
             </div>
           </b-button>

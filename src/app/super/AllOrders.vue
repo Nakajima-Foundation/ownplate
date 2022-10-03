@@ -68,7 +68,7 @@
                   >save_alt</i
                 >
                 <span class="font-bold text-op-teal">{{
-                  $t("admin.report.download-csv")
+                  $t("admin.report.download-csv-all")
                 }}</span>
               </span>
             </b-button>

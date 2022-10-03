@@ -902,8 +902,12 @@
     },
     "report": {
       "title": "月次報告",
-      "download-csv": "エクセルデータダウンロード (売上)",
-      "download-csv-details": "エクセルデータダウンロード (詳細)"
+      "download-csv": "エクセルデータダウンロード（月次報告 サマリ）",
+      "download-csv-details": "エクセルデータダウンロード (詳細)",
+      "download-csv-all": "エクセルデータダウンロード（売上）",
+      "download-csv-history": "エクセルデータダウンロード（注文履歴 サマリ）",
+      "download-csv-history-details": "エクセルデータダウンロード（注文履歴 詳細）",
+      "download-csv-monthly-details": "エクセルデータダウンロード（月次報告 詳細）"
     },
     "error": {
       "memoLength": "メッセージは500文字以内で入力してください。",
