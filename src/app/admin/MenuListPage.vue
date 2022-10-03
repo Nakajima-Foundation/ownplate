@@ -380,7 +380,7 @@ export default defineComponent({
     watch(isLoading, (value) => {
       if (!props.isInMo) {
         if (!value) { // finish load
-          if (numberOfMenus.value !== props.shopInfo.numberOfMenus) {
+          if (numberOfMenus.value > 0 && (numberOfMenus.value !== props.shopInfo?.numberOfMenus)) {
             updateDoc(doc(db, `restaurants/${restaurantId.value}`), {
                numberOfMenus: numberOfMenus.value,
             });
