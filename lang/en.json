@@ -746,6 +746,9 @@
       "smaregiAppMarket": "Go to Smaregi App Market",
       "smaregiManualLink": "How to use Smaregi"
     },
+    "needEmailVerification": "You need email verification",
+    "sendVerificationCode": "Send verification code",
+    "verificationCodeSent": "We sent email",
     "viewAllOrders": "View All Orders from All Restaurants",
     "viewPage": "View Page",
     "viewOrders": "View Orders",
@@ -841,8 +844,12 @@
     },
     "report": {
       "title": "Reports",
-      "download-csv": "Download Excel File (Earnings)",
-      "download-csv-details": "Download Excel File (Details)"
+      "download-csv": "Download Excel File (Monthly Earnings)",
+      "download-csv-details": "Download Excel File (Details)",
+      "download-all-csv": "Download Excel File (Earnings)",
+      "download-csv-history": "Download Excel File (History Earnings)",
+      "download-csv-history-details": "Download Excel File (History Details)",
+      "download-csv-monthly-details": "Download Excel File (Monthly Details)"
     },
     "error": {
       "memoLength": "Please enter your message within 500 characters.",

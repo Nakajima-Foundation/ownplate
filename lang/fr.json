@@ -831,7 +831,11 @@
     "report": {
       "title": "Rapport mensuel",
       "download-csv": "Télécharger le fichier Excel (Gains)",
-      "download-csv-details": "Télécharger le fichier Excel (Détails)"
+      "download-csv-details": "Télécharger le fichier Excel (Détails)",
+      "download-all-csv": "Download Excel File (Earnings)",
+      "download-csv-history": "Download Excel File (History Earnings)",
+      "download-csv-history-details": "Download Excel File (History Details)",
+      "download-csv-monthly-details": "Download Excel File (Monthly Details)"
     },
     "error": {
       "memoLength": "Please enter your message within 500 characters.",

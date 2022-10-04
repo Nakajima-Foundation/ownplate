@@ -3,7 +3,7 @@
     :data="tableData"
     :fields="fields"
     :fieldNames="fieldNames"
-    :fileName="$t('order.history')"
+    :fileName="fileName"
   >
     <b-button class="b-reset-tw">
       <div
@@ -11,7 +11,7 @@
       >
         <i class="material-icons mr-2 text-lg text-op-teal">save_alt</i>
         <div class="text-sm font-bold text-op-teal">
-          {{ $t("admin.report.download-csv") }}
+          {{ $t("admin.report.download-csv-history") }}
         </div>
       </div>
     </b-button>
@@ -84,7 +84,9 @@ export default defineComponent({
         };
       });
     });
+    const fileName = ctx.root.restaurantId() + "_orderhistory_detail.csv";
     return {
+      fileName,
       fields,
       fieldNames,
       tableData,

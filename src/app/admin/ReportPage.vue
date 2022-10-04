@@ -159,7 +159,7 @@
           :data="tableData"
           :fields="fields"
           :fieldNames="fieldNames"
-          :fileName="fileName"
+          :fileName="fileNameSummary"
         >
           <b-button class="b-reset-tw">
             <div
@@ -179,10 +179,11 @@
         <report-details
           :orders="orders"
           :shopInfo="shopInfo"
-          :fileName="fileName"
+          :fileName="fileNameDetail"
           :isInMo="isInMo"
           :categoryDataObj="categoryDataObj"
           :allSubCategoryDataObj="allSubCategoryDataObj"
+          buttonTitle="admin.report.download-csv-monthly-details"
         />
       </div>
     </div>
@@ -253,10 +254,10 @@ export default defineComponent({
     return {
       title: this.shopInfo.restaurantName
         ? [
-            "Admin Report",
-            this.shopInfo.restaurantName,
-            this.defaultTitle,
-          ].join(" / ")
+          "Admin Report",
+          this.shopInfo.restaurantName,
+          this.defaultTitle,
+        ].join(" / ")
         : this.defaultTitle,
     };
   },
@@ -279,22 +280,22 @@ export default defineComponent({
     });
     const monthIndex = ref(0);
     let detacher = null;
-
+    
     const { ownerUid, uid } = useAdminUids(ctx);
     if (!checkShopOwner(props.shopInfo, uid.value)) {
       return notFoundResponse;
     }
-
+    
     const fields = computed(() => {
       return props.isInMo ? revenueMoCSVHeader : revenueCSVHeader;
     });
-
+    
     const fieldNames = computed(() => {
       return fields.value.map((field) => {
         return ctx.root.$t(`order.${field}`);
       });
     });
-
+    
     const { loadCategory, categoryDataObj } = useCategory(props.moPrefix);
     const { allSubCategoryDataObj, loadAllSubcategory } = useAllSubcategory(
       props.moPrefix
@@ -303,7 +304,7 @@ export default defineComponent({
       loadCategory();
       loadAllSubcategory();
     }
-
+    
     const revenueTableHeader = [
       "order.date",
       "order.foodRevenue",
@@ -350,25 +351,36 @@ export default defineComponent({
         return { index, date };
       });
     });
-    const fileName = computed(() => {
+    const fileNameSummary = computed(() => {
       return [
         moment(lastSeveralMonths.value[monthIndex.value].date).format(
           "YYYY-MM"
         ),
         "revenue",
         props.shopInfo.restaurantId,
+        "summary",
       ].join("-");
     });
-
+    const fileNameDetail = computed(() => {
+      return [
+        moment(lastSeveralMonths.value[monthIndex.value].date).format(
+          "YYYY-MM"
+        ),
+        "revenue",
+        props.shopInfo.restaurantId,
+        "detail",
+      ].join("-");
+    });
+    
     const updateQuery = () => {
       detacher && detacher();
       let query = db
-        .collection(`restaurants/${props.shopInfo.restaurantId}/orders`)
-        .where(
-          "timeConfirmed",
-          ">=",
-          lastSeveralMonths.value[monthIndex.value].date
-        );
+          .collection(`restaurants/${props.shopInfo.restaurantId}/orders`)
+          .where(
+            "timeConfirmed",
+            ">=",
+            lastSeveralMonths.value[monthIndex.value].date
+          );
       if (monthIndex.value > 0) {
         query = query.where(
           "timeConfirmed",
@@ -418,7 +430,7 @@ export default defineComponent({
       const value = encodeURIComponent(order.description || nameOfOrder(order));
       return `${ownPlateConfig.stripe.search}?query=${value}`;
     };
-
+    
     updateQuery();
 
     onUnmounted(() => {
@@ -439,8 +451,8 @@ export default defineComponent({
       tableData,
       fields,
       fieldNames,
-      fileName,
-
+      fileNameSummary,
+      fileNameDetail,
       orderUrl,
       nameOfOrder,
       searchUrl,

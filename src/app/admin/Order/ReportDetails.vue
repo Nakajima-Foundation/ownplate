@@ -36,7 +36,7 @@
         >
           <i class="material-icons mr-2 text-lg text-op-teal">save_alt</i>
           <div class="text-sm font-bold text-op-teal">
-            {{ $t("admin.report.download-csv-details") }}
+            {{ $t(buttonTitle) }}
           </div>
         </div>
       </b-button>
@@ -98,6 +98,10 @@ export default defineComponent({
     },
     allSubCategoryDataObj: {
       type: Object,
+      required: true,
+    },
+    buttonTitle: {
+      type: String,
       required: true,
     },
   },

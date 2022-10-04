@@ -649,10 +649,14 @@ export const useAdminUids = (ctx: any) => {
       ? ctx.root.$store.getters.parentId
       : ctx.root.$store.getters.uidAdmin;
   });
+  const emailVerified = computed(() => {
+    return ctx.root.$store.state.user?.emailVerified
+  });
   return {
     isOwner,
     uid,
     ownerUid,
+    emailVerified,
   };
 };
 
