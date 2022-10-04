@@ -1,5 +1,5 @@
 <template>
-  <div>verify</div>
+  <div></div>
 </template>
 
 
@@ -13,7 +13,6 @@ export default defineComponent({
     (async () => {
       try {
         const res = await applyActionCode(auth, ctx.root.$route.query.oobCode as string);
-        console.log(res);
       } catch (e) {
         console.log(e);
         console.log("error");
