@@ -74,6 +74,9 @@ export const validateBase64 = (id: string) => {
 export const validateBase64Ext = (id: string) => {
   return /^[a-zA-Z0-9+\-_/]+$/.test(id);
 };
+export const validateNumAlphaBar = (id: string) => {
+  return /^[a-zA-Z0-9\-_]+$/.test(id);
+};
 
 const validateNumber = (text: number) => {
   return typeof text === "number";
@@ -108,6 +111,9 @@ const validateNewOrder = (values: newOrderData[]) => {
 }
 const validateArray = {
   firebaseId: validateFirebaseId,
+  base64: validateBase64,
+  base64Ext: validateBase64Ext,
+  numAlphaBar: validateNumAlphaBar,
   number: validateNumber,
   numberStrong: validateNumberString,
   integer: validateInteger,
@@ -287,7 +293,6 @@ export const validateCancelPayment = (data: orderCancelPaymentData) => {
 
 
 export const validateOrderChange = (data: orderChangeData) => {
-  //const { restaurantId, orderId, newOrder, timezone, lng } = data;
   const validator = {
     restaurantId: {
       type: "firebaseId",
@@ -311,5 +316,25 @@ export const validateOrderChange = (data: orderChangeData) => {
       required: false,
     },
   };
+  return validateData(data, validator);
+};
+
+export const validatorStripeOAuthConnect = (data: any) => {
+  const validator = {
+    code: {
+      type: "numAlphaBar",
+      required: true,
+    }
+  }
+  return validateData(data, validator);
+};
+
+export const validatorStripeOAuthVerify = (data: any) => {
+  const validator = {
+    account_id: {
+      type: "numAlphaBar",
+      required: true,
+    }
+  }
   return validateData(data, validator);
 };

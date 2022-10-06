@@ -1,6 +1,7 @@
 import * as admin from "firebase-admin";
 import * as functions from "firebase-functions";
 import * as utils from "../../lib/utils";
+import { validatorStripeOAuthConnect } from "../../lib/validator";
 
 export const connect = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
@@ -9,6 +10,12 @@ export const connect = async (db: admin.firestore.Firestore, data: any, context:
   const { code } = data;
   utils.required_params({ code });
 
+  const validateResult = validatorStripeOAuthConnect(data)
+  if (!validateResult.result) {
+    console.error("connect", validateResult.errors);
+    throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
+  }
+  
   try {
     const refStripe = db.doc(`/admins/${uid}/system/stripe`);
 
