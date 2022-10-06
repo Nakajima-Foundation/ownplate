@@ -38,4 +38,3 @@ export const disconnect = async (db: admin.firestore.Firestore, data: any, conte
     throw utils.process_error(error);
   }
 };
-

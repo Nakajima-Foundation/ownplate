@@ -1,5 +1,18 @@
 import * as admin from "firebase-admin";
-import { orderCreatedData, orderUpdateData, orderPlacedData, customerInfoData, confirmIntentData, orderCancelData, orderCancelPaymentData, orderChangeData, newOrderData, stripeReceiptData, stripeOAuthConnectData, stripeOAuthVerifyData } from "./types";
+import {
+  orderCreatedData,
+  orderUpdateData,
+  orderPlacedData,
+  customerInfoData,
+  confirmIntentData,
+  orderCancelData,
+  orderCancelPaymentData,
+  orderChangeData,
+  newOrderData,
+  stripeReceiptData,
+  stripeOAuthConnectData,
+  stripeOAuthVerifyData,
+} from "./types";
 import { isEmpty } from "./utils";
 
 import isNumeric from "validator/lib/isNumeric";
@@ -106,9 +119,9 @@ const validateBoolean = (value: boolean) => {
 };
 const validateNewOrder = (values: newOrderData[]) => {
   return values.every((data) => {
-    return validateFirebaseId(data.menuId) && validateInteger(data.index)
+    return validateFirebaseId(data.menuId) && validateInteger(data.index);
   });
-}
+};
 const validateArray = {
   firebaseId: validateFirebaseId,
   base64: validateBase64,
@@ -291,7 +304,6 @@ export const validateCancelPayment = (data: orderCancelPaymentData) => {
   return validateData(data, validator);
 };
 
-
 export const validateOrderChange = (data: orderChangeData) => {
   const validator = {
     restaurantId: {
@@ -324,8 +336,8 @@ export const validatorStripeOAuthConnect = (data: stripeOAuthConnectData) => {
     code: {
       type: "numAlphaBar",
       required: true,
-    }
-  }
+    },
+  };
   return validateData(data, validator);
 };
 
@@ -334,8 +346,8 @@ export const validatorStripeOAuthVerify = (data: stripeOAuthVerifyData) => {
     account_id: {
       type: "numAlphaBar",
       required: true,
-    }
-  }
+    },
+  };
   return validateData(data, validator);
 };
 

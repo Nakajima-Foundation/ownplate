@@ -4,7 +4,7 @@ import * as utils from "../../lib/utils";
 import { validatorStripeOAuthVerify } from "../../lib/validator";
 
 export const verify = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => {
-  // just 
+  // just
   if (!context.auth?.token?.admin) {
     throw new functions.https.HttpsError("permission-denied", "You do not have permission to confirm this request.");
   }
@@ -13,7 +13,7 @@ export const verify = async (db: admin.firestore.Firestore, data: any, context: 
   const { account_id } = data;
   utils.required_params({ account_id });
 
-  const validateResult = validatorStripeOAuthVerify(data)
+  const validateResult = validatorStripeOAuthVerify(data);
   if (!validateResult.result) {
     console.error("connect", validateResult.errors);
     throw new functions.https.HttpsError("invalid-argument", "Validation Error.");

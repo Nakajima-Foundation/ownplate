@@ -10,12 +10,12 @@ export const connect = async (db: admin.firestore.Firestore, data: any, context:
   const { code } = data;
   utils.required_params({ code });
 
-  const validateResult = validatorStripeOAuthConnect(data)
+  const validateResult = validatorStripeOAuthConnect(data);
   if (!validateResult.result) {
     console.error("connect", validateResult.errors);
     throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
   }
-  
+
   try {
     const refStripe = db.doc(`/admins/${uid}/system/stripe`);
 
@@ -41,4 +41,3 @@ export const connect = async (db: admin.firestore.Firestore, data: any, context:
     throw utils.process_error(error);
   }
 };
-

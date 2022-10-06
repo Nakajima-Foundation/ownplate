@@ -53,7 +53,7 @@ export const orderChange = async (db: any, data: orderChangeData, context: funct
     console.error("createIntent", validateResult.errors);
     throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
   }
-  
+
   const restaurantRef = db.doc(`restaurants/${restaurantId}`);
   const restaurantData = (await restaurantRef.get()).data() || {};
   if (restaurantData.uid !== ownerUid) {
