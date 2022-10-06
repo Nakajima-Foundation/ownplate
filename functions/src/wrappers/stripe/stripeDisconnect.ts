@@ -1,7 +1,7 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 
-import { disconnect } from "../../functions/stripe/oauthDisconnect";
+import { disconnect } from "../../functions/stripe/oauth/Disconnect";
 import { allowInvalidAppCheckToken } from "../firebase";
 
 const db = admin.firestore();
