@@ -109,3 +109,9 @@ export interface stripeUpdateCustomerData {
   tokenId: string;
   reuse: string; // ??
 }
+
+export interface pingData {
+  restaurantId: string;
+  operationType: string;
+  pathName: string;
+}
