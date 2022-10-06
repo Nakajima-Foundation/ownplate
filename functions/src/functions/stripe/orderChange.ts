@@ -11,6 +11,7 @@ import { Context } from "../../models/TestType";
 import { getStripeAccount, getStripeOrderRecord, getPaymentMethodData, getHash } from "./intent";
 
 import { orderChangeData, newOrderData } from "../../lib/types";
+import { validateOrderChange } from "../../lib/validator";
 
 const multiple = utils.getStripeRegion().multiple; // 100 for USD, 1 for JPY
 const stripe = utils.get_stripe();
@@ -47,6 +48,12 @@ export const orderChange = async (db: any, data: orderChangeData, context: funct
   const { restaurantId, orderId, newOrder, timezone, lng } = data;
   utils.required_params({ restaurantId, orderId, newOrder, timezone }); // lng is optional
 
+  const validateResult = validateOrderChange(data);
+  if (!validateResult.result) {
+    console.error("createIntent", validateResult.errors);
+    throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
+  }
+  
   const restaurantRef = db.doc(`restaurants/${restaurantId}`);
   const restaurantData = (await restaurantRef.get()).data() || {};
   if (restaurantData.uid !== ownerUid) {
