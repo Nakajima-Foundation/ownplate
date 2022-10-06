@@ -1,6 +1,8 @@
 import * as admin from "firebase-admin";
 import * as functions from "firebase-functions";
 import * as utils from "../../lib/utils";
+import { validateStripeUpdateCustomer } from "../../lib/validator";
+import { stripeUpdateCustomerData } from "../../lib/types";
 
 // called byt order/orderCreated
 export const createCustomer = async (db: admin.firestore.Firestore, uid: string, phoneNumber: string) => {
@@ -78,10 +80,17 @@ export const deleteCard = async (db: admin.firestore.Firestore, data: any, conte
 };
 
 // function
-export const updateCustomer = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => {
+export const updateCustomer = async (db: admin.firestore.Firestore, data: stripeUpdateCustomerData, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
   const { tokenId, reuse } = data;
   utils.required_params({ tokenId });
+
+  const validateResult = validateStripeUpdateCustomer(data);
+  if (!validateResult.result) {
+    console.error("updateCustomer", validateResult.errors);
+    throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
+  }
+
   const stripe = utils.get_stripe();
 
   const refStripeSystem = db.doc(`/users/${uid}/system/stripe`);

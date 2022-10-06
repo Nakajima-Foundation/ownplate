@@ -12,6 +12,7 @@ import {
   stripeReceiptData,
   stripeOAuthConnectData,
   stripeOAuthVerifyData,
+  stripeUpdateCustomerData,
 } from "./types";
 import { isEmpty } from "./utils";
 
@@ -359,6 +360,16 @@ export const validateStripeReceipt = (data: stripeReceiptData) => {
     },
     orderId: {
       type: "firebaseId",
+      required: true,
+    },
+  };
+  return validateData(data, validator);
+};
+
+export const validateStripeUpdateCustomer = (data: stripeUpdateCustomerData) => {
+  const validator = {
+    tokenId: {
+      type: "numAlphaBar",
       required: true,
     },
   };

@@ -104,3 +104,8 @@ export interface stripeReceiptData {
   restaurantId: string;
   orderId: string;
 }
+
+export interface stripeUpdateCustomerData {
+  tokenId: string;
+  reuse: string; // ??
+}

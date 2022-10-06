@@ -43,7 +43,7 @@ const getUpdateOrder = (newOrders: newOrderData[], order, options, rawOptions) =
   };
 };
 
-export const orderChange = async (db: any, data: orderChangeData, context: functions.https.CallableContext | Context) => {
+export const orderChange = async (db: admin.firestore.Firestore, data: orderChangeData, context: functions.https.CallableContext | Context) => {
   const ownerUid = utils.validate_admin_auth(context);
   const { restaurantId, orderId, newOrder, timezone, lng } = data;
   utils.required_params({ restaurantId, orderId, newOrder, timezone }); // lng is optional
