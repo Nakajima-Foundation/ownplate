@@ -1,5 +1,5 @@
 import * as admin from "firebase-admin";
-import { orderCreatedData, orderUpdateData, orderPlacedData, customerInfoData, confirmIntentData, orderCancelData, orderCancelPaymentData, orderChangeData, newOrderData } from "./types";
+import { orderCreatedData, orderUpdateData, orderPlacedData, customerInfoData, confirmIntentData, orderCancelData, orderCancelPaymentData, orderChangeData, newOrderData, stripeReceiptData, stripeOAuthConnectData, stripeOAuthVerifyData } from "./types";
 import { isEmpty } from "./utils";
 
 import isNumeric from "validator/lib/isNumeric";
@@ -319,7 +319,7 @@ export const validateOrderChange = (data: orderChangeData) => {
   return validateData(data, validator);
 };
 
-export const validatorStripeOAuthConnect = (data: any) => {
+export const validatorStripeOAuthConnect = (data: stripeOAuthConnectData) => {
   const validator = {
     code: {
       type: "numAlphaBar",
@@ -329,12 +329,26 @@ export const validatorStripeOAuthConnect = (data: any) => {
   return validateData(data, validator);
 };
 
-export const validatorStripeOAuthVerify = (data: any) => {
+export const validatorStripeOAuthVerify = (data: stripeOAuthVerifyData) => {
   const validator = {
     account_id: {
       type: "numAlphaBar",
       required: true,
     }
   }
+  return validateData(data, validator);
+};
+
+export const validateStripeReceipt = (data: stripeReceiptData) => {
+  const validator = {
+    restaurantId: {
+      type: "firebaseId",
+      required: true,
+    },
+    orderId: {
+      type: "firebaseId",
+      required: true,
+    },
+  };
   return validateData(data, validator);
 };
