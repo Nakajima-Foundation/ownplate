@@ -1,4 +1,5 @@
 import express from "express";
+import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 import * as fs from "fs";
 import { ownPlateConfig } from "../../common/project";
@@ -334,11 +335,31 @@ export const stripe_parser = async (req, res) => {
   }
 };
 
+export const alogger = async (req, res, next) => {
+  const message = "access " + req.path;
+  const { path, method, originalUrl, params, query, headers }  = req;
+
+  const ip = headers["fastly-client-ip"];
+  const mobile = headers["sec-ch-ua-mobile"];
+  const platform = headers["sec-ch-ua-platform"];
+  const ua = headers["user-agent"];
+  const country = headers["x-country-code"];
+  const host =headers["x-forwarded-host"];
+
+  const log = {
+    path, method, originalUrl, params, query,
+    ip, mobile, platform, ua, country, host,
+  };
+  functions.logger.log(message, log);
+  next();
+};
+
 router.post("/stripe/callback", logger, stripe_parser);
 
 app.use(express.json());
+app.use(alogger);
 
-// app.use("/1.0", router);
+app.use("/1.0", router); // for stripe
 // app.use("/api/1.0/", apis.apiRouter);
 // app.use("/api/2.0/", apis2.apiRouter);
 
