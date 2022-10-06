@@ -16,7 +16,7 @@ import * as smaregi from "../smaregiApi";
 
 import * as xmlbuilder from "xmlbuilder";
 
-import { validateFirebaseId } from "../../lib/validator"
+import { validateFirebaseId } from "../../lib/validator";
 
 import moment from "moment";
 
@@ -337,18 +337,27 @@ export const stripe_parser = async (req, res) => {
 
 export const alogger = async (req, res, next) => {
   const message = "access " + req.path;
-  const { path, method, originalUrl, params, query, headers }  = req;
+  const { path, method, originalUrl, params, query, headers } = req;
 
   const ip = headers["fastly-client-ip"];
   const mobile = headers["sec-ch-ua-mobile"];
   const platform = headers["sec-ch-ua-platform"];
   const ua = headers["user-agent"];
   const country = headers["x-country-code"];
-  const host =headers["x-forwarded-host"];
+  const host = headers["x-forwarded-host"];
 
   const log = {
-    path, method, originalUrl, params, query,
-    ip, mobile, platform, ua, country, host,
+    path,
+    method,
+    originalUrl,
+    params,
+    query,
+    ip,
+    mobile,
+    platform,
+    ua,
+    country,
+    host,
   };
   functions.logger.log(message, log);
   next();

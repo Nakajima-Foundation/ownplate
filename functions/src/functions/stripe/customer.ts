@@ -2,6 +2,7 @@ import * as admin from "firebase-admin";
 import * as functions from "firebase-functions";
 import * as utils from "../../lib/utils";
 
+// called byt order/orderCreated
 export const createCustomer = async (db: admin.firestore.Firestore, uid: string, phoneNumber: string) => {
   const stripe = utils.get_stripe();
   await db.runTransaction(async (tr) => {

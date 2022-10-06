@@ -1,6 +1,6 @@
 import * as functions from "firebase-functions";
-import * as utils from "../lib/utils";
-import * as netutils from "../lib/netutils";
+import * as utils from "../../lib/utils";
+import * as netutils from "../../lib/netutils";
 import * as admin from "firebase-admin";
 
 const LINE_MESSAGE_TOKEN = (functions.config() && functions.config().line && functions.config().line.message_token) || process.env.LINE_MESSAGE_TOKEN;

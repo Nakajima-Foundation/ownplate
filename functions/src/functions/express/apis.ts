@@ -3,7 +3,7 @@ import * as admin from "firebase-admin";
 import { ownPlateConfig } from "../../common/project";
 import cors from "cors";
 import * as Sentry from "@sentry/node";
-import { validateFirebaseId } from "../../lib/validator"
+import { validateFirebaseId } from "../../lib/validator";
 
 export const apiRouter = express.Router();
 

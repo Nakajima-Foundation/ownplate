@@ -92,3 +92,15 @@ export interface orderCancelPaymentData {
   orderId: string;
   lng?: string;
 }
+
+export interface stripeOAuthConnectData {
+  code: string;
+}
+export interface stripeOAuthVerifyData {
+  account_id: string;
+}
+
+export interface stripeReceiptData {
+  restaurantId: string;
+  orderId: string;
+}

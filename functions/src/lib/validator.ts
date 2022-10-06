@@ -1,5 +1,18 @@
 import * as admin from "firebase-admin";
-import { orderCreatedData, orderUpdateData, orderPlacedData, customerInfoData, confirmIntentData, orderCancelData, orderCancelPaymentData, orderChangeData, newOrderData } from "./types";
+import {
+  orderCreatedData,
+  orderUpdateData,
+  orderPlacedData,
+  customerInfoData,
+  confirmIntentData,
+  orderCancelData,
+  orderCancelPaymentData,
+  orderChangeData,
+  newOrderData,
+  stripeReceiptData,
+  stripeOAuthConnectData,
+  stripeOAuthVerifyData,
+} from "./types";
 import { isEmpty } from "./utils";
 
 import isNumeric from "validator/lib/isNumeric";
@@ -74,6 +87,9 @@ export const validateBase64 = (id: string) => {
 export const validateBase64Ext = (id: string) => {
   return /^[a-zA-Z0-9+\-_/]+$/.test(id);
 };
+export const validateNumAlphaBar = (id: string) => {
+  return /^[a-zA-Z0-9\-_]+$/.test(id);
+};
 
 const validateNumber = (text: number) => {
   return typeof text === "number";
@@ -103,11 +119,14 @@ const validateBoolean = (value: boolean) => {
 };
 const validateNewOrder = (values: newOrderData[]) => {
   return values.every((data) => {
-    return validateFirebaseId(data.menuId) && validateInteger(data.index)
+    return validateFirebaseId(data.menuId) && validateInteger(data.index);
   });
-}
+};
 const validateArray = {
   firebaseId: validateFirebaseId,
+  base64: validateBase64,
+  base64Ext: validateBase64Ext,
+  numAlphaBar: validateNumAlphaBar,
   number: validateNumber,
   numberStrong: validateNumberString,
   integer: validateInteger,
@@ -285,9 +304,7 @@ export const validateCancelPayment = (data: orderCancelPaymentData) => {
   return validateData(data, validator);
 };
 
-
 export const validateOrderChange = (data: orderChangeData) => {
-  //const { restaurantId, orderId, newOrder, timezone, lng } = data;
   const validator = {
     restaurantId: {
       type: "firebaseId",
@@ -309,6 +326,40 @@ export const validateOrderChange = (data: orderChangeData) => {
     lng: {
       type: "alphabet",
       required: false,
+    },
+  };
+  return validateData(data, validator);
+};
+
+export const validatorStripeOAuthConnect = (data: stripeOAuthConnectData) => {
+  const validator = {
+    code: {
+      type: "numAlphaBar",
+      required: true,
+    },
+  };
+  return validateData(data, validator);
+};
+
+export const validatorStripeOAuthVerify = (data: stripeOAuthVerifyData) => {
+  const validator = {
+    account_id: {
+      type: "numAlphaBar",
+      required: true,
+    },
+  };
+  return validateData(data, validator);
+};
+
+export const validateStripeReceipt = (data: stripeReceiptData) => {
+  const validator = {
+    restaurantId: {
+      type: "firebaseId",
+      required: true,
+    },
+    orderId: {
+      type: "firebaseId",
+      required: true,
     },
   };
   return validateData(data, validator);

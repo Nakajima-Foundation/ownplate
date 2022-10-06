@@ -1,6 +1,6 @@
 import * as functions from "firebase-functions";
-import * as utils from "../lib/utils";
-import * as netutils from "../lib/netutils";
+import * as utils from "../../lib/utils";
+import * as netutils from "../../lib/netutils";
 import * as admin from "firebase-admin";
 import * as crypto from "crypto";
 
