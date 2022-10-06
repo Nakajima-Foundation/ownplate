@@ -9,6 +9,7 @@ const db = admin.firestore();
 export default functions
   .runWith({
     memory: "1GB" as "1GB",
+    maxInstances: 50,
     allowInvalidAppCheckToken,
   })
   .https.onCall(async (data, context) => {

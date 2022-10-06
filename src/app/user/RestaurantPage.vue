@@ -344,7 +344,7 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 
-import { wasOrderCreated } from "@/lib/firebase/functions";
+import { orderCreated } from "@/lib/firebase/functions";
 
 import { order_status } from "@/config/constant";
 
@@ -720,7 +720,7 @@ export default defineComponent({
             howtoreceive: howtoreceive.value,
           },
         });
-        await wasOrderCreated({
+        await orderCreated({
           restaurantId: restaurantId.value,
           orderId: res.id,
         });

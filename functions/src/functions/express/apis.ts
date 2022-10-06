@@ -1,8 +1,9 @@
 import express from "express";
 import * as admin from "firebase-admin";
-import { ownPlateConfig } from "../common/project";
+import { ownPlateConfig } from "../../common/project";
 import cors from "cors";
 import * as Sentry from "@sentry/node";
+import { validateFirebaseId } from "../../lib/validator"
 
 export const apiRouter = express.Router();
 
@@ -103,6 +104,10 @@ const getRestaurants = async (req: any, res: any) => {
 
 const getMenus = async (req: any, res: any) => {
   const { restaurantId } = req.params;
+
+  if (!validateFirebaseId(restaurantId)) {
+    return res.status(404).send("");
+  }
 
   const restaurant = await db.doc(`restaurants/${restaurantId}`).get();
   if (!restaurant || !restaurant.exists) {
