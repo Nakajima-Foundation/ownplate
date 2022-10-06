@@ -54,7 +54,7 @@ export const orderChange = httpsCallable(functionsJP, "orderChangeJp");
 
 export const orderPlace = httpsCallable(functionsJP, "orderPlaceJp");
 
-export const wasOrderCreated = httpsCallable(functionsJP, "wasOrderCreatedJp");
+export const orderCreated = httpsCallable(functionsJP, "orderCreatedJp");
 
 export const liffAuthenticate = httpsCallable(functionsJP, "liffAuthenticate");
 
