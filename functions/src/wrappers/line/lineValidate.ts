@@ -1,8 +1,8 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 
-import * as Line from "../functions/line";
-import { allowInvalidAppCheckToken } from "./firebase";
+import * as Line from "../../functions/line";
+import { allowInvalidAppCheckToken } from "../firebase";
 
 const db = admin.firestore();
 

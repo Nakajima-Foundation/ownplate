@@ -14,16 +14,16 @@ if (!admin.apps.length) {
 
 exportIfNeeded("api", "api", exports);
 
-exportIfNeeded("superDispatch", "superDispatch", exports);
-exportIfNeeded("superTwilio", "superTwilio", exports);
+exportIfNeeded("superDispatch", "super/superDispatch", exports);
+exportIfNeeded("superTwilio", "super/superTwilio", exports);
 
 exportIfNeeded("accountDelete", "accountDelete", exports);
 
 exportIfNeeded("lineVerifyFriend", "line/lineVerifyFriend", exports);
-exportIfNeeded("lineValidate", "lineValidate", exports);
-exportIfNeeded("lineAuthenticate", "lineAuthenticate", exports);
+exportIfNeeded("lineValidate", "line/lineValidate", exports);
+exportIfNeeded("lineAuthenticate", "line/lineAuthenticate", exports);
 exportIfNeeded("lineSetCustomClaim", "line/lineSetCustomClaim", exports);
-exportIfNeeded("liffAuthenticate", "liffAuthenticate", exports); // jp
+exportIfNeeded("liffAuthenticate", "line/liffAuthenticate", exports); // jp
 exportIfNeeded("traceProcess", "traceProcess", exports);
 
 exportIfNeeded("wasOrderCreatedJp", "order/orderCreatedJp", exports); // jp

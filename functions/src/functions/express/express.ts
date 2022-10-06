@@ -1,21 +1,21 @@
 import express from "express";
 import * as admin from "firebase-admin";
 import * as fs from "fs";
-import { ownPlateConfig } from "../common/project";
+import { ownPlateConfig } from "../../common/project";
 
 import * as Sentry from "@sentry/node";
 
-import * as utils from "../lib/utils";
-import * as stripeLog from "../lib/stripeLog";
+import * as utils from "../../lib/utils";
+import * as stripeLog from "../../lib/stripeLog";
 
 import * as apis from "./apis";
 import * as apis2 from "./apis2";
 
-import * as smaregi from "./smaregiApi";
+import * as smaregi from "../smaregiApi";
 
 import * as xmlbuilder from "xmlbuilder";
 
-import { validateFirebaseId } from "../lib/validator"
+import { validateFirebaseId } from "../../lib/validator"
 
 import moment from "moment";
 

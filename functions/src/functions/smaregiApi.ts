@@ -3,7 +3,7 @@ import * as admin from "firebase-admin";
 import * as functions from "firebase-functions";
 import SmaregiApi from "../smaregi/smaregiapi";
 import { smaregi } from "../common/project";
-import { response200 } from "./apis";
+import { response200 } from "./express/apis";
 import moment from "moment";
 
 const clientSecrets = (functions.config() && functions.config().smaregi && functions.config().smaregi.clientsecrets) || {

@@ -1,5 +1,5 @@
 import * as functions from "firebase-functions";
-import * as express from "../functions/express";
+import * as express from "../functions/express/express";
 
 export default functions
   .runWith({
