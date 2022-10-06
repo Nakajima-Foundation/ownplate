@@ -15,6 +15,8 @@ import * as smaregi from "./smaregiApi";
 
 import * as xmlbuilder from "xmlbuilder";
 
+import { validateFirebaseId } from "../lib/validator"
+
 import moment from "moment";
 
 export const app = express();
@@ -114,9 +116,6 @@ const getMenuData = async (restaurantName, menuId) => {
     exists: false,
   };
 };
-const isId = (id: string) => {
-  return /^[a-zA-Z0-9]+$/.test(id);
-};
 const ogpPage = async (req: any, res: any) => {
   const { restaurantName, menuId } = req.params;
   const template_data = fs.readFileSync("./templates/index.html", {
@@ -129,10 +128,10 @@ const ogpPage = async (req: any, res: any) => {
   res.setHeader("X-Permitted-Cross-Domain-Policies", "none");
   res.setHeader("Referrer-Policy", "no-referrer");
   try {
-    if (!isId(restaurantName)) {
+    if (!validateFirebaseId(restaurantName)) {
       return res.status(404).send(template_data);
     }
-    if (menuId && !isId(menuId)) {
+    if (menuId && !validateFirebaseId(menuId)) {
       return res.status(404).send(template_data);
     }
     const restaurant = await db.doc(`restaurants/${restaurantName}`).get();
@@ -230,7 +229,7 @@ const ownerPage = async (req: any, res: any) => {
   res.setHeader("X-Permitted-Cross-Domain-Policies", "none");
   res.setHeader("Referrer-Policy", "no-referrer");
   try {
-    if (!isId(ownerId)) {
+    if (!validateFirebaseId(ownerId)) {
       return res.status(404).send(template_data);
     }
     const ownerData = await getOwnerData(ownerId);
@@ -338,9 +337,10 @@ export const stripe_parser = async (req, res) => {
 router.post("/stripe/callback", logger, stripe_parser);
 
 app.use(express.json());
-app.use("/1.0", router);
-app.use("/api/1.0/", apis.apiRouter);
-app.use("/api/2.0/", apis2.apiRouter);
+
+// app.use("/1.0", router);
+// app.use("/api/1.0/", apis.apiRouter);
+// app.use("/api/2.0/", apis2.apiRouter);
 
 app.use("/smaregi/1.0", smaregi.smaregiRouter);
 

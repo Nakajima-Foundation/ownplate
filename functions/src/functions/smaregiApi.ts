@@ -25,9 +25,6 @@ export const updateDb = (_db) => {
 };
 
 const subscribe = async (req: any, res: any) => {
-  // console.log(JSON.stringify(req.headers));
-  // console.log(JSON.stringify(req.body));
-
   await db.collection("smaregiLog/log/subscribe").add({ data: req.body, createdAt: admin.firestore.Timestamp.now() });
   return response200(res, {});
 };
@@ -112,13 +109,8 @@ export const processAction = async (data) => {
 const webhook = async (req: any, res: any) => {
   const data = req.body;
 
-  // console.log(JSON.stringify(req.headers));
-  // console.log(JSON.stringify(data));
-
   const contractId = req.body.contractId;
   const time = moment().format("YYYYMMDDHHmmss.SSS");
-
-  // await db.collection("smaregiLog/log/webhook").add({data: req.body, createdAt: admin.firestore.Timestamp.now()});
 
   // tslint:disable-next-line
   processAction(data);

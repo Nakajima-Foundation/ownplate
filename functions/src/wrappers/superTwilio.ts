@@ -8,6 +8,7 @@ const db = admin.firestore();
 
 export default functions
   .runWith({
+    maxInstances: 5,
     allowInvalidAppCheckToken,
   })
   .https.onCall(async (data, context) => {
