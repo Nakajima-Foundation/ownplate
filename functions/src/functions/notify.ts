@@ -10,7 +10,7 @@ import { resources, resources_mo } from "./resources";
 
 import { ownPlateConfig } from "../common/project";
 
-import * as line from "./line";
+import * as line from "./line/line";
 import * as sms from "./sms";
 import * as twilio from "./twilio";
 import * as ses from "./ses";
