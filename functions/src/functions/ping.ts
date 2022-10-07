@@ -2,6 +2,7 @@ import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 import { validatePing } from "../lib/validator";
 import { pingData } from "../lib/types";
+import * as utils from "../lib/utils";
 
 export const operationLog = (context: functions.https.CallableContext, params: any) => {
   const uid = context.auth?.uid;
@@ -44,6 +45,7 @@ export const operationLog = (context: functions.https.CallableContext, params: a
 // eslint-disable-next-line
 export const ping = async (db: admin.firestore.Firestore, data: pingData, context: functions.https.CallableContext) => {
   const { operationType, restaurantId, pathName } = data;
+  utils.validate_admin_auth(context);
 
   const validateResult = validatePing(data);
   if (!validateResult.result) {
