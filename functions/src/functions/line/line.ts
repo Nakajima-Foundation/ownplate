@@ -30,9 +30,9 @@ export const setCustomClaim = async (db: admin.firestore.Firestore, data: any, c
 */
 
 export const verifyFriend = async (db: admin.firestore.Firestore, context: functions.https.CallableContext) => {
-  const uid = utils.validate_auth(context);
-  const isLine = uid.slice(0, 5) === "line:";
-  const uidLine = isLine ? uid.slice(5) : context.auth?.token?.line?.slice(5);
+  const customerUid = utils.validate_customer_auth(context);
+  const isLine = customerUid.slice(0, 5) === "line:";
+  const uidLine = isLine ? customerUid.slice(5) : context.auth?.token?.line?.slice(5);
   try {
     const profile = await netutils.request(`https://api.line.me/v2/bot/profile/${uidLine}`, {
       headers: {
