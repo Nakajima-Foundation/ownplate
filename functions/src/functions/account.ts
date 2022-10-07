@@ -4,10 +4,10 @@ import * as utils from "../lib/utils";
 import { deleteCustomer } from "./stripe/customer";
 
 export const deleteAccount = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => {
-  const uid = utils.validate_auth(context);
+  const customerUid = utils.validate_customer_auth(context);
 
   try {
-    const refCollection = db.collectionGroup("orders").where("uid", "==", uid).orderBy("timePlaced", "desc");
+    const refCollection = db.collectionGroup("orders").where("uid", "==", customerUid).orderBy("timePlaced", "desc");
     const next = async (_query) => {
       const doc = (await _query.limit(1).get()).docs[0];
       if (doc) {
@@ -26,16 +26,16 @@ export const deleteAccount = async (db: admin.firestore.Firestore, data: any, co
       count++;
     } while (query);
 
-    const refUser = db.doc(`/users/${uid}`);
+    const refUser = db.doc(`/users/${customerUid}`);
     const refSystem = refUser.collection("system");
     const refPrivate = refUser.collection("private");
     await refSystem.doc("line").delete();
     await refPrivate.doc("line").delete();
     await refPrivate.doc("profile").delete();
     await refUser.delete();
-    await deleteCustomer(db, uid);
+    await deleteCustomer(db, customerUid);
 
-    return { result: uid, count };
+    return { result: customerUid, count };
   } catch (error) {
     throw utils.process_error(error);
   }
