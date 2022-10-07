@@ -12,7 +12,7 @@
       :notificationData="notificationData"
       :notificationSettingsPopup="notificationSettingsPopup"
       @close="closeNotificationSettings"
-      v-if="notificationData"
+      v-if="notificationData && loaded"
     />
   </div>
 </template>
@@ -45,7 +45,7 @@ export default defineComponent({
       createdAt: serverTimestamp(),
     };
     const notificationData = ref(defaultNotificationData);
-
+    const loaded = ref(false);
     (async () => {
       try {
         const notification = await getDoc(
@@ -57,6 +57,7 @@ export default defineComponent({
         notificationData.value = notification.exists
           ? Object.assign(defaultNotificationData, notification.data())
           : defaultNotificationData;
+        loaded.value = true;
       } catch (error) {
         if (error.code === "permission-denied") {
           // We can ignore this type of error here
@@ -78,6 +79,8 @@ export default defineComponent({
 
       openNotificationSettings,
       closeNotificationSettings,
+
+      loaded,
     };
   },
 });

@@ -202,7 +202,6 @@ export default defineComponent({
   setup(props, ctx) {
     const notificationConfig = ref(props.notificationData);
     const soundIndex = ref(getSoundIndex(props.notificationData.nameKey));
-
     const saveNotificationData = () => {
       notificationConfig.value.updatedAt = serverTimestamp();
       setDoc(
