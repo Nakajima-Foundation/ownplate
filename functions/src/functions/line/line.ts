@@ -2,8 +2,13 @@ import * as functions from "firebase-functions";
 import * as utils from "../../lib/utils";
 import * as netutils from "../../lib/netutils";
 import * as admin from "firebase-admin";
+import { ownPlateConfig } from "../../common/project";
+
+import { lineValidateData } from "../../lib/types";
 
 const LINE_MESSAGE_TOKEN = (functions.config() && functions.config().line && functions.config().line.message_token) || process.env.LINE_MESSAGE_TOKEN;
+
+const client_id = ownPlateConfig.line.LOGIN_CHANNEL_ID;
 
 /*
 export const setCustomClaim = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => {
@@ -23,7 +28,7 @@ export const setCustomClaim = async (db: admin.firestore.Firestore, data: any, c
 };
 */
 
-export const verifyFriend = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => {
+export const verifyFriend = async (db: admin.firestore.Firestore, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
   const isLine = uid.slice(0, 5) === "line:";
   const uidLine = isLine ? uid.slice(5) : context.auth?.token?.line?.slice(5);
@@ -99,12 +104,14 @@ export const authenticate = async (db: admin.firestore.Firestore, data: any, con
 };
 */
 
-export const validate = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => {
+export const validate = async (db: admin.firestore.Firestore, data: lineValidateData, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
 
-  const { code, redirect_uri, client_id } = data;
-  utils.required_params({ code, redirect_uri, client_id });
+  const { code, redirect_uri } = data;
+  utils.required_params({ code, redirect_uri });
 
+  // http://localhost:3000/callback/line?code=LlXAy0HoPpliiPtgQ1kI&state=s0.1315995687610736
+  
   const LINE_SECRET_KEY = functions.config().line.secret;
 
   try {

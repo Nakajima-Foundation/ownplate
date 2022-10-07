@@ -110,6 +110,11 @@ export interface stripeUpdateCustomerData {
   reuse: string; // ??
 }
 
+export interface lineValidateData {
+  code: string;
+  redirect_uri: string;
+}
+
 export interface pingData {
   restaurantId: string;
   operationType: string;

@@ -14,9 +14,10 @@ import {
   stripeOAuthVerifyData,
   stripeUpdateCustomerData,
   pingData,
+  lineValidateData,
 } from "./types";
 import { isEmpty } from "./utils";
-
+import isURL from "validator/lib/isURL";
 import isNumeric from "validator/lib/isNumeric";
 
 export const isNumber = (value: string, option: any = {}) => {
@@ -80,7 +81,13 @@ export const isString = (value: string, option: any = {}) => {
   return true;
 };
 
+export const validateUrl = (url: string) => {
+  return isURL(url);
+};
 export const validateFirebaseId = (id: string) => {
+  return /^[a-zA-Z0-9]+$/.test(id);
+};
+export const validateNumAlpha = (id: string) => {
   return /^[a-zA-Z0-9]+$/.test(id);
 };
 export const validateBase64 = (id: string) => {
@@ -125,10 +132,12 @@ const validateNewOrder = (values: newOrderData[]) => {
   });
 };
 const validateArray = {
+  url: validateUrl,
   firebaseId: validateFirebaseId,
   base64: validateBase64,
   base64Ext: validateBase64Ext,
   numAlphaBar: validateNumAlphaBar,
+  numAlpha: validateNumAlpha,
   number: validateNumber,
   numberStrong: validateNumberString,
   integer: validateInteger,
@@ -385,6 +394,21 @@ export const validatePing = (data: pingData) => {
     },
     operationType: {
       type: "numAlphaBar",
+      required: true,
+    },
+  };
+  return validateData(data, validator);
+};
+
+
+export const validateLineValidate = (data: lineValidateData) => {
+  const validator = {
+    code: {
+      type: "numAlpha",
+      required: true,
+    },
+    redirect_uri: {
+      type: "url",
       required: true,
     },
   };
