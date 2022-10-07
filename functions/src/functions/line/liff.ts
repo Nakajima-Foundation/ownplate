@@ -4,6 +4,9 @@ import * as netutils from "../../lib/netutils";
 import * as admin from "firebase-admin";
 import * as crypto from "crypto";
 
+import { liffAuthenticateData } from "../../lib/types";
+import { validateLiffAuthenticate } from "../../lib/validator";
+
 const LIFF_SALT = (functions.config() && functions.config().line && functions.config().line.liff_salt) || process.env.LIFF_SALT;
 
 const getLiffConfig = async (db: any, liffIndexId: string) => {
@@ -15,12 +18,19 @@ const getLiffConfig = async (db: any, liffIndexId: string) => {
 };
 
 // eslint-disable-next-line
-export const liffAuthenticate = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => {
+export const liffAuthenticate = async (db: admin.firestore.Firestore, data: liffAuthenticateData, context: functions.https.CallableContext) => {
   // eslint-disable-line
 
   const { liffIndexId, token } = data;
   utils.required_params({ liffIndexId, token });
 
+  const validateResult = validateLiffAuthenticate(data);
+  if (!validateResult.result) {
+    console.error("validate", validateResult.errors);
+    throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
+  }
+  
+  
   try {
     const liffConfig = await getLiffConfig(db, liffIndexId);
 

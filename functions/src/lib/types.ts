@@ -114,6 +114,10 @@ export interface lineValidateData {
   code: string;
   redirect_uri: string;
 }
+export interface liffAuthenticateData {
+  token: string;
+  liffIndexId: string;
+}
 
 export interface pingData {
   restaurantId: string;

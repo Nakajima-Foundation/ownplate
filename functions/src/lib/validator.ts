@@ -15,6 +15,7 @@ import {
   stripeUpdateCustomerData,
   pingData,
   lineValidateData,
+  liffAuthenticateData,
 } from "./types";
 import { isEmpty } from "./utils";
 import isURL from "validator/lib/isURL";
@@ -409,6 +410,20 @@ export const validateLineValidate = (data: lineValidateData) => {
     },
     redirect_uri: {
       type: "url",
+      required: true,
+    },
+  };
+  return validateData(data, validator);
+};
+
+export const validateLiffAuthenticate = (data: liffAuthenticateData) => {
+  const validator = {
+    token: {
+      type: "numAlpha",
+      required: true,
+    },
+    liffIndexId: {
+      type: "firebaseId",
       required: true,
     },
   };

@@ -5,6 +5,7 @@ import * as admin from "firebase-admin";
 import { ownPlateConfig } from "../../common/project";
 
 import { lineValidateData } from "../../lib/types";
+import { validateLineValidate } from "../../lib/validator";
 
 const LINE_MESSAGE_TOKEN = (functions.config() && functions.config().line && functions.config().line.message_token) || process.env.LINE_MESSAGE_TOKEN;
 
@@ -110,7 +111,11 @@ export const validate = async (db: admin.firestore.Firestore, data: lineValidate
   const { code, redirect_uri } = data;
   utils.required_params({ code, redirect_uri });
 
-  // http://localhost:3000/callback/line?code=LlXAy0HoPpliiPtgQ1kI&state=s0.1315995687610736
+  const validateResult = validateLineValidate(data);
+  if (!validateResult.result) {
+    console.error("validate", validateResult.errors);
+    throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
+  }
   
   const LINE_SECRET_KEY = functions.config().line.secret;
 
