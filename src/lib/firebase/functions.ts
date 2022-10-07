@@ -13,11 +13,21 @@ export const smaregiAuth = httpsCallable(functionsJP, "smaregiAuth");
 export const lineVerifyFriend = httpsCallable(functionsJP, "lineVerifyFriend");
 
 export const subAccountDeleteChild = httpsCallable(
-  functions,
+  functionsJP,
   "subAccountDeleteChild"
 );
 
-export const subAccountInvite = httpsCallable(functions, "subAccountInvite");
+export const subAccountInvite = httpsCallable(functionsJP, "subAccountInvite");
+
+export const subAccountInvitationAccept = httpsCallable(
+  functionsJP,
+  "subAccountInvitationAccept"
+);
+
+export const subAccountInvitationDeny = httpsCallable(
+  functionsJP,
+  "subAccountInvitationDeny"
+);
 
 export const lineValidate = httpsCallable(functionsJP, "lineValidate");
 
@@ -30,15 +40,6 @@ export const lineSetCustomClaim = httpsCallable(
 
 export const traceProcess = httpsCallable(functions, "traceProcess");
 
-export const subAccountInvitationAccept = httpsCallable(
-  functions,
-  "subAccountInvitationAccept"
-);
-
-export const subAccountInvitationDeny = httpsCallable(
-  functions,
-  "subAccountInvitationDeny"
-);
 
 export const superDispatch = httpsCallable(functionsJP, "superDispatch");
 
