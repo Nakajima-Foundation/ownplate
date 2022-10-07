@@ -14,7 +14,7 @@ import moment from "moment-timezone";
 // This function is called by admin to confurm a "payment intent" (to complete the payment transaction)
 // order_accepted  not ready_to_pickup.
 export const confirm = async (db: admin.firestore.Firestore, data: confirmIntentData, context: functions.https.CallableContext) => {
-  const ownerUid = utils.validate_admin_auth(context);
+  const ownerUid = utils.validate_owner_admin_auth(context);
 
   const { restaurantId, orderId, lng, timezone, timeEstimated } = data;
   utils.required_params({ restaurantId, orderId });

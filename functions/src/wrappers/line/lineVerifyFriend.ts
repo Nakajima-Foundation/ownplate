@@ -1,6 +1,6 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
-import * as Line from "../../functions/line/line";
+import { verifyFriend } from "../../functions/line/line";
 import { allowInvalidAppCheckToken } from "../firebase";
 
 const db = admin.firestore();
@@ -16,5 +16,5 @@ export default functions
     if (context.app == undefined) {
       throw new functions.https.HttpsError("failed-precondition", "The function must be called from an App Check verified app.");
     }
-    return await Line.verifyFriend(db, data, context);
+    return await verifyFriend(db, context);
   });

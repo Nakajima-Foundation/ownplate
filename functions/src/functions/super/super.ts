@@ -1,12 +1,12 @@
 import * as functions from "firebase-functions";
-import * as utils from "../lib/utils";
+import * as utils from "../../lib/utils";
 import * as admin from "firebase-admin";
 
 import moment from "moment-timezone";
 
-import { Context } from "../models/TestType";
+import { Context } from "../../models/TestType";
 
-import * as twilio from "./twilio";
+import * as twilio from "../twilio";
 
 export const dispatch = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => {
   if (!context.auth?.token?.admin) {

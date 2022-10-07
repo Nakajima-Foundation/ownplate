@@ -7,11 +7,12 @@ import { order_status } from "../../common/constant";
 import * as utils from "../../lib/utils";
 import { Context } from "../../models/TestType";
 import { validateStripeReceipt } from "../../lib/validator";
+import { stripeReceiptData } from "../../lib/types";
 
 const stripe = utils.get_stripe();
 
-export const receipt = async (db, data: any, context: functions.https.CallableContext | Context) => {
-  const customerUid = utils.validate_auth(context);
+export const receipt = async (db: any, data: stripeReceiptData, context: functions.https.CallableContext | Context) => {
+  const customerUid = utils.validate_customer_auth(context);
   const validateResult = validateStripeReceipt(data);
   if (!validateResult.result) {
     console.error("receipt", validateResult.errors);

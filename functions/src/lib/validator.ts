@@ -12,9 +12,13 @@ import {
   stripeReceiptData,
   stripeOAuthConnectData,
   stripeOAuthVerifyData,
+  stripeUpdateCustomerData,
+  pingData,
+  lineValidateData,
+  liffAuthenticateData,
 } from "./types";
 import { isEmpty } from "./utils";
-
+import isURL from "validator/lib/isURL";
 import isNumeric from "validator/lib/isNumeric";
 
 export const isNumber = (value: string, option: any = {}) => {
@@ -78,7 +82,13 @@ export const isString = (value: string, option: any = {}) => {
   return true;
 };
 
+export const validateUrl = (url: string) => {
+  return isURL(url, {require_tld: false});
+};
 export const validateFirebaseId = (id: string) => {
+  return /^[a-zA-Z0-9]+$/.test(id);
+};
+export const validateNumAlpha = (id: string) => {
   return /^[a-zA-Z0-9]+$/.test(id);
 };
 export const validateBase64 = (id: string) => {
@@ -123,10 +133,12 @@ const validateNewOrder = (values: newOrderData[]) => {
   });
 };
 const validateArray = {
+  url: validateUrl,
   firebaseId: validateFirebaseId,
   base64: validateBase64,
   base64Ext: validateBase64Ext,
   numAlphaBar: validateNumAlphaBar,
+  numAlpha: validateNumAlpha,
   number: validateNumber,
   numberStrong: validateNumberString,
   integer: validateInteger,
@@ -358,6 +370,59 @@ export const validateStripeReceipt = (data: stripeReceiptData) => {
       required: true,
     },
     orderId: {
+      type: "firebaseId",
+      required: true,
+    },
+  };
+  return validateData(data, validator);
+};
+
+export const validateStripeUpdateCustomer = (data: stripeUpdateCustomerData) => {
+  const validator = {
+    tokenId: {
+      type: "numAlphaBar",
+      required: true,
+    },
+  };
+  return validateData(data, validator);
+};
+
+export const validatePing = (data: pingData) => {
+  const validator = {
+    restaurantId: {
+      type: "firebaseId",
+      required: true,
+    },
+    operationType: {
+      type: "numAlphaBar",
+      required: true,
+    },
+  };
+  return validateData(data, validator);
+};
+
+
+export const validateLineValidate = (data: lineValidateData) => {
+  const validator = {
+    code: {
+      type: "numAlpha",
+      required: true,
+    },
+    redirect_uri: {
+      type: "url",
+      required: true,
+    },
+  };
+  return validateData(data, validator);
+};
+
+export const validateLiffAuthenticate = (data: liffAuthenticateData) => {
+  const validator = {
+    token: {
+      type: "numAlpha",
+      required: true,
+    },
+    liffIndexId: {
       type: "firebaseId",
       required: true,
     },

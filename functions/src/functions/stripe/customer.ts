@@ -1,6 +1,8 @@
 import * as admin from "firebase-admin";
 import * as functions from "firebase-functions";
 import * as utils from "../../lib/utils";
+import { validateStripeUpdateCustomer } from "../../lib/validator";
+import { stripeUpdateCustomerData } from "../../lib/types";
 
 // called byt order/orderCreated
 export const createCustomer = async (db: admin.firestore.Firestore, uid: string, phoneNumber: string) => {
@@ -22,39 +24,7 @@ export const createCustomer = async (db: admin.firestore.Firestore, uid: string,
   });
 };
 
-export const deleteCard = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => {
-  const uid = utils.validate_auth(context);
-
-  try {
-    // retrieve the customerId from uid
-    const refStripeSystem = db.doc(`/users/${uid}/system/stripe`);
-    const stripeInfo = (await refStripeSystem.get()).data();
-    if (!stripeInfo) {
-      return { return: true };
-    }
-    const customerId = stripeInfo.customerId;
-
-    // retrieve the default cardId from the customerId and delete it
-    const stripe = utils.get_stripe();
-    const customer = (await stripe.customers.retrieve(customerId)) as any;
-    const sourcesData = customer?.sources?.data;
-    let cardId = null;
-    if (sourcesData.length > 0) {
-      cardId = sourcesData[0].id;
-      await stripe.customers.deleteSource(customerId, cardId!);
-    }
-
-    // delete the stripe information on the database associated with this user
-    await refStripeSystem.delete();
-    const refStripeReadOnly = db.doc(`/users/${uid}/readonly/stripe`);
-    await refStripeReadOnly.delete();
-
-    return { return: true, cardId };
-  } catch (error) {
-    throw utils.process_error(error);
-  }
-};
-
+// called by delete account
 export const deleteCustomer = async (db: admin.firestore.Firestore, uid: string) => {
   const stripe = utils.get_stripe();
   const refStripeSystem = db.doc(`/users/${uid}/system/stripe`);
@@ -75,14 +45,22 @@ export const deleteCustomer = async (db: admin.firestore.Firestore, uid: string)
   });
 };
 
-export const update = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => {
-  const uid = utils.validate_auth(context);
+// function
+export const updateCustomer = async (db: admin.firestore.Firestore, data: stripeUpdateCustomerData, context: functions.https.CallableContext) => {
+  const customerUid = utils.validate_customer_auth(context);
   const { tokenId, reuse } = data;
   utils.required_params({ tokenId });
+
+  const validateResult = validateStripeUpdateCustomer(data);
+  if (!validateResult.result) {
+    console.error("updateCustomer", validateResult.errors);
+    throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
+  }
+
   const stripe = utils.get_stripe();
 
-  const refStripeSystem = db.doc(`/users/${uid}/system/stripe`);
-  const refStripeReadOnly = db.doc(`/users/${uid}/readonly/stripe`);
+  const refStripeSystem = db.doc(`/users/${customerUid}/system/stripe`);
+  const refStripeReadOnly = db.doc(`/users/${customerUid}/readonly/stripe`);
 
   try {
     const token = await stripe.tokens.retrieve(tokenId);

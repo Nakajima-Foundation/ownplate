@@ -1,12 +1,13 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 
-import * as Super from "../../functions/super";
+import * as Super from "../../functions/super/super";
 import { allowInvalidAppCheckToken } from "../firebase";
 
 const db = admin.firestore();
 
 export default functions
+  .region("asia-northeast1")
   .runWith({
     maxInstances: 5,
     memory: "1GB" as "1GB",
