@@ -5,6 +5,7 @@ import * as admin from "firebase-admin";
 
 const LINE_MESSAGE_TOKEN = (functions.config() && functions.config().line && functions.config().line.message_token) || process.env.LINE_MESSAGE_TOKEN;
 
+/*
 export const setCustomClaim = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
   const isLine = uid.slice(0, 5) === "line:";
@@ -20,6 +21,7 @@ export const setCustomClaim = async (db: admin.firestore.Firestore, data: any, c
     throw utils.process_error(error);
   }
 };
+*/
 
 export const verifyFriend = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
@@ -41,6 +43,7 @@ export const verifyFriend = async (db: admin.firestore.Firestore, data: any, con
   }
 };
 
+/*
 // eslint-disable-next-line
 export const authenticate = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => {
   // eslint-disable-line
@@ -94,6 +97,7 @@ export const authenticate = async (db: admin.firestore.Firestore, data: any, con
     throw utils.process_error(error);
   }
 };
+*/
 
 export const validate = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
