@@ -83,7 +83,7 @@ export const isString = (value: string, option: any = {}) => {
 };
 
 export const validateUrl = (url: string) => {
-  return isURL(url);
+  return isURL(url, {require_tld: false});
 };
 export const validateFirebaseId = (id: string) => {
   return /^[a-zA-Z0-9]+$/.test(id);
