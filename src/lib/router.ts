@@ -452,18 +452,18 @@ export const customRoutes: CustomRoute[] = [
     path: "/callback/line",
     component: "auth/LineCallback.vue",
   },
-  {
-    path: "/callback/track",
-    component: "auth/TrackCallback.vue",
-  },
-  {
-    path: "/t/:traceId",
-    component: "trace/Record.vue",
-  },
-  {
-    path: "/t",
-    component: "trace/Record.vue",
-  },
+//  {
+//    path: "/callback/track",
+//    component: "auth/TrackCallback.vue",
+//  },
+//  {
+//    path: "/t/:traceId",
+//    component: "trace/Record.vue",
+//  },
+//  {
+//    path: "/t",
+//    component: "trace/Record.vue",
+//  },
   {
     path: "/l/:urlKey",
     component: "docs/link.vue",
