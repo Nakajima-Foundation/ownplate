@@ -31,14 +31,14 @@ export const subAccountInvitationDeny = httpsCallable(
 
 export const lineValidate = httpsCallable(functionsJP, "lineValidate");
 
-export const lineAuthenticate = httpsCallable(functions, "lineAuthenticate");
+// export const lineAuthenticate = httpsCallable(functions, "lineAuthenticate");
 
-export const lineSetCustomClaim = httpsCallable(
-  functions,
-  "lineSetCustomClaim"
-);
+// export const lineSetCustomClaim = httpsCallable(
+//   functions,
+//   "lineSetCustomClaim"
+// );
 
-export const traceProcess = httpsCallable(functions, "traceProcess");
+// export const traceProcess = httpsCallable(functions, "traceProcess");
 
 
 export const superDispatch = httpsCallable(functionsJP, "superDispatch");
