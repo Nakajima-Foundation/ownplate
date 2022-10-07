@@ -13,7 +13,7 @@ const authHost = functions.config() && functions.config().smaregi && functions.c
 export const auth = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const { code, client_id } = data;
 
-  const adminUid = utils.validate_auth(context);
+  const adminUid = utils.validate_admin_auth(context);
   const clientSecret = clientSecrets[client_id];
   const authToken = [client_id, clientSecret].join(":");
 
@@ -69,7 +69,7 @@ export const auth = async (db: admin.firestore.Firestore, data: any, context: fu
 export const storeList = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const { client_id } = data;
 
-  const adminUid = utils.validate_auth(context);
+  const adminUid = utils.validate_admin_auth(context);
   const clientSecret = clientSecrets[client_id];
 
   const smaregiDoc = await db.doc(`admins/${adminUid}/private/smaregi`).get();
@@ -102,7 +102,7 @@ export const storeList = async (db: admin.firestore.Firestore, data: any, contex
 export const productList = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => {
   const { client_id, store_id } = data;
 
-  const adminUid = utils.validate_auth(context);
+  const adminUid = utils.validate_admin_auth(context);
   const clientSecret = clientSecrets[client_id];
 
   const smaregiDoc = await db.doc(`admins/${adminUid}/private/smaregi`).get();
