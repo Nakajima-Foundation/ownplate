@@ -47,11 +47,11 @@ export const deleteCustomer = async (db: admin.firestore.Firestore, uid: string)
 
 // func
 export const deleteCard = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => {
-  const uid = utils.validate_auth(context);
+  const customerUid = utils.validate_customer_auth(context);
 
   try {
     // retrieve the customerId from uid
-    const refStripeSystem = db.doc(`/users/${uid}/system/stripe`);
+    const refStripeSystem = db.doc(`/users/${customerUid}/system/stripe`);
     const stripeInfo = (await refStripeSystem.get()).data();
     if (!stripeInfo) {
       return { return: true };
@@ -70,7 +70,7 @@ export const deleteCard = async (db: admin.firestore.Firestore, data: any, conte
 
     // delete the stripe information on the database associated with this user
     await refStripeSystem.delete();
-    const refStripeReadOnly = db.doc(`/users/${uid}/readonly/stripe`);
+    const refStripeReadOnly = db.doc(`/users/${customerUid}/readonly/stripe`);
     await refStripeReadOnly.delete();
 
     return { return: true, cardId };
@@ -81,7 +81,7 @@ export const deleteCard = async (db: admin.firestore.Firestore, data: any, conte
 
 // function
 export const updateCustomer = async (db: admin.firestore.Firestore, data: stripeUpdateCustomerData, context: functions.https.CallableContext) => {
-  const uid = utils.validate_auth(context);
+  const customerUid = utils.validate_customer_auth(context);
   const { tokenId, reuse } = data;
   utils.required_params({ tokenId });
 
@@ -93,8 +93,8 @@ export const updateCustomer = async (db: admin.firestore.Firestore, data: stripe
 
   const stripe = utils.get_stripe();
 
-  const refStripeSystem = db.doc(`/users/${uid}/system/stripe`);
-  const refStripeReadOnly = db.doc(`/users/${uid}/readonly/stripe`);
+  const refStripeSystem = db.doc(`/users/${customerUid}/system/stripe`);
+  const refStripeReadOnly = db.doc(`/users/${customerUid}/readonly/stripe`);
 
   try {
     const token = await stripe.tokens.retrieve(tokenId);

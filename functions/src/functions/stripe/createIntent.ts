@@ -27,7 +27,7 @@ const getOrderData = async (transaction: any, orderRef: any) => {
 
 // This function is called by user to create a "payment intent" (to start the payment transaction)
 export const create = async (db: admin.firestore.Firestore, data: orderPlacedData, context: functions.https.CallableContext) => {
-  const customerUid = utils.validate_auth(context);
+  const customerUid = utils.validate_customer_auth(context);
 
   const { restaurantId, orderId, tip, sendSMS, timeToPickup, lng, memo, customerInfo } = data; // orderPlace
   utils.required_params({ orderId, restaurantId }); // lng, tip and sendSMS are optional
