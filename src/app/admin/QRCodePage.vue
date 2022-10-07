@@ -73,72 +73,6 @@
 
         <!-- Right Column -->
         <div class="column">
-          <div class="ml-6 mr-6">
-            <!-- Trace -->
-            <div v-if="trace && regionalSetting.covid19trace">
-              <div
-                class="mt-6 pb-2 text-xl font-bold text-black text-opacity-40"
-              >
-                {{ $t("trace.list") }}
-              </div>
-              <div class="rounded-lg bg-white pl-6 pr-6 pt-6 pb-6 shadow-md">
-                <!-- Enter -->
-                <div>
-                  <!-- QR Code -->
-                  <div class="text-center">
-                    <qrcode
-                      :value="urlEnter"
-                      :options="{ width: 160 }"
-                    ></qrcode>
-                  </div>
-                  <!-- Link -->
-                  <div class="text-center">
-                    <a :href="urlEnter">
-                      <div
-                        class="inline-flex min-h-[36px] cursor-pointer items-center justify-center px-2 font-bold text-op-teal"
-                      >
-                        {{ $t("admin.qrcode.enter") }}
-                      </div>
-                    </a>
-                  </div>
-                </div>
-
-                <!-- Leave -->
-                <div class="mt-12">
-                  <!-- QR Code -->
-                  <div class="text-center">
-                    <qrcode
-                      :value="urlLeave"
-                      :options="{ width: 160 }"
-                    ></qrcode>
-                  </div>
-                  <!-- Link -->
-                  <div class="text-center">
-                    <a :href="urlLeave">
-                      <div
-                        class="inline-flex min-h-[36px] cursor-pointer items-center justify-center px-2 font-bold text-op-teal"
-                      >
-                        {{ $t("admin.qrcode.leave") }}
-                      </div>
-                    </a>
-                  </div>
-                </div>
-
-                <!-- Trace List -->
-                <div class="mt-6 text-center">
-                  <router-link
-                    :to="`/admin/restaurants/${restaurantId()}/traces`"
-                  >
-                    <div
-                      class="inline-flex h-12 min-h-[36px] min-w-[128px] cursor-pointer items-center justify-center rounded-full bg-black bg-opacity-5 px-6 text-base font-bold text-black opacity-60"
-                    >
-                      {{ $t("trace.viewList") }}
-                    </div>
-                  </router-link>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
         <!-- Right Gap -->
         <div class="column is-narrow w-6"></div>
@@ -188,56 +122,13 @@ export default defineComponent({
       required: false,
     },
   },
-  data() {
-    return {
-      trace: null,
-    };
-  },
   setup(props, ctx) {
     const { ownerUid } = useAdminUids(ctx);
-    console.log(checkShopAccount(props.shopInfo, ownerUid.value));
     if (!checkShopAccount(props.shopInfo, ownerUid.value)) {
       return notFoundResponse;
     }
 
-    const trace = props.shopInfo.trace;
-    /*
-    (async () => {
-      if (props.shopInfo.trace) {
-      const trace = props.shopInfo.trace;
-      } else {
-        const refRestaurant = db.doc(`restaurants/${this.restaurantId()}`);
-        const refEnter = refRestaurant.collection("trace").doc();
-        const refLeave = refRestaurant.collection("trace").doc();
-        console.log("new traceIDs", refEnter.id, refLeave.id);
-        await db.runTransaction(async (transaction) => {
-          transaction.set(refEnter, {
-            event: "enter",
-            uid: this.user.uid,
-            traceId: refEnter.id,
-            restaurantId: this.restaurantId(),
-            });
-          transaction.set(refLeave, {
-            event: "leave",
-            uid: this.user.uid,
-            traceId: refLeave.id,
-            restaurantId: this.restaurantId(),
-          });
-          transaction.update(refRestaurant, {
-            trace: {
-              enter: refEnter.id,
-                leave: refLeave.id,
-            },
-          });
-          });
-      }
-    })();
-    */
-
-    const urlEnter = trace ? `${location.origin}/t/${trace.enter}` : "";
-    const urlLeave = trace ? `${location.origin}/t/${trace.leave}` : "";
     const urlMenu = shareUrlAdmin(props);
-
     const qrcodeRef = ref();
 
     const download = () => {
@@ -249,12 +140,8 @@ export default defineComponent({
     };
 
     return {
-      trace,
-      urlEnter,
-      urlLeave,
       urlMenu,
       download,
-
       qrcodeRef,
 
       notFound: false,
