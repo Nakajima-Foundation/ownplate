@@ -13,8 +13,9 @@ const stripe = utils.get_stripe();
 
 // This function is called by admin to cancel an exsting order
 export const cancelStripePayment = async (db: admin.firestore.Firestore, data: orderCancelPaymentData, context: functions.https.CallableContext | Context) => {
-  const uid = utils.validate_admin_auth(context);
-
+  const ownerUid = utils.validate_owner_admin_auth(context);
+  const uid = utils.validate_auth(context);
+  
   const { restaurantId, orderId, lng } = data;
   utils.required_params({ restaurantId, orderId }); // lng is optional
 
@@ -27,7 +28,11 @@ export const cancelStripePayment = async (db: admin.firestore.Firestore, data: o
   const stripeRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}/system/stripe`);
   const restaurant = await utils.get_restaurant(db, restaurantId);
   const restaurantOwnerUid = restaurant["uid"];
-
+  if (restaurantOwnerUid !== ownerUid) {
+    console.error("cancelStripePayment: invalid operator:", uid);
+    throw new functions.https.HttpsError("invalid-argument", "Validation Error.");
+  };
+  
   const stripeAccount = await getStripeAccount(db, restaurantOwnerUid);
 
   try {

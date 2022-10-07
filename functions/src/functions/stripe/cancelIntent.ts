@@ -17,7 +17,7 @@ const stripe = utils.get_stripe();
 export const cancel = async (db: any, data: orderCancelData, context: functions.https.CallableContext | Context) => {
   const isAdmin = utils.is_admin_auth(context);
 
-  const uid = isAdmin ? utils.validate_admin_auth(context) : utils.validate_auth(context);
+  const uid = isAdmin ? utils.validate_owner_admin_auth(context) : utils.validate_customer_auth(context);
 
   const { restaurantId, orderId, lng } = data;
   utils.required_params({ restaurantId, orderId }); // lng is optional
