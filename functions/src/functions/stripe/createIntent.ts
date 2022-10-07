@@ -56,6 +56,9 @@ export const create = async (db: admin.firestore.Firestore, data: orderPlacedDat
       const stripeRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}/system/stripe`);
 
       const order = await getOrderData(transaction, orderRef);
+      if (customerUid !== order.uid) {
+        throw new functions.https.HttpsError("permission-denied", "The user is not the owner of this order.");
+      }
       if (order.status !== order_status.validation_ok) {
         throw new functions.https.HttpsError("failed-precondition", "This order is invalid.");
       }

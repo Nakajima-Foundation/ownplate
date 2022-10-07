@@ -130,8 +130,8 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
       if (order.status !== order_status.validation_ok) {
         throw new functions.https.HttpsError("failed-precondition", "The order has been already placed or canceled");
       }
+      const shippingCost = restaurantData.isEC ? costCal(postage, customerInfo?.prefectureId, order.total) : 0;
       const hasCustomer = restaurantData.isEC || order.isDelivery;
-
       if (hasCustomer) {
         const validateResult = validateCustomer(customerInfo || {});
         if (!validateResult.result) {
@@ -143,8 +143,6 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
       }
       // transaction for stock orderTotal
       await updateOrderTotalDataAndUserLog(db, transaction, customerUid, order.order, restaurantId, restaurantData.uid, timePlaced, now, true);
-      const shippingCost = restaurantData.isEC ? costCal(postage, customerInfo?.prefectureId, order.total) : 0;
-
       const totalCharge = order.total + roundedTip + (shippingCost || 0) + (order.deliveryFee || 0);
 
       if (hasCustomer) {
