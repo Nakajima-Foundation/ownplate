@@ -94,7 +94,7 @@ const multiple = utils.getStripeRegion().multiple; // 100 for USD, 1 for JPY
 // This function is called by users to place orders without paying
 // export const place = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => {
 export const place = async (db, data: orderPlacedData, context: functions.https.CallableContext | Context) => {
-  const customerUid = utils.validate_auth(context);
+  const customerUid = utils.validate_customer_auth(context);
 
   const { restaurantId, orderId, tip, sendSMS, timeToPickup, lng, memo, customerInfo } = data;
   utils.required_params({ restaurantId, orderId }); // tip, sendSMS and lng are optinoal
