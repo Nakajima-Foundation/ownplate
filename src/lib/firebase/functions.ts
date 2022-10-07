@@ -19,7 +19,7 @@ export const subAccountDeleteChild = httpsCallable(
 
 export const subAccountInvite = httpsCallable(functions, "subAccountInvite");
 
-export const lineValidate = httpsCallable(functions, "lineValidate");
+export const lineValidate = httpsCallable(functionsJP, "lineValidate");
 
 export const lineAuthenticate = httpsCallable(functions, "lineAuthenticate");
 
@@ -40,13 +40,13 @@ export const subAccountInvitationDeny = httpsCallable(
   "subAccountInvitationDeny"
 );
 
-export const superDispatch = httpsCallable(functions, "superDispatch");
+export const superDispatch = httpsCallable(functionsJP, "superDispatch");
 
-export const superTwilio = httpsCallable(functions, "superTwilio");
+export const superTwilio = httpsCallable(functionsJP, "superTwilio");
 
 export const stripeDeleteCard = httpsCallable(functions, "stripeDeleteCard");
 
-export const accountDelete = httpsCallable(functions, "accountDelete");
+export const accountDelete = httpsCallable(functionsJP, "accountDelete");
 
 export const orderUpdate = httpsCallable(functionsJP, "orderUpdateJp");
 

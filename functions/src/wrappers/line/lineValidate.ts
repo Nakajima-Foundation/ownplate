@@ -6,6 +6,7 @@ import { allowInvalidAppCheckToken } from "../firebase";
 const db = admin.firestore();
 
 export default functions
+  .region("asia-northeast1")
   .runWith({
     maxInstances: 50,
     memory: "1GB" as "1GB",
