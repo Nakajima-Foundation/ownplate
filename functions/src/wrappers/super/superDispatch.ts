@@ -1,7 +1,7 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 
-import * as Super from "../../functions/super";
+import * as Super from "../../functions/super/super";
 import { allowInvalidAppCheckToken } from "../firebase";
 
 const db = admin.firestore();

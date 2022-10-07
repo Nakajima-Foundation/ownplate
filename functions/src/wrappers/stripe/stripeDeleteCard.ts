@@ -1,7 +1,7 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 
-import { deleteCard } from "../../functions/stripe/customer";
+import { deleteCard } from "../../functions/stripe/deleteCard";
 import { allowInvalidAppCheckToken } from "../firebase";
 
 const db = admin.firestore();
