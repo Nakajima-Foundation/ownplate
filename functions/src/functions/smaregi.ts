@@ -7,6 +7,7 @@ import { generateBody } from "../smaregi/apiUtils";
 
 import { smaregiAuthData, smaregiStoreListData, smaregiProductListData } from "../lib/types";
 import { smaregi }  from "../common/project";
+import { validateFirebaseId } from "../lib/validator";
 
 const clientSecrets = functions.config() && functions.config().smaregi && functions.config().smaregi.clientsecrets;
 const host = functions.config() && functions.config().smaregi && functions.config().smaregi.host; // https://id.smaregi.dev
@@ -103,7 +104,10 @@ export const storeList = async (db: admin.firestore.Firestore, data: smaregiStor
 
 export const productList = async (db: admin.firestore.Firestore, data: smaregiProductListData, context: functions.https.CallableContext) => {
   const { store_id } = data;
-
+  if (validateFirebaseId(store_id)) {
+    throw new functions.https.HttpsError("invalid-argument", "invalid args.");
+  }
+  
   const adminUid = utils.validate_admin_auth(context);
   const clientSecret = clientSecrets[client_id];
 
