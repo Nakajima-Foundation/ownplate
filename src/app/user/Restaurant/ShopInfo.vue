@@ -93,6 +93,7 @@
             target="_blank"
             :href="shopInfo.url"
             class="inline-flex items-center justify-center"
+            rel="noopener noreferrer"
           >
             <i class="material-icons mr-2 text-lg text-op-teal">language</i>
             <div class="text-sm font-bold text-op-teal">
@@ -107,6 +108,7 @@
             target="_blank"
             :href="shopInfo.lineUrl"
             class="inline-flex items-center justify-center"
+            rel="noopener noreferrer"
           >
             <i class="fab fa-line mr-2 text-lg" style="color: #4ec263"></i>
             <div class="text-sm font-bold" style="color: #4ec263">
@@ -121,6 +123,7 @@
             target="_blank"
             :href="shopInfo.instagramUrl"
             class="inline-flex items-center justify-center"
+            rel="noopener noreferrer"
           >
             <i class="fab fa-instagram mr-2 text-lg" style="color: #dd2a7b"></i>
             <div class="text-sm font-bold" style="color: #dd2a7b">
@@ -135,6 +138,7 @@
             target="_blank"
             :href="shopInfo.uberEatsUrl"
             class="inline-flex items-center justify-center"
+            rel="noopener noreferrer"
           >
             <i class="fab fa-uber mr-2 text-lg" style="color: #06c167"></i>
             <div class="text-sm font-bold" style="color: #06c167">
