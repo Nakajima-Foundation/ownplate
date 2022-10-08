@@ -146,7 +146,6 @@ export default {
     });
 
     const { data } = await smaregiProductList({
-      client_id: smaregi.clientId,
       store_id: this.storeId,
     });
     this.productList = data.res;

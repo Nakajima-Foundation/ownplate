@@ -6,14 +6,16 @@ import * as utils from "../lib/utils";
 import { generateBody } from "../smaregi/apiUtils";
 
 import { smaregiAuthData, smaregiStoreListData, smaregiProductListData } from "../lib/types";
+import { smaregi }  from "../common/project";
 
 const clientSecrets = functions.config() && functions.config().smaregi && functions.config().smaregi.clientsecrets;
 const host = functions.config() && functions.config().smaregi && functions.config().smaregi.host; // https://id.smaregi.dev
 const apiHost = functions.config() && functions.config().smaregi && functions.config().smaregi.host_name; // like api.smaregi.dev
 const authHost = functions.config() && functions.config().smaregi && functions.config().smaregi.auth_host_name; // id.smaregi.dev
+const client_id = smaregi.clientId;
 
 export const auth = async (db: admin.firestore.Firestore, data: smaregiAuthData, context: functions.https.CallableContext) => {
-  const { code, client_id } = data;
+  const { code } = data;
 
   const adminUid = utils.validate_admin_auth(context);
   const clientSecret = clientSecrets[client_id];
@@ -69,8 +71,6 @@ export const auth = async (db: admin.firestore.Firestore, data: smaregiAuthData,
 };
 
 export const storeList = async (db: admin.firestore.Firestore, data: smaregiStoreListData, context: functions.https.CallableContext) => {
-  const { client_id } = data;
-
   const adminUid = utils.validate_admin_auth(context);
   const clientSecret = clientSecrets[client_id];
 
@@ -102,7 +102,7 @@ export const storeList = async (db: admin.firestore.Firestore, data: smaregiStor
 };
 
 export const productList = async (db: admin.firestore.Firestore, data: smaregiProductListData, context: functions.https.CallableContext) => {
-  const { client_id, store_id } = data;
+  const { store_id } = data;
 
   const adminUid = utils.validate_admin_auth(context);
   const clientSecret = clientSecrets[client_id];

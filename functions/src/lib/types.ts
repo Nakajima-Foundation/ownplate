@@ -140,13 +140,10 @@ export interface subAccountDeleteChildData {
 
 export interface smaregiAuthData {
   code: string;
-  client_id: string;
 }
 
 export interface smaregiStoreListData {
-  client_id: string;
 }
 export interface smaregiProductListData {
   store_id: string;
-  client_id: string;
 }

@@ -166,9 +166,7 @@ export default {
 
       try {
         this.isLoading = true;
-        const { data } = await smaregiStoreList({
-          client_id: smaregi.clientId,
-        });
+        const { data } = await smaregiStoreList({});
         this.shopList = data.res;
         // console.log("smaregiStoreList", data);
       } finally {

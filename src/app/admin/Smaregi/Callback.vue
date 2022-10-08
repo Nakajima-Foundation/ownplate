@@ -36,7 +36,6 @@ export default {
         this.isValidating = true;
         const { data } = await smaregiAuth({
           code: this.code,
-          client_id: smaregi.clientId,
         });
         console.log("smaregiAuth", data);
         if (data.result) {
