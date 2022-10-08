@@ -124,3 +124,16 @@ export interface pingData {
   operationType: string;
   pathName: string;
 }
+
+export interface subAccountInvitate {
+  email: string;
+  name: string;
+}
+
+export interface subAccountInvitationAcceptDeny {
+  messageId: string;
+}
+
+export interface subAccountDeleteChildData {
+  childUid: string;
+}
