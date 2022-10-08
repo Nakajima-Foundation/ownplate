@@ -5,12 +5,14 @@ import SmaregiApi from "../smaregi/smaregiapi";
 import * as utils from "../lib/utils";
 import { generateBody } from "../smaregi/apiUtils";
 
+import { smaregiAuthData, smaregiStoreListData, smaregiProductListData } from "../lib/types";
+
 const clientSecrets = functions.config() && functions.config().smaregi && functions.config().smaregi.clientsecrets;
 const host = functions.config() && functions.config().smaregi && functions.config().smaregi.host; // https://id.smaregi.dev
 const apiHost = functions.config() && functions.config().smaregi && functions.config().smaregi.host_name; // like api.smaregi.dev
 const authHost = functions.config() && functions.config().smaregi && functions.config().smaregi.auth_host_name; // id.smaregi.dev
 
-export const auth = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => {
+export const auth = async (db: admin.firestore.Firestore, data: smaregiAuthData, context: functions.https.CallableContext) => {
   const { code, client_id } = data;
 
   const adminUid = utils.validate_admin_auth(context);
@@ -66,7 +68,7 @@ export const auth = async (db: admin.firestore.Firestore, data: any, context: fu
   }
 };
 
-export const storeList = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => {
+export const storeList = async (db: admin.firestore.Firestore, data: smaregiStoreListData, context: functions.https.CallableContext) => {
   const { client_id } = data;
 
   const adminUid = utils.validate_admin_auth(context);
@@ -99,7 +101,7 @@ export const storeList = async (db: admin.firestore.Firestore, data: any, contex
   return { res: storeListData };
 };
 
-export const productList = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => {
+export const productList = async (db: admin.firestore.Firestore, data: smaregiProductListData, context: functions.https.CallableContext) => {
   const { client_id, store_id } = data;
 
   const adminUid = utils.validate_admin_auth(context);
