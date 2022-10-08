@@ -118,7 +118,7 @@
             <!-- titles for omochikaeri -->
             <Titles :titleLists="titleLists" v-if="titleLists.length > 0" />
 
-            <div v-if="showSubCategory">
+            <div v-if="showSubCategory && moPickup">
               <!-- Mo Pickup Toggle -->
               <div class="mx-6 mt-2 lg:mx-0" v-if="shopInfo.enableMoPickup">
                 <div class="rounded-lg bg-white shadow">
@@ -208,7 +208,7 @@
                       <div
                         v-if="
                           item._dataType === 'menu' &&
-                          (isPublucDataSet[item.id] || {}).isPublic
+                          (!moPickup || (isPublucDataSet[item.id] || {}).isPublic)
                         "
                         :key="[subCategoryKey, item.id].join('_')"
                       >
@@ -227,7 +227,7 @@
                           :prices="prices[item.id] || []"
                           :mode="mode"
                           :moSoldOut="
-                            (moSoldOutDataSet[item.id] || {}).isStock === false
+                           moPickup && ((moSoldOutDataSet[item.id] || {}).isStock === false)
                           "
                           @didOrderdChange="didOrderdChange($event)"
                         ></MenuMo>
@@ -348,7 +348,7 @@ import { orderCreated } from "@/lib/firebase/functions";
 
 import { order_status } from "@/config/constant";
 
-import { ownPlateConfig, moTitle } from "@/config/project";
+import { ownPlateConfig, moTitle, moPickup } from "@/config/project";
 import * as analyticsUtil from "@/lib/firebase/analytics";
 
 import {
@@ -936,6 +936,8 @@ export default defineComponent({
         
       isPublucDataSet,
       moSoldOutDataSet,
+
+      moPickup,
     };
   },
 });

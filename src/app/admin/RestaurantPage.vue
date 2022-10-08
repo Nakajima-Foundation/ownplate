@@ -652,7 +652,7 @@
           </div>
 
           <!-- Time to Mo Pickup -->
-          <template v-if="true">
+          <template v-if="moPickup">
             <div class="mt-4" v-if="isInMo">
               <div class="pb-2 text-sm font-bold">
                 {{ $t("mobileOrder.timeToMoPickup") }}
@@ -684,7 +684,7 @@
           </template>
 
           <!-- mo Hours -->
-          <div class="mt-4 lg:mt-0" v-if="isInMo">
+          <div class="mt-4 lg:mt-0" v-if="isInMo && moPickup">
             <div class="pb-2 text-sm font-bold">
               {{ $t("mobileOrder.pickupHours") }} <span class="text-red-700">*</span>
             </div>
@@ -1053,7 +1053,7 @@ import { db } from "@/lib/firebase/firebase9";
 import { doc, updateDoc, getDoc } from "firebase/firestore";
 
 import { google_geocode } from "@/lib/google/api";
-import { ownPlateConfig } from "@/config/project";
+import { ownPlateConfig, moPickup } from "@/config/project";
 
 import BackButton from "@/components/BackButton.vue";
 import NotFound from "@/components/NotFound.vue";
@@ -1468,6 +1468,8 @@ export default defineComponent({
       updateAndUpdateMap,
 
       disableSave,
+
+      moPickup,
     };
   },
 });
