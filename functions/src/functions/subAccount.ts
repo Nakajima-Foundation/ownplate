@@ -111,7 +111,8 @@ const childInvitationProcess = async (
 };
 export const accept = async (db, data: subAccountInvitationAcceptDeny, context: functions.https.CallableContext | Context) => {
   const { messageId } = data;
-  if (validateFirebaseId(messageId)) {
+  if (!validateFirebaseId(messageId)) {
+    console.log(messageId);
     throw new functions.https.HttpsError("invalid-argument", "invalid args.");
   }
   try {
@@ -145,7 +146,8 @@ export const accept = async (db, data: subAccountInvitationAcceptDeny, context: 
 };
 export const deny = async (db, data: subAccountInvitationAcceptDeny, context: functions.https.CallableContext | Context) => {
   const { messageId } = data;
-  if (validateFirebaseId(messageId)) {
+  if (!validateFirebaseId(messageId)) {
+    console.log(messageId);
     throw new functions.https.HttpsError("invalid-argument", "invalid args.");
   }
   try {
@@ -176,7 +178,7 @@ export const deleteChild = async (db, data: subAccountDeleteChildData, context: 
   // check admin
   const adminUid = utils.validate_parent_admin_auth(context);
   const { childUid } = data;
-  if (validateFirebaseId(childUid)) {
+  if (!validateFirebaseId(childUid)) {
       throw new functions.https.HttpsError("invalid-argument", "invalid args.");
   }
   
