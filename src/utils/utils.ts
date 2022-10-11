@@ -729,3 +729,22 @@ export const smallImageErrorHandler = (e: any) => {
 export const imageErrorHandler = (e: any) => {
   e.target.src = "/images/noimage.png";
 };
+
+export const orderType = (order: OrderInfoData, isInMo: boolean) => {
+  if (order.isEC) {
+    return "EC";
+  }
+  if (order.isDelivery) {
+    return "Delivery";
+  }
+  if (order.isPickup) {
+    return "Pickup";
+  }
+  if (isInMo) {
+    return "PreOrder";
+  }
+  return "Takeout";
+};
+export const orderTypeKey = (order: OrderInfoData, isInMo: boolean) => {
+  return "orderType" + orderType(order, isInMo);
+}

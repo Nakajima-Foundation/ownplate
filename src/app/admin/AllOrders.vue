@@ -105,7 +105,7 @@ import { order_status, order_status_keys } from "@/config/constant";
 import { nameOfOrder } from "@/utils/strings";
 import { revenueCSVHeader, revenueMoCSVHeader } from "@/utils/reportUtils";
 import { order2ReportData } from "@/models/orderInfo";
-import { arrayOrNumSum, useAdminUids, notFoundResponse } from "@/utils/utils";
+import { arrayOrNumSum, useAdminUids, notFoundResponse, orderTypeKey } from "@/utils/utils";
 
 import DownloadCsv from "@/components/DownloadCSV.vue";
 import OrderedInfo from "@/app/admin/Order/OrderedInfo.vue";
@@ -191,6 +191,7 @@ export default defineComponent({
           date: time ? moment(time).format("YYYY/MM/DD") : "",
           restaurantId: order.restaurant.restaurantId, // mo
           shopId: order.restaurant.shopId, // mo
+          type: ctx.root.$t("order." + orderTypeKey(order, props.isInMo)),
           restaurantName: order.restaurant.restaurantName,
           orderStatus: ctx.root.$t(
             "order.status." + order_status_keys[order.status]
@@ -236,7 +237,7 @@ export default defineComponent({
           let i = 0;
           for (; i < snapshot.docs.length; i++) {
             const orderDoc = snapshot.docs[i];
-            const order = order2ReportData(orderDoc.data(), serviceTaxRate);
+            const order = order2ReportData(orderDoc.data(), serviceTaxRate, props.isInMo);
             order.restaurantId = orderDoc.ref.path.split("/")[1];
             order.id = orderDoc.id;
             if (!restaurants[order.restaurantId]) {

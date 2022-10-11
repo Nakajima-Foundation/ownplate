@@ -3,12 +3,14 @@ import * as firebase from "firebase-admin";
 import * as functions from "firebase-functions";
 // import * as admin from 'firebase-admin';
 import * as utils from "../lib/utils";
-
+import { subAccountInvitate, subAccountInvitationAcceptDeny, subAccountDeleteChildData} from "../lib/types";
+         
 import isEmail from "validator/lib/isEmail";
+import { validateFirebaseId } from "../lib/validator";
 
 import { Context } from "../models/TestType";
 
-export const invite = async (db, data: any, context: functions.https.CallableContext | Context) => {
+export const invite = async (db, data: subAccountInvitate, context: functions.https.CallableContext | Context) => {
   // check admin
   const adminUid = utils.validate_parent_admin_auth(context);
   const { email, name } = data;
@@ -67,7 +69,7 @@ export const invite = async (db, data: any, context: functions.https.CallableCon
 
 export const invitationValidateProcess = async (
   db,
-  data: any,
+  data: subAccountInvitationAcceptDeny,
   context: functions.https.CallableContext | Context,
   callback: (adminUid: string, messageData: firebase.firestore.DocumentData, messageRef: firebase.firestore.DocumentReference) => Promise<void> // eslint-disable-line
 ) => {
@@ -87,7 +89,7 @@ export const invitationValidateProcess = async (
 };
 const childInvitationProcess = async (
   db: any,
-  data: any,
+  data: subAccountInvitationAcceptDeny,
   context: functions.https.CallableContext | Context,
   callback: (messageData: firebase.firestore.DocumentData, messageRef: firebase.firestore.DocumentReference) => Promise<void> // eslint-disable-line
 ) => {
@@ -107,7 +109,12 @@ const childInvitationProcess = async (
     }
   });
 };
-export const accept = async (db, data: any, context: functions.https.CallableContext | Context) => {
+export const accept = async (db, data: subAccountInvitationAcceptDeny, context: functions.https.CallableContext | Context) => {
+  const { messageId } = data;
+  if (!validateFirebaseId(messageId)) {
+    console.log(messageId);
+    throw new functions.https.HttpsError("invalid-argument", "invalid args.");
+  }
   try {
     await childInvitationProcess(db, data, context, async (messageData, messageRef) => {
       await db.runTransaction(async (tr) => {
@@ -137,7 +144,12 @@ export const accept = async (db, data: any, context: functions.https.CallableCon
   }
   return {};
 };
-export const deny = async (db, data: any, context: functions.https.CallableContext | Context) => {
+export const deny = async (db, data: subAccountInvitationAcceptDeny, context: functions.https.CallableContext | Context) => {
+  const { messageId } = data;
+  if (!validateFirebaseId(messageId)) {
+    console.log(messageId);
+    throw new functions.https.HttpsError("invalid-argument", "invalid args.");
+  }
   try {
     await childInvitationProcess(db, data, context, async (messageData, messageRef) => {
       await db.runTransaction(async (tr) => {
@@ -162,11 +174,14 @@ export const deny = async (db, data: any, context: functions.https.CallableConte
   return {};
 };
 
-export const deleteChild = async (db, data: any, context: functions.https.CallableContext | Context) => {
+export const deleteChild = async (db, data: subAccountDeleteChildData, context: functions.https.CallableContext | Context) => {
   // check admin
   const adminUid = utils.validate_parent_admin_auth(context);
   const { childUid } = data;
-
+  if (!validateFirebaseId(childUid)) {
+      throw new functions.https.HttpsError("invalid-argument", "invalid args.");
+  }
+  
   try {
     await db.runTransaction(async (tr) => {
       const childRef = db.doc(`admins/${adminUid}/children/${childUid}`);

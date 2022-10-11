@@ -25,8 +25,7 @@ import moment from "moment";
 import { nameOfOrder } from "@/utils/strings";
 import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
 import { order_status } from "@/config/constant";
-import { arrayOrNumSum } from "@/utils/utils";
-import { revenueCSVHeader, revenueMoCSVHeader } from "@/utils/reportUtils";
+import { arrayOrNumSum, orderTypeKey } from "@/utils/utils";
 
 export default defineComponent({
   components: {
@@ -37,10 +36,15 @@ export default defineComponent({
       type: Array,
       required: true,
     },
+    isInMo: {
+      type: Boolean,
+      required: true,
+    },
   },
   setup(props, ctx) {
     const fields = [
       "datePlaced",
+      "type",
       "dateEstimated",
       "dateConfirmed",
       "statusName",
@@ -67,6 +71,7 @@ export default defineComponent({
         }, "unexpected");
         return {
           datePlaced: moment(order.timePlaced).format("YYYY/MM/DD HH:mm"),
+          type: ctx.root.$t("order." + orderTypeKey(order, props.isInMo)),
           dateEstimated:
             order.timeEstimated &&
             moment(order.timeEstimated).format("YYYY/MM/DD HH:mm"),

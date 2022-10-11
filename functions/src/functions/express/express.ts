@@ -12,7 +12,7 @@ import * as stripeLog from "../../lib/stripeLog";
 import * as apis from "./apis";
 import * as apis2 from "./apis2";
 
-import * as smaregi from "../smaregiApi";
+import * as smaregi from "./smaregiApi";
 
 import * as xmlbuilder from "xmlbuilder";
 
