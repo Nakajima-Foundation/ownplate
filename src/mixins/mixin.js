@@ -21,12 +21,6 @@ const mixin = {
         restaurant.restProfilePhoto
       );
     },
-    shareUrl() {
-      return (
-        location.protocol + "//" + location.host + "/r/" + this.restaurantId()
-      );
-      // return "https://omochikaeri.com/r/" + this.restaurantId();
-    },
     num2time(num) {
       if (num === 0 || num === 60 * 24) {
         return this.$t("shopInfo.midnight");
