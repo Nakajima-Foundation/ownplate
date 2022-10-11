@@ -279,7 +279,6 @@ export default defineComponent({
     const filteredOrders = computed(() => {
       return orders.value
         .filter((order) => {
-          console.log(order);
           if (orderState.value === 0) {
             return true;
           }
