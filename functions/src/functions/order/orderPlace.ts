@@ -96,8 +96,8 @@ const multiple = utils.getStripeRegion().multiple; // 100 for USD, 1 for JPY
 export const place = async (db, data: orderPlacedData, context: functions.https.CallableContext | Context) => {
   const customerUid = utils.validate_customer_auth(context);
 
-  const { restaurantId, orderId, tip, sendSMS, timeToPickup, lng, memo, customerInfo } = data;
-  utils.required_params({ restaurantId, orderId }); // tip, sendSMS and lng are optinoal
+  const { restaurantId, orderId, tip, timeToPickup, lng, memo, customerInfo } = data;
+  utils.required_params({ restaurantId, orderId }); // tip and lng are optinoal
 
   const validateResult = validateOrderPlaced(data);
   if (!validateResult.result) {
@@ -119,6 +119,9 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
     const customerRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}/customer/data`);
 
     const result = await db.runTransaction(async (transaction) => {
+
+
+
       const order = (await transaction.get(orderRef)).data();
       if (!order) {
         throw new functions.https.HttpsError("invalid-argument", "This order does not exist.");
@@ -141,10 +144,30 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
         // for transaction lock
         await transaction.get(customerRef);
       }
-      // transaction for stock orderTotal
-      await updateOrderTotalDataAndUserLog(db, transaction, customerUid, order.order, restaurantId, restaurantData.uid, timePlaced, now, true);
+
       const totalCharge = order.total + roundedTip + (shippingCost || 0) + (order.deliveryFee || 0);
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      // transaction for stock orderTotal
+      await updateOrderTotalDataAndUserLog(db, transaction, customerUid, order.order, restaurantId, restaurantData.uid, timePlaced, now, true);
       if (hasCustomer) {
         const { zip, prefectureId, address, name, email } = customerInfo;
         await transaction.set(customerRef, {
@@ -165,11 +188,12 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
         totalCharge,
         tip: roundedTip,
         shippingCost,
-        sendSMS: sendSMS || false,
+        sendSMS: true,
         updatedAt: now,
         orderPlacedAt: now,
         timePlaced,
         timePickupForQuery: timePlaced,
+
         memo: memo || "",
         isEC: restaurantData.isEC || false,
       });

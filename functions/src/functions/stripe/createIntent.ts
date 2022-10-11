@@ -29,8 +29,8 @@ const getOrderData = async (transaction: any, orderRef: any) => {
 export const create = async (db: admin.firestore.Firestore, data: orderPlacedData, context: functions.https.CallableContext) => {
   const customerUid = utils.validate_customer_auth(context);
 
-  const { restaurantId, orderId, tip, sendSMS, timeToPickup, lng, memo, customerInfo } = data; // orderPlace
-  utils.required_params({ orderId, restaurantId }); // lng, tip and sendSMS are optional
+  const { restaurantId, orderId, tip, timeToPickup, lng, memo, customerInfo } = data; // orderPlace
+  utils.required_params({ restaurantId, orderId }); // tip and lng are optinoal
 
   const validateResult = validateOrderPlaced(data);
   if (!validateResult.result) {
@@ -56,6 +56,10 @@ export const create = async (db: admin.firestore.Firestore, data: orderPlacedDat
       const stripeRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}/system/stripe`);
 
       const order = await getOrderData(transaction, orderRef);
+      if (!order) {
+        throw new functions.https.HttpsError("invalid-argument", "This order does not exist.");
+      }
+
       if (customerUid !== order.uid) {
         throw new functions.https.HttpsError("permission-denied", "The user is not the owner of this order.");
       }
@@ -117,7 +121,7 @@ export const create = async (db: admin.firestore.Firestore, data: orderPlacedDat
         totalCharge,
         tip: roundedTip,
         shippingCost,
-        sendSMS: sendSMS || false,
+        sendSMS: true,
         updatedAt: now,
         orderPlacedAt: now,
         timePlaced,

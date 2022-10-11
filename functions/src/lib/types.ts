@@ -16,7 +16,6 @@ export interface orderPlacedData {
   restaurantId: string;
   orderId: string;
   tip: number;
-  sendSMS: boolean;
   timeToPickup: admin.firestore.Timestamp;
   lng: string;
   memo: string;

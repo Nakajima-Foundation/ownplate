@@ -242,10 +242,6 @@ export const validateOrderPlaced = (data: orderPlacedData) => {
       type: "integer",
       require: false,
     },
-    sendSMS: {
-      type: "boolean",
-      require: false,
-    },
     timeToPickup: {
       type: "timestamp",
       required: false,
