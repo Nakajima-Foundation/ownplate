@@ -56,7 +56,7 @@
               class="p-2 text-xs font-bold"
               v-for="(field, k) in revenueTableHeader"
             >
-              <div class="text-right">{{ $t(field) }}</div>
+              <div class="text-right">{{ $t("order." + field) }}</div>
             </th>
           </tr>
 
@@ -210,13 +210,14 @@ import NotFound from "@/components/NotFound.vue";
 import { ownPlateConfig } from "@/config/project";
 import { nameOfOrder } from "@/utils/strings";
 import { midNightOfMonth } from "@/utils/dateUtils";
-import { revenueCSVHeader, revenueMoCSVHeader } from "@/utils/reportUtils";
+import { revenueCSVHeader, revenueMoCSVHeader, revenueTableHeader } from "@/utils/reportUtils";
 import { order_status_keys } from "@/config/constant";
 import {
   useAdminUids,
   doc2data,
   arrayOrNumSum,
   notFoundResponse,
+  orderTypeKey,
 } from "@/utils/utils";
 
 import { order2ReportData } from "@/models/orderInfo";
@@ -305,25 +306,13 @@ export default defineComponent({
       loadAllSubcategory();
     }
     
-    const revenueTableHeader = [
-      "order.date",
-      "order.foodRevenue",
-      "order.foodTax",
-      "order.alcoholRevenue",
-      "order.salesTax",
-      "order.productSubTotal",
-      "order.tipShort",
-      "order.serviceTax",
-      "order.shippingCost",
-      "order.total",
-      "order.name",
-    ];
     const tableData = computed(() => {
       return orders.value.map((order) => {
         return {
           date: moment(order.timeConfirmed).format("YYYY/MM/DD"),
           restaurantId: props.shopInfo.restaurantId, // mo
           shopId: props.shopInfo.shopId, // mo
+          type: ctx.root.$t("order." + orderTypeKey(order, props.isInMo)),
           restaurantName: props.shopInfo.restaurantName,
           orderStatus: ctx.root.$t(
             "order.status." + order_status_keys[order.status]
@@ -392,7 +381,7 @@ export default defineComponent({
         const serviceTaxRate = props.shopInfo.alcoholTax / 100;
         orders.value = snapshot.docs
           .map(doc2data("order"))
-          .map((order) => order2ReportData(order, serviceTaxRate));
+          .map((order) => order2ReportData(order, serviceTaxRate, props.isInMo));
         total.value = orders.value.reduce(
           (total, order) => {
             const accounting = order.accounting;

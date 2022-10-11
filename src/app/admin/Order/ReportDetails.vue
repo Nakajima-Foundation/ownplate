@@ -197,6 +197,11 @@ export default defineComponent({
                 orderId: order.id,
                 name: nameOfOrder(order),
                 restaurantName: props.shopInfo.restaurantName,
+                type: writeonFirstLine(
+                  index,
+                  key,
+                  ctx.root.$t("order.orderType" + order.type)
+                ),
                 uid: order.uid, // mo
                 restaurantId: props.shopInfo.restaurantId, // mo
                 shopId: props.shopInfo.shopId, // mo

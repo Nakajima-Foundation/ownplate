@@ -94,7 +94,10 @@
       <div v-if="isOwner">
         <!-- Download Orders -->
         <div class="mx-6 mt-6 text-center">
-          <download-orders :orders="filteredOrders" />
+          <download-orders
+            :orders="filteredOrders"
+            :isInMo="isInMo"
+            />
         </div>
 
         <!-- Download Report -->
@@ -134,6 +137,7 @@ import {
   useAdminUids,
   doc2data,
   notFoundResponse,
+  orderType,
 } from "@/utils/utils";
 import { checkShopAccount } from "@/utils/userPermission";
 
@@ -261,6 +265,7 @@ export default defineComponent({
         if (order.timeConfirmed) {
           order.timeConfirmed = order.timeConfirmed.toDate();
         }
+        order.type = orderType(order, props.isInMo);
         orders.value.push(order);
       });
     };
@@ -274,6 +279,7 @@ export default defineComponent({
     const filteredOrders = computed(() => {
       return orders.value
         .filter((order) => {
+          console.log(order);
           if (orderState.value === 0) {
             return true;
           }
