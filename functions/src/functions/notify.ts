@@ -37,7 +37,7 @@ export const sendMessageToCustomer = async (
   const orderNumber = utils.nameOfOrder(orderData.number);
 
   const t = await i18next.init({
-    lng: lng || utils.getStripeRegion().langs[0],
+    lng: lng || utils.stripeRegion.langs[0],
     resources: orderData.groupId ? resources_mo : resources,
   });
   const getMessage = (_url: string) => {
@@ -109,7 +109,7 @@ export const sendMessageToCustomer = async (
 // for restaurant
 const createNotifyRestaurantLineMessage = async (messageId: string, restaurantName: string, orderNumber: number, lng: string) => {
   const t = await i18next.init({
-    lng: lng || utils.getStripeRegion().langs[0],
+    lng: lng || utils.stripeRegion.langs[0],
     resources,
   });
   const orderName = utils.nameOfOrder(orderNumber);
@@ -119,7 +119,7 @@ const createNotifyRestaurantLineMessage = async (messageId: string, restaurantNa
 
 const createNotifyRestaurantMailTitle = async (messageId: string, restaurantName: string, orderNumber: number, lng: string) => {
   const t = await i18next.init({
-    lng: lng || utils.getStripeRegion().langs[0],
+    lng: lng || utils.stripeRegion.langs[0],
     resources,
   });
   const orderName = utils.nameOfOrder(orderNumber);
@@ -128,12 +128,12 @@ const createNotifyRestaurantMailTitle = async (messageId: string, restaurantName
 };
 
 export const createNotifyRestaurantMailMessage = async (messageId: string, restaurantName: string, order: any, orderNumber: number, _lng: string, url: string) => {
-  const lng = _lng || utils.getStripeRegion().langs[0];
+  const lng = _lng || utils.stripeRegion.langs[0];
   const path = `./mail_templates/${messageId}/${lng}.html`;
   const template_data = fs.readFileSync(path, { encoding: "utf8" });
 
   const t = await i18next.init({
-    lng: lng || utils.getStripeRegion().langs[0],
+    lng: lng || utils.stripeRegion.langs[0],
     resources,
   });
 

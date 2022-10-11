@@ -194,7 +194,7 @@ export const orderCreated = async (db, data: orderCreatedData, context) => {
       console.log("invalid order:" + String(orderId));
       throw new functions.https.HttpsError("invalid-argument", "This order does not exist.");
     }
-    const multiple = utils.getStripeRegion().multiple; //100 for USD, 1 for JPY
+    const multiple = utils.stripeRegion.multiple; //100 for USD, 1 for JPY
 
     const { newOrderData, newItems, newPrices, food_sub_total, alcohol_sub_total } = await createNewOrderData(menuRestaurantRef, orderRef, orderData, multiple);
 

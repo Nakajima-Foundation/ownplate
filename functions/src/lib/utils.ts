@@ -8,11 +8,8 @@ import * as admin from "firebase-admin";
 
 const locale = functions.config().locale;
 const region = (locale && locale.region) || "US";
-
 export const stripeRegion = stripe_regions[region];
-export const getStripeRegion = () => {
-  return stripeRegion;
-};
+
 export const timezone = (functions.config() && functions.config().order && functions.config().order.timezone) || "Asia/Tokyo";
 
 export const validate_auth = (context: functions.https.CallableContext | Context) => {

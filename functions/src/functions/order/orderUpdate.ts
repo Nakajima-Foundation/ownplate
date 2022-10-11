@@ -97,7 +97,7 @@ export const update = async (db: admin.firestore.Firestore, data: orderUpdateDat
         params["time"] = moment(orderData.timeEstimated.toDate()).tz(timezone).locale("ja").format("LLL");
         console.log("timeEstimated", params["time"]);
       }
-      await sendMessageToCustomer(db, lng || utils.getStripeRegion().langs[0], msgKey, restaurant.restaurantName, orderData, restaurantId, orderId, params);
+      await sendMessageToCustomer(db, lng || utils.stripeRegion.langs[0], msgKey, restaurant.restaurantName, orderData, restaurantId, orderId, params);
     }
     return result;
   } catch (error) {

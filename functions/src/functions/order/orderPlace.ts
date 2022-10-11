@@ -88,7 +88,7 @@ export const updateOrderTotalDataAndUserLog = async (db, transaction, customerUi
   }
 };
 
-const multiple = utils.getStripeRegion().multiple; // 100 for USD, 1 for JPY
+const multiple = utils.stripeRegion.multiple; // 100 for USD, 1 for JPY
 
 // This function is called by users to place orders without paying
 // export const place = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => {

@@ -13,7 +13,7 @@ import { getStripeAccount, getStripeOrderRecord, getPaymentMethodData, getHash }
 import { orderChangeData, newOrderData } from "../../lib/types";
 import { validateOrderChange } from "../../lib/validator";
 
-const multiple = utils.getStripeRegion().multiple; // 100 for USD, 1 for JPY
+const multiple = utils.stripeRegion.multiple; // 100 for USD, 1 for JPY
 const stripe = utils.get_stripe();
 
 const getUpdateOrder = (newOrders: newOrderData[], order, options, rawOptions) => {
@@ -145,7 +145,7 @@ export const orderChange = async (db: admin.firestore.Firestore, data: orderChan
           setup_future_usage: "off_session",
           amount: orderUpdateData.totalCharge * multiple,
           description: `${description} ${orderId} orderChange`,
-          currency: utils.getStripeRegion().currency,
+          currency: utils.stripeRegion.currency,
           metadata: { uid: customerUid, restaurantId, orderId },
           payment_method_data,
         } as Stripe.PaymentIntentCreateParams;
