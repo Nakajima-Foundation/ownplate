@@ -1,24 +1,17 @@
 import * as functions from "firebase-functions";
-import { stripe_regions, regionalSettings } from "../common/constant";
+import { stripe_regions } from "../common/constant";
 import Stripe from "stripe";
 import * as Sentry from "@sentry/node";
 
 import { Context } from "../models/TestType";
 import * as admin from "firebase-admin";
 
-export const getRegion = () => {
-  const locale = functions.config().locale;
-  return (locale && locale.region) || "US";
-};
+const locale = functions.config().locale;
+const region = (locale && locale.region) || "US";
 
+export const stripeRegion = stripe_regions[region];
 export const getStripeRegion = () => {
-  const region = getRegion();
-  return stripe_regions[region] || stripe_regions["US"];
-};
-
-export const getRegionalSetting = () => {
-  const region = getRegion();
-  return regionalSettings[region] || regionalSettings["US"];
+  return stripeRegion;
 };
 
 export const validate_auth = (context: functions.https.CallableContext | Context) => {
