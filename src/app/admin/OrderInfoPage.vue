@@ -608,6 +608,7 @@ import {
   useRestaurantId,
   notFoundResponse,
   stripeRegion,
+  convOrderStateForText,
 } from "@/utils/utils";
 
 import {
@@ -1302,6 +1303,8 @@ export default defineComponent({
       closeCancel,
       openPaymentCancel,
       closePaymentCancel,
+
+      convOrderStateForText,
     };
   },
 });

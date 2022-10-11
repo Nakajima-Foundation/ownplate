@@ -167,7 +167,10 @@ import { db } from "@/lib/firebase/firebase9";
 import { doc, getDoc } from "firebase/firestore";
 
 import { order_status, order_status_keys } from "@/config/constant";
-import { arrayOrNumSum } from "@/utils/utils";
+import {
+  arrayOrNumSum,
+  convOrderStateForText
+} from "@/utils/utils";
 
 export default defineComponent({
   props: {
@@ -243,6 +246,8 @@ export default defineComponent({
       orderName,
       totalCount,
       paymentIsNotCompleted,
+
+      convOrderStateForText,
     };
   },
 });

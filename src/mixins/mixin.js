@@ -62,17 +62,6 @@ const mixin = {
         console.log("order: call play");
       }
     },
-    convOrderStateForText(orderState, orderInfo) {
-      if (orderInfo?.isEC) {
-        if (orderState === "ready_to_pickup") {
-          return "ready_to_shipping";
-        }
-        if (orderState === "transaction_complete") {
-          return "shipping_complete";
-        }
-      }
-      return orderState;
-    },
     itemOptionCheckbox2options(itemOptionCheckbox) {
       // HACK: Dealing with a special case (probalby a bug in the menu editor)
       if (
