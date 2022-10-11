@@ -16,7 +16,7 @@ import moment from "moment-timezone";
 export const confirm = async (db: admin.firestore.Firestore, data: confirmIntentData, context: functions.https.CallableContext) => {
   const ownerUid = utils.validate_owner_admin_auth(context);
 
-  const { restaurantId, orderId, lng, timezone, timeEstimated } = data;
+  const { restaurantId, orderId, lng, timeEstimated } = data;
   utils.required_params({ restaurantId, orderId });
 
   const validateResult = validateConfirmIntent(data);
@@ -93,7 +93,7 @@ export const confirm = async (db: admin.firestore.Firestore, data: confirmIntent
 
     const params = {
       time: moment(orderData.timeEstimated.toDate())
-        .tz(timezone || "Asia/Tokyo")
+        .tz(utils.timezone)
         .locale("ja")
         .format("LLL"),
     };

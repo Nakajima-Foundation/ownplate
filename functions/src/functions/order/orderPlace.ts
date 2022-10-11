@@ -12,10 +12,9 @@ import { orderPlacedData } from "../../lib/types";
 import { validateOrderPlaced, validateCustomer } from "../../lib/validator";
 
 export const updateOrderTotalDataAndUserLog = async (db, transaction, customerUid, order, restaurantId, ownerUid, timePlaced, now, positive) => {
-  const timezone = (functions.config() && functions.config().order && functions.config().order.timezone) || "Asia/Tokyo";
-
   const menuIds = Object.keys(order);
-  const date = moment(timePlaced.toDate()).tz(timezone).format("YYYYMMDD");
+  console.log(utils.timezone);
+  const date = moment(timePlaced.toDate()).tz(utils.timezone).format("YYYYMMDD");
 
   // Firestore transactions require all reads to be executed before all writes.
 
