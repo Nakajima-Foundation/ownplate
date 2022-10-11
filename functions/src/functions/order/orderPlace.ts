@@ -112,7 +112,7 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
   const timePlaced = (timeToPickup && new admin.firestore.Timestamp(timeToPickup.seconds, timeToPickup.nanoseconds)) || admin.firestore.FieldValue.serverTimestamp();
   try {
     const restaurantData = await utils.get_restaurant(db, restaurantId);
-
+    const restaurantOwnerUid = restaurantData["uid"];
     const postage = restaurantData.isEC ? await utils.get_restaurant_postage(db, restaurantId) : {};
 
     const orderRef = db.doc(`restaurants/${restaurantId}/orders/${orderId}`);
@@ -126,7 +126,6 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
       if (!order) {
         throw new functions.https.HttpsError("invalid-argument", "This order does not exist.");
       }
-      order.id = orderId;
       if (customerUid !== order.uid) {
         throw new functions.https.HttpsError("permission-denied", "The user is not the owner of this order.");
       }
@@ -167,7 +166,7 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
 
 
       // transaction for stock orderTotal
-      await updateOrderTotalDataAndUserLog(db, transaction, customerUid, order.order, restaurantId, restaurantData.uid, timePlaced, now, true);
+      await updateOrderTotalDataAndUserLog(db, transaction, customerUid, order.order, restaurantId, restaurantOwnerUid, timePlaced, now, true);
       if (hasCustomer) {
         const { zip, prefectureId, address, name, email } = customerInfo;
         await transaction.set(customerRef, {

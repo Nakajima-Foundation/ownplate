@@ -59,7 +59,6 @@ export const create = async (db: admin.firestore.Firestore, data: orderPlacedDat
       if (!order) {
         throw new functions.https.HttpsError("invalid-argument", "This order does not exist.");
       }
-
       if (customerUid !== order.uid) {
         throw new functions.https.HttpsError("permission-denied", "The user is not the owner of this order.");
       }
@@ -100,7 +99,7 @@ export const create = async (db: admin.firestore.Firestore, data: orderPlacedDat
         stripeAccount,
       });
       // start write transaction
-      await updateOrderTotalDataAndUserLog(db, transaction, customerUid, order.order, restaurantId, customerUid, timePlaced, now, true);
+      await updateOrderTotalDataAndUserLog(db, transaction, customerUid, order.order, restaurantId, restaurantOwnerUid, timePlaced, now, true);
       if (hasCustomer) {
         const { zip, prefectureId, address, name, email } = customerInfo;
         await transaction.set(customerRef, {
