@@ -117,14 +117,14 @@ const mixin = {
     userLiffId() {
       return this.$store.getters.liffId;
     },
-    isAnonymous() {
+    isAnonymous() { // TODO
       return this.$store.getters.isAnonymous;
     },
-    isLineUser() {
+    isLineUser() { // TODO
       const claims = this.$store.state.claims;
       return !!claims?.line;
     },
-    isLineEnabled() {
+    isLineEnabled() { // TODO
       return !!ownPlateConfig.line;
     },
     isLocaleJapan() {
@@ -133,23 +133,6 @@ const mixin = {
       // return this.$i18n.locale === "ja";
       // TODO: why not ja ?
       return this.$i18n.locale !== "en" && this.$i18n.locale !== "fr";
-    },
-    // for user agent detect
-    isIOS() {
-      return this.isOldIOS || this.isNewIOS;
-    },
-    isOldIOS() {
-      return /iP(hone|(o|a)d)/.test(navigator.userAgent);
-    },
-    isNewIOS() {
-      return this.isSafari && typeof document.ontouchstart !== "undefined";
-    },
-    isSafari() {
-      return /Safari/.test(navigator.userAgent);
-    },
-    isAndroid() {
-      // not implemented
-      return null;
     },
     inLiff() {
       // BY path
@@ -161,16 +144,14 @@ const mixin = {
     liff_base_path() {
       return `/liff/${this.liffIndexId}`;
     },
-    isInLine() {
+    isInLine() { // TODO
       // By UA
       return /Line/.test(navigator.userAgent);
     },
     isInLIFF() {
       return /LIFF/.test(navigator.userAgent);
     },
-    isInFacebook() {},
-    isInTwitter() {},
-    isDev() {
+    isDev() { // TODO 
       return firebaseConfig.projectId === "ownplate-dev";
     },
     featureHeroMobile() {
@@ -183,7 +164,7 @@ const mixin = {
         this.isLocaleJapan ? "ja" : "en"
       ];
     },
-    gmapKey() {
+    gmapKey() { // TODO
       return GAPIKey;
     },
   },

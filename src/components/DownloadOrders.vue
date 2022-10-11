@@ -26,7 +26,6 @@ import { nameOfOrder } from "@/utils/strings";
 import { parsePhoneNumber, formatNational } from "@/utils/phoneutil";
 import { order_status } from "@/config/constant";
 import { arrayOrNumSum } from "@/utils/utils";
-import { revenueCSVHeader, revenueMoCSVHeader } from "@/utils/reportUtils";
 
 export default defineComponent({
   components: {
