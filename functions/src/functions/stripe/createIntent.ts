@@ -29,8 +29,8 @@ const getOrderData = async (transaction: any, orderRef: any) => {
 export const create = async (db: admin.firestore.Firestore, data: orderPlacedData, context: functions.https.CallableContext) => {
   const customerUid = utils.validate_customer_auth(context);
 
-  const { restaurantId, orderId, tip, timeToPickup, lng, memo, customerInfo } = data; // orderPlace
-  utils.required_params({ restaurantId, orderId }); // tip and lng are optinoal
+  const { restaurantId, orderId, tip, timeToPickup, memo, customerInfo } = data; // orderPlace
+  utils.required_params({ restaurantId, orderId }); // tip is optinoal
 
   const validateResult = validateOrderPlaced(data);
   if (!validateResult.result) {
@@ -144,8 +144,7 @@ export const create = async (db: admin.firestore.Firestore, data: orderPlacedDat
       Object.assign(order, updateData);
       return { success: true, order };
     });
-
-    await notifyNewOrderToRestaurant(db, restaurantId, result.order, restaurantData.restaurantName, lng);
+    await notifyNewOrderToRestaurant(db, restaurantId, result.order, restaurantData.restaurantName);
 
     return result;
   } catch (error) {

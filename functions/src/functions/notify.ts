@@ -133,7 +133,7 @@ export const createNotifyRestaurantMailMessage = async (messageId: string, resta
   const template_data = fs.readFileSync(path, { encoding: "utf8" });
 
   const t = await i18next.init({
-    lng: lng || utils.stripeRegion.langs[0],
+    lng,
     resources,
   });
 
@@ -255,8 +255,8 @@ export const notifyRestaurant = async (db: any, messageId: string, restaurantId:
   }
 };
 
-export const notifyNewOrderToRestaurant = async (db: firebase.firestore.Firestore, restaurantId: string, order: any, restaurantName: string, lng: string) => {
-  return notifyRestaurant(db, "msg_order_placed", restaurantId, order, restaurantName, lng);
+export const notifyNewOrderToRestaurant = async (db: firebase.firestore.Firestore, restaurantId: string, order: any, restaurantName: string) => {
+  return notifyRestaurant(db, "msg_order_placed", restaurantId, order, restaurantName, utils.stripeRegion.langs[0]);
 };
 
 export const notifyCanceledOrderToRestaurant = async (db: firebase.firestore.Firestore, restaurantId: string, order: any, restaurantName: string, lng: string) => {

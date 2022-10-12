@@ -12,8 +12,8 @@ import { validateOrderUpadte } from "../../lib/validator";
 // This function is called by admins (restaurant operators) to update the status of order
 export const update = async (db: admin.firestore.Firestore, data: orderUpdateData, context: functions.https.CallableContext) => {
   const ownerUid = utils.validate_owner_admin_auth(context);
-  const { restaurantId, orderId, status, lng, timezone, timeEstimated } = data;
-  utils.required_params({ restaurantId, orderId, status, timezone }); // lng, timeEstimated is optional
+  const { restaurantId, orderId, status, timezone, timeEstimated } = data;
+  utils.required_params({ restaurantId, orderId, status, timezone }); // timeEstimated is optional
 
   const validateResult = validateOrderUpadte(data);
   if (!validateResult.result) {
@@ -97,7 +97,7 @@ export const update = async (db: admin.firestore.Firestore, data: orderUpdateDat
         params["time"] = moment(orderData.timeEstimated.toDate()).tz(timezone).locale("ja").format("LLL");
         console.log("timeEstimated", params["time"]);
       }
-      await sendMessageToCustomer(db, lng || utils.stripeRegion.langs[0], msgKey, restaurant.restaurantName, orderData, restaurantId, orderId, params);
+      await sendMessageToCustomer(db, utils.stripeRegion.langs[0], msgKey, restaurant.restaurantName, orderData, restaurantId, orderId, params);
     }
     return result;
   } catch (error) {

@@ -95,8 +95,8 @@ const multiple = utils.stripeRegion.multiple; // 100 for USD, 1 for JPY
 export const place = async (db, data: orderPlacedData, context: functions.https.CallableContext | Context) => {
   const customerUid = utils.validate_customer_auth(context);
 
-  const { restaurantId, orderId, tip, timeToPickup, lng, memo, customerInfo } = data;
-  utils.required_params({ restaurantId, orderId }); // tip and lng are optinoal
+  const { restaurantId, orderId, tip, timeToPickup, memo, customerInfo } = data;
+  utils.required_params({ restaurantId, orderId }); // tip is optinoal
 
   const validateResult = validateOrderPlaced(data);
   if (!validateResult.result) {
@@ -198,8 +198,7 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
       Object.assign(order, { totalCharge, tip, shippingCost });
       return { success: true, order };
     });
-
-    await notifyNewOrderToRestaurant(db, restaurantId, result.order, restaurantData.restaurantName, lng);
+    await notifyNewOrderToRestaurant(db, restaurantId, result.order, restaurantData.restaurantName);
 
     return result;
   } catch (error) {
