@@ -19,8 +19,8 @@ export const cancel = async (db: any, data: orderCancelData, context: functions.
 
   const uid = isAdmin ? utils.validate_owner_admin_auth(context) : utils.validate_customer_auth(context);
 
-  const { restaurantId, orderId, lng } = data;
-  utils.required_params({ restaurantId, orderId }); // lng is optional
+  const { restaurantId, orderId  } = data;
+  utils.required_params({ restaurantId, orderId });
 
   const validateResult = validateCancel(data);
   if (!validateResult.result) {
@@ -115,10 +115,10 @@ export const cancel = async (db: any, data: orderCancelData, context: functions.
     });
     // sendSMS is always true
     if (isAdmin && result.order.sendSMS) {
-      await sendMessageToCustomer(db, lng || "", "msg_order_canceled", restaurant.restaurantName, result.order, restaurantId, orderId, {}, true);
+      await sendMessageToCustomer(db, "msg_order_canceled", restaurant.restaurantName, result.order, restaurantId, orderId, {}, true);
     }
     if (!isAdmin) {
-      await notifyCanceledOrderToRestaurant(db, restaurantId, result.order, restaurant.restaurantName, lng || "");
+      await notifyCanceledOrderToRestaurant(db, restaurantId, result.order, restaurant.restaurantName);
     }
     return result;
   } catch (error) {

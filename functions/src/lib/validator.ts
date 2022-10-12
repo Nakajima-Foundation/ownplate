@@ -212,15 +212,6 @@ export const validateOrderUpadte = (data: orderUpdateData) => {
       type: "number",
       required: true,
     },
-    timezone: {
-      type: "string",
-      regex: /^([a-zA-Z]+)\/([a-zA-Z]+)$/,
-      required: true,
-    },
-    lng: {
-      type: "alphabet",
-      required: false,
-    },
     timeEstimated: {
       type: "timestamp",
       required: false,
@@ -266,15 +257,6 @@ export const validateConfirmIntent = (data: confirmIntentData) => {
     orderId: {
       type: "firebaseId",
       required: true,
-    },
-    timezone: {
-      type: "string",
-      regex: /^([a-zA-Z]+)\/([a-zA-Z]+)$/,
-      required: true,
-    },
-    lng: {
-      type: "alphabet",
-      required: false,
     },
     timeEstimated: {
       type: "timestamp",
@@ -325,15 +307,6 @@ export const validateOrderChange = (data: orderChangeData) => {
     newOrder: {
       type: "newOrder",
       required: true,
-    },
-    timezone: {
-      type: "string",
-      regex: /^([a-zA-Z]+)\/([a-zA-Z]+)$/,
-      required: true,
-    },
-    lng: {
-      type: "alphabet",
-      required: false,
     },
   };
   return validateData(data, validator);

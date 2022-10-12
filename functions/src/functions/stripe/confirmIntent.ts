@@ -16,7 +16,7 @@ import moment from "moment-timezone";
 export const confirm = async (db: admin.firestore.Firestore, data: confirmIntentData, context: functions.https.CallableContext) => {
   const ownerUid = utils.validate_owner_admin_auth(context);
 
-  const { restaurantId, orderId, lng, timeEstimated } = data;
+  const { restaurantId, orderId, timeEstimated } = data;
   utils.required_params({ restaurantId, orderId });
 
   const validateResult = validateConfirmIntent(data);
@@ -99,7 +99,7 @@ export const confirm = async (db: admin.firestore.Firestore, data: confirmIntent
     };
 
     const msgKey = orderData.isEC ? "msg_ec_order_accepted" : "msg_order_accepted";
-    await sendMessageToCustomer(db, lng || "", msgKey, restaurantData.restaurantName, orderData, restaurantId, orderId, params);
+    await sendMessageToCustomer(db, msgKey, restaurantData.restaurantName, orderData, restaurantId, orderId, params);
 
     return result;
   } catch (error) {

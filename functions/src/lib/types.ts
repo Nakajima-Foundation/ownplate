@@ -17,7 +17,6 @@ export interface orderPlacedData {
   orderId: string;
   tip: number;
   timeToPickup: admin.firestore.Timestamp;
-  lng: string;
   memo: string;
   customerInfo: customerInfoData;
 }
@@ -26,8 +25,6 @@ export interface orderUpdateData {
   restaurantId: string;
   orderId: string;
   status: number;
-  timezone: string;
-  lng?: string;
   timeEstimated?: admin.firestore.Timestamp;
 }
 
@@ -62,15 +59,12 @@ export interface menuItem {
 export interface confirmIntentData {
   restaurantId: string;
   orderId: string;
-  timezone: string;
-  lng?: string;
   timeEstimated?: admin.firestore.Timestamp;
 }
 
 export interface orderCancelData {
   restaurantId: string;
   orderId: string;
-  lng?: string;
 }
 
 export interface newOrderData {
@@ -82,14 +76,11 @@ export interface orderChangeData {
   restaurantId: string;
   orderId: string;
   newOrder: newOrderData[];
-  timezone: string;
-  lng?: string;
 }
 
 export interface orderCancelPaymentData {
   restaurantId: string;
   orderId: string;
-  lng?: string;
 }
 
 export interface stripeOAuthConnectData {

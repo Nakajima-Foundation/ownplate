@@ -25,7 +25,6 @@ export const isEnabled = !!ownPlateConfig.line;
 // for customer
 export const sendMessageToCustomer = async (
   db: firebase.firestore.Firestore,
-  lng: string,
   msgKey: string,
   restaurantName: string,
   orderData: firebase.firestore.DocumentData,
@@ -37,7 +36,7 @@ export const sendMessageToCustomer = async (
   const orderNumber = utils.nameOfOrder(orderData.number);
 
   const t = await i18next.init({
-    lng: lng || utils.stripeRegion.langs[0],
+    lng: utils.stripeRegion.langs[0],
     resources: orderData.groupId ? resources_mo : resources,
   });
   const getMessage = (_url: string) => {
@@ -194,7 +193,8 @@ const notifyRestaurantToLineUser = async (url: string, message: string, lineUser
   return results;
 };
 
-export const notifyRestaurant = async (db: any, messageId: string, restaurantId: string, order: any, restaurantName: string, lng: string) => {
+export const notifyRestaurant = async (db: any, messageId: string, restaurantId: string, order: any, restaurantName: string) => {
+  const lng = utils.stripeRegion.langs[0];
   const datestr = moment().format("YYYY-MM-DD");
   const restaurant = (await db.doc(`/restaurants/${restaurantId}`).get()).data();
   if (!restaurant) {
@@ -256,9 +256,9 @@ export const notifyRestaurant = async (db: any, messageId: string, restaurantId:
 };
 
 export const notifyNewOrderToRestaurant = async (db: firebase.firestore.Firestore, restaurantId: string, order: any, restaurantName: string) => {
-  return notifyRestaurant(db, "msg_order_placed", restaurantId, order, restaurantName, utils.stripeRegion.langs[0]);
+  return notifyRestaurant(db, "msg_order_placed", restaurantId, order, restaurantName);
 };
 
-export const notifyCanceledOrderToRestaurant = async (db: firebase.firestore.Firestore, restaurantId: string, order: any, restaurantName: string, lng: string) => {
-  return notifyRestaurant(db, "msg_order_canceled_by_user", restaurantId, order, restaurantName, lng);
+export const notifyCanceledOrderToRestaurant = async (db: firebase.firestore.Firestore, restaurantId: string, order: any, restaurantName: string) => {
+  return notifyRestaurant(db, "msg_order_canceled_by_user", restaurantId, order, restaurantName);
 };

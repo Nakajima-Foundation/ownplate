@@ -45,8 +45,8 @@ const getUpdateOrder = (newOrders: newOrderData[], order, options, rawOptions) =
 
 export const orderChange = async (db: admin.firestore.Firestore, data: orderChangeData, context: functions.https.CallableContext | Context) => {
   const ownerUid = utils.validate_owner_admin_auth(context);
-  const { restaurantId, orderId, newOrder, timezone, lng } = data;
-  utils.required_params({ restaurantId, orderId, newOrder, timezone }); // lng is optional
+  const { restaurantId, orderId, newOrder } = data;
+  utils.required_params({ restaurantId, orderId, newOrder });
 
   const validateResult = validateOrderChange(data);
   if (!validateResult.result) {
@@ -169,7 +169,7 @@ export const orderChange = async (db: admin.firestore.Firestore, data: orderChan
       });
     }
     if (order.sendSMS) {
-      await sendMessageToCustomer(db, lng || "", "msg_order_updated", restaurantData.restaurantName, order, restaurantId, orderId, {}, true);
+      await sendMessageToCustomer(db, "msg_order_updated", restaurantData.restaurantName, order, restaurantId, orderId, {}, true);
     }
     return {};
   } catch (error) {

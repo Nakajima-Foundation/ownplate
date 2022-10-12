@@ -16,8 +16,8 @@ export const cancelStripePayment = async (db: admin.firestore.Firestore, data: o
   const ownerUid = utils.validate_owner_admin_auth(context);
   const uid = utils.validate_auth(context);
   
-  const { restaurantId, orderId, lng } = data;
-  utils.required_params({ restaurantId, orderId }); // lng is optional
+  const { restaurantId, orderId } = data;
+  utils.required_params({ restaurantId, orderId });
 
   const validateResult = validateCancelPayment(data);
   if (!validateResult.result) {
@@ -75,7 +75,7 @@ export const cancelStripePayment = async (db: admin.firestore.Firestore, data: o
     });
     // sendSMS is always true
     if (result.order.sendSMS) {
-      await sendMessageToCustomer(db, lng || "", "msg_stripe_payment_canceled", restaurant.restaurantName, result.order, restaurantId, orderId, {}, true);
+      await sendMessageToCustomer(db, "msg_stripe_payment_canceled", restaurant.restaurantName, result.order, restaurantId, orderId, {}, true);
     }
     return { success: true, payment: "stripe" };
   } catch (error) {
