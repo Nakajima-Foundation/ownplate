@@ -574,7 +574,6 @@ export default {
           restaurantId: this.restaurantId(),
           orderId: this.orderId,
           description: "", // no longer used TOTO DELETE
-          sendSMS: this.sendSMS,
           tip: this.tip || 0,
           memo: this.memo || "",
           customerInfo: this.$refs.ecCustomerRef
