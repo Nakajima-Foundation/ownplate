@@ -23,11 +23,7 @@ exportIfNeeded("lineVerifyFriend", "line/lineVerifyFriend", exports); // by user
 exportIfNeeded("lineValidate", "line/lineValidate", exports); // callback, user and admin
 
 exportIfNeeded("liffAuthenticate", "line/liffAuthenticate", exports); // liff jp
-// exportIfNeeded("traceProcess", "traceProcess", exports);
-// exportIfNeeded("lineAuthenticate", "line/lineAuthenticate", exports); // track.
-// exportIfNeeded("lineSetCustomClaim", "line/lineSetCustomClaim", exports); //track
 
-exportIfNeeded("wasOrderCreatedJp", "order/orderCreatedJp", exports); // jp
 exportIfNeeded("orderCreatedJp", "order/orderCreatedJp", exports); // jp
 exportIfNeeded("orderUpdateJp", "order/orderUpdateJp", exports);
 exportIfNeeded("orderPlaceJp", "order/orderPlaceJp", exports);

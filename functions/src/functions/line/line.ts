@@ -11,24 +11,6 @@ const LINE_MESSAGE_TOKEN = (functions.config() && functions.config().line && fun
 
 const client_id = ownPlateConfig.line.LOGIN_CHANNEL_ID;
 
-/*
-export const setCustomClaim = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => {
-  const uid = utils.validate_auth(context);
-  const isLine = uid.slice(0, 5) === "line:";
-  try {
-    if (isLine) {
-      // This looks redundant, but it simplifies the firebase.rules
-      await admin.auth().setCustomUserClaims(uid, {
-        line: uid,
-      });
-    }
-    return { success: isLine };
-  } catch (error) {
-    throw utils.process_error(error);
-  }
-};
-*/
-
 export const verifyFriend = async (db: admin.firestore.Firestore, context: functions.https.CallableContext) => {
   const customerUid = utils.validate_customer_auth(context);
   const isLine = customerUid.slice(0, 5) === "line:";
@@ -49,61 +31,6 @@ export const verifyFriend = async (db: admin.firestore.Firestore, context: funct
   }
 };
 
-/*
-// eslint-disable-next-line
-export const authenticate = async (db: admin.firestore.Firestore, data: any, context: functions.https.CallableContext) => {
-  // eslint-disable-line
-  const { code, redirect_uri, client_id } = data;
-  utils.required_params({ code, redirect_uri, client_id });
-  const LINE_TRACK_KEY = functions.config().line.track;
-
-  try {
-    // We validate the OAuth token (code) given to the redirected page.
-    // Result: access_token, id_token, expires_in, refresh_token, scope, token_type
-    const access = await netutils.postForm("https://api.line.me/oauth2/v2.1/token", {
-      grant_type: "authorization_code",
-      code,
-      redirect_uri,
-      client_id,
-      client_secret: LINE_TRACK_KEY,
-    });
-    if (!access.id_token || !access.access_token) {
-      throw new functions.https.HttpsError("invalid-argument", "Validation failed.", { params: access });
-    }
-
-    // We verify this code.
-    // amr, aud, exp, iat, iss, name, sub
-    const verified = await netutils.postForm("https://api.line.me/oauth2/v2.1/verify", {
-      id_token: access.id_token,
-      client_id,
-    });
-    if (!verified.sub) {
-      throw new functions.https.HttpsError("invalid-argument", "Verification failed.", { params: verified });
-    }
-
-    // We get user's profile
-    const profile = await netutils.request("https://api.line.me/v2/profile", {
-      headers: {
-        Authorization: `Bearer ${access.access_token}`,
-      },
-    });
-
-    const uidLine = "line:" + profile.userId;
-    await db.doc(`/line/${uidLine}/system/line`).set(
-      {
-        access,
-        verified,
-        profile,
-      },
-      { merge: true }
-    );
-    const customToken = await admin.auth().createCustomToken(uidLine);
-    return { profile, customToken, nonce: verified.nonce };
-  } catch (error) {
-    throw utils.process_error(error);
-  }
-};
-*/
 
 export const validate = async (db: admin.firestore.Firestore, data: lineValidateData, context: functions.https.CallableContext) => {
   const uid = utils.validate_auth(context);
@@ -197,19 +124,6 @@ export const sendMessageDirect = async (lineId: string, message: string, token: 
   );
 };
 
-/*
-export const sendMessage = async (db: admin.firestore.Firestore, uid: string | null, message: string) => {
-  if (uid === null) {
-    return;
-  }
-  const data = (await db.doc(`/users/${uid}/system/line`).get()).data() || (await db.doc(`/admins/${uid}/system/line`).get()).data();
-  const sub = data && data.profile && data.profile.userId
-  if (!sub) {
-    return;
-  }
-  return sendMessageDirect(sub, message);
-}
-*/
 export const getLiffPrivateConfig = async (db: any, liffIndexId: string) => {
   const liffPrivateConfig = (await db.doc(`/liff/${liffIndexId}/liffPrivate/data`).get()).data();
   if (!liffPrivateConfig) {
