@@ -4,7 +4,7 @@ import * as functions from "firebase-functions";
 
 import { order_status } from "../../common/constant";
 import * as utils from "../../lib/utils";
-import { updateOrderTotalDataAndUserLog } from "../order/orderPlace";
+import { updateOrderTotalDataAndUserLog, getOrderData } from "../order/orderPlace";
 import { notifyNewOrderToRestaurant } from "../notify";
 import { costCal } from "../../common/commonUtils";
 
@@ -14,16 +14,6 @@ import { orderPlacedData } from "../../lib/types";
 
 const multiple = utils.stripeRegion.multiple; // 100 for USD, 1 for JPY
 const stripe = utils.get_stripe();
-
-const getOrderData = async (transaction: any, orderRef: any) => {
-  const orderDoc = await transaction.get(orderRef);
-  const order = orderDoc.data();
-  if (!order) {
-    throw new functions.https.HttpsError("invalid-argument", "This order does not exist.");
-  }
-  order.id = orderDoc.id;
-  return order;
-};
 
 // This function is called by user to create a "payment intent" (to start the payment transaction)
 export const create = async (db: admin.firestore.Firestore, data: orderPlacedData, context: functions.https.CallableContext) => {

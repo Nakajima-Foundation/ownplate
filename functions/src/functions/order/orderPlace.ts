@@ -11,6 +11,16 @@ import { Context } from "../../models/TestType";
 import { orderPlacedData } from "../../lib/types";
 import { validateOrderPlaced, validateCustomer } from "../../lib/validator";
 
+export const getOrderData = async (transaction: any, orderRef: any) => {
+  const orderDoc = await transaction.get(orderRef);
+  const order = orderDoc.data();
+  if (!order) {
+    throw new functions.https.HttpsError("invalid-argument", "This order does not exist.");
+  }
+  order.id = orderDoc.id;
+  return order;
+};
+
 export const updateOrderTotalDataAndUserLog = async (db, transaction, customerUid, order, restaurantId, ownerUid, timePlaced, now, positive) => {
   const menuIds = Object.keys(order);
   console.log(utils.timezone);
@@ -121,7 +131,7 @@ export const place = async (db, data: orderPlacedData, context: functions.https.
 
 
 
-      const order = (await transaction.get(orderRef)).data();
+      const order = await getOrderData(transaction, orderRef);
       if (!order) {
         throw new functions.https.HttpsError("invalid-argument", "This order does not exist.");
       }
