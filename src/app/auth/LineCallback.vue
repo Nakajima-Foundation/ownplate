@@ -27,7 +27,6 @@ export default {
         const { data } = await lineValidate({
           code: this.code,
           redirect_uri: this.redirect_uri,
-          client_id: ownPlateConfig.line.LOGIN_CHANNEL_ID,
         });
         console.log("lineValidate", data);
 
